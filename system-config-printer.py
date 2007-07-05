@@ -898,7 +898,7 @@ class GUI:
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
                 if option.is_changed or saveall:
-                    #print "save", option.name, option.get_current_value()
+                    #print "save", option.name, `option.get_current_value()`
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
@@ -1098,9 +1098,12 @@ class GUI:
         self.tblServerOptions.resize(1, 3)
         for child in self.tblServerOptions.get_children():
             self.tblServerOptions.remove(child)
-        
-        for attr in printer.attributes:
-            value, supported = printer.possible_attributes[attr]
+
+        attrs = printer.attributes.keys()
+        attrs.sort()
+        for attr in attrs:
+            value = printer.attributes[attr]
+            supported = printer.possible_attributes[attr][1]
             self.add_option(attr, value, supported, is_new=False,
                             editable=editable)
 

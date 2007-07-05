@@ -20,7 +20,6 @@
 import gtk
 
 def OptionWidget(name, v, s, on_change):
-
     if isinstance(v, list):
         # XXX
         if isinstance(s, list):
@@ -138,7 +137,6 @@ class OptionNumeric(Option):
         if isinstance(supported, int):
             supported = (0, supported)
         Option.__init__(self, name, value, supported, on_change)
-
         adj = gtk.Adjustment(value, supported[0], supported[1], 1.0, 5.0, 0.0)
         self.selector = gtk.SpinButton(adj, climb_rate=1.0)
         self.selector.set_numeric(True)

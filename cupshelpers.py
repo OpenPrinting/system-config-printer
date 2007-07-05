@@ -78,44 +78,44 @@ class Printer:
     def _getAttributes(self, set_attributes):
         attrs = self.connection.getPrinterAttributes(self.name)
         self.attributes = {}
-        self.possible_attributes = {}
+        self.possible_attributes = {
+            'columns' : ('1', (1, 4)),
+            'cpi' : ('10', (1, 100)),
+            'fitplot' : ('false', ['true', 'false']),
+            'landscape' : ('false', ['true', 'false']),
+            'number-up-layout' : ('lrtb', ['btlr', 'btrl', 'lrbt', 'lrtb',
+                                         'rlbt', 'rltb', 'tblr', 'tbrl']),
+            'orientation-requested' : ('3', ['3','4','5','6']),
+            'page-bottom' : ('72', (0, 500)),
+            'page-top' : ('72', (0, 500)),
+            'page-left' : ('72', (0, 500)),
+            'page-right' : ('72', (0, 500)),
+            'page-border' : ('none', ['none', 'single', 'single-thick',
+                                     'double', 'double-thick']),
+            'prettyprint' : ('false', ['true', 'false']),
+            'lpi' : ('6', (1, 100)),
+            'scaling' : ('100', (1, 1000)),
+            'sides' : ('one-sided', ['one-sided', 'two-sided-long-edge',
+                                    'two-sided-short-edge']),
+            'wrap' : ('false', ['true', 'false'])}
 
         for key, value in attrs.iteritems():
             if key.endswith("-default"):
                 name = key[:-len("-default")]
-                if not attrs.has_key(name + "-supported"): continue
                 if name in ["job-sheets", "printer-error-policy",
                             "printer-op-policy", # handled below
                             "notify-events"]: # not supported by cups
                     continue 
+
+                supported = attrs.get(name + "-supported", None) or \
+                            self.possible_attributes.get(name, None) or \
+                            ""
                 if name in set_attributes:
                     self.attributes[name] = value
                     
-                self.possible_attributes[name] = (value,
-                                                  attrs[name+"-supported"]) 
-                #print name, value, attrs[name + "-supported"]
-
-        for name, default, supported in (
-            ('columns', '1', (1, 4)),
-            ('cpi', '10', (1, 100)),
-            ('fitplot', 'false', ['true', 'false']),
-            ('landscape', 'false', ['true', 'false']),
-            ('number-up-layout', 'lrtb', ['btlr', 'btrl', 'lrbt', 'lrtb',
-                                          'rlbt', 'rltb', 'tblr', 'tbrl']),
-            ('orientation-requested', '3', ['3','4','5','6']),
-            ('page-bottom', '72', (0, 500)),
-            ('page-top', '72', (0, 500)),
-            ('page-left', '72', (0, 500)),
-            ('page-right', '72', (0, 500)),
-            ('page-border', 'none', ['none', 'single', 'single-thick',
-                                     'double', 'double-thick']),
-            ('prettyprint', 'false', ['true', 'false']),
-            ('lpi', '6', (1, 100)),
-            ('scaling', '100', (1, 1000)),
-            ('sides', 'one-sided', ['one-sided', 'two-sided-long-edge',
-                                    'two-sided-short-edge']),
-            ('wrap', 'false', ['true', 'false'])):
-            self.possible_attributes.setdefault(name, (default, supported))
+                if attrs.has_key(name+"-supported"):
+                    self.possible_attributes[name] = (
+                        value, attrs[name+"-supported"]) 
         
         #print set_attributes
         #print self.attributes, self.possible_attributes
