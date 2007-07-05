@@ -379,6 +379,7 @@ class Foomatic:
     def __init__(self):
         self.path = '/usr/share/foomatic/db/source'
         self.foomatic_configure = "/usr/bin/foomatic-configure"
+        self.pickle_file = "/var/cache/foomatic.pickle"
 
         self._printer_names = None
         self._driver_names = None
@@ -394,11 +395,11 @@ class Foomatic:
         self.ppds = {}
         self.ppd_makes = {}
         
-        err = self._load_pickle()
+        err = self._load_pickle(self.pickle_file)
         if err:
             print "Writing new pickle"
             self.loadAll()
-            self._write_pickle()
+            self._write_pickle(self.pickle_file)
 
         # Add entries for raw printers
         self._add_printer(RawPrinter(self))
@@ -555,12 +556,12 @@ class Foomatic:
             "_auto_description" : self._auto_description,
             }
         path = os.path.dirname(filename)
-        # temp file
-        fd, tempname = tempfile.mkstemp(".tmp", "foomatic", dir=path)
-        os.write(fd, pickle.dumps(data, -1))
-        os.close(fd)
-        
         try:
+            # temp file
+            fd, tempname = tempfile.mkstemp(".tmp", "foomatic", dir=path)
+            os.write(fd, pickle.dumps(data, -1))
+            os.close(fd)
+        
             os.rename(tempname, filename) # atomically replace old file
         except os.Error:
             pass
