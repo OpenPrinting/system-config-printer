@@ -3,6 +3,10 @@
 	* system-config-printer.py (GUI.save_printer): Don't call
 	populateList() after saving printer, just update the printer we
 	changed.  This prevents a GTK+ crash (bug #242961).
+	(GUI.maySelectItem): Only clear the changed set when the cursor is
+	going to change.
+	(GUI.on_tvMainList_cursor_changed): Don't update when unapplied
+	changes remain.
 
 2007-06-06  Tim Waugh  <twaugh@redhat.com>
 

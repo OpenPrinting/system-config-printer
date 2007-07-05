@@ -670,9 +670,9 @@ class GUI:
             err = False
             if response == gtk.RESPONSE_APPLY:
                 err = self.apply()
-            self.changed = set() # of options
             if err or response == gtk.RESPONSE_CANCEL:
                 return False
+        self.changed = set() # of options
         return True
 
     def getSelectedItem(self):
@@ -1404,6 +1404,10 @@ class GUI:
     # select Item
 
     def on_tvMainList_cursor_changed(self, list):
+        if self.changed:
+            # The unapplied changes for this item have not been saved,
+            # and the user just pressed "Cancel".
+            return
         name, type = self.getSelectedItem()
         model, self.mainListSelected = self.tvMainList.get_selection().get_selected()
         item_selected = True
