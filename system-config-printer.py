@@ -139,7 +139,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            raise ValueError # uncomment for development
+            #raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
@@ -188,6 +188,7 @@ class GUI:
                         "cmbJONumberUp", "btnJOResetNumberUp",
                         "cmbJONumberUpLayout", "btnJOResetNumberUpLayout",
                         "sbJOBrightness", "btnJOResetBrightness",
+                        "cmbJOFinishings", "btnJOResetFinishings",
                         "cbJOMirror", "btnJOResetMirror",
                         "sbJOScaling", "btnJOResetScaling",
                         "sbJOSaturation", "btnJOResetSaturation",
@@ -381,6 +382,17 @@ class GUI:
                  options.OptionAlwaysShown ("brightness", int, 100,
                                             self.sbJOBrightness,
                                             self.btnJOResetBrightness),
+
+                 options.OptionAlwaysShown ("finishings", int, 3,
+                                            self.cmbJOFinishings,
+                                            self.btnJOResetFinishings,
+                                            combobox_map = [ 3, 4, 5, 6,
+                                                             7, 8, 9, 10,
+                                                             11, 12, 13, 14,
+                                                             20, 21, 22, 23,
+                                                             24, 25, 26, 27,
+                                                             28, 29, 30, 31,
+                                                             50, 51, 52, 53 ]),
 
                  options.OptionAlwaysShown ("mirror", bool, False,
                                             self.cbJOMirror,

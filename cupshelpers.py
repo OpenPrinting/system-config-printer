@@ -105,7 +105,6 @@ class Printer:
                 if name in ["job-sheets", "printer-error-policy",
                             "printer-op-policy", # handled below
                             "notify-events", # not supported by cups
-                            "finishings",             #
                             "job-priority",           # Not handled
                             "media",                  # in the UI
                             "document-format",        # (yet).
