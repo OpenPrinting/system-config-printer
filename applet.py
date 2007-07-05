@@ -61,6 +61,7 @@ class JobManager:
 
         self.MainWindow = self.xml.get_widget ('MainWindow')
         self.MainWindow.hide ()
+        self.MainWindow.set_icon_from_file (APPDIR + "/" + ICON)
 
         self.job_popupmenu = self.xml.get_widget ('job_popupmenu')
         self.icon_popupmenu = self.xml.get_widget ('icon_popupmenu')
