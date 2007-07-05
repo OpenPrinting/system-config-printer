@@ -789,7 +789,7 @@ class Foomatic:
             self._auto_make[make].has_key(model)):
             printer = self.getPrinter(self._auto_make[make][model])
         # check description
-        elif self._auto_description.has_key(description):
+        elif description and self._auto_description.has_key(description):
             printer = self.getPrinter(self._auto_description[description])
 
         # generic ppd
