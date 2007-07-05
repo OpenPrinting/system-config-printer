@@ -950,12 +950,13 @@ class GUI:
 
         # Server side options
 
-        # XXX
         self.server_side_options = {}
         self.cmbentNewOption.get_model().clear()
         self.cmbentNewOption.get_child().set_text("")
         self.btnNewOption.set_sensitive(False)
-        for attr in self.printer.possible_attributes:
+        attrs = self.printer.possible_attributes.keys()
+        attrs.sort()
+        for attr in attrs:
             if attr not in self.printer.attributes:
                 self.cmbentNewOption.append_text(attr)
 

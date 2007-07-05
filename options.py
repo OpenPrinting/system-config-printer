@@ -99,6 +99,7 @@ class OptionSelectMany(Option):
         Option.__init__(self, name, value, supported, on_change)
         self.checkboxes = []
         vbox = gtk.VBox()
+
         for s in supported:
             checkbox = gtk.CheckButton(label=s)
             checkbox.set_active(s in value)

@@ -71,6 +71,28 @@ class Printer:
                 self.possible_attributes[name] = (value,
                                                   attrs[name+"-supported"]) 
                 #print name, value, attrs[name + "-supported"]
+
+        for name, default, supported in (
+            ('columns', '1', (1, 4)),
+            ('cpi', '10', (1, 100)),
+            ('fitplot', 'false', ['true', 'false']),
+            ('landscape', 'false', ['true', 'false']),
+            ('number-up-layout', 'lrtb', ['btlr', 'btrl', 'lrbt', 'lrtb',
+                                          'rlbt', 'rltb', 'tblr', 'tbrl']),
+            ('orientation-requested', '3', ['3','4','5','6']),
+            ('page-bottom', '72', (0, 500)),
+            ('page-top', '72', (0, 500)),
+            ('page-left', '72', (0, 500)),
+            ('page-right', '72', (0, 500)),
+            ('page-border', 'none', ['none', 'single', 'single-thick',
+                                     'double', 'double-thick']),
+            ('prettyprint', 'false', ['true', 'false']),
+            ('lpi', '6', (1, 100)),
+            ('scaling', '100', (1, 1000)),
+            ('sides', 'one-sided', ['one-sided', 'two-sided-long-edge',
+                                    'two-sided-short-edge']),
+            ('wrap', 'false', ['true', 'false'])):
+            self.possible_attributes.setdefault(name, (default, supported))
         
         #print set_attributes
         #print self.attributes, self.possible_attributes
