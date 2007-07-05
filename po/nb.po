@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: printconf 0.1\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-04-05 09:34+0100\n"
+"POT-Creation-Date: 2007-04-05 18:27+0100\n"
 "PO-Revision-Date: 2007-03-31 17:28+0200\n"
 "Last-Translator: Espen Stefansen <espenas@gmail.com>\n"
 "Language-Team: Norsk <no@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Ledig"
 
-#: ../cupshelpers.py:29 ../applet.py:261
+#: ../cupshelpers.py:29 ../applet.py:540
 msgid "Processing"
 msgstr "Prosesserer"
 
@@ -25,11 +25,11 @@ msgstr "Prosesserer"
 msgid "Busy"
 msgstr "Opptatt"
 
-#: ../cupshelpers.py:31 ../applet.py:262
+#: ../cupshelpers.py:31 ../applet.py:541
 msgid "Stopped"
 msgstr "Stoppet"
 
-#: ../cupshelpers.py:48 ../applet.py:271
+#: ../cupshelpers.py:48 ../applet.py:550
 msgid "Unknown"
 msgstr "Ukjent"
 
@@ -144,20 +144,20 @@ msgstr ""
 "at disse konfliktene er løst."
 
 #: ../system-config-printer.py:1115 ../system-config-printer.py:1131
-#: ../applet.py:132
+#: ../applet.py:310
 msgid "Not authorized"
 msgstr "Ikke autorisert"
 
-#: ../system-config-printer.py:1116 ../applet.py:133
+#: ../system-config-printer.py:1116 ../applet.py:311
 msgid "The password may be incorrect."
 msgstr "Passordet kan være feil."
 
 #: ../system-config-printer.py:1119 ../system-config-printer.py:1152
-#: ../applet.py:136
+#: ../applet.py:314
 msgid "CUPS server error"
 msgstr "Feil med CUPS-tjener"
 
-#: ../system-config-printer.py:1120 ../applet.py:137
+#: ../system-config-printer.py:1120 ../applet.py:315
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Det oppstod en feil under utførelse av CUPS-operasjon: «%s»."
@@ -1044,7 +1044,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr "Pen utskrift"
 
-#: ../system-config-printer.glade.h:189 ../applet.py:45
+#: ../system-config-printer.glade.h:189 ../applet.py:172 ../applet.py:211
 msgid "Printer"
 msgstr "Skriver"
 
@@ -1230,7 +1230,7 @@ msgstr "Ikke _bruk"
 msgid "_Edit"
 msgstr "R_ediger"
 
-#: ../system-config-printer.glade.h:230 ../applet.glade.h:8
+#: ../system-config-printer.glade.h:230 ../applet.glade.h:10
 msgid "_File"
 msgstr "_Fil"
 
@@ -1270,93 +1270,189 @@ msgstr "Konfigurer skrivere"
 msgid "Printing"
 msgstr "Skrivere"
 
-#: ../applet.py:43
+#: ../applet.py:75
+msgid "Toner low"
+msgstr ""
+
+#: ../applet.py:76
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr ""
+
+#: ../applet.py:77
+msgid "Toner empty"
+msgstr ""
+
+#: ../applet.py:78
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr ""
+
+#: ../applet.py:79
+msgid "Cover open"
+msgstr ""
+
+#: ../applet.py:80
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:81
+msgid "Door open"
+msgstr ""
+
+#: ../applet.py:82
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:83
+msgid "Paper low"
+msgstr ""
+
+#: ../applet.py:84
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr ""
+
+#: ../applet.py:85
+msgid "Out of paper"
+msgstr ""
+
+#: ../applet.py:86
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr ""
+
+#: ../applet.py:87
+msgid "Ink low"
+msgstr ""
+
+#: ../applet.py:88
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr ""
+
+#: ../applet.py:89
+msgid "Ink empty"
+msgstr ""
+
+#: ../applet.py:90
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr ""
+
+#: ../applet.py:97
+#, fuzzy
+msgid "Printer report"
+msgstr "Alternativer for skriver"
+
+#: ../applet.py:99
+#, fuzzy
+msgid "Printer warning"
+msgstr "Skrivere"
+
+#: ../applet.py:101
+#, fuzzy
+msgid "Printer error"
+msgstr "Feil med tjener"
+
+#: ../applet.py:102
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr ""
+
+#: ../applet.py:170
 msgid "Job"
 msgstr "Jobb"
 
-#: ../applet.py:44
+#: ../applet.py:171
 msgid "Document"
 msgstr "Dokument"
 
-#: ../applet.py:46
+#: ../applet.py:173
 msgid "Size"
 msgstr "Størrelse"
 
-#: ../applet.py:47
+#: ../applet.py:174
 msgid "Time submitted"
 msgstr "Tid sendt"
 
-#: ../applet.py:48
+#: ../applet.py:175
 msgid "Status"
 msgstr "Status"
 
-#: ../applet.py:183
+#: ../applet.py:225
+msgid "Message"
+msgstr ""
+
+#: ../applet.py:451
 msgid "No documents queued"
 msgstr "Ingen dokumenter i kø"
 
-#: ../applet.py:186
+#: ../applet.py:454
 msgid "1 document queued"
 msgstr "1 dokument i kø"
 
-#: ../applet.py:189
+#: ../applet.py:457
 #, python-format
 msgid "%d documents queued"
 msgstr "%d dokumenter i kø"
 
-#: ../applet.py:232
+#: ../applet.py:511
 msgid "1 hour ago"
 msgstr "1 time siden"
 
-#: ../applet.py:234
+#: ../applet.py:513
 msgid "1 hour and 1 minute ago"
 msgstr "1 time og 1 minutt siden"
 
-#: ../applet.py:236
+#: ../applet.py:515
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "1 time og %d minutter siden"
 
-#: ../applet.py:239
+#: ../applet.py:518
 #, python-format
 msgid "%d hours ago"
 msgstr "%d timer siden"
 
-#: ../applet.py:241
+#: ../applet.py:520
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d timer og 1 minutt siden"
 
-#: ../applet.py:243
+#: ../applet.py:522
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d timer og %d minutter siden"
 
-#: ../applet.py:248
+#: ../applet.py:527
 msgid "a minute ago"
 msgstr "ett minutt siden"
 
-#: ../applet.py:250
+#: ../applet.py:529
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d minutter siden"
 
-#: ../applet.py:259
+#: ../applet.py:538
 msgid "Pending"
 msgstr "Venter"
 
-#: ../applet.py:260
+#: ../applet.py:539
 msgid "Held"
 msgstr "Holdt"
 
-#: ../applet.py:263
+#: ../applet.py:542
 msgid "Canceled"
 msgstr "Kansellert"
 
-#: ../applet.py:264
+#: ../applet.py:543
 msgid "Aborted"
 msgstr "Avbrutt"
 
-#: ../applet.py:265
+#: ../applet.py:544
 msgid "Completed"
 msgstr "Ferdig"
 
@@ -1365,26 +1461,36 @@ msgid "Document print status"
 msgstr "Utskriftsstatus for dokument"
 
 #: ../applet.glade.h:6
+#, fuzzy
+msgid "Printer status"
+msgstr "Tilstand for skriver:"
+
+#: ../applet.glade.h:7
 msgid "Re_print"
 msgstr "Skriv ut _igjen"
 
-#: ../applet.glade.h:7
+#: ../applet.glade.h:8
 msgid "Show _completed jobs"
 msgstr "Vis _ferdig jobber"
 
 #: ../applet.glade.h:9
+#, fuzzy
+msgid "Show _printer status"
+msgstr "Utskriftsstatus for dokument"
+
+#: ../applet.glade.h:11
 msgid "_Hide"
 msgstr "_Gjemme"
 
-#: ../applet.glade.h:10
+#: ../applet.glade.h:12
 msgid "_Hold"
 msgstr "_Hold"
 
-#: ../applet.glade.h:11
+#: ../applet.glade.h:13
 msgid "_Release"
 msgstr "_Ta bort"
 
-#: ../applet.glade.h:12
+#: ../applet.glade.h:14
 msgid "_View"
 msgstr "_Vis"
 

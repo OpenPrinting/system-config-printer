@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-04-02 17:13+0100\n"
+"POT-Creation-Date: 2007-04-05 18:27+0100\n"
 "PO-Revision-Date: 2007-04-05 11:49+0200\n"
 "Last-Translator: Alain PORTAL <aportal@univ-montp2.fr>\n"
 "Language-Team: Français <traduc@traduc.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Inactif"
 
-#: ../cupshelpers.py:29 ../applet.py:261
+#: ../cupshelpers.py:29 ../applet.py:540
 msgid "Processing"
 msgstr "Traitement en cours"
 
@@ -38,11 +38,11 @@ msgstr "Traitement en cours"
 msgid "Busy"
 msgstr "Occupé"
 
-#: ../cupshelpers.py:31 ../applet.py:262
+#: ../cupshelpers.py:31 ../applet.py:541
 msgid "Stopped"
 msgstr "Stoppé"
 
-#: ../cupshelpers.py:48 ../applet.py:271
+#: ../cupshelpers.py:48 ../applet.py:550
 msgid "Unknown"
 msgstr "Inconnu"
 
@@ -157,20 +157,20 @@ msgstr ""
 "avoir résolu ces conflits."
 
 #: ../system-config-printer.py:1115 ../system-config-printer.py:1131
-#: ../applet.py:132
+#: ../applet.py:310
 msgid "Not authorized"
 msgstr "Non autorisé"
 
-#: ../system-config-printer.py:1116 ../applet.py:133
+#: ../system-config-printer.py:1116 ../applet.py:311
 msgid "The password may be incorrect."
 msgstr "Le mot de passe est peut-être incorrect."
 
 #: ../system-config-printer.py:1119 ../system-config-printer.py:1152
-#: ../applet.py:136
+#: ../applet.py:314
 msgid "CUPS server error"
 msgstr "Erreur du serveur CUPS"
 
-#: ../system-config-printer.py:1120 ../applet.py:137
+#: ../system-config-printer.py:1120 ../applet.py:315
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Une erreur s'est produite lors de l'opération CUPS : « %s »."
@@ -1068,7 +1068,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr "Impression intelligente"
 
-#: ../system-config-printer.glade.h:189 ../applet.py:45
+#: ../system-config-printer.glade.h:189 ../applet.py:172 ../applet.py:211
 msgid "Printer"
 msgstr "Imprimante"
 
@@ -1165,7 +1165,10 @@ msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
-msgstr "Spécifier les options par défaut de la tâche pour cette imprimante. Les tâches arrivant au serveur d'impression se verront attribuer ces options si elles n'ont pas déjà été configurées par l'application."
+msgstr ""
+"Spécifier les options par défaut de la tâche pour cette imprimante. Les "
+"tâches arrivant au serveur d'impression se verront attribuer ces options si "
+"elles n'ont pas déjà été configurées par l'application."
 
 #: ../system-config-printer.glade.h:214
 msgid "Starting Banner:"
@@ -1215,7 +1218,9 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:221
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr "Pour ajouter une nouvelle option, entrez son nom dans la case en dessous et cliquez sur « Ajouter »."
+msgstr ""
+"Pour ajouter une nouvelle option, entrez son nom dans la case en dessous et "
+"cliquez sur « Ajouter »."
 
 #: ../system-config-printer.glade.h:222
 msgid "Top margin:"
@@ -1227,7 +1232,8 @@ msgstr "Essayer de copier les paramètres des options de l'ancien fichier PPD."
 
 #: ../system-config-printer.glade.h:224
 msgid "Use the new PPD (Postscript Printer Description) as is."
-msgstr "Utiliser le nouveau fichier PPD (Postscript Printer Description) tel quel."
+msgstr ""
+"Utiliser le nouveau fichier PPD (Postscript Printer Description) tel quel."
 
 #: ../system-config-printer.glade.h:225
 msgid "User name:"
@@ -1249,7 +1255,7 @@ msgstr "_Ne pas appliquer"
 msgid "_Edit"
 msgstr "_Éditer"
 
-#: ../system-config-printer.glade.h:230 ../applet.glade.h:8
+#: ../system-config-printer.glade.h:230 ../applet.glade.h:10
 msgid "_File"
 msgstr "_Fichier"
 
@@ -1289,93 +1295,189 @@ msgstr "Configurez les imprimantes"
 msgid "Printing"
 msgstr "Impression"
 
-#: ../applet.py:43
+#: ../applet.py:75
+msgid "Toner low"
+msgstr ""
+
+#: ../applet.py:76
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr ""
+
+#: ../applet.py:77
+msgid "Toner empty"
+msgstr ""
+
+#: ../applet.py:78
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr ""
+
+#: ../applet.py:79
+msgid "Cover open"
+msgstr ""
+
+#: ../applet.py:80
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:81
+msgid "Door open"
+msgstr ""
+
+#: ../applet.py:82
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:83
+msgid "Paper low"
+msgstr ""
+
+#: ../applet.py:84
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr ""
+
+#: ../applet.py:85
+msgid "Out of paper"
+msgstr ""
+
+#: ../applet.py:86
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr ""
+
+#: ../applet.py:87
+msgid "Ink low"
+msgstr ""
+
+#: ../applet.py:88
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr ""
+
+#: ../applet.py:89
+msgid "Ink empty"
+msgstr ""
+
+#: ../applet.py:90
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr ""
+
+#: ../applet.py:97
+#, fuzzy
+msgid "Printer report"
+msgstr "Options de l'imprimante"
+
+#: ../applet.py:99
+#, fuzzy
+msgid "Printer warning"
+msgstr "Impression"
+
+#: ../applet.py:101
+#, fuzzy
+msgid "Printer error"
+msgstr "Erreur serveur"
+
+#: ../applet.py:102
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr ""
+
+#: ../applet.py:170
 msgid "Job"
 msgstr "Tâche"
 
-#: ../applet.py:44
+#: ../applet.py:171
 msgid "Document"
 msgstr "Document"
 
-#: ../applet.py:46
+#: ../applet.py:173
 msgid "Size"
 msgstr "Taille"
 
-#: ../applet.py:47
+#: ../applet.py:174
 msgid "Time submitted"
 msgstr "Heure de soumission"
 
-#: ../applet.py:48
+#: ../applet.py:175
 msgid "Status"
 msgstr "État"
 
-#: ../applet.py:183
+#: ../applet.py:225
+msgid "Message"
+msgstr ""
+
+#: ../applet.py:451
 msgid "No documents queued"
 msgstr "Aucun document en attente"
 
-#: ../applet.py:186
+#: ../applet.py:454
 msgid "1 document queued"
 msgstr "1 document dans la file d'attente"
 
-#: ../applet.py:189
+#: ../applet.py:457
 #, python-format
 msgid "%d documents queued"
 msgstr "%d documents dans la file d'attente"
 
-#: ../applet.py:232
+#: ../applet.py:511
 msgid "1 hour ago"
 msgstr "il y a une heure"
 
-#: ../applet.py:234
+#: ../applet.py:513
 msgid "1 hour and 1 minute ago"
 msgstr "il y a une heure et une minute"
 
-#: ../applet.py:236
+#: ../applet.py:515
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "il y a une heure et %d minutes"
 
-#: ../applet.py:239
+#: ../applet.py:518
 #, python-format
 msgid "%d hours ago"
 msgstr "il y a %d heures"
 
-#: ../applet.py:241
+#: ../applet.py:520
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "il y a %d heures et une minute"
 
-#: ../applet.py:243
+#: ../applet.py:522
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "il y a %d heures et %d minutes"
 
-#: ../applet.py:248
+#: ../applet.py:527
 msgid "a minute ago"
 msgstr "il y a une minute"
 
-#: ../applet.py:250
+#: ../applet.py:529
 #, python-format
 msgid "%d minutes ago"
 msgstr "il y a %d minutes"
 
-#: ../applet.py:259
+#: ../applet.py:538
 msgid "Pending"
 msgstr "En attente"
 
-#: ../applet.py:260
+#: ../applet.py:539
 msgid "Held"
 msgstr "Maintenu"
 
-#: ../applet.py:263
+#: ../applet.py:542
 msgid "Canceled"
 msgstr "Annulé"
 
-#: ../applet.py:264
+#: ../applet.py:543
 msgid "Aborted"
 msgstr "Abandonné"
 
-#: ../applet.py:265
+#: ../applet.py:544
 msgid "Completed"
 msgstr "Achevé"
 
@@ -1384,26 +1486,36 @@ msgid "Document print status"
 msgstr "État d'impression du document"
 
 #: ../applet.glade.h:6
+#, fuzzy
+msgid "Printer status"
+msgstr "État de l'imprimante :"
+
+#: ../applet.glade.h:7
 msgid "Re_print"
 msgstr "Réim_primer"
 
-#: ../applet.glade.h:7
+#: ../applet.glade.h:8
 msgid "Show _completed jobs"
 msgstr "Afficher les tâches a_chevées"
 
 #: ../applet.glade.h:9
+#, fuzzy
+msgid "Show _printer status"
+msgstr "État d'impression du document"
+
+#: ../applet.glade.h:11
 msgid "_Hide"
 msgstr "Cac_her"
 
-#: ../applet.glade.h:10
+#: ../applet.glade.h:12
 msgid "_Hold"
 msgstr "_Maintenir"
 
-#: ../applet.glade.h:11
+#: ../applet.glade.h:13
 msgid "_Release"
 msgstr "_Relâcher"
 
-#: ../applet.glade.h:12
+#: ../applet.glade.h:14
 msgid "_View"
 msgstr "_Voir"
 
@@ -1422,4 +1534,3 @@ msgstr "Annuler, mettre en pause, relancer ou réimprimer les tâches"
 #: ../manage-print-jobs.desktop.in.h:2
 msgid "Manage print jobs"
 msgstr "Gèrer les tâches d'impression"
-

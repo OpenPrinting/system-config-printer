@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pt_BR\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-04-05 09:34+0100\n"
+"POT-Creation-Date: 2007-04-05 18:27+0100\n"
 "PO-Revision-Date: 2007-04-02 20:17-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_BR@redhat.com>\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Ociosa"
 
-#: ../cupshelpers.py:29 ../applet.py:261
+#: ../cupshelpers.py:29 ../applet.py:540
 msgid "Processing"
 msgstr "Processando"
 
@@ -41,11 +41,11 @@ msgstr "Processando"
 msgid "Busy"
 msgstr "Ocupada"
 
-#: ../cupshelpers.py:31 ../applet.py:262
+#: ../cupshelpers.py:31 ../applet.py:541
 msgid "Stopped"
 msgstr "Parada"
 
-#: ../cupshelpers.py:48 ../applet.py:271
+#: ../cupshelpers.py:48 ../applet.py:550
 msgid "Unknown"
 msgstr "Desconhecido"
 
@@ -160,20 +160,20 @@ msgstr ""
 "que estes conflitos forem resolvidos."
 
 #: ../system-config-printer.py:1115 ../system-config-printer.py:1131
-#: ../applet.py:132
+#: ../applet.py:310
 msgid "Not authorized"
 msgstr "Não autorizado"
 
-#: ../system-config-printer.py:1116 ../applet.py:133
+#: ../system-config-printer.py:1116 ../applet.py:311
 msgid "The password may be incorrect."
 msgstr "A senha pode estar incorreta."
 
 #: ../system-config-printer.py:1119 ../system-config-printer.py:1152
-#: ../applet.py:136
+#: ../applet.py:314
 msgid "CUPS server error"
 msgstr "Erro no servidor CUPS"
 
-#: ../system-config-printer.py:1120 ../applet.py:137
+#: ../system-config-printer.py:1120 ../applet.py:315
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Houve um erro durante a operação do CUPS: '%s'"
@@ -1064,7 +1064,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr "Impressão bela"
 
-#: ../system-config-printer.glade.h:189 ../applet.py:45
+#: ../system-config-printer.glade.h:189 ../applet.py:172 ../applet.py:211
 msgid "Printer"
 msgstr "Impressora"
 
@@ -1250,7 +1250,7 @@ msgstr "_Não aplicado"
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../system-config-printer.glade.h:230 ../applet.glade.h:8
+#: ../system-config-printer.glade.h:230 ../applet.glade.h:10
 msgid "_File"
 msgstr "_Arquivo"
 
@@ -1290,93 +1290,189 @@ msgstr "Configurar impressoras"
 msgid "Printing"
 msgstr "Impressão"
 
-#: ../applet.py:43
+#: ../applet.py:75
+msgid "Toner low"
+msgstr ""
+
+#: ../applet.py:76
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr ""
+
+#: ../applet.py:77
+msgid "Toner empty"
+msgstr ""
+
+#: ../applet.py:78
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr ""
+
+#: ../applet.py:79
+msgid "Cover open"
+msgstr ""
+
+#: ../applet.py:80
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:81
+msgid "Door open"
+msgstr ""
+
+#: ../applet.py:82
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:83
+msgid "Paper low"
+msgstr ""
+
+#: ../applet.py:84
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr ""
+
+#: ../applet.py:85
+msgid "Out of paper"
+msgstr ""
+
+#: ../applet.py:86
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr ""
+
+#: ../applet.py:87
+msgid "Ink low"
+msgstr ""
+
+#: ../applet.py:88
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr ""
+
+#: ../applet.py:89
+msgid "Ink empty"
+msgstr ""
+
+#: ../applet.py:90
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr ""
+
+#: ../applet.py:97
+#, fuzzy
+msgid "Printer report"
+msgstr "Opções da impressora"
+
+#: ../applet.py:99
+#, fuzzy
+msgid "Printer warning"
+msgstr "Impressão"
+
+#: ../applet.py:101
+#, fuzzy
+msgid "Printer error"
+msgstr "Erro no servidor"
+
+#: ../applet.py:102
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr ""
+
+#: ../applet.py:170
 msgid "Job"
 msgstr "Trabalho"
 
-#: ../applet.py:44
+#: ../applet.py:171
 msgid "Document"
 msgstr "Documento"
 
-#: ../applet.py:46
+#: ../applet.py:173
 msgid "Size"
 msgstr "Tamanho"
 
-#: ../applet.py:47
+#: ../applet.py:174
 msgid "Time submitted"
 msgstr "Tempo submetido"
 
-#: ../applet.py:48
+#: ../applet.py:175
 msgid "Status"
 msgstr "Status"
 
-#: ../applet.py:183
+#: ../applet.py:225
+msgid "Message"
+msgstr ""
+
+#: ../applet.py:451
 msgid "No documents queued"
 msgstr "Nenhum documento na fila"
 
-#: ../applet.py:186
+#: ../applet.py:454
 msgid "1 document queued"
 msgstr "1 documento na fila"
 
-#: ../applet.py:189
+#: ../applet.py:457
 #, python-format
 msgid "%d documents queued"
 msgstr "%d documentos na fila"
 
-#: ../applet.py:232
+#: ../applet.py:511
 msgid "1 hour ago"
 msgstr "1 hora atrás"
 
-#: ../applet.py:234
+#: ../applet.py:513
 msgid "1 hour and 1 minute ago"
 msgstr "1 hora e 1 minuto atrás"
 
-#: ../applet.py:236
+#: ../applet.py:515
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "1 hora e %d minutos atrás"
 
-#: ../applet.py:239
+#: ../applet.py:518
 #, python-format
 msgid "%d hours ago"
 msgstr "%d horas atrás"
 
-#: ../applet.py:241
+#: ../applet.py:520
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d horas e 1 minuto atrás"
 
-#: ../applet.py:243
+#: ../applet.py:522
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d horas e %d minutos atrás"
 
-#: ../applet.py:248
+#: ../applet.py:527
 msgid "a minute ago"
 msgstr "1 minuto atrás"
 
-#: ../applet.py:250
+#: ../applet.py:529
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d minutos atrás"
 
-#: ../applet.py:259
+#: ../applet.py:538
 msgid "Pending"
 msgstr "Pendente"
 
-#: ../applet.py:260
+#: ../applet.py:539
 msgid "Held"
 msgstr "Retido"
 
-#: ../applet.py:263
+#: ../applet.py:542
 msgid "Canceled"
 msgstr "Cancelado"
 
-#: ../applet.py:264
+#: ../applet.py:543
 msgid "Aborted"
 msgstr "Abortado"
 
-#: ../applet.py:265
+#: ../applet.py:544
 msgid "Completed"
 msgstr "Completo"
 
@@ -1385,26 +1481,36 @@ msgid "Document print status"
 msgstr "Status da impressão dos documentos"
 
 #: ../applet.glade.h:6
+#, fuzzy
+msgid "Printer status"
+msgstr "Estado da Impressora:"
+
+#: ../applet.glade.h:7
 msgid "Re_print"
 msgstr "Reim_primir"
 
-#: ../applet.glade.h:7
+#: ../applet.glade.h:8
 msgid "Show _completed jobs"
 msgstr "Mostrar trabalhos _completos"
 
 #: ../applet.glade.h:9
+#, fuzzy
+msgid "Show _printer status"
+msgstr "Status da impressão dos documentos"
+
+#: ../applet.glade.h:11
 msgid "_Hide"
 msgstr "_Ocultar"
 
-#: ../applet.glade.h:10
+#: ../applet.glade.h:12
 msgid "_Hold"
 msgstr "_Reter"
 
-#: ../applet.glade.h:11
+#: ../applet.glade.h:13
 msgid "_Release"
 msgstr "Li_berar"
 
-#: ../applet.glade.h:12
+#: ../applet.glade.h:14
 msgid "_View"
 msgstr "_Ver"
 

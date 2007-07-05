@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: printconf\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-04-05 09:34+0100\n"
+"POT-Creation-Date: 2007-04-05 18:27+0100\n"
 "PO-Revision-Date: 2005-04-18 12:02+0430\n"
 "Last-Translator: Meelad Zakaria <meelad@farsiweb.info>\n"
 "Language-Team: Persian <farsi@lists.sharif.edu>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Idle"
 msgstr ""
 
-#: ../cupshelpers.py:29 ../applet.py:261
+#: ../cupshelpers.py:29 ../applet.py:540
 msgid "Processing"
 msgstr ""
 
@@ -30,11 +30,11 @@ msgstr ""
 msgid "Busy"
 msgstr ""
 
-#: ../cupshelpers.py:31 ../applet.py:262
+#: ../cupshelpers.py:31 ../applet.py:541
 msgid "Stopped"
 msgstr ""
 
-#: ../cupshelpers.py:48 ../applet.py:271
+#: ../cupshelpers.py:48 ../applet.py:550
 #, fuzzy
 msgid "Unknown"
 msgstr "(نامعلوم)"
@@ -154,20 +154,20 @@ msgid ""
 msgstr ""
 
 #: ../system-config-printer.py:1115 ../system-config-printer.py:1131
-#: ../applet.py:132
+#: ../applet.py:310
 msgid "Not authorized"
 msgstr ""
 
-#: ../system-config-printer.py:1116 ../applet.py:133
+#: ../system-config-printer.py:1116 ../applet.py:311
 msgid "The password may be incorrect."
 msgstr ""
 
 #: ../system-config-printer.py:1119 ../system-config-printer.py:1152
-#: ../applet.py:136
+#: ../applet.py:314
 msgid "CUPS server error"
 msgstr ""
 
-#: ../system-config-printer.py:1120 ../applet.py:137
+#: ../system-config-printer.py:1120 ../applet.py:315
 #, fuzzy, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "هنگام تلاش برای چاپ صفحه‌ی آزمایشی، خطایی پیش آمد."
@@ -1007,7 +1007,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr ""
 
-#: ../system-config-printer.glade.h:189 ../applet.py:45
+#: ../system-config-printer.glade.h:189 ../applet.py:172 ../applet.py:211
 #, fuzzy
 msgid "Printer"
 msgstr "چاپگر: "
@@ -1189,7 +1189,7 @@ msgstr ""
 msgid "_Edit"
 msgstr "ویرایش"
 
-#: ../system-config-printer.glade.h:230 ../applet.glade.h:8
+#: ../system-config-printer.glade.h:230 ../applet.glade.h:10
 msgid "_File"
 msgstr ""
 
@@ -1234,99 +1234,195 @@ msgstr "پیکربندی چاپگرها"
 msgid "Printing"
 msgstr "در حال چاپ"
 
-#: ../applet.py:43
+#: ../applet.py:75
+msgid "Toner low"
+msgstr ""
+
+#: ../applet.py:76
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr ""
+
+#: ../applet.py:77
+msgid "Toner empty"
+msgstr ""
+
+#: ../applet.py:78
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr ""
+
+#: ../applet.py:79
+msgid "Cover open"
+msgstr ""
+
+#: ../applet.py:80
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:81
+msgid "Door open"
+msgstr ""
+
+#: ../applet.py:82
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:83
+msgid "Paper low"
+msgstr ""
+
+#: ../applet.py:84
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr ""
+
+#: ../applet.py:85
+msgid "Out of paper"
+msgstr ""
+
+#: ../applet.py:86
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr ""
+
+#: ../applet.py:87
+msgid "Ink low"
+msgstr ""
+
+#: ../applet.py:88
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr ""
+
+#: ../applet.py:89
+msgid "Ink empty"
+msgstr ""
+
+#: ../applet.py:90
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr ""
+
+#: ../applet.py:97
+#, fuzzy
+msgid "Printer report"
+msgstr "گزینه‌های صافی"
+
+#: ../applet.py:99
+#, fuzzy
+msgid "Printer warning"
+msgstr "در حال چاپ"
+
+#: ../applet.py:101
+#, fuzzy
+msgid "Printer error"
+msgstr "چاپگر: "
+
+#: ../applet.py:102
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr ""
+
+#: ../applet.py:170
 msgid "Job"
 msgstr ""
 
-#: ../applet.py:44
+#: ../applet.py:171
 #, fuzzy
 msgid "Document"
 msgstr "توضیح"
 
-#: ../applet.py:46
+#: ../applet.py:173
 #, fuzzy
 msgid "Size"
 msgstr "اندازه‌ی صفحه"
 
-#: ../applet.py:47
+#: ../applet.py:174
 msgid "Time submitted"
 msgstr ""
 
-#: ../applet.py:48
+#: ../applet.py:175
 msgid "Status"
 msgstr ""
 
-#: ../applet.py:183
+#: ../applet.py:225
+msgid "Message"
+msgstr ""
+
+#: ../applet.py:451
 msgid "No documents queued"
 msgstr ""
 
-#: ../applet.py:186
+#: ../applet.py:454
 msgid "1 document queued"
 msgstr ""
 
-#: ../applet.py:189
+#: ../applet.py:457
 #, python-format
 msgid "%d documents queued"
 msgstr ""
 
-#: ../applet.py:232
+#: ../applet.py:511
 msgid "1 hour ago"
 msgstr ""
 
-#: ../applet.py:234
+#: ../applet.py:513
 msgid "1 hour and 1 minute ago"
 msgstr ""
 
-#: ../applet.py:236
+#: ../applet.py:515
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr ""
 
-#: ../applet.py:239
+#: ../applet.py:518
 #, python-format
 msgid "%d hours ago"
 msgstr ""
 
-#: ../applet.py:241
+#: ../applet.py:520
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr ""
 
-#: ../applet.py:243
+#: ../applet.py:522
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr ""
 
-#: ../applet.py:248
+#: ../applet.py:527
 msgid "a minute ago"
 msgstr ""
 
-#: ../applet.py:250
+#: ../applet.py:529
 #, python-format
 msgid "%d minutes ago"
 msgstr ""
 
-#: ../applet.py:259
+#: ../applet.py:538
 #, fuzzy
 msgid "Pending"
 msgstr "در حال چاپ"
 
-#: ../applet.py:260
+#: ../applet.py:539
 #, fuzzy
 msgid "Held"
 msgstr "_راهنما"
 
-#: ../applet.py:263
+#: ../applet.py:542
 #, fuzzy
 msgid "Canceled"
 msgstr "ان_صراف"
 
-#: ../applet.py:264
+#: ../applet.py:543
 #, fuzzy
 msgid "Aborted"
 msgstr "درباره"
 
-#: ../applet.py:265
+#: ../applet.py:544
 #, fuzzy
 msgid "Completed"
 msgstr "توضیح"
@@ -1336,27 +1432,36 @@ msgid "Document print status"
 msgstr ""
 
 #: ../applet.glade.h:6
+#, fuzzy
+msgid "Printer status"
+msgstr "یادداشت‌های چاپگر:"
+
+#: ../applet.glade.h:7
 msgid "Re_print"
 msgstr ""
 
-#: ../applet.glade.h:7
+#: ../applet.glade.h:8
 msgid "Show _completed jobs"
 msgstr ""
 
 #: ../applet.glade.h:9
-msgid "_Hide"
-msgstr ""
-
-#: ../applet.glade.h:10
-msgid "_Hold"
+msgid "Show _printer status"
 msgstr ""
 
 #: ../applet.glade.h:11
+msgid "_Hide"
+msgstr ""
+
+#: ../applet.glade.h:12
+msgid "_Hold"
+msgstr ""
+
+#: ../applet.glade.h:13
 #, fuzzy
 msgid "_Release"
 msgstr "_حذف"
 
-#: ../applet.glade.h:12
+#: ../applet.glade.h:14
 msgid "_View"
 msgstr ""
 

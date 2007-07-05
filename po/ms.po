@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: printconf\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-04-05 09:34+0100\n"
+"POT-Creation-Date: 2007-04-05 18:27+0100\n"
 "PO-Revision-Date: 2007-04-01 18:30+0800\n"
 "Last-Translator: Sharuzzaman Ahmat Raslan <sharuzzaman@myrealbox.com>\n"
 "Language-Team: Malay <translation-team-ms@lists.sourceforge.net>\n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "Idle"
 msgstr "LEKA"
 
-#: ../cupshelpers.py:29 ../applet.py:261
+#: ../cupshelpers.py:29 ../applet.py:540
 msgid "Processing"
 msgstr "Memproses"
 
@@ -29,11 +29,11 @@ msgstr "Memproses"
 msgid "Busy"
 msgstr "Saya sibuk"
 
-#: ../cupshelpers.py:31 ../applet.py:262
+#: ../cupshelpers.py:31 ../applet.py:541
 msgid "Stopped"
 msgstr "Dihentikan"
 
-#: ../cupshelpers.py:48 ../applet.py:271
+#: ../cupshelpers.py:48 ../applet.py:550
 #, fuzzy
 msgid "Unknown"
 msgstr "Entah"
@@ -155,23 +155,23 @@ msgid ""
 msgstr ""
 
 #: ../system-config-printer.py:1115 ../system-config-printer.py:1131
-#: ../applet.py:132
+#: ../applet.py:310
 #, fuzzy
 msgid "Not authorized"
 msgstr "%s tidak dijumpai"
 
-#: ../system-config-printer.py:1116 ../applet.py:133
+#: ../system-config-printer.py:1116 ../applet.py:311
 #, fuzzy
 msgid "The password may be incorrect."
 msgstr "Katalaluan pengguna FTP salah\n"
 
 #: ../system-config-printer.py:1119 ../system-config-printer.py:1152
-#: ../applet.py:136
+#: ../applet.py:314
 #, fuzzy
 msgid "CUPS server error"
 msgstr "Ralat Dalaman Pelayan"
 
-#: ../system-config-printer.py:1120 ../applet.py:137
+#: ../system-config-printer.py:1120 ../applet.py:315
 #, fuzzy, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Terdapat ralat ketika cuba mencetak halaman ujian."
@@ -1050,7 +1050,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr "Teks cetakan-cantik (%s atau %s)"
 
-#: ../system-config-printer.glade.h:189 ../applet.py:45
+#: ../system-config-printer.glade.h:189 ../applet.py:172 ../applet.py:211
 msgid "Printer"
 msgstr "Pencetak"
 
@@ -1235,7 +1235,7 @@ msgstr "_Jangan terapkan"
 msgid "_Edit"
 msgstr "_Sunting"
 
-#: ../system-config-printer.glade.h:230 ../applet.glade.h:8
+#: ../system-config-printer.glade.h:230 ../applet.glade.h:10
 msgid "_File"
 msgstr "_Fail"
 
@@ -1276,101 +1276,199 @@ msgstr "Tetapkan pencetak"
 msgid "Printing"
 msgstr "Mencetak"
 
-#: ../applet.py:43
+#: ../applet.py:75
+msgid "Toner low"
+msgstr ""
+
+#: ../applet.py:76
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr ""
+
+#: ../applet.py:77
+msgid "Toner empty"
+msgstr ""
+
+#: ../applet.py:78
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr ""
+
+#: ../applet.py:79
+msgid "Cover open"
+msgstr ""
+
+#: ../applet.py:80
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:81
+msgid "Door open"
+msgstr ""
+
+#: ../applet.py:82
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:83
+msgid "Paper low"
+msgstr ""
+
+#: ../applet.py:84
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr ""
+
+#: ../applet.py:85
+msgid "Out of paper"
+msgstr ""
+
+#: ../applet.py:86
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr ""
+
+#: ../applet.py:87
+msgid "Ink low"
+msgstr ""
+
+#: ../applet.py:88
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr ""
+
+#: ../applet.py:89
+msgid "Ink empty"
+msgstr ""
+
+#: ../applet.py:90
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr ""
+
+# ui/galeon.glade.h:247
+#: ../applet.py:97
+#, fuzzy
+msgid "Printer report"
+msgstr "Opsyen RAID"
+
+# libgnomeui/gnome-messagebox.c:120 libgnomeui/gnome-messagebox.c:253
+#: ../applet.py:99
+#, fuzzy
+msgid "Printer warning"
+msgstr "Mencetak"
+
+#: ../applet.py:101
+#, fuzzy
+msgid "Printer error"
+msgstr "Ralat Dalaman Pelayan"
+
+#: ../applet.py:102
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr ""
+
+#: ../applet.py:170
 #, fuzzy
 msgid "Job"
 msgstr "Tugas cetakan #%d"
 
-#: ../applet.py:44
+#: ../applet.py:171
 #, fuzzy
 msgid "Document"
 msgstr "Pelihat Dokumen"
 
-#: ../applet.py:46
+#: ../applet.py:173
 msgid "Size"
 msgstr "Saiz"
 
-#: ../applet.py:47
+#: ../applet.py:174
 #, fuzzy
 msgid "Time submitted"
 msgstr "Waktu Alaska"
 
-#: ../applet.py:48
+#: ../applet.py:175
 msgid "Status"
 msgstr "Status"
 
-#: ../applet.py:183
+#: ../applet.py:225
+msgid "Message"
+msgstr ""
+
+#: ../applet.py:451
 #, fuzzy
 msgid "No documents queued"
 msgstr "Tiada Pemacu Dijumpai"
 
-#: ../applet.py:186
+#: ../applet.py:454
 #, fuzzy
 msgid "1 document queued"
 msgstr "Pelihat Dokumen"
 
-#: ../applet.py:189
+#: ../applet.py:457
 #, fuzzy, python-format
 msgid "%d documents queued"
 msgstr "Dokumen halaman"
 
-#: ../applet.py:232
+#: ../applet.py:511
 msgid "1 hour ago"
 msgstr ""
 
-#: ../applet.py:234
+#: ../applet.py:513
 msgid "1 hour and 1 minute ago"
 msgstr ""
 
-#: ../applet.py:236
+#: ../applet.py:515
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr ""
 
-#: ../applet.py:239
+#: ../applet.py:518
 #, fuzzy, python-format
 msgid "%d hours ago"
 msgstr "Keseluruhan"
 
-#: ../applet.py:241
+#: ../applet.py:520
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr ""
 
-#: ../applet.py:243
+#: ../applet.py:522
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr ""
 
-#: ../applet.py:248
+#: ../applet.py:527
 msgid "a minute ago"
 msgstr ""
 
-#: ../applet.py:250
+#: ../applet.py:529
 #, fuzzy, python-format
 msgid "%d minutes ago"
 msgstr "Baki masa: %s minit"
 
 # libgnomeui/gnome-messagebox.c:120 libgnomeui/gnome-messagebox.c:253
-#: ../applet.py:259
+#: ../applet.py:538
 msgid "Pending"
 msgstr "Tertangguh"
 
-#: ../applet.py:260
+#: ../applet.py:539
 #, fuzzy
 msgid "Held"
 msgstr "_Bantuan"
 
-#: ../applet.py:263
+#: ../applet.py:542
 #, fuzzy
 msgid "Canceled"
 msgstr "Permintaan dibatalkan."
 
-#: ../applet.py:264
+#: ../applet.py:543
 msgid "Aborted"
 msgstr "Dibatalkan"
 
-#: ../applet.py:265
+#: ../applet.py:544
 msgid "Completed"
 msgstr "Selesai"
 
@@ -1381,27 +1479,37 @@ msgstr "%s - status adalah auto.\n"
 
 #: ../applet.glade.h:6
 #, fuzzy
+msgid "Printer status"
+msgstr "keadaan tidak diketahui"
+
+#: ../applet.glade.h:7
+#, fuzzy
 msgid "Re_print"
 msgstr "Pengurus Pencetak"
 
-#: ../applet.glade.h:7
+#: ../applet.glade.h:8
 #, fuzzy
 msgid "Show _completed jobs"
 msgstr "Laksana tugas terjadual"
 
 #: ../applet.glade.h:9
+#, fuzzy
+msgid "Show _printer status"
+msgstr "%s - status adalah auto.\n"
+
+#: ../applet.glade.h:11
 msgid "_Hide"
 msgstr "_Sembunyi"
 
-#: ../applet.glade.h:10
+#: ../applet.glade.h:12
 msgid "_Hold"
 msgstr ""
 
-#: ../applet.glade.h:11
+#: ../applet.glade.h:13
 msgid "_Release"
 msgstr "Kelua_ran"
 
-#: ../applet.glade.h:12
+#: ../applet.glade.h:14
 msgid "_View"
 msgstr "_Lihat"
 
