@@ -47,7 +47,7 @@ from nametree import BuildTree
 from cupsd import CupsConfig
 import probe_printer
 import gtk_label_autowrap
-
+import urllib
 
 domain='system-config-printer'
 import locale
@@ -63,44 +63,6 @@ sys.path.append (pkgdata)
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 ellipsis = unichr(0x2026)
-
-def percentEncode (text):
-    """Percent-encode ASCII text ready for inclusion in a URI."""
-    l = len (text)
-    i = 0
-    while i < l:
-        c = text[i]
-        a = ord (c)
-        if (a <= 0x1f or a == 0x7f or
-            c == ' ' or
-            '<>#%"'.find (c) != -1 or
-            '{}|\^[]`'.find (c) != -1):
-            pre = text[:i]
-            post = text[i + 1:]
-            text = pre + "%" + ("%2X" % a) + post
-            i += 2
-            l += 2
-        i += 1
-    return text
-
-def percentDecode (text):
-    """Percent-decode URI text to ASCII."""
-    l = len (text)
-    r = 0
-    w = ''
-    xdigs = "0123456789abcdef"
-    while r < l:
-        if r + 2 < l and text[r] == '%':
-            c10 = xdigs.find (text[r + 1].lower ())
-            if c10 != -1:
-                c01 = xdigs.find (text[r + 2].lower ())
-                if c01 != -1:
-                    w += chr (c10 * 0x10 + c01)
-                    r += 3
-        else:
-            w += text[r]
-            r += 1
-    return w
 
 def nonfatalException ():
     print "Caught non-fatal exception.  Traceback:"
@@ -2261,16 +2223,16 @@ class GUI:
                 host = host[:p]
         share = uri
         return (group, host, share,
-                percentDecode (user), percentDecode (password))
+                urllib.unquote (user), urllib.unquote (password))
 
     def construct_SMBURI (self, group, host, share,
                           user = '', password = ''):
         uri_password = ''
         if password:
-            uri_password = ':' + percentEncode (password)
+            uri_password = ':' + urllib.quote (password)
         if user:
             uri_password += '@'
-        return "%s%s%s/%s/%s" % (percentEncode (user),
+        return "%s%s%s/%s/%s" % (urllib.quote (user),
                                  uri_password, group, host, share)
 
     def on_entSMBURI_changed (self, ent):
