@@ -29,3 +29,5 @@ EXTRA_DIST=\
 
 tag:
 	cvs tag -c @PACKAGE@-`echo @VERSION@ | tr . _`
+
+DISTCLEANFILES=*.pyc *.pyo *~ *.bak
