@@ -1551,7 +1551,6 @@ class GUI:
         # TODO: Cursor busy
         iter = None
         domains = pysmb.get_domain_list ()
-        domains = { 'blah': { 'DOMAIN': 'blah domain', 'IP': '192.168.1.1'}}
         for domain in domains.keys ():
             d = domains[domain]
             iter = store.append (None)
