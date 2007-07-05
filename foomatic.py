@@ -721,10 +721,11 @@ class Foomatic:
         if not device.id:
             return None
 
+        commandsets = device.id_dict["CMD"].split (",")
         return self.getPrinterFromDeviceID (device.id_dict["MFG"],
                                             device.id_dict["MDL"],
                                             description=device.id_dict["DES"],
-                                            commandsets=device.id_dict["CMD"],
+                                            commandsets=commandsets)
                                             uri=device.uri)
 
     def getPrinterFromDeviceID(self, mfg, mdl, description="",
