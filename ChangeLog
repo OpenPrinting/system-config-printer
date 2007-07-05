@@ -1,4 +1,11 @@
+2006-03-08 Florian Festi  <ffesti@redhat.com>
+	* cupshelpers.py:
+	new Printer class, cups.Connection.getPrinters() replacement
+	* system-config-printer.py (GUI.fill*, GUI.save_printer):
+	change printers to new Printer class	
 
+	* system-config-printer.py (GUI.fill*): don't allow changes 
+	to remote printers
 	
 2006-03-07 Florian Festi  <ffesti@redhat.com>
 	* system-config-printer.glade: Tab for members of printer classes 
@@ -12,8 +19,7 @@
 	add conflict icons to table
 	* system-config-printer.py (GUI.option_changed, 
 	GUI.setDataButtonState): disable Apply and Revert buttons on 
-	conflicts and show Error icon  
-	, optionswidgets.py
+	conflicts and show Error icon
 
 	* system-config-printer.py (GUI.on_btnApply*_clicked):
 	ApplyDialog

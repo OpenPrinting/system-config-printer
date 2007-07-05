@@ -26,6 +26,9 @@ class Option:
 
         self.constraints = [c for c in ppd.constraints
                             if c.option1 == option.keyword]
+        #for c in self.constraints:
+        #    if not c.choice1 or not c.choice2:
+        #        print c.option1, repr(c.choice1), c.option2, repr(c.choice2)
         self.conflicts = set()
         
     def is_changed(self):
@@ -38,6 +41,7 @@ class Option:
         return self.get_current_value()!= self.option.defchoice
     
     def writeback(self):
+        #print repr(self.option.keyword), repr(self.get_current_value())
         self.ppd.markOption(self.option.keyword, self.get_current_value())
 
     def checkConflicts(self, update_others=True):
@@ -90,7 +94,6 @@ class OptionBool(Option):
         self.selector.set_active(option.defchoice == 'True')
         self.selector.set_alignment(0.0, 0.5)
         self.selector.connect("toggled", self.on_change)
-
         Option.__init__(self, option, ppd, gui)
 
     def get_current_value(self):
@@ -119,7 +122,7 @@ class OptionPickOne(Option):
         if selected is not None:
             self.selector.set_active(selected)
         else:
-            print option.text, "unknown value"
+            print option.text, "unknown value:", option.defchoice
         self.selector.connect("changed", self.on_change)
 
         Option.__init__(self, option, ppd, gui)

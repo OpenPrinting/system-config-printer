@@ -1,6 +1,6 @@
 #!/bin/env python
 
-import gtk.glade, cups
+import gtk.glade, cups, cupshelpers
 import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
 from foomatic import Foomatic
@@ -36,6 +36,7 @@ class GUI:
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
                         "btnNewPrinter", "btnNewClass", "btnCopy", "btnDelete",
                         "new_printer", "new_class", "copy", "delete",
+                        "btnGotoServer",
 
                         "btnApply", "btnRevert", "imgConflict",
 
@@ -47,6 +48,7 @@ class GUI:
                           "lblPOptions", "vbPOptions",
                          "vbClassMembers", "lblClassMembers",
                           "tvClassMembers", "tvClassNotMembers",
+                          "btnClassAddMember", "btnClassDelMember",
 
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
@@ -84,8 +86,6 @@ class GUI:
         selection.set_mode(gtk.SELECTION_BROWSE)
         selection.set_select_function(self.maySelectItem)
         
-        self.populateList()
-
         # setup PPD tree
         model = gtk.TreeStore(str)
         cell = gtk.CellRendererText()
@@ -106,6 +106,8 @@ class GUI:
             treeview.set_model(model)
             treeview.append_column(column)
         
+        self.populateList()
+        
         self.xml.signal_autoconnect(self)
 
     def getWidgets(self, *names):
@@ -122,38 +124,41 @@ class GUI:
         self.MainWindow.set_title ("Printer configuration - %s" % host)
 
     def populateList(self):
+        old_name, old_type = self.getSelectedItem()
+        select_path = 0
+
         self.mainlist.clear()
 
         self.mainlist.append(("Server Settings", 'Settings'))
 
         # Printers
-        self.printers = self.cups.getPrinters()
+        self.printers = cupshelpers.getPrinters(self.cups)
         names = self.printers.keys()
         names.sort()
 
         self.mainlist.append(("Printers:", ''))
 
         for name in names:
-            #if self.printers[name]["printer-type"] & cups.CUPS_PRINTER_REMOTE:
+            #if self.printers[name].remote
             #    continue
-            if self.printers[name]["printer-type"] & cups.CUPS_PRINTER_CLASS:
+            if self.printers[name].is_class:
                 continue
-            self.mainlist.append(('  ' + name, 'Printer'))
+            iter = self.mainlist.append(('  ' + name, 'Printer'))
+            if name == old_name:
+                select_path = self.mainlist.get_path(iter)
         
         # Classes
-        self.classes = self.cups.getClasses()
-        names = self.classes.keys()
-        names.sort()
-        
         self.mainlist.append(("Classes:", ''))
         for name in names:
-            if not self.printers.has_key(name): continue
-            self.printers[name]["class-members"] = self.classes[name]
-            self.mainlist.append((name, 'Class'))       
+            if not self.printers[name].is_class: continue
+            iter = self.mainlist.append((name, 'Class'))       
+            if name == old_name:
+                select_path = self.mainlist.get_path(iter)
 
         # Selection
         selection = self.tvMainList.get_selection()
-        selection.select_path(0)
+        selection.select_path(select_path)
+
         self.on_tvMainList_cursor_changed(self.tvMainList)
 
     def maySelectItem(self, selection):
@@ -163,6 +168,8 @@ class GUI:
 
     def getSelectedItem(self):
         model, iter = self.tvMainList.get_selection().get_selected()
+        if iter is None:
+            return ("Server Settings", 'Settings')
         name, type = model.get_value(iter, 0), model.get_value(iter, 1)
         return name.strip(), type
 
@@ -180,25 +187,13 @@ class GUI:
                 return
 
         # Use browsed queues to build up a list of known IPP servers
-        known_servers = [ 'localhost' ]
+        known_servers = set(('localhost',))
         for name in self.printers:
             printer = self.printers[name]
-            if not (printer['printer-type'] & cups.CUPS_PRINTER_REMOTE):
-                continue
-            if not printer.has_key ('printer-uri-supported'):
-                continue
-            uri = printer['printer-uri-supported']
-            if not uri.startswith ('ipp://'):
-                continue
-            uri = uri[6:]
-            s = uri.find ('/')
-            if s != -1:
-                uri = uri[:s]
-            s = uri.find (':')
-            if s != -1:
-                uri = uri[:s]
-            if known_servers.count (uri) == 0:
-                known_servers.append (uri)
+            known_servers.add(printer.getServer())
+        known_servers.discard(None)
+        known_servers = list(known_servers)
+        known_servers.sort
 
         store = gtk.ListStore (gobject.TYPE_STRING)
         self.cmbServername.set_model (store)
@@ -246,6 +241,22 @@ class GUI:
 
     def on_btnCancelConnect_clicked(self, widget):
         self.ConnectWindow.hide()
+
+    def on_btnGotoServer_clicked(self, button):
+        cups.setServer(self.printer.getServer())
+        try:
+            connection = cups.Connection() # XXX timeout?
+            self.setTitle()
+        except:
+            connection = None
+
+        if not connection: # error handling
+            # XXX more Error handling
+            return
+
+        self.cups = connection
+        self.populateList()
+        
 
     # Password handling
 
@@ -313,17 +324,19 @@ class GUI:
     # Apply Changes
     
     def on_btnApply_clicked(self, widget):
-        self.apply()
+        err = self.apply()
+        if not err:
+            self.populateList()
+        else:
+            pass # XXX
         
     def apply(self):
         name, type = self.getSelectedItem()
-        if type == "Printer":
+        if type in ("Printer", "Class"):
             return self.save_printer(name)
-        elif type == "Class":
-            print "Apply Class"
         elif type == "Settings":
             print "Apply Settings"
-
+        
     def show_IPP_Error(self, exception, message):
         if exception == cups.IPP_NOT_AUTHORIZED:
             error_text = ('<span weight="bold" size="larger">' +
@@ -341,50 +354,47 @@ class GUI:
             
     def save_printer(self, name):
         printer = self.printers[name] 
-        is_class = printer.has_key("class-members")
         
         try:
-            if not is_class: 
+            if not printer.is_class: 
                 self.getPrinterSettings()
-                if self.ppd.nondefaultsMarked():
+                if True: #self.ppd.nondefaultsMarked():
                     self.passwd_retry = False # use cached Passwd 
                     self.cups.addPrinter(name, ppd=self.ppd)
+                else:
+                    print "no PPD changes found"
+            location = self.entPLocation.get_text()
+            info = self.entPDescription.get_text()
+            device_uri = self.entPDevice.get_text()
 
-            new_values = {
-                "printer-location" : self.entPLocation.get_text(),
-                "printer-info" : self.entPDescription.get_text(),
-                "device-uri" : self.entPDevice.get_text(),
-                }
+            if info!=printer.info:
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterInfo(name, info)
+            if location!=printer.location:
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterLocation(name, location)
+            if device_uri!=printer.device_uri:
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterDevice(name, device_uri)
 
-            if new_values["printer-info"]!=printer["printer-info"]:
-                self.passwd_retry = False # use cached Passwd 
-                self.cups.setPrinterInfo(name, new_values["printer-info"])
-            if new_values["printer-location"]!=printer["printer-location"]:
-                self.passwd_retry = False # use cached Passwd 
-                self.cups.setPrinterLocation(name,
-                                             new_values["printer-location"])
-            if new_values["device-uri"]!=printer["device-uri"]:
-                self.passwd_retry = False # use cached Passwd 
-                self.cups.setPrinterDevice(name, new_values["device-uri"])
-            printer.update(new_values)
-
-            if is_class:
+            if printer.is_class:
                 # update member list
                 new_members = self.getCurrentClassMembers()
-                for member in printer["class-members"]:
+                for member in printer.class_members:
                     if member in new_members:
                         new_members.remove(member)
                     else:
-                        cups.deletePrinterFromClass(member, name)
+                        self.cups.deletePrinterFromClass(member, name)
                 for member in new_members:
-                    cups.addPrinterToClass(member, name)                
+                    self.cups.addPrinterToClass(member, name)                
         except cups.IPPError, (e, s):
             self.show_IPP_Error(e, s)
             return True
+        self.changed = set() # of options
         return False
 
     def getPrinterSettings(self):
-        self.ppd.markDefaults()
+        #self.ppd.markDefaults()
         for option in self.options.itervalues():
             option.writeback()
         print self.ppd.conflicts(), "conflicts"
@@ -414,6 +424,7 @@ class GUI:
         item_selected = True
         if type == "Settings":
             self.ntbkMain.set_current_page(0)
+            self.fillServerTab()
             item_selected = False
         elif type in ['Printer', 'Class']:
             self.fillPrinterTab(name)
@@ -422,46 +433,49 @@ class GUI:
         for widget in [self.copy, self.delete, self.btnCopy, self.btnDelete]:
             widget.set_sensitive(item_selected)
 
+
+    def fillServerTab(self):
+        self.changed = set()
+        self.btnGotoServer.set_sensitive(False)
+
     def fillPrinterTab(self, name):
         self.changed = set() # of options
         self.options = {} # keyword -> Option object
         self.conflicts = set() # of options
 
-        # Description page
-        printer_states = { cups.IPP_PRINTER_IDLE: "Idle",
-                           cups.IPP_PRINTER_PROCESSING: "Processing",
-                           cups.IPP_PRINTER_BUSY: "Busy",
-                           cups.IPP_PRINTER_STOPPED: "Stopped" }
-
         printer = self.printers[name] 
         self.printer = printer
-        self.entPDescription.set_text(printer.get("printer-info", ""))
-        self.entPLocation.set_text(printer.get("printer-location", ""))
-        self.lblPMakeModel.set_text(printer.get("printer-make-and-model", ""))
 
-        statestr = "Unknown"
-        state = printer.get("printer-state", -1)
-        if printer_states.has_key (state):
-            statestr = printer_states[state]
-        self.lblPState.set_text(statestr)
+        editable = not self.printer.remote
 
-        self.entPDevice.set_text(printer.get("device-uri", ""))
+        self.btnGotoServer.set_sensitive(bool(printer.getServer()))
+
+        # Description page        
+        self.entPDescription.set_text(printer.info)
+        self.entPDescription.set_sensitive(editable)
+        self.entPLocation.set_text(printer.location)
+        self.entPLocation.set_sensitive(editable)
+        self.lblPMakeModel.set_text(printer.make_and_model)
+        self.lblPState.set_text(printer.state_description)
+
+        self.entPDevice.set_text(printer.device_uri)
+        self.entPDevice.set_sensitive(editable)
 
         # remove InstallOptions tab
         tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
         if tab_nr != -1:
             self.ntbkPrinter.remove_page(tab_nr)
 
-        if printer.has_key("class-members"):
+        if printer.is_class:
             # Class
-            self.fillClassMembers(name)
+            self.fillClassMembers(name, editable)
         else:
             # real Printer
-            self.fillPrinterOptions(name)
+            self.fillPrinterOptions(name, editable)
 
         self.setDataButtonState()
 
-    def fillPrinterOptions(self, name):
+    def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
         tab_nr = self.ntbkPrinter.page_num(self.vbClassMembers)
         if tab_nr != -1:
@@ -518,6 +532,7 @@ class GUI:
                     table.attach(o.selector, 0, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
                 table.attach(o.conflictIcon, 2, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
                 self.options[option.keyword] = o
+                o.selector.set_sensitive(editable)
 
         for option in self.options.itervalues():
             conflicts = option.checkConflicts()
@@ -529,8 +544,11 @@ class GUI:
 
     # Class members
     
-    def fillClassMembers(self, name):
+    def fillClassMembers(self, name, editable):
         printer = self.printers[name]
+
+        self.btnClassAddMember.set_sensitive(editable)
+        self.btnClassDelMember.set_sensitive(editable)
 
         # remove Options tab
         tab_nr = self.ntbkPrinter.page_num(self.swPOptions)
@@ -549,10 +567,10 @@ class GUI:
         model_not_members.clear()
 
         for name, p in self.printers.iteritems():
-            if (not p.has_key("class-members") and
+            if (not p.is_class and
                 p is not printer and
-                not (p["printer-type"] & cups.CUPS_PRINTER_REMOTE)):
-                if name in printer["class-members"]:
+                not p.remote):
+                if name in printer.class_members:
                     model_members.append((name, ))
                 else:
                     model_not_members.append((name, ))
@@ -580,7 +598,7 @@ class GUI:
             model_to.append(row_data)
             model_from.remove(iter)
 
-        if self.getCurrentClassMembers() != self.printer["class-members"]:
+        if self.getCurrentClassMembers() != self.printer.class_members:
             self.changed.add(self.tvClassMembers)
         else:
             self.changed.discard(self.tvClassMembers)
@@ -788,26 +806,25 @@ class GUI:
             # XXX
             pass
 
-        printer = {
-            "printer-location" : self.entNPLocation.get_text(),
-            "printer-info" : self.entNPDescription.get_text(),
-            "device-uri" : self.getDeviceURI(),
-            }
+        location = self.entNPLocation.get_text(),
+        info = self.entNPDescription.get_text(),
+        uri = self.getDeviceURI(),
 
         try:
             self.passwd_retry = False # use cached Passwd 
-            self.cups.setPrinterInfo(name, new_values["printer-info"])
+            self.cups.setPrinterInfo(name, info)
             self.passwd_retry = False # use cached Passwd 
             self.cups.setPrinterLocation(name,
-                                         new_values["printer-location"])
+                                         location)
             self.passwd_retry = False # use cached Passwd 
-            self.cups.setPrinterDevice(name, new_values["device-uri"])
+            self.cups.setPrinterDevice(name, device_uri)
         except cups.IPPError:
             # XXX
             pass
 
-        self.printers[name] = printer
+        #self.printers[name] = printer
         self.NewPrinterWindow.hide()
+        # XXX reread printerlist
 
 def main():
     # The default configuration requires root for administration.
