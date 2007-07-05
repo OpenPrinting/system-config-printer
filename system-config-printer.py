@@ -385,12 +385,9 @@ class GUI:
         servername = self.cmbServername.child.get_text()
         user = self.entUser.get_text()
 
-#<<<<<<< system-config-printer.py XXX
-        self.ConnectingDialog.set_text(_("Connecting to Server:\n%s") %
-                                       servername)
-#=======
+        self.lblConnecting.set_text(_("Connecting to Server:\n%s") %
+                                    servername)
         self.unloadFoomatic()
-#>>>>>>> 1.46
         self.ConnectingDialog.show()
         self.connect_thread = thread.start_new_thread(
             self.connect, (servername, user))
