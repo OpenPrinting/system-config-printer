@@ -2369,13 +2369,15 @@ See server settings&lt;/i&gt;</property>
 						  </child>
 
 						  <child>
-						    <widget class="GtkButton" id="button19">
+						    <widget class="GtkButton" id="btnJOResetOrientationRequested">
 						      <property name="visible">True</property>
+						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Reset</property>
 						      <property name="use_underline">True</property>
 						      <property name="relief">GTK_RELIEF_NORMAL</property>
 						      <property name="focus_on_click">True</property>
+						      <signal name="clicked" handler="on_job_option_reset" last_modification_time="Thu, 22 Feb 2007 12:15:26 GMT"/>
 						    </widget>
 						    <packing>
 						      <property name="left_attach">2</property>
@@ -2400,13 +2402,15 @@ See server settings&lt;/i&gt;</property>
 						      <property name="right_padding">0</property>
 
 						      <child>
-							<widget class="GtkButton" id="button18">
+							<widget class="GtkButton" id="btnJOResetCopies">
 							  <property name="visible">True</property>
+							  <property name="tooltip" translatable="yes">Reset to system default</property>
 							  <property name="can_focus">True</property>
 							  <property name="label" translatable="yes">Reset</property>
 							  <property name="use_underline">True</property>
 							  <property name="relief">GTK_RELIEF_NORMAL</property>
 							  <property name="focus_on_click">True</property>
+							  <signal name="clicked" handler="on_job_option_reset" last_modification_time="Thu, 22 Feb 2007 12:59:25 GMT"/>
 							</widget>
 						      </child>
 						    </widget>
@@ -2421,13 +2425,15 @@ See server settings&lt;/i&gt;</property>
 						  </child>
 
 						  <child>
-						    <widget class="GtkButton" id="button20">
+						    <widget class="GtkButton" id="btnJOResetFitplot">
 						      <property name="visible">True</property>
+						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Reset</property>
 						      <property name="use_underline">True</property>
 						      <property name="relief">GTK_RELIEF_NORMAL</property>
 						      <property name="focus_on_click">True</property>
+						      <signal name="clicked" handler="on_job_option_reset" last_modification_time="Thu, 22 Feb 2007 12:16:06 GMT"/>
 						    </widget>
 						    <packing>
 						      <property name="left_attach">2</property>
@@ -2468,13 +2474,15 @@ See server settings&lt;/i&gt;</property>
 						  </child>
 
 						  <child>
-						    <widget class="GtkButton" id="button21">
+						    <widget class="GtkButton" id="btnJOResetNumberUp">
 						      <property name="visible">True</property>
+						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Reset</property>
 						      <property name="use_underline">True</property>
 						      <property name="relief">GTK_RELIEF_NORMAL</property>
 						      <property name="focus_on_click">True</property>
+						      <signal name="clicked" handler="on_job_option_reset" last_modification_time="Thu, 22 Feb 2007 12:16:47 GMT"/>
 						    </widget>
 						    <packing>
 						      <property name="left_attach">2</property>
@@ -2499,7 +2507,7 @@ See server settings&lt;/i&gt;</property>
 						      <property name="right_padding">0</property>
 
 						      <child>
-							<widget class="GtkComboBox" id="combobox2">
+							<widget class="GtkComboBox" id="cmbJONumberUp">
 							  <property name="visible">True</property>
 							  <property name="items" translatable="yes">1
 2
@@ -2509,6 +2517,7 @@ See server settings&lt;/i&gt;</property>
 16</property>
 							  <property name="add_tearoffs">False</property>
 							  <property name="focus_on_click">True</property>
+							  <signal name="changed" handler="on_job_option_changed" last_modification_time="Thu, 22 Feb 2007 12:16:20 GMT"/>
 							</widget>
 						      </child>
 						    </widget>
@@ -2523,7 +2532,7 @@ See server settings&lt;/i&gt;</property>
 						  </child>
 
 						  <child>
-						    <widget class="GtkCheckButton" id="checkbutton1">
+						    <widget class="GtkCheckButton" id="cbJOFitplot">
 						      <property name="visible">True</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Scale to fit</property>
@@ -2533,6 +2542,7 @@ See server settings&lt;/i&gt;</property>
 						      <property name="active">False</property>
 						      <property name="inconsistent">False</property>
 						      <property name="draw_indicator">True</property>
+						      <signal name="toggled" handler="on_job_option_changed" last_modification_time="Thu, 22 Feb 2007 12:15:49 GMT"/>
 						    </widget>
 						    <packing>
 						      <property name="left_attach">0</property>
@@ -2589,7 +2599,7 @@ See server settings&lt;/i&gt;</property>
 						  </child>
 
 						  <child>
-						    <widget class="GtkComboBox" id="combobox1">
+						    <widget class="GtkComboBox" id="cmbJOOrientationRequested">
 						      <property name="visible">True</property>
 						      <property name="items" translatable="yes">Portrait (no rotation)
 Landscape (90°)
@@ -2597,6 +2607,7 @@ Reverse landscape (270°)
 Reverse portrait (180°)</property>
 						      <property name="add_tearoffs">False</property>
 						      <property name="focus_on_click">True</property>
+						      <signal name="changed" handler="on_job_option_changed" last_modification_time="Thu, 22 Feb 2007 12:15:13 GMT"/>
 						    </widget>
 						    <packing>
 						      <property name="left_attach">1</property>
@@ -2609,7 +2620,7 @@ Reverse portrait (180°)</property>
 						  </child>
 
 						  <child>
-						    <widget class="GtkSpinButton" id="spinbutton1">
+						    <widget class="GtkSpinButton" id="sbJOCopies">
 						      <property name="visible">True</property>
 						      <property name="can_focus">True</property>
 						      <property name="climb_rate">1</property>
@@ -2618,7 +2629,8 @@ Reverse portrait (180°)</property>
 						      <property name="update_policy">GTK_UPDATE_ALWAYS</property>
 						      <property name="snap_to_ticks">False</property>
 						      <property name="wrap">False</property>
-						      <property name="adjustment">1 0 100 1 10 10</property>
+						      <property name="adjustment">1 1 1000 1 10 10</property>
+						      <signal name="changed" handler="on_job_option_changed" last_modification_time="Thu, 22 Feb 2007 12:15:06 GMT"/>
 						    </widget>
 						    <packing>
 						      <property name="left_attach">1</property>
@@ -2723,6 +2735,7 @@ Reverse portrait (180°)</property>
 						  <child>
 						    <widget class="GtkButton" id="button22">
 						      <property name="visible">True</property>
+						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Reset</property>
 						      <property name="use_underline">True</property>
@@ -2754,6 +2767,7 @@ Reverse portrait (180°)</property>
 						      <child>
 							<widget class="GtkButton" id="button23">
 							  <property name="visible">True</property>
+							  <property name="tooltip" translatable="yes">Reset to system default</property>
 							  <property name="can_focus">True</property>
 							  <property name="label" translatable="yes">Reset</property>
 							  <property name="use_underline">True</property>
@@ -3018,6 +3032,7 @@ Reverse portrait (180°)</property>
 						  <child>
 						    <widget class="GtkButton" id="button24">
 						      <property name="visible">True</property>
+						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Reset</property>
 						      <property name="use_underline">True</property>
@@ -3049,6 +3064,7 @@ Reverse portrait (180°)</property>
 						      <child>
 							<widget class="GtkButton" id="button25">
 							  <property name="visible">True</property>
+							  <property name="tooltip" translatable="yes">Reset to system default</property>
 							  <property name="can_focus">True</property>
 							  <property name="label" translatable="yes">Reset</property>
 							  <property name="use_underline">True</property>
@@ -3070,6 +3086,7 @@ Reverse portrait (180°)</property>
 						  <child>
 						    <widget class="GtkButton" id="button26">
 						      <property name="visible">True</property>
+						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Reset</property>
 						      <property name="use_underline">True</property>
@@ -3089,6 +3106,7 @@ Reverse portrait (180°)</property>
 						  <child>
 						    <widget class="GtkButton" id="button27">
 						      <property name="visible">True</property>
+						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Reset</property>
 						      <property name="use_underline">True</property>
@@ -3638,6 +3656,7 @@ Reverse portrait (180°)</property>
 						  <child>
 						    <widget class="GtkButton" id="button28">
 						      <property name="visible">True</property>
+						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Reset</property>
 						      <property name="use_underline">True</property>
@@ -3657,6 +3676,7 @@ Reverse portrait (180°)</property>
 						  <child>
 						    <widget class="GtkButton" id="button29">
 						      <property name="visible">True</property>
+						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Reset</property>
 						      <property name="use_underline">True</property>
