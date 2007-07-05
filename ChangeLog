@@ -1,5 +1,12 @@
 2007-05-16  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.on_btnSelectDevice_clicked): Start
+	fetching the device list in a separate thread.
+	(GUI.loadFoomatic): Start fetching the PPD list while we parse the
+	XML database.
+	(GUI.on_new_printer_activate): Start fetching PPD and device lists
+	while the user picks a name for the printer.
+
 	* applet.py (JobManager.refresh): Limit refresh frequency.
 	Sometimes several D-Bus events will occur in quick succession, and
 	we do not want a full refresh every single time.

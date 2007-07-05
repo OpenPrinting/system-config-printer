@@ -93,6 +93,10 @@ class GUI:
 
         self.servers = set(("localhost",))
 
+        # Synchronisation objects.
+        self.ppds_lock = None
+        self.devices_lock = None
+
         try:
             self.cups = cups.Connection()
         except RuntimeError:
@@ -468,13 +472,52 @@ class GUI:
         win.window.set_cursor (ready_cursor)
         while gtk.events_pending ():
             gtk.main_iteration ()
-            
+
+    def queryPPDs(self):
+        if self.ppds_lock != None:
+            print "queryPPDs: in progress"
+            return
+        print "queryPPDs"
+        # Make a lock for synchronising against.
+        self.ppds_lock = thread.allocate_lock ()
+        self.ppds_lock.acquire ()
+        print "Lock acquired for PPDs thread"
+        # Start new thread
+        thread.start_new_thread (self.getPPDs_thread, ())
+        print "PPDs thread started"
+
+    def getPPDs_thread(self):
+        try:
+            print "Connecting (PPDs)"
+            c = cups.Connection ()
+            print "Fetching PPDs"
+            self.ppds_result = c.getPPDs()
+            print "Closing connection (PPDs)"
+            del c
+        except:
+            pass
+
+        print "Releasing PPDs lock"
+        self.ppds_lock.release ()
+
+    def fetchPPDs(self):
+        print "fetchPPDs"
+        if self.ppds_lock == None:
+            self.queryPPDs()
+
+        print "Acquiring PPDs lock"
+        self.ppds_lock.acquire ()
+        self.ppds_lock = None
+        print "Got PPDs"
+        return self.ppds_result
+
     def loadFoomatic(self):
         try:
             return self.foomatic
         except:
+            self.queryPPDs ()
             self.foomatic = Foomatic() # this works on the local db
-            self.foomatic.addCupsPPDs(self.cups.getPPDs(), self.cups)
+            self.foomatic.addCupsPPDs(self.fetchPPDs(), self.cups)
             return self.foomatic
 
     def unloadFoomatic(self):
@@ -1860,6 +1903,10 @@ class GUI:
 
         self.initNewPrinterWindow()
 
+        # Start fetching information from CUPS in the background
+        self.queryPPDs ()
+        self.queryDevices ()
+
     # new class
     def on_new_class_activate(self, widget):
         self.dialog_mode = "class"
@@ -1872,6 +1919,7 @@ class GUI:
     # change device
     def on_btnSelectDevice_clicked(self, button):
         self.busy (self.MainWindow)
+        self.queryDevices (self.printer.device_uri)
         self.loadFoomatic()
         self.dialog_mode = "device"
         self.initNewPrinterWindow()
@@ -2073,10 +2121,56 @@ class GUI:
             self.check_NPName(new_text))
 
     # Device URI
+    def queryDevices(self, current_uri=None):
+        if self.devices_lock != None:
+            print "queryDevices: in progress"
+            return
+        print "queryDevices"
+        # Make a lock for synchronising against.
+        self.devices_lock = thread.allocate_lock ()
+        self.devices_lock.acquire ()
+        print "Lock acquired for devices thread"
+        # Start new thread
+        thread.start_new_thread (self.getDevices_thread, (current_uri,))
+        print "Devices thread started"
+
+    def getDevices_thread(self, current_uri):
+        try:
+            print "Connecting (devices)"
+            c = cups.Connection ()
+            print "Fetching devices"
+            self.devices_result = cupshelpers.getDevices(c, current_uri)
+        except cups.IPPError, (e, msg):
+            self.devices_result = cups.IPPError (e, msg)
+        except:
+            self.devices_result = None
+
+        try:
+            print "Closing connection (devices)"
+            del c
+        except:
+            pass
+
+        print "Releasing devices lock"
+        self.devices_lock.release ()
+
+    def fetchDevices(self, current_uri=None):
+        print "fetchDevices"
+        if self.devices_lock == None:
+            self.queryDevices (current_uri)
+
+        print "Acquiring devices lock"
+        self.devices_lock.acquire ()
+        self.devices_lock = None
+        print "Got devices"
+        if isinstance (self.devices_result, cups.IPPError):
+            # Propagate exception.
+            raise self.devices_result
+        return self.devices_result
 
     def fillDeviceTab(self, current_uri=None):
         try:
-            devices = cupshelpers.getDevices(self.cups, current_uri)
+            devices = self.fetchDevices(current_uri)
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
             devices = {}
