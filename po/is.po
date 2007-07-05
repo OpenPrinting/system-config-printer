@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer 1\n"
-"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"Report-Msgid-Bugs-To: Richard Allen <ra@ra.is>\n"
 "POT-Creation-Date: 2007-04-11 19:39+0100\n"
-"PO-Revision-Date: 2006-12-13 10:31+0000\n"
+"PO-Revision-Date: 2007-05-01 10:31+0000\n"
 "Last-Translator: Richard Allen <ra@ra.is>\n"
 "Language-Team: Icelandic <kde-isl@molar.is>\n"
 "MIME-Version: 1.0\n"
@@ -168,35 +168,33 @@ msgstr ""
 
 #: ../system-config-printer.py:1099
 msgid "Bad request"
-msgstr ""
+msgstr "Óleyfileg beiðni"
 
 #: ../system-config-printer.py:1101
-#, fuzzy
 msgid "Not found"
-msgstr "Ekki tengdur"
+msgstr "Fannst ekki"
 
 #: ../system-config-printer.py:1103
 msgid "Request timeout"
-msgstr ""
+msgstr "Beiðnin tímaði út"
 
 #: ../system-config-printer.py:1105
 msgid "Upgrade required"
-msgstr ""
+msgstr "Uppfærslu er þörf"
 
 #: ../system-config-printer.py:1107
-#, fuzzy
 msgid "Server error"
-msgstr "Villa frá CUPS þjóni"
+msgstr "Villa frá þjóni"
 
 #: ../system-config-printer.py:1111
 #, python-format
 msgid "status %d"
-msgstr ""
+msgstr "staða %d"
 
 #: ../system-config-printer.py:1115
 #, python-format
 msgid "There was an HTTP error: %s."
-msgstr ""
+msgstr "Það kom upp HTTP villa: %s."
 
 #: ../system-config-printer.py:1138
 msgid "This will delete this class!"
@@ -224,15 +222,16 @@ msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr ""
+"Þjónninn tók ekki við prentverkinu líkast til vegna þess að prentaranum "
+"hefur ekki verið deilt á netinu."
 
 #: ../system-config-printer.py:1393
 msgid "Error"
-msgstr ""
+msgstr "Villa"
 
 #: ../system-config-printer.py:1394
-#, fuzzy
 msgid "There was a problem connecting to the CUPS server."
-msgstr "Það kom upp villa þegar CUPS aðgerðin '%s' var reynd."
+msgstr "Það kom upp villa þegar tengst var við CUPS þjóninn."
 
 #: ../system-config-printer.py:1457
 msgid "This is the default printer"
@@ -249,22 +248,21 @@ msgstr "Enginn sjálfgefinn prentari."
 
 #: ../system-config-printer.py:1548
 msgid "Cancel Tests"
-msgstr ""
+msgstr "Hætta við prófanir"
 
 #: ../system-config-printer.py:1552 ../system-config-printer.glade.h:188
-#, fuzzy
 msgid "Print Test Page"
-msgstr "Athugasemdir prentara:"
+msgstr "Prenta prófunarsíðu"
 
 #: ../system-config-printer.py:1807
-#, fuzzy, python-format
+#, python-format
 msgid "Really delete printer %s?"
-msgstr "Virkilega eyða %s %s?"
+msgstr "Virkilega eyða prentaranum %s?"
 
 #: ../system-config-printer.py:1809
-#, fuzzy, python-format
+#, python-format
 msgid "Really delete class %s?"
-msgstr "Virkilega eyða %s %s?"
+msgstr "Virkilega eyða flokknum %s?"
 
 #: ../system-config-printer.py:1857 ../system-config-printer.glade.h:139
 msgid "New Printer"
@@ -308,11 +306,11 @@ msgstr "Þessi prentdeild er ekki aðgengileg"
 
 #: ../system-config-printer.py:2311
 msgid "A printer connected to the parallel port."
-msgstr ""
+msgstr "Prentari tengdur í raðtengið."
 
 #: ../system-config-printer.py:2313
 msgid "A printer connected to a USB port."
-msgstr ""
+msgstr "Prentari tengdur í USB tengi."
 
 #: ../system-config-printer.py:2315
 msgid ""
@@ -408,7 +406,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:1
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../system-config-printer.glade.h:2
 msgid " PPD "
@@ -423,6 +421,12 @@ msgid ""
 "9\n"
 "16"
 msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
 
 #: ../system-config-printer.glade.h:9
 msgid "<b>Authentication</b>"
@@ -1107,7 +1111,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:222
 msgid "Top margin:"
-msgstr ""
+msgstr "Efri spássía:"
 
 #: ../system-config-printer.glade.h:223
 msgid "Try to copy the option settings over from the old PPD. "
@@ -1127,7 +1131,7 @@ msgstr "Notandi:"
 
 #: ../system-config-printer.glade.h:227
 msgid "Word wrap"
-msgstr ""
+msgstr "Línufletting"
 
 #: ../system-config-printer.glade.h:228
 msgid "_Do not apply"
@@ -1163,11 +1167,11 @@ msgstr "enginn"
 
 #: ../system-config-printer.glade.h:236
 msgid "points"
-msgstr ""
+msgstr "púnktar"
 
 #: ../system-config-printer.glade.h:237
 msgid "points (72 points per inch)"
-msgstr ""
+msgstr "púnktar (72 á tommu)"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1179,260 +1183,244 @@ msgstr "Prenta"
 
 #: ../applet.py:76
 msgid "Toner low"
-msgstr ""
+msgstr "Tóner að verða búinn"
 
 #: ../applet.py:77
 #, python-format
 msgid "Printer '%s' is low on toner."
-msgstr ""
+msgstr "Prentarinn '%s' er að verða búinn með tónerinn."
 
 #: ../applet.py:78
 msgid "Toner empty"
-msgstr ""
+msgstr "Tóner búinn"
 
 #: ../applet.py:79
 #, python-format
 msgid "Printer '%s' has no toner left."
-msgstr ""
+msgstr "Prentarinn '%s' hefur klárað tónerinn."
 
 #: ../applet.py:80
 msgid "Cover open"
-msgstr ""
+msgstr "Lokið er opið"
 
 #: ../applet.py:81
 #, python-format
 msgid "The cover is open on printer '%s'."
-msgstr ""
+msgstr "Lokið er opið á prentaranum '%s'."
 
 #: ../applet.py:82
 msgid "Door open"
-msgstr ""
+msgstr "Hurðin er opin"
 
 #: ../applet.py:83
 #, python-format
 msgid "The door is open on printer '%s'."
-msgstr ""
+msgstr "Hurðin er opin á prentaranum '%s'."
 
 #: ../applet.py:84
 msgid "Paper low"
-msgstr ""
+msgstr "Pappír að verða búinn"
 
 #: ../applet.py:85
 #, python-format
 msgid "Printer '%s' is low on paper."
-msgstr ""
+msgstr "Prentarinn '%s' er að verða pappírslaus."
 
 #: ../applet.py:86
 msgid "Out of paper"
-msgstr ""
+msgstr "Pappír búinn"
 
 #: ../applet.py:87
 #, python-format
 msgid "Printer '%s' is out of paper."
-msgstr ""
+msgstr "Prentarinn '%s' er pappírslaus."
 
 #: ../applet.py:88
 msgid "Ink low"
-msgstr ""
+msgstr "Blekið að verða búið"
 
 #: ../applet.py:89
 #, python-format
 msgid "Printer '%s' is low on ink."
-msgstr ""
+msgstr "Prentarinn '%s' er að verða bleklaus."
 
 #: ../applet.py:90
 msgid "Ink empty"
-msgstr ""
+msgstr "Blekið er búið"
 
 #: ../applet.py:91
 #, python-format
 msgid "Printer '%s' has no ink left."
-msgstr ""
+msgstr "Prentarinn '%s' er bleklaus."
 
 #: ../applet.py:92
-#, fuzzy
 msgid "Not connected?"
-msgstr "Ekki tengdur"
+msgstr "Ekki tengdur?"
 
 #: ../applet.py:93
 #, python-format
 msgid "Printer '%s' may not be connected."
-msgstr ""
+msgstr "Prentarinn '%s' er kanski ekki tengdur."
 
 #: ../applet.py:100
-#, fuzzy
 msgid "Printer report"
-msgstr "Rofar prentara"
+msgstr "Prentaraskýrsla"
 
 #: ../applet.py:102
-#, fuzzy
 msgid "Printer warning"
-msgstr "Prenta"
+msgstr "Prentaraaðvörun"
 
 #: ../applet.py:104
-#, fuzzy
 msgid "Printer error"
-msgstr "Villa frá CUPS þjóni"
+msgstr "Prentaravilla"
 
 #: ../applet.py:105
 #, python-format
 msgid "Printer '%s': '%s'."
-msgstr ""
+msgstr "Prentari '%s': '%s'."
 
 #: ../applet.py:173
 msgid "Job"
-msgstr ""
+msgstr "Verk"
 
 #: ../applet.py:174
-#, fuzzy
 msgid "Document"
-msgstr "Athugasemd"
+msgstr "Skjal"
 
 #: ../applet.py:176
 msgid "Size"
-msgstr ""
+msgstr "Stærð"
 
 #: ../applet.py:177
-#, fuzzy
 msgid "Time submitted"
-msgstr "Sent"
+msgstr "Sent klukkan"
 
 #: ../applet.py:178
 msgid "Status"
-msgstr ""
+msgstr "Staða"
 
 #: ../applet.py:229
 msgid "Message"
-msgstr ""
+msgstr "Skilaboð"
 
 #: ../applet.py:507
 msgid "No documents queued"
-msgstr ""
+msgstr "Engin skjöl í bið"
 
 #: ../applet.py:510
 msgid "1 document queued"
-msgstr ""
+msgstr "1 skjal í bið"
 
 #: ../applet.py:513
 #, python-format
 msgid "%d documents queued"
-msgstr ""
+msgstr "%d skjöl í bið"
 
 #: ../applet.py:567
 msgid "1 hour ago"
-msgstr ""
+msgstr "fyrir 1 klst"
 
 #: ../applet.py:569
 msgid "1 hour and 1 minute ago"
-msgstr ""
+msgstr "fyrir 1 klst og 1 mín"
 
 #: ../applet.py:571
 #, python-format
 msgid "1 hour and %d minutes ago"
-msgstr ""
+msgstr "fyrir 1 klst og %d mín"
 
 #: ../applet.py:574
 #, python-format
 msgid "%d hours ago"
-msgstr ""
+msgstr "fyrir %d klst"
 
 #: ../applet.py:576
 #, python-format
 msgid "%d hours and 1 minute ago"
-msgstr ""
+msgstr "fyrir %d klst og 1 mín"
 
 #: ../applet.py:578
 #, python-format
 msgid "%d hours and %d minutes ago"
-msgstr ""
+msgstr "fyrir %d klst og %d mín"
 
 #: ../applet.py:583
 msgid "a minute ago"
-msgstr ""
+msgstr "fyrir mínútu"
 
 #: ../applet.py:585
 #, python-format
 msgid "%d minutes ago"
-msgstr ""
+msgstr "fyrir %d mínútum"
 
 #: ../applet.py:594
-#, fuzzy
 msgid "Pending"
-msgstr "Prenta"
+msgstr "Í bið"
 
 #: ../applet.py:595
-#, fuzzy
 msgid "Held"
-msgstr "_Hjálp"
+msgstr "Haldið"
 
 #: ../applet.py:598
 msgid "Canceled"
-msgstr ""
+msgstr "Hætt við"
 
 #: ../applet.py:599
-#, fuzzy
 msgid "Aborted"
-msgstr "Um"
+msgstr "Hætt við"
 
 #: ../applet.py:600
-#, fuzzy
 msgid "Completed"
-msgstr "Athugasemd"
+msgstr "Lokið"
 
 #: ../applet.glade.h:4
 msgid "Document print status"
-msgstr ""
+msgstr "Staða prentverks"
 
 #: ../applet.glade.h:6
-#, fuzzy
 msgid "Printer status"
-msgstr "Ástand prentara:"
+msgstr "Staða prentara"
 
 #: ../applet.glade.h:7
 msgid "Re_print"
-msgstr ""
+msgstr "Endur_prenta"
 
 #: ../applet.glade.h:8
 msgid "Show _completed jobs"
-msgstr ""
+msgstr "Sýna _kláruð prentverk"
 
 #: ../applet.glade.h:9
 msgid "Show _printer status"
-msgstr ""
+msgstr "Birta stöðu _prentara"
 
 #: ../applet.glade.h:11
 msgid "_Hide"
-msgstr ""
+msgstr "_Fela"
 
 #: ../applet.glade.h:12
 msgid "_Hold"
-msgstr ""
+msgstr "_Halda"
 
 #: ../applet.glade.h:13
 msgid "_Release"
-msgstr ""
+msgstr "_Sleppa"
 
 #: ../applet.glade.h:14
 msgid "_View"
-msgstr ""
+msgstr "_Birta"
 
 #: ../print-applet.desktop.in.h:1
-#, fuzzy
 msgid "Print queue applet"
-msgstr "Athugasemdir prentara:"
+msgstr "Prentbiðraðarsmáforrit"
 
 #: ../print-applet.desktop.in.h:2
 msgid "System tray icon for managing print jobs"
-msgstr ""
+msgstr "Táknmynd á spjaldið til að stýra prentverkum"
 
 #: ../manage-print-jobs.desktop.in.h:1
 msgid "Cancel, pause, resume or reprint jobs"
-msgstr ""
+msgstr "Hætta við, halda, sleppa eða endurprenta verk"
 
 #: ../manage-print-jobs.desktop.in.h:2
 msgid "Manage print jobs"
-msgstr ""
-
-#, fuzzy
-#~ msgid "Specify default job options."
-#~ msgstr "Stilla rofa í sjálfgefin gildi"
+msgstr "Stýra prentverkum"
