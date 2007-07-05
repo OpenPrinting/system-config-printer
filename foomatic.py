@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -776,12 +776,12 @@ class Foomatic:
 
             # Try to find the best match (case-insensitive)
             best_matchlen = 0
-            mdl = mdl.lower ()
+            mdll = mdl.lower ()
             for (name, id) in mdls.iteritems():
                 name = name.lower ()
-                if mdl[:1 + best_matchlen] == name[:1 + best_matchlen]:
+                if mdll[:1 + best_matchlen] == name[:1 + best_matchlen]:
                     extra = 2
-                    while (mdl[1 + best_matchlen:extra + best_matchlen] ==
+                    while (mdll[1 + best_matchlen:extra + best_matchlen] ==
                            name[1 + best_matchlen:extra + best_matchlen]):
                         extra += 1
                         if extra + best_matchlen >= len (name):
