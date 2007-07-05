@@ -223,7 +223,7 @@ class GUI:
         # Set up "About" dialog strings.
         vertext = self.lblVersion.get_text ()
         self.lblVersion.set_text (vertext % config.VERSION)
-        self.lblCopyright.set_text (_("Copyright 2006 Red Hat, Inc."))
+        self.lblCopyright.set_text (_("Copyright 2006, 2007 Red Hat, Inc."))
         self.lblAuthors.set_text ("Florian Festi, Tim Waugh")
 
         self.static_tabs = 3
@@ -268,9 +268,9 @@ class GUI:
         m = gtk.SELECTION_MULTIPLE
         s = gtk.SELECTION_SINGLE
         for name, treeview, selection_mode in (
-            (_("Members of this Class"), self.tvClassMembers, m),
+            (_("Members of this class"), self.tvClassMembers, m),
             (_("Others"), self.tvClassNotMembers, m),
-            (_("Members of this Class"), self.tvNCMembers, m),
+            (_("Members of this class"), self.tvNCMembers, m),
             (_("Others"), self.tvNCNotMembers, m),
             (_("Devices"), self.tvNPDevices, s),
             (_("Makes"), self.tvNPMakes,s),
@@ -535,7 +535,7 @@ class GUI:
         servername = self.cmbServername.child.get_text()
         user = self.entUser.get_text()
 
-        self.lblConnecting.set_text(_("Connecting to Server:\n%s") %
+        self.lblConnecting.set_text(_("Connecting to server:\n%s") %
                                     servername)
         self.unloadFoomatic()
         self.ConnectingDialog.set_transient_for(self.MainWindow)
@@ -1103,7 +1103,7 @@ class GUI:
         if self.test_button_cancels:
             jobs = self.printer.testsQueued ()
             for job in jobs:
-                print "Cancelling job %s" % job
+                print "Canceling job %s" % job
                 try:
                     self.cups.cancelJob (job)
                 except cups.IPPError, (e, msg):
@@ -1555,10 +1555,15 @@ class GUI:
         name, type = self.getSelectedItem()
 
         # Confirm
+        if type == "Printer":
+            message_format = _("Really delete printer %s?")
+        else:
+            message_format = _("Really delete class %s?")
+
         dialog = gtk.MessageDialog(
             self.MainWindow,
             buttons=gtk.BUTTONS_OK_CANCEL,
-            message_format=_("Really delete %s %s?") % (_(type), name))
+            message_format=message_format % name)
         result = dialog.run()
         dialog.destroy()
 
