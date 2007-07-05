@@ -74,8 +74,9 @@ def _ppdMakeModelSplit (ppd_make_and_model, ppdname=None):
     if gimpprint != -1:
         model = model[:gimpprint]
 
-    if make == "EPSON":
-        make = "Epson"
+    for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
+        if make == mfr.upper ():
+            make = mfr
 
     return (make, model)
 
