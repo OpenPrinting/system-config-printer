@@ -1066,7 +1066,11 @@ class GUI:
             self.cups.getFile(resource, tmpfname)
             success = True
         except cups.HTTPError, (s,):
-            os.remove (tmpfname)
+            try:
+                os.remove (tmpfname)
+            except OSError:
+                pass
+
             if e != cups.HTTP_NOT_FOUND:
                 self.show_HTTP_Error(s)
                 return

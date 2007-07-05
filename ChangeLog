@@ -2,6 +2,8 @@
 
 	* system-config-printer.py (GUI.fillPrinterTab): Handle unknown
 	job options (bug #225538).
+	(GUI.on_btnPMakeDefault_clicked): Don't throw exception if
+	getFile() already removed the temporary file (bug #226703).
 
 	* cupshelpers.py (Printer._getAttributes): cpi, lpi and scaling
 	are floats (bug #224651).
