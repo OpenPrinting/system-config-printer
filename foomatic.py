@@ -685,10 +685,10 @@ class Foomatic:
         if not device.id: return None
 
         # check for make, model
-        if (self._auto_make.has_key(device.id_dict["MFG"]) and
-            self._auto_make[device.id_dict["MFG"]].has_key(
-            device.id_dict["MDL"])):
-            return self._auto_make[device.id_dict["MFG"]][device.id_dict["MDL"]]
+        mfg = device.id_dict["MFG"]
+        if (self._auto_make.has_key(mfg) and
+            self._auto_make[mfg].has_key(device.id_dict["MDL"])):
+            return self._auto_make[mfg][device.id_dict["MDL"]]
 
         # check whole ieee1284 string
         pieces = device.id.split(';')
@@ -701,7 +701,52 @@ class Foomatic:
         if self._auto_description.has_key(device.id_dict["DES"]):
             return self._auto_description[device.id_dict["DES"]]
 
-        # XXX just try to find out the manufacturer?
+        # Try matching against the foomatic names
+        best_mdl = None
+        for attempt in range (2):
+            if self.makes.has_key (mfg):
+                mdl = device.id_dict["MDL"]
+                mdls = self.makes[mfg]
+                if mdls.has_key (mdl):
+                    print "Please report a bug in Bugzilla against 'foomatic':"
+                    print "  https://bugzilla.redhat.com/bugzilla"
+                    print "Include this complete message."
+                    print "Deducing %s from IEEE 1284 ID:" % best_mdl
+                    print "      <manufacturer>%s</manufacturer>" % mfg
+                    print "      <model>%s</model>" % mdl
+                    print "      <description>%s</description>" %\
+                          device.id_dict["DES"]
+                    print "This message is harmless."
+                    return mdls[mdl]
+
+                # Try to find the best match
+                best_matchlen = 0
+                for each in mdls.keys():
+                    if mdl[:1 + best_matchlen] == each[:1 + best_matchlen]:
+                        extra = 2
+                        while (mdl[1 + best_matchlen:extra + best_matchlen] ==
+                               each[1 + best_matchlen:extra + best_matchlen]):
+                            extra += 1
+                        best_matchlen += extra
+                        best_mdl = mdls[each]
+
+            # Try again with replacements
+            if mfg == "Hewlett-Packard":
+                mfg = "HP"
+                continue
+
+            break
+
+        if best_mdl:
+            print "Please report a bug in Bugzilla against 'foomatic':"
+            print "  https://bugzilla.redhat.com/bugzilla"
+            print "Include this complete message."
+            print "Guessing %s from IEEE 1284 ID:" % best_mdl
+            print "      <manufacturer>%s</manufacturer>" % mfg
+            print "      <model>%s</model>" % mdl
+            print "      <description>%s</description>" % device.id_dict["DES"]
+            return best_mdl
+
         return None
 
     def getPPD(self, make, model, description="", languages=[]):
