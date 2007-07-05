@@ -1021,7 +1021,12 @@ class GUI:
             self.show_IPP_Error(e, s)
             return True
         self.changed = set() # of options
-        self.populateList()
+
+        # Update our copy of the printer's settings.
+        printers = cupshelpers.getPrinters (self.cups)
+        this_printer = { name: printers[name] }
+        self.printers.update (this_printer)
+
         return False
 
     def getPrinterSettings(self):

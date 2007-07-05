@@ -1,3 +1,9 @@
+2007-06-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.save_printer): Don't call
+	populateList() after saving printer, just update the printer we
+	changed.  This prevents a GTK+ crash (bug #242961, bug #229474).
+
 2008-08-07  Tim Waugh  <twaugh@redhat.com>
 
 	* configure.in: Version 0.7.32.9.
