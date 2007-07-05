@@ -632,7 +632,8 @@ class GUI:
             self.changed.discard(option)
         else:
             # keep name as reminder that option got deleted
-            self.changed.add(option.name) 
+            self.changed.add(option.name)
+            del self.server_side_options[option.name]
         self.setDataButtonState()
 
     def on_btnNewOption_clicked(self, button):
@@ -789,7 +790,7 @@ class GUI:
 
             for option in printer.attributes:
                 if option not in self.server_side_options:
-                    print "unset", option.name
+                    print "unset", option
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
                 if option.is_changed or saveall:
