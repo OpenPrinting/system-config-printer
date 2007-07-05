@@ -146,6 +146,7 @@ class GUI:
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
                            "entNPTIPPHostname", "entNPTIPPPrintername",
                         "entNPTDirectJetHostname", "entNPTDirectJetPort",
+                        "entNPTIPPHostname", "entNPTIPPPrintername",
                         "entSMBURI", "tvSMBBrowser",
                         "entSMBUsername", "entSMBPassword",
                            "entNPTDevice",
@@ -496,14 +497,14 @@ class GUI:
             gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
             self.show_IPP_Error(None, s)
-            gtk.threads_leave()
+            gtk.gdk.threads_leave()
             return        
         except cups.IPPError, (e, s):
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
             self.show_IPP_Error(e, s)
-            gtk.threads_leave()
+            gtk.gdk.threads_leave()
             return
 
         if self.connect_thread != thread.get_ident(): return
@@ -515,7 +516,7 @@ class GUI:
         self.cups = connection
         self.setConnected()
         self.populateList()
-        gtk.threads_leave()
+        gtk.gdk.threads_leave()
 
     def on_btnCancelConnect_clicked(self, widget):
         """Close Connect dialog"""
@@ -1849,8 +1850,8 @@ class GUI:
             if port:
                 device = device + ':' + port
         elif type in ("http", "ipp"): # IPP
-            host = self.cmbNPTIPPHostname.get_text()
-            printer = self.cmbNPTIPPPrintername.get_text()
+            host = self.entNPTIPPHostname.get_text()
+            printer = self.entNPTIPPPrintername.get_text()
             device = "ipp://" + host
             if printer:
                 device = device + "/" + printer
@@ -2230,7 +2231,7 @@ def main():
     else:
         gtk.mainloop()
 
-    gtk.threads_leave()
+    gtk.gdk.threads_leave()
 
 if __name__ == "__main__":
     main()
