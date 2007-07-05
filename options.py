@@ -73,7 +73,8 @@ class Option:
         raise NotImplemented
 
     def is_changed(self):
-        return self.is_new or self.get_current_value()!= self.value
+        return (self.is_new or
+                str (self.get_current_value()) != str (self.value))
 
     def changed(self, widget, *args):
         self.on_change(self)
