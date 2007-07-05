@@ -5,6 +5,12 @@
 	* foomatic.py (Foomatic._add_printer): Likewise.
 	(Foomatic.addCupsPPDs): Parse IEEE 1284 Device IDs from CUPS PPDs
 	and add them to the make/model look-up dictionary.
+	(Foomatic._add_printer): Don't add empty fields to the look-up
+	dictionary.
+	(Foomatic.getPrinterFromCupsDevice): Fixed typo.
+	(Foomatic.getPrinterFromCommandSet): New function.
+	(Foomatic.getPPD): Use it.
+	(Foomatic.getPrinterFromCupsDevice): Match against command sets.
 
 	* foomatic.py (Foomatic.getPPD): Convert command sets to lower
 	case for comparison.
