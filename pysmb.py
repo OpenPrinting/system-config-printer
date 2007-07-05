@@ -273,6 +273,8 @@ def printer_share_accessible (share, group = None, user = None, passwd = None):
 
 if __name__ == '__main__':
 
-# add get domain list firt
-    hosts = get_host_list ()
-    print get_printer_list (hosts[hosts.keys ()[0]])
+    import pprint
+    domains = get_domain_list ()
+    for domain in domains:
+        hosts = get_host_list (domains[domain]['IP'])
+        pprint.pprint (get_printer_list (hosts[hosts.keys ()[0]]))
