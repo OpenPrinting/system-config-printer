@@ -267,10 +267,12 @@ class GUI:
                 self.ntbkPrinter.insert_page(self.swPInstallOptions,
                                              gtk.Label(group.text), 1)
             else:
-                container = self.vbPOptions
-                label = gtk.Label(group.text)
-                label.set_alignment(0.0,0.5)
-                container.pack_start(label)
+                container = gtk.Frame (group.text)
+                container.set_shadow_type (gtk.SHADOW_NONE)
+                a = gtk.Alignment ()
+                a.set_padding (12, 0, 12, 0)
+                a.add (container)
+                self.vbPOptions.pack_start(a)
 
             table = gtk.Table(len(group.options), 2, False)
             #table.set_homogeneous
