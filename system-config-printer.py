@@ -105,7 +105,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            #raise ValueError # uncomment for development
+            raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
@@ -158,6 +158,7 @@ class GUI:
                         "sbJOJobPriority", "btnJOResetJobPriority",
                         "cmbJOMedia", "btnJOResetMedia",
                         "cmbJOSides", "btnJOResetSides",
+                        "cmbJOHoldUntil", "btnJOResetHoldUntil",
                         "cbJOMirror", "btnJOResetMirror",
                         "sbJOScaling", "btnJOResetScaling",
                         "sbJOSaturation", "btnJOResetSaturation",
@@ -384,6 +385,12 @@ class GUI:
                                             [ "one-sided",
                                               "two-sided-long-edge",
                                               "two-sided-short-edge" ]),
+
+                 options.OptionAlwaysShown ("job-hold-until", str,
+                                            "no-hold",
+                                            self.cmbJOHoldUntil,
+                                            self.btnJOResetHoldUntil,
+                                            use_supported = True),
 
                  options.OptionAlwaysShown ("mirror", bool, False,
                                             self.cbJOMirror,

@@ -2466,7 +2466,7 @@ See server settings&lt;/i&gt;</property>
 						      <child>
 							<widget class="GtkTable" id="table13">
 							  <property name="visible">True</property>
-							  <property name="n_rows">6</property>
+							  <property name="n_rows">7</property>
 							  <property name="n_columns">3</property>
 							  <property name="homogeneous">False</property>
 							  <property name="row_spacing">6</property>
@@ -2954,6 +2954,73 @@ Two-sided (short edge)</property>
 							      <property name="bottom_attach">6</property>
 							      <property name="x_options">fill</property>
 							      <property name="y_options"></property>
+							    </packing>
+							  </child>
+
+							  <child>
+							    <widget class="GtkLabel" id="label180">
+							      <property name="visible">True</property>
+							      <property name="label" translatable="yes">Hold until:</property>
+							      <property name="use_underline">False</property>
+							      <property name="use_markup">False</property>
+							      <property name="justify">GTK_JUSTIFY_LEFT</property>
+							      <property name="wrap">False</property>
+							      <property name="selectable">False</property>
+							      <property name="xalign">0</property>
+							      <property name="yalign">0.5</property>
+							      <property name="xpad">0</property>
+							      <property name="ypad">0</property>
+							      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+							      <property name="width_chars">-1</property>
+							      <property name="single_line_mode">False</property>
+							      <property name="angle">0</property>
+							    </widget>
+							    <packing>
+							      <property name="left_attach">0</property>
+							      <property name="right_attach">1</property>
+							      <property name="top_attach">6</property>
+							      <property name="bottom_attach">7</property>
+							      <property name="x_options">fill</property>
+							      <property name="y_options"></property>
+							    </packing>
+							  </child>
+
+							  <child>
+							    <widget class="GtkButton" id="btnJOResetHoldUntil">
+							      <property name="visible">True</property>
+							      <property name="tooltip" translatable="yes">Reset to system default</property>
+							      <property name="can_focus">True</property>
+							      <property name="label" translatable="yes">Reset</property>
+							      <property name="use_underline">True</property>
+							      <property name="relief">GTK_RELIEF_NORMAL</property>
+							      <property name="focus_on_click">True</property>
+							      <signal name="clicked" handler="on_job_option_reset" last_modification_time="Thu, 22 Feb 2007 12:15:26 GMT"/>
+							    </widget>
+							    <packing>
+							      <property name="left_attach">2</property>
+							      <property name="right_attach">3</property>
+							      <property name="top_attach">6</property>
+							      <property name="bottom_attach">7</property>
+							      <property name="x_options">fill</property>
+							      <property name="y_options"></property>
+							    </packing>
+							  </child>
+
+							  <child>
+							    <widget class="GtkComboBox" id="cmbJOHoldUntil">
+							      <property name="visible">True</property>
+							      <property name="items" translatable="yes"></property>
+							      <property name="add_tearoffs">False</property>
+							      <property name="focus_on_click">True</property>
+							      <signal name="changed" handler="on_job_option_changed" last_modification_time="Fri, 23 Feb 2007 14:12:08 GMT"/>
+							    </widget>
+							    <packing>
+							      <property name="left_attach">1</property>
+							      <property name="right_attach">2</property>
+							      <property name="top_attach">6</property>
+							      <property name="bottom_attach">7</property>
+							      <property name="x_options">fill</property>
+							      <property name="y_options">fill</property>
 							    </packing>
 							  </child>
 							</widget>
