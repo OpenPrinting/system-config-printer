@@ -455,6 +455,8 @@ class GUI:
                         
         # Selection
         selection = self.tvMainList.get_selection()
+        if old_type == "Settings":
+            select_path = (0,)
         if select_path:
             selection.select_path(select_path)
         else:
@@ -513,19 +515,18 @@ class GUI:
             return
 
         if self.chkEncrypted.get_active():
-            cups.setEncryption(cups.HTTP_ENCRYPT_ALWAYS)
+            self.encryption = cups.HTTP_ENCRYPT_ALWAYS
         else:
-            cups.setEncryption(cups.HTTP_ENCRYPT_IF_REQUESTED)
+            self.encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
 
-        servername = self.cmbServername.child.get_text()
-        user = self.entUser.get_text()
+        self.servername = self.cmbServername.child.get_text()
+        self.user = self.entUser.get_text()
 
         self.lblConnecting.set_text(_("Connecting to Server:\n%s") %
-                                    servername)
+                                    self.servername)
         self.unloadFoomatic()
         self.ConnectingDialog.show()
-        self.connect_thread = thread.start_new_thread(
-            self.connect, (servername, user))
+        self.connect_thread = thread.start_new_thread(self.connect, ())
 
     def on_cancel_connect_clicked(self, widget):
         """
@@ -536,15 +537,25 @@ class GUI:
         self.connect_thread = None
         self.ConnectingDialog.hide()
 
-    def connect(self, servername, user):
+    def reconnect (self):
+        """Reconnect to CUPS after the server has reloaded."""
+        cups.setServer(self.servername)
+        cups.setPasswordCB(self.cupsPasswdCallback)
+        cups.setEncryption (self.encryption)
+        self.passwd_retry = False # use cached Passwd
+        self.busy (self.MainWindow)
+        self.cups = cups.Connection ()
+        self.ready (self.MainWindow)
+
+    def connect(self):
         """
         Open a connection to a new server. Is executed in a separate thread!
         """
-        cups.setServer(servername)
+        cups.setServer(self.servername)
         cups.setPasswordCB(self.cupsPasswdCallback)
-        # cups.setEncryption (...)
+        cups.setEncryption (self.encryption)
 
-        if user: cups.setUser(user)
+        if self.user: cups.setUser(self.user)
         self.password = ''
 
         try:
@@ -582,10 +593,6 @@ class GUI:
             self.show_HTTP_Error(s)
 
         gtk.gdk.threads_leave()
-
-    def reconnect (self):
-        """Reconnect to CUPS after the server has reloaded."""
-        print "FIXME: need to reconnect to CUPS here"
 
     def on_btnCancelConnect_clicked(self, widget):
         """Close Connect dialog"""
@@ -858,7 +865,9 @@ class GUI:
         if type in ("Printer", "Class"):
             return self.save_printer(self.printer)
         elif type == "Settings":
-            return self.save_serversettings()
+            err = self.save_serversettings()
+            if not err:
+                self.reconnect ()
         
     def show_IPP_Error(self, exception, message):
         if exception == cups.IPP_NOT_AUTHORIZED:

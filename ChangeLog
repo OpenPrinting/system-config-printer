@@ -1,3 +1,8 @@
+2006-11-29  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): Keep 'Server
+	Settings' selected after re-fetching printer list.
+
 2006-11-28  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.setNPButtons): Set Forward button
@@ -11,6 +16,8 @@
 	it (bug	#217395).
 	(GUI.show_HTTP_Error): Describe cups.HTTPError -1 as 'not
 	connected'.
+	(GUI.reconnect): Implemented.
+	(GUI.apply): Reconnect after applying server settings.
 
 2006-11-27  Tim Waugh  <twaugh@redhat.com>
 
