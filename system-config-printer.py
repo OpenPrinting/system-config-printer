@@ -44,6 +44,8 @@ class GUI:
 
                         "PasswordDialog", "lblPasswordPrompt", "entPasswd",
 
+                        "ErrorDialog", "hboxError",
+
                         "NewPrinterWindow", "ntbkNewPrinter",
                         "btnNBack", "btnNForward", "btnNApply",
                         "entNName", "entNDescription", "entNLocation",
@@ -230,36 +232,65 @@ class GUI:
     # Data handling
 
     def on_btnApply_clicked(self, widget):
-        name, type = self.getSelectedItem()
-        if type == "Printer":
-            self.getPrinterSettings()
-            self.passwd_retry = False # use cached Passwd 
-            if self.ppd.nondefaultsMarked ():
-                self.cups.addPrinter(name, ppd=self.ppd)
-
-            printer = self.printers[name] 
-            new_values = {
-                "printer-location" : self.entPLocation.get_text(),
-                "printer-info" : self.entPDescription.get_text(),
-                "device-uri" : self.entPDevice.get_text(),
-                }
-
-            if new_values["printer-info"]!=printer["printer-info"]:
+        try:
+            name, type = self.getSelectedItem()
+            if type == "Printer":
+                self.getPrinterSettings()
                 self.passwd_retry = False # use cached Passwd 
-                self.cups.setPrinterInfo(name, new_values["printer-info"])
-            if new_values["printer-location"]!=printer["printer-location"]:
-                self.passwd_retry = False # use cached Passwd 
-                self.cups.setPrinterLocation(name,
-                                             new_values["printer-location"])
-            if new_values["device-uri"]!=printer["device-uri"]:
-                self.passwd_retry = False # use cached Passwd 
-                self.cups.setPrinterDevice(name, new_values["device-uri"])
-            printer.update(new_values)
-        elif type == "Class":
-            print "Apply Class"
-        elif type == "Settings":
-            print "Apply Settings"
+                if self.ppd.nondefaultsMarked ():
+                    self.cups.addPrinter(name, ppd=self.ppd)
 
+                printer = self.printers[name] 
+                new_values = {
+                    "printer-location" : self.entPLocation.get_text(),
+                    "printer-info" : self.entPDescription.get_text(),
+                    "device-uri" : self.entPDevice.get_text(),
+                    }
+
+                if new_values["printer-info"]!=printer["printer-info"]:
+                    self.passwd_retry = False # use cached Passwd 
+                    self.cups.setPrinterInfo(name, new_values["printer-info"])
+                if new_values["printer-location"]!=printer["printer-location"]:
+                    self.passwd_retry = False # use cached Passwd 
+                    self.cups.setPrinterLocation(name,
+                                                 new_values["printer-location"])
+                if new_values["device-uri"]!=printer["device-uri"]:
+                    self.passwd_retry = False # use cached Passwd 
+                    self.cups.setPrinterDevice(name, new_values["device-uri"])
+                printer.update(new_values)
+            elif type == "Class":
+                print "Apply Class"
+            elif type == "Settings":
+                print "Apply Settings"
+        except cups.IPPError, (e, s):
+            stuff = self.hboxError.get_children ()
+            if len (stuff) > 1:
+                self.hboxError.remove (stuff[1])
+            if e == cups.IPP_NOT_AUTHORIZED:
+                label = gtk.Label ()
+                label.set_markup ('<span weight="bold" size="larger">' +
+                                  'Not authorized</span>\n\n' +
+                                  'The password may be incorrect.')
+                label.set_line_wrap (True)
+                label.set_selectable (True)
+                self.hboxError.pack_start (label)
+                self.hboxError.show_all ()
+                self.ErrorDialog.set_transient_for (self.MainWindow)
+                self.ErrorDialog.run ()
+                self.ErrorDialog.hide ()
+            else:
+                label = gtk.Label ()
+                label.set_markup ('<span weight="bold" size="larger">' +
+                                  'CUPS server error</span>\n\n' +
+                                  'There was an error during the CUPS ' +
+                                  "operation: '%s'." % s)
+                label.set_line_wrap (True)
+                label.set_selectable (True)
+                self.hboxError.pack_start (label)
+                self.hboxError.show_all ()
+                self.ErrorDialog.set_transient_for (self.MainWindow)
+                self.ErrorDialog.run ()
+                self.ErrorDialog.hide ()
 
     def on_tvMainList_cursor_changed(self, list):
         name, type = self.getSelectedItem()
