@@ -1,5 +1,10 @@
 2007-02-21  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.maySelectItem): Handle applying
+	changes here rather than...
+	(GUI.on_tvMainList_cursor_changed): ...here, after the new item
+	has been selected (bug #229378).
+
 	* system-config-printer.glade: Added scrollbars to main printer
 	list (bug #229453).
 	Set maximum width of default printer label (bug #229453).
