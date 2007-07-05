@@ -75,6 +75,7 @@ class GUI:
                            "cmbNPTSerialBaud", "cmbNPTSerialParity",
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
+                           "entNPTDevice",
                           "tvNPModels", "cmbNPDriver",
                            "txtNPModelDescription", "txtNPDriverDescription",
                         )

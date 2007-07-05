@@ -1,6 +1,6 @@
 #!/bin/env python
 
-import os, signal, pickle, tempfile
+import os, signal, pickle, tempfile, glob
 from xml.utils import qp_xml
 
 import sys
@@ -399,7 +399,7 @@ class Foomatic:
 
     def getPrinters(self):
         if self._printer_names is None:
-            filenames = os.listdir(os.path.join(self.path, 'printer'))
+            filenames = glob.glob(os.path.join(self.path, 'printer') + "/*.xml")
             self._printer_names = [self.unquote_filename(name)
                                    for name in filenames]
             self._printer_names.sort()
@@ -409,7 +409,7 @@ class Foomatic:
 
     def getDrivers(self):
         if self._driver_names is None:
-            filenames = os.listdir(os.path.join(self.path, 'driver'))
+            filenames = glob.glob(os.path.join(self.path, 'driver') + "/*.xml")
             self._driver_names = [self.unquote_filename(name)
                                   for name in filenames]
             self._driver_names.sort()

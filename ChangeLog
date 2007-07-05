@@ -1,3 +1,13 @@
+2006-03-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Fetch entNPTDevice
+	widget.
+
+	* foomatic.py (Foomatic.getPrinters): Use glob for this, so we
+	only pick up XML files.  Foomatic has shipped DTD files here in
+	the past, and may again.
+	(Foomatic.getDrivers): Likewise.
+
 2006-03-15 Florian Festi  <ffesti@redhat.com>	
 
 	* foomatic.py (Foomatic.__init__): pickle printers' make, 
