@@ -1,5 +1,5 @@
 NAME=system-config-printer
-VERSION=0.7.3
+VERSION=0.7.4
 TAG=`echo $(NAME)-$(VERSION) | tr . _`
 
 SOURCES=cupsd.py         \
