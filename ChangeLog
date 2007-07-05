@@ -1,5 +1,8 @@
 2006-11-02  Tim Waugh  <twaugh@redhat.com>
 
+	* cupshelpers.py (copyPPDOptions): Skip 'PageRegion' since that's
+	special (bug #213680).
+
 	* system-config-printer.py (GUI.on_btnNPApply_clicked): Fix using
 	the new PPD as-is (bug #203905).
 

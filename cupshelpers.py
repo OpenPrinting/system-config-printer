@@ -366,12 +366,15 @@ def iteratePPDOptions(ppd):
 
 def copyPPDOptions(ppd1, ppd2):
     for option in iteratePPDOptions(ppd1):
+        if option.keyword == "PageRegion":
+            continue
         new_option = ppd2.findOption(option.keyword)
         if new_option and option.ui==new_option.ui:
             value = option.defchoice
             for choice in new_option.choices:
                 if choice["choice"]==value:
                     ppd2.markOption(new_option.keyword, value)
+                    print "set %s = %s" % (new_option.keyword, value)
                     
             
 def main():
