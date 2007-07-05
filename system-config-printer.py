@@ -1927,7 +1927,7 @@ class GUI:
             printer = self.entNPTIPPPrintername.get_text()
             device = "ipp://" + host
             if printer:
-                device = device + "/" + printer
+                device = device + "/printers/" + printer
         elif type == "lpd": # LPD
             host = self.cmbentNPTLpdHost.get_active_text()
             printer = self.cmbentNPTLpdQueue.get_active_text()
