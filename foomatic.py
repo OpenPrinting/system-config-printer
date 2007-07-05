@@ -776,12 +776,17 @@ class Foomatic:
             # Try to find the best match (case-insensitive)
             best_matchlen = 0
             mdll = mdl.lower ()
-            for (name, id) in mdls.iteritems():
-                name = name.lower ()
+            mdlnames = mdls.keys ()
+            mdlnames.sort (cups.modelSort)
+            mdlitems = map (lambda x: (x.lower (), mdls[x]), mdlnames)
+            for (name, id) in mdlitems:
                 if mdll[:1 + best_matchlen] == name[:1 + best_matchlen]:
-                    extra = 2
-                    while (mdll[1 + best_matchlen:extra + best_matchlen] ==
-                           name[1 + best_matchlen:extra + best_matchlen]):
+                    # We know we've got one more character matching.
+                    # Can we match any more on this entry?
+                    extra = 1
+                    while (mdll[1 + best_matchlen:1 + best_matchlen + extra] ==
+                           name[1 + best_matchlen:1 + best_matchlen + extra]):
+                        # Yes!  Try another!
                         extra += 1
                         if extra + best_matchlen >= len (name):
                             break
