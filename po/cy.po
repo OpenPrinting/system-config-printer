@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: printconf.cy\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-25 23:37+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2006-06-26 09:33+0100\n"
 "PO-Revision-Date: 2004-02-24 12:29+0000\n"
 "Last-Translator: Alan Cox <alan@redhat.com>\n"
 "Language-Team: Cymraeg <Cy@li.org>\n"
@@ -185,12 +185,13 @@ msgstr ""
 msgid "Really delete %s %s?"
 msgstr "Dileu \"%s\" wir?"
 
-#: system-config-printer.py:1330
+#: system-config-printer.py:1330 system-config-printer.glade:193
+#: system-config-printer.glade:2426
 #, fuzzy
 msgid "New Printer"
 msgstr "Argraffydd:"
 
-#: system-config-printer.py:1339
+#: system-config-printer.py:1339 system-config-printer.glade:210
 msgid "New Class"
 msgstr ""
 
@@ -261,6 +262,573 @@ msgid ""
 "%s.\n"
 msgstr ""
 
+#: system-config-printer.glade:8
+#, fuzzy
+msgid "System-Config-Printer"
+msgstr "Cyflunio argraffyddion"
+
+#: system-config-printer.glade:40
+msgid "_File"
+msgstr ""
+
+#: system-config-printer.glade:49
+#, fuzzy
+msgid "_Goto Server"
+msgstr "Gweinydd"
+
+#: system-config-printer.glade:83
+#, fuzzy
+msgid "_Edit"
+msgstr "Golygu"
+
+#: system-config-printer.glade:92
+#, fuzzy
+msgid "New _Printer"
+msgstr "Argraffydd:"
+
+#: system-config-printer.glade:113
+msgid "New Clas_s"
+msgstr ""
+
+#: system-config-printer.glade:156
+msgid "_Help"
+msgstr "_Cymorth"
+
+#: system-config-printer.glade:270
+#, fuzzy
+msgid "Goto Server"
+msgstr "Gweinydd"
+
+#: system-config-printer.glade:394
+msgid "Show printers shared by other systems"
+msgstr ""
+
+#: system-config-printer.glade:414
+msgid "Share published printers connected to this system"
+msgstr ""
+
+#: system-config-printer.glade:434
+msgid "Allow remote administration"
+msgstr ""
+
+#: system-config-printer.glade:454
+msgid "Allow users to cancel any job (not just their own)"
+msgstr ""
+
+#: system-config-printer.glade:474
+msgid "Save debugging information for troubleshooting"
+msgstr ""
+
+#: system-config-printer.glade:497
+#, fuzzy
+msgid "<b>Basic Server Settings</b>"
+msgstr "Dewisiadau gyrrydd"
+
+#: system-config-printer.glade:594
+#, fuzzy
+msgid "Description:"
+msgstr "Disgrifiad"
+
+#: system-config-printer.glade:622
+#, fuzzy
+msgid "Location:"
+msgstr "_Gweithred"
+
+#: system-config-printer.glade:694
+#, fuzzy
+msgid "Device URI:"
+msgstr "Dyfais:"
+
+#: system-config-printer.glade:722
+#, fuzzy
+msgid "Printer State:"
+msgstr "Nodiadau argraffydd:"
+
+#: system-config-printer.glade:777 system-config-printer.glade:892
+#, fuzzy
+msgid "Change..."
+msgstr "_Rhannu..."
+
+#: system-config-printer.glade:803
+#, fuzzy
+msgid "Make and Model:"
+msgstr "Mae angen gwneuthurwr a model.\n"
+
+#: system-config-printer.glade:927
+msgid "<b>Settings</b>"
+msgstr ""
+
+#: system-config-printer.glade:983
+msgid "Enabled"
+msgstr ""
+
+#: system-config-printer.glade:1003
+msgid "Accepting jobs"
+msgstr ""
+
+#: system-config-printer.glade:1023
+msgid "Shared"
+msgstr "Rhaniad"
+
+#: system-config-printer.glade:1046
+msgid "<b>State</b>"
+msgstr ""
+
+#: system-config-printer.glade:1102
+#, fuzzy
+msgid "Make Default Printer"
+msgstr "Dyma ddisgrifiad yr argraffydd."
+
+#: system-config-printer.glade:1147
+msgid "<b>Default Printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:1183
+#, fuzzy
+msgid "Settings"
+msgstr "Gosod"
+
+#: system-config-printer.glade:1240
+msgid "Starting Banner:"
+msgstr ""
+
+#: system-config-printer.glade:1268
+msgid "Ending Banner: \t"
+msgstr ""
+
+#: system-config-printer.glade:1296 system-config-printer.glade:1314
+msgid "none"
+msgstr "dim"
+
+#: system-config-printer.glade:1336
+msgid "<b>Banner</b>"
+msgstr ""
+
+#: system-config-printer.glade:1394
+msgid "Error Policy: \t"
+msgstr ""
+
+#: system-config-printer.glade:1422
+msgid "Operation Policy:"
+msgstr ""
+
+#: system-config-printer.glade:1450 system-config-printer.glade:1469
+#, fuzzy
+msgid "default"
+msgstr "Rhagosodyn"
+
+#: system-config-printer.glade:1492
+msgid "<b>Policies</b>"
+msgstr ""
+
+#: system-config-printer.glade:1528
+msgid "Policies"
+msgstr ""
+
+#: system-config-printer.glade:1570
+msgid "Allow printing for everyone except these users:"
+msgstr ""
+
+#: system-config-printer.glade:1590
+msgid "Deny printing for everyone except these users:"
+msgstr ""
+
+#: system-config-printer.glade:1757
+msgid "Access control"
+msgstr ""
+
+#: system-config-printer.glade:1786
+msgid "Add or Remove Members"
+msgstr ""
+
+#: system-config-printer.glade:1949
+msgid "Members"
+msgstr ""
+
+#: system-config-printer.glade:2028
+msgid "Installable Options"
+msgstr ""
+
+#: system-config-printer.glade:2092
+#, fuzzy
+msgid "Printer Options"
+msgstr "Dewisiadau hidlen"
+
+#: system-config-printer.glade:2121
+#, fuzzy
+msgid "Specify default job options."
+msgstr "Ailosod i'r gosodiadau rhagosodedig"
+
+#: system-config-printer.glade:2232
+msgid "Job Options"
+msgstr ""
+
+#: system-config-printer.glade:2493
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr ""
+
+#: system-config-printer.glade:2542
+#, fuzzy
+msgid "<b>Printer Name</b>"
+msgstr "Model argraffydd"
+
+#: system-config-printer.glade:2597
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+
+#: system-config-printer.glade:2645
+msgid "<b>Description</b> (optional)"
+msgstr ""
+
+#: system-config-printer.glade:2700
+msgid "Human-readable location such as \"Lab 1\""
+msgstr ""
+
+#: system-config-printer.glade:2748
+msgid "<b>Location</b> (optional)"
+msgstr ""
+
+#: system-config-printer.glade:2784
+msgid "Name"
+msgstr "Enw"
+
+#: system-config-printer.glade:2831
+msgid "<b>Select Connection</b>"
+msgstr ""
+
+#: system-config-printer.glade:2920
+msgid "Empty"
+msgstr ""
+
+#: system-config-printer.glade:2949
+#, fuzzy
+msgid "Enter Device URI"
+msgstr "Dyfais Argraffydd"
+
+#: system-config-printer.glade:3003
+#, fuzzy
+msgid "Device URI"
+msgstr "Dyfais: "
+
+#: system-config-printer.glade:3051 system-config-printer.glade:3220
+#: system-config-printer.glade:3389
+msgid "Hostname"
+msgstr ""
+
+#: system-config-printer.glade:3095
+msgid "Port number"
+msgstr ""
+
+#: system-config-printer.glade:3143 system-config-printer.glade:3312
+msgid "<b>Location of the network printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:3172
+msgid "DirectJet"
+msgstr ""
+
+#: system-config-printer.glade:3264 system-config-printer.glade:3548
+#, fuzzy
+msgid "Printername"
+msgstr "Model argraffydd"
+
+#: system-config-printer.glade:3341
+#, fuzzy
+msgid "IPP"
+msgstr "IP:"
+
+#: system-config-printer.glade:3505
+msgid "Probe"
+msgstr ""
+
+#: system-config-printer.glade:3593
+msgid "<b>Location of the LPD network printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:3622
+msgid "LPD"
+msgstr ""
+
+#: system-config-printer.glade:3669
+msgid "SCSI"
+msgstr ""
+
+#: system-config-printer.glade:3720
+msgid "Baud Rate"
+msgstr ""
+
+#: system-config-printer.glade:3748
+msgid "Parity"
+msgstr ""
+
+#: system-config-printer.glade:3776
+#, fuzzy
+msgid "Data Bits"
+msgstr "Manylion"
+
+#: system-config-printer.glade:3804
+msgid "Flow Control"
+msgstr ""
+
+#: system-config-printer.glade:3832
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+
+#: system-config-printer.glade:3857
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+
+#: system-config-printer.glade:3877
+#, fuzzy
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr "Rhagosodyn"
+
+#: system-config-printer.glade:3896
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+
+#: system-config-printer.glade:3921
+msgid "<b>Settings of the serial port</b>"
+msgstr ""
+
+#: system-config-printer.glade:3950
+#, fuzzy
+msgid "Serial"
+msgstr "Cyffredinol"
+
+#: system-config-printer.glade:4100 system-config-printer.glade:6070
+msgid "Password:"
+msgstr "Cyfrinair:"
+
+#: system-config-printer.glade:4128
+#, fuzzy
+msgid "Username:"
+msgstr "Enw defnyddiwr:"
+
+#: system-config-printer.glade:4242
+#, fuzzy
+msgid "_Verify..."
+msgstr "Penodi..."
+
+#: system-config-printer.glade:4285
+#, fuzzy
+msgid "<b>Authentication</b>"
+msgstr "Dilysiant"
+
+#: system-config-printer.glade:4321
+msgid "SMB"
+msgstr ""
+
+#: system-config-printer.glade:4359
+#, fuzzy
+msgid "Device"
+msgstr "Dyfais"
+
+#: system-config-printer.glade:4389
+msgid "Select Printer from database"
+msgstr ""
+
+#: system-config-printer.glade:4426
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+
+#: system-config-printer.glade:4503
+msgid "Provide PPD file"
+msgstr ""
+
+#: system-config-printer.glade:4540
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: system-config-printer.glade:4571
+msgid "Select A File"
+msgstr ""
+
+#: system-config-printer.glade:4611
+msgid "PPD"
+msgstr ""
+
+#: system-config-printer.glade:4728
+#, fuzzy
+msgid "Comments: "
+msgstr "Sylw"
+
+#: system-config-printer.glade:4754
+#, fuzzy
+msgid "Printer"
+msgstr "Argraffyd: "
+
+#: system-config-printer.glade:4773
+#, fuzzy
+msgid "Driver"
+msgstr "Gyrrydd"
+
+#: system-config-printer.glade:4792
+msgid " PPD "
+msgstr ""
+
+#: system-config-printer.glade:4901
+msgid "<b>Comment about the Printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:4989
+msgid "<b>Comment about the Driver</b>"
+msgstr ""
+
+#: system-config-printer.glade:5077
+msgid "<b>Information about the PPD</b>"
+msgstr ""
+
+#: system-config-printer.glade:5330
+msgid "<b>Printers to be members of this Class</b>"
+msgstr ""
+
+#: system-config-printer.glade:5359
+msgid "Class Members"
+msgstr ""
+
+#: system-config-printer.glade:5419
+msgid "Apply"
+msgstr "Gweithredoli"
+
+#: system-config-printer.glade:5486
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr ""
+
+#: system-config-printer.glade:5504
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+
+#: system-config-printer.glade:5542
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr ""
+
+#: system-config-printer.glade:5563
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+
+#: system-config-printer.glade:5596
+#, fuzzy
+msgid "Change PPD"
+msgstr "Newid Math"
+
+#: system-config-printer.glade:5692
+msgid "Connect to CUPS server"
+msgstr ""
+
+#: system-config-printer.glade:5766
+msgid "Require encryption"
+msgstr ""
+
+#: system-config-printer.glade:5820
+#, fuzzy
+msgid "CUPS server:"
+msgstr "Gweinydd:"
+
+#: system-config-printer.glade:5862
+msgid "User name:"
+msgstr "Enw defnyddiwr:"
+
+#: system-config-printer.glade:6013
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+
+#: system-config-printer.glade:6172
+msgid "_Do not apply"
+msgstr ""
+
+#: system-config-printer.glade:6244
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+
+#: system-config-printer.glade:6388
+#, fuzzy
+msgid "Copy Printer"
+msgstr "Argraffydd:"
+
+#: system-config-printer.glade:6451
+#, fuzzy
+msgid "New name for the printer"
+msgstr "Argraffydd Jetdirect"
+
+#: system-config-printer.glade:6537
+msgid "About System-Config-Printer"
+msgstr ""
+
+#: system-config-printer.glade:6597
+#, fuzzy
+msgid "System-Config-Printer %s\n"
+msgstr "Cyflunio argraffyddion"
+
+#: system-config-printer.glade:6622
+msgid "About"
+msgstr "Ynghylch"
+
+#: system-config-printer.glade:6669
+msgid "Copyright"
+msgstr ""
+
+#: system-config-printer.glade:6716
+msgid "Authors"
+msgstr ""
+
+#: system-config-printer.glade:6747
+msgid "Connecting"
+msgstr ""
+
+#: system-config-printer.glade:6798
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+
+#, fuzzy
+#~ msgid "localhost"
+#~ msgstr "lleol"
+
+#, fuzzy
+#~ msgid "smb://"
+#~ msgstr "smb"
+
 #~ msgid "Error"
 #~ msgstr "Gwall"
 
@@ -307,20 +875,11 @@ msgstr ""
 #~ msgid "Type:"
 #~ msgstr "Math:"
 
-#~ msgid "Device:"
-#~ msgstr "Dyfais:"
-
-#~ msgid "Server:"
-#~ msgstr "Gweinydd:"
-
 #~ msgid "Lpd Queue:"
 #~ msgstr "Ciw lpd:"
 
 #~ msgid "Share:"
 #~ msgstr "Rhaniad:"
-
-#~ msgid "IP:"
-#~ msgstr "IP:"
 
 #~ msgid "Workgroup:"
 #~ msgstr "Grŵp gwaith:"
@@ -361,12 +920,6 @@ msgstr ""
 #~ msgid "Custom"
 #~ msgstr "Addasiedig"
 
-#~ msgid "Setting Up"
-#~ msgstr "Gosod"
-
-#~ msgid "Printer Device"
-#~ msgstr "Dyfais Argraffydd"
-
 #~ msgid ""
 #~ "Pick the printer device from the list, or enter it using \"Custom\" below."
 #~ msgstr ""
@@ -375,9 +928,6 @@ msgstr ""
 
 #~ msgid "Specify Device:"
 #~ msgstr "Penodwch Ddyfais:"
-
-#~ msgid "Description"
-#~ msgstr "Disgrifiad"
 
 #~ msgid "Custom Device"
 #~ msgstr "Dyfais Addasiedig"
@@ -393,9 +943,6 @@ msgstr ""
 
 #~ msgid "Enter the LPD server and queue to use."
 #~ msgstr "Rhowch y gweinydd LPD a'r ciw i'w defnyddio."
-
-#~ msgid "Server"
-#~ msgstr "Gweinydd"
 
 #~ msgid "Queue"
 #~ msgstr "Ciw"
@@ -484,9 +1031,6 @@ msgstr ""
 #~ msgid "Edit Name and Aliases"
 #~ msgstr "Golygu Enw a Ffugenwau"
 
-#~ msgid "Name"
-#~ msgstr "Enw"
-
 #~ msgid "Add Alias"
 #~ msgstr "Ychwanegu Ffugenw"
 
@@ -522,9 +1066,6 @@ msgstr ""
 
 #~ msgid "Edit Driver Options"
 #~ msgstr "Golygu Dewisiadau Gyrrydd"
-
-#~ msgid "Edit"
-#~ msgstr "Golygu"
 
 #~ msgid "Edit %s"
 #~ msgstr "Golygu %s"
@@ -608,17 +1149,11 @@ msgstr ""
 #~ msgid "Aliases"
 #~ msgstr "Ffugenwau"
 
-#~ msgid "Details"
-#~ msgstr "Manylion"
-
 #~ msgid "New"
 #~ msgstr "Newydd"
 
 #~ msgid "Delete"
 #~ msgstr "Dileu"
-
-#~ msgid "Default"
-#~ msgstr "Rhagosodyn"
 
 #~ msgid "You must select a printer queue to edit."
 #~ msgstr "Rhaid i chi ddewis ciw argraffydd i'w olygu."
@@ -675,9 +1210,6 @@ msgstr ""
 #~ msgid "Now run printconf-backend (or restart lpd service)."
 #~ msgstr "Nawr rhedwch printconf-backend (neu ailddechrau'r gwasanaeth lpd)."
 
-#~ msgid "Need make and model.\n"
-#~ msgstr "Mae angen gwneuthurwr a model.\n"
-
 #~ msgid "You must run printconf-tui as root."
 #~ msgstr "Rhaid i che redeg printconf-tui fel y gwraidd."
 
@@ -692,9 +1224,6 @@ msgstr ""
 
 #~ msgid "Queue name"
 #~ msgstr "Enw ciw"
-
-#~ msgid "Shared"
-#~ msgstr "Rhaniad"
 
 #~ msgid ""
 #~ "Do you want to save the changes\n"
@@ -724,9 +1253,6 @@ msgstr ""
 
 #~ msgid "Notes from the Linux Printing Database"
 #~ msgstr "Nodiadau o'r Gronfa Ddata Argraffu Linux"
-
-#~ msgid "Printer notes:"
-#~ msgstr "Nodiadau argraffydd:"
 
 #~ msgid "Driver notes:"
 #~ msgstr "Nodiadau gyrrydd:"
@@ -850,12 +1376,6 @@ msgstr ""
 
 #~ msgid "Type: "
 #~ msgstr "Math: "
-
-#~ msgid "Printer: "
-#~ msgstr "Argraffyd: "
-
-#~ msgid "Device: "
-#~ msgstr "Dyfais: "
 
 #~ msgid "Queue: "
 #~ msgstr "Ciw: "
@@ -1155,9 +1675,6 @@ msgstr ""
 #~ msgid "ASC_II text test page"
 #~ msgstr "Tudalen brawf testun ASC_II"
 
-#~ msgid "About"
-#~ msgstr "Ynghylch"
-
 #~ msgid "Add a new option"
 #~ msgstr "Ychwanegu dewisiad newydd"
 
@@ -1176,9 +1693,6 @@ msgstr ""
 #~ msgid "Allowed hosts"
 #~ msgstr "Gwesteiwyr caniataol"
 
-#~ msgid "Apply"
-#~ msgstr "Gweithredoli"
-
 #~ msgid "Apply changes"
 #~ msgstr "Gweithredoli newidiadau"
 
@@ -1187,9 +1701,6 @@ msgstr ""
 
 #~ msgid "At start of job:"
 #~ msgstr "Ar ddechrau swydd:"
-
-#~ msgid "Authentication"
-#~ msgstr "Dilysiant"
 
 #~ msgid "Autoselect driver"
 #~ msgstr "Awtoddewis gyrrydd"
@@ -1239,17 +1750,11 @@ msgstr ""
 #~ msgid "Enter the device you would like to use."
 #~ msgstr "Rhowch y ddyfais yr hoffech ei defnyddio."
 
-#~ msgid "Filter options"
-#~ msgstr "Dewisiadau hidlen"
-
 #~ msgid "Finish, and create the new print queue"
 #~ msgstr "Gorffen, a chreu'r ciw argraffu newydd"
 
 #~ msgid "For example: /dev/lp0"
 #~ msgstr "Er enghraifft: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "Cyffredinol"
 
 #~ msgid "Generic"
 #~ msgstr "Cyffredinol"
@@ -1327,9 +1832,6 @@ msgstr ""
 #~ "Ni wneir unrhywbeth i'ch gosodiadau nes i chi daro \"Gorffen\" ar y sgrîn "
 #~ "olaf."
 
-#~ msgid "Password:"
-#~ msgstr "Cyfrinair:"
-
 #~ msgid "Path:"
 #~ msgstr "Llwybr:"
 
@@ -1351,9 +1853,6 @@ msgstr ""
 
 #~ msgid "Printer hostname or IP address"
 #~ msgstr "Enw gwesteiwr neu gyfeiriadu IP argraffydd"
-
-#~ msgid "Printer model"
-#~ msgstr "Model argraffydd"
 
 #~ msgid "Printer/driver _notes..."
 #~ msgstr "_Nodiadau argraffydd/gyrrydd..."
@@ -1378,9 +1877,6 @@ msgstr ""
 
 #~ msgid "Rescan devices"
 #~ msgstr "Ailsyllu dyfeisiau"
-
-#~ msgid "Reset to the default options"
-#~ msgstr "Ailosod i'r gosodiadau rhagosodedig"
 
 #~ msgid "Right margin (pt):"
 #~ msgstr "Ymyl dde (pt):"
@@ -1411,9 +1907,6 @@ msgstr ""
 
 #~ msgid "Single _IP address"
 #~ msgstr "Cyfeiriad _IP unigol"
-
-#~ msgid "Specify..."
-#~ msgstr "Penodi..."
 
 #~ msgid "Strict RFC1179 compliance"
 #~ msgstr "Cydymffurfiad RFC1179 hollol"
@@ -1449,14 +1942,8 @@ msgstr ""
 #~ msgid "Use control-F to search"
 #~ msgstr "Defnyddiwch rheoli-F i chwilio"
 
-#~ msgid "User name:"
-#~ msgstr "Enw defnyddiwr:"
-
 #~ msgid "_A4 PostScript test page"
 #~ msgstr "Tudalen brawf PostScript _A4"
-
-#~ msgid "_Action"
-#~ msgstr "_Gweithred"
 
 #~ msgid "_Add..."
 #~ msgstr "_Ychwanegu..."
@@ -1500,9 +1987,6 @@ msgstr ""
 #~ msgid "_Edit..."
 #~ msgstr "_Golygu..."
 
-#~ msgid "_Help"
-#~ msgstr "_Cymorth"
-
 #~ msgid "_Import PPD..."
 #~ msgstr "_Mewnforio PPD..."
 
@@ -1520,9 +2004,6 @@ msgstr ""
 
 #~ msgid "_Rescan devices"
 #~ msgstr "_Ailsyllu dyfeisiau"
-
-#~ msgid "_Sharing..."
-#~ msgstr "_Rhannu..."
 
 #~ msgid "_Test"
 #~ msgstr "_Profi"
@@ -1560,23 +2041,11 @@ msgstr ""
 #~ msgid "jetdirect"
 #~ msgstr "jetdirect"
 
-#~ msgid "local"
-#~ msgstr "lleol"
-
 #~ msgid "lpd"
 #~ msgstr "lpd"
 
 #~ msgid "ncp"
 #~ msgstr "ncp"
-
-#~ msgid "none"
-#~ msgstr "dim"
-
-#~ msgid "smb"
-#~ msgstr "smb"
-
-#~ msgid "Configure printers"
-#~ msgstr "Cyflunio argraffyddion"
 
 #~ msgid "Printing"
 #~ msgstr "Yn argraffu"

@@ -2,7 +2,7 @@
 # translation of printconf.po to Slovenian
 # SLOVENIAN TRANSLATION OF PRINTCONF.
 # Copyright (C) 2001,2003,2004 Free Software Foundation, Inc.
-# $Id: sl.po,v 1.4 2006/06/25 22:39:38 twaugh Exp $
+# $Id: sl.po,v 1.5 2006/06/26 09:41:23 twaugh Exp $
 # $Source: /home/fedora/mmcgrath/elvis/cvs/system-config-printer/po/sl.po,v $
 # Roman Maurer <roman@lugos.si>, 2001,2003.
 # Rok Papez <rok.papez@lugos.si>, 2004
@@ -10,8 +10,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sl\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-25 23:37+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2006-06-26 09:33+0100\n"
 "PO-Revision-Date: 2004-03-31 19:56+0200\n"
 "Last-Translator: Rok Papez <rok.papez@lugos.si>\n"
 "Language-Team: slovenščina <translation-team-sl@lists.sourceforge.net>\n"
@@ -188,12 +188,13 @@ msgstr ""
 msgid "Really delete %s %s?"
 msgstr "Zares zbrišete \"%s\"?"
 
-#: system-config-printer.py:1330
+#: system-config-printer.py:1330 system-config-printer.glade:193
+#: system-config-printer.glade:2426
 #, fuzzy
 msgid "New Printer"
 msgstr "Tiskalnik:"
 
-#: system-config-printer.py:1339
+#: system-config-printer.py:1339 system-config-printer.glade:210
 msgid "New Class"
 msgstr ""
 
@@ -264,6 +265,574 @@ msgid ""
 "%s.\n"
 msgstr ""
 
+#: system-config-printer.glade:8
+#, fuzzy
+msgid "System-Config-Printer"
+msgstr "Prikroji tiskalnike"
+
+#: system-config-printer.glade:40
+msgid "_File"
+msgstr ""
+
+#: system-config-printer.glade:49
+#, fuzzy
+msgid "_Goto Server"
+msgstr "Strežnik"
+
+#: system-config-printer.glade:83
+#, fuzzy
+msgid "_Edit"
+msgstr "Uredi"
+
+#: system-config-printer.glade:92
+#, fuzzy
+msgid "New _Printer"
+msgstr "Tiskalnik:"
+
+#: system-config-printer.glade:113
+msgid "New Clas_s"
+msgstr ""
+
+#: system-config-printer.glade:156
+msgid "_Help"
+msgstr "_Pomoč"
+
+#: system-config-printer.glade:270
+#, fuzzy
+msgid "Goto Server"
+msgstr "Strežnik"
+
+#: system-config-printer.glade:394
+msgid "Show printers shared by other systems"
+msgstr ""
+
+#: system-config-printer.glade:414
+msgid "Share published printers connected to this system"
+msgstr ""
+
+#: system-config-printer.glade:434
+msgid "Allow remote administration"
+msgstr ""
+
+#: system-config-printer.glade:454
+msgid "Allow users to cancel any job (not just their own)"
+msgstr ""
+
+#: system-config-printer.glade:474
+msgid "Save debugging information for troubleshooting"
+msgstr ""
+
+#: system-config-printer.glade:497
+#, fuzzy
+msgid "<b>Basic Server Settings</b>"
+msgstr "Možnosti gonilnika"
+
+#: system-config-printer.glade:594
+#, fuzzy
+msgid "Description:"
+msgstr "Opis"
+
+#: system-config-printer.glade:622
+#, fuzzy
+msgid "Location:"
+msgstr "_Dejanje"
+
+#: system-config-printer.glade:694
+#, fuzzy
+msgid "Device URI:"
+msgstr "Naprava:"
+
+#: system-config-printer.glade:722
+#, fuzzy
+msgid "Printer State:"
+msgstr "Zapiski o tiskalniku:"
+
+#: system-config-printer.glade:777 system-config-printer.glade:892
+#, fuzzy
+msgid "Change..."
+msgstr "De_ljenje..."
+
+#: system-config-printer.glade:803
+#, fuzzy
+msgid "Make and Model:"
+msgstr "Potrebujem napravo, proizvajalca in model.\n"
+
+#: system-config-printer.glade:927
+msgid "<b>Settings</b>"
+msgstr ""
+
+#: system-config-printer.glade:983
+msgid "Enabled"
+msgstr ""
+
+#: system-config-printer.glade:1003
+msgid "Accepting jobs"
+msgstr ""
+
+#: system-config-printer.glade:1023
+#, fuzzy
+msgid "Shared"
+msgstr "Deljeni vir"
+
+#: system-config-printer.glade:1046
+msgid "<b>State</b>"
+msgstr ""
+
+#: system-config-printer.glade:1102
+#, fuzzy
+msgid "Make Default Printer"
+msgstr "To je opis tiskalnika."
+
+#: system-config-printer.glade:1147
+msgid "<b>Default Printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:1183
+#, fuzzy
+msgid "Settings"
+msgstr "Nastavljam"
+
+#: system-config-printer.glade:1240
+msgid "Starting Banner:"
+msgstr ""
+
+#: system-config-printer.glade:1268
+msgid "Ending Banner: \t"
+msgstr ""
+
+#: system-config-printer.glade:1296 system-config-printer.glade:1314
+msgid "none"
+msgstr "nobeden"
+
+#: system-config-printer.glade:1336
+msgid "<b>Banner</b>"
+msgstr ""
+
+#: system-config-printer.glade:1394
+msgid "Error Policy: \t"
+msgstr ""
+
+#: system-config-printer.glade:1422
+msgid "Operation Policy:"
+msgstr ""
+
+#: system-config-printer.glade:1450 system-config-printer.glade:1469
+#, fuzzy
+msgid "default"
+msgstr "Privzeto"
+
+#: system-config-printer.glade:1492
+msgid "<b>Policies</b>"
+msgstr ""
+
+#: system-config-printer.glade:1528
+msgid "Policies"
+msgstr ""
+
+#: system-config-printer.glade:1570
+msgid "Allow printing for everyone except these users:"
+msgstr ""
+
+#: system-config-printer.glade:1590
+msgid "Deny printing for everyone except these users:"
+msgstr ""
+
+#: system-config-printer.glade:1757
+msgid "Access control"
+msgstr ""
+
+#: system-config-printer.glade:1786
+msgid "Add or Remove Members"
+msgstr ""
+
+#: system-config-printer.glade:1949
+msgid "Members"
+msgstr ""
+
+#: system-config-printer.glade:2028
+msgid "Installable Options"
+msgstr ""
+
+#: system-config-printer.glade:2092
+#, fuzzy
+msgid "Printer Options"
+msgstr "Možnosti filtra"
+
+#: system-config-printer.glade:2121
+#, fuzzy
+msgid "Specify default job options."
+msgstr "Nastavi na privzeto vrednost"
+
+#: system-config-printer.glade:2232
+msgid "Job Options"
+msgstr ""
+
+#: system-config-printer.glade:2493
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr ""
+
+#: system-config-printer.glade:2542
+#, fuzzy
+msgid "<b>Printer Name</b>"
+msgstr "Model tiskalnika"
+
+#: system-config-printer.glade:2597
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+
+#: system-config-printer.glade:2645
+msgid "<b>Description</b> (optional)"
+msgstr ""
+
+#: system-config-printer.glade:2700
+msgid "Human-readable location such as \"Lab 1\""
+msgstr ""
+
+#: system-config-printer.glade:2748
+msgid "<b>Location</b> (optional)"
+msgstr ""
+
+#: system-config-printer.glade:2784
+msgid "Name"
+msgstr "Ime"
+
+#: system-config-printer.glade:2831
+msgid "<b>Select Connection</b>"
+msgstr ""
+
+#: system-config-printer.glade:2920
+msgid "Empty"
+msgstr ""
+
+#: system-config-printer.glade:2949
+#, fuzzy
+msgid "Enter Device URI"
+msgstr "Tiskalniška naprava"
+
+#: system-config-printer.glade:3003
+#, fuzzy
+msgid "Device URI"
+msgstr "Naprava: "
+
+#: system-config-printer.glade:3051 system-config-printer.glade:3220
+#: system-config-printer.glade:3389
+msgid "Hostname"
+msgstr ""
+
+#: system-config-printer.glade:3095
+msgid "Port number"
+msgstr ""
+
+#: system-config-printer.glade:3143 system-config-printer.glade:3312
+msgid "<b>Location of the network printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:3172
+msgid "DirectJet"
+msgstr ""
+
+#: system-config-printer.glade:3264 system-config-printer.glade:3548
+#, fuzzy
+msgid "Printername"
+msgstr "Model tiskalnika"
+
+#: system-config-printer.glade:3341
+#, fuzzy
+msgid "IPP"
+msgstr "IP:"
+
+#: system-config-printer.glade:3505
+msgid "Probe"
+msgstr ""
+
+#: system-config-printer.glade:3593
+msgid "<b>Location of the LPD network printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:3622
+msgid "LPD"
+msgstr ""
+
+#: system-config-printer.glade:3669
+msgid "SCSI"
+msgstr ""
+
+#: system-config-printer.glade:3720
+msgid "Baud Rate"
+msgstr ""
+
+#: system-config-printer.glade:3748
+msgid "Parity"
+msgstr ""
+
+#: system-config-printer.glade:3776
+#, fuzzy
+msgid "Data Bits"
+msgstr "Podrobnosti"
+
+#: system-config-printer.glade:3804
+msgid "Flow Control"
+msgstr ""
+
+#: system-config-printer.glade:3832
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+
+#: system-config-printer.glade:3857
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+
+#: system-config-printer.glade:3877
+#, fuzzy
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr "Privzeto"
+
+#: system-config-printer.glade:3896
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+
+#: system-config-printer.glade:3921
+msgid "<b>Settings of the serial port</b>"
+msgstr ""
+
+#: system-config-printer.glade:3950
+#, fuzzy
+msgid "Serial"
+msgstr "Splošno"
+
+#: system-config-printer.glade:4100 system-config-printer.glade:6070
+msgid "Password:"
+msgstr "Geslo:"
+
+#: system-config-printer.glade:4128
+#, fuzzy
+msgid "Username:"
+msgstr "Uporabniško ime:"
+
+#: system-config-printer.glade:4242
+#, fuzzy
+msgid "_Verify..."
+msgstr "Določi..."
+
+#: system-config-printer.glade:4285
+#, fuzzy
+msgid "<b>Authentication</b>"
+msgstr "Avtentikacija"
+
+#: system-config-printer.glade:4321
+msgid "SMB"
+msgstr ""
+
+#: system-config-printer.glade:4359
+#, fuzzy
+msgid "Device"
+msgstr "Naprava"
+
+#: system-config-printer.glade:4389
+msgid "Select Printer from database"
+msgstr ""
+
+#: system-config-printer.glade:4426
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+
+#: system-config-printer.glade:4503
+msgid "Provide PPD file"
+msgstr ""
+
+#: system-config-printer.glade:4540
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: system-config-printer.glade:4571
+msgid "Select A File"
+msgstr ""
+
+#: system-config-printer.glade:4611
+msgid "PPD"
+msgstr ""
+
+#: system-config-printer.glade:4728
+#, fuzzy
+msgid "Comments: "
+msgstr "Komentar"
+
+#: system-config-printer.glade:4754
+#, fuzzy
+msgid "Printer"
+msgstr "Tiskalnik:"
+
+#: system-config-printer.glade:4773
+#, fuzzy
+msgid "Driver"
+msgstr "Gonilnik"
+
+#: system-config-printer.glade:4792
+msgid " PPD "
+msgstr ""
+
+#: system-config-printer.glade:4901
+msgid "<b>Comment about the Printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:4989
+msgid "<b>Comment about the Driver</b>"
+msgstr ""
+
+#: system-config-printer.glade:5077
+msgid "<b>Information about the PPD</b>"
+msgstr ""
+
+#: system-config-printer.glade:5330
+msgid "<b>Printers to be members of this Class</b>"
+msgstr ""
+
+#: system-config-printer.glade:5359
+msgid "Class Members"
+msgstr ""
+
+#: system-config-printer.glade:5419
+msgid "Apply"
+msgstr "Uveljavi"
+
+#: system-config-printer.glade:5486
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr ""
+
+#: system-config-printer.glade:5504
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+
+#: system-config-printer.glade:5542
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr ""
+
+#: system-config-printer.glade:5563
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+
+#: system-config-printer.glade:5596
+#, fuzzy
+msgid "Change PPD"
+msgstr "Spremeni tip"
+
+#: system-config-printer.glade:5692
+msgid "Connect to CUPS server"
+msgstr ""
+
+#: system-config-printer.glade:5766
+msgid "Require encryption"
+msgstr ""
+
+#: system-config-printer.glade:5820
+#, fuzzy
+msgid "CUPS server:"
+msgstr "Strežnik:"
+
+#: system-config-printer.glade:5862
+msgid "User name:"
+msgstr "Uporabniško ime:"
+
+#: system-config-printer.glade:6013
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+
+#: system-config-printer.glade:6172
+msgid "_Do not apply"
+msgstr ""
+
+#: system-config-printer.glade:6244
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+
+#: system-config-printer.glade:6388
+#, fuzzy
+msgid "Copy Printer"
+msgstr "Tiskalnik:"
+
+#: system-config-printer.glade:6451
+#, fuzzy
+msgid "New name for the printer"
+msgstr "Tiskalnik Jetdirect"
+
+#: system-config-printer.glade:6537
+msgid "About System-Config-Printer"
+msgstr ""
+
+#: system-config-printer.glade:6597
+#, fuzzy
+msgid "System-Config-Printer %s\n"
+msgstr "Prikroji tiskalnike"
+
+#: system-config-printer.glade:6622
+msgid "About"
+msgstr "O programu"
+
+#: system-config-printer.glade:6669
+msgid "Copyright"
+msgstr ""
+
+#: system-config-printer.glade:6716
+msgid "Authors"
+msgstr ""
+
+#: system-config-printer.glade:6747
+msgid "Connecting"
+msgstr ""
+
+#: system-config-printer.glade:6798
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+
+#, fuzzy
+#~ msgid "localhost"
+#~ msgstr "krajevno"
+
+#, fuzzy
+#~ msgid "smb://"
+#~ msgstr "smb"
+
 #~ msgid "Error"
 #~ msgstr "Napaka"
 
@@ -310,20 +879,11 @@ msgstr ""
 #~ msgid "Type:"
 #~ msgstr "Tip:"
 
-#~ msgid "Device:"
-#~ msgstr "Naprava:"
-
-#~ msgid "Server:"
-#~ msgstr "Strežnik:"
-
 #~ msgid "Lpd Queue:"
 #~ msgstr "Vrsta za lpd:"
 
 #~ msgid "Share:"
 #~ msgstr "Deljeni vir:"
-
-#~ msgid "IP:"
-#~ msgstr "IP:"
 
 #~ msgid "Workgroup:"
 #~ msgstr "Delovna skupina:"
@@ -364,12 +924,6 @@ msgstr ""
 #~ msgid "Custom"
 #~ msgstr "Po meri"
 
-#~ msgid "Setting Up"
-#~ msgstr "Nastavljam"
-
-#~ msgid "Printer Device"
-#~ msgstr "Tiskalniška naprava"
-
 #~ msgid ""
 #~ "Pick the printer device from the list, or enter it using \"Custom\" below."
 #~ msgstr ""
@@ -378,9 +932,6 @@ msgstr ""
 
 #~ msgid "Specify Device:"
 #~ msgstr "Določite napravo:"
-
-#~ msgid "Description"
-#~ msgstr "Opis"
 
 #~ msgid "Custom Device"
 #~ msgstr "Prilagojena naprava"
@@ -396,9 +947,6 @@ msgstr ""
 
 #~ msgid "Enter the LPD server and queue to use."
 #~ msgstr "Vnesite strežnik LPD in vrsto, ki naj se uporabljata."
-
-#~ msgid "Server"
-#~ msgstr "Strežnik"
 
 #~ msgid "Queue"
 #~ msgstr "Čakalna vrsta"
@@ -487,9 +1035,6 @@ msgstr ""
 #~ msgid "Edit Name and Aliases"
 #~ msgstr "Uredi ime in vzdevke"
 
-#~ msgid "Name"
-#~ msgstr "Ime"
-
 #~ msgid "Add Alias"
 #~ msgstr "Dodaj vzdevek"
 
@@ -525,9 +1070,6 @@ msgstr ""
 
 #~ msgid "Edit Driver Options"
 #~ msgstr "Uredi izbire gonilnika"
-
-#~ msgid "Edit"
-#~ msgstr "Uredi"
 
 #~ msgid "Edit %s"
 #~ msgstr "Uredi %s"
@@ -611,17 +1153,11 @@ msgstr ""
 #~ msgid "Aliases"
 #~ msgstr "Vzdevki"
 
-#~ msgid "Details"
-#~ msgstr "Podrobnosti"
-
 #~ msgid "New"
 #~ msgstr "Nov"
 
 #~ msgid "Delete"
 #~ msgstr "Izbriši"
-
-#~ msgid "Default"
-#~ msgstr "Privzeto"
 
 #~ msgid "You must select a printer queue to edit."
 #~ msgstr "Izbrati morate tiskalniško vrsto, ki naj se uredi."
@@ -677,10 +1213,6 @@ msgstr ""
 #~ msgid "Now run printconf-backend (or restart lpd service)."
 #~ msgstr "Zdaj poženite printconf-backend (ali znova zaženite storitev lpd)."
 
-#, fuzzy
-#~ msgid "Need make and model.\n"
-#~ msgstr "Potrebujem napravo, proizvajalca in model.\n"
-
 #~ msgid "You must run printconf-tui as root."
 #~ msgstr "Orodje printconf-tui morate pognati kot root."
 
@@ -695,10 +1227,6 @@ msgstr ""
 
 #~ msgid "Queue name"
 #~ msgstr "Ime vrste"
-
-#, fuzzy
-#~ msgid "Shared"
-#~ msgstr "Deljeni vir"
 
 #~ msgid ""
 #~ "Do you want to save the changes\n"
@@ -728,9 +1256,6 @@ msgstr ""
 
 #~ msgid "Notes from the Linux Printing Database"
 #~ msgstr "Zapiski iz Linux Printing Database"
-
-#~ msgid "Printer notes:"
-#~ msgstr "Zapiski o tiskalniku:"
 
 #~ msgid "Driver notes:"
 #~ msgstr "Zapiski o gonilniku:"
@@ -845,12 +1370,6 @@ msgstr ""
 
 #~ msgid "Type: "
 #~ msgstr "Tip: "
-
-#~ msgid "Printer: "
-#~ msgstr "Tiskalnik:"
-
-#~ msgid "Device: "
-#~ msgstr "Naprava: "
 
 #~ msgid "Queue: "
 #~ msgstr "Vrsta: "
@@ -1153,9 +1672,6 @@ msgstr ""
 #~ msgid "ASC_II text test page"
 #~ msgstr "Besedilna preskusna stran ASC_II"
 
-#~ msgid "About"
-#~ msgstr "O programu"
-
 #~ msgid "Add a new option"
 #~ msgstr "Dodaj novo izbiro"
 
@@ -1174,9 +1690,6 @@ msgstr ""
 #~ msgid "Allowed hosts"
 #~ msgstr "Dovoljeni računalniki"
 
-#~ msgid "Apply"
-#~ msgstr "Uveljavi"
-
 #~ msgid "Apply changes"
 #~ msgstr "Uveljavi spremembe"
 
@@ -1185,9 +1698,6 @@ msgstr ""
 
 #~ msgid "At start of job:"
 #~ msgstr "Na začetku opravila:"
-
-#~ msgid "Authentication"
-#~ msgstr "Avtentikacija"
 
 #~ msgid "Autoselect driver"
 #~ msgstr "Samodejno izberi gonilnik"
@@ -1237,17 +1747,11 @@ msgstr ""
 #~ msgid "Enter the device you would like to use."
 #~ msgstr "Vnesite napravo, ki naj se uporablja."
 
-#~ msgid "Filter options"
-#~ msgstr "Možnosti filtra"
-
 #~ msgid "Finish, and create the new print queue"
 #~ msgstr "Končaj in ustvari novo tiskalniško vrsto"
 
 #~ msgid "For example: /dev/lp0"
 #~ msgstr "Na primer: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "Splošno"
 
 #~ msgid "Generic"
 #~ msgstr "Splošen"
@@ -1324,9 +1828,6 @@ msgstr ""
 #~ "Dokler ne boste na zadnjem zaslonu izbrali \"Dokončaj\" se nastavitve ne "
 #~ "bodo spremenile."
 
-#~ msgid "Password:"
-#~ msgstr "Geslo:"
-
 #~ msgid "Path:"
 #~ msgstr "Pot:"
 
@@ -1348,9 +1849,6 @@ msgstr ""
 
 #~ msgid "Printer hostname or IP address"
 #~ msgstr "Mrežno ime in naslov IP tiskalnika"
-
-#~ msgid "Printer model"
-#~ msgstr "Model tiskalnika"
 
 #~ msgid "Printer/driver _notes..."
 #~ msgstr "_Zapiski o tiskalniku/gonilniku..."
@@ -1375,9 +1873,6 @@ msgstr ""
 
 #~ msgid "Rescan devices"
 #~ msgstr "Znova preišči naprave"
-
-#~ msgid "Reset to the default options"
-#~ msgstr "Nastavi na privzeto vrednost"
 
 #~ msgid "Right margin (pt):"
 #~ msgstr "Desni rob (pt):"
@@ -1408,9 +1903,6 @@ msgstr ""
 
 #~ msgid "Single _IP address"
 #~ msgstr "En sam naslov _IP"
-
-#~ msgid "Specify..."
-#~ msgstr "Določi..."
 
 #~ msgid "Strict RFC1179 compliance"
 #~ msgstr "Stroga združljivost z RFC1179"
@@ -1446,14 +1938,8 @@ msgstr ""
 #~ msgid "Use control-F to search"
 #~ msgstr "Uporabite control-F za iskanje"
 
-#~ msgid "User name:"
-#~ msgstr "Uporabniško ime:"
-
 #~ msgid "_A4 PostScript test page"
 #~ msgstr "Postscriptna preskusna stran _A4"
-
-#~ msgid "_Action"
-#~ msgstr "_Dejanje"
 
 #~ msgid "_Add..."
 #~ msgstr "_Dodaj..."
@@ -1497,9 +1983,6 @@ msgstr ""
 #~ msgid "_Edit..."
 #~ msgstr "_Uredi..."
 
-#~ msgid "_Help"
-#~ msgstr "_Pomoč"
-
 #~ msgid "_Network address"
 #~ msgstr "_Mrežni naslov"
 
@@ -1514,9 +1997,6 @@ msgstr ""
 
 #~ msgid "_Rescan devices"
 #~ msgstr "_Znova preišči naprave"
-
-#~ msgid "_Sharing..."
-#~ msgstr "De_ljenje..."
 
 #~ msgid "_Test"
 #~ msgstr "_Preskus"
@@ -1554,23 +2034,11 @@ msgstr ""
 #~ msgid "jetdirect"
 #~ msgstr "jetdirect"
 
-#~ msgid "local"
-#~ msgstr "krajevno"
-
 #~ msgid "lpd"
 #~ msgstr "lpd"
 
 #~ msgid "ncp"
 #~ msgstr "ncp"
-
-#~ msgid "none"
-#~ msgstr "nobeden"
-
-#~ msgid "smb"
-#~ msgstr "smb"
-
-#~ msgid "Configure printers"
-#~ msgstr "Prikroji tiskalnike"
 
 #~ msgid "Printing"
 #~ msgstr "Tiskanje"

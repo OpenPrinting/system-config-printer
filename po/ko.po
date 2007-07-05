@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: print-ko\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-25 23:37+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2006-06-26 09:33+0100\n"
 "PO-Revision-Date: 2004-10-21 09:30+1000\n"
 "Last-Translator: Michelle J Kim <mkim@redhat.com>\n"
 "Language-Team:  <ko@li.org>\n"
@@ -185,12 +185,13 @@ msgstr ""
 msgid "Really delete %s %s?"
 msgstr "정말로 \"%s\"(을)를 삭제하시겠습니까?"
 
-#: system-config-printer.py:1330
+#: system-config-printer.py:1330 system-config-printer.glade:193
+#: system-config-printer.glade:2426
 #, fuzzy
 msgid "New Printer"
 msgstr "노벨 프린터"
 
-#: system-config-printer.py:1339
+#: system-config-printer.py:1339 system-config-printer.glade:210
 msgid "New Class"
 msgstr ""
 
@@ -261,6 +262,576 @@ msgid ""
 "%s.\n"
 msgstr ""
 
+#: system-config-printer.glade:8
+#, fuzzy
+msgid "System-Config-Printer"
+msgstr "프린터 설정"
+
+#: system-config-printer.glade:40
+msgid "_File"
+msgstr ""
+
+#: system-config-printer.glade:49
+#, fuzzy
+msgid "_Goto Server"
+msgstr "서버"
+
+#: system-config-printer.glade:83
+#, fuzzy
+msgid "_Edit"
+msgstr "편집"
+
+#: system-config-printer.glade:92
+#, fuzzy
+msgid "New _Printer"
+msgstr "노벨 프린터"
+
+#: system-config-printer.glade:113
+msgid "New Clas_s"
+msgstr ""
+
+#: system-config-printer.glade:156
+msgid "_Help"
+msgstr "도움말(_H)"
+
+#: system-config-printer.glade:270
+#, fuzzy
+msgid "Goto Server"
+msgstr "서버"
+
+#: system-config-printer.glade:394
+msgid "Show printers shared by other systems"
+msgstr ""
+
+#: system-config-printer.glade:414
+msgid "Share published printers connected to this system"
+msgstr ""
+
+#: system-config-printer.glade:434
+msgid "Allow remote administration"
+msgstr ""
+
+#: system-config-printer.glade:454
+msgid "Allow users to cancel any job (not just their own)"
+msgstr ""
+
+#: system-config-printer.glade:474
+msgid "Save debugging information for troubleshooting"
+msgstr ""
+
+#: system-config-printer.glade:497
+#, fuzzy
+msgid "<b>Basic Server Settings</b>"
+msgstr "드라이버 옵션"
+
+#: system-config-printer.glade:594
+#, fuzzy
+msgid "Description:"
+msgstr "설명"
+
+#: system-config-printer.glade:622
+#, fuzzy
+msgid "Location:"
+msgstr "실행(_A)"
+
+#: system-config-printer.glade:694
+#, fuzzy
+msgid "Device URI:"
+msgstr "장치:"
+
+#: system-config-printer.glade:722
+#, fuzzy
+msgid "Printer State:"
+msgstr "프린터 관련사항:"
+
+#: system-config-printer.glade:777 system-config-printer.glade:892
+#, fuzzy
+msgid "Change..."
+msgstr "공유...(_S)"
+
+#: system-config-printer.glade:803
+#, fuzzy
+msgid "Make and Model:"
+msgstr "제조회사, 모델명을 입력해 주십시오.\n"
+
+#: system-config-printer.glade:927
+msgid "<b>Settings</b>"
+msgstr ""
+
+#: system-config-printer.glade:983
+msgid "Enabled"
+msgstr ""
+
+#: system-config-printer.glade:1003
+msgid "Accepting jobs"
+msgstr ""
+
+#: system-config-printer.glade:1023
+msgid "Shared"
+msgstr "공유"
+
+#: system-config-printer.glade:1046
+msgid "<b>State</b>"
+msgstr ""
+
+#: system-config-printer.glade:1102
+#, fuzzy
+msgid "Make Default Printer"
+msgstr "JetDirect 프린터"
+
+#: system-config-printer.glade:1147
+msgid "<b>Default Printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:1183
+#, fuzzy
+msgid "Settings"
+msgstr "설정"
+
+#: system-config-printer.glade:1240
+msgid "Starting Banner:"
+msgstr ""
+
+#: system-config-printer.glade:1268
+msgid "Ending Banner: \t"
+msgstr ""
+
+#: system-config-printer.glade:1296 system-config-printer.glade:1314
+msgid "none"
+msgstr "없음"
+
+#: system-config-printer.glade:1336
+msgid "<b>Banner</b>"
+msgstr ""
+
+#: system-config-printer.glade:1394
+msgid "Error Policy: \t"
+msgstr ""
+
+#: system-config-printer.glade:1422
+msgid "Operation Policy:"
+msgstr ""
+
+#: system-config-printer.glade:1450 system-config-printer.glade:1469
+#, fuzzy
+msgid "default"
+msgstr "기본"
+
+#: system-config-printer.glade:1492
+msgid "<b>Policies</b>"
+msgstr ""
+
+#: system-config-printer.glade:1528
+msgid "Policies"
+msgstr ""
+
+#: system-config-printer.glade:1570
+msgid "Allow printing for everyone except these users:"
+msgstr ""
+
+#: system-config-printer.glade:1590
+msgid "Deny printing for everyone except these users:"
+msgstr ""
+
+#: system-config-printer.glade:1757
+msgid "Access control"
+msgstr ""
+
+#: system-config-printer.glade:1786
+msgid "Add or Remove Members"
+msgstr ""
+
+#: system-config-printer.glade:1949
+msgid "Members"
+msgstr ""
+
+#: system-config-printer.glade:2028
+msgid "Installable Options"
+msgstr ""
+
+#: system-config-printer.glade:2092
+#, fuzzy
+msgid "Printer Options"
+msgstr "필터 옵션"
+
+#: system-config-printer.glade:2121
+#, fuzzy
+msgid "Specify default job options."
+msgstr "기본 옵션으로 재설정"
+
+#: system-config-printer.glade:2232
+msgid "Job Options"
+msgstr ""
+
+#: system-config-printer.glade:2493
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr ""
+
+#: system-config-printer.glade:2542
+#, fuzzy
+msgid "<b>Printer Name</b>"
+msgstr "프린터 모델"
+
+#: system-config-printer.glade:2597
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+
+#: system-config-printer.glade:2645
+msgid "<b>Description</b> (optional)"
+msgstr ""
+
+#: system-config-printer.glade:2700
+msgid "Human-readable location such as \"Lab 1\""
+msgstr ""
+
+#: system-config-printer.glade:2748
+msgid "<b>Location</b> (optional)"
+msgstr ""
+
+#: system-config-printer.glade:2784
+msgid "Name"
+msgstr "이름"
+
+#: system-config-printer.glade:2831
+msgid "<b>Select Connection</b>"
+msgstr ""
+
+#: system-config-printer.glade:2920
+msgid "Empty"
+msgstr ""
+
+#: system-config-printer.glade:2949
+#, fuzzy
+msgid "Enter Device URI"
+msgstr "프린터 장치"
+
+#: system-config-printer.glade:3003
+#, fuzzy
+msgid "Device URI"
+msgstr "장치: "
+
+#: system-config-printer.glade:3051 system-config-printer.glade:3220
+#: system-config-printer.glade:3389
+#, fuzzy
+msgid "Hostname"
+msgstr "호스트:"
+
+#: system-config-printer.glade:3095
+msgid "Port number"
+msgstr ""
+
+#: system-config-printer.glade:3143 system-config-printer.glade:3312
+msgid "<b>Location of the network printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:3172
+msgid "DirectJet"
+msgstr ""
+
+#: system-config-printer.glade:3264 system-config-printer.glade:3548
+#, fuzzy
+msgid "Printername"
+msgstr "프린터 모델"
+
+#: system-config-printer.glade:3341
+#, fuzzy
+msgid "IPP"
+msgstr "IP:"
+
+#: system-config-printer.glade:3505
+msgid "Probe"
+msgstr ""
+
+#: system-config-printer.glade:3593
+msgid "<b>Location of the LPD network printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:3622
+msgid "LPD"
+msgstr "LPD"
+
+#: system-config-printer.glade:3669
+msgid "SCSI"
+msgstr ""
+
+#: system-config-printer.glade:3720
+msgid "Baud Rate"
+msgstr ""
+
+#: system-config-printer.glade:3748
+msgid "Parity"
+msgstr ""
+
+#: system-config-printer.glade:3776
+#, fuzzy
+msgid "Data Bits"
+msgstr "세부사항"
+
+#: system-config-printer.glade:3804
+msgid "Flow Control"
+msgstr ""
+
+#: system-config-printer.glade:3832
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+
+#: system-config-printer.glade:3857
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+
+#: system-config-printer.glade:3877
+#, fuzzy
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr "기본"
+
+#: system-config-printer.glade:3896
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+
+#: system-config-printer.glade:3921
+msgid "<b>Settings of the serial port</b>"
+msgstr ""
+
+#: system-config-printer.glade:3950
+#, fuzzy
+msgid "Serial"
+msgstr "일반"
+
+#: system-config-printer.glade:4100 system-config-printer.glade:6070
+msgid "Password:"
+msgstr "암호:"
+
+#: system-config-printer.glade:4128
+#, fuzzy
+msgid "Username:"
+msgstr "사용자 이름:"
+
+#: system-config-printer.glade:4242
+#, fuzzy
+msgid "_Verify..."
+msgstr "지정..."
+
+#: system-config-printer.glade:4285
+#, fuzzy
+msgid "<b>Authentication</b>"
+msgstr "인증"
+
+#: system-config-printer.glade:4321
+msgid "SMB"
+msgstr "SMB"
+
+#: system-config-printer.glade:4359
+#, fuzzy
+msgid "Device"
+msgstr "장치"
+
+#: system-config-printer.glade:4389
+#, fuzzy
+msgid "Select Printer from database"
+msgstr "프린트 드라이버 선택"
+
+#: system-config-printer.glade:4426
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+
+#: system-config-printer.glade:4503
+msgid "Provide PPD file"
+msgstr ""
+
+#: system-config-printer.glade:4540
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: system-config-printer.glade:4571
+msgid "Select A File"
+msgstr ""
+
+#: system-config-printer.glade:4611
+#, fuzzy
+msgid "PPD"
+msgstr "LPD"
+
+#: system-config-printer.glade:4728
+#, fuzzy
+msgid "Comments: "
+msgstr "주석"
+
+#: system-config-printer.glade:4754
+#, fuzzy
+msgid "Printer"
+msgstr "프린터:"
+
+#: system-config-printer.glade:4773
+#, fuzzy
+msgid "Driver"
+msgstr "드라이버"
+
+#: system-config-printer.glade:4792
+msgid " PPD "
+msgstr ""
+
+#: system-config-printer.glade:4901
+msgid "<b>Comment about the Printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:4989
+msgid "<b>Comment about the Driver</b>"
+msgstr ""
+
+#: system-config-printer.glade:5077
+msgid "<b>Information about the PPD</b>"
+msgstr ""
+
+#: system-config-printer.glade:5330
+msgid "<b>Printers to be members of this Class</b>"
+msgstr ""
+
+#: system-config-printer.glade:5359
+msgid "Class Members"
+msgstr ""
+
+#: system-config-printer.glade:5419
+msgid "Apply"
+msgstr "적용"
+
+#: system-config-printer.glade:5486
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr ""
+
+#: system-config-printer.glade:5504
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+
+#: system-config-printer.glade:5542
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr ""
+
+#: system-config-printer.glade:5563
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+
+#: system-config-printer.glade:5596
+#, fuzzy
+msgid "Change PPD"
+msgstr "유형 변경"
+
+#: system-config-printer.glade:5692
+msgid "Connect to CUPS server"
+msgstr ""
+
+#: system-config-printer.glade:5766
+msgid "Require encryption"
+msgstr ""
+
+#: system-config-printer.glade:5820
+#, fuzzy
+msgid "CUPS server:"
+msgstr "서버:"
+
+#: system-config-printer.glade:5862
+msgid "User name:"
+msgstr "사용자 이름:"
+
+#: system-config-printer.glade:6013
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+
+#: system-config-printer.glade:6172
+msgid "_Do not apply"
+msgstr ""
+
+#: system-config-printer.glade:6244
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+
+#: system-config-printer.glade:6388
+#, fuzzy
+msgid "Copy Printer"
+msgstr "프린터:"
+
+#: system-config-printer.glade:6451
+#, fuzzy
+msgid "New name for the printer"
+msgstr "노벨 프린터"
+
+#: system-config-printer.glade:6537
+msgid "About System-Config-Printer"
+msgstr ""
+
+#: system-config-printer.glade:6597
+#, fuzzy
+msgid "System-Config-Printer %s\n"
+msgstr "프린터 설정"
+
+#: system-config-printer.glade:6622
+msgid "About"
+msgstr "정보"
+
+#: system-config-printer.glade:6669
+msgid "Copyright"
+msgstr ""
+
+#: system-config-printer.glade:6716
+msgid "Authors"
+msgstr ""
+
+#: system-config-printer.glade:6747
+msgid "Connecting"
+msgstr ""
+
+#: system-config-printer.glade:6798
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+
+#, fuzzy
+#~ msgid "localhost"
+#~ msgstr "로컬"
+
+#, fuzzy
+#~ msgid "smb://"
+#~ msgstr "smb"
+
 #~ msgid "Error"
 #~ msgstr "오류"
 
@@ -307,20 +878,11 @@ msgstr ""
 #~ msgid "Type:"
 #~ msgstr "유형:"
 
-#~ msgid "Device:"
-#~ msgstr "장치:"
-
-#~ msgid "Server:"
-#~ msgstr "서버:"
-
 #~ msgid "Lpd Queue:"
 #~ msgstr "Lpd 대기열(Queue):"
 
 #~ msgid "Share:"
 #~ msgstr "공유:"
-
-#~ msgid "IP:"
-#~ msgstr "IP:"
 
 #~ msgid "Workgroup:"
 #~ msgstr "작업그룹:"
@@ -362,12 +924,6 @@ msgstr ""
 #~ msgid "Custom"
 #~ msgstr "사용자"
 
-#~ msgid "Setting Up"
-#~ msgstr "설정"
-
-#~ msgid "Printer Device"
-#~ msgstr "프린터 장치"
-
 #~ msgid ""
 #~ "Pick the printer device from the list, or enter it using \"Custom\" below."
 #~ msgstr ""
@@ -376,9 +932,6 @@ msgstr ""
 
 #~ msgid "Specify Device:"
 #~ msgstr "지정된 장치:"
-
-#~ msgid "Description"
-#~ msgstr "설명"
 
 #~ msgid "Custom Device"
 #~ msgstr "사용자 장치"
@@ -394,9 +947,6 @@ msgstr ""
 
 #~ msgid "Enter the LPD server and queue to use."
 #~ msgstr "사용할 LPD 서버와 대기열을 입력해 주십시오."
-
-#~ msgid "Server"
-#~ msgstr "서버"
 
 #~ msgid "Queue"
 #~ msgstr "대기열"
@@ -485,9 +1035,6 @@ msgstr ""
 #~ msgid "Edit Name and Aliases"
 #~ msgstr "이름 및 별칭 편집"
 
-#~ msgid "Name"
-#~ msgstr "이름"
-
 #~ msgid "Add Alias"
 #~ msgstr "별칭 추가"
 
@@ -526,9 +1073,6 @@ msgstr ""
 
 #~ msgid "Edit Driver Options"
 #~ msgstr "드라이버 옵션 편집"
-
-#~ msgid "Edit"
-#~ msgstr "편집"
 
 #~ msgid "Edit %s"
 #~ msgstr "%s 편집"
@@ -612,17 +1156,11 @@ msgstr ""
 #~ msgid "Aliases"
 #~ msgstr "별칭"
 
-#~ msgid "Details"
-#~ msgstr "세부사항"
-
 #~ msgid "New"
 #~ msgstr "새로생성"
 
 #~ msgid "Delete"
 #~ msgstr "삭제"
-
-#~ msgid "Default"
-#~ msgstr "기본"
 
 #~ msgid "You must select a printer queue to edit."
 #~ msgstr "편집할 프린터 대기열을 선택해 주십시요."
@@ -681,9 +1219,6 @@ msgstr ""
 #~ msgstr ""
 #~ "이제 printconf-backend를 실행하십시오 (또는 lpd 서비스를 재시작하십시오)."
 
-#~ msgid "Need make and model.\n"
-#~ msgstr "제조회사, 모델명을 입력해 주십시오.\n"
-
 #~ msgid "You must run printconf-tui as root."
 #~ msgstr "printconf-tui는 root 계정으로 실행하셔야 합니다."
 
@@ -698,9 +1233,6 @@ msgstr ""
 
 #~ msgid "Queue name"
 #~ msgstr "대기열 이름"
-
-#~ msgid "Shared"
-#~ msgstr "공유"
 
 #~ msgid ""
 #~ "Do you want to save the changes\n"
@@ -730,9 +1262,6 @@ msgstr ""
 
 #~ msgid "Notes from the Linux Printing Database"
 #~ msgstr "리눅스에서의 인쇄에 관한 자료"
-
-#~ msgid "Printer notes:"
-#~ msgstr "프린터 관련사항:"
 
 #~ msgid "Driver notes:"
 #~ msgstr "드라이버 관련사항:"
@@ -858,9 +1387,6 @@ msgstr ""
 
 #~ msgid "Printer: "
 #~ msgstr "프린터: "
-
-#~ msgid "Device: "
-#~ msgstr "장치: "
 
 #~ msgid "Queue: "
 #~ msgstr "대기열: "
@@ -1163,9 +1689,6 @@ msgstr ""
 #~ msgid "ASC_II text test page"
 #~ msgstr "ASC_II 텍스트 테스트 페이지"
 
-#~ msgid "About"
-#~ msgstr "정보"
-
 #~ msgid "Add a new option"
 #~ msgstr "새 옵션 추가"
 
@@ -1184,9 +1707,6 @@ msgstr ""
 #~ msgid "Allowed hosts"
 #~ msgstr "허용할 호스트"
 
-#~ msgid "Apply"
-#~ msgstr "적용"
-
 #~ msgid "Apply changes"
 #~ msgstr "변경 사항 적용"
 
@@ -1195,9 +1715,6 @@ msgstr ""
 
 #~ msgid "At start of job:"
 #~ msgstr "인쇄 작업 첫 페이지:"
-
-#~ msgid "Authentication"
-#~ msgstr "인증"
 
 #~ msgid "Autoselect driver"
 #~ msgstr "드라이버 자동 선택"
@@ -1247,17 +1764,11 @@ msgstr ""
 #~ msgid "Enter the device you would like to use."
 #~ msgstr "사용할 장치를 입력해 주십시오."
 
-#~ msgid "Filter options"
-#~ msgstr "필터 옵션"
-
 #~ msgid "Finish, and create the new print queue"
 #~ msgstr "완료, 새로운 인쇄 대기열 생성"
 
 #~ msgid "For example: /dev/lp0"
 #~ msgstr "예: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "일반"
 
 #~ msgid "Generic"
 #~ msgstr "Generic"
@@ -1334,9 +1845,6 @@ msgstr ""
 #~ "마지막 설정 화면에서 \"완료\" 버튼을 클릭하기 전까지는 어떠한 설정도 변경"
 #~ "되지 않습니다."
 
-#~ msgid "Password:"
-#~ msgstr "암호:"
-
 #~ msgid "Path:"
 #~ msgstr "경로:"
 
@@ -1359,14 +1867,8 @@ msgstr ""
 #~ msgid "Printer hostname or IP address"
 #~ msgstr "프린터 호스트명 또는 IP 주소"
 
-#~ msgid "Printer model"
-#~ msgstr "프린터 모델"
-
 #~ msgid "Printer/driver _notes..."
 #~ msgstr "프린터/드라이버 관련사항...(_N)"
-
-#~ msgid "Printer:"
-#~ msgstr "프린터:"
 
 #~ msgid "Queue options"
 #~ msgstr "대기열 옵션"
@@ -1388,9 +1890,6 @@ msgstr ""
 
 #~ msgid "Rescan devices"
 #~ msgstr "장치 다시읽기"
-
-#~ msgid "Reset to the default options"
-#~ msgstr "기본 옵션으로 재설정"
 
 #~ msgid "Right margin (pt):"
 #~ msgstr "오른쪽 여백 (pt):"
@@ -1421,9 +1920,6 @@ msgstr ""
 
 #~ msgid "Single _IP address"
 #~ msgstr "단독 _IP 주소"
-
-#~ msgid "Specify..."
-#~ msgstr "지정..."
 
 #~ msgid "Strict RFC1179 compliance"
 #~ msgstr "엄격한 RFC1179 규격 따르기"
@@ -1458,14 +1954,8 @@ msgstr ""
 #~ msgid "Use control-F to search"
 #~ msgstr "control-F 키를 눌러 검색"
 
-#~ msgid "User name:"
-#~ msgstr "사용자 이름:"
-
 #~ msgid "_A4 PostScript test page"
 #~ msgstr "_A4 포스트스크립트 테스트 페이지"
-
-#~ msgid "_Action"
-#~ msgstr "실행(_A)"
 
 #~ msgid "_Add..."
 #~ msgstr "추가...(_A)"
@@ -1509,9 +1999,6 @@ msgstr ""
 #~ msgid "_Edit..."
 #~ msgstr "편집...(_E)"
 
-#~ msgid "_Help"
-#~ msgstr "도움말(_H)"
-
 #~ msgid "_Import PPD..."
 #~ msgstr "PPD 가져오기(_I)..."
 
@@ -1529,9 +2016,6 @@ msgstr ""
 
 #~ msgid "_Rescan devices"
 #~ msgstr "장치 다시읽기(_R)"
-
-#~ msgid "_Sharing..."
-#~ msgstr "공유...(_S)"
 
 #~ msgid "_Test"
 #~ msgstr "테스트(_T)"
@@ -1569,23 +2053,11 @@ msgstr ""
 #~ msgid "jetdirect"
 #~ msgstr "젯다이렉트"
 
-#~ msgid "local"
-#~ msgstr "로컬"
-
 #~ msgid "lpd"
 #~ msgstr "lpd"
 
 #~ msgid "ncp"
 #~ msgstr "ncp"
-
-#~ msgid "none"
-#~ msgstr "없음"
-
-#~ msgid "smb"
-#~ msgstr "smb"
-
-#~ msgid "Configure printers"
-#~ msgstr "프린터 설정"
 
 #~ msgid "Printing"
 #~ msgstr "프린팅"
@@ -1629,9 +2101,6 @@ msgstr ""
 
 #~ msgid "You must specify the port of the JetDirect printer."
 #~ msgstr "JetDirect 프린터의 포트를 지정해 주십시요."
-
-#~ msgid "Host:"
-#~ msgstr "호스트:"
 
 #~ msgid "Ip:"
 #~ msgstr "Ip:"
@@ -1774,14 +2243,8 @@ msgstr ""
 #~ msgid "JETDIRECT"
 #~ msgstr "JETDIRECT"
 
-#~ msgid "JetDirect Printer"
-#~ msgstr "JetDirect 프린터"
-
 #~ msgid "LOCAL"
 #~ msgstr "로컬"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
 
 #~ msgid "NCP"
 #~ msgstr "NCP"
@@ -1797,12 +2260,6 @@ msgstr ""
 
 #~ msgid "Qux"
 #~ msgstr "Qux"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Select a Print Driver"
-#~ msgstr "프린트 드라이버 선택"
 
 #~ msgid "Select a print driver for your printer."
 #~ msgstr "프린트 드라이버를 선택해 주십시요."

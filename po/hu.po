@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: printconf\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-25 23:37+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2006-06-26 09:33+0100\n"
 "PO-Revision-Date: 2004-10-13 00:00+0200\n"
 "Last-Translator: Tamas Szanto <tszanto@mol.hu>\n"
 "Language-Team: Hungarian\n"
@@ -185,12 +185,13 @@ msgstr ""
 msgid "Really delete %s %s?"
 msgstr "Valóban törli „%s”-t?"
 
-#: system-config-printer.py:1330
+#: system-config-printer.py:1330 system-config-printer.glade:193
+#: system-config-printer.glade:2426
 #, fuzzy
 msgid "New Printer"
 msgstr "Nyomtató:"
 
-#: system-config-printer.py:1339
+#: system-config-printer.py:1339 system-config-printer.glade:210
 msgid "New Class"
 msgstr ""
 
@@ -261,6 +262,573 @@ msgid ""
 "%s.\n"
 msgstr ""
 
+#: system-config-printer.glade:8
+#, fuzzy
+msgid "System-Config-Printer"
+msgstr "Nyomtatók beállítása"
+
+#: system-config-printer.glade:40
+msgid "_File"
+msgstr ""
+
+#: system-config-printer.glade:49
+#, fuzzy
+msgid "_Goto Server"
+msgstr "Kiszolgáló"
+
+#: system-config-printer.glade:83
+#, fuzzy
+msgid "_Edit"
+msgstr "Szerkesztés"
+
+#: system-config-printer.glade:92
+#, fuzzy
+msgid "New _Printer"
+msgstr "Nyomtató:"
+
+#: system-config-printer.glade:113
+msgid "New Clas_s"
+msgstr ""
+
+#: system-config-printer.glade:156
+msgid "_Help"
+msgstr "_Súgó"
+
+#: system-config-printer.glade:270
+#, fuzzy
+msgid "Goto Server"
+msgstr "Kiszolgáló"
+
+#: system-config-printer.glade:394
+msgid "Show printers shared by other systems"
+msgstr ""
+
+#: system-config-printer.glade:414
+msgid "Share published printers connected to this system"
+msgstr ""
+
+#: system-config-printer.glade:434
+msgid "Allow remote administration"
+msgstr ""
+
+#: system-config-printer.glade:454
+msgid "Allow users to cancel any job (not just their own)"
+msgstr ""
+
+#: system-config-printer.glade:474
+msgid "Save debugging information for troubleshooting"
+msgstr ""
+
+#: system-config-printer.glade:497
+#, fuzzy
+msgid "<b>Basic Server Settings</b>"
+msgstr "Meghajtó-beállítások"
+
+#: system-config-printer.glade:594
+#, fuzzy
+msgid "Description:"
+msgstr "Leírás"
+
+#: system-config-printer.glade:622
+#, fuzzy
+msgid "Location:"
+msgstr "Mű_velet"
+
+#: system-config-printer.glade:694
+#, fuzzy
+msgid "Device URI:"
+msgstr "Eszköz:"
+
+#: system-config-printer.glade:722
+#, fuzzy
+msgid "Printer State:"
+msgstr "Nyomtató megjegyzései:"
+
+#: system-config-printer.glade:777 system-config-printer.glade:892
+#, fuzzy
+msgid "Change..."
+msgstr "_Megosztás..."
+
+#: system-config-printer.glade:803
+#, fuzzy
+msgid "Make and Model:"
+msgstr "Gyártó és modell szükséges.\n"
+
+#: system-config-printer.glade:927
+msgid "<b>Settings</b>"
+msgstr ""
+
+#: system-config-printer.glade:983
+msgid "Enabled"
+msgstr ""
+
+#: system-config-printer.glade:1003
+msgid "Accepting jobs"
+msgstr ""
+
+#: system-config-printer.glade:1023
+msgid "Shared"
+msgstr "Megosztva"
+
+#: system-config-printer.glade:1046
+msgid "<b>State</b>"
+msgstr ""
+
+#: system-config-printer.glade:1102
+#, fuzzy
+msgid "Make Default Printer"
+msgstr "Ez a nyomtató leírása."
+
+#: system-config-printer.glade:1147
+msgid "<b>Default Printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:1183
+#, fuzzy
+msgid "Settings"
+msgstr "Beállítás"
+
+#: system-config-printer.glade:1240
+msgid "Starting Banner:"
+msgstr ""
+
+#: system-config-printer.glade:1268
+msgid "Ending Banner: \t"
+msgstr ""
+
+#: system-config-printer.glade:1296 system-config-printer.glade:1314
+msgid "none"
+msgstr "semmi"
+
+#: system-config-printer.glade:1336
+msgid "<b>Banner</b>"
+msgstr ""
+
+#: system-config-printer.glade:1394
+msgid "Error Policy: \t"
+msgstr ""
+
+#: system-config-printer.glade:1422
+msgid "Operation Policy:"
+msgstr ""
+
+#: system-config-printer.glade:1450 system-config-printer.glade:1469
+#, fuzzy
+msgid "default"
+msgstr "Alap"
+
+#: system-config-printer.glade:1492
+msgid "<b>Policies</b>"
+msgstr ""
+
+#: system-config-printer.glade:1528
+msgid "Policies"
+msgstr ""
+
+#: system-config-printer.glade:1570
+msgid "Allow printing for everyone except these users:"
+msgstr ""
+
+#: system-config-printer.glade:1590
+msgid "Deny printing for everyone except these users:"
+msgstr ""
+
+#: system-config-printer.glade:1757
+msgid "Access control"
+msgstr ""
+
+#: system-config-printer.glade:1786
+msgid "Add or Remove Members"
+msgstr ""
+
+#: system-config-printer.glade:1949
+msgid "Members"
+msgstr ""
+
+#: system-config-printer.glade:2028
+msgid "Installable Options"
+msgstr ""
+
+#: system-config-printer.glade:2092
+#, fuzzy
+msgid "Printer Options"
+msgstr "Szűrőbeállítások"
+
+#: system-config-printer.glade:2121
+#, fuzzy
+msgid "Specify default job options."
+msgstr "Visszaállás alapbeállításokra"
+
+#: system-config-printer.glade:2232
+msgid "Job Options"
+msgstr ""
+
+#: system-config-printer.glade:2493
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr ""
+
+#: system-config-printer.glade:2542
+#, fuzzy
+msgid "<b>Printer Name</b>"
+msgstr "Nyomtatómodell"
+
+#: system-config-printer.glade:2597
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+
+#: system-config-printer.glade:2645
+msgid "<b>Description</b> (optional)"
+msgstr ""
+
+#: system-config-printer.glade:2700
+msgid "Human-readable location such as \"Lab 1\""
+msgstr ""
+
+#: system-config-printer.glade:2748
+msgid "<b>Location</b> (optional)"
+msgstr ""
+
+#: system-config-printer.glade:2784
+msgid "Name"
+msgstr "Név"
+
+#: system-config-printer.glade:2831
+msgid "<b>Select Connection</b>"
+msgstr ""
+
+#: system-config-printer.glade:2920
+msgid "Empty"
+msgstr ""
+
+#: system-config-printer.glade:2949
+#, fuzzy
+msgid "Enter Device URI"
+msgstr "Nyomtatóeszköz"
+
+#: system-config-printer.glade:3003
+#, fuzzy
+msgid "Device URI"
+msgstr "Eszköz: "
+
+#: system-config-printer.glade:3051 system-config-printer.glade:3220
+#: system-config-printer.glade:3389
+msgid "Hostname"
+msgstr ""
+
+#: system-config-printer.glade:3095
+msgid "Port number"
+msgstr ""
+
+#: system-config-printer.glade:3143 system-config-printer.glade:3312
+msgid "<b>Location of the network printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:3172
+msgid "DirectJet"
+msgstr ""
+
+#: system-config-printer.glade:3264 system-config-printer.glade:3548
+#, fuzzy
+msgid "Printername"
+msgstr "Nyomtatómodell"
+
+#: system-config-printer.glade:3341
+#, fuzzy
+msgid "IPP"
+msgstr "IP:"
+
+#: system-config-printer.glade:3505
+msgid "Probe"
+msgstr ""
+
+#: system-config-printer.glade:3593
+msgid "<b>Location of the LPD network printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:3622
+msgid "LPD"
+msgstr ""
+
+#: system-config-printer.glade:3669
+msgid "SCSI"
+msgstr ""
+
+#: system-config-printer.glade:3720
+msgid "Baud Rate"
+msgstr ""
+
+#: system-config-printer.glade:3748
+msgid "Parity"
+msgstr ""
+
+#: system-config-printer.glade:3776
+#, fuzzy
+msgid "Data Bits"
+msgstr "Részletek"
+
+#: system-config-printer.glade:3804
+msgid "Flow Control"
+msgstr ""
+
+#: system-config-printer.glade:3832
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+
+#: system-config-printer.glade:3857
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+
+#: system-config-printer.glade:3877
+#, fuzzy
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr "Alap"
+
+#: system-config-printer.glade:3896
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+
+#: system-config-printer.glade:3921
+msgid "<b>Settings of the serial port</b>"
+msgstr ""
+
+#: system-config-printer.glade:3950
+#, fuzzy
+msgid "Serial"
+msgstr "Általános"
+
+#: system-config-printer.glade:4100 system-config-printer.glade:6070
+msgid "Password:"
+msgstr "Jelszó:"
+
+#: system-config-printer.glade:4128
+#, fuzzy
+msgid "Username:"
+msgstr "Felhasználó neve:"
+
+#: system-config-printer.glade:4242
+#, fuzzy
+msgid "_Verify..."
+msgstr "Megadás..."
+
+#: system-config-printer.glade:4285
+#, fuzzy
+msgid "<b>Authentication</b>"
+msgstr "Azonosítás"
+
+#: system-config-printer.glade:4321
+msgid "SMB"
+msgstr ""
+
+#: system-config-printer.glade:4359
+#, fuzzy
+msgid "Device"
+msgstr "Eszköz"
+
+#: system-config-printer.glade:4389
+msgid "Select Printer from database"
+msgstr ""
+
+#: system-config-printer.glade:4426
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+
+#: system-config-printer.glade:4503
+msgid "Provide PPD file"
+msgstr ""
+
+#: system-config-printer.glade:4540
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: system-config-printer.glade:4571
+msgid "Select A File"
+msgstr ""
+
+#: system-config-printer.glade:4611
+msgid "PPD"
+msgstr ""
+
+#: system-config-printer.glade:4728
+#, fuzzy
+msgid "Comments: "
+msgstr "Megjegyzés"
+
+#: system-config-printer.glade:4754
+#, fuzzy
+msgid "Printer"
+msgstr "Nyomtató: "
+
+#: system-config-printer.glade:4773
+#, fuzzy
+msgid "Driver"
+msgstr "Meghajtó"
+
+#: system-config-printer.glade:4792
+msgid " PPD "
+msgstr ""
+
+#: system-config-printer.glade:4901
+msgid "<b>Comment about the Printer</b>"
+msgstr ""
+
+#: system-config-printer.glade:4989
+msgid "<b>Comment about the Driver</b>"
+msgstr ""
+
+#: system-config-printer.glade:5077
+msgid "<b>Information about the PPD</b>"
+msgstr ""
+
+#: system-config-printer.glade:5330
+msgid "<b>Printers to be members of this Class</b>"
+msgstr ""
+
+#: system-config-printer.glade:5359
+msgid "Class Members"
+msgstr ""
+
+#: system-config-printer.glade:5419
+msgid "Apply"
+msgstr "Alkalmazás"
+
+#: system-config-printer.glade:5486
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr ""
+
+#: system-config-printer.glade:5504
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+
+#: system-config-printer.glade:5542
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr ""
+
+#: system-config-printer.glade:5563
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+
+#: system-config-printer.glade:5596
+#, fuzzy
+msgid "Change PPD"
+msgstr "Típus megváltoztatása"
+
+#: system-config-printer.glade:5692
+msgid "Connect to CUPS server"
+msgstr ""
+
+#: system-config-printer.glade:5766
+msgid "Require encryption"
+msgstr ""
+
+#: system-config-printer.glade:5820
+#, fuzzy
+msgid "CUPS server:"
+msgstr "Kiszolgáló:"
+
+#: system-config-printer.glade:5862
+msgid "User name:"
+msgstr "Felhasználó neve:"
+
+#: system-config-printer.glade:6013
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+
+#: system-config-printer.glade:6172
+msgid "_Do not apply"
+msgstr ""
+
+#: system-config-printer.glade:6244
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+
+#: system-config-printer.glade:6388
+#, fuzzy
+msgid "Copy Printer"
+msgstr "Nyomtató:"
+
+#: system-config-printer.glade:6451
+#, fuzzy
+msgid "New name for the printer"
+msgstr "Jetdirect-nyomtató"
+
+#: system-config-printer.glade:6537
+msgid "About System-Config-Printer"
+msgstr ""
+
+#: system-config-printer.glade:6597
+#, fuzzy
+msgid "System-Config-Printer %s\n"
+msgstr "Nyomtatók beállítása"
+
+#: system-config-printer.glade:6622
+msgid "About"
+msgstr "Névjegy"
+
+#: system-config-printer.glade:6669
+msgid "Copyright"
+msgstr ""
+
+#: system-config-printer.glade:6716
+msgid "Authors"
+msgstr ""
+
+#: system-config-printer.glade:6747
+msgid "Connecting"
+msgstr ""
+
+#: system-config-printer.glade:6798
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+
+#, fuzzy
+#~ msgid "localhost"
+#~ msgstr "local"
+
+#, fuzzy
+#~ msgid "smb://"
+#~ msgstr "smb"
+
 #~ msgid "Error"
 #~ msgstr "Hiba"
 
@@ -307,20 +875,11 @@ msgstr ""
 #~ msgid "Type:"
 #~ msgstr "Típus:"
 
-#~ msgid "Device:"
-#~ msgstr "Eszköz:"
-
-#~ msgid "Server:"
-#~ msgstr "Kiszolgáló:"
-
 #~ msgid "Lpd Queue:"
 #~ msgstr "Lpd-sor:"
 
 #~ msgid "Share:"
 #~ msgstr "Megosztás:"
-
-#~ msgid "IP:"
-#~ msgstr "IP:"
 
 #~ msgid "Workgroup:"
 #~ msgstr "Munkacsoport:"
@@ -361,12 +920,6 @@ msgstr ""
 #~ msgid "Custom"
 #~ msgstr "Egyedi"
 
-#~ msgid "Setting Up"
-#~ msgstr "Beállítás"
-
-#~ msgid "Printer Device"
-#~ msgstr "Nyomtatóeszköz"
-
 #~ msgid ""
 #~ "Pick the printer device from the list, or enter it using \"Custom\" below."
 #~ msgstr ""
@@ -375,9 +928,6 @@ msgstr ""
 
 #~ msgid "Specify Device:"
 #~ msgstr "Eszköz megadása:"
-
-#~ msgid "Description"
-#~ msgstr "Leírás"
 
 #~ msgid "Custom Device"
 #~ msgstr "Egyedi eszköz"
@@ -393,9 +943,6 @@ msgstr ""
 
 #~ msgid "Enter the LPD server and queue to use."
 #~ msgstr "Adja meg a használandó LPD-kiszolgálót és sort."
-
-#~ msgid "Server"
-#~ msgstr "Kiszolgáló"
 
 #~ msgid "Queue"
 #~ msgstr "Sor"
@@ -484,9 +1031,6 @@ msgstr ""
 #~ msgid "Edit Name and Aliases"
 #~ msgstr "Név és álnevek szerkesztése"
 
-#~ msgid "Name"
-#~ msgstr "Név"
-
 #~ msgid "Add Alias"
 #~ msgstr "Álnév hozzáadása"
 
@@ -522,9 +1066,6 @@ msgstr ""
 
 #~ msgid "Edit Driver Options"
 #~ msgstr "Meghajtó-beállítások szerkesztése"
-
-#~ msgid "Edit"
-#~ msgstr "Szerkesztés"
 
 #~ msgid "Edit %s"
 #~ msgstr "%s szerkesztése"
@@ -608,17 +1149,11 @@ msgstr ""
 #~ msgid "Aliases"
 #~ msgstr "Álnevek"
 
-#~ msgid "Details"
-#~ msgstr "Részletek"
-
 #~ msgid "New"
 #~ msgstr "Új"
 
 #~ msgid "Delete"
 #~ msgstr "Törlés"
-
-#~ msgid "Default"
-#~ msgstr "Alap"
 
 #~ msgid "You must select a printer queue to edit."
 #~ msgstr "Ki kell választani a szerkesztendő nyomtatósort."
@@ -676,9 +1211,6 @@ msgstr ""
 #~ "Most futtassa a printconf-backendet (vagy indítsa újra az lpd "
 #~ "szolgáltatást)."
 
-#~ msgid "Need make and model.\n"
-#~ msgstr "Gyártó és modell szükséges.\n"
-
 #~ msgid "You must run printconf-tui as root."
 #~ msgstr "A printconf-tui programot rendszergazdaként kell futtatni."
 
@@ -693,9 +1225,6 @@ msgstr ""
 
 #~ msgid "Queue name"
 #~ msgstr "Sor neve"
-
-#~ msgid "Shared"
-#~ msgstr "Megosztva"
 
 #~ msgid ""
 #~ "Do you want to save the changes\n"
@@ -725,9 +1254,6 @@ msgstr ""
 
 #~ msgid "Notes from the Linux Printing Database"
 #~ msgstr "Megjegyzések a Linux nyomtatóadatbázisából"
-
-#~ msgid "Printer notes:"
-#~ msgstr "Nyomtató megjegyzései:"
 
 #~ msgid "Driver notes:"
 #~ msgstr "A meghajtó megjegyzései:"
@@ -851,12 +1377,6 @@ msgstr ""
 
 #~ msgid "Type: "
 #~ msgstr "Típus: "
-
-#~ msgid "Printer: "
-#~ msgstr "Nyomtató: "
-
-#~ msgid "Device: "
-#~ msgstr "Eszköz: "
 
 #~ msgid "Queue: "
 #~ msgstr "Sor: "
@@ -1155,9 +1675,6 @@ msgstr ""
 #~ msgid "ASC_II text test page"
 #~ msgstr "ASC_II-szöveges tesztoldal"
 
-#~ msgid "About"
-#~ msgstr "Névjegy"
-
 #~ msgid "Add a new option"
 #~ msgstr "Új beállítás hozzáadása"
 
@@ -1176,9 +1693,6 @@ msgstr ""
 #~ msgid "Allowed hosts"
 #~ msgstr "Engedélyezett gépek"
 
-#~ msgid "Apply"
-#~ msgstr "Alkalmazás"
-
 #~ msgid "Apply changes"
 #~ msgstr "Változtatások alkalmazása"
 
@@ -1187,9 +1701,6 @@ msgstr ""
 
 #~ msgid "At start of job:"
 #~ msgstr "Munka elején:"
-
-#~ msgid "Authentication"
-#~ msgstr "Azonosítás"
 
 #~ msgid "Autoselect driver"
 #~ msgstr "Automatikus meghajtóválasztás"
@@ -1239,17 +1750,11 @@ msgstr ""
 #~ msgid "Enter the device you would like to use."
 #~ msgstr "Adja meg a használni kívánt eszközt."
 
-#~ msgid "Filter options"
-#~ msgstr "Szűrőbeállítások"
-
 #~ msgid "Finish, and create the new print queue"
 #~ msgstr "Befejezés és új nyomtatósor létrehozása"
 
 #~ msgid "For example: /dev/lp0"
 #~ msgstr "Például: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "Általános"
 
 #~ msgid "Generic"
 #~ msgstr "Általános"
@@ -1326,9 +1831,6 @@ msgstr ""
 #~ "Semmi sem történik a beállításokkal, amíg nem nyom „Befejezés”-t az "
 #~ "utolsó képernyőn."
 
-#~ msgid "Password:"
-#~ msgstr "Jelszó:"
-
 #~ msgid "Path:"
 #~ msgstr "Út:"
 
@@ -1350,9 +1852,6 @@ msgstr ""
 
 #~ msgid "Printer hostname or IP address"
 #~ msgstr "Nyomtató-gépnév vagy IP-cím"
-
-#~ msgid "Printer model"
-#~ msgstr "Nyomtatómodell"
 
 #~ msgid "Printer/driver _notes..."
 #~ msgstr "Nyomtatóval/meghajtóval kapcsolatos _megjegyzések..."
@@ -1377,9 +1876,6 @@ msgstr ""
 
 #~ msgid "Rescan devices"
 #~ msgstr "Eszközök felmérése újra"
-
-#~ msgid "Reset to the default options"
-#~ msgstr "Visszaállás alapbeállításokra"
 
 #~ msgid "Right margin (pt):"
 #~ msgstr "Jobb margó (pt):"
@@ -1410,9 +1906,6 @@ msgstr ""
 
 #~ msgid "Single _IP address"
 #~ msgstr "Egyetlen _IP-cím"
-
-#~ msgid "Specify..."
-#~ msgstr "Megadás..."
 
 #~ msgid "Strict RFC1179 compliance"
 #~ msgstr "Szigorú RFC1179-megfelelés"
@@ -1449,14 +1942,8 @@ msgstr ""
 #~ msgid "Use control-F to search"
 #~ msgstr "Kereséshez használja a Ctrl+F-et"
 
-#~ msgid "User name:"
-#~ msgstr "Felhasználó neve:"
-
 #~ msgid "_A4 PostScript test page"
 #~ msgstr "_A4 PostScript-tesztoldal"
-
-#~ msgid "_Action"
-#~ msgstr "Mű_velet"
 
 #~ msgid "_Add..."
 #~ msgstr "_Hozzáadás..."
@@ -1500,9 +1987,6 @@ msgstr ""
 #~ msgid "_Edit..."
 #~ msgstr "_Szerkesztés..."
 
-#~ msgid "_Help"
-#~ msgstr "_Súgó"
-
 #~ msgid "_Import PPD..."
 #~ msgstr "PPD _importálása..."
 
@@ -1520,9 +2004,6 @@ msgstr ""
 
 #~ msgid "_Rescan devices"
 #~ msgstr "_Eszközök felmérése ismét"
-
-#~ msgid "_Sharing..."
-#~ msgstr "_Megosztás..."
 
 #~ msgid "_Test"
 #~ msgstr "_Teszt"
@@ -1560,23 +2041,11 @@ msgstr ""
 #~ msgid "jetdirect"
 #~ msgstr "jetdirect"
 
-#~ msgid "local"
-#~ msgstr "local"
-
 #~ msgid "lpd"
 #~ msgstr "lpd"
 
 #~ msgid "ncp"
 #~ msgstr "ncp"
-
-#~ msgid "none"
-#~ msgstr "semmi"
-
-#~ msgid "smb"
-#~ msgstr "smb"
-
-#~ msgid "Configure printers"
-#~ msgstr "Nyomtatók beállítása"
 
 #~ msgid "Printing"
 #~ msgstr "Nyomtatás"
