@@ -189,6 +189,7 @@ class GUI:
                         "cmbJONumberUpLayout", "btnJOResetNumberUpLayout",
                         "sbJOBrightness", "btnJOResetBrightness",
                         "cmbJOFinishings", "btnJOResetFinishings",
+                        "sbJOJobPriority", "btnJOResetJobPriority",
                         "cbJOMirror", "btnJOResetMirror",
                         "sbJOScaling", "btnJOResetScaling",
                         "sbJOSaturation", "btnJOResetSaturation",
@@ -393,6 +394,10 @@ class GUI:
                                                              24, 25, 26, 27,
                                                              28, 29, 30, 31,
                                                              50, 51, 52, 53 ]),
+
+                 options.OptionAlwaysShown ("job-priority", int, 50,
+                                            self.sbJOJobPriority,
+                                            self.btnJOResetJobPriority),
 
                  options.OptionAlwaysShown ("mirror", bool, False,
                                             self.cbJOMirror,
