@@ -914,7 +914,7 @@ class NewPrinterNotification(dbus.service.Object):
                                                SEARCHING_ICON)
 
         self.getting_ready += 1
-        gobject.timeout_add (30 * 1000, self.timeout_ready)
+        gobject.timeout_add (60 * 1000, self.timeout_ready)
 
     def timeout_ready (self):
         global jobmanager
