@@ -133,6 +133,7 @@ class GUI:
                         "PasswordDialog", "lblPasswordPrompt", "entPasswd",
 
                         "ErrorDialog", "lblError",
+                        "InfoDialog", "lblInfo",
 
                         "ApplyDialog",
 
@@ -1733,10 +1734,20 @@ class GUI:
                                                      user = user,
                                                      passwd = passwd)
         if accessible:
-            print "ACCESSIBLE"
+            self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
+                                     _("Verified") + '</span>\n\n' +
+                                     _("This print share is accessible."))
+            self.InfoDialog.set_transient_for (self.NewPrinterWindow)
+            self.InfoDialog.run()
+            self.InfoDialog.hide ()
             return
 
-        print "NOT ACCESSIBLE!"
+        self.lblError.set_markup ('<span weight="bold" size="larger">' +
+                                  _("Inaccessible") + '</span>\n\n' +
+                                  _("This print share is not accessible."))
+        self.ErrorDialog.set_transient_for (self.NewPrinterWindow)
+        self.ErrorDialog.run()
+        self.ErrorDialog.hide ()
 
     def on_tvNPDevices_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
