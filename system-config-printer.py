@@ -1624,14 +1624,14 @@ class GUI:
         name = self.entNPName.get_text()
         if self.dialog_mode=="class":
             # XXX
-            msg = _("Going to create a new class %s.")
+            msg = _("Going to create a new class %s.") % name
         else:
             # XXX
             uri = self.getDeviceURI()
             msg = _(
 """Going to create a new printer %s at
 %s.
-""" )
+""" ) % (name, uri)
         self.lblNPApply.set_markup(msg)
             
     # Create new Printer
