@@ -719,20 +719,22 @@ class Foomatic:
 
     def getPrinterFromCupsDevice(self, device):
         """return name of printer or None"""
-        if not device.id: return None
+        if not device.id:
+            return None
 
+        return self.getPrinterFromDeviceID (device.id_dict["MFG"],
+                                            device.id_dict["MDL"],
+                                            description=device.id_dict["DES"],
+                                            commandsets=device.id_dict["CMD"],
+                                            uri=device.uri)
+
+    def getPrinterFromDeviceID(self, mfg, mdl, description="",
+                               commandsets=[], uri=None):
+        """return name of printer or None"""
         # check for make, model
-        mfg = device.id_dict["MFG"]
         if (self._auto_make.has_key(mfg) and
-            self._auto_make[mfg].has_key(device.id_dict["MDL"])):
-            return self._auto_make[mfg][device.id_dict["MDL"]]
-
-        # check whole ieee1284 string
-        pieces = device.id.split(';')
-        for length in xrange(len(pieces), 0, -1):
-            ieee1284 = ";".join(pieces[:length]) + ';'
-            if self._auto_ieee1284.has_key(ieee1284):
-                return self._auto_ieee1284[ieee1284]                
+            self._auto_make[mfg].has_key(mdl)):
+            return self._auto_make[mfg][mdl]
 
         # Try matching against the foomatic names
         best_mdl = None
@@ -755,7 +757,6 @@ class Foomatic:
                 continue
 
         if mdls:
-            mdl = device.id_dict["MDL"]
             # Handle bogus HPLIP Device IDs
             if mdl.startswith (mfg + ' '):
                 mdl = mdl[len (mfg) + 1:]
@@ -767,9 +768,9 @@ class Foomatic:
                 print "Deducing %s from IEEE 1284 ID:" % mdls[mdl]
                 print "      <manufacturer>%s</manufacturer>" % mfg
                 print "      <model>%s</model>" % mdl
-                print "      <description>%s</description>" %\
-                      device.id_dict["DES"]
-                print "URI: %s" % device.uri
+                print "      <description>%s</description>" % description
+                if uri:
+                    print "URI: %s" % uri
                 print "This message is harmless."
                 return mdls[mdl]
 
@@ -789,9 +790,9 @@ class Foomatic:
                     best_mdl = id
 
         cmdset = ""
-        if len (device.id_dict["CMD"]) > 0:
-            cmdset = device.id_dict["CMD"][0]
-            for each in device.id_dict["CMD"][1:]:
+        if len (commandsets) > 0:
+            cmdset = commandsets[0]
+            for each in commandsets[1:]:
                 cmdset += "," + each
 
         if best_mdl and best_matchlen > (len (mdl) / 2):
@@ -801,21 +802,23 @@ class Foomatic:
             print "Guessing %s from IEEE 1284 ID:" % best_mdl
             print "      <manufacturer>%s</manufacturer>" % mfg
             print "      <model>%s</model>" % mdl
-            print "      <description>%s</description>" % device.id_dict["DES"]
+            print "      <description>%s</description>" % description
             print "      <commandset>%s</commandset>" % cmdset
-            print "URI: %s" % device.uri
+            if uri:
+                print "URI: %s" % uri
             return best_mdl
 
         print "No match for device ID:"
         print "      <manufacturer>%s</manufacturer>" % mfg
-        print "      <model>%s</model>" % device.id_dict["MDL"]
-        print "      <description>%s</description>" % device.id_dict["DES"]
+        print "      <model>%s</model>" % mdl
+        print "      <description>%s</description>" % description
         print "      <commandset>%s</commandset>" % cmdset
-        print "URI: %s" % device.uri
+        if uri:
+            print "URI: %s" % uri
 
         # Try command-set matching.
-        print "Command set: %s" % device.id_dict["CMD"]
-        id = self.getPrinterFromCommandSet (device.id_dict["CMD"])
+        print "Command set: %s" % commandsets
+        id = self.getPrinterFromCommandSet (commandsets)
         if id:
             print "Using %s" % id
             print "Best match was %s (not close enough)" % best_mdl
@@ -853,21 +856,11 @@ class Foomatic:
         return printer
     
     def getPPD(self, make, model, description="", commandsets=[]):
-        # check for make, model
-        if (self._auto_make.has_key(make) and
-            self._auto_make[make].has_key(model)):
-            printer = self.getPrinter(self._auto_make[make][model])
-        # check description
-        elif description and self._auto_description.has_key(description):
-            printer = self.getPrinter(self._auto_description[description])
-        else:
-            # Match against command sets.
-            id = self.getPrinterFromCommandSet (commandsets)
-            if id:
-                printer = self.getPrinter (id)
-            else:
-                return None
         try:
+            id = self.getPrinterFromDeviceID (make, model,
+                                              description=description,
+                                              commandsets=commandsets)
+            printer = self.getPrinter (id)
             return printer.getPPD()
         except:
             return None

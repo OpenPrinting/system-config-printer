@@ -23,7 +23,7 @@
 # config is generated from config.py.in by configure
 import config
 
-import sys, os, tempfile, time
+import sys, os, tempfile, time, traceback
 import signal, thread
 try:
     import gtk.glade
