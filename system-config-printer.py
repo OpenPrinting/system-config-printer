@@ -304,11 +304,16 @@ class GUI:
         self.tvSMBBrowser.append_column (col)
         slct = self.tvSMBBrowser.get_selection ()
         slct.set_select_function (self.smb_select_function)
-
-        self.populateList()
-        
         self.xml.signal_autoconnect(self)
 
+        try:
+            self.populateList()
+        except cups.HTTPError, (s,):
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            self.show_HTTP_Error(s)
+        
     def getWidgets(self, *names):
         for name in names:
             widget = self.xml.get_widget(name)
@@ -360,7 +365,11 @@ class GUI:
         self.statusbarMain.push(self.status_context_id, status_msg)
 
         for widget in (self.btnNewPrinter, self.btnNewClass,
-                       self.new_printer, self.new_class):
+                       self.new_printer, self.new_class,
+                       self.chkServerBrowse, self.chkServerShare,
+                       self.chkServerRemoteAdmin,
+                       self.chkServerAllowCancelAll,
+                       self.chkServerLogDebug):
             widget.set_sensitive(connected)
         
     def getServers(self):
@@ -559,12 +568,18 @@ class GUI:
         if self.connect_thread != thread.get_ident(): return
         gtk.gdk.threads_enter()
 
-        self.foomatic = foomatic
-        self.ConnectingDialog.hide()
+        try:
+            self.foomatic = foomatic
+            self.ConnectingDialog.hide()
+            self.cups = connection
+            self.setConnected()
+            self.populateList()
+	except cups.HTTPError, (s,):
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            self.show_HTTP_Error(s)
 
-        self.cups = connection
-        self.setConnected()
-        self.populateList()
         gtk.gdk.threads_leave()
 
     def reconnect (self):
@@ -858,6 +873,36 @@ class GUI:
         self.ErrorDialog.run()
         self.ErrorDialog.hide()        
             
+    def show_HTTP_Error(self, status):
+        if (status == cups.HTTP_UNAUTHORIZED or
+            status == cups.HTTP_FORBIDDEN):
+            error_text = ('<span weight="bold" size="larger">' +
+                          _('Not authorized') + '</span>\n\n' +
+                          _('The password may be incorrect, or the '
+                            'server may be configured to deny '
+                            'remote administration.'))
+        else:
+            if status == cups.HTTP_BAD_REQUEST:
+                msg = _("Bad request")
+            elif status == cups.HTTP_NOT_FOUND:
+                msg = _("Not found")
+            elif status == cups.HTTP_REQUEST_TIMEOUT:
+                msg = _("Request timeout")
+            elif status == cups.HTTP_UPGRADE_REQUIRED:
+                msg = _("Upgrade required")
+            elif status == cups.HTTP_SERVER_ERROR:
+                msg = _("Server error")
+            else:
+                msg = _("status %d") % status
+
+            error_text = ('<span weight="bold" size="larger">' +
+                          _('CUPS server error') + '</span>\n\n' +
+                          _("There was an HTTP error: %s.")) % message
+        self.lblError.set_markup(error_text)
+        self.ErrorDialog.set_transient_for (self.MainWindow)
+        self.ErrorDialog.run()
+        self.ErrorDialog.hide()        
+            
     def save_printer(self, printer, saveall=False):
         name = printer.name
         
@@ -1026,7 +1071,8 @@ class GUI:
         item_selected = True
         if type == "Settings":
             self.ntbkMain.set_current_page(0)
-            self.fillServerTab()
+            if self.cups:
+                self.fillServerTab()
             item_selected = False
         elif type in ['Printer', 'Class']:
             self.fillPrinterTab(name)
