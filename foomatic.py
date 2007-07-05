@@ -399,7 +399,7 @@ class Foomatic:
     def __init__(self):
         self.path = '/usr/share/foomatic/db/source'
         self.foomatic_configure = "/usr/bin/foomatic-configure"
-        self.pickle_file = "/var/cache/foomatic.pickle"
+        self.pickle_file = "/var/cache/foomatic/foomatic.pickle"
 
         self._printer_names = None
         self._driver_names = None
@@ -566,7 +566,7 @@ class Foomatic:
 
     # ----
 
-    def _write_pickle(self, filename="/var/cache/foomatic.pickle"):
+    def _write_pickle(self, filename="/var/cache/foomatic/foomatic.pickle"):
         data = {
             "_printer_names" : self._printer_names,
             #"_driver_names" : self._driver_names,
@@ -586,7 +586,7 @@ class Foomatic:
         except OSError:
             pass
         
-    def _load_pickle(self, filename="/var/cache/foomatic.pickle"):
+    def _load_pickle(self, filename="/var/cache/foomatic/foomatic.pickle"):
         if not os.path.exists(filename): return True
         
         pickle_mtime = os.path.getmtime(filename)
