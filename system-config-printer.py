@@ -208,10 +208,6 @@ class GUI:
         selection.set_select_function(self.maySelectItem)
 
         self.mainlist.append(None, (_("Server Settings"), 'Settings'))
-        self.mainlist.append(None, (_("Local Printers"), ""))
-        self.mainlist.append(None, (_("Local Classes"), ""))
-        self.mainlist.append(None, (_("Remote Printers"), ""))
-        self.mainlist.append(None, (_("Remote Classes"), ""))
 
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
@@ -375,25 +371,40 @@ class GUI:
         remote_printers.sort()
         remote_classes.sort()
 
+        expanded = {
+            "_printers" : True,
+            "_classes" : True,
+            "_remote_printers" : True,
+            "_remote_classes" : True,
+            }
+
+
+        # remove old printers/classes
         iter = self.mainlist.get_iter_first()
         iter = self.mainlist.iter_next(iter) # step over server settings
-        for printers in (local_printers, local_classes,
-                         remote_printers, remote_classes):
+        while iter:
+            entry = self.mainlist.get_value(iter, 1)
             path = self.mainlist.get_path(iter)
-            expanded = (self.tvMainList.row_expanded(path) or
-                        not self.mainlist.iter_has_child(iter))
+            expanded[entry] = self.tvMainList.row_expanded(path)
+            more_entries =  self.mainlist.remove(iter)
+            if not more_entries: break
+        
+        # add new
+        for printers, text, name in (
+            (local_printers, _("Local Printers"), "_printers"),
+            (local_classes, _("Local Classes"), "_classes"),
+            (remote_printers, _("Remote Printers"), "_remote_printers"),
+            (remote_classes, _("Remote Classes"), "_remove_classes")):
+            if not printers: continue
+            iter = self.mainlist.append(None, (text, name))
+            path = self.mainlist.get_path(iter)
 
-            # clear old entries
-            while self.mainlist.iter_has_child(iter):
-                self.mainlist.remove(self.mainlist.iter_children(iter))
-            # add new ones
             for printer_name in printers:
                 p_iter = self.mainlist.append(iter, (printer_name, "Printer"))
                 if printer_name==old_name:
                     select_path = self.mainlist.get_path(p_iter)
-            if expanded:
+            if expanded[name]:
                 self.tvMainList.expand_row(path, False)
-            iter = self.mainlist.iter_next(iter)
                         
         # Selection
         selection = self.tvMainList.get_selection()
@@ -407,7 +418,7 @@ class GUI:
     def maySelectItem(self, selection):
         result = self.mainlist.get_value(
             self.mainlist.get_iter(selection), 1)
-        return bool(result)
+        return result[0] != "_"
 
     def getSelectedItem(self):
         model, iter = self.tvMainList.get_selection().get_selected()
@@ -882,11 +893,11 @@ class GUI:
 
             for option in printer.attributes:
                 if option not in self.server_side_options:
-                    print "unset", option
+                    #print "unset", option
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
                 if option.is_changed or saveall:
-                    print "save", option.name, option.get_current_value()
+                    #print "save", option.name, option.get_current_value()
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
