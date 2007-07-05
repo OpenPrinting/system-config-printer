@@ -746,6 +746,9 @@ class Foomatic:
             if self.makes.has_key (mfg):
                 mdl = device.id_dict["MDL"]
                 mdls = self.makes[mfg]
+                # Handle bogus HPLIP Device IDs
+                if mdl.startswith (mfg + ' '):
+                    mdl = mdl[len (mfg) + 1:]
                 if mdls.has_key (mdl):
                     print "Please report a bug in Bugzilla against 'foomatic':"
                     print "  https://bugzilla.redhat.com/bugzilla"
@@ -788,6 +791,11 @@ class Foomatic:
             print "URI: %s" % device.uri
             return best_mdl
 
+        print "No match for device ID:"
+        print "      <manufacturer>%s</manufacturer>" % mfg
+        print "      <model>%s</model>" % mdl
+        print "      <description>%s</description>" % device.id_dict["DES"]
+        print "URI: %s" % device.uri
         return None
 
     def getPPD(self, make, model, description="", languages=[]):
