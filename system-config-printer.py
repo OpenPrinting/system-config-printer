@@ -9,7 +9,7 @@ except RuntimeError, e:
     print "This is a graphical application and requires DISPLAY to be set."
     sys.exit (1)
 
-if sys.argv[1] == '--help':
+if len(sys.argv)>1 and sys.argv[1] == '--help':
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n")
     sys.exit (0)
@@ -52,7 +52,6 @@ class GUI:
         self.servers = set(("localhost",))
 
         try:
-            #self.cups = None
             self.cups = cups.Connection()
         except RuntimeError:
             self.cups = None
@@ -60,6 +59,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
+            raise ValueError
             self.xml = gtk.glade.XML(glade_file)
         except:
             self.xml = gtk.glade.XML(domain + '.glade')
@@ -74,7 +74,7 @@ class GUI:
 
                         "chkServerBrowse", "chkServerShare",
                         "chkServerRemoteAdmin", "chkServerAllowCancelAll",
-                        "cmbServerLogLevel",
+                        "chkServerLogDebug",
 
                         "ntbkPrinter",
                          "entPDescription", "entPLocation",
@@ -96,7 +96,8 @@ class GUI:
                          "vbClassMembers", "lblClassMembers",
                           "tvClassMembers", "tvClassNotMembers",
                           "btnClassAddMember", "btnClassDelMember",
-
+                         "vbPServersideOptions",
+                        
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
                         "ConnectingDialog", "lblConnecting",
@@ -113,6 +114,7 @@ class GUI:
                            "cmbNPTSerialBaud", "cmbNPTSerialParity",
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
+                           "entNPTIPPHostname", "entNPTIPPPrintername",
                            "entNPTDevice",
                            "tvNCMembers", "tvNCNotMembers",
                           "rbtnNPPPD", "tvNPMakes", 
@@ -162,7 +164,7 @@ class GUI:
         selection.set_mode(gtk.SELECTION_BROWSE)
         selection.set_select_function(self.maySelectItem)
 
-        # self.mainlist.append(None, ("Server Settings", 'Settings'))
+        self.mainlist.append(None, (_("Server Settings"), 'Settings'))
         self.mainlist.append(None, (_("Local Printers"), ""))
         self.mainlist.append(None, (_("Local Classes"), ""))
         self.mainlist.append(None, (_("Remote Printers"), ""))
@@ -271,7 +273,7 @@ class GUI:
             self.printers = {}
         
         self.default_printer = ""
-        print self.printers
+        #print self.printers
 
         local_printers = []
         local_classes = []
@@ -296,7 +298,7 @@ class GUI:
         remote_classes.sort()
 
         iter = self.mainlist.get_iter_first()
-        #iter = self.mainlist.iter_next(iter) # step over server settings
+        iter = self.mainlist.iter_next(iter) # step over server settings
         for printers in (local_printers, local_classes,
                          remote_printers, remote_classes):
             path = self.mainlist.get_path(iter)
@@ -317,6 +319,7 @@ class GUI:
                         
         # Selection
         selection = self.tvMainList.get_selection()
+        print select_path
         if select_path:
             selection.select_path(select_path)
         else:
@@ -382,7 +385,12 @@ class GUI:
         servername = self.cmbServername.child.get_text()
         user = self.entUser.get_text()
 
+#<<<<<<< system-config-printer.py XXX
+        self.ConnectingDialog.set_text(_("Connecting to Server:\n%s") %
+                                       servername)
+#=======
         self.unloadFoomatic()
+#>>>>>>> 1.46
         self.ConnectingDialog.show()
         self.connect_thread = thread.start_new_thread(
             self.connect, (servername, user))
@@ -869,6 +877,10 @@ class GUI:
 
         self.entPUser.set_text("")
 
+        # Printer defaults
+
+        
+
         # remove InstallOptions tab
         tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
         if tab_nr != -1:
@@ -1196,7 +1208,7 @@ class GUI:
         else:
             self.auto_model = ""
 
-        print self.auto_make, self.auto_model
+        #print self.auto_make, self.auto_model
         self.fillMakeList()
         self.initNewPrinterWindow()
         
@@ -1360,6 +1372,8 @@ class GUI:
                                                       "scsi", "http"),
                               devices) 
 
+        self.devices.insert(0, cupshelpers.Device('',
+             **{'device-info' :_("Other")}))
         if current_uri:
             current.info += _(" (Current)")
             self.devices.insert(0, current)
@@ -1378,9 +1392,10 @@ class GUI:
         device = self.devices[path[0]]
         self.device = device
         self.ntbkNPType.set_current_page(
-            self.new_printer_device_tabs.get(device.type, 0))
+            self.new_printer_device_tabs.get(device.type, 1))
 
         type = device.type
+        url = device.uri.split(":", 1)[-1]
         if device.type=="serial":
             if not device.is_class:
                 options = device.uri.split("?")[1]
@@ -1417,8 +1432,18 @@ class GUI:
                         widget.set_active(0)
                                             
         # XXX FILL TABS FOR VALID DEVICE URIs
-        elif device.type in ("ipp", "http"):
-            pass
+        elif device.type in ("ipp", "http", "lpd"):
+            try:
+                server, printer = url.split("/", 1)
+            except ValueError:
+                server, printer = url, ""
+            if device.type == "lpd":
+                pass # XXX
+            else:
+                self.entNPTIPPHostname.set_text(server)
+                self.entNPTIPPPrintername.set_text(printer)
+        else:
+            self.entNPTDevice.set_text(device.uri)
 
 
         self.auto_make, self.auto_model = None, None
@@ -1748,45 +1773,54 @@ class GUI:
 
     def fillServerTab(self):
         self.changed = set()
-        fd, filename = tempfile.mkstemp("cupsd.conf", "system-config-printer")
-        os.close(fd)
         try:
-            self.cups.getFile('/admin/conf/cupsd.conf', filename)
-        except cups.IPPError, (e, msg):
-            self.show_IPP_Error(e, msg)
-                            
-        self.cupsd_conf = CupsConfig(filename)
-        self.cupsd_conf.read()
+            self.server_settings = self.cups.adminGetServerSettings()
+        except cups.IPPError, (e, m):
+            self.show_IPP_Error(e, m)
+            self.tvMainList.get_selection().unselect_all()
+            self.on_tvMainList_cursor_changed(self.tvMainList)
+            return
 
-        print self.cupsd_conf.start_block
-
-        if self.cupsd_conf.start_block.has_key("LogLevel"):
-            loglevel = self.cupsd_conf.start_block["LogLevel"][0].values[0]
-            print loglevel
-        self.cmbServerLogLevel.set_active(0)
+        for widget, setting in [
+            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
+            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
+            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
+            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
+            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
+            widget.set_data("setting", setting)
+            if self.server_settings.has_key(setting):
+                widget.set_active(int(self.server_settings[setting]))
+                widget.show()
+            else:
+                widget.hide()
+        self.setDataButtonState()
         
     def on_server_changed(self, widget):
-        value = widget.get_active()
-
-        old_values = {
-            self.chkServerBrowse : "",
-            self.chkServerShare : "",
-            self.chkServerRemoteAdmin : "",
-            self.chkServerAllowCancelAll : "",
-            self.chkServerDebug : "",
-            }
-
-        old_value = old_values[widget]
-        
-        if old_value == value:
+        if (str(int(widget.get_active())) ==
+            self.server_settings[widget.get_data("setting")]):
             self.changed.discard(widget)
         else:
             self.changed.add(widget)
         self.setDataButtonState()
 
     def save_serversettings(self):
-        print "Apply Settings"
-
+        setting_dict = self.server_settings.copy()
+        for widget, setting in [
+            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
+            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
+            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
+            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
+            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
+            if not self.server_settings.has_key(setting): continue
+            setting_dict[setting] = str(int(widget.get_active()))
+        try:
+            self.cups.adminSetServerSettings(setting_dict)
+        except cups.IPPError, (e, m):
+            self.show_IPP_Error(e, m)
+            return True
+        self.changed = set()
+        self.setDataButtonState()
+        time.sleep(0.1) # give the server a chance to process our request
 
 def main():
     # The default configuration requires root for administration.

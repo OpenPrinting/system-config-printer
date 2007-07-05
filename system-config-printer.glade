@@ -453,22 +453,17 @@
 				  </child>
 
 				  <child>
-				    <widget class="GtkComboBox" id="cmbServerLogLevel">
+				    <widget class="GtkCheckButton" id="chkServerLogDebug">
 				      <property name="visible">True</property>
-				      <property name="items" translatable="yes">default (info)
-none
-emerg
-alert 
-crit
-error
-warn
-notice
-info 
-debug
-debug2
-</property>
-				      <property name="add_tearoffs">False</property>
+				      <property name="can_focus">True</property>
+				      <property name="label" translatable="yes">Save debugging information for troubleshooting</property>
+				      <property name="use_underline">True</property>
+				      <property name="relief">GTK_RELIEF_NORMAL</property>
 				      <property name="focus_on_click">True</property>
+				      <property name="active">False</property>
+				      <property name="inconsistent">False</property>
+				      <property name="draw_indicator">True</property>
+				      <signal name="toggled" handler="on_server_changed" last_modification_time="Thu, 20 Apr 2006 11:50:13 GMT"/>
 				    </widget>
 				    <packing>
 				      <property name="padding">10</property>
@@ -2066,6 +2061,71 @@ debug2
 			<widget class="GtkLabel" id="lblPOptions">
 			  <property name="visible">True</property>
 			  <property name="label" translatable="yes">Default Options</property>
+			  <property name="use_underline">False</property>
+			  <property name="use_markup">False</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
+			</widget>
+			<packing>
+			  <property name="type">tab</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkScrolledWindow" id="scrolledwindow20">
+			  <property name="visible">True</property>
+			  <property name="can_focus">True</property>
+			  <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			  <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+			  <property name="shadow_type">GTK_SHADOW_NONE</property>
+			  <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
+
+			  <child>
+			    <widget class="GtkViewport" id="viewport6">
+			      <property name="visible">True</property>
+			      <property name="shadow_type">GTK_SHADOW_IN</property>
+
+			      <child>
+				<widget class="GtkVBox" id="vbPServersideOptions">
+				  <property name="visible">True</property>
+				  <property name="homogeneous">False</property>
+				  <property name="spacing">0</property>
+
+				  <child>
+				    <placeholder/>
+				  </child>
+
+				  <child>
+				    <placeholder/>
+				  </child>
+
+				  <child>
+				    <placeholder/>
+				  </child>
+				</widget>
+			      </child>
+			    </widget>
+			  </child>
+			</widget>
+			<packing>
+			  <property name="tab_expand">False</property>
+			  <property name="tab_fill">True</property>
+			</packing>
+		      </child>
+
+		      <child>
+			<widget class="GtkLabel" id="label126">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">Serverside Options</property>
 			  <property name="use_underline">False</property>
 			  <property name="use_markup">False</property>
 			  <property name="justify">GTK_JUSTIFY_LEFT</property>

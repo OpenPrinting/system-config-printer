@@ -56,6 +56,16 @@ class Printer:
     def _getAttributes(self):
         attrs = self.connection.getPrinterAttributes(self.name)
 
+        #print self.name
+        #print "======================"
+        #for key, value in attrs.iteritems():
+        #    if key.endswith("-default"):
+        #        name = key[:-len("-default")]
+        #        if not attrs.has_key(name + "-supported"): continue
+        #        print name, value, attrs[name + "-supported"]
+        #
+        #print
+
         self.job_sheet_start, self.job_sheet_end = attrs.get(
             'job-sheets-default', ('none', 'none'))
         self.job_sheets_supported = attrs.get('job-sheets-supported', ['none'])
