@@ -59,7 +59,6 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            raise ValueError
             self.xml = gtk.glade.XML(glade_file)
         except:
             self.xml = gtk.glade.XML(domain + '.glade')
