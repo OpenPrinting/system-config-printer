@@ -1,5 +1,10 @@
 SUBDIRS=po
 nobase_pkgdata_SCRIPTS=				\
+	pysmb.py				\
+	system-config-printer.py		\
+	applet.py
+
+nobase_pkgdata_DATA=				\
 	config.py				\
 	cupsd.py				\
 	cupshelpers.py				\
@@ -8,15 +13,10 @@ nobase_pkgdata_SCRIPTS=				\
 	options.py				\
 	optionwidgets.py			\
 	probe_printer.py			\
-	pysmb.py				\
-	system-config-printer.py		\
 	gtk_label_autowrap.py			\
 	gtk_html2pango.py			\
-	applet.py
-
-nobase_pkgdata_DATA=\
-	system-config-printer.glade \
-	applet.glade \
+	system-config-printer.glade		\
+	applet.glade				\
 	applet.png
 
 nobase_sbin_SCRIPTS=\
