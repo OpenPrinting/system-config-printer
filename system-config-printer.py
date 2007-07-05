@@ -2314,7 +2314,24 @@ class GUI:
                 return
         elif self.dialog_mode=="printer":
             uri = self.getDeviceURI()
-            ppd = self.getNPPPD()
+            try:
+                ppd = self.getNPPPD()
+            except RuntimeError, e:
+                model, iter = self.tvNPDrivers.get_selection().get_selected()
+                nr = model.get_path(iter)[0]
+                driver = self.NPDrivers[nr]
+                error_text = ('<span weight="bold" size="larger">' +
+                              _('Database error') + '</span>\n\n' +
+                              _("The '%s' driver cannot be used with printer "
+                                "'%s %s'.") % (driver, self.NPMake,
+                                               self.NPModel))
+                self.lblError.set_markup(error_text)
+                self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+                self.ErrorDialog.run()
+                self.ErrorDialog.hide()
+                # Go back to previous page to re-select driver.
+                self.nextNPTab(-1)
+                return
         
             try:
                 self.passwd_retry = False # use cached Passwd
@@ -2354,7 +2371,24 @@ class GUI:
                 self.show_IPP_Error(e, msg)
                 return
         elif self.dialog_mode == "ppd":
-            ppd = self.getNPPPD()
+            try:
+                ppd = self.getNPPPD()
+            except RuntimeError, e:
+                model, iter = self.tvNPDrivers.get_selection().get_selected()
+                nr = model.get_path(iter)[0]
+                driver = self.NPDrivers[nr]
+                error_text = ('<span weight="bold" size="larger">' +
+                              _('Database error') + '</span>\n\n' +
+                              _("The '%s' driver cannot be used with printer "
+                                "'%s %s'.") % (driver, self.NPMake,
+                                               self.NPModel))
+                self.lblError.set_markup(error_text)
+                self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+                self.ErrorDialog.run()
+                self.ErrorDialog.hide()
+                # Go back to previous page to re-select driver.
+                self.nextNPTab(-1)
+                return
 
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
