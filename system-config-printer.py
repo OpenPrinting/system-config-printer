@@ -928,7 +928,7 @@ class GUI:
         # changed from the original value: it's still meaningful to
         # reset the option to the system default.
 
-    def draw_other_job_options (self):
+    def draw_other_job_options (self, editable=True):
         n = len (self.other_job_options)
         if n == 0:
             self.tblJOOther.hide_all ()
@@ -947,11 +947,12 @@ class GUI:
             self.tblJOOther.attach (opt.selector, 1, 2, i, i + 1,
                                     xoptions=gtk.FILL,
                                     yoptions=0)
-            opt.selector.set_sensitive (True)
+            opt.selector.set_sensitive (editable)
 
             btn = gtk.Button(stock="gtk-remove")
             btn.connect("clicked", self.on_btnJOOtherRemove_clicked)
             btn.set_data("pyobject", opt)
+            btn.set_sensitive (editable)
             self.tblJOOther.attach(btn, 2, 3, i, i + 1,
                                    xoptions=0,
                                    yoptions=0)
@@ -959,12 +960,13 @@ class GUI:
 
         self.tblJOOther.show_all ()
 
-    def add_job_option(self, name, value = "", supported = "", is_new=True):
+    def add_job_option(self, name, value = "", supported = "", is_new=True,
+                       editable=True):
         option = options.OptionWidget(name, value, supported,
                                       self.option_changed)
         option.is_new = is_new
         self.other_job_options.append (option)
-        self.draw_other_job_options ()
+        self.draw_other_job_options (editable=editable)
         self.server_side_options[name] = option
         if name in self.changed: # was deleted before
             option.is_new = False
@@ -1486,8 +1488,11 @@ class GUI:
             else:
                 option.reinit (value)
                 self.server_side_options[option.name] = option
+            option.widget.set_sensitive (editable)
+            if not editable:
+                option.button.set_sensitive (editable)
         self.other_job_options = []
-        self.draw_other_job_options ()
+        self.draw_other_job_options (editable=editable)
         for option in self.printer.attributes.keys ():
             if self.server_side_options.has_key (option):
                 continue
@@ -1495,8 +1500,10 @@ class GUI:
             if self.printer.possible_attributes.has_key (option):
                 supported = self.printer.possible_attributes[option][1]
             self.add_job_option (option, value=self.printer.attributes[option],
-                                 supported=supported, is_new=False)
+                                 supported=supported, is_new=False,
+                                 editable=editable)
         self.entNewJobOption.set_text ('')
+        self.entNewJobOption.set_sensitive (editable)
         self.btnNewJobOption.set_sensitive (False)
 
         if printer.is_class:
