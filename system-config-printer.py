@@ -31,8 +31,8 @@ class GUI:
                         "btnNewPrinter", "btnNewClass", "btnCopy", "btnDelete",
                         "new_printer", "new_class", "copy", "delete",
 
-                        "ConnectWindow", "chkEncrypted", "cmbServername",
-                        "entUser", "entPassword",
+                        "ConnectDialog", "chkEncrypted", "cmbServername",
+                        "entUser",
 
                         "PasswordDialog", "entPasswd",
 
@@ -156,25 +156,25 @@ class GUI:
         self.chkEncrypted.set_active (cups.getEncryption () ==
                                       cups.HTTP_ENCRYPT_ALWAYS)
 
-        # XXX insert know servers
-        # XXX clear passwd field?
         # XXX check for unapplied changes
-        self.ConnectWindow.show()
+        self.cmbServername.grab_focus ()
+        self.ConnectDialog.set_transient_for (self.MainWindow)
+        response = self.ConnectDialog.run()
+        if response != gtk.RESPONSE_OK:
+            self.ConnectDialog.hide ()
+            return
 
-    def on_btnConnect_clicked(self, widget):
-        # XXX check for unapplied changes
         if self.chkEncrypted.get_active():
-            cups.setEncryption(cups.HTTP_ENCRYPT_ALWAYS) # XXX REQUIRED?
+            cups.setEncryption(cups.HTTP_ENCRYPT_ALWAYS)
         else:
             cups.setEncryption(cups.HTTP_ENCRYPT_IF_REQUESTED)
 
         servername = self.cmbServername.child.get_text()
-        # XXX append port and protocoll if needed
         cups.setServer(servername)
 
         user = self.entUser.get_text()
         if user: cups.setUser(user)
-        self.password = self.entPassword.get_text()
+        self.password = ''
 
         try:
             connection = cups.Connection() # XXX timeout?
@@ -186,7 +186,7 @@ class GUI:
             # XXX more Error handling
             return
 
-        self.ConnectWindow.hide()
+        self.ConnectDialog.hide()
         self.cups = connection
         self.populateList()
 
