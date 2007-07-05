@@ -187,6 +187,7 @@ class GUI:
 
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo",
+                        "InstallDialog", "lblInstall",
 
                         "ApplyDialog",
 
@@ -3076,6 +3077,12 @@ class GUI:
 
         if exe and not exepath:
             # We didn't find a necessary executable.  Complain.
+
+            # Strip out foomatic '%'-style place-holders.
+            p = exe.find ('%')
+            if p != -1:
+                exe = exe[:p]
+
             pkgs = {
                 # Foomatic command line executables
                 'gs': 'ghostscript',
@@ -3106,12 +3113,13 @@ class GUI:
 
             if pkg:
                 print "%s included in package %s" % (exe, pkg)
-                error_text = ('<span weight="bold" size="larger">' +
-                              _('Missing driver') + '</span>\n\n' +
-                              _("Printer '%s' requires the %s package but "
-                                "it is not currently installed.  Please "
-                                "install it before using this printer.") %
-                              (name, pkg))
+                install_text = ('<span weight="bold" size="larger">' +
+                                _('Install driver') + '</span>\n\n' +
+                                _("Printer '%s' requires the %s package but "
+                                  "it is not currently installed.") %
+                                (name, pkg))
+                dialog = self.InstallDialog
+                self.lblInstall.set_markup(install_text)
             else:
                 error_text = ('<span weight="bold" size="larger">' +
                               _('Missing driver') + '</span>\n\n' +
@@ -3119,10 +3127,29 @@ class GUI:
                                 "it is not currently installed.  Please "
                                 "install it before using this printer.") %
                               (name, exe))
-            self.lblError.set_markup(error_text)
-            self.ErrorDialog.set_transient_for (self.MainWindow)
-            self.ErrorDialog.run()
-            self.ErrorDialog.hide()
+                dialog = self.ErrorDialog
+                self.lblError.set_markup(error_text)
+
+            dialog.set_transient_for (self.MainWindow)
+            response = dialog.run ()
+            dialog.hide ()
+            if pkg and response == gtk.RESPONSE_OK:
+                # Install the package.
+                def wait_child (sig, stack):
+                    (pid, status) = os.wait ()
+
+                signal.signal (signal.SIGCHLD, wait_child)
+                pid = os.fork ()
+                if pid == 0:
+                    # Child.
+                    install = "/usr/bin/system-install-packages"
+                    try:
+                        os.execv (install, [install, pkg])
+                    except:
+                        pass
+                    sys.exit (1)
+                elif pid == -1:
+                    pass # should handle error
 
     ##########################################################################
     ### Server settings
