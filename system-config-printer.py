@@ -2298,6 +2298,10 @@ class GUI:
         else:
             name = self.printer.name
 
+        # Whether to check for missing drivers.
+        check = False
+        checkppd = None
+
         if self.dialog_mode=="class":
             members = self.getCurrentClassMembers(self.tvNCMembers)
             try:
@@ -2316,12 +2320,15 @@ class GUI:
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
                     self.cups.addPrinter(name, ppdname=ppd,
                          device=uri, info=info, location=location)
+                    check = True
                 elif ppd is None: # raw queue
                     self.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
                 else:
                     self.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)
+                    check = True
+                    checkppd = ppd
 
                 self.cups.enablePrinter (name)
                 self.cups.acceptJobs (name)
@@ -2381,8 +2388,137 @@ class GUI:
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
 
+                check = True
+                checkppd = ppd
+
         self.NewPrinterWindow.hide()
         self.populateList()
+        if check:
+            self.checkDriverExists (name, ppd=checkppd)
+
+    def checkDriverExists(self, name, ppd=None):
+        """Check that the driver for an existing queue actually
+        exists, and prompt to install the appropriate package
+        if not.
+
+        ppd: cups.PPD object, if already created"""
+
+        # Is this queue on the local machine?  If not, we can't check
+        # anything at all.
+        server = cups.getServer ()
+        if not (server == 'localhost' or server == '127.0.0.1' or
+                server == '::1' or server[0] == '/'):
+            return
+
+        # Fetch the PPD if we haven't already.
+        if not ppd:
+            try:
+                filename = self.cups.getPPD(name)
+            except cups.IPPError, (e, msg):
+                if e == cups.IPP_NOT_FOUND:
+                    # This is a raw queue.  Nothing to check.
+                    return
+                else:
+                    self.show_IPP_Error(e, msg)
+                    return
+
+            ppd = cups.PPD(filename)
+            os.unlink(filename)
+
+        # Find a 'FoomaticRIPCommandLine' attribute.
+        attr = ppd.findAttr ('FoomaticRIPCommandLine')
+        if not attr:
+            # No attribute there.  Nothing we can check.
+            return
+
+        cmdline = attr.value.replace ('&&\n', '')
+        args = cmdline.split (' ')
+        argn = len (args)
+        argi = 1
+        exe = args[0]
+
+        # How to check that something exists in the path:
+        def pathcheck (name):
+            path="/usr/bin:/bin"
+            for component in path.split (':'):
+                file = component.rstrip (os.path.sep) + os.path.sep + name
+                if os.access (file, os.X_OK):
+                    print "%s: found" % file
+                    return file
+            print "%s: NOT found" % name
+            return None
+
+        exepath = pathcheck (exe)
+        if exepath:
+            # Main executable found.  But if it's 'gs', perhaps there is
+            # an IJS server we also need to check.
+            if os.path.basename (exepath) == 'gs':
+                search = "-sIjsServer="
+                while argi < argn:
+                    arg = args[argi]
+                    if arg == '|':
+                        break
+                    if arg.startswith (search):
+                        exe = arg[len (search):]
+                        # Strip out foomatic '%'-style place-holders
+                        p = exe.find ('%')
+                        if p != -1:
+                            exe = exe[:p]
+                        exepath = pathcheck (exe)
+                        break
+
+                    argi += 1
+
+        # If that was found, is there a pipeline?
+        while exepath:
+            pipe = 0
+            while argi < argn - 1:
+                if args[argi] == '|':
+                    pipe = 1
+                    break
+                argi += 1
+            if pipe == 0:
+                break
+            argi += 1
+            exe = args[argi]
+            # Strip out foomatic '%'-style place-holders
+            p = exe.find ('%')
+            if p != -1:
+                exe = exe[:p]
+            exepath = pathcheck (exe)
+
+        if not exepath:
+            # We didn't find a necessary executable.  Complain.
+            pkgs = {
+                'gs': 'ghostscript',
+                'perl': 'perl',
+                'foo2oak-wrapper': None,
+                'pnm2ppa': 'pnm2ppa',
+                'hpijs': 'hpijs',
+                }
+            try:
+                pkg = pkgs[exe]
+            except:
+                pkg = None
+
+            if pkg:
+                error_text = ('<span weight="bold" size="larger">' +
+                              _('Missing driver') + '</span>\n\n' +
+                              _("Printer '%s' requires the %s package but "
+                                "it is not currently installed.  Please "
+                                "install it before using this printer.") %
+                              (name, pkg))
+            else:
+                error_text = ('<span weight="bold" size="larger">' +
+                              _('Missing driver') + '</span>\n\n' +
+                              _("Printer '%s' requires the '%s' program but "
+                                "it is not currently installed.  Please "
+                                "install it before using this printer.") %
+                              (name, exe))
+            self.lblError.set_markup(error_text)
+            self.ErrorDialog.set_transient_for (self.MainWindow)
+            self.ErrorDialog.run()
+            self.ErrorDialog.hide()
 
     ##########################################################################
     ### Server settings
