@@ -1548,6 +1548,7 @@ class GUI:
 
     # change device
     def on_btnSelectDevice_clicked(self, button):
+        self.busy (self.MainWindow)
         self.loadFoomatic()
         self.dialog_mode = "device"
         self.initNewPrinterWindow()
@@ -1557,9 +1558,11 @@ class GUI:
         self.fillDeviceTab(self.printer.device_uri)
 
         self.initNewPrinterWindow()
+        self.ready (self.MainWindow)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
+        self.busy (self.MainWindow)
         self.loadFoomatic()
         self.dialog_mode = "ppd"
         self.initNewPrinterWindow()
@@ -1595,7 +1598,7 @@ class GUI:
 
         self.fillMakeList()
         self.initNewPrinterWindow()
-        
+        self.ready (self.MainWindow)
 
     def initNewPrinterWindow(self):
         if self.dialog_mode in ("printer", "class"):
