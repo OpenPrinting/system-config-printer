@@ -1,5 +1,10 @@
 2007-05-23  Tim Waugh  <twaugh@redhat.com>
 
+	* applet.py (JobManager.set_special_statusicon): New method.
+	(JobManager.unset_special_statusicon): New method.
+	(JobManager.set_statusicon_from_pixbuf): New method.
+	(JobManager.refresh): Use it.
+
 	* system-config-printer.py (GUI.__init__): Added 'Hold until:'
 	control to Job Options screen (bug #239776).
 	* cupshelpers.py (Printer._getAttributes): Allow job-hold-until to

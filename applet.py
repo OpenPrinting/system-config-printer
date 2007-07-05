@@ -172,6 +172,7 @@ class JobManager:
         self.will_update_job_creation_times = False # whether timeout is set
         self.will_refresh = False # whether timeout is set
         self.last_refreshed = 0
+        self.special_status_icon = False
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE)
         self.xml.signal_autoconnect(self)
@@ -270,7 +271,7 @@ class JobManager:
                                       1.0, 1.0,
                                       gtk.gdk.INTERP_BILINEAR,
                                       127)
-            self.statusicon.set_from_pixbuf (self.icon_no_jobs)
+            self.set_statusicon_from_pixbuf (self.icon_no_jobs)
             self.statusicon.connect ('activate', self.toggle_window_display)
             self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
 
@@ -290,6 +291,20 @@ class JobManager:
 
         if not self.trayicon:
             self.MainWindow.show ()
+
+    # Handle "special" status icon
+    def set_special_statusicon (self, filename):
+        self.special_status_icon = True
+        self.statusicon.set_from_file (filename)
+
+    def unset_special_statusicon (self):
+        self.special_status_icon = False
+        self.statusicon.set_from_pixbuf (self.saved_statusicon_pixbuf)
+
+    def set_statusicon_from_pixbuf (self, pb):
+        self.saved_statusicon_pixbuf = pb
+        if not self.special_status_icon:
+            self.statusicon.set_from_pixbuf (pb)
 
     def on_delete_event(self, *args):
         if self.trayicon:
@@ -468,7 +483,7 @@ class JobManager:
                                   pixbuf.get_height () / 2,
                                   0.5, 0.5,
                                   gtk.gdk.INTERP_BILINEAR, 255)
-                self.statusicon.set_from_pixbuf (pixbuf)
+                self.set_statusicon_from_pixbuf (pixbuf)
         else:
             # No errors
             if self.statusbar_set:
@@ -615,14 +630,14 @@ class JobManager:
         if self.trayicon:
             if num_jobs == 0:
                 self.statusicon.set_tooltip (_("No documents queued"))
-                self.statusicon.set_from_pixbuf (self.icon_no_jobs)
+                self.set_statusicon_from_pixbuf (self.icon_no_jobs)
             elif num_jobs == 1:
                 self.statusicon.set_tooltip (_("1 document queued"))
-                self.statusicon.set_from_pixbuf (self.icon_jobs)
+                self.set_statusicon_from_pixbuf (self.icon_jobs)
             else:
                 self.statusicon.set_tooltip (_("%d documents queued")
                                              % num_jobs)
-                self.statusicon.set_from_pixbuf (self.icon_jobs)
+                self.set_statusicon_from_pixbuf (self.icon_jobs)
 
         my_printers = set()
         for job, data in jobs.iteritems ():
