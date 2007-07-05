@@ -358,7 +358,7 @@ class PrintDriverSelection(dbus.service.Object):
     def __init__(self, bus_name):
         dbus.service.Object.__init__(self, bus_name, PDS_PATH)
 
-    @dbus.service.method(PDF_IFACE, in_signature='ssss', out_signature='')
+    @dbus.service.method(PDS_IFACE, in_signature='ssss', out_signature='')
     def PromptPrintDriver (self, make, model, uid, name):
         do_imports ()
         print "Need to implement PromptPrintDriver"
