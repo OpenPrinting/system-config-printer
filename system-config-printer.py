@@ -962,6 +962,11 @@ class GUI:
 
     def initNewPrinterWindow(self, prototype=None):
         self.ntbkNewPrinter.set_current_page(0)
+        self.entNPName.grab_focus()
+        for widget in [self.entNPName, self.entNPLocation,
+                       self.entNPDescription]:
+            widget.set_text('')
+        self.NewPrinterWindow.set_transient_for (self.MainWindow)
         self.setNPButtons()
         if self.new_class:
             self.fillNewClassMembers()
