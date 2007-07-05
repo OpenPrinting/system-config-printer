@@ -89,6 +89,40 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = model.strip ()
     return (make, model)
 
+# Some drivers are just generally better than others.
+# Here is the preference list:
+DRIVER_TYPE_VENDOR = 1
+DRIVER_TYPE_GUTENPRINT_NATIVE = 2
+DRIVER_TYPE_FOOMATIC_PS = 3
+DRIVER_TYPE_FOOMATIC_HPIJS = 4
+DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 5
+DRIVER_TYPE_FOOMATIC_GUTENPRINT = 6
+DRIVER_TYPE_FOOMATIC = 7
+DRIVER_TYPE_CUPS = 8
+def getDriverType (ppdname):
+    """Decides which of the above types ppdname is."""
+    if ppdname.startswith ("gutenprint"):
+        return DRIVER_TYPE_GUTENPRINT_NATIVE
+    if (ppdname.find (":") == -1 and
+        ppdname.find ("/") == -1 and
+        ppdname.endswith (".gz")):
+        return DRIVER_TYPE_CUPS
+    if ppdname.startswith ("foomatic:"):
+        # Foomatic (generated) -- but which driver?
+        if ppdname.find ("-Postscript")!= -1:
+            return DRIVER_TYPE_FOOMATIC_PS
+        if ppdname.find ("-hpijs") != -1:
+            if ppdname.find ("hpijs-rss") == -1:
+                return DRIVER_TYPE_FOOMATIC_HPIJS
+        if ppdname.find ("-gutenprint") != -1:
+            if ppdname.find ("-simplified")!= -1:
+                return DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED
+            return DRIVER_TYPE_FOOMATIC_GUTENPRINT
+        return DRIVER_TYPE_FOOMATIC
+    # Anything else should be a vendor's PPD.
+    return DRIVER_TYPE_VENDOR # vendor's own
+
+
 class PPDs:
     # Status of match.
     STATUS_SUCCESS = 0
@@ -139,42 +173,25 @@ class PPDs:
 
     def orderPPDNamesByPreference (self, ppdnamelist=[]):
         """Returns a sorted list of ppd-names."""
-        def sort_ppdnames (a, b):
-            # Some drivers are just generally better than others.
-            # Here is the preference list:
-            # 1. vendor's own (incl foomatic bundled)
-            # 2. gutenprint native
-            # 3. foomatic (generated): Postscript
-            # 4. foomatic (generated): hpijs
-            # 5. foomatic (generated): gutenprint, simplified
-            # 6. foomatic (generated): gutenprint
-            # 7. foomatic (generated): other driver
-            # 8. CUPS
-            def which_type (ppdname):
-                """Decides which of the above types ppdname is."""
-                if ppdname.startswith ("gutenprint"):
-                    return 2 # gutenprint native
-                if (ppdname.find (":") == -1 and
-                    ppdname.find ("/") == -1 and
-                    ppdname.endswith (".gz")):
-                    return 8 # CUPS
-                if ppdname.startswith ("foomatic:"):
-                    # Foomatic (generated) -- but which driver?
-                    if ppdname.find ("-Postscript")!= -1:
-                        return 3 # Postscript
-                    if ppdname.find ("-hpijs") != -1:
-                        if ppdname.find ("hpijs-rss") == -1:
-                            return 4 # hpijs
-                    if ppdname.find ("-gutenprint") != -1:
-                        if ppdname.find ("-simplified")!= -1:
-                            return 5 # gutenprint, simplified
-                        return 6 # gutenprint
-                    return 7 # other driver
-                # Anything else should be a vendor's PPD.
-                return 1 # vendor's own
+        if len (ppdnamelist) < 1:
+            return ppdnamelist
 
-            ta = which_type (a)
-            tb = which_type (b)
+        dict = self.getInfoFromPPDName (ppdnamelist[0])
+        make_model = dict['ppd-make-and-model']
+        mfg, mdl = ppdMakeModelSplit (make_model)
+        def getDriverTypeWithBias (x, mfg):
+            t = getDriverType (x)
+            if mfg == "HP":
+                if t == DRIVER_TYPE_FOOMATIC_HPIJS:
+                    # Prefer HPIJS for HP devices.
+                    t = 1
+                elif t == DRIVER_TYPE_VENDOR:
+                    t = 0
+            return t
+
+        def sort_ppdnames (a, b):
+            ta = getDriverTypeWithBias (a, mfg)
+            tb = getDriverTypeWithBias (b, mfg)
             if ta != tb:
                 if tb < ta:
                     return 1
