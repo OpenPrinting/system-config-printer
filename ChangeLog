@@ -2,6 +2,11 @@
 
 	* foomatic.py: Use /var/cache/foomatic/foomatic.pickle for pickle
 	file.
+	(Foomatic.addCupsPPDs): Strip PS/PXL suffices from CUPS PPD
+	nicknames.
+	(Foomatic.addCupsPPDs): Add loaded PPD drivers to existing
+	printers.
+	(Printer.getPPDDrivers): Strip .gz when comparing file names.
 
 2006-06-29  Tim Waugh  <twaugh@redhat.com>
 

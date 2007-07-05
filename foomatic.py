@@ -330,7 +330,10 @@ class Printer(FoomaticXMLFile):
         for ppd_name in ppds:
             lang = self.foomatic.ppds[ppd_name]['ppd-natural-language']
             if ppd_name.startswith("foomatic-db-ppds/"):
-                foomatic_name = ppd_name.replace("foomatic-db-ppds/", "PPD/")
+                p = ppd_name
+                if p.endswith(".gz"):
+                    p = p[:-3]
+                foomatic_name = p.replace("foomatic-db-ppds/", "PPD/")
                 if foomatic_name in self.drivers.itervalues():
                     print "Dropping %s for %s" % (ppd_name, foomatic_name)
                     continue
@@ -466,25 +469,34 @@ class Foomatic:
         # remove foomatic ppds
         #for name in ppds.keys():
             #if name.startswith("foomatic-db-ppds/"):
-            #    ppds.pop(name)
+                #ppds.pop(name)
         self.ppds = ppds
         for name, ppd in self.ppds.iteritems():
             try:
                 make, model = ppd['ppd-make-and-model'].split(" ", 1)
             except KeyError:
                 continue
+
+            if self.ppd_makes.has_key (make):
+                for suffix in [" PS",
+                               " PXL"]:
+                    if model.endswith (suffix):
+                        model = model[:-len(suffix)]
+                        break
+
             # ppd_makes[make][model] -> [names]
             models = self.ppd_makes.setdefault(make, {})
             ppd_list = models.setdefault(model, [])
             ppd_list.append(name)
             
-            # add to printers in not yet exist
+            # add to printers if not yet exist
             printers = self.makes.setdefault(make, {})
             if printers.has_key(model):
                 if self._printers.has_key(printers[model]): # printer loaded
                     printer = self._printers[printers[model]] # add as driver
                     lang = ppd['ppd-natural-language']
                     self._drivers["CUPS: %s (%s)" % (name, lang)] = name
+                    printer.getPPDDrivers()
             else:
                 #print make, model, name
                 printers[model] = name # add as printer
