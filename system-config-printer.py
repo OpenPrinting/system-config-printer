@@ -707,14 +707,14 @@ class GUI:
         
     def show_IPP_Error(self, exception, message):
         if exception == cups.IPP_NOT_AUTHORIZED:
-            error_text = _('<span weight="bold" size="larger">' +
-                           'Not authorized</span>\n\n' +
-                           'The password may be incorrect.')
+            error_text = ('<span weight="bold" size="larger">' +
+                          _('Not authorized') + '</span>\n\n' +
+                          _('The password may be incorrect.'))
         else:
-            error_text = _('<span weight="bold" size="larger">' +
-                           'CUPS server error</span>\n\n' +
-                           'There was an error during the CUPS ' +
-                           "operation: '%s'.") % message
+            error_text = ('<span weight="bold" size="larger">' +
+                          _('CUPS server error') + '</span>\n\n' +
+                          _("There was an error during the CUPS "\
+                            "operation: '%s'.")) % message
         self.lblError.set_markup(error_text)
         self.ErrorDialog.set_transient_for (self.MainWindow)
         self.ErrorDialog.run()
@@ -737,7 +737,7 @@ class GUI:
                     dialog = gtk.MessageDialog(
                         flags=0, type=gtk.MESSAGE_WARNING,
                         buttons=gtk.BUTTONS_YES_NO,
-                        message_format=_("This will delete this Class!"))
+                        message_format=_("This will delete this class!"))
                     dialog.format_secondary_text(_("Proceed anyway?"))
                     result = dialog.run()
                     dialog.destroy()
