@@ -2594,7 +2594,10 @@ class GUI:
         self.NewPrinterWindow.hide()
         self.populateList()
         if check:
-            self.checkDriverExists (name, ppd=checkppd)
+            try:
+                self.checkDriverExists (name, ppd=checkppd)
+            except:
+                nonfatalException()
 
     def checkDriverExists(self, name, ppd=None):
         """Check that the driver for an existing queue actually
@@ -2659,7 +2662,7 @@ class GUI:
             return None
 
         # Find a 'FoomaticRIPCommandLine' attribute.
-        exepath = None
+        exe = exepath = None
         attr = ppd.findAttr ('FoomaticRIPCommandLine')
         if attr:
             # Foomatic RIP command line to check.
@@ -2702,7 +2705,7 @@ class GUI:
                     # Next pipe.
                     break
 
-        if exepath or not attr:
+        if exepath or not exe:
             # Look for '*cupsFilter' lines in the PPD and check that
             # the filters are installed.
             (tmpfd, tmpfname) = tempfile.mkstemp ()
