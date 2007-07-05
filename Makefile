@@ -16,7 +16,8 @@ SOURCES=cupsd.py         \
 	system-config-printer.gladep
 
 DIST=Makefile \
-	COPYING NEWS README TODO ChangeLog
+	COPYING NEWS README TODO ChangeLog \
+	system-config-printer.desktop
 
 clean:
 	-rm -rf *.pyc *~ *.bak *.orig
