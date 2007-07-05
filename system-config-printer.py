@@ -1245,8 +1245,10 @@ class GUI:
             sys.exit (1)
 
         for widget in (self.entPDescription, self.entPLocation,
-                       self.entPDevice, self.btnSelectDevice,
-                       self.btnChangePPD,
+                       self.entPDevice):
+            widget.set_editable(editable)
+
+        for widget in (self.btnSelectDevice, self.btnChangePPD,
                        self.chkPEnabled, self.chkPAccepting, self.chkPShared,
                        self.cmbPStartBanner, self.cmbPEndBanner,
                        self.cmbPErrorPolicy, self.cmbPOperationPolicy,
