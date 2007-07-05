@@ -8,7 +8,9 @@ SOURCES=cupsd.py         \
 	nametree.py      \
 	optionwidgets.py \
 	probe_printer.py \
-	system-config-printer.py
+	system-config-printer.py \
+	system-config-printer.glade \
+	system-config-printer.gladep
 
 DIST=Makefile \
 	COPYING NEWS README TODO ChangeLog
