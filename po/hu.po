@@ -1,28 +1,27 @@
 # Hungarian translation of printconf
 # Copyright (C) 2004 Red Hat, Inc.
-# This file is distributed under the same license as the PACKAGE package.
-# Sulyok Péter <sp@elte.hu>, 2004.
-# Arpad Biro <biro_arpad@yahoo.com>, 2004, 2006.
 #
+# Sulyok Péter <sp@elte.hu>, 2004.
+# Arpad Biro <biro_arpad@yahoo.com>, 2004, 2006, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: hu\n"
+"Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-04-02 17:13+0100\n"
-"PO-Revision-Date: 2006-10-06 00:18+0200\n"
+"POT-Creation-Date: 2007-03-23 11:08+0000\n"
+"PO-Revision-Date: 2007-04-02 23:23+0200\n"
 "Last-Translator: Arpad Biro <biro_arpad@yahoo.com>\n"
-"Language-Team: Hungarian\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
+"X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../cupshelpers.py:28
 msgid "Idle"
 msgstr "Üresjárat"
 
-#: ../cupshelpers.py:29 ../applet.py:261
+#: ../cupshelpers.py:29 ../applet.py:242
 msgid "Processing"
 msgstr "Feldolgozás"
 
@@ -30,11 +29,11 @@ msgstr "Feldolgozás"
 msgid "Busy"
 msgstr "Foglalt"
 
-#: ../cupshelpers.py:31 ../applet.py:262
+#: ../cupshelpers.py:31 ../applet.py:243
 msgid "Stopped"
 msgstr "Leállítva"
 
-#: ../cupshelpers.py:48 ../applet.py:271
+#: ../cupshelpers.py:48 ../applet.py:252
 msgid "Unknown"
 msgstr "Ismeretlen"
 
@@ -43,16 +42,14 @@ msgid "Conflicts with:"
 msgstr "Ütközik ezzel:"
 
 #: ../system-config-printer.py:256
-#, fuzzy
 msgid "Copyright 2006, 2007 Red Hat, Inc."
-msgstr "Copyright 2006 Red Hat, Inc."
+msgstr "Copyright 2006, 2007 Red Hat, Inc."
 
 #: ../system-config-printer.py:292
 msgid "Server Settings"
 msgstr "Kiszolgáló-beállítások"
 
 #: ../system-config-printer.py:301 ../system-config-printer.py:303
-#, fuzzy
 msgid "Members of this class"
 msgstr "Ezen osztály tagjai"
 
@@ -103,7 +100,7 @@ msgstr "Nyomtató beállítása - %s"
 msgid "Connected to %s"
 msgstr "Csatlakoztatva ide: %s"
 
-#: ../system-config-printer.py:536 ../system-config-printer.py:1147
+#: ../system-config-printer.py:536 ../system-config-printer.py:1139
 msgid "Not connected"
 msgstr "Nincs csatlakoztatva"
 
@@ -124,7 +121,7 @@ msgid "Remote Classes"
 msgstr "Távoli osztályok"
 
 #: ../system-config-printer.py:712
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Connecting to server:\n"
 "%s"
@@ -132,16 +129,15 @@ msgstr ""
 "Csatlakozás ehhez a kiszolgálóhoz:\n"
 "%s"
 
-#: ../system-config-printer.py:1076 ../system-config-printer.glade.h:114
+#: ../system-config-printer.py:1068 ../system-config-printer.glade.h:114
 msgid "Installable Options"
 msgstr "Telepíthető opciók"
 
-#: ../system-config-printer.py:1077 ../system-config-printer.glade.h:190
+#: ../system-config-printer.py:1069 ../system-config-printer.glade.h:190
 msgid "Printer Options"
 msgstr "Nyomtatóbeállítások"
 
-#: ../system-config-printer.py:1086
-#, fuzzy
+#: ../system-config-printer.py:1078
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -151,26 +147,26 @@ msgstr ""
 "A módosítások csak az ütközések\n"
 "feloldása után léphetnek életbe."
 
-#: ../system-config-printer.py:1115 ../system-config-printer.py:1131
-#: ../applet.py:132
+#: ../system-config-printer.py:1107 ../system-config-printer.py:1123
+#: ../applet.py:117
 msgid "Not authorized"
 msgstr "Nincs jogosultság"
 
-#: ../system-config-printer.py:1116 ../applet.py:133
+#: ../system-config-printer.py:1108 ../applet.py:118
 msgid "The password may be incorrect."
 msgstr "Lehetséges, hogy helytelen a jelszó."
 
-#: ../system-config-printer.py:1119 ../system-config-printer.py:1152
-#: ../applet.py:136
+#: ../system-config-printer.py:1111 ../system-config-printer.py:1144
+#: ../applet.py:121
 msgid "CUPS server error"
 msgstr "CUPS-kiszolgálóhiba"
 
-#: ../system-config-printer.py:1120 ../applet.py:137
+#: ../system-config-printer.py:1112 ../applet.py:122
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Hiba történt a CUPS-művelet közben: \"%s\"."
 
-#: ../system-config-printer.py:1132
+#: ../system-config-printer.py:1124
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
@@ -178,58 +174,58 @@ msgstr ""
 "Lehetséges, hogy helytelen a jelszó, vagy pedig a kiszolgáló úgy van "
 "beállítva, hogy utasítsa el a távoli adminisztrációt."
 
-#: ../system-config-printer.py:1137
+#: ../system-config-printer.py:1129
 msgid "Bad request"
 msgstr "Helytelen kérelem"
 
-#: ../system-config-printer.py:1139
+#: ../system-config-printer.py:1131
 msgid "Not found"
 msgstr "Nem található"
 
-#: ../system-config-printer.py:1141
+#: ../system-config-printer.py:1133
 msgid "Request timeout"
 msgstr "Kérelem-időtúllépés"
 
-#: ../system-config-printer.py:1143
+#: ../system-config-printer.py:1135
 msgid "Upgrade required"
 msgstr "Frissítés szükséges"
 
-#: ../system-config-printer.py:1145
+#: ../system-config-printer.py:1137
 msgid "Server error"
 msgstr "Kiszolgálóhiba"
 
-#: ../system-config-printer.py:1149
+#: ../system-config-printer.py:1141
 #, python-format
 msgid "status %d"
 msgstr "állapot: %d"
 
-#: ../system-config-printer.py:1153
+#: ../system-config-printer.py:1145
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "HTTP-hiba történt: %s."
 
-#: ../system-config-printer.py:1176
+#: ../system-config-printer.py:1168
 msgid "This will delete this class!"
 msgstr "Ez az osztály így törlődni fog."
 
-#: ../system-config-printer.py:1177
+#: ../system-config-printer.py:1169
 msgid "Proceed anyway?"
 msgstr "Szeretné mégis folytatni?"
 
-#: ../system-config-printer.py:1358
+#: ../system-config-printer.py:1350
 msgid "Submitted"
 msgstr "Elküldve"
 
-#: ../system-config-printer.py:1359
+#: ../system-config-printer.py:1351
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "A tesztlap elküldve a következő feladat-azonosítóval: %d"
 
-#: ../system-config-printer.py:1369
+#: ../system-config-printer.py:1361
 msgid "Not possible"
 msgstr "Nem lehetséges"
 
-#: ../system-config-printer.py:1370
+#: ../system-config-printer.py:1362
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -237,135 +233,138 @@ msgstr ""
 "A távoli nyomtató nem fogadta el a nyomtatási feladatot - valószínűleg "
 "azért, mert nincs megosztva a nyomtató."
 
-#: ../system-config-printer.py:1431
+#: ../system-config-printer.py:1423
 msgid "Error"
-msgstr ""
+msgstr "Hiba"
 
-#: ../system-config-printer.py:1432
-#, fuzzy
+#: ../system-config-printer.py:1424
 msgid "There was a problem connecting to the CUPS server."
-msgstr "Hiba történt a CUPS-művelet közben: \"%s\"."
+msgstr "Hiba történt a CUPS-kiszolgálóhoz való kapcsolódás közben."
 
-#: ../system-config-printer.py:1495
+#: ../system-config-printer.py:1487
 msgid "This is the default printer"
 msgstr "Ez az alapértelmezett nyomtató"
 
-#: ../system-config-printer.py:1497
+#: ../system-config-printer.py:1489
 #, python-format
 msgid "Default printer is %s"
 msgstr "Az alapértelmezett nyomtató: %s"
 
-#: ../system-config-printer.py:1500
+#: ../system-config-printer.py:1492
 msgid "No default printer set."
 msgstr "Nincs beállítva alapértelmezett nyomtató."
 
-#: ../system-config-printer.py:1586
+#: ../system-config-printer.py:1578
 msgid "Cancel Tests"
-msgstr ""
+msgstr "Tesztek megszakítása"
 
-#: ../system-config-printer.py:1590 ../system-config-printer.glade.h:188
+#: ../system-config-printer.py:1582 ../system-config-printer.glade.h:188
 msgid "Print Test Page"
 msgstr "Tesztlap nyomtatása"
 
-#: ../system-config-printer.py:1845
-#, fuzzy, python-format
+#: ../system-config-printer.py:1837
+#, python-format
 msgid "Really delete printer %s?"
-msgstr "Valóban törli ezt: %s %s?"
+msgstr "Valóban törli a(z) \"%s\" nyomtatót?"
 
-#: ../system-config-printer.py:1847
-#, fuzzy, python-format
+#: ../system-config-printer.py:1839
+#, python-format
 msgid "Really delete class %s?"
-msgstr "Valóban törli ezt: %s %s?"
+msgstr "Valóban törli a(z) \"%s\" osztályt?"
 
-#: ../system-config-printer.py:1895 ../system-config-printer.glade.h:139
+#: ../system-config-printer.py:1887 ../system-config-printer.glade.h:139
 msgid "New Printer"
 msgstr "Új nyomtató"
 
-#: ../system-config-printer.py:1904 ../system-config-printer.glade.h:138
+#: ../system-config-printer.py:1896 ../system-config-printer.glade.h:138
 msgid "New Class"
 msgstr "Új osztály"
 
-#: ../system-config-printer.py:1916
+#: ../system-config-printer.py:1908
 msgid "Change Device URI"
 msgstr "Az eszköz URI-jának módosítása"
 
-#: ../system-config-printer.py:1930
+#: ../system-config-printer.py:1922
 msgid "Change Driver"
 msgstr "Meghajtóprogram módosítása"
 
-#: ../system-config-printer.py:2133
+#: ../system-config-printer.py:2125
 msgid "Other"
 msgstr "Egyéb"
 
-#: ../system-config-printer.py:2135
+#: ../system-config-printer.py:2127
 msgid " (Current)"
 msgstr " (Aktuális)"
 
-#: ../system-config-printer.py:2320
+#: ../system-config-printer.py:2312
 msgid "Verified"
 msgstr "Ellenőrzött"
 
-#: ../system-config-printer.py:2321
+#: ../system-config-printer.py:2313
 msgid "This print share is accessible."
 msgstr "Ez a nyomtatási megosztás elérhető."
 
-#: ../system-config-printer.py:2328
+#: ../system-config-printer.py:2320
 msgid "Inaccessible"
 msgstr "Nem elérhető"
 
-#: ../system-config-printer.py:2329
+#: ../system-config-printer.py:2321
 msgid "This print share is not accessible."
 msgstr "Ez a nyomtatási megosztás nem elérhető."
 
-#: ../system-config-printer.py:2349
+#: ../system-config-printer.py:2341
 msgid "A printer connected to the parallel port."
-msgstr ""
+msgstr "A párhuzamos portra kapcsolt nyomtató."
 
-#: ../system-config-printer.py:2351
+#: ../system-config-printer.py:2343
 msgid "A printer connected to a USB port."
-msgstr ""
+msgstr "Egy USB-portra kapcsolt nyomtató."
 
-#: ../system-config-printer.py:2353
+#: ../system-config-printer.py:2345
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr ""
+"Egy nyomtatót vagy egy többfunkciós eszköz nyomtatási funkcióját "
+"vezérlő HPLIP meghajtóprogram."
 
-#: ../system-config-printer.py:2356
+#: ../system-config-printer.py:2348
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr ""
+"Egy faxgépet vagy egy többfunkciós eszköz fax-funkcióját "
+"vezérlő HPLIP meghajtóprogram."
 
-#: ../system-config-printer.py:2359
+#: ../system-config-printer.py:2351
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
-msgstr ""
+msgstr "A hardverabsztrakciós réteg (HAL) egy helyi nyomtatót érzékelt."
 
-#: ../system-config-printer.py:2602
+#: ../system-config-printer.py:2594
 msgid " (recommended)"
 msgstr " (javasolt)"
 
-#: ../system-config-printer.py:2648
+#: ../system-config-printer.py:2640
 msgid "This PPD is generated by foomatic."
 msgstr "Ezt a PPD-t a Foomatic készítette."
 
-#: ../system-config-printer.py:2651
+#: ../system-config-printer.py:2643
 msgid ""
 "This PPD is provided by the manufacturer and is included with the foomatic "
 "package."
 msgstr "Ezt a PPD-t a gyártó biztosítja és része a Foomatic csomagnak."
 
-#: ../system-config-printer.py:2659
+#: ../system-config-printer.py:2651
 msgid "This PPD is provided by CUPS."
 msgstr "Ezt a PPD-t a CUPS biztosítja."
 
 #. XXX
-#: ../system-config-printer.py:2701
+#: ../system-config-printer.py:2693
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "Új osztály (%s) létrehozása."
 
-#: ../system-config-printer.py:2715
+#: ../system-config-printer.py:2707
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -375,53 +374,57 @@ msgstr ""
 "%s.\n"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:2739
+#: ../system-config-printer.py:2731
 msgid "Database error"
-msgstr ""
+msgstr "Adatbázis-hiba"
 
-#: ../system-config-printer.py:2740
+#: ../system-config-printer.py:2732
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
-msgstr ""
+msgstr "A(z) \"%s\" meghajtóprogram nem használható ezzel a nyomtatóval: \"%s %s\"."
 
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:2750
+#: ../system-config-printer.py:2742
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
-msgstr ""
+msgstr "A meghajtóprogram használatához telepíteni kell a(z) \"%s\" csomagot."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:2757
+#: ../system-config-printer.py:2749
 msgid "PPD error"
-msgstr ""
+msgstr "PPD-hiba"
 
-#: ../system-config-printer.py:2759
+#: ../system-config-printer.py:2751
 msgid "Failed to read PPD file.  Possible reason follows:"
-msgstr ""
+msgstr "Nem sikerült beolvasni a PPD-fájlt. A lehetséges ok:"
 
-#: ../system-config-printer.py:3045 ../system-config-printer.py:3052
+#: ../system-config-printer.py:3037 ../system-config-printer.py:3044
 msgid "Missing driver"
-msgstr ""
+msgstr "Hiányzó meghajtóprogram"
 
-#: ../system-config-printer.py:3046
+#: ../system-config-printer.py:3038
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
 "Please install it before using this printer."
 msgstr ""
+"A(z) \"%s\" nyomtatóhoz szükség van a(z) \"%s\" csomagra, de az jelenleg nincs "
+"telepítve. A nyomtató használata előtt telepítse azt."
 
-#: ../system-config-printer.py:3053
+#: ../system-config-printer.py:3045
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
 "Please install it before using this printer."
 msgstr ""
+"A(z) \"%s\" nyomtatóhoz szükség van a(z) \"%s\" programra, de az jelenleg nincs "
+"telepítve. A nyomtató használata előtt telepítse azt."
 
 #: ../system-config-printer.glade.h:1
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../system-config-printer.glade.h:2
 msgid " PPD "
@@ -436,6 +439,12 @@ msgid ""
 "9\n"
 "16"
 msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
 
 #: ../system-config-printer.glade.h:9
 msgid "<b>Authentication</b>"
@@ -466,27 +475,24 @@ msgid "<b>Comment about the Printer</b>"
 msgstr "<b>Megjegyzés a nyomtatóról</b>"
 
 #: ../system-config-printer.glade.h:14
-#, fuzzy
 msgid "<b>Common Options</b>"
-msgstr "<b>Válasszon kapcsolatot</b>"
+msgstr "<b>Általános opciók</b>"
 
 #: ../system-config-printer.glade.h:15
 msgid "<b>Default Printer</b>"
 msgstr "<b>Alapértelmezett nyomtató</b>"
 
 #: ../system-config-printer.glade.h:16
-#, fuzzy
 msgid "<b>Description</b>"
-msgstr "<b>Leírás</b> (nem kötelező)"
+msgstr "<b>Leírás</b>"
 
 #: ../system-config-printer.glade.h:17
 msgid "<b>Description</b> (optional)"
 msgstr "<b>Leírás</b> (nem kötelező)"
 
 #: ../system-config-printer.glade.h:18
-#, fuzzy
 msgid "<b>Image Options</b>"
-msgstr "<b>Beállítások</b>"
+msgstr "<b>Kép-beállítások</b>"
 
 #: ../system-config-printer.glade.h:19
 msgid "<b>Information about the PPD</b>"
@@ -506,7 +512,7 @@ msgstr "<b>Hely</b> (nem kötelező)"
 
 #: ../system-config-printer.glade.h:23
 msgid "<b>Other Options (Advanced)</b>"
-msgstr ""
+msgstr "<b>Egyéb beállítások (speciális)</b>"
 
 #: ../system-config-printer.glade.h:24
 msgid "<b>Policies</b>"
@@ -537,9 +543,8 @@ msgid "<b>State</b>"
 msgstr "<b>Állapot</b>"
 
 #: ../system-config-printer.glade.h:31
-#, fuzzy
 msgid "<b>Text Options</b>"
-msgstr "<b>Beállítások</b>"
+msgstr "<b>Szöveg-beállítások</b>"
 
 #: ../system-config-printer.glade.h:32
 msgid ""
@@ -599,8 +604,7 @@ msgstr "Távoli adminisztráció engedélyezése"
 
 #: ../system-config-printer.glade.h:48
 msgid "Allow users to cancel any job (not just their own)"
-msgstr ""
-"A felhasználók bármely feladatot szakíthassák meg (ne csak a sajátjaikat)"
+msgstr "A felhasználók bármely feladatot szakíthassák meg (ne csak a sajátjaikat)"
 
 #: ../system-config-printer.glade.h:49
 msgid "Apply"
@@ -824,8 +828,7 @@ msgstr ""
 # at the same time.
 #: ../system-config-printer.glade.h:111
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-msgstr ""
-"Ember által olvasható leírás, például \"HP LaserJet kétoldalas nyomtatással\""
+msgstr "Ember által olvasható leírás, például \"HP LaserJet kétoldalas nyomtatással\""
 
 #: ../system-config-printer.glade.h:112
 msgid "Human-readable location such as \"Lab 1\""
@@ -1014,7 +1017,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr ""
 
-#: ../system-config-printer.glade.h:189 ../applet.py:45
+#: ../system-config-printer.glade.h:189 ../applet.py:43
 msgid "Printer"
 msgstr "Nyomtató"
 
@@ -1043,8 +1046,9 @@ msgid "Reset"
 msgstr ""
 
 #: ../system-config-printer.glade.h:197
+#, fuzzy
 msgid "Reset to system default"
-msgstr ""
+msgstr "alapértelmezett"
 
 #: ../system-config-printer.glade.h:198
 msgid "Right margin:"
@@ -1107,11 +1111,14 @@ msgid "Sides:"
 msgstr ""
 
 #: ../system-config-printer.glade.h:213
+#, fuzzy
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
 msgstr ""
+"alapértelmezett"
+"nyomtató"
 
 #: ../system-config-printer.glade.h:214
 msgid "Starting Banner:"
@@ -1172,8 +1179,7 @@ msgstr "A régi PPD beállításainak átmásolásának megkísérlése. "
 
 #: ../system-config-printer.glade.h:224
 msgid "Use the new PPD (Postscript Printer Description) as is."
-msgstr ""
-"Az új PPD (PostScript-nyomtatóleírás) eredeti formában való használata."
+msgstr "Az új PPD (PostScript-nyomtatóleírás) eredeti formában való használata."
 
 #: ../system-config-printer.glade.h:225
 msgid "User name:"
@@ -1235,128 +1241,126 @@ msgstr "Nyomtatók beállítása"
 msgid "Printing"
 msgstr "Nyomtatás"
 
-#: ../applet.py:43
+#: ../applet.py:41
 msgid "Job"
 msgstr ""
 
-#: ../applet.py:44
+#: ../applet.py:42
 #, fuzzy
 msgid "Document"
 msgstr "Megjegyzés"
 
-#: ../applet.py:46
+#: ../applet.py:44
 msgid "Size"
 msgstr ""
 
-#: ../applet.py:47
+#: ../applet.py:45
 #, fuzzy
 msgid "Time submitted"
 msgstr "Elküldve"
 
-#: ../applet.py:48
+#: ../applet.py:46
 #, fuzzy
 msgid "Status"
 msgstr "állapot: %d"
 
-#: ../applet.py:183
+#: ../applet.py:165
 msgid "No documents queued"
 msgstr ""
 
-#: ../applet.py:186
+#: ../applet.py:168
 msgid "1 document queued"
 msgstr ""
 
-#: ../applet.py:189
+#: ../applet.py:171
 #, python-format
 msgid "%d documents queued"
 msgstr ""
 
-#: ../applet.py:232
+#: ../applet.py:213
 msgid "1 hour ago"
 msgstr ""
 
-#: ../applet.py:234
+#: ../applet.py:215
 msgid "1 hour and 1 minute ago"
 msgstr ""
 
-#: ../applet.py:236
+#: ../applet.py:217
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr ""
 
-#: ../applet.py:239
+#: ../applet.py:220
 #, python-format
 msgid "%d hours ago"
 msgstr ""
 
-#: ../applet.py:241
+#: ../applet.py:222
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr ""
 
-#: ../applet.py:243
+#: ../applet.py:224
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr ""
 
-#: ../applet.py:248
+#: ../applet.py:229
 msgid "a minute ago"
 msgstr ""
 
-#: ../applet.py:250
+#: ../applet.py:231
 #, python-format
 msgid "%d minutes ago"
 msgstr ""
 
-#: ../applet.py:259
+#: ../applet.py:240
 #, fuzzy
 msgid "Pending"
 msgstr "Nyomtatás"
 
-#: ../applet.py:260
+#: ../applet.py:241
 #, fuzzy
 msgid "Held"
 msgstr "_Súgó"
 
-#: ../applet.py:263
+#: ../applet.py:244
 msgid "Canceled"
 msgstr ""
 
-#: ../applet.py:264
+#: ../applet.py:245
 #, fuzzy
 msgid "Aborted"
 msgstr "Névjegy"
 
-#: ../applet.py:265
+#: ../applet.py:246
 #, fuzzy
 msgid "Completed"
 msgstr "Megjegyzés"
 
 #: ../applet.glade.h:4
+#, fuzzy
 msgid "Document print status"
-msgstr ""
+msgstr "nyomtat"
 
 #: ../applet.glade.h:6
+#, fuzzy
 msgid "Re_print"
-msgstr ""
+msgstr "nyomtat"
 
 #: ../applet.glade.h:7
 msgid "Show _completed jobs"
 msgstr ""
 
 #: ../applet.glade.h:9
-msgid "_Hide"
-msgstr ""
-
-#: ../applet.glade.h:10
 msgid "_Hold"
 msgstr ""
 
-#: ../applet.glade.h:11
+#: ../applet.glade.h:10
 msgid "_Release"
 msgstr ""
 
-#: ../applet.glade.h:12
+#: ../applet.glade.h:11
 msgid "_View"
 msgstr ""
 
@@ -1366,16 +1370,7 @@ msgid "Print queue applet"
 msgstr "Tesztlap nyomtatása"
 
 #: ../print-applet.desktop.in.h:2
+#, fuzzy
 msgid "System tray icon for managing print jobs"
-msgstr ""
+msgstr "nyomtat"
 
-#: ../manage-print-jobs.desktop.in.h:1
-msgid "Cancel, pause, resume or reprint jobs"
-msgstr ""
-
-#: ../manage-print-jobs.desktop.in.h:2
-msgid "Manage print jobs"
-msgstr ""
-
-#~ msgid "Specify default job options."
-#~ msgstr "Adja meg az alapértelmezett feladatbeállításokat."
