@@ -181,6 +181,9 @@ class GUI:
                           "lblClassMembers",
                           "tvClassMembers", "tvClassNotMembers",
                           "btnClassAddMember", "btnClassDelMember",
+
+                        "sbJOCopies", "btnJOResetCopies",
+                        "cmbJOOrientationRequested", "btnJOResetOrientationRequested",
                         
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
@@ -322,6 +325,23 @@ class GUI:
         slct = self.tvSMBBrowser.get_selection ()
         slct.set_select_function (self.smb_select_function)
         self.xml.signal_autoconnect(self)
+
+        # Job Options widgets.
+        opts = [ options.OptionAlwaysShown ("copies", int, 1,
+                                            self.sbJOCopies,
+                                            self.btnJOResetCopies),
+
+                 options.OptionAlwaysShown \
+                 ("orientation-requested", int, 3,
+                  self.cmbJOOrientationRequested,
+                  self.btnJOResetOrientationRequested,
+                  combobox_map = [3, 4, 5, 6])
+                 ]
+        self.job_options_widgets = {}
+        self.job_options_buttons = {}
+        for option in opts:
+            self.job_options_widgets[option.widget] = option
+            self.job_options_buttons[option.button] = option
 
         try:
             self.populateList()
@@ -781,6 +801,34 @@ class GUI:
         self.btnPDelUser.set_sensitive(bool(rows))
 
     # Server side options
+    def on_job_option_reset(self, button):
+        option = self.job_options_buttons[button]
+        option.reset ()
+        # Remember to set this option for removal in the IPP request.
+        if self.server_side_options.has_key (option.name):
+            del self.server_side_options[option.name]
+        if option.is_changed ():
+            self.changed.add(option)
+        else:
+            self.changed.discard(option)
+        self.setDataButtonState()
+
+    def on_job_option_changed(self, widget):
+        if not self.printer:
+            return
+        option = self.job_options_widgets[widget]
+        option.changed ()
+        if option.is_changed ():
+            self.server_side_options[option.name] = option
+            self.changed.add(option)
+        else:
+            if self.server_side_options.has_key (option.name):
+                del self.server_side_options[option.name]
+            self.changed.discard(option)
+        self.setDataButtonState()
+        # Don't set the reset button insensitive if the option hasn't
+        # changed from the original value: it's still meaningful to
+        # reset the option to the system default.
 
     def add_option(self, name, value, supported, is_new=False,
                    editable=True):
@@ -1063,7 +1111,7 @@ class GUI:
                 if option not in self.server_side_options:
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
-                if option.is_changed or saveall:
+                if option.is_changed() or saveall:
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
@@ -1335,7 +1383,16 @@ class GUI:
 
         self.entPUser.set_text("")
 
-        # Server side options
+        # Server side options (Job options)
+        self.server_side_options = {}
+        for option in self.job_options_widgets.values ():
+            try:
+                value = self.printer.attributes[option.name]
+                self.server_side_options[option.name] = option
+            except KeyError:
+                option.reinit (None)
+            else:
+                option.reinit (value)
 
         if printer.is_class:
             # remove InstallOptions tab

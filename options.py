@@ -59,7 +59,98 @@ def OptionWidget(name, v, s, on_change):
 
 # ---------------------------------------------------------------------------
 
-class Option:
+class OptionInterface:
+    def get_current_value(self):
+        raise NotImplemented
+
+    def is_changed(self):
+        raise NotImplemented
+
+class OptionAlwaysShown(OptionInterface):
+    # States
+    STATE_UNCHANGED=0
+    STATE_RESET=1
+    STATE_ADJUSTED=2
+
+    def __init__(self, name, ipp_type, system_default,
+                 widget, button, combobox_map = None):
+        self.name = name
+        self.widget = widget
+        self.button = button
+        self.ipp_type = ipp_type
+        self.system_default = self.ipp_type (system_default)
+        self.combobox_map = combobox_map
+        self.reinit (None)
+
+    def reinit(self, original_value):
+        if original_value != None:
+            self.original_value = self.ipp_type (original_value)
+            self.set_widget_value (original_value)
+            self.button.set_sensitive (True)
+        else:
+            self.original_value = None
+            self.set_widget_value (self.system_default)
+            self.button.set_sensitive (False)
+        self.state = self.STATE_UNCHANGED
+
+    def set_widget_value(self, ipp_value):
+        t = type(self.widget)
+        if t == gtk.SpinButton:
+            return self.widget.set_value (ipp_value)
+        elif t == gtk.ComboBox:
+            index = self.combobox_map.index (ipp_value)
+            return self.widget.set_active (index)
+        else:
+            raise NotImplemented
+
+    def get_widget_value(self):
+        t = type(self.widget)
+        if t == gtk.SpinButton:
+            return self.widget.get_value ()
+        elif t == gtk.ComboBox:
+            return self.widget.get_active ()
+
+        print t
+        raise NotImplemented
+
+    def get_current_value(self):
+        t = type(self.widget)
+        if t == gtk.ComboBox:
+            return self.combobox_map[self.get_widget_value ()]
+        return self.ipp_type (self.get_widget_value ())
+
+    def is_changed(self):
+        if self.original_value:
+            # There was a value set previously.
+            if self.state == self.STATE_RESET:
+                # It's been removed.
+                return True
+            if self.state == self.STATE_ADJUSTED:
+                if self.get_current_value () != self.original_value:
+                    return True
+                return False
+
+            # The value is the same as before, and not reset.
+            return False
+
+        # There was no original value set.
+        if self.state == self.STATE_ADJUSTED:
+            # It's been adjusted.
+            return True
+
+        # It's been left alone, or possible adjusted and then reset.
+        return False
+
+    def reset(self):
+        self.set_widget_value (self.system_default)
+        self.state = self.STATE_RESET
+        self.button.set_sensitive (False)
+
+    def changed(self):
+        self.state = self.STATE_ADJUSTED
+        self.button.set_sensitive (True)
+
+class Option(OptionInterface):
 
     conflicts = None
 
