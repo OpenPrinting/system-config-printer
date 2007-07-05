@@ -79,35 +79,20 @@ class Printer:
         attrs = self.connection.getPrinterAttributes(self.name)
         self.attributes = {}
         self.possible_attributes = {
-            'columns' : ('1', (1, 4)),
-            'cpi' : ('10', (1.0, 100.0)),
-            'fitplot' : ('False', ['True', 'False']),
             'landscape' : ('False', ['True', 'False']),
-            'number-up-layout' : ('lrtb', ['btlr', 'btrl', 'lrbt', 'lrtb',
-                                         'rlbt', 'rltb', 'tblr', 'tbrl']),
-            'orientation-requested' : ('3', ['3','4','5','6']),
-            'page-bottom' : ('72', (0, 500)),
-            'page-top' : ('72', (0, 500)),
-            'page-left' : ('72', (0, 500)),
-            'page-right' : ('72', (0, 500)),
             'page-border' : ('none', ['none', 'single', 'single-thick',
                                      'double', 'double-thick']),
-            'prettyprint' : ('False', ['True', 'False']),
-            'lpi' : ('6', (1.0, 100.0)),
-            'scaling' : ('100', (1.0, 1000.0)),
-            'sides' : ('one-sided', ['one-sided', 'two-sided-long-edge',
-                                    'two-sided-short-edge']),
-            'wrap' : ('False', ['True', 'False'])}
+            }
 
         for key, value in attrs.iteritems():
             if key.endswith("-default"):
                 name = key[:-len("-default")]
                 if name in ["job-sheets", "printer-error-policy",
                             "printer-op-policy", # handled below
-                            "notify-events", # not supported by cups
-                            "document-format",        # Not handled
-                            "job-hold-until",         # in the UI
-                            "notify-lease-duration"]: # (yet).
+                            "notify-events", # cannot be set
+                            "document-format", # cannot be set
+                            "notify-lease-duration", # cannot be set
+                            "job-hold-until"]: # no sensible way to implement
                     continue 
 
                 supported = attrs.get(name + "-supported", None) or \
