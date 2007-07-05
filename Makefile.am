@@ -1,14 +1,15 @@
 SUBDIRS=po
-nobase_pkgdata_SCRIPTS=\
-	cupsd.py         \
-	cupshelpers.py   \
-	foomatic.py      \
-	nametree.py      \
-	options.py       \
-	optionwidgets.py \
-	probe_printer.py \
-	system-config-printer.py \
-	gtk_label_autowrap.py \
+nobase_pkgdata_SCRIPTS=				\
+	config.py				\
+	cupsd.py				\
+	cupshelpers.py				\
+	foomatic.py				\
+	nametree.py				\
+	options.py				\
+	optionwidgets.py			\
+	probe_printer.py			\
+	system-config-printer.py		\
+	gtk_label_autowrap.py			\
 	gtk_html2pango.py
 
 nobase_pkgdata_DATA=\

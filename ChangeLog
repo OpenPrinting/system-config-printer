@@ -1,7 +1,15 @@
 2006-06-20  Tim Waugh  <twaugh@redhat.com>
 
+	* Makefile.am: Ship config.py.
+
+	* configure.in: Generate config.py.
+
+	* config.py.in: New file, for any autoconf-generated variables
+	such as VERSION.
+
 	* system-config-printer.py (connect, main): Use gtk.gdk.threads_enter,
 	because gtk.threads_enter is deprecated.
+	(GUI.__init__): Set up "About" dialog strings (bug #192764).
 
 2006-06-19  Tim Waugh  <twaugh@redhat.com>
 

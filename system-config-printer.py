@@ -1,5 +1,8 @@
 #!/bin/env python
 
+# config is generated from config.py.in by configure
+import config
+
 import sys, os, tempfile, time
 import signal, thread
 try:
@@ -130,8 +133,16 @@ class GUI:
                           "rbtnChangePPDasIs",
                           "lblNPApply",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
-                        "AboutDialog",
+
+                        "AboutDialog", "lblVersion", "lblCopyright",
+                        "lblAuthors",
                         )
+
+        # Set up "About" dialog strings.
+        vertext = self.lblVersion.get_text ()
+        self.lblVersion.set_text (vertext % config.VERSION)
+        self.lblCopyright.set_text (_("Copyright 2006 Red Hat, Inc."))
+        self.lblAuthors.set_text ("Florian Festi, Tim Waugh")
 
         self.static_tabs = 3
 
