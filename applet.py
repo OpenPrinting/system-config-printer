@@ -21,8 +21,12 @@ import cups
 import dbus
 import dbus.glib
 import gobject
+import sys
 
-appdir="/usr/share/eggcups"
+APPDIR="/usr/share/system-config-printer"
+DOMAIN="system-config-printer"
+GLADE="applet.glade"
+ICON="applet.png"
 
 class JobManager:
     def __init__(self, bus):
@@ -30,7 +34,7 @@ class JobManager:
         self.jobiters = {}
         self.which_jobs = "not-completed"
 
-        self.xml = gtk.glade.XML(appdir + "/eggcups.glade")
+        self.xml = gtk.glade.XML(APPDIR + "/" + GLADE)
         self.xml.signal_autoconnect(self)
         self.treeview = self.xml.get_widget ('treeview')
         text=0
@@ -76,7 +80,7 @@ class JobManager:
                                  dbus_interface="com.redhat.PrinterSpooler")
 
         self.statusicon = gtk.StatusIcon ()
-        self.statusicon.set_from_file (appdir + "/icon.png")
+        self.statusicon.set_from_file (APPDIR + "/" + ICON)
         self.icon_jobs = self.statusicon.get_pixbuf ()
         self.icon_no_jobs = self.icon_jobs.copy ()
         self.icon_no_jobs.fill (0)
@@ -340,34 +344,43 @@ def do_imports():
         import time
         import gettext
         from gettext import gettext as _
-        gettext.textdomain ("eggcups")
-        gtk.glade.bindtextdomain ("eggcups")
+        gettext.textdomain (DOMAIN)
+        gtk.glade.bindtextdomain (DOMAIN)
 
 ####
 #### PrintDriverSelection DBus server
 ####
+PDS_PATH="/com/redhat/PrintDriverSelection"
+PDS_IFACE="com.redhat.PrintDriverSelection"
+PDS_OBJ="com.redhat.PrintDriverSelection"
 import dbus.service
 class PrintDriverSelection(dbus.service.Object):
     def __init__(self, bus_name):
-        dbus.service.Object.__init__(self, bus_name,
-                                     "/com/redhat/PrintDriverSelection")
+        dbus.service.Object.__init__(self, bus_name, PDS_PATH)
 
-    @dbus.service.method("com.redhat.PrintDriverSelection",
-                         in_signature='ssss', out_signature='')
+    @dbus.service.method(PDF_IFACE, in_signature='ssss', out_signature='')
     def PromptPrintDriver (self, make, model, uid, name):
         do_imports ()
         print "Need to implement PromptPrintDriver"
 
     # Need to add an interface for providing a PPD.
 
-bus = dbus.SessionBus()
-name = dbus.service.BusName ("com.redhat.PrintDriverSelection",
-                             bus=bus)
+bus = dbus.SystemBus()
+name = dbus.service.BusName (PDS_OBJ, bus=bus)
 PrintDriverSelection(name)
 
 ####
 #### Main program entry
 ####
+
+import sys
+for arg in sys.argv:
+    if arg.startswith ("--sm-client-id"):
+        # eggcups was in the default GNOME session in Fedora,
+        # but now we get run from an XDG autostart desktop file.
+        # If we were invoked with a '--sm-client-id' argument then
+        # it was from a session pre-dating Fedora 7 (bug #233261).
+        sys.exit (0)
 
 # Start off just waiting for print jobs.
 def any_jobs ():
