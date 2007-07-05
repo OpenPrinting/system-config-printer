@@ -2520,6 +2520,7 @@ class GUI:
                 'foo2oak-wrapper': None,
                 'pnm2ppa': 'pnm2ppa',
                 'hpijs': 'hpijs',
+                'ijsgutenprint.5.0': 'gutenprint',
                 }
             try:
                 pkg = pkgs[exe]
