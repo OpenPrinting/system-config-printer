@@ -123,7 +123,8 @@ class GUI:
                          "swPInstallOptions", "vbPInstallOptions", 
                          "swPOptions",
                           "lblPOptions", "vbPOptions",
-                         "vbClassMembers", "lblClassMembers",
+                         "algnClassMembers", "vbClassMembers",
+                          "lblClassMembers",
                           "tvClassMembers", "tvClassNotMembers",
                           "btnClassAddMember", "btnClassDelMember",
                          "cmbentNewOption", "tblServerOptions", "btnNewOption",
@@ -1122,7 +1123,7 @@ class GUI:
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
-        tab_nr = self.ntbkPrinter.page_num(self.vbClassMembers)
+        tab_nr = self.ntbkPrinter.page_num(self.algnClassMembers)
         if tab_nr != -1:
             self.ntbkPrinter.remove_page(tab_nr)
 
@@ -1207,9 +1208,9 @@ class GUI:
             self.ntbkPrinter.remove_page(tab_nr)
 
         # insert Member Tab
-        if self.ntbkPrinter.page_num(self.vbClassMembers) == -1:
+        if self.ntbkPrinter.page_num(self.algnClassMembers) == -1:
             self.ntbkPrinter.insert_page(
-                self.vbClassMembers, self.lblClassMembers,
+                self.algnClassMembers, self.lblClassMembers,
                 self.static_tabs)
 
         model_members = self.tvClassMembers.get_model()
