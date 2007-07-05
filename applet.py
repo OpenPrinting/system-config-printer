@@ -165,7 +165,7 @@ class JobManager:
             self.statusicon.set_tooltip (_("No documents queued"))
             self.statusicon.set_from_pixbuf (self.icon_no_jobs)
         elif num_jobs == 1:
-            self.statusicon.set_tooltip (_("%d document queued") % num_jobs)
+            self.statusicon.set_tooltip (_("1 document queued"))
             self.statusicon.set_from_pixbuf (self.icon_jobs)
         else:
             self.statusicon.set_tooltip (_("%d documents queued") % num_jobs)
