@@ -618,7 +618,27 @@ class GUI:
             self.fillServerTab()
             item_selected = False
         elif type in ['Printer', 'Class']:
-            self.fillPrinterTab(name)
+            try:
+                self.fillPrinterTab(name)
+            except cups.IPPError, err:
+                (e, s) = err
+                if e == cups.IPP_NOT_FOUND:
+                    # The remote printer has been removed, but the CUPS
+                    # server we're talking to hasn't timed it out yet.
+                    # Remove it from the list.
+                    print "FIXME: This printer has not timed out yet."
+                    self.tvMainList.get_selection().select_path (0)
+                    self.on_tvMainList_cursor_changed (list)
+                    return
+                elif e == cups.IPP_SERVICE_UNAVAILABLE:
+                    # The remote CUPS server is not available.  Perhaps
+                    # it was stopped?
+                    print "FIXME: CUPS server unavailable"
+                    self.tvMainList.get_selection().select_path (0)
+                    self.on_tvMainList_cursor_changed (list)
+                else:
+                    raise err
+
             self.ntbkMain.set_current_page(1)
 
         for widget in [self.copy, self.delete, self.btnCopy, self.btnDelete]:
