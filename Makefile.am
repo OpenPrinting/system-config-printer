@@ -30,6 +30,10 @@ man_MANS=					\
 	man/system-config-printer.1		\
 	man/system-config-printer-applet.1
 
+dbus_DATA =\
+	newprinternotification.conf
+dbusdir = $(sysconfdir)/dbus-1/system.d/
+
 desktop_DATA =\
 	system-config-printer.desktop \
 	print-applet.desktop \
@@ -74,6 +78,7 @@ EXTRA_DIST=\
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
 	man/system-config-printer.xml \
+	newprinternotification.conf \
 	bootstrap \
 	mkinstalldirs \
 	system-config-printer.gladep \
