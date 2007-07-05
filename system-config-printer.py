@@ -869,7 +869,7 @@ class GUI:
         if not err:
             self.populateList()
         else:
-            pass # XXX
+            nonfatalException()
         
     def apply(self):
         name, type = self.getSelectedItem()
