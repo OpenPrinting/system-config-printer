@@ -489,6 +489,19 @@ class Foomatic:
                 d[dict["model"]] = printer.name
             if dict.has_key("ieee1284"):
                 self._auto_ieee1284[dict["ieee1284"]] = printer.name
+                # Also parse the ID.
+                pieces = dict["ieee1284"].split(";")
+                mfg = mdl = None
+                for piece in pieces:
+                    if piece.find (":") == -1: continue
+                    name, value = piece.split(":",1)
+                    if name == "MFG":
+                        mfg = value
+                    elif name == "MDL":
+                        mdl = value
+                if mfg and mdl:
+                    d = self._auto_make.setdefault(mfg, {})
+                    d[mdl] = printer.name
             if dict.has_key("description"):
                 self._auto_description[dict["description"]] = printer.name
         
