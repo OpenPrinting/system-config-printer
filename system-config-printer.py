@@ -188,6 +188,8 @@ class GUI:
                         "cmbJONumberUp", "btnJOResetNumberUp",
                         "cmbJONumberUpLayout", "btnJOResetNumberUpLayout",
                         "sbJOBrightness", "btnJOResetBrightness",
+                        "tblJOOther",
+                        "entNewJobOption", "btnNewJobOption",
                         
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
@@ -859,83 +861,78 @@ class GUI:
         # changed from the original value: it's still meaningful to
         # reset the option to the system default.
 
-    def add_option(self, name, value, supported, is_new=False,
-                   editable=True):
+    def draw_other_job_options (self):
+        n = len (self.other_job_options)
+        if n == 0:
+            self.tblJOOther.hide_all ()
+            return
+
+        self.tblJOOther.resize (n, 3)
+        children = self.tblJOOther.get_children ()
+        for child in children:
+            self.tblJOOther.remove (child)
+        i = 0
+        for opt in self.other_job_options:
+            self.tblJOOther.attach (opt.label, 0, 1, i, i + 1,
+                                    xoptions=gtk.FILL,
+                                    yoptions=gtk.FILL)
+            opt.label.set_alignment (0.0, 0.5)
+            self.tblJOOther.attach (opt.selector, 1, 2, i, i + 1,
+                                    xoptions=gtk.FILL,
+                                    yoptions=0)
+            opt.selector.set_sensitive (True)
+
+            btn = gtk.Button(stock="gtk-remove")
+            btn.connect("clicked", self.on_btnJOOtherRemove_clicked)
+            btn.set_data("pyobject", opt)
+            self.tblJOOther.attach(btn, 2, 3, i, i + 1,
+                                   xoptions=0,
+                                   yoptions=0)
+            i += 1
+
+        self.tblJOOther.show_all ()
+
+    def add_job_option(self, name, value = "", supported = "", is_new=True):
         option = options.OptionWidget(name, value, supported,
                                       self.option_changed)
         option.is_new = is_new
-        rows = self.tblServerOptions.get_property("n-rows")
-        self.tblServerOptions.resize(rows+1, 3)
-        self.tblServerOptions.attach(option.label, 0, 1, rows, rows+1,
-                                     xoptions=gtk.FILL,
-                                     yoptions=gtk.FILL)
-        option.label.set_alignment(0.0, 0.0)
-        option.label.set_padding(5, 5)
-        align = gtk.Alignment()
-        align.add(option.selector)
-        option.align = align
-        self.tblServerOptions.attach(align, 1, 2, rows, rows+1,
-                                     xoptions=gtk.FILL,
-                                     yoptions=0)
-        option.selector.set_sensitive(editable)
-        if editable:
-            # remove button
-            btn = gtk.Button(stock="gtk-remove")
-            btn.connect("clicked", self.removeOption_clicked)
-            btn.set_data("pyobject", option)
-            align = gtk.Alignment()
-            align.add(btn)
-            self.tblServerOptions.attach(align, 2, 3, rows, rows+1,
-                                         xoptions=0,
-                                         yoptions=gtk.FILL)
-            option.remove_button = align
+        self.other_job_options.append (option)
+        self.draw_other_job_options ()
         self.server_side_options[name] = option
         if name in self.changed: # was deleted before
             option.is_new = False
-            self.changed.discard(name)
-        if option.is_changed():
-            self.changed.add(option)
+        self.changed.add(option)
+        self.setDataButtonState()
+        if is_new:
+            option.selector.grab_focus ()
 
-    def removeOption_clicked(self, button):
+    def on_btnJOOtherRemove_clicked(self, button):
         option = button.get_data("pyobject")
-        self.tblServerOptions.remove(option.label)
-        self.tblServerOptions.remove(option.align)
-        self.tblServerOptions.remove(option.remove_button)
+        self.other_job_options.remove (option)
+        self.draw_other_job_options ()
         if option.is_new:
             self.changed.discard(option)
         else:
             # keep name as reminder that option got deleted
             self.changed.add(option.name)
-            del self.server_side_options[option.name]
-
-        # re add to combobox
-        if option.name in self.printer.possible_attributes:
-            for nr, row in enumerate(self.cmbentNewOption.get_model()):
-                if row[0] > option.name:
-                    self.cmbentNewOption.insert_text(nr, option.name)
-                    break
-            
+        del self.server_side_options[option.name]
         self.setDataButtonState()
 
-    def on_btnNewOption_clicked(self, button):
-        name = self.cmbentNewOption.get_active_text()
-        if name in self.printer.possible_attributes:
-            value, supported = self.printer.possible_attributes[name]
-        else:
-            value, supported = "", ""
-        self.add_option(name, value, supported, is_new=True)
-        self.tblServerOptions.show_all()
-        active = self.cmbentNewOption.get_active()
-        if active >= 0:
-            self.cmbentNewOption.remove_text(active)
-            self.cmbentNewOption.set_active(-1)
-        self.on_cmbentNewOption_changed(self.cmbentNewOption)
+    def on_btnNewJobOption_clicked(self, button):
+        name = self.entNewJobOption.get_text()
+        self.add_job_option(name)
+        self.tblJOOther.show_all()
+        self.entNewJobOption.set_text ('')
+        self.btnNewJobOption.set_sensitive (False)
         self.setDataButtonState()
 
-    def on_cmbentNewOption_changed(self, widget):
-        text = self.cmbentNewOption.get_active_text()
-        active = bool(text) and text not in self.server_side_options
-        self.btnNewOption.set_sensitive(active)
+    def on_entNewJobOption_changed(self, widget):
+        text = self.entNewJobOption.get_text()
+        active = (len(text) > 0) and text not in self.server_side_options
+        self.btnNewJobOption.set_sensitive(active)
+
+    def on_entNewJobOption_activate(self, widget):
+        self.on_btnNewJobOption_clicked (widget) # wrong widget but ok
 
     # set Apply/Revert buttons sensitive    
     def setDataButtonState(self):
@@ -1413,7 +1410,7 @@ class GUI:
         self.entPUser.set_text("")
 
         # Server side options (Job options)
-        self.server_side_options = {}
+        self.server_side_options = {}        
         for option in self.job_options_widgets.values ():
             try:
                 value = self.printer.attributes[option.name]
@@ -1422,6 +1419,18 @@ class GUI:
                 option.reinit (None)
             else:
                 option.reinit (value)
+        self.other_job_options = []
+        self.draw_other_job_options ()
+        for option in self.printer.attributes:
+            if self.server_side_options.has_key (option):
+                continue
+            supported = ""
+            if self.printer.possible_attributes.has_key (option):
+                supported = self.printer.possible_attributes[option][1]
+            self.add_job_option (option, value=self.printer.attributes[option],
+                                 supported=supported, is_new=False)
+        self.entNewJobOption.set_text ('')
+        self.btnNewJobOption.set_sensitive (False)
 
         if printer.is_class:
             # remove InstallOptions tab

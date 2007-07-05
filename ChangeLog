@@ -1,5 +1,16 @@
 2007-02-23  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: "Other" job options.
+	* system-config-printer.py (GUI.draw_other_job_options): New
+	function to redraw the other job options table.
+	(GUI.add_job_option): Implemented for new UI.
+	(GUI.on_btnJOOtherRemove_clicked): Likewise.
+	(GUI.on_btnNewJobOption_clicked): Likewise.
+	(GUI.on_entNewJobOption_changed): Likewise.
+	(GUI.on_entNewJobOption_activate): Pressing Return in the new
+	option text entry widget adds the option.
+	(GUI.fillPrinterTab): Added support for "Other" job options.
+
 	* options.py (OptionAlwaysShown.set_widget_value): Make
 	combobox_map optional.
 	(OptionAlwaysShown.get_current_value): Likewise.
