@@ -94,7 +94,7 @@ class Printer:
             self.connection.rejectJobs(self.name)
 
     def setShared(self,on):
-        self.connection.setPrinterPublished(self.name, on)
+        self.connection.setPrinterShared(self.name, on)
 
     def setErrorPolicy (self, policy):
         self.connection.setPrinterErrorPolicy(self.name, policy)
