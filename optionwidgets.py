@@ -16,7 +16,10 @@ class Option:
         self.option = option
         self.ppd = ppd
         self.gui = gui
-        self.label = gtk.Label(option.text)
+        label = option.text
+        if not label.endswith (':'):
+            label += ':'
+        self.label = gtk.Label(label)
         self.label.set_alignment(0.0, 0.5)
         
 # ---------------------------------------------------------------------------
