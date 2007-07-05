@@ -1110,13 +1110,11 @@ class GUI:
         self.tblServerOptions.show_all()
         self.tblServerOptions.queue_draw()
 
-        # remove InstallOptions tab
-        tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
-        if tab_nr != -1:
-            self.ntbkPrinter.remove_page(tab_nr)
-
         if printer.is_class:
-            # Class
+            # remove InstallOptions tab
+            tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
+            if tab_nr != -1:
+                self.ntbkPrinter.remove_page(tab_nr)
             self.fillClassMembers(name, editable)
         else:
             # real Printer
@@ -1147,13 +1145,18 @@ class GUI:
         ppd = self.ppd
         ppd.markDefaults()
 
+        hasInstallableOptions = False
+        
         # build option tabs
         for group in ppd.optionGroups:
             if group.name == "InstallableOptions":
+                hasInstallableOptions = True
                 container = self.vbPInstallOptions
-                self.ntbkPrinter.insert_page(
-                    self.swPInstallOptions, gtk.Label(group.text),
-                    self.static_tabs)
+                tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
+                if tab_nr == -1:
+                    self.ntbkPrinter.insert_page(
+                        self.swPInstallOptions, gtk.Label(group.text),
+                        self.static_tabs)
             else:
                 frame = gtk.Frame("<b>%s</b>" % group.text)
                 frame.get_label_widget().set_use_markup(True)
@@ -1189,6 +1192,13 @@ class GUI:
                 self.options[option.keyword] = o
                 o.selector.set_sensitive(editable)
 
+        # remove Installable Options tab if not needed
+        if not hasInstallableOptions:
+            tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
+            if tab_nr != -1:
+                self.ntbkPrinter.remove_page(tab_nr)
+
+        # check for conflicts
         for option in self.options.itervalues():
             conflicts = option.checkConflicts()
             if conflicts:
