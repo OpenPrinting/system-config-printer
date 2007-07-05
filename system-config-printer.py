@@ -871,6 +871,9 @@ class GUI:
         message = _("There are conflicting options.\n"
                     "Changes can only be applied after\n"
                     "these conflicts are resolved.")
+        message += "\n\n"
+        for option in self.conflicts:
+            message += option.option.text + "\n"
         self.conflict_dialog.set_markup(message)
         self.conflict_dialog.run()
         self.conflict_dialog.hide()
