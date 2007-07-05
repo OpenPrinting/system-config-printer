@@ -96,7 +96,7 @@ class OptionSelectOne(Option):
         if selected is not None:
             self.selector.set_active(selected)
         else:
-            print "Unknown value:", default
+            print "Unknown value:", value
         self.selector.connect("changed", self.changed)
 
     def get_current_value(self):
