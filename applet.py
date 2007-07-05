@@ -25,6 +25,63 @@ DOMAIN="system-config-printer"
 GLADE="applet.glade"
 ICON="applet.png"
 
+REASON_REPORT=1
+REASON_WARNING=2
+REASON_ERROR=3
+def collect_printer_state_reasons (connection):
+    result = {}
+    printers = connection.getPrinters ()
+    for name, printer in printers.iteritems ():
+        reasons = printer["printer-state-reasons"]
+        if type (reasons) == str:
+            # Work around a bug that was fixed in pycups-1.9.20.
+            reasons = [reasons]
+        bad_reasons = []
+        for reason in reasons:
+            if reason == "none":
+                break
+            if (reason.startswith ("moving-to-paused") or
+                reason.startswith ("paused") or
+                reason.startswith ("shutdown") or
+                reason.startswith ("connecting-to-device") or
+                reason.startswith ("stopping") or
+                reason.startswith ("stopped-partly")):
+                continue
+            bad_reasons.append (reason)
+        if len (bad_reasons):
+            result[name] = bad_reasons
+    return result
+
+def worst_printer_state_reason (connection):
+    """Fetches the printer list and checks printer-state-reason for
+    each printer, returning a triple (printer, reason, level) for the
+    most severe printer-state-reason, with printer==None if there is none."""
+    level = 0
+    worst_reason = None
+    affected_printer = None
+    printer_reasons = collect_printer_state_reasons (connection)
+    for printer, reasons in printer_reasons.iteritems ():
+        for reason in reasons:
+            is_worst = False
+            this_level = 0
+            if reason.endswith ("-report"):
+                if level < REASON_REPORT:
+                    is_worst = True
+                    this_level = REASON_REPORT
+            if reason.endswith ("-warning"):
+                if level < REASON_WARNING:
+                    is_worst = True
+                    this_level = REASON_WARNING
+            elif level < REASON_ERROR:
+                is_worst = True
+                this_level = REASON_ERROR
+
+            if is_worst:
+                level = this_level
+                worst_reason = reason
+                affected_printer = printer
+    return affected_printer, worst_reason, level
+
 class JobManager:
     def __init__(self, bus, loop, service_running=False, trayicon=True):
         self.loop = loop
@@ -103,6 +160,10 @@ class JobManager:
             self.statusicon.set_from_pixbuf (self.icon_no_jobs)
             self.statusicon.connect ('activate', self.toggle_window_display)
             self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
+            self.notify = None
+            if not pynotify.init (PROGRAM_NAME):
+                print >> sys.stderr, ("%s: unable to initialize pynotify" %
+                                      PROGRAM_NAME)
 
         self.refresh ()
 
@@ -154,6 +215,85 @@ class JobManager:
             self.which_jobs = "not-completed"
         self.refresh()
 
+    def check_state_reasons(self, connection, my_printers=set()):
+        (printer, reason, level) = worst_printer_state_reason (connection)
+        if level < REASON_WARNING:
+            return
+
+        if level == REASON_WARNING and reason.endswith ("-warning"):
+            reason = reason[:-8]
+        elif level == REASON_ERROR and reason.endswith ("-error"):
+            reason = reason[:-6]
+
+        messages = {
+            'toner-low': (_("Toner low"),
+                          _("Printer '%s' is low on toner.")),
+            'toner-empty': (_("Toner empty"),
+                            _("Printer '%s' has no toner left.")),
+            'cover-open': (_("Cover open"),
+                           _("The cover is open on printer '%s'.")),
+            'door-open': (_("Door open"),
+                          _("The door is open on printer '%s'.")),
+            'media-low': (_("Paper low"),
+                          _("Printer '%s' is low on paper.")),
+            'media-empty': (_("Paper out"),
+                            _("Printer '%s' is out of paper.")),
+            'marker-supply-low': (_("Ink low"),
+                                  _("Printer '%s' is low on ink.")),
+            'marker-supply-empty': (_("Ink empty"),
+                                    _("Printer '%s' has no ink left.")),
+            }
+
+        if self.trayicon:
+            if level == REASON_WARNING:
+                icon = "/usr/share/icons/gnome/22x22/status/important.png"
+            else:
+                icon = "/usr/share/icons/gnome/22x22/status/error.png"
+
+            pixbuf = self.statusicon.get_pixbuf ().copy ()
+            image = gtk.Image ()
+            image.set_from_file (icon)
+            emblem = image.get_pixbuf ()
+            emblem.composite (pixbuf,
+                              pixbuf.get_width () / 2, 0,
+                              emblem.get_width () / 2,
+                              emblem.get_height () / 2,
+                              pixbuf.get_width () / 2, 0,
+                              0.5, 0.5,
+                              gtk.gdk.INTERP_BILINEAR, 255)
+            self.statusicon.set_from_pixbuf (pixbuf)
+
+            if self.notify and self.notify_last == (printer, reason, level):
+                # Don't send the same notification twice in a row.
+                my_printers = set()
+
+            if printer in my_printers:
+                if level == REASON_WARNING:
+                    notify_urgency = pynotify.URGENCY_LOW
+                    timeout = pynotify.EXPIRES_DEFAULT
+                else:
+                    notify_urgency = pynotify.URGENCY_NORMAL
+                    timeout = pynotify.EXPIRES_NEVER
+
+                try:
+                    (title, text) = messages[reason]
+                    text = text % printer
+                except KeyError:
+                    if level == REASON_WARNING:
+                        title = _("Printer warning")
+                    else:
+                        title = _("Printer error")
+                    text = _("Printer '%s': '%s'.") % (printer, reason)
+
+                if self.notify:
+                    self.notify.close ()
+                self.notify = pynotify.Notification (title, text)
+                self.notify.attach_to_status_icon (self.statusicon)
+                self.notify.set_urgency (notify_urgency)
+                self.notify.set_timeout (timeout)
+                self.notify.show ()
+                self.notify_last = (printer, reason, level)
+
     def refresh(self):
         if self.hidden:
             return
@@ -177,7 +317,6 @@ class JobManager:
             except RuntimeError:
                 return
 
-        del c
         if self.trayicon:
             if num_jobs == 0:
                 self.statusicon.set_tooltip (_("No documents queued"))
@@ -186,10 +325,21 @@ class JobManager:
                 self.statusicon.set_tooltip (_("1 document queued"))
                 self.statusicon.set_from_pixbuf (self.icon_jobs)
             else:
-                self.statusicon.set_tooltip (_("%d documents queued") %
-                                             num_jobs)
+                self.statusicon.set_tooltip (_("%d documents queued")
+                                             % num_jobs)
                 self.statusicon.set_from_pixbuf (self.icon_jobs)
 
+            my_printers = set()
+            for job, data in jobs.iteritems ():
+                state = data.get ('job-state', cups.IPP_JOB_CANCELED)
+                if state >= cups.IPP_JOB_CANCELED:
+                    continue
+                uri = data.get ('job-printer-uri', '/')
+                i = uri.rfind ('/')
+                my_printers.add (uri[i + 1:])
+            self.check_state_reasons (c, my_printers)
+
+        del c
         for job in self.jobs:
             if not jobs.has_key (job):
                 self.store.remove (self.jobiters[job])
@@ -371,8 +521,9 @@ def do_imports():
     global gtk_loaded
     if not gtk_loaded:
         gtk_loaded = True
-        global gtk, pango, time, gettext, _
+        global gtk, pango, pynotify, time, gettext, _
         import gtk, gtk.glade, pango
+        import pynotify
         import time
         import gettext
         from gettext import gettext as _
@@ -449,22 +600,26 @@ if trayicon:
         PrintDriverSelection(name)
         service_running = True
     except:
-        print "%s: failed to start PrintDriverSelection service" % PROGRAM_NAME
+        print >> sys.stderr, \
+              "%s: failed to start PrintDriverSelection service" % PROGRAM_NAME
 
-    # Start off just waiting for print jobs.
-    def any_jobs ():
+    # Start off just waiting for print jobs or printer errors.
+    def any_jobs_or_errors ():
         try:
             c = cups.Connection ()
             if len (c.getJobs (my_jobs=True)):
+                return True
+            (printer, reason, level) = worst_printer_state_reason (c)
+            if level >= REASON_WARNING:
                 return True
         except:
             pass
 
         return False
 
-    if not any_jobs ():
+    if not any_jobs_or_errors ():
         def check_for_jobs (*args):
-            if any_jobs ():
+            if any_jobs_or_errors ():
                 loop.quit ()
 
         bus.add_signal_receiver (check_for_jobs,
