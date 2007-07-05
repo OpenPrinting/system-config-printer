@@ -2338,8 +2338,13 @@ class GUI:
     #    for leaf in treenode.leafs:
     #        self._fillPPDList(iter, leaf)
 
-    def on_tvNPMakes_cursor_changed(self, widget):
-        model, iter = self.tvNPMakes.get_selection().get_selected()
+    def on_tvNPMakes_cursor_changed(self, tvNPMakes):
+        selection = tvNPMakes.get_selection()
+        model, iter = selection.get_selected()
+        if not iter:
+            # Interactively searching.
+            path, column = tvNPMakes.get_cursor()
+            iter = model.get_iter (path)
         self.NPMake = model.get(iter, 0)[0]
         self.fillModelList()
 
@@ -2384,6 +2389,10 @@ class GUI:
              
     def on_tvNPModels_cursor_changed(self, widget):        
         model, iter = widget.get_selection().get_selected()
+        if not iter:
+            # Interactively searching.
+            path, column = widget.get_cursor()
+            iter = model.get_iter (path)
         pmodel = model.get(iter, 0)[0]
         printer = self.foomatic.getMakeModel(self.NPMake, pmodel)
         self.NPModel = pmodel
