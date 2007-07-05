@@ -121,13 +121,14 @@ class GUI:
         # setup Class member lists
         for name, treeview in (("Members", self.tvClassMembers),
                                ("Others", self.tvClassNotMembers),
-                               ("Select Members", self.tvNCMembers)):
+                               (None, self.tvNCMembers)):
             model = gtk.ListStore(str)
             cell = gtk.CellRendererText()
             column = gtk.TreeViewColumn(name, cell, text=0)
             treeview.set_model(model)
             treeview.append_column(column)
             treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+        self.tvNCMembers.set_headers_visible(False)
         
         self.populateList()
         
@@ -1117,7 +1118,9 @@ class GUI:
             options = "+".join(options)
             device =  self.device.uri.split("?")[0] #"serial:/dev/ttyS%s" 
             if options:
-                device = device + "?" + options                
+                device = device + "?" + options
+        elif not self.device.is_class:
+            device = self.device.uri
         else:
             device = self.entNPTDevice.get_text()
         return device
