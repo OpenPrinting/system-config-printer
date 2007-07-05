@@ -716,6 +716,7 @@ class Foomatic:
                     print "      <model>%s</model>" % mdl
                     print "      <description>%s</description>" %\
                           device.id_dict["DES"]
+                    print "URI: %s" % device.uri
                     print "This message is harmless."
                     return mdls[mdl]
 
@@ -745,6 +746,7 @@ class Foomatic:
             print "      <manufacturer>%s</manufacturer>" % mfg
             print "      <model>%s</model>" % mdl
             print "      <description>%s</description>" % device.id_dict["DES"]
+            print "URI: %s" % device.uri
             return best_mdl
 
         return None
