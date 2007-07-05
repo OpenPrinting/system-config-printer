@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-02-07 16:44+0000\n"
+"POT-Creation-Date: 2007-02-08 17:29+0000\n"
 "PO-Revision-Date: 2007-02-08 00:12+0300\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -39,93 +39,90 @@ msgstr "Остановлен"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../optionwidgets.py:107
+#: ../optionwidgets.py:108
 msgid "Conflicts with:"
 msgstr "Конфликтует с:"
 
-#: ../system-config-printer.py:228
+#: ../system-config-printer.py:229
 msgid "Copyright 2006, 2007 Red Hat, Inc."
 msgstr "Copyright 2006, 2007 Red Hat, Inc."
 
-#: ../system-config-printer.py:264
+#: ../system-config-printer.py:265
 msgid "Server Settings"
 msgstr "Параметры сервера"
 
-#: ../system-config-printer.py:273
-#: ../system-config-printer.py:275
+#: ../system-config-printer.py:274 ../system-config-printer.py:276
 msgid "Members of this class"
 msgstr "Члены этого класса"
 
-#: ../system-config-printer.py:274
-#: ../system-config-printer.py:276
+#: ../system-config-printer.py:275 ../system-config-printer.py:277
 msgid "Others"
 msgstr "Другие"
 
-#: ../system-config-printer.py:277
+#: ../system-config-printer.py:278
 msgid "Devices"
 msgstr "Устройства"
 
-#: ../system-config-printer.py:278
+#: ../system-config-printer.py:279
 msgid "Makes"
 msgstr "Производители"
 
-#: ../system-config-printer.py:279
+#: ../system-config-printer.py:280
 msgid "Models"
 msgstr "Модели"
 
-#: ../system-config-printer.py:280
+#: ../system-config-printer.py:281
 msgid "Drivers"
 msgstr "Драйвера"
 
-#: ../system-config-printer.py:281
+#: ../system-config-printer.py:282
 msgid "Users"
 msgstr "Пользователи"
 
-#: ../system-config-printer.py:292
+#: ../system-config-printer.py:293
 msgid "PostScript Printer Description (*.ppd[.gz])"
 msgstr "Описание PostScript принтера (*.ppd[.gz])"
 
 #. SMB list columns
-#: ../system-config-printer.py:312
+#: ../system-config-printer.py:313
 msgid "Share"
 msgstr "Ресурс"
 
-#: ../system-config-printer.py:318
+#: ../system-config-printer.py:319
 msgid "Comment"
 msgstr "Комментарий"
 
-#: ../system-config-printer.py:375
+#: ../system-config-printer.py:376
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Настройка принтера - %s"
 
-#: ../system-config-printer.py:378
+#: ../system-config-printer.py:379
 #, python-format
 msgid "Connected to %s"
 msgstr "Подключен к %s"
 
-#: ../system-config-printer.py:380
-#: ../system-config-printer.py:929
+#: ../system-config-printer.py:381 ../system-config-printer.py:948
 msgid "Not connected"
 msgstr "Не подключен"
 
-#: ../system-config-printer.py:461
+#: ../system-config-printer.py:462
 msgid "Local Printers"
 msgstr "Локальные принтеры"
 
-#: ../system-config-printer.py:462
+#: ../system-config-printer.py:463
 msgid "Local Classes"
 msgstr "Локальные классы"
 
-#: ../system-config-printer.py:463
+#: ../system-config-printer.py:464
 msgid "Remote Printers"
 msgstr "Удаленные принтеры"
 
-#: ../system-config-printer.py:464
+#: ../system-config-printer.py:465
 msgid "Remote Classes"
 msgstr "Удаленные классы"
 
-#: ../system-config-printer.py:545
+#: ../system-config-printer.py:546
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -134,7 +131,15 @@ msgstr ""
 "Подключение к серверу:\n"
 "%s"
 
-#: ../system-config-printer.py:871
+#: ../system-config-printer.py:877 ../system-config-printer.glade.h:95
+msgid "Installable Options"
+msgstr "Устанавливаемые возможности"
+
+#: ../system-config-printer.py:878 ../system-config-printer.glade.h:118
+msgid "Printer Options"
+msgstr "Параметры принтера"
+
+#: ../system-config-printer.py:887
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -144,201 +149,214 @@ msgstr ""
 "Изменения могут быть сохранены\n"
 "только после разрешения конфликта."
 
-#: ../system-config-printer.py:897
-#: ../system-config-printer.py:913
+#: ../system-config-printer.py:916 ../system-config-printer.py:932
 msgid "Not authorized"
 msgstr "Не авторизован"
 
-#: ../system-config-printer.py:898
+#: ../system-config-printer.py:917
 msgid "The password may be incorrect."
 msgstr "Возможно пароль ошибочен."
 
-#: ../system-config-printer.py:901
-#: ../system-config-printer.py:934
+#: ../system-config-printer.py:920 ../system-config-printer.py:953
 msgid "CUPS server error"
 msgstr "Ошибка сервера CUPS"
 
-#: ../system-config-printer.py:902
+#: ../system-config-printer.py:921
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Произошла ошибка при операции CUPS: '%s'."
 
-#: ../system-config-printer.py:914
-msgid "The password may be incorrect, or the server may be configured to deny remote administration."
-msgstr "Пароль может быть неверным или сервер настроен на запрет удаленного управления."
+#: ../system-config-printer.py:933
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr ""
+"Пароль может быть неверным или сервер настроен на запрет удаленного "
+"управления."
 
-#: ../system-config-printer.py:919
+#: ../system-config-printer.py:938
 msgid "Bad request"
 msgstr "Неверный запрос"
 
-#: ../system-config-printer.py:921
+#: ../system-config-printer.py:940
 msgid "Not found"
 msgstr "Не найден"
 
-#: ../system-config-printer.py:923
+#: ../system-config-printer.py:942
 msgid "Request timeout"
 msgstr "Время запроса истекло"
 
-#: ../system-config-printer.py:925
+#: ../system-config-printer.py:944
 msgid "Upgrade required"
 msgstr "Требуется обновление"
 
-#: ../system-config-printer.py:927
+#: ../system-config-printer.py:946
 msgid "Server error"
 msgstr "Ошибка сервера"
 
-#: ../system-config-printer.py:931
+#: ../system-config-printer.py:950
 #, python-format
 msgid "status %d"
 msgstr "статус %d"
 
-#: ../system-config-printer.py:935
+#: ../system-config-printer.py:954
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "Произошла ошибка HTTP: %s."
 
-#: ../system-config-printer.py:958
+#: ../system-config-printer.py:977
 msgid "This will delete this class!"
 msgstr "Это приведет к удалению класса!"
 
-#: ../system-config-printer.py:959
+#: ../system-config-printer.py:978
 msgid "Proceed anyway?"
 msgstr "Продолжить?"
 
-#: ../system-config-printer.py:1136
+#: ../system-config-printer.py:1155
 msgid "Submitted"
 msgstr "Переслано"
 
-#: ../system-config-printer.py:1137
+#: ../system-config-printer.py:1156
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Тестовая страница поставлена в очередь как задание %d"
 
-#: ../system-config-printer.py:1147
+#: ../system-config-printer.py:1166
 msgid "Not possible"
 msgstr "Невозможно"
 
-#: ../system-config-printer.py:1148
-msgid "The remote server did not accept the print job, most likely because the printer is not shared."
-msgstr "Удаленный сервер не принял задание печати, скорее всего потому, что принтер не настроен для общего доступа."
+#: ../system-config-printer.py:1167
+msgid ""
+"The remote server did not accept the print job, most likely because the "
+"printer is not shared."
+msgstr ""
+"Удаленный сервер не принял задание печати, скорее всего потому, что принтер "
+"не настроен для общего доступа."
 
-#: ../system-config-printer.py:1269
+#: ../system-config-printer.py:1288
 msgid "This is the default printer"
 msgstr "Это принтера по умолчанию"
 
-#: ../system-config-printer.py:1271
+#: ../system-config-printer.py:1290
 #, python-format
 msgid "Default printer is %s"
 msgstr "Принтер по умолчанию - %s"
 
-#: ../system-config-printer.py:1274
+#: ../system-config-printer.py:1293
 msgid "No default printer set."
 msgstr "Не задан принтер по умолчанию."
 
-#: ../system-config-printer.py:1349
+#: ../system-config-printer.py:1368
 msgid "Cancel Tests"
 msgstr "Отменить пробные задания"
 
-#: ../system-config-printer.py:1353
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.py:1372 ../system-config-printer.glade.h:116
 msgid "Print Test Page"
 msgstr "Напечатать пробную страницу"
 
-#: ../system-config-printer.py:1601
+#: ../system-config-printer.py:1622
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "Действительно удалить принтер %s?"
 
-#: ../system-config-printer.py:1603
+#: ../system-config-printer.py:1624
 #, python-format
 msgid "Really delete class %s?"
 msgstr "Действительно удалить класс %s?"
 
-#: ../system-config-printer.py:1651
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.py:1672 ../system-config-printer.glade.h:106
 msgid "New Printer"
 msgstr "Новый принтер"
 
-#: ../system-config-printer.py:1660
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.py:1681 ../system-config-printer.glade.h:105
 msgid "New Class"
 msgstr "Новый класс"
 
-#: ../system-config-printer.py:1672
+#: ../system-config-printer.py:1693
 msgid "Change Device URI"
 msgstr "Изменение URI адреса устройства"
 
-#: ../system-config-printer.py:1686
+#: ../system-config-printer.py:1707
 msgid "Change Driver"
 msgstr "Изменение драйвера"
 
-#: ../system-config-printer.py:1889
+#: ../system-config-printer.py:1910
 msgid "Other"
 msgstr "Другой"
 
-#: ../system-config-printer.py:1891
+#: ../system-config-printer.py:1912
 msgid " (Current)"
 msgstr " (текущий)"
 
-#: ../system-config-printer.py:2076
+#: ../system-config-printer.py:2097
 msgid "Verified"
 msgstr "Проверено"
 
-#: ../system-config-printer.py:2077
+#: ../system-config-printer.py:2098
 msgid "This print share is accessible."
 msgstr "Этот принтер (общий ресурс) доступен."
 
-#: ../system-config-printer.py:2084
+#: ../system-config-printer.py:2105
 msgid "Inaccessible"
 msgstr "Недоступно"
 
-#: ../system-config-printer.py:2085
+#: ../system-config-printer.py:2106
 msgid "This print share is not accessible."
 msgstr "Этот принтер (общий ресурс) не доступен."
 
-#: ../system-config-printer.py:2105
+#: ../system-config-printer.py:2126
 msgid "A printer connected to the parallel port."
 msgstr "Принтер подключен к параллельному порту."
 
-#: ../system-config-printer.py:2107
+#: ../system-config-printer.py:2128
 msgid "A printer connected to a USB port."
 msgstr "Принтер подключен к порту USB."
 
-#: ../system-config-printer.py:2109
-msgid "HPLIP software driving a printer, or the printer function of a multi-function device."
-msgstr "Работу принтера обеспечивает HPLIP или функция принтера многофункционального устройства."
+#: ../system-config-printer.py:2130
+msgid ""
+"HPLIP software driving a printer, or the printer function of a multi-"
+"function device."
+msgstr ""
+"Работу принтера обеспечивает HPLIP или функция принтера многофункционального "
+"устройства."
 
-#: ../system-config-printer.py:2112
-msgid "HPLIP software driving a fax machine, or the fax function of a multi-function device."
-msgstr "Работу принтера обеспечивает HPLIP или функция факса многофункционального устройства."
+#: ../system-config-printer.py:2133
+msgid ""
+"HPLIP software driving a fax machine, or the fax function of a multi-"
+"function device."
+msgstr ""
+"Работу принтера обеспечивает HPLIP или функция факса многофункционального "
+"устройства."
 
-#: ../system-config-printer.py:2115
+#: ../system-config-printer.py:2136
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL (Hardware Abstraction Layer) обнаружил локальный принтер."
 
-#: ../system-config-printer.py:2353
+#: ../system-config-printer.py:2374
 msgid " (recommended)"
 msgstr " (рекомендуемый)"
 
-#: ../system-config-printer.py:2395
+#: ../system-config-printer.py:2416
 msgid "This PPD is generated by foomatic."
 msgstr "Данный PPD сформирован foomatic."
 
-#: ../system-config-printer.py:2398
-msgid "This PPD is provided by the manufacturer and is included with the foomatic package."
+#: ../system-config-printer.py:2419
+msgid ""
+"This PPD is provided by the manufacturer and is included with the foomatic "
+"package."
 msgstr "Данный PPD предоставлен производителем и включен в пакет foomatic."
 
-#: ../system-config-printer.py:2406
+#: ../system-config-printer.py:2427
 msgid "This PPD is provided by CUPS."
 msgstr "Данный PPD предоставлен CUPS."
 
 #. XXX
-#: ../system-config-printer.py:2448
+#: ../system-config-printer.py:2469
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "Будет создан новый класс %s."
 
-#: ../system-config-printer.py:2462
+#: ../system-config-printer.py:2483
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -348,11 +366,11 @@ msgstr ""
 "%s.\n"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:2486
+#: ../system-config-printer.py:2507
 msgid "Database error"
 msgstr "Ошибка базы данных"
 
-#: ../system-config-printer.py:2487
+#: ../system-config-printer.py:2508
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Драйвер '%s' не может быть использован с принтером '%s %s'."
@@ -360,34 +378,42 @@ msgstr "Драйвер '%s' не может быть использован с �
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:2497
+#: ../system-config-printer.py:2518
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
-msgstr "Чтобы воспользоваться этим драйвером Вам необходимо установить пакет '%s'."
+msgstr ""
+"Чтобы воспользоваться этим драйвером Вам необходимо установить пакет '%s'."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:2504
+#: ../system-config-printer.py:2525
 msgid "PPD error"
 msgstr "Ошибка PPD"
 
-#: ../system-config-printer.py:2506
+#: ../system-config-printer.py:2527
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Не удалось прочитать файл PPD. Возможные причины:"
 
-#: ../system-config-printer.py:2793
-#: ../system-config-printer.py:2800
+#: ../system-config-printer.py:2814 ../system-config-printer.py:2821
 msgid "Missing driver"
 msgstr "Отсутствует драйвер"
 
-#: ../system-config-printer.py:2794
+#: ../system-config-printer.py:2815
 #, python-format
-msgid "Printer '%s' requires the %s package but it is not currently installed.  Please install it before using this printer."
-msgstr "Принтеру '%s' необходим пакет %s, но он не установлен. Пожалуйста, установите его перед использованием принтера."
+msgid ""
+"Printer '%s' requires the %s package but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"Принтеру '%s' необходим пакет %s, но он не установлен. Пожалуйста, "
+"установите его перед использованием принтера."
 
-#: ../system-config-printer.py:2801
+#: ../system-config-printer.py:2822
 #, python-format
-msgid "Printer '%s' requires the '%s' program but it is not currently installed.  Please install it before using this printer."
-msgstr "Принтеру '%s' необходима програма '%s', но она не установлена. Пожалуйста, установите ее до использования принтера."
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"Принтеру '%s' необходима програма '%s', но она не установлена. Пожалуйста, "
+"установите ее до использования принтера."
 
 #: ../system-config-printer.glade.h:1
 msgid " PPD "
@@ -529,7 +555,8 @@ msgstr "Разрешить удаленное управление"
 
 #: ../system-config-printer.glade.h:37
 msgid "Allow users to cancel any job (not just their own)"
-msgstr "Разрешить пользователям снимать любые задания (не только свои собственные)"
+msgstr ""
+"Разрешить пользователям снимать любые задания (не только свои собственные)"
 
 #: ../system-config-printer.glade.h:38
 msgid "Apply"
@@ -726,10 +753,6 @@ msgstr "Понятное размещение, например, \"Лабора�
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:95
-msgid "Installable Options"
-msgstr "Устанавливаемые возможности"
-
 #: ../system-config-printer.glade.h:96
 msgid "Job Options"
 msgstr "Параметры задания"
@@ -752,7 +775,8 @@ msgstr "Производитель и модель:"
 
 #: ../system-config-printer.glade.h:101
 msgid "May contain any printable characters except \"/\", \"#\", and space"
-msgstr "Может включать любые печатные символы, за исключением \"/\", \"#\" и пробела"
+msgstr ""
+"Может включать любые печатные символы, за исключением \"/\", \"#\" и пробела"
 
 #: ../system-config-printer.glade.h:102
 msgid "Members"
@@ -799,16 +823,18 @@ msgid "Port number"
 msgstr "Номер порта"
 
 #: ../system-config-printer.glade.h:115
-msgid "PostScript Printer Description (PPD) files can often found on the driver disk that comes with the printer. For PostScript printers they are often part of the Windows<sup>®</sup> driver."
-msgstr "Файлы описаний PostScript принтеров (PostScript Printer Description, PPD) могут быть найдены на диске с драйверами из поставки принтера. Для PostScript принтеров они часто входят в состав Windows<sup>®</sup> драйвера."
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"Файлы описаний PostScript принтеров (PostScript Printer Description, PPD) "
+"могут быть найдены на диске с драйверами из поставки принтера. Для "
+"PostScript принтеров они часто входят в состав Windows<sup>®</sup> драйвера."
 
 #: ../system-config-printer.glade.h:117
 msgid "Printer"
 msgstr "Принтер"
-
-#: ../system-config-printer.glade.h:118
-msgid "Printer Options"
-msgstr "Параметры принтера"
 
 #: ../system-config-printer.glade.h:119
 msgid "Printer State:"
@@ -860,7 +886,8 @@ msgstr "Параметры"
 
 #: ../system-config-printer.glade.h:131
 msgid "Share published printers connected to this system"
-msgstr "Открывать доступ к опубликованным принтерам, подключенным к этой системе"
+msgstr ""
+"Открывать доступ к опубликованным принтерам, подключенным к этой системе"
 
 #: ../system-config-printer.glade.h:132
 msgid "Shared"
@@ -888,16 +915,37 @@ msgid "System-Config-Printer %s"
 msgstr "System-Config-Printer %s"
 
 #: ../system-config-printer.glade.h:139
-msgid "The foomatic printer database contains various manufacturer provided PostScript Printer Description (PPD) files and also can generate PPD files for a large number of (non PostScript) printers. But in general manufacturer provided PPD files provide better access to the specific features of the printer."
-msgstr "База принтеров foomatic содержит различные PPD файлы описаний PostScript принтеров (PostScript Printer Description), а также может формировать PPD файлы для большого числа (не PostScript) принтеров. Обычно PPD файлы от производителя предоставляет лучший доступ к специфическим возможностям принтера."
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"База принтеров foomatic содержит различные PPD файлы описаний PostScript "
+"принтеров (PostScript Printer Description), а также может формировать PPD "
+"файлы для большого числа (не PostScript) принтеров. Обычно PPD файлы от "
+"производителя предоставляет лучший доступ к специфическим возможностям "
+"принтера."
 
 #: ../system-config-printer.glade.h:140
-msgid "This is done by assuming that options with the same name do have the same meaning. Settings of options that are not present in the new PPD will be lost and options only present in the new PPD will be set to default."
-msgstr "Это действие будет выполнено с предположением, что параметры с одинаковыми именами имеют одинаковое назначение. Настройки параметров, отсутствующие в новом PPD будут потеряны, а новые параметры в PPD получат значения по умолчанию."
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Это действие будет выполнено с предположением, что параметры с одинаковыми "
+"именами имеют одинаковое назначение. Настройки параметров, отсутствующие в "
+"новом PPD будут потеряны, а новые параметры в PPD получат значения по "
+"умолчанию."
 
 #: ../system-config-printer.glade.h:141
-msgid "This way all current option settings will be lost. The default settings of the new PPD will be used. "
-msgstr "Таким образом все текущие настройки параметров будут потеряны. Будут использованы стандартные настройки нового описания PPD. "
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Таким образом все текущие настройки параметров будут потеряны. Будут "
+"использованы стандартные настройки нового описания PPD. "
 
 #: ../system-config-printer.glade.h:142
 msgid "Try to copy the option settings over from the old PPD. "
@@ -954,4 +1002,3 @@ msgstr "Настройка принтеров"
 #: ../system-config-printer.desktop.in.h:2
 msgid "Printing"
 msgstr "Печать"
-
