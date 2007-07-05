@@ -1309,12 +1309,9 @@ class GUI:
 
     # new printer
     def on_new_printer_activate(self, widget):
-        self.loadFoomatic()
         self.dialog_mode = "printer"
         self.NewPrinterWindow.set_title(_("New Printer"))
         
-        self.fillDeviceTab()
-        self.fillMakeList()
         self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
 
         self.initNewPrinterWindow()
@@ -1423,6 +1420,10 @@ class GUI:
         if self.dialog_mode == "class":
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
+            self.loadFoomatic()
+            if page_nr == 0:
+                self.fillDeviceTab()
+                self.fillMakeList()
             if self.rbtnNPFoomatic.get_active():
                 order = [0, 1, 2, 3, 5]
             else:
