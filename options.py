@@ -88,10 +88,16 @@ class OptionAlwaysShown(OptionInterface):
                 return bool (x)
             ipp_type = bool_type
         self.ipp_type = ipp_type
-        self.system_default = self.ipp_type (system_default)
+        self.set_default (system_default)
         self.combobox_map = combobox_map
         self.use_supported = use_supported
         self.reinit (None)
+
+    def set_default(self, system_default):
+        # For the media option, the system default depends on the printer's
+        # PageSize setting.  This method allows the main module to tell us
+        # what that is.
+        self.system_default = self.ipp_type (system_default)
 
     def reinit(self, original_value, supported=None):
         if (supported != None and
@@ -126,9 +132,6 @@ class OptionAlwaysShown(OptionInterface):
                     iter = model.iter_next (iter)
                 if iter:
                     self.widget.set_active_iter (iter)
-                else:
-                    print "Failed to set option %s to %s" % (self.name,
-                                                             ipp_value)
             else:
                 # It's an int.
                 if self.combobox_map:

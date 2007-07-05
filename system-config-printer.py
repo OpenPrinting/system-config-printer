@@ -139,7 +139,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            #raise ValueError # uncomment for development
+            raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
@@ -1507,8 +1507,16 @@ class GUI:
         self.entPUser.set_text("")
 
         # Server side options (Job options)
-        self.server_side_options = {}        
+        self.server_side_options = {}
         for option in self.job_options_widgets.values ():
+            if option.name == "media" and self.ppd:
+                # Slightly special case because the 'system default'
+                # (i.e. what you get when you press Reset) depends
+                # on the printer's PageSize.
+                opt = self.ppd.findOption ("PageSize")
+                if opt:
+                    option.set_default (opt.defchoice)
+
             try:
                 value = self.printer.attributes[option.name]
             except KeyError:
