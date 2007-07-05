@@ -280,55 +280,47 @@ class Device:
 
 class PrintersConf:
 
+    filename = '/admin/conf/printers.conf'
+    tag = 'Printer'
+    
     def __init__(self, connection):
+        self.set_options = {}
         self.connection = connection
-        self.fetch()
-        self.parse()
+        self.parse(self.fetch('/admin/conf/printers.conf'), 'Printer')
+        self.parse(self.fetch('/admin/conf/classes.conf'), 'Class')
 
-    def fetch(self):
+    def fetch(self, file):
         fd, filename = tempfile.mkstemp("printer.conf")
         os.close(fd)
         try:
-            self.connection.getFile('/admin/conf/printers.conf', filename)
+            self.connection.getFile(file, filename)
         except cups.HTTPError, e:
             if e.args[0] == cups.HTTP_UNAUTHORIZED:
-                self.lines = []
-                return
+                return []
             else:
                 raise e
 
-        self.lines = open(filename).readlines()
+        lines = open(filename).readlines()
         os.unlink(filename)
+        return lines
 
-    def parse(self):
-        self.set_options = {}
+    def parse(self, lines, tag):
         current_printer = None
-        for line in self.lines:
+        for line in lines:
             words = line.split()
             if len (words) == 0:
                 continue
             if words[0] == "Option":
                 self.set_options.setdefault(current_printer, []).append(words[1])
                 continue
-            match = re.match(r"<(Default)?Printer ([^>]+)>\s*\n", line) 
+            match = re.match(r"<(Default)?%s ([^>]+)>\s*\n" % tag, line) 
             if match:
                 current_printer = match.group(2)
-            if line.strip().find("</Printer>") != -1:
+            if line.strip().find("</%s>" % tag) != -1:
                 current_printer = None
 
     def get_options(self, printername):
         return self.set_options.get(printername, [])
-                
-"""
-attrs=c.getPrinterAttributes(printer)
-options=map (lambda x: x[:x.rindex ('-')],
-             filter (lambda x: x.endswith('-default'), attrs.keys()))
-
-specified_options = []
-
-print "Specified options:"
-print map (lambda x: (x, attrs[x + '-default']), specified_options)
-"""
 
 def match(s1, s2):
     if s1==s2: return len(s1)
