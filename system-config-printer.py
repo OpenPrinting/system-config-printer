@@ -116,6 +116,7 @@ class GUI:
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
                            "entNPTIPPHostname", "entNPTIPPPrintername",
+                        "entNPTDirectJetHostname", "entNPTDirectJetPort",
                            "entNPTDevice",
                            "tvNCMembers", "tvNCNotMembers",
                           "rbtnNPPPD", "tvNPMakes", 
@@ -1570,8 +1571,8 @@ class GUI:
     def getDeviceURI(self):
         type = self.device.type
         if type == "socket": # DirectJet
-            host = self.cmbNPTDirectJetHostname.get_text()
-            port = self.cmbNPTDirectJetPort.get_text()
+            host = self.entNPTDirectJetHostname.get_text()
+            port = self.entNPTDirectJetPort.get_text()
             device = "socket://" + host
             if port:
                 device = device + ':' + port
