@@ -1527,6 +1527,7 @@ class GUI:
         devices = devices.values()
         devices.sort()
         self.devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
+                                                      "hpfax:/no_device_found",
                                                       "hal", "beh",
                                                       "scsi", "http"),
                               devices) 
