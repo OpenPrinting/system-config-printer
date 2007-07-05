@@ -598,8 +598,8 @@ class JobManager:
                 if ago > 86400:
                     t = time.ctime (created)
                 elif ago > 3600:
-                    hours = ago / 3600
-                    mins = (ago % 3600) / 60
+                    hours = int (ago / 3600)
+                    mins = int ((ago % 3600) / 60)
                     if hours == 1:
                         if mins == 0:
                             t = _("1 hour ago")
