@@ -9,8 +9,10 @@
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_NONE</property>
   <property name="modal">False</property>
+  <property name="default_width">800</property>
+  <property name="default_height">520</property>
   <property name="resizable">True</property>
-  <property name="destroy_with_parent">False</property>
+  <property name="destroy_with_parent">True</property>
   <property name="decorated">True</property>
   <property name="skip_taskbar_hint">False</property>
   <property name="skip_pager_hint">False</property>
@@ -558,7 +560,7 @@ server3</property>
 				      <child>
 					<widget class="GtkLabel" id="lblPDescription">
 					  <property name="visible">True</property>
-					  <property name="label" translatable="yes">&lt;b&gt;Description:&lt;/b&gt;</property>
+					  <property name="label" translatable="yes">Description:</property>
 					  <property name="use_underline">False</property>
 					  <property name="use_markup">True</property>
 					  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -586,7 +588,7 @@ server3</property>
 				      <child>
 					<widget class="GtkLabel" id="lblPLocation">
 					  <property name="visible">True</property>
-					  <property name="label" translatable="yes">&lt;b&gt;Location:&lt;/b&gt;</property>
+					  <property name="label" translatable="yes">Location:</property>
 					  <property name="use_underline">False</property>
 					  <property name="use_markup">True</property>
 					  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -658,7 +660,7 @@ server3</property>
 				      <child>
 					<widget class="GtkLabel" id="lblPDevice2">
 					  <property name="visible">True</property>
-					  <property name="label" translatable="yes">&lt;b&gt;Device URI:&lt;/b&gt;</property>
+					  <property name="label" translatable="yes">Device URI:</property>
 					  <property name="use_underline">False</property>
 					  <property name="use_markup">True</property>
 					  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -686,7 +688,7 @@ server3</property>
 				      <child>
 					<widget class="GtkLabel" id="lblPState2">
 					  <property name="visible">True</property>
-					  <property name="label" translatable="yes">&lt;b&gt;Printer State:&lt;/b&gt;</property>
+					  <property name="label" translatable="yes">Printer State:</property>
 					  <property name="use_underline">False</property>
 					  <property name="use_markup">True</property>
 					  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -767,7 +769,7 @@ server3</property>
 				      <child>
 					<widget class="GtkLabel" id="lblPMakeModel2">
 					  <property name="visible">True</property>
-					  <property name="label" translatable="yes">&lt;b&gt;Make and Model:&lt;/b&gt;</property>
+					  <property name="label" translatable="yes">Make and Model:</property>
 					  <property name="use_underline">False</property>
 					  <property name="use_markup">True</property>
 					  <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -1609,7 +1611,7 @@ server3</property>
 		    <widget class="GtkHButtonBox" id="hbuttonbox1">
 		      <property name="visible">True</property>
 		      <property name="layout_style">GTK_BUTTONBOX_START</property>
-		      <property name="spacing">0</property>
+		      <property name="spacing">6</property>
 
 		      <child>
 			<widget class="GtkButton" id="btnApply">
@@ -1650,7 +1652,7 @@ server3</property>
 		      <property name="icon_size">5</property>
 		      <property name="xalign">0.5</property>
 		      <property name="yalign">0.5</property>
-		      <property name="xpad">0</property>
+		      <property name="xpad">2</property>
 		      <property name="ypad">0</property>
 		    </widget>
 		    <packing>
@@ -1661,14 +1663,14 @@ server3</property>
 		  </child>
 		</widget>
 		<packing>
-		  <property name="padding">0</property>
+		  <property name="padding">3</property>
 		  <property name="expand">False</property>
 		  <property name="fill">True</property>
 		</packing>
 	      </child>
 	    </widget>
 	    <packing>
-	      <property name="padding">0</property>
+	      <property name="padding">10</property>
 	      <property name="expand">True</property>
 	      <property name="fill">True</property>
 	    </packing>

@@ -70,6 +70,7 @@ class GUI:
                           "tvNPDrivers",
                         
                         )
+
         self.setTitle ()
         self.ntbkMain.set_show_tabs(False)
         self.ntbkNewPrinter.set_show_tabs(False)
@@ -82,13 +83,21 @@ class GUI:
         cell.markup = True
         column.pack_start(cell, True)
         self.tvMainList.append_column(column)
-        self.mainlist = gtk.ListStore(str, str)
-
+        self.mainlist = gtk.TreeStore(str, str)
+        
         self.tvMainList.set_model(self.mainlist)
         column.set_attributes(cell, text=0)
         selection = self.tvMainList.get_selection()
         selection.set_mode(gtk.SELECTION_BROWSE)
         selection.set_select_function(self.maySelectItem)
+
+        self.mainlist.append(None, ("Server Settings", 'Settings'))
+        self.mainlist.append(None, ("Local Printers", ""))
+        self.mainlist.append(None, ("Local Classes", ""))
+        self.mainlist.append(None, ("Remote Printers", ""))
+        self.mainlist.append(None, ("Remote Classes", ""))
+
+        #self.tvMainList.expand_all()
         
         # setup PPD tree
         model = gtk.TreeStore(str)
@@ -147,45 +156,57 @@ class GUI:
 
     def populateList(self):
         old_name, old_type = self.getSelectedItem()
-        select_path = 0
 
-        self.mainlist.clear()
+        select_path = (0, )
 
-        self.mainlist.append(("Server Settings", 'Settings'))
+        #self.mainlist.clear()
 
-        # Printers
+        # get Printers
         self.printers = cupshelpers.getPrinters(self.cups)
         
-        names = self.printers.keys()
-        names.sort()
-
-        self.mainlist.append(("Printers:", ''))
-
         self.default_printer = ""
-        for name in names:
-            printer = self.printers[name]
 
-            #if printer.remote
-            #    continue
-            
+        local_printers = []
+        local_classes = []
+        remote_printers = []
+        remote_classes = []
+
+        for name, printer in self.printers.iteritems():
             if printer.default:
                 self.default_printer = name
-            
-            self.servers.add(printer.getServer())
 
-            if not printer.is_class:
-                iter = self.mainlist.append(('  ' + name, 'Printer'))
-                if name == old_name:
-                    select_path = self.mainlist.get_path(iter)
-        
-        # Classes
-        self.mainlist.append(("Classes:", ''))
-        for name in names:
-            if not self.printers[name].is_class: continue
-            iter = self.mainlist.append((name, 'Class'))       
-            if name == old_name:
-                select_path = self.mainlist.get_path(iter)
+            if printer.remote:
+                if printer.is_class: remote_classes.append(name)
+                else: remote_printers.append(name)
+            else:
+                if printer.is_class: local_classes.append(name)
+                else: local_printers.append(name)
 
+        local_printers.sort()
+        local_classes.sort()
+        remote_printers.sort()
+        remote_classes.sort()
+
+        iter = self.mainlist.get_iter_first()
+        iter = self.mainlist.iter_next(iter)
+        for printers in (local_printers, local_classes,
+                         remote_printers, remote_classes):
+            path = self.mainlist.get_path(iter)
+            expanded = (self.tvMainList.row_expanded(path) or
+                        not self.mainlist.iter_has_child(iter))
+
+            # clear old entries
+            while self.mainlist.iter_has_child(iter):
+                self.mainlist.remove(self.mainlist.iter_children(iter))
+            # add new ones
+            for printer_name in printers:
+                p_iter = self.mainlist.append(iter, (printer_name, "Printer"))
+                if printer_name==old_name:
+                    select_path = self.mainlist.get_path(p_iter)
+            if expanded:
+                self.tvMainList.expand_row(path, False)
+            iter = self.mainlist.iter_next(iter)
+                
         # server combobox
         model = self.cmbServers.get_model()
         model.clear()
@@ -205,7 +226,7 @@ class GUI:
 
     def maySelectItem(self, selection):
         result = self.mainlist.get_value(
-            self.mainlist.get_iter(selection[0]), 1)
+            self.mainlist.get_iter(selection), 1)
         return bool(result)
 
     def getSelectedItem(self):
@@ -524,7 +545,7 @@ class GUI:
         printer = self.printers[name] 
         self.printer = printer
 
-        editable = not self.printer.remote
+        editable = True#not self.printer.remote
 
         self.setCmbServers(printer.getServer())
 
@@ -600,7 +621,8 @@ class GUI:
                 self.ntbkPrinter.insert_page(self.swPInstallOptions,
                                              gtk.Label(group.text), 1)
             else:
-                frame = gtk.Frame (group.text)
+                frame = gtk.Frame("<b>%s</b>" % group.text)
+                frame.get_label_widget().set_use_markup(True)
                 frame.set_shadow_type (gtk.SHADOW_NONE)
                 self.vbPOptions.pack_start (frame, False, False, 0)
                 container = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
@@ -617,15 +639,18 @@ class GUI:
                 rows += 1
                 table.resize (rows, 3)
                 o = OptionWidget(option, ppd, self)
+                table.attach(o.conflictIcon, 0, 1, nr, nr+1, 0, 0, 0, 0)
+
+                hbox = gtk.HBox()
                 if o.label:
                     a = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
                     a.set_padding (0, 0, 0, 6)
                     a.add (o.label)
-                    table.attach(a, 0, 1, nr, nr+1, gtk.FILL, 0, 0, 0)
-                    table.attach(o.selector, 1, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    table.attach(a, 1, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    table.attach(hbox, 2, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
                 else:
-                    table.attach(o.selector, 0, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
-                table.attach(o.conflictIcon, 2, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    table.attach(hbox, 1, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
+                hbox.pack_start(o.selector, False)
                 self.options[option.keyword] = o
                 o.selector.set_sensitive(editable)
 
@@ -766,12 +791,16 @@ class GUI:
     def initNewPrinterWindow(self, prototype=None):
         self.ntbkNewPrinter.set_current_page(0)
         self.setNPButtons()
-        self.fillPPDList()
+        self.fillDeviceTab()
         if prototype:
             pass
         else:
             pass
             #self.
+
+    def fillDeviceTab(self):
+        devices = cupshelpers.getDevices()
+        
 
     def on_NewPrinterWindow_delete_event(self, widget, event):
         self.NewPrinterWindow.hide()
@@ -804,9 +833,6 @@ class GUI:
         print args
 
     # Device URI
-
-    def fillDeviceTab(self):
-        pass
 
     def on_cmbNPType_changed(self, widget):
         self.ntbkNPType.set_current_page(widget.get_active())
