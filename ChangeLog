@@ -1,5 +1,17 @@
 2007-06-08  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.on_tvNPDevices_cursor_changed):
+	Use PPDs class for ID matching.
+	(GUI.fillMakeList): Use PPDs class.
+	(GUI.fillModelList): Likewise.
+	(GUI.on_tvNPModels_cursor_changed): Likewise.
+	(GUI.on_tvNPDrivers_cursor_changed): Likewise.
+	(GUI.getNPPPD): Likewise.
+	(GUI.loadPPDs): New method, replacing loadFoomatic().
+	(GUI.dropPPDs): New method, replacing unloadFoomatic().
+	(GUI.on_btnChangePPD_clicked): Load PPDs on demand.
+	(GUI.on_btnChangePPD_clicked): Don't drop PPDs each time.
+
 	* ppds.py (PPDs.getPPDNameFromDeviceID): Display message to stdout
 	when the ID was not matched.
 

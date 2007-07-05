@@ -314,7 +314,7 @@ class PPDs:
         debugprint (str (ppdnamelist))
 
         if not id_matched:
-            print "No ID match for device:"
+            print "No ID match for device %s:" % uri
             print "  <manufacturer>%s</manufacturer>" % mfg
             print "  <model>%s</model>" % mdl
             print "  <description>%s</description>" % description

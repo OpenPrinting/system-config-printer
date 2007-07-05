@@ -45,7 +45,7 @@ import pysmb
 import cupshelpers, options
 import gobject # for TYPE_STRING and TYPE_PYOBJECT
 from optionwidgets import OptionWidget
-from foomatic import Foomatic
+import ppds
 from nametree import BuildTree
 from cupsd import CupsConfig
 import probe_printer
@@ -108,7 +108,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            #raise ValueError # uncomment for development
+            raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
@@ -499,6 +499,7 @@ class GUI:
     def getPPDs_thread(self):
         try:
             print "Connecting (PPDs)"
+            # FIXME: Need to set correct server etc.
             c = cups.Connection ()
             print "Fetching PPDs"
             self.ppds_result = c.getPPDs()
@@ -521,18 +522,17 @@ class GUI:
         print "Got PPDs"
         return self.ppds_result
 
-    def loadFoomatic(self):
+    def loadPPDs(self):
         try:
-            return self.foomatic
+            return self.ppds
         except:
             self.queryPPDs ()
-            self.foomatic = Foomatic() # this works on the local db
-            self.foomatic.addCupsPPDs(self.fetchPPDs(), self.cups)
-            return self.foomatic
+            self.ppds = ppds.PPDs(self.fetchPPDs ())
+            return self.ppds
 
-    def unloadFoomatic(self):
+    def dropPPDs(self):
         try:
-            del self.foomatic
+            del self.ppds
         except:
             pass
 
@@ -730,7 +730,7 @@ class GUI:
 
         self.lblConnecting.set_text(_("Connecting to server:\n%s") %
                                     servername)
-        self.unloadFoomatic()
+        self.dropPPDs()
         self.ConnectingDialog.set_transient_for(self.MainWindow)
         self.ConnectingDialog.show()
         self.connect_thread = thread.start_new_thread(
@@ -758,8 +758,7 @@ class GUI:
 
         try:
             connection = cups.Connection()
-            foomatic = Foomatic()
-            foomatic.addCupsPPDs(connection.getPPDs(), connection)
+            self.dropPPDs ()
         except RuntimeError, s:
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
@@ -779,7 +778,6 @@ class GUI:
         gtk.gdk.threads_enter()
 
         try:
-            self.foomatic = foomatic
             self.ConnectingDialog.hide()
             self.cups = connection
             self.setConnected()
@@ -1943,7 +1941,7 @@ class GUI:
     def on_btnSelectDevice_clicked(self, button):
         self.busy (self.MainWindow)
         self.queryDevices (self.printer.device_uri)
-        self.loadFoomatic()
+        self.loadPPDs()
         self.dialog_mode = "device"
         self.initNewPrinterWindow()
         self.NewPrinterWindow.set_title(_("Change Device URI"))
@@ -1957,7 +1955,6 @@ class GUI:
     # change PPD
     def on_btnChangePPD_clicked(self, button):
         self.busy (self.MainWindow)
-        self.loadFoomatic()
         self.dialog_mode = "ppd"
         self.initNewPrinterWindow()
         self.NewPrinterWindow.set_title(_("Change Driver"))
@@ -1990,6 +1987,7 @@ class GUI:
             self.auto_make = 'Raw'
             self.auto_model = 'Queue'
 
+        self.loadPPDs ()
         self.fillMakeList()
         self.initNewPrinterWindow()
         self.ready (self.MainWindow)
@@ -2049,7 +2047,7 @@ class GUI:
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
             self.busy (self.NewPrinterWindow)
-            self.loadFoomatic()
+            self.loadPPDs()
             if page_nr == 0:
                 self.fillDeviceTab()
                 self.fillMakeList()
@@ -2508,15 +2506,24 @@ class GUI:
         self.auto_make, self.auto_model = None, None
 
         try:
-            printer_name = self.foomatic.getPrinterFromCupsDevice(self.device)
+            if self.device.id:
+                id_dict = self.device.id_dict
+                (status, ppdname) = self.ppds.\
+                                    getPPDNameFromDeviceID (id_dict["MFG"],
+                                                            id_dict["MDL"],
+                                                            id_dict["DES"],
+                                                            id_dict["CMD"],
+                                                            self.device.uri)
+
+                if status < self.ppds.STATUS_NO_DRIVER:
+                    ppddict = self.ppds.getInfoFromPPDName (ppdname)
+                    make_model = ppddict['ppd-make-and-model']
+                    (make, model) = ppds.ppdMakeModelSplit (make_model)
+                    self.auto_make = make
+                    self.auto_model = model
         except:
             nonfatalException ()
-            printer_name = None
 
-        if printer_name:
-            printer = self.foomatic.getPrinter(printer_name)
-            if printer:
-                self.auto_make, self.auto_model = printer.make, printer.model
         self.fillMakeList()
 
     def on_btnNPTLpdProbe_clicked(self, button):
@@ -2602,7 +2609,7 @@ class GUI:
     # PPD from foomatic
 
     def fillMakeList(self):
-        makes = self.foomatic.getMakes()
+        makes = self.ppds.getMakes()
         model = self.tvNPMakes.get_model()
         model.clear()
         found = False
@@ -2651,7 +2658,7 @@ class GUI:
         self.fillModelList()
 
     def fillModelList(self):
-        models = self.foomatic.getModels(self.NPMake)
+        models = self.ppds.getModels(self.NPMake)
         model = self.tvNPModels.get_model()
         model.clear()
         selected = False
@@ -2668,26 +2675,19 @@ class GUI:
             self.tvNPModels.scroll_to_cell(0, None, True, 0.0, 0.0)
         self.on_tvNPModels_cursor_changed(self.tvNPModels)
         
-    def fillDriverList(self, printer):
+    def fillDriverList(self, ppdnamelist):
         model = self.tvNPDrivers.get_model()
         model.clear()
-        self.NPDrivers = printer.drivers.keys()
-        self.NPDrivers.sort()
-        found = False
-        remote_driver="foomatic:%s-%s.ppd" % (printer.name, printer.driver)
-        for driver in self.NPDrivers:
-            if (driver==printer.driver or
-                ((not found) and driver == remote_driver)):
-                iter = model.append((driver + _(" (recommended)"),))
-                path = model.get_path(iter)
+        self.NPDrivers = ppdnamelist
+        for i in range (len (ppdnamelist)):
+            driver = self.NPDrivers[i]
+            if i == 0:
+                iter = model.append ((driver + _(" (recommended)"),))
+                path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.5)
-                found = True
             else:
                 model.append((driver, ))
-
-        if not found:
-             self.tvNPDrivers.get_selection().select_path(0)
              
     def on_tvNPModels_cursor_changed(self, widget):        
         model, iter = widget.get_selection().get_selected()
@@ -2696,13 +2696,13 @@ class GUI:
             path, column = widget.get_cursor()
             iter = model.get_iter (path)
         pmodel = model.get(iter, 0)[0]
-        printer = self.foomatic.getMakeModel(self.NPMake, pmodel)
+        ppdnamelist = self.ppds.getInfoFromModel(self.NPMake, pmodel).keys ()
         self.NPModel = pmodel
-        self.fillDriverList(printer)
+        self.fillDriverList(ppdnamelist)
 
         if self.frmNPPDescription.flags() & gtk.VISIBLE:
-            self.lblNPPDescription.set_markup(printer.getCommentPango(
-                self.language, "en"))
+            # This used to come from the foomatic database.
+            self.lblNPPDescription.set_markup('')
         self.on_tvNPDrivers_cursor_changed(self.tvNPDrivers)
 
     def on_tvNPDrivers_cursor_changed(self, widget):
@@ -2716,26 +2716,13 @@ class GUI:
                 nr = model.get_path(iter)[0]
                 drivername = self.NPDrivers[nr]
                 if self.frmNPDDescription.flags() & gtk.VISIBLE:
-                    driver = self.foomatic.getDriver (drivername)
-                    self.lblNPDDescription.set_markup(
-                        driver.getCommentPango(self.language, "en"))
-                if self.frmNPPPDDescription.flags() & gtk.VISIBLE: 
-                    printer = self.foomatic.getMakeModel (self.NPMake,
-                                                          self.NPModel)
-                    ppd = printer.drivers[drivername]
-                    if (not ppd or ppd.startswith ("foomatic:")):
-                        markup = _("This PPD is generated by foomatic.")
-                    elif (ppd.startswith ("foomatic-db-ppds/") or
-                          ppd.startswith ("PPD/")):
-                        markup = _("This PPD is provided by the manufacturer "
-                                   "and is included with the foomatic "
-                                   "package.")
-                    else:
-                        try:
-                            fppd = self.foomatic.ppds[ppd]
-                            markup = fppd['ppd-make-and-model'] + '\n'
-                        except KeyError:
-                            markup += _("This PPD is provided by CUPS.")
+                    # This used to come from the foomatic database.
+                    self.lblNPDDescription.set_markup('')
+                if self.frmNPPPDDescription.flags() & gtk.VISIBLE:
+                    ppddict = self.ppds.getInfoFromPPDName (drivername)
+                    markup = ppddict['ppd-make-and-model'] + '\n'
+                    if (drivername.startswith ("foomatic:")):
+                        markup += _("This PPD is generated by foomatic.")
 
                     self.lblNPPPDDescription.set_markup (markup)
         self.setNPButtons()
@@ -2768,8 +2755,7 @@ class GUI:
             model, iter = self.tvNPDrivers.get_selection().get_selected()
             nr = model.get_path(iter)[0]
             driver = self.NPDrivers[nr]
-            printer = self.foomatic.getMakeModel(self.NPMake, self.NPModel)
-            return printer.getPPD(driver)
+            return driver
         else:
             return cups.PPD(self.filechooserPPD.get_filename())
 
