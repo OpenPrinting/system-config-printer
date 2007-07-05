@@ -82,6 +82,25 @@ def percentEncode (text):
         i += 1
     return text
 
+def percentDecode (text):
+    """Percent-decode URI text to ASCII."""
+    l = len (text)
+    r = 0
+    w = ''
+    xdigs = "01234567890abcdef"
+    while r < l:
+        if r + 2 < l and text[r] == '%':
+            c10 = xdigs.find (text[r + 1].lower ())
+            if c10 != -1:
+                c01 = xdigs.find (text[r + 2].lower ())
+                if c01 != -1:
+                    w += chr (c10 * 0x10 + c01)
+                    r += 3
+        else:
+            w += text[r]
+            r += 1
+    return w
+
 class GUI:
 
     def __init__(self):
@@ -1064,7 +1083,11 @@ class GUI:
         if uri.startswith("smb://"):
             group, host, share, user, password = self.parse_SMBURI(uri[6:])
             if password:
-                uri = "smb://" + self.construct_SMBURI(group, host, share, user, '*' * len(password))
+                ellipsis = unichr(0x2026)
+                uri = "smb://"
+                if len (user) or len (password):
+                    uri += ellipsis
+                uri += self.construct_SMBURI(group, host, share)
                 self.entPDevice.set_sensitive(False)
         self.entPDevice.set_text(uri)
         self.changed.discard(self.entPDevice)
@@ -1798,16 +1821,18 @@ class GUI:
             if p != -1:
                 host = host[:p]
         share = uri
-        return (group, host, share, user, password)
+        return (group, host, share,
+                percentDecode (user), percentDecode (password))
 
     def construct_SMBURI (self, group, host, share,
                           user = '', password = ''):
         uri_password = ''
         if password:
-            uri_password = ':' + password
+            uri_password = ':' + percentEncode (password)
         if user:
             uri_password += '@'
-        return "%s%s%s/%s/%s" % (user, uri_password, group, host, share)
+        return "%s%s%s/%s/%s" % (percentEncode (user),
+                                 uri_password, group, host, share)
 
     def on_entSMBURI_changed (self, ent):
         try:
@@ -2010,7 +2035,7 @@ class GUI:
             uri = self.entSMBURI.get_text ()
             (group, host, share, u, p) = self.parse_SMBURI (uri)
             user = self.entSMBUsername.get_text ()
-            password = percentEncode (self.entSMBPassword.get_text ())
+            password = self.entSMBPassword.get_text ()
             uri = self.construct_SMBURI (group, host, share, user, password)
             device = "smb://" + uri
         elif not self.device.is_class:
