@@ -964,6 +964,7 @@ class NewPrinterNotification(dbus.service.Object):
         n.set_timeout (pynotify.EXPIRES_NEVER)
         n.attach_to_status_icon (jobmanager.statusicon)
         n.show ()
+        self.notify = n
 
     def run_config_tool (self, argv):
         import os
