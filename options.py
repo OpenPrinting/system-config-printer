@@ -78,6 +78,15 @@ class OptionAlwaysShown(OptionInterface):
         self.name = name
         self.widget = widget
         self.button = button
+        if ipp_type == bool:
+            def bool_type (x):
+                if type (x) == str:
+                    if x.lower () in ("false", "no", "off"):
+                        return False
+                    # Even the empty string is true.
+                    return True
+                return bool (x)
+            ipp_type = bool_type
         self.ipp_type = ipp_type
         self.system_default = self.ipp_type (system_default)
         self.combobox_map = combobox_map
