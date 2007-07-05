@@ -127,9 +127,9 @@ class GUI:
         # =======
         try:
             #raise ValueError # uncomment for development
-            self.xml = gtk.glade.XML(glade_file)
+            self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
-            self.xml = gtk.glade.XML(domain + '.glade')
+            self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
 
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
                         "statusbarMain",
