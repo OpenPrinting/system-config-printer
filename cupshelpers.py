@@ -250,7 +250,15 @@ class PrintersConf:
     def fetch(self):
         fd, filename = tempfile.mkstemp("printer.conf")
         os.close(fd)
-        self.connection.getFile('/admin/conf/printers.conf', filename)
+        try:
+            self.connection.getFile('/admin/conf/printers.conf', filename)
+        except cups.HTTPError, e:
+            if e.args[0] == cups.HTTP_UNAUTHORIZED:
+                self.lines = []
+                return
+            else:
+                raise e
+
         self.lines = open(filename).readlines()
         os.unlink(filename)
 
