@@ -1,4 +1,16 @@
+2007-03-16  Tim Waugh  <twaugh@redhat.com>
+
+	* options.py (OptionAlwaysShown.set_widget_value): Handle str-type
+	IPP enums.
+	(OptionAlwaysShown.get_widget_value): Likewise.
+
 2007-03-13  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (Printer._getAttributes): Handle 'media'.
+	* system-config-printer.py (GUI.fillPrinterTab): Pass supported
+	values through to the option widget, if supplied.
+	* options.py (OptionAlwaysShown.reinit): Fit the supported list,
+	if supplied, to	the combobox.
 
 	* cupshelpers.py (Printer._getAttributes): Handle 'job-priority'.
 	* system-config-printer.py (GUI.__init__): Likewise.

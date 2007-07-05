@@ -105,10 +105,9 @@ class Printer:
                 if name in ["job-sheets", "printer-error-policy",
                             "printer-op-policy", # handled below
                             "notify-events", # not supported by cups
-                            "media",                  # Not handled
-                            "document-format",        # in the UI
-                            "job-hold-until",         # (yet).
-                            "notify-lease-duration",  #
+                            "document-format",        # Not handled
+                            "job-hold-until",         # in the UI
+                            "notify-lease-duration",  # (yet).
                             "sides"]:                 #
                     continue 
 

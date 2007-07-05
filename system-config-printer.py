@@ -190,6 +190,7 @@ class GUI:
                         "sbJOBrightness", "btnJOResetBrightness",
                         "cmbJOFinishings", "btnJOResetFinishings",
                         "sbJOJobPriority", "btnJOResetJobPriority",
+                        "cmbJOMedia", "btnJOResetMedia",
                         "cbJOMirror", "btnJOResetMirror",
                         "sbJOScaling", "btnJOResetScaling",
                         "sbJOSaturation", "btnJOResetSaturation",
@@ -398,6 +399,16 @@ class GUI:
                  options.OptionAlwaysShown ("job-priority", int, 50,
                                             self.sbJOJobPriority,
                                             self.btnJOResetJobPriority),
+
+                 options.OptionAlwaysShown ("media", str,
+                                            "A4", # This is the default for
+                                                  # when media-default is
+                                                  # not supplied by the IPP
+                                                  # server.  Fortunately it
+                                                  # is a mandatory attribute.
+                                            self.cmbJOMedia,
+                                            self.btnJOResetMedia,
+                                            use_supported = True),
 
                  options.OptionAlwaysShown ("mirror", bool, False,
                                             self.cbJOMirror,
@@ -1503,7 +1514,11 @@ class GUI:
             except KeyError:
                 option.reinit (None)
             else:
-                option.reinit (value)
+                if self.printer.possible_attributes.has_key (option.name):
+                    supported = self.printer.possible_attributes[option.name][1]
+                    option.reinit (value, supported=supported)
+                else:
+                    option.reinit (value)
                 self.server_side_options[option.name] = option
             option.widget.set_sensitive (editable)
             if not editable:

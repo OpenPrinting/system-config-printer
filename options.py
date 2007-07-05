@@ -74,7 +74,7 @@ class OptionAlwaysShown(OptionInterface):
     STATE_ADJUSTED=2
 
     def __init__(self, name, ipp_type, system_default,
-                 widget, button, combobox_map = None):
+                 widget, button, combobox_map = None, use_supported = False):
         self.name = name
         self.widget = widget
         self.button = button
@@ -90,9 +90,19 @@ class OptionAlwaysShown(OptionInterface):
         self.ipp_type = ipp_type
         self.system_default = self.ipp_type (system_default)
         self.combobox_map = combobox_map
+        self.use_supported = use_supported
         self.reinit (None)
 
-    def reinit(self, original_value):
+    def reinit(self, original_value, supported=None):
+        if (supported != None and
+            self.use_supported and
+            type(self.widget) == gtk.ComboBox and
+            self.ipp_type == str):
+            model = self.widget.get_model ()
+            model.clear ()
+            for each in supported:
+                iter = model.append ()
+                model.set_value (iter, 0, each)
         if original_value != None:
             self.original_value = self.ipp_type (original_value)
             self.set_widget_value (self.original_value)
@@ -108,11 +118,24 @@ class OptionAlwaysShown(OptionInterface):
         if t == gtk.SpinButton:
             return self.widget.set_value (ipp_value)
         elif t == gtk.ComboBox:
-            if self.combobox_map:
-                index = self.combobox_map.index (ipp_value)
+            if self.ipp_type == str and self.combobox_map == None:
+                model = self.widget.get_model ()
+                iter = model.get_iter_first ()
+                while (iter != None and
+                       model.get_value (iter, 0) != ipp_value):
+                    iter = model.iter_next (iter)
+                if iter:
+                    self.widget.set_active_iter (iter)
+                else:
+                    print "Failed to set option %s to %s" % (self.name,
+                                                             ipp_value)
             else:
-                index = ipp_value
-            return self.widget.set_active (index)
+                # It's an int.
+                if self.combobox_map:
+                    index = self.combobox_map.index (ipp_value)
+                else:
+                    index = ipp_value
+                return self.widget.set_active (index)
         elif t == gtk.CheckButton:
             return self.widget.set_active (ipp_value)
         else:
@@ -121,20 +144,21 @@ class OptionAlwaysShown(OptionInterface):
     def get_widget_value(self):
         t = type(self.widget)
         if t == gtk.SpinButton:
-            return self.widget.get_value ()
+            return self.ipp_type (self.widget.get_value ())
         elif t == gtk.ComboBox:
-            return self.widget.get_active ()
+            if self.combobox_map:
+                return self.combobox_map[self.widget.get_active()]
+            if self.ipp_type == str:
+                return self.widget.get_active_text ()
+            return self.ipp_type (self.widget.get_active ())
         elif t == gtk.CheckButton:
-            return self.widget.get_active ()
+            return self.ipp_type (self.widget.get_active ())
 
         print t
         raise NotImplemented
 
     def get_current_value(self):
-        t = type(self.widget)
-        if t == gtk.ComboBox and self.combobox_map:
-            return self.combobox_map[self.get_widget_value ()]
-        return self.ipp_type (self.get_widget_value ())
+        return self.get_widget_value ()
 
     def is_changed(self):
         if self.original_value != None:
