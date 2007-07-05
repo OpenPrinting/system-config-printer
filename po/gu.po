@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: gu\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2006-11-06 13:23+0000\n"
+"POT-Creation-Date: 2006-11-07 13:52+0000\n"
 "PO-Revision-Date: 2006-11-06 10:35+0530\n"
 "Last-Translator: Ankit Patel <ankit@redhat.com>\n"
 "Language-Team: Gujarati <fedora-trans-gu@redhat.com>\n"
@@ -334,11 +334,19 @@ msgstr "ડેટાબેઝ ભૂલ"
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' ડ્રાઈવર એ પ્રિન્ટર '%s %s' સાથે વાપરી શકાશે નહિં."
 
-#: ../system-config-printer.py:2565 ../system-config-printer.py:2572
+#. This printer references some XML that is not installed
+#. by default.  Point the user at the package they need
+#. to install.
+#: ../system-config-printer.py:2320
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr ""
+
+#: ../system-config-printer.py:2592 ../system-config-printer.py:2599
 msgid "Missing driver"
 msgstr "ગુમ થયેલ ડ્રાઈવર"
 
-#: ../system-config-printer.py:2566
+#: ../system-config-printer.py:2593
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
@@ -347,7 +355,7 @@ msgstr ""
 "પ્રિન્ટર '%s' માટે %s પેકેજ જરૂરી છે પરંતુ તે વર્તમાનમાં સ્થાપિત નથી.  મહેરબાની કરીને તેને આ "
 "પ્રિન્ટરની મદદથી સ્થાપિત કરો."
 
-#: ../system-config-printer.py:2573
+#: ../system-config-printer.py:2600
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "

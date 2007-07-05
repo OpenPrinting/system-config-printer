@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: printconf 0\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2006-11-06 13:23+0000\n"
+"POT-Creation-Date: 2006-11-07 13:52+0000\n"
 "PO-Revision-Date: 2006-11-04 15:53+0100\n"
 "Last-Translator: Renato Pavicic <renato@translator-shop.org>\n"
 "Language-Team: Croatian <www.translator-shop.org>\n"
@@ -317,11 +317,19 @@ msgstr "Pogreška baze podataka"
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Upravljački program '%s' nije moguće upotrijebiti za pisač '%s %s'."
 
-#: ../system-config-printer.py:2565 ../system-config-printer.py:2572
+#. This printer references some XML that is not installed
+#. by default.  Point the user at the package they need
+#. to install.
+#: ../system-config-printer.py:2320
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr ""
+
+#: ../system-config-printer.py:2592 ../system-config-printer.py:2599
 msgid "Missing driver"
 msgstr "Nedostaje upravljački program"
 
-#: ../system-config-printer.py:2566
+#: ../system-config-printer.py:2593
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
@@ -330,7 +338,7 @@ msgstr ""
 "Pisač '%s' potražuje paket %s, koji trenutno nije instaliran. Prije upotrebe "
 "ovog pisača instalirajte taj paket."
 
-#: ../system-config-printer.py:2573
+#: ../system-config-printer.py:2600
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "

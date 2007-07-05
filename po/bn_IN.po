@@ -46,7 +46,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2006-11-06 13:23+0000\n"
+"POT-Creation-Date: 2006-11-07 13:52+0000\n"
 "PO-Revision-Date: 2006-11-06 09:12+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali India\n"
@@ -369,11 +369,19 @@ msgstr "ডাটাবপস সংক্রান্ত ত্রুটি"
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' ড্রাইভারটি '%s %s' প্রিন্টারের সাথে ব্যবহার করা সম্ভব নয়।"
 
-#: ../system-config-printer.py:2565 ../system-config-printer.py:2572
+#. This printer references some XML that is not installed
+#. by default.  Point the user at the package they need
+#. to install.
+#: ../system-config-printer.py:2320
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr ""
+
+#: ../system-config-printer.py:2592 ../system-config-printer.py:2599
 msgid "Missing driver"
 msgstr "অনুপস্থিত ড্রাইভার"
 
-#: ../system-config-printer.py:2566
+#: ../system-config-printer.py:2593
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
@@ -382,7 +390,7 @@ msgstr ""
 "'%s' প্রিন্টারের জন্য %s প্যাকেজের উপস্থিতি আবশ্যক হলেও এটি বর্তমানে ইনস্টল করা "
 "নেই।  অনুগ্রহ করে প্রিন্টার ব্যবহারের পূর্বে এটি ইনস্টল করুন।"
 
-#: ../system-config-printer.py:2573
+#: ../system-config-printer.py:2600
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "

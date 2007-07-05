@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hi\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2006-11-06 13:23+0000\n"
+"POT-Creation-Date: 2006-11-07 13:52+0000\n"
 "PO-Revision-Date: 2006-11-03 17:10+0530\n"
 "Last-Translator: Rajesh Ranjan <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -324,11 +324,19 @@ msgstr ""
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr ""
 
-#: ../system-config-printer.py:2565 ../system-config-printer.py:2572
+#. This printer references some XML that is not installed
+#. by default.  Point the user at the package they need
+#. to install.
+#: ../system-config-printer.py:2320
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr ""
+
+#: ../system-config-printer.py:2592 ../system-config-printer.py:2599
 msgid "Missing driver"
 msgstr "गुम ड्राइवर"
 
-#: ../system-config-printer.py:2566
+#: ../system-config-printer.py:2593
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
@@ -337,7 +345,7 @@ msgstr ""
 "'%s' मुद्रक %s संकुल की जरूरत होती है लेकिन यह अभी अधिष्ठापित नहीं है.  कृपया इस मुद्रक के "
 "प्रयोग के पहले इसे अधिष्ठापित करें."
 
-#: ../system-config-printer.py:2573
+#: ../system-config-printer.py:2600
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "

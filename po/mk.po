@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mk\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2006-11-06 13:23+0000\n"
+"POT-Creation-Date: 2006-11-07 13:52+0000\n"
 "PO-Revision-Date: 2004-10-18 22:16+0200\n"
 "Last-Translator: Arangel Angov <ufo@linux.net.mk>\n"
 "Language-Team: Macedonian <ossm-members@hedona.on.net.mk>\n"
@@ -331,19 +331,27 @@ msgstr ""
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr ""
 
-#: ../system-config-printer.py:2565 ../system-config-printer.py:2572
+#. This printer references some XML that is not installed
+#. by default.  Point the user at the package they need
+#. to install.
+#: ../system-config-printer.py:2320
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr ""
+
+#: ../system-config-printer.py:2592 ../system-config-printer.py:2599
 #, fuzzy
 msgid "Missing driver"
 msgstr "Драјвер за печатачот"
 
-#: ../system-config-printer.py:2566
+#: ../system-config-printer.py:2593
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
 "Please install it before using this printer."
 msgstr ""
 
-#: ../system-config-printer.py:2573
+#: ../system-config-printer.py:2600
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
