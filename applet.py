@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 ## Copyright (C) 2007 Tim Waugh <twaugh@redhat.com>
 ## Copyright (C) 2007 Red Hat, Inc.

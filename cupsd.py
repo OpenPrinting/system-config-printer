@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/env python
 import re
 from rhpl.Conf import Conf
 
