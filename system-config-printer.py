@@ -26,7 +26,7 @@ class GUI:
         self.passwd_retry = False
         cups.setPasswordCB(self.cupsPasswdCallback)        
 
-        self.changed = {}
+        self.changed = set() # of options
 
         self.cups = cups.Connection()
         # XXX Error handling
@@ -38,7 +38,7 @@ class GUI:
         # =======
         self.xml = gtk.glade.XML("system-config-printer.glade")
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
-                        "btnApply", "btnRevert",
+                        "btnApply", "btnRevert", "imgConflict",
                         "entPDescription", "entPLocation", "lblPMakeModel",
                         "lblPState", "entPDevice",
                         "vbPInstallOptions", "vbPOptions", "ntbkPrinter",
@@ -90,6 +90,9 @@ class GUI:
         self.tvNPDrivers.append_column(column)
         self.tvNPDriversModel = model
 
+        self.tooltips = gtk.Tooltips()
+        self.tooltips.enable()
+        
         self.xml.signal_autoconnect(self)
 
     def getWidgets(self, *names):
@@ -118,8 +121,8 @@ class GUI:
         self.mainlist.append(("Printers:", ''))
 
         for name in names:
-            if self.printers[name]["printer-type"] & cups.CUPS_PRINTER_REMOTE:
-                continue
+            #if self.printers[name]["printer-type"] & cups.CUPS_PRINTER_REMOTE:
+            #    continue
             self.mainlist.append(('  ' + name, 'Printer'))
         
         # Classes
@@ -247,15 +250,29 @@ class GUI:
 
     # Data handling
 
-    def option_changed(self, option, changed):
-        if changed:
-            self.changed[option] = 1
+    def option_changed(self, option):
+        if option.is_changed():
+            self.changed.add(option)
         else:
-            self.changed.pop(option, None)
+            self.changed.discard(option)
 
+        if option.conflicts:
+            self.conflicts.add(option)
+        else:
+            self.conflicts.discard(option)
+
+        self.setDataButtonState()
+
+    def setDataButtonState(self):
         for button in [self.btnApply, self.btnRevert]:
-            button.set_sensitive(bool(self.changed))
+            button.set_sensitive(bool(self.changed) and
+                                 not bool(self.conflicts))
 
+        if self.conflicts:
+            self.imgConflict.show()
+        else:
+            self.imgConflict.hide()
+            
     def on_btnApply_clicked(self, widget):
         name, type = self.getSelectedItem()
         if type == "Printer":
@@ -334,8 +351,11 @@ class GUI:
             item.set_sensitive(item_selected)
             
     def fillPrinterTab(self, name):
-        self.changed = {}
-        self.option_changed(None, False) # set Apply/Revert buttons
+        self.changed = set() # of options
+        self.options = {} # keyword -> Option object
+        self.conflicts = set() # of options
+
+        # XXX self.option_changed(None, False) # set Apply/Revert buttons
         
         # Description page
         printer_states = { cups.IPP_PRINTER_IDLE: "Idle",
@@ -369,8 +389,6 @@ class GUI:
         ppd = cups.PPD(self.cups.getPPD(name))
         ppd.markDefaults()
         self.ppd = ppd
-
-        self.options = []
         
         for group in ppd.optionGroups:
             if group.name == "InstallableOptions":
@@ -385,7 +403,7 @@ class GUI:
                 container.set_padding (0, 0, 12, 0)
                 frame.add (container)
 
-            table = gtk.Table(1, 2, False)
+            table = gtk.Table(1, 3, False)
             container.add(table)
 
             rows = 0
@@ -393,7 +411,7 @@ class GUI:
                 if option.keyword == "PageRegion":
                     continue
                 rows += 1
-                table.resize (rows, 2)
+                table.resize (rows, 3)
                 o = OptionWidget(option, ppd, self)
                 if o.label:
                     a = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
@@ -403,14 +421,21 @@ class GUI:
                     table.attach(o.selector, 1, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
                 else:
                     table.attach(o.selector, 0, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
-                self.options.append(o)
+                table.attach(o.conflictIcon, 2, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
+                self.options[option.keyword] = o
+
+        for option in self.options.itervalues():
+            conflicts = option.checkConflicts()
+            if conflicts:
+                self.conflicts.add(option)
 
         self.swPInstallOptions.show_all()
         self.swPOptions.show_all()
+        self.setDataButtonState()
 
     def getPrinterSettings(self):
         self.ppd.markDefaults()
-        for option in self.options:
+        for option in self.options.itervalues():
             option.writeback()
         print self.ppd.conflicts(), "conflicts"
 
@@ -483,6 +508,7 @@ class GUI:
         self.setNPButtons()
 
     def on_btnNPForward_clicked(self, widget):
+        print "XX"
         self.ntbkNewPrinter.next_page()
         self.setNPButtons()
 

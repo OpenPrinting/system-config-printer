@@ -16,12 +16,18 @@ class Option:
         self.option = option
         self.ppd = ppd
         self.gui = gui
-        label = option.text
-        if not label.endswith (':'):
-            label += ':'
-        self.label = gtk.Label(label)
-        self.label.set_alignment(0.0, 0.5)
+        self.eventbox = gtk.EventBox()
+        self.imgConflict = gtk.image_new_from_stock("gtk-dialog-warning", 4)
+        self.imgConflict.set_padding(10, 3)
+        self.imgConflict.hide()
+        self.imgConflict.set_no_show_all(True)
+        self.eventbox.add(self.imgConflict)
+        self.conflictIcon = self.eventbox
 
+        self.constraints = [c for c in ppd.constraints
+                            if c.option1 == option.keyword]
+        self.conflicts = set()
+        
     def is_changed(self):
         raise NotImplemented
 
@@ -34,26 +40,52 @@ class Option:
     def writeback(self):
         self.ppd.markOption(self.option.keyword, self.get_current_value())
 
-    def on_change(self, widget):
+    def checkConflicts(self, update_others=True):
         value = self.get_current_value()
-        for constraint in self.ppd.constraints:
-            if constraint.option1 == self.option.keyword:
-                if (not constraint.choice1 or
-                    constraint.choice1==value):
-                    option = self.gui.options.get(constraint.option2, None)
-                    if option is None: continue
-                    
-                    #if not contraint.choice2 or  
-                    print (constraint.option1, constraint.choice1,
-                           constraint.option2, constraint.choice2)
-        self.gui.option_changed(self, self.is_changed())
+        for constraint in self.constraints:
+            option2 = self.gui.options.get(constraint.option2, None)
+            if option2 is None: continue
+
+            if ((not constraint.choice1 or
+                constraint.choice1==value) and                    
+                (not constraint.choice2 or
+                 option2.get_current_value() == constraint.choice2)):
+                # conflict
+                self.conflicts.add(constraint)
+                if update_others:
+                    option2.checkConflicts(update_others=False)
+            elif constraint in self.conflicts:
+                # remove conflict
+                self.conflicts.remove(constraint)
+                option2.checkConflicts(update_others=False)
+
+
+        tooltip = ["Conflicts with:"] # XXX i18n
+        for c in self.conflicts:
+            option = self.gui.options.get(c.option2)
+            tooltip.append(option.option.text)
+            
+        tooltip = "\n".join(tooltip)
+            
+        if self.conflicts:
+            self.gui.tooltips.set_tip(self.eventbox, tooltip,
+                                      "OPTION-" + self.option.keyword)
+            self.imgConflict.show()
+        else:
+            self.imgConflict.hide()
+
+        self.gui.option_changed(self)
+        return self.conflicts
+            
+    def on_change(self, widget):
+        self.checkConflicts()
 
 # ---------------------------------------------------------------------------
 
 class OptionBool(Option):
 
     def __init__(self, option, ppd, gui):
-        self.selector = gtk.CheckButton (option.text)
+        self.selector = gtk.CheckButton(option.text)
         self.label = None
         self.selector.set_active(option.defchoice == 'True')
         self.selector.set_alignment(0.0, 0.5)
@@ -72,6 +104,12 @@ class OptionPickOne(Option):
     def __init__(self, option, ppd, gui):
         self.selector = gtk.combo_box_new_text()
         #self.selector.set_alignment(0.0, 0.5)
+
+        label = option.text
+        if not label.endswith (':'):
+            label += ':'
+        self.label = gtk.Label(label)
+        self.label.set_alignment(0.0, 0.5)
         
         selected = None
         for nr, choice in enumerate(option.choices):
