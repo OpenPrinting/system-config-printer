@@ -117,9 +117,6 @@ class Printer:
                     self.possible_attributes[name] = (
                         value, attrs[name+"-supported"]) 
         
-        #print set_attributes
-        #print self.attributes, self.possible_attributes
-
         self.job_sheet_start, self.job_sheet_end = attrs.get(
             'job-sheets-default', ('none', 'none'))
         self.job_sheets_supported = attrs.get('job-sheets-supported', ['none'])

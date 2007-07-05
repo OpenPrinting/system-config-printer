@@ -248,12 +248,8 @@ class Printer(FoomaticXMLFile):
         """
         if driver_name is None: driver_name = self.driver
         if self.drivers.has_key(driver_name):
-            print self.name, driver_name
             if self.drivers[driver_name]:
-                print "PPD name:", self.drivers[driver_name]
-                # XXX cups ppds
                 if self.foomatic.ppds.has_key(self.drivers[driver_name]):
-                    print "Cups PPD"
                     return self.drivers[driver_name]
                     #try:
                     #    filename = self.foomatic.connection.getPPD(
@@ -293,7 +289,6 @@ class Printer(FoomaticXMLFile):
                 os.remove (fname)
                 return ppdobj
         else:
-            print self.name, driver_name
             return None
     
     def parse_autodetect(self, root_node):
@@ -309,7 +304,6 @@ class Printer(FoomaticXMLFile):
                     data[name] = node.first_cdata
             else:
                 pass
-                #print node.name
         return data
 
     def parse_xml(self, root_node):
@@ -363,7 +357,6 @@ class Printer(FoomaticXMLFile):
                 self.comments_dict = self.parse_lang_tree(child)
             else:
                 pass
-                #print "Ignoring", child.name
                 
         if self.id:
             if self.id.startswith('printer/'):                
@@ -525,7 +518,6 @@ class Foomatic:
                     self._drivers["CUPS: %s (%s)" % (name, lang)] = name
                     printer.getPPDDrivers()
             else:
-                #print make, model, name
                 printers[model] = name # add as printer
             if ppd.has_key('ppd-device-id') and ppd['ppd-device-id']:
                 self._auto_ieee1284.setdefault(ppd['ppd-device-id'],
@@ -798,7 +790,7 @@ class Foomatic:
         print "URI: %s" % device.uri
         return None
 
-    def getPPD(self, make, model, description="", languages=[]):
+    def getPPD(self, make, model, description="", commandsets=[]):
         # check for make, model
         if (self._auto_make.has_key(make) and
             self._auto_make[make].has_key(model)):
@@ -806,9 +798,12 @@ class Foomatic:
         # check description
         elif description and self._auto_description.has_key(description):
             printer = self.getPrinter(self._auto_description[description])
-
-        # generic ppd
-        # XXX
+        elif "postscript" in commandsets:
+            printer =  self.getPrinter("Generic-PostScript_Printer")
+        elif "pclxl" in commandsets:
+            printer = self.getPrinter("Generic-PCL_6_PCL_XL_Printer")
+        elif "pcl" in commandsets:
+            printer = self.getPrinter("Generic-PCL_3_Printer")
         else:
             return None
         return printer.getPPD()
