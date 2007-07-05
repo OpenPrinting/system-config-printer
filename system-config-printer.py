@@ -42,6 +42,7 @@ class GUI:
                         
                         
                         )
+        self.setTitle ()
         self.ntbkMain.set_show_tabs(False)
         self.ntbkNewPrinter.set_show_tabs(False)
         self.ntbkNPType.set_show_tabs(False)
@@ -70,6 +71,12 @@ class GUI:
             if widget is None:
                 raise ValueError, "Widget '%s' not found" % name
             setattr(self, name, widget)
+
+    def setTitle(self):
+        host = cups.getServer ()
+        if host[0] == '/':
+            host = 'localhost'
+        self.MainWindow.set_title ("Printer configuration - %s" % host)
 
     def populateList(self):
         self.mainlist.clear()
@@ -143,6 +150,7 @@ class GUI:
 
         try:
             connection = cups.Connection() # XXX timeout?
+            self.setTitle()
         except:
             connection = None
 
