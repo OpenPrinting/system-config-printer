@@ -1336,7 +1336,8 @@ class GUI:
             self.cups.deletePrinter(name)
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
-                            
+
+        self.changed = set()
         self.populateList()
 
     # About dialog
