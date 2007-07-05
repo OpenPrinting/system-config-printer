@@ -21,14 +21,14 @@
 import gtk.glade, cups
 from rhpl.translate import _
 
-def OptionWidget(option, ppd, gui):
+def OptionWidget(option, ppd, gui, tab_label=None):
     """Factory function"""
     if option.ui == cups.PPD_UI_BOOLEAN:
-        return OptionBool(option, ppd, gui)
+        return OptionBool(option, ppd, gui, tab_label=tab_label)
     elif option.ui == cups.PPD_UI_PICKONE:
-        return OptionPickOne(option, ppd, gui)
+        return OptionPickOne(option, ppd, gui, tab_label=tab_label)
     elif option.ui == cups.PPD_UI_PICKMANY:
-        return OptionPickMany(option, ppd, gui)
+        return OptionPickMany(option, ppd, gui, tab_label=tab_label)
 
 # ---------------------------------------------------------------------------
 
@@ -37,11 +37,12 @@ class Option:
     dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
                                buttons=gtk.BUTTONS_OK)
 
-    def __init__(self, option, ppd, gui):
+    def __init__(self, option, ppd, gui, tab_label=None):
         self.option = option
         self.ppd = ppd
         self.gui = gui
         self.enabled = True
+        self.tab_label = tab_label
 
         vbox = gtk.VBox()
         
@@ -135,7 +136,7 @@ class Option:
 
 class OptionBool(Option):
 
-    def __init__(self, option, ppd, gui):
+    def __init__(self, option, ppd, gui, tab_label=None):
         self.selector = gtk.CheckButton(option.text)
         self.label = None
         self.false = u"False" # hack to allow "None" instead of "False"
@@ -148,7 +149,7 @@ class OptionBool(Option):
         self.selector.set_active(option.defchoice == self.true)
         self.selector.set_alignment(0.0, 0.5)
         self.selector.connect("toggled", self.on_change)
-        Option.__init__(self, option, ppd, gui)
+        Option.__init__(self, option, ppd, gui, tab_label=tab_label)
 
     def get_current_value(self):
         return (self.false, self.true)[self.selector.get_active()]
@@ -158,7 +159,7 @@ class OptionBool(Option):
 class OptionPickOne(Option):
     widget_name = "OptionPickOne"
 
-    def __init__(self, option, ppd, gui):
+    def __init__(self, option, ppd, gui, tab_label=None):
         self.selector = gtk.combo_box_new_text()
         #self.selector.set_alignment(0.0, 0.5)
 
@@ -179,7 +180,7 @@ class OptionPickOne(Option):
             print option.text, "unknown value:", option.defchoice
         self.selector.connect("changed", self.on_change)
 
-        Option.__init__(self, option, ppd, gui)
+        Option.__init__(self, option, ppd, gui, tab_label=tab_label)
 
     def get_current_value(self):
         return self.option.choices[self.selector.get_active()]['choice']
@@ -189,7 +190,7 @@ class OptionPickOne(Option):
 class OptionPickMany(OptionPickOne):
     widget_name = "OptionPickMany"
 
-    def __init__(self, option, ppd, gui):
+    def __init__(self, option, ppd, gui, tab_label=None):
         raise NotImplemented
-        Option.__init__(self, option, ppd, gui)
+        Option.__init__(self, option, ppd, gui, tab_label=tab_label)
         

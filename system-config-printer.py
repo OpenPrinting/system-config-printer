@@ -172,6 +172,7 @@ class GUI:
                          "rbtnPAllow", "rbtnPDeny", "tvPUsers",
                           "entPUser", "btnPAddUser", "btnPDelUser", 
 
+                        "lblPInstallOptions",
                          "swPInstallOptions", "vbPInstallOptions", 
                          "swPOptions",
                           "lblPOptions", "vbPOptions",
@@ -862,10 +863,25 @@ class GUI:
         except:
             pass
 
+        installablebold = False
+        optionsbold = False
         if self.conflicts:
             self.btnConflict.show()
+            for option in self.conflicts:
+                if option.tab_label == self.lblPInstallOptions:
+                    installablebold = True
+                else:
+                    optionsbold = True
         else:
             self.btnConflict.hide()
+        installabletext = _("Installable Options")
+        optionstext = _("Printer Options")
+        if installablebold:
+            installabletext = "<b>%s</b>" % installabletext
+        if optionsbold:
+            optionstext = "<b>%s</b>" % optionstext
+        self.lblPInstallOptions.set_markup (installabletext)
+        self.lblPOptions.set_markup (optionstext)
 
     def on_btnConflict_clicked(self, button):
         message = _("There are conflicting options.\n"
@@ -1398,6 +1414,7 @@ class GUI:
                     self.ntbkPrinter.insert_page(
                         self.swPInstallOptions, gtk.Label(group.text),
                         self.static_tabs)
+                tab_label = self.lblPInstallOptions
             else:
                 frame = gtk.Frame("<b>%s</b>" % group.text)
                 frame.get_label_widget().set_use_markup(True)
@@ -1406,6 +1423,7 @@ class GUI:
                 container = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
                 container.set_padding (0, 0, 12, 0)
                 frame.add (container)
+                tab_label = self.lblPOptions
 
             table = gtk.Table(1, 3, False)
             table.set_col_spacing(0, 6)
@@ -1425,7 +1443,7 @@ class GUI:
                     continue
                 rows += 1
                 table.resize (rows, 3)
-                o = OptionWidget(option, ppd, self)
+                o = OptionWidget(option, ppd, self, tab_label=tab_label)
                 table.attach(o.conflictIcon, 0, 1, nr, nr+1, 0, 0, 0, 0)
 
                 hbox = gtk.HBox()
