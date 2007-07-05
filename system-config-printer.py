@@ -60,6 +60,9 @@ pkgdata = '/usr/share/' + domain
 glade_file = pkgdata + '/' + domain + '.glade'
 sys.path.append (pkgdata)
 
+busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
+ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
+
 class GUI:
 
     def __init__(self):
@@ -274,6 +277,20 @@ class GUI:
             if widget is None:
                 raise ValueError, "Widget '%s' not found" % name
             setattr(self, name, widget)
+
+    def busy (self, win = None):
+        if not win:
+            win = self.MainWindow
+        win.window.set_cursor (busy_cursor)
+        while gtk.events_pending ():
+            gtk.main_iteration ()
+            
+    def ready (self, win = None):
+        if not win:
+            win = self.MainWindow
+        win.window.set_cursor (ready_cursor)
+        while gtk.events_pending ():
+            gtk.main_iteration ()
             
     def loadFoomatic(self):
         try:
@@ -1373,7 +1390,8 @@ class GUI:
             self.ntbkNewPrinter.set_current_page(0)
             self.entNPName.grab_focus()
             
-            for widget in [self.entNPName, self.entNPLocation,
+            self.entNPName.set_text ('printer')
+            for widget in [self.entNPLocation,
                            self.entNPDescription,
                            self.entSMBURI, self.entSMBUsername,
                            self.entSMBPassword]:
@@ -1421,10 +1439,12 @@ class GUI:
         if self.dialog_mode == "class":
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
+            self.busy (self.NewPrinterWindow)
             self.loadFoomatic()
             if page_nr == 0:
                 self.fillDeviceTab()
                 self.fillMakeList()
+            self.ready (self.NewPrinterWindow)
             if self.rbtnNPFoomatic.get_active():
                 order = [0, 1, 2, 3, 5]
             else:
@@ -1553,7 +1573,7 @@ class GUI:
         store = self.smb_store
         store.clear ()
 
-        # TODO: Cursor busy
+        self.busy (self.NewPrinterWindow)
         iter = None
         domains = pysmb.get_domain_list ()
         for domain in domains.keys ():
@@ -1564,7 +1584,7 @@ class GUI:
 
         if iter:
             dummy = store.append (iter)
-        # TODO: Cursor ready
+        self.ready (self.NewPrinterWindow)
 
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
@@ -1597,7 +1617,7 @@ class GUI:
 
             host = store.get_value (iter, 3)
             if host:
-                # TODO: Cursor busy
+                self.busy (self.NewPrinterWindow)
                 printers = pysmb.get_printer_list (host)
                 while store.iter_has_child (iter):
                     i = store.iter_nth_child (iter, 0)
@@ -1606,7 +1626,7 @@ class GUI:
                     i = store.append (iter)
                     store.set_value (i, 0, printer)
                     store.set_value (i, 1, printers[printer])
-                # TODO: Cursor ready
+                self.ready (self.NewPrinterWindow)
 
             view.expand_row (path, 1)
             del self.expanding_row
@@ -1620,7 +1640,7 @@ class GUI:
 
             domain = store.get_value (iter, 2)
             if domain:
-                # TODO: Cursor busy
+                self.busy (self.NewPrinterWindow)
                 hosts = pysmb.get_host_list (domain['IP'])
                 while store.iter_has_child (iter):
                     i = store.iter_nth_child (iter, 0)
@@ -1633,7 +1653,7 @@ class GUI:
                     store.set_value (i, 3, h)
                 if i:
                     dummy = store.append (i)
-                # TODO: Cursor ready
+                self.ready (self.NewPrinterWindow)
             view.expand_row (path, 0)
             del self.expanding_row
 
@@ -1675,6 +1695,12 @@ class GUI:
         return "%s%s%s/%s/%s" % (user, uri_password, group, host, share)
 
     def on_entSMBURI_changed (self, ent):
+        try:
+            if self.ignore_signals:
+                return
+        except:
+            pass
+
         uri = ent.get_text ()
         (group, host, share, user, password) = self.parse_SMBURI (uri)
         self.entSMBUsername.set_text (user)
@@ -1692,7 +1718,9 @@ class GUI:
         host = store.get_value (parent_iter, 0)
         share = store.get_value (iter, 0)
         uri = self.construct_SMBURI (group, host, share)
+        self.ignore_signals = True # Avoid 'changed' signal from Entry
         self.entSMBURI.set_text (uri)
+        del self.ignore_signals
 
     def on_btnSMBVerify_clicked(self, button):
         uri = self.entSMBURI.get_text ()

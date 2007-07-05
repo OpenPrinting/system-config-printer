@@ -2,6 +2,10 @@
 
 	* system-config-printer.py (GUI.on_tvNPDrivers_cursor_changed):
 	Provide PPD information.
+	(GUI.busy, GUI.ready): New cursor functions.
+	(GUI.on_entSMBURI_changed): Check whether to ignore this signal.
+	(GUI.on_tvSMBBrowser_cursor_changed): Suppress signals from
+	entSMBURI when we set its text.
 
 2006-06-23  Tim Waugh  <twaugh@redhat.com>
 
