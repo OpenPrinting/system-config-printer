@@ -167,17 +167,23 @@ class Printer:
     def unsetOption(self, name):
         self.connection.deletePrinterOptionDefault(self.name, name)
 
-    def setEnabled(self, on):
+    def setEnabled(self, on, reason=None):
         if on:
             self.connection.enablePrinter(self.name)
         else:
-            self.connection.disablePrinter(self.name)
+            if reason:
+                self.connection.disablePrinter(self.name, reason=reason)
+            else:
+                self.connection.disablePrinter(self.name)
 
-    def setAccepting(self, on):
+    def setAccepting(self, on, reason=None):
         if on:
             self.connection.acceptJobs(self.name)
         else:
-            self.connection.rejectJobs(self.name)
+            if reason:
+                self.connection.rejectJobs(self.name, reason=reason)
+            else:
+                self.connection.rejectJobs(self.name)
 
     def setShared(self,on):
         self.connection.setPrinterShared(self.name, on)
