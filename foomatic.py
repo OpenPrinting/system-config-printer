@@ -811,14 +811,17 @@ class Foomatic:
         # check description
         elif description and self._auto_description.has_key(description):
             printer = self.getPrinter(self._auto_description[description])
-        elif "postscript" in commandsets:
-            printer =  self.getPrinter("Generic-PostScript_Printer")
-        elif "pclxl" in commandsets:
-            printer = self.getPrinter("Generic-PCL_6_PCL_XL_Printer")
-        elif "pcl" in commandsets:
-            printer = self.getPrinter("Generic-PCL_3_Printer")
         else:
-            return None
+            # Match against command sets.
+            cmdsets = map (lambda x: x.lower (), commandsets)
+            if "postscript" in cmdsets:
+                printer =  self.getPrinter("Generic-PostScript_Printer")
+            elif "pclxl" in cmdsets:
+                printer = self.getPrinter("Generic-PCL_6_PCL_XL_Printer")
+            elif "pcl" in cmdsets:
+                printer = self.getPrinter("Generic-PCL_3_Printer")
+            else:
+                return None
         return printer.getPPD()
 
     def getCupsPPD(self, printer, ppds):
