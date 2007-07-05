@@ -747,7 +747,20 @@ class GUI:
                 self.swPOptions, self.lblPOptions, 2)
 
         # get PPD
-        filename = self.cups.getPPD(name)
+        filename = None
+        try:
+            filename = self.cups.getPPD(name)
+        except cups.IPPError, err:
+            (e, s) = err
+            if e == cups.IPP_NOT_FOUND:
+                pass
+            else:
+                raise err
+
+        if filename == None:
+            # This is a raw queue.
+            print "FIXME: Handle raw queues."
+
         ppd = cups.PPD(filename)
         os.unlink (filename)
         ppd.markDefaults()
