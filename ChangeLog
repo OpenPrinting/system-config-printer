@@ -7,6 +7,11 @@
 	(GUI.get_PPD_but_handle_errors): Get the arguments the right way
 	round.
 	(GUI.get_PPD_but_handle_errors): Likewise.
+	(GUI.fillPrinterTab): Point to the server settings if a printer is
+	shared but the server is not publishing shared printers (bug
+	#225081).
+	(GUI.setConnected): Clear out remembered server settings when
+	connecting to a new server.
 
 	* cupshelpers.py (Printer._getAttributes): cpi, lpi and scaling
 	are floats (bug #224651).

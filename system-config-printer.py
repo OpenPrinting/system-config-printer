@@ -139,7 +139,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            #raise ValueError # uncomment for development
+            raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
@@ -162,6 +162,7 @@ class GUI:
                           "lblPState", "entPDevice", "lblPDevice2",
                           "btnSelectDevice", "btnChangePPD",
                           "chkPEnabled", "chkPAccepting", "chkPShared",
+                        "lblNotPublished",
                           "btnPMakeDefault", "lblPDefault",
                         "btnPrintTestPage",
            
@@ -386,6 +387,11 @@ class GUI:
                        self.chkServerAllowCancelAll,
                        self.chkServerLogDebug):
             widget.set_sensitive(connected)
+
+        try:
+            del self.server_settings
+        except:
+            pass
         
     def getServers(self):
         self.servers.discard(None)
@@ -1247,6 +1253,14 @@ class GUI:
         self.chkPEnabled.set_active(printer.enabled)
         self.chkPAccepting.set_active(not printer.rejecting)
         self.chkPShared.set_active(printer.is_shared)
+        try:
+            if printer.is_shared:
+                flag = cups.CUPS_SERVER_SHARE_PRINTERS
+                publishing = int (self.server_settings[flag])
+                if not publishing:
+                    self.lblNotPublished.show_all ()
+        except:
+            self.lblNotPublished.hide_all ()
 
 
         # default printer
