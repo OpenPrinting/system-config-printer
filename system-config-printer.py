@@ -1159,7 +1159,14 @@ class GUI:
                 self.swPOptions, self.lblPOptions, self.static_tabs)
 
 
-        if not self.ppd: return
+        if not self.ppd:
+            tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
+            if tab_nr != -1:
+                self.ntbkPrinter.remove_page(tab_nr)
+            tab_nr = self.ntbkPrinter.page_num(self.swPOptions)
+            if tab_nr != -1:
+                self.ntbkPrinter.remove_page(tab_nr)           
+            return
         ppd = self.ppd
         ppd.markDefaults()
 
@@ -2193,6 +2200,9 @@ class GUI:
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
                     self.cups.addPrinter(name, ppdname=ppd,
                          device=uri, info=info, location=location)
+                elif ppd is None: # raw queue
+                    self.cups.addPrinter(name, device=uri,
+                                         info=info, location=location)
                 else:
                     self.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)

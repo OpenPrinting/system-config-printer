@@ -158,10 +158,11 @@ class Printer:
         if self._ppd is None:
             try:
                 filename = self.connection.getPPD(self.name)
-            except cups.IPP_NOT_FOUND:
+                self._ppd = cups.PPD(filename)
+                os.unlink(filename)
+            except cups.IPPError:
                 self._ppd = False
-            self._ppd = cups.PPD(filename)
-            os.unlink(filename)
+            
         return self._ppd
 
     def setOption(self, name, value):
