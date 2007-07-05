@@ -80,7 +80,7 @@ class Printer:
         self.attributes = {}
         self.possible_attributes = {
             'columns' : ('1', (1, 4)),
-            'cpi' : ('10', (1, 100)),
+            'cpi' : ('10', (1.0, 100.0)),
             'fitplot' : ('False', ['True', 'False']),
             'landscape' : ('False', ['True', 'False']),
             'number-up-layout' : ('lrtb', ['btlr', 'btrl', 'lrbt', 'lrtb',
@@ -93,8 +93,8 @@ class Printer:
             'page-border' : ('none', ['none', 'single', 'single-thick',
                                      'double', 'double-thick']),
             'prettyprint' : ('False', ['True', 'False']),
-            'lpi' : ('6', (1, 100)),
-            'scaling' : ('100', (1, 1000)),
+            'lpi' : ('6', (1.0, 100.0)),
+            'scaling' : ('100', (1.0, 1000.0)),
             'sides' : ('one-sided', ['one-sided', 'two-sided-long-edge',
                                     'two-sided-short-edge']),
             'wrap' : ('False', ['True', 'False'])}

@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -28,11 +28,16 @@ def OptionWidget(name, v, s, on_change):
             return OptionSelectMany(name, v, s, on_change)
         raise NotImplemented
     else:
-        if (isinstance(s, int) or
+        if (isinstance(s, int) or isinstance(s, float) or
             (isinstance(s, tuple) and len(s)==2 and
-             isinstance(s[0], int) and isinstance(s[1], int))):
+             (isinstance(s[0], int) and isinstance(s[1], int)) or
+             (isinstance(s[0], float) and isinstance(s[1], float)))):
             try:
-                v = int(v)
+                if (isinstance(s, int) or
+                    isinstance(s, tuple) and isinstance(s[0], int)):
+                    v = int(v)
+                else:
+                    v = float(v)
             except ValueError:
                 return OptionText(name, v, "", on_change)
             return OptionNumeric(name, v, s, on_change)
@@ -136,15 +141,26 @@ class OptionSelectMany(Option):
 
 class OptionNumeric(Option):
     def __init__(self, name, value, supported, on_change):
-        if isinstance(supported, int):
+        self.is_float = (isinstance(supported, float) or
+                         (isinstance(supported, tuple) and
+                          isinstance(supported[0], float)))
+        if self.is_float:
+            digits = 2
+        else:
+            digits = 0
+
+        if not isinstance(supported, tuple):
             supported = (0, supported)
         Option.__init__(self, name, value, supported, on_change)
         adj = gtk.Adjustment(value, supported[0], supported[1], 1.0, 5.0, 0.0)
-        self.selector = gtk.SpinButton(adj, climb_rate=1.0)
-        self.selector.set_numeric(True)
+        self.selector = gtk.SpinButton(adj, climb_rate=1.0, digits=digits)
+        if not self.is_float:
+            self.selector.set_numeric(True)
         self.selector.connect("changed", self.changed)
 
     def get_current_value(self):
+        if self.is_float:
+            return self.selector.get_value()
         return self.selector.get_value_as_int()
 
 # ---------------------------------------------------------------------------
