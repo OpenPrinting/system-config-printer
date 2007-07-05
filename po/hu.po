@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2007-04-05 18:27+0100\n"
-"PO-Revision-Date: 2007-04-02 23:23+0200\n"
+"PO-Revision-Date: 2007-04-10 00:04+0200\n"
 "Last-Translator: Arpad Biro <biro_arpad@yahoo.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -381,8 +381,7 @@ msgstr "Adatbázis-hiba"
 #: ../system-config-printer.py:2740
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
-msgstr ""
-"A(z) \"%s\" meghajtóprogram nem használható ezzel a nyomtatóval: \"%s %s\"."
+msgstr "A(z) \"%s\" meghajtóprogram nem használható ezzel a nyomtatóval: \"%s %s\"."
 
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
@@ -552,10 +551,12 @@ msgid ""
 "<i>Not published\n"
 "See server settings</i>"
 msgstr ""
+"<i>Nem nyilvános\n"
+"Információ a kiszolgáló beállításainál</i>"
 
 #: ../system-config-printer.glade.h:34
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-msgstr ""
+msgstr "<i>smb://[munkacsoport/]kiszolgáló[:port]/nyomtató</i>"
 
 #: ../system-config-printer.glade.h:35
 msgid ""
@@ -605,8 +606,7 @@ msgstr "Távoli adminisztráció engedélyezése"
 
 #: ../system-config-printer.glade.h:48
 msgid "Allow users to cancel any job (not just their own)"
-msgstr ""
-"A felhasználók bármely feladatot szakíthassák meg (ne csak a sajátjaikat)"
+msgstr "A felhasználók bármely feladatot szakíthassák meg (ne csak a sajátjaikat)"
 
 #: ../system-config-printer.glade.h:49
 msgid "Apply"
@@ -622,11 +622,11 @@ msgstr "Baud-ráta"
 
 #: ../system-config-printer.glade.h:52
 msgid "Bottom margin:"
-msgstr ""
+msgstr "Alsó margó:"
 
 #: ../system-config-printer.glade.h:53
 msgid "Brightness:"
-msgstr ""
+msgstr "Fényesség:"
 
 #: ../system-config-printer.glade.h:54
 msgid "CUPS server:"
@@ -642,16 +642,15 @@ msgstr "Módosítás..."
 
 #: ../system-config-printer.glade.h:57
 msgid "Characters per inch:"
-msgstr ""
+msgstr "Hüvelykenkénti karakterszám:"
 
 #: ../system-config-printer.glade.h:58
 msgid "Class Members"
 msgstr "Az osztály tagjai"
 
 #: ../system-config-printer.glade.h:59
-#, fuzzy
 msgid "Columns:"
-msgstr "Megjegyzések: "
+msgstr "Oszlopok:"
 
 #: ../system-config-printer.glade.h:60
 msgid "Comments: "
@@ -676,7 +675,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:67
 msgid "Copies:"
-msgstr ""
+msgstr "Példányszám:"
 
 #: ../system-config-printer.glade.h:68
 msgid "Copy Printer"
@@ -769,9 +768,8 @@ msgid "Device URI:"
 msgstr "Az eszköz URI-ja:"
 
 #: ../system-config-printer.glade.h:97
-#, fuzzy
 msgid "Device description."
-msgstr "Leírás:"
+msgstr "Eszközleírás."
 
 #: ../system-config-printer.glade.h:98
 msgid "DirectJet"
@@ -803,7 +801,7 @@ msgstr "Hibakezelési szabályzat: \t"
 
 #: ../system-config-printer.glade.h:105
 msgid "Finishings:"
-msgstr ""
+msgstr "Utómunkálatok:"
 
 #: ../system-config-printer.glade.h:106
 msgid "Flow Control"
@@ -811,7 +809,7 @@ msgstr "Áramlásvezérlés"
 
 #: ../system-config-printer.glade.h:107
 msgid "Gamma:"
-msgstr ""
+msgstr "Gamma:"
 
 #: ../system-config-printer.glade.h:108
 msgid "Goto Server"
@@ -823,15 +821,14 @@ msgstr "Gépnév"
 
 #: ../system-config-printer.glade.h:110
 msgid "Hue adjustment:"
-msgstr ""
+msgstr "Árnyalat-módosítás:"
 
 # duplexer: A component of a printer that
 # allows for both sides of a page to be printed
 # at the same time.
 #: ../system-config-printer.glade.h:111
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-msgstr ""
-"Ember által olvasható leírás, például \"HP LaserJet kétoldalas nyomtatással\""
+msgstr "Ember által olvasható leírás, például \"HP LaserJet kétoldalas nyomtatással\""
 
 #: ../system-config-printer.glade.h:112
 msgid "Human-readable location such as \"Lab 1\""
@@ -847,7 +844,7 @@ msgstr "Feladatbeállítások"
 
 #: ../system-config-printer.glade.h:116
 msgid "Job priority:"
-msgstr ""
+msgstr "Feladat-prioritás:"
 
 #: ../system-config-printer.glade.h:117
 msgid "LPD"
@@ -855,7 +852,7 @@ msgstr "LPD"
 
 #: ../system-config-printer.glade.h:118
 msgid "Left margin:"
-msgstr ""
+msgstr "Bal margó:"
 
 #: ../system-config-printer.glade.h:119
 msgid ""
@@ -868,10 +865,18 @@ msgid ""
 "Bottom to top, left to right\n"
 "Bottom to top, right to left"
 msgstr ""
+"Balról jobbra, felülről lefelé\n"
+"Balról jobbra, alulról felfelé\n"
+"Jobbról balra, felülről lefelé\n"
+"Jobbról balra, alulról felfelé\n"
+"Felülről lefelé, balról jobbra\n"
+"Felülről lefelé, jobbról balra\n"
+"Alulról felfelé, balról jobbra\n"
+"Alulról felfelé, jobbról balra"
 
 #: ../system-config-printer.glade.h:127
 msgid "Lines per inch:"
-msgstr ""
+msgstr "Hüvelykenkénti sorok száma:"
 
 #: ../system-config-printer.glade.h:128
 msgid "Location:"
@@ -893,7 +898,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:132
 msgid "Media:"
-msgstr ""
+msgstr "Média:"
 
 #: ../system-config-printer.glade.h:133
 msgid "Members"
@@ -901,11 +906,11 @@ msgstr "Tagok"
 
 #: ../system-config-printer.glade.h:134
 msgid "Mirror"
-msgstr ""
+msgstr "Tükrözés"
 
 #: ../system-config-printer.glade.h:135
 msgid "More"
-msgstr ""
+msgstr "Továbbiak"
 
 #: ../system-config-printer.glade.h:136
 msgid "Name"
@@ -954,6 +959,34 @@ msgid ""
 "Bind (right)\n"
 "Bind (bottom)"
 msgstr ""
+"Egyik sem\n"
+"Tűzés\n"
+"Lyukasztás\n"
+"Fedőlap\n"
+"Kötés\n"
+"Hajtásos tűzés\n"
+"Szél-tűzés\n"
+"Hajtogatás\n"
+"Nyírás\n"
+"Bálázás\n"
+"Füzetkészítő\n"
+"Feladat-pozíció\n"
+"Tűzés (bal felső)\n"
+"Tűzés (bal alsó)\n"
+"Tűzés (jobb felső)\n"
+"Tűzés (jobb alsó)\n"
+"Szél-tűzés (bal)\n"
+"Szél-tűzés (felső)\n"
+"Szél-tűzés (jobb)\n"
+"Szél-tűzés (alsó)\n"
+"Dupla tűzés (bal)\n"
+"Dupla tűzés (felső)\n"
+"Dupla tűzés (jobb)\n"
+"Dupla tűzés (alsó)\n"
+"Kötés (bal)\n"
+"Kötés (felső)\n"
+"Kötés (jobb)\n"
+"Kötés (alsó)"
 
 #: ../system-config-printer.glade.h:170
 msgid ""
@@ -961,6 +994,9 @@ msgid ""
 "Two-sided (long edge)\n"
 "Two-sided (short edge)"
 msgstr ""
+"Egyoldalas\n"
+"Kétoldalas (hosszú szél)\n"
+"Kétoldalas (rövid szél)"
 
 #: ../system-config-printer.glade.h:173
 msgid "Operation Policy:"
@@ -968,7 +1004,7 @@ msgstr "Működési szabályzat:"
 
 #: ../system-config-printer.glade.h:174
 msgid "Orientation:"
-msgstr ""
+msgstr "Tájolás:"
 
 #: ../system-config-printer.glade.h:175
 msgid "PPD"
@@ -976,11 +1012,11 @@ msgstr "PPD"
 
 #: ../system-config-printer.glade.h:176
 msgid "Pages per side layout:"
-msgstr ""
+msgstr "Oldalankénti lapszám - elrendezés:"
 
 #: ../system-config-printer.glade.h:177
 msgid "Pages per side:"
-msgstr ""
+msgstr "Oldalankénti lapszám:"
 
 #: ../system-config-printer.glade.h:178
 msgid "Parity"
@@ -1005,6 +1041,10 @@ msgid ""
 "Reverse landscape (270°)\n"
 "Reverse portrait (180°)"
 msgstr ""
+"Álló (nincs elforgatás)\n"
+"Fekvő (90°)\n"
+"Fordított fekvő (270°)\n"
+"Fordított álló (180°)"
 
 #: ../system-config-printer.glade.h:186
 msgid ""
@@ -1018,7 +1058,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:187
 msgid "Pretty print"
-msgstr ""
+msgstr "Formázás"
 
 #: ../system-config-printer.glade.h:189 ../applet.py:172 ../applet.py:211
 msgid "Printer"
@@ -1046,16 +1086,15 @@ msgstr "Titkosítás megkövetelése"
 
 #: ../system-config-printer.glade.h:196
 msgid "Reset"
-msgstr ""
+msgstr "Visszaállítás"
 
 #: ../system-config-printer.glade.h:197
-#, fuzzy
 msgid "Reset to system default"
-msgstr "alapértelmezett"
+msgstr "Visszaállítás a rendszer alapértelmezéseire"
 
 #: ../system-config-printer.glade.h:198
 msgid "Right margin:"
-msgstr ""
+msgstr "Jobb margó:"
 
 #: ../system-config-printer.glade.h:199
 msgid "SCSI"
@@ -1067,7 +1106,7 @@ msgstr "SMB"
 
 #: ../system-config-printer.glade.h:201
 msgid "Saturation:"
-msgstr ""
+msgstr "Telítettség:"
 
 #: ../system-config-printer.glade.h:202
 msgid "Save debugging information for troubleshooting"
@@ -1075,11 +1114,11 @@ msgstr "Hibakeresési információ mentése problémamegoldáshoz"
 
 #: ../system-config-printer.glade.h:203
 msgid "Scale to fit"
-msgstr ""
+msgstr "Illesztés átméretezéssel"
 
 #: ../system-config-printer.glade.h:204
 msgid "Scaling:"
-msgstr ""
+msgstr "Átméretezés:"
 
 #: ../system-config-printer.glade.h:205
 msgid "Select A File"
@@ -1111,15 +1150,17 @@ msgstr "Más rendszerek által megosztott nyomtatók megjelenítése"
 
 #: ../system-config-printer.glade.h:212
 msgid "Sides:"
-msgstr ""
+msgstr "Oldalak:"
 
 #: ../system-config-printer.glade.h:213
-#, fuzzy
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
-msgstr "alapértelmezettnyomtató"
+msgstr ""
+"Adja meg a nyomtató alapértelmezett feladat-beállításait. Az ezen "
+"nyomtatókiszolgálóra érkező feladatokra alkalmazva lesznek ezek a "
+"beállítások, ha az alkalmazás még nem tette ezt meg."
 
 #: ../system-config-printer.glade.h:214
 msgid "Starting Banner:"
@@ -1169,10 +1210,12 @@ msgstr ""
 #: ../system-config-printer.glade.h:221
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
+"Új beállítás felvételéhez adja meg annak nevét a lentebbi mezőben, majd kattintással "
+"végezze el a felvételt."
 
 #: ../system-config-printer.glade.h:222
 msgid "Top margin:"
-msgstr ""
+msgstr "Felső margó:"
 
 #: ../system-config-printer.glade.h:223
 msgid "Try to copy the option settings over from the old PPD. "
@@ -1180,8 +1223,7 @@ msgstr "A régi PPD beállításainak átmásolásának megkísérlése. "
 
 #: ../system-config-printer.glade.h:224
 msgid "Use the new PPD (Postscript Printer Description) as is."
-msgstr ""
-"Az új PPD (PostScript-nyomtatóleírás) eredeti formában való használata."
+msgstr "Az új PPD (PostScript-nyomtatóleírás) eredeti formában való használata."
 
 #: ../system-config-printer.glade.h:225
 msgid "User name:"
@@ -1232,8 +1274,9 @@ msgid "points"
 msgstr ""
 
 #: ../system-config-printer.glade.h:237
+#, fuzzy
 msgid "points (72 points per inch)"
-msgstr ""
+msgstr "Hüvelykenkénti karakterszám:"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1337,7 +1380,7 @@ msgstr ""
 
 #: ../applet.py:170
 msgid "Job"
-msgstr ""
+msgstr "Feladat"
 
 #: ../applet.py:171
 #, fuzzy
@@ -1452,8 +1495,9 @@ msgid "Re_print"
 msgstr "nyomtat"
 
 #: ../applet.glade.h:8
+#, fuzzy
 msgid "Show _completed jobs"
-msgstr ""
+msgstr "feladat"
 
 #: ../applet.glade.h:9
 #, fuzzy
@@ -1484,12 +1528,17 @@ msgstr "Tesztlap nyomtatása"
 #: ../print-applet.desktop.in.h:2
 #, fuzzy
 msgid "System tray icon for managing print jobs"
-msgstr "nyomtat"
+msgstr ""
+"nyomtat "
+"feladat"
 
 #: ../manage-print-jobs.desktop.in.h:1
+#, fuzzy
 msgid "Cancel, pause, resume or reprint jobs"
-msgstr ""
+msgstr "feladat"
 
 #: ../manage-print-jobs.desktop.in.h:2
+#, fuzzy
 msgid "Manage print jobs"
-msgstr ""
+msgstr "feladat"
+
