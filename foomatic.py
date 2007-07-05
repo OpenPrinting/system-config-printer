@@ -683,6 +683,21 @@ class Foomatic:
         # XXX just try to find out the manufacturer?
         return None
 
+    def getPPD(self, make, model, description="", languages=[]):
+        # check for make, model
+        if (self._auto_make.has_key(make) and
+            self._auto_make[make].has_key(model)):
+            printer = self.getPrinter(self._auto_make[make][model])
+        # check description
+        elif self._auto_description.has_key(description):
+            printer = self.getPrinter(self._auto_description[description])
+
+        # generic ppd
+        # XXX
+        else:
+            return None
+        return printer.getPPD()
+
     def getCupsPPD(self, printer, ppds):
         make_model = "%s %s" % (printer.make, printer.model)
         result = []

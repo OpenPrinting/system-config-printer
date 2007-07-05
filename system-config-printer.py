@@ -471,6 +471,11 @@ class GUI:
     def on_btnPasswdCancel_clicked(self, widget):
         self.PasswordDialog.response(1)
 
+    # refresh
+    
+    def on_btnRefresh_clicked(self, button):
+        self.populateList()
+
     # Unapplied changes dialog
 
     def on_btnApplyApply_clicked(self, button):

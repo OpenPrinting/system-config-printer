@@ -63,8 +63,9 @@ class Printer:
                 name = key[:-len("-default")]
                 if not attrs.has_key(name + "-supported"): continue
                 if name in ["job-sheets", "printer-error-policy",
-                            "printer-op-policy"]:
-                    continue # handled below
+                            "printer-op-policy", # handled below
+                            "notify-events"]: # not supported by cups
+                    continue 
                 if name in set_attributes:
                     self.attributes[name] = value
                     
