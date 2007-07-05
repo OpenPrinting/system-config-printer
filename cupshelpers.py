@@ -21,13 +21,14 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups, pprint, os, tempfile, re
+from rhpl.translate import _, N_
 
 class Printer:
 
-    printer_states = { cups.IPP_PRINTER_IDLE: "Idle",
-                       cups.IPP_PRINTER_PROCESSING: "Processing",
-                       cups.IPP_PRINTER_BUSY: "Busy",
-                       cups.IPP_PRINTER_STOPPED: "Stopped" }
+    printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
+                       cups.IPP_PRINTER_PROCESSING: _("Processing"),
+                       cups.IPP_PRINTER_BUSY: _("Busy"),
+                       cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
     def __init__(self, name, connection, set_attributes=[], **kw):
         self.name = name
@@ -44,7 +45,7 @@ class Printer:
         self._expand_flags()
 
         self.state_description = self.printer_states.get(
-            self.state, "Unknown")
+            self.state, _("Unknown"))
 
         self._getAttributes(set_attributes)
 

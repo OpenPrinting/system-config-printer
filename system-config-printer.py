@@ -2100,6 +2100,9 @@ class GUI:
                 else:
                     self.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)
+
+                self.cups.enablePrinter (name)
+                self.cups.acceptJobs (name)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 return
