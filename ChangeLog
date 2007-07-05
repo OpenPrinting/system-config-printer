@@ -4,6 +4,9 @@
 	"Installable Options" tab focused when Apply button is pressed.
 	* system-config-printer.glade: hide "Installable Options" tab to 
 	haveit redrawn on the first showall()
+	* system-config-printer.py (GUI.on_btnNewOption_clicked, 
+	GUI.removeOption_clicked, GUI.on_cmbentNewOption_changed): Don't offer
+	options as new that are already set.
 	
 2006-07-05  Tim Waugh  <twaugh@redhat.com>
 

@@ -731,6 +731,14 @@ class GUI:
             # keep name as reminder that option got deleted
             self.changed.add(option.name)
             del self.server_side_options[option.name]
+
+        # re add to combobox
+        if option.name in self.printer.possible_attributes:
+            for nr, row in enumerate(self.cmbentNewOption.get_model()):
+                if row[0] > option.name:
+                    self.cmbentNewOption.insert_text(nr, option.name)
+                    break
+            
         self.setDataButtonState()
 
     def on_btnNewOption_clicked(self, button):
@@ -741,11 +749,17 @@ class GUI:
             value, supported = "", ""
         self.add_option(name, value, supported, is_new=True)
         self.tblServerOptions.show_all()
+        active = self.cmbentNewOption.get_active()
+        if active >= 0:
+            self.cmbentNewOption.remove_text(active)
+            self.cmbentNewOption.set_active(-1)
+        self.on_cmbentNewOption_changed(self.cmbentNewOption)
         self.setDataButtonState()
 
     def on_cmbentNewOption_changed(self, widget):
-        self.btnNewOption.set_sensitive(
-            bool(self.cmbentNewOption.get_active_text()))
+        text = self.cmbentNewOption.get_active_text()
+        active = bool(text) and text not in self.server_side_options
+        self.btnNewOption.set_sensitive(active)
 
     # set Apply/Revert buttons sensitive    
     def setDataButtonState(self):
