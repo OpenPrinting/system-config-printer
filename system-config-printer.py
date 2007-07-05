@@ -1003,6 +1003,7 @@ class GUI:
             self.show_IPP_Error(e, s)
             return True
         self.changed = set() # of options
+        self.populateList()
         return False
 
     def getPrinterSettings(self):
