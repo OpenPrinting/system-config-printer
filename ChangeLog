@@ -1,3 +1,13 @@
+2007-02-23  Tim Waugh  <twaugh@redhat.com>
+
+	* options.py (OptionAlwaysShown.set_widget_value): Make
+	combobox_map optional.
+	(OptionAlwaysShown.get_current_value): Likewise.
+	(OptionAlwaysShown.set_widget_value): Handle CheckButtons.
+	(OptionAlwaysShown.get_widget_value): Likewise.
+	(OptionAlwaysShown.is_changed): Explicitly check original_value
+	against None to protect against false bools.
+
 2007-02-22  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.on_job_option_reset): New

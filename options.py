@@ -98,8 +98,13 @@ class OptionAlwaysShown(OptionInterface):
         if t == gtk.SpinButton:
             return self.widget.set_value (ipp_value)
         elif t == gtk.ComboBox:
-            index = self.combobox_map.index (ipp_value)
+            if self.combobox_map:
+                index = self.combobox_map.index (ipp_value)
+            else:
+                index = ipp_value
             return self.widget.set_active (index)
+        elif t == gtk.CheckButton:
+            return self.widget.set_active (ipp_value)
         else:
             raise NotImplemented
 
@@ -109,18 +114,20 @@ class OptionAlwaysShown(OptionInterface):
             return self.widget.get_value ()
         elif t == gtk.ComboBox:
             return self.widget.get_active ()
+        elif t == gtk.CheckButton:
+            return self.widget.get_active ()
 
         print t
         raise NotImplemented
 
     def get_current_value(self):
         t = type(self.widget)
-        if t == gtk.ComboBox:
+        if t == gtk.ComboBox and self.combobox_map:
             return self.combobox_map[self.get_widget_value ()]
         return self.ipp_type (self.get_widget_value ())
 
     def is_changed(self):
-        if self.original_value:
+        if self.original_value != None:
             # There was a value set previously.
             if self.state == self.STATE_RESET:
                 # It's been removed.
