@@ -11,15 +11,19 @@ nobase_pkgdata_SCRIPTS=				\
 	pysmb.py				\
 	system-config-printer.py		\
 	gtk_label_autowrap.py			\
-	gtk_html2pango.py
+	gtk_html2pango.py			\
+	applet.py
 
 nobase_pkgdata_DATA=\
-	system-config-printer.glade
+	system-config-printer.glade \
+	applet.glade
 
 nobase_sbin_SCRIPTS=\
 	system-config-printer
 
-desktop_DATA = system-config-printer.desktop
+desktop_DATA =\
+	system-config-printer.desktop \
+	print-applet.desktop
 desktopdir = $(datadir)/applications/
 
 install-desktopDATA: $(desktop_DATA)
@@ -33,6 +37,11 @@ install-desktopDATA: $(desktop_DATA)
 		  $$i;                               \
 	done
 
+uninstall-desktopDATA:
+	for i in $(desktop_DATA); do \
+		rm -f $(DESTDIR)$(desktopdir)/redhat-$$i; \
+	done
+
 EXTRA_DIST=\
 	$(nobase_pkgdata_SCRIPTS) \
 	$(nobase_pkgdata_DATA) \
@@ -41,6 +50,7 @@ EXTRA_DIST=\
 	mkinstalldirs \
 	system-config-printer.gladep \
 	system-config-printer.desktop.in \
+	print-applet.desktop.in \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in
