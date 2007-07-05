@@ -2,6 +2,13 @@
 
 	* system-config-printer.py (GUI.fillNPApply): Fill in name and
 	uri.
+	(GUI.loadFoomatic): New function to load foomatic database (and
+	get CUPS PPDs) on demand, since this is an expensive process.
+	(GUI.unloadFoomatic): New function.
+	(GUI.on_connect_activate): Unload foomatic.
+	(GUI.on_new_printer_activate): Load foomatic.
+	(GUI.on_btnSelectDevice_clicked): Likewise.
+	(GUI.on_btnChangePPD_clicked): Likewise.
 
 2006-04-07  Tim Waugh  <twaugh@redhat.com>
 

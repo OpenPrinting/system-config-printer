@@ -39,13 +39,9 @@ class GUI:
 
         self.servers = set(("localhost",))
 
-        self.foomatic = Foomatic() # this works on the local db
-
-
         try:
             #self.cups = None
             self.cups = cups.Connection()
-            self.foomatic.addCupsPPDs(self.cups.getPPDs(), self.cups)
         except RuntimeError:
             self.cups = None
 
@@ -207,6 +203,21 @@ class GUI:
                 raise ValueError, "Widget '%s' not found" % name
             setattr(self, name, widget)
             
+    def loadFoomatic(self):
+        try:
+            return self.foomatic
+        except:
+            print "Loading foomatic database..."
+            self.foomatic = Foomatic() # this works on the local db
+            self.foomatic.addCupsPPDs(self.cups.getPPDs(), self.cups)
+            return self.foomatic
+
+    def unloadFoomatic(self):
+        try:
+            del self.foomatic
+        except:
+            pass
+
     def setConnected(self):
         connected = bool(self.cups)
 
@@ -359,6 +370,7 @@ class GUI:
         servername = self.cmbServername.child.get_text()
         user = self.entUser.get_text()
 
+        self.unloadFoomatic()
         self.ConnectingDialog.show()
         self.connect_thread = thread.start_new_thread(
             self.connect, (servername, user))
@@ -1114,6 +1126,7 @@ class GUI:
 
     # new printer
     def on_new_printer_activate(self, widget):
+        self.loadFoomatic()
         self.dialog_mode = "printer"
         self.NewPrinterWindow.set_title(_("New Printer"))
         
@@ -1134,6 +1147,7 @@ class GUI:
 
     # change device
     def on_btnSelectDevice_clicked(self, button):
+        self.loadFoomatic()
         self.dialog_mode = "device"
         self.NewPrinterWindow.set_title(_("Change Device URI"))
 
@@ -1144,6 +1158,7 @@ class GUI:
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
+        self.loadFoomatic()
         self.dialog_mode = "ppd"
         self.NewPrinterWindow.set_title(_("Change Driver"))
 
