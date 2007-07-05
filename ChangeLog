@@ -1,3 +1,19 @@
+2006-03-06 Florian Festi  <ffesti@redhat.com>
+	* optionswidgets.py (Option.__init__, Option.checkConflicts):
+	Conflict handling
+	* system-config-printer.py (GUI.fillPrinterTab) Calculate conflicts,
+	add conflict icons to table
+	* system-config-printer.py (GUI.option_changed, 
+	GUI.setDataButtonState): disable Apply and Revert buttons on 
+	conflicts and show Error icon  
+	, optionswidgets.py
+
+	* system-config-printer.py (GUI.on_btnApply*_clicked):
+	ApplyDialog
+	* system-config-printer.py (GUI.on_quit_activate, 
+	GUI.on_tvMainList_cursor_changed, GUI.on_connect_activate):
+	Run ApplyDialog if there are unapplied changes 
+
 2006-03-03  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.glade: Make error dialog label selectable.
@@ -38,20 +54,4 @@
 
 	* system-config-printer.py (GUI.on_connect_activate): Populate
 	server-name combo-box from browsed queues.
-
-2006-03-06 Florian Festi  <ffesti@redhat.com>
-	* optionswidgets.py (Option.__init__, Option.checkConflicts):
-	Conflict handling
-	* system-config-printer.py (GUI.fillPrinterTab) Calculate conflicts,
-	add conflict icons to table
-	* system-config-printer.py (GUI.option_changed, 
-	GUI.setDataButtonState): disable Apply and Revert buttons on 
-	conflicts and show Error icon  
-	, optionswidgets.py
-
-	* system-config-printer.py (GUI.on_btnApply*_clicked):
-	ApplyDialog
-	* system-config-printer.py (GUI.on_quit_activate, 
-	GUI.on_tvMainList_cursor_changed, GUI.on_connect_activate):
-	Run ApplyDialog if there are unapplied changes 
 	

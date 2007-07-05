@@ -160,11 +160,9 @@ class GUI:
             response = self.ApplyDialog.run()
             self.ApplyDialog.hide()
             if response == gtk.RESPONSE_APPLY:
-                self.on_btnApply_clicked(None)
-            elif response == gtk.RESPONSE_CANCEL:
+                err = self.apply()
+            if err or response == gtk.RESPONSE_CANCEL:
                 return
-            else:
-                pass # just ignore the changes
 
         # Use browsed queues to build up a list of known IPP servers
         known_servers = [ 'localhost' ]
@@ -297,9 +295,12 @@ class GUI:
             self.imgConflict.hide()
             
     def on_btnApply_clicked(self, widget):
+        self.apply()
+        
+    def apply(self):
         name, type = self.getSelectedItem()
         if type == "Printer":
-            self.save_printer(name)
+            return self.save_printer(name)
         elif type == "Class":
             print "Apply Class"
         elif type == "Settings":
@@ -347,19 +348,24 @@ class GUI:
             printer.update(new_values)
         except cups.IPPError, (e, s):
             self.show_IPP_Error(e, s)
+            return True
+        return False
+
+    def on_btnRevert_clicked(self, button):
+        self.changed = set() # avoid asking the user
+        self.on_tvMainList_cursor_changed(self.tvMainList)
 
     def on_tvMainList_cursor_changed(self, list):
         if self.changed:
             response = self.ApplyDialog.run()
             self.ApplyDialog.hide()
+            err = False
             if response == gtk.RESPONSE_APPLY:
-                self.on_btnApply_clicked(None)
-            elif response == gtk.RESPONSE_CANCEL:
+                err = self.apply()
+            if err or response == gtk.RESPONSE_CANCEL:
                 self.tvMainList.get_selection().select_iter(
                     self.mainListSelected)
                 return
-            else:
-                pass # just ignore the changes            
 
         name, type = self.getSelectedItem()
         model, self.mainListSelected = self.tvMainList.get_selection().get_selected()
@@ -475,11 +481,9 @@ class GUI:
             response = self.ApplyDialog.run()
             self.ApplyDialog.hide()
             if response == gtk.RESPONSE_APPLY:
-                self.on_btnApply_clicked(None)
-            elif response == gtk.RESPONSE_CANCEL:
+                err = self.apply()
+            if err or response == gtk.RESPONSE_CANCEL:
                 return
-            else:
-                pass # just ignore the changes
         gtk.main_quit()
 
     # Create/Delete
