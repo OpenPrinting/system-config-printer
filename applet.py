@@ -25,6 +25,8 @@ DOMAIN="system-config-printer"
 GLADE="applet.glade"
 ICON="applet.png"
 
+CONNECTING_TIMEOUT = 60 # seconds
+
 class StateReason:
     REPORT=1
     WARNING=2
@@ -164,6 +166,7 @@ class JobManager:
         self.jobiters = {}
         self.which_jobs = "not-completed"
         self.hidden = False
+        self.connecting_to_device = {} # dict of printer->time first seen
         self.still_connecting = set()
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE)
@@ -346,23 +349,52 @@ class JobManager:
         else:
             self.PrintersWindow.hide()
 
-    def check_still_connecting(self, connecting_devices):
+    def check_still_connecting(self):
         """Timer callback to check on connecting-to-device reasons."""
-        still_connecting = set()
-        connection = cups.Connection ()
-        printer_reasons = collect_printer_state_reasons (connection)
-        for reason in printer_reasons:
-            if (reason.get_printer () in connecting_devices and
-                reason.get_reason () == "connecting-to-device"):
-                still_connecting.add (reason.get_printer ())
-        del connection
+        c = cups.Connection ()
+        printer_reasons = collect_printer_state_reasons (c)
+        del c
 
-        self.still_connecting = still_connecting
-        if len (still_connecting):
+        if self.update_connecting_devices (printer_reasons):
             self.refresh ()
 
         # Don't run this callback again.
         return False
+
+    def update_connecting_devices(self, printer_reasons=[]):
+        """Updates connecting_to_device dict and still_connecting set.
+        Returns True if a device has been connecting too long."""
+        time_now = time.time ()
+        connecting_to_device = {}
+        trouble = False
+        for reason in printer_reasons:
+            if reason.get_reason () == "connecting-to-device":
+                # Build a new connecting_to_device dict.  If our existing
+                # dict already has an entry for this printer, use that.
+                printer = reason.get_printer ()
+                t = self.connecting_to_device.get (printer, time_now)
+                connecting_to_device[printer] = t
+                if time_now - t >= CONNECTING_TIMEOUT:
+                    trouble = True
+
+        # Clear any previously-notified errors that are now fine.
+        remove = set()
+        for printer in self.still_connecting:
+            if not self.connecting_to_device.has_key (printer):
+                remove.add (printer)
+                if self.trayicon and self.notify:
+                    r = self.notified_reason
+                    if (r.get_printer () == printer and
+                        r.get_reason () == 'connecting-to-device'):
+                        # We had sent a notification for this reason.
+                        # Close it.
+                        self.notify.close ()
+                        self.notify = None
+
+        self.still_connecting = self.still_connecting.difference (remove)
+
+        self.connecting_to_device = connecting_to_device
+        return trouble
 
     def check_state_reasons(self, connection, my_printers=set()):
         printer_reasons = collect_printer_state_reasons (connection)
@@ -370,9 +402,10 @@ class JobManager:
         # Look for any new reasons since we last checked.
         old_reasons_seen_keys = self.reasons_seen.keys ()
         reasons_now = set()
-        connecting_devices = set()
+        need_recheck = False
         for reason in printer_reasons:
             tuple = reason.get_tuple ()
+            printer = reason.get_printer ()
             reasons_now.add (tuple)
             if not self.reasons_seen.has_key (tuple):
                 # New reason.
@@ -382,16 +415,17 @@ class JobManager:
                 title, text = reason.get_description ()
                 self.store_printers.set_value (iter, 2, text)
                 self.reasons_seen[tuple] = iter
-                if reason.get_reason () == "connecting-to-device":
-                    # Check this again later.
-                    connecting_devices.add (reason.get_printer ())
+                if (reason.get_reason () == "connecting-to-device" and
+                    not self.connecting_to_device.has_key (printer)):
+                    # First time we've seen this.
+                    need_recheck = True
 
-        if len (connecting_devices) > 0:
+        if need_recheck:
             # Check on them again in a minute's time.
-            gobject.timeout_add (60000,
-                                 self.check_still_connecting,
-                                 connecting_devices)
+            gobject.timeout_add (CONNECTING_TIMEOUT * 1000,
+                                 self.check_still_connecting)
 
+        self.update_connecting_devices (printer_reasons)
         items = self.reasons_seen.keys ()
         for tuple in items:
             if not tuple in reasons_now:
@@ -448,14 +482,18 @@ class JobManager:
         # like that for more than a minute.  If so, let's put a warning
         # bubble up.
         if (self.trayicon and reason != None and
-            len (self.still_connecting) and
             reason.get_reason () == "connecting-to-device"):
-            # This will be in our list of reasons we've already seen,
-            # which ordinarily stops us notifying the user.  In this
-            # case, pretend we haven't seen it before.
-            old_reasons_seen_keys.remove (reason.get_tuple ())
-            reason = StateReason (self.still_connecting.copy ().pop (),
-                                  reason.get_reason () + "-error")
+            now = time.time ()
+            printer = reason.get_printer ()
+            start = self.connecting_to_device.get (printer, now)
+            if now - start >= CONNECTING_TIMEOUT:
+                # This will be in our list of reasons we've already seen,
+                # which ordinarily stops us notifying the user.  In this
+                # case, pretend we haven't seen it before.
+                self.still_connecting.add (printer)
+                old_reasons_seen_keys.remove (reason.get_tuple ())
+                reason = StateReason (printer,
+                                      reason.get_reason () + "-error")
 
         if (self.trayicon and reason != None and
             reason.get_level () >= StateReason.WARNING):
