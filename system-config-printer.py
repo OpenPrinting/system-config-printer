@@ -1529,7 +1529,6 @@ class GUI:
             if nr == 6: # Apply
                 self.btnNPForward.hide()
                 self.btnNPApply.show()
-                self.fillNPApply()
                 return
             else:
                 self.btnNPForward.show()
