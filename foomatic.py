@@ -563,7 +563,7 @@ class Foomatic:
             os.close(fd)
         
             os.rename(tempname, filename) # atomically replace old file
-        except os.Error:
+        except OSError:
             pass
         
     def _load_pickle(self, filename="/var/cache/foomatic.pickle"):
