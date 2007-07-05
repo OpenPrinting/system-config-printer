@@ -25,6 +25,10 @@ nobase_sbin_SCRIPTS=\
 bin_SCRIPTS=\
 	system-config-printer-applet
 
+man_MANS=					\
+	man/system-config-printer.1		\
+	man/system-config-printer-applet.1
+
 desktop_DATA =\
 	system-config-printer.desktop \
 	print-applet.desktop \
@@ -68,6 +72,7 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
+	man/system-config-printer.xml \
 	bootstrap \
 	mkinstalldirs \
 	system-config-printer.gladep \
@@ -82,6 +87,10 @@ EXTRA_DIST=\
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
 @INTLTOOL_DESKTOP_RULE@
+
+# The man pages are generated from DocBook XML.
+$(man_MANS): $(top_srcdir)/man/system-config-printer.xml
+	xmlto man -o man $<
 
 tag:
 	cvs tag -c @PACKAGE@-`echo @VERSION@ | tr . _`
@@ -99,6 +108,6 @@ missing-languages:
 
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract intltool-merge intltool-update \
-	*.desktop
+	*.desktop man/*.1
 
 .PHONY: update-po

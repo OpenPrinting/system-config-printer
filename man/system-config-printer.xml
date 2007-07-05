@@ -1,0 +1,147 @@
+<?xml version='1.0'?> <!-- -*- xml -*- -->
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
+ "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<book>
+  <bookinfo>
+    <title>system-config-printer</title>
+    <author>
+      <firstname>Tim</firstname>
+      <surname>Waugh</surname>
+      <affiliation>
+	<address><email>twaugh@redhat.com</email></address>
+      </affiliation>
+    </author>
+  </bookinfo>
+
+  <reference>
+    <title>Man pages</title>
+
+    <refentry id="system-config-printer">
+      <refentryinfo>
+	<productname>system-config-printer</productname>
+	<date>21 May 2007</date>
+	<author>
+	  <firstname>Tim</firstname>
+	  <surname>Waugh</surname>
+	  <affiliation>
+	    <address><email>twaugh@redhat.com</email></address>
+	  </affiliation>
+	</author>
+      </refentryinfo>
+
+      <refmeta>
+	<refentrytitle>system-config-printer</refentrytitle>
+	<manvolnum>1</manvolnum>
+      </refmeta>
+
+      <refnamediv>
+	<refname>system-config-printer</refname>
+	<refpurpose>configure a CUPS server</refpurpose>
+      </refnamediv>
+
+      <refsynopsisdiv>
+	<cmdsynopsis>
+	  <command>system-config-printer</command>
+	</cmdsynopsis>
+      </refsynopsisdiv>
+
+      <refsect1>
+	<title>Description</title>
+
+	<para><command>system-config-printer</command> configures a
+	CUPS server.  It uses the CUPS API (bound to Python with
+	pycups) to do this.  The communication with the server is
+	performed using IPP.  As a result, it is equally able to
+	configure a remote CUPS server as a local one.</para>
+      </refsect1>
+
+      <refsect1>
+	<title>Options</title>
+
+	<variablelist>
+	  <varlistentry>
+	    <term><option>--help</option></term>
+	    <listitem>
+	      <para>Display a short usage message.</para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </refsect1>
+    </refentry>
+
+    <refentry id="system-config-printer-applet">
+      <refentryinfo>
+	<productname>system-config-printer</productname>
+	<date>21 May 2007</date>
+      </refentryinfo>
+
+      <refmeta>
+	<refentrytitle>system-config-printer-applet</refentrytitle>
+	<manvolnum>1</manvolnum>
+      </refmeta>
+
+      <refnamediv>
+	<refname>system-config-printer-applet</refname>
+	<refpurpose>print job manager</refpurpose>
+      </refnamediv>
+
+      <refsynopsisdiv>
+	<cmdsynopsis>
+	  <command>system-config-printer-applet</command>
+	  <arg choice="opt">--no-tray-icon</arg>
+	</cmdsynopsis>
+      </refsynopsisdiv>
+
+      <refsect1>
+	<title>Description</title>
+
+	<para>system-config-printer-applet is a print job manager for
+	CUPS.  Normally it will display a printer icon in the
+	notification area, greyed out when there are no print jobs for
+	the current user.  Clicking on the icon displays a simple
+	print job manager for cancelling or reprinting jobs.</para>
+
+	<para>To save memory, the applet waits first of all until the
+	user has printed a job before putting the icon in the
+	notification area.  To invoke the print job manager before a
+	job has been printed, run the applet with the
+	<option>--no-tray-icon</option> option: a desktop file is
+	provided for this, so that it should appear in the system
+	menu.</para>
+
+	<para>As well as displaying a printer icon in the notification
+	area, the applet also provides a D-BUS server for the
+	com.redhat.PrintDriverSelection interface, to help configure a
+	new printer when it is plugged in.</para>
+      </refsect1>
+
+      <refsect1>
+	<title>Options</title>
+
+	<variablelist>
+	  <varlistentry>
+	    <term><option>--help</option></term>
+	    <listitem>
+	      <para>Display a short usage message.</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><option>--version</option></term>
+	    <listitem>
+	      <para>Display the version of the applet.</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><option>--no-tray-icon</option></term>
+	    <listitem>
+	      <para>Do not display an icon in the notification area.
+	      Quit when the job manager window is closed.</para>
+	    </listitem>
+	  </varlistentry>
+	</variablelist>
+      </refsect1>
+    </refentry>
+  </reference>
+</book>
