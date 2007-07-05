@@ -50,10 +50,8 @@ class Option:
             option2 = self.gui.options.get(constraint.option2, None)
             if option2 is None: continue
 
-            if ((not constraint.choice1 or
-                constraint.choice1==value) and                    
-                (not constraint.choice2 or
-                 option2.get_current_value() == constraint.choice2)):
+            if (constraint.choice1==value and
+                option2.get_current_value() == constraint.choice2):
                 # conflict
                 self.conflicts.add(constraint)
                 if update_others:

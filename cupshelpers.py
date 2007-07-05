@@ -8,8 +8,9 @@ class Printer:
                        cups.IPP_PRINTER_BUSY: "Busy",
                        cups.IPP_PRINTER_STOPPED: "Stopped" }
 
-    def __init__(self, name, **kw):
+    def __init__(self, name, connection, **kw):
         self.name = name
+        self.connection = connection
         self.class_members = []
         self.device_uri = kw.get('device-uri', "")
         self.info = kw.get('printer-info', "")
@@ -24,6 +25,7 @@ class Printer:
         self.state_description = self.printer_states.get(
             self.state, "Unknown")
 
+        self.enabled = self.state != cups.IPP_PRINTER_STOPPED
 
         if self.is_shared is None:
             self.is_shared = not self.not_shared
@@ -53,12 +55,27 @@ class Printer:
         uri = uri.split('/')[0]
         uri = uri.split(':')[0]
         return uri
-        
+
+    def setEnabled(self, on):
+        if on:
+            self.connection.enablePrinter(self.name)
+        else:
+            self.connection.disablePrinter(self.name)
+
+    def setAccepting(self, on):
+        if on:
+            self.connection.acceptJobs(self.name)
+        else:
+            self.connection.rejectJobs(self.name)
+
+    def setShared(self,on):
+        self.connection.setPrinterPublished(self.name, on)
+
 def getPrinters(connection):
     printers = connection.getPrinters()
     classes = connection.getClasses()
     for name, printer in printers.iteritems():
-        printer = Printer(name, **printer)
+        printer = Printer(name, connection, **printer)
         printers[name] = printer
         if classes.has_key(name):
             printer.class_members = classes[name]

@@ -42,7 +42,8 @@ class GUI:
 
                         "ntbkPrinter",
                           "entPDescription", "entPLocation", "lblPMakeModel",
-                          "lblPState", "entPDevice",                          
+                          "lblPState", "entPDevice",
+                          "chkPEnabled", "chkPAccepting", "chkPShared",
                          "swPInstallOptions", "vbPInstallOptions", 
                          "swPOptions",
                           "lblPOptions", "vbPOptions",
@@ -297,6 +298,30 @@ class GUI:
 
     # Data handling
 
+    def on_printer_changed(self, widget):
+        if isinstance(widget, gtk.CheckButton):
+            value = widget.get_active()
+        elif isinstance(widget, gtk.Entry):
+            value = widget.get_text()
+        else:
+            raise ValueError, "Widget not supported (yet)"
+
+        p = self.printer
+        for known_widget, old_value in [(self.entPDescription, p.info),
+                                        (self.entPLocation, p.location),
+                                        (self.entPDevice, p.device_uri),
+                                        (self.chkPEnabled, p.enabled),
+                                        (self.chkPAccepting, not p.rejecting),
+                                        (self.chkPShared, p.is_shared)]:
+            if known_widget is widget:
+                if old_value == value:
+                    self.changed.discard(widget)
+                else:
+                    self.changed.add(widget)
+        self.setDataButtonState()
+                        
+        
+        
     def option_changed(self, option):
         if option.is_changed():
             self.changed.add(option)
@@ -307,7 +332,6 @@ class GUI:
             self.conflicts.add(option)
         else:
             self.conflicts.discard(option)
-
         self.setDataButtonState()
 
     def setDataButtonState(self):
@@ -367,6 +391,10 @@ class GUI:
             info = self.entPDescription.get_text()
             device_uri = self.entPDevice.get_text()
 
+            enabled = self.chkPEnabled.get_active()
+            accepting = self.chkPAccepting.get_active()
+            shared = self.chkPShared.get_active()
+
             if info!=printer.info:
                 self.passwd_retry = False # use cached Passwd 
                 self.cups.setPrinterInfo(name, info)
@@ -377,6 +405,16 @@ class GUI:
                 self.passwd_retry = False # use cached Passwd 
                 self.cups.setPrinterDevice(name, device_uri)
 
+            if enabled != printer.enabled:
+                self.passwd_retry = False # use cached Passwd 
+                self.printer.setEnabled(enabled)
+            if accepting == printer.rejecting:
+                self.passwd_retry = False # use cached Passwd 
+                self.printer.setAccepting(accepting)
+            if shared != printer.is_shared:
+                self.passwd_retry = False # use cached Passwd 
+                self.printer.setShared(shared)
+                
             if printer.is_class:
                 # update member list
                 new_members = self.getCurrentClassMembers()
@@ -461,6 +499,13 @@ class GUI:
         self.entPDevice.set_text(printer.device_uri)
         self.entPDevice.set_sensitive(editable)
 
+        self.chkPEnabled.set_active(printer.enabled)
+        self.chkPEnabled.set_sensitive(editable)
+        self.chkPAccepting.set_active(not printer.rejecting)
+        self.chkPAccepting.set_sensitive(editable)
+        self.chkPShared.set_active(printer.is_shared)
+        self.chkPShared.set_sensitive(editable)
+
         # remove InstallOptions tab
         tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
         if tab_nr != -1:
@@ -503,7 +548,7 @@ class GUI:
             if group.name == "InstallableOptions":
                 container = self.vbPInstallOptions
                 self.ntbkPrinter.insert_page(self.swPInstallOptions,
-                                             gtk.Label(group.text), 2)
+                                             gtk.Label(group.text), 1)
             else:
                 frame = gtk.Frame (group.text)
                 frame.set_shadow_type (gtk.SHADOW_NONE)
@@ -558,7 +603,7 @@ class GUI:
         # insert Member Tab
         if self.ntbkPrinter.page_num(self.vbClassMembers) == -1:
             self.ntbkPrinter.insert_page(
-                self.vbClassMembers, self.lblClassMembers, 2)
+                self.vbClassMembers, self.lblClassMembers, 1)
         
 
         model_members = self.tvClassMembers.get_model()
