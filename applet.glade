@@ -477,6 +477,7 @@
 		      <property name="max_length">0</property>
 		      <property name="text" translatable="yes"></property>
 		      <property name="has_frame">True</property>
+		      <property name="invisible_char">•</property>
 		      <property name="activates_default">True</property>
 		    </widget>
 		    <packing>
@@ -506,6 +507,18 @@
 	  <property name="fill">True</property>
 	</packing>
       </child>
+    </widget>
+  </child>
+</widget>
+
+<widget class="GtkMenu" id="icon_popupmenu">
+
+  <child>
+    <widget class="GtkMenuItem" id="icon_hide">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">_Hide</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_icon_hide_activate" last_modification_time="Mon, 26 Mar 2007 11:28:59 GMT"/>
     </widget>
   </child>
 </widget>

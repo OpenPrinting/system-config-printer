@@ -24,15 +24,20 @@ import gobject
 import sys
 
 APPDIR="/usr/share/system-config-printer"
+APPDIR="."
 DOMAIN="system-config-printer"
 GLADE="applet.glade"
 ICON="applet.png"
 
 class JobManager:
-    def __init__(self, bus):
+    def __init__(self, bus, loop, service_running=False):
+        self.loop = loop
+        self.service_running = service_running
+
         self.jobs = {}
         self.jobiters = {}
         self.which_jobs = "not-completed"
+        self.hidden = False
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE)
         self.xml.signal_autoconnect(self)
@@ -99,6 +104,7 @@ class JobManager:
                                   127)
         self.statusicon.set_from_pixbuf (self.icon_no_jobs)
         self.statusicon.connect ('activate', self.toggle_window_display)
+        self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
 
         self.refresh ()
 
@@ -145,6 +151,8 @@ class JobManager:
         self.refresh()
 
     def refresh(self):
+        if self.hidden:
+            return
         try:
             c = cups.Connection ()
             jobs = c.getJobs (which_jobs=self.which_jobs, my_jobs=True)
@@ -287,6 +295,18 @@ class JobManager:
         self.job_popupmenu.popup (None, None, None, event.button,
                                   event.get_time ())
 
+    def on_icon_popupmenu(self, icon, button, time):
+        self.icon_popupmenu.popup (None, None, None, button, time)
+
+    def on_icon_hide_activate(self, menuitem):
+        bus.remove_signal_receiver (self.handle_dbus_signal,
+                                    path="/com/redhat/PrinterSpooler",
+                                    dbus_interface="com.redhat.PrinterSpooler")
+        self.hidden = True
+        self.statusicon.set_visible (False)
+        if not self.service_running:
+            self.loop.quit ()
+
     def on_job_cancel_activate(self, menuitem):
         try:
             c = cups.Connection ()
@@ -370,10 +390,12 @@ class PrintDriverSelection(dbus.service.Object):
 
     # Need to add an interface for providing a PPD.
 
+service_running = False
 try:
     bus = dbus.SystemBus()
     name = dbus.service.BusName (PDS_OBJ, bus=bus)
     PrintDriverSelection(name)
+    service_running = True
 except:
     print "eggcups: failed to start PrintDriverSelection service"
 
@@ -417,6 +439,6 @@ if not any_jobs ():
                                 dbus_interface="com.redhat.PrinterSpooler")
 
 do_imports()
-JobManager(bus)
 loop = gobject.MainLoop ()
+JobManager(bus, loop, service_running=service_running)
 loop.run()
