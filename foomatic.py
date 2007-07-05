@@ -28,6 +28,30 @@ from gtk_html2pango import HTML2PangoParser
 from cStringIO import StringIO
 from pprint import pprint
 
+def _ppdMakeModelSplit (ppd_make_and_model):
+    """Convert the ppd-make-and-model field into a (make, model) pair."""
+    try:
+        make, model = ppd_make_and_model.split(" ", 1)
+    except:
+        make = ppd_make_and_model
+        model = ''
+
+    for suffix in [" PS",
+                   " PXL"]:
+        if model.endswith (suffix):
+            model = model[:-len(suffix)]
+            break
+
+        hp_suffix = " Postscript (recommended)"
+        if model.endswith (hp_suffix):
+            v = model.find (" v")
+            if v != -1 and model[v + 2].isdigit ():
+                model = model[:v]
+            else:
+                model = model[:-len(hp_suffix)]
+
+    return (make, model)
+
 ############################################################################# 
 ###  FoomaticXMLFile
 #############################################################################
@@ -269,25 +293,27 @@ class Printer(FoomaticXMLFile):
                 for sub_child in child.children:
                     if sub_child.name == "driver":
                         if len(sub_child.children) == 2:
-                            # single xml file
+                            # PPD driver
                             driver = sub_child.children[0].first_cdata.strip()
                             ppd = sub_child.children[1].first_cdata.strip()
                             self.drivers[driver] = ppd
                         elif len(sub_child.children) == 0:
-                            # foomatic-config output
+                            # Non-PPD driver
                             self.drivers.setdefault(sub_child.first_cdata, '')
             
             elif (child.name == "driver" and
                   len (child.first_cdata.strip())):
                 self.driver = child.first_cdata
     
-            elif child.name == "ppds":
+            elif child.name == "lang":
                 for sub_child in child.children:
-                    if (sub_child.name != "ppd" or
-                        len(sub_child.children)!=2): continue
-                    driver = sub_child.children[0].first_cdata.strip()
-                    ppd = sub_child.children[1].first_cdata.strip()
-                    self.drivers[driver] = ppd
+                    if (len (sub_child.children) > 0 and
+                        sub_child.children[0].name == "ppd"):
+                        driver = sub_child.name
+                        if driver == "postscript":
+                            driver = "Postscript"
+                        ppd = sub_child.children[0].first_cdata.strip()
+                        self.drivers[driver] = ppd
                 
             elif child.name == "autodetect":
                 for sub_child in child.children:
@@ -335,7 +361,6 @@ class Printer(FoomaticXMLFile):
                     p = p[:-3]
                 foomatic_name = p.replace("foomatic-db-ppds/", "PPD/")
                 if foomatic_name in self.drivers.itervalues():
-                    print "Dropping %s for %s" % (ppd_name, foomatic_name)
                     continue
             self.drivers[ppd_name] = ppd_name
 
@@ -363,14 +388,14 @@ class PPDPrinter(Printer):
         FoomaticXMLFile.__init__(self, name, foomatic)
 
         ppd = foomatic.ppds[name]
-        self.make, self.model = ppd['ppd-make-and-model'].split(' ', 1)
+        self.make, self.model = _ppdMakeModelSplit (ppd['ppd-make-and-model'])
         self.functionality = ''
         self.driver = ''
         self.drivers = {}
         self.autodetect = {}
         self.unverified = False
         self.comments_dict = {}
-        
+        print "PPDPrinter: %s / %s" % (self.make, self.model)
         self.getPPDDrivers()
 
 #############################################################################
@@ -472,17 +497,7 @@ class Foomatic:
                 #ppds.pop(name)
         self.ppds = ppds
         for name, ppd in self.ppds.iteritems():
-            try:
-                make, model = ppd['ppd-make-and-model'].split(" ", 1)
-            except KeyError:
-                continue
-
-            if self.ppd_makes.has_key (make):
-                for suffix in [" PS",
-                               " PXL"]:
-                    if model.endswith (suffix):
-                        model = model[:-len(suffix)]
-                        break
+            (make, model) = _ppdMakeModelSplit (ppd['ppd-make-and-model'])
 
             # ppd_makes[make][model] -> [names]
             models = self.ppd_makes.setdefault(make, {})

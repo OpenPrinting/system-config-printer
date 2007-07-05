@@ -1,5 +1,12 @@
 2006-06-30  Tim Waugh  <twaugh@redhat.com>
 
+	* foomatic.py (Printer.parse_xml): There's no ppds node.  Handle
+	lang/*/ppd.
+	(_ppdMakeModelSplit): New function.
+
+	* system-config-printer.py (GUI.on_tvNPDrivers_cursor_changed):
+	More reliable PPD information.
+
 	* foomatic.py: Use /var/cache/foomatic/foomatic.pickle for pickle
 	file.
 	(Foomatic.addCupsPPDs): Strip PS/PXL suffices from CUPS PPD
