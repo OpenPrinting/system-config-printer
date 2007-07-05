@@ -158,7 +158,7 @@ class GUI:
     # Password handling
 
     def cupsPasswdCallback(self, querystring):
-        if self.passwd_retry:
+        if self.passwd_retry or len (self.password) == 0:
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
             if result:
