@@ -381,11 +381,9 @@ class Foomatic:
     def addCupsPPDs(self, ppds):
         self.ppds = ppds
         for name, ppd in self.ppds.iteritems():
-            make, model = ppd['ppd-make-and-model'].split(" ", 1)
             try:
-                make = unicode(make) # XXX hack to avoid encoding problem
-                model = unicode(model)
-            except UnicodeError:
+                make, model = ppd['ppd-make-and-model'].split(" ", 1)
+            except KeyError:
                 continue
             # ppd_makes[make][model] -> [names]
             models = self.ppd_makes.setdefault(make, {})
