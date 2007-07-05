@@ -419,6 +419,12 @@ import dbus.glib
 import dbus.service
 import gobject
 
+# Stop running when the session ends.
+def monitor_session (*args):
+    pass
+bus = dbus.SessionBus()
+bus.add_signal_receiver (monitor_session)
+
 ####
 #### PrintDriverSelection DBus server
 ####
