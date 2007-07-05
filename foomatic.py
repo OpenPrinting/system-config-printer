@@ -68,6 +68,9 @@ def _ppdMakeModelSplit (ppd_make_and_model, ppdname=None):
     if gutenprint != -1:
         model = model[:gutenprint]
 
+    if make == "EPSON":
+        make = "Epson"
+
     return (make, model)
 
 ############################################################################# 
