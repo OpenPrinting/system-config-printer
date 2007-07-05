@@ -734,10 +734,6 @@ class Foomatic:
             if self._auto_ieee1284.has_key(ieee1284):
                 return self._auto_ieee1284[ieee1284]                
 
-        # check description
-        if self._auto_description.has_key(device.id_dict["DES"]):
-            return self._auto_description[device.id_dict["DES"]]
-
         # Try matching against the foomatic names
         best_mdl = None
         mdls = None
