@@ -412,8 +412,18 @@ def main():
     list_models = True
     list_ids = False
 
-    c = cups.Connection ()
-    ppds = PPDs (c.getPPDs ())
+    picklefile="pickled-ppds"
+    import pickle
+    try:
+        f = open (picklefile, "r")
+        cupsppds = pickle.load (f)
+    except IOError:
+        f = open (picklefile, "w")
+        c = cups.Connection ()
+        cupsppds = c.getPPDs ()
+        pickle.dump (cupsppds, f)
+
+    ppds = PPDs (cupsppds)
     makes = ppds.getMakes ()
     models_count = 0
     for make in makes:
@@ -451,8 +461,10 @@ def main():
         "MFG:New;MDL:Unknown ESC/P Printer;CMD:ESCP2E;",
         ]:
         id_dict = parseDeviceID (id)
-        print ppds.getPPDNameFromDeviceID (id_dict["MFG"], id_dict["MDL"],
-                                           id_dict["DES"], id_dict["CMD"])
+        print ppds.getPPDNameFromDeviceID (id_dict["MFG"],
+                                           id_dict["MDL"],
+                                           id_dict["DES"],
+                                           id_dict["CMD"])
 
 if __name__ == "__main__":
     main()
