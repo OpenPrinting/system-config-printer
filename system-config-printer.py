@@ -1583,8 +1583,8 @@ class GUI:
             if printer:
                 device = device + "/" + printer
         elif type == "lpd": # LPD
-            host = self.cmbNPTLPDHostname.get_text()
-            printer = self.cmbNPLPDPrintername.get_text()
+            host = self.cmbentNPTLpdHost.get_active_text()
+            printer = self.cmbentNPTLpdQueue.get_active_text()
             device = "lpd://" + host
             if printer:
                 device = device + "/" + printer
