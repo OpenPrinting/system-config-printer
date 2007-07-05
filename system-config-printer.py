@@ -395,7 +395,7 @@ class GUI:
             (local_printers, _("Local Printers"), "_printers"),
             (local_classes, _("Local Classes"), "_classes"),
             (remote_printers, _("Remote Printers"), "_remote_printers"),
-            (remote_classes, _("Remote Classes"), "_remove_classes")):
+            (remote_classes, _("Remote Classes"), "_remote_classes")):
             if not printers: continue
             iter = self.mainlist.append(None, (text, name))
             path = self.mainlist.get_path(iter)
