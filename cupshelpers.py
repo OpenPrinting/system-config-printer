@@ -232,9 +232,25 @@ class Device:
             self.id_dict.setdefault(name, "")
 
     def __cmp__(self, other):
-        result = cmp(self.is_class, other.is_class)
-        if not result:
-            result = cmp(bool(self.id), bool(other.id))
+        if self.is_class != other.is_class:
+            if other.is_class:
+                return -1
+            return 1
+        if not self.is_class and (self.type != other.type):
+            # "hp" before * before "parallel" before "serial"
+            if other.type == "serial":
+                return -1
+            if self.type == "serial":
+                return 1
+            if other.type == "parallel":
+                return -1
+            if self.type == "parallel":
+                return 1
+            if other.type == "hp":
+                return 1
+            if self.type == "hp":
+                return -1
+        result = cmp(bool(self.id), bool(other.id))
         if not result:
             result = cmp(self.info, other.info)
         
