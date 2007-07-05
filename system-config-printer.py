@@ -143,6 +143,7 @@ class GUI:
                            "entNPTIPPHostname", "entNPTIPPPrintername",
                         "entNPTDirectJetHostname", "entNPTDirectJetPort",
                         "entSMBURI", "tvSMBBrowser",
+                        "entSMBUsername", "entSMBPassword",
                            "entNPTDevice",
                            "tvNCMembers", "tvNCNotMembers",
                           "rbtnNPPPD", "tvNPMakes", 
@@ -246,9 +247,7 @@ class GUI:
         self.smb_store = gtk.TreeStore (str, # host or share
                                         str, # comment
                                         gobject.TYPE_PYOBJECT, # domain dict
-                                        gobject.TYPE_PYOBJECT, # host dict
-                                        str, # username
-                                        str) # password
+                                        gobject.TYPE_PYOBJECT) # host dict
         self.tvSMBBrowser.set_model (self.smb_store)
         self.smb_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
 
@@ -1604,8 +1603,6 @@ class GUI:
                     i = store.append (iter)
                     store.set_value (i, 0, printer)
                     store.set_value (i, 1, printers[printer])
-                    store.set_value (i, 4, '')
-                    store.set_value (i, 5, '')
                 # TODO: Cursor ready
 
             view.expand_row (path, 1)
@@ -1643,12 +1640,12 @@ class GUI:
             return
 
         parent_iter = store.iter_parent (iter)
+        domain_iter = store.iter_parent (parent_iter)
+        group = store.get_value (domain_iter, 0)
         host = store.get_value (parent_iter, 0)
         share = store.get_value (iter, 0)
-        domain_iter = store.iter_parent (parent_iter)
-        group = store.get_value (domain_iter, 2)['DOMAIN']
-        user = store.get_value (iter, 4)
-        passwd = store.get_value (iter, 5)
+        user = self.entSMBUsername.get_text ()
+        passwd = self.entSMBPassword.get_text ()
 
         uri_password = ''
         if passwd:
@@ -1660,6 +1657,46 @@ class GUI:
         uri_share = '%s/%s' % (host, share)
         uri = "%s%s%s%s" % (user, uri_password, uri_group, uri_share)
         self.entSMBURI.set_text (uri)
+
+    def on_entSMBUsername_changed(self, entry):
+        self.on_tvSMBBrowser_cursor_changed (self.tvSMBBrowser)
+
+    def on_entSMBPassword_changed(self, entry):
+        self.on_tvSMBBrowser_cursor_changed (self.tvSMBBrowser)
+
+    def on_btnSMBVerify_clicked(self, button):
+        uri = self.entSMBURI.get_text ()
+        auth = uri.find ('@')
+        if auth != -1:
+            uri = uri[auth + 1:]
+        sep = uri.count ('/')
+        group = ''
+        if sep == 2:
+            g = uri.find('/')
+            group = uri[:g]
+            uri = uri[g + 1:]
+        if sep < 1:
+            host = 'localhost'
+        else:
+            h = uri.find('/')
+            host = uri[:h]
+            uri = uri[h + 1:]
+            p = host.find(':')
+            if p != -1:
+                host = host[:p]
+        share = uri
+        user = self.entSMBUsername.get_text ()
+        passwd = self.entSMBPassword.get_text ()
+        accessible = pysmb.printer_share_accessible ("//%s/%s" %
+                                                     (host, share),
+                                                     group = group,
+                                                     user = user,
+                                                     passwd = passwd)
+        if accessible:
+            print "ACCESSIBLE"
+            return
+
+        print "NOT ACCESSIBLE!"
 
     def on_tvNPDevices_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
@@ -1792,6 +1829,7 @@ class GUI:
             device = self.device.uri
         elif type == "smb":
             device = "smb://" + self.entSMBURI.get_text ()
+            ### RECONSTRUCT WITH REAL PASSWORD!
         else:
             device = self.entNPTDevice.get_text()
         return device
