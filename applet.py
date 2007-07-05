@@ -517,6 +517,59 @@ class JobManager:
                 self.notify.show ()
                 self.notified_reason = reason
 
+    def update_job_creation_times(self):
+        now = time.time ()
+        need_update = False
+        for job, data in self.jobs.iteritems():
+            if self.jobs.has_key (job):
+                iter = self.jobiters[job]
+
+            t = "Unknown"
+            if data.has_key ('time-at-creation'):
+                created = data['time-at-creation']
+                ago = now - created
+                if ago > 86400:
+                    t = time.ctime (created)
+                elif ago > 3600:
+                    need_update = True
+                    hours = int (ago / 3600)
+                    mins = int ((ago % 3600) / 60)
+                    if hours == 1:
+                        if mins == 0:
+                            t = _("1 hour ago")
+                        elif mins == 1:
+                            t = _("1 hour and 1 minute ago")
+                        else:
+                            t = _("1 hour and %d minutes ago") % mins
+                    else:
+                        if mins == 0:
+                            t = _("%d hours ago")
+                        elif mins == 1:
+                            t = _("%d hours and 1 minute ago") % hours
+                        else:
+                            t = _("%d hours and %d minutes ago") % \
+                                (hours, mins)
+                else:
+                    need_update = True
+                    mins = ago / 60
+                    if mins < 2:
+                        t = _("a minute ago")
+                    else:
+                        t = _("%d minutes ago") % mins
+
+            self.store.set_value (iter, 4, t)
+
+        if need_update and not self.will_update_job_creation_times:
+            gobject.timeout_add (60 * 1000,
+                                 self.update_job_creation_times)
+            self.will_update_job_creation_times = True
+
+        if not need_update:
+            self.will_update_job_creation_times = False
+
+        # Return code controls whether the timeout will recur.
+        return self.will_update_job_creation_times
+
     def refresh(self):
         if self.hidden:
             return
@@ -590,40 +643,6 @@ class JobManager:
                 size = 'Unknown'
             self.store.set_value (iter, 3, size)
 
-            t = "Unknown"
-            if data.has_key ('time-at-creation'):
-                created = data['time-at-creation']
-                now = time.time ()
-                ago = now - created
-                if ago > 86400:
-                    t = time.ctime (created)
-                elif ago > 3600:
-                    hours = int (ago / 3600)
-                    mins = int ((ago % 3600) / 60)
-                    if hours == 1:
-                        if mins == 0:
-                            t = _("1 hour ago")
-                        elif mins == 1:
-                            t = _("1 hour and 1 minute ago")
-                        else:
-                            t = _("1 hour and %d minutes ago") % mins
-                    else:
-                        if mins == 0:
-                            t = _("%d hours ago")
-                        elif mins == 1:
-                            t = _("%d hours and 1 minute ago") % hours
-                        else:
-                            t = _("%d hours and %d minutes ago") % \
-                                (hours, mins)
-                else:
-                    mins = ago / 60
-                    if mins < 2:
-                        t = _("a minute ago")
-                    else:
-                        t = _("%d minutes ago") % mins
-
-            self.store.set_value (iter, 4, t)
-
             state = None
             if data.has_key ('job-state'):
                 try:
@@ -645,6 +664,7 @@ class JobManager:
             self.store.set_value (iter, 5, state)
 
         self.jobs = jobs
+        self.update_job_creation_times ()
 
     def on_treeview_button_press_event(self, treeview, event):
         if event.button != 3:
