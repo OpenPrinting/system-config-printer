@@ -87,7 +87,7 @@ def percentDecode (text):
     l = len (text)
     r = 0
     w = ''
-    xdigs = "01234567890abcdef"
+    xdigs = "0123456789abcdef"
     while r < l:
         if r + 2 < l and text[r] == '%':
             c10 = xdigs.find (text[r + 1].lower ())
