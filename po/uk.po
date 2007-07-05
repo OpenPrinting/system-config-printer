@@ -2,14 +2,14 @@
 # Copyright (C) Free Software Foundation
 # This file is distributed under the same license as the printconf package.
 # Maxim Dubovoy <max@mylinux.com.ua>, 2003.
-# Maxim Dziumanenko <dziumanenko@gmail.com>, 2003-2006
+# Maxim Dziumanenko <dziumanenko@gmail.com>, 2003-2007
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: printconf\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2007-01-16 16:55+0000\n"
-"PO-Revision-Date: 2005-01-27 20:22+0300\n"
+"PO-Revision-Date: 2007-01-24 20:22+0300\n"
 "Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -41,16 +41,14 @@ msgid "Conflicts with:"
 msgstr "Конфліктує з:"
 
 #: ../system-config-printer.py:226
-#, fuzzy
 msgid "Copyright 2006, 2007 Red Hat, Inc."
-msgstr "Copyright 2006 Red Hat, Inc."
+msgstr "Copyright 2006, 2007 Red Hat, Inc."
 
 #: ../system-config-printer.py:262
 msgid "Server Settings"
 msgstr "Параметри сервера"
 
 #: ../system-config-printer.py:271 ../system-config-printer.py:273
-#, fuzzy
 msgid "Members of this class"
 msgstr "Члени цього класу"
 
@@ -122,7 +120,7 @@ msgid "Remote Classes"
 msgstr "Віддалені класи"
 
 #: ../system-config-printer.py:538
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Connecting to server:\n"
 "%s"
@@ -131,7 +129,6 @@ msgstr ""
 "%s"
 
 #: ../system-config-printer.py:864
-#, fuzzy
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -162,39 +159,37 @@ msgstr "Помилка при операції CUPS: '%s'."
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
-msgstr ""
+msgstr "Можливо, вказано неправильний або сервер налаштований на заборону віддаленого керування."
 
 #: ../system-config-printer.py:912
 msgid "Bad request"
-msgstr ""
+msgstr "Неправильний запит"
 
 #: ../system-config-printer.py:914
-#, fuzzy
 msgid "Not found"
-msgstr "Не підключений"
+msgstr "Не знайдений"
 
 #: ../system-config-printer.py:916
 msgid "Request timeout"
-msgstr ""
+msgstr "Час очікування запиту"
 
 #: ../system-config-printer.py:918
 msgid "Upgrade required"
-msgstr ""
+msgstr "Вимагається оновлення"
 
 #: ../system-config-printer.py:920
-#, fuzzy
 msgid "Server error"
-msgstr "Помилка сервера CUPS"
+msgstr "Помилка сервера"
 
 #: ../system-config-printer.py:924
 #, python-format
 msgid "status %d"
-msgstr ""
+msgstr "статус %d"
 
 #: ../system-config-printer.py:928
 #, python-format
 msgid "There was an HTTP error: %s."
-msgstr ""
+msgstr "Помилка HTTP сервера: %s."
 
 #: ../system-config-printer.py:951
 msgid "This will delete this class!"
@@ -240,21 +235,21 @@ msgstr "Не заданий типовий принтер."
 
 #: ../system-config-printer.py:1325
 msgid "Cancel Tests"
-msgstr ""
+msgstr "Скасувати перевірку"
 
 #: ../system-config-printer.py:1329 ../system-config-printer.glade.h:114
 msgid "Print Test Page"
 msgstr "Надрукувати тестову сторінку"
 
 #: ../system-config-printer.py:1577
-#, fuzzy, python-format
+#, python-format
 msgid "Really delete printer %s?"
-msgstr "Справді видалити %s %s?"
+msgstr "Справді видалити %s?"
 
 #: ../system-config-printer.py:1579
-#, fuzzy, python-format
+#, python-format
 msgid "Really delete class %s?"
-msgstr "Справді видалити %s %s?"
+msgstr "Справді видалити клас %s?"
 
 #: ../system-config-printer.py:1627 ../system-config-printer.glade.h:104
 msgid "New Printer"
@@ -298,27 +293,28 @@ msgstr "Цей принтер (спільний ресурс) недоступн
 
 #: ../system-config-printer.py:2081
 msgid "A printer connected to the parallel port."
-msgstr ""
+msgstr "Принтер підключений до паралельного порту."
 
 #: ../system-config-printer.py:2083
 msgid "A printer connected to a USB port."
-msgstr ""
+msgstr "Принтер підключений до порту USB."
 
 #: ../system-config-printer.py:2085
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr ""
+"Роботу принтера забезпечує HPLIP або функція принтера багатофункціонального пристрою."
 
 #: ../system-config-printer.py:2088
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
-msgstr ""
+msgstr "Роботу принтера забезпечує HPLIP або функція факсу багатофункціонального пристрою."
 
 #: ../system-config-printer.py:2091
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
-msgstr ""
+msgstr "HAL (Hardware Abstraction Layer) виявив локальний принтер."
 
 #: ../system-config-printer.py:2329
 msgid " (recommended)"
@@ -356,12 +352,12 @@ msgstr ""
 #. Foomatic database problem of some sort.
 #: ../system-config-printer.py:2463
 msgid "Database error"
-msgstr ""
+msgstr "Помилка бази даних"
 
 #: ../system-config-printer.py:2464
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
-msgstr ""
+msgstr "Драйвер '%s' не може використовуватись з принтером '%s %s'."
 
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
@@ -369,34 +365,34 @@ msgstr ""
 #: ../system-config-printer.py:2474
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
-msgstr ""
+msgstr "Щоб скористатись цим драйвером необхідно встановити пакет '%s'."
 
 #. This error came from trying to open the PPD file.
 #: ../system-config-printer.py:2481
 msgid "PPD error"
-msgstr ""
+msgstr "Помилка PPD"
 
 #: ../system-config-printer.py:2483
 msgid "Failed to read PPD file.  Possible reason follows:"
-msgstr ""
+msgstr "Не вдається прочитати файл PPD. Можливі причини:"
 
 #: ../system-config-printer.py:2769 ../system-config-printer.py:2776
 msgid "Missing driver"
-msgstr ""
+msgstr "Відсутній драйвер"
 
 #: ../system-config-printer.py:2770
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
 "Please install it before using this printer."
-msgstr ""
+msgstr "Принтеру '%s' потрібен пакет %s, але він не встановлений. Будь ласка, встановіть його перш ніж використовувати принтер."
 
 #: ../system-config-printer.py:2777
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
 "Please install it before using this printer."
-msgstr ""
+msgstr "Принтеру '%s' потрібна програма '%s', але вона не встановлена. Будь ласка, встановіть її перш ніж використовувати принтер."
 
 #: ../system-config-printer.glade.h:1
 msgid " PPD "
@@ -427,9 +423,8 @@ msgid "<b>Default Printer</b>"
 msgstr "<b>Типовий принтер</b>"
 
 #: ../system-config-printer.glade.h:8
-#, fuzzy
 msgid "<b>Description</b>"
-msgstr "<b>Опис</b> (не обов'язково)"
+msgstr "<b>Опис</b>"
 
 #: ../system-config-printer.glade.h:9
 msgid "<b>Description</b> (optional)"
@@ -481,7 +476,7 @@ msgstr "<b>Стан</b>"
 
 #: ../system-config-printer.glade.h:21
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-msgstr ""
+msgstr "<i>smb://[робочагрупа/]сервер[:порт]/принтер</i>"
 
 #: ../system-config-printer.glade.h:22
 msgid ""
@@ -673,9 +668,8 @@ msgid "Device URI:"
 msgstr "URI пристрою:"
 
 #: ../system-config-printer.glade.h:79
-#, fuzzy
 msgid "Device description."
-msgstr "Опис:"
+msgstr "Опис пристрою."
 
 #: ../system-config-printer.glade.h:80
 msgid "DirectJet"
@@ -978,11 +972,9 @@ msgid "none"
 msgstr "немає"
 
 #: ../system-config-printer.desktop.in.h:1
-#, fuzzy
 msgid "Configure printers"
-msgstr "System-Config-Printer %s"
+msgstr "Налаштовування принтерів"
 
 #: ../system-config-printer.desktop.in.h:2
-#, fuzzy
 msgid "Printing"
-msgstr "Принтер"
+msgstr "Друк"
