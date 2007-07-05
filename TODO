@@ -1,0 +1,23 @@
+TODO list for system-config-printer
+-----------------------------------
+
+* Get UI feedback from a real UI person
+
+* Use GNOME HIG-recommended paddings/layout for widgets
+
+* All tracebacks should result in a graphical dialog (like anaconda)
+
+* Handle cups.IPP_Error exceptions like:
+   cups.IPP_NOT_AUTHORIZED (user doesn't know password and pressed 'cancel')
+   cups.IPP_SERVICE_UNAVAILABLE (CUPS server shut down)
+   etc (other common ones)
+  with friendly dialog boxes explaining what happened and what the
+  implication is
+
+* 'Printer state' should show textual description
+
+* Handle unapplied changes:
+   - when closing main window
+   - when flipping between printers/classes/etc
+
+* Populate servers list from browsed queues
