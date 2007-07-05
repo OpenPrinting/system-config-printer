@@ -16,7 +16,8 @@ nobase_pkgdata_SCRIPTS=				\
 
 nobase_pkgdata_DATA=\
 	system-config-printer.glade \
-	applet.glade
+	applet.glade \
+	applet.png
 
 nobase_sbin_SCRIPTS=\
 	system-config-printer
@@ -51,6 +52,7 @@ EXTRA_DIST=\
 	system-config-printer.gladep \
 	system-config-printer.desktop.in \
 	print-applet.desktop.in \
+	applet.png \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in
