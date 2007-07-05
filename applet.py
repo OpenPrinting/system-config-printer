@@ -25,18 +25,104 @@ DOMAIN="system-config-printer"
 GLADE="applet.glade"
 ICON="applet.png"
 
-REASON_REPORT=1
-REASON_WARNING=2
-REASON_ERROR=3
+class StateReason:
+    REPORT=1
+    WARNING=2
+    ERROR=3
+
+    LEVEL_FILE={
+        REPORT: "/usr/share/icons/gnome/22x22/status/info.png",
+        WARNING: "/usr/share/icons/gnome/22x22/status/important.png",
+        ERROR: "/usr/share/icons/gnome/22x22/status/error.png"
+        }
+
+    def __init__(self, printer, reason):
+        self.printer = printer
+        self.reason = reason
+        self.level = None
+        self.canonical_reason = None
+
+    def get_printer (self):
+        return self.printer
+
+    def get_level (self):
+        if self.level != None:
+            return self.level
+
+        if self.reason.endswith ("-report"):
+            self.level = self.REPORT
+        elif self.reason.endswith ("-warning"):
+            self.level = self.WARNING
+        else:
+            self.level = self.ERROR
+        return self.level
+
+    def get_reason (self):
+        if self.canonical_reason:
+            return self.canonical_reason
+
+        level = self.get_level ()
+        reason = self.reason
+        if level == self.WARNING and reason.endswith ("-warning"):
+            reason = reason[:-8]
+        elif level == self.ERROR and reason.endswith ("-error"):
+            reason = reason[:-6]
+        self.canonical_reason = reason
+        return self.canonical_reason
+
+    def get_description (self):
+        messages = {
+            'toner-low': (_("Toner low"),
+                          _("Printer '%s' is low on toner.")),
+            'toner-empty': (_("Toner empty"),
+                            _("Printer '%s' has no toner left.")),
+            'cover-open': (_("Cover open"),
+                           _("The cover is open on printer '%s'.")),
+            'door-open': (_("Door open"),
+                          _("The door is open on printer '%s'.")),
+            'media-low': (_("Paper low"),
+                          _("Printer '%s' is low on paper.")),
+            'media-empty': (_("Out of paper"),
+                            _("Printer '%s' is out of paper.")),
+            'marker-supply-low': (_("Ink low"),
+                                  _("Printer '%s' is low on ink.")),
+            'marker-supply-empty': (_("Ink empty"),
+                                    _("Printer '%s' has no ink left.")),
+            }
+        try:
+            (title, text) = messages[self.get_reason ()]
+            text = text % self.get_printer ()
+        except KeyError:
+            if self.get_level () == self.REPORT:
+                title = _("Printer report")
+            elif self.get_level () == self.WARNING:
+                title = _("Printer warning")
+            elif self.get_level () == self.ERROR:
+                title = _("Printer error")
+            text = _("Printer '%s': '%s'.") % (reason.get_printer (),
+                                               reason.get_reason ())
+        return (title, text)
+
+    def get_tuple (self):
+        return (self.get_level (), self.get_printer (), self.get_reason ())
+
+    def __cmp__(self, other):
+        if other == None:
+            return 1
+        if other.get_level () != self.get_level ():
+            return int.__cmp__ (self.get_level (), other.get_level ())
+        if other.printer () != self.printer ():
+            return str.__cmp__ (other.get_printer (), self.get_printer ())
+        return str.__cmp__ (other.get_reason (), self.get_reason ())
+
 def collect_printer_state_reasons (connection):
-    result = {}
+    result = []
     printers = connection.getPrinters ()
     for name, printer in printers.iteritems ():
         reasons = printer["printer-state-reasons"]
         if type (reasons) == str:
             # Work around a bug that was fixed in pycups-1.9.20.
             reasons = [reasons]
-        bad_reasons = []
         for reason in reasons:
             if reason == "none":
                 break
@@ -47,40 +133,24 @@ def collect_printer_state_reasons (connection):
                 reason.startswith ("stopping") or
                 reason.startswith ("stopped-partly")):
                 continue
-            bad_reasons.append (reason)
-        if len (bad_reasons):
-            result[name] = bad_reasons
+            result.append (StateReason (name, reason))
     return result
 
-def worst_printer_state_reason (connection):
+def worst_printer_state_reason (connection, printer_reasons=None):
     """Fetches the printer list and checks printer-state-reason for
-    each printer, returning a triple (printer, reason, level) for the
-    most severe printer-state-reason, with printer==None if there is none."""
-    level = 0
+    each printer, returning a StateReason for the most severe
+    printer-state-reason, or None."""
     worst_reason = None
-    affected_printer = None
-    printer_reasons = collect_printer_state_reasons (connection)
-    for printer, reasons in printer_reasons.iteritems ():
-        for reason in reasons:
-            is_worst = False
-            this_level = 0
-            if reason.endswith ("-report"):
-                if level < REASON_REPORT:
-                    is_worst = True
-                    this_level = REASON_REPORT
-            if reason.endswith ("-warning"):
-                if level < REASON_WARNING:
-                    is_worst = True
-                    this_level = REASON_WARNING
-            elif level < REASON_ERROR:
-                is_worst = True
-                this_level = REASON_ERROR
+    if printer_reasons == None:
+        printer_reasons = collect_printer_state_reasons (connection)
+    for reason in printer_reasons:
+        if worst_reason == None:
+            worst_reason = reason
+            continue
+        if reason > worst_reason:
+            worst_reason = reason
 
-            if is_worst:
-                level = this_level
-                worst_reason = reason
-                affected_printer = printer
-    return affected_printer, worst_reason, level
+    return worst_reason
 
 class JobManager:
     def __init__(self, bus, loop, service_running=False, trayicon=True):
@@ -123,12 +193,43 @@ class JobManager:
         self.MainWindow.set_icon_from_file (APPDIR + "/" + ICON)
         self.MainWindow.hide ()
 
+        self.statusbar = self.xml.get_widget ('statusbar')
+        self.reasons_seen = {}
+
         self.job_popupmenu = self.xml.get_widget ('job_popupmenu')
         self.icon_popupmenu = self.xml.get_widget ('icon_popupmenu')
         self.cancel = self.xml.get_widget ('cancel')
         self.hold = self.xml.get_widget ('hold')
         self.release = self.xml.get_widget ('release')
         self.reprint = self.xml.get_widget ('reprint')
+
+        self.show_printer_status = self.xml.get_widget ('show_printer_status')
+        self.PrintersWindow = self.xml.get_widget ('PrintersWindow')
+        self.PrintersWindow.set_icon_from_file (APPDIR + "/" + ICON)
+        self.PrintersWindow.hide ()
+        self.treeview_printers = self.xml.get_widget ('treeview_printers')
+        column = gtk.TreeViewColumn(_("Printer"))
+        icon = gtk.CellRendererPixbuf()
+        column.pack_start (icon, False)
+        text = gtk.CellRendererText()
+        text.set_property ("ellipsize", pango.ELLIPSIZE_END)
+        text.set_property ("width-chars", 10)
+        column.pack_start (text, False)
+        column.set_cell_data_func (icon, self.set_printer_status_icon)
+        column.set_cell_data_func (text, self.set_printer_status_name)
+        column.set_resizable (True)
+        column.set_sort_column_id (1)
+        column.set_sort_order (gtk.SORT_ASCENDING)
+        self.treeview_printers.append_column(column)
+        cell = gtk.CellRendererText()
+        column = gtk.TreeViewColumn(_("Message"), cell, text=2)
+        cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
+        cell.set_property ("width-chars", 35)
+        self.treeview_printers.append_column(column)
+
+        self.treeview_printers.get_selection().set_mode(gtk.SELECTION_NONE)
+        self.store_printers = gtk.TreeStore (int, str, str)
+        self.treeview_printers.set_model(self.store_printers)
 
         self.lblPasswordPrompt = self.xml.get_widget('lblPasswordPrompt')
         self.PasswordDialog = self.xml.get_widget('PasswordDialog')
@@ -161,7 +262,15 @@ class JobManager:
             self.statusicon.set_from_pixbuf (self.icon_no_jobs)
             self.statusicon.connect ('activate', self.toggle_window_display)
             self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
+
+            # We need the statusicon to actually get placed on the screen
+            # in case refresh() wants to attach a notification to it.
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
             self.notify = None
+            self.notified_reason = None
+
             if not pynotify.init (PROGRAM_NAME):
                 print >> sys.stderr, ("%s: unable to initialize pynotify" %
                                       PROGRAM_NAME)
@@ -174,8 +283,15 @@ class JobManager:
     def on_delete_event(self, *args):
         if self.trayicon:
             self.MainWindow.hide ()
+            if self.show_printer_status.get_active ():
+                self.PrintersWindow.hide ()
         else:
             self.loop.quit ()
+        return True
+
+    def on_printer_status_delete_event(self, *args):
+        self.show_printer_status.set_active (False)
+        self.PrintersWindow.hide()
         return True
 
     def cupsPasswdCallback(self, querystring):
@@ -206,8 +322,12 @@ class JobManager:
     def toggle_window_display(self, icon):
         if self.MainWindow.get_property('visible'):
             self.MainWindow.hide()
+            if self.show_printer_status.get_active ():
+                self.PrintersWindow.hide()
         else:
             self.MainWindow.show()
+            if self.show_printer_status.get_active ():
+                self.PrintersWindow.show()
 
     def on_show_completed_jobs_activate(self, menuitem):
         if menuitem.get_active():
@@ -216,75 +336,83 @@ class JobManager:
             self.which_jobs = "not-completed"
         self.refresh()
 
+    def on_show_printer_status_activate(self, menuitem):
+        if self.show_printer_status.get_active ():
+            self.PrintersWindow.show()
+        else:
+            self.PrintersWindow.hide()
+
     def check_state_reasons(self, connection, my_printers=set()):
-        (printer, reason, level) = worst_printer_state_reason (connection)
-        if level < REASON_WARNING:
-            return
+        printer_reasons = collect_printer_state_reasons (connection)
 
-        if level == REASON_WARNING and reason.endswith ("-warning"):
-            reason = reason[:-8]
-        elif level == REASON_ERROR and reason.endswith ("-error"):
-            reason = reason[:-6]
+        # Look for any new reasons since we last checked.
+        old_reasons_seen_keys = self.reasons_seen.keys ()
+        reasons_now = set()
+        for reason in printer_reasons:
+            tuple = reason.get_tuple ()
+            reasons_now.add (tuple)
+            if not self.reasons_seen.has_key (tuple):
+                # New reason.
+                iter = self.store_printers.append (None)
+                self.store_printers.set_value (iter, 0, reason.get_level ())
+                self.store_printers.set_value (iter, 1, reason.get_printer ())
+                title, text = reason.get_description ()
+                self.store_printers.set_value (iter, 2, text)
+                self.reasons_seen[tuple] = iter
+        items = self.reasons_seen.keys ()
+        for tuple in items:
+            if not tuple in reasons_now:
+                # Reason no longer present.
+                iter = self.reasons_seen[tuple]
+                self.store_printers.remove (iter)
+                del self.reasons_seen[tuple]
+                if self.notify and self.notified_reason.get_tuple () == tuple:
+                    # We had sent a notification for this reason.  Close it.
+                    self.notify.close ()
+                    self.notify = None
 
-        messages = {
-            'toner-low': (_("Toner low"),
-                          _("Printer '%s' is low on toner.")),
-            'toner-empty': (_("Toner empty"),
-                            _("Printer '%s' has no toner left.")),
-            'cover-open': (_("Cover open"),
-                           _("The cover is open on printer '%s'.")),
-            'door-open': (_("Door open"),
-                          _("The door is open on printer '%s'.")),
-            'media-low': (_("Paper low"),
-                          _("Printer '%s' is low on paper.")),
-            'media-empty': (_("Paper out"),
-                            _("Printer '%s' is out of paper.")),
-            'marker-supply-low': (_("Ink low"),
-                                  _("Printer '%s' is low on ink.")),
-            'marker-supply-empty': (_("Ink empty"),
-                                    _("Printer '%s' has no ink left.")),
-            }
+        # Update statusbar and icon with most severe printer reason
+        # across all printers.
+        reason = worst_printer_state_reason (connection, printer_reasons)
+        if reason != None and reason.get_level () >= StateReason.WARNING:
+            title, text = reason.get_description ()
+            self.statusbar.pop (0)
+            self.statusbar.push (0, text)
 
-        if self.trayicon:
-            if level == REASON_WARNING:
-                icon = "/usr/share/icons/gnome/22x22/status/important.png"
-            else:
-                icon = "/usr/share/icons/gnome/22x22/status/error.png"
+            if self.trayicon:
+                icon = StateReason.LEVEL_FILE[reason.get_level ()]
+                pixbuf = self.statusicon.get_pixbuf ().copy ()
+                image = gtk.Image ()
+                image.set_from_file (icon)
+                emblem = image.get_pixbuf ()
+                emblem.composite (pixbuf,
+                                  pixbuf.get_width () / 2, 0,
+                                  emblem.get_width () / 2,
+                                  emblem.get_height () / 2,
+                                  pixbuf.get_width () / 2, 0,
+                                  0.5, 0.5,
+                                  gtk.gdk.INTERP_BILINEAR, 255)
+                self.statusicon.set_from_pixbuf (pixbuf)
 
-            pixbuf = self.statusicon.get_pixbuf ().copy ()
-            image = gtk.Image ()
-            image.set_from_file (icon)
-            emblem = image.get_pixbuf ()
-            emblem.composite (pixbuf,
-                              pixbuf.get_width () / 2, 0,
-                              emblem.get_width () / 2,
-                              emblem.get_height () / 2,
-                              pixbuf.get_width () / 2, 0,
-                              0.5, 0.5,
-                              gtk.gdk.INTERP_BILINEAR, 255)
-            self.statusicon.set_from_pixbuf (pixbuf)
+        # Send notifications for printers we've got jobs queued for.
+        my_reasons = []
+        for reason in printer_reasons:
+            if reason.get_printer () in my_printers:
+                my_reasons.append (reason)
+        reason = worst_printer_state_reason (connection, my_reasons)
 
-            if self.notify and self.notify_last == (printer, reason, level):
-                # Don't send the same notification twice in a row.
-                my_printers = set()
-
-            if printer in my_printers:
-                if level == REASON_WARNING:
+        if (self.trayicon and reason != None and
+            reason.get_level () >= StateReason.WARNING):
+            if not reason.get_tuple () in old_reasons_seen_keys:
+                level = reason.get_level ()
+                if level == StateReason.WARNING:
                     notify_urgency = pynotify.URGENCY_LOW
                     timeout = pynotify.EXPIRES_DEFAULT
                 else:
                     notify_urgency = pynotify.URGENCY_NORMAL
                     timeout = pynotify.EXPIRES_NEVER
 
-                try:
-                    (title, text) = messages[reason]
-                    text = text % printer
-                except KeyError:
-                    if level == REASON_WARNING:
-                        title = _("Printer warning")
-                    else:
-                        title = _("Printer error")
-                    text = _("Printer '%s': '%s'.") % (printer, reason)
+                (title, text) = reason.get_description ()
 
                 if self.notify:
                     self.notify.close ()
@@ -293,7 +421,7 @@ class JobManager:
                 self.notify.set_urgency (notify_urgency)
                 self.notify.set_timeout (timeout)
                 self.notify.show ()
-                self.notify_last = (printer, reason, level)
+                self.notified_reason = reason
 
     def refresh(self):
         if self.hidden:
@@ -517,6 +645,16 @@ class JobManager:
     def handle_dbus_signal(self, *args):
         self.refresh ()
 
+    ## Printer status window
+    def set_printer_status_icon (self, column, cell, model, iter, *user_data):
+        level = model.get_value (iter, 0)
+        file = StateReason.LEVEL_FILE[level]
+        pixbuf = gtk.gdk.pixbuf_new_from_file (file)
+        cell.set_property("pixbuf", pixbuf)
+
+    def set_printer_status_name (self, column, cell, model, iter, *user_data):
+        cell.set_property("text", model.get_value (iter, 1))
+
 gtk_loaded = False
 def do_imports():
     global gtk_loaded
@@ -606,14 +744,14 @@ if trayicon:
 
     # Start off just waiting for print jobs or printer errors.
     def any_jobs_or_errors ():
-        try:
+        if 1: #try:
             c = cups.Connection ()
             if len (c.getJobs (my_jobs=True)):
                 return True
-            (printer, reason, level) = worst_printer_state_reason (c)
-            if level >= REASON_WARNING:
+            reason = worst_printer_state_reason (c)
+            if reason != None and reason.get_level () >= StateReason.WARNING:
                 return True
-        except:
+        else: #except:
             pass
 
         return False

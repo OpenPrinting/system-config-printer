@@ -1,5 +1,17 @@
 2007-04-05  Tim Waugh  <twaugh@redhat.com>
 
+	* applet.py (StateReason): New class.
+	(JobManager.__init__): Set up printer state treeview.
+	(JobManager.on_printer_status_delete_event): New method.
+	(JobManager.on_show_printer_status_activate): New method.
+	(JobManager.check_state_reasons): Update printer state display
+	window.
+	(JobManager.check_state_reasons): Send notifications for printer
+	errors on our jobs.
+	(JobManager.check_state_reasons): Set statusbar.
+
+	* applet.glade: Added windows for printer state display.
+
 	* applet.py (JobManager.__init__): Set rules hint for the
 	treeview.
 
