@@ -1,5 +1,6 @@
 #!/bin/env python
 
+import sys
 import gtk.glade, cups, cupshelpers
 import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
@@ -14,6 +15,9 @@ from rhpl.translate import _, N_
 import rhpl.translate as translate
 translate.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
+pkgdata = '/usr/share/' + domain
+glade_file = pkgdata + '/' + domain + '.glade'
+sys.path.append (pkgdata)
 
 class GUI:
 
@@ -35,7 +39,11 @@ class GUI:
 
         # WIDGETS
         # =======
-        self.xml = gtk.glade.XML("system-config-printer.glade")
+        try:
+            self.xml = gtk.glade.XML(glade_file)
+        except:
+            self.xml = gtk.glade.XML(domain + '.glade')
+
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
                         "btnNewPrinter", "btnNewClass", "btnCopy", "btnDelete",
                         "new_printer", "new_class", "copy", "delete",
