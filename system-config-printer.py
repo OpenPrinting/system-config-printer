@@ -5,6 +5,7 @@ import sys
 sys.path.append("/home/ffesti/CVS/pycups")
 
 import gtk.glade, cups
+import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
 from foomatic import Foomatic
 
@@ -46,7 +47,7 @@ class GUI:
         self.ntbkMain.set_show_tabs(False)
         self.ntbkNewPrinter.set_show_tabs(False)
         self.ntbkNPType.set_show_tabs(False)
-        
+
         # Setup main list
         column = gtk.TreeViewColumn()
         cell = gtk.CellRendererText()
@@ -123,6 +124,33 @@ class GUI:
     # Connect to Server
 
     def on_connect_activate(self, widget):
+        # Use browsed queues to build up a list of known IPP servers
+        known_servers = [ 'localhost' ]
+        for name in self.printers:
+            printer = self.printers[name]
+            if not (printer['printer-type'] & cups.CUPS_PRINTER_REMOTE):
+                continue
+            if not printer.has_key ('printer-uri-supported'):
+                continue
+            uri = printer['printer-uri-supported']
+            if not uri.startswith ('ipp://'):
+                continue
+            uri = uri[6:]
+            s = uri.find ('/')
+            if s != -1:
+                uri = uri[:s]
+            s = uri.find (':')
+            if s != -1:
+                uri = uri[:s]
+            if known_servers.count (uri) == 0:
+                known_servers.append (uri)
+
+        store = gtk.ListStore (gobject.TYPE_STRING)
+        self.cmbServername.set_model (store)
+        for server in known_servers:
+            self.cmbServername.append_text (server)
+        self.cmbServername.show ()
+
         self.cmbServername.child.set_text (cups.getServer ())
         self.entUser.set_text (cups.getUser ())
         self.chkEncrypted.set_active (cups.getEncryption () ==
