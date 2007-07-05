@@ -531,6 +531,10 @@ class GUI:
         self.populateList()
         gtk.gdk.threads_leave()
 
+    def reconnect (self):
+        """Reconnect to CUPS after the server has reloaded."""
+        print "FIXME: need to reconnect to CUPS here"
+
     def on_btnCancelConnect_clicked(self, widget):
         """Close Connect dialog"""
         self.ConnectWindow.hide()
@@ -2290,6 +2294,9 @@ class GUI:
         self.changed = set()
         self.setDataButtonState()
         time.sleep(0.1) # give the server a chance to process our request
+
+        # Now reconnect, in case the server needed to reload.
+        self.reconnect ()
 
 def main():
     # The default configuration requires root for administration.
