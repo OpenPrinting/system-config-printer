@@ -52,7 +52,14 @@ desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 tag:
 	cvs tag -c @PACKAGE@-`echo @VERSION@ | tr . _`
 
+distcheck-hook: update-po
+
+update-po:
+	$(MAKE) -C po update-po
+
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract.in intltool-merge.in intltool-update.in \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop
+
+.PHONY: update-po
