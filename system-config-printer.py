@@ -14,7 +14,7 @@ if len(sys.argv)>1 and sys.argv[1] == '--help':
            "a CUPS server configuration program.\n")
     sys.exit (0)
 
-import cups, cupshelpers
+import cups, cupshelpers, options
 import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
 from foomatic import Foomatic
@@ -95,7 +95,7 @@ class GUI:
                          "vbClassMembers", "lblClassMembers",
                           "tvClassMembers", "tvClassNotMembers",
                           "btnClassAddMember", "btnClassDelMember",
-                         "vbPServersideOptions",
+                         "cmbentNewOption", "tblServerOptions",
                         
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
@@ -318,7 +318,6 @@ class GUI:
                         
         # Selection
         selection = self.tvMainList.get_selection()
-        print select_path
         if select_path:
             selection.select_path(select_path)
         else:
@@ -583,7 +582,55 @@ class GUI:
     def on_tvPUsers_cursor_changed(self, widget):
         model, rows = widget.get_selection().get_selected_rows()
         self.btnPDelUser.set_sensitive(bool(rows))
-    
+
+    # Server side options
+
+    def add_option(self, name, value, supported, is_new=False):
+        option = options.OptionWidget(name, value, supported,
+                                      self.option_changed)
+        option.is_new = is_new
+        rows = self.tblServerOptions.get_property("n-rows")
+        self.tblServerOptions.resize(rows+1, 3)
+        self.tblServerOptions.attach(option.label, 0, 1, rows, rows+1,
+                                     yoptions=0)
+        self.tblServerOptions.attach(option.selector, 1, 2, rows, rows+1,
+                                     yoptions=0)
+        # remove button
+        btn = gtk.Button(stock="gtk-remove")
+        btn.connect("clicked", self.removeOption_clicked)
+        btn.set_data("pyobject", option)
+        self.tblServerOptions.attach(btn, 2, 3, rows, rows+1,
+                                     yoptions=0)
+        option.remove_button = btn
+        self.server_side_options[name] = option
+        if name in self.changed: # was deleted before
+            option.is_new = False
+            self.changed.discard(name)
+        if option.is_changed():
+            self.changed.add(option)
+
+    def removeOption_clicked(self, button):
+        option = button.get_data("pyobject")
+        self.tblServerOptions.remove(option.label)
+        self.tblServerOptions.remove(option.selector)
+        self.tblServerOptions.remove(option.remove_button)
+        if option.is_new:
+            self.changed.discard(option)
+        else:
+            # keep name as reminder that option got deleted
+            self.changed.add(option.name) 
+        self.setDataButtonState()
+
+    def on_btnNewOption_clicked(self, button):
+        name = self.cmbentNewOption.get_active_text()
+        if name in self.printer.possible_attributes:
+            value, supported = self.printer.possible_attributes[name]
+        else:
+            value, supported = "", ""
+        self.add_option(name, value, supported, is_new=True)
+        self.tblServerOptions.show_all()
+        self.setDataButtonState()
+
     # set Apply/Revert buttons sensitive    
     def setDataButtonState(self):
         for button in [self.btnApply, self.btnRevert]:
@@ -721,6 +768,13 @@ class GUI:
                 except_users != printer.except_users) or saveall:
                 self.passwd_retry = False # use cached Passwd
                 printer.setAccess(default_allow, except_users)
+
+            for option in printer.attributes:
+                if option not in self.server_side_options:
+                    printer.unsetOption(option)
+            for option in self.server_side_options.itervalues():
+                if option.is_changed or saveall:
+                    printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
             self.show_IPP_Error(e, s)
@@ -873,9 +927,24 @@ class GUI:
 
         self.entPUser.set_text("")
 
-        # Printer defaults
+        # Server side options
 
+        self.server_side_options = {}
+        self.cmbentNewOption.get_model().clear()
+        for attr in self.printer.possible_attributes:
+            if attr not in self.printer.attributes:
+                self.cmbentNewOption.append_text(attr)
+
+        self.tblServerOptions.resize(1, 3)
+        for child in self.tblServerOptions.get_children():
+            self.tblServerOptions.remove(child)
         
+        for attr in printer.attributes:
+            value, supported = printer.possible_attributes[attr]
+            self.add_option(attr, value, supported)
+
+        self.tblServerOptions.show_all()
+        self.tblServerOptions.queue_draw()
 
         # remove InstallOptions tab
         tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)

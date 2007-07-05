@@ -46,9 +46,6 @@ class Option:
         self.conflicts = set()
         self.conflict_message = ""
         
-    def is_changed(self):
-        raise NotImplemented
-
     def get_current_value(self):
         raise NotImplemented
 
@@ -159,32 +156,3 @@ class OptionPickMany(OptionPickOne):
         raise NotImplemented
         Option.__init__(self, option, ppd, gui)
         
-# ---------------------------------------------------------------------------
-
-class NonPPDOptionPickOne(OptionPickOne):
-    
-    def __init__(self, label, default, supported, gui):
-        self.default = default
-        self.supported = supported
-
-        self.selector = gtk.combo_box_new_text()
-        
-        label = option.text
-        if not label.endswith (':'):
-            label += ':'
-        self.label = gtk.Label(label)
-        self.label.set_alignment(0.0, 0.5)
-        
-        selected = None
-        for nr, choice in enumerate(supported):
-            self.selector.append_text(choice)
-            if default == choice:
-                selected = nr
-        if selected is not None:
-            self.selector.set_active(selected)
-        else:
-            print "unknown value:", default
-        self.selector.connect("changed", self.on_change)
-
-    def on_change(self, widget):
-        pass

@@ -1,5 +1,5 @@
 #!/bin/env python
-import cups, pprint, os
+import cups, pprint, os, tempfile, re
 
 class Printer:
 
@@ -8,7 +8,7 @@ class Printer:
                        cups.IPP_PRINTER_BUSY: "Busy",
                        cups.IPP_PRINTER_STOPPED: "Stopped" }
 
-    def __init__(self, name, connection, **kw):
+    def __init__(self, name, connection, set_attributes=[], **kw):
         self.name = name
         self.connection = connection
         self.class_members = []
@@ -25,7 +25,7 @@ class Printer:
         self.state_description = self.printer_states.get(
             self.state, "Unknown")
 
-        self._getAttributes()
+        self._getAttributes(set_attributes)
 
         self.enabled = self.state != cups.IPP_PRINTER_STOPPED
 
@@ -53,18 +53,27 @@ class Printer:
                 setattr(self, attr_name,
                         bool(self.type & getattr(cups, name)))
 
-    def _getAttributes(self):
+    def _getAttributes(self, set_attributes):
         attrs = self.connection.getPrinterAttributes(self.name)
+        self.attributes = {}
+        self.possible_attributes = {}
 
-        #print self.name
-        #print "======================"
-        #for key, value in attrs.iteritems():
-        #    if key.endswith("-default"):
-        #        name = key[:-len("-default")]
-        #        if not attrs.has_key(name + "-supported"): continue
-        #        print name, value, attrs[name + "-supported"]
-        #
-        #print
+        for key, value in attrs.iteritems():
+            if key.endswith("-default"):
+                name = key[:-len("-default")]
+                if not attrs.has_key(name + "-supported"): continue
+                if name in ["job-sheets", "printer-error-policy",
+                            "printer-op-policy"]:
+                    continue # handled below
+                if name in set_attributes:
+                    self.attributes[name] = value
+                    
+                self.possible_attributes[name] = (value,
+                                                  attrs[name+"-supported"]) 
+                #print name, value, attrs[name + "-supported"]
+        
+        #print set_attributes
+        #print self.attributes, self.possible_attributes
 
         self.job_sheet_start, self.job_sheet_end = attrs.get(
             'job-sheets-default', ('none', 'none'))
@@ -110,6 +119,12 @@ class Printer:
             os.unlink(filename)
         return self._ppd
 
+    def setOption(self, name, value):
+        self.connection.addPrinterOptionDefault(self.name, name, value)
+
+    def unsetOption(self, name):
+        self.connection.deletePrinterOptionDefault(self.name, name)
+
     def setEnabled(self, on):
         if on:
             self.connection.enablePrinter(self.name)
@@ -150,10 +165,13 @@ class Printer:
             self.connection.setPrinterUsersAllowed(self.name, except_users)
 
 def getPrinters(connection):
+    printers_conf = PrintersConf(connection)
     printers = connection.getPrinters()
     classes = connection.getClasses()
     for name, printer in printers.iteritems():
-        printer = Printer(name, connection, **printer)
+        printer = Printer(name, connection,
+                          set_attributes=printers_conf.get_options(name),
+                          **printer)
         printers[name] = printer
         if classes.has_key(name):
             printer.class_members = classes[name]
@@ -198,6 +216,48 @@ class Device:
             result = cmp(self.info, other.info)
         
         return result
+
+class PrintersConf:
+
+    def __init__(self, connection):
+        self.connection = connection
+        self.fetch()
+        self.parse()
+
+    def fetch(self):
+        fd, filename = tempfile.mkstemp("printer.conf")
+        os.close(fd)
+        self.connection.getFile('/admin/conf/printers.conf', filename)
+        self.lines = open(filename).readlines()
+        os.unlink(filename)
+
+    def parse(self):
+        self.set_options = {}
+        current_printer = None
+        for line in self.lines:
+            words = line.split()
+            if words[0] == "Option":
+                self.set_options.setdefault(current_printer, []).append(words[1])
+                continue
+            match = re.match(r"<(Default)?Printer ([^>]+)>\s*\n", line) 
+            if match:
+                current_printer = match.group(2)
+            if line.find("</Printer>") != -1:
+                current_printer = None
+
+    def get_options(self, printername):
+        return self.set_options.get(printername, [])
+                
+"""
+attrs=c.getPrinterAttributes(printer)
+options=map (lambda x: x[:x.rindex ('-')],
+             filter (lambda x: x.endswith('-default'), attrs.keys()))
+
+specified_options = []
+
+print "Specified options:"
+print map (lambda x: (x, attrs[x + '-default']), specified_options)
+"""
 
 def match(s1, s2):
     if s1==s2: return len(s1)
