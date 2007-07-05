@@ -126,7 +126,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            #raise ValueError # uncomment for development
+            raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
@@ -523,6 +523,7 @@ class GUI:
         self.lblConnecting.set_text(_("Connecting to Server:\n%s") %
                                     servername)
         self.unloadFoomatic()
+        self.ConnectingDialog.set_transient_for(self.MainWindow)
         self.ConnectingDialog.show()
         self.connect_thread = thread.start_new_thread(
             self.connect, (servername, user))
