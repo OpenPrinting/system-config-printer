@@ -939,8 +939,8 @@ class NewPrinterNotification(dbus.service.Object):
 
         import sys
         sys.path.append (APPDIR)
-        from foomatic import _ppdMakeModelSplit
-        (make, model) = _ppdMakeModelSplit (printer['printer-make-and-model'])
+        from ppds import ppdMakeModelSplit
+        (make, model) = ppdMakeModelSplit (printer['printer-make-and-model'])
         driver = make + " " + model
         if status < self.STATUS_GENERIC_DRIVER:
             title = _("Printer added")
