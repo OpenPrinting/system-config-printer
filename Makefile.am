@@ -27,7 +27,8 @@ bin_SCRIPTS=\
 
 desktop_DATA =\
 	system-config-printer.desktop \
-	print-applet.desktop
+	print-applet.desktop \
+	manage-print-jobs.desktop
 desktopdir = $(datadir)/applications/
 autostartdir = $(sysconfdir)/xdg/autostart/
 
@@ -42,6 +43,13 @@ install-desktopDATA: $(desktop_DATA)
 	  --add-category GTK			\
 	  system-config-printer.desktop
 	desktop-file-install --vendor redhat	\
+	  --dir $(DESTDIR)$(desktopdir)		\
+	  --add-category X-Red-Hat-Base		\
+	  --add-category System			\
+	  --add-category Monitor		\
+	  --add-category GTK			\
+	  manage-print-jobs.desktop
+	desktop-file-install --vendor redhat	\
 	  --dir $(DESTDIR)$(autostartdir)	\
 	  --add-category X-Red-Hat-Base		\
 	  --add-category System			\
@@ -52,6 +60,7 @@ install-desktopDATA: $(desktop_DATA)
 
 uninstall-desktopDATA:
 	rm -f $(DESTDIR)$(desktopdir)/redhat-system-config-printer.desktop
+	rm -f $(DESTDIR)$(desktopdir)/redhat-manage-print-jobs.desktop
 	rm -f $(DESTDIR)$(autostartdir)/redhat-print-applet.desktop
 
 EXTRA_DIST=\
@@ -64,6 +73,7 @@ EXTRA_DIST=\
 	system-config-printer.gladep \
 	system-config-printer.desktop.in \
 	print-applet.desktop.in \
+	manage-print-jobs.desktop.in \
 	applet.png \
 	intltool-extract.in \
 	intltool-merge.in \
