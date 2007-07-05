@@ -1025,8 +1025,57 @@ class GUI:
             self.cups.setDefault(self.printer.name)
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
-                                
-        self.populateList()
+            return
+
+        # Also need to check system-wide lpoptions because that's how
+        # previous Fedora versions set the default (bug #217395).
+        (tmpfd, tmpfname) = tempfile.mkstemp ()
+        success = False
+        try:
+            resource = "/admin/conf/lpoptions"
+            self.cups.getFile(resource, tmpfname)
+            success = True
+        except cups.HTTPError, (s,):
+            os.remove (tmpfname)
+            if e != cups.HTTP_NOT_FOUND:
+                self.show_HTTP_Error(s)
+                return
+
+        if success:
+            lines = file (tmpfname).readlines ()
+            changed = False
+            i = 0
+            for line in lines:
+                if line.startswith ("Default "):
+                    # This is the system-wide default.
+                    name = line.split (' ')[1]
+                    if name != self.printer.name:
+                        # Stop it from over-riding the server default.
+                        lines[i] = "Dest " + line[8:]
+                        changed = True
+                i += 1
+
+            if changed:
+                file (tmpfname, 'w').writelines (lines)
+                try:
+                    self.cups.putFile (resource, tmpfname)
+                except cups.HTTPError, (s,):
+                    os.remove (tmpfname)
+                    print s
+                    self.show_HTTP_Error(s)
+                    return
+
+                # Now reconnect because the server needs to reload.
+                self.reconnect ()
+
+        os.remove (tmpfname)
+        try:
+            self.populateList()
+        except cups.HTTPError, (s,):
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            self.show_HTTP_Error(s)
 
     # print test page
     

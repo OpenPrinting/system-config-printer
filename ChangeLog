@@ -5,6 +5,10 @@
 	(GUI.on_tvNPDevices_cursor_changed): Don't pre-select make and
 	model when not discoverable for chosen device (bug #217518).
 	(GUI.show_HTTP_Error): Fixed typo (bug #217537).
+	(GUI.on_btnPMakeDefault_clicked): If the system-wide lpoptions
+	file sets a default printer that conflicts with the new server
+	default, alter lpoptions so that it no longer overrides
+	it (bug	#217395).
 
 2006-11-27  Tim Waugh  <twaugh@redhat.com>
 
