@@ -1318,7 +1318,11 @@ class GUI:
                 # Now reconnect because the server needs to reload.
                 self.reconnect ()
 
-        os.remove (tmpfname)
+        try:
+            os.remove (tmpfname)
+        except OSError:
+            pass
+
         try:
             self.populateList()
         except cups.HTTPError, (s,):
