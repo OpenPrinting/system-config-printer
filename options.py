@@ -28,10 +28,12 @@ def OptionWidget(name, v, s, on_change):
             return OptionSelectMany(name, v, s, on_change)
         raise NotImplemented
     else:
-        if (isinstance(s, int) or isinstance(s, float) or
-            (isinstance(s, tuple) and len(s)==2 and
-             (isinstance(s[0], int) and isinstance(s[1], int)) or
-             (isinstance(s[0], float) and isinstance(s[1], float)))):
+        if (isinstance(s, int) or
+            isinstance(s, float) or
+            (isinstance(s, tuple) and
+             len(s) == 2 and
+             ((isinstance(s[0], int) and isinstance(s[1], int)) or
+              (isinstance(s[0], float) and isinstance(s[1], float))))):
             try:
                 if (isinstance(s, int) or
                     isinstance(s, tuple) and isinstance(s[0], int)):
