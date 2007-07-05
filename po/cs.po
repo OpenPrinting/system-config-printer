@@ -1,4 +1,4 @@
-# $Id: cs.po,v 1.46 2007/02/26 17:48:05 twaugh Exp $
+# $Id: cs.po,v 1.47 2007/02/26 21:15:13 kerslage Exp $
 #
 # Message catalog for printconf.
 # Copyright (C) 1999 Free Software Foundation, Inc.
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: printconf\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2007-02-26 17:49+0000\n"
-"PO-Revision-Date: 2007-02-08 00:15+0100\n"
+"PO-Revision-Date: 2007-02-26 22:16+0100\n"
 "Last-Translator: Milan Kerslager <kerslage@linux.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -232,12 +232,11 @@ msgstr ""
 
 #: ../system-config-printer.py:1382
 msgid "Error"
-msgstr ""
+msgstr "Chyba"
 
 #: ../system-config-printer.py:1383
-#, fuzzy
 msgid "There was a problem connecting to the CUPS server."
-msgstr "V CUPS se při operaci vyskytla chyba: '%s'."
+msgstr "Při připojování k CUPS serveru nastal problém."
 
 #: ../system-config-printer.py:1446
 msgid "This is the default printer"
@@ -420,7 +419,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:1
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../system-config-printer.glade.h:2
 msgid " PPD "
@@ -435,6 +434,12 @@ msgid ""
 "9\n"
 "16"
 msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
 
 #: ../system-config-printer.glade.h:9
 msgid "<b>Authentication</b>"
@@ -457,9 +462,8 @@ msgid "<b>Comment about the Printer</b>"
 msgstr "<b>Komentář k tiskárně</b>"
 
 #: ../system-config-printer.glade.h:14
-#, fuzzy
 msgid "<b>Common Options</b>"
-msgstr "<b>Zvolte připojení</b>"
+msgstr "<b>Společné nastavení</b>"
 
 #: ../system-config-printer.glade.h:15
 msgid "<b>Default Printer</b>"
@@ -474,9 +478,8 @@ msgid "<b>Description</b> (optional)"
 msgstr "<b>Popis</b> (volitelný)"
 
 #: ../system-config-printer.glade.h:18
-#, fuzzy
 msgid "<b>Image Options</b>"
-msgstr "<b>Nastavení</b>"
+msgstr "<b>Nastavení obrázků</b>"
 
 #: ../system-config-printer.glade.h:19
 msgid "<b>Information about the PPD</b>"
@@ -496,7 +499,7 @@ msgstr "<b>Umístění</b> (volitelné)"
 
 #: ../system-config-printer.glade.h:23
 msgid "<b>Other Options (Advanced)</b>"
-msgstr ""
+msgstr "<b>Další nastavení (pokročilé)</b>"
 
 #: ../system-config-printer.glade.h:24
 msgid "<b>Policies</b>"
@@ -527,9 +530,8 @@ msgid "<b>State</b>"
 msgstr "<b>Stav</b>"
 
 #: ../system-config-printer.glade.h:31
-#, fuzzy
 msgid "<b>Text Options</b>"
-msgstr "<b>Nastavení</b>"
+msgstr "<b>Nastavení textu</b>"
 
 #: ../system-config-printer.glade.h:32
 msgid ""
@@ -607,11 +609,11 @@ msgstr "Přenosová rychlost"
 
 #: ../system-config-printer.glade.h:52
 msgid "Bottom margin:"
-msgstr ""
+msgstr "Spodní okraj:"
 
 #: ../system-config-printer.glade.h:53
 msgid "Brightness:"
-msgstr ""
+msgstr "Jas:"
 
 #: ../system-config-printer.glade.h:54
 msgid "CUPS server:"
@@ -627,16 +629,15 @@ msgstr "Změnit..."
 
 #: ../system-config-printer.glade.h:57
 msgid "Characters per inch:"
-msgstr ""
+msgstr "Znaků na palec:"
 
 #: ../system-config-printer.glade.h:58
 msgid "Class Members"
 msgstr "Členové třídy"
 
 #: ../system-config-printer.glade.h:59
-#, fuzzy
 msgid "Columns:"
-msgstr "Poznámky: "
+msgstr "Sloupce: "
 
 #: ../system-config-printer.glade.h:60
 msgid "Comments: "
@@ -661,7 +662,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:67
 msgid "Copies:"
-msgstr ""
+msgstr "Kopie:"
 
 #: ../system-config-printer.glade.h:68
 msgid "Copy Printer"
@@ -791,7 +792,7 @@ msgstr "Řízení přenosu"
 
 #: ../system-config-printer.glade.h:106
 msgid "Gamma:"
-msgstr ""
+msgstr "Gama:"
 
 #: ../system-config-printer.glade.h:107
 msgid "Goto Server"
@@ -803,7 +804,7 @@ msgstr "Jméno počítače"
 
 #: ../system-config-printer.glade.h:109
 msgid "Hue adjustment:"
-msgstr ""
+msgstr "Nastavení odstínu (hue):"
 
 #: ../system-config-printer.glade.h:110
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
@@ -827,7 +828,7 @@ msgstr "LPD"
 
 #: ../system-config-printer.glade.h:116
 msgid "Left margin:"
-msgstr ""
+msgstr "Levý okraj:"
 
 #: ../system-config-printer.glade.h:117
 msgid ""
@@ -840,10 +841,18 @@ msgid ""
 "Bottom to top, left to right\n"
 "Bottom to top, right to left"
 msgstr ""
+"Zleva do prava, od vrchu ke spodu\n"
+"Zleva do prava, od spodu k vrchu\n"
+"Zprava do leva, od vrchu ke spodu\n"
+"Zprava do leva, od spodu k vrchu\n"
+"Od vrchu ke spodu, zleva do prava\n"
+"Od vrchu ke spodu, zprava do leva\n"
+"Od spodu k vrchu, zleva do prava\n"
+"Od spodu k vrchu, zprava do leva"
 
 #: ../system-config-printer.glade.h:125
 msgid "Lines per inch:"
-msgstr ""
+msgstr "Řádků na palec:"
 
 #: ../system-config-printer.glade.h:126
 msgid "Location:"
@@ -867,11 +876,11 @@ msgstr "Členové"
 
 #: ../system-config-printer.glade.h:131
 msgid "Mirror"
-msgstr ""
+msgstr "Zrcadlo"
 
 #: ../system-config-printer.glade.h:132
 msgid "More"
-msgstr ""
+msgstr "Další"
 
 #: ../system-config-printer.glade.h:133
 msgid "Name"
@@ -895,7 +904,7 @@ msgstr "Operační politika:"
 
 #: ../system-config-printer.glade.h:140
 msgid "Orientation:"
-msgstr ""
+msgstr "Orientace:"
 
 #: ../system-config-printer.glade.h:141
 msgid "PPD"
@@ -903,11 +912,11 @@ msgstr "PPD"
 
 #: ../system-config-printer.glade.h:142
 msgid "Pages per side layout:"
-msgstr ""
+msgstr "Stránek na rozvržení strany:"
 
 #: ../system-config-printer.glade.h:143
 msgid "Pages per side:"
-msgstr ""
+msgstr "Stránek na stranu:"
 
 #: ../system-config-printer.glade.h:144
 msgid "Parity"
@@ -932,6 +941,10 @@ msgid ""
 "Reverse landscape (270°)\n"
 "Reverse portrait (180°)"
 msgstr ""
+"Na výšku (bez rotace)\n"
+"Na šířku (90°)\n"
+"Obráceně na šířku (270°)\n"
+"Obráceně na výšku (180°)"
 
 #: ../system-config-printer.glade.h:152
 msgid ""
@@ -945,7 +958,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:153
 msgid "Pretty print"
-msgstr ""
+msgstr "Pěkný tisk"
 
 #: ../system-config-printer.glade.h:155
 msgid "Printer"
@@ -973,15 +986,15 @@ msgstr "Vyžaduje šifrování"
 
 #: ../system-config-printer.glade.h:162
 msgid "Reset"
-msgstr ""
+msgstr "Reset"
 
 #: ../system-config-printer.glade.h:163
 msgid "Reset to system default"
-msgstr ""
+msgstr "Nastavit na implicitní"
 
 #: ../system-config-printer.glade.h:164
 msgid "Right margin:"
-msgstr ""
+msgstr "Pravý okraj:"
 
 #: ../system-config-printer.glade.h:165
 msgid "SCSI"
@@ -993,7 +1006,7 @@ msgstr "SMB"
 
 #: ../system-config-printer.glade.h:167
 msgid "Saturation:"
-msgstr ""
+msgstr "Nasycení:"
 
 #: ../system-config-printer.glade.h:168
 msgid "Save debugging information for troubleshooting"
@@ -1001,11 +1014,11 @@ msgstr "Uložit ladící informace pro nalezení chyby"
 
 #: ../system-config-printer.glade.h:169
 msgid "Scale to fit"
-msgstr ""
+msgstr "Přizpůsobit listu"
 
 #: ../system-config-printer.glade.h:170
 msgid "Scaling:"
-msgstr ""
+msgstr "Poměr:"
 
 #: ../system-config-printer.glade.h:171
 msgid "Select A File"
@@ -1041,6 +1054,9 @@ msgid ""
 "print server will have these options added if they are not already set by "
 "the application."
 msgstr ""
+"Zvolte implicitní nastavení pro tuto tiskárnu. Úlohy předávané "
+"tiskovému serveru nastavení převezmou, pokud klient nepošle s úlohou "
+"vlastní nastavení."
 
 #: ../system-config-printer.glade.h:179
 msgid "Starting Banner:"
@@ -1088,11 +1104,11 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:186
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr ""
+msgstr "Pro přidání nového nastavení vložte jméno do boxu a klikněte na 'Přidat'."
 
 #: ../system-config-printer.glade.h:187
 msgid "Top margin:"
-msgstr ""
+msgstr "Horní okraj:"
 
 #: ../system-config-printer.glade.h:188
 msgid "Try to copy the option settings over from the old PPD. "
@@ -1112,7 +1128,7 @@ msgstr "Jméno uživatele:"
 
 #: ../system-config-printer.glade.h:192
 msgid "Word wrap"
-msgstr ""
+msgstr "Zalamovat slova"
 
 #: ../system-config-printer.glade.h:193
 msgid "_Do not apply"
@@ -1148,11 +1164,11 @@ msgstr "žádný"
 
 #: ../system-config-printer.glade.h:201
 msgid "points"
-msgstr ""
+msgstr "body"
 
 #: ../system-config-printer.glade.h:202
 msgid "points (72 points per inch)"
-msgstr ""
+msgstr "body (72 bodů na palec)"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1161,6 +1177,3 @@ msgstr "Nastavit tiskárny"
 #: ../system-config-printer.desktop.in.h:2
 msgid "Printing"
 msgstr "Tisk"
-
-#~ msgid "Specify default job options."
-#~ msgstr "Implicitní volby pro tisk."
