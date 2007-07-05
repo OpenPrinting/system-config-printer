@@ -24,6 +24,7 @@ tag:
 	cvs tag -c $(TAG)
 
 dist:
+	rm -rf $(NAME)
 	cvs export -r $(TAG) $(NAME)
 	mkdir $(NAME)-$(VERSION)
 	cd $(NAME); cp -a $(SOURCES) $(DIST) ../$(NAME)-$(VERSION); cd ..
