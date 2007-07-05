@@ -101,6 +101,18 @@ def percentDecode (text):
             r += 1
     return w
 
+def nonfatalException ():
+    print "Caught non-fatal exception.  Traceback:"
+    (type, value, tb) = sys.exc_info ()
+    tblast = traceback.extract_tb (tb, limit=None)
+    if len (tblast):
+        tblast = tblast[:len (tblast) - 1]
+    extxt = traceback.format_exception_only (type, value)
+    for line in traceback.format_tb(tb):
+        print line.strip ()
+    print extxt[0].strip ()
+    print "Continuing anyway.."
+
 class GUI:
 
     def __init__(self):
@@ -2125,7 +2137,12 @@ class GUI:
 
         self.auto_make, self.auto_model = None, None
 
-        printer_name = self.foomatic.getPrinterFromCupsDevice(self.device)
+        try:
+            printer_name = self.foomatic.getPrinterFromCupsDevice(self.device)
+        except:
+            nonfatalException ()
+            printer_name = None
+
         if printer_name:
             printer = self.foomatic.getPrinter(printer_name)
             if printer:

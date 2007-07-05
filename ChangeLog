@@ -1,5 +1,9 @@
 2006-12-14  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (nonfatalException): New function.
+	(GUI.on_tvNPDevices_cursor_changed): Use it when trying to
+	auto-match printer model.
+
 	* foomatic.py (Foomatic.getPrinterFromDeviceID): New function.
 	(Foomatic.getPrinterFromCupsDevice): Use it.
 	(Foomatic.getPPD): Likewise (bug #219518).
