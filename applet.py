@@ -117,6 +117,7 @@ class JobManager:
         self.store = gtk.TreeStore(int, str, str, str, str, str)
         self.store.set_sort_column_id (0, gtk.SORT_DESCENDING)
         self.treeview.set_model(self.store)
+        self.treeview.set_rules_hint (True)
 
         self.MainWindow = self.xml.get_widget ('MainWindow')
         self.MainWindow.set_icon_from_file (APPDIR + "/" + ICON)
