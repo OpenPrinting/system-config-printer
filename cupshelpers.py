@@ -81,8 +81,8 @@ class Printer:
         self.possible_attributes = {
             'columns' : ('1', (1, 4)),
             'cpi' : ('10', (1, 100)),
-            'fitplot' : ('false', ['true', 'false']),
-            'landscape' : ('false', ['true', 'false']),
+            'fitplot' : ('False', ['True', 'False']),
+            'landscape' : ('False', ['True', 'False']),
             'number-up-layout' : ('lrtb', ['btlr', 'btrl', 'lrbt', 'lrtb',
                                          'rlbt', 'rltb', 'tblr', 'tbrl']),
             'orientation-requested' : ('3', ['3','4','5','6']),
@@ -92,12 +92,12 @@ class Printer:
             'page-right' : ('72', (0, 500)),
             'page-border' : ('none', ['none', 'single', 'single-thick',
                                      'double', 'double-thick']),
-            'prettyprint' : ('false', ['true', 'false']),
+            'prettyprint' : ('False', ['True', 'False']),
             'lpi' : ('6', (1, 100)),
             'scaling' : ('100', (1, 1000)),
             'sides' : ('one-sided', ['one-sided', 'two-sided-long-edge',
                                     'two-sided-short-edge']),
-            'wrap' : ('false', ['true', 'false'])}
+            'wrap' : ('False', ['True', 'False'])}
 
         for key, value in attrs.iteritems():
             if key.endswith("-default"):

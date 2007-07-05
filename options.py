@@ -91,7 +91,7 @@ class OptionSelectOne(Option):
         selected = None
         for nr, choice in enumerate(supported):
             self.selector.append_text(str(choice))
-            if value == choice:
+            if str (value) == str (choice):
                 selected = nr
         if selected is not None:
             self.selector.set_active(selected)
