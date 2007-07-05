@@ -48,8 +48,7 @@ class Printer:
 
     def getServer(self):
         """return Server URI or None"""
-        if (not self.remote or
-            not self.uri_supported.startswith('ipp://')):
+        if not self.uri_supported.startswith('ipp://'):
             return None
         uri = self.uri_supported[6:]
         uri = uri.split('/')[0]

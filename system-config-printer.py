@@ -24,6 +24,8 @@ class GUI:
 
         self.changed = set() # of options
 
+        self.servers = set(("localhost",))
+
         self.cups = cups.Connection()
         # XXX Error handling
         
@@ -36,7 +38,7 @@ class GUI:
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
                         "btnNewPrinter", "btnNewClass", "btnCopy", "btnDelete",
                         "new_printer", "new_class", "copy", "delete",
-                        "btnGotoServer",
+                        "cmbServers", "btnGotoServer",
 
                         "btnApply", "btnRevert", "imgConflict",
 
@@ -44,6 +46,7 @@ class GUI:
                           "entPDescription", "entPLocation", "lblPMakeModel",
                           "lblPState", "entPDevice",
                           "chkPEnabled", "chkPAccepting", "chkPShared",
+                          "btnPMakeDefault", "lblPDefault",
                          "swPInstallOptions", "vbPInstallOptions", 
                          "swPOptions",
                           "lblPOptions", "vbPOptions",
@@ -124,6 +127,24 @@ class GUI:
             host = 'localhost'
         self.MainWindow.set_title ("Printer configuration - %s" % host)
 
+    def getServers(self):
+        self.servers.discard(None)
+        known_servers = list(self.servers)
+        known_servers.sort()
+        return known_servers
+
+    def setCmbServers(self, server):
+        model = self.cmbServers.get_model()
+        pos = model.get_iter_first()
+        nr = 0
+        while True:
+            s = model.get(pos, 0)[0]
+            if s==server:
+                self.cmbServers.set_active(nr)
+            pos = model.iter_next(pos)
+            nr += 1
+            if pos is None: break
+
     def populateList(self):
         old_name, old_type = self.getSelectedItem()
         select_path = 0
@@ -134,19 +155,28 @@ class GUI:
 
         # Printers
         self.printers = cupshelpers.getPrinters(self.cups)
+        
         names = self.printers.keys()
         names.sort()
 
         self.mainlist.append(("Printers:", ''))
 
+        self.default_printer = ""
         for name in names:
-            #if self.printers[name].remote
+            printer = self.printers[name]
+
+            #if printer.remote
             #    continue
-            if self.printers[name].is_class:
-                continue
-            iter = self.mainlist.append(('  ' + name, 'Printer'))
-            if name == old_name:
-                select_path = self.mainlist.get_path(iter)
+            
+            if printer.default:
+                self.default_printer = name
+            
+            self.servers.add(printer.getServer())
+
+            if not printer.is_class:
+                iter = self.mainlist.append(('  ' + name, 'Printer'))
+                if name == old_name:
+                    select_path = self.mainlist.get_path(iter)
         
         # Classes
         self.mainlist.append(("Classes:", ''))
@@ -156,6 +186,17 @@ class GUI:
             if name == old_name:
                 select_path = self.mainlist.get_path(iter)
 
+        # server combobox
+        model = self.cmbServers.get_model()
+        model.clear()
+        current_server = cups.getServer()
+        select_row = 0
+        for nr, server in enumerate(self.getServers()):
+            if current_server == server:
+                select_row = nr
+            model.append((server,))
+        self.cmbServers.set_active(select_row)
+        
         # Selection
         selection = self.tvMainList.get_selection()
         selection.select_path(select_path)
@@ -188,17 +229,11 @@ class GUI:
                 return
 
         # Use browsed queues to build up a list of known IPP servers
-        known_servers = set(('localhost',))
-        for name in self.printers:
-            printer = self.printers[name]
-            known_servers.add(printer.getServer())
-        known_servers.discard(None)
-        known_servers = list(known_servers)
-        known_servers.sort
+        servers = self.getServers()
 
         store = gtk.ListStore (gobject.TYPE_STRING)
         self.cmbServername.set_model (store)
-        for server in known_servers:
+        for server in servers:
             self.cmbServername.append_text (server)
         self.cmbServername.show ()
 
@@ -244,7 +279,7 @@ class GUI:
         self.ConnectWindow.hide()
 
     def on_btnGotoServer_clicked(self, button):
-        cups.setServer(self.printer.getServer())
+        cups.setServer(self.cmbServers.get_active_text())
         try:
             connection = cups.Connection() # XXX timeout?
             self.setTitle()
@@ -318,9 +353,8 @@ class GUI:
                     self.changed.discard(widget)
                 else:
                     self.changed.add(widget)
+                break
         self.setDataButtonState()
-                        
-        
         
     def option_changed(self, option):
         if option.is_changed():
@@ -443,6 +477,12 @@ class GUI:
         self.changed = set() # avoid asking the user
         self.on_tvMainList_cursor_changed(self.tvMainList)
 
+    # set default printer
+    
+    def on_btnPMakeDefault_pressed(self, button):
+        self.cups.setDefault(self.printer.name)
+        self.populateList()
+
     # select Item
 
     def on_tvMainList_cursor_changed(self, list):
@@ -474,7 +514,7 @@ class GUI:
 
     def fillServerTab(self):
         self.changed = set()
-        self.btnGotoServer.set_sensitive(False)
+        self.setCmbServers(cups.getServer())
 
     def fillPrinterTab(self, name):
         self.changed = set() # of options
@@ -486,7 +526,7 @@ class GUI:
 
         editable = not self.printer.remote
 
-        self.btnGotoServer.set_sensitive(bool(printer.getServer()))
+        self.setCmbServers(printer.getServer())
 
         # Description page        
         self.entPDescription.set_text(printer.info)
@@ -505,6 +545,16 @@ class GUI:
         self.chkPAccepting.set_sensitive(editable)
         self.chkPShared.set_active(printer.is_shared)
         self.chkPShared.set_sensitive(editable)
+
+        # default printer
+        self.btnPMakeDefault.set_sensitive(not printer.default)
+        if printer.default:
+            self.lblPDefault.set_text(_("This is the default printer"))
+        elif self.default_printer:
+            self.lblPDefault.set_text(_("Default printer is %s") %
+                                      self.default_printer)
+        else:
+            self.lblPDefault.set_text(_("No default printer set."))
 
         # remove InstallOptions tab
         tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
@@ -732,7 +782,6 @@ class GUI:
         self.setNPButtons()
 
     def on_btnNPForward_clicked(self, widget):
-        print "XX"
         self.ntbkNewPrinter.next_page()
         self.setNPButtons()
 
