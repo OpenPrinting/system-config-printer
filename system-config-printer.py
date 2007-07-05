@@ -2560,8 +2560,8 @@ class GUI:
                             p = exe.find ('%')
                             if p != -1:
                                 exe = exe[:p]
-                                exepath = pathcheck (exe)
-                                break
+                            exepath = pathcheck (exe)
+                            break
 
                         argi += 1
 
