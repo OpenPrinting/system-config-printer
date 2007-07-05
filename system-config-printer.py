@@ -1558,7 +1558,7 @@ class GUI:
             if not attr: attr = self.ppd.findAttr("NickName")
             if attr:
                 if attr.value.startswith(self.auto_make):
-                    self.auto_model = attr.value[len(self.auto_make):]
+                    self.auto_model = attr.value[len(self.auto_make):].strip ()
                 else:
                     try:
                         self.auto_model = attr.value.split(" ", 1)[1]

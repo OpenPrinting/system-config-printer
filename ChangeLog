@@ -1,3 +1,11 @@
+2006-11-02  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_btnChangePPD_clicked): Fix
+	auto-selection of current PPD when changing it (bug #213667).
+
+	* optionwidgets.py (OptionPickOne.__init__): Handle enum values
+	already set outside the range (bug #213136).
+
 2006-11-01  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.checkDriverExists): New function
