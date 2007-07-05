@@ -765,14 +765,14 @@ if trayicon:
 
     # Start off just waiting for print jobs or printer errors.
     def any_jobs_or_errors ():
-        if 1: #try:
+        try:
             c = cups.Connection ()
             if len (c.getJobs (my_jobs=True)):
                 return True
             reason = worst_printer_state_reason (c)
             if reason != None and reason.get_level () >= StateReason.WARNING:
                 return True
-        else: #except:
+        except:
             pass
 
         return False
