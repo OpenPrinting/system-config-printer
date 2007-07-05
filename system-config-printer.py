@@ -2229,7 +2229,12 @@ class GUI:
                                    "and is included with the foomatic "
                                    "package.")
                     else:
-                        markup = _("This PPD is provided by CUPS.")
+                        try:
+                            fppd = self.foomatic.ppds[ppd]
+                            markup = fppd['ppd-make-and-model'] + '\n'
+                        except KeyError:
+                            markup += _("This PPD is provided by CUPS.")
+
                     self.lblNPPPDDescription.set_markup (markup)
         self.setNPButtons()
 
