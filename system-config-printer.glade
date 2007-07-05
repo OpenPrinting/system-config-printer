@@ -2942,7 +2942,7 @@ Reverse portrait (180°)</property>
 						      <property name="right_padding">0</property>
 
 						      <child>
-							<widget class="GtkButton" id="button23">
+							<widget class="GtkButton" id="btnJOResetMirror">
 							  <property name="visible">True</property>
 							  <property name="tooltip" translatable="yes">Reset to system default</property>
 							  <property name="can_focus">True</property>
@@ -2950,6 +2950,7 @@ Reverse portrait (180°)</property>
 							  <property name="use_underline">True</property>
 							  <property name="relief">GTK_RELIEF_NORMAL</property>
 							  <property name="focus_on_click">True</property>
+							  <signal name="clicked" handler="on_job_option_reset" last_modification_time="Fri, 23 Feb 2007 17:44:00 GMT"/>
 							</widget>
 						      </child>
 						    </widget>
@@ -3024,7 +3025,7 @@ Reverse portrait (180°)</property>
 						  </child>
 
 						  <child>
-						    <widget class="GtkCheckButton" id="checkbutton3">
+						    <widget class="GtkCheckButton" id="cbJOMirror">
 						      <property name="visible">True</property>
 						      <property name="can_focus">True</property>
 						      <property name="label" translatable="yes">Mirror</property>
@@ -3034,6 +3035,7 @@ Reverse portrait (180°)</property>
 						      <property name="active">False</property>
 						      <property name="inconsistent">False</property>
 						      <property name="draw_indicator">True</property>
+						      <signal name="toggled" handler="on_job_option_changed" last_modification_time="Fri, 23 Feb 2007 17:43:49 GMT"/>
 						    </widget>
 						    <packing>
 						      <property name="left_attach">0</property>

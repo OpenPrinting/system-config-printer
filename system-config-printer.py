@@ -188,6 +188,7 @@ class GUI:
                         "cmbJONumberUp", "btnJOResetNumberUp",
                         "cmbJONumberUpLayout", "btnJOResetNumberUpLayout",
                         "sbJOBrightness", "btnJOResetBrightness",
+                        "cbJOMirror", "btnJOResetMirror",
                         "tblJOOther",
                         "entNewJobOption", "btnNewJobOption",
                         
@@ -367,6 +368,10 @@ class GUI:
                  options.OptionAlwaysShown ("brightness", int, 100,
                                             self.sbJOBrightness,
                                             self.btnJOResetBrightness),
+
+                 options.OptionAlwaysShown ("mirror", bool, False,
+                                            self.cbJOMirror,
+                                            self.btnJOResetMirror),
                  ]
         self.job_options_widgets = {}
         self.job_options_buttons = {}
@@ -1414,14 +1419,14 @@ class GUI:
         for option in self.job_options_widgets.values ():
             try:
                 value = self.printer.attributes[option.name]
-                self.server_side_options[option.name] = option
             except KeyError:
                 option.reinit (None)
             else:
                 option.reinit (value)
+                self.server_side_options[option.name] = option
         self.other_job_options = []
         self.draw_other_job_options ()
-        for option in self.printer.attributes:
+        for option in self.printer.attributes.keys ():
             if self.server_side_options.has_key (option):
                 continue
             supported = ""
