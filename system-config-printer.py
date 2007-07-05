@@ -2649,7 +2649,7 @@ class GUI:
             return None
 
         # Find a 'FoomaticRIPCommandLine' attribute.
-        exe = None
+        exe = exepath = None
         attr = ppd.findAttr ('FoomaticRIPCommandLine')
         if attr:
             # Foomatic RIP command line to check.
