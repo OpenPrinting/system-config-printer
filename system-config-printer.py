@@ -2563,7 +2563,7 @@ class GUI:
             if line.startswith (search):
                 line = line[len (search):].strip ().strip ('"')
                 try:
-                    (mimetype, prio, exe) = line.split (' ')
+                    (mimetype, cost, exe) = line.split (' ')
                 except:
                     continue
 
