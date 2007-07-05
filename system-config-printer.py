@@ -2306,6 +2306,32 @@ class GUI:
         DBErr_title = _('Database error')
         DBErr_text = _("The '%s' driver cannot be used with printer '%s %s'.")
 
+        def get_PPD_but_handle_errors ():
+            try:
+                ppd = self.getNPPPD()
+            except RuntimeError, e:
+                model, iter = self.tvNPDrivers.get_selection().get_selected()
+                nr = model.get_path(iter)[0]
+                driver = self.NPDrivers[nr]
+                if driver.startswith ("gutenprint"):
+                    # This printer references some XML that is not installed
+                    # by default.  Point the user at the package they need
+                    # to install.
+                    DBErr = _("You will need to install the '%s' package "
+                              "in order to use this driver.") % \
+                              "gutenprint-foomatic"
+                else:
+                    DBErr = DBErr_text % (driver, self.NPMake, self.NPModel)
+
+                error_text = ('<span weight="bold" size="larger">' +
+                              DBErr_title + '</span>\n\n' + DBErr)
+                self.lblError.set_markup(error_text)
+                self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+                self.ErrorDialog.run()
+                self.ErrorDialog.hide()
+                return None
+            return ppd
+
         if self.dialog_mode=="class":
             members = self.getCurrentClassMembers(self.tvNCMembers)
             try:
@@ -2317,19 +2343,8 @@ class GUI:
                 return
         elif self.dialog_mode=="printer":
             uri = self.getDeviceURI()
-            try:
-                ppd = self.getNPPPD()
-            except RuntimeError, e:
-                model, iter = self.tvNPDrivers.get_selection().get_selected()
-                nr = model.get_path(iter)[0]
-                driver = self.NPDrivers[nr]
-                error_text = ('<span weight="bold" size="larger">' +
-                              DBErr_title + '</span>\n\n' +
-                              DBErr_text % (driver, self.NPMake, self.NPModel))
-                self.lblError.set_markup(error_text)
-                self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
-                self.ErrorDialog.run()
-                self.ErrorDialog.hide()
+            ppd = get_PPD_but_handle_errors ()
+            if not ppd:
                 # Go back to previous page to re-select driver.
                 self.nextNPTab(-1)
                 return
@@ -2372,19 +2387,8 @@ class GUI:
                 self.show_IPP_Error(e, msg)
                 return
         elif self.dialog_mode == "ppd":
-            try:
-                ppd = self.getNPPPD()
-            except RuntimeError, e:
-                model, iter = self.tvNPDrivers.get_selection().get_selected()
-                nr = model.get_path(iter)[0]
-                driver = self.NPDrivers[nr]
-                error_text = ('<span weight="bold" size="larger">' +
-                              DBErr_title + '</span>\n\n' +
-                              DBErr_text % (driver, self.NPMake, self.NPModel))
-                self.lblError.set_markup(error_text)
-                self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
-                self.ErrorDialog.run()
-                self.ErrorDialog.hide()
+            ppd = get_PPD_but_handle_errors ()
+            if not ppd:
                 # Go back to previous page to re-select driver.
                 self.nextNPTab(-1)
                 return
