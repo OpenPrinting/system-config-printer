@@ -496,7 +496,7 @@ class GUI:
             err = False
             if response == gtk.RESPONSE_APPLY:
                 err = self.apply()
-            self.changed = False
+            self.changed = set() # of options
             if err or response == gtk.RESPONSE_CANCEL:
                 return False
         return True
