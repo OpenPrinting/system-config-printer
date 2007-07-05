@@ -1389,9 +1389,8 @@ class GUI:
     def initNewPrinterWindow(self):
         if self.dialog_mode in ("printer", "class"):
             self.ntbkNewPrinter.set_current_page(0)
-            self.entNPName.grab_focus()
-            
             self.entNPName.set_text ('printer')
+            self.entNPName.grab_focus()
             for widget in [self.entNPLocation,
                            self.entNPDescription,
                            self.entSMBURI, self.entSMBUsername,
