@@ -731,7 +731,7 @@ class Foomatic:
                     print "Please report a bug in Bugzilla against 'foomatic':"
                     print "  https://bugzilla.redhat.com/bugzilla"
                     print "Include this complete message."
-                    print "Deducing %s from IEEE 1284 ID:" % best_mdl
+                    print "Deducing %s from IEEE 1284 ID:" % mdls[mdl]
                     print "      <manufacturer>%s</manufacturer>" % mfg
                     print "      <model>%s</model>" % mdl
                     print "      <description>%s</description>" %\
