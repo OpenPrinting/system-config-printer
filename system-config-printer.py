@@ -139,7 +139,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            #raise ValueError # uncomment for development
+            raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
@@ -180,7 +180,6 @@ class GUI:
                           "lblClassMembers",
                           "tvClassMembers", "tvClassNotMembers",
                           "btnClassAddMember", "btnClassDelMember",
-                         "cmbentNewOption", "tblServerOptions", "btnNewOption",
                         
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
@@ -1253,8 +1252,7 @@ class GUI:
                        self.cmbPStartBanner, self.cmbPEndBanner,
                        self.cmbPErrorPolicy, self.cmbPOperationPolicy,
                        self.rbtnPAllow, self.rbtnPDeny, self.tvPUsers,
-                       self.entPUser, self.btnPAddUser, self.btnPDelUser,
-                       self.cmbentNewOption):
+                       self.entPUser, self.btnPAddUser, self.btnPDelUser):
             widget.set_sensitive(editable)
 
         # Description page
@@ -1337,34 +1335,6 @@ class GUI:
         self.entPUser.set_text("")
 
         # Server side options
-
-        self.server_side_options = {}
-        self.cmbentNewOption.get_model().clear()
-        self.cmbentNewOption.get_child().set_text("")
-        self.btnNewOption.set_sensitive(False)
-        attrs = self.printer.possible_attributes.keys()
-        attrs.sort()
-        for attr in attrs:
-            if attr not in self.printer.attributes:
-                self.cmbentNewOption.append_text(attr)
-
-        for child in self.tblServerOptions.get_children():
-            self.tblServerOptions.remove(child)
-
-        self.tblServerOptions.resize(1, 3)
-        attrs = printer.attributes.keys()
-        attrs.sort()
-        for attr in attrs:
-            value = printer.attributes[attr]
-            if attr in printer.possible_attributes:
-                supported = printer.possible_attributes[attr][1]
-            else:
-                supported = ""
-            self.add_option(attr, value, supported, is_new=False,
-                            editable=editable)
-
-        self.tblServerOptions.show_all()
-        self.tblServerOptions.queue_draw()
 
         if printer.is_class:
             # remove InstallOptions tab
