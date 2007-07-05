@@ -108,13 +108,17 @@ class OptionBool(Option):
     def __init__(self, option, ppd, gui):
         self.selector = gtk.CheckButton(option.text)
         self.label = None
+        self.false = u"False" # hack to allow "None insted of "False"
+        for c in option.choices:
+            if c["choice"] in ("None", "False"):
+                self.false = c["choice"]
         self.selector.set_active(option.defchoice == 'True')
         self.selector.set_alignment(0.0, 0.5)
         self.selector.connect("toggled", self.on_change)
         Option.__init__(self, option, ppd, gui)
 
     def get_current_value(self):
-        return ('False', 'True')[self.selector.get_active()]
+        return (self.false, 'True')[self.selector.get_active()]
 
 # ---------------------------------------------------------------------------
 

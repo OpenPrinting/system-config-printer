@@ -59,6 +59,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
+            #raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file)
         except:
             self.xml = gtk.glade.XML(domain + '.glade')
@@ -95,7 +96,7 @@ class GUI:
                          "vbClassMembers", "lblClassMembers",
                           "tvClassMembers", "tvClassNotMembers",
                           "btnClassAddMember", "btnClassDelMember",
-                         "cmbentNewOption", "tblServerOptions",
+                         "cmbentNewOption", "tblServerOptions", "btnNewOption",
                         
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
@@ -585,23 +586,36 @@ class GUI:
 
     # Server side options
 
-    def add_option(self, name, value, supported, is_new=False):
+    def add_option(self, name, value, supported, is_new=False,
+                   editable=True):
         option = options.OptionWidget(name, value, supported,
                                       self.option_changed)
         option.is_new = is_new
         rows = self.tblServerOptions.get_property("n-rows")
         self.tblServerOptions.resize(rows+1, 3)
         self.tblServerOptions.attach(option.label, 0, 1, rows, rows+1,
+                                     xoptions=gtk.FILL,
+                                     yoptions=gtk.FILL)
+        option.label.set_alignment(0.0, 0.0)
+        option.label.set_padding(5, 5)
+        align = gtk.Alignment()
+        align.add(option.selector)
+        option.align = align
+        self.tblServerOptions.attach(align, 1, 2, rows, rows+1,
+                                     xoptions=gtk.FILL,
                                      yoptions=0)
-        self.tblServerOptions.attach(option.selector, 1, 2, rows, rows+1,
-                                     yoptions=0)
-        # remove button
-        btn = gtk.Button(stock="gtk-remove")
-        btn.connect("clicked", self.removeOption_clicked)
-        btn.set_data("pyobject", option)
-        self.tblServerOptions.attach(btn, 2, 3, rows, rows+1,
-                                     yoptions=0)
-        option.remove_button = btn
+        option.selector.set_sensitive(editable)
+        if editable:
+            # remove button
+            btn = gtk.Button(stock="gtk-remove")
+            btn.connect("clicked", self.removeOption_clicked)
+            btn.set_data("pyobject", option)
+            align = gtk.Alignment()
+            align.add(btn)
+            self.tblServerOptions.attach(align, 2, 3, rows, rows+1,
+                                         xoptions=0,
+                                         yoptions=gtk.FILL)
+            option.remove_button = align
         self.server_side_options[name] = option
         if name in self.changed: # was deleted before
             option.is_new = False
@@ -612,7 +626,7 @@ class GUI:
     def removeOption_clicked(self, button):
         option = button.get_data("pyobject")
         self.tblServerOptions.remove(option.label)
-        self.tblServerOptions.remove(option.selector)
+        self.tblServerOptions.remove(option.align)
         self.tblServerOptions.remove(option.remove_button)
         if option.is_new:
             self.changed.discard(option)
@@ -630,6 +644,10 @@ class GUI:
         self.add_option(name, value, supported, is_new=True)
         self.tblServerOptions.show_all()
         self.setDataButtonState()
+
+    def on_cmbentNewOption_changed(self, widget):
+        self.btnNewOption.set_sensitive(
+            bool(self.cmbentNewOption.get_active_text()))
 
     # set Apply/Revert buttons sensitive    
     def setDataButtonState(self):
@@ -771,9 +789,11 @@ class GUI:
 
             for option in printer.attributes:
                 if option not in self.server_side_options:
+                    print "unset", option.name
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
                 if option.is_changed or saveall:
+                    print "save", option.name, option.get_current_value()
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
@@ -865,7 +885,8 @@ class GUI:
                        self.cmbPStartBanner, self.cmbPEndBanner,
                        self.cmbPErrorPolicy, self.cmbPOperationPolicy,
                        self.rbtnPAllow, self.rbtnPDeny, self.tvPUsers,
-                       self.entPUser, self.btnPAddUser, self.btnPDelUser):
+                       self.entPUser, self.btnPAddUser, self.btnPDelUser,
+                       self.cmbentNewOption):
             widget.set_sensitive(editable)
 
         # Description page        
@@ -929,8 +950,11 @@ class GUI:
 
         # Server side options
 
+        # XXX
         self.server_side_options = {}
         self.cmbentNewOption.get_model().clear()
+        self.cmbentNewOption.get_child().set_text("")
+        self.btnNewOption.set_sensitive(False)
         for attr in self.printer.possible_attributes:
             if attr not in self.printer.attributes:
                 self.cmbentNewOption.append_text(attr)
@@ -941,7 +965,8 @@ class GUI:
         
         for attr in printer.attributes:
             value, supported = printer.possible_attributes[attr]
-            self.add_option(attr, value, supported)
+            self.add_option(attr, value, supported, is_new=False,
+                            editable=editable)
 
         self.tblServerOptions.show_all()
         self.tblServerOptions.queue_draw()

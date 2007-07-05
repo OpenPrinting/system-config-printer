@@ -2,33 +2,36 @@ import gtk
 
 def OptionWidget(name, v, s, on_change):
 
-    if isinstance(v, int):
+    if isinstance(v, list):
+        # XXX
+        if isinstance(s, list):
+            for vv in v + s:
+                if not isinstance(vv, str): raise ValueError
+            return OptionSelectMany(name, v, s, on_change)
+        raise NotImplemented
+    else:
         if (isinstance(s, int) or
             (isinstance(s, tuple) and len(s)==2 and
              isinstance(s[0], int) and isinstance(s[1], int))):
+            try:
+                v = int(v)
+            except ValueError:
+                return OptionText(name, v, "", on_change)
             return OptionNumeric(name, v, s, on_change)
         elif isinstance(s, list):
             for sv in s:
                 if not isinstance(sv, int):
                     return OptionSelectOne(name, v, s, on_change)
+            try:
+                v = int(v)
+            except ValueError:
+                return OptionSelectOne(name, v, s, on_change)
             return OptionSelectOneNumber(name, v, s, on_change)
-    elif isinstance(v, str):
-        if isinstance(s, list):
-            for sv in s:
-                if not isinstance(sv, str):
-                    raise ValueError
-            return OptionSelectOne(name, v, s, on_change)
         elif isinstance(s, str):
             return OptionText(name, v, s, on_change)
         else:
             raise ValueError
-    elif isinstance(v, list) and isinstance(s, list):
-        for vv in v + s:
-            if not isinstance(vv, str): raise ValueError
-        return OptionSelectMany(name, v, s, on_change)
-    else:
-        raise ValueError
-    
+
 # ---------------------------------------------------------------------------
 
 class Option:
@@ -91,8 +94,22 @@ class OptionSelectOneNumber(OptionSelectOne):
 # ---------------------------------------------------------------------------
 
 class OptionSelectMany(Option):
-    # XXX
-    pass
+
+    def __init__(self, name, value, supported, on_change):
+        Option.__init__(self, name, value, supported, on_change)
+        self.checkboxes = []
+        vbox = gtk.VBox()
+        for s in supported:
+            checkbox = gtk.CheckButton(label=s)
+            checkbox.set_active(s in value)
+            vbox.add(checkbox)
+            checkbox.connect("toggled", self.changed)
+            self.checkboxes.append(checkbox)
+        self.selector = vbox
+            
+    def get_current_value(self):
+        return[s for s, chk in zip(self.supported, self.checkboxes)
+               if chk.get_active()]
 
 # ---------------------------------------------------------------------------
 

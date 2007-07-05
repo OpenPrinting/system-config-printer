@@ -2124,6 +2124,7 @@
 				  <property name="add_tearoffs">False</property>
 				  <property name="has_frame">True</property>
 				  <property name="focus_on_click">True</property>
+				  <signal name="changed" handler="on_cmbentNewOption_changed" last_modification_time="Fri, 05 May 2006 12:04:23 GMT"/>
 				</widget>
 				<packing>
 				  <property name="padding">0</property>
@@ -2150,7 +2151,7 @@
 			      </child>
 			    </widget>
 			    <packing>
-			      <property name="padding">0</property>
+			      <property name="padding">5</property>
 			      <property name="expand">False</property>
 			      <property name="fill">True</property>
 			    </packing>
@@ -2162,21 +2163,22 @@
 			      <property name="can_focus">True</property>
 			      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
 			      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-			      <property name="shadow_type">GTK_SHADOW_NONE</property>
+			      <property name="shadow_type">GTK_SHADOW_ETCHED_IN</property>
 			      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 			      <child>
 				<widget class="GtkViewport" id="viewport6">
 				  <property name="visible">True</property>
-				  <property name="shadow_type">GTK_SHADOW_IN</property>
+				  <property name="shadow_type">GTK_SHADOW_NONE</property>
 
 				  <child>
 				    <widget class="GtkTable" id="tblServerOptions">
+				      <property name="border_width">5</property>
 				      <property name="n_rows">3</property>
 				      <property name="n_columns">3</property>
 				      <property name="homogeneous">False</property>
-				      <property name="row_spacing">0</property>
-				      <property name="column_spacing">0</property>
+				      <property name="row_spacing">2</property>
+				      <property name="column_spacing">10</property>
 				    </widget>
 				  </child>
 				</widget>

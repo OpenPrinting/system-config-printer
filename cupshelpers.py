@@ -242,7 +242,7 @@ class PrintersConf:
             match = re.match(r"<(Default)?Printer ([^>]+)>\s*\n", line) 
             if match:
                 current_printer = match.group(2)
-            if line.find("</Printer>") != -1:
+            if line.strip().find("</Printer>") != -1:
                 current_printer = None
 
     def get_options(self, printername):
