@@ -62,6 +62,12 @@ def _ppdMakeModelSplit (ppd_make_and_model, ppdname=None):
         if f != -1:
             model = model[:f]
 
+    # Gutenprint PPDs have NickNames that end:
+    # ... - CUPS+Gutenprint v5.0.0
+    gutenprint = model.find (" - CUPS+Gutenprint")
+    if gutenprint != -1:
+        model = model[:gutenprint]
+
     return (make, model)
 
 ############################################################################# 
