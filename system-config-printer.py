@@ -88,6 +88,8 @@ class GUI:
         
         self.printer = None
         self.conflicts = set() # of options
+        self.connect_server = 'localhost'
+        self.connect_user = 'root'
         self.password = ''
         self.passwd_retry = False
         cups.setPasswordCB(self.cupsPasswdCallback)        
@@ -501,7 +503,7 @@ class GUI:
             print "Connecting (PPDs)"
             cups.setServer (self.connect_server)
             cups.setUser (self.connect_user)
-            cups.setPasswdCB (self.cupsPasswdCallback)
+            cups.setPasswordCB (self.cupsPasswdCallback)
             # cups.setEncryption (...)
             c = cups.Connection ()
             print "Fetching PPDs"
@@ -738,7 +740,7 @@ class GUI:
         self.ConnectingDialog.show()
         self.connect_server = servername
         self.connect_user = user
-        self.connect_thread = thread.start_new_thread(self.connect)
+        self.connect_thread = thread.start_new_thread(self.connect, ())
 
     def on_cancel_connect_clicked(self, widget):
         """
@@ -2164,7 +2166,7 @@ class GUI:
             print "Connecting (devices)"
             cups.setServer (self.connect_server)
             cups.setUser (self.connect_user)
-            cups.setPasswdCB (self.cupsPasswdCallback)
+            cups.setPasswordCB (self.cupsPasswdCallback)
             # cups.setEncryption (...)
             c = cups.Connection ()
             print "Fetching devices"
@@ -2705,6 +2707,7 @@ class GUI:
             iter = model.get_iter (path)
         pmodel = model.get(iter, 0)[0]
         ppdnamelist = self.ppds.getInfoFromModel(self.NPMake, pmodel).keys ()
+        ppdnamelist = self.ppds.orderPPDNamesByPreference (ppdnamelist)
         self.NPModel = pmodel
         self.fillDriverList(ppdnamelist)
 

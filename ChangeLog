@@ -11,6 +11,9 @@
 	(GUI.dropPPDs): New method, replacing unloadFoomatic().
 	(GUI.on_btnChangePPD_clicked): Load PPDs on demand.
 	(GUI.on_btnChangePPD_clicked): Don't drop PPDs each time.
+	(GUI.on_tvNPModels_cursor_changed): Order PPD names by preference.
+	(GUI.getPPDs_thread): Fetch PPDs from the correct server.
+	(GUI.getDevices_thread): Fetch devices from the correct server.
 
 	* ppds.py (PPDs.getPPDNameFromDeviceID): Display message to stdout
 	when the ID was not matched.
