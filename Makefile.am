@@ -1,5 +1,6 @@
 SUBDIRS=po
 nobase_pkgdata_SCRIPTS=				\
+	my-default-printer.py			\
 	ppds.py					\
 	pysmb.py				\
 	system-config-printer.py		\
@@ -25,7 +26,8 @@ nobase_sbin_SCRIPTS=\
 	system-config-printer
 
 bin_SCRIPTS=\
-	system-config-printer-applet
+	system-config-printer-applet		\
+	my-default-printer
 
 man_MANS=					\
 	man/system-config-printer.1		\
@@ -38,7 +40,8 @@ dbusdir = $(sysconfdir)/dbus-1/system.d/
 desktop_DATA =\
 	system-config-printer.desktop \
 	print-applet.desktop \
-	manage-print-jobs.desktop
+	manage-print-jobs.desktop \
+	my-default-printer.desktop
 desktopdir = $(datadir)/applications/
 autostartdir = $(sysconfdir)/xdg/autostart/
 
@@ -62,6 +65,12 @@ install-desktopDATA: $(desktop_DATA)
 	  --add-category GTK			\
 	  manage-print-jobs.desktop
 	desktop-file-install --vendor redhat	\
+	  --dir $(DESTDIR)$(desktopdir)		\
+	  --add-category X-Red-Hat-Base		\
+	  --add-category Settings		\
+	  --add-category GTK			\
+	  my-default-printer.desktop
+	desktop-file-install --vendor redhat	\
 	  --dir $(DESTDIR)$(autostartdir)	\
 	  --add-category X-Red-Hat-Base		\
 	  --add-category System			\
@@ -72,6 +81,7 @@ install-desktopDATA: $(desktop_DATA)
 uninstall-desktopDATA:
 	rm -f $(DESTDIR)$(desktopdir)/redhat-system-config-printer.desktop
 	rm -f $(DESTDIR)$(desktopdir)/redhat-manage-print-jobs.desktop
+	rm -f $(DESTDIR)$(desktopdir)/redhat-my-default-printer.desktop
 	rm -f $(DESTDIR)$(autostartdir)/redhat-print-applet.desktop
 
 EXTRA_DIST=\
@@ -86,6 +96,7 @@ EXTRA_DIST=\
 	system-config-printer.gladep \
 	system-config-printer.desktop.in \
 	manage-print-jobs.desktop.in \
+	my-default-printer.desktop.in \
 	print-applet.desktop.in \
 	applet.png \
 	intltool-extract.in \
