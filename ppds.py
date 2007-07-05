@@ -70,9 +70,15 @@ def ppdMakeModelSplit (ppd_make_and_model):
     if gimpprint != -1:
         model = model[:gimpprint]
 
+    wth = model.find (" w/")
+    if wth != -1:
+        model = model[:wth]
+
     model = strip_suffix (model, " (recommended)")
     model = strip_suffix (model, " Postscript")
+    model = strip_suffix (model, " - PostScript")
     model = strip_suffix (model, " Series")
+    model = strip_suffix (model, " series")
     model = strip_suffix (model, " PS")
     model = strip_suffix (model, " PXL")
 
@@ -138,10 +144,10 @@ class PPDs:
             # Here is the preference list:
             # 1. vendor's own (incl foomatic bundled)
             # 2. gutenprint native
-            # 3. foomatic (generated): hpijs
-            # 4. foomatic (generated): gutenprint, simplified
-            # 5. foomatic (generated): gutenprint
-            # 6. foomatic (generated): Postscript
+            # 3. foomatic (generated): Postscript
+            # 4. foomatic (generated): hpijs
+            # 5. foomatic (generated): gutenprint, simplified
+            # 6. foomatic (generated): gutenprint
             # 7. foomatic (generated): other driver
             # 8. CUPS
             def which_type (ppdname):
@@ -154,15 +160,15 @@ class PPDs:
                     return 8 # CUPS
                 if ppdname.startswith ("foomatic:"):
                     # Foomatic (generated) -- but which driver?
+                    if ppdname.find ("-Postscript")!= -1:
+                        return 3 # Postscript
                     if ppdname.find ("-hpijs") != -1:
                         if ppdname.find ("hpijs-rss") == -1:
-                            return 3 # hpijs
+                            return 4 # hpijs
                     if ppdname.find ("-gutenprint") != -1:
                         if ppdname.find ("-simplified")!= -1:
-                            return 4 # gutenprint, simplified
-                        return 5 # gutenprint
-                    if ppdname.find ("-Postscript")!= -1:
-                        return 6 # Postscript
+                            return 5 # gutenprint, simplified
+                        return 6 # gutenprint
                     return 7 # other driver
                 # Anything else should be a vendor's PPD.
                 return 1 # vendor's own
@@ -451,7 +457,7 @@ class PPDs:
         self.ids = ids
 
 def main():
-    list_models = False
+    list_models = True
     list_ids = False
 
     picklefile="pickled-ppds"
@@ -495,6 +501,7 @@ def main():
         "MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;DES:EPSON Stylus D78;",
         "MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;CLS:PRINTER;1284.4DL:4d,4e,1;",
         "MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;",
+        "CLASS:PRINTER;MODEL:HP LaserJet 6MP;MANUFACTURER:Hewlett-Packard;DESCRIPTION:Hewlett-Packard LaserJet 6MP Printer;COMMAND SET:PJL,MLC,PCLXL,PCL,POSTSCRIPT;",
         "MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
         "MFG:New;MDL:Unknown PCL6 Printer;CMD:PCLXL;",
         "MFG:New;MDL:Unknown PCL5e Printer;CMD:PCL5e;",
