@@ -2508,7 +2508,7 @@ class GUI:
                     self.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
                 else:
-                    cupshelpers.setPPDPageSize(self.languages[0], ppd)
+                    cupshelpers.setPPDPageSize(self.language[0], ppd)
                     self.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)
                     check = True
@@ -2627,13 +2627,29 @@ class GUI:
 
         # How to check that something exists in a path:
         def pathcheck (name, path="/usr/bin:/bin"):
+            # Strip out foomatic '%'-style place-holders.
+            p = name.find ('%')
+            if p != -1:
+                name = name[:p]
+            if len (name) == 0:
+                return "true"
             if name[0] == '/':
-                if os.access (file, os.X_OK):
-                    print "%s: found" % file
-                    return file
+                if os.access (name, os.X_OK):
+                    print "%s: found" % name
+                    return name
                 else:
-                    print "%s: NOT found" % file
+                    print "%s: NOT found" % name
                     return None
+            if name.find ("=") != -1:
+                return "builtin"
+            if name in [ ":", ".", "[", "alias", "bind", "break", "cd",
+                         "continue", "declare", "echo", "else", "eval",
+                         "exec", "exit", "export", "fi", "if", "kill", "let",
+                         "local", "popd", "printf", "pushd", "pwd", "read",
+                         "readonly", "set", "shift", "shopt", "source",
+                         "test", "then", "trap", "type", "ulimit", "umask",
+                         "unalias", "unset", "wait" ]:
+                return "builtin"
             for component in path.split (':'):
                 file = component.rstrip (os.path.sep) + os.path.sep + name
                 if os.access (file, os.X_OK):
@@ -2643,56 +2659,50 @@ class GUI:
             return None
 
         # Find a 'FoomaticRIPCommandLine' attribute.
-        exe = exepath = None
+        exepath = None
         attr = ppd.findAttr ('FoomaticRIPCommandLine')
         if attr:
             # Foomatic RIP command line to check.
             cmdline = attr.value.replace ('&&\n', '')
-            args = cmdline.split (' ')
-            argn = len (args)
-            argi = 1
-            exe = args[0]
+            cmdline = cmdline.replace ('&quot;', '"')
+            cmdline = cmdline.replace ('&lt;', '<')
+            cmdline = cmdline.replace ('&gt;', '>')
+            if cmdline.find ("(") != -1:
+                # Don't try to handle sub-shells.
+                cmdline = ""
 
-            exepath = pathcheck (exe)
-            if exepath:
-                # Main executable found.  But if it's 'gs', perhaps there is
-                # an IJS server we also need to check.
-                if os.path.basename (exepath) == 'gs':
-                    search = "-sIjsServer="
-                    while argi < argn:
-                        arg = args[argi]
-                        if arg == '|':
-                            break
-                        if arg.startswith (search):
-                            exe = arg[len (search):]
-                            # Strip out foomatic '%'-style place-holders
-                            p = exe.find ('%')
-                            if p != -1:
-                                exe = exe[:p]
-                            exepath = pathcheck (exe)
-                            break
-
-                        argi += 1
-
-            # If that was found, is there a pipeline?
-            while exepath:
-                pipe = 0
-                while argi < argn - 1:
-                    if args[argi] == '|':
-                        pipe = 1
+            # Strip out foomatic '%'-style place-holders
+            pipes = cmdline.split (';')
+            for pipe in pipes:
+                cmds = pipe.strip ().split ('|')
+                for cmd in cmds:
+                    args = cmd.strip ().split (' ')
+                    exe = args[0]
+                    exepath = pathcheck (exe)
+                    if not exepath:
                         break
-                    argi += 1
-                if pipe == 0:
-                    break
-                argi += 1
-                exe = args[argi]
-                # Strip out foomatic '%'-style place-holders
-                p = exe.find ('%')
-                if p != -1:
-                    exe = exe[:p]
-                exepath = pathcheck (exe)
 
-        if exepath or not exe:
+                    # Main executable found.  But if it's 'gs',
+                    # perhaps there is an IJS server we also need
+                    # to check.
+                    if os.path.basename (exepath) == 'gs':
+                        argn = len (args)
+                        argi = 1
+                        search = "-sIjsServer="
+                        while argi < argn:
+                            arg = args[argi]
+                            if arg.startswith (search):
+                                exe = arg[len (search):]
+                                exepath = pathcheck (exe)
+                                break
+
+                            argi += 1
+
+                if not exepath:
+                    # Next pipe.
+                    break
+
+        if exepath or not attr:
             # Look for '*cupsFilter' lines in the PPD and check that
             # the filters are installed.
             (tmpfd, tmpfname) = tempfile.mkstemp ()
