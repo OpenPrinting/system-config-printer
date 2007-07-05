@@ -316,9 +316,16 @@ class PrintersConf:
             if len(words) == 0:
                 continue
             if words[0] == "Option":
-                self.set_options.setdefault(current_printer, []).append(words[1])
+                if len (words) >= 2:
+                    val = words[1]
+                else:
+                    val = ''
+                self.set_options.setdefault(current_printer, []).append(val)
             elif words[0] == "DeviceURI":
-                self.device_uris[current_printer] = words[1]
+                if len (words) >= 2:
+                    self.device_uris[current_printer] = words[1]
+                else:
+                    self.device_uris[current_printer] = ''
             else:
                 match = re.match(r"<(Default)?%s ([^>]+)>\s*\n" % tag, line) 
                 if match:
