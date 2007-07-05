@@ -2184,7 +2184,9 @@ class GUI:
             # Don't reveal SMB authentication details.
             if uri[:6] == "smb://":
                 (group, host, share, u, p) = self.parse_SMBURI (uri[6:])
-                uri = "smb://" + self.construct_SMBURI (group, host, share)
+                ellipsis = unichr(0x2026)
+                uri = "smb://" + ellipsis
+                uri += self.construct_SMBURI (group, host, share)
 
             msg = _(
 """Going to create a new printer %s at
