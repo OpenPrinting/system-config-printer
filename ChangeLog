@@ -1,3 +1,12 @@
+2006-06-27  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.setDataButtonState): Print Test
+	Page button is only sensitive when printer is enabled, accepting
+	jobs, and no changes need to be applied.
+	(GUI.fillPrinterTab): Likewise.
+	(GUI.on_btnPrintTestPage_clicked): Tell the user that the test
+	page was submitted, and which job number it was.
+
 2006-06-26 Florian Festi  <ffesti@redhat.com>
 	* system-config-printer.glade, 
 	system-config-printer.py (GUI.on_btnPrintTestPage_clicked): 

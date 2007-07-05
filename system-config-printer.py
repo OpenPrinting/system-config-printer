@@ -112,6 +112,7 @@ class GUI:
                           "btnSelectDevice", "btnChangePPD",
                           "chkPEnabled", "chkPAccepting", "chkPShared",
                           "btnPMakeDefault", "lblPDefault",
+                        "btnPrintTestPage",
            
                          "cmbPStartBanner", "cmbPEndBanner",
                           "cmbPErrorPolicy", "cmbPOperationPolicy",
@@ -740,6 +741,13 @@ class GUI:
             button.set_sensitive(bool(self.changed) and
                                  not bool(self.conflicts))
 
+        try: # Might not be a printer selected
+            self.btnPrintTestPage.set_sensitive (not bool (self.changed) and
+                                                 self.printer.enabled and
+                                                 not self.printer.rejecting)
+        except:
+            pass
+
         if self.conflicts:
             self.btnConflict.show()
         else:
@@ -913,7 +921,12 @@ class GUI:
     def on_btnPrintTestPage_clicked(self, button):
         try:
             job_id = self.cups.printTestPage(self.printer.name)
-            #print job_id
+            self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
+                                     _("Submitted") + '</span>\n\n' +
+                                     _("Test page submitted as job %d")%job_id)
+            self.InfoDialog.set_transient_for (self.MainWindow)
+            self.InfoDialog.run ()
+            self.InfoDialog.hide ()
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
 
@@ -1015,6 +1028,9 @@ class GUI:
                                       self.default_printer)
         else:
             self.lblPDefault.set_text(_("No default printer set."))
+
+        self.btnPrintTestPage.set_sensitive (printer.enabled and
+                                             not printer.rejecting)
 
         # Policy tab
         # ----------
