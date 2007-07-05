@@ -1222,7 +1222,7 @@ class GUI:
                        self.cmbentNewOption):
             widget.set_sensitive(editable)
 
-        # Description page        
+        # Description page
         self.entPDescription.set_text(printer.info)
         self.entPLocation.set_text(printer.location)
         self.lblPMakeModel.set_text(printer.make_and_model)
