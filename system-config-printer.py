@@ -108,7 +108,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            raise ValueError # uncomment for development
+            #raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
@@ -499,7 +499,10 @@ class GUI:
     def getPPDs_thread(self):
         try:
             print "Connecting (PPDs)"
-            # FIXME: Need to set correct server etc.
+            cups.setServer (self.connect_server)
+            cups.setUser (self.connect_user)
+            cups.setPasswdCB (self.cupsPasswdCallback)
+            # cups.setEncryption (...)
             c = cups.Connection ()
             print "Fetching PPDs"
             self.ppds_result = c.getPPDs()
@@ -733,8 +736,9 @@ class GUI:
         self.dropPPDs()
         self.ConnectingDialog.set_transient_for(self.MainWindow)
         self.ConnectingDialog.show()
-        self.connect_thread = thread.start_new_thread(
-            self.connect, (servername, user))
+        self.connect_server = servername
+        self.connect_user = user
+        self.connect_thread = thread.start_new_thread(self.connect)
 
     def on_cancel_connect_clicked(self, widget):
         """
@@ -745,15 +749,15 @@ class GUI:
         self.connect_thread = None
         self.ConnectingDialog.hide()
 
-    def connect(self, servername, user):
+    def connect(self):
         """
         Open a connection to a new server. Is executed in a separate thread!
         """
-        cups.setServer(servername)
+        cups.setServer(self.connect_server)
+        cups.setUser(self.connect_user)
         cups.setPasswordCB(self.cupsPasswdCallback)
         # cups.setEncryption (...)
 
-        if user: cups.setUser(user)
         self.password = ''
 
         try:
@@ -2158,6 +2162,10 @@ class GUI:
     def getDevices_thread(self, current_uri):
         try:
             print "Connecting (devices)"
+            cups.setServer (self.connect_server)
+            cups.setUser (self.connect_user)
+            cups.setPasswdCB (self.cupsPasswdCallback)
+            # cups.setEncryption (...)
             c = cups.Connection ()
             print "Fetching devices"
             self.devices_result = cupshelpers.getDevices(c, current_uri)
