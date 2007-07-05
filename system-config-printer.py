@@ -24,6 +24,7 @@ class GUI:
 
     def __init__(self):
         self.printer = None
+        self.conflicts = set() # of options
         self.password = ''
         self.passwd_retry = False
         cups.setPasswordCB(self.cupsPasswdCallback)        

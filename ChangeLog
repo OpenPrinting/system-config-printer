@@ -1,3 +1,9 @@
+2006-03-27 Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Always set
+	self.conflicts, to prevent tracebacks in self.setDataButtonState()
+	later.
+
 2006-03-27 Florian Festi  <ffesti@redhat.com>
 	* system-config-printer.glade, system-config-printer.py:
 	New tab for Access Control, list with add/remove buttons for 
