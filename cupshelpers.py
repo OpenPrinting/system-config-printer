@@ -295,7 +295,8 @@ class PrintersConf:
         try:
             self.connection.getFile(file, filename)
         except cups.HTTPError, e:
-            if e.args[0] == cups.HTTP_UNAUTHORIZED:
+            if (e.args[0] == cups.HTTP_UNAUTHORIZED or
+                e.args[0] == cups.HTTP_NOT_FOUND):
                 return []
             else:
                 raise e
