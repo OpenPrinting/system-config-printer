@@ -47,6 +47,7 @@ class GUI:
         self.ntbkMain.set_show_tabs(False)
         self.ntbkNewPrinter.set_show_tabs(False)
         self.ntbkNPType.set_show_tabs(False)
+        self.prompt_primary = self.lblPasswordPrompt.get_label ()
 
         # Setup main list
         column = gtk.TreeViewColumn()
@@ -197,7 +198,8 @@ class GUI:
 
     def cupsPasswdCallback(self, querystring):
         if self.passwd_retry or len(self.password) == 0:
-            self.lblPasswordPrompt.set_label (querystring)
+            self.lblPasswordPrompt.set_label (self.prompt_primary +
+                                              querystring)
             self.entPasswd.grab_focus ()
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
