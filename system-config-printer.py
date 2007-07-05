@@ -191,6 +191,7 @@ class GUI:
                         "cmbJOFinishings", "btnJOResetFinishings",
                         "sbJOJobPriority", "btnJOResetJobPriority",
                         "cmbJOMedia", "btnJOResetMedia",
+                        "cmbJOSides", "btnJOResetSides",
                         "cbJOMirror", "btnJOResetMirror",
                         "sbJOScaling", "btnJOResetScaling",
                         "sbJOSaturation", "btnJOResetSaturation",
@@ -409,6 +410,14 @@ class GUI:
                                             self.cmbJOMedia,
                                             self.btnJOResetMedia,
                                             use_supported = True),
+
+                 options.OptionAlwaysShown ("sides", str, "one-sided",
+                                            self.cmbJOSides,
+                                            self.btnJOResetSides,
+                                            combobox_map =
+                                            [ "one-sided",
+                                              "two-sided-long-edge",
+                                              "two-sided-short-edge" ]),
 
                  options.OptionAlwaysShown ("mirror", bool, False,
                                             self.cbJOMirror,

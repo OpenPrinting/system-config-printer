@@ -107,8 +107,7 @@ class Printer:
                             "notify-events", # not supported by cups
                             "document-format",        # Not handled
                             "job-hold-until",         # in the UI
-                            "notify-lease-duration",  # (yet).
-                            "sides"]:                 #
+                            "notify-lease-duration"]: # (yet).
                     continue 
 
                 supported = attrs.get(name + "-supported", None) or \
