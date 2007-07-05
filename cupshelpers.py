@@ -250,8 +250,6 @@ def parseDeviceID (id):
         if piece.find(":") == -1:
             continue
         name, value = piece.split(":",1)
-        if name=="CMD":
-            value = value.split(',') 
         id_dict[name] = value
     if id_dict.has_key ("MANUFACTURER"):
         id_dict.setdefault("MFG", id_dict["MANUFACTURER"])
@@ -261,6 +259,7 @@ def parseDeviceID (id):
         id_dict.setdefault("CMD", id_dict["COMMAND SET"])
     for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
         id_dict.setdefault(name, "")
+    id_dict["CMD"] = id_dict["CMD"].split(',') 
     return id_dict
 
 class Device:

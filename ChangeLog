@@ -1,5 +1,9 @@
 2007-06-08  Tim Waugh  <twaugh@redhat.com>
 
+	* foomatic.py (Foomatic.getPrinterFromCupsDevice): Don't split the
+	CMD field: it is already split.
+	* cupshelpers.py (parseDeviceID): Always split the CMD field.
+
 	* manage-print-jobs.desktop.in (_Name): Use capital letters at the
 	start of each word for the Name field (bug #242859).
 
