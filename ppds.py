@@ -312,6 +312,20 @@ class PPDs:
         # take the first.
         ppdnamelist = self.orderPPDNamesByPreference (ppdnamelist)
         debugprint (str (ppdnamelist))
+
+        if not id_matched:
+            print "No ID match for device:"
+            print "  <manufacturer>%s</manufacturer>" % mfg
+            print "  <model>%s</model>" % mdl
+            print "  <description>%s</description>" % description
+            try:
+                cmd = reduce (lambda x, y: x + ","+ y, commandsets)
+            except TypeError:
+                cmd = ""
+
+            print "  <commandset>%s</commandset>" % cmd
+            print "Using %s" % ppdnamelist[0]
+
         return (status, ppdnamelist[0])
 
     def _findBestMatchPPDs (self, mdls, mdl):
@@ -513,10 +527,11 @@ def main():
         ]:
         id_dict = parseDeviceID (id)
         print id_dict["MFG"], id_dict["MDL"]
-        print " ", ppds.getPPDNameFromDeviceID (id_dict["MFG"],
-                                                id_dict["MDL"],
-                                                id_dict["DES"],
-                                                id_dict["CMD"])
+        ppdname = ppds.getPPDNameFromDeviceID (id_dict["MFG"],
+                                               id_dict["MDL"],
+                                               id_dict["DES"],
+                                               id_dict["CMD"])
+        print " ", ppdname
 
 if __name__ == "__main__":
     main()
