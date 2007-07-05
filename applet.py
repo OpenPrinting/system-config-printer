@@ -26,6 +26,7 @@ GLADE="applet.glade"
 ICON="applet.png"
 
 CONNECTING_TIMEOUT = 60 # seconds
+MIN_REFRESH_INTERVAL = 1 # seconds
 
 class StateReason:
     REPORT=1
@@ -168,7 +169,9 @@ class JobManager:
         self.hidden = False
         self.connecting_to_device = {} # dict of printer->time first seen
         self.still_connecting = set()
-        self.will_update_job_creation_times = False
+        self.will_update_job_creation_times = False # whether timeout is set
+        self.will_refresh = False # whether timeout is set
+        self.last_refreshed = 0
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE)
         self.xml.signal_autoconnect(self)
@@ -574,6 +577,21 @@ class JobManager:
     def refresh(self):
         if self.hidden:
             return
+
+        now = time.time ()
+        if (now - self.last_refreshed) < MIN_REFRESH_INTERVAL:
+            if self.will_refresh:
+                return
+
+            gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
+                                 self.refresh)
+            self.will_refresh = True
+            return
+
+        self.will_refresh = False
+        self.last_refreshed = now
+        print "refresh"
+
         try:
             c = cups.Connection ()
             jobs = c.getJobs (which_jobs=self.which_jobs, my_jobs=True)
