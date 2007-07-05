@@ -1842,7 +1842,7 @@ class GUI:
 
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
-            if isinstance(ppd, str) or ininstance(ppd, unicode):
+            if isinstance(ppd, str) or isinstance(ppd, unicode):
                 try:
                     self.passwd_retry = False # use cached Passwd
                     self.cups.addPrinter(name, ppdname=ppd)
