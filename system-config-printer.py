@@ -1096,7 +1096,7 @@ class GUI:
             except OSError:
                 pass
 
-            if e != cups.HTTP_NOT_FOUND:
+            if s != cups.HTTP_NOT_FOUND:
                 self.show_HTTP_Error(s)
                 return
 
