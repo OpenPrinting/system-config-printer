@@ -28,6 +28,8 @@ from gtk_html2pango import HTML2PangoParser
 from cStringIO import StringIO
 from pprint import pprint
 
+FOOMATIC_PPD_DIR = "/usr/share/foomatic/db/source/"
+
 def _ppdMakeModelSplit (ppd_make_and_model):
     """Convert the ppd-make-and-model field into a (make, model) pair."""
     try:
@@ -249,7 +251,18 @@ class Printer(FoomaticXMLFile):
                     #    raise
                     #    return None
                 else:
-                    return cups.PPD(self.drivers[driver_name])
+                    ppd = FOOMATIC_PPD_DIR + self.drivers[driver_name]
+                    try:
+                        return cups.PPD(ppd)
+                    except RuntimeError:
+                        os.environ['IN'] = ppd + ".gz"
+                        os.environ['OUT'] = tempfile.mkstemp (".ppd",
+                                                              self.name +
+                                                              "-" +
+                                                              driver_name)[1]
+                        os.system ('gzip -dc "$IN" > "$OUT"')
+                        # TODO: clean up temporary file
+                        return cups.PPD(os.environ['OUT'])
             else:
                 try:
                     fd, fname = tempfile.mkstemp(
