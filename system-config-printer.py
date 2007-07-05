@@ -143,6 +143,7 @@ class GUI:
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
+            print "Using local glade file"
 
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
                         "statusbarMain",
