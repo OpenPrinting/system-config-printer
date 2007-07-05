@@ -2489,6 +2489,13 @@ class GUI:
 
         # How to check that something exists in a path:
         def pathcheck (name, path="/usr/bin:/bin"):
+            if name[0] == '/':
+                if os.access (file, os.X_OK):
+                    print "%s: found" % file
+                    return file
+                else:
+                    print "%s: NOT found" % file
+                    return None
             for component in path.split (':'):
                 file = component.rstrip (os.path.sep) + os.path.sep + name
                 if os.access (file, os.X_OK):
