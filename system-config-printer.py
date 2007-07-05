@@ -2185,7 +2185,9 @@ class GUI:
             if uri[:6] == "smb://":
                 (group, host, share, u, p) = self.parse_SMBURI (uri[6:])
                 ellipsis = unichr(0x2026)
-                uri = "smb://" + ellipsis
+                uri = "smb://"
+                if len (u) or len (p):
+                    uri += ellipsis
                 uri += self.construct_SMBURI (group, host, share)
 
             msg = _(
