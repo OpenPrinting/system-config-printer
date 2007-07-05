@@ -245,7 +245,7 @@ class Device:
         self.id_dict = {}
         pieces = self.id.split(";")
         for piece in pieces:
-            if not piece: continue
+            if piece.find (":") == -1: continue
             name, value = piece.split(":",1)
             if name=="CMD":
                 value = value.split(',') 
