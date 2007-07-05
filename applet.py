@@ -979,7 +979,7 @@ class NewPrinterNotification(dbus.service.Object):
     def find_driver (self, notification, action, name):
         print "find_driver:", notification, action, name
         argv = ["system-config-printer",
-                "--find-driver",
+                "--choose-driver",
                 name]
 
 if trayicon:
