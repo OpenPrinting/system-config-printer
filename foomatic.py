@@ -546,7 +546,7 @@ class Foomatic:
 
     # ----
 
-    def _write_pickle(self, filename="/tmp/foomatic.pickle"):
+    def _write_pickle(self, filename="/var/cache/foomatic.pickle"):
         data = {
             "_printer_names" : self._printer_names,
             #"_driver_names" : self._driver_names,
@@ -566,7 +566,7 @@ class Foomatic:
         except os.Error:
             pass
         
-    def _load_pickle(self, filename="/tmp/foomatic.pickle"):
+    def _load_pickle(self, filename="/var/cache/foomatic.pickle"):
         if not os.path.exists(filename): return True
         
         pickle_mtime = os.path.getmtime(filename)
