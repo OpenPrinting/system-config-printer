@@ -1227,8 +1227,22 @@ class GUI:
         try:
             self.ppd = printer.getPPD()
         except cups.IPPError, (e, m):
+            # Some IPP error other than IPP_NOT_FOUND.
             self.show_IPP_Error(e, m)
+            # Treat it as a raw queue.
             self.ppd = False
+        except RuntimeError:
+            # The underlying cupsGetPPD2() function returned NULL without
+            # setting an IPP error, so it'll be something like a failed
+            # connection.
+            self.lblError.set_markup('<span weight="bold" size="larger">' +
+                                     _("Error") + '</span>\n\n' +
+                                     _("There was a problem connecting to "
+                                       "the CUPS server."))
+            self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+            self.ErrorDialog.run()
+            self.ErrorDialog.hide()
+            sys.exit (1)
 
         for widget in (self.entPDescription, self.entPLocation,
                        self.entPDevice, self.btnSelectDevice,

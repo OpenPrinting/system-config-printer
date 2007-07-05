@@ -1,5 +1,16 @@
 2007-02-21  Tim Waugh  <twaugh@redhat.com>
 
+	* cupshelpers.py (Printer.testsQueued): Handle failure gracefully
+	(bug #229406).
+
+	* system-config-printer.py (GUI.fillPrinterTab): Display an error
+	dialog if we get a RuntimeError trying to get the PPD, instead of
+	just a traceback (bug #229406).
+
+	* cupshelpers.py (Printer.getPPD): Only IPP_NOT_FOUND means the
+	queue is raw; anything else needs to be handled as an error (bug
+	#229406).
+
 	* system-config-printer.py (GUI.maySelectItem): Handle applying
 	changes here rather than...
 	(GUI.on_tvMainList_cursor_changed): ...here, after the new item
