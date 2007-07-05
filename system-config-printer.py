@@ -8,6 +8,7 @@ import gtk.glade, cups
 import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
 from foomatic import Foomatic
+from nametree import BuildTree
 
 domain='system-config-printer'
 import locale
@@ -20,18 +21,24 @@ gtk.glade.bindtextdomain (domain)
 class GUI:
 
     def __init__(self):
+
         self.password = ''
         self.passwd_retry = False
         cups.setPasswordCB(self.cupsPasswdCallback)        
 
+        self.changed = {}
 
         self.cups = cups.Connection()
         # XXX Error handling
         
         self.foomatic = Foomatic() # this works on the local db
 
+
+        # WIDGETS
+        # =======
         self.xml = gtk.glade.XML("system-config-printer.glade")
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
+                        "btnApply", "btnRevert",
                         "entPDescription", "entPLocation", "lblPMakeModel",
                         "lblPState", "entPDevice",
                         "vbPInstallOptions", "vbPOptions", "ntbkPrinter",
@@ -44,13 +51,13 @@ class GUI:
 
                         "PasswordDialog", "lblPasswordPrompt", "entPasswd",
 
-                        "ErrorDialog", "hboxError",
+                        "ErrorDialog", "lblError",
 
                         "NewPrinterWindow", "ntbkNewPrinter",
-                        "btnNBack", "btnNForward", "btnNApply",
-                        "entNName", "entNDescription", "entNLocation",
-                        "cmbNPType", "ntbkNPType"
-                        
+                        "btnNPBack", "btnNPForward", "btnNPApply",
+                        "entNPName", "entNPDescription", "entNPLocation",
+                        "cmbNPType", "ntbkNPType",
+                        "tvNPDrivers",                        
                         
                         )
         self.setTitle ()
@@ -74,6 +81,14 @@ class GUI:
         selection.set_select_function(self.maySelectItem)
         
         self.populateList()
+
+        # setup PPD tree
+        model = gtk.TreeStore(str)
+        cell = gtk.CellRendererText()
+        column = gtk.TreeViewColumn('States', cell, text=0)
+        self.tvNPDrivers.set_model(model)
+        self.tvNPDrivers.append_column(column)
+        self.tvNPDriversModel = model
 
         self.xml.signal_autoconnect(self)
 
@@ -212,6 +227,7 @@ class GUI:
                                               querystring)
             self.PasswordDialog.set_transient_for (self.MainWindow)
             self.entPasswd.grab_focus ()
+
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
             if result == gtk.RESPONSE_OK:
@@ -231,68 +247,76 @@ class GUI:
 
     # Data handling
 
+    def option_changed(self, option, changed):
+        if changed:
+            self.changed[option] = 1
+        else:
+            self.changed.pop(option, None)
+
+        for button in [self.btnApply, self.btnRevert]:
+            button.set_sensitive(bool(self.changed))
+
     def on_btnApply_clicked(self, widget):
+        name, type = self.getSelectedItem()
+        if type == "Printer":
+            self.save_printer(name)
+        elif type == "Class":
+            print "Apply Class"
+        elif type == "Settings":
+            print "Apply Settings"
+
+    #def deselect_entry(self):
+    #    if self.changed:
+
+    def show_IPP_Error(self, exception, message):
+        if exception == cups.IPP_NOT_AUTHORIZED:
+            error_text = ('<span weight="bold" size="larger">' +
+                          'Not authorized</span>\n\n' +
+                          'The password may be incorrect.')
+        else:
+            error_text = ('<span weight="bold" size="larger">' +
+                          'CUPS server error</span>\n\n' +
+                          'There was an error during the CUPS ' +
+                          "operation: '%s'." % message)
+        self.lblError.set_markup(error_text)
+        self.ErrorDialog.set_transient_for (self.MainWindow)
+        self.ErrorDialog.run()
+        self.ErrorDialog.hide()
+        
+            
+    def save_printer(self, name):
+        self.getPrinterSettings()
+        self.passwd_retry = False # use cached Passwd 
         try:
-            name, type = self.getSelectedItem()
-            if type == "Printer":
-                self.getPrinterSettings()
+            if self.ppd.nondefaultsMarked ():
+                self.cups.addPrinter(name, ppd=self.ppd)
+
+            printer = self.printers[name] 
+            new_values = {
+                "printer-location" : self.entPLocation.get_text(),
+                "printer-info" : self.entPDescription.get_text(),
+                "device-uri" : self.entPDevice.get_text(),
+                }
+
+            if new_values["printer-info"]!=printer["printer-info"]:
                 self.passwd_retry = False # use cached Passwd 
-                if self.ppd.nondefaultsMarked ():
-                    self.cups.addPrinter(name, ppd=self.ppd)
-
-                printer = self.printers[name] 
-                new_values = {
-                    "printer-location" : self.entPLocation.get_text(),
-                    "printer-info" : self.entPDescription.get_text(),
-                    "device-uri" : self.entPDevice.get_text(),
-                    }
-
-                if new_values["printer-info"]!=printer["printer-info"]:
-                    self.passwd_retry = False # use cached Passwd 
-                    self.cups.setPrinterInfo(name, new_values["printer-info"])
-                if new_values["printer-location"]!=printer["printer-location"]:
-                    self.passwd_retry = False # use cached Passwd 
-                    self.cups.setPrinterLocation(name,
-                                                 new_values["printer-location"])
-                if new_values["device-uri"]!=printer["device-uri"]:
-                    self.passwd_retry = False # use cached Passwd 
-                    self.cups.setPrinterDevice(name, new_values["device-uri"])
-                printer.update(new_values)
-            elif type == "Class":
-                print "Apply Class"
-            elif type == "Settings":
-                print "Apply Settings"
+                self.cups.setPrinterInfo(name, new_values["printer-info"])
+            if new_values["printer-location"]!=printer["printer-location"]:
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterLocation(name,
+                                             new_values["printer-location"])
+            if new_values["device-uri"]!=printer["device-uri"]:
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterDevice(name, new_values["device-uri"])
+            printer.update(new_values)
         except cups.IPPError, (e, s):
-            stuff = self.hboxError.get_children ()
-            if len (stuff) > 1:
-                self.hboxError.remove (stuff[1])
-            if e == cups.IPP_NOT_AUTHORIZED:
-                label = gtk.Label ()
-                label.set_markup ('<span weight="bold" size="larger">' +
-                                  'Not authorized</span>\n\n' +
-                                  'The password may be incorrect.')
-                label.set_line_wrap (True)
-                label.set_selectable (True)
-                self.hboxError.pack_start (label)
-                self.hboxError.show_all ()
-                self.ErrorDialog.set_transient_for (self.MainWindow)
-                self.ErrorDialog.run ()
-                self.ErrorDialog.hide ()
-            else:
-                label = gtk.Label ()
-                label.set_markup ('<span weight="bold" size="larger">' +
-                                  'CUPS server error</span>\n\n' +
-                                  'There was an error during the CUPS ' +
-                                  "operation: '%s'." % s)
-                label.set_line_wrap (True)
-                label.set_selectable (True)
-                self.hboxError.pack_start (label)
-                self.hboxError.show_all ()
-                self.ErrorDialog.set_transient_for (self.MainWindow)
-                self.ErrorDialog.run ()
-                self.ErrorDialog.hide ()
+            self.show_IPP_Error(e, s)
 
     def on_tvMainList_cursor_changed(self, list):
+        #if self.changed and not self.ask_apply_revert("",""):
+        #    
+        #    print "NOT DISCARDING"
+
         name, type = self.getSelectedItem()
 
         item_selected = True
@@ -305,11 +329,15 @@ class GUI:
         elif type == 'Class':
             self.fillClassTab(name)
             self.ntbkMain.set_current_page(2)
-            
+
         for item in [self.copy, self.delete, self.btnCopy, self.btnDelete]:
             item.set_sensitive(item_selected)
-
+            
     def fillPrinterTab(self, name):
+        self.changed = {}
+        self.option_changed(None, False) # set Apply/Revert buttons
+        
+        # Description page
         printer_states = { cups.IPP_PRINTER_IDLE: "Idle",
                            cups.IPP_PRINTER_PROCESSING: "Processing",
                            cups.IPP_PRINTER_BUSY: "Busy",
@@ -412,8 +440,25 @@ class GUI:
 
     def on_delete_activate(self, widget):
         name, type = self.getSelectedItem()
+
+        # Confirm
+        dialog = gtk.MessageDialog(
+            self.MainWindow,
+            buttons=gtk.BUTTONS_OK_CANCEL,
+            message_format="Really delete %s %s" % (type, name))
+        result = dialog.run()
+        dialog.destroy()
+
+        if result == gtk.RESPONSE_CANCEL:
+            return
+        
         if type == "Printer":
-            print "DELETE Printer"
+            self.cups.deletePrinter(name)
+            selection = self.tvMainList.get_selection()
+            model, iter = selection.get_selected()
+            model.remove(iter)
+            selection.select_path(0)
+            self.on_tvMainList_cursor_changed(self.tvMainList)
         elif type == "Class":
             print "DELETE Class"
 
@@ -422,6 +467,7 @@ class GUI:
     def initNewPrinterWindow(self, prototype=None):
         self.ntbkNewPrinter.set_current_page(0)
         self.setNPButtons()
+        self.fillPPDList()
         if prototype:
             pass
         else:
@@ -432,33 +478,30 @@ class GUI:
         self.NewPrinterWindow.hide()
         return True
 
-    def on_btnNBack_clicked(self, widget):
+    def on_btnNPBack_clicked(self, widget):
         self.ntbkNewPrinter.prev_page()
         self.setNPButtons()
 
-    def on_btnNForward_clicked(self, widget):
+    def on_btnNPForward_clicked(self, widget):
         self.ntbkNewPrinter.next_page()
         self.setNPButtons()
-
-    def on_btnNApply_clicked(self, widget):
-        self.NewPrinterWindow.hide()
 
     def setNPButtons(self):
         first_page = not self.ntbkNewPrinter.get_current_page()
         last_page = (self.ntbkNewPrinter.get_current_page() ==
                      len(self.ntbkNewPrinter.get_children()) -1 )        
-        self.btnNBack.set_sensitive(not first_page)
-        self.btnNForward.set_sensitive(not last_page)
+        self.btnNPBack.set_sensitive(not first_page)
+        self.btnNPForward.set_sensitive(not last_page)
         if last_page:
-            self.btnNApply.show()
+            self.btnNPApply.show()
         else:
-            self.btnNApply.hide()
+            self.btnNPApply.hide()
 
-    def on_entNName_insert_at_cursor(self, widget, *args):        
+    def on_entNPName_insert_at_cursor(self, widget, *args):        
         # restrict
         print "X", args
 
-    def on_entNName_insert_text(self, *args):
+    def on_entNPName_insert_text(self, *args):
         print args
 
     # Device URI
@@ -496,9 +539,34 @@ class GUI:
         elif ptype == 5: # SCSII
             device = ""
         elif ptype == 6: # Serial
-            device = ("serial:/dev/ttyS%s?baud=%s+bits=%s+parity=%s+flow=%s" %
-                      []) #XXX
+            options = []
+            for widget, name, optionvalues in (
+                (self.cmbNPTSerialBaud, "baud", None),
+                (self.cmbNPTSerialBits, "bits", None),
+                (self.cmbNPTSerialParity, "parity",
+                 ("none", "odd", "even")),
+                (self.cmbNPTSerialFlow, "flow",
+                 ("none", "soft", "hard", "hard"))):
+                nr = widget.get_active()
+                if nr:
+                    if options is not None:
+                        option = optionvalues[nr-1]
+                    else:
+                        option = widget.get_active_text()
+                    options.append(name + "=" + option)
+
+            options = "+".join(options)
+            device = "serial:/dev/ttyS%s" 
+            if options:
+                device = device + "?" + options
+                
     # PPD
+
+    def _fillPPDList(self, iter, treenode):
+        if treenode.name:
+            iter = self.tvNPDriversModel.append(iter, (treenode.name,))
+        for leaf in treenode.leafs:
+            self._fillPPDList(iter, leaf)
 
     def fillPPDList(self):
         self.foomatic.load_all() # XXX
@@ -507,7 +575,52 @@ class GUI:
             printer = self.foomatic.get_printer(printername)
             names.append(printer.make + " " + printer.model)
         names.sort(cups.modelSort)
-        # XXX
+        tree = BuildTree(names, mindepth=3, minwidth=3)
+
+        self._fillPPDList(None, tree)
+
+    def on_tvNPDrivers_cursor_changed(self, widget):
+        model, iter = widget.get_selection().get_selected()
+        widget.collapse_all()
+        path = model.get_path(iter)
+        widget.expand_to_path(path)
+        widget.get_selection().select_path(path)
+
+        self.btnNPForward.set_sensitive(not model.iter_has_child(iter))
+
+    # Create new Printer
+    def on_btnNPApply_clicked(self, widget):
+        name = self.entNPName.get_text()
+
+        # XXX ppd = self.getNPPD()
+        
+        self.passwd_retry = False # use cached Passwd 
+        try:
+            self.cups.addPrinter(name, ppd=ppd)
+        except cups.IPPError:
+            # XXX
+            pass
+
+        printer = {
+            "printer-location" : self.entNPLocation.get_text(),
+            "printer-info" : self.entNPDescription.get_text(),
+            "device-uri" : self.getDeviceURI(),
+            }
+
+        try:
+            self.passwd_retry = False # use cached Passwd 
+            self.cups.setPrinterInfo(name, new_values["printer-info"])
+            self.passwd_retry = False # use cached Passwd 
+            self.cups.setPrinterLocation(name,
+                                         new_values["printer-location"])
+            self.passwd_retry = False # use cached Passwd 
+            self.cups.setPrinterDevice(name, new_values["device-uri"])
+        except cups.IPPError:
+            # XXX
+            pass
+
+        self.printers[name] = printer
+        self.NewPrinterWindow.hide()
 
 def main():
     # The default configuration requires root for administration.

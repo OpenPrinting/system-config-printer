@@ -3,6 +3,11 @@
 import os, signal
 from xml.utils import qp_xml
 
+import sys
+sys.path.append("/home/ffesti/CVS/pycups")
+
+import cups
+
 class FoomaticXMLFile:
 
     def __init__(self, name, foomatic):
@@ -291,7 +296,7 @@ class Foomatic:
 
 def main():
 
-    from nametree import NameTree
+    from nametree import BuildTree
 
     foo = Foomatic()
 
@@ -302,12 +307,11 @@ def main():
         #print name
         printer = foo.get_printer(name)
         models.append(printer.make + ' ' + printer.model)
-    models.sort()
+    models.sort(cups.modelSort)
 
-    tree = NameTree(models)
+    tree = BuildTree(models, 3, 3)
 
-    tree.get_tree()
-
+    print tree
 
     #    if foo.getMakeModelFromName(name) != (printer.make, printer.model):
     #        print foo.getMakeModelFromName(name), (printer.make, printer.model)

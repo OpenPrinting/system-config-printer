@@ -21,22 +21,48 @@ class Option:
             label += ':'
         self.label = gtk.Label(label)
         self.label.set_alignment(0.0, 0.5)
-        
+
+    def is_changed(self):
+        raise NotImplemented
+
+    def get_current_value(self):
+        raise NotImplemented
+
+    def is_changed(self):
+        return self.get_current_value()!= self.option.defchoice
+    
+    def writeback(self):
+        self.ppd.markOption(self.option.keyword, self.get_current_value())
+
+    def on_change(self, widget):
+        value = self.get_current_value()
+        for constraint in self.ppd.constraints:
+            if constraint.option1 == self.option.keyword:
+                if (not constraint.choice1 or
+                    constraint.choice1==value):
+                    option = self.gui.options.get(constraint.option2, None)
+                    if option is None: continue
+                    
+                    #if not contraint.choice2 or  
+                    print (constraint.option1, constraint.choice1,
+                           constraint.option2, constraint.choice2)
+        self.gui.option_changed(self, self.is_changed())
+
 # ---------------------------------------------------------------------------
 
 class OptionBool(Option):
 
     def __init__(self, option, ppd, gui):
-        Option.__init__(self, option, ppd, gui)
         self.selector = gtk.CheckButton (option.text)
         self.label = None
         self.selector.set_active(option.defchoice == 'True')
         self.selector.set_alignment(0.0, 0.5)
+        self.selector.connect("toggled", self.on_change)
 
-    def writeback(self):
-        self.ppd.markOption(
-            self.option.keyword,
-            ('False', 'True')[not self.selector.get_active()])
+        Option.__init__(self, option, ppd, gui)
+
+    def get_current_value(self):
+        return ('False', 'True')[self.selector.get_active()]
 
 # ---------------------------------------------------------------------------
 
@@ -44,7 +70,6 @@ class OptionPickOne(Option):
     widget_name = "OptionPickOne"
 
     def __init__(self, option, ppd, gui):
-        Option.__init__(self, option, ppd, gui)
         self.selector = gtk.combo_box_new_text()
         #self.selector.set_alignment(0.0, 0.5)
         
@@ -57,13 +82,13 @@ class OptionPickOne(Option):
             self.selector.set_active(selected)
         else:
             print option.text, "unknown value"
+        self.selector.connect("changed", self.on_change)
 
-    def writeback(self):
-        self.ppd.markOption(
-            self.option.keyword,
-            self.option.choices[self.selector.get_active()]['choice'])
+        Option.__init__(self, option, ppd, gui)
+
+    def get_current_value(self):
+        return self.option.choices[self.selector.get_active()]['choice']
         
-            
 # ---------------------------------------------------------------------------
 
 class OptionPickMany(OptionPickOne):
