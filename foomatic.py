@@ -829,7 +829,7 @@ class Foomatic:
         elif ("pcl5" in cmdsets) or ("pcl 5 emulation" in cmdsets):
             printer = "Generic-PCL_5_Printer"
         elif "pcl" in cmdsets:
-            printer = self.getPrinter("Generic-PCL_3_Printer")
+            printer = "Generic-PCL_3_Printer"
         elif (("escpl2" in cmdsets) or ("esc/p2" in cmdsets) or
               ("escp2e" in cmdsets)):
             printer = "Generic-ESC_P_Dot_Matrix_Printer"
