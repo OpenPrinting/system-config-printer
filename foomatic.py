@@ -42,13 +42,13 @@ def _ppdMakeModelSplit (ppd_make_and_model):
             model = model[:-len(suffix)]
             break
 
-        hp_suffix = " Postscript (recommended)"
-        if model.endswith (hp_suffix):
-            v = model.find (" v")
-            if v != -1 and model[v + 2].isdigit ():
-                model = model[:v]
-            else:
-                model = model[:-len(hp_suffix)]
+    hp_suffix = " Postscript (recommended)"
+    if model.endswith (hp_suffix):
+        v = model.find (" v")
+        if v != -1 and model[v + 2].isdigit ():
+            model = model[:v]
+        else:
+            model = model[:-len(hp_suffix)]
 
     return (make, model)
 
