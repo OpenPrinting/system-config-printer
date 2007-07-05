@@ -1,3 +1,14 @@
+2006-03-15 Florian Festi  <ffesti@redhat.com>	
+
+	* foomatic.py (Foomatic.__init__): pickle printers' make, 
+	model, name to disk
+	* system-config-printer.glade, 
+	* system-config-printer.py (GUI.fillPPDList): GUI for selecting 
+	printers and drivers (no "give PPD file" yet)
+	* system-config-printer.py (GUI.fillDeviceTab,
+	GUI.on_cmbNPType_changed, GUI.getDeviceURI): 
+	Use cups.Connection.getDevices() for DeviceURI GUI
+
 2006-03-14  Tim Waugh  <twaugh@redhat.com>
 
 	* cupshelpers.py (Printer.setShared): setPrinterPublished changed
@@ -15,10 +26,12 @@
 	GUI.on_entPExceptUsers_changed): Handle CUPS printer attributes
 	
 2006-03-10 Florian Festi  <ffesti@redhat.com>
+
 	* system-config-printer.py (GUI.__init__, GUI.populateList):
 	Make main list a tree (remote/local printers/classes)
 
 2006-03-09 Florian Festi  <ffesti@redhat.com>
+
 	* cupshelpers.py (Printer.__init__): save cups.Connection within 
 	Printer object
 	* cupshelpers.py (Printer.set*): Methods for setting printer 
@@ -42,6 +55,7 @@
 	Made conflict icon a button 
 	
 2006-03-08 Florian Festi  <ffesti@redhat.com>
+
 	* cupshelpers.py:
 	new Printer class, cups.Connection.getPrinters() replacement
 	* system-config-printer.py (GUI.fill*, GUI.save_printer):
@@ -51,11 +65,13 @@
 	to remote printers
 	
 2006-03-07 Florian Festi  <ffesti@redhat.com>
+
 	* system-config-printer.glade: Tab for members of printer classes 
 	* system-config-printer.py (GUI.fill*, GUI.save_printer, ...): 
 	support for printer classes
 	
 2006-03-06 Florian Festi  <ffesti@redhat.com>
+
 	* optionswidgets.py (Option.__init__, Option.checkConflicts):
 	Conflict handling
 	* system-config-printer.py (GUI.fillPrinterTab) Calculate conflicts,

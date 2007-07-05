@@ -75,8 +75,8 @@ class GUI:
                            "cmbNPTSerialBaud", "cmbNPTSerialParity",
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
-                          "tvNPDrivers",
-                        
+                          "tvNPModels", "cmbNPDriver",
+                           "txtNPModelDescription", "txtNPDriverDescription",
                         )
 
         self.setTitle ()
@@ -108,12 +108,12 @@ class GUI:
         #self.tvMainList.expand_all()
         
         # setup PPD tree
-        model = gtk.TreeStore(str)
+        model = gtk.TreeStore(str, str)
         cell = gtk.CellRendererText()
         column = gtk.TreeViewColumn('States', cell, text=0)
-        self.tvNPDrivers.set_model(model)
-        self.tvNPDrivers.append_column(column)
-        self.tvNPDriversModel = model
+        self.tvNPModels.set_model(model)
+        self.tvNPModels.append_column(column)
+        self.tvNPModelsModel = model
 
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
@@ -411,8 +411,10 @@ class GUI:
         active = widget.get_active()
         if active:
             widget.set_label(_("Allow"))
+            widget.set_image(gtk.image_new_from_icon_name("gtk-yes", 1))
         else:
             widget.set_label(_("Deny"))
+            widget.set_image(gtk.image_new_from_icon_name("gtk-no", 1))
         
         if not(active ^ self.printer.default_allow):
             self.changed.discard(widget)
@@ -475,11 +477,10 @@ class GUI:
         try:
             if not printer.is_class: 
                 self.getPrinterSettings()
-                if True: #self.ppd.nondefaultsMarked():
+                if self.ppd.nondefaultsMarked():
                     self.passwd_retry = False # use cached Passwd 
                     self.cups.addPrinter(name, ppd=self.ppd)
-                else:
-                    print "no PPD changes found"
+
             location = self.entPLocation.get_text()
             info = self.entPDescription.get_text()
             device_uri = self.entPDevice.get_text()
@@ -553,7 +554,6 @@ class GUI:
         #self.ppd.markDefaults()
         for option in self.options.itervalues():
             option.writeback()
-        print self.ppd.conflicts(), "conflicts"
 
     # revert changes
 
@@ -664,8 +664,12 @@ class GUI:
         # Access control
         if printer.default_allow:
             self.tbtnPAllow.set_label(_("Allow"))
+            self.tbtnPAllow.set_image(
+                gtk.image_new_from_icon_name("gtk-yes", 1))
         else:
             self.tbtnPAllow.set_label(_("Deny"))
+            self.tbtnPAllow.set_image(
+                gtk.image_new_from_icon_name("gtk-no", 1))
         self.entPExceptUsers.set_text(printer.except_users_string)
 
         # remove InstallOptions tab
@@ -912,7 +916,6 @@ class GUI:
         model.clear()
 
         for device in self.devices:
-            print device.type
             model.append((device.info,))
 
         self.cmbNPType.set_active(0)
@@ -1023,32 +1026,30 @@ class GUI:
             self.cmbentNPTLpdQueue.set_active(0)
         
     def getDeviceURI(self):
-        ptype = self.cmbNPType.get_active()
-        if pytpe == 0: # Device
-            device = self.entNPTDevice.get_text()
-        elif ptype == 1: # DirectJet
+        type = self.device.type
+        if type == "socket": # DirectJet
             host = self.cmbNPTDirectJetHostname.get_text()
             port = self.cmbNPTDirectJetPort.get_text()
             device = "socket://" + host
             if port:
                 device = device + ':' + port
-        elif pytype == 2: # IPP
+        elif type in ("http", "ipp"): # IPP
             host = self.cmbNPTIPPHostname.get_text()
             printer = self.cmbNPTIPPPrintername.get_text()
             device = "ipp://" + host
             if printer:
                 device = device + "/" + printer
-        elif ptype == 3: # LPD
+        elif type == "lpd": # LPD
             host = self.cmbNPTLPDHostname.get_text()
             printer = self.cmbNPLPDPrintername.get_text()
             device = "lpd://" + host
             if printer:
                 device = device + "/" + printer
-        elif ptype == 4: # Parallel
-            device = "parallel:/dev/lp%d" % self.cmbNPTParallel.get_active()
-        elif ptype == 5: # SCSII
+        elif type == "parallel": # Parallel
+            device = self.device.uri
+        elif type == "scsi": # SCSII
             device = ""
-        elif ptype == 6: # Serial
+        elif type == "serial": # Serial
             options = []
             for widget, name, optionvalues in (
                 (self.cmbNPTSerialBaud, "baud", None),
@@ -1059,17 +1060,19 @@ class GUI:
                  ("none", "soft", "hard", "hard"))):
                 nr = widget.get_active()
                 if nr:
-                    if options is not None:
+                    if optionvalues is not None:
                         option = optionvalues[nr-1]
                     else:
                         option = widget.get_active_text()
                     options.append(name + "=" + option)
-
             options = "+".join(options)
-            device = "serial:/dev/ttyS%s" 
+            device =  self.device.uri.split("?")[0] #"serial:/dev/ttyS%s" 
             if options:
-                device = device + "?" + options
-                
+                device = device + "?" + options                
+        else:
+            device = self.entNPTDevice.get_text()
+        return device
+    
     # PPD
 
     def _fillPPDList(self, iter, treenode):
@@ -1083,61 +1086,87 @@ class GUI:
             # try to find the right PPDs
             pass
 
-        #self.foomatic.load_all() # XXX
-        names = []
-        for printername in self.foomatic.get_printers():
-            printer = self.foomatic.get_printer(printername)
-            names.append(printer.make + " " + printer.model)
-        names.sort(cups.modelSort)
-        tree = BuildTree(names, mindepth=3, minwidth=3)
+        makes = self.foomatic.getMakes()
+        for make in makes:
+            printers = self.foomatic.getModelsNames(make)
+            #printers = [self.foomatic.getPrinter(name)
+            #            for name in self.foomatic.getModels(maker)
+            #            if self.foomatic.getPrinter(name).drivers]
+            if not printers: continue
+            
+            iter = self.tvNPModelsModel.append(None, (make, ''))
+            for model_name in printers:
+                self.tvNPModelsModel.append(iter, model_name)
 
-        self._fillPPDList(None, tree)
+            #tree = BuildTree(names, 3, 3)
+            #tree.name = maker
+            #self._fillPPDList(None, tree)
+            
+            
+        #names = []
+        #for printername in self.foomatic.get_printers():
+        #    printer = self.foomatic.get_printer(printername)
+        #    names.append(printer.make + " " + printer.model)
+        #names.sort(cups.modelSort)
+        #tree = BuildTree(names, mindepth=3, minwidth=3)
 
-    def on_tvNPDrivers_cursor_changed(self, widget):
+        #self._fillPPDList(None, tree)
+
+    def on_tvNPModels_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
-        widget.collapse_all()
+        #widget.collapse_all()
         path = model.get_path(iter)
-        widget.expand_to_path(path)
-        widget.get_selection().select_path(path)
+        #widget.expand_to_path(path)
+        #widget.get_selection().select_path(path)
 
-        self.btnNPForward.set_sensitive(not model.iter_has_child(iter))
+        #self.btnNPForward.set_sensitive(not model.iter_has_child(iter))
+        if not model.iter_has_child(iter):
+            name = model.get(iter, 1)[0]
+            printer = self.foomatic.getPrinter(name)
+            self.txtNPModelDescription.get_buffer().set_text(
+                printer.comments_dict.get("en", ""))
 
-    def getNPPD(self):
-        model, iter = widget.get_selection().get_selected()
-        model.get(iter, 0)[0]
+            model = self.cmbNPDriver.get_model()
+            model.clear()
+            for nr, driver in enumerate(printer.drivers):
+                self.cmbNPDriver.append_text(driver)
+                if driver==printer.driver:
+                    self.cmbNPDriver.set_active(nr)
+
+    def on_cmbNPDriver_changed(self, widget):
+        driver = self.foomatic.getDriver(widget.get_active_text())
+        self.txtNPDriverDescription.get_buffer().set_text(
+            driver.comments_dict.get("en", ""))
+
+    def getNPPPD(self):
+        model, iter = self.tvNPModels.get_selection().get_selected()
+        printer_name = model.get(iter, 1)[0]
+        printer = self.foomatic.getPrinter(printer_name)
+        driver_name = self.cmbNPDriver.get_active_text()
+        return self.foomatic.getPPDFilename(printer, driver_name)
 
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
         name = self.entNPName.get_text()
 
-        ppd = self.getNPPD() # XXX
+        ppd = self.getNPPPD()
         
         self.passwd_retry = False # use cached Passwd 
-        try:
-            self.cups.addPrinter(name, ppd=ppd)
-        except cups.IPPError:
-            # XXX
-            pass
 
-        location = self.entNPLocation.get_text(),
-        info = self.entNPDescription.get_text(),
-        uri = self.getDeviceURI(),
-
+        location = self.entNPLocation.get_text()
+        info = self.entNPDescription.get_text()
+        uri = self.getDeviceURI()
+        
         try:
-            self.passwd_retry = False # use cached Passwd 
-            self.cups.setPrinterInfo(name, info)
-            self.passwd_retry = False # use cached Passwd 
-            self.cups.setPrinterLocation(name,
-                                         location)
-            self.passwd_retry = False # use cached Passwd 
-            self.cups.setPrinterDevice(name, device_uri)
+            self.cups.addPrinter(name, filename=ppd,
+                                 device=uri, info=info, location=location)
         except cups.IPPError:
             # XXX
             pass
 
         #self.printers[name] = printer
         self.NewPrinterWindow.hide()
-        # XXX reread printerlist
+        self.populateList()
 
 def main():
     # The default configuration requires root for administration.

@@ -1,12 +1,17 @@
 #!/bin/env python
 
-import os, signal
+import os, signal, pickle, tempfile
 from xml.utils import qp_xml
 
 import sys
 sys.path.append("/home/ffesti/CVS/pycups")
 
 import cups
+
+############################################################################# 
+###  FoomaticXMLFile
+#############################################################################
+
 
 class FoomaticXMLFile:
 
@@ -27,6 +32,15 @@ class FoomaticXMLFile:
         root_node = qp_xml.Parser().parse(open(self.filename))
         self.parse_xml(root_node)
         
+    def __cmp__(self, other):
+        if isinstance(other, str):
+            return cmp(self.name, other) # XXX is .name really what we want?
+        else:
+            return cmp(self.name, other.name)
+
+############################################################################# 
+###  Driver
+#############################################################################
 
 class Driver(FoomaticXMLFile):
     """
@@ -36,7 +50,7 @@ class Driver(FoomaticXMLFile):
      id : String 'driver/name'
      filename : String
      url : String
-     comments : dict lang -> text
+     comments_dict : dict lang -> text
      printers : list of id strings
 
      foomatic : Foomatic
@@ -50,6 +64,7 @@ class Driver(FoomaticXMLFile):
 
     def parse_xml(self, root_node):
         self.printers = []
+        self.comments_dict = {}
 
         if root_node.name != "driver":
             raise ValueError, "'driver' node expected"
@@ -77,6 +92,10 @@ class Driver(FoomaticXMLFile):
             #elif node.name == 'execution':
             # XXX
 
+############################################################################# 
+###  Driver
+#############################################################################
+
 class Printer(FoomaticXMLFile):
     """
     Attributes:
@@ -85,9 +104,11 @@ class Printer(FoomaticXMLFile):
      id : String 'printer/name'
      filename : String
      make, model, functionality : String
-     drivers : list of driver names
+     driver : name of default driver
+     drivers : dict driver name -> ppd file
+     comments_dict : dict lang -> text
      autodetect : dict with keys 'snmp', 'parallel', 'usb', 'general'
-        -> dict with keys 'ieee1284', 'manufacturer', 'model',
+        -> dict with keys 'ieee1284', 'make', 'model',
                           'description', 'commandset'     
      unverified : Bool
      foomatic : Foomatic
@@ -101,10 +122,17 @@ class Printer(FoomaticXMLFile):
     def parse_autodetect(self, root_node):
         data = { }
         for node in root_node.children:
-            if node.name in ('ieee1284', 'manufacturer', 'model',
-                             'description', 'commandset'):
+            if node.name.lower() in (
+                'ieee1284', 'manufacturer', 'model',
+                'description', 'commandset', 'cmdset'):
+                name = node.name.lower()
+                if name == 'manufacturer': name = "make"
+                if name == 'cmdset': name = "commandset"
                 if node.first_cdata != "(see notes)":
-                    data[node.name] = node.first_cdata
+                    data[name] = node.first_cdata
+            else:
+                pass
+                #print node.name
         return data
 
     def parse_xml(self, root_node):
@@ -116,8 +144,10 @@ class Printer(FoomaticXMLFile):
         
         self.unverified = False
         self.functionality = None
-        self.drivers = []
+        self.driver = ''
+        self.drivers = {}
         self.autodetect = {}
+        self.comments_dict = {}
 
         for child in root_node.children:
             if child.name in ("id", "make", "model",
@@ -126,14 +156,28 @@ class Printer(FoomaticXMLFile):
     
             elif child.name == "drivers":
                 for sub_child in child.children:
-                    if (sub_child.name == "driver" and
-                        len (sub_child.first_cdata.strip())):
-                        self.drivers.append(sub_child.first_cdata)
-
+                    if sub_child.name == "driver":
+                        if len(sub_child.children) == 2:
+                            # single xml file
+                            driver = sub_child.children[0].first_cdata.strip()
+                            ppd = sub_child.children[1].first_cdata.strip()
+                            self.drivers[driver] = ppd
+                        elif len(sub_child.children) == 0:
+                            # foomatic-config output
+                            self.drivers.setdefault(sub_child.first_cdata, '')
+            
             elif (child.name == "driver" and
                   len (child.first_cdata.strip())):
-                self.drivers.append(child.first_cdata)
+                self.driver = child.first_cdata
     
+            elif child.name == "ppds":
+                for sub_child in child.children:
+                    if (sub_child.name != "ppd" or
+                        len(sub_child.children)!=2): continue
+                    driver = sub_child.children[0].first_cdata.strip()
+                    ppd = sub_child.children[1].first_cdata.strip()
+                    self.drivers[driver] = ppd
+                
             elif child.name == "autodetect":
                 for sub_child in child.children:
                     if (sub_child.name in ("snmp", "parallel",
@@ -142,6 +186,12 @@ class Printer(FoomaticXMLFile):
                           self.parse_autodetect(sub_child)
             elif child.name == "unverified":
                 self.unverified = True
+
+            elif child.name == "comments":
+                self.comments_dict = self.parse_lang_tree(child)
+            else:
+                pass
+                #print "Ignoring", child.name
                 
         if self.id:
             if self.id.startswith('printer/'):                
@@ -150,10 +200,18 @@ class Printer(FoomaticXMLFile):
                 self.name = self.id
                 self.id = 'printer/' + self.id
             self.filename = os.path.join(
-                self.foomatic.path, 'driver',
+                self.foomatic.path, 'printer',
                 self.foomatic.quote_filename(self.name))
+            if not os.path.exists(self.filename):
+                print self.filename
+        if self.driver and not self.drivers:
+            self.drivers[self.driver] = ''
 
-class CupsPrinter:
+############################################################################# 
+###  PPDDriver
+#############################################################################
+
+class PPDPrinter:
     """
     Attributes:
 
@@ -163,7 +221,7 @@ class CupsPrinter:
      make, model, functionality : String
      drivers : list of driver names
      autodetect : dict with keys 'snmp', 'parallel', 'usb', 'general'
-        -> dict with keys 'ieee1284', 'manufacturer', 'model',
+        -> dict with keys 'ieee1284', 'make', 'model',
                           'description', 'commandset'     
      unverified : Bool
      foomatic : Foomatic
@@ -180,7 +238,9 @@ class CupsPrinter:
         
         self.foomatic = foomatic
 
-    
+############################################################################# 
+###  Foomatic database
+#############################################################################
 
 class Foomatic:
 
@@ -193,8 +253,16 @@ class Foomatic:
         self._printers = {}
         self._drivers = {}
 
-        self._makers = {}
+        self.makes = {}
 
+        self._auto_ieee1284 = {}
+        self._auto_make = {}
+        self._auto_description = {}
+        
+        err = self._load_pickle()
+        if err:
+            self.loadAll()
+            self._write_pickle()
         
     def quote_filename(self, name):
         return name + '.xml'
@@ -202,7 +270,7 @@ class Foomatic:
     def unquote_filename(self, file):
         return file.replace('.xml', '')
 
-    def calculate_name(self, make, model):
+    def calculated_name(self, make, model):
         model = model.replace("/", "_")
         model = model.replace(" ", "_")
         model = model.replace("+", "plus")
@@ -217,11 +285,17 @@ class Foomatic:
         return make, model
 
     def _add_printer(self, printer):
-        printers = self._makers.setdefault(printer.make, {})
-        printers[printer.name] = printer
+        printers = self.makes.setdefault(printer.make, {})
+        printers[printer.name] = printer.name
 
-        printers = self._makers.setdefault(printer.make.lower(), {})
-        printers[printer.name.lower()] = printer
+        for dict in printer.autodetect.values():
+            if dict.has_key("make") and dict.has_key("model"):
+                d = self._auto_make.setdefault(dict["make"], {})
+                d[dict["model"]] = printer.name
+            if dict.has_key("ieee1284"):
+                self._auto_ieee1284[dict["ieee1284"]] = printer.name
+            if dict.has_key("description"):
+                self._auto_description[dict["description"]] = printer.name
         
     def _read_all_printers(self):
         self._printer_names = []
@@ -247,6 +321,38 @@ class Foomatic:
                 self._driver_names.append(driver)
         self._printer_names.sort()
 
+    def _read_all_printers_from_files(self):
+        for name in self.getPrinters():
+            printer = self.getPrinter(name)
+
+    def _read_printer_list(self):
+        self._printer_names = []
+        for line in os.popen("foomatic-ppdfile -A"):
+            parts = line.split("=")
+            name = "make_model"
+            values = {}
+            for part in parts:
+                try:
+                    value, next_name = part.rsplit(" ", 1)
+                except ValueError:
+                    value = part
+                if value.startswith("'"): value = value[1:-1]
+                value = value.split()
+                if len(value)==1: value = value[0]
+                values[name] = value
+                name = next_name
+            printer = Printer(values["Id"], self)
+            printer.driver = values.get("Driver", "")
+            printer.drivers = {}
+            for driver in values.get("CompatibleDrivers", []):
+                printer.drivers[driver] = ''
+            printer.make = values["make_model"][0]
+            printer.model = " ".join(values["make_model"][1:])
+
+            self._printers[printer.name] = printer
+            self._printer_names.append(printer.name)
+            self._add_printer(printer)
+
     # ----
 
     def addCupsPDDs(self, connection):
@@ -257,13 +363,41 @@ class Foomatic:
             self.makemodel[ppd['ppd-make-and-model']] = ppd
     # ----
 
-    def load_all(self):
+    def loadAll(self):
         # XXX do pickling
-        self._read_all_printers()
+        #self._read_all_printers()
+        self._read_all_printers_from_files()
+        #self._read_printer_list()
 
     # ----
 
-    def get_printers(self):
+    def _write_pickle(self, filename="/tmp/foomatic.pickle"):
+        data = {
+            "_printer_names" : self._printer_names,
+            #"_driver_names" : self._driver_names,
+            "makes" : self.makes,
+            "_auto_ieee1284" : self._auto_ieee1284,
+            "_auto_make" : self._auto_make,
+            "_auto_description" : self._auto_description,
+            }
+        f = open(filename, "w")
+        pickle.dump(data, f, -1)
+        f.close()
+        
+    def _load_pickle(self, filename="/tmp/foomatic.pickle"):
+        try:
+            f = open(filename, "r")
+            data = pickle.load(f)
+            f.close()
+        except IOError:
+            return True
+        for name, value in data.iteritems():
+            setattr(self, name, value)
+        return False
+    
+    # ----
+
+    def getPrinters(self):
         if self._printer_names is None:
             filenames = os.listdir(os.path.join(self.path, 'printer'))
             self._printer_names = [self.unquote_filename(name)
@@ -273,7 +407,7 @@ class Foomatic:
         
     # ----
 
-    def get_drivers(self):
+    def getDrivers(self):
         if self._driver_names is None:
             filenames = os.listdir(os.path.join(self.path, 'driver'))
             self._driver_names = [self.unquote_filename(name)
@@ -283,7 +417,7 @@ class Foomatic:
 
     # ----
 
-    def get_printer(self, name):
+    def getPrinter(self, name):
         if not self._printers.has_key(name):
             printer = Printer(name, self)
             printer.read()
@@ -291,28 +425,71 @@ class Foomatic:
             self._add_printer(printer)
         return self._printers[name]
 
-    def get_driver(self, name):
+    def getMakeModel(self, make, model):
+        try:
+            return self.getPrinter(self.makes[make][model])
+        except KeyError:
+            return None
+        
+    def getDriver(self, name):
         if not self._drivers.has_key(name):
             self._drivers[name] = Driver(name, self)
             self._drivers[name].read()
         return self._drivers[name]
 
-    def getPPD(self, printer):
-        return
+    def getPPDFilename(self, printer, driver_name=None):
+        if driver_name is None: driver_name = printer.driver
+        if printer.drivers.has_key(driver_name):
+            if printer.drivers[driver_name]:
+                return printer.drivers[driver_name]
+            else:
+                fd, fname = tempfile.mkstemp(
+                    ".ppd", printer.name + "-" + driver_name)
+                data = os.popen("foomatic-ppdfile -p %s -d %s" %
+                                (printer.name, driver_name)).read()
+                os.write(fd, data)
+                os.close(fd)
+                return fname
+        else:
+            return None
+    def getMakes(self):
+        result = self.makes.keys()
+        result.sort()
+        return result
 
+    def getModels(self, make):
+        result = self.makes[make].keys()
+        result.sort()
+        return result
 
+    def getModelsNames(self, make):
+        result = self.makes[make].items()
+        result.sort()
+        return result
 
 def main():
 
     from nametree import BuildTree
 
     foo = Foomatic()
+    #foo.loadAll()
+    #print foo.makes
+    for make in foo.getMakes():
+        print make
+        for model, name in foo.makes[make].iteritems():
+            print "  ", model, name
 
-    #foo.load_all()
-
+    return
+    for name in foo.getPrinters():
+        printer = foo.getPrinter(name)
+        print printer.name, printer.drivers
+    return
     models = []
-    for name in foo.get_printers():
-        printer = foo.get_printer(name)
+        
+            
+    return
+    for name in foo.getPrinters():
+        printer = foo.getPrinter(name)
         models.append(printer.make + ' ' + printer.model)
 
         if (name != printer.calculated_name() and
