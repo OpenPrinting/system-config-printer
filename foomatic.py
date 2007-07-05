@@ -42,12 +42,17 @@ def _ppdMakeModelSplit (ppd_make_and_model):
             model = model[:-len(suffix)]
             break
 
+    # HP PPDs give NickNames like:
+    # *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
     hp_suffix = " Postscript (recommended)"
     if model.endswith (hp_suffix):
+        # Find the version number.
         v = model.find (" v")
         if v != -1 and model[v + 2].isdigit ():
+            # Truncate at that point.
             model = model[:v]
         else:
+            # Otherwise just remove the 'Postscript (recommended)' bit.
             model = model[:-len(hp_suffix)]
 
     return (make, model)
