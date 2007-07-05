@@ -267,6 +267,8 @@ class PrintersConf:
         current_printer = None
         for line in self.lines:
             words = line.split()
+            if len (words) == 0:
+                continue
             if words[0] == "Option":
                 self.set_options.setdefault(current_printer, []).append(words[1])
                 continue
