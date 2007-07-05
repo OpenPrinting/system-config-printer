@@ -184,6 +184,10 @@ class GUI:
 
                         "sbJOCopies", "btnJOResetCopies",
                         "cmbJOOrientationRequested", "btnJOResetOrientationRequested",
+                        "cbJOFitplot", "btnJOResetFitplot",
+                        "cmbJONumberUp", "btnJOResetNumberUp",
+                        "cmbJONumberUpLayout", "btnJOResetNumberUpLayout",
+                        "sbJOBrightness", "btnJOResetBrightness",
                         
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
@@ -335,7 +339,32 @@ class GUI:
                  ("orientation-requested", int, 3,
                   self.cmbJOOrientationRequested,
                   self.btnJOResetOrientationRequested,
-                  combobox_map = [3, 4, 5, 6])
+                  combobox_map = [3, 4, 5, 6]),
+
+                 options.OptionAlwaysShown ("fitplot", bool, False,
+                                            self.cbJOFitplot,
+                                            self.btnJOResetFitplot),
+
+                 options.OptionAlwaysShown ("number-up", int, 1,
+                                            self.cmbJONumberUp,
+                                            self.btnJOResetNumberUp,
+                                            combobox_map=[1, 2, 4, 6, 9, 16]),
+
+                 options.OptionAlwaysShown ("number-up-layout", str, "lrtb",
+                                            self.cmbJONumberUpLayout,
+                                            self.btnJOResetNumberUpLayout,
+                                            combobox_map = [ "lrtb",
+                                                             "lrbt",
+                                                             "rltb",
+                                                             "rlbt",
+                                                             "tblr",
+                                                             "tbrl",
+                                                             "btlr",
+                                                             "btrl" ]),
+
+                 options.OptionAlwaysShown ("brightness", int, 100,
+                                            self.sbJOBrightness,
+                                            self.btnJOResetBrightness),
                  ]
         self.job_options_widgets = {}
         self.job_options_buttons = {}
@@ -1404,6 +1433,7 @@ class GUI:
             # real Printer
             self.fillPrinterOptions(name, editable)
 
+        self.changed = set() # of options
         self.setDataButtonState()
 
     def setTestButton (self, printer):
