@@ -194,6 +194,7 @@ class JobManager:
         self.MainWindow.hide ()
 
         self.statusbar = self.xml.get_widget ('statusbar')
+        self.statusbar_set = False
         self.reasons_seen = {}
 
         self.job_popupmenu = self.xml.get_widget ('job_popupmenu')
@@ -366,7 +367,8 @@ class JobManager:
                 iter = self.reasons_seen[tuple]
                 self.store_printers.remove (iter)
                 del self.reasons_seen[tuple]
-                if self.notify and self.notified_reason.get_tuple () == tuple:
+                if (self.trayicon and self.notify and
+                    self.notified_reason.get_tuple () == tuple):
                     # We had sent a notification for this reason.  Close it.
                     self.notify.close ()
                     self.notify = None
@@ -376,8 +378,10 @@ class JobManager:
         reason = worst_printer_state_reason (connection, printer_reasons)
         if reason != None and reason.get_level () >= StateReason.WARNING:
             title, text = reason.get_description ()
-            self.statusbar.pop (0)
+            if self.statusbar_set:
+                self.statusbar.pop (0)
             self.statusbar.push (0, text)
+            self.statusbar_set = True
 
             if self.trayicon:
                 icon = StateReason.LEVEL_FILE[reason.get_level ()]
@@ -393,6 +397,11 @@ class JobManager:
                                   0.5, 0.5,
                                   gtk.gdk.INTERP_BILINEAR, 255)
                 self.statusicon.set_from_pixbuf (pixbuf)
+        else:
+            # No errors
+            if self.statusbar_set:
+                self.statusbar.pop (0)
+                self.statusbar_set = False
 
         # Send notifications for printers we've got jobs queued for.
         my_reasons = []
@@ -458,16 +467,16 @@ class JobManager:
                                              % num_jobs)
                 self.statusicon.set_from_pixbuf (self.icon_jobs)
 
-            my_printers = set()
-            for job, data in jobs.iteritems ():
-                state = data.get ('job-state', cups.IPP_JOB_CANCELED)
-                if state >= cups.IPP_JOB_CANCELED:
-                    continue
-                uri = data.get ('job-printer-uri', '/')
-                i = uri.rfind ('/')
-                my_printers.add (uri[i + 1:])
-            self.check_state_reasons (c, my_printers)
+        my_printers = set()
+        for job, data in jobs.iteritems ():
+            state = data.get ('job-state', cups.IPP_JOB_CANCELED)
+            if state >= cups.IPP_JOB_CANCELED:
+                continue
+            uri = data.get ('job-printer-uri', '/')
+            i = uri.rfind ('/')
+            my_printers.add (uri[i + 1:])
 
+        self.check_state_reasons (c, my_printers)
         del c
         for job in self.jobs:
             if not jobs.has_key (job):

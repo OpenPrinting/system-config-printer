@@ -1,3 +1,12 @@
+2007-04-06  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.check_state_reasons): Clear the status bar
+	when there is no warning/error to report.
+	(JobManager.refresh): Check status reasons when running without a
+	tray icon.
+	(JobManager.check_state_reasons): Only check for notifications to
+	close if we are running with a tray icon.
+
 2007-04-05  Tim Waugh  <twaugh@redhat.com>
 
 	* configure.in: Version 0.7.64.
