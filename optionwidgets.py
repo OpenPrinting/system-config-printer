@@ -49,8 +49,10 @@ class OptionPickOne(Option):
             self.selector.append_text(choice['text'])
             if option.defchoice == choice['choice']:
                 selected = nr
-        if nr is not None:
-            self.selector.set_active(nr)
+        if selected is not None:
+            self.selector.set_active(selected)
+        else:
+            print option.text, "unknown value"
 
     def writeback(self):
         self.ppd.markOption(

@@ -287,15 +287,30 @@ class Foomatic:
     def getPPD(self, printer):
         return
 
+
+
 def main():
+
+    from nametree import NameTree
+
     foo = Foomatic()
 
     foo._read_all_printers()
+
+    models = []
     for name in foo.get_printers():
         #print name
         printer = foo.get_printer(name)
-        if foo.getMakeModelFromName(name) != (printer.make, printer.model):
-            print foo.getMakeModelFromName(name), (printer.make, printer.model)
+        models.append(printer.make + ' ' + printer.model)
+    models.sort()
+
+    tree = NameTree(models)
+
+    tree.get_tree()
+
+
+    #    if foo.getMakeModelFromName(name) != (printer.make, printer.model):
+    #        print foo.getMakeModelFromName(name), (printer.make, printer.model)
 
     #for name in foo.get_drivers():
     #    print name

@@ -12,10 +12,15 @@ class GUI:
 
     def __init__(self):
         self.password = ''
-        
+        self.passwd_retry = False
+        cups.setPasswordCB(self.cupsPasswdCallback)        
+
+
         self.cups = cups.Connection()
-        cups.setPasswordCB(self.cupsPasswdCallback)
+        # XXX Error handling
         
+        self.foomatic = Foomatic() # this works on the local db
+
         self.xml = gtk.glade.XML("system-config-printer.glade")
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
                         "entPDescription", "entPLocation", "lblPMakeModel",
@@ -29,8 +34,17 @@ class GUI:
                         "entUser", "entPassword",
 
                         "PasswordDialog", "entPasswd",
+
+                        "NewPrinterWindow", "ntbkNewPrinter",
+                        "btnNBack", "btnNForward", "btnNApply",
+                        "entNName", "entNDescription", "entNLocation",
+                        "cmbNPType", "ntbkNPType"
+                        
+                        
                         )
         self.ntbkMain.set_show_tabs(False)
+        self.ntbkNewPrinter.set_show_tabs(False)
+        self.ntbkNPType.set_show_tabs(False)
         
         # Setup main list
         column = gtk.TreeViewColumn()
@@ -138,13 +152,17 @@ class GUI:
 
     # Password handling
 
-    def cupsPasswdCallback(self, *args):
-        print args
-        if self.PasswordDialog.run():
-            self.password = ''
+    def cupsPasswdCallback(self, querystring):
+        if self.passwd_retry:
+            result = self.PasswordDialog.run()
+            self.PasswordDialog.hide()
+            if result:
+                self.password = ''
+            else:
+                self.password = self.entPasswd.get_text()
+            self.passwd_retry = False
         else:
-            self.Password = entPasswd.get_text()
-        self.PasswordDialog.hide()
+            self.passwd_retry = True
         return self.password
     
     def on_btnPasswdOk_clicked(self, widget):
@@ -153,36 +171,38 @@ class GUI:
     def on_btnPasswdCancel_clicked(self, widget):
         self.PasswordDialog.response(1)
 
-    # Create/Delete
-    
-    def on_new_printer_activate(self, widget):
-        print "NEW PRINTER"
-
-    def on_new_class_activate(self, widget):
-        print "NEW CLASS"
-        
-    def on_copy_activate(self, widget):
-        print "COPY"
-
-    def on_delete_activate(self, widget):
-        name, type = self.getSelectedItem()
-        if type == "Printer":
-            print "DELETE Printer"
-        elif type == "Class":
-            print "DELETE Class"
+    # Data handling
 
     def on_btnApply_clicked(self, widget):
         name, type = self.getSelectedItem()
         if type == "Printer":
             self.getPrinterSettings()
-            location = self.entPLocation.get_text()
-            description = self.entPDescription.get_text()
-            device = self.entPDevice.get_text()
+            self.passwd_retry = False # use cached Passwd 
             self.cups.addPrinter(name, ppd=self.ppd)
+
+            printer = self.printers[name] 
+            new_values = {
+                "printer-location" : self.entPLocation.get_text(),
+                "printer-info" : self.entPDescription.get_text(),
+                "device-uri" : self.entPDevice.get_text(),
+                }
+
+            if new_values["printer-info"]!=printer["printer-info"]:
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterInfo(name, new_values["printer-info"])
+            if new_values["printer-location"]!=printer["printer-location"]:
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterLocation(name,
+                                             new_values["printer-location"])
+            if new_values["device-uri"]!=printer["device-uri"]:
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterDevice(name, new_values["device-uri"])
+            printer.update(new_values)
         elif type == "Class":
-            print "DELETE Class"
+            print "Apply Class"
         elif type == "Settings":
-            pass
+            print "Apply Settings"
+
 
     def on_tvMainList_cursor_changed(self, list):
         name, type = self.getSelectedItem()
@@ -197,7 +217,7 @@ class GUI:
         elif type == 'Class':
             self.fillClassTab(name)
             self.ntbkMain.set_current_page(2)
-
+            
         for item in [self.copy, self.delete, self.btnCopy, self.btnDelete]:
             item.set_sensitive(item_selected)
 
@@ -221,6 +241,7 @@ class GUI:
             self.vbPOptions.remove(widget)
 
         ppd = cups.PPD(self.cups.getPPD(name))
+        ppd.markDefaults()
         self.ppd = ppd
 
         self.options = []
@@ -250,8 +271,10 @@ class GUI:
         self.swPOptions.show_all()
 
     def getPrinterSettings(self):
+        self.ppd.markDefaults()
         for option in self.options:
             option.writeback()
+        print self.ppd.conflicts()
 
     def fillClassTab(self, name):
         pass
@@ -260,11 +283,122 @@ class GUI:
         # XXX check for unapplied changes
         gtk.main_quit()
 
+    # Create/Delete
+    
+    def on_new_printer_activate(self, widget):
+        self.initNewPrinterWindow()
+        self.NewPrinterWindow.show()
+
+    def on_new_class_activate(self, widget):
+        print "NEW CLASS"
+        
+    def on_copy_activate(self, widget):
+        name, type = self.getSelectedItem()
+        if type == "Printer":
+            self.initNewPrinterWindow(name)
+            self.NewPrinterWindow.show()
+        elif type == "Class":
+            print "New Class"
+
+    def on_delete_activate(self, widget):
+        name, type = self.getSelectedItem()
+        if type == "Printer":
+            print "DELETE Printer"
+        elif type == "Class":
+            print "DELETE Class"
+
     # == New Printer =====================================================
 
-    
+    def initNewPrinterWindow(self, prototype=None):
+        self.ntbkNewPrinter.set_current_page(0)
+        self.setNPButtons()
+        if prototype:
+            pass
+        else:
+            pass
+            #self.
 
-        
+    def on_NewPrinterWindow_delete_event(self, widget, event):
+        self.NewPrinterWindow.hide()
+        return True
+
+    def on_btnNBack_clicked(self, widget):
+        self.ntbkNewPrinter.prev_page()
+        self.setNPButtons()
+
+    def on_btnNForward_clicked(self, widget):
+        self.ntbkNewPrinter.next_page()
+        self.setNPButtons()
+
+    def on_btnNApply_clicked(self, widget):
+        self.NewPrinterWindow.hide()
+
+    def setNPButtons(self):
+        first_page = not self.ntbkNewPrinter.get_current_page()
+        last_page = (self.ntbkNewPrinter.get_current_page() ==
+                     len(self.ntbkNewPrinter.get_children()) -1 )        
+        self.btnNBack.set_sensitive(not first_page)
+        self.btnNForward.set_sensitive(not last_page)
+        if last_page:
+            self.btnNApply.show()
+        else:
+            self.btnNApply.hide()
+
+    def on_entNName_insert_at_cursor(self, widget, *args):        
+        # restrict
+        print "X", args
+
+    def on_entNName_insert_text(self, *args):
+        print args
+
+    # Device URI
+
+    def fillDeviceTab(self):
+        pass
+
+    def on_cmbNPType_changed(self, widget):
+        self.ntbkNPType.set_current_page(widget.get_active())
+
+    def getDeviceURI(self):
+        ptype = self.cmbNPType.get_active()
+        if pytpe == 0: # Device
+            device = self.entNPTDevice.get_text()
+        elif ptype == 1: # DirectJet
+            host = self.cmbNPTDirectJetHostname.get_text()
+            port = self.cmbNPTDirectJetPort.get_text()
+            device = "socket://" + host
+            if port:
+                device = device + ':' + port
+        elif pytype == 2: # IPP
+            host = self.cmbNPTIPPHostname.get_text()
+            printer = self.cmbNPTIPPPrintername.get_text()
+            device = "ipp://" + host
+            if printer:
+                device = device + "/" + printer
+        elif ptype == 3: # LPD
+            host = self.cmbNPTLPDHostname.get_text()
+            printer = self.cmbNPLPDPrintername.get_text()
+            device = "lpd://" + host
+            if printer:
+                device = device + "/" + printer
+        elif ptype == 4: # Parallel
+            device = "parallel:/dev/lp%d" % self.cmbNPTParallel.get_active()
+        elif ptype == 5: # SCSII
+            device = ""
+        elif ptype == 6: # Serial
+            device = ("serial:/dev/ttyS%s?baud=%s+bits=%s+parity=%s+flow=%s" %
+                      []) #XXX
+    # PPD
+
+    def fillPPDList(self):
+        self.foomatic.load_all() # XXX
+        names = []
+        for printername in self.foomatic.get_printers():
+            printer = self.foomatic.get_printer(printername)
+            names.append(printer.make + " " + printer.model)
+        names.sort(cups.modelSort)
+        # XXX
+
 def main():
     mainwindow = GUI()
     if gtk.__dict__.has_key("main"):
