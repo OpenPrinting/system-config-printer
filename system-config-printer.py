@@ -2458,7 +2458,7 @@ class GUI:
                     err_title = _('PPD error')
                     filename = self.filechooserPPD.get_filename()
                     err = _('Failed to read PPD file.  Possible reason '
-                            'follows:' % filename) + '\n'
+                            'follows:') + '\n'
                     os.environ["PPD"] = filename
                     # We want this to be in the current natural language,
                     # so we intentionally don't set LC_ALL=C here.
