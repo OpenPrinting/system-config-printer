@@ -1,6 +1,6 @@
 #!/bin/env python
 
-import sys
+import sys, os
 import gtk.glade, cups, cupshelpers
 import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
@@ -727,7 +727,9 @@ class GUI:
                 self.swPOptions, self.lblPOptions, 2)
 
         # get PPD
-        ppd = cups.PPD(self.cups.getPPD(name))
+        filename = self.cups.getPPD(name)
+        ppd = cups.PPD(filename)
+        os.unlink (filename)
         ppd.markDefaults()
         self.ppd = ppd
 
