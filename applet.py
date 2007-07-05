@@ -718,11 +718,18 @@ import dbus.glib
 import dbus.service
 import gobject
 
-# Stop running when the session ends.
-def monitor_session (*args):
-    pass
-bus = dbus.SessionBus()
-bus.add_signal_receiver (monitor_session)
+if trayicon:
+    # Stop running when the session ends.
+    def monitor_session (*args):
+        pass
+
+    try:
+        bus = dbus.SessionBus()
+        bus.add_signal_receiver (monitor_session)
+    except:
+        print >> sys.stderr, "%s: failed to connect to session D-Bus" % \
+              PROGRAM_NAME
+        sys.exit (1)
 
 ####
 #### PrintDriverSelection DBus server
@@ -741,7 +748,12 @@ class PrintDriverSelection(dbus.service.Object):
 
     # Need to add an interface for providing a PPD.
 
-bus = dbus.SystemBus()
+try:
+    bus = dbus.SystemBus()
+except:
+    print >> sys.stderr, "%s: failed to connect to system D-Bus" % PROGRAM_NAME
+    sys.exit (1)
+
 if trayicon:
     try:
         name = dbus.service.BusName (PDS_OBJ, bus=bus)
