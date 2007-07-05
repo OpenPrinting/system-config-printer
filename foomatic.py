@@ -30,9 +30,15 @@ class FoomaticXMLFile:
         return result
 
     def read(self):
-        root_node = qp_xml.Parser().parse(open(self.filename))
+        try:
+            root_node = qp_xml.Parser().parse(open(self.filename))
+        except IOError:
+            self.valid = False
+            return True
         self.parse_xml(root_node)
-        
+        self.valid = True
+        return False
+    
     def __cmp__(self, other):
         if isinstance(other, str):
             return cmp(self.name, other) # XXX is .name really what we want?
@@ -48,6 +54,10 @@ class FoomaticXMLFile:
         for lang in languages:
             if self.comments_dict.has_key(lang):
                 return lang, self.comments_dict[lang]
+            if "_" in lang:
+                country, dialect = lang.split("_", 1)
+                if self.comments_dict.has_key(country):
+                    return country, self.comments_dict[country]
         
         for lang_comment in self.comments_dict.iteritems():
             return lang_comment # return first one
@@ -83,8 +93,7 @@ class Driver(FoomaticXMLFile):
 
     """
     def __init__(self, name, foomatic):
-        self.filename = os.path.join(foomatic.path, 'driver',
-                                     foomatic.quote_filename(name))
+        self.filename = foomatic.quote_filename(name, "driver")
         FoomaticXMLFile.__init__(self, name, foomatic)
 
     def parse_xml(self, root_node):
@@ -97,9 +106,7 @@ class Driver(FoomaticXMLFile):
         self.id = root_node.attrs.get(('', u'id'), None)
         if self.id:
             self.name = self.id[len('driver/'):]
-            self.filename = os.path.join(
-                self.foomatic.path, 'driver',
-                self.foomatic.quote_filename(self.name))
+            self.filename = self.foomatic.quote_filename(self.name, "driver")
         
         for node in root_node.children:
             if node.name in ("name", "url"):
@@ -127,6 +134,13 @@ class PPDDriver(Driver):
     def __init__(self, name, foomatic):
         FoomaticXMLFile.__init__(self, name, foomatic)
         self.comments_dict = {}
+
+#############################################################################
+### No Driver (for Raw Queues
+#############################################################################
+        
+class NoDriver(PPDDriver): 
+    pass
         
 ############################################################################# 
 ###  Printer
@@ -151,8 +165,7 @@ class Printer(FoomaticXMLFile):
     """
 
     def __init__(self, name, foomatic):
-        self.filename = os.path.join(foomatic.path, 'printer',
-                                     foomatic.quote_filename(name))
+        self.filename = foomatic.quote_filename(name, "printer")
         self.id = ''
         self.unverified = False
         self.functionality = None
@@ -165,19 +178,43 @@ class Printer(FoomaticXMLFile):
 
 
     def getPPD(self, driver_name=None):
+        """
+        return cups.PPD object or string for PPD on Cups server
+        """
         if driver_name is None: driver_name = self.driver
         if self.drivers.has_key(driver_name):
+            print self.name, driver_name
             if self.drivers[driver_name]:
-                return self.drivers[driver_name]
+                print "PPD name:", self.drivers[driver_name]
+                # XXX cups ppds
+                if self.foomatic.ppds.has_key(self.drivers[driver_name]):
+                    print "Cups PPD"
+                    return self.drivers[driver_name]
+                    #try:
+                    #    filename = self.foomatic.connection.getPPD(
+                    #        self.drivers[driver_name])
+                    #    ppd = cups.PPD(filename)
+                    #    os.unlink(filename)
+                    #    return ppd
+                    #except cups.IPPError:
+                    #    raise
+                    #    return None
+                else:
+                    return cups.PPD(self.drivers[driver_name])
             else:
-                fd, fname = tempfile.mkstemp(
-                    ".ppd", printer.name + "-" + driver_name)
-                data = os.popen("foomatic-ppdfile -p %s -d %s" %
-                                (printer.name, driver_name)).read()
-                os.write(fd, data)
-                os.close(fd)
-                return fname
+                try:
+                    fd, fname = tempfile.mkstemp(
+                        ".ppd", self.name + "-" + driver_name)
+                    data = os.popen("foomatic-ppdfile -p %s -d %s" %
+                                    (self.name, driver_name)).read()
+                    os.write(fd, data)
+                    os.close(fd)
+                except IOError:
+                    raise
+                    return None
+                return cups.PPD(fname)
         else:
+            print self.name, driver_name
             return None
     
     def parse_autodetect(self, root_node):
@@ -253,11 +290,9 @@ class Printer(FoomaticXMLFile):
             else:
                 self.name = self.id
                 self.id = 'printer/' + self.id
-            self.filename = os.path.join(
-                self.foomatic.path, 'printer',
-                self.foomatic.quote_filename(self.name))
+            self.filename = self.foomatic.quote_filename(self.name, "printer")
             if not os.path.exists(self.filename):
-                print self.filename
+                print "File does not exists:", self.filename
 
         self.getPPDDrivers()
                 
@@ -309,13 +344,32 @@ class PPDPrinter(Printer):
         self.functionality = ''
         self.driver = ''
         self.drivers = {}
-        self.autoddetect = {}
+        self.autodetect = {}
         self.unverified = False
         self.comments_dict = {}
         
         self.getPPDDrivers()
 
-        
+#############################################################################
+### Raw Printer
+#############################################################################
+
+class RawPrinter(Printer):
+
+    def __init__(self, foomatic):
+        FoomaticXMLFile.__init__(self, "Generic-Raw", foomatic)
+        self.make, self.model = "Generic", "Raw"
+        self.functionality = ''
+        self.driver = ''
+        self.drivers = {'None' : ''}
+        self.autodetect = {}
+        self.unverified = False
+        self.comments_dict = {}        
+
+    def getPPD(self, driver=None):
+        return None
+    
+
 ############################################################################# 
 ###  Foomatic database
 #############################################################################
@@ -345,12 +399,16 @@ class Foomatic:
             print "Writing new pickle"
             self.loadAll()
             self._write_pickle()
+
+        # Add entries for raw printers
+        self._add_printer(RawPrinter(self))
+        self._drivers["None"] = NoDriver("None", self)
         
-    def quote_filename(self, name):
-        return name + '.xml'
+    def quote_filename(self, name, type):
+        return os.path.join(self.path, type, name + '.xml')
     
     def unquote_filename(self, file):
-        return file.replace('.xml', '')
+        return os.path.basename(file).replace('.xml', '')
 
     def calculated_name(self, make, model):
         model = model.replace("/", "_")
@@ -367,6 +425,8 @@ class Foomatic:
         return make, model
 
     def _add_printer(self, printer):
+        self._printers[printer.name] = printer
+        
         printers = self.makes.setdefault(printer.make, {})
         printers[printer.model] = printer.name
 
@@ -379,12 +439,13 @@ class Foomatic:
             if dict.has_key("description"):
                 self._auto_description[dict["description"]] = printer.name
         
-    def addCupsPPDs(self, ppds):
+    def addCupsPPDs(self, ppds, connection):
         ppds = ppds.copy()
+        self.connection = connection
         # remove foomatic ppds
-        for name in ppds.keys():
-            if name.startswith("foomatic-db-ppds/"):
-                ppds.pop(name)
+        #for name in ppds.keys():
+            #if name.startswith("foomatic-db-ppds/"):
+            #    ppds.pop(name)
         self.ppds = ppds
         for name, ppd in self.ppds.iteritems():
             try:
@@ -402,7 +463,7 @@ class Foomatic:
                 if self._printers.has_key(printers[model]): # printer loaded
                     printer = self._printers[printers[model]] # add as driver
                     lang = ppd['ppd-natural-language']
-                    self.drivers["CUPS: %s (%s)" % (name, lang)] = name
+                    self._drivers["CUPS: %s (%s)" % (name, lang)] = name
             else:
                 #print make, model, name
                 printers[model] = name # add as printer
@@ -435,7 +496,6 @@ class Foomatic:
             if node.name == "printer":
                 printer = Printer("", self)
                 printer.parse_xml(node)
-                self._printers[printer.name] = printer
                 self._printer_names.append(printer.name)
                 self._add_printer(printer)
             elif node.name == "driver":
@@ -473,14 +533,12 @@ class Foomatic:
             printer.make = values["make_model"][0]
             printer.model = " ".join(values["make_model"][1:])
 
-            self._printers[printer.name] = printer
             self._printer_names.append(printer.name)
             self._add_printer(printer)
 
     # ----
 
     def loadAll(self):
-        # XXX do pickling
         #self._read_all_printers()
         self._read_all_printers_from_files()
         #self._read_printer_list()
@@ -496,9 +554,16 @@ class Foomatic:
             "_auto_make" : self._auto_make,
             "_auto_description" : self._auto_description,
             }
-        f = open(filename, "w") # XXX use atomic write
-        pickle.dump(data, f, -1)
-        f.close()
+        path = os.path.dirname(filename)
+        # temp file
+        fd, tempname = tempfile.mkstemp(".tmp", "foomatic", dir=path)
+        os.write(fd, pickle.dumps(data, -1))
+        os.close(fd)
+        
+        try:
+            os.rename(tempname, filename) # atomically replace old file
+        except os.Error:
+            pass
         
     def _load_pickle(self, filename="/tmp/foomatic.pickle"):
         if not os.path.exists(filename): return True
@@ -550,11 +615,11 @@ class Foomatic:
         if not self._printers.has_key(name):
             if self.ppds.has_key(name):
                 printer = PPDPrinter(name, self)
+                self._printers[name] = printer
             else:
                 printer = Printer(name, self)
                 printer.read()
                 self._add_printer(printer)
-            self._printers[name] = printer
         return self._printers[name]
 
     def getMakeModel(self, make, model):

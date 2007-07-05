@@ -1,3 +1,28 @@
+2006-04-06 Florian Festi  <ffesti@redhat.com>
+
+	* system-config-printer.py (GUI.on_connect_activate, connect):
+	Open connection to cups server in a new thread to avoid GUI freeze
+	* system-config-printer.glade (ConnectingDialog): Shown while 
+	connection to server
+
+	* system-config-printer.py (GUI.save_printer, ...) Do error
+	handling when communicationg with cups server.
+
+	* system-config-printer.py (...) make GUI strings translatable
+	
+	* foomatic.py (copyPPDOptions): Migrate options settings between PPDs
+
+	* foomatic.py (FoomaticXMLFile.getLangComment): search for language 
+	fammilies
+	
+	* foomatic.py: "Generic Raw" printer for raw queues
+
+	* system-config-printer.glade (NewPrinterDialog): Tab for applying 
+	new PPD: Ask copy option settings or not?
+
+	* system-config-printer.glade Commented out Server setting tab, allow
+	no printer is selected, support not connected to cups server
+
 2006-03-27 Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.__init__): Always set

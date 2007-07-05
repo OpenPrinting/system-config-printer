@@ -60,8 +60,7 @@ class HTML2PangoParser(HTMLParser):
         self.output.write("&%s;" % name) # XXX convert to unicode?
 
     def handle_entityref(self, name):
-        print name
         if htmlentitydefs.name2codepoint.has_key(name):
             self.output.write(unichr(htmlentitydefs.name2codepoint[name]))
         else:
-            self.handle_data(name)
+            self.handle_data("&" + name)

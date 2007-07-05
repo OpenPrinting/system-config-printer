@@ -1,5 +1,5 @@
 #!/bin/env python
-import cups, pprint
+import cups, pprint, os
 
 class Printer:
 
@@ -32,6 +32,11 @@ class Printer:
         if self.is_shared is None:
             self.is_shared = not self.not_shared
         del self.not_shared
+
+        if self.is_class:
+            self._ppd = False
+        else:
+            self._ppd = None # load on demand
 
     _flags_blacklist = ["options", "local"]
 
@@ -80,6 +85,20 @@ class Printer:
         if uri == "localhost.localdomain":
             uri = "localhost"
         return uri
+
+    def getPPD(self):
+        """
+        return cups.PPD object or False for raw queues
+        raise cups.IPPError
+        """
+        if self._ppd is None:
+            try:
+                filename = self.connection.getPPD(self.name)
+            except cups.IPP_NOT_FOUND:
+                self._ppd = False
+            self._ppd = cups.PPD(filename)
+            os.unlink(filename)
+        return self._ppd
 
     def setEnabled(self, on):
         if on:
@@ -177,6 +196,9 @@ def match(s1, s2):
     return min(len(s1), len(s2))
 
 def getDevices(connection, current_uri=None):
+    """
+    raise cups.IPPError
+    """
     devices = connection.getDevices()
     for uri, data in devices.iteritems():
         device = Device(uri, **data)
@@ -190,7 +212,28 @@ def getDevices(connection, current_uri=None):
         device.info = devices[uri].info
         devices[current_uri] = device
     return devices
-    
+
+def getPPDGroupOptions(group):
+    options = group.options[:]
+    for g in group.subgroups:
+        options.extend(getPPDGroupOptions(g))
+    return options
+
+def iteratePPDOptions(ppd):
+    for group in ppd.optionGroups:
+        for option in getPPDGroupOptions(group):
+            yield option
+
+def copyPPDOptions(ppd1, ppd2):
+    for option in iteratePPDOptions(ppd1):
+        new_option = ppd2.findOption(option.keyword)
+        if new_option and option.ui==new_option.ui:
+            value = option.defchoice
+            for choice in new_option.choices:
+                if choice["choice"]==value:
+                    ppd2.markOption(new_option.keyword, value)
+                    
+            
 def main():
     c = cups.Connection()
     #printers = getPrinters(c)

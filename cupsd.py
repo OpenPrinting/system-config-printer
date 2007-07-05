@@ -230,4 +230,5 @@ def main():
     block = cupsd_conf.start_block
     print block
 
-main()
+if __name__=="__main__":
+    main()
