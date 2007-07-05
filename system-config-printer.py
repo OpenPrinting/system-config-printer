@@ -46,7 +46,6 @@ import cupshelpers, options
 import gobject # for TYPE_STRING and TYPE_PYOBJECT
 from optionwidgets import OptionWidget
 import ppds
-from nametree import BuildTree
 from cupsd import CupsConfig
 import probe_printer
 import gtk_label_autowrap
@@ -2637,25 +2636,6 @@ class GUI:
             self.tvNPMakes.scroll_to_cell(0, None, True, 0.0, 0.0)
             
         self.on_tvNPMakes_cursor_changed(self.tvNPMakes)
-            #tree = BuildTree(names, 3, 3)
-            #tree.name = maker
-            #self._fillPPDList(None, tree)
-            
-            
-        #names = []
-        #for printername in self.foomatic.get_printers():
-        #    printer = self.foomatic.get_printer(printername)
-        #    names.append(printer.make + " " + printer.model)
-        #names.sort(cups.modelSort)
-        #tree = BuildTree(names, mindepth=3, minwidth=3)
-
-        #self._fillPPDList(None, tree)
-
-    #def _fillPPDList(self, iter, treenode):
-    #    if treenode.name:
-    #        iter = self.tvNPDriversModel.append(iter, (treenode.name,))
-    #    for leaf in treenode.leafs:
-    #        self._fillPPDList(iter, leaf)
 
     def on_tvNPMakes_cursor_changed(self, tvNPMakes):
         selection = tvNPMakes.get_selection()

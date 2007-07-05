@@ -10,13 +10,10 @@ nobase_pkgdata_DATA=				\
 	config.py				\
 	cupsd.py				\
 	cupshelpers.py				\
-	foomatic.py				\
-	nametree.py				\
 	options.py				\
 	optionwidgets.py			\
 	probe_printer.py			\
 	gtk_label_autowrap.py			\
-	gtk_html2pango.py			\
 	system-config-printer.glade		\
 	applet.glade				\
 	applet.png				\
