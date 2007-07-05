@@ -2129,8 +2129,10 @@ class GUI:
         self.NPDrivers = printer.drivers.keys()
         self.NPDrivers.sort()
         found = False
+        remote_driver="foomatic:%s-%s.ppd" % (printer.name, printer.driver)
         for driver in self.NPDrivers:
-            if driver==printer.driver:
+            if (driver==printer.driver or
+                ((not found) and driver == remote_driver)):
                 iter = model.append((driver + _(" (recommended)"),))
                 path = model.get_path(iter)
                 self.tvNPDrivers.get_selection().select_path(path)
