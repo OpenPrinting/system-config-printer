@@ -2682,22 +2682,23 @@ class GUI:
                     exe = exe[:p]
                 exepath = pathcheck (exe)
 
-        # Look for '*cupsFilter' lines in the PPD and check that the filters
-        # are installed.
-        (tmpfd, tmpfname) = tempfile.mkstemp ()
-        ppd.writeFd (tmpfd)
-        search = "*cupsFilter:"
-        for line in file (tmpfname).readlines ():
-            if line.startswith (search):
-                line = line[len (search):].strip ().strip ('"')
-                try:
-                    (mimetype, cost, exe) = line.split (' ')
-                except:
-                    continue
+        if exepath or not exe:
+            # Look for '*cupsFilter' lines in the PPD and check that
+            # the filters are installed.
+            (tmpfd, tmpfname) = tempfile.mkstemp ()
+            ppd.writeFd (tmpfd)
+            search = "*cupsFilter:"
+            for line in file (tmpfname).readlines ():
+                if line.startswith (search):
+                    line = line[len (search):].strip ().strip ('"')
+                    try:
+                        (mimetype, cost, exe) = line.split (' ')
+                    except:
+                        continue
 
-                exepath = pathcheck (exe,
-                                     "/usr/lib/cups/filter:"
-                                     "/usr/lib64/cups/filter")
+                    exepath = pathcheck (exe,
+                                         "/usr/lib/cups/filter:"
+                                         "/usr/lib64/cups/filter")
 
         if exe and not exepath:
             # We didn't find a necessary executable.  Complain.
