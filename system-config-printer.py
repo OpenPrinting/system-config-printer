@@ -169,6 +169,7 @@ class GUI:
 
     def cupsPasswdCallback(self, querystring):
         if self.passwd_retry or len(self.password) == 0:
+            self.entPasswd.grab_focus ()
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
             if result:
