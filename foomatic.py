@@ -496,9 +496,9 @@ class Foomatic:
         ppds = ppds.copy()
         self.connection = connection
         # remove foomatic ppds
-        #for name in ppds.keys():
-            #if name.startswith("foomatic-db-ppds/"):
-                #ppds.pop(name)
+        for name in ppds.keys():
+            if name.startswith("foomatic-db-ppds/"):
+                ppds.pop(name)
         self.ppds = ppds
         for name, ppd in self.ppds.iteritems():
             (make, model) = _ppdMakeModelSplit (ppd['ppd-make-and-model'])
