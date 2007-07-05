@@ -740,43 +740,63 @@ class Foomatic:
 
         # Try matching against the foomatic names
         best_mdl = None
+        mdls = None
         for attempt in range (2):
             if self.makes.has_key (mfg):
-                mdl = device.id_dict["MDL"]
                 mdls = self.makes[mfg]
-                # Handle bogus HPLIP Device IDs
-                if mdl.startswith (mfg + ' '):
-                    mdl = mdl[len (mfg) + 1:]
-                if mdls.has_key (mdl):
-                    print "Please report a bug in Bugzilla against 'foomatic':"
-                    print "  https://bugzilla.redhat.com/bugzilla"
-                    print "Include this complete message."
-                    print "Deducing %s from IEEE 1284 ID:" % mdls[mdl]
-                    print "      <manufacturer>%s</manufacturer>" % mfg
-                    print "      <model>%s</model>" % mdl
-                    print "      <description>%s</description>" %\
-                          device.id_dict["DES"]
-                    print "URI: %s" % device.uri
-                    print "This message is harmless."
-                    return mdls[mdl]
+                break
 
-                # Try to find the best match
-                best_matchlen = 0
-                for each in mdls.keys():
-                    if mdl[:1 + best_matchlen] == each[:1 + best_matchlen]:
-                        extra = 2
-                        while (mdl[1 + best_matchlen:extra + best_matchlen] ==
-                               each[1 + best_matchlen:extra + best_matchlen]):
-                            extra += 1
-                        best_matchlen += extra
-                        best_mdl = mdls[each]
+            # Try case-insensitive search
+            mfgl = mfg.lower ()
+            for (m, ms) in self.makes.iteritems ():
+                if m.lower () == mfgl:
+                    mdls = ms
+                    break
 
             # Try again with replacements
             if mfg == "Hewlett-Packard":
                 mfg = "HP"
                 continue
 
-            break
+        if mdls:
+            mdl = device.id_dict["MDL"]
+            # Handle bogus HPLIP Device IDs
+            if mdl.startswith (mfg + ' '):
+                mdl = mdl[len (mfg) + 1:]
+
+            if mdls.has_key (mdl):
+                print "Please report a bug in Bugzilla against 'foomatic':"
+                print "  https://bugzilla.redhat.com/bugzilla"
+                print "Include this complete message."
+                print "Deducing %s from IEEE 1284 ID:" % mdls[mdl]
+                print "      <manufacturer>%s</manufacturer>" % mfg
+                print "      <model>%s</model>" % mdl
+                print "      <description>%s</description>" %\
+                      device.id_dict["DES"]
+                print "URI: %s" % device.uri
+                print "This message is harmless."
+                return mdls[mdl]
+
+            # Try to find the best match (case-insensitive)
+            best_matchlen = 0
+            mdl = mdl.lower ()
+            for (name, id) in mdls.iteritems():
+                name = name.lower ()
+                if mdl[:1 + best_matchlen] == name[:1 + best_matchlen]:
+                    extra = 2
+                    while (mdl[1 + best_matchlen:extra + best_matchlen] ==
+                           name[1 + best_matchlen:extra + best_matchlen]):
+                        extra += 1
+                        if extra + best_matchlen >= len (name):
+                            break
+                    best_matchlen += extra
+                    best_mdl = id
+
+        cmdset = ""
+        if len (device.id_dict["CMD"]) > 0:
+            cmdset = device.id_dict["CMD"][0]
+            for each in device.id_dict["CMD"][1:]:
+                cmdset += "," + each
 
         if best_mdl and best_matchlen > (len (mdl) / 2):
             print "Please report a bug in Bugzilla against 'foomatic':"
@@ -786,7 +806,7 @@ class Foomatic:
             print "      <manufacturer>%s</manufacturer>" % mfg
             print "      <model>%s</model>" % mdl
             print "      <description>%s</description>" % device.id_dict["DES"]
-            print "      <commandset>%s</commandset>" % device.id_dict["CMD"]
+            print "      <commandset>%s</commandset>" % cmdset
             print "URI: %s" % device.uri
             return best_mdl
 
@@ -794,6 +814,7 @@ class Foomatic:
         print "      <manufacturer>%s</manufacturer>" % mfg
         print "      <model>%s</model>" % device.id_dict["MDL"]
         print "      <description>%s</description>" % device.id_dict["DES"]
+        print "      <commandset>%s</commandset>" % cmdset
         print "URI: %s" % device.uri
 
         # Try command-set matching.
