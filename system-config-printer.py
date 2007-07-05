@@ -1313,10 +1313,10 @@ class GUI:
             if attr not in self.printer.attributes:
                 self.cmbentNewOption.append_text(attr)
 
-        self.tblServerOptions.resize(1, 3)
         for child in self.tblServerOptions.get_children():
             self.tblServerOptions.remove(child)
 
+        self.tblServerOptions.resize(1, 3)
         attrs = printer.attributes.keys()
         attrs.sort()
         for attr in attrs:
