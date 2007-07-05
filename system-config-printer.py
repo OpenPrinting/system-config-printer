@@ -39,7 +39,8 @@ class GUI:
 
     def __init__(self):
 
-        self.language, self.encoding = locale.getlocale(locale.LC_ALL)
+        self.language = locale.getlocale(locale.LC_MESSAGES)
+        self.encoding = locale.getlocale(locale.LC_CTYPE)
         
         self.printer = None
         self.conflicts = set() # of options
