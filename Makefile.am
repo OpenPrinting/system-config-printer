@@ -1,6 +1,6 @@
 SUBDIRS=po
-
-SOURCES=cupsd.py         \
+nobase_pkgdata_SCRIPTS=\
+	cupsd.py         \
 	cupshelpers.py   \
 	foomatic.py      \
 	nametree.py      \
@@ -8,14 +8,21 @@ SOURCES=cupsd.py         \
 	optionwidgets.py \
 	probe_printer.py \
 	system-config-printer.py \
-	system-config-printer \
 	gtk_label_autowrap.py \
 	gtk_html2pango.py
 
+nobase_pkgdata_DATA=\
+	system-config-printer.glade
+
+nobase_sbin_SCRIPTS=\
+	system-config-printer
+
 EXTRA_DIST=\
-	$(SOURCES) \
+	$(nobase_pkgdata_SCRIPTS) \
+	$(nobase_pkgdata_DATA) \
+	$(nobase_sbin_SCRIPTS) \
 	bootstrap \
-	system-config-printer.glade \
+	mkinstalldirs \
 	system-config-printer.gladep \
 	system-config-printer.desktop
 
