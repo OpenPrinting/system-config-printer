@@ -2359,6 +2359,15 @@ class GUI:
             # cups doesn't offer a way to just download a ppd ;(=
             raw = False
             if isinstance(ppd, str) or isinstance(ppd, unicode):
+                if self.rbtnChangePPDasIs.get_active():
+                    # To use the PPD as-is we need to prevent CUPS copying
+                    # the old options over.  Do this by setting it to a
+                    # raw queue (no PPD) first.
+                    try:
+                        self.passwd_retry = False # use cached Passwd
+                        self.cups.addPrinter(name, ppdname='raw')
+                    except cups.IPPError, (e, msg):
+                        self.show_IPP_Error(e, msg)
                 try:
                     self.passwd_retry = False # use cached Passwd
                     self.cups.addPrinter(name, ppdname=ppd)
@@ -2377,17 +2386,18 @@ class GUI:
                     else:
                         self.show_IPP_Error(e, msg)
                         return
-
-            if not raw:
-                # copy over old option settings
+            else:
+                # We have an actual PPD to upload, not just a name.
                 if not self.rbtnChangePPDasIs.get_active():
                     cupshelpers.copyPPDOptions(self.ppd, ppd)
+
                 try:
                     self.passwd_retry = False # use cached Passwd
                     self.cups.addPrinter(name, ppd=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
 
+            if not raw:
                 check = True
                 checkppd = ppd
 
