@@ -455,6 +455,8 @@ class GUI:
                         
         # Selection
         selection = self.tvMainList.get_selection()
+        if old_type == "Settings":
+            select_path = (0,)
         if select_path:
             selection.select_path(select_path)
         else:
