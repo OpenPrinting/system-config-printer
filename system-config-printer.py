@@ -9,6 +9,14 @@ import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
 from foomatic import Foomatic
 
+domain='system-config-printer'
+import locale
+locale.setlocale (locale.LC_ALL, "")
+from rhpl.translate import _, N_
+import rhpl.translate as translate
+translate.textdomain (domain)
+gtk.glade.bindtextdomain (domain)
+
 class GUI:
 
     def __init__(self):
@@ -204,10 +212,10 @@ class GUI:
             self.entPasswd.grab_focus ()
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
-            if result:
-                self.password = ''
-            else:
+            if result == gtk.RESPONSE_OK:
                 self.password = self.entPasswd.get_text()
+            else:
+                self.password = ''
             self.passwd_retry = False
         else:
             self.passwd_retry = True
