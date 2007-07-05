@@ -6,6 +6,7 @@ SOURCES=cupsd.py         \
 	cupshelpers.py   \
 	foomatic.py      \
 	nametree.py      \
+	options.py       \
 	optionwidgets.py \
 	probe_printer.py \
 	system-config-printer.py \
