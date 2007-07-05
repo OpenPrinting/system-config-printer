@@ -1468,9 +1468,9 @@ class GUI:
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
-        self.initNewPrinterWindow()
         self.loadFoomatic()
         self.dialog_mode = "ppd"
+        self.initNewPrinterWindow()
         self.NewPrinterWindow.set_title(_("Change Driver"))
 
         self.ntbkNewPrinter.set_current_page(2)
