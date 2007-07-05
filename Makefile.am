@@ -34,17 +34,20 @@ autostartdir = $(sysconfdir)/xdg/autostart/
 install-desktopDATA: $(desktop_DATA)
 	mkdir -p $(DESTDIR)$(desktopdir)
 	mkdir -p $(DESTDIR)$(desktopdir)
-	desktop-file-install --vendor redhat \
-	  --dir $(DESTDIR)$(desktopdir)      \
-	  --add-category X-Red-Hat-Base      \
-	  --add-category SystemSetup         \
-	  --add-category Application         \
+	desktop-file-install --vendor redhat	\
+	  --dir $(DESTDIR)$(desktopdir)		\
+	  --add-category X-Red-Hat-Base		\
+	  --add-category System			\
+	  --add-category Settings		\
+	  --add-category GTK			\
 	  system-config-printer.desktop
-	desktop-file-install --vendor redhat \
-	  --dir $(DESTDIR)$(autostartdir)      \
-	  --add-category X-Red-Hat-Base      \
-	  --add-category SystemSetup         \
-	  --add-category Application         \
+	desktop-file-install --vendor redhat	\
+	  --dir $(DESTDIR)$(autostartdir)	\
+	  --add-category X-Red-Hat-Base		\
+	  --add-category System			\
+	  --add-category Monitor		\
+	  --add-category TrayIcon		\
+	  --add-category GTK			\
 	  print-applet.desktop
 
 uninstall-desktopDATA:
