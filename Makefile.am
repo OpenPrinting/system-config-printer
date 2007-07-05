@@ -17,7 +17,8 @@ nobase_pkgdata_DATA=				\
 	gtk_html2pango.py			\
 	system-config-printer.glade		\
 	applet.glade				\
-	applet.png
+	applet.png				\
+	inspecting-printer.png
 
 nobase_sbin_SCRIPTS=\
 	system-config-printer

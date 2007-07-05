@@ -24,6 +24,7 @@ APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
 GLADE="applet.glade"
 ICON="applet.png"
+SEARCHING_ICON="inspecting-printer.png"
 
 CONNECTING_TIMEOUT = 60 # seconds
 MIN_REFRESH_INTERVAL = 1 # seconds
@@ -282,10 +283,6 @@ class JobManager:
 
             self.notify = None
             self.notified_reason = None
-
-            if not pynotify.init (PROGRAM_NAME):
-                print >> sys.stderr, ("%s: unable to initialize pynotify" %
-                                      PROGRAM_NAME)
 
         self.refresh ()
 
@@ -829,8 +826,12 @@ def show_version ():
 #### Main program entry
 ####
 
+global waitloop, runloop, jobmanager
+
 trayicon = True
 service_running = False
+waitloop = runloop = None
+jobmanager = None
 
 import sys, getopt
 try:
@@ -856,6 +857,12 @@ import dbus
 import dbus.glib
 import dbus.service
 import gobject
+import pynotify
+
+#Must be done before connecting to D-Bus (for some reason).
+if not pynotify.init (PROGRAM_NAME):
+    print >> sys.stderr, ("%s: unable to initialize pynotify" %
+                          PROGRAM_NAME)
 
 if trayicon:
     # Stop running when the session ends.
@@ -871,21 +878,126 @@ if trayicon:
         sys.exit (1)
 
 ####
-#### PrintDriverSelection DBus server
+#### NewPrinterNotification DBus server (the 'new' way).  Note: this interface
+#### is not final yet.
 ####
-PDS_PATH="/com/redhat/PrintDriverSelection"
-PDS_IFACE="com.redhat.PrintDriverSelection"
-PDS_OBJ="com.redhat.PrintDriverSelection"
-class PrintDriverSelection(dbus.service.Object):
-    def __init__(self, bus_name):
-        dbus.service.Object.__init__(self, bus_name, PDS_PATH)
+PDS_PATH="/com/redhat/NewPrinterNotification"
+PDS_IFACE="com.redhat.NewPrinterNotification"
+PDS_OBJ="com.redhat.NewPrinterNotification"
+class NewPrinterNotification(dbus.service.Object):
+    STATUS_SUCCESS = 0
+    STATUS_MODEL_MISMATCH = 1
+    STATUS_GENERIC_DRIVER = 2
+    STATUS_NO_DRIVER = 3
 
-    @dbus.service.method(PDS_IFACE, in_signature='ssss', out_signature='')
-    def PromptPrintDriver (self, make, model, uid, name):
+    def __init__ (self, bus):
+        self.bus = bus
+        self.getting_ready = 0
+        bus_name = dbus.service.BusName (PDS_OBJ, bus=bus)
+        dbus.service.Object.__init__ (self, bus_name, PDS_PATH)
+
+    def wake_up (self):
+        global waitloop, runloop, jobmanager
         do_imports ()
-        print "Need to implement PromptPrintDriver"
+        if jobmanager == None:
+            waitloop.quit ()
+            runloop = gobject.MainLoop ()
+            jobmanager = JobManager(bus, runloop,
+                                    service_running=service_running,
+                                    trayicon=trayicon)
 
-    # Need to add an interface for providing a PPD.
+    @dbus.service.method(PDS_IFACE, in_signature='', out_signature='')
+    def GetReady (self):
+        print "GetReady"
+        self.wake_up ()
+        if self.getting_ready == 0:
+            jobmanager.set_special_statusicon (APPDIR + "/" +
+                                               SEARCHING_ICON)
+
+        self.getting_ready += 1
+        gobject.timeout_add (30 * 1000, self.timeout_ready)
+
+    def timeout_ready (self):
+        global jobmanager
+        if self.getting_ready > 0:
+            self.getting_ready -= 1
+        if self.getting_ready == 0:
+            jobmanager.unset_special_statusicon ()
+
+        return False
+
+    @dbus.service.method(PDS_IFACE, in_signature='isssss', out_signature='')
+    def NewPrinter (self, status, name, mfg, mdl, des, cmd):
+        print "NewPrinter", status, name, mfg, mdl, des, cmd
+        global jobmanager
+        self.wake_up ()
+        self.timeout_ready ()
+        c = cups.Connection ()
+        try:
+            printer = c.getPrinters ()[name]
+        except KeyError:
+            return
+        del c
+
+        driver = printer['printer-make-and-model']
+        if status < self.STATUS_GENERIC_DRIVER:
+            title = _("Printer added")
+        else:
+            title = _("Missing printer driver")
+
+        if status == self.STATUS_SUCCESS:
+            text = _("`%s' is ready for printing.") % name
+            n = pynotify.Notification (title, text)
+            n.set_urgency (pynotify.URGENCY_NORMAL)
+            n.add_action ("configure", _("Configure"),
+                          lambda x, y: self.configure (x, y, name))
+        else: # Model mismatch
+            text = _("`%s' has been added, using the `%s' driver.") % \
+                   (name, driver)
+            n = pynotify.Notification (title, text)
+            n.set_urgency (pynotify.URGENCY_CRITICAL)
+            n.add_action ("find-driver", _("Find driver"),
+                          lambda x, y: self.find_driver (x, y, name))
+
+        n.set_timeout (pynotify.EXPIRES_NEVER)
+        n.attach_to_status_icon (jobmanager.statusicon)
+        n.show ()
+
+    def configure (self, notification, action, name):
+        print "configure:", notification, action, name
+        import os
+        pid = os.fork ()
+        if pid == 0:
+            # Child.
+            cmd = "/usr/bin/system-config-printer"
+            argv = [cmd, "--configure-printer", name]
+            os.execvp (cmd, argv)
+            sys.exit (1)
+        elif pid == -1:
+            print "Error forking process"
+
+    def find_driver (self, notification, action, name):
+        print "find_driver:", notification, action, name
+        argv = ["system-config-printer",
+                "--find-driver",
+                name]
+
+if trayicon:
+    try:
+        print "FIXME: Should use the system bus for NewPrinterNotification"
+        bus = dbus.SessionBus()
+    except:
+        print >> sys.stderr, \
+              "%s: failed to connect to session D-Bus" % PROGRAM_NAME
+        sys.exit (1)
+
+    try:
+        npl = NewPrinterNotification(bus)
+        service_running = True
+    except:
+        print >> sys.stderr, \
+              "%s: failed to start NewPrinterNotification service" % \
+              PROGRAM_NAME
 
 try:
     bus = dbus.SystemBus()
@@ -894,14 +1006,6 @@ except:
     sys.exit (1)
 
 if trayicon:
-    try:
-        name = dbus.service.BusName (PDS_OBJ, bus=bus)
-        PrintDriverSelection(name)
-        service_running = True
-    except:
-        print >> sys.stderr, \
-              "%s: failed to start PrintDriverSelection service" % PROGRAM_NAME
-
     # Start off just waiting for print jobs or printer errors.
     def any_jobs_or_errors ():
         try:
@@ -919,18 +1023,22 @@ if trayicon:
     if not any_jobs_or_errors ():
         def check_for_jobs (*args):
             if any_jobs_or_errors ():
-                loop.quit ()
+                waitloop.quit ()
 
         bus.add_signal_receiver (check_for_jobs,
                                  path="/com/redhat/PrinterSpooler",
                                  dbus_interface="com.redhat.PrinterSpooler")
-        loop = gobject.MainLoop ()
-        loop.run()
+        waitloop = gobject.MainLoop ()
+        waitloop.run()
+        waitloop = None
         bus.remove_signal_receiver (check_for_jobs,
                                     path="/com/redhat/PrinterSpooler",
                                     dbus_interface="com.redhat.PrinterSpooler")
 
-do_imports()
-loop = gobject.MainLoop ()
-JobManager(bus, loop, service_running=service_running, trayicon=trayicon)
-loop.run()
+if jobmanager == None:
+    do_imports()
+    runloop = gobject.MainLoop ()
+    jobmanager = JobManager(bus, runloop,
+                            service_running=service_running, trayicon=trayicon)
+
+runloop.run()
