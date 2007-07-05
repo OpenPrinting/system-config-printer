@@ -2,7 +2,19 @@
 
 import sys, os, tempfile, time
 import signal, thread
-import gtk.glade, cups, cupshelpers
+try:
+    import gtk.glade
+except RuntimeError, e:
+    print "system-config-printer:", e
+    print "This is a graphical application and requires DISPLAY to be set."
+    sys.exit (1)
+
+if sys.argv[1] == '--help':
+    print ("\nThis is system-config-printer, " \
+           "a CUPS server configuration program.\n")
+    sys.exit (0)
+
+import cups, cupshelpers
 import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
 from foomatic import Foomatic
