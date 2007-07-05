@@ -419,21 +419,21 @@ class GUI:
             foomatic.addCupsPPDs(connection.getPPDs(), connection)
         except RuntimeError, s:
             if self.connect_thread != thread.get_ident(): return
-            gtk.threads_enter()
+            gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
             self.show_IPP_Error(None, s)
             gtk.threads_leave()
             return        
         except cups.IPPError, (e, s):
             if self.connect_thread != thread.get_ident(): return
-            gtk.threads_enter()
+            gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
             self.show_IPP_Error(e, s)
             gtk.threads_leave()
             return
 
         if self.connect_thread != thread.get_ident(): return
-        gtk.threads_enter()
+        gtk.gdk.threads_enter()
 
         self.foomatic = foomatic
         self.ConnectingDialog.hide()
@@ -1927,7 +1927,7 @@ def main():
     # The default configuration requires root for administration.
     cups.setUser ("root")
     gtk.gdk.threads_init()
-    gtk.threads_enter()
+    gtk.gdk.threads_enter()
 
     mainwindow = GUI()
     if gtk.__dict__.has_key("main"):
