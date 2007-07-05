@@ -324,7 +324,10 @@ class GUI:
                 table.resize (rows, 2)
                 o = OptionWidget(option, ppd, self)
                 if o.label:
-                    table.attach(o.label, 0, 1, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    a = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                    a.set_padding (0, 0, 0, 6)
+                    a.add (o.label)
+                    table.attach(a, 0, 1, nr, nr+1, gtk.FILL, 0, 0, 0)
                     table.attach(o.selector, 1, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
                 else:
                     table.attach(o.selector, 0, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
