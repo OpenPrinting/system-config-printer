@@ -2303,6 +2303,9 @@ class GUI:
         check = False
         checkppd = None
 
+        DBErr_title = _('Database error')
+        DBErr_text = _("The '%s' driver cannot be used with printer '%s %s'.")
+
         if self.dialog_mode=="class":
             members = self.getCurrentClassMembers(self.tvNCMembers)
             try:
@@ -2321,10 +2324,8 @@ class GUI:
                 nr = model.get_path(iter)[0]
                 driver = self.NPDrivers[nr]
                 error_text = ('<span weight="bold" size="larger">' +
-                              _('Database error') + '</span>\n\n' +
-                              _("The '%s' driver cannot be used with printer "
-                                "'%s %s'.") % (driver, self.NPMake,
-                                               self.NPModel))
+                              DBErr_title + '</span>\n\n' +
+                              DBErr_text % (driver, self.NPMake, self.NPModel))
                 self.lblError.set_markup(error_text)
                 self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
                 self.ErrorDialog.run()
@@ -2378,10 +2379,8 @@ class GUI:
                 nr = model.get_path(iter)[0]
                 driver = self.NPDrivers[nr]
                 error_text = ('<span weight="bold" size="larger">' +
-                              _('Database error') + '</span>\n\n' +
-                              _("The '%s' driver cannot be used with printer "
-                                "'%s %s'.") % (driver, self.NPMake,
-                                               self.NPModel))
+                              DBErr_title + '</span>\n\n' +
+                              DBErr_text % (driver, self.NPMake, self.NPModel))
                 self.lblError.set_markup(error_text)
                 self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
                 self.ErrorDialog.run()
