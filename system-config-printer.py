@@ -2431,28 +2431,44 @@ class GUI:
         check = False
         checkppd = None
 
-        DBErr_title = _('Database error')
-        DBErr_text = _("The '%s' driver cannot be used with printer '%s %s'.")
-
         def get_PPD_but_handle_errors ():
             try:
                 ppd = self.getNPPPD()
             except RuntimeError, e:
-                model, iter = self.tvNPDrivers.get_selection().get_selected()
-                nr = model.get_path(iter)[0]
-                driver = self.NPDrivers[nr]
-                if driver.startswith ("gutenprint"):
-                    # This printer references some XML that is not installed
-                    # by default.  Point the user at the package they need
-                    # to install.
-                    DBErr = _("You will need to install the '%s' package "
-                              "in order to use this driver.") % \
-                              "gutenprint-foomatic"
+                if self.rbtnNPFoomatic.get_active():
+                    # Foomatic database problem of some sort.
+                    err_title = _('Database error')
+                    err_text = _("The '%s' driver cannot be "
+                                 "used with printer '%s %s'.")
+                    model, iter = (self.tvNPDrivers.get_selection().
+                                   get_selected())
+                    nr = model.get_path(iter)[0]
+                    driver = self.NPDrivers[nr]
+                    if driver.startswith ("gutenprint"):
+                        # This printer references some XML that is not
+                        # installed by default.  Point the user at the
+                        # package they need to install.
+                        err = _("You will need to install the '%s' package "
+                                "in order to use this driver.") % \
+                                "gutenprint-foomatic"
+                    else:
+                        err = err_text % (driver, self.NPMake, self.NPModel)
                 else:
-                    DBErr = DBErr_text % (driver, self.NPMake, self.NPModel)
+                    # This error came from trying to open the PPD file.
+                    err_title = _('PPD error')
+                    filename = self.filechooserPPD.get_filename()
+                    err = _('Failed to read PPD file.  Possible reason '
+                            'follows:' % filename) + '\n'
+                    os.environ["PPD"] = filename
+                    # We want this to be in the current natural language,
+                    # so we intentionally don't set LC_ALL=C here.
+                    p = os.popen ('/usr/bin/cupstestppd -rvv "$PPD"', 'r')
+                    output = p.readlines ()
+                    p.close ()
+                    err += reduce (lambda x, y: x + y, output)
 
                 error_text = ('<span weight="bold" size="larger">' +
-                              DBErr_title + '</span>\n\n' + DBErr)
+                              err_title + '</span>\n\n' + err)
                 self.lblError.set_markup(error_text)
                 self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
                 self.ErrorDialog.run()
