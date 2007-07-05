@@ -30,7 +30,7 @@ from pprint import pprint
 
 FOOMATIC_PPD_DIR = "/usr/share/foomatic/db/source/"
 
-def _ppdMakeModelSplit (ppd_make_and_model):
+def _ppdMakeModelSplit (ppd_make_and_model, ppdname=None):
     """Convert the ppd-make-and-model field into a (make, model) pair."""
     try:
         make, model = ppd_make_and_model.split(" ", 1)
@@ -56,6 +56,11 @@ def _ppdMakeModelSplit (ppd_make_and_model):
         else:
             # Otherwise just remove the 'Postscript (recommended)' bit.
             model = model[:-len(hp_suffix)]
+
+    if ppdname and ppdname.startswith ("foomatic:"):
+        f = model.find (" Foomatic/")
+        if f != -1:
+            model = model[:f]
 
     return (make, model)
 
@@ -406,7 +411,8 @@ class PPDPrinter(Printer):
         FoomaticXMLFile.__init__(self, name, foomatic)
 
         ppd = foomatic.ppds[name]
-        self.make, self.model = _ppdMakeModelSplit (ppd['ppd-make-and-model'])
+        self.make, self.model = _ppdMakeModelSplit (ppd['ppd-make-and-model'],
+                                                    ppdname=name)
         self.functionality = ''
         self.driver = ''
         self.drivers = {}
@@ -514,7 +520,8 @@ class Foomatic:
                 ppds.pop(name)
         self.ppds = ppds
         for name, ppd in self.ppds.iteritems():
-            (make, model) = _ppdMakeModelSplit (ppd['ppd-make-and-model'])
+            (make, model) = _ppdMakeModelSplit (ppd['ppd-make-and-model'],
+                                                ppdname=name)
 
             # ppd_makes[make][model] -> [names]
             models = self.ppd_makes.setdefault(make, {})
