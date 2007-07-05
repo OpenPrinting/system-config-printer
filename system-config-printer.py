@@ -189,6 +189,7 @@ class GUI:
                         "cmbJONumberUpLayout", "btnJOResetNumberUpLayout",
                         "sbJOBrightness", "btnJOResetBrightness",
                         "cbJOMirror", "btnJOResetMirror",
+                        "sbJOScaling", "btnJOResetScaling",
                         "tblJOOther",
                         "entNewJobOption", "btnNewJobOption",
                         
@@ -372,6 +373,10 @@ class GUI:
                  options.OptionAlwaysShown ("mirror", bool, False,
                                             self.cbJOMirror,
                                             self.btnJOResetMirror),
+
+                 options.OptionAlwaysShown ("scaling", int, 100,
+                                            self.sbJOScaling,
+                                            self.btnJOResetScaling),
                  ]
         self.job_options_widgets = {}
         self.job_options_buttons = {}

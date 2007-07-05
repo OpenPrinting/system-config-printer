@@ -2910,7 +2910,7 @@ Reverse portrait (180°)</property>
 						  </child>
 
 						  <child>
-						    <widget class="GtkButton" id="button22">
+						    <widget class="GtkButton" id="btnJOResetScaling">
 						      <property name="visible">True</property>
 						      <property name="tooltip" translatable="yes">Reset to system default</property>
 						      <property name="can_focus">True</property>
@@ -2918,6 +2918,7 @@ Reverse portrait (180°)</property>
 						      <property name="use_underline">True</property>
 						      <property name="relief">GTK_RELIEF_NORMAL</property>
 						      <property name="focus_on_click">True</property>
+						      <signal name="clicked" handler="on_job_option_reset" last_modification_time="Mon, 26 Feb 2007 13:56:38 GMT"/>
 						    </widget>
 						    <packing>
 						      <property name="left_attach">2</property>
@@ -2971,7 +2972,7 @@ Reverse portrait (180°)</property>
 						      <property name="spacing">6</property>
 
 						      <child>
-							<widget class="GtkSpinButton" id="spinbutton2">
+							<widget class="GtkSpinButton" id="sbJOScaling">
 							  <property name="visible">True</property>
 							  <property name="can_focus">True</property>
 							  <property name="climb_rate">1</property>
@@ -2981,6 +2982,7 @@ Reverse portrait (180°)</property>
 							  <property name="snap_to_ticks">False</property>
 							  <property name="wrap">False</property>
 							  <property name="adjustment">100 10 1000 1 10 10</property>
+							  <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 13:56:24 GMT"/>
 							</widget>
 							<packing>
 							  <property name="padding">0</property>
