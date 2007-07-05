@@ -1,5 +1,6 @@
 SUBDIRS=po
 nobase_pkgdata_SCRIPTS=				\
+	ppds.py					\
 	pysmb.py				\
 	system-config-printer.py		\
 	applet.py
