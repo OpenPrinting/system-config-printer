@@ -49,7 +49,8 @@ class StateReason:
         if self.level != None:
             return self.level
 
-        if self.reason.endswith ("-report"):
+        if (self.reason.endswith ("-report") or
+            self.reason == "connecting-to-device"):
             self.level = self.REPORT
         elif self.reason.endswith ("-warning"):
             self.level = self.WARNING
@@ -88,6 +89,8 @@ class StateReason:
                                   _("Printer '%s' is low on ink.")),
             'marker-supply-empty': (_("Ink empty"),
                                     _("Printer '%s' has no ink left.")),
+            'connecting-to-device': (_("Not connected?"),
+                                     _("Printer '%s' may not be connected.")),
             }
         try:
             (title, text) = messages[self.get_reason ()]
@@ -99,8 +102,8 @@ class StateReason:
                 title = _("Printer warning")
             elif self.get_level () == self.ERROR:
                 title = _("Printer error")
-            text = _("Printer '%s': '%s'.") % (reason.get_printer (),
-                                               reason.get_reason ())
+            text = _("Printer '%s': '%s'.") % (self.get_printer (),
+                                               self.get_reason ())
         return (title, text)
 
     def get_tuple (self):
@@ -129,7 +132,6 @@ def collect_printer_state_reasons (connection):
             if (reason.startswith ("moving-to-paused") or
                 reason.startswith ("paused") or
                 reason.startswith ("shutdown") or
-                reason.startswith ("connecting-to-device") or
                 reason.startswith ("stopping") or
                 reason.startswith ("stopped-partly")):
                 continue
@@ -162,6 +164,7 @@ class JobManager:
         self.jobiters = {}
         self.which_jobs = "not-completed"
         self.hidden = False
+        self.still_connecting = set()
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE)
         self.xml.signal_autoconnect(self)
@@ -343,12 +346,31 @@ class JobManager:
         else:
             self.PrintersWindow.hide()
 
+    def check_still_connecting(self, connecting_devices):
+        """Timer callback to check on connecting-to-device reasons."""
+        still_connecting = set()
+        connection = cups.Connection ()
+        printer_reasons = collect_printer_state_reasons (connection)
+        for reason in printer_reasons:
+            if (reason.get_printer () in connecting_devices and
+                reason.get_reason () == "connecting-to-device"):
+                still_connecting.add (reason.get_printer ())
+        del connection
+
+        self.still_connecting = still_connecting
+        if len (still_connecting):
+            self.refresh ()
+
+        # Don't run this callback again.
+        return False
+
     def check_state_reasons(self, connection, my_printers=set()):
         printer_reasons = collect_printer_state_reasons (connection)
 
         # Look for any new reasons since we last checked.
         old_reasons_seen_keys = self.reasons_seen.keys ()
         reasons_now = set()
+        connecting_devices = set()
         for reason in printer_reasons:
             tuple = reason.get_tuple ()
             reasons_now.add (tuple)
@@ -360,6 +382,16 @@ class JobManager:
                 title, text = reason.get_description ()
                 self.store_printers.set_value (iter, 2, text)
                 self.reasons_seen[tuple] = iter
+                if reason.get_reason () == "connecting-to-device":
+                    # Check this again later.
+                    connecting_devices.add (reason.get_printer ())
+
+        if len (connecting_devices) > 0:
+            # Check on them again in a minute's time.
+            gobject.timeout_add (60000,
+                                 self.check_still_connecting,
+                                 connecting_devices)
+
         items = self.reasons_seen.keys ()
         for tuple in items:
             if not tuple in reasons_now:
@@ -411,6 +443,19 @@ class JobManager:
             if reason.get_printer () in my_printers:
                 my_reasons.append (reason)
         reason = worst_printer_state_reason (connection, my_reasons)
+
+        # If connecting-to-device is the worst reason, check if it's been
+        # like that for more than a minute.  If so, let's put a warning
+        # bubble up.
+        if (self.trayicon and reason != None and
+            len (self.still_connecting) and
+            reason.get_reason () == "connecting-to-device"):
+            # This will be in our list of reasons we've already seen,
+            # which ordinarily stops us notifying the user.  In this
+            # case, pretend we haven't seen it before.
+            old_reasons_seen_keys.remove (reason.get_tuple ())
+            reason = StateReason (self.still_connecting.copy ().pop (),
+                                  reason.get_reason () + "-error")
 
         if (self.trayicon and reason != None and
             reason.get_level () >= StateReason.WARNING):
