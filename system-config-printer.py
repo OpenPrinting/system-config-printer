@@ -1477,9 +1477,10 @@ class GUI:
             for widget in [self.entNPLocation,
                            self.entNPDescription,
                            self.entSMBURI, self.entSMBUsername,
-                           self.entSMBPassword]:
+                           self.entSMBPassword, self.entNPTDirectJetHostname]:
                 widget.set_text('')
 
+        self.entNPTDirectJetPort.set_text('9100')
         self.setNPButtons()
         self.NewPrinterWindow.set_transient_for(self.MainWindow)
         self.NewPrinterWindow.show()
