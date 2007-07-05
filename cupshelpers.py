@@ -223,6 +223,26 @@ def getPrinters(connection):
             printer.device_uri = printers_conf.device_uris[name]
     return printers
 
+def parseDeviceID (id):
+    id_dict = {}
+    pieces = id.split(";")
+    for piece in pieces:
+        if piece.find(":") == -1:
+            continue
+        name, value = piece.split(":",1)
+        if name=="CMD":
+            value = value.split(',') 
+        id_dict[name] = value
+    if id_dict.has_key ("MANUFACTURER"):
+        id_dict.setdefault("MFG", id_dict["MANUFACTURER"])
+    if id_dict.has_key ("MODEL"):
+        id_dict.setdefault("MDL", id_dict["MODEL"])
+    if id_dict.has_key ("COMMAND SET"):
+        id_dict.setdefault("CMD", id_dict["COMMAND SET"])
+    for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
+        id_dict.setdefault(name, "")
+    return id_dict
+
 class Device:
 
     prototypes = {
@@ -242,16 +262,7 @@ class Device:
 
         #self.id = 'MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;SN:US05N1J00XLG;S:00808880800010032C1000000C2000000;P:0800,FL,B0;J:                    ;'
 
-        self.id_dict = {}
-        pieces = self.id.split(";")
-        for piece in pieces:
-            if piece.find (":") == -1: continue
-            name, value = piece.split(":",1)
-            if name=="CMD":
-                value = value.split(',') 
-            self.id_dict[name] = value
-        for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
-            self.id_dict.setdefault(name, "")
+        self.id_dict = parseDeviceID (self.id)
 
     def __cmp__(self, other):
         if self.is_class != other.is_class:

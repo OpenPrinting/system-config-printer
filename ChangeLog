@@ -1,5 +1,11 @@
 2006-11-09  Tim Waugh  <twaugh@redhat.com>
 
+	* cupshelpers.py (parseDeviceID): New function.
+	(Device.__init__): Use it.
+	* foomatic.py (Foomatic._add_printer): Likewise.
+	(Foomatic.addCupsPPDs): Parse IEEE 1284 Device IDs from CUPS PPDs
+	and add them to the make/model look-up dictionary.
+
 	* foomatic.py (Foomatic.getPPD): Convert command sets to lower
 	case for comparison.
 	(Foomatic.getPPD): Match PCL6, PCL5e, PCL5c, ESCPL2 command sets.

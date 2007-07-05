@@ -27,6 +27,7 @@ import cups
 from gtk_html2pango import HTML2PangoParser
 from cStringIO import StringIO
 from pprint import pprint
+from cupshelpers import parseDeviceID
 
 FOOMATIC_PPD_DIR = "/usr/share/foomatic/db/source/"
 
@@ -490,18 +491,10 @@ class Foomatic:
             if dict.has_key("ieee1284"):
                 self._auto_ieee1284[dict["ieee1284"]] = printer.name
                 # Also parse the ID.
-                pieces = dict["ieee1284"].split(";")
-                mfg = mdl = None
-                for piece in pieces:
-                    if piece.find (":") == -1: continue
-                    name, value = piece.split(":",1)
-                    if name == "MFG":
-                        mfg = value
-                    elif name == "MDL":
-                        mdl = value
-                if mfg and mdl:
-                    d = self._auto_make.setdefault(mfg, {})
-                    d[mdl] = printer.name
+                id_dict = parseDeviceID (dict["ieee1284"])
+                if id_dict["MFG"] and id_dict["MDL"]:
+                    d = self._auto_make.setdefault(id_dict["MFG"], {})
+                    d[id_dict["MDL"]] = printer.name
             if dict.has_key("description"):
                 self._auto_description[dict["description"]] = printer.name
         
@@ -535,6 +528,10 @@ class Foomatic:
             if ppd.has_key('ppd-device-id') and ppd['ppd-device-id']:
                 self._auto_ieee1284.setdefault(ppd['ppd-device-id'],
                                                name)
+                id_dict = parseDeviceID (ppd['ppd-device-id'])
+                if id_dict["MFG"] and id_dict["MDL"]:
+                    d = self._auto_make.setdefault(id_dict["MFG"], {})
+                    d[id_dict["MDL"]] = printer.name                
 
 #     def clearCupsPPDs(self):
 #         for name, ppd in self.ppds.iteritems():
@@ -833,7 +830,10 @@ class Foomatic:
                 printer = self.getPrinter("Generic-ESC_P_Dot_Matrix_Printer")
             else:
                 return None
-        return printer.getPPD()
+        try:
+            return printer.getPPD()
+        except:
+            return None
 
     def getCupsPPD(self, printer, ppds):
         make_model = "%s %s" % (printer.make, printer.model)
