@@ -53,6 +53,8 @@ class GUI:
 
                         "ErrorDialog", "lblError",
 
+                        "ApplyDialog",
+
                         "NewPrinterWindow", "ntbkNewPrinter",
                         "btnNPBack", "btnNPForward", "btnNPApply",
                         "entNPName", "entNPDescription", "entNPLocation",
@@ -153,6 +155,17 @@ class GUI:
     # Connect to Server
 
     def on_connect_activate(self, widget):
+        # check for unapplied changes
+        if self.changed:
+            response = self.ApplyDialog.run()
+            self.ApplyDialog.hide()
+            if response == gtk.RESPONSE_APPLY:
+                self.on_btnApply_clicked(None)
+            elif response == gtk.RESPONSE_CANCEL:
+                return
+            else:
+                pass # just ignore the changes
+
         # Use browsed queues to build up a list of known IPP servers
         known_servers = [ 'localhost' ]
         for name in self.printers:
@@ -185,7 +198,6 @@ class GUI:
         self.chkEncrypted.set_active (cups.getEncryption () ==
                                       cups.HTTP_ENCRYPT_ALWAYS)
 
-        # XXX check for unapplied changes
         self.cmbServername.grab_focus ()
         self.ConnectDialog.set_transient_for (self.MainWindow)
         response = self.ConnectDialog.run()
@@ -248,6 +260,17 @@ class GUI:
     def on_btnPasswdCancel_clicked(self, widget):
         self.PasswordDialog.response(1)
 
+    # Handle unapplied changes (dialog)
+
+    def on_btnApplyApply_clicked(self, button):
+        self.ApplyDialog.response(gtk.RESPONSE_APPLY)
+
+    def on_btnApplyCancel_clicked(self, button):
+        self.ApplyDialog.response(gtk.RESPONSE_CANCEL)
+
+    def on_btnApplyDiscard_clicked(self, button):
+        self.ApplyDialog.response(gtk.RESPONSE_REJECT)
+
     # Data handling
 
     def option_changed(self, option):
@@ -282,9 +305,6 @@ class GUI:
         elif type == "Settings":
             print "Apply Settings"
 
-    #def deselect_entry(self):
-    #    if self.changed:
-
     def show_IPP_Error(self, exception, message):
         if exception == cups.IPP_NOT_AUTHORIZED:
             error_text = ('<span weight="bold" size="larger">' +
@@ -298,8 +318,7 @@ class GUI:
         self.lblError.set_markup(error_text)
         self.ErrorDialog.set_transient_for (self.MainWindow)
         self.ErrorDialog.run()
-        self.ErrorDialog.hide()
-        
+        self.ErrorDialog.hide()        
             
     def save_printer(self, name):
         self.getPrinterSettings()
@@ -330,12 +349,20 @@ class GUI:
             self.show_IPP_Error(e, s)
 
     def on_tvMainList_cursor_changed(self, list):
-        #if self.changed and not self.ask_apply_revert("",""):
-        #    
-        #    print "NOT DISCARDING"
+        if self.changed:
+            response = self.ApplyDialog.run()
+            self.ApplyDialog.hide()
+            if response == gtk.RESPONSE_APPLY:
+                self.on_btnApply_clicked(None)
+            elif response == gtk.RESPONSE_CANCEL:
+                self.tvMainList.get_selection().select_iter(
+                    self.mainListSelected)
+                return
+            else:
+                pass # just ignore the changes            
 
         name, type = self.getSelectedItem()
-
+        model, self.mainListSelected = self.tvMainList.get_selection().get_selected()
         item_selected = True
         if type == "Settings":
             self.ntbkMain.set_current_page(0)
@@ -349,7 +376,7 @@ class GUI:
 
         for item in [self.copy, self.delete, self.btnCopy, self.btnDelete]:
             item.set_sensitive(item_selected)
-            
+
     def fillPrinterTab(self, name):
         self.changed = set() # of options
         self.options = {} # keyword -> Option object
@@ -443,7 +470,16 @@ class GUI:
         pass
 
     def on_quit_activate(self, widget, event=None):
-        # XXX check for unapplied changes
+        # check for unapplied changes
+        if self.changed:
+            response = self.ApplyDialog.run()
+            self.ApplyDialog.hide()
+            if response == gtk.RESPONSE_APPLY:
+                self.on_btnApply_clicked(None)
+            elif response == gtk.RESPONSE_CANCEL:
+                return
+            else:
+                pass # just ignore the changes
         gtk.main_quit()
 
     # Create/Delete
