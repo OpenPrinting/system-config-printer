@@ -1743,7 +1743,7 @@ class GUI:
                                                       "scsi", "http"),
                               devices) 
 
-        self.devices.insert(0, cupshelpers.Device('',
+        self.devices.append(cupshelpers.Device('',
              **{'device-info' :_("Other")}))
         if current_uri:
             current.info += _(" (Current)")
