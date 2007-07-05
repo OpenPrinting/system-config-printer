@@ -315,7 +315,6 @@ class GUI:
         try:
             return self.foomatic
         except:
-            print "Loading foomatic database..."
             self.foomatic = Foomatic() # this works on the local db
             self.foomatic.addCupsPPDs(self.cups.getPPDs(), self.cups)
             return self.foomatic
@@ -367,7 +366,6 @@ class GUI:
             self.printers = {}
         
         self.default_printer = ""
-        #print self.printers
 
         local_printers = []
         local_classes = []
@@ -931,11 +929,9 @@ class GUI:
 
             for option in printer.attributes:
                 if option not in self.server_side_options:
-                    #print "unset", option
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
                 if option.is_changed or saveall:
-                    #print "save", option.name, `option.get_current_value()`
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
@@ -1064,8 +1060,15 @@ class GUI:
         self.lblPMakeModel.set_text(printer.make_and_model)
         self.lblPState.set_text(printer.state_description)
 
-        self.entPDevice.set_text(printer.device_uri)
-
+        uri = printer.device_uri
+        if uri.startswith("smb://"):
+            group, host, share, user, password = self.parse_SMBURI(uri[6:])
+            if password:
+                uri = "smb://" + self.construct_SMBURI(group, host, share, user, '*' * len(password))
+                self.entPDevice.set_sensitive(False)
+        self.entPDevice.set_text(uri)
+        self.changed.discard(self.entPDevice)
+        
         # Hide make/model and Device URI for classes
         for widget in (self.lblPMakeModel2, self.lblPMakeModel,
                        self.btnChangePPD, self.lblPDevice2,
@@ -1455,6 +1458,7 @@ class GUI:
     def on_btnSelectDevice_clicked(self, button):
         self.loadFoomatic()
         self.dialog_mode = "device"
+        self.initNewPrinterWindow()
         self.NewPrinterWindow.set_title(_("Change Device URI"))
 
         self.ntbkNewPrinter.set_current_page(1)
@@ -1464,6 +1468,7 @@ class GUI:
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
+        self.initNewPrinterWindow()
         self.loadFoomatic()
         self.dialog_mode = "ppd"
         self.NewPrinterWindow.set_title(_("Change Driver"))
@@ -1490,7 +1495,6 @@ class GUI:
         else:
             self.auto_model = ""
 
-        #print self.auto_make, self.auto_model
         self.fillMakeList()
         self.initNewPrinterWindow()
         
@@ -1682,7 +1686,7 @@ class GUI:
         store = self.smb_store
         store.clear ()
 
-        self.busy (self.NewPrinterWindow)
+        self.busy(self.NewPrinterWindow)
         iter = None
         domains = pysmb.get_domain_list ()
         for domain in domains.keys ():
@@ -1693,7 +1697,7 @@ class GUI:
 
         if iter:
             dummy = store.append (iter)
-        self.ready (self.NewPrinterWindow)
+        self.ready(self.NewPrinterWindow)
 
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
@@ -1775,6 +1779,8 @@ class GUI:
             if u != -1:
                 user = uri[:u]
                 password = uri[u + 1:auth]
+            else:
+                user = uri[:auth]
             uri = uri[auth + 1:]
         sep = uri.count ('/')
         group = ''
@@ -1812,9 +1818,13 @@ class GUI:
 
         uri = ent.get_text ()
         (group, host, share, user, password) = self.parse_SMBURI (uri)
-        self.entSMBUsername.set_text (user)
-        self.entSMBPassword.set_text (password)
+        if user:
+            self.entSMBUsername.set_text (user)
+        if password:
+            self.entSMBPassword.set_text (password)
         self.tvSMBBrowser.get_selection ().unselect_all ()
+        if user or password:
+            ent.set_text(self.construct_SMBURI(group, host, share))
 
     def on_tvSMBBrowser_cursor_changed (self, view):
         store, iter = view.get_selection ().get_selected ()
@@ -1923,7 +1933,10 @@ class GUI:
         elif device.type == "lpd":
             pass # XXX
         elif device.uri == "smb":
+            self.entSMBURI.set_text('')
             self.browse_smb_hosts ()
+        elif device.type == "smb":
+            self.entSMBURI.set_text(device.uri[6:])
         else:
             self.entNPTDevice.set_text(device.uri)
 
@@ -1993,8 +2006,6 @@ class GUI:
             device =  self.device.uri.split("?")[0] #"serial:/dev/ttyS%s" 
             if options:
                 device = device + "?" + options
-        elif not self.device.is_class:
-            device = self.device.uri
         elif type == "smb":
             uri = self.entSMBURI.get_text ()
             (group, host, share, u, p) = self.parse_SMBURI (uri)
@@ -2002,6 +2013,8 @@ class GUI:
             password = percentEncode (self.entSMBPassword.get_text ())
             uri = self.construct_SMBURI (group, host, share, user, password)
             device = "smb://" + uri
+        elif not self.device.is_class:
+            device = self.device.uri
         else:
             device = self.entNPTDevice.get_text()
         return device
@@ -2271,9 +2284,7 @@ class GUI:
                                 
             # copy over old option settings
             if not self.rbtnChangePPDasIs.get_active():
-                print "COPYING OPTIONS"
                 cupshelpers.copyPPDOptions(self.ppd, ppd)
-
             try:
                 self.passwd_retry = False # use cached Passwd
                 self.cups.addPrinter(name, ppd=ppd)

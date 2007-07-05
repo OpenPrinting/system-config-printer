@@ -162,7 +162,6 @@ class Printer:
                 os.unlink(filename)
             except cups.IPPError:
                 self._ppd = False
-            
         return self._ppd
 
     def setOption(self, name, value):
@@ -222,6 +221,9 @@ def getPrinters(connection):
         if classes.has_key(name):
             printer.class_members = classes[name]
             printer.class_members.sort()
+
+        if printers_conf.device_uris.has_key(name):
+            printer.device_uri = printers_conf.device_uris[name]
     return printers
 
 class Device:
@@ -286,6 +288,7 @@ class PrintersConf:
     
     def __init__(self, connection):
         self.set_options = {}
+        self.device_uris = {}
         self.connection = connection
         self.parse(self.fetch('/admin/conf/printers.conf'), 'Printer')
         self.parse(self.fetch('/admin/conf/classes.conf'), 'Class')
@@ -310,16 +313,18 @@ class PrintersConf:
         current_printer = None
         for line in lines:
             words = line.split()
-            if len (words) == 0:
+            if len(words) == 0:
                 continue
             if words[0] == "Option":
                 self.set_options.setdefault(current_printer, []).append(words[1])
-                continue
-            match = re.match(r"<(Default)?%s ([^>]+)>\s*\n" % tag, line) 
-            if match:
-                current_printer = match.group(2)
-            if line.strip().find("</%s>" % tag) != -1:
-                current_printer = None
+            elif words[0] == "DeviceURI":
+                self.device_uris[current_printer] = words[1]
+            else:
+                match = re.match(r"<(Default)?%s ([^>]+)>\s*\n" % tag, line) 
+                if match:
+                    current_printer = match.group(2)
+                if line.strip().find("</%s>" % tag) != -1:
+                    current_printer = None
 
     def get_options(self, printername):
         return self.set_options.get(printername, [])
