@@ -8,6 +8,7 @@ nobase_pkgdata_SCRIPTS=				\
 	options.py				\
 	optionwidgets.py			\
 	probe_printer.py			\
+	pysmb.py				\
 	system-config-printer.py		\
 	gtk_label_autowrap.py			\
 	gtk_html2pango.py

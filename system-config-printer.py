@@ -37,8 +37,10 @@ if len(sys.argv)>1 and sys.argv[1] == '--help':
            "a CUPS server configuration program.\n")
     sys.exit (0)
 
-import cups, cupshelpers, options
-import gobject # for TYPE_STRING
+import cups
+import pysmb
+import cupshelpers, options
+import gobject # for TYPE_STRING and TYPE_PYOBJECT
 from optionwidgets import OptionWidget
 from foomatic import Foomatic
 from nametree import BuildTree
@@ -140,6 +142,7 @@ class GUI:
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
                            "entNPTIPPHostname", "entNPTIPPPrintername",
                         "entNPTDirectJetHostname", "entNPTDirectJetPort",
+                        "entSMBURI", "tvSMBBrowser",
                            "entNPTDevice",
                            "tvNCMembers", "tvNCNotMembers",
                           "rbtnNPPPD", "tvNPMakes", 
@@ -1278,7 +1281,7 @@ class GUI:
         "lpd" : 4,
         "scsi" : 5,
         "serial" : 6,
-        "smb" : 1,
+        "smb" : 7,
         }
 
     # new printer
@@ -1354,7 +1357,28 @@ class GUI:
             for widget in [self.entNPName, self.entNPLocation,
                            self.entNPDescription]:
                 widget.set_text('')
-                
+
+        # SMB browser
+        self.smb_store = gtk.TreeStore (str, # host or share
+                                        str, # comment
+                                        gobject.TYPE_PYOBJECT, # domain dict
+                                        gobject.TYPE_PYOBJECT, # host dict
+                                        str, # username
+                                        str) # password
+        self.tvSMBBrowser.set_model (self.smb_store)
+        self.smb_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
+
+        # SMB list columns
+        col = gtk.TreeViewColumn (_("Share"), gtk.CellRendererText (),
+                                  text=0)
+        col.set_resizable (True)
+        col.set_sort_column_id (0)
+        self.tvSMBBrowser.append_column (col)
+
+        col = gtk.TreeViewColumn (_("Comment"), gtk.CellRendererText (),
+                                  text=1)
+        self.tvSMBBrowser.append_column (col)
+
         self.setNPButtons()
         self.NewPrinterWindow.set_transient_for(self.MainWindow)
         self.NewPrinterWindow.show()
@@ -1519,6 +1543,98 @@ class GUI:
         self.tvNPDevices.get_selection().select_path(0)
         self.on_tvNPDevices_cursor_changed(self.tvNPDevices)
 
+    def browse_smb_hosts (self):
+        """Initialise the SMB tree store."""
+        store = self.smb_store
+        store.clear ()
+
+        # TODO: Cursor busy
+        iter = None
+        domains = pysmb.get_domain_list ()
+        domains = { 'blah': { 'DOMAIN': 'blah domain', 'IP': '192.168.1.1'}}
+        for domain in domains.keys ():
+            d = domains[domain]
+            iter = store.append (None)
+            store.set_value (iter, 0, d['DOMAIN'])
+            store.set_value (iter, 2, d)
+
+        if iter:
+            dummy = store.append (iter)
+        # TODO: Cursor ready
+
+    def on_tvSMBBrowser_row_activated (self, view, path, column):
+        """Handle double-clicks in the SMB tree view."""
+        store = self.smb_store
+        iter = store.get_iter (path)
+        if store.iter_depth (iter) == 2:
+            # This is a share, not a host.
+            return
+
+        if view.row_expanded (path):
+            view.collapse_row (path)
+        else:
+            self.on_tvSMBBrowser_row_expanded (view, iter, path)
+
+    def on_tvSMBBrowser_row_expanded (self, view, iter, path):
+        """Handler for expanding a row in the SMB tree view."""
+        store = self.smb_store
+        try:
+            l_path = list(path)
+        except:
+            l_path = None
+
+        if len (l_path) == 2:
+            # Click on host, look for shares
+            try:
+                if self.expanding_row:
+                    return
+            except:
+                self.expanding_row = 1
+
+            host = store.get_value (iter, 3)
+            if host:
+                # TODO: Cursor busy
+                printers = pysmb.get_printer_list (host)
+                while store.iter_has_child (iter):
+                    i = store.iter_nth_child (iter, 0)
+                    store.remove (i)
+                for printer in printers.keys():
+                    i = store.append (iter)
+                    store.set_value (i, 0, printer)
+                    store.set_value (i, 1, printers[printer])
+                    store.set_value (i, 4, '')
+                    store.set_value (i, 5, '')
+                # TODO: Cursor ready
+
+            view.expand_row (path, 1)
+            del self.expanding_row
+        else:
+            # Click on domain, look for hosts
+            try:
+                if self.expanding_row:
+                    return
+            except:
+                self.expanding_row = 1
+
+            domain = store.get_value (iter, 2)
+            if domain:
+                # TODO: Cursor busy
+                hosts = pysmb.get_host_list (domain['IP'])
+                while store.iter_has_child (iter):
+                    i = store.iter_nth_child (iter, 0)
+                    store.remove (i)
+                for host in hosts.keys():
+                    h = hosts[host]
+                    i = store.append (iter)
+                    store.set_value (i, 0, h['NAME'])
+                    store.set_value (i, 3, h)
+                # TODO: Cursor ready
+            view.expand_row (path, 0)
+            del self.expanding_row
+
+    def on_tvSMBBrowser_select_cursor_row (self, *args):
+        print "FIXME: Fill in entSMBURI"
+
     def on_tvNPDevices_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
         path = model.get_path(iter)
@@ -1575,6 +1691,8 @@ class GUI:
             else:
                 self.entNPTIPPHostname.set_text(server)
                 self.entNPTIPPPrintername.set_text(printer)
+        elif device.type == "smb":
+            self.browse_smb_hosts ()
         else:
             self.entNPTDevice.set_text(device.uri)
 
