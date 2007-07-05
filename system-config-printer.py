@@ -200,6 +200,7 @@ class GUI:
         if self.passwd_retry or len(self.password) == 0:
             self.lblPasswordPrompt.set_label (self.prompt_primary +
                                               querystring)
+            self.PasswordDialog.set_transient_for (self.MainWindow)
             self.entPasswd.grab_focus ()
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
