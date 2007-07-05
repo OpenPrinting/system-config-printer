@@ -306,23 +306,30 @@ class GUI:
                 self.ntbkPrinter.insert_page(self.swPInstallOptions,
                                              gtk.Label(group.text), 1)
             else:
-                container = gtk.Frame (group.text)
-                container.set_shadow_type (gtk.SHADOW_NONE)
-                a = gtk.Alignment ()
-                a.set_padding (12, 0, 12, 0)
-                a.add (container)
-                self.vbPOptions.pack_start(a)
+                frame = gtk.Frame (group.text)
+                frame.set_shadow_type (gtk.SHADOW_NONE)
+                self.vbPOptions.pack_start (frame, False, False, 0)
+                container = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                container.set_padding (0, 0, 12, 0)
+                frame.add (container)
 
-            table = gtk.Table(len(group.options), 2, False)
-            #table.set_homogeneous
+            table = gtk.Table(1, 2, False)
             container.add(table)
 
+            rows = 0
             for nr, option in enumerate(group.options):
+                if option.keyword == "PageRegion":
+                    continue
+                rows += 1
+                table.resize (rows, 2)
                 o = OptionWidget(option, ppd, self)
-                table.attach(o.label, 0, 1, nr, nr+1, gtk.FILL, False)
-                table.attach(o.selector, 1, 2, nr, nr+1, gtk.FILL, False)
+                if o.label:
+                    table.attach(o.label, 0, 1, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    table.attach(o.selector, 1, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
+                else:
+                    table.attach(o.selector, 0, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
                 self.options.append(o)
-                
+
         self.swPInstallOptions.show_all()
         self.swPOptions.show_all()
 
