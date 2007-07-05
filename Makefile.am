@@ -68,6 +68,7 @@ install-desktopDATA: $(desktop_DATA)
 	  --dir $(DESTDIR)$(desktopdir)		\
 	  --add-category X-Red-Hat-Base		\
 	  --add-category Settings		\
+	  --add-category HardwareSettings	\
 	  --add-category GTK			\
 	  my-default-printer.desktop
 	desktop-file-install --vendor redhat	\
