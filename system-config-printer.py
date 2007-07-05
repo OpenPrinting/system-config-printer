@@ -857,7 +857,6 @@ class GUI:
         self.ErrorDialog.set_transient_for (self.MainWindow)
         self.ErrorDialog.run()
         self.ErrorDialog.hide()        
-	foo
             
     def save_printer(self, printer, saveall=False):
         name = printer.name
@@ -2302,27 +2301,37 @@ class GUI:
 
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
+            raw = False
             if isinstance(ppd, str) or isinstance(ppd, unicode):
                 try:
                     self.passwd_retry = False # use cached Passwd
                     self.cups.addPrinter(name, ppdname=ppd)
+                except cups.IPPError, (e, msg):
+                    self.show_IPP_Error(e, msg)
+                    return
+
+                try:
                     self.passwd_retry = False # use cached Passwd
                     filename = self.cups.getPPD(name)
                     ppd = cups.PPD(filename)
                     os.unlink(filename)
                 except cups.IPPError, (e, msg):
+                    if e == cups.IPP_NOT_FOUND:
+                        raw = True
+                    else:
+                        self.show_IPP_Error(e, msg)
+                        return
+
+            if not raw:
+                # copy over old option settings
+                if not self.rbtnChangePPDasIs.get_active():
+                    cupshelpers.copyPPDOptions(self.ppd, ppd)
+                try:
+                    self.passwd_retry = False # use cached Passwd
+                    self.cups.addPrinter(name, ppd=ppd)
+                except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
-                    return
-                                
-            # copy over old option settings
-            if not self.rbtnChangePPDasIs.get_active():
-                cupshelpers.copyPPDOptions(self.ppd, ppd)
-            try:
-                self.passwd_retry = False # use cached Passwd
-                self.cups.addPrinter(name, ppd=ppd)
-            except cups.IPPError, (e, msg):
-                self.show_IPP_Error(e, msg)
-                            
+
         self.NewPrinterWindow.hide()
         self.populateList()
 
