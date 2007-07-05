@@ -52,9 +52,9 @@ import gtk_label_autowrap
 domain='system-config-printer'
 import locale
 locale.setlocale (locale.LC_ALL, "")
-from rhpl.translate import _, N_
-import rhpl.translate as translate
-translate.textdomain (domain)
+from gettext import gettext as _
+import gettext
+gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
 pkgdata = '/usr/share/' + domain
 glade_file = pkgdata + '/' + domain + '.glade'

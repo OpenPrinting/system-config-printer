@@ -19,7 +19,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import gtk.glade, cups
-from rhpl.translate import _
+from gettext import gettext as _
 
 def OptionWidget(option, ppd, gui, tab_label=None):
     """Factory function"""
