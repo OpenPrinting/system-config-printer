@@ -249,13 +249,13 @@ class JobManager:
                 try:
                     jstate = data['job-state']
                     s = int (jstate)
-                    state = [ _("Pending"),
-                              _("Held"),
-                              _("Processing"),
-                              _("Stopped"),
-                              _("Canceled"),
-                              _("Aborted"),
-                              _("Completed") ][s - 3]
+                    state = { cups.IPP_JOB_PENDING:_("Pending"),
+                              cups.IPP_JOB_HELD:_("Held"),
+                              cups.IPP_JOB_PROCESSING: _("Processing"),
+                              cups.IPP_JOB_STOPPED: _("Stopped"),
+                              cups.IPP_JOB_CANCELED: _("Canceled"),
+                              cups.IPP_JOB_ABORTED: _("Aborted"),
+                              cups.IPP_JOB_COMPLETED: _("Completed") }[s]
                 except ValueError:
                     pass
                 except IndexError:
@@ -283,13 +283,14 @@ class JobManager:
         self.reprint.set_sensitive (True)
         if job.has_key ('job-state'):
             s = job['job-state']
-            if s >= 7:
+            if s >= cups.IPP_JOB_CANCELED:
                 self.cancel.set_sensitive (False)
-            if s != 3:
+            if s != cups.IPP_JOB_PENDING:
                 self.hold.set_sensitive (False)
-            if s != 4:
+            if s != cups.IPP_JOB_HELD:
                 self.release.set_sensitive (False)
-            if s < 7 or not job.get('job-preserved', False):
+            if (s < cups.IPP_JOB_CANCELED or
+                not job.get('job-preserved', False)):
                 self.reprint.set_sensitive (False)
         self.job_popupmenu.popup (None, None, None, event.button,
                                   event.get_time ())
@@ -401,15 +402,6 @@ except:
 ####
 #### Main program entry
 ####
-
-import sys
-for arg in sys.argv:
-    if arg.startswith ("--sm-client-id"):
-        # eggcups was in the default GNOME session in Fedora,
-        # but now we get run from an XDG autostart desktop file.
-        # If we were invoked with a '--sm-client-id' argument then
-        # it was from a session pre-dating Fedora 7 (bug #233261).
-        sys.exit (0)
 
 # Start off just waiting for print jobs.
 def any_jobs ():

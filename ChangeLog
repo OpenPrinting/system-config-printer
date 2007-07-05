@@ -4,6 +4,12 @@
 
 2007-03-27  Tim Waugh  <twaugh@redhat.com>
 
+	* applet.py (JobManager.refresh): Use job state constants.
+	(JobManager.on_treeview_button_press_event): Likewise.
+
+	* applet.py: No need to check for --sm-client-id now that the
+	applet has a different name.
+
 	* Makefile.am: Better desktop-file categories.
 
 	* print-applet.desktop.in: Remove 'eggcups' name from the
