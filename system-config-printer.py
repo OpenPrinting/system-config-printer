@@ -1727,6 +1727,7 @@ class GUI:
             if response == gtk.RESPONSE_APPLY:
                 err = self.apply()
             if err or response == gtk.RESPONSE_CANCEL:
+                # TODO: how do we just carry on as normal?
                 return
         gtk.main_quit()
 
