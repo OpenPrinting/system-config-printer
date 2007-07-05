@@ -84,6 +84,8 @@ class GUI:
         self.mainlist.append(("Printers:", ''))
 
         for name in names:
+            if self.printers[name]["printer-type"] & cups.CUPS_PRINTER_REMOTE:
+                continue
             self.mainlist.append(('  ' + name, 'Printer'))
         
         # Classes
@@ -158,7 +160,7 @@ class GUI:
     # Password handling
 
     def cupsPasswdCallback(self, querystring):
-        if self.passwd_retry or len (self.password) == 0:
+        if self.passwd_retry or len(self.password) == 0:
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
             if result:
