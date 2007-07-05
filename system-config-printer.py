@@ -777,7 +777,15 @@ class GUI:
         """Reconnect to CUPS after the server has reloaded."""
         # libcups will handle the reconnection; we just need to tell it
         # to do something.
-        self.cups.getClasses ()
+        try:
+            self.cups.getClasses ()
+        except cups.IPPError, (e, s):
+            self.show_IPP_Error(e, s)
+        except cups.HTTPError, (s,):
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            self.show_HTTP_Error(s)
 
     def on_btnCancelConnect_clicked(self, widget):
         """Close Connect dialog"""
