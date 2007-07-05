@@ -242,6 +242,29 @@ class GUI:
             parent=None, flags=0, type=gtk.MESSAGE_WARNING,
             buttons=gtk.BUTTONS_OK)
         
+        # SMB browser
+        self.smb_store = gtk.TreeStore (str, # host or share
+                                        str, # comment
+                                        gobject.TYPE_PYOBJECT, # domain dict
+                                        gobject.TYPE_PYOBJECT, # host dict
+                                        str, # username
+                                        str) # password
+        self.tvSMBBrowser.set_model (self.smb_store)
+        self.smb_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
+
+        # SMB list columns
+        col = gtk.TreeViewColumn (_("Share"), gtk.CellRendererText (),
+                                  text=0)
+        col.set_resizable (True)
+        col.set_sort_column_id (0)
+        self.tvSMBBrowser.append_column (col)
+
+        col = gtk.TreeViewColumn (_("Comment"), gtk.CellRendererText (),
+                                  text=1)
+        self.tvSMBBrowser.append_column (col)
+        slct = self.tvSMBBrowser.get_selection ()
+        slct.set_select_function (self.smb_select_function)
+
         self.populateList()
         
         self.xml.signal_autoconnect(self)
@@ -1358,27 +1381,6 @@ class GUI:
                            self.entNPDescription]:
                 widget.set_text('')
 
-        # SMB browser
-        self.smb_store = gtk.TreeStore (str, # host or share
-                                        str, # comment
-                                        gobject.TYPE_PYOBJECT, # domain dict
-                                        gobject.TYPE_PYOBJECT, # host dict
-                                        str, # username
-                                        str) # password
-        self.tvSMBBrowser.set_model (self.smb_store)
-        self.smb_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
-
-        # SMB list columns
-        col = gtk.TreeViewColumn (_("Share"), gtk.CellRendererText (),
-                                  text=0)
-        col.set_resizable (True)
-        col.set_sort_column_id (0)
-        self.tvSMBBrowser.append_column (col)
-
-        col = gtk.TreeViewColumn (_("Comment"), gtk.CellRendererText (),
-                                  text=1)
-        self.tvSMBBrowser.append_column (col)
-
         self.setNPButtons()
         self.NewPrinterWindow.set_transient_for(self.MainWindow)
         self.NewPrinterWindow.show()
@@ -1561,6 +1563,11 @@ class GUI:
             dummy = store.append (iter)
         # TODO: Cursor ready
 
+    def smb_select_function (self, path):
+        """Don't allow this path to be selected unless it is a leaf."""
+        iter = self.smb_store.get_iter (path)
+        return not self.smb_store.iter_has_child (iter)
+
     def on_tvSMBBrowser_row_activated (self, view, path, column):
         """Handle double-clicks in the SMB tree view."""
         store = self.smb_store
@@ -1577,12 +1584,7 @@ class GUI:
     def on_tvSMBBrowser_row_expanded (self, view, iter, path):
         """Handler for expanding a row in the SMB tree view."""
         store = self.smb_store
-        try:
-            l_path = list(path)
-        except:
-            l_path = None
-
-        if len (l_path) == 2:
+        if len (path) == 2:
             # Click on host, look for shares
             try:
                 if self.expanding_row:
@@ -1622,17 +1624,41 @@ class GUI:
                 while store.iter_has_child (iter):
                     i = store.iter_nth_child (iter, 0)
                     store.remove (i)
+                i = None
                 for host in hosts.keys():
                     h = hosts[host]
                     i = store.append (iter)
                     store.set_value (i, 0, h['NAME'])
                     store.set_value (i, 3, h)
+                if i:
+                    dummy = store.append (i)
                 # TODO: Cursor ready
             view.expand_row (path, 0)
             del self.expanding_row
 
-    def on_tvSMBBrowser_select_cursor_row (self, *args):
-        print "FIXME: Fill in entSMBURI"
+    def on_tvSMBBrowser_cursor_changed (self, view):
+        store, iter = view.get_selection ().get_selected ()
+        if not iter:
+            return
+
+        parent_iter = store.iter_parent (iter)
+        host = store.get_value (parent_iter, 0)
+        share = store.get_value (iter, 0)
+        domain_iter = store.iter_parent (parent_iter)
+        group = store.get_value (domain_iter, 2)['DOMAIN']
+        user = store.get_value (iter, 4)
+        passwd = store.get_value (iter, 5)
+
+        uri_password = ''
+        if passwd:
+            uri_password = ':' + '*' * len (passwd)
+        if user:
+            uri_password += '@'
+
+        uri_group = group + '/'
+        uri_share = '%s/%s' % (host, share)
+        uri = "%s%s%s%s" % (user, uri_password, uri_group, uri_share)
+        self.entSMBURI.set_text (uri)
 
     def on_tvNPDevices_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
@@ -1690,7 +1716,7 @@ class GUI:
             else:
                 self.entNPTIPPHostname.set_text(server)
                 self.entNPTIPPPrintername.set_text(printer)
-        elif device.type == "smb":
+        elif device.uri == "smb":
             self.browse_smb_hosts ()
         else:
             self.entNPTDevice.set_text(device.uri)
@@ -1763,6 +1789,8 @@ class GUI:
                 device = device + "?" + options
         elif not self.device.is_class:
             device = self.device.uri
+        elif type == "smb":
+            device = "smb://" + self.entSMBURI.get_text ()
         else:
             device = self.entNPTDevice.get_text()
         return device
