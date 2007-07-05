@@ -234,7 +234,8 @@ class GUI:
         if type == "Printer":
             self.getPrinterSettings()
             self.passwd_retry = False # use cached Passwd 
-            self.cups.addPrinter(name, ppd=self.ppd)
+            if self.ppd.nondefaultsMarked ():
+                self.cups.addPrinter(name, ppd=self.ppd)
 
             printer = self.printers[name] 
             new_values = {
@@ -352,7 +353,7 @@ class GUI:
         self.ppd.markDefaults()
         for option in self.options:
             option.writeback()
-        print self.ppd.conflicts()
+        print self.ppd.conflicts(), "conflicts"
 
     def fillClassTab(self, name):
         pass
