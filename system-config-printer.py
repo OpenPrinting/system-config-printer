@@ -1385,11 +1385,11 @@ class GUI:
         # clean Options Tab
         for widget in self.vbPOptions.get_children():
             self.vbPOptions.remove(widget)
+
         # insert Options Tab
         if self.ntbkPrinter.page_num(self.swPOptions) == -1:
             self.ntbkPrinter.insert_page(
                 self.swPOptions, self.lblPOptions, self.static_tabs)
-
 
         if not self.ppd:
             tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
@@ -1421,7 +1421,10 @@ class GUI:
                 frame.set_shadow_type (gtk.SHADOW_NONE)
                 self.vbPOptions.pack_start (frame, False, False, 0)
                 container = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
-                container.set_padding (0, 0, 12, 0)
+                # We want a left padding of 12, but there is a Table with
+                # spacing 6, and the left-most column of it (the conflict
+                # icon) is normally hidden, so just use 6 here.
+                container.set_padding (0, 0, 6, 0)
                 frame.add (container)
                 tab_label = self.lblPOptions
 
