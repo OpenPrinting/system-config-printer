@@ -24,7 +24,6 @@ import gobject
 import sys
 
 APPDIR="/usr/share/system-config-printer"
-APPDIR="."
 DOMAIN="system-config-printer"
 GLADE="applet.glade"
 ICON="applet.png"
