@@ -259,8 +259,9 @@ class Printer(FoomaticXMLFile):
                                                               "-" +
                                                               driver_name)[1]
                         os.system ('gzip -dc "$IN" > "$OUT"')
-                        # TODO: clean up temporary file
-                        return cups.PPD(os.environ['OUT'])
+                        ppdobj = cups.PPD(os.environ['OUT'])
+                        os.remove (os.environ['OUT'])
+                        return ppdobj
             else:
                 try:
                     fd, fname = tempfile.mkstemp(
@@ -272,7 +273,9 @@ class Printer(FoomaticXMLFile):
                 except IOError:
                     raise
                     return None
-                return cups.PPD(fname)
+                ppdobj = cups.PPD(fname)
+                os.remove (fname)
+                return ppdobj
         else:
             print self.name, driver_name
             return None
