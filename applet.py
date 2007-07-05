@@ -168,6 +168,7 @@ class JobManager:
         self.hidden = False
         self.connecting_to_device = {} # dict of printer->time first seen
         self.still_connecting = set()
+        self.will_update_job_creation_times = False
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE)
         self.xml.signal_autoconnect(self)
