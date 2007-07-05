@@ -193,6 +193,15 @@ class GUI:
                         "sbJOSaturation", "btnJOResetSaturation",
                         "sbJOHue", "btnJOResetHue",
                         "sbJOGamma", "btnJOResetGamma",
+                        "sbJOCpi", "btnJOResetCpi",
+                        "sbJOLpi", "btnJOResetLpi",
+                        "sbJOPageLeft", "btnJOResetPageLeft",
+                        "sbJOPageRight", "btnJOResetPageRight",
+                        "sbJOPageTop", "btnJOResetPageTop",
+                        "sbJOPageBottom", "btnJOResetPageBottom",
+                        "cbJOPrettyPrint", "btnJOResetPrettyPrint",
+                        "cbJOWrap", "btnJOResetWrap",
+                        "sbJOColumns", "btnJOResetColumns",
                         "tblJOOther",
                         "entNewJobOption", "btnNewJobOption",
                         
@@ -392,6 +401,39 @@ class GUI:
                  options.OptionAlwaysShown ("gamma", int, 1000,
                                             self.sbJOGamma,
                                             self.btnJOResetGamma),
+
+                 options.OptionAlwaysShown ("cpi", float, 10.0,
+                                            self.sbJOCpi, self.btnJOResetCpi),
+
+                 options.OptionAlwaysShown ("lpi", float, 6.0,
+                                            self.sbJOLpi, self.btnJOResetLpi),
+
+                 options.OptionAlwaysShown ("page-left", int, 18,
+                                            self.sbJOPageLeft,
+                                            self.btnJOResetPageLeft),
+
+                 options.OptionAlwaysShown ("page-right", int, 18,
+                                            self.sbJOPageRight,
+                                            self.btnJOResetPageRight),
+
+                 options.OptionAlwaysShown ("page-top", int, 36,
+                                            self.sbJOPageTop,
+                                            self.btnJOResetPageTop),
+
+                 options.OptionAlwaysShown ("page-bottom", int, 36,
+                                            self.sbJOPageBottom,
+                                            self.btnJOResetPageBottom),
+
+                 options.OptionAlwaysShown ("prettyprint", bool, False,
+                                            self.cbJOPrettyPrint,
+                                            self.btnJOResetPrettyPrint),
+
+                 options.OptionAlwaysShown ("wrap", bool, False, self.cbJOWrap,
+                                            self.btnJOResetWrap),
+
+                 options.OptionAlwaysShown ("columns", int, 1,
+                                            self.sbJOColumns,
+                                            self.btnJOResetColumns),
                  ]
         self.job_options_widgets = {}
         self.job_options_buttons = {}
