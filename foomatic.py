@@ -527,7 +527,7 @@ class Foomatic:
                 id_dict = parseDeviceID (ppd['ppd-device-id'])
                 if id_dict["MFG"] and id_dict["MDL"]:
                     d = self._auto_make.setdefault(id_dict["MFG"], {})
-                    d[id_dict["MDL"]] = printer.name                
+                    d[id_dict["MDL"]] = name                
 
 #     def clearCupsPPDs(self):
 #         for name, ppd in self.ppds.iteritems():
