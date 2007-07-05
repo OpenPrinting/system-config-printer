@@ -63,6 +63,25 @@ sys.path.append (pkgdata)
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 
+def percentEncode (text):
+    """Percent-encode ASCII text ready for inclusion in a URI."""
+    l = len (text)
+    i = 0
+    while i < l:
+        c = text[i]
+        a = ord (c)
+        if (a <= 0x1f or a == 0x7f or
+            c == ' ' or
+            '<>#%"'.find (c) != -1 or
+            '{}|\^[]`'.find (c) != -1):
+            pre = text[:i]
+            post = text[i + 1:]
+            text = pre + "%" + ("%2X" % a) + post
+            i += 2
+            l += 2
+        i += 1
+    return text
+
 class GUI:
 
     def __init__(self):
@@ -1980,7 +1999,7 @@ class GUI:
             uri = self.entSMBURI.get_text ()
             (group, host, share, u, p) = self.parse_SMBURI (uri)
             user = self.entSMBUsername.get_text ()
-            password = self.entSMBPassword.get_text ()
+            password = percentEncode (self.entSMBPassword.get_text ())
             uri = self.construct_SMBURI (group, host, share, user, password)
             device = "smb://" + uri
         else:
