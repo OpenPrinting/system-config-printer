@@ -72,8 +72,8 @@ EXTRA_DIST=\
 	mkinstalldirs \
 	system-config-printer.gladep \
 	system-config-printer.desktop.in \
-	print-applet.desktop.in \
 	manage-print-jobs.desktop.in \
+	print-applet.desktop.in \
 	applet.png \
 	intltool-extract.in \
 	intltool-merge.in \
