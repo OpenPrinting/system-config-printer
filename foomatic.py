@@ -286,7 +286,7 @@ class Foomatic:
 
     def _add_printer(self, printer):
         printers = self.makes.setdefault(printer.make, {})
-        printers[printer.name] = printer.name
+        printers[printer.model] = printer.name
 
         for dict in printer.autodetect.values():
             if dict.has_key("make") and dict.has_key("model"):
@@ -459,13 +459,14 @@ class Foomatic:
 
     def getModels(self, make):
         result = self.makes[make].keys()
-        result.sort()
-        return result
 
     def getModelsNames(self, make):
+        def cmpModels(first, second):
+            return cups.modelSort(first[0], second[0])
         result = self.makes[make].items()
-        result.sort()
+        result.sort(cmpModels)
         return result
+
 
 def main():
 

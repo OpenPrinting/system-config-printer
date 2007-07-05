@@ -1018,7 +1018,6 @@ class GUI:
         hostname = self.cmbentNPTLpdHost.get_active_text()
         server = probe_printer.LpdServer(hostname)
         printers = server.probe()
-        print printers
         model = self.cmbentNPTLpdQueue.get_model()
         model.clear()
         for printer in printers:
@@ -1076,11 +1075,11 @@ class GUI:
     
     # PPD
 
-    def _fillPPDList(self, iter, treenode):
-        if treenode.name:
-            iter = self.tvNPDriversModel.append(iter, (treenode.name,))
-        for leaf in treenode.leafs:
-            self._fillPPDList(iter, leaf)
+    #def _fillPPDList(self, iter, treenode):
+    #    if treenode.name:
+    #        iter = self.tvNPDriversModel.append(iter, (treenode.name,))
+    #    for leaf in treenode.leafs:
+    #        self._fillPPDList(iter, leaf)
 
     def fillPPDList(self):
         if self.device.id:
@@ -1090,9 +1089,6 @@ class GUI:
         makes = self.foomatic.getMakes()
         for make in makes:
             printers = self.foomatic.getModelsNames(make)
-            #printers = [self.foomatic.getPrinter(name)
-            #            for name in self.foomatic.getModels(maker)
-            #            if self.foomatic.getPrinter(name).drivers]
             if not printers: continue
             
             iter = self.tvNPModelsModel.append(None, (make, ''))
