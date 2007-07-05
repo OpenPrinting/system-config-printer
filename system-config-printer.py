@@ -190,6 +190,9 @@ class GUI:
                         "sbJOBrightness", "btnJOResetBrightness",
                         "cbJOMirror", "btnJOResetMirror",
                         "sbJOScaling", "btnJOResetScaling",
+                        "sbJOSaturation", "btnJOResetSaturation",
+                        "sbJOHue", "btnJOResetHue",
+                        "sbJOGamma", "btnJOResetGamma",
                         "tblJOOther",
                         "entNewJobOption", "btnNewJobOption",
                         
@@ -377,6 +380,18 @@ class GUI:
                  options.OptionAlwaysShown ("scaling", int, 100,
                                             self.sbJOScaling,
                                             self.btnJOResetScaling),
+
+                 options.OptionAlwaysShown ("saturation", int, 100,
+                                            self.sbJOSaturation,
+                                            self.btnJOResetSaturation),
+
+                 options.OptionAlwaysShown ("hue", int, 0,
+                                            self.sbJOHue,
+                                            self.btnJOResetHue),
+
+                 options.OptionAlwaysShown ("gamma", int, 1000,
+                                            self.sbJOGamma,
+                                            self.btnJOResetGamma),
                  ]
         self.job_options_widgets = {}
         self.job_options_buttons = {}

@@ -26,6 +26,7 @@ def OptionWidget(name, v, s, on_change):
             for vv in v + s:
                 if not isinstance(vv, str): raise ValueError
             return OptionSelectMany(name, v, s, on_change)
+        print v, s
         raise NotImplemented
     else:
         if (isinstance(s, int) or
