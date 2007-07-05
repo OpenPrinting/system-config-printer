@@ -1067,6 +1067,7 @@ class GUI:
                 frame.add (container)
 
             table = gtk.Table(1, 3, False)
+            table.set_col_spacing(0, 6)
             container.add(table)
 
             rows = 0

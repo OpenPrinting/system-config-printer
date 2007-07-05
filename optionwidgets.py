@@ -18,6 +18,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import gtk.glade, cups
+from rhpl.translate import _
 
 def OptionWidget(option, ppd, gui):
     """Factory function"""
@@ -34,7 +35,7 @@ class Option:
     
     dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
                                buttons=gtk.BUTTONS_OK)
-    
+
     def __init__(self, option, ppd, gui):
         self.option = option
         self.ppd = ppd
@@ -42,20 +43,17 @@ class Option:
 
         vbox = gtk.VBox()
         
-        self.btnConflict = gtk.Button(stock="gtk-dialog-warning")
-        # tailor the button to our needs
-        btnhbox = self.btnConflict.get_child().get_children()[0]
-        img, label = btnhbox.get_children()
-        img.show()
-        label.hide()
+        self.btnConflict = gtk.Button()
+        icon = gtk.image_new_from_stock("gtk-dialog-warning", 2)
+        self.btnConflict.add(icon)
         self.btnConflict.set_no_show_all(True) #avoid the button taking
                                                # over control again
-
         vbox.add(self.btnConflict)    # vbox reserves space while button
         vbox.set_size_request(32, 28) # is hidden
         self.conflictIcon = vbox
 
         self.btnConflict.connect("clicked", self.on_btnConflict_clicked)
+        icon.show()
 
         self.constraints = [c for c in ppd.constraints
                             if c.option1 == option.keyword]
@@ -93,7 +91,7 @@ class Option:
                 option2.checkConflicts(update_others=False)
 
 
-        tooltip = ["Conflicts with:"] # XXX i18n
+        tooltip = [_("Conflicts with:")]
         for c in self.conflicts:
             option = self.gui.options.get(c.option2)
             tooltip.append(option.option.text)
