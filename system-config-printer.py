@@ -700,6 +700,12 @@ class GUI:
             self.conflicts.discard(option)
         self.setDataButtonState()
 
+        if (self.option_manualfeed and self.option_inputslot and
+            option == self.option_manualfeed):
+            if option.get_current_value() == "True":
+                self.option_inputslot.disable ()
+            else:
+                self.option_inputslot.enable ()
 
     # Access control
     def getPUsers(self):
@@ -1379,6 +1385,14 @@ class GUI:
             container.add(table)
 
             rows = 0
+
+            # InputSlot and ManualFeed need special handling.  With
+            # libcups, if ManualFeed is True, InputSlot gets unset.
+            # Likewise, if InputSlot is set, ManualFeed becomes False.
+            # We handle it by toggling the sensitivity of InputSlot
+            # based on ManualFeed.
+            self.option_inputslot = self.option_manualfeed = None
+
             for nr, option in enumerate(group.options):
                 if option.keyword == "PageRegion":
                     continue
@@ -1399,6 +1413,10 @@ class GUI:
                 hbox.pack_start(o.selector, False)
                 self.options[option.keyword] = o
                 o.selector.set_sensitive(editable)
+                if option.keyword == "InputSlot":
+                    self.option_inputslot = o
+                elif option.keyword == "ManualFeed":
+                    self.option_manualfeed = o
 
         # remove Installable Options tab if not needed
         if not hasInstallableOptions:

@@ -1,7 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
+## Copyright (C) 2007 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -40,6 +41,7 @@ class Option:
         self.option = option
         self.ppd = ppd
         self.gui = gui
+        self.enabled = True
 
         vbox = gtk.VBox()
         
@@ -62,7 +64,17 @@ class Option:
         #        print c.option1, repr(c.choice1), c.option2, repr(c.choice2)
         self.conflicts = set()
         self.conflict_message = ""
-        
+
+    def enable(self, enabled=True):
+        self.selector.set_sensitive (enabled)
+        self.enabled = enabled
+
+    def disable(self):
+        self.enable (False)
+
+    def is_enabled(self):
+        return self.enabled
+
     def get_current_value(self):
         raise NotImplemented
 
@@ -71,7 +83,8 @@ class Option:
     
     def writeback(self):
         #print repr(self.option.keyword), repr(self.get_current_value())
-        self.ppd.markOption(self.option.keyword, self.get_current_value())
+        if self.enabled:
+            self.ppd.markOption(self.option.keyword, self.get_current_value())
 
     def checkConflicts(self, update_others=True):
         value = self.get_current_value()
