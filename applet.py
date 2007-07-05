@@ -45,6 +45,10 @@ class JobManager:
                      _("Time submitted"),
                      _("Status")]:
             cell = gtk.CellRendererText()
+            if text == 1 or text == 2:
+                # Ellipsize the 'Document' and 'Printer' columns.
+                cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
+                cell.set_property ("width-chars", 20)
             column = gtk.TreeViewColumn(name, cell, text=text)
             column.set_resizable(True)
             self.treeview.append_column(column)
@@ -339,8 +343,8 @@ def do_imports():
     global gtk_loaded
     if not gtk_loaded:
         gtk_loaded = True
-        global gtk, time, gettext, _
-        import gtk, gtk.glade
+        global gtk, pango, time, gettext, _
+        import gtk, gtk.glade, pango
         import time
         import gettext
         from gettext import gettext as _
@@ -365,9 +369,12 @@ class PrintDriverSelection(dbus.service.Object):
 
     # Need to add an interface for providing a PPD.
 
-bus = dbus.SystemBus()
-name = dbus.service.BusName (PDS_OBJ, bus=bus)
-PrintDriverSelection(name)
+try:
+    bus = dbus.SystemBus()
+    name = dbus.service.BusName (PDS_OBJ, bus=bus)
+    PrintDriverSelection(name)
+except:
+    print "eggcups: failed to start PrintDriverSelection service"
 
 ####
 #### Main program entry
