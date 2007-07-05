@@ -22,6 +22,17 @@ nobase_sbin_SCRIPTS=\
 desktop_DATA = system-config-printer.desktop
 desktopdir = $(datadir)/applications/
 
+install-desktopDATA: $(desktop_DATA)
+	mkdir -p $(DESTDIR)$(desktopdir)
+	for i in $(desktop_DATA); do \
+		desktop-file-install --vendor redhat \
+		  --dir $(DESTDIR)$(desktopdir)      \
+		  --add-category X-Red-Hat-Base      \
+		  --add-category SystemSetup         \
+		  --add-category Application         \
+		  $$i;                               \
+	done
+
 EXTRA_DIST=\
 	$(nobase_pkgdata_SCRIPTS) \
 	$(nobase_pkgdata_DATA) \
@@ -41,5 +52,7 @@ desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 tag:
 	cvs tag -c @PACKAGE@-`echo @VERSION@ | tr . _`
 
-DISTCLEANFILES=*.pyc *.pyo *~ *.bak intltool-extract.in intltool-merge.in intltool-update.in
-
+DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
+	intltool-extract.in intltool-merge.in intltool-update.in \
+	intltool-extract intltool-merge intltool-update \
+	*.desktop
