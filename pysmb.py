@@ -72,9 +72,9 @@ def get_domain_list ():
     ips = []
     signal.signal (signal.SIGCHLD, signal.SIG_DFL)
     if wins:
-    	str = "LC_ALL=C %s -U %s -M -- -" % (nmblookup, wins)
+    	str = "LC_ALL=C %s -U %s -M -- - 2>&1" % (nmblookup, wins)
     else:
-    	str = "LC_ALL=C %s -M -- -" % (nmblookup)
+    	str = "LC_ALL=C %s -M -- - 2>&1" % (nmblookup)
     for l in os.popen (str, 'r').readlines ():
 	l = l.splitlines()[0]
 	if l.endswith("<01>"):
@@ -88,6 +88,7 @@ def get_domain_list ():
     		str = "LC_ALL=C " + nmblookup + " -U " + wins + " -A " + ip
 	else:
     		str = "LC_ALL=C %s -A '%s'" % (nmblookup, ip)
+	str += " 2>&1"
 	for line in os.popen(str, 'r').readlines():
 		line = line.splitlines()[0]
 		if (line.find(" <00> ") != -1) and (line.find("<GROUP>") != -1):
@@ -155,9 +156,9 @@ def get_host_info (smbname):
     dict = { 'NAME': smbname, 'IP': '', 'GROUP': '' }
     global wins
     if wins:
-    	str = "LC_ALL=C %s -U %s -S '%s'" % (nmblookup, wins, smbname)
+    	str = "LC_ALL=C %s -U %s -S '%s' 2>&1" % (nmblookup, wins, smbname)
     else:
-    	str = "LC_ALL=C %s -S '%s'" % (nmblookup, smbname)
+    	str = "LC_ALL=C %s -S '%s' 2>&1" % (nmblookup, smbname)
     for l in os.popen (str, 'r').readlines ():
         l = l.strip ()
         if l.endswith ("<00>"):
@@ -183,7 +184,7 @@ def get_printer_list (host):
     if not os.access (smbclient, os.X_OK):
         return printers
 
-    str = "LC_ALL=C %s -N -L '%s'" % (smbclient, host['NAME'])
+    str = "LC_ALL=C %s -N -L '%s' 2>&1" % (smbclient, host['NAME'])
     if host.has_key ('IP'):
 	str += " -I '%s'" % host['IP']
 
@@ -252,6 +253,7 @@ def printer_share_accessible (share, group = None, user = None, passwd = None):
         os.close (read)
         if write != 1:
             os.dup2 (write, 1)
+        os.dup2 (1, 2)
 
         os.environ['LANG'] = 'C'
         os.execv (args[0], args)
@@ -273,8 +275,11 @@ def printer_share_accessible (share, group = None, user = None, passwd = None):
 
 if __name__ == '__main__':
 
-    import pprint
     domains = get_domain_list ()
     for domain in domains:
+        print domains[domain]
         hosts = get_host_list (domains[domain]['IP'])
-        pprint.pprint (get_printer_list (hosts[hosts.keys ()[0]]))
+        for host in hosts:
+            print hosts[host]
+            printers = get_printer_list (hosts[host])
+            print printers
