@@ -22,31 +22,40 @@ nobase_pkgdata_DATA=\
 nobase_sbin_SCRIPTS=\
 	system-config-printer
 
+bin_SCRIPTS=\
+	system-config-printer-applet
+
 desktop_DATA =\
 	system-config-printer.desktop \
 	print-applet.desktop
 desktopdir = $(datadir)/applications/
+autostartdir = $(sysconfdir)/xdg/autostart/
 
 install-desktopDATA: $(desktop_DATA)
 	mkdir -p $(DESTDIR)$(desktopdir)
-	for i in $(desktop_DATA); do \
-		desktop-file-install --vendor redhat \
-		  --dir $(DESTDIR)$(desktopdir)      \
-		  --add-category X-Red-Hat-Base      \
-		  --add-category SystemSetup         \
-		  --add-category Application         \
-		  $$i;                               \
-	done
+	mkdir -p $(DESTDIR)$(desktopdir)
+	desktop-file-install --vendor redhat \
+	  --dir $(DESTDIR)$(desktopdir)      \
+	  --add-category X-Red-Hat-Base      \
+	  --add-category SystemSetup         \
+	  --add-category Application         \
+	  system-config-printer.desktop
+	desktop-file-install --vendor redhat \
+	  --dir $(DESTDIR)$(autostartdir)      \
+	  --add-category X-Red-Hat-Base      \
+	  --add-category SystemSetup         \
+	  --add-category Application         \
+	  print-applet.desktop
 
 uninstall-desktopDATA:
-	for i in $(desktop_DATA); do \
-		rm -f $(DESTDIR)$(desktopdir)/redhat-$$i; \
-	done
+	rm -f $(DESTDIR)$(desktopdir)/redhat-system-config-printer.desktop
+	rm -f $(DESTDIR)$(autostartdir)/redhat-print-applet.desktop
 
 EXTRA_DIST=\
 	$(nobase_pkgdata_SCRIPTS) \
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
+	$(bin_SCRIPTS) \
 	bootstrap \
 	mkinstalldirs \
 	system-config-printer.gladep \
