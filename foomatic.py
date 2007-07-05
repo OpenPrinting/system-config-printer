@@ -68,6 +68,12 @@ def _ppdMakeModelSplit (ppd_make_and_model, ppdname=None):
     if gutenprint != -1:
         model = model[:gutenprint]
 
+    # Gimp-Print PPDs have NickNames that end:
+    # ... - CUPS+Gimp-Print v4.2.7
+    gimpprint = model.find (" - CUPS+Gimp-Print")
+    if gimpprint != -1:
+        model = model[:gimpprint]
+
     if make == "EPSON":
         make = "Epson"
 

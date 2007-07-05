@@ -2483,77 +2483,99 @@ class GUI:
             ppd = cups.PPD(filename)
             os.unlink(filename)
 
-        # Find a 'FoomaticRIPCommandLine' attribute.
-        attr = ppd.findAttr ('FoomaticRIPCommandLine')
-        if not attr:
-            # No attribute there.  Nothing we can check.
-            return
-
-        cmdline = attr.value.replace ('&&\n', '')
-        args = cmdline.split (' ')
-        argn = len (args)
-        argi = 1
-        exe = args[0]
-
-        # How to check that something exists in the path:
-        def pathcheck (name):
-            path="/usr/bin:/bin"
+        # How to check that something exists in a path:
+        def pathcheck (name, path="/usr/bin:/bin"):
             for component in path.split (':'):
                 file = component.rstrip (os.path.sep) + os.path.sep + name
                 if os.access (file, os.X_OK):
                     print "%s: found" % file
                     return file
-            print "%s: NOT found" % name
+            print "%s: NOT found in %s" % (name,path)
             return None
 
-        exepath = pathcheck (exe)
-        if exepath:
-            # Main executable found.  But if it's 'gs', perhaps there is
-            # an IJS server we also need to check.
-            if os.path.basename (exepath) == 'gs':
-                search = "-sIjsServer="
-                while argi < argn:
-                    arg = args[argi]
-                    if arg == '|':
-                        break
-                    if arg.startswith (search):
-                        exe = arg[len (search):]
-                        # Strip out foomatic '%'-style place-holders
-                        p = exe.find ('%')
-                        if p != -1:
-                            exe = exe[:p]
-                        exepath = pathcheck (exe)
-                        break
+        # Find a 'FoomaticRIPCommandLine' attribute.
+        exe = None
+        attr = ppd.findAttr ('FoomaticRIPCommandLine')
+        if attr:
+            # Foomatic RIP command line to check.
+            cmdline = attr.value.replace ('&&\n', '')
+            args = cmdline.split (' ')
+            argn = len (args)
+            argi = 1
+            exe = args[0]
 
+            exepath = pathcheck (exe)
+            if exepath:
+                # Main executable found.  But if it's 'gs', perhaps there is
+                # an IJS server we also need to check.
+                if os.path.basename (exepath) == 'gs':
+                    search = "-sIjsServer="
+                    while argi < argn:
+                        arg = args[argi]
+                        if arg == '|':
+                            break
+                        if arg.startswith (search):
+                            exe = arg[len (search):]
+                            # Strip out foomatic '%'-style place-holders
+                            p = exe.find ('%')
+                            if p != -1:
+                                exe = exe[:p]
+                                exepath = pathcheck (exe)
+                                break
+
+                        argi += 1
+
+            # If that was found, is there a pipeline?
+            while exepath:
+                pipe = 0
+                while argi < argn - 1:
+                    if args[argi] == '|':
+                        pipe = 1
+                        break
                     argi += 1
-
-        # If that was found, is there a pipeline?
-        while exepath:
-            pipe = 0
-            while argi < argn - 1:
-                if args[argi] == '|':
-                    pipe = 1
+                if pipe == 0:
                     break
                 argi += 1
-            if pipe == 0:
-                break
-            argi += 1
-            exe = args[argi]
-            # Strip out foomatic '%'-style place-holders
-            p = exe.find ('%')
-            if p != -1:
-                exe = exe[:p]
-            exepath = pathcheck (exe)
+                exe = args[argi]
+                # Strip out foomatic '%'-style place-holders
+                p = exe.find ('%')
+                if p != -1:
+                    exe = exe[:p]
+                exepath = pathcheck (exe)
 
-        if not exepath:
+        # Look for '*cupsFilter' lines in the PPD and check that the filters
+        # are installed.
+        (tmpfd, tmpfname) = tempfile.mkstemp ()
+        ppd.writeFd (tmpfd)
+        search = "*cupsFilter:"
+        for line in file (tmpfname).readlines ():
+            if line.startswith (search):
+                line = line[len (search):].strip ().strip ('"')
+                try:
+                    (mimetype, prio, exe) = line.split (' ')
+                except:
+                    continue
+
+                exepath = pathcheck (exe,
+                                     "/usr/lib/cups/filter:"
+                                     "/usr/lib64/cups/filter")
+
+        if exe and not exepath:
             # We didn't find a necessary executable.  Complain.
             pkgs = {
+                # Foomatic command line executables
                 'gs': 'ghostscript',
                 'perl': 'perl',
                 'foo2oak-wrapper': None,
                 'pnm2ppa': 'pnm2ppa',
+                # IJS servers (used by foomatic)
                 'hpijs': 'hpijs',
                 'ijsgutenprint.5.0': 'gutenprint',
+                # CUPS filters
+                'rastertogutenprint.5.0': 'gutenprint',
+                'commandtoepson': 'gimp-print-cups',
+                'commandtocanon': 'gimp-print-cups',
+                'rastertoprinter': 'gimp-print-cups',
                 }
             try:
                 pkg = pkgs[exe]
@@ -2561,6 +2583,7 @@ class GUI:
                 pkg = None
 
             if pkg:
+                print "%s included in package %s" % (exe, pkg)
                 error_text = ('<span weight="bold" size="larger">' +
                               _('Missing driver') + '</span>\n\n' +
                               _("Printer '%s' requires the %s package but "
