@@ -14,11 +14,14 @@ class FoomaticXMLFile:
         self.name = name
         self.foomatic = foomatic
 
+    def parse_xml(self, root_node):
+        raise NotImplemented
+
     def parse_lang_tree(self, node):
-        ret = {}
+        result = {}
         for lang in node.children:
-            ret[lang.name] = lang.first_cdata
-        return ret
+            result[lang.name] = lang.first_cdata
+        return result
 
     def read(self):
         root_node = qp_xml.Parser().parse(open(self.filename))
@@ -95,7 +98,6 @@ class Printer(FoomaticXMLFile):
                                      foomatic.quote_filename(name))
         FoomaticXMLFile.__init__(self, name, foomatic)
 
-
     def parse_autodetect(self, root_node):
         data = { }
         for node in root_node.children:
@@ -135,7 +137,7 @@ class Printer(FoomaticXMLFile):
             elif child.name == "autodetect":
                 for sub_child in child.children:
                     if (sub_child.name in ("snmp", "parallel",
-                                           "usb","general")):
+                                           "usb", "general")):
                         self.autodetect[sub_child.name] = \
                           self.parse_autodetect(sub_child)
             elif child.name == "unverified":
@@ -200,6 +202,19 @@ class Foomatic:
     def unquote_filename(self, file):
         return file.replace('.xml', '')
 
+    def calculate_name(self, make, model):
+        model = model.replace("/", "_")
+        model = model.replace(" ", "_")
+        model = model.replace("+", "plus")
+        model = model.replace("(", "")
+        model = model.replace(")", "")
+        model = model.replace(",", "")
+        return make + "-" + model
+
+    def getMakeModelFromName(self, name):
+        make , model = name.split('-', 1)
+        model = model.replace('_', ' ')
+        return make, model
 
     def _add_printer(self, printer):
         printers = self._makers.setdefault(printer.make, {})
@@ -209,7 +224,6 @@ class Foomatic:
         printers[printer.name.lower()] = printer
         
     def _read_all_printers(self):
-
         self._printer_names = []
         self._printers = {}
 
@@ -231,7 +245,6 @@ class Foomatic:
                 driver.parser_xml(node)
                 self._drivers[driver.name] = driver
                 self._driver_names.append(driver)
-
         self._printer_names.sort()
 
     # ----
@@ -284,11 +297,6 @@ class Foomatic:
             self._drivers[name].read()
         return self._drivers[name]
 
-    def getMakeModelFromName(self, name):
-        make , model = name.split('-', 1)
-        model = model.replace('_', ' ')
-        return make, model
-
     def getPPD(self, printer):
         return
 
@@ -300,18 +308,22 @@ def main():
 
     foo = Foomatic()
 
-    foo._read_all_printers()
+    #foo.load_all()
 
     models = []
     for name in foo.get_printers():
-        #print name
         printer = foo.get_printer(name)
         models.append(printer.make + ' ' + printer.model)
+
+        if (name != printer.calculated_name() and
+            name != printer.calculated_name()+ "PS"):
+            print name, printer.calculated_name()
     models.sort(cups.modelSort)
 
-    tree = BuildTree(models, 3, 3)
+    
+    #tree = BuildTree(models, 3, 3)
 
-    print tree
+    #print tree
 
     #    if foo.getMakeModelFromName(name) != (printer.make, printer.model):
     #        print foo.getMakeModelFromName(name), (printer.make, printer.model)

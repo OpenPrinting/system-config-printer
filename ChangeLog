@@ -1,5 +1,14 @@
-
-
+2006-03-14 Florian Festi  <ffesti@redhat.com>	
+	* probe_printer.py: First code for probing queue names on remote 
+	printers/printing servers.
+	
+	* cupshelpers.py (Printer._getAttributes): Read CUPS printer attributes
+	* cupshelpers.py (Printer.set*): Methods for setting CUPS attributes
+	* system-config-printer.glade: New tab for CUPS printer attributes
+	* system-config-printer.py (GUI.fillPrinterTab, GUI.save_printer,
+	GUI.on_printer_changed, GUI.on_tbtnPAllow_changed, 
+	GUI.on_entPExceptUsers_changed): Handle CUPS printer attributes
+	
 2006-03-10 Florian Festi  <ffesti@redhat.com>
 	* system-config-printer.py (GUI.__init__, GUI.populateList):
 	Make main list a tree (remote/local printers/classes)

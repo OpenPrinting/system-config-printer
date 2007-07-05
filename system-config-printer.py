@@ -5,6 +5,7 @@ import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
 from foomatic import Foomatic
 from nametree import BuildTree
+import probe_printer
 
 domain='system-config-printer'
 import locale
@@ -47,6 +48,10 @@ class GUI:
                           "lblPState", "entPDevice",
                           "chkPEnabled", "chkPAccepting", "chkPShared",
                           "btnPMakeDefault", "lblPDefault",
+                         
+                          "cmbPStartBanner", "cmbPEndBanner",
+                          "cmbPErrorPolicy", "cmbPOperationPolicy",
+                          "tbtnPAllow", "entPExceptUsers",
                          "swPInstallOptions", "vbPInstallOptions", 
                          "swPOptions",
                           "lblPOptions", "vbPOptions",
@@ -67,6 +72,9 @@ class GUI:
                          "btnNPBack", "btnNPForward", "btnNPApply",
                           "entNPName", "entNPDescription", "entNPLocation",
                           "cmbNPType", "ntbkNPType",
+                           "cmbNPTSerialBaud", "cmbNPTSerialParity",
+                            "cmbNPTSerialBits", "cmbNPTSerialFlow",
+                           "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
                           "tvNPDrivers",
                         
                         )
@@ -174,6 +182,7 @@ class GUI:
         for name, printer in self.printers.iteritems():
             if printer.default:
                 self.default_printer = name
+            self.servers.add(printer.getServer())
 
             if printer.remote:
                 if printer.is_class: remote_classes.append(name)
@@ -359,22 +368,31 @@ class GUI:
             value = widget.get_active()
         elif isinstance(widget, gtk.Entry):
             value = widget.get_text()
+        elif isinstance(widget, gtk.ComboBox):
+            value = widget.get_active_text()
         else:
-            raise ValueError, "Widget not supported (yet)"
+            raise ValueError, "Widget type not supported (yet)"
 
         p = self.printer
-        for known_widget, old_value in [(self.entPDescription, p.info),
-                                        (self.entPLocation, p.location),
-                                        (self.entPDevice, p.device_uri),
-                                        (self.chkPEnabled, p.enabled),
-                                        (self.chkPAccepting, not p.rejecting),
-                                        (self.chkPShared, p.is_shared)]:
-            if known_widget is widget:
-                if old_value == value:
-                    self.changed.discard(widget)
-                else:
-                    self.changed.add(widget)
-                break
+        old_values = {
+            self.entPDescription : p.info,
+            self.entPLocation : p.location,
+            self.entPDevice : p.device_uri,
+            self.chkPEnabled : p.enabled,
+            self.chkPAccepting : not p.rejecting,
+            self.chkPShared : p.is_shared,
+            self.cmbPStartBanner : p.job_sheet_start,
+            self.cmbPEndBanner : p.job_sheet_end,
+            self.cmbPErrorPolicy : p.error_policy,
+            self.cmbPOperationPolicy : p.op_policy
+            }
+        
+        old_value = old_values[widget]
+        
+        if old_value == value:
+            self.changed.discard(widget)
+        else:
+            self.changed.add(widget)
         self.setDataButtonState()
         
     def option_changed(self, option):
@@ -387,6 +405,26 @@ class GUI:
             self.conflicts.add(option)
         else:
             self.conflicts.discard(option)
+        self.setDataButtonState()
+
+    def on_tbtnPAllow_changed(self, widget):
+        active = widget.get_active()
+        if active:
+            widget.set_label(_("Allow"))
+        else:
+            widget.set_label(_("Deny"))
+        
+        if not(active ^ self.printer.default_allow):
+            self.changed.discard(widget)
+        else:
+            self.changed.add(widget)
+        self.setDataButtonState()
+
+    def on_entPExceptUsers_changed(self, widget):
+        if widget.get_text() == self.printer.except_users_string:
+            self.changed.discard(widget)
+        else:
+            self.changed.add(widget)
         self.setDataButtonState()
 
     def setDataButtonState(self):
@@ -470,6 +508,31 @@ class GUI:
                 self.passwd_retry = False # use cached Passwd 
                 self.printer.setShared(shared)
                 
+            job_sheet_start = self.cmbPStartBanner.get_active_text()
+            job_sheet_end = self.cmbPEndBanner.get_active_text()
+            error_policy = self.cmbPErrorPolicy.get_active_text()
+            op_policy = self.cmbPOperationPolicy.get_active_text()
+
+            if (job_sheet_start != printer.job_sheet_start or
+                job_sheet_end != printer.job_sheet_end):
+                self.passwd_retry = False # use cached Passwd
+                printer.setJobSheets(job_sheet_start, job_sheet_end)
+            if error_policy != printer.error_policy:
+                self.passwd_retry = False # use cached Passwd
+                printer.setErrorPolicy(error_policy)
+            if op_policy != printer.op_policy:
+                self.passwd_retry = False # use cached Passwd
+                printer.setOperationPolicy(op_policy)
+
+            default_allow = self.tbtnPAllow.get_active()
+            except_users = self.entPExceptUsers.get_text()
+
+            if (default_allow != printer.default_allow or
+                except_users != printer.except_users_string):
+                self.passwd_retry = False # use cached Passwd
+                printer.setAccess(default_allow, except_users)
+
+
             if printer.is_class:
                 # update member list
                 new_members = self.getCurrentClassMembers()
@@ -537,6 +600,12 @@ class GUI:
         self.changed = set()
         self.setCmbServers(cups.getServer())
 
+    def fillComboBox(self, combobox, values, value):
+        combobox.get_model().clear()
+        for nr, val in enumerate(values):
+            combobox.append_text(val)
+            if val == value: combobox.set_active(nr)
+
     def fillPrinterTab(self, name):
         self.changed = set() # of options
         self.options = {} # keyword -> Option object
@@ -576,6 +645,28 @@ class GUI:
                                       self.default_printer)
         else:
             self.lblPDefault.set_text(_("No default printer set."))
+
+        # Policy tab
+        # ----------
+        # Job sheets
+        self.fillComboBox(self.cmbPStartBanner, printer.job_sheets_supported,
+                          printer.job_sheet_start),
+        self.fillComboBox(self.cmbPEndBanner, printer.job_sheets_supported,
+                          printer.job_sheet_end)
+
+        # Policies
+        self.fillComboBox(self.cmbPErrorPolicy, printer.error_policy_supported,
+                          printer.error_policy)
+        self.fillComboBox(self.cmbPOperationPolicy,
+                          printer.op_policy_supported,
+                          printer.op_policy)
+
+        # Access control
+        if printer.default_allow:
+            self.tbtnPAllow.set_label(_("Allow"))
+        else:
+            self.tbtnPAllow.set_label(_("Deny"))
+        self.entPExceptUsers.set_text(printer.except_users_string)
 
         # remove InstallOptions tab
         tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
@@ -619,7 +710,7 @@ class GUI:
             if group.name == "InstallableOptions":
                 container = self.vbPInstallOptions
                 self.ntbkPrinter.insert_page(self.swPInstallOptions,
-                                             gtk.Label(group.text), 1)
+                                             gtk.Label(group.text), 2)
             else:
                 frame = gtk.Frame("<b>%s</b>" % group.text)
                 frame.get_label_widget().set_use_markup(True)
@@ -678,7 +769,7 @@ class GUI:
         # insert Member Tab
         if self.ntbkPrinter.page_num(self.vbClassMembers) == -1:
             self.ntbkPrinter.insert_page(
-                self.vbClassMembers, self.lblClassMembers, 1)
+                self.vbClassMembers, self.lblClassMembers, 2)
         
 
         model_members = self.tvClassMembers.get_model()
@@ -788,6 +879,20 @@ class GUI:
 
     # == New Printer =====================================================
 
+    new_printer_device_tabs = {
+        "hp" : 1,
+        "ipp" : 2,
+        "http" : 2,
+        "lpd" : 3,
+        "parallel" : 4,
+        "scsi" : 5,
+        "serial" : 6,
+        "smb" : 0,
+        "hal" : 0,
+        "beh" : 0,
+        "socket": 0,
+        }
+
     def initNewPrinterWindow(self, prototype=None):
         self.ntbkNewPrinter.set_current_page(0)
         self.setNPButtons()
@@ -799,10 +904,20 @@ class GUI:
             #self.
 
     def fillDeviceTab(self):
-        devices = cupshelpers.getDevices()
-        
+        devices = cupshelpers.getDevices(self.cups).values()
+        devices.sort()
+        self.devices = filter(lambda x: x.uri!="hp:/no_device_found", devices) 
 
-    def on_NewPrinterWindow_delete_event(self, widget, event):
+        model = self.cmbNPType.get_model()
+        model.clear()
+
+        for device in self.devices:
+            print device.type
+            model.append((device.info,))
+
+        self.cmbNPType.set_active(0)
+
+    def on_NPCancel(self, widget, event=None):
         self.NewPrinterWindow.hide()
         return True
 
@@ -815,28 +930,98 @@ class GUI:
         self.setNPButtons()
 
     def setNPButtons(self):
-        first_page = not self.ntbkNewPrinter.get_current_page()
-        last_page = (self.ntbkNewPrinter.get_current_page() ==
+        page_nr = self.ntbkNewPrinter.get_current_page()
+        first_page = not page_nr
+        last_page = (page_nr ==
                      len(self.ntbkNewPrinter.get_children()) -1 )        
-        self.btnNPBack.set_sensitive(not first_page)
-        self.btnNPForward.set_sensitive(not last_page)
+        if first_page:
+            self.btnNPBack.hide()
+        else:
+            self.btnNPBack.show()
         if last_page:
+            self.btnNPForward.hide()
             self.btnNPApply.show()
         else:
+            self.btnNPForward.show()
             self.btnNPApply.hide()
 
-    def on_entNPName_insert_at_cursor(self, widget, *args):        
-        # restrict
-        print "X", args
+        if page_nr == 2: self.fillPPDList()
+            
 
-    def on_entNPName_insert_text(self, *args):
-        print args
+    def on_entNPName_changed(self, widget):
+        # restrict
+        text = widget.get_text()
+        new_text = text
+        new_text = new_text.replace("/", "")
+        new_text = new_text.replace("#", "")
+        new_text = new_text.replace(" ", "")
+        if text!=new_text:
+            widget.set_text(new_text)
 
     # Device URI
 
     def on_cmbNPType_changed(self, widget):
-        self.ntbkNPType.set_current_page(widget.get_active())
+        device = self.devices[widget.get_active()]
+        self.device = device
+        self.ntbkNPType.set_current_page(
+            self.new_printer_device_tabs.get(device.type, 0))
 
+        type = device.type
+        if device.type=="serial":
+            if not device.is_class:
+                options = device.uri.split("?")[1]
+                options = options.split("+")
+                option_dict = {}
+                for option in options:
+                    name, value = option.split("=")
+                    option_dict[name] = value
+                    
+                for widget, name, optionvalues in (
+                    (self.cmbNPTSerialBaud, "baud", None),
+                    (self.cmbNPTSerialBits, "bits", None),
+                    (self.cmbNPTSerialParity, "parity",
+                     ("none", "odd", "even")),
+                    (self.cmbNPTSerialFlow, "flow",
+                     ("none", "soft", "hard", "hard"))):
+                    if option_dict.has_key(name): # option given in URI?
+                        if optionvalues is None: # use text in widget
+                            model = widget.get_model()
+                            iter = model.get_iter_first()
+                            nr = 0
+                            while iter:
+                                value = model.get(iter,0)[0]
+                                if value == option_dict[name]:
+                                    widget.set_active(nr)
+                                    break
+                                iter = model.iter_next(iter)
+                                nr += 1
+                        else: # use optionvalues
+                            nr = optionvalues.index(
+                                option_dict[name])
+                            widget.set_active(nr+1) # compensate "Default"
+                    else:
+                        widget.set_active(0)
+                                            
+        elif device.type in ("ipp", "http"):
+            pass
+        elif device.type=="":
+            pass
+        elif device.type=="":
+            pass
+
+    def on_btnNPTLpdProbe_pressed(self, button):
+        # read hostname, probe, fill printer names
+        hostname = self.cmbentNPTLpdHost.get_active_text()
+        server = probe_printer.LpdServer(hostname)
+        printers = server.probe()
+        print printers
+        model = self.cmbentNPTLpdQueue.get_model()
+        model.clear()
+        for printer in printers:
+            self.cmbentNPTLpdQueue.append_text(printer)
+        if printers:
+            self.cmbentNPTLpdQueue.set_active(0)
+        
     def getDeviceURI(self):
         ptype = self.cmbNPType.get_active()
         if pytpe == 0: # Device
@@ -894,7 +1079,11 @@ class GUI:
             self._fillPPDList(iter, leaf)
 
     def fillPPDList(self):
-        self.foomatic.load_all() # XXX
+        if self.device.id:
+            # try to find the right PPDs
+            pass
+
+        #self.foomatic.load_all() # XXX
         names = []
         for printername in self.foomatic.get_printers():
             printer = self.foomatic.get_printer(printername)
@@ -913,11 +1102,15 @@ class GUI:
 
         self.btnNPForward.set_sensitive(not model.iter_has_child(iter))
 
+    def getNPPD(self):
+        model, iter = widget.get_selection().get_selected()
+        model.get(iter, 0)[0]
+
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
         name = self.entNPName.get_text()
 
-        # XXX ppd = self.getNPPD()
+        ppd = self.getNPPD() # XXX
         
         self.passwd_retry = False # use cached Passwd 
         try:
