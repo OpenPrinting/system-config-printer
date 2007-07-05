@@ -2969,10 +2969,9 @@ class GUI:
                 'hpijs': 'hpijs',
                 'ijsgutenprint.5.0': 'gutenprint',
                 # CUPS filters
-                'rastertogutenprint.5.0': 'gutenprint',
-                'commandtoepson': 'gimp-print-cups',
-                'commandtocanon': 'gimp-print-cups',
-                'rastertoprinter': 'gimp-print-cups',
+                'rastertogutenprint.5.0': 'gutenprint-cups',
+                'commandtoepson': 'gutenprint-cups',
+                'commandtocanon': 'gutenprint-cups',
                 }
             try:
                 pkg = pkgs[exe]
