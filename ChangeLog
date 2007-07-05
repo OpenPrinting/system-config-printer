@@ -1,3 +1,12 @@
+2007-03-13  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (PrintersConf): Removed (bug #231826).
+	(Printer._getAttributes): Removed set_attributes parameter.
+	(Printer.__init__): Likewise.
+	(Printer._getAttributes): For the time being ignore finishings,
+	job-priority, media, document-format, job-hold-until, sides and
+	notify-lease-duration defaults.
+
 2007-03-12  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.checkDriverExists): Updated

@@ -30,7 +30,7 @@ class Printer:
                        cups.IPP_PRINTER_BUSY: _("Busy"),
                        cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
-    def __init__(self, name, connection, set_attributes=[], **kw):
+    def __init__(self, name, connection, **kw):
         self.name = name
         self.connection = connection
         self.class_members = []
@@ -47,7 +47,7 @@ class Printer:
         self.state_description = self.printer_states.get(
             self.state, _("Unknown"))
 
-        self._getAttributes(set_attributes)
+        self._getAttributes()
 
         self.enabled = self.state != cups.IPP_PRINTER_STOPPED
 
@@ -75,7 +75,7 @@ class Printer:
                 setattr(self, attr_name,
                         bool(self.type & getattr(cups, name)))
 
-    def _getAttributes(self, set_attributes):
+    def _getAttributes(self):
         attrs = self.connection.getPrinterAttributes(self.name)
         self.attributes = {}
         self.possible_attributes = {
@@ -104,14 +104,20 @@ class Printer:
                 name = key[:-len("-default")]
                 if name in ["job-sheets", "printer-error-policy",
                             "printer-op-policy", # handled below
-                            "notify-events"]: # not supported by cups
+                            "notify-events", # not supported by cups
+                            "finishings",             #
+                            "job-priority",           # Not handled
+                            "media",                  # in the UI
+                            "document-format",        # (yet).
+                            "job-hold-until",         #
+                            "notify-lease-duration",  #
+                            "sides"]:                 #
                     continue 
 
                 supported = attrs.get(name + "-supported", None) or \
                             self.possible_attributes.get(name, None) or \
                             ""
-                if name in set_attributes:
-                    self.attributes[name] = value
+                self.attributes[name] = value
                     
                 if attrs.has_key(name+"-supported"):
                     self.possible_attributes[name] = (
@@ -238,20 +244,14 @@ class Printer:
         return ret
 
 def getPrinters(connection):
-    printers_conf = PrintersConf(connection)
     printers = connection.getPrinters()
     classes = connection.getClasses()
     for name, printer in printers.iteritems():
-        printer = Printer(name, connection,
-                          set_attributes=printers_conf.get_options(name),
-                          **printer)
+        printer = Printer(name, connection, **printer)
         printers[name] = printer
         if classes.has_key(name):
             printer.class_members = classes[name]
             printer.class_members.sort()
-
-        if printers_conf.device_uris.has_key(name):
-            printer.device_uri = printers_conf.device_uris[name]
     return printers
 
 def parseDeviceID (id):
@@ -319,61 +319,6 @@ class Device:
             result = cmp(self.info, other.info)
         
         return result
-
-class PrintersConf:
-
-    filename = '/admin/conf/printers.conf'
-    tag = 'Printer'
-    
-    def __init__(self, connection):
-        self.set_options = {}
-        self.device_uris = {}
-        self.connection = connection
-        self.parse(self.fetch('/admin/conf/printers.conf'), 'Printer')
-        self.parse(self.fetch('/admin/conf/classes.conf'), 'Class')
-
-    def fetch(self, file):
-        fd, filename = tempfile.mkstemp("printer.conf")
-        os.close(fd)
-        try:
-            self.connection.getFile(file, filename)
-        except cups.HTTPError, e:
-            if (e.args[0] == cups.HTTP_UNAUTHORIZED or
-                e.args[0] == cups.HTTP_NOT_FOUND):
-                return []
-            else:
-                raise e
-
-        lines = open(filename).readlines()
-        os.unlink(filename)
-        return lines
-
-    def parse(self, lines, tag):
-        current_printer = None
-        for line in lines:
-            words = line.split()
-            if len(words) == 0:
-                continue
-            if words[0] == "Option":
-                if len (words) >= 2:
-                    val = words[1]
-                else:
-                    val = ''
-                self.set_options.setdefault(current_printer, []).append(val)
-            elif words[0] == "DeviceURI":
-                if len (words) >= 2:
-                    self.device_uris[current_printer] = words[1]
-                else:
-                    self.device_uris[current_printer] = ''
-            else:
-                match = re.match(r"<(Default)?%s ([^>]+)>\s*\n" % tag, line) 
-                if match:
-                    current_printer = match.group(2)
-                if line.strip().find("</%s>" % tag) != -1:
-                    current_printer = None
-
-    def get_options(self, printername):
-        return self.set_options.get(printername, [])
 
 def match(s1, s2):
     if s1==s2: return len(s1)
