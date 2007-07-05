@@ -114,6 +114,11 @@ class GUI:
     # Connect to Server
 
     def on_connect_activate(self, widget):
+        self.cmbServername.child.set_text (cups.getServer ())
+        self.entUser.set_text (cups.getUser ())
+        self.chkEncrypted.set_active (cups.getEncryption () ==
+                                      cups.HTTP_ENCRYPT_ALWAYS)
+
         # XXX insert know servers
         # XXX clear passwd field?
         # XXX check for unapplied changes
@@ -400,6 +405,9 @@ class GUI:
         # XXX
 
 def main():
+    # The default configuration requires root for administration.
+    cups.setUser ("root")
+
     mainwindow = GUI()
     if gtk.__dict__.has_key("main"):
         gtk.main()
