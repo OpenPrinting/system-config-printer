@@ -1574,12 +1574,13 @@ class GUI:
                 # We want a left padding of 12, but there is a Table with
                 # spacing 6, and the left-most column of it (the conflict
                 # icon) is normally hidden, so just use 6 here.
-                container.set_padding (0, 0, 6, 0)
+                container.set_padding (6, 12, 6, 0)
                 frame.add (container)
                 tab_label = self.lblPOptions
 
             table = gtk.Table(1, 3, False)
-            table.set_col_spacing(0, 6)
+            table.set_col_spacings(6)
+            table.set_row_spacings(6)
             container.add(table)
 
             rows = 0
