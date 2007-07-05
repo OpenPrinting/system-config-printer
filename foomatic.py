@@ -168,7 +168,7 @@ class Printer(FoomaticXMLFile):
         if driver_name is None: driver_name = self.driver
         if self.drivers.has_key(driver_name):
             if self.drivers[driver_name]:
-                return printer.drivers[driver_name]
+                return self.drivers[driver_name]
             else:
                 fd, fname = tempfile.mkstemp(
                     ".ppd", printer.name + "-" + driver_name)
@@ -314,6 +314,7 @@ class PPDPrinter(Printer):
         self.comments_dict = {}
         
         self.getPPDDrivers()
+
         
 ############################################################################# 
 ###  Foomatic database
@@ -379,6 +380,11 @@ class Foomatic:
                 self._auto_description[dict["description"]] = printer.name
         
     def addCupsPPDs(self, ppds):
+        ppds = ppds.copy()
+        # remove foomatic ppds
+        for name in ppds.keys():
+            if name.startswith("foomatic-db-ppds/"):
+                ppds.pop(name)
         self.ppds = ppds
         for name, ppd in self.ppds.iteritems():
             try:
@@ -400,7 +406,7 @@ class Foomatic:
             else:
                 #print make, model, name
                 printers[model] = name # add as printer
-            if ppd['ppd-device-id']:
+            if ppd.has_key('ppd-device-id') and ppd['ppd-device-id']:
                 self._auto_ieee1284.setdefault(ppd['ppd-device-id'],
                                                name)
 
@@ -567,8 +573,13 @@ class Foomatic:
         return self._drivers[name]
 
     def getMakes(self):
-        result = self.makes.keys()
+        result = self.makes.keys()        
         result.sort()
+        try:
+            result.remove("Generic")
+            result.insert(0, "Generic")
+        except ValueError:
+            pass
         return result
 
     def getModels(self, make):

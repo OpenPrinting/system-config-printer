@@ -148,7 +148,7 @@ class Device:
         self.type =  uri_pieces[0]
         self.is_class = len(uri_pieces)==1
 
-        self.id = 'MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;SN:US05N1J00XLG;S:00808880800010032C1000000C2000000;P:0800,FL,B0;J:                    ;'
+        #self.id = 'MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;SN:US05N1J00XLG;S:00808880800010032C1000000C2000000;P:0800,FL,B0;J:                    ;'
 
         self.id_dict = {}
         pieces = self.id.split(";")
@@ -170,11 +170,25 @@ class Device:
         
         return result
 
-def getDevices(connection):
+def match(s1, s2):
+    if s1==s2: return len(s1)
+    for nr, (c1, c2) in enumerate(zip(s1, s2)):
+        if c1!=c2: return nr
+    return min(len(s1), len(s2))
+
+def getDevices(connection, current_uri=None):
     devices = connection.getDevices()
     for uri, data in devices.iteritems():
         device = Device(uri, **data)
         devices[uri] = device
+    if current_uri and not devices.has_key(current_uri):
+        device = Device(current_uri)
+        uri_matches = [(match(uri, current_uri), uri)
+                       for uri in devices.iterkeys()]
+                      # returns list of (match length, uri) 
+        m, uri = max(uri_matches)
+        device.info = devices[uri].info
+        devices[current_uri] = device
     return devices
     
 def main():

@@ -13,6 +13,8 @@ def OptionWidget(option, ppd, gui):
 
 class Option:
     
+    dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
+                               buttons=gtk.BUTTONS_OK)
     
     def __init__(self, option, ppd, gui):
         self.option = option
@@ -42,6 +44,7 @@ class Option:
         #    if not c.choice1 or not c.choice2:
         #        print c.option1, repr(c.choice1), c.option2, repr(c.choice2)
         self.conflicts = set()
+        self.conflict_message = ""
         
     def is_changed(self):
         raise NotImplemented
@@ -80,6 +83,8 @@ class Option:
             tooltip.append(option.option.text)
             
         tooltip = "\n".join(tooltip)
+
+        self.conflict_message = tooltip # XXX more verbose
             
         if self.conflicts:
             self.gui.tooltips.set_tip(self.btnConflict, tooltip,
@@ -95,8 +100,9 @@ class Option:
         self.checkConflicts()
 
     def on_btnConflict_clicked(self, button):
-        # XXX show dialog
-        print "DING"
+        self.dialog.set_markup(self.conflict_message)
+        self.dialog.run()
+        self.dialog.hide()
         
 # ---------------------------------------------------------------------------
 

@@ -1,4 +1,5 @@
 from HTMLParser import HTMLParser
+import htmlentitydefs
 
 class HTML2PangoParser(HTMLParser):
 
@@ -29,8 +30,9 @@ class HTML2PangoParser(HTMLParser):
                     self.a_href = value
             self.output.write("<u>")
         if tag=="span":
+            pass
             # XXX
-            self.output.write("<span>")
+            #self.output.write("<span>")
         
         if self.supported_tags.has_key(tag):
             self.output.write("<%s>" % self.supported_tags[tag])
@@ -50,12 +52,16 @@ class HTML2PangoParser(HTMLParser):
             self.output.write("</%s>" % self.supported_tags[tag])
 
     def handle_data(self, data):
-        # XXX & quoting
+        # & quoting
         data = data.replace("&", "&amp;")
         self.output.write(data)
 
     def handle_charref(self, name):
-        print name
+        self.output.write("&%s;" % name) # XXX convert to unicode?
 
     def handle_entityref(self, name):
         print name
+        if htmlentitydefs.name2codepoint.has_key(name):
+            self.output.write(unichr(htmlentitydefs.name2codepoint[name]))
+        else:
+            self.handle_data(name)
