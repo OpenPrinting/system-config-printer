@@ -191,13 +191,6 @@ class PPDDriver(Driver):
         FoomaticXMLFile.__init__(self, name, foomatic)
         self.comments_dict = {}
 
-#############################################################################
-### No Driver (for Raw Queues
-#############################################################################
-        
-class NoDriver(PPDDriver): 
-    pass
-        
 ############################################################################# 
 ###  Printer
 #############################################################################
@@ -421,26 +414,6 @@ class PPDPrinter(Printer):
         self.comments_dict = {}
         self.getPPDDrivers()
 
-#############################################################################
-### Raw Printer
-#############################################################################
-
-class RawPrinter(Printer):
-
-    def __init__(self, foomatic):
-        FoomaticXMLFile.__init__(self, "Generic-Raw", foomatic)
-        self.make, self.model = "Generic", "Raw"
-        self.functionality = ''
-        self.driver = ''
-        self.drivers = {'None' : ''}
-        self.autodetect = {}
-        self.unverified = False
-        self.comments_dict = {}        
-
-    def getPPD(self, driver=None):
-        return None
-    
-
 ############################################################################# 
 ###  Foomatic database
 #############################################################################
@@ -471,10 +444,6 @@ class Foomatic:
             print "Writing new pickle"
             self.loadAll()
             self._write_pickle(self.pickle_file)
-
-        # Add entries for raw printers
-        self._add_printer(RawPrinter(self))
-        self._drivers["None"] = NoDriver("None", self)
         
     def quote_filename(self, name, type):
         return os.path.join(self.path, type, name + '.xml')
