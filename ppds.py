@@ -130,11 +130,42 @@ class PPDs:
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
 
-    def __init__ (self, ppds):
+    def __init__ (self, ppds, language=None):
         """Takes a dict of PPDs, as returned by cups.Connection.getPPDs()."""
         self.ppds = ppds.copy ()
         self.makes = None
         self.ids = None
+
+        if language != None and language != "C" and language != "POSIX":
+            u = language.find ("_")
+            if u != -1:
+                short_language = language[:u]
+            else:
+                short_language = language
+
+            to_remove = []
+            for ppdname, ppddict in self.ppds.iteritems ():
+                try:
+                    natural_language = ppddict['ppd-natural-language']
+                except KeyError:
+                    continue
+
+                if natural_language == "en":
+                    # Some manufacturer's PPDs are only available in this
+                    # language, so always let them though.
+                    continue
+
+                if natural_language == language:
+                    continue
+
+                if natural_language == short_language:
+                    continue
+
+                to_remove.append (ppdname)
+
+            for ppdname in to_remove:
+                print "Removing %s" % ppdname
+                del self.ppds[ppdname]
 
     def getMakes (self):
         """Returns a sorted list of strings."""

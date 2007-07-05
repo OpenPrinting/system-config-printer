@@ -531,7 +531,7 @@ class GUI:
             return self.ppds
         except:
             self.queryPPDs ()
-            self.ppds = ppds.PPDs(self.fetchPPDs ())
+            self.ppds = ppds.PPDs(self.fetchPPDs (), language=self.language[0])
             return self.ppds
 
     def dropPPDs(self):
