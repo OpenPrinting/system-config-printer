@@ -894,6 +894,8 @@ class GUI:
                 msg = _("Upgrade required")
             elif status == cups.HTTP_SERVER_ERROR:
                 msg = _("Server error")
+            elif status == -1:
+                msg = _("Not connected")
             else:
                 msg = _("status %d") % status
 
