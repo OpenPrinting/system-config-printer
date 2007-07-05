@@ -429,6 +429,7 @@ def setPPDPageSize(ppd, language):
     except:
         print "Failed to set PageSize " \
               "(%s not available?)" % size
+        raise
 
 def main():
     c = cups.Connection()
