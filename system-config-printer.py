@@ -266,12 +266,22 @@ class GUI:
             item.set_sensitive(item_selected)
 
     def fillPrinterTab(self, name):
+        printer_states = { cups.IPP_PRINTER_IDLE: "Idle",
+                           cups.IPP_PRINTER_PROCESSING: "Processing",
+                           cups.IPP_PRINTER_BUSY: "Busy",
+                           cups.IPP_PRINTER_STOPPED: "Stopped" }
+
         printer = self.printers[name] 
         self.entPDescription.set_text(printer.get("printer-info", ""))
         self.entPLocation.set_text(printer.get("printer-location", ""))
         self.lblPMakeModel.set_text(printer.get("printer-make-and-model", ""))
-        self.lblPState.set_text(str(printer.get("printer-state", 0)))
-           # XXX translate into text
+
+        statestr = "Unknown"
+        state = printer.get("printer-state", -1)
+        if printer_states.has_key (state):
+            statestr = printer_states[state]
+        self.lblPState.set_text(statestr)
+
         self.entPDevice.set_text(printer.get("device-uri", ""))
 
         # clean Installable Options Tab
