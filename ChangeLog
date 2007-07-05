@@ -1,3 +1,9 @@
+2007-06-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.save_printer): Don't call
+	populateList() after saving printer, just update the printer we
+	changed.  This prevents a GTK+ crash (bug #242961).
+
 2007-06-06  Tim Waugh  <twaugh@redhat.com>
 
 	* print-applet.desktop.in: Fixed Name field to start each word with
