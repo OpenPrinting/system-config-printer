@@ -25,7 +25,8 @@ class OptionBool(Option):
 
     def __init__(self, option, ppd, gui):
         Option.__init__(self, option, ppd, gui)
-        self.selector = gtk.CheckButton()
+        self.selector = gtk.CheckButton (option.text)
+        self.label = None
         self.selector.set_active(option.defchoice == 'True')
         self.selector.set_alignment(0.0, 0.5)
 
