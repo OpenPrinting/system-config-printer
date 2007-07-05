@@ -1,9 +1,5 @@
 #!/bin/env python
 
-import sys
-
-sys.path.append("/home/ffesti/CVS/pycups")
-
 import gtk.glade, cups
 import gobject # for TYPE_STRING
 from optionwidgets import OptionWidget
@@ -38,16 +34,22 @@ class GUI:
         # =======
         self.xml = gtk.glade.XML("system-config-printer.glade")
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
-                        "btnApply", "btnRevert", "imgConflict",
-                        "entPDescription", "entPLocation", "lblPMakeModel",
-                        "lblPState", "entPDevice",
-                        "vbPInstallOptions", "vbPOptions", "ntbkPrinter",
-                        "swPInstallOptions", "swPOptions",
                         "btnNewPrinter", "btnNewClass", "btnCopy", "btnDelete",
                         "new_printer", "new_class", "copy", "delete",
 
+                        "btnApply", "btnRevert", "imgConflict",
+
+                        "ntbkPrinter",
+                          "entPDescription", "entPLocation", "lblPMakeModel",
+                          "lblPState", "entPDevice",                          
+                         "swPInstallOptions", "vbPInstallOptions", 
+                         "swPOptions",
+                          "lblPOptions", "vbPOptions",
+                         "vbClassMembers", "lblClassMembers",
+                          "tvClassMembers", "tvClassNotMembers",
+
                         "ConnectDialog", "chkEncrypted", "cmbServername",
-                        "entUser",
+                         "entUser",
 
                         "PasswordDialog", "lblPasswordPrompt", "entPasswd",
 
@@ -56,10 +58,10 @@ class GUI:
                         "ApplyDialog",
 
                         "NewPrinterWindow", "ntbkNewPrinter",
-                        "btnNPBack", "btnNPForward", "btnNPApply",
-                        "entNPName", "entNPDescription", "entNPLocation",
-                        "cmbNPType", "ntbkNPType",
-                        "tvNPDrivers",                        
+                         "btnNPBack", "btnNPForward", "btnNPApply",
+                          "entNPName", "entNPDescription", "entNPLocation",
+                          "cmbNPType", "ntbkNPType",
+                          "tvNPDrivers",
                         
                         )
         self.setTitle ()
@@ -94,6 +96,15 @@ class GUI:
 
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
+
+        # setup Class member lists
+        for name, treeview in (("Members", self.tvClassMembers),
+                               ("Others", self.tvClassNotMembers)):
+            model = gtk.ListStore(str)
+            cell = gtk.CellRendererText()
+            column = gtk.TreeViewColumn(name, cell, text=0)
+            treeview.set_model(model)
+            treeview.append_column(column)
         
         self.xml.signal_autoconnect(self)
 
@@ -125,6 +136,8 @@ class GUI:
         for name in names:
             #if self.printers[name]["printer-type"] & cups.CUPS_PRINTER_REMOTE:
             #    continue
+            if self.printers[name]["printer-type"] & cups.CUPS_PRINTER_CLASS:
+                continue
             self.mainlist.append(('  ' + name, 'Printer'))
         
         # Classes
@@ -134,8 +147,9 @@ class GUI:
         
         self.mainlist.append(("Classes:", ''))
         for name in names:
-            self.mainlist.append((class_, 'Class'))       
-
+            if not self.printers.has_key(name): continue
+            self.printers[name]["class-members"] = self.classes[name]
+            self.mainlist.append((name, 'Class'))       
 
         # Selection
         selection = self.tvMainList.get_selection()
@@ -159,6 +173,7 @@ class GUI:
         if self.changed:
             response = self.ApplyDialog.run()
             self.ApplyDialog.hide()
+            err = False
             if response == gtk.RESPONSE_APPLY:
                 err = self.apply()
             if err or response == gtk.RESPONSE_CANCEL:
@@ -294,6 +309,9 @@ class GUI:
         else:
             self.imgConflict.hide()
             
+
+    # Apply Changes
+    
     def on_btnApply_clicked(self, widget):
         self.apply()
         
@@ -322,13 +340,16 @@ class GUI:
         self.ErrorDialog.hide()        
             
     def save_printer(self, name):
-        self.getPrinterSettings()
-        self.passwd_retry = False # use cached Passwd 
+        printer = self.printers[name] 
+        is_class = printer.has_key("class-members")
+        
         try:
-            if self.ppd.nondefaultsMarked ():
-                self.cups.addPrinter(name, ppd=self.ppd)
+            if not is_class: 
+                self.getPrinterSettings()
+                if self.ppd.nondefaultsMarked():
+                    self.passwd_retry = False # use cached Passwd 
+                    self.cups.addPrinter(name, ppd=self.ppd)
 
-            printer = self.printers[name] 
             new_values = {
                 "printer-location" : self.entPLocation.get_text(),
                 "printer-info" : self.entPDescription.get_text(),
@@ -346,14 +367,35 @@ class GUI:
                 self.passwd_retry = False # use cached Passwd 
                 self.cups.setPrinterDevice(name, new_values["device-uri"])
             printer.update(new_values)
+
+            if is_class:
+                # update member list
+                new_members = self.getCurrentClassMembers()
+                for member in printer["class-members"]:
+                    if member in new_members:
+                        new_members.remove(member)
+                    else:
+                        cups.deletePrinterFromClass(member, name)
+                for member in new_members:
+                    cups.addPrinterToClass(member, name)                
         except cups.IPPError, (e, s):
             self.show_IPP_Error(e, s)
             return True
         return False
 
+    def getPrinterSettings(self):
+        self.ppd.markDefaults()
+        for option in self.options.itervalues():
+            option.writeback()
+        print self.ppd.conflicts(), "conflicts"
+
+    # revert changes
+
     def on_btnRevert_clicked(self, button):
         self.changed = set() # avoid asking the user
         self.on_tvMainList_cursor_changed(self.tvMainList)
+
+    # select Item
 
     def on_tvMainList_cursor_changed(self, list):
         if self.changed:
@@ -373,23 +415,18 @@ class GUI:
         if type == "Settings":
             self.ntbkMain.set_current_page(0)
             item_selected = False
-        elif type == 'Printer':
+        elif type in ['Printer', 'Class']:
             self.fillPrinterTab(name)
             self.ntbkMain.set_current_page(1)
-        elif type == 'Class':
-            self.fillClassTab(name)
-            self.ntbkMain.set_current_page(2)
 
-        for item in [self.copy, self.delete, self.btnCopy, self.btnDelete]:
-            item.set_sensitive(item_selected)
+        for widget in [self.copy, self.delete, self.btnCopy, self.btnDelete]:
+            widget.set_sensitive(item_selected)
 
     def fillPrinterTab(self, name):
         self.changed = set() # of options
         self.options = {} # keyword -> Option object
         self.conflicts = set() # of options
 
-        # XXX self.option_changed(None, False) # set Apply/Revert buttons
-        
         # Description page
         printer_states = { cups.IPP_PRINTER_IDLE: "Idle",
                            cups.IPP_PRINTER_PROCESSING: "Processing",
@@ -397,6 +434,7 @@ class GUI:
                            cups.IPP_PRINTER_STOPPED: "Stopped" }
 
         printer = self.printers[name] 
+        self.printer = printer
         self.entPDescription.set_text(printer.get("printer-info", ""))
         self.entPLocation.set_text(printer.get("printer-location", ""))
         self.lblPMakeModel.set_text(printer.get("printer-make-and-model", ""))
@@ -409,25 +447,49 @@ class GUI:
 
         self.entPDevice.set_text(printer.get("device-uri", ""))
 
-        # clean Installable Options Tab
-        for widget in self.vbPInstallOptions.get_children():
-            self.vbPInstallOptions.remove(widget)
+        # remove InstallOptions tab
         tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
         if tab_nr != -1:
             self.ntbkPrinter.remove_page(tab_nr)
+
+        if printer.has_key("class-members"):
+            # Class
+            self.fillClassMembers(name)
+        else:
+            # real Printer
+            self.fillPrinterOptions(name)
+
+        self.setDataButtonState()
+
+    def fillPrinterOptions(self, name):
+        # remove Class membership tab
+        tab_nr = self.ntbkPrinter.page_num(self.vbClassMembers)
+        if tab_nr != -1:
+            self.ntbkPrinter.remove_page(tab_nr)
+
+        # clean Installable Options Tab
+        for widget in self.vbPInstallOptions.get_children():
+            self.vbPInstallOptions.remove(widget)
+
         # clean Options Tab
         for widget in self.vbPOptions.get_children():
             self.vbPOptions.remove(widget)
+        # insert Options Tab
+        if self.ntbkPrinter.page_num(self.swPOptions) == -1:
+            self.ntbkPrinter.insert_page(
+                self.swPOptions, self.lblPOptions, 2)
 
+        # get PPD
         ppd = cups.PPD(self.cups.getPPD(name))
         ppd.markDefaults()
         self.ppd = ppd
-        
+
+        # build option tabs
         for group in ppd.optionGroups:
             if group.name == "InstallableOptions":
                 container = self.vbPInstallOptions
                 self.ntbkPrinter.insert_page(self.swPInstallOptions,
-                                             gtk.Label(group.text), 1)
+                                             gtk.Label(group.text), 2)
             else:
                 frame = gtk.Frame (group.text)
                 frame.set_shadow_type (gtk.SHADOW_NONE)
@@ -464,22 +526,84 @@ class GUI:
 
         self.swPInstallOptions.show_all()
         self.swPOptions.show_all()
+
+    # Class members
+    
+    def fillClassMembers(self, name):
+        printer = self.printers[name]
+
+        # remove Options tab
+        tab_nr = self.ntbkPrinter.page_num(self.swPOptions)
+        if tab_nr != -1:
+            self.ntbkPrinter.remove_page(tab_nr)
+
+        # insert Member Tab
+        if self.ntbkPrinter.page_num(self.vbClassMembers) == -1:
+            self.ntbkPrinter.insert_page(
+                self.vbClassMembers, self.lblClassMembers, 2)
+        
+
+        model_members = self.tvClassMembers.get_model()
+        model_not_members = self.tvClassNotMembers.get_model()
+        model_members.clear()
+        model_not_members.clear()
+
+        for name, p in self.printers.iteritems():
+            if (not p.has_key("class-members") and
+                p is not printer and
+                not (p["printer-type"] & cups.CUPS_PRINTER_REMOTE)):
+                if name in printer["class-members"]:
+                    model_members.append((name, ))
+                else:
+                    model_not_members.append((name, ))
+                
+    def on_btnClassAddMember_clicked(self, button):
+        self.moveClassMembers(self.tvClassNotMembers,
+                              self.tvClassMembers)
+        
+    def on_btnClassDelMember_clicked(self, button):
+        self.moveClassMembers(self.tvClassMembers,
+                              self.tvClassNotMembers)
+        
+    def moveClassMembers(self, treeview_from, treeview_to):
+        selection = treeview_from.get_selection()
+        model_from, rows = selection.get_selected_rows()
+        rows = [gtk.TreeRowReference(model_from, row) for row in rows]
+
+        model_to = treeview_to.get_model()
+        
+        for row in rows:
+            path = row.get_path()
+            iter = model_from.get_iter(path)
+            
+            row_data = model_from.get(iter, 0)
+            model_to.append(row_data)
+            model_from.remove(iter)
+
+        if self.getCurrentClassMembers() != self.printer["class-members"]:
+            self.changed.add(self.tvClassMembers)
+        else:
+            self.changed.discard(self.tvClassMembers)
         self.setDataButtonState()
 
-    def getPrinterSettings(self):
-        self.ppd.markDefaults()
-        for option in self.options.itervalues():
-            option.writeback()
-        print self.ppd.conflicts(), "conflicts"
+    def getCurrentClassMembers(self):
+        model = self.tvClassMembers.get_model()
+        iter = model.get_iter_root()
+        result = []
+        while iter:
+            result.append(model.get(iter, 0)[0])
+            iter = model.iter_next(iter)
+        result.sort()
+        return result
 
-    def fillClassTab(self, name):
-        pass
-
+    # Quit
+    
     def on_quit_activate(self, widget, event=None):
         # check for unapplied changes
         if self.changed:
             response = self.ApplyDialog.run()
             self.ApplyDialog.hide()
+            err = False
             if response == gtk.RESPONSE_APPLY:
                 err = self.apply()
             if err or response == gtk.RESPONSE_CANCEL:
@@ -517,15 +641,12 @@ class GUI:
         if result == gtk.RESPONSE_CANCEL:
             return
         
-        if type == "Printer":
-            self.cups.deletePrinter(name)
-            selection = self.tvMainList.get_selection()
-            model, iter = selection.get_selected()
-            model.remove(iter)
-            selection.select_path(0)
-            self.on_tvMainList_cursor_changed(self.tvMainList)
-        elif type == "Class":
-            print "DELETE Class"
+        self.cups.deletePrinter(name)
+        selection = self.tvMainList.get_selection()
+        model, iter = selection.get_selected()
+        model.remove(iter)
+        selection.select_path(0)
+        self.on_tvMainList_cursor_changed(self.tvMainList)
 
     # == New Printer =====================================================
 
