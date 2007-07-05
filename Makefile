@@ -1,0 +1,30 @@
+NAME=system-config-printer
+VERSION=0.7.0
+TAG=`echo $(NAME)-$(VERSION) | tr . _`
+
+SOURCES=cupsd.py         \
+	cupshelpers.py   \
+	foomatic.py      \
+	nametree.py      \
+	optionwidgets.py \
+	probe_printer.py \
+	system-config-printer.py
+
+DIST=Makefile \
+	COPYING NEWS README TODO ChangeLog
+
+clean:
+	-rm -rf *.pyc *~ *.bak *.orig
+
+tag:
+	cvs tag -c $(TAG)
+
+dist:
+	cvs export -r $(TAG) $(NAME)
+	mkdir $(NAME)-$(VERSION)
+	cd $(NAME); cp -a $(SOURCES) $(DIST) ../$(NAME)-$(VERSION); cd ..
+	tar jcf $(NAME)-$(VERSION).tar.bz2 $(NAME)-$(VERSION)
+	rm -rf $(NAME)-$(VERSION) $(NAME)
+
+.PHONY: clean tag dist install
+
