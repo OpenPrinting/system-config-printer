@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-03-16 17:26+0000\n"
+"POT-Creation-Date: 2007-03-21 09:50+0000\n"
 "PO-Revision-Date: 2007-03-17 12:36+0200\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
@@ -22,7 +22,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Toimeton"
 
-#: ../cupshelpers.py:29
+#: ../cupshelpers.py:29 ../applet.py:238
 msgid "Processing"
 msgstr "Suorittaa"
 
@@ -30,11 +30,11 @@ msgstr "Suorittaa"
 msgid "Busy"
 msgstr "Varattu"
 
-#: ../cupshelpers.py:31
+#: ../cupshelpers.py:31 ../applet.py:239
 msgid "Stopped"
 msgstr "Pysähtynyt"
 
-#: ../cupshelpers.py:48
+#: ../cupshelpers.py:48 ../applet.py:248
 msgid "Unknown"
 msgstr "Tuntematon"
 
@@ -50,13 +50,11 @@ msgstr "Tekijänoikeus 2006, 2007 Red Hat, Inc."
 msgid "Server Settings"
 msgstr "Palvelinvalinnat"
 
-#: ../system-config-printer.py:301
-#: ../system-config-printer.py:303
+#: ../system-config-printer.py:301 ../system-config-printer.py:303
 msgid "Members of this class"
 msgstr "Tämän luokan jäsenet"
 
-#: ../system-config-printer.py:302
-#: ../system-config-printer.py:304
+#: ../system-config-printer.py:302 ../system-config-printer.py:304
 msgid "Others"
 msgstr "Muut"
 
@@ -103,8 +101,7 @@ msgstr "Tulostinasetukset - %s"
 msgid "Connected to %s"
 msgstr "Yhdistetty kohteeseen %s"
 
-#: ../system-config-printer.py:536
-#: ../system-config-printer.py:1139
+#: ../system-config-printer.py:536 ../system-config-printer.py:1139
 msgid "Not connected"
 msgstr "Ei kytketty"
 
@@ -133,13 +130,11 @@ msgstr ""
 "Yhdistetään palvelimeen:\n"
 "%s"
 
-#: ../system-config-printer.py:1068
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.py:1068 ../system-config-printer.glade.h:114
 msgid "Installable Options"
 msgstr "Asennettavissa olevat valinnat"
 
-#: ../system-config-printer.py:1069
-#: ../system-config-printer.glade.h:190
+#: ../system-config-printer.py:1069 ../system-config-printer.glade.h:190
 msgid "Printer Options"
 msgstr "Tulostimen asetukset"
 
@@ -153,28 +148,31 @@ msgstr ""
 "Muutokset voidaan ottaa käyttöön\n"
 "vasta kun ristiriidat on ratkaistu."
 
-#: ../system-config-printer.py:1107
-#: ../system-config-printer.py:1123
+#: ../system-config-printer.py:1107 ../system-config-printer.py:1123
+#: ../applet.py:113
 msgid "Not authorized"
 msgstr "Ei käyttöoikeutta"
 
-#: ../system-config-printer.py:1108
+#: ../system-config-printer.py:1108 ../applet.py:114
 msgid "The password may be incorrect."
 msgstr "Salasana voi olla virheellinen."
 
-#: ../system-config-printer.py:1111
-#: ../system-config-printer.py:1144
+#: ../system-config-printer.py:1111 ../system-config-printer.py:1144
+#: ../applet.py:117
 msgid "CUPS server error"
 msgstr "CUPS-palvelimen virhe"
 
-#: ../system-config-printer.py:1112
+#: ../system-config-printer.py:1112 ../applet.py:118
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS-toiminnon ”%s” aikana tapahtui virhe."
 
 #: ../system-config-printer.py:1124
-msgid "The password may be incorrect, or the server may be configured to deny remote administration."
-msgstr "Salasana voi olla väärä tai palvelin voi olla asetettu estämään etäylläpito"
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr ""
+"Salasana voi olla väärä tai palvelin voi olla asetettu estämään etäylläpito"
 
 #: ../system-config-printer.py:1129
 msgid "Bad request"
@@ -214,148 +212,156 @@ msgstr "Tämä luokka poistetaan!"
 msgid "Proceed anyway?"
 msgstr "Jatketaanko silti?"
 
-#: ../system-config-printer.py:1346
+#: ../system-config-printer.py:1350
 msgid "Submitted"
 msgstr "Lähetetty"
 
-#: ../system-config-printer.py:1347
+#: ../system-config-printer.py:1351
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testisivu lähetetty työnä %d"
 
-#: ../system-config-printer.py:1357
+#: ../system-config-printer.py:1361
 msgid "Not possible"
 msgstr "Mahdotonta"
 
-#: ../system-config-printer.py:1358
-msgid "The remote server did not accept the print job, most likely because the printer is not shared."
-msgstr "Etäpalvelin ei hyväksynyt tulostustyötä, luultavasti koska tulostinta ei ole jaettu."
+#: ../system-config-printer.py:1362
+msgid ""
+"The remote server did not accept the print job, most likely because the "
+"printer is not shared."
+msgstr ""
+"Etäpalvelin ei hyväksynyt tulostustyötä, luultavasti koska tulostinta ei ole "
+"jaettu."
 
-#: ../system-config-printer.py:1419
+#: ../system-config-printer.py:1423
 msgid "Error"
 msgstr "Virhe"
 
-#: ../system-config-printer.py:1420
+#: ../system-config-printer.py:1424
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS-palvelimeen yhdistämisessä oli ongelma."
 
-#: ../system-config-printer.py:1483
+#: ../system-config-printer.py:1487
 msgid "This is the default printer"
 msgstr "Tämä on oletustulostin."
 
-#: ../system-config-printer.py:1485
+#: ../system-config-printer.py:1489
 #, python-format
 msgid "Default printer is %s"
 msgstr "Oletustulostin on %s"
 
-#: ../system-config-printer.py:1488
+#: ../system-config-printer.py:1492
 msgid "No default printer set."
 msgstr "Oletustulostinta ei ole asetettu."
 
-#: ../system-config-printer.py:1574
+#: ../system-config-printer.py:1578
 msgid "Cancel Tests"
 msgstr "Peruuta testit"
 
-#: ../system-config-printer.py:1578
-#: ../system-config-printer.glade.h:188
+#: ../system-config-printer.py:1582 ../system-config-printer.glade.h:188
 msgid "Print Test Page"
 msgstr "Tulosta testisivu"
 
-#: ../system-config-printer.py:1833
+#: ../system-config-printer.py:1837
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "Haluatko varmasti poistaa tulostimen %s?"
 
-#: ../system-config-printer.py:1835
+#: ../system-config-printer.py:1839
 #, python-format
 msgid "Really delete class %s?"
 msgstr "Haluatko varmasti poistaa luokan %s?"
 
-#: ../system-config-printer.py:1883
-#: ../system-config-printer.glade.h:139
+#: ../system-config-printer.py:1887 ../system-config-printer.glade.h:139
 msgid "New Printer"
 msgstr "Uusi tulostin"
 
-#: ../system-config-printer.py:1892
-#: ../system-config-printer.glade.h:138
+#: ../system-config-printer.py:1896 ../system-config-printer.glade.h:138
 msgid "New Class"
 msgstr "Uusi luokka"
 
-#: ../system-config-printer.py:1904
+#: ../system-config-printer.py:1908
 msgid "Change Device URI"
 msgstr "Muuta laitteen osoitetta"
 
-#: ../system-config-printer.py:1918
+#: ../system-config-printer.py:1922
 msgid "Change Driver"
 msgstr "Muuta ajuria"
 
-#: ../system-config-printer.py:2121
+#: ../system-config-printer.py:2125
 msgid "Other"
 msgstr "Muu"
 
-#: ../system-config-printer.py:2123
+#: ../system-config-printer.py:2127
 msgid " (Current)"
 msgstr " (Nykyinen)"
 
-#: ../system-config-printer.py:2308
+#: ../system-config-printer.py:2312
 msgid "Verified"
 msgstr "Tarkistettu"
 
-#: ../system-config-printer.py:2309
+#: ../system-config-printer.py:2313
 msgid "This print share is accessible."
 msgstr "Tämä tulostinjako on käytettävissä."
 
-#: ../system-config-printer.py:2316
+#: ../system-config-printer.py:2320
 msgid "Inaccessible"
 msgstr "Ei käytettävissä"
 
-#: ../system-config-printer.py:2317
+#: ../system-config-printer.py:2321
 msgid "This print share is not accessible."
 msgstr "Tämä tulostinjako ei ole käytettävissä."
 
-#: ../system-config-printer.py:2337
+#: ../system-config-printer.py:2341
 msgid "A printer connected to the parallel port."
 msgstr "Rinnakkaisporttiin liitetty tulostin."
 
-#: ../system-config-printer.py:2339
+#: ../system-config-printer.py:2343
 msgid "A printer connected to a USB port."
 msgstr "USB-porttiin liitetty tulostin"
 
-#: ../system-config-printer.py:2341
-msgid "HPLIP software driving a printer, or the printer function of a multi-function device."
-msgstr "Tulostinta tai monitoimilaitteen tulostinosaa käyttävä HPLIP-ohjelmisto."
+#: ../system-config-printer.py:2345
+msgid ""
+"HPLIP software driving a printer, or the printer function of a multi-"
+"function device."
+msgstr ""
+"Tulostinta tai monitoimilaitteen tulostinosaa käyttävä HPLIP-ohjelmisto."
 
-#: ../system-config-printer.py:2344
-msgid "HPLIP software driving a fax machine, or the fax function of a multi-function device."
+#: ../system-config-printer.py:2348
+msgid ""
+"HPLIP software driving a fax machine, or the fax function of a multi-"
+"function device."
 msgstr "Faksia tai monitoimilaitteen faksiosaa käyttävä HPLIP-ohjelmisto."
 
-#: ../system-config-printer.py:2347
+#: ../system-config-printer.py:2351
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Hardware Abstraction Layerin (HAL) tunnistama paikallinen tulostin."
 
-#: ../system-config-printer.py:2590
+#: ../system-config-printer.py:2594
 msgid " (recommended)"
 msgstr " (suositeltu)"
 
-#: ../system-config-printer.py:2636
+#: ../system-config-printer.py:2640
 msgid "This PPD is generated by foomatic."
 msgstr "Tämän PPD:n on luonut foomatic."
 
-#: ../system-config-printer.py:2639
-msgid "This PPD is provided by the manufacturer and is included with the foomatic package."
+#: ../system-config-printer.py:2643
+msgid ""
+"This PPD is provided by the manufacturer and is included with the foomatic "
+"package."
 msgstr "Tämä PPD on valmistajan toimittama ja mukana foomatic-pakkauksessa."
 
-#: ../system-config-printer.py:2647
+#: ../system-config-printer.py:2651
 msgid "This PPD is provided by CUPS."
 msgstr "Tämä PPD on CUPS:in toimittama."
 
 #. XXX
-#: ../system-config-printer.py:2689
+#: ../system-config-printer.py:2693
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "Luon uuden luokan %s."
 
-#: ../system-config-printer.py:2703
+#: ../system-config-printer.py:2707
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -365,11 +371,11 @@ msgstr ""
 "%s.\n"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:2727
+#: ../system-config-printer.py:2731
 msgid "Database error"
 msgstr "Tietokantavirhe"
 
-#: ../system-config-printer.py:2728
+#: ../system-config-printer.py:2732
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Ajuria ”%s” ei voi käyttää tulostimen ”%s %s” kanssa."
@@ -377,34 +383,41 @@ msgstr "Ajuria ”%s” ei voi käyttää tulostimen ”%s %s” kanssa."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:2738
+#: ../system-config-printer.py:2742
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Tämän ajurin käyttö vaatii paketin ”%s” asentamista."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:2745
+#: ../system-config-printer.py:2749
 msgid "PPD error"
 msgstr "PPD-virhe"
 
-#: ../system-config-printer.py:2747
+#: ../system-config-printer.py:2751
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD-tiedoston lukeminen epäonnistui. Mahdollisia syitä:"
 
-#: ../system-config-printer.py:3033
-#: ../system-config-printer.py:3040
+#: ../system-config-printer.py:3037 ../system-config-printer.py:3044
 msgid "Missing driver"
 msgstr "Puuttuva ajuri"
 
-#: ../system-config-printer.py:3034
+#: ../system-config-printer.py:3038
 #, python-format
-msgid "Printer '%s' requires the %s package but it is not currently installed.  Please install it before using this printer."
-msgstr "Tulostin ”%s” vaatii paketin ”%s”, mutta sitä ei ole asennettu. Asenna paketti ennen tämän tulostimen käyttöä."
+msgid ""
+"Printer '%s' requires the %s package but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"Tulostin ”%s” vaatii paketin ”%s”, mutta sitä ei ole asennettu. Asenna "
+"paketti ennen tämän tulostimen käyttöä."
 
-#: ../system-config-printer.py:3041
+#: ../system-config-printer.py:3045
 #, python-format
-msgid "Printer '%s' requires the '%s' program but it is not currently installed.  Please install it before using this printer."
-msgstr "Tulostin ”%s” vaatii ohjelman ”%s”, mutta sitä ei ole asennettu. Asenna ohjelma ennen tämän tulostimen käyttöä."
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"Tulostin ”%s” vaatii ohjelman ”%s”, mutta sitä ei ole asennettu. Asenna "
+"ohjelma ennen tämän tulostimen käyttöä."
 
 #: ../system-config-printer.glade.h:1
 msgid " "
@@ -544,7 +557,7 @@ msgstr ""
 "\n"
 "Kaikki tekemäsi muutokset hylätään ellet hyväksy niitä."
 
-#: ../system-config-printer.glade.h:38
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
 "\n"
@@ -582,7 +595,8 @@ msgstr "Salli etäylläpito"
 
 #: ../system-config-printer.glade.h:48
 msgid "Allow users to cancel any job (not just their own)"
-msgstr "Salli käyttäjien peruuttaa mikä tahansa työ (ei pelkästään heidän omiaan)"
+msgstr ""
+"Salli käyttäjien peruuttaa mikä tahansa työ (ei pelkästään heidän omiaan)"
 
 #: ../system-config-printer.glade.h:49
 msgid "Apply"
@@ -865,7 +879,9 @@ msgstr "Merkki ja malli"
 
 #: ../system-config-printer.glade.h:131
 msgid "May contain any printable characters except \"/\", \"#\", and space"
-msgstr "Voi sisältää mitä tahansa tulostuskelpoisia merkkejä paitsi \"/\", \"#\", sekä välilyönti"
+msgstr ""
+"Voi sisältää mitä tahansa tulostuskelpoisia merkkejä paitsi \"/\", \"#\", "
+"sekä välilyönti"
 
 #: ../system-config-printer.glade.h:132
 msgid "Media:"
@@ -965,7 +981,7 @@ msgstr "Sivua arkille:"
 msgid "Parity"
 msgstr "Pariteetti"
 
-#: ../system-config-printer.glade.h:179
+#: ../system-config-printer.glade.h:179 ../applet.glade.h:5
 msgid "Password:"
 msgstr "Salasana:"
 
@@ -990,15 +1006,21 @@ msgstr ""
 "Käännetty pysty (180°)"
 
 #: ../system-config-printer.glade.h:186
-msgid "PostScript Printer Description (PPD) files can often found on the driver disk that comes with the printer. For PostScript printers they are often part of the Windows<sup>®</sup> driver."
-msgstr "PostScript Printer Description (PPD) -tiedostot ovat yleensä kirjoittimen mukana tulevalla ajurilevyllä. PostScript-kirjoittimien PPD-tiedostot ovat yleensä osa Windows<sup>®</sup>-ajuria."
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"PostScript Printer Description (PPD) -tiedostot ovat yleensä kirjoittimen "
+"mukana tulevalla ajurilevyllä. PostScript-kirjoittimien PPD-tiedostot ovat "
+"yleensä osa Windows<sup>®</sup>-ajuria."
 
 # Better ideas?
 #: ../system-config-printer.glade.h:187
 msgid "Pretty print"
 msgstr "Tulosta siististi"
 
-#: ../system-config-printer.glade.h:189
+#: ../system-config-printer.glade.h:189 ../applet.py:39
 msgid "Printer"
 msgstr "Tulostin"
 
@@ -1091,8 +1113,14 @@ msgid "Sides:"
 msgstr "Puolet:"
 
 #: ../system-config-printer.glade.h:213
-msgid "Specify the default job options for this printer.  Jobs arriving at this print server will have these options added if they are not already set by the application."
-msgstr "Määrittele töiden oletusasetukset tälle tulostimelle. Tälle tulostuspalvelimelle saapuviin töihin lisätään nämä asetukset, jos sovellus ei ole jo asettanut niitä."
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"Määrittele töiden oletusasetukset tälle tulostimelle. Tälle "
+"tulostuspalvelimelle saapuviin töihin lisätään nämä asetukset, jos sovellus "
+"ei ole jo asettanut niitä."
 
 #: ../system-config-printer.glade.h:214
 msgid "Starting Banner:"
@@ -1108,21 +1136,43 @@ msgid "System-Config-Printer %s"
 msgstr "Aseta tulostimet %s"
 
 #: ../system-config-printer.glade.h:218
-msgid "The foomatic printer database contains various manufacturer provided PostScript Printer Description (PPD) files and also can generate PPD files for a large number of (non PostScript) printers. But in general manufacturer provided PPD files provide better access to the specific features of the printer."
-msgstr "Foomatic-tulostintietokanta sisältää useita valmistajien toimittamia PostScript Printer Description (PPD) -tiedostoja ja voi myös luoda PPD-tiedostoja suurelle määrälle (ei-PostScript) kirjoittimia. Yleensä valmistajien toimittamat PPD-tiedostot tarjoavat paremman tuen kirjoittimen ominaisuuksille."
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"Foomatic-tulostintietokanta sisältää useita valmistajien toimittamia "
+"PostScript Printer Description (PPD) -tiedostoja ja voi myös luoda PPD-"
+"tiedostoja suurelle määrälle (ei-PostScript) kirjoittimia. Yleensä "
+"valmistajien toimittamat PPD-tiedostot tarjoavat paremman tuen kirjoittimen "
+"ominaisuuksille."
 
 #: ../system-config-printer.glade.h:219
-msgid "This is done by assuming that options with the same name do have the same meaning. Settings of options that are not present in the new PPD will be lost and options only present in the new PPD will be set to default."
-msgstr "Tämä tehdään olettaen, että samannimisillä asetuksilla on sama tarkoitus. Asetukset, joita ei ole uudessa PPD:ssä menetetään ja asetukset, jotka ovat vain uudessa PPD:ssä asetetaan oletusarvoonsa."
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Tämä tehdään olettaen, että samannimisillä asetuksilla on sama tarkoitus. "
+"Asetukset, joita ei ole uudessa PPD:ssä menetetään ja asetukset, jotka ovat "
+"vain uudessa PPD:ssä asetetaan oletusarvoonsa."
 
 #: ../system-config-printer.glade.h:220
-msgid "This way all current option settings will be lost. The default settings of the new PPD will be used. "
-msgstr "Näin kaikki nykyiset asetukset menetetään. Uuden PPD:n oletusasetukset otetaan käyttöön."
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Näin kaikki nykyiset asetukset menetetään. Uuden PPD:n oletusasetukset "
+"otetaan käyttöön."
 
 # This will have to be checked!
 #: ../system-config-printer.glade.h:221
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr "Lisätäksesi uuden valitsimen syötä sen nimi alla olevaan kenttään ja napsauta Lisää."
+msgstr ""
+"Lisätäksesi uuden valitsimen syötä sen nimi alla olevaan kenttään ja "
+"napsauta Lisää."
 
 #: ../system-config-printer.glade.h:222
 msgid "Top margin:"
@@ -1134,7 +1184,8 @@ msgstr "Yritä kopioida asetukset vanhasta PPD:stä."
 
 #: ../system-config-printer.glade.h:224
 msgid "Use the new PPD (Postscript Printer Description) as is."
-msgstr "Käytä uutta PPD (Postscript Printer Description) -tiedostoa sellaisenaan."
+msgstr ""
+"Käytä uutta PPD (Postscript Printer Description) -tiedostoa sellaisenaan."
 
 #: ../system-config-printer.glade.h:225
 msgid "User name:"
@@ -1156,7 +1207,7 @@ msgstr "_Älä hyväksy"
 msgid "_Edit"
 msgstr "_Muokkaa"
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:230 ../applet.glade.h:8
 msgid "_File"
 msgstr "_Tiedosto"
 
@@ -1196,6 +1247,129 @@ msgstr "Aseta tulostimet"
 msgid "Printing"
 msgstr "Tulostus"
 
+#: ../applet.py:37
+msgid "Job"
+msgstr ""
+
+#: ../applet.py:38
+#, fuzzy
+msgid "Document"
+msgstr "Kommentti"
+
+#: ../applet.py:40
+msgid "Size"
+msgstr ""
+
+#: ../applet.py:41
+#, fuzzy
+msgid "Time submitted"
+msgstr "Lähetetty"
+
+#: ../applet.py:42
+#, fuzzy
+msgid "Status"
+msgstr "tila %d"
+
+#: ../applet.py:161
+msgid "No documents queued"
+msgstr ""
+
+#: ../applet.py:164
+#, python-format
+msgid "%d document queued"
+msgstr ""
+
+#: ../applet.py:167
+#, python-format
+msgid "%d documents queued"
+msgstr ""
+
+#: ../applet.py:209
+msgid "1 hour ago"
+msgstr ""
+
+#: ../applet.py:211
+msgid "1 hour and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:213
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:216
+#, python-format
+msgid "%d hours ago"
+msgstr ""
+
+#: ../applet.py:218
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:220
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:225
+msgid "a minute ago"
+msgstr ""
+
+#: ../applet.py:227
+#, python-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ../applet.py:236
+#, fuzzy
+msgid "Pending"
+msgstr "Tulostus"
+
+#: ../applet.py:237
+#, fuzzy
+msgid "Held"
+msgstr "_Ohje"
+
+#: ../applet.py:240
+#, fuzzy
+msgid "Canceled"
+msgstr "Peruuta testit"
+
+#: ../applet.py:241
+#, fuzzy
+msgid "Aborted"
+msgstr "Tietoja"
+
+#: ../applet.py:242
+#, fuzzy
+msgid "Completed"
+msgstr "Kommentti"
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr ""
+
+#: ../applet.glade.h:6
+msgid "Re_print"
+msgstr ""
+
+#: ../applet.glade.h:7
+msgid "Show _completed jobs"
+msgstr ""
+
+#: ../applet.glade.h:9
+msgid "_Hold"
+msgstr ""
+
+#: ../applet.glade.h:10
+#, fuzzy
+msgid "_Release"
+msgstr "Oletukset"
+
+#: ../applet.glade.h:11
+msgid "_View"
+msgstr ""
+
 #~ msgid "Specify default job options."
 #~ msgstr "Määrittele työn oletusasetukset."
-

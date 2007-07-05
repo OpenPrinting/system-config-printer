@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-03-16 17:26+0000\n"
+"POT-Creation-Date: 2007-03-21 09:50+0000\n"
 "PO-Revision-Date: 2007-02-10 14:20+0000\n"
 "Last-Translator: Dimitrios Typaldos <dtfedora@yahoo.com>\n"
 "Language-Team: Greek <fedora-trans-el@redhat.com>\n"
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Αδρανής"
 
-#: ../cupshelpers.py:29
+#: ../cupshelpers.py:29 ../applet.py:238
 msgid "Processing"
 msgstr "Γίνεται επεξεργασία"
 
@@ -34,11 +34,11 @@ msgstr "Γίνεται επεξεργασία"
 msgid "Busy"
 msgstr "Απασχολημένος"
 
-#: ../cupshelpers.py:31
+#: ../cupshelpers.py:31 ../applet.py:239
 msgid "Stopped"
 msgstr "Σταματημένος"
 
-#: ../cupshelpers.py:48
+#: ../cupshelpers.py:48 ../applet.py:248
 msgid "Unknown"
 msgstr "Άγνωστο"
 
@@ -153,18 +153,20 @@ msgstr ""
 "μετά την επίλυση των συγκρούσεων."
 
 #: ../system-config-printer.py:1107 ../system-config-printer.py:1123
+#: ../applet.py:113
 msgid "Not authorized"
 msgstr "Χωρίς εξουσιοδότηση"
 
-#: ../system-config-printer.py:1108
+#: ../system-config-printer.py:1108 ../applet.py:114
 msgid "The password may be incorrect."
 msgstr "Το συνθηματικό μπορεί να μην είναι σωστό."
 
 #: ../system-config-printer.py:1111 ../system-config-printer.py:1144
+#: ../applet.py:117
 msgid "CUPS server error"
 msgstr "σφάλμα εξυπηρετητή CUPS"
 
-#: ../system-config-printer.py:1112
+#: ../system-config-printer.py:1112 ../applet.py:118
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Διαπιστώθηκε σφάλμα κατά τη λειτουργία CUPS: '%s'."
@@ -215,20 +217,20 @@ msgstr "Αυτό θα διαγράψει την κλάση!"
 msgid "Proceed anyway?"
 msgstr "Συνέχεια ούτως ή άλλως;"
 
-#: ../system-config-printer.py:1346
+#: ../system-config-printer.py:1350
 msgid "Submitted"
 msgstr "Καταχωρήθηκε"
 
-#: ../system-config-printer.py:1347
+#: ../system-config-printer.py:1351
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Η δοκιμαστική σελίδα καταχωρήθηκε σαν εργασία %d"
 
-#: ../system-config-printer.py:1357
+#: ../system-config-printer.py:1361
 msgid "Not possible"
 msgstr "Δεν είναι εφικτό"
 
-#: ../system-config-printer.py:1358
+#: ../system-config-printer.py:1362
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -236,95 +238,95 @@ msgstr ""
 "Ο απομακρυσμένος διακομιστής δε δέχθηκε την εκτύπωση, κατά πάσα πιθανότητα ο "
 "εκτυπωτής δε διατίθεται για κοινή χρίση."
 
-#: ../system-config-printer.py:1419
+#: ../system-config-printer.py:1423
 msgid "Error"
 msgstr ""
 
-#: ../system-config-printer.py:1420
+#: ../system-config-printer.py:1424
 #, fuzzy
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Διαπιστώθηκε σφάλμα κατά τη λειτουργία CUPS: '%s'."
 
-#: ../system-config-printer.py:1483
+#: ../system-config-printer.py:1487
 msgid "This is the default printer"
 msgstr "Αυτός είναι ο προεπιλεγμένος εκτυπωτής"
 
-#: ../system-config-printer.py:1485
+#: ../system-config-printer.py:1489
 #, python-format
 msgid "Default printer is %s"
 msgstr "Ο προεπιλεγμένος εκτυπωτής είναι %s"
 
-#: ../system-config-printer.py:1488
+#: ../system-config-printer.py:1492
 msgid "No default printer set."
 msgstr "Δεν ορίστηκε προεπιλεγμένος εκτυπωτής."
 
-#: ../system-config-printer.py:1574
+#: ../system-config-printer.py:1578
 msgid "Cancel Tests"
 msgstr "Ακύρωση ελέγχων"
 
-#: ../system-config-printer.py:1578 ../system-config-printer.glade.h:188
+#: ../system-config-printer.py:1582 ../system-config-printer.glade.h:188
 msgid "Print Test Page"
 msgstr "Εκτύπωση δοκιμαστικής σελίδας"
 
-#: ../system-config-printer.py:1833
+#: ../system-config-printer.py:1837
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "Σίγουρα να διαγραφεί ο εκτυπωτής %s;"
 
-#: ../system-config-printer.py:1835
+#: ../system-config-printer.py:1839
 #, python-format
 msgid "Really delete class %s?"
 msgstr "Σίγουρα να διαγραφεί η κλάση %s;"
 
-#: ../system-config-printer.py:1883 ../system-config-printer.glade.h:139
+#: ../system-config-printer.py:1887 ../system-config-printer.glade.h:139
 msgid "New Printer"
 msgstr "Νέος εκτυπωτής"
 
-#: ../system-config-printer.py:1892 ../system-config-printer.glade.h:138
+#: ../system-config-printer.py:1896 ../system-config-printer.glade.h:138
 msgid "New Class"
 msgstr "Νέα κλάση(*.ppd[.gz])"
 
-#: ../system-config-printer.py:1904
+#: ../system-config-printer.py:1908
 msgid "Change Device URI"
 msgstr "Αλλαγή URI συσκευής"
 
-#: ../system-config-printer.py:1918
+#: ../system-config-printer.py:1922
 msgid "Change Driver"
 msgstr "Αλλαγή οδηγού"
 
-#: ../system-config-printer.py:2121
+#: ../system-config-printer.py:2125
 msgid "Other"
 msgstr "Άλλο"
 
-#: ../system-config-printer.py:2123
+#: ../system-config-printer.py:2127
 msgid " (Current)"
 msgstr " (Τρέχον)"
 
-#: ../system-config-printer.py:2308
+#: ../system-config-printer.py:2312
 msgid "Verified"
 msgstr "Επαληθεύτηκε"
 
-#: ../system-config-printer.py:2309
+#: ../system-config-printer.py:2313
 msgid "This print share is accessible."
 msgstr "Ο κοινόχρηστος εκτυπωτής είναι προσβάσιμος."
 
-#: ../system-config-printer.py:2316
+#: ../system-config-printer.py:2320
 msgid "Inaccessible"
 msgstr "Μη προσβάσιμο"
 
-#: ../system-config-printer.py:2317
+#: ../system-config-printer.py:2321
 msgid "This print share is not accessible."
 msgstr "Ο κοινόχρηστος εκτυπωτής δεν είναι προσβάσιμος."
 
-#: ../system-config-printer.py:2337
+#: ../system-config-printer.py:2341
 msgid "A printer connected to the parallel port."
 msgstr "Ένας εκτυπωτής συνδεδεμένος στην παράλληλη θύρα."
 
-#: ../system-config-printer.py:2339
+#: ../system-config-printer.py:2343
 msgid "A printer connected to a USB port."
 msgstr "Ένας εκτυπωτής συνδεδεμένος στη θύρα USB."
 
-#: ../system-config-printer.py:2341
+#: ../system-config-printer.py:2345
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -332,7 +334,7 @@ msgstr ""
 "Λογισμικό HPLIP για οδήγηση εκτυπωτή ή η λειτουργία εκτύπωσης μιας πολυ-"
 "λειτουργικής συσκευής."
 
-#: ../system-config-printer.py:2344
+#: ../system-config-printer.py:2348
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -340,20 +342,20 @@ msgstr ""
 "Λογισμικό HPLIP για οδήγηση φαξ ή η λειτουργία φαξμιας πολυ-λειτουργικής "
 "συσκευής."
 
-#: ../system-config-printer.py:2347
+#: ../system-config-printer.py:2351
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "Τοπικός εκτυπωτής που ανιχνεύτηκε από το Hardware Abstraction Layer (HAL)."
 
-#: ../system-config-printer.py:2590
+#: ../system-config-printer.py:2594
 msgid " (recommended)"
 msgstr " (προτεινόμενος)"
 
-#: ../system-config-printer.py:2636
+#: ../system-config-printer.py:2640
 msgid "This PPD is generated by foomatic."
 msgstr "Αυτό το PPD δημιουργήθηκε από το foomatic."
 
-#: ../system-config-printer.py:2639
+#: ../system-config-printer.py:2643
 msgid ""
 "This PPD is provided by the manufacturer and is included with the foomatic "
 "package."
@@ -361,17 +363,17 @@ msgstr ""
 "Αυτό το PPD παρέχεται από τον κατασκευαστή και συμπεριλαμβάνεται στο πακέτο "
 "foomatic."
 
-#: ../system-config-printer.py:2647
+#: ../system-config-printer.py:2651
 msgid "This PPD is provided by CUPS."
 msgstr "Αυτό το PPD παρέχεται από το CUPS."
 
 #. XXX
-#: ../system-config-printer.py:2689
+#: ../system-config-printer.py:2693
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "Θα δημιουργηθεί νέα κλάση %s."
 
-#: ../system-config-printer.py:2703
+#: ../system-config-printer.py:2707
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -381,11 +383,11 @@ msgstr ""
 "%s.\n"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:2727
+#: ../system-config-printer.py:2731
 msgid "Database error"
 msgstr "Σφάλμα βάσης δεδομένων"
 
-#: ../system-config-printer.py:2728
+#: ../system-config-printer.py:2732
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Ο οδηγός '%s' δε μπορεί να χρησιμοποιηθεί με τον εκτυπωτή '%s %s'."
@@ -393,7 +395,7 @@ msgstr "Ο οδηγός '%s' δε μπορεί να χρησιμοποιηθεί
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:2738
+#: ../system-config-printer.py:2742
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
@@ -401,19 +403,19 @@ msgstr ""
 "τον οδηγό."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:2745
+#: ../system-config-printer.py:2749
 msgid "PPD error"
 msgstr "Σφάλμα PPD"
 
-#: ../system-config-printer.py:2747
+#: ../system-config-printer.py:2751
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Αποτυχία ανάγνωσης αρχείου PPD. Πιθανή αιτία ακολουθεί:"
 
-#: ../system-config-printer.py:3033 ../system-config-printer.py:3040
+#: ../system-config-printer.py:3037 ../system-config-printer.py:3044
 msgid "Missing driver"
 msgstr "Λείπει οδηγός"
 
-#: ../system-config-printer.py:3034
+#: ../system-config-printer.py:3038
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
@@ -423,7 +425,7 @@ msgstr ""
 "εγκατεστημένο.  Παρακαλούμε εγκαταστήστε το πριν χρησιμοποιήσετε αυτόν τον "
 "εκτυπωτή."
 
-#: ../system-config-printer.py:3041
+#: ../system-config-printer.py:3045
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -568,7 +570,7 @@ msgstr ""
 "\n"
 "Οποιεσδήποτε αλλαγές έγιναν θα χαθούν εκτός κι αν τις εφαρμόσετε."
 
-#: ../system-config-printer.glade.h:38
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
 "\n"
@@ -981,7 +983,7 @@ msgstr ""
 msgid "Parity"
 msgstr "Parity"
 
-#: ../system-config-printer.glade.h:179
+#: ../system-config-printer.glade.h:179 ../applet.glade.h:5
 msgid "Password:"
 msgstr "Συνθηματικό:"
 
@@ -1015,7 +1017,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr ""
 
-#: ../system-config-printer.glade.h:189
+#: ../system-config-printer.glade.h:189 ../applet.py:39
 msgid "Printer"
 msgstr "Εκτυπωτής"
 
@@ -1197,7 +1199,7 @@ msgstr "_Χωρίς εφαρμογή"
 msgid "_Edit"
 msgstr "_Επεξεργασία"
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:230 ../applet.glade.h:8
 msgid "_File"
 msgstr "_Αρχείο"
 
@@ -1236,6 +1238,129 @@ msgstr "Ρύθμιση εκτυπωτών"
 #: ../system-config-printer.desktop.in.h:2
 msgid "Printing"
 msgstr "Εκτύπωση"
+
+#: ../applet.py:37
+msgid "Job"
+msgstr ""
+
+#: ../applet.py:38
+#, fuzzy
+msgid "Document"
+msgstr "Σχόλιο"
+
+#: ../applet.py:40
+msgid "Size"
+msgstr ""
+
+#: ../applet.py:41
+#, fuzzy
+msgid "Time submitted"
+msgstr "Καταχωρήθηκε"
+
+#: ../applet.py:42
+#, fuzzy
+msgid "Status"
+msgstr "κατάσταση %d"
+
+#: ../applet.py:161
+msgid "No documents queued"
+msgstr ""
+
+#: ../applet.py:164
+#, python-format
+msgid "%d document queued"
+msgstr ""
+
+#: ../applet.py:167
+#, python-format
+msgid "%d documents queued"
+msgstr ""
+
+#: ../applet.py:209
+msgid "1 hour ago"
+msgstr ""
+
+#: ../applet.py:211
+msgid "1 hour and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:213
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:216
+#, python-format
+msgid "%d hours ago"
+msgstr ""
+
+#: ../applet.py:218
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:220
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:225
+msgid "a minute ago"
+msgstr ""
+
+#: ../applet.py:227
+#, python-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ../applet.py:236
+#, fuzzy
+msgid "Pending"
+msgstr "Εκτύπωση"
+
+#: ../applet.py:237
+#, fuzzy
+msgid "Held"
+msgstr "_Βοήθεια"
+
+#: ../applet.py:240
+#, fuzzy
+msgid "Canceled"
+msgstr "Ακύρωση ελέγχων"
+
+#: ../applet.py:241
+#, fuzzy
+msgid "Aborted"
+msgstr "Περί"
+
+#: ../applet.py:242
+#, fuzzy
+msgid "Completed"
+msgstr "Σχόλιο"
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr ""
+
+#: ../applet.glade.h:6
+msgid "Re_print"
+msgstr ""
+
+#: ../applet.glade.h:7
+msgid "Show _completed jobs"
+msgstr ""
+
+#: ../applet.glade.h:9
+msgid "_Hold"
+msgstr ""
+
+#: ../applet.glade.h:10
+msgid "_Release"
+msgstr ""
+
+#: ../applet.glade.h:11
+msgid "_View"
+msgstr ""
 
 #~ msgid "Specify default job options."
 #~ msgstr "Ορισμός προεπιλεγμένων επιλογών εργασιών."

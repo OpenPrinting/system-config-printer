@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-03-16 17:26+0000\n"
+"POT-Creation-Date: 2007-03-21 09:50+0000\n"
 "PO-Revision-Date: 2007-03-17 11:58+0000\n"
 "Last-Translator: Pedro Morais <morais@kde.org>\n"
 "Language-Team: pt <morais@kde.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Disponível"
 
-#: ../cupshelpers.py:29
+#: ../cupshelpers.py:29 ../applet.py:238
 msgid "Processing"
 msgstr "A processar"
 
@@ -39,11 +39,11 @@ msgstr "A processar"
 msgid "Busy"
 msgstr "Ocupada"
 
-#: ../cupshelpers.py:31
+#: ../cupshelpers.py:31 ../applet.py:239
 msgid "Stopped"
 msgstr "Parado"
 
-#: ../cupshelpers.py:48
+#: ../cupshelpers.py:48 ../applet.py:248
 msgid "Unknown"
 msgstr "Desconhecido"
 
@@ -158,18 +158,20 @@ msgstr ""
 "estes conflitos serem resolvidos."
 
 #: ../system-config-printer.py:1107 ../system-config-printer.py:1123
+#: ../applet.py:113
 msgid "Not authorized"
 msgstr "Não autorizado"
 
-#: ../system-config-printer.py:1108
+#: ../system-config-printer.py:1108 ../applet.py:114
 msgid "The password may be incorrect."
 msgstr "A senha pode estar incorrecta."
 
 #: ../system-config-printer.py:1111 ../system-config-printer.py:1144
+#: ../applet.py:117
 msgid "CUPS server error"
 msgstr "Erro no servidor CUPS"
 
-#: ../system-config-printer.py:1112
+#: ../system-config-printer.py:1112 ../applet.py:118
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Houve um erro durante a operação CUPS: '%s'."
@@ -220,20 +222,20 @@ msgstr "Isto vai apagar esta classe!"
 msgid "Proceed anyway?"
 msgstr "Continuar de qualquer forma?"
 
-#: ../system-config-printer.py:1346
+#: ../system-config-printer.py:1350
 msgid "Submitted"
 msgstr "Enviado"
 
-#: ../system-config-printer.py:1347
+#: ../system-config-printer.py:1351
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Página de teste enviada como trabalho %d"
 
-#: ../system-config-printer.py:1357
+#: ../system-config-printer.py:1361
 msgid "Not possible"
 msgstr "Impossível"
 
-#: ../system-config-printer.py:1358
+#: ../system-config-printer.py:1362
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -241,94 +243,94 @@ msgstr ""
 "O servidor remoto não aceitou o trabalho de impressão, provavelmente porque "
 "a impressora não está partilhada."
 
-#: ../system-config-printer.py:1419
+#: ../system-config-printer.py:1423
 msgid "Error"
 msgstr "Erro"
 
-#: ../system-config-printer.py:1420
+#: ../system-config-printer.py:1424
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Ocorreu um problema na ligação ao servidor CUPS."
 
-#: ../system-config-printer.py:1483
+#: ../system-config-printer.py:1487
 msgid "This is the default printer"
 msgstr "Esta é a impressora predefinida."
 
-#: ../system-config-printer.py:1485
+#: ../system-config-printer.py:1489
 #, python-format
 msgid "Default printer is %s"
 msgstr "Impressora predefinida é %s"
 
-#: ../system-config-printer.py:1488
+#: ../system-config-printer.py:1492
 msgid "No default printer set."
 msgstr "Impressora predefinida não configurada."
 
-#: ../system-config-printer.py:1574
+#: ../system-config-printer.py:1578
 msgid "Cancel Tests"
 msgstr "Cancelar os Testes"
 
-#: ../system-config-printer.py:1578 ../system-config-printer.glade.h:188
+#: ../system-config-printer.py:1582 ../system-config-printer.glade.h:188
 msgid "Print Test Page"
 msgstr "Imprimir Página de Teste"
 
-#: ../system-config-printer.py:1833
+#: ../system-config-printer.py:1837
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "Deseja mesmo apagar a impressora %s?"
 
-#: ../system-config-printer.py:1835
+#: ../system-config-printer.py:1839
 #, python-format
 msgid "Really delete class %s?"
 msgstr "Deseja mesmo apagar a classe %s?"
 
-#: ../system-config-printer.py:1883 ../system-config-printer.glade.h:139
+#: ../system-config-printer.py:1887 ../system-config-printer.glade.h:139
 msgid "New Printer"
 msgstr "Nova Impressora"
 
-#: ../system-config-printer.py:1892 ../system-config-printer.glade.h:138
+#: ../system-config-printer.py:1896 ../system-config-printer.glade.h:138
 msgid "New Class"
 msgstr "Nova Classe"
 
-#: ../system-config-printer.py:1904
+#: ../system-config-printer.py:1908
 msgid "Change Device URI"
 msgstr "Mudar URI do Dispositivo"
 
-#: ../system-config-printer.py:1918
+#: ../system-config-printer.py:1922
 msgid "Change Driver"
 msgstr "Mudar o Controlador"
 
-#: ../system-config-printer.py:2121
+#: ../system-config-printer.py:2125
 msgid "Other"
 msgstr "Outras"
 
-#: ../system-config-printer.py:2123
+#: ../system-config-printer.py:2127
 msgid " (Current)"
 msgstr " (Actual)"
 
-#: ../system-config-printer.py:2308
+#: ../system-config-printer.py:2312
 msgid "Verified"
 msgstr "Verificado"
 
-#: ../system-config-printer.py:2309
+#: ../system-config-printer.py:2313
 msgid "This print share is accessible."
 msgstr "Esta partilha de impressora está acessível."
 
-#: ../system-config-printer.py:2316
+#: ../system-config-printer.py:2320
 msgid "Inaccessible"
 msgstr "Inacessível"
 
-#: ../system-config-printer.py:2317
+#: ../system-config-printer.py:2321
 msgid "This print share is not accessible."
 msgstr "Esta partilha de impressora está inacessível."
 
-#: ../system-config-printer.py:2337
+#: ../system-config-printer.py:2341
 msgid "A printer connected to the parallel port."
 msgstr "Uma impressora ligada à porta paralela."
 
-#: ../system-config-printer.py:2339
+#: ../system-config-printer.py:2343
 msgid "A printer connected to a USB port."
 msgstr "Uma impressora ligada a uma porta USB."
 
-#: ../system-config-printer.py:2341
+#: ../system-config-printer.py:2345
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -336,7 +338,7 @@ msgstr ""
 "A aplicação HPLIP a controlar uma impressora ou uma das funções de um "
 "dispositivo multifunções."
 
-#: ../system-config-printer.py:2344
+#: ../system-config-printer.py:2348
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -344,36 +346,36 @@ msgstr ""
 "A aplicação HPLIP a controlar uma máquina de fax ou a função de fax de um "
 "dispositivo multifunções."
 
-#: ../system-config-printer.py:2347
+#: ../system-config-printer.py:2351
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Impressora local detectada pelo HAL ('Hardware Abstraction Layer')."
 
-#: ../system-config-printer.py:2590
+#: ../system-config-printer.py:2594
 msgid " (recommended)"
 msgstr " (recomendado)"
 
-#: ../system-config-printer.py:2636
+#: ../system-config-printer.py:2640
 msgid "This PPD is generated by foomatic."
 msgstr "Este PPD foi gerado pelo foomatic."
 
-#: ../system-config-printer.py:2639
+#: ../system-config-printer.py:2643
 msgid ""
 "This PPD is provided by the manufacturer and is included with the foomatic "
 "package."
 msgstr ""
 "Este PPD foi fornecido pelo fabricante e está incluído no pacote foomatic."
 
-#: ../system-config-printer.py:2647
+#: ../system-config-printer.py:2651
 msgid "This PPD is provided by CUPS."
 msgstr "Este PPD for fornecido pelo CUPS."
 
 #. XXX
-#: ../system-config-printer.py:2689
+#: ../system-config-printer.py:2693
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "Prestes a criar a nova classe %s."
 
-#: ../system-config-printer.py:2703
+#: ../system-config-printer.py:2707
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -383,11 +385,11 @@ msgstr ""
 "%s.\n"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:2727
+#: ../system-config-printer.py:2731
 msgid "Database error"
 msgstr "Erro na base de dados"
 
-#: ../system-config-printer.py:2728
+#: ../system-config-printer.py:2732
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "O controlador '%s' não pode ser usado com a impressora '%s %s'."
@@ -395,25 +397,25 @@ msgstr "O controlador '%s' não pode ser usado com a impressora '%s %s'."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:2738
+#: ../system-config-printer.py:2742
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Terá de instalar o pacote '%s' para poder usar este controlador."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:2745
+#: ../system-config-printer.py:2749
 msgid "PPD error"
 msgstr "Erro do PPD"
 
-#: ../system-config-printer.py:2747
+#: ../system-config-printer.py:2751
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Não é possível ler o ficheiro PPD. Seguem-se as possíveis razões:"
 
-#: ../system-config-printer.py:3033 ../system-config-printer.py:3040
+#: ../system-config-printer.py:3037 ../system-config-printer.py:3044
 msgid "Missing driver"
 msgstr "Controlador em falta"
 
-#: ../system-config-printer.py:3034
+#: ../system-config-printer.py:3038
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
@@ -422,7 +424,7 @@ msgstr ""
 "A impressora '%s' precisa do pacote %s, mas este não está instalado de "
 "momento. Instale-o por favor, antes de usar esta impressora."
 
-#: ../system-config-printer.py:3041
+#: ../system-config-printer.py:3045
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -569,7 +571,7 @@ msgstr ""
 "\n"
 "Quaisquer alterações que tenha feito serão perdidas a não ser que as aplique."
 
-#: ../system-config-printer.glade.h:38
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
 "\n"
@@ -1018,7 +1020,7 @@ msgstr "Páginas por lado:"
 msgid "Parity"
 msgstr "Paridade"
 
-#: ../system-config-printer.glade.h:179
+#: ../system-config-printer.glade.h:179 ../applet.glade.h:5
 msgid "Password:"
 msgstr "Senha:"
 
@@ -1057,7 +1059,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr "Impressão bonita"
 
-#: ../system-config-printer.glade.h:189
+#: ../system-config-printer.glade.h:189 ../applet.py:39
 msgid "Printer"
 msgstr "Impressora"
 
@@ -1243,7 +1245,7 @@ msgstr "_Não aplicar"
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:230 ../applet.glade.h:8
 msgid "_File"
 msgstr "_Ficheiro"
 
@@ -1282,6 +1284,131 @@ msgstr "Configurar as impressoras"
 #: ../system-config-printer.desktop.in.h:2
 msgid "Printing"
 msgstr "Impressão"
+
+#: ../applet.py:37
+msgid "Job"
+msgstr ""
+
+#: ../applet.py:38
+#, fuzzy
+msgid "Document"
+msgstr "Comentário"
+
+#: ../applet.py:40
+#, fuzzy
+msgid "Size"
+msgstr "Tamanho da Página"
+
+#: ../applet.py:41
+#, fuzzy
+msgid "Time submitted"
+msgstr "Enviado"
+
+#: ../applet.py:42
+#, fuzzy
+msgid "Status"
+msgstr "estado %d"
+
+#: ../applet.py:161
+msgid "No documents queued"
+msgstr ""
+
+#: ../applet.py:164
+#, python-format
+msgid "%d document queued"
+msgstr ""
+
+#: ../applet.py:167
+#, python-format
+msgid "%d documents queued"
+msgstr ""
+
+#: ../applet.py:209
+msgid "1 hour ago"
+msgstr ""
+
+#: ../applet.py:211
+msgid "1 hour and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:213
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:216
+#, python-format
+msgid "%d hours ago"
+msgstr ""
+
+#: ../applet.py:218
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:220
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:225
+msgid "a minute ago"
+msgstr ""
+
+#: ../applet.py:227
+#, python-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ../applet.py:236
+#, fuzzy
+msgid "Pending"
+msgstr "Impressão"
+
+#: ../applet.py:237
+#, fuzzy
+msgid "Held"
+msgstr "_Ajuda"
+
+#: ../applet.py:240
+#, fuzzy
+msgid "Canceled"
+msgstr "_Cancelar"
+
+#: ../applet.py:241
+#, fuzzy
+msgid "Aborted"
+msgstr "Acerca"
+
+#: ../applet.py:242
+#, fuzzy
+msgid "Completed"
+msgstr "Comentário"
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr ""
+
+#: ../applet.glade.h:6
+msgid "Re_print"
+msgstr ""
+
+#: ../applet.glade.h:7
+msgid "Show _completed jobs"
+msgstr ""
+
+#: ../applet.glade.h:9
+msgid "_Hold"
+msgstr ""
+
+#: ../applet.glade.h:10
+#, fuzzy
+msgid "_Release"
+msgstr "Apa_gar"
+
+#: ../applet.glade.h:11
+msgid "_View"
+msgstr ""
 
 #~ msgid "Specify default job options."
 #~ msgstr "Indicar as opções predefinidas de trabalhos."
@@ -1681,9 +1808,6 @@ msgstr "Impressão"
 #~ msgid "_Don't save"
 #~ msgstr "_Não gravar"
 
-#~ msgid "_Cancel"
-#~ msgstr "_Cancelar"
-
 #~ msgid "_Save"
 #~ msgstr "_Gravar"
 
@@ -2042,9 +2166,6 @@ msgstr "Impressão"
 #~ msgid "Convert Text to Postscript"
 #~ msgstr "Converter Texto para PostScript"
 
-#~ msgid "Page Size"
-#~ msgstr "Tamanho da Página"
-
 #~ msgid "Effective Filter Locale"
 #~ msgstr "Localização do Filtro"
 
@@ -2385,9 +2506,6 @@ msgstr "Impressão"
 
 #~ msgid "_Defaults"
 #~ msgstr "Pré_definições"
-
-#~ msgid "_Delete"
-#~ msgstr "Apa_gar"
 
 #~ msgid "_Delete queue"
 #~ msgstr "Apa_gar a fila"

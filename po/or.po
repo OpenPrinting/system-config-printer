@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: or\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-03-16 17:26+0000\n"
+"POT-Creation-Date: 2007-03-21 09:50+0000\n"
 "PO-Revision-Date: 2007-03-21 12:04+0530\n"
 "Last-Translator: Subhransu Behera <sbehera@redhat.com>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -15,7 +15,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -34,7 +35,7 @@ msgstr ""
 msgid "Idle"
 msgstr "ନିଷ୍କ୍ରିୟ"
 
-#: ../cupshelpers.py:29
+#: ../cupshelpers.py:29 ../applet.py:238
 msgid "Processing"
 msgstr "ପ୍ରକ୍ରିୟା କରୁଅଛି"
 
@@ -42,11 +43,11 @@ msgstr "ପ୍ରକ୍ରିୟା କରୁଅଛି"
 msgid "Busy"
 msgstr "ବ୍ଯସ୍ତ"
 
-#: ../cupshelpers.py:31
+#: ../cupshelpers.py:31 ../applet.py:239
 msgid "Stopped"
 msgstr "ଅଟକିଛି"
 
-#: ../cupshelpers.py:48
+#: ../cupshelpers.py:48 ../applet.py:248
 msgid "Unknown"
 msgstr "ଅଜଣା"
 
@@ -161,18 +162,20 @@ msgstr ""
 "ପରିବର୍ତନ ଗୁଡିକ କେବଳ ଲାଗୁ ହେବ।"
 
 #: ../system-config-printer.py:1107 ../system-config-printer.py:1123
+#: ../applet.py:113
 msgid "Not authorized"
 msgstr "କ୍ଷମତା ସମ୍ପନ୍ନ ନୁହେଁ"
 
-#: ../system-config-printer.py:1108
+#: ../system-config-printer.py:1108 ../applet.py:114
 msgid "The password may be incorrect."
 msgstr "ପ୍ରବେଶ ସଙ୍କେତ ଟି ଭୂଲ ହୋଇପାରେ।"
 
 #: ../system-config-printer.py:1111 ../system-config-printer.py:1144
+#: ../applet.py:117
 msgid "CUPS server error"
 msgstr "CUPS ସେବକ ତୃଟି"
 
-#: ../system-config-printer.py:1112
+#: ../system-config-printer.py:1112 ../applet.py:118
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS ପ୍ରକ୍ରିୟା ସମୟରେ ଗୋଟିଏ ତୃଟି ପରିଲିଖିତ ହେଲା: '%s'।"
@@ -223,153 +226,155 @@ msgstr "ଏହି ପ୍ରକ୍ରିୟା ଟି ଏହି ଶ୍ରେଣ�
 msgid "Proceed anyway?"
 msgstr "ତଥାପି ଆଗକୁ ବଢନ୍ତୁ?"
 
-#: ../system-config-printer.py:1346
+#: ../system-config-printer.py:1350
 msgid "Submitted"
 msgstr "ଦାଖଲ କରାଯାଇଛି"
 
-#: ../system-config-printer.py:1347
+#: ../system-config-printer.py:1351
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "%d କାର୍ଯ୍ଯ ରୂପରେ ପରୀକ୍ଷଣ ପୃଷ୍ଠାକୁ ଦାଖଲ କରାଯାଇଛି"
 
-#: ../system-config-printer.py:1357
+#: ../system-config-printer.py:1361
 msgid "Not possible"
 msgstr "ସମ୍ଭବ ନୁହେଁ"
 
-#: ../system-config-printer.py:1358
+#: ../system-config-printer.py:1362
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
-msgstr "ଦୂର ସେବକଟି ମୂଦ୍ରଣ କାର୍ଯ୍ଯକୁ ସ୍ବୀକାର କରିଲା ନାହିଁ, ସମ୍ଭବତ ଏଥିପାଇଁ ଯେ ମୂଦ୍ରଣୀକି ସହଭାଗ କରାଯାଇ ନାହିଁ।"
+msgstr ""
+"ଦୂର ସେବକଟି ମୂଦ୍ରଣ କାର୍ଯ୍ଯକୁ ସ୍ବୀକାର କରିଲା ନାହିଁ, ସମ୍ଭବତ ଏଥିପାଇଁ ଯେ ମୂଦ୍ରଣୀକି ସହଭାଗ କରାଯାଇ ନାହିଁ।"
 
-#: ../system-config-printer.py:1419
+#: ../system-config-printer.py:1423
 msgid "Error"
 msgstr "ତୃଟି"
 
-#: ../system-config-printer.py:1420
+#: ../system-config-printer.py:1424
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS ସେବକ ସହିତ ସଂଯୋଗ କରିବା ବେଳେ ଗୋଟିଏ ସମସ୍ଯା ସୃଷ୍ଟି ହେଲା।"
 
-#: ../system-config-printer.py:1483
+#: ../system-config-printer.py:1487
 msgid "This is the default printer"
 msgstr "ଏହା ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ ମୂଦ୍ରଣୀ ଅଟେ"
 
-#: ../system-config-printer.py:1485
+#: ../system-config-printer.py:1489
 #, python-format
 msgid "Default printer is %s"
 msgstr "ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ ମୂଦ୍ରଣୀ ଟି %s ଅଟେ"
 
-#: ../system-config-printer.py:1488
+#: ../system-config-printer.py:1492
 msgid "No default printer set."
 msgstr "କୌଣସି ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ ମୂଦ୍ରଣୀକୁ ସେଟ କରାଯାଇ ନାହିଁ।"
 
-#: ../system-config-printer.py:1574
+#: ../system-config-printer.py:1578
 msgid "Cancel Tests"
 msgstr "ପରୀକ୍ଷଣ ମାନଙ୍କୁ ବାତିଲ କରନ୍ତୁ"
 
-#: ../system-config-printer.py:1578 ../system-config-printer.glade.h:188
+#: ../system-config-printer.py:1582 ../system-config-printer.glade.h:188
 msgid "Print Test Page"
 msgstr "ପରୀକ୍ଷଣ ପୃଷ୍ଠାକୁ ମୂଦ୍ରିତ କରନ୍ତୁ"
 
-#: ../system-config-printer.py:1833
+#: ../system-config-printer.py:1837
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "%s ମୂଦ୍ରଣୀକୁ ପ୍ରକୃତରେ ଅପସାରଣ କରିବେ କି?"
 
-#: ../system-config-printer.py:1835
+#: ../system-config-printer.py:1839
 #, python-format
 msgid "Really delete class %s?"
 msgstr "%s ଶ୍ରେଣୀକୁ ପ୍ରକୃତରେ ଅପସାରଣ କରିବେ କି?"
 
-#: ../system-config-printer.py:1883 ../system-config-printer.glade.h:139
+#: ../system-config-printer.py:1887 ../system-config-printer.glade.h:139
 msgid "New Printer"
 msgstr "ନୂତନ ମୂଦ୍ରଣୀ"
 
-#: ../system-config-printer.py:1892 ../system-config-printer.glade.h:138
+#: ../system-config-printer.py:1896 ../system-config-printer.glade.h:138
 msgid "New Class"
 msgstr "ନୂତନ ଶ୍ରେଣୀ"
 
-#: ../system-config-printer.py:1904
+#: ../system-config-printer.py:1908
 msgid "Change Device URI"
 msgstr "ଯନ୍ତ୍ର ୟୁ.ଆର.ଆଇ. କୁ ପରିବର୍ତନ କରନ୍ତୁ"
 
-#: ../system-config-printer.py:1918
+#: ../system-config-printer.py:1922
 msgid "Change Driver"
 msgstr "ଡ୍ରାଇଭର କୁ ପରିବର୍ତନ କରନ୍ତୁ"
 
-#: ../system-config-printer.py:2121
+#: ../system-config-printer.py:2125
 msgid "Other"
 msgstr "ଅନ୍ଯାନ୍ଯ"
 
-#: ../system-config-printer.py:2123
+#: ../system-config-printer.py:2127
 msgid " (Current)"
 msgstr " (ବର୍ତମାନ)"
 
-#: ../system-config-printer.py:2308
+#: ../system-config-printer.py:2312
 msgid "Verified"
 msgstr "ଯାଞ୍ଚ କରାଯାଇଛି"
 
-#: ../system-config-printer.py:2309
+#: ../system-config-printer.py:2313
 msgid "This print share is accessible."
 msgstr "ଏହି ମୂଦ୍ରଣ ସହଭାଗଟି ଅଭିଗମ ଯୋଗ୍ଯ ଅଟେ।"
 
-#: ../system-config-printer.py:2316
+#: ../system-config-printer.py:2320
 msgid "Inaccessible"
 msgstr "ଅନଭିଗମ୍ଯ"
 
-#: ../system-config-printer.py:2317
+#: ../system-config-printer.py:2321
 msgid "This print share is not accessible."
 msgstr "ଏହି ମୂଦ୍ରଣ ସହଭାଗଟି ଅଭିଗମ ଯୋଗ୍ଯ ନୁହେଁ।"
 
-#: ../system-config-printer.py:2337
+#: ../system-config-printer.py:2341
 msgid "A printer connected to the parallel port."
 msgstr "ଗୋଟିଏ ସମାନ୍ତରାଳ ସଂଯୋଗିକୀ ସହିତ ଗୋଟିଏ ମୂଦ୍ରଣୀକୁ ଯୋଗ କରାଯାଇଛି।"
 
-#: ../system-config-printer.py:2339
+#: ../system-config-printer.py:2343
 msgid "A printer connected to a USB port."
 msgstr "ଗୋଟିଏ USB ସଂଯୋଗିକୀ ସହିତ ଗୋଟିଏ ମୂଦ୍ରଣୀକୁ ଯୋଗ କରାଯାଇଛି।"
 
-#: ../system-config-printer.py:2341
+#: ../system-config-printer.py:2345
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "HPLIP ଗୋଟିଏ ମୂଦ୍ରଣୀକୁ ଚଳାଉଛି, କିମ୍ବା ମୂଦ୍ରଣୀଟି ବହୁ କାର୍ଯ୍ଯସମ୍ପନ୍ନ ଉପକରଣ ଅଟେ।"
 
-#: ../system-config-printer.py:2344
+#: ../system-config-printer.py:2348
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "HPLIP ଗୋଟିଏ ଫ୍ଯାକ୍ସ ମେସିନ ଚଳାଉଛି, କିମ୍ବା ଫ୍ଯାକ୍ସ ମେସିନଟି ବହୁ କାର୍ଯ୍ଯସମ୍ପନ୍ନ ଉପକରଣ ଅଟେ।"
 
-#: ../system-config-printer.py:2347
+#: ../system-config-printer.py:2351
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "ହାର୍ଡୱେର ପୃଥକୀକରଣ ସ୍ତର (HAL) ଦ୍ବାରା ସ୍ଥାନୀୟ ମୂଦ୍ରଣୀଟି ମିଳିଲା।"
 
-#: ../system-config-printer.py:2590
+#: ../system-config-printer.py:2594
 msgid " (recommended)"
 msgstr " (ଗ୍ରହଣୀୟ)"
 
-#: ../system-config-printer.py:2636
+#: ../system-config-printer.py:2640
 msgid "This PPD is generated by foomatic."
 msgstr "ଏହି PPD foomatic ଦ୍ବାରା ସୃଷ୍ଟି କରାଯାଇଛି।"
 
-#: ../system-config-printer.py:2639
+#: ../system-config-printer.py:2643
 msgid ""
 "This PPD is provided by the manufacturer and is included with the foomatic "
 "package."
-msgstr "ଏହି PPD ନିର୍ମାତାଙ୍କ ଦ୍ବାରା ପ୍ରଦାନ କରାଯାଇଛି ଏବଂ foomatic ପ୍ଯାକେଜ ସହିତ ସଂଲଗ୍ନ କରାଯାଇଛି।"
+msgstr ""
+"ଏହି PPD ନିର୍ମାତାଙ୍କ ଦ୍ବାରା ପ୍ରଦାନ କରାଯାଇଛି ଏବଂ foomatic ପ୍ଯାକେଜ ସହିତ ସଂଲଗ୍ନ କରାଯାଇଛି।"
 
-#: ../system-config-printer.py:2647
+#: ../system-config-printer.py:2651
 msgid "This PPD is provided by CUPS."
 msgstr "ଏହି PPD CUPS ଦ୍ବାରା ପ୍ରଦାନ କରାଯାଇଛି।"
 
 #. XXX
-#: ../system-config-printer.py:2689
+#: ../system-config-printer.py:2693
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "ନୂତନ ଶ୍ରେଣୀ %s କୁ ପ୍ରସ୍ତୁତ କରିବା ପାଇଁ ଯାଉଅଛି।"
 
-#: ../system-config-printer.py:2703
+#: ../system-config-printer.py:2707
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -379,11 +384,11 @@ msgstr ""
 "%s ରେ ପ୍ରସ୍ତୁତ କରିବା ପାଇଁ ଯାଉଅଛି।\n"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:2727
+#: ../system-config-printer.py:2731
 msgid "Database error"
 msgstr "ତଥ୍ଯାଧାର ତୃଟି"
 
-#: ../system-config-printer.py:2728
+#: ../system-config-printer.py:2732
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' ଡ୍ରାଇଭରକୁ '%s %s' ମୂଦ୍ରଣୀ ସହିତ ବ୍ଯବହାର କରିହେବ ନାହିଁ।"
@@ -391,25 +396,25 @@ msgstr "'%s' ଡ୍ରାଇଭରକୁ '%s %s' ମୂଦ୍ରଣୀ ସହି
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:2738
+#: ../system-config-printer.py:2742
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "ଏହି ଡ୍ରାଇଭରକୁ ଚଳାଇବା ପାଇଁ ଆପଣ '%s' ପ୍ଯାକେଜକୁ ସ୍ଥାପନ କରିବା ଉଚିତ।"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:2745
+#: ../system-config-printer.py:2749
 msgid "PPD error"
 msgstr "PPD ତୃଟି"
 
-#: ../system-config-printer.py:2747
+#: ../system-config-printer.py:2751
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD ଫାଇଲକୁ ପଢିବାରେ ତୃଟି।  ସମ୍ଭାବ୍ଯ କାରଣ ଗୁଡିକୁ ହେଲା:"
 
-#: ../system-config-printer.py:3033 ../system-config-printer.py:3040
+#: ../system-config-printer.py:3037 ../system-config-printer.py:3044
 msgid "Missing driver"
 msgstr "ଅନୁପସ୍ଥିତ ଡ୍ରାଇଭର"
 
-#: ../system-config-printer.py:3034
+#: ../system-config-printer.py:3038
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
@@ -418,7 +423,7 @@ msgstr ""
 "'%s' ମୂଦ୍ରଣୀ '%s' ପ୍ଯାକେଜ ମାନଙ୍କୁ ଆବଶ୍ଯକ କରିଥାଏ କିନ୍ତୁ ଏହା ବର୍ତ୍ତମାନ ସ୍ଥାପିତ ହୋଇନାହିଁ।  ଏହି "
 "ମୂଦ୍ରଣୀକୁ ବ୍ଯବହାର କରିବା ପୂର୍ବରୁ ଦୟାକରି ଏହାକୁ ସ୍ଥାପନ କରନ୍ତୁ।"
 
-#: ../system-config-printer.py:3041
+#: ../system-config-printer.py:3045
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -565,7 +570,7 @@ msgstr ""
 "\n"
 "ଆପଣ ପରିବର୍ତନକୁ ପ୍ରୟୋଗ ନକଲେ ତାହା ନଷ୍ଟ ହୋଇଯିବ।"
 
-#: ../system-config-printer.glade.h:38
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
 "\n"
@@ -1014,7 +1019,7 @@ msgstr "ପ୍ରତ୍ଯେକ ପାର୍ଶ୍ବରେ ପୃଷ୍ଠା 
 msgid "Parity"
 msgstr "ସମତା"
 
-#: ../system-config-printer.glade.h:179
+#: ../system-config-printer.glade.h:179 ../applet.glade.h:5
 msgid "Password:"
 msgstr "ପ୍ରବେଶ ସଙ୍କେତ:"
 
@@ -1052,7 +1057,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr "ସୁନ୍ଦର ମୂଦ୍ରଣ"
 
-#: ../system-config-printer.glade.h:189
+#: ../system-config-printer.glade.h:189 ../applet.py:39
 msgid "Printer"
 msgstr "ମୂଦ୍ରଣୀ"
 
@@ -1214,7 +1219,8 @@ msgstr "ପୁରୁଣା PPDରୁ ବିକଳ୍ପ ବିନ୍ଯାସକ
 
 #: ../system-config-printer.glade.h:224
 msgid "Use the new PPD (Postscript Printer Description) as is."
-msgstr "ନୂତନ PPD (ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ମୂଦ୍ରଣୀ ବର୍ଣ୍ଣନା) ଯେମିତି ଅଛି, ତାହାକୁ ସେହିଭଳି ଭାବରେ ବ୍ଯବହାର କରନ୍ତୁ।"
+msgstr ""
+"ନୂତନ PPD (ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ମୂଦ୍ରଣୀ ବର୍ଣ୍ଣନା) ଯେମିତି ଅଛି, ତାହାକୁ ସେହିଭଳି ଭାବରେ ବ୍ଯବହାର କରନ୍ତୁ।"
 
 #: ../system-config-printer.glade.h:225
 msgid "User name:"
@@ -1236,7 +1242,7 @@ msgstr "ପ୍ରୟୋଗ କରନ୍ତୁ ନାହିଁ (_D)"
 msgid "_Edit"
 msgstr "ସମ୍ପାଦନ କରନ୍ତୁ (_E)"
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:230 ../applet.glade.h:8
 msgid "_File"
 msgstr "ଫାଇଲ (_F)"
 
@@ -1276,3 +1282,126 @@ msgstr "ମୂଦ୍ରଣୀ ମାନଙ୍କୁ ବିନ୍ଯାସ କର
 msgid "Printing"
 msgstr "ମୂଦ୍ରଣ କରୁଅଛି"
 
+#: ../applet.py:37
+msgid "Job"
+msgstr ""
+
+#: ../applet.py:38
+#, fuzzy
+msgid "Document"
+msgstr "ଟିପ୍ପଣୀ"
+
+#: ../applet.py:40
+msgid "Size"
+msgstr ""
+
+#: ../applet.py:41
+#, fuzzy
+msgid "Time submitted"
+msgstr "ଦାଖଲ କରାଯାଇଛି"
+
+#: ../applet.py:42
+#, fuzzy
+msgid "Status"
+msgstr "ସ୍ଥିତି %d"
+
+#: ../applet.py:161
+msgid "No documents queued"
+msgstr ""
+
+#: ../applet.py:164
+#, python-format
+msgid "%d document queued"
+msgstr ""
+
+#: ../applet.py:167
+#, python-format
+msgid "%d documents queued"
+msgstr ""
+
+#: ../applet.py:209
+msgid "1 hour ago"
+msgstr ""
+
+#: ../applet.py:211
+msgid "1 hour and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:213
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:216
+#, python-format
+msgid "%d hours ago"
+msgstr ""
+
+#: ../applet.py:218
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:220
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:225
+msgid "a minute ago"
+msgstr ""
+
+#: ../applet.py:227
+#, python-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ../applet.py:236
+#, fuzzy
+msgid "Pending"
+msgstr "ମୂଦ୍ରଣ କରୁଅଛି"
+
+#: ../applet.py:237
+#, fuzzy
+msgid "Held"
+msgstr "ସହାୟତା (_H)"
+
+#: ../applet.py:240
+#, fuzzy
+msgid "Canceled"
+msgstr "ପରୀକ୍ଷଣ ମାନଙ୍କୁ ବାତିଲ କରନ୍ତୁ"
+
+#: ../applet.py:241
+#, fuzzy
+msgid "Aborted"
+msgstr "ବିବରଣୀ"
+
+#: ../applet.py:242
+#, fuzzy
+msgid "Completed"
+msgstr "ଟିପ୍ପଣୀ"
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr ""
+
+#: ../applet.glade.h:6
+msgid "Re_print"
+msgstr ""
+
+#: ../applet.glade.h:7
+msgid "Show _completed jobs"
+msgstr ""
+
+#: ../applet.glade.h:9
+msgid "_Hold"
+msgstr ""
+
+#: ../applet.glade.h:10
+#, fuzzy
+msgid "_Release"
+msgstr "ପୁନଃସ୍ଥାପନ କରନ୍ତୁ"
+
+#: ../applet.glade.h:11
+msgid "_View"
+msgstr ""
