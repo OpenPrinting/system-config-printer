@@ -57,6 +57,12 @@ distcheck-hook: update-po
 update-po:
 	$(MAKE) -C po update-po
 
+missing-languages:
+	bash -c '\
+	eval $$(grep ALL_LINGUAS configure.in); \
+	diff -u <(echo $$ALL_LINGUAS | xargs -rn1 echo) \
+		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
+
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract.in intltool-merge.in intltool-update.in \
 	intltool-extract intltool-merge intltool-update \
