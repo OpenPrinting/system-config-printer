@@ -3,10 +3,10 @@
 # José Nuno Pires <jncp@netcabo.pt>
 msgid ""
 msgstr ""
-"Project-Id-Version: printconf\n"
+"Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2006-08-03 13:31+0100\n"
-"PO-Revision-Date: 2006-08-14 14:14+0100\n"
+"PO-Revision-Date: 2006-08-16 21:34+0100\n"
 "Last-Translator: Pedro Morais <morais@kde.org>\n"
 "Language-Team: pt <morais@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -20,7 +20,9 @@ msgstr ""
 "X-POFile-SpellExtra: Printing JIS Raw oki CIDR Lpd Feed US FF ncpfs LDP\n"
 "X-POFile-SpellExtra: Omni NCP Ip ipp JetDirect ERROR drv MM alchemist lpd\n"
 "X-POFile-SpellExtra: jetdirect Packard contabilistica tui pol\n"
-"X-POFile-SpellExtra: Prédefinições prédefinidos Máx Autoseleccionar\n"
+"X-POFile-SpellExtra: Máx Autoseleccionar\n"
+"X-POFile-SpellExtra: Baud Config Printer HP LaserJet DirectJet CTS DSR Inc\n"
+"X-POFile-SpellExtra: foomatic RTS XON XOFF DTR\n"
 "X-POFile-IgnoreConsistency: New\n"
 
 #: cupshelpers.py:28
@@ -140,6 +142,9 @@ msgid ""
 "Changes can only be applied after\n"
 "these conflictes are resolved."
 msgstr ""
+"Há opções em conflito.\n"
+"As alterações só serão aplicadas após\n"
+"estes conflitos serem resolvidos."
 
 #: system-config-printer.py:813
 msgid "Not authorized"
@@ -666,7 +671,7 @@ msgid ""
 "for a large number of (non PostScript) printers. But in general manufacturer "
 "provided PPD files provide better access to the specific features of the "
 "printer."
-msgstr ""
+msgstr "A base de dados de impressoras foomatic contém vários ficheiros com a Descrição de Impressora PostScript (PPD) fornecidas pelos fabricantes, e também pode gerar ficheiros PPD para muitas impressoras (não Postscript). No entanto, normalmente os ficheiros PPD fornecidos pelos fabricantes fornecem melhor acesso às características específicas da impressora."
 
 #: system-config-printer.glade:4598
 msgid "Provide PPD file"
@@ -677,7 +682,7 @@ msgid ""
 "PostScript Printer Description (PPD) files can often found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
 "part of the Windows<sup>®</sup> driver."
-msgstr ""
+msgstr "Os ficheiros Descrição de Impressora PostScript Printer (PPD) podem normalmente ser encontrados no disco de controladores que vem com a impressora. Nas impressoras PostScript fazem normalmente parte do controlador Windows<sup>®</sup>."
 
 #: system-config-printer.glade:4666
 msgid "Select A File"
@@ -729,24 +734,24 @@ msgstr "Aplicar"
 
 #: system-config-printer.glade:5611
 msgid "Use the new PPD (Postscript Printer Description) as is."
-msgstr ""
+msgstr "Utilizar o novo ficheiro PPD (Descrição de Impressora Postscript) como está."
 
 #: system-config-printer.glade:5629
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
-msgstr ""
+msgstr "Desta forma todas as opções actuais serão perdidas. As predefinições do novo PPD serão utilizadas."
 
 #: system-config-printer.glade:5667
 msgid "Try to copy the option settings over from the old PPD. "
-msgstr ""
+msgstr "Tentar copiar as opções do PPD antigo."
 
 #: system-config-printer.glade:5688
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
 "lost and options only present in the new PPD will be set to default."
-msgstr ""
+msgstr "Isto é feito assumindo que as opções com o mesmo nome tem o mesmo significado. Os valores das opções não presentes no novo PPD serão perdidos e as opções apenas presentes no novo PPD ficam com o valor predefinido."
 
 #: system-config-printer.glade:5721
 msgid "Change PPD"
@@ -784,6 +789,9 @@ msgid ""
 "\n"
 "Any changes you have made will be lost unless you apply them."
 msgstr ""
+"<span weight=\"bold\" size=\"larger\">Aplicar alterações?</span>\n"
+"\n"
+"Quaisquer alterações que tenha feito serão perdidas a não ser que as aplique."
 
 #: system-config-printer.glade:6531
 msgid "Copy Printer"
