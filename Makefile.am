@@ -98,7 +98,6 @@ missing-languages:
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
 
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
-	intltool-extract.in intltool-merge.in intltool-update.in \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop
 
