@@ -206,6 +206,28 @@ class Printer:
         else:
             self.connection.setPrinterUsersAllowed(self.name, except_users)
 
+    def testsQueued(self):
+        """Returns a list of job IDs for test pages in the queue for this
+        printer."""
+        jobs = self.connection.getJobs ()
+        ret = []
+        for id, attrs in jobs.iteritems():
+            try:
+                uri = attrs['job-printer-uri']
+                uri = uri[uri.rindex ('/') + 1:]
+            except:
+                continue
+            if uri != self.name:
+                continue
+
+            if attrs.has_key ('job-name') and attrs['job-name'] == 'Test Page':
+                ret.append (id)
+        return ret
+
+    def cancelJobs (self, jobs = []):
+        for job in jobs:
+            self.connection.cancelJob (job)
+
 def getPrinters(connection):
     printers_conf = PrintersConf(connection)
     printers = connection.getPrinters()

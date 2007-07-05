@@ -1,5 +1,17 @@
 2006-11-10  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.setTestButton): New function for
+	allowing user to cancel test jobs if there are some.
+	(GUI.fillPrinterTab): Use it.
+	(GUI.on_btnPrintTestPage_clicked): Cancel jobs if cancelling (bug
+	#215054).
+
+	* cupshelpers.py (Printer.testsQueued): New method for finding out
+	if test pages are queued.
+	(Printer.cancelJobs): New method for cancelling jobs.
+
+2006-11-10  Tim Waugh  <twaugh@redhat.com>
+
 	* configure.in: Version 0.7.36.
 
 2006-11-10  Tim Waugh  <twaugh@redhat.com>
