@@ -725,7 +725,7 @@ class Foomatic:
         return self.getPrinterFromDeviceID (device.id_dict["MFG"],
                                             device.id_dict["MDL"],
                                             description=device.id_dict["DES"],
-                                            commandsets=commandsets)
+                                            commandsets=commandsets,
                                             uri=device.uri)
 
     def getPrinterFromDeviceID(self, mfg, mdl, description="",
