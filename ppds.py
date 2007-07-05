@@ -24,6 +24,13 @@ import cups
 from cupshelpers import parseDeviceID
 import string
 
+global debugging
+debugging = False
+
+def debugprint (s):
+    if debugging:
+        print s
+
 def ppdMakeModelSplit (ppd_make_and_model):
     """Convert the ppd-make-and-model field into a (make, model) pair."""
     try:
@@ -127,15 +134,49 @@ class PPDs:
     def orderPPDNamesByPreference (self, ppdnamelist=[]):
         """Returns a sorted list of ppd-names."""
         def sort_ppdnames (a, b):
-            # Prefer real PPDs to generated ones.
-            reala = a.find (":") == -1
-            realb = b.find (":") == -1
-            if reala != realb:
-                if realb:
+            # Some drivers are just generally better than others.
+            # Here is the preference list:
+            # 1. vendor's own (incl foomatic bundled)
+            # 2. gutenprint native
+            # 3. foomatic (generated): hpijs
+            # 4. foomatic (generated): gutenprint, simplified
+            # 5. foomatic (generated): gutenprint
+            # 6. foomatic (generated): Postscript
+            # 7. foomatic (generated): other driver
+            # 8. CUPS
+            def which_type (ppdname):
+                """Decides which of the above types ppdname is."""
+                if ppdname.startswith ("gutenprint"):
+                    return 2 # gutenprint native
+                if (ppdname.find (":") == -1 and
+                    ppdname.find ("/") == -1 and
+                    ppdname.endswith (".gz")):
+                    return 8 # CUPS
+                if ppdname.startswith ("foomatic:"):
+                    # Foomatic (generated) -- but which driver?
+                    if ppdname.find ("-hpijs") != -1:
+                        if ppdname.find ("hpijs-rss") == -1:
+                            return 3 # hpijs
+                    if ppdname.find ("-gutenprint") != -1:
+                        if ppdname.find ("-simplified")!= -1:
+                            return 4 # gutenprint, simplified
+                        return 5 # gutenprint
+                    if ppdname.find ("-Postscript")!= -1:
+                        return 6 # Postscript
+                    return 7 # other driver
+                # Anything else should be a vendor's PPD.
+                return 1 # vendor's own
+
+            ta = which_type (a)
+            tb = which_type (b)
+            if ta != tb:
+                if tb < ta:
                     return 1
                 else:
                     return -1
 
+            # Prefer C locale localized PPDs to other languages,
+            # just because we don't know the user's locale.
             def is_C_locale (x):
                 while x:
                     i = x.find ("C")
@@ -173,6 +214,7 @@ class PPDs:
                     else:
                         return -1
 
+            # String-wise compare.
             if a > b:
                 return 1
             elif a < b:
@@ -185,7 +227,7 @@ class PPDs:
     def getPPDNameFromDeviceID (self, mfg, mdl, description="",
                                 commandsets=[], uri=None):
         """Returns a (status,ppd-name) integer,string pair."""
-        print "\n%s %s" % (mfg, mdl)
+        debugprint ("\n%s %s" % (mfg, mdl))
         self._init_ids ()
         id_matched = False
         try:
@@ -197,7 +239,7 @@ class PPDs:
 
         if not ppdnamelist:
             # No ID match.  Try comparing make/model names.
-            print "Trying make/model names"
+            debugprint ("Trying make/model names")
             mfgl = mfg.lower ()
             mdls = None
             for attempt in range (2):
@@ -234,15 +276,15 @@ class PPDs:
                 ppdnamelist = generic
 
         if not ppdnamelist:
-            print "Text-only fallback"
+            debugprint ("Text-only fallback")
             status = self.STATUS_NO_DRIVER
             ppdnamelist = ["textonly.ppd"]
             if not self.ppds.has_key (ppdnamelist[0]):
-                print "No text-only driver?!"
+                debugprint ("No text-only driver?!")
                 ppdnamelist = [self.ppds[0]]
 
         if id_matched:
-            print "Checking DES field"
+            debugprint ("Checking DES field")
             inexact = set()
             if description:
                 for ppdname in ppdnamelist:
@@ -254,7 +296,7 @@ class PPDs:
                         inexact.add (ppdname)
 
             exact = set (ppdnamelist).difference (inexact)
-            print "discarding:", inexact
+            debugprint ("discarding: %s" % inexact)
             if len (exact) >= 1:
                 ppdnamelist = list (exact)
 
@@ -263,11 +305,11 @@ class PPDs:
         # to decide, so let's sort them in order of preference and
         # take the first.
         ppdnamelist = self.orderPPDNamesByPreference (ppdnamelist)
-        print ppdnamelist
+        debugprint (str (ppdnamelist))
         return (status, ppdnamelist[0])
 
     def _findBestMatchPPDs (self, mdls, mdl):
-        print "Trying best match"
+        debugprint ("Trying best match")
         mdl = mdl.lower ()
         best_mdl = None
         best_matchlen = 0
@@ -390,10 +432,10 @@ class PPDs:
 
             bad = False
             if len (lmfg) == 0:
-                print "Missing MFG field for %s" % ppdname
+                debugprint ("Missing MFG field for %s" % ppdname)
                 bad = True
             if len (lmdl) == 0:
-                print "Missing MDL field for %s" % ppdname
+                debugprint ("Missing MDL field for %s" % ppdname)
                 bad = True
             if bad:
                 continue
@@ -409,7 +451,7 @@ class PPDs:
         self.ids = ids
 
 def main():
-    list_models = True
+    list_models = False
     list_ids = False
 
     picklefile="pickled-ppds"
@@ -448,6 +490,7 @@ def main():
                     print "    " + driver
     print "%d ID makes, %d ID models" % (len (makes), models_count)
 
+    print "\nID matching tests\n"
     for id in [
         "MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;DES:EPSON Stylus D78;",
         "MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;CLS:PRINTER;1284.4DL:4d,4e,1;",
@@ -459,12 +502,14 @@ def main():
         "MFG:New;MDL:Unknown PCL5 Printer;CMD:PCL5;",
         "MFG:New;MDL:Unknown PCL3 Printer;CMD:PCL;",
         "MFG:New;MDL:Unknown ESC/P Printer;CMD:ESCP2E;",
+        "MFG:New;MDL:Unknown Printer;",
         ]:
         id_dict = parseDeviceID (id)
-        print ppds.getPPDNameFromDeviceID (id_dict["MFG"],
-                                           id_dict["MDL"],
-                                           id_dict["DES"],
-                                           id_dict["CMD"])
+        print id_dict["MFG"], id_dict["MDL"]
+        print " ", ppds.getPPDNameFromDeviceID (id_dict["MFG"],
+                                                id_dict["MDL"],
+                                                id_dict["DES"],
+                                                id_dict["CMD"])
 
 if __name__ == "__main__":
     main()
