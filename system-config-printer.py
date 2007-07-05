@@ -181,6 +181,7 @@ class GUI:
                          "btnNPBack", "btnNPForward", "btnNPApply",
                           "entNPName", "entNPDescription", "entNPLocation",
                           "tvNPDevices", "ntbkNPType",
+                        "lblNPDeviceDescription",
                            "cmbNPTSerialBaud", "cmbNPTSerialParity",
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
@@ -1575,6 +1576,7 @@ class GUI:
         "hal" : 0,
         "beh" : 0,
         "hp" : 0,
+        "hpfax" : 0,
         "socket": 2,
         "ipp" : 3,
         "http" : 3,
@@ -2031,12 +2033,33 @@ class GUI:
         path = model.get_path(iter)
         device = self.devices[path[0]]
         self.device = device
-        self.ntbkNPType.set_current_page(
-            self.new_printer_device_tabs.get(device.type, 1))
+        self.lblNPDeviceDescription.set_text ('')
+        page = self.new_printer_device_tabs.get(device.type, 1)
+        self.ntbkNPType.set_current_page(page)
 
         type = device.type
         url = device.uri.split(":", 1)[-1]
-        if device.type=="serial":
+        if page == 0:
+            # This is the "no options" page, with just a label to describe
+            # the selected device.
+            if device.type == "parallel":
+                text = _("A printer connected to the parallel port.")
+            elif device.type == "usb":
+                text = _("A printer connected to a USB port.")
+            elif device.type == "hp":
+                text = _("HPLIP software driving a printer, "
+                         "or the printer function of a multi-function device.")
+            elif device.type == "hpfax":
+                text = _("HPLIP software driving a fax machine, "
+                         "or the fax function of a multi-function device.")
+            elif device.type == "hal":
+                text = _("Local printer detected by the "
+                         "Hardware Abstraction Layer (HAL).")
+            else:
+                text = device.uri
+
+            self.lblNPDeviceDescription.set_text (text)
+        elif device.type=="serial":
             if not device.is_class:
                 options = device.uri.split("?")[1]
                 options = options.split("+")
