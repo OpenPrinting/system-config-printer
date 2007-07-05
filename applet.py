@@ -390,10 +390,12 @@ class JobManager:
                 image.set_from_file (icon)
                 emblem = image.get_pixbuf ()
                 emblem.composite (pixbuf,
-                                  pixbuf.get_width () / 2, 0,
+                                  pixbuf.get_width () / 2,
+                                  pixbuf.get_height () / 2,
                                   emblem.get_width () / 2,
                                   emblem.get_height () / 2,
-                                  pixbuf.get_width () / 2, 0,
+                                  pixbuf.get_width () / 2,
+                                  pixbuf.get_height () / 2,
                                   0.5, 0.5,
                                   gtk.gdk.INTERP_BILINEAR, 255)
                 self.statusicon.set_from_pixbuf (pixbuf)
