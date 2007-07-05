@@ -58,10 +58,9 @@ def _ppdMakeModelSplit (ppd_make_and_model, ppdname=None):
             # Otherwise just remove the 'Postscript (recommended)' bit.
             model = model[:-len(hp_suffix)]
 
-    if ppdname and ppdname.startswith ("foomatic:"):
-        f = model.find (" Foomatic/")
-        if f != -1:
-            model = model[:f]
+    f = model.find (" Foomatic/")
+    if f != -1:
+        model = model[:f]
 
     # Gutenprint PPDs have NickNames that end:
     # ... - CUPS+Gutenprint v5.0.0

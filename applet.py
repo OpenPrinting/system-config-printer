@@ -908,7 +908,6 @@ class NewPrinterNotification(dbus.service.Object):
 
     @dbus.service.method(PDS_IFACE, in_signature='', out_signature='')
     def GetReady (self):
-        print "GetReady"
         self.wake_up ()
         if self.getting_ready == 0:
             jobmanager.set_special_statusicon (APPDIR + "/" +
@@ -928,7 +927,6 @@ class NewPrinterNotification(dbus.service.Object):
 
     @dbus.service.method(PDS_IFACE, in_signature='isssss', out_signature='')
     def NewPrinter (self, status, name, mfg, mdl, des, cmd):
-        print "NewPrinter", status, name, mfg, mdl, des, cmd
         global jobmanager
         self.wake_up ()
         self.timeout_ready ()
@@ -939,7 +937,11 @@ class NewPrinterNotification(dbus.service.Object):
             return
         del c
 
-        driver = printer['printer-make-and-model']
+        import sys
+        sys.path.append (APPDIR)
+        from foomatic import _ppdMakeModelSplit
+        (make, model) = _ppdMakeModelSplit (printer['printer-make-and-model'])
+        driver = make + " " + model
         if status < self.STATUS_GENERIC_DRIVER:
             title = _("Printer added")
         else:
@@ -963,47 +965,38 @@ class NewPrinterNotification(dbus.service.Object):
         n.attach_to_status_icon (jobmanager.statusicon)
         n.show ()
 
-    def configure (self, notification, action, name):
-        print "configure:", notification, action, name
+    def run_config_tool (self, argv):
         import os
         pid = os.fork ()
         if pid == 0:
             # Child.
             cmd = "/usr/bin/system-config-printer"
-            argv = [cmd, "--configure-printer", name]
+            argv.insert (0, cmd)
             os.execvp (cmd, argv)
             sys.exit (1)
         elif pid == -1:
             print "Error forking process"
+        
+    def configure (self, notification, action, name):
+        self.run_config_tool (["--configure-printer", name])
 
     def find_driver (self, notification, action, name):
-        print "find_driver:", notification, action, name
-        argv = ["system-config-printer",
-                "--choose-driver",
-                name]
-
-if trayicon:
-    try:
-        print "FIXME: Should use the system bus for NewPrinterNotification"
-        bus = dbus.SessionBus()
-    except:
-        print >> sys.stderr, \
-              "%s: failed to connect to session D-Bus" % PROGRAM_NAME
-        sys.exit (1)
-
-    try:
-        npl = NewPrinterNotification(bus)
-        service_running = True
-    except:
-        print >> sys.stderr, \
-              "%s: failed to start NewPrinterNotification service" % \
-              PROGRAM_NAME
+        self.run_config_tool (["--choose-driver", name])
 
 try:
     bus = dbus.SystemBus()
 except:
     print >> sys.stderr, "%s: failed to connect to system D-Bus" % PROGRAM_NAME
     sys.exit (1)
+
+if trayicon:
+    try:
+        NewPrinterNotification(bus)
+        service_running = True
+    except:
+        print >> sys.stderr, \
+              "%s: failed to start NewPrinterNotification service" % \
+              PROGRAM_NAME
 
 if trayicon:
     # Start off just waiting for print jobs or printer errors.
