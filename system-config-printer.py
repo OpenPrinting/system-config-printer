@@ -923,12 +923,25 @@ class GUI:
             job_id = self.cups.printTestPage(self.printer.name)
             self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
                                      _("Submitted") + '</span>\n\n' +
-                                     _("Test page submitted as job %d")%job_id)
+                                     _("Test page submitted as "
+                                       "job %d") % job_id)
             self.InfoDialog.set_transient_for (self.MainWindow)
             self.InfoDialog.run ()
             self.InfoDialog.hide ()
         except cups.IPPError, (e, msg):
-            self.show_IPP_Error(e, msg)
+            if (e == cups.IPP_NOT_AUTHORIZED and
+                self.printer.name != 'localhost'):
+                self.lblError.set_markup ('<span weight="bold" size="larger">'+
+                                          _("Not possible") + '</span>\n\n' +
+                                          _("The remote server did not accept "
+                                            "the print job, most likely "
+                                            "because the printer is not "
+                                            "shared."))
+                self.ErrorDialog.set_transient_for (self.MainWindow)
+                self.ErrorDialog.run ()
+                self.ErrorDialog.hide ()
+            else:
+                self.show_IPP_Error(e, msg)
 
     # select Item
 

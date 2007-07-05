@@ -6,6 +6,9 @@
 	(GUI.fillPrinterTab): Likewise.
 	(GUI.on_btnPrintTestPage_clicked): Tell the user that the test
 	page was submitted, and which job number it was.
+	(GUI.on_btnPrintTestPage_clicked): Handle test page failures due
+	to the remote printer not being shared.  In theory it should be
+	possible to print test pages there, but needs hackery.
 
 2006-06-26 Florian Festi  <ffesti@redhat.com>
 	* system-config-printer.glade, 
