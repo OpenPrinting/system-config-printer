@@ -52,7 +52,7 @@ class Option:
         self.btnConflict.set_no_show_all(True) #avoid the button taking
                                                # over control again
         vbox.add(self.btnConflict)    # vbox reserves space while button
-        vbox.set_size_request(32, 28) # is hidden
+        #vbox.set_size_request(32, 28) # is hidden
         self.conflictIcon = vbox
 
         self.btnConflict.connect("clicked", self.on_btnConflict_clicked)
