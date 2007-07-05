@@ -19,14 +19,7 @@
     <refentry id="system-config-printer">
       <refentryinfo>
 	<productname>system-config-printer</productname>
-	<date>21 May 2007</date>
-	<author>
-	  <firstname>Tim</firstname>
-	  <surname>Waugh</surname>
-	  <affiliation>
-	    <address><email>twaugh@redhat.com</email></address>
-	  </affiliation>
-	</author>
+	<date>25 May 2007</date>
       </refentryinfo>
 
       <refmeta>
@@ -42,6 +35,10 @@
       <refsynopsisdiv>
 	<cmdsynopsis>
 	  <command>system-config-printer</command>
+	  <group>
+	    <arg choice="opt">--configure-printer=<replaceable>printer</replaceable></arg>
+	    <arg choice="opt">--choose-driver=<replaceable>printer</replaceable></arg>
+	  </group>
 	</cmdsynopsis>
       </refsynopsisdiv>
 
@@ -63,6 +60,21 @@
 	    <term><option>--help</option></term>
 	    <listitem>
 	      <para>Display a short usage message.</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><option>--configure-printer=<replaceable>printer</replaceable></option></term>
+	    <listitem>
+	      <para>Select the named printer on start-up.</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><option>--choose-driver=<replaceable>printer</replaceable></option></term>
+	    <listitem>
+	      <para>Select the named printer on start-up and display
+	      the "choose driver" dialog.</para>
 	    </listitem>
 	  </varlistentry>
 	</variablelist>

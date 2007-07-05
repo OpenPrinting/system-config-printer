@@ -108,7 +108,7 @@ class GUI:
         # WIDGETS
         # =======
         try:
-            raise ValueError # uncomment for development
+            #raise ValueError # uncomment for development
             self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
             self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
@@ -3206,7 +3206,7 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
                                         ['configure-printer=',
-                                         'configure-driver='])
+                                         'choose-driver='])
     except getopt.GetoptError:
         show_help ()
         sys.exit (1)
@@ -3215,9 +3215,9 @@ if __name__ == "__main__":
     change_ppd = False
     for opt, optarg in opts:
         if (opt == "--configure-printer" or
-            opt == "--configure-driver"):
+            opt == "--choose-driver"):
             start_printer = optarg
-            if opt == "--configure-driver":
+            if opt == "--choose-driver":
                 change_ppd = True
 
     main(start_printer, change_ppd)
