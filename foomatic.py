@@ -395,7 +395,6 @@ class PPDPrinter(Printer):
         self.autodetect = {}
         self.unverified = False
         self.comments_dict = {}
-        print "PPDPrinter: %s / %s" % (self.make, self.model)
         self.getPPDDrivers()
 
 #############################################################################
