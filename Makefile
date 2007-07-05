@@ -9,6 +9,7 @@ SOURCES=cupsd.py         \
 	optionwidgets.py \
 	probe_printer.py \
 	system-config-printer.py \
+	system-config-printer \
 	gtk_label_autowrap.py \
 	gtk_html2pango.py \
 	system-config-printer.glade \
