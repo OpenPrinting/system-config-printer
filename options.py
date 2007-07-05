@@ -86,7 +86,7 @@ class OptionAlwaysShown(OptionInterface):
     def reinit(self, original_value):
         if original_value != None:
             self.original_value = self.ipp_type (original_value)
-            self.set_widget_value (original_value)
+            self.set_widget_value (self.original_value)
             self.button.set_sensitive (True)
         else:
             self.original_value = None
