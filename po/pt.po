@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-03-23 11:08+0000\n"
+"POT-Creation-Date: 2007-03-26 12:31+0100\n"
 "PO-Revision-Date: 2007-03-24 13:12+0000\n"
 "Last-Translator: Pedro Morais <morais@kde.org>\n"
 "Language-Team: pt <morais@kde.org>\n"
@@ -33,7 +33,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Disponível"
 
-#: ../cupshelpers.py:29 ../applet.py:242
+#: ../cupshelpers.py:29 ../applet.py:255
 msgid "Processing"
 msgstr "A processar"
 
@@ -41,11 +41,11 @@ msgstr "A processar"
 msgid "Busy"
 msgstr "Ocupada"
 
-#: ../cupshelpers.py:31 ../applet.py:243
+#: ../cupshelpers.py:31 ../applet.py:256
 msgid "Stopped"
 msgstr "Parado"
 
-#: ../cupshelpers.py:48 ../applet.py:252
+#: ../cupshelpers.py:48 ../applet.py:265
 msgid "Unknown"
 msgstr "Desconhecido"
 
@@ -160,20 +160,20 @@ msgstr ""
 "estes conflitos serem resolvidos."
 
 #: ../system-config-printer.py:1107 ../system-config-printer.py:1123
-#: ../applet.py:117
+#: ../applet.py:128
 msgid "Not authorized"
 msgstr "Não autorizado"
 
-#: ../system-config-printer.py:1108 ../applet.py:118
+#: ../system-config-printer.py:1108 ../applet.py:129
 msgid "The password may be incorrect."
 msgstr "A senha pode estar incorrecta."
 
 #: ../system-config-printer.py:1111 ../system-config-printer.py:1144
-#: ../applet.py:121
+#: ../applet.py:132
 msgid "CUPS server error"
 msgstr "Erro no servidor CUPS"
 
-#: ../system-config-printer.py:1112 ../applet.py:122
+#: ../system-config-printer.py:1112 ../applet.py:133
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Houve um erro durante a operação CUPS: '%s'."
@@ -1061,7 +1061,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr "Impressão bonita"
 
-#: ../system-config-printer.glade.h:189 ../applet.py:43
+#: ../system-config-printer.glade.h:189 ../applet.py:48
 msgid "Printer"
 msgstr "Impressora"
 
@@ -1287,93 +1287,93 @@ msgstr "Configurar as impressoras"
 msgid "Printing"
 msgstr "Impressão"
 
-#: ../applet.py:41
+#: ../applet.py:46
 msgid "Job"
 msgstr "Tarefa"
 
-#: ../applet.py:42
+#: ../applet.py:47
 msgid "Document"
 msgstr "Documento"
 
-#: ../applet.py:44
+#: ../applet.py:49
 msgid "Size"
 msgstr "Tamanho"
 
-#: ../applet.py:45
+#: ../applet.py:50
 msgid "Time submitted"
 msgstr "Hora de envio"
 
-#: ../applet.py:46
+#: ../applet.py:51
 msgid "Status"
 msgstr "Estado"
 
-#: ../applet.py:165
+#: ../applet.py:178
 msgid "No documents queued"
 msgstr "Nenhuns documentos em espera"
 
-#: ../applet.py:168
+#: ../applet.py:181
 msgid "1 document queued"
 msgstr "Um documento em espera"
 
-#: ../applet.py:171
+#: ../applet.py:184
 #, python-format
 msgid "%d documents queued"
 msgstr "%d documentos em espera"
 
-#: ../applet.py:213
+#: ../applet.py:226
 msgid "1 hour ago"
 msgstr "Há 1 hora atrás"
 
-#: ../applet.py:215
+#: ../applet.py:228
 msgid "1 hour and 1 minute ago"
 msgstr "Há 1 hora e 1 minuto atrás"
 
-#: ../applet.py:217
+#: ../applet.py:230
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "Há 1 hora e %d minutos atrás"
 
-#: ../applet.py:220
+#: ../applet.py:233
 #, python-format
 msgid "%d hours ago"
 msgstr "Há %d horas atrás"
 
-#: ../applet.py:222
+#: ../applet.py:235
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "Há %d horas e 1 minuto atrás"
 
-#: ../applet.py:224
+#: ../applet.py:237
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "Há %d horas e %d minutos atrás"
 
-#: ../applet.py:229
+#: ../applet.py:242
 msgid "a minute ago"
 msgstr "Há 1 minuto atrás"
 
-#: ../applet.py:231
+#: ../applet.py:244
 #, python-format
 msgid "%d minutes ago"
 msgstr "Há %d minutos atrás"
 
-#: ../applet.py:240
+#: ../applet.py:253
 msgid "Pending"
 msgstr "Pendente"
 
-#: ../applet.py:241
+#: ../applet.py:254
 msgid "Held"
 msgstr "Retida"
 
-#: ../applet.py:244
+#: ../applet.py:257
 msgid "Canceled"
 msgstr "Cancelada"
 
-#: ../applet.py:245
+#: ../applet.py:258
 msgid "Aborted"
 msgstr "Interrompida"
 
-#: ../applet.py:246
+#: ../applet.py:259
 msgid "Completed"
 msgstr "Completa"
 
@@ -1390,14 +1390,18 @@ msgid "Show _completed jobs"
 msgstr "Mostrar as tarefas _completas"
 
 #: ../applet.glade.h:9
+msgid "_Hide"
+msgstr ""
+
+#: ../applet.glade.h:10
 msgid "_Hold"
 msgstr "_Reter"
 
-#: ../applet.glade.h:10
+#: ../applet.glade.h:11
 msgid "_Release"
 msgstr "_Libertar"
 
-#: ../applet.glade.h:11
+#: ../applet.glade.h:12
 msgid "_View"
 msgstr "_Ver"
 

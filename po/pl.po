@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-03-23 11:08+0000\n"
+"POT-Creation-Date: 2007-03-26 12:31+0100\n"
 "PO-Revision-Date: 2007-03-23 12:52+0200\n"
 "Last-Translator: Piotr Drąg <raven@pmail.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Bezczynna"
 
-#: ../cupshelpers.py:29 ../applet.py:242
+#: ../cupshelpers.py:29 ../applet.py:255
 msgid "Processing"
 msgstr "Przetwarzanie"
 
@@ -28,11 +28,11 @@ msgstr "Przetwarzanie"
 msgid "Busy"
 msgstr "Zajęta"
 
-#: ../cupshelpers.py:31 ../applet.py:243
+#: ../cupshelpers.py:31 ../applet.py:256
 msgid "Stopped"
 msgstr "Zatrzymana"
 
-#: ../cupshelpers.py:48 ../applet.py:252
+#: ../cupshelpers.py:48 ../applet.py:265
 msgid "Unknown"
 msgstr "Nieznany"
 
@@ -80,6 +80,7 @@ msgstr "Użytkownicy"
 msgid "PostScript Printer Description (*.ppd[.gz])"
 msgstr "PostScriptowy opis drukarki (*.ppd[.gz])"
 
+#. SMB list columns
 #: ../system-config-printer.py:340
 msgid "Share"
 msgstr "Wspóldziel"
@@ -147,20 +148,20 @@ msgstr ""
 "zostaną rozwiązane."
 
 #: ../system-config-printer.py:1107 ../system-config-printer.py:1123
-#: ../applet.py:117
+#: ../applet.py:128
 msgid "Not authorized"
 msgstr "Nieupoważnione"
 
-#: ../system-config-printer.py:1108 ../applet.py:118
+#: ../system-config-printer.py:1108 ../applet.py:129
 msgid "The password may be incorrect."
 msgstr "Hasło może być niepoprawne."
 
 #: ../system-config-printer.py:1111 ../system-config-printer.py:1144
-#: ../applet.py:121
+#: ../applet.py:132
 msgid "CUPS server error"
 msgstr "Błąd serwera CUPS"
 
-#: ../system-config-printer.py:1112 ../applet.py:122
+#: ../system-config-printer.py:1112 ../applet.py:133
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Wystąpił błąd podczas operacji CUPS-a: \"%s\"."
@@ -359,6 +360,7 @@ msgstr ""
 msgid "This PPD is provided by CUPS."
 msgstr "Ten PPD został dostarczony przez CUPS."
 
+#. XXX
 #: ../system-config-printer.py:2693
 #, python-format
 msgid "Going to create a new class %s."
@@ -373,6 +375,7 @@ msgstr ""
 "Za chwilę zostanie utworzona nowa drukarka %s na\n"
 "%s.\n"
 
+#. Foomatic database problem of some sort.
 #: ../system-config-printer.py:2731
 msgid "Database error"
 msgstr "Błąd bazy danych"
@@ -382,11 +385,15 @@ msgstr "Błąd bazy danych"
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Sterownik \"%s\" nie może być używany z drukarką \"%s %s\"."
 
+#. This printer references some XML that is not
+#. installed by default.  Point the user at the
+#. package they need to install.
 #: ../system-config-printer.py:2742
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Musisz zainstalować pakiet \"%s\", aby użyć tego sterownika."
 
+#. This error came from trying to open the PPD file.
 #: ../system-config-printer.py:2749
 msgid "PPD error"
 msgstr "Błąd PPD"
@@ -1012,7 +1019,7 @@ msgstr ""
 msgid "Pretty print"
 msgstr "Ładny wydruk"
 
-#: ../system-config-printer.glade.h:189 ../applet.py:43
+#: ../system-config-printer.glade.h:189 ../applet.py:48
 msgid "Printer"
 msgstr "Drukarka"
 
@@ -1236,93 +1243,93 @@ msgstr "Konfiguracja drukarek"
 msgid "Printing"
 msgstr "Drukowanie"
 
-#: ../applet.py:41
+#: ../applet.py:46
 msgid "Job"
 msgstr "Zadanie"
 
-#: ../applet.py:42
+#: ../applet.py:47
 msgid "Document"
 msgstr "Dokument"
 
-#: ../applet.py:44
+#: ../applet.py:49
 msgid "Size"
 msgstr "Rozmiar"
 
-#: ../applet.py:45
+#: ../applet.py:50
 msgid "Time submitted"
 msgstr "Czas wysłania"
 
-#: ../applet.py:46
+#: ../applet.py:51
 msgid "Status"
 msgstr "Stan"
 
-#: ../applet.py:165
+#: ../applet.py:178
 msgid "No documents queued"
 msgstr "Brak dokumentów w kolejce"
 
-#: ../applet.py:168
+#: ../applet.py:181
 msgid "1 document queued"
 msgstr "1 dokument w kolejce"
 
-#: ../applet.py:171
+#: ../applet.py:184
 #, python-format
 msgid "%d documents queued"
 msgstr "%d dokumentów w kolejce"
 
-#: ../applet.py:213
+#: ../applet.py:226
 msgid "1 hour ago"
 msgstr "1 godzina temu"
 
-#: ../applet.py:215
+#: ../applet.py:228
 msgid "1 hour and 1 minute ago"
 msgstr "1 godzina i 1 minuta temu"
 
-#: ../applet.py:217
+#: ../applet.py:230
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "1 godzinai %d minut temu"
 
-#: ../applet.py:220
+#: ../applet.py:233
 #, python-format
 msgid "%d hours ago"
 msgstr "%d godzin temu"
 
-#: ../applet.py:222
+#: ../applet.py:235
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d godzin i 1 minuta temu"
 
-#: ../applet.py:224
+#: ../applet.py:237
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d godzin i %d minut temu"
 
-#: ../applet.py:229
+#: ../applet.py:242
 msgid "a minute ago"
 msgstr "minuta temu"
 
-#: ../applet.py:231
+#: ../applet.py:244
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d minut temu"
 
-#: ../applet.py:240
+#: ../applet.py:253
 msgid "Pending"
 msgstr "Oczekiwanie"
 
-#: ../applet.py:241
+#: ../applet.py:254
 msgid "Held"
 msgstr "Wstrzymaj"
 
-#: ../applet.py:244
+#: ../applet.py:257
 msgid "Canceled"
 msgstr "Anulowane"
 
-#: ../applet.py:245
+#: ../applet.py:258
 msgid "Aborted"
 msgstr "Przerwane"
 
-#: ../applet.py:246
+#: ../applet.py:259
 msgid "Completed"
 msgstr "Zakończone"
 
@@ -1339,14 +1346,18 @@ msgid "Show _completed jobs"
 msgstr "Wyświetl zakończone zadania"
 
 #: ../applet.glade.h:9
+msgid "_Hide"
+msgstr ""
+
+#: ../applet.glade.h:10
 msgid "_Hold"
 msgstr "_Wstrzymaj"
 
-#: ../applet.glade.h:10
+#: ../applet.glade.h:11
 msgid "_Release"
 msgstr "_Zwolnij"
 
-#: ../applet.glade.h:11
+#: ../applet.glade.h:12
 msgid "_View"
 msgstr "_Widok"
 
