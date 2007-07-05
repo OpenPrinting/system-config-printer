@@ -18,9 +18,6 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
-import dbus
-import dbus.glib
-import gobject
 import sys
 
 APPDIR="/usr/share/system-config-printer"
@@ -29,9 +26,10 @@ GLADE="applet.glade"
 ICON="applet.png"
 
 class JobManager:
-    def __init__(self, bus, loop, service_running=False):
+    def __init__(self, bus, loop, service_running=False, trayicon=True):
         self.loop = loop
         self.service_running = service_running
+        self.trayicon = trayicon
 
         self.jobs = {}
         self.jobiters = {}
@@ -64,8 +62,8 @@ class JobManager:
         self.treeview.set_model(self.store)
 
         self.MainWindow = self.xml.get_widget ('MainWindow')
-        self.MainWindow.hide ()
         self.MainWindow.set_icon_from_file (APPDIR + "/" + ICON)
+        self.MainWindow.hide ()
 
         self.job_popupmenu = self.xml.get_widget ('job_popupmenu')
         self.icon_popupmenu = self.xml.get_widget ('icon_popupmenu')
@@ -88,27 +86,34 @@ class JobManager:
                                  path="/com/redhat/PrinterSpooler",
                                  dbus_interface="com.redhat.PrinterSpooler")
 
-        self.statusicon = gtk.StatusIcon ()
-        self.statusicon.set_from_file (APPDIR + "/" + ICON)
-        self.icon_jobs = self.statusicon.get_pixbuf ()
-        self.icon_no_jobs = self.icon_jobs.copy ()
-        self.icon_no_jobs.fill (0)
-        self.icon_jobs.composite (self.icon_no_jobs,
-                                  0, 0,
-                                  self.icon_no_jobs.get_width(),
-                                  self.icon_no_jobs.get_height(),
-                                  0, 0,
-                                  1.0, 1.0,
-                                  gtk.gdk.INTERP_BILINEAR,
-                                  127)
-        self.statusicon.set_from_pixbuf (self.icon_no_jobs)
-        self.statusicon.connect ('activate', self.toggle_window_display)
-        self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
+        if self.trayicon:
+            self.statusicon = gtk.StatusIcon ()
+            self.statusicon.set_from_file (APPDIR + "/" + ICON)
+            self.icon_jobs = self.statusicon.get_pixbuf ()
+            self.icon_no_jobs = self.icon_jobs.copy ()
+            self.icon_no_jobs.fill (0)
+            self.icon_jobs.composite (self.icon_no_jobs,
+                                      0, 0,
+                                      self.icon_no_jobs.get_width(),
+                                      self.icon_no_jobs.get_height(),
+                                      0, 0,
+                                      1.0, 1.0,
+                                      gtk.gdk.INTERP_BILINEAR,
+                                      127)
+            self.statusicon.set_from_pixbuf (self.icon_no_jobs)
+            self.statusicon.connect ('activate', self.toggle_window_display)
+            self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
 
         self.refresh ()
 
+        if not self.trayicon:
+            self.MainWindow.show ()
+
     def on_delete_event(self, *args):
-        self.MainWindow.hide ()
+        if self.trayicon:
+            self.MainWindow.hide ()
+        else:
+            self.loop.quit ()
         return True
 
     def cupsPasswdCallback(self, querystring):
@@ -173,15 +178,17 @@ class JobManager:
                 return
 
         del c
-        if num_jobs == 0:
-            self.statusicon.set_tooltip (_("No documents queued"))
-            self.statusicon.set_from_pixbuf (self.icon_no_jobs)
-        elif num_jobs == 1:
-            self.statusicon.set_tooltip (_("1 document queued"))
-            self.statusicon.set_from_pixbuf (self.icon_jobs)
-        else:
-            self.statusicon.set_tooltip (_("%d documents queued") % num_jobs)
-            self.statusicon.set_from_pixbuf (self.icon_jobs)
+        if self.trayicon:
+            if num_jobs == 0:
+                self.statusicon.set_tooltip (_("No documents queued"))
+                self.statusicon.set_from_pixbuf (self.icon_no_jobs)
+            elif num_jobs == 1:
+                self.statusicon.set_tooltip (_("1 document queued"))
+                self.statusicon.set_from_pixbuf (self.icon_jobs)
+            else:
+                self.statusicon.set_tooltip (_("%d documents queued") %
+                                             num_jobs)
+                self.statusicon.set_from_pixbuf (self.icon_jobs)
 
         for job in self.jobs:
             if not jobs.has_key (job):
@@ -372,13 +379,52 @@ def do_imports():
         gettext.textdomain (DOMAIN)
         gtk.glade.bindtextdomain (DOMAIN)
 
+PROGRAM_NAME="system-config-printer-applet"
+def show_help ():
+    print "usage: %s [--no-tray-icon]" % PROGRAM_NAME
+
+def show_version ():
+    import config
+    print "%s %s" % (PROGRAM_NAME, config.VERSION)
+    
+####
+#### Main program entry
+####
+
+trayicon = True
+service_running = False
+
+import sys, getopt
+try:
+    opts, args = getopt.gnu_getopt (sys.argv[1:], '',
+                                    ['no-tray-icon',
+                                     'help',
+                                     'version'])
+except getopt.GetoptError:
+    show_help ()
+    sys.exit (1)
+
+for opt, optarg in opts:
+    if opt == "--help":
+        show_help ()
+        sys.exit (0)
+    if opt == "--version":
+        show_version ()
+        sys.exit (0)
+    if opt == "--no-tray-icon":
+        trayicon = False
+
+import dbus
+import dbus.glib
+import dbus.service
+import gobject
+
 ####
 #### PrintDriverSelection DBus server
 ####
 PDS_PATH="/com/redhat/PrintDriverSelection"
 PDS_IFACE="com.redhat.PrintDriverSelection"
 PDS_OBJ="com.redhat.PrintDriverSelection"
-import dbus.service
 class PrintDriverSelection(dbus.service.Object):
     def __init__(self, bus_name):
         dbus.service.Object.__init__(self, bus_name, PDS_PATH)
@@ -390,46 +436,41 @@ class PrintDriverSelection(dbus.service.Object):
 
     # Need to add an interface for providing a PPD.
 
-service_running = False
-try:
-    bus = dbus.SystemBus()
-    name = dbus.service.BusName (PDS_OBJ, bus=bus)
-    PrintDriverSelection(name)
-    service_running = True
-except:
-    print "eggcups: failed to start PrintDriverSelection service"
-
-####
-#### Main program entry
-####
-
-# Start off just waiting for print jobs.
-def any_jobs ():
-    try:
-        c = cups.Connection ()
-        if len (c.getJobs (my_jobs=True)):
-            return True
-    except:
-        pass
-
-    return False
-
 bus = dbus.SystemBus()
-if not any_jobs ():
-    def check_for_jobs (*args):
-        if any_jobs ():
-            loop.quit ()
+if trayicon:
+    try:
+        name = dbus.service.BusName (PDS_OBJ, bus=bus)
+        PrintDriverSelection(name)
+        service_running = True
+    except:
+        print "%s: failed to start PrintDriverSelection service" % PROGRAM_NAME
 
-    bus.add_signal_receiver (check_for_jobs,
-                             path="/com/redhat/PrinterSpooler",
-                             dbus_interface="com.redhat.PrinterSpooler")
-    loop = gobject.MainLoop ()
-    loop.run()
-    bus.remove_signal_receiver (check_for_jobs,
-                                path="/com/redhat/PrinterSpooler",
-                                dbus_interface="com.redhat.PrinterSpooler")
+    # Start off just waiting for print jobs.
+    def any_jobs ():
+        try:
+            c = cups.Connection ()
+            if len (c.getJobs (my_jobs=True)):
+                return True
+        except:
+            pass
+
+        return False
+
+    if not any_jobs ():
+        def check_for_jobs (*args):
+            if any_jobs ():
+                loop.quit ()
+
+        bus.add_signal_receiver (check_for_jobs,
+                                 path="/com/redhat/PrinterSpooler",
+                                 dbus_interface="com.redhat.PrinterSpooler")
+        loop = gobject.MainLoop ()
+        loop.run()
+        bus.remove_signal_receiver (check_for_jobs,
+                                    path="/com/redhat/PrinterSpooler",
+                                    dbus_interface="com.redhat.PrinterSpooler")
 
 do_imports()
 loop = gobject.MainLoop ()
-JobManager(bus, loop, service_running=service_running)
+JobManager(bus, loop, service_running=service_running, trayicon=trayicon)
 loop.run()
