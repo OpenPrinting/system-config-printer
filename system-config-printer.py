@@ -1033,9 +1033,12 @@ class GUI:
     def on_btnPrintTestPage_clicked(self, button):
         if self.test_button_cancels:
             jobs = self.printer.testsQueued ()
-            if len (jobs):
-                print "Cancelling: %s" % jobs
-                self.printer.cancelJobs (jobs)
+            for job in jobs:
+                print "Cancelling job %s" % job
+                try:
+                    self.cups.cancelJob (job)
+                except cups.IPPError, (e, msg):
+                    self.show_IPP_Error(e, msg)
             self.setTestButton (self.printer)
             return
         try:

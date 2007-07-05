@@ -224,10 +224,6 @@ class Printer:
                 ret.append (id)
         return ret
 
-    def cancelJobs (self, jobs = []):
-        for job in jobs:
-            self.connection.cancelJob (job)
-
 def getPrinters(connection):
     printers_conf = PrintersConf(connection)
     printers = connection.getPrinters()
