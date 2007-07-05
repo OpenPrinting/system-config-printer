@@ -160,7 +160,10 @@ class Device:
     def __cmp__(self, other):
         result = cmp(self.is_class, other.is_class)
         if not result:
+            result = cmp(bool(self.id), bool(other.id))
+        if not result:
             result = cmp(self.info, other.info)
+        
         return result
 
 def getDevices(connection):

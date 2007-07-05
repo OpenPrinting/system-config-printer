@@ -61,7 +61,6 @@ class Driver(FoomaticXMLFile):
                                      foomatic.quote_filename(name))
         FoomaticXMLFile.__init__(self, name, foomatic)
 
-
     def parse_xml(self, root_node):
         self.printers = []
         self.comments_dict = {}
@@ -93,7 +92,7 @@ class Driver(FoomaticXMLFile):
             # XXX
 
 ############################################################################# 
-###  Driver
+###  Printer
 #############################################################################
 
 class Printer(FoomaticXMLFile):
@@ -261,6 +260,7 @@ class Foomatic:
         
         err = self._load_pickle()
         if err:
+            print "Writing new pickle"
             self.loadAll()
             self._write_pickle()
         
@@ -380,11 +380,24 @@ class Foomatic:
             "_auto_make" : self._auto_make,
             "_auto_description" : self._auto_description,
             }
-        f = open(filename, "w")
+        f = open(filename, "w") # XXX use atomic write
         pickle.dump(data, f, -1)
         f.close()
         
     def _load_pickle(self, filename="/tmp/foomatic.pickle"):
+        if not os.path.exists(filename): return True
+        
+        pickle_mtime = os.path.getmtime(filename)
+        if os.path.getmtime(__file__)>pickle_mtime: return True
+
+        # check for changes in printer and driver directories
+        for dir_name in ["printer", "driver"]:
+            path = os.path.join(self.path, dir_name)
+            if os.path.getmtime(path)>pickle_mtime: return True
+
+            for file in glob.glob(os.path.join(path, "*.xml")):
+                if os.path.getmtime(file)>pickle_mtime:
+                    return True
         try:
             f = open(filename, "r")
             data = pickle.load(f)

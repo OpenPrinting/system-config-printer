@@ -51,7 +51,7 @@ class GUI:
                          
                           "cmbPStartBanner", "cmbPEndBanner",
                           "cmbPErrorPolicy", "cmbPOperationPolicy",
-                          "tbtnPAllow", "entPExceptUsers",
+                          "cmbPExplicitAllow", "entPExceptUsers",
                          "swPInstallOptions", "vbPInstallOptions", 
                          "swPOptions",
                           "lblPOptions", "vbPOptions",
@@ -76,6 +76,7 @@ class GUI:
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
                            "entNPTDevice",
+                           "tvNCMembers",
                           "tvNPModels", "cmbNPDriver",
                            "txtNPModelDescription", "txtNPDriverDescription",
                         )
@@ -106,8 +107,6 @@ class GUI:
         self.mainlist.append(None, ("Remote Printers", ""))
         self.mainlist.append(None, ("Remote Classes", ""))
 
-        #self.tvMainList.expand_all()
-        
         # setup PPD tree
         model = gtk.TreeStore(str, str)
         cell = gtk.CellRendererText()
@@ -121,12 +120,14 @@ class GUI:
 
         # setup Class member lists
         for name, treeview in (("Members", self.tvClassMembers),
-                               ("Others", self.tvClassNotMembers)):
+                               ("Others", self.tvClassNotMembers),
+                               ("Select Members", self.tvNCMembers)):
             model = gtk.ListStore(str)
             cell = gtk.CellRendererText()
             column = gtk.TreeViewColumn(name, cell, text=0)
             treeview.set_model(model)
             treeview.append_column(column)
+            treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
         
         self.populateList()
         
@@ -369,6 +370,8 @@ class GUI:
             value = widget.get_active()
         elif isinstance(widget, gtk.Entry):
             value = widget.get_text()
+        elif widget is self.cmbPExplicitAllow:
+            value = widget.get_active()
         elif isinstance(widget, gtk.ComboBox):
             value = widget.get_active_text()
         else:
@@ -385,7 +388,8 @@ class GUI:
             self.cmbPStartBanner : p.job_sheet_start,
             self.cmbPEndBanner : p.job_sheet_end,
             self.cmbPErrorPolicy : p.error_policy,
-            self.cmbPOperationPolicy : p.op_policy
+            self.cmbPOperationPolicy : p.op_policy,
+            self.cmbPExplicitAllow: p.default_allow,
             }
         
         old_value = old_values[widget]
@@ -482,6 +486,20 @@ class GUI:
                     self.passwd_retry = False # use cached Passwd 
                     self.cups.addPrinter(name, ppd=self.ppd)
 
+            if printer.is_class:
+                # update member list
+                new_members = self.getCurrentClassMembers()
+                if not new_members:
+                    dialog = gtk.MessageDialog(
+                        flags=0, type=gtk.MESSAGE_WARNING,
+                        buttons=gtk.BUTTONS_YES_NO,
+                        message_format="This will delete this Class!")
+                    dialog.format_secondary_text("Proceed anyway?")
+                    result = dialog.run()
+                    dialog.destroy()
+                    if result==gtk.RESPONSE_NO:
+                        return True
+
             location = self.entPLocation.get_text()
             info = self.entPDescription.get_text()
             device_uri = self.entPDevice.get_text()
@@ -526,7 +544,7 @@ class GUI:
                 self.passwd_retry = False # use cached Passwd
                 printer.setOperationPolicy(op_policy)
 
-            default_allow = self.tbtnPAllow.get_active()
+            default_allow = self.cmbPExplicitAllow.get_active()
             except_users = self.entPExceptUsers.get_text()
 
             if (default_allow != printer.default_allow or
@@ -534,17 +552,18 @@ class GUI:
                 self.passwd_retry = False # use cached Passwd
                 printer.setAccess(default_allow, except_users)
 
-
             if printer.is_class:
                 # update member list
-                new_members = self.getCurrentClassMembers()
-                for member in printer.class_members:
-                    if member in new_members:
-                        new_members.remove(member)
-                    else:
-                        self.cups.deletePrinterFromClass(member, name)
+                old_members = printer.class_members[:]
+                
                 for member in new_members:
-                    self.cups.addPrinterToClass(member, name)                
+                    if member in old_members:
+                        old_members.remove(member)
+                    else:
+                        self.cups.addPrinterToClass(member, name)
+                for member in old_members:
+                    self.cups.deletePrinterFromClass(member, name)
+                    
         except cups.IPPError, (e, s):
             self.show_IPP_Error(e, s)
             return True
@@ -663,14 +682,7 @@ class GUI:
                           printer.op_policy)
 
         # Access control
-        if printer.default_allow:
-            self.tbtnPAllow.set_label(_("Allow"))
-            self.tbtnPAllow.set_image(
-                gtk.image_new_from_icon_name("gtk-yes", 1))
-        else:
-            self.tbtnPAllow.set_label(_("Deny"))
-            self.tbtnPAllow.set_image(
-                gtk.image_new_from_icon_name("gtk-no", 1))
+        self.cmbPExplicitAllow.set_active(printer.default_allow)
         self.entPExceptUsers.set_text(printer.except_users_string)
 
         # remove InstallOptions tab
@@ -782,10 +794,11 @@ class GUI:
         model_members.clear()
         model_not_members.clear()
 
-        for name, p in self.printers.iteritems():
-            if (not p.is_class and
-                p is not printer and
-                not p.remote):
+        names = self.printers.keys()
+        names.sort()
+        for name in names:
+            p = self.printers[name]
+            if p is not printer:
                 if name in printer.class_members:
                     model_members.append((name, ))
                 else:
@@ -847,11 +860,14 @@ class GUI:
     # Create/Delete
     
     def on_new_printer_activate(self, widget):
+        self.new_class = False
         self.initNewPrinterWindow()
         self.NewPrinterWindow.show()
 
     def on_new_class_activate(self, widget):
-        print "NEW CLASS"
+        self.new_class = True
+        self.initNewPrinterWindow()
+        self.NewPrinterWindow.show()
         
     def on_copy_activate(self, widget):
         name, type = self.getSelectedItem()
@@ -876,32 +892,37 @@ class GUI:
             return
         
         self.cups.deletePrinter(name)
-        selection = self.tvMainList.get_selection()
-        model, iter = selection.get_selected()
-        model.remove(iter)
-        selection.select_path(0)
-        self.on_tvMainList_cursor_changed(self.tvMainList)
+        self.populateList()
+        #selection = self.tvMainList.get_selection()
+        #model, iter = selection.get_selected()
+        #model.remove(iter)
+        #selection.select_path(0)
+        #self.on_tvMainList_cursor_changed(self.tvMainList)
 
     # == New Printer =====================================================
 
     new_printer_device_tabs = {
-        "hp" : 1,
-        "ipp" : 2,
-        "http" : 2,
-        "lpd" : 3,
-        "parallel" : 4,
-        "scsi" : 5,
-        "serial" : 6,
-        "smb" : 0,
+        "parallel" : 0, # empty tab
+        "usb" : 0,
         "hal" : 0,
         "beh" : 0,
-        "socket": 0,
+        "hp" : 0,
+        "socket": 2,
+        "ipp" : 3,
+        "http" : 3,
+        "lpd" : 4,
+        "scsi" : 5,
+        "serial" : 6,
+        "smb" : 1,
         }
 
     def initNewPrinterWindow(self, prototype=None):
         self.ntbkNewPrinter.set_current_page(0)
         self.setNPButtons()
-        self.fillDeviceTab()
+        if self.new_class:
+            self.fillNewClassMembers()
+        else:
+            self.fillDeviceTab()
         if prototype:
             pass
         else:
@@ -911,7 +932,10 @@ class GUI:
     def fillDeviceTab(self):
         devices = cupshelpers.getDevices(self.cups).values()
         devices.sort()
-        self.devices = filter(lambda x: x.uri!="hp:/no_device_found", devices) 
+        self.devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
+                                                      "hal", "beh",
+                                                      "scsi", "http"),
+                              devices) 
 
         model = self.cmbNPType.get_model()
         model.clear()
@@ -921,16 +945,30 @@ class GUI:
 
         self.cmbNPType.set_active(0)
 
+    def fillNewClassMembers(self):
+        model = self.tvNCMembers.get_model()
+        model.clear()
+        for printer in self.printers.itervalues():
+            model.append((printer.name,))
+
     def on_NPCancel(self, widget, event=None):
         self.NewPrinterWindow.hide()
         return True
 
     def on_btnNPBack_clicked(self, widget):
-        self.ntbkNewPrinter.prev_page()
-        self.setNPButtons()
+        self.nextNPTab(-1)
 
     def on_btnNPForward_clicked(self, widget):
-        self.ntbkNewPrinter.next_page()
+        self.nextNPTab()
+
+    def nextNPTab(self, step=1):
+        page_nr = self.ntbkNewPrinter.get_current_page()
+        if self.new_class:
+            order = [0, 3, 4]
+        else:
+            order = [0, 1, 2, 4]
+        page_nr = self.ntbkNewPrinter.set_current_page(
+            order[order.index(page_nr)+step])
         self.setNPButtons()
 
     def setNPButtons(self):
@@ -940,6 +978,8 @@ class GUI:
                      len(self.ntbkNewPrinter.get_children()) -1 )        
         if first_page:
             self.btnNPBack.hide()
+            self.btnNPForward.set_sensitive(
+                self.check_NPName(self.entNPName.get_text()))
         else:
             self.btnNPBack.show()
         if last_page:
@@ -951,7 +991,14 @@ class GUI:
 
         if page_nr == 2: self.fillPPDList()
             
-
+    def check_NPName(self, name):
+        if not name: return False
+        name = name.lower()
+        for printer in self.printers.values():
+            if not printer.remote and printer.name.lower()==name:
+                return False
+        return True
+    
     def on_entNPName_changed(self, widget):
         # restrict
         text = widget.get_text()
@@ -961,6 +1008,8 @@ class GUI:
         new_text = new_text.replace(" ", "")
         if text!=new_text:
             widget.set_text(new_text)
+        self.btnNPForward.set_sensitive(
+            self.check_NPName(new_text))
 
     # Device URI
 
@@ -1145,21 +1194,41 @@ class GUI:
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
         name = self.entNPName.get_text()
-
-        ppd = self.getNPPPD()
-        
-        self.passwd_retry = False # use cached Passwd 
-
         location = self.entNPLocation.get_text()
         info = self.entNPDescription.get_text()
-        uri = self.getDeviceURI()
+
+        if self.new_class:
+            members = []
+            model, paths = self.tvNCMembers.get_selection().get_selected_rows()
+            for path in paths:
+                iter = model.get_iter(path)
+                members.append(model.get(iter, 0)[0])
+            try:
+                for member in members:
+                    self.passwd_retry = False # use cached Passwd 
+                    print member, name
+                    self.cups.addPrinterToClass(member, name)
+                print location
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterLocation(name, location)
+                print info
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.setPrinterInfo(name, info)
+            except cups.IPPError, e:
+                # XXX
+                print e
+                pass
+        else:
+            uri = self.getDeviceURI()
+            ppd = self.getNPPPD()
         
-        try:
-            self.cups.addPrinter(name, filename=ppd,
-                                 device=uri, info=info, location=location)
-        except cups.IPPError:
-            # XXX
-            pass
+            try:
+                self.passwd_retry = False # use cached Passwd 
+                self.cups.addPrinter(name, filename=ppd,
+                                     device=uri, info=info, location=location)
+            except cups.IPPError:
+                # XXX
+                pass
 
         #self.printers[name] = printer
         self.NewPrinterWindow.hide()
