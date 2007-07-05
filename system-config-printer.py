@@ -402,9 +402,11 @@ class GUI:
 
     def connect(self, servername, user):
         """
-        Open a connection to a new server. Is executed in a seperate thread!
+        Open a connection to a new server. Is executed in a separate thread!
         """
         cups.setServer(servername)
+        cups.setPasswordCB(self.cupsPasswdCallback)
+        # cups.setEncryption (...)
 
         if user: cups.setUser(user)
         self.password = ''
