@@ -34,7 +34,7 @@ class GUI:
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                         "entUser",
 
-                        "PasswordDialog", "entPasswd",
+                        "PasswordDialog", "lblPasswordPrompt", "entPasswd",
 
                         "NewPrinterWindow", "ntbkNewPrinter",
                         "btnNBack", "btnNForward", "btnNApply",
@@ -197,6 +197,7 @@ class GUI:
 
     def cupsPasswdCallback(self, querystring):
         if self.passwd_retry or len(self.password) == 0:
+            self.lblPasswordPrompt.set_label (querystring)
             self.entPasswd.grab_focus ()
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
