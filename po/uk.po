@@ -234,12 +234,11 @@ msgstr ""
 
 #: ../system-config-printer.py:1423
 msgid "Error"
-msgstr ""
+msgstr "Помилка"
 
 #: ../system-config-printer.py:1424
-#, fuzzy
 msgid "There was a problem connecting to the CUPS server."
-msgstr "Помилка при операції CUPS: '%s'."
+msgstr "Помилка підключення до сервера CUPS."
 
 #: ../system-config-printer.py:1487
 msgid "This is the default printer"
@@ -424,7 +423,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:1
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../system-config-printer.glade.h:2
 msgid " PPD "
@@ -439,6 +438,12 @@ msgid ""
 "9\n"
 "16"
 msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
 
 #: ../system-config-printer.glade.h:9
 msgid "<b>Authentication</b>"
@@ -461,9 +466,8 @@ msgid "<b>Comment about the Printer</b>"
 msgstr "<b>Коментар до принтера</b>"
 
 #: ../system-config-printer.glade.h:14
-#, fuzzy
 msgid "<b>Common Options</b>"
-msgstr "<b>Вкажіть з'єднання</b>"
+msgstr "<b>Загальні параметри</b>"
 
 #: ../system-config-printer.glade.h:15
 msgid "<b>Default Printer</b>"
@@ -478,9 +482,8 @@ msgid "<b>Description</b> (optional)"
 msgstr "<b>Опис</b> (не обов'язково)"
 
 #: ../system-config-printer.glade.h:18
-#, fuzzy
 msgid "<b>Image Options</b>"
-msgstr "<b>Параметри</b>"
+msgstr "<b>Параметри зображень</b>"
 
 #: ../system-config-printer.glade.h:19
 msgid "<b>Information about the PPD</b>"
@@ -500,7 +503,7 @@ msgstr "<b>Розташування</b> (не обов'язково)"
 
 #: ../system-config-printer.glade.h:23
 msgid "<b>Other Options (Advanced)</b>"
-msgstr ""
+msgstr "<b>Інші параметри (Розширені)</b>"
 
 #: ../system-config-printer.glade.h:24
 msgid "<b>Policies</b>"
@@ -531,9 +534,8 @@ msgid "<b>State</b>"
 msgstr "<b>Стан</b>"
 
 #: ../system-config-printer.glade.h:31
-#, fuzzy
 msgid "<b>Text Options</b>"
-msgstr "<b>Параметри</b>"
+msgstr "<b>Параметри тексту</b>"
 
 #: ../system-config-printer.glade.h:32
 msgid ""
@@ -611,11 +613,11 @@ msgstr "Швидкість передачі"
 
 #: ../system-config-printer.glade.h:52
 msgid "Bottom margin:"
-msgstr ""
+msgstr "Нижнє поле:"
 
 #: ../system-config-printer.glade.h:53
 msgid "Brightness:"
-msgstr ""
+msgstr "Яскравість:"
 
 #: ../system-config-printer.glade.h:54
 msgid "CUPS server:"
@@ -631,16 +633,15 @@ msgstr "Змінити..."
 
 #: ../system-config-printer.glade.h:57
 msgid "Characters per inch:"
-msgstr ""
+msgstr "Знаків на дюйм:"
 
 #: ../system-config-printer.glade.h:58
 msgid "Class Members"
 msgstr "Члени класу"
 
 #: ../system-config-printer.glade.h:59
-#, fuzzy
 msgid "Columns:"
-msgstr "Коментарі: "
+msgstr "Стовпчики:"
 
 #: ../system-config-printer.glade.h:60
 msgid "Comments: "
@@ -665,7 +666,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:67
 msgid "Copies:"
-msgstr ""
+msgstr "Копій:"
 
 #: ../system-config-printer.glade.h:68
 msgid "Copy Printer"
@@ -791,7 +792,7 @@ msgstr "Політика помилок: \t"
 
 #: ../system-config-printer.glade.h:105
 msgid "Finishings:"
-msgstr ""
+msgstr "Фінальна обробка:"
 
 #: ../system-config-printer.glade.h:106
 msgid "Flow Control"
@@ -799,7 +800,7 @@ msgstr "Керування потоком"
 
 #: ../system-config-printer.glade.h:107
 msgid "Gamma:"
-msgstr ""
+msgstr "Контраст:"
 
 #: ../system-config-printer.glade.h:108
 msgid "Goto Server"
@@ -811,7 +812,7 @@ msgstr "Назва вузла"
 
 #: ../system-config-printer.glade.h:110
 msgid "Hue adjustment:"
-msgstr ""
+msgstr "Налаштовування відтінків:"
 
 #: ../system-config-printer.glade.h:111
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
@@ -831,7 +832,7 @@ msgstr "Параметри завдання"
 
 #: ../system-config-printer.glade.h:116
 msgid "Job priority:"
-msgstr ""
+msgstr "Пріоритет завдання:"
 
 #: ../system-config-printer.glade.h:117
 msgid "LPD"
@@ -839,7 +840,7 @@ msgstr "LPD"
 
 #: ../system-config-printer.glade.h:118
 msgid "Left margin:"
-msgstr ""
+msgstr "Ліве поле:"
 
 #: ../system-config-printer.glade.h:119
 msgid ""
@@ -852,10 +853,18 @@ msgid ""
 "Bottom to top, left to right\n"
 "Bottom to top, right to left"
 msgstr ""
+"Зліва направо, згори вниз\n"
+"Зліва направо, знизу вгору\n"
+"Справа наліво, згори вниз\n"
+"Справа наліво, знизу вверх\n"
+"Згори вниз, зліва направо\n"
+"Згори вниз, справа наліво\n"
+"Знизу вверх, зліва направо\n"
+"Знизу вверх, справа наліво"
 
 #: ../system-config-printer.glade.h:127
 msgid "Lines per inch:"
-msgstr ""
+msgstr "Ліній на дюйм:"
 
 #: ../system-config-printer.glade.h:128
 msgid "Location:"
@@ -876,7 +885,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:132
 msgid "Media:"
-msgstr ""
+msgstr "Носій:"
 
 #: ../system-config-printer.glade.h:133
 msgid "Members"
@@ -884,11 +893,11 @@ msgstr "Учасники"
 
 #: ../system-config-printer.glade.h:134
 msgid "Mirror"
-msgstr ""
+msgstr "Дзеркально"
 
 #: ../system-config-printer.glade.h:135
 msgid "More"
-msgstr ""
+msgstr "Ще"
 
 #: ../system-config-printer.glade.h:136
 msgid "Name"
@@ -937,6 +946,34 @@ msgid ""
 "Bind (right)\n"
 "Bind (bottom)"
 msgstr ""
+"Немає\n"
+"Брошурування\n"
+"Швидкозшивач\n"
+"Обкладинка\n"
+"Зшивання\n"
+"Шиття внакладку\n"
+"Обробка країв\n"
+"Фальцювати\n"
+"Обрізка\n"
+"Зібрати\n"
+"Буклет\n"
+"Офсет\n"
+"Брошурування (згори ліворуч)\n"
+"Брошурування (внизу ліворуч)\n"
+"Брошурування (згори справа)\n"
+"Брошурування (внизу справа)\n"
+"Обробка країв (зліва)\n"
+"Обробка країв (згори)\n"
+"Обробка країв (справа)\n"
+"Обробка країв (внизу)\n"
+"Подвійне зшиття (зліва)\n"
+"Подвійне зшиття (згори)\n"
+"Подвійне зшиття (справа)\n"
+"Подвійне зшиття (знизу)\n"
+"Зшиття (зліва)\n"
+"Зшиття (згори)\n"
+"Зшиття (справа)\n"
+"Зшиття (знизу)"
 
 #: ../system-config-printer.glade.h:170
 msgid ""
@@ -944,6 +981,9 @@ msgid ""
 "Two-sided (long edge)\n"
 "Two-sided (short edge)"
 msgstr ""
+"Одностороння\n"
+"Двостороння (по довгому краю)\n"
+"Двостороння (по короткому краю)"
 
 #: ../system-config-printer.glade.h:173
 msgid "Operation Policy:"
@@ -951,7 +991,7 @@ msgstr "Політика роботи:"
 
 #: ../system-config-printer.glade.h:174
 msgid "Orientation:"
-msgstr ""
+msgstr "Розташування:"
 
 #: ../system-config-printer.glade.h:175
 msgid "PPD"
@@ -959,11 +999,11 @@ msgstr "PPD"
 
 #: ../system-config-printer.glade.h:176
 msgid "Pages per side layout:"
-msgstr ""
+msgstr "Сторінок на аркуші:"
 
 #: ../system-config-printer.glade.h:177
 msgid "Pages per side:"
-msgstr ""
+msgstr "Сторінок на аркуші:"
 
 #: ../system-config-printer.glade.h:178
 msgid "Parity"
@@ -988,6 +1028,10 @@ msgid ""
 "Reverse landscape (270°)\n"
 "Reverse portrait (180°)"
 msgstr ""
+"Книжна (без обертання)\n"
+"Альбомна (90°)\n"
+"Альбомна обернена (270°)\n"
+"Книжна обернена (180°)"
 
 #: ../system-config-printer.glade.h:186
 msgid ""
@@ -1001,7 +1045,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:187
 msgid "Pretty print"
-msgstr ""
+msgstr "Гарний друк"
 
 #: ../system-config-printer.glade.h:189 ../applet.py:47
 msgid "Printer"
@@ -1029,15 +1073,15 @@ msgstr "Вимагати шифрування"
 
 #: ../system-config-printer.glade.h:196
 msgid "Reset"
-msgstr ""
+msgstr "Скинути"
 
 #: ../system-config-printer.glade.h:197
 msgid "Reset to system default"
-msgstr ""
+msgstr "Встановити типово"
 
 #: ../system-config-printer.glade.h:198
 msgid "Right margin:"
-msgstr ""
+msgstr "Праве поле:"
 
 #: ../system-config-printer.glade.h:199
 msgid "SCSI"
@@ -1049,7 +1093,7 @@ msgstr "SMB"
 
 #: ../system-config-printer.glade.h:201
 msgid "Saturation:"
-msgstr ""
+msgstr "Насиченість:"
 
 #: ../system-config-printer.glade.h:202
 msgid "Save debugging information for troubleshooting"
@@ -1057,11 +1101,11 @@ msgstr "Зберігати налагоджувальну інформацію �
 
 #: ../system-config-printer.glade.h:203
 msgid "Scale to fit"
-msgstr ""
+msgstr "Масштабувати по сторінці"
 
 #: ../system-config-printer.glade.h:204
 msgid "Scaling:"
-msgstr ""
+msgstr "Масштаб:"
 
 #: ../system-config-printer.glade.h:205
 msgid "Select A File"
@@ -1094,14 +1138,14 @@ msgstr "Показувати принтери, відкрити для спіл�
 
 #: ../system-config-printer.glade.h:212
 msgid "Sides:"
-msgstr ""
+msgstr "Сторони:"
 
 #: ../system-config-printer.glade.h:213
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
-msgstr ""
+msgstr "Вкажіть параметри завдань типового принтера. Завдання, що підходять на сервер друку будуть мати ці параметри, якщо вони не вказані програмою."
 
 #: ../system-config-printer.glade.h:214
 msgid "Starting Banner:"
@@ -1149,11 +1193,11 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:221
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr ""
+msgstr "Щоб додати новий параметр, введіть його назву у цьому полі та натисніть кнопку додавання."
 
 #: ../system-config-printer.glade.h:222
 msgid "Top margin:"
-msgstr ""
+msgstr "Верхнє поле:"
 
 #: ../system-config-printer.glade.h:223
 msgid "Try to copy the option settings over from the old PPD. "
@@ -1173,7 +1217,7 @@ msgstr "Користувач:"
 
 #: ../system-config-printer.glade.h:227
 msgid "Word wrap"
-msgstr ""
+msgstr "Перенос слів"
 
 #: ../system-config-printer.glade.h:228
 msgid "_Do not apply"
@@ -1209,11 +1253,11 @@ msgstr "немає"
 
 #: ../system-config-printer.glade.h:236
 msgid "points"
-msgstr ""
+msgstr "точок"
 
 #: ../system-config-printer.glade.h:237
 msgid "points (72 points per inch)"
-msgstr ""
+msgstr "точок (72 точки на дюйм)"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1225,138 +1269,127 @@ msgstr "Друк"
 
 #: ../applet.py:45
 msgid "Job"
-msgstr ""
+msgstr "Завдання"
 
 #: ../applet.py:46
-#, fuzzy
 msgid "Document"
-msgstr "Коментар"
+msgstr "Документ"
 
 #: ../applet.py:48
 msgid "Size"
-msgstr ""
+msgstr "Розмір"
 
 #: ../applet.py:49
-#, fuzzy
 msgid "Time submitted"
-msgstr "Переслано"
+msgstr "Час надсилання"
 
 #: ../applet.py:50
-#, fuzzy
 msgid "Status"
-msgstr "статус %d"
+msgstr "Статус"
 
 #: ../applet.py:177
 msgid "No documents queued"
-msgstr ""
+msgstr "Немає документів у черзі"
 
 #: ../applet.py:180
 msgid "1 document queued"
-msgstr ""
+msgstr "1 документ у черзі"
 
 #: ../applet.py:183
 #, python-format
 msgid "%d documents queued"
-msgstr ""
+msgstr "%d докум. у черзі"
 
 #: ../applet.py:225
 msgid "1 hour ago"
-msgstr ""
+msgstr "Годину тому"
 
 #: ../applet.py:227
 msgid "1 hour and 1 minute ago"
-msgstr ""
+msgstr "година та хвилина тому"
 
 #: ../applet.py:229
 #, python-format
 msgid "1 hour and %d minutes ago"
-msgstr ""
+msgstr "година та %d хв. тому"
 
 #: ../applet.py:232
 #, python-format
 msgid "%d hours ago"
-msgstr ""
+msgstr "%d годин тому"
 
 #: ../applet.py:234
 #, python-format
 msgid "%d hours and 1 minute ago"
-msgstr ""
+msgstr "%d годин та одна хвилина назад"
 
 #: ../applet.py:236
 #, python-format
 msgid "%d hours and %d minutes ago"
-msgstr ""
+msgstr "%d година та %d хвилин тому"
 
 #: ../applet.py:241
 msgid "a minute ago"
-msgstr ""
+msgstr "хвилину тому"
 
 #: ../applet.py:243
 #, python-format
 msgid "%d minutes ago"
-msgstr ""
+msgstr "%d хвилин тому"
 
 #: ../applet.py:252
-#, fuzzy
 msgid "Pending"
-msgstr "Друк"
+msgstr "Заплановано"
 
 #: ../applet.py:253
-#, fuzzy
 msgid "Held"
-msgstr "_Довідка"
+msgstr "Призупинено"
 
 #: ../applet.py:256
-#, fuzzy
 msgid "Canceled"
-msgstr "Скасувати перевірку"
+msgstr "Скасовано"
 
 #: ../applet.py:257
-#, fuzzy
 msgid "Aborted"
-msgstr "Інформація"
+msgstr "Перервано"
 
 #: ../applet.py:258
-#, fuzzy
 msgid "Completed"
-msgstr "Коментар"
+msgstr "Виконано"
 
 #: ../applet.glade.h:4
 msgid "Document print status"
-msgstr ""
+msgstr "Статус документу"
 
 #: ../applet.glade.h:6
 msgid "Re_print"
-msgstr ""
+msgstr "Пере_друкувати"
 
 #: ../applet.glade.h:7
 msgid "Show _completed jobs"
-msgstr ""
+msgstr "Показати _виконані завдання"
 
 #: ../applet.glade.h:9
 msgid "_Hide"
-msgstr ""
+msgstr "С_ховати"
 
 #: ../applet.glade.h:10
 msgid "_Hold"
-msgstr ""
+msgstr "_Призупинити"
 
 #: ../applet.glade.h:11
 msgid "_Release"
-msgstr ""
+msgstr "_Скинути"
 
 #: ../applet.glade.h:12
 msgid "_View"
-msgstr ""
+msgstr "_Вигляд"
 
 #: ../print-applet.desktop.in.h:1
-#, fuzzy
 msgid "Print queue applet"
-msgstr "Надрукувати тестову сторінку"
+msgstr "Аплет черги друку"
 
 #: ../print-applet.desktop.in.h:2
 msgid "System tray icon for managing print jobs"
-msgstr ""
+msgstr "Значок у системній області для керування завданнями друку"
 
-#~ msgid "Specify default job options."
-#~ msgstr "Вкажіть стандартні параметри завдання."
