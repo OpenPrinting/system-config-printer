@@ -857,6 +857,7 @@ class GUI:
         self.ErrorDialog.set_transient_for (self.MainWindow)
         self.ErrorDialog.run()
         self.ErrorDialog.hide()        
+	foo
             
     def save_printer(self, printer, saveall=False):
         name = printer.name
@@ -1499,24 +1500,30 @@ class GUI:
         self.ntbkNewPrinter.set_current_page(2)
         self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
 
-        attr = self.ppd.findAttr("Manufacturer")
-        if attr:
-            self.auto_make = attr.value
-        else:
-            self.auto_make = ""
-        attr = self.ppd.findAttr("ModelName")
-        if not attr: attr = self.ppd.findAttr("ShortNickName")
-        if not attr: attr = self.ppd.findAttr("NickName")
-        if attr:
-            if attr.value.startswith(self.auto_make):
-                self.auto_model = attr.value[len(self.auto_make):]
+        self.auto_model = ""
+        if self.ppd:
+            attr = self.ppd.findAttr("Manufacturer")
+            if attr:
+                self.auto_make = attr.value
             else:
-                try:
-                    self.auto_model = attr.value.split(" ", 1)[1]
-                except IndexError:
-                    self.auto_model = ""
+                self.auto_make = ""
+            attr = self.ppd.findAttr("ModelName")
+            if not attr: attr = self.ppd.findAttr("ShortNickName")
+            if not attr: attr = self.ppd.findAttr("NickName")
+            if attr:
+                if attr.value.startswith(self.auto_make):
+                    self.auto_model = attr.value[len(self.auto_make):]
+                else:
+                    try:
+                        self.auto_model = attr.value.split(" ", 1)[1]
+                    except IndexError:
+                        self.auto_model = ""
+            else:
+                self.auto_model = ""
         else:
-            self.auto_model = ""
+            # Special CUPS names for a raw queue.
+            self.auto_make = 'Raw'
+            self.auto_model = 'Queue'
 
         self.fillMakeList()
         self.initNewPrinterWindow()
