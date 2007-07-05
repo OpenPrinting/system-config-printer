@@ -907,6 +907,15 @@ class GUI:
                                 
         self.populateList()
 
+    # print test page
+    
+    def on_btnPrintTestPage_clicked(self, button):
+        try:
+            job_id = self.cups.printTestPage(self.printer.name)
+            #print job_id
+        except cups.IPPError, (e, msg):
+            self.show_IPP_Error(e, msg)
+
     # select Item
 
     def on_tvMainList_cursor_changed(self, list):
