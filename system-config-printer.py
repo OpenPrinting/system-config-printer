@@ -857,7 +857,7 @@ class GUI:
     def on_btnConflict_clicked(self, button):
         message = _("There are conflicting options.\n"
                     "Changes can only be applied after\n"
-                    "these conflictes are resolved.")
+                    "these conflicts are resolved.")
         self.conflict_dialog.set_markup(message)
         self.conflict_dialog.run()
         self.conflict_dialog.hide()
