@@ -64,7 +64,6 @@ install-desktopDATA: $(desktop_DATA)
 	  --add-category X-Red-Hat-Base		\
 	  --add-category System			\
 	  --add-category Monitor		\
-	  --add-category TrayIcon		\
 	  --add-category GTK			\
 	  print-applet.desktop
 
