@@ -1374,7 +1374,9 @@ class GUI:
             self.entNPName.grab_focus()
             
             for widget in [self.entNPName, self.entNPLocation,
-                           self.entNPDescription]:
+                           self.entNPDescription,
+                           self.entSMBURI, self.entSMBUsername,
+                           self.entSMBPassword]:
                 widget.set_text('')
 
         self.setNPButtons()
@@ -1635,40 +1637,15 @@ class GUI:
             view.expand_row (path, 0)
             del self.expanding_row
 
-    def on_tvSMBBrowser_cursor_changed (self, view):
-        store, iter = view.get_selection ().get_selected ()
-        if not iter:
-            return
-
-        parent_iter = store.iter_parent (iter)
-        domain_iter = store.iter_parent (parent_iter)
-        group = store.get_value (domain_iter, 0)
-        host = store.get_value (parent_iter, 0)
-        share = store.get_value (iter, 0)
-        user = self.entSMBUsername.get_text ()
-        passwd = self.entSMBPassword.get_text ()
-
-        uri_password = ''
-        if passwd:
-            uri_password = ':' + '*' * len (passwd)
-        if user:
-            uri_password += '@'
-
-        uri_group = group + '/'
-        uri_share = '%s/%s' % (host, share)
-        uri = "%s%s%s%s" % (user, uri_password, uri_group, uri_share)
-        self.entSMBURI.set_text (uri)
-
-    def on_entSMBUsername_changed(self, entry):
-        self.on_tvSMBBrowser_cursor_changed (self.tvSMBBrowser)
-
-    def on_entSMBPassword_changed(self, entry):
-        self.on_tvSMBBrowser_cursor_changed (self.tvSMBBrowser)
-
-    def on_btnSMBVerify_clicked(self, button):
-        uri = self.entSMBURI.get_text ()
+    def parse_SMBURI (self, uri):
+        user = ''
+        password = ''
         auth = uri.find ('@')
         if auth != -1:
+            u = uri[:auth].find(':')
+            if u != -1:
+                user = uri[:u]
+                password = uri[u + 1:auth]
             uri = uri[auth + 1:]
         sep = uri.count ('/')
         group = ''
@@ -1686,6 +1663,40 @@ class GUI:
             if p != -1:
                 host = host[:p]
         share = uri
+        return (group, host, share, user, password)
+
+    def construct_SMBURI (self, group, host, share,
+                          user = '', password = ''):
+        uri_password = ''
+        if password:
+            uri_password = ':' + password
+        if user:
+            uri_password += '@'
+        return "%s%s%s/%s/%s" % (user, uri_password, group, host, share)
+
+    def on_entSMBURI_changed (self, ent):
+        uri = ent.get_text ()
+        (group, host, share, user, password) = self.parse_SMBURI (uri)
+        self.entSMBUsername.set_text (user)
+        self.entSMBPassword.set_text (password)
+        self.tvSMBBrowser.get_selection ().unselect_all ()
+
+    def on_tvSMBBrowser_cursor_changed (self, view):
+        store, iter = view.get_selection ().get_selected ()
+        if not iter:
+            return
+
+        parent_iter = store.iter_parent (iter)
+        domain_iter = store.iter_parent (parent_iter)
+        group = store.get_value (domain_iter, 0)
+        host = store.get_value (parent_iter, 0)
+        share = store.get_value (iter, 0)
+        uri = self.construct_SMBURI (group, host, share)
+        self.entSMBURI.set_text (uri)
+
+    def on_btnSMBVerify_clicked(self, button):
+        uri = self.entSMBURI.get_text ()
+        (group, host, share, u, p) = self.parse_SMBURI (uri)
         user = self.entSMBUsername.get_text ()
         passwd = self.entSMBPassword.get_text ()
         accessible = pysmb.printer_share_accessible ("//%s/%s" %
@@ -1829,8 +1840,12 @@ class GUI:
         elif not self.device.is_class:
             device = self.device.uri
         elif type == "smb":
-            device = "smb://" + self.entSMBURI.get_text ()
-            ### RECONSTRUCT WITH REAL PASSWORD!
+            uri = self.entSMBURI.get_text ()
+            (group, host, share, u, p) = self.parse_SMBURI (uri)
+            user = self.entSMBUsername.get_text ()
+            password = self.entSMBPassword.get_text ()
+            uri = self.construct_SMBURI (group, host, share, user, password)
+            device = "smb://" + uri
         else:
             device = self.entNPTDevice.get_text()
         return device
@@ -1998,6 +2013,12 @@ class GUI:
         else:
             # XXX
             uri = self.getDeviceURI()
+
+            # Don't reveal SMB authentication details.
+            if uri[:6] == "smb://":
+                (group, host, share, u, p) = self.parse_SMBURI (uri[6:])
+                uri = "smb://" + self.construct_SMBURI (group, host, share)
+
             msg = _(
 """Going to create a new printer %s at
 %s.

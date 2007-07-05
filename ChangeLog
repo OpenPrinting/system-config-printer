@@ -2,6 +2,10 @@
 
 	* system-config-printer.py (GUI.fillDeviceTab): Filter out
 	hpfax:/no_device_found.
+	(GUI.construct_SMBURI): New function.
+	(GUI.on_tvSMBBrowser_cursor_changed): Use it.
+	(GUI.fillNPApply): Don't reveal SMB authentication details.
+	(GUI.initNewPrinterWindow): Clear out SMB screen.
 
 2006-06-22  Tim Waugh  <twaugh@redhat.com>
 
