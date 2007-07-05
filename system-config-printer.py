@@ -2122,11 +2122,12 @@ class GUI:
                 self.tvNPMakes.get_selection().select_iter(iter)
                 path = model.get_path(iter)
                 self.tvNPMakes.scroll_to_cell(path, None,
-                                              True, 0.0, 0.0)
+                                              True, 0.5, 0.5)
                 found = True
 
         if not found:
             self.tvNPMakes.get_selection().select_path(0)
+            self.tvNPMakes.scroll_to_cell(0, None, True, 0.0, 0.0)
             
         self.on_tvNPMakes_cursor_changed(self.tvNPMakes)
             #tree = BuildTree(names, 3, 3)
@@ -2169,6 +2170,7 @@ class GUI:
                 selected = True
         if not selected:
             self.tvNPModels.get_selection().select_path(0)
+            self.tvNPModels.scroll_to_cell(0, None, True, 0.0, 0.0)
         self.on_tvNPModels_cursor_changed(self.tvNPModels)
         
     def fillDriverList(self, printer):
@@ -2184,6 +2186,7 @@ class GUI:
                 iter = model.append((driver + _(" (recommended)"),))
                 path = model.get_path(iter)
                 self.tvNPDrivers.get_selection().select_path(path)
+                self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.5)
                 found = True
             else:
                 model.append((driver, ))
