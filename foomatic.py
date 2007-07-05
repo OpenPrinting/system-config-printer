@@ -3,9 +3,6 @@
 import os, signal, pickle, tempfile, glob
 from xml.utils import qp_xml
 
-import sys
-sys.path.append("/home/ffesti/CVS/pycups")
-
 import cups
 
 ############################################################################# 
