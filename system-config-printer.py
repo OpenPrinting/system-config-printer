@@ -1877,16 +1877,25 @@ class GUI:
                         widget.set_active(0)
                                             
         # XXX FILL TABS FOR VALID DEVICE URIs
-        elif device.type in ("ipp", "http", "lpd"):
-            try:
-                server, printer = url.split("/", 1)
-            except ValueError:
-                server, printer = url, ""
-            if device.type == "lpd":
-                pass # XXX
-            else:
-                self.entNPTIPPHostname.set_text(server)
-                self.entNPTIPPPrintername.set_text(printer)
+        elif device.type in ("ipp", "http"):
+            server = ""
+            printer = ""
+            if url[:2] == "//":
+                p = url[2:]
+                t = p.find ('/')
+                if t != -1:
+                    server = p[:t]
+                    p = p[t + 1:]
+
+                    # Skip over 'printers/' or 'classes/'
+                    t = p.find ('/')
+                    if t != -1:
+                        printer = p[t + 1:]
+
+            self.entNPTIPPHostname.set_text(server)
+            self.entNPTIPPPrintername.set_text(printer)
+        elif device.type == "lpd":
+            pass # XXX
         elif device.uri == "smb":
             self.browse_smb_hosts ()
         else:
