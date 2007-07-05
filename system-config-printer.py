@@ -32,9 +32,12 @@ except RuntimeError, e:
     print "This is a graphical application and requires DISPLAY to be set."
     sys.exit (1)
 
-if len(sys.argv)>1 and sys.argv[1] == '--help':
+def show_help():
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n")
+
+if len(sys.argv)>1 and sys.argv[1] == '--help':
+    show_help ()
     sys.exit (0)
 
 import cups
@@ -78,7 +81,7 @@ def nonfatalException ():
 
 class GUI:
 
-    def __init__(self):
+    def __init__(self, start_printer = None, change_ppd = False):
 
         self.language = locale.getlocale(locale.LC_MESSAGES)
         self.encoding = locale.getlocale(locale.LC_CTYPE)
@@ -452,7 +455,7 @@ class GUI:
             self.job_options_buttons[option.button] = option
 
         try:
-            self.populateList()
+            self.populateList(start_printer, change_ppd)
         except cups.HTTPError, (s,):
             self.cups = None
             self.setConnected()
@@ -567,7 +570,7 @@ class GUI:
         known_servers.sort()
         return known_servers
 
-    def populateList(self):
+    def populateList(self, start_printer = None, change_ppd = False):
         old_name, old_type = self.getSelectedItem()
 
         select_path = None
@@ -636,7 +639,8 @@ class GUI:
 
             for printer_name in printers:
                 p_iter = self.mainlist.append(iter, (printer_name, "Printer"))
-                if printer_name==old_name:
+                if (printer_name==old_name or
+                    printer_name==start_printer):
                     select_path = self.mainlist.get_path(p_iter)
             if expanded[name]:
                 self.tvMainList.expand_row(path, False)
@@ -651,6 +655,9 @@ class GUI:
             selection.unselect_all()
 
         self.on_tvMainList_cursor_changed(self.tvMainList)
+
+        if change_ppd:
+            self.on_btnChangePPD_clicked (self.btnChangePPD)
 
     def maySelectItem(self, selection):
         result = self.mainlist.get_value(
@@ -3180,13 +3187,13 @@ class GUI:
         # Now reconnect, in case the server needed to reload.
         self.reconnect ()
 
-def main():
+def main(start_printer = None, change_ppd = False):
     # The default configuration requires root for administration.
     cups.setUser ("root")
     gtk.gdk.threads_init()
     gtk.gdk.threads_enter()
 
-    mainwindow = GUI()
+    mainwindow = GUI(start_printer, change_ppd)
     if gtk.__dict__.has_key("main"):
         gtk.main()
     else:
@@ -3195,4 +3202,22 @@ def main():
     gtk.gdk.threads_leave()
 
 if __name__ == "__main__":
-    main()
+    import getopt
+    try:
+        opts, args = getopt.gnu_getopt (sys.argv[1:], '',
+                                        ['configure-printer=',
+                                         'configure-driver='])
+    except getopt.GetoptError:
+        show_help ()
+        sys.exit (1)
+
+    start_printer = None
+    change_ppd = False
+    for opt, optarg in opts:
+        if (opt == "--configure-printer" or
+            opt == "--configure-driver"):
+            start_printer = optarg
+            if opt == "--configure-driver":
+                change_ppd = True
+
+    main(start_printer, change_ppd)

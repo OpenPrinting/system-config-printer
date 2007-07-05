@@ -1,3 +1,10 @@
+2007-05-25  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): Now
+	--configure-printer=x automatically selects that printer on
+	start-up, and --configure-driver invokes the "Change PPD" dialog
+	as well.  Needed for "new printer" notifications in the applet.
+
 2007-05-23  Tim Waugh  <twaugh@redhat.com>
 
 	* applet.py (JobManager.set_special_statusicon): New method.
