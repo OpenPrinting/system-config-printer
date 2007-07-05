@@ -1,3 +1,51 @@
+2006-03-23 Florian Festi  <ffesti@redhat.com>
+	
+	* system-config-printer.glade (NewPrinterDialog)
+	* system-config-printer.py (GUI): Redesigned PPD selection, added
+	filechooser for providing own PPDs
+
+	* gtk_label_autowrap.py: online fix for multiline gtk.Label to force
+	adjustion to size changes
+
+	* gtk_html2pango.py (HTML2PangoParser)
+	* foomatic.py (FoomaticXMLFile): Convert HTML to pango markup
+	
+2006-03-20 Florian Festi  <ffesti@redhat.com>	
+
+	* system-config-printer.glade (MainWindow)
+	* system-config-printer.py: Removed Server CmbBox in Toolbar, make 
+	Connect Window default to server of currently selected Printer.
+
+	* system-config-printer.glade (NewPrinterDialog)
+	* system-config-printer.py (GUI.fillNewClassMembers, 
+	GUI.on_btnNC(Add|Del)Member_clicked): Change member handling in new 
+	class dialog to the same way as the main window
+
+	* system-config-printer.glade (NewPrinterName)
+	* system-config-printer.py (GUI.save_printer): Copy printers and 
+	classes
+	
+
+2006-03-17 Florian Festi  <ffesti@redhat.com>	
+
+	* foomatic.py (Foomatic._add_printer): fixed bug: used printer.name
+	insted of printer.model as keys in self.makes[make][model]
+
+	* system-config-printer.glade (NewPrinterDialog): Visual improvements
+
+	* system-config-printer.glade
+	* system-config-printer.py (printer data handling): Changed Allow/Deny
+	from ToggleButton to ComboBox
+
+	* foomatic.py (Foomatic._load_pickle): If there are files with 
+	newer mtime and discard pickle
+
+	* system-config-printer.py (GUI.fillClassMembers): Support remote
+	Printers as class members
+	
+	* system-config-printer.glade
+	* system-config-printer.py: NewPrinterDialog also supports new classes 
+
 2006-03-17  Tim Waugh  <twaugh@redhat.com>
 
 	* foomatic.py: No need to adjust sys.path.
@@ -23,26 +71,6 @@
 	(GUI.fillPrinterOptions): Place-holder for handling raw queues.
 	(GUI.initNewPrinterWindow): Better initialization.
 
-2006-03-15 Florian Festi  <ffesti@redhat.com>	
-
-	* foomatic.py (Foomatic._add_printer): fixed bug: used printer.name
-	insted of printer.model as keys in self.makes[make][model]
-
-	* system-config-printer.glade (NewPrinterDialog): Visual improvements
-
-	* system-config-printer.glade
-	* system-config-printer.py (printer data handling): Changed Allow/Deny
-	from ToggleButton to ComboBox
-
-	* foomatic.py (Foomatic._load_pickle): If there are files with 
-	newer mtime and discard pickle
-
-	* system-config-printer.py (GUI.fillClassMembers): Support remote
-	Printers as class members
-	
-	* system-config-printer.glade
-	* system-config-printer.py: NewPrinterDialog also supports new classes 
-	
 2006-03-15  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.__init__): Fetch entNPTDevice

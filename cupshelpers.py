@@ -146,7 +146,9 @@ class Device:
 
         uri_pieces = uri.split(":")
         self.type =  uri_pieces[0]
-        self.is_class = len(uri_pieces)==1 
+        self.is_class = len(uri_pieces)==1
+
+        self.id = 'MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;SN:US05N1J00XLG;S:00808880800010032C1000000C2000000;P:0800,FL,B0;J:                    ;'
 
         self.id_dict = {}
         pieces = self.id.split(";")
@@ -156,6 +158,8 @@ class Device:
             if name=="CMD":
                 value = value.split(',') 
             self.id_dict[name] = value
+        for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
+            self.id_dict.setdefault(name, "")
 
     def __cmp__(self, other):
         result = cmp(self.is_class, other.is_class)

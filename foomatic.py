@@ -1,9 +1,12 @@
 #!/bin/env python
 
-import os, signal, pickle, tempfile, glob
+import os, signal, pickle, tempfile, glob, re
 from xml.utils import qp_xml
 
 import cups
+from gtk_html2pango import HTML2PangoParser
+from cStringIO import StringIO
+from pprint import pprint
 
 ############################################################################# 
 ###  FoomaticXMLFile
@@ -15,6 +18,7 @@ class FoomaticXMLFile:
     def __init__(self, name, foomatic):
         self.name = name
         self.foomatic = foomatic
+        self.pango_comment_dict = {}
 
     def parse_xml(self, root_node):
         raise NotImplemented
@@ -35,6 +39,31 @@ class FoomaticXMLFile:
         else:
             return cmp(self.name, other.name)
 
+    def getComment(self, *languages):
+        lang, comment = self.getLangComment(*languages)
+        return comment
+
+    def getLangComment(self, *languages):
+
+        for lang in languages:
+            if self.comments_dict.has_key(lang):
+                return lang, self.comments_dict[lang]
+        
+        for lang_comment in self.comments_dict.iteritems():
+            return lang_comment # return first one
+        return None, ""
+
+    def getCommentPango(self, *languages):
+        lang, comment = self.getLangComment(*languages)
+        if not self.pango_comment_dict.has_key(lang):
+            output = StringIO()
+            parser = HTML2PangoParser(output)
+            parser.feed(comment)
+            parser.close()
+            pango_comment = output.getvalue()
+            self.pango_comment_dict[lang] = pango_comment
+        return self.pango_comment_dict[lang]
+        
 ############################################################################# 
 ###  Driver
 #############################################################################
@@ -88,6 +117,17 @@ class Driver(FoomaticXMLFile):
             #elif node.name == 'execution':
             # XXX
 
+
+############################################################################# 
+###  PPD Driver
+#############################################################################
+
+class PPDDriver(Driver):
+
+    def __init__(self, name, foomatic):
+        FoomaticXMLFile.__init__(self, name, foomatic)
+        self.comments_dict = {}
+        
 ############################################################################# 
 ###  Printer
 #############################################################################
@@ -113,8 +153,33 @@ class Printer(FoomaticXMLFile):
     def __init__(self, name, foomatic):
         self.filename = os.path.join(foomatic.path, 'printer',
                                      foomatic.quote_filename(name))
+        self.id = ''
+        self.unverified = False
+        self.functionality = None
+        self.driver = ''
+        self.drivers = {}
+        self.autodetect = {}
+        self.comments_dict = {}
+
         FoomaticXMLFile.__init__(self, name, foomatic)
 
+
+    def getPPD(self, driver_name=None):
+        if driver_name is None: driver_name = self.driver
+        if self.drivers.has_key(driver_name):
+            if self.drivers[driver_name]:
+                return printer.drivers[driver_name]
+            else:
+                fd, fname = tempfile.mkstemp(
+                    ".ppd", printer.name + "-" + driver_name)
+                data = os.popen("foomatic-ppdfile -p %s -d %s" %
+                                (printer.name, driver_name)).read()
+                os.write(fd, data)
+                os.close(fd)
+                return fname
+        else:
+            return None
+    
     def parse_autodetect(self, root_node):
         data = { }
         for node in root_node.children:
@@ -138,13 +203,6 @@ class Printer(FoomaticXMLFile):
 
         self.id = root_node.attrs.get(('', u'id'),None)
         
-        self.unverified = False
-        self.functionality = None
-        self.driver = ''
-        self.drivers = {}
-        self.autodetect = {}
-        self.comments_dict = {}
-
         for child in root_node.children:
             if child.name in ("id", "make", "model",
                               "functionality"):
@@ -200,14 +258,34 @@ class Printer(FoomaticXMLFile):
                 self.foomatic.quote_filename(self.name))
             if not os.path.exists(self.filename):
                 print self.filename
+
+        self.getPPDDrivers()
+                
         if self.driver and not self.drivers:
             self.drivers[self.driver] = ''
 
+    def getPPDDrivers(self):
+        # add PPD files to drivers list
+        if (self.foomatic.ppd_makes.has_key(self.make) and
+            self.foomatic.ppd_makes[self.make].has_key(self.model)):
+            ppds = self.foomatic.ppd_makes[self.make][self.model]
+        else:
+            return
+        
+        for ppd_name in ppds:
+            lang = self.foomatic.ppds[ppd_name]['ppd-natural-language']
+            if ppd_name.startswith("foomatic-db-ppds/"):
+                foomatic_name = ppd_name.replace("foomatic-db-ppds/", "PPD/")
+                if foomatic_name in self.drivers.itervalues():
+                    print "Dropping %s for %s" % (ppd_name, foomatic_name)
+                    continue
+            self.drivers[ppd_name] = ppd_name
+
 ############################################################################# 
-###  PPDDriver
+###  PPD Printer
 #############################################################################
 
-class PPDPrinter:
+class PPDPrinter(Printer):
     """
     Attributes:
 
@@ -223,17 +301,20 @@ class PPDPrinter:
      foomatic : Foomatic
     """
 
-    def __init__(self, name, foomatic, ppd):
-        self.name = name
+    def __init__(self, name, foomatic):
+        FoomaticXMLFile.__init__(self, name, foomatic)
 
+        ppd = foomatic.ppds[name]
         self.make, self.model = ppd['ppd-make-and-model'].split(' ', 1)
         self.functionality = ''
-        self.drivers = []
+        self.driver = ''
+        self.drivers = {}
         self.autoddetect = {}
         self.unverified = False
+        self.comments_dict = {}
         
-        self.foomatic = foomatic
-
+        self.getPPDDrivers()
+        
 ############################################################################# 
 ###  Foomatic database
 #############################################################################
@@ -254,6 +335,9 @@ class Foomatic:
         self._auto_ieee1284 = {}
         self._auto_make = {}
         self._auto_description = {}
+
+        self.ppds = {}
+        self.ppd_makes = {}
         
         err = self._load_pickle()
         if err:
@@ -294,6 +378,45 @@ class Foomatic:
             if dict.has_key("description"):
                 self._auto_description[dict["description"]] = printer.name
         
+    def addCupsPPDs(self, ppds):
+        self.ppds = ppds
+        for name, ppd in self.ppds.iteritems():
+            make, model = ppd['ppd-make-and-model'].split(" ", 1)
+            try:
+                make = unicode(make) # XXX hack to avoid encoding problem
+                model = unicode(model)
+            except UnicodeError:
+                continue
+            # ppd_makes[make][model] -> [names]
+            models = self.ppd_makes.setdefault(make, {})
+            ppd_list = models.setdefault(model, [])
+            ppd_list.append(name)
+            
+            # add to printers in not yet exist
+            printers = self.makes.setdefault(make, {})
+            if printers.has_key(model):
+                if self._printers.has_key(printers[model]): # printer loaded
+                    printer = self._printers[printers[model]] # add as driver
+                    lang = ppd['ppd-natural-language']
+                    self.drivers["CUPS: %s (%s)" % (name, lang)] = name
+            else:
+                #print make, model, name
+                printers[model] = name # add as printer
+            if ppd['ppd-device-id']:
+                self._auto_ieee1284.setdefault(ppd['ppd-device-id'],
+                                               name)
+
+#     def clearCupsPPDs(self):
+#         for name, ppd in self.ppds.iteritems():
+#             make, model = ppd['ppd-make-and-model'].split(" ", 1)
+#             if self.makes[make][model] == name:
+#                 del self.makes[make][model]
+#                 if not self.makes[make]: # remove emtpy dicts
+#                     del self.makes[make]
+#         # XXX remove ppd "drivers"
+
+    # ----
+
     def _read_all_printers(self):
         self._printer_names = []
         self._printers = {}
@@ -350,14 +473,6 @@ class Foomatic:
             self._printer_names.append(printer.name)
             self._add_printer(printer)
 
-    # ----
-
-    def addCupsPDDs(self, connection):
-        ppds = connection.getPPDs
-        for name, ppd in ppds.iteritems():
-            
-            ppd['file-name'] = name
-            self.makemodel[ppd['ppd-make-and-model']] = ppd
     # ----
 
     def loadAll(self):
@@ -429,10 +544,13 @@ class Foomatic:
 
     def getPrinter(self, name):
         if not self._printers.has_key(name):
-            printer = Printer(name, self)
-            printer.read()
+            if self.ppds.has_key(name):
+                printer = PPDPrinter(name, self)
+            else:
+                printer = Printer(name, self)
+                printer.read()
+                self._add_printer(printer)
             self._printers[name] = printer
-            self._add_printer(printer)
         return self._printers[name]
 
     def getMakeModel(self, make, model):
@@ -443,25 +561,13 @@ class Foomatic:
         
     def getDriver(self, name):
         if not self._drivers.has_key(name):
-            self._drivers[name] = Driver(name, self)
-            self._drivers[name].read()
+            if self.ppds.has_key(name):
+                self._drivers[name] = PPDDriver(name, self)
+            else:
+                self._drivers[name] = Driver(name, self)
+                self._drivers[name].read()
         return self._drivers[name]
 
-    def getPPDFilename(self, printer, driver_name=None):
-        if driver_name is None: driver_name = printer.driver
-        if printer.drivers.has_key(driver_name):
-            if printer.drivers[driver_name]:
-                return printer.drivers[driver_name]
-            else:
-                fd, fname = tempfile.mkstemp(
-                    ".ppd", printer.name + "-" + driver_name)
-                data = os.popen("foomatic-ppdfile -p %s -d %s" %
-                                (printer.name, driver_name)).read()
-                os.write(fd, data)
-                os.close(fd)
-                return fname
-        else:
-            return None
     def getMakes(self):
         result = self.makes.keys()
         result.sort()
@@ -469,7 +575,9 @@ class Foomatic:
 
     def getModels(self, make):
         result = self.makes[make].keys()
-
+        result.sort(cups.modelSort)
+        return result
+    
     def getModelsNames(self, make):
         def cmpModels(first, second):
             return cups.modelSort(first[0], second[0])
@@ -477,23 +585,53 @@ class Foomatic:
         result.sort(cmpModels)
         return result
 
+    def getPrinterFromCupsDevice(self, device):
+        """return name of printer or None"""
+        if not device.id: return None
 
+        # check for make, model
+        if (self._auto_make.has_key(device.id_dict["MFG"]) and
+            self._auto_make[device.id_dict["MFG"]].has_key(
+            device.id_dict["MDL"])):
+            return self._auto_make[device.id_dict["MFG"]][device.id_dict["MDL"]]
+
+        # check whole ieee1284 string
+        pieces = device.id.split(';')
+        for length in xrange(len(pieces), 0, -1):
+            ieee1284 = ";".join(pieces[:length]) + ';'
+            if self._auto_ieee1284.has_key(ieee1284):
+                return self._auto_ieee1284[ieee1284]                
+
+        # check description
+        if self._auto_description.has_key(device.id_dict["DES"]):
+            return self._auto_description[device.id_dict["DES"]]
+
+        # XXX just try to find out the manufacturer?
+        return None
+
+    def getCupsPPD(self, printer, ppds):
+        make_model = "%s %s" % (printer.make, printer.model)
+        result = []
+        for name, ppd_dict in ppds.iteritems():
+            if ppd_dict['ppd-make-and-model'] == make_model:
+                result.append((name, pd_dict['ppd-natural-language']))
+        return result
+
+        
 def main():
-
     from nametree import BuildTree
 
     foo = Foomatic()
-    #foo.loadAll()
-    #print foo.makes
-    for make in foo.getMakes():
-        print make
-        for model, name in foo.makes[make].iteritems():
-            print "  ", model, name
+    pprint(foo._auto_make)
+    #for make in foo.getMakes():
+    #    print make
+    #    for model, name in foo.makes[make].iteritems():
+    #        print "  ", model, name
 
-    return
     for name in foo.getPrinters():
         printer = foo.getPrinter(name)
-        print printer.name, printer.drivers
+        if len(printer.drivers)>1:
+            print printer.name, printer.drivers
     return
     models = []
         
