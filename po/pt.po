@@ -6,12 +6,13 @@ msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2007-02-26 17:49+0000\n"
-"PO-Revision-Date: 2007-02-08 11:44+0000\n"
+"PO-Revision-Date: 2007-03-03 17:47+0000\n"
 "Last-Translator: Pedro Morais <morais@kde.org>\n"
 "Language-Team: pt <morais@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-POFile-IgnoreConsistency: Mirror\n"
 "X-POFile-SpellExtra: control pt End Netware Postscript Min ip JETDIRECT\n"
 "X-POFile-SpellExtra: Ledger HH dev Statement EOT Print Hat hpijs Red\n"
 "X-POFile-SpellExtra: backend LPD Transmision Form PPD Big printconf lp zA\n"
@@ -244,11 +245,8 @@ msgid "Error"
 msgstr "Erro"
 
 #: ../system-config-printer.py:1383
-#, fuzzy
 msgid "There was a problem connecting to the CUPS server."
-msgstr ""
-"Ocorreu um problema ao enviar %s\n"
-"para a fila '%s':\n"
+msgstr "Ocorreu um problema na ligação ao servidor CUPS."
 
 #: ../system-config-printer.py:1446
 msgid "This is the default printer"
@@ -434,7 +432,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:1
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../system-config-printer.glade.h:2
 msgid " PPD "
@@ -449,6 +447,12 @@ msgid ""
 "9\n"
 "16"
 msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
 
 #: ../system-config-printer.glade.h:9
 msgid "<b>Authentication</b>"
@@ -471,9 +475,8 @@ msgid "<b>Comment about the Printer</b>"
 msgstr "<b>Comentário acerca da Impressora</b>"
 
 #: ../system-config-printer.glade.h:14
-#, fuzzy
 msgid "<b>Common Options</b>"
-msgstr "<b>Escolha a Ligação</b>"
+msgstr "<b>Opções Comuns</b>"
 
 #: ../system-config-printer.glade.h:15
 msgid "<b>Default Printer</b>"
@@ -488,9 +491,8 @@ msgid "<b>Description</b> (optional)"
 msgstr "<b>Descrição</b> (opcional)"
 
 #: ../system-config-printer.glade.h:18
-#, fuzzy
 msgid "<b>Image Options</b>"
-msgstr "<b>Opções</b>"
+msgstr "<b>Opções da Imagem</b>"
 
 #: ../system-config-printer.glade.h:19
 msgid "<b>Information about the PPD</b>"
@@ -510,7 +512,7 @@ msgstr "<b>Localização</b> (opcional)"
 
 #: ../system-config-printer.glade.h:23
 msgid "<b>Other Options (Advanced)</b>"
-msgstr ""
+msgstr "<b>Outras Opções (Avançado)</b>"
 
 #: ../system-config-printer.glade.h:24
 msgid "<b>Policies</b>"
@@ -541,9 +543,8 @@ msgid "<b>State</b>"
 msgstr "<b>Estado</b>"
 
 #: ../system-config-printer.glade.h:31
-#, fuzzy
 msgid "<b>Text Options</b>"
-msgstr "<b>Opções</b>"
+msgstr "<b>Opções do Texto</b>"
 
 #: ../system-config-printer.glade.h:32
 msgid ""
@@ -620,13 +621,12 @@ msgid "Baud Rate"
 msgstr "Taxa de Baud"
 
 #: ../system-config-printer.glade.h:52
-#, fuzzy
 msgid "Bottom margin:"
-msgstr "Margem inferior (pt):"
+msgstr "Margem inferior:"
 
 #: ../system-config-printer.glade.h:53
 msgid "Brightness:"
-msgstr ""
+msgstr "Brilho:"
 
 #: ../system-config-printer.glade.h:54
 msgid "CUPS server:"
@@ -641,18 +641,16 @@ msgid "Change..."
 msgstr "Modificar..."
 
 #: ../system-config-printer.glade.h:57
-#, fuzzy
 msgid "Characters per inch:"
-msgstr "Caracteres por polegada"
+msgstr "Caracteres por polegada:"
 
 #: ../system-config-printer.glade.h:58
 msgid "Class Members"
 msgstr "Membros da Classe"
 
 #: ../system-config-printer.glade.h:59
-#, fuzzy
 msgid "Columns:"
-msgstr "Comentários: "
+msgstr "Colunas:"
 
 #: ../system-config-printer.glade.h:60
 msgid "Comments: "
@@ -677,7 +675,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:67
 msgid "Copies:"
-msgstr ""
+msgstr "Cópias:"
 
 #: ../system-config-printer.glade.h:68
 msgid "Copy Printer"
@@ -807,7 +805,7 @@ msgstr "Controlo de Fluxo"
 
 #: ../system-config-printer.glade.h:106
 msgid "Gamma:"
-msgstr ""
+msgstr "Gama:"
 
 #: ../system-config-printer.glade.h:107
 msgid "Goto Server"
@@ -819,7 +817,7 @@ msgstr "Nome da Máquina"
 
 #: ../system-config-printer.glade.h:109
 msgid "Hue adjustment:"
-msgstr ""
+msgstr "Ajuste de tom:"
 
 #: ../system-config-printer.glade.h:110
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
@@ -842,9 +840,8 @@ msgid "LPD"
 msgstr "LPD"
 
 #: ../system-config-printer.glade.h:116
-#, fuzzy
 msgid "Left margin:"
-msgstr "Margem esquerda (pt):"
+msgstr "Margem esquerda:"
 
 #: ../system-config-printer.glade.h:117
 msgid ""
@@ -857,11 +854,18 @@ msgid ""
 "Bottom to top, left to right\n"
 "Bottom to top, right to left"
 msgstr ""
+"Esquerda para direita, cima para baixo\n"
+"Esquerda para direita, baixo para cima\n"
+"Direita para esquerda, cima para baixo\n"
+"Direita para esquerda, baixo para cima\n"
+"Cima para baixo, esquerda para direita\n"
+"Cima para baixo, direita para esquerda\n"
+"Baixo para cima, esquerda para direita\n"
+"Baixo para cima, direita para esquerda"
 
 #: ../system-config-printer.glade.h:125
-#, fuzzy
 msgid "Lines per inch:"
-msgstr "Linhas por polegada"
+msgstr "Linhas por polegada:"
 
 #: ../system-config-printer.glade.h:126
 msgid "Location:"
@@ -884,13 +888,12 @@ msgid "Members"
 msgstr "Membros"
 
 #: ../system-config-printer.glade.h:131
-#, fuzzy
 msgid "Mirror"
-msgstr "Erro"
+msgstr "Espelho"
 
 #: ../system-config-printer.glade.h:132
 msgid "More"
-msgstr ""
+msgstr "Mais"
 
 #: ../system-config-printer.glade.h:133
 msgid "Name"
@@ -914,7 +917,7 @@ msgstr "Política de Operação:"
 
 #: ../system-config-printer.glade.h:140
 msgid "Orientation:"
-msgstr ""
+msgstr "Orientação:"
 
 #: ../system-config-printer.glade.h:141
 msgid "PPD"
@@ -922,11 +925,11 @@ msgstr "PPD"
 
 #: ../system-config-printer.glade.h:142
 msgid "Pages per side layout:"
-msgstr ""
+msgstr "Páginas por disposição lateral:"
 
 #: ../system-config-printer.glade.h:143
 msgid "Pages per side:"
-msgstr ""
+msgstr "Páginas por lado:"
 
 #: ../system-config-printer.glade.h:144
 msgid "Parity"
@@ -951,6 +954,10 @@ msgid ""
 "Reverse landscape (270°)\n"
 "Reverse portrait (180°)"
 msgstr ""
+"Retrato (sem rotação)\n"
+"Paisagem (90°)\n"
+"Paisagem invertida (270°)\n"
+"Retrato invertido (180°)"
 
 #: ../system-config-printer.glade.h:152
 msgid ""
@@ -965,7 +972,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:153
 msgid "Pretty print"
-msgstr ""
+msgstr "Impressão bonita"
 
 #: ../system-config-printer.glade.h:155
 msgid "Printer"
@@ -992,19 +999,16 @@ msgid "Require encryption"
 msgstr "Obrigar a cifrar"
 
 #: ../system-config-printer.glade.h:162
-#, fuzzy
 msgid "Reset"
-msgstr "Testar"
+msgstr "Reiniciar"
 
 #: ../system-config-printer.glade.h:163
-#, fuzzy
 msgid "Reset to system default"
-msgstr "_Tornar por omissão"
+msgstr "Repor as predefinições do sistema"
 
 #: ../system-config-printer.glade.h:164
-#, fuzzy
 msgid "Right margin:"
-msgstr "Margem direita (pt):"
+msgstr "Margem direita:"
 
 #: ../system-config-printer.glade.h:165
 msgid "SCSI"
@@ -1016,7 +1020,7 @@ msgstr "SMB"
 
 #: ../system-config-printer.glade.h:167
 msgid "Saturation:"
-msgstr ""
+msgstr "Saturação:"
 
 #: ../system-config-printer.glade.h:168
 msgid "Save debugging information for troubleshooting"
@@ -1024,11 +1028,11 @@ msgstr "Gravar informações de depuração para resolução de erros"
 
 #: ../system-config-printer.glade.h:169
 msgid "Scale to fit"
-msgstr ""
+msgstr "Ajustar para caber"
 
 #: ../system-config-printer.glade.h:170
 msgid "Scaling:"
-msgstr ""
+msgstr "Escala:"
 
 #: ../system-config-printer.glade.h:171
 msgid "Select A File"
@@ -1063,7 +1067,7 @@ msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
-msgstr ""
+msgstr "Indique as opções de tarefas predefinidas para esta impressora. As tarefas que chegarem a este servidor terão adicionadas estas opções, se não tiverem já sido definidas pela aplicação."
 
 #: ../system-config-printer.glade.h:179
 msgid "Starting Banner:"
@@ -1112,12 +1116,11 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:186
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr ""
+msgstr "Para adicionar uma nova opção, indique o seu nome no campo abaixo e carregue para adicionar."
 
 #: ../system-config-printer.glade.h:187
-#, fuzzy
 msgid "Top margin:"
-msgstr "Margem superior (pt):"
+msgstr "Margem superior:"
 
 #: ../system-config-printer.glade.h:188
 msgid "Try to copy the option settings over from the old PPD. "
@@ -1138,7 +1141,7 @@ msgstr "Utilizador:"
 
 #: ../system-config-printer.glade.h:192
 msgid "Word wrap"
-msgstr ""
+msgstr "Mudança de linha"
 
 #: ../system-config-printer.glade.h:193
 msgid "_Do not apply"
@@ -1174,12 +1177,11 @@ msgstr "nenhum"
 
 #: ../system-config-printer.glade.h:201
 msgid "points"
-msgstr ""
+msgstr "pontos"
 
 #: ../system-config-printer.glade.h:202
-#, fuzzy
 msgid "points (72 points per inch)"
-msgstr "72pt por polegada"
+msgstr "pontos (72 pontos por polegada)"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
