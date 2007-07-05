@@ -1,5 +1,5 @@
 NAME=system-config-printer
-VERSION=0.7.12
+VERSION=@PACKAGE_VERSION@
 TAG=`echo $(NAME)-$(VERSION) | tr . _`
 
 SOURCES=cupsd.py         \
@@ -18,7 +18,7 @@ SOURCES=cupsd.py         \
 
 DIST=Makefile \
 	COPYING NEWS README TODO ChangeLog \
-	system-config-printer.desktop
+	system-config-printer.desktop bootstrap configure configure.in
 
 clean:
 	-rm -rf *.pyc *~ *.bak *.orig

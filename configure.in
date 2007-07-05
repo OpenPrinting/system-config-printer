@@ -1,0 +1,12 @@
+AC_INIT(system-config-printer, 0.7.12)
+AC_CONFIG_SRCDIR(system-config-printer.py)
+AM_GNU_GETTEXT([external])
+PACKAGE="AC_PACKAGE_NAME"
+VERSION="AC_PACKAGE_VERSION"
+AC_SUBST(PACKAGE)
+AC_SUBST(VERSION)
+AC_CONFIG_FILES([
+Makefile
+po/Makefile.in
+])
+AC_OUTPUT
