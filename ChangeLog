@@ -1,5 +1,13 @@
 2007-01-08  Tim Waugh  <twaugh@redhat.com>
 
+	* foomatic.py (Printer.getPPDDrivers): Removed some dead code.
+
+	* cupshelpers.py (setPPDPageSize): New function.
+	* system-config-printer.py (GUI.on_btnNPApply_clicked): Use it
+	for user-provided PPD.
+	(GUI.on_btnNPApply_clicked): Use it for new printers (bug
+	#221702).
+
 	* configure.in (ALL_LINGUAS): Added ro.
 
 2007-01-03  Tim Waugh  <twaugh@redhat.com>

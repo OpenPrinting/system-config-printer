@@ -383,7 +383,6 @@ class Printer(FoomaticXMLFile):
             return
         
         for ppd_name in ppds:
-            lang = self.foomatic.ppds[ppd_name]['ppd-natural-language']
             if ppd_name.startswith("foomatic-db-ppds/"):
                 p = ppd_name
                 if p.endswith(".gz"):
