@@ -814,12 +814,23 @@ class Foomatic:
         else:
             # Match against command sets.
             cmdsets = map (lambda x: x.lower (), commandsets)
-            if "postscript" in cmdsets:
+            if (("postscript" in cmdsets) or ("postscript2" in cmdsets) or
+                ("postscript level 2 emulation" in cmdsets)):
                 printer =  self.getPrinter("Generic-PostScript_Printer")
-            elif "pclxl" in cmdsets:
+            elif (("pclxl" in cmdsets) or ("pcl-xl" in cmdsets) or
+                  ("pcl6" in cmdsets) or ("pcl 6 emulation" in cmdsets)):
                 printer = self.getPrinter("Generic-PCL_6_PCL_XL_Printer")
+            elif "pcl5e" in cmdsets:
+                printer = self.getPrinter("Generic-PCL_5e_Printer")
+            elif "pcl5c" in cmdsets:
+                printer = self.getPrinter("Generic-PCL_5c_Printer")
+            elif ("pcl5" in cmdsets) or ("pcl 5 emulation" in cmdsets):
+                printer = self.getPrinter("Generic-PCL_5_Printer")
             elif "pcl" in cmdsets:
                 printer = self.getPrinter("Generic-PCL_3_Printer")
+            elif (("escpl2" in cmdsets) or ("esc/p2" in cmdsets) or
+                  ("escp2e" in cmdsets)):
+                printer = self.getPrinter("Generic-ESC_P_Dot_Matrix_Printer")
             else:
                 return None
         return printer.getPPD()
