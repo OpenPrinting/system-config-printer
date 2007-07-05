@@ -276,6 +276,7 @@ class GUI:
         ppd_filter = gtk.FileFilter()
         ppd_filter.set_name(_("PostScript Printer Description (*.ppd[.gz])"))
         ppd_filter.add_pattern("*.ppd")
+        ppd_filter.add_pattern("*.PPD")
         ppd_filter.add_pattern("*.ppd.gz")
         
         self.filechooserPPD.add_filter(ppd_filter)
