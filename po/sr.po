@@ -1,1557 +1,1566 @@
-# Serbian translations for printconf
+# Serbian translations for system-config-printer
 # Copyright (C) 2005 Red Hat, Inc.
-# This file is distributed under the same license as the printconf package.
-# Igor Miletic <grejigl-gnomeprevod@yahoo.ca>, 2005.
+# This file is distributed under the same license as the system-config-printer package.
+# Igor Miletic <grejigl-gnomeprevod@yahoo.ca>, 2005, 2006.
+# Miloš Komarčević <kmilos@gmail.com>, 2007.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: printconf\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-23 17:34+0100\n"
-"PO-Revision-Date: 2006-01-30 00:36-0500\n"
-"Last-Translator: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>\n"
-"Language-Team: Serbian (sr) <fedora@prevod.org>\n"
+"Project-Id-Version: system-config-printer\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2007-06-15 18:34+0100\n"
+"PO-Revision-Date: 2007-06-09 02:59-0000\n"
+"Last-Translator: Miloš Komarčević <kmilos@gmail.com>\n"
+"Language-Team: Serbian (sr) <fedora-trans-sr@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: optionwidgets.py:94
+#: ../cupshelpers.py:28
+msgid "Idle"
+msgstr "Мирује"
+
+#: ../cupshelpers.py:29 ../applet.py:684
+msgid "Processing"
+msgstr "Обрађује"
+
+#: ../cupshelpers.py:30
+msgid "Busy"
+msgstr "Заузет"
+
+#: ../cupshelpers.py:31 ../applet.py:685
+msgid "Stopped"
+msgstr "Заустављен"
+
+#: ../cupshelpers.py:48 ../applet.py:694
+msgid "Unknown"
+msgstr "Непознато"
+
+#: ../my-default-printer.py:117 ../my-default-printer.desktop.in.h:1
+#, fuzzy
+msgid "Default Printer"
+msgstr "Намести као подразумевани штампач"
+
+#: ../my-default-printer.py:121 ../my-default-printer.py:152
+#, fuzzy
+msgid "_Use System Default"
+msgstr "Поврати на подразумеване системске вредности"
+
+#: ../my-default-printer.py:122
+#, fuzzy
+msgid "_Set Default"
+msgstr "подразумевано"
+
+#: ../my-default-printer.py:132 ../system-config-printer.glade.h:190
+#: ../applet.py:184 ../applet.py:224
+msgid "Printer"
+msgstr "Штампач"
+
+#: ../my-default-printer.py:136
+#, fuzzy
+msgid "Location"
+msgstr "Локација:"
+
+#: ../optionwidgets.py:108
 msgid "Conflicts with:"
-msgstr ""
+msgstr "У сукобу је са:"
 
-#: system-config-printer.py:172
-msgid "Copyright 2006 Red Hat, Inc."
-msgstr ""
+#: ../system-config-printer.py:228
+msgid "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "Ауторска права 2006, 2007 Red Hat, Inc."
 
-#: system-config-printer.py:208
-#, fuzzy
+#: ../system-config-printer.py:264
 msgid "Server Settings"
-msgstr "Опције управљачког програма"
+msgstr "Опције сервера"
 
-#: system-config-printer.py:209
-#, fuzzy
-msgid "Local Printers"
-msgstr "Уреди локални штампач"
+#: ../system-config-printer.py:273 ../system-config-printer.py:275
+msgid "Members of this class"
+msgstr "Чланови ове класе"
 
-#: system-config-printer.py:210
-msgid "Local Classes"
-msgstr ""
-
-#: system-config-printer.py:211
-#, fuzzy
-msgid "Remote Printers"
-msgstr "Jetdirect штампач"
-
-#: system-config-printer.py:212
-msgid "Remote Classes"
-msgstr ""
-
-#: system-config-printer.py:221 system-config-printer.py:223
-msgid "Members of this Class"
-msgstr ""
-
-#: system-config-printer.py:222 system-config-printer.py:224
+#: ../system-config-printer.py:274 ../system-config-printer.py:276
 msgid "Others"
-msgstr ""
+msgstr "Остали"
 
-#: system-config-printer.py:225
-#, fuzzy
+#: ../system-config-printer.py:277
 msgid "Devices"
-msgstr "Уређај"
+msgstr "Уређаји"
 
-#: system-config-printer.py:226
+#: ../system-config-printer.py:278
 msgid "Makes"
-msgstr ""
+msgstr "Марке"
 
-#: system-config-printer.py:227
-#, fuzzy
+#: ../system-config-printer.py:279
 msgid "Models"
-msgstr "Модел"
+msgstr "Модели"
 
-#: system-config-printer.py:228
-#, fuzzy
+#: ../system-config-printer.py:280
 msgid "Drivers"
-msgstr "Управљачки програм"
+msgstr "Управљачки програми"
 
-#: system-config-printer.py:229
-#, fuzzy
+#: ../system-config-printer.py:281
 msgid "Users"
-msgstr "Корисник"
+msgstr "Корисници"
 
-#: system-config-printer.py:240
+#: ../system-config-printer.py:292
 msgid "PostScript Printer Description (*.ppd[.gz])"
-msgstr ""
+msgstr "Опис PostScript штампача (*.ppd[.gz])"
 
-#: system-config-printer.py:259
+#. SMB list columns
+#: ../system-config-printer.py:312
 msgid "Share"
 msgstr "Дељени ресурс"
 
-#: system-config-printer.py:265
+#: ../system-config-printer.py:318
 msgid "Comment"
 msgstr "Примедба"
 
-#: system-config-printer.py:318
+#: ../system-config-printer.py:551
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Подешавање штампача - %s"
 
-#: system-config-printer.py:321
+#: ../system-config-printer.py:554
 #, python-format
 msgid "Connected to %s"
-msgstr ""
+msgstr "Спојен са %s"
 
-#: system-config-printer.py:323
-#, fuzzy
+#: ../system-config-printer.py:556 ../system-config-printer.py:1170
 msgid "Not connected"
-msgstr "_Локално спојен"
+msgstr "Није спојен"
 
-#: system-config-printer.py:463
+#: ../system-config-printer.py:637
+msgid "Local Printers"
+msgstr "Локални штампач"
+
+#: ../system-config-printer.py:638
+msgid "Local Classes"
+msgstr "Локалне класе"
+
+#: ../system-config-printer.py:639
+msgid "Remote Printers"
+msgstr "Удаљени штампачи"
+
+#: ../system-config-printer.py:640
+msgid "Remote Classes"
+msgstr "Удаљене класе"
+
+#: ../system-config-printer.py:736
 #, python-format
 msgid ""
-"Connecting to Server:\n"
+"Connecting to server:\n"
 "%s"
 msgstr ""
+"Спајам се са сервером:\n"
+"%s"
 
-#: system-config-printer.py:748
+#: ../system-config-printer.py:1099 ../system-config-printer.glade.h:115
+msgid "Installable Options"
+msgstr "Опције које се могу инсталирати"
+
+#: ../system-config-printer.py:1100 ../system-config-printer.glade.h:191
+msgid "Printer Options"
+msgstr "Опције штампача"
+
+#: ../system-config-printer.py:1109
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
-"these conflictes are resolved."
+"these conflicts are resolved."
 msgstr ""
+"Постоје противречне опције.\n"
+"Промене ће бити примењене када\n"
+"се сукоби разреше."
 
-#: system-config-printer.py:774
+#: ../system-config-printer.py:1138 ../system-config-printer.py:1154
+#: ../applet.py:333
 msgid "Not authorized"
-msgstr ""
+msgstr "Неовлашћен"
 
-#: system-config-printer.py:775
+#: ../system-config-printer.py:1139 ../applet.py:334
 msgid "The password may be incorrect."
-msgstr ""
+msgstr "Лозинка је можда нетачна."
 
-#: system-config-printer.py:778
+#: ../system-config-printer.py:1142 ../system-config-printer.py:1175
+#: ../applet.py:337
 msgid "CUPS server error"
-msgstr ""
+msgstr "Грешка CUPS сервера"
 
-#: system-config-printer.py:779
-#, fuzzy, python-format
+#: ../system-config-printer.py:1143 ../applet.py:338
+#, python-format
 msgid "There was an error during the CUPS operation: '%s'."
-msgstr "Десила се грешка током штампања пробне странице."
+msgstr "Десила се грешка током CUPS радње: „%s“."
 
-#: system-config-printer.py:803
+#: ../system-config-printer.py:1155
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr ""
+"Лозинка је можда неисправна, или је сервер можда подешен да одбија удаљену "
+"администрацију."
+
+#: ../system-config-printer.py:1160
+msgid "Bad request"
+msgstr "Лош захтев"
+
+#: ../system-config-printer.py:1162
+msgid "Not found"
+msgstr "Није пронађен"
+
+#: ../system-config-printer.py:1164
+msgid "Request timeout"
+msgstr "Захтеву је истекло време"
+
+#: ../system-config-printer.py:1166
+msgid "Upgrade required"
+msgstr "Неопходна је надоградња"
+
+#: ../system-config-printer.py:1168
+msgid "Server error"
+msgstr "Грешка сервера"
+
+#: ../system-config-printer.py:1172
+#, python-format
+msgid "status %d"
+msgstr "статус %d"
+
+#: ../system-config-printer.py:1176
+#, python-format
+msgid "There was an HTTP error: %s."
+msgstr "Дошло је до HTTP грешке: %s."
+
+#: ../system-config-printer.py:1199
 msgid "This will delete this class!"
-msgstr ""
+msgstr "Ово ће избрисати ову класу!"
 
-#: system-config-printer.py:804
+#: ../system-config-printer.py:1200
 msgid "Proceed anyway?"
+msgstr "Свакако настави?"
+
+#: ../system-config-printer.py:1386
+msgid "Submitted"
+msgstr "Послато"
+
+#: ../system-config-printer.py:1387
+#, python-format
+msgid "Test page submitted as job %d"
+msgstr "Пробна страница је послата као посао %d"
+
+#: ../system-config-printer.py:1397
+msgid "Not possible"
+msgstr "Није могуће"
+
+#: ../system-config-printer.py:1398
+msgid ""
+"The remote server did not accept the print job, most likely because the "
+"printer is not shared."
 msgstr ""
+"Удаљени сервер није прихватио посао за штампање, највероватније зато што "
+"штампач није дељен."
 
-#: system-config-printer.py:1002
-#, fuzzy
+#: ../system-config-printer.py:1463
+msgid "Error"
+msgstr "Грешка"
+
+#: ../system-config-printer.py:1464
+msgid "There was a problem connecting to the CUPS server."
+msgstr "Десила се грешка током повезивања на CUPS сервер."
+
+#: ../system-config-printer.py:1527
 msgid "This is the default printer"
-msgstr "Ово је опис штампача."
+msgstr "Ово је подразумевани штампач"
 
-#: system-config-printer.py:1004
+#: ../system-config-printer.py:1529
 #, python-format
 msgid "Default printer is %s"
-msgstr ""
+msgstr "Подразумевани штампач је %s"
 
-#: system-config-printer.py:1007
+#: ../system-config-printer.py:1532
 msgid "No default printer set."
-msgstr ""
+msgstr "Подразумевани штампач није постављен."
 
-#: system-config-printer.py:1289
-#, fuzzy, python-format
-msgid "Really delete %s %s?"
-msgstr "Стварно избрисати „%s“?"
+#: ../system-config-printer.py:1618
+msgid "Cancel Tests"
+msgstr "Откажи пробе"
 
-#: system-config-printer.py:1330
-#, fuzzy
+#: ../system-config-printer.py:1622 ../system-config-printer.glade.h:189
+msgid "Print Test Page"
+msgstr "Одштампај пробну страницу"
+
+#: ../system-config-printer.py:1877
+#, python-format
+msgid "Really delete printer %s?"
+msgstr "Стварно избрисати штампач %s?"
+
+#: ../system-config-printer.py:1879
+#, python-format
+msgid "Really delete class %s?"
+msgstr "Стварно избрисати класу %s?"
+
+#: ../system-config-printer.py:1927 ../system-config-printer.glade.h:140
 msgid "New Printer"
-msgstr "Штампач:"
+msgstr "Нови штампач"
 
-#: system-config-printer.py:1339
+#: ../system-config-printer.py:1940 ../system-config-printer.glade.h:139
 msgid "New Class"
-msgstr ""
+msgstr "Нова класа"
 
-#: system-config-printer.py:1349
+#: ../system-config-printer.py:1953
 msgid "Change Device URI"
-msgstr ""
+msgstr "Промени УРИ уређаја"
 
-#: system-config-printer.py:1360
-#, fuzzy
+#: ../system-config-printer.py:1966
 msgid "Change Driver"
-msgstr "Промени врсту"
+msgstr "Промени управљачки програм"
 
-#: system-config-printer.py:1558
+#: ../system-config-printer.py:2220
 msgid "Other"
-msgstr ""
+msgstr "Остали"
 
-#: system-config-printer.py:1560
+#: ../system-config-printer.py:2222
 msgid " (Current)"
-msgstr ""
+msgstr " (Текући)"
 
-#: system-config-printer.py:1737
-#, fuzzy
+#: ../system-config-printer.py:2407
 msgid "Verified"
-msgstr "(Назначен)"
+msgstr "Проверен"
 
-#: system-config-printer.py:1738
+#: ../system-config-printer.py:2408
 msgid "This print share is accessible."
-msgstr ""
+msgstr "Овај дељени штампач је приступачан."
 
-#: system-config-printer.py:1745
+#: ../system-config-printer.py:2415
 msgid "Inaccessible"
-msgstr ""
+msgstr "Неприступачан"
 
-#: system-config-printer.py:1746
+#: ../system-config-printer.py:2416
 msgid "This print share is not accessible."
-msgstr ""
+msgstr "Овај дељени штампач није приступачан."
 
-#: system-config-printer.py:1972
-#, fuzzy
-msgid " (recommended)"
-msgstr ""
-"(Препоручени\n"
-"управљачки програм је %s)"
+#: ../system-config-printer.py:2436
+msgid "A printer connected to the parallel port."
+msgstr "Штампач прикључен на паралелни порт."
 
-#: system-config-printer.py:2010
-msgid "This PPD is generated by foomatic."
-msgstr ""
+#: ../system-config-printer.py:2438
+msgid "A printer connected to a USB port."
+msgstr "Штампач прикључен на USB порт."
 
-#: system-config-printer.py:2012
+#: ../system-config-printer.py:2440
 msgid ""
-"This PPD is provided by the manufacturer and is included with the foomatic "
-"package."
+"HPLIP software driving a printer, or the printer function of a multi-"
+"function device."
 msgstr ""
+"HPLIP софтвер управља штампачем, или функцијом за штампање вишенаменског "
+"уређаја."
 
-#: system-config-printer.py:2016
-msgid "This PPD is provided by CUPS."
+#: ../system-config-printer.py:2443
+msgid ""
+"HPLIP software driving a fax machine, or the fax function of a multi-"
+"function device."
 msgstr ""
+"HPLIP софтвер управља факс машином, или функцијом за слање факса "
+"вишенаменског уређаја."
 
-#: system-config-printer.py:2057
+#: ../system-config-printer.py:2446
+msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
+msgstr ""
+"Локални штампач откривен од стране Слоја за хардверску апстракцију (HAL)."
+
+#: ../system-config-printer.py:2695
+msgid " (recommended)"
+msgstr " (препоручено)"
+
+#: ../system-config-printer.py:2736
+msgid "This PPD is generated by foomatic."
+msgstr "Овај PPD је направио foomatic."
+
+#. XXX
+#: ../system-config-printer.py:2777
 #, python-format
 msgid "Going to create a new class %s."
-msgstr ""
+msgstr "Направићу нову класу %s."
 
-#: system-config-printer.py:2068
+#: ../system-config-printer.py:2791
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
 "%s.\n"
 msgstr ""
-
-#~ msgid "Error"
-#~ msgstr "Грешка"
-
-#~ msgid "Ok"
-#~ msgstr "У реду"
-
-#~ msgid "Info"
-#~ msgstr "Инфо"
-
-#~ msgid "Yes"
-#~ msgstr "Да"
-
-#~ msgid "No"
-#~ msgstr "Не"
-
-#~ msgid "Exit"
-#~ msgstr "Излаз"
-
-#~ msgid ""
-#~ "You have made changes, would you like to save them? If you say no, your "
-#~ "changes will be lost."
-#~ msgstr ""
-#~ "Направили сте измене, желите ли их сачувати? Ако изаберете не, Ваше "
-#~ "измене ће бити изгубљене."
-
-#~ msgid "Cancel"
-#~ msgstr "Откажи"
-
-#~ msgid "Create a New Queue"
-#~ msgstr "Направи нови ред"
-
-#~ msgid "Finish Making New Queue"
-#~ msgstr "Заврши прављење новог реда"
-
-#~ msgid "About to create the following queue:"
-#~ msgstr "Припремам се да направим следећи ред:"
-
-#~ msgid "Finish"
-#~ msgstr "Заврши"
-
-#~ msgid "Back"
-#~ msgstr "Назад"
-
-#~ msgid "Type:"
-#~ msgstr "Врста:"
-
-#~ msgid "Device:"
-#~ msgstr "Уређај:"
-
-#~ msgid "Server:"
-#~ msgstr "Сервер:"
-
-#~ msgid "Lpd Queue:"
-#~ msgstr "LPD ред:"
-
-#~ msgid "Share:"
-#~ msgstr "Дељени штампач:"
-
-#~ msgid "IP:"
-#~ msgstr "IP:"
-
-#~ msgid "Workgroup:"
-#~ msgstr "Радна група:"
-
-#~ msgid "User:"
-#~ msgstr "Корисник:"
-
-#~ msgid "Port:"
-#~ msgstr "Порт:"
-
-#~ msgid "Driver:"
-#~ msgstr "Уређај:"
-
-#~ msgid "Warning"
-#~ msgstr "Упозорење"
-
-#~ msgid "Name and Type"
-#~ msgstr "Име и врста"
-
-#~ msgid "Next"
-#~ msgstr "Следећи"
-
-#~ msgid "Queue Name"
-#~ msgstr "Име реда"
-
-#~ msgid "Queue Type"
-#~ msgstr "Врста реда"
-
-#~ msgid ""
-#~ "The name \"%s\" is bad. Please choose a name of the form [a-zA-Z][a-zA-Z0-"
-#~ "9_-]*."
-#~ msgstr ""
-#~ "Име „%s“ је лоше. Молим изаберите име у облику [a-zA-Z][a-ZA-Z0-9_-]*."
-
-#~ msgid "The name \"%s\" is already in use. Please choose a different name."
-#~ msgstr "Име „%s“ се већ користи. Изаберите друго име."
-
-#~ msgid "Custom"
-#~ msgstr "Произвољан"
-
-#~ msgid "Setting Up"
-#~ msgstr "Подешавање"
-
-#~ msgid "Printer Device"
-#~ msgstr "Уређај за штампање"
-
-#~ msgid ""
-#~ "Pick the printer device from the list, or enter it using \"Custom\" below."
-#~ msgstr ""
-#~ "Изаберите уређај за штампање са списка, или га унесите користећи "
-#~ "„Произвољан“ испод."
-
-#~ msgid "Specify Device:"
-#~ msgstr "Наведите уређај:"
-
-#~ msgid "Description"
-#~ msgstr "Опис"
-
-#~ msgid "Custom Device"
-#~ msgstr "Произвољан уређај"
-
-#~ msgid "Specify the device to use."
-#~ msgstr "Наведите уређај за употребу."
-
-#~ msgid "Device File"
-#~ msgstr "Датотека уређаја"
-
-#~ msgid "You must specify a device."
-#~ msgstr "Морате навести уређај."
-
-#~ msgid "Enter the LPD server and queue to use."
-#~ msgstr "Унесите LPD сервер и ред за употребу."
-
-#~ msgid "Server"
-#~ msgstr "Сервер"
-
-#~ msgid "Queue"
-#~ msgstr "Ред"
-
-#~ msgid "LPD Data"
-#~ msgstr "LPD подаци"
-
-#~ msgid "You must specify a server."
-#~ msgstr "Морате навести сервер."
-
-#~ msgid "Enter the SMB share to use."
-#~ msgstr "Унесите SMB дељени штампач за употребу."
-
-#~ msgid "Host IP"
-#~ msgstr "IP домаћина"
-
-#~ msgid "Workgroup"
-#~ msgstr "Радна група"
-
-#~ msgid "Passwd"
-#~ msgstr "Лозинка"
-
-#~ msgid "Windows Printer (SMB) Data"
-#~ msgstr "Подаци за Windows (SMB) штампач"
-
-#~ msgid "You must specify a SMB share to print to."
-#~ msgstr "Морате навести SMB дељени ресурс за штампање."
-
-#~ msgid "Enter the NCP server and queue to use."
-#~ msgstr "Унесите NCP сервер и ред који ћете користити."
-
-#~ msgid "Novell Netware Printer (NCP) Data"
-#~ msgstr "Подаци за Novell Netware штампач (NCP)"
-
-#~ msgid "You must specify an NCP server to print to."
-#~ msgstr "Морате навести NCP сервер на којем ћете штампати."
-
-#~ msgid "You must specify a queue on the NCP server to print to."
-#~ msgstr "Морате навести ред на NCP серверу на којем ћете штампати."
-
-#~ msgid "Enter the Jetdirect ip and port to use."
-#~ msgstr "Унесите Jetdirect IP и порт за употребу."
-
-#~ msgid "Ip"
-#~ msgstr "IP"
-
-#~ msgid "Port"
-#~ msgstr "Порт"
-
-#~ msgid "Jetdirect (JETDIRECT) Data"
-#~ msgstr "Подаци за Jetdirect (JETDIRECT)"
-
-#~ msgid "You must specify the ip address of a JetDirect printer."
-#~ msgstr "Морате навести IP адресу JetDirect штампача."
-
-#~ msgid "Queue Driver"
-#~ msgstr "Управљачки програм за ред"
-
-#~ msgid "Select the Driver to use with this Queue."
-#~ msgstr "Изаберите уређај за употребу са овим редом."
-
-#~ msgid "You must specify a driver."
-#~ msgstr "Морате навести управљачки програм."
-
-#~ msgid "Edit Queue"
-#~ msgstr "Уреди ред"
-
-#~ msgid "Names"
-#~ msgstr "Имена"
-
-#~ msgid "Type"
-#~ msgstr "Врста"
-
-#~ msgid "Done"
-#~ msgstr "Завршено"
-
-#~ msgid "Name:"
-#~ msgstr "Име:"
-
-#~ msgid "Aliases:"
-#~ msgstr "Псеудоними:"
-
-#~ msgid "Printer Device:"
-#~ msgstr "Уређај за штампање:"
-
-#~ msgid "Edit Name and Aliases"
-#~ msgstr "Уреди име и псеудониме"
-
-#~ msgid "Name"
-#~ msgstr "Име"
-
-#~ msgid "Add Alias"
-#~ msgstr "Додај псеудоним"
-
-#~ msgid "Edit Alias"
-#~ msgstr "Уреди псеудоним"
-
-#~ msgid "Delete Alias"
-#~ msgstr "Избриши псеудоним"
-
-#~ msgid "Alias:"
-#~ msgstr "Псеудоним:"
-
-#~ msgid "Add an Alias"
-#~ msgstr "Додај псеудоним"
-
-#~ msgid "Edit the alias"
-#~ msgstr "Уреди псеудоним"
-
-#~ msgid "You must select an alias to edit."
-#~ msgstr "Морате назначити псеудоним за уређивање."
-
-#~ msgid "You must select an alias to delete."
-#~ msgstr "Морате назначити псеудоним за брисање."
-
-#~ msgid "Strict RFC1179"
-#~ msgstr "Строги RFC1179"
-
-#~ msgid "Translate \\n->\\r\\n"
-#~ msgstr ""
-#~ "Преведи \n"
-#~ "->\\r\\n"
-
-#~ msgid "Edit Driver"
-#~ msgstr "Уреди управљачки програм"
-
-#~ msgid "Edit Driver Options"
-#~ msgstr "Уреди опције управљачког програма"
-
-#~ msgid "Edit"
-#~ msgstr "Уреди"
-
-#~ msgid "Edit %s"
-#~ msgstr "Уреди %s"
-
-#~ msgid "Integer: Min %s | Max %s"
-#~ msgstr "Цео број: Мин %s | Макс %s"
-
-#~ msgid "Value must be a number"
-#~ msgstr "Вредност мора бити број"
-
-#~ msgid "Float: Min %s | Max %s"
-#~ msgstr "Децимални број: Мин %s | Макс %s"
-
-#~ msgid "US Letter"
-#~ msgstr "US писмо"
-
-#~ msgid "Tabloid"
-#~ msgstr "Магазин"
-
-#~ msgid "Ledger"
-#~ msgstr "Фасцикла"
-
-#~ msgid "Legal"
-#~ msgstr "Легално писмо"
-
-#~ msgid "Statement"
-#~ msgstr "Наредба"
-
-#~ msgid "Executive"
-#~ msgstr "Извршно писмо"
-
-#~ msgid "A3"
-#~ msgstr "А3"
-
-#~ msgid "A4"
-#~ msgstr "А4"
-
-#~ msgid "A5"
-#~ msgstr "А5"
-
-#~ msgid "B4"
-#~ msgstr "Б4"
-
-#~ msgid "B5"
-#~ msgstr "Б5"
-
-#~ msgid "Folio"
-#~ msgstr "Фолија"
-
+"Направићу нови штампач %s на\n"
+"%s.\n"
+
+#. Foomatic database problem of some sort.
+#: ../system-config-printer.py:2815
+msgid "Database error"
+msgstr "Грешка у бази података"
+
+#: ../system-config-printer.py:2816
+#, python-format
+msgid "The '%s' driver cannot be used with printer '%s %s'."
+msgstr "„%s“ управљачки програм не може бити коришћен са штампачем „%s %s“."
+
+#. This printer references some XML that is not
+#. installed by default.  Point the user at the
+#. package they need to install.
+#: ../system-config-printer.py:2826
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr ""
+"Мораћете инсталирати „%s“ пакет да бисте користили овај управљачки програм."
+
+#. This error came from trying to open the PPD file.
+#: ../system-config-printer.py:2833
+msgid "PPD error"
+msgstr "PPD грешка"
+
+#: ../system-config-printer.py:2835
+msgid "Failed to read PPD file.  Possible reason follows:"
+msgstr "Читање PPD датотеке није успело. Могући разлози следе:"
+
+#: ../system-config-printer.py:3121 ../system-config-printer.py:3128
+msgid "Missing driver"
+msgstr "Недостаје управљачки програм"
+
+#: ../system-config-printer.py:3122
+#, python-format
+msgid ""
+"Printer '%s' requires the %s package but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"Штампач „%s“ захтева „%s“ пакет али он није тренутно инсталиран.  Молим "
+"инсталирајте га пре коришћења штампача."
+
+#: ../system-config-printer.py:3129
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"Штампач „%s“ захтева „%s“ програм али он није тренутно инсталиран.  Молим "
+"инсталирајте га пре коришћења штампача."
+
+#: ../system-config-printer.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../system-config-printer.glade.h:2
+msgid " PPD "
+msgstr " PPD "
+
+#: ../system-config-printer.glade.h:3
+msgid ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+
+#: ../system-config-printer.glade.h:9
+msgid "<b>Authentication</b>"
+msgstr "<b>Аутентификација</b>"
+
+#: ../system-config-printer.glade.h:10
+msgid "<b>Banner</b>"
+msgstr "<b>Наслов</b>"
+
+#: ../system-config-printer.glade.h:11
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Основна подешавања сервера</b>"
+
+#: ../system-config-printer.glade.h:12
+msgid "<b>Comment about the Driver</b>"
+msgstr "<b>Примедба о управљачком програму</b>"
+
+#: ../system-config-printer.glade.h:13
+msgid "<b>Comment about the Printer</b>"
+msgstr "<b>Примедба о штампачу</b>"
+
+#: ../system-config-printer.glade.h:14
+msgid "<b>Common Options</b>"
+msgstr "<b>Опште опције</b>"
+
+#: ../system-config-printer.glade.h:15
+msgid "<b>Default Printer</b>"
+msgstr "<b>Подразумевани штампач</b>"
+
+#: ../system-config-printer.glade.h:16
+msgid "<b>Description</b>"
+msgstr "<b>Опис</b>"
+
+#: ../system-config-printer.glade.h:17
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Опис</b> (необавезно)"
+
+#: ../system-config-printer.glade.h:18
+msgid "<b>Image Options</b>"
+msgstr "<b>Опције за слике</b>"
+
+#: ../system-config-printer.glade.h:19
+msgid "<b>Information about the PPD</b>"
+msgstr "<b>Подаци о PPD-у</b>"
+
+#: ../system-config-printer.glade.h:20
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Локација LPD мрежног штампача</b>"
+
+#: ../system-config-printer.glade.h:21
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Локације мрежног штампача</b>"
+
+#: ../system-config-printer.glade.h:22
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Локација</b> (необавезно)"
+
+#: ../system-config-printer.glade.h:23
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Остале опције (напредно)</b>"
+
+#: ../system-config-printer.glade.h:24
+msgid "<b>Policies</b>"
+msgstr "<b>Полисе</b>"
+
+#: ../system-config-printer.glade.h:25
+msgid "<b>Printer Name</b>"
+msgstr "<b>Име штампача</b>"
+
+#: ../system-config-printer.glade.h:26
+msgid "<b>Printers to be members of this Class</b>"
+msgstr "<b>Штампачи који ће бити чланови ове класе</b>"
+
+#: ../system-config-printer.glade.h:27
+msgid "<b>Select Connection</b>"
+msgstr "<b>Изаберите везу</b>"
+
+#: ../system-config-printer.glade.h:28
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Подешавања серијског порта</b>"
+
+#: ../system-config-printer.glade.h:29
+msgid "<b>Settings</b>"
+msgstr "<b>Подешавања</b>"
+
+#: ../system-config-printer.glade.h:30
+msgid "<b>State</b>"
+msgstr "<b>Стање</b>"
+
+#: ../system-config-printer.glade.h:31
+msgid "<b>Text Options</b>"
+msgstr "<b>Опције за текст</b>"
+
+#: ../system-config-printer.glade.h:32
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>Није објављен\n"
+"Погледајте поставке сервера</i>"
+
+#: ../system-config-printer.glade.h:34
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
+
+#: ../system-config-printer.glade.h:35
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Примени промене?</span>\n"
+"\n"
+"Све промене које сте направили ће бити изгубљене ако их не примените."
+
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Лозинка обавезна</span>\n"
+"\n"
+
+#: ../system-config-printer.glade.h:41
+msgid "About"
+msgstr "О програму"
+
+#: ../system-config-printer.glade.h:42
+msgid "About System-Config-Printer"
+msgstr "О подешавању штампача"
+
+#: ../system-config-printer.glade.h:43
+msgid "Accepting jobs"
+msgstr "Прихвата послове"
+
+#: ../system-config-printer.glade.h:44
+msgid "Access control"
+msgstr "Контрола приступа"
+
+#: ../system-config-printer.glade.h:45
+msgid "Add or Remove Members"
+msgstr "Додај или избриши чланове"
+
+#: ../system-config-printer.glade.h:46
+msgid "Allow printing for everyone except these users:"
+msgstr "Дозволи штампање за све осим ове кориснике:"
+
+#: ../system-config-printer.glade.h:47
+msgid "Allow remote administration"
+msgstr "Дозволи даљинско руковођење"
+
+#: ../system-config-printer.glade.h:48
+msgid "Allow users to cancel any job (not just their own)"
+msgstr "Дозволи корисницима да откажу било који посао (не само њихов)"
+
+#: ../system-config-printer.glade.h:49
+msgid "Apply"
+msgstr "Примени"
+
+#: ../system-config-printer.glade.h:50
+msgid "Authors"
+msgstr "Аутори"
+
+#: ../system-config-printer.glade.h:51
+msgid "Baud Rate"
+msgstr "Брзина у бодима"
+
+#: ../system-config-printer.glade.h:52
+msgid "Bottom margin:"
+msgstr "Доња маргина:"
+
+#: ../system-config-printer.glade.h:53
+msgid "Brightness:"
+msgstr "Осветљење:"
+
+#: ../system-config-printer.glade.h:54
+msgid "CUPS server:"
+msgstr "CUPS сервер:"
+
+#: ../system-config-printer.glade.h:55
+msgid "Change PPD"
+msgstr "Промени PPD"
+
+#: ../system-config-printer.glade.h:56
+msgid "Change..."
+msgstr "Промени..."
+
+#: ../system-config-printer.glade.h:57
+msgid "Characters per inch:"
+msgstr "Знакова по инчу:"
+
+#: ../system-config-printer.glade.h:58
+msgid "Class Members"
+msgstr "Чланови класе"
+
+#: ../system-config-printer.glade.h:59
+msgid "Columns:"
+msgstr "Колоне: "
+
+#: ../system-config-printer.glade.h:60
+msgid "Comments: "
+msgstr "Примедбе: "
+
+#: ../system-config-printer.glade.h:61
+msgid "Connect to CUPS server"
+msgstr "Споји на CUPS сервер"
+
+#: ../system-config-printer.glade.h:62
+msgid "Connecting"
+msgstr "Спајање"
+
+#: ../system-config-printer.glade.h:64
+#, no-c-format
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+"Спајање са сервером:\n"
+"%s\n"
+
+#: ../system-config-printer.glade.h:67
+msgid "Copies:"
+msgstr "Умножака:"
+
+#: ../system-config-printer.glade.h:68
+msgid "Copy Printer"
+msgstr "Умножи штампач"
+
+#: ../system-config-printer.glade.h:69
+msgid "Copyright"
+msgstr "Ауторска права"
+
+#: ../system-config-printer.glade.h:70
+msgid "Data Bits"
+msgstr "Битови података"
+
+#: ../system-config-printer.glade.h:71
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+"Подразумевано\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+
+#: ../system-config-printer.glade.h:80
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr ""
+"Подразумевано\n"
+"8\n"
+"7"
+
+#: ../system-config-printer.glade.h:83
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+"Подразумевано\n"
+"Ништа\n"
+"Непарно\n"
+"Парно"
+
+#: ../system-config-printer.glade.h:87
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+"Подразумевано\n"
+"Ниједан\n"
+"XON/XOFF (софтверска)\n"
+"RTS/CTS (хардверска)\n"
+"DTR/DSR (хардверска)"
+
+#: ../system-config-printer.glade.h:92
+msgid "Deny printing for everyone except these users:"
+msgstr "Забрани штампање свима осим овим корисницима:"
+
+#: ../system-config-printer.glade.h:93
+msgid "Description:"
+msgstr "Опис:"
+
+#: ../system-config-printer.glade.h:94
+msgid "Device"
+msgstr "Уређај"
+
+#: ../system-config-printer.glade.h:95
+msgid "Device URI"
+msgstr "УРИ уређаја"
+
+#: ../system-config-printer.glade.h:96
+msgid "Device URI:"
+msgstr "УРИ уређаја:"
+
+#: ../system-config-printer.glade.h:97
+msgid "Device description."
+msgstr "Опис уређаја."
+
+#: ../system-config-printer.glade.h:98
+msgid "DirectJet"
+msgstr "DirectJet"
+
+#: ../system-config-printer.glade.h:99
+msgid "Driver"
+msgstr "Управљачки програм"
+
+#: ../system-config-printer.glade.h:100
+msgid "Empty"
+msgstr "Празно"
+
+#: ../system-config-printer.glade.h:101
+msgid "Enabled"
+msgstr "Омогућен"
+
+#: ../system-config-printer.glade.h:102
+msgid "Ending Banner:"
+msgstr "Завршна ознака:"
+
+#: ../system-config-printer.glade.h:103
+msgid "Enter Device URI"
+msgstr "Унесите УРИ уређаја"
+
+#: ../system-config-printer.glade.h:104
+msgid "Error Policy: \t"
+msgstr "Полиса за грешку: \t"
+
+#: ../system-config-printer.glade.h:105
+msgid "Finishings:"
+msgstr "Завршавања:"
+
+#: ../system-config-printer.glade.h:106
+msgid "Flow Control"
+msgstr "Контрола тока"
+
+#: ../system-config-printer.glade.h:107
+msgid "Gamma:"
+msgstr "Гама:"
+
+#: ../system-config-printer.glade.h:108
+msgid "Goto Server"
+msgstr "Иди на сервер"
+
+#: ../system-config-printer.glade.h:109
+msgid "Hold until:"
+msgstr "Задржи до:"
+
+#: ../system-config-printer.glade.h:110
+msgid "Hostname"
+msgstr "Име домаћина"
+
+#: ../system-config-printer.glade.h:111
+msgid "Hue adjustment:"
+msgstr "Подешавање нијансе:"
+
+#: ../system-config-printer.glade.h:112
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "Опис који је људима разумљив као „HP LaserJet са обостраним штампањем“"
+
+#: ../system-config-printer.glade.h:113
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "Локација која је људима разумљива као „Канцеларија 1“"
+
+#: ../system-config-printer.glade.h:114
+msgid "IPP"
+msgstr "IPP"
+
+#: ../system-config-printer.glade.h:116
+msgid "Job Options"
+msgstr "Опције посла"
+
+#: ../system-config-printer.glade.h:117
+msgid "Job priority:"
+msgstr "Првенство посла:"
+
+#: ../system-config-printer.glade.h:118
+msgid "LPD"
+msgstr "LPD"
+
+#: ../system-config-printer.glade.h:119
+msgid "Left margin:"
+msgstr "Лева маргина:"
+
+#: ../system-config-printer.glade.h:120
+msgid ""
+"Left to right, top to bottom\n"
+"Left to right, bottom to top\n"
+"Right to left, top to bottom\n"
+"Right to left, bottom to top\n"
+"Top to bottom, left to right\n"
+"Top to bottom, right to left\n"
+"Bottom to top, left to right\n"
+"Bottom to top, right to left"
+msgstr ""
+"Лево на десно, одозго на доле\n"
+"Лево на десно, одоздо на горе\n"
+"Десно на лево, одозго на доле\n"
+"Десно на лево, одоздо на горе\n"
+"Одозго на доле, лево на десно\n"
+"Одозго на доле, десно на лево\n"
+"Одоздо на горе, лево на десно\n"
+"Одоздо на горе, десно на лево"
+
+#: ../system-config-printer.glade.h:128
+msgid "Lines per inch:"
+msgstr "Линија по инчу:"
+
+#: ../system-config-printer.glade.h:129
+msgid "Location:"
+msgstr "Локација:"
+
+#: ../system-config-printer.glade.h:130
+msgid "Make Default Printer"
+msgstr "Намести као подразумевани штампач"
+
+#: ../system-config-printer.glade.h:131
+msgid "Make and Model:"
+msgstr "Марка и модел:"
+
+#: ../system-config-printer.glade.h:132
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr "Може да садржи било коју штампану ознаку осим „/“, „#“ и размака"
+
+#: ../system-config-printer.glade.h:133
+msgid "Media:"
+msgstr "Медија:"
+
+#: ../system-config-printer.glade.h:134
+msgid "Members"
+msgstr "Чланови"
+
+#: ../system-config-printer.glade.h:135
+msgid "Mirror"
+msgstr "Одраз"
+
+#: ../system-config-printer.glade.h:136
+msgid "More"
+msgstr "Више"
+
+#: ../system-config-printer.glade.h:137
+msgid "Name"
+msgstr "Име"
+
+#: ../system-config-printer.glade.h:138
+msgid "New Clas_s"
+msgstr "Нова _класа"
+
+#: ../system-config-printer.glade.h:141
+msgid "New _Printer"
+msgstr "Нови _штампач"
+
+#: ../system-config-printer.glade.h:142
+msgid "New name for the printer"
+msgstr "Ново име за штампач"
+
+#: ../system-config-printer.glade.h:143
+msgid ""
+"None\n"
+"Staple\n"
+"Punch\n"
+"Cover\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Staple (top left)\n"
+"Staple (bottom left)\n"
+"Staple (top right)\n"
+"Staple (bottom right)\n"
+"Edge stitch (left)\n"
+"Edge stitch (top)\n"
+"Edge stitch (right)\n"
+"Edge stitch (bottom)\n"
+"Staple dual (left)\n"
+"Staple dual (top)\n"
+"Staple dual (right)\n"
+"Staple dual (bottom)\n"
+"Bind (left)\n"
+"Bind (top)\n"
+"Bind (right)\n"
+"Bind (bottom)"
+msgstr ""
+"Ништа\n"
+"Захефтати\n"
+"Пробушити\n"
+"Укоричити\n"
+"Повезати\n"
+"Захефтати на превоју\n"
+"Захефтати на ивици\n"
+"Пресавијање\n"
+"Исећи\n"
+"Пакет\n"
+"Произвођач брошуре\n"
+"Компензација посла\n"
+"Захефтати (горе лево)\n"
+"Захефтати (доле лево)\n"
+"Захефтати (горе десно)\n"
+"Захефтати (доле десно)\n"
+"Захефтати на ивици (лево)\n"
+"Захефтати на ивици (горе)\n"
+"Захефтати на ивици (десно)\n"
+"Захефтати на ивици (доле)\n"
+"Дупло захефтавање (лево)\n"
+"Дупло захефтавање (горе)\n"
+"Дупло захефтавање (десно)\n"
+"Дупло захефтавање (доле)\n"
+"Повезивање (лево)\n"
+"Повезивање (горе)\n"
+"Повезивање (десно)\n"
+"Повезивање (доле)"
+
+#: ../system-config-printer.glade.h:171
+msgid ""
+"One-sided\n"
+"Two-sided (long edge)\n"
+"Two-sided (short edge)"
+msgstr ""
+"Једнострано\n"
+"Двострано (по дугој ивици)\n"
+"Двострано (по краткој ивици)"
+
+#: ../system-config-printer.glade.h:174
+msgid "Operation Policy:"
+msgstr "Радна полиса:"
+
+#: ../system-config-printer.glade.h:175
+msgid "Orientation:"
+msgstr "Усмереност:"
+
+#: ../system-config-printer.glade.h:176
+msgid "PPD"
+msgstr "PPD"
+
+#: ../system-config-printer.glade.h:177
+msgid "Pages per side layout:"
+msgstr "Страница по распореду листа:"
+
+#: ../system-config-printer.glade.h:178
+msgid "Pages per side:"
+msgstr "Страница по листу:"
+
+#: ../system-config-printer.glade.h:179
+msgid "Parity"
+msgstr "Парност"
+
+#: ../system-config-printer.glade.h:180 ../applet.glade.h:5
+msgid "Password:"
+msgstr "Лозинка:"
+
+#: ../system-config-printer.glade.h:181
+msgid "Policies"
+msgstr "Полисе"
+
+#: ../system-config-printer.glade.h:182
+msgid "Port number"
+msgstr "Број порта"
+
+#: ../system-config-printer.glade.h:183
+msgid ""
+"Portrait (no rotation)\n"
+"Landscape (90°)\n"
+"Reverse landscape (270°)\n"
+"Reverse portrait (180°)"
+msgstr ""
+"Портрет (без ротирања)\n"
+"Пејзаж (90°)\n"
+"Обрнути пејзаж (270°)\n"
+"Обрнути портрет (180°)"
+
+#: ../system-config-printer.glade.h:187
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"Датотеке описа PostScript штампача (PPD - PostScript Printer Description) се "
+"често могу наћи на диску управљачког програма који дође уз штампач. Оне су "
+"често део Windows<sup>®</sup> управљачког програма за PostScript штампаче."
+
+#: ../system-config-printer.glade.h:188
+msgid "Pretty print"
+msgstr "Лепо штампање"
+
+#: ../system-config-printer.glade.h:192
+msgid "Printer State:"
+msgstr "Стање штампача:"
+
+#: ../system-config-printer.glade.h:193
+msgid "Printername"
+msgstr "Име штампача"
+
+#: ../system-config-printer.glade.h:194
+msgid "Probe"
+msgstr "Испитај"
+
+#: ../system-config-printer.glade.h:195
+msgid "Provide PPD file"
+msgstr "Понуди PPD датотеку"
+
+#: ../system-config-printer.glade.h:196
+msgid "Require encryption"
+msgstr "Захтевај шифровање"
+
+#: ../system-config-printer.glade.h:197
+msgid "Reset"
+msgstr "Поврати"
+
+#: ../system-config-printer.glade.h:198
+msgid "Reset to system default"
+msgstr "Поврати на подразумеване системске вредности"
+
+#: ../system-config-printer.glade.h:199
+msgid "Right margin:"
+msgstr "Лева маргина:"
+
+#: ../system-config-printer.glade.h:200
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../system-config-printer.glade.h:201
+msgid "SMB"
+msgstr "SMB"
+
+#: ../system-config-printer.glade.h:202
+msgid "Saturation:"
+msgstr "Засићење:"
+
+#: ../system-config-printer.glade.h:203
+msgid "Save debugging information for troubleshooting"
+msgstr "Сачувај податке о грешкама за уклањање неисправности"
+
+#: ../system-config-printer.glade.h:204
+msgid "Scale to fit"
+msgstr "Прилагоди величини странице"
+
+#: ../system-config-printer.glade.h:205
+msgid "Scaling:"
+msgstr "Размера:"
+
+#: ../system-config-printer.glade.h:206
+msgid "Select A File"
+msgstr "Изаберите датотеку"
+
+#: ../system-config-printer.glade.h:207
+msgid "Select Printer from database"
+msgstr "Изаберите штампач из базе података"
+
+#: ../system-config-printer.glade.h:208
+msgid "Serial"
+msgstr "Серијски"
+
+#: ../system-config-printer.glade.h:209
+msgid "Settings"
+msgstr "Подешавања"
+
+#: ../system-config-printer.glade.h:210
+msgid "Share published printers connected to this system"
+msgstr "Дели објављене штампаче спојене на овај систем"
+
+#: ../system-config-printer.glade.h:211
+msgid "Shared"
+msgstr "Дељен"
+
+#: ../system-config-printer.glade.h:212
+msgid "Show printers shared by other systems"
+msgstr "Покажи дељене штампаче са осталих система"
+
+#: ../system-config-printer.glade.h:213
+msgid "Sides:"
+msgstr "Стране:"
+
+#: ../system-config-printer.glade.h:214
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"Наведите подразумеване опције посла за овај штампач. Ове опције ће бити "
+"додате на послове који долазе на овај сервер ако већ нису постављене од "
+"програма."
+
+#: ../system-config-printer.glade.h:215
+msgid "Starting Banner:"
+msgstr "Почетна ознака:"
+
+#: ../system-config-printer.glade.h:216
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../system-config-printer.glade.h:218
+#, no-c-format
+msgid "System-Config-Printer %s"
+msgstr "System-Config-Printer %s"
+
+#: ../system-config-printer.glade.h:219
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"Foomatic база штампача садржи разне датотеке Описа PostScript штампача (PPD) "
+"достављене од произвођача. Такође може направити PPD датотеке за велики број "
+"(не PostScript) штампача. Али у општем случају PPD датотеке достављене од "
+"произвођача дају бољи приступ посебним алатима штампача."
+
+#: ../system-config-printer.glade.h:220
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Ово се ради претпостављајући да опције са истим именом имају и исто значење. "
+"Подешавања опција које нису у новом PPD-у ће бити изгубљене и само опције "
+"које постоје у новом PPD-у ће бити постављене на подразумевано."
+
+#: ../system-config-printer.glade.h:221
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Овако ће све тренутне опције подешавања бити изгубљене. Подразумевана "
+"подешавања новог PPD-a ће бити употребљена."
+
+#: ../system-config-printer.glade.h:222
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"Да бисте додали нову опцију, унесите њено име у поље испод и притисните "
+"додај."
+
+#: ../system-config-printer.glade.h:223
+msgid "Top margin:"
+msgstr "Горња маргина:"
+
+#: ../system-config-printer.glade.h:224
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Покушајте да умножите опције подешавања из старог PPD-a. "
+
+#: ../system-config-printer.glade.h:225
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Користи нови PPD (Опис PostScript штампача) без промена."
+
+#: ../system-config-printer.glade.h:226
+msgid "User name:"
+msgstr "Име корисника:"
+
+#: ../system-config-printer.glade.h:227
+msgid "Username:"
+msgstr "Име корисника:"
+
+#: ../system-config-printer.glade.h:228
+msgid "Word wrap"
+msgstr "Прелом реда"
+
+#: ../system-config-printer.glade.h:229
+msgid "_Do not apply"
+msgstr "_Не примењуј"
+
+#: ../system-config-printer.glade.h:230
+msgid "_Edit"
+msgstr "_Уреди"
+
+#: ../system-config-printer.glade.h:231 ../applet.glade.h:10
+msgid "_File"
+msgstr "_Датотека"
+
+#: ../system-config-printer.glade.h:232
+msgid "_Goto Server"
+msgstr "_Иди на сервер"
+
+#: ../system-config-printer.glade.h:233
+msgid "_Help"
+msgstr "_Помоћ"
+
+#: ../system-config-printer.glade.h:234
+msgid "_Verify..."
+msgstr "Про_вери..."
+
+#: ../system-config-printer.glade.h:235
+msgid "default"
+msgstr "подразумевано"
+
+#: ../system-config-printer.glade.h:236
+msgid "none"
+msgstr "ништа"
+
+#: ../system-config-printer.glade.h:237
+msgid "points"
+msgstr "тачака"
+
+#: ../system-config-printer.glade.h:238
+msgid "points (72 points per inch)"
+msgstr "тачака (72 тачке по инчу)"
+
+#: ../system-config-printer.desktop.in.h:1
+msgid "Configure printers"
+msgstr "Подешавање штампача"
+
+#: ../system-config-printer.desktop.in.h:2
+msgid "Printing"
+msgstr "Штампање"
+
+#: ../applet.py:80
+msgid "Toner low"
+msgstr "Тонер скоро празан"
+
+#: ../applet.py:81
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "Штампачу „%s“ је тонер скоро празан."
+
+#: ../applet.py:82
+msgid "Toner empty"
+msgstr "Тонер празан"
+
+#: ../applet.py:83
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "Штампачу „%s“ је тонер празан."
+
+#: ../applet.py:84
+msgid "Cover open"
+msgstr "Отворен поклопац"
+
+#: ../applet.py:85
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "Поклопац је отворен на штампачу „%s“."
+
+#: ../applet.py:86
+msgid "Door open"
+msgstr "Врата отворена"
+
+#: ../applet.py:87
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "Врата су отворен на штампачу „%s“."
+
+#: ../applet.py:88
+msgid "Paper low"
+msgstr "Мало папира"
+
+#: ../applet.py:89
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "Штампачу „%s“ је остало веома мало папира."
+
+#: ../applet.py:90
+msgid "Out of paper"
+msgstr "Нема папира"
+
+#: ../applet.py:91
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "Штампач „%s“ је остао без папира."
+
+#: ../applet.py:92
+msgid "Ink low"
+msgstr "Мало боје"
+
+#: ../applet.py:93
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "Штампачу „%s“ је остало веома мало боје."
+
+#: ../applet.py:94
+msgid "Ink empty"
+msgstr "Нестало боје"
+
+#: ../applet.py:95
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "Штампач „%s“ је остао без боје."
+
+#: ../applet.py:96
+msgid "Not connected?"
+msgstr "Није спојен?"
+
+#: ../applet.py:97
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "Штампач „%s“ можда није спојен."
+
+#: ../applet.py:104
+msgid "Printer report"
+msgstr "Извештај штампача"
+
+#: ../applet.py:106
+msgid "Printer warning"
+msgstr "Упозорење штампача"
+
+#: ../applet.py:108
+msgid "Printer error"
+msgstr "Грешка штампача"
+
+#: ../applet.py:109
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "Штампач „%s“: „%s“."
+
+#: ../applet.py:182
+msgid "Job"
+msgstr "Посао"
+
+#: ../applet.py:183
+msgid "Document"
+msgstr "Документ"
+
+#: ../applet.py:185
+msgid "Size"
+msgstr "Величина"
+
+#: ../applet.py:186
+msgid "Time submitted"
+msgstr "Време слања"
+
+#: ../applet.py:187
+msgid "Status"
+msgstr "Статус"
+
+#: ../applet.py:238
+msgid "Message"
+msgstr "Порука"
+
+#: ../applet.py:555
+msgid "1 hour ago"
+msgstr "пре 1 сат"
+
+#: ../applet.py:557
+msgid "1 hour and 1 minute ago"
+msgstr "пре 1 сат и 1 минуту"
+
+#: ../applet.py:559
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr "пре 1 сат и %d минута"
+
+#: ../applet.py:562
+#, python-format
+msgid "%d hours ago"
+msgstr "пре %d сати"
+
+#: ../applet.py:564
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr "пре %d сати и 1 минуту"
+
+#: ../applet.py:566
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr "пре %d сати и %d минута"
+
+#: ../applet.py:572
+msgid "a minute ago"
+msgstr "пре једне минуте"
+
+#: ../applet.py:574
+#, python-format
+msgid "%d minutes ago"
+msgstr "пре %d минута"
+
+#: ../applet.py:629
+msgid "No documents queued"
+msgstr "Нема докумената у реду"
+
+#: ../applet.py:632
+msgid "1 document queued"
+msgstr "1 документ у реду"
+
+#: ../applet.py:635
+#, python-format
+msgid "%d documents queued"
+msgstr "%d докумената у реду"
+
+#: ../applet.py:682
+msgid "Pending"
+msgstr "На чекању"
+
+#: ../applet.py:683
+msgid "Held"
+msgstr "Задржано"
+
+#: ../applet.py:686
+msgid "Canceled"
+msgstr "Отказано"
+
+#: ../applet.py:687
+msgid "Aborted"
+msgstr "Обустављено"
+
+#: ../applet.py:688
+msgid "Completed"
+msgstr "Завршено"
+
+#: ../applet.py:946
+msgid "Printer added"
+msgstr "Штампач је додат"
+
+#: ../applet.py:948
+msgid "Missing printer driver"
+msgstr "Недостаје управљачки програм штампача"
+
+#: ../applet.py:951
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr "„%s“ је спреман за штампање."
+
+#: ../applet.py:954
+msgid "Configure"
+msgstr "Подеси"
+
+#. Model mismatch
+#: ../applet.py:957
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr "„%s“ је додат, користећи управљачки програм „%s“."
+
+#: ../applet.py:961
+msgid "Find driver"
+msgstr "Нађи управљачки програм"
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr "Статус штампања документа"
+
+#: ../applet.glade.h:6
+msgid "Printer status"
+msgstr "Стање штампача"
+
+#: ../applet.glade.h:7
+msgid "Re_print"
+msgstr "Поново _штампај"
+
+#: ../applet.glade.h:8
+msgid "Show _completed jobs"
+msgstr "Покажи _завршене послове"
+
+#: ../applet.glade.h:9
+msgid "Show _printer status"
+msgstr "Прикажи _статус штампача"
+
+#: ../applet.glade.h:11
+msgid "_Hide"
+msgstr "Са_криј"
+
+#: ../applet.glade.h:12
+msgid "_Hold"
+msgstr "За_држи"
+
+#: ../applet.glade.h:13
+msgid "_Release"
+msgstr "П_усти"
+
+#: ../applet.glade.h:14
+msgid "_View"
+msgstr "_Прегледај"
+
+#: ../print-applet.desktop.in.h:1
+msgid "Print Queue Applet"
+msgstr "Програмче за ред штампања"
+
+#: ../print-applet.desktop.in.h:2
+msgid "System tray icon for managing print jobs"
+msgstr "Икона системске обавештајне зоне за управљање штампарским пословима"
+
+#: ../manage-print-jobs.desktop.in.h:1
+msgid "Cancel, pause, resume or reprint jobs"
+msgstr "Откажи, паузирај, настави или поново штампај послове"
+
+#: ../manage-print-jobs.desktop.in.h:2
+msgid "Manage Print Jobs"
+msgstr "Управљај пословима штампања"
+
+#: ../my-default-printer.desktop.in.h:2
 #, fuzzy
-#~ msgid "Quatro"
-#~ msgstr "Quatro"
-
-#~ msgid "10x14"
-#~ msgstr "10x14"
-
-#~ msgid "Test %s"
-#~ msgstr "Испробај %s"
-
-#~ msgid ""
-#~ "You have made changes, would you like to save them?\n"
-#~ "If you say no, you will not be able to print test pages."
-#~ msgstr ""
-#~ "Направили сте измене, да ли бисте желели да их сачувате?\n"
-#~ "Ако изаберете не, нећете моћи изштампати пробне странице."
-
-#~ msgid "Test"
-#~ msgstr "Проба"
-
-#~ msgid "Sent %s to \"%s\"."
-#~ msgstr "Послато %s на „%s“."
-
-#~ msgid "You must select a printer queue to delete."
-#~ msgstr "Морате назначити ред штампања који ћете избрисати."
-
-#~ msgid "You cannot delete an imported printer."
-#~ msgstr "Не можете избрисати увезени штампач."
-
-#~ msgid "Confirm Delete"
-#~ msgstr "Потврдите брисање"
-
-#~ msgid "Aliases"
-#~ msgstr "Псеудоними"
-
-#~ msgid "Details"
-#~ msgstr "Детаљи"
-
-#~ msgid "New"
-#~ msgstr "Нови"
-
-#~ msgid "Delete"
-#~ msgstr "Избриши"
-
-#~ msgid "Default"
-#~ msgstr "Подразумевано"
-
-#~ msgid "You must select a printer queue to edit."
-#~ msgstr "Морате назначити ред штампања за уређивање."
-
-#~ msgid ""
-#~ "This imported printer is protected from overrides. You can not edit it."
-#~ msgstr ""
-#~ "Овај увезени штампач је заштићен од премошћавања. Не можете га уредити."
-
-#~ msgid "Override?"
-#~ msgstr "Премостити?"
-
-#~ msgid "This is an imported printer. Do you want to create a local override?"
-#~ msgstr "Ово је увезени штампач. Да ли га желите локално премостити?"
-
-#~ msgid "You must select a queue to print to."
-#~ msgstr "Морате изабрати ред у којем ћете штампати."
-
-#~ msgid "Initializing alchemist edit environment ..."
-#~ msgstr "Иницијализујем alchemist окружење за уређивање ..."
-
-#~ msgid "Initializing linux printing database ..."
-#~ msgstr "Иницијализација Linux базе података за штампање ..."
-
-#~ msgid "Importing CUPS queues ..."
-#~ msgstr "Увозим CUPS редове ..."
-
-#~ msgid ""
-#~ "Failed to parse alchemist context: \n"
-#~ "%s"
-#~ msgstr ""
-#~ "Нисам успео да протумачим alchemist контекст: \n"
-#~ "%s"
-
-#~ msgid "Invalid printconf context"
-#~ msgstr "Неважећи printconf садржај"
-
-#~ msgid "\"%s\" is not a valid queue name."
-#~ msgstr "„%s“ није важеће име реда."
-
-#~ msgid "Need device, make and model.\n"
-#~ msgstr "Потребан уређај, марка и модел.\n"
-
-#~ msgid "add-local: queue name '%s' not unique\n"
-#~ msgstr "add-local: име реда „%s“ није јединствено\n"
-
-#~ msgid "add-local: no suitable name available\n"
-#~ msgstr "add-local: нема одговарајућег имена\n"
-
-#~ msgid "add-local: No information available about %s %s\n"
-#~ msgstr "add-local: нема одговарајуће информације о %s %s\n"
-
-#~ msgid "Now run printconf-backend (or restart lpd service)."
-#~ msgstr "Сада покрените printconf-backend (или изнова покрените lpd сервис)."
-
-#~ msgid "Need make and model.\n"
-#~ msgstr "Потребна марка и модел.\n"
-
-#~ msgid "You must run printconf-tui as root."
-#~ msgstr "Морате покренути printconf-tui као root."
-
-#~ msgid "Conflicting commands: %s and %s"
-#~ msgstr "Сукобљене команде: %s и %s"
-
-#~ msgid "No handler for command: "
-#~ msgstr "Не постоји манипулатор за команду: "
-
-#~ msgid "You must be root to run this program.\n"
-#~ msgstr "Морате бити root да би покренули овај програм.\n"
-
-#~ msgid "Queue name"
-#~ msgstr "Име реда"
-
-#~ msgid "Shared"
-#~ msgstr "Дељено"
-
-#~ msgid ""
-#~ "Do you want to save the changes\n"
-#~ "you made to your printer configuration?"
-#~ msgstr ""
-#~ "Желите ли сачувати промене које сте\n"
-#~ "направили током подешавања штампача?"
-
-#~ msgid "_Don't save"
-#~ msgstr "_Не сачувај"
-
-#~ msgid "_Cancel"
-#~ msgstr "_Откажи"
-
-#~ msgid "_Save"
-#~ msgstr "_Сачувај"
-
-#~ msgid "Browsed queues"
-#~ msgstr "Прегледани редови"
-
-#~ msgid ""
-#~ "Loading printer information.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "Учитавам информације о штампачу.\n"
-#~ "Молимо сачекајте ..."
-
-#~ msgid "Notes from the Linux Printing Database"
-#~ msgstr "Белешке из LPD базе података за штампање"
-
-#~ msgid "Printer notes:"
-#~ msgstr "Белешке штампача:"
-
-#~ msgid "Driver notes:"
-#~ msgstr "Белешке управљачког програма:"
-
-#~ msgid "Generic (click to select manufacturer)"
-#~ msgstr "Уопштени (притисните да изаберете произвођача)"
-
-#~ msgid ""
-#~ "You are changing an option\n"
-#~ "that has no effect in the print\n"
-#~ "spooler you are using (%s)."
-#~ msgstr ""
-#~ "Мењате опцију која нема\n"
-#~ "утицаја на помоћни програм\n"
-#~ "за штампање који користите (%s)."
-
-#~ msgid ""
-#~ "Applying changes.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "Примењујем промене.\n"
-#~ "Молим сачекајте..."
-
-#~ msgid "Failed to write queues."
-#~ msgstr "Неуспело записивање реда."
-
-#~ msgid ""
-#~ "There was a problem sending %s\n"
-#~ "to '%s' queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Десио се проблем приликом слања %s\n"
-#~ "у „%s“ ред.\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Sent %s\n"
-#~ "to '%s' queue.  Does it look okay?"
-#~ msgstr ""
-#~ "Послат %s\n"
-#~ "у „%s“ ред. Да ли изгледа у реду?"
-
-#~ msgid "Here are the messages that appeared in the error log:"
-#~ msgstr "Ево порука које су се појавиле у дневнику грешака:"
-
-#~ msgid "'%s' does not look like a PPD file."
-#~ msgstr "„%s“ не изгледа као PPD датотека."
-
-#~ msgid "File cannot be opened for reading."
-#~ msgstr "Датотека се не може отворити за читање."
-
-#~ msgid "PPD imported."
-#~ msgstr "PPD је увезен."
-
-#~ msgid "PPD import failed."
-#~ msgstr "PPD увоз није успео."
-
-#~ msgid "Invalid name"
-#~ msgstr "Неисправно име"
-
-#~ msgid "There is already a queue with that name."
-#~ msgstr "Већ постоји ред са тим именом."
-
-#~ msgid "An existing queue has an alias of that name."
-#~ msgstr "Постојећи ред има исти псеудоним."
-
-#~ msgid "'%s' does not exist, or is not writable."
-#~ msgstr "„%s“ не постоји, или није уписив."
-
-#~ msgid "Custom device"
-#~ msgstr "Произвољан уређај"
-
-#~ msgid "You must select a device."
-#~ msgstr "Морате изабрати уређај."
-
-#~ msgid "You must specify a path."
-#~ msgstr "Морате назначити путању."
-
-#~ msgid "You must specify a queue."
-#~ msgstr "Морате назначити ред."
-
-#~ msgid "You must choose an SMB share to print to."
-#~ msgstr "Морате изабрати SMB дељени ресурс на којем ћете штампати."
-
-#~ msgid "You must choose a share, not a host."
-#~ msgstr "Морате изабрати дељени штампач, не домаћина."
-
-#~ msgid "You must specify an SMB share to print to."
-#~ msgstr "Морате означити SMB дељени ресурс на којем ћете штампати."
-
-#~ msgid "You must specify a queue on the NCP server."
-#~ msgstr "Морате означити ред на NCP серверу."
-
-#~ msgid "You must specify a JetDirect printer to print to."
-#~ msgstr "Морате означити JetDirect штампач на којем ћете штампати."
-
-#~ msgid "You must specify an IP port number."
-#~ msgstr "Морате означити број IP порта."
-
-#~ msgid "Select the printer manufacturer and model."
-#~ msgstr "Изаберите произвођача и модел штампача."
-
-#~ msgid ""
-#~ "Select the printer manufacturer and model. Depending on how the remote "
-#~ "queue is configured, you may need to select the generic PostScript option "
-#~ "here."
-#~ msgstr ""
-#~ "Изаберите произвођача и модел штампача. У зависности како је даљински ред "
-#~ "подешен, можда ћете морати да изаберете уопштену PostScript опцију овде. "
-
-#~ msgid "You must select a printer model."
-#~ msgstr "Морате изабрати модел штампача."
-
-#~ msgid ""
-#~ "About to create the following queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Спремам се да направим следећи ред:\n"
-#~ " \n"
-
-#~ msgid "Type: "
-#~ msgstr "Врста: "
-
-#~ msgid "Printer: "
-#~ msgstr "Штампач: "
-
-#~ msgid "Device: "
-#~ msgstr "Уређај: "
-
-#~ msgid "Queue: "
-#~ msgstr "Ред: "
-
-#~ msgid "Share: "
-#~ msgstr "Заједнички штампач: "
-
-#~ msgid "Port: "
-#~ msgstr "Порт: "
-
-#~ msgid "Would you like to print a test page?"
-#~ msgstr "Да ли бисте желели да изштампате пробну страницу?"
-
-#~ msgid ""
-#~ "Would you like to print a test page?\n"
-#~ "Answering 'yes' will apply all changes\n"
-#~ "and print a test page to this printer."
-#~ msgstr ""
-#~ "Да ли бисте желели да изштампате пробну страницу?\n"
-#~ "Одговарајући са „да“ ћете применити све промене\n"
-#~ "и изштампати пробну страницу на овом штампачу."
-
-#~ msgid "Number of columns on a page"
-#~ msgstr "Број колона на страници"
-
-#~ msgid "Characters per inch"
-#~ msgstr "Знакова по инчу"
-
-#~ msgid "Billing label"
-#~ msgstr "Рачунска ознака"
-
-#~ msgid ""
-#~ "HH:MM:SS or '%s'.\n"
-#~ "Use GMT."
-#~ msgstr ""
-#~ "ЧЧ:ММ:СС или „%s“.\n"
-#~ "Користи GMT."
-
-#~ msgid ""
-#~ "Banner pages (start,end):\n"
-#~ "for example, '%s'"
-#~ msgstr ""
-#~ "Рекламне странице (почетак,крај):\n"
-#~ "на пример, „%s“"
-
-#~ msgid "Landscape (%s or %s)"
-#~ msgstr "Пејзаж (%s или %s)"
-
-#~ msgid "Lines per inch"
-#~ msgstr "Линија по инчу"
-
-#~ msgid ""
-#~ "Number of document pages per\n"
-#~ "printed page: 1, 2, 4, 6, 9, or 16"
-#~ msgstr ""
-#~ "Број страница документа по\n"
-#~ "одштапаној страници: 1, 2, 4, 6, 9, или 16"
-
-#~ msgid "Top margin in pt (1/72 in)"
-#~ msgstr "Горња маргина у pt (1/72 инча)"
-
-#~ msgid "Left margin in pt (1/72 in)"
-#~ msgstr "Лева маргина у pt (1/72 инча)"
-
-#~ msgid "Right margin in pt (1/72 in)"
-#~ msgstr "Десна маргина у pt (1/72 инча)"
-
-#~ msgid "Bottom margin in pt (1/72 in)"
-#~ msgstr "Доња маргина у pt (1/72 инча)"
-
-#~ msgid ""
-#~ "'%s', '%s', '%s'\n"
-#~ "'%s' or '%s'"
-#~ msgstr ""
-#~ "„%s“, „%s“,„%s“,\n"
-#~ "„%s“ или „%s“"
-
-#~ msgid "Page label"
-#~ msgstr "Ознака странице"
-
-#~ msgid "Pretty-print text (%s or %s)"
-#~ msgstr "Лепо штампани текст (%s или %s)"
-
-#~ msgid "Scaling (percentage)"
-#~ msgstr "Размера (у процентима)"
-
-#~ msgid "Word-wrapping (%s or %s)"
-#~ msgstr "Преношење речи (%s или %s)"
-
-#~ msgid "Option name"
-#~ msgstr "Име опције"
-
-#~ msgid "Value"
-#~ msgstr "Вредност"
-
-#~ msgid "Can't determine the printer model attached to this device."
-#~ msgstr "Не могу одредсити модел штампача прикљученог на овај уређај."
-
-#~ msgid "I don't know enough about this printer model to choose a driver."
-#~ msgstr ""
-#~ "Не знам довољно о овом моделу штампача за избор управљачког програма."
-
-#~ msgid "Edit queue option"
-#~ msgstr "Уреди опције реда"
-
-#~ msgid "Add queue option"
-#~ msgstr "Додај опције реда"
-
-#~ msgid "Invalid option name"
-#~ msgstr "Неисправно име опције"
-
-#~ msgid "Invalid value"
-#~ msgstr "Неисправна вредност"
-
-#~ msgid "Value for this option"
-#~ msgstr "Вредност за ову опцију"
-
-#~ msgid "None"
-#~ msgstr "Ништа"
-
-#~ msgid ""
-#~ "(this is the\n"
-#~ "recommended driver)"
-#~ msgstr ""
-#~ "(Ово је препоручени\n"
-#~ "управљачки програм)"
-
-#~ msgid "There are no options available for this driver."
-#~ msgstr "Нема доступних опција за овај управљачки програм."
-
-#~ msgid ""
-#~ "This driver requires Hewlett Packard's hpijs driver (available in the "
-#~ "hpijs package) which does not appear to be installed."
-#~ msgstr ""
-#~ "Овај управљачки програм захтева Hewlett Packard-ов hpijs управљачки "
-#~ "програм (доступан у hpijs пакету) који није инсталиран."
-
-#~ msgid "Do you wish to use it anyway?"
-#~ msgstr "Да ли желите да га свеједно користите?"
-
-#~ msgid ""
-#~ "This driver requires the Omni Print Driver System, which does not appear "
-#~ "to be installed."
-#~ msgstr ""
-#~ "Ово захтева Omni Print Driver System (Omni систем за штампање), који није "
-#~ "инсталиран."
-
-#~ msgid ""
-#~ "This driver requires the oki4drv daemon to be running, and it does not "
-#~ "appear to be."
-#~ msgstr ""
-#~ "Овај управљачки програм захтева oki4drv демон, али он није покренут."
-
-#~ msgid "Local Printer Device"
-#~ msgstr "Локални уређај за штампање"
-
-#~ msgid "IPP Print Queue"
-#~ msgstr "IPP ред за штампање"
-
-#~ msgid "Unix Print Queue"
-#~ msgstr "Unix ред за штампање"
-
-#~ msgid "Windows Print Queue"
-#~ msgstr "Windows ред за штампање"
-
-#~ msgid ""
-#~ "SMB print queues require the \"smbclient\" program, which does not appear "
-#~ "to be installed."
-#~ msgstr ""
-#~ "SMB редови за штампање захтевају „smbclient“ програм, који није "
-#~ "инсталиран. "
-
-#~ msgid ""
-#~ "It is part of the \"samba-client\" package, as distributed by Red Hat."
-#~ msgstr "То је део „samba-client“ пакета, достављеног од Red Hat-а."
-
-#~ msgid "Do you wish to enable it anyway?"
-#~ msgstr "Да ли желите свеједно да укључите?"
-
-#~ msgid "Novell Print Queue"
-#~ msgstr "Novell ред за штампање"
-
-#~ msgid ""
-#~ "NCP print queues require the \"nprint\" program, which does not appear to "
-#~ "be installed."
-#~ msgstr ""
-#~ "NCP редови за штампање захтевају „nprint“ програм, који није инсталиран."
-
-#~ msgid "It is part of the \"ncpfs\" package, as distributed by Red Hat."
-#~ msgstr "То је део „ncpfs“ пакета, достављеног од Red Hat-а."
-
-#~ msgid "Custom Command"
-#~ msgstr "Прилогођена команда"
-
-#~ msgid "Postscript Printer"
-#~ msgstr "Postscript штампач"
-
-#~ msgid "Text Only Printer"
-#~ msgstr "Штампач само за текст"
-
-#~ msgid "Raw Print Queue"
-#~ msgstr "Необрађен ред за штампање"
-
-#~ msgid "Custom Filter"
-#~ msgstr "Прилагођен филтар"
-
-#~ msgid "ERROR: No box named \"%s\" found.\n"
-#~ msgstr "ГРЕШКА: Не постоји кутија са именом „%s“\n"
-
-#~ msgid "ERROR: box \"%s\" is not a writable interface.\n"
-#~ msgstr "ГРЕШКА: кутија „%s“ није уписиво сучеље.\n"
-
-#~ msgid "Send Form-Feed (FF)"
-#~ msgstr "Пошаљи Form-Feed (FF, нова страница)"
-
-#~ msgid "Send End-of-Transmission (EOT)"
-#~ msgstr "Пошаљи End-of-Transmission (EOT, крај слања)"
-
-#~ msgid "Assume Unknown Data is Text"
-#~ msgstr "Претпостави да су непознати подаци текст"
-
-#~ msgid "Prerender Postscript"
-#~ msgstr "Припреми Postscript"
-
-#~ msgid "Convert Text to Postscript"
-#~ msgstr "Пребаци текст у Postscript"
-
-#~ msgid "Page Size"
-#~ msgstr "Величина странице"
-
-#~ msgid "Effective Filter Locale"
-#~ msgstr "Дејствујући филтар локализације"
-
-#~ msgid "Couldn't load driver information.\n"
-#~ msgstr "Нисам могао да учитам информације о управљачком програму\n"
-
-#~ msgid "You must run printconf-backend as root."
-#~ msgstr "Морате покренути printconf-backend као root."
-
-#~ msgid "Sharing properties - %s"
-#~ msgstr "Својства делења - %s"
-
-#~ msgid "Sharing properties"
-#~ msgstr "Својства делења"
-
-#~ msgid "All hosts"
-#~ msgstr "Сви домаћини"
-
-#~ msgid "Network device %s"
-#~ msgstr "Мрежни уређај %s"
-
-#~ msgid "Network devices %s"
-#~ msgstr "Мрежни уређаји %s"
-
-#~ msgid "Network address %s"
-#~ msgstr "Мрежна адреса %s"
-
-#~ msgid "(unknown)"
-#~ msgstr "(непознато)"
-
-#~ msgid "Add allowed hosts - %s"
-#~ msgstr "Додај дозвољене домаћине - %s"
-
-#~ msgid "Edit allowed hosts - %s"
-#~ msgstr "Уреди дозвољене домаћине - %s"
-
-#~ msgid ""
-#~ "LPD connections will be accepted\n"
-#~ "on all interfaces, and jobs for\n"
-#~ "all queues will be accepted."
-#~ msgstr ""
-#~ "LPD везе ће бити прихваћене\n"
-#~ "на свим спрегама, такође ће бити\n"
-#~ "прихваћени и послови за све редове."
-
-#~ msgid "Invalid network address"
-#~ msgstr "Неисправна мрежна адреса"
-
-#~ msgid "Invalid netmask"
-#~ msgstr "Неисправна мрежна маска"
-
-#~ msgid "Invalid IP address"
-#~ msgstr "Неисправна IP адреса"
-
-#~ msgid "*"
-#~ msgstr "*"
-
-#~ msgid "/"
-#~ msgstr "/"
-
-#~ msgid "72pt per inch"
-#~ msgstr "72pt по инчу"
-
-#~ msgid "="
-#~ msgstr "="
-
-#~ msgid "ASC_II text test page"
-#~ msgstr "ASC_II текст пробна страница"
-
-#~ msgid "About"
-#~ msgstr "О програму"
-
-#~ msgid "Add a new option"
-#~ msgstr "Додај нову опцију"
-
-#~ msgid "Add a new print queue"
-#~ msgstr "Додај нови ред за штампање"
-
-#~ msgid "Add a new queue"
-#~ msgstr "Додај нови ред"
-
-#~ msgid "Add an allowed host"
-#~ msgstr "Додај дозвољеног домаћина"
-
-#~ msgid "Add/edit queue option"
-#~ msgstr "Додај/уреди опције реда"
-
-#~ msgid "Allowed hosts"
-#~ msgstr "Дозвољени домаћини"
-
-#~ msgid "Apply"
-#~ msgstr "Примени"
-
-#~ msgid "Apply changes"
-#~ msgstr "Примени промене"
-
-#~ msgid "At end of job:"
-#~ msgstr "На крају посла:"
-
-#~ msgid "At start of job:"
-#~ msgstr "На почетку посла:"
-
-#~ msgid "Authentication"
-#~ msgstr "Аутентификација"
-
-#~ msgid "Autoselect driver"
-#~ msgstr "Самоизабери управљачки програм"
-
-#~ msgid "Available drivers:"
-#~ msgstr "Доступни управљачки програми:"
-
-#~ msgid "Banner pages"
-#~ msgstr "Рекламне странице"
-
-#~ msgid "Big5 PostScript test page"
-#~ msgstr "Big5 PostScript пробна страница"
-
-#~ msgid "Bottom margin (pt):"
-#~ msgstr "Доња маргина (pt):"
-
-#~ msgid "Choose the manufacturer"
-#~ msgstr "Изаберите произвођача"
-
-#~ msgid "Choose the queue type"
-#~ msgstr "Изаберите врсту реда"
-
-#~ msgid "Choose the type of queue you want to use"
-#~ msgstr "Изаберите врсту реда коју желите да користите"
-
-#~ msgid "Choose which other computers may use this queue."
-#~ msgstr "Изаберите који остали рачунари могу да користе овај ред."
-
-#~ msgid "Delete the selected queue"
-#~ msgstr "Избришите назначени ред"
-
-#~ msgid "Edit a print queue"
-#~ msgstr "Уреди ред штампања"
-
-#~ msgid "Edit the selected queue"
-#~ msgstr "Уреди изабрани ред"
-
-#~ msgid "Edit this host"
-#~ msgstr "Уреди овог домаћина"
-
-#~ msgid "Edit this option"
-#~ msgstr "Уреди ову опцију"
-
-#~ msgid "Enable _LPD protocol"
-#~ msgstr "Омогући _LPD протокол"
-
-#~ msgid "Enter the device you would like to use."
-#~ msgstr "Унесите уређај који би сте желели да користите."
-
-#~ msgid "Filter options"
-#~ msgstr "Опције филтрирања"
-
-#~ msgid "Finish, and create the new print queue"
-#~ msgstr "Заврши, и направи нови ред за штампање"
-
-#~ msgid "For example: /dev/lp0"
-#~ msgstr "На пример: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "Опште"
-
-#~ msgid "Generic"
-#~ msgstr "Уопштено"
-
-#~ msgid "IP port number (often 9100)"
-#~ msgstr "Број IP порта (често 9100)"
-
-#~ msgid ""
-#~ "If you like, you can enter a description of the printer to help you "
-#~ "identify it more easily."
-#~ msgstr "Ако желите, можете унети опис штампача како би га лакше препознали."
-
-#~ msgid "Imageable Area"
-#~ msgstr "Површина за штампање"
-
-#~ msgid "JPE_G test"
-#~ msgstr "JPE_G проба"
-
-#~ msgid "Japanese EUC PostScript test page"
-#~ msgstr "Јапанска EUC PostScript пробна страница"
-
-#~ msgid "Japanese JIS PostScript test page"
-#~ msgstr "Јапанска JIS PostScript пробна страница"
-
-#~ msgid "Japanese SJIS PostScript test page"
-#~ msgstr "Јапанска SJIS PostScript пробна страница"
-
-#~ msgid "Japanese _EUC text test page"
-#~ msgstr "Јапанска _EUC текстуална пробна страница"
-
-#~ msgid "Japanese _JIS text test page"
-#~ msgstr "Јапанска _JIS текстуална пробна страница"
-
-#~ msgid "Japanese _SJIS text test page"
-#~ msgstr "Јапанска _SJIS текстуална пробна страница"
-
-#~ msgid "Left margin (pt):"
-#~ msgstr "Лева маргина (pt):"
-
-#~ msgid "Linefeed translation"
-#~ msgstr "Преношење новог реда"
-
-#~ msgid "Network _devices"
-#~ msgstr "Мрежни _уређаји"
-
-#~ msgid "Networked CUPS (_IPP)"
-#~ msgstr "Умрежен CUPS (_IPP)"
-
-#~ msgid "Networked _JetDirect"
-#~ msgstr "Умрежен _JetDirect"
-
-#~ msgid "Networked _Novell (NCP)"
-#~ msgstr "Умрежен _Novell (NCP)"
-
-#~ msgid "Networked _UNIX (LPD)"
-#~ msgstr "Умрежен _UNIX (LPD)"
-
-#~ msgid "Networked _Windows (SMB)"
-#~ msgstr "Умрежен _Windows (SMB)"
-
-#~ msgid ""
-#~ "On the following screens, you will be asked to provide basic information "
-#~ "for adding a new print queue.  You will be able to edit the more advanced "
-#~ "options afterwards.\n"
-#~ "\n"
-#~ "Nothing will be done to your settings until you hit \"Finish\" on the "
-#~ "last screen."
-#~ msgstr ""
-#~ "На следећим екранима бићете упитани да дате основне информације за "
-#~ "додавање новог реда за штампање.  Моћи ћете да уредите напредније опције "
-#~ "касније.\n"
-#~ "\n"
-#~ "Ваша подешавања неће бити примењена све док не притиснете „Заврши“ на "
-#~ "последњем екрану."
-
-#~ msgid "Password:"
-#~ msgstr "Лозинка:"
-
-#~ msgid "Path:"
-#~ msgstr "Путања:"
-
-#~ msgid "Patience"
-#~ msgstr "Стрпљење"
-
-#~ msgid ""
-#~ "Please enter a name for this queue.  Choose a short name that begins with "
-#~ "a letter and contains no spaces."
-#~ msgstr ""
-#~ "Молим унесите име овог реда.  Изаберите кратко име које почиње са словом "
-#~ "и не садржи размаке."
-
-#~ msgid "Printer configuration"
-#~ msgstr "Подешавања штампача"
-
-#~ msgid "Printer driver"
-#~ msgstr "Управљачки програм за штампач"
-
-#~ msgid "Printer hostname or IP address"
-#~ msgstr "Име штампачевог домаћина или IP адреса"
-
-#~ msgid "Printer model"
-#~ msgstr "Модел штампача"
-
-#~ msgid "Printer/driver _notes..."
-#~ msgstr "_Белешке штампача/управљачког програма..."
-
-#~ msgid "Queue options"
-#~ msgstr "Опције реда"
-
-#~ msgid "Queue type"
-#~ msgstr "Врста реда"
-
-#~ msgid "Queue type:"
-#~ msgstr "Врста реда:"
-
-#~ msgid "Queue:"
-#~ msgstr "Ред:"
-
-#~ msgid "Remove this host from the list"
-#~ msgstr "Уклоните овог домаћина са листе"
-
-#~ msgid "Remove this option"
-#~ msgstr "Уклоните ову опцију"
-
-#~ msgid "Rescan devices"
-#~ msgstr "Поново скенирај уређаје"
-
-#~ msgid "Reset to the default options"
-#~ msgstr "Врати на подразумеване опције"
-
-#~ msgid "Right margin (pt):"
-#~ msgstr "Десна маргина (pt):"
-
-#~ msgid "Select a queue type:"
-#~ msgstr "Назначите врсту реда:"
-
-#~ msgid "Select the appropriate printer manufacturer and model."
-#~ msgstr "Изаберите одговарајућег произвођача и модел штампача."
-
-#~ msgid "Server hostname or IP address:"
-#~ msgstr "Име домаћина сервера или IP адреса:"
-
-#~ msgid "Set as _default"
-#~ msgstr "Намести на под_разумевано"
-
-#~ msgid "Set as de_fault"
-#~ msgstr "Намести на под_разумевано"
-
-#~ msgid "Set as default queue"
-#~ msgstr "Намести као подразумевани ред"
-
-#~ msgid "Short description:"
-#~ msgstr "Кратак опис:"
-
-#~ msgid "Short description: "
-#~ msgstr "Кратак опис:"
-
-#~ msgid "Single _IP address"
-#~ msgstr "Једина _IP адреса"
-
-#~ msgid "Specify..."
-#~ msgstr "Назначи..."
-
-#~ msgid "Strict RFC1179 compliance"
-#~ msgstr "Строга RFC1179 усаглашеност"
-
-#~ msgid "These settings are system-wide."
-#~ msgstr "Ова подешавања су за читав систем."
-
-#~ msgid "This allows older systems to print to this machine"
-#~ msgstr "Ово дозвољава старијим системима штампање на овој машини"
-
-#~ msgid "This enables CUPS IPP browsing"
-#~ msgstr "Ово омогућава CUPS IPP разгледање"
-
-#~ msgid ""
-#~ "This is the name of the queue.  It must begin with a letter and contain "
-#~ "no spaces."
-#~ msgstr "Ово је име реда. Мора почети словом и не сме да садржи размаке."
-
-#~ msgid "Top margin (pt):"
-#~ msgstr "Горња маргина (pt):"
-
-#~ msgid "Type in an IP address"
-#~ msgstr "Унесите IP адресу"
-
-#~ msgid "Type in the netmask, or the CIDR mask length"
-#~ msgstr "Унесите мрежну маску, или дужину CIDR маске"
-
-#~ msgid "Type in the share name"
-#~ msgstr "Унесите име дељеног штампача"
-
-#~ msgid "Use control-F to search"
-#~ msgstr "Користите control-F за претраживање"
-
-#~ msgid "User name:"
-#~ msgstr "Име корисника:"
-
-#~ msgid "_A4 PostScript test page"
-#~ msgstr "_A4 PostScript пробна страница"
-
-#~ msgid "_Action"
-#~ msgstr "_Акција"
-
-#~ msgid "_Add..."
-#~ msgstr "_Додај..."
-
-#~ msgid "_All hosts"
-#~ msgstr "_Сви домаћини"
-
-#~ msgid "_Apply"
-#~ msgstr "_Примени"
-
-#~ msgid "_Automatically find remote shared queues"
-#~ msgstr "_Аутоматски нађи даљинске дељене распореде"
-
-#~ msgid "_Big5 text test page"
-#~ msgstr "_Big5 текстуална пробна страница"
-
-#~ msgid "_CUPS test page"
-#~ msgstr "_CUPS пробна страница"
-
-#~ msgid "_Contents"
-#~ msgstr "_Садржај"
-
-#~ msgid "_Custom device"
-#~ msgstr "_Прилагођен уређај"
-
-#~ msgid "_Defaults"
-#~ msgstr "_Подразумеване вредности"
-
-#~ msgid "_Delete"
-#~ msgstr "_Избриши"
-
-#~ msgid "_Delete queue"
-#~ msgstr "_Избриши ред"
-
-#~ msgid "_Duplex test"
-#~ msgstr "_Обострани тест"
-
-#~ msgid "_Edit queue"
-#~ msgstr "_Уреди ред"
-
-#~ msgid "_Edit..."
-#~ msgstr "_Уреди..."
-
-#~ msgid "_Help"
-#~ msgstr "_Помоћ"
-
-#~ msgid "_Import PPD..."
-#~ msgstr "_Увези PPD..."
-
-#~ msgid "_Network address"
-#~ msgstr "_Мрежна адреса"
-
-#~ msgid "_New queue"
-#~ msgstr "_Нови ред"
-
-#~ msgid "_Notes..."
-#~ msgstr "_Белешке..."
-
-#~ msgid "_Remove"
-#~ msgstr "У_клони"
-
-#~ msgid "_Rescan devices"
-#~ msgstr "_Поново скенирај уређаје"
-
-#~ msgid "_Sharing..."
-#~ msgstr "_Дељено..."
-
-#~ msgid "_Test"
-#~ msgstr "_Проба"
-
-#~ msgid "_This queue is available to other computers"
-#~ msgstr "_Овај ред је доступан другим рачунарима"
-
-#~ msgid "_US Letter PostScript test page"
-#~ msgstr "_US писмо PostScript пробна страница"
-
-#~ msgid "_classified"
-#~ msgstr "_заштићен"
-
-#~ msgid "_none"
-#~ msgstr "_ништа"
-
-#~ msgid "_secret"
-#~ msgstr "_тајни"
-
-#~ msgid "_standard"
-#~ msgstr "_стандардан"
-
-#~ msgid "_topsecret"
-#~ msgstr "_врхунска тајна"
-
-#~ msgid "_unclassified"
-#~ msgstr "не_заштићен"
-
-#~ msgid "c_onfidential"
-#~ msgstr "пове_рљив"
-
-#~ msgid "ipp"
-#~ msgstr "ipp"
-
-#~ msgid "jetdirect"
-#~ msgstr "jetdirect"
-
-#~ msgid "local"
-#~ msgstr "локални"
-
-#~ msgid "lpd"
-#~ msgstr "lpd"
-
-#~ msgid "ncp"
-#~ msgstr "ncp"
-
-#~ msgid "none"
-#~ msgstr "ништа"
-
-#~ msgid "smb"
-#~ msgstr "smb"
-
-#~ msgid "Configure printers"
-#~ msgstr "Подешава штампаче"
-
-#~ msgid "Printing"
-#~ msgstr "Штампање"
+msgid "Select default printer"
+msgstr "Намести као подразумевани штампач"

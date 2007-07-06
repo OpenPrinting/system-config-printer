@@ -1,3 +1,1258 @@
+2007-06-15  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.68.
+
+2007-06-15  Tim Waugh  <twaugh@redhat.com>
+
+	* my-default-printer.py: New file.
+	* my-default-printer.desktop.in: New file.
+	* my-default-printer: New file.
+	* po/POTFILES.in: Translate it.
+	* Makefile.am: Ship it and install it.
+
+2007-06-15  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (NewPrinterNotification.NewPrinter): Keep the
+	notification object around so it knows which action callback to
+	call (bug #241531).
+
+2007-06-08  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am: Don't use the TrayIcon category in the applet desktop
+	file since that is reserved now.  Use HardwareSettings and Printing
+	categories for the admin tool's desktop file.
+
+2007-06-08  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.67.
+
+2007-06-08  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py (PPDs.orderPPDNamesByPreference): Prefer HPIJS for HP
+	devices.
+	(getDriverType): New function.
+
+	* system-config-printer.py (GUI.on_tvNPDevices_cursor_changed):
+	Use PPDs class for ID matching.
+	(GUI.fillMakeList): Use PPDs class.
+	(GUI.fillModelList): Likewise.
+	(GUI.on_tvNPModels_cursor_changed): Likewise.
+	(GUI.on_tvNPDrivers_cursor_changed): Likewise.
+	(GUI.getNPPPD): Likewise.
+	(GUI.loadPPDs): New method, replacing loadFoomatic().
+	(GUI.dropPPDs): New method, replacing unloadFoomatic().
+	(GUI.on_btnChangePPD_clicked): Load PPDs on demand.
+	(GUI.on_btnChangePPD_clicked): Don't drop PPDs each time.
+	(GUI.on_tvNPModels_cursor_changed): Order PPD names by preference.
+	(GUI.getPPDs_thread): Fetch PPDs from the correct server.
+	(GUI.getDevices_thread): Fetch devices from the correct server.
+
+	* ppds.py (PPDs.getPPDNameFromDeviceID): Display message to stdout
+	when the ID was not matched.
+
+	* applet.py (NewPrinterNotification.NewPrinter): Use
+	ppdMakeModelSplit from the new ppds module, not the old foomatic
+	module.
+
+	* Makefile.am: Ship ppds.py as a script.  Running it on its own
+	gives statistics on the installed PPDs, and runs some ID tests.
+
+	* foomatic.py (Foomatic.getPrinterFromCupsDevice): Don't split the
+	CMD field: it is already split.
+	* cupshelpers.py (parseDeviceID): Always split the CMD field.
+
+	* manage-print-jobs.desktop.in (_Name): Use capital letters at the
+	start of each word for the Name field (bug #242859).
+
+2007-06-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.save_printer): Don't call
+	populateList() after saving printer, just update the printer we
+	changed.  This prevents a GTK+ crash (bug #242961).
+	(GUI.maySelectItem): Only clear the changed set when the cursor is
+	going to change.
+	(GUI.on_tvMainList_cursor_changed): Don't update when unapplied
+	changes remain.
+
+2007-06-06  Tim Waugh  <twaugh@redhat.com>
+
+	* print-applet.desktop.in: Fixed Name field to start each word with
+	a capital letter (bug #242859).
+
+2007-05-30  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.66.
+
+2007-05-30  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (_ppdMakeModelSplit): Don't require ppdname when
+	stripping foomatic driver information.
+
+	* applet.py (NewPrinterNotification): Use the system bus not the
+	session bus.
+
+	* newprinternotification.conf: D-Bus configuration file.
+	* Makefile.am: Ship it.
+
+2007-05-28  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am (nobase_pkgdata_DATA): Ship 'inspecting' icon.
+
+	* applet.py (NewPrinterNotification): Implemented.
+
+2007-05-25  Tim Waugh  <twaugh@redhat.com>
+
+	* man/system-config-printer.xml: Document new options.
+
+	* system-config-printer.py (GUI.populateList): Now
+	--configure-printer=x automatically selects that printer on
+	start-up, and --choose-driver=x invokes the "Change PPD" dialog
+	as well.  Needed for "new printer" notifications in the applet.
+
+2007-05-23  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.set_special_statusicon): New method.
+	(JobManager.unset_special_statusicon): New method.
+	(JobManager.set_statusicon_from_pixbuf): New method.
+	(JobManager.refresh): Use it.
+
+	* system-config-printer.py (GUI.__init__): Added 'Hold until:'
+	control to Job Options screen (bug #239776).
+	* cupshelpers.py (Printer._getAttributes): Allow job-hold-until to
+	be set (bug #239776).
+
+2007-05-22  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.65.
+
+2007-05-21  Tim Waugh  <twaugh@redhat.com>
+
+	* man/system-config-printer.xml: New file.
+	* Makefile.am: Ship it.  Create man files and install them.
+
+	* Makefile.am: Not all of the Python modules are scripts.  Mark
+	the ones that are and aren't so that the executable permissions
+	are set correctly on install.
+
+2007-05-16  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_btnSelectDevice_clicked): Start
+	fetching the device list in a separate thread.
+	(GUI.loadFoomatic): Start fetching the PPD list while we parse the
+	XML database.
+	(GUI.on_new_printer_activate): Start fetching PPD and device lists
+	while the user picks a name for the printer.
+
+	* applet.py (JobManager.refresh): Limit refresh frequency.
+	Sometimes several D-Bus events will occur in quick succession, and
+	we do not want a full refresh every single time.
+
+2007-05-15  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am (DISTCLEANFILES): Don't removed intltool .in files
+	on distclean.
+
+2007-05-09  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in (ALL_LINGUAS): Added kn.
+
+2007-04-29  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.__init__): Prevent traceback.
+
+2007-04-26  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.update_job_creation_times): Split out
+	creation time text into separate function, and update it every
+	minute when there are jobs.
+
+2007-04-25  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.refresh): Fix relative time description.
+
+2007-04-13  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.update_connecting_devices): New method.
+	Be a bit smarter about connecting-to-device, to make sure it
+	really has been in that state for as long as we think.
+
+2007-04-11  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (StateReason.get_description): Fixed typo.
+	(JobManager.check_still_connecting): New method.
+	(JobManager.check_state_reasons): Add a timed callback to check
+	for connecting-to-device after a minute's time.
+	(StateReason.get_description): Messages for connecting-to-device.
+
+2007-04-10  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py: Don't connect to the session bus if we don't need to,
+	and exit if connecting to D-Bus fails for any reason (Ubuntu #102992).
+	(JobManager.check_state_reasons): Put warning/error symbol at the
+	bottom right of the icon instead of the top right.
+
+	* system-config-printer.py (GUI.parse_SMBURI): Use urllib for
+	quoting/unquoting (Val Henson, Ubuntu #105022).
+	(GUI.construct_SMBURI): Likewise.
+	(percentEncode, percentDecode): Removed.
+
+2007-04-06  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.check_state_reasons): Clear the status bar
+	when there is no warning/error to report.
+	(JobManager.refresh): Check status reasons when running without a
+	tray icon.
+	(JobManager.check_state_reasons): Only check for notifications to
+	close if we are running with a tray icon.
+
+2007-04-05  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.64.
+
+2007-04-05  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (StateReason): New class.
+	(JobManager.__init__): Set up printer state treeview.
+	(JobManager.on_printer_status_delete_event): New method.
+	(JobManager.on_show_printer_status_activate): New method.
+	(JobManager.check_state_reasons): Update printer state display
+	window.
+	(JobManager.check_state_reasons): Send notifications for printer
+	errors on our jobs.
+	(JobManager.check_state_reasons): Set statusbar.
+
+	* applet.glade: Added windows for printer state display.
+
+	* applet.py (JobManager.__init__): Set rules hint for the
+	treeview.
+
+2007-04-04  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.check_state_reasons): New method.
+	(worst_printer_state_reason): Helper function.
+	(collect_printer_state_reasons): Helper function.
+
+2007-04-05  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.63.
+
+2007-04-05  Tim Waugh  <twaugh@redhat.com>
+
+	* po: Updated translations pulled in.
+	* manage-print-jobs.desktop.in: This file had not been checked in.
+
+2007-04-02  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.62.
+
+2007-04-02  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_tvSMBBrowser_cursor_changed):
+	Prevent a traceback (bug #225351).  Patch from Jani Monoses.
+
+	* manage-print-jobs.desktop.in: New file.
+	* po/POTFILES.in: Translate it.
+	* Makefile.am: Ship it.
+
+	* applet.py (monitor_session): Stop running when the session
+	ends.
+
+2007-03-30  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py, cupsd.py, cupshelpers.py, foomatic.py,
+	  system-config-printer.py: Use /usr/bin/env instead of /bin/env.
+
+	* system-config-printer.desktop.in: Use printer.png as the icon.
+
+2007-03-30  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.61.
+
+2007-03-30  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (PrintersConf): Reinstated (bug #203539).
+	(getPrinters): Fetch and parse printers.conf if needed for SMB
+	authentication details (bug #203539).
+
+	* applet.py: Added support for --help, --version and
+	--no-tray-icon.
+	(show_help): Implemented.
+	(show_version): Likewise.
+
+2007-03-27  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.60.
+
+2007-03-27  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.refresh): Use job state constants (requires
+	pycups 1.9.19).
+	(JobManager.on_treeview_button_press_event): Likewise.
+
+	* applet.py: No need to check for --sm-client-id now that the
+	applet has a different name.
+
+	* Makefile.am: Better desktop-file categories.
+
+	* print-applet.desktop.in: Remove 'eggcups' name from the
+	applet.
+	* Makefile.am: Install the autostart file in the correct
+	location, and install the applet.
+	* system-config-printer-applet: New file.
+
+	* system-config-printer.py (GUI.reconnect): Handle reconnection
+	failure (Ubuntu #95629).
+
+2007-03-26  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.59.
+
+2007-03-26  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.58.
+
+2007-03-26  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.on_icon_hide_activate): Hide icon when
+	requested (bug #233899).  If the service is not running, quit.
+
+	* applet.glade: Icon pop-up menu.
+	
+	* applet.glade: Removed status bar (bug #233899).
+
+	* applet.py (JobManager.__init__): Ellipsize the document name
+	(bug #233899).
+	(PrintDriverSelection.PromptPrintDriver): Handle failure to start
+	the service.
+	(JobManager.__init__): Set a window icon (bug #233899).
+
+2007-03-23  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.refresh): Fixed '1 document queued'
+	string.
+
+2007-03-21  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.57.
+
+2007-03-21  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am: Ship the applet icon.
+
+	* applet.py: Put the PrintDriverSelection service on the system
+	bus not the session bus.
+	Exit immediately if --sm-client-id is seen (bug #233261).
+
+	* print-applet.desktop.in: New file.
+	* po/POTFILES.in: Translate it.
+	* Makefile.am: Merge translations and ship it.
+
+	* applet.py, applet.glade: New files.
+	* po/POTFILES.in: Translate them.
+
+2007-03-17  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_btnPMakeDefault_clicked):
+	Prevent traceback when removing temporary file (Ubuntu #92914).
+
+2007-03-16  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.56.
+
+2007-03-16  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (Printer._getAttributes): Removed always-shown
+	options from the possible_attributes list.
+
+	* cupshelpers.py (Printer._getAttributes): Handle 'sides'.
+	* system-config-printer.py (GUI.__init__): Likewise.
+
+	* options.py (OptionAlwaysShown.set_default): New method.
+	(OptionAlwaysShown.__init__): Use it.
+	* system-config-printer.py (GUI.fillPrinterTab): Likewise.
+
+	* options.py (OptionAlwaysShown.set_widget_value): Handle str-type
+	IPP enums.
+	(OptionAlwaysShown.get_widget_value): Likewise.
+
+2007-03-13  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (Printer._getAttributes): Handle 'media'.
+	* system-config-printer.py (GUI.fillPrinterTab): Pass supported
+	values through to the option widget, if supplied.
+	* options.py (OptionAlwaysShown.reinit): Fit the supported list,
+	if supplied, to	the combobox.
+
+	* cupshelpers.py (Printer._getAttributes): Handle 'job-priority'.
+	* system-config-printer.py (GUI.__init__): Likewise.
+
+	* cupshelpers.py (Printer._getAttributes): Handle 'finishings'.
+	* system-config-printer.py (GUI.__init__): Likewise.
+
+	* cupshelpers.py (PrintersConf): Removed (bug #231826).
+	(Printer._getAttributes): Removed set_attributes parameter.
+	(Printer.__init__): Likewise.
+	(Printer._getAttributes): For the time being ignore finishings,
+	job-priority, media, document-format, job-hold-until, sides and
+	notify-lease-duration defaults.
+
+2007-03-12  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.checkDriverExists): Updated
+	filter-to-driver map.
+
+2007-03-12  Tim Waugh  <twaugh@redhat.com>
+
+	* probe_printer.py (LpdServer._open_socket): Handle hostname
+	look-up failures (Ubuntu #87115).
+
+2007-03-02  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Foomatic.getPrinterFromCupsDevice): Make
+	commandsets into a list instead of a string (seen in bug
+	#230665).
+
+2007-02-27  Tim Waugh  <twaugh@redhat.com>
+
+	* options.py (OptionAlwaysShown.bool_type): Parse Boolean strings
+	correctly.
+
+2007-02-27  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.55.
+
+2007-02-27  Tim Waugh  <twaugh@redhat.com>
+
+	* options.py (OptionAlwaysShown.reinit): Use converted value.
+
+2007-02-27  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.54.
+
+2007-02-27  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py: Disable debugging code (oops).
+
+2007-02-27  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.53.
+
+2007-02-26  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Added 'scaling'
+	option.
+	(GUI.__init__): Added 'saturation', 'hue' and 'gamma' options.
+	(GUI.__init__): Added 'cpi', 'lpi', 'page-left', 'page-right',
+	'page-top', 'page-bottom', 'prettyprint', 'wrap' and 'columns'
+	options.
+	(GUI.fillPrinterOptions): 6 pixels row spacings for PPD options.
+	(GUI.draw_other_job_options): No job options are editable for
+	remote queues (although might not be a bad idea for implementing
+	lpoptions edits..).
+
+2007-02-23  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Added 'mirror' option.
+
+	* system-config-printer.glade: "Other" job options.
+	* system-config-printer.py (GUI.draw_other_job_options): New
+	function to redraw the other job options table.
+	(GUI.add_job_option): Implemented for new UI.
+	(GUI.on_btnJOOtherRemove_clicked): Likewise.
+	(GUI.on_btnNewJobOption_clicked): Likewise.
+	(GUI.on_entNewJobOption_changed): Likewise.
+	(GUI.on_entNewJobOption_activate): Pressing Return in the new
+	option text entry widget adds the option.
+	(GUI.fillPrinterTab): Added support for "Other" job options.
+
+	* options.py (OptionAlwaysShown.set_widget_value): Make
+	combobox_map optional.
+	(OptionAlwaysShown.get_current_value): Likewise.
+	(OptionAlwaysShown.set_widget_value): Handle CheckButtons.
+	(OptionAlwaysShown.get_widget_value): Likewise.
+	(OptionAlwaysShown.is_changed): Explicitly check original_value
+	against None to protect against false bools.
+
+2007-02-22  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_job_option_reset): New
+	function.
+	(GUI.on_job_option_changed): New function.
+
+	* options.py (OptionInterface): Interface class for Option.
+	(Option): Inherit OptionInterface.
+	(OptionAlwaysShown): New class for always-shown job options
+	widgets.
+
+2007-02-21  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.fillPrinterTab): Make the text
+	entry boxes sensitive but not editable for remote printers (bug
+	#229381).
+
+	* cupshelpers.py (Printer.testsQueued): Handle failure gracefully
+	(bug #229406).
+
+	* system-config-printer.py (GUI.fillPrinterTab): Display an error
+	dialog if we get a RuntimeError trying to get the PPD, instead of
+	just a traceback (bug #229406).
+
+	* cupshelpers.py (Printer.getPPD): Only IPP_NOT_FOUND means the
+	queue is raw; anything else needs to be handled as an error (bug
+	#229406).
+
+	* system-config-printer.py (GUI.maySelectItem): Handle applying
+	changes here rather than...
+	(GUI.on_tvMainList_cursor_changed): ...here, after the new item
+	has been selected (bug #229378).
+
+	* system-config-printer.glade: Added scrollbars to main printer
+	list (bug #229453).
+	Set maximum width of default printer label (bug #229453).
+
+2007-02-20  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.fillPrinterOptions): Better
+	layout.
+
+2007-02-14  Tim Waugh  <twaugh@redhat.com>
+
+	* optionwidgets.py: Use gettext instead of rhpl.translate.
+	* system-config-printer.py (domain): Likewise.
+
+2007-02-13  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.52.
+
+2007-02-13  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Foomatic.getPrinterFromDeviceID): Sort models using
+	cups.modelSort before scanning for a close match (bug #228505).
+	(Foomatic.getPrinterFromDeviceID): Fixed matching logic (bug #228505).
+
+2007-02-09  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.51.
+
+2007-02-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_tvNPMakes_cursor_changed):
+	Handle interactive search a little better (bug #227935).
+	(GUI.on_tvNPModels_cursor_changed): Likewise.
+
+	* system-config-printer.py (GUI.on_btnPMakeDefault_clicked): Fixed
+	typo (bug #227936).
+
+2007-02-08  Tim Waugh  <twaugh@redhat.com>
+
+	* optionwidgets.py (OptionWidget): Remember the tab label.
+	* system-config-printer.py (GUI.setDataButtonState): Embolden the
+	tab containing options in conflict (bug #226368).
+
+	* system-config-printer.py (GUI.fillPrinterTab): Prevent display
+	glitch in job options list when clicking on printer repeatedly.
+	(GUI.on_btnConflict_clicked): List conflicting options (bug
+	#226368).
+
+2007-02-07  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.50.
+
+2007-02-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.fillPrinterTab): Handle unknown
+	job options (bug #225538).
+	(GUI.on_btnPMakeDefault_clicked): Don't throw exception if
+	getFile() already removed the temporary file (bug #226703).
+	(GUI.get_PPD_but_handle_errors): Get the arguments the right way
+	round.
+	(GUI.get_PPD_but_handle_errors): Likewise.
+	(GUI.fillPrinterTab): Point to the server settings if a printer is
+	shared but the server is not publishing shared printers (bug
+	#225081).
+	(GUI.setConnected): Clear out remembered server settings when
+	connecting to a new server.
+
+	* cupshelpers.py (Printer._getAttributes): cpi, lpi and scaling
+	are floats (bug #224651).
+
+	* options.py (OptionWidget): Handle floating point options.
+	(OptionNumeric.get_current_value): Allow floating point values
+	(bug #224651).
+
+	* system-config-printer.py (GUI.checkDriverExists): If there are
+	unreplaced HTML entities, give up checking (bug #225104).
+	(GUI.save_printer): Don't write an ellipsis in the actual device
+	URI we set (bug #227643).
+
+	* configure.in (ALL_LINGUAS): Added bs.
+
+2007-01-24  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (percentDecode): Fix hex digits list so
+	we get A-F right (bug #223770).
+
+2007-01-16  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.49.
+
+2007-01-16  Tim Waugh  <twaugh@redhat.com>
+
+	* optionwidgets.py (Option.__init__): Maintain 'enabled' state.
+	(Option.enable): Method for enabling.
+	(Option.disable): Method for disabling.
+	(Option.is_enabled): Method for discovering whether enabled.
+	(Option.writeback): Only mark PPD option if enabled.
+
+	* system-config-printer.py (GUI.fillPrinterOptions): Take
+	references to InputSlot and ManualFeed widgets.
+	(GUI.option_changed): Enable/disable InputSlot option based on
+	ManualFeed state (bug #222490).
+
+2007-01-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (on_btnConflict_clicked): Fixed typo in
+	string.
+
+	* system-config-printer.py (GUI.checkDriverExists): Fixed another
+	traceback.
+
+2007-01-15  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.48 (only translations updated).
+
+2007-01-12  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.47.
+
+2007-01-12  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.get_PPD_but_handle_errors): Fixed
+	typo.
+	(GUI.checkDriverExists): Handle multiple commands better.
+	(GUI.pathcheck): Handle shell builtins (bug #222413).
+
+2007-01-11  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Updated copyright
+	notice.
+	(GUI.__init__): Fixed incorrect nouns-with-capitals in
+	translatable text.
+	(GUI.on_connect_activate): Likewise.
+	(GUI.on_btnPrintTestPage_clicked): US spelling for 'cancelling'.
+	(GUI.on_delete_activate): Fixed incorrect nouns-with-capitals in
+	translatable text.
+
+2007-01-08  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.46.
+
+2007-01-08  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Printer.getPPDDrivers): Removed some dead code.
+
+	* cupshelpers.py (setPPDPageSize): New function.
+	* system-config-printer.py (GUI.on_btnNPApply_clicked): Use it
+	for user-provided PPD.
+	(GUI.on_btnNPApply_clicked): Use it for new printers (bug
+	#221702).
+
+	* configure.in (ALL_LINGUAS): Added ro.
+
+2007-01-03  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.45.
+
+2007-01-03  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.checkDriverExists): Fixed
+	traceback.
+
+2007-01-02  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.44.
+
+2007-01-02  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Foomatic.getPrinterFromDeviceID): Preserve case in
+	model string when dumping debug output.
+
+2006-12-28  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.get_PPD_but_handle_errors): Fixed
+	traceback in error display.
+
+2006-12-21  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.43.
+
+2006-12-21  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.checkDriverExists): Stop checking
+	for binaries if we already discovered one missing (bug #220347).
+	(GUI.on_btnNPApply_clicked.get_PPD_but_handle_errors): Distinguish
+	between PPD and Foomatic errors, and for PPD errors show the
+	output of the cupstestppd command to help pinpoint the
+	problem (bug #220136).
+
+2006-12-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_btnApply_clicked): Use
+	nonfatalException() if exception caught.
+
+2006-12-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (nonfatalException): New function.
+	(GUI.on_tvNPDevices_cursor_changed): Use it when trying to
+	auto-match printer model.
+
+	* foomatic.py (Foomatic.getPrinterFromDeviceID): New function.
+	(Foomatic.getPrinterFromCupsDevice): Use it.
+	(Foomatic.getPPD): Likewise (bug #219518).
+
+2006-12-12  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Foomatic.getPrinterFromCupsDevice): Don't check
+	against DES field at all; if the make and model strings don't
+	match, the description field isn't helpful.  Example: '6543' which
+	is the same between two unrelated devices.
+
+	* Makefile.am: New target missing-languages.
+
+2006-12-11  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.42.
+
+2006-12-11  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Foomatic.getPrinterFromCommandSet): Fixed typo.
+	(Foomatic.getPrinterFromCupsDevice): Case-insensitive matching
+	when Device ID not known to database.
+
+	* configure.in (ALL_LINGUAS): Added mr.
+
+2006-12-07  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.41.
+
+2006-12-01  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_about_activate): hpfax backend
+	should set empty/description tab.
+	(GUI.on_tvNPDevices_cursor_changed): Set description label to
+	reflect backend type.
+
+	* system-config-printer.glade: Added label to describe devices
+	with no optional parameters.
+
+2006-11-30  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (Printer.setEnabled): Optional 'reason'
+	argument.
+	(Printer.setAccepting): Likewise.
+
+	* system-config-printer.glade: Centre Connecting dialog on
+	parent.
+	* system-config-printer.py (GUI.on_connect_activate): Set
+	Connecting dialog transient for main window.
+	(GUI.reconnect): Provoke libcups into reconnecting.
+	(GUI.populateList): Keep Server Settings selected if it was before.
+
+2006-11-28  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.setNPButtons): Set Forward button
+	sensitive on Device screen in new-printer dialog (bug #217515).
+	(GUI.on_tvNPDevices_cursor_changed): Don't pre-select make and
+	model when not discoverable for chosen device (bug #217518).
+	(GUI.show_HTTP_Error): Fixed typo (bug #217537).
+	(GUI.on_btnPMakeDefault_clicked): If the system-wide lpoptions
+	file sets a default printer that conflicts with the new server
+	default, alter lpoptions so that it no longer overrides
+	it (bug	#217395).
+	(GUI.show_HTTP_Error): Describe cups.HTTPError -1 as 'not
+	connected'.
+	(GUI.reconnect): Implemented.
+	(GUI.apply): Reconnect after applying server settings.
+
+2006-11-27  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.40.
+
+2006-11-24  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in (ALL_LINGUAS): Added lv and si.
+
+2006-11-23  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Don't set button widths in
+	new-printer dialog (bug #217025).
+
+2006-11-21  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Removed username:password from
+	hint string because we add that in afterwards.
+
+2006-11-21  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.39.
+
+2006-11-21  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Added SMB hint label on device
+	screen (bug #212759).
+
+2006-11-15  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in (ALL_LINGUAS): Updated.
+
+2006-11-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Make PPD NickName selectable.
+
+	* system-config-printer.py (GUI.on_btnChangePPD_clicked): Busy
+	cursor while loading foomatic and PPD list (bug #215527).
+	(GUI.on_btnSelectDevice_clicked): Busy cursor while loading
+	foomatic and device list (bug #215527).
+
+2006-11-14  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.38.
+
+2006-11-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.pathcheck): Fixed indentation so
+	that IJS servers are checked to be in the path.
+
+	* foomatic.py (Foomatic.addCupsPPDs): Fixed traceback in
+	'ppd-device-id' parsing code.
+
+2006-11-13  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.37.
+
+2006-11-11  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_btnPrintTestPage_clicked): IPP
+	Error dialog for any cancelling errors.
+
+2006-11-10  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.setTestButton): New function for
+	allowing user to cancel test jobs if there are some.
+	(GUI.fillPrinterTab): Use it.
+	(GUI.on_btnPrintTestPage_clicked): Cancel jobs if cancelling (bug
+	#215054).
+
+	* cupshelpers.py (Printer.testsQueued): New method for finding out
+	if test pages are queued.
+	(Printer.cancelJobs): New method for cancelling jobs.
+
+2006-11-10  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.36.
+
+2006-11-10  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Foomatic.addCupsPPDs): No need to remove foomatic
+	PPDs now; this is handled in foomatic.
+
+2006-11-09  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (parseDeviceID): New function.
+	(Device.__init__): Use it.
+	* foomatic.py (Foomatic._add_printer): Likewise.
+	(Foomatic.addCupsPPDs): Parse IEEE 1284 Device IDs from CUPS PPDs
+	and add them to the make/model look-up dictionary.
+	(Foomatic._add_printer): Don't add empty fields to the look-up
+	dictionary.
+	(Foomatic.getPrinterFromCupsDevice): Fixed typo.
+	(Foomatic.getPrinterFromCommandSet): New function.
+	(Foomatic.getPPD): Use it.
+	(Foomatic.getPrinterFromCupsDevice): Match against command sets.
+
+	* foomatic.py (Foomatic.getPPD): Convert command sets to lower
+	case for comparison.
+	(Foomatic.getPPD): Match PCL6, PCL5e, PCL5c, ESCPL2 command sets.
+
+	* foomatic.py (Foomatic._add_printer): Parse
+	'autodetect/*/ieee1284' entries (bug #214761).
+
+2006-11-08 Florian Festi  <ffesti@redhat.com>
+
+	* foomatic.py (Foomatic.getPPD): now matches against 
+	commandset (bug #214181), removed debug code and
+	code commented out
+
+	* cupshelpers.py: removed code commented out
+
+2006-11-07  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: 0.7.35.
+
+2006-11-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.fillModelList): Reset scroll.
+	(GUI.fillMakeList): Likewise.
+	(GUI.fillDriverList): Scroll to pre-selected driver.
+
+	* foomatic.py (Foomatic.getPrinterFromCupsDevice): Handle bogus
+	HPLIP Device IDs (bug #214434).
+
+	* system-config-printer.py (GUI.pathcheck): Support absolute paths
+	in foomatic command line.
+	(GUI.pathcheck): Fixed typo.
+	(GUI.on_tvNPDrivers_cursor_changed): Better PPD information
+	display (bug #214365).
+
+	* foomatic.py (_ppdMakeModelSplit): Merge CUPS and foomatic
+	manufacturers when they differ in case.
+
+	* system-config-printer.py (GUI.on_btnNPApply_clicked): Handle
+	missing driver XML for drivers like Gutenprint.
+
+	* system-config-printer.py (GUI.checkDriverExists): Check for
+	'*cupsFilter' lines and verify filters are installed (bug
+	#212139).
+
+	* foomatic.py (_ppdMakeModelSplit):  Better display for models
+	driven by Gimp-Print PPDs (bug #213862).
+
+2006-11-06  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.34.
+
+2006-11-06  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Foomatic.getPPD): Only match against description
+	when it is valid (bug #206907).
+
+	* cupshelpers.py (PrintersConf.parse): Handle invalid printers.conf
+	file gracefully (bug #214134).
+
+2006-11-04  Tim Waugh  <twaugh@redhat.com>
+
+	* optionwidgets.py (OptionBool.__init__): Handle Boolean values
+	with "On" and "Off" as choices (bug #213136).
+
+	* system-config-printer.py (GUI.on_btnNPApply_clicked): Handle
+	database errors gracefully (bug #213992).
+	(GUI.on_btnNPApply_clicked): Only translate the strings once.
+
+2006-11-03  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (_ppdMakeModelSplit): "EPSON" -> "Epson".
+
+	* system-config-printer.py (GUI.checkDriverExists): Include
+	gutenprint driver check.
+
+	* foomatic.py (_ppdMakeModelSplit): Better display for models
+	driven by Gutenprint PPDs (bug #213862).
+
+2006-11-02  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.33.
+
+2006-11-02  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.save_printer): Refresh after
+	applying changes (bug #213692).
+
+	* system-config-printer.py (GUI.on_btnNPApply_clicked): Set
+	PageSize when uploading a new PPD as-is (bug #213680).
+
+	* cupshelpers.py (copyPPDOptions): Skip 'PageRegion' since that's
+	special (bug #213680).
+
+	* system-config-printer.py (GUI.on_btnNPApply_clicked): Fix using
+	the new PPD as-is (bug #203905).
+
+	* system-config-printer.py (GUI.fillDeviceTab): Sort 'Other' last
+	in the devices list (bug #213676).
+
+	* system-config-printer.py (GUI.on_btnChangePPD_clicked): Fix
+	auto-selection of current PPD when changing it (bug #213667).
+
+	* optionwidgets.py (OptionPickOne.__init__): Handle enum values
+	already set outside the range (bug #213136).
+
+2006-11-01  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.checkDriverExists): New function
+	to check that the driver exists.
+	(GUI.on_btnNPApply_clicked): Use it (bug #212139).
+
+2006-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Find '.PPD' files as
+	well as '.ppd' files (bug #213223).
+
+2006-10-25  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Printer.getPPD): Clean up temporary file.
+
+2006-10-05  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Fix invisible_char in glade
+	file (bug #209368).
+
+2006-10-02  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.32.
+
+2006-10-02  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.show_HTTP_Error): New function.
+	(GUI.connect): Use it to handle HTTPError (bug #208824).
+	(GUI.setConnected): Set 'server settings' widgets insensitive when
+	not connected.
+	(GUI.on_tvMainList_cursor_changed): Only set widget status when
+	connected.
+	(GUI.__init__): Handle error on initial connection (bug #208824).
+
+2006-09-29  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.31.
+
+2006-09-29  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py: Fixed automatic selection of recommended
+	driver (bug #208606).
+
+	* system-config-printer.glade: Better visibility for printer
+	drivers (bug #203907).
+
+2006-09-29  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.30.
+
+2006-09-29  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am: Add a distcheck-hook for update-po.
+
+	* system-config-printer.glade: Don't set width_request on buttons
+	that don't need it (bug #208556).
+
+2006-09-29  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.29.
+
+2006-09-29  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (getPrinterFromCupsDevice): Fixed debug message.
+
+	* system-config-printer.py (GUI.__init__): Set glade translation
+	domain (bug #206622).
+
+	* po/fr.po: Fixed vertext ('%' -> '%s').
+
+2006-09-26  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.28.
+
+2006-09-26  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Set CATOBJECT to fix bug #206622.
+
+2006-08-30  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.27.
+
+2006-08-30  Tim Waugh  <twaugh@redhat.com>
+
+	Applied patch from Kjartan Maraas:
+	* Makefile.am: Use intltool to translate desktop file.
+	* bootstrap: Run intltoolize.
+	* configure.in: Added intltool hook.
+	* system-config-printer.desktop.in: New file.
+	* po/POTFILES.in: Translate desktop file.
+
+2006-08-24  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py: Removed special raw printer handling in favour of
+	CUPS-provided 'Raw Queue' pseudo-PPD.
+
+	* system-config-printer.py (GUI.on_btnChangePPD_clicked): Prevent
+	traceback on raw queue.
+	(GUI.on_btnNPApply_clicked): Cope with changing from a PPD-driven
+	queue to a raw queue.
+
+2006-08-23  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.26.
+
+2006-08-23  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.fillPrinterTab): Use ellipsis to
+	show authentication details are hidden.
+	(percentDecode): New function.
+
+2006-08-18  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (percentEncode): New function.
+	(GUI.getDeviceURI): Use it (bug #203066).
+	(GUI.fillNPApply): When authentication details are hidden in SMB
+	URI, show this with an ellipsis.
+
+2006-08-14 Florian Festi  <ffesti@redhat.com>
+
+	* configure.in: Version 0.7.25.
+	* cupshelpers.py (Printer.getPPD): fix for raw queues
+	* system-config-printer.py (GUI.fillPrinterOptions): don't show 
+	  option tabs for raw queues
+	* system-config-printer.py (GUI.on_btnNPApply_clicked): fix for 
+	  raw queues
+2006-08-03  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.24.
+
+2006-08-03  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.getDeviceURI): Fixed IPP URI
+	generation.
+	(GUI.on_tvNPDevices_cursor_changed): Parse IPP URIs correctly.
+
+2006-07-28  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (Device.__init__): Fixed traceback when handling
+	non-conforming Device IDs.
+
+2006-07-24  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.23.
+
+2006-07-24  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.initNewPrinterWindow): Set JetDirect
+	port number to 9100 by default (bug #197866).
+
+2006-07-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.save_serversettings): Reconnect
+	after adjusting server settings.
+
+2006-07-07  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.22.
+
+2006-07-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_tvNPDrivers_cursor_changed):
+	Fix PPD description for PPDs from the CUPS foomatic driver.
+
+	* foomatic.py (_ppdMakeModelSplit): Handle PPDs from the CUPS
+	foomatic driver.
+
+	* cupshelpers.py (PrintersConf.fetch): Handle classes.conf or
+	printers.conf being asent.
+
+2006-07-06 Florian Festi  <ffesti@redhat.com>
+
+	* system-config-printer.py (GUI.fillPrinterOptions): Keep 
+	"Installable Options" tab focused when Apply button is pressed.
+	* system-config-printer.glade: hide "Installable Options" tab to 
+	haveit redrawn on the first showall()
+	* system-config-printer.py (GUI.on_btnNewOption_clicked, 
+	GUI.removeOption_clicked, GUI.on_cmbentNewOption_changed): Don't offer
+	options as new that are already set.
+	
+2006-07-05  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.21.
+
+2006-07-05  Tim Waugh  <twaugh@redhat.com>
+
+	* options.py (OptionSelectOne.__init__): Handle Booleans.
+	(Option.is_changed): Compare strings not values.
+
+	* cupshelpers.py (Printer._getAttributes): Fix case in Boolean
+	options.
+
+2006-07-05 Florian Festi  <ffesti@redhat.com>
+
+	* cupshelpers.py (Printer._getAttributes, GUI.fillPrinterTab):
+	fixed handling of server side settings
+	
+2006-07-04  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Printer.getPPD): Fix foomatic-provided PPD
+	loading.
+
+2006-07-03  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.20.
+
+2006-07-03 Florian Festi  <ffesti@redhat.com>
+
+	* system-config-printer.glade: Spacing (HIG)
+
+2006-07-03 Florian Festi  <ffesti@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): Hide empty entries in
+	the main list
+		
+2006-07-03  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (_ppdMakeModelSplit): Fixed indentation.
+	(_ppdMakeModelSplit): Better commented explanations.
+	(Foomatic.addCupsPPDs): Don't include foomatic-provided PPDs
+	because we already know about them from foomatic.
+
+2006-06-30  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.19.
+
+2006-06-30  Tim Waugh  <twaugh@redhat.com>
+
+	* foomatic.py (Printer.parse_xml): There's no ppds node.  Handle
+	lang/*/ppd.
+	(_ppdMakeModelSplit): New function.
+
+	* system-config-printer.py (GUI.on_tvNPDrivers_cursor_changed):
+	More reliable PPD information.
+
+	* foomatic.py: Use /var/cache/foomatic/foomatic.pickle for pickle
+	file.
+	(Foomatic.addCupsPPDs): Strip PS/PXL suffices from CUPS PPD
+	nicknames.
+	(Foomatic.addCupsPPDs): Add loaded PPD drivers to existing
+	printers.
+	(Printer.getPPDDrivers): Strip .gz when comparing file names.
+
+2006-06-29  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_delete_activate): Clear any
+	un-applied changes.
+
+	* system-config-printer.glade: Make buttons on the new printer dialog
+	all the same width.
+
+2006-06-27  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.18.
+
+2006-06-27  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.setDataButtonState): Print Test
+	Page button is only sensitive when printer is enabled, accepting
+	jobs, and no changes need to be applied.
+	(GUI.fillPrinterTab): Likewise.
+	(GUI.on_btnPrintTestPage_clicked): Tell the user that the test
+	page was submitted, and which job number it was.
+	(GUI.on_btnPrintTestPage_clicked): Handle test page failures due
+	to the remote printer not being shared.  In theory it should be
+	possible to print test pages there, but needs hackery.
+
+2006-06-26 Florian Festi  <ffesti@redhat.com>
+	* system-config-printer.glade, 
+	system-config-printer.py (GUI.on_btnPrintTestPage_clicked): 
+	Print test page button
+
+2006-06-26  Tim Waugh  <twaugh@redhat.com>
+
+	* po/POTFILES.in: Include the glade file.
+	* po/Makevars: Bugzilla for reporting bugs.
+	* system-config-printer.glade: Some translatable="no" fixes.
+
 2006-06-25  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.on_btnNPApply_clicked): Set

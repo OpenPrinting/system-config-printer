@@ -1,10 +1,10 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -30,7 +30,7 @@ class Printer:
                        cups.IPP_PRINTER_BUSY: _("Busy"),
                        cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
-    def __init__(self, name, connection, set_attributes=[], **kw):
+    def __init__(self, name, connection, **kw):
         self.name = name
         self.connection = connection
         self.class_members = []
@@ -47,7 +47,7 @@ class Printer:
         self.state_description = self.printer_states.get(
             self.state, _("Unknown"))
 
-        self._getAttributes(set_attributes)
+        self._getAttributes()
 
         self.enabled = self.state != cups.IPP_PRINTER_STOPPED
 
@@ -75,51 +75,34 @@ class Printer:
                 setattr(self, attr_name,
                         bool(self.type & getattr(cups, name)))
 
-    def _getAttributes(self, set_attributes):
+    def _getAttributes(self):
         attrs = self.connection.getPrinterAttributes(self.name)
         self.attributes = {}
-        self.possible_attributes = {}
+        self.possible_attributes = {
+            'landscape' : ('False', ['True', 'False']),
+            'page-border' : ('none', ['none', 'single', 'single-thick',
+                                     'double', 'double-thick']),
+            }
 
         for key, value in attrs.iteritems():
             if key.endswith("-default"):
                 name = key[:-len("-default")]
-                if not attrs.has_key(name + "-supported"): continue
                 if name in ["job-sheets", "printer-error-policy",
                             "printer-op-policy", # handled below
-                            "notify-events"]: # not supported by cups
+                            "notify-events", # cannot be set
+                            "document-format", # cannot be set
+                            "notify-lease-duration"]: # cannot be set
                     continue 
-                if name in set_attributes:
-                    self.attributes[name] = value
+
+                supported = attrs.get(name + "-supported", None) or \
+                            self.possible_attributes.get(name, None) or \
+                            ""
+                self.attributes[name] = value
                     
-                self.possible_attributes[name] = (value,
-                                                  attrs[name+"-supported"]) 
-                #print name, value, attrs[name + "-supported"]
-
-        for name, default, supported in (
-            ('columns', '1', (1, 4)),
-            ('cpi', '10', (1, 100)),
-            ('fitplot', 'false', ['true', 'false']),
-            ('landscape', 'false', ['true', 'false']),
-            ('number-up-layout', 'lrtb', ['btlr', 'btrl', 'lrbt', 'lrtb',
-                                          'rlbt', 'rltb', 'tblr', 'tbrl']),
-            ('orientation-requested', '3', ['3','4','5','6']),
-            ('page-bottom', '72', (0, 500)),
-            ('page-top', '72', (0, 500)),
-            ('page-left', '72', (0, 500)),
-            ('page-right', '72', (0, 500)),
-            ('page-border', 'none', ['none', 'single', 'single-thick',
-                                     'double', 'double-thick']),
-            ('prettyprint', 'false', ['true', 'false']),
-            ('lpi', '6', (1, 100)),
-            ('scaling', '100', (1, 1000)),
-            ('sides', 'one-sided', ['one-sided', 'two-sided-long-edge',
-                                    'two-sided-short-edge']),
-            ('wrap', 'false', ['true', 'false'])):
-            self.possible_attributes.setdefault(name, (default, supported))
+                if attrs.has_key(name+"-supported"):
+                    self.possible_attributes[name] = (
+                        value, attrs[name+"-supported"]) 
         
-        #print set_attributes
-        #print self.attributes, self.possible_attributes
-
         self.job_sheet_start, self.job_sheet_end = attrs.get(
             'job-sheets-default', ('none', 'none'))
         self.job_sheets_supported = attrs.get('job-sheets-supported', ['none'])
@@ -158,10 +141,13 @@ class Printer:
         if self._ppd is None:
             try:
                 filename = self.connection.getPPD(self.name)
-            except cups.IPP_NOT_FOUND:
-                self._ppd = False
-            self._ppd = cups.PPD(filename)
-            os.unlink(filename)
+                self._ppd = cups.PPD(filename)
+                os.unlink(filename)
+            except cups.IPPError, (e, m):
+                if e == cups.IPP_NOT_FOUND:
+                    self._ppd = False
+                else:
+                    raise
         return self._ppd
 
     def setOption(self, name, value):
@@ -170,17 +156,23 @@ class Printer:
     def unsetOption(self, name):
         self.connection.deletePrinterOptionDefault(self.name, name)
 
-    def setEnabled(self, on):
+    def setEnabled(self, on, reason=None):
         if on:
             self.connection.enablePrinter(self.name)
         else:
-            self.connection.disablePrinter(self.name)
+            if reason:
+                self.connection.disablePrinter(self.name, reason=reason)
+            else:
+                self.connection.disablePrinter(self.name)
 
-    def setAccepting(self, on):
+    def setAccepting(self, on, reason=None):
         if on:
             self.connection.acceptJobs(self.name)
         else:
-            self.connection.rejectJobs(self.name)
+            if reason:
+                self.connection.rejectJobs(self.name, reason=reason)
+            else:
+                self.connection.rejectJobs(self.name)
 
     def setShared(self,on):
         self.connection.setPrinterShared(self.name, on)
@@ -209,19 +201,66 @@ class Printer:
         else:
             self.connection.setPrinterUsersAllowed(self.name, except_users)
 
+    def testsQueued(self):
+        """Returns a list of job IDs for test pages in the queue for this
+        printer."""
+        ret = []
+        try:
+            jobs = self.connection.getJobs ()
+        except cups.IPPError:
+            return ret
+
+        for id, attrs in jobs.iteritems():
+            try:
+                uri = attrs['job-printer-uri']
+                uri = uri[uri.rindex ('/') + 1:]
+            except:
+                continue
+            if uri != self.name:
+                continue
+
+            if attrs.has_key ('job-name') and attrs['job-name'] == 'Test Page':
+                ret.append (id)
+        return ret
+
 def getPrinters(connection):
-    printers_conf = PrintersConf(connection)
     printers = connection.getPrinters()
     classes = connection.getClasses()
+    printers_conf = None
     for name, printer in printers.iteritems():
-        printer = Printer(name, connection,
-                          set_attributes=printers_conf.get_options(name),
-                          **printer)
+        printer = Printer(name, connection, **printer)
         printers[name] = printer
         if classes.has_key(name):
             printer.class_members = classes[name]
             printer.class_members.sort()
+
+        if printer.device_uri.startswith ("smb:"):
+            # smb: URIs may have been sanitized (authentication details
+            # removed), so fetch the actual details from printers.conf.
+            if not printers_conf:
+                printers_conf = PrintersConf(connection)
+            if printers_conf.device_uris.has_key(name):
+                printer.device_uri = printers_conf.device_uris[name]
     return printers
+
+def parseDeviceID (id):
+    id_dict = {}
+    pieces = id.split(";")
+    for piece in pieces:
+        if piece.find(":") == -1:
+            continue
+        name, value = piece.split(":",1)
+        id_dict[name] = value
+    if id_dict.has_key ("MANUFACTURER"):
+        id_dict.setdefault("MFG", id_dict["MANUFACTURER"])
+    if id_dict.has_key ("MODEL"):
+        id_dict.setdefault("MDL", id_dict["MODEL"])
+    if id_dict.has_key ("COMMAND SET"):
+        id_dict.setdefault("CMD", id_dict["COMMAND SET"])
+    for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
+        id_dict.setdefault(name, "")
+    id_dict["CMD"] = id_dict["CMD"].split(',') 
+    return id_dict
 
 class Device:
 
@@ -242,16 +281,7 @@ class Device:
 
         #self.id = 'MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;SN:US05N1J00XLG;S:00808880800010032C1000000C2000000;P:0800,FL,B0;J:                    ;'
 
-        self.id_dict = {}
-        pieces = self.id.split(";")
-        for piece in pieces:
-            if not piece: continue
-            name, value = piece.split(":",1)
-            if name=="CMD":
-                value = value.split(',') 
-            self.id_dict[name] = value
-        for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
-            self.id_dict.setdefault(name, "")
+        self.id_dict = parseDeviceID (self.id)
 
     def __cmp__(self, other):
         if self.is_class != other.is_class:
@@ -279,56 +309,44 @@ class Device:
         return result
 
 class PrintersConf:
-
     def __init__(self, connection):
+        self.device_uris = {}
         self.connection = connection
-        self.fetch()
-        self.parse()
+        self.parse(self.fetch('/admin/conf/printers.conf'))
 
-    def fetch(self):
+    def fetch(self, file):
         fd, filename = tempfile.mkstemp("printer.conf")
         os.close(fd)
         try:
-            self.connection.getFile('/admin/conf/printers.conf', filename)
+            self.connection.getFile(file, filename)
         except cups.HTTPError, e:
-            if e.args[0] == cups.HTTP_UNAUTHORIZED:
-                self.lines = []
-                return
+            if (e.args[0] == cups.HTTP_UNAUTHORIZED or
+                e.args[0] == cups.HTTP_NOT_FOUND):
+                return []
             else:
                 raise e
 
-        self.lines = open(filename).readlines()
+        lines = open(filename).readlines()
         os.unlink(filename)
+        return lines
 
-    def parse(self):
-        self.set_options = {}
+    def parse(self, lines):
         current_printer = None
-        for line in self.lines:
+        for line in lines:
             words = line.split()
-            if len (words) == 0:
+            if len(words) == 0:
                 continue
-            if words[0] == "Option":
-                self.set_options.setdefault(current_printer, []).append(words[1])
-                continue
-            match = re.match(r"<(Default)?Printer ([^>]+)>\s*\n", line) 
-            if match:
-                current_printer = match.group(2)
-            if line.strip().find("</Printer>") != -1:
-                current_printer = None
-
-    def get_options(self, printername):
-        return self.set_options.get(printername, [])
-                
-"""
-attrs=c.getPrinterAttributes(printer)
-options=map (lambda x: x[:x.rindex ('-')],
-             filter (lambda x: x.endswith('-default'), attrs.keys()))
-
-specified_options = []
-
-print "Specified options:"
-print map (lambda x: (x, attrs[x + '-default']), specified_options)
-"""
+            if words[0] == "DeviceURI":
+                if len (words) >= 2:
+                    self.device_uris[current_printer] = words[1]
+                else:
+                    self.device_uris[current_printer] = ''
+            else:
+                match = re.match(r"<(Default)?Printer ([^>]+)>\s*\n", line) 
+                if match:
+                    current_printer = match.group(2)
+                if line.strip().find("</Printer>") != -1:
+                    current_printer = None
 
 def match(s1, s2):
     if s1==s2: return len(s1)
@@ -367,14 +385,31 @@ def iteratePPDOptions(ppd):
 
 def copyPPDOptions(ppd1, ppd2):
     for option in iteratePPDOptions(ppd1):
+        if option.keyword == "PageRegion":
+            continue
         new_option = ppd2.findOption(option.keyword)
         if new_option and option.ui==new_option.ui:
             value = option.defchoice
             for choice in new_option.choices:
                 if choice["choice"]==value:
                     ppd2.markOption(new_option.keyword, value)
+                    print "set %s = %s" % (new_option.keyword, value)
                     
-            
+def setPPDPageSize(ppd, language):
+    # Just set the page size to A4 or Letter, that's all.
+    # Use the same method CUPS uses.
+    size = 'A4'
+    letter = [ 'C', 'POSIX', 'en', 'en_US', 'en_CA', 'fr_CA' ]
+    for each in letter:
+        if language == each:
+            size = 'Letter'
+    try:
+        ppd.markOption ('PageSize', size)
+        print "set PageSize = %s" % size
+    except:
+        print "Failed to set PageSize " \
+              "(%s not available?)" % size
+
 def main():
     c = cups.Connection()
     #printers = getPrinters(c)

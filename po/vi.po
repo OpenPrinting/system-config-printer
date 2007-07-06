@@ -6,8 +6,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: printconf VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-23 17:34+0100\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2007-06-15 18:34+0100\n"
 "PO-Revision-Date: 2003-07-27 20:29+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
@@ -15,232 +15,1542 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: optionwidgets.py:94
+#: ../cupshelpers.py:28
+msgid "Idle"
+msgstr ""
+
+#: ../cupshelpers.py:29 ../applet.py:684
+msgid "Processing"
+msgstr ""
+
+#: ../cupshelpers.py:30
+msgid "Busy"
+msgstr ""
+
+#: ../cupshelpers.py:31 ../applet.py:685
+msgid "Stopped"
+msgstr ""
+
+#: ../cupshelpers.py:48 ../applet.py:694
+msgid "Unknown"
+msgstr ""
+
+#: ../my-default-printer.py:117 ../my-default-printer.desktop.in.h:1
+#, fuzzy
+msgid "Default Printer"
+msgstr "Đây là mô tả của máy in."
+
+#: ../my-default-printer.py:121 ../my-default-printer.py:152
+#, fuzzy
+msgid "_Use System Default"
+msgstr "Đặt làm _mặc định"
+
+#: ../my-default-printer.py:122
+#, fuzzy
+msgid "_Set Default"
+msgstr "_Mặc định"
+
+#: ../my-default-printer.py:132 ../system-config-printer.glade.h:190
+#: ../applet.py:184 ../applet.py:224
+#, fuzzy
+msgid "Printer"
+msgstr "Máy in: "
+
+#: ../my-default-printer.py:136
+#, fuzzy
+msgid "Location"
+msgstr "_Hành động"
+
+#: ../optionwidgets.py:108
 msgid "Conflicts with:"
 msgstr ""
 
-#: system-config-printer.py:172
-msgid "Copyright 2006 Red Hat, Inc."
+#: ../system-config-printer.py:228
+msgid "Copyright 2006, 2007 Red Hat, Inc."
 msgstr ""
 
-#: system-config-printer.py:208
+#: ../system-config-printer.py:264
 #, fuzzy
 msgid "Server Settings"
 msgstr "Tùy chọn driver"
 
-#: system-config-printer.py:209
-#, fuzzy
-msgid "Local Printers"
-msgstr "Hiệu chỉnh Máy in cục bộ"
-
-#: system-config-printer.py:210
-msgid "Local Classes"
+#: ../system-config-printer.py:273 ../system-config-printer.py:275
+msgid "Members of this class"
 msgstr ""
 
-#: system-config-printer.py:211
-#, fuzzy
-msgid "Remote Printers"
-msgstr "Máy in JetDirect"
-
-#: system-config-printer.py:212
-msgid "Remote Classes"
-msgstr ""
-
-#: system-config-printer.py:221 system-config-printer.py:223
-msgid "Members of this Class"
-msgstr ""
-
-#: system-config-printer.py:222 system-config-printer.py:224
+#: ../system-config-printer.py:274 ../system-config-printer.py:276
 msgid "Others"
 msgstr ""
 
-#: system-config-printer.py:225
+#: ../system-config-printer.py:277
 #, fuzzy
 msgid "Devices"
 msgstr "Thiết bị"
 
-#: system-config-printer.py:226
+#: ../system-config-printer.py:278
 msgid "Makes"
 msgstr ""
 
-#: system-config-printer.py:227
+#: ../system-config-printer.py:279
 #, fuzzy
 msgid "Models"
 msgstr "Kiểu"
 
-#: system-config-printer.py:228
+#: ../system-config-printer.py:280
 #, fuzzy
 msgid "Drivers"
 msgstr "Driver"
 
-#: system-config-printer.py:229
+#: ../system-config-printer.py:281
 #, fuzzy
 msgid "Users"
 msgstr "Người dùng"
 
-#: system-config-printer.py:240
+#: ../system-config-printer.py:292
 msgid "PostScript Printer Description (*.ppd[.gz])"
 msgstr ""
 
-#: system-config-printer.py:259
+#. SMB list columns
+#: ../system-config-printer.py:312
 msgid "Share"
 msgstr "Chia sẻ"
 
-#: system-config-printer.py:265
+#: ../system-config-printer.py:318
 msgid "Comment"
 msgstr "Ghi chú"
 
-#: system-config-printer.py:318
+#: ../system-config-printer.py:551
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Cấu hình máy in - %s"
 
-#: system-config-printer.py:321
+#: ../system-config-printer.py:554
 #, python-format
 msgid "Connected to %s"
 msgstr ""
 
-#: system-config-printer.py:323
+#: ../system-config-printer.py:556 ../system-config-printer.py:1170
 #, fuzzy
 msgid "Not connected"
 msgstr "_Kết nối cục bộ"
 
-#: system-config-printer.py:463
+#: ../system-config-printer.py:637
+#, fuzzy
+msgid "Local Printers"
+msgstr "Hiệu chỉnh Máy in cục bộ"
+
+#: ../system-config-printer.py:638
+msgid "Local Classes"
+msgstr ""
+
+#: ../system-config-printer.py:639
+#, fuzzy
+msgid "Remote Printers"
+msgstr "Máy in JetDirect"
+
+#: ../system-config-printer.py:640
+msgid "Remote Classes"
+msgstr ""
+
+#: ../system-config-printer.py:736
 #, python-format
 msgid ""
-"Connecting to Server:\n"
+"Connecting to server:\n"
 "%s"
 msgstr ""
 
-#: system-config-printer.py:748
+#: ../system-config-printer.py:1099 ../system-config-printer.glade.h:115
+msgid "Installable Options"
+msgstr ""
+
+#: ../system-config-printer.py:1100 ../system-config-printer.glade.h:191
+#, fuzzy
+msgid "Printer Options"
+msgstr "Tùy chọn bộ lọc"
+
+#: ../system-config-printer.py:1109
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
-"these conflictes are resolved."
+"these conflicts are resolved."
 msgstr ""
 
-#: system-config-printer.py:774
+#: ../system-config-printer.py:1138 ../system-config-printer.py:1154
+#: ../applet.py:333
 msgid "Not authorized"
 msgstr ""
 
-#: system-config-printer.py:775
+#: ../system-config-printer.py:1139 ../applet.py:334
 msgid "The password may be incorrect."
 msgstr ""
 
-#: system-config-printer.py:778
+#: ../system-config-printer.py:1142 ../system-config-printer.py:1175
+#: ../applet.py:337
 msgid "CUPS server error"
 msgstr ""
 
-#: system-config-printer.py:779
+#: ../system-config-printer.py:1143 ../applet.py:338
 #, fuzzy, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Lỗi khi in trang thử."
 
-#: system-config-printer.py:803
+#: ../system-config-printer.py:1155
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr ""
+
+#: ../system-config-printer.py:1160
+msgid "Bad request"
+msgstr ""
+
+#: ../system-config-printer.py:1162
+#, fuzzy
+msgid "Not found"
+msgstr "_Kết nối cục bộ"
+
+#: ../system-config-printer.py:1164
+msgid "Request timeout"
+msgstr ""
+
+#: ../system-config-printer.py:1166
+msgid "Upgrade required"
+msgstr ""
+
+#: ../system-config-printer.py:1168
+msgid "Server error"
+msgstr ""
+
+#: ../system-config-printer.py:1172
+#, python-format
+msgid "status %d"
+msgstr ""
+
+#: ../system-config-printer.py:1176
+#, python-format
+msgid "There was an HTTP error: %s."
+msgstr ""
+
+#: ../system-config-printer.py:1199
 msgid "This will delete this class!"
 msgstr ""
 
-#: system-config-printer.py:804
+#: ../system-config-printer.py:1200
 msgid "Proceed anyway?"
 msgstr ""
 
-#: system-config-printer.py:1002
+#: ../system-config-printer.py:1386
+msgid "Submitted"
+msgstr ""
+
+#: ../system-config-printer.py:1387
+#, python-format
+msgid "Test page submitted as job %d"
+msgstr ""
+
+#: ../system-config-printer.py:1397
+msgid "Not possible"
+msgstr ""
+
+#: ../system-config-printer.py:1398
+msgid ""
+"The remote server did not accept the print job, most likely because the "
+"printer is not shared."
+msgstr ""
+
+#: ../system-config-printer.py:1463
+msgid "Error"
+msgstr "Lỗi"
+
+#: ../system-config-printer.py:1464
+#, fuzzy
+msgid "There was a problem connecting to the CUPS server."
+msgstr ""
+"Lỗi gửi %s\n"
+"đến hàng đợi `%s':\n"
+"\n"
+
+#: ../system-config-printer.py:1527
 #, fuzzy
 msgid "This is the default printer"
 msgstr "Đây là mô tả của máy in."
 
-#: system-config-printer.py:1004
+#: ../system-config-printer.py:1529
 #, python-format
 msgid "Default printer is %s"
 msgstr ""
 
-#: system-config-printer.py:1007
+#: ../system-config-printer.py:1532
 msgid "No default printer set."
 msgstr ""
 
-#: system-config-printer.py:1289
+#: ../system-config-printer.py:1618
+#, fuzzy
+msgid "Cancel Tests"
+msgstr "Hủy bỏ"
+
+#: ../system-config-printer.py:1622 ../system-config-printer.glade.h:189
+#, fuzzy
+msgid "Print Test Page"
+msgstr "Ghi chú máy in:"
+
+#: ../system-config-printer.py:1877
 #, fuzzy, python-format
-msgid "Really delete %s %s?"
+msgid "Really delete printer %s?"
 msgstr "Thật sự muốn xóa \"%s\" chứ?"
 
-#: system-config-printer.py:1330
+#: ../system-config-printer.py:1879
+#, fuzzy, python-format
+msgid "Really delete class %s?"
+msgstr "Thật sự muốn xóa \"%s\" chứ?"
+
+#: ../system-config-printer.py:1927 ../system-config-printer.glade.h:140
 #, fuzzy
 msgid "New Printer"
 msgstr "Máy in:"
 
-#: system-config-printer.py:1339
+#: ../system-config-printer.py:1940 ../system-config-printer.glade.h:139
 msgid "New Class"
 msgstr ""
 
-#: system-config-printer.py:1349
+#: ../system-config-printer.py:1953
 msgid "Change Device URI"
 msgstr ""
 
-#: system-config-printer.py:1360
+#: ../system-config-printer.py:1966
 #, fuzzy
 msgid "Change Driver"
 msgstr "Đổi kiểu"
 
-#: system-config-printer.py:1558
+#: ../system-config-printer.py:2220
 msgid "Other"
 msgstr ""
 
-#: system-config-printer.py:1560
+#: ../system-config-printer.py:2222
 msgid " (Current)"
 msgstr ""
 
-#: system-config-printer.py:1737
+#: ../system-config-printer.py:2407
 #, fuzzy
 msgid "Verified"
 msgstr "(Không xác định)"
 
-#: system-config-printer.py:1738
+#: ../system-config-printer.py:2408
 msgid "This print share is accessible."
 msgstr ""
 
-#: system-config-printer.py:1745
+#: ../system-config-printer.py:2415
 msgid "Inaccessible"
 msgstr ""
 
-#: system-config-printer.py:1746
+#: ../system-config-printer.py:2416
 msgid "This print share is not accessible."
 msgstr ""
 
-#: system-config-printer.py:1972
+#: ../system-config-printer.py:2436
+msgid "A printer connected to the parallel port."
+msgstr ""
+
+#: ../system-config-printer.py:2438
+msgid "A printer connected to a USB port."
+msgstr ""
+
+#: ../system-config-printer.py:2440
+msgid ""
+"HPLIP software driving a printer, or the printer function of a multi-"
+"function device."
+msgstr ""
+
+#: ../system-config-printer.py:2443
+msgid ""
+"HPLIP software driving a fax machine, or the fax function of a multi-"
+"function device."
+msgstr ""
+
+#: ../system-config-printer.py:2446
+msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
+msgstr ""
+
+#: ../system-config-printer.py:2695
 #, fuzzy
 msgid " (recommended)"
 msgstr ""
 "(driver khuyên\n"
 "dùng là %s)"
 
-#: system-config-printer.py:2010
+#: ../system-config-printer.py:2736
 msgid "This PPD is generated by foomatic."
 msgstr ""
 
-#: system-config-printer.py:2012
-msgid ""
-"This PPD is provided by the manufacturer and is included with the foomatic "
-"package."
-msgstr ""
-
-#: system-config-printer.py:2016
-msgid "This PPD is provided by CUPS."
-msgstr ""
-
-#: system-config-printer.py:2057
+#. XXX
+#: ../system-config-printer.py:2777
 #, python-format
 msgid "Going to create a new class %s."
 msgstr ""
 
-#: system-config-printer.py:2068
+#: ../system-config-printer.py:2791
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
 "%s.\n"
 msgstr ""
 
-#~ msgid "Error"
-#~ msgstr "Lỗi"
+#. Foomatic database problem of some sort.
+#: ../system-config-printer.py:2815
+msgid "Database error"
+msgstr ""
+
+#: ../system-config-printer.py:2816
+#, python-format
+msgid "The '%s' driver cannot be used with printer '%s %s'."
+msgstr ""
+
+#. This printer references some XML that is not
+#. installed by default.  Point the user at the
+#. package they need to install.
+#: ../system-config-printer.py:2826
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr ""
+
+#. This error came from trying to open the PPD file.
+#: ../system-config-printer.py:2833
+msgid "PPD error"
+msgstr ""
+
+#: ../system-config-printer.py:2835
+msgid "Failed to read PPD file.  Possible reason follows:"
+msgstr ""
+
+#: ../system-config-printer.py:3121 ../system-config-printer.py:3128
+#, fuzzy
+msgid "Missing driver"
+msgstr "Driver máy in"
+
+#: ../system-config-printer.py:3122
+#, python-format
+msgid ""
+"Printer '%s' requires the %s package but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+
+#: ../system-config-printer.py:3129
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+
+#: ../system-config-printer.glade.h:1
+msgid " "
+msgstr ""
+
+#: ../system-config-printer.glade.h:2
+msgid " PPD "
+msgstr ""
+
+#: ../system-config-printer.glade.h:3
+msgid ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+msgstr ""
+
+#: ../system-config-printer.glade.h:9
+#, fuzzy
+msgid "<b>Authentication</b>"
+msgstr "Xác thực"
+
+#: ../system-config-printer.glade.h:10
+msgid "<b>Banner</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:11
+#, fuzzy
+msgid "<b>Basic Server Settings</b>"
+msgstr "Tùy chọn driver"
+
+#: ../system-config-printer.glade.h:12
+msgid "<b>Comment about the Driver</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:13
+msgid "<b>Comment about the Printer</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:14
+#, fuzzy
+msgid "<b>Common Options</b>"
+msgstr "Mô tả"
+
+#: ../system-config-printer.glade.h:15
+msgid "<b>Default Printer</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:16
+#, fuzzy
+msgid "<b>Description</b>"
+msgstr "Mô tả"
+
+#: ../system-config-printer.glade.h:17
+msgid "<b>Description</b> (optional)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:18
+#, fuzzy
+msgid "<b>Image Options</b>"
+msgstr "Mô tả"
+
+#: ../system-config-printer.glade.h:19
+msgid "<b>Information about the PPD</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:20
+msgid "<b>Location of the LPD network printer</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:21
+msgid "<b>Location of the network printer</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:22
+msgid "<b>Location</b> (optional)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:23
+msgid "<b>Other Options (Advanced)</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:24
+msgid "<b>Policies</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:25
+#, fuzzy
+msgid "<b>Printer Name</b>"
+msgstr "Kiểu máy in"
+
+#: ../system-config-printer.glade.h:26
+msgid "<b>Printers to be members of this Class</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:27
+msgid "<b>Select Connection</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:28
+msgid "<b>Settings of the serial port</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:29
+msgid "<b>Settings</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:30
+msgid "<b>State</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:31
+#, fuzzy
+msgid "<b>Text Options</b>"
+msgstr "Mô tả"
+
+#: ../system-config-printer.glade.h:32
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:34
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:35
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.glade.h:41
+msgid "About"
+msgstr "Giới thiệu"
+
+#: ../system-config-printer.glade.h:42
+msgid "About System-Config-Printer"
+msgstr ""
+
+#: ../system-config-printer.glade.h:43
+msgid "Accepting jobs"
+msgstr ""
+
+#: ../system-config-printer.glade.h:44
+msgid "Access control"
+msgstr ""
+
+#: ../system-config-printer.glade.h:45
+msgid "Add or Remove Members"
+msgstr ""
+
+#: ../system-config-printer.glade.h:46
+msgid "Allow printing for everyone except these users:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:47
+msgid "Allow remote administration"
+msgstr ""
+
+#: ../system-config-printer.glade.h:48
+msgid "Allow users to cancel any job (not just their own)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:49
+msgid "Apply"
+msgstr "Áp dụng"
+
+#: ../system-config-printer.glade.h:50
+msgid "Authors"
+msgstr ""
+
+#: ../system-config-printer.glade.h:51
+msgid "Baud Rate"
+msgstr ""
+
+#: ../system-config-printer.glade.h:52
+#, fuzzy
+msgid "Bottom margin:"
+msgstr "Lề dưới (pt):"
+
+#: ../system-config-printer.glade.h:53
+msgid "Brightness:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:54
+#, fuzzy
+msgid "CUPS server:"
+msgstr "Server:"
+
+#: ../system-config-printer.glade.h:55
+#, fuzzy
+msgid "Change PPD"
+msgstr "Đổi kiểu"
+
+#: ../system-config-printer.glade.h:56
+#, fuzzy
+msgid "Change..."
+msgstr "_Chia sẻ..."
+
+#: ../system-config-printer.glade.h:57
+#, fuzzy
+msgid "Characters per inch:"
+msgstr "Ký tự mỗi inch"
+
+#: ../system-config-printer.glade.h:58
+msgid "Class Members"
+msgstr ""
+
+#: ../system-config-printer.glade.h:59
+#, fuzzy
+msgid "Columns:"
+msgstr "Ghi chú"
+
+#: ../system-config-printer.glade.h:60
+#, fuzzy
+msgid "Comments: "
+msgstr "Ghi chú"
+
+#: ../system-config-printer.glade.h:61
+msgid "Connect to CUPS server"
+msgstr ""
+
+#: ../system-config-printer.glade.h:62
+msgid "Connecting"
+msgstr ""
+
+#: ../system-config-printer.glade.h:64
+#, no-c-format
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+
+#: ../system-config-printer.glade.h:67
+msgid "Copies:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:68
+#, fuzzy
+msgid "Copy Printer"
+msgstr "Máy in:"
+
+#: ../system-config-printer.glade.h:69
+msgid "Copyright"
+msgstr ""
+
+#: ../system-config-printer.glade.h:70
+#, fuzzy
+msgid "Data Bits"
+msgstr "Chi tiết"
+
+#: ../system-config-printer.glade.h:71
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+
+#: ../system-config-printer.glade.h:80
+#, fuzzy
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr "Mặc định"
+
+#: ../system-config-printer.glade.h:83
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+
+#: ../system-config-printer.glade.h:87
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:92
+msgid "Deny printing for everyone except these users:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:93
+#, fuzzy
+msgid "Description:"
+msgstr "Mô tả"
+
+#: ../system-config-printer.glade.h:94
+#, fuzzy
+msgid "Device"
+msgstr "Thiết bị"
+
+#: ../system-config-printer.glade.h:95
+#, fuzzy
+msgid "Device URI"
+msgstr "Thiết bị: "
+
+#: ../system-config-printer.glade.h:96
+#, fuzzy
+msgid "Device URI:"
+msgstr "Thiết bị:"
+
+#: ../system-config-printer.glade.h:97
+#, fuzzy
+msgid "Device description."
+msgstr "Mô tả"
+
+#: ../system-config-printer.glade.h:98
+msgid "DirectJet"
+msgstr ""
+
+#: ../system-config-printer.glade.h:99
+#, fuzzy
+msgid "Driver"
+msgstr "Driver"
+
+#: ../system-config-printer.glade.h:100
+msgid "Empty"
+msgstr ""
+
+#: ../system-config-printer.glade.h:101
+msgid "Enabled"
+msgstr ""
+
+#: ../system-config-printer.glade.h:102
+msgid "Ending Banner:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:103
+#, fuzzy
+msgid "Enter Device URI"
+msgstr "Thiết bị Máy in"
+
+#: ../system-config-printer.glade.h:104
+msgid "Error Policy: \t"
+msgstr ""
+
+#: ../system-config-printer.glade.h:105
+#, fuzzy
+msgid "Finishings:"
+msgstr "Hoàn tất"
+
+#: ../system-config-printer.glade.h:106
+msgid "Flow Control"
+msgstr ""
+
+#: ../system-config-printer.glade.h:107
+msgid "Gamma:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:108
+#, fuzzy
+msgid "Goto Server"
+msgstr "Server"
+
+#: ../system-config-printer.glade.h:109
+msgid "Hold until:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:110
+msgid "Hostname"
+msgstr ""
+
+#: ../system-config-printer.glade.h:111
+msgid "Hue adjustment:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:112
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+
+#: ../system-config-printer.glade.h:113
+msgid "Human-readable location such as \"Lab 1\""
+msgstr ""
+
+#: ../system-config-printer.glade.h:114
+#, fuzzy
+msgid "IPP"
+msgstr "IP:"
+
+#: ../system-config-printer.glade.h:116
+msgid "Job Options"
+msgstr ""
+
+#: ../system-config-printer.glade.h:117
+msgid "Job priority:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:118
+msgid "LPD"
+msgstr ""
+
+#: ../system-config-printer.glade.h:119
+#, fuzzy
+msgid "Left margin:"
+msgstr "Lề trái (pt):"
+
+#: ../system-config-printer.glade.h:120
+msgid ""
+"Left to right, top to bottom\n"
+"Left to right, bottom to top\n"
+"Right to left, top to bottom\n"
+"Right to left, bottom to top\n"
+"Top to bottom, left to right\n"
+"Top to bottom, right to left\n"
+"Bottom to top, left to right\n"
+"Bottom to top, right to left"
+msgstr ""
+
+#: ../system-config-printer.glade.h:128
+#, fuzzy
+msgid "Lines per inch:"
+msgstr "Hàng mỗi inch"
+
+#: ../system-config-printer.glade.h:129
+#, fuzzy
+msgid "Location:"
+msgstr "_Hành động"
+
+#: ../system-config-printer.glade.h:130
+#, fuzzy
+msgid "Make Default Printer"
+msgstr "Đây là mô tả của máy in."
+
+#: ../system-config-printer.glade.h:131
+msgid "Make and Model:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:132
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr ""
+
+#: ../system-config-printer.glade.h:133
+msgid "Media:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:134
+msgid "Members"
+msgstr ""
+
+#: ../system-config-printer.glade.h:135
+#, fuzzy
+msgid "Mirror"
+msgstr "Lỗi"
+
+#: ../system-config-printer.glade.h:136
+msgid "More"
+msgstr ""
+
+#: ../system-config-printer.glade.h:137
+msgid "Name"
+msgstr "Tên"
+
+#: ../system-config-printer.glade.h:138
+msgid "New Clas_s"
+msgstr ""
+
+#: ../system-config-printer.glade.h:141
+#, fuzzy
+msgid "New _Printer"
+msgstr "Máy in:"
+
+#: ../system-config-printer.glade.h:142
+#, fuzzy
+msgid "New name for the printer"
+msgstr "Máy in JetDirect"
+
+#: ../system-config-printer.glade.h:143
+msgid ""
+"None\n"
+"Staple\n"
+"Punch\n"
+"Cover\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Staple (top left)\n"
+"Staple (bottom left)\n"
+"Staple (top right)\n"
+"Staple (bottom right)\n"
+"Edge stitch (left)\n"
+"Edge stitch (top)\n"
+"Edge stitch (right)\n"
+"Edge stitch (bottom)\n"
+"Staple dual (left)\n"
+"Staple dual (top)\n"
+"Staple dual (right)\n"
+"Staple dual (bottom)\n"
+"Bind (left)\n"
+"Bind (top)\n"
+"Bind (right)\n"
+"Bind (bottom)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:171
+msgid ""
+"One-sided\n"
+"Two-sided (long edge)\n"
+"Two-sided (short edge)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:174
+msgid "Operation Policy:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:175
+msgid "Orientation:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:176
+msgid "PPD"
+msgstr ""
+
+#: ../system-config-printer.glade.h:177
+msgid "Pages per side layout:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:178
+msgid "Pages per side:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:179
+msgid "Parity"
+msgstr ""
+
+#: ../system-config-printer.glade.h:180 ../applet.glade.h:5
+msgid "Password:"
+msgstr "Mật khẩu:"
+
+#: ../system-config-printer.glade.h:181
+msgid "Policies"
+msgstr ""
+
+#: ../system-config-printer.glade.h:182
+msgid "Port number"
+msgstr ""
+
+#: ../system-config-printer.glade.h:183
+msgid ""
+"Portrait (no rotation)\n"
+"Landscape (90°)\n"
+"Reverse landscape (270°)\n"
+"Reverse portrait (180°)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:187
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: ../system-config-printer.glade.h:188
+msgid "Pretty print"
+msgstr ""
+
+#: ../system-config-printer.glade.h:192
+#, fuzzy
+msgid "Printer State:"
+msgstr "Ghi chú máy in:"
+
+#: ../system-config-printer.glade.h:193
+#, fuzzy
+msgid "Printername"
+msgstr "Kiểu máy in"
+
+#: ../system-config-printer.glade.h:194
+msgid "Probe"
+msgstr ""
+
+#: ../system-config-printer.glade.h:195
+msgid "Provide PPD file"
+msgstr ""
+
+#: ../system-config-printer.glade.h:196
+msgid "Require encryption"
+msgstr ""
+
+#: ../system-config-printer.glade.h:197
+#, fuzzy
+msgid "Reset"
+msgstr "Thử"
+
+#: ../system-config-printer.glade.h:198
+#, fuzzy
+msgid "Reset to system default"
+msgstr "Đặt làm _mặc định"
+
+#: ../system-config-printer.glade.h:199
+#, fuzzy
+msgid "Right margin:"
+msgstr "Lề phải (pt):"
+
+#: ../system-config-printer.glade.h:200
+msgid "SCSI"
+msgstr ""
+
+#: ../system-config-printer.glade.h:201
+msgid "SMB"
+msgstr ""
+
+#: ../system-config-printer.glade.h:202
+msgid "Saturation:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:203
+msgid "Save debugging information for troubleshooting"
+msgstr ""
+
+#: ../system-config-printer.glade.h:204
+msgid "Scale to fit"
+msgstr ""
+
+#: ../system-config-printer.glade.h:205
+msgid "Scaling:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:206
+msgid "Select A File"
+msgstr ""
+
+#: ../system-config-printer.glade.h:207
+msgid "Select Printer from database"
+msgstr ""
+
+#: ../system-config-printer.glade.h:208
+#, fuzzy
+msgid "Serial"
+msgstr "Chung"
+
+#: ../system-config-printer.glade.h:209
+#, fuzzy
+msgid "Settings"
+msgstr "Thiết lập"
+
+#: ../system-config-printer.glade.h:210
+msgid "Share published printers connected to this system"
+msgstr ""
+
+#: ../system-config-printer.glade.h:211
+#, fuzzy
+msgid "Shared"
+msgstr "Chia sẻ"
+
+#: ../system-config-printer.glade.h:212
+msgid "Show printers shared by other systems"
+msgstr ""
+
+#: ../system-config-printer.glade.h:213
+msgid "Sides:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:214
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+
+#: ../system-config-printer.glade.h:215
+msgid "Starting Banner:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:216
+#, fuzzy
+msgid "System-Config-Printer"
+msgstr "Cấu hình máy in"
+
+#: ../system-config-printer.glade.h:218
+#, fuzzy, no-c-format
+msgid "System-Config-Printer %s"
+msgstr "Cấu hình máy in"
+
+#: ../system-config-printer.glade.h:219
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+
+#: ../system-config-printer.glade.h:220
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+
+#: ../system-config-printer.glade.h:221
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+
+#: ../system-config-printer.glade.h:222
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+
+#: ../system-config-printer.glade.h:223
+#, fuzzy
+msgid "Top margin:"
+msgstr "Lề trên (pt):"
+
+#: ../system-config-printer.glade.h:224
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr ""
+
+#: ../system-config-printer.glade.h:225
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr ""
+
+#: ../system-config-printer.glade.h:226
+msgid "User name:"
+msgstr "Tên người dùng:"
+
+#: ../system-config-printer.glade.h:227
+#, fuzzy
+msgid "Username:"
+msgstr "Tên người dùng:"
+
+#: ../system-config-printer.glade.h:228
+msgid "Word wrap"
+msgstr ""
+
+#: ../system-config-printer.glade.h:229
+msgid "_Do not apply"
+msgstr ""
+
+#: ../system-config-printer.glade.h:230
+#, fuzzy
+msgid "_Edit"
+msgstr "Sửa"
+
+#: ../system-config-printer.glade.h:231 ../applet.glade.h:10
+msgid "_File"
+msgstr ""
+
+#: ../system-config-printer.glade.h:232
+#, fuzzy
+msgid "_Goto Server"
+msgstr "Server"
+
+#: ../system-config-printer.glade.h:233
+msgid "_Help"
+msgstr "Trợ _giúp"
+
+#: ../system-config-printer.glade.h:234
+#, fuzzy
+msgid "_Verify..."
+msgstr "Xác định..."
+
+#: ../system-config-printer.glade.h:235
+#, fuzzy
+msgid "default"
+msgstr "Mặc định"
+
+#: ../system-config-printer.glade.h:236
+msgid "none"
+msgstr "không"
+
+#: ../system-config-printer.glade.h:237
+msgid "points"
+msgstr ""
+
+#: ../system-config-printer.glade.h:238
+#, fuzzy
+msgid "points (72 points per inch)"
+msgstr "72pt mỗi inch"
+
+#: ../system-config-printer.desktop.in.h:1
+#, fuzzy
+msgid "Configure printers"
+msgstr "Cấu hình máy in"
+
+#: ../system-config-printer.desktop.in.h:2
+#, fuzzy
+msgid "Printing"
+msgstr "Máy in: "
+
+#: ../applet.py:80
+msgid "Toner low"
+msgstr ""
+
+#: ../applet.py:81
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr ""
+
+#: ../applet.py:82
+msgid "Toner empty"
+msgstr ""
+
+#: ../applet.py:83
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr ""
+
+#: ../applet.py:84
+msgid "Cover open"
+msgstr ""
+
+#: ../applet.py:85
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:86
+msgid "Door open"
+msgstr ""
+
+#: ../applet.py:87
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:88
+msgid "Paper low"
+msgstr ""
+
+#: ../applet.py:89
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr ""
+
+#: ../applet.py:90
+msgid "Out of paper"
+msgstr ""
+
+#: ../applet.py:91
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr ""
+
+#: ../applet.py:92
+msgid "Ink low"
+msgstr ""
+
+#: ../applet.py:93
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr ""
+
+#: ../applet.py:94
+msgid "Ink empty"
+msgstr ""
+
+#: ../applet.py:95
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr ""
+
+#: ../applet.py:96
+#, fuzzy
+msgid "Not connected?"
+msgstr "_Kết nối cục bộ"
+
+#: ../applet.py:97
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr ""
+
+#: ../applet.py:104
+#, fuzzy
+msgid "Printer report"
+msgstr "Tùy chọn bộ lọc"
+
+#: ../applet.py:106
+#, fuzzy
+msgid "Printer warning"
+msgstr "Máy in: "
+
+#: ../applet.py:108
+#, fuzzy
+msgid "Printer error"
+msgstr "Máy in: "
+
+#: ../applet.py:109
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr ""
+
+#: ../applet.py:182
+msgid "Job"
+msgstr ""
+
+#: ../applet.py:183
+#, fuzzy
+msgid "Document"
+msgstr "Ghi chú"
+
+#: ../applet.py:185
+#, fuzzy
+msgid "Size"
+msgstr "Cỡ giấy"
+
+#: ../applet.py:186
+msgid "Time submitted"
+msgstr ""
+
+#: ../applet.py:187
+msgid "Status"
+msgstr ""
+
+#: ../applet.py:238
+msgid "Message"
+msgstr ""
+
+#: ../applet.py:555
+msgid "1 hour ago"
+msgstr ""
+
+#: ../applet.py:557
+msgid "1 hour and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:559
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:562
+#, python-format
+msgid "%d hours ago"
+msgstr ""
+
+#: ../applet.py:564
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:566
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:572
+msgid "a minute ago"
+msgstr ""
+
+#: ../applet.py:574
+#, python-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ../applet.py:629
+msgid "No documents queued"
+msgstr ""
+
+#: ../applet.py:632
+msgid "1 document queued"
+msgstr ""
+
+#: ../applet.py:635
+#, python-format
+msgid "%d documents queued"
+msgstr ""
+
+#: ../applet.py:682
+#, fuzzy
+msgid "Pending"
+msgstr "Máy in: "
+
+#: ../applet.py:683
+#, fuzzy
+msgid "Held"
+msgstr "Trợ _giúp"
+
+#: ../applet.py:686
+#, fuzzy
+msgid "Canceled"
+msgstr "_Hủy bỏ"
+
+#: ../applet.py:687
+#, fuzzy
+msgid "Aborted"
+msgstr "Giới thiệu"
+
+#: ../applet.py:688
+#, fuzzy
+msgid "Completed"
+msgstr "Ghi chú"
+
+#: ../applet.py:946
+#, fuzzy
+msgid "Printer added"
+msgstr "Kiểu máy in"
+
+#: ../applet.py:948
+#, fuzzy
+msgid "Missing printer driver"
+msgstr "Driver máy in"
+
+#: ../applet.py:951
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr ""
+
+#: ../applet.py:954
+#, fuzzy
+msgid "Configure"
+msgstr "Cấu hình máy in"
+
+#. Model mismatch
+#: ../applet.py:957
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr ""
+
+#: ../applet.py:961
+#, fuzzy
+msgid "Find driver"
+msgstr "Driver máy in"
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr ""
+
+#: ../applet.glade.h:6
+#, fuzzy
+msgid "Printer status"
+msgstr "Ghi chú máy in:"
+
+#: ../applet.glade.h:7
+msgid "Re_print"
+msgstr ""
+
+#: ../applet.glade.h:8
+msgid "Show _completed jobs"
+msgstr ""
+
+#: ../applet.glade.h:9
+msgid "Show _printer status"
+msgstr ""
+
+#: ../applet.glade.h:11
+msgid "_Hide"
+msgstr ""
+
+#: ../applet.glade.h:12
+msgid "_Hold"
+msgstr ""
+
+#: ../applet.glade.h:13
+#, fuzzy
+msgid "_Release"
+msgstr "_Xoá"
+
+#: ../applet.glade.h:14
+msgid "_View"
+msgstr ""
+
+#: ../print-applet.desktop.in.h:1
+#, fuzzy
+msgid "Print Queue Applet"
+msgstr "Sửa tùy chọn hàng đợi"
+
+#: ../print-applet.desktop.in.h:2
+msgid "System tray icon for managing print jobs"
+msgstr ""
+
+#: ../manage-print-jobs.desktop.in.h:1
+msgid "Cancel, pause, resume or reprint jobs"
+msgstr ""
+
+#: ../manage-print-jobs.desktop.in.h:2
+msgid "Manage Print Jobs"
+msgstr ""
+
+#: ../my-default-printer.desktop.in.h:2
+#, fuzzy
+msgid "Select default printer"
+msgstr "Đây là mô tả của máy in."
+
+#, fuzzy
+#~ msgid "Specify default job options."
+#~ msgstr "Đặt lại tùy chọn mặc định"
+
+#, fuzzy
+#~ msgid "localhost"
+#~ msgstr "cục bộ"
+
+#, fuzzy
+#~ msgid "smb://"
+#~ msgstr "smb"
 
 #~ msgid "Ok"
 #~ msgstr "Đồng ý"
@@ -264,9 +1574,6 @@ msgstr ""
 #~ "Bạn đã thực hiện các thay đổi, bạn có muốn lưu chúng lại không? Nếu bạn "
 #~ "nói không, các thay đổi của bạn sẽ bị mất."
 
-#~ msgid "Cancel"
-#~ msgstr "Hủy bỏ"
-
 #~ msgid "Create a New Queue"
 #~ msgstr "Tạo hàng đợi mới"
 
@@ -276,29 +1583,17 @@ msgstr ""
 #~ msgid "About to create the following queue:"
 #~ msgstr "Chuẩn bị tạo hàng đợi sau:"
 
-#~ msgid "Finish"
-#~ msgstr "Hoàn tất"
-
 #~ msgid "Back"
 #~ msgstr "Lùi"
 
 #~ msgid "Type:"
 #~ msgstr "Kiểu:"
 
-#~ msgid "Device:"
-#~ msgstr "Thiết bị:"
-
-#~ msgid "Server:"
-#~ msgstr "Server:"
-
 #~ msgid "Lpd Queue:"
 #~ msgstr "Hàng đợi Lpd:"
 
 #~ msgid "Share:"
 #~ msgstr "Chia sẻ:"
-
-#~ msgid "IP:"
-#~ msgstr "IP:"
 
 #~ msgid "Workgroup:"
 #~ msgstr "Workgroup:"
@@ -341,12 +1636,6 @@ msgstr ""
 #~ msgid "Custom"
 #~ msgstr "Tự chọn"
 
-#~ msgid "Setting Up"
-#~ msgstr "Thiết lập"
-
-#~ msgid "Printer Device"
-#~ msgstr "Thiết bị Máy in"
-
 #~ msgid ""
 #~ "Pick the printer device from the list, or enter it using \"Custom\" below."
 #~ msgstr ""
@@ -355,9 +1644,6 @@ msgstr ""
 
 #~ msgid "Specify Device:"
 #~ msgstr "Xác định thiết bị:"
-
-#~ msgid "Description"
-#~ msgstr "Mô tả"
 
 #~ msgid "Custom Device"
 #~ msgstr "Thiết bị Tự chọn"
@@ -373,9 +1659,6 @@ msgstr ""
 
 #~ msgid "Enter the LPD server and queue to use."
 #~ msgstr "Nhập server và hàng đợi LPD cần dùng."
-
-#~ msgid "Server"
-#~ msgstr "Server"
 
 #~ msgid "Queue"
 #~ msgstr "Hàng đợi"
@@ -464,9 +1747,6 @@ msgstr ""
 #~ msgid "Edit Name and Aliases"
 #~ msgstr "Sửa Tên và Bí danh"
 
-#~ msgid "Name"
-#~ msgstr "Tên"
-
 #~ msgid "Add Alias"
 #~ msgstr "Thêm bí danh"
 
@@ -502,9 +1782,6 @@ msgstr ""
 
 #~ msgid "Edit Driver Options"
 #~ msgstr "Sửa Tùy chọn Driver"
-
-#~ msgid "Edit"
-#~ msgstr "Sửa"
 
 #~ msgid "Edit %s"
 #~ msgstr "Sửa %s"
@@ -546,9 +1823,6 @@ msgstr ""
 #~ "Bạn đã thực hiện các thay đổi, bạn có muốn lưu chúng lại không?\n"
 #~ "Nếu bạn nói không, bạn sẽ không thể in trang thử."
 
-#~ msgid "Test"
-#~ msgstr "Thử"
-
 #~ msgid "Sent %s to \"%s\"."
 #~ msgstr "Đã gửi %s đến \"%s\"."
 
@@ -564,17 +1838,11 @@ msgstr ""
 #~ msgid "Aliases"
 #~ msgstr "Bí danh"
 
-#~ msgid "Details"
-#~ msgstr "Chi tiết"
-
 #~ msgid "New"
 #~ msgstr "Mới"
 
 #~ msgid "Delete"
 #~ msgstr "Xóa"
-
-#~ msgid "Default"
-#~ msgstr "Mặc định"
 
 #~ msgid "You must select a printer queue to edit."
 #~ msgstr "Bạn phải chọn hàng đợi máy in cần hiệu chỉnh."
@@ -629,10 +1897,6 @@ msgstr ""
 #~ msgid "Queue name"
 #~ msgstr "Tên hàng đợi"
 
-#, fuzzy
-#~ msgid "Shared"
-#~ msgstr "Chia sẻ"
-
 #~ msgid ""
 #~ "Do you want to save the changes\n"
 #~ "you made to your printer configuration?"
@@ -642,9 +1906,6 @@ msgstr ""
 
 #~ msgid "_Don't save"
 #~ msgstr "_Không lưu"
-
-#~ msgid "_Cancel"
-#~ msgstr "_Hủy bỏ"
 
 #~ msgid "_Save"
 #~ msgstr "_Lưu"
@@ -661,9 +1922,6 @@ msgstr ""
 
 #~ msgid "Notes from the Linux Printing Database"
 #~ msgstr "Ghi chút từ Cơ sở Dữ liệu In Linux"
-
-#~ msgid "Printer notes:"
-#~ msgstr "Ghi chú máy in:"
 
 #~ msgid "Driver notes:"
 #~ msgstr "Ghi chú driver:"
@@ -689,15 +1947,6 @@ msgstr ""
 
 #~ msgid "Failed to write queues."
 #~ msgstr "Lỗi ghi hàng đợi."
-
-#~ msgid ""
-#~ "There was a problem sending %s\n"
-#~ "to '%s' queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Lỗi gửi %s\n"
-#~ "đến hàng đợi `%s':\n"
-#~ "\n"
 
 #~ msgid ""
 #~ "Sent %s\n"
@@ -771,12 +2020,6 @@ msgstr ""
 #~ msgid "Type: "
 #~ msgstr "Kiểu: "
 
-#~ msgid "Printer: "
-#~ msgstr "Máy in: "
-
-#~ msgid "Device: "
-#~ msgstr "Thiết bị: "
-
 #~ msgid "Queue: "
 #~ msgstr "Hàng đợi: "
 
@@ -798,18 +2041,12 @@ msgstr ""
 #~ "Trả lời 'có' sẽ áp dụng các thay đổi\n"
 #~ "và in thử một trang bằng máy in này."
 
-#~ msgid "Characters per inch"
-#~ msgstr "Ký tự mỗi inch"
-
 #~ msgid ""
 #~ "HH:MM:SS or '%s'.\n"
 #~ "Use GMT."
 #~ msgstr ""
 #~ "HH:MM:SS hoặc '%s'.\n"
 #~ "Dùng GMT."
-
-#~ msgid "Lines per inch"
-#~ msgstr "Hàng mỗi inch"
 
 #~ msgid ""
 #~ "Number of document pages per\n"
@@ -854,9 +2091,6 @@ msgstr ""
 
 #~ msgid "I don't know enough about this printer model to choose a driver."
 #~ msgstr "Tôi không biết nên chọn driver nào cho kiểu máy in này."
-
-#~ msgid "Edit queue option"
-#~ msgstr "Sửa tùy chọn hàng đợi"
 
 #~ msgid "Add queue option"
 #~ msgstr "Thêm tùy chọn hàng đợi"
@@ -962,9 +2196,6 @@ msgstr ""
 #~ msgid "Convert Text to Postscript"
 #~ msgstr "Chuyển Text sang Postscript"
 
-#~ msgid "Page Size"
-#~ msgstr "Cỡ giấy"
-
 #, fuzzy
 #~ msgid "Couldn't load driver information.\n"
 #~ msgstr "Không thể nạp thông tin driver."
@@ -1021,17 +2252,11 @@ msgstr ""
 #~ msgid "/"
 #~ msgstr "/"
 
-#~ msgid "72pt per inch"
-#~ msgstr "72pt mỗi inch"
-
 #~ msgid "="
 #~ msgstr "="
 
 #~ msgid "ASC_II text test page"
 #~ msgstr "Trang văn bản thử ASC_II"
-
-#~ msgid "About"
-#~ msgstr "Giới thiệu"
 
 #~ msgid "Add a new option"
 #~ msgstr "Thêm tùy chọn mới"
@@ -1051,9 +2276,6 @@ msgstr ""
 #~ msgid "Allowed hosts"
 #~ msgstr "Máy được phép"
 
-#~ msgid "Apply"
-#~ msgstr "Áp dụng"
-
 #~ msgid "Apply changes"
 #~ msgstr "Áp dụng các thay đổi"
 
@@ -1063,9 +2285,6 @@ msgstr ""
 #~ msgid "At start of job:"
 #~ msgstr "Bắt đầu công việc:"
 
-#~ msgid "Authentication"
-#~ msgstr "Xác thực"
-
 #~ msgid "Autoselect driver"
 #~ msgstr "Tự động chọn driver"
 
@@ -1074,9 +2293,6 @@ msgstr ""
 
 #~ msgid "Big5 PostScript test page"
 #~ msgstr "Trang thử PostScript Big5"
-
-#~ msgid "Bottom margin (pt):"
-#~ msgstr "Lề dưới (pt):"
 
 #~ msgid "Choose the manufacturer"
 #~ msgstr "Chọn nhà sản xuất"
@@ -1111,17 +2327,11 @@ msgstr ""
 #~ msgid "Enter the device you would like to use."
 #~ msgstr "Nhập thiết bị bạn muốn dùng."
 
-#~ msgid "Filter options"
-#~ msgstr "Tùy chọn bộ lọc"
-
 #~ msgid "Finish, and create the new print queue"
 #~ msgstr "Hoàn tất, và tạo hàng đợi máy in mới"
 
 #~ msgid "For example: /dev/lp0"
 #~ msgstr "Ví dụ: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "Chung"
 
 #~ msgid "Generic"
 #~ msgstr "Thường"
@@ -1160,9 +2370,6 @@ msgstr ""
 #~ msgid "Japanese _SJIS text test page"
 #~ msgstr "Trang văn bản thử _SJIS tiếng Nhật"
 
-#~ msgid "Left margin (pt):"
-#~ msgstr "Lề trái (pt):"
-
 #~ msgid "Network _devices"
 #~ msgstr "_Thiết bị mạng"
 
@@ -1181,9 +2388,6 @@ msgstr ""
 #~ msgid "Networked _Windows (SMB)"
 #~ msgstr "_Windows nối mạng (SMB)"
 
-#~ msgid "Password:"
-#~ msgstr "Mật khẩu:"
-
 #~ msgid "Path:"
 #~ msgstr "Đường dẫn:"
 
@@ -1200,14 +2404,8 @@ msgstr ""
 #~ msgid "Printer configuration"
 #~ msgstr "Cấu hình máy in"
 
-#~ msgid "Printer driver"
-#~ msgstr "Driver máy in"
-
 #~ msgid "Printer hostname or IP address"
 #~ msgstr "Tên hoặc địa chỉ IP của máy in"
-
-#~ msgid "Printer model"
-#~ msgstr "Kiểu máy in"
 
 #~ msgid "Printer/driver _notes..."
 #~ msgstr "_Ghi chú driver/máy in..."
@@ -1233,12 +2431,6 @@ msgstr ""
 #~ msgid "Rescan devices"
 #~ msgstr "Quét lại thiết bị"
 
-#~ msgid "Reset to the default options"
-#~ msgstr "Đặt lại tùy chọn mặc định"
-
-#~ msgid "Right margin (pt):"
-#~ msgstr "Lề phải (pt):"
-
 #~ msgid "Select a queue type:"
 #~ msgstr "Chọn kiểu hàng đợi:"
 
@@ -1247,9 +2439,6 @@ msgstr ""
 
 #~ msgid "Server hostname or IP address:"
 #~ msgstr "Tên hoặc địa chỉ IP của server:"
-
-#~ msgid "Set as _default"
-#~ msgstr "Đặt làm _mặc định"
 
 #~ msgid "Set as de_fault"
 #~ msgstr "Đặt làm _mặc định"
@@ -1265,9 +2454,6 @@ msgstr ""
 
 #~ msgid "Single _IP address"
 #~ msgstr "Địa chỉ _IP đơn"
-
-#~ msgid "Specify..."
-#~ msgstr "Xác định..."
 
 #~ msgid "Strict RFC1179 compliance"
 #~ msgstr "Tương thích chặt RFC1179"
@@ -1288,9 +2474,6 @@ msgstr ""
 #~ "Đây là tên của hàng đợi. Nó phải bắt đầu bằng một ký tự và không chứa "
 #~ "khoảng trắng."
 
-#~ msgid "Top margin (pt):"
-#~ msgstr "Lề trên (pt):"
-
 #~ msgid "Type in an IP address"
 #~ msgstr "Nhập vào địa chỉ IP"
 
@@ -1303,14 +2486,8 @@ msgstr ""
 #~ msgid "Use control-F to search"
 #~ msgstr "Dùng Control-F để tìm"
 
-#~ msgid "User name:"
-#~ msgstr "Tên người dùng:"
-
 #~ msgid "_A4 PostScript test page"
 #~ msgstr "Trang thử Postscript _A4"
-
-#~ msgid "_Action"
-#~ msgstr "_Hành động"
 
 #~ msgid "_Add..."
 #~ msgstr "_Thêm..."
@@ -1336,12 +2513,6 @@ msgstr ""
 #~ msgid "_Custom device"
 #~ msgstr "Thiết bị tự _chọn"
 
-#~ msgid "_Defaults"
-#~ msgstr "_Mặc định"
-
-#~ msgid "_Delete"
-#~ msgstr "_Xoá"
-
 #~ msgid "_Delete queue"
 #~ msgstr "_Xóa hàng đợi"
 
@@ -1350,9 +2521,6 @@ msgstr ""
 
 #~ msgid "_Edit..."
 #~ msgstr "_Hiệu chỉnh..."
-
-#~ msgid "_Help"
-#~ msgstr "Trợ _giúp"
 
 #~ msgid "_Network address"
 #~ msgstr "Đị_a chỉ mạng"
@@ -1368,9 +2536,6 @@ msgstr ""
 
 #~ msgid "_Rescan devices"
 #~ msgstr "_Quét lại thiết bị"
-
-#~ msgid "_Sharing..."
-#~ msgstr "_Chia sẻ..."
 
 #~ msgid "_Test"
 #~ msgstr "_Thử"
@@ -1405,20 +2570,8 @@ msgstr ""
 #~ msgid "jetdirect"
 #~ msgstr "jetdirect"
 
-#~ msgid "local"
-#~ msgstr "cục bộ"
-
 #~ msgid "lpd"
 #~ msgstr "lpd"
 
 #~ msgid "ncp"
 #~ msgstr "ncp"
-
-#~ msgid "none"
-#~ msgstr "không"
-
-#~ msgid "smb"
-#~ msgstr "smb"
-
-#~ msgid "Configure printers"
-#~ msgstr "Cấu hình máy in"

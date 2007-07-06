@@ -1,1542 +1,1531 @@
-# translation of zh_TW.po to Chinese, Traditional
+# translation of zh_TW.po to
 # Translation of printconf to Chinese (traditional)
 # Copyright (C) 2002,2003, 2004, 2006 Free Software Foundation, Inc.
+#
 # Ben Wu <hpwu@redhat.com>, 2002,2003.
 # Chester Cheng <ccheng@redhat.com>, 2004, 2006.
 # Walter Cheuk <wwycheuk@netvigator.com>, 2005.
-#
+# Walter Cheuk <wwycheuk@gmail.com>, 2006, 2007.
+# Chester Cheng <ccheng@brisbane.redhat.com>, 2006.
 msgid ""
 msgstr ""
 "Project-Id-Version: zh_TW\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-23 17:34+0100\n"
-"PO-Revision-Date: 2006-02-03 11:53+1000\n"
-"Last-Translator: Chester Cheng <ccheng@redhat.com>\n"
-"Language-Team: Chinese, Traditional <zh_TW@li.org>\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2007-06-15 18:34+0100\n"
+"PO-Revision-Date: 2007-02-04 20:56+1000\n"
+"Last-Translator: Chester Cheng <ccheng@brisbane.redhat.com>\n"
+"Language-Team:  <zh@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.9.1\n"
+"X-Generator: KBabel 1.11.4\n"
 
-#: optionwidgets.py:94
+#: ../cupshelpers.py:28
+msgid "Idle"
+msgstr "閒置"
+
+#: ../cupshelpers.py:29 ../applet.py:684
+msgid "Processing"
+msgstr "正在處理"
+
+#: ../cupshelpers.py:30
+msgid "Busy"
+msgstr "忙碌"
+
+#: ../cupshelpers.py:31 ../applet.py:685
+msgid "Stopped"
+msgstr "已停止"
+
+#: ../cupshelpers.py:48 ../applet.py:694
+msgid "Unknown"
+msgstr "未知"
+
+#: ../my-default-printer.py:117 ../my-default-printer.desktop.in.h:1
+#, fuzzy
+msgid "Default Printer"
+msgstr "設為預設印表機"
+
+#: ../my-default-printer.py:121 ../my-default-printer.py:152
+msgid "_Use System Default"
+msgstr ""
+
+#: ../my-default-printer.py:122
+#, fuzzy
+msgid "_Set Default"
+msgstr "預設"
+
+#: ../my-default-printer.py:132 ../system-config-printer.glade.h:190
+#: ../applet.py:184 ../applet.py:224
+msgid "Printer"
+msgstr "印表機"
+
+#: ../my-default-printer.py:136
+#, fuzzy
+msgid "Location"
+msgstr "位置："
+
+#: ../optionwidgets.py:108
 msgid "Conflicts with:"
-msgstr ""
+msgstr "和此有衝突："
 
-#: system-config-printer.py:172
-msgid "Copyright 2006 Red Hat, Inc."
-msgstr ""
+#: ../system-config-printer.py:228
+msgid "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "版權所有 2006, 2007 Red Hat, Inc."
 
-#: system-config-printer.py:208
-#, fuzzy
+#: ../system-config-printer.py:264
 msgid "Server Settings"
-msgstr "驅動程式選項"
+msgstr "伺服器設定"
 
-#: system-config-printer.py:209
+#: ../system-config-printer.py:273 ../system-config-printer.py:275
 #, fuzzy
-msgid "Local Printers"
-msgstr "編輯本機印表機"
+msgid "Members of this class"
+msgstr "此組別的成員"
 
-#: system-config-printer.py:210
-msgid "Local Classes"
-msgstr ""
-
-#: system-config-printer.py:211
-#, fuzzy
-msgid "Remote Printers"
-msgstr "Jetdirect 印表機"
-
-#: system-config-printer.py:212
-msgid "Remote Classes"
-msgstr ""
-
-#: system-config-printer.py:221 system-config-printer.py:223
-msgid "Members of this Class"
-msgstr ""
-
-#: system-config-printer.py:222 system-config-printer.py:224
+#: ../system-config-printer.py:274 ../system-config-printer.py:276
 msgid "Others"
-msgstr ""
+msgstr "其他"
 
-#: system-config-printer.py:225
-#, fuzzy
+#: ../system-config-printer.py:277
 msgid "Devices"
 msgstr "裝置"
 
-#: system-config-printer.py:226
+#: ../system-config-printer.py:278
 msgid "Makes"
-msgstr ""
+msgstr "廠牌"
 
-#: system-config-printer.py:227
-#, fuzzy
+#: ../system-config-printer.py:279
 msgid "Models"
-msgstr "規格"
+msgstr "型號"
 
-#: system-config-printer.py:228
-#, fuzzy
+#: ../system-config-printer.py:280
 msgid "Drivers"
 msgstr "驅動程式"
 
-#: system-config-printer.py:229
-#, fuzzy
+#: ../system-config-printer.py:281
 msgid "Users"
 msgstr "使用者"
 
-#: system-config-printer.py:240
+#: ../system-config-printer.py:292
 msgid "PostScript Printer Description (*.ppd[.gz])"
-msgstr ""
+msgstr "PostScript 印表機的描述（*.ppd[.gz]）"
 
-#: system-config-printer.py:259
+#. SMB list columns
+#: ../system-config-printer.py:312
 msgid "Share"
 msgstr "共享資源"
 
-#: system-config-printer.py:265
+#: ../system-config-printer.py:318
 msgid "Comment"
 msgstr "註解"
 
-#: system-config-printer.py:318
+#: ../system-config-printer.py:551
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "印表機設定 - %s"
 
-#: system-config-printer.py:321
+#: ../system-config-printer.py:554
 #, python-format
 msgid "Connected to %s"
-msgstr ""
+msgstr "已連接至 %s"
 
-#: system-config-printer.py:323
-#, fuzzy
+#: ../system-config-printer.py:556 ../system-config-printer.py:1170
 msgid "Not connected"
-msgstr "與本機連接的(_L)"
+msgstr "未連接"
 
-#: system-config-printer.py:463
-#, python-format
+#: ../system-config-printer.py:637
+msgid "Local Printers"
+msgstr "本機印表機"
+
+#: ../system-config-printer.py:638
+msgid "Local Classes"
+msgstr "本機組別"
+
+#: ../system-config-printer.py:639
+msgid "Remote Printers"
+msgstr "遠端印表機"
+
+#: ../system-config-printer.py:640
+msgid "Remote Classes"
+msgstr "遠端組別"
+
+#: ../system-config-printer.py:736
+#, fuzzy, python-format
 msgid ""
-"Connecting to Server:\n"
+"Connecting to server:\n"
 "%s"
 msgstr ""
+"正在連接伺服器：\n"
+"%s"
 
-#: system-config-printer.py:748
+#: ../system-config-printer.py:1099 ../system-config-printer.glade.h:115
+msgid "Installable Options"
+msgstr "可安裝選項"
+
+#: ../system-config-printer.py:1100 ../system-config-printer.glade.h:191
+msgid "Printer Options"
+msgstr "印表機選項"
+
+#: ../system-config-printer.py:1109
+#, fuzzy
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
-"these conflictes are resolved."
+"these conflicts are resolved."
 msgstr ""
+"有相衝突的選項。\n"
+"變更只能在這些衝\n"
+"突解決之後套用。"
 
-#: system-config-printer.py:774
+#: ../system-config-printer.py:1138 ../system-config-printer.py:1154
+#: ../applet.py:333
 msgid "Not authorized"
-msgstr ""
+msgstr "未授權"
 
-#: system-config-printer.py:775
+#: ../system-config-printer.py:1139 ../applet.py:334
 msgid "The password may be incorrect."
-msgstr ""
+msgstr "密碼可能不正確。"
 
-#: system-config-printer.py:778
+#: ../system-config-printer.py:1142 ../system-config-printer.py:1175
+#: ../applet.py:337
 msgid "CUPS server error"
-msgstr ""
+msgstr "CUPS 伺服器錯誤"
 
-#: system-config-printer.py:779
-#, fuzzy, python-format
+#: ../system-config-printer.py:1143 ../applet.py:338
+#, python-format
 msgid "There was an error during the CUPS operation: '%s'."
-msgstr "列印測試頁時發生錯誤。"
+msgstr "CUPS 進行此操作時發生錯誤：'%s'。"
 
-#: system-config-printer.py:803
+#: ../system-config-printer.py:1155
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr "密碼可能不正確，或伺服器已設為不接受遠端管理。"
+
+#: ../system-config-printer.py:1160
+msgid "Bad request"
+msgstr "不正確的要求"
+
+#: ../system-config-printer.py:1162
+msgid "Not found"
+msgstr "找不到"
+
+#: ../system-config-printer.py:1164
+msgid "Request timeout"
+msgstr "要求逾時"
+
+#: ../system-config-printer.py:1166
+msgid "Upgrade required"
+msgstr "需要更新"
+
+#: ../system-config-printer.py:1168
+msgid "Server error"
+msgstr "伺服器錯誤"
+
+#: ../system-config-printer.py:1172
+#, python-format
+msgid "status %d"
+msgstr "狀態 %d"
+
+#: ../system-config-printer.py:1176
+#, python-format
+msgid "There was an HTTP error: %s."
+msgstr "產生 HTTP 錯誤：%s。"
+
+#: ../system-config-printer.py:1199
 msgid "This will delete this class!"
-msgstr ""
+msgstr "這樣會刪除此組別！"
 
-#: system-config-printer.py:804
+#: ../system-config-printer.py:1200
 msgid "Proceed anyway?"
+msgstr "要繼續嗎？"
+
+#: ../system-config-printer.py:1386
+msgid "Submitted"
+msgstr "已提交"
+
+#: ../system-config-printer.py:1387
+#, python-format
+msgid "Test page submitted as job %d"
+msgstr "測試頁已提交為 %d 工作"
+
+#: ../system-config-printer.py:1397
+msgid "Not possible"
+msgstr "不可能"
+
+#: ../system-config-printer.py:1398
+msgid ""
+"The remote server did not accept the print job, most likely because the "
+"printer is not shared."
+msgstr "遠端伺服器不接受列印工作，很大可能是未共享印表機。"
+
+#: ../system-config-printer.py:1463
+msgid "Error"
 msgstr ""
 
-#: system-config-printer.py:1002
+#: ../system-config-printer.py:1464
 #, fuzzy
-msgid "This is the default printer"
-msgstr "這個印表機的描述說明。"
+msgid "There was a problem connecting to the CUPS server."
+msgstr "CUPS 進行此操作時發生錯誤：'%s'。"
 
-#: system-config-printer.py:1004
+#: ../system-config-printer.py:1527
+msgid "This is the default printer"
+msgstr "這是預設印表機。"
+
+#: ../system-config-printer.py:1529
 #, python-format
 msgid "Default printer is %s"
-msgstr ""
+msgstr "預設印表機是 %s"
 
-#: system-config-printer.py:1007
+#: ../system-config-printer.py:1532
 msgid "No default printer set."
-msgstr ""
+msgstr "未有設定預設印表機。"
 
-#: system-config-printer.py:1289
-#, fuzzy, python-format
-msgid "Really delete %s %s?"
-msgstr "真的要刪除 \"%s\"?"
+#: ../system-config-printer.py:1618
+msgid "Cancel Tests"
+msgstr "取消測試"
 
-#: system-config-printer.py:1330
-#, fuzzy
+#: ../system-config-printer.py:1622 ../system-config-printer.glade.h:189
+msgid "Print Test Page"
+msgstr "列印測試頁"
+
+#: ../system-config-printer.py:1877
+#, python-format
+msgid "Really delete printer %s?"
+msgstr "真的要刪除 %s 印表機嗎？"
+
+#: ../system-config-printer.py:1879
+#, python-format
+msgid "Really delete class %s?"
+msgstr "真的要刪除 %s 組別嗎？"
+
+#: ../system-config-printer.py:1927 ../system-config-printer.glade.h:140
 msgid "New Printer"
-msgstr "印表機:"
+msgstr "新印表機"
 
-#: system-config-printer.py:1339
+#: ../system-config-printer.py:1940 ../system-config-printer.glade.h:139
 msgid "New Class"
-msgstr ""
+msgstr "新組別"
 
-#: system-config-printer.py:1349
+#: ../system-config-printer.py:1953
 msgid "Change Device URI"
-msgstr ""
+msgstr "更改裝置 URI"
 
-#: system-config-printer.py:1360
-#, fuzzy
+#: ../system-config-printer.py:1966
 msgid "Change Driver"
-msgstr "更改種類"
+msgstr "更改驅動程式"
 
-#: system-config-printer.py:1558
+#: ../system-config-printer.py:2220
 msgid "Other"
-msgstr ""
+msgstr "其他"
 
-#: system-config-printer.py:1560
+#: ../system-config-printer.py:2222
 msgid " (Current)"
-msgstr ""
+msgstr "（當前）"
 
-#: system-config-printer.py:1737
-#, fuzzy
+#: ../system-config-printer.py:2407
 msgid "Verified"
-msgstr "（指定裝置）"
+msgstr "已驗證"
 
-#: system-config-printer.py:1738
+#: ../system-config-printer.py:2408
 msgid "This print share is accessible."
-msgstr ""
+msgstr "此列印共享資源可存取。"
 
-#: system-config-printer.py:1745
+#: ../system-config-printer.py:2415
 msgid "Inaccessible"
-msgstr ""
+msgstr "不可存取"
 
-#: system-config-printer.py:1746
+#: ../system-config-printer.py:2416
 msgid "This print share is not accessible."
-msgstr ""
+msgstr "此列印共享資源不可存取。"
 
-#: system-config-printer.py:1972
-#, fuzzy
-msgid " (recommended)"
-msgstr ""
-"（建議\n"
-"的驅動程式是 %s）"
+#: ../system-config-printer.py:2436
+msgid "A printer connected to the parallel port."
+msgstr "連接至平行埠的印表機。"
 
-#: system-config-printer.py:2010
-msgid "This PPD is generated by foomatic."
-msgstr ""
+#: ../system-config-printer.py:2438
+msgid "A printer connected to a USB port."
+msgstr "連接至串列埠的印表機。"
 
-#: system-config-printer.py:2012
+#: ../system-config-printer.py:2440
 msgid ""
-"This PPD is provided by the manufacturer and is included with the foomatic "
-"package."
-msgstr ""
+"HPLIP software driving a printer, or the printer function of a multi-"
+"function device."
+msgstr "HPLIP 軟體驅動印表機，或多功能裝置的印表機部份。"
 
-#: system-config-printer.py:2016
-msgid "This PPD is provided by CUPS."
-msgstr ""
+#: ../system-config-printer.py:2443
+msgid ""
+"HPLIP software driving a fax machine, or the fax function of a multi-"
+"function device."
+msgstr "HPLIP 軟體驅動傳真機，或多功能裝置的傳真機部份。"
 
-#: system-config-printer.py:2057
+#: ../system-config-printer.py:2446
+msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
+msgstr "由硬體箤取層 (HAL) 偵測到的本機印表機。"
+
+#: ../system-config-printer.py:2695
+msgid " (recommended)"
+msgstr "（建議）"
+
+#: ../system-config-printer.py:2736
+msgid "This PPD is generated by foomatic."
+msgstr "此 PPD 由 foomatic 產生。"
+
+#. XXX
+#: ../system-config-printer.py:2777
 #, python-format
 msgid "Going to create a new class %s."
-msgstr ""
+msgstr "建立新組別 %s。"
 
-#: system-config-printer.py:2068
+#: ../system-config-printer.py:2791
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
 "%s.\n"
 msgstr ""
+"建立新印表機 %s，位置在\n"
+"%s。\n"
 
-#~ msgid "Error"
-#~ msgstr "錯誤"
+#. Foomatic database problem of some sort.
+#: ../system-config-printer.py:2815
+msgid "Database error"
+msgstr "資料庫錯誤"
 
-#~ msgid "Ok"
-#~ msgstr "確定"
+#: ../system-config-printer.py:2816
+#, python-format
+msgid "The '%s' driver cannot be used with printer '%s %s'."
+msgstr "「%s」驅動程式無法用於印表機「%s %s」。"
 
-#~ msgid "Info"
-#~ msgstr "相關資訊"
+#. This printer references some XML that is not
+#. installed by default.  Point the user at the
+#. package they need to install.
+#: ../system-config-printer.py:2826
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr "要使用這驅動程式，您需要安裝「%s」套件。"
 
-#~ msgid "Yes"
-#~ msgstr "是"
+#. This error came from trying to open the PPD file.
+#: ../system-config-printer.py:2833
+msgid "PPD error"
+msgstr "PPD 錯誤"
 
-#~ msgid "No"
-#~ msgstr "否"
+#: ../system-config-printer.py:2835
+msgid "Failed to read PPD file.  Possible reason follows:"
+msgstr "讀取 PPD 檔案失敗。可能原因有："
 
-#~ msgid "Exit"
-#~ msgstr "離開"
+#: ../system-config-printer.py:3121 ../system-config-printer.py:3128
+msgid "Missing driver"
+msgstr "找不到驅動程式"
+
+#: ../system-config-printer.py:3122
+#, python-format
+msgid ""
+"Printer '%s' requires the %s package but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"印表機「%s」需要 %s 套件，但這套件並未安裝。在使用本印表機前，請安裝該套件。"
+
+#: ../system-config-printer.py:3129
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"印表機「%s」需要「%s」程式，但目前並未安裝這程式。在使用本印表機前，請安裝該"
+"程式。"
+
+#: ../system-config-printer.glade.h:1
+msgid " "
+msgstr ""
+
+#: ../system-config-printer.glade.h:2
+msgid " PPD "
+msgstr " PPD "
+
+#: ../system-config-printer.glade.h:3
+msgid ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+msgstr ""
+
+#: ../system-config-printer.glade.h:9
+msgid "<b>Authentication</b>"
+msgstr "<b>身分核證</b>"
+
+#: ../system-config-printer.glade.h:10
+msgid "<b>Banner</b>"
+msgstr "<b>橫幅</b>"
+
+#: ../system-config-printer.glade.h:11
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>基本伺服器設定</b>"
+
+#: ../system-config-printer.glade.h:12
+msgid "<b>Comment about the Driver</b>"
+msgstr "<b>驅動程式的註解</b>"
+
+#: ../system-config-printer.glade.h:13
+msgid "<b>Comment about the Printer</b>"
+msgstr "<b>印表機的註解</b>"
+
+#: ../system-config-printer.glade.h:14
+#, fuzzy
+msgid "<b>Common Options</b>"
+msgstr "<b>選取連線</b>"
+
+#: ../system-config-printer.glade.h:15
+msgid "<b>Default Printer</b>"
+msgstr "<b>預設印表機</b>"
+
+#: ../system-config-printer.glade.h:16
+msgid "<b>Description</b>"
+msgstr "<b>說明</b>"
+
+#: ../system-config-printer.glade.h:17
+msgid "<b>Description</b> (optional)"
+msgstr "<b>說明</b>（非必要）"
+
+#: ../system-config-printer.glade.h:18
+#, fuzzy
+msgid "<b>Image Options</b>"
+msgstr "<b>設定</b>"
+
+#: ../system-config-printer.glade.h:19
+msgid "<b>Information about the PPD</b>"
+msgstr "<b>PPD 的資訊</b>"
+
+#: ../system-config-printer.glade.h:20
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>LPD 網路印表機位置</b>"
+
+#: ../system-config-printer.glade.h:21
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>網路印表機位置</b>"
+
+#: ../system-config-printer.glade.h:22
+msgid "<b>Location</b> (optional)"
+msgstr "<b>位置</b>（非必要）"
+
+#: ../system-config-printer.glade.h:23
+msgid "<b>Other Options (Advanced)</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:24
+msgid "<b>Policies</b>"
+msgstr "<b>政策</b>"
+
+#: ../system-config-printer.glade.h:25
+msgid "<b>Printer Name</b>"
+msgstr "<b>印表機名稱</b>"
+
+#: ../system-config-printer.glade.h:26
+msgid "<b>Printers to be members of this Class</b>"
+msgstr "<b>要成為此組別成員的列表機</b>"
+
+#: ../system-config-printer.glade.h:27
+msgid "<b>Select Connection</b>"
+msgstr "<b>選取連線</b>"
+
+#: ../system-config-printer.glade.h:28
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>串列埠設定</b>"
+
+#: ../system-config-printer.glade.h:29
+msgid "<b>Settings</b>"
+msgstr "<b>設定</b>"
+
+#: ../system-config-printer.glade.h:30
+msgid "<b>State</b>"
+msgstr "<b>狀態</b>"
+
+#: ../system-config-printer.glade.h:31
+#, fuzzy
+msgid "<b>Text Options</b>"
+msgstr "<b>設定</b>"
+
+#: ../system-config-printer.glade.h:32
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:34
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
+
+#: ../system-config-printer.glade.h:35
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">套用變更？</span>\n"
+"\n"
+"除非您套用變更，否則您所作的所有改變都會佚失。"
+
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">需要密碼</span>\n"
+"\n"
+
+#: ../system-config-printer.glade.h:41
+msgid "About"
+msgstr "關於"
+
+#: ../system-config-printer.glade.h:42
+msgid "About System-Config-Printer"
+msgstr "關於「印表機設定」"
+
+#: ../system-config-printer.glade.h:43
+msgid "Accepting jobs"
+msgstr "接受工作"
+
+#: ../system-config-printer.glade.h:44
+msgid "Access control"
+msgstr "存取控制"
+
+#: ../system-config-printer.glade.h:45
+msgid "Add or Remove Members"
+msgstr "加入或移除成員"
+
+#: ../system-config-printer.glade.h:46
+msgid "Allow printing for everyone except these users:"
+msgstr "容許所有人列印，除了："
+
+#: ../system-config-printer.glade.h:47
+msgid "Allow remote administration"
+msgstr "容許遠端管理"
+
+#: ../system-config-printer.glade.h:48
+msgid "Allow users to cancel any job (not just their own)"
+msgstr "容許使用者取消任何工作（不單止他們自己的）"
+
+#: ../system-config-printer.glade.h:49
+msgid "Apply"
+msgstr "套用"
+
+#: ../system-config-printer.glade.h:50
+msgid "Authors"
+msgstr "作者"
+
+#: ../system-config-printer.glade.h:51
+msgid "Baud Rate"
+msgstr "Baud 速率"
+
+#: ../system-config-printer.glade.h:52
+msgid "Bottom margin:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:53
+msgid "Brightness:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:54
+msgid "CUPS server:"
+msgstr "CUPS 伺服器："
+
+#: ../system-config-printer.glade.h:55
+msgid "Change PPD"
+msgstr "更改 PPD"
+
+#: ../system-config-printer.glade.h:56
+msgid "Change..."
+msgstr "更改..."
+
+#: ../system-config-printer.glade.h:57
+msgid "Characters per inch:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:58
+msgid "Class Members"
+msgstr "組別成員"
+
+#: ../system-config-printer.glade.h:59
+#, fuzzy
+msgid "Columns:"
+msgstr "註解："
+
+#: ../system-config-printer.glade.h:60
+msgid "Comments: "
+msgstr "註解："
+
+#: ../system-config-printer.glade.h:61
+msgid "Connect to CUPS server"
+msgstr "連接至 CUPS 伺服器"
+
+#: ../system-config-printer.glade.h:62
+msgid "Connecting"
+msgstr "正在連接"
+
+#: ../system-config-printer.glade.h:64
+#, no-c-format
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+"正在連接伺服器：\n"
+"%s\n"
+
+#: ../system-config-printer.glade.h:67
+msgid "Copies:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:68
+msgid "Copy Printer"
+msgstr "複製印表機"
+
+#: ../system-config-printer.glade.h:69
+msgid "Copyright"
+msgstr "版權所有"
+
+#: ../system-config-printer.glade.h:70
+msgid "Data Bits"
+msgstr "資料位元"
+
+#: ../system-config-printer.glade.h:71
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+"預設\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+
+#: ../system-config-printer.glade.h:80
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr ""
+"預設\n"
+"8\n"
+"7"
+
+#: ../system-config-printer.glade.h:83
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+"預設\n"
+"None\n"
+"Odd\n"
+"Even"
+
+#: ../system-config-printer.glade.h:87
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+"預設\n"
+"沒有\n"
+"XON/XOFF (軟體)\n"
+"RTS/CTS (硬體)\n"
+"DTR/DSR (硬體)"
+
+#: ../system-config-printer.glade.h:92
+msgid "Deny printing for everyone except these users:"
+msgstr "拒絕所有人列印，除了："
+
+#: ../system-config-printer.glade.h:93
+msgid "Description:"
+msgstr "說明："
+
+#: ../system-config-printer.glade.h:94
+msgid "Device"
+msgstr "裝置"
+
+#: ../system-config-printer.glade.h:95
+msgid "Device URI"
+msgstr "裝置 URI"
+
+#: ../system-config-printer.glade.h:96
+msgid "Device URI:"
+msgstr "裝置 URI："
+
+#: ../system-config-printer.glade.h:97
+msgid "Device description."
+msgstr "裝置說明："
+
+#: ../system-config-printer.glade.h:98
+msgid "DirectJet"
+msgstr "DirectJet"
+
+#: ../system-config-printer.glade.h:99
+msgid "Driver"
+msgstr "驅動程式"
+
+#: ../system-config-printer.glade.h:100
+msgid "Empty"
+msgstr "空"
+
+#: ../system-config-printer.glade.h:101
+msgid "Enabled"
+msgstr "已啟用"
+
+#: ../system-config-printer.glade.h:102
+msgid "Ending Banner:"
+msgstr "結尾橫幅："
+
+#: ../system-config-printer.glade.h:103
+msgid "Enter Device URI"
+msgstr "輸入裝置 URI"
+
+#: ../system-config-printer.glade.h:104
+msgid "Error Policy: \t"
+msgstr "錯誤政策：\t"
+
+#: ../system-config-printer.glade.h:105
+msgid "Finishings:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:106
+msgid "Flow Control"
+msgstr "流量控制"
+
+#: ../system-config-printer.glade.h:107
+msgid "Gamma:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:108
+msgid "Goto Server"
+msgstr "前往伺服器"
+
+#: ../system-config-printer.glade.h:109
+msgid "Hold until:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:110
+msgid "Hostname"
+msgstr "主機名稱"
+
+#: ../system-config-printer.glade.h:111
+msgid "Hue adjustment:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:112
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "容易理解的說明，例如「帶有雙面列印的 HP 鐳射印表機」"
+
+#: ../system-config-printer.glade.h:113
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "容易理解的位置說明，例如「一號實驗室」"
+
+#: ../system-config-printer.glade.h:114
+msgid "IPP"
+msgstr "IPP"
+
+#: ../system-config-printer.glade.h:116
+msgid "Job Options"
+msgstr "工作選項"
+
+#: ../system-config-printer.glade.h:117
+msgid "Job priority:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:118
+msgid "LPD"
+msgstr "LPD"
+
+#: ../system-config-printer.glade.h:119
+msgid "Left margin:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:120
+msgid ""
+"Left to right, top to bottom\n"
+"Left to right, bottom to top\n"
+"Right to left, top to bottom\n"
+"Right to left, bottom to top\n"
+"Top to bottom, left to right\n"
+"Top to bottom, right to left\n"
+"Bottom to top, left to right\n"
+"Bottom to top, right to left"
+msgstr ""
+
+#: ../system-config-printer.glade.h:128
+msgid "Lines per inch:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:129
+msgid "Location:"
+msgstr "位置："
+
+#: ../system-config-printer.glade.h:130
+msgid "Make Default Printer"
+msgstr "設為預設印表機"
+
+#: ../system-config-printer.glade.h:131
+msgid "Make and Model:"
+msgstr "廠牌與型號："
+
+#: ../system-config-printer.glade.h:132
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr "可包含任何可列印字元，除了 \"/\", \"#\" 和空格"
+
+#: ../system-config-printer.glade.h:133
+msgid "Media:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:134
+msgid "Members"
+msgstr "成員"
+
+#: ../system-config-printer.glade.h:135
+msgid "Mirror"
+msgstr ""
+
+#: ../system-config-printer.glade.h:136
+msgid "More"
+msgstr ""
+
+#: ../system-config-printer.glade.h:137
+msgid "Name"
+msgstr "名稱"
+
+#: ../system-config-printer.glade.h:138
+msgid "New Clas_s"
+msgstr "新組別(_S)"
+
+#: ../system-config-printer.glade.h:141
+msgid "New _Printer"
+msgstr "新印表機(_P)"
+
+#: ../system-config-printer.glade.h:142
+msgid "New name for the printer"
+msgstr "印表機的新名稱"
+
+#: ../system-config-printer.glade.h:143
+msgid ""
+"None\n"
+"Staple\n"
+"Punch\n"
+"Cover\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Staple (top left)\n"
+"Staple (bottom left)\n"
+"Staple (top right)\n"
+"Staple (bottom right)\n"
+"Edge stitch (left)\n"
+"Edge stitch (top)\n"
+"Edge stitch (right)\n"
+"Edge stitch (bottom)\n"
+"Staple dual (left)\n"
+"Staple dual (top)\n"
+"Staple dual (right)\n"
+"Staple dual (bottom)\n"
+"Bind (left)\n"
+"Bind (top)\n"
+"Bind (right)\n"
+"Bind (bottom)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:171
+msgid ""
+"One-sided\n"
+"Two-sided (long edge)\n"
+"Two-sided (short edge)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:174
+msgid "Operation Policy:"
+msgstr "操作政策："
+
+#: ../system-config-printer.glade.h:175
+msgid "Orientation:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:176
+msgid "PPD"
+msgstr "PPD"
+
+#: ../system-config-printer.glade.h:177
+msgid "Pages per side layout:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:178
+msgid "Pages per side:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:179
+msgid "Parity"
+msgstr "同位檢查"
+
+#: ../system-config-printer.glade.h:180 ../applet.glade.h:5
+msgid "Password:"
+msgstr "密碼："
+
+#: ../system-config-printer.glade.h:181
+msgid "Policies"
+msgstr "政策"
+
+#: ../system-config-printer.glade.h:182
+msgid "Port number"
+msgstr "埠號"
+
+#: ../system-config-printer.glade.h:183
+msgid ""
+"Portrait (no rotation)\n"
+"Landscape (90°)\n"
+"Reverse landscape (270°)\n"
+"Reverse portrait (180°)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:187
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"PostScript 印表機描述（PPD）檔案通常可以在印表機所附的驅動程式磁片中找到。對 "
+"PostScript 的印表機來說，這通常是 Windows<sup>®</sup> 驅動程式的一部分。"
+
+#: ../system-config-printer.glade.h:188
+msgid "Pretty print"
+msgstr ""
+
+#: ../system-config-printer.glade.h:192
+msgid "Printer State:"
+msgstr "印表機狀態："
+
+#: ../system-config-printer.glade.h:193
+msgid "Printername"
+msgstr "印表機名稱"
+
+#: ../system-config-printer.glade.h:194
+msgid "Probe"
+msgstr "查探"
+
+#: ../system-config-printer.glade.h:195
+msgid "Provide PPD file"
+msgstr "提供 PPD 檔案"
+
+#: ../system-config-printer.glade.h:196
+msgid "Require encryption"
+msgstr "需要加密"
+
+#: ../system-config-printer.glade.h:197
+msgid "Reset"
+msgstr ""
+
+#: ../system-config-printer.glade.h:198
+msgid "Reset to system default"
+msgstr ""
+
+#: ../system-config-printer.glade.h:199
+msgid "Right margin:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:200
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../system-config-printer.glade.h:201
+msgid "SMB"
+msgstr "SMB"
+
+#: ../system-config-printer.glade.h:202
+msgid "Saturation:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:203
+msgid "Save debugging information for troubleshooting"
+msgstr "儲存除錯資訊，供障礙排除用"
+
+#: ../system-config-printer.glade.h:204
+msgid "Scale to fit"
+msgstr ""
+
+#: ../system-config-printer.glade.h:205
+msgid "Scaling:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:206
+msgid "Select A File"
+msgstr "選取檔案"
+
+#: ../system-config-printer.glade.h:207
+msgid "Select Printer from database"
+msgstr "從資料庫選取印表機"
+
+#: ../system-config-printer.glade.h:208
+msgid "Serial"
+msgstr "串列"
+
+#: ../system-config-printer.glade.h:209
+msgid "Settings"
+msgstr "設定"
+
+#: ../system-config-printer.glade.h:210
+msgid "Share published printers connected to this system"
+msgstr "共享連接到此系統的已公佈印表機"
+
+#: ../system-config-printer.glade.h:211
+msgid "Shared"
+msgstr "共享"
+
+#: ../system-config-printer.glade.h:212
+msgid "Show printers shared by other systems"
+msgstr "顯示其他系統共享的印表機"
+
+#: ../system-config-printer.glade.h:213
+msgid "Sides:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:214
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+
+#: ../system-config-printer.glade.h:215
+msgid "Starting Banner:"
+msgstr "起始橫幅："
+
+#: ../system-config-printer.glade.h:216
+msgid "System-Config-Printer"
+msgstr "印表機設定"
+
+#: ../system-config-printer.glade.h:218
+#, no-c-format
+msgid "System-Config-Printer %s"
+msgstr "印表機設定 %s"
+
+#: ../system-config-printer.glade.h:219
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"Foomatic 印表機資料庫包含許多製造商所提供的 PostScript 印表機之描述（PPD）檔"
+"案，也可以為許多（非 PostScript）印表機產生 PPD 檔案。但一般來說，製造商提供"
+"的 PPD 檔案能更有效地存取印表機的特定功能。"
+
+#: ../system-config-printer.glade.h:220
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"這藉由以下方式完成：假設擁有同樣名稱的選項，也擁有同樣的意義。不存在於新 PPD "
+"選項的設定都會佚失，只有在新 PPD 中的選項才會被設為預設值。"
+
+#: ../system-config-printer.glade.h:221
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr "這樣所有選項的設定都會佚失。系統將使用新 PPD 的預設設定。"
+
+#: ../system-config-printer.glade.h:222
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+
+#: ../system-config-printer.glade.h:223
+msgid "Top margin:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:224
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "試著從舊的 PPD 複製所有選項設定。"
+
+#: ../system-config-printer.glade.h:225
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "如常使用新的 PPD（PostScript 印表機描述）。"
+
+#: ../system-config-printer.glade.h:226
+msgid "User name:"
+msgstr "使用者名稱："
+
+#: ../system-config-printer.glade.h:227
+msgid "Username:"
+msgstr "使用者名稱："
+
+#: ../system-config-printer.glade.h:228
+msgid "Word wrap"
+msgstr ""
+
+#: ../system-config-printer.glade.h:229
+msgid "_Do not apply"
+msgstr "不套用(_D)"
+
+#: ../system-config-printer.glade.h:230
+msgid "_Edit"
+msgstr "編輯(_E)"
+
+#: ../system-config-printer.glade.h:231 ../applet.glade.h:10
+msgid "_File"
+msgstr "檔案(_F)"
+
+#: ../system-config-printer.glade.h:232
+msgid "_Goto Server"
+msgstr "前往伺服器(_G)"
+
+#: ../system-config-printer.glade.h:233
+msgid "_Help"
+msgstr "說明(_H)"
+
+#: ../system-config-printer.glade.h:234
+msgid "_Verify..."
+msgstr "驗證(_V)..."
+
+#: ../system-config-printer.glade.h:235
+msgid "default"
+msgstr "預設"
+
+#: ../system-config-printer.glade.h:236
+msgid "none"
+msgstr "沒有"
+
+#: ../system-config-printer.glade.h:237
+msgid "points"
+msgstr ""
+
+#: ../system-config-printer.glade.h:238
+msgid "points (72 points per inch)"
+msgstr ""
+
+#: ../system-config-printer.desktop.in.h:1
+msgid "Configure printers"
+msgstr "設定印表機"
+
+#: ../system-config-printer.desktop.in.h:2
+msgid "Printing"
+msgstr "列印"
+
+#: ../applet.py:80
+msgid "Toner low"
+msgstr ""
+
+#: ../applet.py:81
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr ""
+
+#: ../applet.py:82
+msgid "Toner empty"
+msgstr ""
+
+#: ../applet.py:83
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr ""
+
+#: ../applet.py:84
+msgid "Cover open"
+msgstr ""
+
+#: ../applet.py:85
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:86
+msgid "Door open"
+msgstr ""
+
+#: ../applet.py:87
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr ""
+
+#: ../applet.py:88
+msgid "Paper low"
+msgstr ""
+
+#: ../applet.py:89
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr ""
+
+#: ../applet.py:90
+msgid "Out of paper"
+msgstr ""
+
+#: ../applet.py:91
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr ""
+
+#: ../applet.py:92
+msgid "Ink low"
+msgstr ""
+
+#: ../applet.py:93
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr ""
+
+#: ../applet.py:94
+msgid "Ink empty"
+msgstr ""
+
+#: ../applet.py:95
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr ""
+
+#: ../applet.py:96
+#, fuzzy
+msgid "Not connected?"
+msgstr "未連接"
+
+#: ../applet.py:97
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr ""
+
+#: ../applet.py:104
+#, fuzzy
+msgid "Printer report"
+msgstr "印表機選項"
+
+#: ../applet.py:106
+#, fuzzy
+msgid "Printer warning"
+msgstr "列印"
+
+#: ../applet.py:108
+#, fuzzy
+msgid "Printer error"
+msgstr "伺服器錯誤"
+
+#: ../applet.py:109
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr ""
+
+#: ../applet.py:182
+msgid "Job"
+msgstr ""
+
+#: ../applet.py:183
+#, fuzzy
+msgid "Document"
+msgstr "註解"
+
+#: ../applet.py:185
+msgid "Size"
+msgstr ""
+
+#: ../applet.py:186
+#, fuzzy
+msgid "Time submitted"
+msgstr "已提交"
+
+#: ../applet.py:187
+#, fuzzy
+msgid "Status"
+msgstr "狀態 %d"
+
+#: ../applet.py:238
+msgid "Message"
+msgstr ""
+
+#: ../applet.py:555
+msgid "1 hour ago"
+msgstr ""
+
+#: ../applet.py:557
+msgid "1 hour and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:559
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:562
+#, python-format
+msgid "%d hours ago"
+msgstr ""
+
+#: ../applet.py:564
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:566
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:572
+msgid "a minute ago"
+msgstr ""
+
+#: ../applet.py:574
+#, python-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ../applet.py:629
+msgid "No documents queued"
+msgstr ""
+
+#: ../applet.py:632
+msgid "1 document queued"
+msgstr ""
+
+#: ../applet.py:635
+#, python-format
+msgid "%d documents queued"
+msgstr ""
+
+#: ../applet.py:682
+#, fuzzy
+msgid "Pending"
+msgstr "列印"
+
+#: ../applet.py:683
+#, fuzzy
+msgid "Held"
+msgstr "說明(_H)"
+
+#: ../applet.py:686
+#, fuzzy
+msgid "Canceled"
+msgstr "取消測試"
+
+#: ../applet.py:687
+#, fuzzy
+msgid "Aborted"
+msgstr "關於"
+
+#: ../applet.py:688
+#, fuzzy
+msgid "Completed"
+msgstr "註解"
+
+#: ../applet.py:946
+#, fuzzy
+msgid "Printer added"
+msgstr "印表機名稱"
+
+#: ../applet.py:948
+#, fuzzy
+msgid "Missing printer driver"
+msgstr "找不到驅動程式"
+
+#: ../applet.py:951
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr ""
+
+#: ../applet.py:954
+#, fuzzy
+msgid "Configure"
+msgstr "設定印表機"
+
+#. Model mismatch
+#: ../applet.py:957
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr ""
+
+#: ../applet.py:961
+#, fuzzy
+msgid "Find driver"
+msgstr "找不到驅動程式"
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr ""
+
+#: ../applet.glade.h:6
+#, fuzzy
+msgid "Printer status"
+msgstr "印表機狀態："
+
+#: ../applet.glade.h:7
+msgid "Re_print"
+msgstr ""
+
+#: ../applet.glade.h:8
+msgid "Show _completed jobs"
+msgstr ""
+
+#: ../applet.glade.h:9
+msgid "Show _printer status"
+msgstr ""
+
+#: ../applet.glade.h:11
+msgid "_Hide"
+msgstr ""
+
+#: ../applet.glade.h:12
+msgid "_Hold"
+msgstr ""
+
+#: ../applet.glade.h:13
+msgid "_Release"
+msgstr ""
+
+#: ../applet.glade.h:14
+msgid "_View"
+msgstr ""
+
+#: ../print-applet.desktop.in.h:1
+#, fuzzy
+msgid "Print Queue Applet"
+msgstr "列印測試頁"
+
+#: ../print-applet.desktop.in.h:2
+msgid "System tray icon for managing print jobs"
+msgstr ""
+
+#: ../manage-print-jobs.desktop.in.h:1
+msgid "Cancel, pause, resume or reprint jobs"
+msgstr ""
+
+#: ../manage-print-jobs.desktop.in.h:2
+msgid "Manage Print Jobs"
+msgstr ""
+
+#: ../my-default-printer.desktop.in.h:2
+#, fuzzy
+msgid "Select default printer"
+msgstr "設為預設印表機"
 
 #~ msgid ""
-#~ "You have made changes, would you like to save them? If you say no, your "
-#~ "changes will be lost."
-#~ msgstr "資料已更改，您想儲存嗎？如果不要，您所做的改變將會遺失。"
-
-#~ msgid "Cancel"
-#~ msgstr "取消"
-
-#~ msgid "Create a New Queue"
-#~ msgstr "建立新的佇列"
-
-#~ msgid "Finish Making New Queue"
-#~ msgstr "完成建立新的佇列"
-
-#~ msgid "About to create the following queue:"
-#~ msgstr "即將建立以下的佇列："
-
-#~ msgid "Finish"
-#~ msgstr "完成"
-
-#~ msgid "Back"
-#~ msgstr "上一步"
-
-#~ msgid "Type:"
-#~ msgstr "種類："
-
-#~ msgid "Device:"
-#~ msgstr "裝置："
-
-#~ msgid "Server:"
-#~ msgstr "伺服器："
-
-#~ msgid "Lpd Queue:"
-#~ msgstr "Lpd 佇列："
-
-#~ msgid "Share:"
-#~ msgstr "共享："
-
-#~ msgid "IP:"
-#~ msgstr "IP："
-
-#~ msgid "Workgroup:"
-#~ msgstr "工作群組："
-
-#~ msgid "User:"
-#~ msgstr "使用者："
-
-#~ msgid "Port:"
-#~ msgstr "連接埠："
-
-#~ msgid "Driver:"
-#~ msgstr "驅動程式："
-
-#~ msgid "Warning"
-#~ msgstr "警告"
-
-#~ msgid "Name and Type"
-#~ msgstr "名稱與種類"
-
-#~ msgid "Next"
-#~ msgstr "下一步"
-
-#~ msgid "Queue Name"
-#~ msgstr "佇列名稱"
-
-#~ msgid "Queue Type"
-#~ msgstr "佇列種類"
-
-#~ msgid ""
-#~ "The name \"%s\" is bad. Please choose a name of the form [a-zA-Z][a-zA-Z0-"
-#~ "9_-]*."
-#~ msgstr "名稱 \"%s\" 不當。請選下列形式的名稱 [a-zA-Z][a-zA-Z0-9_-]*。"
-
-#~ msgid "The name \"%s\" is already in use. Please choose a different name."
-#~ msgstr "\"%s\" 名稱已經被使用。請選擇一個不同的名稱。"
-
-#~ msgid "Custom"
-#~ msgstr "自訂"
-
-#~ msgid "Setting Up"
-#~ msgstr "設定"
-
-#~ msgid "Printer Device"
-#~ msgstr "列印裝置"
-
-#~ msgid ""
-#~ "Pick the printer device from the list, or enter it using \"Custom\" below."
-#~ msgstr "從清單中挑選列印裝置或使用以下的 \"自訂\" 輸入。"
-
-#~ msgid "Specify Device:"
-#~ msgstr "指定裝置:"
-
-#~ msgid "Description"
-#~ msgstr "說明"
-
-#~ msgid "Custom Device"
-#~ msgstr "自訂裝置"
-
-#~ msgid "Specify the device to use."
-#~ msgstr "指定欲使用的裝置。"
-
-#~ msgid "Device File"
-#~ msgstr "裝置檔案"
-
-#~ msgid "You must specify a device."
-#~ msgstr "您必須指定一個裝置。"
-
-#~ msgid "Enter the LPD server and queue to use."
-#~ msgstr "輸入欲使用的 LPD 伺服器與佇列。"
-
-#~ msgid "Server"
-#~ msgstr "伺服器"
-
-#~ msgid "Queue"
-#~ msgstr "佇列"
-
-#~ msgid "LPD Data"
-#~ msgstr "LPD 資料"
-
-#~ msgid "You must specify a server."
-#~ msgstr "您必須指定一部伺服器。"
-
-#~ msgid "Enter the SMB share to use."
-#~ msgstr "輸入欲使用的 SMB 共享資源。"
-
-#~ msgid "Host IP"
-#~ msgstr "主機 IP"
-
-#~ msgid "Workgroup"
-#~ msgstr "工作群組"
-
-#~ msgid "Passwd"
-#~ msgstr "Passwd"
-
-#~ msgid "Windows Printer (SMB) Data"
-#~ msgstr "Windows 印表機 (SMB) 資料"
-
-#~ msgid "You must specify a SMB share to print to."
-#~ msgstr "您必須指定要用來列印的 SMB 共享資源。"
-
-#~ msgid "Enter the NCP server and queue to use."
-#~ msgstr "輸入欲使用的 NCP 伺服器與佇列。"
-
-#~ msgid "Novell Netware Printer (NCP) Data"
-#~ msgstr "Novell Netware 印表機 (NCP) 資料"
-
-#~ msgid "You must specify an NCP server to print to."
-#~ msgstr "您必須指定要用來列印的 NCP 伺服器。"
-
-#~ msgid "You must specify a queue on the NCP server to print to."
-#~ msgstr "您必須指定要用來列印的 NCP 伺服器上的佇列。"
-
-#~ msgid "Enter the Jetdirect ip and port to use."
-#~ msgstr "輸入欲使用的 Jetdirect IP 位址與連接埠。"
-
-#~ msgid "Ip"
-#~ msgstr "Ip"
-
-#~ msgid "Port"
-#~ msgstr "連接埠"
-
-#~ msgid "Jetdirect (JETDIRECT) Data"
-#~ msgstr "Jetdirect (JETDIRECT) 資料"
-
-#~ msgid "You must specify the ip address of a JetDirect printer."
-#~ msgstr "您必須指定 JetDirect 印表機的 IP 位址。"
-
-#~ msgid "Queue Driver"
-#~ msgstr "佇列驅動程式"
-
-#~ msgid "Select the Driver to use with this Queue."
-#~ msgstr "選取這個佇列要使用的驅動程式。"
-
-#~ msgid "You must specify a driver."
-#~ msgstr "您必須指定一個驅動程式。"
-
-#~ msgid "Edit Queue"
-#~ msgstr "編輯佇列"
-
-#~ msgid "Names"
-#~ msgstr "名稱"
-
-#~ msgid "Type"
-#~ msgstr "種類"
-
-#~ msgid "Done"
-#~ msgstr "已完成"
-
-#~ msgid "Name:"
-#~ msgstr "名稱:"
-
-#~ msgid "Aliases:"
-#~ msgstr "別名:"
-
-#~ msgid "Printer Device:"
-#~ msgstr "列印裝置:"
-
-#~ msgid "Edit Name and Aliases"
-#~ msgstr "編輯名稱與別名"
-
-#~ msgid "Name"
-#~ msgstr "名稱"
-
-#~ msgid "Add Alias"
-#~ msgstr "新增別名"
-
-#~ msgid "Edit Alias"
-#~ msgstr "編輯別名"
-
-#~ msgid "Delete Alias"
-#~ msgstr "刪除別名"
-
-#~ msgid "Alias:"
-#~ msgstr "別名:"
-
-#~ msgid "Add an Alias"
-#~ msgstr "新增一個別名"
-
-#~ msgid "Edit the alias"
-#~ msgstr "編輯別名"
-
-#~ msgid "You must select an alias to edit."
-#~ msgstr "您必須選取要編輯的別名。"
-
-#~ msgid "You must select an alias to delete."
-#~ msgstr "您必須選取要刪除的別名。"
-
-#~ msgid "Strict RFC1179"
-#~ msgstr "嚴格的 RFC1179"
-
-#~ msgid "Translate \\n->\\r\\n"
-#~ msgstr "編譯 \\n->\\r\\n"
-
-#~ msgid "Edit Driver"
-#~ msgstr "編輯驅動程式"
-
-#~ msgid "Edit Driver Options"
-#~ msgstr "編輯驅動程式選項"
-
-#~ msgid "Edit"
-#~ msgstr "編輯"
-
-#~ msgid "Edit %s"
-#~ msgstr "編輯 %s"
-
-#~ msgid "Integer: Min %s | Max %s"
-#~ msgstr "整數: 最小值 %s | 最大值 %s"
-
-#~ msgid "Value must be a number"
-#~ msgstr "數值必須是一個數字"
-
-#~ msgid "Float: Min %s | Max %s"
-#~ msgstr "浮點數: 最小值 %s | 最大值 %s"
-
-#~ msgid "US Letter"
-#~ msgstr "US Letter"
-
-#~ msgid "Tabloid"
-#~ msgstr "Tabloid"
-
-#~ msgid "Ledger"
-#~ msgstr "Ledger"
-
-#~ msgid "Legal"
-#~ msgstr "Legal"
-
-#~ msgid "Statement"
-#~ msgstr "Statement"
-
-#~ msgid "Executive"
-#~ msgstr "Executive"
-
-#~ msgid "A3"
-#~ msgstr "A3"
-
-#~ msgid "A4"
-#~ msgstr "A4"
-
-#~ msgid "A5"
-#~ msgstr "A5"
-
-#~ msgid "B4"
-#~ msgstr "B4"
-
-#~ msgid "B5"
-#~ msgstr "B5"
-
-#~ msgid "Folio"
-#~ msgstr "Folio"
-
-#~ msgid "Quatro"
-#~ msgstr "Quatro"
-
-#~ msgid "10x14"
-#~ msgstr "10x14"
-
-#~ msgid "Test %s"
-#~ msgstr "測試 %s"
-
-#~ msgid ""
-#~ "You have made changes, would you like to save them?\n"
-#~ "If you say no, you will not be able to print test pages."
-#~ msgstr ""
-#~ "資料已更改， 您想要儲存嗎？\n"
-#~ "假如不要，您將無法列印測試頁。"
-
-#~ msgid "Test"
-#~ msgstr "測試"
-
-#~ msgid "Sent %s to \"%s\"."
-#~ msgstr "已傳送 %s 到 \"%s\"。"
-
-#~ msgid "You must select a printer queue to delete."
-#~ msgstr "您必須選取要刪除的列印佇列。"
-
-#~ msgid "You cannot delete an imported printer."
-#~ msgstr "您不能刪除載入的印表機。"
-
-#~ msgid "Confirm Delete"
-#~ msgstr "確認刪除"
-
-#~ msgid "Aliases"
-#~ msgstr "別名"
-
-#~ msgid "Details"
-#~ msgstr "詳細資料"
-
-#~ msgid "New"
-#~ msgstr "新增"
-
-#~ msgid "Delete"
-#~ msgstr "刪除"
-
-#~ msgid "Default"
-#~ msgstr "預設"
-
-#~ msgid "You must select a printer queue to edit."
-#~ msgstr "您必須選取要編輯的列印佇列。"
-
-#~ msgid ""
-#~ "This imported printer is protected from overrides. You can not edit it."
-#~ msgstr "這部載入的印表機受到權限的保護。您不能編輯它。"
-
-#~ msgid "Override?"
-#~ msgstr "要跨越權限嗎？"
-
-#~ msgid "This is an imported printer. Do you want to create a local override?"
-#~ msgstr "這是一部載入的印表機。您想要建立本機的權限跨越嗎？"
-
-#~ msgid "You must select a queue to print to."
-#~ msgstr "您必須選取要用來列印的佇列。"
-
-#~ msgid "Initializing alchemist edit environment ..."
-#~ msgstr "初始化 alchemist 編輯環境 ..."
-
-#~ msgid "Initializing linux printing database ..."
-#~ msgstr "初始化 linux 列印資料庫 ..."
-
-#~ msgid "Importing CUPS queues ..."
-#~ msgstr "匯入 CUPS 佇列..."
-
-#~ msgid ""
-#~ "Failed to parse alchemist context: \n"
-#~ "%s"
-#~ msgstr ""
-#~ "解析 alchemist 內文失敗: \n"
-#~ "%s"
-
-#~ msgid "Invalid printconf context"
-#~ msgstr "無效的 printconf 內文"
-
-#~ msgid "\"%s\" is not a valid queue name."
-#~ msgstr "\"%s\" 不是一個有效的佇列名稱。"
-
-#~ msgid "Need device, make and model.\n"
-#~ msgstr "需要裝置、廠牌與型號。\n"
-
-#~ msgid "add-local: queue name '%s' not unique\n"
-#~ msgstr "add-local: '%s' 佇列名稱不是唯一的\n"
-
-#~ msgid "add-local: no suitable name available\n"
-#~ msgstr "add-local: 沒有可使用的適當名稱\n"
-
-#~ msgid "add-local: No information available about %s %s\n"
-#~ msgstr "add-local: 沒有關於 %s %s 的資訊可以使用\n"
-
-#~ msgid "Now run printconf-backend (or restart lpd service)."
-#~ msgstr "現在執行 printconf-backend （或重新啟動 lpd 服務）。"
-
-#~ msgid "Need make and model.\n"
-#~ msgstr "需要廠牌與型號。\n"
-
-#~ msgid "You must run printconf-tui as root."
-#~ msgstr "您必須是 root 才能執行 printconf-tui。"
-
-#~ msgid "Conflicting commands: %s and %s"
-#~ msgstr "互相衝突的指令: %s 與 %s"
-
-#~ msgid "No handler for command: "
-#~ msgstr "沒有指令的控制數:"
-
-#~ msgid "You must be root to run this program.\n"
-#~ msgstr "您必須是 root 才能執行這個程式。\n"
-
-#~ msgid "Queue name"
-#~ msgstr "佇列名稱"
-
-#~ msgid "Shared"
-#~ msgstr "共享"
-
-#~ msgid ""
-#~ "Do you want to save the changes\n"
-#~ "you made to your printer configuration?"
-#~ msgstr ""
-#~ "您想要儲存您對印表機\n"
-#~ "設定所做的變更嗎？"
-
-#~ msgid "_Don't save"
-#~ msgstr "不儲存(_D)"
-
-#~ msgid "_Cancel"
-#~ msgstr "取消(_C)"
-
-#~ msgid "_Save"
-#~ msgstr "儲存(_S)"
-
-#~ msgid "Browsed queues"
-#~ msgstr "瀏覽過的佇列"
-
-#~ msgid ""
-#~ "Loading printer information.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "載入印表機資訊中。\n"
-#~ "請稍候..."
-
-#~ msgid "Notes from the Linux Printing Database"
-#~ msgstr "來自 Linux 列印資料庫的說明"
-
-#~ msgid "Printer notes:"
-#~ msgstr "印表機備註:"
-
-#~ msgid "Driver notes:"
-#~ msgstr "驅動程式備註:"
-
-#~ msgid "Generic (click to select manufacturer)"
-#~ msgstr "一般（點選以選取製造商）"
-
-#~ msgid ""
-#~ "You are changing an option\n"
-#~ "that has no effect in the print\n"
-#~ "spooler you are using (%s)."
-#~ msgstr ""
-#~ "您正要更改一個選項，\n"
-#~ "而該選項並不影響您正在\n"
-#~ "使用的列印緩衝器 (%s)。"
-
-#~ msgid ""
-#~ "Applying changes.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "套用變更中。\n"
-#~ "請稍候..."
-
-#~ msgid "Failed to write queues."
-#~ msgstr "無法寫入佇列。"
-
-#~ msgid ""
-#~ "There was a problem sending %s\n"
-#~ "to '%s' queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "傳送 %s 到 '%s' 佇列時\n"
-#~ "發生一個問題:\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Sent %s\n"
-#~ "to '%s' queue.  Does it look okay?"
-#~ msgstr ""
-#~ "已傳送 %s\n"
-#~ "到 '%s' 佇列。  列印結果是否正確？"
-
-#~ msgid "Here are the messages that appeared in the error log:"
-#~ msgstr "這是會出現在錯誤紀錄檔中的訊息:"
-
-#~ msgid "'%s' does not look like a PPD file."
-#~ msgstr "'%s' 並不是 PPD 檔案。"
-
-#~ msgid "File cannot be opened for reading."
-#~ msgstr "無法開啟以讀取檔案。"
-
-#~ msgid "PPD imported."
-#~ msgstr "PPD 已匯入。"
-
-#~ msgid "PPD import failed."
-#~ msgstr "PPD 匯入失敗。"
-
-#~ msgid "Invalid name"
-#~ msgstr "無效的名稱"
-
-#~ msgid "There is already a queue with that name."
-#~ msgstr "已經存在一個相同名稱的佇列。"
-
-#~ msgid "An existing queue has an alias of that name."
-#~ msgstr "一個既有的佇列已有這個別名。"
-
-#~ msgid "'%s' does not exist, or is not writable."
-#~ msgstr "'%s' 不存在或無法寫入。"
-
-#~ msgid "Custom device"
-#~ msgstr "自訂裝置"
-
-#~ msgid "You must select a device."
-#~ msgstr "您必須選取一個裝置。"
-
-#~ msgid "You must specify a path."
-#~ msgstr "您必須指定一個路徑。"
-
-#~ msgid "You must specify a queue."
-#~ msgstr "您必須指定一個佇列。"
-
-#~ msgid "You must choose an SMB share to print to."
-#~ msgstr "您必須選擇一個要用來列印的 SMB 共享資源。"
-
-#~ msgid "You must choose a share, not a host."
-#~ msgstr "您必須選擇一個共享資源，而不是一部主機。"
-
-#~ msgid "You must specify an SMB share to print to."
-#~ msgstr "您必須指定要用來列印的 SMB 共享資源。"
-
-#~ msgid "You must specify a queue on the NCP server."
-#~ msgstr "您必須指定一個 NCP 伺服器上的佇列。"
-
-#~ msgid "You must specify a JetDirect printer to print to."
-#~ msgstr "您必須指定要用來列印的 JetDirect 印表機。"
-
-#~ msgid "You must specify an IP port number."
-#~ msgstr "您必須指定一個 IP 連接埠號碼。"
-
-#~ msgid "Select the printer manufacturer and model."
-#~ msgstr "請選擇印表機的製造商與型號。"
-
-#~ msgid ""
-#~ "Select the printer manufacturer and model. Depending on how the remote "
-#~ "queue is configured, you may need to select the generic PostScript option "
-#~ "here."
-#~ msgstr ""
-#~ "請選擇印表機的製造商與型號。 取決於遠端的佇列是如何設定的，您也許需要在這"
-#~ "裡選取一般的 PostScript 選項。"
-
-#~ msgid "You must select a printer model."
-#~ msgstr "您必須選取一個印表機型號。"
-
-#~ msgid ""
-#~ "About to create the following queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "即將建立以下的佇列:\n"
-#~ "\n"
-
-#~ msgid "Type: "
-#~ msgstr "類型:"
-
-#~ msgid "Printer: "
-#~ msgstr "印表機:"
-
-#~ msgid "Device: "
-#~ msgstr "裝置:"
-
-#~ msgid "Queue: "
-#~ msgstr "佇列:"
-
-#~ msgid "Share: "
-#~ msgstr "共享:"
-
-#~ msgid "Port: "
-#~ msgstr "連接埠:"
-
-#~ msgid "Would you like to print a test page?"
-#~ msgstr "您想要列印測試頁嗎？"
-
-#~ msgid ""
-#~ "Would you like to print a test page?\n"
-#~ "Answering 'yes' will apply all changes\n"
-#~ "and print a test page to this printer."
-#~ msgstr ""
-#~ "您想要列印測試頁嗎？\n"
-#~ "回答『是』的話將會套用所有變更，\n"
-#~ "並列印測試頁到這部印表機。"
-
-#~ msgid "Number of columns on a page"
-#~ msgstr "一頁中的欄位數"
-
-#~ msgid "Characters per inch"
-#~ msgstr "字元數/英吋"
-
-#~ msgid "Billing label"
-#~ msgstr "帳單標籤"
-
-#~ msgid ""
-#~ "HH:MM:SS or '%s'.\n"
-#~ "Use GMT."
-#~ msgstr ""
-#~ "HH:MM:SS 或 '%s'。\n"
-#~ "使用 GMT。"
-
-#~ msgid ""
-#~ "Banner pages (start,end):\n"
-#~ "for example, '%s'"
-#~ msgstr ""
-#~ "橫幅頁面（開始、結束）:\n"
-#~ "例如，'%s'"
-
-#~ msgid "Landscape (%s or %s)"
-#~ msgstr "橫向列印（%s 或 %s）"
-
-#~ msgid "Lines per inch"
-#~ msgstr "行數/英吋"
-
-#~ msgid ""
-#~ "Number of document pages per\n"
-#~ "printed page: 1, 2, 4, 6, 9, or 16"
-#~ msgstr ""
-#~ "每面的頁數:\n"
-#~ "1, 2, 4, 6, 9 或 16"
-
-#~ msgid "Top margin in pt (1/72 in)"
-#~ msgstr "上邊界（1/72英吋）"
-
-#~ msgid "Left margin in pt (1/72 in)"
-#~ msgstr "左邊界（1/72英吋）"
-
-#~ msgid "Right margin in pt (1/72 in)"
-#~ msgstr "右邊界（1/72英吋）"
-
-#~ msgid "Bottom margin in pt (1/72 in)"
-#~ msgstr "下邊界（1/72英吋）"
-
-#~ msgid ""
-#~ "'%s', '%s', '%s'\n"
-#~ "'%s' or '%s'"
-#~ msgstr ""
-#~ "'%s', '%s', '%s'\n"
-#~ "'%s' 或 '%s'"
-
-#~ msgid "Page label"
-#~ msgstr "頁面標籤"
-
-#~ msgid "Pretty-print text (%s or %s)"
-#~ msgstr "美化文字（%s 或 %s）"
-
-#~ msgid "Scaling (percentage)"
-#~ msgstr "縮放比例（百分比）"
-
-#~ msgid "Word-wrapping (%s or %s)"
-#~ msgstr "自動換行（%s 或 %s）"
-
-#~ msgid "Option name"
-#~ msgstr "選項名稱"
-
-#~ msgid "Value"
-#~ msgstr "數值"
-
-#~ msgid "Can't determine the printer model attached to this device."
-#~ msgstr "無法取得連接到這個裝置的印表機型號。"
-
-#~ msgid "I don't know enough about this printer model to choose a driver."
-#~ msgstr "無法取得這部印表機的足夠資訊以選擇一個驅動程式。"
-
-#~ msgid "Edit queue option"
-#~ msgstr "編輯佇列選項"
-
-#~ msgid "Add queue option"
-#~ msgstr "新增佇列選項"
-
-#~ msgid "Invalid option name"
-#~ msgstr "無效的選項名稱"
-
-#~ msgid "Invalid value"
-#~ msgstr "無效的數值"
-
-#~ msgid "Value for this option"
-#~ msgstr "這個選項的數值"
-
-#~ msgid "None"
-#~ msgstr "沒有"
-
-#~ msgid ""
-#~ "(this is the\n"
-#~ "recommended driver)"
-#~ msgstr ""
-#~ "（這是建議使用的\n"
-#~ "驅動程式）"
-
-#~ msgid "There are no options available for this driver."
-#~ msgstr "這個驅動程式沒有可使用的選項。"
-
-#~ msgid ""
-#~ "This driver requires Hewlett Packard's hpijs driver (available in the "
-#~ "hpijs package) which does not appear to be installed."
-#~ msgstr ""
-#~ "這個驅動程式需要 Hewlett Packard's hpijs 驅動程式 (可在 hpijs 套件中取"
-#~ "得)，看來這個套件尚未安裝。"
-
-#~ msgid "Do you wish to use it anyway?"
-#~ msgstr "您仍然想使用它嗎？"
-
-#~ msgid ""
-#~ "This driver requires the Omni Print Driver System, which does not appear "
-#~ "to be installed."
-#~ msgstr "這個驅動程式需要 Omni 列印驅動程式系統，該程式看來似乎沒有安裝。"
-
-#~ msgid ""
-#~ "This driver requires the oki4drv daemon to be running, and it does not "
-#~ "appear to be."
-#~ msgstr "這個驅動程式需要 oki4drv 系統程式執行中，不過似乎沒有。"
-
-#~ msgid "Local Printer Device"
-#~ msgstr "本機列印裝置"
-
-#~ msgid "IPP Print Queue"
-#~ msgstr "IPP 列印佇列"
-
-#~ msgid "Unix Print Queue"
-#~ msgstr "Unix 列印佇列"
-
-#~ msgid "Windows Print Queue"
-#~ msgstr "Windows 列印佇列"
-
-#~ msgid ""
-#~ "SMB print queues require the \"smbclient\" program, which does not appear "
-#~ "to be installed."
-#~ msgstr "SMB 列印佇列需要 \"smbclient\" 程式，看來該程式似乎沒有安裝。"
-
-#~ msgid ""
-#~ "It is part of the \"samba-client\" package, as distributed by Red Hat."
-#~ msgstr "它是 \"samba-client\" 套件的一部分。由 Red Hat 散佈。"
-
-#~ msgid "Do you wish to enable it anyway?"
-#~ msgstr "您仍然想啟用它嗎？"
-
-#~ msgid "Novell Print Queue"
-#~ msgstr "Novell 列印佇列"
-
-#~ msgid ""
-#~ "NCP print queues require the \"nprint\" program, which does not appear to "
-#~ "be installed."
-#~ msgstr "NCP 列印佇列需要 \"nprint\" 程式，該程式看來似乎沒有安裝。"
-
-#~ msgid "It is part of the \"ncpfs\" package, as distributed by Red Hat."
-#~ msgstr "它是 \"ncpfs\" 套件的一部分。由 Red Hat 散佈。"
-
-#~ msgid "Custom Command"
-#~ msgstr "自訂指令"
-
-#~ msgid "Postscript Printer"
-#~ msgstr "Postscript 印表機"
-
-#~ msgid "Text Only Printer"
-#~ msgstr "純文字印表機"
-
-#~ msgid "Raw Print Queue"
-#~ msgstr "原始的列印佇列"
-
-#~ msgid "Custom Filter"
-#~ msgstr "自訂過濾器"
-
-#~ msgid "ERROR: No box named \"%s\" found.\n"
-#~ msgstr "錯誤：找不到名稱為 \"%s\" 的機器。\n"
-
-#~ msgid "ERROR: box \"%s\" is not a writable interface.\n"
-#~ msgstr "錯誤: \"%s\" 不是一個可寫入的介面。\n"
-
-#~ msgid "Send Form-Feed (FF)"
-#~ msgstr "傳送 Form-Feed (FF)"
-
-#~ msgid "Send End-of-Transmission (EOT)"
-#~ msgstr "傳送 End-of-Transmission (EOT)"
-
-#~ msgid "Assume Unknown Data is Text"
-#~ msgstr "假定未知的資料為文字"
-
-#~ msgid "Prerender Postscript"
-#~ msgstr "預先處理 Postscript"
-
-#~ msgid "Convert Text to Postscript"
-#~ msgstr "轉換文字成 Postscript"
-
-#~ msgid "Page Size"
-#~ msgstr "頁面大小"
-
-#~ msgid "Effective Filter Locale"
-#~ msgstr "有效的過濾器區域性"
-
-#~ msgid "Couldn't load driver information.\n"
-#~ msgstr "無法載入驅動程式資訊。\n"
-
-#~ msgid "You must run printconf-backend as root."
-#~ msgstr "您必須是 root 才能執行 printconf-backend。"
-
-#~ msgid "Sharing properties - %s"
-#~ msgstr "共享資源的內容 - %s"
-
-#~ msgid "Sharing properties"
-#~ msgstr "共享資源的內容"
-
-#~ msgid "All hosts"
-#~ msgstr "所有主機"
-
-#~ msgid "Network device %s"
-#~ msgstr "網路裝置 %s"
-
-#~ msgid "Network devices %s"
-#~ msgstr "網路裝置 %s"
-
-#~ msgid "Network address %s"
-#~ msgstr "網路位址 %s"
-
-#~ msgid "(unknown)"
-#~ msgstr "（未知）"
-
-#~ msgid "Add allowed hosts - %s"
-#~ msgstr "新增一個可存取的主機 - %s"
-
-#~ msgid "Edit allowed hosts - %s"
-#~ msgstr "編輯可存取的主機 - %s"
-
-#~ msgid ""
-#~ "LPD connections will be accepted\n"
-#~ "on all interfaces, and jobs for\n"
-#~ "all queues will be accepted."
-#~ msgstr ""
-#~ "將會允許來自所有介面的\n"
-#~ "LPD 連線，並接受所有佇\n"
-#~ "列中的工作。"
-
-#~ msgid "Invalid network address"
-#~ msgstr "無效的網路位址"
-
-#~ msgid "Invalid netmask"
-#~ msgstr "無效的網路遮罩"
-
-#~ msgid "Invalid IP address"
-#~ msgstr "無效的 IP 位址"
-
-#~ msgid "*"
-#~ msgstr "*"
-
-#~ msgid "/"
-#~ msgstr "/"
-
-#~ msgid "72pt per inch"
-#~ msgstr "72pt/英吋"
-
-#~ msgid "="
-#~ msgstr "="
-
-#~ msgid "ASC_II text test page"
-#~ msgstr "ASC_II 文字測試頁"
-
-#~ msgid "About"
-#~ msgstr "關於"
-
-#~ msgid "Add a new option"
-#~ msgstr "新增一個選項"
-
-#~ msgid "Add a new print queue"
-#~ msgstr "新增一個列印佇列"
-
-#~ msgid "Add a new queue"
-#~ msgstr "增加一個新的佇列"
-
-#~ msgid "Add an allowed host"
-#~ msgstr "新增一個可存取的主機"
-
-#~ msgid "Add/edit queue option"
-#~ msgstr "新增/編輯佇列選項"
-
-#~ msgid "Allowed hosts"
-#~ msgstr "可存取的主機"
-
-#~ msgid "Apply"
-#~ msgstr "套用"
-
-#~ msgid "Apply changes"
-#~ msgstr "套用變更"
-
-#~ msgid "At end of job:"
-#~ msgstr "列印工作的最後一頁:"
-
-#~ msgid "At start of job:"
-#~ msgstr "列印工作的第一頁:"
-
-#~ msgid "Authentication"
-#~ msgstr "驗證"
-
-#~ msgid "Autoselect driver"
-#~ msgstr "自動選取驅動程式"
-
-#~ msgid "Available drivers:"
-#~ msgstr "可使用的驅動程式:"
-
-#~ msgid "Banner pages"
-#~ msgstr "標題頁面"
-
-#~ msgid "Big5 PostScript test page"
-#~ msgstr "Big5 PostScript 測試頁"
-
-#~ msgid "Bottom margin (pt):"
-#~ msgstr "下邊界 (pt):"
-
-#~ msgid "Choose the manufacturer"
-#~ msgstr "請選擇製造商"
-
-#~ msgid "Choose the queue type"
-#~ msgstr "選取佇列種類"
-
-#~ msgid "Choose the type of queue you want to use"
-#~ msgstr "請選擇您想使用的佇列種類"
-
-#~ msgid "Choose which other computers may use this queue."
-#~ msgstr "請選擇其他可以使用這個佇列的電腦。"
-
-#~ msgid "Delete the selected queue"
-#~ msgstr "刪除選取的佇列"
-
-#~ msgid "Edit a print queue"
-#~ msgstr "編輯列印佇列"
-
-#~ msgid "Edit the selected queue"
-#~ msgstr "編輯選取的佇列"
-
-#~ msgid "Edit this host"
-#~ msgstr "編輯主機"
-
-#~ msgid "Edit this option"
-#~ msgstr "編輯選項"
-
-#~ msgid "Enable _LPD protocol"
-#~ msgstr "啟用 _LPD 通訊協定"
-
-#~ msgid "Enter the device you would like to use."
-#~ msgstr "輸入欲使用的裝置。"
-
-#~ msgid "Filter options"
-#~ msgstr "過濾器選項"
-
-#~ msgid "Finish, and create the new print queue"
-#~ msgstr "完成，並建立新的列印佇列"
-
-#~ msgid "For example: /dev/lp0"
-#~ msgstr "例如: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "一般"
-
-#~ msgid "Generic"
-#~ msgstr "一般"
-
-#~ msgid "IP port number (often 9100)"
-#~ msgstr "IP 連接埠號碼（通常為 9100）"
-
-#~ msgid ""
-#~ "If you like, you can enter a description of the printer to help you "
-#~ "identify it more easily."
-#~ msgstr "您可以輸入這部印表機的一段說明以幫助您方便的辨識它。"
-
-#~ msgid "Imageable Area"
-#~ msgstr "內容列印的區域"
-
-#~ msgid "JPE_G test"
-#~ msgstr "JPE_G 測試"
-
-#~ msgid "Japanese EUC PostScript test page"
-#~ msgstr "日文 EUC PostScript 測試頁"
-
-#~ msgid "Japanese JIS PostScript test page"
-#~ msgstr "日文 JIS PostScript 測試頁"
-
-#~ msgid "Japanese SJIS PostScript test page"
-#~ msgstr "日文 SJIS PostScript 測試頁"
-
-#~ msgid "Japanese _EUC text test page"
-#~ msgstr "日文 _EUC 文字測試頁"
-
-#~ msgid "Japanese _JIS text test page"
-#~ msgstr "日文 _JIS 文字測試頁"
-
-#~ msgid "Japanese _SJIS text test page"
-#~ msgstr "日文 _SJIS 文字測試頁"
-
-#~ msgid "Left margin (pt):"
-#~ msgstr "左邊界 (pt):"
-
-#~ msgid "Linefeed translation"
-#~ msgstr "跳行轉換"
-
-#~ msgid "Network _devices"
-#~ msgstr "網路裝置(_d)"
-
-#~ msgid "Networked CUPS (_IPP)"
-#~ msgstr "網路連線的 CUPS (_IPP)"
-
-#~ msgid "Networked _JetDirect"
-#~ msgstr "網路連線的 _JetDirect"
-
-#~ msgid "Networked _Novell (NCP)"
-#~ msgstr "網路連線的 _Novell (NCP)"
-
-#~ msgid "Networked _UNIX (LPD)"
-#~ msgstr "網路連線的 _UNIX (LPD)"
-
-#~ msgid "Networked _Windows (SMB)"
-#~ msgstr "網路連線的 _Windows (SMB)"
-
-#~ msgid ""
-#~ "On the following screens, you will be asked to provide basic information "
-#~ "for adding a new print queue.  You will be able to edit the more advanced "
-#~ "options afterwards.\n"
-#~ "\n"
-#~ "Nothing will be done to your settings until you hit \"Finish\" on the "
-#~ "last screen."
-#~ msgstr ""
-#~ "在以下畫面中，您將被詢問以提供新增一個列印佇列的基本資訊。在之後您將可以編"
-#~ "輯更進階的選項。\n"
-#~ "\n"
-#~ "您的設定不會被更改，除非您按下最後一個畫面的 \"完成\" 鍵。"
-
-#~ msgid "Password:"
-#~ msgstr "密碼:"
-
-#~ msgid "Path:"
-#~ msgstr "路徑:"
-
-#~ msgid "Patience"
-#~ msgstr "請耐心等候..."
-
-#~ msgid ""
-#~ "Please enter a name for this queue.  Choose a short name that begins with "
-#~ "a letter and contains no spaces."
-#~ msgstr ""
-#~ "請輸入這個佇列的名稱，請選擇一個以字母為開頭的簡短名稱（不能含有空白字"
-#~ "元）。"
-
-#~ msgid "Printer configuration"
-#~ msgstr "印表機設定"
-
-#~ msgid "Printer driver"
-#~ msgstr "印表機驅動程式"
-
-#~ msgid "Printer hostname or IP address"
-#~ msgstr "印表機主機名稱或 IP 位址"
-
-#~ msgid "Printer model"
-#~ msgstr "印表機型號:"
-
-#~ msgid "Printer/driver _notes..."
-#~ msgstr "印表機/驅動程式備註(_n)..."
-
-#~ msgid "Queue options"
-#~ msgstr "佇列選項"
-
-#~ msgid "Queue type"
-#~ msgstr "佇列種類"
-
-#~ msgid "Queue type:"
-#~ msgstr "佇列種類:"
-
-#~ msgid "Queue:"
-#~ msgstr "佇列:"
-
-#~ msgid "Remove this host from the list"
-#~ msgstr "從清單移除這部主機"
-
-#~ msgid "Remove this option"
-#~ msgstr "移除選項"
-
-#~ msgid "Rescan devices"
-#~ msgstr "重新偵測裝置"
-
-#~ msgid "Reset to the default options"
-#~ msgstr "重設為預設選項"
-
-#~ msgid "Right margin (pt):"
-#~ msgstr "右邊界 (pt):"
-
-#~ msgid "Select a queue type:"
-#~ msgstr "選取一個佇列種類:"
-
-#~ msgid "Select the appropriate printer manufacturer and model."
-#~ msgstr "請選擇印表機的製造商與型號。"
-
-#~ msgid "Server hostname or IP address:"
-#~ msgstr "伺服器主機名稱或 IP 位址:"
-
-#~ msgid "Set as _default"
-#~ msgstr "設為預設值(_d)"
-
-#~ msgid "Set as de_fault"
-#~ msgstr "設定為預設佇列(_f)"
-
-#~ msgid "Set as default queue"
-#~ msgstr "設定為預設佇列"
-
-#~ msgid "Short description:"
-#~ msgstr "簡短說明:"
-
-#~ msgid "Short description: "
-#~ msgstr "簡短說明:"
-
-#~ msgid "Single _IP address"
-#~ msgstr "單一的 _IP 位址"
-
-#~ msgid "Specify..."
-#~ msgstr "指定..."
-
-#~ msgid "Strict RFC1179 compliance"
-#~ msgstr "嚴格遵從 RFC1179"
-
-#~ msgid "These settings are system-wide."
-#~ msgstr "這些設定是全系統性的。"
-
-#~ msgid "This allows older systems to print to this machine"
-#~ msgstr "這將會允許舊系統經由這部機器進行列印"
-
-#~ msgid "This enables CUPS IPP browsing"
-#~ msgstr "這將啟用 CUPS IPP 瀏覽"
-
-#~ msgid ""
-#~ "This is the name of the queue.  It must begin with a letter and contain "
-#~ "no spaces."
-#~ msgstr "這是佇列的名稱，它必須以字母開頭，且不能包含空白字元。"
-
-#~ msgid "Top margin (pt):"
-#~ msgstr "上邊界 (pt):"
-
-#~ msgid "Type in an IP address"
-#~ msgstr "請輸入一個 IP 位址"
-
-#~ msgid "Type in the netmask, or the CIDR mask length"
-#~ msgstr "請輸入網路遮罩或 CIDR 遮罩長度 (mask length)"
-
-#~ msgid "Type in the share name"
-#~ msgstr "請輸入共享名稱"
-
-#~ msgid "Use control-F to search"
-#~ msgstr "使用 control-F 做搜尋"
-
-#~ msgid "User name:"
-#~ msgstr "使用者名稱:"
-
-#~ msgid "_A4 PostScript test page"
-#~ msgstr "_A4 PostScript 測試頁"
-
-#~ msgid "_Action"
-#~ msgstr "動作(_A)"
-
-#~ msgid "_Add..."
-#~ msgstr "新增(_A)..."
-
-#~ msgid "_All hosts"
-#~ msgstr "所有主機(_A)"
-
-#~ msgid "_Apply"
-#~ msgstr "套用(_A)"
-
-#~ msgid "_Automatically find remote shared queues"
-#~ msgstr "自動搜尋遠端共享佇列(_A)"
-
-#~ msgid "_Big5 text test page"
-#~ msgstr "_Big5 文字測試頁"
-
-#~ msgid "_CUPS test page"
-#~ msgstr "_CUPS 測試頁"
-
-#~ msgid "_Contents"
-#~ msgstr "內容(_C)"
-
-#~ msgid "_Custom device"
-#~ msgstr "自訂裝置(_C)"
-
-#~ msgid "_Defaults"
-#~ msgstr "預設(_D)"
-
-#~ msgid "_Delete"
-#~ msgstr "刪除(_D)"
-
-#~ msgid "_Delete queue"
-#~ msgstr "刪除佇列(_D)"
-
-#~ msgid "_Duplex test"
-#~ msgstr "雙工功能測試(_D)"
-
-#~ msgid "_Edit queue"
-#~ msgstr "編輯佇列(_E)"
-
-#~ msgid "_Edit..."
-#~ msgstr "編輯(_E)..."
-
-#~ msgid "_Help"
-#~ msgstr "說明(_H)"
-
-#~ msgid "_Import PPD..."
-#~ msgstr "匯入 PPD（_I）..."
-
-#~ msgid "_Network address"
-#~ msgstr "網路位址(_N)"
-
-#~ msgid "_New queue"
-#~ msgstr "新增列印佇列(_N)"
-
-#~ msgid "_Notes..."
-#~ msgstr "備註(_N)..."
-
-#~ msgid "_Remove"
-#~ msgstr "移除(_R)"
-
-#~ msgid "_Rescan devices"
-#~ msgstr "重新偵測裝置(_R)"
-
-#~ msgid "_Sharing..."
-#~ msgstr "共享資源(_S)..."
-
-#~ msgid "_Test"
-#~ msgstr "測試(_T)"
-
-#~ msgid "_This queue is available to other computers"
-#~ msgstr "這個佇列可被其他電腦主機存取(_T)"
-
-#~ msgid "_US Letter PostScript test page"
-#~ msgstr "_US Letter PostScript 測試頁"
-
-#~ msgid "_classified"
-#~ msgstr "分類的(_c)"
-
-#~ msgid "_none"
-#~ msgstr "沒有(_n)"
-
-#~ msgid "_secret"
-#~ msgstr "極機密(_s)"
-
-#~ msgid "_standard"
-#~ msgstr "標準的(_s)"
-
-#~ msgid "_topsecret"
-#~ msgstr "最高機密(_t)"
-
-#~ msgid "_unclassified"
-#~ msgstr "未分類的(_u)"
-
-#~ msgid "c_onfidential"
-#~ msgstr "機密(_o)"
-
-#~ msgid "ipp"
-#~ msgstr "ipp"
-
-#~ msgid "jetdirect"
-#~ msgstr "jetdirect"
-
-#~ msgid "local"
-#~ msgstr "本機"
-
-#~ msgid "lpd"
-#~ msgstr "lpd"
-
-#~ msgid "ncp"
-#~ msgstr "ncp"
-
-#~ msgid "none"
-#~ msgstr "沒有"
-
-#~ msgid "smb"
-#~ msgstr "smb"
-
-#~ msgid "Configure printers"
-#~ msgstr "設定印表機"
-
-#~ msgid "Printing"
-#~ msgstr "列印"
+#~ "This PPD is provided by the manufacturer and is included with the "
+#~ "foomatic package."
+#~ msgstr "此 PPD 由製造商提供，並包含在 foomatic 套件內。"
+
+#~ msgid "This PPD is provided by CUPS."
+#~ msgstr "此 PPD 由 CUPS 提供。"
+
+#~ msgid "Specify default job options."
+#~ msgstr "指定預設工作選項。"

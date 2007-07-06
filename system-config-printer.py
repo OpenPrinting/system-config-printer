@@ -1,8 +1,8 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2006 Tim Waugh <twaugh@redhat.com>
 
@@ -23,7 +23,7 @@
 # config is generated from config.py.in by configure
 import config
 
-import sys, os, tempfile, time
+import sys, os, tempfile, time, traceback
 import signal, thread
 try:
     import gtk.glade
@@ -32,9 +32,12 @@ except RuntimeError, e:
     print "This is a graphical application and requires DISPLAY to be set."
     sys.exit (1)
 
-if len(sys.argv)>1 and sys.argv[1] == '--help':
+def show_help():
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n")
+
+if len(sys.argv)>1 and sys.argv[1] == '--help':
+    show_help ()
     sys.exit (0)
 
 import cups
@@ -42,19 +45,19 @@ import pysmb
 import cupshelpers, options
 import gobject # for TYPE_STRING and TYPE_PYOBJECT
 from optionwidgets import OptionWidget
-from foomatic import Foomatic
+import ppds
 from nametree import BuildTree
 from cupsd import CupsConfig
 import probe_printer
 import gtk_label_autowrap
-
+import urllib
 
 domain='system-config-printer'
 import locale
 locale.setlocale (locale.LC_ALL, "")
-from rhpl.translate import _, N_
-import rhpl.translate as translate
-translate.textdomain (domain)
+from gettext import gettext as _
+import gettext
+gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
 pkgdata = '/usr/share/' + domain
 glade_file = pkgdata + '/' + domain + '.glade'
@@ -62,16 +65,31 @@ sys.path.append (pkgdata)
 
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
+ellipsis = unichr(0x2026)
+
+def nonfatalException ():
+    print "Caught non-fatal exception.  Traceback:"
+    (type, value, tb) = sys.exc_info ()
+    tblast = traceback.extract_tb (tb, limit=None)
+    if len (tblast):
+        tblast = tblast[:len (tblast) - 1]
+    extxt = traceback.format_exception_only (type, value)
+    for line in traceback.format_tb(tb):
+        print line.strip ()
+    print extxt[0].strip ()
+    print "Continuing anyway.."
 
 class GUI:
 
-    def __init__(self):
+    def __init__(self, start_printer = None, change_ppd = False):
 
         self.language = locale.getlocale(locale.LC_MESSAGES)
         self.encoding = locale.getlocale(locale.LC_CTYPE)
         
         self.printer = None
         self.conflicts = set() # of options
+        self.connect_server = 'localhost'
+        self.connect_user = 'root'
         self.password = ''
         self.passwd_retry = False
         cups.setPasswordCB(self.cupsPasswdCallback)        
@@ -79,6 +97,10 @@ class GUI:
         self.changed = set() # of options
 
         self.servers = set(("localhost",))
+
+        # Synchronisation objects.
+        self.ppds_lock = None
+        self.devices_lock = None
 
         try:
             self.cups = cups.Connection()
@@ -89,9 +111,10 @@ class GUI:
         # =======
         try:
             #raise ValueError # uncomment for development
-            self.xml = gtk.glade.XML(glade_file)
+            self.xml = gtk.glade.XML(glade_file, domain = domain)
         except:
-            self.xml = gtk.glade.XML(domain + '.glade')
+            self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
+            print "Using local glade file"
 
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
                         "statusbarMain",
@@ -111,7 +134,9 @@ class GUI:
                           "lblPState", "entPDevice", "lblPDevice2",
                           "btnSelectDevice", "btnChangePPD",
                           "chkPEnabled", "chkPAccepting", "chkPShared",
+                        "lblNotPublished",
                           "btnPMakeDefault", "lblPDefault",
+                        "btnPrintTestPage",
            
                          "cmbPStartBanner", "cmbPEndBanner",
                           "cmbPErrorPolicy", "cmbPOperationPolicy",
@@ -119,13 +144,42 @@ class GUI:
                          "rbtnPAllow", "rbtnPDeny", "tvPUsers",
                           "entPUser", "btnPAddUser", "btnPDelUser", 
 
+                        "lblPInstallOptions",
                          "swPInstallOptions", "vbPInstallOptions", 
                          "swPOptions",
                           "lblPOptions", "vbPOptions",
-                         "vbClassMembers", "lblClassMembers",
+                         "algnClassMembers", "vbClassMembers",
+                          "lblClassMembers",
                           "tvClassMembers", "tvClassNotMembers",
                           "btnClassAddMember", "btnClassDelMember",
-                         "cmbentNewOption", "tblServerOptions", "btnNewOption",
+
+                        "sbJOCopies", "btnJOResetCopies",
+                        "cmbJOOrientationRequested", "btnJOResetOrientationRequested",
+                        "cbJOFitplot", "btnJOResetFitplot",
+                        "cmbJONumberUp", "btnJOResetNumberUp",
+                        "cmbJONumberUpLayout", "btnJOResetNumberUpLayout",
+                        "sbJOBrightness", "btnJOResetBrightness",
+                        "cmbJOFinishings", "btnJOResetFinishings",
+                        "sbJOJobPriority", "btnJOResetJobPriority",
+                        "cmbJOMedia", "btnJOResetMedia",
+                        "cmbJOSides", "btnJOResetSides",
+                        "cmbJOHoldUntil", "btnJOResetHoldUntil",
+                        "cbJOMirror", "btnJOResetMirror",
+                        "sbJOScaling", "btnJOResetScaling",
+                        "sbJOSaturation", "btnJOResetSaturation",
+                        "sbJOHue", "btnJOResetHue",
+                        "sbJOGamma", "btnJOResetGamma",
+                        "sbJOCpi", "btnJOResetCpi",
+                        "sbJOLpi", "btnJOResetLpi",
+                        "sbJOPageLeft", "btnJOResetPageLeft",
+                        "sbJOPageRight", "btnJOResetPageRight",
+                        "sbJOPageTop", "btnJOResetPageTop",
+                        "sbJOPageBottom", "btnJOResetPageBottom",
+                        "cbJOPrettyPrint", "btnJOResetPrettyPrint",
+                        "cbJOWrap", "btnJOResetWrap",
+                        "sbJOColumns", "btnJOResetColumns",
+                        "tblJOOther",
+                        "entNewJobOption", "btnNewJobOption",
                         
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
@@ -141,11 +195,13 @@ class GUI:
                          "btnNPBack", "btnNPForward", "btnNPApply",
                           "entNPName", "entNPDescription", "entNPLocation",
                           "tvNPDevices", "ntbkNPType",
+                        "lblNPDeviceDescription",
                            "cmbNPTSerialBaud", "cmbNPTSerialParity",
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
                            "entNPTIPPHostname", "entNPTIPPPrintername",
                         "entNPTDirectJetHostname", "entNPTDirectJetPort",
+                        "entNPTIPPHostname", "entNPTIPPPrintername",
                         "entSMBURI", "tvSMBBrowser",
                         "entSMBUsername", "entSMBPassword",
                            "entNPTDevice",
@@ -169,7 +225,7 @@ class GUI:
         # Set up "About" dialog strings.
         vertext = self.lblVersion.get_text ()
         self.lblVersion.set_text (vertext % config.VERSION)
-        self.lblCopyright.set_text (_("Copyright 2006 Red Hat, Inc."))
+        self.lblCopyright.set_text (_("Copyright 2006, 2007 Red Hat, Inc."))
         self.lblAuthors.set_text ("Florian Festi, Tim Waugh")
 
         self.static_tabs = 3
@@ -206,10 +262,6 @@ class GUI:
         selection.set_select_function(self.maySelectItem)
 
         self.mainlist.append(None, (_("Server Settings"), 'Settings'))
-        self.mainlist.append(None, (_("Local Printers"), ""))
-        self.mainlist.append(None, (_("Local Classes"), ""))
-        self.mainlist.append(None, (_("Remote Printers"), ""))
-        self.mainlist.append(None, (_("Remote Classes"), ""))
 
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
@@ -218,9 +270,9 @@ class GUI:
         m = gtk.SELECTION_MULTIPLE
         s = gtk.SELECTION_SINGLE
         for name, treeview, selection_mode in (
-            (_("Members of this Class"), self.tvClassMembers, m),
+            (_("Members of this class"), self.tvClassMembers, m),
             (_("Others"), self.tvClassNotMembers, m),
-            (_("Members of this Class"), self.tvNCMembers, m),
+            (_("Members of this class"), self.tvNCMembers, m),
             (_("Others"), self.tvNCNotMembers, m),
             (_("Devices"), self.tvNPDevices, s),
             (_("Makes"), self.tvNPMakes,s),
@@ -239,6 +291,7 @@ class GUI:
         ppd_filter = gtk.FileFilter()
         ppd_filter.set_name(_("PostScript Printer Description (*.ppd[.gz])"))
         ppd_filter.add_pattern("*.ppd")
+        ppd_filter.add_pattern("*.PPD")
         ppd_filter.add_pattern("*.ppd.gz")
         
         self.filechooserPPD.add_filter(ppd_filter)
@@ -267,11 +320,150 @@ class GUI:
         self.tvSMBBrowser.append_column (col)
         slct = self.tvSMBBrowser.get_selection ()
         slct.set_select_function (self.smb_select_function)
-
-        self.populateList()
-        
         self.xml.signal_autoconnect(self)
 
+        # Job Options widgets.
+        opts = [ options.OptionAlwaysShown ("copies", int, 1,
+                                            self.sbJOCopies,
+                                            self.btnJOResetCopies),
+
+                 options.OptionAlwaysShown \
+                 ("orientation-requested", int, 3,
+                  self.cmbJOOrientationRequested,
+                  self.btnJOResetOrientationRequested,
+                  combobox_map = [3, 4, 5, 6]),
+
+                 options.OptionAlwaysShown ("fitplot", bool, False,
+                                            self.cbJOFitplot,
+                                            self.btnJOResetFitplot),
+
+                 options.OptionAlwaysShown ("number-up", int, 1,
+                                            self.cmbJONumberUp,
+                                            self.btnJOResetNumberUp,
+                                            combobox_map=[1, 2, 4, 6, 9, 16]),
+
+                 options.OptionAlwaysShown ("number-up-layout", str, "lrtb",
+                                            self.cmbJONumberUpLayout,
+                                            self.btnJOResetNumberUpLayout,
+                                            combobox_map = [ "lrtb",
+                                                             "lrbt",
+                                                             "rltb",
+                                                             "rlbt",
+                                                             "tblr",
+                                                             "tbrl",
+                                                             "btlr",
+                                                             "btrl" ]),
+
+                 options.OptionAlwaysShown ("brightness", int, 100,
+                                            self.sbJOBrightness,
+                                            self.btnJOResetBrightness),
+
+                 options.OptionAlwaysShown ("finishings", int, 3,
+                                            self.cmbJOFinishings,
+                                            self.btnJOResetFinishings,
+                                            combobox_map = [ 3, 4, 5, 6,
+                                                             7, 8, 9, 10,
+                                                             11, 12, 13, 14,
+                                                             20, 21, 22, 23,
+                                                             24, 25, 26, 27,
+                                                             28, 29, 30, 31,
+                                                             50, 51, 52, 53 ]),
+
+                 options.OptionAlwaysShown ("job-priority", int, 50,
+                                            self.sbJOJobPriority,
+                                            self.btnJOResetJobPriority),
+
+                 options.OptionAlwaysShown ("media", str,
+                                            "A4", # This is the default for
+                                                  # when media-default is
+                                                  # not supplied by the IPP
+                                                  # server.  Fortunately it
+                                                  # is a mandatory attribute.
+                                            self.cmbJOMedia,
+                                            self.btnJOResetMedia,
+                                            use_supported = True),
+
+                 options.OptionAlwaysShown ("sides", str, "one-sided",
+                                            self.cmbJOSides,
+                                            self.btnJOResetSides,
+                                            combobox_map =
+                                            [ "one-sided",
+                                              "two-sided-long-edge",
+                                              "two-sided-short-edge" ]),
+
+                 options.OptionAlwaysShown ("job-hold-until", str,
+                                            "no-hold",
+                                            self.cmbJOHoldUntil,
+                                            self.btnJOResetHoldUntil,
+                                            use_supported = True),
+
+                 options.OptionAlwaysShown ("mirror", bool, False,
+                                            self.cbJOMirror,
+                                            self.btnJOResetMirror),
+
+                 options.OptionAlwaysShown ("scaling", int, 100,
+                                            self.sbJOScaling,
+                                            self.btnJOResetScaling),
+
+                 options.OptionAlwaysShown ("saturation", int, 100,
+                                            self.sbJOSaturation,
+                                            self.btnJOResetSaturation),
+
+                 options.OptionAlwaysShown ("hue", int, 0,
+                                            self.sbJOHue,
+                                            self.btnJOResetHue),
+
+                 options.OptionAlwaysShown ("gamma", int, 1000,
+                                            self.sbJOGamma,
+                                            self.btnJOResetGamma),
+
+                 options.OptionAlwaysShown ("cpi", float, 10.0,
+                                            self.sbJOCpi, self.btnJOResetCpi),
+
+                 options.OptionAlwaysShown ("lpi", float, 6.0,
+                                            self.sbJOLpi, self.btnJOResetLpi),
+
+                 options.OptionAlwaysShown ("page-left", int, 18,
+                                            self.sbJOPageLeft,
+                                            self.btnJOResetPageLeft),
+
+                 options.OptionAlwaysShown ("page-right", int, 18,
+                                            self.sbJOPageRight,
+                                            self.btnJOResetPageRight),
+
+                 options.OptionAlwaysShown ("page-top", int, 36,
+                                            self.sbJOPageTop,
+                                            self.btnJOResetPageTop),
+
+                 options.OptionAlwaysShown ("page-bottom", int, 36,
+                                            self.sbJOPageBottom,
+                                            self.btnJOResetPageBottom),
+
+                 options.OptionAlwaysShown ("prettyprint", bool, False,
+                                            self.cbJOPrettyPrint,
+                                            self.btnJOResetPrettyPrint),
+
+                 options.OptionAlwaysShown ("wrap", bool, False, self.cbJOWrap,
+                                            self.btnJOResetWrap),
+
+                 options.OptionAlwaysShown ("columns", int, 1,
+                                            self.sbJOColumns,
+                                            self.btnJOResetColumns),
+                 ]
+        self.job_options_widgets = {}
+        self.job_options_buttons = {}
+        for option in opts:
+            self.job_options_widgets[option.widget] = option
+            self.job_options_buttons[option.button] = option
+
+        try:
+            self.populateList(start_printer, change_ppd)
+        except cups.HTTPError, (s,):
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            self.show_HTTP_Error(s)
+        
     def getWidgets(self, *names):
         for name in names:
             widget = self.xml.get_widget(name)
@@ -292,19 +484,60 @@ class GUI:
         win.window.set_cursor (ready_cursor)
         while gtk.events_pending ():
             gtk.main_iteration ()
-            
-    def loadFoomatic(self):
-        try:
-            return self.foomatic
-        except:
-            print "Loading foomatic database..."
-            self.foomatic = Foomatic() # this works on the local db
-            self.foomatic.addCupsPPDs(self.cups.getPPDs(), self.cups)
-            return self.foomatic
 
-    def unloadFoomatic(self):
+    def queryPPDs(self):
+        if self.ppds_lock != None:
+            print "queryPPDs: in progress"
+            return
+        print "queryPPDs"
+        # Make a lock for synchronising against.
+        self.ppds_lock = thread.allocate_lock ()
+        self.ppds_lock.acquire ()
+        print "Lock acquired for PPDs thread"
+        # Start new thread
+        thread.start_new_thread (self.getPPDs_thread, ())
+        print "PPDs thread started"
+
+    def getPPDs_thread(self):
         try:
-            del self.foomatic
+            print "Connecting (PPDs)"
+            cups.setServer (self.connect_server)
+            cups.setUser (self.connect_user)
+            cups.setPasswordCB (self.cupsPasswdCallback)
+            # cups.setEncryption (...)
+            c = cups.Connection ()
+            print "Fetching PPDs"
+            self.ppds_result = c.getPPDs()
+            print "Closing connection (PPDs)"
+            del c
+        except:
+            pass
+
+        print "Releasing PPDs lock"
+        self.ppds_lock.release ()
+
+    def fetchPPDs(self):
+        print "fetchPPDs"
+        if self.ppds_lock == None:
+            self.queryPPDs()
+
+        print "Acquiring PPDs lock"
+        self.ppds_lock.acquire ()
+        self.ppds_lock = None
+        print "Got PPDs"
+        return self.ppds_result
+
+    def loadPPDs(self):
+        try:
+            return self.ppds
+        except:
+            self.queryPPDs ()
+            self.ppds = ppds.PPDs(self.fetchPPDs ())
+            return self.ppds
+
+    def dropPPDs(self):
+        try:
+            del self.ppds
         except:
             pass
 
@@ -324,8 +557,17 @@ class GUI:
         self.statusbarMain.push(self.status_context_id, status_msg)
 
         for widget in (self.btnNewPrinter, self.btnNewClass,
-                       self.new_printer, self.new_class):
+                       self.new_printer, self.new_class,
+                       self.chkServerBrowse, self.chkServerShare,
+                       self.chkServerRemoteAdmin,
+                       self.chkServerAllowCancelAll,
+                       self.chkServerLogDebug):
             widget.set_sensitive(connected)
+
+        try:
+            del self.server_settings
+        except:
+            pass
         
     def getServers(self):
         self.servers.discard(None)
@@ -333,7 +575,7 @@ class GUI:
         known_servers.sort()
         return known_servers
 
-    def populateList(self):
+    def populateList(self, start_printer = None, change_ppd = False):
         old_name, old_type = self.getSelectedItem()
 
         select_path = None
@@ -349,7 +591,6 @@ class GUI:
             self.printers = {}
         
         self.default_printer = ""
-        #print self.printers
 
         local_printers = []
         local_classes = []
@@ -373,28 +614,46 @@ class GUI:
         remote_printers.sort()
         remote_classes.sort()
 
+        expanded = {
+            "_printers" : True,
+            "_classes" : True,
+            "_remote_printers" : True,
+            "_remote_classes" : True,
+            }
+
+
+        # remove old printers/classes
         iter = self.mainlist.get_iter_first()
         iter = self.mainlist.iter_next(iter) # step over server settings
-        for printers in (local_printers, local_classes,
-                         remote_printers, remote_classes):
+        while iter:
+            entry = self.mainlist.get_value(iter, 1)
             path = self.mainlist.get_path(iter)
-            expanded = (self.tvMainList.row_expanded(path) or
-                        not self.mainlist.iter_has_child(iter))
+            expanded[entry] = self.tvMainList.row_expanded(path)
+            more_entries =  self.mainlist.remove(iter)
+            if not more_entries: break
+        
+        # add new
+        for printers, text, name in (
+            (local_printers, _("Local Printers"), "_printers"),
+            (local_classes, _("Local Classes"), "_classes"),
+            (remote_printers, _("Remote Printers"), "_remote_printers"),
+            (remote_classes, _("Remote Classes"), "_remote_classes")):
+            if not printers: continue
+            iter = self.mainlist.append(None, (text, name))
+            path = self.mainlist.get_path(iter)
 
-            # clear old entries
-            while self.mainlist.iter_has_child(iter):
-                self.mainlist.remove(self.mainlist.iter_children(iter))
-            # add new ones
             for printer_name in printers:
                 p_iter = self.mainlist.append(iter, (printer_name, "Printer"))
-                if printer_name==old_name:
+                if (printer_name==old_name or
+                    printer_name==start_printer):
                     select_path = self.mainlist.get_path(p_iter)
-            if expanded:
+            if expanded[name]:
                 self.tvMainList.expand_row(path, False)
-            iter = self.mainlist.iter_next(iter)
                         
         # Selection
         selection = self.tvMainList.get_selection()
+        if old_type == "Settings":
+            select_path = (0,)
         if select_path:
             selection.select_path(select_path)
         else:
@@ -402,10 +661,24 @@ class GUI:
 
         self.on_tvMainList_cursor_changed(self.tvMainList)
 
+        if change_ppd:
+            self.on_btnChangePPD_clicked (self.btnChangePPD)
+
     def maySelectItem(self, selection):
         result = self.mainlist.get_value(
             self.mainlist.get_iter(selection), 1)
-        return bool(result)
+        if result[0] == "_":
+            return False
+        if self.changed:
+            response = self.ApplyDialog.run()
+            self.ApplyDialog.hide()
+            err = False
+            if response == gtk.RESPONSE_APPLY:
+                err = self.apply()
+            if err or response == gtk.RESPONSE_CANCEL:
+                return False
+        self.changed = set() # of options
+        return True
 
     def getSelectedItem(self):
         model, iter = self.tvMainList.get_selection().get_selected()
@@ -460,12 +733,14 @@ class GUI:
         servername = self.cmbServername.child.get_text()
         user = self.entUser.get_text()
 
-        self.lblConnecting.set_text(_("Connecting to Server:\n%s") %
+        self.lblConnecting.set_text(_("Connecting to server:\n%s") %
                                     servername)
-        self.unloadFoomatic()
+        self.dropPPDs()
+        self.ConnectingDialog.set_transient_for(self.MainWindow)
         self.ConnectingDialog.show()
-        self.connect_thread = thread.start_new_thread(
-            self.connect, (servername, user))
+        self.connect_server = servername
+        self.connect_user = user
+        self.connect_thread = thread.start_new_thread(self.connect, ())
 
     def on_cancel_connect_clicked(self, widget):
         """
@@ -476,46 +751,64 @@ class GUI:
         self.connect_thread = None
         self.ConnectingDialog.hide()
 
-    def connect(self, servername, user):
+    def connect(self):
         """
         Open a connection to a new server. Is executed in a separate thread!
         """
-        cups.setServer(servername)
+        cups.setServer(self.connect_server)
+        cups.setUser(self.connect_user)
         cups.setPasswordCB(self.cupsPasswdCallback)
         # cups.setEncryption (...)
 
-        if user: cups.setUser(user)
         self.password = ''
 
         try:
             connection = cups.Connection()
-            foomatic = Foomatic()
-            foomatic.addCupsPPDs(connection.getPPDs(), connection)
+            self.dropPPDs ()
         except RuntimeError, s:
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
             self.show_IPP_Error(None, s)
-            gtk.threads_leave()
+            gtk.gdk.threads_leave()
             return        
         except cups.IPPError, (e, s):
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
             self.show_IPP_Error(e, s)
-            gtk.threads_leave()
+            gtk.gdk.threads_leave()
             return
 
         if self.connect_thread != thread.get_ident(): return
         gtk.gdk.threads_enter()
 
-        self.foomatic = foomatic
-        self.ConnectingDialog.hide()
+        try:
+            self.ConnectingDialog.hide()
+            self.cups = connection
+            self.setConnected()
+            self.populateList()
+	except cups.HTTPError, (s,):
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            self.show_HTTP_Error(s)
 
-        self.cups = connection
-        self.setConnected()
-        self.populateList()
-        gtk.threads_leave()
+        gtk.gdk.threads_leave()
+
+    def reconnect (self):
+        """Reconnect to CUPS after the server has reloaded."""
+        # libcups will handle the reconnection; we just need to tell it
+        # to do something.
+        try:
+            self.cups.getClasses ()
+        except cups.IPPError, (e, s):
+            self.show_IPP_Error(e, s)
+        except cups.HTTPError, (s,):
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            self.show_HTTP_Error(s)
 
     def on_btnCancelConnect_clicked(self, widget):
         """Close Connect dialog"""
@@ -612,6 +905,12 @@ class GUI:
             self.conflicts.discard(option)
         self.setDataButtonState()
 
+        if (self.option_manualfeed and self.option_inputslot and
+            option == self.option_manualfeed):
+            if option.get_current_value() == "True":
+                self.option_inputslot.disable ()
+            else:
+                self.option_inputslot.enable ()
 
     # Access control
     def getPUsers(self):
@@ -668,70 +967,109 @@ class GUI:
         self.btnPDelUser.set_sensitive(bool(rows))
 
     # Server side options
+    def on_job_option_reset(self, button):
+        option = self.job_options_buttons[button]
+        option.reset ()
+        # Remember to set this option for removal in the IPP request.
+        if self.server_side_options.has_key (option.name):
+            del self.server_side_options[option.name]
+        if option.is_changed ():
+            self.changed.add(option)
+        else:
+            self.changed.discard(option)
+        self.setDataButtonState()
 
-    def add_option(self, name, value, supported, is_new=False,
-                   editable=True):
+    def on_job_option_changed(self, widget):
+        if not self.printer:
+            return
+        option = self.job_options_widgets[widget]
+        option.changed ()
+        if option.is_changed ():
+            self.server_side_options[option.name] = option
+            self.changed.add(option)
+        else:
+            if self.server_side_options.has_key (option.name):
+                del self.server_side_options[option.name]
+            self.changed.discard(option)
+        self.setDataButtonState()
+        # Don't set the reset button insensitive if the option hasn't
+        # changed from the original value: it's still meaningful to
+        # reset the option to the system default.
+
+    def draw_other_job_options (self, editable=True):
+        n = len (self.other_job_options)
+        if n == 0:
+            self.tblJOOther.hide_all ()
+            return
+
+        self.tblJOOther.resize (n, 3)
+        children = self.tblJOOther.get_children ()
+        for child in children:
+            self.tblJOOther.remove (child)
+        i = 0
+        for opt in self.other_job_options:
+            self.tblJOOther.attach (opt.label, 0, 1, i, i + 1,
+                                    xoptions=gtk.FILL,
+                                    yoptions=gtk.FILL)
+            opt.label.set_alignment (0.0, 0.5)
+            self.tblJOOther.attach (opt.selector, 1, 2, i, i + 1,
+                                    xoptions=gtk.FILL,
+                                    yoptions=0)
+            opt.selector.set_sensitive (editable)
+
+            btn = gtk.Button(stock="gtk-remove")
+            btn.connect("clicked", self.on_btnJOOtherRemove_clicked)
+            btn.set_data("pyobject", opt)
+            btn.set_sensitive (editable)
+            self.tblJOOther.attach(btn, 2, 3, i, i + 1,
+                                   xoptions=0,
+                                   yoptions=0)
+            i += 1
+
+        self.tblJOOther.show_all ()
+
+    def add_job_option(self, name, value = "", supported = "", is_new=True,
+                       editable=True):
         option = options.OptionWidget(name, value, supported,
                                       self.option_changed)
         option.is_new = is_new
-        rows = self.tblServerOptions.get_property("n-rows")
-        self.tblServerOptions.resize(rows+1, 3)
-        self.tblServerOptions.attach(option.label, 0, 1, rows, rows+1,
-                                     xoptions=gtk.FILL,
-                                     yoptions=gtk.FILL)
-        option.label.set_alignment(0.0, 0.0)
-        option.label.set_padding(5, 5)
-        align = gtk.Alignment()
-        align.add(option.selector)
-        option.align = align
-        self.tblServerOptions.attach(align, 1, 2, rows, rows+1,
-                                     xoptions=gtk.FILL,
-                                     yoptions=0)
-        option.selector.set_sensitive(editable)
-        if editable:
-            # remove button
-            btn = gtk.Button(stock="gtk-remove")
-            btn.connect("clicked", self.removeOption_clicked)
-            btn.set_data("pyobject", option)
-            align = gtk.Alignment()
-            align.add(btn)
-            self.tblServerOptions.attach(align, 2, 3, rows, rows+1,
-                                         xoptions=0,
-                                         yoptions=gtk.FILL)
-            option.remove_button = align
+        self.other_job_options.append (option)
+        self.draw_other_job_options (editable=editable)
         self.server_side_options[name] = option
         if name in self.changed: # was deleted before
             option.is_new = False
-            self.changed.discard(name)
-        if option.is_changed():
-            self.changed.add(option)
+        self.changed.add(option)
+        self.setDataButtonState()
+        if is_new:
+            option.selector.grab_focus ()
 
-    def removeOption_clicked(self, button):
+    def on_btnJOOtherRemove_clicked(self, button):
         option = button.get_data("pyobject")
-        self.tblServerOptions.remove(option.label)
-        self.tblServerOptions.remove(option.align)
-        self.tblServerOptions.remove(option.remove_button)
+        self.other_job_options.remove (option)
+        self.draw_other_job_options ()
         if option.is_new:
             self.changed.discard(option)
         else:
             # keep name as reminder that option got deleted
             self.changed.add(option.name)
-            del self.server_side_options[option.name]
+        del self.server_side_options[option.name]
         self.setDataButtonState()
 
-    def on_btnNewOption_clicked(self, button):
-        name = self.cmbentNewOption.get_active_text()
-        if name in self.printer.possible_attributes:
-            value, supported = self.printer.possible_attributes[name]
-        else:
-            value, supported = "", ""
-        self.add_option(name, value, supported, is_new=True)
-        self.tblServerOptions.show_all()
+    def on_btnNewJobOption_clicked(self, button):
+        name = self.entNewJobOption.get_text()
+        self.add_job_option(name)
+        self.tblJOOther.show_all()
+        self.entNewJobOption.set_text ('')
+        self.btnNewJobOption.set_sensitive (False)
         self.setDataButtonState()
 
-    def on_cmbentNewOption_changed(self, widget):
-        self.btnNewOption.set_sensitive(
-            bool(self.cmbentNewOption.get_active_text()))
+    def on_entNewJobOption_changed(self, widget):
+        text = self.entNewJobOption.get_text()
+        active = (len(text) > 0) and text not in self.server_side_options
+        self.btnNewJobOption.set_sensitive(active)
+
+    def on_entNewJobOption_activate(self, widget):
+        self.on_btnNewJobOption_clicked (widget) # wrong widget but ok
 
     # set Apply/Revert buttons sensitive    
     def setDataButtonState(self):
@@ -739,15 +1077,41 @@ class GUI:
             button.set_sensitive(bool(self.changed) and
                                  not bool(self.conflicts))
 
+        try: # Might not be a printer selected
+            if not self.test_button_cancels:
+                self.btnPrintTestPage.set_sensitive (not bool (self.changed) and
+                                                     self.printer.enabled and
+                                                     not self.printer.rejecting)
+        except:
+            pass
+
+        installablebold = False
+        optionsbold = False
         if self.conflicts:
             self.btnConflict.show()
+            for option in self.conflicts:
+                if option.tab_label == self.lblPInstallOptions:
+                    installablebold = True
+                else:
+                    optionsbold = True
         else:
             self.btnConflict.hide()
+        installabletext = _("Installable Options")
+        optionstext = _("Printer Options")
+        if installablebold:
+            installabletext = "<b>%s</b>" % installabletext
+        if optionsbold:
+            optionstext = "<b>%s</b>" % optionstext
+        self.lblPInstallOptions.set_markup (installabletext)
+        self.lblPOptions.set_markup (optionstext)
 
     def on_btnConflict_clicked(self, button):
         message = _("There are conflicting options.\n"
                     "Changes can only be applied after\n"
-                    "these conflictes are resolved.")
+                    "these conflicts are resolved.")
+        message += "\n\n"
+        for option in self.conflicts:
+            message += option.option.text + "\n"
         self.conflict_dialog.set_markup(message)
         self.conflict_dialog.run()
         self.conflict_dialog.hide()
@@ -759,7 +1123,7 @@ class GUI:
         if not err:
             self.populateList()
         else:
-            pass # XXX
+            nonfatalException()
         
     def apply(self):
         name, type = self.getSelectedItem()
@@ -778,6 +1142,38 @@ class GUI:
                           _('CUPS server error') + '</span>\n\n' +
                           _("There was an error during the CUPS "\
                             "operation: '%s'.")) % message
+        self.lblError.set_markup(error_text)
+        self.ErrorDialog.set_transient_for (self.MainWindow)
+        self.ErrorDialog.run()
+        self.ErrorDialog.hide()        
+            
+    def show_HTTP_Error(self, status):
+        if (status == cups.HTTP_UNAUTHORIZED or
+            status == cups.HTTP_FORBIDDEN):
+            error_text = ('<span weight="bold" size="larger">' +
+                          _('Not authorized') + '</span>\n\n' +
+                          _('The password may be incorrect, or the '
+                            'server may be configured to deny '
+                            'remote administration.'))
+        else:
+            if status == cups.HTTP_BAD_REQUEST:
+                msg = _("Bad request")
+            elif status == cups.HTTP_NOT_FOUND:
+                msg = _("Not found")
+            elif status == cups.HTTP_REQUEST_TIMEOUT:
+                msg = _("Request timeout")
+            elif status == cups.HTTP_UPGRADE_REQUIRED:
+                msg = _("Upgrade required")
+            elif status == cups.HTTP_SERVER_ERROR:
+                msg = _("Server error")
+            elif status == -1:
+                msg = _("Not connected")
+            else:
+                msg = _("status %d") % status
+
+            error_text = ('<span weight="bold" size="larger">' +
+                          _('CUPS server error') + '</span>\n\n' +
+                          _("There was an HTTP error: %s.")) % msg
         self.lblError.set_markup(error_text)
         self.ErrorDialog.set_transient_for (self.MainWindow)
         self.ErrorDialog.run()
@@ -821,6 +1217,9 @@ class GUI:
             location = self.entPLocation.get_text()
             info = self.entPDescription.get_text()
             device_uri = self.entPDevice.get_text()
+            if device_uri.find (ellipsis) != -1:
+                # The URI is sanitized and not editable.
+                device_uri = printer.device_uri
 
             enabled = self.chkPEnabled.get_active()
             accepting = self.chkPAccepting.get_active()
@@ -873,17 +1272,21 @@ class GUI:
 
             for option in printer.attributes:
                 if option not in self.server_side_options:
-                    print "unset", option
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
-                if option.is_changed or saveall:
-                    print "save", option.name, option.get_current_value()
+                if option.is_changed() or saveall:
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
             self.show_IPP_Error(e, s)
             return True
         self.changed = set() # of options
+
+        # Update our copy of the printer's settings.
+        printers = cupshelpers.getPrinters (self.cups)
+        this_printer = { name: printers[name] }
+        self.printers.update (this_printer)
+
         return False
 
     def getPrinterSettings(self):
@@ -904,29 +1307,118 @@ class GUI:
             self.cups.setDefault(self.printer.name)
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
-                                
-        self.populateList()
+            return
+
+        # Also need to check system-wide lpoptions because that's how
+        # previous Fedora versions set the default (bug #217395).
+        (tmpfd, tmpfname) = tempfile.mkstemp ()
+        success = False
+        try:
+            resource = "/admin/conf/lpoptions"
+            self.cups.getFile(resource, tmpfname)
+            success = True
+        except cups.HTTPError, (s,):
+            try:
+                os.remove (tmpfname)
+            except OSError:
+                pass
+
+            if s != cups.HTTP_NOT_FOUND:
+                self.show_HTTP_Error(s)
+                return
+
+        if success:
+            lines = file (tmpfname).readlines ()
+            changed = False
+            i = 0
+            for line in lines:
+                if line.startswith ("Default "):
+                    # This is the system-wide default.
+                    name = line.split (' ')[1]
+                    if name != self.printer.name:
+                        # Stop it from over-riding the server default.
+                        lines[i] = "Dest " + line[8:]
+                        changed = True
+                i += 1
+
+            if changed:
+                file (tmpfname, 'w').writelines (lines)
+                try:
+                    self.cups.putFile (resource, tmpfname)
+                except cups.HTTPError, (s,):
+                    os.remove (tmpfname)
+                    print s
+                    self.show_HTTP_Error(s)
+                    return
+
+                # Now reconnect because the server needs to reload.
+                self.reconnect ()
+
+        try:
+            os.remove (tmpfname)
+        except OSError:
+            pass
+
+        try:
+            self.populateList()
+        except cups.HTTPError, (s,):
+            self.cups = None
+            self.setConnected()
+            self.populateList()
+            self.show_HTTP_Error(s)
+
+    # print test page
+    
+    def on_btnPrintTestPage_clicked(self, button):
+        if self.test_button_cancels:
+            jobs = self.printer.testsQueued ()
+            for job in jobs:
+                print "Canceling job %s" % job
+                try:
+                    self.cups.cancelJob (job)
+                except cups.IPPError, (e, msg):
+                    self.show_IPP_Error(e, msg)
+            self.setTestButton (self.printer)
+            return
+        try:
+            job_id = self.cups.printTestPage(self.printer.name)
+            self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
+                                     _("Submitted") + '</span>\n\n' +
+                                     _("Test page submitted as "
+                                       "job %d") % job_id)
+            self.InfoDialog.set_transient_for (self.MainWindow)
+            self.setTestButton (self.printer)
+            self.InfoDialog.run ()
+            self.InfoDialog.hide ()
+        except cups.IPPError, (e, msg):
+            if (e == cups.IPP_NOT_AUTHORIZED and
+                self.printer.name != 'localhost'):
+                self.lblError.set_markup ('<span weight="bold" size="larger">'+
+                                          _("Not possible") + '</span>\n\n' +
+                                          _("The remote server did not accept "
+                                            "the print job, most likely "
+                                            "because the printer is not "
+                                            "shared."))
+                self.ErrorDialog.set_transient_for (self.MainWindow)
+                self.ErrorDialog.run ()
+                self.ErrorDialog.hide ()
+            else:
+                self.show_IPP_Error(e, msg)
 
     # select Item
 
     def on_tvMainList_cursor_changed(self, list):
         if self.changed:
-            response = self.ApplyDialog.run()
-            self.ApplyDialog.hide()
-            err = False
-            if response == gtk.RESPONSE_APPLY:
-                err = self.apply()
-            if err or response == gtk.RESPONSE_CANCEL:
-                self.tvMainList.get_selection().select_iter(
-                    self.mainListSelected)
-                return
-
+            # The unapplied changes for this item have not been saved,
+            # and the user just pressed "Cancel".
+            return
         name, type = self.getSelectedItem()
         model, self.mainListSelected = self.tvMainList.get_selection().get_selected()
         item_selected = True
         if type == "Settings":
             self.ntbkMain.set_current_page(0)
-            self.fillServerTab()
+            if self.cups:
+                self.fillServerTab()
             item_selected = False
         elif type in ['Printer', 'Class']:
             self.fillPrinterTab(name)
@@ -959,28 +1451,53 @@ class GUI:
         try:
             self.ppd = printer.getPPD()
         except cups.IPPError, (e, m):
+            # Some IPP error other than IPP_NOT_FOUND.
             self.show_IPP_Error(e, m)
+            # Treat it as a raw queue.
             self.ppd = False
+        except RuntimeError:
+            # The underlying cupsGetPPD2() function returned NULL without
+            # setting an IPP error, so it'll be something like a failed
+            # connection.
+            self.lblError.set_markup('<span weight="bold" size="larger">' +
+                                     _("Error") + '</span>\n\n' +
+                                     _("There was a problem connecting to "
+                                       "the CUPS server."))
+            self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+            self.ErrorDialog.run()
+            self.ErrorDialog.hide()
+            sys.exit (1)
 
         for widget in (self.entPDescription, self.entPLocation,
-                       self.entPDevice, self.btnSelectDevice,
-                       self.btnChangePPD,
+                       self.entPDevice):
+            widget.set_editable(editable)
+
+        for widget in (self.btnSelectDevice, self.btnChangePPD,
                        self.chkPEnabled, self.chkPAccepting, self.chkPShared,
                        self.cmbPStartBanner, self.cmbPEndBanner,
                        self.cmbPErrorPolicy, self.cmbPOperationPolicy,
                        self.rbtnPAllow, self.rbtnPDeny, self.tvPUsers,
-                       self.entPUser, self.btnPAddUser, self.btnPDelUser,
-                       self.cmbentNewOption):
+                       self.entPUser, self.btnPAddUser, self.btnPDelUser):
             widget.set_sensitive(editable)
 
-        # Description page        
+        # Description page
         self.entPDescription.set_text(printer.info)
         self.entPLocation.set_text(printer.location)
         self.lblPMakeModel.set_text(printer.make_and_model)
         self.lblPState.set_text(printer.state_description)
 
-        self.entPDevice.set_text(printer.device_uri)
-
+        uri = printer.device_uri
+        if uri.startswith("smb://"):
+            group, host, share, user, password = self.parse_SMBURI(uri[6:])
+            if password:
+                uri = "smb://"
+                if len (user) or len (password):
+                    uri += ellipsis
+                uri += self.construct_SMBURI(group, host, share)
+                self.entPDevice.set_sensitive(False)
+        self.entPDevice.set_text(uri)
+        self.changed.discard(self.entPDevice)
+        
         # Hide make/model and Device URI for classes
         for widget in (self.lblPMakeModel2, self.lblPMakeModel,
                        self.btnChangePPD, self.lblPDevice2,
@@ -994,6 +1511,14 @@ class GUI:
         self.chkPEnabled.set_active(printer.enabled)
         self.chkPAccepting.set_active(not printer.rejecting)
         self.chkPShared.set_active(printer.is_shared)
+        try:
+            if printer.is_shared:
+                flag = cups.CUPS_SERVER_SHARE_PRINTERS
+                publishing = int (self.server_settings[flag])
+                if not publishing:
+                    self.lblNotPublished.show_all ()
+        except:
+            self.lblNotPublished.hide_all ()
 
 
         # default printer
@@ -1005,6 +1530,8 @@ class GUI:
                                       self.default_printer)
         else:
             self.lblPDefault.set_text(_("No default printer set."))
+
+        self.setTestButton (printer)
 
         # Policy tab
         # ----------
@@ -1032,47 +1559,72 @@ class GUI:
 
         self.entPUser.set_text("")
 
-        # Server side options
-
+        # Server side options (Job options)
         self.server_side_options = {}
-        self.cmbentNewOption.get_model().clear()
-        self.cmbentNewOption.get_child().set_text("")
-        self.btnNewOption.set_sensitive(False)
-        attrs = self.printer.possible_attributes.keys()
-        attrs.sort()
-        for attr in attrs:
-            if attr not in self.printer.attributes:
-                self.cmbentNewOption.append_text(attr)
+        for option in self.job_options_widgets.values ():
+            if option.name == "media" and self.ppd:
+                # Slightly special case because the 'system default'
+                # (i.e. what you get when you press Reset) depends
+                # on the printer's PageSize.
+                opt = self.ppd.findOption ("PageSize")
+                if opt:
+                    option.set_default (opt.defchoice)
 
-        self.tblServerOptions.resize(1, 3)
-        for child in self.tblServerOptions.get_children():
-            self.tblServerOptions.remove(child)
-        
-        for attr in printer.attributes:
-            value, supported = printer.possible_attributes[attr]
-            self.add_option(attr, value, supported, is_new=False,
-                            editable=editable)
-
-        self.tblServerOptions.show_all()
-        self.tblServerOptions.queue_draw()
-
-        # remove InstallOptions tab
-        tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
-        if tab_nr != -1:
-            self.ntbkPrinter.remove_page(tab_nr)
+            try:
+                value = self.printer.attributes[option.name]
+            except KeyError:
+                option.reinit (None)
+            else:
+                if self.printer.possible_attributes.has_key (option.name):
+                    supported = self.printer.possible_attributes[option.name][1]
+                    option.reinit (value, supported=supported)
+                else:
+                    option.reinit (value)
+                self.server_side_options[option.name] = option
+            option.widget.set_sensitive (editable)
+            if not editable:
+                option.button.set_sensitive (editable)
+        self.other_job_options = []
+        self.draw_other_job_options (editable=editable)
+        for option in self.printer.attributes.keys ():
+            if self.server_side_options.has_key (option):
+                continue
+            supported = ""
+            if self.printer.possible_attributes.has_key (option):
+                supported = self.printer.possible_attributes[option][1]
+            self.add_job_option (option, value=self.printer.attributes[option],
+                                 supported=supported, is_new=False,
+                                 editable=editable)
+        self.entNewJobOption.set_text ('')
+        self.entNewJobOption.set_sensitive (editable)
+        self.btnNewJobOption.set_sensitive (False)
 
         if printer.is_class:
-            # Class
+            # remove InstallOptions tab
+            tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
+            if tab_nr != -1:
+                self.ntbkPrinter.remove_page(tab_nr)
             self.fillClassMembers(name, editable)
         else:
             # real Printer
             self.fillPrinterOptions(name, editable)
 
+        self.changed = set() # of options
         self.setDataButtonState()
+
+    def setTestButton (self, printer):
+        if printer.testsQueued ():
+            self.test_button_cancels = True
+            self.btnPrintTestPage.set_label (_('Cancel Tests'))
+            self.btnPrintTestPage.set_sensitive (True)
+        else:
+            self.test_button_cancels = False
+            self.btnPrintTestPage.set_label (_('Print Test Page'))
+            self.setDataButtonState ()
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
-        tab_nr = self.ntbkPrinter.page_num(self.vbClassMembers)
+        tab_nr = self.ntbkPrinter.page_num(self.algnClassMembers)
         if tab_nr != -1:
             self.ntbkPrinter.remove_page(tab_nr)
 
@@ -1083,43 +1635,69 @@ class GUI:
         # clean Options Tab
         for widget in self.vbPOptions.get_children():
             self.vbPOptions.remove(widget)
+
         # insert Options Tab
         if self.ntbkPrinter.page_num(self.swPOptions) == -1:
             self.ntbkPrinter.insert_page(
                 self.swPOptions, self.lblPOptions, self.static_tabs)
 
-
-        if not self.ppd: return
+        if not self.ppd:
+            tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
+            if tab_nr != -1:
+                self.ntbkPrinter.remove_page(tab_nr)
+            tab_nr = self.ntbkPrinter.page_num(self.swPOptions)
+            if tab_nr != -1:
+                self.ntbkPrinter.remove_page(tab_nr)           
+            return
         ppd = self.ppd
         ppd.markDefaults()
 
+        hasInstallableOptions = False
+        
         # build option tabs
         for group in ppd.optionGroups:
             if group.name == "InstallableOptions":
+                hasInstallableOptions = True
                 container = self.vbPInstallOptions
-                self.ntbkPrinter.insert_page(
-                    self.swPInstallOptions, gtk.Label(group.text),
-                    self.static_tabs)
+                tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
+                if tab_nr == -1:
+                    self.ntbkPrinter.insert_page(
+                        self.swPInstallOptions, gtk.Label(group.text),
+                        self.static_tabs)
+                tab_label = self.lblPInstallOptions
             else:
                 frame = gtk.Frame("<b>%s</b>" % group.text)
                 frame.get_label_widget().set_use_markup(True)
                 frame.set_shadow_type (gtk.SHADOW_NONE)
                 self.vbPOptions.pack_start (frame, False, False, 0)
                 container = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
-                container.set_padding (0, 0, 12, 0)
+                # We want a left padding of 12, but there is a Table with
+                # spacing 6, and the left-most column of it (the conflict
+                # icon) is normally hidden, so just use 6 here.
+                container.set_padding (6, 12, 6, 0)
                 frame.add (container)
+                tab_label = self.lblPOptions
 
             table = gtk.Table(1, 3, False)
-            table.set_col_spacing(0, 6)
+            table.set_col_spacings(6)
+            table.set_row_spacings(6)
             container.add(table)
 
             rows = 0
+
+            # InputSlot and ManualFeed need special handling.  With
+            # libcups, if ManualFeed is True, InputSlot gets unset.
+            # Likewise, if InputSlot is set, ManualFeed becomes False.
+            # We handle it by toggling the sensitivity of InputSlot
+            # based on ManualFeed.
+            self.option_inputslot = self.option_manualfeed = None
+
             for nr, option in enumerate(group.options):
                 if option.keyword == "PageRegion":
                     continue
                 rows += 1
                 table.resize (rows, 3)
-                o = OptionWidget(option, ppd, self)
+                o = OptionWidget(option, ppd, self, tab_label=tab_label)
                 table.attach(o.conflictIcon, 0, 1, nr, nr+1, 0, 0, 0, 0)
 
                 hbox = gtk.HBox()
@@ -1134,7 +1712,18 @@ class GUI:
                 hbox.pack_start(o.selector, False)
                 self.options[option.keyword] = o
                 o.selector.set_sensitive(editable)
+                if option.keyword == "InputSlot":
+                    self.option_inputslot = o
+                elif option.keyword == "ManualFeed":
+                    self.option_manualfeed = o
 
+        # remove Installable Options tab if not needed
+        if not hasInstallableOptions:
+            tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
+            if tab_nr != -1:
+                self.ntbkPrinter.remove_page(tab_nr)
+
+        # check for conflicts
         for option in self.options.itervalues():
             conflicts = option.checkConflicts()
             if conflicts:
@@ -1157,9 +1746,9 @@ class GUI:
             self.ntbkPrinter.remove_page(tab_nr)
 
         # insert Member Tab
-        if self.ntbkPrinter.page_num(self.vbClassMembers) == -1:
+        if self.ntbkPrinter.page_num(self.algnClassMembers) == -1:
             self.ntbkPrinter.insert_page(
-                self.vbClassMembers, self.lblClassMembers,
+                self.algnClassMembers, self.lblClassMembers,
                 self.static_tabs)
 
         model_members = self.tvClassMembers.get_model()
@@ -1231,6 +1820,7 @@ class GUI:
             if response == gtk.RESPONSE_APPLY:
                 err = self.apply()
             if err or response == gtk.RESPONSE_CANCEL:
+                # TODO: how do we just carry on as normal?
                 return
         gtk.main_quit()
 
@@ -1283,10 +1873,15 @@ class GUI:
         name, type = self.getSelectedItem()
 
         # Confirm
+        if type == "Printer":
+            message_format = _("Really delete printer %s?")
+        else:
+            message_format = _("Really delete class %s?")
+
         dialog = gtk.MessageDialog(
             self.MainWindow,
             buttons=gtk.BUTTONS_OK_CANCEL,
-            message_format=_("Really delete %s %s?") % (_(type), name))
+            message_format=message_format % name)
         result = dialog.run()
         dialog.destroy()
 
@@ -1297,7 +1892,8 @@ class GUI:
             self.cups.deletePrinter(name)
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
-                            
+
+        self.changed = set()
         self.populateList()
 
     # About dialog
@@ -1315,6 +1911,7 @@ class GUI:
         "hal" : 0,
         "beh" : 0,
         "hp" : 0,
+        "hpfax" : 0,
         "socket": 2,
         "ipp" : 3,
         "http" : 3,
@@ -1333,6 +1930,10 @@ class GUI:
 
         self.initNewPrinterWindow()
 
+        # Start fetching information from CUPS in the background
+        self.queryPPDs ()
+        self.queryDevices ()
+
     # new class
     def on_new_class_activate(self, widget):
         self.dialog_mode = "class"
@@ -1344,47 +1945,58 @@ class GUI:
 
     # change device
     def on_btnSelectDevice_clicked(self, button):
-        self.loadFoomatic()
+        self.busy (self.MainWindow)
+        self.queryDevices (self.printer.device_uri)
+        self.loadPPDs()
         self.dialog_mode = "device"
+        self.initNewPrinterWindow()
         self.NewPrinterWindow.set_title(_("Change Device URI"))
 
         self.ntbkNewPrinter.set_current_page(1)
         self.fillDeviceTab(self.printer.device_uri)
 
         self.initNewPrinterWindow()
+        self.ready (self.MainWindow)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
-        self.loadFoomatic()
+        self.busy (self.MainWindow)
         self.dialog_mode = "ppd"
+        self.initNewPrinterWindow()
         self.NewPrinterWindow.set_title(_("Change Driver"))
 
         self.ntbkNewPrinter.set_current_page(2)
         self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
 
-        attr = self.ppd.findAttr("Manufacturer")
-        if attr:
-            self.auto_make = attr.value
-        else:
-            self.auto_make = ""
-        attr = self.ppd.findAttr("ModelName")
-        if not attr: attr = self.ppd.findAttr("ShortNickName")
-        if not attr: attr = self.ppd.findAttr("NickName")
-        if attr:
-            if attr.value.startswith(self.auto_make):
-                self.auto_model = attr.value[len(self.auto_make):]
+        self.auto_model = ""
+        if self.ppd:
+            attr = self.ppd.findAttr("Manufacturer")
+            if attr:
+                self.auto_make = attr.value
             else:
-                try:
-                    self.auto_model = attr.value.split(" ", 1)[1]
-                except IndexError:
-                    self.auto_model = ""
+                self.auto_make = ""
+            attr = self.ppd.findAttr("ModelName")
+            if not attr: attr = self.ppd.findAttr("ShortNickName")
+            if not attr: attr = self.ppd.findAttr("NickName")
+            if attr:
+                if attr.value.startswith(self.auto_make):
+                    self.auto_model = attr.value[len(self.auto_make):].strip ()
+                else:
+                    try:
+                        self.auto_model = attr.value.split(" ", 1)[1]
+                    except IndexError:
+                        self.auto_model = ""
+            else:
+                self.auto_model = ""
         else:
-            self.auto_model = ""
+            # Special CUPS names for a raw queue.
+            self.auto_make = 'Raw'
+            self.auto_model = 'Queue'
 
-        #print self.auto_make, self.auto_model
+        self.loadPPDs ()
         self.fillMakeList()
         self.initNewPrinterWindow()
-        
+        self.ready (self.MainWindow)
 
     def initNewPrinterWindow(self):
         if self.dialog_mode in ("printer", "class"):
@@ -1394,9 +2006,10 @@ class GUI:
             for widget in [self.entNPLocation,
                            self.entNPDescription,
                            self.entSMBURI, self.entSMBUsername,
-                           self.entSMBPassword]:
+                           self.entSMBPassword, self.entNPTDirectJetHostname]:
                 widget.set_text('')
 
+        self.entNPTDirectJetPort.set_text('9100')
         self.setNPButtons()
         self.NewPrinterWindow.set_transient_for(self.MainWindow)
         self.NewPrinterWindow.show()
@@ -1440,7 +2053,7 @@ class GUI:
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
             self.busy (self.NewPrinterWindow)
-            self.loadFoomatic()
+            self.loadPPDs()
             if page_nr == 0:
                 self.fillDeviceTab()
                 self.fillMakeList()
@@ -1474,7 +2087,6 @@ class GUI:
             if nr == 6: # Apply
                 self.btnNPForward.hide()
                 self.btnNPApply.show()
-                self.fillNPApply()
                 return
             else:
                 self.btnNPForward.show()
@@ -1496,7 +2108,7 @@ class GUI:
         else:
             self.btnNPBack.show()
         if nr == 1: # Device
-            pass
+            self.btnNPForward.set_sensitive(True)
         if nr == 2: # Make/PPD file
             self.btnNPForward.set_sensitive(bool(
                 self.rbtnNPFoomatic.get_active() or
@@ -1536,10 +2148,60 @@ class GUI:
             self.check_NPName(new_text))
 
     # Device URI
+    def queryDevices(self, current_uri=None):
+        if self.devices_lock != None:
+            print "queryDevices: in progress"
+            return
+        print "queryDevices"
+        # Make a lock for synchronising against.
+        self.devices_lock = thread.allocate_lock ()
+        self.devices_lock.acquire ()
+        print "Lock acquired for devices thread"
+        # Start new thread
+        thread.start_new_thread (self.getDevices_thread, (current_uri,))
+        print "Devices thread started"
+
+    def getDevices_thread(self, current_uri):
+        try:
+            print "Connecting (devices)"
+            cups.setServer (self.connect_server)
+            cups.setUser (self.connect_user)
+            cups.setPasswordCB (self.cupsPasswdCallback)
+            # cups.setEncryption (...)
+            c = cups.Connection ()
+            print "Fetching devices"
+            self.devices_result = cupshelpers.getDevices(c, current_uri)
+        except cups.IPPError, (e, msg):
+            self.devices_result = cups.IPPError (e, msg)
+        except:
+            self.devices_result = None
+
+        try:
+            print "Closing connection (devices)"
+            del c
+        except:
+            pass
+
+        print "Releasing devices lock"
+        self.devices_lock.release ()
+
+    def fetchDevices(self, current_uri=None):
+        print "fetchDevices"
+        if self.devices_lock == None:
+            self.queryDevices (current_uri)
+
+        print "Acquiring devices lock"
+        self.devices_lock.acquire ()
+        self.devices_lock = None
+        print "Got devices"
+        if isinstance (self.devices_result, cups.IPPError):
+            # Propagate exception.
+            raise self.devices_result
+        return self.devices_result
 
     def fillDeviceTab(self, current_uri=None):
         try:
-            devices = cupshelpers.getDevices(self.cups, current_uri)
+            devices = self.fetchDevices(current_uri)
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
             devices = {}
@@ -1554,7 +2216,7 @@ class GUI:
                                                       "scsi", "http"),
                               devices) 
 
-        self.devices.insert(0, cupshelpers.Device('',
+        self.devices.append(cupshelpers.Device('',
              **{'device-info' :_("Other")}))
         if current_uri:
             current.info += _(" (Current)")
@@ -1573,7 +2235,7 @@ class GUI:
         store = self.smb_store
         store.clear ()
 
-        self.busy (self.NewPrinterWindow)
+        self.busy(self.NewPrinterWindow)
         iter = None
         domains = pysmb.get_domain_list ()
         for domain in domains.keys ():
@@ -1584,7 +2246,7 @@ class GUI:
 
         if iter:
             dummy = store.append (iter)
-        self.ready (self.NewPrinterWindow)
+        self.ready(self.NewPrinterWindow)
 
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
@@ -1666,6 +2328,8 @@ class GUI:
             if u != -1:
                 user = uri[:u]
                 password = uri[u + 1:auth]
+            else:
+                user = uri[:auth]
             uri = uri[auth + 1:]
         sep = uri.count ('/')
         group = ''
@@ -1683,16 +2347,18 @@ class GUI:
             if p != -1:
                 host = host[:p]
         share = uri
-        return (group, host, share, user, password)
+        return (group, host, share,
+                urllib.unquote (user), urllib.unquote (password))
 
     def construct_SMBURI (self, group, host, share,
                           user = '', password = ''):
         uri_password = ''
         if password:
-            uri_password = ':' + password
+            uri_password = ':' + urllib.quote (password)
         if user:
             uri_password += '@'
-        return "%s%s%s/%s/%s" % (user, uri_password, group, host, share)
+        return "%s%s%s/%s/%s" % (urllib.quote (user),
+                                 uri_password, group, host, share)
 
     def on_entSMBURI_changed (self, ent):
         try:
@@ -1703,13 +2369,17 @@ class GUI:
 
         uri = ent.get_text ()
         (group, host, share, user, password) = self.parse_SMBURI (uri)
-        self.entSMBUsername.set_text (user)
-        self.entSMBPassword.set_text (password)
+        if user:
+            self.entSMBUsername.set_text (user)
+        if password:
+            self.entSMBPassword.set_text (password)
         self.tvSMBBrowser.get_selection ().unselect_all ()
+        if user or password:
+            ent.set_text(self.construct_SMBURI(group, host, share))
 
     def on_tvSMBBrowser_cursor_changed (self, view):
         store, iter = view.get_selection ().get_selected ()
-        if not iter:
+        if not iter or store.iter_depth(iter) != 2:
             return
 
         parent_iter = store.iter_parent (iter)
@@ -1753,12 +2423,33 @@ class GUI:
         path = model.get_path(iter)
         device = self.devices[path[0]]
         self.device = device
-        self.ntbkNPType.set_current_page(
-            self.new_printer_device_tabs.get(device.type, 1))
+        self.lblNPDeviceDescription.set_text ('')
+        page = self.new_printer_device_tabs.get(device.type, 1)
+        self.ntbkNPType.set_current_page(page)
 
         type = device.type
         url = device.uri.split(":", 1)[-1]
-        if device.type=="serial":
+        if page == 0:
+            # This is the "no options" page, with just a label to describe
+            # the selected device.
+            if device.type == "parallel":
+                text = _("A printer connected to the parallel port.")
+            elif device.type == "usb":
+                text = _("A printer connected to a USB port.")
+            elif device.type == "hp":
+                text = _("HPLIP software driving a printer, "
+                         "or the printer function of a multi-function device.")
+            elif device.type == "hpfax":
+                text = _("HPLIP software driving a fax machine, "
+                         "or the fax function of a multi-function device.")
+            elif device.type == "hal":
+                text = _("Local printer detected by the "
+                         "Hardware Abstraction Layer (HAL).")
+            else:
+                text = device.uri
+
+            self.lblNPDeviceDescription.set_text (text)
+        elif device.type=="serial":
             if not device.is_class:
                 options = device.uri.split("?")[1]
                 options = options.split("+")
@@ -1794,30 +2485,56 @@ class GUI:
                         widget.set_active(0)
                                             
         # XXX FILL TABS FOR VALID DEVICE URIs
-        elif device.type in ("ipp", "http", "lpd"):
-            try:
-                server, printer = url.split("/", 1)
-            except ValueError:
-                server, printer = url, ""
-            if device.type == "lpd":
-                pass # XXX
-            else:
-                self.entNPTIPPHostname.set_text(server)
-                self.entNPTIPPPrintername.set_text(printer)
+        elif device.type in ("ipp", "http"):
+            server = ""
+            printer = ""
+            if url[:2] == "//":
+                p = url[2:]
+                t = p.find ('/')
+                if t != -1:
+                    server = p[:t]
+                    p = p[t + 1:]
+
+                    # Skip over 'printers/' or 'classes/'
+                    t = p.find ('/')
+                    if t != -1:
+                        printer = p[t + 1:]
+
+            self.entNPTIPPHostname.set_text(server)
+            self.entNPTIPPPrintername.set_text(printer)
+        elif device.type == "lpd":
+            pass # XXX
         elif device.uri == "smb":
+            self.entSMBURI.set_text('')
             self.browse_smb_hosts ()
+        elif device.type == "smb":
+            self.entSMBURI.set_text(device.uri[6:])
         else:
             self.entNPTDevice.set_text(device.uri)
 
 
         self.auto_make, self.auto_model = None, None
 
-        printer_name = self.foomatic.getPrinterFromCupsDevice(self.device)
-        if printer_name:
-            printer = self.foomatic.getPrinter(printer_name)
-            if printer:
-                self.auto_make, self.auto_model = printer.make, printer.model
-                self.fillMakeList()
+        try:
+            if self.device.id:
+                id_dict = self.device.id_dict
+                (status, ppdname) = self.ppds.\
+                                    getPPDNameFromDeviceID (id_dict["MFG"],
+                                                            id_dict["MDL"],
+                                                            id_dict["DES"],
+                                                            id_dict["CMD"],
+                                                            self.device.uri)
+
+                if status < self.ppds.STATUS_NO_DRIVER:
+                    ppddict = self.ppds.getInfoFromPPDName (ppdname)
+                    make_model = ppddict['ppd-make-and-model']
+                    (make, model) = ppds.ppdMakeModelSplit (make_model)
+                    self.auto_make = make
+                    self.auto_model = model
+        except:
+            nonfatalException ()
+
+        self.fillMakeList()
 
     def on_btnNPTLpdProbe_clicked(self, button):
         # read hostname, probe, fill printer names
@@ -1840,11 +2557,11 @@ class GUI:
             if port:
                 device = device + ':' + port
         elif type in ("http", "ipp"): # IPP
-            host = self.cmbNPTIPPHostname.get_text()
-            printer = self.cmbNPTIPPPrintername.get_text()
+            host = self.entNPTIPPHostname.get_text()
+            printer = self.entNPTIPPPrintername.get_text()
             device = "ipp://" + host
             if printer:
-                device = device + "/" + printer
+                device = device + "/printers/" + printer
         elif type == "lpd": # LPD
             host = self.cmbentNPTLpdHost.get_active_text()
             printer = self.cmbentNPTLpdQueue.get_active_text()
@@ -1875,8 +2592,6 @@ class GUI:
             device =  self.device.uri.split("?")[0] #"serial:/dev/ttyS%s" 
             if options:
                 device = device + "?" + options
-        elif not self.device.is_class:
-            device = self.device.uri
         elif type == "smb":
             uri = self.entSMBURI.get_text ()
             (group, host, share, u, p) = self.parse_SMBURI (uri)
@@ -1884,6 +2599,8 @@ class GUI:
             password = self.entSMBPassword.get_text ()
             uri = self.construct_SMBURI (group, host, share, user, password)
             device = "smb://" + uri
+        elif not self.device.is_class:
+            device = self.device.uri
         else:
             device = self.entNPTDevice.get_text()
         return device
@@ -1902,7 +2619,7 @@ class GUI:
     # PPD from foomatic
 
     def fillMakeList(self):
-        makes = self.foomatic.getMakes()
+        makes = self.ppds.getMakes()
         model = self.tvNPMakes.get_model()
         model.clear()
         found = False
@@ -1912,11 +2629,12 @@ class GUI:
                 self.tvNPMakes.get_selection().select_iter(iter)
                 path = model.get_path(iter)
                 self.tvNPMakes.scroll_to_cell(path, None,
-                                              True, 0.0, 0.0)
+                                              True, 0.5, 0.5)
                 found = True
 
         if not found:
             self.tvNPMakes.get_selection().select_path(0)
+            self.tvNPMakes.scroll_to_cell(0, None, True, 0.0, 0.0)
             
         self.on_tvNPMakes_cursor_changed(self.tvNPMakes)
             #tree = BuildTree(names, 3, 3)
@@ -1939,13 +2657,18 @@ class GUI:
     #    for leaf in treenode.leafs:
     #        self._fillPPDList(iter, leaf)
 
-    def on_tvNPMakes_cursor_changed(self, widget):
-        model, iter = self.tvNPMakes.get_selection().get_selected()
+    def on_tvNPMakes_cursor_changed(self, tvNPMakes):
+        selection = tvNPMakes.get_selection()
+        model, iter = selection.get_selected()
+        if not iter:
+            # Interactively searching.
+            path, column = tvNPMakes.get_cursor()
+            iter = model.get_iter (path)
         self.NPMake = model.get(iter, 0)[0]
         self.fillModelList()
 
     def fillModelList(self):
-        models = self.foomatic.getModels(self.NPMake)
+        models = self.ppds.getModels(self.NPMake)
         model = self.tvNPModels.get_model()
         model.clear()
         selected = False
@@ -1959,36 +2682,38 @@ class GUI:
                 selected = True
         if not selected:
             self.tvNPModels.get_selection().select_path(0)
+            self.tvNPModels.scroll_to_cell(0, None, True, 0.0, 0.0)
         self.on_tvNPModels_cursor_changed(self.tvNPModels)
         
-    def fillDriverList(self, printer):
+    def fillDriverList(self, ppdnamelist):
         model = self.tvNPDrivers.get_model()
         model.clear()
-        self.NPDrivers = printer.drivers.keys()
-        self.NPDrivers.sort()
-        found = False
-        for driver in self.NPDrivers:
-            if driver==printer.driver:
-                iter = model.append((driver + _(" (recommended)"),))
-                path = model.get_path(iter)
+        self.NPDrivers = ppdnamelist
+        for i in range (len (ppdnamelist)):
+            driver = self.NPDrivers[i]
+            if i == 0:
+                iter = model.append ((driver + _(" (recommended)"),))
+                path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
-                found = True
+                self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.5)
             else:
                 model.append((driver, ))
-
-        if not found:
-             self.tvNPDrivers.get_selection().select_path(0)
              
     def on_tvNPModels_cursor_changed(self, widget):        
         model, iter = widget.get_selection().get_selected()
+        if not iter:
+            # Interactively searching.
+            path, column = widget.get_cursor()
+            iter = model.get_iter (path)
         pmodel = model.get(iter, 0)[0]
-        printer = self.foomatic.getMakeModel(self.NPMake, pmodel)
+        ppdnamelist = self.ppds.getInfoFromModel(self.NPMake, pmodel).keys ()
+        ppdnamelist = self.ppds.orderPPDNamesByPreference (ppdnamelist)
         self.NPModel = pmodel
-        self.fillDriverList(printer)
+        self.fillDriverList(ppdnamelist)
 
         if self.frmNPPDescription.flags() & gtk.VISIBLE:
-            self.lblNPPDescription.set_markup(printer.getCommentPango(
-                self.language, "en"))
+            # This used to come from the foomatic database.
+            self.lblNPPDescription.set_markup('')
         self.on_tvNPDrivers_cursor_changed(self.tvNPDrivers)
 
     def on_tvNPDrivers_cursor_changed(self, widget):
@@ -2001,19 +2726,15 @@ class GUI:
             else:
                 nr = model.get_path(iter)[0]
                 drivername = self.NPDrivers[nr]
-                driver = self.foomatic.getDriver(drivername)
                 if self.frmNPDDescription.flags() & gtk.VISIBLE:
-                    self.lblNPDDescription.set_markup(
-                        driver.getCommentPango(self.language, "en"))
-                if self.frmNPPPDDescription.flags() & gtk.VISIBLE: 
-                    if drivername.find ('.ppd') == -1:
-                        markup = _("This PPD is generated by foomatic.")
-                    elif drivername.startswith ("foomatic-db-ppds/"):
-                        markup = _("This PPD is provided by the manufacturer "
-                                   "and is included with the foomatic "
-                                   "package.")
-                    else:
-                        markup = _("This PPD is provided by CUPS.")
+                    # This used to come from the foomatic database.
+                    self.lblNPDDescription.set_markup('')
+                if self.frmNPPPDDescription.flags() & gtk.VISIBLE:
+                    ppddict = self.ppds.getInfoFromPPDName (drivername)
+                    markup = ppddict['ppd-make-and-model'] + '\n'
+                    if (drivername.startswith ("foomatic:")):
+                        markup += _("This PPD is generated by foomatic.")
+
                     self.lblNPPPDDescription.set_markup (markup)
         self.setNPButtons()
 
@@ -2045,8 +2766,7 @@ class GUI:
             model, iter = self.tvNPDrivers.get_selection().get_selected()
             nr = model.get_path(iter)[0]
             driver = self.NPDrivers[nr]
-            printer = self.foomatic.getMakeModel(self.NPMake, self.NPModel)
-            return printer.getPPD(driver)
+            return driver
         else:
             return cups.PPD(self.filechooserPPD.get_filename())
 
@@ -2062,7 +2782,10 @@ class GUI:
             # Don't reveal SMB authentication details.
             if uri[:6] == "smb://":
                 (group, host, share, u, p) = self.parse_SMBURI (uri[6:])
-                uri = "smb://" + self.construct_SMBURI (group, host, share)
+                uri = "smb://"
+                if len (u) or len (p):
+                    uri += ellipsis
+                uri += self.construct_SMBURI (group, host, share)
 
             msg = _(
 """Going to create a new printer %s at
@@ -2079,6 +2802,55 @@ class GUI:
         else:
             name = self.printer.name
 
+        # Whether to check for missing drivers.
+        check = False
+        checkppd = None
+
+        def get_PPD_but_handle_errors ():
+            try:
+                ppd = self.getNPPPD()
+            except RuntimeError, e:
+                if self.rbtnNPFoomatic.get_active():
+                    # Foomatic database problem of some sort.
+                    err_title = _('Database error')
+                    err_text = _("The '%s' driver cannot be "
+                                 "used with printer '%s %s'.")
+                    model, iter = (self.tvNPDrivers.get_selection().
+                                   get_selected())
+                    nr = model.get_path(iter)[0]
+                    driver = self.NPDrivers[nr]
+                    if driver.startswith ("gutenprint"):
+                        # This printer references some XML that is not
+                        # installed by default.  Point the user at the
+                        # package they need to install.
+                        err = _("You will need to install the '%s' package "
+                                "in order to use this driver.") % \
+                                "gutenprint-foomatic"
+                    else:
+                        err = err_text % (driver, self.NPMake, self.NPModel)
+                else:
+                    # This error came from trying to open the PPD file.
+                    err_title = _('PPD error')
+                    filename = self.filechooserPPD.get_filename()
+                    err = _('Failed to read PPD file.  Possible reason '
+                            'follows:') + '\n'
+                    os.environ["PPD"] = filename
+                    # We want this to be in the current natural language,
+                    # so we intentionally don't set LC_ALL=C here.
+                    p = os.popen ('/usr/bin/cupstestppd -rvv "$PPD"', 'r')
+                    output = p.readlines ()
+                    p.close ()
+                    err += reduce (lambda x, y: x + y, output)
+
+                error_text = ('<span weight="bold" size="larger">' +
+                              err_title + '</span>\n\n' + err)
+                self.lblError.set_markup(error_text)
+                self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+                self.ErrorDialog.run()
+                self.ErrorDialog.hide()
+                return None
+            return ppd
+
         if self.dialog_mode=="class":
             members = self.getCurrentClassMembers(self.tvNCMembers)
             try:
@@ -2090,16 +2862,27 @@ class GUI:
                 return
         elif self.dialog_mode=="printer":
             uri = self.getDeviceURI()
-            ppd = self.getNPPPD()
+            ppd = get_PPD_but_handle_errors ()
+            if not ppd:
+                # Go back to previous page to re-select driver.
+                self.nextNPTab(-1)
+                return
         
             try:
                 self.passwd_retry = False # use cached Passwd
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
                     self.cups.addPrinter(name, ppdname=ppd,
                          device=uri, info=info, location=location)
+                    check = True
+                elif ppd is None: # raw queue
+                    self.cups.addPrinter(name, device=uri,
+                                         info=info, location=location)
                 else:
+                    cupshelpers.setPPDPageSize(ppd, self.language[0])
                     self.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)
+                    check = True
+                    checkppd = ppd
 
                 self.cups.enablePrinter (name)
                 self.cups.acceptJobs (name)
@@ -2124,35 +2907,233 @@ class GUI:
                 self.show_IPP_Error(e, msg)
                 return
         elif self.dialog_mode == "ppd":
-            ppd = self.getNPPPD()
+            ppd = get_PPD_but_handle_errors ()
+            if not ppd:
+                # Go back to previous page to re-select driver.
+                self.nextNPTab(-1)
+                return
 
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
+            raw = False
             if isinstance(ppd, str) or isinstance(ppd, unicode):
+                if self.rbtnChangePPDasIs.get_active():
+                    # To use the PPD as-is we need to prevent CUPS copying
+                    # the old options over.  Do this by setting it to a
+                    # raw queue (no PPD) first.
+                    try:
+                        self.passwd_retry = False # use cached Passwd
+                        self.cups.addPrinter(name, ppdname='raw')
+                    except cups.IPPError, (e, msg):
+                        self.show_IPP_Error(e, msg)
                 try:
                     self.passwd_retry = False # use cached Passwd
                     self.cups.addPrinter(name, ppdname=ppd)
+                except cups.IPPError, (e, msg):
+                    self.show_IPP_Error(e, msg)
+                    return
+
+                try:
                     self.passwd_retry = False # use cached Passwd
                     filename = self.cups.getPPD(name)
                     ppd = cups.PPD(filename)
                     os.unlink(filename)
                 except cups.IPPError, (e, msg):
-                    self.show_IPP_Error(e, msg)
-                    return
-                                
-            # copy over old option settings
-            if not self.rbtnChangePPDasIs.get_active():
-                print "COPYING OPTIONS"
-                cupshelpers.copyPPDOptions(self.ppd, ppd)
+                    if e == cups.IPP_NOT_FOUND:
+                        raw = True
+                    else:
+                        self.show_IPP_Error(e, msg)
+                        return
+            else:
+                # We have an actual PPD to upload, not just a name.
+                if not self.rbtnChangePPDasIs.get_active():
+                    cupshelpers.copyPPDOptions(self.ppd, ppd)
+                else:
+                    cupshelpers.setPPDPageSize(ppd, self.language[0])
 
-            try:
-                self.passwd_retry = False # use cached Passwd
-                self.cups.addPrinter(name, ppd=ppd)
-            except cups.IPPError, (e, msg):
-                self.show_IPP_Error(e, msg)
-                            
+                try:
+                    self.passwd_retry = False # use cached Passwd
+                    self.cups.addPrinter(name, ppd=ppd)
+                except cups.IPPError, (e, msg):
+                    self.show_IPP_Error(e, msg)
+
+            if not raw:
+                check = True
+                checkppd = ppd
+
         self.NewPrinterWindow.hide()
         self.populateList()
+        if check:
+            try:
+                self.checkDriverExists (name, ppd=checkppd)
+            except:
+                nonfatalException()
+
+    def checkDriverExists(self, name, ppd=None):
+        """Check that the driver for an existing queue actually
+        exists, and prompt to install the appropriate package
+        if not.
+
+        ppd: cups.PPD object, if already created"""
+
+        # Is this queue on the local machine?  If not, we can't check
+        # anything at all.
+        server = cups.getServer ()
+        if not (server == 'localhost' or server == '127.0.0.1' or
+                server == '::1' or server[0] == '/'):
+            return
+
+        # Fetch the PPD if we haven't already.
+        if not ppd:
+            try:
+                filename = self.cups.getPPD(name)
+            except cups.IPPError, (e, msg):
+                if e == cups.IPP_NOT_FOUND:
+                    # This is a raw queue.  Nothing to check.
+                    return
+                else:
+                    self.show_IPP_Error(e, msg)
+                    return
+
+            ppd = cups.PPD(filename)
+            os.unlink(filename)
+
+        # How to check that something exists in a path:
+        def pathcheck (name, path="/usr/bin:/bin"):
+            # Strip out foomatic '%'-style place-holders.
+            p = name.find ('%')
+            if p != -1:
+                name = name[:p]
+            if len (name) == 0:
+                return "true"
+            if name[0] == '/':
+                if os.access (name, os.X_OK):
+                    print "%s: found" % name
+                    return name
+                else:
+                    print "%s: NOT found" % name
+                    return None
+            if name.find ("=") != -1:
+                return "builtin"
+            if name in [ ":", ".", "[", "alias", "bind", "break", "cd",
+                         "continue", "declare", "echo", "else", "eval",
+                         "exec", "exit", "export", "fi", "if", "kill", "let",
+                         "local", "popd", "printf", "pushd", "pwd", "read",
+                         "readonly", "set", "shift", "shopt", "source",
+                         "test", "then", "trap", "type", "ulimit", "umask",
+                         "unalias", "unset", "wait" ]:
+                return "builtin"
+            for component in path.split (':'):
+                file = component.rstrip (os.path.sep) + os.path.sep + name
+                if os.access (file, os.X_OK):
+                    print "%s: found" % file
+                    return file
+            print "%s: NOT found in %s" % (name,path)
+            return None
+
+        # Find a 'FoomaticRIPCommandLine' attribute.
+        exe = exepath = None
+        attr = ppd.findAttr ('FoomaticRIPCommandLine')
+        if attr:
+            # Foomatic RIP command line to check.
+            cmdline = attr.value.replace ('&&\n', '')
+            cmdline = cmdline.replace ('&quot;', '"')
+            cmdline = cmdline.replace ('&lt;', '<')
+            cmdline = cmdline.replace ('&gt;', '>')
+            if (cmdline.find ("(") != -1 or
+                cmdline.find ("&") != -1):
+                # Don't try to handle sub-shells or unreplaced HTML entities.
+                cmdline = ""
+
+            # Strip out foomatic '%'-style place-holders
+            pipes = cmdline.split (';')
+            for pipe in pipes:
+                cmds = pipe.strip ().split ('|')
+                for cmd in cmds:
+                    args = cmd.strip ().split (' ')
+                    exe = args[0]
+                    exepath = pathcheck (exe)
+                    if not exepath:
+                        break
+
+                    # Main executable found.  But if it's 'gs',
+                    # perhaps there is an IJS server we also need
+                    # to check.
+                    if os.path.basename (exepath) == 'gs':
+                        argn = len (args)
+                        argi = 1
+                        search = "-sIjsServer="
+                        while argi < argn:
+                            arg = args[argi]
+                            if arg.startswith (search):
+                                exe = arg[len (search):]
+                                exepath = pathcheck (exe)
+                                break
+
+                            argi += 1
+
+                if not exepath:
+                    # Next pipe.
+                    break
+
+        if exepath or not exe:
+            # Look for '*cupsFilter' lines in the PPD and check that
+            # the filters are installed.
+            (tmpfd, tmpfname) = tempfile.mkstemp ()
+            ppd.writeFd (tmpfd)
+            search = "*cupsFilter:"
+            for line in file (tmpfname).readlines ():
+                if line.startswith (search):
+                    line = line[len (search):].strip ().strip ('"')
+                    try:
+                        (mimetype, cost, exe) = line.split (' ')
+                    except:
+                        continue
+
+                    exepath = pathcheck (exe,
+                                         "/usr/lib/cups/filter:"
+                                         "/usr/lib64/cups/filter")
+
+        if exe and not exepath:
+            # We didn't find a necessary executable.  Complain.
+            pkgs = {
+                # Foomatic command line executables
+                'gs': 'ghostscript',
+                'perl': 'perl',
+                'foo2oak-wrapper': None,
+                'pnm2ppa': 'pnm2ppa',
+                # IJS servers (used by foomatic)
+                'hpijs': 'hpijs',
+                'ijsgutenprint.5.0': 'gutenprint',
+                # CUPS filters
+                'rastertogutenprint.5.0': 'gutenprint-cups',
+                'commandtoepson': 'gutenprint-cups',
+                'commandtocanon': 'gutenprint-cups',
+                }
+            try:
+                pkg = pkgs[exe]
+            except:
+                pkg = None
+
+            if pkg:
+                print "%s included in package %s" % (exe, pkg)
+                error_text = ('<span weight="bold" size="larger">' +
+                              _('Missing driver') + '</span>\n\n' +
+                              _("Printer '%s' requires the %s package but "
+                                "it is not currently installed.  Please "
+                                "install it before using this printer.") %
+                              (name, pkg))
+            else:
+                error_text = ('<span weight="bold" size="larger">' +
+                              _('Missing driver') + '</span>\n\n' +
+                              _("Printer '%s' requires the '%s' program but "
+                                "it is not currently installed.  Please "
+                                "install it before using this printer.") %
+                              (name, exe))
+            self.lblError.set_markup(error_text)
+            self.ErrorDialog.set_transient_for (self.MainWindow)
+            self.ErrorDialog.run()
+            self.ErrorDialog.hide()
 
     ##########################################################################
     ### Server settings
@@ -2207,21 +3188,42 @@ class GUI:
             return True
         self.changed = set()
         self.setDataButtonState()
-        time.sleep(0.1) # give the server a chance to process our request
+        time.sleep(1) # give the server a chance to process our request
 
-def main():
+        # Now reconnect, in case the server needed to reload.
+        self.reconnect ()
+
+def main(start_printer = None, change_ppd = False):
     # The default configuration requires root for administration.
     cups.setUser ("root")
     gtk.gdk.threads_init()
     gtk.gdk.threads_enter()
 
-    mainwindow = GUI()
+    mainwindow = GUI(start_printer, change_ppd)
     if gtk.__dict__.has_key("main"):
         gtk.main()
     else:
         gtk.mainloop()
 
-    gtk.threads_leave()
+    gtk.gdk.threads_leave()
 
 if __name__ == "__main__":
-    main()
+    import getopt
+    try:
+        opts, args = getopt.gnu_getopt (sys.argv[1:], '',
+                                        ['configure-printer=',
+                                         'choose-driver='])
+    except getopt.GetoptError:
+        show_help ()
+        sys.exit (1)
+
+    start_printer = None
+    change_ppd = False
+    for opt, optarg in opts:
+        if (opt == "--configure-printer" or
+            opt == "--choose-driver"):
+            start_printer = optarg
+            if opt == "--choose-driver":
+                change_ppd = True
+
+    main(start_printer, change_ppd)

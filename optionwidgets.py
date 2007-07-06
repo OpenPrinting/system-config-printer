@@ -1,7 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
+## Copyright (C) 2007 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -18,16 +19,16 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import gtk.glade, cups
-from rhpl.translate import _
+from gettext import gettext as _
 
-def OptionWidget(option, ppd, gui):
+def OptionWidget(option, ppd, gui, tab_label=None):
     """Factory function"""
     if option.ui == cups.PPD_UI_BOOLEAN:
-        return OptionBool(option, ppd, gui)
+        return OptionBool(option, ppd, gui, tab_label=tab_label)
     elif option.ui == cups.PPD_UI_PICKONE:
-        return OptionPickOne(option, ppd, gui)
+        return OptionPickOne(option, ppd, gui, tab_label=tab_label)
     elif option.ui == cups.PPD_UI_PICKMANY:
-        return OptionPickMany(option, ppd, gui)
+        return OptionPickMany(option, ppd, gui, tab_label=tab_label)
 
 # ---------------------------------------------------------------------------
 
@@ -36,10 +37,12 @@ class Option:
     dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
                                buttons=gtk.BUTTONS_OK)
 
-    def __init__(self, option, ppd, gui):
+    def __init__(self, option, ppd, gui, tab_label=None):
         self.option = option
         self.ppd = ppd
         self.gui = gui
+        self.enabled = True
+        self.tab_label = tab_label
 
         vbox = gtk.VBox()
         
@@ -49,7 +52,7 @@ class Option:
         self.btnConflict.set_no_show_all(True) #avoid the button taking
                                                # over control again
         vbox.add(self.btnConflict)    # vbox reserves space while button
-        vbox.set_size_request(32, 28) # is hidden
+        #vbox.set_size_request(32, 28) # is hidden
         self.conflictIcon = vbox
 
         self.btnConflict.connect("clicked", self.on_btnConflict_clicked)
@@ -62,7 +65,17 @@ class Option:
         #        print c.option1, repr(c.choice1), c.option2, repr(c.choice2)
         self.conflicts = set()
         self.conflict_message = ""
-        
+
+    def enable(self, enabled=True):
+        self.selector.set_sensitive (enabled)
+        self.enabled = enabled
+
+    def disable(self):
+        self.enable (False)
+
+    def is_enabled(self):
+        return self.enabled
+
     def get_current_value(self):
         raise NotImplemented
 
@@ -71,7 +84,8 @@ class Option:
     
     def writeback(self):
         #print repr(self.option.keyword), repr(self.get_current_value())
-        self.ppd.markOption(self.option.keyword, self.get_current_value())
+        if self.enabled:
+            self.ppd.markOption(self.option.keyword, self.get_current_value())
 
     def checkConflicts(self, update_others=True):
         value = self.get_current_value()
@@ -122,27 +136,30 @@ class Option:
 
 class OptionBool(Option):
 
-    def __init__(self, option, ppd, gui):
+    def __init__(self, option, ppd, gui, tab_label=None):
         self.selector = gtk.CheckButton(option.text)
         self.label = None
-        self.false = u"False" # hack to allow "None insted of "False"
+        self.false = u"False" # hack to allow "None" instead of "False"
+        self.true = u"True"
         for c in option.choices:
-            if c["choice"] in ("None", "False"):
+            if c["choice"] in ("None", "False", "Off"):
                 self.false = c["choice"]
-        self.selector.set_active(option.defchoice == 'True')
+            if c["choice"] in ("True", "On"):
+                self.true = c["choice"]
+        self.selector.set_active(option.defchoice == self.true)
         self.selector.set_alignment(0.0, 0.5)
         self.selector.connect("toggled", self.on_change)
-        Option.__init__(self, option, ppd, gui)
+        Option.__init__(self, option, ppd, gui, tab_label=tab_label)
 
     def get_current_value(self):
-        return (self.false, 'True')[self.selector.get_active()]
+        return (self.false, self.true)[self.selector.get_active()]
 
 # ---------------------------------------------------------------------------
 
 class OptionPickOne(Option):
     widget_name = "OptionPickOne"
 
-    def __init__(self, option, ppd, gui):
+    def __init__(self, option, ppd, gui, tab_label=None):
         self.selector = gtk.combo_box_new_text()
         #self.selector.set_alignment(0.0, 0.5)
 
@@ -163,7 +180,7 @@ class OptionPickOne(Option):
             print option.text, "unknown value:", option.defchoice
         self.selector.connect("changed", self.on_change)
 
-        Option.__init__(self, option, ppd, gui)
+        Option.__init__(self, option, ppd, gui, tab_label=tab_label)
 
     def get_current_value(self):
         return self.option.choices[self.selector.get_active()]['choice']
@@ -173,7 +190,7 @@ class OptionPickOne(Option):
 class OptionPickMany(OptionPickOne):
     widget_name = "OptionPickMany"
 
-    def __init__(self, option, ppd, gui):
+    def __init__(self, option, ppd, gui, tab_label=None):
         raise NotImplemented
-        Option.__init__(self, option, ppd, gui)
+        Option.__init__(self, option, ppd, gui, tab_label=tab_label)
         

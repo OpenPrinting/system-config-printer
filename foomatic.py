@@ -1,10 +1,10 @@
-#!/bin/env python
+#!/usr/bin/env python
 
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -27,6 +27,58 @@ import cups
 from gtk_html2pango import HTML2PangoParser
 from cStringIO import StringIO
 from pprint import pprint
+from cupshelpers import parseDeviceID
+
+FOOMATIC_PPD_DIR = "/usr/share/foomatic/db/source/"
+
+def _ppdMakeModelSplit (ppd_make_and_model, ppdname=None):
+    """Convert the ppd-make-and-model field into a (make, model) pair."""
+    try:
+        make, model = ppd_make_and_model.split(" ", 1)
+    except:
+        make = ppd_make_and_model
+        model = ''
+
+    for suffix in [" PS",
+                   " PXL"]:
+        if model.endswith (suffix):
+            model = model[:-len(suffix)]
+            break
+
+    # HP PPDs give NickNames like:
+    # *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
+    hp_suffix = " Postscript (recommended)"
+    if model.endswith (hp_suffix):
+        # Find the version number.
+        v = model.find (" v")
+        if v != -1 and model[v + 2].isdigit ():
+            # Truncate at that point.
+            model = model[:v]
+        else:
+            # Otherwise just remove the 'Postscript (recommended)' bit.
+            model = model[:-len(hp_suffix)]
+
+    f = model.find (" Foomatic/")
+    if f != -1:
+        model = model[:f]
+
+    # Gutenprint PPDs have NickNames that end:
+    # ... - CUPS+Gutenprint v5.0.0
+    gutenprint = model.find (" - CUPS+Gutenprint")
+    if gutenprint != -1:
+        model = model[:gutenprint]
+
+    # Gimp-Print PPDs have NickNames that end:
+    # ... - CUPS+Gimp-Print v4.2.7
+    gimpprint = model.find (" - CUPS+Gimp-Print")
+    if gimpprint != -1:
+        model = model[:gimpprint]
+
+    for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
+        if make == mfr.upper ():
+            make = mfr
+
+    return (make, model)
 
 ############################################################################# 
 ###  FoomaticXMLFile
@@ -155,13 +207,6 @@ class PPDDriver(Driver):
         FoomaticXMLFile.__init__(self, name, foomatic)
         self.comments_dict = {}
 
-#############################################################################
-### No Driver (for Raw Queues
-#############################################################################
-        
-class NoDriver(PPDDriver): 
-    pass
-        
 ############################################################################# 
 ###  Printer
 #############################################################################
@@ -203,12 +248,8 @@ class Printer(FoomaticXMLFile):
         """
         if driver_name is None: driver_name = self.driver
         if self.drivers.has_key(driver_name):
-            print self.name, driver_name
             if self.drivers[driver_name]:
-                print "PPD name:", self.drivers[driver_name]
-                # XXX cups ppds
                 if self.foomatic.ppds.has_key(self.drivers[driver_name]):
-                    print "Cups PPD"
                     return self.drivers[driver_name]
                     #try:
                     #    filename = self.foomatic.connection.getPPD(
@@ -220,7 +261,19 @@ class Printer(FoomaticXMLFile):
                     #    raise
                     #    return None
                 else:
-                    return cups.PPD(self.drivers[driver_name])
+                    ppd = FOOMATIC_PPD_DIR + self.drivers[driver_name]
+                    try:
+                        return cups.PPD(ppd)
+                    except RuntimeError:
+                        os.environ['IN'] = ppd + ".gz"
+                        os.environ['OUT'] = tempfile.mkstemp (".ppd",
+                                                              self.name +
+                                                              "-" +
+                                                              driver_name)[1]
+                        os.system ('gzip -dc "$IN" > "$OUT"')
+                        ppdobj = cups.PPD(os.environ['OUT'])
+                        os.remove (os.environ['OUT'])
+                        return ppdobj
             else:
                 try:
                     fd, fname = tempfile.mkstemp(
@@ -232,9 +285,10 @@ class Printer(FoomaticXMLFile):
                 except IOError:
                     raise
                     return None
-                return cups.PPD(fname)
+                ppdobj = cups.PPD(fname)
+                os.remove (fname)
+                return ppdobj
         else:
-            print self.name, driver_name
             return None
     
     def parse_autodetect(self, root_node):
@@ -250,7 +304,6 @@ class Printer(FoomaticXMLFile):
                     data[name] = node.first_cdata
             else:
                 pass
-                #print node.name
         return data
 
     def parse_xml(self, root_node):
@@ -269,25 +322,27 @@ class Printer(FoomaticXMLFile):
                 for sub_child in child.children:
                     if sub_child.name == "driver":
                         if len(sub_child.children) == 2:
-                            # single xml file
+                            # PPD driver
                             driver = sub_child.children[0].first_cdata.strip()
                             ppd = sub_child.children[1].first_cdata.strip()
                             self.drivers[driver] = ppd
                         elif len(sub_child.children) == 0:
-                            # foomatic-config output
+                            # Non-PPD driver
                             self.drivers.setdefault(sub_child.first_cdata, '')
             
             elif (child.name == "driver" and
                   len (child.first_cdata.strip())):
                 self.driver = child.first_cdata
     
-            elif child.name == "ppds":
+            elif child.name == "lang":
                 for sub_child in child.children:
-                    if (sub_child.name != "ppd" or
-                        len(sub_child.children)!=2): continue
-                    driver = sub_child.children[0].first_cdata.strip()
-                    ppd = sub_child.children[1].first_cdata.strip()
-                    self.drivers[driver] = ppd
+                    if (len (sub_child.children) > 0 and
+                        sub_child.children[0].name == "ppd"):
+                        driver = sub_child.name
+                        if driver == "postscript":
+                            driver = "Postscript"
+                        ppd = sub_child.children[0].first_cdata.strip()
+                        self.drivers[driver] = ppd
                 
             elif child.name == "autodetect":
                 for sub_child in child.children:
@@ -302,7 +357,6 @@ class Printer(FoomaticXMLFile):
                 self.comments_dict = self.parse_lang_tree(child)
             else:
                 pass
-                #print "Ignoring", child.name
                 
         if self.id:
             if self.id.startswith('printer/'):                
@@ -328,11 +382,12 @@ class Printer(FoomaticXMLFile):
             return
         
         for ppd_name in ppds:
-            lang = self.foomatic.ppds[ppd_name]['ppd-natural-language']
             if ppd_name.startswith("foomatic-db-ppds/"):
-                foomatic_name = ppd_name.replace("foomatic-db-ppds/", "PPD/")
+                p = ppd_name
+                if p.endswith(".gz"):
+                    p = p[:-3]
+                foomatic_name = p.replace("foomatic-db-ppds/", "PPD/")
                 if foomatic_name in self.drivers.itervalues():
-                    print "Dropping %s for %s" % (ppd_name, foomatic_name)
                     continue
             self.drivers[ppd_name] = ppd_name
 
@@ -360,35 +415,15 @@ class PPDPrinter(Printer):
         FoomaticXMLFile.__init__(self, name, foomatic)
 
         ppd = foomatic.ppds[name]
-        self.make, self.model = ppd['ppd-make-and-model'].split(' ', 1)
+        self.make, self.model = _ppdMakeModelSplit (ppd['ppd-make-and-model'],
+                                                    ppdname=name)
         self.functionality = ''
         self.driver = ''
         self.drivers = {}
         self.autodetect = {}
         self.unverified = False
         self.comments_dict = {}
-        
         self.getPPDDrivers()
-
-#############################################################################
-### Raw Printer
-#############################################################################
-
-class RawPrinter(Printer):
-
-    def __init__(self, foomatic):
-        FoomaticXMLFile.__init__(self, "Generic-Raw", foomatic)
-        self.make, self.model = "Generic", "Raw"
-        self.functionality = ''
-        self.driver = ''
-        self.drivers = {'None' : ''}
-        self.autodetect = {}
-        self.unverified = False
-        self.comments_dict = {}        
-
-    def getPPD(self, driver=None):
-        return None
-    
 
 ############################################################################# 
 ###  Foomatic database
@@ -399,7 +434,7 @@ class Foomatic:
     def __init__(self):
         self.path = '/usr/share/foomatic/db/source'
         self.foomatic_configure = "/usr/bin/foomatic-configure"
-        self.pickle_file = "/var/cache/foomatic.pickle"
+        self.pickle_file = "/var/cache/foomatic/foomatic.pickle"
 
         self._printer_names = None
         self._driver_names = None
@@ -420,10 +455,6 @@ class Foomatic:
             print "Writing new pickle"
             self.loadAll()
             self._write_pickle(self.pickle_file)
-
-        # Add entries for raw printers
-        self._add_printer(RawPrinter(self))
-        self._drivers["None"] = NoDriver("None", self)
         
     def quote_filename(self, name, type):
         return os.path.join(self.path, type, name + '.xml')
@@ -455,42 +486,46 @@ class Foomatic:
             if dict.has_key("make") and dict.has_key("model"):
                 d = self._auto_make.setdefault(dict["make"], {})
                 d[dict["model"]] = printer.name
-            if dict.has_key("ieee1284"):
+            if dict.has_key("ieee1284") and dict["ieee1284"]:
                 self._auto_ieee1284[dict["ieee1284"]] = printer.name
-            if dict.has_key("description"):
+                # Also parse the ID.
+                id_dict = parseDeviceID (dict["ieee1284"])
+                if id_dict["MFG"] and id_dict["MDL"]:
+                    d = self._auto_make.setdefault(id_dict["MFG"], {})
+                    d[id_dict["MDL"]] = printer.name
+            if dict.has_key("description") and dict["description"]:
                 self._auto_description[dict["description"]] = printer.name
         
     def addCupsPPDs(self, ppds, connection):
         ppds = ppds.copy()
         self.connection = connection
-        # remove foomatic ppds
-        #for name in ppds.keys():
-            #if name.startswith("foomatic-db-ppds/"):
-            #    ppds.pop(name)
         self.ppds = ppds
         for name, ppd in self.ppds.iteritems():
-            try:
-                make, model = ppd['ppd-make-and-model'].split(" ", 1)
-            except KeyError:
-                continue
+            (make, model) = _ppdMakeModelSplit (ppd['ppd-make-and-model'],
+                                                ppdname=name)
+
             # ppd_makes[make][model] -> [names]
             models = self.ppd_makes.setdefault(make, {})
             ppd_list = models.setdefault(model, [])
             ppd_list.append(name)
             
-            # add to printers in not yet exist
+            # add to printers if not yet exist
             printers = self.makes.setdefault(make, {})
             if printers.has_key(model):
                 if self._printers.has_key(printers[model]): # printer loaded
                     printer = self._printers[printers[model]] # add as driver
                     lang = ppd['ppd-natural-language']
                     self._drivers["CUPS: %s (%s)" % (name, lang)] = name
+                    printer.getPPDDrivers()
             else:
-                #print make, model, name
                 printers[model] = name # add as printer
             if ppd.has_key('ppd-device-id') and ppd['ppd-device-id']:
                 self._auto_ieee1284.setdefault(ppd['ppd-device-id'],
                                                name)
+                id_dict = parseDeviceID (ppd['ppd-device-id'])
+                if id_dict["MFG"] and id_dict["MDL"]:
+                    d = self._auto_make.setdefault(id_dict["MFG"], {})
+                    d[id_dict["MDL"]] = name                
 
 #     def clearCupsPPDs(self):
 #         for name, ppd in self.ppds.iteritems():
@@ -566,7 +601,7 @@ class Foomatic:
 
     # ----
 
-    def _write_pickle(self, filename="/var/cache/foomatic.pickle"):
+    def _write_pickle(self, filename="/var/cache/foomatic/foomatic.pickle"):
         data = {
             "_printer_names" : self._printer_names,
             #"_driver_names" : self._driver_names,
@@ -586,7 +621,7 @@ class Foomatic:
         except OSError:
             pass
         
-    def _load_pickle(self, filename="/var/cache/foomatic.pickle"):
+    def _load_pickle(self, filename="/var/cache/foomatic/foomatic.pickle"):
         if not os.path.exists(filename): return True
         
         pickle_mtime = os.path.getmtime(filename)
@@ -682,89 +717,156 @@ class Foomatic:
 
     def getPrinterFromCupsDevice(self, device):
         """return name of printer or None"""
-        if not device.id: return None
+        if not device.id:
+            return None
 
+        return self.getPrinterFromDeviceID (device.id_dict["MFG"],
+                                            device.id_dict["MDL"],
+                                            description=device.id_dict["DES"],
+                                            commandsets=device.id_dict["CMD"],
+                                            uri=device.uri)
+
+    def getPrinterFromDeviceID(self, mfg, mdl, description="",
+                               commandsets=[], uri=None):
+        """return name of printer or None"""
         # check for make, model
-        mfg = device.id_dict["MFG"]
         if (self._auto_make.has_key(mfg) and
-            self._auto_make[mfg].has_key(device.id_dict["MDL"])):
-            return self._auto_make[mfg][device.id_dict["MDL"]]
-
-        # check whole ieee1284 string
-        pieces = device.id.split(';')
-        for length in xrange(len(pieces), 0, -1):
-            ieee1284 = ";".join(pieces[:length]) + ';'
-            if self._auto_ieee1284.has_key(ieee1284):
-                return self._auto_ieee1284[ieee1284]                
-
-        # check description
-        if self._auto_description.has_key(device.id_dict["DES"]):
-            return self._auto_description[device.id_dict["DES"]]
+            self._auto_make[mfg].has_key(mdl)):
+            return self._auto_make[mfg][mdl]
 
         # Try matching against the foomatic names
         best_mdl = None
+        mdls = None
         for attempt in range (2):
             if self.makes.has_key (mfg):
-                mdl = device.id_dict["MDL"]
                 mdls = self.makes[mfg]
-                if mdls.has_key (mdl):
-                    print "Please report a bug in Bugzilla against 'foomatic':"
-                    print "  https://bugzilla.redhat.com/bugzilla"
-                    print "Include this complete message."
-                    print "Deducing %s from IEEE 1284 ID:" % best_mdl
-                    print "      <manufacturer>%s</manufacturer>" % mfg
-                    print "      <model>%s</model>" % mdl
-                    print "      <description>%s</description>" %\
-                          device.id_dict["DES"]
-                    print "URI: %s" % device.uri
-                    print "This message is harmless."
-                    return mdls[mdl]
+                break
 
-                # Try to find the best match
-                best_matchlen = 0
-                for each in mdls.keys():
-                    if mdl[:1 + best_matchlen] == each[:1 + best_matchlen]:
-                        extra = 2
-                        while (mdl[1 + best_matchlen:extra + best_matchlen] ==
-                               each[1 + best_matchlen:extra + best_matchlen]):
-                            extra += 1
-                        best_matchlen += extra
-                        best_mdl = mdls[each]
+            # Try case-insensitive search
+            mfgl = mfg.lower ()
+            for (m, ms) in self.makes.iteritems ():
+                if m.lower () == mfgl:
+                    mdls = ms
+                    break
 
             # Try again with replacements
             if mfg == "Hewlett-Packard":
                 mfg = "HP"
                 continue
 
-            break
+        if mdls:
+            # Handle bogus HPLIP Device IDs
+            if mdl.startswith (mfg + ' '):
+                mdl = mdl[len (mfg) + 1:]
 
-        if best_mdl:
+            if mdls.has_key (mdl):
+                print "Please report a bug in Bugzilla against 'foomatic':"
+                print "  https://bugzilla.redhat.com/bugzilla"
+                print "Include this complete message."
+                print "Deducing %s from IEEE 1284 ID:" % mdls[mdl]
+                print "      <manufacturer>%s</manufacturer>" % mfg
+                print "      <model>%s</model>" % mdl
+                print "      <description>%s</description>" % description
+                if uri:
+                    print "URI: %s" % uri
+                print "This message is harmless."
+                return mdls[mdl]
+
+            # Try to find the best match (case-insensitive)
+            best_matchlen = 0
+            mdll = mdl.lower ()
+            mdlnames = mdls.keys ()
+            mdlnames.sort (cups.modelSort)
+            mdlitems = map (lambda x: (x.lower (), mdls[x]), mdlnames)
+            for (name, id) in mdlitems:
+                if mdll[:1 + best_matchlen] == name[:1 + best_matchlen]:
+                    # We know we've got one more character matching.
+                    # Can we match any more on this entry?
+                    extra = 1
+                    while (mdll[1 + best_matchlen:1 + best_matchlen + extra] ==
+                           name[1 + best_matchlen:1 + best_matchlen + extra]):
+                        # Yes!  Try another!
+                        extra += 1
+                        if extra + best_matchlen >= len (name):
+                            break
+                    best_matchlen += extra
+                    best_mdl = id
+
+        cmdset = ""
+        if len (commandsets) > 0:
+            cmdset = commandsets[0]
+            for each in commandsets[1:]:
+                cmdset += "," + each
+
+        if best_mdl and best_matchlen > (len (mdl) / 2):
             print "Please report a bug in Bugzilla against 'foomatic':"
             print "  https://bugzilla.redhat.com/bugzilla"
             print "Include this complete message."
             print "Guessing %s from IEEE 1284 ID:" % best_mdl
             print "      <manufacturer>%s</manufacturer>" % mfg
             print "      <model>%s</model>" % mdl
-            print "      <description>%s</description>" % device.id_dict["DES"]
-            print "URI: %s" % device.uri
+            print "      <description>%s</description>" % description
+            print "      <commandset>%s</commandset>" % cmdset
+            if uri:
+                print "URI: %s" % uri
             return best_mdl
 
+        print "No match for device ID:"
+        print "      <manufacturer>%s</manufacturer>" % mfg
+        print "      <model>%s</model>" % mdl
+        print "      <description>%s</description>" % description
+        print "      <commandset>%s</commandset>" % cmdset
+        if uri:
+            print "URI: %s" % uri
+
+        # Try command-set matching.
+        print "Command set: %s" % commandsets
+        id = self.getPrinterFromCommandSet (commandsets)
+        if id:
+            print "Using %s" % id
+            print "Best match was %s (not close enough)" % best_mdl
+            return id
+        else:
+            print "No luck guessing from the command set."
+
+        if best_mdl:
+            print "Best match is %s, so trying that." % best_mdl
+            return best_mdl
         return None
 
-    def getPPD(self, make, model, description="", languages=[]):
-        # check for make, model
-        if (self._auto_make.has_key(make) and
-            self._auto_make[make].has_key(model)):
-            printer = self.getPrinter(self._auto_make[make][model])
-        # check description
-        elif self._auto_description.has_key(description):
-            printer = self.getPrinter(self._auto_description[description])
-
-        # generic ppd
-        # XXX
-        else:
+    def getPrinterFromCommandSet (self, commandsets=[]):
+        """Return printer ID or None, given a list of strings representing
+        the command sets supported."""
+        cmdsets = map (lambda x: x.lower (), commandsets)
+        printer = None
+        if (("postscript" in cmdsets) or ("postscript2" in cmdsets) or
+            ("postscript level 2 emulation" in cmdsets)):
+            printer = "Generic-PostScript_Printer"
+        elif (("pclxl" in cmdsets) or ("pcl-xl" in cmdsets) or
+              ("pcl6" in cmdsets) or ("pcl 6 emulation" in cmdsets)):
+            printer = "Generic-PCL_6_PCL_XL_Printer"
+        elif "pcl5e" in cmdsets:
+            printer = "Generic-PCL_5e_Printer"
+        elif "pcl5c" in cmdsets:
+            printer = "Generic-PCL_5c_Printer"
+        elif ("pcl5" in cmdsets) or ("pcl 5 emulation" in cmdsets):
+            printer = "Generic-PCL_5_Printer"
+        elif "pcl" in cmdsets:
+            printer = "Generic-PCL_3_Printer"
+        elif (("escpl2" in cmdsets) or ("esc/p2" in cmdsets) or
+              ("escp2e" in cmdsets)):
+            printer = "Generic-ESC_P_Dot_Matrix_Printer"
+        return printer
+    
+    def getPPD(self, make, model, description="", commandsets=[]):
+        try:
+            id = self.getPrinterFromDeviceID (make, model,
+                                              description=description,
+                                              commandsets=commandsets)
+            printer = self.getPrinter (id)
+            return printer.getPPD()
+        except:
             return None
-        return printer.getPPD()
 
     def getCupsPPD(self, printer, ppds):
         make_model = "%s %s" % (printer.make, printer.model)

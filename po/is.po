@@ -1,1558 +1,1476 @@
-# Íslensk þýðing printconf
+# Íslensk þýðing system-config-printer
 # Copyright (C) YEAR ORGANIZATION
 # Richard Allen <ra@ra.is>, 2002.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: printconf 1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-23 17:34+0100\n"
-"PO-Revision-Date: 2004-10-11 10:31+0000\n"
+"Project-Id-Version: system-config-printer 1\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2007-06-15 18:34+0100\n"
+"PO-Revision-Date: 2007-05-01 10:31+0000\n"
 "Last-Translator: Richard Allen <ra@ra.is>\n"
 "Language-Team: Icelandic <kde-isl@molar.is>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: optionwidgets.py:94
+#: ../cupshelpers.py:28
+msgid "Idle"
+msgstr "Óvirkur"
+
+#: ../cupshelpers.py:29 ../applet.py:684
+msgid "Processing"
+msgstr "Í vinnslu"
+
+#: ../cupshelpers.py:30
+msgid "Busy"
+msgstr "Upptekinn"
+
+#: ../cupshelpers.py:31 ../applet.py:685
+msgid "Stopped"
+msgstr "Stöðvaður"
+
+#: ../cupshelpers.py:48 ../applet.py:694
+msgid "Unknown"
+msgstr "Óþekkt"
+
+#: ../my-default-printer.py:117 ../my-default-printer.desktop.in.h:1
+#, fuzzy
+msgid "Default Printer"
+msgstr "Gera að sjálfgefnum prentara"
+
+#: ../my-default-printer.py:121 ../my-default-printer.py:152
+msgid "_Use System Default"
+msgstr ""
+
+#: ../my-default-printer.py:122
+#, fuzzy
+msgid "_Set Default"
+msgstr "Sjálfgefið"
+
+#: ../my-default-printer.py:132 ../system-config-printer.glade.h:190
+#: ../applet.py:184 ../applet.py:224
+msgid "Printer"
+msgstr "Prentari"
+
+#: ../my-default-printer.py:136
+#, fuzzy
+msgid "Location"
+msgstr "Staðsetning:"
+
+#: ../optionwidgets.py:108
 msgid "Conflicts with:"
-msgstr ""
+msgstr "Rekst á:"
 
-#: system-config-printer.py:172
-msgid "Copyright 2006 Red Hat, Inc."
-msgstr ""
+#: ../system-config-printer.py:228
+msgid "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "Höfundarréttur 2006, 2007 Red Hat, Inc."
 
-#: system-config-printer.py:208
-#, fuzzy
+#: ../system-config-printer.py:264
 msgid "Server Settings"
-msgstr "Rofar rekils"
+msgstr "Rofar þjóns"
 
-#: system-config-printer.py:209
-#, fuzzy
-msgid "Local Printers"
-msgstr "Breyta staðbundnum prentara"
+#: ../system-config-printer.py:273 ../system-config-printer.py:275
+msgid "Members of this class"
+msgstr "Meðlimir þessa flokks"
 
-#: system-config-printer.py:210
-msgid "Local Classes"
-msgstr ""
-
-#: system-config-printer.py:211
-#, fuzzy
-msgid "Remote Printers"
-msgstr "JetDirect prentari"
-
-#: system-config-printer.py:212
-msgid "Remote Classes"
-msgstr ""
-
-#: system-config-printer.py:221 system-config-printer.py:223
-msgid "Members of this Class"
-msgstr ""
-
-#: system-config-printer.py:222 system-config-printer.py:224
+#: ../system-config-printer.py:274 ../system-config-printer.py:276
 msgid "Others"
-msgstr ""
+msgstr "Aðrir"
 
-#: system-config-printer.py:225
-#, fuzzy
+#: ../system-config-printer.py:277
 msgid "Devices"
 msgstr "Tæki"
 
-#: system-config-printer.py:226
+#: ../system-config-printer.py:278
 msgid "Makes"
-msgstr ""
+msgstr "Gerðir"
 
-#: system-config-printer.py:227
-#, fuzzy
+#: ../system-config-printer.py:279
 msgid "Models"
-msgstr "Tegund"
+msgstr "Tegundir"
 
-#: system-config-printer.py:228
-#, fuzzy
+#: ../system-config-printer.py:280
 msgid "Drivers"
-msgstr "Rekill"
+msgstr "Reklar"
 
-#: system-config-printer.py:229
-#, fuzzy
+#: ../system-config-printer.py:281
 msgid "Users"
-msgstr "Notandi"
+msgstr "Notendur"
 
-#: system-config-printer.py:240
+#: ../system-config-printer.py:292
 msgid "PostScript Printer Description (*.ppd[.gz])"
-msgstr ""
+msgstr "PostScript Prentaralýsing (*.ppd[.gz])"
 
-#: system-config-printer.py:259
+#. SMB list columns
+#: ../system-config-printer.py:312
 msgid "Share"
 msgstr "Netprentari"
 
-#: system-config-printer.py:265
+#: ../system-config-printer.py:318
 msgid "Comment"
 msgstr "Athugasemd"
 
-#: system-config-printer.py:318
+#: ../system-config-printer.py:551
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Stillingar prentara - %s"
 
-#: system-config-printer.py:321
+#: ../system-config-printer.py:554
 #, python-format
 msgid "Connected to %s"
-msgstr ""
+msgstr "Tengdur %s"
 
-#: system-config-printer.py:323
-#, fuzzy
+#: ../system-config-printer.py:556 ../system-config-printer.py:1170
 msgid "Not connected"
-msgstr "_Tengdur-staðbundið"
+msgstr "Ekki tengdur"
 
-#: system-config-printer.py:463
+#: ../system-config-printer.py:637
+msgid "Local Printers"
+msgstr "Staðbundnir prentarar"
+
+#: ../system-config-printer.py:638
+msgid "Local Classes"
+msgstr "Staðbundnir flokkar"
+
+#: ../system-config-printer.py:639
+msgid "Remote Printers"
+msgstr "Fjartengdir prentarar"
+
+#: ../system-config-printer.py:640
+msgid "Remote Classes"
+msgstr "Fjartengdir flokkar"
+
+#: ../system-config-printer.py:736
 #, python-format
 msgid ""
-"Connecting to Server:\n"
+"Connecting to server:\n"
 "%s"
 msgstr ""
+"Tengist þjóni:\n"
+"%s"
 
-#: system-config-printer.py:748
+#: ../system-config-printer.py:1099 ../system-config-printer.glade.h:115
+msgid "Installable Options"
+msgstr "Uppsetjanlegir hlutir"
+
+#: ../system-config-printer.py:1100 ../system-config-printer.glade.h:191
+msgid "Printer Options"
+msgstr "Rofar prentara"
+
+#: ../system-config-printer.py:1109
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
-"these conflictes are resolved."
+"these conflicts are resolved."
 msgstr ""
 
-#: system-config-printer.py:774
+#: ../system-config-printer.py:1138 ../system-config-printer.py:1154
+#: ../applet.py:333
 msgid "Not authorized"
-msgstr ""
+msgstr "Ekki leyfilegt"
 
-#: system-config-printer.py:775
+#: ../system-config-printer.py:1139 ../applet.py:334
 msgid "The password may be incorrect."
-msgstr ""
+msgstr "Lykilorðið er kanski rangt."
 
-#: system-config-printer.py:778
+#: ../system-config-printer.py:1142 ../system-config-printer.py:1175
+#: ../applet.py:337
 msgid "CUPS server error"
-msgstr ""
+msgstr "Villa frá CUPS þjóni"
 
-#: system-config-printer.py:779
-#, fuzzy, python-format
+#: ../system-config-printer.py:1143 ../applet.py:338
+#, python-format
 msgid "There was an error during the CUPS operation: '%s'."
-msgstr "Það kom upp villa þegar reynt var að prenta tilraunasíðuna."
+msgstr "Það kom upp villa þegar CUPS aðgerðin '%s' var reynd."
 
-#: system-config-printer.py:803
+#: ../system-config-printer.py:1155
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr ""
+
+#: ../system-config-printer.py:1160
+msgid "Bad request"
+msgstr "Óleyfileg beiðni"
+
+#: ../system-config-printer.py:1162
+msgid "Not found"
+msgstr "Fannst ekki"
+
+#: ../system-config-printer.py:1164
+msgid "Request timeout"
+msgstr "Beiðnin tímaði út"
+
+#: ../system-config-printer.py:1166
+msgid "Upgrade required"
+msgstr "Uppfærslu er þörf"
+
+#: ../system-config-printer.py:1168
+msgid "Server error"
+msgstr "Villa frá þjóni"
+
+#: ../system-config-printer.py:1172
+#, python-format
+msgid "status %d"
+msgstr "staða %d"
+
+#: ../system-config-printer.py:1176
+#, python-format
+msgid "There was an HTTP error: %s."
+msgstr "Það kom upp HTTP villa: %s."
+
+#: ../system-config-printer.py:1199
 msgid "This will delete this class!"
-msgstr ""
+msgstr "Þetta mun eyða þessum flokk!"
 
-#: system-config-printer.py:804
+#: ../system-config-printer.py:1200
 msgid "Proceed anyway?"
+msgstr "Halda samt áfram?"
+
+#: ../system-config-printer.py:1386
+msgid "Submitted"
+msgstr "Sent"
+
+#: ../system-config-printer.py:1387
+#, python-format
+msgid "Test page submitted as job %d"
+msgstr "Tilraunasíða send sem verk %d"
+
+#: ../system-config-printer.py:1397
+msgid "Not possible"
+msgstr "Ekki mögulegt"
+
+#: ../system-config-printer.py:1398
+msgid ""
+"The remote server did not accept the print job, most likely because the "
+"printer is not shared."
 msgstr ""
+"Þjónninn tók ekki við prentverkinu líkast til vegna þess að prentaranum "
+"hefur ekki verið deilt á netinu."
 
-#: system-config-printer.py:1002
-#, fuzzy
+#: ../system-config-printer.py:1463
+msgid "Error"
+msgstr "Villa"
+
+#: ../system-config-printer.py:1464
+msgid "There was a problem connecting to the CUPS server."
+msgstr "Það kom upp villa þegar tengst var við CUPS þjóninn."
+
+#: ../system-config-printer.py:1527
 msgid "This is the default printer"
-msgstr "Þetta er lýsing prentarans."
+msgstr "Þetta er sjálfgefni prentarinn"
 
-#: system-config-printer.py:1004
+#: ../system-config-printer.py:1529
 #, python-format
 msgid "Default printer is %s"
-msgstr ""
+msgstr "Sjálfgefinn prentari er %s"
 
-#: system-config-printer.py:1007
+#: ../system-config-printer.py:1532
 msgid "No default printer set."
-msgstr ""
+msgstr "Enginn sjálfgefinn prentari."
 
-#: system-config-printer.py:1289
-#, fuzzy, python-format
-msgid "Really delete %s %s?"
-msgstr "Virkilega eyða \"%s\"?"
+#: ../system-config-printer.py:1618
+msgid "Cancel Tests"
+msgstr "Hætta við prófanir"
 
-#: system-config-printer.py:1330
-#, fuzzy
+#: ../system-config-printer.py:1622 ../system-config-printer.glade.h:189
+msgid "Print Test Page"
+msgstr "Prenta prófunarsíðu"
+
+#: ../system-config-printer.py:1877
+#, python-format
+msgid "Really delete printer %s?"
+msgstr "Virkilega eyða prentaranum %s?"
+
+#: ../system-config-printer.py:1879
+#, python-format
+msgid "Really delete class %s?"
+msgstr "Virkilega eyða flokknum %s?"
+
+#: ../system-config-printer.py:1927 ../system-config-printer.glade.h:140
 msgid "New Printer"
-msgstr "Prentari:"
+msgstr "Nýr prentari"
 
-#: system-config-printer.py:1339
+#: ../system-config-printer.py:1940 ../system-config-printer.glade.h:139
 msgid "New Class"
-msgstr ""
+msgstr "Nýr flokkur"
 
-#: system-config-printer.py:1349
+#: ../system-config-printer.py:1953
 msgid "Change Device URI"
-msgstr ""
+msgstr "Breyta URI tækis"
 
-#: system-config-printer.py:1360
-#, fuzzy
+#: ../system-config-printer.py:1966
 msgid "Change Driver"
-msgstr "Breyta tegund"
+msgstr "Breyta rekli"
 
-#: system-config-printer.py:1558
+#: ../system-config-printer.py:2220
 msgid "Other"
-msgstr ""
+msgstr "Annað"
 
-#: system-config-printer.py:1560
+#: ../system-config-printer.py:2222
 msgid " (Current)"
-msgstr ""
+msgstr " (núverandi)"
 
-#: system-config-printer.py:1737
-#, fuzzy
+#: ../system-config-printer.py:2407
 msgid "Verified"
-msgstr "(Valið)"
+msgstr "Staðfest"
 
-#: system-config-printer.py:1738
+#: ../system-config-printer.py:2408
 msgid "This print share is accessible."
-msgstr ""
+msgstr "Þessi prentdeild er aðgengileg"
 
-#: system-config-printer.py:1745
+#: ../system-config-printer.py:2415
 msgid "Inaccessible"
-msgstr ""
+msgstr "Óaðgengilegt"
 
-#: system-config-printer.py:1746
+#: ../system-config-printer.py:2416
 msgid "This print share is not accessible."
+msgstr "Þessi prentdeild er ekki aðgengileg"
+
+#: ../system-config-printer.py:2436
+msgid "A printer connected to the parallel port."
+msgstr "Prentari tengdur í raðtengið."
+
+#: ../system-config-printer.py:2438
+msgid "A printer connected to a USB port."
+msgstr "Prentari tengdur í USB tengi."
+
+#: ../system-config-printer.py:2440
+msgid ""
+"HPLIP software driving a printer, or the printer function of a multi-"
+"function device."
 msgstr ""
 
-#: system-config-printer.py:1972
-#, fuzzy
+#: ../system-config-printer.py:2443
+msgid ""
+"HPLIP software driving a fax machine, or the fax function of a multi-"
+"function device."
+msgstr ""
+
+#: ../system-config-printer.py:2446
+msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
+msgstr ""
+
+#: ../system-config-printer.py:2695
 msgid " (recommended)"
-msgstr ""
-"(mælt er með þessu\n"
-"rekillinn er %s)"
+msgstr " (mælt er með þessu)"
 
-#: system-config-printer.py:2010
+#: ../system-config-printer.py:2736
 msgid "This PPD is generated by foomatic."
 msgstr ""
 
-#: system-config-printer.py:2012
-msgid ""
-"This PPD is provided by the manufacturer and is included with the foomatic "
-"package."
-msgstr ""
-
-#: system-config-printer.py:2016
-msgid "This PPD is provided by CUPS."
-msgstr ""
-
-#: system-config-printer.py:2057
+#. XXX
+#: ../system-config-printer.py:2777
 #, python-format
 msgid "Going to create a new class %s."
 msgstr ""
 
-#: system-config-printer.py:2068
+#: ../system-config-printer.py:2791
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
 "%s.\n"
 msgstr ""
 
-#~ msgid "Error"
-#~ msgstr "Villa"
-
-#~ msgid "Ok"
-#~ msgstr "Í lagi"
-
-#~ msgid "Info"
-#~ msgstr "Upplýsingar"
-
-#~ msgid "Yes"
-#~ msgstr "Já"
-
-#~ msgid "No"
-#~ msgstr "Nei"
-
-#~ msgid "Exit"
-#~ msgstr "Hætta"
-
-#~ msgid ""
-#~ "You have made changes, would you like to save them? If you say no, your "
-#~ "changes will be lost."
-#~ msgstr ""
-#~ "Viltu vista breytingunum sem þú hefur gert ? Ef þú segir nei munu þær "
-#~ "tapast."
-
-#~ msgid "Cancel"
-#~ msgstr "Hætta við"
-
-#~ msgid "Create a New Queue"
-#~ msgstr "Búa til nýja biðröð"
-
-#~ msgid "Finish Making New Queue"
-#~ msgstr "Klára að búa til nýja biðröð"
-
-#~ msgid "About to create the following queue:"
-#~ msgstr "Er að fara að búa til eftirfarandi biðröð:"
-
-#~ msgid "Finish"
-#~ msgstr "Klára"
-
-#~ msgid "Back"
-#~ msgstr "Til baka"
-
-#~ msgid "Type:"
-#~ msgstr "tegund:"
-
-#~ msgid "Device:"
-#~ msgstr "Tæki:"
-
-#~ msgid "Server:"
-#~ msgstr "þjónn:"
-
-#~ msgid "Lpd Queue:"
-#~ msgstr "Lpd biðröð:"
-
-#~ msgid "Share:"
-#~ msgstr "Netprentari:"
-
-#~ msgid "IP:"
-#~ msgstr "IP:"
-
-#~ msgid "Workgroup:"
-#~ msgstr "Vinnuhópur:"
-
-#~ msgid "User:"
-#~ msgstr "Notandi:"
-
-#~ msgid "Port:"
-#~ msgstr "Gátt:"
-
-#~ msgid "Driver:"
-#~ msgstr "rekill:"
-
-#~ msgid "Warning"
-#~ msgstr "Aðvörun"
-
-#~ msgid "Name and Type"
-#~ msgstr "Heiti og tegund"
-
-#~ msgid "Next"
-#~ msgstr "Næsti"
-
-#~ msgid "Queue Name"
-#~ msgstr "Heiti biðraðar"
-
-#~ msgid "Queue Type"
-#~ msgstr "Tegund biðraðar"
-
-#~ msgid ""
-#~ "The name \"%s\" is bad. Please choose a name of the form [a-zA-Z][a-zA-Z0-"
-#~ "9_-]*."
-#~ msgstr ""
-#~ "Heitið \"%s\" er ólöglegt. Vinsamlegast veldu heiti á sniðinu [a-zA-Z][a-"
-#~ "zA-Z0-9_-]*."
-
-#~ msgid "The name \"%s\" is already in use. Please choose a different name."
-#~ msgstr "Heitið \"%s\" er þegar í notkun. Vinsamlegast veldu annað heiti."
-
-#~ msgid "Custom"
-#~ msgstr "Sérsniðinn"
-
-#~ msgid "Setting Up"
-#~ msgstr "Set upp"
-
-#~ msgid "Printer Device"
-#~ msgstr "Tæki prentara"
-
-#~ msgid ""
-#~ "Pick the printer device from the list, or enter it using \"Custom\" below."
-#~ msgstr ""
-#~ "Veldu prentarann úr tækjalistanum eða sláðu hann inn með \"Sérsniðinn\" "
-#~ "að neðan"
-
-#~ msgid "Specify Device:"
-#~ msgstr "Veldu prentara:"
-
-#~ msgid "Description"
-#~ msgstr "Lýsing"
-
-#~ msgid "Custom Device"
-#~ msgstr "Sérsniðið tæki"
-
-#~ msgid "Specify the device to use."
-#~ msgstr "Veldu tækið sem nota skal."
-
-#~ msgid "Device File"
-#~ msgstr "Tækjaskrá"
-
-#~ msgid "You must specify a device."
-#~ msgstr "Þú verður að gefa upp tæki."
-
-#~ msgid "Enter the LPD server and queue to use."
-#~ msgstr "Sláðu inn LPD þjóninn og biðröðina á honum sem á að nota."
-
-#~ msgid "Server"
-#~ msgstr "þjónn"
-
-#~ msgid "Queue"
-#~ msgstr "Biðröð"
-
-#~ msgid "LPD Data"
-#~ msgstr "LPD gögn"
-
-#~ msgid "You must specify a server."
-#~ msgstr "Þú verður að gefa upp þjón."
-
-#~ msgid "Enter the SMB share to use."
-#~ msgstr "Sláðu inn SMB netprentarann sem á að nota."
-
-#~ msgid "Host IP"
-#~ msgstr "IP vistfang"
-
-#~ msgid "Workgroup"
-#~ msgstr "Vinnuhópur"
-
-#~ msgid "Passwd"
-#~ msgstr "Lykilorð"
-
-#~ msgid "Windows Printer (SMB) Data"
-#~ msgstr "Windows prentari (SMB) gögn"
-
-#~ msgid "You must specify a SMB share to print to."
-#~ msgstr "Þú verður að gefa upp SMB netprentara til að prenta á."
-
-#~ msgid "Enter the NCP server and queue to use."
-#~ msgstr "Sláðu inn NCP þjóninn og biðröðina á honum sem á að nota."
-
-#~ msgid "Novell Netware Printer (NCP) Data"
-#~ msgstr "Novell prentari (NCP) gögn"
-
-#~ msgid "You must specify an NCP server to print to."
-#~ msgstr "Þú verður að gefa upp NCP þjón til að prenta á."
-
-#~ msgid "You must specify a queue on the NCP server to print to."
-#~ msgstr "Þú verður að gefa upp biðröð á NCP þjóninum til að prenta á."
-
-#~ msgid "Enter the Jetdirect ip and port to use."
-#~ msgstr "Sláðu inn Jetdirect vistfang og port."
-
-#~ msgid "Ip"
-#~ msgstr "Ip"
-
-#~ msgid "Port"
-#~ msgstr "Gátt"
-
-#~ msgid "Jetdirect (JETDIRECT) Data"
-#~ msgstr "Jetdirect (JETDIRECT) gögn"
-
-#~ msgid "You must specify the ip address of a JetDirect printer."
-#~ msgstr "Þú verður að gefa upp IP vistfang JetDirect prentarans."
-
-#~ msgid "Queue Driver"
-#~ msgstr "Tegund rekils"
-
-#~ msgid "Select the Driver to use with this Queue."
-#~ msgstr "Veldu rekilinn sem þú vilt nota á þessari biðröð."
-
-#~ msgid "You must specify a driver."
-#~ msgstr "Þú verður að gefa upp rekil."
-
-#~ msgid "Edit Queue"
-#~ msgstr "Breyta prentbiðröð"
-
-#~ msgid "Names"
-#~ msgstr "Heiti"
-
-#~ msgid "Type"
-#~ msgstr "Tegund"
-
-#~ msgid "Done"
-#~ msgstr "Búið"
-
-#~ msgid "Name:"
-#~ msgstr "Heiti:"
-
-#~ msgid "Aliases:"
-#~ msgstr "Samheiti:"
-
-#~ msgid "Printer Device:"
-#~ msgstr "Tæki prentara:"
-
-#~ msgid "Edit Name and Aliases"
-#~ msgstr "Breyta heiti og samheiti"
-
-#~ msgid "Name"
-#~ msgstr "Heiti"
-
-#~ msgid "Add Alias"
-#~ msgstr "Bæta við samheiti"
-
-#~ msgid "Edit Alias"
-#~ msgstr "Breyta samheiti"
-
-#~ msgid "Delete Alias"
-#~ msgstr "Eyða samheiti"
-
-#~ msgid "Alias:"
-#~ msgstr "Samheiti:"
-
-#~ msgid "Add an Alias"
-#~ msgstr "Bæta við samheiti"
-
-#~ msgid "Edit the alias"
-#~ msgstr "Breyta samheiti"
-
-#~ msgid "You must select an alias to edit."
-#~ msgstr "Þú verður að velja samheiti til að breyta."
-
-#~ msgid "You must select an alias to delete."
-#~ msgstr "Þú verður að velja samheiti til að eyða."
-
-#~ msgid "Strict RFC1179"
-#~ msgstr "Framfylgja RFC1179 stuðningi"
-
-#~ msgid "Translate \\n->\\r\\n"
-#~ msgstr "Þýða \\n->\\r\\n"
-
-#~ msgid "Edit Driver"
-#~ msgstr "Breyta rekli"
-
-#~ msgid "Edit Driver Options"
-#~ msgstr "Rofar rekils"
-
-#~ msgid "Edit"
-#~ msgstr "Sýsla"
-
-#~ msgid "Edit %s"
-#~ msgstr "Breyta %s"
-
-#~ msgid "Integer: Min %s | Max %s"
-#~ msgstr "Heiltala: minnst %s | mest %s"
-
-#~ msgid "Value must be a number"
-#~ msgstr "Gildið verður að vera tala"
-
-#~ msgid "Float: Min %s | Max %s"
-#~ msgstr "Tala: minnst %s | mest %s"
-
-#~ msgid "US Letter"
-#~ msgstr "US Letter"
-
-#~ msgid "Tabloid"
-#~ msgstr "Tabloid"
-
-#~ msgid "Ledger"
-#~ msgstr "Ledger"
-
-#~ msgid "Legal"
-#~ msgstr "Legal"
-
-#~ msgid "Statement"
-#~ msgstr "Statement"
-
-#~ msgid "Executive"
-#~ msgstr "Executive"
-
-#~ msgid "A3"
-#~ msgstr "A3"
-
-#~ msgid "A4"
-#~ msgstr "A4"
-
-#~ msgid "A5"
-#~ msgstr "A5"
-
-#~ msgid "B4"
-#~ msgstr "B4"
-
-#~ msgid "B5"
-#~ msgstr "B5"
-
-#~ msgid "Folio"
-#~ msgstr "Folio"
-
-#~ msgid "Quatro"
-#~ msgstr "Quatro"
-
-#~ msgid "10x14"
-#~ msgstr "10x14"
-
-#~ msgid "Test %s"
-#~ msgstr "Prófa %s"
-
-#~ msgid ""
-#~ "You have made changes, would you like to save them?\n"
-#~ "If you say no, you will not be able to print test pages."
-#~ msgstr ""
-#~ "Viltu vista breytingunum sem þú hefur gert ?\n"
-#~ "Ef þú segir nei getur þú ekki prentað tilraunasíður."
-
-#~ msgid "Test"
-#~ msgstr "Prófa"
-
-#~ msgid "Sent %s to \"%s\"."
-#~ msgstr "Sendi %s á \"%s\"."
-
-#~ msgid "You must select a printer queue to delete."
-#~ msgstr "Þú verður að velja prentara til að eyða."
-
-#~ msgid "You cannot delete an imported printer."
-#~ msgstr "Þú getur ekki eytt influttum prentara."
-
-#~ msgid "Confirm Delete"
-#~ msgstr "Staðfestu eyðingu"
-
-#~ msgid "Aliases"
-#~ msgstr "Samheiti"
-
-#~ msgid "Details"
-#~ msgstr "Smáatriði"
-
-#~ msgid "New"
-#~ msgstr "Nýr"
-
-#~ msgid "Delete"
-#~ msgstr "Eyða"
-
-#~ msgid "Default"
-#~ msgstr "Sjálfgefið"
-
-#~ msgid "You must select a printer queue to edit."
-#~ msgstr "Þú verður að velja prentbiðröð til að breyta."
-
-#~ msgid ""
-#~ "This imported printer is protected from overrides. You can not edit it."
-#~ msgstr "Þessi innflutti prentari er varinn yfirtöku. Þú getur ekki breytt."
-
-#~ msgid "Override?"
-#~ msgstr "Yfirtaka?"
-
-#~ msgid "This is an imported printer. Do you want to create a local override?"
-#~ msgstr "Þetta er influttur prentari. Viltu yfirtaka hann?"
-
-#~ msgid "You must select a queue to print to."
-#~ msgstr "Þú verður að velja prentbiðröð til að prenta á."
-
-#~ msgid "Initializing alchemist edit environment ..."
-#~ msgstr "Frumstilli alchemist breytingakerfið..."
-
-#~ msgid "Initializing linux printing database ..."
-#~ msgstr "Frumstilli linux prentaragagnagrunninn..."
-
-#~ msgid "Importing CUPS queues ..."
-#~ msgstr "Flyt inn CUPS biðraðir..."
-
-#~ msgid ""
-#~ "Failed to parse alchemist context: \n"
-#~ "%s"
-#~ msgstr ""
-#~ "Gar ekki þáttað alchemist skipinina: \n"
-#~ "%s"
-
-#~ msgid "Invalid printconf context"
-#~ msgstr "Ógild printconf færsla"
-
-#~ msgid "\"%s\" is not a valid queue name."
-#~ msgstr "\"%s\" er ekki gilt heiti biðraðar."
-
-#~ msgid "Need device, make and model.\n"
-#~ msgstr "Þarf tæki, framleiðanda og gerð.\n"
-
-#~ msgid "add-local: queue name '%s' not unique\n"
-#~ msgstr "bæta við: heiti biðraðarinnar '%s' er í notkun\n"
-
-#~ msgid "add-local: no suitable name available\n"
-#~ msgstr "bæta við: ekkert hæfilegt heiti tiltækt\n"
-
-#~ msgid "add-local: No information available about %s %s\n"
-#~ msgstr "bæta við: engar upplýsingar til um %s %s\n"
-
-#~ msgid "Now run printconf-backend (or restart lpd service)."
-#~ msgstr "Nú skaltu keyra printconf-backend (eða endurræsa lpd þjónustuna)."
-
-#~ msgid "Need make and model.\n"
-#~ msgstr "Þarf framleiðanda og gerð.\n"
-
-#~ msgid "You must run printconf-tui as root."
-#~ msgstr "Þú verður að keyra printconf-tui sem rót."
-
-#~ msgid "Conflicting commands: %s and %s"
-#~ msgstr "Skipanirnar rekast á: %s og %s"
-
-#~ msgid "No handler for command: "
-#~ msgstr "Ekkert kerfi fyrir skipunina: "
-
-#~ msgid "You must be root to run this program.\n"
-#~ msgstr "Þú verður að vera rót til að keyra þetta forrit.\n"
-
-#~ msgid "Queue name"
-#~ msgstr "Heiti biðraðar"
-
-#~ msgid "Shared"
-#~ msgstr "Netprentari"
-
-#~ msgid ""
-#~ "Do you want to save the changes\n"
-#~ "you made to your printer configuration?"
-#~ msgstr ""
-#~ "Viltu vista breytingunum sem þú\n"
-#~ "gerðir á stillingum prentara?"
-
-#~ msgid "_Don't save"
-#~ msgstr "_Ekki vista"
-
-#~ msgid "_Cancel"
-#~ msgstr "_Hætta við"
-
-#~ msgid "_Save"
-#~ msgstr "_Vista"
-
-#~ msgid "Browsed queues"
-#~ msgstr "Biðraðarflakk"
-
-#~ msgid ""
-#~ "Loading printer information.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "Les upplýsingar um prentara.\n"
-#~ "Vinsamlegast bíðið..."
-
-#~ msgid "Notes from the Linux Printing Database"
-#~ msgstr "Athugasemdir úr Linux Prentunargagnagrunninum"
-
-#~ msgid "Printer notes:"
-#~ msgstr "Athugasemdir prentara:"
-
-#~ msgid "Driver notes:"
-#~ msgstr "Athugasemdir rekils:"
-
-#~ msgid "Generic (click to select manufacturer)"
-#~ msgstr "Almennur (smelltu til að velja framleiðanda)"
-
-#~ msgid ""
-#~ "You are changing an option\n"
-#~ "that has no effect in the print\n"
-#~ "spooler you are using (%s)."
-#~ msgstr ""
-#~ "Þú ert að breyta rofa sem\n"
-#~ "hefur engin áhrif í biðröðinni\n"
-#~ "sem þú ert að nota (%s)."
-
-#~ msgid ""
-#~ "Applying changes.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "Virkja breytingar.\n"
-#~ "Vinsamlegast bíðið..."
-
-#~ msgid "Failed to write queues."
-#~ msgstr "Gat ekki ritað í biðraðirnar."
-
-#~ msgid ""
-#~ "There was a problem sending %s\n"
-#~ "to '%s' queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "það kom upp villa við að senda %s\n"
-#~ "á biðröðina '%s':\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Sent %s\n"
-#~ "to '%s' queue.  Does it look okay?"
-#~ msgstr ""
-#~ "Sendi %s\n"
-#~ "í '%s' biðröðina. Kom það eðlilega út?"
-
-#~ msgid "Here are the messages that appeared in the error log:"
-#~ msgstr "Hér eru skilaboðin úr villuannálnum:"
-
-#~ msgid "'%s' does not look like a PPD file."
-#~ msgstr "'%s' virðist ekki vera PPD skrá."
-
-#~ msgid "File cannot be opened for reading."
-#~ msgstr "Ekki tókst að opna skrána til lestrar."
-
-#~ msgid "PPD imported."
-#~ msgstr "PPD skrá flutt inn."
-
-#~ msgid "PPD import failed."
-#~ msgstr "PPD innflutningur mistókst."
-
-#~ msgid "Invalid name"
-#~ msgstr "Ógilt heiti"
-
-#~ msgid "There is already a queue with that name."
-#~ msgstr "Það er þegar til biðröð með þessu heiti."
-
-#~ msgid "An existing queue has an alias of that name."
-#~ msgstr "Það er þegar til biðröð með þessu samheiti."
-
-#~ msgid "'%s' does not exist, or is not writable."
-#~ msgstr "'%s' er ekki til eða er ekki ritanlegt."
-
-#~ msgid "Custom device"
-#~ msgstr "Sérsniðið tæki"
-
-#~ msgid "You must select a device."
-#~ msgstr "Þú verður að velja tæki."
-
-#~ msgid "You must specify a path."
-#~ msgstr "Þú verður að gefa upp slóð."
-
-#~ msgid "You must specify a queue."
-#~ msgstr "Þú verður að gefa upp biðröð."
-
-#~ msgid "You must choose an SMB share to print to."
-#~ msgstr "Þú verður að velja SMB netprentara til að prenta á."
-
-#~ msgid "You must choose a share, not a host."
-#~ msgstr "Þú verður að velja netprentara en ekki vél."
-
-#~ msgid "You must specify an SMB share to print to."
-#~ msgstr "Þú verður að gefa upp SMB netprentara til að prenta á."
-
-#~ msgid "You must specify a queue on the NCP server."
-#~ msgstr "Þú verður að gefa upp biðröð á NCP þjóninum til að prenta á."
-
-#~ msgid "You must specify a JetDirect printer to print to."
-#~ msgstr "Þú verður að gefa upp JetDirect prentara til að prenta á."
-
-#~ msgid "You must specify an IP port number."
-#~ msgstr "Þú verður að gefa upp IP gátt."
-
-#~ msgid "Select the printer manufacturer and model."
-#~ msgstr "Veldu prentara, framleiðanda og gerð."
-
-#~ msgid ""
-#~ "Select the printer manufacturer and model. Depending on how the remote "
-#~ "queue is configured, you may need to select the generic PostScript option "
-#~ "here."
-#~ msgstr ""
-#~ "Veldu prentara, framleiðanda og gerð. Ef þetta er fjartengd biðröð gætir "
-#~ "þú þurft að velja almenna PostScript rekilinn hér."
-
-#~ msgid "You must select a printer model."
-#~ msgstr "Þú verður að velja gerð prentara."
-
-#~ msgid ""
-#~ "About to create the following queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Er að fara að búa til eftirfarandi biðröð:\n"
-#~ "\n"
-
-#~ msgid "Type: "
-#~ msgstr "tegund: "
-
-#~ msgid "Printer: "
-#~ msgstr "Prentari: "
-
-#~ msgid "Device: "
-#~ msgstr "Tæki: "
-
-#~ msgid "Queue: "
-#~ msgstr "Biðröð: "
-
-#~ msgid "Share: "
-#~ msgstr "Netprentari: "
-
-#~ msgid "Port: "
-#~ msgstr "Gátt: "
-
-#~ msgid "Would you like to print a test page?"
-#~ msgstr "Viltu prenta út tilraunasíðu?"
-
-#~ msgid ""
-#~ "Would you like to print a test page?\n"
-#~ "Answering 'yes' will apply all changes\n"
-#~ "and print a test page to this printer."
-#~ msgstr ""
-#~ "Viltu prenta tilraunasíðu?\n"
-#~ "Svarir þú 'já' verður breytingunum vistað\n"
-#~ "og tilraunasíða send á prentarann."
-
-#~ msgid "Number of columns on a page"
-#~ msgstr "Fjöldi dálka á síðu"
-
-#~ msgid "Characters per inch"
-#~ msgstr "Stafir á tommu"
-
-#~ msgid "Billing label"
-#~ msgstr "Innheimtumerking"
-
-#~ msgid ""
-#~ "HH:MM:SS or '%s'.\n"
-#~ "Use GMT."
-#~ msgstr ""
-#~ "HH:MM:SS eða '%s'.\n"
-#~ "Nota GMT."
-
-#~ msgid ""
-#~ "Banner pages (start,end):\n"
-#~ "for example, '%s'"
-#~ msgstr ""
-#~ "Titilsíður (á byrjun eða enda):\n"
-#~ "til dæmis '%s'"
-
-#~ msgid "Landscape (%s or %s)"
-#~ msgstr "Landscape (%s eða %s)"
-
-#~ msgid "Lines per inch"
-#~ msgstr "Línur á tommu"
-
-#~ msgid ""
-#~ "Number of document pages per\n"
-#~ "printed page: 1, 2, 4, 6, 9, or 16"
-#~ msgstr ""
-#~ "Fjöldi síðna úr skjalinu á hverja\n"
-#~ "prentaða síðu: 1, 2, 4, 6, 9, eða 16"
-
-#~ msgid "Top margin in pt (1/72 in)"
-#~ msgstr "Efri spássía í punktum (1/72 tommu)"
-
-#~ msgid "Left margin in pt (1/72 in)"
-#~ msgstr "Vinstri spássía í punktum (1/72 tommu)"
-
-#~ msgid "Right margin in pt (1/72 in)"
-#~ msgstr "Hægri spássía í punktum (1/72 tommu)"
-
-#~ msgid "Bottom margin in pt (1/72 in)"
-#~ msgstr "Neðri spássía í punktum (1/72 tommu)"
-
-#~ msgid ""
-#~ "'%s', '%s', '%s'\n"
-#~ "'%s' or '%s'"
-#~ msgstr ""
-#~ "'%s', '%s', '%s'\n"
-#~ "'%s' eða '%s'"
-
-#~ msgid "Page label"
-#~ msgstr "Síðumerking"
-
-#~ msgid "Pretty-print text (%s or %s)"
-#~ msgstr "Prenta texta fallega (%s eða %s)"
-
-#~ msgid "Scaling (percentage)"
-#~ msgstr "Skölun (prósenta)"
-
-#~ msgid "Word-wrapping (%s or %s)"
-#~ msgstr "Orðafletting (%s eða %s)"
-
-#~ msgid "Option name"
-#~ msgstr "Heiti rofa"
-
-#~ msgid "Value"
-#~ msgstr "Gildi"
-
-#~ msgid "Can't determine the printer model attached to this device."
-#~ msgstr "Get ekki fundið út gerð prentarans sem er tengdur þessu tæki."
-
-#~ msgid "I don't know enough about this printer model to choose a driver."
-#~ msgstr "Ég veit ekki nóg um þennan prentara til að velja rekil."
-
-#~ msgid "Edit queue option"
-#~ msgstr "Breyta rofa"
-
-#~ msgid "Add queue option"
-#~ msgstr "Bæta við rofa"
-
-#~ msgid "Invalid option name"
-#~ msgstr "Ógilt heiti rofa"
-
-#~ msgid "Invalid value"
-#~ msgstr "Ógilt gildi"
-
-#~ msgid "Value for this option"
-#~ msgstr "Gildi þessa rofa"
-
-#~ msgid "None"
-#~ msgstr "Enginn"
-
-#~ msgid ""
-#~ "(this is the\n"
-#~ "recommended driver)"
-#~ msgstr ""
-#~ "(Þetta er rekillinn\n"
-#~ "sem mælt er með)"
-
-#~ msgid "There are no options available for this driver."
-#~ msgstr "Það eru engir rofar fyrir þennan rekil."
-
-#~ msgid ""
-#~ "This driver requires Hewlett Packard's hpijs driver (available in the "
-#~ "hpijs package) which does not appear to be installed."
-#~ msgstr ""
-#~ "Þessi rekill þarfnast hpijs pakkans frá Hewlett Packard sem virðist ekki "
-#~ "vera uppsettur."
-
-#~ msgid "Do you wish to use it anyway?"
-#~ msgstr "Viltu nota pakkann þrátt fyrir það?"
-
-#~ msgid ""
-#~ "This driver requires the Omni Print Driver System, which does not appear "
-#~ "to be installed."
-#~ msgstr ""
-#~ "Þessi rekill þarf á Omni prentreklapakkanum að halda sem virðist ekki "
-#~ "vera uppsettur."
-
-#~ msgid ""
-#~ "This driver requires the oki4drv daemon to be running, and it does not "
-#~ "appear to be."
-#~ msgstr ""
-#~ "Þessi rekill þarf að hafa oki4drv púkann keyrandi og hann virðist ekki "
-#~ "vera í gangi."
-
-#~ msgid "Local Printer Device"
-#~ msgstr "Staðbundið prenttæki"
-
-#~ msgid "IPP Print Queue"
-#~ msgstr "IPP biðröð"
-
-#~ msgid "Unix Print Queue"
-#~ msgstr "Unix prentbiðröð"
-
-#~ msgid "Windows Print Queue"
-#~ msgstr "Windows prentbiðröð"
-
-#~ msgid ""
-#~ "SMB print queues require the \"smbclient\" program, which does not appear "
-#~ "to be installed."
-#~ msgstr ""
-#~ "Til að prenta gegnum SMB þarftu \"smbclient\" forritið sem virðist ekki "
-#~ "vera uppsett á vélinni þinni."
-
-#~ msgid ""
-#~ "It is part of the \"samba-client\" package, as distributed by Red Hat."
-#~ msgstr "Það er hluti af \"samba-client\" pakkanum sem Red Hat dreyfir."
-
-#~ msgid "Do you wish to enable it anyway?"
-#~ msgstr "Viltu samt virkja það?"
-
-#~ msgid "Novell Print Queue"
-#~ msgstr "Novell prentbiðröð"
-
-#~ msgid ""
-#~ "NCP print queues require the \"nprint\" program, which does not appear to "
-#~ "be installed."
-#~ msgstr ""
-#~ "Til að prenta gegnum NCP þarftu \"nprint\" forritið sem virðist ekki vera "
-#~ "uppsett á vélinni þinni."
-
-#~ msgid "It is part of the \"ncpfs\" package, as distributed by Red Hat."
-#~ msgstr "Það er hluti af \"ncpfs\" pakkanum sem Red Hat dreyfir."
-
-#~ msgid "Custom Command"
-#~ msgstr "Sérsniðin skipun"
-
-#~ msgid "Postscript Printer"
-#~ msgstr "Postscript prentari"
-
-#~ msgid "Text Only Printer"
-#~ msgstr "Textaprentari"
-
-#~ msgid "Raw Print Queue"
-#~ msgstr "Hrá biðröð"
-
-#~ msgid "Custom Filter"
-#~ msgstr "Sérsniðin sía"
-
-#~ msgid "ERROR: No box named \"%s\" found.\n"
-#~ msgstr "VILLA: Enginn kassi með heitinu \"%s\" fannst.\n"
-
-#~ msgid "ERROR: box \"%s\" is not a writable interface.\n"
-#~ msgstr "VILLA: kassinn \"%s\" er ekki ritanlegur.\n"
-
-#~ msgid "Send Form-Feed (FF)"
-#~ msgstr "Senda Form-Feed (FF)"
-
-#~ msgid "Send End-of-Transmission (EOT)"
-#~ msgstr "Senda End-of-Transmission (EOT)"
-
-#~ msgid "Assume Unknown Data is Text"
-#~ msgstr "Reikna með að óþekkt gögn séu texti"
-
-#~ msgid "Prerender Postscript"
-#~ msgstr "Endurteikna Postscript"
-
-#~ msgid "Convert Text to Postscript"
-#~ msgstr "Breyta texta í PostScript"
-
-#~ msgid "Page Size"
-#~ msgstr "Síðustærð"
-
-#~ msgid "Effective Filter Locale"
-#~ msgstr "Staðfærsla síu"
-
-#~ msgid "Couldn't load driver information.\n"
-#~ msgstr "Gat ekki lesið upplýsingar rekils.\n"
-
-#~ msgid "You must run printconf-backend as root."
-#~ msgstr "Þú verður að keyra printconf-backend sem rót."
-
-#~ msgid "Sharing properties - %s"
-#~ msgstr "Eiginleikar netprentara - %s"
-
-#~ msgid "Sharing properties"
-#~ msgstr "Eiginleikar netprentara"
-
-#~ msgid "All hosts"
-#~ msgstr "Allar vélar"
-
-#~ msgid "Network device %s"
-#~ msgstr "Netkort %s"
-
-#~ msgid "Network devices %s"
-#~ msgstr "Netkort %s"
-
-#~ msgid "Network address %s"
-#~ msgstr "Netvistfang %s"
-
-#~ msgid "(unknown)"
-#~ msgstr "(óþekkt)"
-
-#~ msgid "Add allowed hosts - %s"
-#~ msgstr "Bæta við leyfðri vél - %s"
-
-#~ msgid "Edit allowed hosts - %s"
-#~ msgstr "Breyta leyfðri vél - %s"
-
-#~ msgid ""
-#~ "LPD connections will be accepted\n"
-#~ "on all interfaces, and jobs for\n"
-#~ "all queues will be accepted."
-#~ msgstr ""
-#~ "Tekið verður við LPD tengingum á\n"
-#~ "öllum netkortum og einnig við\n"
-#~ "öllum verkum fyrir allar biðraðir."
-
-#~ msgid "Invalid network address"
-#~ msgstr "Ógilt netvistfang"
-
-#~ msgid "Invalid netmask"
-#~ msgstr "Ógildur netmöskvi"
-
-#~ msgid "Invalid IP address"
-#~ msgstr "Ógilt IP vistfang"
-
-#~ msgid "*"
-#~ msgstr "*"
-
-#~ msgid "/"
-#~ msgstr "/"
-
-#~ msgid "72pt per inch"
-#~ msgstr "72 púnktar á tommu"
-
-#~ msgid "="
-#~ msgstr "="
-
-#~ msgid "ASC_II text test page"
-#~ msgstr "ASC_II textatilraunasíða"
-
-#~ msgid "About"
-#~ msgstr "Um"
-
-#~ msgid "Add a new option"
-#~ msgstr "Bæta við nýjum rofa"
-
-#~ msgid "Add a new print queue"
-#~ msgstr "Bæta við nýrri biðröð"
-
-#~ msgid "Add a new queue"
-#~ msgstr "Búa til nýja prentröð"
-
-#~ msgid "Add an allowed host"
-#~ msgstr "Bæta við leyfðri vél"
-
-#~ msgid "Add/edit queue option"
-#~ msgstr "Bæta viði/breyta rofa"
-
-#~ msgid "Allowed hosts"
-#~ msgstr "Leyfðar vélar"
-
-#~ msgid "Apply"
-#~ msgstr "Virkja"
-
-#~ msgid "Apply changes"
-#~ msgstr "Virkja breytingar"
-
-#~ msgid "At end of job:"
-#~ msgstr "Við enda prentverks:"
-
-#~ msgid "At start of job:"
-#~ msgstr "Við byrjun prentverks:"
-
-#~ msgid "Authentication"
-#~ msgstr "Auðkenning"
-
-#~ msgid "Autoselect driver"
-#~ msgstr "Velja rekil sjálfvirkt"
-
-#~ msgid "Available drivers:"
-#~ msgstr "Tiltækir reklar:"
-
-#~ msgid "Banner pages"
-#~ msgstr "Titilsíður"
-
-#~ msgid "Big5 PostScript test page"
-#~ msgstr "Big5 PostScript tilraunasíða"
-
-#~ msgid "Bottom margin (pt):"
-#~ msgstr "Neðri spássía í punktum:"
-
-#~ msgid "Choose the manufacturer"
-#~ msgstr "Veldu framleiðanda"
-
-#~ msgid "Choose the queue type"
-#~ msgstr "Veldu tegund biðraðar"
-
-#~ msgid "Choose the type of queue you want to use"
-#~ msgstr "Veldu tegund biðrararinnar sem þú vilt nota"
-
-#~ msgid "Choose which other computers may use this queue."
-#~ msgstr "Veldu hvaða vélar mega nota þessa biðröð."
-
-#~ msgid "Delete the selected queue"
-#~ msgstr "Eyða valinni prentröð"
-
-#~ msgid "Edit a print queue"
-#~ msgstr "Breyta prentröð"
-
-#~ msgid "Edit the selected queue"
-#~ msgstr "Breyta valinni prentröð"
-
-#~ msgid "Edit this host"
-#~ msgstr "Breyta þessari vél"
-
-#~ msgid "Edit this option"
-#~ msgstr "Breyta þessum rofa"
-
-#~ msgid "Enable _LPD protocol"
-#~ msgstr "Virkja _LPD prótókollinn"
-
-#~ msgid "Enter the device you would like to use."
-#~ msgstr "Sláðu inn tækið sem þú vilt nota."
-
-#~ msgid "Filter options"
-#~ msgstr "Rofar síu"
-
-#~ msgid "Finish, and create the new print queue"
-#~ msgstr "Klára og búa til nýju prentröðina"
-
-#~ msgid "For example: /dev/lp0"
-#~ msgstr "Til dæmis: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "Almennt"
-
-#~ msgid "Generic"
-#~ msgstr "Almennur"
-
-#~ msgid "IP port number (often 9100)"
-#~ msgstr "IP gáttarnúmer (oft 9100)"
-
-#~ msgid ""
-#~ "If you like, you can enter a description of the printer to help you "
-#~ "identify it more easily."
-#~ msgstr ""
-#~ "Hér getur þú slegið inn lýsingu á prentaranum svo það verði auðveldara að "
-#~ "þekkja hann í framtíðinni."
-
-#~ msgid "Imageable Area"
-#~ msgstr "Nýtanlegt svæði"
-
-#~ msgid "JPE_G test"
-#~ msgstr "JPE_G próf"
-
-#~ msgid "Japanese EUC PostScript test page"
-#~ msgstr "Japönsk EUC PostScript tilraunasíða"
-
-#~ msgid "Japanese JIS PostScript test page"
-#~ msgstr "Japönsk JIS PostScript tilraunasíða"
-
-#~ msgid "Japanese SJIS PostScript test page"
-#~ msgstr "Japönsk SJIS PostScript tilraunasíða"
-
-#~ msgid "Japanese _EUC text test page"
-#~ msgstr "Japönsk _EUC textatilraunasíða"
-
-#~ msgid "Japanese _JIS text test page"
-#~ msgstr "Japönsk _JIS textatilraunasíða"
-
-#~ msgid "Japanese _SJIS text test page"
-#~ msgstr "Japönsk _SJIS textatilraunasíða"
-
-#~ msgid "Left margin (pt):"
-#~ msgstr "Vinstri spássía í punktum:"
-
-#~ msgid "Linefeed translation"
-#~ msgstr "Þíða línubil"
-
-#~ msgid "Network _devices"
-#~ msgstr "Net_tæki"
-
-#~ msgid "Networked CUPS (_IPP)"
-#~ msgstr "Nettengur CUPS (_IPP)"
-
-#~ msgid "Networked _JetDirect"
-#~ msgstr "Nettengur _JetDirect"
-
-#~ msgid "Networked _Novell (NCP)"
-#~ msgstr "Nettengur _Novell (NCP)"
-
-#~ msgid "Networked _UNIX (LPD)"
-#~ msgstr "Nettengur _UNIX (LPD)"
-
-#~ msgid "Networked _Windows (SMB)"
-#~ msgstr "Nettengur _Windows (SMB)"
-
-#~ msgid ""
-#~ "On the following screens, you will be asked to provide basic information "
-#~ "for adding a new print queue.  You will be able to edit the more advanced "
-#~ "options afterwards.\n"
-#~ "\n"
-#~ "Nothing will be done to your settings until you hit \"Finish\" on the "
-#~ "last screen."
-#~ msgstr ""
-#~ "Á skjáunum sem á eftir koma verður þú beðinn um að slá inn þær "
-#~ "upplýsingar sem þarf til að bæta við nýrri prentröð.  Þú getur breytt "
-#~ "flóknari stillingunum síðar.\n"
-#~ "\n"
-#~ "Engum stillingum á vélinni þinni verður breytt fyrr en þú velur \"Klára\" "
-#~ "hnappinn á síðasta skjánum."
-
-#~ msgid "Password:"
-#~ msgstr "Lykilorð:"
-
-#~ msgid "Path:"
-#~ msgstr "Slóð:"
-
-#~ msgid "Patience"
-#~ msgstr "Þolinmæði"
-
-#~ msgid ""
-#~ "Please enter a name for this queue.  Choose a short name that begins with "
-#~ "a letter and contains no spaces."
-#~ msgstr ""
-#~ "Vinsamlegast sláðu inn heiti fyrir þessa prentröð.  Veldu stutt heiti sem "
-#~ "byrjar á bókstaf og hefur engin orðabil."
-
-#~ msgid "Printer configuration"
-#~ msgstr "Stillingar prentara"
-
-#~ msgid "Printer driver"
-#~ msgstr "Prentrekill"
-
-#~ msgid "Printer hostname or IP address"
-#~ msgstr "Vistfang eða heiti prentarana"
-
-#~ msgid "Printer model"
-#~ msgstr "Tegund prentara"
-
-#~ msgid "Printer/driver _notes..."
-#~ msgstr "_Athugasemdir prentara/rekils..."
-
-#~ msgid "Queue options"
-#~ msgstr "Rofar biðraðar"
-
-#~ msgid "Queue type"
-#~ msgstr "Tegund biðraðar"
-
-#~ msgid "Queue type:"
-#~ msgstr "Tegund biðraðar:"
-
-#~ msgid "Queue:"
-#~ msgstr "Biðröð:"
-
-#~ msgid "Remove this host from the list"
-#~ msgstr "Fjarlægja þessa vél úr listanum"
-
-#~ msgid "Remove this option"
-#~ msgstr "Fjarlægja þennan rofa"
-
-#~ msgid "Rescan devices"
-#~ msgstr "Leita aftur að tækjum"
-
-#~ msgid "Reset to the default options"
-#~ msgstr "Stilla rofa í sjálfgefin gildi"
-
-#~ msgid "Right margin (pt):"
-#~ msgstr "Hægri spássía í punktum:"
-
-#~ msgid "Select a queue type:"
-#~ msgstr "Veldu tegund biðrararinnar:"
-
-#~ msgid "Select the appropriate printer manufacturer and model."
-#~ msgstr "Veldu prentara, framleiðanda og gerð."
-
-#~ msgid "Server hostname or IP address:"
-#~ msgstr "Heiti eða vistfang þjóns:"
-
-#~ msgid "Set as _default"
-#~ msgstr "Gera _sjálfgefið"
-
-#~ msgid "Set as de_fault"
-#~ msgstr "Gera sjá_lfgefið"
-
-#~ msgid "Set as default queue"
-#~ msgstr "Gera að sjálfgefnu prentröðinni"
-
-#~ msgid "Short description:"
-#~ msgstr "Stutt lýsing:"
-
-#~ msgid "Short description: "
-#~ msgstr "Stutt lýsing: "
-
-#~ msgid "Single _IP address"
-#~ msgstr "Stakt _IP vistfang"
-
-#~ msgid "Specify..."
-#~ msgstr "Tiltaka..."
-
-#~ msgid "Strict RFC1179 compliance"
-#~ msgstr "Framfylgja RFC1179 stuðningi"
-
-#~ msgid "These settings are system-wide."
-#~ msgstr "Þessar stillingar eru víðværar."
-
-#~ msgid "This allows older systems to print to this machine"
-#~ msgstr "Þetta gerir eldri vélum kleyft að prenta á þessa vél"
-
-#~ msgid "This enables CUPS IPP browsing"
-#~ msgstr "Þetta virkjar IPP flakk í CUPS"
-
-#~ msgid ""
-#~ "This is the name of the queue.  It must begin with a letter and contain "
-#~ "no spaces."
-#~ msgstr ""
-#~ "Þetta er heiti prentraðarinnar.  Það verður að byrja á bókstaf og má ekki "
-#~ "innihalda orðabil."
-
-#~ msgid "Top margin (pt):"
-#~ msgstr "Efri spássía í punktum:"
-
-#~ msgid "Type in an IP address"
-#~ msgstr "Sláðu inn IP visfang"
-
-#~ msgid "Type in the netmask, or the CIDR mask length"
-#~ msgstr "Sláðu inn netmöskvann eða lengd CIDR maskans"
-
-#~ msgid "Type in the share name"
-#~ msgstr "Sláðu inn heiti netprentara"
-
-#~ msgid "Use control-F to search"
-#~ msgstr "Notaðu control-F til að leita"
-
-#~ msgid "User name:"
-#~ msgstr "Notandi:"
-
-#~ msgid "_A4 PostScript test page"
-#~ msgstr "_A4 PostScript tilraunasíða"
-
-#~ msgid "_Action"
-#~ msgstr "_Aðgerð"
-
-#~ msgid "_Add..."
-#~ msgstr "_Bæta við..."
-
-#~ msgid "_All hosts"
-#~ msgstr "_Allar vélar"
-
-#~ msgid "_Apply"
-#~ msgstr "_Virkja"
-
-#~ msgid "_Automatically find remote shared queues"
-#~ msgstr "_Finna sjálfvirkt prentraðir á öðrum vélum"
-
-#~ msgid "_Big5 text test page"
-#~ msgstr "_Big5 textatilraunasíða"
-
-#~ msgid "_CUPS test page"
-#~ msgstr "_CUPS tilraunasíða"
-
-#~ msgid "_Contents"
-#~ msgstr "_Athugasemdir"
-
-#~ msgid "_Custom device"
-#~ msgstr "_Sérsniðið tæki"
-
-#~ msgid "_Defaults"
-#~ msgstr "_Sjálfgefið"
-
-#~ msgid "_Delete"
-#~ msgstr "_Eyða"
-
-#~ msgid "_Delete queue"
-#~ msgstr "_Eyða prentröð"
-
-#~ msgid "_Duplex test"
-#~ msgstr "_Duplex próf"
-
-#~ msgid "_Edit queue"
-#~ msgstr "_Breyta prentröð"
-
-#~ msgid "_Edit..."
-#~ msgstr "_Sýsla..."
-
-#~ msgid "_Help"
-#~ msgstr "_Hjálp"
-
-#~ msgid "_Import PPD..."
-#~ msgstr "_Flytja inn PPD..."
-
-#~ msgid "_Network address"
-#~ msgstr "_IP vistfang"
-
-#~ msgid "_New queue"
-#~ msgstr "_Ný prentröð"
-
-#~ msgid "_Notes..."
-#~ msgstr "_Athugasemdir..."
-
-#~ msgid "_Remove"
-#~ msgstr "_Fjarlægja"
-
-#~ msgid "_Rescan devices"
-#~ msgstr "_Leita aftur að tækjum"
-
-#~ msgid "_Sharing..."
-#~ msgstr "_Deila..."
-
-#~ msgid "_Test"
-#~ msgstr "_Prófa"
-
-#~ msgid "_This queue is available to other computers"
-#~ msgstr "Þ_essi biðröð er nothæf fyrir aðrar vélar"
-
-#~ msgid "_US Letter PostScript test page"
-#~ msgstr "_US Letter tilraunasíða"
-
-#~ msgid "_classified"
-#~ msgstr "_hernaðarleyndó"
-
-#~ msgid "_none"
-#~ msgstr "_ekkert"
-
-#~ msgid "_secret"
-#~ msgstr "_leyndó"
-
-#~ msgid "_standard"
-#~ msgstr "_staðlað"
-
-#~ msgid "_topsecret"
-#~ msgstr "_algertleyndó"
-
-#~ msgid "_unclassified"
-#~ msgstr "_ekkileyndó"
-
-#~ msgid "c_onfidential"
-#~ msgstr "_einkamál"
-
-#~ msgid "ipp"
-#~ msgstr "ipp"
-
-#~ msgid "jetdirect"
-#~ msgstr "jetdirect"
-
-#~ msgid "local"
-#~ msgstr "staðbundinn"
-
-#~ msgid "lpd"
-#~ msgstr "lpd"
-
-#~ msgid "ncp"
-#~ msgstr "ncp"
-
-#~ msgid "none"
-#~ msgstr "enginn"
-
-#~ msgid "smb"
-#~ msgstr "smb"
-
-#~ msgid "Configure printers"
-#~ msgstr "Stilla prentara"
-
-#~ msgid "Printing"
-#~ msgstr "Prenta"
+#. Foomatic database problem of some sort.
+#: ../system-config-printer.py:2815
+msgid "Database error"
+msgstr ""
+
+#: ../system-config-printer.py:2816
+#, python-format
+msgid "The '%s' driver cannot be used with printer '%s %s'."
+msgstr ""
+
+#. This printer references some XML that is not
+#. installed by default.  Point the user at the
+#. package they need to install.
+#: ../system-config-printer.py:2826
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr ""
+
+#. This error came from trying to open the PPD file.
+#: ../system-config-printer.py:2833
+msgid "PPD error"
+msgstr ""
+
+#: ../system-config-printer.py:2835
+msgid "Failed to read PPD file.  Possible reason follows:"
+msgstr ""
+
+#: ../system-config-printer.py:3121 ../system-config-printer.py:3128
+msgid "Missing driver"
+msgstr ""
+
+#: ../system-config-printer.py:3122
+#, python-format
+msgid ""
+"Printer '%s' requires the %s package but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+
+#: ../system-config-printer.py:3129
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+
+#: ../system-config-printer.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../system-config-printer.glade.h:2
+msgid " PPD "
+msgstr " PPD "
+
+#: ../system-config-printer.glade.h:3
+msgid ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+
+#: ../system-config-printer.glade.h:9
+msgid "<b>Authentication</b>"
+msgstr "<b>Auðkenning</b>"
+
+#: ../system-config-printer.glade.h:10
+msgid "<b>Banner</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:11
+#, fuzzy
+msgid "<b>Basic Server Settings</b>"
+msgstr "Rofar rekils"
+
+#: ../system-config-printer.glade.h:12
+msgid "<b>Comment about the Driver</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:13
+msgid "<b>Comment about the Printer</b>"
+msgstr "<b>Athugasemd um prentarann</b>"
+
+#: ../system-config-printer.glade.h:14
+#, fuzzy
+msgid "<b>Common Options</b>"
+msgstr "<b>Veldu tengingi</b>"
+
+#: ../system-config-printer.glade.h:15
+msgid "<b>Default Printer</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:16
+#, fuzzy
+msgid "<b>Description</b>"
+msgstr "Lýsing"
+
+#: ../system-config-printer.glade.h:17
+msgid "<b>Description</b> (optional)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:18
+#, fuzzy
+msgid "<b>Image Options</b>"
+msgstr "Lýsing"
+
+#: ../system-config-printer.glade.h:19
+msgid "<b>Information about the PPD</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:20
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Staðsetning LPD netprentara</b>"
+
+#: ../system-config-printer.glade.h:21
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Staðsetning netprentara</b>"
+
+#: ../system-config-printer.glade.h:22
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Staðsetning</b> (óþarft)"
+
+#: ../system-config-printer.glade.h:23
+msgid "<b>Other Options (Advanced)</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:24
+msgid "<b>Policies</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:25
+msgid "<b>Printer Name</b>"
+msgstr "<b>Heiti prentara</b>"
+
+#: ../system-config-printer.glade.h:26
+msgid "<b>Printers to be members of this Class</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:27
+msgid "<b>Select Connection</b>"
+msgstr "<b>Veldu tengingi</b>"
+
+#: ../system-config-printer.glade.h:28
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Stillingar raðtengingar</b>"
+
+#: ../system-config-printer.glade.h:29
+msgid "<b>Settings</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:30
+msgid "<b>State</b>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:31
+#, fuzzy
+msgid "<b>Text Options</b>"
+msgstr "Lýsing"
+
+#: ../system-config-printer.glade.h:32
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:34
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr ""
+
+#: ../system-config-printer.glade.h:35
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.glade.h:41
+msgid "About"
+msgstr "Um"
+
+#: ../system-config-printer.glade.h:42
+msgid "About System-Config-Printer"
+msgstr "Um System-Config-Printer"
+
+#: ../system-config-printer.glade.h:43
+msgid "Accepting jobs"
+msgstr ""
+
+#: ../system-config-printer.glade.h:44
+msgid "Access control"
+msgstr ""
+
+#: ../system-config-printer.glade.h:45
+msgid "Add or Remove Members"
+msgstr ""
+
+#: ../system-config-printer.glade.h:46
+msgid "Allow printing for everyone except these users:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:47
+msgid "Allow remote administration"
+msgstr ""
+
+#: ../system-config-printer.glade.h:48
+msgid "Allow users to cancel any job (not just their own)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:49
+msgid "Apply"
+msgstr "Virkja"
+
+#: ../system-config-printer.glade.h:50
+msgid "Authors"
+msgstr "Höfundar"
+
+#: ../system-config-printer.glade.h:51
+msgid "Baud Rate"
+msgstr ""
+
+#: ../system-config-printer.glade.h:52
+msgid "Bottom margin:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:53
+msgid "Brightness:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:54
+msgid "CUPS server:"
+msgstr "CUPS þjónn:"
+
+#: ../system-config-printer.glade.h:55
+msgid "Change PPD"
+msgstr "Breyta PPD"
+
+#: ../system-config-printer.glade.h:56
+#, fuzzy
+msgid "Change..."
+msgstr "_Deila..."
+
+#: ../system-config-printer.glade.h:57
+msgid "Characters per inch:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:58
+msgid "Class Members"
+msgstr ""
+
+#: ../system-config-printer.glade.h:59
+#, fuzzy
+msgid "Columns:"
+msgstr "Athugasemdir: "
+
+#: ../system-config-printer.glade.h:60
+msgid "Comments: "
+msgstr "Athugasemdir: "
+
+#: ../system-config-printer.glade.h:61
+msgid "Connect to CUPS server"
+msgstr "tengjast CUPS þjóni"
+
+#: ../system-config-printer.glade.h:62
+msgid "Connecting"
+msgstr "Tengist"
+
+#: ../system-config-printer.glade.h:64
+#, no-c-format
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+"Þengist þjóni:\n"
+"%s\n"
+
+#: ../system-config-printer.glade.h:67
+msgid "Copies:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:68
+msgid "Copy Printer"
+msgstr "Afrita prentara"
+
+#: ../system-config-printer.glade.h:69
+msgid "Copyright"
+msgstr "Höfundarréttur"
+
+#: ../system-config-printer.glade.h:70
+#, fuzzy
+msgid "Data Bits"
+msgstr "Smáatriði"
+
+#: ../system-config-printer.glade.h:71
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+
+#: ../system-config-printer.glade.h:80
+#, fuzzy
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr "Sjálfgefið"
+
+#: ../system-config-printer.glade.h:83
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+
+#: ../system-config-printer.glade.h:87
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:92
+msgid "Deny printing for everyone except these users:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:93
+#, fuzzy
+msgid "Description:"
+msgstr "Lýsing"
+
+#: ../system-config-printer.glade.h:94
+msgid "Device"
+msgstr "Tæki"
+
+#: ../system-config-printer.glade.h:95
+msgid "Device URI"
+msgstr "URI tækis"
+
+#: ../system-config-printer.glade.h:96
+#, fuzzy
+msgid "Device URI:"
+msgstr "Tæki:"
+
+#: ../system-config-printer.glade.h:97
+#, fuzzy
+msgid "Device description."
+msgstr "Lýsing"
+
+#: ../system-config-printer.glade.h:98
+msgid "DirectJet"
+msgstr "DirectJet"
+
+#: ../system-config-printer.glade.h:99
+msgid "Driver"
+msgstr "Rekill"
+
+#: ../system-config-printer.glade.h:100
+msgid "Empty"
+msgstr "Tómt"
+
+#: ../system-config-printer.glade.h:101
+msgid "Enabled"
+msgstr ""
+
+#: ../system-config-printer.glade.h:102
+msgid "Ending Banner:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:103
+msgid "Enter Device URI"
+msgstr "Sláðu inn URI tækisins"
+
+#: ../system-config-printer.glade.h:104
+msgid "Error Policy: \t"
+msgstr ""
+
+#: ../system-config-printer.glade.h:105
+msgid "Finishings:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:106
+msgid "Flow Control"
+msgstr ""
+
+#: ../system-config-printer.glade.h:107
+msgid "Gamma:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:108
+#, fuzzy
+msgid "Goto Server"
+msgstr "þjónn"
+
+#: ../system-config-printer.glade.h:109
+msgid "Hold until:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:110
+msgid "Hostname"
+msgstr "Vélarheiti"
+
+#: ../system-config-printer.glade.h:111
+msgid "Hue adjustment:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:112
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr ""
+
+#: ../system-config-printer.glade.h:113
+msgid "Human-readable location such as \"Lab 1\""
+msgstr ""
+
+#: ../system-config-printer.glade.h:114
+msgid "IPP"
+msgstr "IPP"
+
+#: ../system-config-printer.glade.h:116
+msgid "Job Options"
+msgstr "Rofar prentverks"
+
+#: ../system-config-printer.glade.h:117
+msgid "Job priority:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:118
+msgid "LPD"
+msgstr "LPD"
+
+#: ../system-config-printer.glade.h:119
+msgid "Left margin:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:120
+msgid ""
+"Left to right, top to bottom\n"
+"Left to right, bottom to top\n"
+"Right to left, top to bottom\n"
+"Right to left, bottom to top\n"
+"Top to bottom, left to right\n"
+"Top to bottom, right to left\n"
+"Bottom to top, left to right\n"
+"Bottom to top, right to left"
+msgstr ""
+
+#: ../system-config-printer.glade.h:128
+msgid "Lines per inch:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:129
+msgid "Location:"
+msgstr "Staðsetning:"
+
+#: ../system-config-printer.glade.h:130
+msgid "Make Default Printer"
+msgstr "Gera að sjálfgefnum prentara"
+
+#: ../system-config-printer.glade.h:131
+msgid "Make and Model:"
+msgstr "Framleiðandi og gerð:"
+
+#: ../system-config-printer.glade.h:132
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr ""
+"Má innihalda hvaða prentanlega staf sem er nema \"/\", \"#\" og orðabil"
+
+#: ../system-config-printer.glade.h:133
+msgid "Media:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:134
+msgid "Members"
+msgstr "Meðlimir"
+
+#: ../system-config-printer.glade.h:135
+msgid "Mirror"
+msgstr ""
+
+#: ../system-config-printer.glade.h:136
+msgid "More"
+msgstr ""
+
+#: ../system-config-printer.glade.h:137
+msgid "Name"
+msgstr "Heiti"
+
+#: ../system-config-printer.glade.h:138
+msgid "New Clas_s"
+msgstr "Nýr fl_okkur"
+
+#: ../system-config-printer.glade.h:141
+msgid "New _Printer"
+msgstr "Nýr _prentari"
+
+#: ../system-config-printer.glade.h:142
+msgid "New name for the printer"
+msgstr "Nýtt heiti prentara"
+
+#: ../system-config-printer.glade.h:143
+msgid ""
+"None\n"
+"Staple\n"
+"Punch\n"
+"Cover\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Staple (top left)\n"
+"Staple (bottom left)\n"
+"Staple (top right)\n"
+"Staple (bottom right)\n"
+"Edge stitch (left)\n"
+"Edge stitch (top)\n"
+"Edge stitch (right)\n"
+"Edge stitch (bottom)\n"
+"Staple dual (left)\n"
+"Staple dual (top)\n"
+"Staple dual (right)\n"
+"Staple dual (bottom)\n"
+"Bind (left)\n"
+"Bind (top)\n"
+"Bind (right)\n"
+"Bind (bottom)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:171
+msgid ""
+"One-sided\n"
+"Two-sided (long edge)\n"
+"Two-sided (short edge)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:174
+msgid "Operation Policy:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:175
+msgid "Orientation:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:176
+msgid "PPD"
+msgstr "PPD"
+
+#: ../system-config-printer.glade.h:177
+msgid "Pages per side layout:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:178
+msgid "Pages per side:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:179
+msgid "Parity"
+msgstr "Parity"
+
+#: ../system-config-printer.glade.h:180 ../applet.glade.h:5
+msgid "Password:"
+msgstr "Lykilorð:"
+
+#: ../system-config-printer.glade.h:181
+msgid "Policies"
+msgstr "Stefnur"
+
+#: ../system-config-printer.glade.h:182
+msgid "Port number"
+msgstr "Gátt"
+
+#: ../system-config-printer.glade.h:183
+msgid ""
+"Portrait (no rotation)\n"
+"Landscape (90°)\n"
+"Reverse landscape (270°)\n"
+"Reverse portrait (180°)"
+msgstr ""
+
+#: ../system-config-printer.glade.h:187
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: ../system-config-printer.glade.h:188
+msgid "Pretty print"
+msgstr ""
+
+#: ../system-config-printer.glade.h:192
+msgid "Printer State:"
+msgstr "Ástand prentara:"
+
+#: ../system-config-printer.glade.h:193
+msgid "Printername"
+msgstr "Heiti prentara"
+
+#: ../system-config-printer.glade.h:194
+msgid "Probe"
+msgstr "Leita"
+
+#: ../system-config-printer.glade.h:195
+msgid "Provide PPD file"
+msgstr "Nota PPD skrá"
+
+#: ../system-config-printer.glade.h:196
+msgid "Require encryption"
+msgstr "Nota dulritun"
+
+#: ../system-config-printer.glade.h:197
+msgid "Reset"
+msgstr ""
+
+#: ../system-config-printer.glade.h:198
+msgid "Reset to system default"
+msgstr ""
+
+#: ../system-config-printer.glade.h:199
+msgid "Right margin:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:200
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../system-config-printer.glade.h:201
+msgid "SMB"
+msgstr "SMB"
+
+#: ../system-config-printer.glade.h:202
+msgid "Saturation:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:203
+msgid "Save debugging information for troubleshooting"
+msgstr "Vista aflúsunarupplýsingar"
+
+#: ../system-config-printer.glade.h:204
+msgid "Scale to fit"
+msgstr ""
+
+#: ../system-config-printer.glade.h:205
+msgid "Scaling:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:206
+msgid "Select A File"
+msgstr "Veldu skrá"
+
+#: ../system-config-printer.glade.h:207
+msgid "Select Printer from database"
+msgstr "Velja prentara úr gagnagrunni"
+
+#: ../system-config-printer.glade.h:208
+msgid "Serial"
+msgstr "Raðtengdur"
+
+#: ../system-config-printer.glade.h:209
+msgid "Settings"
+msgstr "Stillingar"
+
+#: ../system-config-printer.glade.h:210
+msgid "Share published printers connected to this system"
+msgstr ""
+
+#: ../system-config-printer.glade.h:211
+msgid "Shared"
+msgstr "Netprentari"
+
+#: ../system-config-printer.glade.h:212
+msgid "Show printers shared by other systems"
+msgstr ""
+
+#: ../system-config-printer.glade.h:213
+msgid "Sides:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:214
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+
+#: ../system-config-printer.glade.h:215
+msgid "Starting Banner:"
+msgstr ""
+
+#: ../system-config-printer.glade.h:216
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../system-config-printer.glade.h:218
+#, no-c-format
+msgid "System-Config-Printer %s"
+msgstr "System-Config-Printer %s"
+
+#: ../system-config-printer.glade.h:219
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+
+#: ../system-config-printer.glade.h:220
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+
+#: ../system-config-printer.glade.h:221
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Með þessari aðferð týnast allar stillingar. Sjálfgefnar stillingar úr PPD "
+"skránni verða virkar."
+
+#: ../system-config-printer.glade.h:222
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+
+#: ../system-config-printer.glade.h:223
+msgid "Top margin:"
+msgstr "Efri spássía:"
+
+#: ../system-config-printer.glade.h:224
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Reyna að afrita rofastillingar úr gömlu PPD skránni."
+
+#: ../system-config-printer.glade.h:225
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Nota nýju PPD (Postscript Printer Description) eins og hún er."
+
+#: ../system-config-printer.glade.h:226
+msgid "User name:"
+msgstr "Notandi:"
+
+#: ../system-config-printer.glade.h:227
+msgid "Username:"
+msgstr "Notandi:"
+
+#: ../system-config-printer.glade.h:228
+msgid "Word wrap"
+msgstr "Línufletting"
+
+#: ../system-config-printer.glade.h:229
+msgid "_Do not apply"
+msgstr "_Ekki sækja um"
+
+#: ../system-config-printer.glade.h:230
+msgid "_Edit"
+msgstr "_Sýsla"
+
+#: ../system-config-printer.glade.h:231 ../applet.glade.h:10
+msgid "_File"
+msgstr "_Skrá"
+
+#: ../system-config-printer.glade.h:232
+msgid "_Goto Server"
+msgstr "Fara á þjón"
+
+#: ../system-config-printer.glade.h:233
+msgid "_Help"
+msgstr "_Hjálp"
+
+#: ../system-config-printer.glade.h:234
+msgid "_Verify..."
+msgstr "_Staðfesta..."
+
+#: ../system-config-printer.glade.h:235
+msgid "default"
+msgstr "Sjálfgefið"
+
+#: ../system-config-printer.glade.h:236
+msgid "none"
+msgstr "enginn"
+
+#: ../system-config-printer.glade.h:237
+msgid "points"
+msgstr "púnktar"
+
+#: ../system-config-printer.glade.h:238
+msgid "points (72 points per inch)"
+msgstr "púnktar (72 á tommu)"
+
+#: ../system-config-printer.desktop.in.h:1
+msgid "Configure printers"
+msgstr "Stilla prentara"
+
+#: ../system-config-printer.desktop.in.h:2
+msgid "Printing"
+msgstr "Prenta"
+
+#: ../applet.py:80
+msgid "Toner low"
+msgstr "Tóner að verða búinn"
+
+#: ../applet.py:81
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "Prentarinn '%s' er að verða búinn með tónerinn."
+
+#: ../applet.py:82
+msgid "Toner empty"
+msgstr "Tóner búinn"
+
+#: ../applet.py:83
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "Prentarinn '%s' hefur klárað tónerinn."
+
+#: ../applet.py:84
+msgid "Cover open"
+msgstr "Lokið er opið"
+
+#: ../applet.py:85
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "Lokið er opið á prentaranum '%s'."
+
+#: ../applet.py:86
+msgid "Door open"
+msgstr "Hurðin er opin"
+
+#: ../applet.py:87
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "Hurðin er opin á prentaranum '%s'."
+
+#: ../applet.py:88
+msgid "Paper low"
+msgstr "Pappír að verða búinn"
+
+#: ../applet.py:89
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "Prentarinn '%s' er að verða pappírslaus."
+
+#: ../applet.py:90
+msgid "Out of paper"
+msgstr "Pappír búinn"
+
+#: ../applet.py:91
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "Prentarinn '%s' er pappírslaus."
+
+#: ../applet.py:92
+msgid "Ink low"
+msgstr "Blekið að verða búið"
+
+#: ../applet.py:93
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "Prentarinn '%s' er að verða bleklaus."
+
+#: ../applet.py:94
+msgid "Ink empty"
+msgstr "Blekið er búið"
+
+#: ../applet.py:95
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "Prentarinn '%s' er bleklaus."
+
+#: ../applet.py:96
+msgid "Not connected?"
+msgstr "Ekki tengdur?"
+
+#: ../applet.py:97
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "Prentarinn '%s' er kanski ekki tengdur."
+
+#: ../applet.py:104
+msgid "Printer report"
+msgstr "Prentaraskýrsla"
+
+#: ../applet.py:106
+msgid "Printer warning"
+msgstr "Prentaraaðvörun"
+
+#: ../applet.py:108
+msgid "Printer error"
+msgstr "Prentaravilla"
+
+#: ../applet.py:109
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "Prentari '%s': '%s'."
+
+#: ../applet.py:182
+msgid "Job"
+msgstr "Verk"
+
+#: ../applet.py:183
+msgid "Document"
+msgstr "Skjal"
+
+#: ../applet.py:185
+msgid "Size"
+msgstr "Stærð"
+
+#: ../applet.py:186
+msgid "Time submitted"
+msgstr "Sent klukkan"
+
+#: ../applet.py:187
+msgid "Status"
+msgstr "Staða"
+
+#: ../applet.py:238
+msgid "Message"
+msgstr "Skilaboð"
+
+#: ../applet.py:555
+msgid "1 hour ago"
+msgstr "fyrir 1 klst"
+
+#: ../applet.py:557
+msgid "1 hour and 1 minute ago"
+msgstr "fyrir 1 klst og 1 mín"
+
+#: ../applet.py:559
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr "fyrir 1 klst og %d mín"
+
+#: ../applet.py:562
+#, python-format
+msgid "%d hours ago"
+msgstr "fyrir %d klst"
+
+#: ../applet.py:564
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr "fyrir %d klst og 1 mín"
+
+#: ../applet.py:566
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr "fyrir %d klst og %d mín"
+
+#: ../applet.py:572
+msgid "a minute ago"
+msgstr "fyrir mínútu"
+
+#: ../applet.py:574
+#, python-format
+msgid "%d minutes ago"
+msgstr "fyrir %d mínútum"
+
+#: ../applet.py:629
+msgid "No documents queued"
+msgstr "Engin skjöl í bið"
+
+#: ../applet.py:632
+msgid "1 document queued"
+msgstr "1 skjal í bið"
+
+#: ../applet.py:635
+#, python-format
+msgid "%d documents queued"
+msgstr "%d skjöl í bið"
+
+#: ../applet.py:682
+msgid "Pending"
+msgstr "Í bið"
+
+#: ../applet.py:683
+msgid "Held"
+msgstr "Haldið"
+
+#: ../applet.py:686
+msgid "Canceled"
+msgstr "Hætt við"
+
+#: ../applet.py:687
+msgid "Aborted"
+msgstr "Hætt við"
+
+#: ../applet.py:688
+msgid "Completed"
+msgstr "Lokið"
+
+#: ../applet.py:946
+#, fuzzy
+msgid "Printer added"
+msgstr "Heiti prentara"
+
+#: ../applet.py:948
+msgid "Missing printer driver"
+msgstr ""
+
+#: ../applet.py:951
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr ""
+
+#: ../applet.py:954
+#, fuzzy
+msgid "Configure"
+msgstr "Stilla prentara"
+
+#. Model mismatch
+#: ../applet.py:957
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr ""
+
+#: ../applet.py:961
+msgid "Find driver"
+msgstr ""
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr "Staða prentverks"
+
+#: ../applet.glade.h:6
+msgid "Printer status"
+msgstr "Staða prentara"
+
+#: ../applet.glade.h:7
+msgid "Re_print"
+msgstr "Endur_prenta"
+
+#: ../applet.glade.h:8
+msgid "Show _completed jobs"
+msgstr "Sýna _kláruð prentverk"
+
+#: ../applet.glade.h:9
+msgid "Show _printer status"
+msgstr "Birta stöðu _prentara"
+
+#: ../applet.glade.h:11
+msgid "_Hide"
+msgstr "_Fela"
+
+#: ../applet.glade.h:12
+msgid "_Hold"
+msgstr "_Halda"
+
+#: ../applet.glade.h:13
+msgid "_Release"
+msgstr "_Sleppa"
+
+#: ../applet.glade.h:14
+msgid "_View"
+msgstr "_Birta"
+
+#: ../print-applet.desktop.in.h:1
+#, fuzzy
+msgid "Print Queue Applet"
+msgstr "Prentbiðraðarsmáforrit"
+
+#: ../print-applet.desktop.in.h:2
+msgid "System tray icon for managing print jobs"
+msgstr "Táknmynd á spjaldið til að stýra prentverkum"
+
+#: ../manage-print-jobs.desktop.in.h:1
+msgid "Cancel, pause, resume or reprint jobs"
+msgstr "Hætta við, halda, sleppa eða endurprenta verk"
+
+#: ../manage-print-jobs.desktop.in.h:2
+#, fuzzy
+msgid "Manage Print Jobs"
+msgstr "Stýra prentverkum"
+
+#: ../my-default-printer.desktop.in.h:2
+#, fuzzy
+msgid "Select default printer"
+msgstr "Gera að sjálfgefnum prentara"

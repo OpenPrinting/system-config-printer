@@ -1,235 +1,391 @@
+# translation of ja.po to
 # translation of ja.po to Japanese
 # print-conf-gui
-# Copyright (C) 2001,2002,2003, 2004 Free Software Foundation, Inc.
+# Copyright (C) 2001,2002,2003, 2004, 2006, 2007 Free Software Foundation, Inc.
 # Yukihiro Nakai <ynakai@redhat.com>, 2001.
 # James Hashida <khashida@redhat.com>, 2002,2003.
-# Noriko Mizumoto <noriko@redhat.com>, 2003.
+# Noriko Mizumoto <noriko@redhat.com>, 2003, 2006, 2007.
 # Tadashi Jokagi <fedora@elf.no-ip.org>, 2004.
 # Hirofumi Saito <hi_saito@yk.rim.or.jp>, 2004, 2006.
+# kiyoto james hashida <khashida@brisbane.redhat.com>, 2006.
+# Kiyoto James Hashida <khashida@redhat.com>, 2007.
+# Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2007.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-23 17:34+0100\n"
-"PO-Revision-Date: 2006-06-24 22:29+0900\n"
-"Last-Translator: Hirofumi Saito <hi_saito@yk.rim.or.jp>\n"
-"Language-Team: Japanese <fedora-trans-ja@redhat.com>\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2007-06-15 18:34+0100\n"
+"PO-Revision-Date: 2007-06-09 22:02+0900\n"
+"Last-Translator: Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>\n"
+"Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.2\n"
+"X-Generator: KBabel 1.9.1\n"
 
-#: optionwidgets.py:94
+#: ../cupshelpers.py:28
+msgid "Idle"
+msgstr "アイドル状態"
+
+#: ../cupshelpers.py:29 ../applet.py:684
+msgid "Processing"
+msgstr "処理中"
+
+#: ../cupshelpers.py:30
+msgid "Busy"
+msgstr "ビジー"
+
+#: ../cupshelpers.py:31 ../applet.py:685
+msgid "Stopped"
+msgstr "停止"
+
+#: ../cupshelpers.py:48 ../applet.py:694
+msgid "Unknown"
+msgstr "不明"
+
+#: ../my-default-printer.py:117 ../my-default-printer.desktop.in.h:1
+#, fuzzy
+msgid "Default Printer"
+msgstr "デフォルトのプリンターにする"
+
+#: ../my-default-printer.py:121 ../my-default-printer.py:152
+#, fuzzy
+msgid "_Use System Default"
+msgstr "システムデフォルトにリセット"
+
+#: ../my-default-printer.py:122
+#, fuzzy
+msgid "_Set Default"
+msgstr "デフォルト"
+
+#: ../my-default-printer.py:132 ../system-config-printer.glade.h:190
+#: ../applet.py:184 ../applet.py:224
+msgid "Printer"
+msgstr "プリンター"
+
+#: ../my-default-printer.py:136
+#, fuzzy
+msgid "Location"
+msgstr "場所:"
+
+#: ../optionwidgets.py:108
 msgid "Conflicts with:"
 msgstr "以下とコンフリクト: "
 
-#: system-config-printer.py:172
-msgid "Copyright 2006 Red Hat, Inc."
-msgstr "Copyright 2006 Red Hat, Inc."
+#: ../system-config-printer.py:228
+msgid "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "Copyright 2006, 2007 Red Hat, Inc."
 
-#: system-config-printer.py:208
+#: ../system-config-printer.py:264
 msgid "Server Settings"
 msgstr "サーバー設定"
 
-#: system-config-printer.py:209
-msgid "Local Printers"
-msgstr "ローカルプリンタ"
+#: ../system-config-printer.py:273 ../system-config-printer.py:275
+msgid "Members of this class"
+msgstr "このクラスのメンバー"
 
-#: system-config-printer.py:210
-msgid "Local Classes"
-msgstr "ローカルクラス"
-
-#: system-config-printer.py:211
-msgid "Remote Printers"
-msgstr "リモートプリンタ"
-
-#: system-config-printer.py:212
-msgid "Remote Classes"
-msgstr "リモートクラス"
-
-#: system-config-printer.py:221 system-config-printer.py:223
-msgid "Members of this Class"
-msgstr "クラスのメンバー"
-
-#: system-config-printer.py:222 system-config-printer.py:224
+#: ../system-config-printer.py:274 ../system-config-printer.py:276
 msgid "Others"
 msgstr "その他"
 
-#: system-config-printer.py:225
+#: ../system-config-printer.py:277
 msgid "Devices"
 msgstr "デバイス"
 
-#: system-config-printer.py:226
+#: ../system-config-printer.py:278
 msgid "Makes"
 msgstr "製造元"
 
-#: system-config-printer.py:227
+#: ../system-config-printer.py:279
 msgid "Models"
 msgstr "モデル"
 
-#: system-config-printer.py:228
+#: ../system-config-printer.py:280
 msgid "Drivers"
-msgstr "ドライバ"
+msgstr "ドライバー"
 
-#: system-config-printer.py:229
+#: ../system-config-printer.py:281
 msgid "Users"
 msgstr "ユーザー"
 
-#: system-config-printer.py:240
+#: ../system-config-printer.py:292
 msgid "PostScript Printer Description (*.ppd[.gz])"
 msgstr "PostScript プリンター記述 (*.ppd[.gz])"
 
-#: system-config-printer.py:259
+#. SMB list columns
+#: ../system-config-printer.py:312
 msgid "Share"
 msgstr "共有"
 
-#: system-config-printer.py:265
+#: ../system-config-printer.py:318
 msgid "Comment"
 msgstr "コメント"
 
-#: system-config-printer.py:318
+#: ../system-config-printer.py:551
 #, python-format
 msgid "Printer configuration - %s"
-msgstr "プリンタ設定 - %s"
+msgstr "プリンター設定 - %s"
 
-#: system-config-printer.py:321
+#: ../system-config-printer.py:554
 #, python-format
 msgid "Connected to %s"
 msgstr "%s に接続"
 
-#: system-config-printer.py:323
+#: ../system-config-printer.py:556 ../system-config-printer.py:1170
 msgid "Not connected"
 msgstr "未接続"
 
-#: system-config-printer.py:463
+#: ../system-config-printer.py:637
+msgid "Local Printers"
+msgstr "ローカルプリンター"
+
+#: ../system-config-printer.py:638
+msgid "Local Classes"
+msgstr "ローカルクラス"
+
+#: ../system-config-printer.py:639
+msgid "Remote Printers"
+msgstr "リモートプリンター"
+
+#: ../system-config-printer.py:640
+msgid "Remote Classes"
+msgstr "リモートクラス"
+
+#: ../system-config-printer.py:736
 #, python-format
 msgid ""
-"Connecting to Server:\n"
+"Connecting to server:\n"
 "%s"
 msgstr ""
 "サーバーに接続中:\n"
 "%s"
 
-#: system-config-printer.py:748
+#: ../system-config-printer.py:1099 ../system-config-printer.glade.h:115
+msgid "Installable Options"
+msgstr "インストールできるオプション"
+
+#: ../system-config-printer.py:1100 ../system-config-printer.glade.h:191
+msgid "Printer Options"
+msgstr "プリンターオプション"
+
+#: ../system-config-printer.py:1109
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
-"these conflictes are resolved."
+"these conflicts are resolved."
 msgstr ""
-"コンフリクトしているオプションが\n"
-"あります。コンフリクトが解決され\n"
-"た後に変更が適用されます。"
+"競合しているオプションが\n"
+"あります。競合が解決され\n"
+"ないと変更は適用できません。"
 
-#: system-config-printer.py:774
+#: ../system-config-printer.py:1138 ../system-config-printer.py:1154
+#: ../applet.py:333
 msgid "Not authorized"
 msgstr "認証されていません"
 
-#: system-config-printer.py:775
+#: ../system-config-printer.py:1139 ../applet.py:334
 msgid "The password may be incorrect."
-msgstr "パスワードが異なります。"
+msgstr "パスワードが正しくない可能性があります。"
 
-#: system-config-printer.py:778
+#: ../system-config-printer.py:1142 ../system-config-printer.py:1175
+#: ../applet.py:337
 msgid "CUPS server error"
 msgstr "CUPS サーバーエラー"
 
-#: system-config-printer.py:779
+#: ../system-config-printer.py:1143 ../applet.py:338
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS 操作中にエラーが発生しました:  '%s'."
 
-#: system-config-printer.py:803
+#: ../system-config-printer.py:1155
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr ""
+"パスワードが正しくないか、サーバーがリモート管理を拒否するよう設定されている"
+"可能性があります。"
+
+#: ../system-config-printer.py:1160
+msgid "Bad request"
+msgstr "不正な要求です"
+
+#: ../system-config-printer.py:1162
+msgid "Not found"
+msgstr "見つかりませんでした"
+
+#: ../system-config-printer.py:1164
+msgid "Request timeout"
+msgstr "要求がタイムアウトです"
+
+#: ../system-config-printer.py:1166
+msgid "Upgrade required"
+msgstr "アップグレードが必要です"
+
+#: ../system-config-printer.py:1168
+msgid "Server error"
+msgstr "サーバーのエラーです"
+
+#: ../system-config-printer.py:1172
+#, python-format
+msgid "status %d"
+msgstr "%d の状態"
+
+#: ../system-config-printer.py:1176
+#, python-format
+msgid "There was an HTTP error: %s."
+msgstr "HTTP エラーが発生しました: %s"
+
+#: ../system-config-printer.py:1199
 msgid "This will delete this class!"
 msgstr "このクラスを削除します!"
 
-#: system-config-printer.py:804
+#: ../system-config-printer.py:1200
 msgid "Proceed anyway?"
 msgstr "続けますか?"
 
-#: system-config-printer.py:1002
+#: ../system-config-printer.py:1386
+msgid "Submitted"
+msgstr "受付られました"
+
+#: ../system-config-printer.py:1387
+#, python-format
+msgid "Test page submitted as job %d"
+msgstr "依頼 %d としてテストページが受け入れられました"
+
+#: ../system-config-printer.py:1397
+msgid "Not possible"
+msgstr "不可能です"
+
+#: ../system-config-printer.py:1398
+msgid ""
+"The remote server did not accept the print job, most likely because the "
+"printer is not shared."
+msgstr ""
+"リモートサーバーは印刷依頼を受け入れませんでした。多分プリンターが共有されて"
+"いないからでしょう。"
+
+#: ../system-config-printer.py:1463
+msgid "Error"
+msgstr "エラー"
+
+#: ../system-config-printer.py:1464
+msgid "There was a problem connecting to the CUPS server."
+msgstr "CUPS サーバーへの接続に問題があります。"
+
+#: ../system-config-printer.py:1527
 msgid "This is the default printer"
 msgstr "これはデフォルトのプリンターです"
 
-#: system-config-printer.py:1004
+#: ../system-config-printer.py:1529
 #, python-format
 msgid "Default printer is %s"
 msgstr "デフォルトのプリンターは %s"
 
-#: system-config-printer.py:1007
+#: ../system-config-printer.py:1532
 msgid "No default printer set."
 msgstr "デフォルトのプリンター設定がありません"
 
-#: system-config-printer.py:1289
+#: ../system-config-printer.py:1618
+msgid "Cancel Tests"
+msgstr "テストの取り消し"
+
+#: ../system-config-printer.py:1622 ../system-config-printer.glade.h:189
+msgid "Print Test Page"
+msgstr "テストページの印刷"
+
+#: ../system-config-printer.py:1877
 #, python-format
-msgid "Really delete %s %s?"
-msgstr "本当に %s %s を削除しますか?"
+msgid "Really delete printer %s?"
+msgstr "本当にプリンター %s を削除しますか?"
 
-#: system-config-printer.py:1330
+#: ../system-config-printer.py:1879
+#, python-format
+msgid "Really delete class %s?"
+msgstr "本当にクラス %s を削除しますか?"
+
+#: ../system-config-printer.py:1927 ../system-config-printer.glade.h:140
 msgid "New Printer"
-msgstr "新規プリンタ"
+msgstr "新規プリンター"
 
-#: system-config-printer.py:1339
+#: ../system-config-printer.py:1940 ../system-config-printer.glade.h:139
 msgid "New Class"
 msgstr "新規クラス"
 
-#: system-config-printer.py:1349
+#: ../system-config-printer.py:1953
 msgid "Change Device URI"
 msgstr "デバイス URI の変更"
 
-#: system-config-printer.py:1360
+#: ../system-config-printer.py:1966
 msgid "Change Driver"
-msgstr "デバイスの変更"
+msgstr "ドライバーの変更"
 
-#: system-config-printer.py:1558
+#: ../system-config-printer.py:2220
 msgid "Other"
 msgstr "その他"
 
-#: system-config-printer.py:1560
+#: ../system-config-printer.py:2222
 msgid " (Current)"
 msgstr " (現在の設定)"
 
-#: system-config-printer.py:1737
+#: ../system-config-printer.py:2407
 msgid "Verified"
 msgstr "確認済み"
 
-#: system-config-printer.py:1738
+#: ../system-config-printer.py:2408
 msgid "This print share is accessible."
 msgstr "このプリント共有はアクセス可能です。"
 
-#: system-config-printer.py:1745
+#: ../system-config-printer.py:2415
 msgid "Inaccessible"
 msgstr "アクセス不能"
 
-#: system-config-printer.py:1746
+#: ../system-config-printer.py:2416
 msgid "This print share is not accessible."
 msgstr "このプリント共有はアクセスできません。"
 
-#: system-config-printer.py:1972
+#: ../system-config-printer.py:2436
+msgid "A printer connected to the parallel port."
+msgstr "パラレルポートに接続されたプリンター"
+
+#: ../system-config-printer.py:2438
+msgid "A printer connected to a USB port."
+msgstr "USB ポートに接続されたプリンター"
+
+#: ../system-config-printer.py:2440
+msgid ""
+"HPLIP software driving a printer, or the printer function of a multi-"
+"function device."
+msgstr ""
+"HPLIP ソフトウェアが動かすプリンター、又はマルチ機能デバイスのプリンター機能"
+
+#: ../system-config-printer.py:2443
+msgid ""
+"HPLIP software driving a fax machine, or the fax function of a multi-"
+"function device."
+msgstr ""
+"HPLIP ソフトウェアが動かすファックスマシン、又はマルチ機能デバイスのファック"
+"ス機能"
+
+#: ../system-config-printer.py:2446
+msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
+msgstr "HAL (Hardware Abstraction Layer) で検出されたローカルプリンター"
+
+#: ../system-config-printer.py:2695
 msgid " (recommended)"
 msgstr " (推奨)"
 
-#: system-config-printer.py:2010
+#: ../system-config-printer.py:2736
 msgid "This PPD is generated by foomatic."
 msgstr "この PPD は foomatic で作成されています。"
 
-#: system-config-printer.py:2012
-msgid ""
-"This PPD is provided by the manufacturer and is included with the foomatic "
-"package."
-msgstr ""
-"この PPD は製造メーカーから提供されており foomatic パッケージを含んでいます"
-"。"
-
-#: system-config-printer.py:2016
-msgid "This PPD is provided by CUPS."
-msgstr "この PPD は CUPS から提供されています。"
-
-#: system-config-printer.py:2057
+#. XXX
+#: ../system-config-printer.py:2777
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "新規クラス %s を作成しようとしています。"
 
-#: system-config-printer.py:2068
+#: ../system-config-printer.py:2791
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -238,1669 +394,1189 @@ msgstr ""
 "新規プリンター %s を %s に作成しよ\n"
 "うとしています。\n"
 
-#~ msgid "Error"
-#~ msgstr "エラー"
+#. Foomatic database problem of some sort.
+#: ../system-config-printer.py:2815
+msgid "Database error"
+msgstr "データベースエラー"
 
-#~ msgid "Ok"
-#~ msgstr "OK"
+#: ../system-config-printer.py:2816
+#, python-format
+msgid "The '%s' driver cannot be used with printer '%s %s'."
+msgstr "'%s' ドライバーはプリンター '%s %s' で使用できません。"
 
-#~ msgid "Info"
-#~ msgstr "情報"
+#. This printer references some XML that is not
+#. installed by default.  Point the user at the
+#. package they need to install.
+#: ../system-config-printer.py:2826
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr ""
+"このドライバーを使うには '%s' パッケージをインストールする必要があります。"
 
-#~ msgid "Yes"
-#~ msgstr "はい"
+#. This error came from trying to open the PPD file.
+#: ../system-config-printer.py:2833
+msgid "PPD error"
+msgstr "PPD エラー"
 
-#~ msgid "No"
-#~ msgstr "いいえ"
+#: ../system-config-printer.py:2835
+msgid "Failed to read PPD file.  Possible reason follows:"
+msgstr "PPD ファイルの読み込みに失敗しました。次のような理由があります:"
 
-#~ msgid "Exit"
-#~ msgstr "終了"
+#: ../system-config-printer.py:3121 ../system-config-printer.py:3128
+msgid "Missing driver"
+msgstr "見つからないドライバー"
+
+#: ../system-config-printer.py:3122
+#, python-format
+msgid ""
+"Printer '%s' requires the %s package but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"プリンター '%s' には %s パッケージが必要ですが、現在インストールされていませ"
+"ん。このプリンターを使用する前にインストールを行ってください。"
+
+#: ../system-config-printer.py:3129
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"プリンター '%s' には '%s' プログラムが必要ですが、現在インストールされていま"
+"せん。このプリンターを使用する前にインストールを行ってください。"
+
+#: ../system-config-printer.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../system-config-printer.glade.h:2
+msgid " PPD "
+msgstr "PPD"
+
+#: ../system-config-printer.glade.h:3
+msgid ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+
+#: ../system-config-printer.glade.h:9
+msgid "<b>Authentication</b>"
+msgstr "<b>認証</b>"
+
+#: ../system-config-printer.glade.h:10
+msgid "<b>Banner</b>"
+msgstr "<b>バナー</b>"
+
+#: ../system-config-printer.glade.h:11
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>基本サーバー設定</b>"
+
+#: ../system-config-printer.glade.h:12
+msgid "<b>Comment about the Driver</b>"
+msgstr "<b>ドライバーに関するコメント</b>"
+
+#: ../system-config-printer.glade.h:13
+msgid "<b>Comment about the Printer</b>"
+msgstr "<b>プリンターに関するコメント</b>"
+
+#: ../system-config-printer.glade.h:14
+msgid "<b>Common Options</b>"
+msgstr "<b>共通オプション</b>"
+
+#: ../system-config-printer.glade.h:15
+msgid "<b>Default Printer</b>"
+msgstr "<b>デフォルトのプリンター</b>"
+
+#: ../system-config-printer.glade.h:16
+msgid "<b>Description</b>"
+msgstr "<b>説明</b> "
+
+#: ../system-config-printer.glade.h:17
+msgid "<b>Description</b> (optional)"
+msgstr "<b>説明</b> (オプション)"
+
+#: ../system-config-printer.glade.h:18
+msgid "<b>Image Options</b>"
+msgstr "<b>イメージオプション</b>"
+
+#: ../system-config-printer.glade.h:19
+msgid "<b>Information about the PPD</b>"
+msgstr "<b>PPD に関する情報</b>"
+
+#: ../system-config-printer.glade.h:20
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>LPD ネットワークプリンターの場所</b>"
+
+#: ../system-config-printer.glade.h:21
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>ネットワークプリンターの場所</b>"
+
+#: ../system-config-printer.glade.h:22
+msgid "<b>Location</b> (optional)"
+msgstr "<b>場所</b> (オプション)"
+
+#: ../system-config-printer.glade.h:23
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>他のオプション(高度な操作)</b>"
+
+#: ../system-config-printer.glade.h:24
+msgid "<b>Policies</b>"
+msgstr "<b>ポリシー</b>"
+
+#: ../system-config-printer.glade.h:25
+msgid "<b>Printer Name</b>"
+msgstr "プリンター名"
+
+#: ../system-config-printer.glade.h:26
+msgid "<b>Printers to be members of this Class</b>"
+msgstr "<b>このクラスのメンバーのプリンター</b>"
+
+#: ../system-config-printer.glade.h:27
+msgid "<b>Select Connection</b>"
+msgstr "<b>接続の選択</b>"
+
+#: ../system-config-printer.glade.h:28
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>シリアルポートの設定</b>"
+
+#: ../system-config-printer.glade.h:29
+msgid "<b>Settings</b>"
+msgstr "<b>設定</b>"
+
+#: ../system-config-printer.glade.h:30
+msgid "<b>State</b>"
+msgstr "<b>状態</b>"
+
+#: ../system-config-printer.glade.h:31
+msgid "<b>Text Options</b>"
+msgstr "<b>テキストオプション</b>"
+
+#: ../system-config-printer.glade.h:32
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>非発行品\n"
+"サーバー設定参照</i>"
+
+#: ../system-config-printer.glade.h:34
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
+
+#: ../system-config-printer.glade.h:35
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">変更を適用しますか?</span>\n"
+"\n"
+"行った変更は適用しない限りすべて失われます。"
+
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">パスワードが必要です</span>\n"
+"\n"
+
+#: ../system-config-printer.glade.h:41
+msgid "About"
+msgstr "関連情報"
+
+#: ../system-config-printer.glade.h:42
+msgid "About System-Config-Printer"
+msgstr "System-Config-Printer について"
+
+#: ../system-config-printer.glade.h:43
+msgid "Accepting jobs"
+msgstr "依頼の受け入れ中"
+
+#: ../system-config-printer.glade.h:44
+msgid "Access control"
+msgstr "アクセス制御"
+
+#: ../system-config-printer.glade.h:45
+msgid "Add or Remove Members"
+msgstr "メンバーの追加と削除"
+
+#: ../system-config-printer.glade.h:46
+msgid "Allow printing for everyone except these users:"
+msgstr "次のユーザーを除いて全員に印刷を許可する:"
+
+#: ../system-config-printer.glade.h:47
+msgid "Allow remote administration"
+msgstr "リモート管理者を許可する"
+
+#: ../system-config-printer.glade.h:48
+msgid "Allow users to cancel any job (not just their own)"
+msgstr ""
+"ユーザーに依頼をキャンセルすることを許可する (彼ら自身のものでなくても)"
+
+#: ../system-config-printer.glade.h:49
+msgid "Apply"
+msgstr "適用"
+
+#: ../system-config-printer.glade.h:50
+msgid "Authors"
+msgstr "作者"
+
+#: ../system-config-printer.glade.h:51
+msgid "Baud Rate"
+msgstr "通信速度"
+
+#: ../system-config-printer.glade.h:52
+msgid "Bottom margin:"
+msgstr "下余白:"
+
+#: ../system-config-printer.glade.h:53
+msgid "Brightness:"
+msgstr "輝度:"
+
+#: ../system-config-printer.glade.h:54
+msgid "CUPS server:"
+msgstr "CUPS サーバー:"
+
+#: ../system-config-printer.glade.h:55
+msgid "Change PPD"
+msgstr "PPD の変更"
+
+#: ../system-config-printer.glade.h:56
+msgid "Change..."
+msgstr "変更..."
+
+#: ../system-config-printer.glade.h:57
+msgid "Characters per inch:"
+msgstr "1 インチあたりの文字数:"
+
+#: ../system-config-printer.glade.h:58
+msgid "Class Members"
+msgstr "クラスメンバー"
+
+#: ../system-config-printer.glade.h:59
+msgid "Columns:"
+msgstr "コラム: "
+
+#: ../system-config-printer.glade.h:60
+msgid "Comments: "
+msgstr "コメント: "
+
+#: ../system-config-printer.glade.h:61
+msgid "Connect to CUPS server"
+msgstr "CUPS サーバーへの接続"
+
+#: ../system-config-printer.glade.h:62
+msgid "Connecting"
+msgstr "接続中"
+
+#: ../system-config-printer.glade.h:64
+#, no-c-format
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+"サーバーに接続中:\n"
+"%s\n"
+
+#: ../system-config-printer.glade.h:67
+msgid "Copies:"
+msgstr "部数:"
+
+#: ../system-config-printer.glade.h:68
+msgid "Copy Printer"
+msgstr "プリンターの複製"
+
+#: ../system-config-printer.glade.h:69
+msgid "Copyright"
+msgstr "著作権"
+
+#: ../system-config-printer.glade.h:70
+msgid "Data Bits"
+msgstr "データビット"
+
+#: ../system-config-printer.glade.h:71
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+"デフォルト\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+
+#: ../system-config-printer.glade.h:80
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr ""
+"デフォルト\n"
+"8\n"
+"7"
+
+#: ../system-config-printer.glade.h:83
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+"デフォルト\n"
+"なし\n"
+"奇数\n"
+"偶数"
+
+#: ../system-config-printer.glade.h:87
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+"デフォルト\n"
+"なし\n"
+"XON/XOFF (ソフトウェア)\n"
+"RTS/CTS (ハードウェア)\n"
+"DTR/DSR (ハードウェア)"
+
+#: ../system-config-printer.glade.h:92
+msgid "Deny printing for everyone except these users:"
+msgstr "次のユーザー以外の印刷を拒否する:"
+
+#: ../system-config-printer.glade.h:93
+msgid "Description:"
+msgstr "説明:"
+
+#: ../system-config-printer.glade.h:94
+msgid "Device"
+msgstr "デバイス"
+
+#: ../system-config-printer.glade.h:95
+msgid "Device URI"
+msgstr "デバイス URI"
+
+#: ../system-config-printer.glade.h:96
+msgid "Device URI:"
+msgstr "デバイス URI:"
+
+#: ../system-config-printer.glade.h:97
+msgid "Device description."
+msgstr "デバイスの説明"
+
+#: ../system-config-printer.glade.h:98
+msgid "DirectJet"
+msgstr "DirectJet"
+
+#: ../system-config-printer.glade.h:99
+msgid "Driver"
+msgstr "ドライバー"
+
+#: ../system-config-printer.glade.h:100
+msgid "Empty"
+msgstr "空"
+
+#: ../system-config-printer.glade.h:101
+msgid "Enabled"
+msgstr "可能"
+
+#: ../system-config-printer.glade.h:102
+msgid "Ending Banner:"
+msgstr "終了バナー:"
+
+#: ../system-config-printer.glade.h:103
+msgid "Enter Device URI"
+msgstr "デバイス URI の入力"
+
+#: ../system-config-printer.glade.h:104
+msgid "Error Policy: \t"
+msgstr "エラーポリシー: \t"
+
+#: ../system-config-printer.glade.h:105
+msgid "Finishings:"
+msgstr "仕上げ"
+
+#: ../system-config-printer.glade.h:106
+msgid "Flow Control"
+msgstr "フロー制御"
+
+#: ../system-config-printer.glade.h:107
+msgid "Gamma:"
+msgstr "ガンマ:"
+
+#: ../system-config-printer.glade.h:108
+msgid "Goto Server"
+msgstr "サーバー"
+
+#: ../system-config-printer.glade.h:109
+msgid "Hold until:"
+msgstr "以下まで保留:"
+
+#: ../system-config-printer.glade.h:110
+msgid "Hostname"
+msgstr "ホスト名"
+
+#: ../system-config-printer.glade.h:111
+msgid "Hue adjustment:"
+msgstr "色調節:"
+
+#: ../system-config-printer.glade.h:112
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "\"HP LaserJet with Duplexer\" などのようにわかりやすい説明"
+
+#: ../system-config-printer.glade.h:113
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "\"1 研\" などのようにわかりやすい場所"
+
+#: ../system-config-printer.glade.h:114
+msgid "IPP"
+msgstr "IPP"
+
+#: ../system-config-printer.glade.h:116
+msgid "Job Options"
+msgstr "依頼のオプション"
+
+#: ../system-config-printer.glade.h:117
+msgid "Job priority:"
+msgstr "依頼の優先度"
+
+#: ../system-config-printer.glade.h:118
+msgid "LPD"
+msgstr "LPD"
+
+#: ../system-config-printer.glade.h:119
+msgid "Left margin:"
+msgstr "左余白"
+
+#: ../system-config-printer.glade.h:120
+msgid ""
+"Left to right, top to bottom\n"
+"Left to right, bottom to top\n"
+"Right to left, top to bottom\n"
+"Right to left, bottom to top\n"
+"Top to bottom, left to right\n"
+"Top to bottom, right to left\n"
+"Bottom to top, left to right\n"
+"Bottom to top, right to left"
+msgstr ""
+"左から右、上から下\n"
+"左から右、下から上\n"
+"右から左、上から下\n"
+"右から左、下から上\n"
+"上から下、左から右\n"
+"上から下、右から左\n"
+"下から上、左から右\n"
+"下から上、右から左"
+
+#: ../system-config-printer.glade.h:128
+msgid "Lines per inch:"
+msgstr "インチ単位の行数:"
+
+#: ../system-config-printer.glade.h:129
+msgid "Location:"
+msgstr "場所:"
+
+#: ../system-config-printer.glade.h:130
+msgid "Make Default Printer"
+msgstr "デフォルトのプリンターにする"
+
+#: ../system-config-printer.glade.h:131
+msgid "Make and Model:"
+msgstr "製造元とモデル:"
+
+#: ../system-config-printer.glade.h:132
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr ""
+"\"/\"、 \"#\"、 空白以外なら印刷できる文字はすべて含ませることができます"
+
+#: ../system-config-printer.glade.h:133
+msgid "Media:"
+msgstr "媒体:"
+
+#: ../system-config-printer.glade.h:134
+msgid "Members"
+msgstr "メンバー"
+
+#: ../system-config-printer.glade.h:135
+msgid "Mirror"
+msgstr "ミラー"
+
+#: ../system-config-printer.glade.h:136
+msgid "More"
+msgstr "追加用件"
+
+#: ../system-config-printer.glade.h:137
+msgid "Name"
+msgstr "名前"
+
+#: ../system-config-printer.glade.h:138
+msgid "New Clas_s"
+msgstr "新規クラス(_s)"
+
+#: ../system-config-printer.glade.h:141
+msgid "New _Printer"
+msgstr "新規プリンター(_P)"
+
+#: ../system-config-printer.glade.h:142
+msgid "New name for the printer"
+msgstr "プリンターの新規名称"
+
+#: ../system-config-printer.glade.h:143
+msgid ""
+"None\n"
+"Staple\n"
+"Punch\n"
+"Cover\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Staple (top left)\n"
+"Staple (bottom left)\n"
+"Staple (top right)\n"
+"Staple (bottom right)\n"
+"Edge stitch (left)\n"
+"Edge stitch (top)\n"
+"Edge stitch (right)\n"
+"Edge stitch (bottom)\n"
+"Staple dual (left)\n"
+"Staple dual (top)\n"
+"Staple dual (right)\n"
+"Staple dual (bottom)\n"
+"Bind (left)\n"
+"Bind (top)\n"
+"Bind (right)\n"
+"Bind (bottom)"
+msgstr ""
+"なし\n"
+"綴じる\n"
+"穴開け\n"
+"カバー\n"
+"製本\n"
+"中綴じ\n"
+"端綴じ\n"
+"折り畳む\n"
+"トリム\n"
+"梱包\n"
+"小冊子の作成\n"
+"依頼の補正\n"
+"綴じる (左上)\n"
+"綴じる (左下)\n"
+"綴じる (右上)\n"
+"綴じる (右下)\n"
+"端綴じ (左)\n"
+"端綴じ (上)\n"
+"端綴じ (右)\n"
+"端綴じ (下)\n"
+"二重綴じ (左)\n"
+"二重綴じ (上)\n"
+"二重綴じ (右)\n"
+"二重綴じ (下)\n"
+"製本 (左)\n"
+"製本 (上)\n"
+"製本 (右)\n"
+"製本 (下)"
+
+#: ../system-config-printer.glade.h:171
+msgid ""
+"One-sided\n"
+"Two-sided (long edge)\n"
+"Two-sided (short edge)"
+msgstr ""
+"片面\n"
+"両面 (長辺綴じ)\n"
+"両面 (短辺綴じ)"
+
+#: ../system-config-printer.glade.h:174
+msgid "Operation Policy:"
+msgstr "操作ポリシー:"
+
+#: ../system-config-printer.glade.h:175
+msgid "Orientation:"
+msgstr "方向性:"
+
+#: ../system-config-printer.glade.h:176
+msgid "PPD"
+msgstr "PPD"
+
+#: ../system-config-printer.glade.h:177
+msgid "Pages per side layout:"
+msgstr "横置きページ数:"
+
+#: ../system-config-printer.glade.h:178
+msgid "Pages per side:"
+msgstr "横ページ数:"
+
+#: ../system-config-printer.glade.h:179
+msgid "Parity"
+msgstr "パリティ"
+
+#: ../system-config-printer.glade.h:180 ../applet.glade.h:5
+msgid "Password:"
+msgstr "パスワード:"
+
+#: ../system-config-printer.glade.h:181
+msgid "Policies"
+msgstr "ポリシー"
+
+#: ../system-config-printer.glade.h:182
+msgid "Port number"
+msgstr "ポート番号"
+
+#: ../system-config-printer.glade.h:183
+msgid ""
+"Portrait (no rotation)\n"
+"Landscape (90°)\n"
+"Reverse landscape (270°)\n"
+"Reverse portrait (180°)"
+msgstr ""
+"縦長書式 (無回転)\n"
+"横長書式 (90°)\n"
+"逆横長書式 (270°)\n"
+"逆縦長書式 (180°)"
+
+#: ../system-config-printer.glade.h:187
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"PPD (PostScript Printer Description) ファイルはプリンターに同梱されているドラ"
+"イバーディスクに入っていることがよくあります。 PostScript プリンターの場合、 "
+"Windows<sup>®</sup> ドライバーの一部となっていることがよくあります。"
+
+#: ../system-config-printer.glade.h:188
+msgid "Pretty print"
+msgstr "美麗印刷"
+
+#: ../system-config-printer.glade.h:192
+msgid "Printer State:"
+msgstr "プリンター状態:"
+
+#: ../system-config-printer.glade.h:193
+msgid "Printername"
+msgstr "プリンター名"
+
+#: ../system-config-printer.glade.h:194
+msgid "Probe"
+msgstr "プローブ"
+
+#: ../system-config-printer.glade.h:195
+msgid "Provide PPD file"
+msgstr "PPD ファイルを提供する"
+
+#: ../system-config-printer.glade.h:196
+msgid "Require encryption"
+msgstr "暗号化を必要とする"
+
+#: ../system-config-printer.glade.h:197
+msgid "Reset"
+msgstr "リセット"
+
+#: ../system-config-printer.glade.h:198
+msgid "Reset to system default"
+msgstr "システムデフォルトにリセット"
+
+#: ../system-config-printer.glade.h:199
+msgid "Right margin:"
+msgstr "右余白:"
+
+#: ../system-config-printer.glade.h:200
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../system-config-printer.glade.h:201
+msgid "SMB"
+msgstr "SMB"
+
+#: ../system-config-printer.glade.h:202
+msgid "Saturation:"
+msgstr "彩度:"
+
+#: ../system-config-printer.glade.h:203
+msgid "Save debugging information for troubleshooting"
+msgstr "トラブルシュートのためのデバッグ情報を保存する"
+
+#: ../system-config-printer.glade.h:204
+msgid "Scale to fit"
+msgstr "適合サイズに拡大"
+
+#: ../system-config-printer.glade.h:205
+msgid "Scaling:"
+msgstr "拡大:"
+
+#: ../system-config-printer.glade.h:206
+msgid "Select A File"
+msgstr "ファイルをひとつ選択する"
+
+#: ../system-config-printer.glade.h:207
+msgid "Select Printer from database"
+msgstr "データベースからプリンタードライバーの選択"
+
+#: ../system-config-printer.glade.h:208
+msgid "Serial"
+msgstr "シリアル"
+
+#: ../system-config-printer.glade.h:209
+msgid "Settings"
+msgstr "設定"
+
+#: ../system-config-printer.glade.h:210
+msgid "Share published printers connected to this system"
+msgstr "このシステムに接続されている共有公開プリンター"
+
+#: ../system-config-printer.glade.h:211
+msgid "Shared"
+msgstr "共有"
+
+#: ../system-config-printer.glade.h:212
+msgid "Show printers shared by other systems"
+msgstr "他のシステムで共有されているプリンターを表示する"
+
+#: ../system-config-printer.glade.h:213
+msgid "Sides:"
+msgstr "面:"
+
+#: ../system-config-printer.glade.h:214
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"このプリンター用のデフォルト依頼オプションを指定して下さい。アプリケーション"
+"で既に設定されていない場合は、このプリンターサーバーに到着する依頼に、これら"
+"のオプションが追加されます。"
+
+#: ../system-config-printer.glade.h:215
+msgid "Starting Banner:"
+msgstr "開始バナー"
+
+#: ../system-config-printer.glade.h:216
+msgid "System-Config-Printer"
+msgstr "プリンターの設定"
+
+#: ../system-config-printer.glade.h:218
+#, no-c-format
+msgid "System-Config-Printer %s"
+msgstr "System-Config-Printer %s"
+
+#: ../system-config-printer.glade.h:219
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"foomatic プリンターのデータベースには製造元が提供する各種 PPD (PostScript "
+"Printer Description) ファイルが含まれ、また多数のプリンター (PostScript以外) "
+"用 PPD ファイルを生成することもできます。 ただし、一般的には製造元が提供する "
+"PPD ファイルの方がプリンターの特定機能に対してはよい手段を提供します。"
+
+#: ../system-config-printer.glade.h:220
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"これは同じ名前のオプションは同じ意味を持つと仮定することで行われます。 新し"
+"い PPD にないオプション設定は失われ、新しい PPD にあるオプションのみがデフォ"
+"ルトに設定されます。"
+
+#: ../system-config-printer.glade.h:221
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"このようにして現在のすべてのオプション設定は失われることになり、 新しい PPD "
+"のデフォルト設定が使用されるようになります。"
+
+#: ../system-config-printer.glade.h:222
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"新規のオプションを追加するには、下のボックスにその名前を入力して、追加のク"
+"リックをします。"
+
+#: ../system-config-printer.glade.h:223
+msgid "Top margin:"
+msgstr "上余白:"
+
+#: ../system-config-printer.glade.h:224
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "古い PPD からオプション設定をコピーしようとしています。"
+
+#: ../system-config-printer.glade.h:225
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "新しい PPD (Postscript Printer Description) のままで使用します。"
+
+#: ../system-config-printer.glade.h:226
+msgid "User name:"
+msgstr "ユーザー名:"
+
+#: ../system-config-printer.glade.h:227
+msgid "Username:"
+msgstr "ユーザー名:"
+
+#: ../system-config-printer.glade.h:228
+msgid "Word wrap"
+msgstr "次行送り"
+
+#: ../system-config-printer.glade.h:229
+msgid "_Do not apply"
+msgstr "適用しない (_D)"
+
+#: ../system-config-printer.glade.h:230
+msgid "_Edit"
+msgstr "編集(_E)"
+
+#: ../system-config-printer.glade.h:231 ../applet.glade.h:10
+msgid "_File"
+msgstr "ファイル(_F)"
+
+#: ../system-config-printer.glade.h:232
+msgid "_Goto Server"
+msgstr "サーバー(_G)"
+
+#: ../system-config-printer.glade.h:233
+msgid "_Help"
+msgstr "ヘルプ(_H)"
+
+#: ../system-config-printer.glade.h:234
+msgid "_Verify..."
+msgstr "確認(_V)..."
+
+#: ../system-config-printer.glade.h:235
+msgid "default"
+msgstr "デフォルト"
+
+#: ../system-config-printer.glade.h:236
+msgid "none"
+msgstr "なし"
+
+#: ../system-config-printer.glade.h:237
+msgid "points"
+msgstr "ポイント"
+
+#: ../system-config-printer.glade.h:238
+msgid "points (72 points per inch)"
+msgstr "ポイント(1 インチで 72 ポイント)"
+
+#: ../system-config-printer.desktop.in.h:1
+msgid "Configure printers"
+msgstr "プリンターの設定"
+
+#: ../system-config-printer.desktop.in.h:2
+msgid "Printing"
+msgstr "印刷"
+
+#: ../applet.py:80
+msgid "Toner low"
+msgstr "トナーが少なくなっています"
+
+#: ../applet.py:81
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "プリンター '%s' のトナーは少なくなっています。"
+
+#: ../applet.py:82
+msgid "Toner empty"
+msgstr "トナーがありません"
+
+#: ../applet.py:83
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "プリンター '%s' にトナーがありません。"
+
+#: ../applet.py:84
+msgid "Cover open"
+msgstr "カバーが開いています"
+
+#: ../applet.py:85
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "プリンター '%s' のカバーが開いています。"
+
+#: ../applet.py:86
+msgid "Door open"
+msgstr "扉が開いています"
+
+#: ../applet.py:87
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "プリンター '%s' の扉が開いています。"
+
+#: ../applet.py:88
+msgid "Paper low"
+msgstr "紙が少なくなっています"
+
+#: ../applet.py:89
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "プリンター '%s' の紙が少なくなっています。"
+
+#: ../applet.py:90
+msgid "Out of paper"
+msgstr "紙切れ"
+
+#: ../applet.py:91
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "プリンター '%s' の紙がなくなりました。"
+
+#: ../applet.py:92
+msgid "Ink low"
+msgstr "インクが少なくなっています"
+
+#: ../applet.py:93
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "プリンター '%s' のインクが少なくなっています。"
+
+#: ../applet.py:94
+msgid "Ink empty"
+msgstr "インクがありません"
+
+#: ../applet.py:95
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "プリンター '%s' のインクがありません。"
+
+#: ../applet.py:96
+msgid "Not connected?"
+msgstr "未接続?"
+
+#: ../applet.py:97
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "プリンター '%s' が接続されていないようです。"
+
+#: ../applet.py:104
+msgid "Printer report"
+msgstr "プリンターレポート"
+
+#: ../applet.py:106
+msgid "Printer warning"
+msgstr "プリンターの警告"
+
+#: ../applet.py:108
+msgid "Printer error"
+msgstr "プリンターのエラー"
+
+#: ../applet.py:109
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "プリンター '%s': '%s'。"
+
+#: ../applet.py:182
+msgid "Job"
+msgstr "依頼"
+
+#: ../applet.py:183
+msgid "Document"
+msgstr "ドキュメント"
+
+#: ../applet.py:185
+msgid "Size"
+msgstr "大きさ"
+
+#: ../applet.py:186
+msgid "Time submitted"
+msgstr "時刻が送られました"
+
+#: ../applet.py:187
+msgid "Status"
+msgstr "状態"
+
+#: ../applet.py:238
+msgid "Message"
+msgstr "メッセージ"
+
+#: ../applet.py:555
+msgid "1 hour ago"
+msgstr "1 時間前"
+
+#: ../applet.py:557
+msgid "1 hour and 1 minute ago"
+msgstr "1 時間 1 分前"
+
+#: ../applet.py:559
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr "1 時間 %d 分前"
+
+#: ../applet.py:562
+#, python-format
+msgid "%d hours ago"
+msgstr "%d 時間前"
+
+#: ../applet.py:564
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr "%d 時間 1 分前"
+
+#: ../applet.py:566
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr "%d 時間 %d 分前"
+
+#: ../applet.py:572
+msgid "a minute ago"
+msgstr "1 分前"
+
+#: ../applet.py:574
+#, python-format
+msgid "%d minutes ago"
+msgstr "%d 分前"
+
+#: ../applet.py:629
+msgid "No documents queued"
+msgstr "印刷待ちのドキュメントはありません"
+
+#: ../applet.py:632
+msgid "1 document queued"
+msgstr "1 個のドキュメントが印刷待ちです"
+
+#: ../applet.py:635
+#, python-format
+msgid "%d documents queued"
+msgstr "%d 個のドキュメントが印刷待ちです"
+
+#: ../applet.py:682
+msgid "Pending"
+msgstr "保留中"
+
+#: ../applet.py:683
+msgid "Held"
+msgstr "ヘルプ"
+
+#: ../applet.py:686
+msgid "Canceled"
+msgstr "取り消されました"
+
+#: ../applet.py:687
+msgid "Aborted"
+msgstr "異常終了しました"
+
+#: ../applet.py:688
+msgid "Completed"
+msgstr "完了しました"
+
+#: ../applet.py:946
+msgid "Printer added"
+msgstr "追加したプリンター"
+
+#: ../applet.py:948
+msgid "Missing printer driver"
+msgstr "プリンタードライバーが見つからない"
+
+#: ../applet.py:951
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr "`%s' は印刷準備ができています。"
+
+#: ../applet.py:954
+msgid "Configure"
+msgstr "設定"
+
+#. Model mismatch
+#: ../applet.py:957
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr "`%s' が追加され、`%s' ドライバーを使います。"
+
+#: ../applet.py:961
+msgid "Find driver"
+msgstr "ドライバーをさがす"
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr "ドキュメントの印刷状態"
+
+#: ../applet.glade.h:6
+msgid "Printer status"
+msgstr "プリンター状態"
+
+#: ../applet.glade.h:7
+msgid "Re_print"
+msgstr "再印刷 (_p)"
+
+#: ../applet.glade.h:8
+msgid "Show _completed jobs"
+msgstr "完了した依頼を表示する (_c)"
+
+#: ../applet.glade.h:9
+msgid "Show _printer status"
+msgstr "プリンターの状態を表示する (_p)"
+
+#: ../applet.glade.h:11
+msgid "_Hide"
+msgstr "隠す (_H)"
+
+#: ../applet.glade.h:12
+msgid "_Hold"
+msgstr "保留 (_H)"
+
+#: ../applet.glade.h:13
+msgid "_Release"
+msgstr "解放する (_R)"
+
+#: ../applet.glade.h:14
+msgid "_View"
+msgstr "見る (_V)"
+
+#: ../print-applet.desktop.in.h:1
+msgid "Print Queue Applet"
+msgstr "印刷待ち行列アプレット"
+
+#: ../print-applet.desktop.in.h:2
+msgid "System tray icon for managing print jobs"
+msgstr "印刷依頼を管理するシステムトレイアイコン"
+
+#: ../manage-print-jobs.desktop.in.h:1
+msgid "Cancel, pause, resume or reprint jobs"
+msgstr "依頼の取消し、一時停止、再開、再印刷"
+
+#: ../manage-print-jobs.desktop.in.h:2
+msgid "Manage Print Jobs"
+msgstr "印刷依頼を管理する"
+
+#: ../my-default-printer.desktop.in.h:2
+#, fuzzy
+msgid "Select default printer"
+msgstr "デフォルトのプリンターにする"
 
 #~ msgid ""
-#~ "You have made changes, would you like to save them? If you say no, your "
-#~ "changes will be lost."
+#~ "This PPD is provided by the manufacturer and is included with the "
+#~ "foomatic package."
 #~ msgstr ""
-#~ "設定が変更されました。変更を保存しますか?\n"
-#~ "「いいえ」を選択すると変更内容を破棄します。"
-
-#~ msgid "Cancel"
-#~ msgstr "キャンセル"
-
-#~ msgid "Create a New Queue"
-#~ msgstr "新規プリンタの作成"
-
-#~ msgid "Finish Making New Queue"
-#~ msgstr "新規プリンタの作成を完了"
-
-#~ msgid "About to create the following queue:"
-#~ msgstr "次のプリンタを作成します:"
-
-#~ msgid "Finish"
-#~ msgstr "完了"
-
-#~ msgid "Back"
-#~ msgstr "戻る"
-
-#~ msgid "Type:"
-#~ msgstr "タイプ:"
-
-#~ msgid "Device:"
-#~ msgstr "デバイス:"
-
-#~ msgid "Server:"
-#~ msgstr "サーバー:"
-
-#~ msgid "Lpd Queue:"
-#~ msgstr "Lpd プリンタ:"
-
-#~ msgid "Share:"
-#~ msgstr "共有:"
-
-#~ msgid "IP:"
-#~ msgstr "IP:"
-
-#~ msgid "Workgroup:"
-#~ msgstr "ワークグループ:"
-
-#~ msgid "User:"
-#~ msgstr "ユーザー:"
-
-#~ msgid "Port:"
-#~ msgstr "ポート:"
-
-#~ msgid "Driver:"
-#~ msgstr "ドライバ:"
-
-#~ msgid "Warning"
-#~ msgstr "警告"
-
-#~ msgid "Name and Type"
-#~ msgstr "名前とタイプ"
-
-#~ msgid "Next"
-#~ msgstr "次"
-
-#~ msgid "Queue Name"
-#~ msgstr "プリンタ名"
-
-#~ msgid "Queue Type"
-#~ msgstr "プリンタタイプ"
-
-#~ msgid ""
-#~ "The name \"%s\" is bad. Please choose a name of the form [a-zA-Z][a-zA-Z0-"
-#~ "9_-]*."
-#~ msgstr ""
-#~ "名前 \"%s\" は間違っています。[a-zA-Z][a-zA-Z0-9_-]* の名前を選択してくだ"
-#~ "さい。"
-
-#~ msgid "The name \"%s\" is already in use. Please choose a different name."
-#~ msgstr "名前 \"%s\" はすでに使われています。別の名前を選んでください。"
-
-#~ msgid "Custom"
-#~ msgstr "カスタム"
-
-#~ msgid "Setting Up"
-#~ msgstr "設定"
-
-#~ msgid "Printer Device"
-#~ msgstr "プリンタデバイス"
-
-#~ msgid ""
-#~ "Pick the printer device from the list, or enter it using \"Custom\" below."
-#~ msgstr ""
-#~ "プリンタデバイスをリストから選択するか、下で「カスタム」を選択してくださ"
-#~ "い。"
-
-#~ msgid "Specify Device:"
-#~ msgstr "デバイスの指定:"
-
-#~ msgid "Description"
-#~ msgstr "説明"
-
-#~ msgid "Custom Device"
-#~ msgstr "カスタムデバイス"
-
-#~ msgid "Specify the device to use."
-#~ msgstr "使用するデバイスを指定してください。"
-
-#~ msgid "Device File"
-#~ msgstr "デバイスファイル"
-
-#~ msgid "You must specify a device."
-#~ msgstr "デバイスを指定してください"
-
-#~ msgid "Enter the LPD server and queue to use."
-#~ msgstr "使用する LPD サーバーとプリンタを入力してください。"
-
-#~ msgid "Server"
-#~ msgstr "サーバー"
-
-#~ msgid "Queue"
-#~ msgstr "プリンタ"
-
-#~ msgid "LPD Data"
-#~ msgstr "LPD データ"
-
-#~ msgid "You must specify a server."
-#~ msgstr "サーバーを指定してください"
-
-#~ msgid "Enter the SMB share to use."
-#~ msgstr "使用する SMB 共有を入力してください。"
-
-#~ msgid "Host IP"
-#~ msgstr "ホスト IP"
-
-#~ msgid "Workgroup"
-#~ msgstr "ワークグループ"
-
-#~ msgid "Passwd"
-#~ msgstr "パスワード"
-
-#~ msgid "Windows Printer (SMB) Data"
-#~ msgstr "Windows プリンタ(SMB)データ"
-
-#~ msgid "You must specify a SMB share to print to."
-#~ msgstr "印刷する SMB 共有を指定してください。"
-
-#~ msgid "Enter the NCP server and queue to use."
-#~ msgstr "使用する NCP サーバーとプリンタを入力してください。"
-
-#~ msgid "Novell Netware Printer (NCP) Data"
-#~ msgstr "Novell Netware プリンタ(NCP)データ"
-
-#~ msgid "You must specify an NCP server to print to."
-#~ msgstr "印刷する NCP サーバーを指定してください。"
-
-#~ msgid "You must specify a queue on the NCP server to print to."
-#~ msgstr "印刷する NCP サーバーのプリンタを指定してください。"
-
-#~ msgid "Enter the Jetdirect ip and port to use."
-#~ msgstr "使用する Jetdirect の IP とポートを入力してください。"
-
-#~ msgid "Ip"
-#~ msgstr "IP"
-
-#~ msgid "Port"
-#~ msgstr "ポート"
-
-#~ msgid "Jetdirect (JETDIRECT) Data"
-#~ msgstr "Jetdirect(JETDIRECT)データ"
-
-#~ msgid "You must specify the ip address of a JetDirect printer."
-#~ msgstr "JetDirectプリンタのIPアドレスを指定してください。"
-
-#~ msgid "Queue Driver"
-#~ msgstr "プリンタのドライバ"
-
-#~ msgid "Select the Driver to use with this Queue."
-#~ msgstr "このプリンタで使うドライバを選択します。"
-
-#~ msgid "You must specify a driver."
-#~ msgstr "ドライバを指定してください"
-
-#~ msgid "Edit Queue"
-#~ msgstr "プリンタの編集"
-
-#~ msgid "Names"
-#~ msgstr "名前"
-
-#~ msgid "Type"
-#~ msgstr "タイプ"
-
-#~ msgid "Done"
-#~ msgstr "完了"
-
-#~ msgid "Name:"
-#~ msgstr "名前:"
-
-#~ msgid "Aliases:"
-#~ msgstr "エイリアス:"
-
-#~ msgid "Printer Device:"
-#~ msgstr "プリンタデバイス:"
-
-#~ msgid "Edit Name and Aliases"
-#~ msgstr "名前とエイリアスの編集"
-
-#~ msgid "Name"
-#~ msgstr "名前"
-
-#~ msgid "Add Alias"
-#~ msgstr "エイリアスの追加"
-
-#~ msgid "Edit Alias"
-#~ msgstr "エイリアスの編集"
-
-#~ msgid "Delete Alias"
-#~ msgstr "エイリアスの削除"
-
-#~ msgid "Alias:"
-#~ msgstr "エイリアス:"
-
-#~ msgid "Add an Alias"
-#~ msgstr "エイリアスの追加"
-
-#~ msgid "Edit the alias"
-#~ msgstr "エイリアスの編集"
-
-#~ msgid "You must select an alias to edit."
-#~ msgstr "編集するエイリアスを選択してください"
-
-#~ msgid "You must select an alias to delete."
-#~ msgstr "削除するエイリアスを選択してください"
-
-#~ msgid "Edit Local Printer"
-#~ msgstr "ローカルプリンタの編集"
-
-#~ msgid "Strict RFC1179"
-#~ msgstr "RFC1179 互換にする"
-
-#~ msgid "Translate \\n->\\r\\n"
-#~ msgstr "\\n を \\r に変換する\\n"
-
-#~ msgid "Edit Driver"
-#~ msgstr "ドライバの編集"
-
-#~ msgid "Edit Driver Options"
-#~ msgstr "ドライバオプションの編集"
-
-#~ msgid "Edit"
-#~ msgstr "編集"
-
-#~ msgid "Edit %s"
-#~ msgstr "%s の編集"
-
-#~ msgid "Integer: Min %s | Max %s"
-#~ msgstr "整数: 最小 %s | 最大 %s"
-
-#~ msgid "Value must be a number"
-#~ msgstr "値は数字でなければなりません"
-
-#~ msgid "Float: Min %s | Max %s"
-#~ msgstr "浮動小数: 最小 %s | 最大 %s"
-
-#~ msgid "US Letter"
-#~ msgstr "USレター"
-
-#~ msgid "Tabloid"
-#~ msgstr "タブロイド"
-
-#~ msgid "Ledger"
-#~ msgstr "元帳"
-
-#~ msgid "Legal"
-#~ msgstr "法定"
-
-#~ msgid "Statement"
-#~ msgstr "貸借表"
-
-#~ msgid "Executive"
-#~ msgstr "行政用"
-
-#~ msgid "A3"
-#~ msgstr "A3"
-
-#~ msgid "A4"
-#~ msgstr "A4"
-
-#~ msgid "A5"
-#~ msgstr "A5"
-
-#~ msgid "B4"
-#~ msgstr "B4"
-
-#~ msgid "B5"
-#~ msgstr "B5"
-
-#~ msgid "Folio"
-#~ msgstr "二つ折り"
-
-#~ msgid "Quatro"
-#~ msgstr "四つ折り"
-
-#~ msgid "10x14"
-#~ msgstr "10x14"
-
-#~ msgid "Test %s"
-#~ msgstr "テスト %s"
-
-#~ msgid ""
-#~ "You have made changes, would you like to save them?\n"
-#~ "If you say no, you will not be able to print test pages."
-#~ msgstr ""
-#~ "設定が変更されました。変更を保存しますか?\n"
-#~ "「いいえ」を選択すると変更を破棄します"
-
-#~ msgid "Test"
-#~ msgstr "テスト"
-
-#~ msgid "Sent %s to \"%s\"."
-#~ msgstr "%s を \"%s\" へ送信。"
-
-#~ msgid "You must select a printer queue to delete."
-#~ msgstr "削除するプリンタを選択してください。"
-
-#~ msgid "You cannot delete an imported printer."
-#~ msgstr "インポートされたプリンタは削除できません。"
-
-#~ msgid "Confirm Delete"
-#~ msgstr "削除の確認"
-
-#~ msgid "Aliases"
-#~ msgstr "エイリアス"
-
-#~ msgid "Details"
-#~ msgstr "詳細"
-
-#~ msgid "New"
-#~ msgstr "新規"
-
-#~ msgid "Delete"
-#~ msgstr "削除"
-
-#~ msgid "Default"
-#~ msgstr "デフォルト"
-
-#~ msgid "You must select a printer queue to edit."
-#~ msgstr "編集するプリンタを選択してください。"
-
-#~ msgid ""
-#~ "This imported printer is protected from overrides. You can not edit it."
-#~ msgstr ""
-#~ "このインポートされたプリンタは上書きできないようになっています。編集するこ"
-#~ "とはできません。"
-
-#~ msgid "Override?"
-#~ msgstr "上書きしますか?"
-
-#~ msgid "This is an imported printer. Do you want to create a local override?"
-#~ msgstr "これはインポートされたプリンタですが、ローカルに上書きしたいですか?"
-
-#~ msgid "You must select a queue to print to."
-#~ msgstr "印刷するプリンタを選択してください。"
-
-#~ msgid "Initializing alchemist edit environment ..."
-#~ msgstr "Alchemist 編集環境を初期化中..."
-
-#~ msgid "Initializing linux printing database ..."
-#~ msgstr "Linux 印刷データベースを初期化中..."
-
-#~ msgid "Importing CUPS queues ..."
-#~ msgstr "CUPS キューを取り込み中です..."
-
-#~ msgid ""
-#~ "Failed to parse alchemist context: \n"
-#~ "%s"
-#~ msgstr ""
-#~ "alchemist コンテキストのパースに失敗しました: \n"
-#~ "%s"
-
-#~ msgid "Invalid printconf context"
-#~ msgstr "プリンタのコンテキストが不適切です"
-
-#~ msgid "\"%s\" is not a valid queue name."
-#~ msgstr "\"%s\" は正しいプリンタ名ではありません。"
-
-#~ msgid "Need device, make and model.\n"
-#~ msgstr "デバイス、製造元、モデルが必要です。\n"
-
-#~ msgid "add-local: queue name '%s' not unique\n"
-#~ msgstr "ローカルを追加: プリンタ名 '%s' が独特ではありません。\n"
-
-#~ msgid "add-local: no suitable name available\n"
-#~ msgstr "ローカルを追加: 適切な名前がありません。\n"
-
-#~ msgid "add-local: No information available about %s %s\n"
-#~ msgstr "ローカルを追加:%s %s に関する情報がありません。\n"
-
-#~ msgid "Now run printconf-backend (or restart lpd service)."
-#~ msgstr "printconf-backend を実行します(又はlpdサービス再起動)"
-
-#~ msgid "Need make and model.\n"
-#~ msgstr "製造元、モデルが必要です。\n"
-
-#~ msgid "You must run printconf-tui as root."
-#~ msgstr "printconf-uiはrootで実行しなければなりません"
-
-#~ msgid "Conflicting commands: %s and %s"
-#~ msgstr "コマンドのコンフリクト: %s と %s"
-
-#~ msgid "No handler for command: "
-#~ msgstr "コマンドのハンドラがありません:"
-
-#~ msgid "You must be root to run this program.\n"
-#~ msgstr "このプログラムはrootで実行する必要があります。\n"
-
-#~ msgid "Queue name"
-#~ msgstr "キュー名"
-
-#~ msgid "Shared"
-#~ msgstr "共有"
-
-#~ msgid ""
-#~ "Do you want to save the changes\n"
-#~ "you made to your printer configuration?"
-#~ msgstr ""
-#~ "プリンタ設定の変更を保存しま\n"
-#~ " すか?"
-
-#~ msgid "_Don't save"
-#~ msgstr "保存しません(_D)"
-
-#~ msgid "_Cancel"
-#~ msgstr "中止(_C)"
-
-#~ msgid "_Save"
-#~ msgstr "保存(_S)"
-
-#~ msgid "Browsed queues"
-#~ msgstr "閲覧したキュー"
-
-#~ msgid ""
-#~ "Loading printer information.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "プリンタ情報をロードしています。\n"
-#~ "お待ち下さい..."
-
-#~ msgid "Notes from the Linux Printing Database"
-#~ msgstr "Linux Printingデータベースの説明"
-
-#~ msgid "Printer notes:"
-#~ msgstr "プリンタ説明:"
-
-#~ msgid "Driver notes:"
-#~ msgstr "ドライバ説明:"
-
-#~ msgid "Generic (click to select manufacturer)"
-#~ msgstr "汎用(クリックしてメーカーを選択します)"
-
-#~ msgid ""
-#~ "You are changing an option\n"
-#~ "that has no effect in the print\n"
-#~ "spooler you are using (%s)."
-#~ msgstr ""
-#~ "使用中のプリントスプールに\n"
-#~ "何も効果のないオプションの\n"
-#~ "変更をしています(%s)。"
-
-#~ msgid ""
-#~ "Applying changes.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "変更を適用しています。\n"
-#~ "お待ち下さい..."
-
-#~ msgid "Failed to write queues."
-#~ msgstr "キューの書き込みに失敗。"
-
-#~ msgid ""
-#~ "There was a problem sending %s\n"
-#~ "to '%s' queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "%sを'%s'プリンタに送る時点に\n"
-#~ "問題がありました:\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Sent %s\n"
-#~ "to '%s' queue.  Does it look okay?"
-#~ msgstr ""
-#~ "%sを\n"
-#~ "'%s' プリンタに送りました。結果を確認して下さい。"
-
-#~ msgid "Here are the messages that appeared in the error log:"
-#~ msgstr "エラーログに表示されたメッセージです。"
-
-#~ msgid "'%s' does not look like a PPD file."
-#~ msgstr "'%s' は PPD ファイルではないようです。"
-
-#~ msgid "File cannot be opened for reading."
-#~ msgstr "読み込むためにファイルをオープンできません。"
-
-#~ msgid "PPD imported."
-#~ msgstr "PPD が取り込まれました。"
-
-#~ msgid "PPD import failed."
-#~ msgstr "PPD の取り込みに失敗しました。"
-
-#~ msgid "Invalid name"
-#~ msgstr "無効な名前"
-
-#~ msgid "There is already a queue with that name."
-#~ msgstr "この名前のプリンタは既に存在します。"
-
-#~ msgid "An existing queue has an alias of that name."
-#~ msgstr "既存のプリンタがその名前のエイリアスを持っています。"
-
-#~ msgid "'%s' does not exist, or is not writable."
-#~ msgstr "'%s'は存在しないか、書き込み不可です。"
-
-#~ msgid "Custom device"
-#~ msgstr "カスタムデバイス"
-
-#~ msgid "You must select a device."
-#~ msgstr "ドライバを選択する必要があります。"
-
-#~ msgid "You must specify a path."
-#~ msgstr "パスを指定する必要があります。"
-
-#~ msgid "You must specify a queue."
-#~ msgstr "プリンタを指定する必要があります。"
-
-#~ msgid "You must choose an SMB share to print to."
-#~ msgstr "印刷する SMB 共有を選択する必要があります。"
-
-#~ msgid "You must choose a share, not a host."
-#~ msgstr "ホストではなく、共有を選択して下さい。"
-
-#~ msgid "You must specify an SMB share to print to."
-#~ msgstr "印刷するSMB共有を指定する必要があります。"
-
-#~ msgid "You must specify a queue on the NCP server."
-#~ msgstr "NCP サーバーのプリンタを指定する必要があります。"
-
-#~ msgid "You must specify a JetDirect printer to print to."
-#~ msgstr "印刷する JetDirect プリンタを指定する必要があります。"
-
-#~ msgid "You must specify an IP port number."
-#~ msgstr "IP ポート番号を指定する必要があります。"
-
-#~ msgid "Select the printer manufacturer and model."
-#~ msgstr "プリンタの製造元とモデルを選択して下さい。"
-
-#~ msgid ""
-#~ "Select the printer manufacturer and model. Depending on how the remote "
-#~ "queue is configured, you may need to select the generic PostScript option "
-#~ "here."
-#~ msgstr ""
-#~ "プリンタの製造元とモデルを選択して下さい。リモートプリンタの設定次第では、"
-#~ "ここで汎用のPostScriptオプションを選択する必要があるかも知れません。"
-
-#~ msgid "You must select a printer model."
-#~ msgstr "プリンタモデルを選択する必要があります。"
-
-#~ msgid ""
-#~ "About to create the following queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "次のプリンタを作成します:\n"
-#~ "\n"
-
-#~ msgid "Type: "
-#~ msgstr "タイプ: "
-
-#~ msgid "Printer: "
-#~ msgstr "プリンタ: "
-
-#~ msgid "Device: "
-#~ msgstr "デバイス: "
-
-#~ msgid "Queue: "
-#~ msgstr "プリンタ: "
-
-#~ msgid "Share: "
-#~ msgstr "共有: "
-
-#~ msgid "Port: "
-#~ msgstr "ポート: "
-
-#~ msgid "Would you like to print a test page?"
-#~ msgstr "テストページを印刷しますか?"
-
-#~ msgid ""
-#~ "Would you like to print a test page?\n"
-#~ "Answering 'yes' will apply all changes\n"
-#~ "and print a test page to this printer."
-#~ msgstr ""
-#~ "テストページを印刷したいですか? 「はい」\n"
-#~ "を選択すると全ての変更を適用して、この\n"
-#~ "プリンタでテストページを印刷します。"
-
-#~ msgid "Number of columns on a page"
-#~ msgstr "ページ内の桁数"
-
-#~ msgid "Characters per inch"
-#~ msgstr "インチ当たりの文字数"
-
-#~ msgid "Billing label"
-#~ msgstr "張り紙ラベル"
-
-#~ msgid ""
-#~ "HH:MM:SS or '%s'.\n"
-#~ "Use GMT."
-#~ msgstr ""
-#~ "HH:MM:SS 又は '%s'。\n"
-#~ "GMTを使用します。"
-
-#~ msgid ""
-#~ "Banner pages (start,end):\n"
-#~ "for example, '%s'"
-#~ msgstr ""
-#~ "バナーページ(始点、終点): \n"
-#~ "例えば、'%s'"
-
-#~ msgid "Landscape (%s or %s)"
-#~ msgstr "Landscape (%s 又は %s)"
-
-#~ msgid "Lines per inch"
-#~ msgstr "インチ当たりの行数"
-
-#~ msgid ""
-#~ "Number of document pages per\n"
-#~ "printed page: 1, 2, 4, 6, 9, or 16"
-#~ msgstr ""
-#~ "印刷ページ1枚内の文書の\n"
-#~ " ページ数：1, 2, 4, 6, 9, 又は 16"
-
-#~ msgid "Top margin in pt (1/72 in)"
-#~ msgstr "上マージンのポイント数(1/72インチ)"
-
-#~ msgid "Left margin in pt (1/72 in)"
-#~ msgstr "左マージンのポイント数(1/72インチ)"
-
-#~ msgid "Right margin in pt (1/72 in)"
-#~ msgstr "右マージンのポイント数(1/72インチ)"
-
-#~ msgid "Bottom margin in pt (1/72 in)"
-#~ msgstr "下マージンのポイント数(1/72インチ)"
-
-#~ msgid ""
-#~ "'%s', '%s', '%s'\n"
-#~ "'%s' or '%s'"
-#~ msgstr ""
-#~ "'%s', '%s', '%s'\n"
-#~ "'%s' 又は '%s'"
-
-#~ msgid "Page label"
-#~ msgstr "ページラベル"
-
-#~ msgid "Pretty-print text (%s or %s)"
-#~ msgstr "Pretty-print テキスト(%s 又は %s)"
-
-#~ msgid "Scaling (percentage)"
-#~ msgstr "拡大率(パーセント)"
-
-#~ msgid "Word-wrapping (%s or %s)"
-#~ msgstr "ワードラッピング(%s 又は %s)"
-
-#~ msgid "Option name"
-#~ msgstr "オプション名"
-
-#~ msgid "Value"
-#~ msgstr "値"
-
-#~ msgid "Can't determine the printer model attached to this device."
-#~ msgstr "このデバイスに添え付けのプリンタモデルを判定できません。"
-
-#~ msgid "I don't know enough about this printer model to choose a driver."
-#~ msgstr "このプリンタ用にドライバを選択する為の情報がありません。"
-
-#~ msgid "Edit queue option"
-#~ msgstr "プリンタオプションを編集"
-
-#~ msgid "Add queue option"
-#~ msgstr "プリンタオプションを追加"
-
-#~ msgid "Invalid option name"
-#~ msgstr "無効なオプション名"
-
-#~ msgid "Invalid value"
-#~ msgstr "無効な値"
-
-#~ msgid "Value for this option"
-#~ msgstr "このオプションの値"
-
-#~ msgid "None"
-#~ msgstr "なし"
-
-#~ msgid ""
-#~ "(this is the\n"
-#~ "recommended driver)"
-#~ msgstr ""
-#~ "(これは推奨の\n"
-#~ "ドライバーです。)"
-
-#~ msgid "There are no options available for this driver."
-#~ msgstr "このドライバで使用できるオプションはありません。"
-
-#~ msgid ""
-#~ "This driver requires Hewlett Packard's hpijs driver (available in the "
-#~ "hpijs package) which does not appear to be installed."
-#~ msgstr ""
-#~ "このドライバは Hewlett Packard の hpijs ドライバ(hpijs パッケージ内にあり"
-#~ "ます)を必要としますが、インストールされていないようです。"
-
-#~ msgid "Do you wish to use it anyway?"
-#~ msgstr "それでもご利用になりたいですか?"
-
-#~ msgid ""
-#~ "This driver requires the Omni Print Driver System, which does not appear "
-#~ "to be installed."
-#~ msgstr ""
-#~ "このドライバは Omni プリントドライバシステムを必要としますが、インストール"
-#~ "されていないようです。"
-
-#~ msgid ""
-#~ "This driver requires the oki4drv daemon to be running, and it does not "
-#~ "appear to be."
-#~ msgstr ""
-#~ "このドライバは oki4drv デーモンが稼働していることを必要としますが、稼働し"
-#~ "ていないようです。"
-
-#~ msgid "Local Printer Device"
-#~ msgstr "ローカルプリンタデバイス"
-
-#~ msgid "IPP Print Queue"
-#~ msgstr "IPP 印刷キュー"
-
-#~ msgid "Unix Print Queue"
-#~ msgstr "UNIX 印刷キュー"
-
-#~ msgid "Windows Print Queue"
-#~ msgstr "Windows 印刷キュー"
-
-#~ msgid ""
-#~ "SMB print queues require the \"smbclient\" program, which does not appear "
-#~ "to be installed."
-#~ msgstr ""
-#~ "SMB 印刷キューは \"smbclient\" プログラムを必要としますが、インストールさ"
-#~ "れていないようです。"
-
-#~ msgid ""
-#~ "It is part of the \"samba-client\" package, as distributed by Red Hat."
-#~ msgstr ""
-#~ "\"smbclient\" は弊社の \"samba-client\" パッケージの中に含まれています。"
-
-#~ msgid "Do you wish to enable it anyway?"
-#~ msgstr "それでも有効にしたいですか?"
-
-#~ msgid "Novell Print Queue"
-#~ msgstr "Novell 印刷キュー"
-
-#~ msgid ""
-#~ "NCP print queues require the \"nprint\" program, which does not appear to "
-#~ "be installed."
-#~ msgstr ""
-#~ "NCP印刷キューは \"nprint\" プログラムを必要としますが、インストールされて"
-#~ "いないようです。"
-
-#~ msgid "It is part of the \"ncpfs\" package, as distributed by Red Hat."
-#~ msgstr "\"nprint\" は弊社の \"ncpfs\" パッケージの中に含まれています。"
-
-#~ msgid "Jetdirect Printer"
-#~ msgstr "JetDirect プリンタ"
-
-#~ msgid "Custom Command"
-#~ msgstr "カスタムコマンド"
-
-#~ msgid "Postscript Printer"
-#~ msgstr "Postscript プリンタ"
-
-#~ msgid "Text Only Printer"
-#~ msgstr "テキスト専用プリンタ"
-
-#~ msgid "Raw Print Queue"
-#~ msgstr "直接印刷キュー"
-
-#~ msgid "Custom Filter"
-#~ msgstr "カスタムフィルタ"
-
-#~ msgid "ERROR: No box named \"%s\" found.\n"
-#~ msgstr "エラー: \"%s\" というボックスは見つかりません。\n"
-
-#~ msgid "ERROR: box \"%s\" is not a writable interface.\n"
-#~ msgstr "エラー: ボックス \"%s\" は書き込み不可のインターフェイスです。\n"
-
-#~ msgid "Send Form-Feed (FF)"
-#~ msgstr "Form-Feed (FF)を送る"
-
-#~ msgid "Send End-of-Transmission (EOT)"
-#~ msgstr "End-of-Transmission (EOT)を送る"
-
-#~ msgid "Assume Unknown Data is Text"
-#~ msgstr "未知のデータをテキストとみなす"
-
-#~ msgid "Prerender Postscript"
-#~ msgstr "PostScriptの再描画"
-
-#~ msgid "Convert Text to Postscript"
-#~ msgstr "テキストをポストスクリプトに変換"
-
-#~ msgid "Page Size"
-#~ msgstr "ページサイズ"
-
-#~ msgid "Effective Filter Locale"
-#~ msgstr "フィルタで使うロケール"
-
-#~ msgid "Couldn't load driver information.\n"
-#~ msgstr "ドライバ情報を読み込めませんでした。\n"
-
-#~ msgid "You must run printconf-backend as root."
-#~ msgstr "printconf-backend は root で実行しなければなりません。"
-
-#~ msgid "Sharing properties - %s"
-#~ msgstr "プロパティを共有 - %s"
-
-#~ msgid "Sharing properties"
-#~ msgstr "プロパティを共有"
-
-#~ msgid "All hosts"
-#~ msgstr "全てのホスト"
-
-#~ msgid "Network device %s"
-#~ msgstr "ネットワークデバイス %s"
-
-#~ msgid "Network devices %s"
-#~ msgstr "ネットワークデバイス %s"
-
-#~ msgid "Network address %s"
-#~ msgstr "ネットワークアドレス %s"
-
-#~ msgid "(unknown)"
-#~ msgstr "(不明)"
-
-#~ msgid "Add allowed hosts - %s"
-#~ msgstr "許可されたホストを追加 - %s"
-
-#~ msgid "Edit allowed hosts - %s"
-#~ msgstr "許可されたホストの編集 - %s"
-
-#~ msgid ""
-#~ "LPD connections will be accepted\n"
-#~ "on all interfaces, and jobs for\n"
-#~ "all queues will be accepted."
-#~ msgstr ""
-#~ "LPD 接続が全てのインターフェースで許\n"
-#~ "可され、全てのキューのジョブが許可され\n"
-#~ "ます。"
-
-#~ msgid "Invalid network address"
-#~ msgstr "無効なネットワークアドレス"
-
-#~ msgid "Invalid netmask"
-#~ msgstr "無効なネットマスク"
-
-#~ msgid "Invalid IP address"
-#~ msgstr "無効な IP アドレス"
-
-#~ msgid "*"
-#~ msgstr "*"
-
-#~ msgid "/"
-#~ msgstr "/"
-
-#~ msgid "72pt per inch"
-#~ msgstr "インチ当たり 72pt"
-
-#~ msgid "="
-#~ msgstr "="
-
-#~ msgid "ASC_II text test page"
-#~ msgstr "ASCII テキストのテストページ(_I)"
-
-#~ msgid "About"
-#~ msgstr "関連情報"
-
-#~ msgid "Add a new option"
-#~ msgstr "新規のオプションを追加"
-
-#~ msgid "Add a new print queue"
-#~ msgstr "新規印刷キューの追加"
-
-#~ msgid "Add a new queue"
-#~ msgstr "新規プリンタの追加"
-
-#~ msgid "Add an allowed host"
-#~ msgstr "許可されたホストを追加"
-
-#~ msgid "Add/edit queue option"
-#~ msgstr "プリンタオプションを追加/削除"
-
-#~ msgid "Allowed hosts"
-#~ msgstr "許可されたホスト"
-
-#~ msgid "Apply"
-#~ msgstr "適用"
-
-#~ msgid "Apply changes"
-#~ msgstr "変更を適用"
-
-#~ msgid "At end of job:"
-#~ msgstr "ジョブの終点で:"
-
-#~ msgid "At start of job:"
-#~ msgstr "ジョブの開始点で: "
-
-#~ msgid "Authentication"
-#~ msgstr "認証"
-
-#~ msgid "Autoselect driver"
-#~ msgstr "自動選択のドライバー"
-
-#~ msgid "Available drivers:"
-#~ msgstr "利用可能なドライバー: "
-
-#~ msgid "Banner pages"
-#~ msgstr "バナーのページ"
-
-#~ msgid "Big5 PostScript test page"
-#~ msgstr "Big5 PostScript テストページ"
-
-#~ msgid "Bottom margin (pt):"
-#~ msgstr "下マージン(pt):"
-
-#~ msgid "Choose the manufacturer"
-#~ msgstr "製造元を選択"
-
-#~ msgid "Choose the queue type"
-#~ msgstr "プリンタタイプの選択"
-
-#~ msgid "Choose the type of queue you want to use"
-#~ msgstr "使用するプリンタタイプを選択して下さい"
-
-#~ msgid "Choose which other computers may use this queue."
-#~ msgstr "このプリンタを使用できる他のコンピュータを選択して下さい。"
-
-#~ msgid "Delete the selected queue"
-#~ msgstr "選択したプリンタの削除"
-
-#~ msgid "Edit a print queue"
-#~ msgstr "印刷キューの編集"
-
-#~ msgid "Edit the selected queue"
-#~ msgstr "選択したプリンタを編集"
-
-#~ msgid "Edit this host"
-#~ msgstr "このホストの編集"
-
-#~ msgid "Edit this option"
-#~ msgstr "このオプションを編集"
-
-#~ msgid "Enable _LPD protocol"
-#~ msgstr "LPD プロトコルを有効にする(_L)"
-
-#~ msgid "Enter the device you would like to use."
-#~ msgstr "使用するデバイスを入力してください。"
-
-#~ msgid "Filter options"
-#~ msgstr "フィルターオプション"
-
-#~ msgid "Finish, and create the new print queue"
-#~ msgstr "完了、そして新規印刷キューを作成します"
-
-#~ msgid "For example: /dev/lp0"
-#~ msgstr "例えば: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "全般"
-
-#~ msgid "Generic"
-#~ msgstr "汎用"
-
-#~ msgid "IP port number (often 9100)"
-#~ msgstr "IPポート番号(多くは9100)"
-
-#~ msgid ""
-#~ "If you like, you can enter a description of the printer to help you "
-#~ "identify it more easily."
-#~ msgstr ""
-#~ "好みに応じて、このプリンタをより識別しやすくする為にその説明を入力する 事"
-#~ "もできます。"
-
-#~ msgid "Imageable Area"
-#~ msgstr "想像できる範囲"
-
-#~ msgid "JPE_G test"
-#~ msgstr "JPEG のテスト(_G)"
-
-#~ msgid "Japanese EUC PostScript test page"
-#~ msgstr "日本語 EUC PostScript のテストページ"
-
-#~ msgid "Japanese JIS PostScript test page"
-#~ msgstr "日本語 JIS PostScript のテストページ"
-
-#~ msgid "Japanese SJIS PostScript test page"
-#~ msgstr "日本語 SJIS PostScript のテストページ"
-
-#~ msgid "Japanese _EUC text test page"
-#~ msgstr "日本語 EUC テキストのテストページ(_E)"
-
-#~ msgid "Japanese _JIS text test page"
-#~ msgstr "日本語 JIS テキストのテストページ(_J)"
-
-#~ msgid "Japanese _SJIS text test page"
-#~ msgstr "日本語 SJIS テキストのテストページ(_S)"
-
-#~ msgid "Left margin (pt):"
-#~ msgstr "左マージン(pt):"
-
-#~ msgid "Linefeed translation"
-#~ msgstr "行毎の翻訳"
-
-#~ msgid "Network _devices"
-#~ msgstr "ネットワークデバイス(_D)"
-
-#~ msgid "Networked CUPS (_IPP)"
-#~ msgstr "ネットワーク上の CUPS (IPP)(_I)"
-
-#~ msgid "Networked _JetDirect"
-#~ msgstr "ネットワーク上のJetDirect(_J)"
-
-#~ msgid "Networked _Novell (NCP)"
-#~ msgstr "ネットワーク上の Novell (NCP)(_N)"
-
-#~ msgid "Networked _UNIX (LPD)"
-#~ msgstr "ネットワーク上の UNIX (LPD)(_U)"
-
-#~ msgid "Networked _Windows (SMB)"
-#~ msgstr "ネットワーク上のWindows (SMB)(_W)"
-
-#~ msgid ""
-#~ "On the following screens, you will be asked to provide basic information "
-#~ "for adding a new print queue.  You will be able to edit the more advanced "
-#~ "options afterwards.\n"
-#~ "\n"
-#~ "Nothing will be done to your settings until you hit \"Finish\" on the "
-#~ "last screen."
-#~ msgstr ""
-#~ "次の画面に進んで、新規印刷キューを追加するための基本的な情報を入力していき"
-#~ "ます。 より高度なオプションは後で編集できるようになります。\n"
-#~ "\n"
-#~ "最後の画面で「完了」を押すまでは、設定に対して何も変更は反映されません。"
-
-#~ msgid "Password:"
-#~ msgstr "パスワード:"
-
-#~ msgid "Path:"
-#~ msgstr "パス: "
-
-#~ msgid "Patience"
-#~ msgstr "お待ち下さい"
-
-#~ msgid ""
-#~ "Please enter a name for this queue.  Choose a short name that begins with "
-#~ "a letter and contains no spaces."
-#~ msgstr ""
-#~ "このプリンタの名前を入力して下さい。 文字 1 つから始まる空白なしの短い名前"
-#~ "を選択して下さい。"
-
-#~ msgid "Printer configuration"
-#~ msgstr "プリンタ設定 "
-
-#~ msgid "Printer driver"
-#~ msgstr "プリンタドライバー"
-
-#~ msgid "Printer hostname or IP address"
-#~ msgstr "プリンタホスト名 又は IP アドレス"
-
-#~ msgid "Printer model"
-#~ msgstr "プリンタモデル"
-
-#~ msgid "Printer/driver _notes..."
-#~ msgstr "プリンタ/ドライバの注意事項(_N)..."
-
-#~ msgid "Printer:"
-#~ msgstr "プリンタ: "
-
-#~ msgid "Queue options"
-#~ msgstr "プリンタオプション"
-
-#~ msgid "Queue type"
-#~ msgstr "プリンタタイプ"
-
-#~ msgid "Queue type:"
-#~ msgstr "キュータイプ:"
-
-#~ msgid "Queue:"
-#~ msgstr "キュー:"
-
-#~ msgid "Remove this host from the list"
-#~ msgstr "リストからこのホストを削除"
-
-#~ msgid "Remove this option"
-#~ msgstr "このオプションを削除"
-
-#~ msgid "Rescan devices"
-#~ msgstr "デバイスを再スキャン"
-
-#~ msgid "Reset to the default options"
-#~ msgstr "デフォルトオプションのリセット"
-
-#~ msgid "Right margin (pt):"
-#~ msgstr "右マージン(pt):"
-
-#~ msgid "Select a queue type:"
-#~ msgstr "キュータイプの選択: "
-
-#~ msgid "Select the appropriate printer manufacturer and model."
-#~ msgstr "適切なプリンタの製造元とモデルを選択して下さい。"
-
-#~ msgid "Server hostname or IP address:"
-#~ msgstr "サーバーホスト名又は IP アドレス:"
-
-#~ msgid "Set as _default"
-#~ msgstr "デフォルトに設定(_D)"
-
-#~ msgid "Set as de_fault"
-#~ msgstr "デフォルトとして設定(_F)"
-
-#~ msgid "Set as default queue"
-#~ msgstr "デフォルトキューに設定"
-
-#~ msgid "Short description:"
-#~ msgstr "簡単な説明:"
-
-#~ msgid "Short description: "
-#~ msgstr "簡単な説明:"
-
-#~ msgid "Single _IP address"
-#~ msgstr "単独IPアドレス(_I)"
-
-#~ msgid "Specify..."
-#~ msgstr "指定..."
-
-#~ msgid "Strict RFC1179 compliance"
-#~ msgstr "厳密な RFC1179 準処"
-
-#~ msgid "These settings are system-wide."
-#~ msgstr "この設定はシステム全体で有効です。"
-
-#~ msgid "This allows older systems to print to this machine"
-#~ msgstr "これにより古いシステムからこのマシンへ印刷できます。"
-
-#~ msgid "This enables CUPS IPP browsing"
-#~ msgstr "これで CUPS IPP 閲覧が有効になります。"
-
-#~ msgid ""
-#~ "This is the name of the queue.  It must begin with a letter and contain "
-#~ "no spaces."
-#~ msgstr ""
-#~ "これはプリンタの名前です。文字1つから始まり、空白がないようにする必要があ"
-#~ "ります。"
-
-#~ msgid "Top margin (pt):"
-#~ msgstr "上マージン(pt):"
-
-#~ msgid "Type in an IP address"
-#~ msgstr "IPアドレスを入力します"
-
-#~ msgid "Type in the netmask, or the CIDR mask length"
-#~ msgstr "ネットマスクに入力、又は CIDR マスクの長さで入力"
-
-#~ msgid "Type in the share name"
-#~ msgstr "共有名を入力"
-
-#~ msgid "Use control-F to search"
-#~ msgstr "Ctrl キーと F キーを押して検索します"
-
-#~ msgid "User name:"
-#~ msgstr "ユーザー名:"
-
-#~ msgid "_A4 PostScript test page"
-#~ msgstr "A4 PostScriptテストページ(_A)"
-
-#~ msgid "_Action"
-#~ msgstr "操作(_A)"
-
-#~ msgid "_Add..."
-#~ msgstr "追加(_A)..."
-
-#~ msgid "_All hosts"
-#~ msgstr "全てのホスト(_A)"
-
-#~ msgid "_Apply"
-#~ msgstr "適用(_A)"
-
-#~ msgid "_Automatically find remote shared queues"
-#~ msgstr "自動的にリモートの共有プリンタを探す(_A)"
-
-#~ msgid "_Big5 text test page"
-#~ msgstr "Big5 テキストテストページ(_B)"
-
-#~ msgid "_CUPS test page"
-#~ msgstr "CUPS のテストページ(_C)"
-
-#~ msgid "_Contents"
-#~ msgstr "目次(_C)"
-
-#~ msgid "_Custom device"
-#~ msgstr "カスタムデバイス(_C)"
-
-#~ msgid "_Defaults"
-#~ msgstr "デフォルト(_D)"
-
-#~ msgid "_Delete"
-#~ msgstr "削除(_D)"
-
-#~ msgid "_Delete queue"
-#~ msgstr "プリンタの削除(_D)"
-
-#~ msgid "_Duplex test"
-#~ msgstr "Duplex のテスト(_D)"
-
-#~ msgid "_Edit queue"
-#~ msgstr "プリンタの編集(_E)"
-
-#~ msgid "_Edit..."
-#~ msgstr "編集(_E)..."
-
-#~ msgid "_Help"
-#~ msgstr "ヘルプ(_H)"
-
-#~ msgid "_Import PPD..."
-#~ msgstr "PPS 取り込み (_I)..."
-
-#~ msgid "_Network address"
-#~ msgstr "ネットワークアドレス(_N)"
-
-#~ msgid "_New queue"
-#~ msgstr "新規プリンタ(_N)"
-
-#~ msgid "_Notes..."
-#~ msgstr "注意書き(_N)..."
-
-#~ msgid "_Remove"
-#~ msgstr "削除(_R)"
-
-#~ msgid "_Rescan devices"
-#~ msgstr "デバイスを再スキャン(_R)"
-
-#~ msgid "_Sharing..."
-#~ msgstr "共有(_S)..."
-
-#~ msgid "_Test"
-#~ msgstr "テスト(_T)"
-
-#~ msgid "_This queue is available to other computers"
-#~ msgstr "このプリンタは他のコンピュータで利用できます(_T)"
-
-#~ msgid "_US Letter PostScript test page"
-#~ msgstr "US Letter PostScriptのテストページ(_U)"
-
-#~ msgid "_classified"
-#~ msgstr "分類した(_C)"
-
-#~ msgid "_none"
-#~ msgstr "なし(_N)"
-
-#~ msgid "_secret"
-#~ msgstr "秘密(_S)"
-
-#~ msgid "_standard"
-#~ msgstr "標準(_S)"
-
-#~ msgid "_topsecret"
-#~ msgstr "特別秘密(_T)"
-
-#~ msgid "_unclassified"
-#~ msgstr "分類無し(_U)"
-
-#~ msgid "c_onfidential"
-#~ msgstr "内密の(_O)"
-
-#~ msgid "ipp"
-#~ msgstr "ipp"
-
-#~ msgid "jetdirect"
-#~ msgstr "jetdirect"
-
-#~ msgid "local"
-#~ msgstr "ローカル"
-
-#~ msgid "lpd"
-#~ msgstr "lpd"
-
-#~ msgid "ncp"
-#~ msgstr "NCP"
-
-#~ msgid "none"
-#~ msgstr "なし"
-
-#~ msgid "smb"
-#~ msgstr "SMB"
-
-#~ msgid "Configure printers"
-#~ msgstr "プリンタの設定"
-
-#~ msgid "Printing"
-#~ msgstr "印刷"
-
-#~ msgid ""
-#~ "Would you like to save your changes?\n"
-#~ "If you say no, your changes will be lost."
-#~ msgstr ""
-#~ "変更を保存しますか?\n"
-#~ "もし「いいえ」を選択すると変更は失われます。"
-
-#~ msgid "Landscape orientation (true or false)"
-#~ msgstr "Landscapeの方向(正しい/誤り)"
-
-#~ msgid "No help yet!"
-#~ msgstr "まだヘルプは不必要!"
-
-#~ msgid "No options are available for this driver."
-#~ msgstr "このドライバで使用できるオプションはありません"
-
-#~ msgid "Send FF"
-#~ msgstr "FF を送信"
-
-#~ msgid "Send EOT"
-#~ msgstr "EOT を送信"
-
-#~ msgid "Red Hat, Inc"
-#~ msgstr "Red Hat, Inc."
-
-#~ msgid "\"The Trees! The Trees!\"  -Thoreau"
-#~ msgstr "\"森!、森!\" - ヘンリー=デヴィッド=ソロー"
-
-#~ msgid "Thanks to everyone involved at http://www.linuxprinting.org!"
-#~ msgstr "http://www.linuxprinting.org のみなさんどうもありがとう!"
-
-#~ msgid "lpd restart succeeded."
-#~ msgstr "lpd の再起動に成功"
-
-#~ msgid "lpd restart failed."
-#~ msgstr "lpd の再起動に失敗"
-
-#~ msgid "You must specify the port of the JetDirect printer."
-#~ msgstr "JetDirect プリンタのポート番号を指定してください。"
-
-#~ msgid "Host:"
-#~ msgstr "ホスト:"
-
-#~ msgid "Ip:"
-#~ msgstr "IP:"
-
-#~ msgid "Alias"
-#~ msgstr "エイリアス"
-
-#~ msgid "Please choose a name of the form [a-zA-Z][a-zA-Z0-9_-]*."
-#~ msgstr "[a-zA-Z][a-zA-Z0-9_-]* の名前を選択してください。"
-
-#~ msgid "Can't autoselect for this printer device."
-#~ msgstr "このプリンタデバイスについて自動選択はできません"
-
-#~ msgid ""
-#~ "Sorry,\n"
-#~ "there are no notes available for this printer."
-#~ msgstr ""
-#~ "すみません、\n"
-#~ "このプリンタの説明はありません。"
-
-#~ msgid "Invalid Printer Record."
-#~ msgstr "不適切なプリンタレコード"
-
-#~ msgid "You must select a printer queue to override."
-#~ msgstr "上書きするプリンタを選択してください。"
-
-#~ msgid "You cannot override a locally defined printer."
-#~ msgstr "ローカルプリンタを上書きすることはできません。"
-
-#~ msgid "You must select a printer queue to send a test page to."
-#~ msgstr "テストページを送る、プリンタキューを選択してください"
-
-#~ msgid "The printer's format is not understood, and can not be edited."
-#~ msgstr "プリンタのフォーマットが不明なので、編集できません。"
-
-#~ msgid ""
-#~ "You must select a printer queue\n"
-#~ " to make the default."
-#~ msgstr ""
-#~ "デフォルトのプリンタを選択して\n"
-#~ "ください。"
-
-#~ msgid "You must run printconf-gui as root."
-#~ msgstr "printconf-guiを実行するにはrootでなければなりません"
-
-#~ msgid ""
-#~ "RPMS are available from the project's sourceforge site: http://hpinkjet."
-#~ "sourceforge.net"
-#~ msgstr ""
-#~ "RPMなどはsourceforgeのサイト(http://hpinkjet.sourceforge.net)から入手可能"
-#~ "です"
-
-#~ msgid "Red Hat is unable to ship these drivers due to license restrictions."
-#~ msgstr ""
-#~ "弊社はライセンスの問題からこれらのドライバを同梱することができません"
-
-#~ msgid "Alias List"
-#~ msgstr "エイリアスリスト"
-
-#~ msgid "Bar"
-#~ msgstr "Bar"
-
-#~ msgid "Baz"
-#~ msgstr "Baz"
-
-#~ msgid "Bob"
-#~ msgstr "Bob"
-
-#~ msgid "Configure a Delivery Command"
-#~ msgstr "転送コマンドの設定"
-
-#~ msgid "Configure a Jetdirect Printer"
-#~ msgstr "JetDirectプリンタの設定"
-
-#~ msgid "Configure a Novell Print Queue"
-#~ msgstr "Novellプリンタの設定"
-
-#~ msgid "Configure a Unix Print Queue"
-#~ msgstr "UNIXプリンタの設定"
-
-#~ msgid "Configure a Windows Print Queue"
-#~ msgstr "Windowsプリンタの設定"
-
-#~ msgid "Configure the SMB share of your remote printer."
-#~ msgstr "リモートプリンタのSMB共有を設定"
-
-#~ msgid "Configure the remote server and queue of your NCP printer."
-#~ msgstr "リモートサーバと NCPプリンタのキューを設定"
-
-#~ msgid ""
-#~ "Configure the server and queue of your remote lpd server. If no queue is "
-#~ "specified, you will use the default queue on the remote server. Select "
-#~ "strict RFC1179 compliance if you are having problems connecting to an "
-#~ "older lpd server."
-#~ msgstr ""
-#~ "サーバとそのリモートlpdサーバ用のキューを設定。キューが無指定ならそのリ"
-#~ "モートサーバの標準のキューを使用します。旧式のlpdサーバに接続する際に何ら"
-#~ "かの障害が生じているようなら、[厳密なRFC1179に準拠]を選択して下さい"
-
-#~ msgid "Create a New Print Queue"
-#~ msgstr "新規プリンタの作成"
-
-#~ msgid ""
-#~ "Enter the Command you want to run for delivery.\n"
-#~ "The printjob will be sent to this command on standard input.\n"
-#~ "You must give full paths to programs, there is no guaranteed path set."
-#~ msgstr ""
-#~ "転送時に実行したいコマンドを入力して下さい。\n"
-#~ "印刷ジョブはこのコマンドを標準入力に送ります。\n"
-#~ "パスが未指定の場合は動作が保証できないので、\n"
-#~ "必ずプログラムへの絶対パスを指定して下さい"
-
-#~ msgid ""
-#~ "Enter the IP address of the JetDirect printer.\n"
-#~ "Use the default port of 9100 unless you know the printer is using a "
-#~ "different port."
-#~ msgstr ""
-#~ "JetDirectプリンタのIPを入力してください。\n"
-#~ "プリンタが別のポートを使っているのでなければ、標準の 9100 ポートを使用しま"
-#~ "す"
-
-#~ msgid ""
-#~ "Enter the Queue's name, and select the Queue's Type.\n"
-#~ "Valid names can contain the characters \"a-z\", \"A-Z\", \"0-9\", \"-\", "
-#~ "and \"__\".\n"
-#~ "They must begin with letters."
-#~ msgstr ""
-#~ "プリンタ名を入力して、プリンタタイプを選択してください。\n"
-#~ "適切な名称は次の文字を含みます: \"a-z\", \"A-Z\", \"0-9\", \"-\"そして\"__"
-#~ "\"。\n"
-#~ "これらは文字で始まらなければなりません。"
-
-#~ msgid "Foo"
-#~ msgstr "Foo"
-
-#~ msgid "Host IP:"
-#~ msgstr "ホストIP:"
-
-#~ msgid "JETDIRECT"
-#~ msgstr "JETDIRECT"
-
-#~ msgid "JetDirect Printer"
-#~ msgstr "JetDirectプリンタ"
-
-#~ msgid "LOCAL"
-#~ msgstr "LOCAL"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "NCP"
-#~ msgstr "NCP"
-
-#~ msgid "Name and Aliases"
-#~ msgstr "名前とエイリアス"
-
-#~ msgid "Novell Printer (NCP Queue)"
-#~ msgstr "Novellプリンタ(NCP)"
-
-#~ msgid "Printer IP:"
-#~ msgstr "プリンタIP:"
-
-#~ msgid "Qux"
-#~ msgstr "Qux"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Select a Print Driver"
-#~ msgstr "プリンタドライバの選択"
-
-#~ msgid "Select a print driver for your printer."
-#~ msgstr "プリンタドライバの選択"
-
-#~ msgid ""
-#~ "Select the printer device to use, or use the custom option if it is not "
-#~ "listed."
-#~ msgstr ""
-#~ "使用するプリンタデバイスを選択するか、一覧になければカスタムオプションを使"
-#~ "用してください。"
-
-#~ msgid "Set the Print Queue Name and Type"
-#~ msgstr "プリンタ名とタイプの設定"
-
-#~ msgid "Translate \\n => \\r\\n"
-#~ msgstr "\\n を\\r に変換する\\n"
-
-#~ msgid "UNIX Printer (lpd Queue)"
-#~ msgstr "UNIXプリンタ(lpd)"
-
-#~ msgid "Unix Printer"
-#~ msgstr "UNIXプリンタ"
-
-#~ msgid "Windows Printer"
-#~ msgstr "Windowsプリンタ"
-
-#~ msgid "Windows Printer (SMB Share)"
-#~ msgstr "Windowsプリンタ(SMB共有)"
-
-#~ msgid "_Override Queue"
-#~ msgstr "プリンタの上書き(_O)"
-
-#~ msgid "_Queue Name:"
-#~ msgstr "プリンタ名(_Q):"
-
-#~ msgid "_Restart lpd"
-#~ msgstr "lpdを再起動(_R)"
-
-#~ msgid "_Save Changes"
-#~ msgstr "変更を保存(_S)"
-
-#~ msgid "Red Hat Printer Config"
-#~ msgstr "Red Hatプリンタ設定"
-
-#~ msgid "Red Hat Printer Config: Add a New Print Queue"
-#~ msgstr "Red Hatプリンタ設定: 新規印刷キューを追加"
-
-#~ msgid "replace me."
-#~ msgstr "置き換えてください。"
-
-#~ msgid "window1"
-#~ msgstr "window1"
-
-#~ msgid "_File"
-#~ msgstr "ファイル(_F)"
-
-#~ msgid "printconf-gui"
-#~ msgstr "printconf-gui"
-
-#~ msgid "Sent a US Letter PostScript test page to \"%s\"."
-#~ msgstr "US Letter ポストスクリプトページを \"%s\" へ送信"
-
-#~ msgid "Sent an A4 PostScript test page to \"%s\"."
-#~ msgstr "A4 ポストスクリプトテストページを\"%s\"に送信"
-
-#~ msgid "Ascii Test Page"
-#~ msgstr "ASCIIテキストテストページ"
-
-#~ msgid "Print A_4 Postscript Test Page"
-#~ msgstr "A4 PostScriptテストページを印刷(_4)"
-
-#~ msgid "Print US _Letter Postscript Test Page"
-#~ msgstr "US Letterのポストスクリプトのテストページを印刷(_L)"
-
-#~ msgid ", "
-#~ msgstr "、"
-
-#~ msgid ", and "
-#~ msgstr "、そして"
-
-#~ msgid ""
-#~ ".\n"
-#~ "They must begin with letters."
-#~ msgstr ""
-#~ " \n"
-#~ "それらは次の文字で始まっていなければなりません"
-
-#~ msgid ""
-#~ "\n"
-#~ "on the last screen."
-#~ msgstr ""
-#~ "\n"
-#~ "最終画面"
-
-#~ msgid ""
-#~ "Translate \n"
-#~ " => \r\n"
-#~ msgstr ""
-#~ " \n"
-#~ " => \r\n"
-#~ "に変換\n"
-
-#~ msgid "Edit Names"
-#~ msgstr "名前の編集"
-
-#~ msgid "Edit Type"
-#~ msgstr "タイプの編集"
-
-#~ msgid "Convert Text To Postscript"
-#~ msgstr "平文テキストをポストスクリプトに変換"
-
-#~ msgid "You cannot edit an imported printer."
-#~ msgstr "インポートされたプリンタは編集できません。"
-
-#~ msgid "label158"
-#~ msgstr "label158"
-
-#~ msgid "label164"
-#~ msgstr "label164"
-
-#~ msgid "label170"
-#~ msgstr "label170"
-
-#~ msgid "stuff"
-#~ msgstr "資材"
+#~ "この PPD は製造メーカーから提供されており foomatic パッケージを含んでいま"
+#~ "す。"
+
+#~ msgid "This PPD is provided by CUPS."
+#~ msgstr "この PPD は CUPS から提供されています。"

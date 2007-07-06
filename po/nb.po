@@ -1,1940 +1,1561 @@
+# Trond Eivind Glomsrød <teg@redhat.com>, 2007.
+#
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: printconf 0.1\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-06-23 17:34+0100\n"
-"PO-Revision-Date: 2004-10-15 10:55+0200\n"
-"Last-Translator: Trond Eivind Glomsrød <teg@redhat.com>\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2007-06-15 18:34+0100\n"
+"PO-Revision-Date: 2007-06-11 09:39+0200\n"
+"Last-Translator: Espen A. Stefansen <espenas@gmail.com>\n"
 "Language-Team: Norsk <no@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8-bit\n"
+"Content-Transfer-Encoding: 8bit\n"
 
-#: optionwidgets.py:94
+#: ../cupshelpers.py:28
+msgid "Idle"
+msgstr "Ledig"
+
+#: ../cupshelpers.py:29 ../applet.py:684
+msgid "Processing"
+msgstr "Prosesserer"
+
+#: ../cupshelpers.py:30
+msgid "Busy"
+msgstr "Opptatt"
+
+#: ../cupshelpers.py:31 ../applet.py:685
+msgid "Stopped"
+msgstr "Stoppet"
+
+#: ../cupshelpers.py:48 ../applet.py:694
+msgid "Unknown"
+msgstr "Ukjent"
+
+#: ../my-default-printer.py:117 ../my-default-printer.desktop.in.h:1
+#, fuzzy
+msgid "Default Printer"
+msgstr "Sett til forvalgt skriver"
+
+#: ../my-default-printer.py:121 ../my-default-printer.py:152
+#, fuzzy
+msgid "_Use System Default"
+msgstr "Sett til systemets forvalgte verdier"
+
+#: ../my-default-printer.py:122
+#, fuzzy
+msgid "_Set Default"
+msgstr "forvalgt"
+
+#: ../my-default-printer.py:132 ../system-config-printer.glade.h:190
+#: ../applet.py:184 ../applet.py:224
+msgid "Printer"
+msgstr "Skriver"
+
+#: ../my-default-printer.py:136
+#, fuzzy
+msgid "Location"
+msgstr "Lokasjon:"
+
+#: ../optionwidgets.py:108
 msgid "Conflicts with:"
-msgstr ""
+msgstr "I konflikt med:"
 
-#: system-config-printer.py:172
-msgid "Copyright 2006 Red Hat, Inc."
-msgstr ""
+#: ../system-config-printer.py:228
+msgid "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "Opphavsrett 2006, 2007 Red Hat, Inc."
 
-#: system-config-printer.py:208
-#, fuzzy
+#: ../system-config-printer.py:264
 msgid "Server Settings"
-msgstr "Alternativer for driver"
+msgstr "Innstillinger for tjener"
 
-#: system-config-printer.py:209
-#, fuzzy
-msgid "Local Printers"
-msgstr "Lokal skriver"
+#: ../system-config-printer.py:273 ../system-config-printer.py:275
+msgid "Members of this class"
+msgstr "Medlemmer av denne klassen"
 
-#: system-config-printer.py:210
-msgid "Local Classes"
-msgstr ""
-
-#: system-config-printer.py:211
-#, fuzzy
-msgid "Remote Printers"
-msgstr "Novell-skriver"
-
-#: system-config-printer.py:212
-msgid "Remote Classes"
-msgstr ""
-
-#: system-config-printer.py:221 system-config-printer.py:223
-msgid "Members of this Class"
-msgstr ""
-
-#: system-config-printer.py:222 system-config-printer.py:224
+#: ../system-config-printer.py:274 ../system-config-printer.py:276
 msgid "Others"
-msgstr ""
+msgstr "Andre"
 
-#: system-config-printer.py:225
-#, fuzzy
+#: ../system-config-printer.py:277
 msgid "Devices"
-msgstr "Enhet"
+msgstr "Enheter"
 
-#: system-config-printer.py:226
+#: ../system-config-printer.py:278
 msgid "Makes"
-msgstr ""
+msgstr "Merker"
 
-#: system-config-printer.py:227
-#, fuzzy
+#: ../system-config-printer.py:279
 msgid "Models"
-msgstr "Modell"
+msgstr "Modeller"
 
-#: system-config-printer.py:228
-#, fuzzy
+#: ../system-config-printer.py:280
 msgid "Drivers"
-msgstr "Driver"
+msgstr "Drivere"
 
-#: system-config-printer.py:229
-#, fuzzy
+#: ../system-config-printer.py:281
 msgid "Users"
-msgstr "Bruker"
+msgstr "Brukere"
 
-#: system-config-printer.py:240
+#: ../system-config-printer.py:292
 msgid "PostScript Printer Description (*.ppd[.gz])"
-msgstr ""
+msgstr "PostScript skriverbeskrivelse (*.ppd[.gz])"
 
-#: system-config-printer.py:259
+#. SMB list columns
+#: ../system-config-printer.py:312
 msgid "Share"
 msgstr "Share"
 
-#: system-config-printer.py:265
+#: ../system-config-printer.py:318
 msgid "Comment"
 msgstr "Kommentar"
 
-#: system-config-printer.py:318
+#: ../system-config-printer.py:551
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Skriverkonfigurasjon - %s"
 
-#: system-config-printer.py:321
+#: ../system-config-printer.py:554
 #, python-format
 msgid "Connected to %s"
-msgstr ""
+msgstr "Koblet til %s"
 
-#: system-config-printer.py:323
-#, fuzzy
+#: ../system-config-printer.py:556 ../system-config-printer.py:1170
 msgid "Not connected"
-msgstr "_Lokalt tilknyttet"
+msgstr "Ikke tilkoblet"
 
-#: system-config-printer.py:463
+#: ../system-config-printer.py:637
+msgid "Local Printers"
+msgstr "Lokale skrivere"
+
+#: ../system-config-printer.py:638
+msgid "Local Classes"
+msgstr "Lokale klasser"
+
+#: ../system-config-printer.py:639
+msgid "Remote Printers"
+msgstr "Eksterne skrivere"
+
+#: ../system-config-printer.py:640
+msgid "Remote Classes"
+msgstr "Eksterne klasser"
+
+#: ../system-config-printer.py:736
 #, python-format
 msgid ""
-"Connecting to Server:\n"
+"Connecting to server:\n"
 "%s"
 msgstr ""
+"Kobler til tjener:\n"
+"%s"
 
-#: system-config-printer.py:748
+#: ../system-config-printer.py:1099 ../system-config-printer.glade.h:115
+msgid "Installable Options"
+msgstr "Installerbare alternativer"
+
+#: ../system-config-printer.py:1100 ../system-config-printer.glade.h:191
+msgid "Printer Options"
+msgstr "Alternativer for skriver"
+
+#: ../system-config-printer.py:1109
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
-"these conflictes are resolved."
+"these conflicts are resolved."
 msgstr ""
+"Noen alternativer er i konflikt.\n"
+"Endringer kan kun aktiveres etter\n"
+"at disse konfliktene er løst."
 
-#: system-config-printer.py:774
+#: ../system-config-printer.py:1138 ../system-config-printer.py:1154
+#: ../applet.py:333
 msgid "Not authorized"
-msgstr ""
+msgstr "Ikke autorisert"
 
-#: system-config-printer.py:775
+#: ../system-config-printer.py:1139 ../applet.py:334
 msgid "The password may be incorrect."
-msgstr ""
+msgstr "Passordet kan være feil."
 
-#: system-config-printer.py:778
+#: ../system-config-printer.py:1142 ../system-config-printer.py:1175
+#: ../applet.py:337
 msgid "CUPS server error"
-msgstr ""
+msgstr "Feil med CUPS-tjener"
 
-#: system-config-printer.py:779
-#, fuzzy, python-format
+#: ../system-config-printer.py:1143 ../applet.py:338
+#, python-format
 msgid "There was an error during the CUPS operation: '%s'."
-msgstr "Det oppstod en feil under utskrift av testsiden."
+msgstr "Det oppstod en feil under utførelse av CUPS-operasjon: «%s»."
 
-#: system-config-printer.py:803
+#: ../system-config-printer.py:1155
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr ""
+"Passordet kan være feil eller tjeneren kan være konfigurert til å nekte "
+"ekstern administrasjon."
+
+#: ../system-config-printer.py:1160
+msgid "Bad request"
+msgstr "Ugyldig forespørsel"
+
+#: ../system-config-printer.py:1162
+msgid "Not found"
+msgstr "Ikke funnet"
+
+#: ../system-config-printer.py:1164
+msgid "Request timeout"
+msgstr "Tidsavbrudd for forespørsel"
+
+#: ../system-config-printer.py:1166
+msgid "Upgrade required"
+msgstr "Oppdatering kreves"
+
+#: ../system-config-printer.py:1168
+msgid "Server error"
+msgstr "Feil med tjener"
+
+#: ../system-config-printer.py:1172
+#, python-format
+msgid "status %d"
+msgstr "status %d"
+
+#: ../system-config-printer.py:1176
+#, python-format
+msgid "There was an HTTP error: %s."
+msgstr "Det oppsto en HTTP-feil: %s."
+
+#: ../system-config-printer.py:1199
 msgid "This will delete this class!"
-msgstr ""
+msgstr "Dette vil slette denne klassen!"
 
-#: system-config-printer.py:804
+#: ../system-config-printer.py:1200
 msgid "Proceed anyway?"
+msgstr "Fortsett likevel?"
+
+#: ../system-config-printer.py:1386
+msgid "Submitted"
+msgstr "Sendt"
+
+#: ../system-config-printer.py:1387
+#, python-format
+msgid "Test page submitted as job %d"
+msgstr "Testside sendt som jobb %d"
+
+#: ../system-config-printer.py:1397
+msgid "Not possible"
+msgstr "Ikke mulig"
+
+#: ../system-config-printer.py:1398
+msgid ""
+"The remote server did not accept the print job, most likely because the "
+"printer is not shared."
 msgstr ""
+"Ekstern tjener tok ikke imot jobben. Sannsynligvis fordi skriveren ikke er "
+"delt."
 
-#: system-config-printer.py:1002
-#, fuzzy
+#: ../system-config-printer.py:1463
+msgid "Error"
+msgstr "Feil"
+
+#: ../system-config-printer.py:1464
+msgid "There was a problem connecting to the CUPS server."
+msgstr "Det oppstod et problem ved tilkobling til CUPS-tjeneren."
+
+#: ../system-config-printer.py:1527
 msgid "This is the default printer"
-msgstr "Dette er en beskrivelse av skriveren."
+msgstr "Dette er forvalgt skriver"
 
-#: system-config-printer.py:1004
+#: ../system-config-printer.py:1529
 #, python-format
 msgid "Default printer is %s"
-msgstr ""
+msgstr "Forvalgt skriver er %s"
 
-#: system-config-printer.py:1007
+#: ../system-config-printer.py:1532
 msgid "No default printer set."
-msgstr ""
+msgstr "Ingen forvalgt skriver satt."
 
-#: system-config-printer.py:1289
-#, fuzzy, python-format
-msgid "Really delete %s %s?"
-msgstr "Virkelig slett \"%s\"?"
+#: ../system-config-printer.py:1618
+msgid "Cancel Tests"
+msgstr "Avbryt tester"
 
-#: system-config-printer.py:1330
-#, fuzzy
+#: ../system-config-printer.py:1622 ../system-config-printer.glade.h:189
+msgid "Print Test Page"
+msgstr "Skriv ut testside"
+
+#: ../system-config-printer.py:1877
+#, python-format
+msgid "Really delete printer %s?"
+msgstr "Vil du virkelig slette skriver %s?"
+
+#: ../system-config-printer.py:1879
+#, python-format
+msgid "Really delete class %s?"
+msgstr "Vil du virkelig slette klassen %s?"
+
+#: ../system-config-printer.py:1927 ../system-config-printer.glade.h:140
 msgid "New Printer"
-msgstr "Novell-skriver"
+msgstr "Ny skriver"
 
-#: system-config-printer.py:1339
+#: ../system-config-printer.py:1940 ../system-config-printer.glade.h:139
 msgid "New Class"
-msgstr ""
+msgstr "Ny klasse"
 
-#: system-config-printer.py:1349
+#: ../system-config-printer.py:1953
 msgid "Change Device URI"
-msgstr ""
+msgstr "Endre URI for enhet"
 
-#: system-config-printer.py:1360
-#, fuzzy
+#: ../system-config-printer.py:1966
 msgid "Change Driver"
-msgstr "Endre type"
+msgstr "Endre driver"
 
-#: system-config-printer.py:1558
+#: ../system-config-printer.py:2220
 msgid "Other"
-msgstr ""
+msgstr "Andre"
 
-#: system-config-printer.py:1560
+#: ../system-config-printer.py:2222
 msgid " (Current)"
-msgstr ""
+msgstr " (aktiv)"
 
-#: system-config-printer.py:1737
-#, fuzzy
+#: ../system-config-printer.py:2407
 msgid "Verified"
-msgstr "(Spesifisert)"
+msgstr "Verifisert"
 
-#: system-config-printer.py:1738
+#: ../system-config-printer.py:2408
 msgid "This print share is accessible."
-msgstr ""
+msgstr "Denne delte skriveren er tilgjengelig."
 
-#: system-config-printer.py:1745
+#: ../system-config-printer.py:2415
 msgid "Inaccessible"
-msgstr ""
+msgstr "Kan ikke aksesseres"
 
-#: system-config-printer.py:1746
-#, fuzzy
+#: ../system-config-printer.py:2416
 msgid "This print share is not accessible."
-msgstr "Denne køen er ikke redigerbar."
+msgstr "Denne delte skriveren kan ikke aksesseres."
 
-#: system-config-printer.py:1972
-#, fuzzy
-msgid " (recommended)"
-msgstr ""
-"(anbefalt\n"
-"driver er %s)"
+#: ../system-config-printer.py:2436
+msgid "A printer connected to the parallel port."
+msgstr "En skriver koblet til en parallellport."
 
-#: system-config-printer.py:2010
-msgid "This PPD is generated by foomatic."
-msgstr ""
+#: ../system-config-printer.py:2438
+msgid "A printer connected to a USB port."
+msgstr "En skriver koblet til en USB port."
 
-#: system-config-printer.py:2012
+#: ../system-config-printer.py:2440
 msgid ""
-"This PPD is provided by the manufacturer and is included with the foomatic "
-"package."
+"HPLIP software driving a printer, or the printer function of a multi-"
+"function device."
 msgstr ""
+"HPLIP-programvare som kjører en skriver eller skriverfunksjonen i en "
+"multifunksjonsenhet."
 
-#: system-config-printer.py:2016
-msgid "This PPD is provided by CUPS."
+#: ../system-config-printer.py:2443
+msgid ""
+"HPLIP software driving a fax machine, or the fax function of a multi-"
+"function device."
 msgstr ""
+"HPLIP-programvare som driver en faksmaskin eller faksfunksjonen på en "
+"multifunksjonsenhet."
 
-#: system-config-printer.py:2057
+#: ../system-config-printer.py:2446
+msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
+msgstr "Lokal skriver gjenkjent av Hardware Abstraction Layer (HAL)."
+
+#: ../system-config-printer.py:2695
+msgid " (recommended)"
+msgstr " (anbefalt)"
+
+#: ../system-config-printer.py:2736
+msgid "This PPD is generated by foomatic."
+msgstr "Denne PPDen er generert av foomatic."
+
+#. XXX
+#: ../system-config-printer.py:2777
 #, python-format
 msgid "Going to create a new class %s."
-msgstr ""
+msgstr "Oppretter en ny klasse %s."
 
-#: system-config-printer.py:2068
+#: ../system-config-printer.py:2791
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
 "%s.\n"
 msgstr ""
-
-#~ msgid "Error"
-#~ msgstr "Feil"
-
-#~ msgid "Ok"
-#~ msgstr "Ok"
-
-#~ msgid "Info"
-#~ msgstr "Info"
-
-#~ msgid "Yes"
-#~ msgstr "Ja"
-
-#~ msgid "No"
-#~ msgstr "Nei"
-
-#~ msgid "Exit"
-#~ msgstr "Avslutt"
-
-#~ msgid ""
-#~ "You have made changes, would you like to save them? If you say no, your "
-#~ "changes will be lost."
-#~ msgstr ""
-#~ "Du har gjort endringer. Vil du lagre dem? Hvis du svarer nei vil "
-#~ "endringene gå tapt."
-
-#~ msgid "Cancel"
-#~ msgstr "Avbryt"
-
-#~ msgid "Create a New Queue"
-#~ msgstr "Lag en ny kø"
-
-#~ msgid "Finish Making New Queue"
-#~ msgstr "Fullfør oppretting av ny kø"
-
-#~ msgid "About to create the following queue:"
-#~ msgstr "I ferd med å opprette følgende kø:"
-
-#~ msgid "Finish"
-#~ msgstr "Fullfør"
-
-#~ msgid "Back"
-#~ msgstr "Tilbake"
-
-#~ msgid "Type:"
-#~ msgstr "Type:"
-
-#~ msgid "Device:"
-#~ msgstr "Enhet:"
-
-#~ msgid "Server:"
-#~ msgstr "Tjener:"
-
-#~ msgid "Lpd Queue:"
-#~ msgstr "Lpd-kø:"
-
-#~ msgid "Share:"
-#~ msgstr "Share:"
-
-#~ msgid "IP:"
-#~ msgstr "IP:"
-
-#~ msgid "Workgroup:"
-#~ msgstr "Arbeidsgruppe:"
-
-#~ msgid "User:"
-#~ msgstr "Bruker:"
-
-#~ msgid "Port:"
-#~ msgstr "Port:"
-
-#~ msgid "Driver:"
-#~ msgstr "Driver:"
-
-#~ msgid "Warning"
-#~ msgstr "Advarsel"
-
-#~ msgid "Name and Type"
-#~ msgstr "Navn og type"
-
-#~ msgid "Next"
-#~ msgstr "Neste"
-
-#~ msgid "Queue Name"
-#~ msgstr "Kønavn"
-
-#~ msgid "Queue Type"
-#~ msgstr "Køtype"
-
-#~ msgid ""
-#~ "The name \"%s\" is bad. Please choose a name of the form [a-zA-Z][a-zA-Z0-"
-#~ "9_-]*."
-#~ msgstr ""
-#~ "Navnet \"%s\" er ugyldig. Vennligst velg et navn på formen [a-zA-Z][a-zA-"
-#~ "Z0-9_-]*."
-
-#~ msgid "The name \"%s\" is already in use. Please choose a different name."
-#~ msgstr "Navnet \"%s\" er allerede i bruk. Vennligst velg et annet navn."
-
-#~ msgid "Custom"
-#~ msgstr "Tilpasset"
-
-#~ msgid "Setting Up"
-#~ msgstr "Setter opp"
-
-#~ msgid "Printer Device"
-#~ msgstr "Skriverenhet"
-
-#~ msgid ""
-#~ "Pick the printer device from the list, or enter it using \"Custom\" below."
-#~ msgstr ""
-#~ "Velg skriverenheten fra listen, eller skriv den inn ved bruk av "
-#~ "\"Tilpasset\" under."
-
-#~ msgid "Specify Device:"
-#~ msgstr "Spesifiser enhet:"
-
-#~ msgid "Description"
-#~ msgstr "Beskrivelse"
-
-#~ msgid "Custom Device"
-#~ msgstr "Tilpasset enhet"
-
-#~ msgid "Specify the device to use."
-#~ msgstr "Spesifiser enhet som skal brukes."
-
-#~ msgid "Device File"
-#~ msgstr "Enhetsfil"
-
-#~ msgid "You must specify a device."
-#~ msgstr "Du må spesifisere en enhet."
-
-#~ msgid "Enter the LPD server and queue to use."
-#~ msgstr "Skriv inn LPD-tjener og kø som skal brukes."
-
-#~ msgid "Server"
-#~ msgstr "Tjener"
-
-#~ msgid "Queue"
-#~ msgstr "Kø"
-
-#~ msgid "LPD Data"
-#~ msgstr "LPD-data"
-
-#~ msgid "You must specify a server."
-#~ msgstr "Du må spesifisere en tjener."
-
-#~ msgid "Enter the SMB share to use."
-#~ msgstr "Skriv inn SMB-share som skal brukes."
-
-#~ msgid "Host IP"
-#~ msgstr "Verts IP"
-
-#~ msgid "Workgroup"
-#~ msgstr "Arbeidsgruppe"
-
-#~ msgid "Passwd"
-#~ msgstr "Passord"
-
-#~ msgid "Windows Printer (SMB) Data"
-#~ msgstr "Data for Windows skriver (SMB)"
-
-#~ msgid "You must specify a SMB share to print to."
-#~ msgstr "Du må spesifisere en SMB share å skrive til."
-
-#~ msgid "Enter the NCP server and queue to use."
-#~ msgstr "Skriv inn NCP-tjener og kø som skal brukes."
-
-#~ msgid "Novell Netware Printer (NCP) Data"
-#~ msgstr "Data for Novell skriver (NCP)"
-
-#~ msgid "You must specify an NCP server to print to."
-#~ msgstr "Du må spesifisere en NCP-tjener å skrive til."
-
-#~ msgid "You must specify a queue on the NCP server to print to."
-#~ msgstr "Du må spesifisere en kø på NCP-tjeneren å skrive til."
-
-#~ msgid "Enter the Jetdirect ip and port to use."
-#~ msgstr "Skriv inn IP for JetDirect og port som skal brukes."
-
-#~ msgid "Ip"
-#~ msgstr "IP"
-
-#~ msgid "Port"
-#~ msgstr "Port"
-
-#~ msgid "Jetdirect (JETDIRECT) Data"
-#~ msgstr "JetDirect (JETDIRECT) data"
-
-#~ msgid "You must specify the ip address of a JetDirect printer."
-#~ msgstr "Du må spesifisere IP-adressen på JetDirect-skriveren."
-
-#~ msgid "Queue Driver"
-#~ msgstr "Kødriver"
-
-#~ msgid "Select the Driver to use with this Queue."
-#~ msgstr "Velg driver som skal brukes med denne køen."
-
-#~ msgid "You must specify a driver."
-#~ msgstr "Du må spesifisere en driver."
-
-#~ msgid "Edit Queue"
-#~ msgstr "Rediger kø"
-
-#~ msgid "Names"
-#~ msgstr "Navn"
-
-#~ msgid "Type"
-#~ msgstr "Type"
-
-#~ msgid "Done"
-#~ msgstr "Ferdig"
-
-#~ msgid "Name:"
-#~ msgstr "Navn:"
-
-#~ msgid "Aliases:"
-#~ msgstr "Alias:"
-
-#~ msgid "Printer Device:"
-#~ msgstr "Skriverenhet:"
-
-#~ msgid "Edit Name and Aliases"
-#~ msgstr "Rediger navn og alias"
-
-#~ msgid "Name"
-#~ msgstr "Navn"
-
-#~ msgid "Add Alias"
-#~ msgstr "Legg til alias"
-
-#~ msgid "Edit Alias"
-#~ msgstr "Rediger alias"
-
-#~ msgid "Delete Alias"
-#~ msgstr "Slett alias"
-
-#~ msgid "Alias:"
-#~ msgstr "Alias:"
-
-#~ msgid "Add an Alias"
-#~ msgstr "Legg til et alias"
-
-#~ msgid "Edit the alias"
-#~ msgstr "Rediger alias"
-
-#~ msgid "You must select an alias to edit."
-#~ msgstr "Du må velge et alias som skal redigeres."
-
-#~ msgid "You must select an alias to delete."
-#~ msgstr "Du må velge at alias for sletting."
-
-#~ msgid "Edit Local Printer"
-#~ msgstr "Rediger lokal skriver"
-
-#~ msgid "Strict RFC1179"
-#~ msgstr "Følg RFC1179"
-
-#~ msgid "Translate \\n->\\r\\n"
-#~ msgstr "Oversett \\n->\\r\\n"
-
-#~ msgid "Edit Driver"
-#~ msgstr "Rediger driver"
-
-#~ msgid "Edit Driver Options"
-#~ msgstr "Rediger alternativer for driver"
-
-#~ msgid "Edit"
-#~ msgstr "Rediger"
-
-#~ msgid "Edit %s"
-#~ msgstr "Rediger %s"
-
-#~ msgid "Integer: Min %s | Max %s"
-#~ msgstr "Heltall: Min %s | Maks %s"
-
-#~ msgid "Value must be a number"
-#~ msgstr "Verdien må være et tall"
-
-#~ msgid "Float: Min %s | Max %s"
-#~ msgstr "Flyttall: Min %s | Maks %s"
-
-#~ msgid "US Letter"
-#~ msgstr "US Letter"
-
-#~ msgid "Tabloid"
-#~ msgstr "Tabloid"
-
-#~ msgid "Ledger"
-#~ msgstr "Ledger"
-
-#~ msgid "Legal"
-#~ msgstr "Legal"
-
-#~ msgid "Statement"
-#~ msgstr "Statement"
-
-#~ msgid "Executive"
-#~ msgstr "Executive"
-
-#~ msgid "A3"
-#~ msgstr "A3"
-
-#~ msgid "A4"
-#~ msgstr "A4"
-
-#~ msgid "A5"
-#~ msgstr "A5"
-
-#~ msgid "B4"
-#~ msgstr "B4"
-
-#~ msgid "B5"
-#~ msgstr "B5"
-
-#~ msgid "Folio"
-#~ msgstr "Folie"
-
-#~ msgid "Quatro"
-#~ msgstr "Quatro"
-
-#~ msgid "10x14"
-#~ msgstr "10x14"
-
-#~ msgid "Test %s"
-#~ msgstr "Test %s"
-
-#~ msgid ""
-#~ "You have made changes, would you like to save them?\n"
-#~ "If you say no, you will not be able to print test pages."
-#~ msgstr ""
-#~ "Du har gjort endringer. Vil du lagre dem?\n"
-#~ "Hvis du svarer nei vil du ikke kunne skrive ut testsider."
-
-#~ msgid "Test"
-#~ msgstr "Test"
-
-#~ msgid "Sent %s to \"%s\"."
-#~ msgstr "Sendte %s til \"%s\"."
-
-#~ msgid "You must select a printer queue to delete."
-#~ msgstr "Du må velge en skriverkø for å kunne slette."
-
-#~ msgid "You cannot delete an imported printer."
-#~ msgstr "Du kan ikke slette en importert skriverdefinisjon."
-
-#~ msgid "Confirm Delete"
-#~ msgstr "Bekreft sletting"
-
-#~ msgid "Aliases"
-#~ msgstr "Alias"
-
-#~ msgid "Details"
-#~ msgstr "Detaljer"
-
-#~ msgid "New"
-#~ msgstr "Ny"
-
-#~ msgid "Delete"
-#~ msgstr "Slett"
-
-#~ msgid "Default"
-#~ msgstr "Standard"
-
-#~ msgid "You must select a printer queue to edit."
-#~ msgstr "Du må velge en skriverkø for å kunne redigere."
-
-#~ msgid ""
-#~ "This imported printer is protected from overrides. You can not edit it."
-#~ msgstr ""
-#~ "Denne importerte skriverdefinisjonen kan ikke overstyres eller redigeres."
-
-#~ msgid "Override?"
-#~ msgstr "Overstyr?"
-
-#~ msgid "This is an imported printer. Do you want to create a local override?"
-#~ msgstr ""
-#~ "Dette er en importert skriver. Vil du opprette en lokal overstyring?"
-
-#~ msgid "You must select a queue to print to."
-#~ msgstr "Du må velge en kø for utskrift."
-
-#~ msgid "Initializing alchemist edit environment ..."
-#~ msgstr "Initierer redigeringsverktøyet alchemist..."
-
-#~ msgid "Initializing linux printing database ..."
-#~ msgstr "Initierer linux utskriftsdatabase..."
-
-#~ msgid "Importing CUPS queues ..."
-#~ msgstr "Importerer CUPS-køer..."
-
-#~ msgid ""
-#~ "Failed to parse alchemist context: \n"
-#~ "%s"
-#~ msgstr ""
-#~ "Feil under lesing av alchemist-kontekst: \n"
-#~ "%s"
-
-#~ msgid "Invalid printconf context"
-#~ msgstr "Ugyldig printconf-kontekst"
-
-#~ msgid "\"%s\" is not a valid queue name."
-#~ msgstr "«%s» er ikke et gyldig kønavn."
-
-#~ msgid "Need device, make and model.\n"
-#~ msgstr "Trenger enhet, produsent og modell.\n"
-
-#~ msgid "add-local: queue name '%s' not unique\n"
-#~ msgstr "add-local: kønavn «%s» er ikke unikt.\n"
-
-#~ msgid "add-local: no suitable name available\n"
-#~ msgstr "add-local: ingen passende navn tilgjengelig\n"
-
-#~ msgid "add-local: No information available about %s %s\n"
-#~ msgstr "add-local: Ingen informasjon tilgjengelig om %s %s\n"
-
-#~ msgid "Now run printconf-backend (or restart lpd service)."
-#~ msgstr "Kjør printconf-backend nå (eller start lpd-tjenesten på nytt)."
-
-#~ msgid "Need make and model.\n"
-#~ msgstr "Trenger produsent og modell.\n"
-
-#~ msgid "You must run printconf-tui as root."
-#~ msgstr "Du må kjøre printconf-tui som root."
-
-#~ msgid "Conflicting commands: %s and %s"
-#~ msgstr "Konflikt mellom kommandoer: %s og %s"
-
-#~ msgid "No handler for command: "
-#~ msgstr "Ingen håndterer for kommando: "
-
-#~ msgid "You must be root to run this program.\n"
-#~ msgstr "Du må være root for å kjøre dette programmet.\n"
-
-#~ msgid "Queue name"
-#~ msgstr "Kønavn"
-
-#~ msgid "Shared"
-#~ msgstr "Delt"
-
-#~ msgid ""
-#~ "Do you want to save the changes\n"
-#~ "you made to your printer configuration?"
-#~ msgstr ""
-#~ "Vil du lagre endringene du\n"
-#~ "har gjort i din skriverkonfigurasjon?"
-
-#~ msgid "_Don't save"
-#~ msgstr "_Ikke lagre"
-
-#~ msgid "_Cancel"
-#~ msgstr "_Avbryt"
-
-#~ msgid "_Save"
-#~ msgstr "_Lagre"
-
-#~ msgid "Browsed queues"
-#~ msgstr "Viste køer"
-
-#~ msgid ""
-#~ "Loading printer information.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "Laster skriverinformasjon.\n"
-#~ "Vennligst vent..."
-
-#~ msgid "Notes from the Linux Printing Database"
-#~ msgstr "Merknader fra Linux Printing Database"
-
-#~ msgid "Printer notes:"
-#~ msgstr "Merknader om skriver:"
-
-#~ msgid "Driver notes:"
-#~ msgstr "Merknader om driver:"
-
-#~ msgid "Generic (click to select manufacturer)"
-#~ msgstr "Vanlig (klikk for å velge produsent)"
-
-#~ msgid ""
-#~ "You are changing an option\n"
-#~ "that has no effect in the print\n"
-#~ "spooler you are using (%s)."
-#~ msgstr ""
-#~ "Du endrer et alternativ\n"
-#~ "som ikke har noen effekt for\n"
-#~ "utskriftssystemet du bruker (%s)."
-
-#~ msgid ""
-#~ "Applying changes.\n"
-#~ "Please wait..."
-#~ msgstr ""
-#~ "Aktiverer endringer.\n"
-#~ "Vennligst vent..."
-
-#~ msgid "Failed to write queues."
-#~ msgstr "Feil under skriving av køer."
-
-#~ msgid ""
-#~ "There was a problem sending %s\n"
-#~ "to '%s' queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "Det oppsto et problem ved sending av %s\n"
-#~ "til kø «%s»:\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "Sent %s\n"
-#~ "to '%s' queue.  Does it look okay?"
-#~ msgstr ""
-#~ "Sendte %s\n"
-#~ "til kø «%s». Ser det bra ut?"
-
-#~ msgid "Here are the messages that appeared in the error log:"
-#~ msgstr "Her er meldingene som ble oppført i feilloggen:"
-
-#~ msgid "'%s' does not look like a PPD file."
-#~ msgstr "«%s» ser ikke ut som en PPD-fil."
-
-#~ msgid "File cannot be opened for reading."
-#~ msgstr "Filen kan ikke åpnes for lesing."
-
-#~ msgid "PPD imported."
-#~ msgstr "PPD importert."
-
-#~ msgid "PPD import failed."
-#~ msgstr "Import av PPD feilet."
-
-#~ msgid "Invalid name"
-#~ msgstr "Ugyldig navn"
-
-#~ msgid "There is already a queue with that name."
-#~ msgstr "Det finnes allerede en kø med dette navnet."
-
-#~ msgid "An existing queue has an alias of that name."
-#~ msgstr "En eksisterende kø har et alias med dette navnet."
-
-#~ msgid "'%s' does not exist, or is not writable."
-#~ msgstr "«%s» eksisterer ikke, eller er ikke skrivbar."
-
-#~ msgid "Custom device"
-#~ msgstr "Tilpasset enhet"
-
-#~ msgid "You must select a device."
-#~ msgstr "Du må velge en enhet."
-
-#~ msgid "You must specify a path."
-#~ msgstr "Du må spesifisere en sti."
-
-#~ msgid "You must specify a queue."
-#~ msgstr "Du må spesifisere en kø."
-
-#~ msgid "You must choose an SMB share to print to."
-#~ msgstr "Du må velge en delt ressurs å skrive til."
-
-#~ msgid "You must choose a share, not a host."
-#~ msgstr "Du må velge en delt ressurs, ikke en vert."
-
-#~ msgid "You must specify an SMB share to print to."
-#~ msgstr "Du må spesifisere en delt ressurs å skrive til."
-
-#~ msgid "You must specify a queue on the NCP server."
-#~ msgstr "Du må spesifisere en kø på NCP-tjeneren."
-
-#~ msgid "You must specify a JetDirect printer to print to."
-#~ msgstr "Du må oppgi en JetDirect-skriver å skrive til."
-
-#~ msgid "You must specify an IP port number."
-#~ msgstr "Du må spesifisere IP-portnummer."
-
-#~ msgid "Select the printer manufacturer and model."
-#~ msgstr "Velg skriverprodusent og modell."
-
-#~ msgid ""
-#~ "Select the printer manufacturer and model. Depending on how the remote "
-#~ "queue is configured, you may need to select the generic PostScript option "
-#~ "here."
-#~ msgstr ""
-#~ "Velg skriverprodusent og modell. Avhengig av hvordan den eksterne køen er "
-#~ "konfigurert vil du kunne velge alternativet «vanlig PostScript» her."
-
-#~ msgid "You must select a printer model."
-#~ msgstr "Du må velge en skrivermodell."
-
-#~ msgid ""
-#~ "About to create the following queue:\n"
-#~ "\n"
-#~ msgstr ""
-#~ "I ferd med å opprette følgende kø:\n"
-#~ "\n"
-
-#~ msgid "Type: "
-#~ msgstr "Type: "
-
-#~ msgid "Printer: "
-#~ msgstr "Skriver: "
-
-#~ msgid "Device: "
-#~ msgstr "Enhet: "
-
-#~ msgid "Queue: "
-#~ msgstr "Kø: "
-
-#~ msgid "Share: "
-#~ msgstr "Delt ressurs: "
-
-#~ msgid "Port: "
-#~ msgstr "Port: "
-
-#~ msgid "Would you like to print a test page?"
-#~ msgstr "Vil du skrive ut en testside?"
-
-#~ msgid ""
-#~ "Would you like to print a test page?\n"
-#~ "Answering 'yes' will apply all changes\n"
-#~ "and print a test page to this printer."
-#~ msgstr ""
-#~ "Vil du skrive ut en testside?\n"
-#~ "Hvis du svarer ja vil alle endringer aktiveres\n"
-#~ "og en testside vil skrives til denne skriveren."
-
-#~ msgid "Number of columns on a page"
-#~ msgstr "Antall kolonner på en side"
-
-#~ msgid "Characters per inch"
-#~ msgstr "Tegn per tomme"
-
-#~ msgid "Billing label"
-#~ msgstr "Avregningsetikett"
-
-#~ msgid ""
-#~ "HH:MM:SS or '%s'.\n"
-#~ "Use GMT."
-#~ msgstr ""
-#~ "HH:MM:SS eller «%s».\n"
-#~ "Bruk GMT."
-
-#~ msgid ""
-#~ "Banner pages (start,end):\n"
-#~ "for example, '%s'"
-#~ msgstr ""
-#~ "Bannerside (start,slutt):\n"
-#~ "for eksempel, «%s»"
-
-#~ msgid "Landscape (%s or %s)"
-#~ msgstr "Landskap (%s eller %s)"
-
-#~ msgid "Lines per inch"
-#~ msgstr "Linjer per tomme"
-
-#~ msgid ""
-#~ "Number of document pages per\n"
-#~ "printed page: 1, 2, 4, 6, 9, or 16"
-#~ msgstr ""
-#~ "Antall sider i dokumentet per\n"
-#~ "utskrevet side: 1, 2, 4, 6, 9 eller 16"
-
-#~ msgid "Top margin in pt (1/72 in)"
-#~ msgstr "Toppmarg i pkt. (1/72 tomme)"
-
-#~ msgid "Left margin in pt (1/72 in)"
-#~ msgstr "Venstre marg i pkt (1/72 tomme)"
-
-#~ msgid "Right margin in pt (1/72 in)"
-#~ msgstr "Høyre marg i pkt (1/72 tomme)"
-
-#~ msgid "Bottom margin in pt (1/72 in)"
-#~ msgstr "Bunnmarg i pkt (1/72 tomme)"
-
-#~ msgid ""
-#~ "'%s', '%s', '%s'\n"
-#~ "'%s' or '%s'"
-#~ msgstr ""
-#~ "«%s», «%s», «%s»\n"
-#~ "«%s» eller «%s»"
-
-#~ msgid "Page label"
-#~ msgstr "Sideetikett"
-
-#~ msgid "Pretty-print text (%s or %s)"
-#~ msgstr "Finskriv tekst (%s eller %s)"
-
-#~ msgid "Scaling (percentage)"
-#~ msgstr "Skalering (prosent)"
-
-#~ msgid "Word-wrapping (%s or %s)"
-#~ msgstr "Ordbryting (%s eller %s)"
-
-#~ msgid "Option name"
-#~ msgstr "Navn på alternativ"
-
-#~ msgid "Value"
-#~ msgstr "Verdi"
-
-#~ msgid "Can't determine the printer model attached to this device."
-#~ msgstr ""
-#~ "Kan ikke bestemme hvilken skrivermodell som er tilkoblet denne enheten."
-
-#~ msgid "I don't know enough about this printer model to choose a driver."
-#~ msgstr "Vet ikke nok om denne skrivermodellen til å velge en driver."
-
-#~ msgid "Edit queue option"
-#~ msgstr "Rediger alternativ for kø"
-
-#~ msgid "Add queue option"
-#~ msgstr "Legg til alternativ for kø"
-
-#~ msgid "Invalid option name"
-#~ msgstr "Ugyldig navn på alternativ"
-
-#~ msgid "Invalid value"
-#~ msgstr "Ugyldig verdi"
-
-#~ msgid "Value for this option"
-#~ msgstr "Verdi for dette alternativet"
-
-#~ msgid "None"
-#~ msgstr "Ingen"
-
-#~ msgid ""
-#~ "(this is the\n"
-#~ "recommended driver)"
-#~ msgstr ""
-#~ "(dette er den\n"
-#~ "anbefalte driveren)"
-
-#~ msgid "There are no options available for this driver."
-#~ msgstr "Det er ingen tilgjengelige alternativer for denne driveren."
-
-#~ msgid ""
-#~ "This driver requires Hewlett Packard's hpijs driver (available in the "
-#~ "hpijs package) which does not appear to be installed."
-#~ msgstr ""
-#~ "Denne driveren trenger hpijs driverpakken fra Hewlett Packard, og denne "
-#~ "ser ikke ut til å være installert."
-
-#~ msgid "Do you wish to use it anyway?"
-#~ msgstr "Vil du bruke den likevel?"
-
-#~ msgid ""
-#~ "This driver requires the Omni Print Driver System, which does not appear "
-#~ "to be installed."
-#~ msgstr ""
-#~ "Denne driveren trenger Omni skriverdriversystemet , og dette ser ikke ut "
-#~ "til å være installert."
-
-#~ msgid ""
-#~ "This driver requires the oki4drv daemon to be running, and it does not "
-#~ "appear to be."
-#~ msgstr ""
-#~ "Denne driveren krever at oki4drv-daemonen kjører, og denne ser ikke ut "
-#~ "til å gjøre det."
-
-#~ msgid "Local Printer Device"
-#~ msgstr "Lokal skriverenhet"
-
-#~ msgid "IPP Print Queue"
-#~ msgstr "IPP-utskriftskø"
-
-#~ msgid "Unix Print Queue"
-#~ msgstr "Unix skriverkø"
-
-#~ msgid "Windows Print Queue"
-#~ msgstr "Windows skriverkø"
-
-#~ msgid ""
-#~ "SMB print queues require the \"smbclient\" program, which does not appear "
-#~ "to be installed."
-#~ msgstr ""
-#~ "SMB-skriverkøer krever programmet \"smbclient\", og dette ser ikke ut til "
-#~ "å være installert."
-
-#~ msgid ""
-#~ "It is part of the \"samba-client\" package, as distributed by Red Hat."
-#~ msgstr ""
-#~ "Dette er en del av \"samba-client\"-pakken, som distribueres av Red Hat."
-
-#~ msgid "Do you wish to enable it anyway?"
-#~ msgstr "Vil du aktivere den likevel?"
-
-#~ msgid "Novell Print Queue"
-#~ msgstr "Novell skriverkø"
-
-#~ msgid ""
-#~ "NCP print queues require the \"nprint\" program, which does not appear to "
-#~ "be installed."
-#~ msgstr ""
-#~ "NPC-skriverkøer krever \"nprint\"-programmet, og dette ser ikke ut til å "
-#~ "være installert."
-
-#~ msgid "It is part of the \"ncpfs\" package, as distributed by Red Hat."
-#~ msgstr "Det er en del av \"ncpfs\"-pakken, som distribueres av Red Hat."
-
-#~ msgid "Jetdirect Printer"
-#~ msgstr "JetDirect-skriver"
-
-#~ msgid "Custom Command"
-#~ msgstr "Tilpasset kommando"
-
-#~ msgid "Postscript Printer"
-#~ msgstr "Postscript-skriver"
-
-#~ msgid "Text Only Printer"
-#~ msgstr "Tekstskriver"
-
-#~ msgid "Raw Print Queue"
-#~ msgstr "Direkte skriver-kø"
-
-#~ msgid "Custom Filter"
-#~ msgstr "Tilpasset filter"
-
-#~ msgid "ERROR: No box named \"%s\" found.\n"
-#~ msgstr "FEIL: Fant ingen boks med navn «%s».\n"
-
-#~ msgid "ERROR: box \"%s\" is not a writable interface.\n"
-#~ msgstr "FEIL: boksen «%s» er ikke et skrivbart grensesnitt.\n"
-
-#~ msgid "Send Form-Feed (FF)"
-#~ msgstr "Send Form-Feed (FF)"
-
-#~ msgid "Send End-of-Transmission (EOT)"
-#~ msgstr "Send End-of-Transmission (EOT)"
-
-#~ msgid "Assume Unknown Data is Text"
-#~ msgstr "Anta at ukjente data er tekst"
-
-#~ msgid "Prerender Postscript"
-#~ msgstr "Rendre PostScript på nytt"
-
-#~ msgid "Convert Text to Postscript"
-#~ msgstr "Konverter tekst til PostScript"
-
-#~ msgid "Page Size"
-#~ msgstr "Sidestørrelse"
-
-#~ msgid "Effective Filter Locale"
-#~ msgstr "Filter-lokale i effekt"
-
-#~ msgid "Couldn't load driver information.\n"
-#~ msgstr "Kunne ikke laste driverinformasjon.\n"
-
-#~ msgid "You must run printconf-backend as root."
-#~ msgstr "Du må kjøre printconf-backend som root."
-
-#~ msgid "Sharing properties - %s"
-#~ msgstr "Egenskaper for deling - %s"
-
-#~ msgid "Sharing properties"
-#~ msgstr "Egenskaper for deling"
-
-#~ msgid "All hosts"
-#~ msgstr "Alle verter"
-
-#~ msgid "Network device %s"
-#~ msgstr "Nettverksenhet %s"
-
-#~ msgid "Network devices %s"
-#~ msgstr "Nettverksenheter %s"
-
-#~ msgid "Network address %s"
-#~ msgstr "Nettverksadresse %s"
-
-#~ msgid "(unknown)"
-#~ msgstr "(ukjent)"
-
-#~ msgid "Add allowed hosts - %s"
-#~ msgstr "Legg til tillatte verter - %s"
-
-#~ msgid "Edit allowed hosts - %s"
-#~ msgstr "Rediger tillatte verter - %s"
-
-#~ msgid ""
-#~ "LPD connections will be accepted\n"
-#~ "on all interfaces, and jobs for\n"
-#~ "all queues will be accepted."
-#~ msgstr ""
-#~ "LPD-tilkoblinger vil godtas\n"
-#~ "på alle grensesnitt, og jobber\n"
-#~ "for alle køer vil godtas."
-
-#~ msgid "Invalid network address"
-#~ msgstr "Ugyldig nettverksadresse"
-
-#~ msgid "Invalid netmask"
-#~ msgstr "Ugyldig nettverksmaske"
-
-#~ msgid "Invalid IP address"
-#~ msgstr "Ugyldig IP-adresse"
-
-#~ msgid "*"
-#~ msgstr "*"
-
-#~ msgid "/"
-#~ msgstr "/"
-
-#~ msgid "72pt per inch"
-#~ msgstr "72 punkter per tomme"
-
-#~ msgid "="
-#~ msgstr "="
-
-#~ msgid "ASC_II text test page"
-#~ msgstr "ASC_II-tekst testside"
-
-#~ msgid "About"
-#~ msgstr "Om"
-
-#~ msgid "Add a new option"
-#~ msgstr "Legg til et nytt alternativ"
-
-#~ msgid "Add a new print queue"
-#~ msgstr "Legg til en ny utskriftskø"
-
-#~ msgid "Add a new queue"
-#~ msgstr "Legg til en ny kø"
-
-#~ msgid "Add an allowed host"
-#~ msgstr "Legg til en tillatt vert"
-
-#~ msgid "Add/edit queue option"
-#~ msgstr "Legg til/rediger alternativ for kø"
-
-#~ msgid "Allowed hosts"
-#~ msgstr "Tillatte verter"
-
-#~ msgid "Apply"
-#~ msgstr "Bruk"
-
-#~ msgid "Apply changes"
-#~ msgstr "Bruk endringer"
-
-#~ msgid "At end of job:"
-#~ msgstr "Ved slutten av jobben:"
-
-#~ msgid "At start of job:"
-#~ msgstr "I begynnelsen av jobben:"
-
-#~ msgid "Authentication"
-#~ msgstr "Autentisering"
-
-#~ msgid "Autoselect driver"
-#~ msgstr "Velg driver automatisk"
-
-#~ msgid "Available drivers:"
-#~ msgstr "Tilgjengelige drivere:"
-
-#~ msgid "Banner pages"
-#~ msgstr "Banner-sider"
-
-#~ msgid "Big5 PostScript test page"
-#~ msgstr "Big5 PostScript-testside"
-
-#~ msgid "Bottom margin (pt):"
-#~ msgstr "Bunnmarg (pkt):"
-
-#~ msgid "Choose the manufacturer"
-#~ msgstr "Velg produsent"
-
-#~ msgid "Choose the queue type"
-#~ msgstr "Velg køtype"
-
-#~ msgid "Choose the type of queue you want to use"
-#~ msgstr "Velg hvilken køtype du ønsker å bruke"
-
-#~ msgid "Choose which other computers may use this queue."
-#~ msgstr "Velg hvilke andre datamaskiner som kan bruke denne køen."
-
-#~ msgid "Delete the selected queue"
-#~ msgstr "Slett valgt kø"
-
-#~ msgid "Edit a print queue"
-#~ msgstr "Rediger en kø"
-
-#~ msgid "Edit the selected queue"
-#~ msgstr "Rediger valgt kø"
-
-#~ msgid "Edit this host"
-#~ msgstr "Rediger denne verten"
-
-#~ msgid "Edit this option"
-#~ msgstr "Rediger dette alternativet"
-
-#~ msgid "Enable _LPD protocol"
-#~ msgstr "Aktiver _LPD-protokollen"
-
-#~ msgid "Enter the device you would like to use."
-#~ msgstr "Oppgi hvilken enhet du vil bruke."
-
-#~ msgid "Filter options"
-#~ msgstr "Alternativer for filter"
-
-#~ msgid "Finish, and create the new print queue"
-#~ msgstr "Fullfør og opprett den nye utskriftskøen"
-
-#~ msgid "For example: /dev/lp0"
-#~ msgstr "For eksempel: /dev/lp0"
-
-#~ msgid "General"
-#~ msgstr "Generell"
-
-#~ msgid "Generic"
-#~ msgstr "Vanlig"
-
-#~ msgid "IP port number (often 9100)"
-#~ msgstr "IP-portnummer (ofte 9100)"
-
-#~ msgid ""
-#~ "If you like, you can enter a description of the printer to help you "
-#~ "identify it more easily."
-#~ msgstr ""
-#~ "Hvis du vil, kan du oppgi en beskrivelse av skriveren som kan hjelpe deg "
-#~ "med å identifisere den."
-
-#~ msgid "Imageable Area"
-#~ msgstr "Område for bilde"
-
-#~ msgid "JPE_G test"
-#~ msgstr "JPE_G-test"
-
-#~ msgid "Japanese EUC PostScript test page"
-#~ msgstr "Japansk PostScript-testside"
-
-#~ msgid "Japanese JIS PostScript test page"
-#~ msgstr "Japansk JIS PostScript-testside"
-
-#~ msgid "Japanese SJIS PostScript test page"
-#~ msgstr "Japansk SJIS PostScript-testside"
-
-#~ msgid "Japanese _EUC text test page"
-#~ msgstr "Japansk _EUC-text testside"
-
-#~ msgid "Japanese _JIS text test page"
-#~ msgstr "Japansk _JIS-tekst testside"
-
-#~ msgid "Japanese _SJIS text test page"
-#~ msgstr "Japansk _SJIS-tekst testside"
-
-#~ msgid "Left margin (pt):"
-#~ msgstr "Venstre marg (pkt):"
-
-#~ msgid "Linefeed translation"
-#~ msgstr "Oversett linjemating"
-
-#~ msgid "Network _devices"
-#~ msgstr "Nettverks_enheter"
-
-#~ msgid "Networked CUPS (_IPP)"
-#~ msgstr "Nettverk med CUPS (_IPP)"
-
-#~ msgid "Networked _JetDirect"
-#~ msgstr "_JetDirect i nettverk"
-
-#~ msgid "Networked _Novell (NCP)"
-#~ msgstr "_Novell-nettverk (NCP)"
-
-#~ msgid "Networked _UNIX (LPD)"
-#~ msgstr "_UNIX-nettverk (LPD)"
-
-#~ msgid "Networked _Windows (SMB)"
-#~ msgstr "_Windows-nettverk (SMB)"
-
-#~ msgid ""
-#~ "On the following screens, you will be asked to provide basic information "
-#~ "for adding a new print queue.  You will be able to edit the more advanced "
-#~ "options afterwards.\n"
-#~ "\n"
-#~ "Nothing will be done to your settings until you hit \"Finish\" on the "
-#~ "last screen."
-#~ msgstr ""
-#~ "På følgende skjermer vil du bli bedt om å oppgi grunnleggende informasjon "
-#~ "for å legge til en ny utskriftskø. Du vil kunne redigere avanserte "
-#~ "alternativer etterpå.\n"
-#~ "\n"
-#~ "Ingenting vil bli gjort med innstillingene før du klikker «Fullfør»\n"
-#~ "på den siste skjermen."
-
-#~ msgid "Password:"
-#~ msgstr "Passord:"
-
-#~ msgid "Path:"
-#~ msgstr "Sti:"
-
-#~ msgid "Patience"
-#~ msgstr "Tålmodighet"
-
-#~ msgid ""
-#~ "Please enter a name for this queue.  Choose a short name that begins with "
-#~ "a letter and contains no spaces."
-#~ msgstr ""
-#~ "Vennligst oppgi et navn for denne køen. Velg et kort navn som begynner "
-#~ "med en bosktav og ikke inneholder mellomrom."
-
-#~ msgid "Printer configuration"
-#~ msgstr "Skriverkonfigurasjon"
-
-#~ msgid "Printer driver"
-#~ msgstr "Skriverdriver"
-
-#~ msgid "Printer hostname or IP address"
-#~ msgstr "Vertsnavn eller IP-adresse for skriveren"
-
-#~ msgid "Printer model"
-#~ msgstr "Skrivermodell"
-
-#~ msgid "Printer/driver _notes..."
-#~ msgstr "_Notater for skriver/driver..."
-
-#~ msgid "Printer:"
-#~ msgstr "Skriver:"
-
-#~ msgid "Queue options"
-#~ msgstr "Alternativer for kø"
-
-#~ msgid "Queue type"
-#~ msgstr "Køtype"
-
-#~ msgid "Queue type:"
-#~ msgstr "Køtype:"
-
-#~ msgid "Queue:"
-#~ msgstr "Kø:"
-
-#~ msgid "Remove this host from the list"
-#~ msgstr "Fjern denne verten fra listen"
-
-#~ msgid "Remove this option"
-#~ msgstr "Fjern dette alternativet"
-
-#~ msgid "Rescan devices"
-#~ msgstr "Søk etter enheter på nytt"
-
-#~ msgid "Reset to the default options"
-#~ msgstr "Sett til forvalgte alternativer"
-
-#~ msgid "Right margin (pt):"
-#~ msgstr "Høyre marg (pkt):"
-
-#~ msgid "Select a queue type:"
-#~ msgstr "Velg en køtype:"
-
-#~ msgid "Select the appropriate printer manufacturer and model."
-#~ msgstr "Velg passende skriverprodusent og modell."
-
-#~ msgid "Server hostname or IP address:"
-#~ msgstr "Navn på tjener eller IP-adresse:"
-
-#~ msgid "Set as _default"
-#~ msgstr "Sett som _forvalg"
-
-#~ msgid "Set as de_fault"
-#~ msgstr "Sett som _forvalgt"
-
-#~ msgid "Set as default queue"
-#~ msgstr "Sett som forvalgt kø"
-
-#~ msgid "Short description:"
-#~ msgstr "Kort beskrivelse:"
-
-#~ msgid "Short description: "
-#~ msgstr "Kort beskrivelse: "
-
-#~ msgid "Single _IP address"
-#~ msgstr "Enkel _IP-adresse"
-
-#~ msgid "Specify..."
-#~ msgstr "Spesifiser..."
-
-#~ msgid "Strict RFC1179 compliance"
-#~ msgstr "Følg RFC1179"
-
-#~ msgid "These settings are system-wide."
-#~ msgstr "Disse innstillingene gjelder for hele systemet."
-
-#~ msgid "This allows older systems to print to this machine"
-#~ msgstr "Dette lar eldre systemer skrive ut på denne maskinen"
-
-#~ msgid "This enables CUPS IPP browsing"
-#~ msgstr "Dette lar deg se andre skrivere via CUPS IPP"
-
-#~ msgid ""
-#~ "This is the name of the queue.  It must begin with a letter and contain "
-#~ "no spaces."
-#~ msgstr ""
-#~ "Dette er navnet på køen. Det må begynne med en bokstav, og kan ikke "
-#~ "inneholde mellomrom."
-
-#~ msgid "Top margin (pt):"
-#~ msgstr "Toppmarg (pkt):"
-
-#~ msgid "Type in an IP address"
-#~ msgstr "Skriv inn en IP-adresse"
-
-#~ msgid "Type in the netmask, or the CIDR mask length"
-#~ msgstr "Skriv inn nettmasken eller størrelse på masken i CIDR-format"
-
-#~ msgid "Type in the share name"
-#~ msgstr "Skriv inn navnet på den delte ressursen"
-
-#~ msgid "Use control-F to search"
-#~ msgstr "Bruk Ctrl-f for å søke"
-
-#~ msgid "User name:"
-#~ msgstr "Brukernavn:"
-
-#~ msgid "_A4 PostScript test page"
-#~ msgstr "_A4 PostScript-testside"
-
-#~ msgid "_Action"
-#~ msgstr "H_andling"
-
-#~ msgid "_Add..."
-#~ msgstr "_Legg til..."
-
-#~ msgid "_All hosts"
-#~ msgstr "_Alle verter"
-
-#~ msgid "_Apply"
-#~ msgstr "_Bruk"
-
-#~ msgid "_Automatically find remote shared queues"
-#~ msgstr "Finn delte eksterne køer _automatisk"
-
-#~ msgid "_Big5 text test page"
-#~ msgstr "_Big5 testside for tekst"
-
-#~ msgid "_CUPS test page"
-#~ msgstr "_CUPS testside"
-
-#~ msgid "_Contents"
-#~ msgstr "_Innhold"
-
-#~ msgid "_Custom device"
-#~ msgstr "_Tilpasset enhet"
-
-#~ msgid "_Defaults"
-#~ msgstr "_Forvalg"
-
-#~ msgid "_Delete"
-#~ msgstr "_Slett"
-
-#~ msgid "_Delete queue"
-#~ msgstr "_Slett kø"
-
-#~ msgid "_Duplex test"
-#~ msgstr "_Dupleks-test"
-
-#~ msgid "_Edit queue"
-#~ msgstr "R_ediger kø"
-
-#~ msgid "_Edit..."
-#~ msgstr "R_ediger..."
-
-#~ msgid "_Help"
-#~ msgstr "_Hjelp"
-
-#~ msgid "_Import PPD..."
-#~ msgstr "_Importer PPD..."
-
-#~ msgid "_Network address"
-#~ msgstr "_Nettverksadresse"
-
-#~ msgid "_New queue"
-#~ msgstr "_Ny kø"
-
-#~ msgid "_Notes..."
-#~ msgstr "_Notater..."
-
-#~ msgid "_Remove"
-#~ msgstr "_Fjern"
-
-#~ msgid "_Rescan devices"
-#~ msgstr "Søk ette_r enheter på nytt"
-
-#~ msgid "_Sharing..."
-#~ msgstr "_Deling..."
-
-#~ msgid "_Test"
-#~ msgstr "_Test"
-
-#~ msgid "_This queue is available to other computers"
-#~ msgstr "_Denne køen er tilgjengelig for andre datamaskiner"
-
-#~ msgid "_US Letter PostScript test page"
-#~ msgstr "_US Letter PostScript testside"
-
-#~ msgid "_classified"
-#~ msgstr "_klassifisert"
-
-#~ msgid "_none"
-#~ msgstr "i_ngen"
-
-#~ msgid "_secret"
-#~ msgstr "_hemmelig"
-
-#~ msgid "_standard"
-#~ msgstr "_standard"
-
-#~ msgid "_topsecret"
-#~ msgstr "_topp hemmelig"
-
-#~ msgid "_unclassified"
-#~ msgstr "_uklassifisert"
-
-#~ msgid "c_onfidential"
-#~ msgstr "k_onfidensiell"
-
-#~ msgid "ipp"
-#~ msgstr "ipp"
-
-#~ msgid "jetdirect"
-#~ msgstr "jetdirect"
-
-#~ msgid "local"
-#~ msgstr "lokal"
-
-#~ msgid "lpd"
-#~ msgstr "lpd"
-
-#~ msgid "ncp"
-#~ msgstr "ncp"
-
-#~ msgid "none"
-#~ msgstr "ingen"
-
-#~ msgid "smb"
-#~ msgstr "smb"
-
-#~ msgid "Configure printers"
-#~ msgstr "Konfigurer skrivere"
-
-#~ msgid "Printing"
-#~ msgstr "Utskrift"
-
-#~ msgid "Please choose a name of the form [a-zA-Z][a-zA-Z0-9_-]*."
-#~ msgstr "Alias"
-
-#~ msgid "Can't autoselect for this printer device."
-#~ msgstr "Kan ikke velge automatisk for denne skriverenheten."
-
-#~ msgid ""
-#~ "Sorry,\n"
-#~ "there are no notes available for this printer."
-#~ msgstr ""
-#~ "Beklager,\n"
-#~ "det er ingen tilgjengelige merknader for denne skriveren."
-
-#~ msgid "Invalid Printer Record."
-#~ msgstr "Ugyldig skriver-definisjon."
-
-#~ msgid "You must select a printer queue to override."
-#~ msgstr "Du må velge en skriverkø for overstyring."
-
-#~ msgid "You cannot override a locally defined printer."
-#~ msgstr "Du kan ikke overstyre en lokalt definert skriver."
-
-#~ msgid "You must select a printer queue to send a test page to."
-#~ msgstr "Du må velge en skriverkø å sende testsiden til."
-
-#~ msgid "The printer's format is not understood, and can not be edited."
-#~ msgstr ""
-#~ "Skriverdefinisjonen er ikke forstått av dette verktøyet, og kan ikke "
-#~ "redigeres her."
-
-#~ msgid ""
-#~ "You must select a printer queue\n"
-#~ " to make the default."
-#~ msgstr ""
-#~ "Du må velge en skriverkø for å kunne\n"
-#~ "sette en standard skriverkø."
-
-#~ msgid "You must run printconf-gui as root."
-#~ msgstr "Du må kjøre printconf-tui som root."
-
-#~ msgid ""
-#~ "RPMS are available from the project's sourceforge site: http://hpinkjet."
-#~ "sourceforge.net"
-#~ msgstr ""
-#~ "RPMer er tilgjengelig fra prosjektets nettsted på sourceforge: http://"
-#~ "hpinkjet.sourceforge.net"
-
-#~ msgid "Red Hat is unable to ship these drivers due to license restrictions."
-#~ msgstr ""
-#~ "Red Hat kan ikke distribuere disse driverene på grunn av "
-#~ "lisensieringsrestriksjoner."
-
-#~ msgid "Alias List"
-#~ msgstr "Alias-liste"
-
-#~ msgid "Bar"
-#~ msgstr "Bar"
-
-#~ msgid "Baz"
-#~ msgstr "Baz"
-
-#~ msgid "Bob"
-#~ msgstr "Bob"
-
-#~ msgid "Configure a Delivery Command"
-#~ msgstr "Konfigurer en kommando for levering"
-
-#~ msgid "Configure a Jetdirect Printer"
-#~ msgstr "Konfigurer en JetDirect skriver"
-
-#~ msgid "Configure a Novell Print Queue"
-#~ msgstr "Konfigurer en Novell utskriftskø"
-
-#~ msgid "Configure a Unix Print Queue"
-#~ msgstr "Konfigurer en Unix utskriftskø"
-
-#~ msgid "Configure a Windows Print Queue"
-#~ msgstr "Konfigurer en Windows utskriftskø"
-
-#~ msgid "Configure the SMB share of your remote printer."
-#~ msgstr "Konfigurer SMB-share for din eksterne skriver."
-
-#~ msgid "Configure the remote server and queue of your NCP printer."
-#~ msgstr "Konfigurer ekstern tjener og kø for din NCP-skriver."
-
-#~ msgid ""
-#~ "Configure the server and queue of your remote lpd server. If no queue is "
-#~ "specified, you will use the default queue on the remote server. Select "
-#~ "strict RFC1179 compliance if you are having problems connecting to an "
-#~ "older lpd server."
-#~ msgstr ""
-#~ "Konfigurer tjener og kø for din eksterne lpd-tjener. Hvis ingen kø "
-#~ "spesifiseres vil du bruke standard kø på den eksterne tjeneren. Velg "
-#~ "streng RFC1179-tolking hvis du har problemer med å nå en eldre lpd-tjener."
-
-#~ msgid "Create a New Print Queue"
-#~ msgstr "Lag en ny skriverkø"
-
-#~ msgid ""
-#~ "Enter the Command you want to run for delivery.\n"
-#~ "The printjob will be sent to this command on standard input.\n"
-#~ "You must give full paths to programs, there is no guaranteed path set."
-#~ msgstr ""
-#~ "Skriv inn kommandoen du ønsker å bruke for levering.\n"
-#~ "Utskriftsjobben vil bli sendt som standard inndata til denne kommandoen.\n"
-#~ "Du må oppgi full sti til programmene, ingen garantert sti er satt."
-
-#~ msgid ""
-#~ "Enter the IP address of the JetDirect printer.\n"
-#~ "Use the default port of 9100 unless you know the printer is using a "
-#~ "different port."
-#~ msgstr ""
-#~ "Skriv inn IP for JetDirect-skriveren.\n"
-#~ "Bruk standard portnummer, 9100, med mindre du vet at skriveren bruker en "
-#~ "annen port."
-
-#~ msgid ""
-#~ "Enter the Queue's name, and select the Queue's Type.\n"
-#~ "Valid names can contain the characters \"a-z\", \"A-Z\", \"0-9\", \"-\", "
-#~ "and \"__\".\n"
-#~ "They must begin with letters."
-#~ msgstr ""
-#~ "Skriv in navn på køen, og velg type for køen.\n"
-#~ "Gyldige navn kan inneholde tegnene \"a-z\", \"A-Z\", \"0-9\", \"-\" og \"_"
-#~ "\".\n"
-#~ "De må starte med en bokstav."
-
-#~ msgid "Foo"
-#~ msgstr "Foo"
-
-#~ msgid "Host IP:"
-#~ msgstr "Verts IP:"
-
-#~ msgid "JETDIRECT"
-#~ msgstr "JETDIRECT"
-
-#~ msgid "JetDirect Printer"
-#~ msgstr "JetDirect skriver"
-
-#~ msgid "LOCAL"
-#~ msgstr "LOKAL"
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "NCP"
-#~ msgstr "NCP"
-
-#~ msgid "Name and Aliases"
-#~ msgstr "Navn og alias"
-
-#~ msgid "Novell Printer (NCP Queue)"
-#~ msgstr "Novell skriver (NCP-kø)"
-
-#~ msgid "Printer IP:"
-#~ msgstr "Skrivers IP:"
-
-#~ msgid "Qux"
-#~ msgstr "Qux"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Select a Print Driver"
-#~ msgstr "Velg en skriverdriver"
-
-#~ msgid "Select a print driver for your printer."
-#~ msgstr "Velg en skriverdriver for din skriver."
-
-#~ msgid ""
-#~ "Select the printer device to use, or use the custom option if it is not "
-#~ "listed."
-#~ msgstr ""
-#~ "Velg skriverenheten som skal brukes, eller bruk alternativet \"tilpasset"
-#~ "\" hvis den ikke er på listen."
-
-#~ msgid "Set the Print Queue Name and Type"
-#~ msgstr "Sett navn og type for utskriftskø"
-
-#~ msgid "Translate \\n => \\r\\n"
-#~ msgstr "Oversett \\n => \\r\\n"
-
-#~ msgid "UNIX Printer (lpd Queue)"
-#~ msgstr "UNIX-skriver (lpd-kø)"
-
-#~ msgid "Unix Printer"
-#~ msgstr "Unix-skriver"
-
-#~ msgid "Windows Printer"
-#~ msgstr "Windows-skriver"
-
-#~ msgid "Windows Printer (SMB Share)"
-#~ msgstr "Windows skriver (SMB-share)"
-
-#~ msgid "_Override Queue"
-#~ msgstr "_Overstyr kø"
-
-#~ msgid "_Queue Name:"
-#~ msgstr "_Kønavn:"
-
-#~ msgid "_Restart lpd"
-#~ msgstr "Sta_rt lpd på nytt"
-
-#~ msgid "_Save Changes"
-#~ msgstr "_Lagre endringer"
-
-#~ msgid "printconf-gui"
-#~ msgstr "printconf-gui"
-
-#~ msgid "printconf-gui: Add a New Print Queue"
-#~ msgstr "printconf-gui: Legg til en ny utskriftskø"
-
-#~ msgid "replace me."
-#~ msgstr "erstatt meg."
-
-#~ msgid "window1"
-#~ msgstr "vindu1"
-
-#~ msgid "Sent a US Letter PostScript test page to \"%s\"."
-#~ msgstr "Sendte en US Letter PostScript-testside til \"%s\"."
-
-#~ msgid "Sent an A4 PostScript test page to \"%s\"."
-#~ msgstr "Sendte en Postscript testside i A4-format til \"%s\"."
-
-#~ msgid "Ascii Test Page"
-#~ msgstr "ASCII testside"
-
-#~ msgid ", "
-#~ msgstr ", "
-
-#~ msgid ", and "
-#~ msgstr ", og "
-
-#~ msgid ""
-#~ ".\n"
-#~ "They must begin with letters."
-#~ msgstr ""
-#~ ".\n"
-#~ "Må begynne med bokstaver."
-
-#~ msgid ""
-#~ "\n"
-#~ "on the last screen."
-#~ msgstr ""
-#~ "\n"
-#~ "på den siste skjermen."
-
-#~ msgid "Print A_4 Postscript Test Page"
-#~ msgstr "Skriv ut A_4 Postscript-testside"
-
-#~ msgid "Print US _Letter Postscript Test Page"
-#~ msgstr "Skriv ut US _Letter PostScript testside"
-
-#~ msgid ""
-#~ "Translate \n"
-#~ " => \r\n"
-#~ msgstr ""
-#~ "Oversett \n"
-#~ " => \n"
-
-#~ msgid "Edit Names"
-#~ msgstr "Rediger navn"
-
-#~ msgid "Edit Type"
-#~ msgstr "Rediger type"
-
-#~ msgid "Convert Text To Postscript"
-#~ msgstr "Konverter tekst til PostScript"
-
-#~ msgid "You cannot edit an imported printer."
-#~ msgstr "Du kan ikke redigere en importert skriverdefinisjon."
-
-#~ msgid "."
-#~ msgstr "."
-
-#~ msgid "label158"
-#~ msgstr "etikett158"
-
-#~ msgid "label164"
-#~ msgstr "etikett164"
-
-#~ msgid "label170"
-#~ msgstr "etikett170"
-
-#~ msgid "stuff"
-#~ msgstr "stuff"
-
-#~ msgid "Apply Changes and Restart LPD"
-#~ msgstr "Aktiver endringer og start LPD på nytt"
-
-#~ msgid "Raw"
-#~ msgstr "Rå"
-
-#~ msgid "%s %s"
-#~ msgstr "%s %s"
-
-#~ msgid "%s queue on local device %s"
-#~ msgstr "%s kø på lokal enhet %s"
-
-#~ msgid "%s lpd queue %s@%s"
-#~ msgstr "%s lpd-kø %s@%s"
-
-#~ msgid "%s SMB queue on share %s"
-#~ msgstr "%s SMB-kø på share %s"
-
-#~ msgid "%s Novell queue %s on server %s"
-#~ msgstr "%s Novell-kø %s på tjener %s"
-
-#~ msgid "%s JetDirect queue %s:%s"
-#~ msgstr "%s JetDirect-kø %s:%s"
-
-#~ msgid "%s unknown queue type %s"
-#~ msgstr "%s ukjent kø type %s"
-
-#~ msgid ""
-#~ "This queue is in an unknown format.\n"
-#~ "Cannot Edit."
-#~ msgstr ""
-#~ "Denne køen er i et ukjent format.\n"
-#~ "Kan ikke redigere."
-
-#~ msgid ""
-#~ "You must select a valid name.\n"
-#~ "Use only the characters -,a-z,A-Z,0-9,_ please."
-#~ msgstr ""
-#~ "Du må velge et gyldig navn.\n"
-#~ "Gyldige tegn er \"-\",a-z,A-Z,0-9 og \"_\"."
-
-#~ msgid "Another print queue is already using \"%s\" as a name."
-#~ msgstr "En annen skriverkø bruker allerede navnet \"%s\"."
-
-#~ msgid "You must select a valid name for an alias.\n"
-#~ msgstr "Du må velge et gyldig navn for aliaset.\n"
-
-#~ msgid ""
-#~ "You do not seem to have the samba client installed.\n"
-#~ "You will not be able to print to SMB servers.\n"
-#~ "Consider installing the 'samba-client' rpm."
-#~ msgstr ""
-#~ "Det ser ikke ut som om du har samba-klienten installert,\n"
-#~ "og kan dermed ikke skrive ut til SMB-tjenere.\n"
-#~ "For å kunne gjøre dette, installer RPMen 'samba-client'."
-
-#~ msgid ""
-#~ "You do not seem to have the nprint program installed.\n"
-#~ "You will not be able to print to NCP servers.\n"
-#~ "Consider installing the 'ncpfs' rpm."
-#~ msgstr ""
-#~ "Det ser ikke ut til at du har programmet 'nprint' installert,\n"
-#~ "og kan dermed ikke skrive ut til NCP-tjenere.\n"
-#~ "For å kunne gjøre dette må du installere rpmen 'ncpfs'."
-
-#~ msgid ""
-#~ "Exiting will discard your unsaved changes.\n"
-#~ "Continue?"
-#~ msgstr ""
-#~ "Hvis du avslutter vil du miste endringer du ikke lagret.\n"
-#~ "Fortsett?"
-
-#~ msgid "Are you sure you want to delete '%s'?"
-#~ msgstr "Er du sikker på at du vil slette '%s'?"
-
-#~ msgid "Unknown printer"
-#~ msgstr "Ukjent skriver"
-
-#~ msgid ""
-#~ "FIXME:%s\n"
-#~ "This feature is incomplete, and under development."
-#~ msgstr ""
-#~ "FIXME:%s\n"
-#~ "Denne featuren er under utvikling og er ikke ferdig."
+"Oppretter en ny printer %s på\n"
+"%s.\n"
+
+#. Foomatic database problem of some sort.
+#: ../system-config-printer.py:2815
+msgid "Database error"
+msgstr "Database-feil"
+
+#: ../system-config-printer.py:2816
+#, python-format
+msgid "The '%s' driver cannot be used with printer '%s %s'."
+msgstr "Driveren '%s' kan ikke brukes sammen med skriver '%s' %s."
+
+#. This printer references some XML that is not
+#. installed by default.  Point the user at the
+#. package they need to install.
+#: ../system-config-printer.py:2826
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr "Du er nødt til å installere pakken '%s' for å bruke denne skriveren."
+
+#. This error came from trying to open the PPD file.
+#: ../system-config-printer.py:2833
+msgid "PPD error"
+msgstr "PPD-feil"
+
+#: ../system-config-printer.py:2835
+msgid "Failed to read PPD file.  Possible reason follows:"
+msgstr "Kunne ikke lese PPD-fil. Mulige årsaker følger:"
+
+#: ../system-config-printer.py:3121 ../system-config-printer.py:3128
+msgid "Missing driver"
+msgstr "Mangler driver"
+
+#: ../system-config-printer.py:3122
+#, python-format
+msgid ""
+"Printer '%s' requires the %s package but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"Skriveren '%s' er avhengig av pakken %s, som ikke er installert.  Vennligst "
+"installer denne pakken før skriveren tas i bruk."
+
+#: ../system-config-printer.py:3129
+#, python-format
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"Skriver '%s' er avhengig av programmet '%s', som ikke er installert.  "
+"Vennligst installer dette programmet før skriveren tas i bruk."
+
+#: ../system-config-printer.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../system-config-printer.glade.h:2
+msgid " PPD "
+msgstr " PPD "
+
+#: ../system-config-printer.glade.h:3
+msgid ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+
+#: ../system-config-printer.glade.h:9
+msgid "<b>Authentication</b>"
+msgstr "<b>Autentisering</b>"
+
+#: ../system-config-printer.glade.h:10
+msgid "<b>Banner</b>"
+msgstr "<b>Banner</b>"
+
+#: ../system-config-printer.glade.h:11
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Grunnleggende innstillinger for tjener</b>"
+
+#: ../system-config-printer.glade.h:12
+msgid "<b>Comment about the Driver</b>"
+msgstr "<b>Kommentar for denne driveren</b>"
+
+#: ../system-config-printer.glade.h:13
+msgid "<b>Comment about the Printer</b>"
+msgstr "<b>Kommentar for skriveren</b>"
+
+#: ../system-config-printer.glade.h:14
+msgid "<b>Common Options</b>"
+msgstr "<b>Vanlige alternativer</b>"
+
+#: ../system-config-printer.glade.h:15
+msgid "<b>Default Printer</b>"
+msgstr "<b>Forvalgt skriver</b>"
+
+#: ../system-config-printer.glade.h:16
+msgid "<b>Description</b>"
+msgstr "<b>Beskrivelse</b>"
+
+#: ../system-config-printer.glade.h:17
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Beskrivelse</b> (valgfri)"
+
+#: ../system-config-printer.glade.h:18
+msgid "<b>Image Options</b>"
+msgstr "<b>Alternativer for bilder</b>"
+
+#: ../system-config-printer.glade.h:19
+msgid "<b>Information about the PPD</b>"
+msgstr "<b>Informasjon om PPDen</b>"
+
+#: ../system-config-printer.glade.h:20
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Lokasjon for LPD-nettverksskriver</b>"
+
+#: ../system-config-printer.glade.h:21
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Lokasjon av nettverksskriver</b>"
+
+#: ../system-config-printer.glade.h:22
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Lokasjon</b> (valgfri)"
+
+#: ../system-config-printer.glade.h:23
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Andre alternativer (avansert)</b>"
+
+#: ../system-config-printer.glade.h:24
+msgid "<b>Policies</b>"
+msgstr "<b>Regelsett</b>"
+
+#: ../system-config-printer.glade.h:25
+msgid "<b>Printer Name</b>"
+msgstr "<b>Navn på skriver</b>"
+
+#: ../system-config-printer.glade.h:26
+msgid "<b>Printers to be members of this Class</b>"
+msgstr "<b>Skrivere som skal være medlem i denne klassen</b>"
+
+#: ../system-config-printer.glade.h:27
+msgid "<b>Select Connection</b>"
+msgstr "<b>Velg tilkobling</b>"
+
+#: ../system-config-printer.glade.h:28
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Innstillinger for seriellporten</b>"
+
+#: ../system-config-printer.glade.h:29
+msgid "<b>Settings</b>"
+msgstr "<b>Innstillinger</b>"
+
+#: ../system-config-printer.glade.h:30
+msgid "<b>State</b>"
+msgstr "<b>Tilstand</b>"
+
+#: ../system-config-printer.glade.h:31
+msgid "<b>Text Options</b>"
+msgstr "<b>Alternativer for tekst</b>"
+
+#: ../system-config-printer.glade.h:32
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>Ikke publisert\n"
+"Se tjener-innstillingene</i>"
+
+#: ../system-config-printer.glade.h:34
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[arbeidsgruppe/]tjener[:port]/skriver</i>"
+
+#: ../system-config-printer.glade.h:35
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+"\n"
+"Any changes you have made will be lost unless you apply them."
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Bruk endringer?</span>\n"
+"\n"
+"Alle endringer du har utført vil gå tapt hvis du ikke aktiverer dem."
+
+#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Passord kreves</span>\n"
+"\n"
+
+#: ../system-config-printer.glade.h:41
+msgid "About"
+msgstr "Om"
+
+#: ../system-config-printer.glade.h:42
+msgid "About System-Config-Printer"
+msgstr "Om System-Config-Printer"
+
+#: ../system-config-printer.glade.h:43
+msgid "Accepting jobs"
+msgstr "Godtar jobber"
+
+#: ../system-config-printer.glade.h:44
+msgid "Access control"
+msgstr "Tilgangskontroll"
+
+#: ../system-config-printer.glade.h:45
+msgid "Add or Remove Members"
+msgstr "Legg til eller fjern medlemmer"
+
+#: ../system-config-printer.glade.h:46
+msgid "Allow printing for everyone except these users:"
+msgstr "Tillat utskrifter for alle, bortsett fra disse brukerne:"
+
+#: ../system-config-printer.glade.h:47
+msgid "Allow remote administration"
+msgstr "Tillat ekstern administrasjon"
+
+#: ../system-config-printer.glade.h:48
+msgid "Allow users to cancel any job (not just their own)"
+msgstr "Tillat brukere å avbryte alle utskrifter (ikke bare sine egne)"
+
+#: ../system-config-printer.glade.h:49
+msgid "Apply"
+msgstr "Bruk"
+
+#: ../system-config-printer.glade.h:50
+msgid "Authors"
+msgstr "Forfattere"
+
+#: ../system-config-printer.glade.h:51
+msgid "Baud Rate"
+msgstr "Baud-rate"
+
+#: ../system-config-printer.glade.h:52
+msgid "Bottom margin:"
+msgstr "Bunnmarg:"
+
+#: ../system-config-printer.glade.h:53
+msgid "Brightness:"
+msgstr "Lysstyrke:"
+
+#: ../system-config-printer.glade.h:54
+msgid "CUPS server:"
+msgstr "CUPS-tjener:"
+
+#: ../system-config-printer.glade.h:55
+msgid "Change PPD"
+msgstr "Endre PPD"
+
+#: ../system-config-printer.glade.h:56
+msgid "Change..."
+msgstr "Endre..."
+
+#: ../system-config-printer.glade.h:57
+msgid "Characters per inch:"
+msgstr "Tegn per tomme:"
+
+#: ../system-config-printer.glade.h:58
+msgid "Class Members"
+msgstr "Medlemmer i klassen"
+
+#: ../system-config-printer.glade.h:59
+msgid "Columns:"
+msgstr "Kolonner:"
+
+#: ../system-config-printer.glade.h:60
+msgid "Comments: "
+msgstr "Kommentarer: "
+
+#: ../system-config-printer.glade.h:61
+msgid "Connect to CUPS server"
+msgstr "Koble til CUPS-tjener"
+
+#: ../system-config-printer.glade.h:62
+msgid "Connecting"
+msgstr "Kobler til"
+
+#: ../system-config-printer.glade.h:64
+#, no-c-format
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+"Kobler til tjener:\n"
+"%s\n"
+
+#: ../system-config-printer.glade.h:67
+msgid "Copies:"
+msgstr "Kopier"
+
+#: ../system-config-printer.glade.h:68
+msgid "Copy Printer"
+msgstr "Kopier skriver"
+
+#: ../system-config-printer.glade.h:69
+msgid "Copyright"
+msgstr "Opphavsrett"
+
+#: ../system-config-printer.glade.h:70
+msgid "Data Bits"
+msgstr "Databiter"
+
+#: ../system-config-printer.glade.h:71
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+"Forvalgt\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+
+#: ../system-config-printer.glade.h:80
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr ""
+"Forvalgt\n"
+"8\n"
+"7"
+
+#: ../system-config-printer.glade.h:83
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+"Forvalgt\n"
+"Ingen\n"
+"Ulik\n"
+"Lik"
+
+#: ../system-config-printer.glade.h:87
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+"Forvalgt\n"
+"Ingen\n"
+"XON/XOFF (Programvare)\n"
+"RTS/CTS (Maskinvare)\n"
+"DTR/DSR (Maskinvare)"
+
+#: ../system-config-printer.glade.h:92
+msgid "Deny printing for everyone except these users:"
+msgstr "Nekt utskrifter for alle, bortsett fra disse brukerne:"
+
+#: ../system-config-printer.glade.h:93
+msgid "Description:"
+msgstr "Beskrivelse:"
+
+#: ../system-config-printer.glade.h:94
+msgid "Device"
+msgstr "Enhet"
+
+#: ../system-config-printer.glade.h:95
+msgid "Device URI"
+msgstr "URI til enhet"
+
+#: ../system-config-printer.glade.h:96
+msgid "Device URI:"
+msgstr "URI til enhet:"
+
+#: ../system-config-printer.glade.h:97
+msgid "Device description."
+msgstr "Beskrivelse av enheten."
+
+#: ../system-config-printer.glade.h:98
+msgid "DirectJet"
+msgstr "DirectJet"
+
+#: ../system-config-printer.glade.h:99
+msgid "Driver"
+msgstr "Driver"
+
+#: ../system-config-printer.glade.h:100
+msgid "Empty"
+msgstr "Tom"
+
+#: ../system-config-printer.glade.h:101
+msgid "Enabled"
+msgstr "Aktivert"
+
+#: ../system-config-printer.glade.h:102
+msgid "Ending Banner:"
+msgstr "Slutter Banner:"
+
+#: ../system-config-printer.glade.h:103
+msgid "Enter Device URI"
+msgstr "Oppgi URI for enhet"
+
+#: ../system-config-printer.glade.h:104
+msgid "Error Policy: \t"
+msgstr "Regelsett for feil: \t"
+
+#: ../system-config-printer.glade.h:105
+msgid "Finishings:"
+msgstr "Utføringer:"
+
+#: ../system-config-printer.glade.h:106
+msgid "Flow Control"
+msgstr "Flytkontroll"
+
+#: ../system-config-printer.glade.h:107
+msgid "Gamma:"
+msgstr "Gamma:"
+
+#: ../system-config-printer.glade.h:108
+msgid "Goto Server"
+msgstr "Gå til tjener"
+
+#: ../system-config-printer.glade.h:109
+msgid "Hold until:"
+msgstr "Hold inntil:"
+
+#: ../system-config-printer.glade.h:110
+msgid "Hostname"
+msgstr "Vertsnavn"
+
+#: ../system-config-printer.glade.h:111
+msgid "Hue adjustment:"
+msgstr "Justering av glød:"
+
+#: ../system-config-printer.glade.h:112
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "Lesbar beskrivelse, som f.eks. \"HP LaserJet med Duplexer\""
+
+#: ../system-config-printer.glade.h:113
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "Lesbar plassering, som f.eks. \"Lab 1\""
+
+#: ../system-config-printer.glade.h:114
+msgid "IPP"
+msgstr "IPP"
+
+#: ../system-config-printer.glade.h:116
+msgid "Job Options"
+msgstr "Alternativer for jobb"
+
+#: ../system-config-printer.glade.h:117
+msgid "Job priority:"
+msgstr "Jobb-prioritet:"
+
+#: ../system-config-printer.glade.h:118
+msgid "LPD"
+msgstr "LPD"
+
+#: ../system-config-printer.glade.h:119
+msgid "Left margin:"
+msgstr "Venstre marg:"
+
+#: ../system-config-printer.glade.h:120
+msgid ""
+"Left to right, top to bottom\n"
+"Left to right, bottom to top\n"
+"Right to left, top to bottom\n"
+"Right to left, bottom to top\n"
+"Top to bottom, left to right\n"
+"Top to bottom, right to left\n"
+"Bottom to top, left to right\n"
+"Bottom to top, right to left"
+msgstr ""
+"Venstre til høyre, topp til bunn\n"
+"Venstre til høyrem bunn til topp\n"
+"Høyre til venstre, topp til bunn\n"
+"Høyre til venstre, bunn til topp\n"
+"Topp til bunn, venstre til høyre\n"
+"Topp til bunn, høyre til venstre\n"
+"Bunn til topp, venstre til høyre\n"
+"Bunn til topp, høyre til venstre"
+
+#: ../system-config-printer.glade.h:128
+msgid "Lines per inch:"
+msgstr "Linjer per tomme:"
+
+#: ../system-config-printer.glade.h:129
+msgid "Location:"
+msgstr "Lokasjon:"
+
+#: ../system-config-printer.glade.h:130
+msgid "Make Default Printer"
+msgstr "Sett til forvalgt skriver"
+
+#: ../system-config-printer.glade.h:131
+msgid "Make and Model:"
+msgstr "Merke og modell:"
+
+#: ../system-config-printer.glade.h:132
+msgid "May contain any printable characters except \"/\", \"#\", and space"
+msgstr "Kan inneholde alle skrivbare tegn unntatt «/», «#» og mellomrom"
+
+#: ../system-config-printer.glade.h:133
+msgid "Media:"
+msgstr "Medie:"
+
+#: ../system-config-printer.glade.h:134
+msgid "Members"
+msgstr "Medlemmer"
+
+#: ../system-config-printer.glade.h:135
+msgid "Mirror"
+msgstr "Speil"
+
+#: ../system-config-printer.glade.h:136
+msgid "More"
+msgstr "Mer"
+
+#: ../system-config-printer.glade.h:137
+msgid "Name"
+msgstr "Navn"
+
+#: ../system-config-printer.glade.h:138
+msgid "New Clas_s"
+msgstr "Ny kla_sse"
+
+#: ../system-config-printer.glade.h:141
+msgid "New _Printer"
+msgstr "Ny s_kriver"
+
+#: ../system-config-printer.glade.h:142
+msgid "New name for the printer"
+msgstr "Nytt navn på skriveren"
+
+#: ../system-config-printer.glade.h:143
+msgid ""
+"None\n"
+"Staple\n"
+"Punch\n"
+"Cover\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Staple (top left)\n"
+"Staple (bottom left)\n"
+"Staple (top right)\n"
+"Staple (bottom right)\n"
+"Edge stitch (left)\n"
+"Edge stitch (top)\n"
+"Edge stitch (right)\n"
+"Edge stitch (bottom)\n"
+"Staple dual (left)\n"
+"Staple dual (top)\n"
+"Staple dual (right)\n"
+"Staple dual (bottom)\n"
+"Bind (left)\n"
+"Bind (top)\n"
+"Bind (right)\n"
+"Bind (bottom)"
+msgstr ""
+"Ingen\n"
+"Stiftet\n"
+"Punch\n"
+"Omslag\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Stiftet (oppe til venstre)\n"
+"Stiftet (nede til venstre)\n"
+"Stiftet (oppe til høyre)\n"
+"Stiftet (nede til høyre)\n"
+"Hjørnestiftet (venstre)\n"
+"Hjørnestiftet (oppe)\n"
+"Hjørnestiftet (høyre)\n"
+"Hjørnestiftet (nede)\n"
+"Dobbelt-stiftet (venstre)\n"
+"Dobbelt-stiftet (oppe)\n"
+"Dobbelt-stiftet (høyre)\n"
+"Dobbelt-stiftet (nede)\n"
+"Bind (venstre)\n"
+"Bind (oppe)\n"
+"Bind (høyre)\n"
+"Bind (nede)"
+
+#: ../system-config-printer.glade.h:171
+msgid ""
+"One-sided\n"
+"Two-sided (long edge)\n"
+"Two-sided (short edge)"
+msgstr ""
+"En-sidig\n"
+"To-sidig (langsiden)\n"
+"To-sidig (kortsiden)"
+
+#: ../system-config-printer.glade.h:174
+msgid "Operation Policy:"
+msgstr "Regelsett for operasjon:"
+
+#: ../system-config-printer.glade.h:175
+msgid "Orientation:"
+msgstr "Orientering:"
+
+#: ../system-config-printer.glade.h:176
+msgid "PPD"
+msgstr "PPD"
+
+#: ../system-config-printer.glade.h:177
+msgid "Pages per side layout:"
+msgstr "Ark per side visning:"
+
+#: ../system-config-printer.glade.h:178
+msgid "Pages per side:"
+msgstr "Ark per side:"
+
+#: ../system-config-printer.glade.h:179
+msgid "Parity"
+msgstr "Paritet"
+
+#: ../system-config-printer.glade.h:180 ../applet.glade.h:5
+msgid "Password:"
+msgstr "Passord:"
+
+#: ../system-config-printer.glade.h:181
+msgid "Policies"
+msgstr "Regelsett"
+
+#: ../system-config-printer.glade.h:182
+msgid "Port number"
+msgstr "Portnummer"
+
+#: ../system-config-printer.glade.h:183
+msgid ""
+"Portrait (no rotation)\n"
+"Landscape (90°)\n"
+"Reverse landscape (270°)\n"
+"Reverse portrait (180°)"
+msgstr ""
+"Portrett (ingen rotasjon)\n"
+"Landskap (90°)\n"
+"Omvendt landskao (270°)\n"
+"Omvendt portrett (180°)"
+
+#: ../system-config-printer.glade.h:187
+msgid ""
+"PostScript Printer Description (PPD) files can often found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"PostScript Printer Description (PPD)-filene kan ofte bli funnet på "
+"driverdisketten som følger med skriveren. For PostScript-skrivere så er de "
+"ofte en del av Windows<sup>®</sup>-driverne."
+
+#: ../system-config-printer.glade.h:188
+msgid "Pretty print"
+msgstr "Pen utskrift"
+
+#: ../system-config-printer.glade.h:192
+msgid "Printer State:"
+msgstr "Tilstand for skriver:"
+
+#: ../system-config-printer.glade.h:193
+msgid "Printername"
+msgstr "Skrivernavn"
+
+#: ../system-config-printer.glade.h:194
+msgid "Probe"
+msgstr "Søk"
+
+#: ../system-config-printer.glade.h:195
+msgid "Provide PPD file"
+msgstr "Oppgi PPD-fil"
+
+#: ../system-config-printer.glade.h:196
+msgid "Require encryption"
+msgstr "Krev kryptering"
+
+#: ../system-config-printer.glade.h:197
+msgid "Reset"
+msgstr "Nullstill"
+
+#: ../system-config-printer.glade.h:198
+msgid "Reset to system default"
+msgstr "Sett til systemets forvalgte verdier"
+
+#: ../system-config-printer.glade.h:199
+msgid "Right margin:"
+msgstr "Høyre marg"
+
+#: ../system-config-printer.glade.h:200
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../system-config-printer.glade.h:201
+msgid "SMB"
+msgstr "SMB"
+
+#: ../system-config-printer.glade.h:202
+msgid "Saturation:"
+msgstr "Metning:"
+
+#: ../system-config-printer.glade.h:203
+msgid "Save debugging information for troubleshooting"
+msgstr "Lagre feilsøkingsinformasjon"
+
+#: ../system-config-printer.glade.h:204
+msgid "Scale to fit"
+msgstr "Skaler så det passer"
+
+#: ../system-config-printer.glade.h:205
+msgid "Scaling:"
+msgstr "Skalering:"
+
+#: ../system-config-printer.glade.h:206
+msgid "Select A File"
+msgstr "Velg en fil"
+
+#: ../system-config-printer.glade.h:207
+msgid "Select Printer from database"
+msgstr "Velg en skriver fra databasen"
+
+#: ../system-config-printer.glade.h:208
+msgid "Serial"
+msgstr "Seriell"
+
+#: ../system-config-printer.glade.h:209
+msgid "Settings"
+msgstr "Innstillinger"
+
+#: ../system-config-printer.glade.h:210
+msgid "Share published printers connected to this system"
+msgstr "Del ut publiserte skrivere som er koblet til dette systemet"
+
+#: ../system-config-printer.glade.h:211
+msgid "Shared"
+msgstr "Delt"
+
+#: ../system-config-printer.glade.h:212
+msgid "Show printers shared by other systems"
+msgstr "Vis skrivere som deles ut av andre systemer"
+
+#: ../system-config-printer.glade.h:213
+msgid "Sides:"
+msgstr "Sider:"
+
+#: ../system-config-printer.glade.h:214
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"Angi standardjobbene for denne skriveren.  Jobbene som mottas på denne "
+"skrivertjeneren vil ha disse valgene, hvis de ikke allerede er satt av "
+"programmet."
+
+#: ../system-config-printer.glade.h:215
+msgid "Starting Banner:"
+msgstr "Starter Banner:"
+
+#: ../system-config-printer.glade.h:216
+msgid "System-Config-Printer"
+msgstr "Skriverkonfigurasjon"
+
+#: ../system-config-printer.glade.h:218
+#, no-c-format
+msgid "System-Config-Printer %s"
+msgstr "Skriverkonfigurasjon %s"
+
+#: ../system-config-printer.glade.h:219
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"foomatic skriverdatabasen inneholder forskjellige produsent-utgitte "
+"PostScript Printer Description (PPD) filer og kan også generere PPD-filer "
+"for et stort antall (ikke-PostScript) skrivere. Men generelt sett så gir "
+"også produsents egne PPD-filer bedre tilgang til spesifikke funksjoner på "
+"skriveren."
+
+#: ../system-config-printer.glade.h:220
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Dette er gjort ved å anta at alternativer med samme navn har samme "
+"betydning. Innstillinger av alternativene som ikke finnes i den nye PPDen, "
+"vil gå tapt og alternativene som kun finnes i den nye PPDen vil bli satt som "
+"standard."
+
+#: ../system-config-printer.glade.h:221
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"På denne måten vil alle nåværende alternativ-innstillingene vil gå tapt. "
+"Standard-innstillingene fra den nye PPDen vil bli brukt."
+
+#: ../system-config-printer.glade.h:222
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"For å legge til et nytt valg, skriv inn navnet i boksen under og klikk for å "
+"legge til."
+
+#: ../system-config-printer.glade.h:223
+msgid "Top margin:"
+msgstr "Toppmarg:"
+
+#: ../system-config-printer.glade.h:224
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Prøv å kopiere over de alternativ-innstillingene fra den gamle PPDen."
+
+#: ../system-config-printer.glade.h:225
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Bruk den nye PPDen (PostScript Printer Description) som den er."
+
+#: ../system-config-printer.glade.h:226
+msgid "User name:"
+msgstr "Brukernavn:"
+
+#: ../system-config-printer.glade.h:227
+msgid "Username:"
+msgstr "Brukernavn:"
+
+#: ../system-config-printer.glade.h:228
+msgid "Word wrap"
+msgstr "Ordbryting"
+
+#: ../system-config-printer.glade.h:229
+msgid "_Do not apply"
+msgstr "Ikke _bruk"
+
+#: ../system-config-printer.glade.h:230
+msgid "_Edit"
+msgstr "R_ediger"
+
+#: ../system-config-printer.glade.h:231 ../applet.glade.h:10
+msgid "_File"
+msgstr "_Fil"
+
+#: ../system-config-printer.glade.h:232
+msgid "_Goto Server"
+msgstr "_Gå til tjener"
+
+#: ../system-config-printer.glade.h:233
+msgid "_Help"
+msgstr "_Hjelp"
+
+#: ../system-config-printer.glade.h:234
+msgid "_Verify..."
+msgstr "_Verifiser..."
+
+#: ../system-config-printer.glade.h:235
+msgid "default"
+msgstr "forvalgt"
+
+#: ../system-config-printer.glade.h:236
+msgid "none"
+msgstr "ingen"
+
+#: ../system-config-printer.glade.h:237
+msgid "points"
+msgstr "punkter"
+
+#: ../system-config-printer.glade.h:238
+msgid "points (72 points per inch)"
+msgstr "punkter (72 punkter per tomme)"
+
+#: ../system-config-printer.desktop.in.h:1
+msgid "Configure printers"
+msgstr "Konfigurer skrivere"
+
+#: ../system-config-printer.desktop.in.h:2
+msgid "Printing"
+msgstr "Skrivere"
+
+#: ../applet.py:80
+msgid "Toner low"
+msgstr "Lite toner"
+
+#: ../applet.py:81
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "Skriver '%s' har lite toner igjen"
+
+#: ../applet.py:82
+msgid "Toner empty"
+msgstr "Tomt for toner"
+
+#: ../applet.py:83
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "Skriver '%s' har ikke toner igjen"
+
+#: ../applet.py:84
+msgid "Cover open"
+msgstr "Lokket er åpent"
+
+#: ../applet.py:85
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "Lokket er åpent på skriver '%s'."
+
+#: ../applet.py:86
+msgid "Door open"
+msgstr "Dør åpen"
+
+#: ../applet.py:87
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "Døren er åpen på skriver «%s»."
+
+#: ../applet.py:88
+msgid "Paper low"
+msgstr "Lite papir"
+
+#: ../applet.py:89
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "Skriver '%s' har lite papir"
+
+#: ../applet.py:90
+msgid "Out of paper"
+msgstr "Ute av papir"
+
+#: ../applet.py:91
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "Skriver '%s' er tom for papir"
+
+#: ../applet.py:92
+msgid "Ink low"
+msgstr "Lite blekk"
+
+#: ../applet.py:93
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "Skriver '%s' har lite blekk igjen"
+
+#: ../applet.py:94
+msgid "Ink empty"
+msgstr "Tomt for blekk"
+
+#: ../applet.py:95
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "Skriver '%s' er tom for blekk"
+
+#: ../applet.py:96
+msgid "Not connected?"
+msgstr "Ikke tilkoblet?"
+
+#: ../applet.py:97
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "Skriver '%s' er kanskje ikke tilkoblet."
+
+#: ../applet.py:104
+msgid "Printer report"
+msgstr "Skriverrapport"
+
+#: ../applet.py:106
+msgid "Printer warning"
+msgstr "Skriveradvarsel"
+
+#: ../applet.py:108
+msgid "Printer error"
+msgstr "Skriverfeil"
+
+#: ../applet.py:109
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "Skriver '%s': '%s'"
+
+#: ../applet.py:182
+msgid "Job"
+msgstr "Jobb"
+
+#: ../applet.py:183
+msgid "Document"
+msgstr "Dokument"
+
+#: ../applet.py:185
+msgid "Size"
+msgstr "Størrelse"
+
+#: ../applet.py:186
+msgid "Time submitted"
+msgstr "Tid sendt"
+
+#: ../applet.py:187
+msgid "Status"
+msgstr "Status"
+
+#: ../applet.py:238
+msgid "Message"
+msgstr "Beskjed"
+
+#: ../applet.py:555
+msgid "1 hour ago"
+msgstr "1 time siden"
+
+#: ../applet.py:557
+msgid "1 hour and 1 minute ago"
+msgstr "1 time og 1 minutt siden"
+
+#: ../applet.py:559
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr "1 time og %d minutter siden"
+
+#: ../applet.py:562
+#, python-format
+msgid "%d hours ago"
+msgstr "%d timer siden"
+
+#: ../applet.py:564
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr "%d timer og 1 minutt siden"
+
+#: ../applet.py:566
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr "%d timer og %d minutter siden"
+
+#: ../applet.py:572
+msgid "a minute ago"
+msgstr "ett minutt siden"
+
+#: ../applet.py:574
+#, python-format
+msgid "%d minutes ago"
+msgstr "%d minutter siden"
+
+#: ../applet.py:629
+msgid "No documents queued"
+msgstr "Ingen dokumenter i kø"
+
+#: ../applet.py:632
+msgid "1 document queued"
+msgstr "1 dokument i kø"
+
+#: ../applet.py:635
+#, python-format
+msgid "%d documents queued"
+msgstr "%d dokumenter i kø"
+
+#: ../applet.py:682
+msgid "Pending"
+msgstr "Venter"
+
+#: ../applet.py:683
+msgid "Held"
+msgstr "Holdt"
+
+#: ../applet.py:686
+msgid "Canceled"
+msgstr "Kansellert"
+
+#: ../applet.py:687
+msgid "Aborted"
+msgstr "Avbrutt"
+
+#: ../applet.py:688
+msgid "Completed"
+msgstr "Ferdig"
+
+#: ../applet.py:946
+msgid "Printer added"
+msgstr "Skriver lagt til"
+
+#: ../applet.py:948
+msgid "Missing printer driver"
+msgstr "Mangler skriverdriver"
+
+#: ../applet.py:951
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr "«%s» er klar for utskrift."
+
+#: ../applet.py:954
+msgid "Configure"
+msgstr "Konfigurer"
+
+#. Model mismatch
+#: ../applet.py:957
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr "«%s» er lagt til. Bruker driver «%s»."
+
+#: ../applet.py:961
+msgid "Find driver"
+msgstr "Finn driver"
+
+#: ../applet.glade.h:4
+msgid "Document print status"
+msgstr "Utskriftsstatus for dokument"
+
+#: ../applet.glade.h:6
+msgid "Printer status"
+msgstr "Skriverstatus"
+
+#: ../applet.glade.h:7
+msgid "Re_print"
+msgstr "Skriv ut _igjen"
+
+#: ../applet.glade.h:8
+msgid "Show _completed jobs"
+msgstr "Vis _ferdig jobber"
+
+#: ../applet.glade.h:9
+msgid "Show _printer status"
+msgstr "Vis _skriverstatus"
+
+#: ../applet.glade.h:11
+msgid "_Hide"
+msgstr "_Gjemme"
+
+#: ../applet.glade.h:12
+msgid "_Hold"
+msgstr "_Hold"
+
+#: ../applet.glade.h:13
+msgid "_Release"
+msgstr "_Ta bort"
+
+#: ../applet.glade.h:14
+msgid "_View"
+msgstr "_Vis"
+
+#: ../print-applet.desktop.in.h:1
+msgid "Print Queue Applet"
+msgstr "Panelprogram for utskriftskø"
+
+#: ../print-applet.desktop.in.h:2
+msgid "System tray icon for managing print jobs"
+msgstr "Varselikon for utskriftsjobber for systemområdet"
+
+#: ../manage-print-jobs.desktop.in.h:1
+msgid "Cancel, pause, resume or reprint jobs"
+msgstr "Avbryt, pause, gjenoppta eller skriv ut jobber på nytt"
+
+#: ../manage-print-jobs.desktop.in.h:2
+msgid "Manage Print Jobs"
+msgstr "Håndter utskriftsjobber"
+
+#: ../my-default-printer.desktop.in.h:2
+#, fuzzy
+msgid "Select default printer"
+msgstr "Sett til forvalgt skriver"
