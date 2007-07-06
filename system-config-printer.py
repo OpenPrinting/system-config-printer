@@ -192,6 +192,7 @@ class GUI:
                         "sbJOJobPriority", "btnJOResetJobPriority",
                         "cmbJOMedia", "btnJOResetMedia",
                         "cmbJOSides", "btnJOResetSides",
+                        "cmbJOHoldUntil", "btnJOResetHoldUntil",
                         "cbJOMirror", "btnJOResetMirror",
                         "sbJOScaling", "btnJOResetScaling",
                         "sbJOSaturation", "btnJOResetSaturation",
@@ -418,6 +419,12 @@ class GUI:
                                             [ "one-sided",
                                               "two-sided-long-edge",
                                               "two-sided-short-edge" ]),
+
+                 options.OptionAlwaysShown ("job-hold-until", str,
+                                            "no-hold",
+                                            self.cmbJOHoldUntil,
+                                            self.btnJOResetHoldUntil,
+                                            use_supported = True),
 
                  options.OptionAlwaysShown ("mirror", bool, False,
                                             self.cbJOMirror,
@@ -651,9 +658,9 @@ class GUI:
             err = False
             if response == gtk.RESPONSE_APPLY:
                 err = self.apply()
-            self.changed = set() # of options
             if err or response == gtk.RESPONSE_CANCEL:
                 return False
+        self.changed = set() # of options
         return True
 
     def getSelectedItem(self):
@@ -1258,7 +1265,12 @@ class GUI:
             self.show_IPP_Error(e, s)
             return True
         self.changed = set() # of options
-        self.populateList()
+
+        # Update our copy of the printer's settings.
+        printers = cupshelpers.getPrinters (self.cups)
+        this_printer = { name: printers[name] }
+        self.printers.update (this_printer)
+
         return False
 
     def getPrinterSettings(self):
@@ -1380,6 +1392,10 @@ class GUI:
     # select Item
 
     def on_tvMainList_cursor_changed(self, list):
+        if self.changed:
+            # The unapplied changes for this item have not been saved,
+            # and the user just pressed "Cancel".
+            return
         name, type = self.getSelectedItem()
         model, self.mainListSelected = self.tvMainList.get_selection().get_selected()
         item_selected = True

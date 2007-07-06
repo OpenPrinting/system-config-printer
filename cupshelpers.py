@@ -91,8 +91,7 @@ class Printer:
                             "printer-op-policy", # handled below
                             "notify-events", # cannot be set
                             "document-format", # cannot be set
-                            "notify-lease-duration", # cannot be set
-                            "job-hold-until"]: # no sensible way to implement
+                            "notify-lease-duration"]: # cannot be set
                     continue 
 
                 supported = attrs.get(name + "-supported", None) or \

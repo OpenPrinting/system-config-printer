@@ -1,3 +1,27 @@
+2007-06-07  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.63.2.
+
+2007-06-07  Tim Waugh  <twaugh@redhat.com>
+
+	* print-applet.desktop.in: Fixed Name field to start each word with
+	a capital letter (bug #242859).
+
+	* system-config-printer.glade: Added 'Hold until:' control to Job
+	Options screen (bug #239776).
+	* system-config-printer.py (GUI.__init__): Added 'Hold until:'
+	control to Job Options screen (bug #239776).
+	* cupshelpers.py (Printer._getAttributes): Allow job-hold-until to
+	be set (bug #239776).
+
+	* system-config-printer.py (GUI.save_printer): Don't call
+	populateList() after saving printer, just update the printer we
+	changed.  This prevents a GTK+ crash (bug #242961).
+	(GUI.maySelectItem): Only clear the changed set when the cursor is
+	going to change.
+	(GUI.on_tvMainList_cursor_changed): Don't update when unapplied
+	changes remain.
+
 2007-04-10  Tim Waugh  <twaugh@redhat.com>
 
 	* configure.in: Version 0.7.63.1.
