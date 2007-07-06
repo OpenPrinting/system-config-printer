@@ -1,3 +1,119 @@
+2006-11-15  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.32.2.
+
+2006-11-15  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Substitute DATADIRNAME to fix build.
+
+2006-11-15  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 0.7.32.1.
+
+2006-11-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_tvNPDrivers_cursor_changed): Better
+	PPD information display (bug #215751).
+
+	* foomatic.py (_ppdMakeModelSplit): Merge CUPS and foomatic
+	manufacturers when they differ in case (bug #215747).
+
+	* foomatic.py (Foomatic.getPrinterFromCommandSet): New function.
+	(Foomatic.getPPD): Use it (bug #215744).
+	(Foomatic.getPrinterFromCupsDevice): Match against command
+	sets (bug #215744).
+
+	* foomatic.py (Foomatic.addCupsPPDs): No need to remove foomatic
+	PPDs now: this is handled in foomatic (bug #214963).
+
+	* system-config-printer.py (GUI.on_btnSelectDevice_clicked): Set
+	busy cursor (bug #215528).
+	(GUI.on_btnChangePPD_clicked): Likewise (bug #215528).
+
+	* system-config-printer.py (GUI.setTestButton): New function for
+	allowing user to cancel test jobs if there are some.
+	(GUI.fillPrinterTab): Use it (bug #215058).
+	(GUI.on_btnPrintTestPage_clicked): Cancel jobs if cancelling (bug
+	#215058).
+	(GUI.setDataButtonState): Only set test button sensitivity if not
+	cancelling (bug #215058).
+	(GUI.on_btnPrintTestPage_clicked): Set button to 'Cancel' after
+	submitting test page (bug #215058).
+
+	* po/bn_IN.po, po/de.po, po/es.po, po/fr.po, po/gu.po, po/hi.po,
+	po/hr.po, po/it.po, po/ko.po, po/nb.po, po/nl.po, po/pl.po,
+	po/pt_BR.po, po/sr@Latn.po, po/sr.po, po/ta.po: Updated translations.
+
+	* cupshelpers.py (Printer.testsQueued): New method for finding out
+	if test pages are queued (bug #215058).
+
+	* system-config-printer.py (GUI.fillMakeList): Scroll to start of
+	list if no match (bug #214954).
+	(GUI.fillModelList): Likewise (bug #214954).
+	(GUI.fillDriverList): Scroll to selected driver (bug #214954).
+
+	* cupshelpers.py (parseDeviceID): New function.
+	* foomatic.py (Foomatic._add_printer): Use it (bug #214765).
+	(Foomatic.addCupsPPDs): Likewise.
+
+	* foomatic.py (Foomatic.getPrinterFromCupsDevice): Handle bogus
+	HPLIP Device IDs (bug #214435).
+	(Foomatic.getPrinterFromCupsDevice): Added debug message when no
+	device ID match (bug #214435).
+
+	* foomatic.py (Foomatic.getPPD): Only match against description
+	when it is valid (bug #214178).
+	(Foomatic._add_printer): Don't add empty fields to the look-up
+	dictionary (bug #214178).
+
+	* cupshelpers.py (PrintersConf.parse): Handle invalid
+	printers.conf file gracefully (bug #214156).
+
+	* optionwidgets.py (OptionBool.__init__): Handle Boolean values
+	with 'On' and 'Off' as choices (bug #214021).
+
+	* system-config-printer.py (GUI.get_PPD_but_handle_errors): Handle
+	database errors gracefully (bug #213993).
+	* po/bn_IN.po, po/de.po, po/es.po, po/fr.po, po/gu.po, po/hr.po,
+	po/it.po, po/ja.po, po/ko.po, po/nl.po, po/pt_BR.po, po/pt.po,
+	po/ru.po, po/sr@Latn.po, po/sr.po, po/ta.po: Updated translations.
+
+	* foomatic.py (_ppdMakeModelSplit): Better display for models
+	driven by Gutenprint and Gimp-Print PPDs (bug #213863).
+
+	* system-config-printer.py (GUI.save_printer): Refresh after
+	applying changes (bug #213694).
+
+	* system-config-printer.py (GUI.on_btnNPApply_clicked): Set
+	PageSize when uploading a new PPD as-is (bug #213681).
+
+	* cupshelpers.py (copyPPDOptions): Skip 'PageRegion' since that's
+	special (bug #213681).
+
+	* system-config-printer.py (GUI.fillDeviceTab): Sort 'Other' last
+	in the list (bug #213678).
+
+	* system-config-printer.py (GUI.on_btnChangePPD_clicked): Fixed
+	auto-selection of current PPD when changing it (bug #213668).
+
+	* system-config-printer (GUI.on_btnNPApply_clicked): Fixed using
+	the new PPD as-is (bug #213401).
+
+	* system-config-printer.glade: Fixed invisible_char in glade
+	file (bug #213261).
+
+	* system-config-printer.py (GUI.__init__): Find '.PPD' files as
+	well as '.ppd' files (bug #213224).
+	
+	* system-config-printer.py (GUI.checkDriverExists): New function
+	to check that the driver exists.
+	(GUI.on_btnNPApply_clicked): Use it (bug #212533).
+
+	* po/bn_IN.po, po/de.po, po/es.po, po/fr.po, po/gu.po, po/hi.po,
+	po/hr.po, po/it.po, po/ja.po, po/ko.po, po/nb.po, po/nl.po, po/pl.po,
+	po/pt_BR.po, po/pt.po, po/ru.po, po/sr@Latn.po, po/sr.po,
+	po/ta.po: Updated translations.
+
 2006-10-02  Tim Waugh  <twaugh@redhat.com>
 
 	* configure.in: Version 0.7.32.

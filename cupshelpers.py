@@ -209,6 +209,24 @@ class Printer:
         else:
             self.connection.setPrinterUsersAllowed(self.name, except_users)
 
+    def testsQueued(self):
+        """Returns a list of job IDs for test pages in the queue for this
+        printer."""
+        jobs = self.connection.getJobs ()
+        ret = []
+        for id, attrs in jobs.iteritems():
+            try:
+                uri = attrs['job-printer-uri']
+                uri = uri[uri.rindex ('/') + 1:]
+            except:
+                continue
+            if uri != self.name:
+                continue
+
+            if attrs.has_key ('job-name') and attrs['job-name'] == 'Test Page':
+                ret.append (id)
+        return ret
+
 def getPrinters(connection):
     printers_conf = PrintersConf(connection)
     printers = connection.getPrinters()
@@ -225,6 +243,26 @@ def getPrinters(connection):
         if printers_conf.device_uris.has_key(name):
             printer.device_uri = printers_conf.device_uris[name]
     return printers
+
+def parseDeviceID (id):
+    id_dict = {}
+    pieces = id.split(";")
+    for piece in pieces:
+        if piece.find(":") == -1:
+            continue
+        name, value = piece.split(":",1)
+        if name=="CMD":
+            value = value.split(',') 
+        id_dict[name] = value
+    if id_dict.has_key ("MANUFACTURER"):
+        id_dict.setdefault("MFG", id_dict["MANUFACTURER"])
+    if id_dict.has_key ("MODEL"):
+        id_dict.setdefault("MDL", id_dict["MODEL"])
+    if id_dict.has_key ("COMMAND SET"):
+        id_dict.setdefault("CMD", id_dict["COMMAND SET"])
+    for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
+        id_dict.setdefault(name, "")
+    return id_dict
 
 class Device:
 
@@ -245,16 +283,7 @@ class Device:
 
         #self.id = 'MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;SN:US05N1J00XLG;S:00808880800010032C1000000C2000000;P:0800,FL,B0;J:                    ;'
 
-        self.id_dict = {}
-        pieces = self.id.split(";")
-        for piece in pieces:
-            if piece.find (":") == -1: continue
-            name, value = piece.split(":",1)
-            if name=="CMD":
-                value = value.split(',') 
-            self.id_dict[name] = value
-        for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
-            self.id_dict.setdefault(name, "")
+        self.id_dict = parseDeviceID (self.id)
 
     def __cmp__(self, other):
         if self.is_class != other.is_class:
@@ -316,9 +345,16 @@ class PrintersConf:
             if len(words) == 0:
                 continue
             if words[0] == "Option":
-                self.set_options.setdefault(current_printer, []).append(words[1])
+                if len (words) >= 2:
+                    val = words[1]
+                else:
+                    val = ''
+                self.set_options.setdefault(current_printer, []).append(val)
             elif words[0] == "DeviceURI":
-                self.device_uris[current_printer] = words[1]
+                if len (words) >= 2:
+                    self.device_uris[current_printer] = words[1]
+                else:
+                    self.device_uris[current_printer] = ''
             else:
                 match = re.match(r"<(Default)?%s ([^>]+)>\s*\n" % tag, line) 
                 if match:
@@ -366,12 +402,15 @@ def iteratePPDOptions(ppd):
 
 def copyPPDOptions(ppd1, ppd2):
     for option in iteratePPDOptions(ppd1):
+        if option.keyword == "PageRegion":
+            continue
         new_option = ppd2.findOption(option.keyword)
         if new_option and option.ui==new_option.ui:
             value = option.defchoice
             for choice in new_option.choices:
                 if choice["choice"]==value:
                     ppd2.markOption(new_option.keyword, value)
+                    print "set %s = %s" % (new_option.keyword, value)
                     
             
 def main():

@@ -27,6 +27,7 @@ import cups
 from gtk_html2pango import HTML2PangoParser
 from cStringIO import StringIO
 from pprint import pprint
+from cupshelpers import parseDeviceID
 
 FOOMATIC_PPD_DIR = "/usr/share/foomatic/db/source/"
 
@@ -61,6 +62,22 @@ def _ppdMakeModelSplit (ppd_make_and_model, ppdname=None):
         f = model.find (" Foomatic/")
         if f != -1:
             model = model[:f]
+
+    # Gutenprint PPDs have NickNames that end:
+    # ... - CUPS+Gutenprint v5.0.0
+    gutenprint = model.find (" - CUPS+Gutenprint")
+    if gutenprint != -1:
+        model = model[:gutenprint]
+
+    # Gimp-Print PPDs have NickNames that end:
+    # ... - CUPS+Gimp-Print v4.2.7
+    gimpprint = model.find (" - CUPS+Gimp-Print")
+    if gimpprint != -1:
+        model = model[:gimpprint]
+
+    for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
+        if make == mfr.upper ():
+            make = mfr
 
     return (make, model)
 
@@ -475,18 +492,19 @@ class Foomatic:
             if dict.has_key("make") and dict.has_key("model"):
                 d = self._auto_make.setdefault(dict["make"], {})
                 d[dict["model"]] = printer.name
-            if dict.has_key("ieee1284"):
+            if dict.has_key("ieee1284") and dict["ieee1284"]:
                 self._auto_ieee1284[dict["ieee1284"]] = printer.name
-            if dict.has_key("description"):
+                # Also parse the ID.
+                id_dict = parseDeviceID (dict["ieee1284"])
+                if id_dict["MFG"] and id_dict["MDL"]:
+                    d = self._auto_make.setdefault(id_dict["MFG"], {})
+                    d[id_dict["MDL"]] = printer.name
+            if dict.has_key("description") and dict["description"]:
                 self._auto_description[dict["description"]] = printer.name
         
     def addCupsPPDs(self, ppds, connection):
         ppds = ppds.copy()
         self.connection = connection
-        # remove foomatic ppds
-        for name in ppds.keys():
-            if name.startswith("foomatic-db-ppds/"):
-                ppds.pop(name)
         self.ppds = ppds
         for name, ppd in self.ppds.iteritems():
             (make, model) = _ppdMakeModelSplit (ppd['ppd-make-and-model'],
@@ -511,6 +529,10 @@ class Foomatic:
             if ppd.has_key('ppd-device-id') and ppd['ppd-device-id']:
                 self._auto_ieee1284.setdefault(ppd['ppd-device-id'],
                                                name)
+                id_dict = parseDeviceID (ppd['ppd-device-id'])
+                if id_dict["MFG"] and id_dict["MDL"]:
+                    d = self._auto_make.setdefault(id_dict["MFG"], {})
+                    d[id_dict["MDL"]] = name                
 
 #     def clearCupsPPDs(self):
 #         for name, ppd in self.ppds.iteritems():
@@ -727,6 +749,9 @@ class Foomatic:
             if self.makes.has_key (mfg):
                 mdl = device.id_dict["MDL"]
                 mdls = self.makes[mfg]
+                # Handle bogus HPLIP Device IDs
+                if mdl.startswith (mfg + ' '):
+                    mdl = mdl[len (mfg) + 1:]
                 if mdls.has_key (mdl):
                     print "Please report a bug in Bugzilla against 'foomatic':"
                     print "  https://bugzilla.redhat.com/bugzilla"
@@ -758,7 +783,7 @@ class Foomatic:
 
             break
 
-        if best_mdl:
+        if best_mdl and best_matchlen > (len (mdl) / 2):
             print "Please report a bug in Bugzilla against 'foomatic':"
             print "  https://bugzilla.redhat.com/bugzilla"
             print "Include this complete message."
@@ -766,25 +791,74 @@ class Foomatic:
             print "      <manufacturer>%s</manufacturer>" % mfg
             print "      <model>%s</model>" % mdl
             print "      <description>%s</description>" % device.id_dict["DES"]
+            print "      <commandset>%s</commandset>" % device.id_dict["CMD"]
             print "URI: %s" % device.uri
             return best_mdl
 
+        print "No match for device ID:"
+        print "      <manufacturer>%s</manufacturer>" % mfg
+        print "      <model>%s</model>" % device.id_dict["MDL"]
+        print "      <description>%s</description>" % device.id_dict["DES"]
+        print "URI: %s" % device.uri
+
+        # Try command-set matching.
+        print "Command set: %s" % device.id_dict["CMD"]
+        id = self.getPrinterFromCommandSet (device.id_dict["CMD"])
+        if id:
+            print "Using %s" % id
+            print "Best match was %s (not close enough)" % best_mdl
+            return id
+        else:
+            print "No luck guessing from the command set."
+
+        if best_mdl:
+            print "Best match is %s, so trying that." % best_mdl
+            return best_mdl
         return None
 
-    def getPPD(self, make, model, description="", languages=[]):
+    def getPrinterFromCommandSet (self, commandsets=[]):
+        """Return printer ID or None, given a list of strings representing
+        the command sets supported."""
+        cmdsets = map (lambda x: x.lower (), commandsets)
+        printer = None
+        if (("postscript" in cmdsets) or ("postscript2" in cmdsets) or
+            ("postscript level 2 emulation" in cmdsets)):
+            printer = "Generic-PostScript_Printer"
+        elif (("pclxl" in cmdsets) or ("pcl-xl" in cmdsets) or
+              ("pcl6" in cmdsets) or ("pcl 6 emulation" in cmdsets)):
+            printer = "Generic-PCL_6_PCL_XL_Printer"
+        elif "pcl5e" in cmdsets:
+            printer = "Generic-PCL_5e_Printer"
+        elif "pcl5c" in cmdsets:
+            printer = "Generic-PCL_5c_Printer"
+        elif ("pcl5" in cmdsets) or ("pcl 5 emulation" in cmdsets):
+            printer = "Generic-PCL_5_Printer"
+        elif "pcl" in cmdsets:
+            printer = self.getPrinter("Generic-PCL_3_Printer")
+        elif (("escpl2" in cmdsets) or ("esc/p2" in cmdsets) or
+              ("escp2e" in cmdsets)):
+            printer = "Generic-ESC_P_Dot_Matrix_Printer"
+        return printer
+    
+    def getPPD(self, make, model, description="", commandsets=[]):
         # check for make, model
         if (self._auto_make.has_key(make) and
             self._auto_make[make].has_key(model)):
             printer = self.getPrinter(self._auto_make[make][model])
         # check description
-        elif self._auto_description.has_key(description):
+        elif description and self._auto_description.has_key(description):
             printer = self.getPrinter(self._auto_description[description])
-
-        # generic ppd
-        # XXX
         else:
+            # Match against command sets.
+            id = self.getPrinterFromCommandSet (commandsets)
+            if id:
+                printer = self.getPrinter (id)
+            else:
+                return None
+        try:
+            return printer.getPPD()
+        except:
             return None
-        return printer.getPPD()
 
     def getCupsPPD(self, printer, ppds):
         make_model = "%s %s" % (printer.make, printer.model)

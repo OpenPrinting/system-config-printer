@@ -276,6 +276,7 @@ class GUI:
         ppd_filter = gtk.FileFilter()
         ppd_filter.set_name(_("PostScript Printer Description (*.ppd[.gz])"))
         ppd_filter.add_pattern("*.ppd")
+        ppd_filter.add_pattern("*.PPD")
         ppd_filter.add_pattern("*.ppd.gz")
         
         self.filechooserPPD.add_filter(ppd_filter)
@@ -823,9 +824,10 @@ class GUI:
                                  not bool(self.conflicts))
 
         try: # Might not be a printer selected
-            self.btnPrintTestPage.set_sensitive (not bool (self.changed) and
-                                                 self.printer.enabled and
-                                                 not self.printer.rejecting)
+            if not self.test_button_cancels:
+                self.btnPrintTestPage.set_sensitive (not bool (self.changed) and
+                                                     self.printer.enabled and
+                                                     not self.printer.rejecting)
         except:
             pass
 
@@ -1002,6 +1004,7 @@ class GUI:
             self.show_IPP_Error(e, s)
             return True
         self.changed = set() # of options
+        self.populateList()
         return False
 
     def getPrinterSettings(self):
@@ -1028,6 +1031,16 @@ class GUI:
     # print test page
     
     def on_btnPrintTestPage_clicked(self, button):
+        if self.test_button_cancels:
+            jobs = self.printer.testsQueued ()
+            for job in jobs:
+                print "Cancelling job %s" % job
+                try:
+                    self.cups.cancelJob (job)
+                except cups.IPPError, (e, msg):
+                    self.show_IPP_Error(e, msg)
+            self.setTestButton (self.printer)
+            return
         try:
             job_id = self.cups.printTestPage(self.printer.name)
             self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
@@ -1035,6 +1048,7 @@ class GUI:
                                      _("Test page submitted as "
                                        "job %d") % job_id)
             self.InfoDialog.set_transient_for (self.MainWindow)
+            self.setTestButton (self.printer)
             self.InfoDialog.run ()
             self.InfoDialog.hide ()
         except cups.IPPError, (e, msg):
@@ -1163,8 +1177,7 @@ class GUI:
         else:
             self.lblPDefault.set_text(_("No default printer set."))
 
-        self.btnPrintTestPage.set_sensitive (printer.enabled and
-                                             not printer.rejecting)
+        self.setTestButton (printer)
 
         # Policy tab
         # ----------
@@ -1230,6 +1243,16 @@ class GUI:
             self.fillPrinterOptions(name, editable)
 
         self.setDataButtonState()
+
+    def setTestButton (self, printer):
+        if printer.testsQueued ():
+            self.test_button_cancels = True
+            self.btnPrintTestPage.set_label (_('Cancel Tests'))
+            self.btnPrintTestPage.set_sensitive (True)
+        else:
+            self.test_button_cancels = False
+            self.btnPrintTestPage.set_label (_('Print Test Page'))
+            self.setDataButtonState ()
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
@@ -1525,6 +1548,7 @@ class GUI:
 
     # change device
     def on_btnSelectDevice_clicked(self, button):
+        self.busy (self.MainWindow)
         self.loadFoomatic()
         self.dialog_mode = "device"
         self.initNewPrinterWindow()
@@ -1534,9 +1558,11 @@ class GUI:
         self.fillDeviceTab(self.printer.device_uri)
 
         self.initNewPrinterWindow()
+        self.ready (self.MainWindow)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
+        self.busy (self.MainWindow)
         self.loadFoomatic()
         self.dialog_mode = "ppd"
         self.initNewPrinterWindow()
@@ -1557,7 +1583,7 @@ class GUI:
             if not attr: attr = self.ppd.findAttr("NickName")
             if attr:
                 if attr.value.startswith(self.auto_make):
-                    self.auto_model = attr.value[len(self.auto_make):]
+                    self.auto_model = attr.value[len(self.auto_make):].strip ()
                 else:
                     try:
                         self.auto_model = attr.value.split(" ", 1)[1]
@@ -1572,7 +1598,7 @@ class GUI:
 
         self.fillMakeList()
         self.initNewPrinterWindow()
-        
+        self.ready (self.MainWindow)
 
     def initNewPrinterWindow(self):
         if self.dialog_mode in ("printer", "class"):
@@ -1742,7 +1768,7 @@ class GUI:
                                                       "scsi", "http"),
                               devices) 
 
-        self.devices.insert(0, cupshelpers.Device('',
+        self.devices.append(cupshelpers.Device('',
              **{'device-info' :_("Other")}))
         if current_uri:
             current.info += _(" (Current)")
@@ -2120,11 +2146,12 @@ class GUI:
                 self.tvNPMakes.get_selection().select_iter(iter)
                 path = model.get_path(iter)
                 self.tvNPMakes.scroll_to_cell(path, None,
-                                              True, 0.0, 0.0)
+                                              True, 0.5, 0.5)
                 found = True
 
         if not found:
             self.tvNPMakes.get_selection().select_path(0)
+            self.tvNPMakes.scroll_to_cell(0, None, True, 0.0, 0.0)
             
         self.on_tvNPMakes_cursor_changed(self.tvNPMakes)
             #tree = BuildTree(names, 3, 3)
@@ -2167,6 +2194,7 @@ class GUI:
                 selected = True
         if not selected:
             self.tvNPModels.get_selection().select_path(0)
+            self.tvNPModels.scroll_to_cell(0, None, True, 0.0, 0.0)
         self.on_tvNPModels_cursor_changed(self.tvNPModels)
         
     def fillDriverList(self, printer):
@@ -2182,6 +2210,7 @@ class GUI:
                 iter = model.append((driver + _(" (recommended)"),))
                 path = model.get_path(iter)
                 self.tvNPDrivers.get_selection().select_path(path)
+                self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.5)
                 found = True
             else:
                 model.append((driver, ))
@@ -2227,7 +2256,12 @@ class GUI:
                                    "and is included with the foomatic "
                                    "package.")
                     else:
-                        markup = _("This PPD is provided by CUPS.")
+                        try:
+                            fppd = self.foomatic.ppds[ppd]
+                            markup = fppd['ppd-make-and-model'] + '\n'
+                        except KeyError:
+                            markup += _("This PPD is provided by CUPS.")
+
                     self.lblNPPPDDescription.set_markup (markup)
         self.setNPButtons()
 
@@ -2297,6 +2331,39 @@ class GUI:
         else:
             name = self.printer.name
 
+        # Whether to check for missing drivers.
+        check = False
+        checkppd = None
+
+        DBErr_title = _('Database error')
+        DBErr_text = _("The '%s' driver cannot be used with printer '%s %s'.")
+
+        def get_PPD_but_handle_errors ():
+            try:
+                ppd = self.getNPPPD()
+            except RuntimeError, e:
+                model, iter = self.tvNPDrivers.get_selection().get_selected()
+                nr = model.get_path(iter)[0]
+                driver = self.NPDrivers[nr]
+                if driver.startswith ("gutenprint"):
+                    # This printer references some XML that is not installed
+                    # by default.  Point the user at the package they need
+                    # to install.
+                    DBErr = _("You will need to install the '%s' package "
+                              "in order to use this driver.") % \
+                              "gutenprint-foomatic"
+                else:
+                    DBErr = DBErr_text % (driver, self.NPMake, self.NPModel)
+
+                error_text = ('<span weight="bold" size="larger">' +
+                              DBErr_title + '</span>\n\n' + DBErr)
+                self.lblError.set_markup(error_text)
+                self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+                self.ErrorDialog.run()
+                self.ErrorDialog.hide()
+                return None
+            return ppd
+
         if self.dialog_mode=="class":
             members = self.getCurrentClassMembers(self.tvNCMembers)
             try:
@@ -2308,19 +2375,26 @@ class GUI:
                 return
         elif self.dialog_mode=="printer":
             uri = self.getDeviceURI()
-            ppd = self.getNPPPD()
+            ppd = get_PPD_but_handle_errors ()
+            if not ppd:
+                # Go back to previous page to re-select driver.
+                self.nextNPTab(-1)
+                return
         
             try:
                 self.passwd_retry = False # use cached Passwd
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
                     self.cups.addPrinter(name, ppdname=ppd,
                          device=uri, info=info, location=location)
+                    check = True
                 elif ppd is None: # raw queue
                     self.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
                 else:
                     self.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)
+                    check = True
+                    checkppd = ppd
 
                 self.cups.enablePrinter (name)
                 self.cups.acceptJobs (name)
@@ -2345,12 +2419,25 @@ class GUI:
                 self.show_IPP_Error(e, msg)
                 return
         elif self.dialog_mode == "ppd":
-            ppd = self.getNPPPD()
+            ppd = get_PPD_but_handle_errors ()
+            if not ppd:
+                # Go back to previous page to re-select driver.
+                self.nextNPTab(-1)
+                return
 
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
             raw = False
             if isinstance(ppd, str) or isinstance(ppd, unicode):
+                if self.rbtnChangePPDasIs.get_active():
+                    # To use the PPD as-is we need to prevent CUPS copying
+                    # the old options over.  Do this by setting it to a
+                    # raw queue (no PPD) first.
+                    try:
+                        self.passwd_retry = False # use cached Passwd
+                        self.cups.addPrinter(name, ppdname='raw')
+                    except cups.IPPError, (e, msg):
+                        self.show_IPP_Error(e, msg)
                 try:
                     self.passwd_retry = False # use cached Passwd
                     self.cups.addPrinter(name, ppdname=ppd)
@@ -2369,19 +2456,194 @@ class GUI:
                     else:
                         self.show_IPP_Error(e, msg)
                         return
-
-            if not raw:
-                # copy over old option settings
+            else:
+                # We have an actual PPD to upload, not just a name.
                 if not self.rbtnChangePPDasIs.get_active():
                     cupshelpers.copyPPDOptions(self.ppd, ppd)
+                else:
+                    # Just set the page size to A4 or Letter, that's all.
+                    # Use the same method CUPS uses.
+                    size = 'A4'
+                    letter = [ 'C', 'POSIX', 'en', 'en_US', 'en_CA', 'fr_CA' ]
+                    for each in letter:
+                        if self.language[0] == each:
+                            size = 'Letter'
+                    try:
+                        ppd.markOption ('PageSize', size)
+                        print "set PageSize = %s" % size
+                    except:
+                        print "Failed to set PageSize " \
+                              "(%s not available?)" % size
+
                 try:
                     self.passwd_retry = False # use cached Passwd
                     self.cups.addPrinter(name, ppd=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
 
+            if not raw:
+                check = True
+                checkppd = ppd
+
         self.NewPrinterWindow.hide()
         self.populateList()
+        if check:
+            self.checkDriverExists (name, ppd=checkppd)
+
+    def checkDriverExists(self, name, ppd=None):
+        """Check that the driver for an existing queue actually
+        exists, and prompt to install the appropriate package
+        if not.
+
+        ppd: cups.PPD object, if already created"""
+
+        # Is this queue on the local machine?  If not, we can't check
+        # anything at all.
+        server = cups.getServer ()
+        if not (server == 'localhost' or server == '127.0.0.1' or
+                server == '::1' or server[0] == '/'):
+            return
+
+        # Fetch the PPD if we haven't already.
+        if not ppd:
+            try:
+                filename = self.cups.getPPD(name)
+            except cups.IPPError, (e, msg):
+                if e == cups.IPP_NOT_FOUND:
+                    # This is a raw queue.  Nothing to check.
+                    return
+                else:
+                    self.show_IPP_Error(e, msg)
+                    return
+
+            ppd = cups.PPD(filename)
+            os.unlink(filename)
+
+        # How to check that something exists in a path:
+        def pathcheck (name, path="/usr/bin:/bin"):
+            if name[0] == '/':
+                if os.access (file, os.X_OK):
+                    print "%s: found" % file
+                    return file
+                else:
+                    print "%s: NOT found" % file
+                    return None
+            for component in path.split (':'):
+                file = component.rstrip (os.path.sep) + os.path.sep + name
+                if os.access (file, os.X_OK):
+                    print "%s: found" % file
+                    return file
+            print "%s: NOT found in %s" % (name,path)
+            return None
+
+        # Find a 'FoomaticRIPCommandLine' attribute.
+        exe = None
+        attr = ppd.findAttr ('FoomaticRIPCommandLine')
+        if attr:
+            # Foomatic RIP command line to check.
+            cmdline = attr.value.replace ('&&\n', '')
+            args = cmdline.split (' ')
+            argn = len (args)
+            argi = 1
+            exe = args[0]
+
+            exepath = pathcheck (exe)
+            if exepath:
+                # Main executable found.  But if it's 'gs', perhaps there is
+                # an IJS server we also need to check.
+                if os.path.basename (exepath) == 'gs':
+                    search = "-sIjsServer="
+                    while argi < argn:
+                        arg = args[argi]
+                        if arg == '|':
+                            break
+                        if arg.startswith (search):
+                            exe = arg[len (search):]
+                            # Strip out foomatic '%'-style place-holders
+                            p = exe.find ('%')
+                            if p != -1:
+                                exe = exe[:p]
+                            exepath = pathcheck (exe)
+                            break
+
+                        argi += 1
+
+            # If that was found, is there a pipeline?
+            while exepath:
+                pipe = 0
+                while argi < argn - 1:
+                    if args[argi] == '|':
+                        pipe = 1
+                        break
+                    argi += 1
+                if pipe == 0:
+                    break
+                argi += 1
+                exe = args[argi]
+                # Strip out foomatic '%'-style place-holders
+                p = exe.find ('%')
+                if p != -1:
+                    exe = exe[:p]
+                exepath = pathcheck (exe)
+
+        # Look for '*cupsFilter' lines in the PPD and check that the filters
+        # are installed.
+        (tmpfd, tmpfname) = tempfile.mkstemp ()
+        ppd.writeFd (tmpfd)
+        search = "*cupsFilter:"
+        for line in file (tmpfname).readlines ():
+            if line.startswith (search):
+                line = line[len (search):].strip ().strip ('"')
+                try:
+                    (mimetype, cost, exe) = line.split (' ')
+                except:
+                    continue
+
+                exepath = pathcheck (exe,
+                                     "/usr/lib/cups/filter:"
+                                     "/usr/lib64/cups/filter")
+
+        if exe and not exepath:
+            # We didn't find a necessary executable.  Complain.
+            pkgs = {
+                # Foomatic command line executables
+                'gs': 'ghostscript',
+                'perl': 'perl',
+                'foo2oak-wrapper': None,
+                'pnm2ppa': 'pnm2ppa',
+                # IJS servers (used by foomatic)
+                'hpijs': 'hpijs',
+                'ijsgutenprint.5.0': 'gutenprint',
+                # CUPS filters
+                'rastertogutenprint.5.0': 'gutenprint',
+                'commandtoepson': 'gimp-print-cups',
+                'commandtocanon': 'gimp-print-cups',
+                'rastertoprinter': 'gimp-print-cups',
+                }
+            try:
+                pkg = pkgs[exe]
+            except:
+                pkg = None
+
+            if pkg:
+                print "%s included in package %s" % (exe, pkg)
+                error_text = ('<span weight="bold" size="larger">' +
+                              _('Missing driver') + '</span>\n\n' +
+                              _("Printer '%s' requires the %s package but "
+                                "it is not currently installed.  Please "
+                                "install it before using this printer.") %
+                              (name, pkg))
+            else:
+                error_text = ('<span weight="bold" size="larger">' +
+                              _('Missing driver') + '</span>\n\n' +
+                              _("Printer '%s' requires the '%s' program but "
+                                "it is not currently installed.  Please "
+                                "install it before using this printer.") %
+                              (name, exe))
+            self.lblError.set_markup(error_text)
+            self.ErrorDialog.set_transient_for (self.MainWindow)
+            self.ErrorDialog.run()
+            self.ErrorDialog.hide()
 
     ##########################################################################
     ### Server settings

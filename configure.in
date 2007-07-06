@@ -1,4 +1,4 @@
-AC_INIT(system-config-printer, 0.7.32)
+AC_INIT(system-config-printer, 0.7.32.2)
 AC_CONFIG_SRCDIR(system-config-printer.py)
 AM_INIT_AUTOMAKE([dist-bzip2 subdir-objects 1.6])
 IT_PROG_INTLTOOL
@@ -7,10 +7,12 @@ PACKAGE="AC_PACKAGE_NAME"
 VERSION="AC_PACKAGE_VERSION"
 GETTEXT_PACKAGE="AC_PACKAGE_NAME"
 CATOBJEXT=".gmo"
+DATADIRNAME=share
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
 AC_SUBST(GETTEXT_PACKAGE)
 AC_SUBST(CATOBJEXT)
+AC_SUBST(DATADIRNAME)
 ALL_LINGUAS="ar bg bn_IN bn ca cs cy da de el en_GB es et fa fi fr gu hi hr hu hy id is it ja ka ko lo mk ml ms my nb nl nn no pa pl pt_BR pt ru sk sl sr@Latn sr sv ta tr uk vi zh_CN zh_TW"
 AC_CONFIG_FILES([
 Makefile
