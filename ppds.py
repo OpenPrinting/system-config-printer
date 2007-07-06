@@ -164,7 +164,6 @@ class PPDs:
                 to_remove.append (ppdname)
 
             for ppdname in to_remove:
-                print "Removing %s" % ppdname
                 del self.ppds[ppdname]
 
     def getMakes (self):
