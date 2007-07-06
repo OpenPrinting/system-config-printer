@@ -3111,7 +3111,8 @@ class GUI:
             except:
                 pkg = None
 
-            if pkg:
+            install = "/usr/bin/system-install-packages"
+            if pkg and os.access (install, os.X_OK):
                 print "%s included in package %s" % (exe, pkg)
                 install_text = ('<span weight="bold" size="larger">' +
                                 _('Install driver') + '</span>\n\n' +
@@ -3142,7 +3143,6 @@ class GUI:
                 pid = os.fork ()
                 if pid == 0:
                     # Child.
-                    install = "/usr/bin/system-install-packages"
                     try:
                         os.execv (install, [install, pkg])
                     except:
