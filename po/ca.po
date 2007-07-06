@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: printconf\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-09-29 17:59+0100\n"
+"POT-Creation-Date: 2006-10-02 16:56+0100\n"
 "PO-Revision-Date: 2006-08-28 15:48+0200\n"
 "Last-Translator: Xavier Conde Rueda <xavi.conde@gmail.com>\n"
 "Language-Team: Catalan <fedora@softcatala.net>\n"
@@ -94,37 +94,37 @@ msgstr "Comparteix"
 msgid "Comment"
 msgstr "Comentari"
 
-#: ../system-config-printer.py:354
+#: ../system-config-printer.py:359
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Configuració de la impressora - %s"
 
-#: ../system-config-printer.py:357
+#: ../system-config-printer.py:362
 #, python-format
 msgid "Connected to %s"
 msgstr "Connectat a %s"
 
-#: ../system-config-printer.py:359
+#: ../system-config-printer.py:364
 msgid "Not connected"
 msgstr "Sense connectar"
 
-#: ../system-config-printer.py:431
+#: ../system-config-printer.py:440
 msgid "Local Printers"
 msgstr "Impressores locals"
 
-#: ../system-config-printer.py:432
+#: ../system-config-printer.py:441
 msgid "Local Classes"
 msgstr "Classes locals"
 
-#: ../system-config-printer.py:433
+#: ../system-config-printer.py:442
 msgid "Remote Printers"
 msgstr "Impressores remotes"
 
-#: ../system-config-printer.py:434
+#: ../system-config-printer.py:443
 msgid "Remote Classes"
 msgstr "Classes remotes"
 
-#: ../system-config-printer.py:513
+#: ../system-config-printer.py:522
 #, python-format
 msgid ""
 "Connecting to Server:\n"
@@ -133,7 +133,7 @@ msgstr ""
 "S'està connectant al servidor:\n"
 "%s"
 
-#: ../system-config-printer.py:823
+#: ../system-config-printer.py:838
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -143,45 +143,83 @@ msgstr ""
 "Els canvis s'aplicaran després de\n"
 "resoldre aquests conflictes."
 
-#: ../system-config-printer.py:849
+#: ../system-config-printer.py:864 ../system-config-printer.py:880
 msgid "Not authorized"
 msgstr "Sense autoritzar"
 
-#: ../system-config-printer.py:850
+#: ../system-config-printer.py:865
 msgid "The password may be incorrect."
 msgstr "La contrasenya pot ser incorrecta."
 
-#: ../system-config-printer.py:853
+#: ../system-config-printer.py:868 ../system-config-printer.py:899
 msgid "CUPS server error"
 msgstr "Error del servidor CUPS"
 
-#: ../system-config-printer.py:854
+#: ../system-config-printer.py:869
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "S'ha produït un error durant l'operació del CUPS: «%s»."
 
-#: ../system-config-printer.py:878
+#: ../system-config-printer.py:881
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr ""
+
+#: ../system-config-printer.py:886
+msgid "Bad request"
+msgstr ""
+
+#: ../system-config-printer.py:888
+#, fuzzy
+msgid "Not found"
+msgstr "Sense connectar"
+
+#: ../system-config-printer.py:890
+msgid "Request timeout"
+msgstr ""
+
+#: ../system-config-printer.py:892
+msgid "Upgrade required"
+msgstr ""
+
+#: ../system-config-printer.py:894
+#, fuzzy
+msgid "Server error"
+msgstr "Error del servidor CUPS"
+
+#: ../system-config-printer.py:896
+#, python-format
+msgid "status %d"
+msgstr ""
+
+#: ../system-config-printer.py:900
+#, python-format
+msgid "There was an HTTP error: %s."
+msgstr ""
+
+#: ../system-config-printer.py:923
 msgid "This will delete this class!"
 msgstr "S'esborrarà la classe"
 
-#: ../system-config-printer.py:879
+#: ../system-config-printer.py:924
 msgid "Proceed anyway?"
 msgstr "Voleu continuar de totes maneres?"
 
-#: ../system-config-printer.py:989
+#: ../system-config-printer.py:1034
 msgid "Submitted"
 msgstr "Enviat"
 
-#: ../system-config-printer.py:990
+#: ../system-config-printer.py:1035
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "La pàgina de prova s'ha enviat com a tasca %d"
 
-#: ../system-config-printer.py:999
+#: ../system-config-printer.py:1044
 msgid "Not possible"
 msgstr "Impossible"
 
-#: ../system-config-printer.py:1000
+#: ../system-config-printer.py:1045
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -189,74 +227,74 @@ msgstr ""
 "El servidor remot no ha acceptat la tasca d'impressió. Probablement la "
 "impressora no s'està compartint."
 
-#: ../system-config-printer.py:1113
+#: ../system-config-printer.py:1159
 msgid "This is the default printer"
 msgstr "Aquesta és la impressora predeterminada"
 
-#: ../system-config-printer.py:1115
+#: ../system-config-printer.py:1161
 #, python-format
 msgid "Default printer is %s"
 msgstr "La impressora predeterminada és %s"
 
-#: ../system-config-printer.py:1118
+#: ../system-config-printer.py:1164
 msgid "No default printer set."
 msgstr "No s'ha establert la impressora predeterminada."
 
-#: ../system-config-printer.py:1423
+#: ../system-config-printer.py:1469
 #, python-format
 msgid "Really delete %s %s?"
 msgstr "Voleu suprimir %s %s?"
 
 # Mozilla 1.3->printerInput.label
-#: ../system-config-printer.py:1465 ../system-config-printer.glade.h:101
+#: ../system-config-printer.py:1511 ../system-config-printer.glade.h:101
 msgid "New Printer"
 msgstr "Nova impressora"
 
-#: ../system-config-printer.py:1474 ../system-config-printer.glade.h:100
+#: ../system-config-printer.py:1520 ../system-config-printer.glade.h:100
 msgid "New Class"
 msgstr "Nova classe"
 
-#: ../system-config-printer.py:1485
+#: ../system-config-printer.py:1531
 msgid "Change Device URI"
 msgstr "Canvia la URI del dispositiu"
 
-#: ../system-config-printer.py:1497
+#: ../system-config-printer.py:1543
 msgid "Change Driver"
 msgstr "Canvia el controlador"
 
-#: ../system-config-printer.py:1700
+#: ../system-config-printer.py:1746
 msgid "Other"
 msgstr "Altre"
 
-#: ../system-config-printer.py:1702
+#: ../system-config-printer.py:1748
 msgid " (Current)"
 msgstr " (Actual)"
 
-#: ../system-config-printer.py:1887
+#: ../system-config-printer.py:1933
 msgid "Verified"
 msgstr "Verificat"
 
-#: ../system-config-printer.py:1888
+#: ../system-config-printer.py:1934
 msgid "This print share is accessible."
 msgstr "Aquesta impressora compartida és accessible."
 
-#: ../system-config-printer.py:1895
+#: ../system-config-printer.py:1941
 msgid "Inaccessible"
 msgstr "Inaccessible"
 
-#: ../system-config-printer.py:1896
+#: ../system-config-printer.py:1942
 msgid "This print share is not accessible."
 msgstr "Aquesta impressora compartida no és accessible."
 
-#: ../system-config-printer.py:2136
+#: ../system-config-printer.py:2182
 msgid " (recommended)"
 msgstr " (recomanat)"
 
-#: ../system-config-printer.py:2177
+#: ../system-config-printer.py:2223
 msgid "This PPD is generated by foomatic."
 msgstr "Aquest PPD ha sigut generat pel foomatic."
 
-#: ../system-config-printer.py:2180
+#: ../system-config-printer.py:2226
 msgid ""
 "This PPD is provided by the manufacturer and is included with the foomatic "
 "package."
@@ -264,17 +302,17 @@ msgstr ""
 "Aquest PPD ha sigut proporcionat pel fabricant i s'inclou amb el paquet del "
 "foomatic."
 
-#: ../system-config-printer.py:2184
+#: ../system-config-printer.py:2230
 msgid "This PPD is provided by CUPS."
 msgstr "El CUPS proporciona aquest PPD."
 
 #. XXX
-#: ../system-config-printer.py:2225
+#: ../system-config-printer.py:2271
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "Es crearà una nova classe «%s»."
 
-#: ../system-config-printer.py:2240
+#: ../system-config-printer.py:2286
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
