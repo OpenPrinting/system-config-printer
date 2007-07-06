@@ -488,7 +488,18 @@ class GUI:
     def maySelectItem(self, selection):
         result = self.mainlist.get_value(
             self.mainlist.get_iter(selection), 1)
-        return result[0] != "_"
+        if result[0] == "_":
+            return False
+        if self.changed:
+            response = self.ApplyDialog.run()
+            self.ApplyDialog.hide()
+            err = False
+            if response == gtk.RESPONSE_APPLY:
+                err = self.apply()
+            self.changed = set() # of options
+            if err or response == gtk.RESPONSE_CANCEL:
+                return False
+        return True
 
     def getSelectedItem(self):
         model, iter = self.tvMainList.get_selection().get_selected()
@@ -1177,17 +1188,6 @@ class GUI:
     # select Item
 
     def on_tvMainList_cursor_changed(self, list):
-        if self.changed:
-            response = self.ApplyDialog.run()
-            self.ApplyDialog.hide()
-            err = False
-            if response == gtk.RESPONSE_APPLY:
-                err = self.apply()
-            if err or response == gtk.RESPONSE_CANCEL:
-                self.tvMainList.get_selection().select_iter(
-                    self.mainListSelected)
-                return
-
         name, type = self.getSelectedItem()
         model, self.mainListSelected = self.tvMainList.get_selection().get_selected()
         item_selected = True
@@ -1227,12 +1227,28 @@ class GUI:
         try:
             self.ppd = printer.getPPD()
         except cups.IPPError, (e, m):
+            # Some IPP error other than IPP_NOT_FOUND.
             self.show_IPP_Error(e, m)
+            # Treat it as a raw queue.
             self.ppd = False
+        except RuntimeError:
+            # The underlying cupsGetPPD2() function returned NULL without
+            # setting an IPP error, so it'll be something like a failed
+            # connection.
+            self.lblError.set_markup('<span weight="bold" size="larger">' +
+                                     _("Error") + '</span>\n\n' +
+                                     _("There was a problem connecting to "
+                                       "the CUPS server."))
+            self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+            self.ErrorDialog.run()
+            self.ErrorDialog.hide()
+            sys.exit (1)
 
         for widget in (self.entPDescription, self.entPLocation,
-                       self.entPDevice, self.btnSelectDevice,
-                       self.btnChangePPD,
+                       self.entPDevice):
+            widget.set_editable(editable)
+
+        for widget in (self.btnSelectDevice, self.btnChangePPD,
                        self.chkPEnabled, self.chkPAccepting, self.chkPShared,
                        self.cmbPStartBanner, self.cmbPEndBanner,
                        self.cmbPErrorPolicy, self.cmbPOperationPolicy,
@@ -2807,7 +2823,7 @@ class GUI:
                 'hpijs': 'hpijs',
                 'ijsgutenprint.5.0': 'gutenprint',
                 # CUPS filters
-                'rastertogutenprint.5.0': 'gutenprint',
+                'rastertogutenprint.5.0': 'gutenprint-cups',
                 'commandtoepson': 'gimp-print-cups',
                 'commandtocanon': 'gimp-print-cups',
                 'rastertoprinter': 'gimp-print-cups',

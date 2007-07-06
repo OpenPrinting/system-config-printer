@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-02-09 15:58+0000\n"
+"POT-Creation-Date: 2007-03-13 14:04+0000\n"
 "PO-Revision-Date: 2007-02-05 14:52+1000\n"
 "Last-Translator: Noriko Mizumoto <noriko@redhat.com>\n"
 "Language-Team: Japanese <fedora-trans-ja@redhat.com>\n"
@@ -107,7 +107,7 @@ msgstr "プリンタ設定 - %s"
 msgid "Connected to %s"
 msgstr "%s に接続"
 
-#: ../system-config-printer.py:381 ../system-config-printer.py:948
+#: ../system-config-printer.py:381 ../system-config-printer.py:959
 msgid "Not connected"
 msgstr "未接続"
 
@@ -127,7 +127,7 @@ msgstr "リモートプリンタ"
 msgid "Remote Classes"
 msgstr "リモートクラス"
 
-#: ../system-config-printer.py:546
+#: ../system-config-printer.py:557
 #, fuzzy, python-format
 msgid ""
 "Connecting to server:\n"
@@ -136,15 +136,15 @@ msgstr ""
 "サーバーに接続中:\n"
 "%s"
 
-#: ../system-config-printer.py:877 ../system-config-printer.glade.h:95
+#: ../system-config-printer.py:888 ../system-config-printer.glade.h:95
 msgid "Installable Options"
 msgstr "インストールできるオプション"
 
-#: ../system-config-printer.py:878 ../system-config-printer.glade.h:118
+#: ../system-config-printer.py:889 ../system-config-printer.glade.h:118
 msgid "Printer Options"
 msgstr "プリンターオプション"
 
-#: ../system-config-printer.py:887
+#: ../system-config-printer.py:898
 #, fuzzy
 msgid ""
 "There are conflicting options.\n"
@@ -155,24 +155,24 @@ msgstr ""
 "あります。コンフリクトが解決され\n"
 "ないと変更は適用できません。"
 
-#: ../system-config-printer.py:916 ../system-config-printer.py:932
+#: ../system-config-printer.py:927 ../system-config-printer.py:943
 msgid "Not authorized"
 msgstr "認証されていません"
 
-#: ../system-config-printer.py:917
+#: ../system-config-printer.py:928
 msgid "The password may be incorrect."
 msgstr "パスワードが正しくない可能性があります。"
 
-#: ../system-config-printer.py:920 ../system-config-printer.py:953
+#: ../system-config-printer.py:931 ../system-config-printer.py:964
 msgid "CUPS server error"
 msgstr "CUPS サーバーエラー"
 
-#: ../system-config-printer.py:921
+#: ../system-config-printer.py:932
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS 操作中にエラーが発生しました:  '%s'."
 
-#: ../system-config-printer.py:933
+#: ../system-config-printer.py:944
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
@@ -180,58 +180,58 @@ msgstr ""
 "パスワードが正しくないか、サーバーがリモート管理を拒否するよう設定されている"
 "可能性があります。"
 
-#: ../system-config-printer.py:938
+#: ../system-config-printer.py:949
 msgid "Bad request"
 msgstr "不正な要求です"
 
-#: ../system-config-printer.py:940
+#: ../system-config-printer.py:951
 msgid "Not found"
 msgstr "見つかりませんでした"
 
-#: ../system-config-printer.py:942
+#: ../system-config-printer.py:953
 msgid "Request timeout"
 msgstr "要求がタイムアウトです"
 
-#: ../system-config-printer.py:944
+#: ../system-config-printer.py:955
 msgid "Upgrade required"
 msgstr "アップグレードが必要です"
 
-#: ../system-config-printer.py:946
+#: ../system-config-printer.py:957
 msgid "Server error"
 msgstr "サーバーのエラーです"
 
-#: ../system-config-printer.py:950
+#: ../system-config-printer.py:961
 #, python-format
 msgid "status %d"
 msgstr "%d の状態"
 
-#: ../system-config-printer.py:954
+#: ../system-config-printer.py:965
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "HTTP エラーが発生しました: %s"
 
-#: ../system-config-printer.py:977
+#: ../system-config-printer.py:988
 msgid "This will delete this class!"
 msgstr "このクラスを削除します!"
 
-#: ../system-config-printer.py:978
+#: ../system-config-printer.py:989
 msgid "Proceed anyway?"
 msgstr "続けますか?"
 
-#: ../system-config-printer.py:1155
+#: ../system-config-printer.py:1166
 msgid "Submitted"
 msgstr "受付られました"
 
-#: ../system-config-printer.py:1156
+#: ../system-config-printer.py:1167
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "ジョブ %d としてテストページが受け入れられました"
 
-#: ../system-config-printer.py:1166
+#: ../system-config-printer.py:1177
 msgid "Not possible"
 msgstr "不可能です"
 
-#: ../system-config-printer.py:1167
+#: ../system-config-printer.py:1178
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -239,93 +239,102 @@ msgstr ""
 "リモートサーバーはプリンタージョブを受け入れませんでした。多分プリンターが共"
 "有されていないからでしょう。"
 
-#: ../system-config-printer.py:1288
+#: ../system-config-printer.py:1239
+msgid "Error"
+msgstr ""
+
+#: ../system-config-printer.py:1240
+#, fuzzy
+msgid "There was a problem connecting to the CUPS server."
+msgstr "CUPS 操作中にエラーが発生しました:  '%s'."
+
+#: ../system-config-printer.py:1304
 msgid "This is the default printer"
 msgstr "これはデフォルトのプリンターです"
 
-#: ../system-config-printer.py:1290
+#: ../system-config-printer.py:1306
 #, python-format
 msgid "Default printer is %s"
 msgstr "デフォルトのプリンターは %s"
 
-#: ../system-config-printer.py:1293
+#: ../system-config-printer.py:1309
 msgid "No default printer set."
 msgstr "デフォルトのプリンター設定がありません"
 
-#: ../system-config-printer.py:1368
+#: ../system-config-printer.py:1384
 msgid "Cancel Tests"
 msgstr "テストの取り消し"
 
-#: ../system-config-printer.py:1372 ../system-config-printer.glade.h:116
+#: ../system-config-printer.py:1388 ../system-config-printer.glade.h:116
 msgid "Print Test Page"
 msgstr "テストページの印刷"
 
-#: ../system-config-printer.py:1622
+#: ../system-config-printer.py:1638
 #, fuzzy, python-format
 msgid "Really delete printer %s?"
 msgstr "本当に %s %s を削除しますか?"
 
-#: ../system-config-printer.py:1624
+#: ../system-config-printer.py:1640
 #, fuzzy, python-format
 msgid "Really delete class %s?"
 msgstr "本当に %s %s を削除しますか?"
 
-#: ../system-config-printer.py:1672 ../system-config-printer.glade.h:106
+#: ../system-config-printer.py:1688 ../system-config-printer.glade.h:106
 msgid "New Printer"
 msgstr "新規プリンタ"
 
-#: ../system-config-printer.py:1681 ../system-config-printer.glade.h:105
+#: ../system-config-printer.py:1697 ../system-config-printer.glade.h:105
 msgid "New Class"
 msgstr "新規クラス"
 
-#: ../system-config-printer.py:1693
+#: ../system-config-printer.py:1709
 msgid "Change Device URI"
 msgstr "デバイス URI の変更"
 
-#: ../system-config-printer.py:1707
+#: ../system-config-printer.py:1723
 msgid "Change Driver"
 msgstr "デバイスの変更"
 
-#: ../system-config-printer.py:1910
+#: ../system-config-printer.py:1926
 msgid "Other"
 msgstr "その他"
 
-#: ../system-config-printer.py:1912
+#: ../system-config-printer.py:1928
 msgid " (Current)"
 msgstr " (現在の設定)"
 
-#: ../system-config-printer.py:2097
+#: ../system-config-printer.py:2113
 msgid "Verified"
 msgstr "確認済み"
 
-#: ../system-config-printer.py:2098
+#: ../system-config-printer.py:2114
 msgid "This print share is accessible."
 msgstr "このプリント共有はアクセス可能です。"
 
-#: ../system-config-printer.py:2105
+#: ../system-config-printer.py:2121
 msgid "Inaccessible"
 msgstr "アクセス不能"
 
-#: ../system-config-printer.py:2106
+#: ../system-config-printer.py:2122
 msgid "This print share is not accessible."
 msgstr "このプリント共有はアクセスできません。"
 
-#: ../system-config-printer.py:2126
+#: ../system-config-printer.py:2142
 msgid "A printer connected to the parallel port."
 msgstr "パラレルポートに接続されたプリンタ"
 
-#: ../system-config-printer.py:2128
+#: ../system-config-printer.py:2144
 msgid "A printer connected to a USB port."
 msgstr "USB ポートに接続されたプリンタ"
 
-#: ../system-config-printer.py:2130
+#: ../system-config-printer.py:2146
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr ""
 "HPLIP ソフトウェアドライブのプリンタ、又はマルチ機能デバイスの プリンタ機能"
 
-#: ../system-config-printer.py:2133
+#: ../system-config-printer.py:2149
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -333,36 +342,36 @@ msgstr ""
 "HPLIP ソフトウェアドライブのファックスマシン、又はマルチ機能デバイスの ファッ"
 "クス機能"
 
-#: ../system-config-printer.py:2136
+#: ../system-config-printer.py:2152
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL (Hardware Abstraction Layer) で検出されたローカルプリンタ"
 
-#: ../system-config-printer.py:2379
+#: ../system-config-printer.py:2395
 msgid " (recommended)"
 msgstr " (推奨)"
 
-#: ../system-config-printer.py:2425
+#: ../system-config-printer.py:2441
 msgid "This PPD is generated by foomatic."
 msgstr "この PPD は foomatic で作成されています。"
 
-#: ../system-config-printer.py:2428
+#: ../system-config-printer.py:2444
 msgid ""
 "This PPD is provided by the manufacturer and is included with the foomatic "
 "package."
 msgstr ""
 "この PPD は製造メーカーから提供されており foomatic パッケージを含んでいます。"
 
-#: ../system-config-printer.py:2436
+#: ../system-config-printer.py:2452
 msgid "This PPD is provided by CUPS."
 msgstr "この PPD は CUPS から提供されています。"
 
 #. XXX
-#: ../system-config-printer.py:2478
+#: ../system-config-printer.py:2494
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "新規クラス %s を作成しようとしています。"
 
-#: ../system-config-printer.py:2492
+#: ../system-config-printer.py:2508
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -372,11 +381,11 @@ msgstr ""
 "うとしています。\n"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:2516
+#: ../system-config-printer.py:2532
 msgid "Database error"
 msgstr "データベースエラー"
 
-#: ../system-config-printer.py:2517
+#: ../system-config-printer.py:2533
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' ドライバはプリンタ '%s %s' で使用できません。"
@@ -384,27 +393,27 @@ msgstr "'%s' ドライバはプリンタ '%s %s' で使用できません。"
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:2527
+#: ../system-config-printer.py:2543
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
 "このドライバを使うには '%s' パッケージをインストールする必要があります。"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:2534
+#: ../system-config-printer.py:2550
 #, fuzzy
 msgid "PPD error"
 msgstr "データベースエラー"
 
-#: ../system-config-printer.py:2536
+#: ../system-config-printer.py:2552
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr ""
 
-#: ../system-config-printer.py:2823 ../system-config-printer.py:2830
+#: ../system-config-printer.py:2839 ../system-config-printer.py:2846
 msgid "Missing driver"
 msgstr "見つからないドライバ"
 
-#: ../system-config-printer.py:2824
+#: ../system-config-printer.py:2840
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
@@ -413,7 +422,7 @@ msgstr ""
 "プリンタ '%s' には %s パッケージが必要ですが、現在インストールされていませ"
 "ん。このプリンタを使用する前にインストールを行ってください。"
 
-#: ../system-config-printer.py:2831
+#: ../system-config-printer.py:2847
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-02-09 15:58+0000\n"
+"POT-Creation-Date: 2007-03-13 14:04+0000\n"
 "PO-Revision-Date: 2007-01-17 10:12+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -100,7 +100,7 @@ msgstr "프린터 설정 - %s"
 msgid "Connected to %s"
 msgstr "%s에 접속됨"
 
-#: ../system-config-printer.py:381 ../system-config-printer.py:948
+#: ../system-config-printer.py:381 ../system-config-printer.py:959
 msgid "Not connected"
 msgstr "접속되지 않음"
 
@@ -120,7 +120,7 @@ msgstr "원격 프린터"
 msgid "Remote Classes"
 msgstr "원격 클래스"
 
-#: ../system-config-printer.py:546
+#: ../system-config-printer.py:557
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -129,15 +129,15 @@ msgstr ""
 "서버에 접속 중입니다:\n"
 "%s"
 
-#: ../system-config-printer.py:877 ../system-config-printer.glade.h:95
+#: ../system-config-printer.py:888 ../system-config-printer.glade.h:95
 msgid "Installable Options"
 msgstr "설치 가능한 옵션 "
 
-#: ../system-config-printer.py:878 ../system-config-printer.glade.h:118
+#: ../system-config-printer.py:889 ../system-config-printer.glade.h:118
 msgid "Printer Options"
 msgstr "프린터 옵션"
 
-#: ../system-config-printer.py:887
+#: ../system-config-printer.py:898
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -147,208 +147,217 @@ msgstr ""
 "충돌이 해결된 후에\n"
 "변경할 수 있습니다."
 
-#: ../system-config-printer.py:916 ../system-config-printer.py:932
+#: ../system-config-printer.py:927 ../system-config-printer.py:943
 msgid "Not authorized"
 msgstr "권한이 없습니다"
 
-#: ../system-config-printer.py:917
+#: ../system-config-printer.py:928
 msgid "The password may be incorrect."
 msgstr "패스워드가 일치하지 않습니다."
 
-#: ../system-config-printer.py:920 ../system-config-printer.py:953
+#: ../system-config-printer.py:931 ../system-config-printer.py:964
 msgid "CUPS server error"
 msgstr "CUPS 서버 오류 "
 
-#: ../system-config-printer.py:921
+#: ../system-config-printer.py:932
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS 가동 도중 오류가 발생했습니다:'%s'."
 
-#: ../system-config-printer.py:933
+#: ../system-config-printer.py:944
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
 msgstr ""
 "암호가 틀리거나 또는 서버에서 원격 관리 거부가 설정되었을 수 도 있습니다."
 
-#: ../system-config-printer.py:938
+#: ../system-config-printer.py:949
 msgid "Bad request"
 msgstr "요청 실패"
 
-#: ../system-config-printer.py:940
+#: ../system-config-printer.py:951
 msgid "Not found"
 msgstr "찾을 수 없음"
 
-#: ../system-config-printer.py:942
+#: ../system-config-printer.py:953
 msgid "Request timeout"
 msgstr "요청한 시간이 초과됨"
 
-#: ../system-config-printer.py:944
+#: ../system-config-printer.py:955
 msgid "Upgrade required"
 msgstr "업그레이드 필요"
 
-#: ../system-config-printer.py:946
+#: ../system-config-printer.py:957
 msgid "Server error"
 msgstr "서버 오류"
 
-#: ../system-config-printer.py:950
+#: ../system-config-printer.py:961
 #, python-format
 msgid "status %d"
 msgstr "상태 %d"
 
-#: ../system-config-printer.py:954
+#: ../system-config-printer.py:965
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "HTTP 오류가 발생했습니다: %s."
 
-#: ../system-config-printer.py:977
+#: ../system-config-printer.py:988
 msgid "This will delete this class!"
 msgstr "이는 클래스를 삭제하게 됩니다!"
 
-#: ../system-config-printer.py:978
+#: ../system-config-printer.py:989
 msgid "Proceed anyway?"
 msgstr "계속 진행하시겠습니까?"
 
-#: ../system-config-printer.py:1155
+#: ../system-config-printer.py:1166
 msgid "Submitted"
 msgstr "입력됨"
 
-#: ../system-config-printer.py:1156
+#: ../system-config-printer.py:1167
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "테스트 페이지는 %d 작업으로 입력되었습니다"
 
-#: ../system-config-printer.py:1166
+#: ../system-config-printer.py:1177
 msgid "Not possible"
 msgstr "불가능"
 
-#: ../system-config-printer.py:1167
+#: ../system-config-printer.py:1178
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr ""
 "프린터가 공유되지 않아 원격서버를 통해 프린트 작업을 실행할 수 없습니다."
 
-#: ../system-config-printer.py:1288
+#: ../system-config-printer.py:1239
+msgid "Error"
+msgstr ""
+
+#: ../system-config-printer.py:1240
+#, fuzzy
+msgid "There was a problem connecting to the CUPS server."
+msgstr "CUPS 가동 도중 오류가 발생했습니다:'%s'."
+
+#: ../system-config-printer.py:1304
 msgid "This is the default printer"
 msgstr "디폴트 프린터입니다"
 
-#: ../system-config-printer.py:1290
+#: ../system-config-printer.py:1306
 #, python-format
 msgid "Default printer is %s"
 msgstr "디폴트 프린터는 %s입니다"
 
-#: ../system-config-printer.py:1293
+#: ../system-config-printer.py:1309
 msgid "No default printer set."
 msgstr "디폴트 프린터 세트 없음"
 
-#: ../system-config-printer.py:1368
+#: ../system-config-printer.py:1384
 msgid "Cancel Tests"
 msgstr "테스트 취소"
 
-#: ../system-config-printer.py:1372 ../system-config-printer.glade.h:116
+#: ../system-config-printer.py:1388 ../system-config-printer.glade.h:116
 msgid "Print Test Page"
 msgstr "테스트 페이지 프린트하기"
 
-#: ../system-config-printer.py:1622
+#: ../system-config-printer.py:1638
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "정말로 프린터 %s(을)를 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:1624
+#: ../system-config-printer.py:1640
 #, python-format
 msgid "Really delete class %s?"
 msgstr "정말로 클래스 %s(을)를 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:1672 ../system-config-printer.glade.h:106
+#: ../system-config-printer.py:1688 ../system-config-printer.glade.h:106
 msgid "New Printer"
 msgstr "새 프린터"
 
-#: ../system-config-printer.py:1681 ../system-config-printer.glade.h:105
+#: ../system-config-printer.py:1697 ../system-config-printer.glade.h:105
 msgid "New Class"
 msgstr "새 클라스"
 
-#: ../system-config-printer.py:1693
+#: ../system-config-printer.py:1709
 msgid "Change Device URI"
 msgstr "URI 장치 변경"
 
-#: ../system-config-printer.py:1707
+#: ../system-config-printer.py:1723
 msgid "Change Driver"
 msgstr "드라이버 변경"
 
-#: ../system-config-printer.py:1910
+#: ../system-config-printer.py:1926
 msgid "Other"
 msgstr "기타"
 
-#: ../system-config-printer.py:1912
+#: ../system-config-printer.py:1928
 msgid " (Current)"
 msgstr " (현재)"
 
-#: ../system-config-printer.py:2097
+#: ../system-config-printer.py:2113
 msgid "Verified"
 msgstr "검증됨"
 
-#: ../system-config-printer.py:2098
+#: ../system-config-printer.py:2114
 msgid "This print share is accessible."
 msgstr "프린터 공유를 액세스할 수 있습니다"
 
-#: ../system-config-printer.py:2105
+#: ../system-config-printer.py:2121
 msgid "Inaccessible"
 msgstr "액세스할 수 없음"
 
-#: ../system-config-printer.py:2106
+#: ../system-config-printer.py:2122
 msgid "This print share is not accessible."
 msgstr "프린터 공유를 액세스할 수 없습니다"
 
-#: ../system-config-printer.py:2126
+#: ../system-config-printer.py:2142
 msgid "A printer connected to the parallel port."
 msgstr "프린터가 병렬 포트에 연결되어 있습니다."
 
-#: ../system-config-printer.py:2128
+#: ../system-config-printer.py:2144
 msgid "A printer connected to a USB port."
 msgstr "프린터가 USB 포트에 연결되어 있습니다."
 
-#: ../system-config-printer.py:2130
+#: ../system-config-printer.py:2146
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "프린터를 다루는 HPLIP 소프트웨어, 또는 다중 기능 장치의 프린터 기능."
 
-#: ../system-config-printer.py:2133
+#: ../system-config-printer.py:2149
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "팩스기를 다루는 HPLIP 소프트웨어, 또는 다중 기능 장치의 팩스 기능."
 
-#: ../system-config-printer.py:2136
+#: ../system-config-printer.py:2152
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL (Hardware Abstraction Layer)에 의해 검색된 로컬 프린터."
 
-#: ../system-config-printer.py:2379
+#: ../system-config-printer.py:2395
 msgid " (recommended)"
 msgstr "(권장사항)"
 
-#: ../system-config-printer.py:2425
+#: ../system-config-printer.py:2441
 msgid "This PPD is generated by foomatic."
 msgstr "이 PPD는 foomatic에 의하여 생성됩니다"
 
-#: ../system-config-printer.py:2428
+#: ../system-config-printer.py:2444
 msgid ""
 "This PPD is provided by the manufacturer and is included with the foomatic "
 "package."
 msgstr "이 PPD는 제조업자에 의하여 제공되며 foomatic 팩키지가 들어있습니다."
 
-#: ../system-config-printer.py:2436
+#: ../system-config-printer.py:2452
 msgid "This PPD is provided by CUPS."
 msgstr "이 PPD는 CUPS에 의하여 제공됩니다."
 
 #. XXX
-#: ../system-config-printer.py:2478
+#: ../system-config-printer.py:2494
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "새 클래스 %s를 만듭니다."
 
-#: ../system-config-printer.py:2492
+#: ../system-config-printer.py:2508
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -358,11 +367,11 @@ msgstr ""
 "에 만듭니다%s.\n"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:2516
+#: ../system-config-printer.py:2532
 msgid "Database error"
 msgstr "데이터베이스 오류"
 
-#: ../system-config-printer.py:2517
+#: ../system-config-printer.py:2533
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' 드라이버는 프린터 '%s %s'와 함께 사용할 수 없습니다."
@@ -370,25 +379,25 @@ msgstr "'%s' 드라이버는 프린터 '%s %s'와 함께 사용할 수 없습니
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:2527
+#: ../system-config-printer.py:2543
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "이러한 드라이버를 사용하기 위해 '%s' 패키지를 설치하셔야 합니다."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:2534
+#: ../system-config-printer.py:2550
 msgid "PPD error"
 msgstr "PPD 오류"
 
-#: ../system-config-printer.py:2536
+#: ../system-config-printer.py:2552
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "다음과 같은 이유로 PPD 파일 읽기를 실패했습니다:"
 
-#: ../system-config-printer.py:2823 ../system-config-printer.py:2830
+#: ../system-config-printer.py:2839 ../system-config-printer.py:2846
 msgid "Missing driver"
 msgstr "드라이버가 없음"
 
-#: ../system-config-printer.py:2824
+#: ../system-config-printer.py:2840
 #, python-format
 msgid ""
 "Printer '%s' requires the %s package but it is not currently installed.  "
@@ -397,7 +406,7 @@ msgstr ""
 "프린터 '%s'는 %s 패키지가 필요하나 이는 현재 설치되어 있지 않습니다.  프린터"
 "를 사용하시기 전에 패키지를 설치하시기 바랍니다."
 
-#: ../system-config-printer.py:2831
+#: ../system-config-printer.py:2847
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "

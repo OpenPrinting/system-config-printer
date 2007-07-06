@@ -157,8 +157,11 @@ class Printer:
                 filename = self.connection.getPPD(self.name)
                 self._ppd = cups.PPD(filename)
                 os.unlink(filename)
-            except cups.IPPError:
-                self._ppd = False
+            except cups.IPPError, (e, m):
+                if e == cups.IPP_NOT_FOUND:
+                    self._ppd = False
+                else:
+                    raise
         return self._ppd
 
     def setOption(self, name, value):
@@ -215,8 +218,12 @@ class Printer:
     def testsQueued(self):
         """Returns a list of job IDs for test pages in the queue for this
         printer."""
-        jobs = self.connection.getJobs ()
         ret = []
+        try:
+            jobs = self.connection.getJobs ()
+        except cups.IPPError:
+            return ret
+
         for id, attrs in jobs.iteritems():
             try:
                 uri = attrs['job-printer-uri']

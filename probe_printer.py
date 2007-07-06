@@ -1,7 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
+## Copyright (C) 2007 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -32,7 +33,13 @@ class LpdServer:
             host = self.hostname
         
         s = None
-        for res in socket.getaddrinfo(host, port, socket.AF_UNSPEC, socket.SOCK_STREAM):
+        try:
+            ai = socket.getaddrinfo(host, port, socket.AF_UNSPEC,
+                                    socket.SOCK_STREAM)
+        except socket.gaierror:
+            ai = []
+
+        for res in ai:
             af, socktype, proto, canonname, sa = res
             try:
                 s = socket.socket(af, socktype, proto)
