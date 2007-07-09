@@ -109,9 +109,6 @@ desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 $(man_MANS): $(top_srcdir)/man/system-config-printer.xml
 	xmlto man -o man $<
 
-tag:
-	cvs tag -c @PACKAGE@-`echo @VERSION@ | tr . _`
-
 distcheck-hook: update-po
 
 update-po:
