@@ -2449,6 +2449,17 @@ class GUI:
                 text = device.uri
 
             self.lblNPDeviceDescription.set_text (text)
+        elif device.type=="socket":
+            host = device.uri[9:]
+            i = host.find (":")
+            if i != -1:
+                port = int (host[i + 1:])
+                host = host[:i]
+            else:
+                port = 9100
+
+            self.entNPTDirectJetHostname.set_text (host)
+            self.entNPTDirectJetPort.set_text (str (port))
         elif device.type=="serial":
             if not device.is_class:
                 options = device.uri.split("?")[1]
