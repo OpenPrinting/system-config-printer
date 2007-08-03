@@ -74,13 +74,13 @@ def ppdMakeModelSplit (ppd_make_and_model):
     if wth != -1:
         model = model[:wth]
 
-    model = strip_suffix (model, " (recommended)")
-    model = strip_suffix (model, " Postscript")
-    model = strip_suffix (model, " - PostScript")
-    model = strip_suffix (model, " Series")
-    model = strip_suffix (model, " series")
-    model = strip_suffix (model, " PS")
-    model = strip_suffix (model, " PXL")
+    model = model.replace (" (recommended)", "")
+    model = model.replace (" Postscript", "")
+    model = model.replace (" - PostScript", "")
+    model = model.replace (" Series", "")
+    model = model.replace (" series", "")
+    model = model.replace (" PS", "")
+    model = model.replace (" PXL", "")
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
         if make == mfr.upper ():
@@ -91,24 +91,35 @@ def ppdMakeModelSplit (ppd_make_and_model):
 
 # Some drivers are just generally better than others.
 # Here is the preference list:
-DRIVER_TYPE_VENDOR = 1
-DRIVER_TYPE_GUTENPRINT_NATIVE = 2
-DRIVER_TYPE_FOOMATIC_PS = 3
-DRIVER_TYPE_FOOMATIC_HPIJS = 4
-DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 5
-DRIVER_TYPE_FOOMATIC_GUTENPRINT = 6
-DRIVER_TYPE_FOOMATIC = 7
-DRIVER_TYPE_CUPS = 8
+DRIVER_TYPE_VENDOR = 10
+DRIVER_TYPE_FOOMATIC_RECOMMENDED = 15
+DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP = 17
+DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED = 20
+DRIVER_TYPE_GUTENPRINT_NATIVE = 25
+DRIVER_TYPE_SPLIX = 27
+DRIVER_TYPE_FOOMATIC_PS = 30
+DRIVER_TYPE_FOOMATIC_HPIJS = 40
+DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 50
+DRIVER_TYPE_FOOMATIC_GUTENPRINT = 60
+DRIVER_TYPE_FOOMATIC = 70
+DRIVER_TYPE_CUPS = 80
+DRIVER_DOES_NOT_WORK = 999
 def getDriverType (ppdname):
     """Decides which of the above types ppdname is."""
     if ppdname.startswith ("gutenprint"):
-        return DRIVER_TYPE_GUTENPRINT_NATIVE
-    if (ppdname.find (":") == -1 and
-        ppdname.find ("/") == -1 and
-        ppdname.endswith (".gz")):
+        if ppdname.find ("/simple/") != -1:
+            return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
+        else:
+            return DRIVER_TYPE_GUTENPRINT_NATIVE
+    if ppdname.find ("SpliX")!= -1:
+        return DRIVER_TYPE_SPLIX
+    if (ppdname.find (";") == -1 and
+        ppdname.find ("/cups-included/") != -1):
         return DRIVER_TYPE_CUPS
     if ppdname.startswith ("foomatic:"):
         # Foomatic (generated) -- but which driver?
+        if ppdname.find ("(recommended)")!= -1:
+            return DRIVER_TYPE_FOOMATIC_RECOMMENDED
         if ppdname.find ("-Postscript")!= -1:
             return DRIVER_TYPE_FOOMATIC_PS
         if ppdname.find ("-hpijs") != -1:
@@ -119,6 +130,9 @@ def getDriverType (ppdname):
                 return DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED
             return DRIVER_TYPE_FOOMATIC_GUTENPRINT
         return DRIVER_TYPE_FOOMATIC
+    if ppdname.find ("-hpijs") != -1:
+        if ppdname.find ("hpijs-rss") == -1:
+            return DRIVER_TYPE_FOOMATIC_HPIJS
     # Anything else should be a vendor's PPD.
     return DRIVER_TYPE_VENDOR # vendor's own
 
@@ -214,9 +228,7 @@ class PPDs:
             if mfg == "HP":
                 if t == DRIVER_TYPE_FOOMATIC_HPIJS:
                     # Prefer HPIJS for HP devices.
-                    t = 1
-                elif t == DRIVER_TYPE_VENDOR:
-                    t = 0
+                    t = DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP
             return t
 
         def sort_ppdnames (a, b):
@@ -290,29 +302,44 @@ class PPDs:
         except KeyError:
             ppdnamelist = None
 
-        if not ppdnamelist:
-            # No ID match.  Try comparing make/model names.
-            debugprint ("Trying make/model names")
-            mfgl = mfg.lower ()
-            mdls = None
-            self._init_makes ()
-            for attempt in range (2):
-                for (make, models) in self.makes.iteritems ():
-                    if make.lower () == mfgl:
-                        mdls = models
-                        break
+        debugprint ("Trying make/model names")
+        mfgl = mfg.lower ()
+        mdls = None
+        self._init_makes ()
+        for attempt in range (2):
+            for (make, models) in self.makes.iteritems ():
+                if make.lower () == mfgl:
+                    mdls = models
+                    break
 
-                # Try again with replacements.
-                if mfg == "hewlett-packard":
-                    mfg = "hp"
+            # Try again with replacements.
+            if mfg == "hewlett-packard":
+                mfg = "hp"
 
-            # Handle bogus HPLIP Device IDs
-            if mdl.startswith (mfg + ' '):
-                mdl = mdl[len (mfg) + 1:]
-
-            if mdls and mdls.has_key (mdl):
-                ppdnamelist = mdls[mdl].keys ()
+        # Remove manufacturer name from model field
+        ppdnamelist2 = None
+        if mdl.startswith (mfg + ' '):
+            mdl = mdl[len (mfg) + 1:]
+        if mdl.startswith ('Hewlett-Packard '):
+            mdl = mdl[16:]
+        if mdl.startswith ('HP '):
+            mdl = mdl[3:]
+        if mdls and mdls.has_key (mdl):
+            ppdnamelist2 = mdls[mdl].keys ()
+            status = self.STATUS_SUCCESS
+        else:
+            # Make use of the model name clean-up in the ppdMakeModelSplit ()
+            # function
+            (mfg2, mdl2) = ppdMakeModelSplit (mfg + " " + mdl)
+            if mdls and mdls.has_key (mdl2):
+                ppdnamelist2 = mdls[mdl2].keys ()
                 status = self.STATUS_SUCCESS
+      
+        if ppdnamelist:
+            if ppdnamelist2:
+                ppdnamelist = ppdnamelist + ppdnamelist2
+        elif ppdnamelist2:
+            ppdnamelist = ppdnamelist2
 
         if not ppdnamelist and mdls:
             (s, ppds) = self._findBestMatchPPDs (mdls, mdl)
@@ -344,6 +371,7 @@ class PPDs:
                 for ppdname in ppdnamelist:
                     ppddict = self.ppds[ppdname]
                     id = ppddict['ppd-device-id']
+                    if not id: continue
                     # Fetch description field.
                     id_dict = parseDeviceID (id)
                     if id_dict["DES"] != description:
