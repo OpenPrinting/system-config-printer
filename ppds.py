@@ -335,7 +335,7 @@ class PPDs:
             ppdnamelist = ["textonly.ppd"]
             if not self.ppds.has_key (ppdnamelist[0]):
                 debugprint ("No text-only driver?!")
-                ppdnamelist = [self.ppds[0]]
+                ppdnamelist = [self.ppds.keys ()[0]]
 
         if id_matched:
             debugprint ("Checking DES field")
