@@ -1,5 +1,10 @@
 2007-08-03  Tim Waugh  <twaugh@redhat.com>
 
+	* my-default-printer.py (error_out): New function.
+	(Dialog.response): Catch exceptions and error out (Ubuntu
+	#129901).
+	(*top-level*): Likewise.
+
 	* ppds.py (PPDs.getPPDNameFromDeviceID): Initialise the make/model
 	list when an ID match failed (patch from Till Kamppeter).
 	(PPDs.getPPDNameFromDeviceID): Fixed fallback if no text-only

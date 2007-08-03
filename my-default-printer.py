@@ -184,22 +184,55 @@ class Dialog:
             response == gtk.RESPONSE_DELETE_EVENT):
             gtk.main_quit ()
 
-        if response == gtk.RESPONSE_OK:
-            (model, iter) = self.view.get_selection ().get_selected ()
-            name = model.get_value (iter, 0)
-            self.server.setUserDefault (name)
-            self.system_default_button.set_sensitive (True)
-        elif response == gtk.RESPONSE_NO:
-            self.server.clearUserDefault ()
-            system_default = self.server.getSystemDefault ()
-            iter = self.model.get_iter_first ()
-            while iter:
-                name = self.model.get_value (iter, 0)
-                if name == system_default:
-                    self.view.get_selection ().select_iter (iter)
-                    break
-                iter = self.model.get_iter_next (iter)
-            self.system_default_button.set_sensitive (False)
+        try:
+            if response == gtk.RESPONSE_OK:
+                (model, iter) = self.view.get_selection ().get_selected ()
+                name = model.get_value (iter, 0)
+                self.server.setUserDefault (name)
+                self.system_default_button.set_sensitive (True)
+            elif response == gtk.RESPONSE_NO:
+                self.server.clearUserDefault ()
+                system_default = self.server.getSystemDefault ()
+                iter = self.model.get_iter_first ()
+                while iter:
+                    name = self.model.get_value (iter, 0)
+                    if name == system_default:
+                        self.view.get_selection ().select_iter (iter)
+                        break
+                    iter = self.model.get_iter_next (iter)
+                self.system_default_button.set_sensitive (False)
+        except cups.IPPError, (e, s):
+            if e == cups.IPP_SERVICE_UNAVAILABLE:
+                error_out ('<span weight="bold" size="larger">' +
+                           'CUPS server error' + '</span>\n\n' +
+                           'The CUPS scheduler is not running.')
+            else:
+                error_out ('<span weight="bold" size="larger">' +
+                           'CUPS server error' + '</span>\n\n' +
+                           'There was an error during the CUPS operation: ' +
+                           s)
 
-d = Dialog()
-d.run ()
+def error_out (msg):
+    d = gtk.MessageDialog (None, 0, gtk.MESSAGE_ERROR, gtk.BUTTONS_OK, '')
+    d.set_markup (msg)
+    d.run ()
+    d.destroy ()
+    sys.exit (1)
+
+try:
+    d = Dialog()
+    d.run ()
+except RuntimeError:
+    error_out ('<span weight="bold" size="larger">' +
+               'CUPS server error' + '</span>\n\n' +
+               'The CUPS scheduler is not running.')
+except cups.IPPError, (e, s):
+    if e == cups.IPP_SERVICE_UNAVAILABLE:
+        error_out ('<span weight="bold" size="larger">' +
+                   'CUPS server error' + '</span>\n\n' +
+                   'The CUPS scheduler is not running.')
+    else:
+        error_out ('<span weight="bold" size="larger">' +
+                   'CUPS server error' + '</span>\n\n' +
+                   'There was an error during the CUPS operation: ' +
+                   s)
