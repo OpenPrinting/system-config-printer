@@ -1,20 +1,21 @@
-# translation of system-config-printer.HEAD.po to Korean
-#
+# translation of print-ko.po to Korean
+# translation of ko.po to Korean
 # Michelle J Kim <mkim@redhat.com>, 2003, 2004.
 # Jooil Lee <jooil.lee@gmail.com>, 2004.
 # Eunju Kim <eukim@redhat.com>, 2006, 2007.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: system-config-printer.HEAD\n"
+"Project-Id-Version: ko\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-07-06 13:50-0700\n"
-"PO-Revision-Date: 2007-08-03 14:14+1000\n"
+"POT-Creation-Date: 2007-07-09 14:19+0100\n"
+"PO-Revision-Date: 2007-01-17 10:12+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: KBabel 1.9.1\n"
 
 #: ../cupshelpers.py:28
 msgid "Idle"
@@ -26,7 +27,7 @@ msgstr "처리중"
 
 #: ../cupshelpers.py:30
 msgid "Busy"
-msgstr "작업중"
+msgstr "비지"
 
 #: ../cupshelpers.py:31 ../applet.py:685
 msgid "Stopped"
@@ -34,19 +35,21 @@ msgstr "정지됨"
 
 #: ../cupshelpers.py:48 ../applet.py:694
 msgid "Unknown"
-msgstr "알 수 없음"
+msgstr "알수없는"
 
 #: ../my-default-printer.py:125 ../my-default-printer.desktop.in.h:1
+#, fuzzy
 msgid "Default Printer"
-msgstr "기본 프린터"
+msgstr "디폴트 프린터 설정"
 
 #: ../my-default-printer.py:129 ../my-default-printer.py:160
 msgid "_Use System Default"
-msgstr "시스템의 기본값 사용(_U)"
+msgstr ""
 
 #: ../my-default-printer.py:130
+#, fuzzy
 msgid "_Set Default"
-msgstr "기본 설정(_S)"
+msgstr "디폴트"
 
 #: ../my-default-printer.py:140 ../system-config-printer.glade.h:190
 #: ../applet.py:184 ../applet.py:224
@@ -54,8 +57,9 @@ msgid "Printer"
 msgstr "프린터"
 
 #: ../my-default-printer.py:144
+#, fuzzy
 msgid "Location"
-msgstr "위치"
+msgstr "위치:"
 
 #: ../optionwidgets.py:108
 msgid "Conflicts with:"
@@ -190,7 +194,8 @@ msgstr "CUPS 가동 도중 오류가 발생했습니다:'%s'."
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
-msgstr "암호가 틀리거나 또는 서버에서 원격 관리 거부가 설정되었을 수 도 있습니다."
+msgstr ""
+"암호가 틀리거나 또는 서버에서 원격 관리 거부가 설정되었을 수 도 있습니다."
 
 #: ../system-config-printer.py:1160
 msgid "Bad request"
@@ -247,28 +252,30 @@ msgstr "불가능"
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
-msgstr "프린터가 공유되지 않아 원격서버를 통해 인쇄 작업을 실행할 수 없습니다."
+msgstr ""
+"프린터가 공유되지 않아 원격서버를 통해 프린트 작업을 실행할 수 없습니다."
 
 #: ../system-config-printer.py:1463
 msgid "Error"
-msgstr "오류"
+msgstr ""
 
 #: ../system-config-printer.py:1464
+#, fuzzy
 msgid "There was a problem connecting to the CUPS server."
-msgstr "CUPS 서버로 연결하는 도중 오류가 발생했습니다."
+msgstr "CUPS 가동 도중 오류가 발생했습니다:'%s'."
 
 #: ../system-config-printer.py:1527
 msgid "This is the default printer"
-msgstr "기본 프린터입니다"
+msgstr "디폴트 프린터입니다"
 
 #: ../system-config-printer.py:1529
 #, python-format
 msgid "Default printer is %s"
-msgstr "기본 프린터는 %s입니다"
+msgstr "디폴트 프린터는 %s입니다"
 
 #: ../system-config-printer.py:1532
 msgid "No default printer set."
-msgstr "기본 프린터 세트 없음"
+msgstr "디폴트 프린터 세트 없음"
 
 #: ../system-config-printer.py:1618
 msgid "Cancel Tests"
@@ -276,7 +283,7 @@ msgstr "테스트 취소"
 
 #: ../system-config-printer.py:1622 ../system-config-printer.glade.h:189
 msgid "Print Test Page"
-msgstr "테스트 페이지 인쇄"
+msgstr "테스트 페이지 프린트하기"
 
 #: ../system-config-printer.py:1877
 #, python-format
@@ -294,7 +301,7 @@ msgstr "새 프린터"
 
 #: ../system-config-printer.py:1940 ../system-config-printer.glade.h:139
 msgid "New Class"
-msgstr "새 클래스"
+msgstr "새 클라스"
 
 #: ../system-config-printer.py:1953
 msgid "Change Device URI"
@@ -391,7 +398,7 @@ msgstr "'%s' 드라이버는 프린터 '%s %s'와 함께 사용할 수 없습니
 #: ../system-config-printer.py:2807
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
-msgstr "이 드라이버를 사용하기 위해 '%s' 패키지를 설치하셔야 합니다."
+msgstr "이러한 드라이버를 사용하기 위해 '%s' 패키지를 설치하셔야 합니다."
 
 #. This error came from trying to open the PPD file.
 #: ../system-config-printer.py:2814
@@ -402,20 +409,23 @@ msgstr "PPD 오류"
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "다음과 같은 이유로 PPD 파일 읽기를 실패했습니다:"
 
-#: ../system-config-printer.py:3117
-msgid "Install driver"
-msgstr "드라이버 설치"
-
 #: ../system-config-printer.py:3118
-#, python-format
-msgid "Printer '%s' requires the %s package but it is not currently installed."
-msgstr "프린터 '%s'는 %s 패키지가 필요하나 이는 현재 설치되어 있지 않습니다."
+#, fuzzy
+msgid "Install driver"
+msgstr "드라이버가 없음"
 
-#: ../system-config-printer.py:3125
+#: ../system-config-printer.py:3119
+#, fuzzy, python-format
+msgid "Printer '%s' requires the %s package but it is not currently installed."
+msgstr ""
+"프린터 '%s'는 %s 패키지가 필요하나 이는 현재 설치되어 있지 않습니다.  프린터"
+"를 사용하시기 전에 패키지를 설치하시기 바랍니다."
+
+#: ../system-config-printer.py:3126
 msgid "Missing driver"
 msgstr "드라이버가 없음"
 
-#: ../system-config-printer.py:3126
+#: ../system-config-printer.py:3127
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -426,7 +436,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:1
 msgid " "
-msgstr " "
+msgstr ""
 
 #: ../system-config-printer.glade.h:2
 msgid " PPD "
@@ -441,12 +451,6 @@ msgid ""
 "9\n"
 "16"
 msgstr ""
-"1\n"
-"2\n"
-"4\n"
-"6\n"
-"9\n"
-"16"
 
 #: ../system-config-printer.glade.h:9
 msgid "<b>Authentication</b>"
@@ -469,12 +473,13 @@ msgid "<b>Comment about the Printer</b>"
 msgstr "<b>프린터에 관한 주석</b> "
 
 #: ../system-config-printer.glade.h:14
+#, fuzzy
 msgid "<b>Common Options</b>"
-msgstr "<b>일반 옵션</b> "
+msgstr "<b>선택 접속</b> "
 
 #: ../system-config-printer.glade.h:15
 msgid "<b>Default Printer</b>"
-msgstr "<b>기본 프린터</b> "
+msgstr "<b>디폴트 프린터</b> "
 
 #: ../system-config-printer.glade.h:16
 msgid "<b>Description</b>"
@@ -485,8 +490,9 @@ msgid "<b>Description</b> (optional)"
 msgstr "<b>설명</b> (옵션) "
 
 #: ../system-config-printer.glade.h:18
+#, fuzzy
 msgid "<b>Image Options</b>"
-msgstr "<b>이미지 옵션</b> "
+msgstr "<b>설정</b> "
 
 #: ../system-config-printer.glade.h:19
 msgid "<b>Information about the PPD</b>"
@@ -506,7 +512,7 @@ msgstr "<b>위치</b> (옵션) "
 
 #: ../system-config-printer.glade.h:23
 msgid "<b>Other Options (Advanced)</b>"
-msgstr "<b>기타 옵션 (고급)</b>"
+msgstr ""
 
 #: ../system-config-printer.glade.h:24
 msgid "<b>Policies</b>"
@@ -526,27 +532,26 @@ msgstr "<b>선택 접속</b> "
 
 #: ../system-config-printer.glade.h:28
 msgid "<b>Settings of the serial port</b>"
-msgstr "<b>직렬 포트 설정</b>"
+msgstr "<b>직렬 포트 설정</b> "
 
 #: ../system-config-printer.glade.h:29
 msgid "<b>Settings</b>"
-msgstr "<b>설정</b>"
+msgstr "<b>설정</b> "
 
 #: ../system-config-printer.glade.h:30
 msgid "<b>State</b>"
 msgstr "<b>상태</b>"
 
 #: ../system-config-printer.glade.h:31
+#, fuzzy
 msgid "<b>Text Options</b>"
-msgstr "<b>텍스트 옵션</b>"
+msgstr "<b>설정</b> "
 
 #: ../system-config-printer.glade.h:32
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
 msgstr ""
-"<i>공유되지 않음\n"
-"서버 설정 확인</i>"
 
 #: ../system-config-printer.glade.h:34
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
@@ -592,7 +597,7 @@ msgstr "멤버 추가 또는 삭제"
 
 #: ../system-config-printer.glade.h:46
 msgid "Allow printing for everyone except these users:"
-msgstr "다음의 사용자를 제외하고 모두 인쇄할 수 있습니다: "
+msgstr "다음의 사용자를 제외하고 모두 프린트 할 수 있습니다: "
 
 #: ../system-config-printer.glade.h:47
 msgid "Allow remote administration"
@@ -600,7 +605,9 @@ msgstr "원격 관리 허용 "
 
 #: ../system-config-printer.glade.h:48
 msgid "Allow users to cancel any job (not just their own)"
-msgstr "사용자에게 (실행중인 자신의 작업뿐 만 아니라)실행중인 모든 작업의 취소를 허용"
+msgstr ""
+"사용자에게 (실행중인 자신의 작업뿐 만 아니라)실행중인 모든 작업의 취소를 허용"
+"합니다"
 
 #: ../system-config-printer.glade.h:49
 msgid "Apply"
@@ -616,11 +623,11 @@ msgstr "보레이트 "
 
 #: ../system-config-printer.glade.h:52
 msgid "Bottom margin:"
-msgstr "아래 여백:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:53
 msgid "Brightness:"
-msgstr "명도:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:54
 msgid "CUPS server:"
@@ -636,15 +643,16 @@ msgstr "변경..."
 
 #: ../system-config-printer.glade.h:57
 msgid "Characters per inch:"
-msgstr "인치 당 글자수:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:58
 msgid "Class Members"
 msgstr "클래스 멤버 "
 
 #: ../system-config-printer.glade.h:59
+#, fuzzy
 msgid "Columns:"
-msgstr "행:"
+msgstr "주석: "
 
 #: ../system-config-printer.glade.h:60
 msgid "Comments: "
@@ -669,7 +677,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:67
 msgid "Copies:"
-msgstr "매수:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:68
 msgid "Copy Printer"
@@ -743,7 +751,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:92
 msgid "Deny printing for everyone except these users:"
-msgstr "다음의 사용자를 제외하고 모두 인쇄할 수 없습니다: "
+msgstr "다음의 사용자를 제외하고 모두 프린트 할 수 없습니다: "
 
 #: ../system-config-printer.glade.h:93
 msgid "Description:"
@@ -795,15 +803,15 @@ msgstr "정책 오류: \t "
 
 #: ../system-config-printer.glade.h:105
 msgid "Finishings:"
-msgstr "완료:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:106
 msgid "Flow Control"
-msgstr "흐름 제어"
+msgstr "흐름 제어 "
 
 #: ../system-config-printer.glade.h:107
 msgid "Gamma:"
-msgstr "감마:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:108
 msgid "Goto Server"
@@ -811,7 +819,7 @@ msgstr "서버로 가기"
 
 #: ../system-config-printer.glade.h:109
 msgid "Hold until:"
-msgstr "대기 (만료 시간):"
+msgstr ""
 
 #: ../system-config-printer.glade.h:110
 msgid "Hostname"
@@ -819,7 +827,7 @@ msgstr "호스트명:"
 
 #: ../system-config-printer.glade.h:111
 msgid "Hue adjustment:"
-msgstr "색상 조절:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:112
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
@@ -839,7 +847,7 @@ msgstr "작업 옵션"
 
 #: ../system-config-printer.glade.h:117
 msgid "Job priority:"
-msgstr "작업 우선 순위:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:118
 msgid "LPD"
@@ -847,7 +855,7 @@ msgstr "LPD"
 
 #: ../system-config-printer.glade.h:119
 msgid "Left margin:"
-msgstr "왼쪽 여백:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:120
 msgid ""
@@ -860,18 +868,10 @@ msgid ""
 "Bottom to top, left to right\n"
 "Bottom to top, right to left"
 msgstr ""
-"왼쪽에서 오른쪽으로, 위에서 아래로\n"
-"왼쪽에서 오른쪽으로, 아래에서 위로\n"
-"오른쪽에서 왼쪽으로, 위에서 아래로\n"
-"오른쪽에서 왼쪽으로, 아래서 위로\n"
-"위에서 아래로, 왼쪽에서 오른쪽으로\n"
-"위에서 아래로, 오른쪽에서 왼쪽으로\n"
-"아래서 위로, 왼쪽에서 오른쪽으로\n"
-"아래서 위로, 오른쪽에서 왼쪽으로"
 
 #: ../system-config-printer.glade.h:128
 msgid "Lines per inch:"
-msgstr "인치 당 줄:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:129
 msgid "Location:"
@@ -879,7 +879,7 @@ msgstr "위치:"
 
 #: ../system-config-printer.glade.h:130
 msgid "Make Default Printer"
-msgstr "기본 프린터로 설정"
+msgstr "디폴트 프린터 설정"
 
 #: ../system-config-printer.glade.h:131
 msgid "Make and Model:"
@@ -887,11 +887,12 @@ msgstr "제조회사 및 모델명:"
 
 #: ../system-config-printer.glade.h:132
 msgid "May contain any printable characters except \"/\", \"#\", and space"
-msgstr "\"/\", \"#\", 스페이스를 제외하고 프린트할 수 있는 모든 문자가 있습니다."
+msgstr ""
+"\"/\", \"#\", 스페이스를 제외하고 프린트할 수 있는 모든 문자가 있습니다."
 
 #: ../system-config-printer.glade.h:133
 msgid "Media:"
-msgstr "미디어:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:134
 msgid "Members"
@@ -899,11 +900,11 @@ msgstr "멤버"
 
 #: ../system-config-printer.glade.h:135
 msgid "Mirror"
-msgstr "미러"
+msgstr ""
 
 #: ../system-config-printer.glade.h:136
 msgid "More"
-msgstr "기타 "
+msgstr ""
 
 #: ../system-config-printer.glade.h:137
 msgid "Name"
@@ -952,34 +953,6 @@ msgid ""
 "Bind (right)\n"
 "Bind (bottom)"
 msgstr ""
-"없음\n"
-"스테이플\n"
-"펀치\n"
-"표지\n"
-"제본\n"
-"중간 부분에 철하기\n"
-"가장자리에 철하기\n"
-"접기\n"
-"불필요한 선 자르기\n"
-"베일 (Bale)\n"
-"중철기 (Booklet maker)\n"
-"인쇄 작업 오프셋\n"
-"스테이플 (왼쪽 상단)\n"
-"스테이플 (왼쪽 하단)\n"
-"스테이플 (오른쪽 상단)\n"
-"스테이플 (오른쪽 하단)\n"
-"가장자리 철하기 (왼쪽)\n"
-"가장자리 철하기 (상단)\n"
-"가장자리 철하기 (오른쪽)\n"
-"가장자리 철하기 (하단)\n"
-"이중 스테이플 (왼쪽)\n"
-"이중 스테이플 (상단)\n"
-"이중 스테이플 (오른쪽)\n"
-"이중 스테이플 (하단)\n"
-"제본 (왼쪽)\n"
-"제본 (상단)\n"
-"제본 (오른쪽)\n"
-"제본 (하단) "
 
 #: ../system-config-printer.glade.h:171
 msgid ""
@@ -987,9 +960,6 @@ msgid ""
 "Two-sided (long edge)\n"
 "Two-sided (short edge)"
 msgstr ""
-"단면\n"
-"양면 (옆으로 넘김)\n"
-"양면 (위로 넘김)"
 
 #: ../system-config-printer.glade.h:174
 msgid "Operation Policy:"
@@ -997,7 +967,7 @@ msgstr "정책 작업: "
 
 #: ../system-config-printer.glade.h:175
 msgid "Orientation:"
-msgstr "용지 방향:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:176
 msgid "PPD"
@@ -1005,11 +975,11 @@ msgstr "PPD"
 
 #: ../system-config-printer.glade.h:177
 msgid "Pages per side layout:"
-msgstr "한 면에 인쇄할 페이지 수:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:178
 msgid "Pages per side:"
-msgstr "한 면에 인쇄할 페이지 수:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:179
 msgid "Parity"
@@ -1034,10 +1004,6 @@ msgid ""
 "Reverse landscape (270°)\n"
 "Reverse portrait (180°)"
 msgstr ""
-"세로 방향 (회전 없이)\n"
-"가로 방향 (90°)\n"
-"역 가로 방향 (270°)\n"
-"역 세로 방향 (180°)"
 
 #: ../system-config-printer.glade.h:187
 msgid ""
@@ -1046,12 +1012,12 @@ msgid ""
 "part of the Windows<sup>®</sup> driver."
 msgstr ""
 "사후 프린터 설명 스크립트 (PPD) 파일은 프린터 위치와 함께 드라이버 디스크에"
-"서 찾을 수 있습니다. 사후 프린트 설명 스크립트는 종종 윈도우<sup>®</sup> 드라"
+"서 찾을 수 있습니다. 사후 프린트 설명 스크립트는 종종윈도우<sup>®</sup> 드라"
 "이버의 일부분이 되기도 합니다."
 
 #: ../system-config-printer.glade.h:188
 msgid "Pretty print"
-msgstr "예쁘게 인쇄"
+msgstr ""
 
 #: ../system-config-printer.glade.h:192
 msgid "Printer State:"
@@ -1075,15 +1041,15 @@ msgstr "암호화 필요"
 
 #: ../system-config-printer.glade.h:197
 msgid "Reset"
-msgstr "다시 설정"
+msgstr ""
 
 #: ../system-config-printer.glade.h:198
 msgid "Reset to system default"
-msgstr "시스템 기본값으로 다시 설정"
+msgstr ""
 
 #: ../system-config-printer.glade.h:199
 msgid "Right margin:"
-msgstr "오른쪽 여백:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:200
 msgid "SCSI"
@@ -1095,7 +1061,7 @@ msgstr "SMB"
 
 #: ../system-config-printer.glade.h:202
 msgid "Saturation:"
-msgstr "채도:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:203
 msgid "Save debugging information for troubleshooting"
@@ -1103,11 +1069,11 @@ msgstr "장애 추적에 대한 오류 수정 정보를 저장"
 
 #: ../system-config-printer.glade.h:204
 msgid "Scale to fit"
-msgstr "용지에 맞게 조절"
+msgstr ""
 
 #: ../system-config-printer.glade.h:205
 msgid "Scaling:"
-msgstr "비례 축소:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:206
 msgid "Select A File"
@@ -1139,14 +1105,14 @@ msgstr "다른 시스템과 공유된 프린터 보기"
 
 #: ../system-config-printer.glade.h:213
 msgid "Sides:"
-msgstr "인쇄면:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:214
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
-msgstr "프린터의 기본 작업 옵션을 설정합니다. 응용 프로그램에서 이 옵션을 설정하지 않았을 경우 프린트 서버에 도착한 인쇄 작업에 이 옵션이 추가됩니다."
+msgstr ""
 
 #: ../system-config-printer.glade.h:215
 msgid "Starting Banner:"
@@ -1169,10 +1135,10 @@ msgid ""
 "provided PPD files provide better access to the specific features of the "
 "printer."
 msgstr ""
-"제조업자가 포함된 foomatic 프린터 데이타베이스는 사후 프린터 설명 스크"
-"립트 (PPD) 파일을 제공하며 (사후 스크립트가 아닌) 다른 여러 프린터에 대하"
+"다양한 제조업자가 포함된 foomatic 프린터 데이타베이스는 사후 프린터 설명 스크"
+"립트 (PPD) 파일을 제공하며 (사후 스크립트가 아닌) 다른 여러개의 프린터에 대하"
 "여 PPD파일을 생성할 수 있습니다. 그러나 일반 제조업자에 의하여 제공되는 PPD "
-"파일은 프린터의 특정한 특징에 더 나은 액세스를 제공합니다."
+"파일은 프린터의 특정한 특징에 더나은 액세스를 제공합니다."
 
 #: ../system-config-printer.glade.h:220
 msgid ""
@@ -1181,23 +1147,23 @@ msgid ""
 "lost and options only present in the new PPD will be set to default."
 msgstr ""
 "이름이 같은 옵션은 같은 의미를 가지고 있다고 간주합니다. 새 PPD에서 제시되지 "
-"않는 옵션의 설정은 손실되며 새 PPD에서 제시된 옵션만이 기본으로 설정됩니다."
+"않는 옵션의 설정은 손실되며 새 PPD에서 제시된 옵션만이 디폴트로 설정됩니다."
 
 #: ../system-config-printer.glade.h:221
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
 msgstr ""
-"현재 모든 옵션 설정이 손실될 수 있습니다. 새 PPD에 대해 기본 설정을 사용해"
-"야 합니다."
+"현재 모든 옵션 설정이 손실될 수 있습니다. 새 PPD에 대한 디폴트 설정을 사용해"
+"야 합니다"
 
 #: ../system-config-printer.glade.h:222
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr "새 옵션을 추가하려면 아래 박스에 옵션 이름을 입력하고 추가 버튼을 클릭합니다."
+msgstr ""
 
 #: ../system-config-printer.glade.h:223
 msgid "Top margin:"
-msgstr "위 여백:"
+msgstr ""
 
 #: ../system-config-printer.glade.h:224
 msgid "Try to copy the option settings over from the old PPD. "
@@ -1217,7 +1183,7 @@ msgstr "사용자 이름:"
 
 #: ../system-config-printer.glade.h:228
 msgid "Word wrap"
-msgstr "단어 넘김"
+msgstr ""
 
 #: ../system-config-printer.glade.h:229
 msgid "_Do not apply"
@@ -1241,7 +1207,7 @@ msgstr "도움말(_H)"
 
 #: ../system-config-printer.glade.h:234
 msgid "_Install"
-msgstr "설치(_I)"
+msgstr ""
 
 #: ../system-config-printer.glade.h:235
 msgid "_Verify..."
@@ -1249,7 +1215,7 @@ msgstr "확인...(_V)"
 
 #: ../system-config-printer.glade.h:236
 msgid "default"
-msgstr "기본"
+msgstr "디폴트"
 
 #: ../system-config-printer.glade.h:237
 msgid "none"
@@ -1257,11 +1223,11 @@ msgstr "없음"
 
 #: ../system-config-printer.glade.h:238
 msgid "points"
-msgstr "포인트"
+msgstr ""
 
 #: ../system-config-printer.glade.h:239
 msgid "points (72 points per inch)"
-msgstr "포인트 (인치 당 72 포인트)"
+msgstr ""
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1269,280 +1235,309 @@ msgstr "프린터 설정"
 
 #: ../system-config-printer.desktop.in.h:2
 msgid "Printing"
-msgstr "인쇄"
+msgstr "프린트하기"
 
 #: ../applet.py:80
 msgid "Toner low"
-msgstr "토너 부족"
+msgstr ""
 
 #: ../applet.py:81
 #, python-format
 msgid "Printer '%s' is low on toner."
-msgstr "프린터 '%s'의 토너가 부족합니다."
+msgstr ""
 
 #: ../applet.py:82
 msgid "Toner empty"
-msgstr "토너 없음"
+msgstr ""
 
 #: ../applet.py:83
 #, python-format
 msgid "Printer '%s' has no toner left."
-msgstr "프린터 '%s'에 토너가 없습니다."
+msgstr ""
 
 #: ../applet.py:84
 msgid "Cover open"
-msgstr "덮개가 열려 있음"
+msgstr ""
 
 #: ../applet.py:85
 #, python-format
 msgid "The cover is open on printer '%s'."
-msgstr "프린터 '%s'의 덮개가 열려 있습니다."
+msgstr ""
 
 #: ../applet.py:86
 msgid "Door open"
-msgstr "뚜껑이 열려 있음"
+msgstr ""
 
 #: ../applet.py:87
 #, python-format
 msgid "The door is open on printer '%s'."
-msgstr "프린터 '%s'의 뚜껑이 열려있습니다."
+msgstr ""
 
 #: ../applet.py:88
 msgid "Paper low"
-msgstr "용지 부족"
+msgstr ""
 
 #: ../applet.py:89
 #, python-format
 msgid "Printer '%s' is low on paper."
-msgstr "프린터 '%s'에 용지가 부족합니다."
+msgstr ""
 
 #: ../applet.py:90
 msgid "Out of paper"
-msgstr "용지 없음"
+msgstr ""
 
 #: ../applet.py:91
 #, python-format
 msgid "Printer '%s' is out of paper."
-msgstr "프린터 '%s'에 용지가 없습니다."
+msgstr ""
 
 #: ../applet.py:92
 msgid "Ink low"
-msgstr "잉크 부족"
+msgstr ""
 
 #: ../applet.py:93
 #, python-format
 msgid "Printer '%s' is low on ink."
-msgstr "프린터 '%s'에 잉크가 부족합니다. "
+msgstr ""
 
 #: ../applet.py:94
 msgid "Ink empty"
-msgstr "잉크 없음 "
+msgstr ""
 
 #: ../applet.py:95
 #, python-format
 msgid "Printer '%s' has no ink left."
-msgstr "프린터 '%s'에 잉크가 없습니다. "
+msgstr ""
 
 #: ../applet.py:96
+#, fuzzy
 msgid "Not connected?"
-msgstr "접속되지 않음?"
+msgstr "접속되지 않음"
 
 #: ../applet.py:97
 #, python-format
 msgid "Printer '%s' may not be connected."
-msgstr "프린터 '%s'이(가) 연결되어 있지 않습니다."
+msgstr ""
 
 #: ../applet.py:104
+#, fuzzy
 msgid "Printer report"
-msgstr "프린터 상태 보고"
+msgstr "프린터 옵션"
 
 #: ../applet.py:106
+#, fuzzy
 msgid "Printer warning"
-msgstr "프린터 경고"
+msgstr "프린트하기"
 
 #: ../applet.py:108
+#, fuzzy
 msgid "Printer error"
-msgstr "프린터 오류"
+msgstr "서버 오류"
 
 #: ../applet.py:109
 #, python-format
 msgid "Printer '%s': '%s'."
-msgstr "프린터 '%s': '%s'. "
+msgstr ""
 
 #: ../applet.py:182
 msgid "Job"
-msgstr "작업"
+msgstr ""
 
 #: ../applet.py:183
+#, fuzzy
 msgid "Document"
-msgstr "문서"
+msgstr "주석"
 
 #: ../applet.py:185
 msgid "Size"
-msgstr "크기"
+msgstr ""
 
 #: ../applet.py:186
+#, fuzzy
 msgid "Time submitted"
-msgstr "시간이 입력됨"
+msgstr "입력됨"
 
 #: ../applet.py:187
+#, fuzzy
 msgid "Status"
-msgstr "상태"
+msgstr "상태 %d"
 
 #: ../applet.py:238
 msgid "Message"
-msgstr "메세지"
+msgstr ""
 
 #: ../applet.py:555
 msgid "1 hour ago"
-msgstr "1 시간 전 "
+msgstr ""
 
 #: ../applet.py:557
 msgid "1 hour and 1 minute ago"
-msgstr "1 시간 1 분 전 "
+msgstr ""
 
 #: ../applet.py:559
 #, python-format
 msgid "1 hour and %d minutes ago"
-msgstr "1 시간 %d 분 전 "
+msgstr ""
 
 #: ../applet.py:562
 #, python-format
 msgid "%d hours ago"
-msgstr "%d 시간 전 "
+msgstr ""
 
 #: ../applet.py:564
 #, python-format
 msgid "%d hours and 1 minute ago"
-msgstr "%d 시간 1 분 전 "
+msgstr ""
 
 #: ../applet.py:566
 #, python-format
 msgid "%d hours and %d minutes ago"
-msgstr "%d 시간 %d 분 전 "
+msgstr ""
 
 #: ../applet.py:572
 msgid "a minute ago"
-msgstr "1분 전 "
+msgstr ""
 
 #: ../applet.py:574
 #, python-format
 msgid "%d minutes ago"
-msgstr "%d 분 전 "
+msgstr ""
 
 #: ../applet.py:629
 msgid "No documents queued"
-msgstr "대기 상태에 있는 문서가 없음 "
+msgstr ""
 
 #: ../applet.py:632
 msgid "1 document queued"
-msgstr "1개의 문서가 대기 상태에 있음 "
+msgstr ""
 
 #: ../applet.py:635
 #, python-format
 msgid "%d documents queued"
-msgstr "%d 문서가 대기 상태에 있음 "
+msgstr ""
 
 #: ../applet.py:682
+#, fuzzy
 msgid "Pending"
-msgstr "보류"
+msgstr "프린트하기"
 
 #: ../applet.py:683
+#, fuzzy
 msgid "Held"
-msgstr "대기"
+msgstr "도움말(_H)"
 
 #: ../applet.py:686
+#, fuzzy
 msgid "Canceled"
-msgstr "취소"
+msgstr "테스트 취소"
 
 #: ../applet.py:687
+#, fuzzy
 msgid "Aborted"
-msgstr "중지"
+msgstr "정보"
 
 #: ../applet.py:688
+#, fuzzy
 msgid "Completed"
-msgstr "완료"
+msgstr "주석"
 
 #: ../applet.py:946
+#, fuzzy
 msgid "Printer added"
-msgstr "프린터 추가"
+msgstr "프린터명"
 
 #: ../applet.py:948
+#, fuzzy
 msgid "Missing printer driver"
-msgstr "프린터 드라이버가 없음"
+msgstr "드라이버가 없음"
 
 #: ../applet.py:951
 #, python-format
 msgid "`%s' is ready for printing."
-msgstr "`%s'이(가) 인쇄할 준비가 되어 있습니다."
+msgstr ""
 
 #: ../applet.py:954
+#, fuzzy
 msgid "Configure"
-msgstr "설정"
+msgstr "프린터 설정"
 
 #. Model mismatch
 #: ../applet.py:957
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
-msgstr "`%s' 가 추가되었습니다, `%s' 드라이버를 사용합니다."
+msgstr ""
 
 #: ../applet.py:961
+#, fuzzy
 msgid "Find driver"
-msgstr "드라이버 찾기"
+msgstr "드라이버가 없음"
 
 #: ../applet.glade.h:4
 msgid "Document print status"
-msgstr "문서 인쇄 상태"
+msgstr ""
 
 #: ../applet.glade.h:6
+#, fuzzy
 msgid "Printer status"
-msgstr "프린터 상태"
+msgstr "프린터 관련사항: "
 
 #: ../applet.glade.h:7
 msgid "Re_print"
-msgstr "다시 인쇄(_P) "
+msgstr ""
 
 #: ../applet.glade.h:8
 msgid "Show _completed jobs"
-msgstr "완료된 작업 보기(_C) "
+msgstr ""
 
 #: ../applet.glade.h:9
 msgid "Show _printer status"
-msgstr "프린터 상태 보기(_P)"
+msgstr ""
 
 #: ../applet.glade.h:11
 msgid "_Hide"
-msgstr "숨기기(_H)"
+msgstr ""
 
 #: ../applet.glade.h:12
 msgid "_Hold"
-msgstr "대기(_H)"
+msgstr ""
 
 #: ../applet.glade.h:13
 msgid "_Release"
-msgstr "취소(_R)"
+msgstr ""
 
 #: ../applet.glade.h:14
 msgid "_View"
-msgstr "보기(_V) "
+msgstr ""
 
 #: ../print-applet.desktop.in.h:1
+#, fuzzy
 msgid "Print Queue Applet"
-msgstr "인쇄 대기 상태 애플릿"
+msgstr "테스트 페이지 프린트하기"
 
 #: ../print-applet.desktop.in.h:2
 msgid "System tray icon for managing print jobs"
-msgstr "인쇄 작업 관리를 위한 시스템 트레이 아이콘"
+msgstr ""
 
 #: ../manage-print-jobs.desktop.in.h:1
 msgid "Cancel, pause, resume or reprint jobs"
-msgstr "취소, 일시 정지, 다시 시작, 다시 인쇄"
+msgstr ""
 
 #: ../manage-print-jobs.desktop.in.h:2
 msgid "Manage Print Jobs"
-msgstr "인쇄 작업 관리"
+msgstr ""
 
 #: ../my-default-printer.desktop.in.h:2
+#, fuzzy
 msgid "Select default printer"
-msgstr "기본 프린터 선택"
+msgstr "디폴트 프린터 설정"
 
+#~ msgid ""
+#~ "This PPD is provided by the manufacturer and is included with the "
+#~ "foomatic package."
+#~ msgstr "이 PPD는 제조업자에 의하여 제공되며 foomatic 팩키지가 들어있습니다."
+
+#~ msgid "This PPD is provided by CUPS."
+#~ msgstr "이 PPD는 CUPS에 의하여 제공됩니다."
+
+#~ msgid "Specify default job options."
+#~ msgstr "디폴트 작업 옵션으로 설정"
