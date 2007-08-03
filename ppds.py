@@ -295,7 +295,6 @@ class PPDs:
             debugprint ("Trying make/model names")
             mfgl = mfg.lower ()
             mdls = None
-            self._init_makes ()
             for attempt in range (2):
                 for (make, models) in self.makes.iteritems ():
                     if make.lower () == mfgl:
