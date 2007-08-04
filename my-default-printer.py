@@ -199,7 +199,7 @@ class Dialog:
                     if name == system_default:
                         self.view.get_selection ().select_iter (iter)
                         break
-                    iter = self.model.get_iter_next (iter)
+                    iter = self.model.iter_next (iter)
                 self.system_default_button.set_sensitive (False)
         except cups.IPPError, (e, s):
             if e == cups.IPP_SERVICE_UNAVAILABLE:
