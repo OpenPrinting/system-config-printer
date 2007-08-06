@@ -1,3 +1,38 @@
+2007-08-06  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py: Integrated add-printer wizard patch
+	from Till Kamppeter:
+
+	o If an auto-detected device (USB, network) is supported by HPLIP
+	  only the HPLIP URIs are shown, to assure that the user gets it
+	  correctly set up to get access to the complete functionality
+	o For auto-detected network MF devices from HP also an entry
+	  for setting up the fax queue is shown
+	o Make and model info of auto-detected network printers is used to
+	  direct the user to the correct PPD/driver
+	o For manually entered printers make and model are determined via
+	  SNMP. It is also checked whether the printer is supported by
+	  HPLIP
+	o No "HP Fax" entry any more when no Fax-capable HP printer is
+	  connected.
+	o When selecting an auto-detected non-HPLIP network printer the
+	  fields of the form on the right are correctly prefilled now.
+	o Improved sorting of the device list entries.
+
+	Very important changes for that are:
+
+	o Improved filtering of the detected devices when building the
+	  device list for the second page of the wizard
+	o Moved assignment of the PPD to the device from the stage of
+	  initializing the forms on the right on the second page of
+	  the wizard to the stage of clicking "Forward" for getting from
+	  the second to the third page (after the user has manually entered
+	  an IP address for a network printer)
+	o Used "/usr/lib/cups/backend/snmp <host name or IP>" to obtain
+	  make and model for a manually entered network printer
+	o Used "hp-makeuri" to determine whether a network printer is
+	  supported by HPLIP.
+
 2007-08-04  Tim Waugh  <twaugh@redhat.com>
 
 	* my-default-printer.py (Dialog.response): The method name is

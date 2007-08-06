@@ -23,7 +23,7 @@
 # config is generated from config.py.in by configure
 import config
 
-import sys, os, tempfile, time, traceback
+import sys, os, tempfile, time, traceback, re
 import signal, thread
 try:
     import gtk.glade
@@ -2049,6 +2049,7 @@ class GUI:
 
     def nextNPTab(self, step=1):
         page_nr = self.ntbkNewPrinter.get_current_page()
+
         if self.dialog_mode == "class":
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
@@ -2056,6 +2057,30 @@ class GUI:
             self.loadPPDs()
             if page_nr == 0:
                 self.fillDeviceTab()
+            if page_nr == 1:
+                self.auto_make, self.auto_model = None, None
+                self.device.uri = self.getDeviceURI()
+                if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
+                    host = self.getNetworkPrinterMakeModel(self.device)
+                try:
+                    if self.device.id:
+                        id_dict = self.device.id_dict
+                        (status, ppdname) = self.ppds.\
+                            getPPDNameFromDeviceID (id_dict["MFG"],
+                                                    id_dict["MDL"],
+                                                    id_dict["DES"],
+                                                    id_dict["CMD"],
+                                                    self.device.uri)
+
+                        if status < self.ppds.STATUS_NO_DRIVER:
+                            ppddict = self.ppds.getInfoFromPPDName (ppdname)
+                            make_model = ppddict['ppd-make-and-model']
+                            (make, model) = ppds.ppdMakeModelSplit (make_model)
+                            self.auto_make = make
+                            self.auto_model = model
+                except:
+                    nonfatalException ()
+
                 self.fillMakeList()
             self.ready (self.NewPrinterWindow)
             if self.rbtnNPFoomatic.get_active():
@@ -2199,6 +2224,73 @@ class GUI:
             raise self.devices_result
         return self.devices_result
 
+    def get_hplip_uri_for_network_printer(self, host, mode):
+        if mode == "print": mod = "-c "
+        elif mode == "fax": mod = "-f "
+        else: mod = "-c "
+        uri = None
+        cmd = "hp-makeuri " + mod + host + " 2> /dev/null"
+        p = os.popen(cmd, 'r')
+        uri = p.read()
+        p.close()
+        return uri
+
+    def getNetworkPrinterMakeModel(self, device):
+        # Determine host name/IP
+        host = None
+        s = device.uri.find ("://")
+        if s != -1:
+            s += 3
+            e = device.uri[s:].find (":")
+            if e == -1: e = device.uri[s:].find ("/")
+            if e == -1: e = device.uri[s:].find ("?")
+            if e == -1: e = len (device.uri)
+            host = device.uri[s:s+e]
+        # Try to get make and model via SNMP
+        if host:
+            cmd = "/usr/lib/cups/backend/snmp " + host + " 2> /dev/null"
+            p = os.popen(cmd, 'r')
+            output = p.read()
+            p.close()
+            mm = re.sub("^\s*\S+\s+\S+\s+\"", "", output)
+            mm = re.sub("\"\s+.*$", "", mm)
+            if mm and mm != "": device.make_and_model = mm
+        # Extract make and model and create a pseudo device ID, so
+        # that a PPD/driver can be assigned to the device
+        make_and_model = None
+        if len (device.make_and_model) > 7:
+            make_and_model = device.make_and_model
+        elif len (device.info) > 7:
+            make_and_model = device.info
+            make_and_model = re.sub("\s*(\(|\d+\.\d+\.\d+\.\d+).*$", "", make_and_model)
+        if make_and_model:
+            mk = None
+            md = None
+            (mk, md) = ppds.ppdMakeModelSplit (make_and_model)
+            device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
+            device.id_dict = cupshelpers.parseDeviceID (device.id)
+        # Check whether the device is supported by HPLIP and replace
+        # its URI by an HPLIP URI. Add an entry for fax is needed
+        if host:
+            hplipuri = self.get_hplip_uri_for_network_printer(host, "print")
+            if hplipuri:
+                device.uri = hplipuri
+                s = hplipuri.find ("/usb/")
+                if s == -1: s = hplipuri.find ("/par/")
+                if s == -1: s = hplipuri.find ("/net/")
+                if s != -1:
+                    s += 5
+                    e = hplipuri[s:].find ("?")
+                    if e == -1: e = len (hplipuri)
+                    mdl = hplipuri[s:s+e].replace ("_", " ")
+                    if mdl.startswith ("hp ") or mdl.startswith ("HP "):
+                        mdl = mdl[3:]
+                        device.make_and_model = "HP " + mdl
+                        device.id = "MFG:HP;MDL:" + mdl + ";DES:HP " + mdl + ";"
+                        device.id_dict = cupshelpers.parseDeviceID (device.id)
+        # Return the host name/IP for further actions
+        return host
+
     def fillDeviceTab(self, current_uri=None):
         try:
             devices = self.fetchDevices(current_uri)
@@ -2208,13 +2300,84 @@ class GUI:
             
         if current_uri:
             current = devices.pop(current_uri)
-        devices = devices.values()
-        devices.sort()
+        self.devices = devices.values()
+
+        for device in self.devices:
+            if device.type == "usb":
+                # Find USB URIs with corresponding HPLIP URIs and mark them
+                # for deleting, so that the user will only get the HPLIP
+                # URIs for full device support in the list
+                ser = None
+                s = device.uri.find ("?serial=")
+                if s != -1:
+                    s += 8
+                    e = device.uri[s:].find ("?")
+                    if e == -1: e = len (device.uri)
+                    ser = device.uri[s:s+e]
+                mod = None
+                s = device.uri[6:].find ("/")
+                if s != -1:
+                    s += 7
+                    e = device.uri[s:].find ("?")
+                    if e == -1: e = len (device.uri)
+                    mod = device.uri[s:s+e].lower ().replace ("%20", "_")
+                    if mod.startswith ("hp_"):
+                        mod = mod[3:]
+                matchfound = 0
+                for hpdevice in self.devices:
+                    hpser = None
+                    hpmod = None
+                    uri = hpdevice.uri
+                    if not uri.startswith ("hp:"): continue
+                    if ser:
+                        s = uri.find ("?serial=")
+                        if s != -1:
+                            s += 8
+                            e = uri[s:].find ("?")
+                            if e == -1: e = len (uri)
+                            hpser = uri[s:s+e]
+                            if hpser != ser: continue
+                            matchfound = 1
+                    if mod and not (ser and hpser):
+                        s = uri.find ("/usb/")
+                        if s != -1:
+                            s += 5
+                            e = uri[s:].find ("?")
+                            if e == -1: e = len (uri)
+                            hpmod = uri[s:s+e].lower ()
+                            if hpmod.startswith ("hp_"):
+                                hpmod = hpmod[3:]
+                            if hpmod != mod: continue
+                            matchfound = 1
+                    if matchfound == 1: break
+                if matchfound == 1:
+                    device.uri = "delete"
+            if device.type == "hal":
+                # Remove HAL USB URIs, for these printers there are already
+                # USB URIs
+                if device.uri.startswith("hal:///org/freedesktop/Hal/devices/usb_device"):
+                    device.uri = "delete"
+            if device.type in ("socket", "lpd", "ipp", "bluetooth"):
+                host = self.getNetworkPrinterMakeModel(device)
+                faxuri = None
+                if host:
+                    faxuri = self.get_hplip_uri_for_network_printer(host, "fax")
+                if faxuri:
+                    self.devices.append(cupshelpers.Device(faxuri,
+                              **{'device-class' : "direct",
+                                 'device-info' : device.info + " HP Fax HPLIP",
+                                 'device-device-make-and-model' : "HP Fax",
+                                 'device-id' : "MFG:HP;MDL:Fax;DES:HP Fax;"}))
+                if device.uri.startswith ("hp:"):
+                    device.type = "hp" 
+                    device.info += (" HPLIP")
         self.devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
                                                       "hpfax:/no_device_found",
+                                                      "hp", "hpfax",
                                                       "hal", "beh",
-                                                      "scsi", "http"),
-                              devices) 
+                                                      "scsi", "http", "delete"),
+                              self.devices)
+        self.devices.sort()
 
         self.devices.append(cupshelpers.Device('',
              **{'device-info' :_("Other")}))
@@ -2450,16 +2613,17 @@ class GUI:
 
             self.lblNPDeviceDescription.set_text (text)
         elif device.type=="socket":
-            host = device.uri[9:]
-            i = host.find (":")
-            if i != -1:
-                port = int (host[i + 1:])
-                host = host[:i]
-            else:
-                port = 9100
+            if device.uri.startswith ("socket"):
+                host = device.uri[9:]
+                i = host.find (":")
+                if i != -1:
+                    port = int (host[i + 1:])
+                    host = host[:i]
+                else:
+                    port = 9100
 
-            self.entNPTDirectJetHostname.set_text (host)
-            self.entNPTDirectJetPort.set_text (str (port))
+                self.entNPTDirectJetHostname.set_text (host)
+                self.entNPTDirectJetPort.set_text (str (port))
         elif device.type=="serial":
             if not device.is_class:
                 options = device.uri.split("?")[1]
@@ -2497,24 +2661,36 @@ class GUI:
                                             
         # XXX FILL TABS FOR VALID DEVICE URIs
         elif device.type in ("ipp", "http"):
-            server = ""
-            printer = ""
-            if url[:2] == "//":
-                p = url[2:]
-                t = p.find ('/')
-                if t != -1:
-                    server = p[:t]
-                    p = p[t + 1:]
-
-                    # Skip over 'printers/' or 'classes/'
+            if device.uri.startswith ("ipp") or device.uri.startswith ("http"):
+                server = ""
+                printer = ""
+                if url[:2] == "//":
+                    p = url[2:]
                     t = p.find ('/')
                     if t != -1:
-                        printer = p[t + 1:]
+                        server = p[:t]
+                        p = p[t + 1:]
 
-            self.entNPTIPPHostname.set_text(server)
-            self.entNPTIPPPrintername.set_text(printer)
-        elif device.type == "lpd":
-            pass # XXX
+                        # Skip over 'printers/' or 'classes/'
+                        t = p.find ('/')
+                        if t != -1:
+                            printer = p[t + 1:]
+
+                self.entNPTIPPHostname.set_text(server)
+                self.entNPTIPPPrintername.set_text(printer)
+        elif device.type=="lpd":
+            if device.uri.startswith ("lpd"):
+                host = device.uri[6:]
+                i = host.find ("/")
+                if i != -1:
+                    printer = host[i + 1:]
+                    host = host[:i]
+                else:
+                    printer = ""
+                self.cmbentNPTLpdHost.child.set_text (host)
+                self.cmbentNPTLpdQueue.child.set_text (printer)
+        elif device.uri == "lpd":
+            pass
         elif device.uri == "smb":
             self.entSMBURI.set_text('')
             self.browse_smb_hosts ()
@@ -2522,30 +2698,6 @@ class GUI:
             self.entSMBURI.set_text(device.uri[6:])
         else:
             self.entNPTDevice.set_text(device.uri)
-
-
-        self.auto_make, self.auto_model = None, None
-
-        try:
-            if self.device.id:
-                id_dict = self.device.id_dict
-                (status, ppdname) = self.ppds.\
-                                    getPPDNameFromDeviceID (id_dict["MFG"],
-                                                            id_dict["MDL"],
-                                                            id_dict["DES"],
-                                                            id_dict["CMD"],
-                                                            self.device.uri)
-
-                if status < self.ppds.STATUS_NO_DRIVER:
-                    ppddict = self.ppds.getInfoFromPPDName (ppdname)
-                    make_model = ppddict['ppd-make-and-model']
-                    (make, model) = ppds.ppdMakeModelSplit (make_model)
-                    self.auto_make = make
-                    self.auto_model = model
-        except:
-            nonfatalException ()
-
-        self.fillMakeList()
 
     def on_btnNPTLpdProbe_clicked(self, button):
         # read hostname, probe, fill printer names
@@ -2558,7 +2710,7 @@ class GUI:
             self.cmbentNPTLpdQueue.append_text(printer)
         if printers:
             self.cmbentNPTLpdQueue.set_active(0)
-        
+
     def getDeviceURI(self):
         type = self.device.type
         if type == "socket": # DirectJet
@@ -2769,7 +2921,11 @@ class GUI:
             msg = _("Going to create a new class %s.") % name
         else:
             # XXX
-            uri = self.getDeviceURI()
+            uri = None
+            if self.device.uri:
+                uri = self.device.uri
+            else:
+                uri = self.getDeviceURI()
 
             # Don't reveal SMB authentication details.
             if uri[:6] == "smb://":
@@ -2853,7 +3009,11 @@ class GUI:
                 self.show_IPP_Error(e, msg)
                 return
         elif self.dialog_mode=="printer":
-            uri = self.getDeviceURI()
+            uri = None
+            if self.device.uri:
+                uri = self.device.uri
+            else:
+                uri = self.getDeviceURI()
             ppd = get_PPD_but_handle_errors ()
             if not ppd:
                 # Go back to previous page to re-select driver.
@@ -2892,7 +3052,11 @@ class GUI:
                 return
         elif self.dialog_mode == "device":
             try:
-                uri = self.getDeviceURI()
+                uri = None
+                if self.device.uri:
+                    uri = self.device.uri
+                else:
+                    uri = self.getDeviceURI()
                 self.passwd_retry = False # use cached Passwd 
                 self.cups.addPrinter(name, device=uri)
             except cups.IPPError, (e, msg):
