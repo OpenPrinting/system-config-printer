@@ -4,6 +4,8 @@
 	that PPDs and devices have not yet been loaded.
 	(GUI.nextNPTab): Only load PPDs and devices if not already
 	loaded.
+	(GUI.getNetworkPrinterMakeModel): Protect hostname from shell
+	expansion.
 
 	* probe_printer.py (LpdServer.probe): Try leaving queue name blank
 	when probing.  This should work for e.g. HP LaserJet 3390.

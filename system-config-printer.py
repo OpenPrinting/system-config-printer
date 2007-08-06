@@ -2253,7 +2253,8 @@ class GUI:
             host = device.uri[s:s+e]
         # Try to get make and model via SNMP
         if host:
-            cmd = "/usr/lib/cups/backend/snmp " + host + " 2> /dev/null"
+            sys.environ["HOST"] = host
+            cmd = '/usr/lib/cups/backend/snmp "${HOST}" 2>/dev/null'
             p = os.popen(cmd, 'r')
             output = p.read()
             p.close()
