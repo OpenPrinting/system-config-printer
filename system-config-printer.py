@@ -1931,6 +1931,8 @@ class GUI:
         self.initNewPrinterWindow()
 
         # Start fetching information from CUPS in the background
+        self.new_printer_PPDs_loaded = False
+        self.new_printer_devices_loaded = False
         self.queryPPDs ()
         self.queryDevices ()
 
@@ -2054,9 +2056,12 @@ class GUI:
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
             self.busy (self.NewPrinterWindow)
-            self.loadPPDs()
+            if not self.new_printer_PPDs_loaded:
+                self.loadPPDs()
+                self.new_printer_PPDs_loaded = True
             if page_nr == 0:
-                self.fillDeviceTab()
+                self.fillDeviceTab(query=not self.new_printer_devices_loaded)
+                self.new_printer_devices_loaded = True
             if page_nr == 1:
                 self.auto_make, self.auto_model = None, None
                 self.device.uri = self.getDeviceURI()
@@ -2291,16 +2296,18 @@ class GUI:
         # Return the host name/IP for further actions
         return host
 
-    def fillDeviceTab(self, current_uri=None):
-        try:
-            devices = self.fetchDevices(current_uri)
-        except cups.IPPError, (e, msg):
-            self.show_IPP_Error(e, msg)
-            devices = {}
+    def fillDeviceTab(self, current_uri=None, query=True):
+        if query:
+            try:
+                devices = self.fetchDevices(current_uri)
+            except cups.IPPError, (e, msg):
+                self.show_IPP_Error(e, msg)
+                devices = {}
             
-        if current_uri:
-            current = devices.pop(current_uri)
-        self.devices = devices.values()
+            if current_uri:
+                current = devices.pop(current_uri)
+
+            self.devices = devices.values()
 
         for device in self.devices:
             if device.type == "usb":
