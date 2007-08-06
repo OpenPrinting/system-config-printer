@@ -75,7 +75,7 @@ class LpdServer:
         #if s is None:
         #    return []
         result = []
-        for name in ["PASSTHRU", "ps", "lp", "PORT1"]:
+        for name in ["PASSTHRU", "ps", "lp", "PORT1", ""]:
             self._probe_queue(name, result)
             time.sleep(0.1) # avoid DOS and following counter messures 
         for nr in range(self.max_lpt_com):
