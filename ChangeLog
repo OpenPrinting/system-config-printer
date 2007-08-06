@@ -6,6 +6,8 @@
 	loaded.
 	(GUI.getNetworkPrinterMakeModel): Protect hostname from shell
 	expansion.
+	(GUI.on_tvMainList_cursor_changed): Only allow Delete/Copy for
+	locally-defined printers (bug #250384).
 
 	* probe_printer.py (LpdServer.probe): Try leaving queue name blank
 	when probing.  This should work for e.g. HP LaserJet 3390.
