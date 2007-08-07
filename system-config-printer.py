@@ -762,6 +762,22 @@ class GUI:
 
         self.password = ''
 
+        if self.connect_server[0] == '/':
+            # UNIX domain socket.  This may potentially fail if the server
+            # settings have been changed and cupsd has written out a
+            # configuration that does not include a Listen line for the
+            # UNIX domain socket.  To handle this special case, try to
+            # connect once and fall back to "localhost" on failure.
+            try:
+                connection = cups.Connection ()
+
+                # Worked fine.  Disconnect, and we'll connect for real
+                # shortly.
+                del connection
+            except RuntimeError:
+                # When we connect, avoid the domain socket.
+                cups.setServer ("localhost")
+
         try:
             connection = cups.Connection()
             self.dropPPDs ()

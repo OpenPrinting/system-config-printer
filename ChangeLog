@@ -4,6 +4,8 @@
 	Prevent traceback (sys.environ -> os.environ).
 	(GUI.on_tvMainList_cursor_changed): Allow copying of remote
 	queues.
+	(GUI.connect): If connection via the UNIX domain socket fails,
+	fall back to local loopback.
 
 2007-08-06  Tim Waugh  <twaugh@redhat.com>
 
