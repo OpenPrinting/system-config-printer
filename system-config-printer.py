@@ -1413,7 +1413,9 @@ class GUI:
             item_selected = False
 
         is_local = item_selected and not self.printers[name].remote
-        for widget in [self.copy, self.delete, self.btnCopy, self.btnDelete]:
+        for widget in [self.copy, self.btnCopy]:
+            widget.set_sensitive(item_selected)
+        for widget in [self.delete, self.btnDelete]:
             widget.set_sensitive(is_local)
 
     def fillComboBox(self, combobox, values, value):
