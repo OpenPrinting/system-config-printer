@@ -3079,8 +3079,7 @@ class GUI:
                     check = True
                     checkppd = ppd
 
-                self.cups.enablePrinter (name)
-                self.cups.acceptJobs (name)
+                cupshelpers.activateNewPrinter (self.cups, name)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 return
