@@ -1,5 +1,10 @@
 2007-08-10  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.on_btnNPApply_clicked): Set cursor
+	busy while adding queue.
+	(GUI.cupsPasswdCallback): Wait for main loop to hide dialog before
+	returning from callback.
+
 	* cupshelpers.py (activateNewPrinter): New function.
 	* system-config-printer.py (GUI.on_btnNPApply_clicked): Use it.
 

@@ -846,6 +846,8 @@ class GUI:
 
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
+            while gtk.events_pending ():
+                gtk.main_iteration ()
             if result == gtk.RESPONSE_OK:
                 self.password = self.entPasswd.get_text()
             else:
@@ -3062,7 +3064,8 @@ class GUI:
                 # Go back to previous page to re-select driver.
                 self.nextNPTab(-1)
                 return
-        
+
+            self.busy (self.NewPrinterWindow)
             try:
                 self.passwd_retry = False # use cached Passwd
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
@@ -3081,8 +3084,10 @@ class GUI:
 
                 cupshelpers.activateNewPrinter (self.cups, name)
             except cups.IPPError, (e, msg):
+                self.ready (self.NewPrinterWindow)
                 self.show_IPP_Error(e, msg)
                 return
+            self.ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer"):
             try:
                 self.passwd_retry = False # use cached Passwd 
