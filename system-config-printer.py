@@ -3165,7 +3165,7 @@ class GUI:
                 checkppd = ppd
 
         self.NewPrinterWindow.hide()
-        self.populateList()
+        self.populateList(start_printer=name)
         if check:
             try:
                 self.checkDriverExists (name, ppd=checkppd)
