@@ -377,6 +377,23 @@ def getDevices(connection, current_uri=None):
         devices[current_uri] = device
     return devices
 
+def activateNewPrinter(connection, name):
+    """Set a new printer enabled, accepting jobs, and
+    (if necessary) the default printer."""
+    connection.enablePrinter (name)
+    connection.acceptJobs (name)
+
+    # Set first available printer as the default.
+    dests = connection.getDests ()
+    set_default = True
+    for id, dest in dests.iteritems ():
+        if dest.is_default:
+            set_default = False
+            break
+
+    if set_default:
+        connection.setDefault (name)
+
 def getPPDGroupOptions(group):
     options = group.options[:]
     for g in group.subgroups:
