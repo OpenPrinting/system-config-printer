@@ -1,3 +1,12 @@
+2007-08-10  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.getPPDs_thread): Store IPP error
+	for collection by main thread.
+	(GUI.fetchPPDs): Propagate exception.
+	(GUI.nextNPTab): Handle IPP error while fetching PPDs.
+	(GUI.fillDeviceTab): More error handling for failure to fetch
+	device list.
+
 2007-08-09  Tim Waugh  <twaugh@redhat.com>
 
 	* optionwidgets.py (OptionWidget): Treat incorrect Boolean options

@@ -510,8 +510,10 @@ class GUI:
             self.ppds_result = c.getPPDs()
             print "Closing connection (PPDs)"
             del c
+        except cups.IPPError, (e, msg):
+            self.ppds_result = cups.IPPError (e, msg)
         except:
-            pass
+            self.ppds_result = None
 
         print "Releasing PPDs lock"
         self.ppds_lock.release ()
@@ -525,6 +527,9 @@ class GUI:
         self.ppds_lock.acquire ()
         self.ppds_lock = None
         print "Got PPDs"
+        if isinstance (self.ppds_result, cups.IPPError):
+            # Propagate exception.
+            raise self.ppds_result
         return self.ppds_result
 
     def loadPPDs(self):
@@ -2076,7 +2081,16 @@ class GUI:
         elif self.dialog_mode == "printer":
             self.busy (self.NewPrinterWindow)
             if not self.new_printer_PPDs_loaded:
-                self.loadPPDs()
+                try:
+                    self.loadPPDs()
+                except cups.IPPError, (e, msg):
+                    self.ready (self.NewPrinterWindow)
+                    self.show_IPP_Error(e, msg)
+                    return
+                except:
+                    self.ready (self.NewPrinterWindow)
+                    return
+
                 self.new_printer_PPDs_loaded = True
             if page_nr == 0:
                 self.fillDeviceTab(query=not self.new_printer_devices_loaded)
@@ -2322,6 +2336,8 @@ class GUI:
                 devices = self.fetchDevices(current_uri)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
+                devices = {}
+            except:
                 devices = {}
             
             if current_uri:
