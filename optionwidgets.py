@@ -23,11 +23,19 @@ from gettext import gettext as _
 
 def OptionWidget(option, ppd, gui, tab_label=None):
     """Factory function"""
-    if option.ui == cups.PPD_UI_BOOLEAN:
+    ui = option.ui
+    if (ui == cups.PPD_UI_BOOLEAN and
+        len (option.choices) != 2):
+        # This option is advertised as a Boolean but in fact has more
+        # than two choices.
+        print "Treating Boolean option %s as PickOne" % option.keyword
+        ui = cups.PPD_UI_PICKONE
+
+    if ui == cups.PPD_UI_BOOLEAN:
         return OptionBool(option, ppd, gui, tab_label=tab_label)
-    elif option.ui == cups.PPD_UI_PICKONE:
+    elif ui == cups.PPD_UI_PICKONE:
         return OptionPickOne(option, ppd, gui, tab_label=tab_label)
-    elif option.ui == cups.PPD_UI_PICKMANY:
+    elif ui == cups.PPD_UI_PICKMANY:
         return OptionPickMany(option, ppd, gui, tab_label=tab_label)
 
 # ---------------------------------------------------------------------------
