@@ -353,13 +353,7 @@ class PrintersConf:
                 if line.strip().find("</Printer>") != -1:
                     current_printer = None
 
-def match(s1, s2):
-    if s1==s2: return len(s1)
-    for nr, (c1, c2) in enumerate(zip(s1, s2)):
-        if c1!=c2: return nr
-    return min(len(s1), len(s2))
-
-def getDevices(connection, current_uri=None):
+def getDevices(connection):
     """
     raise cups.IPPError
     """
@@ -367,14 +361,6 @@ def getDevices(connection, current_uri=None):
     for uri, data in devices.iteritems():
         device = Device(uri, **data)
         devices[uri] = device
-    if current_uri and not devices.has_key(current_uri):
-        device = Device(current_uri)
-        uri_matches = [(match(uri, current_uri), uri)
-                       for uri in devices.iterkeys()]
-                      # returns list of (match length, uri) 
-        m, uri = max(uri_matches)
-        device.info = devices[uri].info
-        devices[current_uri] = device
     return devices
 
 def activateNewPrinter(connection, name):

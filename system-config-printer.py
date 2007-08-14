@@ -78,6 +78,12 @@ def nonfatalException ():
     print extxt[0].strip ()
     print "Continuing anyway.."
 
+def validDeviceURI (uri):
+    """Returns True is the provided URI is valid."""
+    if uri.find (":/") > 0:
+        return True
+    return False
+
 class GUI:
 
     def __init__(self, start_printer = None, change_ppd = False):
@@ -1974,14 +1980,14 @@ class GUI:
     # change device
     def on_btnSelectDevice_clicked(self, button):
         self.busy (self.MainWindow)
-        self.queryDevices (self.printer.device_uri)
+        self.queryDevices ()
         self.loadPPDs()
         self.dialog_mode = "device"
+        self.fillDeviceTab(self.printer.device_uri)
         self.initNewPrinterWindow()
         self.NewPrinterWindow.set_title(_("Change Device URI"))
 
         self.ntbkNewPrinter.set_current_page(1)
-        self.fillDeviceTab(self.printer.device_uri)
 
         self.initNewPrinterWindow()
         self.ready (self.MainWindow)
@@ -2146,6 +2152,8 @@ class GUI:
             self.btnNPBack.hide()
             self.btnNPForward.hide()
             self.btnNPApply.show()
+            uri = self.getDeviceURI ()
+            self.btnNPApply.set_sensitive (validDeviceURI (uri))
             return
 
         if self.dialog_mode == "ppd":
@@ -2173,7 +2181,8 @@ class GUI:
         else:
             self.btnNPBack.show()
         if nr == 1: # Device
-            self.btnNPForward.set_sensitive(True)
+            uri = self.getDeviceURI ()
+            self.btnNPForward.set_sensitive(validDeviceURI (uri))
         if nr == 2: # Make/PPD file
             self.btnNPForward.set_sensitive(bool(
                 self.rbtnNPFoomatic.get_active() or
@@ -2213,7 +2222,7 @@ class GUI:
             self.check_NPName(new_text))
 
     # Device URI
-    def queryDevices(self, current_uri=None):
+    def queryDevices(self):
         if self.devices_lock != None:
             print "queryDevices: in progress"
             return
@@ -2223,10 +2232,10 @@ class GUI:
         self.devices_lock.acquire ()
         print "Lock acquired for devices thread"
         # Start new thread
-        thread.start_new_thread (self.getDevices_thread, (current_uri,))
+        thread.start_new_thread (self.getDevices_thread, ())
         print "Devices thread started"
 
-    def getDevices_thread(self, current_uri):
+    def getDevices_thread(self):
         try:
             print "Connecting (devices)"
             cups.setServer (self.connect_server)
@@ -2235,10 +2244,11 @@ class GUI:
             # cups.setEncryption (...)
             c = cups.Connection ()
             print "Fetching devices"
-            self.devices_result = cupshelpers.getDevices(c, current_uri)
+            self.devices_result = cupshelpers.getDevices(c)
         except cups.IPPError, (e, msg):
             self.devices_result = cups.IPPError (e, msg)
         except:
+            print "Exception in getDevices_thread"
             self.devices_result = None
 
         try:
@@ -2250,10 +2260,10 @@ class GUI:
         print "Releasing devices lock"
         self.devices_lock.release ()
 
-    def fetchDevices(self, current_uri=None):
+    def fetchDevices(self):
         print "fetchDevices"
         if self.devices_lock == None:
-            self.queryDevices (current_uri)
+            self.queryDevices ()
 
         print "Acquiring devices lock"
         self.devices_lock.acquire ()
@@ -2335,15 +2345,21 @@ class GUI:
     def fillDeviceTab(self, current_uri=None, query=True):
         if query:
             try:
-                devices = self.fetchDevices(current_uri)
+                devices = self.fetchDevices()
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 devices = {}
             except:
                 devices = {}
-            
+
             if current_uri:
-                current = devices.pop(current_uri)
+                print current_uri
+                if devices.has_key (current_uri):
+                    current = devices.pop(current_uri)
+                else:
+                    current = cupshelpers.Device (current_uri)
+                    current.info = "Current device"
+                print current.info
 
             self.devices = devices.values()
 
@@ -2429,6 +2445,7 @@ class GUI:
         if current_uri:
             current.info += _(" (Current)")
             self.devices.insert(0, current)
+            self.device = current
         model = self.tvNPDevices.get_model()
         model.clear()
 
@@ -2743,6 +2760,8 @@ class GUI:
             self.entSMBURI.set_text(device.uri[6:])
         else:
             self.entNPTDevice.set_text(device.uri)
+
+        self.setNPButtons()
 
     def on_btnNPTLpdProbe_clicked(self, button):
         # read hostname, probe, fill printer names
