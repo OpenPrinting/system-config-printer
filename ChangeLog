@@ -2,6 +2,10 @@
 
 	* system-config-printer.py (GUI.initNewPrinterWindow): Set
 	location as the hostname.
+	(GUI.get_hplip_uri_for_network_printer): Protect hostname against
+	shell expansion.
+	(GUI.fillDeviceTab): Catch non-fatal exceptions when fetching make
+	and model information from network printers.
 
 	* system-config-printer.py (GUI.nextNPTab): Switch the first two
 	pages of the New Printer wizard around, so that the device is

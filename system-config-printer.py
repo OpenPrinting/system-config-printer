@@ -2304,11 +2304,12 @@ class GUI:
         return self.devices_result
 
     def get_hplip_uri_for_network_printer(self, host, mode):
-        if mode == "print": mod = "-c "
-        elif mode == "fax": mod = "-f "
-        else: mod = "-c "
+        if mode == "print": mod = "-c"
+        elif mode == "fax": mod = "-f"
+        else: mod = "-c"
         uri = None
-        cmd = "hp-makeuri " + mod + host + " 2> /dev/null"
+        os.environ["HOST"] = host
+        cmd = 'hp-makeuri ' + mod + ' "${HOST}" 2> /dev/null'
         p = os.popen(cmd, 'r')
         uri = p.read()
         p.close()
@@ -2447,20 +2448,24 @@ class GUI:
                 # USB URIs
                 if device.uri.startswith("hal:///org/freedesktop/Hal/devices/usb_device"):
                     device.uri = "delete"
-            if device.type in ("socket", "lpd", "ipp", "bluetooth"):
-                host = self.getNetworkPrinterMakeModel(device)
-                faxuri = None
-                if host:
-                    faxuri = self.get_hplip_uri_for_network_printer(host, "fax")
-                if faxuri:
-                    self.devices.append(cupshelpers.Device(faxuri,
+            try:
+                if device.type in ("socket", "lpd", "ipp", "bluetooth"):
+                    host = self.getNetworkPrinterMakeModel(device)
+                    faxuri = None
+                    if host:
+                        faxuri = self.get_hplip_uri_for_network_printer(host,
+                                                                        "fax")
+                    if faxuri:
+                        self.devices.append(cupshelpers.Device(faxuri,
                               **{'device-class' : "direct",
                                  'device-info' : device.info + " HP Fax HPLIP",
                                  'device-device-make-and-model' : "HP Fax",
                                  'device-id' : "MFG:HP;MDL:Fax;DES:HP Fax;"}))
-                if device.uri.startswith ("hp:"):
-                    device.type = "hp" 
-                    device.info += (" HPLIP")
+                    if device.uri.startswith ("hp:"):
+                        device.type = "hp" 
+                        device.info += (" HPLIP")
+            except:
+                nonfatalException ()
         self.devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
                                                       "hpfax:/no_device_found",
                                                       "hp", "hpfax",
