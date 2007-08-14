@@ -469,7 +469,11 @@ class GUI:
             self.setConnected()
             self.populateList()
             self.show_HTTP_Error(s)
-        
+
+        # In case the user wants to add a printer, let's fetch the list
+        # of devices now.
+        self.queryDevices ()
+
     def getWidgets(self, *names):
         for name in names:
             widget = self.xml.get_widget(name)
@@ -1960,13 +1964,14 @@ class GUI:
         
         self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
 
+        self.busy (self.MainWindow)
+        self.fillDeviceTab ()
+        self.ready (self.MainWindow)
         self.initNewPrinterWindow()
 
         # Start fetching information from CUPS in the background
         self.new_printer_PPDs_loaded = False
-        self.new_printer_devices_loaded = False
         self.queryPPDs ()
-        self.queryDevices ()
 
     # new class
     def on_new_class_activate(self, widget):
@@ -2034,7 +2039,8 @@ class GUI:
 
     def initNewPrinterWindow(self):
         if self.dialog_mode in ("printer", "class"):
-            self.ntbkNewPrinter.set_current_page(0)
+            # Start on devices page (1, not 0)
+            self.ntbkNewPrinter.set_current_page(1)
             self.entNPName.set_text ('printer')
             self.entNPName.grab_focus()
             for widget in [self.entNPLocation,
@@ -2088,22 +2094,31 @@ class GUI:
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
             self.busy (self.NewPrinterWindow)
-            if not self.new_printer_PPDs_loaded:
+            if page_nr == 1: # Device
+                # Choose an appropriate name.
+                name = 'printer'
                 try:
-                    self.loadPPDs()
-                except cups.IPPError, (e, msg):
-                    self.ready (self.NewPrinterWindow)
-                    self.show_IPP_Error(e, msg)
-                    return
+                    if self.device.id:
+                        name = self.device.id_dict["MDL"]
+                    name = name.replace (" ", "_")
+                    name = name.replace ("/", "_")
+                    name = name.replace ("#", "_")
+                    self.entNPName.set_text (name)
                 except:
-                    self.ready (self.NewPrinterWindow)
-                    return
-
+                    nonfatalException ()
+            elif page_nr == 0: # Name
+                if not self.new_printer_PPDs_loaded:
+                    try:
+                        self.loadPPDs()
+                    except cups.IPPError, (e, msg):
+                        self.ready (self.NewPrinterWindow)
+                        self.show_IPP_Error(e, msg)
+                        return
+                    except:
+                        self.ready (self.NewPrinterWindow)
+                        return
                 self.new_printer_PPDs_loaded = True
-            if page_nr == 0:
-                self.fillDeviceTab(query=not self.new_printer_devices_loaded)
-                self.new_printer_devices_loaded = True
-            if page_nr == 1:
+
                 self.auto_make, self.auto_model = None, None
                 self.device.uri = self.getDeviceURI()
                 if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
@@ -2130,9 +2145,9 @@ class GUI:
                 self.fillMakeList()
             self.ready (self.NewPrinterWindow)
             if self.rbtnNPFoomatic.get_active():
-                order = [0, 1, 2, 3, 5]
+                order = [1, 0, 2, 3, 5]
             else:
-                order = [0, 1, 2, 5]
+                order = [1, 0, 2, 5]
         elif self.dialog_mode == "device":
             order = [1]
         elif self.dialog_mode == "ppd":
@@ -2174,15 +2189,21 @@ class GUI:
 
         # class/printer
 
-        if nr == 0: # name
-            self.btnNPBack.hide()
-            self.btnNPForward.set_sensitive(
-                self.check_NPName(self.entNPName.get_text()))
+        if nr == 1: # Device
+            valid = False
+            try:
+                uri = self.getDeviceURI ()
+                valid = validDeviceURI (uri)
+            except:
+                pass
+            self.btnNPForward.set_sensitive(valid)
+            self.btnNPBack.hide ()
         else:
             self.btnNPBack.show()
-        if nr == 1: # Device
-            uri = self.getDeviceURI ()
-            self.btnNPForward.set_sensitive(validDeviceURI (uri))
+        if nr == 0: # Name
+            self.btnNPBack.show()
+            self.btnNPForward.set_sensitive(
+                self.check_NPName(self.entNPName.get_text()))
         if nr == 2: # Make/PPD file
             self.btnNPForward.set_sensitive(bool(
                 self.rbtnNPFoomatic.get_active() or

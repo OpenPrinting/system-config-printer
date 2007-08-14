@@ -1,5 +1,17 @@
 2007-08-14  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.nextNPTab): Switch the first two
+	pages of the New Printer wizard around, so that the device is
+	chosen first and then the name.
+	(GUI.initNewPrinterWindow): Likewise.
+	(GUI.__init__): Query devices as soon as the application is
+	started.
+	(GUI.on_new_printer_activate): Fill device tab first when
+	displaying the New Printer wizard.
+	(GUI.nextNPTab): Choose an appropriate name for the new queue if
+	possible.
+	(GUI.setNPButtons): Adjust which pages get forward/back buttons.
+
 	* ppds.py (PPDs.getPPDNameFromDeviceID): Unbreak HPLIP made-up
 	Device IDs.
 
