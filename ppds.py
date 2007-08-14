@@ -44,6 +44,12 @@ def ppdMakeModelSplit (ppd_make_and_model):
             return model[:-len(suffix)]
         return model
 
+    # Model names do not contain a comma, truncate all from the
+    # comma on
+    c = model.find (",")
+    if c != -1:
+        model = model[:c]
+
     # HP PPDs give NickNames like:
     # *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
     # Find the version number.
