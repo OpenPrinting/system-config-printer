@@ -2049,6 +2049,14 @@ class GUI:
                            self.entSMBPassword, self.entNPTDirectJetHostname]:
                 widget.set_text('')
 
+            try:
+                p = os.popen ('/bin/hostname', 'r')
+                hostname = p.read ().strip ()
+                p.close ()
+                self.entNPLocation.set_text (hostname)
+            except:
+                nonfatalException ()
+
         self.entNPTDirectJetPort.set_text('9100')
         self.setNPButtons()
         self.NewPrinterWindow.set_transient_for(self.MainWindow)
