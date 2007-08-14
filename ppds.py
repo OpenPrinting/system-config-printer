@@ -306,7 +306,17 @@ class PPDs:
             status = self.STATUS_SUCCESS
             id_matched = True
         except KeyError:
-            ppdnamelist = None
+            if uri.startswith ("hp:") or uri.startswith ("hpfax:"):
+                # The HPLIP backends make up incorrect IDs.
+                if mfg == "HP":
+                    try:
+                        ppdnamelist = self.ids['hewlett-packard'][mdl.lower ()]
+                        status = self.STATUS_SUCCESS
+                        id_matched = True
+                    except KeyError:
+                        pass
+            if not id_matched:
+                ppdnamelist = None
 
         debugprint ("Trying make/model names")
         mfgl = mfg.lower ()
