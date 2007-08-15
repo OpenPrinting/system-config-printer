@@ -306,7 +306,7 @@ class PPDs:
             status = self.STATUS_SUCCESS
             id_matched = True
         except KeyError:
-            if uri.startswith ("hp:") or uri.startswith ("hpfax:"):
+            if uri and (uri.startswith ("hp:") or uri.startswith ("hpfax:")):
                 # The HPLIP backends make up incorrect IDs.
                 if mfg == "HP":
                     try:
@@ -423,6 +423,9 @@ class PPDs:
     def _findBestMatchPPDs (self, mdls, mdl):
         debugprint ("Trying best match")
         mdl = mdl.lower ()
+        if mdl.endswith (" series"):
+            # Strip " series" from the end of the MDL field.
+            mdl = mdl[:-7]
         best_mdl = None
         best_matchlen = 0
         mdlnames = mdls.keys ()
@@ -606,6 +609,7 @@ def main():
     for id in [
         "MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;DES:EPSON Stylus D78;",
         "MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;CLS:PRINTER;1284.4DL:4d,4e,1;",
+        "MFG:HP;MDL:PSC 2200 Series;CLS:PRINTER;DES:PSC 2200 Series;", # from HPLIP
         "MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;",
         "CLASS:PRINTER;MODEL:HP LaserJet 6MP;MANUFACTURER:Hewlett-Packard;DESCRIPTION:Hewlett-Packard LaserJet 6MP Printer;COMMAND SET:PJL,MLC,PCLXL,PCL,POSTSCRIPT;",
         "MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
