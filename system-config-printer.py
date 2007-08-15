@@ -1441,7 +1441,21 @@ class GUI:
             self.setTestButton (self.printer)
             return
         try:
-            job_id = self.cups.printTestPage(self.printer.name)
+            # if we have a page size specific custom test page, use it;
+            # otherwise use cups' default one
+            custom_testpage = None
+            opt = self.ppd.findOption ("PageSize")
+            if opt:
+                custom_testpage = os.path.join(pkgdata, 'testpage-%s.ps' % opt.defchoice.lower())
+
+            if custom_testpage and os.path.exists(custom_testpage):
+                print 'Printing custom test page', custom_testpage
+                job_id = self.cups.printTestPage(self.printer.name,
+                    file=custom_testpage)
+            else:
+                print 'Printing default test page'
+                job_id = self.cups.printTestPage(self.printer.name)
+
             self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
                                      _("Submitted") + '</span>\n\n' +
                                      _("Test page submitted as "
