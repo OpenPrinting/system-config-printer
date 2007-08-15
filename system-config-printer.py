@@ -226,6 +226,8 @@ class GUI:
 
                         "AboutDialog", "lblVersion", "lblCopyright",
                         "lblAuthors",
+
+                        "WaitWindow", "lblWait",
                         )
 
         # Set up "About" dialog strings.
@@ -470,10 +472,6 @@ class GUI:
             self.populateList()
             self.show_HTTP_Error(s)
 
-        # In case the user wants to add a printer, let's fetch the list
-        # of devices now.
-        self.queryDevices ()
-
     def getWidgets(self, *names):
         for name in names:
             widget = self.xml.get_widget(name)
@@ -505,10 +503,10 @@ class GUI:
         self.ppds_lock.acquire ()
         print "Lock acquired for PPDs thread"
         # Start new thread
-        thread.start_new_thread (self.getPPDs_thread, ())
+        thread.start_new_thread (self.getPPDs_thread, (self.language[0],))
         print "PPDs thread started"
 
-    def getPPDs_thread(self):
+    def getPPDs_thread(self, language):
         try:
             print "Connecting (PPDs)"
             cups.setServer (self.connect_server)
@@ -517,7 +515,8 @@ class GUI:
             # cups.setEncryption (...)
             c = cups.Connection ()
             print "Fetching PPDs"
-            self.ppds_result = c.getPPDs()
+            ppds_dict = c.getPPDs()
+            self.ppds_result = ppds.PPDs(ppds_dict, language=language)
             print "Closing connection (PPDs)"
             del c
         except cups.IPPError, (e, msg):
@@ -528,10 +527,31 @@ class GUI:
         print "Releasing PPDs lock"
         self.ppds_lock.release ()
 
-    def fetchPPDs(self):
+    def fetchPPDs(self, parent=None):
         print "fetchPPDs"
         if self.ppds_lock == None:
             self.queryPPDs()
+            time.sleep (0.1)
+
+        # Keep the UI refreshed while we wait for the devices to load.
+        waiting = False
+        while (self.ppds_lock and
+               self.ppds_lock.locked ()):
+            if not waiting:
+                waiting = True
+                self.lblWait.set_text (_("Searching for drivers"))
+                if not parent:
+                    parent = self.MainWindow
+                self.WaitWindow.set_transient_for (parent)
+                self.WaitWindow.show ()
+
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
+            time.sleep (0.1)
+
+        if waiting:
+            self.WaitWindow.hide ()
 
         print "Acquiring PPDs lock"
         self.ppds_lock.acquire ()
@@ -542,12 +562,11 @@ class GUI:
             raise self.ppds_result
         return self.ppds_result
 
-    def loadPPDs(self):
+    def loadPPDs(self, parent=None):
         try:
             return self.ppds
         except:
-            self.queryPPDs ()
-            self.ppds = ppds.PPDs(self.fetchPPDs (), language=self.language[0])
+            self.ppds = self.fetchPPDs (parent=parent)
             return self.ppds
 
     def dropPPDs(self):
@@ -2117,7 +2136,7 @@ class GUI:
 
                 if not self.new_printer_PPDs_loaded:
                     try:
-                        self.loadPPDs()
+                        self.loadPPDs(self.NewPrinterWindow)
                     except cups.IPPError, (e, msg):
                         self.ready (self.NewPrinterWindow)
                         self.show_IPP_Error(e, msg)
@@ -2305,10 +2324,31 @@ class GUI:
         print "Releasing devices lock"
         self.devices_lock.release ()
 
-    def fetchDevices(self):
+    def fetchDevices(self, parent=None):
         print "fetchDevices"
         if self.devices_lock == None:
             self.queryDevices ()
+            time.sleep (0.1)
+
+        # Keep the UI refreshed while we wait for the devices to load.
+        waiting = False
+        while (self.devices_lock and
+               self.devices_lock.locked ()):
+            if not waiting:
+                waiting = True
+                self.lblWait.set_text (_("Searching for printers"))
+                if not parent:
+                    parent = self.MainWindow
+                self.WaitWindow.set_transient_for (parent)
+                self.WaitWindow.show ()
+
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
+            time.sleep (0.1)
+
+        if waiting:
+            self.WaitWindow.hide ()
 
         print "Acquiring devices lock"
         self.devices_lock.acquire ()

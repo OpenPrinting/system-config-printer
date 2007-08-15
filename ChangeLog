@@ -1,5 +1,10 @@
 2007-08-15  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade (WaitWindow): New window.
+	* system-config-printer.py: Responsiveness improvements.  Call
+	into the main GTK+ loop when waiting for threads to finish, and
+	index PPDs in the PPD thread.
+
 	* system-config-printer.py (GUI.nextNPTab): Ask for name, location
 	and description after model selection (Ubuntu #132227).
 	(GUI.nextNPTab): Choose printer name based on selected model if no
