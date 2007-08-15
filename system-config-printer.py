@@ -539,7 +539,9 @@ class GUI:
                self.ppds_lock.locked ()):
             if not waiting:
                 waiting = True
-                self.lblWait.set_text (_("Searching for drivers"))
+                self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                         _('Searching') + '</span>\n\n' +
+                                         _('Searching for drivers'))
                 if not parent:
                     parent = self.MainWindow
                 self.WaitWindow.set_transient_for (parent)
@@ -868,6 +870,9 @@ class GUI:
 
     def cupsPasswdCallback(self, querystring):
         if self.passwd_retry or len(self.password) == 0:
+            waiting = self.WaitWindow.get_property('visible')
+            if waiting:
+                self.WaitWindow.hide ()
             self.lblPasswordPrompt.set_label (self.prompt_primary +
                                               querystring)
             self.PasswordDialog.set_transient_for (self.MainWindow)
@@ -875,6 +880,8 @@ class GUI:
 
             result = self.PasswordDialog.run()
             self.PasswordDialog.hide()
+            if waiting:
+                self.WaitWindow.show ()
             while gtk.events_pending ():
                 gtk.main_iteration ()
             if result == gtk.RESPONSE_OK:
@@ -2346,7 +2353,9 @@ class GUI:
                self.devices_lock.locked ()):
             if not waiting:
                 waiting = True
-                self.lblWait.set_text (_("Searching for printers"))
+                self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                         _('Searching') + '</span>\n\n' +
+                                         _('Searching for printers'))
                 if not parent:
                     parent = self.MainWindow
                 self.WaitWindow.set_transient_for (parent)
@@ -3185,6 +3194,13 @@ class GUI:
                 return
 
             self.busy (self.NewPrinterWindow)
+            self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                     _('Adding') + '</span>\n\n' +
+                                     _('Adding printer'))
+            self.WaitWindow.set_transient_for (self.NewPrinterWindow)
+            self.WaitWindow.show ()
+            while gtk.events_pending ():
+                gtk.main_iteration ()
             try:
                 self.passwd_retry = False # use cached Passwd
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
@@ -3205,7 +3221,9 @@ class GUI:
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
                 self.show_IPP_Error(e, msg)
+                self.WaitWindow.hide ()
                 return
+            self.WaitWindow.hide ()
             self.ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer"):
             try:
