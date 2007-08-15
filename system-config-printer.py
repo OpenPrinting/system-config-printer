@@ -3533,6 +3533,9 @@ class GUI:
         except cups.IPPError, (e, m):
             self.show_IPP_Error(e, m)
             return True
+        except RuntimeError, s:
+            self.show_IPP_Error(None, s)
+            return True
         self.changed = set()
         self.setDataButtonState()
         time.sleep(1) # give the server a chance to process our request
