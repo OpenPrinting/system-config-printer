@@ -93,15 +93,16 @@ class GUI:
         
         self.printer = None
         self.conflicts = set() # of options
-        self.connect_server = 'localhost'
-        self.connect_user = 'root'
+        self.connect_server = (self.printer and self.printer.getServer()) \
+                               or cups.getServer()	
+        self.connect_user = cups.getUser()
         self.password = ''
         self.passwd_retry = False
         cups.setPasswordCB(self.cupsPasswdCallback)        
 
         self.changed = set() # of options
 
-        self.servers = set(("localhost",))
+        self.servers = set((self.connect_server,))
 
         # Synchronisation objects.
         self.ppds_lock = None
@@ -3572,8 +3573,7 @@ class GUI:
         self.reconnect ()
 
 def main(start_printer = None, change_ppd = False):
-    # The default configuration requires root for administration.
-    cups.setUser ("root")
+    cups.setUser (cups.getUser())
     gtk.gdk.threads_init()
     gtk.gdk.threads_enter()
 
