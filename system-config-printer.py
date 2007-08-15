@@ -2102,7 +2102,7 @@ class GUI:
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
             self.busy (self.NewPrinterWindow)
-            if page_nr == 1: # Device
+            if page_nr == 1: # Device (first page)
                 # Choose an appropriate name.
                 name = 'printer'
                 try:
@@ -2114,7 +2114,7 @@ class GUI:
                     self.entNPName.set_text (name)
                 except:
                     nonfatalException ()
-            elif page_nr == 0: # Name
+
                 if not self.new_printer_PPDs_loaded:
                     try:
                         self.loadPPDs()
@@ -2151,11 +2151,27 @@ class GUI:
                     nonfatalException ()
 
                 self.fillMakeList()
+            elif page_nr == 3: # Model has been selected
+                if not self.device.id:
+                    # Choose an appropriate name when no Device ID
+                    # is available, based on the model the user has
+                    # selected.
+                    try:
+                        model, iter = self.tvNPModels.get_selection ().\
+                                      get_selected ()
+                        name = model.get(iter, 0)[0]
+                        name = name.replace (" ", "_")
+                        name = name.replace ("/", "_")
+                        name = name.replace ("#", "_")
+                        self.entNPName.set_text (name)
+                    except:
+                        nonfatalException ()
+
             self.ready (self.NewPrinterWindow)
             if self.rbtnNPFoomatic.get_active():
-                order = [1, 0, 2, 3, 5]
+                order = [1, 2, 3, 0, 5]
             else:
-                order = [1, 0, 2, 5]
+                order = [1, 2, 0, 5]
         elif self.dialog_mode == "device":
             order = [1]
         elif self.dialog_mode == "ppd":
