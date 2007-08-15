@@ -2,6 +2,9 @@
 
 	* system-config-printer.py (GUI.save_serversettings): Handle
 	RuntimeError from cups.adminSetServerSettings (Ubuntu #131848).
+	(GUI.makeNameUnique): New method, for creating unique queue
+	names (Ubuntu #132227).
+	(GUI.nextNPTab): Use it.
 
 	* ppds.py (PPDs._findBestMatchPPDs): Don't try to match 'series'
 	in Device ID MDL fields.

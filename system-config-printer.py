@@ -2127,9 +2127,7 @@ class GUI:
                 try:
                     if self.device.id:
                         name = self.device.id_dict["MDL"]
-                    name = name.replace (" ", "_")
-                    name = name.replace ("/", "_")
-                    name = name.replace ("#", "_")
+                    name = self.makeNameUnique (name)
                     self.entNPName.set_text (name)
                 except:
                     nonfatalException ()
@@ -2179,9 +2177,7 @@ class GUI:
                         model, iter = self.tvNPModels.get_selection ().\
                                       get_selected ()
                         name = model.get(iter, 0)[0]
-                        name = name.replace (" ", "_")
-                        name = name.replace ("/", "_")
-                        name = name.replace ("#", "_")
+                        name = self.makeNameUnique (name)
                         self.entNPName.set_text (name)
                     except:
                         nonfatalException ()
@@ -2273,6 +2269,20 @@ class GUI:
                 return False
         return True
     
+    def makeNameUnique(self, name):
+        """Make a suggested queue name valid and unique."""
+        name = name.replace (" ", "_")
+        name = name.replace ("/", "_")
+        name = name.replace ("#", "_")
+        if not self.check_NPName (name):
+            suffix=1
+            while not self.check_NPName (name + str (suffix)):
+                suffix += 1
+                if suffix == 100:
+                    break
+            name += str (suffix)
+        return name
+
     def on_entNPName_changed(self, widget):
         # restrict
         text = widget.get_text()
