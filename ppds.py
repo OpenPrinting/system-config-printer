@@ -376,10 +376,22 @@ class PPDs:
             debugprint ("Text-only fallback")
             status = self.STATUS_NO_DRIVER
             ppdnamelist = ["textonly.ppd"]
-            if not self.ppds.has_key (ppdnamelist[0]):
+            tppdfound = 0
+            for ppdpath in self.ppds.keys ():
+                if ppdpath.endswith (ppdnamelist[0]):
+                    tppdfound = 1
+                    ppdnamelist = [ppdpath]
+                    break
+            if tppdfound == 0:
                 debugprint ("No text-only driver?!  Using postscript.ppd")
                 ppdnamelist = ["postscript.ppd"]
-                if not self.ppds.has_key (ppdnamelist[0]):
+                psppdfound = 0
+                for ppdpath in self.ppds.keys ():
+                    if ppdpath.endswith (ppdnamelist[0]):
+                        psppdfound = 1
+                        ppdnamelist = [ppdpath]
+                        break
+                if psppdfound == 0:
                     debugprint ("No postscript.ppd; choosing any")
                     ppdnamelist = [self.ppds.keys ()[0]]
 
