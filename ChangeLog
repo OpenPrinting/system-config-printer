@@ -1,4 +1,14 @@
+2007-08-16  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py (PPDs.getPPDNameFromDeviceID): Better fall-back if no
+	textonly.ppd is available.
+
 2007-08-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): New optional
+	argument for selecting an initial printer after connection (Ubuntu
+	#132652).
+	(GUI.populateList): Initially select default/first printer/class.
 
 	* system-config-printer.py (GUI.save_serversettings): Handle
 	RuntimeError from cups.adminSetServerSettings (Ubuntu #131848).
