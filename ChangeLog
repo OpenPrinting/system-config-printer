@@ -1,3 +1,9 @@
+2007-08-16  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* ppds.py: Allow textonly.ppd and postscript.ppd (for fallback on
+	unknown printer models) to be at any arbitrary place in the PPD
+	file directories
+	
 2007-08-16  Tim Waugh  <twaugh@redhat.com>
 
 	* ppds.py (PPDs.getPPDNameFromDeviceID): Better fall-back if no
@@ -6,6 +12,26 @@
 	searching for the model ID word, with decreasing significant
 	figures.
 
+2007-08-15  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Added support for custom
+	page-size-specific test pages. When clicking "Test Page"
+	system-config-printer looks at first for a file
+	/usr/share/system-config-printer/testpage-<PageSize>.ps where
+	<PageSize> is the current page size setting of the printer
+	(case-insensitive matching). If such a file is there, it will be
+	printed, otherwise the standard CUPS test page. This allows
+	distributions to place custom test pages (Thanks to Martin Pitt
+	from Ubuntu/Debian).
+
+	* system-config-printer.py: Made system-config-printer more
+	flexible for special situations:
+          - system-config-printer can be started and used by users in
+	    the lpadmin group now
+	  - system-config-printer can be started on systems without local CUPS
+	    deamon (with client.conf pointing to a remote server)
+	This should not break running system-config-printer as root.
+	
 2007-08-15  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.populateList): New optional
@@ -66,6 +92,11 @@
 	(GUI.setNPButtons): Validate device URI.
 	(validDeviceURI): New function for validating device URIs.
 	(GUI.fillDeviceTab): Fix display of current URI.
+
+2007-08-14  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* ppds.py: Strip version numbers from model name (ex: "ML-1610,
+	1.0")
 
 2007-08-10  Tim Waugh  <twaugh@redhat.com>
 
