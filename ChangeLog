@@ -2,6 +2,9 @@
 
 	* ppds.py (PPDs.getPPDNameFromDeviceID): Better fall-back if no
 	textonly.ppd is available.
+	(PPDs._findBestMatchPPDs): If no match is found at all, try
+	searching for the model ID word, with decreasing significant
+	figures.
 
 2007-08-15  Tim Waugh  <twaugh@redhat.com>
 

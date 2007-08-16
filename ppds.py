@@ -424,6 +424,11 @@ class PPDs:
         return (status, ppdnamelist[0])
 
     def _findBestMatchPPDs (self, mdls, mdl):
+        """
+        Find the best-matching PPDs based on the MDL Device ID.
+        This function could be made a lot smarter.
+        """
+
         debugprint ("Trying best match")
         mdl = mdl.lower ()
         if mdl.endswith (" series"):
@@ -457,6 +462,70 @@ class PPDs:
         else:
             status = self.STATUS_NO_DRIVER
             ppdnamelist = None
+
+            # Last resort.  Find the "most important" word in the MDL
+            # field and look for a match based solely on that.  If
+            # there are digits, try lowering the number of
+            # significant figures.
+            modelid = None
+            for word in mdl.split (' '):
+                if modelid == None:
+                    modelid = word
+
+                have_digits = False
+                for i in range (len (word)):
+                    if word[i].isdigit ():
+                        have_digits = True
+                        break
+
+                if have_digits:
+                    modelid = word
+                    break
+
+            digits = 0
+            digits_start = -1
+            digits_end = -1
+            for i in range (len (modelid)):
+                if word[i].isdigit ():
+                    if digits_start == -1:
+                        digits_start = i
+                    digits_end = i
+                    digits += 1
+            digits_end += 1
+            modelnumber = int (modelid[digits_start:digits_end])
+            modelpattern = (modelid[:digits_start] + "%d" +
+                            modelid[digits_end:])
+            debugprint ("Searching for model ID '%s', '%s' %% %d" %
+                        (modelid, modelpattern, modelnumber))
+            ignore_digits = 0
+            best_mdl = None
+            found = False
+            while ignore_digits < digits:
+                div = pow (10, ignore_digits)
+                modelid = modelpattern % ((modelnumber / div) * div)
+                debugprint ("Ignoring %d of %d digits, trying %s" %
+                            (ignore_digits, digits, modelid))
+
+                for (name, ppds) in mdlitems:
+                    for word in name.split (' '):
+                        if word == modelid:
+                            found = True
+                            break
+
+                    if found:
+                        best_mdl = ppds.keys ()
+                        break
+
+                if found:
+                    break
+
+                ignore_digits += 1
+                if digits < 2:
+                    break
+
+            if found:
+                ppdnamelist = best_mdl
+                status = self.STATUS_MODEL_MISMATCH
 
         return (status, ppdnamelist)
 
@@ -615,6 +684,7 @@ def main():
         "MFG:HP;MDL:PSC 2200 Series;CLS:PRINTER;DES:PSC 2200 Series;", # from HPLIP
         "MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;",
         "CLASS:PRINTER;MODEL:HP LaserJet 6MP;MANUFACTURER:Hewlett-Packard;DESCRIPTION:Hewlett-Packard LaserJet 6MP Printer;COMMAND SET:PJL,MLC,PCLXL,PCL,POSTSCRIPT;",
+        "MFG:Canon;CMD:BJL,BJRaster3,BSCCe;SOJ:TXT01;MDL:iP3000;CLS:PRINTER;DES:Canon iP3000;VER:1.09;STA:10;FSI:03;",
         "MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
         "MFG:New;MDL:Unknown PCL6 Printer;CMD:PCLXL;",
         "MFG:New;MDL:Unknown PCL5e Printer;CMD:PCL5e;",
