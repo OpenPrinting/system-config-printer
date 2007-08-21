@@ -2171,6 +2171,7 @@ class GUI:
                 if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
                     host = self.getNetworkPrinterMakeModel(self.device)
                 try:
+                    ppdname = None
                     if self.device.id:
                         id_dict = self.device.id_dict
                         (status, ppdname) = self.ppds.\
@@ -2179,13 +2180,20 @@ class GUI:
                                                     id_dict["DES"],
                                                     id_dict["CMD"],
                                                     self.device.uri)
-
-                        if ppdname:
-                            ppddict = self.ppds.getInfoFromPPDName (ppdname)
-                            make_model = ppddict['ppd-make-and-model']
-                            (make, model) = ppds.ppdMakeModelSplit (make_model)
-                            self.auto_make = make
-                            self.auto_model = model
+                    else:
+                        (status, ppdname) = self.ppds.\
+                            getPPDNameFromDeviceID ("Generic",
+                                                    "Printer",
+                                                    "Generic Printer",
+                                                    [],
+                                                    self.device.uri)
+                        
+                    if ppdname:
+                        ppddict = self.ppds.getInfoFromPPDName (ppdname)
+                        make_model = ppddict['ppd-make-and-model']
+                        (make, model) = ppds.ppdMakeModelSplit (make_model)
+                        self.auto_make = make
+                        self.auto_model = model
                 except:
                     nonfatalException ()
 
