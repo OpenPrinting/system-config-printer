@@ -78,8 +78,15 @@ def get_domain_list ():
     for l in os.popen (str, 'r').readlines ():
 	l = l.splitlines()[0]
 	if l.endswith("<01>"):
-		ips.append (l.split(" ")[0])
-			
+            ips.append (l.split(" ")[0])
+    if len (ips) <= 0:
+        if wins:
+            str = "LC_ALL=C %s -U %s '*' 2>&1" % (nmblookup, wins)
+	else:
+            str = "LC_ALL=C %s '*' 2>&1" % (nmblookup)
+	for l in os.popen (str, 'r').readlines ():
+            l = l.splitlines()[0]
+	    ips.append (l.split(" ")[0])
 
     for ip in ips:
         dom = None
@@ -193,6 +200,8 @@ def get_printer_list (host):
 
     signal.signal (signal.SIGCHLD, signal.SIG_DFL)
     section = 0
+    typepos = 0
+    commentpos = 0
     for l in os.popen (str, 'r'):
         l = l.strip ()
         if l == "":
@@ -205,10 +214,20 @@ def get_printer_list (host):
 
             continue
 
-        if section != 1:
-            continue
+	if section == 0:
+	    if l.find ("Sharename ") != -1:
+	        typepos = l.find (" Type ") + 1
+                commentpos = l.find (" Comment") + 1
+	    continue
 
-        share = l[:l.find (" ")]
+        if section != 1:
+	    continue
+
+        share = l[:l[typepos:].find (" " + "Printer".ljust (commentpos - typepos, " ")) + typepos].strip ()
+	if share == -1 and share.endswith (" Printer"):
+            share = l[:- len (" Printer")].strip ()
+	if share == -1:
+            continue
         rest = l[len (share):].strip ()
         end = rest.find (" ")
         if end == -1:

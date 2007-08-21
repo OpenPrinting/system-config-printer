@@ -1,5 +1,10 @@
 2007-08-21  Till Kamppeter  <till.kamppeter@gmail.com>
 
+	* pysmb.py: "nmblookup -M -- -" not always gives a result. If not,
+	fall back to "nmblookup '*'". This should fix Ubuntu bug 127152.
+	If a printer share name has spaces, it got truncated at its first
+	space this is fixed now and should fix Ubuntu bug 128261.
+
 	* system-config-printer.py: Extract make and model name from the
 	PPD file for positioning the cursor in the make/model selection
 	whenever a PPD file was found, also with STATUS_NO_DRIVER.
@@ -7,6 +12,7 @@
 	a non-existing device ID to get a fallback PPD (like textonly.ppd or
 	postscript.ppd). This way the model selection cursor is never simply
 	set onto the first entry of the "Generic" printers.
+	This two changes fix Ubuntu bug 102389.
 
 	* ppds.py: Let the PPDs coming with CUPS have higher priority than the
 	"Generic" PPDs of Foomatic, but lower priority than model-specific
