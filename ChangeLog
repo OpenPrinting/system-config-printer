@@ -4,6 +4,10 @@
 	PPD file for positioning the cursor in the make/model selection
 	whenever a PPD file was found, also with STATUS_NO_DRIVER.
 
+	* ppds.py: Let the PPDs coming with CUPS have higher priority than the
+	"Generic" PPDs of Foomatic, but lower priority than model-specific
+	Foomatic PPDs.
+
 2007-08-16  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* ppds.py: Allow textonly.ppd and postscript.ppd (for fallback on

@@ -109,6 +109,7 @@ DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 50
 DRIVER_TYPE_FOOMATIC_GUTENPRINT = 60
 DRIVER_TYPE_FOOMATIC = 70
 DRIVER_TYPE_CUPS = 80
+DRIVER_TYPE_FOOMATIC_GENERIC = 90
 DRIVER_DOES_NOT_WORK = 999
 def getDriverType (ppdname):
     """Decides which of the above types ppdname is."""
@@ -124,6 +125,8 @@ def getDriverType (ppdname):
         return DRIVER_TYPE_CUPS
     if ppdname.startswith ("foomatic:"):
         # Foomatic (generated) -- but which driver?
+        if ppdname.find ("Generic")!= -1:
+            return DRIVER_TYPE_FOOMATIC_GENERIC
         if ppdname.find ("(recommended)")!= -1:
             return DRIVER_TYPE_FOOMATIC_RECOMMENDED
         if ppdname.find ("-Postscript")!= -1:
