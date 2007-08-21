@@ -2180,7 +2180,7 @@ class GUI:
                                                     id_dict["CMD"],
                                                     self.device.uri)
 
-                        if status < self.ppds.STATUS_NO_DRIVER:
+                        if ppdname:
                             ppddict = self.ppds.getInfoFromPPDName (ppdname)
                             make_model = ppddict['ppd-make-and-model']
                             (make, model) = ppds.ppdMakeModelSplit (make_model)
