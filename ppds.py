@@ -507,7 +507,9 @@ class PPDs:
                     digits_end = i
                     digits += 1
             digits_end += 1
-            modelnumber = int (modelid[digits_start:digits_end])
+            modelnumber = 0
+            if digits > 0:
+                modelnumber = int (modelid[digits_start:digits_end])
             modelpattern = (modelid[:digits_start] + "%d" +
                             modelid[digits_end:])
             debugprint ("Searching for model ID '%s', '%s' %% %d" %

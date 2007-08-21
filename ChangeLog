@@ -3,7 +3,6 @@
 	* system-config-printer.py: Extract make and model name from the
 	PPD file for positioning the cursor in the make/model selection
 	whenever a PPD file was found, also with STATUS_NO_DRIVER.
-
 	If there is no device ID information at all call PPD search with
 	a non-existing device ID to get a fallback PPD (like textonly.ppd or
 	postscript.ppd). This way the model selection cursor is never simply
@@ -12,6 +11,8 @@
 	* ppds.py: Let the PPDs coming with CUPS have higher priority than the
 	"Generic" PPDs of Foomatic, but lower priority than model-specific
 	Foomatic PPDs.
+	(PPDs._findBestMatchPPDs): This function raised an exception on model
+	names without digits.
 
 2007-08-16  Till Kamppeter  <till.kamppeter@gmail.com>
 
