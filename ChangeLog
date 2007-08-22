@@ -1,3 +1,17 @@
+2007-08-22  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* pysmb.py: Added new function get_host_list_from_domain() which
+	lists all hosts belonging to a given domain using the command
+	"nmblookup -R '<DOMAIN>'" and getting the SMB names of the hosts
+	via "nmblookup -A <IP>". This is more reliable than the old
+	function get_host_list() which uses "smbclient -N -L //<DOMAIN IP>".
+	See Ubuntu bug 127152.
+	Modified the test procedure to use the new function.
+
+	* system-config-printer.py: Look up the hosts in a domain with the
+	new get_host_list_from_domain() function. Should fix Ubuntu bug
+	127152.
+	
 2007-08-21  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* pysmb.py: "nmblookup -M -- -" not always gives a result. If not,

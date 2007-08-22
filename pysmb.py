@@ -158,6 +158,42 @@ def get_host_list(dmbip):
 
 	return hosts
 
+def get_host_list_from_domain (domain):
+    hosts = {}
+    global wins
+    ips = []
+    signal.signal (signal.SIGCHLD, signal.SIG_DFL)
+    if wins:
+    	str = "LC_ALL=C %s -U %s -R '%s' 2>&1" % (nmblookup, wins, domain)
+    else:
+    	str = "LC_ALL=C %s -R '%s' 2>&1" % (nmblookup, domain)
+    for l in os.popen (str, 'r').readlines ():
+	l = l.splitlines()[0]
+	if l.endswith("<00>"):
+            ips.append (l.split(" ")[0])
+
+    for ip in ips:
+        name = None
+    	dict = { 'IP': ip }
+	if wins:
+    		str = "LC_ALL=C " + nmblookup + " -U " + wins + " -A " + ip
+	else:
+    		str = "LC_ALL=C %s -A '%s'" % (nmblookup, ip)
+	str += " 2>&1"
+	for line in os.popen(str, 'r').readlines():
+		line = line.splitlines()[0]
+		if (line.find(" <00> ") != -1) and (line.find("<GROUP>") == -1):
+			name = line.split(" ")[0]
+			name = name.lstrip()
+			dict['NAME'] = name
+			dict['DOMAIN'] = domain
+				
+	if name:
+		hosts[name] = dict
+    
+    return hosts
+
+
 def get_host_info (smbname):
     """Given an SMB name, returns a host dict for it."""
     dict = { 'NAME': smbname, 'IP': '', 'GROUP': '' }
@@ -297,7 +333,11 @@ if __name__ == '__main__':
     domains = get_domain_list ()
     for domain in domains:
         print domains[domain]
-        hosts = get_host_list (domains[domain]['IP'])
+	hosts = get_host_list_from_domain (domain)
+	if len(hosts) <= 0:
+            print "fallback to get_host_list(IP)"
+	    hosts = get_host_list (domains[domain]['IP'])
+	print hosts
         for host in hosts:
             print hosts[host]
             printers = get_printer_list (hosts[host])

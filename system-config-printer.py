@@ -2660,7 +2660,9 @@ class GUI:
             domain = store.get_value (iter, 2)
             if domain:
                 self.busy (self.NewPrinterWindow)
-                hosts = pysmb.get_host_list (domain['IP'])
+                hosts = pysmb.get_host_list_from_domain (domain['DOMAIN'])
+                if len(hosts) <= 0:
+                    hosts = pysmb.get_host_list (domain['IP'])
                 while store.iter_has_child (iter):
                     i = store.iter_nth_child (iter, 0)
                     store.remove (i)
