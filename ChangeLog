@@ -13,6 +13,16 @@
 	items in the tree list of SMB domains/servers/shares have the little
 	triangle to show the sub-tem list, even before the sub-items were
 	scanned. These two fixes should fix Ubuntu bug 127152.
+	Quote/Unquote all elements of the SMB device URIs, as spaces are
+	also allowed in SMB host and share names. Should fix Ubuntu bug
+	128261.
+	Scan SMB host list when in the main window the "Change" button for
+	the URI is clicked and the URI is an SMB URI. This way the list
+	of SMB domains/servers/shares in the dialog for setting the URI
+	does not stay empty.
+	Handle exceptions raised by the browse_smb_hosts() function if it
+	is called before the add-printer wizard window is open. Should fix
+	Ubuntu bug 133573.
 	
 2007-08-21  Till Kamppeter  <till.kamppeter@gmail.com>
 

@@ -2487,6 +2487,8 @@ class GUI:
                 else:
                     current = cupshelpers.Device (current_uri)
                     current.info = "Current device"
+                    if current.type == "smb":
+                        self.browse_smb_hosts ()
                 print current.info
 
             self.devices = devices.values()
@@ -2592,7 +2594,10 @@ class GUI:
         store = self.smb_store
         store.clear ()
 
-        self.busy(self.NewPrinterWindow)
+        try:
+            self.busy(self.NewPrinterWindow)
+        except:
+            nonfatalException()
         iter = None
         domains = pysmb.get_domain_list ()
         for domain in domains.keys ():
@@ -2603,7 +2608,10 @@ class GUI:
             store.set_value (iter, 0, d['DOMAIN'])
             store.set_value (iter, 2, d)
 
-        self.ready(self.NewPrinterWindow)
+        try:
+            self.ready(self.NewPrinterWindow)
+        except:
+            nonfatalException()
 
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
@@ -2706,7 +2714,8 @@ class GUI:
             if p != -1:
                 host = host[:p]
         share = uri
-        return (group, host, share,
+        return (urllib.unquote (group), urllib.unquote (host),
+                urllib.unquote (share),
                 urllib.unquote (user), urllib.unquote (password))
 
     def construct_SMBURI (self, group, host, share,
@@ -2717,7 +2726,8 @@ class GUI:
         if user:
             uri_password += '@'
         return "%s%s%s/%s/%s" % (urllib.quote (user),
-                                 uri_password, group, host, share)
+                                 uri_password, urllib.quote (group),
+                                 urllib.quote (host), urllib.quote (share))
 
     def on_entSMBURI_changed (self, ent):
         try:
