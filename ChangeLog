@@ -9,8 +9,10 @@
 	Modified the test procedure to use the new function.
 
 	* system-config-printer.py: Look up the hosts in a domain with the
-	new get_host_list_from_domain() function. Should fix Ubuntu bug
-	127152.
+	new get_host_list_from_domain() function. Make also sure that all
+	items in the tree list of SMB domains/servers/shares have the little
+	triangle to show the sub-tem list, even before the sub-items were
+	scanned. These two fixes should fix Ubuntu bug 127152.
 	
 2007-08-21  Till Kamppeter  <till.kamppeter@gmail.com>
 

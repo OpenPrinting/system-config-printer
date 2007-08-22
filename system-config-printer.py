@@ -2598,11 +2598,11 @@ class GUI:
         for domain in domains.keys ():
             d = domains[domain]
             iter = store.append (None)
+            if iter:
+                dummy = store.append (iter)
             store.set_value (iter, 0, d['DOMAIN'])
             store.set_value (iter, 2, d)
 
-        if iter:
-            dummy = store.append (iter)
         self.ready(self.NewPrinterWindow)
 
     def smb_select_function (self, path):
@@ -2670,10 +2670,10 @@ class GUI:
                 for host in hosts.keys():
                     h = hosts[host]
                     i = store.append (iter)
+                    if i:
+                        dummy = store.append (i)
                     store.set_value (i, 0, h['NAME'])
                     store.set_value (i, 3, h)
-                if i:
-                    dummy = store.append (i)
                 self.ready (self.NewPrinterWindow)
             view.expand_row (path, 0)
             del self.expanding_row
