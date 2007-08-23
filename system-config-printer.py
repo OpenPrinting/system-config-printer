@@ -1592,8 +1592,12 @@ class GUI:
             if printer.is_shared:
                 flag = cups.CUPS_SERVER_SHARE_PRINTERS
                 publishing = int (self.server_settings[flag])
-                if not publishing:
+                if publishing:
+                    self.lblNotPublished.hide_all ()
+                else:
                     self.lblNotPublished.show_all ()
+            else:
+                self.lblNotPublished.hide_all ()
         except:
             self.lblNotPublished.hide_all ()
 
