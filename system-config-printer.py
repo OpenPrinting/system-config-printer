@@ -637,6 +637,8 @@ class GUI:
         for name, printer in self.printers.iteritems():
             if printer.default:
                 self.default_printer = name
+                if start_printer == None:
+                    start_printer = self.default_printer
             self.servers.add(printer.getServer())
 
             if printer.remote:
@@ -680,6 +682,8 @@ class GUI:
             path = self.mainlist.get_path(iter)
 
             for printer_name in printers:
+                if start_printer == None:
+                    start_printer = printer_name
                 p_iter = self.mainlist.append(iter, (printer_name, "Printer"))
                 if (printer_name==old_name or
                     printer_name==start_printer):
@@ -694,7 +698,7 @@ class GUI:
         if select_path:
             selection.select_path(select_path)
         else:
-            selection.unselect_all()
+            selection.select_path((0,))
 
         self.on_tvMainList_cursor_changed(self.tvMainList)
 

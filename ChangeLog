@@ -4,6 +4,11 @@
 	a shared printer is not really published due to the CUPS server
 	settings. The message was not removed when turning on printer
 	sharing in the CUPS server setting. This fixes Ubuntu bug 132735.
+	Set decent default selection in the main window when
+	system-config-printer is started without options. If there is a
+	default printer, select it, if not select the first printer in
+	the list, and if there are no printers, select the server
+	settings. Fixes Ubuntu bug 132652.
 
 2007-08-22  Till Kamppeter  <till.kamppeter@gmail.com>
 
