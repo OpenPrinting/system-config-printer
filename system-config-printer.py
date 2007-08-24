@@ -3615,7 +3615,7 @@ class GUI:
         self.reconnect ()
 
 def main(start_printer = None, change_ppd = False):
-    cups.setUser (cups.getUser())
+    cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init()
     gtk.gdk.threads_enter()
 
