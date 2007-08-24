@@ -310,50 +310,32 @@
 	  <property name="spacing">0</property>
 
 	  <child>
-	    <widget class="GtkScrolledWindow" id="scrolledwindow1">
+	    <widget class="GtkScrolledWindow" id="scrolledwindow23">
+	      <property name="width_request">150</property>
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
-	      <property name="hscrollbar_policy">GTK_POLICY_NEVER</property>
+	      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
 	      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-	      <property name="shadow_type">GTK_SHADOW_IN</property>
+	      <property name="shadow_type">GTK_SHADOW_NONE</property>
 	      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
 
 	      <child>
-		<widget class="GtkViewport" id="viewport7">
+		<widget class="GtkViewport" id="viewport8">
 		  <property name="visible">True</property>
 		  <property name="shadow_type">GTK_SHADOW_IN</property>
 
 		  <child>
-		    <widget class="GtkScrolledWindow" id="scrolledwindow23">
-		      <property name="width_request">150</property>
+		    <widget class="GtkTreeView" id="tvMainList">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
-		      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-		      <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
-		      <property name="shadow_type">GTK_SHADOW_NONE</property>
-		      <property name="window_placement">GTK_CORNER_TOP_LEFT</property>
-
-		      <child>
-			<widget class="GtkViewport" id="viewport8">
-			  <property name="visible">True</property>
-			  <property name="shadow_type">GTK_SHADOW_IN</property>
-
-			  <child>
-			    <widget class="GtkTreeView" id="tvMainList">
-			      <property name="visible">True</property>
-			      <property name="can_focus">True</property>
-			      <property name="headers_visible">False</property>
-			      <property name="rules_hint">False</property>
-			      <property name="reorderable">False</property>
-			      <property name="enable_search">True</property>
-			      <property name="fixed_height_mode">False</property>
-			      <property name="hover_selection">False</property>
-			      <property name="hover_expand">False</property>
-			      <signal name="cursor_changed" handler="on_tvMainList_cursor_changed" last_modification_time="Tue, 21 Feb 2006 15:58:58 GMT"/>
-			    </widget>
-			  </child>
-			</widget>
-		      </child>
+		      <property name="headers_visible">False</property>
+		      <property name="rules_hint">False</property>
+		      <property name="reorderable">False</property>
+		      <property name="enable_search">True</property>
+		      <property name="fixed_height_mode">False</property>
+		      <property name="hover_selection">False</property>
+		      <property name="hover_expand">False</property>
+		      <signal name="cursor_changed" handler="on_tvMainList_cursor_changed" last_modification_time="Tue, 21 Feb 2006 15:58:58 GMT"/>
 		    </widget>
 		  </child>
 		</widget>
@@ -679,6 +661,7 @@
 					  <property name="max_length">0</property>
 					  <property name="text"></property>
 					  <property name="has_frame">True</property>
+					  <property name="invisible_char">●</property>
 					  <property name="activates_default">False</property>
 					  <signal name="changed" handler="on_printer_changed" last_modification_time="Thu, 09 Mar 2006 09:55:36 GMT"/>
 					</widget>
@@ -700,6 +683,7 @@
 					  <property name="max_length">0</property>
 					  <property name="text"></property>
 					  <property name="has_frame">True</property>
+					  <property name="invisible_char">●</property>
 					  <property name="activates_default">False</property>
 					  <signal name="changed" handler="on_printer_changed" last_modification_time="Thu, 09 Mar 2006 09:56:06 GMT"/>
 					</widget>
@@ -783,6 +767,7 @@
 					      <property name="max_length">0</property>
 					      <property name="text"></property>
 					      <property name="has_frame">True</property>
+					      <property name="invisible_char">●</property>
 					      <property name="activates_default">False</property>
 					      <signal name="changed" handler="on_printer_changed" last_modification_time="Thu, 09 Mar 2006 09:56:23 GMT"/>
 					    </widget>
@@ -1738,6 +1723,7 @@ See server settings&lt;/i&gt;</property>
 					  <property name="max_length">0</property>
 					  <property name="text"></property>
 					  <property name="has_frame">True</property>
+					  <property name="invisible_char">●</property>
 					  <property name="activates_default">True</property>
 					  <signal name="changed" handler="on_entPUser_changed" last_modification_time="Mon, 27 Mar 2006 13:07:50 GMT"/>
 					</widget>
@@ -4825,6 +4811,7 @@ Reverse portrait (180°)</property>
 							      <property name="max_length">0</property>
 							      <property name="text" translatable="yes"></property>
 							      <property name="has_frame">True</property>
+							      <property name="invisible_char">●</property>
 							      <property name="activates_default">False</property>
 							      <signal name="changed" handler="on_entNewJobOption_changed" last_modification_time="Fri, 23 Feb 2007 15:48:17 GMT"/>
 							      <signal name="activate" handler="on_entNewJobOption_activate" last_modification_time="Fri, 23 Feb 2007 17:27:38 GMT"/>
@@ -5208,6 +5195,7 @@ Reverse portrait (180°)</property>
 			      <property name="max_length">0</property>
 			      <property name="text"></property>
 			      <property name="has_frame">True</property>
+			      <property name="invisible_char">●</property>
 			      <property name="activates_default">False</property>
 			      <signal name="changed" handler="on_entNPName_changed" last_modification_time="Fri, 10 Mar 2006 11:58:45 GMT"/>
 			    </widget>
@@ -5311,6 +5299,7 @@ Reverse portrait (180°)</property>
 			      <property name="max_length">0</property>
 			      <property name="text"></property>
 			      <property name="has_frame">True</property>
+			      <property name="invisible_char">●</property>
 			      <property name="activates_default">False</property>
 			    </widget>
 			    <packing>
@@ -5413,6 +5402,7 @@ Reverse portrait (180°)</property>
 			      <property name="max_length">0</property>
 			      <property name="text"></property>
 			      <property name="has_frame">True</property>
+			      <property name="invisible_char">●</property>
 			      <property name="activates_default">False</property>
 			    </widget>
 			    <packing>
@@ -5728,6 +5718,7 @@ Reverse portrait (180°)</property>
 			      <property name="max_length">0</property>
 			      <property name="text"></property>
 			      <property name="has_frame">True</property>
+			      <property name="invisible_char">●</property>
 			      <property name="activates_default">False</property>
 			    </widget>
 			    <packing>
@@ -5829,6 +5820,7 @@ Reverse portrait (180°)</property>
 				      <property name="max_length">0</property>
 				      <property name="text"></property>
 				      <property name="has_frame">True</property>
+				      <property name="invisible_char">●</property>
 				      <property name="activates_default">False</property>
 				    </widget>
 				    <packing>
@@ -5872,6 +5864,7 @@ Reverse portrait (180°)</property>
 				      <property name="max_length">0</property>
 				      <property name="text"></property>
 				      <property name="has_frame">True</property>
+				      <property name="invisible_char">●</property>
 				      <property name="activates_default">False</property>
 				    </widget>
 				    <packing>
@@ -5996,6 +5989,7 @@ Reverse portrait (180°)</property>
 				      <property name="max_length">0</property>
 				      <property name="text"></property>
 				      <property name="has_frame">True</property>
+				      <property name="invisible_char">●</property>
 				      <property name="activates_default">False</property>
 				    </widget>
 				    <packing>
@@ -6039,6 +6033,7 @@ Reverse portrait (180°)</property>
 				      <property name="max_length">0</property>
 				      <property name="text"></property>
 				      <property name="has_frame">True</property>
+				      <property name="invisible_char">●</property>
 				      <property name="activates_default">False</property>
 				    </widget>
 				    <packing>
@@ -6760,6 +6755,7 @@ DTR/DSR (Hardware)</property>
 				  <property name="max_length">0</property>
 				  <property name="text"></property>
 				  <property name="has_frame">True</property>
+				  <property name="invisible_char">●</property>
 				  <property name="activates_default">False</property>
 				  <signal name="changed" handler="on_entSMBURI_changed" last_modification_time="Thu, 22 Jun 2006 17:29:03 GMT"/>
 				</widget>
@@ -6929,6 +6925,7 @@ DTR/DSR (Hardware)</property>
 					  <property name="max_length">0</property>
 					  <property name="text"></property>
 					  <property name="has_frame">True</property>
+					  <property name="invisible_char">●</property>
 					  <property name="activates_default">False</property>
 					</widget>
 					<packing>
@@ -6949,6 +6946,7 @@ DTR/DSR (Hardware)</property>
 					  <property name="max_length">0</property>
 					  <property name="text"></property>
 					  <property name="has_frame">True</property>
+					  <property name="invisible_char">●</property>
 					  <property name="activates_default">False</property>
 					</widget>
 					<packing>
@@ -8622,6 +8620,7 @@ DTR/DSR (Hardware)</property>
 		  <property name="max_length">0</property>
 		  <property name="text"></property>
 		  <property name="has_frame">True</property>
+		  <property name="invisible_char">●</property>
 		  <property name="activates_default">True</property>
 		</widget>
 		<packing>
@@ -8933,6 +8932,7 @@ DTR/DSR (Hardware)</property>
 			  <property name="max_length">0</property>
 			  <property name="text"></property>
 			  <property name="has_frame">True</property>
+			  <property name="invisible_char">●</property>
 			  <property name="activates_default">True</property>
 			</widget>
 			<packing>
@@ -9312,6 +9312,7 @@ Any changes you have made will be lost unless you apply them.</property>
 	  <property name="max_length">0</property>
 	  <property name="text"></property>
 	  <property name="has_frame">True</property>
+	  <property name="invisible_char">●</property>
 	  <property name="activates_default">False</property>
 	  <signal name="changed" handler="on_entCopyName_changed" last_modification_time="Mon, 20 Mar 2006 15:14:01 GMT"/>
 	</widget>
