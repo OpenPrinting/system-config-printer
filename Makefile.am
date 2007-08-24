@@ -120,8 +120,11 @@ missing-languages:
 	diff -u <(echo $$ALL_LINGUAS | xargs -rn1 echo) \
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
 
+fix-glade:
+	sed -i -e '/invisible_char/d' *.glade
+
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1
 
-.PHONY: update-po
+.PHONY: update-po fix-glade
