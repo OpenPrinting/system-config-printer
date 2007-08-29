@@ -685,7 +685,7 @@ class GUI:
                     select_path = self.mainlist.get_path(p_iter)
             if expanded[name]:
                 self.tvMainList.expand_row(path, False)
-                        
+
         # Selection
         selection = self.tvMainList.get_selection()
         if old_type == "Settings":
