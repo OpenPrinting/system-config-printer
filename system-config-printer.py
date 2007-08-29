@@ -115,12 +115,8 @@ class GUI:
 
         # WIDGETS
         # =======
-        try:
-            #raise ValueError # uncomment for development
-            self.xml = gtk.glade.XML(glade_file, domain = domain)
-        except:
-            self.xml = gtk.glade.XML(domain + '.glade', domain = domain)
-            print "Using local glade file"
+        xml = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE", glade_file)
+        self.xml = gtk.glade.XML(xml, domain = domain)
 
         self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
                         "statusbarMain",

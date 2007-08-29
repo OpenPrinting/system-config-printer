@@ -123,8 +123,13 @@ missing-languages:
 fix-glade:
 	sed -i -e '/invisible_char/d' *.glade
 
+run:
+	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/system-config-printer.glade \
+	python $(top_srcdir)/system-config-printer.py
+
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1
 
-.PHONY: update-po fix-glade
+.PHONY: update-po fix-glade run
+
