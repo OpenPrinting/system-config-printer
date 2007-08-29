@@ -709,6 +709,10 @@ class GUI:
         result = self.mainlist.get_value(
             self.mainlist.get_iter(selection), 1)
         if result[0] == "_":
+            if self.tvMainList.row_expanded(selection):
+                self.tvMainList.collapse_row(selection)
+            else:
+                self.tvMainList.expand_row(selection, False)
             return False
         if self.changed:
             response = self.ApplyDialog.run()
