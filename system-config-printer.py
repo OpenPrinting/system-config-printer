@@ -2093,9 +2093,14 @@ class GUI:
         self.ready (self.MainWindow)
 
     def initNewPrinterWindow(self):
-        if self.dialog_mode in ("printer", "class"):
+        if self.dialog_mode == "printer":
             # Start on devices page (1, not 0)
             self.ntbkNewPrinter.set_current_page(1)
+        elif self.dialog_mode == "class":
+            # Start on name page
+            self.ntbkNewPrinter.set_current_page(0)
+
+        if self.dialog_mode in ("printer", "class"):
             self.entNPName.set_text ('printer')
             self.entNPName.grab_focus()
             for widget in [self.entNPLocation,
