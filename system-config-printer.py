@@ -656,7 +656,6 @@ class GUI:
             "_remote_classes" : True,
             }
 
-
         # remove old printers/classes
         iter = self.mainlist.get_iter_first()
         iter = self.mainlist.iter_next(iter) # step over server settings
@@ -781,7 +780,14 @@ class GUI:
         self.ConnectingDialog.show()
         self.connect_server = servername
         self.connect_user = user
-        self.connect_thread = thread.start_new_thread(self.connect, ())
+        # We need to set the connecting user in this thread as well.
+        cups.setServer(self.connect_server)
+        cups.setUser(self.connect_user)
+        # Now start a new thread for connection.
+        args = ()
+        if self.printer:
+            args = (self.printer.name,)
+        self.connect_thread = thread.start_new_thread(self.connect, args)
 
     def on_cancel_connect_clicked(self, widget):
         """
@@ -792,7 +798,7 @@ class GUI:
         self.connect_thread = None
         self.ConnectingDialog.hide()
 
-    def connect(self):
+    def connect(self, start_printer=None):
         """
         Open a connection to a new server. Is executed in a separate thread!
         """
@@ -844,7 +850,7 @@ class GUI:
             self.ConnectingDialog.hide()
             self.cups = connection
             self.setConnected()
-            self.populateList()
+            self.populateList(start_printer=start_printer)
 	except cups.HTTPError, (s,):
             self.cups = None
             self.setConnected()

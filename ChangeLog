@@ -3,6 +3,10 @@
 	* system-config-printer.py (__init__): Developer can use
 	environment variable SYSTEM_CONFIG_PRINTER_GLADE to override the
 	location of the XML file to read.
+	(GUI.connect): When connecting to a new server, try to select the
+	printer we already had selected.  This is useful when selecting a
+	remote printer and then clicking 'Go to...'.
+
 	* Makefile.am: New target 'run'.
 
 	* system-config-printer.py: Expand/collapse printer lists.  Patch
