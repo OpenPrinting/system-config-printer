@@ -683,6 +683,7 @@ class GUI:
                 if (printer_name==old_name or
                     printer_name==start_printer):
                     select_path = self.mainlist.get_path(p_iter)
+                    expanded[name] = True
             if expanded[name]:
                 self.tvMainList.expand_row(path, False)
 
