@@ -2018,12 +2018,11 @@ class GUI:
         self.dialog_mode = "printer"
         self.NewPrinterWindow.set_title(_("New Printer"))
         
-        self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-
         self.busy (self.MainWindow)
         self.fillDeviceTab ()
-        self.ready (self.MainWindow)
         self.initNewPrinterWindow()
+        self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
+        self.ready (self.MainWindow)
 
         # Start fetching information from CUPS in the background
         self.new_printer_PPDs_loaded = False
