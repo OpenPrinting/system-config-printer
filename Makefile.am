@@ -127,9 +127,18 @@ run:
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/system-config-printer.glade \
 	python $(top_srcdir)/system-config-printer.py
 
+help:
+	@echo "Usage: make <target>"
+	@echo "Available targets:"
+	@echo " help               Show this help message"
+	@echo " update-po          Update the translations"
+	@echo " missing-languages  Show which po files are not shipped"
+	@echo " fix-glade          Sanitize the glade files"
+	@echo " run                Run system-config-printer with local glade file"
+
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1
 
-.PHONY: update-po fix-glade run
+.PHONY: update-po missing-languages fix-glade run help
 
