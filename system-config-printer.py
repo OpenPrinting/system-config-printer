@@ -221,17 +221,13 @@ class GUI:
                           "lblNPApply",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
 
-                        "AboutDialog", "lblVersion", "lblCopyright",
-                        "lblAuthors",
+                        "AboutDialog",
 
                         "WaitWindow", "lblWait",
                         )
 
-        # Set up "About" dialog strings.
-        vertext = self.lblVersion.get_text ()
-        self.lblVersion.set_text (vertext % config.VERSION)
-        self.lblCopyright.set_text (_("Copyright 2006, 2007 Red Hat, Inc."))
-        self.lblAuthors.set_text ("Florian Festi, Tim Waugh")
+        # Set up "About" dialog
+        self.AboutDialog.set_version(config.VERSION)
 
         self.static_tabs = 3
 
