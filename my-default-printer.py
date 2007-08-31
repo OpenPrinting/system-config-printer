@@ -34,10 +34,13 @@ import gettext
 gettext.textdomain (domain)
 
 def handle_sigchld (signum, stack):
-    (pid, status) = os.wait ()
-    exitcode = os.WEXITSTATUS (status)
-    if exitcode != 0:
-        print "Child exit status %d" % exitcode
+    try:
+        (pid, status) = os.wait ()
+        exitcode = os.WEXITSTATUS (status)
+        if exitcode != 0:
+            print "Child exit status %d" % exitcode
+    except OSError:
+        pass
 
 signal.signal (signal.SIGCHLD, handle_sigchld)
 
