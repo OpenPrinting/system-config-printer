@@ -107,6 +107,7 @@ class GUI:
         # Synchronisation objects.
         self.ppds_lock = None
         self.devices_lock = None
+        self.smb_lock = thread.allocate_lock()
 
         try:
             self.cups = cups.Connection()
@@ -205,8 +206,8 @@ class GUI:
                            "entNPTIPPHostname", "entNPTIPPPrintername",
                         "entNPTDirectJetHostname", "entNPTDirectJetPort",
                         "entNPTIPPHostname", "entNPTIPPPrintername",
-                        "entSMBURI", "tvSMBBrowser",
-                        "entSMBUsername", "entSMBPassword",
+                        "SMBBrowseDialog", "entSMBURI", "tvSMBBrowser", "tblSMBAuth",
+                        "entSMBUsername", "entSMBPassword", "btnSMBBrowseOk",
                            "entNPTDevice",
                            "tvNCMembers", "tvNCNotMembers",
                           "rbtnNPPPD", "tvNPMakes", 
@@ -231,6 +232,7 @@ class GUI:
 
         self.static_tabs = 3
 
+        gtk_label_autowrap.set_autowrap(self.MainWindow)
         gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
         self.status_context_id = self.statusbarMain.get_context_id(
@@ -2604,17 +2606,31 @@ class GUI:
         self.tvNPDevices.get_selection().select_path(0)
         self.on_tvNPDevices_cursor_changed(self.tvNPDevices)
 
-    def browse_smb_hosts (self):
+    def browse_smb_hosts(self):
+        if not self.smb_lock.acquire(0):
+            return
+        thread.start_new_thread(self.browse_smb_hosts_thread, ())
+
+    def browse_smb_hosts_thread(self):
         """Initialise the SMB tree store."""
+
+        gtk.gdk.threads_enter()
         store = self.smb_store
         store.clear ()
-
+        store.append(None, ('Scanning...', '', None, None))
         try:
-            self.busy(self.NewPrinterWindow)
+            self.busy(self.SMBBrowseDialog)
         except:
             nonfatalException()
+        gtk.gdk.threads_leave()
+
+
+
         iter = None
         domains = pysmb.get_domain_list ()
+
+        gtk.gdk.threads_enter()
+        store.clear ()
         for domain in domains.keys ():
             d = domains[domain]
             iter = store.append (None)
@@ -2624,9 +2640,13 @@ class GUI:
             store.set_value (iter, 2, d)
 
         try:
-            self.ready(self.NewPrinterWindow)
+            self.ready(self.SMBBrowseDialog)
         except:
             nonfatalException()
+
+        self.smb_lock.release()
+        gtk.gdk.threads_leave()
+
 
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
@@ -2760,10 +2780,21 @@ class GUI:
         self.tvSMBBrowser.get_selection ().unselect_all ()
         if user or password:
             ent.set_text(self.construct_SMBURI(group, host, share))
+            self.chkSMBAuth.set_active(True)
 
-    def on_tvSMBBrowser_cursor_changed (self, view):
-        store, iter = view.get_selection ().get_selected ()
+    def on_tvSMBBrowser_cursor_changed(self, widget):
+        store, iter = self.tvSMBBrowser.get_selection().get_selected()
+        self.btnSMBBrowseOk.set_sensitive(iter and store.iter_depth(iter) == 2)
+
+    def on_btnSMBBrowse_clicked(self, button):
+        self.btnSMBBrowseOk.set_sensitive(False)
+        self.SMBBrowseDialog.show()
+        self.browse_smb_hosts()
+
+    def on_btnSMBBrowseOk_clicked(self, button):
+        store, iter = self.tvSMBBrowser.get_selection().get_selected()
         if not iter or store.iter_depth(iter) != 2:
+            self.SMBBrowseDialog.hide()
             return
 
         parent_iter = store.iter_parent (iter)
@@ -2776,11 +2807,25 @@ class GUI:
         self.entSMBURI.set_text (uri)
         del self.ignore_signals
 
+        self.SMBBrowseDialog.hide()
+
+    def on_btnSMBBrowseCancel_clicked(self, widget, *args):
+        self.SMBBrowseDialog.hide()
+
+    def on_btnSMBBrowseRefresh_clicked(self, button):
+        self.browse_smb_hosts()
+
+    def on_chkSMBAuth_toggled(self, widget):
+        self.tblSMBAuth.set_sensitive(widget.get_active())
+
     def on_btnSMBVerify_clicked(self, button):
         uri = self.entSMBURI.get_text ()
         (group, host, share, u, p) = self.parse_SMBURI (uri)
-        user = self.entSMBUsername.get_text ()
-        passwd = self.entSMBPassword.get_text ()
+        user = ''
+        passwd = ''
+        if self.tblSMBAuth.get_property("sensitive"):
+            user = self.entSMBUsername.get_text ()
+            passwd = self.entSMBPassword.get_text ()
         accessible = pysmb.printer_share_accessible ("//%s/%s" %
                                                      (host, share),
                                                      group = group,
@@ -2914,7 +2959,6 @@ class GUI:
             pass
         elif device.uri == "smb":
             self.entSMBURI.set_text('')
-            self.browse_smb_hosts ()
         elif device.type == "smb":
             self.entSMBURI.set_text(device.uri[6:])
         else:
@@ -3624,7 +3668,6 @@ class GUI:
 def main(start_printer = None, change_ppd = False):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init()
-    gtk.gdk.threads_enter()
 
     mainwindow = GUI(start_printer, change_ppd)
     if gtk.__dict__.has_key("main"):
@@ -3632,7 +3675,6 @@ def main(start_printer = None, change_ppd = False):
     else:
         gtk.mainloop()
 
-    gtk.gdk.threads_leave()
 
 if __name__ == "__main__":
     import getopt

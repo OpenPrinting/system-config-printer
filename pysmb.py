@@ -21,7 +21,6 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import os
-import signal
 import sys
 import re
 
@@ -70,7 +69,6 @@ def get_domain_list ():
     get_wins_server()
 
     ips = []
-    signal.signal (signal.SIGCHLD, signal.SIG_DFL)
     if wins:
     	str = "LC_ALL=C %s -U %s -M -- - 2>&1" % (nmblookup, wins)
     else:
@@ -119,7 +117,6 @@ def get_host_list(dmbip):
         serverregex = re.compile("\s*Server\s*Comment")
         domainregex = re.compile("\s*Workgroup\s*Master")
         commentregex = re.compile("(\s*-+)+")
-        signal.signal (signal.SIGCHLD, signal.SIG_DFL)
 	str = " %s -N -L //%s 2>/dev/null" % (smbclient, dmbip)
         for l in os.popen (str, 'r').readlines ():
                 l = l.splitlines()[0]
@@ -143,7 +140,6 @@ def get_host_list(dmbip):
 		# if there are a lot of servers it takes too much time
 		# so commented out
 		#
-	        #signal.signal (signal.SIGCHLD, signal.SIG_DFL)
 		#if wins:
 		#	str = nmblookup + " -U " + wins + " " +name
 		#else:
@@ -162,7 +158,6 @@ def get_host_list_from_domain (domain):
     hosts = {}
     global wins
     ips = []
-    signal.signal (signal.SIGCHLD, signal.SIG_DFL)
     if wins:
     	str = "LC_ALL=C %s -U %s -R '%s' 2>&1" % (nmblookup, wins, domain)
     else:
@@ -234,7 +229,6 @@ def get_printer_list (host):
     if host.has_key ('GROUP'):
         str += " -W '%s'" % host['GROUP']
 
-    signal.signal (signal.SIGCHLD, signal.SIG_DFL)
     section = 0
     typepos = 0
     commentpos = 0
@@ -302,7 +296,6 @@ def printer_share_accessible (share, group = None, user = None, passwd = None):
         args.extend (["-U", user])
 
     read, write = os.pipe ()
-    signal.signal (signal.SIGCHLD, signal.SIG_DFL)
     pid = os.fork ()
     if pid == 0:
         os.close (read)
