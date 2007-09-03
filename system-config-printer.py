@@ -2784,7 +2784,8 @@ class GUI:
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
         store, iter = self.tvSMBBrowser.get_selection().get_selected()
-        self.btnSMBBrowseOk.set_sensitive(iter and store.iter_depth(iter) == 2)
+        self.btnSMBBrowseOk.set_sensitive(iter != None
+                                          and store.iter_depth(iter) == 2)
 
     def on_btnSMBBrowse_clicked(self, button):
         self.btnSMBBrowseOk.set_sensitive(False)
