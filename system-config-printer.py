@@ -113,7 +113,7 @@ class GUI:
 
         # Synchronisation objects.
         self.ppds_lock = None
-        self.devices_lock = None
+        self.devices_lock = thread.allocate_lock()
         self.smb_lock = thread.allocate_lock()
 
         try:
@@ -2346,13 +2346,9 @@ class GUI:
 
     # Device URI
     def queryDevices(self):
-        if self.devices_lock != None:
+        if not self.devices_lock.acquire(0):
             print "queryDevices: in progress"
             return
-        print "queryDevices"
-        # Make a lock for synchronising against.
-        self.devices_lock = thread.allocate_lock ()
-        self.devices_lock.acquire ()
         print "Lock acquired for devices thread"
         # Start new thread
         thread.start_new_thread (self.getDevices_thread, ())
@@ -2385,14 +2381,12 @@ class GUI:
 
     def fetchDevices(self, parent=None):
         print "fetchDevices"
-        if self.devices_lock == None:
-            self.queryDevices ()
-            time.sleep (0.1)
+        self.queryDevices ()
+        time.sleep (0.1)
 
         # Keep the UI refreshed while we wait for the devices to load.
         waiting = False
-        while (self.devices_lock and
-               self.devices_lock.locked ()):
+        while (self.devices_lock.locked()):
             if not waiting:
                 waiting = True
                 self.lblWait.set_markup ('<span weight="bold" size="larger">' +
@@ -2411,14 +2405,12 @@ class GUI:
         if waiting:
             self.WaitWindow.hide ()
 
-        print "Acquiring devices lock"
-        self.devices_lock.acquire ()
-        self.devices_lock = None
         print "Got devices"
-        if isinstance (self.devices_result, cups.IPPError):
+        result = self.devices_result # atomic operation
+        if isinstance (result, cups.IPPError):
             # Propagate exception.
-            raise self.devices_result
-        return self.devices_result
+            raise result
+        return result
 
     def get_hplip_uri_for_network_printer(self, host, mode):
         if mode == "print": mod = "-c"
