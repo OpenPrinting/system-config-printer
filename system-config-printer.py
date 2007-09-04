@@ -112,7 +112,7 @@ class GUI:
         self.servers = set((self.connect_server,))
 
         # Synchronisation objects.
-        self.ppds_lock = None
+        self.ppds_lock = thread.allocate_lock()
         self.devices_lock = thread.allocate_lock()
         self.smb_lock = thread.allocate_lock()
 
@@ -488,13 +488,10 @@ class GUI:
             gtk.main_iteration ()
 
     def queryPPDs(self):
-        if self.ppds_lock != None:
+        print "queryPPDs"
+        if not self.ppds_lock.acquire(0):
             print "queryPPDs: in progress"
             return
-        print "queryPPDs"
-        # Make a lock for synchronising against.
-        self.ppds_lock = thread.allocate_lock ()
-        self.ppds_lock.acquire ()
         print "Lock acquired for PPDs thread"
         # Start new thread
         thread.start_new_thread (self.getPPDs_thread, (self.language[0],))
@@ -523,14 +520,12 @@ class GUI:
 
     def fetchPPDs(self, parent=None):
         print "fetchPPDs"
-        if self.ppds_lock == None:
-            self.queryPPDs()
-            time.sleep (0.1)
+        self.queryPPDs()
+        time.sleep (0.1)
 
         # Keep the UI refreshed while we wait for the devices to load.
         waiting = False
-        while (self.ppds_lock and
-               self.ppds_lock.locked ()):
+        while (self.ppds_lock.locked()):
             if not waiting:
                 waiting = True
                 self.lblWait.set_markup ('<span weight="bold" size="larger">' +
@@ -549,14 +544,12 @@ class GUI:
         if waiting:
             self.WaitWindow.hide ()
 
-        print "Acquiring PPDs lock"
-        self.ppds_lock.acquire ()
-        self.ppds_lock = None
         print "Got PPDs"
-        if isinstance (self.ppds_result, cups.IPPError):
+        result = self.ppds_result # atomic operation
+        if isinstance (result, cups.IPPError):
             # Propagate exception.
-            raise self.ppds_result
-        return self.ppds_result
+            raise result
+        return result
 
     def loadPPDs(self, parent=None):
         try:
