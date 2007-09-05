@@ -322,6 +322,9 @@ class GUI:
         self.tvSMBBrowser.append_column (col)
         slct = self.tvSMBBrowser.get_selection ()
         slct.set_select_function (self.smb_select_function)
+        
+        self.SMBBrowseDialog.set_transient_for(self.NewPrinterWindow)
+
         self.xml.signal_autoconnect(self)
 
         # Job Options widgets.
