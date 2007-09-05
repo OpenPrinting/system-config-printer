@@ -3583,9 +3583,10 @@ class GUI:
             widget.set_data("setting", setting)
             if self.server_settings.has_key(setting):
                 widget.set_active(int(self.server_settings[setting]))
-                widget.show()
+                widget.set_sensitive(True)
             else:
-                widget.hide()
+                widget.set_active(False)
+                widget.set_sensitive(False)
         self.setDataButtonState()
         
     def on_server_changed(self, widget):
@@ -3596,7 +3597,8 @@ class GUI:
             self.changed.add(widget)
 
         sharing = self.chkServerShare.get_active ()
-        self.chkServerShareAny.set_sensitive (sharing)
+        self.chkServerShareAny.set_sensitive (
+            sharing and self.server_settings.has_key(try_CUPS_SERVER_REMOTE_ANY))
 
         self.setDataButtonState()
 
