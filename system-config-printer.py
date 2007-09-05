@@ -2097,7 +2097,7 @@ class GUI:
             self.ntbkNewPrinter.set_current_page(0)
 
         if self.dialog_mode in ("printer", "class"):
-            self.entNPName.set_text ('printer')
+            self.entNPName.set_text (self.makeNameUnique(self.dialog_mode))
             self.entNPName.grab_focus()
             for widget in [self.entNPLocation,
                            self.entNPDescription,
@@ -2320,7 +2320,7 @@ class GUI:
         name = name.replace ("/", "_")
         name = name.replace ("#", "_")
         if not self.check_NPName (name):
-            suffix=1
+            suffix=2
             while not self.check_NPName (name + str (suffix)):
                 suffix += 1
                 if suffix == 100:
