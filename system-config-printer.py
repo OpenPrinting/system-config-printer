@@ -223,7 +223,6 @@ class GUI:
                         
                           "tvNPModels", "tvNPDrivers",
                           "rbtnChangePPDasIs",
-                          "lblNPApply",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
 
                         "AboutDialog",
@@ -2131,12 +2130,12 @@ class GUI:
 
     def on_btnNCAddMember_clicked(self, button):
         self.moveClassMembers(self.tvNCNotMembers, self.tvNCMembers)
-        self.btnNPForward.set_sensitive(
+        self.btnNPApply.set_sensitive(
             bool(self.getCurrentClassMembers(self.tvNCMembers)))
         
     def on_btnNCDelMember_clicked(self, button):
         self.moveClassMembers(self.tvNCMembers, self.tvNCNotMembers)        
-        self.btnNPForward.set_sensitive(
+        self.btnNPApply.set_sensitive(
             bool(self.getCurrentClassMembers(self.tvNCMembers)))
 
     # Navigation buttons
@@ -2229,16 +2228,16 @@ class GUI:
 
             self.ready (self.NewPrinterWindow)
             if self.rbtnNPFoomatic.get_active():
-                order = [1, 2, 3, 0, 5]
+                order = [1, 2, 3, 0]
             else:
-                order = [1, 2, 0, 5]
+                order = [1, 2, 0]
         elif self.dialog_mode == "device":
             order = [1]
         elif self.dialog_mode == "ppd":
             if self.rbtnNPFoomatic.get_active():
-                order = [2, 3, 6]
+                order = [2, 3, 5]
             else:
-                order = [2, 6]
+                order = [2, 5]
             
         page_nr = self.ntbkNewPrinter.set_current_page(
             order[order.index(page_nr)+step])
@@ -2256,7 +2255,7 @@ class GUI:
             return
 
         if self.dialog_mode == "ppd":
-            if nr == 6: # Apply
+            if nr == 5: # Apply
                 self.btnNPForward.hide()
                 self.btnNPApply.show()
                 return
@@ -2284,10 +2283,17 @@ class GUI:
             self.btnNPBack.hide ()
         else:
             self.btnNPBack.show()
+
+        self.btnNPForward.show()
+        self.btnNPApply.hide()
+
         if nr == 0: # Name
             self.btnNPBack.show()
-            self.btnNPForward.set_sensitive(
-                self.check_NPName(self.entNPName.get_text()))
+            if self.dialog_mode == "printer":
+                self.btnNPForward.hide()
+                self.btnNPApply.show()
+                self.btnNPApply.set_sensitive(
+                    self.check_NPName(self.entNPName.get_text()))
         if nr == 2: # Make/PPD file
             self.btnNPForward.set_sensitive(bool(
                 self.rbtnNPFoomatic.get_active() or
@@ -2296,15 +2302,10 @@ class GUI:
             model, iter = self.tvNPDrivers.get_selection().get_selected()
             self.btnNPForward.set_sensitive(bool(iter))
         if nr == 4: # Class Members
-            self.btnNPForward.set_sensitive(
-                bool(self.getCurrentClassMembers(self.tvNCMembers)))
-        if nr == 5: # Apply
             self.btnNPForward.hide()
             self.btnNPApply.show()
-            self.fillNPApply()
-        else:
-            self.btnNPForward.show()
-            self.btnNPApply.hide()
+            self.btnNPApply.set_sensitive(
+                bool(self.getCurrentClassMembers(self.tvNCMembers)))
             
     def check_NPName(self, name):
         if not name: return False
@@ -2337,8 +2338,12 @@ class GUI:
         new_text = new_text.replace(" ", "")
         if text!=new_text:
             widget.set_text(new_text)
-        self.btnNPForward.set_sensitive(
-            self.check_NPName(new_text))
+        if self.dialog_mode == "printer":
+            self.btnNPApply.set_sensitive(
+                self.check_NPName(new_text))
+        else:
+            self.btnNPForward.set_sensitive(
+                self.check_NPName(new_text))
 
     # Device URI
     def queryDevices(self):
@@ -3143,33 +3148,6 @@ class GUI:
             return driver
         else:
             return cups.PPD(self.filechooserPPD.get_filename())
-
-    def fillNPApply(self):
-        name = self.entNPName.get_text()
-        if self.dialog_mode=="class":
-            # XXX
-            msg = _("Going to create a new class %s.") % name
-        else:
-            # XXX
-            uri = None
-            if self.device.uri:
-                uri = self.device.uri
-            else:
-                uri = self.getDeviceURI()
-
-            # Don't reveal SMB authentication details.
-            if uri[:6] == "smb://":
-                (group, host, share, u, p) = self.parse_SMBURI (uri[6:])
-                uri = "smb://"
-                if len (u) or len (p):
-                    uri += ellipsis
-                uri += self.construct_SMBURI (group, host, share)
-
-            msg = _(
-"""Going to create a new printer %s at
-%s.
-""" ) % (name, uri)
-        self.lblNPApply.set_markup(msg)
             
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
