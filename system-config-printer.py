@@ -215,7 +215,7 @@ class GUI:
                         "entNPTDirectJetHostname", "entNPTDirectJetPort",
                         "entNPTIPPHostname", "entNPTIPPPrintername",
                         "SMBBrowseDialog", "entSMBURI", "tvSMBBrowser", "tblSMBAuth",
-                        "entSMBUsername", "entSMBPassword", "btnSMBBrowseOk",
+                        "entSMBUsername", "entSMBPassword", "btnSMBBrowseOk", "btnSMBVerify",
                            "entNPTDevice",
                            "tvNCMembers", "tvNCNotMembers",
                           "rbtnNPPPD", "tvNPMakes", 
@@ -2769,8 +2769,11 @@ class GUI:
             self.entSMBPassword.set_text (password)
         self.tvSMBBrowser.get_selection ().unselect_all ()
         if user or password:
-            ent.set_text(self.construct_SMBURI(group, host, share))
+            uri = self.construct_SMBURI(group, host, share)
+            ent.set_text(uri)
             self.chkSMBAuth.set_active(True)
+        
+        self.btnSMBVerify.set_sensitive(bool(uri))
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
         store, iter = self.tvSMBBrowser.get_selection().get_selected()
@@ -2950,8 +2953,10 @@ class GUI:
             pass
         elif device.uri == "smb":
             self.entSMBURI.set_text('')
+            self.btnSMBVerify.set_sensitive(False)
         elif device.type == "smb":
             self.entSMBURI.set_text(device.uri[6:])
+            self.btnSMBVerify.set_sensitive(True)
         else:
             self.entNPTDevice.set_text(device.uri)
 
