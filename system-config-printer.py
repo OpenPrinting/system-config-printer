@@ -1485,11 +1485,39 @@ class GUI:
             else:
                 self.show_IPP_Error(e, msg)
 
+    def maintenance_command (self, command):
+        (tmpfd, tmpfname) = tempfile.mkstemp ()
+        os.write (tmpfd, "#CUPS-COMMAND\n%s\n" % command)
+        os.close (tmpfd)
+        try:
+            job_id = self.cups.printTestPage (self.printer.name, file=tmpfname)
+            self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
+                                     _("Submitted") + '</span>\n\n' +
+                                     _("Maintenance command submitted as "
+                                       "job %d") % job_id)
+            self.InfoDialog.set_transient_for (self.MainWindow)
+            self.InfoDialog.run ()
+            self.InfoDialog.hide ()
+        except cups.IPPError, (e, msg):
+            if (e == cups.IPP_NOT_AUTHORIZED and
+                self.printer.name != 'localhost'):
+                self.lblError.set_markup ('<span weight="bold" size="larger">'+
+                                          _("Not possible") + '</span>\n\n' +
+                                          _("THe remote server did not accept "
+                                            "the print job, most likely "
+                                            "because the printer is not "
+                                            "shared."))
+                self.ErrorDialog.set_transient_for (self.MainWindow)
+                self.ErrorDialog.run ()
+                self.ErrorDialog.hide ()
+            else:
+                self.show_IPP_Error(e, msg)
+
     def on_btnSelfTest_clicked(self, button):
-        pass
+        self.maintenance_command ("PrintSelfTestPage")
 
     def on_btnCleanHeads_clicked(self, button):
-        pass
+        self.maintenance_command ("Clean all")
 
     # select Item
 
@@ -1607,6 +1635,11 @@ class GUI:
             self.lblPDefault.set_text(_("No default printer set."))
 
         self.setTestButton (printer)
+
+        commands = (printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
+        commands = False # Needs better pycups support; disabled for now
+        self.btnSelfTest.set_sensitive (commands)
+        self.btnCleanHeads.set_sensitive (commands)
 
         # Policy tab
         # ----------
