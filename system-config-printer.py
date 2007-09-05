@@ -1597,6 +1597,21 @@ class GUI:
                 widget.show()
             
 
+        # default printer
+        self.btnPMakeDefault.set_sensitive(not printer.default)
+        if printer.default:
+            self.lblPDefault.set_text(_("This is the default printer"))
+        elif self.default_printer:
+            self.lblPDefault.set_text(self.default_printer)
+        else:
+            self.lblPDefault.set_text(_("No default printer set."))
+
+        self.setTestButton (printer)
+
+        # Policy tab
+        # ----------
+
+        # State
         self.chkPEnabled.set_active(printer.enabled)
         self.chkPAccepting.set_active(not printer.rejecting)
         self.chkPShared.set_active(printer.is_shared)
@@ -1613,20 +1628,6 @@ class GUI:
         except:
             self.lblNotPublished.hide_all ()
 
-
-        # default printer
-        self.btnPMakeDefault.set_sensitive(not printer.default)
-        if printer.default:
-            self.lblPDefault.set_text(_("This is the default printer"))
-        elif self.default_printer:
-            self.lblPDefault.set_text(self.default_printer)
-        else:
-            self.lblPDefault.set_text(_("No default printer set."))
-
-        self.setTestButton (printer)
-
-        # Policy tab
-        # ----------
         # Job sheets
         self.fillComboBox(self.cmbPStartBanner, printer.job_sheets_supported,
                           printer.job_sheet_start),
