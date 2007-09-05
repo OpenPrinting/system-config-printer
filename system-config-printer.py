@@ -147,7 +147,7 @@ class GUI:
                           "chkPEnabled", "chkPAccepting", "chkPShared",
                         "lblNotPublished",
                           "btnPMakeDefault", "lblPDefault",
-                        "btnPrintTestPage",
+                        "btnPrintTestPage", "btnSelfTest", "btnCleanHeads",
            
                          "cmbPStartBanner", "cmbPEndBanner",
                           "cmbPErrorPolicy", "cmbPOperationPolicy",
@@ -1485,6 +1485,12 @@ class GUI:
             else:
                 self.show_IPP_Error(e, msg)
 
+    def on_btnSelfTest_clicked(self, button):
+        pass
+
+    def on_btnCleanHeads_clicked(self, button):
+        pass
+
     # select Item
 
     def on_tvMainList_cursor_changed(self, list):
@@ -1613,8 +1619,7 @@ class GUI:
         if printer.default:
             self.lblPDefault.set_text(_("This is the default printer"))
         elif self.default_printer:
-            self.lblPDefault.set_text(_("Default printer is %s") %
-                                      self.default_printer)
+            self.lblPDefault.set_text(self.default_printer)
         else:
             self.lblPDefault.set_text(_("No default printer set."))
 
