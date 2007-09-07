@@ -2543,8 +2543,6 @@ class GUI:
                 else:
                     current = cupshelpers.Device (current_uri)
                     current.info = "Current device"
-                    if current.type == "smb":
-                        self.browse_smb_hosts ()
                 print current.info
 
             self.devices = devices.values()
