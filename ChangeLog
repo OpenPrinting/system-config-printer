@@ -2,11 +2,14 @@
 
 	* configure.in: Version 0.7.74.1.
 
-	* system-config-printer.py (GUI.fillNPApply): Always construct the
-	URI from the input fields (bug #281551).
-	(GUI.get_PPD_but_handle_errors): Likewise.
-
 2007-09-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.busy): Avoid traceback when window
+	is not yet displayed.
+	(GUI.ready): Likewise.
+
+	* system-config-printer.py (GUI.get_PPD_but_handle_errors): Always
+	construct URI from input fields (bug #281551).
 
 	* system-config-printer.py (GUI.populateList): Don't select the
 	default printer after changes to another printer have been made.
