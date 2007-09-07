@@ -3290,11 +3290,7 @@ class GUI:
                 return
         elif self.dialog_mode == "device":
             try:
-                uri = None
-                if self.device.uri:
-                    uri = self.device.uri
-                else:
-                    uri = self.getDeviceURI()
+                uri = self.getDeviceURI()
                 self.passwd_retry = False # use cached Passwd 
                 self.cups.addPrinter(name, device=uri)
             except cups.IPPError, (e, msg):
