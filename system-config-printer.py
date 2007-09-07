@@ -1490,7 +1490,11 @@ class GUI:
         os.write (tmpfd, "#CUPS-COMMAND\n%s\n" % command)
         os.close (tmpfd)
         try:
-            job_id = self.cups.printTestPage (self.printer.name, file=tmpfname)
+            format = "application/vnd.cups-command"
+            job_id = self.cups.printTestPage (self.printer.name,
+                                              format=format,
+                                              file=tmpfname,
+                                              user=self.connect_user)
             self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
                                      _("Submitted") + '</span>\n\n' +
                                      _("Maintenance command submitted as "
@@ -1637,7 +1641,6 @@ class GUI:
         self.setTestButton (printer)
 
         commands = (printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
-        commands = False # Needs better pycups support; disabled for now
         self.btnSelfTest.set_sensitive (commands)
         self.btnCleanHeads.set_sensitive (commands)
 
