@@ -1144,10 +1144,16 @@ class GUI:
                                  not bool(self.conflicts))
 
         try: # Might not be a printer selected
+            possible = (not bool (self.changed) and
+                        self.printer.enabled and
+                        not self.printer.rejecting)
+
             if not self.test_button_cancels:
-                self.btnPrintTestPage.set_sensitive (not bool (self.changed) and
-                                                     self.printer.enabled and
-                                                     not self.printer.rejecting)
+                self.btnPrintTestPage.set_sensitive (possible)
+
+            commands = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
+            self.btnSelfTest.set_sensitive (commands and possible)
+            self.btnCleanHeads.set_sensitive (commands and possible)
         except:
             pass
 
@@ -1639,10 +1645,6 @@ class GUI:
             self.lblPDefault.set_text(_("No default printer set."))
 
         self.setTestButton (printer)
-
-        commands = (printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
-        self.btnSelfTest.set_sensitive (commands)
-        self.btnCleanHeads.set_sensitive (commands)
 
         # Policy tab
         # ----------
