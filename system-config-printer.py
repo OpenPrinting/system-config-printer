@@ -628,7 +628,7 @@ class GUI:
         for name, printer in self.printers.iteritems():
             if printer.default:
                 self.default_printer = name
-                if start_printer == None:
+                if start_printer == None and old_name == "":
                     start_printer = self.default_printer
             self.servers.add(printer.getServer())
 
