@@ -4,6 +4,10 @@
 
 2007-09-07  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.busy): Avoid traceback when window
+	is not yet displayed.
+	(GUI.ready): Likewise.
+
 	* system-config-printer.py (GUI.get_PPD_but_handle_errors): Always
 	construct URI from input fields (bug #281551).
 

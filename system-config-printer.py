@@ -479,16 +479,18 @@ class GUI:
     def busy (self, win = None):
         if not win:
             win = self.MainWindow
-        win.window.set_cursor (busy_cursor)
-        while gtk.events_pending ():
-            gtk.main_iteration ()
+        if win.window:
+            win.window.set_cursor (busy_cursor)
+            while gtk.events_pending ():
+                gtk.main_iteration ()
             
     def ready (self, win = None):
         if not win:
             win = self.MainWindow
-        win.window.set_cursor (ready_cursor)
-        while gtk.events_pending ():
-            gtk.main_iteration ()
+        if win.window:
+            win.window.set_cursor (ready_cursor)
+            while gtk.events_pending ():
+                gtk.main_iteration ()
 
     def queryPPDs(self):
         if self.ppds_lock != None:
