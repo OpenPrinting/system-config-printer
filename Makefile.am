@@ -14,6 +14,7 @@ nobase_pkgdata_DATA=				\
 	optionwidgets.py			\
 	probe_printer.py			\
 	gtk_label_autowrap.py			\
+	gtk_treeviewtooltips.py			\
 	system-config-printer.glade		\
 	applet.glade				\
 	applet.png				\
