@@ -91,7 +91,42 @@ def validDeviceURI (uri):
         return True
     return False
 
-class GUI:
+class GtkGUI:
+
+    def getWidgets(self, *names):
+        for name in names:
+            widget = self.xml.get_widget(name)
+            if widget is None:
+                raise ValueError, "Widget '%s' not found" % name
+            setattr(self, name, widget)
+
+    def moveClassMembers(self, treeview_from, treeview_to):
+        selection = treeview_from.get_selection()
+        model_from, rows = selection.get_selected_rows()
+        rows = [gtk.TreeRowReference(model_from, row) for row in rows]
+
+        model_to = treeview_to.get_model()
+        
+        for row in rows:
+            path = row.get_path()
+            iter = model_from.get_iter(path)
+            
+            row_data = model_from.get(iter, 0)
+            model_to.append(row_data)
+            model_from.remove(iter)
+
+    def getCurrentClassMembers(self, treeview):
+        model = treeview.get_model()
+        iter = model.get_iter_root()
+        result = []
+        while iter:
+            result.append(model.get(iter, 0)[0])
+            iter = model.iter_next(iter)
+        result.sort()
+        return result
+
+
+class GUI(GtkGUI):
 
     def __init__(self, start_printer = None, change_ppd = False):
 
@@ -110,11 +145,6 @@ class GUI:
         self.changed = set() # of options
 
         self.servers = set((self.connect_server,))
-
-        # Synchronisation objects.
-        self.ppds_lock = thread.allocate_lock()
-        self.devices_lock = thread.allocate_lock()
-        self.smb_lock = thread.allocate_lock()
 
         try:
             self.cups = cups.Connection()
@@ -163,7 +193,7 @@ class GUI:
                           "lblClassMembers",
                           "tvClassMembers", "tvClassNotMembers",
                           "btnClassAddMember", "btnClassDelMember",
-
+                        # Job options
                         "sbJOCopies", "btnJOResetCopies",
                         "cmbJOOrientationRequested", "btnJOResetOrientationRequested",
                         "cbJOFitplot", "btnJOResetFitplot",
@@ -191,44 +221,23 @@ class GUI:
                         "sbJOColumns", "btnJOResetColumns",
                         "tblJOOther",
                         "entNewJobOption", "btnNewJobOption",
-                        
+                        # small dialogs
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                          "entUser",
                         "ConnectingDialog", "lblConnecting",
                         "PasswordDialog", "lblPasswordPrompt", "entPasswd",
-
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo",
                         "InstallDialog", "lblInstall",
-
-                        "ApplyDialog",
-
-                        "NewPrinterWindow", "ntbkNewPrinter",
-                         "btnNPBack", "btnNPForward", "btnNPApply",
-                          "entNPName", "entNPDescription", "entNPLocation",
-                          "tvNPDevices", "ntbkNPType",
-                        "lblNPDeviceDescription",
-                           "cmbNPTSerialBaud", "cmbNPTSerialParity",
-                            "cmbNPTSerialBits", "cmbNPTSerialFlow",
-                           "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
-                           "entNPTIPPHostname", "entNPTIPPPrintername",
-                        "entNPTDirectJetHostname", "entNPTDirectJetPort",
-                        "entNPTIPPHostname", "entNPTIPPPrintername",
-                        "SMBBrowseDialog", "entSMBURI", "tvSMBBrowser", "tblSMBAuth",
-                        "entSMBUsername", "entSMBPassword", "btnSMBBrowseOk", "btnSMBVerify",
-                           "entNPTDevice",
-                           "tvNCMembers", "tvNCNotMembers",
-                          "rbtnNPPPD", "tvNPMakes", 
-                          "rbtnNPFoomatic", "filechooserPPD",
-                        
-                          "tvNPModels", "tvNPDrivers",
-                          "rbtnChangePPDasIs",
-                        "NewPrinterName", "entCopyName", "btnCopyOk",
-
-                        "AboutDialog",
-
+                        "ApplyDialog", "AboutDialog",
                         "WaitWindow", "lblWait",
                         )
+        self.tooltips = gtk.Tooltips()
+        self.tooltips.enable()
+
+        # New Printer Dialog
+        self.newPrinterGUI = np = NewPrinterGUI(self)
+        np.NewPrinterWindow.set_transient_for(self.MainWindow)
 
         # Set up "About" dialog
         self.AboutDialog.set_version(config.VERSION)
@@ -236,14 +245,11 @@ class GUI:
         self.static_tabs = 3
 
         gtk_label_autowrap.set_autowrap(self.MainWindow)
-        gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
         self.status_context_id = self.statusbarMain.get_context_id(
             "Connection")
         self.setConnected()
         self.ntbkMain.set_show_tabs(False)
-        self.ntbkNewPrinter.set_show_tabs(False)
-        self.ntbkNPType.set_show_tabs(False)
         self.prompt_primary = self.lblPasswordPrompt.get_label ()
 
         # Setup main list
@@ -262,21 +268,18 @@ class GUI:
 
         self.mainlist.append(None, (_("Server Settings"), 'Settings'))
 
-        self.tooltips = gtk.Tooltips()
-        self.tooltips.enable()
-
         # setup some lists
         m = gtk.SELECTION_MULTIPLE
         s = gtk.SELECTION_SINGLE
         for name, treeview, selection_mode in (
             (_("Members of this class"), self.tvClassMembers, m),
             (_("Others"), self.tvClassNotMembers, m),
-            (_("Members of this class"), self.tvNCMembers, m),
-            (_("Others"), self.tvNCNotMembers, m),
-            (_("Devices"), self.tvNPDevices, s),
-            (_("Makes"), self.tvNPMakes,s),
-            (_("Models"), self.tvNPModels,s),
-            (_("Drivers"), self.tvNPDrivers,s),
+            (_("Members of this class"), np.tvNCMembers, m),
+            (_("Others"), np.tvNCNotMembers, m),
+            (_("Devices"), np.tvNPDevices, s),
+            (_("Makes"), np.tvNPMakes,s),
+            (_("Models"), np.tvNPModels,s),
+            (_("Drivers"), np.tvNPDrivers,s),
             (_("Users"), self.tvPUsers, m),
             ):
             
@@ -287,43 +290,11 @@ class GUI:
             treeview.append_column(column)
             treeview.get_selection().set_mode(selection_mode)
 
-        self.tvNPDriversTooltips = TreeViewTooltips(self.tvNPDrivers, self.NPDriversTooltips)
-
-        ppd_filter = gtk.FileFilter()
-        ppd_filter.set_name(_("PostScript Printer Description (*.ppd[.gz])"))
-        ppd_filter.add_pattern("*.ppd")
-        ppd_filter.add_pattern("*.PPD")
-        ppd_filter.add_pattern("*.ppd.gz")
-        
-        self.filechooserPPD.add_filter(ppd_filter)
 
         self.conflict_dialog = gtk.MessageDialog(
             parent=None, flags=0, type=gtk.MESSAGE_WARNING,
             buttons=gtk.BUTTONS_OK)
         
-        # SMB browser
-        self.smb_store = gtk.TreeStore (str, # host or share
-                                        str, # comment
-                                        gobject.TYPE_PYOBJECT, # domain dict
-                                        gobject.TYPE_PYOBJECT) # host dict
-        self.tvSMBBrowser.set_model (self.smb_store)
-        self.smb_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
-
-        # SMB list columns
-        col = gtk.TreeViewColumn (_("Share"), gtk.CellRendererText (),
-                                  text=0)
-        col.set_resizable (True)
-        col.set_sort_column_id (0)
-        self.tvSMBBrowser.append_column (col)
-
-        col = gtk.TreeViewColumn (_("Comment"), gtk.CellRendererText (),
-                                  text=1)
-        self.tvSMBBrowser.append_column (col)
-        slct = self.tvSMBBrowser.get_selection ()
-        slct.set_select_function (self.smb_select_function)
-        
-        self.SMBBrowseDialog.set_transient_for(self.NewPrinterWindow)
-
         self.xml.signal_autoconnect(self)
 
         # Job Options widgets.
@@ -468,13 +439,6 @@ class GUI:
             self.populateList()
             self.show_HTTP_Error(s)
 
-    def getWidgets(self, *names):
-        for name in names:
-            widget = self.xml.get_widget(name)
-            if widget is None:
-                raise ValueError, "Widget '%s' not found" % name
-            setattr(self, name, widget)
-
     def busy (self, win = None):
         if not win:
             win = self.MainWindow
@@ -488,83 +452,6 @@ class GUI:
         win.window.set_cursor (ready_cursor)
         while gtk.events_pending ():
             gtk.main_iteration ()
-
-    def queryPPDs(self):
-        print "queryPPDs"
-        if not self.ppds_lock.acquire(0):
-            print "queryPPDs: in progress"
-            return
-        print "Lock acquired for PPDs thread"
-        # Start new thread
-        thread.start_new_thread (self.getPPDs_thread, (self.language[0],))
-        print "PPDs thread started"
-
-    def getPPDs_thread(self, language):
-        try:
-            print "Connecting (PPDs)"
-            cups.setServer (self.connect_server)
-            cups.setUser (self.connect_user)
-            cups.setPasswordCB (self.cupsPasswdCallback)
-            # cups.setEncryption (...)
-            c = cups.Connection ()
-            print "Fetching PPDs"
-            ppds_dict = c.getPPDs()
-            self.ppds_result = ppds.PPDs(ppds_dict, language=language)
-            print "Closing connection (PPDs)"
-            del c
-        except cups.IPPError, (e, msg):
-            self.ppds_result = cups.IPPError (e, msg)
-        except:
-            self.ppds_result = None
-
-        print "Releasing PPDs lock"
-        self.ppds_lock.release ()
-
-    def fetchPPDs(self, parent=None):
-        print "fetchPPDs"
-        self.queryPPDs()
-        time.sleep (0.1)
-
-        # Keep the UI refreshed while we wait for the devices to load.
-        waiting = False
-        while (self.ppds_lock.locked()):
-            if not waiting:
-                waiting = True
-                self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                         _('Searching') + '</span>\n\n' +
-                                         _('Searching for drivers'))
-                if not parent:
-                    parent = self.MainWindow
-                self.WaitWindow.set_transient_for (parent)
-                self.WaitWindow.show ()
-
-            while gtk.events_pending ():
-                gtk.main_iteration ()
-
-            time.sleep (0.1)
-
-        if waiting:
-            self.WaitWindow.hide ()
-
-        print "Got PPDs"
-        result = self.ppds_result # atomic operation
-        if isinstance (result, cups.IPPError):
-            # Propagate exception.
-            raise result
-        return result
-
-    def loadPPDs(self, parent=None):
-        try:
-            return self.ppds
-        except:
-            self.ppds = self.fetchPPDs (parent=parent)
-            return self.ppds
-
-    def dropPPDs(self):
-        try:
-            del self.ppds
-        except:
-            pass
 
     def setConnected(self):
         connected = bool(self.cups)
@@ -771,7 +658,7 @@ class GUI:
 
         self.lblConnecting.set_text(_("Connecting to server:\n%s") %
                                     servername)
-        self.dropPPDs()
+        self.newPrinterGUI.dropPPDs()
         self.ConnectingDialog.set_transient_for(self.MainWindow)
         self.ConnectingDialog.show()
         self.connect_server = servername
@@ -823,7 +710,7 @@ class GUI:
 
         try:
             connection = cups.Connection()
-            self.dropPPDs ()
+            self.newPrinterGUI.dropPPDs ()
         except RuntimeError, s:
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
@@ -1590,7 +1477,7 @@ class GUI:
                                      _("Error") + '</span>\n\n' +
                                      _("There was a problem connecting to "
                                        "the CUPS server."))
-            self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+            self.ErrorDialog.set_transient_for()
             self.ErrorDialog.run()
             self.ErrorDialog.hide()
             sys.exit (1)
@@ -1915,31 +1802,6 @@ class GUI:
             self.changed.discard(self.tvClassMembers)
         self.setDataButtonState()
         
-    def moveClassMembers(self, treeview_from, treeview_to):
-        selection = treeview_from.get_selection()
-        model_from, rows = selection.get_selected_rows()
-        rows = [gtk.TreeRowReference(model_from, row) for row in rows]
-
-        model_to = treeview_to.get_model()
-        
-        for row in rows:
-            path = row.get_path()
-            iter = model_from.get_iter(path)
-            
-            row_data = model_from.get(iter, 0)
-            model_to.append(row_data)
-            model_from.remove(iter)
-
-    def getCurrentClassMembers(self, treeview):
-        model = treeview.get_model()
-        iter = model.get_iter_root()
-        result = []
-        while iter:
-            result.append(model.get(iter, 0)[0])
-            iter = model.iter_next(iter)
-        result.sort()
-        return result
-
     # Quit
     
     def on_quit_activate(self, widget, event=None):
@@ -1996,7 +1858,7 @@ class GUI:
         if text!=new_text:
             widget.set_text(new_text)
         self.btnCopyOk.set_sensitive(
-            self.check_NPName(new_text))
+            self.checkNPName(new_text))
 
     # Delete
 
@@ -2032,9 +1894,125 @@ class GUI:
         self.AboutDialog.run()
         self.AboutDialog.hide()
 
+    ##########################################################################
+    ### Server settings
+    ##########################################################################
+
+    def fillServerTab(self):
+        self.changed = set()
+        try:
+            self.server_settings = self.cups.adminGetServerSettings()
+        except cups.IPPError, (e, m):
+            self.show_IPP_Error(e, m)
+            self.tvMainList.get_selection().unselect_all()
+            self.on_tvMainList_cursor_changed(self.tvMainList)
+            return
+
+        for widget, setting in [
+            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
+            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
+            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
+            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
+            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
+            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
+            widget.set_data("setting", setting)
+            if self.server_settings.has_key(setting):
+                widget.set_active(int(self.server_settings[setting]))
+                widget.set_sensitive(True)
+            else:
+                widget.set_active(False)
+                widget.set_sensitive(False)
+        self.setDataButtonState()
+        
+    def on_server_changed(self, widget):
+        if (str(int(widget.get_active())) ==
+            self.server_settings[widget.get_data("setting")]):
+            self.changed.discard(widget)
+        else:
+            self.changed.add(widget)
+
+        sharing = self.chkServerShare.get_active ()
+        self.chkServerShareAny.set_sensitive (
+            sharing and self.server_settings.has_key(try_CUPS_SERVER_REMOTE_ANY))
+
+        self.setDataButtonState()
+
+    def save_serversettings(self):
+        setting_dict = self.server_settings.copy()
+        for widget, setting in [
+            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
+            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
+            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
+            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
+            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
+            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
+            if not self.server_settings.has_key(setting): continue
+            setting_dict[setting] = str(int(widget.get_active()))
+        try:
+            self.cups.adminSetServerSettings(setting_dict)
+        except cups.IPPError, (e, m):
+            self.show_IPP_Error(e, m)
+            return True
+        except RuntimeError, s:
+            self.show_IPP_Error(None, s)
+            return True
+        self.changed = set()
+        self.setDataButtonState()
+        time.sleep(1) # give the server a chance to process our request
+
+        # Now reconnect, in case the server needed to reload.
+        self.reconnect ()
+
     # ====================================================================
     # == New Printer Dialog ==============================================
     # ====================================================================
+
+    # new printer
+    def on_new_printer_activate(self, widget):
+        self.busy (self.MainWindow)
+        self.newPrinterGUI.init("printer")
+        self.ready (self.MainWindow)
+
+    # new class
+    def on_new_class_activate(self, widget):
+        self.newPrinterGUI.init("class")
+
+    # change device
+    def on_btnSelectDevice_clicked(self, button):
+        self.busy (self.MainWindow)
+        self.newPrinterGUI.init("device")
+        self.ready (self.MainWindow)
+
+    # change PPD
+    def on_btnChangePPD_clicked(self, button):
+        self.busy (self.MainWindow)
+        self.newPrinterGUI.init("ppd")
+        self.ready (self.MainWindow)
+
+    def checkNPName(self, name):
+        if not name: return False
+        name = name.lower()
+        for printer in self.printers.values():
+            if not printer.remote and printer.name.lower()==name:
+                return False
+        return True
+    
+    def makeNameUnique(self, name):
+        """Make a suggested queue name valid and unique."""
+        name = name.replace (" ", "_")
+        name = name.replace ("/", "_")
+        name = name.replace ("#", "_")
+        if not self.checkNPName (name):
+            suffix=2
+            while not self.checkNPName (name + str (suffix)):
+                suffix += 1
+                if suffix == 100:
+                    break
+            name += str (suffix)
+        return name
+
+
+class NewPrinterGUI(GtkGUI):
 
     new_printer_device_tabs = {
         "parallel" : 0, # empty tab
@@ -2052,95 +2030,174 @@ class GUI:
         "smb" : 7,
         }
 
-    # new printer
-    def on_new_printer_activate(self, widget):
-        self.dialog_mode = "printer"
-        self.NewPrinterWindow.set_title(_("New Printer"))
+    def __init__(self, mainapp):
+        self.mainapp = mainapp
+        self.xml = mainapp.xml
+        self.tooltips = mainapp.tooltips
+        self.language = mainapp.language
         
-        self.busy (self.MainWindow)
-        self.fillDeviceTab ()
-        self.initNewPrinterWindow()
-        self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-        self.ready (self.MainWindow)
+        self.options = {} # keyword -> Option object
+        self.changed = set()
+        self.conflicts = set()
+        self.ppd = None
 
-        # Start fetching information from CUPS in the background
-        self.new_printer_PPDs_loaded = False
-        self.queryPPDs ()
+        # Synchronisation objects.
+        self.ppds_lock = thread.allocate_lock()
+        self.devices_lock = thread.allocate_lock()
+        self.smb_lock = thread.allocate_lock()
 
-    # new class
-    def on_new_class_activate(self, widget):
-        self.dialog_mode = "class"
-        self.NewPrinterWindow.set_title(_("New Class"))
+        self.getWidgets("NewPrinterWindow", "ntbkNewPrinter",
+                         "btnNPBack", "btnNPForward", "btnNPApply",
+                          "entNPName", "entNPDescription", "entNPLocation",
+                          "tvNPDevices", "ntbkNPType",
+                        "lblNPDeviceDescription",
+                           "cmbNPTSerialBaud", "cmbNPTSerialParity",
+                            "cmbNPTSerialBits", "cmbNPTSerialFlow",
+                           "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
+                           "entNPTIPPHostname", "entNPTIPPPrintername",
+                        "entNPTDirectJetHostname", "entNPTDirectJetPort",
+                        "entNPTIPPHostname", "entNPTIPPPrintername",
+                        "SMBBrowseDialog", "entSMBURI", "tvSMBBrowser", "tblSMBAuth",
+                        "entSMBUsername", "entSMBPassword", "btnSMBBrowseOk", "btnSMBVerify",
+                           "entNPTDevice",
+                           "tvNCMembers", "tvNCNotMembers",
+                          "rbtnNPPPD", "tvNPMakes", 
+                          "rbtnNPFoomatic", "filechooserPPD",
+                        
+                          "tvNPModels", "tvNPDrivers",
+                          "rbtnChangePPDasIs",
+                        "vbNPInstallOptions",
+                        "NewPrinterName", "entCopyName", "btnCopyOk")
+        # share with mainapp
+        self.WaitWindow = mainapp.WaitWindow
+        self.lblWait = mainapp.lblWait
+        self.busy = mainapp.busy
+        self.ready = mainapp.ready
 
-        self.fillNewClassMembers()
+        gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
-        self.initNewPrinterWindow()
+        self.ntbkNewPrinter.set_show_tabs(False)
+        self.ntbkNPType.set_show_tabs(False)
 
-    # change device
-    def on_btnSelectDevice_clicked(self, button):
-        self.busy (self.MainWindow)
-        self.queryDevices ()
-        self.loadPPDs()
-        self.dialog_mode = "device"
-        self.fillDeviceTab(self.printer.device_uri)
-        self.initNewPrinterWindow()
-        self.NewPrinterWindow.set_title(_("Change Device URI"))
+        # SMB browser
+        self.smb_store = gtk.TreeStore (str, # host or share
+                                        str, # comment
+                                        gobject.TYPE_PYOBJECT, # domain dict
+                                        gobject.TYPE_PYOBJECT) # host dict
+        self.tvSMBBrowser.set_model (self.smb_store)
+        self.smb_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
 
-        self.ntbkNewPrinter.set_current_page(1)
+        # SMB list columns
+        col = gtk.TreeViewColumn (_("Share"), gtk.CellRendererText (),
+                                  text=0)
+        col.set_resizable (True)
+        col.set_sort_column_id (0)
+        self.tvSMBBrowser.append_column (col)
 
-        self.initNewPrinterWindow()
-        self.ready (self.MainWindow)
+        col = gtk.TreeViewColumn (_("Comment"), gtk.CellRendererText (),
+                                  text=1)
+        self.tvSMBBrowser.append_column (col)
+        slct = self.tvSMBBrowser.get_selection ()
+        slct.set_select_function (self.smb_select_function)
+        
+        self.SMBBrowseDialog.set_transient_for(self.NewPrinterWindow)
 
-    # change PPD
-    def on_btnChangePPD_clicked(self, button):
-        self.busy (self.MainWindow)
-        self.dialog_mode = "ppd"
-        self.initNewPrinterWindow()
-        self.NewPrinterWindow.set_title(_("Change Driver"))
 
-        self.ntbkNewPrinter.set_current_page(2)
-        self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
+        self.tvNPDriversTooltips = TreeViewTooltips(self.tvNPDrivers, self.NPDriversTooltips)
 
-        self.auto_model = ""
-        if self.ppd:
-            attr = self.ppd.findAttr("Manufacturer")
-            if attr:
-                self.auto_make = attr.value
-            else:
-                self.auto_make = ""
-            attr = self.ppd.findAttr("ModelName")
-            if not attr: attr = self.ppd.findAttr("ShortNickName")
-            if not attr: attr = self.ppd.findAttr("NickName")
-            if attr:
-                if attr.value.startswith(self.auto_make):
-                    self.auto_model = attr.value[len(self.auto_make):].strip ()
-                else:
-                    try:
-                        self.auto_model = attr.value.split(" ", 1)[1]
-                    except IndexError:
-                        self.auto_model = ""
-            else:
-                self.auto_model = ""
+        ppd_filter = gtk.FileFilter()
+        ppd_filter.set_name(_("PostScript Printer Description (*.ppd[.gz])"))
+        ppd_filter.add_pattern("*.ppd")
+        ppd_filter.add_pattern("*.PPD")
+        ppd_filter.add_pattern("*.ppd.gz")
+        
+        self.filechooserPPD.add_filter(ppd_filter)
+
+        self.xml.signal_autoconnect(self)
+
+    def option_changed(self, option):
+        if option.is_changed():
+            self.changed.add(option)
         else:
-            # Special CUPS names for a raw queue.
-            self.auto_make = 'Raw'
-            self.auto_model = 'Queue'
+            self.changed.discard(option)
 
-        self.loadPPDs ()
-        self.fillMakeList()
-        self.initNewPrinterWindow()
-        self.ready (self.MainWindow)
+        if option.conflicts:
+            self.conflicts.add(option)
+        else:
+            self.conflicts.discard(option)
+        self.setDataButtonState()
 
-    def initNewPrinterWindow(self):
+        return
+
+    def setDataButtonState(self):
+        self.btnNPForward.set_sensitive(not bool(self.conflicts))
+
+    def init(self, dialog_mode):
+        self.dialog_mode = dialog_mode
+        self.options = {} # keyword -> Option object
+        self.changed = set()
+        self.conflicts = set()
+
         if self.dialog_mode == "printer":
+            self.NewPrinterWindow.set_title(_("New Printer"))
             # Start on devices page (1, not 0)
             self.ntbkNewPrinter.set_current_page(1)
+            self.fillDeviceTab()
+            self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
+            # Start fetching information from CUPS in the background
+            self.new_printer_PPDs_loaded = False
+            self.queryPPDs ()
+
         elif self.dialog_mode == "class":
+            self.NewPrinterWindow.set_title(_("New Class"))
+            self.fillNewClassMembers()
             # Start on name page
             self.ntbkNewPrinter.set_current_page(0)
+        elif self.dialog_mode == "device":
+            self.NewPrinterWindow.set_title(_("Change Device URI"))
+            self.ntbkNewPrinter.set_current_page(1)
+            self.queryDevices ()
+            self.loadPPDs()
+            self.fillDeviceTab(self.mainapp.printer.device_uri)
+            # Start fetching information from CUPS in the background
+            self.new_printer_PPDs_loaded = False
+            self.queryPPDs ()
+        elif self.dialog_mode == "ppd":
+            self.NewPrinterWindow.set_title(_("Change Driver"))
+            self.ntbkNewPrinter.set_current_page(2)
+            self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
+
+            self.auto_model = ""
+            ppd = self.mainapp.ppd
+            if ppd:
+                attr = ppd.findAttr("Manufacturer")
+                if attr:
+                    self.auto_make = attr.value
+                else:
+                    self.auto_make = ""
+                attr = ppd.findAttr("ModelName")
+                if not attr: attr = ppd.findAttr("ShortNickName")
+                if not attr: attr = ppd.findAttr("NickName")
+                if attr:
+                    if attr.value.startswith(self.auto_make):
+                        self.auto_model = attr.value[len(self.auto_make):].strip ()
+                    else:
+                        try:
+                            self.auto_model = attr.value.split(" ", 1)[1]
+                        except IndexError:
+                            self.auto_model = ""
+                else:
+                    self.auto_model = ""
+            else:
+                # Special CUPS names for a raw queue.
+                self.auto_make = 'Raw'
+                self.auto_model = 'Queue'
+
+            self.loadPPDs ()
+            self.fillMakeList()
 
         if self.dialog_mode in ("printer", "class"):
-            self.entNPName.set_text (self.makeNameUnique(self.dialog_mode))
+            self.entNPName.set_text (self.mainapp.makeNameUnique(self.dialog_mode))
             self.entNPName.grab_focus()
             for widget in [self.entNPLocation,
                            self.entNPDescription,
@@ -2158,9 +2215,87 @@ class GUI:
 
         self.entNPTDirectJetPort.set_text('9100')
         self.setNPButtons()
-        self.NewPrinterWindow.set_transient_for(self.MainWindow)
         self.NewPrinterWindow.show()
     
+    # get PPDs
+
+    def queryPPDs(self):
+        print "queryPPDs"
+        if not self.ppds_lock.acquire(0):
+            print "queryPPDs: in progress"
+            return
+        print "Lock acquired for PPDs thread"
+        # Start new thread
+        thread.start_new_thread (self.getPPDs_thread, (self.language[0],))
+        print "PPDs thread started"
+
+    def getPPDs_thread(self, language):
+        try:
+            print "Connecting (PPDs)"
+            cups.setServer (self.mainapp.connect_server)
+            cups.setUser (self.mainapp.connect_user)
+            cups.setPasswordCB (self.mainapp.cupsPasswdCallback)
+            # cups.setEncryption (...)
+            c = cups.Connection ()
+            print "Fetching PPDs"
+            ppds_dict = c.getPPDs()
+            self.ppds_result = ppds.PPDs(ppds_dict, language=language)
+            print "Closing connection (PPDs)"
+            del c
+        except cups.IPPError, (e, msg):
+            self.ppds_result = cups.IPPError (e, msg)
+        except:
+            nonfatalException()
+            self.ppds_result = { }
+
+        print "Releasing PPDs lock"
+        self.ppds_lock.release ()
+
+    def fetchPPDs(self, parent=None):
+        print "fetchPPDs"
+        self.queryPPDs()
+        time.sleep (0.1)
+
+        # Keep the UI refreshed while we wait for the devices to load.
+        waiting = False
+        while (self.ppds_lock.locked()):
+            if not waiting:
+                waiting = True
+                self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                         _('Searching') + '</span>\n\n' +
+                                         _('Searching for drivers'))
+                if not parent:
+                    parent = self.mainapp.MainWindow
+                self.WaitWindow.set_transient_for (parent)
+                self.WaitWindow.show ()
+
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
+            time.sleep (0.1)
+
+        if waiting:
+            self.WaitWindow.hide ()
+
+        print "Got PPDs"
+        result = self.ppds_result # atomic operation
+        if isinstance (result, cups.IPPError):
+            # Propagate exception.
+            raise result
+        return result
+
+    def loadPPDs(self, parent=None):
+        try:
+            return self.ppds
+        except:
+            self.ppds = self.fetchPPDs (parent=parent)
+            return self.ppds
+
+    def dropPPDs(self):
+        try:
+            del self.ppds
+        except:
+            pass
 
     # Class members
 
@@ -2169,7 +2304,7 @@ class GUI:
         model.clear()
         model = self.tvNCNotMembers.get_model()
         model.clear()
-        for printer in self.printers.itervalues():
+        for printer in self.mainapp.printers.itervalues():
             model.append((printer.name,))
 
     def on_btnNCAddMember_clicked(self, button):
@@ -2207,7 +2342,7 @@ class GUI:
                 try:
                     if self.device.id:
                         name = self.device.id_dict["MDL"]
-                    name = self.makeNameUnique (name)
+                    name = self.mainapp.makeNameUnique (name)
                     self.entNPName.set_text (name)
                 except:
                     nonfatalException ()
@@ -2265,16 +2400,16 @@ class GUI:
                         model, iter = self.tvNPModels.get_selection ().\
                                       get_selected ()
                         name = model.get(iter, 0)[0]
-                        name = self.makeNameUnique (name)
+                        name = self.mainapp.makeNameUnique (name)
                         self.entNPName.set_text (name)
                     except:
                         nonfatalException ()
 
             self.ready (self.NewPrinterWindow)
             if self.rbtnNPFoomatic.get_active():
-                order = [1, 2, 3, 0]
+                order = [1, 2, 3, 6, 0]
             else:
-                order = [1, 2, 0]
+                order = [1, 2, 6, 0]
         elif self.dialog_mode == "device":
             order = [1]
         elif self.dialog_mode == "ppd":
@@ -2282,9 +2417,24 @@ class GUI:
                 order = [2, 3, 5]
             else:
                 order = [2, 5]
+
+        if ((page_nr == 2 and not self.rbtnNPFoomatic.get_active())
+            or page_nr == 3) and step > 0:
+            self.ppd = self.getNPPPD()
+            if not self.ppd:
+                return
+            self.fillNPInstallableOptions()
+            if not self.installable_options:
+                step += 1
             
-        page_nr = self.ntbkNewPrinter.set_current_page(
-            order[order.index(page_nr)+step])
+        page_nr = order[order.index(page_nr)+step]
+        self.ntbkNewPrinter.set_current_page(page_nr)
+            
+        if page_nr == 6 and not self.installable_options and step<0:
+            page_nr = self.ntbkNewPrinter.set_current_page(
+                order[order.index(page_nr)-1])
+            
+            
         self.setNPButtons()
 
     def setNPButtons(self):
@@ -2337,7 +2487,7 @@ class GUI:
                 self.btnNPForward.hide()
                 self.btnNPApply.show()
                 self.btnNPApply.set_sensitive(
-                    self.check_NPName(self.entNPName.get_text()))
+                    self.mainapp.checkNPName(self.entNPName.get_text()))
         if nr == 2: # Make/PPD file
             self.btnNPForward.set_sensitive(bool(
                 self.rbtnNPFoomatic.get_active() or
@@ -2351,28 +2501,6 @@ class GUI:
             self.btnNPApply.set_sensitive(
                 bool(self.getCurrentClassMembers(self.tvNCMembers)))
             
-    def check_NPName(self, name):
-        if not name: return False
-        name = name.lower()
-        for printer in self.printers.values():
-            if not printer.remote and printer.name.lower()==name:
-                return False
-        return True
-    
-    def makeNameUnique(self, name):
-        """Make a suggested queue name valid and unique."""
-        name = name.replace (" ", "_")
-        name = name.replace ("/", "_")
-        name = name.replace ("#", "_")
-        if not self.check_NPName (name):
-            suffix=2
-            while not self.check_NPName (name + str (suffix)):
-                suffix += 1
-                if suffix == 100:
-                    break
-            name += str (suffix)
-        return name
-
     def on_entNPName_changed(self, widget):
         # restrict
         text = widget.get_text()
@@ -2384,10 +2512,10 @@ class GUI:
             widget.set_text(new_text)
         if self.dialog_mode == "printer":
             self.btnNPApply.set_sensitive(
-                self.check_NPName(new_text))
+                self.mainapp.checkNPName(new_text))
         else:
             self.btnNPForward.set_sensitive(
-                self.check_NPName(new_text))
+                self.mainapp.checkNPName(new_text))
 
     # Device URI
     def queryDevices(self):
@@ -2402,9 +2530,9 @@ class GUI:
     def getDevices_thread(self):
         try:
             print "Connecting (devices)"
-            cups.setServer (self.connect_server)
-            cups.setUser (self.connect_user)
-            cups.setPasswordCB (self.cupsPasswdCallback)
+            cups.setServer (self.mainapp.connect_server)
+            cups.setUser (self.mainapp.connect_user)
+            cups.setPasswordCB (self.mainapp.cupsPasswdCallback)
             # cups.setEncryption (...)
             c = cups.Connection ()
             print "Fetching devices"
@@ -2413,7 +2541,7 @@ class GUI:
             self.devices_result = cups.IPPError (e, msg)
         except:
             print "Exception in getDevices_thread"
-            self.devices_result = None
+            self.devices_result = {}
 
         try:
             print "Closing connection (devices)"
@@ -2438,7 +2566,7 @@ class GUI:
                                          _('Searching') + '</span>\n\n' +
                                          _('Searching for printers'))
                 if not parent:
-                    parent = self.MainWindow
+                    parent = self.mainapp.MainWindow
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show ()
 
@@ -2534,6 +2662,7 @@ class GUI:
                 self.show_IPP_Error(e, msg)
                 devices = {}
             except:
+                nonfatalException()
                 devices = {}
 
             if current_uri:
@@ -2543,7 +2672,6 @@ class GUI:
                 else:
                     current = cupshelpers.Device (current_uri)
                     current.info = "Current device"
-                print current.info
 
             self.devices = devices.values()
 
@@ -3183,13 +3311,111 @@ class GUI:
         self.setNPButtons()
 
     def getNPPPD(self):
-        if self.rbtnNPFoomatic.get_active():
-            model, iter = self.tvNPDrivers.get_selection().get_selected()
-            nr = model.get_path(iter)[0]
-            driver = self.NPDrivers[nr]
-            return driver
-        else:
-            return cups.PPD(self.filechooserPPD.get_filename())
+        try:
+            if self.rbtnNPFoomatic.get_active():
+                model, iter = self.tvNPDrivers.get_selection().get_selected()
+                nr = model.get_path(iter)[0]
+                ppd = self.NPDrivers[nr]
+            else:
+                ppd = cups.PPD(self.filechooserPPD.get_filename())
+
+        except RuntimeError, e:
+            if self.rbtnNPFoomatic.get_active():
+                # Foomatic database problem of some sort.
+                err_title = _('Database error')
+                err_text = _("The '%s' driver cannot be "
+                             "used with printer '%s %s'.")
+                model, iter = (self.tvNPDrivers.get_selection().
+                               get_selected())
+                nr = model.get_path(iter)[0]
+                driver = self.NPDrivers[nr]
+                if driver.startswith ("gutenprint"):
+                    # This printer references some XML that is not
+                    # installed by default.  Point the user at the
+                    # package they need to install.
+                    err = _("You will need to install the '%s' package "
+                            "in order to use this driver.") % \
+                            "gutenprint-foomatic"
+                else:
+                    err = err_text % (driver, self.NPMake, self.NPModel)
+            else:
+                # This error came from trying to open the PPD file.
+                err_title = _('PPD error')
+                filename = self.filechooserPPD.get_filename()
+                err = _('Failed to read PPD file.  Possible reason '
+                        'follows:') + '\n'
+                os.environ["PPD"] = filename
+                # We want this to be in the current natural language,
+                # so we intentionally don't set LC_ALL=C here.
+                p = os.popen ('/usr/bin/cupstestppd -rvv "$PPD"', 'r')
+                output = p.readlines ()
+                p.close ()
+                err += reduce (lambda x, y: x + y, output)
+
+            error_text = ('<span weight="bold" size="larger">' +
+                          err_title + '</span>\n\n' + err)
+            self.lblError.set_markup(error_text)
+            self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
+            self.ErrorDialog.run()
+            self.ErrorDialog.hide()
+            return None
+
+        if isinstance(ppd, str) or isinstance(ppd, unicode):
+            try:
+                f = self.mainapp.cups.getServerPPD(ppd)
+                ppd = cups.PPD(f)
+                os.unlink(f)
+            except :
+                # XXX
+                raise
+                pass
+        return ppd
+
+    # Installable Options
+
+    def fillNPInstallableOptions(self):
+        self.installable_options = False
+        if not self.ppd:
+            return
+
+        container = self.vbNPInstallOptions
+        for child in container.get_children():
+            container.remove(child)
+
+        # build option tabs
+        for group in self.ppd.optionGroups:
+            if group.name != "InstallableOptions":
+                continue
+            self.installable_options = True
+
+            table = gtk.Table(1, 3, False)
+            table.set_col_spacings(6)
+            table.set_row_spacings(6)
+            container.add(table)
+
+            rows = 0
+
+            for nr, option in enumerate(group.options):
+                if option.keyword == "PageRegion":
+                    continue
+                rows += 1
+                table.resize (rows, 3)
+                o = OptionWidget(option, self.ppd, self)
+                table.attach(o.conflictIcon, 0, 1, nr, nr+1, 0, 0, 0, 0)
+
+                hbox = gtk.HBox()
+                if o.label:
+                    a = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                    a.set_padding (0, 0, 0, 6)
+                    a.add (o.label)
+                    table.attach(a, 1, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    table.attach(hbox, 2, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
+                else:
+                    table.attach(hbox, 1, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
+                hbox.pack_start(o.selector, False)
+                self.options[option.keyword] = o
+            container.show_all()
+
             
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
@@ -3198,63 +3424,19 @@ class GUI:
             location = self.entNPLocation.get_text()
             info = self.entNPDescription.get_text()
         else:
-            name = self.printer.name
+            name = self.mainapp.printer.name
 
         # Whether to check for missing drivers.
         check = False
         checkppd = None
-
-        def get_PPD_but_handle_errors ():
-            try:
-                ppd = self.getNPPPD()
-            except RuntimeError, e:
-                if self.rbtnNPFoomatic.get_active():
-                    # Foomatic database problem of some sort.
-                    err_title = _('Database error')
-                    err_text = _("The '%s' driver cannot be "
-                                 "used with printer '%s %s'.")
-                    model, iter = (self.tvNPDrivers.get_selection().
-                                   get_selected())
-                    nr = model.get_path(iter)[0]
-                    driver = self.NPDrivers[nr]
-                    if driver.startswith ("gutenprint"):
-                        # This printer references some XML that is not
-                        # installed by default.  Point the user at the
-                        # package they need to install.
-                        err = _("You will need to install the '%s' package "
-                                "in order to use this driver.") % \
-                                "gutenprint-foomatic"
-                    else:
-                        err = err_text % (driver, self.NPMake, self.NPModel)
-                else:
-                    # This error came from trying to open the PPD file.
-                    err_title = _('PPD error')
-                    filename = self.filechooserPPD.get_filename()
-                    err = _('Failed to read PPD file.  Possible reason '
-                            'follows:') + '\n'
-                    os.environ["PPD"] = filename
-                    # We want this to be in the current natural language,
-                    # so we intentionally don't set LC_ALL=C here.
-                    p = os.popen ('/usr/bin/cupstestppd -rvv "$PPD"', 'r')
-                    output = p.readlines ()
-                    p.close ()
-                    err += reduce (lambda x, y: x + y, output)
-
-                error_text = ('<span weight="bold" size="larger">' +
-                              err_title + '</span>\n\n' + err)
-                self.lblError.set_markup(error_text)
-                self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
-                self.ErrorDialog.run()
-                self.ErrorDialog.hide()
-                return None
-            return ppd
+        ppd = self.ppd
 
         if self.dialog_mode=="class":
             members = self.getCurrentClassMembers(self.tvNCMembers)
             try:
                 for member in members:
                     self.passwd_retry = False # use cached Passwd 
-                    self.cups.addPrinterToClass(member, name)
+                    self.mainapp.cups.addPrinterToClass(member, name)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 return
@@ -3264,8 +3446,7 @@ class GUI:
                 uri = self.device.uri
             else:
                 uri = self.getDeviceURI()
-            ppd = get_PPD_but_handle_errors ()
-            if not ppd:
+            if not self.ppd: # XXX needed?
                 # Go back to previous page to re-select driver.
                 self.nextNPTab(-1)
                 return
@@ -3281,20 +3462,20 @@ class GUI:
             try:
                 self.passwd_retry = False # use cached Passwd
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
-                    self.cups.addPrinter(name, ppdname=ppd,
+                    self.mainapp.cups.addPrinter(name, ppdname=ppd,
                          device=uri, info=info, location=location)
                     check = True
                 elif ppd is None: # raw queue
-                    self.cups.addPrinter(name, device=uri,
+                    self.mainapp.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
                 else:
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
-                    self.cups.addPrinter(name, ppd=ppd,
+                    self.mainapp.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)
                     check = True
                     checkppd = ppd
-
-                cupshelpers.activateNewPrinter (self.cups, name)
+                    # XXX set Installable Options
+                cupshelpers.activateNewPrinter (self.mainapp.cups, name)
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
                 self.show_IPP_Error(e, msg)
@@ -3305,9 +3486,9 @@ class GUI:
         if self.dialog_mode in ("class", "printer"):
             try:
                 self.passwd_retry = False # use cached Passwd 
-                self.cups.setPrinterLocation(name, location)
+                self.mainapp.cups.setPrinterLocation(name, location)
                 self.passwd_retry = False # use cached Passwd 
-                self.cups.setPrinterInfo(name, info)
+                self.mainapp.cups.setPrinterInfo(name, info)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 return
@@ -3315,13 +3496,12 @@ class GUI:
             try:
                 uri = self.getDeviceURI()
                 self.passwd_retry = False # use cached Passwd 
-                self.cups.addPrinter(name, device=uri)
+                self.mainapp.cups.addPrinter(name, device=uri)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 return
         elif self.dialog_mode == "ppd":
-            ppd = get_PPD_but_handle_errors ()
-            if not ppd:
+            if not ppd: # XXX needed?
                 # Go back to previous page to re-select driver.
                 self.nextNPTab(-1)
                 return
@@ -3336,19 +3516,19 @@ class GUI:
                     # raw queue (no PPD) first.
                     try:
                         self.passwd_retry = False # use cached Passwd
-                        self.cups.addPrinter(name, ppdname='raw')
+                        self.mainapp.cups.addPrinter(name, ppdname='raw')
                     except cups.IPPError, (e, msg):
                         self.show_IPP_Error(e, msg)
                 try:
                     self.passwd_retry = False # use cached Passwd
-                    self.cups.addPrinter(name, ppdname=ppd)
+                    self.mainapp.cups.addPrinter(name, ppdname=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
                     return
 
                 try:
                     self.passwd_retry = False # use cached Passwd
-                    filename = self.cups.getPPD(name)
+                    filename = self.mainapp.cups.getPPD(name)
                     ppd = cups.PPD(filename)
                     os.unlink(filename)
                 except cups.IPPError, (e, msg):
@@ -3366,7 +3546,7 @@ class GUI:
 
                 try:
                     self.passwd_retry = False # use cached Passwd
-                    self.cups.addPrinter(name, ppd=ppd)
+                    self.mainapp.cups.addPrinter(name, ppd=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
 
@@ -3375,7 +3555,7 @@ class GUI:
                 checkppd = ppd
 
         self.NewPrinterWindow.hide()
-        self.populateList(start_printer=name)
+        self.mainapp.populateList(start_printer=name)
         if check:
             try:
                 self.checkDriverExists (name, ppd=checkppd)
@@ -3399,7 +3579,7 @@ class GUI:
         # Fetch the PPD if we haven't already.
         if not ppd:
             try:
-                filename = self.cups.getPPD(name)
+                filename = self.mainapp.cups.getPPD(name)
             except cups.IPPError, (e, msg):
                 if e == cups.IPP_NOT_FOUND:
                     # This is a raw queue.  Nothing to check.
@@ -3582,75 +3762,6 @@ class GUI:
                     sys.exit (1)
                 elif pid == -1:
                     pass # should handle error
-
-    ##########################################################################
-    ### Server settings
-    ##########################################################################
-
-    def fillServerTab(self):
-        self.changed = set()
-        try:
-            self.server_settings = self.cups.adminGetServerSettings()
-        except cups.IPPError, (e, m):
-            self.show_IPP_Error(e, m)
-            self.tvMainList.get_selection().unselect_all()
-            self.on_tvMainList_cursor_changed(self.tvMainList)
-            return
-
-        for widget, setting in [
-            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
-            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
-            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
-            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
-            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
-            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
-            widget.set_data("setting", setting)
-            if self.server_settings.has_key(setting):
-                widget.set_active(int(self.server_settings[setting]))
-                widget.set_sensitive(True)
-            else:
-                widget.set_active(False)
-                widget.set_sensitive(False)
-        self.setDataButtonState()
-        
-    def on_server_changed(self, widget):
-        if (str(int(widget.get_active())) ==
-            self.server_settings[widget.get_data("setting")]):
-            self.changed.discard(widget)
-        else:
-            self.changed.add(widget)
-
-        sharing = self.chkServerShare.get_active ()
-        self.chkServerShareAny.set_sensitive (
-            sharing and self.server_settings.has_key(try_CUPS_SERVER_REMOTE_ANY))
-
-        self.setDataButtonState()
-
-    def save_serversettings(self):
-        setting_dict = self.server_settings.copy()
-        for widget, setting in [
-            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
-            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
-            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
-            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
-            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
-            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
-            if not self.server_settings.has_key(setting): continue
-            setting_dict[setting] = str(int(widget.get_active()))
-        try:
-            self.cups.adminSetServerSettings(setting_dict)
-        except cups.IPPError, (e, m):
-            self.show_IPP_Error(e, m)
-            return True
-        except RuntimeError, s:
-            self.show_IPP_Error(None, s)
-            return True
-        self.changed = set()
-        self.setDataButtonState()
-        time.sleep(1) # give the server a chance to process our request
-
-        # Now reconnect, in case the server needed to reload.
-        self.reconnect ()
 
 def main(start_printer = None, change_ppd = False):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
