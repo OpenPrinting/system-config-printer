@@ -2072,7 +2072,9 @@ class NewPrinterGUI(GtkGUI):
                           "tvNPModels", "tvNPDrivers",
                           "rbtnChangePPDasIs",
                         "vbNPInstallOptions",
-                        "NewPrinterName", "entCopyName", "btnCopyOk")
+                        "NewPrinterName", "entCopyName", "btnCopyOk",
+
+                        "ErrorDialog", "lblError")
         # share with mainapp
         self.WaitWindow = mainapp.WaitWindow
         self.lblWait = mainapp.lblWait

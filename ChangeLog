@@ -4,6 +4,8 @@
 	(NewPrinterGUI.on_btnSMBBrowseOk_clicked): Don't ignore 'changed'
 	signal from Entry widget; otherwise the Verify button never gets
 	set sensitive.
+	(NewPrinterGUI.__init__): Fetch the ErrorDialog and lblError
+	widgets from the Glade XML.
 
 	* system-config-printer.glade: Prevent GTK+ warning about
 	non-scrollable widgets.
