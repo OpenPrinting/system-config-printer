@@ -1139,6 +1139,7 @@ class GUI(GtkGUI):
         self.ErrorDialog.hide()        
             
     def save_printer(self, printer, saveall=False):
+        class_deleted = False
         name = printer.name
         
         try:
@@ -1161,6 +1162,7 @@ class GUI(GtkGUI):
                     dialog.destroy()
                     if result==gtk.RESPONSE_NO:
                         return True
+                    class_deleted = True
 
                 # update member list
                 old_members = printer.class_members[:]
@@ -1241,10 +1243,13 @@ class GUI(GtkGUI):
             return True
         self.changed = set() # of options
 
-        # Update our copy of the printer's settings.
-        printers = cupshelpers.getPrinters (self.cups)
-        this_printer = { name: printers[name] }
-        self.printers.update (this_printer)
+        if class_deleted:
+            self.populateList ()
+        else:
+            # Update our copy of the printer's settings.
+            printers = cupshelpers.getPrinters (self.cups)
+            this_printer = { name: printers[name] }
+            self.printers.update (this_printer)
 
         return False
 
