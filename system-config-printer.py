@@ -2977,9 +2977,7 @@ class NewPrinterGUI(GtkGUI):
         host = store.get_value (parent_iter, 0)
         share = store.get_value (iter, 0)
         uri = self.construct_SMBURI (group, host, share)
-        self.ignore_signals = True # Avoid 'changed' signal from Entry
         self.entSMBURI.set_text (uri)
-        del self.ignore_signals
 
         self.SMBBrowseDialog.hide()
 
