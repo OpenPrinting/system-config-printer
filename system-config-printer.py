@@ -2441,9 +2441,11 @@ class NewPrinterGUI(GtkGUI):
         if ((page_nr == 2 and not self.rbtnNPFoomatic.get_active())
             or page_nr == 3) and step > 0:
             self.ppd = self.getNPPPD()
-            if not self.ppd:
-                return
-            self.fillNPInstallableOptions()
+            if isinstance(self.ppd, cups.PPD):
+                self.fillNPInstallableOptions()
+            else:
+                self.installable_options = None
+
             if not self.installable_options:
                 step += 1
             
@@ -3383,10 +3385,16 @@ class NewPrinterGUI(GtkGUI):
                 f = self.mainapp.cups.getServerPPD(ppd)
                 ppd = cups.PPD(f)
                 os.unlink(f)
-            except :
-                # XXX
-                raise
-                pass
+            except AttributeError:
+                nonfatalException()
+                print "pycups function getServerPPD not available: never mind"
+            except RuntimeError:
+                nonfatalException()
+                print "libcups from CUPS 1.3 not available: never mind"
+            except cups.IPPError:
+                nonfatalException()
+                print "CUPS 1.3 server not available: never mind"
+
         return ppd
 
     # Installable Options

@@ -6,6 +6,12 @@
 	(GUI.on_copy_activate): Select newly-copied printer.
 	(GUI.populateList): When deleting a printer, select the default
 	printer again.
+	(NewPrinterGUI.getNPPPD): It is non-fatal for getServerPPD to fail
+	here.
+	(NewPrinterGUI.nextNPTab): Don't try to show installable options
+	when the PPD cannot be fetched due to (a) lack of pycups support,
+	(b) lack of libcups support, or (c) lack of support in the CUPS
+	server.
 
 2007-09-12  Tim Waugh  <twaugh@redhat.com>
 
