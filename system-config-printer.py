@@ -635,8 +635,6 @@ class GUI:
         for name, printer in self.printers.iteritems():
             if printer.default:
                 self.default_printer = name
-                if start_printer == None and old_name == "":
-                    start_printer = self.default_printer
             self.servers.add(printer.getServer())
 
             if printer.remote:
@@ -650,6 +648,19 @@ class GUI:
         local_classes.sort()
         remote_printers.sort()
         remote_classes.sort()
+
+        if (old_name != "" and
+            (not old_name in local_printers) and
+            (not old_name in local_classes) and
+            (not old_name in remote_printers) and
+            (not old_name in remote_classes)):
+            # The previously selected printer no longer exists.
+            old_name = ""
+
+        if (self.default_printer != "" and
+            start_printer == None and
+            old_name == ""):
+            start_printer = self.default_printer
 
         expanded = {
             "_printers" : True,
