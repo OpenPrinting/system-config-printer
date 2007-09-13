@@ -2074,7 +2074,8 @@ class NewPrinterGUI(GtkGUI):
                         "vbNPInstallOptions",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
 
-                        "ErrorDialog", "lblError")
+                        "ErrorDialog", "lblError",
+                        "InfoDialog", "lblInfo")
         # share with mainapp
         self.WaitWindow = mainapp.WaitWindow
         self.lblWait = mainapp.lblWait
