@@ -226,6 +226,7 @@ class GUI(GtkGUI):
                          "entUser",
                         "ConnectingDialog", "lblConnecting",
                         "PasswordDialog", "lblPasswordPrompt", "entPasswd",
+                        "NewPrinterName", "entCopyName", "btnCopyOk",
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo",
                         "InstallDialog", "lblInstall",
