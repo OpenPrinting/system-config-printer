@@ -1852,7 +1852,7 @@ class GUI(GtkGUI):
                                         # will get added 
         
         self.save_printer(self.printer, saveall=True)
-        self.populateList()
+        self.populateList(start_printer=self.printer.name)
 
     def on_entCopyName_changed(self, widget):
         # restrict
