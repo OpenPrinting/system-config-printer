@@ -2441,22 +2441,24 @@ class NewPrinterGUI(GtkGUI):
         if ((page_nr == 2 and not self.rbtnNPFoomatic.get_active())
             or page_nr == 3) and step > 0:
             self.ppd = self.getNPPPD()
-            if isinstance(self.ppd, cups.PPD):
-                self.fillNPInstallableOptions()
-            else:
-                self.installable_options = None
+            subsequent_page_nr = order[order.index(page_nr)+1]
+            if subsequent_page_nr == 6:
+                # Prepare Installable Options screen.
+                if isinstance(self.ppd, cups.PPD):
+                    self.fillNPInstallableOptions()
+                else:
+                    self.installable_options = None
 
-            if not self.installable_options:
-                step += 1
-            
+                if not self.installable_options:
+                    step += 1
+
         page_nr = order[order.index(page_nr)+step]
         self.ntbkNewPrinter.set_current_page(page_nr)
             
         if page_nr == 6 and not self.installable_options and step<0:
             page_nr = self.ntbkNewPrinter.set_current_page(
                 order[order.index(page_nr)-1])
-            
-            
+
         self.setNPButtons()
 
     def setNPButtons(self):
