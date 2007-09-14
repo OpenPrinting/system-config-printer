@@ -2302,7 +2302,7 @@ class NewPrinterGUI(GtkGUI):
         self.entNPTDirectJetPort.set_text('9100')
         self.setNPButtons()
         self.NewPrinterWindow.show()
-    
+
     # get PPDs
 
     def queryPPDs(self):
@@ -2997,6 +2997,8 @@ class NewPrinterGUI(GtkGUI):
             uri = SMBURI (group=group, host=host, share=share).get_uri ()
             ent.set_text(uri)
             self.chkSMBAuth.set_active(True)
+        else:
+            self.chkSMBAuth.set_active(False)
         
         self.btnSMBVerify.set_sensitive(bool(uri))
 
@@ -3040,7 +3042,7 @@ class NewPrinterGUI(GtkGUI):
         (group, host, share, u, p) = SMBURI (uri=uri).separate ()
         user = ''
         passwd = ''
-        if self.tblSMBAuth.get_property("sensitive"):
+        if self.chkSMBAuth.get_active():
             user = self.entSMBUsername.get_text ()
             passwd = self.entSMBPassword.get_text ()
         accessible = pysmb.printer_share_accessible ("//%s/%s" %
@@ -3244,8 +3246,11 @@ class NewPrinterGUI(GtkGUI):
         elif type == "smb":
             uri = self.entSMBURI.get_text ()
             (group, host, share, u, p) = SMBURI (uri=uri).separate ()
-            user = self.entSMBUsername.get_text ()
-            password = self.entSMBPassword.get_text ()
+            user = ''
+            password = ''
+            if self.chkSMBAuth.get_active ():
+                user = self.entSMBUsername.get_text ()
+                password = self.entSMBPassword.get_text ()
             uri = SMBURI (group=group, host=host, share=share,
                           user=user, password=password).get_uri ()
             device = "smb://" + uri

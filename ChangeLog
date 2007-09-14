@@ -12,6 +12,12 @@
 	before giving them to the PPD matcher; otherwise debug messages
 	might show passwords.
 	(NewPrinterGUI.fillDeviceTab): Don't print current URI.
+	(NewPrinterGUI.on_entSMBURI_changed): Set authentication check-box
+	inactive when not needed.
+	(NewPrinterGUI.getDeviceURI): No user and password when the
+	authentication check-box is not checked.
+	(NewPrinterGUI.on_btnSMBVerify_clicked): Use get_active on the
+	check-box rather than looking at the table's sensitivity.
 
 2007-09-13  Tim Waugh  <twaugh@redhat.com>
 
