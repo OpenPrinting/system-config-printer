@@ -607,6 +607,9 @@ class GUI(GtkGUI):
             old_name == ""):
             start_printer = self.default_printer
 
+        if not start_printer:
+            start_printer = old_name
+
         expanded = {
             "_printers" : True,
             "_classes" : True,
@@ -638,8 +641,7 @@ class GUI(GtkGUI):
                 if start_printer == None:
                     start_printer = printer_name
                 p_iter = self.mainlist.append(iter, (printer_name, "Printer"))
-                if (printer_name==old_name or
-                    printer_name==start_printer):
+                if printer_name==start_printer:
                     select_path = self.mainlist.get_path(p_iter)
                     expanded[name] = True
             if expanded[name]:
