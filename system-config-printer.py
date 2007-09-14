@@ -2450,6 +2450,10 @@ class NewPrinterGUI(GtkGUI):
                 if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
                     host = self.getNetworkPrinterMakeModel(self.device)
                 try:
+                    uri = self.device.uri
+                    if uri and uri.startswith ("smb://"):
+                        uri = SMBURI (uri=uri[6:]).sanitize_uri ()
+
                     ppdname = None
                     if self.device.id:
                         id_dict = self.device.id_dict
@@ -2756,7 +2760,6 @@ class NewPrinterGUI(GtkGUI):
                 devices = {}
 
             if current_uri:
-                print current_uri
                 if devices.has_key (current_uri):
                     current = devices.pop(current_uri)
                 else:

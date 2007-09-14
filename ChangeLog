@@ -8,6 +8,10 @@
 	(NewPrinterGUI.on_btnSMBVerify_clicked): Likewise.
 	(NewPrinterGUI.getDeviceURI): Likewise.
 	(NewPrinterGUI.__init__): Fetch chkSMBAuth widget.
+	(NewPrinterGUI.nextNPTab): Sanitize SMB URIs (remove passwords)
+	before giving them to the PPD matcher; otherwise debug messages
+	might show passwords.
+	(NewPrinterGUI.fillDeviceTab): Don't print current URI.
 
 2007-09-13  Tim Waugh  <twaugh@redhat.com>
 
