@@ -91,6 +91,70 @@ def validDeviceURI (uri):
         return True
     return False
 
+class SMBURI:
+    def __init__ (self,
+                  uri=None,
+                  group='', host='', share='', user='', password=''):
+        if uri:
+            if group or host or share or user or password:
+                raise RuntimeError
+
+            self.uri = uri
+        else:
+            self.uri = self._construct (group, host, share,
+                                        user=user, password=password)
+
+    def _construct (self, group, host, share, user='', password=''):
+        uri_password = ''
+        if password:
+            uri_password = ':' + urllib.quote (password)
+        if user:
+            uri_password += '@'
+        return "%s%s%s/%s/%s" % (urllib.quote (user), uri_password,
+                                 urllib.quote (group),
+                                 urllib.quote (host),
+                                 urllib.quote (share))
+
+    def get_uri (self):
+        return self.uri
+
+    def sanitize_uri (self):
+        group, host, share, user, password = self.separate ()
+        return self._construct (group, host, share)
+
+    def separate (self):
+        uri = self.get_uri ()
+        user = ''
+        password = ''
+        auth = uri.find ('@')
+        if auth != -1:
+            u = uri[:auth].find(':')
+            if u != -1:
+                user = uri[:u]
+                password = uri[u + 1:auth]
+            else:
+                user = uri[:auth]
+            uri = uri[auth + 1:]
+        sep = uri.count ('/')
+        group = ''
+        if sep == 2:
+            g = uri.find('/')
+            group = uri[:g]
+            uri = uri[g + 1:]
+        if sep < 1:
+            host = 'localhost'
+        else:
+            h = uri.find('/')
+            host = uri[:h]
+            uri = uri[h + 1:]
+            p = host.find(':')
+            if p != -1:
+                host = host[:p]
+        share = uri
+        return (urllib.unquote (group), urllib.unquote (host),
+                urllib.unquote (share),
+                urllib.unquote (user), urllib.unquote (password))
+
 class GtkGUI:
 
     def getWidgets(self, *names):
@@ -1519,12 +1583,13 @@ class GUI(GtkGUI):
 
         uri = printer.device_uri
         if uri.startswith("smb://"):
-            group, host, share, user, password = self.parse_SMBURI(uri[6:])
+            (group, host, share,
+             user, password) = SMBURI (uri=uri[6:]).separate ()
             if password:
                 uri = "smb://"
                 if len (user) or len (password):
                     uri += ellipsis
-                uri += self.construct_SMBURI(group, host, share)
+                uri += SMBURI (group=group, host=host, share=share).get_uri ()
                 self.entPDevice.set_sensitive(False)
         self.entPDevice.set_text(uri)
         self.changed.discard(self.entPDevice)
@@ -2910,49 +2975,6 @@ class NewPrinterGUI(GtkGUI):
             view.expand_row (path, 0)
             del self.expanding_row
 
-    def parse_SMBURI (self, uri):
-        user = ''
-        password = ''
-        auth = uri.find ('@')
-        if auth != -1:
-            u = uri[:auth].find(':')
-            if u != -1:
-                user = uri[:u]
-                password = uri[u + 1:auth]
-            else:
-                user = uri[:auth]
-            uri = uri[auth + 1:]
-        sep = uri.count ('/')
-        group = ''
-        if sep == 2:
-            g = uri.find('/')
-            group = uri[:g]
-            uri = uri[g + 1:]
-        if sep < 1:
-            host = 'localhost'
-        else:
-            h = uri.find('/')
-            host = uri[:h]
-            uri = uri[h + 1:]
-            p = host.find(':')
-            if p != -1:
-                host = host[:p]
-        share = uri
-        return (urllib.unquote (group), urllib.unquote (host),
-                urllib.unquote (share),
-                urllib.unquote (user), urllib.unquote (password))
-
-    def construct_SMBURI (self, group, host, share,
-                          user = '', password = ''):
-        uri_password = ''
-        if password:
-            uri_password = ':' + urllib.quote (password)
-        if user:
-            uri_password += '@'
-        return "%s%s%s/%s/%s" % (urllib.quote (user),
-                                 uri_password, urllib.quote (group),
-                                 urllib.quote (host), urllib.quote (share))
-
     def on_entSMBURI_changed (self, ent):
         try:
             if self.ignore_signals:
@@ -2961,14 +2983,14 @@ class NewPrinterGUI(GtkGUI):
             pass
 
         uri = ent.get_text ()
-        (group, host, share, user, password) = self.parse_SMBURI (uri)
+        (group, host, share, user, password) = SMBURI (uri=uri).separate ()
         if user:
             self.entSMBUsername.set_text (user)
         if password:
             self.entSMBPassword.set_text (password)
         self.tvSMBBrowser.get_selection ().unselect_all ()
         if user or password:
-            uri = self.construct_SMBURI(group, host, share)
+            uri = SMBURI (group=group, host=host, share=share).get_uri ()
             ent.set_text(uri)
             self.chkSMBAuth.set_active(True)
         
@@ -2995,7 +3017,7 @@ class NewPrinterGUI(GtkGUI):
         group = store.get_value (domain_iter, 0)
         host = store.get_value (parent_iter, 0)
         share = store.get_value (iter, 0)
-        uri = self.construct_SMBURI (group, host, share)
+        uri = SMBURI (group=group, host=host, share=share).get_uri ()
         self.entSMBURI.set_text (uri)
 
         self.SMBBrowseDialog.hide()
@@ -3011,7 +3033,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnSMBVerify_clicked(self, button):
         uri = self.entSMBURI.get_text ()
-        (group, host, share, u, p) = self.parse_SMBURI (uri)
+        (group, host, share, u, p) = SMBURI (uri=uri).separate ()
         user = ''
         passwd = ''
         if self.tblSMBAuth.get_property("sensitive"):
@@ -3217,10 +3239,11 @@ class NewPrinterGUI(GtkGUI):
                 device = device + "?" + options
         elif type == "smb":
             uri = self.entSMBURI.get_text ()
-            (group, host, share, u, p) = self.parse_SMBURI (uri)
+            (group, host, share, u, p) = SMBURI (uri=uri).separate ()
             user = self.entSMBUsername.get_text ()
             password = self.entSMBPassword.get_text ()
-            uri = self.construct_SMBURI (group, host, share, user, password)
+            uri = SMBURI (group=group, host=host, share=share,
+                          user=user, password=password).get_uri ()
             device = "smb://" + uri
         elif not self.device.is_class:
             device = self.device.uri
