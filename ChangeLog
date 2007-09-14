@@ -20,6 +20,12 @@
 	check-box rather than looking at the table's sensitivity.
 	(GUI.fillPrinterTab): Set device URI sensitive when there is no
 	needed for an ellipsis.
+	(NewPrinterGUI.on_entSMBURI_changed): Always set username and
+	password fields, even when empty.
+	(NewPrinterGUI.on_btnSMBBrowseOk_clicked): Clear SMB username and
+	password fields.
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Likewise.
+	(NewPrinterGUI.on_entSMBURI_changed): Removed redundant code.
 
 2007-09-13  Tim Waugh  <twaugh@redhat.com>
 

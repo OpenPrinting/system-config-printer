@@ -2982,12 +2982,6 @@ class NewPrinterGUI(GtkGUI):
             del self.expanding_row
 
     def on_entSMBURI_changed (self, ent):
-        try:
-            if self.ignore_signals:
-                return
-        except:
-            pass
-
         uri = ent.get_text ()
         (group, host, share, user, password) = SMBURI (uri=uri).separate ()
         if user:
@@ -3026,6 +3020,8 @@ class NewPrinterGUI(GtkGUI):
         host = store.get_value (parent_iter, 0)
         share = store.get_value (iter, 0)
         uri = SMBURI (group=group, host=host, share=share).get_uri ()
+        self.entSMBUsername.set_text ('')
+        self.entSMBPassword.set_text ('')
         self.entSMBURI.set_text (uri)
 
         self.SMBBrowseDialog.hide()
@@ -3182,6 +3178,8 @@ class NewPrinterGUI(GtkGUI):
             self.entSMBURI.set_text('')
             self.btnSMBVerify.set_sensitive(False)
         elif device.type == "smb":
+            self.entSMBUsername.set_text ('')
+            self.entSMBPassword.set_text ('')
             self.entSMBURI.set_text(device.uri[6:])
             self.btnSMBVerify.set_sensitive(True)
         else:
