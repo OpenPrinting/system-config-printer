@@ -1591,6 +1591,8 @@ class GUI(GtkGUI):
                     uri += ellipsis
                 uri += SMBURI (group=group, host=host, share=share).get_uri ()
                 self.entPDevice.set_sensitive(False)
+            else:
+                self.entPDevice.set_sensitive(True)
         self.entPDevice.set_text(uri)
         self.changed.discard(self.entPDevice)
         
