@@ -20,7 +20,7 @@
 import cups
 import sys
 
-APPDIR="." #"/usr/share/system-config-printer"
+APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
 GLADE="applet.glade"
 ICON="applet.png"
