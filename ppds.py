@@ -23,6 +23,7 @@
 import cups
 from cupshelpers import parseDeviceID
 import string
+import locale
 
 global debugging
 debugging = False
@@ -193,7 +194,7 @@ class PPDs:
         """Returns a sorted list of strings."""
         self._init_makes ()
         makes_list = self.makes.keys ()
-        makes_list.sort ()
+        makes_list.sort (locale.strcoll)
         try:
             # "Generic" should be listed first.
             makes_list.remove ("Generic")
