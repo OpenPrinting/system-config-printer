@@ -3519,6 +3519,10 @@ class NewPrinterGUI(GtkGUI):
                 self.nextNPTab(-1)
                 return
 
+            # write Installable Options to ppd
+            for option in self.options.itervalues():
+                option.writeback()
+
             self.busy (self.NewPrinterWindow)
             self.lblWait.set_markup ('<span weight="bold" size="larger">' +
                                      _('Adding') + '</span>\n\n' +
