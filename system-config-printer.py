@@ -34,7 +34,13 @@ except RuntimeError, e:
 
 def show_help():
     print ("\nThis is system-config-printer, " \
-           "a CUPS server configuration program.\n")
+           "a CUPS server configuration program.\n\n"
+           "Options:\n\n"
+           "  --configure-printer NAME\n"
+           "            Select the named printer on start-up.\n\n"
+           "  --choose-driver NAME\n"
+           "            Select the named printer on start-up, and display\n"
+           "            a list of drivers.\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
     show_help ()
