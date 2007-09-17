@@ -2159,7 +2159,7 @@ class NewPrinterGUI(GtkGUI):
                         
                           "tvNPModels", "tvNPDrivers",
                           "rbtnChangePPDasIs",
-                        "vbNPInstallOptions",
+                        "scrNPInstallableOptions", "vbNPInstallOptions",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
 
                         "ErrorDialog", "lblError",
@@ -3443,6 +3443,7 @@ class NewPrinterGUI(GtkGUI):
 
     def fillNPInstallableOptions(self):
         self.installable_options = False
+        self.options = { }
         if not self.ppd:
             return
 
@@ -3460,7 +3461,6 @@ class NewPrinterGUI(GtkGUI):
             table.set_col_spacings(6)
             table.set_row_spacings(6)
             container.add(table)
-
             rows = 0
 
             for nr, option in enumerate(group.options):
@@ -3482,7 +3482,8 @@ class NewPrinterGUI(GtkGUI):
                     table.attach(hbox, 1, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
                 hbox.pack_start(o.selector, False)
                 self.options[option.keyword] = o
-            container.show_all()
+        self.scrNPInstallableOptions.hide()
+        self.scrNPInstallableOptions.show_all()
 
             
     # Create new Printer

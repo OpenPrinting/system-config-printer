@@ -5490,7 +5490,7 @@ Name must be unique on the local machine!</property>
 	  <child>
 	    <widget class="GtkLabel" id="label14">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Name</property>
+	      <property name="label">Name</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -7202,7 +7202,7 @@ DTR/DSR (Hardware)</property>
 	  <child>
 	    <widget class="GtkLabel" id="label15">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Device</property>
+	      <property name="label">Device</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -7455,7 +7455,7 @@ DTR/DSR (Hardware)</property>
 	  <child>
 	    <widget class="GtkLabel" id="label16">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">PPD</property>
+	      <property name="label">PPD</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -7856,7 +7856,7 @@ DTR/DSR (Hardware)</property>
 	  <child>
 	    <widget class="GtkLabel" id="label98">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Class Members</property>
+	      <property name="label">Class Members</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -8019,7 +8019,7 @@ DTR/DSR (Hardware)</property>
 	  <child>
 	    <widget class="GtkLabel" id="label114">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Change PPD</property>
+	      <property name="label">Change PPD</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
@@ -8040,7 +8040,7 @@ DTR/DSR (Hardware)</property>
 	  </child>
 
 	  <child>
-	    <widget class="GtkScrolledWindow" id="scrolledwindow24">
+	    <widget class="GtkScrolledWindow" id="scrNPInstallableOptions">
 	      <property name="visible">True</property>
 	      <property name="can_focus">True</property>
 	      <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
@@ -8051,24 +8051,70 @@ DTR/DSR (Hardware)</property>
 	      <child>
 		<widget class="GtkViewport" id="viewport10">
 		  <property name="visible">True</property>
-		  <property name="shadow_type">GTK_SHADOW_IN</property>
+		  <property name="shadow_type">GTK_SHADOW_NONE</property>
 
 		  <child>
-		    <widget class="GtkVBox" id="vbNPInstallOptions">
+		    <widget class="GtkFrame" id="frame33">
 		      <property name="visible">True</property>
-		      <property name="homogeneous">False</property>
-		      <property name="spacing">6</property>
+		      <property name="label_xalign">0</property>
+		      <property name="label_yalign">0.5</property>
+		      <property name="shadow_type">GTK_SHADOW_NONE</property>
 
 		      <child>
-			<placeholder/>
+			<widget class="GtkAlignment" id="alignment80">
+			  <property name="visible">True</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xscale">1</property>
+			  <property name="yscale">1</property>
+			  <property name="top_padding">6</property>
+			  <property name="bottom_padding">0</property>
+			  <property name="left_padding">0</property>
+			  <property name="right_padding">0</property>
+
+			  <child>
+			    <widget class="GtkVBox" id="vbNPInstallOptions">
+			      <property name="visible">True</property>
+			      <property name="homogeneous">False</property>
+			      <property name="spacing">6</property>
+
+			      <child>
+				<placeholder/>
+			      </child>
+
+			      <child>
+				<placeholder/>
+			      </child>
+
+			      <child>
+				<placeholder/>
+			      </child>
+			    </widget>
+			  </child>
+			</widget>
 		      </child>
 
 		      <child>
-			<placeholder/>
-		      </child>
-
-		      <child>
-			<placeholder/>
+			<widget class="GtkLabel" id="label192">
+			  <property name="visible">True</property>
+			  <property name="label" translatable="yes">&lt;b&gt;Installable Options&lt;/b&gt;</property>
+			  <property name="use_underline">False</property>
+			  <property name="use_markup">True</property>
+			  <property name="justify">GTK_JUSTIFY_LEFT</property>
+			  <property name="wrap">False</property>
+			  <property name="selectable">False</property>
+			  <property name="xalign">0</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+			  <property name="width_chars">-1</property>
+			  <property name="single_line_mode">False</property>
+			  <property name="angle">0</property>
+			</widget>
+			<packing>
+			  <property name="type">label_item</property>
+			</packing>
 		      </child>
 		    </widget>
 		  </child>
@@ -8084,7 +8130,7 @@ DTR/DSR (Hardware)</property>
 	  <child>
 	    <widget class="GtkLabel" id="label191">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">Installable Options</property>
+	      <property name="label">Installable Options</property>
 	      <property name="use_underline">False</property>
 	      <property name="use_markup">False</property>
 	      <property name="justify">GTK_JUSTIFY_LEFT</property>
