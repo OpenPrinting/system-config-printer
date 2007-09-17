@@ -2169,6 +2169,8 @@ class NewPrinterGUI(GtkGUI):
         self.lblWait = mainapp.lblWait
         self.busy = mainapp.busy
         self.ready = mainapp.ready
+        self.show_IPP_Error = mainapp.show_IPP_Error
+        self.show_HTTP_Error = mainapp.show_HTTP_Error
 
         gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
@@ -3551,8 +3553,8 @@ class NewPrinterGUI(GtkGUI):
                 cupshelpers.activateNewPrinter (self.mainapp.cups, name)
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
-                self.show_IPP_Error(e, msg)
                 self.WaitWindow.hide ()
+                self.show_IPP_Error(e, msg)
                 return
             self.WaitWindow.hide ()
             self.ready (self.NewPrinterWindow)
