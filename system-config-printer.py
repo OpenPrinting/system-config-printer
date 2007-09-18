@@ -2835,6 +2835,9 @@ class NewPrinterGUI(GtkGUI):
                 # USB URIs
                 if device.uri.startswith("hal:///org/freedesktop/Hal/devices/usb_device"):
                     device.uri = "delete"
+            if device.type == "socket":
+                # Remove default port to more easily find duplicate URIs
+                device.uri = device.uri.replace (":9100", "")
             try:
                 if device.type in ("socket", "lpd", "ipp", "bluetooth"):
                     host = self.getNetworkPrinterMakeModel(device)
@@ -2853,6 +2856,24 @@ class NewPrinterGUI(GtkGUI):
                         device.info += (" HPLIP")
             except:
                 nonfatalException ()
+        # Mark duplicate URIs for deletion
+        for i in range (len (self.devices)):
+            for j in range (len (self.devices)):
+                if i == j: continue
+                device1 = self.devices[i]
+                device2 = self.devices[j]
+                if device1.uri == "delete" or device2.uri == "delete":
+                    continue
+                if device1.uri == device2.uri:
+                    # Keep the one with the longer (better) device ID
+                    if (not device1.id):
+                        device1.uri = "delete"
+                    elif (not device2.id):
+                        device2.uri = "delete"
+                    elif (len (device1.id) < len (device2.id)):
+                        device1.uri = "delete"
+                    else:
+                        device2.uri = "delete"
         self.devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
                                                       "hpfax:/no_device_found",
                                                       "hp", "hpfax",
