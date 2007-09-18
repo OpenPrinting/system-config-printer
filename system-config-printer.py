@@ -2531,6 +2531,11 @@ class NewPrinterGUI(GtkGUI):
                     self.fillNPInstallableOptions()
                 else:
                     self.installable_options = None
+                    # Put a label there explaining why the page is empty.
+                    ppd = self.ppd
+                    self.ppd = None
+                    self.fillNPInstallableOptions()
+                    self.ppd = ppd
 
                 # step over if empty and not in PPD mode
                 if self.dialog_mode != "ppd" and not self.installable_options:
@@ -3491,6 +3496,7 @@ class NewPrinterGUI(GtkGUI):
         if not self.ppd:
             l = gtk.Label(_("No Installable Options"))
             container.add(l)
+            l.show()
             return
 
         # build option tabs
@@ -3527,6 +3533,7 @@ class NewPrinterGUI(GtkGUI):
         if not self.installable_options:
             l = gtk.Label(_("No Installable Options"))
             container.add(l)
+            l.show()
         self.scrNPInstallableOptions.hide()
         self.scrNPInstallableOptions.show_all()
 
