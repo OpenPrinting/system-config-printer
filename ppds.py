@@ -333,8 +333,8 @@ class PPDs:
                     break
 
             # Try again with replacements.
-            if mfg == "hewlett-packard":
-                mfg = "hp"
+            if mfgl == "hewlett-packard":
+                mfgl = "hp"
 
         # Remove manufacturer name from model field
         ppdnamelist2 = None
