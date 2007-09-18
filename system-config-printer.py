@@ -2158,7 +2158,7 @@ class NewPrinterGUI(GtkGUI):
                           "rbtnNPFoomatic", "filechooserPPD",
                         
                           "tvNPModels", "tvNPDrivers",
-                          "rbtnChangePPDasIs",
+                          "rbtnChangePPDasIs", "rbtnChangePPDKeepSettings",
                         "scrNPInstallableOptions", "vbNPInstallOptions",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
 
@@ -2563,7 +2563,7 @@ class NewPrinterGUI(GtkGUI):
 
         if self.dialog_mode == "ppd":
             if nr == 5: # Apply
-                self.rbtnChangePPDasIs.set_active(True)
+                self.rbtnChangePPDKeepSettings.set_active(True)
                 return
             elif nr == 6:
                 self.btnNPForward.hide()
