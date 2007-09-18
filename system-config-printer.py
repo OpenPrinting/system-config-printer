@@ -2516,29 +2516,31 @@ class NewPrinterGUI(GtkGUI):
             order = [1]
         elif self.dialog_mode == "ppd":
             if self.rbtnNPFoomatic.get_active():
-                order = [2, 3, 5]
+                order = [2, 3, 5, 6]
             else:
-                order = [2, 5]
+                order = [2, 5, 6]
 
-        if ((page_nr == 2 and not self.rbtnNPFoomatic.get_active())
-            or page_nr == 3) and step > 0:
+        next_page_nr = order[order.index(page_nr)+step]
+
+        # fill Installable Options tab
+        if next_page_nr == 6 and step > 0:
             self.ppd = self.getNPPPD()
-            subsequent_page_nr = order[order.index(page_nr)+1]
-            if subsequent_page_nr == 6:
+            if next_page_nr == 6:
                 # Prepare Installable Options screen.
                 if isinstance(self.ppd, cups.PPD):
                     self.fillNPInstallableOptions()
                 else:
                     self.installable_options = None
 
-                if not self.installable_options:
-                    step += 1
+                # step over if empty and not in PPD mode
+                if self.dialog_mode != "ppd" and not self.installable_options:
+                    next_page_nr = order[order.index(next_page_nr)+1]
 
-        page_nr = order[order.index(page_nr)+step]
-        self.ntbkNewPrinter.set_current_page(page_nr)
-            
-        if page_nr == 6 and not self.installable_options and step<0:
-            page_nr = self.ntbkNewPrinter.set_current_page(
+        self.ntbkNewPrinter.set_current_page(next_page_nr)
+
+        # Step over empty Installable Options tab
+        if next_page_nr == 6 and not self.installable_options and step<0:
+            next_page_nr = self.ntbkNewPrinter.set_current_page(
                 order[order.index(page_nr)-1])
 
         self.setNPButtons()
@@ -2556,6 +2558,9 @@ class NewPrinterGUI(GtkGUI):
 
         if self.dialog_mode == "ppd":
             if nr == 5: # Apply
+                self.rbtnChangePPDasIs.set_active(True)
+                return
+            elif nr == 6:
                 self.btnNPForward.hide()
                 self.btnNPApply.show()
                 return
@@ -3463,17 +3468,30 @@ class NewPrinterGUI(GtkGUI):
 
         return ppd
 
+    # use PPD as Is?
+
+    def on_rbtnChangePPDasIs_toggled(self, button):
+        if button.get_active():
+            self.btnNPForward.show()
+            self.btnNPApply.hide()                        
+        else:
+            self.btnNPForward.hide()
+            self.btnNPApply.show()
+
     # Installable Options
 
     def fillNPInstallableOptions(self):
         self.installable_options = False
         self.options = { }
-        if not self.ppd:
-            return
 
         container = self.vbNPInstallOptions
         for child in container.get_children():
             container.remove(child)
+
+        if not self.ppd:
+            l = gtk.Label(_("No Installable Options"))
+            container.add(l)
+            return
 
         # build option tabs
         for group in self.ppd.optionGroups:
@@ -3506,6 +3524,9 @@ class NewPrinterGUI(GtkGUI):
                     table.attach(hbox, 1, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
                 hbox.pack_start(o.selector, False)
                 self.options[option.keyword] = o
+        if not self.installable_options:
+            l = gtk.Label(_("No Installable Options"))
+            container.add(l)
         self.scrNPInstallableOptions.hide()
         self.scrNPInstallableOptions.show_all()
 
@@ -3571,7 +3592,6 @@ class NewPrinterGUI(GtkGUI):
                          device=uri, info=info, location=location)
                     check = True
                     checkppd = ppd
-                    # XXX set Installable Options
                 cupshelpers.activateNewPrinter (self.mainapp.cups, name)
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
@@ -3598,10 +3618,12 @@ class NewPrinterGUI(GtkGUI):
                 self.show_IPP_Error(e, msg)
                 return
         elif self.dialog_mode == "ppd":
-            if not ppd: # XXX needed?
-                # Go back to previous page to re-select driver.
-                self.nextNPTab(-1)
-                return
+            if not ppd:
+                ppd = self.ppd = self.getNPPPD()
+                if not ppd:
+                    # Go back to previous page to re-select driver.
+                    self.nextNPTab(-1)
+                    return
 
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
@@ -3637,8 +3659,11 @@ class NewPrinterGUI(GtkGUI):
             else:
                 # We have an actual PPD to upload, not just a name.
                 if not self.rbtnChangePPDasIs.get_active():
-                    cupshelpers.copyPPDOptions(self.ppd, ppd)
+                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd) # XXX
                 else:
+                    # write Installable Options to ppd
+                    for option in self.options.itervalues():
+                        option.writeback()
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
 
                 try:
