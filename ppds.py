@@ -121,7 +121,7 @@ def getDriverType (ppdname):
             return DRIVER_TYPE_GUTENPRINT_NATIVE
     if ppdname.find ("SpliX")!= -1:
         return DRIVER_TYPE_SPLIX
-    if (ppdname.find (";") == -1 and
+    if (ppdname.find (":") == -1 and
         ppdname.find ("/cups-included/") != -1):
         return DRIVER_TYPE_CUPS
     if ppdname.startswith ("foomatic:"):

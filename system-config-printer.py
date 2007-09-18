@@ -3086,6 +3086,7 @@ class GUI:
         self.NPDrivers = ppdnamelist
         for i in range (len (ppdnamelist)):
             driver = self.NPDrivers[i]
+            driver = driver.replace(" (recommended)", "")
             if i == 0:
                 iter = model.append ((driver + _(" (recommended)"),))
                 path = model.get_path (iter)
