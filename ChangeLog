@@ -1,3 +1,12 @@
+2007-09-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py: Require pycups-1.9.27 so that
+	IPP_TAG_NOVALUE attributes have Python value None instead of a
+	string.
+
+	* options.py (OptionAlwaysShown.bool_type): Handle IPP_TAG_NOVALUE
+	by translating it to a valid default value.
+
 2007-09-18  Tim Waugh  <twaugh@redhat.com>
 
 	* ppds.py (PPDs.getPPDNameFromDeviceID): Fixed typo.
