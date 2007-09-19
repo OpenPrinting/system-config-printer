@@ -7,6 +7,13 @@
 	* options.py (OptionAlwaysShown.bool_type): Handle IPP_TAG_NOVALUE
 	by translating it to a valid default value.
 
+2007-09-18  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Remove duplicate URIs from the list of
+	auto-discovered printers. This way one can use more than one
+	network printer auto-discovery CUPS backend using different
+	methods.
+
 2007-09-18  Tim Waugh  <twaugh@redhat.com>
 
 	* ppds.py (PPDs.getPPDNameFromDeviceID): Fixed typo.
