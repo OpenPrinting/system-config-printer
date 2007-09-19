@@ -78,6 +78,7 @@ class OptionAlwaysShown(OptionInterface):
         self.name = name
         self.widget = widget
         self.button = button
+        self.simple_ipp_type = ipp_type
         if ipp_type == bool:
             def bool_type (x):
                 if type (x) == str:
@@ -87,7 +88,11 @@ class OptionAlwaysShown(OptionInterface):
                     return True
                 return bool (x)
             ipp_type = bool_type
-        self.ipp_type = ipp_type
+
+        # Handle IPP_TAG_NOVALUE by translating it to a valid default
+        # value.
+        self.ipp_type = lambda x: (x and ipp_type(x)) or system_default
+
         self.set_default (system_default)
         self.combobox_map = combobox_map
         self.use_supported = use_supported
@@ -103,7 +108,7 @@ class OptionAlwaysShown(OptionInterface):
         if (supported != None and
             self.use_supported and
             type(self.widget) == gtk.ComboBox and
-            self.ipp_type == str):
+            self.simple_ipp_type == str):
             model = self.widget.get_model ()
             model.clear ()
             for each in supported:
@@ -124,7 +129,7 @@ class OptionAlwaysShown(OptionInterface):
         if t == gtk.SpinButton:
             return self.widget.set_value (ipp_value)
         elif t == gtk.ComboBox:
-            if self.ipp_type == str and self.combobox_map == None:
+            if self.simple_ipp_type == str and self.combobox_map == None:
                 model = self.widget.get_model ()
                 iter = model.get_iter_first ()
                 while (iter != None and
@@ -151,7 +156,7 @@ class OptionAlwaysShown(OptionInterface):
         elif t == gtk.ComboBox:
             if self.combobox_map:
                 return self.combobox_map[self.widget.get_active()]
-            if self.ipp_type == str:
+            if self.simple_ipp_type == str:
                 return self.widget.get_active_text ()
             return self.ipp_type (self.widget.get_active ())
         elif t == gtk.CheckButton:
