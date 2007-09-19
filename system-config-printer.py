@@ -1689,6 +1689,12 @@ class GUI(GtkGUI):
             else:
                 if self.printer.possible_attributes.has_key (option.name):
                     supported = self.printer.possible_attributes[option.name][1]
+                    # Set the option widget.
+                    # In CUPS 1.3.x the orientation-requested-default
+                    # attribute may have the value None; this means there
+                    # is no value set.  This suits our needs here, as None
+                    # resets the option to the system default and makes the
+                    # Reset button insensitive.
                     option.reinit (value, supported=supported)
                 else:
                     option.reinit (value)
