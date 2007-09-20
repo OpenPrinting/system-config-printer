@@ -197,6 +197,54 @@ class OptionAlwaysShown(OptionInterface):
         self.state = self.STATE_ADJUSTED
         self.button.set_sensitive (True)
 
+class OptionAlwaysShownSpecial(OptionAlwaysShown):
+    def __init__(self, name, ipp_type, system_default,
+                 widget, button, combobox_map = None, use_supported = False,
+                 special_choice = "System default"):
+        self.special_choice = special_choice
+        self.special_choice_shown = False
+        OptionAlwaysShown.__init__ (self, name, ipp_type, system_default,
+                                    widget, button,
+                                    combobox_map=combobox_map,
+                                    use_supported=use_supported)
+
+    def show_special_choice (self):
+        if self.special_choice_shown:
+            return
+
+        self.special_choice_shown = True
+        # Only works for ComboBox widgets
+        model = self.widget.get_model ()
+        iter = model.insert (0)
+        model.set_value (iter, 0, self.special_choice)
+        self.widget.set_active_iter (model.get_iter_first ())
+
+    def hide_special_choice (self):
+        if not self.special_choice_shown:
+            return
+
+        self.special_choice_shown = False
+        # Only works for ComboBox widgets
+        model = self.widget.get_model ()
+        model.remove (model.get_iter_first ())
+
+    def reinit(self, original_value, supported=None):
+        if original_value != None:
+            self.hide_special_choice ()
+        else:
+            self.show_special_choice ()
+
+        OptionAlwaysShown.reinit (self, original_value, supported=supported)
+
+    def reset(self):
+        self.show_special_choice ()
+        OptionAlwaysShown.reset (self)
+
+    def changed(self):
+        OptionAlwaysShown.changed (self)
+        if self.widget.get_active () > 0:
+            self.hide_special_choice ()
+
 class Option(OptionInterface):
 
     conflicts = None

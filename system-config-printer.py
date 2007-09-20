@@ -375,11 +375,12 @@ class GUI(GtkGUI):
                                             self.sbJOCopies,
                                             self.btnJOResetCopies),
 
-                 options.OptionAlwaysShown \
+                 options.OptionAlwaysShownSpecial \
                  ("orientation-requested", int, 3,
                   self.cmbJOOrientationRequested,
                   self.btnJOResetOrientationRequested,
-                  combobox_map = [3, 4, 5, 6]),
+                  combobox_map = [3, 4, 5, 6],
+                  special_choice=_("Automatic rotation")),
 
                  options.OptionAlwaysShown ("fitplot", bool, False,
                                             self.cbJOFitplot,
