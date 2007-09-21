@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.HEAD\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-07-06 13:50-0700\n"
+"POT-Creation-Date: 2007-09-21 18:32+0100\n"
 "PO-Revision-Date: 2007-08-03 14:14+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -48,7 +48,7 @@ msgstr "시스템의 기본값 사용(_U)"
 msgid "_Set Default"
 msgstr "기본 설정(_S)"
 
-#: ../my-default-printer.py:140 ../system-config-printer.glade.h:190
+#: ../my-default-printer.py:140 ../system-config-printer.glade.h:193
 #: ../applet.py:184 ../applet.py:224
 msgid "Printer"
 msgstr "프린터"
@@ -57,90 +57,98 @@ msgstr "프린터"
 msgid "Location"
 msgstr "위치"
 
-#: ../optionwidgets.py:108
+#: ../optionwidgets.py:116
 msgid "Conflicts with:"
 msgstr "충돌: "
 
-#: ../system-config-printer.py:228
+#: ../system-config-printer.py:248
 msgid "Copyright 2006, 2007 Red Hat, Inc."
 msgstr "저작권 2006, 2007 Red Hat, Inc."
 
-#: ../system-config-printer.py:264
+#: ../system-config-printer.py:284
 msgid "Server Settings"
 msgstr "서버 세팅"
 
-#: ../system-config-printer.py:273 ../system-config-printer.py:275
+#: ../system-config-printer.py:293 ../system-config-printer.py:295
 msgid "Members of this class"
 msgstr "이 클래스의 멤버"
 
-#: ../system-config-printer.py:274 ../system-config-printer.py:276
+#: ../system-config-printer.py:294 ../system-config-printer.py:296
 msgid "Others"
 msgstr "기타"
 
-#: ../system-config-printer.py:277
+#: ../system-config-printer.py:297
 msgid "Devices"
 msgstr "장치 "
 
-#: ../system-config-printer.py:278
+#: ../system-config-printer.py:298
 msgid "Makes"
 msgstr "제조회사"
 
-#: ../system-config-printer.py:279
+#: ../system-config-printer.py:299
 msgid "Models"
 msgstr "모델 "
 
-#: ../system-config-printer.py:280
+#: ../system-config-printer.py:300
 msgid "Drivers"
 msgstr "드라이버 "
 
-#: ../system-config-printer.py:281
+#: ../system-config-printer.py:301
 msgid "Users"
 msgstr "사용자 "
 
-#: ../system-config-printer.py:292
+#: ../system-config-printer.py:312
 msgid "PostScript Printer Description (*.ppd[.gz])"
 msgstr "사후 프린터 설명 스크립트 (*.ppd[.gz])"
 
 #. SMB list columns
-#: ../system-config-printer.py:312
+#: ../system-config-printer.py:332
 msgid "Share"
 msgstr "공유"
 
-#: ../system-config-printer.py:318
+#: ../system-config-printer.py:338
 msgid "Comment"
 msgstr "주석"
 
-#: ../system-config-printer.py:551
+#: ../system-config-printer.py:557 ../system-config-printer.py:2435
+msgid "Searching"
+msgstr ""
+
+#: ../system-config-printer.py:558
+msgid "Searching for drivers"
+msgstr ""
+
+#: ../system-config-printer.py:601
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "프린터 설정 - %s"
 
-#: ../system-config-printer.py:554
+#: ../system-config-printer.py:604
 #, python-format
 msgid "Connected to %s"
 msgstr "%s에 접속됨"
 
-#: ../system-config-printer.py:556 ../system-config-printer.py:1170
+#: ../system-config-printer.py:606 ../system-config-printer.py:1272
 msgid "Not connected"
 msgstr "접속되지 않음"
 
-#: ../system-config-printer.py:637
+#: ../system-config-printer.py:702
 msgid "Local Printers"
 msgstr "로컬 프린터"
 
-#: ../system-config-printer.py:638
+#: ../system-config-printer.py:703
 msgid "Local Classes"
 msgstr "로컬 클래스"
 
-#: ../system-config-printer.py:639
+#: ../system-config-printer.py:704
 msgid "Remote Printers"
 msgstr "원격 프린터"
 
-#: ../system-config-printer.py:640
+#: ../system-config-printer.py:705
 msgid "Remote Classes"
 msgstr "원격 클래스"
 
-#: ../system-config-printer.py:736
+#: ../system-config-printer.py:808
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -149,15 +157,15 @@ msgstr ""
 "서버에 접속 중입니다:\n"
 "%s"
 
-#: ../system-config-printer.py:1099 ../system-config-printer.glade.h:115
+#: ../system-config-printer.py:1201 ../system-config-printer.glade.h:117
 msgid "Installable Options"
 msgstr "설치 가능한 옵션 "
 
-#: ../system-config-printer.py:1100 ../system-config-printer.glade.h:191
+#: ../system-config-printer.py:1202 ../system-config-printer.glade.h:194
 msgid "Printer Options"
 msgstr "프린터 옵션"
 
-#: ../system-config-printer.py:1109
+#: ../system-config-printer.py:1211
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -167,206 +175,212 @@ msgstr ""
 "충돌이 해결된 후에\n"
 "변경할 수 있습니다."
 
-#: ../system-config-printer.py:1138 ../system-config-printer.py:1154
+#: ../system-config-printer.py:1240 ../system-config-printer.py:1256
 #: ../applet.py:333
 msgid "Not authorized"
 msgstr "권한이 없습니다"
 
-#: ../system-config-printer.py:1139 ../applet.py:334
+#: ../system-config-printer.py:1241 ../applet.py:334
 msgid "The password may be incorrect."
 msgstr "패스워드가 일치하지 않습니다."
 
-#: ../system-config-printer.py:1142 ../system-config-printer.py:1175
+#: ../system-config-printer.py:1244 ../system-config-printer.py:1277
 #: ../applet.py:337
 msgid "CUPS server error"
 msgstr "CUPS 서버 오류 "
 
-#: ../system-config-printer.py:1143 ../applet.py:338
+#: ../system-config-printer.py:1245 ../applet.py:338
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS 가동 도중 오류가 발생했습니다:'%s'."
 
-#: ../system-config-printer.py:1155
+#: ../system-config-printer.py:1257
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
-msgstr "암호가 틀리거나 또는 서버에서 원격 관리 거부가 설정되었을 수 도 있습니다."
+msgstr ""
+"암호가 틀리거나 또는 서버에서 원격 관리 거부가 설정되었을 수 도 있습니다."
 
-#: ../system-config-printer.py:1160
+#: ../system-config-printer.py:1262
 msgid "Bad request"
 msgstr "요청 실패"
 
-#: ../system-config-printer.py:1162
+#: ../system-config-printer.py:1264
 msgid "Not found"
 msgstr "찾을 수 없음"
 
-#: ../system-config-printer.py:1164
+#: ../system-config-printer.py:1266
 msgid "Request timeout"
 msgstr "요청한 시간이 초과됨"
 
-#: ../system-config-printer.py:1166
+#: ../system-config-printer.py:1268
 msgid "Upgrade required"
 msgstr "업그레이드 필요"
 
-#: ../system-config-printer.py:1168
+#: ../system-config-printer.py:1270
 msgid "Server error"
 msgstr "서버 오류"
 
-#: ../system-config-printer.py:1172
+#: ../system-config-printer.py:1274
 #, python-format
 msgid "status %d"
 msgstr "상태 %d"
 
-#: ../system-config-printer.py:1176
+#: ../system-config-printer.py:1278
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "HTTP 오류가 발생했습니다: %s."
 
-#: ../system-config-printer.py:1199
+#: ../system-config-printer.py:1302
 msgid "This will delete this class!"
 msgstr "이는 클래스를 삭제하게 됩니다!"
 
-#: ../system-config-printer.py:1200
+#: ../system-config-printer.py:1303
 msgid "Proceed anyway?"
 msgstr "계속 진행하시겠습니까?"
 
-#: ../system-config-printer.py:1386
+#: ../system-config-printer.py:1507
 msgid "Submitted"
 msgstr "입력됨"
 
-#: ../system-config-printer.py:1387
+#: ../system-config-printer.py:1508
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "테스트 페이지는 %d 작업으로 입력되었습니다"
 
-#: ../system-config-printer.py:1397
+#: ../system-config-printer.py:1518
 msgid "Not possible"
 msgstr "불가능"
 
-#: ../system-config-printer.py:1398
+#: ../system-config-printer.py:1519
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "프린터가 공유되지 않아 원격서버를 통해 인쇄 작업을 실행할 수 없습니다."
 
-#: ../system-config-printer.py:1463
+#: ../system-config-printer.py:1587
 msgid "Error"
 msgstr "오류"
 
-#: ../system-config-printer.py:1464
+#: ../system-config-printer.py:1588
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS 서버로 연결하는 도중 오류가 발생했습니다."
 
-#: ../system-config-printer.py:1527
+#: ../system-config-printer.py:1655
 msgid "This is the default printer"
 msgstr "기본 프린터입니다"
 
-#: ../system-config-printer.py:1529
+#: ../system-config-printer.py:1657
 #, python-format
 msgid "Default printer is %s"
 msgstr "기본 프린터는 %s입니다"
 
-#: ../system-config-printer.py:1532
+#: ../system-config-printer.py:1660
 msgid "No default printer set."
 msgstr "기본 프린터 세트 없음"
 
-#: ../system-config-printer.py:1618
+#: ../system-config-printer.py:1746
 msgid "Cancel Tests"
 msgstr "테스트 취소"
 
-#: ../system-config-printer.py:1622 ../system-config-printer.glade.h:189
+#: ../system-config-printer.py:1750 ../system-config-printer.glade.h:192
 msgid "Print Test Page"
 msgstr "테스트 페이지 인쇄"
 
-#: ../system-config-printer.py:1877
+#: ../system-config-printer.py:2005
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "정말로 프린터 %s(을)를 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:1879
+#: ../system-config-printer.py:2007
 #, python-format
 msgid "Really delete class %s?"
 msgstr "정말로 클래스 %s(을)를 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:1927 ../system-config-printer.glade.h:140
+#: ../system-config-printer.py:2055 ../system-config-printer.glade.h:142
 msgid "New Printer"
 msgstr "새 프린터"
 
-#: ../system-config-printer.py:1940 ../system-config-printer.glade.h:139
+#: ../system-config-printer.py:2070 ../system-config-printer.glade.h:141
 msgid "New Class"
 msgstr "새 클래스"
 
-#: ../system-config-printer.py:1953
+#: ../system-config-printer.py:2084
 msgid "Change Device URI"
 msgstr "URI 장치 변경"
 
-#: ../system-config-printer.py:1966
+#: ../system-config-printer.py:2096
 msgid "Change Driver"
 msgstr "드라이버 변경"
 
-#: ../system-config-printer.py:2220
+#: ../system-config-printer.py:2436
+#, fuzzy
+msgid "Searching for printers"
+msgstr "새 프린터 이름"
+
+#: ../system-config-printer.py:2654
 msgid "Other"
 msgstr "기타"
 
-#: ../system-config-printer.py:2222
+#: ../system-config-printer.py:2656
 msgid " (Current)"
 msgstr " (현재)"
 
-#: ../system-config-printer.py:2407
+#: ../system-config-printer.py:2852
 msgid "Verified"
 msgstr "검증됨"
 
-#: ../system-config-printer.py:2408
+#: ../system-config-printer.py:2853
 msgid "This print share is accessible."
 msgstr "프린터 공유를 액세스할 수 있습니다"
 
-#: ../system-config-printer.py:2415
+#: ../system-config-printer.py:2860
 msgid "Inaccessible"
 msgstr "액세스할 수 없음"
 
-#: ../system-config-printer.py:2416
+#: ../system-config-printer.py:2861
 msgid "This print share is not accessible."
 msgstr "프린터 공유를 액세스할 수 없습니다"
 
-#: ../system-config-printer.py:2436
+#: ../system-config-printer.py:2881
 msgid "A printer connected to the parallel port."
 msgstr "프린터가 병렬 포트에 연결되어 있습니다."
 
-#: ../system-config-printer.py:2438
+#: ../system-config-printer.py:2883
 msgid "A printer connected to a USB port."
 msgstr "프린터가 USB 포트에 연결되어 있습니다."
 
-#: ../system-config-printer.py:2440
+#: ../system-config-printer.py:2885
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "프린터를 다루는 HPLIP 소프트웨어, 또는 다중 기능 장치의 프린터 기능."
 
-#: ../system-config-printer.py:2443
+#: ../system-config-printer.py:2888
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "팩스기를 다루는 HPLIP 소프트웨어, 또는 다중 기능 장치의 팩스 기능."
 
-#: ../system-config-printer.py:2446
+#: ../system-config-printer.py:2891
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL (Hardware Abstraction Layer)에 의해 검색된 로컬 프린터."
 
-#: ../system-config-printer.py:2676
+#: ../system-config-printer.py:3124
 msgid " (recommended)"
 msgstr "(권장사항)"
 
-#: ../system-config-printer.py:2717
+#: ../system-config-printer.py:3165
 msgid "This PPD is generated by foomatic."
 msgstr "이 PPD는 foomatic에 의하여 생성됩니다"
 
 #. XXX
-#: ../system-config-printer.py:2758
+#: ../system-config-printer.py:3206
 #, python-format
 msgid "Going to create a new class %s."
 msgstr "새 클래스 %s를 만듭니다."
 
-#: ../system-config-printer.py:2772
+#: ../system-config-printer.py:3224
 #, python-format
 msgid ""
 "Going to create a new printer %s at\n"
@@ -376,11 +390,11 @@ msgstr ""
 "에 만듭니다%s.\n"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:2796
+#: ../system-config-printer.py:3248
 msgid "Database error"
 msgstr "데이터베이스 오류"
 
-#: ../system-config-printer.py:2797
+#: ../system-config-printer.py:3249
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' 드라이버는 프린터 '%s %s'와 함께 사용할 수 없습니다."
@@ -388,34 +402,44 @@ msgstr "'%s' 드라이버는 프린터 '%s %s'와 함께 사용할 수 없습니
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:2807
+#: ../system-config-printer.py:3259
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "이 드라이버를 사용하기 위해 '%s' 패키지를 설치하셔야 합니다."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:2814
+#: ../system-config-printer.py:3266
 msgid "PPD error"
 msgstr "PPD 오류"
 
-#: ../system-config-printer.py:2816
+#: ../system-config-printer.py:3268
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "다음과 같은 이유로 PPD 파일 읽기를 실패했습니다:"
 
-#: ../system-config-printer.py:3117
+#: ../system-config-printer.py:3310
+#, fuzzy
+msgid "Adding"
+msgstr "보류"
+
+#: ../system-config-printer.py:3311
+#, fuzzy
+msgid "Adding printer"
+msgstr "프린터 설정"
+
+#: ../system-config-printer.py:3585
 msgid "Install driver"
 msgstr "드라이버 설치"
 
-#: ../system-config-printer.py:3118
+#: ../system-config-printer.py:3586
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "프린터 '%s'는 %s 패키지가 필요하나 이는 현재 설치되어 있지 않습니다."
 
-#: ../system-config-printer.py:3125
+#: ../system-config-printer.py:3593
 msgid "Missing driver"
 msgstr "드라이버가 없음"
 
-#: ../system-config-printer.py:3126
+#: ../system-config-printer.py:3594
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -485,62 +509,72 @@ msgid "<b>Description</b> (optional)"
 msgstr "<b>설명</b> (옵션) "
 
 #: ../system-config-printer.glade.h:18
+#, fuzzy
+msgid "<b>Enter device URI</b>"
+msgstr "URI 장치로 들어가기"
+
+#: ../system-config-printer.glade.h:19
 msgid "<b>Image Options</b>"
 msgstr "<b>이미지 옵션</b> "
 
-#: ../system-config-printer.glade.h:19
+#: ../system-config-printer.glade.h:20
 msgid "<b>Information about the PPD</b>"
 msgstr "<b>PPD에 관한 정보</b> "
 
-#: ../system-config-printer.glade.h:20
+#: ../system-config-printer.glade.h:21
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>LPD 네트워크 프린터의 위치</b> "
 
-#: ../system-config-printer.glade.h:21
+#: ../system-config-printer.glade.h:22
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>네트워크 프린터의 위치</b> "
 
-#: ../system-config-printer.glade.h:22
+#: ../system-config-printer.glade.h:23
 msgid "<b>Location</b> (optional)"
 msgstr "<b>위치</b> (옵션) "
 
-#: ../system-config-printer.glade.h:23
+#: ../system-config-printer.glade.h:24
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>기타 옵션 (고급)</b>"
 
-#: ../system-config-printer.glade.h:24
+#: ../system-config-printer.glade.h:25
 msgid "<b>Policies</b>"
 msgstr "<b>정책</b>"
 
-#: ../system-config-printer.glade.h:25
+#: ../system-config-printer.glade.h:26
 msgid "<b>Printer Name</b>"
 msgstr "<b>프린터명</b>"
 
-#: ../system-config-printer.glade.h:26
+#: ../system-config-printer.glade.h:27
 msgid "<b>Printers to be members of this Class</b>"
 msgstr "<b>이 클래스의 멤버인 프린터</b> "
 
-#: ../system-config-printer.glade.h:27
+#: ../system-config-printer.glade.h:28
+#, fuzzy
+msgid "<b>SMB Printer</b>"
+msgstr "<b>프린터명</b>"
+
+#: ../system-config-printer.glade.h:29
 msgid "<b>Select Connection</b>"
 msgstr "<b>선택 접속</b> "
 
-#: ../system-config-printer.glade.h:28
+#: ../system-config-printer.glade.h:30
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>직렬 포트 설정</b>"
 
-#: ../system-config-printer.glade.h:29
+#: ../system-config-printer.glade.h:31
 msgid "<b>Settings</b>"
 msgstr "<b>설정</b>"
 
-#: ../system-config-printer.glade.h:30
+#: ../system-config-printer.glade.h:32
 msgid "<b>State</b>"
 msgstr "<b>상태</b>"
 
-#: ../system-config-printer.glade.h:31
+#: ../system-config-printer.glade.h:33
 msgid "<b>Text Options</b>"
 msgstr "<b>텍스트 옵션</b>"
 
-#: ../system-config-printer.glade.h:32
+#: ../system-config-printer.glade.h:34
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -548,11 +582,11 @@ msgstr ""
 "<i>공유되지 않음\n"
 "서버 설정 확인</i>"
 
-#: ../system-config-printer.glade.h:34
+#: ../system-config-printer.glade.h:36
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
 
-#: ../system-config-printer.glade.h:35
+#: ../system-config-printer.glade.h:37
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
 "\n"
@@ -562,7 +596,7 @@ msgstr ""
 "\n"
 "어떠한 변경 사항이라도 적용하지 않는다면 이를 손실하게 됩니다. "
 
-#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
+#: ../system-config-printer.glade.h:40 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
 "\n"
@@ -570,95 +604,101 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">패스워드 필요</span>\n"
 "\n"
 
-#: ../system-config-printer.glade.h:41
+#: ../system-config-printer.glade.h:43
 msgid "About"
 msgstr "정보"
 
-#: ../system-config-printer.glade.h:42
+#: ../system-config-printer.glade.h:44
 msgid "About System-Config-Printer"
 msgstr "System-Config-Printer에 관한 설명"
 
-#: ../system-config-printer.glade.h:43
+#: ../system-config-printer.glade.h:45
 msgid "Accepting jobs"
 msgstr "작업 수신"
 
-#: ../system-config-printer.glade.h:44
+#: ../system-config-printer.glade.h:46
 msgid "Access control"
 msgstr "액세스 제어 "
 
-#: ../system-config-printer.glade.h:45
+#: ../system-config-printer.glade.h:47
 msgid "Add or Remove Members"
 msgstr "멤버 추가 또는 삭제"
 
-#: ../system-config-printer.glade.h:46
+#: ../system-config-printer.glade.h:48
 msgid "Allow printing for everyone except these users:"
 msgstr "다음의 사용자를 제외하고 모두 인쇄할 수 있습니다: "
 
-#: ../system-config-printer.glade.h:47
+#: ../system-config-printer.glade.h:49
+#, fuzzy
+msgid "Allow printing from the Internet"
+msgstr "다음의 사용자를 제외하고 모두 인쇄할 수 있습니다: "
+
+#: ../system-config-printer.glade.h:50
 msgid "Allow remote administration"
 msgstr "원격 관리 허용 "
 
-#: ../system-config-printer.glade.h:48
+#: ../system-config-printer.glade.h:51
 msgid "Allow users to cancel any job (not just their own)"
-msgstr "사용자에게 (실행중인 자신의 작업뿐 만 아니라)실행중인 모든 작업의 취소를 허용"
+msgstr ""
+"사용자에게 (실행중인 자신의 작업뿐 만 아니라)실행중인 모든 작업의 취소를 허용"
 
-#: ../system-config-printer.glade.h:49
+#: ../system-config-printer.glade.h:52
 msgid "Apply"
 msgstr "적용"
 
-#: ../system-config-printer.glade.h:50
+#: ../system-config-printer.glade.h:53
 msgid "Authors"
 msgstr "저자 "
 
-#: ../system-config-printer.glade.h:51
+#: ../system-config-printer.glade.h:54
 msgid "Baud Rate"
 msgstr "보레이트 "
 
-#: ../system-config-printer.glade.h:52
+#: ../system-config-printer.glade.h:55
 msgid "Bottom margin:"
 msgstr "아래 여백:"
 
-#: ../system-config-printer.glade.h:53
+#: ../system-config-printer.glade.h:56
 msgid "Brightness:"
 msgstr "명도:"
 
-#: ../system-config-printer.glade.h:54
+#: ../system-config-printer.glade.h:57
 msgid "CUPS server:"
 msgstr "CUPS 서버:"
 
-#: ../system-config-printer.glade.h:55
+#: ../system-config-printer.glade.h:58
 msgid "Change PPD"
 msgstr "PPD 변경"
 
-#: ../system-config-printer.glade.h:56
+#: ../system-config-printer.glade.h:59
 msgid "Change..."
 msgstr "변경..."
 
-#: ../system-config-printer.glade.h:57
+#: ../system-config-printer.glade.h:60
 msgid "Characters per inch:"
 msgstr "인치 당 글자수:"
 
-#: ../system-config-printer.glade.h:58
+#: ../system-config-printer.glade.h:61
 msgid "Class Members"
 msgstr "클래스 멤버 "
 
-#: ../system-config-printer.glade.h:59
+#: ../system-config-printer.glade.h:62
 msgid "Columns:"
 msgstr "행:"
 
-#: ../system-config-printer.glade.h:60
+#: ../system-config-printer.glade.h:63
 msgid "Comments: "
 msgstr "주석: "
 
-#: ../system-config-printer.glade.h:61
+#: ../system-config-printer.glade.h:64
 msgid "Connect to CUPS server"
 msgstr "CUPS 서버에 접속 "
 
-#: ../system-config-printer.glade.h:62
+#: ../system-config-printer.glade.h:65
 msgid "Connecting"
 msgstr "연결 중  "
 
-#: ../system-config-printer.glade.h:64
+#: ../system-config-printer.glade.h:67
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -667,23 +707,23 @@ msgstr ""
 "서버에 연결 중:\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:67
+#: ../system-config-printer.glade.h:70
 msgid "Copies:"
 msgstr "매수:"
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:71
 msgid "Copy Printer"
 msgstr "프린터 복사"
 
-#: ../system-config-printer.glade.h:69
+#: ../system-config-printer.glade.h:72
 msgid "Copyright"
 msgstr "저작권 "
 
-#: ../system-config-printer.glade.h:70
+#: ../system-config-printer.glade.h:73
 msgid "Data Bits"
 msgstr "데이타 비트"
 
-#: ../system-config-printer.glade.h:71
+#: ../system-config-printer.glade.h:74
 msgid ""
 "Default\n"
 "1200\n"
@@ -705,7 +745,7 @@ msgstr ""
 "57600\n"
 "115200 "
 
-#: ../system-config-printer.glade.h:80
+#: ../system-config-printer.glade.h:83
 msgid ""
 "Default\n"
 "8\n"
@@ -715,7 +755,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../system-config-printer.glade.h:83
+#: ../system-config-printer.glade.h:86
 msgid ""
 "Default\n"
 "None\n"
@@ -727,7 +767,7 @@ msgstr ""
 "홀수\n"
 "짝수 "
 
-#: ../system-config-printer.glade.h:87
+#: ../system-config-printer.glade.h:90
 msgid ""
 "Default\n"
 "None\n"
@@ -741,115 +781,111 @@ msgstr ""
 "RTS/CTS (하드웨어)\n"
 "DTR/DSR (하드웨어) "
 
-#: ../system-config-printer.glade.h:92
+#: ../system-config-printer.glade.h:95
 msgid "Deny printing for everyone except these users:"
 msgstr "다음의 사용자를 제외하고 모두 인쇄할 수 없습니다: "
 
-#: ../system-config-printer.glade.h:93
+#: ../system-config-printer.glade.h:96
 msgid "Description:"
 msgstr "설명:"
 
-#: ../system-config-printer.glade.h:94
+#: ../system-config-printer.glade.h:97
 msgid "Device"
 msgstr "장치 "
 
-#: ../system-config-printer.glade.h:95
+#: ../system-config-printer.glade.h:98
 msgid "Device URI"
 msgstr "URI 장치: "
 
-#: ../system-config-printer.glade.h:96
+#: ../system-config-printer.glade.h:99
 msgid "Device URI:"
 msgstr "URI 장치:"
 
-#: ../system-config-printer.glade.h:97
+#: ../system-config-printer.glade.h:100
 msgid "Device description."
 msgstr "장치 설명."
 
-#: ../system-config-printer.glade.h:98
+#: ../system-config-printer.glade.h:101
 msgid "DirectJet"
 msgstr "다이렉Jet "
 
-#: ../system-config-printer.glade.h:99
+#: ../system-config-printer.glade.h:102
 msgid "Driver"
 msgstr "드라이버 "
 
-#: ../system-config-printer.glade.h:100
+#: ../system-config-printer.glade.h:103
 msgid "Empty"
 msgstr "비어있음 "
 
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:104
 msgid "Enabled"
 msgstr "활성화"
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:105
 msgid "Ending Banner:"
 msgstr "배너 종료:"
 
-#: ../system-config-printer.glade.h:103
-msgid "Enter Device URI"
-msgstr "URI 장치로 들어가기"
-
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:106
 msgid "Error Policy: \t"
 msgstr "정책 오류: \t "
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:107
 msgid "Finishings:"
 msgstr "완료:"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:108
 msgid "Flow Control"
 msgstr "흐름 제어"
 
-#: ../system-config-printer.glade.h:107
+#: ../system-config-printer.glade.h:109
 msgid "Gamma:"
 msgstr "감마:"
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:110
 msgid "Goto Server"
 msgstr "서버로 가기"
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:111
 msgid "Hold until:"
 msgstr "대기 (만료 시간):"
 
-#: ../system-config-printer.glade.h:110
+#: ../system-config-printer.glade.h:112
 msgid "Hostname"
 msgstr "호스트명:"
 
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:113
 msgid "Hue adjustment:"
 msgstr "색상 조절:"
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:114
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "\"HP LaserJet with Duplexer\"와 같이 읽기 쉬운 설명 "
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:115
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "\"Lab 1\"와 같이 읽기 쉬운 위치"
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:116
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.glade.h:118
 msgid "Job Options"
 msgstr "작업 옵션"
 
-#: ../system-config-printer.glade.h:117
+#: ../system-config-printer.glade.h:119
 msgid "Job priority:"
 msgstr "작업 우선 순위:"
 
-#: ../system-config-printer.glade.h:118
+#: ../system-config-printer.glade.h:120
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:119
+#: ../system-config-printer.glade.h:121
 msgid "Left margin:"
 msgstr "왼쪽 여백:"
 
-#: ../system-config-printer.glade.h:120
+#: ../system-config-printer.glade.h:122
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -869,59 +905,60 @@ msgstr ""
 "아래서 위로, 왼쪽에서 오른쪽으로\n"
 "아래서 위로, 오른쪽에서 왼쪽으로"
 
-#: ../system-config-printer.glade.h:128
+#: ../system-config-printer.glade.h:130
 msgid "Lines per inch:"
 msgstr "인치 당 줄:"
 
-#: ../system-config-printer.glade.h:129
+#: ../system-config-printer.glade.h:131
 msgid "Location:"
 msgstr "위치:"
 
-#: ../system-config-printer.glade.h:130
+#: ../system-config-printer.glade.h:132
 msgid "Make Default Printer"
 msgstr "기본 프린터로 설정"
 
-#: ../system-config-printer.glade.h:131
+#: ../system-config-printer.glade.h:133
 msgid "Make and Model:"
 msgstr "제조회사 및 모델명:"
 
-#: ../system-config-printer.glade.h:132
+#: ../system-config-printer.glade.h:134
 msgid "May contain any printable characters except \"/\", \"#\", and space"
-msgstr "\"/\", \"#\", 스페이스를 제외하고 프린트할 수 있는 모든 문자가 있습니다."
+msgstr ""
+"\"/\", \"#\", 스페이스를 제외하고 프린트할 수 있는 모든 문자가 있습니다."
 
-#: ../system-config-printer.glade.h:133
+#: ../system-config-printer.glade.h:135
 msgid "Media:"
 msgstr "미디어:"
 
-#: ../system-config-printer.glade.h:134
+#: ../system-config-printer.glade.h:136
 msgid "Members"
 msgstr "멤버"
 
-#: ../system-config-printer.glade.h:135
+#: ../system-config-printer.glade.h:137
 msgid "Mirror"
 msgstr "미러"
 
-#: ../system-config-printer.glade.h:136
+#: ../system-config-printer.glade.h:138
 msgid "More"
 msgstr "기타 "
 
-#: ../system-config-printer.glade.h:137
+#: ../system-config-printer.glade.h:139
 msgid "Name"
 msgstr "이름"
 
-#: ../system-config-printer.glade.h:138
+#: ../system-config-printer.glade.h:140
 msgid "New Clas_s"
 msgstr "새 클래스(_s)"
 
-#: ../system-config-printer.glade.h:141
+#: ../system-config-printer.glade.h:143
 msgid "New _Printer"
 msgstr "새 프린터(_P)"
 
-#: ../system-config-printer.glade.h:142
+#: ../system-config-printer.glade.h:144
 msgid "New name for the printer"
 msgstr "새 프린터 이름"
 
-#: ../system-config-printer.glade.h:143
+#: ../system-config-printer.glade.h:145
 msgid ""
 "None\n"
 "Staple\n"
@@ -981,7 +1018,7 @@ msgstr ""
 "제본 (오른쪽)\n"
 "제본 (하단) "
 
-#: ../system-config-printer.glade.h:171
+#: ../system-config-printer.glade.h:173
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -991,43 +1028,47 @@ msgstr ""
 "양면 (옆으로 넘김)\n"
 "양면 (위로 넘김)"
 
-#: ../system-config-printer.glade.h:174
+#: ../system-config-printer.glade.h:176
 msgid "Operation Policy:"
 msgstr "정책 작업: "
 
-#: ../system-config-printer.glade.h:175
+#: ../system-config-printer.glade.h:177
 msgid "Orientation:"
 msgstr "용지 방향:"
 
-#: ../system-config-printer.glade.h:176
+#: ../system-config-printer.glade.h:178
 msgid "PPD"
 msgstr "PPD"
 
-#: ../system-config-printer.glade.h:177
+#: ../system-config-printer.glade.h:179
 msgid "Pages per side layout:"
 msgstr "한 면에 인쇄할 페이지 수:"
 
-#: ../system-config-printer.glade.h:178
+#: ../system-config-printer.glade.h:180
 msgid "Pages per side:"
 msgstr "한 면에 인쇄할 페이지 수:"
 
-#: ../system-config-printer.glade.h:179
+#: ../system-config-printer.glade.h:181
 msgid "Parity"
 msgstr "패리티 "
 
-#: ../system-config-printer.glade.h:180 ../applet.glade.h:5
+#: ../system-config-printer.glade.h:182 ../applet.glade.h:5
 msgid "Password:"
 msgstr "패스워드:"
 
-#: ../system-config-printer.glade.h:181
+#: ../system-config-printer.glade.h:183
+msgid "Please Wait"
+msgstr ""
+
+#: ../system-config-printer.glade.h:184
 msgid "Policies"
 msgstr "정책"
 
-#: ../system-config-printer.glade.h:182
+#: ../system-config-printer.glade.h:185
 msgid "Port number"
 msgstr "포트 번호 "
 
-#: ../system-config-printer.glade.h:183
+#: ../system-config-printer.glade.h:186
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1039,7 +1080,7 @@ msgstr ""
 "역 가로 방향 (270°)\n"
 "역 세로 방향 (180°)"
 
-#: ../system-config-printer.glade.h:187
+#: ../system-config-printer.glade.h:190
 msgid ""
 "PostScript Printer Description (PPD) files can often found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1049,119 +1090,121 @@ msgstr ""
 "서 찾을 수 있습니다. 사후 프린트 설명 스크립트는 종종 윈도우<sup>®</sup> 드라"
 "이버의 일부분이 되기도 합니다."
 
-#: ../system-config-printer.glade.h:188
+#: ../system-config-printer.glade.h:191
 msgid "Pretty print"
 msgstr "예쁘게 인쇄"
 
-#: ../system-config-printer.glade.h:192
+#: ../system-config-printer.glade.h:195
 msgid "Printer State:"
 msgstr "프린터 관련사항: "
 
-#: ../system-config-printer.glade.h:193
+#: ../system-config-printer.glade.h:196
 msgid "Printername"
 msgstr "프린터명"
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:197
 msgid "Probe"
 msgstr "추적"
 
-#: ../system-config-printer.glade.h:195
+#: ../system-config-printer.glade.h:198
 msgid "Provide PPD file"
 msgstr "PPD 파일 제공 "
 
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:199
 msgid "Require encryption"
 msgstr "암호화 필요"
 
-#: ../system-config-printer.glade.h:197
+#: ../system-config-printer.glade.h:200
 msgid "Reset"
 msgstr "다시 설정"
 
-#: ../system-config-printer.glade.h:198
+#: ../system-config-printer.glade.h:201
 msgid "Reset to system default"
 msgstr "시스템 기본값으로 다시 설정"
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:202
 msgid "Right margin:"
 msgstr "오른쪽 여백:"
 
-#: ../system-config-printer.glade.h:200
+#: ../system-config-printer.glade.h:203
 msgid "SCSI"
 msgstr "SCSI "
 
-#: ../system-config-printer.glade.h:201
+#: ../system-config-printer.glade.h:204
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:202
+#: ../system-config-printer.glade.h:205
 msgid "Saturation:"
 msgstr "채도:"
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:206
 msgid "Save debugging information for troubleshooting"
 msgstr "장애 추적에 대한 오류 수정 정보를 저장"
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:207
 msgid "Scale to fit"
 msgstr "용지에 맞게 조절"
 
-#: ../system-config-printer.glade.h:205
+#: ../system-config-printer.glade.h:208
 msgid "Scaling:"
 msgstr "비례 축소:"
 
-#: ../system-config-printer.glade.h:206
+#: ../system-config-printer.glade.h:209
 msgid "Select A File"
 msgstr "파일 선택 "
 
-#: ../system-config-printer.glade.h:207
+#: ../system-config-printer.glade.h:210
 msgid "Select Printer from database"
 msgstr "데이타 베이스에서 프린터 선택"
 
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.glade.h:211
 msgid "Serial"
 msgstr "직렬"
 
-#: ../system-config-printer.glade.h:209
+#: ../system-config-printer.glade.h:212
 msgid "Settings"
 msgstr "설정 "
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:213
 msgid "Share published printers connected to this system"
 msgstr "이 시스템과 연결된 프린터 공유하기"
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:214
 msgid "Shared"
 msgstr "공유"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:215
 msgid "Show printers shared by other systems"
 msgstr "다른 시스템과 공유된 프린터 보기"
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:216
 msgid "Sides:"
 msgstr "인쇄면:"
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:217
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
-msgstr "프린터의 기본 작업 옵션을 설정합니다. 응용 프로그램에서 이 옵션을 설정하지 않았을 경우 프린트 서버에 도착한 인쇄 작업에 이 옵션이 추가됩니다."
+msgstr ""
+"프린터의 기본 작업 옵션을 설정합니다. 응용 프로그램에서 이 옵션을 설정하지 않"
+"았을 경우 프린트 서버에 도착한 인쇄 작업에 이 옵션이 추가됩니다."
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:218
 msgid "Starting Banner:"
 msgstr "배너 시작 "
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:219
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:221
 #, no-c-format
 msgid "System-Config-Printer %s"
 msgstr "System-Config-Printer %s"
 
-#: ../system-config-printer.glade.h:219
+#: ../system-config-printer.glade.h:222
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1169,12 +1212,12 @@ msgid ""
 "provided PPD files provide better access to the specific features of the "
 "printer."
 msgstr ""
-"제조업자가 포함된 foomatic 프린터 데이타베이스는 사후 프린터 설명 스크"
-"립트 (PPD) 파일을 제공하며 (사후 스크립트가 아닌) 다른 여러 프린터에 대하"
-"여 PPD파일을 생성할 수 있습니다. 그러나 일반 제조업자에 의하여 제공되는 PPD "
-"파일은 프린터의 특정한 특징에 더 나은 액세스를 제공합니다."
+"제조업자가 포함된 foomatic 프린터 데이타베이스는 사후 프린터 설명 스크립트 "
+"(PPD) 파일을 제공하며 (사후 스크립트가 아닌) 다른 여러 프린터에 대하여 PPD파"
+"일을 생성할 수 있습니다. 그러나 일반 제조업자에 의하여 제공되는 PPD 파일은 프"
+"린터의 특정한 특징에 더 나은 액세스를 제공합니다."
 
-#: ../system-config-printer.glade.h:220
+#: ../system-config-printer.glade.h:223
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1183,83 +1226,84 @@ msgstr ""
 "이름이 같은 옵션은 같은 의미를 가지고 있다고 간주합니다. 새 PPD에서 제시되지 "
 "않는 옵션의 설정은 손실되며 새 PPD에서 제시된 옵션만이 기본으로 설정됩니다."
 
-#: ../system-config-printer.glade.h:221
+#: ../system-config-printer.glade.h:224
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
 msgstr ""
-"현재 모든 옵션 설정이 손실될 수 있습니다. 새 PPD에 대해 기본 설정을 사용해"
-"야 합니다."
+"현재 모든 옵션 설정이 손실될 수 있습니다. 새 PPD에 대해 기본 설정을 사용해야 "
+"합니다."
 
-#: ../system-config-printer.glade.h:222
+#: ../system-config-printer.glade.h:225
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr "새 옵션을 추가하려면 아래 박스에 옵션 이름을 입력하고 추가 버튼을 클릭합니다."
+msgstr ""
+"새 옵션을 추가하려면 아래 박스에 옵션 이름을 입력하고 추가 버튼을 클릭합니다."
 
-#: ../system-config-printer.glade.h:223
+#: ../system-config-printer.glade.h:226
 msgid "Top margin:"
 msgstr "위 여백:"
 
-#: ../system-config-printer.glade.h:224
+#: ../system-config-printer.glade.h:227
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "이전 PPD에서 옵션 설정을 복사해 보십시오 "
 
-#: ../system-config-printer.glade.h:225
+#: ../system-config-printer.glade.h:228
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "새 PPD (Postscript Printer Description) 사용. "
 
-#: ../system-config-printer.glade.h:226
+#: ../system-config-printer.glade.h:229
 msgid "User name:"
 msgstr "사용자 이름:"
 
-#: ../system-config-printer.glade.h:227
+#: ../system-config-printer.glade.h:230
 msgid "Username:"
 msgstr "사용자 이름:"
 
-#: ../system-config-printer.glade.h:228
+#: ../system-config-printer.glade.h:231
 msgid "Word wrap"
 msgstr "단어 넘김"
 
-#: ../system-config-printer.glade.h:229
+#: ../system-config-printer.glade.h:232
 msgid "_Do not apply"
 msgstr "적용하지 마십시오(_D) "
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:233
 msgid "_Edit"
 msgstr "편집(_E)"
 
-#: ../system-config-printer.glade.h:231 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:234 ../applet.glade.h:10
 msgid "_File"
 msgstr "파일(_F)"
 
-#: ../system-config-printer.glade.h:232
+#: ../system-config-printer.glade.h:235
 msgid "_Goto Server"
 msgstr "서버로 가기 (_G)"
 
-#: ../system-config-printer.glade.h:233
+#: ../system-config-printer.glade.h:236
 msgid "_Help"
 msgstr "도움말(_H)"
 
-#: ../system-config-printer.glade.h:234
+#: ../system-config-printer.glade.h:237
 msgid "_Install"
 msgstr "설치(_I)"
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:238
 msgid "_Verify..."
 msgstr "확인...(_V)"
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:239
 msgid "default"
 msgstr "기본"
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:240
 msgid "none"
 msgstr "없음"
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:241
 msgid "points"
 msgstr "포인트"
 
-#: ../system-config-printer.glade.h:239
+#: ../system-config-printer.glade.h:242
 msgid "points (72 points per inch)"
 msgstr "포인트 (인치 당 72 포인트)"
 
@@ -1545,4 +1589,3 @@ msgstr "인쇄 작업 관리"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "기본 프린터 선택"
-
