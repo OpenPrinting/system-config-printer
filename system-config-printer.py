@@ -74,6 +74,12 @@ busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 ellipsis = unichr(0x2026)
 
+try:
+    try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY
+except AttributeError:
+    # cups module was compiled with CUPS < 1.3
+    try_CUPS_SERVER_REMOTE_ANY = "_remote_any"
+
 def nonfatalException ():
     print "Caught non-fatal exception.  Traceback:"
     (type, value, tb) = sys.exc_info ()
@@ -135,6 +141,7 @@ class GUI:
                         "btnApply", "btnRevert", "btnConflict",
 
                         "chkServerBrowse", "chkServerShare",
+                        "chkServerShareAny",
                         "chkServerRemoteAdmin", "chkServerAllowCancelAll",
                         "chkServerLogDebug",
 
@@ -606,6 +613,9 @@ class GUI:
                        self.chkServerAllowCancelAll,
                        self.chkServerLogDebug):
             widget.set_sensitive(connected)
+
+        sharing = self.chkServerShare.get_active ()
+        self.chkServerShareAny.set_sensitive (sharing)
 
         try:
             del self.server_settings
@@ -3625,15 +3635,17 @@ class GUI:
         for widget, setting in [
             (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
             (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
+            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
             (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
             (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
             (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
             widget.set_data("setting", setting)
             if self.server_settings.has_key(setting):
                 widget.set_active(int(self.server_settings[setting]))
-                widget.show()
+                widget.set_sensitive(True)
             else:
-                widget.hide()
+                widget.set_active(False)
+                widget.set_sensitive(False)
         self.setDataButtonState()
         
     def on_server_changed(self, widget):
@@ -3642,6 +3654,11 @@ class GUI:
             self.changed.discard(widget)
         else:
             self.changed.add(widget)
+
+        sharing = self.chkServerShare.get_active ()
+        self.chkServerShareAny.set_sensitive (
+            sharing and self.server_settings.has_key(try_CUPS_SERVER_REMOTE_ANY))
+
         self.setDataButtonState()
 
     def save_serversettings(self):
@@ -3649,6 +3666,7 @@ class GUI:
         for widget, setting in [
             (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
             (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
+            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
             (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
             (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
             (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
