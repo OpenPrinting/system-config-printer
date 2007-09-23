@@ -1569,7 +1569,7 @@ class GUI(GtkGUI):
                                      _("Error") + '</span>\n\n' +
                                      _("There was a problem connecting to "
                                        "the CUPS server."))
-            self.ErrorDialog.set_transient_for()
+            self.ErrorDialog.set_transient_for(self.MainWindow)
             self.ErrorDialog.run()
             self.ErrorDialog.hide()
             sys.exit (1)
