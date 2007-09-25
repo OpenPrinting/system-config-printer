@@ -112,7 +112,7 @@ DRIVER_TYPE_FOOMATIC = 70
 DRIVER_TYPE_CUPS = 80
 DRIVER_TYPE_FOOMATIC_GENERIC = 90
 DRIVER_DOES_NOT_WORK = 999
-def getDriverType (ppdname):
+def getDriverType (ppdname, ppds=None):
     """Decides which of the above types ppdname is."""
     if ppdname.startswith ("gutenprint"):
         if ppdname.find ("/simple/") != -1:
@@ -128,7 +128,9 @@ def getDriverType (ppdname):
         # Foomatic (generated) -- but which driver?
         if ppdname.find ("Generic")!= -1:
             return DRIVER_TYPE_FOOMATIC_GENERIC
-        if ppdname.find ("(recommended)")!= -1:
+        if (ppds != None and
+            ppds.getInfoFromPPDName (ppdname).\
+            get ('ppd-make-and-model', '').find ("(recommended)") != -1):
             return DRIVER_TYPE_FOOMATIC_RECOMMENDED
         if ppdname.find ("-Postscript")!= -1:
             return DRIVER_TYPE_FOOMATIC_PS
@@ -234,7 +236,7 @@ class PPDs:
         make_model = dict['ppd-make-and-model']
         mfg, mdl = ppdMakeModelSplit (make_model)
         def getDriverTypeWithBias (x, mfg):
-            t = getDriverType (x)
+            t = getDriverType (x, ppds=self)
             if mfg == "HP":
                 if t == DRIVER_TYPE_FOOMATIC_HPIJS:
                     # Prefer HPIJS for HP devices.
