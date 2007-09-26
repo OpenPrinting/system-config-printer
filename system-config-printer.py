@@ -1181,7 +1181,8 @@ class GUI:
 
         try: # Might not be a printer selected
             if not self.test_button_cancels:
-                self.btnPrintTestPage.set_sensitive (not bool (self.changed) and
+                self.btnPrintTestPage.set_sensitive (self.ppd and
+                                                     not bool (self.changed) and
                                                      self.printer.enabled and
                                                      not self.printer.rejecting)
         except:
