@@ -670,14 +670,16 @@ class GUI(GtkGUI):
         if change_ppd:
             self.on_btnChangePPD_clicked (self.btnChangePPD)
 
+    def on_tvMainList_row_activated(self, treeview, path, column):
+        if treeview.row_expanded(path):
+            treeview.collapse_row(path)
+        else:
+            treeview.expand_row(path, False)
+
     def maySelectItem(self, selection):
         result = self.mainlist.get_value(
             self.mainlist.get_iter(selection), 1)
         if result[0] == "_":
-            if self.tvMainList.row_expanded(selection):
-                self.tvMainList.collapse_row(selection)
-            else:
-                self.tvMainList.expand_row(selection, False)
             return False
         if self.changed:
             response = self.ApplyDialog.run()
