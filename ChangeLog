@@ -1,3 +1,10 @@
+2007-09-26  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py (PPDs._findBestMatchPPDs): Rather than just looking for
+	the longest initial match in model order, sort our model name into
+	the available models and look at the immediate neighbours.  Pick
+	the longest initial match from them (bug #244546).
+
 2007-09-25  Tim Waugh  <twaugh@redhat.com>
 
 	* ppds.py (getDriverType): Fix foomatic recommended driver
