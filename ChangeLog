@@ -1,5 +1,10 @@
 2007-09-26  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.on_tvMainList_row_activated): Just
+	selecting printer type headings should not expand or collapse the
+	list, but activating them (double-clicking) should.  Part of
+	Ubuntu #144106.
+
 	* system-config-printer.py (GUI.setDataButtonState): Don't allow
 	test pages for raw queues (Ubuntu #145098).
 	(GUI.get_PPD_but_handle_errors): Hide wait window before
