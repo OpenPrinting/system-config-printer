@@ -2668,6 +2668,9 @@ class GUI:
         self.tvNPDevices.get_selection().select_path(0)
         self.on_tvNPDevices_cursor_changed(self.tvNPDevices)
 
+    def on_entNPTDevice_changed(self, entry):
+        self.setNPButtons()
+
     def browse_smb_hosts (self):
         """Initialise the SMB tree store."""
         store = self.smb_store
