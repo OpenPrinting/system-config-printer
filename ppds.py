@@ -24,6 +24,7 @@ import cups
 from cupshelpers import parseDeviceID
 import string
 import locale
+import os.path
 
 global debugging
 debugging = False
@@ -448,32 +449,41 @@ class PPDs:
         """
 
         debugprint ("Trying best match")
-        mdl = mdl.lower ()
-        if mdl.endswith (" series"):
+        mdll = mdl.lower ()
+        if mdll.endswith (" series"):
             # Strip " series" from the end of the MDL field.
+            mdll = mdll[:-7]
             mdl = mdl[:-7]
         best_mdl = None
         best_matchlen = 0
         mdlnames = mdls.keys ()
-        mdlnames.sort (cups.modelSort)
-        mdlitems = map (lambda x: (x.lower (), mdls[x]), mdlnames)
-        for (name, ppds) in mdlitems:
-            if mdl[:1 + best_matchlen] == name[:1 + best_matchlen]:
-                # We know we've got one more character matching.
-                # Can we match any more on this entry?
-                extra = 1
-                while (mdl[1 + best_matchlen:1 + best_matchlen + extra] ==
-                       name[1 + best_matchlen:1 + best_matchlen + extra]):
-                    # Yes!  Try another!
-                    extra += 1
-                    if extra + best_matchlen >= len (name):
-                        break
-                best_matchlen += extra
-                best_mdl = ppds.keys ()
 
-        if best_mdl and best_matchlen > (len (mdl) / 2):
+        # Perform a case-insensitive model sort on the names.
+        mdlnamesl = map (lambda x: (x, x.lower()), mdlnames)
+        mdlnamesl.append ((mdl, mdll))
+        mdlnamesl.sort (lambda x, y: cups.modelSort(x[1], y[1]))
+        i = mdlnamesl.index ((mdl, mdll))
+        candidates = [mdlnamesl[i - 1]]
+        if i + 1 < len (mdlnamesl):
+            candidates.append (mdlnamesl[i + 1])
+            debugprint (candidates[0][0] + " <= " + mdl + " <= " +
+                        candidates[1][0])
+        else:
+            debugprint (candidates[0][0] + " <= " + mdl)
+
+        # Look at the models immediately before and after ours in the
+        # sorted list, and pick the one with the longest initial match.
+        for (candidate, candidatel) in candidates:
+            prefix = os.path.commonprefix ([candidatel, mdll])
+            if len (prefix) > best_matchlen:
+                best_mdl = mdls[candidate].keys ()
+                best_matchlen = len (prefix)
+                debugprint ("%s: match length %d" % (candidate, best_matchlen))
+
+        # Did we match more than half of the model name?
+        if best_mdl and best_matchlen > (len (mdll) / 2):
             ppdnamelist = best_mdl
-            if best_matchlen == len (mdl):
+            if best_matchlen == len (mdll):
                 status = self.STATUS_SUCCESS
             else:
                 status = self.STATUS_MODEL_MISMATCH
@@ -485,6 +495,7 @@ class PPDs:
             # field and look for a match based solely on that.  If
             # there are digits, try lowering the number of
             # significant figures.
+            mdlitems = map (lambda x: (x.lower (), mdls[x]), mdlnames)
             modelid = None
             for word in mdl.split (' '):
                 if modelid == None:
