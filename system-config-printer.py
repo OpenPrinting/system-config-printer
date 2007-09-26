@@ -2955,7 +2955,7 @@ class NewPrinterGUI(GtkGUI):
         gtk.gdk.threads_enter()
         store = self.smb_store
         store.clear ()
-        store.append(None, ('Scanning...', '', None, None))
+        store.append(None, (_('Scanning...'), '', None, None))
         try:
             self.busy(self.SMBBrowseDialog)
         except:
