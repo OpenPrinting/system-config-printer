@@ -3227,7 +3227,7 @@ class NewPrinterGUI(GtkGUI):
         self.IPPBrowseDialog.hide()
 
     def on_btnIPPBrowseRefresh_clicked(self, button):
-        self.browse_ipp_hosts()
+        self.browse_ipp_queues()
 
     def on_tvNPDevices_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
