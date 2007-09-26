@@ -1118,7 +1118,8 @@ class GUI(GtkGUI):
                                  not bool(self.conflicts))
 
         try: # Might not be a printer selected
-            possible = (not bool (self.changed) and
+            possible = (self.ppd and
+                        not bool (self.changed) and
                         self.printer.enabled and
                         not self.printer.rejecting)
 
