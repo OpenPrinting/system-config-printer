@@ -2149,6 +2149,7 @@ class NewPrinterGUI(GtkGUI):
         self.ppds_lock = thread.allocate_lock()
         self.devices_lock = thread.allocate_lock()
         self.smb_lock = thread.allocate_lock()
+        self.ipp_lock = thread.allocate_lock()
 
         self.getWidgets("NewPrinterWindow", "ntbkNewPrinter",
                          "btnNPBack", "btnNPForward", "btnNPApply",
@@ -2158,9 +2159,12 @@ class NewPrinterGUI(GtkGUI):
                            "cmbNPTSerialBaud", "cmbNPTSerialParity",
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
-                           "entNPTIPPHostname", "entNPTIPPPrintername",
+                           "entNPTIPPHostname", "btnIPPFindQueue",
+                        "lblIPPURI", "lblIPPPrintername",
+                        "IPPBrowseDialog", "tvIPPBrowser",
+                        "btnIPPBrowseOk",
                         "entNPTDirectJetHostname", "entNPTDirectJetPort",
-                        "entNPTIPPHostname", "entNPTIPPPrintername",
+                        "entNPTIPPHostname",
                         "SMBBrowseDialog", "entSMBURI", "tvSMBBrowser", "tblSMBAuth",
                         "chkSMBAuth", "entSMBUsername", "entSMBPassword",
                         "btnSMBBrowseOk", "btnSMBVerify",
@@ -2212,6 +2216,24 @@ class NewPrinterGUI(GtkGUI):
         
         self.SMBBrowseDialog.set_transient_for(self.NewPrinterWindow)
 
+        # IPP browser
+        self.ipp_store = gtk.TreeStore (str, # queue
+                                        str, # location
+                                        gobject.TYPE_PYOBJECT) # dict
+        self.tvIPPBrowser.set_model (self.ipp_store)
+        self.ipp_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
+
+        # IPP list columns
+        col = gtk.TreeViewColumn (_("Queue"), gtk.CellRendererText (),
+                                  text=0)
+        col.set_resizable (True)
+        col.set_sort_column_id (0)
+        self.tvIPPBrowser.append_column (col)
+
+        col = gtk.TreeViewColumn (_("Location"), gtk.CellRendererText (),
+                                  text=1)
+        self.tvIPPBrowser.append_column (col)
+        self.IPPBrowseDialog.set_transient_for(self.NewPrinterWindow)
 
         self.tvNPDriversTooltips = TreeViewTooltips(self.tvNPDrivers, self.NPDriversTooltips)
 
@@ -3117,6 +3139,96 @@ class NewPrinterGUI(GtkGUI):
         self.ErrorDialog.run()
         self.ErrorDialog.hide ()
 
+    ### IPP Browsing
+    def on_entNPTIPPHostname_changed(self, ent):
+        self.btnIPPFindQueue.set_sensitive (len (ent.get_text ()) > 0)
+
+    def on_btnIPPFindQueue_clicked(self, button):
+        self.btnIPPBrowseOk.set_sensitive(False)
+        self.IPPBrowseDialog.show()
+        self.browse_ipp_queues()
+
+    def browse_ipp_queues(self):
+        if not self.ipp_lock.acquire(0):
+            return
+        thread.start_new_thread(self.browse_ipp_queues_thread, ())
+
+    def browse_ipp_queues_thread(self):
+        gtk.gdk.threads_enter()
+        store = self.ipp_store
+        store.clear ()
+        store.append(None, (_('Scanning...'), '', None))
+        try:
+            self.busy(self.IPPBrowseDialog)
+        except:
+            nonfatalException()
+
+        host = self.entNPTIPPHostname.get_text()
+        gtk.gdk.threads_leave()
+
+        cups.setServer (host)
+        printers = classes = {}
+        try:
+            c = cups.Connection()
+            printers = c.getPrinters ()
+            classes = c.getClasses ()
+            del c
+        except RuntimeError:
+            pass
+        except cups.IPP_Error, (e, msg):
+            pass
+
+        gtk.gdk.threads_enter()
+
+        store.clear ()
+        for printer, dict in printers.iteritems ():
+            iter = store.append (None)
+            store.set_value (iter, 0, printer)
+            store.set_value (iter, 1, dict.get ('printer-location', ''))
+            store.set_value (iter, 2, dict)
+        for pclass, dict in classes.iteritems ():
+            iter = store.append (None)
+            store.set_value (iter, 0, pclass)
+            store.set_value (iter, 1, dict.get ('printer-location', ''))
+            store.set_value (iter, 2, dict)
+
+        if len (printers) + len (classes) == 0:
+            # Display 'No queues' dialog
+            self.lblError.set_markup ('<span weight="bold" size="larger">' +
+                                      _("No queues") + '</span>\n\n' +
+                                      _("There are no queues available."))
+            self.ErrorDialog.set_transient_for (self.IPPBrowseDialog)
+            self.ErrorDialog.run ()
+            self.ErrorDialog.hide ()
+
+        try:
+            self.ready(self.IPPBrowseDialog)
+        except:
+            nonfatalException()
+
+        self.ipp_lock.release()
+        gtk.gdk.threads_leave()
+
+    def on_tvIPPBrowser_cursor_changed(self, widget):
+        self.btnIPPBrowseOk.set_sensitive(True)
+
+    def on_btnIPPBrowseOk_clicked(self, button):
+        store, iter = self.tvIPPBrowser.get_selection().get_selected()
+        self.IPPBrowseDialog.hide()
+        queue = store.get_value (iter, 0)
+        dict = store.get_value (iter, 2)
+        self.lblIPPPrintername.set_text (queue)
+        self.lblIPPPrintername.show()
+        self.lblIPPURI.set_text (dict.get('printer-uri-supported', 'ipp'))
+        self.lblIPPURI.show()
+        self.setNPButtons()
+
+    def on_btnIPPBrowseCancel_clicked(self, widget, *args):
+        self.IPPBrowseDialog.hide()
+
+    def on_btnIPPBrowseRefresh_clicked(self, button):
+        self.browse_ipp_hosts()
+
     def on_tvNPDevices_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
         path = model.get_path(iter)
@@ -3197,7 +3309,8 @@ class NewPrinterGUI(GtkGUI):
                                             
         # XXX FILL TABS FOR VALID DEVICE URIs
         elif device.type in ("ipp", "http"):
-            if device.uri.startswith ("ipp") or device.uri.startswith ("http"):
+            if (device.uri.startswith ("ipp:") or
+                device.uri.startswith ("http:")):
                 server = ""
                 printer = ""
                 if url[:2] == "//":
@@ -3213,7 +3326,14 @@ class NewPrinterGUI(GtkGUI):
                             printer = p[t + 1:]
 
                 self.entNPTIPPHostname.set_text(server)
-                self.entNPTIPPPrintername.set_text(printer)
+                self.lblIPPURI.set_text(device.uri)
+                self.lblIPPPrintername.set_text(printer)
+                self.lblIPPURI.show()
+                self.lblIPPPrintername.show()
+            else:
+                self.entNPTIPPHostname.set_text('')
+                self.lblIPPPrintername.hide()
+                self.lblIPPURI.hide()
         elif device.type=="lpd":
             if device.uri.startswith ("lpd"):
                 host = device.uri[6:]
@@ -3262,10 +3382,10 @@ class NewPrinterGUI(GtkGUI):
                 device = device + ':' + port
         elif type in ("http", "ipp"): # IPP
             host = self.entNPTIPPHostname.get_text()
-            printer = self.entNPTIPPPrintername.get_text()
-            device = "ipp://" + host
-            if printer:
-                device = device + "/printers/" + printer
+            if self.lblIPPURI.get_property('visible'):
+                device = self.lblIPPURI.get_text()
+            else:
+                device = "ipp"
         elif type == "lpd": # LPD
             host = self.cmbentNPTLpdHost.get_active_text()
             printer = self.cmbentNPTLpdQueue.get_active_text()
