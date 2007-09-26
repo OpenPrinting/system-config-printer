@@ -3333,8 +3333,8 @@ class GUI:
                 cupshelpers.activateNewPrinter (self.cups, name)
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
-                self.show_IPP_Error(e, msg)
                 self.WaitWindow.hide ()
+                self.show_IPP_Error(e, msg)
                 return
             self.WaitWindow.hide ()
             self.ready (self.NewPrinterWindow)
