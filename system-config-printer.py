@@ -2946,6 +2946,9 @@ class NewPrinterGUI(GtkGUI):
             return
         thread.start_new_thread(self.browse_smb_hosts_thread, ())
 
+    def on_entNPTDevice_changed(self, entry):
+        self.setNPButtons()
+
     def browse_smb_hosts_thread(self):
         """Initialise the SMB tree store."""
 
