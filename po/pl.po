@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-09-18 16:56+0100\n"
-"PO-Revision-Date: 2007-09-01 14:46+0200\n"
+"POT-Creation-Date: 2007-09-21 18:32+0100\n"
+"PO-Revision-Date: 2007-09-27 09:05+0200\n"
 "Last-Translator: Piotr Drąg <raven@pmail.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -35,23 +35,24 @@ msgstr "Zatrzymana"
 msgid "Unknown"
 msgstr "Nieznany"
 
-#: ../my-default-printer.py:128 ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:125 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
 msgstr "Domyślna drukarka"
 
-#: ../my-default-printer.py:132 ../my-default-printer.py:163
+#: ../my-default-printer.py:129 ../my-default-printer.py:160
 msgid "_Use System Default"
 msgstr "_Użyj domyślnej systemu"
 
-#: ../my-default-printer.py:133
+#: ../my-default-printer.py:130
 msgid "_Set Default"
 msgstr "U_staw jako domyślną"
 
-#: ../my-default-printer.py:143 ../applet.py:184 ../applet.py:224
+#: ../my-default-printer.py:140 ../system-config-printer.glade.h:193
+#: ../applet.py:184 ../applet.py:224
 msgid "Printer"
 msgstr "Drukarka"
 
-#: ../my-default-printer.py:147
+#: ../my-default-printer.py:144
 msgid "Location"
 msgstr "Położenie"
 
@@ -59,69 +60,94 @@ msgstr "Położenie"
 msgid "Conflicts with:"
 msgstr "Jest w konflikcie z:"
 
-#: ../system-config-printer.py:340
+#: ../system-config-printer.py:248
+msgid "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "Copyright 2006, 2007 Red Hat, Inc."
+
+#: ../system-config-printer.py:284
 msgid "Server Settings"
 msgstr "Ustawienia serwera"
 
-#: ../system-config-printer.py:346 ../system-config-printer.py:348
+#: ../system-config-printer.py:293 ../system-config-printer.py:295
 msgid "Members of this class"
 msgstr "Elementy tej klasy"
 
-#: ../system-config-printer.py:347 ../system-config-printer.py:349
+#: ../system-config-printer.py:294 ../system-config-printer.py:296
 msgid "Others"
 msgstr "Inne"
 
-#: ../system-config-printer.py:350
+#: ../system-config-printer.py:297
 msgid "Devices"
 msgstr "Urządzenia"
 
-#: ../system-config-printer.py:351
+#: ../system-config-printer.py:298
 msgid "Makes"
 msgstr "Producenci"
 
-#: ../system-config-printer.py:352
+#: ../system-config-printer.py:299
 msgid "Models"
 msgstr "Modele"
 
-#: ../system-config-printer.py:353
+#: ../system-config-printer.py:300
 msgid "Drivers"
 msgstr "Sterowniki"
 
-#: ../system-config-printer.py:354
+#: ../system-config-printer.py:301
 msgid "Users"
 msgstr "Użytkownicy"
 
-#: ../system-config-printer.py:534
+#: ../system-config-printer.py:312
+msgid "PostScript Printer Description (*.ppd[.gz])"
+msgstr "PostScriptowy opis drukarki (*.ppd[.gz])"
+
+#. SMB list columns
+#: ../system-config-printer.py:332
+msgid "Share"
+msgstr "Współdziel"
+
+#: ../system-config-printer.py:338
+msgid "Comment"
+msgstr "Komentarz"
+
+#: ../system-config-printer.py:557 ../system-config-printer.py:2435
+msgid "Searching"
+msgstr "Wyszukiwanie"
+
+#: ../system-config-printer.py:558
+msgid "Searching for drivers"
+msgstr "Wyszukiwanie sterowników"
+
+#: ../system-config-printer.py:601
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Konfiguracja drukarki - %s"
 
-#: ../system-config-printer.py:537
+#: ../system-config-printer.py:604
 #, python-format
 msgid "Connected to %s"
 msgstr "Połączone do %s"
 
-#: ../system-config-printer.py:539 ../system-config-printer.py:1213
+#: ../system-config-printer.py:606 ../system-config-printer.py:1272
 msgid "Not connected"
 msgstr "Niepołączona"
 
-#: ../system-config-printer.py:638
+#: ../system-config-printer.py:702
 msgid "Local Printers"
 msgstr "Lokalne drukarki"
 
-#: ../system-config-printer.py:639
+#: ../system-config-printer.py:703
 msgid "Local Classes"
 msgstr "Lokalne klasy"
 
-#: ../system-config-printer.py:640
+#: ../system-config-printer.py:704
 msgid "Remote Printers"
 msgstr "Zdalne drukarki"
 
-#: ../system-config-printer.py:641
+#: ../system-config-printer.py:705
 msgid "Remote Classes"
 msgstr "Zdalne klasy"
 
-#: ../system-config-printer.py:743
+#: ../system-config-printer.py:808
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -130,15 +156,15 @@ msgstr ""
 "Łączenie do serwera:\n"
 "%s"
 
-#: ../system-config-printer.py:1142
+#: ../system-config-printer.py:1201 ../system-config-printer.glade.h:117
 msgid "Installable Options"
 msgstr "Opcje instalacyjne"
 
-#: ../system-config-printer.py:1143 ../system-config-printer.glade.h:189
+#: ../system-config-printer.py:1202 ../system-config-printer.glade.h:194
 msgid "Printer Options"
 msgstr "Opcje drukarki"
 
-#: ../system-config-printer.py:1152
+#: ../system-config-printer.py:1211
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -149,26 +175,26 @@ msgstr ""
 "tylko po tym, jak te konflikty\n"
 "zostaną rozwiązane."
 
-#: ../system-config-printer.py:1181 ../system-config-printer.py:1197
+#: ../system-config-printer.py:1240 ../system-config-printer.py:1256
 #: ../applet.py:333
 msgid "Not authorized"
 msgstr "Nieupoważnione"
 
-#: ../system-config-printer.py:1182 ../applet.py:334
+#: ../system-config-printer.py:1241 ../applet.py:334
 msgid "The password may be incorrect."
 msgstr "Hasło może być niepoprawne."
 
-#: ../system-config-printer.py:1185 ../system-config-printer.py:1218
+#: ../system-config-printer.py:1244 ../system-config-printer.py:1277
 #: ../applet.py:337
 msgid "CUPS server error"
 msgstr "Błąd serwera CUPS"
 
-#: ../system-config-printer.py:1186 ../applet.py:338
+#: ../system-config-printer.py:1245 ../applet.py:338
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Wystąpił błąd podczas operacji CUPS-a: \"%s\"."
 
-#: ../system-config-printer.py:1198
+#: ../system-config-printer.py:1257
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
@@ -176,58 +202,58 @@ msgstr ""
 "Hasło może być niepoprawne lub serwer może być skonfigurowany do odmawiania "
 "zdalnej administracji."
 
-#: ../system-config-printer.py:1203
+#: ../system-config-printer.py:1262
 msgid "Bad request"
 msgstr "Błędne żądanie"
 
-#: ../system-config-printer.py:1205
+#: ../system-config-printer.py:1264
 msgid "Not found"
 msgstr "Nie znaleziono"
 
-#: ../system-config-printer.py:1207
+#: ../system-config-printer.py:1266
 msgid "Request timeout"
 msgstr "Przekroczono czas oczekiwania na żądanie"
 
-#: ../system-config-printer.py:1209
+#: ../system-config-printer.py:1268
 msgid "Upgrade required"
 msgstr "Wymagana jest aktualizacja"
 
-#: ../system-config-printer.py:1211
+#: ../system-config-printer.py:1270
 msgid "Server error"
 msgstr "Błąd serwera"
 
-#: ../system-config-printer.py:1215
+#: ../system-config-printer.py:1274
 #, python-format
 msgid "status %d"
 msgstr "stan %d"
 
-#: ../system-config-printer.py:1219
+#: ../system-config-printer.py:1278
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "Wystąpił błąd HTTP: %s."
 
-#: ../system-config-printer.py:1243
+#: ../system-config-printer.py:1302
 msgid "This will delete this class!"
 msgstr "To usunie tę klasę!"
 
-#: ../system-config-printer.py:1244
+#: ../system-config-printer.py:1303
 msgid "Proceed anyway?"
 msgstr "Kontynuować mimo to?"
 
-#: ../system-config-printer.py:1448 ../system-config-printer.py:1481
+#: ../system-config-printer.py:1507
 msgid "Submitted"
 msgstr "Wysłane"
 
-#: ../system-config-printer.py:1449
+#: ../system-config-printer.py:1508
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Strona próbna została wysłana jako zadanie %d"
 
-#: ../system-config-printer.py:1459 ../system-config-printer.py:1491
+#: ../system-config-printer.py:1518
 msgid "Not possible"
 msgstr "Niemożliwe"
 
-#: ../system-config-printer.py:1460
+#: ../system-config-printer.py:1519
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -235,129 +261,98 @@ msgstr ""
 "Zdalny serwer nie zaakceptował zadania drukowania, prawdopodobnie dlatego, "
 "że drukarka nie jest współdzielona."
 
-#: ../system-config-printer.py:1482
-#, fuzzy, python-format
-msgid "Maintenance command submitted as job %d"
-msgstr "Strona próbna została wysłana jako zadanie %d"
-
-#: ../system-config-printer.py:1492
-#, fuzzy
-msgid ""
-"THe remote server did not accept the print job, most likely because the "
-"printer is not shared."
-msgstr ""
-"Zdalny serwer nie zaakceptował zadania drukowania, prawdopodobnie dlatego, "
-"że drukarka nie jest współdzielona."
-
-#: ../system-config-printer.py:1566
+#: ../system-config-printer.py:1587
 msgid "Error"
 msgstr "Błąd"
 
-#: ../system-config-printer.py:1567
+#: ../system-config-printer.py:1588
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Wystąpił problem podczas łączenia się z serwerem CUPS."
 
-#: ../system-config-printer.py:1620
+#: ../system-config-printer.py:1655
 msgid "This is the default printer"
 msgstr "To jest domyślna drukarka"
 
-#: ../system-config-printer.py:1624
+#: ../system-config-printer.py:1657
+#, python-format
+msgid "Default printer is %s"
+msgstr "Domyślną drukarką jest %s"
+
+#: ../system-config-printer.py:1660
 msgid "No default printer set."
 msgstr "Nie ustawiono domyślnej drukarki."
 
-#: ../system-config-printer.py:1728
+#: ../system-config-printer.py:1746
 msgid "Cancel Tests"
 msgstr "Anuluj próby"
 
-#. Not more than 25 characters
-#: ../system-config-printer.py:1732 ../system-config-printer.glade.h:188
+#: ../system-config-printer.py:1750 ../system-config-printer.glade.h:192
 msgid "Print Test Page"
 msgstr "Wydrukuj stronę próbną"
 
-#: ../system-config-printer.py:1962
+#: ../system-config-printer.py:2005
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "Czy na pewno usunąć drukarkę %s?"
 
-#: ../system-config-printer.py:1964
+#: ../system-config-printer.py:2007
 #, python-format
 msgid "Really delete class %s?"
 msgstr "Czy na pewno usunąć klasę %s?"
 
-#. SMB list columns
-#: ../system-config-printer.py:2189
-msgid "Share"
-msgstr "Wspóldziel"
-
-#: ../system-config-printer.py:2195
-msgid "Comment"
-msgstr "Komentarz"
-
-#: ../system-config-printer.py:2207
-msgid "PostScript Printer Description (*.ppd[.gz])"
-msgstr "PostScriptowy opis drukarki (*.ppd[.gz])"
-
-#: ../system-config-printer.py:2240 ../system-config-printer.glade.h:136
+#: ../system-config-printer.py:2055 ../system-config-printer.glade.h:142
 msgid "New Printer"
 msgstr "Nowa drukarka"
 
-#: ../system-config-printer.py:2250 ../system-config-printer.glade.h:135
+#: ../system-config-printer.py:2070 ../system-config-printer.glade.h:141
 msgid "New Class"
 msgstr "Nowa klasa"
 
-#: ../system-config-printer.py:2255
+#: ../system-config-printer.py:2084
 msgid "Change Device URI"
 msgstr "Zmień URI urządzenia"
 
-#: ../system-config-printer.py:2264
+#: ../system-config-printer.py:2096
 msgid "Change Driver"
 msgstr "Zmień sterownik"
 
-#: ../system-config-printer.py:2363 ../system-config-printer.py:2682
-msgid "Searching"
-msgstr "Wyszukiwanie"
-
-#: ../system-config-printer.py:2364
-msgid "Searching for drivers"
-msgstr "Wyszukiwanie sterowników"
-
-#: ../system-config-printer.py:2683
+#: ../system-config-printer.py:2436
 msgid "Searching for printers"
 msgstr "Wyszukiwanie drukarek"
 
-#: ../system-config-printer.py:2896
+#: ../system-config-printer.py:2654
 msgid "Other"
 msgstr "Inne"
 
-#: ../system-config-printer.py:2898
+#: ../system-config-printer.py:2656
 msgid " (Current)"
 msgstr " (bieżąca)"
 
-#: ../system-config-printer.py:3094
+#: ../system-config-printer.py:2852
 msgid "Verified"
 msgstr "Sprawdzona"
 
-#: ../system-config-printer.py:3095
+#: ../system-config-printer.py:2853
 msgid "This print share is accessible."
 msgstr "Ten udział drukowania jest dostępny."
 
-#: ../system-config-printer.py:3102
+#: ../system-config-printer.py:2860
 msgid "Inaccessible"
 msgstr "Niedostępny"
 
-#: ../system-config-printer.py:3103
+#: ../system-config-printer.py:2861
 msgid "This print share is not accessible."
 msgstr "Ten udział drukowania jest niedostępny."
 
-#: ../system-config-printer.py:3123
+#: ../system-config-printer.py:2881
 msgid "A printer connected to the parallel port."
 msgstr "Drukarka połączona do portu równoległego."
 
-#: ../system-config-printer.py:3125
+#: ../system-config-printer.py:2883
 msgid "A printer connected to a USB port."
 msgstr "Drukarka połączona do portu USB."
 
-#: ../system-config-printer.py:3127
+#: ../system-config-printer.py:2885
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -365,7 +360,7 @@ msgstr ""
 "Oprogramowanie HPLIP steruje drukarką lub funkcją drukarki urządzenia "
 "wielofunkcyjnego."
 
-#: ../system-config-printer.py:3130
+#: ../system-config-printer.py:2888
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -373,24 +368,39 @@ msgstr ""
 "Oprogramowanie HPLIP steruje faksem lub funkcją faksu urządzenia "
 "wielofunkcyjnego."
 
-#: ../system-config-printer.py:3133
+#: ../system-config-printer.py:2891
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Lokalne drukarki wykryte przez warstwę abstrakcji sprzętowej (HAL)."
 
-#: ../system-config-printer.py:3378
+#: ../system-config-printer.py:3124
 msgid " (recommended)"
 msgstr " (zalecane)"
 
-#: ../system-config-printer.py:3392
+#: ../system-config-printer.py:3165
 msgid "This PPD is generated by foomatic."
 msgstr "Ten PPD został utworzony przez foomatica."
 
+#. XXX
+#: ../system-config-printer.py:3206
+#, python-format
+msgid "Going to create a new class %s."
+msgstr "Za chwilę zostanie utworzona nowa klasa %s."
+
+#: ../system-config-printer.py:3224
+#, python-format
+msgid ""
+"Going to create a new printer %s at\n"
+"%s.\n"
+msgstr ""
+"Za chwilę zostanie utworzona nowa drukarka %s na\n"
+"%s.\n"
+
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:3421
+#: ../system-config-printer.py:3248
 msgid "Database error"
 msgstr "Błąd bazy danych"
 
-#: ../system-config-printer.py:3422
+#: ../system-config-printer.py:3249
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Sterownik \"%s\" nie może być używany z drukarką \"%s %s\"."
@@ -398,47 +408,42 @@ msgstr "Sterownik \"%s\" nie może być używany z drukarką \"%s %s\"."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:3432
+#: ../system-config-printer.py:3259
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Musisz zainstalować pakiet \"%s\", aby użyć tego sterownika."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:3439
+#: ../system-config-printer.py:3266
 msgid "PPD error"
 msgstr "Błąd PPD"
 
-#: ../system-config-printer.py:3441
+#: ../system-config-printer.py:3268
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Nie udało się odczytać pliku PPD. Możliwe przyczyny:"
 
-#: ../system-config-printer.py:3497 ../system-config-printer.py:3534
-#, fuzzy
-msgid "No Installable Options"
-msgstr "Opcje instalacyjne"
-
-#: ../system-config-printer.py:3581
+#: ../system-config-printer.py:3310
 msgid "Adding"
 msgstr "Dodawanie"
 
-#: ../system-config-printer.py:3582
+#: ../system-config-printer.py:3311
 msgid "Adding printer"
 msgstr "Dodawanie drukarki"
 
-#: ../system-config-printer.py:3859
+#: ../system-config-printer.py:3585
 msgid "Install driver"
 msgstr "Zainstaluj sterownik"
 
-#: ../system-config-printer.py:3860
+#: ../system-config-printer.py:3586
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "Drukarka \"%s\" wymaga pakietu %s, który nie jest zainstalowany."
 
-#: ../system-config-printer.py:3867
+#: ../system-config-printer.py:3593
 msgid "Missing driver"
 msgstr "Brak sterownika"
 
-#: ../system-config-printer.py:3868
+#: ../system-config-printer.py:3594
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -452,6 +457,10 @@ msgid " "
 msgstr " "
 
 #: ../system-config-printer.glade.h:2
+msgid " PPD "
+msgstr " PPD "
+
+#: ../system-config-printer.glade.h:3
 msgid ""
 "1\n"
 "2\n"
@@ -467,96 +476,107 @@ msgstr ""
 "9\n"
 "16"
 
-#: ../system-config-printer.glade.h:8
+#: ../system-config-printer.glade.h:9
+msgid "<b>Authentication</b>"
+msgstr "<b>Uwierzytelnianie</b>"
+
+#: ../system-config-printer.glade.h:10
 msgid "<b>Banner</b>"
 msgstr "<b>Banner</b>"
 
-#: ../system-config-printer.glade.h:9
+#: ../system-config-printer.glade.h:11
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>Podstawowe ustawienia serwera</b>"
 
-#: ../system-config-printer.glade.h:10
+#: ../system-config-printer.glade.h:12
+msgid "<b>Comment about the Driver</b>"
+msgstr "<b>Komentarze na temat sterownika</b>"
+
+#: ../system-config-printer.glade.h:13
+msgid "<b>Comment about the Printer</b>"
+msgstr "<b>Komentarze na temat drukarki</b>"
+
+#: ../system-config-printer.glade.h:14
 msgid "<b>Common Options</b>"
 msgstr "<b>Wspólne opcje</b>"
 
-#: ../system-config-printer.glade.h:11
+#: ../system-config-printer.glade.h:15
+msgid "<b>Default Printer</b>"
+msgstr "<b>Domyślna drukarka</b>"
+
+#: ../system-config-printer.glade.h:16
 msgid "<b>Description</b>"
 msgstr "<b>Opis</b>"
 
-#: ../system-config-printer.glade.h:12
+#: ../system-config-printer.glade.h:17
 msgid "<b>Description</b> (optional)"
 msgstr "<b>Opis</b> (opcjonalny)"
 
-#: ../system-config-printer.glade.h:13
+#: ../system-config-printer.glade.h:18
 msgid "<b>Enter device URI</b>"
 msgstr "<b>Podaj URI urządzenia</b>"
 
-#: ../system-config-printer.glade.h:14
+#: ../system-config-printer.glade.h:19
 msgid "<b>Image Options</b>"
 msgstr "<b>Opcje obrazu</b>"
 
-#: ../system-config-printer.glade.h:15
-#, fuzzy
-msgid "<b>Installed Options</b>"
-msgstr "<b>Opcje obrazu</b>"
+#: ../system-config-printer.glade.h:20
+msgid "<b>Information about the PPD</b>"
+msgstr "<b>Informacje o PPD</b>"
 
-#: ../system-config-printer.glade.h:16
+#: ../system-config-printer.glade.h:21
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>Położenie drukarki sieciowej LPD</b>"
 
-#: ../system-config-printer.glade.h:17
+#: ../system-config-printer.glade.h:22
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>Położenie drukarki sieciowej</b>"
 
-#: ../system-config-printer.glade.h:18
+#: ../system-config-printer.glade.h:23
 msgid "<b>Location</b> (optional)"
 msgstr "<b>Położenie</b> (opcjonalne)"
 
-#: ../system-config-printer.glade.h:19
+#: ../system-config-printer.glade.h:24
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>Inne opcje (zaawansowane)</b>"
 
-#: ../system-config-printer.glade.h:20
+#: ../system-config-printer.glade.h:25
 msgid "<b>Policies</b>"
 msgstr "<b>Polityki</b>"
 
-#: ../system-config-printer.glade.h:21
+#: ../system-config-printer.glade.h:26
 msgid "<b>Printer Name</b>"
 msgstr "<b>Nazwa drukarki</b>"
 
-#: ../system-config-printer.glade.h:22
+#: ../system-config-printer.glade.h:27
 msgid "<b>Printers to be members of this Class</b>"
 msgstr "<b>Drukarki będące elementami tej klasy</b>"
 
-#: ../system-config-printer.glade.h:23
+#: ../system-config-printer.glade.h:28
 msgid "<b>SMB Printer</b>"
 msgstr "<b>Drukarka SMB</b>"
 
-#: ../system-config-printer.glade.h:24
+#: ../system-config-printer.glade.h:29
 msgid "<b>Select Connection</b>"
 msgstr "<b>Wybierz połączenie</b>"
 
-#: ../system-config-printer.glade.h:25
+#: ../system-config-printer.glade.h:30
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>Ustawienia portu szeregowego</b>"
 
-#: ../system-config-printer.glade.h:26
+#: ../system-config-printer.glade.h:31
 msgid "<b>Settings</b>"
 msgstr "<b>Ustawienia</b>"
 
-#: ../system-config-printer.glade.h:27
+#: ../system-config-printer.glade.h:32
 msgid "<b>State</b>"
 msgstr "<b>Stan</b>"
 
-#: ../system-config-printer.glade.h:28
-msgid "<b>Tests and Maintenance</b>"
-msgstr ""
-
-#: ../system-config-printer.glade.h:29
+#: ../system-config-printer.glade.h:33
 msgid "<b>Text Options</b>"
 msgstr "<b>Opcje tekstu</b>"
 
-#: ../system-config-printer.glade.h:30
+#: ../system-config-printer.glade.h:34
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -564,11 +584,11 @@ msgstr ""
 "<i>Nie opublikowano\n"
 "Zobacz ustawienia serwera</i>"
 
-#: ../system-config-printer.glade.h:32
+#: ../system-config-printer.glade.h:36
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[gruparobocza/]serwer[:port]/drukarka</i>"
 
-#: ../system-config-printer.glade.h:33
+#: ../system-config-printer.glade.h:37
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
 "\n"
@@ -578,7 +598,7 @@ msgstr ""
 "\n"
 "Wszystkie wykonane zmiany zostaną utracone, jeśli ich nie zastosujesz."
 
-#: ../system-config-printer.glade.h:36 ../applet.glade.h:1
+#: ../system-config-printer.glade.h:40 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
 "\n"
@@ -586,93 +606,100 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Wymagane jest hasło</span>\n"
 "\n"
 
-#: ../system-config-printer.glade.h:39
+#: ../system-config-printer.glade.h:43
+msgid "About"
+msgstr "Informacje o"
+
+#: ../system-config-printer.glade.h:44
+msgid "About System-Config-Printer"
+msgstr "Informacje o System-Config-Printer"
+
+#: ../system-config-printer.glade.h:45
 msgid "Accepting jobs"
 msgstr "Akceptowanie zadań"
 
-#: ../system-config-printer.glade.h:40
-#, fuzzy
-msgid "Access Control"
+#: ../system-config-printer.glade.h:46
+msgid "Access control"
 msgstr "Kontrola dostępu"
 
-#: ../system-config-printer.glade.h:41
+#: ../system-config-printer.glade.h:47
 msgid "Add or Remove Members"
 msgstr "Dodaj lub usuń elementy"
 
-#: ../system-config-printer.glade.h:42
+#: ../system-config-printer.glade.h:48
 msgid "Allow printing for everyone except these users:"
 msgstr "Pozwól drukować wszystkim, oprócz tych użytkowników:"
 
-#: ../system-config-printer.glade.h:43
-#, fuzzy
+#: ../system-config-printer.glade.h:49
 msgid "Allow printing from the Internet"
-msgstr "Pozwól drukować wszystkim, oprócz tych użytkowników:"
+msgstr "Pozwól drukować z Internetu"
 
-#: ../system-config-printer.glade.h:44
+#: ../system-config-printer.glade.h:50
 msgid "Allow remote administration"
 msgstr "Pozwól na zdalną administrację"
 
-#: ../system-config-printer.glade.h:45
+#: ../system-config-printer.glade.h:51
 msgid "Allow users to cancel any job (not just their own)"
 msgstr ""
 "Pozwól użytkownikom na anulowanie każdego zadania (nie tylko ich własnego)"
 
-#: ../system-config-printer.glade.h:46
-#, fuzzy
-msgid "Authentication required"
-msgstr "<b>Uwierzytelnianie</b>"
+#: ../system-config-printer.glade.h:52
+msgid "Apply"
+msgstr "Zastosuj"
 
-#: ../system-config-printer.glade.h:47
+#: ../system-config-printer.glade.h:53
+msgid "Authors"
+msgstr "Autorzy"
+
+#: ../system-config-printer.glade.h:54
 msgid "Baud Rate"
 msgstr "Prędkość w baudach"
 
-#: ../system-config-printer.glade.h:48
+#: ../system-config-printer.glade.h:55
 msgid "Bottom margin:"
 msgstr "Dolny margines:"
 
-#: ../system-config-printer.glade.h:49
+#: ../system-config-printer.glade.h:56
 msgid "Brightness:"
 msgstr "Jasność:"
 
-#: ../system-config-printer.glade.h:50
-msgid "Browse..."
-msgstr ""
-
-#: ../system-config-printer.glade.h:51
+#: ../system-config-printer.glade.h:57
 msgid "CUPS server:"
 msgstr "Serwer CUPS:"
 
-#: ../system-config-printer.glade.h:52
+#: ../system-config-printer.glade.h:58
+msgid "Change PPD"
+msgstr "Zmień PPD"
+
+#: ../system-config-printer.glade.h:59
 msgid "Change..."
 msgstr "Zmień..."
 
-#: ../system-config-printer.glade.h:53
+#: ../system-config-printer.glade.h:60
 msgid "Characters per inch:"
 msgstr "Znaków na cal:"
 
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:55
-msgid "Clean Print Heads"
-msgstr ""
+#: ../system-config-printer.glade.h:61
+msgid "Class Members"
+msgstr "Elementy klasy"
 
-#: ../system-config-printer.glade.h:56
+#: ../system-config-printer.glade.h:62
 msgid "Columns:"
 msgstr "Kolumny:"
 
-#: ../system-config-printer.glade.h:57
-#, fuzzy
-msgid "Comments..."
-msgstr "Komentarz"
+#: ../system-config-printer.glade.h:63
+msgid "Comments: "
+msgstr "Komentarze: "
 
-#: ../system-config-printer.glade.h:58
+#: ../system-config-printer.glade.h:64
 msgid "Connect to CUPS server"
 msgstr "Połącz się do serwera CUPS"
 
-#: ../system-config-printer.glade.h:59
+#: ../system-config-printer.glade.h:65
 msgid "Connecting"
 msgstr "Łączenie"
 
-#: ../system-config-printer.glade.h:61
+#: ../system-config-printer.glade.h:67
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -681,23 +708,23 @@ msgstr ""
 "Łączenie się do serwera:\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:64
+#: ../system-config-printer.glade.h:70
 msgid "Copies:"
 msgstr "Kopie:"
 
-#: ../system-config-printer.glade.h:65
+#: ../system-config-printer.glade.h:71
 msgid "Copy Printer"
 msgstr "Skopiuj drukarkę"
 
-#: ../system-config-printer.glade.h:66
-msgid "Copyright 2006, 2007 Red Hat, Inc."
-msgstr "Copyright 2006, 2007 Red Hat, Inc."
+#: ../system-config-printer.glade.h:72
+msgid "Copyright"
+msgstr "Copyright"
 
-#: ../system-config-printer.glade.h:67
+#: ../system-config-printer.glade.h:73
 msgid "Data Bits"
 msgstr "Bity danych"
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:74
 msgid ""
 "Default\n"
 "1200\n"
@@ -719,7 +746,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../system-config-printer.glade.h:77
+#: ../system-config-printer.glade.h:83
 msgid ""
 "Default\n"
 "8\n"
@@ -729,7 +756,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../system-config-printer.glade.h:80
+#: ../system-config-printer.glade.h:86
 msgid ""
 "Default\n"
 "None\n"
@@ -741,7 +768,7 @@ msgstr ""
 "Nieparzysta\n"
 "Parzysta"
 
-#: ../system-config-printer.glade.h:84
+#: ../system-config-printer.glade.h:90
 msgid ""
 "Default\n"
 "None\n"
@@ -755,113 +782,111 @@ msgstr ""
 "RTS/CTS (sprzętowa)\n"
 "DTR/DSR (sprzętowa)"
 
-#: ../system-config-printer.glade.h:89
-#, fuzzy
-msgid "Default Printer:"
-msgstr "Domyślna drukarka"
-
-#: ../system-config-printer.glade.h:90
+#: ../system-config-printer.glade.h:95
 msgid "Deny printing for everyone except these users:"
 msgstr "Zabroń drukować wszystkim, oprócz tych użytkowników:"
 
-#: ../system-config-printer.glade.h:91
+#: ../system-config-printer.glade.h:96
 msgid "Description:"
 msgstr "Opis:"
 
-#: ../system-config-printer.glade.h:92
+#: ../system-config-printer.glade.h:97
+msgid "Device"
+msgstr "Urządzenie"
+
+#: ../system-config-printer.glade.h:98
 msgid "Device URI"
 msgstr "URI urządzenia"
 
-#: ../system-config-printer.glade.h:93
+#: ../system-config-printer.glade.h:99
 msgid "Device URI:"
 msgstr "URI urządzenia:"
 
-#: ../system-config-printer.glade.h:94
+#: ../system-config-printer.glade.h:100
 msgid "Device description."
 msgstr "Opis urządzenia:"
 
-#: ../system-config-printer.glade.h:95
+#: ../system-config-printer.glade.h:101
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:96
+#: ../system-config-printer.glade.h:102
+msgid "Driver"
+msgstr "Sterownik"
+
+#: ../system-config-printer.glade.h:103
 msgid "Empty"
 msgstr "Puste"
 
-#: ../system-config-printer.glade.h:97
+#: ../system-config-printer.glade.h:104
 msgid "Enabled"
 msgstr "Włączona"
 
-#: ../system-config-printer.glade.h:98
+#: ../system-config-printer.glade.h:105
 msgid "Ending Banner:"
 msgstr "Kończenie bannera:"
 
-#: ../system-config-printer.glade.h:99
+#: ../system-config-printer.glade.h:106
 msgid "Error Policy: \t"
 msgstr "Błąd polityki: \t"
 
-#: ../system-config-printer.glade.h:100
+#: ../system-config-printer.glade.h:107
 msgid "Finishings:"
 msgstr "Kończenie:"
 
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:108
 msgid "Flow Control"
 msgstr "Kontrola przepływu"
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:109
 msgid "Gamma:"
 msgstr "Gamma:"
 
-#: ../system-config-printer.glade.h:103
+#: ../system-config-printer.glade.h:110
 msgid "Goto Server"
 msgstr "Przejdź do serwera"
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:111
 msgid "Hold until:"
 msgstr "Wstrzymaj do:"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:112
 msgid "Hostname"
 msgstr "Nazwa komputera"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:113
 msgid "Hue adjustment:"
 msgstr "Dostosowanie odcienia:"
 
-#: ../system-config-printer.glade.h:107
+#: ../system-config-printer.glade.h:114
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Opis czytelny dla człowieka, taki jak \"HP LaserJet z dupleksem\""
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:115
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "Położenie czytelne dla człowieka, takie jak \"Laboratorium 1\""
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:116
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:110
-#, fuzzy
-msgid "Installed Options"
-msgstr "Opcje instalacyjne"
-
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:118
 msgid "Job Options"
 msgstr "Opcje zadania"
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:119
 msgid "Job priority:"
 msgstr "Priorytet zadania:"
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:120
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:121
 msgid "Left margin:"
 msgstr "Lewy margines"
 
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:122
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -881,60 +906,59 @@ msgstr ""
 "Od dołu do góry, od lewej do prawej\n"
 "Od dołu do góry, od prawej do lewej"
 
-#: ../system-config-printer.glade.h:123
+#: ../system-config-printer.glade.h:130
 msgid "Lines per inch:"
 msgstr "Wierszy na cal:"
 
-#: ../system-config-printer.glade.h:124
+#: ../system-config-printer.glade.h:131
 msgid "Location:"
 msgstr "Położenie:"
 
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:126
-#, fuzzy
-msgid "Make Default"
-msgstr "U_staw jako domyślną"
+#: ../system-config-printer.glade.h:132
+msgid "Make Default Printer"
+msgstr "Uczyń domyślną drukarką"
 
-#: ../system-config-printer.glade.h:127
+#: ../system-config-printer.glade.h:133
 msgid "Make and Model:"
 msgstr "Producent i model:"
 
-#: ../system-config-printer.glade.h:128
-#, fuzzy
-msgid ""
-"May contain any printable characters except \"/\", \"#\", and space.\n"
-"Name must be unique on the local machine!"
+#: ../system-config-printer.glade.h:134
+msgid "May contain any printable characters except \"/\", \"#\", and space"
 msgstr "Może zawierać każdy drukowalny znak, oprócz  \"/\", \"#\" i spacji"
 
-#: ../system-config-printer.glade.h:130
+#: ../system-config-printer.glade.h:135
 msgid "Media:"
 msgstr "Nośnik:"
 
-#: ../system-config-printer.glade.h:131
+#: ../system-config-printer.glade.h:136
 msgid "Members"
 msgstr "Elementy"
 
-#: ../system-config-printer.glade.h:132
+#: ../system-config-printer.glade.h:137
 msgid "Mirror"
 msgstr "Lustro"
 
-#: ../system-config-printer.glade.h:133
+#: ../system-config-printer.glade.h:138
 msgid "More"
 msgstr "Więcej"
 
-#: ../system-config-printer.glade.h:134
+#: ../system-config-printer.glade.h:139
+msgid "Name"
+msgstr "Nazwa"
+
+#: ../system-config-printer.glade.h:140
 msgid "New Clas_s"
 msgstr "Nowa kla_sa"
 
-#: ../system-config-printer.glade.h:137
+#: ../system-config-printer.glade.h:143
 msgid "New _Printer"
 msgstr "Nowa _drukarka"
 
-#: ../system-config-printer.glade.h:138
+#: ../system-config-printer.glade.h:144
 msgid "New name for the printer"
 msgstr "Nowa nazwa dla drukarki"
 
-#: ../system-config-printer.glade.h:139
+#: ../system-config-printer.glade.h:145
 msgid ""
 "None\n"
 "Staple\n"
@@ -966,7 +990,7 @@ msgid ""
 "Bind (bottom)"
 msgstr ""
 
-#: ../system-config-printer.glade.h:167
+#: ../system-config-printer.glade.h:173
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -976,43 +1000,47 @@ msgstr ""
 "Dwustronna (długa krawędź)\n"
 "Dwustronna (krótka krawędź)"
 
-#: ../system-config-printer.glade.h:170
+#: ../system-config-printer.glade.h:176
 msgid "Operation Policy:"
 msgstr "Polityka operacji:"
 
-#: ../system-config-printer.glade.h:171
+#: ../system-config-printer.glade.h:177
 msgid "Orientation:"
 msgstr "Ułożenie papieru:"
 
-#: ../system-config-printer.glade.h:172
+#: ../system-config-printer.glade.h:178
+msgid "PPD"
+msgstr "PPD"
+
+#: ../system-config-printer.glade.h:179
 msgid "Pages per side layout:"
 msgstr "Stron na układ kartek:"
 
-#: ../system-config-printer.glade.h:173
+#: ../system-config-printer.glade.h:180
 msgid "Pages per side:"
 msgstr "Stron na kartkę:"
 
-#: ../system-config-printer.glade.h:174
+#: ../system-config-printer.glade.h:181
 msgid "Parity"
 msgstr "Równorzędność"
 
-#: ../system-config-printer.glade.h:175 ../applet.glade.h:5
+#: ../system-config-printer.glade.h:182 ../applet.glade.h:5
 msgid "Password:"
 msgstr "Hasło:"
 
-#: ../system-config-printer.glade.h:176
+#: ../system-config-printer.glade.h:183
 msgid "Please Wait"
 msgstr "Proszę czekać"
 
-#: ../system-config-printer.glade.h:177
+#: ../system-config-printer.glade.h:184
 msgid "Policies"
 msgstr "Polityki"
 
-#: ../system-config-printer.glade.h:178
+#: ../system-config-printer.glade.h:185
 msgid "Port number"
 msgstr "Numer portu"
 
-#: ../system-config-printer.glade.h:179
+#: ../system-config-printer.glade.h:186
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1024,7 +1052,7 @@ msgstr ""
 "Odwrotny pejzaż (270°)\n"
 "Odwrotny portret (180°)"
 
-#: ../system-config-printer.glade.h:183
+#: ../system-config-printer.glade.h:190
 msgid ""
 "PostScript Printer Description (PPD) files can often found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1034,111 +1062,99 @@ msgstr ""
 "ze sterownikami, który dostałeś z drukarką. Dla drukarek PostScriptowych "
 "często są częścią sterownika dla Windows<sup>®</sup>."
 
-#: ../system-config-printer.glade.h:184
+#: ../system-config-printer.glade.h:191
 msgid "Pretty print"
 msgstr "Ładny wydruk"
 
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:186
-#, fuzzy
-msgid "Print Self-Test Page"
-msgstr "Wydrukuj stronę próbną"
-
-#: ../system-config-printer.glade.h:190
+#: ../system-config-printer.glade.h:195
 msgid "Printer State:"
 msgstr "Stan drukarki:"
 
-#: ../system-config-printer.glade.h:191
+#: ../system-config-printer.glade.h:196
 msgid "Printername"
 msgstr "Nazwa drukarki"
 
-#: ../system-config-printer.glade.h:192
+#: ../system-config-printer.glade.h:197
 msgid "Probe"
 msgstr "Wykryj"
 
-#: ../system-config-printer.glade.h:193
-#, fuzzy
-msgid "Provide PPD File"
+#: ../system-config-printer.glade.h:198
+msgid "Provide PPD file"
 msgstr "Podaj plik PPD"
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:199
 msgid "Require encryption"
 msgstr "Wymaga szyfrowania"
 
-#: ../system-config-printer.glade.h:195
+#: ../system-config-printer.glade.h:200
 msgid "Reset"
 msgstr "Przywróć"
 
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:201
 msgid "Reset to system default"
 msgstr "Przywróć do domyślnych systemu"
 
-#: ../system-config-printer.glade.h:197
+#: ../system-config-printer.glade.h:202
 msgid "Right margin:"
 msgstr "Prawy margines:"
 
-#: ../system-config-printer.glade.h:198
+#: ../system-config-printer.glade.h:203
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:204
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:200
-msgid "SMB Browser"
-msgstr ""
-
-#: ../system-config-printer.glade.h:201
+#: ../system-config-printer.glade.h:205
 msgid "Saturation:"
 msgstr "Nasycenie:"
 
-#: ../system-config-printer.glade.h:202
+#: ../system-config-printer.glade.h:206
 msgid "Save debugging information for troubleshooting"
 msgstr "Zapisz informacje debugowania do naprawiania problemów"
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:207
 msgid "Scale to fit"
 msgstr "Przeskaluj, aby pasowało"
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:208
 msgid "Scaling:"
 msgstr "Skalowanie:"
 
-#: ../system-config-printer.glade.h:205
+#: ../system-config-printer.glade.h:209
 msgid "Select A File"
 msgstr "Wybierz plik"
 
-#: ../system-config-printer.glade.h:206
-#, fuzzy
-msgid "Select Printer from Database"
+#: ../system-config-printer.glade.h:210
+msgid "Select Printer from database"
 msgstr "Wybierz drukarkę z bazy danych"
 
-#: ../system-config-printer.glade.h:207
+#: ../system-config-printer.glade.h:211
 msgid "Serial"
 msgstr "Szeregowo"
 
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.glade.h:212
 msgid "Settings"
 msgstr "Ustawienia"
 
-#: ../system-config-printer.glade.h:209
+#: ../system-config-printer.glade.h:213
 msgid "Share published printers connected to this system"
 msgstr "Współdziel opublikowane drukarki połączone do tego systemu"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:214
 msgid "Shared"
 msgstr "Współdzielona"
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:215
 msgid "Show printers shared by other systems"
 msgstr "Wyświetl drukarki współdzielone przez inne systemy"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:216
 msgid "Sides:"
 msgstr "Kartek:"
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:217
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1148,15 +1164,20 @@ msgstr ""
 "serwera wydruku dostaną te opcje, jeśli nie będą już ustawione przez "
 "aplikację."
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:218
 msgid "Starting Banner:"
 msgstr "Uruchamianie bannera:"
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:219
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:221
+#, no-c-format
+msgid "System-Config-Printer %s"
+msgstr "System-Config-Printer %s"
+
+#: ../system-config-printer.glade.h:222
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1170,13 +1191,7 @@ msgstr ""
 "dostarczone przez producentów dostarczają lepszy dostęp do określonych "
 "funkcji drukarki."
 
-#: ../system-config-printer.glade.h:217
-msgid ""
-"This driver supports additional hardware that may be installed in the "
-"printer."
-msgstr ""
-
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:223
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1185,23 +1200,6 @@ msgstr ""
 "Zostało to zrobione przez przyjęcie, że opcje z tą samą nazwą mają te same "
 "znaczenie. Ustawienia opcji, które nie są obecne w nowym PPD zostaną "
 "utracone, a opcje obecne tylko w nowym PPD zostaną ustawione na domyślne."
-
-#: ../system-config-printer.glade.h:219
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
-"Ave, Cambridge, MA 02139, USA."
-msgstr ""
 
 #: ../system-config-printer.glade.h:224
 msgid ""
@@ -1283,11 +1281,6 @@ msgstr "punkty"
 #: ../system-config-printer.glade.h:242
 msgid "points (72 points per inch)"
 msgstr "punkty (72 punkty na cal)"
-
-#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:244
-msgid "translator-credits"
-msgstr ""
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1571,73 +1564,3 @@ msgstr "Zarządzanie zadaniami wydruku"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Wybór domyślnej drukarki"
-
-#~ msgid "Default printer is %s"
-#~ msgstr "Domyślną drukarką jest %s"
-
-#~ msgid "Going to create a new class %s."
-#~ msgstr "Za chwilę zostanie utworzona nowa klasa %s."
-
-#~ msgid ""
-#~ "Going to create a new printer %s at\n"
-#~ "%s.\n"
-#~ msgstr ""
-#~ "Za chwilę zostanie utworzona nowa drukarka %s na\n"
-#~ "%s.\n"
-
-#~ msgid " PPD "
-#~ msgstr " PPD "
-
-#~ msgid "<b>Comment about the Driver</b>"
-#~ msgstr "<b>Komentarze na temat sterownika</b>"
-
-#~ msgid "<b>Comment about the Printer</b>"
-#~ msgstr "<b>Komentarze na temat drukarki</b>"
-
-#~ msgid "<b>Default Printer</b>"
-#~ msgstr "<b>Domyślna drukarka</b>"
-
-#~ msgid "<b>Information about the PPD</b>"
-#~ msgstr "<b>Informacje o PPD</b>"
-
-#~ msgid "About"
-#~ msgstr "Informacje o"
-
-#~ msgid "About System-Config-Printer"
-#~ msgstr "Informacje o System-Config-Printer"
-
-#~ msgid "Apply"
-#~ msgstr "Zastosuj"
-
-#~ msgid "Authors"
-#~ msgstr "Autorzy"
-
-#~ msgid "Change PPD"
-#~ msgstr "Zmień PPD"
-
-#~ msgid "Class Members"
-#~ msgstr "Elementy klasy"
-
-#~ msgid "Comments: "
-#~ msgstr "Komentarze: "
-
-#~ msgid "Copyright"
-#~ msgstr "Copyright"
-
-#~ msgid "Device"
-#~ msgstr "Urządzenie"
-
-#~ msgid "Driver"
-#~ msgstr "Sterownik"
-
-#~ msgid "Make Default Printer"
-#~ msgstr "Uczyń domyślną drukarką"
-
-#~ msgid "Name"
-#~ msgstr "Nazwa"
-
-#~ msgid "PPD"
-#~ msgstr "PPD"
-
-#~ msgid "System-Config-Printer %s"
-#~ msgstr "System-Config-Printer %s"
