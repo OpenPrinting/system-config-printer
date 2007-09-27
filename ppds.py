@@ -193,6 +193,14 @@ class PPDs:
             for ppdname in to_remove:
                 del self.ppds[ppdname]
 
+        # CUPS sets the 'raw' model's ppd-make-and-model to 'Raw Queue'
+        # which unfortunately then appears as manufacturer Raw and
+        # model Queue.  Use 'Generic' for this model.
+        if self.ppds.has_key ('raw'):
+            makemodel = self.ppds['raw']['ppd-make-and-model']
+            if not makemodel.startswith ("Generic "):
+                self.ppds['raw']['ppd-make-and-model'] = "Generic " + makemodel
+
     def getMakes (self):
         """Returns a sorted list of strings."""
         self._init_makes ()
