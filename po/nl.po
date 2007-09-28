@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-09-18 16:56+0100\n"
-"PO-Revision-Date: 2007-07-01 20:21+0200\n"
+"POT-Creation-Date: 2007-09-27 10:06-0700\n"
+"PO-Revision-Date: 2007-09-27 21:51+0200\n"
 "Last-Translator: Peter van Egdom <p.van.egdom@gmail.com>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
@@ -40,23 +40,24 @@ msgstr "Gestopt"
 msgid "Unknown"
 msgstr "Onbekend"
 
-#: ../my-default-printer.py:128 ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:125 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
 msgstr "Standaardprinter"
 
-#: ../my-default-printer.py:132 ../my-default-printer.py:163
+#: ../my-default-printer.py:129 ../my-default-printer.py:160
 msgid "_Use System Default"
 msgstr "Systeemstandaard _gebruiken"
 
-#: ../my-default-printer.py:133
+#: ../my-default-printer.py:130
 msgid "_Set Default"
 msgstr "Standaard _instellen"
 
-#: ../my-default-printer.py:143 ../applet.py:184 ../applet.py:224
+#: ../my-default-printer.py:140 ../system-config-printer.glade.h:193
+#: ../applet.py:184 ../applet.py:224
 msgid "Printer"
 msgstr "Printer"
 
-#: ../my-default-printer.py:147
+#: ../my-default-printer.py:144
 msgid "Location"
 msgstr "Locatie"
 
@@ -64,70 +65,95 @@ msgstr "Locatie"
 msgid "Conflicts with:"
 msgstr "Conflicteert met:"
 
-#: ../system-config-printer.py:340
+#: ../system-config-printer.py:248
+msgid "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "Copyright 2006, 2007 Red Hat, Inc."
+
+#: ../system-config-printer.py:284
 msgid "Server Settings"
 msgstr "Server-instellingen"
 
-#: ../system-config-printer.py:346 ../system-config-printer.py:348
+#: ../system-config-printer.py:293 ../system-config-printer.py:295
 msgid "Members of this class"
 msgstr "Leden van deze klasse"
 
-#: ../system-config-printer.py:347 ../system-config-printer.py:349
+#: ../system-config-printer.py:294 ../system-config-printer.py:296
 msgid "Others"
 msgstr "Anderen"
 
-#: ../system-config-printer.py:350
+#: ../system-config-printer.py:297
 msgid "Devices"
 msgstr "Apparaten"
 
-#: ../system-config-printer.py:351
+#: ../system-config-printer.py:298
 msgid "Makes"
 msgstr "Merken"
 
-#: ../system-config-printer.py:352
+#: ../system-config-printer.py:299
 msgid "Models"
 msgstr "Modellen"
 
-#: ../system-config-printer.py:353
+#: ../system-config-printer.py:300
 msgid "Drivers"
 msgstr "Stuurprogramma's"
 
-#: ../system-config-printer.py:354
+#: ../system-config-printer.py:301
 msgid "Users"
 msgstr "Gebruikers"
 
-#: ../system-config-printer.py:534
+#: ../system-config-printer.py:312
+msgid "PostScript Printer Description (*.ppd[.gz])"
+msgstr "PostScript Printer Description (*.ppd[.gz])"
+
+#. SMB list columns
+#: ../system-config-printer.py:332
+msgid "Share"
+msgstr "Delen"
+
+#: ../system-config-printer.py:338
+msgid "Comment"
+msgstr "Opmerking"
+
+#: ../system-config-printer.py:557 ../system-config-printer.py:2438
+msgid "Searching"
+msgstr "Bezig met zoeken"
+
+#: ../system-config-printer.py:558
+msgid "Searching for drivers"
+msgstr "Zoeken naar stuurprogramma's"
+
+#: ../system-config-printer.py:601
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Printerconfiguratie - %s"
 
-#: ../system-config-printer.py:537
+#: ../system-config-printer.py:604
 #, python-format
 msgid "Connected to %s"
 msgstr "Verbonden met %s"
 
-#: ../system-config-printer.py:539 ../system-config-printer.py:1213
+#: ../system-config-printer.py:606 ../system-config-printer.py:1275
 msgid "Not connected"
 msgstr "Niet verbonden"
 
 # aanpassen hier iets beter dan bewerken.
-#: ../system-config-printer.py:638
+#: ../system-config-printer.py:702
 msgid "Local Printers"
 msgstr "Lokale printers"
 
-#: ../system-config-printer.py:639
+#: ../system-config-printer.py:703
 msgid "Local Classes"
 msgstr "Lokale klassen"
 
-#: ../system-config-printer.py:640
+#: ../system-config-printer.py:704
 msgid "Remote Printers"
 msgstr "Printers op afstand"
 
-#: ../system-config-printer.py:641
+#: ../system-config-printer.py:705
 msgid "Remote Classes"
 msgstr "Klassen op afstand"
 
-#: ../system-config-printer.py:743
+#: ../system-config-printer.py:810
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -136,15 +162,15 @@ msgstr ""
 "Verbinden met server:\n"
 "%s"
 
-#: ../system-config-printer.py:1142
+#: ../system-config-printer.py:1204 ../system-config-printer.glade.h:117
 msgid "Installable Options"
 msgstr "Installeerbare opties"
 
-#: ../system-config-printer.py:1143 ../system-config-printer.glade.h:189
+#: ../system-config-printer.py:1205 ../system-config-printer.glade.h:194
 msgid "Printer Options"
 msgstr "Printeropties"
 
-#: ../system-config-printer.py:1152
+#: ../system-config-printer.py:1214
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -154,26 +180,26 @@ msgstr ""
 "Veranderingen kunnen alleen worden toegepast\n"
 "nadat deze conflicten zijn opgelost."
 
-#: ../system-config-printer.py:1181 ../system-config-printer.py:1197
+#: ../system-config-printer.py:1243 ../system-config-printer.py:1259
 #: ../applet.py:333
 msgid "Not authorized"
 msgstr "Niet gemachtigd"
 
-#: ../system-config-printer.py:1182 ../applet.py:334
+#: ../system-config-printer.py:1244 ../applet.py:334
 msgid "The password may be incorrect."
 msgstr "Het wachtwoord kan onjuist zijn."
 
-#: ../system-config-printer.py:1185 ../system-config-printer.py:1218
+#: ../system-config-printer.py:1247 ../system-config-printer.py:1280
 #: ../applet.py:337
 msgid "CUPS server error"
 msgstr "CUPS-server fout"
 
-#: ../system-config-printer.py:1186 ../applet.py:338
+#: ../system-config-printer.py:1248 ../applet.py:338
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Er was een fout tijdens de CUPS-actie: '%s'."
 
-#: ../system-config-printer.py:1198
+#: ../system-config-printer.py:1260
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
@@ -181,58 +207,58 @@ msgstr ""
 "Het wachtwoord kan onjuist zijn, of de server kan zo geconfigureerd zijn dat "
 "beheer op afstand niet wordt toegestaan."
 
-#: ../system-config-printer.py:1203
+#: ../system-config-printer.py:1265
 msgid "Bad request"
 msgstr "Onjuiste aanvraag"
 
-#: ../system-config-printer.py:1205
+#: ../system-config-printer.py:1267
 msgid "Not found"
 msgstr "Niet gevonden"
 
-#: ../system-config-printer.py:1207
+#: ../system-config-printer.py:1269
 msgid "Request timeout"
 msgstr "Aanvraag verlopen"
 
-#: ../system-config-printer.py:1209
+#: ../system-config-printer.py:1271
 msgid "Upgrade required"
 msgstr "Upgrade vereist"
 
-#: ../system-config-printer.py:1211
+#: ../system-config-printer.py:1273
 msgid "Server error"
 msgstr "Server-fout"
 
-#: ../system-config-printer.py:1215
+#: ../system-config-printer.py:1277
 #, python-format
 msgid "status %d"
 msgstr "status %d"
 
-#: ../system-config-printer.py:1219
+#: ../system-config-printer.py:1281
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "Er was een HTTP-fout: %s."
 
-#: ../system-config-printer.py:1243
+#: ../system-config-printer.py:1305
 msgid "This will delete this class!"
 msgstr "Dit zal deze klasse verwijderen!"
 
-#: ../system-config-printer.py:1244
+#: ../system-config-printer.py:1306
 msgid "Proceed anyway?"
 msgstr "Toch doorgaan?"
 
-#: ../system-config-printer.py:1448 ../system-config-printer.py:1481
+#: ../system-config-printer.py:1510
 msgid "Submitted"
 msgstr "Ingediend"
 
-#: ../system-config-printer.py:1449
+#: ../system-config-printer.py:1511
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testpagina ingediend als opdracht %d"
 
-#: ../system-config-printer.py:1459 ../system-config-printer.py:1491
+#: ../system-config-printer.py:1521
 msgid "Not possible"
 msgstr "Niet mogelijk"
 
-#: ../system-config-printer.py:1460
+#: ../system-config-printer.py:1522
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -240,130 +266,98 @@ msgstr ""
 "De andere server heeft de printopdracht niet geaccepteerd, waarschijnlijk "
 "omdat de printer niet gedeeld is."
 
-#: ../system-config-printer.py:1482
-#, fuzzy, python-format
-msgid "Maintenance command submitted as job %d"
-msgstr "Testpagina ingediend als opdracht %d"
-
-#: ../system-config-printer.py:1492
-#, fuzzy
-msgid ""
-"THe remote server did not accept the print job, most likely because the "
-"printer is not shared."
-msgstr ""
-"De andere server heeft de printopdracht niet geaccepteerd, waarschijnlijk "
-"omdat de printer niet gedeeld is."
-
-#: ../system-config-printer.py:1566
+#: ../system-config-printer.py:1590
 msgid "Error"
 msgstr "Fout"
 
-#: ../system-config-printer.py:1567
+#: ../system-config-printer.py:1591
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Er was een probleem bij het verbinden met de CUPS-server."
 
-#: ../system-config-printer.py:1620
+#: ../system-config-printer.py:1658
 msgid "This is the default printer"
 msgstr "Dit is de standaardprinter"
 
-#: ../system-config-printer.py:1624
+#: ../system-config-printer.py:1660
+#, python-format
+msgid "Default printer is %s"
+msgstr "Standaardprinter is %s"
+
+#: ../system-config-printer.py:1663
 msgid "No default printer set."
 msgstr "Geen standaardprinter ingesteld."
 
-#: ../system-config-printer.py:1728
+#: ../system-config-printer.py:1749
 msgid "Cancel Tests"
 msgstr "Tests annuleren"
 
-#. Not more than 25 characters
-#: ../system-config-printer.py:1732 ../system-config-printer.glade.h:188
+#: ../system-config-printer.py:1753 ../system-config-printer.glade.h:192
 msgid "Print Test Page"
 msgstr "Testpagina afdrukken"
 
-#: ../system-config-printer.py:1962
+#: ../system-config-printer.py:2008
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "Printer %s echt verwijderen?"
 
-#: ../system-config-printer.py:1964
+#: ../system-config-printer.py:2010
 #, python-format
 msgid "Really delete class %s?"
 msgstr "Klasse %s echt verwijderen?"
 
-#. SMB list columns
-#: ../system-config-printer.py:2189
-msgid "Share"
-msgstr "Delen"
-
-#: ../system-config-printer.py:2195
-msgid "Comment"
-msgstr "Opmerking"
-
-#: ../system-config-printer.py:2207
-msgid "PostScript Printer Description (*.ppd[.gz])"
-msgstr "PostScript Printer Description (*.ppd[.gz])"
-
-#: ../system-config-printer.py:2240 ../system-config-printer.glade.h:136
+#: ../system-config-printer.py:2058 ../system-config-printer.glade.h:142
 msgid "New Printer"
 msgstr "Nieuwe printer"
 
-#: ../system-config-printer.py:2250 ../system-config-printer.glade.h:135
+#: ../system-config-printer.py:2073 ../system-config-printer.glade.h:141
 msgid "New Class"
 msgstr "Nieuwe klasse"
 
-#: ../system-config-printer.py:2255
+#: ../system-config-printer.py:2087
 msgid "Change Device URI"
 msgstr "Apparaat URI veranderen"
 
-#: ../system-config-printer.py:2264
+#: ../system-config-printer.py:2099
 msgid "Change Driver"
 msgstr "Stuurprogramma veranderen"
 
-#: ../system-config-printer.py:2363 ../system-config-printer.py:2682
-msgid "Searching"
-msgstr ""
-
-#: ../system-config-printer.py:2364
-msgid "Searching for drivers"
-msgstr ""
-
-#: ../system-config-printer.py:2683
-#, fuzzy
+#: ../system-config-printer.py:2439
 msgid "Searching for printers"
-msgstr "Nieuwe naam voor de printer"
+msgstr "Zoeken naar printers"
 
-#: ../system-config-printer.py:2896
+#: ../system-config-printer.py:2657
 msgid "Other"
 msgstr "Andere"
 
-#: ../system-config-printer.py:2898
+#: ../system-config-printer.py:2659
 msgid " (Current)"
 msgstr " (Huidige)"
 
-#: ../system-config-printer.py:3094
+#: ../system-config-printer.py:2858
 msgid "Verified"
 msgstr "Gecontroleerd"
 
-#: ../system-config-printer.py:3095
+#: ../system-config-printer.py:2859
 msgid "This print share is accessible."
 msgstr "Deze gedeelde printer is toegankelijk."
 
-#: ../system-config-printer.py:3102
+#: ../system-config-printer.py:2866
 msgid "Inaccessible"
 msgstr "Ontoegankelijk"
 
-#: ../system-config-printer.py:3103
+#: ../system-config-printer.py:2867
 msgid "This print share is not accessible."
 msgstr "Deze gedeelde printer is niet toegankelijk."
 
-#: ../system-config-printer.py:3123
+#: ../system-config-printer.py:2887
 msgid "A printer connected to the parallel port."
 msgstr "Een printer verbonden met de parallelle poort."
 
-#: ../system-config-printer.py:3125
+#: ../system-config-printer.py:2889
 msgid "A printer connected to a USB port."
 msgstr "Een printer verbonden met een USB-poort."
 
-#: ../system-config-printer.py:3127
+#: ../system-config-printer.py:2891
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -371,7 +365,7 @@ msgstr ""
 "HPLIP-software die een printer aanstuurt, of de printerfunctie van een "
 "multifunctioneel apparaat."
 
-#: ../system-config-printer.py:3130
+#: ../system-config-printer.py:2894
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -379,24 +373,39 @@ msgstr ""
 "HPLIP-software die een fax aanstuurt, of de faxfunctie van een "
 "multifunctioneel apparaat."
 
-#: ../system-config-printer.py:3133
+#: ../system-config-printer.py:2897
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Lokale printer gedetecteerd door de Hardware Abstraction Layer (HAL)."
 
-#: ../system-config-printer.py:3378
+#: ../system-config-printer.py:3130
 msgid " (recommended)"
 msgstr " (aanbevolen)"
 
-#: ../system-config-printer.py:3392
+#: ../system-config-printer.py:3171
 msgid "This PPD is generated by foomatic."
 msgstr "Deze PPD is gegenereerd door foomatic."
 
+#. XXX
+#: ../system-config-printer.py:3212
+#, python-format
+msgid "Going to create a new class %s."
+msgstr "Nieuwe klasse %s wordt aangemaakt."
+
+#: ../system-config-printer.py:3230
+#, python-format
+msgid ""
+"Going to create a new printer %s at\n"
+"%s.\n"
+msgstr ""
+"Nieuwe printer %s wordt aangemaakt op\n"
+"%s.\n"
+
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:3421
+#: ../system-config-printer.py:3254
 msgid "Database error"
 msgstr "Database fout"
 
-#: ../system-config-printer.py:3422
+#: ../system-config-printer.py:3255
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Het '%s' stuurprogramma kan niet worden gebruikt met printer '%s %s'."
@@ -404,7 +413,7 @@ msgstr "Het '%s' stuurprogramma kan niet worden gebruikt met printer '%s %s'."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:3432
+#: ../system-config-printer.py:3265
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
@@ -412,46 +421,38 @@ msgstr ""
 "gebruiken."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:3439
+#: ../system-config-printer.py:3272
 msgid "PPD error"
 msgstr "PPD-fout"
 
-#: ../system-config-printer.py:3441
+#: ../system-config-printer.py:3274
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Niet geslaagd om het PPD-bestand te lezen. Volgende redenen mogelijk:"
 
-#: ../system-config-printer.py:3497 ../system-config-printer.py:3534
-#, fuzzy
-msgid "No Installable Options"
-msgstr "Installeerbare opties"
-
-#: ../system-config-printer.py:3581
-#, fuzzy
+#: ../system-config-printer.py:3316
 msgid "Adding"
-msgstr "Wachtend"
+msgstr "Bezig met toevoegen"
 
-#: ../system-config-printer.py:3582
-#, fuzzy
+#: ../system-config-printer.py:3317
 msgid "Adding printer"
-msgstr "Printers configureren"
+msgstr "Toevoegen van printer"
 
-#: ../system-config-printer.py:3859
-#, fuzzy
+#: ../system-config-printer.py:3591
 msgid "Install driver"
-msgstr "Stuurprogramma zoeken"
+msgstr "Stuurprogramma installeren"
 
-#: ../system-config-printer.py:3860
-#, fuzzy, python-format
+#: ../system-config-printer.py:3592
+#, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Printer '%s' vereist het %s pakket, maar dit pakket is momenteel niet "
-"geïnstalleerd. Installeer dit pakket voordat deze printer wordt gebruikt."
+"geïnstalleerd."
 
-#: ../system-config-printer.py:3867
+#: ../system-config-printer.py:3599
 msgid "Missing driver"
 msgstr "Stuurprogramma ontbreekt"
 
-#: ../system-config-printer.py:3868
+#: ../system-config-printer.py:3600
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -466,6 +467,10 @@ msgid " "
 msgstr " "
 
 #: ../system-config-printer.glade.h:2
+msgid " PPD "
+msgstr " PPD "
+
+#: ../system-config-printer.glade.h:3
 msgid ""
 "1\n"
 "2\n"
@@ -481,98 +486,107 @@ msgstr ""
 "9\n"
 "16"
 
-#: ../system-config-printer.glade.h:8
+#: ../system-config-printer.glade.h:9
+msgid "<b>Authentication</b>"
+msgstr "<b>Authenticatie</b>"
+
+#: ../system-config-printer.glade.h:10
 msgid "<b>Banner</b>"
 msgstr "<b>Banner</b>"
 
-#: ../system-config-printer.glade.h:9
+#: ../system-config-printer.glade.h:11
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>Standaard server-instellingen</b>"
 
-#: ../system-config-printer.glade.h:10
+#: ../system-config-printer.glade.h:12
+msgid "<b>Comment about the Driver</b>"
+msgstr "<b>Commentaar over het stuurprogramma</b>"
+
+#: ../system-config-printer.glade.h:13
+msgid "<b>Comment about the Printer</b>"
+msgstr "<b>Commentaar over de printer</b>"
+
+#: ../system-config-printer.glade.h:14
 msgid "<b>Common Options</b>"
 msgstr "<b>Algemene opties</b>"
 
-#: ../system-config-printer.glade.h:11
+#: ../system-config-printer.glade.h:15
+msgid "<b>Default Printer</b>"
+msgstr "<b>Standaardprinter</b>"
+
+#: ../system-config-printer.glade.h:16
 msgid "<b>Description</b>"
 msgstr "<b>Omschrijving</b>"
 
-#: ../system-config-printer.glade.h:12
+#: ../system-config-printer.glade.h:17
 msgid "<b>Description</b> (optional)"
 msgstr "<b>Omschrijving</b> (optioneel)"
 
-#: ../system-config-printer.glade.h:13
-#, fuzzy
+#: ../system-config-printer.glade.h:18
 msgid "<b>Enter device URI</b>"
-msgstr "Voer apparaat URI in"
+msgstr "<b>Voer apparaat URI in</b>"
 
-#: ../system-config-printer.glade.h:14
+#: ../system-config-printer.glade.h:19
 msgid "<b>Image Options</b>"
 msgstr "<b>Afbeeldingsopties</b>"
 
-#: ../system-config-printer.glade.h:15
-#, fuzzy
-msgid "<b>Installed Options</b>"
-msgstr "<b>Afbeeldingsopties</b>"
+#: ../system-config-printer.glade.h:20
+msgid "<b>Information about the PPD</b>"
+msgstr "<b>Informatie over de PPD</b>"
 
-#: ../system-config-printer.glade.h:16
+#: ../system-config-printer.glade.h:21
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>Locatie van de LPD-netwerkprinter</b>"
 
-#: ../system-config-printer.glade.h:17
+#: ../system-config-printer.glade.h:22
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>Locatie van de netwerkprinter</b>"
 
-#: ../system-config-printer.glade.h:18
+#: ../system-config-printer.glade.h:23
 msgid "<b>Location</b> (optional)"
 msgstr "<b>Locatie</b> (optioneel)"
 
-#: ../system-config-printer.glade.h:19
+#: ../system-config-printer.glade.h:24
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>Andere opties (geavanceerd)</b>"
 
-#: ../system-config-printer.glade.h:20
+#: ../system-config-printer.glade.h:25
 msgid "<b>Policies</b>"
 msgstr "<b>Beleid</b>"
 
-#: ../system-config-printer.glade.h:21
+#: ../system-config-printer.glade.h:26
 msgid "<b>Printer Name</b>"
 msgstr "<b>Printernaam</b>"
 
-#: ../system-config-printer.glade.h:22
+#: ../system-config-printer.glade.h:27
 msgid "<b>Printers to be members of this Class</b>"
 msgstr "<b>Printers die lid moeten worden van deze klasse</b>"
 
-#: ../system-config-printer.glade.h:23
-#, fuzzy
+#: ../system-config-printer.glade.h:28
 msgid "<b>SMB Printer</b>"
-msgstr "<b>Printernaam</b>"
+msgstr "<b>SMB-printer</b>"
 
-#: ../system-config-printer.glade.h:24
+#: ../system-config-printer.glade.h:29
 msgid "<b>Select Connection</b>"
 msgstr "<b>Selecteer verbinding</b>"
 
-#: ../system-config-printer.glade.h:25
+#: ../system-config-printer.glade.h:30
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>Instellingen van de seriële poort</b>"
 
-#: ../system-config-printer.glade.h:26
+#: ../system-config-printer.glade.h:31
 msgid "<b>Settings</b>"
 msgstr "<b>Instellingen</b>"
 
-#: ../system-config-printer.glade.h:27
+#: ../system-config-printer.glade.h:32
 msgid "<b>State</b>"
 msgstr "<b>Status</b>"
 
-#: ../system-config-printer.glade.h:28
-msgid "<b>Tests and Maintenance</b>"
-msgstr ""
-
-#: ../system-config-printer.glade.h:29
+#: ../system-config-printer.glade.h:33
 msgid "<b>Text Options</b>"
 msgstr "<b>Tekstopties</b>"
 
-#: ../system-config-printer.glade.h:30
+#: ../system-config-printer.glade.h:34
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -580,11 +594,11 @@ msgstr ""
 "<i>Niet gepubliceerd\n"
 "Zie server-instellingen</i>"
 
-#: ../system-config-printer.glade.h:32
+#: ../system-config-printer.glade.h:36
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[werkgroep/]server[:poort]/printer</i>"
 
-#: ../system-config-printer.glade.h:33
+#: ../system-config-printer.glade.h:37
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
 "\n"
@@ -595,7 +609,7 @@ msgstr ""
 "Alle veranderingen die u hebt gemaakt zullen verloren gaan tenzij u ze "
 "toepast."
 
-#: ../system-config-printer.glade.h:36 ../applet.glade.h:1
+#: ../system-config-printer.glade.h:40 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
 "\n"
@@ -603,94 +617,101 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Wachtwoord vereist</span>\n"
 "\n"
 
-#: ../system-config-printer.glade.h:39
+#: ../system-config-printer.glade.h:43
+msgid "About"
+msgstr "Over"
+
+#: ../system-config-printer.glade.h:44
+msgid "About System-Config-Printer"
+msgstr "Over System-Config-Printer"
+
+#: ../system-config-printer.glade.h:45
 msgid "Accepting jobs"
 msgstr "Opdrachten worden geaccepteerd"
 
-#: ../system-config-printer.glade.h:40
-#, fuzzy
-msgid "Access Control"
+#: ../system-config-printer.glade.h:46
+msgid "Access control"
 msgstr "Toegangscontrole"
 
-#: ../system-config-printer.glade.h:41
+#: ../system-config-printer.glade.h:47
 msgid "Add or Remove Members"
 msgstr "Leden toevoegen of verwijderen"
 
-#: ../system-config-printer.glade.h:42
+#: ../system-config-printer.glade.h:48
 msgid "Allow printing for everyone except these users:"
 msgstr "Afdrukken voor iedereen toestaan, behalve voor deze gebruikers:"
 
-#: ../system-config-printer.glade.h:43
-#, fuzzy
+#: ../system-config-printer.glade.h:49
 msgid "Allow printing from the Internet"
-msgstr "Afdrukken voor iedereen toestaan, behalve voor deze gebruikers:"
+msgstr "Afdrukken vanaf het Internet toestaan"
 
-#: ../system-config-printer.glade.h:44
+#: ../system-config-printer.glade.h:50
 msgid "Allow remote administration"
 msgstr "Beheer op afstand toestaan"
 
-#: ../system-config-printer.glade.h:45
+#: ../system-config-printer.glade.h:51
 msgid "Allow users to cancel any job (not just their own)"
 msgstr ""
 "Gebruikers toestaan om elke opdracht te annuleren (niet alleen die van "
 "hunzelf)"
 
-#: ../system-config-printer.glade.h:46
-#, fuzzy
-msgid "Authentication required"
-msgstr "<b>Authenticatie</b>"
+#: ../system-config-printer.glade.h:52
+msgid "Apply"
+msgstr "Toepassen"
 
-#: ../system-config-printer.glade.h:47
+#: ../system-config-printer.glade.h:53
+msgid "Authors"
+msgstr "Auteurs"
+
+#: ../system-config-printer.glade.h:54
 msgid "Baud Rate"
 msgstr "Baud rate"
 
-#: ../system-config-printer.glade.h:48
+#: ../system-config-printer.glade.h:55
 msgid "Bottom margin:"
 msgstr "Ondermarge:"
 
-#: ../system-config-printer.glade.h:49
+#: ../system-config-printer.glade.h:56
 msgid "Brightness:"
 msgstr "Helderheid:"
 
-#: ../system-config-printer.glade.h:50
-msgid "Browse..."
-msgstr ""
-
-#: ../system-config-printer.glade.h:51
+#: ../system-config-printer.glade.h:57
 msgid "CUPS server:"
 msgstr "CUPS-server:"
 
-#: ../system-config-printer.glade.h:52
+#: ../system-config-printer.glade.h:58
+msgid "Change PPD"
+msgstr "PPD veranderen"
+
+#: ../system-config-printer.glade.h:59
 msgid "Change..."
 msgstr "Veranderen..."
 
-#: ../system-config-printer.glade.h:53
+#: ../system-config-printer.glade.h:60
 msgid "Characters per inch:"
 msgstr "Tekens per inch:"
 
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:55
-msgid "Clean Print Heads"
-msgstr ""
+#: ../system-config-printer.glade.h:61
+msgid "Class Members"
+msgstr "Klasseleden"
 
-#: ../system-config-printer.glade.h:56
+#: ../system-config-printer.glade.h:62
 msgid "Columns:"
 msgstr "Kolommen:"
 
-#: ../system-config-printer.glade.h:57
-#, fuzzy
-msgid "Comments..."
-msgstr "Opmerking"
+#: ../system-config-printer.glade.h:63
+msgid "Comments: "
+msgstr "Opmerkingen: "
 
-#: ../system-config-printer.glade.h:58
+#: ../system-config-printer.glade.h:64
 msgid "Connect to CUPS server"
 msgstr "Verbinden met CUPS-server"
 
-#: ../system-config-printer.glade.h:59
+#: ../system-config-printer.glade.h:65
 msgid "Connecting"
 msgstr "Verbinden"
 
-#: ../system-config-printer.glade.h:61
+#: ../system-config-printer.glade.h:67
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -699,23 +720,23 @@ msgstr ""
 "Verbinden met server:\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:64
+#: ../system-config-printer.glade.h:70
 msgid "Copies:"
 msgstr "Kopieën:"
 
-#: ../system-config-printer.glade.h:65
+#: ../system-config-printer.glade.h:71
 msgid "Copy Printer"
 msgstr "Printer kopieëren"
 
-#: ../system-config-printer.glade.h:66
-msgid "Copyright 2006, 2007 Red Hat, Inc."
-msgstr "Copyright 2006, 2007 Red Hat, Inc."
+#: ../system-config-printer.glade.h:72
+msgid "Copyright"
+msgstr "Copyright"
 
-#: ../system-config-printer.glade.h:67
+#: ../system-config-printer.glade.h:73
 msgid "Data Bits"
 msgstr "Data bits"
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:74
 msgid ""
 "Default\n"
 "1200\n"
@@ -737,7 +758,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../system-config-printer.glade.h:77
+#: ../system-config-printer.glade.h:83
 msgid ""
 "Default\n"
 "8\n"
@@ -747,7 +768,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../system-config-printer.glade.h:80
+#: ../system-config-printer.glade.h:86
 msgid ""
 "Default\n"
 "None\n"
@@ -759,7 +780,7 @@ msgstr ""
 "Oneven\n"
 "Even"
 
-#: ../system-config-printer.glade.h:84
+#: ../system-config-printer.glade.h:90
 msgid ""
 "Default\n"
 "None\n"
@@ -773,113 +794,111 @@ msgstr ""
 "RTS/CTS (hardware)\n"
 "DTR/DSR (hardware)"
 
-#: ../system-config-printer.glade.h:89
-#, fuzzy
-msgid "Default Printer:"
-msgstr "Standaardprinter"
-
-#: ../system-config-printer.glade.h:90
+#: ../system-config-printer.glade.h:95
 msgid "Deny printing for everyone except these users:"
 msgstr "Afdrukken voor iedereen ontzeggen, behalve voor deze gebruikers:"
 
-#: ../system-config-printer.glade.h:91
+#: ../system-config-printer.glade.h:96
 msgid "Description:"
 msgstr "Omschrijving:"
 
-#: ../system-config-printer.glade.h:92
+#: ../system-config-printer.glade.h:97
+msgid "Device"
+msgstr "Apparaat"
+
+#: ../system-config-printer.glade.h:98
 msgid "Device URI"
 msgstr "Apparaat URI"
 
-#: ../system-config-printer.glade.h:93
+#: ../system-config-printer.glade.h:99
 msgid "Device URI:"
 msgstr "Apparaat URI:"
 
-#: ../system-config-printer.glade.h:94
+#: ../system-config-printer.glade.h:100
 msgid "Device description."
 msgstr "Apparaat omschrijving."
 
-#: ../system-config-printer.glade.h:95
+#: ../system-config-printer.glade.h:101
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:96
+#: ../system-config-printer.glade.h:102
+msgid "Driver"
+msgstr "Stuurprogramma"
+
+#: ../system-config-printer.glade.h:103
 msgid "Empty"
 msgstr "Leeg"
 
-#: ../system-config-printer.glade.h:97
+#: ../system-config-printer.glade.h:104
 msgid "Enabled"
 msgstr "Aangezet"
 
-#: ../system-config-printer.glade.h:98
+#: ../system-config-printer.glade.h:105
 msgid "Ending Banner:"
 msgstr "Einde-banner:"
 
-#: ../system-config-printer.glade.h:99
+#: ../system-config-printer.glade.h:106
 msgid "Error Policy: \t"
 msgstr "Foutenbeleid: \t"
 
-#: ../system-config-printer.glade.h:100
+#: ../system-config-printer.glade.h:107
 msgid "Finishings:"
 msgstr "Nabewerking:"
 
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:108
 msgid "Flow Control"
 msgstr "Flow control"
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:109
 msgid "Gamma:"
 msgstr "Gamma:"
 
-#: ../system-config-printer.glade.h:103
+#: ../system-config-printer.glade.h:110
 msgid "Goto Server"
 msgstr "Ga naar server"
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:111
 msgid "Hold until:"
 msgstr "Vasthouden tot:"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:112
 msgid "Hostname"
 msgstr "Hostnaam"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:113
 msgid "Hue adjustment:"
 msgstr "Tintaanpassing:"
 
-#: ../system-config-printer.glade.h:107
+#: ../system-config-printer.glade.h:114
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Leesbare omschrijving zoals \"HP LaserJet met duplexer\""
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:115
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "Leesbare locatie zoals \"Lab 1\""
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:116
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:110
-#, fuzzy
-msgid "Installed Options"
-msgstr "Installeerbare opties"
-
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:118
 msgid "Job Options"
 msgstr "Opdrachtopties"
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:119
 msgid "Job priority:"
 msgstr "Opdrachtprioriteit:"
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:120
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:121
 msgid "Left margin:"
 msgstr "Linkermarge:"
 
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:122
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -899,60 +918,59 @@ msgstr ""
 "Beneden naar boven, links naar rechts\n"
 "Beneden naar boven, rechts naar links"
 
-#: ../system-config-printer.glade.h:123
+#: ../system-config-printer.glade.h:130
 msgid "Lines per inch:"
 msgstr "Regels per inch:"
 
-#: ../system-config-printer.glade.h:124
+#: ../system-config-printer.glade.h:131
 msgid "Location:"
 msgstr "Locatie:"
 
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:126
-#, fuzzy
-msgid "Make Default"
-msgstr "Standaard _instellen"
+#: ../system-config-printer.glade.h:132
+msgid "Make Default Printer"
+msgstr "Standaardprinter maken"
 
-#: ../system-config-printer.glade.h:127
+#: ../system-config-printer.glade.h:133
 msgid "Make and Model:"
 msgstr "Merk en model:"
 
-#: ../system-config-printer.glade.h:128
-#, fuzzy
-msgid ""
-"May contain any printable characters except \"/\", \"#\", and space.\n"
-"Name must be unique on the local machine!"
+#: ../system-config-printer.glade.h:134
+msgid "May contain any printable characters except \"/\", \"#\", and space"
 msgstr "Mag elk afdrukbaar karakter bevatten behalve \"/\", \"#\", en spatie"
 
-#: ../system-config-printer.glade.h:130
+#: ../system-config-printer.glade.h:135
 msgid "Media:"
 msgstr "Media:"
 
-#: ../system-config-printer.glade.h:131
+#: ../system-config-printer.glade.h:136
 msgid "Members"
 msgstr "Leden"
 
-#: ../system-config-printer.glade.h:132
+#: ../system-config-printer.glade.h:137
 msgid "Mirror"
 msgstr "Spiegel"
 
-#: ../system-config-printer.glade.h:133
+#: ../system-config-printer.glade.h:138
 msgid "More"
 msgstr "Meer"
 
-#: ../system-config-printer.glade.h:134
+#: ../system-config-printer.glade.h:139
+msgid "Name"
+msgstr "Naam"
+
+#: ../system-config-printer.glade.h:140
 msgid "New Clas_s"
 msgstr "Nieuwe klas_se"
 
-#: ../system-config-printer.glade.h:137
+#: ../system-config-printer.glade.h:143
 msgid "New _Printer"
 msgstr "Nieuwe _printer"
 
-#: ../system-config-printer.glade.h:138
+#: ../system-config-printer.glade.h:144
 msgid "New name for the printer"
 msgstr "Nieuwe naam voor de printer"
 
-#: ../system-config-printer.glade.h:139
+#: ../system-config-printer.glade.h:145
 msgid ""
 "None\n"
 "Staple\n"
@@ -1012,7 +1030,7 @@ msgstr ""
 "Binden (rechts)\n"
 "Binden (onder)"
 
-#: ../system-config-printer.glade.h:167
+#: ../system-config-printer.glade.h:173
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1022,43 +1040,47 @@ msgstr ""
 "Tweezijdig (lange kant)\n"
 "Tweezijdig (korte kant)"
 
-#: ../system-config-printer.glade.h:170
+#: ../system-config-printer.glade.h:176
 msgid "Operation Policy:"
 msgstr "Operationeel beleid:"
 
-#: ../system-config-printer.glade.h:171
+#: ../system-config-printer.glade.h:177
 msgid "Orientation:"
 msgstr "Oriëntatie:"
 
-#: ../system-config-printer.glade.h:172
+#: ../system-config-printer.glade.h:178
+msgid "PPD"
+msgstr "PPD"
+
+#: ../system-config-printer.glade.h:179
 msgid "Pages per side layout:"
 msgstr "Layout pagina's per kant:"
 
-#: ../system-config-printer.glade.h:173
+#: ../system-config-printer.glade.h:180
 msgid "Pages per side:"
 msgstr "Pagina's per kant:"
 
-#: ../system-config-printer.glade.h:174
+#: ../system-config-printer.glade.h:181
 msgid "Parity"
 msgstr "Pariteit"
 
-#: ../system-config-printer.glade.h:175 ../applet.glade.h:5
+#: ../system-config-printer.glade.h:182 ../applet.glade.h:5
 msgid "Password:"
 msgstr "Wachtwoord:"
 
-#: ../system-config-printer.glade.h:176
+#: ../system-config-printer.glade.h:183
 msgid "Please Wait"
-msgstr ""
+msgstr "Even geduld"
 
-#: ../system-config-printer.glade.h:177
+#: ../system-config-printer.glade.h:184
 msgid "Policies"
 msgstr "Policies"
 
-#: ../system-config-printer.glade.h:178
+#: ../system-config-printer.glade.h:185
 msgid "Port number"
 msgstr "Poortnummer"
 
-#: ../system-config-printer.glade.h:179
+#: ../system-config-printer.glade.h:186
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1070,7 +1092,7 @@ msgstr ""
 "Omgekeerd landschap (270°)\n"
 "Omgekeerd portret (180°)"
 
-#: ../system-config-printer.glade.h:183
+#: ../system-config-printer.glade.h:190
 msgid ""
 "PostScript Printer Description (PPD) files can often found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1081,111 +1103,99 @@ msgstr ""
 "printers maken ze meestal deel uit van het Windows<sup>®</sup> "
 "stuurprogramma."
 
-#: ../system-config-printer.glade.h:184
+#: ../system-config-printer.glade.h:191
 msgid "Pretty print"
 msgstr "Mooi afdrukken"
 
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:186
-#, fuzzy
-msgid "Print Self-Test Page"
-msgstr "Testpagina afdrukken"
-
-#: ../system-config-printer.glade.h:190
+#: ../system-config-printer.glade.h:195
 msgid "Printer State:"
 msgstr "Printerstatus:"
 
-#: ../system-config-printer.glade.h:191
+#: ../system-config-printer.glade.h:196
 msgid "Printername"
 msgstr "Printernaam"
 
-#: ../system-config-printer.glade.h:192
+#: ../system-config-printer.glade.h:197
 msgid "Probe"
 msgstr "Detecteren"
 
-#: ../system-config-printer.glade.h:193
-#, fuzzy
-msgid "Provide PPD File"
+#: ../system-config-printer.glade.h:198
+msgid "Provide PPD file"
 msgstr "PPD-bestand opgeven"
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:199
 msgid "Require encryption"
 msgstr "Versleuteling vereisen"
 
-#: ../system-config-printer.glade.h:195
+#: ../system-config-printer.glade.h:200
 msgid "Reset"
 msgstr "Opnieuw instellen"
 
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:201
 msgid "Reset to system default"
 msgstr "Opnieuw naar systeemstandaard instellen"
 
-#: ../system-config-printer.glade.h:197
+#: ../system-config-printer.glade.h:202
 msgid "Right margin:"
 msgstr "Rechtermarge:"
 
-#: ../system-config-printer.glade.h:198
+#: ../system-config-printer.glade.h:203
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:204
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:200
-msgid "SMB Browser"
-msgstr ""
-
-#: ../system-config-printer.glade.h:201
+#: ../system-config-printer.glade.h:205
 msgid "Saturation:"
 msgstr "Verzadiging:"
 
-#: ../system-config-printer.glade.h:202
+#: ../system-config-printer.glade.h:206
 msgid "Save debugging information for troubleshooting"
 msgstr "Debug-informatie opslaan om problemen op te lossen"
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:207
 msgid "Scale to fit"
 msgstr "Passend schalen"
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:208
 msgid "Scaling:"
 msgstr "Schalen:"
 
-#: ../system-config-printer.glade.h:205
+#: ../system-config-printer.glade.h:209
 msgid "Select A File"
 msgstr "Selecteer een bestand"
 
-#: ../system-config-printer.glade.h:206
-#, fuzzy
-msgid "Select Printer from Database"
+#: ../system-config-printer.glade.h:210
+msgid "Select Printer from database"
 msgstr "Een printer uit de database selecteren"
 
-#: ../system-config-printer.glade.h:207
+#: ../system-config-printer.glade.h:211
 msgid "Serial"
 msgstr "Serieel"
 
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.glade.h:212
 msgid "Settings"
 msgstr "Instellingen"
 
-#: ../system-config-printer.glade.h:209
+#: ../system-config-printer.glade.h:213
 msgid "Share published printers connected to this system"
 msgstr "Gepubliceerde printers verbonden met dit systeem delen"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:214
 msgid "Shared"
 msgstr "Gedeeld"
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:215
 msgid "Show printers shared by other systems"
 msgstr "Printers die gedeeld worden door andere systemen tonen"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:216
 msgid "Sides:"
 msgstr "Aantal zijden:"
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:217
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1195,15 +1205,20 @@ msgstr ""
 "arriveren op deze printserver zullen deze opties toegevoegd krijgen als ze "
 "al niet door de applicatie zelf zijn ingesteld."
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:218
 msgid "Starting Banner:"
 msgstr "Begin-banner:"
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:219
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:221
+#, no-c-format
+msgid "System-Config-Printer %s"
+msgstr "System-Config-Printer %s"
+
+#: ../system-config-printer.glade.h:222
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1217,13 +1232,7 @@ msgstr ""
 "bieden de door de fabrikant geleverde PPD-bestanden betere toegang tot de "
 "specifieke functies van de printer."
 
-#: ../system-config-printer.glade.h:217
-msgid ""
-"This driver supports additional hardware that may be installed in the "
-"printer."
-msgstr ""
-
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:223
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1234,23 +1243,6 @@ msgstr ""
 "het nieuwe PPD-bestand zullen verloren gaan en opties die alleen aanwezig "
 "zijn in het nieuwe PPD-bestand zullen worden ingesteld naar de "
 "standaardwaarde."
-
-#: ../system-config-printer.glade.h:219
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
-"Ave, Cambridge, MA 02139, USA."
-msgstr ""
 
 #: ../system-config-printer.glade.h:224
 msgid ""
@@ -1312,7 +1304,7 @@ msgstr "_Hulp"
 
 #: ../system-config-printer.glade.h:237
 msgid "_Install"
-msgstr ""
+msgstr "_Installeren"
 
 #: ../system-config-printer.glade.h:238
 msgid "_Verify..."
@@ -1333,11 +1325,6 @@ msgstr "punten"
 #: ../system-config-printer.glade.h:242
 msgid "points (72 points per inch)"
 msgstr "punten (72 punten per inch)"
-
-#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:244
-msgid "translator-credits"
-msgstr ""
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1621,76 +1608,6 @@ msgstr "Printopdrachten beheren"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Selecteer standaardprinter"
-
-#~ msgid "Default printer is %s"
-#~ msgstr "Standaardprinter is %s"
-
-#~ msgid "Going to create a new class %s."
-#~ msgstr "Nieuwe klasse %s wordt aangemaakt."
-
-#~ msgid ""
-#~ "Going to create a new printer %s at\n"
-#~ "%s.\n"
-#~ msgstr ""
-#~ "Nieuwe printer %s wordt aangemaakt op\n"
-#~ "%s.\n"
-
-#~ msgid " PPD "
-#~ msgstr " PPD "
-
-#~ msgid "<b>Comment about the Driver</b>"
-#~ msgstr "<b>Commentaar over het stuurprogramma</b>"
-
-#~ msgid "<b>Comment about the Printer</b>"
-#~ msgstr "<b>Commentaar over de printer</b>"
-
-#~ msgid "<b>Default Printer</b>"
-#~ msgstr "<b>Standaardprinter</b>"
-
-#~ msgid "<b>Information about the PPD</b>"
-#~ msgstr "<b>Informatie over de PPD</b>"
-
-#~ msgid "About"
-#~ msgstr "Over"
-
-#~ msgid "About System-Config-Printer"
-#~ msgstr "Over System-Config-Printer"
-
-#~ msgid "Apply"
-#~ msgstr "Toepassen"
-
-#~ msgid "Authors"
-#~ msgstr "Auteurs"
-
-#~ msgid "Change PPD"
-#~ msgstr "PPD veranderen"
-
-#~ msgid "Class Members"
-#~ msgstr "Klasseleden"
-
-#~ msgid "Comments: "
-#~ msgstr "Opmerkingen: "
-
-#~ msgid "Copyright"
-#~ msgstr "Copyright"
-
-#~ msgid "Device"
-#~ msgstr "Apparaat"
-
-#~ msgid "Driver"
-#~ msgstr "Stuurprogramma"
-
-#~ msgid "Make Default Printer"
-#~ msgstr "Standaardprinter maken"
-
-#~ msgid "Name"
-#~ msgstr "Naam"
-
-#~ msgid "PPD"
-#~ msgstr "PPD"
-
-#~ msgid "System-Config-Printer %s"
-#~ msgstr "System-Config-Printer %s"
 
 #~ msgid ""
 #~ "This PPD is provided by the manufacturer and is included with the "
