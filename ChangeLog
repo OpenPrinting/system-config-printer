@@ -1,6 +1,8 @@
 2007-09-28  Tim Waugh  <twaugh@redhat.com>
 
 	* cupshelpers.py: Removed shebang.
+	(Printer.setOption): Convert floating point values to strings in a
+	locale-safe manner (Ubuntu #145693).
 
 	* system-config-printer.py (GUI.fillPrinterTab): Handle strange
 	options a little bit more gracefully.
