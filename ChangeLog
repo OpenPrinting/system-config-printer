@@ -3,6 +3,8 @@
 	* cupshelpers.py: Removed shebang.
 	(Printer.setOption): Convert floating point values to strings in a
 	locale-safe manner (Ubuntu #145693).
+	(Printer._getAttributes): Avoid mis-interpreting '1,2'-type
+	values.
 
 	* system-config-printer.py (GUI.fillPrinterTab): Handle strange
 	options a little bit more gracefully.
