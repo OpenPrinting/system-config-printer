@@ -8,7 +8,6 @@ nobase_pkgdata_SCRIPTS=				\
 
 nobase_pkgdata_DATA=				\
 	config.py				\
-	cupsd.py				\
 	cupshelpers.py				\
 	options.py				\
 	optionwidgets.py			\
