@@ -20,6 +20,7 @@
 
 import cups, pprint, os, tempfile, re
 from rhpl.translate import _, N_
+import locale
 
 class Printer:
 
@@ -149,6 +150,11 @@ class Printer:
         return self._ppd
 
     def setOption(self, name, value):
+        if isinstance (value, float):
+            radixchar = locale.nl_langinfo (locale.RADIXCHAR)
+            if radixchar != '.':
+                # Convert floats to strings, being careful with decimal points.
+                value = str (value).replace (radixchar, '.')
         self.connection.addPrinterOptionDefault(self.name, name, value)
 
     def unsetOption(self, name):
