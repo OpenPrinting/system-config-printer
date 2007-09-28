@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 ## system-config-printer
 
 ## Copyright (C) 2006, 2007 Red Hat, Inc.
