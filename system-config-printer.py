@@ -54,7 +54,6 @@ import cupshelpers, options
 import gobject # for TYPE_STRING and TYPE_PYOBJECT
 from optionwidgets import OptionWidget
 import ppds
-from cupsd import CupsConfig
 import probe_printer
 import gtk_label_autowrap
 from gtk_treeviewtooltips import TreeViewTooltips
