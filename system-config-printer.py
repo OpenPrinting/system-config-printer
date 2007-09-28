@@ -1685,26 +1685,41 @@ class GUI(GtkGUI):
                 if opt:
                     option.set_default (opt.defchoice)
 
+            option_editable = editable
             try:
                 value = self.printer.attributes[option.name]
             except KeyError:
                 option.reinit (None)
             else:
-                if self.printer.possible_attributes.has_key (option.name):
-                    supported = self.printer.possible_attributes[option.name][1]
-                    # Set the option widget.
-                    # In CUPS 1.3.x the orientation-requested-default
-                    # attribute may have the value None; this means there
-                    # is no value set.  This suits our needs here, as None
-                    # resets the option to the system default and makes the
-                    # Reset button insensitive.
-                    option.reinit (value, supported=supported)
-                else:
-                    option.reinit (value)
-                self.server_side_options[option.name] = option
-            option.widget.set_sensitive (editable)
+                try:
+                    if self.printer.possible_attributes.has_key (option.name):
+                        supported = self.printer.\
+                                    possible_attributes[option.name][1]
+                        # Set the option widget.
+                        # In CUPS 1.3.x the orientation-requested-default
+                        # attribute may have the value None; this means there
+                        # is no value set.  This suits our needs here, as None
+                        # resets the option to the system default and makes the
+                        # Reset button insensitive.
+                        option.reinit (value, supported=supported)
+                    else:
+                        option.reinit (value)
+
+                    self.server_side_options[option.name] = option
+                except:
+                    option_editable = False
+                    self.lblError.set_markup ('<span weight="bold" ' +
+                                              'size="larger">' +
+                                              _("Error") + '</span>\n\n' +
+                                              _("Option '%s' has value '%s' " +
+                                                "and cannot be edited.") %
+                                              (option.name, value))
+                    self.ErrorDialog.set_transient_for (self.MainWindow)
+                    self.ErrorDialog.run()
+                    self.ErrorDialog.hide()
+            option.widget.set_sensitive (option_editable)
             if not editable:
-                option.button.set_sensitive (editable)
+                option.button.set_sensitive (False)
         self.other_job_options = []
         self.draw_other_job_options (editable=editable)
         for option in self.printer.attributes.keys ():
