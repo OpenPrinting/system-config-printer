@@ -96,6 +96,13 @@ class Printer:
                 supported = attrs.get(name + "-supported", None) or \
                             self.possible_attributes.get(name, None) or \
                             ""
+
+                # Convert a list into a comma-separated string, since
+                # it can only really have been misinterpreted as a list
+                # by CUPS.
+                if isinstance (value, list):
+                    value = reduce (lambda x, y: x+','+y, value)
+
                 self.attributes[name] = value
                     
                 if attrs.has_key(name+"-supported"):
