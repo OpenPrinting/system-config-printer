@@ -294,7 +294,7 @@ class GUI(GtkGUI):
                         "entNewJobOption", "btnNewJobOption",
                         # small dialogs
                         "ConnectDialog", "chkEncrypted", "cmbServername",
-                         "entUser",
+                        "entUser", "btnConnect",
                         "ConnectingDialog", "lblConnecting",
                         "PasswordDialog", "lblPasswordPrompt", "entPasswd",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
@@ -699,6 +699,9 @@ class GUI(GtkGUI):
         return name.strip(), type
 
     # Connect to Server
+
+    def on_connect_servername_changed(self, widget):
+        self.btnConnect.set_sensitive (len (widget.get_active_text ()) > 0)
 
     def on_connect_activate(self, widget):
         # check for unapplied changes
