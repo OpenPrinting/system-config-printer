@@ -199,7 +199,7 @@ class GUI:
                         "entNewJobOption", "btnNewJobOption",
                         
                         "ConnectDialog", "chkEncrypted", "cmbServername",
-                         "entUser",
+                        "entUser", "btnConnect",
                         "ConnectingDialog", "lblConnecting",
                         "PasswordDialog", "lblPasswordPrompt", "entPasswd",
 
@@ -762,6 +762,9 @@ class GUI:
         return name.strip(), type
 
     # Connect to Server
+
+    def on_connect_servername_changed(self, widget):
+        self.btnConnect.set_sensitive (len (widget.get_active_text ()) > 0)
 
     def on_connect_activate(self, widget):
         # check for unapplied changes
