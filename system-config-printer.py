@@ -3658,8 +3658,9 @@ class GUI:
         self.setDataButtonState()
         
     def on_server_changed(self, widget):
-        if (str(int(widget.get_active())) ==
-            self.server_settings[widget.get_data("setting")]):
+        setting = widget.get_data("setting")
+        if (self.server_settings.has_key (setting) and
+            str(int(widget.get_active())) == self.server_settings[setting]):
             self.changed.discard(widget)
         else:
             self.changed.add(widget)
