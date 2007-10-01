@@ -162,6 +162,8 @@ class Dialog:
         for button in self.dialog.action_area.get_children ():
             if button.get_label () == _("_Use System Default"):
                 self.system_default_button = button
+            elif button.get_label () == _("_Set Default"):
+                self.set_default_button = button
 
     def run (self):
         c = cups.Connection ()
@@ -177,6 +179,7 @@ class Dialog:
 
         self.system_default_button.set_sensitive (self.server.
                                                   isUserDefaultSet ())
+        self.set_default_button.set_sensitive (len (printers) > 0)
 
         self.dialog.show_all ()
         self.dialog.connect ("response", self.response)
