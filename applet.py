@@ -118,7 +118,7 @@ class StateReason:
             return 1
         if other.get_level () != self.get_level ():
             return int.__cmp__ (self.get_level (), other.get_level ())
-        if other.printer () != self.printer ():
+        if other.get_printer () != self.get_printer ():
             return str.__cmp__ (other.get_printer (), self.get_printer ())
         return str.__cmp__ (other.get_reason (), self.get_reason ())
 
