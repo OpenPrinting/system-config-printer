@@ -3656,6 +3656,8 @@ class GUI:
                 widget.set_active(False)
                 widget.set_sensitive(False)
         self.setDataButtonState()
+        # Set sensitivity of 'Allow printing from the Internet'.
+        self.on_server_changed (self.chkServerShare) # (any will do here)
         
     def on_server_changed(self, widget):
         setting = widget.get_data("setting")
