@@ -1392,6 +1392,16 @@ class GUI:
             return True
         self.changed = set() # of options
 
+        if not self.__dict__.has_key ("server_settings"):
+            # We can authenticate with the server correctly at this point,
+            # but we have never fetched the server settings to see whether
+            # the server is publishing shared printers.  Fetch the settings
+            # now so that we can update the "not published" label if necessary.
+            try:
+                self.server_settings = self.cups.adminGetServerSettings()
+            except:
+                nonfatalException()
+
         if class_deleted:
             self.populateList ()
         else:
