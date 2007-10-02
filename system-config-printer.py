@@ -2047,11 +2047,11 @@ class GUI(GtkGUI):
         
     def on_server_changed(self, widget):
         setting = widget.get_data("setting")
-        if (self.server_settings.has_key (setting) and
-            str(int(widget.get_active())) == self.server_settings[setting]):
-            self.changed.discard(widget)
-        else:
-            self.changed.add(widget)
+        if self.server_settings.has_key (setting):
+            if str(int(widget.get_active())) == self.server_settings[setting]:
+                self.changed.discard(widget)
+            else:
+                self.changed.add(widget)
 
         sharing = self.chkServerShare.get_active ()
         self.chkServerShareAny.set_sensitive (
