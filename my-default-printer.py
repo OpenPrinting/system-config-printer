@@ -26,7 +26,7 @@ import os
 import signal
 import sys
 
-domain='my-default-printer'
+domain='system-config-printer'
 import locale
 locale.setlocale (locale.LC_ALL, "")
 from gettext import gettext as _
