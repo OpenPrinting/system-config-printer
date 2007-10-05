@@ -3,8 +3,8 @@
 ## system-config-printer
 ## CUPS backend
  
-## Copyright (C) 2002, 2003, 2006 Red Hat, Inc.
-## Copyright (C) 2002, 2003 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2002, 2003, 2006, 2007 Red Hat, Inc.
+## Copyright (C) 2002, 2003, 2006, 2007 Tim Waugh <twaugh@redhat.com>
  
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -70,7 +70,8 @@ def get_domain_list ():
 
     ips = []
     if wins:
-    	str = "LC_ALL=C %s -U %s -M -- - 2>&1" % (nmblookup, wins)
+    	os.environ['WINS'] = wins
+    	str = 'LC_ALL=C %s -U "$WINS" -M -- - 2>&1' % (nmblookup)
     else:
     	str = "LC_ALL=C %s -M -- - 2>&1" % (nmblookup)
     for l in os.popen (str, 'r').readlines ():
@@ -79,7 +80,8 @@ def get_domain_list ():
             ips.append (l.split(" ")[0])
     if len (ips) <= 0:
         if wins:
-            str = "LC_ALL=C %s -U %s '*' 2>&1" % (nmblookup, wins)
+	    os.environ['WINS'] = wins
+            str = 'LC_ALL=C %s -U "$WINS" "*" 2>&1' % (nmblookup)
 	else:
             str = "LC_ALL=C %s '*' 2>&1" % (nmblookup)
 	for l in os.popen (str, 'r').readlines ():
@@ -89,10 +91,12 @@ def get_domain_list ():
     for ip in ips:
         dom = None
     	dict = { 'IP': ip }
+	os.environ["IP"] = ip
 	if wins:
-    		str = "LC_ALL=C " + nmblookup + " -U " + wins + " -A " + ip
+		os.environ["WINS"] = wins
+    		str = 'LC_ALL=C %s -U "$WINS" -A "$IP"' % (nmblookup)
 	else:
-    		str = "LC_ALL=C %s -A '%s'" % (nmblookup, ip)
+    		str = 'LC_ALL=C %s -A "$IP"' % (nmblookup)
 	str += " 2>&1"
 	for line in os.popen(str, 'r').readlines():
 		line = line.splitlines()[0]
@@ -117,7 +121,8 @@ def get_host_list(dmbip):
         serverregex = re.compile("\s*Server\s*Comment")
         domainregex = re.compile("\s*Workgroup\s*Master")
         commentregex = re.compile("(\s*-+)+")
-	str = " %s -N -L //%s 2>/dev/null" % (smbclient, dmbip)
+	os.environ["DMBIP"] = dmbip
+	str = 'LC_ALL=C %s -N -L "//$DMBIP" 2>/dev/null' % (smbclient)
         for l in os.popen (str, 'r').readlines ():
                 l = l.splitlines()[0]
 
@@ -170,10 +175,12 @@ def get_host_list_from_domain (domain):
     for ip in ips:
         name = None
     	dict = { 'IP': ip }
+	os.environ["IP"] = ip
 	if wins:
-    		str = "LC_ALL=C " + nmblookup + " -U " + wins + " -A " + ip
+    		os.environ["WINS"] = wins
+    		str = 'LC_ALL=C %s -U "$WINS" -A "$IP"' % (nmblookup)
 	else:
-    		str = "LC_ALL=C %s -A '%s'" % (nmblookup, ip)
+    		str = 'LC_ALL=C %s -A "$IP"' % (nmblookup)
 	str += " 2>&1"
 	for line in os.popen(str, 'r').readlines():
 		line = line.splitlines()[0]
@@ -193,10 +200,12 @@ def get_host_info (smbname):
     """Given an SMB name, returns a host dict for it."""
     dict = { 'NAME': smbname, 'IP': '', 'GROUP': '' }
     global wins
+    os.environ["SMBNAME"] = smbname
     if wins:
-    	str = "LC_ALL=C %s -U %s -S '%s' 2>&1" % (nmblookup, wins, smbname)
+    	os.environ["WINS"] = wins
+    	str = 'LC_ALL=C %s -U "$WINS" -S "$SMBNAME" 2>&1' % (nmblookup)
     else:
-    	str = "LC_ALL=C %s -S '%s' 2>&1" % (nmblookup, smbname)
+    	str = 'LC_ALL=C %s -S "$SMBNAME" 2>&1' % (nmblookup)
     for l in os.popen (str, 'r').readlines ():
         l = l.strip ()
         if l.endswith ("<00>"):
@@ -222,12 +231,15 @@ def get_printer_list (host):
     if not os.access (smbclient, os.X_OK):
         return printers
 
-    str = "LC_ALL=C %s -N -L '%s' 2>&1" % (smbclient, host['NAME'])
+    os.environ["NAME"] = host['NAME']
+    str = 'LC_ALL=C %s -N -L "$NAME" 2>&1' % (smbclient)
     if host.has_key ('IP'):
-	str += " -I '%s'" % host['IP']
+	os.environ["IP"] = host['IP']
+	str += ' -I "$IP"'
 
     if host.has_key ('GROUP'):
-        str += " -W '%s'" % host['GROUP']
+        os.environ["GROUP"] = host['GROUP']
+        str += ' -W "$GROUP"'
 
     section = 0
     typepos = 0
@@ -303,7 +315,7 @@ def printer_share_accessible (share, group = None, user = None, passwd = None):
             os.dup2 (write, 1)
         os.dup2 (1, 2)
 
-        os.environ['LANG'] = 'C'
+        os.environ['LC_ALL'] = 'C'
         os.execv (args[0], args)
         sys.exit (1)
 
