@@ -2190,11 +2190,11 @@ class NewPrinterGUI(GtkGUI):
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
                            "entNPTIPPHostname", "btnIPPFindQueue",
-                        "lblIPPURI", "lblIPPPrintername",
+                        "lblIPPURI", "entNPTIPPQueuename",
+                        "btnIPPVerify",
                         "IPPBrowseDialog", "tvIPPBrowser",
                         "btnIPPBrowseOk",
                         "entNPTDirectJetHostname", "entNPTDirectJetPort",
-                        "entNPTIPPHostname",
                         "SMBBrowseDialog", "entSMBURI", "tvSMBBrowser", "tblSMBAuth",
                         "chkSMBAuth", "entSMBUsername", "entSMBPassword",
                         "btnSMBBrowseOk", "btnSMBVerify",
@@ -3173,13 +3173,62 @@ class NewPrinterGUI(GtkGUI):
         self.ErrorDialog.hide ()
 
     ### IPP Browsing
+    def update_IPP_URI_label(self):
+        hostname = self.entNPTIPPHostname.get_text ()
+        queue = self.entNPTIPPQueuename.get_text ()
+        valid = len (hostname + queue) > 0
+
+        if valid:
+            uri = "ipp://%s%s" % (hostname, queue)
+            self.lblIPPURI.set_text (uri)
+            self.lblIPPURI.show ()
+        else:
+            self.lblIPPURI.hide ()
+
+        self.btnIPPVerify.set_sensitive (valid)
+
     def on_entNPTIPPHostname_changed(self, ent):
-        self.btnIPPFindQueue.set_sensitive (len (ent.get_text ()) > 0)
+        valid = len (ent.get_text ()) > 0
+        self.btnIPPFindQueue.set_sensitive (valid)
+        self.update_IPP_URI_label ()
+
+    def on_entNPTIPPQueuename_changed(self, ent):
+        self.update_IPP_URI_label ()
 
     def on_btnIPPFindQueue_clicked(self, button):
         self.btnIPPBrowseOk.set_sensitive(False)
         self.IPPBrowseDialog.show()
         self.browse_ipp_queues()
+
+    def on_btnIPPVerify_clicked(self, button):
+        uri = self.lblIPPURI.get_text ()
+        match = re.match ("(ipp|https?)://([^/]+)(.*)/([^/]*)", uri)
+        verified = False
+        if match:
+            try:
+                cups.setServer (match.group (2))
+                c = cups.Connection ()
+                attributes = c.getPrinterAttributes (match.group (4))
+                verified = True
+            except:
+                pass
+        else:
+            print uri
+
+        if verified:
+            self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
+                                     _("Verified") + '</span>\n\n' +
+                                     _("This print share is accessible."))
+            self.InfoDialog.set_transient_for (self.NewPrinterWindow)
+            self.InfoDialog.run()
+            self.InfoDialog.hide ()
+        else:
+            self.lblError.set_markup ('<span weight="bold" size="larger">' +
+                                      _("Inaccessible") + '</span>\n\n' +
+                                      _("This print share is not accessible."))
+            self.ErrorDialog.set_transient_for (self.NewPrinterWindow)
+            self.ErrorDialog.run ()
+            self.ErrorDialog.hide ()
 
     def browse_ipp_queues(self):
         if not self.ipp_lock.acquire(0):
@@ -3201,15 +3250,16 @@ class NewPrinterGUI(GtkGUI):
 
         cups.setServer (host)
         printers = classes = {}
+        failed = False
         try:
             c = cups.Connection()
             printers = c.getPrinters ()
             classes = c.getClasses ()
             del c
         except RuntimeError:
-            pass
+            failed = True
         except cups.IPP_Error, (e, msg):
-            pass
+            failed = True
 
         gtk.gdk.threads_enter()
 
@@ -3227,12 +3277,21 @@ class NewPrinterGUI(GtkGUI):
 
         if len (printers) + len (classes) == 0:
             # Display 'No queues' dialog
-            self.lblError.set_markup ('<span weight="bold" size="larger">' +
-                                      _("No queues") + '</span>\n\n' +
-                                      _("There are no queues available."))
+            if failed:
+                markup = '<span weight="bold" size="larger">' + \
+                         _("Not possible") + '</span>\n\n' + \
+                         _("It is not possible to obtain a list of queues " \
+                           "from this host.")
+            else:
+                markup = '<span weight="bold" size="larger">' + \
+                         _("No queues") + '</span>\n\n' + \
+                         _("There are no queues available.")
+
+            self.lblError.set_markup (markup)
             self.ErrorDialog.set_transient_for (self.IPPBrowseDialog)
             self.ErrorDialog.run ()
             self.ErrorDialog.hide ()
+            self.IPPBrowseDialog.hide ()
 
         try:
             self.ready(self.IPPBrowseDialog)
@@ -3250,9 +3309,15 @@ class NewPrinterGUI(GtkGUI):
         self.IPPBrowseDialog.hide()
         queue = store.get_value (iter, 0)
         dict = store.get_value (iter, 2)
-        self.lblIPPPrintername.set_text (queue)
-        self.lblIPPPrintername.show()
-        self.lblIPPURI.set_text (dict.get('printer-uri-supported', 'ipp'))
+        self.entNPTIPPQueuename.set_text (queue)
+        self.entNPTIPPQueuename.show()
+        uri = dict.get('printer-uri-supported', 'ipp')
+        match = re.match ("(ipp|https?)://([^/]+)(.*)", uri)
+        if match:
+            self.entNPTIPPHostname.set_text (match.group (2))
+            self.entNPTIPPQueuename.set_text (match.group (3))
+
+        self.lblIPPURI.set_text (uri)
         self.lblIPPURI.show()
         self.setNPButtons()
 
@@ -3344,28 +3409,22 @@ class NewPrinterGUI(GtkGUI):
         elif device.type in ("ipp", "http"):
             if (device.uri.startswith ("ipp:") or
                 device.uri.startswith ("http:")):
-                server = ""
-                printer = ""
-                if url[:2] == "//":
-                    p = url[2:]
-                    t = p.find ('/')
-                    if t != -1:
-                        server = p[:t]
-                        p = p[t + 1:]
-
-                        # Skip over 'printers/' or 'classes/'
-                        t = p.find ('/')
-                        if t != -1:
-                            printer = p[t + 1:]
+                match = re.match ("(ipp|https?)://([^/]+)(.*)", uri)
+                if match:
+                    server = match.group (2)
+                    printer = match.group (3)
+                else:
+                    server = ""
+                    printer = ""
 
                 self.entNPTIPPHostname.set_text(server)
+                self.entNPTIPPQueuename.set_text(printer)
                 self.lblIPPURI.set_text(device.uri)
-                self.lblIPPPrintername.set_text(printer)
                 self.lblIPPURI.show()
-                self.lblIPPPrintername.show()
+                self.entNPTIPPQueuename.show()
             else:
                 self.entNPTIPPHostname.set_text('')
-                self.lblIPPPrintername.hide()
+                self.entNPTIPPQueuename.hide()
                 self.lblIPPURI.hide()
         elif device.type=="lpd":
             if device.uri.startswith ("lpd"):
@@ -3414,7 +3473,6 @@ class NewPrinterGUI(GtkGUI):
             if port:
                 device = device + ':' + port
         elif type in ("http", "ipp"): # IPP
-            host = self.entNPTIPPHostname.get_text()
             if self.lblIPPURI.get_property('visible'):
                 device = self.lblIPPURI.get_text()
             else:

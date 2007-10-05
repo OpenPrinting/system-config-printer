@@ -1,5 +1,15 @@
 2007-10-05  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (NewPrinterGUI.update_IPP_URI_label):
+	New method.
+	(NewPrinterGUI.on_entNPTIPPHostname_changed): Use it.
+	(NewPrinterGUI.on_entNPTIPPQueuename_changed): New method.
+	(NewPrinterGUI.on_btnIPPVerify_clicked): New method.
+	(NewPrinterGUI.browse_ipp_queues_thread): Display a different
+	message when the IPP request failed.
+
+	* system-config-printer.glade: Another IPP browse change.
+
 	* pysmb.py: More consistency and care in building command lines.
 
 2007-10-03  Till Kamppeter  <till.kamppeter@gmail.com>
