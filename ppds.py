@@ -503,9 +503,10 @@ class PPDs:
             # field and look for a match based solely on that.  If
             # there are digits, try lowering the number of
             # significant figures.
+            mdlnames.sort (cups.modelSort)
             mdlitems = map (lambda x: (x.lower (), mdls[x]), mdlnames)
             modelid = None
-            for word in mdl.split (' '):
+            for word in mdll.split (' '):
                 if modelid == None:
                     modelid = word
 
@@ -547,7 +548,7 @@ class PPDs:
 
                 for (name, ppds) in mdlitems:
                     for word in name.split (' '):
-                        if word == modelid:
+                        if word.lower () == modelid:
                             found = True
                             break
 

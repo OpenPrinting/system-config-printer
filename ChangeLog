@@ -1,5 +1,18 @@
 2007-10-05  Tim Waugh  <twaugh@redhat.com>
 
+	* ppds.py (PPDs._findBestMatchPPDs): Efficiency improvement (don't
+	run lower() on the loop-constant string).
+	(PPDs._findBestMatchPPDs): The model search should be performed in
+	model order.
+
+2007-10-05  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* ppds.py (_findBestMatchPPDs): Do case-insensitive match when
+	matching "most important" word. Especially important for matching
+	Canon printers (Ubuntu #149264).
+
+2007-10-05  Tim Waugh  <twaugh@redhat.com>
+
 	* pysmb.py: More consistency and care in building command lines.
 
 2007-10-03  Till Kamppeter  <till.kamppeter@gmail.com>
