@@ -547,7 +547,7 @@ class PPDs:
 
                 for (name, ppds) in mdlitems:
                     for word in name.split (' '):
-                        if word == modelid:
+                        if word.lower () == modelid.lower ():
                             found = True
                             break
 
