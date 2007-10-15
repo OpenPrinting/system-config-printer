@@ -121,7 +121,7 @@ missing-languages:
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
 
 fix-glade:
-	sed -i -e '/invisible_char/d' *.glade
+	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' *.glade
 
 run:
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/system-config-printer.glade \
