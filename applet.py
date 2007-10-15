@@ -175,7 +175,7 @@ class JobManager:
         self.last_refreshed = 0
         self.special_status_icon = False
 
-        self.xml = gtk.glade.XML(APPDIR + "/" + GLADE)
+        self.xml = gtk.glade.XML(APPDIR + "/" + GLADE, domain = DOMAIN)
         self.xml.signal_autoconnect(self)
         self.treeview = self.xml.get_widget ('treeview')
         text=0
