@@ -15,9 +15,7 @@ nobase_pkgdata_DATA=				\
 	gtk_label_autowrap.py			\
 	gtk_treeviewtooltips.py			\
 	system-config-printer.glade		\
-	applet.glade				\
-	applet.png				\
-	inspecting-printer.png
+	applet.glade
 
 nobase_sbin_SCRIPTS=\
 	system-config-printer
@@ -96,7 +94,6 @@ EXTRA_DIST=\
 	manage-print-jobs.desktop.in \
 	my-default-printer.desktop.in \
 	print-applet.desktop.in \
-	applet.png \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in
