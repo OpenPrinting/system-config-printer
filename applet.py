@@ -460,7 +460,7 @@ class JobManager:
         # Update statusbar and icon with most severe printer reason
         # across all printers.
         reason = worst_printer_state_reason (connection, printer_reasons)
-        if reason != None and reason.get_level () >= StateReason.REPORT:
+        if reason != None and reason.get_level () >= StateReason.WARNING:
             title, text = reason.get_description ()
             if self.statusbar_set:
                 self.statusbar.pop (0)
