@@ -35,9 +35,9 @@ class StateReason:
     ERROR=3
 
     LEVEL_ICON={
-        REPORT: "dialog-info",
-        WARNING: "dialog-warning",
-        ERROR: "dialog-error"
+        REPORT: "info",
+        WARNING: "important",
+        ERROR: "error"
         }
 
     def __init__(self, printer, reason):
