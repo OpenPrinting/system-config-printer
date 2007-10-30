@@ -1,7 +1,7 @@
-# generated automatically by aclocal 1.9.6 -*- Autoconf -*-
+# generated automatically by aclocal 1.10 -*- Autoconf -*-
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
-# 2005  Free Software Foundation, Inc.
+# 2005, 2006  Free Software Foundation, Inc.
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
@@ -11,8 +11,13 @@
 # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
 # PARTICULAR PURPOSE.
 
-# gettext.m4 serial 37 (gettext-0.14.4)
-dnl Copyright (C) 1995-2005 Free Software Foundation, Inc.
+m4_if(m4_PACKAGE_VERSION, [2.61],,
+[m4_fatal([this file was generated for autoconf 2.61.
+You have another version of autoconf.  If you want to use that,
+you should regenerate the build system entirely.], [63])])
+
+# gettext.m4 serial 59 (gettext-0.16.1)
+dnl Copyright (C) 1995-2006 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -28,7 +33,7 @@ dnl They are *not* in the public domain.
 
 dnl Authors:
 dnl   Ulrich Drepper <drepper@cygnus.com>, 1995-2000.
-dnl   Bruno Haible <haible@clisp.cons.org>, 2000-2003.
+dnl   Bruno Haible <haible@clisp.cons.org>, 2000-2006.
 
 dnl Macro to add for using GNU gettext.
 
@@ -76,8 +81,13 @@ AC_DEFUN([AM_GNU_GETTEXT],
   ifelse([$2], [], , [ifelse([$2], [need-ngettext], , [ifelse([$2], [need-formatstring-macros], ,
     [errprint([ERROR: invalid second argument to AM_GNU_GETTEXT
 ])])])])
-  define([gt_included_intl], ifelse([$1], [external], [no], [yes]))
+  define([gt_included_intl],
+    ifelse([$1], [external],
+      ifdef([AM_GNU_GETTEXT_][INTL_SUBDIR], [yes], [no]),
+      [yes]))
   define([gt_libtool_suffix_prefix], ifelse([$1], [use-libtool], [l], []))
+  gt_NEEDS_INIT
+  AM_GNU_GETTEXT_NEED([$2])
 
   AC_REQUIRE([AM_PO_SUBDIRS])dnl
   ifelse(gt_included_intl, yes, [
@@ -91,7 +101,7 @@ AC_DEFUN([AM_GNU_GETTEXT],
   dnl Sometimes libintl requires libiconv, so first search for libiconv.
   dnl Ideally we would do this search only after the
   dnl      if test "$USE_NLS" = "yes"; then
-  dnl        if test "$gt_cv_func_gnugettext_libc" != "yes"; then
+  dnl        if { eval "gt_val=\$$gt_func_gnugettext_libc"; test "$gt_val" != "yes"; }; then
   dnl tests. But if configure.in invokes AM_ICONV after AM_GNU_GETTEXT
   dnl the configure script would need to contain the same shell code
   dnl again, outside any 'if'. There are two solutions:
@@ -107,7 +117,7 @@ AC_DEFUN([AM_GNU_GETTEXT],
   gt_INTL_MACOSX
 
   dnl Set USE_NLS.
-  AM_NLS
+  AC_REQUIRE([AM_NLS])
 
   ifelse(gt_included_intl, yes, [
     BUILD_INCLUDED_LIBINTL=no
@@ -116,6 +126,15 @@ AC_DEFUN([AM_GNU_GETTEXT],
   LIBINTL=
   LTLIBINTL=
   POSUB=
+
+  dnl Add a version number to the cache macros.
+  case " $gt_needs " in
+    *" need-formatstring-macros "*) gt_api_version=3 ;;
+    *" need-ngettext "*) gt_api_version=2 ;;
+    *) gt_api_version=1 ;;
+  esac
+  gt_func_gnugettext_libc="gt_cv_func_gnugettext${gt_api_version}_libc"
+  gt_func_gnugettext_libintl="gt_cv_func_gnugettext${gt_api_version}_libintl"
 
   dnl If we use NLS figure out what method
   if test "$USE_NLS" = "yes"; then
@@ -135,28 +154,35 @@ AC_DEFUN([AM_GNU_GETTEXT],
         dnl to use.  If GNU gettext is available we use this.  Else we have
         dnl to fall back to GNU NLS library.
 
-        dnl Add a version number to the cache macros.
-        define([gt_api_version], ifelse([$2], [need-formatstring-macros], 3, ifelse([$2], [need-ngettext], 2, 1)))
-        define([gt_cv_func_gnugettext_libc], [gt_cv_func_gnugettext]gt_api_version[_libc])
-        define([gt_cv_func_gnugettext_libintl], [gt_cv_func_gnugettext]gt_api_version[_libintl])
-
-        AC_CACHE_CHECK([for GNU gettext in libc], gt_cv_func_gnugettext_libc,
-         [AC_TRY_LINK([#include <libintl.h>
-]ifelse([$2], [need-formatstring-macros],
-[#ifndef __GNU_GETTEXT_SUPPORTED_REVISION
+        if test $gt_api_version -ge 3; then
+          gt_revision_test_code='
+#ifndef __GNU_GETTEXT_SUPPORTED_REVISION
 #define __GNU_GETTEXT_SUPPORTED_REVISION(major) ((major) == 0 ? 0 : -1)
 #endif
 changequote(,)dnl
 typedef int array [2 * (__GNU_GETTEXT_SUPPORTED_REVISION(0) >= 1) - 1];
 changequote([,])dnl
-], [])[extern int _nl_msg_cat_cntr;
+'
+        else
+          gt_revision_test_code=
+        fi
+        if test $gt_api_version -ge 2; then
+          gt_expression_test_code=' + * ngettext ("", "", 0)'
+        else
+          gt_expression_test_code=
+        fi
+
+        AC_CACHE_CHECK([for GNU gettext in libc], [$gt_func_gnugettext_libc],
+         [AC_TRY_LINK([#include <libintl.h>
+$gt_revision_test_code
+extern int _nl_msg_cat_cntr;
 extern int *_nl_domain_bindings;],
             [bindtextdomain ("", "");
-return * gettext ("")]ifelse([$2], [need-ngettext], [ + * ngettext ("", "", 0)], [])[ + _nl_msg_cat_cntr + *_nl_domain_bindings],
-            gt_cv_func_gnugettext_libc=yes,
-            gt_cv_func_gnugettext_libc=no)])
+return * gettext ("")$gt_expression_test_code + _nl_msg_cat_cntr + *_nl_domain_bindings],
+            [eval "$gt_func_gnugettext_libc=yes"],
+            [eval "$gt_func_gnugettext_libc=no"])])
 
-        if test "$gt_cv_func_gnugettext_libc" != "yes"; then
+        if { eval "gt_val=\$$gt_func_gnugettext_libc"; test "$gt_val" != "yes"; }; then
           dnl Sometimes libintl requires libiconv, so first search for libiconv.
           ifelse(gt_included_intl, yes, , [
             AM_ICONV_LINK
@@ -167,52 +193,40 @@ return * gettext ("")]ifelse([$2], [need-ngettext], [ + * ngettext ("", "", 0)],
           dnl even if libiconv doesn't exist.
           AC_LIB_LINKFLAGS_BODY([intl])
           AC_CACHE_CHECK([for GNU gettext in libintl],
-            gt_cv_func_gnugettext_libintl,
+            [$gt_func_gnugettext_libintl],
            [gt_save_CPPFLAGS="$CPPFLAGS"
             CPPFLAGS="$CPPFLAGS $INCINTL"
             gt_save_LIBS="$LIBS"
             LIBS="$LIBS $LIBINTL"
             dnl Now see whether libintl exists and does not depend on libiconv.
             AC_TRY_LINK([#include <libintl.h>
-]ifelse([$2], [need-formatstring-macros],
-[#ifndef __GNU_GETTEXT_SUPPORTED_REVISION
-#define __GNU_GETTEXT_SUPPORTED_REVISION(major) ((major) == 0 ? 0 : -1)
-#endif
-changequote(,)dnl
-typedef int array [2 * (__GNU_GETTEXT_SUPPORTED_REVISION(0) >= 1) - 1];
-changequote([,])dnl
-], [])[extern int _nl_msg_cat_cntr;
+$gt_revision_test_code
+extern int _nl_msg_cat_cntr;
 extern
 #ifdef __cplusplus
 "C"
 #endif
 const char *_nl_expand_alias (const char *);],
               [bindtextdomain ("", "");
-return * gettext ("")]ifelse([$2], [need-ngettext], [ + * ngettext ("", "", 0)], [])[ + _nl_msg_cat_cntr + *_nl_expand_alias ("")],
-              gt_cv_func_gnugettext_libintl=yes,
-              gt_cv_func_gnugettext_libintl=no)
+return * gettext ("")$gt_expression_test_code + _nl_msg_cat_cntr + *_nl_expand_alias ("")],
+              [eval "$gt_func_gnugettext_libintl=yes"],
+              [eval "$gt_func_gnugettext_libintl=no"])
             dnl Now see whether libintl exists and depends on libiconv.
-            if test "$gt_cv_func_gnugettext_libintl" != yes && test -n "$LIBICONV"; then
+            if { eval "gt_val=\$$gt_func_gnugettext_libintl"; test "$gt_val" != yes; } && test -n "$LIBICONV"; then
               LIBS="$LIBS $LIBICONV"
               AC_TRY_LINK([#include <libintl.h>
-]ifelse([$2], [need-formatstring-macros],
-[#ifndef __GNU_GETTEXT_SUPPORTED_REVISION
-#define __GNU_GETTEXT_SUPPORTED_REVISION(major) ((major) == 0 ? 0 : -1)
-#endif
-changequote(,)dnl
-typedef int array [2 * (__GNU_GETTEXT_SUPPORTED_REVISION(0) >= 1) - 1];
-changequote([,])dnl
-], [])[extern int _nl_msg_cat_cntr;
+$gt_revision_test_code
+extern int _nl_msg_cat_cntr;
 extern
 #ifdef __cplusplus
 "C"
 #endif
 const char *_nl_expand_alias (const char *);],
                 [bindtextdomain ("", "");
-return * gettext ("")]ifelse([$2], [need-ngettext], [ + * ngettext ("", "", 0)], [])[ + _nl_msg_cat_cntr + *_nl_expand_alias ("")],
+return * gettext ("")$gt_expression_test_code + _nl_msg_cat_cntr + *_nl_expand_alias ("")],
                [LIBINTL="$LIBINTL $LIBICONV"
                 LTLIBINTL="$LTLIBINTL $LTLIBICONV"
-                gt_cv_func_gnugettext_libintl=yes
+                eval "$gt_func_gnugettext_libintl=yes"
                ])
             fi
             CPPFLAGS="$gt_save_CPPFLAGS"
@@ -223,8 +237,8 @@ return * gettext ("")]ifelse([$2], [need-ngettext], [ + * ngettext ("", "", 0)],
         dnl use it.  But if this macro is used in GNU gettext, and GNU
         dnl gettext is already preinstalled in libintl, we update this
         dnl libintl.  (Cf. the install rule in intl/Makefile.in.)
-        if test "$gt_cv_func_gnugettext_libc" = "yes" \
-           || { test "$gt_cv_func_gnugettext_libintl" = "yes" \
+        if { eval "gt_val=\$$gt_func_gnugettext_libc"; test "$gt_val" = "yes"; } \
+           || { { eval "gt_val=\$$gt_func_gnugettext_libintl"; test "$gt_val" = "yes"; } \
                 && test "$PACKAGE" != gettext-runtime \
                 && test "$PACKAGE" != gettext-tools; }; then
           gt_use_preinstalled_gnugettext=yes
@@ -247,8 +261,8 @@ return * gettext ("")]ifelse([$2], [need-ngettext], [ + * ngettext ("", "", 0)],
         dnl Mark actions used to generate GNU NLS library.
         BUILD_INCLUDED_LIBINTL=yes
         USE_INCLUDED_LIBINTL=yes
-        LIBINTL="ifelse([$3],[],\${top_builddir}/intl,[$3])/libintl.[]gt_libtool_suffix_prefix[]a $LIBICONV"
-        LTLIBINTL="ifelse([$3],[],\${top_builddir}/intl,[$3])/libintl.[]gt_libtool_suffix_prefix[]a $LTLIBICONV"
+        LIBINTL="ifelse([$3],[],\${top_builddir}/intl,[$3])/libintl.[]gt_libtool_suffix_prefix[]a $LIBICONV $LIBTHREAD"
+        LTLIBINTL="ifelse([$3],[],\${top_builddir}/intl,[$3])/libintl.[]gt_libtool_suffix_prefix[]a $LTLIBICONV $LTLIBTHREAD"
         LIBS=`echo " $LIBS " | sed -e 's/ -lintl / /' -e 's/^ //' -e 's/ $//'`
       fi
 
@@ -284,7 +298,7 @@ return * gettext ("")]ifelse([$2], [need-ngettext], [ + * ngettext ("", "", 0)],
   if test "$USE_NLS" = "yes"; then
     AC_MSG_CHECKING([where the gettext function comes from])
     if test "$gt_use_preinstalled_gnugettext" = "yes"; then
-      if test "$gt_cv_func_gnugettext_libintl" = "yes"; then
+      if { eval "gt_val=\$$gt_func_gnugettext_libintl"; test "$gt_val" = "yes"; }; then
         gt_source="external libintl"
       else
         gt_source="libc"
@@ -298,7 +312,7 @@ return * gettext ("")]ifelse([$2], [need-ngettext], [ + * ngettext ("", "", 0)],
   if test "$USE_NLS" = "yes"; then
 
     if test "$gt_use_preinstalled_gnugettext" = "yes"; then
-      if test "$gt_cv_func_gnugettext_libintl" = "yes"; then
+      if { eval "gt_val=\$$gt_func_gnugettext_libintl"; test "$gt_val" = "yes"; }; then
         AC_MSG_CHECKING([how to link with libintl])
         AC_MSG_RESULT([$LIBINTL])
         AC_LIB_APPENDTOVAR([CPPFLAGS], [$INCINTL])
@@ -366,134 +380,6 @@ return * gettext ("")]ifelse([$2], [need-ngettext], [ + * ngettext ("", "", 0)],
 ])
 
 
-dnl Checks for all prerequisites of the intl subdirectory,
-dnl except for INTL_LIBTOOL_SUFFIX_PREFIX (and possibly LIBTOOL), INTLOBJS,
-dnl            USE_INCLUDED_LIBINTL, BUILD_INCLUDED_LIBINTL.
-AC_DEFUN([AM_INTL_SUBDIR],
-[
-  AC_REQUIRE([AC_PROG_INSTALL])dnl
-  AC_REQUIRE([AM_MKINSTALLDIRS])dnl
-  AC_REQUIRE([AC_PROG_CC])dnl
-  AC_REQUIRE([AC_CANONICAL_HOST])dnl
-  AC_REQUIRE([gt_GLIBC2])dnl
-  AC_REQUIRE([AC_PROG_RANLIB])dnl
-  AC_REQUIRE([AC_ISC_POSIX])dnl
-  AC_REQUIRE([AC_HEADER_STDC])dnl
-  AC_REQUIRE([AC_C_CONST])dnl
-  AC_REQUIRE([bh_C_SIGNED])dnl
-  AC_REQUIRE([AC_C_INLINE])dnl
-  AC_REQUIRE([AC_TYPE_OFF_T])dnl
-  AC_REQUIRE([AC_TYPE_SIZE_T])dnl
-  AC_REQUIRE([gl_AC_TYPE_LONG_LONG])dnl
-  AC_REQUIRE([gt_TYPE_LONGDOUBLE])dnl
-  AC_REQUIRE([gt_TYPE_WCHAR_T])dnl
-  AC_REQUIRE([gt_TYPE_WINT_T])dnl
-  AC_REQUIRE([gl_AC_HEADER_INTTYPES_H])
-  AC_REQUIRE([gl_AC_HEADER_STDINT_H])
-  AC_REQUIRE([gt_TYPE_INTMAX_T])
-  AC_REQUIRE([gt_PRINTF_POSIX])
-  AC_REQUIRE([AC_FUNC_ALLOCA])dnl
-  AC_REQUIRE([AC_FUNC_MMAP])dnl
-  AC_REQUIRE([gl_GLIBC21])dnl
-  AC_REQUIRE([gt_INTDIV0])dnl
-  AC_REQUIRE([gl_AC_TYPE_UINTMAX_T])dnl
-  AC_REQUIRE([gt_HEADER_INTTYPES_H])dnl
-  AC_REQUIRE([gt_INTTYPES_PRI])dnl
-  AC_REQUIRE([gl_XSIZE])dnl
-  AC_REQUIRE([gt_INTL_MACOSX])dnl
-
-  AC_CHECK_TYPE([ptrdiff_t], ,
-    [AC_DEFINE([ptrdiff_t], [long],
-       [Define as the type of the result of subtracting two pointers, if the system doesn't define it.])
-    ])
-  AC_CHECK_HEADERS([argz.h limits.h locale.h nl_types.h malloc.h stddef.h \
-stdlib.h string.h unistd.h sys/param.h])
-  AC_CHECK_FUNCS([asprintf fwprintf getcwd getegid geteuid getgid getuid \
-mempcpy munmap putenv setenv setlocale snprintf stpcpy strcasecmp strdup \
-strtoul tsearch wcslen __argz_count __argz_stringify __argz_next \
-__fsetlocking])
-
-  dnl Use the _snprintf function only if it is declared (because on NetBSD it
-  dnl is defined as a weak alias of snprintf; we prefer to use the latter).
-  gt_CHECK_DECL(_snprintf, [#include <stdio.h>])
-  gt_CHECK_DECL(_snwprintf, [#include <stdio.h>])
-
-  dnl Use the *_unlocked functions only if they are declared.
-  dnl (because some of them were defined without being declared in Solaris
-  dnl 2.5.1 but were removed in Solaris 2.6, whereas we want binaries built
-  dnl on Solaris 2.5.1 to run on Solaris 2.6).
-  dnl Don't use AC_CHECK_DECLS because it isn't supported in autoconf-2.13.
-  gt_CHECK_DECL(feof_unlocked, [#include <stdio.h>])
-  gt_CHECK_DECL(fgets_unlocked, [#include <stdio.h>])
-  gt_CHECK_DECL(getc_unlocked, [#include <stdio.h>])
-
-  case $gt_cv_func_printf_posix in
-    *yes) HAVE_POSIX_PRINTF=1 ;;
-    *) HAVE_POSIX_PRINTF=0 ;;
-  esac
-  AC_SUBST([HAVE_POSIX_PRINTF])
-  if test "$ac_cv_func_asprintf" = yes; then
-    HAVE_ASPRINTF=1
-  else
-    HAVE_ASPRINTF=0
-  fi
-  AC_SUBST([HAVE_ASPRINTF])
-  if test "$ac_cv_func_snprintf" = yes; then
-    HAVE_SNPRINTF=1
-  else
-    HAVE_SNPRINTF=0
-  fi
-  AC_SUBST([HAVE_SNPRINTF])
-  if test "$ac_cv_func_wprintf" = yes; then
-    HAVE_WPRINTF=1
-  else
-    HAVE_WPRINTF=0
-  fi
-  AC_SUBST([HAVE_WPRINTF])
-
-  AM_ICONV
-  AM_LANGINFO_CODESET
-  if test $ac_cv_header_locale_h = yes; then
-    gt_LC_MESSAGES
-  fi
-
-  if test -n "$INTL_MACOSX_LIBS"; then
-    CPPFLAGS="$CPPFLAGS -I/System/Library/Frameworks/CoreFoundation.framework/Headers"
-  fi
-
-  dnl intl/plural.c is generated from intl/plural.y. It requires bison,
-  dnl because plural.y uses bison specific features. It requires at least
-  dnl bison-1.26 because earlier versions generate a plural.c that doesn't
-  dnl compile.
-  dnl bison is only needed for the maintainer (who touches plural.y). But in
-  dnl order to avoid separate Makefiles or --enable-maintainer-mode, we put
-  dnl the rule in general Makefile. Now, some people carelessly touch the
-  dnl files or have a broken "make" program, hence the plural.c rule will
-  dnl sometimes fire. To avoid an error, defines BISON to ":" if it is not
-  dnl present or too old.
-  AC_CHECK_PROGS([INTLBISON], [bison])
-  if test -z "$INTLBISON"; then
-    ac_verc_fail=yes
-  else
-    dnl Found it, now check the version.
-    AC_MSG_CHECKING([version of bison])
-changequote(<<,>>)dnl
-    ac_prog_version=`$INTLBISON --version 2>&1 | sed -n 's/^.*GNU Bison.* \([0-9]*\.[0-9.]*\).*$/\1/p'`
-    case $ac_prog_version in
-      '') ac_prog_version="v. ?.??, bad"; ac_verc_fail=yes;;
-      1.2[6-9]* | 1.[3-9][0-9]* | [2-9].*)
-changequote([,])dnl
-         ac_prog_version="$ac_prog_version, ok"; ac_verc_fail=no;;
-      *) ac_prog_version="$ac_prog_version, bad"; ac_verc_fail=yes;;
-    esac
-    AC_MSG_RESULT([$ac_prog_version])
-  fi
-  if test $ac_verc_fail = yes; then
-    INTLBISON=:
-  fi
-])
-
-
 dnl Checks for special options needed on MacOS X.
 dnl Defines INTL_MACOSX_LIBS.
 AC_DEFUN([gt_INTL_MACOSX],
@@ -501,15 +387,12 @@ AC_DEFUN([gt_INTL_MACOSX],
   dnl Check for API introduced in MacOS X 10.2.
   AC_CACHE_CHECK([for CFPreferencesCopyAppValue],
     gt_cv_func_CFPreferencesCopyAppValue,
-    [gt_save_CPPFLAGS="$CPPFLAGS"
-     CPPFLAGS="$CPPFLAGS -I/System/Library/Frameworks/CoreFoundation.framework/Headers"
-     gt_save_LIBS="$LIBS"
-     LIBS="$LIBS -framework CoreFoundation"
-     AC_TRY_LINK([#include <CFPreferences.h>],
+    [gt_save_LIBS="$LIBS"
+     LIBS="$LIBS -Wl,-framework -Wl,CoreFoundation"
+     AC_TRY_LINK([#include <CoreFoundation/CFPreferences.h>],
        [CFPreferencesCopyAppValue(NULL, NULL)],
        [gt_cv_func_CFPreferencesCopyAppValue=yes],
        [gt_cv_func_CFPreferencesCopyAppValue=no])
-     CPPFLAGS="$gt_save_CPPFLAGS"
      LIBS="$gt_save_LIBS"])
   if test $gt_cv_func_CFPreferencesCopyAppValue = yes; then
     AC_DEFINE([HAVE_CFPREFERENCESCOPYAPPVALUE], 1,
@@ -517,14 +400,11 @@ AC_DEFUN([gt_INTL_MACOSX],
   fi
   dnl Check for API introduced in MacOS X 10.3.
   AC_CACHE_CHECK([for CFLocaleCopyCurrent], gt_cv_func_CFLocaleCopyCurrent,
-    [gt_save_CPPFLAGS="$CPPFLAGS"
-     CPPFLAGS="$CPPFLAGS -I/System/Library/Frameworks/CoreFoundation.framework/Headers"
-     gt_save_LIBS="$LIBS"
-     LIBS="$LIBS -framework CoreFoundation"
-     AC_TRY_LINK([#include <CFLocale.h>], [CFLocaleCopyCurrent();],
+    [gt_save_LIBS="$LIBS"
+     LIBS="$LIBS -Wl,-framework -Wl,CoreFoundation"
+     AC_TRY_LINK([#include <CoreFoundation/CFLocale.h>], [CFLocaleCopyCurrent();],
        [gt_cv_func_CFLocaleCopyCurrent=yes],
        [gt_cv_func_CFLocaleCopyCurrent=no])
-     CPPFLAGS="$gt_save_CPPFLAGS"
      LIBS="$gt_save_LIBS"])
   if test $gt_cv_func_CFLocaleCopyCurrent = yes; then
     AC_DEFINE([HAVE_CFLOCALECOPYCURRENT], 1,
@@ -538,23 +418,18 @@ AC_DEFUN([gt_INTL_MACOSX],
 ])
 
 
-dnl gt_CHECK_DECL(FUNC, INCLUDES)
-dnl Check whether a function is declared.
-AC_DEFUN([gt_CHECK_DECL],
+dnl gt_NEEDS_INIT ensures that the gt_needs variable is initialized.
+m4_define([gt_NEEDS_INIT],
 [
-  AC_CACHE_CHECK([whether $1 is declared], ac_cv_have_decl_$1,
-    [AC_TRY_COMPILE([$2], [
-#ifndef $1
-  char *p = (char *) $1;
-#endif
-], ac_cv_have_decl_$1=yes, ac_cv_have_decl_$1=no)])
-  if test $ac_cv_have_decl_$1 = yes; then
-    gt_value=1
-  else
-    gt_value=0
-  fi
-  AC_DEFINE_UNQUOTED([HAVE_DECL_]translit($1, [a-z], [A-Z]), [$gt_value],
-    [Define to 1 if you have the declaration of `$1', and to 0 if you don't.])
+  m4_divert_text([DEFAULTS], [gt_needs=])
+  m4_define([gt_NEEDS_INIT], [])
+])
+
+
+dnl Usage: AM_GNU_GETTEXT_NEED([NEEDSYMBOL])
+AC_DEFUN([AM_GNU_GETTEXT_NEED],
+[
+  m4_divert_text([INIT_PREPARE], [gt_needs="$gt_needs $1"])
 ])
 
 
@@ -755,7 +630,30 @@ AC_PATH_PROG(INTLTOOL_XGETTEXT, xgettext, xgettext)
 
 # Substitute ALL_LINGUAS so we can use it in po/Makefile
 AC_SUBST(ALL_LINGUAS)
-    
+
+# Set DATADIRNAME correctly if it is not set yet
+# (copied from glib-gettext.m4)
+if test -z "$DATADIRNAME"; then
+  AC_TRY_LINK(, [extern int _nl_msg_cat_cntr;
+                 return _nl_msg_cat_cntr],
+    [DATADIRNAME=share],
+    [case $host in
+    *-*-solaris*)
+    dnl On Solaris, if bind_textdomain_codeset is in libc,
+    dnl GNU format message catalog is always supported,
+    dnl since both are added to the libc all together.
+    dnl Hence, we'd like to go with DATADIRNAME=share
+    dnl in this case.
+    AC_CHECK_FUNC(bind_textdomain_codeset,
+      [DATADIRNAME=share], [DATADIRNAME=lib])
+    ;;
+    *)
+    [DATADIRNAME=lib]
+    ;;
+    esac])
+fi
+AC_SUBST(DATADIRNAME)
+
 IT_PO_SUBDIR([po])
 
 dnl The following is very similar to
@@ -956,8 +854,8 @@ test -z "$LD" && AC_MSG_ERROR([no acceptable ld found in \$PATH])
 AC_LIB_PROG_LD_GNU
 ])
 
-# lib-link.m4 serial 6 (gettext-0.14.3)
-dnl Copyright (C) 2001-2005 Free Software Foundation, Inc.
+# lib-link.m4 serial 9 (gettext-0.16)
+dnl Copyright (C) 2001-2006 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -1084,6 +982,7 @@ dnl the libraries corresponding to explicit and implicit dependencies.
 dnl Sets the LIB${NAME}, LTLIB${NAME} and INC${NAME} variables.
 AC_DEFUN([AC_LIB_LINKFLAGS_BODY],
 [
+  AC_REQUIRE([AC_LIB_PREPARE_MULTILIB])
   define([NAME],[translit([$1],[abcdefghijklmnopqrstuvwxyz./-],
                                [ABCDEFGHIJKLMNOPQRSTUVWXYZ___])])
   dnl By default, look in $includedir and $libdir.
@@ -1106,7 +1005,7 @@ AC_DEFUN([AC_LIB_LINKFLAGS_BODY],
         ])
       else
         additional_includedir="$withval/include"
-        additional_libdir="$withval/lib"
+        additional_libdir="$withval/$acl_libdirstem"
       fi
     fi
 ])
@@ -1155,9 +1054,16 @@ AC_DEFUN([AC_LIB_LINKFLAGS_BODY],
           found_so=
           found_a=
           if test $use_additional = yes; then
-            if test -n "$shlibext" && test -f "$additional_libdir/lib$name.$shlibext"; then
+            if test -n "$shlibext" \
+               && { test -f "$additional_libdir/lib$name.$shlibext" \
+                    || { test "$shlibext" = dll \
+                         && test -f "$additional_libdir/lib$name.dll.a"; }; }; then
               found_dir="$additional_libdir"
-              found_so="$additional_libdir/lib$name.$shlibext"
+              if test -f "$additional_libdir/lib$name.$shlibext"; then
+                found_so="$additional_libdir/lib$name.$shlibext"
+              else
+                found_so="$additional_libdir/lib$name.dll.a"
+              fi
               if test -f "$additional_libdir/lib$name.la"; then
                 found_la="$additional_libdir/lib$name.la"
               fi
@@ -1177,9 +1083,16 @@ AC_DEFUN([AC_LIB_LINKFLAGS_BODY],
               case "$x" in
                 -L*)
                   dir=`echo "X$x" | sed -e 's/^X-L//'`
-                  if test -n "$shlibext" && test -f "$dir/lib$name.$shlibext"; then
+                  if test -n "$shlibext" \
+                     && { test -f "$dir/lib$name.$shlibext" \
+                          || { test "$shlibext" = dll \
+                               && test -f "$dir/lib$name.dll.a"; }; }; then
                     found_dir="$dir"
-                    found_so="$dir/lib$name.$shlibext"
+                    if test -f "$dir/lib$name.$shlibext"; then
+                      found_so="$dir/lib$name.$shlibext"
+                    else
+                      found_so="$dir/lib$name.dll.a"
+                    fi
                     if test -f "$dir/lib$name.la"; then
                       found_la="$dir/lib$name.la"
                     fi
@@ -1206,7 +1119,7 @@ AC_DEFUN([AC_LIB_LINKFLAGS_BODY],
               dnl Linking with a shared library. We attempt to hardcode its
               dnl directory into the executable's runpath, unless it's the
               dnl standard /usr/lib.
-              if test "$enable_rpath" = no || test "X$found_dir" = "X/usr/lib"; then
+              if test "$enable_rpath" = no || test "X$found_dir" = "X/usr/$acl_libdirstem"; then
                 dnl No hardcoding is needed.
                 LIB[]NAME="${LIB[]NAME}${LIB[]NAME:+ }$found_so"
               else
@@ -1292,8 +1205,8 @@ AC_DEFUN([AC_LIB_LINKFLAGS_BODY],
             dnl Assume the include files are nearby.
             additional_includedir=
             case "$found_dir" in
-              */lib | */lib/)
-                basedir=`echo "X$found_dir" | sed -e 's,^X,,' -e 's,/lib/*$,,'`
+              */$acl_libdirstem | */$acl_libdirstem/)
+                basedir=`echo "X$found_dir" | sed -e 's,^X,,' -e "s,/$acl_libdirstem/"'*$,,'`
                 additional_includedir="$basedir/include"
                 ;;
             esac
@@ -1354,9 +1267,9 @@ AC_DEFUN([AC_LIB_LINKFLAGS_BODY],
                     dnl   3. if it's already present in $LDFLAGS or the already
                     dnl      constructed $LIBNAME,
                     dnl   4. if it doesn't exist as a directory.
-                    if test "X$additional_libdir" != "X/usr/lib"; then
+                    if test "X$additional_libdir" != "X/usr/$acl_libdirstem"; then
                       haveit=
-                      if test "X$additional_libdir" = "X/usr/local/lib"; then
+                      if test "X$additional_libdir" = "X/usr/local/$acl_libdirstem"; then
                         if test -n "$GCC"; then
                           case $host_os in
                             linux* | gnu* | k*bsd*-gnu) haveit=yes;;
@@ -1510,7 +1423,83 @@ AC_DEFUN([AC_LIB_APPENDTOVAR],
   done
 ])
 
-# lib-prefix.m4 serial 4 (gettext-0.14.2)
+dnl For those cases where a variable contains several -L and -l options
+dnl referring to unknown libraries and directories, this macro determines the
+dnl necessary additional linker options for the runtime path.
+dnl AC_LIB_LINKFLAGS_FROM_LIBS([LDADDVAR], [LIBSVALUE], [USE-LIBTOOL])
+dnl sets LDADDVAR to linker options needed together with LIBSVALUE.
+dnl If USE-LIBTOOL evaluates to non-empty, linking with libtool is assumed,
+dnl otherwise linking without libtool is assumed.
+AC_DEFUN([AC_LIB_LINKFLAGS_FROM_LIBS],
+[
+  AC_REQUIRE([AC_LIB_RPATH])
+  AC_REQUIRE([AC_LIB_PREPARE_MULTILIB])
+  $1=
+  if test "$enable_rpath" != no; then
+    if test -n "$hardcode_libdir_flag_spec" && test "$hardcode_minus_L" = no; then
+      dnl Use an explicit option to hardcode directories into the resulting
+      dnl binary.
+      rpathdirs=
+      next=
+      for opt in $2; do
+        if test -n "$next"; then
+          dir="$next"
+          dnl No need to hardcode the standard /usr/lib.
+          if test "X$dir" != "X/usr/$acl_libdirstem"; then
+            rpathdirs="$rpathdirs $dir"
+          fi
+          next=
+        else
+          case $opt in
+            -L) next=yes ;;
+            -L*) dir=`echo "X$opt" | sed -e 's,^X-L,,'`
+                 dnl No need to hardcode the standard /usr/lib.
+                 if test "X$dir" != "X/usr/$acl_libdirstem"; then
+                   rpathdirs="$rpathdirs $dir"
+                 fi
+                 next= ;;
+            *) next= ;;
+          esac
+        fi
+      done
+      if test "X$rpathdirs" != "X"; then
+        if test -n ""$3""; then
+          dnl libtool is used for linking. Use -R options.
+          for dir in $rpathdirs; do
+            $1="${$1}${$1:+ }-R$dir"
+          done
+        else
+          dnl The linker is used for linking directly.
+          if test -n "$hardcode_libdir_separator"; then
+            dnl Weird platform: only the last -rpath option counts, the user
+            dnl must pass all path elements in one option.
+            alldirs=
+            for dir in $rpathdirs; do
+              alldirs="${alldirs}${alldirs:+$hardcode_libdir_separator}$dir"
+            done
+            acl_save_libdir="$libdir"
+            libdir="$alldirs"
+            eval flag=\"$hardcode_libdir_flag_spec\"
+            libdir="$acl_save_libdir"
+            $1="$flag"
+          else
+            dnl The -rpath options are cumulative.
+            for dir in $rpathdirs; do
+              acl_save_libdir="$libdir"
+              libdir="$dir"
+              eval flag=\"$hardcode_libdir_flag_spec\"
+              libdir="$acl_save_libdir"
+              $1="${$1}${$1:+ }$flag"
+            done
+          fi
+        fi
+      fi
+    fi
+  fi
+  AC_SUBST([$1])
+])
+
+# lib-prefix.m4 serial 5 (gettext-0.15)
 dnl Copyright (C) 2001-2005 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
@@ -1536,6 +1525,7 @@ AC_DEFUN([AC_LIB_PREFIX],
   AC_BEFORE([$0], [AC_LIB_LINKFLAGS])
   AC_REQUIRE([AC_PROG_CC])
   AC_REQUIRE([AC_CANONICAL_HOST])
+  AC_REQUIRE([AC_LIB_PREPARE_MULTILIB])
   AC_REQUIRE([AC_LIB_PREPARE_PREFIX])
   dnl By default, look in $includedir and $libdir.
   use_additional=yes
@@ -1557,7 +1547,7 @@ AC_DEFUN([AC_LIB_PREFIX],
         ])
       else
         additional_includedir="$withval/include"
-        additional_libdir="$withval/lib"
+        additional_libdir="$withval/$acl_libdirstem"
       fi
     fi
 ])
@@ -1599,7 +1589,7 @@ AC_DEFUN([AC_LIB_PREFIX],
     dnl   2. if it's already present in $LDFLAGS,
     dnl   3. if it's /usr/local/lib and we are using GCC on Linux,
     dnl   4. if it doesn't exist as a directory.
-    if test "X$additional_libdir" != "X/usr/lib"; then
+    if test "X$additional_libdir" != "X/usr/$acl_libdirstem"; then
       haveit=
       for x in $LDFLAGS; do
         AC_LIB_WITH_FINAL_PREFIX([eval x=\"$x\"])
@@ -1609,7 +1599,7 @@ AC_DEFUN([AC_LIB_PREFIX],
         fi
       done
       if test -z "$haveit"; then
-        if test "X$additional_libdir" = "X/usr/local/lib"; then
+        if test "X$additional_libdir" = "X/usr/local/$acl_libdirstem"; then
           if test -n "$GCC"; then
             case $host_os in
               linux*) haveit=yes;;
@@ -1664,8 +1654,39 @@ AC_DEFUN([AC_LIB_WITH_FINAL_PREFIX],
   prefix="$acl_save_prefix"
 ])
 
-# nls.m4 serial 2 (gettext-0.14.3)
-dnl Copyright (C) 1995-2003, 2005 Free Software Foundation, Inc.
+dnl AC_LIB_PREPARE_MULTILIB creates a variable acl_libdirstem, containing
+dnl the basename of the libdir, either "lib" or "lib64".
+AC_DEFUN([AC_LIB_PREPARE_MULTILIB],
+[
+  dnl There is no formal standard regarding lib and lib64. The current
+  dnl practice is that on a system supporting 32-bit and 64-bit instruction
+  dnl sets or ABIs, 64-bit libraries go under $prefix/lib64 and 32-bit
+  dnl libraries go under $prefix/lib. We determine the compiler's default
+  dnl mode by looking at the compiler's library search path. If at least
+  dnl of its elements ends in /lib64 or points to a directory whose absolute
+  dnl pathname ends in /lib64, we assume a 64-bit ABI. Otherwise we use the
+  dnl default, namely "lib".
+  acl_libdirstem=lib
+  searchpath=`(LC_ALL=C $CC -print-search-dirs) 2>/dev/null | sed -n -e 's,^libraries: ,,p' | sed -e 's,^=,,'`
+  if test -n "$searchpath"; then
+    acl_save_IFS="${IFS= 	}"; IFS=":"
+    for searchdir in $searchpath; do
+      if test -d "$searchdir"; then
+        case "$searchdir" in
+          */lib64/ | */lib64 ) acl_libdirstem=lib64 ;;
+          *) searchdir=`cd "$searchdir" && pwd`
+             case "$searchdir" in
+               */lib64 ) acl_libdirstem=lib64 ;;
+             esac ;;
+        esac
+      fi
+    done
+    IFS="$acl_save_IFS"
+  fi
+])
+
+# nls.m4 serial 3 (gettext-0.15)
+dnl Copyright (C) 1995-2003, 2005-2006 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -1696,28 +1717,8 @@ AC_DEFUN([AM_NLS],
   AC_SUBST(USE_NLS)
 ])
 
-AC_DEFUN([AM_MKINSTALLDIRS],
-[
-  dnl Tell automake >= 1.10 to complain if mkinstalldirs is missing.
-  m4_ifdef([AC_REQUIRE_AUX_FILE], [AC_REQUIRE_AUX_FILE([mkinstalldirs])])
-  dnl If the AC_CONFIG_AUX_DIR macro for autoconf is used we possibly
-  dnl find the mkinstalldirs script in another subdir but $(top_srcdir).
-  dnl Try to locate it.
-  MKINSTALLDIRS=
-  if test -n "$ac_aux_dir"; then
-    case "$ac_aux_dir" in
-      /*) MKINSTALLDIRS="$ac_aux_dir/mkinstalldirs" ;;
-      *) MKINSTALLDIRS="\$(top_builddir)/$ac_aux_dir/mkinstalldirs" ;;
-    esac
-  fi
-  if test -z "$MKINSTALLDIRS"; then
-    MKINSTALLDIRS="\$(top_srcdir)/mkinstalldirs"
-  fi
-  AC_SUBST(MKINSTALLDIRS)
-])
-
-# po.m4 serial 7 (gettext-0.14.3)
-dnl Copyright (C) 1995-2005 Free Software Foundation, Inc.
+# po.m4 serial 13 (gettext-0.15)
+dnl Copyright (C) 1995-2006 Free Software Foundation, Inc.
 dnl This file is free software; the Free Software Foundation
 dnl gives unlimited permission to copy and/or distribute it,
 dnl with or without modifications, as long as this notice is preserved.
@@ -1742,7 +1743,7 @@ AC_DEFUN([AM_PO_SUBDIRS],
 [
   AC_REQUIRE([AC_PROG_MAKE_SET])dnl
   AC_REQUIRE([AC_PROG_INSTALL])dnl
-  AC_REQUIRE([AM_MKINSTALLDIRS])dnl
+  AC_REQUIRE([AM_PROG_MKDIR_P])dnl defined by automake
   AC_REQUIRE([AM_NLS])dnl
 
   dnl Perform the following tests also if --disable-nls has been given,
@@ -1757,6 +1758,22 @@ AC_DEFUN([AM_PO_SUBDIRS],
     :)
   AC_PATH_PROG(GMSGFMT, gmsgfmt, $MSGFMT)
 
+  dnl Test whether it is GNU msgfmt >= 0.15.
+changequote(,)dnl
+  case `$MSGFMT --version | sed 1q | sed -e 's,^[^0-9]*,,'` in
+    '' | 0.[0-9] | 0.[0-9].* | 0.1[0-4] | 0.1[0-4].*) MSGFMT_015=: ;;
+    *) MSGFMT_015=$MSGFMT ;;
+  esac
+changequote([,])dnl
+  AC_SUBST([MSGFMT_015])
+changequote(,)dnl
+  case `$GMSGFMT --version | sed 1q | sed -e 's,^[^0-9]*,,'` in
+    '' | 0.[0-9] | 0.[0-9].* | 0.1[0-4] | 0.1[0-4].*) GMSGFMT_015=: ;;
+    *) GMSGFMT_015=$GMSGFMT ;;
+  esac
+changequote([,])dnl
+  AC_SUBST([GMSGFMT_015])
+
   dnl Search for GNU xgettext 0.12 or newer in the PATH.
   dnl The first test excludes Solaris xgettext and early GNU xgettext versions.
   dnl The second test excludes FreeBSD xgettext.
@@ -1767,44 +1784,26 @@ AC_DEFUN([AM_PO_SUBDIRS],
   dnl Remove leftover from FreeBSD xgettext call.
   rm -f messages.po
 
+  dnl Test whether it is GNU xgettext >= 0.15.
+changequote(,)dnl
+  case `$XGETTEXT --version | sed 1q | sed -e 's,^[^0-9]*,,'` in
+    '' | 0.[0-9] | 0.[0-9].* | 0.1[0-4] | 0.1[0-4].*) XGETTEXT_015=: ;;
+    *) XGETTEXT_015=$XGETTEXT ;;
+  esac
+changequote([,])dnl
+  AC_SUBST([XGETTEXT_015])
+
   dnl Search for GNU msgmerge 0.11 or newer in the PATH.
   AM_PATH_PROG_WITH_TEST(MSGMERGE, msgmerge,
     [$ac_dir/$ac_word --update -q /dev/null /dev/null >&]AS_MESSAGE_LOG_FD[ 2>&1], :)
 
-  dnl This could go away some day; the PATH_PROG_WITH_TEST already does it.
-  dnl Test whether we really found GNU msgfmt.
-  if test "$GMSGFMT" != ":"; then
-    dnl If it is no GNU msgfmt we define it as : so that the
-    dnl Makefiles still can work.
-    if $GMSGFMT --statistics /dev/null >/dev/null 2>&1 &&
-       (if $GMSGFMT --statistics /dev/null 2>&1 >/dev/null | grep usage >/dev/null; then exit 1; else exit 0; fi); then
-      : ;
-    else
-      GMSGFMT=`echo "$GMSGFMT" | sed -e 's,^.*/,,'`
-      AC_MSG_RESULT(
-        [found $GMSGFMT program is not GNU msgfmt; ignore it])
-      GMSGFMT=":"
-    fi
-  fi
+  dnl Installation directories.
+  dnl Autoconf >= 2.60 defines localedir. For older versions of autoconf, we
+  dnl have to define it here, so that it can be used in po/Makefile.
+  test -n "$localedir" || localedir='${datadir}/locale'
+  AC_SUBST([localedir])
 
-  dnl This could go away some day; the PATH_PROG_WITH_TEST already does it.
-  dnl Test whether we really found GNU xgettext.
-  if test "$XGETTEXT" != ":"; then
-    dnl If it is no GNU xgettext we define it as : so that the
-    dnl Makefiles still can work.
-    if $XGETTEXT --omit-header --copyright-holder= --msgid-bugs-address= /dev/null >/dev/null 2>&1 &&
-       (if $XGETTEXT --omit-header --copyright-holder= --msgid-bugs-address= /dev/null 2>&1 >/dev/null | grep usage >/dev/null; then exit 1; else exit 0; fi); then
-      : ;
-    else
-      AC_MSG_RESULT(
-        [found xgettext program is not GNU xgettext; ignore it])
-      XGETTEXT=":"
-    fi
-    dnl Remove leftover from FreeBSD xgettext call.
-    rm -f messages.po
-  fi
-
-  AC_OUTPUT_COMMANDS([
+  AC_CONFIG_COMMANDS([po-directories], [[
     for ac_file in $CONFIG_FILES; do
       # Support "outfile[:infile[:infile...]]"
       case "$ac_file" in
@@ -1841,11 +1840,12 @@ AC_DEFUN([AM_PO_SUBDIRS],
               test -n "$as_me" && echo "$as_me: setting ALL_LINGUAS in configure.in is obsolete" || echo "setting ALL_LINGUAS in configure.in is obsolete"
             fi
             ALL_LINGUAS_=`sed -e "/^#/d" -e "s/#.*//" "$ac_given_srcdir/$ac_dir/LINGUAS"`
-            # Hide the ALL_LINGUAS assigment from automake.
+            # Hide the ALL_LINGUAS assigment from automake < 1.5.
             eval 'ALL_LINGUAS''=$ALL_LINGUAS_'
             POMAKEFILEDEPS="$POMAKEFILEDEPS LINGUAS"
           else
             # The set of available languages was given in configure.in.
+            # Hide the ALL_LINGUAS assigment from automake < 1.5.
             eval 'ALL_LINGUAS''=$OBSOLETE_ALL_LINGUAS'
           fi
           # Compute POFILES
@@ -1915,10 +1915,10 @@ AC_DEFUN([AM_PO_SUBDIRS],
         fi
         ;;
       esac
-    done],
+    done]],
    [# Capture the value of obsolete ALL_LINGUAS because we need it to compute
     # POFILES, UPDATEPOFILES, DUMMYPOFILES, GMOFILES, CATALOGS. But hide it
-    # from automake.
+    # from automake < 1.5.
     eval 'OBSOLETE_ALL_LINGUAS''="$ALL_LINGUAS"'
     # Capture the value of LINGUAS because we need it to compute CATALOGS.
     LINGUAS="${LINGUAS-%UNSET%}"
@@ -2004,7 +2004,7 @@ x
 changequote([,])dnl
 
   # Set POTFILES to the value of the Makefile variable POTFILES.
-  sed_x_POTFILES="`$gt_echo \"$sed_x_variable\" | sed -e '/^ *#/d' -e 's/VARIABLE/POTFILES/g'`"
+  sed_x_POTFILES=`$gt_echo "$sed_x_variable" | sed -e '/^ *#/d' -e 's/VARIABLE/POTFILES/g'`
   POTFILES=`sed -n -e "$sed_x_POTFILES" < "$ac_file"`
   # Compute POTFILES_DEPS as
   #   $(foreach file, $(POTFILES), $(top_srcdir)/$(file))
@@ -2023,10 +2023,10 @@ changequote([,])dnl
     POMAKEFILEDEPS="$POMAKEFILEDEPS LINGUAS"
   else
     # Set ALL_LINGUAS to the value of the Makefile variable LINGUAS.
-    sed_x_LINGUAS="`$gt_echo \"$sed_x_variable\" | sed -e '/^ *#/d' -e 's/VARIABLE/LINGUAS/g'`"
+    sed_x_LINGUAS=`$gt_echo "$sed_x_variable" | sed -e '/^ *#/d' -e 's/VARIABLE/LINGUAS/g'`
     ALL_LINGUAS_=`sed -n -e "$sed_x_LINGUAS" < "$ac_file"`
   fi
-  # Hide the ALL_LINGUAS assigment from automake.
+  # Hide the ALL_LINGUAS assigment from automake < 1.5.
   eval 'ALL_LINGUAS''=$ALL_LINGUAS_'
   # Compute POFILES
   # as      $(foreach lang, $(ALL_LINGUAS), $(srcdir)/$(lang).po)
@@ -2239,7 +2239,7 @@ fi
 AC_SUBST($1)dnl
 ])
 
-# Copyright (C) 2002, 2003, 2005  Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2005, 2006  Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -2249,14 +2249,29 @@ AC_SUBST($1)dnl
 # ----------------------------
 # Automake X.Y traces this macro to ensure aclocal.m4 has been
 # generated from the m4 files accompanying Automake X.Y.
-AC_DEFUN([AM_AUTOMAKE_VERSION], [am__api_version="1.9"])
+# (This private macro should not be called outside this file.)
+AC_DEFUN([AM_AUTOMAKE_VERSION],
+[am__api_version='1.10'
+dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
+dnl require some minimum version.  Point them to the right macro.
+m4_if([$1], [1.10], [],
+      [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
+])
+
+# _AM_AUTOCONF_VERSION(VERSION)
+# -----------------------------
+# aclocal traces this macro to find the Autoconf version.
+# This is a private macro too.  Using m4_define simplifies
+# the logic in aclocal, which can simply ignore this definition.
+m4_define([_AM_AUTOCONF_VERSION], [])
 
 # AM_SET_CURRENT_AUTOMAKE_VERSION
 # -------------------------------
-# Call AM_AUTOMAKE_VERSION so it can be traced.
+# Call AM_AUTOMAKE_VERSION and AM_AUTOMAKE_VERSION so they can be traced.
 # This function is AC_REQUIREd by AC_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-	 [AM_AUTOMAKE_VERSION([1.9.6])])
+[AM_AUTOMAKE_VERSION([1.10])dnl
+_AM_AUTOCONF_VERSION(m4_PACKAGE_VERSION)])
 
 # AM_AUX_DIR_EXPAND                                         -*- Autoconf -*-
 
@@ -2313,14 +2328,14 @@ am_aux_dir=`cd $ac_aux_dir && pwd`
 
 # AM_CONDITIONAL                                            -*- Autoconf -*-
 
-# Copyright (C) 1997, 2000, 2001, 2003, 2004, 2005
+# Copyright (C) 1997, 2000, 2001, 2003, 2004, 2005, 2006
 # Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-# serial 7
+# serial 8
 
 # AM_CONDITIONAL(NAME, SHELL-CONDITION)
 # -------------------------------------
@@ -2329,8 +2344,10 @@ AC_DEFUN([AM_CONDITIONAL],
 [AC_PREREQ(2.52)dnl
  ifelse([$1], [TRUE],  [AC_FATAL([$0: invalid condition: $1])],
 	[$1], [FALSE], [AC_FATAL([$0: invalid condition: $1])])dnl
-AC_SUBST([$1_TRUE])
-AC_SUBST([$1_FALSE])
+AC_SUBST([$1_TRUE])dnl
+AC_SUBST([$1_FALSE])dnl
+_AM_SUBST_NOTMAKE([$1_TRUE])dnl
+_AM_SUBST_NOTMAKE([$1_FALSE])dnl
 if $2; then
   $1_TRUE=
   $1_FALSE='#'
@@ -2344,15 +2361,14 @@ AC_CONFIG_COMMANDS_PRE(
 Usually this means the macro was only invoked conditionally.]])
 fi])])
 
-
-# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005
+# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2006
 # Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-# serial 8
+# serial 9
 
 # There are a few dirty hacks below to avoid letting `AC_PROG_CC' be
 # written in clear, in which case automake, when reading aclocal.m4,
@@ -2380,6 +2396,7 @@ AC_REQUIRE([AM_DEP_TRACK])dnl
 ifelse([$1], CC,   [depcc="$CC"   am_compiler_list=],
        [$1], CXX,  [depcc="$CXX"  am_compiler_list=],
        [$1], OBJC, [depcc="$OBJC" am_compiler_list='gcc3 gcc'],
+       [$1], UPC,  [depcc="$UPC"  am_compiler_list=],
        [$1], GCJ,  [depcc="$GCJ"  am_compiler_list='gcc3 gcc'],
                    [depcc="$$1"   am_compiler_list=])
 
@@ -2445,6 +2462,7 @@ AC_CACHE_CHECK([dependency style of $depcc],
        depfile=sub/conftest.Po tmpdepfile=sub/conftest.TPo \
        $SHELL ./depcomp $depcc -c -o sub/conftest.${OBJEXT-o} sub/conftest.c \
          >/dev/null 2>conftest.err &&
+       grep sub/conftst1.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftst6.h sub/conftest.Po > /dev/null 2>&1 &&
        grep sub/conftest.${OBJEXT-o} sub/conftest.Po > /dev/null 2>&1 &&
        ${MAKE-make} -s -f confmf > /dev/null 2>&1; then
@@ -2497,7 +2515,8 @@ if test "x$enable_dependency_tracking" != xno; then
   AMDEPBACKSLASH='\'
 fi
 AM_CONDITIONAL([AMDEP], [test "x$enable_dependency_tracking" != xno])
-AC_SUBST([AMDEPBACKSLASH])
+AC_SUBST([AMDEPBACKSLASH])dnl
+_AM_SUBST_NOTMAKE([AMDEPBACKSLASH])dnl
 ])
 
 # Generate code to set up dependency tracking.              -*- Autoconf -*-
@@ -2522,8 +2541,9 @@ AC_DEFUN([_AM_OUTPUT_DEPENDENCY_COMMANDS],
   # some people rename them; so instead we look at the file content.
   # Grep'ing the first line is not enough: some people post-process
   # each Makefile.in and add a new line on top of each file to say so.
-  # So let's grep whole file.
-  if grep '^#.*generated by automake' $mf > /dev/null 2>&1; then
+  # Grep'ing the whole file is not good either: AIX grep has a line
+  # limit of 2048, but all sed's we know have understand at least 4000.
+  if sed 10q "$mf" | grep '^#.*generated by automake' > /dev/null 2>&1; then
     dirpart=`AS_DIRNAME("$mf")`
   else
     continue
@@ -2570,8 +2590,8 @@ AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS],
 
 # Do all the work for Automake.                             -*- Autoconf -*-
 
-# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005
-# Free Software Foundation, Inc.
+# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
+# 2005, 2006 Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -2594,16 +2614,20 @@ AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS],
 # arguments mandatory, and then we can depend on a new Autoconf
 # release and drop the old call support.
 AC_DEFUN([AM_INIT_AUTOMAKE],
-[AC_PREREQ([2.58])dnl
+[AC_PREREQ([2.60])dnl
 dnl Autoconf wants to disallow AM_ names.  We explicitly allow
 dnl the ones we care about.
 m4_pattern_allow([^AM_[A-Z]+FLAGS$])dnl
 AC_REQUIRE([AM_SET_CURRENT_AUTOMAKE_VERSION])dnl
 AC_REQUIRE([AC_PROG_INSTALL])dnl
-# test to see if srcdir already configured
-if test "`cd $srcdir && pwd`" != "`pwd`" &&
-   test -f $srcdir/config.status; then
-  AC_MSG_ERROR([source directory already configured; run "make distclean" there first])
+if test "`cd $srcdir && pwd`" != "`pwd`"; then
+  # Use -I$(srcdir) only when $(srcdir) != ., so that make's output
+  # is not polluted with repeated "-I."
+  AC_SUBST([am__isrc], [' -I$(srcdir)'])_AM_SUBST_NOTMAKE([am__isrc])dnl
+  # test to see if srcdir already configured
+  if test -f $srcdir/config.status; then
+    AC_MSG_ERROR([source directory already configured; run "make distclean" there first])
+  fi
 fi
 
 # test whether we have cygpath
@@ -2623,6 +2647,9 @@ m4_ifval([$2],
  AC_SUBST([PACKAGE], [$1])dnl
  AC_SUBST([VERSION], [$2])],
 [_AM_SET_OPTIONS([$1])dnl
+dnl Diagnose old-style AC_INIT with new-style AM_AUTOMAKE_INIT.
+m4_if(m4_ifdef([AC_PACKAGE_NAME], 1)m4_ifdef([AC_PACKAGE_VERSION], 1), 11,,
+  [m4_fatal([AC_INIT should be called with package and version arguments])])dnl
  AC_SUBST([PACKAGE], ['AC_PACKAGE_TARNAME'])dnl
  AC_SUBST([VERSION], ['AC_PACKAGE_VERSION'])])dnl
 
@@ -2658,6 +2685,10 @@ AC_PROVIDE_IFELSE([AC_PROG_CXX],
                   [_AM_DEPENDENCIES(CXX)],
                   [define([AC_PROG_CXX],
                           defn([AC_PROG_CXX])[_AM_DEPENDENCIES(CXX)])])dnl
+AC_PROVIDE_IFELSE([AC_PROG_OBJC],
+                  [_AM_DEPENDENCIES(OBJC)],
+                  [define([AC_PROG_OBJC],
+                          defn([AC_PROG_OBJC])[_AM_DEPENDENCIES(OBJC)])])dnl
 ])
 ])
 
@@ -2693,7 +2724,7 @@ echo "timestamp for $1" >`AS_DIRNAME([$1])`/stamp-h[]$_am_stamp_count])
 # Define $install_sh.
 AC_DEFUN([AM_PROG_INSTALL_SH],
 [AC_REQUIRE([AM_AUX_DIR_EXPAND])dnl
-install_sh=${install_sh-"$am_aux_dir/install-sh"}
+install_sh=${install_sh-"\$(SHELL) $am_aux_dir/install-sh"}
 AC_SUBST(install_sh)])
 
 # Copyright (C) 2003, 2005  Free Software Foundation, Inc.
@@ -2771,14 +2802,14 @@ rm -f confinc confmf
 
 # Fake the existence of programs that GNU maintainers use.  -*- Autoconf -*-
 
-# Copyright (C) 1997, 1999, 2000, 2001, 2003, 2005
+# Copyright (C) 1997, 1999, 2000, 2001, 2003, 2004, 2005
 # Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-# serial 4
+# serial 5
 
 # AM_MISSING_PROG(NAME, PROGRAM)
 # ------------------------------
@@ -2794,6 +2825,7 @@ AC_SUBST($1)])
 # If it does, set am_missing_run to use it, otherwise, to nothing.
 AC_DEFUN([AM_MISSING_HAS_RUN],
 [AC_REQUIRE([AM_AUX_DIR_EXPAND])dnl
+AC_REQUIRE_AUX_FILE([missing])dnl
 test x"${MISSING+set}" = xset || MISSING="\${SHELL} $am_aux_dir/missing"
 # Use eval to expand $SHELL
 if eval "$MISSING --run true"; then
@@ -2804,7 +2836,7 @@ else
 fi
 ])
 
-# Copyright (C) 2003, 2004, 2005  Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004, 2005, 2006  Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -2812,60 +2844,23 @@ fi
 
 # AM_PROG_MKDIR_P
 # ---------------
-# Check whether `mkdir -p' is supported, fallback to mkinstalldirs otherwise.
-#
-# Automake 1.8 used `mkdir -m 0755 -p --' to ensure that directories
-# created by `make install' are always world readable, even if the
-# installer happens to have an overly restrictive umask (e.g. 077).
-# This was a mistake.  There are at least two reasons why we must not
-# use `-m 0755':
-#   - it causes special bits like SGID to be ignored,
-#   - it may be too restrictive (some setups expect 775 directories).
-#
-# Do not use -m 0755 and let people choose whatever they expect by
-# setting umask.
-#
-# We cannot accept any implementation of `mkdir' that recognizes `-p'.
-# Some implementations (such as Solaris 8's) are not thread-safe: if a
-# parallel make tries to run `mkdir -p a/b' and `mkdir -p a/c'
-# concurrently, both version can detect that a/ is missing, but only
-# one can create it and the other will error out.  Consequently we
-# restrict ourselves to GNU make (using the --version option ensures
-# this.)
+# Check for `mkdir -p'.
 AC_DEFUN([AM_PROG_MKDIR_P],
-[if mkdir -p --version . >/dev/null 2>&1 && test ! -d ./--version; then
-  # We used to keeping the `.' as first argument, in order to
-  # allow $(mkdir_p) to be used without argument.  As in
-  #   $(mkdir_p) $(somedir)
-  # where $(somedir) is conditionally defined.  However this is wrong
-  # for two reasons:
-  #  1. if the package is installed by a user who cannot write `.'
-  #     make install will fail,
-  #  2. the above comment should most certainly read
-  #     $(mkdir_p) $(DESTDIR)$(somedir)
-  #     so it does not work when $(somedir) is undefined and
-  #     $(DESTDIR) is not.
-  #  To support the latter case, we have to write
-  #     test -z "$(somedir)" || $(mkdir_p) $(DESTDIR)$(somedir),
-  #  so the `.' trick is pointless.
-  mkdir_p='mkdir -p --'
-else
-  # On NextStep and OpenStep, the `mkdir' command does not
-  # recognize any option.  It will interpret all options as
-  # directories to create, and then abort because `.' already
-  # exists.
-  for d in ./-p ./--version;
-  do
-    test -d $d && rmdir $d
-  done
-  # $(mkinstalldirs) is defined by Automake if mkinstalldirs exists.
-  if test -f "$ac_aux_dir/mkinstalldirs"; then
-    mkdir_p='$(mkinstalldirs)'
-  else
-    mkdir_p='$(install_sh) -d'
-  fi
-fi
-AC_SUBST([mkdir_p])])
+[AC_PREREQ([2.60])dnl
+AC_REQUIRE([AC_PROG_MKDIR_P])dnl
+dnl Automake 1.8 to 1.9.6 used to define mkdir_p.  We now use MKDIR_P,
+dnl while keeping a definition of mkdir_p for backward compatibility.
+dnl @MKDIR_P@ is magic: AC_OUTPUT adjusts its value for each Makefile.
+dnl However we cannot define mkdir_p as $(MKDIR_P) for the sake of
+dnl Makefile.ins that do not define MKDIR_P, so we do our own
+dnl adjustment using top_builddir (which is defined more often than
+dnl MKDIR_P).
+AC_SUBST([mkdir_p], ["$MKDIR_P"])dnl
+case $mkdir_p in
+  [[\\/$]]* | ?:[[\\/]]*) ;;
+  */*) mkdir_p="\$(top_builddir)/$mkdir_p" ;;
+esac
+])
 
 # Helper functions for option handling.                     -*- Autoconf -*-
 
@@ -2977,8 +2972,20 @@ dnl Don't test for $cross_compiling = yes, because it might be `maybe'.
 if test "$cross_compiling" != no; then
   AC_CHECK_TOOL([STRIP], [strip], :)
 fi
-INSTALL_STRIP_PROGRAM="\${SHELL} \$(install_sh) -c -s"
+INSTALL_STRIP_PROGRAM="\$(install_sh) -c -s"
 AC_SUBST([INSTALL_STRIP_PROGRAM])])
+
+# Copyright (C) 2006  Free Software Foundation, Inc.
+#
+# This file is free software; the Free Software Foundation
+# gives unlimited permission to copy and/or distribute it,
+# with or without modifications, as long as this notice is preserved.
+
+# _AM_SUBST_NOTMAKE(VARIABLE)
+# ---------------------------
+# Prevent Automake from outputing VARIABLE = @VARIABLE@ in Makefile.in.
+# This macro is traced by Automake.
+AC_DEFUN([_AM_SUBST_NOTMAKE])
 
 # Check how to create a tarball.                            -*- Autoconf -*-
 

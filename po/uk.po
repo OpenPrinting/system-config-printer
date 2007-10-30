@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: printconf\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-10-12 17:29+0100\n"
+"POT-Creation-Date: 2007-10-30 17:56+0000\n"
 "PO-Revision-Date: 2007-04-11 20:22+0300\n"
 "Last-Translator: Maxim Dziumanenko <dziumanenko@gmail.com>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -20,7 +20,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Простоює"
 
-#: ../cupshelpers.py:28 ../applet.py:684
+#: ../cupshelpers.py:28 ../applet.py:688
 msgid "Processing"
 msgstr "Оброблює"
 
@@ -28,11 +28,11 @@ msgstr "Оброблює"
 msgid "Busy"
 msgstr "Зайнятий"
 
-#: ../cupshelpers.py:30 ../applet.py:685
+#: ../cupshelpers.py:30 ../applet.py:689
 msgid "Stopped"
 msgstr "Зупинено"
 
-#: ../cupshelpers.py:47 ../applet.py:694
+#: ../cupshelpers.py:47 ../applet.py:698
 msgid "Unknown"
 msgstr "Невідомо"
 
@@ -143,7 +143,7 @@ msgstr ""
 msgid "Installable Options"
 msgstr "Можливості що встановлюються"
 
-#: ../system-config-printer.py:1151 ../system-config-printer.glade.h:193
+#: ../system-config-printer.py:1151 ../system-config-printer.glade.h:198
 msgid "Printer Options"
 msgstr "Параметри принтера"
 
@@ -158,20 +158,20 @@ msgstr ""
 "лише після розв'язання конфлікту."
 
 #: ../system-config-printer.py:1189 ../system-config-printer.py:1205
-#: ../applet.py:333
+#: ../applet.py:335
 msgid "Not authorized"
 msgstr "Немає авторизації"
 
-#: ../system-config-printer.py:1190 ../applet.py:334
+#: ../system-config-printer.py:1190 ../applet.py:336
 msgid "The password may be incorrect."
 msgstr "Можливо неправильний пароль."
 
 #: ../system-config-printer.py:1193 ../system-config-printer.py:1226
-#: ../applet.py:337
+#: ../applet.py:339
 msgid "CUPS server error"
 msgstr "Помилка сервера CUPS"
 
-#: ../system-config-printer.py:1194 ../applet.py:338
+#: ../system-config-printer.py:1194 ../applet.py:340
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Помилка при операції CUPS: '%s'."
@@ -276,11 +276,7 @@ msgstr "Не заданий типовий принтер."
 
 #: ../system-config-printer.py:1727
 #, python-format
-msgid "Option '%s' has value '%s' "
-msgstr ""
-
-#: ../system-config-printer.py:1728
-msgid "and cannot be edited."
+msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
 #: ../system-config-printer.py:1767
@@ -288,7 +284,7 @@ msgid "Cancel Tests"
 msgstr "Скасувати перевірку"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1771 ../system-config-printer.glade.h:192
+#: ../system-config-printer.py:1771 ../system-config-printer.glade.h:197
 msgid "Print Test Page"
 msgstr "Надрукувати тестову сторінку"
 
@@ -320,11 +316,11 @@ msgstr ""
 msgid "PostScript Printer Description (*.ppd[.gz])"
 msgstr "Опис принтера PostScript (*.ppd[.gz])"
 
-#: ../system-config-printer.py:2304 ../system-config-printer.glade.h:140
+#: ../system-config-printer.py:2304 ../system-config-printer.glade.h:145
 msgid "New Printer"
 msgstr "Новий принтер"
 
-#: ../system-config-printer.py:2314 ../system-config-printer.glade.h:139
+#: ../system-config-printer.py:2314 ../system-config-printer.glade.h:144
 msgid "New Class"
 msgstr "Новий клас"
 
@@ -721,10 +717,15 @@ msgid "Connect to CUPS server"
 msgstr "Підключення до сервера CUPS"
 
 #: ../system-config-printer.glade.h:60
+#, fuzzy
+msgid "Connect to a different print server"
+msgstr "Підключення до сервера CUPS"
+
+#: ../system-config-printer.glade.h:61
 msgid "Connecting"
 msgstr "З'єднання"
 
-#: ../system-config-printer.glade.h:62
+#: ../system-config-printer.glade.h:63
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -733,23 +734,42 @@ msgstr ""
 "З'єднання з сервером:\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:65
+#: ../system-config-printer.glade.h:66
 msgid "Copies:"
 msgstr "Копій:"
 
-#: ../system-config-printer.glade.h:66
+#: ../system-config-printer.glade.h:67
 msgid "Copy Printer"
 msgstr "Копіювання принтера"
 
-#: ../system-config-printer.glade.h:67
+#: ../system-config-printer.glade.h:68
+#, fuzzy
+msgid "Copy this printer queue"
+msgstr "Копіювання принтера"
+
+#: ../system-config-printer.glade.h:69
 msgid "Copyright 2006, 2007 Red Hat, Inc."
 msgstr "Copyright 2006, 2007 Red Hat, Inc."
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:70
+#, fuzzy
+msgid "Create a new printer group"
+msgstr ""
+"Буде створено новий принтер %s з підключенням\n"
+"%s.\n"
+
+#: ../system-config-printer.glade.h:71
+#, fuzzy
+msgid "Create a new printer queue"
+msgstr ""
+"Буде створено новий принтер %s з підключенням\n"
+"%s.\n"
+
+#: ../system-config-printer.glade.h:72
 msgid "Data Bits"
 msgstr "Біти даних"
 
-#: ../system-config-printer.glade.h:69
+#: ../system-config-printer.glade.h:73
 msgid ""
 "Default\n"
 "1200\n"
@@ -771,7 +791,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../system-config-printer.glade.h:78
+#: ../system-config-printer.glade.h:82
 msgid ""
 "Default\n"
 "8\n"
@@ -781,7 +801,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../system-config-printer.glade.h:81
+#: ../system-config-printer.glade.h:85
 msgid ""
 "Default\n"
 "None\n"
@@ -793,7 +813,7 @@ msgstr ""
 "Непарний\n"
 "Парний"
 
-#: ../system-config-printer.glade.h:85
+#: ../system-config-printer.glade.h:89
 msgid ""
 "Default\n"
 "None\n"
@@ -807,126 +827,130 @@ msgstr ""
 "RTS/CTS (апаратно)\n"
 "DTR/DSR (апаратно)"
 
-#: ../system-config-printer.glade.h:90
+#: ../system-config-printer.glade.h:94
 #, fuzzy
 msgid "Default Printer:"
 msgstr "Зробити типовим принтером"
 
-#: ../system-config-printer.glade.h:91
+#: ../system-config-printer.glade.h:95
+msgid "Delete this printer queue"
+msgstr ""
+
+#: ../system-config-printer.glade.h:96
 msgid "Deny printing for everyone except these users:"
 msgstr "Заборонити друк усім, окрім вказаних користувачів:"
 
-#: ../system-config-printer.glade.h:92
+#: ../system-config-printer.glade.h:97
 msgid "Description:"
 msgstr "Опис:"
 
-#: ../system-config-printer.glade.h:93
+#: ../system-config-printer.glade.h:98
 msgid "Device URI"
 msgstr "URI пристрою"
 
-#: ../system-config-printer.glade.h:94
+#: ../system-config-printer.glade.h:99
 msgid "Device URI:"
 msgstr "URI пристрою:"
 
-#: ../system-config-printer.glade.h:95
+#: ../system-config-printer.glade.h:100
 msgid "Device description."
 msgstr "Опис пристрою."
 
-#: ../system-config-printer.glade.h:96
+#: ../system-config-printer.glade.h:101
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:97
+#: ../system-config-printer.glade.h:102
 msgid "Empty"
 msgstr "Немає"
 
-#: ../system-config-printer.glade.h:98
+#: ../system-config-printer.glade.h:103
 msgid "Enabled"
 msgstr "Увімкнено"
 
-#: ../system-config-printer.glade.h:99
+#: ../system-config-printer.glade.h:104
 msgid "Ending Banner:"
 msgstr "Кінцевий розділювач:"
 
-#: ../system-config-printer.glade.h:100
+#: ../system-config-printer.glade.h:105
 msgid "Error Policy: \t"
 msgstr "Політика помилок: \t"
 
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:106
 msgid "Find _Queue..."
 msgstr ""
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:107
 msgid "Finishings:"
 msgstr "Фінальна обробка:"
 
-#: ../system-config-printer.glade.h:103
+#: ../system-config-printer.glade.h:108
 msgid "Flow Control"
 msgstr "Керування потоком"
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:109
 msgid "Gamma:"
 msgstr "Контраст:"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:110
 msgid "Goto Server"
 msgstr "Перейти до сервера"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:111
 msgid "Hold until:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:107
+#: ../system-config-printer.glade.h:112
 #, fuzzy
 msgid "Host:"
 msgstr "Назва вузла"
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:113
 msgid "Hostname"
 msgstr "Назва вузла"
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:114
 msgid "Hue adjustment:"
 msgstr "Налаштовування відтінків:"
 
-#: ../system-config-printer.glade.h:110
+#: ../system-config-printer.glade.h:115
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Зрозумілий людині опис, наприклад \"HP LaserJet with Duplexer\""
 
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:116
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "Зрозуміле людині розташування, наприклад, \"Лабораторія 1\""
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:117
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:118
 msgid "IPP Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:119
 #, fuzzy
 msgid "Installed Options"
 msgstr "Можливості що встановлюються"
 
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:120
 msgid "Job Options"
 msgstr "Параметри завдання"
 
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.glade.h:121
 msgid "Job priority:"
 msgstr "Пріоритет завдання:"
 
-#: ../system-config-printer.glade.h:117
+#: ../system-config-printer.glade.h:122
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:118
+#: ../system-config-printer.glade.h:123
 msgid "Left margin:"
 msgstr "Ліве поле:"
 
-#: ../system-config-printer.glade.h:119
+#: ../system-config-printer.glade.h:124
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -946,25 +970,25 @@ msgstr ""
 "Знизу вверх, зліва направо\n"
 "Знизу вверх, справа наліво"
 
-#: ../system-config-printer.glade.h:127
+#: ../system-config-printer.glade.h:132
 msgid "Lines per inch:"
 msgstr "Ліній на дюйм:"
 
-#: ../system-config-printer.glade.h:128
+#: ../system-config-printer.glade.h:133
 msgid "Location:"
 msgstr "Розташування:"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:130
+#: ../system-config-printer.glade.h:135
 #, fuzzy
 msgid "Make Default"
 msgstr "типово"
 
-#: ../system-config-printer.glade.h:131
+#: ../system-config-printer.glade.h:136
 msgid "Make and Model:"
 msgstr "Виробник та модель:"
 
-#: ../system-config-printer.glade.h:132
+#: ../system-config-printer.glade.h:137
 #, fuzzy
 msgid ""
 "May contain any printable characters except \"/\", \"#\", and space.\n"
@@ -972,35 +996,35 @@ msgid ""
 msgstr ""
 "Може містити будь-які друковані символи, за винятком \"/\", \"#\", та пробілу"
 
-#: ../system-config-printer.glade.h:134
+#: ../system-config-printer.glade.h:139
 msgid "Media:"
 msgstr "Носій:"
 
-#: ../system-config-printer.glade.h:135
+#: ../system-config-printer.glade.h:140
 msgid "Members"
 msgstr "Учасники"
 
-#: ../system-config-printer.glade.h:136
+#: ../system-config-printer.glade.h:141
 msgid "Mirror"
 msgstr "Дзеркально"
 
-#: ../system-config-printer.glade.h:137
+#: ../system-config-printer.glade.h:142
 msgid "More"
 msgstr "Ще"
 
-#: ../system-config-printer.glade.h:138
+#: ../system-config-printer.glade.h:143
 msgid "New Clas_s"
 msgstr "Новий _клас"
 
-#: ../system-config-printer.glade.h:141
+#: ../system-config-printer.glade.h:146
 msgid "New _Printer"
 msgstr "Новий _принтер"
 
-#: ../system-config-printer.glade.h:142
+#: ../system-config-printer.glade.h:147
 msgid "New name for the printer"
 msgstr "Нова назва принтера"
 
-#: ../system-config-printer.glade.h:143
+#: ../system-config-printer.glade.h:148
 msgid ""
 "None\n"
 "Staple\n"
@@ -1060,7 +1084,7 @@ msgstr ""
 "Зшиття (справа)\n"
 "Зшиття (знизу)"
 
-#: ../system-config-printer.glade.h:171
+#: ../system-config-printer.glade.h:176
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1070,43 +1094,43 @@ msgstr ""
 "Двостороння (по довгому краю)\n"
 "Двостороння (по короткому краю)"
 
-#: ../system-config-printer.glade.h:174
+#: ../system-config-printer.glade.h:179
 msgid "Operation Policy:"
 msgstr "Політика роботи:"
 
-#: ../system-config-printer.glade.h:175
+#: ../system-config-printer.glade.h:180
 msgid "Orientation:"
 msgstr "Розташування:"
 
-#: ../system-config-printer.glade.h:176
+#: ../system-config-printer.glade.h:181
 msgid "Pages per side layout:"
 msgstr "Сторінок на аркуші:"
 
-#: ../system-config-printer.glade.h:177
+#: ../system-config-printer.glade.h:182
 msgid "Pages per side:"
 msgstr "Сторінок на аркуші:"
 
-#: ../system-config-printer.glade.h:178
+#: ../system-config-printer.glade.h:183
 msgid "Parity"
 msgstr "Парність"
 
-#: ../system-config-printer.glade.h:179 ../applet.glade.h:5
+#: ../system-config-printer.glade.h:184 ../applet.glade.h:5
 msgid "Password:"
 msgstr "Пароль:"
 
-#: ../system-config-printer.glade.h:180
+#: ../system-config-printer.glade.h:185
 msgid "Please Wait"
 msgstr ""
 
-#: ../system-config-printer.glade.h:181
+#: ../system-config-printer.glade.h:186
 msgid "Policies"
 msgstr "Політики"
 
-#: ../system-config-printer.glade.h:182
+#: ../system-config-printer.glade.h:187
 msgid "Port number"
 msgstr "Номер порту"
 
-#: ../system-config-printer.glade.h:183
+#: ../system-config-printer.glade.h:188
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1118,7 +1142,7 @@ msgstr ""
 "Альбомна обернена (270°)\n"
 "Книжна обернена (180°)"
 
-#: ../system-config-printer.glade.h:187
+#: ../system-config-printer.glade.h:192
 msgid ""
 "PostScript Printer Description (PPD) files can often found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1128,116 +1152,120 @@ msgstr ""
 "можна знайти на диску з драйверами у поставці принтера. Для PostScript "
 "принтерів вони часто входять до складу драйвера Windows<sup>®</sup>."
 
-#: ../system-config-printer.glade.h:188
+#: ../system-config-printer.glade.h:193
 msgid "Pretty print"
 msgstr "Гарний друк"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:190
+#: ../system-config-printer.glade.h:195
 #, fuzzy
 msgid "Print Self-Test Page"
 msgstr "Надрукувати тестову сторінку"
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:199
 msgid "Printer State:"
 msgstr "Стан принтера:"
 
-#: ../system-config-printer.glade.h:195
+#: ../system-config-printer.glade.h:200
 msgid "Printername"
 msgstr "Назва принтера"
 
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:201
 msgid "Probe"
 msgstr "Випробувати"
 
-#: ../system-config-printer.glade.h:197
+#: ../system-config-printer.glade.h:202
 #, fuzzy
 msgid "Provide PPD File"
 msgstr "Вкажіть файл PPD"
 
-#: ../system-config-printer.glade.h:198
+#: ../system-config-printer.glade.h:203
 msgid "Queue:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:204
+msgid "Refresh the list of printer queues"
+msgstr ""
+
+#: ../system-config-printer.glade.h:205
 msgid "Require encryption"
 msgstr "Вимагати шифрування"
 
-#: ../system-config-printer.glade.h:200
+#: ../system-config-printer.glade.h:206
 msgid "Reset"
 msgstr "Скинути"
 
-#: ../system-config-printer.glade.h:201
+#: ../system-config-printer.glade.h:207
 msgid "Reset to system default"
 msgstr "Встановити типово"
 
-#: ../system-config-printer.glade.h:202
+#: ../system-config-printer.glade.h:208
 msgid "Right margin:"
 msgstr "Праве поле:"
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:209
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:210
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:205
+#: ../system-config-printer.glade.h:211
 msgid "SMB Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:206
+#: ../system-config-printer.glade.h:212
 msgid "Saturation:"
 msgstr "Насиченість:"
 
-#: ../system-config-printer.glade.h:207
+#: ../system-config-printer.glade.h:213
 msgid "Save debugging information for troubleshooting"
 msgstr "Зберігати налагоджувальну інформацію для усунення проблем"
 
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.glade.h:214
 msgid "Scale to fit"
 msgstr "Масштабувати по сторінці"
 
-#: ../system-config-printer.glade.h:209
+#: ../system-config-printer.glade.h:215
 msgid "Scaling:"
 msgstr "Масштаб:"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:216
 msgid "Select A File"
 msgstr "Вкажіть файл"
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:217
 #, fuzzy
 msgid "Select Printer from Database"
 msgstr "Виберіть принтер з бази даних"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:218
 msgid "Serial"
 msgstr "Послідовний порт"
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:219
 msgid "Settings"
 msgstr "Параметри"
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:220
 msgid "Share published printers connected to this system"
 msgstr ""
 "Відкривати доступ до опублікованих принтерів, щоб підключені до цієї системи"
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:221
 msgid "Shared"
 msgstr "Спільний доступ"
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:222
 msgid "Show printers shared by other systems"
 msgstr "Показувати принтери, відкрити для спільного доступу іншими системами"
 
-#: ../system-config-printer.glade.h:217
+#: ../system-config-printer.glade.h:223
 msgid "Sides:"
 msgstr "Сторони:"
 
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:224
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1246,15 +1274,15 @@ msgstr ""
 "Вкажіть параметри завдань типового принтера. Завдання, що підходять на "
 "сервер друку будуть мати ці параметри, якщо вони не вказані програмою."
 
-#: ../system-config-printer.glade.h:219
+#: ../system-config-printer.glade.h:225
 msgid "Starting Banner:"
 msgstr "Стартовий розділювач:"
 
-#: ../system-config-printer.glade.h:220
+#: ../system-config-printer.glade.h:226
 msgid "System-Config-Printer"
 msgstr "Налаштовування принтера"
 
-#: ../system-config-printer.glade.h:221
+#: ../system-config-printer.glade.h:227
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1267,13 +1295,13 @@ msgstr ""
 "великого числа (не PostScript) принтерів. Звичайно файли PPD від виробника "
 "надають кращий доступ до специфічних можливостей принтера."
 
-#: ../system-config-printer.glade.h:222
+#: ../system-config-printer.glade.h:228
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr ""
 
-#: ../system-config-printer.glade.h:223
+#: ../system-config-printer.glade.h:229
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1283,7 +1311,7 @@ msgstr ""
 "мають однакове значення. Значення параметрів, що відсутні у новому PPD "
 "будуть втрачені, а нові параметри у PPD отримають типові значення."
 
-#: ../system-config-printer.glade.h:224
+#: ../system-config-printer.glade.h:230
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1300,7 +1328,7 @@ msgid ""
 "Ave, Cambridge, MA 02139, USA."
 msgstr ""
 
-#: ../system-config-printer.glade.h:229
+#: ../system-config-printer.glade.h:235
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -1308,86 +1336,86 @@ msgstr ""
 "Таким чином усі поточні значення параметрів будуть втрачені. Будуть "
 "використовуватись стандартні параметри з нового опису PPD."
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:236
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "Щоб додати новий параметр, введіть його назву у цьому полі та натисніть "
 "кнопку додавання."
 
-#: ../system-config-printer.glade.h:231
+#: ../system-config-printer.glade.h:237
 msgid "Top margin:"
 msgstr "Верхнє поле:"
 
-#: ../system-config-printer.glade.h:232
+#: ../system-config-printer.glade.h:238
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "Намагатись копіювати значення параметрів зі старого PPD. "
 
-#: ../system-config-printer.glade.h:233
+#: ../system-config-printer.glade.h:239
 msgid "URI:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:234
+#: ../system-config-printer.glade.h:240
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "Використовувати новий PPD (Postscript Printer Description) як є."
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:241
 msgid "User name:"
 msgstr "Користувач:"
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:242
 msgid "Username:"
 msgstr "Користувач:"
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:243
 msgid "Word wrap"
 msgstr "Перенос слів"
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:244
 msgid "_Do not apply"
 msgstr "_Не застосовувати"
 
-#: ../system-config-printer.glade.h:239
+#: ../system-config-printer.glade.h:245
 msgid "_Edit"
 msgstr "_Правка"
 
-#: ../system-config-printer.glade.h:240 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:246 ../applet.glade.h:10
 msgid "_File"
 msgstr "_Файл"
 
-#: ../system-config-printer.glade.h:241
+#: ../system-config-printer.glade.h:247
 msgid "_Goto Server"
 msgstr "_Перейти до сервера"
 
-#: ../system-config-printer.glade.h:242
+#: ../system-config-printer.glade.h:248
 msgid "_Help"
 msgstr "_Довідка"
 
-#: ../system-config-printer.glade.h:243
+#: ../system-config-printer.glade.h:249
 msgid "_Install"
 msgstr ""
 
-#: ../system-config-printer.glade.h:244
+#: ../system-config-printer.glade.h:250
 msgid "_Verify..."
 msgstr "_Перевірити..."
 
-#: ../system-config-printer.glade.h:245
+#: ../system-config-printer.glade.h:251
 msgid "default"
 msgstr "типово"
 
-#: ../system-config-printer.glade.h:246
+#: ../system-config-printer.glade.h:252
 msgid "none"
 msgstr "немає"
 
-#: ../system-config-printer.glade.h:247
+#: ../system-config-printer.glade.h:253
 msgid "points"
 msgstr "точок"
 
-#: ../system-config-printer.glade.h:248
+#: ../system-config-printer.glade.h:254
 msgid "points (72 points per inch)"
 msgstr "точок (72 точки на дюйм)"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:250
+#: ../system-config-printer.glade.h:256
 msgid "translator-credits"
 msgstr ""
 
@@ -1522,103 +1550,103 @@ msgstr "Статус"
 msgid "Message"
 msgstr "Повідомлення"
 
-#: ../applet.py:555
+#: ../applet.py:559
 msgid "1 hour ago"
 msgstr "Годину тому"
 
-#: ../applet.py:557
+#: ../applet.py:561
 msgid "1 hour and 1 minute ago"
 msgstr "година та хвилина тому"
 
-#: ../applet.py:559
+#: ../applet.py:563
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "година та %d хв. тому"
 
-#: ../applet.py:562
+#: ../applet.py:566
 #, python-format
 msgid "%d hours ago"
 msgstr "%d годин тому"
 
-#: ../applet.py:564
+#: ../applet.py:568
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d годин та одна хвилина назад"
 
-#: ../applet.py:566
+#: ../applet.py:570
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d година та %d хвилин тому"
 
-#: ../applet.py:572
+#: ../applet.py:576
 msgid "a minute ago"
 msgstr "хвилину тому"
 
-#: ../applet.py:574
+#: ../applet.py:578
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d хвилин тому"
 
-#: ../applet.py:629
+#: ../applet.py:633
 msgid "No documents queued"
 msgstr "Немає документів у черзі"
 
-#: ../applet.py:632
+#: ../applet.py:636
 msgid "1 document queued"
 msgstr "1 документ у черзі"
 
-#: ../applet.py:635
+#: ../applet.py:639
 #, python-format
 msgid "%d documents queued"
 msgstr "%d докум. у черзі"
 
-#: ../applet.py:682
+#: ../applet.py:686
 msgid "Pending"
 msgstr "Заплановано"
 
-#: ../applet.py:683
+#: ../applet.py:687
 msgid "Held"
 msgstr "Призупинено"
 
-#: ../applet.py:686
+#: ../applet.py:690
 msgid "Canceled"
 msgstr "Скасовано"
 
-#: ../applet.py:687
+#: ../applet.py:691
 msgid "Aborted"
 msgstr "Перервано"
 
-#: ../applet.py:688
+#: ../applet.py:692
 msgid "Completed"
 msgstr "Виконано"
 
-#: ../applet.py:946
+#: ../applet.py:953
 #, fuzzy
 msgid "Printer added"
 msgstr "Назва принтера"
 
-#: ../applet.py:948
+#: ../applet.py:955
 #, fuzzy
 msgid "Missing printer driver"
 msgstr "Відсутній драйвер"
 
-#: ../applet.py:951
+#: ../applet.py:958
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr ""
 
-#: ../applet.py:954
+#: ../applet.py:961
 #, fuzzy
 msgid "Configure"
 msgstr "Налаштовування принтерів"
 
 #. Model mismatch
-#: ../applet.py:957
+#: ../applet.py:964
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr ""
 
-#: ../applet.py:961
+#: ../applet.py:968
 #, fuzzy
 msgid "Find driver"
 msgstr "Відсутній драйвер"
@@ -1687,13 +1715,6 @@ msgstr "Зробити типовим принтером"
 
 #~ msgid "Going to create a new class %s."
 #~ msgstr "Буде створено новий клас %s."
-
-#~ msgid ""
-#~ "Going to create a new printer %s at\n"
-#~ "%s.\n"
-#~ msgstr ""
-#~ "Буде створено новий принтер %s з підключенням\n"
-#~ "%s.\n"
 
 #~ msgid " PPD "
 #~ msgstr " PPD "

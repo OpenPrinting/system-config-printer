@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bn_IN\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-10-12 17:29+0100\n"
+"POT-Creation-Date: 2007-10-30 17:56+0000\n"
 "PO-Revision-Date: 2007-04-17 10:19+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali <en@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Idle"
 msgstr "কর্মবিহীন"
 
-#: ../cupshelpers.py:28 ../applet.py:684
+#: ../cupshelpers.py:28 ../applet.py:688
 msgid "Processing"
 msgstr "কর্মরত"
 
@@ -39,11 +39,11 @@ msgstr "কর্মরত"
 msgid "Busy"
 msgstr "ব্যস্ত"
 
-#: ../cupshelpers.py:30 ../applet.py:685
+#: ../cupshelpers.py:30 ../applet.py:689
 msgid "Stopped"
 msgstr "স্থগিত"
 
-#: ../cupshelpers.py:47 ../applet.py:694
+#: ../cupshelpers.py:47 ../applet.py:698
 msgid "Unknown"
 msgstr "অজ্ঞাত"
 
@@ -154,7 +154,7 @@ msgstr ""
 msgid "Installable Options"
 msgstr "ইনস্টল করার যোগ্য বিকল্প"
 
-#: ../system-config-printer.py:1151 ../system-config-printer.glade.h:193
+#: ../system-config-printer.py:1151 ../system-config-printer.glade.h:198
 msgid "Printer Options"
 msgstr "প্রিন্টার সংক্রান্ত বিকল্প"
 
@@ -169,20 +169,20 @@ msgstr ""
 "পরিবর্তন প্রয়োগ করা সম্ভব হবে না।"
 
 #: ../system-config-printer.py:1189 ../system-config-printer.py:1205
-#: ../applet.py:333
+#: ../applet.py:335
 msgid "Not authorized"
 msgstr "অনুমোদিত নয়"
 
-#: ../system-config-printer.py:1190 ../applet.py:334
+#: ../system-config-printer.py:1190 ../applet.py:336
 msgid "The password may be incorrect."
 msgstr "পাসওয়ার্ড সম্ভবত সঠিক নয়।"
 
 #: ../system-config-printer.py:1193 ../system-config-printer.py:1226
-#: ../applet.py:337
+#: ../applet.py:339
 msgid "CUPS server error"
 msgstr "CUPS সার্ভারের সমস্যা"
 
-#: ../system-config-printer.py:1194 ../applet.py:338
+#: ../system-config-printer.py:1194 ../applet.py:340
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS'র কর্ম চলাকালীন সমস্যা হয়েছে: '%s'।"
@@ -287,11 +287,7 @@ msgstr "ডিফল্ট প্রিন্টার চিহ্নিত ক
 
 #: ../system-config-printer.py:1727
 #, python-format
-msgid "Option '%s' has value '%s' "
-msgstr ""
-
-#: ../system-config-printer.py:1728
-msgid "and cannot be edited."
+msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
 #: ../system-config-printer.py:1767
@@ -299,7 +295,7 @@ msgid "Cancel Tests"
 msgstr "পরীক্ষা বাতিল করুন"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1771 ../system-config-printer.glade.h:192
+#: ../system-config-printer.py:1771 ../system-config-printer.glade.h:197
 msgid "Print Test Page"
 msgstr "পরীক্ষামূলক পৃষ্ঠা প্রিন্ট করুন"
 
@@ -331,11 +327,11 @@ msgstr ""
 msgid "PostScript Printer Description (*.ppd[.gz])"
 msgstr "PostScript Printer Description (*.ppd[.gz])"
 
-#: ../system-config-printer.py:2304 ../system-config-printer.glade.h:140
+#: ../system-config-printer.py:2304 ../system-config-printer.glade.h:145
 msgid "New Printer"
 msgstr "নতুন প্রিন্টার"
 
-#: ../system-config-printer.py:2314 ../system-config-printer.glade.h:139
+#: ../system-config-printer.py:2314 ../system-config-printer.glade.h:144
 msgid "New Class"
 msgstr "নতুন শ্রেণী"
 
@@ -732,10 +728,15 @@ msgid "Connect to CUPS server"
 msgstr "CUPS সার্ভারের সাথে সংযোগ করুন"
 
 #: ../system-config-printer.glade.h:60
+#, fuzzy
+msgid "Connect to a different print server"
+msgstr "CUPS সার্ভারের সাথে সংযোগ করুন"
+
+#: ../system-config-printer.glade.h:61
 msgid "Connecting"
 msgstr "সংযোগ স্থাপন করা হচ্ছে"
 
-#: ../system-config-printer.glade.h:62
+#: ../system-config-printer.glade.h:63
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -744,23 +745,42 @@ msgstr ""
 "সার্ভারের সাথে সংযোগ স্থাপন করা হচ্ছে:\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:65
+#: ../system-config-printer.glade.h:66
 msgid "Copies:"
 msgstr "প্রতিলিপি:"
 
-#: ../system-config-printer.glade.h:66
+#: ../system-config-printer.glade.h:67
 msgid "Copy Printer"
 msgstr "প্রিন্টার কপি করুন"
 
-#: ../system-config-printer.glade.h:67
+#: ../system-config-printer.glade.h:68
+#, fuzzy
+msgid "Copy this printer queue"
+msgstr "প্রিন্টার কপি করুন"
+
+#: ../system-config-printer.glade.h:69
 msgid "Copyright 2006, 2007 Red Hat, Inc."
 msgstr "স্বত্বাধিকার ২০০৬, ২০০৭ Red Hat, Inc."
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:70
+#, fuzzy
+msgid "Create a new printer group"
+msgstr ""
+"%s নামক নতুন প্রিন্টার %s-এ\n"
+"স্থাপন করা হবে।\n"
+
+#: ../system-config-printer.glade.h:71
+#, fuzzy
+msgid "Create a new printer queue"
+msgstr ""
+"%s নামক নতুন প্রিন্টার %s-এ\n"
+"স্থাপন করা হবে।\n"
+
+#: ../system-config-printer.glade.h:72
 msgid "Data Bits"
 msgstr "ডাটা বিট"
 
-#: ../system-config-printer.glade.h:69
+#: ../system-config-printer.glade.h:73
 msgid ""
 "Default\n"
 "1200\n"
@@ -782,7 +802,7 @@ msgstr ""
 "৫৭৬০০\n"
 "১১৫২০০"
 
-#: ../system-config-printer.glade.h:78
+#: ../system-config-printer.glade.h:82
 msgid ""
 "Default\n"
 "8\n"
@@ -792,7 +812,7 @@ msgstr ""
 "৮\n"
 "৭"
 
-#: ../system-config-printer.glade.h:81
+#: ../system-config-printer.glade.h:85
 msgid ""
 "Default\n"
 "None\n"
@@ -804,7 +824,7 @@ msgstr ""
 "বেজোড়\n"
 "জোড়"
 
-#: ../system-config-printer.glade.h:85
+#: ../system-config-printer.glade.h:89
 msgid ""
 "Default\n"
 "None\n"
@@ -818,127 +838,131 @@ msgstr ""
 "RTS/CTS (হার্ডওয়্যার)\n"
 "DTR/DSR (হার্ডওয়্যার)"
 
-#: ../system-config-printer.glade.h:90
+#: ../system-config-printer.glade.h:94
 #, fuzzy
 msgid "Default Printer:"
 msgstr "ডিফল্ট প্রিন্টার রূপে চিহ্নিত করা হবে"
 
-#: ../system-config-printer.glade.h:91
+#: ../system-config-printer.glade.h:95
+msgid "Delete this printer queue"
+msgstr ""
+
+#: ../system-config-printer.glade.h:96
 msgid "Deny printing for everyone except these users:"
 msgstr ""
 "উল্লিখিত ব্যবহারকারী ব্যতীত অন্যান্য সব ব্যবহারকারীদের জন্য প্রিন্ট ব্যবস্থা অনুমোদিত নয়:"
 
-#: ../system-config-printer.glade.h:92
+#: ../system-config-printer.glade.h:97
 msgid "Description:"
 msgstr "বিবরণ:"
 
-#: ../system-config-printer.glade.h:93
+#: ../system-config-printer.glade.h:98
 msgid "Device URI"
 msgstr "ডিভাইস URI"
 
-#: ../system-config-printer.glade.h:94
+#: ../system-config-printer.glade.h:99
 msgid "Device URI:"
 msgstr "ডিভাইসের URI:"
 
-#: ../system-config-printer.glade.h:95
+#: ../system-config-printer.glade.h:100
 msgid "Device description."
 msgstr "ডিভাইসের বিবরণ:"
 
-#: ../system-config-printer.glade.h:96
+#: ../system-config-printer.glade.h:101
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:97
+#: ../system-config-printer.glade.h:102
 msgid "Empty"
 msgstr "ফাঁকা"
 
-#: ../system-config-printer.glade.h:98
+#: ../system-config-printer.glade.h:103
 msgid "Enabled"
 msgstr "সক্রিয়"
 
-#: ../system-config-printer.glade.h:99
+#: ../system-config-printer.glade.h:104
 msgid "Ending Banner:"
 msgstr "অন্তিম ব্যানার:"
 
-#: ../system-config-printer.glade.h:100
+#: ../system-config-printer.glade.h:105
 msgid "Error Policy: \t"
 msgstr "ত্রুটি সংক্রান্ত নিয়মনীতি: \t"
 
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:106
 msgid "Find _Queue..."
 msgstr ""
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:107
 msgid "Finishings:"
 msgstr "কর্ম সমাপ্তি:"
 
-#: ../system-config-printer.glade.h:103
+#: ../system-config-printer.glade.h:108
 msgid "Flow Control"
 msgstr "স্রোত নিয়ন্ত্রণ"
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:109
 msgid "Gamma:"
 msgstr "গামা:"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:110
 msgid "Goto Server"
 msgstr "চিহ্নিত সার্ভারে চলুন"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:111
 msgid "Hold until:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:107
+#: ../system-config-printer.glade.h:112
 #, fuzzy
 msgid "Host:"
 msgstr "হোস্ট-নেম"
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:113
 msgid "Hostname"
 msgstr "হোস্ট-নেম"
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:114
 msgid "Hue adjustment:"
 msgstr "হিউ পরিবর্তন:"
 
-#: ../system-config-printer.glade.h:110
+#: ../system-config-printer.glade.h:115
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "সাধারণ রূপে পাঠযোগ্য বিবরণ যেমন \"HP LaserJet with Duplexer\""
 
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:116
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "সাধারণ রূপে পাঠযোগ্য অবস্থানের নাম যেমন \"Lab 1\""
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:117
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:118
 msgid "IPP Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:119
 #, fuzzy
 msgid "Installed Options"
 msgstr "ইনস্টল করার যোগ্য বিকল্প"
 
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:120
 msgid "Job Options"
 msgstr "কর্ম সংক্রান্ত বিকল্প"
 
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.glade.h:121
 msgid "Job priority:"
 msgstr "কর্মে অগ্রাধিকারের মাত্রা:"
 
-#: ../system-config-printer.glade.h:117
+#: ../system-config-printer.glade.h:122
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:118
+#: ../system-config-printer.glade.h:123
 msgid "Left margin:"
 msgstr "বাঁদিকের প্রান্তরেখা"
 
-#: ../system-config-printer.glade.h:119
+#: ../system-config-printer.glade.h:124
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -958,25 +982,25 @@ msgstr ""
 "নীচে থেকে উপর, বাঁদিক থেকে ডানদিক\n"
 "নীচে থেকে উপর, ডানদিক থেকে বাঁদিক"
 
-#: ../system-config-printer.glade.h:127
+#: ../system-config-printer.glade.h:132
 msgid "Lines per inch:"
 msgstr "প্রতি ইঞ্চে পংক্তি সংখ্যা:"
 
-#: ../system-config-printer.glade.h:128
+#: ../system-config-printer.glade.h:133
 msgid "Location:"
 msgstr "অবস্থান:"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:130
+#: ../system-config-printer.glade.h:135
 #, fuzzy
 msgid "Make Default"
 msgstr "ডিফল্ট"
 
-#: ../system-config-printer.glade.h:131
+#: ../system-config-printer.glade.h:136
 msgid "Make and Model:"
 msgstr "ধরন ও মডেল:"
 
-#: ../system-config-printer.glade.h:132
+#: ../system-config-printer.glade.h:137
 #, fuzzy
 msgid ""
 "May contain any printable characters except \"/\", \"#\", and space.\n"
@@ -984,35 +1008,35 @@ msgid ""
 msgstr ""
 "\"/\", \"#\" ও শূণ্যস্থান ব্যতীত প্রিন্ট করার যোগ্য সমস্ত ধরনের অক্ষর অন্তর্ভুক্ত করা সম্ভব"
 
-#: ../system-config-printer.glade.h:134
+#: ../system-config-printer.glade.h:139
 msgid "Media:"
 msgstr "মিডিয়া:"
 
-#: ../system-config-printer.glade.h:135
+#: ../system-config-printer.glade.h:140
 msgid "Members"
 msgstr "সদস্য"
 
-#: ../system-config-printer.glade.h:136
+#: ../system-config-printer.glade.h:141
 msgid "Mirror"
 msgstr "প্রতিবিম্ব"
 
-#: ../system-config-printer.glade.h:137
+#: ../system-config-printer.glade.h:142
 msgid "More"
 msgstr "অতিরিক্ত"
 
-#: ../system-config-printer.glade.h:138
+#: ../system-config-printer.glade.h:143
 msgid "New Clas_s"
 msgstr "নতুন শ্রেণী (_s)"
 
-#: ../system-config-printer.glade.h:141
+#: ../system-config-printer.glade.h:146
 msgid "New _Printer"
 msgstr "নতুন প্রিন্টার (_P)"
 
-#: ../system-config-printer.glade.h:142
+#: ../system-config-printer.glade.h:147
 msgid "New name for the printer"
 msgstr "প্রিন্টারের নতুন নাম"
 
-#: ../system-config-printer.glade.h:143
+#: ../system-config-printer.glade.h:148
 msgid ""
 "None\n"
 "Staple\n"
@@ -1072,7 +1096,7 @@ msgstr ""
 "বাধাই (ডানদিকে)\n"
 "বাধাই (নীচে)"
 
-#: ../system-config-printer.glade.h:171
+#: ../system-config-printer.glade.h:176
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1082,43 +1106,43 @@ msgstr ""
 "উভয়-পৃষ্ঠ (দীর্ঘ প্রান্তিক)\n"
 "উভয়-পৃষ্ঠ (ক্ষুদ্র প্রান্তিক)"
 
-#: ../system-config-printer.glade.h:174
+#: ../system-config-printer.glade.h:179
 msgid "Operation Policy:"
 msgstr "কর্ম সংক্রান্ত নিয়মনীতি:"
 
-#: ../system-config-printer.glade.h:175
+#: ../system-config-printer.glade.h:180
 msgid "Orientation:"
 msgstr "দিশা:"
 
-#: ../system-config-printer.glade.h:176
+#: ../system-config-printer.glade.h:181
 msgid "Pages per side layout:"
 msgstr "প্রতি বিন্যাসে পৃষ্ঠা সংখ্যা:"
 
-#: ../system-config-printer.glade.h:177
+#: ../system-config-printer.glade.h:182
 msgid "Pages per side:"
 msgstr "প্রতি পার্শ্বে পৃষ্ঠা সংখ্যা:"
 
-#: ../system-config-printer.glade.h:178
+#: ../system-config-printer.glade.h:183
 msgid "Parity"
 msgstr "প্যারিটি"
 
-#: ../system-config-printer.glade.h:179 ../applet.glade.h:5
+#: ../system-config-printer.glade.h:184 ../applet.glade.h:5
 msgid "Password:"
 msgstr "পাসওয়ার্ড:"
 
-#: ../system-config-printer.glade.h:180
+#: ../system-config-printer.glade.h:185
 msgid "Please Wait"
 msgstr ""
 
-#: ../system-config-printer.glade.h:181
+#: ../system-config-printer.glade.h:186
 msgid "Policies"
 msgstr "নিয়মনীতি"
 
-#: ../system-config-printer.glade.h:182
+#: ../system-config-printer.glade.h:187
 msgid "Port number"
 msgstr "পোর্ট সংখ্যা"
 
-#: ../system-config-printer.glade.h:183
+#: ../system-config-printer.glade.h:188
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1130,7 +1154,7 @@ msgstr ""
 "বিপরীত দিশায় ভূদৃশ্য (২৭০°)\n"
 "বিপরীত দিশায় প্রতিকৃতি (১৮০°)"
 
-#: ../system-config-printer.glade.h:187
+#: ../system-config-printer.glade.h:192
 msgid ""
 "PostScript Printer Description (PPD) files can often found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1140,115 +1164,119 @@ msgstr ""
 "ড্রাইভার ডিস্কের মধ্যে উপস্থিত থাকে। PostScript প্রিন্টারের ক্ষেত্রে সেগুলি "
 "Windows<sup>®</sup> ড্রাইভারের অংশ।"
 
-#: ../system-config-printer.glade.h:188
+#: ../system-config-printer.glade.h:193
 msgid "Pretty print"
 msgstr "Pretty print"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:190
+#: ../system-config-printer.glade.h:195
 #, fuzzy
 msgid "Print Self-Test Page"
 msgstr "পরীক্ষামূলক পৃষ্ঠা প্রিন্ট করুন"
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:199
 msgid "Printer State:"
 msgstr "প্রিন্টারের অবস্থা:"
 
-#: ../system-config-printer.glade.h:195
+#: ../system-config-printer.glade.h:200
 msgid "Printername"
 msgstr "প্রিন্টারের নাম"
 
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:201
 msgid "Probe"
 msgstr "অনুসন্ধান"
 
-#: ../system-config-printer.glade.h:197
+#: ../system-config-printer.glade.h:202
 #, fuzzy
 msgid "Provide PPD File"
 msgstr "PPD ফাইল উপলব্ধ করুন"
 
-#: ../system-config-printer.glade.h:198
+#: ../system-config-printer.glade.h:203
 msgid "Queue:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:204
+msgid "Refresh the list of printer queues"
+msgstr ""
+
+#: ../system-config-printer.glade.h:205
 msgid "Require encryption"
 msgstr "এনক্রিপশন আবশ্যক"
 
-#: ../system-config-printer.glade.h:200
+#: ../system-config-printer.glade.h:206
 msgid "Reset"
 msgstr "পুনরায় নির্ধারণ"
 
-#: ../system-config-printer.glade.h:201
+#: ../system-config-printer.glade.h:207
 msgid "Reset to system default"
 msgstr "সিস্টেমের ডিফল্ট মান পুনরায় স্থাপন"
 
-#: ../system-config-printer.glade.h:202
+#: ../system-config-printer.glade.h:208
 msgid "Right margin:"
 msgstr "ডানদিকের প্রান্তরেখা:"
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:209
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:210
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:205
+#: ../system-config-printer.glade.h:211
 msgid "SMB Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:206
+#: ../system-config-printer.glade.h:212
 msgid "Saturation:"
 msgstr "স্যাচুরেশন:"
 
-#: ../system-config-printer.glade.h:207
+#: ../system-config-printer.glade.h:213
 msgid "Save debugging information for troubleshooting"
 msgstr "সমস্যাসমাধানের উদ্দেশ্যে ডিবাগ সংক্রান্ত তথ্য সংরক্ষণ করুন"
 
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.glade.h:214
 msgid "Scale to fit"
 msgstr "মাপ অনুযায়ী"
 
-#: ../system-config-printer.glade.h:209
+#: ../system-config-printer.glade.h:215
 msgid "Scaling:"
 msgstr "মাপ পরিবর্তন:"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:216
 msgid "Select A File"
 msgstr "একটি ফাইল নির্বাচন করুন"
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:217
 #, fuzzy
 msgid "Select Printer from Database"
 msgstr "ডাটাবেস থেকে প্রিন্টার নির্বাচন করুন"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:218
 msgid "Serial"
 msgstr "সিরিয়াল"
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:219
 msgid "Settings"
 msgstr "বৈশিষ্ট্যাবলী"
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:220
 msgid "Share published printers connected to this system"
 msgstr "বর্তমান সিস্টেমের সাথে সংযুক্ত প্রকাশিত প্রিন্টার শেয়ার করা হবে"
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:221
 msgid "Shared"
 msgstr "যৌথরূপে ব্যবহৃত"
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:222
 msgid "Show printers shared by other systems"
 msgstr "অন্যান্য সিস্টেমের সাথে যৌথরূপে ব্যবহৃত প্রিন্টার প্রদর্শন করা হবে"
 
-#: ../system-config-printer.glade.h:217
+#: ../system-config-printer.glade.h:223
 msgid "Sides:"
 msgstr "পার্শ্ব:"
 
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:224
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1258,15 +1286,15 @@ msgstr ""
 "অ্যাপ্লিকেশন দ্বারা এই সমস্ত বিকল্পের মান নির্ধারিত না হলে চিহ্নিত প্রিন্টারে আগত "
 "সমস্ত কর্মের জন্য উল্লিখিত বিকল্পগুলি প্রয়োগ করা হবে।"
 
-#: ../system-config-printer.glade.h:219
+#: ../system-config-printer.glade.h:225
 msgid "Starting Banner:"
 msgstr "প্রারম্ভিক ব্যানার:"
 
-#: ../system-config-printer.glade.h:220
+#: ../system-config-printer.glade.h:226
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:221
+#: ../system-config-printer.glade.h:227
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1280,13 +1308,13 @@ msgstr ""
 "বিশেষ বৈশিষ্ট্যগুলি ব্যবহারের জন্য সাধারণত প্রিন্টার নির্মাতাদের দ্বারা উপলব্ধ ফাইলগুলি "
 "তুলনামূলকভাবে অধিক সহায়ক।"
 
-#: ../system-config-printer.glade.h:222
+#: ../system-config-printer.glade.h:228
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr ""
 
-#: ../system-config-printer.glade.h:223
+#: ../system-config-printer.glade.h:229
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1296,7 +1324,7 @@ msgstr ""
 "অনুপস্থিত বিকল্পের বৈশিষ্ট্য মুছে যাবে এবং শুধুমাত্র নতুন PPD'র মধ্যে উপস্থিত বিকল্পগুলির "
 "ডিফল্ট মান স্থাপন করা হবে।"
 
-#: ../system-config-printer.glade.h:224
+#: ../system-config-printer.glade.h:230
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1313,7 +1341,7 @@ msgid ""
 "Ave, Cambridge, MA 02139, USA."
 msgstr ""
 
-#: ../system-config-printer.glade.h:229
+#: ../system-config-printer.glade.h:235
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -1321,85 +1349,85 @@ msgstr ""
 "এর ফলে বর্তমানে উপস্থিত সমস্ত বিকল্পের বৈশিষ্ট্য মুছে যাবে। নতুন PPD'র ডিফল্ট বৈশিষ্ট্য "
 "প্রয়োগ করা হবে। "
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:236
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "নতুন বিকল্প যোগ করার জন্য নিম্নলিখিত বাক্সে সেটির নাম লিখে যোগ করুন ক্লিক করুন।"
 
-#: ../system-config-printer.glade.h:231
+#: ../system-config-printer.glade.h:237
 msgid "Top margin:"
 msgstr "উপরের প্রান্তরেখা"
 
-#: ../system-config-printer.glade.h:232
+#: ../system-config-printer.glade.h:238
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "পুরোনো PPD থেকে বিকল্পের বৈশিষ্ট্য কপি করার প্রচেষ্টা করুন। "
 
-#: ../system-config-printer.glade.h:233
+#: ../system-config-printer.glade.h:239
 msgid "URI:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:234
+#: ../system-config-printer.glade.h:240
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "নতু PPD (Postscript Printer Description) মূল অবস্থায় ব্যবহার করুন।"
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:241
 msgid "User name:"
 msgstr "ব্যবহারকারীর নাম:"
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:242
 msgid "Username:"
 msgstr "ব্যবহারকারীর নাম:"
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:243
 msgid "Word wrap"
 msgstr "পংক্তি বিভাজন"
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:244
 msgid "_Do not apply"
 msgstr "প্রয়োগ করা হবে না (_D)"
 
-#: ../system-config-printer.glade.h:239
+#: ../system-config-printer.glade.h:245
 msgid "_Edit"
 msgstr "সম্পাদনা (_E)"
 
-#: ../system-config-printer.glade.h:240 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:246 ../applet.glade.h:10
 msgid "_File"
 msgstr "ফাইল (_F)"
 
-#: ../system-config-printer.glade.h:241
+#: ../system-config-printer.glade.h:247
 msgid "_Goto Server"
 msgstr "চিহ্নিত সার্ভারে চলুন (_G)"
 
-#: ../system-config-printer.glade.h:242
+#: ../system-config-printer.glade.h:248
 msgid "_Help"
 msgstr "সাহায্য (_H)"
 
-#: ../system-config-printer.glade.h:243
+#: ../system-config-printer.glade.h:249
 msgid "_Install"
 msgstr ""
 
-#: ../system-config-printer.glade.h:244
+#: ../system-config-printer.glade.h:250
 msgid "_Verify..."
 msgstr "পরীক্ষা করুন...(_V)"
 
-#: ../system-config-printer.glade.h:245
+#: ../system-config-printer.glade.h:251
 msgid "default"
 msgstr "ডিফল্ট"
 
-#: ../system-config-printer.glade.h:246
+#: ../system-config-printer.glade.h:252
 msgid "none"
 msgstr "শূণ্য"
 
-#: ../system-config-printer.glade.h:247
+#: ../system-config-printer.glade.h:253
 msgid "points"
 msgstr "পয়েন্ট"
 
-#: ../system-config-printer.glade.h:248
+#: ../system-config-printer.glade.h:254
 msgid "points (72 points per inch)"
 msgstr "পয়েন্ট (প্রতি ইঞ্চে ৭২ পয়েন্ট)"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:250
+#: ../system-config-printer.glade.h:256
 msgid "translator-credits"
 msgstr ""
 
@@ -1533,103 +1561,103 @@ msgstr "অবস্থা"
 msgid "Message"
 msgstr "বার্তা"
 
-#: ../applet.py:555
+#: ../applet.py:559
 msgid "1 hour ago"
 msgstr "১ ঘন্টা পূর্বে"
 
-#: ../applet.py:557
+#: ../applet.py:561
 msgid "1 hour and 1 minute ago"
 msgstr "১ ঘন্টা ও ১ মিনিট পূর্বে"
 
-#: ../applet.py:559
+#: ../applet.py:563
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "১ ঘন্টা ও %d মিনিট পূর্বে"
 
-#: ../applet.py:562
+#: ../applet.py:566
 #, python-format
 msgid "%d hours ago"
 msgstr "%d ঘন্টা পূর্বে"
 
-#: ../applet.py:564
+#: ../applet.py:568
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d ঘন্টা ও ১ মিনিট পূর্বে"
 
-#: ../applet.py:566
+#: ../applet.py:570
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d ঘন্টা ও %d মিনিট পূর্বে"
 
-#: ../applet.py:572
+#: ../applet.py:576
 msgid "a minute ago"
 msgstr "এক মিনিট পূর্বে"
 
-#: ../applet.py:574
+#: ../applet.py:578
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d মিনিট পূর্বে"
 
-#: ../applet.py:629
+#: ../applet.py:633
 msgid "No documents queued"
 msgstr "কোনো নথি অপেক্ষারত নয়"
 
-#: ../applet.py:632
+#: ../applet.py:636
 msgid "1 document queued"
 msgstr "১-টি নথি অপেক্ষারত"
 
-#: ../applet.py:635
+#: ../applet.py:639
 #, python-format
 msgid "%d documents queued"
 msgstr "%d-টি নথি অপেক্ষারত"
 
-#: ../applet.py:682
+#: ../applet.py:686
 msgid "Pending"
 msgstr "অসমাপ্ত কর্ম"
 
-#: ../applet.py:683
+#: ../applet.py:687
 msgid "Held"
 msgstr "আটক করা"
 
-#: ../applet.py:686
+#: ../applet.py:690
 msgid "Canceled"
 msgstr "বাতিল করা"
 
-#: ../applet.py:687
+#: ../applet.py:691
 msgid "Aborted"
 msgstr "পরিত্যক্ত"
 
-#: ../applet.py:688
+#: ../applet.py:692
 msgid "Completed"
 msgstr "সমাপ্ত"
 
-#: ../applet.py:946
+#: ../applet.py:953
 #, fuzzy
 msgid "Printer added"
 msgstr "প্রিন্টারের নাম"
 
-#: ../applet.py:948
+#: ../applet.py:955
 #, fuzzy
 msgid "Missing printer driver"
 msgstr "অনুপস্থিত ড্রাইভার"
 
-#: ../applet.py:951
+#: ../applet.py:958
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr ""
 
-#: ../applet.py:954
+#: ../applet.py:961
 #, fuzzy
 msgid "Configure"
 msgstr "প্রিন্টার কনফিগার করুন"
 
 #. Model mismatch
-#: ../applet.py:957
+#: ../applet.py:964
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr ""
 
-#: ../applet.py:961
+#: ../applet.py:968
 #, fuzzy
 msgid "Find driver"
 msgstr "অনুপস্থিত ড্রাইভার"
@@ -1698,13 +1726,6 @@ msgstr "ডিফল্ট প্রিন্টার রূপে চিহ্
 
 #~ msgid "Going to create a new class %s."
 #~ msgstr "%s নামক নতুন শ্রেণী নির্মাণ করা হবে।"
-
-#~ msgid ""
-#~ "Going to create a new printer %s at\n"
-#~ "%s.\n"
-#~ msgstr ""
-#~ "%s নামক নতুন প্রিন্টার %s-এ\n"
-#~ "স্থাপন করা হবে।\n"
 
 #~ msgid " PPD "
 #~ msgstr " PPD "

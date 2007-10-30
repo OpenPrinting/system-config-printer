@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: printconf\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2007-10-12 17:29+0100\n"
+"POT-Creation-Date: 2007-10-30 17:56+0000\n"
 "PO-Revision-Date: 2007-04-13 22:34+0100\n"
 "Last-Translator: Milan Kerslager <kerslage@linux.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Nečinný"
 
-#: ../cupshelpers.py:28 ../applet.py:684
+#: ../cupshelpers.py:28 ../applet.py:688
 msgid "Processing"
 msgstr "Provádění"
 
@@ -29,11 +29,11 @@ msgstr "Provádění"
 msgid "Busy"
 msgstr "V činnosti"
 
-#: ../cupshelpers.py:30 ../applet.py:685
+#: ../cupshelpers.py:30 ../applet.py:689
 msgid "Stopped"
 msgstr "Zastaveno"
 
-#: ../cupshelpers.py:47 ../applet.py:694
+#: ../cupshelpers.py:47 ../applet.py:698
 msgid "Unknown"
 msgstr "Neznámý"
 
@@ -144,7 +144,7 @@ msgstr ""
 msgid "Installable Options"
 msgstr "Volby instalace"
 
-#: ../system-config-printer.py:1151 ../system-config-printer.glade.h:193
+#: ../system-config-printer.py:1151 ../system-config-printer.glade.h:198
 msgid "Printer Options"
 msgstr "Nastavení tiskárny"
 
@@ -158,20 +158,20 @@ msgstr ""
 "Změny bude možné uložit, až budou konflikty odstraněny."
 
 #: ../system-config-printer.py:1189 ../system-config-printer.py:1205
-#: ../applet.py:333
+#: ../applet.py:335
 msgid "Not authorized"
 msgstr "Neautorizován"
 
-#: ../system-config-printer.py:1190 ../applet.py:334
+#: ../system-config-printer.py:1190 ../applet.py:336
 msgid "The password may be incorrect."
 msgstr "Heslo může být nesprávné."
 
 #: ../system-config-printer.py:1193 ../system-config-printer.py:1226
-#: ../applet.py:337
+#: ../applet.py:339
 msgid "CUPS server error"
 msgstr "Chyba serveru CUPS"
 
-#: ../system-config-printer.py:1194 ../applet.py:338
+#: ../system-config-printer.py:1194 ../applet.py:340
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "V CUPS se při operaci vyskytla chyba: '%s'."
@@ -276,11 +276,7 @@ msgstr "Výchozí tiskárna není nastavena."
 
 #: ../system-config-printer.py:1727
 #, python-format
-msgid "Option '%s' has value '%s' "
-msgstr ""
-
-#: ../system-config-printer.py:1728
-msgid "and cannot be edited."
+msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
 #: ../system-config-printer.py:1767
@@ -288,7 +284,7 @@ msgid "Cancel Tests"
 msgstr "Zrušit test"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1771 ../system-config-printer.glade.h:192
+#: ../system-config-printer.py:1771 ../system-config-printer.glade.h:197
 msgid "Print Test Page"
 msgstr "Tisk testovací stránky"
 
@@ -320,11 +316,11 @@ msgstr ""
 msgid "PostScript Printer Description (*.ppd[.gz])"
 msgstr "PostScript Printer Description (*.ppd[.gz])"
 
-#: ../system-config-printer.py:2304 ../system-config-printer.glade.h:140
+#: ../system-config-printer.py:2304 ../system-config-printer.glade.h:145
 msgid "New Printer"
 msgstr "Nová tiskárna"
 
-#: ../system-config-printer.py:2314 ../system-config-printer.glade.h:139
+#: ../system-config-printer.py:2314 ../system-config-printer.glade.h:144
 msgid "New Class"
 msgstr "Nová třída"
 
@@ -718,10 +714,15 @@ msgid "Connect to CUPS server"
 msgstr "Připojit se k CUPS serveru"
 
 #: ../system-config-printer.glade.h:60
+#, fuzzy
+msgid "Connect to a different print server"
+msgstr "Připojit se k CUPS serveru"
+
+#: ../system-config-printer.glade.h:61
 msgid "Connecting"
 msgstr "Připojování"
 
-#: ../system-config-printer.glade.h:62
+#: ../system-config-printer.glade.h:63
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -730,23 +731,42 @@ msgstr ""
 "Připojuji se k serveru:\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:65
+#: ../system-config-printer.glade.h:66
 msgid "Copies:"
 msgstr "Kopie:"
 
-#: ../system-config-printer.glade.h:66
+#: ../system-config-printer.glade.h:67
 msgid "Copy Printer"
 msgstr "Kopie tiskárny:"
 
-#: ../system-config-printer.glade.h:67
+#: ../system-config-printer.glade.h:68
+#, fuzzy
+msgid "Copy this printer queue"
+msgstr "Kopie tiskárny:"
+
+#: ../system-config-printer.glade.h:69
 msgid "Copyright 2006, 2007 Red Hat, Inc."
 msgstr "Copyright 2006, 2007 Red Hat, Inc."
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:70
+#, fuzzy
+msgid "Create a new printer group"
+msgstr ""
+"Bude vytvořena nová tiskárna %s na \n"
+"%s.\n"
+
+#: ../system-config-printer.glade.h:71
+#, fuzzy
+msgid "Create a new printer queue"
+msgstr ""
+"Bude vytvořena nová tiskárna %s na \n"
+"%s.\n"
+
+#: ../system-config-printer.glade.h:72
 msgid "Data Bits"
 msgstr "Datové bity"
 
-#: ../system-config-printer.glade.h:69
+#: ../system-config-printer.glade.h:73
 msgid ""
 "Default\n"
 "1200\n"
@@ -768,7 +788,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../system-config-printer.glade.h:78
+#: ../system-config-printer.glade.h:82
 msgid ""
 "Default\n"
 "8\n"
@@ -778,7 +798,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../system-config-printer.glade.h:81
+#: ../system-config-printer.glade.h:85
 msgid ""
 "Default\n"
 "None\n"
@@ -790,7 +810,7 @@ msgstr ""
 "Lichý\n"
 "Sudý"
 
-#: ../system-config-printer.glade.h:85
+#: ../system-config-printer.glade.h:89
 msgid ""
 "Default\n"
 "None\n"
@@ -804,126 +824,130 @@ msgstr ""
 "RTS/CTS (Hardwarové)\n"
 "DTR/DSR (Hardwarové)"
 
-#: ../system-config-printer.glade.h:90
+#: ../system-config-printer.glade.h:94
 #, fuzzy
 msgid "Default Printer:"
 msgstr "Nastavit jako výchozí"
 
-#: ../system-config-printer.glade.h:91
+#: ../system-config-printer.glade.h:95
+msgid "Delete this printer queue"
+msgstr ""
+
+#: ../system-config-printer.glade.h:96
 msgid "Deny printing for everyone except these users:"
 msgstr "Zakázat tisk všem kromě uvedeným:"
 
-#: ../system-config-printer.glade.h:92
+#: ../system-config-printer.glade.h:97
 msgid "Description:"
 msgstr "Popis:"
 
-#: ../system-config-printer.glade.h:93
+#: ../system-config-printer.glade.h:98
 msgid "Device URI"
 msgstr "URI zařízení"
 
-#: ../system-config-printer.glade.h:94
+#: ../system-config-printer.glade.h:99
 msgid "Device URI:"
 msgstr "URI zařízení:"
 
-#: ../system-config-printer.glade.h:95
+#: ../system-config-printer.glade.h:100
 msgid "Device description."
 msgstr "Popis zařízení."
 
-#: ../system-config-printer.glade.h:96
+#: ../system-config-printer.glade.h:101
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:97
+#: ../system-config-printer.glade.h:102
 msgid "Empty"
 msgstr "Prázdný"
 
-#: ../system-config-printer.glade.h:98
+#: ../system-config-printer.glade.h:103
 msgid "Enabled"
 msgstr "Povolený"
 
-#: ../system-config-printer.glade.h:99
+#: ../system-config-printer.glade.h:104
 msgid "Ending Banner:"
 msgstr "Ukončující banner:"
 
-#: ../system-config-printer.glade.h:100
+#: ../system-config-printer.glade.h:105
 msgid "Error Policy: \t"
 msgstr "Chybová politika: \t"
 
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:106
 msgid "Find _Queue..."
 msgstr ""
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:107
 msgid "Finishings:"
 msgstr "Dokončování:"
 
-#: ../system-config-printer.glade.h:103
+#: ../system-config-printer.glade.h:108
 msgid "Flow Control"
 msgstr "Řízení přenosu"
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:109
 msgid "Gamma:"
 msgstr "Gama:"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:110
 msgid "Goto Server"
 msgstr "Jít na server"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:111
 msgid "Hold until:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:107
+#: ../system-config-printer.glade.h:112
 #, fuzzy
 msgid "Host:"
 msgstr "Jméno počítače"
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:113
 msgid "Hostname"
 msgstr "Jméno počítače"
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:114
 msgid "Hue adjustment:"
 msgstr "Nastavení odstínu (hue):"
 
-#: ../system-config-printer.glade.h:110
+#: ../system-config-printer.glade.h:115
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Popis pro uživatele, jako např. \"HP LaserJet s oboustranným tiskem\""
 
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:116
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "Umístění pro uživatele, jako např. \"Místnost 3\""
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:117
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:118
 msgid "IPP Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:119
 #, fuzzy
 msgid "Installed Options"
 msgstr "Volby instalace"
 
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:120
 msgid "Job Options"
 msgstr "Volby úlohy"
 
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.glade.h:121
 msgid "Job priority:"
 msgstr "Priorita úlohy:"
 
-#: ../system-config-printer.glade.h:117
+#: ../system-config-printer.glade.h:122
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:118
+#: ../system-config-printer.glade.h:123
 msgid "Left margin:"
 msgstr "Levý okraj:"
 
-#: ../system-config-printer.glade.h:119
+#: ../system-config-printer.glade.h:124
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -943,60 +967,60 @@ msgstr ""
 "Od spodu k vrchu, zleva do prava\n"
 "Od spodu k vrchu, zprava do leva"
 
-#: ../system-config-printer.glade.h:127
+#: ../system-config-printer.glade.h:132
 msgid "Lines per inch:"
 msgstr "Řádků na palec:"
 
-#: ../system-config-printer.glade.h:128
+#: ../system-config-printer.glade.h:133
 msgid "Location:"
 msgstr "Umístění:"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:130
+#: ../system-config-printer.glade.h:135
 #, fuzzy
 msgid "Make Default"
 msgstr "výchozí"
 
-#: ../system-config-printer.glade.h:131
+#: ../system-config-printer.glade.h:136
 msgid "Make and Model:"
 msgstr "Značka a model:"
 
-#: ../system-config-printer.glade.h:132
+#: ../system-config-printer.glade.h:137
 #, fuzzy
 msgid ""
 "May contain any printable characters except \"/\", \"#\", and space.\n"
 "Name must be unique on the local machine!"
 msgstr "Může obsahovat tisknutelné znaky mimo \"/\", \"#\" a mezery"
 
-#: ../system-config-printer.glade.h:134
+#: ../system-config-printer.glade.h:139
 msgid "Media:"
 msgstr "Médium:"
 
-#: ../system-config-printer.glade.h:135
+#: ../system-config-printer.glade.h:140
 msgid "Members"
 msgstr "Členové"
 
-#: ../system-config-printer.glade.h:136
+#: ../system-config-printer.glade.h:141
 msgid "Mirror"
 msgstr "Zrcadlo"
 
-#: ../system-config-printer.glade.h:137
+#: ../system-config-printer.glade.h:142
 msgid "More"
 msgstr "Další"
 
-#: ../system-config-printer.glade.h:138
+#: ../system-config-printer.glade.h:143
 msgid "New Clas_s"
 msgstr "Nová tří_da"
 
-#: ../system-config-printer.glade.h:141
+#: ../system-config-printer.glade.h:146
 msgid "New _Printer"
 msgstr "Nová _tiskárna"
 
-#: ../system-config-printer.glade.h:142
+#: ../system-config-printer.glade.h:147
 msgid "New name for the printer"
 msgstr "Nové jméno pro tiskárnu"
 
-#: ../system-config-printer.glade.h:143
+#: ../system-config-printer.glade.h:148
 msgid ""
 "None\n"
 "Staple\n"
@@ -1056,7 +1080,7 @@ msgstr ""
 "Svázat (vpravot)\n"
 "Svázat (dole)"
 
-#: ../system-config-printer.glade.h:171
+#: ../system-config-printer.glade.h:176
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1066,43 +1090,43 @@ msgstr ""
 "Oboustranně (dlouhý kraj)\n"
 "Oboustranně (krátký kraj)"
 
-#: ../system-config-printer.glade.h:174
+#: ../system-config-printer.glade.h:179
 msgid "Operation Policy:"
 msgstr "Operační politika:"
 
-#: ../system-config-printer.glade.h:175
+#: ../system-config-printer.glade.h:180
 msgid "Orientation:"
 msgstr "Orientace:"
 
-#: ../system-config-printer.glade.h:176
+#: ../system-config-printer.glade.h:181
 msgid "Pages per side layout:"
 msgstr "Stránek na rozvržení strany:"
 
-#: ../system-config-printer.glade.h:177
+#: ../system-config-printer.glade.h:182
 msgid "Pages per side:"
 msgstr "Stránek na stranu:"
 
-#: ../system-config-printer.glade.h:178
+#: ../system-config-printer.glade.h:183
 msgid "Parity"
 msgstr "Parita"
 
-#: ../system-config-printer.glade.h:179 ../applet.glade.h:5
+#: ../system-config-printer.glade.h:184 ../applet.glade.h:5
 msgid "Password:"
 msgstr "Heslo:"
 
-#: ../system-config-printer.glade.h:180
+#: ../system-config-printer.glade.h:185
 msgid "Please Wait"
 msgstr ""
 
-#: ../system-config-printer.glade.h:181
+#: ../system-config-printer.glade.h:186
 msgid "Policies"
 msgstr "Politiky"
 
-#: ../system-config-printer.glade.h:182
+#: ../system-config-printer.glade.h:187
 msgid "Port number"
 msgstr "Číslo portu"
 
-#: ../system-config-printer.glade.h:183
+#: ../system-config-printer.glade.h:188
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1114,7 +1138,7 @@ msgstr ""
 "Obráceně na šířku (270°)\n"
 "Obráceně na výšku (180°)"
 
-#: ../system-config-printer.glade.h:187
+#: ../system-config-printer.glade.h:192
 msgid ""
 "PostScript Printer Description (PPD) files can often found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1124,115 +1148,119 @@ msgstr ""
 "který jste dostali s tiskárnou. U PostScriptových tiskáren jsou občas "
 "součástí ovladače pro Windows<sup>®</sup>"
 
-#: ../system-config-printer.glade.h:188
+#: ../system-config-printer.glade.h:193
 msgid "Pretty print"
 msgstr "Pěkný tisk"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:190
+#: ../system-config-printer.glade.h:195
 #, fuzzy
 msgid "Print Self-Test Page"
 msgstr "Tisk testovací stránky"
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:199
 msgid "Printer State:"
 msgstr "Stav tiskárny:"
 
-#: ../system-config-printer.glade.h:195
+#: ../system-config-printer.glade.h:200
 msgid "Printername"
 msgstr "Jméno tiskárny"
 
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:201
 msgid "Probe"
 msgstr "Detekce"
 
-#: ../system-config-printer.glade.h:197
+#: ../system-config-printer.glade.h:202
 #, fuzzy
 msgid "Provide PPD File"
 msgstr "Dodejte PPD soubor"
 
-#: ../system-config-printer.glade.h:198
+#: ../system-config-printer.glade.h:203
 msgid "Queue:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:204
+msgid "Refresh the list of printer queues"
+msgstr ""
+
+#: ../system-config-printer.glade.h:205
 msgid "Require encryption"
 msgstr "Vyžaduje šifrování"
 
-#: ../system-config-printer.glade.h:200
+#: ../system-config-printer.glade.h:206
 msgid "Reset"
 msgstr "Reset"
 
-#: ../system-config-printer.glade.h:201
+#: ../system-config-printer.glade.h:207
 msgid "Reset to system default"
 msgstr "Nastavit na implicitní"
 
-#: ../system-config-printer.glade.h:202
+#: ../system-config-printer.glade.h:208
 msgid "Right margin:"
 msgstr "Pravý okraj:"
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:209
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:210
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:205
+#: ../system-config-printer.glade.h:211
 msgid "SMB Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:206
+#: ../system-config-printer.glade.h:212
 msgid "Saturation:"
 msgstr "Nasycení:"
 
-#: ../system-config-printer.glade.h:207
+#: ../system-config-printer.glade.h:213
 msgid "Save debugging information for troubleshooting"
 msgstr "Uložit ladící informace pro nalezení chyby"
 
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.glade.h:214
 msgid "Scale to fit"
 msgstr "Přizpůsobit listu"
 
-#: ../system-config-printer.glade.h:209
+#: ../system-config-printer.glade.h:215
 msgid "Scaling:"
 msgstr "Poměr:"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:216
 msgid "Select A File"
 msgstr "Vyberte soubor"
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:217
 #, fuzzy
 msgid "Select Printer from Database"
 msgstr "Vyberte tiskárnu z databáze"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:218
 msgid "Serial"
 msgstr "Sériový"
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:219
 msgid "Settings"
 msgstr "Nastavení"
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:220
 msgid "Share published printers connected to this system"
 msgstr "Sdílet tiskárny připojené k tomuto systému"
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:221
 msgid "Shared"
 msgstr "Sdílená"
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:222
 msgid "Show printers shared by other systems"
 msgstr "Zobrazit tiskárny sdílené jinými počítači"
 
-#: ../system-config-printer.glade.h:217
+#: ../system-config-printer.glade.h:223
 msgid "Sides:"
 msgstr "Stran:"
 
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:224
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1241,15 +1269,15 @@ msgstr ""
 "Zvolte implicitní nastavení pro tuto tiskárnu. Úlohy předávané tiskovému "
 "serveru nastavení převezmou, pokud klient nepošle s úlohou vlastní nastavení."
 
-#: ../system-config-printer.glade.h:219
+#: ../system-config-printer.glade.h:225
 msgid "Starting Banner:"
 msgstr "Úvodní banner:"
 
-#: ../system-config-printer.glade.h:220
+#: ../system-config-printer.glade.h:226
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:221
+#: ../system-config-printer.glade.h:227
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1262,13 +1290,13 @@ msgstr ""
 "PostScript neumějí. Výrobce, který PPD soubor poskytuje, umožňuje snadnější "
 "využití možností tiskárny."
 
-#: ../system-config-printer.glade.h:222
+#: ../system-config-printer.glade.h:228
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr ""
 
-#: ../system-config-printer.glade.h:223
+#: ../system-config-printer.glade.h:229
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1278,7 +1306,7 @@ msgstr ""
 "voleb, které v novém PPD nejsou, bude ztraceno. Volby z nového PPD budou "
 "nastevny na výchozí hodnoty."
 
-#: ../system-config-printer.glade.h:224
+#: ../system-config-printer.glade.h:230
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1295,7 +1323,7 @@ msgid ""
 "Ave, Cambridge, MA 02139, USA."
 msgstr ""
 
-#: ../system-config-printer.glade.h:229
+#: ../system-config-printer.glade.h:235
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -1303,85 +1331,85 @@ msgstr ""
 "Všechna uživatelská nastavení budou ztracena. Použijí se výchozí hodnoty z "
 "nového PPD."
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:236
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "Pro přidání nového nastavení vložte jméno do boxu a klikněte na 'Přidat'."
 
-#: ../system-config-printer.glade.h:231
+#: ../system-config-printer.glade.h:237
 msgid "Top margin:"
 msgstr "Horní okraj:"
 
-#: ../system-config-printer.glade.h:232
+#: ../system-config-printer.glade.h:238
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "Zkusit zkopírovat nastavení ze starého PPD."
 
-#: ../system-config-printer.glade.h:233
+#: ../system-config-printer.glade.h:239
 msgid "URI:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:234
+#: ../system-config-printer.glade.h:240
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "Použít nový PPD (Postscript Printer Description) tak, jak je."
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:241
 msgid "User name:"
 msgstr "Jméno uživatele:"
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:242
 msgid "Username:"
 msgstr "Jméno uživatele:"
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:243
 msgid "Word wrap"
 msgstr "Zalamovat slova"
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:244
 msgid "_Do not apply"
 msgstr "_Neukládat"
 
-#: ../system-config-printer.glade.h:239
+#: ../system-config-printer.glade.h:245
 msgid "_Edit"
 msgstr "_Změnit"
 
-#: ../system-config-printer.glade.h:240 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:246 ../applet.glade.h:10
 msgid "_File"
 msgstr "_Soubor"
 
-#: ../system-config-printer.glade.h:241
+#: ../system-config-printer.glade.h:247
 msgid "_Goto Server"
 msgstr "_Jít na server"
 
-#: ../system-config-printer.glade.h:242
+#: ../system-config-printer.glade.h:248
 msgid "_Help"
 msgstr "Nápo_věda"
 
-#: ../system-config-printer.glade.h:243
+#: ../system-config-printer.glade.h:249
 msgid "_Install"
 msgstr ""
 
-#: ../system-config-printer.glade.h:244
+#: ../system-config-printer.glade.h:250
 msgid "_Verify..."
 msgstr "Z_kontrolovat..."
 
-#: ../system-config-printer.glade.h:245
+#: ../system-config-printer.glade.h:251
 msgid "default"
 msgstr "výchozí"
 
-#: ../system-config-printer.glade.h:246
+#: ../system-config-printer.glade.h:252
 msgid "none"
 msgstr "žádný"
 
-#: ../system-config-printer.glade.h:247
+#: ../system-config-printer.glade.h:253
 msgid "points"
 msgstr "body"
 
-#: ../system-config-printer.glade.h:248
+#: ../system-config-printer.glade.h:254
 msgid "points (72 points per inch)"
 msgstr "body (72 bodů na palec)"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:250
+#: ../system-config-printer.glade.h:256
 msgid "translator-credits"
 msgstr ""
 
@@ -1515,103 +1543,103 @@ msgstr "Stav"
 msgid "Message"
 msgstr "Zpráva"
 
-#: ../applet.py:555
+#: ../applet.py:559
 msgid "1 hour ago"
 msgstr "před 1 hodinou"
 
-#: ../applet.py:557
+#: ../applet.py:561
 msgid "1 hour and 1 minute ago"
 msgstr "před 1 hodinou a 1 minutou"
 
-#: ../applet.py:559
+#: ../applet.py:563
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "před 1 hodinou a %d minutami"
 
-#: ../applet.py:562
+#: ../applet.py:566
 #, python-format
 msgid "%d hours ago"
 msgstr "před %d"
 
-#: ../applet.py:564
+#: ../applet.py:568
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "před %d hodinami a 1 minutou"
 
-#: ../applet.py:566
+#: ../applet.py:570
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "před %d hodinami a %d minutami"
 
-#: ../applet.py:572
+#: ../applet.py:576
 msgid "a minute ago"
 msgstr "před minutou"
 
-#: ../applet.py:574
+#: ../applet.py:578
 #, python-format
 msgid "%d minutes ago"
 msgstr "před %d minutami"
 
-#: ../applet.py:629
+#: ../applet.py:633
 msgid "No documents queued"
 msgstr "Žádné dokumenty ve frontě"
 
-#: ../applet.py:632
+#: ../applet.py:636
 msgid "1 document queued"
 msgstr "1 dokument ve frontě"
 
-#: ../applet.py:635
+#: ../applet.py:639
 #, python-format
 msgid "%d documents queued"
 msgstr "%d dokumentů ve frontě"
 
-#: ../applet.py:682
+#: ../applet.py:686
 msgid "Pending"
 msgstr "Čekající"
 
-#: ../applet.py:683
+#: ../applet.py:687
 msgid "Held"
 msgstr "Pozastaveno"
 
-#: ../applet.py:686
+#: ../applet.py:690
 msgid "Canceled"
 msgstr "Zrušeno"
 
-#: ../applet.py:687
+#: ../applet.py:691
 msgid "Aborted"
 msgstr "Přerušeno"
 
-#: ../applet.py:688
+#: ../applet.py:692
 msgid "Completed"
 msgstr "Dokončeno"
 
-#: ../applet.py:946
+#: ../applet.py:953
 #, fuzzy
 msgid "Printer added"
 msgstr "Jméno tiskárny"
 
-#: ../applet.py:948
+#: ../applet.py:955
 #, fuzzy
 msgid "Missing printer driver"
 msgstr "Chybí ovladač"
 
-#: ../applet.py:951
+#: ../applet.py:958
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr ""
 
-#: ../applet.py:954
+#: ../applet.py:961
 #, fuzzy
 msgid "Configure"
 msgstr "Nastavit tiskárny"
 
 #. Model mismatch
-#: ../applet.py:957
+#: ../applet.py:964
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr ""
 
-#: ../applet.py:961
+#: ../applet.py:968
 #, fuzzy
 msgid "Find driver"
 msgstr "Chybí ovladač"
@@ -1680,13 +1708,6 @@ msgstr "Nastavit jako výchozí"
 
 #~ msgid "Going to create a new class %s."
 #~ msgstr "Bude vytvořena nová třída %s."
-
-#~ msgid ""
-#~ "Going to create a new printer %s at\n"
-#~ "%s.\n"
-#~ msgstr ""
-#~ "Bude vytvořena nová tiskárna %s na \n"
-#~ "%s.\n"
 
 #~ msgid " PPD "
 #~ msgstr " PPD "

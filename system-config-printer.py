@@ -1507,7 +1507,7 @@ class GUI(GtkGUI):
                 self.printer.name != 'localhost'):
                 self.lblError.set_markup ('<span weight="bold" size="larger">'+
                                           _("Not possible") + '</span>\n\n' +
-                                          _("THe remote server did not accept "
+                                          _("The remote server did not accept "
                                             "the print job, most likely "
                                             "because the printer is not "
                                             "shared."))
@@ -1724,7 +1724,7 @@ class GUI(GtkGUI):
                     self.lblError.set_markup ('<span weight="bold" ' +
                                               'size="larger">' +
                                               _("Error") + '</span>\n\n' +
-                                              _("Option '%s' has value '%s' " +
+                                              _("Option '%s' has value '%s' "
                                                 "and cannot be edited.") %
                                               (option.name, value))
                     self.ErrorDialog.set_transient_for (self.MainWindow)
