@@ -677,9 +677,38 @@ class PPDs:
 
         self.ids = ids
 
+def show_help():
+    print "usage: ppds.py [--deviceid] [--list-models] [--list-ids] [--debug]"
+
 def main():
-    list_models = True
+    import sys, getopt
+    try:
+        opts, args = getopt.gnu_getopt (sys.argv[1:], '',
+                                        ['help',
+                                         'deviceid',
+                                         'list-models',
+                                         'list-ids',
+                                         'debug'])
+    except getopt.GetoptError:
+        show_help()
+        sys.exit (1)
+
+    stdin_deviceid = False
+    list_models = False
     list_ids = False
+
+    for opt, optarg in opts:
+        if opt == "--help":
+            show_help ()
+            sys.exit (0)
+        if opt == "--deviceid":
+            stdin_deviceid = True
+        elif opt == "--list-models":
+            list_models = True
+        elif opt == "--list-ids":
+            list_ids = True
+        elif opt == "--debug":
+            debugging = True
 
     picklefile="pickled-ppds"
     import pickle
@@ -718,7 +747,8 @@ def main():
     print "%d ID makes, %d ID models" % (len (makes), models_count)
 
     print "\nID matching tests\n"
-    for id in [
+
+    idlist = [
         "MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;DES:EPSON Stylus D78;",
         "MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;CLS:PRINTER;1284.4DL:4d,4e,1;",
         "MFG:HP;MDL:PSC 2200 Series;CLS:PRINTER;DES:PSC 2200 Series;", # from HPLIP
@@ -733,7 +763,12 @@ def main():
         "MFG:New;MDL:Unknown PCL3 Printer;CMD:PCL;",
         "MFG:New;MDL:Unknown ESC/P Printer;CMD:ESCP2E;",
         "MFG:New;MDL:Unknown Printer;",
-        ]:
+        ]
+
+    if stdin_deviceid:
+        idlist = [raw_input ('Device ID: ')]
+
+    for id in idlist:
         id_dict = parseDeviceID (id)
         print id_dict["MFG"], id_dict["MDL"]
         ppdname = ppds.getPPDNameFromDeviceID (id_dict["MFG"],
