@@ -3176,16 +3176,18 @@ class NewPrinterGUI(GtkGUI):
     def update_IPP_URI_label(self):
         hostname = self.entNPTIPPHostname.get_text ()
         queue = self.entNPTIPPQueuename.get_text ()
-        valid = len (hostname + queue) > 0
+        valid = len (hostname) > 0 and queue != '/printers/'
 
         if valid:
             uri = "ipp://%s%s" % (hostname, queue)
             self.lblIPPURI.set_text (uri)
             self.lblIPPURI.show ()
+            self.entNPTIPPQueuename.show ()
         else:
             self.lblIPPURI.hide ()
 
         self.btnIPPVerify.set_sensitive (valid)
+        self.setNPButtons ()
 
     def on_entNPTIPPHostname_changed(self, ent):
         valid = len (ent.get_text ()) > 0
@@ -3424,7 +3426,8 @@ class NewPrinterGUI(GtkGUI):
                 self.entNPTIPPQueuename.show()
             else:
                 self.entNPTIPPHostname.set_text('')
-                self.entNPTIPPQueuename.hide()
+                self.entNPTIPPQueuename.set_text('/printers/')
+                self.entNPTIPPQueuename.show()
                 self.lblIPPURI.hide()
         elif device.type=="lpd":
             if device.uri.startswith ("lpd"):
