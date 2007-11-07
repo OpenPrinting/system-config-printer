@@ -1,3 +1,24 @@
+2007-11-07  Tim Waugh  <twaugh@redhat.com>
+
+	* print-applet.desktop.in: Removed reference to applet.png.
+
+	* applet.png: Removed.
+	* inspecting-printer.png: Removed.
+	* Makefile.am: Removed references to shipped icons.
+
+	* applet.py (ICON, JobManager.__init__): Use 'printer' named icon
+	from theme (Ubuntu #152634).
+
+	* applet.py (StateReason): Use named icons for state reason
+	severities (part of Ubuntu #152634).
+	(JobManager.check_state_reasons): Load them from the theme.
+	(JobManager.set_printer_status_icon): Likewise.
+
+	* manage-print-jobs.desktop.in (Icon): Likewise.
+	* applet.py (JobManager.set_special_status_icon,
+	NewPrinterNotification.GetReady): Use 'document-print-preview'
+	named icon from theme (Ubuntu #152634).
+
 2007-10-31  Tim Waugh  <twaugh@redhat.com>
 
 	* ppds.py (main): Allow stand-alone Device ID testing.

@@ -23,8 +23,8 @@ import sys
 APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
 GLADE="applet.glade"
-ICON="applet.png"
-SEARCHING_ICON="inspecting-printer.png"
+ICON="printer"
+SEARCHING_ICON="document-print-preview"
 
 CONNECTING_TIMEOUT = 60 # seconds
 MIN_REFRESH_INTERVAL = 1 # seconds
@@ -34,10 +34,10 @@ class StateReason:
     WARNING=2
     ERROR=3
 
-    LEVEL_FILE={
-        REPORT: "/usr/share/icons/gnome/22x22/status/info.png",
-        WARNING: "/usr/share/icons/gnome/22x22/status/important.png",
-        ERROR: "/usr/share/icons/gnome/22x22/status/error.png"
+    LEVEL_ICON={
+        REPORT: "info",
+        WARNING: "important",
+        ERROR: "error"
         }
 
     def __init__(self, printer, reason):
@@ -202,7 +202,7 @@ class JobManager:
         self.treeview.set_rules_hint (True)
 
         self.MainWindow = self.xml.get_widget ('MainWindow')
-        self.MainWindow.set_icon_from_file (APPDIR + "/" + ICON)
+        self.MainWindow.set_icon_name (ICON)
         self.MainWindow.hide ()
 
         self.statusbar = self.xml.get_widget ('statusbar')
@@ -218,7 +218,7 @@ class JobManager:
 
         self.show_printer_status = self.xml.get_widget ('show_printer_status')
         self.PrintersWindow = self.xml.get_widget ('PrintersWindow')
-        self.PrintersWindow.set_icon_from_file (APPDIR + "/" + ICON)
+        self.PrintersWindow.set_icon_name (ICON)
         self.PrintersWindow.hide ()
         self.treeview_printers = self.xml.get_widget ('treeview_printers')
         column = gtk.TreeViewColumn(_("Printer"))
@@ -260,7 +260,9 @@ class JobManager:
 
         if self.trayicon:
             self.statusicon = gtk.StatusIcon ()
-            self.statusicon.set_from_file (APPDIR + "/" + ICON)
+            theme = gtk.icon_theme_get_default ()
+            pixbuf = theme.load_icon (ICON, 22, 0)
+            self.statusicon.set_from_pixbuf (pixbuf)
             self.icon_jobs = self.statusicon.get_pixbuf ()
             self.icon_no_jobs = self.icon_jobs.copy ()
             self.icon_no_jobs.fill (0)
@@ -290,9 +292,9 @@ class JobManager:
             self.MainWindow.show ()
 
     # Handle "special" status icon
-    def set_special_statusicon (self, filename):
+    def set_special_statusicon (self, iconname):
         self.special_status_icon = True
-        self.statusicon.set_from_file (filename)
+        self.statusicon.set_from_icon_name (iconname)
 
     def unset_special_statusicon (self):
         self.special_status_icon = False
@@ -466,21 +468,23 @@ class JobManager:
             self.statusbar_set = True
 
             if self.trayicon:
-                icon = StateReason.LEVEL_FILE[reason.get_level ()]
+                icon = StateReason.LEVEL_ICON[reason.get_level ()]
                 pixbuf = self.statusicon.get_pixbuf ().copy ()
-                image = gtk.Image ()
-                image.set_from_file (icon)
-                emblem = image.get_pixbuf ()
-                emblem.composite (pixbuf,
-                                  pixbuf.get_width () / 2,
-                                  pixbuf.get_height () / 2,
-                                  emblem.get_width () / 2,
-                                  emblem.get_height () / 2,
-                                  pixbuf.get_width () / 2,
-                                  pixbuf.get_height () / 2,
-                                  0.5, 0.5,
-                                  gtk.gdk.INTERP_BILINEAR, 255)
-                self.set_statusicon_from_pixbuf (pixbuf)
+                theme = gtk.icon_theme_get_default ()
+                try:
+                    emblem = theme.load_icon (icon, 22, 0)
+                    emblem.composite (pixbuf,
+                                      pixbuf.get_width () / 2,
+                                      pixbuf.get_height () / 2,
+                                      emblem.get_width () / 2,
+                                      emblem.get_height () / 2,
+                                      pixbuf.get_width () / 2,
+                                      pixbuf.get_height () / 2,
+                                      0.5, 0.5,
+                                      gtk.gdk.INTERP_BILINEAR, 255)
+                    self.set_statusicon_from_pixbuf (pixbuf)
+                except gobject.GError, exc:
+                    pass # Couldn't load icon.
         else:
             # No errors
             if self.statusbar_set:
@@ -793,9 +797,13 @@ class JobManager:
     ## Printer status window
     def set_printer_status_icon (self, column, cell, model, iter, *user_data):
         level = model.get_value (iter, 0)
-        file = StateReason.LEVEL_FILE[level]
-        pixbuf = gtk.gdk.pixbuf_new_from_file (file)
-        cell.set_property("pixbuf", pixbuf)
+        icon = StateReason.LEVEL_ICON[level]
+        theme = gtk.icon_theme_get_default ()
+        try:
+            pixbuf = theme.load_icon (icon, 22, 0)
+            cell.set_property("pixbuf", pixbuf)
+        except gobject.GError, exc:
+            pass # Couldn't load icon
 
     def set_printer_status_name (self, column, cell, model, iter, *user_data):
         cell.set_property("text", model.get_value (iter, 1))
@@ -910,8 +918,7 @@ class NewPrinterNotification(dbus.service.Object):
     def GetReady (self):
         self.wake_up ()
         if self.getting_ready == 0:
-            jobmanager.set_special_statusicon (APPDIR + "/" +
-                                               SEARCHING_ICON)
+            jobmanager.set_special_statusicon (SEARCHING_ICON)
 
         self.getting_ready += 1
         gobject.timeout_add (60 * 1000, self.timeout_ready)
