@@ -813,7 +813,7 @@ def do_imports():
     global gtk_loaded
     if not gtk_loaded:
         gtk_loaded = True
-        global gtk, pango, pynotify, time, gettext, _
+        global gtk, pango, pynotify, gettext, _
         import gtk, gtk.glade, pango
         import pynotify
         import time
@@ -866,6 +866,7 @@ import dbus.glib
 import dbus.service
 import gobject
 import pynotify
+import time
 
 #Must be done before connecting to D-Bus (for some reason).
 if not pynotify.init (PROGRAM_NAME):
@@ -1022,11 +1023,35 @@ if trayicon:
         return False
 
     if not any_jobs_or_errors ():
-        def check_for_jobs (*args):
-            if any_jobs_or_errors ():
-                waitloop.quit ()
 
-        bus.add_signal_receiver (check_for_jobs,
+        ###
+        class WaitForJobs:
+            MIN_CHECK_INTERVAL=5 # seconds
+
+            def __init__ (self):
+                self.last_check = time.time()
+                self.timer = None
+
+            def check_for_jobs (self, *args):
+                now = time.time ()
+                since_last_check = now - self.last_check
+                if since_last_check < self.MIN_CHECK_INTERVAL:
+                    if self.timer != None:
+                        return
+
+                    self.timer = gobject.timeout_add (self.MIN_CHECK_INTERVAL *
+                                                      1000,
+                                                      self.check_for_jobs)
+                    return
+
+                self.timer = None
+                self.last_check = now
+                if any_jobs_or_errors ():
+                    waitloop.quit ()
+        ###
+
+        jobwaiter = WaitForJobs()
+        bus.add_signal_receiver (jobwaiter.check_for_jobs,
                                  path="/com/redhat/PrinterSpooler",
                                  dbus_interface="com.redhat.PrinterSpooler")
         waitloop = gobject.MainLoop ()

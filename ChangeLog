@@ -1,3 +1,10 @@
+2007-11-13  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (WaitForJobs): New class to throttle the rate of
+	checking for jobs or error messages when in start-up mode.  This
+	prevents the applet being a nuisance when a large number of CUPS
+	administration operations are performed in a batch.
+
 2007-11-11  Tim Waugh  <twaugh@redhat.com>
 
 	* manage-print-jobs.desktop.in, my-default-printer.desktop.in,
