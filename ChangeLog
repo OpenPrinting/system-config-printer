@@ -1,3 +1,11 @@
+2007-11-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Add a blank page to the main
+	window's right-pane notebook for occasions when there is a problem
+	fetching information about the printer.
+	* system-config-printer.py (GUI.on_tvMainList_cursor_changed):
+	When cupsGetPPD2() fails this is not fatal (bug #382031).
+
 2007-11-13  Tim Waugh  <twaugh@redhat.com>
 
 	* applet.py (WaitForJobs): New class to throttle the rate of

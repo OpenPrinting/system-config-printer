@@ -1539,7 +1539,13 @@ class GUI(GtkGUI):
                 self.fillServerTab()
             item_selected = False
         elif type in ['Printer', 'Class']:
-            self.fillPrinterTab(name)
+            try:
+                self.fillPrinterTab(name)
+            except RuntimeError:
+                # Perhaps cupsGetPPD2 failed for a browsed printer.
+                self.ntbkMain.set_current_page(2)
+                return
+
             self.ntbkMain.set_current_page(1)
         elif type == "None":
             self.ntbkMain.set_current_page(2)
@@ -1587,7 +1593,7 @@ class GUI(GtkGUI):
             self.ErrorDialog.set_transient_for(self.MainWindow)
             self.ErrorDialog.run()
             self.ErrorDialog.hide()
-            sys.exit (1)
+            raise
 
         for widget in (self.entPDescription, self.entPLocation,
                        self.entPDevice):
