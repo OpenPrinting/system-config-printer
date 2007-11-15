@@ -759,6 +759,7 @@ class GUI:
         if iter is None:
             return ("", 'None')
         name, type = model.get_value(iter, 0), model.get_value(iter, 1)
+        name = name.decode ('utf-8')
         return name.strip(), type
 
     # Connect to Server
