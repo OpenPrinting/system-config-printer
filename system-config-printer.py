@@ -80,8 +80,12 @@ except AttributeError:
     # cups module was compiled with CUPS < 1.3
     try_CUPS_SERVER_REMOTE_ANY = "_remote_any"
 
-def nonfatalException ():
-    print "Caught non-fatal exception.  Traceback:"
+def fatalException (exitcode=1):
+    nonfatalException (type="fatal", end="Exiting")
+    sys.exit (exitcode)
+
+def nonfatalException (type="non-fatal", end="Continuing anyway.."):
+    print "Caught %s exception.  Traceback:" % type
     (type, value, tb) = sys.exc_info ()
     tblast = traceback.extract_tb (tb, limit=None)
     if len (tblast):
@@ -90,7 +94,7 @@ def nonfatalException ():
     for line in traceback.format_tb(tb):
         print line.strip ()
     print extxt[0].strip ()
-    print "Continuing anyway.."
+    print end
 
 def validDeviceURI (uri):
     """Returns True is the provided URI is valid."""
@@ -3361,6 +3365,10 @@ class GUI:
                 self.WaitWindow.hide ()
                 self.show_IPP_Error(e, msg)
                 return
+            except:
+                self.ready (self.NewPrinterWindow)
+                self.WaitWindow.hide ()
+                fatalException (1)
             self.WaitWindow.hide ()
             self.ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer"):
