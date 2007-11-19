@@ -1057,7 +1057,7 @@ if trayicon:
         waitloop = gobject.MainLoop ()
         waitloop.run()
         waitloop = None
-        bus.remove_signal_receiver (check_for_jobs,
+        bus.remove_signal_receiver (jobwaiter.check_for_jobs,
                                     path="/com/redhat/PrinterSpooler",
                                     dbus_interface="com.redhat.PrinterSpooler")
 
