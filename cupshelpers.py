@@ -380,15 +380,19 @@ def activateNewPrinter(connection, name):
     connection.enablePrinter (name)
     connection.acceptJobs (name)
 
-    # Set first available printer as the default.
-    dests = connection.getDests ()
-    set_default = True
-    for id, dest in dests.iteritems ():
-        if dest.is_default:
-            set_default = False
-            break
+    # Set as the default if there is not already a default printer.
+    default_is_set = False
+    try:
+        if connection.getDefault () != None:
+            default_is_set = True
+    except AttributeError: # getDefault appeared in pycups-1.9.31
+        dests = connection.getDests ()
+        # If a default printer is set it will be available from
+        # key (None,None).
+        if dests.has_key ((None, None)):
+            default_is_set = True
 
-    if set_default:
+    if not default_is_set:
         connection.setDefault (name)
 
 def getPPDGroupOptions(group):
