@@ -582,7 +582,16 @@ class GUI(GtkGUI):
         else:
             self.printers = {}
         
-        self.default_printer = ""
+        try:
+            self.default_printer = self.cups.getDefault ()
+        except AttributeError: # getDefault appeared in pycups-1.9.31
+            # This fetches the list of printers and classes *again*, just
+            # to find out the default printer.
+            dests = self.cups.getDests ()
+            if dests.has_key ((None,None)):
+                self.default_printer = dests[(None,None)].name
+            else:
+                self.default_printer = None
 
         local_printers = []
         local_classes = []
@@ -614,7 +623,7 @@ class GUI(GtkGUI):
             # The previously selected printer no longer exists.
             old_name = ""
 
-        if (self.default_printer != "" and
+        if (self.default_printer != None and
             start_printer == None and
             old_name == ""):
             start_printer = self.default_printer
