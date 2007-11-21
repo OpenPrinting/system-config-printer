@@ -1534,7 +1534,8 @@ class GUI:
             self.InfoDialog.hide ()
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
-                self.printer.name != 'localhost'):
+                self.connect_server != 'localhost' and
+                self.connect_server[0] != '/'):
                 self.lblError.set_markup ('<span weight="bold" size="larger">'+
                                           _("Not possible") + '</span>\n\n' +
                                           _("The remote server did not accept "
