@@ -1,3 +1,14 @@
+2007-11-22  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.check_state_reasons): Emblems and
+	notifications make the icon useful.  For notifications, make the
+	icon visible if it was not previously visible.  For emblems, do
+	not hide the icon if currently visible.
+	(JobManager.on_icon_hide_activate): When hiding the icon, allow it
+	to become visible next time a job is submitted.
+	(JobManager.__init__): Attach signal receiver after everything is
+	correctly initialised.
+
 2007-11-21  Tim Waugh  <twaugh@redhat.com>
 
 	* cupshelpers.py (activateNewPrinter): Use getDefault (or, failing

@@ -253,11 +253,6 @@ class JobManager:
 
         cups.setPasswordCB(self.cupsPasswdCallback)
 
-        # D-Bus
-        bus.add_signal_receiver (self.handle_dbus_signal,
-                                 path="/com/redhat/PrinterSpooler",
-                                 dbus_interface="com.redhat.PrinterSpooler")
-
         if self.trayicon:
             self.statusicon = gtk.StatusIcon ()
             theme = gtk.icon_theme_get_default ()
@@ -286,6 +281,11 @@ class JobManager:
             self.notify = None
             self.notified_reason = None
 
+        # D-Bus
+        bus.add_signal_receiver (self.handle_dbus_signal,
+                                 path="/com/redhat/PrinterSpooler",
+                                 dbus_interface="com.redhat.PrinterSpooler")
+
         self.refresh ()
 
         if not self.trayicon:
@@ -295,6 +295,7 @@ class JobManager:
     def set_special_statusicon (self, iconname):
         self.special_status_icon = True
         self.statusicon.set_from_icon_name (iconname)
+        self.statusicon.set_visible (True)
 
     def unset_special_statusicon (self):
         self.special_status_icon = False
@@ -459,6 +460,7 @@ class JobManager:
 
         # Update statusbar and icon with most severe printer reason
         # across all printers.
+        self.icon_has_emblem = False
         reason = worst_printer_state_reason (connection, printer_reasons)
         if reason != None and reason.get_level () >= StateReason.WARNING:
             title, text = reason.get_description ()
@@ -483,6 +485,7 @@ class JobManager:
                                       0.5, 0.5,
                                       gtk.gdk.INTERP_BILINEAR, 255)
                     self.set_statusicon_from_pixbuf (pixbuf)
+                    self.icon_has_emblem = True
                 except gobject.GError, exc:
                     pass # Couldn't load icon.
         else:
@@ -531,11 +534,27 @@ class JobManager:
                 if self.notify:
                     self.notify.close ()
                 self.notify = pynotify.Notification (title, text)
+                self.set_statusicon_visibility ()
+                # Let the icon show itself, ready for the notification
+                while gtk.events_pending ():
+                    gtk.main_iteration ()
+
                 self.notify.attach_to_status_icon (self.statusicon)
+
+                while gtk.events_pending ():
+                    gtk.main_iteration ()
+
                 self.notify.set_urgency (notify_urgency)
                 self.notify.set_timeout (timeout)
+                self.notify.connect ('closed', self.on_notification_closed)
                 self.notify.show ()
                 self.notified_reason = reason
+
+    def on_notification_closed(self, notify):
+        self.notify = None
+        if self.trayicon:
+            # Any reason to keep the status icon around?
+            self.set_statusicon_visibility ()
 
     def update_job_creation_times(self):
         now = time.time ()
@@ -591,9 +610,6 @@ class JobManager:
         return self.will_update_job_creation_times
 
     def refresh(self):
-        if self.hidden:
-            return
-
         now = time.time ()
         if (now - self.last_refreshed) < MIN_REFRESH_INTERVAL:
             if self.will_refresh:
@@ -629,6 +645,9 @@ class JobManager:
                 return
 
         if self.trayicon:
+            self.num_jobs = num_jobs
+            if self.hidden and self.num_jobs != self.num_jobs_when_hidden:
+                self.hidden = False
             if num_jobs == 0:
                 self.statusicon.set_tooltip (_("No documents queued"))
                 self.set_statusicon_from_pixbuf (self.icon_no_jobs)
@@ -651,6 +670,10 @@ class JobManager:
 
         self.check_state_reasons (c, my_printers)
         del c
+
+        if self.trayicon:
+            self.set_statusicon_visibility ()
+
         for job in self.jobs:
             if not jobs.has_key (job):
                 self.store.remove (self.jobiters[job])
@@ -701,6 +724,13 @@ class JobManager:
         self.jobs = jobs
         self.update_job_creation_times ()
 
+    def set_statusicon_visibility (self):
+        if self.trayicon:
+            self.statusicon.set_visible ((not self.hidden) and
+                                         (self.num_jobs > 0 or
+                                          self.icon_has_emblem or
+                                          (self.notify != None)))
+
     def on_treeview_button_press_event(self, treeview, event):
         if event.button != 3:
             return
@@ -734,13 +764,16 @@ class JobManager:
         self.icon_popupmenu.popup (None, None, None, button, time)
 
     def on_icon_hide_activate(self, menuitem):
-        bus.remove_signal_receiver (self.handle_dbus_signal,
-                                    path="/com/redhat/PrinterSpooler",
-                                    dbus_interface="com.redhat.PrinterSpooler")
+        if self.notify:
+            self.notify.close ()
+            self.notify = None
+
+        self.num_jobs_when_hidden = self.num_jobs
         self.hidden = True
-        self.statusicon.set_visible (False)
-        if not self.service_running:
-            self.loop.quit ()
+        self.set_statusicon_visibility ()
+
+    def on_icon_quit_activate (self, menuitem):
+        self.loop.quit ()
 
     def on_job_cancel_activate(self, menuitem):
         try:
