@@ -46,8 +46,6 @@ class Printer:
         self.state_description = self.printer_states.get(
             self.state, _("Unknown"))
 
-        self._getAttributes()
-
         self.enabled = self.state != cups.IPP_PRINTER_STOPPED
 
         if self.is_shared is None:
@@ -74,7 +72,7 @@ class Printer:
                 setattr(self, attr_name,
                         bool(self.type & getattr(cups, name)))
 
-    def _getAttributes(self):
+    def getAttributes(self):
         attrs = self.connection.getPrinterAttributes(self.name)
         self.attributes = {}
         self.possible_attributes = {

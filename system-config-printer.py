@@ -1606,6 +1606,7 @@ class GUI:
 
         printer = self.printers[name] 
         self.printer = printer
+        printer.getAttributes ()
 
         editable = not self.printer.remote
 
