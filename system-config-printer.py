@@ -3240,7 +3240,7 @@ class NewPrinterGUI(GtkGUI):
             except cups.IPPError (e, msg):
                 print "Failed to get attributes:", e, msg
             except:
-                nonfatalError ()
+                nonfatalException ()
         else:
             print uri
 
