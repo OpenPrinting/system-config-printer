@@ -3279,9 +3279,8 @@ class NewPrinterGUI(GtkGUI):
             printers = c.getPrinters ()
             classes = c.getClasses ()
             del c
-        except RuntimeError:
-            failed = True
-        except cups.IPP_Error, (e, msg):
+        except:
+            nonfatalException()
             failed = True
 
         gtk.gdk.threads_enter()

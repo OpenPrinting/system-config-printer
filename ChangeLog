@@ -1,3 +1,9 @@
+2007-11-27  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.browse_ipp_queues_thread): Handle exceptions other
+	than RuntimeError and cups.IPP_Error (bug #252304).
+
 2007-11-22  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* print-applet.desktop.in: Removed the last printer.png (Ubuntu package
