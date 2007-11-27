@@ -1,5 +1,12 @@
 2007-11-27  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.fillPrinterTab): Fetch attributes
+	on demand.
+
+	* cupshelpers.py (Printer.getAttributes): Make this method
+	public.
+	(Printer.__init__): Don't fetch attributes automatically.
+
 	* system-config-printer.py
 	(NewPrinterGUI.browse_ipp_queues_thread): Handle exceptions other
 	than RuntimeError and cups.IPPError (bug #252304).
