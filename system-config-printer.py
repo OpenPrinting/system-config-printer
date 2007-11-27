@@ -32,6 +32,10 @@ except RuntimeError, e:
     print "This is a graphical application and requires DISPLAY to be set."
     sys.exit (1)
 
+import gnome
+gtk.about_dialog_set_url_hook (lambda x, y: gnome.url_show (y))
+gtk.about_dialog_set_email_hook (lambda x, y: gnome.url_show ("mailto:" + y))
+
 def show_help():
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n\n"
@@ -316,7 +320,10 @@ class GUI(GtkGUI):
         np.NewPrinterWindow.set_transient_for(self.MainWindow)
 
         # Set up "About" dialog
+        self.AboutDialog.set_program_name(domain)
         self.AboutDialog.set_version(config.VERSION)
+        self.AboutDialog.set_icon_name('printer')
+        self.AboutDialog.set_logo_icon_name('printer')
 
         self.static_tabs = 3
 
