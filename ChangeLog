@@ -2,7 +2,10 @@
 
 	* system-config-printer.py
 	(NewPrinterGUI.browse_ipp_queues_thread): Handle exceptions other
-	than RuntimeError and cups.IPP_Error (bug #252304).
+	than RuntimeError and cups.IPPError (bug #252304).
+	(NewPrinterGUI.on_btnIPPVerify_clicked): Get printer attributes by
+	printer URI not name, to prevent pycups constructing a CUPS URI
+	(bug #252304).
 
 2007-11-22  Till Kamppeter  <till.kamppeter@gmail.com>
 

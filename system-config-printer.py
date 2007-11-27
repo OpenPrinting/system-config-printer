@@ -3231,10 +3231,16 @@ class NewPrinterGUI(GtkGUI):
             try:
                 cups.setServer (match.group (2))
                 c = cups.Connection ()
-                attributes = c.getPrinterAttributes (match.group (4))
+                try:
+                    attributes = c.getPrinterAttributes (uri = uri)
+                except TypeError: # uri keyword introduced in pycups 1.9.32
+                    print "Fetching printer attributes by name"
+                    attributes = c.getPrinterAttributes (match.group (4))
                 verified = True
+            except cups.IPPError (e, msg):
+                print "Failed to get attributes:", e, msg
             except:
-                pass
+                nonfatalError ()
         else:
             print uri
 
