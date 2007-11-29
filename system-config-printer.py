@@ -3632,8 +3632,16 @@ class NewPrinterGUI(GtkGUI):
 
         self.NPDrivers = self.ppds.orderPPDNamesByPreference(ppds.keys()) 
         for i in range (len(self.NPDrivers)):
-            driver = ppds[self.NPDrivers[i]]["ppd-make-and-model"]
+            ppd = ppds[self.NPDrivers[i]]
+            driver = ppd["ppd-make-and-model"]
             driver = driver.replace(" (recommended)", "")
+
+            try:
+                lpostfix = " [%s]" % ppd["ppd-natural-language"]
+                driver += lpostfix
+            except KeyError:
+                pass
+
             if i == 0:
                 iter = model.append ((driver + _(" (recommended)"),))
                 path = model.get_path (iter)
