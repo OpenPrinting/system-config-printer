@@ -467,6 +467,7 @@ class JobManager:
             if self.statusbar_set:
                 self.statusbar.pop (0)
             self.statusbar.push (0, text)
+            self.worst_reason_text = text
             self.statusbar_set = True
 
             if self.trayicon:
@@ -649,14 +650,13 @@ class JobManager:
             if self.hidden and self.num_jobs != self.num_jobs_when_hidden:
                 self.hidden = False
             if num_jobs == 0:
-                self.statusicon.set_tooltip (_("No documents queued"))
+                toolip = _("No documents queued")
                 self.set_statusicon_from_pixbuf (self.icon_no_jobs)
             elif num_jobs == 1:
-                self.statusicon.set_tooltip (_("1 document queued"))
+                tooltip = _("1 document queued")
                 self.set_statusicon_from_pixbuf (self.icon_jobs)
             else:
-                self.statusicon.set_tooltip (_("%d documents queued")
-                                             % num_jobs)
+                tooltip = _("%d documents queued") % num_jobs
                 self.set_statusicon_from_pixbuf (self.icon_jobs)
 
         my_printers = set()
@@ -672,6 +672,13 @@ class JobManager:
         del c
 
         if self.trayicon:
+            # If there are no jobs but there is a printer
+            # warning/error indicated by the icon, set the icon
+            # tooltip to the reason description.
+            if self.num_jobs == 0 and self.icon_has_emblem:
+                tooltip = self.worst_reason_text
+
+            self.statusicon.set_tooltip (tooltip)
             self.set_statusicon_visibility ()
 
         for job in self.jobs:
