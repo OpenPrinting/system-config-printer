@@ -163,35 +163,39 @@ class PPDs:
         self.makes = None
         self.ids = None
 
-        if language != None and language != "C" and language != "POSIX":
-            u = language.find ("_")
-            if u != -1:
-                short_language = language[:u]
-            else:
-                short_language = language
+        if (language == None or
+            language == "C" or
+            language == "POSIX"):
+            language = "en_US"
 
-            to_remove = []
-            for ppdname, ppddict in self.ppds.iteritems ():
-                try:
-                    natural_language = ppddict['ppd-natural-language']
-                except KeyError:
-                    continue
+        u = language.find ("_")
+        if u != -1:
+            short_language = language[:u]
+        else:
+            short_language = language
 
-                if natural_language == "en":
-                    # Some manufacturer's PPDs are only available in this
-                    # language, so always let them though.
-                    continue
+        to_remove = []
+        for ppdname, ppddict in self.ppds.iteritems ():
+            try:
+                natural_language = ppddict['ppd-natural-language']
+            except KeyError:
+                continue
 
-                if natural_language == language:
-                    continue
+            if natural_language == "en":
+                # Some manufacturer's PPDs are only available in this
+                # language, so always let them though.
+                continue
 
-                if natural_language == short_language:
-                    continue
+            if natural_language == language:
+                continue
 
-                to_remove.append (ppdname)
+            if natural_language == short_language:
+                continue
 
-            for ppdname in to_remove:
-                del self.ppds[ppdname]
+            to_remove.append (ppdname)
+
+        for ppdname in to_remove:
+            del self.ppds[ppdname]
 
         # CUPS sets the 'raw' model's ppd-make-and-model to 'Raw Queue'
         # which unfortunately then appears as manufacturer Raw and
