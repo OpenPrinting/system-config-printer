@@ -663,7 +663,7 @@ class JobManager:
             if self.hidden and self.num_jobs != self.num_jobs_when_hidden:
                 self.hidden = False
             if num_jobs == 0:
-                toolip = _("No documents queued")
+                tooltip = _("No documents queued")
                 self.set_statusicon_from_pixbuf (self.icon_no_jobs)
             elif num_jobs == 1:
                 tooltip = _("1 document queued")
