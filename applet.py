@@ -159,10 +159,12 @@ def worst_printer_state_reason (connection, printer_reasons=None):
     return worst_reason
 
 class JobManager:
-    def __init__(self, bus, loop, service_running=False, trayicon=True):
+    def __init__(self, bus, loop, service_running=False, trayicon=True,
+                 suppress_icon_hide=False):
         self.loop = loop
         self.service_running = service_running
         self.trayicon = trayicon
+        self.suppress_icon_hide = suppress_icon_hide
 
         self.jobs = {}
         self.jobiters = {}
@@ -225,7 +227,8 @@ class JobManager:
         icon = gtk.CellRendererPixbuf()
         column.pack_start (icon, False)
         text = gtk.CellRendererText()
-        column.set_resizable(True)
+        text.set_property ("ellipsize", pango.ELLIPSIZE_END)
+        text.set_property ("width-chars", 10)
         column.pack_start (text, False)
         column.set_cell_data_func (icon, self.set_printer_status_icon)
         column.set_cell_data_func (text, self.set_printer_status_name)
@@ -235,8 +238,8 @@ class JobManager:
         self.treeview_printers.append_column(column)
         cell = gtk.CellRendererText()
         column = gtk.TreeViewColumn(_("Message"), cell, text=2)
-        column.set_resizable(True)
         cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
+        cell.set_property ("width-chars", 35)
         self.treeview_printers.append_column(column)
 
         self.treeview_printers.get_selection().set_mode(gtk.SELECTION_NONE)
@@ -294,11 +297,23 @@ class JobManager:
     def set_special_statusicon (self, iconname):
         self.special_status_icon = True
         self.statusicon.set_from_icon_name (iconname)
-        self.statusicon.set_visible (True)
+        self.set_statusicon_visibility ()
 
     def unset_special_statusicon (self):
         self.special_status_icon = False
         self.statusicon.set_from_pixbuf (self.saved_statusicon_pixbuf)
+
+    def notify_new_printer (self, printer, notification):
+        self.notify = notification
+        self.notified_reason = StateReason (printer, "new-printer-report")
+        notification.connect ('closed', self.on_notification_closed)
+        self.hidden = False
+        self.set_statusicon_visibility ()
+        # Let the icon show itself, ready for the notification
+        while gtk.events_pending ():
+            gtk.main_iteration ()
+        notification.attach_to_status_icon (jobmanager.statusicon)
+        notification.show ()
 
     def set_statusicon_from_pixbuf (self, pb):
         self.saved_statusicon_pixbuf = pb
@@ -466,7 +481,6 @@ class JobManager:
             if self.statusbar_set:
                 self.statusbar.pop (0)
             self.statusbar.push (0, text)
-            self.worst_reason_text = text
             self.statusbar_set = True
 
             if self.trayicon:
@@ -649,13 +663,14 @@ class JobManager:
             if self.hidden and self.num_jobs != self.num_jobs_when_hidden:
                 self.hidden = False
             if num_jobs == 0:
-                toolip = _("No documents queued")
+                self.statusicon.set_tooltip (_("No documents queued"))
                 self.set_statusicon_from_pixbuf (self.icon_no_jobs)
             elif num_jobs == 1:
-                tooltip = _("1 document queued")
+                self.statusicon.set_tooltip (_("1 document queued"))
                 self.set_statusicon_from_pixbuf (self.icon_jobs)
             else:
-                tooltip = _("%d documents queued") % num_jobs
+                self.statusicon.set_tooltip (_("%d documents queued")
+                                             % num_jobs)
                 self.set_statusicon_from_pixbuf (self.icon_jobs)
 
         my_printers = set()
@@ -671,13 +686,6 @@ class JobManager:
         del c
 
         if self.trayicon:
-            # If there are no jobs but there is a printer
-            # warning/error indicated by the icon, set the icon
-            # tooltip to the reason description.
-            if self.num_jobs == 0 and self.icon_has_emblem:
-                tooltip = self.worst_reason_text
-
-            self.statusicon.set_tooltip (tooltip)
             self.set_statusicon_visibility ()
 
         for job in self.jobs:
@@ -732,10 +740,17 @@ class JobManager:
 
     def set_statusicon_visibility (self):
         if self.trayicon:
+            if self.suppress_icon_hide:
+                # Avoid hiding the icon if we've been woken up to notify
+                # about a new printer.
+                self.suppress_icon_hide = False
+                return
+
             self.statusicon.set_visible ((not self.hidden) and
                                          (self.num_jobs > 0 or
                                           self.icon_has_emblem or
-                                          (self.notify != None)))
+                                          (self.notify != None)) or
+                                          self.special_status_icon)
 
     def on_treeview_button_press_event(self, treeview, event):
         if event.button != 3:
@@ -952,7 +967,7 @@ class NewPrinterNotification(dbus.service.Object):
             runloop = gobject.MainLoop ()
             jobmanager = JobManager(bus, runloop,
                                     service_running=service_running,
-                                    trayicon=trayicon)
+                                    trayicon=trayicon, suppress_icon_hide=True)
 
     @dbus.service.method(PDS_IFACE, in_signature='', out_signature='')
     def GetReady (self):
@@ -976,7 +991,6 @@ class NewPrinterNotification(dbus.service.Object):
     def NewPrinter (self, status, name, mfg, mdl, des, cmd):
         global jobmanager
         self.wake_up ()
-        self.timeout_ready ()
         c = cups.Connection ()
         try:
             printer = c.getPrinters ()[name]
@@ -1009,9 +1023,9 @@ class NewPrinterNotification(dbus.service.Object):
                           lambda x, y: self.find_driver (x, y, name))
 
         n.set_timeout (pynotify.EXPIRES_NEVER)
-        n.attach_to_status_icon (jobmanager.statusicon)
-        n.show ()
-        self.notify = n
+        jobmanager.notify_new_printer (name, n)
+        # Set the icon back how it was.
+        self.timeout_ready ()
 
     def run_config_tool (self, argv):
         import os
