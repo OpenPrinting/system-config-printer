@@ -23,7 +23,7 @@
 # config is generated from config.py.in by configure
 import config
 
-import sys, os, tempfile, time, traceback, re
+import sys, os, tempfile, time, traceback, re, httplib
 import signal, thread
 try:
     import gtk.glade
@@ -1578,7 +1578,7 @@ class GUI(GtkGUI):
         for widget in [self.copy, self.btnCopy]:
             widget.set_sensitive(item_selected)
         for widget in [self.delete, self.btnDelete]:
-            widget.set_sensitive(is_local)
+            widget.set_sensitive(item_selected)
 
     def fillComboBox(self, combobox, values, value):
         combobox.get_model().clear()
@@ -2527,6 +2527,23 @@ class NewPrinterGUI(GtkGUI):
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
             self.busy (self.NewPrinterWindow)
+            remotecupsqueue = None
+            if self.device.uri:
+                res = re.search ("ipp://(\S+(:\d+|))/printers/(\S+)", \
+                                  self.device.uri)
+                # Try to access the PPD, in this case our detected IPP
+                # printer is a queue on a remote CUPS server which is
+                # not automatically set up on our local CUPS server
+                # (for example DNS-SD broadcasted queue from Mac OS X)
+                if res:
+                    resg = res.groups()
+                    try:
+                        conn = httplib.HTTPConnection(resg[0])
+                        conn.request("GET", "/printers/%s.ppd" % resg[2])
+                        resp = conn.getresponse()
+                        if resp.status == 200: remotecupsqueue = resg[2]
+                    except:
+                        pass
             if page_nr == 1: # Device (first page)
                 # Choose an appropriate name.
                 name = 'printer'
@@ -2554,13 +2571,20 @@ class NewPrinterGUI(GtkGUI):
                 self.device.uri = self.getDeviceURI()
                 if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
                     host = self.getNetworkPrinterMakeModel(self.device)
+                uri = self.device.uri
+                if uri and uri.startswith ("smb://"):
+                    uri = SMBURI (uri=uri[6:]).sanitize_uri ()
+                ppdname = None
                 try:
-                    uri = self.device.uri
-                    if uri and uri.startswith ("smb://"):
-                        uri = SMBURI (uri=uri[6:]).sanitize_uri ()
-
-                    ppdname = None
-                    if self.device.id:
+                    if remotecupsqueue:
+                        # We have a remote CUPS queue, let the client queue
+                        # stay raw so that the driver on the server gets used
+                        ppdname = 'raw'
+                        self.ppd = ppdname
+                        name = remotecupsqueue
+                        name = self.mainapp.makeNameUnique (name)
+                        self.entNPName.set_text (name)
+                    elif self.device.id:
                         id_dict = self.device.id_dict
                         (status, ppdname) = self.ppds.\
                             getPPDNameFromDeviceID (id_dict["MFG"],
@@ -2601,7 +2625,9 @@ class NewPrinterGUI(GtkGUI):
                         nonfatalException ()
 
             self.ready (self.NewPrinterWindow)
-            if self.rbtnNPFoomatic.get_active():
+            if remotecupsqueue:
+                order = [1, 0]
+            elif self.rbtnNPFoomatic.get_active():
                 order = [1, 2, 3, 6, 0]
             else:
                 order = [1, 2, 6, 0]
@@ -2634,12 +2660,11 @@ class NewPrinterGUI(GtkGUI):
                 if self.dialog_mode != "ppd" and not self.installable_options:
                     next_page_nr = order[order.index(next_page_nr)+1]
 
-        self.ntbkNewPrinter.set_current_page(next_page_nr)
-
         # Step over empty Installable Options tab
         if next_page_nr == 6 and not self.installable_options and step<0:
-            next_page_nr = self.ntbkNewPrinter.set_current_page(
-                order[order.index(page_nr)-1])
+            next_page_nr = order[order.index(next_page_nr)-1]
+
+        self.ntbkNewPrinter.set_current_page(next_page_nr)
 
         self.setNPButtons()
 
@@ -3445,7 +3470,7 @@ class NewPrinterGUI(GtkGUI):
         elif device.type in ("ipp", "http"):
             if (device.uri.startswith ("ipp:") or
                 device.uri.startswith ("http:")):
-                match = re.match ("(ipp|https?)://([^/]+)(.*)", uri)
+                match = re.match ("(ipp|https?)://([^/]+)(.*)", device.uri)
                 if match:
                     server = match.group (2)
                     printer = match.group (3)
@@ -3726,9 +3751,10 @@ class NewPrinterGUI(GtkGUI):
 
         if isinstance(ppd, str) or isinstance(ppd, unicode):
             try:
-                f = self.mainapp.cups.getServerPPD(ppd)
-                ppd = cups.PPD(f)
-                os.unlink(f)
+                if (ppd != "raw"):
+                    f = self.mainapp.cups.getServerPPD(ppd)
+                    ppd = cups.PPD(f)
+                    os.unlink(f)
             except AttributeError:
                 nonfatalException()
                 print "pycups function getServerPPD not available: never mind"

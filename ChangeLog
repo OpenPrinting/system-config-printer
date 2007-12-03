@@ -1,3 +1,24 @@
+2007-12-03  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py (nextNPTab): If an IPP queue from a remote
+	CUPS server gets auto-detected create a local raw queue, so that the
+	driver from the server gets used. Such CUPS queues are queues which
+	are advertised by the server only via DNS-SD/mDNS/Bonjour/ZeroConf
+	as for example from Mac OS X servers. They can be detected via the
+	dnssd backend from http://www.linuxprinting.org/download/printing/dnssd
+	(on_tvMainList_cursor_changed): Allow also deleting of remote queues.
+	This is the only solution to remove queues created to access CUPS
+	printers on Mac OS X servers. Unfortunately via CUPS one cannot
+	distinguish automatically created queues induced by CUPS broadcasts
+	and manually created queues pointing to remote CUPS queues.
+	(on_tvNPDevices_cursor_changed): Fixed bug of IPP printer setup
+	GUI not showing the printer parameters when selecting an
+	auto-detected IPP printer
+	(getNPPPD): Fixed traceback when creating a raw queue.
+	(nextNPTab): When stepping back with the "Previous" button in the
+	"New printer" wizard the empty "Installed Options" screen was not
+	skipped.
+	
 2007-11-30  Tim Waugh  <twaugh@redhat.com>
 
 	* applet.py: Fixed New Printer notifications after they got broken
