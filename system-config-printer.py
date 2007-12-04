@@ -1574,11 +1574,11 @@ class GUI(GtkGUI):
             self.setDataButtonState()
             item_selected = False
 
-        is_local = item_selected and not self.printers[name].remote
+        is_local = item_selected and not self.printers[name].discovered
         for widget in [self.copy, self.btnCopy]:
             widget.set_sensitive(item_selected)
         for widget in [self.delete, self.btnDelete]:
-            widget.set_sensitive(item_selected)
+            widget.set_sensitive(is_local)
 
     def fillComboBox(self, combobox, values, value):
         combobox.get_model().clear()
@@ -1596,7 +1596,8 @@ class GUI(GtkGUI):
         self.printer = printer
         printer.getAttributes ()
 
-        editable = not self.printer.remote
+        editable = not self.printer.discovered
+        editablePPD = not self.printer.remote
 
         try:
             self.ppd = printer.getPPD()
@@ -1785,7 +1786,7 @@ class GUI(GtkGUI):
             self.fillClassMembers(name, editable)
         else:
             # real Printer
-            self.fillPrinterOptions(name, editable)
+            self.fillPrinterOptions(name, editablePPD)
 
         self.changed = set() # of options
         self.setDataButtonState()
@@ -2156,7 +2157,7 @@ class GUI(GtkGUI):
         if not name: return False
         name = name.lower()
         for printer in self.printers.values():
-            if not printer.remote and printer.name.lower()==name:
+            if not printer.discovered and printer.name.lower()==name:
                 return False
         return True
     
