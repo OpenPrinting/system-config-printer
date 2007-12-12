@@ -3271,7 +3271,7 @@ class NewPrinterGUI(GtkGUI):
                     print "Fetching printer attributes by name"
                     attributes = c.getPrinterAttributes (match.group (4))
                 verified = True
-            except cups.IPPError, (e, msg):
+            except cups.IPPError (e, msg):
                 print "Failed to get attributes:", e, msg
             except:
                 nonfatalException ()
