@@ -117,10 +117,10 @@ class StateReason:
         if other == None:
             return 1
         if other.get_level () != self.get_level ():
-            return int.__cmp__ (self.get_level (), other.get_level ())
+            return cmp (self.get_level (), other.get_level ())
         if other.get_printer () != self.get_printer ():
-            return str.__cmp__ (other.get_printer (), self.get_printer ())
-        return str.__cmp__ (other.get_reason (), self.get_reason ())
+            return cmp (other.get_printer (), self.get_printer ())
+        return cmp (other.get_reason (), self.get_reason ())
 
 def collect_printer_state_reasons (connection):
     result = []
