@@ -1,3 +1,11 @@
+2007-12-20  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): Only try to fetch
+	the default printer if we have a CUPS connection (Ubuntu
+	#159212).
+	(GUI.on_tvMainList_cursor_changed): Set data button state when no
+	CUPS connection.
+
 2007-12-17  Tim Waugh  <twaugh@redhat.com>
 
 	* configure.in: Version 0.7.47.8.

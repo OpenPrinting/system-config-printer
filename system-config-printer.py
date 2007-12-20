@@ -637,27 +637,30 @@ class GUI:
 
         select_path = None
 
-        # get Printers
         if self.cups:
             try:
+                # get Printers
                 self.printers = cupshelpers.getPrinters(self.cups)
+
+                # Get default printer.
+                try:
+                    self.default_printer = self.cups.getDefault ()
+                except AttributeError: # getDefault appeared in pycups-1.9.31
+                    # This fetches the list of printers and classes *again*,
+                    # just to find out the default printer.
+                    dests = self.cups.getDests ()
+                    if dests.has_key ((None,None)):
+                        self.default_printer = dests[(None,None)].name
+                    else:
+                        self.default_printer = None
             except cups.IPPError, (e, m):
                 self.show_IPP_Error(e, m)
                 self.printers = {}
+                self.default_printer = None
         else:
             self.printers = {}
+            self.default_printer = None
         
-        try:
-            self.default_printer = self.cups.getDefault ()
-        except AttributeError: # getDefault appeared in pycups-1.9.31
-            # This fetches the list of printers and classes *again*, just
-            # to find out the default printer.
-            dests = self.cups.getDests ()
-            if dests.has_key ((None,None)):
-                self.default_printer = dests[(None,None)].name
-            else:
-                self.default_printer = None
-
         local_printers = []
         local_classes = []
         remote_printers = []
@@ -1571,6 +1574,10 @@ class GUI:
             self.ntbkMain.set_current_page(0)
             if self.cups:
                 self.fillServerTab()
+            else:
+                # No connection to CUPS.  Make sure the Apply/Revert buttons
+                # are not sensitive.
+                self.setDataButtonState()
             item_selected = False
         elif type in ['Printer', 'Class']:
             try:
