@@ -3157,7 +3157,6 @@ class NewPrinterGUI(GtkGUI):
             self.entSMBUsername.set_text (user)
         if password:
             self.entSMBPassword.set_text (password)
-        self.tvSMBBrowser.get_selection ().unselect_all ()
         if user or password:
             uri = SMBURI (group=group, host=host, share=share).get_uri ()
             ent.set_text(uri)
