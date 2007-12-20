@@ -1,5 +1,11 @@
 2007-12-20  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.populateList): Only try to fetch
+	the default printer if we have a CUPS connection (Ubuntu
+	#159212).
+	(GUI.on_tvMainList_cursor_changed): Set data button state when no
+	CUPS connection.
+
 	* system-config-printer.py (NewPrinterGUI.on_entSMBURI_changed):
 	SMB browser is no longer in the same window as the editable URI
 	(Ubuntu #173115).
