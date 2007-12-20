@@ -78,6 +78,12 @@ busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 ellipsis = unichr(0x2026)
 
+def debugprint(x):
+    try:
+        print x
+    except:
+        pass
+
 try:
     try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY
 except AttributeError:
@@ -89,16 +95,16 @@ def fatalException (exitcode=1):
     sys.exit (exitcode)
 
 def nonfatalException (type="non-fatal", end="Continuing anyway.."):
-    print "Caught %s exception.  Traceback:" % type
+    debugprint ("Caught %s exception.  Traceback:" % type)
     (type, value, tb) = sys.exc_info ()
     tblast = traceback.extract_tb (tb, limit=None)
     if len (tblast):
         tblast = tblast[:len (tblast) - 1]
     extxt = traceback.format_exception_only (type, value)
     for line in traceback.format_tb(tb):
-        print line.strip ()
-    print extxt[0].strip ()
-    print end
+        debugprint (line.strip ())
+    debugprint (extxt[0].strip ())
+    debugprint (end)
 
 def validDeviceURI (uri):
     """Returns True is the provided URI is valid."""
@@ -1434,7 +1440,7 @@ class GUI(GtkGUI):
                     self.cups.putFile (resource, tmpfname)
                 except cups.HTTPError, (s,):
                     os.remove (tmpfname)
-                    print s
+                    debugprint (s)
                     self.show_HTTP_Error(s)
                     return
 
@@ -1460,7 +1466,7 @@ class GUI(GtkGUI):
         if self.test_button_cancels:
             jobs = self.printer.testsQueued ()
             for job in jobs:
-                print "Canceling job %s" % job
+                debugprint ("Canceling job %s" % job)
                 try:
                     self.cups.cancelJob (job)
                 except cups.IPPError, (e, msg):
@@ -1476,11 +1482,11 @@ class GUI(GtkGUI):
                 custom_testpage = os.path.join(pkgdata, 'testpage-%s.ps' % opt.defchoice.lower())
 
             if custom_testpage and os.path.exists(custom_testpage):
-                print 'Printing custom test page', custom_testpage
+                debugprint ('Printing custom test page ' + custom_testpage)
                 job_id = self.cups.printTestPage(self.printer.name,
                     file=custom_testpage)
             else:
-                print 'Printing default test page'
+                debugprint ('Printing default test page')
                 job_id = self.cups.printTestPage(self.printer.name)
 
             self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
@@ -2412,27 +2418,27 @@ class NewPrinterGUI(GtkGUI):
     # get PPDs
 
     def queryPPDs(self):
-        print "queryPPDs"
+        debugprint ("queryPPDs")
         if not self.ppds_lock.acquire(0):
-            print "queryPPDs: in progress"
+            debugprint ("queryPPDs: in progress")
             return
-        print "Lock acquired for PPDs thread"
+        debugprint ("Lock acquired for PPDs thread")
         # Start new thread
         thread.start_new_thread (self.getPPDs_thread, (self.language[0],))
-        print "PPDs thread started"
+        debugprint ("PPDs thread started")
 
     def getPPDs_thread(self, language):
         try:
-            print "Connecting (PPDs)"
+            debugprint ("Connecting (PPDs)")
             cups.setServer (self.mainapp.connect_server)
             cups.setUser (self.mainapp.connect_user)
             cups.setPasswordCB (self.mainapp.cupsPasswdCallback)
             # cups.setEncryption (...)
             c = cups.Connection ()
-            print "Fetching PPDs"
+            debugprint ("Fetching PPDs")
             ppds_dict = c.getPPDs()
             self.ppds_result = ppds.PPDs(ppds_dict, language=language)
-            print "Closing connection (PPDs)"
+            debugprint ("Closing connection (PPDs)")
             del c
         except cups.IPPError, (e, msg):
             self.ppds_result = cups.IPPError (e, msg)
@@ -2440,11 +2446,11 @@ class NewPrinterGUI(GtkGUI):
             nonfatalException()
             self.ppds_result = { }
 
-        print "Releasing PPDs lock"
+        debugprint ("Releasing PPDs lock")
         self.ppds_lock.release ()
 
     def fetchPPDs(self, parent=None):
-        print "fetchPPDs"
+        debugprint ("fetchPPDs")
         self.queryPPDs()
         time.sleep (0.1)
 
@@ -2469,7 +2475,7 @@ class NewPrinterGUI(GtkGUI):
         if waiting:
             self.WaitWindow.hide ()
 
-        print "Got PPDs"
+        debugprint ("Got PPDs")
         result = self.ppds_result # atomic operation
         if isinstance (result, cups.IPPError):
             # Propagate exception.
@@ -2755,40 +2761,40 @@ class NewPrinterGUI(GtkGUI):
     # Device URI
     def queryDevices(self):
         if not self.devices_lock.acquire(0):
-            print "queryDevices: in progress"
+            debugprint ("queryDevices: in progress")
             return
-        print "Lock acquired for devices thread"
+        debugprint ("Lock acquired for devices thread")
         # Start new thread
         thread.start_new_thread (self.getDevices_thread, ())
-        print "Devices thread started"
+        debugprint ("Devices thread started")
 
     def getDevices_thread(self):
         try:
-            print "Connecting (devices)"
+            debugprint ("Connecting (devices)")
             cups.setServer (self.mainapp.connect_server)
             cups.setUser (self.mainapp.connect_user)
             cups.setPasswordCB (self.mainapp.cupsPasswdCallback)
             # cups.setEncryption (...)
             c = cups.Connection ()
-            print "Fetching devices"
+            debugprint ("Fetching devices")
             self.devices_result = cupshelpers.getDevices(c)
         except cups.IPPError, (e, msg):
             self.devices_result = cups.IPPError (e, msg)
         except:
-            print "Exception in getDevices_thread"
+            debugprint ("Exception in getDevices_thread")
             self.devices_result = {}
 
         try:
-            print "Closing connection (devices)"
+            debugprint ("Closing connection (devices)")
             del c
         except:
             pass
 
-        print "Releasing devices lock"
+        debugprint ("Releasing devices lock")
         self.devices_lock.release ()
 
     def fetchDevices(self, parent=None):
-        print "fetchDevices"
+        debugprint ("fetchDevices")
         self.queryDevices ()
         time.sleep (0.1)
 
@@ -2813,7 +2819,7 @@ class NewPrinterGUI(GtkGUI):
         if waiting:
             self.WaitWindow.hide ()
 
-        print "Got devices"
+        debugprint ("Got devices")
         result = self.devices_result # atomic operation
         if isinstance (result, cups.IPPError):
             # Propagate exception.
@@ -3268,15 +3274,15 @@ class NewPrinterGUI(GtkGUI):
                 try:
                     attributes = c.getPrinterAttributes (uri = uri)
                 except TypeError: # uri keyword introduced in pycups 1.9.32
-                    print "Fetching printer attributes by name"
+                    debugprint ("Fetching printer attributes by name")
                     attributes = c.getPrinterAttributes (match.group (4))
                 verified = True
             except cups.IPPError, (e, msg):
-                print "Failed to get attributes:", e, msg
+                debugprint ("Failed to get attributes: " + e + " " + msg)
             except:
                 nonfatalException ()
         else:
-            print uri
+            debugprint (uri)
 
         if verified:
             self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
@@ -3758,13 +3764,13 @@ class NewPrinterGUI(GtkGUI):
                     os.unlink(f)
             except AttributeError:
                 nonfatalException()
-                print "pycups function getServerPPD not available: never mind"
+                debugprint ("pycups function getServerPPD not available: never mind")
             except RuntimeError:
                 nonfatalException()
-                print "libcups from CUPS 1.3 not available: never mind"
+                debugprint ("libcups from CUPS 1.3 not available: never mind")
             except cups.IPPError:
                 nonfatalException()
-                print "CUPS 1.3 server not available: never mind"
+                debugprint ("CUPS 1.3 server not available: never mind")
 
         return ppd
 

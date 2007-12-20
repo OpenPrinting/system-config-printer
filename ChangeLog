@@ -1,3 +1,25 @@
+2007-12-20  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (debugprint): New function.
+	(nonfatalException): Use it.
+	(GUI.on_btnPMakeDefault_clicked): Likewise.
+	(GUI.on_btnPrintTestPage_clicked): Likewise.
+	(NewPrinterGUI.queryPPDs): Likewise.
+	(NewPrinterGUI.getPPDs_thread): Likewise.
+	(NewPrinterGUI.fetchPPDs): Likewise.
+	(NewPrinterGUI.queryDevices): Likewise.
+	(NewPrinterGUI.getDevices_thread): Likewise.
+	(NewPrinterGUI.fetchDevices): Likewise.
+	(NewPrinterGUI.on_btnIPPVerify_clicked): Likewise.
+	(NewPrinterGUI.getNPPPD): Likewise.
+
+	* cupshelpers.py (debugprint): New function for printing without
+	propagating print exceptions (Ubuntu #175500).
+	(copyPPDOptions): Use it.
+	(setPPDPageSize): Likewise.
+	(missingPackagesAndExecutables.pathcheck): Likewise.
+	(missingPackagesAndExecutables): Likewise.
+
 2007-12-14  Tim Waugh  <twaugh@redhat.com>
 
 	* cupshelpers.py (missingPackagesAndExecutables): Moved this
