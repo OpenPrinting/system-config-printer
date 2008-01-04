@@ -89,6 +89,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = model.replace (" series", "")
     model = model.replace (" PS", "")
     model = model.replace (" PXL", "")
+    model = model.replace ("_BT", "")
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
         if make == mfr.upper ():

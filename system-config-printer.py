@@ -2874,7 +2874,7 @@ class NewPrinterGUI(GtkGUI):
         elif len (device.info) > 7:
             make_and_model = device.info
             make_and_model = re.sub("\s*(\(|\d+\.\d+\.\d+\.\d+).*$", "", make_and_model)
-        if make_and_model:
+        if make_and_model and not device.id:
             mk = None
             md = None
             (mk, md) = ppds.ppdMakeModelSplit (make_and_model)
