@@ -10,6 +10,12 @@
 	Handle the manufacturer name "KONICA MINOLTA" correctly (Ubuntu
 	#64046). 
 	Use case-insensitive when cleaning model names.
+	For "recommended" Foomatic PPDs give higher priority than a vendor PPD
+	in case of the recommended driver being not "Postscript" and lower
+	priority otherwise. So if using the printer in PostScript mode is
+	recommended, the vendor PPD will be preferred, if another mode of
+	the printer is recommended (like PCL on HP LaserJet 12xx/13xx) the
+	appropriate non-PostScript PPD will be used (Ubuntu #172550).
 
 	* system-config-printer.py: Allow listing of all files in file
 	chooser dialog for selecting a custom PPD file. This way also PPDs

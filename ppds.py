@@ -156,8 +156,9 @@ def ppdMakeModelSplit (ppd_make_and_model):
 
 # Some drivers are just generally better than others.
 # Here is the preference list:
+DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT = 8
 DRIVER_TYPE_VENDOR = 10
-DRIVER_TYPE_FOOMATIC_RECOMMENDED = 15
+DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 15
 DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP = 17
 DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED = 20
 DRIVER_TYPE_GUTENPRINT_NATIVE = 25
@@ -189,7 +190,11 @@ def getDriverType (ppdname, ppds=None):
         if (ppds != None and
             ppds.getInfoFromPPDName (ppdname).\
             get ('ppd-make-and-model', '').find ("(recommended)") != -1):
-            return DRIVER_TYPE_FOOMATIC_RECOMMENDED
+            if ppds.getInfoFromPPDName (ppdname).\
+               get ('ppd-make-and-model', '').find ("Postscript") != -1:
+                return DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT
+            else:
+                return DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT
         if ppdname.find ("-Postscript")!= -1:
             return DRIVER_TYPE_FOOMATIC_PS
         if ppdname.find ("-hpijs") != -1:
@@ -811,6 +816,8 @@ def main():
 
     idlist = [
         "MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;DES:EPSON Stylus D78;",
+        "MFG:Hewlett-Packard;MDL:LaserJet 1200 Series;CMD:MLC,PCL,POSTSCRIPT;CLS:PRINTER;",
+        "MFG:Hewlett-Packard;MDL:LaserJet 3390 Series;CMD:MLC,PCL,POSTSCRIPT;CLS:PRINTER;",
         "MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;CLS:PRINTER;1284.4DL:4d,4e,1;",
         "MFG:HP;MDL:PSC 2200 Series;CLS:PRINTER;DES:PSC 2200 Series;", # from HPLIP
         "MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;",
