@@ -25,6 +25,7 @@ from cupshelpers import parseDeviceID
 import string
 import locale
 import os.path
+import re
 
 global debugging
 debugging = False
@@ -35,11 +36,60 @@ def debugprint (s):
 
 def ppdMakeModelSplit (ppd_make_and_model):
     """Convert the ppd-make-and-model field into a (make, model) pair."""
-    try:
-        make, model = ppd_make_and_model.split(" ", 1)
-    except:
-        make = ppd_make_and_model
-        model = ''
+
+    # If the string starts with a known model name (like "LaserJet") assume
+    # that the manufacturer name is missing and add the manufacturer name
+    # corresponding to the model name
+    if re.search ("^(deskjet|laserjet|designjet|officejet|photosmart)", \
+                      ppd_make_and_model, re.I):
+        make = "HP"
+        model = ppd_make_and_model
+    elif re.search ("^(stylus|aculaser)", \
+                      ppd_make_and_model, re.I):
+        make = "Epson"
+        model = ppd_make_and_model
+    elif re.search ("^(stylewriter|imagewriter|deskwriter|laserwriter)", \
+                      ppd_make_and_model, re.I):
+        make = "Apple"
+        model = ppd_make_and_model
+    elif re.search ("^(pixus|pixma|selphy|imagerunner|\bbjc\b|\bbj\b|\blbp\b)",\
+                      ppd_make_and_model, re.I):
+        make = "Canon"
+        model = ppd_make_and_model
+    elif re.search ("^(\bhl\b|\bdcp\b|\bmfc\b)", \
+                      ppd_make_and_model, re.I):
+        make = "Brother"
+        model = ppd_make_and_model
+    elif re.search ("^(docuprint|docupage|phaser|workcentre|homecentre)", \
+                      ppd_make_and_model, re.I):
+        make = "Xerox"
+        model = ppd_make_and_model
+    elif re.search ("^(optra|(color\s*|)jetprinter)", \
+                      ppd_make_and_model, re.I):
+        make = "Lexmark"
+        model = ppd_make_and_model
+    elif re.search ("^(magicolor|pageworks|pagepro)", \
+                      ppd_make_and_model, re.I):
+        make = "KONICA MINOLTA"
+        model = ppd_make_and_model
+    elif re.search ("^(aficio)", \
+                      ppd_make_and_model, re.I):
+        make = "Ricoh"
+        model = ppd_make_and_model
+    elif re.search ("^(varioprint)", \
+                      ppd_make_and_model, re.I):
+        make = "Oce"
+        model = ppd_make_and_model
+    elif re.search ("^(okipage|microline)", \
+                      ppd_make_and_model, re.I):
+        make = "Okidata"
+        model = ppd_make_and_model
+    else:
+        try:
+            make, model = ppd_make_and_model.split(" ", 1)
+        except:
+            make = ppd_make_and_model
+            model = ''
 
     def strip_suffix (model, suffix):
         if model.endswith (suffix):
@@ -90,6 +140,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = model.replace (" PS", "")
     model = model.replace (" PXL", "")
     model = model.replace ("_BT", "")
+    model = model.replace (" (Bluetooth)", "")
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
         if make == mfr.upper ():

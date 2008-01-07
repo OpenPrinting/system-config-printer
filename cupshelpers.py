@@ -387,6 +387,8 @@ def getDevices(connection):
     for uri, data in devices.iteritems():
         device = Device(uri, **data)
         devices[uri] = device
+        if device.info != 'Unknown' and device.make_and_model == 'Unknown':
+            device.make_and_model = device.info
     return devices
 
 def activateNewPrinter(connection, name):

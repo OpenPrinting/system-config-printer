@@ -1,3 +1,13 @@
+2008-01-07  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* cupshelpers.py: If the device discovery output of a CUPS backend
+	has "Unknown" for make and model but something useful in the info
+	field, copy the info field into the make-and-model field.
+
+	* ppds.py: Derive manufacturer name from model name if the manufacturer
+	name is missing in the Nickname or make-and-model string. Remove
+	"(Bluetooth)" from model name for more reliable matching.
+	
 2008-01-04  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* system-config-printer.py, ppds.py: Make automatic recognition
