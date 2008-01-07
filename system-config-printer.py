@@ -2311,11 +2311,17 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDriversTooltips = TreeViewTooltips(self.tvNPDrivers, self.NPDriversTooltips)
 
         ppd_filter = gtk.FileFilter()
-        ppd_filter.set_name(_("PostScript Printer Description (*.ppd[.gz])"))
+        ppd_filter.set_name(_("PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"))
         ppd_filter.add_pattern("*.ppd")
         ppd_filter.add_pattern("*.PPD")
         ppd_filter.add_pattern("*.ppd.gz")
-        
+        ppd_filter.add_pattern("*.PPD.gz")
+        ppd_filter.add_pattern("*.PPD.GZ")
+        self.filechooserPPD.add_filter(ppd_filter)
+
+        ppd_filter = gtk.FileFilter()
+        ppd_filter.set_name(_("All files (*)"))
+        ppd_filter.add_pattern("*")
         self.filechooserPPD.add_filter(ppd_filter)
 
         self.xml.signal_autoconnect(self)
