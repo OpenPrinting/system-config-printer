@@ -84,6 +84,11 @@ def ppdMakeModelSplit (ppd_make_and_model):
                       ppd_make_and_model, re.I):
         make = "Okidata"
         model = ppd_make_and_model
+    elif re.search ("^(konica[\s_-]*minolta)", \
+                      ppd_make_and_model, re.I):
+        make = "KONICA MINOLTA"
+        model = ppd_make_and_model
+        model = re.sub ("(?i)KONICA[\s_-]*MINOLTA\s*", "", model, 1)
     else:
         try:
             make, model = ppd_make_and_model.split(" ", 1)
@@ -132,15 +137,15 @@ def ppdMakeModelSplit (ppd_make_and_model):
     if wth != -1:
         model = model[:wth]
 
-    model = model.replace (" (recommended)", "")
-    model = model.replace (" Postscript", "")
-    model = model.replace (" - PostScript", "")
-    model = model.replace (" Series", "")
-    model = model.replace (" series", "")
-    model = model.replace (" PS", "")
-    model = model.replace (" PXL", "")
-    model = model.replace ("_BT", "")
-    model = model.replace (" (Bluetooth)", "")
+    make = re.sub ("(?i)KONICA[\s_-]*MINOLTA", "KONICA MINOLTA", make, 1)
+    model = re.sub ("(?i)\s*\(recommended\)", "", model)
+    model = re.sub ("(?i)\s*-\s*PostScript", "", model)
+    model = re.sub ("(?i)\s*Postscript", "", model)
+    model = re.sub ("(?i)\s*series", "", model)
+    model = re.sub ("(?i)\s*PS", "", model)
+    model = re.sub ("(?i)\s*PXL", "", model)
+    model = re.sub ("(?i)[\s_-]*BT", "", model)
+    model = re.sub ("(?i)\s*\(Bluetooth\)", "", model)
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
         if make == mfr.upper ():

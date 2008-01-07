@@ -5,8 +5,11 @@
 	field, copy the info field into the make-and-model field.
 
 	* ppds.py: Derive manufacturer name from model name if the manufacturer
-	name is missing in the Nickname or make-and-model string. Remove
-	"(Bluetooth)" from model name for more reliable matching.
+	name is missing in the Nickname or make-and-model string.
+	Remove "(Bluetooth)" from model name for more reliable matching.
+	Handle the manufacturer name "KONICA MINOLTA" correctly (Ubuntu
+	#64046). 
+	Use case-insensitive when cleaning model names.
 	
 2008-01-04  Till Kamppeter  <till.kamppeter@gmail.com>
 
