@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007 Red Hat, Inc.
+## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -596,7 +596,7 @@ class JobManager:
                             t = _("1 hour and %d minutes ago") % mins
                     else:
                         if mins == 0:
-                            t = _("%d hours ago")
+                            t = _("%d hours ago") % hours
                         elif mins == 1:
                             t = _("%d hours and 1 minute ago") % hours
                         else:
