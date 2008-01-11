@@ -369,6 +369,7 @@ class GUI(GtkGUI):
             (_("Makes"), np.tvNPMakes,s),
             (_("Models"), np.tvNPModels,s),
             (_("Drivers"), np.tvNPDrivers,s),
+            (_("Downloadable Drivers"), np.tvNPDownloadableDrivers,s),
             (_("Users"), self.tvPUsers, m),
             ):
             
@@ -2245,12 +2246,24 @@ class NewPrinterGUI(GtkGUI):
                            "tvNCMembers", "tvNCNotMembers",
                           "rbtnNPPPD", "tvNPMakes", 
                           "rbtnNPFoomatic", "filechooserPPD",
+                          "rbtnNPDownloadableDriverSearch",
+                          "entNPDownloadableDriverSearch",
                         
                           "tvNPModels", "tvNPDrivers",
                           "rbtnChangePPDasIs", "rbtnChangePPDKeepSettings",
                         "scrNPInstallableOptions", "vbNPInstallOptions",
+                        "lblNPDriverDownloadIntroText",
+                        "lblNPDriverDownloadHeadline",
+                        "tvNPDownloadableDrivers",
+                        "ntbkNPDownloadableDriverProperties",
+                        "lblNPLocalDriver",
+                        "lblNPDownloadableDriverPropertiesNL",
+                        "lblNPDownloadableDriverPropertiesL",
+                        "tvNPDownloadableDriverLicenseL",
+                        "lblNPDownloadableDriverPropertiesAL",
+                        "tvNPDownloadableDriverLicenseAL",
+                        "chkNPDownloadableDriverAcceptLicense",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
-
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo")
         # share with mainapp
@@ -2265,6 +2278,7 @@ class NewPrinterGUI(GtkGUI):
 
         self.ntbkNewPrinter.set_show_tabs(False)
         self.ntbkNPType.set_show_tabs(False)
+        self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         # SMB browser
         self.smb_store = gtk.TreeStore (str, # host or share
@@ -2354,7 +2368,7 @@ class NewPrinterGUI(GtkGUI):
             # Start on devices page (1, not 0)
             self.ntbkNewPrinter.set_current_page(1)
             self.fillDeviceTab()
-            self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
+            self.on_rbtnNPFoomatic_changed(self.rbtnNPFoomatic)
             # Start fetching information from CUPS in the background
             self.new_printer_PPDs_loaded = False
             self.queryPPDs ()
@@ -2376,7 +2390,7 @@ class NewPrinterGUI(GtkGUI):
         elif self.dialog_mode == "ppd":
             self.NewPrinterWindow.set_title(_("Change Driver"))
             self.ntbkNewPrinter.set_current_page(2)
-            self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
+            self.on_rbtnNPFoomatic_changed(self.rbtnNPFoomatic)
 
             self.auto_model = ""
             ppd = self.mainapp.ppd
@@ -2649,15 +2663,24 @@ class NewPrinterGUI(GtkGUI):
                 order = [1, 0]
             elif self.rbtnNPFoomatic.get_active():
                 order = [1, 2, 3, 6, 0]
-            else:
+            elif self.rbtnNPPPD.get_active():
                 order = [1, 2, 6, 0]
+            else:
+                order = [1, 2, 7, 6, 0]
         elif self.dialog_mode == "device":
             order = [1]
         elif self.dialog_mode == "ppd":
             if self.rbtnNPFoomatic.get_active():
                 order = [2, 3, 5, 6]
-            else:
+            elif self.rbtnNPPPD.get_active():
                 order = [2, 5, 6]
+            else:
+                order = [2, 7, 5, 6]
+
+        if page_nr == 7: # Downloadable driver has been selected
+            # Download and install driver from OpenPrinting here XXX
+            print "XXX"
+            pass
 
         next_page_nr = order[order.index(page_nr)+step]
 
@@ -2745,6 +2768,7 @@ class NewPrinterGUI(GtkGUI):
         if nr == 2: # Make/PPD file
             self.btnNPForward.set_sensitive(bool(
                 self.rbtnNPFoomatic.get_active() or
+                self.rbtnNPDownloadableDriverSearch.get_active() or
                 self.filechooserPPD.get_filename()))
         if nr == 3: # Model/Driver
             model, iter = self.tvNPDrivers.get_selection().get_selected()
@@ -3607,10 +3631,13 @@ class NewPrinterGUI(GtkGUI):
     
     # PPD
 
-    def on_rbtnNPFoomatic_toggled(self, widget):
-        foo = self.rbtnNPFoomatic.get_active()
-        self.tvNPMakes.set_sensitive(foo)
-        self.filechooserPPD.set_sensitive(not foo)
+    def on_rbtnNPFoomatic_changed(self, widget):
+        rbtn1 = self.rbtnNPFoomatic.get_active()
+        rbtn2 = self.rbtnNPPPD.get_active()
+        rbtn3 = self.rbtnNPDownloadableDriverSearch.get_active()
+        self.tvNPMakes.set_sensitive(rbtn1)
+        self.filechooserPPD.set_sensitive(rbtn2)
+        self.entNPDownloadableDriverSearch.set_sensitive(rbtn3)
         self.setNPButtons()
 
     def on_filechooserPPD_selection_changed(self, widget):
@@ -3724,8 +3751,11 @@ class NewPrinterGUI(GtkGUI):
                 model, iter = self.tvNPDrivers.get_selection().get_selected()
                 nr = model.get_path(iter)[0]
                 ppd = self.NPDrivers[nr]
-            else:
+            elif self.rbtnNPPPD.get_active():
                 ppd = cups.PPD(self.filechooserPPD.get_filename())
+            else:
+                # PPD of the driver downloaded from OpenPrinting XXX
+                ppd = "XXX"
 
         except RuntimeError, e:
             if self.rbtnNPFoomatic.get_active():
@@ -3746,7 +3776,7 @@ class NewPrinterGUI(GtkGUI):
                             "gutenprint-foomatic"
                 else:
                     err = err_text % (driver, self.NPMake, self.NPModel)
-            else:
+            elif self.rbtnNPPPD.get_active():
                 # This error came from trying to open the PPD file.
                 err_title = _('PPD error')
                 filename = self.filechooserPPD.get_filename()
@@ -3759,6 +3789,11 @@ class NewPrinterGUI(GtkGUI):
                 output = p.readlines ()
                 p.close ()
                 err += reduce (lambda x, y: x + y, output)
+            else:
+                # Failed to get PPD downloaded from OpenPrinting XXX
+                err_title = _('Downloadable drivers')
+                err_text = _("Support for downloadable "
+                             "drivers is not yet completed.")
 
             error_text = ('<span weight="bold" size="larger">' +
                           err_title + '</span>\n\n' + err)
