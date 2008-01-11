@@ -23,7 +23,7 @@
 # config is generated from config.py.in by configure
 import config
 
-import sys, os, tempfile, time, traceback, re, httplib
+import sys, os, tempfile, time, traceback, re, httplib, urllib, platform
 import signal, thread
 try:
     import gtk.glade
@@ -2448,6 +2448,49 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons()
         self.NewPrinterWindow.show()
 
+    # get downloadable drivers
+
+    def pollDownloadableDrivers(self, searchterm=""):
+        # Base URL XXX To be taken from config file
+        dd_base_url = "www.openprinting.org"
+        # CGI script to be executed
+        query_command = "/query.cgi"
+        # Common parameters for the request
+        params = "type=drivers&%s&moreinfo=1&showprinterid=1&onlydownload=1&onlynewestdriverpackages=1&architectures=%s&uilanguage=%s&locale=%s&noobsoletes=1&onlyfree=%s&onlymanufacturer=%s"
+        # Headers for the post request
+        headers = {"Content-type": "application/x-www-form-urlencoded",
+                   "Accept": "text/plain"}
+        # Search term to be inserted into the URL, with special characters
+        # in device ID appropriately encoded
+        search = urllib.urlencode({'printer': searchterm})
+        # Architecture of this machine
+        arch = platform.machine()
+        # Locale and language which are currently set
+        locale.setlocale(locale.LC_ALL, '')
+        loc = locale.getlocale(locale.LC_ALL)[0]
+        language = loc
+        # Restrictions on driver choices XXX Parameters to be taken from
+        # config file
+        onlyfree = 0
+        onlymanufacturer = 0
+        # Send request to poll driver package list
+        conn = httplib.HTTPConnection(dd_base_url)
+        conn.request("POST", query_command,
+                     params % (search, arch, language, loc, onlyfree,
+                               onlymanufacturer),
+                     headers)
+        resp = conn.getresponse()
+        if resp.status != 200:
+            # XXX error handling
+            pass
+        # This is the list of driver descriptions and downloadable packages
+        # and PPDs
+        dd_data_txt = resp.read()
+        conn.close()
+        # Now parse the list and create the entries in the selection GUI
+        
+        
+
     # get PPDs
 
     def queryPPDs(self):
@@ -2685,7 +2728,6 @@ class NewPrinterGUI(GtkGUI):
 
         if page_nr == 7: # Downloadable driver has been selected
             # Download and install driver from OpenPrinting here XXX
-            print "XXX"
             pass
 
         next_page_nr = order[order.index(page_nr)+step]
