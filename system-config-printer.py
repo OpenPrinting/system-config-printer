@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007 Red Hat, Inc.
-## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007 Florian Festi <ffesti@redhat.com>
+## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -967,6 +967,12 @@ class GUI:
     # refresh
     
     def on_btnRefresh_clicked(self, button):
+        if self.cups == None:
+            try:
+                self.cups = cups.Connection()
+            except RuntimeError:
+                pass
+
         self.populateList()
 
     # Unapplied changes dialog
