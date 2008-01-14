@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -2391,6 +2391,7 @@ class GUI:
                     self.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
                 else:
+                    cupshelpers.setPPDPageSize(self.languages[0], ppd)
                     self.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)
                     check = True
@@ -2461,19 +2462,7 @@ class GUI:
                 if not self.rbtnChangePPDasIs.get_active():
                     cupshelpers.copyPPDOptions(self.ppd, ppd)
                 else:
-                    # Just set the page size to A4 or Letter, that's all.
-                    # Use the same method CUPS uses.
-                    size = 'A4'
-                    letter = [ 'C', 'POSIX', 'en', 'en_US', 'en_CA', 'fr_CA' ]
-                    for each in letter:
-                        if self.language[0] == each:
-                            size = 'Letter'
-                    try:
-                        ppd.markOption ('PageSize', size)
-                        print "set PageSize = %s" % size
-                    except:
-                        print "Failed to set PageSize " \
-                              "(%s not available?)" % size
+                    cupshelpers.setPPDPageSize(self.language[0], ppd)
 
                 try:
                     self.passwd_retry = False # use cached Passwd

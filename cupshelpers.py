@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -412,7 +412,21 @@ def copyPPDOptions(ppd1, ppd2):
                     ppd2.markOption(new_option.keyword, value)
                     print "set %s = %s" % (new_option.keyword, value)
                     
-            
+def setPPDPageSize(ppd, language):
+    # Just set the page size to A4 or Letter, that's all.
+    # Use the same method CUPS uses.
+    size = 'A4'
+    letter = [ 'C', 'POSIX', 'en', 'en_US', 'en_CA', 'fr_CA' ]
+    for each in letter:
+        if language == each:
+            size = 'Letter'
+    try:
+        ppd.markOption ('PageSize', size)
+        print "set PageSize = %s" % size
+    except:
+        print "Failed to set PageSize " \
+              "(%s not available?)" % size
+
 def main():
     c = cups.Connection()
     #printers = getPrinters(c)
