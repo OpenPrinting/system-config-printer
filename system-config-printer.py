@@ -2391,7 +2391,7 @@ class GUI:
                     self.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
                 else:
-                    cupshelpers.setPPDPageSize(self.languages[0], ppd)
+                    cupshelpers.setPPDPageSize(self.language[0], ppd)
                     self.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)
                     check = True
