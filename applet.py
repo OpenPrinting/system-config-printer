@@ -781,8 +781,7 @@ class JobManager:
                 self.hold.set_sensitive (False)
             if s != cups.IPP_JOB_HELD:
                 self.release.set_sensitive (False)
-            if (s < cups.IPP_JOB_CANCELED or
-                not job.get('job-preserved', False)):
+            if (not job.get('job-preserved', False)):
                 self.reprint.set_sensitive (False)
         self.job_popupmenu.popup (None, None, None, event.button,
                                   event.get_time ())
