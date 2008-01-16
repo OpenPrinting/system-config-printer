@@ -2147,6 +2147,13 @@ class GUI(GtkGUI):
         # Now reconnect, in case the server needed to reload.
         self.reconnect ()
 
+        # Refresh the server settings in case they have changed in the
+        # mean time.
+        try:
+            self.server_settings = self.cups.adminGetServerSettings()
+        except:
+            nonfatalException()
+
     # ====================================================================
     # == New Printer Dialog ==============================================
     # ====================================================================
