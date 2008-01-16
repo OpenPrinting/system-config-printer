@@ -2391,7 +2391,7 @@ class GUI:
                     self.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
                 else:
-                    cupshelpers.setPPDPageSize(self.language[0], ppd)
+                    cupshelpers.setPPDPageSize(ppd, self.language[0])
                     self.cups.addPrinter(name, ppd=ppd,
                          device=uri, info=info, location=location)
                     check = True
@@ -2462,7 +2462,7 @@ class GUI:
                 if not self.rbtnChangePPDasIs.get_active():
                     cupshelpers.copyPPDOptions(self.ppd, ppd)
                 else:
-                    cupshelpers.setPPDPageSize(self.language[0], ppd)
+                    cupshelpers.setPPDPageSize(ppd, self.language[0])
 
                 try:
                     self.passwd_retry = False # use cached Passwd
