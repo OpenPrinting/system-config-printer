@@ -1002,10 +1002,24 @@ class NewPrinterNotification(dbus.service.Object):
             printer = c.getPrinters ()[name]
         except KeyError:
             return
+
+        try:
+            filename = c.getPPD (name)
+        except cups.IPPError:
+            return
+
         del c
 
+        # Check for missing packages
+        ppd = cups.PPD (filename)
+        import os
+        os.unlink (filename)
         import sys
         sys.path.append (APPDIR)
+        import cupshelpers
+        (missing_pkgs,
+         missing_exes) = cupshelpers.missingPackagesAndExecutables (ppd)
+
         from ppds import ppdMakeModelSplit
         (make, model) = ppdMakeModelSplit (printer['printer-make-and-model'])
         driver = make + " " + model
@@ -1014,7 +1028,15 @@ class NewPrinterNotification(dbus.service.Object):
         else:
             title = _("Missing printer driver")
 
-        if status == self.STATUS_SUCCESS:
+        if len (missing_pkgs) > 0:
+            pkgs = reduce (lambda x,y: x + ", " + y, missing_pkgs)
+            title = _("Install printer driver")
+            text = _("`%s' requires driver installation: %s.") % (name, pkgs)
+            n = pynotify.Notification (title, text)
+            n.set_urgency (pynotify.URGENCY_CRITICAL)
+            n.add_action ("install-driver", _("Install"),
+                          lambda x, y: self.install_driver (x, y, missing_pkgs))
+        elif status == self.STATUS_SUCCESS:
             text = _("`%s' is ready for printing.") % name
             n = pynotify.Notification (title, text)
             n.set_urgency (pynotify.URGENCY_NORMAL)
@@ -1050,6 +1072,18 @@ class NewPrinterNotification(dbus.service.Object):
 
     def find_driver (self, notification, action, name):
         self.run_config_tool (["--choose-driver", name])
+
+    def install_driver (self, notification, action, missing_pkgs):
+        import os
+        pid = os.fork ()
+        if pid == 0:
+            # Child.
+            argv = ["/usr/bin/system-install-packages"]
+            argv.extend (missing_pkgs)
+            os.execv (argv[0], argv)
+            sys.exit (1)
+        elif pid == -1:
+            print "Error forking process"
 
 try:
     bus = dbus.SystemBus()
