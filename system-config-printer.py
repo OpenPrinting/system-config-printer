@@ -2470,7 +2470,42 @@ class NewPrinterGUI(GtkGUI):
 
     # get downloadable drivers
 
-    def pollDownloadableDrivers(self, searchterm=""):
+    def webQuery(self, params):
+        # Base URL XXX To be taken from config file
+        dd_base_url = "www.openprinting.org"
+        # CGI script to be executed
+        query_command = "/query.cgi"
+        # Headers for the post request
+        headers = {"Content-type": "application/x-www-form-urlencoded",
+                   "Accept": "text/plain"}
+        # Locale and language which are currently set
+        locale.setlocale(locale.LC_ALL, '')
+        loc = locale.getlocale(locale.LC_ALL)[0]
+        language = loc
+        params = "%s&uilanguage=%s&locale=%s" % (params, language, loc)
+        # Send request
+        conn = httplib.HTTPConnection(dd_base_url)
+        conn.request("POST", query_command, params, headers)
+        resp = conn.getresponse()
+        if resp.status != 200:
+            # XXX error handling
+            pass
+        result = resp.read()
+        conn.close()
+        return result
+
+    def searchPrintersOnWebSite(self, searchterm=""):
+        # Common parameters for the request
+        params = "type=printers&%s&moreinfo=1"
+        # Search term to be inserted into the URL, with special characters
+        # in device ID appropriately encoded
+        search = urllib.urlencode({'printer': searchterm})
+        # Send request to poll driver package list
+        printers = self.webQuery(params % search)
+        # Now parse the list and create the printer entries in the selection
+        # combo box XXX
+
+    def pollDownloadableDrivers(self, printer=""):
         # Base URL XXX To be taken from config file
         dd_base_url = "www.openprinting.org"
         # CGI script to be executed
