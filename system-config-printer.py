@@ -866,17 +866,30 @@ class GUI(GtkGUI):
 
     def reconnect (self):
         """Reconnect to CUPS after the server has reloaded."""
-        # libcups will handle the reconnection; we just need to tell it
-        # to do something.
-        try:
-            self.cups.getClasses ()
-        except cups.IPPError, (e, s):
-            self.show_IPP_Error(e, s)
-        except cups.HTTPError, (s,):
-            self.cups = None
-            self.setConnected()
-            self.populateList()
-            self.show_HTTP_Error(s)
+        # libcups would handle the reconnection if we just told it to
+        # do something, for example fetching a list of classes.
+        # However, our local authentication certificate would be
+        # invalidated by a server restart, so it is better for us to
+        # handle the reconnection ourselves.
+
+        # Disconnect.
+        self.cups = None
+        self.setConnected()
+
+        cups.setServer(self.connect_server)
+        cups.setUser(self.connect_user)
+        attempt = 1
+        while attempt <= 5:
+            try:
+                self.cups = cups.Connection ()
+                break
+            except RuntimeError:
+                # Connection failed.
+                time.sleep(1)
+                attempt += 1
+
+        self.setConnected()
+        self.passwd_retry = False
 
     def on_btnCancelConnect_clicked(self, widget):
         """Close Connect dialog"""
@@ -2150,7 +2163,7 @@ class GUI(GtkGUI):
         # Refresh the server settings in case they have changed in the
         # mean time.
         try:
-            self.server_settings = self.cups.adminGetServerSettings()
+            self.fillServerTab()
         except:
             nonfatalException()
 
