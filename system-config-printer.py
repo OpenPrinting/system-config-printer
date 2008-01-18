@@ -2938,6 +2938,7 @@ class NewPrinterGUI(GtkGUI):
         uri = None
         os.environ["HOST"] = host
         cmd = 'hp-makeuri ' + mod + ' "${HOST}" 2> /dev/null'
+        debugprint (host + ": " + cmd)
         p = os.popen(cmd, 'r')
         uri = p.read()
         p.close()
@@ -2958,6 +2959,7 @@ class NewPrinterGUI(GtkGUI):
         if host:
             os.environ["HOST"] = host
             cmd = '/usr/lib/cups/backend/snmp "${HOST}" 2>/dev/null'
+            debugprint (host + ": " + cmd)
             p = os.popen(cmd, 'r')
             output = p.read()
             p.close()
