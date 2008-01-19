@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2008-01-16 17:31+0000\n"
-"PO-Revision-Date: 2007-12-11 22:41+0200\n"
+"PO-Revision-Date: 2008-01-19 14:43+0200\n"
 "Last-Translator: Piotr Drąg <raven@pmail.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -89,7 +89,7 @@ msgstr "Sterowniki"
 
 #: ../system-config-printer.py:372 ../system-config-printer.glade.h:108
 msgid "Downloadable Drivers"
-msgstr ""
+msgstr "Sterowniki do pobrania"
 
 #: ../system-config-printer.py:373
 msgid "Users"
@@ -304,15 +304,16 @@ msgid "Queue"
 msgstr "Kolejka"
 
 #: ../system-config-printer.py:2341
-#, fuzzy
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
-msgstr "PostScriptowy opis drukarki (*.ppd[.gz])"
+msgstr ""
+"Pliki PostScriptowego opisu drukarki (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
+"PPD.GZ)"
 
 #: ../system-config-printer.py:2350
 msgid "All files (*)"
-msgstr ""
+msgstr "Wszystkie pliki (*)"
 
 #: ../system-config-printer.py:2380 ../system-config-printer.glade.h:156
 msgid "New Printer"
@@ -448,11 +449,11 @@ msgstr "Nie udało się odczytać pliku PPD. Możliwe przyczyny:"
 #. Failed to get PPD downloaded from OpenPrinting XXX
 #: ../system-config-printer.py:3849
 msgid "Downloadable drivers"
-msgstr ""
+msgstr "Sterowniki do pobrania"
 
 #: ../system-config-printer.py:3850
 msgid "Support for downloadable drivers is not yet completed."
-msgstr ""
+msgstr "Obsługa pobierania sterowników nie została jeszcze ukończona."
 
 #: ../system-config-printer.py:3900 ../system-config-printer.py:3937
 msgid "No Installable Options"
@@ -545,9 +546,8 @@ msgid "<b>Installed Options</b>"
 msgstr "<b>Zainstalowane opcje</b>"
 
 #: ../system-config-printer.glade.h:17
-#, fuzzy
 msgid "<b>License terms</b>"
-msgstr "<b>Nazwa drukarki</b>"
+msgstr "<b>Warunki licencji</b>"
 
 #: ../system-config-printer.glade.h:18
 msgid "<b>Location of the LPD network printer</b>"
@@ -571,7 +571,7 @@ msgstr "<b>Polityki</b>"
 
 #: ../system-config-printer.glade.h:23
 msgid "<b>Printer Drivers Available for Download</b>"
-msgstr ""
+msgstr "<b>Sterowniki drukarek dostępne do pobrania</b>"
 
 #: ../system-config-printer.glade.h:24
 msgid "<b>Printer Name</b>"
@@ -590,9 +590,8 @@ msgid "<b>Select Connection</b>"
 msgstr "<b>Wybierz połączenie</b>"
 
 #: ../system-config-printer.glade.h:28
-#, fuzzy
 msgid "<b>Select Driver</b>"
-msgstr "<b>Drukarka SMB</b>"
+msgstr "<b>Wybierz sterownik</b>"
 
 #: ../system-config-printer.glade.h:29
 msgid "<b>Settings of the serial port</b>"
@@ -649,13 +648,12 @@ msgid "A CUPS configuration tool."
 msgstr "Narzędzie Konfiguracji CUPS."
 
 #: ../system-config-printer.glade.h:44
-#, fuzzy
 msgid "Accept License"
-msgstr "Akceptowanie zadań"
+msgstr "Zaakceptuj licencję"
 
 #: ../system-config-printer.glade.h:45
 msgid "Accept license terms?"
-msgstr ""
+msgstr "Zaakceptować warunki licencji?"
 
 #: ../system-config-printer.glade.h:46
 msgid "Accepting jobs"
@@ -879,6 +877,11 @@ msgid ""
 "You can emphasize the separation between manufacturer and model name with a "
 "pipe symbol ('|')."
 msgstr ""
+"Nazwa modelu drukarki nie mogła zostać określona lub nie ma do niej "
+"sterowników do pobrania. Podaj wyszukiwany termin, aby znaleźć sterownik do "
+"pobrania dla podobnych modeli. Można podać nazwę producenta, modelu, "
+"producenta i modelu lub ich część. Można odróżnić nazwę producenta i modelu "
+"za pomocą symbolu potoku (\"|\")."
 
 #: ../system-config-printer.glade.h:110
 msgid "Empty"
@@ -915,6 +918,10 @@ msgid ""
 "not covered by the distribution's commercial support. See the support and "
 "license conditions of the driver's supplier."
 msgstr ""
+"Dla wybranej drukarki są dostępne sterowniki do pobrania.\n"
+"<b>Uwaga:</b> te sterowniki nie są częścią dystrybucji, więc nie są objęte "
+"wsparciem technicznym dystrybucji. Zobacz warunki wsparcia i licencji "
+"dostawcy sterownika."
 
 #: ../system-config-printer.glade.h:119
 msgid "Gamma:"
@@ -994,16 +1001,15 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:141
 msgid "License"
-msgstr ""
+msgstr "Licencja"
 
 #: ../system-config-printer.glade.h:142
 msgid "Lines per inch:"
 msgstr "Wierszy na cal:"
 
 #: ../system-config-printer.glade.h:143
-#, fuzzy
 msgid "Local Driver"
-msgstr "Lokalne drukarki"
+msgstr "Lokalny sterownik"
 
 #: ../system-config-printer.glade.h:144
 msgid "Location:"
@@ -1056,7 +1062,7 @@ msgstr "Nowa nazwa dla drukarki"
 
 #: ../system-config-printer.glade.h:159
 msgid "No License"
-msgstr ""
+msgstr "Brak licencji"
 
 #: ../system-config-printer.glade.h:160
 msgid ""
@@ -1089,6 +1095,34 @@ msgid ""
 "Bind (right)\n"
 "Bind (bottom)"
 msgstr ""
+"Brak\n"
+"Staple\n"
+"Punch\n"
+"Cover\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Staple (lewy górny)\n"
+"Staple (lewy dolny)\n"
+"Staple (prawy górny)\n"
+"Staple (prawy dolny)\n"
+"Edge stitch (lewy)\n"
+"Edge stitch (górny)\n"
+"Edge stitch (prawy)\n"
+"Edge stitch (dolny)\n"
+"Staple dual (lewy)\n"
+"Staple dual (górny)\n"
+"Staple dual (prawy)\n"
+"Staple dual (dolny)\n"
+"Bind (lewy)\n"
+"Bind (górny)\n"
+"Bind (prawy)\n"
+"Bind (dolny)"
 
 #: ../system-config-printer.glade.h:188
 msgid ""
@@ -1149,7 +1183,6 @@ msgstr ""
 "Odwrotny portret (180°)"
 
 #: ../system-config-printer.glade.h:204
-#, fuzzy
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1234,15 +1267,15 @@ msgstr "Skalowanie:"
 
 #: ../system-config-printer.glade.h:227
 msgid "Search for a Downlodable Printer Driver"
-msgstr ""
+msgstr "Znajdź sterownik drukarki do pobrania"
 
 #: ../system-config-printer.glade.h:228
 msgid "Search term: "
-msgstr ""
+msgstr "Znajdź termin: "
 
 #: ../system-config-printer.glade.h:229
 msgid "Select Locally Installed Printer Driver"
-msgstr ""
+msgstr "Wybierz lokalnie zainstalowany sterownik drukarki"
 
 #: ../system-config-printer.glade.h:230
 msgid "Serial"
@@ -1292,6 +1325,9 @@ msgid ""
 "installed with your Linux distribution. Choose a suitable driver here by "
 "selecting manufacturer and model name of your printer."
 msgstr ""
+"Sterowniki i pliki PPD dla większości popularnych drukarek są zwykle "
+"zainstalowane w dystrybucji Linuksa. Wybierz odpowiedni sterownik wybierając "
+"producenta i nazwę modelu drukarki."
 
 #: ../system-config-printer.glade.h:240
 msgid ""
@@ -1384,6 +1420,8 @@ msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
 msgstr ""
+"Żaden sterownik nie zostanie pobrany. W następnych krokach wybrany zostanie "
+"lokalnie zainstalowany sterownik."
 
 #: ../system-config-printer.glade.h:256
 msgid "Word wrap"
@@ -1650,19 +1688,17 @@ msgid "Missing printer driver"
 msgstr "Brak sterownika drukarki"
 
 #: ../applet.py:1032
-#, fuzzy
 msgid "Install printer driver"
-msgstr "Zainstaluj sterownik"
+msgstr "Zainstaluj sterownik drukarki"
 
 #: ../applet.py:1033
 #, python-format
 msgid "`%s' requires driver installation: %s."
-msgstr ""
+msgstr "`%s' wymaga instalacji sterownika: %s."
 
 #: ../applet.py:1036
-#, fuzzy
 msgid "Install"
-msgstr "Za_instaluj"
+msgstr "Zainstaluj"
 
 #: ../applet.py:1039
 #, python-format
@@ -1742,28 +1778,3 @@ msgstr "Zarządzanie zadaniami wydruku"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Wybór domyślnej drukarki"
-
-#~ msgid "3"
-#~ msgstr "3"
-
-#~ msgid "Select A File"
-#~ msgstr "Wybierz plik"
-
-#~ msgid "Select Printer from Database"
-#~ msgstr "Wybierz drukarkę z bazy danych"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "Baza danych drukarek foomatic zawiera różne pliki z PostScriptowymi "
-#~ "opisami drukarek (PPD) dostarczone przez producentów, a także może "
-#~ "tworzyć pliki PPD dla dużej liczby (niepostscriptowych) drukarek. W "
-#~ "zasadzie pliki PPD dostarczone przez producentów dostarczają lepszy "
-#~ "dostęp do określonych funkcji drukarki."
-
-#~ msgid "system-config-printer"
-#~ msgstr "system-config-printer"
