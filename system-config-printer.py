@@ -3526,141 +3526,12 @@ class GUI:
             ppd = cups.PPD(filename)
             os.unlink(filename)
 
-        # How to check that something exists in a path:
-        def pathcheck (name, path="/usr/bin:/bin"):
-            # Strip out foomatic '%'-style place-holders.
-            p = name.find ('%')
-            if p != -1:
-                name = name[:p]
-            if len (name) == 0:
-                return "true"
-            if name[0] == '/':
-                if os.access (name, os.X_OK):
-                    print "%s: found" % name
-                    return name
-                else:
-                    print "%s: NOT found" % name
-                    return None
-            if name.find ("=") != -1:
-                return "builtin"
-            if name in [ ":", ".", "[", "alias", "bind", "break", "cd",
-                         "continue", "declare", "echo", "else", "eval",
-                         "exec", "exit", "export", "fi", "if", "kill", "let",
-                         "local", "popd", "printf", "pushd", "pwd", "read",
-                         "readonly", "set", "shift", "shopt", "source",
-                         "test", "then", "trap", "type", "ulimit", "umask",
-                         "unalias", "unset", "wait" ]:
-                return "builtin"
-            for component in path.split (':'):
-                file = component.rstrip (os.path.sep) + os.path.sep + name
-                if os.access (file, os.X_OK):
-                    print "%s: found" % file
-                    return file
-            print "%s: NOT found in %s" % (name,path)
-            return None
-
-        # Find a 'FoomaticRIPCommandLine' attribute.
-        exe = exepath = None
-        attr = ppd.findAttr ('FoomaticRIPCommandLine')
-        if attr:
-            # Foomatic RIP command line to check.
-            cmdline = attr.value.replace ('&&\n', '')
-            cmdline = cmdline.replace ('&quot;', '"')
-            cmdline = cmdline.replace ('&lt;', '<')
-            cmdline = cmdline.replace ('&gt;', '>')
-            if (cmdline.find ("(") != -1 or
-                cmdline.find ("&") != -1):
-                # Don't try to handle sub-shells or unreplaced HTML entities.
-                cmdline = ""
-
-            # Strip out foomatic '%'-style place-holders
-            pipes = cmdline.split (';')
-            for pipe in pipes:
-                cmds = pipe.strip ().split ('|')
-                for cmd in cmds:
-                    args = cmd.strip ().split (' ')
-                    exe = args[0]
-                    exepath = pathcheck (exe)
-                    if not exepath:
-                        break
-
-                    # Main executable found.  But if it's 'gs',
-                    # perhaps there is an IJS server we also need
-                    # to check.
-                    if os.path.basename (exepath) == 'gs':
-                        argn = len (args)
-                        argi = 1
-                        search = "-sIjsServer="
-                        while argi < argn:
-                            arg = args[argi]
-                            if arg.startswith (search):
-                                exe = arg[len (search):]
-                                exepath = pathcheck (exe)
-                                break
-
-                            argi += 1
-
-                if not exepath:
-                    # Next pipe.
-                    break
-
-        if exepath or not exe:
-            # Look for '*cupsFilter' lines in the PPD and check that
-            # the filters are installed.
-            (tmpfd, tmpfname) = tempfile.mkstemp ()
-            ppd.writeFd (tmpfd)
-            search = "*cupsFilter:"
-            for line in file (tmpfname).readlines ():
-                if line.startswith (search):
-                    line = line[len (search):].strip ().strip ('"')
-                    try:
-                        (mimetype, cost, exe) = line.split (' ')
-                    except:
-                        continue
-
-                    exepath = pathcheck (exe,
-                                         "/usr/lib/cups/filter:"
-                                         "/usr/lib64/cups/filter")
-
-        if exe and not exepath:
+        (pkgs, exes) = cupshelpers.missingPackagesAndExecutables (ppd)
+        if len (pkgs) > 0 or len (exes) > 0:
             # We didn't find a necessary executable.  Complain.
-
-            # Strip out foomatic '%'-style place-holders.
-            p = exe.find ('%')
-            if p != -1:
-                exe = exe[:p]
-
-            pkgs = {
-                # Foomatic command line executables
-                'gs': 'ghostscript',
-                'perl': 'perl',
-                'foo2oak-wrapper': None,
-                'pnm2ppa': 'pnm2ppa',
-                'c2050': 'c2050',
-                'c2070': 'c2070',
-                'cjet': 'cjet',
-                'lm1100': 'lx',
-                'esc-m': 'min12xxw',
-                'min12xxw': 'min12xxw',
-                'pbm2l2030': 'pbm2l2030',
-                'pbm2l7k': 'pbm2l7k',
-                'pbm2lex': 'pbm2l7k',
-                # IJS servers (used by foomatic)
-                'hpijs': 'hpijs',
-                'ijsgutenprint.5.0': 'gutenprint',
-                # CUPS filters
-                'rastertogutenprint.5.0': 'gutenprint-cups',
-                'commandtoepson': 'gutenprint-cups',
-                'commandtocanon': 'gutenprint-cups',
-                }
-            try:
-                pkg = pkgs[exe]
-            except:
-                pkg = None
-
             install = "/usr/bin/system-install-packages"
-            if pkg and os.access (install, os.X_OK):
-                print "%s included in package %s" % (exe, pkg)
+            if len (pkgs) > 0 and os.access (install, os.X_OK):
+                pkg = pkgs[0]
                 install_text = ('<span weight="bold" size="larger">' +
                                 _('Install driver') + '</span>\n\n' +
                                 _("Printer '%s' requires the %s package but "
@@ -3674,7 +3545,7 @@ class GUI:
                               _("Printer '%s' requires the '%s' program but "
                                 "it is not currently installed.  Please "
                                 "install it before using this printer.") %
-                              (name, exe))
+                              (name, (exes + pkgs)[0]))
                 dialog = self.ErrorDialog
                 self.lblError.set_markup(error_text)
 
