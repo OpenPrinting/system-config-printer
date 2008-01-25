@@ -2300,6 +2300,9 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPType.set_show_tabs(False)
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
+        # Disable downloadable driver support until it's working.
+        self.rbtnNPDownloadableDriverSearch.set_sensitive(False)
+
         # SMB browser
         self.smb_store = gtk.TreeStore (str, # host or share
                                         str, # comment
