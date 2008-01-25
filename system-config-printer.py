@@ -2274,21 +2274,15 @@ class NewPrinterGUI(GtkGUI):
                           "rbtnNPFoomatic", "filechooserPPD",
                           "rbtnNPDownloadableDriverSearch",
                           "entNPDownloadableDriverSearch",
+                        "btnNPDownloadableDriverSearch",
+                        "cmbNPDownloadableDriverFoundPrinters",
                         
                           "tvNPModels", "tvNPDrivers",
                           "rbtnChangePPDasIs", "rbtnChangePPDKeepSettings",
                         "scrNPInstallableOptions", "vbNPInstallOptions",
-                        "lblNPDriverDownloadIntroText",
-                        "lblNPDriverDownloadHeadline",
                         "tvNPDownloadableDrivers",
                         "ntbkNPDownloadableDriverProperties",
-                        "lblNPLocalDriver",
-                        "lblNPDownloadableDriverPropertiesNL",
-                        "lblNPDownloadableDriverPropertiesL",
-                        "tvNPDownloadableDriverLicenseL",
-                        "lblNPDownloadableDriverPropertiesAL",
-                        "tvNPDownloadableDriverLicenseAL",
-                        "chkNPDownloadableDriverAcceptLicense",
+                        "tvNPDownloadableDriverLicense",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo")
@@ -3742,7 +3736,10 @@ class NewPrinterGUI(GtkGUI):
         rbtn3 = self.rbtnNPDownloadableDriverSearch.get_active()
         self.tvNPMakes.set_sensitive(rbtn1)
         self.filechooserPPD.set_sensitive(rbtn2)
-        self.entNPDownloadableDriverSearch.set_sensitive(rbtn3)
+        for widget in [self.entNPDownloadableDriverSearch,
+                       self.btnNPDownloadableDriverSearch,
+                       self.cmbNPDownloadableDriverFoundPrinters]:
+            widget.set_sensitive(rbtn3)
         self.setNPButtons()
 
     def on_filechooserPPD_selection_changed(self, widget):

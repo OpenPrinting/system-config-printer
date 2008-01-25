@@ -1,3 +1,10 @@
+2008-01-25  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.__init__): No need to
+	fetch labels we aren't going to do anything with.
+	(NewPrinterGUI.on_rbtnNPFoomatic_changed): Set sensitivity of
+	downloadable driver widgets as a group.
+
 2008-01-18  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.reconnect): Better reconnection
