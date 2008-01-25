@@ -105,7 +105,8 @@ class OpenPrinting:
         # Common parameters for the request
         params = { 'type': 'printers',
                    'printer': searchterm,
-                   'moreinfo': '1' }
+                   'moreinfo': '1',
+                   'format': 'xml' }
         return self.webQuery(params, callback, user_data)
 
     def listDrivers(self, model, callback, user_data=None):
@@ -131,7 +132,8 @@ class OpenPrinting:
                    'noobsoletes': '1',
                    'onlyfree': str (self.onlyfree),
                    'onlymanufacturer': str (self.onlymanufacturer),
-                   'printer': model }
+                   'printer': model,
+                   'format': 'xml'}
         return self.webQuery(params, callback, user_data)
 
 if __name__ == "__main__":
