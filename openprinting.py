@@ -144,14 +144,19 @@ if __name__ == "__main__":
                                     None,
                                     gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
                                     (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE,
-                                     "Query", 10))
+                                     "Search", 10,
+                                     "List", 20))
             self.main.set_border_width (6)
             self.main.vbox.set_spacing (2)
             vbox = gtk.VBox (False, 6)
             self.main.vbox.pack_start (vbox, True, True, 0)
             vbox.set_border_width (6)
-            self.label = gtk.Label ()
-            vbox.pack_start (self.label)
+            self.entry = gtk.Entry ()
+            vbox.pack_start (self.entry, False, False, 6)
+            sw = gtk.ScrolledWindow ()
+            self.tv = gtk.TextView ()
+            sw.add (self.tv)
+            vbox.pack_start (sw, True, True, 6)
             self.main.connect ("response", self.response)
             self.main.show_all ()
 
@@ -162,13 +167,16 @@ if __name__ == "__main__":
 
             if response == 10:
                 # Run a query.
-                self.openprinting.searchPrinters ("hp deskjet 990c",
+                self.openprinting.searchPrinters (self.entry.get_text (),
                                                   self.query_callback)
+
+            if response == 20:
+                self.openprinting.listDrivers (self.entry.get_text (),
+                                               self.query_callback)
 
         def query_callback (self, status, user_data, result):
             gtk.gdk.threads_enter ()
-            print "Got callback", result
-            self.label.set_text (result)
+            self.tv.get_buffer ().set_text (result)
             gtk.gdk.threads_leave ()
 
     q = QueryApp()
