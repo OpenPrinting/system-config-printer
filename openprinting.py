@@ -136,6 +136,7 @@ class OpenPrinting:
 
 if __name__ == "__main__":
     import gtk
+    gtk.gdk.threads_init ()
     class QueryApp:
         def __init__(self):
             self.openprinting = OpenPrinting()
