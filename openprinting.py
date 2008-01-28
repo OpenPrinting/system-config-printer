@@ -78,7 +78,10 @@ class OpenPrinting:
 
     def cancelOperation(self, handle):
         # Just prevent the callback.
-        handle.callback = None
+        try:
+            handle.callback = None
+        except:
+            pass
 
     def webQuery(self, parameters, callback, user_data=None):
         """

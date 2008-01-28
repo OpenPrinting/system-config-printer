@@ -10,6 +10,10 @@
 	(NewPrinterGUI.openprinting_printers_found): New method.
 	(NewPrinterGUI.on_cmbNPDownloadableDriverFoundPrinters_changed):
 	New method.
+	(NewPrinterGUI.__init__): Initialise search handle.
+	(NewPrinterGUI.on_NPCancel): Cancel search.
+	(NewPrinterGUI.openprinting_printers_found): Clear search handle.
+	(NewPrinterGUI.init): Initialise search widgets.
 
 	* openprinting.py (OpenPrinting.searchPrinters.parse_result):
 	Don't call the callback twice on error; instead display a

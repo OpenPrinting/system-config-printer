@@ -2306,11 +2306,11 @@ class NewPrinterGUI(GtkGUI):
 
         # Set up OpenPrinting widgets.
         self.openprinting = openprinting.OpenPrinting ()
+        self.openprinting_search_handle = None
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         cell = gtk.CellRendererText()
         combobox.pack_start (cell, True)
         combobox.add_attribute(cell, 'text', 0)
-        combobox.set_model (gtk.ListStore (str, str))
 
         # SMB browser
         self.smb_store = gtk.TreeStore (str, # host or share
@@ -2394,6 +2394,10 @@ class NewPrinterGUI(GtkGUI):
         self.options = {} # keyword -> Option object
         self.changed = set()
         self.conflicts = set()
+
+        combobox = self.cmbNPDownloadableDriverFoundPrinters
+        combobox.set_model (gtk.ListStore (str, str))
+        self.entNPDownloadableDriverSearch.set_text ('')
 
         if self.dialog_mode == "printer":
             self.NewPrinterWindow.set_title(_("New Printer"))
@@ -2578,6 +2582,8 @@ class NewPrinterGUI(GtkGUI):
 
     def on_NPCancel(self, widget, event=None):
         self.NewPrinterWindow.hide()
+        if self.openprinting_search_handle != None:
+            self.openprinting.cancelOperation (self.openprinting_search_handle)
         return True
 
     def on_btnNPBack_clicked(self, widget):
@@ -3694,6 +3700,7 @@ class NewPrinterGUI(GtkGUI):
                                               self.openprinting_printers_found)
 
     def openprinting_printers_found (self, status, user_data, printers):
+        self.openprinting_search_handle = None
         self.btnNPDownloadableDriverSearch.set_sensitive (True)
         if status != 0:
             # Should report error.
