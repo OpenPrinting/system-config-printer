@@ -3709,14 +3709,17 @@ class NewPrinterGUI(GtkGUI):
             return
 
         model = gtk.ListStore (str, str)
-        if len (printers) > 0:
-            first = _("-- Select printer model --")
-        else:
-            first = _("-- No matches found --")
+        if len (printers) != 1:
+            if len (printers) > 1:
+                first = _("-- Select printer model --")
+            else:
+                first = _("-- No matches found --")
 
-        first_iter = model.append (None)
-        model.set_value (first_iter, 0, first)
-        model.set_value (first_iter, 1, None)
+            first_iter = model.append (None)
+            model.set_value (first_iter, 0, first)
+            model.set_value (first_iter, 1, None)
+        else:
+            first_iter = None
 
         sorted_list = []
         for id, name in printers.iteritems ():
@@ -3725,6 +3728,8 @@ class NewPrinterGUI(GtkGUI):
         sorted_list.sort (lambda x, y: cups.modelSort (x[1], y[1]))
         for id, name in sorted_list:
             iter = model.append (None)
+            if first_iter == None:
+                first_iter = iter
             model.set_value (iter, 0, name)
             model.set_value (iter, 1, id)
         combobox = self.cmbNPDownloadableDriverFoundPrinters

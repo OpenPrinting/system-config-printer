@@ -14,6 +14,8 @@
 	(NewPrinterGUI.on_NPCancel): Cancel search.
 	(NewPrinterGUI.openprinting_printers_found): Clear search handle.
 	(NewPrinterGUI.init): Initialise search widgets.
+	(NewPrinterGUI.openprinting_printers_found): When only one printer
+	is found from the search, select it automatically.
 
 	* openprinting.py (OpenPrinting.searchPrinters.parse_result):
 	Don't call the callback twice on error; instead display a
