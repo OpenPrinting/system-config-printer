@@ -19,7 +19,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urllib, httplib, platform, threading
+import urllib, httplib, platform, threading, tempfile, os, sys
+from xml.etree.ElementTree import XML
 
 class QueryThread (threading.Thread):
     def __init__ (self, parent, parameters, callback, user_data=None):
@@ -40,17 +41,24 @@ class QueryThread (threading.Thread):
                    self.parent.language[0],
                    self.parent.language[0]))
         # Send request
-        # XXX Do this in a new thread
-        conn = httplib.HTTPConnection(self.parent.base_url)
-        conn.request("POST", query_command, params, headers)
-        resp = conn.getresponse()
-        if resp.status != 200:
-            # XXX error handling
-            pass
-        result = resp.read()
-        conn.close()
+        result = None
+        status = 1
+        try:
+            conn = httplib.HTTPConnection(self.parent.base_url)
+            conn.request("POST", query_command, params, headers)
+            resp = conn.getresponse()
+            status = resp.status
+            if status == 200:
+                result = resp.read()
+            conn.close()
+        except:
+            result = sys.exc_info ()
+
+        if status == 200:
+            status = 0
+
         if self.callback != None:
-            self.callback (0, self.user_data, result)
+            self.callback (status, self.user_data, result)
 
 class OpenPrinting:
     def __init__(self, language=None):
@@ -102,12 +110,37 @@ class OpenPrinting:
         @return: query handle
         """
 
+        def parse_result (status, data, result):
+            (callback, user_data) = data
+            if status != 0:
+                callback (status, user_data, result)
+                return
+
+            try:
+                root = XML (result)
+                printers = {}
+                # We store the printers as a dict of:
+                # foomatic_id: displayname
+
+                for printer in root.findall ("printer"):
+                    id = printer.find ("id")
+                    make = printer.find ("make")
+                    model = printer.find ("model")
+                    if id != None and make != None and model != None:
+                        idtxt = id.text
+                        maketxt = make.text
+                        modeltxt = model.text
+                        if idtxt and maketxt and modeltxt:
+                            printers[idtxt] = maketxt + " " + modeltxt
+                callback (0, user_data, printers)
+            except:
+                callback (1, user_data, sys.exc_info ())
+
         # Common parameters for the request
         params = { 'type': 'printers',
                    'printer': searchterm,
-                   'moreinfo': '1',
                    'format': 'xml' }
-        return self.webQuery(params, callback, user_data)
+        return self.webQuery(params, parse_result, (callback, user_data))
 
     def listDrivers(self, model, callback, user_data=None):
         """
@@ -123,6 +156,90 @@ class OpenPrinting:
         @return: query handle
         """
 
+        def parse_result (status, data, result):
+            (callback, user_data) = data
+            if status != 0:
+                callback (status, user_data, result)
+
+            try:
+                root = XML (result)
+                drivers = {}
+                # We store the drivers as a dict of:
+                # foomatic_id:
+                #   { 'name': name,
+                #     'url': url,
+                #     'supplier': supplier,
+                #     'license': short license string e.g. GPLv2
+                #     'freesoftware': Boolean
+                #     'shortdescription': short description,
+                #     'recommended': Boolean
+                #     'packages' (optional):
+                #       { arch:
+                #         { 'file': filename,
+                #           'url': url,
+                #           'realversion': upstream version string,
+                #           'version': packaged version string,
+                #           'release': package release string }
+                #       }
+                #     'ppds' (optional):
+                #       URL string list
+                #   }
+                # There is more information in the raw XML, but this
+                # can be added to the Python structure as needed.
+
+                for driver in root.findall ('driver'):
+                    id = driver.attrib.get ('id')
+                    if id == None:
+                        continue
+
+                    dict = {}
+                    for attribute in ['name', 'url', 'supplier', 'license',
+                                      'shortdescription' ]:
+                        element = driver.find (attribute)
+                        if element != None:
+                            dict[attribute] = element.text
+
+                    for boolean in ['freesoftware', 'recommended']:
+                        dict[boolean] = driver.find (boolean) != None
+
+                    if not dict.has_key ('name') or not dict.has_key ('url'):
+                        continue
+
+                    packages = {}
+                    container = driver.find ('packages')
+                    if container != None:
+                        for arch in container.getchildren ():
+                            p = arch.find ('package')
+                            if p == None:
+                                continue
+
+                            package = { 'file': p.attrib.get('file','') }
+
+                            for attribute in ['realversion','version',
+                                              'release']:
+                                element = p.find (attribute)
+                                if element != None:
+                                    package[attribute] = element.text
+
+                            packages[arch.tag] = package
+
+                    if packages:
+                        dict['packages'] = packages
+
+                    ppds = []
+                    container = driver.find ('ppds')
+                    if container != None:
+                        for each in container.getchildren ():
+                            ppds.append (each.text)
+
+                    if ppds:
+                        dict['ppds'] = ppds
+
+                    drivers[id] = dict
+                callback (0, user_data, drivers)
+            except:
+                callback (1, user_data, sys.exc_info ())
+
         params = { 'type': 'drivers',
                    'moreinfo': '1',
                    'showprinterid': '1',
@@ -134,10 +251,10 @@ class OpenPrinting:
                    'onlymanufacturer': str (self.onlymanufacturer),
                    'printer': model,
                    'format': 'xml'}
-        return self.webQuery(params, callback, user_data)
+        return self.webQuery(params, parse_result, (callback, user_data))
 
 if __name__ == "__main__":
-    import gtk
+    import gtk, pprint
     gtk.gdk.threads_init ()
     class QueryApp:
         def __init__(self):
@@ -170,17 +287,37 @@ if __name__ == "__main__":
             if response == 10:
                 # Run a query.
                 self.openprinting.searchPrinters (self.entry.get_text (),
-                                                  self.query_callback)
+                                                  self.search_printers_callback)
 
             if response == 20:
                 self.openprinting.listDrivers (self.entry.get_text (),
-                                               self.query_callback)
+                                               self.list_drivers_callback)
+
+        def search_printers_callback (self, status, user_data, printers):
+            if status != 0:
+                raise printers[1]
+
+            text = ""
+            for printer in printers.values ():
+                text += printer + "\n"
+            gtk.gdk.threads_enter ()
+            self.tv.get_buffer ().set_text (text)
+            gtk.gdk.threads_leave ()
+
+        def list_drivers_callback (self, status, user_data, drivers):
+            if status != 0:
+                raise drivers[1]
+
+            text = pprint.pformat (drivers)
+            gtk.gdk.threads_enter ()
+            self.tv.get_buffer ().set_text (text)
+            gtk.gdk.threads_leave ()
 
         def query_callback (self, status, user_data, result):
             gtk.gdk.threads_enter ()
-            self.tv.get_buffer ().set_text (result)
+            self.tv.get_buffer ().set_text (str (result))
+            file ("result.xml", "w").write (str (result))
             gtk.gdk.threads_leave ()
 
     q = QueryApp()
     gtk.main ()
-
