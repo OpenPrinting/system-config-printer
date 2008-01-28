@@ -2398,6 +2398,10 @@ class NewPrinterGUI(GtkGUI):
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         combobox.set_model (gtk.ListStore (str, str))
         self.entNPDownloadableDriverSearch.set_text ('')
+        button = self.btnNPDownloadableDriverSearch
+        label = button.get_children ()[0].get_children ()[0].get_children ()[1]
+        self.btnNPDownloadableDriverSearch_label = label
+        label.set_text (_("Search"))
 
         if self.dialog_mode == "printer":
             self.NewPrinterWindow.set_title(_("New Printer"))
@@ -3694,6 +3698,8 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnNPDownloadableDriverSearch_clicked(self, widget):
         widget.set_sensitive (False)
+        label = self.btnNPDownloadableDriverSearch_label
+        label.set_text (_("Searching"))
         searchterm = self.entNPDownloadableDriverSearch.get_text ()
         self.openprinting_search_handle = \
             self.openprinting.searchPrinters (searchterm,
@@ -3701,7 +3707,10 @@ class NewPrinterGUI(GtkGUI):
 
     def openprinting_printers_found (self, status, user_data, printers):
         self.openprinting_search_handle = None
-        self.btnNPDownloadableDriverSearch.set_sensitive (True)
+        button = self.btnNPDownloadableDriverSearch
+        label = self.btnNPDownloadableDriverSearch_label
+        label.set_text (_("Search"))
+        button.set_sensitive (True)
         if status != 0:
             # Should report error.
             print printers

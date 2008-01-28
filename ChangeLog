@@ -16,6 +16,11 @@
 	(NewPrinterGUI.init): Initialise search widgets.
 	(NewPrinterGUI.openprinting_printers_found): When only one printer
 	is found from the search, select it automatically.
+	(NewPrinterGUI.init): Set search button label.
+	(NewPrinterGUI.on_btnNPDownloadableDriverSearch_clicked): Update
+	search button label.
+	(NewPrinterGUI.openprinting_printers_found): Reset search button
+	label.
 
 	* openprinting.py (OpenPrinting.searchPrinters.parse_result):
 	Don't call the callback twice on error; instead display a
