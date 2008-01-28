@@ -61,6 +61,7 @@ import ppds
 import probe_printer
 import gtk_label_autowrap
 from gtk_treeviewtooltips import TreeViewTooltips
+import openprinting
 import urllib
 
 domain='system-config-printer'
@@ -2303,6 +2304,14 @@ class NewPrinterGUI(GtkGUI):
         # Disable downloadable driver support until it's working.
         self.rbtnNPDownloadableDriverSearch.set_sensitive(False)
 
+        # Set up OpenPrinting widgets.
+        self.openprinting = openprinting.OpenPrinting ()
+        combobox = self.cmbNPDownloadableDriverFoundPrinters
+        cell = gtk.CellRendererText()
+        combobox.pack_start (cell, True)
+        combobox.add_attribute(cell, 'text', 0)
+        combobox.set_model (gtk.ListStore (str, str))
+
         # SMB browser
         self.smb_store = gtk.TreeStore (str, # host or share
                                         str, # comment
@@ -2788,10 +2797,17 @@ class NewPrinterGUI(GtkGUI):
                 self.btnNPApply.set_sensitive(
                     self.mainapp.checkNPName(self.entNPName.get_text()))
         if nr == 2: # Make/PPD file
+            downloadable_selected = False
+            if self.rbtnNPDownloadableDriverSearch.get_active ():
+                combobox = self.cmbNPDownloadableDriverFoundPrinters
+                iter = combobox.get_active_iter ()
+                if iter and combobox.get_model ().get_value (iter, 1):
+                    downloadable_selected = True
+
             self.btnNPForward.set_sensitive(bool(
                 self.rbtnNPFoomatic.get_active() or
-                self.rbtnNPDownloadableDriverSearch.get_active() or
-                self.filechooserPPD.get_filename()))
+                self.filechooserPPD.get_filename() or
+                downloadable_selected))
         if nr == 3: # Model/Driver
             model, iter = self.tvNPDrivers.get_selection().get_selected()
             self.btnNPForward.set_sensitive(bool(iter))
@@ -3669,6 +3685,48 @@ class NewPrinterGUI(GtkGUI):
 
     def on_filechooserPPD_selection_changed(self, widget):
         self.setNPButtons()
+
+    def on_btnNPDownloadableDriverSearch_clicked(self, widget):
+        widget.set_sensitive (False)
+        searchterm = self.entNPDownloadableDriverSearch.get_text ()
+        self.openprinting_search_handle = \
+            self.openprinting.searchPrinters (searchterm,
+                                              self.openprinting_printers_found)
+
+    def openprinting_printers_found (self, status, user_data, printers):
+        self.btnNPDownloadableDriverSearch.set_sensitive (True)
+        if status != 0:
+            # Should report error.
+            print printers
+            print traceback.extract_tb(printers[2], limit=None)
+            return
+
+        model = gtk.ListStore (str, str)
+        if len (printers) > 0:
+            first = _("-- Select printer model --")
+        else:
+            first = _("-- No matches found --")
+
+        first_iter = model.append (None)
+        model.set_value (first_iter, 0, first)
+        model.set_value (first_iter, 1, None)
+
+        sorted_list = []
+        for id, name in printers.iteritems ():
+            sorted_list.append ((id, name))
+
+        sorted_list.sort (lambda x, y: cups.modelSort (x[1], y[1]))
+        for id, name in sorted_list:
+            iter = model.append (None)
+            model.set_value (iter, 0, name)
+            model.set_value (iter, 1, id)
+        combobox = self.cmbNPDownloadableDriverFoundPrinters
+        combobox.set_model (model)
+        combobox.set_active_iter (first_iter)
+        self.setNPButtons ()
+
+    def on_cmbNPDownloadableDriverFoundPrinters_changed(self, widget):
+        self.setNPButtons ()
 
     # PPD from foomatic
 

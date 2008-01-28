@@ -1,3 +1,20 @@
+2008-01-28  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py: Import the openprinting module.
+	(NewPrinterGUI.__init__): Additional set-up for OpenPrinting
+	widgets.
+	(NewPrinterGUI.setNPButtons): If downloading a driver, check that
+	a model is selected before proceeding.
+	(NewPrinterGUI.on_btnNPDownloadableDriverSearch_clicked): New
+	method.
+	(NewPrinterGUI.openprinting_printers_found): New method.
+	(NewPrinterGUI.on_cmbNPDownloadableDriverFoundPrinters_changed):
+	New method.
+
+	* openprinting.py (OpenPrinting.searchPrinters.parse_result):
+	Don't call the callback twice on error; instead display a
+	useful traceback.
+
 2008-01-25  Tim Waugh  <twaugh@redhat.com>
 
 	* openprinting.py (OpenPrinting): Fixed test app threading.
