@@ -31,6 +31,8 @@ class QueryThread (threading.Thread):
         self.callback = callback
         self.user_data = user_data
 
+        self.setDaemon (True)
+
     def run (self):
         # CGI script to be executed
         query_command = "/query.cgi"
