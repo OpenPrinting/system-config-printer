@@ -8,6 +8,12 @@
 	(NewPrinterGUI.on_cmbNPDownloadableDriverFoundPrinters_changed):
 	Start a query for drivers.
 	(NewPrinterGUI.openprinting_drivers_found): New method.
+	(NewPrinterGUI.nextNPTab): Display wait window if driver query is
+	still in progress.
+	(NewPrinterGUI.on_rbtnNPFoomatic_toggled): Properly cancel out the
+	search operation.
+	(NewPrinterGUI.openprinting_drivers_found): Populate downloadable
+	drivers list and hide wait window.
 
 	* openprinting.py (QueryThread.__init__): Set query thread as
 	daemon to prevent open queries from keeping the application

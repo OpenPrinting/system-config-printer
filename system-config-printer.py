@@ -2709,6 +2709,7 @@ class NewPrinterGUI(GtkGUI):
             elif self.rbtnNPPPD.get_active():
                 order = [1, 2, 6, 0]
             else:
+                # Downloadable driver
                 order = [1, 2, 7, 6, 0]
         elif self.dialog_mode == "device":
             order = [1]
@@ -2718,11 +2719,8 @@ class NewPrinterGUI(GtkGUI):
             elif self.rbtnNPPPD.get_active():
                 order = [2, 5, 6]
             else:
+                # Downloadable driver
                 order = [2, 7, 5, 6]
-
-        if page_nr == 7: # Downloadable driver has been selected
-            # Download and install driver from OpenPrinting here XXX
-            pass
 
         next_page_nr = order[order.index(page_nr)+step]
 
@@ -2748,6 +2746,16 @@ class NewPrinterGUI(GtkGUI):
         # Step over empty Installable Options tab
         if next_page_nr == 6 and not self.installable_options and step<0:
             next_page_nr = order[order.index(next_page_nr)-1]
+
+        if next_page_nr == 7: # About to show downloadable drivers
+            if self.openprinting_query_handle != None:
+                # Still searching for drivers.
+                self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                         _('Searching') + '</span>\n\n' +
+                                         _('Searching for drivers'))
+                self.WaitWindow.set_transient_for (self.NewPrinterWindow)
+                self.WaitWindow.show ()
+                self.busy (self.NewPrinterWindow)
 
         self.ntbkNewPrinter.set_current_page(next_page_nr)
 
@@ -3690,9 +3698,13 @@ class NewPrinterGUI(GtkGUI):
         self.filechooserPPD.set_sensitive(rbtn2)
 
         if not rbtn3 and self.openprinting_query_handle:
+            # Need to cancel a search in progress.
             self.openprinting.cancelOperation (self.openprinting_query_handle)
             self.openprinting_query_handle = None
             self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
+            # Clear printer list.
+            model = gtk.ListStore (str, str)
+            self.cmbNPDownloadableDriverFoundPrinters.set_model (model)
 
         for widget in [self.entNPDownloadableDriverSearch,
                        self.cmbNPDownloadableDriverFoundPrinters]:
@@ -3775,9 +3787,33 @@ class NewPrinterGUI(GtkGUI):
                                            self.openprinting_drivers_found)
 
     def openprinting_drivers_found (self, status, user_data, drivers):
+        self.openprinting_query_handle = None
         gtk.gdk.threads_enter ()
         import pprint
         pprint.pprint (drivers)
+        model = gtk.ListStore (str,                     # driver name
+                               gobject.TYPE_PYOBJECT)   # data
+        recommended_iter = None
+        first_iter = None
+        for driver in drivers.values ():
+            iter = model.append (None)
+            if first_iter == None:
+                first_iter = iter
+
+            model.set_value (iter, 0, driver['name'])
+            model.set_value (iter, 1, driver)
+
+            if driver['recommended']:
+                recommended_iter = iter
+
+        if recommended_iter == None:
+            recommended_iter = first_iter
+
+        treeview = self.tvNPDownloadableDrivers
+        treeview.set_model (model)
+        treeview.get_selection ().select_iter (recommended_iter)
+        self.WaitWindow.hide ()
+        self.ready (self.NewPrinterWindow)
         gtk.gdk.threads_leave ()
 
     # PPD from foomatic
