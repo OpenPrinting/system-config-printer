@@ -2767,7 +2767,8 @@ class NewPrinterGUI(GtkGUI):
 
                 self.ready (self.NewPrinterWindow)
                 self.WaitWindow.hide ()
-                self.fillDownloadableDrivers()
+
+            self.fillDownloadableDrivers()
 
         self.ntbkNewPrinter.set_current_page(next_page_nr)
 
@@ -3781,6 +3782,11 @@ class NewPrinterGUI(GtkGUI):
     def on_cmbNPDownloadableDriverFoundPrinters_changed(self, widget):
         self.setNPButtons ()
 
+        if self.openprinting_query_handle != None:
+            self.openprinting.cancelOperation (self.openprinting_query_handle)
+            self.openprinting_query_handle = None
+            self.drivers_lock_release()
+
         model = widget.get_model ()
         iter = widget.get_active_iter ()
         if iter:
@@ -3803,6 +3809,9 @@ class NewPrinterGUI(GtkGUI):
         self.openprinting_query_handle = None
         self.downloadable_drivers = drivers
         self.drivers_lock.release()
+        gtk.gdk.threads_enter ()
+        debugprint ("Drivers query completed: %s" % drivers.keys ())
+        gtk.gdk.threads_leave ()
 
     def fillDownloadableDrivers(self):
         drivers = self.downloadable_drivers
