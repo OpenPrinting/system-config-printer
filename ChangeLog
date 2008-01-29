@@ -3,6 +3,11 @@
 	* system-config-printer.py
 	(NewPrinterGUI.on_rbtnNPFoomatic_toggled): Better logic for search
 	widget sensitivity.
+	(NewPrinterGUI.openprinting_printers_found): Use
+	threads_enter/threads_leave.
+	(NewPrinterGUI.on_cmbNPDownloadableDriverFoundPrinters_changed):
+	Start a query for drivers.
+	(NewPrinterGUI.openprinting_drivers_found): New method.
 
 	* openprinting.py (QueryThread.__init__): Set query thread as
 	daemon to prevent open queries from keeping the application

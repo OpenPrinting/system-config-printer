@@ -3718,12 +3718,14 @@ class NewPrinterGUI(GtkGUI):
         self.openprinting_query_handle = None
         button = self.btnNPDownloadableDriverSearch
         label = self.btnNPDownloadableDriverSearch_label
+        gtk.gdk.threads_enter ()
         label.set_text (_("Search"))
         button.set_sensitive (True)
         if status != 0:
             # Should report error.
             print printers
             print traceback.extract_tb(printers[2], limit=None)
+            gtk.gdk.threads_leave ()
             return
 
         model = gtk.ListStore (str, str)
@@ -3750,9 +3752,33 @@ class NewPrinterGUI(GtkGUI):
         combobox.set_model (model)
         combobox.set_active (0)
         self.setNPButtons ()
+        gtk.gdk.threads_leave ()
 
     def on_cmbNPDownloadableDriverFoundPrinters_changed(self, widget):
         self.setNPButtons ()
+
+        model = widget.get_model ()
+        iter = widget.get_active_iter ()
+        if iter:
+            id = model.get_value (iter, 1)
+        else:
+            id = None
+
+        if id == None:
+            return
+
+        # A model has been selected, so start the query to find out
+        # which drivers are available.
+        debugprint ("Query drivers for %s" % id)
+        self.openprinting_query_handle = \
+            self.openprinting.listDrivers (id,
+                                           self.openprinting_drivers_found)
+
+    def openprinting_drivers_found (self, status, user_data, drivers):
+        gtk.gdk.threads_enter ()
+        import pprint
+        pprint.pprint (drivers)
+        gtk.gdk.threads_leave ()
 
     # PPD from foomatic
 
