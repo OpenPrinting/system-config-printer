@@ -2306,7 +2306,7 @@ class NewPrinterGUI(GtkGUI):
 
         # Set up OpenPrinting widgets.
         self.openprinting = openprinting.OpenPrinting ()
-        self.openprinting_search_handle = None
+        self.openprinting_query_handle = None
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         cell = gtk.CellRendererText()
         combobox.pack_start (cell, True)
@@ -2586,8 +2586,9 @@ class NewPrinterGUI(GtkGUI):
 
     def on_NPCancel(self, widget, event=None):
         self.NewPrinterWindow.hide()
-        if self.openprinting_search_handle != None:
-            self.openprinting.cancelOperation (self.openprinting_search_handle)
+        if self.openprinting_query_handle != None:
+            self.openprinting.cancelOperation (self.openprinting_query_handle)
+            self.openprinting_query_handle = None
         return True
 
     def on_btnNPBack_clicked(self, widget):
@@ -3687,10 +3688,18 @@ class NewPrinterGUI(GtkGUI):
         rbtn3 = self.rbtnNPDownloadableDriverSearch.get_active()
         self.tvNPMakes.set_sensitive(rbtn1)
         self.filechooserPPD.set_sensitive(rbtn2)
+
+        if not rbtn3 and self.openprinting_query_handle:
+            self.openprinting.cancelOperation (self.openprinting_query_handle)
+            self.openprinting_query_handle = None
+            self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
+
         for widget in [self.entNPDownloadableDriverSearch,
-                       self.btnNPDownloadableDriverSearch,
                        self.cmbNPDownloadableDriverFoundPrinters]:
             widget.set_sensitive(rbtn3)
+        self.btnNPDownloadableDriverSearch.\
+            set_sensitive (rbtn3 and (self.openprinting_query_handle == None))
+
         self.setNPButtons()
 
     def on_filechooserPPD_selection_changed(self, widget):
@@ -3701,12 +3710,12 @@ class NewPrinterGUI(GtkGUI):
         label = self.btnNPDownloadableDriverSearch_label
         label.set_text (_("Searching"))
         searchterm = self.entNPDownloadableDriverSearch.get_text ()
-        self.openprinting_search_handle = \
+        self.openprinting_query_handle = \
             self.openprinting.searchPrinters (searchterm,
                                               self.openprinting_printers_found)
 
     def openprinting_printers_found (self, status, user_data, printers):
-        self.openprinting_search_handle = None
+        self.openprinting_query_handle = None
         button = self.btnNPDownloadableDriverSearch
         label = self.btnNPDownloadableDriverSearch_label
         label.set_text (_("Search"))
