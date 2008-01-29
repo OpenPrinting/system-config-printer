@@ -18,6 +18,11 @@
 	method.
 	(NewPrinterGUI.on_cmbNPDownloadableDriverFoundPrinters_changed):
 	Cancel any driver query in progress.
+	(NewPrinterGUI.fillDownloadableDrivers): Avoid traceback when
+	there are no drivers returned.
+	(NewPrinterGUI.on_btnNPDownloadableDriverSearch_clicked): Cancel
+	out the driver search operation if a new printer search is
+	performed.
 
 	* openprinting.py (QueryThread.__init__): Set query thread as
 	daemon to prevent open queries from keeping the application

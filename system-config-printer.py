@@ -2285,6 +2285,7 @@ class NewPrinterGUI(GtkGUI):
                         "tvNPDownloadableDrivers",
                         "ntbkNPDownloadableDriverProperties",
                         "tvNPDownloadableDriverLicense",
+                        "rbtnNPDownloadLicenseYes",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo")
@@ -2303,7 +2304,7 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         # Disable downloadable driver support until it's working.
-        self.rbtnNPDownloadableDriverSearch.set_sensitive(False)
+        #self.rbtnNPDownloadableDriverSearch.set_sensitive(False)
 
         # Set up OpenPrinting widgets.
         self.openprinting = openprinting.OpenPrinting ()
@@ -2848,6 +2849,13 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPApply.show()
             self.btnNPApply.set_sensitive(
                 bool(self.getCurrentClassMembers(self.tvNCMembers)))
+        if nr == 7: # Downloadable drivers
+            if self.ntbkNPDownloadableDriverProperties.get_current_page() == 2:
+                accepted = self.rbtnNPDownloadLicenseYes.get_active ()
+            else:
+                accepted = True
+
+            self.btnNPForward.set_sensitive(accepted)
             
     def on_entNPName_changed(self, widget):
         # restrict
@@ -3731,6 +3739,10 @@ class NewPrinterGUI(GtkGUI):
         self.setNPButtons()
 
     def on_btnNPDownloadableDriverSearch_clicked(self, widget):
+        if self.openprinting_query_handle != None:
+            self.openprinting.cancelOperation (self.openprinting_query_handle)
+            self.openprinting_query_handle = None
+
         widget.set_sensitive (False)
         label = self.btnNPDownloadableDriverSearch_label
         label.set_text (_("Searching"))
@@ -3808,10 +3820,8 @@ class NewPrinterGUI(GtkGUI):
     def openprinting_drivers_found (self, status, user_data, drivers):
         self.openprinting_query_handle = None
         self.downloadable_drivers = drivers
-        self.drivers_lock.release()
-        gtk.gdk.threads_enter ()
         debugprint ("Drivers query completed: %s" % drivers.keys ())
-        gtk.gdk.threads_leave ()
+        self.drivers_lock.release()
 
     def fillDownloadableDrivers(self):
         drivers = self.downloadable_drivers
@@ -3835,7 +3845,11 @@ class NewPrinterGUI(GtkGUI):
 
         treeview = self.tvNPDownloadableDrivers
         treeview.set_model (model)
-        treeview.get_selection ().select_iter (recommended_iter)
+        if recommended_iter != None:
+            treeview.get_selection ().select_iter (recommended_iter)
+
+    def on_rbtnNPDownloadLicense_toggled(self, widget):
+        self.setNPButtons ()
 
     # PPD from foomatic
 
@@ -3947,6 +3961,8 @@ class NewPrinterGUI(GtkGUI):
         driver = model.get_value (iter, 1)
         import pprint
         pprint.pprint (driver)
+        self.ntbkNPDownloadableDriverProperties.set_current_page(2)
+        self.rbtnNPDownloadLicenseYes.set_active (False)
         self.setNPButtons()
 
     def getNPPPD(self):
