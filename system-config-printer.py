@@ -2251,6 +2251,7 @@ class NewPrinterGUI(GtkGUI):
         self.devices_lock = thread.allocate_lock()
         self.smb_lock = thread.allocate_lock()
         self.ipp_lock = thread.allocate_lock()
+        self.drivers_lock = thread.allocate_lock()
 
         self.getWidgets("NewPrinterWindow", "ntbkNewPrinter",
                          "btnNPBack", "btnNPForward", "btnNPApply",
@@ -2748,7 +2749,7 @@ class NewPrinterGUI(GtkGUI):
             next_page_nr = order[order.index(next_page_nr)-1]
 
         if next_page_nr == 7: # About to show downloadable drivers
-            if self.openprinting_query_handle != None:
+            if self.drivers_lock.locked ():
                 # Still searching for drivers.
                 self.lblWait.set_markup ('<span weight="bold" size="larger">' +
                                          _('Searching') + '</span>\n\n' +
@@ -2756,6 +2757,17 @@ class NewPrinterGUI(GtkGUI):
                 self.WaitWindow.set_transient_for (self.NewPrinterWindow)
                 self.WaitWindow.show ()
                 self.busy (self.NewPrinterWindow)
+
+                # Keep the UI refreshed while we wait for the drivers
+                # query to complete.
+                while self.drivers_lock.locked ():
+                    while gtk.events_pending ():
+                        gtk.main_iteration ()
+                    time.sleep (0.1)
+
+                self.ready (self.NewPrinterWindow)
+                self.WaitWindow.hide ()
+                self.fillDownloadableDrivers()
 
         self.ntbkNewPrinter.set_current_page(next_page_nr)
 
@@ -3782,17 +3794,20 @@ class NewPrinterGUI(GtkGUI):
         # A model has been selected, so start the query to find out
         # which drivers are available.
         debugprint ("Query drivers for %s" % id)
+        self.drivers_lock.acquire(0)
         self.openprinting_query_handle = \
             self.openprinting.listDrivers (id,
                                            self.openprinting_drivers_found)
 
     def openprinting_drivers_found (self, status, user_data, drivers):
         self.openprinting_query_handle = None
-        gtk.gdk.threads_enter ()
-        import pprint
-        pprint.pprint (drivers)
+        self.downloadable_drivers = drivers
+        self.drivers_lock.release()
+
+    def fillDownloadableDrivers(self):
+        drivers = self.downloadable_drivers
         model = gtk.ListStore (str,                     # driver name
-                               gobject.TYPE_PYOBJECT)   # data
+                               gobject.TYPE_PYOBJECT)   # driver data
         recommended_iter = None
         first_iter = None
         for driver in drivers.values ():
@@ -3812,9 +3827,6 @@ class NewPrinterGUI(GtkGUI):
         treeview = self.tvNPDownloadableDrivers
         treeview.set_model (model)
         treeview.get_selection ().select_iter (recommended_iter)
-        self.WaitWindow.hide ()
-        self.ready (self.NewPrinterWindow)
-        gtk.gdk.threads_leave ()
 
     # PPD from foomatic
 
@@ -3916,6 +3928,16 @@ class NewPrinterGUI(GtkGUI):
         self.on_tvNPDrivers_cursor_changed(self.tvNPDrivers)
 
     def on_tvNPDrivers_cursor_changed(self, widget):
+        self.setNPButtons()
+
+    def on_tvNPDownloadableDrivers_cursor_changed(self, widget):
+        model, iter = widget.get_selection ().get_selected ()
+        if not iter:
+            path, column = widget.get_cursor()
+            iter = model.get_iter (path)
+        driver = model.get_value (iter, 1)
+        import pprint
+        pprint.pprint (driver)
         self.setNPButtons()
 
     def getNPPPD(self):
