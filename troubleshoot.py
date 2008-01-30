@@ -49,8 +49,13 @@ class Troubleshooter:
         back.set_sensitive (False)
         self.back = back
 
+        close = gtk.Button (stock='gtk-close')
+        close.connect ('clicked', gtk.main_quit)
+        self.close = close
+
         cancel = gtk.Button (stock='gtk-cancel')
         cancel.connect ('clicked', gtk.main_quit)
+        self.cancel = cancel
 
         forward = gtk.Button (stock='gtk-go-forward')
         forward.connect ('clicked', self.on_forward_clicked)
@@ -58,6 +63,7 @@ class Troubleshooter:
 
         box.pack_start (back, False, False, 0)
         box.pack_start (cancel, False, False, 0)
+        box.pack_start (close, False, False, 0)
         box.pack_start (forward, False, False, 0)
         vbox.pack_start (box, False, False, 0)
 
@@ -69,27 +75,22 @@ class Troubleshooter:
 
         main.show_all ()
 
-    def clear_next_page (self):
+    def no_more_questions (self):
         page = self.ntbk.get_current_page ()
         self.questions = self.questions[:page + 1]
-        self.ntbk.remove_page (page + 1)
+        for p in range (self.ntbk.get_n_pages () - 1, page, -1):
+            self.ntbk.remove_page (p)
+        self.set_back_forward_buttons ()
 
-    def set_next_page (self, widget, question):
-        if self.ntbk.get_n_pages () == 0:
-            page = 0
-        else:
-            page = self.ntbk.get_current_page () + 1
-
-        if len (self.questions) <= page:
-            self.questions.append (question)
-        else:
-            self.questions[page] = question
-
+    def new_page (self, widget, question):
+        page = len (self.questions)
+        self.questions.append (question)
         self.ntbk.insert_page (widget, position=page)
         widget.show_all ()
         if page == 0:
             question.connect_signals (self.set_back_forward_buttons)
             self.ntbk.set_current_page (page)
+        self.set_back_forward_buttons ()
         return page
 
     def set_back_forward_buttons (self, *args):
@@ -98,9 +99,13 @@ class Troubleshooter:
         if len (self.questions) == page + 1:
             # Out of questions.
             self.forward.set_sensitive (False)
+            self.close.show ()
+            self.cancel.hide ()
         else:
             self.forward.set_sensitive (self.questions[page].
                                         can_click_forward ())
+            self.close.hide ()
+            self.cancel.show ()
 
     def on_back_clicked (self, widget):
         page = self.ntbk.get_current_page ()
@@ -131,11 +136,6 @@ class Question:
     def can_click_forward (self):
         return True
 
-class NoQuestion(Question):
-    def __init__ (self, troubleshooter):
-        Question.__init__ (self, troubleshooter)
-        troubleshooter.clear_next_page ()
-
 class Welcome(Question):
     def __init__ (self, troubleshooter):
         # Welcome page (page 0)
@@ -159,12 +159,12 @@ class Welcome(Question):
         intro.set_line_wrap (True)
         welcome.pack_start (image, False, False, 0)
         welcome.pack_start (intro, True, True, 0)
-        page = troubleshooter.set_next_page (welcome, self)
+        page = troubleshooter.new_page (welcome, self)
 
 class CheckCUPS(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter)
-        troubleshooter.set_next_page (gtk.Label ("CUPS not running?"), self)
+        troubleshooter.new_page (gtk.Label ("CUPS not running?"), self)
 
 class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
@@ -236,7 +236,7 @@ class ChoosePrinter(Question):
         except cups.IPPError:
             pass
 
-        troubleshooter.set_next_page (page1, self)
+        troubleshooter.new_page (page1, self)
         self.troubleshooter = troubleshooter
 
     def cursor_changed (self, widget, handler):
@@ -247,7 +247,7 @@ class ChoosePrinter(Question):
                 # Printer not listed.
                 CheckCUPS (self.troubleshooter)
             else:
-                NoQuestion (self.troubleshooter)
+                self.troubleshooter.no_more_questions ()
 
         handler (widget)
 
