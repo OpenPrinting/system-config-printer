@@ -72,11 +72,13 @@ class Troubleshooter:
         self.ntbk = ntbk
 
         self.questions = []
+        self.answers = {}
 
         main.show_all ()
 
-    def no_more_questions (self):
-        page = self.ntbk.get_current_page ()
+    def no_more_questions (self, question):
+        page = self.questions.index (question)
+        print "Page %d: No more questions." % page
         self.questions = self.questions[:page + 1]
         for p in range (self.ntbk.get_n_pages () - 1, page, -1):
             self.ntbk.remove_page (p)
@@ -84,6 +86,7 @@ class Troubleshooter:
 
     def new_page (self, widget, question):
         page = len (self.questions)
+        print "Page %d: new: %s" % (page, str (question))
         self.questions.append (question)
         self.ntbk.insert_page (widget, position=page)
         widget.show_all ()
@@ -98,12 +101,14 @@ class Troubleshooter:
         self.back.set_sensitive (page != 0)
         if len (self.questions) == page + 1:
             # Out of questions.
+            print "Out of questions"
             self.forward.set_sensitive (False)
             self.close.show ()
             self.cancel.hide ()
         else:
-            self.forward.set_sensitive (self.questions[page].
-                                        can_click_forward ())
+            can = self.questions[page].can_click_forward ()
+            print "Page %d: can click forward? %s" % (page, can)
+            self.forward.set_sensitive (can)
             self.close.hide ()
             self.cancel.show ()
 
@@ -117,11 +122,16 @@ class Troubleshooter:
 
     def on_forward_clicked (self, widget):
         page = self.ntbk.get_current_page ()
+        answer_dict = self.questions[page].collect_answer ()
+        print answer_dict
         self.questions[page].disconnect_signals ()
+        self.answers.update (answer_dict)
         self.ntbk.next_page ()
         page += 1
         self.questions[page].connect_signals (self.set_back_forward_buttons)
         self.set_back_forward_buttons ()
+
+#############
 
 class Question:
     def __init__ (self, troubleshooter):
@@ -135,6 +145,40 @@ class Question:
 
     def can_click_forward (self):
         return True
+
+    def collect_answer (self):
+        return {}
+
+class Multichoice(Question):
+    def __init__ (self, troubleshooter, question_tag, question_text, choices):
+        Question.__init__ (self, troubleshooter)
+        page = gtk.VBox ()
+        page.set_spacing (12)
+        page.set_border_width (12)
+        question = gtk.Label (question_text)
+        question.set_line_wrap (True)
+        question.set_alignment (0, 0)
+        page.pack_start (question, False, False, 0)
+        choice_vbox = gtk.VBox ()
+        choice_vbox.set_spacing (6)
+        page.pack_start (choice_vbox, False, False, 0)
+        self.question_tag = question_tag
+        self.widgets = []
+        for choice, tag in choices:
+            button = gtk.RadioButton (label=choice)
+            if len (self.widgets) > 0:
+                button.set_group (self.widgets[0][0])
+            choice_vbox.pack_start (button, False, False, 0)
+            self.widgets.append ((button, tag))
+
+        troubleshooter.new_page (page, self)
+
+    def collect_answer (self):
+        for button, answer_tag in self.widgets:
+            if button.get_active ():
+                return { self.question_tag: answer_tag }
+
+#############
 
 class Welcome(Question):
     def __init__ (self, troubleshooter):
@@ -165,6 +209,7 @@ class CheckCUPS(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter)
         troubleshooter.new_page (gtk.Label ("CUPS not running?"), self)
+        troubleshooter.no_more_questions (self)
 
 class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
@@ -252,7 +297,12 @@ class ChoosePrinter(Question):
                 # Printer not listed.
                 CheckCUPS (self.troubleshooter)
             else:
-                self.troubleshooter.no_more_questions ()
+                Multichoice (self.troubleshooter, 'printer_working_at_all',
+                             _("Can you get printer `%s' to print at all?") %
+                             dest.name,
+                             [(_("Yes"), True),
+                              (_("No"), False)])
+                CheckCUPS (self.troubleshooter)
 
         handler (widget)
 
@@ -269,6 +319,15 @@ class ChoosePrinter(Question):
         if iter == None:
             return False
         return True
+
+    def collect_answer (self):
+        model, iter = self.treeview.get_selection ().get_selected ()
+        dest = model.get_value (iter, 3)
+        if dest == None:
+            return { 'cups_queue_listed': False }
+        else:
+            return { 'cups_queue_listed': True,
+                     'cups_dest': dest }
 
 troubleshooter = Troubleshooter ()
 Welcome (troubleshooter)
