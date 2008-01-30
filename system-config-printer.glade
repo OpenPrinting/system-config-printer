@@ -9031,66 +9031,201 @@ DTR/DSR (Hardware)</property>
 			      </child>
 
 			      <child>
-				<widget class="GtkLabel" id="label219">
+				<widget class="GtkVBox" id="vbox67">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">No license information is available for this driver.</property>
-				  <property name="use_underline">False</property>
-				  <property name="use_markup">False</property>
-				  <property name="justify">GTK_JUSTIFY_LEFT</property>
-				  <property name="wrap">True</property>
-				  <property name="selectable">False</property>
-				  <property name="xalign">0</property>
-				  <property name="yalign">0</property>
-				  <property name="xpad">12</property>
-				  <property name="ypad">6</property>
-				  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-				  <property name="width_chars">-1</property>
-				  <property name="single_line_mode">False</property>
-				  <property name="angle">0</property>
-				</widget>
-				<packing>
-				  <property name="tab_expand">False</property>
-				  <property name="tab_fill">True</property>
-				</packing>
-			      </child>
-
-			      <child>
-				<widget class="GtkLabel" id="label216">
-				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">No License</property>
-				  <property name="use_underline">False</property>
-				  <property name="use_markup">False</property>
-				  <property name="justify">GTK_JUSTIFY_LEFT</property>
-				  <property name="wrap">False</property>
-				  <property name="selectable">False</property>
-				  <property name="xalign">0.5</property>
-				  <property name="yalign">0.5</property>
-				  <property name="xpad">0</property>
-				  <property name="ypad">0</property>
-				  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-				  <property name="width_chars">-1</property>
-				  <property name="single_line_mode">False</property>
-				  <property name="angle">0</property>
-				</widget>
-				<packing>
-				  <property name="type">tab</property>
-				</packing>
-			      </child>
-
-			      <child>
-				<widget class="GtkAlignment" id="alignment92">
-				  <property name="visible">True</property>
-				  <property name="xalign">0.5</property>
-				  <property name="yalign">0.5</property>
-				  <property name="xscale">1</property>
-				  <property name="yscale">1</property>
-				  <property name="top_padding">0</property>
-				  <property name="bottom_padding">0</property>
-				  <property name="left_padding">0</property>
-				  <property name="right_padding">0</property>
+				  <property name="homogeneous">False</property>
+				  <property name="spacing">12</property>
 
 				  <child>
-				    <widget class="GtkFrame" id="frame37">
+				    <widget class="GtkTable" id="table20">
+				      <property name="border_width">6</property>
+				      <property name="visible">True</property>
+				      <property name="n_rows">3</property>
+				      <property name="n_columns">2</property>
+				      <property name="homogeneous">False</property>
+				      <property name="row_spacing">6</property>
+				      <property name="column_spacing">6</property>
+
+				      <child>
+					<widget class="GtkLabel" id="lblNPDownloadableDriverSupplier">
+					  <property name="visible">True</property>
+					  <property name="can_focus">True</property>
+					  <property name="label">supplier</property>
+					  <property name="use_underline">False</property>
+					  <property name="use_markup">False</property>
+					  <property name="justify">GTK_JUSTIFY_LEFT</property>
+					  <property name="wrap">True</property>
+					  <property name="selectable">True</property>
+					  <property name="xalign">0</property>
+					  <property name="yalign">0.5</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
+					</widget>
+					<packing>
+					  <property name="left_attach">1</property>
+					  <property name="right_attach">2</property>
+					  <property name="top_attach">0</property>
+					  <property name="bottom_attach">1</property>
+					  <property name="x_options">fill</property>
+					  <property name="y_options"></property>
+					</packing>
+				      </child>
+
+				      <child>
+					<widget class="GtkLabel" id="lblNPDownloadableDriverLicense">
+					  <property name="visible">True</property>
+					  <property name="can_focus">True</property>
+					  <property name="label">license</property>
+					  <property name="use_underline">False</property>
+					  <property name="use_markup">False</property>
+					  <property name="justify">GTK_JUSTIFY_LEFT</property>
+					  <property name="wrap">True</property>
+					  <property name="selectable">True</property>
+					  <property name="xalign">0</property>
+					  <property name="yalign">0.5</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
+					</widget>
+					<packing>
+					  <property name="left_attach">1</property>
+					  <property name="right_attach">2</property>
+					  <property name="top_attach">1</property>
+					  <property name="bottom_attach">2</property>
+					  <property name="x_options">fill</property>
+					  <property name="y_options"></property>
+					</packing>
+				      </child>
+
+				      <child>
+					<widget class="GtkLabel" id="lblNPDownloadableDriverDescription">
+					  <property name="visible">True</property>
+					  <property name="can_focus">True</property>
+					  <property name="label">short description</property>
+					  <property name="use_underline">False</property>
+					  <property name="use_markup">False</property>
+					  <property name="justify">GTK_JUSTIFY_LEFT</property>
+					  <property name="wrap">True</property>
+					  <property name="selectable">True</property>
+					  <property name="xalign">0</property>
+					  <property name="yalign">0.5</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
+					</widget>
+					<packing>
+					  <property name="left_attach">1</property>
+					  <property name="right_attach">2</property>
+					  <property name="top_attach">2</property>
+					  <property name="bottom_attach">3</property>
+					  <property name="x_options">fill</property>
+					  <property name="y_options"></property>
+					</packing>
+				      </child>
+
+				      <child>
+					<widget class="GtkLabel" id="label225">
+					  <property name="visible">True</property>
+					  <property name="label" translatable="yes">Description:</property>
+					  <property name="use_underline">False</property>
+					  <property name="use_markup">False</property>
+					  <property name="justify">GTK_JUSTIFY_LEFT</property>
+					  <property name="wrap">False</property>
+					  <property name="selectable">False</property>
+					  <property name="xalign">0</property>
+					  <property name="yalign">0</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
+					</widget>
+					<packing>
+					  <property name="left_attach">0</property>
+					  <property name="right_attach">1</property>
+					  <property name="top_attach">2</property>
+					  <property name="bottom_attach">3</property>
+					  <property name="x_options">fill</property>
+					  <property name="y_options">fill</property>
+					</packing>
+				      </child>
+
+				      <child>
+					<widget class="GtkLabel" id="label222">
+					  <property name="visible">True</property>
+					  <property name="label" translatable="yes">License:</property>
+					  <property name="use_underline">False</property>
+					  <property name="use_markup">False</property>
+					  <property name="justify">GTK_JUSTIFY_LEFT</property>
+					  <property name="wrap">False</property>
+					  <property name="selectable">False</property>
+					  <property name="xalign">0</property>
+					  <property name="yalign">0</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
+					</widget>
+					<packing>
+					  <property name="left_attach">0</property>
+					  <property name="right_attach">1</property>
+					  <property name="top_attach">1</property>
+					  <property name="bottom_attach">2</property>
+					  <property name="x_options">fill</property>
+					  <property name="y_options">fill</property>
+					</packing>
+				      </child>
+
+				      <child>
+					<widget class="GtkLabel" id="label221">
+					  <property name="visible">True</property>
+					  <property name="label" translatable="yes">Supplier:</property>
+					  <property name="use_underline">False</property>
+					  <property name="use_markup">False</property>
+					  <property name="justify">GTK_JUSTIFY_LEFT</property>
+					  <property name="wrap">False</property>
+					  <property name="selectable">False</property>
+					  <property name="xalign">0</property>
+					  <property name="yalign">0</property>
+					  <property name="xpad">0</property>
+					  <property name="ypad">0</property>
+					  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+					  <property name="width_chars">-1</property>
+					  <property name="single_line_mode">False</property>
+					  <property name="angle">0</property>
+					</widget>
+					<packing>
+					  <property name="left_attach">0</property>
+					  <property name="right_attach">1</property>
+					  <property name="top_attach">0</property>
+					  <property name="bottom_attach">1</property>
+					  <property name="x_options">fill</property>
+					  <property name="y_options">fill</property>
+					</packing>
+				      </child>
+				    </widget>
+				    <packing>
+				      <property name="padding">0</property>
+				      <property name="expand">False</property>
+				      <property name="fill">False</property>
+				    </packing>
+				  </child>
+
+				  <child>
+				    <widget class="GtkFrame" id="frmNPDownloadableDriverLicenseTerms">
 				      <property name="visible">True</property>
 				      <property name="label_xalign">0</property>
 				      <property name="label_yalign">0.5</property>
@@ -9230,6 +9365,11 @@ DTR/DSR (Hardware)</property>
 					</packing>
 				      </child>
 				    </widget>
+				    <packing>
+				      <property name="padding">0</property>
+				      <property name="expand">True</property>
+				      <property name="fill">True</property>
+				    </packing>
 				  </child>
 				</widget>
 				<packing>
@@ -9239,9 +9379,9 @@ DTR/DSR (Hardware)</property>
 			      </child>
 
 			      <child>
-				<widget class="GtkLabel" id="label217">
+				<widget class="GtkLabel" id="label216">
 				  <property name="visible">True</property>
-				  <property name="label" translatable="yes">License</property>
+				  <property name="label" translatable="yes">Driver details</property>
 				  <property name="use_underline">False</property>
 				  <property name="use_markup">False</property>
 				  <property name="justify">GTK_JUSTIFY_LEFT</property>

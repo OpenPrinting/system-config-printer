@@ -2284,8 +2284,13 @@ class NewPrinterGUI(GtkGUI):
                         "scrNPInstallableOptions", "vbNPInstallOptions",
                         "tvNPDownloadableDrivers",
                         "ntbkNPDownloadableDriverProperties",
+                        "lblNPDownloadableDriverSupplier",
+                        "lblNPDownloadableDriverLicense",
+                        "lblNPDownloadableDriverDescription",
+                        "frmNPDownloadableDriverLicenseTerms",
                         "tvNPDownloadableDriverLicense",
                         "rbtnNPDownloadLicenseYes",
+                        "rbtnNPDownloadLicenseNo",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo")
@@ -2850,7 +2855,7 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPApply.set_sensitive(
                 bool(self.getCurrentClassMembers(self.tvNCMembers)))
         if nr == 7: # Downloadable drivers
-            if self.ntbkNPDownloadableDriverProperties.get_current_page() == 2:
+            if self.ntbkNPDownloadableDriverProperties.get_current_page() == 1:
                 accepted = self.rbtnNPDownloadLicenseYes.get_active ()
             else:
                 accepted = True
@@ -3818,6 +3823,12 @@ class NewPrinterGUI(GtkGUI):
                                            self.openprinting_drivers_found)
 
     def openprinting_drivers_found (self, status, user_data, drivers):
+        if status != 0:
+            # Should report error.
+            print drivers
+            print traceback.extract_tb(drivers[2], limit=None)
+            return
+
         self.openprinting_query_handle = None
         self.downloadable_drivers = drivers
         debugprint ("Drivers query completed: %s" % drivers.keys ())
@@ -3961,8 +3972,22 @@ class NewPrinterGUI(GtkGUI):
         driver = model.get_value (iter, 1)
         import pprint
         pprint.pprint (driver)
-        self.ntbkNPDownloadableDriverProperties.set_current_page(2)
-        self.rbtnNPDownloadLicenseYes.set_active (False)
+        self.ntbkNPDownloadableDriverProperties.set_current_page(1)
+        supplier = driver.get('supplier', _("OpenPrinting"))
+        self.lblNPDownloadableDriverSupplier.set_text (supplier)
+        license = driver.get('license', _("Distributable"))
+        self.lblNPDownloadableDriverLicense.set_text (driver['license'])
+        description = driver.get('shortdescription', _("None"))
+        self.lblNPDownloadableDriverDescription.set_text (description)
+        if driver['freesoftware']:
+            self.rbtnNPDownloadLicenseYes.set_active (True)
+            self.frmNPDownloadableDriverLicenseTerms.hide ()
+        else:
+            self.rbtnNPDownloadLicenseNo.set_active (True)
+            self.frmNPDownloadableDriverLicenseTerms.show ()
+            terms = driver.get('licenseterms', '?')
+            self.tvNPDownloadableDriverLicense.get_buffer ().set_text (terms)
+
         self.setNPButtons()
 
     def getNPPPD(self):

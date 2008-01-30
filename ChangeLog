@@ -1,5 +1,11 @@
 2008-01-30  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py
+	(NewPrinterGUI.openprinting_drivers_found): Display traceback for
+	debugging.
+	(NewPrinterGUI.on_tvNPDownloadableDrivers_cursor_changed): Fill in
+	driver properties.
+
 	* openprinting.py (OpenPrinting.listDrivers.parse_result): File's
 	url attribute was missing.
 	(QueryThread.run): Print query URL for debugging.
