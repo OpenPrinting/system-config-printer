@@ -3096,7 +3096,10 @@ class NewPrinterGUI(GtkGUI):
                 # Remove default port to more easily find duplicate URIs
                 device.uri = device.uri.replace (":9100", "")
             try:
-                if device.type in ("socket", "lpd", "ipp", "bluetooth"):
+                ## XXX This needs to be moved to *after* the device is
+                # selected.  Looping through all the network printers like
+                # this is far too slow.
+                if False and device.type in ("socket", "lpd", "ipp", "bluetooth"):
                     host = self.getNetworkPrinterMakeModel(device)
                     faxuri = None
                     if host:
