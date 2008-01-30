@@ -189,10 +189,19 @@ class OpenPrinting:
                 #   { 'name': name,
                 #     'url': url,
                 #     'supplier': supplier,
-                #     'license': short license string e.g. GPLv2
-                #     'freesoftware': Boolean
+                #     'license': short license string e.g. GPLv2,
+                #     'licensetext': license text (HTML),
+                #     'freesoftware': Boolean,
+                #     'patents': Boolean,
                 #     'shortdescription': short description,
-                #     'recommended': Boolean
+                #     'recommended': Boolean,
+                #     'functionality':
+                #       { 'text': integer percentage,
+                #         'lineart': integer percentage,
+                #         'graphics': integer percentage,
+                #         'photo': integer percentage,
+                #         'speed': integer percentage,
+                #       }
                 #     'packages' (optional):
                 #       { arch:
                 #         { file:
@@ -216,16 +225,28 @@ class OpenPrinting:
 
                     dict = {}
                     for attribute in ['name', 'url', 'supplier', 'license',
-                                      'shortdescription' ]:
+                                      'licensetext', 'shortdescription' ]:
                         element = driver.find (attribute)
                         if element != None:
                             dict[attribute] = element.text
 
-                    for boolean in ['freesoftware', 'recommended']:
+                    for boolean in ['freesoftware', 'recommended',
+                                    'patents']:
                         dict[boolean] = driver.find (boolean) != None
 
                     if not dict.has_key ('name') or not dict.has_key ('url'):
                         continue
+
+                    container = driver.find ('functionality')
+                    if container != None:
+                        functionality = {}
+                        for attribute in ['text', 'lineart', 'graphics',
+                                          'photo', 'speed']:
+                            element = container.find (attribute)
+                            if element != None:
+                                functionality[attribute] = element.text
+                        if functionality:
+                            dict[container.tag] = functionality
 
                     packages = {}
                     container = driver.find ('packages')
