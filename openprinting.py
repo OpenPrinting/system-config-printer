@@ -23,6 +23,15 @@ import urllib, httplib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 
+def normalize_space (text):
+    ws = ' \n'
+    result = text.strip (ws)
+    i = result.find ('  ')
+    while i != -1:
+        result = result.replace ('  ', ' ')
+        i = result.find ('  ')
+    return result
+
 class QueryThread (threading.Thread):
     def __init__ (self, parent, parameters, callback, user_data=None):
         threading.Thread.__init__ (self)
@@ -228,7 +237,7 @@ class OpenPrinting:
                                       'licensetext', 'shortdescription' ]:
                         element = driver.find (attribute)
                         if element != None:
-                            dict[attribute] = element.text
+                            dict[attribute] = normalize_space (element.text)
 
                     for boolean in ['freesoftware', 'recommended',
                                     'patents']:
