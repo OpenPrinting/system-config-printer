@@ -24,8 +24,8 @@ import os, sys
 from xml.etree.ElementTree import XML
 
 def normalize_space (text):
-    ws = ' \n'
-    result = text.strip (ws)
+    result = text.strip ()
+    result = result.replace ('\n', ' ')
     i = result.find ('  ')
     while i != -1:
         result = result.replace ('  ', ' ')
@@ -234,10 +234,14 @@ class OpenPrinting:
 
                     dict = {}
                     for attribute in ['name', 'url', 'supplier', 'license',
-                                      'licensetext', 'shortdescription' ]:
+                                      'shortdescription' ]:
                         element = driver.find (attribute)
                         if element != None:
                             dict[attribute] = normalize_space (element.text)
+
+                    element = driver.find ('licensetext')
+                    if element != None:
+                        dict['licensetext'] = element.text
 
                     for boolean in ['freesoftware', 'recommended',
                                     'patents']:
