@@ -197,7 +197,6 @@ class ChoosePrinter(Question):
         tv.append_column (name)
         tv.append_column (location)
         tv.append_column (info)
-        model.set_sort_column_id (0, gtk.SORT_ASCENDING)
         tv.set_rules_hint (True)
         sw = gtk.ScrolledWindow ()
         sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
@@ -209,6 +208,7 @@ class ChoosePrinter(Question):
             c = cups.Connection ()
             dests = c.getDests ()
             printers = None
+            dests_list = []
             for (name, instance), dest in dests.iteritems ():
                 if instance != None:
                     queue = "%s/%s" % (name, instance)
@@ -226,11 +226,16 @@ class ChoosePrinter(Question):
                     info = printer.get('printer-info', _("Unknown"))
                     location = printer.get('printer-location', _("Unknown"))
 
-                iter = model.append (None)
-                model.set (iter, 0, queue, 1, location, 2, info, 3, dest)
+                dests_list.append ((queue, location, info, dest))
 
             iter = model.append (None)
             model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
+
+            dests_list.sort (lambda x, y: cmp (x[0], y[0]))
+            for queue, location, info, dest in dests_list:
+                iter = model.append (None)
+                model.set (iter, 0, queue, 1, location, 2, info, 3, dest)
+
         except cups.HTTPError:
             pass
         except cups.IPPError:
