@@ -43,6 +43,7 @@ class QueryThread (threading.Thread):
                   (urllib.urlencode (self.parameters),
                    self.parent.language[0],
                    self.parent.language[0]))
+        print "http://%s%s?%s" % (self.parent.base_url, query_command, params)
         # Send request
         result = None
         status = 1
@@ -194,11 +195,13 @@ class OpenPrinting:
                 #     'recommended': Boolean
                 #     'packages' (optional):
                 #       { arch:
-                #         { 'file': filename,
-                #           'url': url,
-                #           'realversion': upstream version string,
-                #           'version': packaged version string,
-                #           'release': package release string }
+                #         { file:
+                #           { 'url': url,
+                #             'realversion': upstream version string,
+                #             'version': packaged version string,
+                #             'release': package release string
+                #           }
+                #         }
                 #       }
                 #     'ppds' (optional):
                 #       URL string list
@@ -228,19 +231,17 @@ class OpenPrinting:
                     container = driver.find ('packages')
                     if container != None:
                         for arch in container.getchildren ():
-                            p = arch.find ('package')
-                            if p == None:
-                                continue
+                            rpms = {}
+                            for package in arch.findall ('package'):
+                                rpm = {}
+                                for attribute in ['realversion','version',
+                                                  'release', 'url']:
+                                    element = package.find (attribute)
+                                    if element != None:
+                                        rpm[attribute] = element.text
 
-                            package = { 'file': p.attrib.get('file','') }
-
-                            for attribute in ['realversion','version',
-                                              'release']:
-                                element = p.find (attribute)
-                                if element != None:
-                                    package[attribute] = element.text
-
-                            packages[arch.tag] = package
+                                rpms[package.attrib['file']] = rpm
+                            packages[arch.tag] = rpms
 
                     if packages:
                         dict['packages'] = packages
