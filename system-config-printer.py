@@ -2274,7 +2274,9 @@ class NewPrinterGUI(GtkGUI):
                            "tvNCMembers", "tvNCNotMembers",
                           "rbtnNPPPD", "tvNPMakes", 
                           "rbtnNPFoomatic", "filechooserPPD",
+                        "hsNPDownloadableDriver",
                           "rbtnNPDownloadableDriverSearch",
+                        "alignNPDownloadableDriver",
                           "entNPDownloadableDriverSearch",
                         "btnNPDownloadableDriverSearch",
                         "cmbNPDownloadableDriverFoundPrinters",
@@ -2308,8 +2310,12 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPType.set_show_tabs(False)
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
-        # Disable downloadable driver support until it's working.
-        self.rbtnNPDownloadableDriverSearch.set_sensitive(False)
+        # Optionally disable downloadable driver support.
+        if not config.DOWNLOADABLE_DRIVER_SUPPORT:
+            self.rbtnNPDownloadableDriverSearch.set_sensitive(False)
+            self.hsNPDownloadableDriver.hide ()
+            self.rbtnNPDownloadableDriverSearch.hide ()
+            self.alignNPDownloadableDriver.hide ()
 
         # Set up OpenPrinting widgets.
         self.openprinting = openprinting.OpenPrinting ()
