@@ -3982,7 +3982,7 @@ class NewPrinterGUI(GtkGUI):
         self.lblNPDownloadableDriverLicense.set_text (driver['license'])
         description = driver.get('shortdescription', _("None"))
         self.lblNPDownloadableDriverDescription.set_text (description)
-        if driver['freesoftware']:
+        if driver['freesoftware'] and not driver['patents']:
             self.rbtnNPDownloadLicenseYes.set_active (True)
             self.frmNPDownloadableDriverLicenseTerms.hide ()
         else:
