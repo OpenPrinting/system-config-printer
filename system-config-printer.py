@@ -3838,6 +3838,13 @@ class NewPrinterGUI(GtkGUI):
         self.drivers_lock.release()
 
     def fillDownloadableDrivers(self):
+        # Clear out the properties.
+        self.lblNPDownloadableDriverSupplier.set_text ('')
+        self.lblNPDownloadableDriverLicense.set_text ('')
+        self.lblNPDownloadableDriverDescription.set_text ('')
+        self.rbtnNPDownloadLicenseNo.set_active (True)
+        self.frmNPDownloadableDriverLicenseTerms.hide ()
+
         drivers = self.downloadable_drivers
         model = gtk.ListStore (str,                     # driver name
                                gobject.TYPE_PYOBJECT)   # driver data
@@ -3979,7 +3986,7 @@ class NewPrinterGUI(GtkGUI):
         supplier = driver.get('supplier', _("OpenPrinting"))
         self.lblNPDownloadableDriverSupplier.set_text (supplier)
         license = driver.get('license', _("Distributable"))
-        self.lblNPDownloadableDriverLicense.set_text (driver['license'])
+        self.lblNPDownloadableDriverLicense.set_text (license)
         description = driver.get('shortdescription', _("None"))
         self.lblNPDownloadableDriverDescription.set_text (description)
         if driver['freesoftware'] and not driver['patents']:
@@ -4003,6 +4010,13 @@ class NewPrinterGUI(GtkGUI):
                 ppd = cups.PPD(self.filechooserPPD.get_filename())
             else:
                 # PPD of the driver downloaded from OpenPrinting XXX
+                treeview = self.tvNPDownloadableDrivers
+                model, iter = treeview.get_selection ().get_selected ()
+                driver = model.get_value (iter, 1)
+                if driver.has_key ('ppds'):
+                    # Only need to download a PPD.
+                    file_to_download = driver
+
                 ppd = "XXX"
 
         except RuntimeError, e:
