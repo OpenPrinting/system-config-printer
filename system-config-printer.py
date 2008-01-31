@@ -3988,7 +3988,7 @@ class NewPrinterGUI(GtkGUI):
         else:
             self.rbtnNPDownloadLicenseNo.set_active (True)
             self.frmNPDownloadableDriverLicenseTerms.show ()
-            terms = driver.get('licenseterms', '?')
+            terms = driver.get('licensetext', _("Not specified."))
             self.tvNPDownloadableDriverLicense.get_buffer ().set_text (terms)
 
         self.setNPButtons()
