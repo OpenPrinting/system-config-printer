@@ -24,6 +24,12 @@ import gobject
 import cups
 from gettext import gettext as _
 
+import pprint
+
+TEXT_start_print_admin_tool = _("To start this tool, select "
+                                "System->Administration->Printing "
+                                "from the main menu.")
+
 class Troubleshooter:
     def __init__ (self):
         main = gtk.Window ()
@@ -122,7 +128,7 @@ class Troubleshooter:
         step = 1
         question = self.questions[page - step]
         while not question.display ():
-            # Skip this one.
+            # Skip this one.            
             print "Page %d: skip" % (page - step)
             step += 1
             question = self.questions[page - step]
@@ -142,15 +148,18 @@ class Troubleshooter:
     def on_forward_clicked (self, widget):
         page = self.ntbk.get_current_page ()
         answer_dict = self.questions[page].collect_answer ()
-        print answer_dict
-        self.questions[page].disconnect_signals ()
         self.question_answers[page] = answer_dict
         self.answers.update (answer_dict)
+
+        self.questions[page].disconnect_signals ()
 
         step = 1
         question = self.questions[page + step]
         while not question.display ():
-            # Skip this one.
+            # Skip this one, but collect its answers.
+            answer_dict = question.collect_answer ()
+            self.question_answers[page + step] = answer_dict
+            self.answers.update (answer_dict)
             print "Page %d: skip" % (page + step)
             step += 1
             question = self.questions[page + step]
@@ -159,6 +168,15 @@ class Troubleshooter:
         page += step
         question.connect_signals (self.set_back_forward_buttons)
         self.set_back_forward_buttons ()
+
+        self._dump_answers ()
+
+    def _dump_answers (self):
+        page = self.ntbk.get_current_page ()
+        print "***"
+        for i in range (page):
+            print "Page %d:" % i
+            pprint.pprint (self.question_answers[i])
 
 #############
 
@@ -243,19 +261,168 @@ class CheckCUPS(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter)
         troubleshooter.new_page (gtk.Label ("CUPS not running?"), self)
-        troubleshooter.no_more_questions (self)
+
+class TestPagePrinted(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter)
+        page = gtk.VBox ()
+        page.set_spacing (12)
+        page.set_border_width (12)
+
+        hbox = gtk.HBox ()
+        hbox.set_spacing (12)
+        self.button = gtk.Button (_("Print Test Page"))
+        hbox.pack_start (self.button, False, False, 0)
+
+        label = gtk.Label (_("Click the button to print a test page."))
+        label.set_line_wrap (True)
+        label.set_alignment (0, 0.5)
+        hbox.pack_start (label, False, False, 0)
+
+        page.pack_start (hbox, False, False, 0)
+
+        label = gtk.Label (_("Did the test page print?"))
+        label.set_line_wrap (True)
+        label.set_alignment (0, 0)
+        page.pack_start (label, False, False, 0)
+
+        vbox = gtk.VBox ()
+        vbox.set_spacing (6)
+        self.yes = gtk.RadioButton (label=_("Yes"))
+        no = gtk.RadioButton (label=_("No"))
+        no.set_group (self.yes)
+        vbox.pack_start (self.yes, False, False, 0)
+        vbox.pack_start (no, False, False, 0)
+        page.pack_start (vbox, False, False, 0)
+        self.answers = {}
+        troubleshooter.new_page (page, self)
+
+    def clicked (self, widget, handler):
+        print "Print test page!"
+        self.answers['test_page_attempted'] = True
+
+    def connect_signals (self, handler):
+        self.signal_id = self.button.connect ("clicked",
+                                              lambda x: self.
+                                              clicked (x, handler))
+
+    def disconnect_signals (self):
+        self.button.disconnect (self.signal_id)
+
+    def collect_answer (self):
+        success = self.yes.get_active ()
+        self.answers['test_page_successful'] = success
+        return self.answers
+
+class QueueRejectingJobs(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter)
+        self.label = gtk.Label ()
+        solution = gtk.VBox ()
+        self.label.set_line_wrap (True)
+        solution.pack_start (self.label, False, False, 0)
+        solution.set_border_width (12)
+        troubleshooter.new_page (solution, self)
+
+    def display (self):
+        troubleshooter = self.troubleshooter
+        if troubleshooter.answers['is_cups_class']:
+            queue = troubleshooter.answers['cups_class_dict']
+        else:
+            queue = troubleshooter.answers['cups_printer_dict']
+
+        rejecting = queue['printer-type'] & cups.CUPS_PRINTER_REJECTING
+        if not rejecting:
+            return False
+
+        state_message = queue.get('printer-state-message', '')
+
+        text = (_("The queue `%s' is rejecting jobs.") %
+                troubleshooter.answers['cups_queue'])
+
+        if state_message:
+            text += _(" The reason given is: `%s'.") % state_message
+
+        text += "\n\n"
+        text += _("To make the queue accept jobs, select the `Accepting Jobs' "
+                  "checkbox in the `Policies' tab for the printer in the "
+                  "printer administration tool.") + ' ' + \
+                  TEXT_start_print_admin_tool
+
+        self.label.set_text (text)
+        return True
+
+    def can_click_forward (self):
+        return False
+
+class QueueNotEnabled(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter)
+        self.label = gtk.Label ()
+        solution = gtk.VBox ()
+        self.label.set_line_wrap (True)
+        solution.pack_start (self.label, False, False, 0)
+        solution.set_border_width (12)
+        troubleshooter.new_page (solution, self)
+
+    def display (self):
+        troubleshooter = self.troubleshooter
+        if troubleshooter.answers['is_cups_class']:
+            queue = troubleshooter.answers['cups_class_dict']
+        else:
+            queue = troubleshooter.answers['cups_printer_dict']
+
+        enabled = queue['printer-state'] != cups.IPP_PRINTER_STOPPED
+        if enabled:
+            return False
+
+        text = _("The queue `%s' is not enabled.  To enable it, "
+                 "select the `Enabled' checkbox in the `Policies' "
+                 "tab for the printer in the printer administration tool.") % \
+                 troubleshooter.answers['cups_queue']
+
+        text += ' ' + TEXT_start_print_admin_tool
+
+        self.label.set_text (text)
+        return True
+
+    def can_click_forward (self):
+        return False
 
 class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter)
-        self.troubleshooter = troubleshooter
-        troubleshooter.new_page (gtk.Label ("Queue not enabled."), self)
-        troubleshooter.no_more_questions (self)
+        self.answers = {}
+        troubleshooter.new_page (gtk.Label (), self)
+        QueueNotEnabled (self.troubleshooter)
+        QueueRejectingJobs (self.troubleshooter)
+        TestPagePrinted (self.troubleshooter)
+        CheckCUPS (self.troubleshooter)
 
     def display (self):
         # Check some common problems.
-        CheckCUPS (self.troubleshooter)
+
+        # Find out if this is a printer or a class.
+        name = self.troubleshooter.answers['cups_queue']
+        try:
+            c = cups.Connection ()
+            printers = c.getPrinters ()
+            if printers.has_key (name):
+                self.answers['is_cups_class'] = False
+                queue = printers[name]
+                self.answers['cups_printer_dict'] = queue
+            else:
+                self.answers['is_cups_class'] = True
+                classes = c.getClasses ()
+                queue = classes[name]
+                self.answers['cups_class_dict'] = queue
+        except:
+            pass
+
         return False
+
+    def collect_answer (self):
+        return self.answers
 
 class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
@@ -339,15 +506,11 @@ class ChoosePrinter(Question):
         model, iter = widget.get_selection ().get_selected ()
         if iter != None:
             dest = model.get_value (iter, 3)
+            self.troubleshooter.no_more_questions (self)
             if dest == None:
                 # Printer not listed.
                 CheckCUPS (self.troubleshooter)
             else:
-                Multichoice (self.troubleshooter, 'printer_working_at_all',
-                             _("Can you get printer `%s' to print at all?") %
-                             dest.name,
-                             [(_("Yes"), True),
-                              (_("No"), False)])
                 CheckPrinterSanity (self.troubleshooter)
 
         handler (widget)
@@ -373,7 +536,9 @@ class ChoosePrinter(Question):
             return { 'cups_queue_listed': False }
         else:
             return { 'cups_queue_listed': True,
-                     'cups_dest': dest }
+                     'cups_dest': dest,
+                     'cups_queue': dest.name,
+                     'cups_instance': dest.instance }
 
 troubleshooter = Troubleshooter ()
 Welcome (troubleshooter)
