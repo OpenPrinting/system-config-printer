@@ -127,18 +127,18 @@ class Troubleshooter:
 
         step = 1
         question = self.questions[page - step]
+        self.ntbk.prev_page ()
         while not question.display ():
             # Skip this one.            
             print "Page %d: skip" % (page - step)
             step += 1
             question = self.questions[page - step]
+            self.ntbk.prev_page ()
 
-        self.ntbk.set_current_page (page - step)
         page -= step
 
         answers = {}
         for i in range (page):
-            print i, self.question_answers[i]
             answers.update (self.question_answers[i])
         self.answers = answers
 
@@ -155,6 +155,7 @@ class Troubleshooter:
 
         step = 1
         question = self.questions[page + step]
+        self.ntbk.next_page ()
         while not question.display ():
             # Skip this one, but collect its answers.
             answer_dict = question.collect_answer ()
@@ -163,26 +164,37 @@ class Troubleshooter:
             print "Page %d: skip" % (page + step)
             step += 1
             question = self.questions[page + step]
+            self.ntbk.next_page ()
 
-        self.ntbk.set_current_page (page + step)
         page += step
         question.connect_signals (self.set_back_forward_buttons)
         self.set_back_forward_buttons ()
 
         self._dump_answers ()
 
-    def _dump_answers (self):
+    def answers_as_text (self):
+        text = ""
         page = self.ntbk.get_current_page ()
-        print "***"
+        n = 1
         for i in range (page):
-            print "Page %d:" % i
-            pprint.pprint (self.question_answers[i])
+            answers = self.question_answers[i]
+            if len (answers.keys ()) == 0:
+                continue
+            text += _("Page %d (%s):") % (n, self.questions[i]) + '\n'
+            text += pprint.pformat (answers) + '\n'
+            n += 1
+        return text.rstrip ()
+
+    def _dump_answers (self):
+        print self.answers_as_text ()
 
 #############
 
 class Question:
-    def __init__ (self, troubleshooter):
+    def __init__ (self, troubleshooter, name=None):
         self.troubleshooter = troubleshooter
+        if name:
+            self.__str__ = lambda: name
 
     def display (self):
         """Returns True if this page should be displayed, or False
@@ -202,8 +214,9 @@ class Question:
         return {}
 
 class Multichoice(Question):
-    def __init__ (self, troubleshooter, question_tag, question_text, choices):
-        Question.__init__ (self, troubleshooter)
+    def __init__ (self, troubleshooter, question_tag, question_text, choices,
+                  name=None):
+        Question.__init__ (self, troubleshooter, name)
         page = gtk.VBox ()
         page.set_spacing (12)
         page.set_border_width (12)
@@ -234,8 +247,7 @@ class Multichoice(Question):
 
 class Welcome(Question):
     def __init__ (self, troubleshooter):
-        # Welcome page (page 0)
-        Question.__init__ (self, troubleshooter)
+        Question.__init__ (self, troubleshooter, "Welcome")
         welcome = gtk.HBox ()
         welcome.set_spacing (12)
         welcome.set_border_width (12)
@@ -257,17 +269,92 @@ class Welcome(Question):
         welcome.pack_start (intro, True, True, 0)
         page = troubleshooter.new_page (welcome, self)
 
-class CheckCUPS(Question):
+class Shrug(Question):
     def __init__ (self, troubleshooter):
-        Question.__init__ (self, troubleshooter)
-        troubleshooter.new_page (gtk.Label ("CUPS not running?"), self)
-
-class TestPagePrinted(Question):
-    def __init__ (self, troubleshooter):
-        Question.__init__ (self, troubleshooter)
+        Question.__init__ (self, troubleshooter, "Shrug")
         page = gtk.VBox ()
         page.set_spacing (12)
         page.set_border_width (12)
+        label = gtk.Label ('<span weight="bold" size="larger">' +
+                           _("Sorry!") + '</span>\n\n' +
+                           _("I have not been able to work out what the "
+                             "problem is, but I have collected some useful "
+                             "information to put in a bug report."))
+        label.set_line_wrap (True)
+        label.set_use_markup (True)
+        label.set_alignment (0, 0)
+        page.pack_start (label, False, False, 0)
+
+        sw = gtk.ScrolledWindow ()
+        textview = gtk.TextView ()
+        textview.set_editable (False)
+        sw.add (textview)
+        page.pack_start (sw)
+        self.buffer = textview.get_buffer ()
+        troubleshooter.new_page (page, self)
+
+    def display (self):
+        self.buffer.set_text (self.troubleshooter.answers_as_text ())
+        return True
+
+###
+
+class LocalOrRemote(Multichoice):
+    def __init__ (self, troubleshooter):
+        Multichoice.__init__ (self, troubleshooter, "printer_is_remote",
+                              _("Is the printer connected to this computer "
+                                "or available on the network?"),
+                              [(_("Locally connected printer"), False),
+                               (_("Network printer"), True)],
+                              "Local or remote?")
+
+class PrinterNotListed(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Printer not listed")
+        self.answers = {}
+        page = gtk.VBox ()
+        page.set_border_width (12)
+        page.set_spacing (12)
+        label = gtk.Label ('<span weight="bold" size="larger">' +
+                           _("CUPS Service Stopped") + '</span>\n\n' +
+                           _("The CUPS print spooler does not appear to be "
+                             "running.  To correct this, choose " +
+                             "System->Administration->Services from the main "
+                             "menu and look for the `cups' service."))
+        label.set_alignment (0, 0)
+        label.set_line_wrap (True)
+        label.set_use_markup (True)
+        troubleshooter.new_page (page, self)
+        LocalOrRemote (troubleshooter)
+
+    def display (self):
+        # Find out if CUPS is running.
+        failure = False
+        try:
+            c = cups.Connection ()
+        except:
+            failure = True
+
+        self.answers['cups_connection_failure'] = failure
+        return failure
+
+    def collect_answer (self):
+        return self.answers
+
+###
+
+class PrintTestPage(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Print test page")
+        page = gtk.VBox ()
+        page.set_spacing (12)
+        page.set_border_width (12)
+
+        label = gtk.Label ('<span weight="bold" size="larger">' +
+                           _("Test Page") + '</span>')
+        label.set_alignment (0, 0)
+        label.set_use_markup (True)
+        page.pack_start (label, False, False, 0)
 
         hbox = gtk.HBox ()
         hbox.set_spacing (12)
@@ -314,14 +401,81 @@ class TestPagePrinted(Question):
         self.answers['test_page_successful'] = success
         return self.answers
 
+class PrinterStateReasons(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Printer state reasons")
+        page = gtk.VBox ()
+        page.set_border_width (12)
+        page.set_spacing (12)
+
+        label = gtk.Label ('<span weight="bold" size="larger">' +
+                           _("Status Messages") + '</span>\n\n' +
+                           _("There are status messages associated with "
+                             "this queue."))
+        label.set_line_wrap (False)
+        label.set_alignment (0, 0)
+        label.set_use_markup (True)
+        page.pack_start (label, False, False, 0)
+
+        table = gtk.Table (2, 2)
+        table.set_col_spacings (6)
+        table.set_row_spacings (6)
+
+        label = gtk.Label (_("Printer's state message:"))
+        label.set_alignment (0, 0)
+        table.attach (label, 0, 1, 0, 1, gtk.FILL)
+        self.state_message_label = gtk.Label ()
+        self.state_message_label.set_line_wrap (True)
+        self.state_message_label.set_alignment (0, 0)
+        table.attach (self.state_message_label, 1, 2, 0, 1)
+
+        label = gtk.Label (_("Printer's state reasons:"))
+        label.set_alignment (0, 0)
+        table.attach (label, 0, 1, 1, 2, gtk.FILL)
+        self.state_reasons_label = gtk.Label ()
+        self.state_reasons_label.set_line_wrap (True)
+        self.state_reasons_label.set_alignment (0, 0)
+        table.attach (self.state_reasons_label, 1, 2, 1, 2)
+        page.pack_start (table, False, False, 0)
+
+        troubleshooter.new_page (page, self)
+
+    def display (self):
+        troubleshooter = self.troubleshooter
+        if troubleshooter.answers['is_cups_class']:
+            queue = troubleshooter.answers['cups_class_dict']
+        else:
+            queue = troubleshooter.answers['cups_printer_dict']
+
+        state_message = queue['printer-state-message']
+        self.state_message_label.set_text (state_message)
+
+        state_reasons_list = queue['printer-state-reasons']
+        state_reasons = reduce (lambda x, y: x + "\n" + y,
+                                state_reasons_list)
+        self.state_reasons_label.set_text (state_reasons)
+        if state_message == '' and state_reasons == 'none':
+            return False
+
+        return True
+
 class QueueRejectingJobs(Question):
     def __init__ (self, troubleshooter):
-        Question.__init__ (self, troubleshooter)
-        self.label = gtk.Label ()
+        Question.__init__ (self, troubleshooter, "Queue rejecting jobs?")
         solution = gtk.VBox ()
+        solution.set_border_width (12)
+        solution.set_spacing (12)
+        label = gtk.Label ('<span weight="bold" size="larger">' +
+                           _("Queue Rejecting Jobs") + '</span>')
+        label.set_alignment (0, 0)
+        label.set_use_markup (True)
+        solution.pack_start (label, False, False, 0)
+        self.label = gtk.Label ()
+        self.label.set_alignment (0, 0)
         self.label.set_line_wrap (True)
         solution.pack_start (self.label, False, False, 0)
         solution.set_border_width (12)
+        
         troubleshooter.new_page (solution, self)
 
     def display (self):
@@ -357,10 +511,11 @@ class QueueRejectingJobs(Question):
 
 class QueueNotEnabled(Question):
     def __init__ (self, troubleshooter):
-        Question.__init__ (self, troubleshooter)
+        Question.__init__ (self, troubleshooter, "Queue not enabled?")
         self.label = gtk.Label ()
         solution = gtk.VBox ()
         self.label.set_line_wrap (True)
+        self.label.set_alignment (0, 0)
         solution.pack_start (self.label, False, False, 0)
         solution.set_border_width (12)
         troubleshooter.new_page (solution, self)
@@ -376,14 +531,18 @@ class QueueNotEnabled(Question):
         if enabled:
             return False
 
-        text = _("The queue `%s' is not enabled.  To enable it, "
-                 "select the `Enabled' checkbox in the `Policies' "
-                 "tab for the printer in the printer administration tool.") % \
-                 troubleshooter.answers['cups_queue']
+        text = ('<span weight="bold" size="larger">' +
+                _("Queue Not Enabled") + '</span>\n\n' +
+                _("The queue `%s' is not enabled.") %
+                troubleshooter.answers['cups_queue'] +
+                '\n\n' +
+                _("To enable it, select the `Enabled' checkbox in the "
+                  "`Policies' tab for the printer in the printer "
+                  "administration tool."))
 
         text += ' ' + TEXT_start_print_admin_tool
 
-        self.label.set_text (text)
+        self.label.set_markup (text)
         return True
 
     def can_click_forward (self):
@@ -391,16 +550,16 @@ class QueueNotEnabled(Question):
 
 class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
-        Question.__init__ (self, troubleshooter)
+        Question.__init__ (self, troubleshooter, "Check printer sanity")
         self.answers = {}
         troubleshooter.new_page (gtk.Label (), self)
         QueueNotEnabled (self.troubleshooter)
         QueueRejectingJobs (self.troubleshooter)
-        TestPagePrinted (self.troubleshooter)
-        CheckCUPS (self.troubleshooter)
+        PrinterStateReasons (self.troubleshooter)
+        PrintTestPage (self.troubleshooter)
 
     def display (self):
-        # Check some common problems.
+        # Collect information useful for the various checks.
 
         # Find out if this is a printer or a class.
         name = self.troubleshooter.answers['cups_queue']
@@ -424,10 +583,12 @@ class CheckPrinterSanity(Question):
     def collect_answer (self):
         return self.answers
 
+###
+
 class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
         # First question: which printer? (page 1)
-        Question.__init__ (self, troubleshooter)
+        Question.__init__ (self, troubleshooter, "Choose printer")
         page1 = gtk.VBox ()
         page1.set_spacing (12)
         page1.set_border_width (12)
@@ -509,9 +670,11 @@ class ChoosePrinter(Question):
             self.troubleshooter.no_more_questions (self)
             if dest == None:
                 # Printer not listed.
-                CheckCUPS (self.troubleshooter)
+                PrinterNotListed (self.troubleshooter)
+                Shrug (self.troubleshooter)
             else:
                 CheckPrinterSanity (self.troubleshooter)
+                Shrug (self.troubleshooter)
 
         handler (widget)
 
