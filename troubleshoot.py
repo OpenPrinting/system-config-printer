@@ -72,6 +72,7 @@ class Troubleshooter:
         self.ntbk = ntbk
 
         self.questions = []
+        self.question_answers = []
         self.answers = {}
 
         main.show_all ()
@@ -80,6 +81,7 @@ class Troubleshooter:
         page = self.questions.index (question)
         print "Page %d: No more questions." % page
         self.questions = self.questions[:page + 1]
+        self.question_answers = self.question_answers[:page + 1]
         for p in range (self.ntbk.get_n_pages () - 1, page, -1):
             self.ntbk.remove_page (p)
         self.set_back_forward_buttons ()
@@ -88,6 +90,7 @@ class Troubleshooter:
         page = len (self.questions)
         print "Page %d: new: %s" % (page, str (question))
         self.questions.append (question)
+        self.question_answers.append ([])
         self.ntbk.insert_page (widget, position=page)
         widget.show_all ()
         if page == 0:
@@ -115,8 +118,24 @@ class Troubleshooter:
     def on_back_clicked (self, widget):
         page = self.ntbk.get_current_page ()
         self.questions[page].disconnect_signals ()
-        self.ntbk.prev_page ()
-        page -= 1
+
+        step = 1
+        question = self.questions[page - step]
+        while not question.display ():
+            # Skip this one.
+            print "Page %d: skip" % (page - step)
+            step += 1
+            question = self.questions[page - step]
+
+        self.ntbk.set_current_page (page - step)
+        page -= step
+
+        answers = {}
+        for i in range (page):
+            print i, self.question_answers[i]
+            answers.update (self.question_answers[i])
+        self.answers = answers
+
         self.questions[page].connect_signals (self.set_back_forward_buttons)
         self.set_back_forward_buttons ()
 
@@ -125,17 +144,32 @@ class Troubleshooter:
         answer_dict = self.questions[page].collect_answer ()
         print answer_dict
         self.questions[page].disconnect_signals ()
+        self.question_answers[page] = answer_dict
         self.answers.update (answer_dict)
-        self.ntbk.next_page ()
-        page += 1
-        self.questions[page].connect_signals (self.set_back_forward_buttons)
+
+        step = 1
+        question = self.questions[page + step]
+        while not question.display ():
+            # Skip this one.
+            print "Page %d: skip" % (page + step)
+            step += 1
+            question = self.questions[page + step]
+
+        self.ntbk.set_current_page (page + step)
+        page += step
+        question.connect_signals (self.set_back_forward_buttons)
         self.set_back_forward_buttons ()
 
 #############
 
 class Question:
     def __init__ (self, troubleshooter):
-        pass
+        self.troubleshooter = troubleshooter
+
+    def display (self):
+        """Returns True if this page should be displayed, or False
+        if it should be skipped."""
+        return True
 
     def connect_signals (self, handler):
         pass
@@ -210,6 +244,18 @@ class CheckCUPS(Question):
         Question.__init__ (self, troubleshooter)
         troubleshooter.new_page (gtk.Label ("CUPS not running?"), self)
         troubleshooter.no_more_questions (self)
+
+class CheckPrinterSanity(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter)
+        self.troubleshooter = troubleshooter
+        troubleshooter.new_page (gtk.Label ("Queue not enabled."), self)
+        troubleshooter.no_more_questions (self)
+
+    def display (self):
+        # Check some common problems.
+        CheckCUPS (self.troubleshooter)
+        return False
 
 class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
@@ -302,7 +348,7 @@ class ChoosePrinter(Question):
                              dest.name,
                              [(_("Yes"), True),
                               (_("No"), False)])
-                CheckCUPS (self.troubleshooter)
+                CheckPrinterSanity (self.troubleshooter)
 
         handler (widget)
 
