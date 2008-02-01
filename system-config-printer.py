@@ -3453,7 +3453,6 @@ class NewPrinterGUI(GtkGUI):
         try:
             c = cups.Connection()
             printers = c.getPrinters ()
-            classes = c.getClasses ()
             del c
         except:
             nonfatalException()
@@ -3465,11 +3464,6 @@ class NewPrinterGUI(GtkGUI):
         for printer, dict in printers.iteritems ():
             iter = store.append (None)
             store.set_value (iter, 0, printer)
-            store.set_value (iter, 1, dict.get ('printer-location', ''))
-            store.set_value (iter, 2, dict)
-        for pclass, dict in classes.iteritems ():
-            iter = store.append (None)
-            store.set_value (iter, 0, pclass)
             store.set_value (iter, 1, dict.get ('printer-location', ''))
             store.set_value (iter, 2, dict)
 
