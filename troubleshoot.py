@@ -22,6 +22,9 @@
 import gtk
 import gobject
 import cups
+import socket
+import subprocess
+import sys
 from gettext import gettext as _
 
 import pprint
@@ -213,17 +216,28 @@ class Question:
     def collect_answer (self):
         return {}
 
+    ## Helper functions
+    def initial_vbox (self, title='', text=''):
+        vbox = gtk.VBox ()
+        vbox.set_border_width (12)
+        vbox.set_spacing (12)
+        if title:
+            s = '<span weight="bold" size="larger">' + title + '</span>\n\n'
+        else:
+            s = ''
+        s += text
+        label = gtk.Label (s)
+        label.set_alignment (0, 0)
+        label.set_line_wrap (True)
+        label.set_use_markup (True)
+        vbox.pack_start (label, False, False, 0)
+        return vbox
+
 class Multichoice(Question):
-    def __init__ (self, troubleshooter, question_tag, question_text, choices,
-                  name=None):
+    def __init__ (self, troubleshooter, question_tag, question_title,
+                  question_text, choices, name=None):
         Question.__init__ (self, troubleshooter, name)
-        page = gtk.VBox ()
-        page.set_spacing (12)
-        page.set_border_width (12)
-        question = gtk.Label (question_text)
-        question.set_line_wrap (True)
-        question.set_alignment (0, 0)
-        page.pack_start (question, False, False, 0)
+        page = self.initial_vbox (question_title, question_text)
         choice_vbox = gtk.VBox ()
         choice_vbox.set_spacing (6)
         page.pack_start (choice_vbox, False, False, 0)
@@ -272,18 +286,11 @@ class Welcome(Question):
 class Shrug(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Shrug")
-        page = gtk.VBox ()
-        page.set_spacing (12)
-        page.set_border_width (12)
-        label = gtk.Label ('<span weight="bold" size="larger">' +
-                           _("Sorry!") + '</span>\n\n' +
-                           _("I have not been able to work out what the "
-                             "problem is, but I have collected some useful "
-                             "information to put in a bug report."))
-        label.set_line_wrap (True)
-        label.set_use_markup (True)
-        label.set_alignment (0, 0)
-        page.pack_start (label, False, False, 0)
+        page = self.initial_vbox (_("Sorry!"),
+                                  _("I have not been able to work out what "
+                                    "the problem is, but I have collected "
+                                    "some useful information to put in a "
+                                    "bug report."))
 
         sw = gtk.ScrolledWindow ()
         textview = gtk.TextView ()
@@ -299,31 +306,337 @@ class Shrug(Question):
 
 ###
 
+class NetworkCUPSPrinterAccepting(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Queue not accepting jobs?")
+        page = self.initial_vbox (_("Queue Not Accepting Jobs"),
+                                  _("The CUPS printer on the server is not "
+                                    "accepting jobs."))
+        troubleshooter.new_page (page, self)
+
+    def display (self):
+        answers = self.troubleshooter.answers
+        attr = answers.get ('remote_cups_queue_attributes', False)
+        if not attr:
+            return False
+
+        try:
+            if attr['printer-type'] & cups.CUPS_PRINTER_REJECTING:
+                return True
+        except:
+            pass
+
+        return False
+
+    def can_click_forward (self):
+        return False
+
+class NetworkCUPSPrinterEnabled(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Queue not enabled?")
+        page = self.initial_vbox (_("Queue Not Enabled"),
+                                  _("The CUPS printer on the server is not "
+                                    "enabled."))
+        troubleshooter.new_page (page, self)
+
+    def display (self):
+        answers = self.troubleshooter.answers
+        try:
+            attr = answers['remote_cups_queue_attributes']
+            if attr['printer-state'] == cups.IPP_PRINTER_STOPPED:
+                return True
+        except:
+            pass
+
+        return False
+
+    def can_click_forward (self):
+        return False
+
+class NetworkCUPSPrinterShared(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Queue not shared?")
+        page = self.initial_vbox (_("Queue Not Shared"),
+                                  _("The CUPS printer on the server is not "
+                                    "shared."))
+        troubleshooter.new_page (page, self)
+
+    def display (self):
+        self.answers = {}
+        answers = self.troubleshooter.answers
+        if not answers.get ('remote_cups_queue_listed', False):
+            return False
+
+        try:
+            cups.setServer (answers['remote_server_try_connect'])
+            c = cups.Connection ()
+            attr = c.getPrinterAttributes (answers['remote_cups_queue'])
+        except:
+            return False
+
+        self.answers['remote_cups_queue_attributes'] = attr
+        if attr.has_key ('printer-is-shared'):
+            # CUPS >= 1.2
+            if not attr['printer-is-shared']:
+                return True
+
+        return False
+
+    def can_click_forward (self):
+        return False
+
+    def collect_answer (self):
+        return self.answers
+
+class ChooseNetworkPrinter(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Choose network printer")
+        page1 = self.initial_vbox (_("Choose Network Printer"),
+                                   _("Please select the network printer you "
+                                     "are trying to use from the list below. "
+                                     "If it does not appear in the list, "
+                                     "select 'Not listed'."))
+        tv = gtk.TreeView ()
+        name = gtk.TreeViewColumn (_("Name"),
+                                   gtk.CellRendererText (), text=0)
+        location = gtk.TreeViewColumn (_("Location"),
+                                       gtk.CellRendererText (), text=1)
+        info = gtk.TreeViewColumn (_("Information"),
+                                   gtk.CellRendererText (), text=2)
+        name.set_property ("resizable", True)
+        location.set_property ("resizable", True)
+        info.set_property ("resizable", True)
+        tv.append_column (name)
+        tv.append_column (location)
+        tv.append_column (info)
+        tv.set_rules_hint (True)
+        sw = gtk.ScrolledWindow ()
+        sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
+        sw.set_shadow_type (gtk.SHADOW_IN)
+        sw.add (tv)
+        page1.pack_start (sw, True, True, 0)
+        self.treeview = tv
+        troubleshooter.new_page (page1, self)
+
+    def display (self):
+        answers = self.troubleshooter.answers
+        if not answers.get ('remote_server_cups', False):
+            return False
+
+        server = answers['remote_server_name']
+        if not server:
+            server = answers['remote_server_ip_address']
+
+        model = gtk.ListStore (gobject.TYPE_STRING,
+                               gobject.TYPE_STRING,
+                               gobject.TYPE_STRING,
+                               gobject.TYPE_PYOBJECT)
+        self.model = model
+        self.treeview.set_model (model)
+        iter = model.append (None)
+        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
+
+        try:
+            cups.setServer (server)
+            c = cups.Connection ()
+            dests = c.getDests ()
+            printers = None
+            dests_list = []
+            for (name, instance), dest in dests.iteritems ():
+                if instance != None:
+                    queue = "%s/%s" % (name, instance)
+                else:
+                    queue = name
+
+                if printers == None:
+                    printers = c.getPrinters ()
+
+                if not printers.has_key (name):
+                    info = _("Unknown")
+                    location = _("Unknown")
+                else:
+                    printer = printers[name]
+                    info = printer.get('printer-info', _("Unknown"))
+                    location = printer.get('printer-location', _("Unknown"))
+
+                dests_list.append ((queue, location, info, dest))
+
+            dests_list.sort (lambda x, y: cmp (x[0], y[0]))
+            for queue, location, info, dest in dests_list:
+                iter = model.append (None)
+                model.set (iter, 0, queue, 1, location, 2, info, 3, dest)
+
+        except cups.HTTPError:
+            pass
+        except cups.IPPError:
+            pass
+        except RuntimeError:
+            pass
+
+        return True
+
+    def connect_signals (self, handler):
+        self.signal_id = self.treeview.connect ("cursor-changed", handler)
+
+    def disconnect_signals (self):
+        self.treeview.disconnect (self.signal_id)
+
+    def can_click_forward (self):
+        model, iter = self.treeview.get_selection ().get_selected ()
+        if iter == None:
+            return False
+        return True
+
+    def collect_answer (self):
+        model, iter = self.treeview.get_selection ().get_selected ()
+        if not model:
+            return {}
+
+        dest = model.get_value (iter, 3)
+        if dest == None:
+            class enum_dests:
+                def __init__ (self, model):
+                    self.dests = []
+                    model.foreach (self.each, None)
+
+                def each (self, model, path, iter, user_data):
+                    dest = model.get_value (iter, 3)
+                    if dest:
+                        self.dests.append ((dest.name, dest.instance))
+
+            return { 'remote_cups_queue_listed': False,
+                     'remote_cups_dests_available': enum_dests (model).dests }
+        else:
+            return { 'remote_cups_queue_listed': True,
+                     'remote_cups_dest': dest,
+                     'remote_cups_queue': dest.name,
+                     'remote_cups_instance': dest.instance }
+
+class CheckNetworkPrinterSanity(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Check network printer sanity")
+        self.answers = {}
+        troubleshooter.new_page (gtk.Label (), self)
+
+    def display (self):
+        # Collect useful information.
+
+        answers = self.troubleshooter.answers
+        server_name = answers['remote_server_name']
+        if server_name:
+            # Try resolving the hostname.
+            try:
+                ai = socket.getaddrinfo (server_name, 631)
+                resolves = map (lambda (family, socktype,
+                                        proto, canonname, sockaddr):
+                                    sockaddr[0], ai)
+            except socket.gaierror:
+                resolves = False
+
+            self.answers['remote_server_name_resolves'] = resolves
+
+            ipaddr = answers['remote_server_ip_address']
+            if ipaddr:
+                try:
+                    resolves.index (ipaddr)
+                except ValueError:
+                    # The IP address given doesn't match the server name.
+                    # Use the IP address instead of the name.
+                    server_name = ipaddr
+        else:
+            server_name = answers['remote_server_ip_address']
+
+        self.answers['remote_server_try_connect'] = server_name
+
+        try:
+            cups.setServer (server_name)
+            c = cups.Connection ()
+            ipp_connect = True
+        except RuntimeError:
+            ipp_connect = False
+
+        self.answers['remote_server_connect_ipp'] = ipp_connect
+
+        if ipp_connect:
+            try:
+                c.getPrinters ()
+                cups_server = True
+            except:
+                cups_server = False
+
+            self.answers['remote_server_cups'] = cups_server
+
+        # Try traceroute.
+        p = subprocess.Popen (['traceroute', '-w', '1', server_name],
+                              stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE)
+        (stdout, stderr) = p.communicate ()
+        self.answers['traceroute_output'] = (stdout, stderr)
+
+        return False
+
+    def collect_answer (self):
+        return self.answers
+
+class RemoteAddress(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Remote address")
+        page = self.initial_vbox (_("Remote Address"),
+                                  _("Please enter as many details as you "
+                                    "can about the network address of this "
+                                    "printer."))
+        table = gtk.Table (2, 2)
+        table.set_row_spacings (6)
+        table.set_col_spacings (6)
+        page.pack_start (table, False, False, 0)
+
+        label = gtk.Label (_("Server name:"))
+        label.set_alignment (0, 0)
+        table.attach (label, 0, 1, 0, 1)
+        self.server_name = gtk.Entry ()
+        table.attach (self.server_name, 1, 2, 0, 1)
+
+        label = gtk.Label (_("Server IP address:"))
+        label.set_alignment (0, 0)
+        table.attach (label, 0, 1, 1, 2)
+        self.server_ipaddr = gtk.Entry ()
+        table.attach (self.server_ipaddr, 1, 2, 1, 2)
+
+        troubleshooter.new_page (page, self)
+
+    def display (self):
+        return self.troubleshooter.answers['printer_is_remote']
+
+    def collect_answer (self):
+        return { 'remote_server_name': self.server_name.get_text (),
+                 'remote_server_ip_address': self.server_ipaddr.get_text () }
+
 class LocalOrRemote(Multichoice):
     def __init__ (self, troubleshooter):
         Multichoice.__init__ (self, troubleshooter, "printer_is_remote",
+                              _("Printer Location"),
                               _("Is the printer connected to this computer "
                                 "or available on the network?"),
                               [(_("Locally connected printer"), False),
                                (_("Network printer"), True)],
                               "Local or remote?")
+        RemoteAddress (troubleshooter)
+        CheckNetworkPrinterSanity (troubleshooter)
+        ChooseNetworkPrinter (troubleshooter)
+        NetworkCUPSPrinterShared (troubleshooter)
+        NetworkCUPSPrinterAccepting (troubleshooter)
+        NetworkCUPSPrinterEnabled (troubleshooter)
 
 class PrinterNotListed(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Printer not listed")
         self.answers = {}
-        page = gtk.VBox ()
-        page.set_border_width (12)
-        page.set_spacing (12)
-        label = gtk.Label ('<span weight="bold" size="larger">' +
-                           _("CUPS Service Stopped") + '</span>\n\n' +
-                           _("The CUPS print spooler does not appear to be "
-                             "running.  To correct this, choose " +
-                             "System->Administration->Services from the main "
-                             "menu and look for the `cups' service."))
-        label.set_alignment (0, 0)
-        label.set_line_wrap (True)
-        label.set_use_markup (True)
+        page = self.initial_vbox (_("CUPS Service Stopped"),
+                                  _("The CUPS print spooler does not appear "
+                                    "to be running.  To correct this, choose "
+                                    "System->Administration->Services from "
+                                    "the main menu and look for the `cups' "
+                                    "service."))
         troubleshooter.new_page (page, self)
         LocalOrRemote (troubleshooter)
 
@@ -404,19 +717,9 @@ class PrintTestPage(Question):
 class PrinterStateReasons(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Printer state reasons")
-        page = gtk.VBox ()
-        page.set_border_width (12)
-        page.set_spacing (12)
-
-        label = gtk.Label ('<span weight="bold" size="larger">' +
-                           _("Status Messages") + '</span>\n\n' +
-                           _("There are status messages associated with "
-                             "this queue."))
-        label.set_line_wrap (False)
-        label.set_alignment (0, 0)
-        label.set_use_markup (True)
-        page.pack_start (label, False, False, 0)
-
+        page = self.initial_vbox (_("Status Messages"),
+                                  _("There are status messages associated with "
+                                    "this queue."))
         table = gtk.Table (2, 2)
         table.set_col_spacings (6)
         table.set_row_spacings (6)
@@ -589,21 +892,12 @@ class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
         # First question: which printer? (page 1)
         Question.__init__ (self, troubleshooter, "Choose printer")
-        page1 = gtk.VBox ()
-        page1.set_spacing (12)
-        page1.set_border_width (12)
-        question = gtk.Label (_("Please select the printer you are trying "
-                                "to use from the list below.  If it does "
-                                "not appear in the list, select "
-                                "'Not listed'."))
-        question.set_line_wrap (True)
-        question.set_alignment (0, 0)
-        page1.pack_start (question, False, False, 0)
-        model = gtk.ListStore (gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_STRING,
-                               gobject.TYPE_PYOBJECT)
-        tv = gtk.TreeView (model)
+        page1 = self.initial_vbox (_("Choose Printer"),
+                                   _("Please select the printer you are "
+                                     "trying to use from the list below. "
+                                     "If it does not appear in the list, "
+                                     "select 'Not listed'."))
+        tv = gtk.TreeView ()
         name = gtk.TreeViewColumn (_("Name"),
                                    gtk.CellRendererText (), text=0)
         location = gtk.TreeViewColumn (_("Location"),
@@ -623,6 +917,17 @@ class ChoosePrinter(Question):
         sw.add (tv)
         page1.pack_start (sw, True, True, 0)
         self.treeview = tv
+        troubleshooter.new_page (page1, self)
+
+    def display (self):
+        model = gtk.ListStore (gobject.TYPE_STRING,
+                               gobject.TYPE_STRING,
+                               gobject.TYPE_STRING,
+                               gobject.TYPE_PYOBJECT)
+        self.treeview.set_model (model)
+        iter = model.append (None)
+        model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
+
         try:
             c = cups.Connection ()
             dests = c.getDests ()
@@ -647,9 +952,6 @@ class ChoosePrinter(Question):
 
                 dests_list.append ((queue, location, info, dest))
 
-            iter = model.append (None)
-            model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
-
             dests_list.sort (lambda x, y: cmp (x[0], y[0]))
             for queue, location, info, dest in dests_list:
                 iter = model.append (None)
@@ -660,8 +962,7 @@ class ChoosePrinter(Question):
         except cups.IPPError:
             pass
 
-        troubleshooter.new_page (page1, self)
-        self.troubleshooter = troubleshooter
+        return True
 
     def cursor_changed (self, widget, handler):
         model, iter = widget.get_selection ().get_selected ()
@@ -696,7 +997,18 @@ class ChoosePrinter(Question):
         model, iter = self.treeview.get_selection ().get_selected ()
         dest = model.get_value (iter, 3)
         if dest == None:
-            return { 'cups_queue_listed': False }
+            class enum_dests:
+                def __init__ (self, model):
+                    self.dests = []
+                    model.foreach (self.each, None)
+
+                def each (self, model, path, iter, user_data):
+                    dest = model.get_value (iter, 3)
+                    if dest:
+                        self.dests.append ((dest.name, dest.instance))
+
+            return { 'cups_queue_listed': False,
+                     'cups_dests_available': enum_dests (model).dests }
         else:
             return { 'cups_queue_listed': True,
                      'cups_dest': dest,
