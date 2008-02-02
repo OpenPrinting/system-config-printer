@@ -74,6 +74,12 @@ busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 ellipsis = unichr(0x2026)
 
+def debugprint(x):
+    try:
+        print x
+    except:
+        pass
+
 try:
     try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY
 except AttributeError:
