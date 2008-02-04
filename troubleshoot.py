@@ -764,9 +764,18 @@ class PrintTestPage(Question):
         self.persistent_answers = {}
         troubleshooter.new_page (page, self)
 
+    def display (self):
+        return self.troubleshooter.answers.has_key ('cups_queue')
+
     def clicked (self, widget, handler):
-        print "Print test page!"
         self.persistent_answers['test_page_attempted'] = True
+        answers = self.troubleshooter.answers
+        cups.setServer ('')
+        c = cups.Connection ()
+        jobid = c.printTestPage (answers['cups_queue'])
+        jobs = self.persistent_answers.get ('test_page_job_id', [])
+        jobs.append (jobid)
+        self.persistent_answers['test_page_job_id'] = jobs
 
     def connect_signals (self, handler):
         self.signal_id = self.button.connect ("clicked",
