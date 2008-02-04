@@ -761,14 +761,12 @@ class PrintTestPage(Question):
         vbox.pack_start (self.yes, False, False, 0)
         vbox.pack_start (no, False, False, 0)
         page.pack_start (vbox, False, False, 0)
-        self.answers = {}
+        self.persistent_answers = {}
         troubleshooter.new_page (page, self)
 
     def clicked (self, widget, handler):
         print "Print test page!"
-
-        # Set this here so that it is persistent.
-        self.answers['test_page_attempted'] = True
+        self.persistent_answers['test_page_attempted'] = True
 
     def connect_signals (self, handler):
         self.signal_id = self.button.connect ("clicked",
@@ -779,6 +777,7 @@ class PrintTestPage(Question):
         self.button.disconnect (self.signal_id)
 
     def collect_answer (self):
+        self.answers = self.persistent_answers.copy ()
         success = self.yes.get_active ()
         self.answers['test_page_successful'] = success
         return self.answers
