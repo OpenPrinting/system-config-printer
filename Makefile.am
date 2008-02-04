@@ -4,6 +4,7 @@ nobase_pkgdata_SCRIPTS=				\
 	ppds.py					\
 	pysmb.py				\
 	system-config-printer.py		\
+	troubleshoot.py				\
 	applet.py
 
 nobase_pkgdata_DATA=				\
