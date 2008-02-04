@@ -30,7 +30,7 @@ from gettext import gettext as _
 
 import pprint
 
-debug=1
+debug=0
 def debugprint (x):
     if debug:
         try:
