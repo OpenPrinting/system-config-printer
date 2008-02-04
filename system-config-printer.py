@@ -63,6 +63,7 @@ import gtk_label_autowrap
 from gtk_treeviewtooltips import TreeViewTooltips
 import openprinting
 import urllib
+import troubleshoot
 
 domain='system-config-printer'
 import locale
@@ -2083,6 +2084,9 @@ class GUI(GtkGUI):
 
         self.changed = set()
         self.populateList()
+
+    def on_troubleshoot_activate(self, widget):
+        troubleshoot.run ()
 
     # About dialog
     def on_about_activate(self, widget):
