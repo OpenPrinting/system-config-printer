@@ -43,13 +43,14 @@ TEXT_start_print_admin_tool = _("To start this tool, select "
                                 "from the main menu.")
 
 class Troubleshooter:
-    def __init__ (self):
+    def __init__ (self, quitfn=None):
         main = gtk.Window ()
         main.set_title (_("Printing troubleshooter"))
         main.set_property ("default-width", 400)
         main.set_property ("default-height", 300)
-        main.connect ("delete_event", gtk.main_quit)
+        main.connect ("delete_event", self.quit)
         self.main = main
+        self.quitfn = quitfn
 
         vbox = gtk.VBox ()
         main.add (vbox)
@@ -68,11 +69,11 @@ class Troubleshooter:
         self.back = back
 
         close = gtk.Button (stock='gtk-close')
-        close.connect ('clicked', gtk.main_quit)
+        close.connect ('clicked', self.quit)
         self.close = close
 
         cancel = gtk.Button (stock='gtk-cancel')
-        cancel.connect ('clicked', gtk.main_quit)
+        cancel.connect ('clicked', self.quit)
         self.cancel = cancel
 
         forward = gtk.Button (stock='gtk-go-forward')
@@ -94,6 +95,11 @@ class Troubleshooter:
         self.answers = {}
 
         main.show_all ()
+
+    def quit (self, *args):
+        self.main.hide ()
+        if self.quitfn:
+            self.quitfn (self)
 
     def no_more_questions (self, question):
         page = self.questions.index (question)
@@ -1079,7 +1085,23 @@ class ChoosePrinter(Question):
                      'cups_queue': dest.name,
                      'cups_instance': dest.instance }
 
-troubleshooter = Troubleshooter ()
-Welcome (troubleshooter)
-ChoosePrinter (troubleshooter)
-gtk.main ()
+def run (quitfn=None):
+    troubleshooter = Troubleshooter (quitfn)
+    Welcome (troubleshooter)
+    ChoosePrinter (troubleshooter)
+    return troubleshooter
+
+if __name__ == "__main__":
+    import sys, getopt
+    debug = 0
+    try:
+        opts, args = getopt.gnu_getopt (sys.argv[1:], '',
+                                        ['debug'])
+        for opt, optarg in opts:
+            if opt == '--debug':
+                debug = 1
+    except getopt.GetoptError:
+        pass
+
+    run (gtk.main_quit)
+    gtk.main ()
