@@ -221,7 +221,7 @@ class Troubleshooter:
             text += _("Page %d (%s):") % (n, self.questions[i]) + '\n'
             text += pprint.pformat (answers) + '\n'
             n += 1
-        return text.rstrip ()
+        return text.rstrip () + '\n'
 
     def _dump_answers (self):
         debugprint (self.answers_as_text ())
@@ -365,11 +365,58 @@ class Shrug(Question):
         sw.add (textview)
         page.pack_start (sw)
         self.buffer = textview.get_buffer ()
+
+        box = gtk.HButtonBox ()
+        box.set_border_width (0)
+        box.set_spacing (3)
+        box.set_layout (gtk.BUTTONBOX_END)
+        page.pack_start (box, False, False, 0)
+
+        self.copy = gtk.Button (stock='gtk-copy')
+        box.pack_start (self.copy, False, False, 0)
+
+        self.save = gtk.Button (stock='gtk-save')
+        box.pack_start (self.save, False, False, 0)
+
+        self.clipboard = gtk.Clipboard ()
+
         troubleshooter.new_page (page, self)
 
     def display (self):
         self.buffer.set_text (self.troubleshooter.answers_as_text ())
         return True
+
+    def connect_signals (self, handler):
+        self.copy_sigid = self.copy.connect ('clicked', self.on_copy_clicked)
+        self.save_sigid = self.save.connect ('clicked', self.on_save_clicked)
+
+    def disconnect_signals (self):
+        self.copy.disconnect (self.copy_sigid)
+        self.save.disconnect (self.save_sigid)
+
+    def on_copy_clicked (self, button):
+        text = self.buffer.get_text (self.buffer.get_start_iter (),
+                                     self.buffer.get_end_iter ())
+        self.clipboard.set_text (text)
+
+    def on_save_clicked (self, button):
+        dialog = gtk.FileChooserDialog (parent=self.troubleshooter.main,
+                                        action=gtk.FILE_CHOOSER_ACTION_SAVE,
+                                        buttons=('gtk-cancel',
+                                                 gtk.RESPONSE_CANCEL,
+                                                 'gtk-save',
+                                                 gtk.RESPONSE_OK))
+        dialog.set_do_overwrite_confirmation (True)
+        dialog.set_default_response (gtk.RESPONSE_OK)
+        response = dialog.run ()
+        dialog.hide ()
+        if response != gtk.RESPONSE_OK:
+            return
+
+        f = file (dialog.get_filename (), "w")
+        f.write (self.buffer.get_text (self.buffer.get_start_iter (),
+                                       self.buffer.get_end_iter ()))
+        del f
 
 ###
 
