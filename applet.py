@@ -726,8 +726,8 @@ class JobManager:
                 try:
                     jstate = data['job-state']
                     s = int (jstate)
-                    state = { cups.IPP_JOB_PENDING:_("Pending"),
-                              cups.IPP_JOB_HELD:_("Held"),
+                    state = { cups.IPP_JOB_PENDING: _("Pending"),
+                              cups.IPP_JOB_HELD: _("Held"),
                               cups.IPP_JOB_PROCESSING: _("Processing"),
                               cups.IPP_JOB_STOPPED: _("Stopped"),
                               cups.IPP_JOB_CANCELED: _("Canceled"),
