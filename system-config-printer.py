@@ -2086,7 +2086,11 @@ class GUI(GtkGUI):
         self.populateList()
 
     def on_troubleshoot_activate(self, widget):
-        troubleshoot.run ()
+        if not self.__dict__.has_key ('troubleshooter'):
+            self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit)
+
+    def on_troubleshoot_quit(self, troubleshooter):
+        del self.troubleshooter
 
     # About dialog
     def on_about_activate(self, widget):
