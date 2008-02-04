@@ -218,7 +218,7 @@ class Troubleshooter:
             answers = self.question_answers[i]
             if len (answers.keys ()) == 0:
                 continue
-            text += _("Page %d (%s):") % (n, self.questions[i]) + '\n'
+            text += "Page %d (%s):" % (n, self.questions[i]) + '\n'
             text += pprint.pformat (answers) + '\n'
             n += 1
         return text.rstrip () + '\n'
