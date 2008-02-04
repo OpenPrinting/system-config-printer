@@ -25,9 +25,18 @@ import cups
 import socket
 import subprocess
 import sys
+import traceback
 from gettext import gettext as _
 
 import pprint
+
+debug=1
+def debugprint (x):
+    if debug:
+        try:
+            print x
+        except:
+            pass
 
 TEXT_start_print_admin_tool = _("To start this tool, select "
                                 "System->Administration->Printing "
@@ -88,7 +97,7 @@ class Troubleshooter:
 
     def no_more_questions (self, question):
         page = self.questions.index (question)
-        print "Page %d: No more questions." % page
+        debugprint ("Page %d: No more questions." % page)
         self.questions = self.questions[:page + 1]
         self.question_answers = self.question_answers[:page + 1]
         for p in range (self.ntbk.get_n_pages () - 1, page, -1):
@@ -97,13 +106,17 @@ class Troubleshooter:
 
     def new_page (self, widget, question):
         page = len (self.questions)
-        print "Page %d: new: %s" % (page, str (question))
+        debugprint ("Page %d: new: %s" % (page, str (question)))
         self.questions.append (question)
         self.question_answers.append ([])
         self.ntbk.insert_page (widget, position=page)
         widget.show_all ()
         if page == 0:
-            question.connect_signals (self.set_back_forward_buttons)
+            try:
+                question.connect_signals (self.set_back_forward_buttons)
+            except:
+                self._report_traceback ()
+
             self.ntbk.set_current_page (page)
         self.set_back_forward_buttons ()
         return page
@@ -113,27 +126,30 @@ class Troubleshooter:
         self.back.set_sensitive (page != 0)
         if len (self.questions) == page + 1:
             # Out of questions.
-            print "Out of questions"
+            debugprint ("Out of questions")
             self.forward.set_sensitive (False)
             self.close.show ()
             self.cancel.hide ()
         else:
-            can = self.questions[page].can_click_forward ()
-            print "Page %d: can click forward? %s" % (page, can)
+            can = self._can_click_forward (self.questions[page])
+            debugprint ("Page %d: can click forward? %s" % (page, can))
             self.forward.set_sensitive (can)
             self.close.hide ()
             self.cancel.show ()
 
     def on_back_clicked (self, widget):
         page = self.ntbk.get_current_page ()
-        self.questions[page].disconnect_signals ()
+        try:
+            self.questions[page].disconnect_signals ()
+        except:
+            self._report_traceback ()
 
         step = 1
         question = self.questions[page - step]
         self.ntbk.prev_page ()
-        while not question.display ():
+        while not self._display (question):
             # Skip this one.            
-            print "Page %d: skip" % (page - step)
+            debugprint ("Page %d: skip" % (page - step))
             step += 1
             question = self.questions[page - step]
             self.ntbk.prev_page ()
@@ -145,35 +161,48 @@ class Troubleshooter:
             answers.update (self.question_answers[i])
         self.answers = answers
 
-        self.questions[page].connect_signals (self.set_back_forward_buttons)
+        try:
+            self.questions[page].connect_signals (self.set_back_forward_buttons)
+        except:
+            self._report_traceback ()
+
         self.set_back_forward_buttons ()
 
     def on_forward_clicked (self, widget):
         page = self.ntbk.get_current_page ()
-        answer_dict = self.questions[page].collect_answer ()
+        answer_dict = self._collect_answer (self.questions[page])
         self.question_answers[page] = answer_dict
         self.answers.update (answer_dict)
 
-        self.questions[page].disconnect_signals ()
+        try:
+            self.questions[page].disconnect_signals ()
+        except:
+            self._report_traceback ()
 
         step = 1
         question = self.questions[page + step]
         self.ntbk.next_page ()
-        while not question.display ():
+        while not self._display (question):
             # Skip this one, but collect its answers.
-            answer_dict = question.collect_answer ()
+            answer_dict = self._collect_answer (question)
             self.question_answers[page + step] = answer_dict
             self.answers.update (answer_dict)
-            print "Page %d: skip" % (page + step)
+            debugprint ("Page %d: skip" % (page + step))
             step += 1
             question = self.questions[page + step]
             self.ntbk.next_page ()
 
         page += step
-        question.connect_signals (self.set_back_forward_buttons)
+
+        try:
+            question.connect_signals (self.set_back_forward_buttons)
+        except:
+            self._report_traceback ()
+
         self.set_back_forward_buttons ()
 
-        self._dump_answers ()
+        if debug:
+            self._dump_answers ()
 
     def answers_as_text (self):
         text = ""
@@ -189,7 +218,39 @@ class Troubleshooter:
         return text.rstrip ()
 
     def _dump_answers (self):
-        print self.answers_as_text ()
+        debugprint (self.answers_as_text ())
+
+    def _report_traceback (self):
+        print "Traceback:"
+        (type, value, tb) = sys.exc_info ()
+        tblast = traceback.extract_tb (tb, limit=None)
+        if len (tblast):
+            tblast = tblast[:len (tblast) - 1]
+        extxt = traceback.format_exception_only (type, value)
+        for line in traceback.format_tb(tb):
+            print line.strip ()
+        print extxt[0].strip ()
+
+    def _display (self, question):
+        try:
+            return question.display ()
+        except:
+            self._report_traceback ()
+            return False
+
+    def _can_click_forward (self, question):
+        try:
+            return question.can_click_forward ()
+        except:
+            self._report_traceback ()
+            return True
+
+    def _collect_answer (self, question):
+        try:
+            return question.collect_answer ()
+        except:
+            self._report_traceback ()
+            return {}
 
 #############
 
@@ -515,12 +576,12 @@ class ChooseNetworkPrinter(Question):
 class CheckNetworkPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check network printer sanity")
-        self.answers = {}
         troubleshooter.new_page (gtk.Label (), self)
 
     def display (self):
         # Collect useful information.
 
+        self.answers = {}
         answers = self.troubleshooter.answers
         server_name = answers['remote_server_name']
         if server_name:
@@ -630,7 +691,6 @@ class LocalOrRemote(Multichoice):
 class PrinterNotListed(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Printer not listed")
-        self.answers = {}
         page = self.initial_vbox (_("CUPS Service Stopped"),
                                   _("The CUPS print spooler does not appear "
                                     "to be running.  To correct this, choose "
@@ -642,6 +702,7 @@ class PrinterNotListed(Question):
 
     def display (self):
         # Find out if CUPS is running.
+        self.answers = {}
         failure = False
         try:
             c = cups.Connection ()
@@ -699,6 +760,8 @@ class PrintTestPage(Question):
 
     def clicked (self, widget, handler):
         print "Print test page!"
+
+        # Set this here so that it is persistent.
         self.answers['test_page_attempted'] = True
 
     def connect_signals (self, handler):
@@ -854,7 +917,6 @@ class QueueNotEnabled(Question):
 class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check printer sanity")
-        self.answers = {}
         troubleshooter.new_page (gtk.Label (), self)
         QueueNotEnabled (self.troubleshooter)
         QueueRejectingJobs (self.troubleshooter)
@@ -863,6 +925,8 @@ class CheckPrinterSanity(Question):
 
     def display (self):
         # Collect information useful for the various checks.
+
+        self.answers = {}
 
         # Find out if this is a printer or a class.
         name = self.troubleshooter.answers['cups_queue']
