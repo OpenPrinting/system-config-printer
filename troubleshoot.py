@@ -22,6 +22,7 @@
 import gtk
 import gobject
 import cups
+import pango
 import pprint
 import socket
 import subprocess
@@ -813,14 +814,22 @@ class PrintTestPage(Question):
 
         tv = gtk.TreeView ()
         job = gtk.TreeViewColumn (_("Job"), gtk.CellRendererText (), text=0)
-        printer = gtk.TreeViewColumn (_("Printer"), gtk.CellRendererText (),
-                                      text=1)
+        printer_cell = gtk.CellRendererText ()
+        printer = gtk.TreeViewColumn (_("Printer"), printer_cell, text=1)
+        name_cell = gtk.CellRendererText ()
+        name = gtk.TreeViewColumn (_("Document"), name_cell, text=2)
         status = gtk.TreeViewColumn (_("Status"), gtk.CellRendererText (),
-                                     text=2)
-        printer.set_property ("resizable", True)
-        status.set_property ("resizable", True)
+                                     text=3)
+        printer.set_resizable (True)
+        printer_cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
+        printer_cell.set_property ("width-chars", 20)
+        name.set_resizable (True)
+        name_cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
+        name_cell.set_property ("width-chars", 20)
+        status.set_resizable (True)
         tv.append_column (job)
         tv.append_column (printer)
+        tv.append_column (name)
         tv.append_column (status)
         tv.set_rules_hint (True)
         sw = gtk.ScrolledWindow ()
@@ -852,35 +861,52 @@ class PrintTestPage(Question):
 
         model = gtk.ListStore (gobject.TYPE_INT,
                                gobject.TYPE_STRING,
+                               gobject.TYPE_STRING,
                                gobject.TYPE_STRING)
         self.treeview.set_model (model)
         self.job_to_iter = {}
 
         jobs = self.persistent_answers.get ('test_page_job_id', [])
-        if jobs:
-            cups.setServer ('')
-            c = cups.Connection ()
-            jobs_dict = c.getJobs (which_jobs='not-completed')
-            completed_jobs_dict = None
-            for job in jobs:
-                try:
-                    j = jobs_dict[job]
-                except KeyError:
-                    if completed_jobs_dict == None:
-                        completed_jobs_dict = c.getJobs (which_jobs='completed')
-                    try:
-                        j = completed_jobs_dict[job]
-                    except KeyError:
-                        continue
+        cups.setServer ('')
+        c = cups.Connection ()
 
-                iter = model.append (None)
-                self.job_to_iter[job] = iter
-                model.set_value (iter, 0, job)
-                uri = j['job-printer-uri']
-                r = uri.rfind ('/')
-                name = uri[r + 1:]
-                model.set_value (iter, 1, name)
-                model.set_value (iter, 2, self.STATE[j['job-state']])
+        jobs_dict = c.getJobs (which_jobs='not-completed',
+                               my_jobs=False)
+
+        # We want to display the jobs in the queue for this printer...
+        try:
+            queue_uri_ending = "/" + self.troubleshooter.answers['cups_queue']
+            jobs_on_this_printer = filter (lambda x:
+                                               jobs_dict[x]['job-printer-uri'].\
+                                               endswith (queue_uri_ending),
+                                           jobs_dict.keys ())
+        except:
+            jobs_on_this_printer = []
+
+        # ...as well as any other jobs we've previous submitted as test pages.
+        jobs = list (set(jobs).union (set (jobs_on_this_printer)))
+
+        completed_jobs_dict = None
+        for job in jobs:
+            try:
+                j = jobs_dict[job]
+            except KeyError:
+                if completed_jobs_dict == None:
+                    completed_jobs_dict = c.getJobs (which_jobs='completed')
+                try:
+                    j = completed_jobs_dict[job]
+                except KeyError:
+                    continue
+
+            iter = model.append (None)
+            self.job_to_iter[job] = iter
+            model.set_value (iter, 0, job)
+            uri = j['job-printer-uri']
+            r = uri.rfind ('/')
+            name = uri[r + 1:]
+            model.set_value (iter, 1, name)
+            model.set_value (iter, 2, j['job-name'])
+            model.set_value (iter, 3, self.STATE[j['job-state']])
 
         return True
 
@@ -950,25 +976,32 @@ class PrintTestPage(Question):
         except AttributeError:
             notifications = c.getNotifications ([self.sub_id])
 
+        answers = self.troubleshooter.answers
         model = self.treeview.get_model ()
+        queue = answers['cups_queue']
         for event in notifications['events']:
             self.sub_seq = event['notify-sequence-number']
             job = event['notify-job-id']
-            if not job in self.persistent_answers['test_page_job_id']:
-                continue
 
             nse = event['notify-subscribed-event']
             if nse == 'job-created':
-                iter = model.append (None)
-                self.job_to_iter[job] = iter
+                if (job in self.persistent_answers['test_page_job_id'] or
+                    event['printer-name'] == queue):
+                    iter = model.append (None)
+                    self.job_to_iter[job] = iter
+                else:
+                    continue
+            elif not self.job_to_iter.has_key (job):
+                continue
 
             iter = self.job_to_iter[job]
             model.set_value (iter, 0, job)
             model.set_value (iter, 1, event['printer-name'])
+            model.set_value (iter, 2, event['job-name'])
             jstate = event['job-state']
             s = int (jstate)
             state = self.STATE[s]
-            model.set_value (iter, 2, state)
+            model.set_value (iter, 3, state)
         return True
 
 class PrinterStateReasons(Question):
