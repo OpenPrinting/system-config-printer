@@ -1046,7 +1046,7 @@ class PrinterStateReasons(Question):
         self.state_message_label.set_text (state_message)
 
         state_reasons_list = dict['printer-state-reasons']
-        if type (state_reasons_list) == str:
+        if type (state_reasons_list) == unicode:
             state_reasons_list = [state_reasons_list]
 
         state_reasons = reduce (lambda x, y: x + "\n" + y,
@@ -1055,7 +1055,20 @@ class PrinterStateReasons(Question):
         if state_message == '' and state_reasons == 'none':
             return False
 
+        # If this screen has been show before, don't show it again if
+        # nothing changed.
+        if troubleshooter.answers.has_key ('printer-state-message'):
+            if (troubleshooter.answers['printer-state-message'] ==
+                state_message and
+                troubleshooter.answers['printer-state-reasons'] ==
+                state_reasons):
+                return False
+
         return True
+
+    def collect_answer (self):
+        return { 'printer-state-message': self.state_message_label.get_text (),
+                 'printer-state-reasons': self.state_reasons_label.get_text () }
 
 class QueueRejectingJobs(Question):
     def __init__ (self, troubleshooter):
