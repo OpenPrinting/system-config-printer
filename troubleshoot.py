@@ -1046,6 +1046,9 @@ class PrinterStateReasons(Question):
         self.state_message_label.set_text (state_message)
 
         state_reasons_list = dict['printer-state-reasons']
+        if type (state_reasons_list) == str:
+            state_reasons_list = [state_reasons_list]
+
         state_reasons = reduce (lambda x, y: x + "\n" + y,
                                 state_reasons_list)
         self.state_reasons_label.set_text (state_reasons)
