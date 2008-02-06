@@ -1038,15 +1038,14 @@ class PrinterStateReasons(Question):
 
     def display (self):
         troubleshooter = self.troubleshooter
-        if troubleshooter.answers['is_cups_class']:
-            queue = troubleshooter.answers['cups_class_dict']
-        else:
-            queue = troubleshooter.answers['cups_printer_dict']
+        queue = troubleshooter.answers['cups_queue']
+        c = cups.Connection ()
+        dict = c.getPrinterAttributes (queue)
 
-        state_message = queue['printer-state-message']
+        state_message = dict['printer-state-message']
         self.state_message_label.set_text (state_message)
 
-        state_reasons_list = queue['printer-state-reasons']
+        state_reasons_list = dict['printer-state-reasons']
         state_reasons = reduce (lambda x, y: x + "\n" + y,
                                 state_reasons_list)
         self.state_reasons_label.set_text (state_reasons)
@@ -1152,6 +1151,8 @@ class CheckPrinterSanity(Question):
         QueueRejectingJobs (self.troubleshooter)
         PrinterStateReasons (self.troubleshooter)
         PrintTestPage (self.troubleshooter)
+        # Look at the state reasons after printing the test page.
+        PrinterStateReasons (self.troubleshooter)
 
     def display (self):
         # Collect information useful for the various checks.
