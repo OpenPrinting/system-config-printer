@@ -1070,7 +1070,7 @@ class QueueRejectingJobs(Question):
         self.label.set_line_wrap (True)
         solution.pack_start (self.label, False, False, 0)
         solution.set_border_width (12)
-        
+
         troubleshooter.new_page (solution, self)
 
     def display (self):
