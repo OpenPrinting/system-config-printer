@@ -775,6 +775,9 @@ class PrinterNotListed(Question):
         self.answers['cups_connection_failure'] = failure
         return failure
 
+    def can_click_forward (self):
+        return False
+
     def collect_answer (self):
         return self.answers
 
@@ -1251,6 +1254,8 @@ class ChoosePrinter(Question):
         except cups.HTTPError:
             pass
         except cups.IPPError:
+            pass
+        except RuntimeError:
             pass
 
         return True
