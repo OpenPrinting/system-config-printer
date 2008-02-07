@@ -46,6 +46,57 @@ TEXT_start_print_admin_tool = _("To start this tool, select "
                                 "System->Administration->Printing "
                                 "from the main menu.")
 
+class AuthenticationDialog:
+    def __init__ (self, parent=None):
+        self.parent = parent
+        cups.setPasswordCB (self.callback)
+
+    def callback (self, prompt):
+        dialog = gtk.Dialog (_("Authentication"),
+                             self.parent,
+                             gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
+                             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                              gtk.STOCK_OK, gtk.RESPONSE_OK))
+        dialog.set_default_response (gtk.RESPONSE_OK)
+        dialog.set_border_width (6)
+        dialog.set_resizable (False)
+        hbox = gtk.HBox (False, 12)
+        hbox.set_border_width (6)
+        image = gtk.Image ()
+        image.set_from_stock ('gtk-dialog-authentication', gtk.ICON_SIZE_DIALOG)
+        hbox.pack_start (image, False, False, 0)
+        vbox = gtk.VBox (False, 12)
+        label = gtk.Label ('<span weight="bold" size="larger">' +
+                           _("Password required") + '</span>\n\n' + prompt)
+        label.set_use_markup (True)
+        label.set_alignment (0, 0)
+        vbox.pack_start (label, False, False, 0)
+        hbox.pack_start (vbox, False, False, 0)
+
+        box = gtk.HBox (False, 6)
+        vbox.pack_start (box, False, False, 0)
+        box.pack_start (gtk.Label (_("Password:")), False, False, 0)
+        self.password = gtk.Entry ()
+        self.password.set_activates_default (True)
+        self.password.set_visibility (False)
+        box.pack_start (self.password, False, False, 0)
+
+        dialog.vbox.pack_start (hbox, True, True, 0)
+        dialog.show_all ()
+        response = dialog.run ()
+        dialog.hide ()
+        if response != gtk.RESPONSE_OK:
+            # Give up.
+            return ''
+
+        self.last_password = self.password.get_text ()
+        if self.username.get_text () != cups.getUser ():
+            # Switch to another username for this action.
+            print "Switch"
+            cups.setUser (self.username.get_text ())
+            self.need_reconnect = True
+            return ''
+
 class Troubleshooter:
     def __init__ (self, quitfn=None):
         main = gtk.Window ()
