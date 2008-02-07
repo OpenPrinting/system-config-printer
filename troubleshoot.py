@@ -804,15 +804,15 @@ class PrintTestPage(Question):
         label.set_use_markup (True)
         page.pack_start (label, False, False, 0)
 
-        hbox = gtk.HBox ()
-        hbox.set_spacing (12)
-        self.button = gtk.Button (_("Print Test Page"))
-        hbox.pack_start (self.button, False, False, 0)
+        hbox = gtk.HButtonBox ()
+        hbox.set_border_width (6)
+        hbox.set_spacing (3)
+        hbox.set_layout (gtk.BUTTONBOX_SPREAD)
+        self.print_button = gtk.Button (_("Print Test Page"))
+        hbox.pack_start (self.print_button, False, False, 0)
 
-        label = gtk.Label (_("Click the button to print a test page."))
-        label.set_line_wrap (True)
-        label.set_alignment (0, 0.5)
-        hbox.pack_start (label, False, False, 0)
+        self.cancel_button = gtk.Button (_("Cancel All Jobs"))
+        hbox.pack_start (self.cancel_button, False, False, 0)
         page.pack_start (hbox, False, False, 0)
 
         tv = gtk.TreeView ()
@@ -913,7 +913,7 @@ class PrintTestPage(Question):
 
         return True
 
-    def clicked (self, widget, handler):
+    def print_clicked (self, widget):
         self.persistent_answers['test_page_attempted'] = True
         answers = self.troubleshooter.answers
         c = cups.Connection ()
@@ -922,10 +922,21 @@ class PrintTestPage(Question):
         jobs.append (jobid)
         self.persistent_answers['test_page_job_id'] = jobs
 
+    def cancel_clicked (self, widget):
+        self.persistent_answers['test_page_jobs_cancelled'] = True
+        c = cups.Connection ()
+        for jobid, iter in self.job_to_iter.iteritems ():
+            try:
+                c.cancelJob (jobid)
+            except cups.IPPError, (e, s):
+                if e != cups.IPP_NOT_POSSIBLE:
+                    raise
+
     def connect_signals (self, handler):
-        self.signal_id = self.button.connect ("clicked",
-                                              lambda x: self.
-                                              clicked (x, handler))
+        self.print_sigid = self.print_button.connect ("clicked",
+                                                      self.print_clicked)
+        self.cancel_sigid = self.cancel_button.connect ("clicked",
+                                                        self.cancel_clicked)
 
         cups.setServer ('')
         c = cups.Connection ()
@@ -939,7 +950,8 @@ class PrintTestPage(Question):
         self.timer = gobject.timeout_add (1000, self.update_jobs_list)
 
     def disconnect_signals (self):
-        self.button.disconnect (self.signal_id)
+        self.print_button.disconnect (self.print_sigid)
+        self.cancel_button.disconnect (self.cancel_sigid)
         c = cups.Connection ()
         c.cancelSubscription (self.sub_id)
         try:
@@ -967,11 +979,6 @@ class PrintTestPage(Question):
         return self.answers
 
     def update_jobs_list (self):
-        try:
-            jobs = self.persistent_answers['test_page_job_id']
-        except KeyError:
-            return True
-
         c = cups.Connection ()
         try:
             notifications = c.getNotifications ([self.sub_id],
@@ -999,7 +1006,7 @@ class PrintTestPage(Question):
 
             iter = self.job_to_iter[job]
             model.set_value (iter, 0, job)
-            model.set_value (iter, 1, event['printer-name'])
+            model.set_value (iter, 1, event.get('printer-name', ''))
             model.set_value (iter, 2, event['job-name'])
             jstate = event['job-state']
             s = int (jstate)
