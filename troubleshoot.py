@@ -856,9 +856,9 @@ class PrintTestPage(Question):
         page.pack_start (label, False, False, 0)
 
         hbox = gtk.HButtonBox ()
-        hbox.set_border_width (6)
+        hbox.set_border_width (0)
         hbox.set_spacing (3)
-        hbox.set_layout (gtk.BUTTONBOX_SPREAD)
+        hbox.set_layout (gtk.BUTTONBOX_START)
         self.print_button = gtk.Button (_("Print Test Page"))
         hbox.pack_start (self.print_button, False, False, 0)
 
@@ -1054,13 +1054,14 @@ class PrintTestPage(Question):
         answers = self.troubleshooter.answers
         model = self.treeview.get_model ()
         queue = answers['cups_queue']
+        test_jobs = self.persistent_answers.get('test_page_job_id', [])
         for event in notifications['events']:
             self.sub_seq = event['notify-sequence-number']
             job = event['notify-job-id']
 
             nse = event['notify-subscribed-event']
             if nse == 'job-created':
-                if (job in self.persistent_answers.get('test_page_job_id',[]) or
+                if (job in test_jobs or
                     event['printer-name'] == queue):
                     iter = model.append (None)
                     self.job_to_iter[job] = iter
@@ -1069,6 +1070,12 @@ class PrintTestPage(Question):
                     continue
             elif not self.job_to_iter.has_key (job):
                 continue
+
+            if (job in test_jobs and
+                nse in ["job-stopped", "job-completed"]):
+                comp = self.persistent_answers.get ('test_page_completions', [])
+                comp.append ((job, event['notify-text']))
+                self.persistent_answers['test_page_completions'] = comp
 
             self.update_job (job, event)
         return True
