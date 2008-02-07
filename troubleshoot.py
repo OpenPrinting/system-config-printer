@@ -858,6 +858,25 @@ class PrintTestPage(Question):
         self.persistent_answers = {}
         troubleshooter.new_page (page, self)
 
+    def update_job (self, jobid, job_dict):
+        iter = self.job_to_iter[jobid]
+        model = self.treeview.get_model ()
+        try:
+            printer_name = job_dict['printer-name']
+        except KeyError:
+            try:
+                uri = job_dict['job-printer-uri']
+                r = uri.rfind ('/')
+                printer_name = uri[r + 1:]
+            except KeyError:
+                printer_name = None
+
+        if printer_name != None:
+            model.set_value (iter, 1, printer_name)
+
+        model.set_value (iter, 2, job_dict['job-name'])
+        model.set_value (iter, 3, self.STATE[job_dict['job-state']])
+
     def display (self):
         if not self.troubleshooter.answers.has_key ('cups_queue'):
             return False
@@ -904,12 +923,7 @@ class PrintTestPage(Question):
             iter = model.append (None)
             self.job_to_iter[job] = iter
             model.set_value (iter, 0, job)
-            uri = j['job-printer-uri']
-            r = uri.rfind ('/')
-            name = uri[r + 1:]
-            model.set_value (iter, 1, name)
-            model.set_value (iter, 2, j['job-name'])
-            model.set_value (iter, 3, self.STATE[j['job-state']])
+            self.update_job (job, j)
 
         return True
 
@@ -995,23 +1009,17 @@ class PrintTestPage(Question):
 
             nse = event['notify-subscribed-event']
             if nse == 'job-created':
-                if (job in self.persistent_answers['test_page_job_id'] or
+                if (job in self.persistent_answers.get('test_page_job_id',[]) or
                     event['printer-name'] == queue):
                     iter = model.append (None)
                     self.job_to_iter[job] = iter
+                    model.set_value (iter, 0, job)
                 else:
                     continue
             elif not self.job_to_iter.has_key (job):
                 continue
 
-            iter = self.job_to_iter[job]
-            model.set_value (iter, 0, job)
-            model.set_value (iter, 1, event.get('printer-name', ''))
-            model.set_value (iter, 2, event['job-name'])
-            jstate = event['job-state']
-            s = int (jstate)
-            state = self.STATE[s]
-            model.set_value (iter, 3, state)
+            self.update_job (job, event)
         return True
 
 class PrinterStateReasons(Question):
