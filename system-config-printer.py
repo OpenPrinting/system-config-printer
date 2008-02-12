@@ -2625,23 +2625,6 @@ class NewPrinterGUI(GtkGUI):
             order = [0, 4, 5]
         elif self.dialog_mode == "printer":
             self.busy (self.NewPrinterWindow)
-            remotecupsqueue = None
-            if self.device.uri:
-                res = re.search ("ipp://(\S+(:\d+|))/printers/(\S+)", \
-                                  self.device.uri)
-                # Try to access the PPD, in this case our detected IPP
-                # printer is a queue on a remote CUPS server which is
-                # not automatically set up on our local CUPS server
-                # (for example DNS-SD broadcasted queue from Mac OS X)
-                if res:
-                    resg = res.groups()
-                    try:
-                        conn = httplib.HTTPConnection(resg[0])
-                        conn.request("GET", "/printers/%s.ppd" % resg[2])
-                        resp = conn.getresponse()
-                        if resp.status == 200: remotecupsqueue = resg[2]
-                    except:
-                        pass
             if page_nr == 1: # Device (first page)
                 # Choose an appropriate name.
                 name = 'printer'
@@ -2672,14 +2655,31 @@ class NewPrinterGUI(GtkGUI):
                 uri = self.device.uri
                 if uri and uri.startswith ("smb://"):
                     uri = SMBURI (uri=uri[6:]).sanitize_uri ()
+
+                # Try to access the PPD, in this case our detected IPP
+                # printer is a queue on a remote CUPS server which is
+                # not automatically set up on our local CUPS server
+                # (for example DNS-SD broadcasted queue from Mac OS X)
+                self.remotecupsqueue = None
+                res = re.search ("ipp://(\S+(:\d+|))/printers/(\S+)", uri)
+                if res:
+                    resg = res.groups()
+                    try:
+                        conn = httplib.HTTPConnection(resg[0])
+                        conn.request("GET", "/printers/%s.ppd" % resg[2])
+                        resp = conn.getresponse()
+                        if resp.status == 200: self.remotecupsqueue = resg[2]
+                    except:
+                        pass
+
                 ppdname = None
                 try:
-                    if remotecupsqueue:
+                    if self.remotecupsqueue:
                         # We have a remote CUPS queue, let the client queue
                         # stay raw so that the driver on the server gets used
                         ppdname = 'raw'
                         self.ppd = ppdname
-                        name = remotecupsqueue
+                        name = self.remotecupsqueue
                         name = self.mainapp.makeNameUnique (name)
                         self.entNPName.set_text (name)
                     elif self.device.id:
@@ -2723,7 +2723,7 @@ class NewPrinterGUI(GtkGUI):
                         nonfatalException ()
 
             self.ready (self.NewPrinterWindow)
-            if remotecupsqueue:
+            if self.remotecupsqueue:
                 order = [1, 0]
             elif self.rbtnNPFoomatic.get_active():
                 order = [1, 2, 3, 6, 0]
