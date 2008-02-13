@@ -1215,11 +1215,18 @@ class QueueNotEnabled(Question):
         if enabled:
             return False
 
+        reason = queue['printer-state-message']
+        if reason:
+            reason = _("The reason given is: `%s'.") % reason
+        else:
+            reason = _("This may be due to the printer being disconnected or "
+                       "switched off.")
+
         text = ('<span weight="bold" size="larger">' +
                 _("Queue Not Enabled") + '</span>\n\n' +
                 _("The queue `%s' is not enabled.") %
-                troubleshooter.answers['cups_queue'] +
-                '\n\n' +
+                troubleshooter.answers['cups_queue'] + ' ' +
+                reason + '\n\n' +
                 _("To enable it, select the `Enabled' checkbox in the "
                   "`Policies' tab for the printer in the printer "
                   "administration tool."))
