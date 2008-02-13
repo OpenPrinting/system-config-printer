@@ -8,19 +8,19 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-02-04 18:14+0000\n"
+"POT-Creation-Date: 2008-02-13 18:09+0000\n"
 "PO-Revision-Date: 2008-02-04 18:18+0000\n"
 "Last-Translator: Tim Waugh <twaugh@redhat.com>\n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
 
 #: ../cupshelpers.py:33
 msgid "Idle"
 msgstr "Idle"
 
-#: ../cupshelpers.py:34 ../troubleshoot.py:785 ../applet.py:731
+#: ../cupshelpers.py:34 ../troubleshoot.py:872 ../applet.py:731
 msgid "Processing"
 msgstr "Processing"
 
@@ -28,36 +28,36 @@ msgstr "Processing"
 msgid "Busy"
 msgstr "Busy"
 
-#: ../cupshelpers.py:36 ../troubleshoot.py:786 ../applet.py:732
+#: ../cupshelpers.py:36 ../troubleshoot.py:873 ../applet.py:732
 msgid "Stopped"
 msgstr "Stopped"
 
-#: ../cupshelpers.py:53 ../troubleshoot.py:578 ../troubleshoot.py:579
-#: ../troubleshoot.py:582 ../troubleshoot.py:583 ../troubleshoot.py:1204
-#: ../troubleshoot.py:1205 ../troubleshoot.py:1208 ../troubleshoot.py:1209
+#: ../cupshelpers.py:53 ../troubleshoot.py:648 ../troubleshoot.py:649
+#: ../troubleshoot.py:652 ../troubleshoot.py:653 ../troubleshoot.py:1415
+#: ../troubleshoot.py:1416 ../troubleshoot.py:1419 ../troubleshoot.py:1420
 #: ../applet.py:741
 msgid "Unknown"
 msgstr "Unknown"
 
-#: ../my-default-printer.py:128 ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:136 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
 msgstr "Default Printer"
 
-#: ../my-default-printer.py:132 ../my-default-printer.py:163
+#: ../my-default-printer.py:140 ../my-default-printer.py:171
 msgid "_Use System Default"
 msgstr "_Use System Default"
 
-#: ../my-default-printer.py:133 ../my-default-printer.py:165
+#: ../my-default-printer.py:141 ../my-default-printer.py:173
 msgid "_Set Default"
 msgstr "_Set Default"
 
-#: ../my-default-printer.py:143 ../troubleshoot.py:816 ../applet.py:186
+#: ../my-default-printer.py:151 ../troubleshoot.py:904 ../applet.py:186
 #: ../applet.py:226
 msgid "Printer"
 msgstr "Printer"
 
-#: ../my-default-printer.py:147 ../system-config-printer.py:2373
-#: ../troubleshoot.py:525 ../troubleshoot.py:1161
+#: ../my-default-printer.py:155 ../system-config-printer.py:2373
+#: ../troubleshoot.py:592 ../troubleshoot.py:1368
 msgid "Location"
 msgstr "Location"
 
@@ -280,7 +280,7 @@ msgid "Cancel Tests"
 msgstr "Cancel Tests"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1836 ../troubleshoot.py:805
+#: ../system-config-printer.py:1836 ../troubleshoot.py:894
 #: ../system-config-printer.glade.h:208
 msgid "Print Test Page"
 msgstr "Print Test Page"
@@ -526,7 +526,7 @@ msgstr ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
 "Please install it before using this printer."
 
-#: ../troubleshoot.py:44
+#: ../troubleshoot.py:46
 msgid ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
@@ -534,15 +534,30 @@ msgstr ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
 
-#: ../troubleshoot.py:51
+#: ../troubleshoot.py:56
+#, fuzzy
+msgid "Authentication"
+msgstr "Authentication required"
+
+#: ../troubleshoot.py:71
+#, fuzzy
+msgid "Password required"
+msgstr "Upgrade required"
+
+#: ../troubleshoot.py:79 ../system-config-printer.glade.h:195
+#: ../applet.glade.h:5
+msgid "Password:"
+msgstr "Password:"
+
+#: ../troubleshoot.py:104
 msgid "Printing troubleshooter"
 msgstr "Printing troubleshooter"
 
-#: ../troubleshoot.py:348
+#: ../troubleshoot.py:401
 msgid "Trouble-shooting Printing"
 msgstr "Trouble-shooting Printing"
 
-#: ../troubleshoot.py:350
+#: ../troubleshoot.py:403
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
@@ -550,15 +565,15 @@ msgstr ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
 
-#: ../troubleshoot.py:354
+#: ../troubleshoot.py:407
 msgid "Click 'Forward' to begin."
 msgstr "Click 'Forward' to begin."
 
-#: ../troubleshoot.py:365
+#: ../troubleshoot.py:418
 msgid "Sorry!"
 msgstr "Sorry!"
 
-#: ../troubleshoot.py:366
+#: ../troubleshoot.py:419
 msgid ""
 "I have not been able to work out what the problem is, but I have collected "
 "some useful information to put in a bug report."
@@ -566,35 +581,44 @@ msgstr ""
 "I have not been able to work out what the problem is, but I have collected "
 "some useful information to put in a bug report."
 
-#: ../troubleshoot.py:435
+#: ../troubleshoot.py:488
 msgid "Queue Not Accepting Jobs"
 msgstr "Queue Not Accepting Jobs"
 
-#: ../troubleshoot.py:436
+#: ../troubleshoot.py:489
 msgid "The CUPS printer on the server is not accepting jobs."
 msgstr "The CUPS printer on the server is not accepting jobs."
 
-#: ../troubleshoot.py:460 ../troubleshoot.py:1095
+#: ../troubleshoot.py:513 ../troubleshoot.py:1259
 msgid "Queue Not Enabled"
 msgstr "Queue Not Enabled"
 
-#: ../troubleshoot.py:461
+#: ../troubleshoot.py:514
 msgid "The CUPS printer on the server is not enabled."
 msgstr "The CUPS printer on the server is not enabled."
 
-#: ../troubleshoot.py:482
+#: ../troubleshoot.py:531 ../troubleshoot.py:1253
+#, fuzzy, python-format
+msgid "The reason given is: `%s'."
+msgstr " The reason given is: `%s'."
+
+#: ../troubleshoot.py:533 ../troubleshoot.py:1255
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr ""
+
+#: ../troubleshoot.py:549
 msgid "Queue Not Shared"
 msgstr "Queue Not Shared"
 
-#: ../troubleshoot.py:483
+#: ../troubleshoot.py:550
 msgid "The CUPS printer on the server is not shared."
 msgstr "The CUPS printer on the server is not shared."
 
-#: ../troubleshoot.py:517
+#: ../troubleshoot.py:584
 msgid "Choose Network Printer"
 msgstr "Choose Network Printer"
 
-#: ../troubleshoot.py:518
+#: ../troubleshoot.py:585
 msgid ""
 "Please select the network printer you are trying to use from the list below. "
 "If it does not appear in the list, select 'Not listed'."
@@ -602,23 +626,23 @@ msgstr ""
 "Please select the network printer you are trying to use from the list below. "
 "If it does not appear in the list, select 'Not listed'."
 
-#: ../troubleshoot.py:523 ../troubleshoot.py:1159
+#: ../troubleshoot.py:590 ../troubleshoot.py:1366
 msgid "Name"
 msgstr "Name"
 
-#: ../troubleshoot.py:527 ../troubleshoot.py:1163
+#: ../troubleshoot.py:594 ../troubleshoot.py:1370
 msgid "Information"
 msgstr "Information"
 
-#: ../troubleshoot.py:560 ../troubleshoot.py:1187
+#: ../troubleshoot.py:627 ../troubleshoot.py:1394
 msgid "Not listed"
 msgstr "Not listed"
 
-#: ../troubleshoot.py:707
+#: ../troubleshoot.py:788
 msgid "Remote Address"
 msgstr "Remote Address"
 
-#: ../troubleshoot.py:708
+#: ../troubleshoot.py:789
 msgid ""
 "Please enter as many details as you can about the network address of this "
 "printer."
@@ -626,35 +650,35 @@ msgstr ""
 "Please enter as many details as you can about the network address of this "
 "printer."
 
-#: ../troubleshoot.py:716
+#: ../troubleshoot.py:797
 msgid "Server name:"
 msgstr "Server name:"
 
-#: ../troubleshoot.py:722
+#: ../troubleshoot.py:803
 msgid "Server IP address:"
 msgstr "Server IP address:"
 
-#: ../troubleshoot.py:740
+#: ../troubleshoot.py:824
 msgid "Printer Location"
 msgstr "Printer Location"
 
-#: ../troubleshoot.py:741
+#: ../troubleshoot.py:825
 msgid "Is the printer connected to this computer or available on the network?"
 msgstr "Is the printer connected to this computer or available on the network?"
 
-#: ../troubleshoot.py:743
+#: ../troubleshoot.py:827
 msgid "Locally connected printer"
 msgstr "Locally connected printer"
 
-#: ../troubleshoot.py:744
+#: ../troubleshoot.py:828
 msgid "Network printer"
 msgstr "Network printer"
 
-#: ../troubleshoot.py:756
+#: ../troubleshoot.py:840
 msgid "CUPS Service Stopped"
 msgstr "CUPS Service Stopped"
 
-#: ../troubleshoot.py:757
+#: ../troubleshoot.py:841
 msgid ""
 "The CUPS print spooler does not appear to be running.  To correct this, "
 "choose System->Administration->Services from the main menu and look for the "
@@ -664,85 +688,89 @@ msgstr ""
 "choose System->Administration->Services from the main menu and look for the "
 "`cups' service."
 
-#: ../troubleshoot.py:783 ../applet.py:729
+#: ../troubleshoot.py:870 ../applet.py:729
 msgid "Pending"
 msgstr "Pending"
 
-#: ../troubleshoot.py:784 ../applet.py:730
+#: ../troubleshoot.py:871 ../applet.py:730
 msgid "Held"
 msgstr "Held"
 
-#: ../troubleshoot.py:787 ../applet.py:733
+#: ../troubleshoot.py:874 ../applet.py:733
 msgid "Canceled"
 msgstr "Cancelled"
 
-#: ../troubleshoot.py:788 ../applet.py:734
+#: ../troubleshoot.py:875 ../applet.py:734
 msgid "Aborted"
 msgstr "Aborted"
 
-#: ../troubleshoot.py:789 ../applet.py:735
+#: ../troubleshoot.py:876 ../applet.py:735
 msgid "Completed"
 msgstr "Completed"
 
-#: ../troubleshoot.py:798
+#: ../troubleshoot.py:885
 msgid "Test Page"
 msgstr "Test Page"
 
-#: ../troubleshoot.py:808
-msgid "Click the button to print a test page."
-msgstr "Click the button to print a test page."
+#: ../troubleshoot.py:897
+msgid "Cancel All Jobs"
+msgstr ""
 
-#: ../troubleshoot.py:815 ../applet.py:184
+#: ../troubleshoot.py:902 ../applet.py:184
 msgid "Job"
 msgstr "Job"
 
-#: ../troubleshoot.py:818 ../applet.py:189
+#: ../troubleshoot.py:906 ../applet.py:185
+msgid "Document"
+msgstr "Document"
+
+#: ../troubleshoot.py:907 ../applet.py:189
 msgid "Status"
 msgstr "Status"
 
-#: ../troubleshoot.py:833
+#: ../troubleshoot.py:928
 msgid "Did the test page print correctly?"
 msgstr "Did the test page print correctly?"
 
-#: ../troubleshoot.py:840
+#: ../troubleshoot.py:935
 msgid "Yes"
 msgstr "Yes"
 
-#: ../troubleshoot.py:841
+#: ../troubleshoot.py:936
 msgid "No"
 msgstr "No"
 
-#: ../troubleshoot.py:977
+#: ../troubleshoot.py:1118
 msgid "Status Messages"
 msgstr "Status Messages"
 
-#: ../troubleshoot.py:978
+#: ../troubleshoot.py:1119
 msgid "There are status messages associated with this queue."
 msgstr "There are status messages associated with this queue."
 
-#: ../troubleshoot.py:984
+#: ../troubleshoot.py:1125
 msgid "Printer's state message:"
 msgstr "Printer's state message:"
 
-#: ../troubleshoot.py:992
+#: ../troubleshoot.py:1133
 msgid "Printer's state reasons:"
 msgstr "Printer's state reasons:"
 
-#: ../troubleshoot.py:1029
+#: ../troubleshoot.py:1186
 msgid "Queue Rejecting Jobs"
 msgstr "Queue Rejecting Jobs"
 
-#: ../troubleshoot.py:1054
+#: ../troubleshoot.py:1211
 #, python-format
 msgid "The queue `%s' is rejecting jobs."
 msgstr "The queue `%s' is rejecting jobs."
 
-#: ../troubleshoot.py:1058
+#: ../troubleshoot.py:1215
 #, python-format
 msgid " The reason given is: `%s'."
 msgstr " The reason given is: `%s'."
 
-#: ../troubleshoot.py:1061
+#: ../troubleshoot.py:1218
 msgid ""
 "To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
 "`Policies' tab for the printer in the printer administration tool."
@@ -750,12 +778,12 @@ msgstr ""
 "To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
 "`Policies' tab for the printer in the printer administration tool."
 
-#: ../troubleshoot.py:1096
+#: ../troubleshoot.py:1260
 #, python-format
 msgid "The queue `%s' is not enabled."
 msgstr "The queue `%s' is not enabled."
 
-#: ../troubleshoot.py:1099
+#: ../troubleshoot.py:1263
 msgid ""
 "To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
 "printer in the printer administration tool."
@@ -763,11 +791,27 @@ msgstr ""
 "To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
 "printer in the printer administration tool."
 
-#: ../troubleshoot.py:1153
+#: ../troubleshoot.py:1278
+msgid "Check Server Firewall"
+msgstr ""
+
+#: ../troubleshoot.py:1279
+#, fuzzy
+msgid "It is not possible to connect to the server."
+msgstr "There was a problem connecting to the CUPS server."
+
+#: ../troubleshoot.py:1292
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server `%s'."
+msgstr ""
+
+#: ../troubleshoot.py:1360
 msgid "Choose Printer"
 msgstr "Choose Printer"
 
-#: ../troubleshoot.py:1154
+#: ../troubleshoot.py:1361
 msgid ""
 "Please select the printer you are trying to use from the list below. If it "
 "does not appear in the list, select 'Not listed'."
@@ -1422,10 +1466,6 @@ msgstr "Pages per side:"
 msgid "Parity"
 msgstr "Parity"
 
-#: ../system-config-printer.glade.h:195 ../applet.glade.h:5
-msgid "Password:"
-msgstr "Password:"
-
 #: ../system-config-printer.glade.h:196
 msgid "Please Wait"
 msgstr "Please Wait"
@@ -1894,10 +1934,6 @@ msgstr "Printer error"
 msgid "Printer '%s': '%s'."
 msgstr "Printer '%s': '%s'."
 
-#: ../applet.py:185
-msgid "Document"
-msgstr "Document"
-
 #: ../applet.py:187
 msgid "Size"
 msgstr "Size"
@@ -2059,6 +2095,9 @@ msgstr "Manage Print Jobs"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Select default printer"
+
+#~ msgid "Click the button to print a test page."
+#~ msgstr "Click the button to print a test page."
 
 #~ msgid "No License"
 #~ msgstr "No License"
