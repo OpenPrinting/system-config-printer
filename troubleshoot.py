@@ -769,6 +769,13 @@ class CheckNetworkPrinterSanity(Question):
 
                 self.answers['remote_server_cups'] = cups_server
 
+                if cups_server and answers.get ('cups_queue', False):
+                    try:
+                        attr = c.getPrinterAttributes (answers['cups_queue'])
+                        self.answers['remote_cups_queue_attributes'] = attr
+                    except:
+                        pass
+
         # Try traceroute if we haven't already.
         if not answers.has_key ('remote_server_traceroute'):
             p = subprocess.Popen (['traceroute', '-w', '1', server_name],
@@ -1446,7 +1453,6 @@ class ChoosePrinter(Question):
                 Shrug (self.troubleshooter)
             else:
                 CheckPrinterSanity (self.troubleshooter)
-                CheckNetworkPrinterSanity (self.troubleshooter)
                 Shrug (self.troubleshooter)
 
         handler (widget)
