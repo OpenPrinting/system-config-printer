@@ -28,6 +28,7 @@ import socket
 import subprocess
 import sys
 import traceback
+import urllib
 from gettext import gettext as _
 
 if __name__ == "__main__":
@@ -700,11 +701,16 @@ class CheckNetworkPrinterSanity(Question):
 
         self.answers = {}
         answers = self.troubleshooter.answers
+        if (not answers.has_key ('remote_server_name') and
+            not answers.has_key ('remote_server_ip_address')):
+            return False
+
         server_name = answers['remote_server_name']
+        server_port = answers.get('remote_server_port', 631)
         if server_name:
             # Try resolving the hostname.
             try:
-                ai = socket.getaddrinfo (server_name, 631)
+                ai = socket.getaddrinfo (server_name, server_port)
                 resolves = map (lambda (family, socktype,
                                         proto, canonname, sockaddr):
                                     sockaddr[0], ai)
@@ -713,7 +719,7 @@ class CheckNetworkPrinterSanity(Question):
 
             self.answers['remote_server_name_resolves'] = resolves
 
-            ipaddr = answers['remote_server_ip_address']
+            ipaddr = answers.get ('remote_server_ip_address', '')
             if ipaddr:
                 try:
                     resolves.index (ipaddr)
@@ -726,14 +732,17 @@ class CheckNetworkPrinterSanity(Question):
 
         self.answers['remote_server_try_connect'] = server_name
 
-        try:
-            cups.setServer (server_name)
-            c = cups.Connection ()
-            ipp_connect = True
-        except RuntimeError:
-            ipp_connect = False
+        if (answers.has_key ('cups_device_uri_scheme') and
+            answers['cups_device_uri_scheme'] == "ipp"):
+            try:
+                cups.setServer (server_name)
+                cups.setPort (server_port)
+                c = cups.Connection ()
+                ipp_connect = True
+            except RuntimeError:
+                ipp_connect = False
 
-        self.answers['remote_server_connect_ipp'] = ipp_connect
+            self.answers['remote_server_connect_ipp'] = ipp_connect
 
         if ipp_connect:
             try:
@@ -744,12 +753,13 @@ class CheckNetworkPrinterSanity(Question):
 
             self.answers['remote_server_cups'] = cups_server
 
-        # Try traceroute.
-        p = subprocess.Popen (['traceroute', '-w', '1', server_name],
-                              stdout=subprocess.PIPE,
-                              stderr=subprocess.PIPE)
-        (stdout, stderr) = p.communicate ()
-        self.answers['traceroute_output'] = (stdout, stderr)
+        # Try traceroute if we haven't already.
+        if not answers.has_key ('remote_server_traceroute'):
+            p = subprocess.Popen (['traceroute', '-w', '1', server_name],
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE)
+            (stdout, stderr) = p.communicate ()
+            self.answers['remote_server_traceroute'] = (stdout, stderr)
 
         return False
 
@@ -1115,6 +1125,7 @@ class PrinterStateReasons(Question):
     def display (self):
         troubleshooter = self.troubleshooter
         queue = troubleshooter.answers['cups_queue']
+        cups.setServer ('')
         c = cups.Connection ()
         dict = c.getPrinterAttributes (queue)
 
@@ -1242,6 +1253,34 @@ class QueueNotEnabled(Question):
     def can_click_forward (self):
         return False
 
+class ServerFirewalled(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Server firewalled")
+        page = self.initial_vbox (_("Check Server Firewall"),
+                                   _("It is not possible to connect to the "
+                                     "server."))
+        self.label = gtk.Label ()
+        self.label.set_alignment (0, 0)
+        self.label.set_line_wrap (True)
+        page.pack_start (self.label)
+        troubleshooter.new_page (page, self)
+
+    def display (self):
+        answers = self.troubleshooter.answers
+        if (answers.get ('cups_queue_listed', False) and
+            answers.has_key ('remote_server_connect_ipp') and
+            answers['remote_server_connect_ipp'] == False):
+            self.label.set_text (_("Please check to see if a firewall or "
+                                   "router configuration is blocking TCP "
+                                   "port %d on server `%s'.")
+                                 % (answers['remote_server_port'],
+                                    answers['remote_server_try_connect']))
+            return True
+        return False
+
+    def can_click_forward (self):
+        return False
+
 class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check printer sanity")
@@ -1249,6 +1288,8 @@ class CheckPrinterSanity(Question):
         QueueNotEnabled (self.troubleshooter)
         QueueRejectingJobs (self.troubleshooter)
         PrinterStateReasons (self.troubleshooter)
+        CheckNetworkPrinterSanity (self.troubleshooter)
+        ServerFirewalled (self.troubleshooter)
         PrintTestPage (self.troubleshooter)
         # Look at the state reasons after printing the test page.
         PrinterStateReasons (self.troubleshooter)
@@ -1259,7 +1300,8 @@ class CheckPrinterSanity(Question):
         self.answers = {}
 
         # Find out if this is a printer or a class.
-        name = self.troubleshooter.answers['cups_queue']
+        answers = self.troubleshooter.answers
+        name = answers['cups_queue']
         try:
             c = cups.Connection ()
             printers = c.getPrinters ()
@@ -1274,6 +1316,16 @@ class CheckPrinterSanity(Question):
                 self.answers['cups_class_dict'] = queue
         except:
             pass
+
+        if self.answers.has_key ('cups_printer_dict'):
+            uri = self.answers['cups_printer_dict']['device-uri']
+            (scheme, rest) = urllib.splittype (uri)
+            self.answers['cups_device_uri_scheme'] = scheme
+            if scheme in ["ipp"]:
+                (hostport, rest) = urllib.splithost (rest)
+                (host, port) = urllib.splitnport (hostport, defport=631)
+                self.answers['remote_server_name'] = host
+                self.answers['remote_server_port'] = port
 
         return False
 
@@ -1323,6 +1375,7 @@ class ChoosePrinter(Question):
         model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
 
         try:
+            cups.setServer ('')
             c = cups.Connection ()
             dests = c.getDests ()
             printers = None
@@ -1374,6 +1427,7 @@ class ChoosePrinter(Question):
                 Shrug (self.troubleshooter)
             else:
                 CheckPrinterSanity (self.troubleshooter)
+                CheckNetworkPrinterSanity (self.troubleshooter)
                 Shrug (self.troubleshooter)
 
         handler (widget)
