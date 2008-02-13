@@ -732,8 +732,7 @@ class CheckNetworkPrinterSanity(Question):
 
         self.answers['remote_server_try_connect'] = server_name
 
-        if (answers.has_key ('cups_device_uri_scheme') and
-            answers['cups_device_uri_scheme'] == "ipp"):
+        if answers.get ('cups_device_uri_scheme', 'ipp'):
             try:
                 cups.setServer (server_name)
                 cups.setPort (server_port)
