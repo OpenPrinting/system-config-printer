@@ -618,6 +618,9 @@ class ChooseNetworkPrinter(Question):
             printers = None
             dests_list = []
             for (name, instance), dest in dests.iteritems ():
+                if name == None:
+                    continue
+
                 if instance != None:
                     queue = "%s/%s" % (name, instance)
                 else:
@@ -1325,6 +1328,9 @@ class ChoosePrinter(Question):
             printers = None
             dests_list = []
             for (name, instance), dest in dests.iteritems ():
+                if name == None:
+                    continue
+
                 if instance != None:
                     queue = "%s/%s" % (name, instance)
                 else:
