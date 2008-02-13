@@ -744,12 +744,12 @@ class CheckNetworkPrinterSanity(Question):
 
             self.answers['remote_server_connect_ipp'] = ipp_connect
 
-        if ipp_connect:
-            try:
-                c.getPrinters ()
-                cups_server = True
-            except:
-                cups_server = False
+            if ipp_connect:
+                try:
+                    c.getPrinters ()
+                    cups_server = True
+                except:
+                    cups_server = False
 
             self.answers['remote_server_cups'] = cups_server
 
