@@ -2,8 +2,8 @@
 
 ## my-default-printer
 
-## Copyright (C) 2006, 2007 Red Hat, Inc.
-## Copyright (C) 2007 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -106,6 +106,9 @@ class Server:
 
     def getUserDefault (self):
         dests = self.cups_connection.getDests ()
+        if dests.has_key ((None, None)):
+            return dests[(None, None)].name
+
         for ((name, instance), dest) in dests.iteritems ():
             if dest.is_default:
                 return name
@@ -113,10 +116,15 @@ class Server:
         return None
 
     def getSystemDefault (self):
-        printers = self.cups_connection.getPrinters ()
-        for (name, info) in printers.iteritems ():
-            if info['printer-type'] & cups.CUPS_PRINTER_DEFAULT:
-                return name
+        try:
+            return self.cups_connection.getDefault ()
+        except AttributeError: # getDefault appeared in pycups-1.9.31
+            printers = self.cups_connection.getPrinters ()
+            for (name, info) in printers.iteritems ():
+                if info['printer-type'] & cups.CUPS_PRINTER_DEFAULT:
+                    return name
+        except:
+            pass
 
         return None
 
