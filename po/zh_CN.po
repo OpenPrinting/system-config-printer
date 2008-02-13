@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: zh_CN\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2008-02-10 09:57-0700\n"
-"PO-Revision-Date: 2008-02-13 15:58+0800\n"
+"PO-Revision-Date: 2008-02-13 16:14+0800\n"
 "Last-Translator: Liu Tao <liutao_free@sohu.com>\n"
 "Language-Team:  <zh@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -45,7 +45,7 @@ msgstr "默认打印机"
 
 #: ../my-default-printer.py:129 ../my-default-printer.py:160
 msgid "_Use System Default"
-msgstr ""
+msgstr "使用系统默认(_U)"
 
 #: ../my-default-printer.py:130 ../my-default-printer.py:162
 msgid "_Set Default"
@@ -115,11 +115,11 @@ msgstr "注解"
 
 #: ../system-config-printer.py:567 ../system-config-printer.py:2512
 msgid "Searching"
-msgstr ""
+msgstr "搜索中"
 
 #: ../system-config-printer.py:568
 msgid "Searching for drivers"
-msgstr ""
+msgstr "搜索驱动程序"
 
 #: ../system-config-printer.py:611
 #, python-format
@@ -175,9 +175,9 @@ msgid ""
 "Changes can only be applied after\n"
 "these conflicts are resolved."
 msgstr ""
-"在选项间有冲突。\n"
-"只有在冲突被解决后，改变\n"
-"才会有效。"
+"选项之间有冲突。\n"
+"只有在冲突被解决后，改动\n"
+"才会生效。"
 
 #: ../system-config-printer.py:1288 ../system-config-printer.py:1304
 #: ../applet.py:349
@@ -263,12 +263,12 @@ msgstr "远程的服务器没有接受这个打印任务，这可能是因为那
 
 #: ../system-config-printer.py:1657
 msgid "Error"
-msgstr ""
+msgstr "错误"
 
 #: ../system-config-printer.py:1658
 #, fuzzy
 msgid "There was a problem connecting to the CUPS server."
-msgstr "CUPS 操作中出现一个错误：'%s'。"
+msgstr "连接到CUPS 服务器时出现问题。"
 
 #: ../system-config-printer.py:1725
 msgid "This is the default printer"
@@ -320,7 +320,7 @@ msgstr "改变驱动"
 #: ../system-config-printer.py:2513
 #, fuzzy
 msgid "Searching for printers"
-msgstr "打印机的新名字"
+msgstr "正在搜索打印机"
 
 #: ../system-config-printer.py:2733
 msgid "Other"
@@ -423,22 +423,22 @@ msgstr "读取PPD文件错误。可能由以下原因造成："
 #: ../system-config-printer.py:3392
 #, fuzzy
 msgid "Adding"
-msgstr "正在打印"
+msgstr "添加"
 
 #: ../system-config-printer.py:3393
 #, fuzzy
 msgid "Adding printer"
-msgstr "配置打印机"
+msgstr "添加打印机"
 
 #: ../system-config-printer.py:3542
 #, fuzzy
 msgid "Install driver"
-msgstr "缺少驱动"
+msgstr "安装驱动"
 
 #: ../system-config-printer.py:3543
 #, fuzzy, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
-msgstr "打印机“%s”要求的 %s 包目前没有安装。请在使用打印机之前安装它。"
+msgstr "打印机“%s”要求的 %s 包目前没有安装。"
 
 #: ../system-config-printer.py:3550
 msgid "Missing driver"
@@ -467,7 +467,12 @@ msgid ""
 "6\n"
 "9\n"
 "16"
-msgstr ""
+msgstr "1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
 
 #: ../system-config-printer.glade.h:9
 msgid "<b>Authentication</b>"
@@ -490,9 +495,8 @@ msgid "<b>Comment about the Printer</b>"
 msgstr "<b>关于打印机的注释</b>"
 
 #: ../system-config-printer.glade.h:14
-#, fuzzy
 msgid "<b>Common Options</b>"
-msgstr "<b>选择连接</b>"
+msgstr "<b>一般选项</b>"
 
 #: ../system-config-printer.glade.h:15
 msgid "<b>Default Printer</b>"
@@ -507,14 +511,12 @@ msgid "<b>Description</b> (optional)"
 msgstr "<b>描述</b> (可选)"
 
 #: ../system-config-printer.glade.h:18
-#, fuzzy
 msgid "<b>Enter device URI</b>"
-msgstr "输入设备 URI"
+msgstr "<b>输入设备 URI</b>"
 
 #: ../system-config-printer.glade.h:19
-#, fuzzy
 msgid "<b>Image Options</b>"
-msgstr "<b>设置</b>"
+msgstr "<b>图像选项</b>"
 
 #: ../system-config-printer.glade.h:20
 msgid "<b>Information about the PPD</b>"
@@ -534,7 +536,7 @@ msgstr "<b>位置</b> (可选)"
 
 #: ../system-config-printer.glade.h:24
 msgid "<b>Other Options (Advanced)</b>"
-msgstr ""
+msgstr "<b>其它选项(高级)</b>"
 
 #: ../system-config-printer.glade.h:25
 msgid "<b>Policies</b>"
@@ -549,9 +551,8 @@ msgid "<b>Printers to be members of this Class</b>"
 msgstr "<b>属于这个 Class 成员的打印机</b>"
 
 #: ../system-config-printer.glade.h:28
-#, fuzzy
 msgid "<b>SMB Printer</b>"
-msgstr "<b>打印机名</b>"
+msgstr "<b>SMB 打印机</b>"
 
 #: ../system-config-printer.glade.h:29
 msgid "<b>Select Connection</b>"
@@ -570,9 +571,8 @@ msgid "<b>State</b>"
 msgstr "<b>状态</b>"
 
 #: ../system-config-printer.glade.h:33
-#, fuzzy
 msgid "<b>Text Options</b>"
-msgstr "<b>设置</b>"
+msgstr "<b>文本选项</b>"
 
 #: ../system-config-printer.glade.h:34
 msgid ""
@@ -590,7 +590,7 @@ msgid ""
 "\n"
 "Any changes you have made will be lost unless you apply them."
 msgstr ""
-"<span weight=\"bold\" size=\"larger\">应用改变吗？</span>\n"
+"<span weight=\"bold\" size=\"larger\">应用修改吗？</span>\n"
 "\n"
 "如果您不应用它们，您所做的改变将丢失。"
 
@@ -627,9 +627,8 @@ msgid "Allow printing for everyone except these users:"
 msgstr "允许为除以下用户外的所有用户打印："
 
 #: ../system-config-printer.glade.h:49
-#, fuzzy
 msgid "Allow printing from the Internet"
-msgstr "允许为除以下用户外的所有用户打印："
+msgstr "允许从互联网打印"
 
 #: ../system-config-printer.glade.h:50
 msgid "Allow remote administration"
@@ -653,11 +652,11 @@ msgstr "波特率"
 
 #: ../system-config-printer.glade.h:55
 msgid "Bottom margin:"
-msgstr ""
+msgstr "底边界："
 
 #: ../system-config-printer.glade.h:56
 msgid "Brightness:"
-msgstr ""
+msgstr "亮度："
 
 #: ../system-config-printer.glade.h:57
 msgid "CUPS server:"
@@ -673,16 +672,15 @@ msgstr "改变..."
 
 #: ../system-config-printer.glade.h:60
 msgid "Characters per inch:"
-msgstr ""
+msgstr "每英寸字符数："
 
 #: ../system-config-printer.glade.h:61
 msgid "Class Members"
 msgstr "Class 成员"
 
 #: ../system-config-printer.glade.h:62
-#, fuzzy
 msgid "Columns:"
-msgstr "注解："
+msgstr "列："
 
 #: ../system-config-printer.glade.h:63
 msgid "Comments: "
@@ -693,9 +691,8 @@ msgid "Connect to CUPS server"
 msgstr "连接到 CUPS 服务器"
 
 #: ../system-config-printer.glade.h:65
-#, fuzzy
 msgid "Connect to a different print server"
-msgstr "连接到 CUPS 服务器"
+msgstr "连接到另外的打印机服务器"
 
 #: ../system-config-printer.glade.h:66
 msgid "Connecting"
@@ -719,27 +716,20 @@ msgid "Copy Printer"
 msgstr "复制打印机"
 
 #: ../system-config-printer.glade.h:73
-#, fuzzy
 msgid "Copy this printer queue"
-msgstr "复制打印机"
+msgstr "复制打印机队列"
 
 #: ../system-config-printer.glade.h:74
 msgid "Copyright"
 msgstr "Copyright"
 
 #: ../system-config-printer.glade.h:75
-#, fuzzy
 msgid "Create a new printer group"
-msgstr ""
-"转到创建一个新打印机 %s\n"
-"（在 %s）。\n"
+msgstr "创建一个新打印机群组"
 
 #: ../system-config-printer.glade.h:76
-#, fuzzy
 msgid "Create a new printer queue"
-msgstr ""
-"转到创建一个新打印机 %s\n"
-"（在 %s）。\n"
+msgstr "创建一个新的打印机队列"
 
 #: ../system-config-printer.glade.h:77
 msgid "Data Bits"
@@ -805,7 +795,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:99
 msgid "Delete this printer queue"
-msgstr ""
+msgstr "删除打印机队列"
 
 #: ../system-config-printer.glade.h:100
 msgid "Deny printing for everyone except these users:"
@@ -901,7 +891,7 @@ msgstr "任务选项"
 
 #: ../system-config-printer.glade.h:124
 msgid "Job priority:"
-msgstr ""
+msgstr "任务优先级："
 
 #: ../system-config-printer.glade.h:125
 msgid "LPD"
@@ -909,7 +899,7 @@ msgstr "LPD"
 
 #: ../system-config-printer.glade.h:126
 msgid "Left margin:"
-msgstr ""
+msgstr "左边界："
 
 #: ../system-config-printer.glade.h:127
 msgid ""
@@ -921,11 +911,18 @@ msgid ""
 "Top to bottom, right to left\n"
 "Bottom to top, left to right\n"
 "Bottom to top, right to left"
-msgstr ""
+msgstr "从左到右，从上到下\n"
+"从左到右，从下到上\n"
+"从右到左，从上到下\n"
+"从右到左，从下到上\n"
+"从上到下，从左到右\n"
+"从上到下，从右到左\n"
+"从下到上，从左到右\n"
+"从下到上，从右到左"
 
 #: ../system-config-printer.glade.h:135
 msgid "Lines per inch:"
-msgstr ""
+msgstr "每英寸行数："
 
 #: ../system-config-printer.glade.h:136
 msgid "Location:"
@@ -957,7 +954,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:143
 msgid "More"
-msgstr ""
+msgstr "更多"
 
 #: ../system-config-printer.glade.h:144
 msgid "Name"
@@ -1044,7 +1041,7 @@ msgstr "口令："
 
 #: ../system-config-printer.glade.h:188
 msgid "Please Wait"
-msgstr ""
+msgstr "请稍候"
 
 #: ../system-config-printer.glade.h:189
 msgid "Policies"
@@ -1073,7 +1070,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:196
 msgid "Pretty print"
-msgstr ""
+msgstr "美化打印"
 
 #: ../system-config-printer.glade.h:200
 msgid "Printer State:"
@@ -1093,7 +1090,7 @@ msgstr "提供 PPD 文件"
 
 #: ../system-config-printer.glade.h:204
 msgid "Refresh the list of printer queues"
-msgstr ""
+msgstr "刷新打印机队列列表"
 
 #: ../system-config-printer.glade.h:205
 msgid "Require encryption"
@@ -1101,15 +1098,15 @@ msgstr "需要加密"
 
 #: ../system-config-printer.glade.h:206
 msgid "Reset"
-msgstr ""
+msgstr "重置"
 
 #: ../system-config-printer.glade.h:207
 msgid "Reset to system default"
-msgstr ""
+msgstr "恢复系统默认"
 
 #: ../system-config-printer.glade.h:208
 msgid "Right margin:"
-msgstr ""
+msgstr "右边界"
 
 #: ../system-config-printer.glade.h:209
 msgid "SCSI"
@@ -1172,7 +1169,7 @@ msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
-msgstr ""
+msgstr "为这个打印机指定默认的任务设置。 如果应用程序没有为新到任务设定选项，则会使用这些默认设置。"
 
 #: ../system-config-printer.glade.h:224
 msgid "Starting Banner:"
@@ -1216,11 +1213,11 @@ msgstr "当前所有的选项设置都将流失。新 PPD 的默认设置将会�
 
 #: ../system-config-printer.glade.h:231
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr ""
+msgstr "如果要添加新的选项，请先在下面的编辑框中输入选项名，然后点'添加'。"
 
 #: ../system-config-printer.glade.h:232
 msgid "Top margin:"
-msgstr ""
+msgstr "顶边界："
 
 #: ../system-config-printer.glade.h:233
 msgid "Try to copy the option settings over from the old PPD. "
@@ -1264,7 +1261,7 @@ msgstr "帮助(_H)"
 
 #: ../system-config-printer.glade.h:243
 msgid "_Install"
-msgstr ""
+msgstr "安装(_I)"
 
 #: ../system-config-printer.glade.h:244
 msgid "_Verify..."
@@ -1332,78 +1329,73 @@ msgstr ""
 
 #: ../applet.py:88
 msgid "Paper low"
-msgstr ""
+msgstr "纸量少"
 
 #: ../applet.py:89
 #, python-format
 msgid "Printer '%s' is low on paper."
-msgstr ""
+msgstr "打印机'%s'纸量少"
 
 #: ../applet.py:90
 msgid "Out of paper"
-msgstr ""
+msgstr "纸已用完"
 
 #: ../applet.py:91
 #, python-format
 msgid "Printer '%s' is out of paper."
-msgstr ""
+msgstr "打印机'%s'纸已用完。"
 
 #: ../applet.py:92
 msgid "Ink low"
-msgstr ""
+msgstr "墨水量少"
 
 #: ../applet.py:93
 #, python-format
 msgid "Printer '%s' is low on ink."
-msgstr ""
+msgstr "打印机'%s'墨水量少"
 
 #: ../applet.py:94
 msgid "Ink empty"
-msgstr ""
+msgstr "没有墨水"
 
 #: ../applet.py:95
 #, python-format
 msgid "Printer '%s' has no ink left."
-msgstr ""
+msgstr "打印机'%s'墨水已用完"
 
 #: ../applet.py:96
-#, fuzzy
 msgid "Not connected?"
-msgstr "未连接"
+msgstr "未连接？"
 
 #: ../applet.py:97
 #, python-format
 msgid "Printer '%s' may not be connected."
-msgstr ""
+msgstr "打印机'%s'可能没有连接。"
 
 #: ../applet.py:104
-#, fuzzy
 msgid "Printer report"
-msgstr "打印机选项"
+msgstr "打印机报告"
 
 #: ../applet.py:106
-#, fuzzy
 msgid "Printer warning"
-msgstr "正在打印"
+msgstr "打印机警告"
 
 #: ../applet.py:108
-#, fuzzy
 msgid "Printer error"
-msgstr "服务器错误"
+msgstr "打印机错误"
 
 #: ../applet.py:109
 #, python-format
 msgid "Printer '%s': '%s'."
-msgstr ""
+msgstr "打印机 '%s':'%s'。"
 
 #: ../applet.py:184
 msgid "Job"
-msgstr ""
+msgstr "任务"
 
 #: ../applet.py:185
-#, fuzzy
 msgid "Document"
-msgstr "注解"
+msgstr "文档"
 
 #: ../applet.py:187
 msgid "Size"
@@ -1415,63 +1407,62 @@ msgid "Time submitted"
 msgstr "发送"
 
 #: ../applet.py:189
-#, fuzzy
 msgid "Status"
-msgstr "状态 %d"
+msgstr "状态"
 
 #: ../applet.py:239
 msgid "Message"
-msgstr ""
+msgstr "消息"
 
 #: ../applet.py:592
 msgid "1 hour ago"
-msgstr ""
+msgstr "1小时以前"
 
 #: ../applet.py:594
 msgid "1 hour and 1 minute ago"
-msgstr ""
+msgstr "1小时1分钟以前"
 
 #: ../applet.py:596
 #, python-format
 msgid "1 hour and %d minutes ago"
-msgstr ""
+msgstr "1小时%d分钟以前"
 
 #: ../applet.py:599
 #, python-format
 msgid "%d hours ago"
-msgstr ""
+msgstr "%d 小时以前"
 
 #: ../applet.py:601
 #, python-format
 msgid "%d hours and 1 minute ago"
-msgstr ""
+msgstr "%d 小时 1分钟以前"
 
 #: ../applet.py:603
 #, python-format
 msgid "%d hours and %d minutes ago"
-msgstr ""
+msgstr "%d 小时 %d 分钟以前"
 
 #: ../applet.py:609
 msgid "a minute ago"
-msgstr ""
+msgstr "1分钟以前"
 
 #: ../applet.py:611
 #, python-format
 msgid "%d minutes ago"
-msgstr ""
+msgstr "%d 分钟以前"
 
 #: ../applet.py:666
 msgid "No documents queued"
-msgstr ""
+msgstr "队列中没有文档"
 
 #: ../applet.py:669
 msgid "1 document queued"
-msgstr ""
+msgstr "1个文档在排队"
 
 #: ../applet.py:672
 #, python-format
 msgid "%d documents queued"
-msgstr ""
+msgstr "%d 文档在排队"
 
 #: ../applet.py:729
 #, fuzzy
@@ -1484,44 +1475,37 @@ msgid "Held"
 msgstr "帮助(_H)"
 
 #: ../applet.py:733
-#, fuzzy
 msgid "Canceled"
-msgstr "取消测试"
+msgstr "已取消"
 
 #: ../applet.py:734
-#, fuzzy
 msgid "Aborted"
-msgstr "关于"
+msgstr "已中断"
 
 #: ../applet.py:735
-#, fuzzy
 msgid "Completed"
-msgstr "注解"
+msgstr "已完成"
 
 #: ../applet.py:1026
-#, fuzzy
 msgid "Printer added"
-msgstr "打印机名"
+msgstr "打印机已添加"
 
 #: ../applet.py:1028
-#, fuzzy
 msgid "Missing printer driver"
-msgstr "缺少驱动"
+msgstr "缺少打印机驱动"
 
 #: ../applet.py:1032
-#, fuzzy
 msgid "Install printer driver"
-msgstr "缺少驱动"
+msgstr "安装打印机驱动"
 
 #: ../applet.py:1033
 #, python-format
 msgid "`%s' requires driver installation: %s."
-msgstr ""
+msgstr "'%s'需要安装驱动：%s。"
 
 #: ../applet.py:1036
-#, fuzzy
 msgid "Install"
-msgstr "缺少驱动"
+msgstr "安装"
 
 #: ../applet.py:1039
 #, python-format
@@ -1529,45 +1513,42 @@ msgid "`%s' is ready for printing."
 msgstr ""
 
 #: ../applet.py:1042
-#, fuzzy
 msgid "Configure"
-msgstr "配置打印机"
+msgstr "配置"
 
 #. Model mismatch
 #: ../applet.py:1045
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
-msgstr ""
+msgstr "成功添加'%s', 使用驱动:'%s'。"
 
 #: ../applet.py:1049
-#, fuzzy
 msgid "Find driver"
-msgstr "缺少驱动"
+msgstr "找到驱动"
 
 #: ../applet.glade.h:4
 msgid "Document print status"
-msgstr ""
+msgstr "文档打印状态"
 
 #: ../applet.glade.h:6
-#, fuzzy
 msgid "Printer status"
-msgstr "打印机状态："
+msgstr "打印机状态"
 
 #: ../applet.glade.h:7
 msgid "Re_print"
-msgstr ""
+msgstr "重新打印(_p)"
 
 #: ../applet.glade.h:8
 msgid "Show _completed jobs"
-msgstr ""
+msgstr "显示已完成的任务(_c)"
 
 #: ../applet.glade.h:9
 msgid "Show _printer status"
-msgstr ""
+msgstr "显示打印机状态(_p)"
 
 #: ../applet.glade.h:11
 msgid "_Hide"
-msgstr ""
+msgstr "隐藏(_H)"
 
 #: ../applet.glade.h:12
 msgid "_Hold"
@@ -1579,7 +1560,7 @@ msgstr ""
 
 #: ../applet.glade.h:14
 msgid "_View"
-msgstr ""
+msgstr "查看(_V)"
 
 #: ../print-applet.desktop.in.h:1
 #, fuzzy
@@ -1592,16 +1573,15 @@ msgstr ""
 
 #: ../manage-print-jobs.desktop.in.h:1
 msgid "Cancel, pause, resume or reprint jobs"
-msgstr ""
+msgstr "取消，暂停，继续或者重新打印"
 
 #: ../manage-print-jobs.desktop.in.h:2
 msgid "Manage Print Jobs"
-msgstr ""
+msgstr "管理打印任务"
 
 #: ../my-default-printer.desktop.in.h:2
-#, fuzzy
 msgid "Select default printer"
-msgstr "设置为默认打印机"
+msgstr "选择默认打印机"
 
 #~ msgid ""
 #~ "This PPD is provided by the manufacturer and is included with the "
