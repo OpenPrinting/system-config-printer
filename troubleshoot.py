@@ -513,14 +513,28 @@ class NetworkCUPSPrinterEnabled(Question):
         page = self.initial_vbox (_("Queue Not Enabled"),
                                   _("The CUPS printer on the server is not "
                                     "enabled."))
+        self.label = gtk.Label ()
+        self.label.set_alignment (0, 0)
+        self.label.set_line_wrap (True)
+        page.pack_start (self.label, False, False, 0)
         troubleshooter.new_page (page, self)
 
     def display (self):
         answers = self.troubleshooter.answers
         try:
             attr = answers['remote_cups_queue_attributes']
-            if attr['printer-state'] == cups.IPP_PRINTER_STOPPED:
-                return True
+            if attr['printer-state'] != cups.IPP_PRINTER_STOPPED:
+                return False
+
+            reason = attr['printer-state-message']
+            if reason:
+                reason = _("The reason given is: `%s'.") % reason
+            else:
+                reason = _("This may be due to the printer being disconnected "
+                           "or switched off.")
+
+            self.label.set_text (reason)
+            return True
         except:
             pass
 
@@ -750,7 +764,7 @@ class CheckNetworkPrinterSanity(Question):
                 except:
                     cups_server = False
 
-            self.answers['remote_server_cups'] = cups_server
+                self.answers['remote_server_cups'] = cups_server
 
         # Try traceroute if we haven't already.
         if not answers.has_key ('remote_server_traceroute'):
@@ -1261,7 +1275,7 @@ class ServerFirewalled(Question):
         self.label = gtk.Label ()
         self.label.set_alignment (0, 0)
         self.label.set_line_wrap (True)
-        page.pack_start (self.label)
+        page.pack_start (self.label, False, False, 0)
         troubleshooter.new_page (page, self)
 
     def display (self):
