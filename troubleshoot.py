@@ -681,6 +681,9 @@ class ChooseNetworkPrinter(Question):
         return True
 
     def collect_answer (self):
+        if not self.troubleshooter.answers.get ('remote_server_cups', False):
+            return {}
+
         model, iter = self.treeview.get_selection ().get_selected ()
         if not model:
             return {}
@@ -809,6 +812,9 @@ class RemoteAddress(Question):
         return self.troubleshooter.answers['printer_is_remote']
 
     def collect_answer (self):
+        if not self.troubleshooter.answers['printer_is_remote']:
+            return {}
+
         return { 'remote_server_name': self.server_name.get_text (),
                  'remote_server_ip_address': self.server_ipaddr.get_text () }
 
