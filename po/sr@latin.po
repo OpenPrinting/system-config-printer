@@ -1,4 +1,4 @@
-# translation of system-config-printer.trunk.sr.po to Serbian
+# translation of system-config-printer.0.7.32.x.sr.po to Serbian
 # Serbian translations for system-config-printer
 # Copyright (C) 2005 Red Hat, Inc.
 # This file is distributed under the same license as the system-config-printer package.
@@ -7,10 +7,10 @@
 # Miloš Komarčević <kmilos@gmail.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: system-config-printer.trunk.sr\n"
+"Project-Id-Version: system-config-printer.0.7.32.x.sr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-01-07 09:52-0700\n"
-"PO-Revision-Date: 2008-01-09 13:55-0500\n"
+"POT-Creation-Date: 2008-02-13 18:10-0700\n"
+"PO-Revision-Date: 2008-02-14 13:46-0500\n"
 "Last-Translator: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>\n"
 "Language-Team: Serbian <fedora-trans-sr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Miruje"
 
-#: ../cupshelpers.py:34 ../applet.py:731
+#: ../cupshelpers.py:34 ../troubleshoot.py:879 ../applet.py:731
 msgid "Processing"
 msgstr "Obrađuje"
 
@@ -32,31 +32,36 @@ msgstr "Obrađuje"
 msgid "Busy"
 msgstr "Zauzet"
 
-#: ../cupshelpers.py:36 ../applet.py:732
+#: ../cupshelpers.py:36 ../troubleshoot.py:880 ../applet.py:732
 msgid "Stopped"
 msgstr "Zaustavljen"
 
-#: ../cupshelpers.py:53 ../applet.py:741
+#: ../cupshelpers.py:53 ../troubleshoot.py:648 ../troubleshoot.py:649
+#: ../troubleshoot.py:652 ../troubleshoot.py:653 ../troubleshoot.py:1422
+#: ../troubleshoot.py:1423 ../troubleshoot.py:1426 ../troubleshoot.py:1427
+#: ../applet.py:741
 msgid "Unknown"
 msgstr "Nepoznato"
 
-#: ../my-default-printer.py:128 ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:136 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
 msgstr "Podrazumevani štampač"
 
-#: ../my-default-printer.py:132 ../my-default-printer.py:163
+#: ../my-default-printer.py:140 ../my-default-printer.py:171
 msgid "_Use System Default"
 msgstr "_Koristi podrazumevane sistemske vrednosti"
 
-#: ../my-default-printer.py:133 ../my-default-printer.py:165
+#: ../my-default-printer.py:141 ../my-default-printer.py:173
 msgid "_Set Default"
 msgstr "Po_stavi kao podrazumevani"
 
-#: ../my-default-printer.py:143 ../applet.py:186 ../applet.py:226
+#: ../my-default-printer.py:151 ../troubleshoot.py:911 ../applet.py:186
+#: ../applet.py:226
 msgid "Printer"
 msgstr "Štampač"
 
-#: ../my-default-printer.py:147 ../system-config-printer.py:2306
+#: ../my-default-printer.py:155 ../system-config-printer.py:2373
+#: ../troubleshoot.py:592 ../troubleshoot.py:1375
 msgid "Location"
 msgstr "Lokacija"
 
@@ -64,73 +69,77 @@ msgstr "Lokacija"
 msgid "Conflicts with:"
 msgstr "U sukobu je sa:"
 
-#: ../system-config-printer.py:358
+#: ../system-config-printer.py:360
 msgid "Server Settings"
 msgstr "Opcije servera"
 
-#: ../system-config-printer.py:364 ../system-config-printer.py:366
+#: ../system-config-printer.py:366 ../system-config-printer.py:368
 msgid "Members of this class"
 msgstr "Članovi ove klase"
 
-#: ../system-config-printer.py:365 ../system-config-printer.py:367
+#: ../system-config-printer.py:367 ../system-config-printer.py:369
 msgid "Others"
 msgstr "Ostali"
 
-#: ../system-config-printer.py:368
+#: ../system-config-printer.py:370
 msgid "Devices"
 msgstr "Uređaji"
 
-#: ../system-config-printer.py:369
+#: ../system-config-printer.py:371
 msgid "Makes"
 msgstr "Marke"
 
-#: ../system-config-printer.py:370
+#: ../system-config-printer.py:372
 msgid "Models"
 msgstr "Modeli"
 
-#: ../system-config-printer.py:371
+#: ../system-config-printer.py:373
 msgid "Drivers"
 msgstr "Upravljački programi"
 
-#: ../system-config-printer.py:372
+#: ../system-config-printer.py:374 ../system-config-printer.glade.h:107
+msgid "Downloadable Drivers"
+msgstr "Preuzimljivi upravljački programi"
+
+#: ../system-config-printer.py:375
 msgid "Users"
 msgstr "Korisnici"
 
-#: ../system-config-printer.py:399
+#: ../system-config-printer.py:402
 msgid "Automatic rotation"
 msgstr "Samostalna rotacija"
 
-#: ../system-config-printer.py:553
+#: ../system-config-printer.py:556
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Podešavanje štampača - %s"
 
-#: ../system-config-printer.py:556
+#: ../system-config-printer.py:559
 #, python-format
 msgid "Connected to %s"
 msgstr "Spojen sa %s"
 
-#: ../system-config-printer.py:558 ../system-config-printer.py:1251
+#: ../system-config-printer.py:561 ../system-config-printer.py:1273
 msgid "Not connected"
 msgstr "Nije spojen"
 
-#: ../system-config-printer.py:669
+#: ../system-config-printer.py:672
 msgid "Local Printers"
 msgstr "Lokalni štampač"
 
-#: ../system-config-printer.py:670
+#: ../system-config-printer.py:673
 msgid "Local Classes"
 msgstr "Lokalne klase"
 
-#: ../system-config-printer.py:671
+#: ../system-config-printer.py:674
 msgid "Remote Printers"
 msgstr "Udaljeni štampači"
 
-#: ../system-config-printer.py:672
+#: ../system-config-printer.py:675
 msgid "Remote Classes"
 msgstr "Udaljene klase"
 
-#: ../system-config-printer.py:780
+#: ../system-config-printer.py:783
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -139,15 +148,15 @@ msgstr ""
 "Spajam se sa serverom:\n"
 "%s"
 
-#: ../system-config-printer.py:1180
+#: ../system-config-printer.py:1202
 msgid "Installable Options"
 msgstr "Opcije koje se mogu instalirati"
 
-#: ../system-config-printer.py:1181 ../system-config-printer.glade.h:199
+#: ../system-config-printer.py:1203 ../system-config-printer.glade.h:209
 msgid "Printer Options"
 msgstr "Opcije štampača"
 
-#: ../system-config-printer.py:1190
+#: ../system-config-printer.py:1212
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -157,26 +166,26 @@ msgstr ""
 "Promene će biti primenjene kada\n"
 "se sukobi razreše."
 
-#: ../system-config-printer.py:1219 ../system-config-printer.py:1235
+#: ../system-config-printer.py:1241 ../system-config-printer.py:1257
 #: ../applet.py:349
 msgid "Not authorized"
 msgstr "Neovlašćen"
 
-#: ../system-config-printer.py:1220 ../applet.py:350
+#: ../system-config-printer.py:1242 ../applet.py:350
 msgid "The password may be incorrect."
 msgstr "Lozinka je možda netačna."
 
-#: ../system-config-printer.py:1223 ../system-config-printer.py:1256
+#: ../system-config-printer.py:1245 ../system-config-printer.py:1278
 #: ../applet.py:353
 msgid "CUPS server error"
 msgstr "Greška CUPS servera"
 
-#: ../system-config-printer.py:1224 ../applet.py:354
+#: ../system-config-printer.py:1246 ../applet.py:354
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Desila se greška tokom CUPS radnje: „%s“."
 
-#: ../system-config-printer.py:1236
+#: ../system-config-printer.py:1258
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
@@ -184,59 +193,59 @@ msgstr ""
 "Lozinka je možda neispravna, ili je server možda podešen da odbija udaljenu "
 "administraciju."
 
-#: ../system-config-printer.py:1241
+#: ../system-config-printer.py:1263
 msgid "Bad request"
 msgstr "Loš zahtev"
 
-#: ../system-config-printer.py:1243
+#: ../system-config-printer.py:1265
 msgid "Not found"
 msgstr "Nije pronađen"
 
-#: ../system-config-printer.py:1245
+#: ../system-config-printer.py:1267
 msgid "Request timeout"
 msgstr "Zahtevu je isteklo vreme"
 
-#: ../system-config-printer.py:1247
+#: ../system-config-printer.py:1269
 msgid "Upgrade required"
 msgstr "Neophodna je nadogradnja"
 
-#: ../system-config-printer.py:1249
+#: ../system-config-printer.py:1271
 msgid "Server error"
 msgstr "Greška servera"
 
-#: ../system-config-printer.py:1253
+#: ../system-config-printer.py:1275
 #, python-format
 msgid "status %d"
 msgstr "status %d"
 
-#: ../system-config-printer.py:1257
+#: ../system-config-printer.py:1279
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "Došlo je do HTTP greške: %s."
 
-#: ../system-config-printer.py:1281
+#: ../system-config-printer.py:1303
 msgid "This will delete this class!"
 msgstr "Ovo će izbrisati ovu klasu!"
 
-#: ../system-config-printer.py:1282
+#: ../system-config-printer.py:1304
 msgid "Proceed anyway?"
 msgstr "Svakako nastavi?"
 
-#: ../system-config-printer.py:1496 ../system-config-printer.py:1530
+#: ../system-config-printer.py:1518 ../system-config-printer.py:1552
 msgid "Submitted"
 msgstr "Poslato"
 
-#: ../system-config-printer.py:1497
+#: ../system-config-printer.py:1519
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Probna stranica je poslata kao posao %d"
 
-#: ../system-config-printer.py:1508 ../system-config-printer.py:1540
-#: ../system-config-printer.py:3362
+#: ../system-config-printer.py:1530 ../system-config-printer.py:1562
+#: ../system-config-printer.py:3482
 msgid "Not possible"
 msgstr "Nije moguće"
 
-#: ../system-config-printer.py:1509 ../system-config-printer.py:1541
+#: ../system-config-printer.py:1531 ../system-config-printer.py:1563
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -244,153 +253,160 @@ msgstr ""
 "Udaljeni server nije prihvatio posao za štampanje, najverovatnije zato što "
 "štampač nije deljen."
 
-#: ../system-config-printer.py:1531
+#: ../system-config-printer.py:1553
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Naredba za održavanje je poslata kao posao %d"
 
-#: ../system-config-printer.py:1627 ../system-config-printer.py:1769
+#: ../system-config-printer.py:1649 ../system-config-printer.py:1791
 msgid "Error"
 msgstr "Greška"
 
-#: ../system-config-printer.py:1628
+#: ../system-config-printer.py:1650
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Desila se greška tokom povezivanja na CUPS server."
 
-#: ../system-config-printer.py:1681
+#: ../system-config-printer.py:1703
 msgid "This is the default printer"
 msgstr "Ovo je podrazumevani štampač"
 
-#: ../system-config-printer.py:1685
+#: ../system-config-printer.py:1707
 msgid "No default printer set."
 msgstr "Podrazumevani štampač nije postavljen."
 
-#: ../system-config-printer.py:1770
+#: ../system-config-printer.py:1792
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Vrednost opcije „%s“ je „%s“ i ne može biti uređivana."
 
-#: ../system-config-printer.py:1810
+#: ../system-config-printer.py:1832
 msgid "Cancel Tests"
 msgstr "Otkaži probe"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1814 ../system-config-printer.glade.h:198
+#: ../system-config-printer.py:1836 ../troubleshoot.py:901
+#: ../system-config-printer.glade.h:208
 msgid "Print Test Page"
 msgstr "Odštampaj probnu stranicu"
 
-#: ../system-config-printer.py:2044
+#: ../system-config-printer.py:2066
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "Stvarno izbrisati štampač %s?"
 
-#: ../system-config-printer.py:2046
+#: ../system-config-printer.py:2068
 #, python-format
 msgid "Really delete class %s?"
 msgstr "Stvarno izbrisati klasu %s?"
 
 #. SMB list columns
-#: ../system-config-printer.py:2278
+#: ../system-config-printer.py:2345
 msgid "Share"
 msgstr "Deljeni resurs"
 
-#: ../system-config-printer.py:2284
+#: ../system-config-printer.py:2351
 msgid "Comment"
 msgstr "Primedba"
 
 #. IPP list columns
-#: ../system-config-printer.py:2300
+#: ../system-config-printer.py:2367
 msgid "Queue"
 msgstr "Red"
 
-#: ../system-config-printer.py:2314
+#: ../system-config-printer.py:2381
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "Datoteke opisa PostScript štampača (*.ppd,*.PPD, *.ppd.gz, *PPD.gz, *.PPD.GZ)"
 
-#: ../system-config-printer.py:2323
+#: ../system-config-printer.py:2390
 msgid "All files (*)"
 msgstr "Sve datoteke (*)"
 
-#: ../system-config-printer.py:2353 ../system-config-printer.glade.h:146
+#: ../system-config-printer.py:2425 ../system-config-printer.py:3741
+#: ../system-config-printer.py:3775
+msgid "Search"
+msgstr "Pretraga"
+
+#: ../system-config-printer.py:2428 ../system-config-printer.glade.h:155
 msgid "New Printer"
 msgstr "Novi štampač"
 
-#: ../system-config-printer.py:2363 ../system-config-printer.glade.h:145
+#: ../system-config-printer.py:2438 ../system-config-printer.glade.h:154
 msgid "New Class"
 msgstr "Nova klasa"
 
-#: ../system-config-printer.py:2368
+#: ../system-config-printer.py:2443
 msgid "Change Device URI"
 msgstr "Promeni URI uređaja"
 
-#: ../system-config-printer.py:2377
+#: ../system-config-printer.py:2452
 msgid "Change Driver"
 msgstr "Promeni upravljački program"
 
-#: ../system-config-printer.py:2476 ../system-config-printer.py:2820
+#: ../system-config-printer.py:2551 ../system-config-printer.py:2775
+#: ../system-config-printer.py:2941 ../system-config-printer.py:3764
 msgid "Searching"
 msgstr "Pretražuje"
 
-#: ../system-config-printer.py:2477
+#: ../system-config-printer.py:2552 ../system-config-printer.py:2776
 msgid "Searching for drivers"
 msgstr "Traži upravljačke programe"
 
-#: ../system-config-printer.py:2821
+#: ../system-config-printer.py:2942
 msgid "Searching for printers"
 msgstr "Traži štampače"
 
-#: ../system-config-printer.py:3034
+#: ../system-config-printer.py:3160
 msgid "Other"
 msgstr "Ostali"
 
-#: ../system-config-printer.py:3036
+#: ../system-config-printer.py:3162
 msgid " (Current)"
 msgstr " (Tekući)"
 
-#: ../system-config-printer.py:3062 ../system-config-printer.py:3323
+#: ../system-config-printer.py:3188 ../system-config-printer.py:3449
 msgid "Scanning..."
 msgstr "Pregledanje..."
 
-#: ../system-config-printer.py:3234 ../system-config-printer.py:3301
+#: ../system-config-printer.py:3360 ../system-config-printer.py:3427
 msgid "Verified"
 msgstr "Proveren"
 
-#: ../system-config-printer.py:3235 ../system-config-printer.py:3302
+#: ../system-config-printer.py:3361 ../system-config-printer.py:3428
 msgid "This print share is accessible."
 msgstr "Ovaj deljeni štampač je pristupačan."
 
-#: ../system-config-printer.py:3242 ../system-config-printer.py:3308
+#: ../system-config-printer.py:3368 ../system-config-printer.py:3434
 msgid "Inaccessible"
 msgstr "Nepristupačan"
 
-#: ../system-config-printer.py:3243 ../system-config-printer.py:3309
+#: ../system-config-printer.py:3369 ../system-config-printer.py:3435
 msgid "This print share is not accessible."
 msgstr "Ovaj deljeni štampač nije pristupačan."
 
-#: ../system-config-printer.py:3363
+#: ../system-config-printer.py:3483
 msgid "It is not possible to obtain a list of queues from this host."
 msgstr "Nije moguće dobaviti spisak redova sa ovog domaćina."
 
-#: ../system-config-printer.py:3367
+#: ../system-config-printer.py:3487
 msgid "No queues"
 msgstr "Nema redova"
 
-#: ../system-config-printer.py:3368
+#: ../system-config-printer.py:3488
 msgid "There are no queues available."
 msgstr "Nema dostupnih redova."
 
-#: ../system-config-printer.py:3425
+#: ../system-config-printer.py:3545
 msgid "A printer connected to the parallel port."
 msgstr "Štampač priključen na paralelni port."
 
-#: ../system-config-printer.py:3427
+#: ../system-config-printer.py:3547
 msgid "A printer connected to a USB port."
 msgstr "Štampač priključen na USB port."
 
-#: ../system-config-printer.py:3429
+#: ../system-config-printer.py:3549
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -398,7 +414,7 @@ msgstr ""
 "HPLIP softver upravlja štampačem, ili funkcijom za štampanje višenamenskog "
 "uređaja."
 
-#: ../system-config-printer.py:3432
+#: ../system-config-printer.py:3552
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -406,25 +422,49 @@ msgstr ""
 "HPLIP softver upravlja faks mašinom, ili funkcijom za slanje faksa "
 "višenamenskog uređaja."
 
-#: ../system-config-printer.py:3435
+#: ../system-config-printer.py:3555
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "Lokalni štampač otkriven od strane Sloja za hardversku apstrakciju (HAL)."
 
-#: ../system-config-printer.py:3690
+#: ../system-config-printer.py:3787
+msgid "-- Select printer model --"
+msgstr "— Izaberite model štampača —"
+
+#: ../system-config-printer.py:3789
+msgid "-- No matches found --"
+msgstr "— Ništa nije nađeno —"
+
+#: ../system-config-printer.py:3954
 msgid " (recommended)"
 msgstr " (preporučeno)"
 
-#: ../system-config-printer.py:3704
+#: ../system-config-printer.py:3968
 msgid "This PPD is generated by foomatic."
 msgstr "Ovaj PPD je napravio foomatic."
 
+#: ../system-config-printer.py:3994
+msgid "OpenPrinting"
+msgstr "OtvoriŠtampanje"
+
+#: ../system-config-printer.py:3996
+msgid "Distributable"
+msgstr "Razdeljiv"
+
+#: ../system-config-printer.py:3998
+msgid "None"
+msgstr "Ništa"
+
+#: ../system-config-printer.py:4006
+msgid "Not specified."
+msgstr "Nije navedeno."
+
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:3733
+#: ../system-config-printer.py:4033
 msgid "Database error"
 msgstr "Greška u bazi podataka"
 
-#: ../system-config-printer.py:3734
+#: ../system-config-printer.py:4034
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "„%s“ upravljački program ne može biti korišćen sa štampačem „%s %s“."
@@ -432,47 +472,56 @@ msgstr "„%s“ upravljački program ne može biti korišćen sa štampačem �
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:3744
+#: ../system-config-printer.py:4044
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
 "Moraćete instalirati „%s“ paket da biste koristili ovaj upravljački program."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:3751
+#: ../system-config-printer.py:4051
 msgid "PPD error"
 msgstr "PPD greška"
 
-#: ../system-config-printer.py:3753
+#: ../system-config-printer.py:4053
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Čitanje PPD datoteke nije uspelo. Mogući razlozi slede:"
 
-#: ../system-config-printer.py:3810 ../system-config-printer.py:3847
+#. Failed to get PPD downloaded from OpenPrinting XXX
+#: ../system-config-printer.py:4064
+msgid "Downloadable drivers"
+msgstr "Preuzimljivi upravljački programi"
+
+#: ../system-config-printer.py:4065
+msgid "Support for downloadable drivers is not yet completed."
+msgstr "Podrška za preuzimljive upravljačke programe još uvek nije potpuna."
+
+#: ../system-config-printer.py:4115 ../system-config-printer.py:4152
 msgid "No Installable Options"
 msgstr "Nema opcija koje se mogu instalirati"
 
-#: ../system-config-printer.py:3894
+#: ../system-config-printer.py:4199
 msgid "Adding"
 msgstr "Dodavanje"
 
-#: ../system-config-printer.py:3895
+#: ../system-config-printer.py:4200
 msgid "Adding printer"
 msgstr "Dodavanje štampača"
 
-#: ../system-config-printer.py:4047
+#: ../system-config-printer.py:4352
 msgid "Install driver"
 msgstr "Instaliraj upravljački program"
 
-#: ../system-config-printer.py:4048
+#: ../system-config-printer.py:4353
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "Štampač „%s“ zahteva paket „%s“ ali on nije trenutno instaliran. "
 
-#: ../system-config-printer.py:4055
+#: ../system-config-printer.py:4360
 msgid "Missing driver"
 msgstr "Nedostaje upravljački program"
 
-#: ../system-config-printer.py:4056
+#: ../system-config-printer.py:4361
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -480,6 +529,295 @@ msgid ""
 msgstr ""
 "Štampač „%s“ zahteva „%s“ program ali on nije trenutno instaliran.  Molim "
 "instalirajte ga pre korišćenja štampača."
+
+#: ../troubleshoot.py:46
+msgid ""
+"To start this tool, select System->Administration->Printing from the main "
+"menu."
+msgstr ""
+"Da biste pokrenuli ovu alatku, izaberite Sistem -> Administracija -> "
+"Štampanje u glavnom meniju."
+
+#: ../troubleshoot.py:56
+msgid "Authentication"
+msgstr "Autentifikacija"
+
+#: ../troubleshoot.py:71
+msgid "Password required"
+msgstr "Lozinka je neophodna"
+
+#: ../troubleshoot.py:79 ../system-config-printer.glade.h:195
+#: ../applet.glade.h:5
+msgid "Password:"
+msgstr "Lozinka:"
+
+#: ../troubleshoot.py:104
+msgid "Printing troubleshooter"
+msgstr "Rešavanje problema štampanja"
+
+#: ../troubleshoot.py:401
+msgid "Trouble-shooting Printing"
+msgstr "Rešavanje problema štampanja"
+
+#: ../troubleshoot.py:403
+msgid ""
+"In the next few screens I will ask you some questions about your problem "
+"with printing. Based on your answers I will try to suggest a solution."
+msgstr ""
+"Sledećih nekoliko ekrana će vas pitati u vezi problema sa štampanjem. Na "
+"osnovu datih odgovora predložiće vam se moguće rešenje."
+
+#: ../troubleshoot.py:407
+msgid "Click 'Forward' to begin."
+msgstr "Pritisnite „Napred“ da bi počeli."
+
+#: ../troubleshoot.py:418
+msgid "Sorry!"
+msgstr "Izvinite."
+
+#: ../troubleshoot.py:419
+msgid ""
+"I have not been able to work out what the problem is, but I have collected "
+"some useful information to put in a bug report."
+msgstr ""
+"Nije bilo moguće naći razlog za problem, ali neki korisni podaci su "
+"prikupljeni koji se mogu staviti u izveštaj o grešci."
+
+#: ../troubleshoot.py:488
+msgid "Queue Not Accepting Jobs"
+msgstr "Red ne prihvata poslove"
+
+#: ../troubleshoot.py:489
+msgid "The CUPS printer on the server is not accepting jobs."
+msgstr "CUPS štampač na serveru ne prihvata poslove."
+
+#: ../troubleshoot.py:513 ../troubleshoot.py:1266
+msgid "Queue Not Enabled"
+msgstr "Red nije omogućen"
+
+#: ../troubleshoot.py:514
+msgid "The CUPS printer on the server is not enabled."
+msgstr "CUPS štampač na serveru nije omogućen."
+
+#: ../troubleshoot.py:531 ../troubleshoot.py:1260
+#, python-format
+msgid "The reason given is: `%s'."
+msgstr "Dati razlog je: „%s“."
+
+#: ../troubleshoot.py:533 ../troubleshoot.py:1262
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr "Ovo može zbiti zbog toga što je štampač iskopčan ili isključen."
+
+#: ../troubleshoot.py:549
+msgid "Queue Not Shared"
+msgstr "Red nije deljen"
+
+#: ../troubleshoot.py:550
+msgid "The CUPS printer on the server is not shared."
+msgstr "CUPS štampač na serveru nije deljen."
+
+#: ../troubleshoot.py:584
+msgid "Choose Network Printer"
+msgstr "Izaberite mrežni štampač"
+
+#: ../troubleshoot.py:585
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+"Izaberite mrežni štampač koji pokušavate da koristite sa donjeg spiska. Ako "
+"nije na spisku, izaberite „Nije na spisku“."
+
+#: ../troubleshoot.py:590 ../troubleshoot.py:1373
+msgid "Name"
+msgstr "Ime"
+
+#: ../troubleshoot.py:594 ../troubleshoot.py:1377
+msgid "Information"
+msgstr "Podaci"
+
+#: ../troubleshoot.py:627 ../troubleshoot.py:1401
+msgid "Not listed"
+msgstr "Nije na spisku"
+
+#: ../troubleshoot.py:795
+msgid "Remote Address"
+msgstr "Udaljena adresa"
+
+#: ../troubleshoot.py:796
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr "Unesite koliko god možete detalja u vezi mrežne adrese ovog štampača."
+
+#: ../troubleshoot.py:804
+msgid "Server name:"
+msgstr "Ime servera:"
+
+#: ../troubleshoot.py:810
+msgid "Server IP address:"
+msgstr "IP adresa servera:"
+
+#: ../troubleshoot.py:831
+msgid "Printer Location"
+msgstr "Lokacija štampača"
+
+#: ../troubleshoot.py:832
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "Da li je štampač priključen na ovaj računar ili je dostupan na mreži?"
+
+#: ../troubleshoot.py:834
+msgid "Locally connected printer"
+msgstr "Lokalno priključen štampač"
+
+#: ../troubleshoot.py:835
+msgid "Network printer"
+msgstr "Mrežni štampač"
+
+#: ../troubleshoot.py:847
+msgid "CUPS Service Stopped"
+msgstr "CUPS servis zaustavljen"
+
+#: ../troubleshoot.py:848
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"`cups' service."
+msgstr ""
+"CUPS servis štampanja nije pokrenut.  Da biste ispravili ovo, izaberite "
+"Sistem -> Administracija -> Servisi iz glavnog menije i nađite „cups“ servis."
+
+#: ../troubleshoot.py:877 ../applet.py:729
+msgid "Pending"
+msgstr "Na čekanju"
+
+#: ../troubleshoot.py:878 ../applet.py:730
+msgid "Held"
+msgstr "Zadržano"
+
+#: ../troubleshoot.py:881 ../applet.py:733
+msgid "Canceled"
+msgstr "Otkazano"
+
+#: ../troubleshoot.py:882 ../applet.py:734
+msgid "Aborted"
+msgstr "Obustavljeno"
+
+#: ../troubleshoot.py:883 ../applet.py:735
+msgid "Completed"
+msgstr "Završeno"
+
+#: ../troubleshoot.py:892
+msgid "Test Page"
+msgstr "Probna stranica"
+
+#: ../troubleshoot.py:904
+msgid "Cancel All Jobs"
+msgstr "Otkaži sve poslove"
+
+#: ../troubleshoot.py:909 ../applet.py:184
+msgid "Job"
+msgstr "Posao"
+
+#: ../troubleshoot.py:913 ../applet.py:185
+msgid "Document"
+msgstr "Dokument"
+
+#: ../troubleshoot.py:914 ../applet.py:189
+msgid "Status"
+msgstr "Stanje"
+
+#: ../troubleshoot.py:935
+msgid "Did the test page print correctly?"
+msgstr "Da li je stranica odštampana pravilno?"
+
+#: ../troubleshoot.py:942
+msgid "Yes"
+msgstr "Da"
+
+#: ../troubleshoot.py:943
+msgid "No"
+msgstr "Ne"
+
+#: ../troubleshoot.py:1125
+msgid "Status Messages"
+msgstr "Poruke stanja"
+
+#: ../troubleshoot.py:1126
+msgid "There are status messages associated with this queue."
+msgstr "Ima poruka stanja povezanih sa ovim redom."
+
+#: ../troubleshoot.py:1132
+msgid "Printer's state message:"
+msgstr "Poruke stanja štampača:"
+
+#: ../troubleshoot.py:1140
+msgid "Printer's state reasons:"
+msgstr "Razlozi stanja štampača:"
+
+#: ../troubleshoot.py:1193
+msgid "Queue Rejecting Jobs"
+msgstr "Red odbija poslove"
+
+#: ../troubleshoot.py:1218
+#, python-format
+msgid "The queue `%s' is rejecting jobs."
+msgstr "Red „%s“ odbija poslove."
+
+#: ../troubleshoot.py:1222
+#, python-format
+msgid " The reason given is: `%s'."
+msgstr "Razlog je: „%s“."
+
+#: ../troubleshoot.py:1225
+msgid ""
+"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
+"`Policies' tab for the printer in the printer administration tool."
+msgstr ""
+"Da bi red prihvatao poslove, štiklirajte „Prihvatanje poslova“ kućicu u "
+"jezičku „Polise“ za dati štampač u alatki za administraciju štampača."
+
+#: ../troubleshoot.py:1267
+#, python-format
+msgid "The queue `%s' is not enabled."
+msgstr "Red „%s“ nije omogućen."
+
+#: ../troubleshoot.py:1270
+msgid ""
+"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+"Da biste omogućili, štiklirajte kućicu „Omogućeno“ u jezičku „Polise“ za "
+"dati štampač u alatki za administraciju štampača."
+
+#: ../troubleshoot.py:1285
+msgid "Check Server Firewall"
+msgstr "Proverite zaštitni zid servera"
+
+#: ../troubleshoot.py:1286
+msgid "It is not possible to connect to the server."
+msgstr "Povezivanje sa serverom nije moguće."
+
+#: ../troubleshoot.py:1299
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server `%s'."
+msgstr ""
+"Proverite dali podešavanja zaštitnog zida ili rutera blokiraju TCP port %d na "
+"serveru `%s'."
+
+#: ../troubleshoot.py:1367
+msgid "Choose Printer"
+msgstr "Izaberite štampač"
+
+#: ../troubleshoot.py:1368
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+"Izaberite štampač koji želite koristiti sa donjeg spiska. Ako ne postoji, "
+"izaberite „Nije u spisku“. "
 
 #: ../system-config-printer.glade.h:1
 msgid " "
@@ -502,28 +840,28 @@ msgstr ""
 "16"
 
 #: ../system-config-printer.glade.h:8
-msgid "3"
-msgstr "3"
-
-#: ../system-config-printer.glade.h:9
 msgid "<b>Banner</b>"
 msgstr "<b>Naslov</b>"
 
-#: ../system-config-printer.glade.h:10
+#: ../system-config-printer.glade.h:9
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>Osnovna podešavanja servera</b>"
 
-#: ../system-config-printer.glade.h:11
+#: ../system-config-printer.glade.h:10
 msgid "<b>Common Options</b>"
 msgstr "<b>Opšte opcije</b>"
 
-#: ../system-config-printer.glade.h:12
+#: ../system-config-printer.glade.h:11
 msgid "<b>Description</b>"
 msgstr "<b>Opis</b>"
 
-#: ../system-config-printer.glade.h:13
+#: ../system-config-printer.glade.h:12
 msgid "<b>Description</b> (optional)"
 msgstr "<b>Opis</b> (neobavezno)"
+
+#: ../system-config-printer.glade.h:13
+msgid "<b>Download Printer Driver</b>"
+msgstr "<b>Preuzmite upravljački program štampača</b>"
 
 #: ../system-config-printer.glade.h:14
 msgid "<b>Enter device URI</b>"
@@ -542,62 +880,74 @@ msgid "<b>Installed Options</b>"
 msgstr "<b>Instalirane opcije</b>"
 
 #: ../system-config-printer.glade.h:18
+msgid "<b>License Terms</b>"
+msgstr "<b>Licencni termini</b>"
+
+#: ../system-config-printer.glade.h:19
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>Lokacija LPD mrežnog štampača</b>"
 
-#: ../system-config-printer.glade.h:19
+#: ../system-config-printer.glade.h:20
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>Lokacije mrežnog štampača</b>"
 
-#: ../system-config-printer.glade.h:20
+#: ../system-config-printer.glade.h:21
 msgid "<b>Location</b> (optional)"
 msgstr "<b>Lokacija</b> (neobavezno)"
 
-#: ../system-config-printer.glade.h:21
+#: ../system-config-printer.glade.h:22
+msgid "<b>Note</b>"
+msgstr "<b>Napomena</b>"
+
+#: ../system-config-printer.glade.h:23
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>Ostale opcije (napredno)</b>"
 
-#: ../system-config-printer.glade.h:22
+#: ../system-config-printer.glade.h:24
 msgid "<b>Policies</b>"
 msgstr "<b>Polise</b>"
 
-#: ../system-config-printer.glade.h:23
+#: ../system-config-printer.glade.h:25
 msgid "<b>Printer Name</b>"
 msgstr "<b>Ime štampača</b>"
 
-#: ../system-config-printer.glade.h:24
+#: ../system-config-printer.glade.h:26
 msgid "<b>Printers to be members of this Class</b>"
 msgstr "<b>Štampači koji će biti članovi ove klase</b>"
 
-#: ../system-config-printer.glade.h:25
+#: ../system-config-printer.glade.h:27
 msgid "<b>SMB Printer</b>"
 msgstr "<b>SMB štampač</b>"
 
-#: ../system-config-printer.glade.h:26
+#: ../system-config-printer.glade.h:28
 msgid "<b>Select Connection</b>"
 msgstr "<b>Izaberite vezu</b>"
 
-#: ../system-config-printer.glade.h:27
+#: ../system-config-printer.glade.h:29
+msgid "<b>Select Driver</b>"
+msgstr "<b>Izaberite upravljački program</b>"
+
+#: ../system-config-printer.glade.h:30
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>Podešavanja serijskog porta</b>"
 
-#: ../system-config-printer.glade.h:28
+#: ../system-config-printer.glade.h:31
 msgid "<b>Settings</b>"
 msgstr "<b>Podešavanja</b>"
 
-#: ../system-config-printer.glade.h:29
+#: ../system-config-printer.glade.h:32
 msgid "<b>State</b>"
 msgstr "<b>Stanje</b>"
 
-#: ../system-config-printer.glade.h:30
+#: ../system-config-printer.glade.h:33
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>Testovi i održavanje</b>"
 
-#: ../system-config-printer.glade.h:31
+#: ../system-config-printer.glade.h:34
 msgid "<b>Text Options</b>"
 msgstr "<b>Opcije za tekst</b>"
 
-#: ../system-config-printer.glade.h:32
+#: ../system-config-printer.glade.h:35
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -605,11 +955,11 @@ msgstr ""
 "<i>Nije objavljen\n"
 "Pogledajte postavke servera</i>"
 
-#: ../system-config-printer.glade.h:34
+#: ../system-config-printer.glade.h:37
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[RadnaGrupa/]server[:port]/štampač</i>"
 
-#: ../system-config-printer.glade.h:35
+#: ../system-config-printer.glade.h:38
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
 "\n"
@@ -619,7 +969,7 @@ msgstr ""
 "\n"
 "Sve promene koje ste napravili će biti izgubljene ako ih ne primenite."
 
-#: ../system-config-printer.glade.h:38 ../applet.glade.h:1
+#: ../system-config-printer.glade.h:41 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
 "\n"
@@ -627,96 +977,96 @@ msgstr ""
 "<span weight=\"bold\" size=\"larger\">Lozinka obavezna</span>\n"
 "\n"
 
-#: ../system-config-printer.glade.h:41
+#: ../system-config-printer.glade.h:44
 msgid "A CUPS configuration tool."
 msgstr "CUPS alat za podešavanje."
 
-#: ../system-config-printer.glade.h:42
+#: ../system-config-printer.glade.h:45
 msgid "Accepting jobs"
 msgstr "Prihvata poslove"
 
-#: ../system-config-printer.glade.h:43
+#: ../system-config-printer.glade.h:46
 msgid "Access Control"
 msgstr "Kontrola pristupa"
 
-#: ../system-config-printer.glade.h:44
+#: ../system-config-printer.glade.h:47
 msgid "Add or Remove Members"
 msgstr "Dodaj ili izbriši članove"
 
-#: ../system-config-printer.glade.h:45
+#: ../system-config-printer.glade.h:48
 msgid "Allow printing for everyone except these users:"
 msgstr "Dozvoli štampanje za sve osim ove korisnike:"
 
-#: ../system-config-printer.glade.h:46
+#: ../system-config-printer.glade.h:49
 msgid "Allow printing from the Internet"
 msgstr "Dozvoli štampanje preko Interneta"
 
-#: ../system-config-printer.glade.h:47
+#: ../system-config-printer.glade.h:50
 msgid "Allow remote administration"
 msgstr "Dozvoli daljinsko rukovođenje"
 
-#: ../system-config-printer.glade.h:48
+#: ../system-config-printer.glade.h:51
 msgid "Allow users to cancel any job (not just their own)"
 msgstr "Dozvoli korisnicima da otkažu bilo koji posao (ne samo njihov)"
 
-#: ../system-config-printer.glade.h:49
+#: ../system-config-printer.glade.h:52
 msgid "Authentication required"
-msgstr "Potrebna aPotrebna utentacija</b>"
+msgstr "Potrebna autentifikacija</b>"
 
-#: ../system-config-printer.glade.h:50
+#: ../system-config-printer.glade.h:53
 msgid "Baud Rate"
 msgstr "Brzina u bodima"
 
-#: ../system-config-printer.glade.h:51
+#: ../system-config-printer.glade.h:54
 msgid "Bottom margin:"
 msgstr "Donja margina:"
 
-#: ../system-config-printer.glade.h:52
+#: ../system-config-printer.glade.h:55
 msgid "Brightness:"
 msgstr "Osvetljenje:"
 
-#: ../system-config-printer.glade.h:53
+#: ../system-config-printer.glade.h:56
 msgid "Browse..."
 msgstr "Razgledaj..."
 
-#: ../system-config-printer.glade.h:54
+#: ../system-config-printer.glade.h:57
 msgid "CUPS server:"
 msgstr "CUPS server:"
 
-#: ../system-config-printer.glade.h:55
+#: ../system-config-printer.glade.h:58
 msgid "Change..."
 msgstr "Promeni..."
 
-#: ../system-config-printer.glade.h:56
+#: ../system-config-printer.glade.h:59
 msgid "Characters per inch:"
 msgstr "Znakova po inču:"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:58
+#: ../system-config-printer.glade.h:61
 msgid "Clean Print Heads"
 msgstr "Očisti glave štampača"
 
-#: ../system-config-printer.glade.h:59
+#: ../system-config-printer.glade.h:62
 msgid "Columns:"
 msgstr "Kolone: "
 
-#: ../system-config-printer.glade.h:60
+#: ../system-config-printer.glade.h:63
 msgid "Comments..."
 msgstr "Primedbe..."
 
-#: ../system-config-printer.glade.h:61
+#: ../system-config-printer.glade.h:64
 msgid "Connect to CUPS server"
 msgstr "Spoji na CUPS server"
 
-#: ../system-config-printer.glade.h:62
+#: ../system-config-printer.glade.h:65
 msgid "Connect to a different print server"
 msgstr "Spoji na drugi server za štampanje"
 
-#: ../system-config-printer.glade.h:63
+#: ../system-config-printer.glade.h:66
 msgid "Connecting"
 msgstr "Spajanje"
 
-#: ../system-config-printer.glade.h:65
+#: ../system-config-printer.glade.h:68
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -725,35 +1075,35 @@ msgstr ""
 "Spajanje sa serverom:\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:71
 msgid "Copies:"
 msgstr "Umnožaka:"
 
-#: ../system-config-printer.glade.h:69
+#: ../system-config-printer.glade.h:72
 msgid "Copy Printer"
 msgstr "Umnoži štampač"
 
-#: ../system-config-printer.glade.h:70
+#: ../system-config-printer.glade.h:73
 msgid "Copy this printer queue"
 msgstr "Umnoži ovaj red za štampanje"
 
-#: ../system-config-printer.glade.h:71
+#: ../system-config-printer.glade.h:74
 msgid "Copyright © 2006-2007 Red Hat, Inc."
 msgstr "Autorska prava © 2006-2007 Red Hat, Inc."
 
-#: ../system-config-printer.glade.h:72
+#: ../system-config-printer.glade.h:75
 msgid "Create a new printer group"
 msgstr "Napravi novu grupu za štampanje"
 
-#: ../system-config-printer.glade.h:73
+#: ../system-config-printer.glade.h:76
 msgid "Create a new printer queue"
 msgstr "Napravi novi red za štampanje"
 
-#: ../system-config-printer.glade.h:74
+#: ../system-config-printer.glade.h:77
 msgid "Data Bits"
 msgstr "Bitovi podataka"
 
-#: ../system-config-printer.glade.h:75
+#: ../system-config-printer.glade.h:78
 msgid ""
 "Default\n"
 "1200\n"
@@ -774,18 +1124,18 @@ msgstr ""
 "38400\n"
 "57600\n"
 "115200"
-
-#: ../system-config-printer.glade.h:84
-msgid ""
-"Default\n"
-"8\n"
-"7"
-msgstr ""
-"Podrazumevano\n"
-"8\n"
-"7"
 
 #: ../system-config-printer.glade.h:87
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr ""
+"Podrazumevano\n"
+"8\n"
+"7"
+
+#: ../system-config-printer.glade.h:90
 msgid ""
 "Default\n"
 "None\n"
@@ -797,7 +1147,7 @@ msgstr ""
 "Neparno\n"
 "Parno"
 
-#: ../system-config-printer.glade.h:91
+#: ../system-config-printer.glade.h:94
 msgid ""
 "Default\n"
 "None\n"
@@ -811,123 +1161,138 @@ msgstr ""
 "RTS/CTS (hardverska)\n"
 "DTR/DSR (hardverska)"
 
-#: ../system-config-printer.glade.h:96
+#: ../system-config-printer.glade.h:99
 msgid "Default Printer:"
 msgstr "Podrazumevani štampač:"
 
-#: ../system-config-printer.glade.h:97
+#: ../system-config-printer.glade.h:100
 msgid "Delete this printer queue"
 msgstr "Izbrišite ovaj red za štampanje"
 
-#: ../system-config-printer.glade.h:98
+#: ../system-config-printer.glade.h:101
 msgid "Deny printing for everyone except these users:"
 msgstr "Zabrani štampanje svima osim ovim korisnicima:"
 
-#: ../system-config-printer.glade.h:99
+#: ../system-config-printer.glade.h:102
 msgid "Description:"
 msgstr "Opis:"
 
-#: ../system-config-printer.glade.h:100
+#: ../system-config-printer.glade.h:103
 msgid "Device URI"
 msgstr "URI uređaja"
 
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:104
 msgid "Device URI:"
 msgstr "URI uređaja:"
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:105
 msgid "Device description."
 msgstr "Opis uređaja."
 
-#: ../system-config-printer.glade.h:103
+#: ../system-config-printer.glade.h:106
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:108
+msgid "Driver details"
+msgstr "Detalji upravljačkog programa"
+
+#: ../system-config-printer.glade.h:109
 msgid "Empty"
 msgstr "Prazno"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:110
 msgid "Enabled"
 msgstr "Omogućen"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:111
 msgid "Ending Banner:"
 msgstr "Završna oznaka:"
 
-#: ../system-config-printer.glade.h:107
+#: ../system-config-printer.glade.h:112
+msgid "Enter some search terms for the model of your printer."
+msgstr "Unesite neke termine za pretragu za model vašeg štampača."
+
+#: ../system-config-printer.glade.h:113
 msgid "Error Policy: \t"
 msgstr "Polisa za grešku: \t"
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:114
 msgid "Find _Queue..."
 msgstr "Nađite _red..."
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:115
 msgid "Finishings:"
 msgstr "Završavanja:"
 
-#: ../system-config-printer.glade.h:110
+#: ../system-config-printer.glade.h:116
 msgid "Flow Control"
 msgstr "Kontrola toka"
 
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:117
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr ""
+"Za štampač koji ste izabrali dostupni su upravljački programi koje možete "
+"preuzeti."
+
+#: ../system-config-printer.glade.h:118
 msgid "Gamma:"
 msgstr "Gama:"
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:119
 msgid "Goto Server"
 msgstr "Idi na server"
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:120
 msgid "Hold until:"
 msgstr "Zadrži do:"
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:121
 msgid "Host:"
 msgstr "Domaćin:"
 
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:122
 msgid "Hue adjustment:"
 msgstr "Podešavanje nijanse:"
 
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.glade.h:123
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Opis koji je ljudima razumljiv kao „HP LaserJet sa obostranim štampanjem“"
 
-#: ../system-config-printer.glade.h:117
+#: ../system-config-printer.glade.h:124
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "Lokacija koja je ljudima razumljiva kao „Kancelarija 1“"
 
-#: ../system-config-printer.glade.h:118
+#: ../system-config-printer.glade.h:125
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:119
+#: ../system-config-printer.glade.h:126
 msgid "IPP Browser"
 msgstr "IPP pregledač"
 
-#: ../system-config-printer.glade.h:120
+#: ../system-config-printer.glade.h:127
 msgid "Installed Options"
 msgstr "Instalirane opcije"
 
-#: ../system-config-printer.glade.h:121
+#: ../system-config-printer.glade.h:128
 msgid "Job Options"
 msgstr "Opcije posla"
 
-#: ../system-config-printer.glade.h:122
+#: ../system-config-printer.glade.h:129
 msgid "Job priority:"
 msgstr "Prvenstvo posla:"
 
-#: ../system-config-printer.glade.h:123
+#: ../system-config-printer.glade.h:130
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:124
+#: ../system-config-printer.glade.h:131
 msgid "Left margin:"
 msgstr "Leva margina:"
 
-#: ../system-config-printer.glade.h:125
+#: ../system-config-printer.glade.h:132
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -947,24 +1312,32 @@ msgstr ""
 "Odozdo na gore, levo na desno\n"
 "Odozdo na gore, desno na levo"
 
-#: ../system-config-printer.glade.h:133
+#: ../system-config-printer.glade.h:140
+msgid "License:"
+msgstr "Licenca:"
+
+#: ../system-config-printer.glade.h:141
 msgid "Lines per inch:"
 msgstr "Linija po inču:"
 
-#: ../system-config-printer.glade.h:134
+#: ../system-config-printer.glade.h:142
+msgid "Local Driver"
+msgstr "Lokalni upravljački program"
+
+#: ../system-config-printer.glade.h:143
 msgid "Location:"
 msgstr "Lokacija:"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:136
+#: ../system-config-printer.glade.h:145
 msgid "Make Default"
 msgstr "Postavi kao podrazumevani"
 
-#: ../system-config-printer.glade.h:137
+#: ../system-config-printer.glade.h:146
 msgid "Make and Model:"
 msgstr "Marka i model:"
 
-#: ../system-config-printer.glade.h:138
+#: ../system-config-printer.glade.h:147
 msgid ""
 "May contain any printable characters except \"/\", \"#\", and space.\n"
 "Name must be unique on the local machine!"
@@ -972,35 +1345,39 @@ msgstr ""
 "Može da sadrži bilo koju štampanu oznaku osim „/“, „#“ i razmaka.\n"
 "Ime mora biti jedinstveno na lokalnoj mašini!"
 
-#: ../system-config-printer.glade.h:140
+#: ../system-config-printer.glade.h:149
 msgid "Media:"
 msgstr "Medija:"
 
-#: ../system-config-printer.glade.h:141
+#: ../system-config-printer.glade.h:150
 msgid "Members"
 msgstr "Članovi"
 
-#: ../system-config-printer.glade.h:142
+#: ../system-config-printer.glade.h:151
 msgid "Mirror"
 msgstr "Odraz"
 
-#: ../system-config-printer.glade.h:143
+#: ../system-config-printer.glade.h:152
 msgid "More"
 msgstr "Više"
 
-#: ../system-config-printer.glade.h:144
+#: ../system-config-printer.glade.h:153
 msgid "New Clas_s"
 msgstr "Nova _klasa"
 
-#: ../system-config-printer.glade.h:147
+#: ../system-config-printer.glade.h:156
 msgid "New _Printer"
 msgstr "Novi _štampač"
 
-#: ../system-config-printer.glade.h:148
+#: ../system-config-printer.glade.h:157
 msgid "New name for the printer"
 msgstr "Novo ime za štampač"
 
-#: ../system-config-printer.glade.h:149
+#: ../system-config-printer.glade.h:158
+msgid "No, I do not accept this license"
+msgstr "Ne, ne prihvatam ovu licencu"
+
+#: ../system-config-printer.glade.h:159
 msgid ""
 "None\n"
 "Staple\n"
@@ -1060,7 +1437,7 @@ msgstr ""
 "Povezivanje (desno)\n"
 "Povezivanje (dole)"
 
-#: ../system-config-printer.glade.h:177
+#: ../system-config-printer.glade.h:187
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1070,43 +1447,39 @@ msgstr ""
 "Dvostrano (po dugoj ivici)\n"
 "Dvostrano (po kratkoj ivici)"
 
-#: ../system-config-printer.glade.h:180
+#: ../system-config-printer.glade.h:190
 msgid "Operation Policy:"
 msgstr "Radna polisa:"
 
-#: ../system-config-printer.glade.h:181
+#: ../system-config-printer.glade.h:191
 msgid "Orientation:"
 msgstr "Usmerenost:"
 
-#: ../system-config-printer.glade.h:182
+#: ../system-config-printer.glade.h:192
 msgid "Pages per side layout:"
 msgstr "Stranica po rasporedu lista:"
 
-#: ../system-config-printer.glade.h:183
+#: ../system-config-printer.glade.h:193
 msgid "Pages per side:"
 msgstr "Stranica po listu:"
 
-#: ../system-config-printer.glade.h:184
+#: ../system-config-printer.glade.h:194
 msgid "Parity"
 msgstr "Parnost"
 
-#: ../system-config-printer.glade.h:185 ../applet.glade.h:5
-msgid "Password:"
-msgstr "Lozinka:"
-
-#: ../system-config-printer.glade.h:186
+#: ../system-config-printer.glade.h:196
 msgid "Please Wait"
 msgstr "Sačekajte"
 
-#: ../system-config-printer.glade.h:187
+#: ../system-config-printer.glade.h:197
 msgid "Policies"
 msgstr "Polise"
 
-#: ../system-config-printer.glade.h:188
+#: ../system-config-printer.glade.h:198
 msgid "Port number:"
 msgstr "Broj porta:"
 
-#: ../system-config-printer.glade.h:189
+#: ../system-config-printer.glade.h:199
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1118,9 +1491,9 @@ msgstr ""
 "Obrnuti pejzaž (270°)\n"
 "Obrnuti portret (180°)"
 
-#: ../system-config-printer.glade.h:193
+#: ../system-config-printer.glade.h:203
 msgid ""
-"PostScript Printer Description (PPD) files can often found on the driver "
+"PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
 "part of the Windows<sup>®</sup> driver."
 msgstr ""
@@ -1128,112 +1501,124 @@ msgstr ""
 "često mogu naći na disku upravljačkog programa koji dođe uz štampač. One su "
 "često deo Windows<sup>®</sup> upravljačkog programa za PostScript štampače."
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:204
 msgid "Pretty print"
 msgstr "Lepo štampanje"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:206
 msgid "Print Self-Test Page"
 msgstr "Odštampaj probnu stranicu"
 
-#: ../system-config-printer.glade.h:200
+#: ../system-config-printer.glade.h:210
 msgid "Printer State:"
 msgstr "Stanje štampača:"
 
-#: ../system-config-printer.glade.h:201
+#: ../system-config-printer.glade.h:211
+msgid "Printer model:"
+msgstr "Model štampača:"
+
+#: ../system-config-printer.glade.h:212
 msgid "Probe"
 msgstr "Ispitaj"
 
-#: ../system-config-printer.glade.h:202
-msgid "Provide PPD File"
-msgstr "Ponudi PPD datoteku"
+#: ../system-config-printer.glade.h:213
+msgid "Provide PPD file"
+msgstr "Priložite PPD datoteku"
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:214
 msgid "Queue:"
 msgstr "Red:"
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:215
 msgid "Refresh the list of printer queues"
 msgstr "Osveži spisak redova za štampanje"
 
-#: ../system-config-printer.glade.h:205
+#: ../system-config-printer.glade.h:216
 msgid "Require encryption"
 msgstr "Zahtevaj šifrovanje"
 
-#: ../system-config-printer.glade.h:206
+#: ../system-config-printer.glade.h:217
 msgid "Reset"
 msgstr "Povrati"
 
-#: ../system-config-printer.glade.h:207
+#: ../system-config-printer.glade.h:218
 msgid "Reset to system default"
 msgstr "Povrati na podrazumevane sistemske vrednosti"
 
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.glade.h:219
 msgid "Right margin:"
 msgstr "Leva margina:"
 
-#: ../system-config-printer.glade.h:209
+#: ../system-config-printer.glade.h:220
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:221
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:222
 msgid "SMB Browser"
 msgstr "SMB pregledač"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:223
 msgid "Saturation:"
 msgstr "Zasićenje:"
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:224
 msgid "Save debugging information for troubleshooting"
 msgstr "Sačuvaj podatke o greškama za uklanjanje neispravnosti"
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:225
 msgid "Scale to fit"
 msgstr "Prilagodi veličini stranice"
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:226
 msgid "Scaling:"
 msgstr "Razmera:"
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:227
+msgid "Search for a printer driver to download"
+msgstr "Tražite upravljački program za preuzimanje"
+
+#: ../system-config-printer.glade.h:228
+msgid "Search terms:"
+msgstr "Termini pretrage:"
+
+#: ../system-config-printer.glade.h:229
 msgid "Select A File"
 msgstr "Izaberite datoteku"
 
-#: ../system-config-printer.glade.h:217
-msgid "Select Printer from Database"
+#: ../system-config-printer.glade.h:230
+msgid "Select printer from database"
 msgstr "Izaberite štampač iz baze podataka"
 
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:231
 msgid "Serial"
 msgstr "Serijski"
 
-#: ../system-config-printer.glade.h:219
+#: ../system-config-printer.glade.h:232
 msgid "Settings"
 msgstr "Podešavanja"
 
-#: ../system-config-printer.glade.h:220
+#: ../system-config-printer.glade.h:233
 msgid "Share published printers connected to this system"
 msgstr "Deli objavljene štampače spojene na ovaj sistem"
 
-#: ../system-config-printer.glade.h:221
+#: ../system-config-printer.glade.h:234
 msgid "Shared"
 msgstr "Deljen"
 
-#: ../system-config-printer.glade.h:222
+#: ../system-config-printer.glade.h:235
 msgid "Show printers shared by other systems"
 msgstr "Pokaži deljene štampače sa ostalih sistema"
 
-#: ../system-config-printer.glade.h:223
+#: ../system-config-printer.glade.h:236
 msgid "Sides:"
 msgstr "Strane:"
 
-#: ../system-config-printer.glade.h:224
+#: ../system-config-printer.glade.h:237
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1243,15 +1628,19 @@ msgstr ""
 "dodate na poslove koji dolaze na ovaj server ako već nisu postavljene od "
 "programa."
 
-#: ../system-config-printer.glade.h:225
+#: ../system-config-printer.glade.h:238
 msgid "Starting Banner:"
 msgstr "Početna oznaka:"
 
-#: ../system-config-printer.glade.h:226
+#: ../system-config-printer.glade.h:239
+msgid "Supplier:"
+msgstr "Opskrbljivač:"
+
+#: ../system-config-printer.glade.h:240
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:227
+#: ../system-config-printer.glade.h:241
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1264,7 +1653,17 @@ msgstr ""
 "(ne PostScript) štampača. Ali u opštem slučaju PPD datoteke dostavljene od "
 "proizvođača daju bolji pristup posebnim alatima štampača."
 
-#: ../system-config-printer.glade.h:228
+#: ../system-config-printer.glade.h:242
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"Ovi upravljački programi ne dolaze od kompanije koja pravi operativni sistem, "
+"i zbog toga nisu pokriveni njihovom komercijalnom podrškom.  Pogledajte "
+"termine podrške i licence opskrbljivača ovih upravljačkih programa."
+
+#: ../system-config-printer.glade.h:243
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
@@ -1272,7 +1671,7 @@ msgstr ""
 "Ovaj upravljački program podržava dodatni hardver koji može biti instaliran u "
 "štampaču."
 
-#: ../system-config-printer.glade.h:229
+#: ../system-config-printer.glade.h:244
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1282,7 +1681,7 @@ msgstr ""
 "Podešavanja opcija koje nisu u novom PPD-u će biti izgubljene i samo opcije "
 "koje postoje u novom PPD-u će biti postavljene na podrazumevano."
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:245
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1312,7 +1711,7 @@ msgstr ""
 "ako niste, pišite Fondaciji slobodnog softvera na adresu: Free Software "
 "Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:250
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -1320,90 +1719,114 @@ msgstr ""
 "Ovako će sve trenutne opcije podešavanja biti izgubljene. Podrazumevana "
 "podešavanja novog PPD-a će biti upotrebljena."
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:251
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "Da biste dodali novu opciju, unesite njeno ime u polje ispod i pritisnite "
 "dodaj."
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:252
 msgid "Top margin:"
 msgstr "Gornja margina:"
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:253
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "Pokušajte da umnožite opcije podešavanja iz starog PPD-a. "
 
-#: ../system-config-printer.glade.h:239
+#: ../system-config-printer.glade.h:254
 msgid "URI:"
 msgstr "URI:"
 
-#: ../system-config-printer.glade.h:240
+#: ../system-config-printer.glade.h:255
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "Koristi novi PPD (Opis PostScript štampača) bez promena."
 
-#: ../system-config-printer.glade.h:241
+#: ../system-config-printer.glade.h:256
 msgid "User name:"
 msgstr "Ime korisnika:"
 
-#: ../system-config-printer.glade.h:242
+#: ../system-config-printer.glade.h:257
 msgid "Username:"
 msgstr "Ime korisnika:"
 
-#: ../system-config-printer.glade.h:243
+#: ../system-config-printer.glade.h:258
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"Sa ovim izborom neće biti preuzimanja upravljačkog programa. U sledećim "
+"koracima lokalno instalirani upravljački program će biti izabran."
+
+#: ../system-config-printer.glade.h:259
 msgid "Word wrap"
 msgstr "Prelom reda"
 
-#: ../system-config-printer.glade.h:244
+#: ../system-config-printer.glade.h:260
+msgid "Yes, I accept this license"
+msgstr "Da, prihvatam ovu licencu"
+
+#: ../system-config-printer.glade.h:261
 msgid "_Do not apply"
 msgstr "_Ne primenjuj"
 
-#: ../system-config-printer.glade.h:245
+#: ../system-config-printer.glade.h:262
 msgid "_Edit"
 msgstr "_Uredi"
 
-#: ../system-config-printer.glade.h:246 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:263 ../applet.glade.h:10
 msgid "_File"
 msgstr "_Datoteka"
 
-#: ../system-config-printer.glade.h:247
+#: ../system-config-printer.glade.h:264
 msgid "_Goto Server"
 msgstr "_Idi na server"
 
-#: ../system-config-printer.glade.h:248
+#: ../system-config-printer.glade.h:265
 msgid "_Help"
 msgstr "_Pomoć"
 
-#: ../system-config-printer.glade.h:249
+#: ../system-config-printer.glade.h:266
 msgid "_Install"
 msgstr "_Instaliraj"
 
-#: ../system-config-printer.glade.h:250
+#: ../system-config-printer.glade.h:267
+msgid "_Search"
+msgstr "_Pretraga"
+
+#: ../system-config-printer.glade.h:268
+msgid "_Troubleshoot"
+msgstr "_Rešavanje problema"
+
+#: ../system-config-printer.glade.h:269
 msgid "_Verify..."
 msgstr "Pro_veri..."
 
-#: ../system-config-printer.glade.h:251
+#: ../system-config-printer.glade.h:270
 msgid "default"
 msgstr "podrazumevano"
 
-#: ../system-config-printer.glade.h:252
+#: ../system-config-printer.glade.h:271
 msgid "none"
 msgstr "ništa"
 
-#: ../system-config-printer.glade.h:253
+#: ../system-config-printer.glade.h:272
 msgid "points"
 msgstr "tačaka"
 
-#: ../system-config-printer.glade.h:254
-msgid "points (72 points per inch)"
-msgstr "tačaka (72 tačke po inču)"
+#: ../system-config-printer.glade.h:273
+msgid ""
+"points\n"
+"(72 points per inch)"
+msgstr ""
+"tačaka\n"
+"(72 tačke po inču)"
 
-#: ../system-config-printer.glade.h:255
+#: ../system-config-printer.glade.h:275
 msgid "system-config-printer"
 msgstr "system-config-printer"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:257
+#: ../system-config-printer.glade.h:277
 msgid "translator-credits"
 msgstr ""
 "Igor Miletić (2008,2007) \n"
@@ -1515,14 +1938,6 @@ msgstr "Greška štampača"
 msgid "Printer '%s': '%s'."
 msgstr "Štampač „%s“: „%s“."
 
-#: ../applet.py:184
-msgid "Job"
-msgstr "Posao"
-
-#: ../applet.py:185
-msgid "Document"
-msgstr "Dokument"
-
 #: ../applet.py:187
 msgid "Size"
 msgstr "Veličina"
@@ -1530,10 +1945,6 @@ msgstr "Veličina"
 #: ../applet.py:188
 msgid "Time submitted"
 msgstr "Vreme slanja"
-
-#: ../applet.py:189
-msgid "Status"
-msgstr "Status"
 
 #: ../applet.py:239
 msgid "Message"
@@ -1589,50 +2000,43 @@ msgstr "1 dokument u redu"
 msgid "%d documents queued"
 msgstr "%d dokumenata u redu"
 
-#: ../applet.py:729
-msgid "Pending"
-msgstr "Na čekanju"
-
-#: ../applet.py:730
-msgid "Held"
-msgstr "Zadržano"
-
-#: ../applet.py:733
-msgid "Canceled"
-msgstr "Otkazano"
-
-#: ../applet.py:734
-msgid "Aborted"
-msgstr "Obustavljeno"
-
-#: ../applet.py:735
-msgid "Completed"
-msgstr "Završeno"
-
-#: ../applet.py:1013
+#: ../applet.py:1026
 msgid "Printer added"
 msgstr "Štampač je dodat"
 
-#: ../applet.py:1015
+#: ../applet.py:1028
 msgid "Missing printer driver"
 msgstr "Nedostaje upravljački program štampača"
 
-#: ../applet.py:1018
+#: ../applet.py:1032
+msgid "Install printer driver"
+msgstr "Instalirajte upravljački program"
+
+#: ../applet.py:1033
+#, python-format
+msgid "`%s' requires driver installation: %s."
+msgstr "„%s“ zahteva instalaciju upravljačkog programa: %s."
+
+#: ../applet.py:1036
+msgid "Install"
+msgstr "Instaliraj"
+
+#: ../applet.py:1039
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "„%s“ je spreman za štampanje."
 
-#: ../applet.py:1021
+#: ../applet.py:1042
 msgid "Configure"
 msgstr "Podesi"
 
 #. Model mismatch
-#: ../applet.py:1024
+#: ../applet.py:1045
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "„%s“ je dodat, koristeći upravljački program „%s“."
 
-#: ../applet.py:1028
+#: ../applet.py:1049
 msgid "Find driver"
 msgstr "Nađi upravljački program"
 
