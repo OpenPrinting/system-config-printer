@@ -1,5 +1,19 @@
 2008-02-14  Tim Waugh  <twaugh@redhat.com>
 
+	* troubleshoot.py (CheckPrinterSanity.display): Don't display
+	unless queue is listed.
+	(ServerFirewalled.display): Likewise.
+	(QueueNotEnabled.display): Likewise.
+	(QueueRejectingJobs.display): Likewise.
+	(PrinterStateReasons.display): Likewise.
+	(PrinterNotListed.display): Don't display if queue is listed.
+	(LocalOrRemote.display): Likewise.
+	(RemoteAddress.display): Likewise.
+	(ChooseNetworkPrinter.display): Likewise.
+	(NetworkCUPSPrinterShared.display): Better restrictions.
+	(NetworkCUPSPrinterEnabled.display): Tighter exception handling.
+	(NetworkCUPSPrinterAccepting.display): Likewise.
+
 	* applet.py (StateReason): Moved...
 	* statereason.py (StateReason): ...here.  New file.
 	* Makefile.am (nobase_pkgdata_DATA): Ship it.

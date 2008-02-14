@@ -31,6 +31,9 @@ import traceback
 import urllib
 from gettext import gettext as _
 
+import statereason
+statereason.set_gettext_function (_)
+
 if __name__ == "__main__":
     import gettext
     gettext.textdomain ('system-config-printer')
@@ -492,8 +495,9 @@ class NetworkCUPSPrinterAccepting(Question):
 
     def display (self):
         answers = self.troubleshooter.answers
-        attr = answers.get ('remote_cups_queue_attributes', False)
-        if not attr:
+        try:
+            attr = answers['remote_cups_queue_attributes']
+        except KeyError:
             return False
 
         try:
@@ -523,22 +527,21 @@ class NetworkCUPSPrinterEnabled(Question):
         answers = self.troubleshooter.answers
         try:
             attr = answers['remote_cups_queue_attributes']
-            if attr['printer-state'] != cups.IPP_PRINTER_STOPPED:
-                return False
+        except KeyError:
+            return False
 
-            reason = attr['printer-state-message']
-            if reason:
-                reason = _("The reason given is: `%s'.") % reason
-            else:
-                reason = _("This may be due to the printer being disconnected "
-                           "or switched off.")
+        if attr['printer-state'] != cups.IPP_PRINTER_STOPPED:
+            return False
 
-            self.label.set_text (reason)
-            return True
-        except:
-            pass
+        reason = attr['printer-state-message']
+        if reason:
+            reason = _("The reason given is: `%s'.") % reason
+        else:
+            reason = _("This may be due to the printer being disconnected "
+                       "or switched off.")
 
-        return False
+        self.label.set_text (reason)
+        return True
 
     def can_click_forward (self):
         return False
@@ -554,7 +557,12 @@ class NetworkCUPSPrinterShared(Question):
     def display (self):
         self.answers = {}
         answers = self.troubleshooter.answers
-        if not answers.get ('remote_cups_queue_listed', False):
+        if (answers.has_key ('remote_cups_queue_listed') and
+            ansers['remote_cups_queue_listed'] == False):
+            return False
+
+        if not (answers.has_key ('remote_server_try_connect') and
+                answers.has_key ('remote_cups_queue')):
             return False
 
         try:
@@ -610,6 +618,9 @@ class ChooseNetworkPrinter(Question):
 
     def display (self):
         answers = self.troubleshooter.answers
+        if answers['cups_queue_listed']:
+            return False
+
         if not answers.get ('remote_server_cups', False):
             return False
 
@@ -816,7 +827,11 @@ class RemoteAddress(Question):
         troubleshooter.new_page (page, self)
 
     def display (self):
-        return self.troubleshooter.answers['printer_is_remote']
+        answers = self.troubleshooter.answers
+        if not answers['cups_queue_listed']:
+            return False
+
+        return answers['printer_is_remote']
 
     def collect_answer (self):
         if not self.troubleshooter.answers['printer_is_remote']:
@@ -841,6 +856,10 @@ class LocalOrRemote(Multichoice):
         NetworkCUPSPrinterAccepting (troubleshooter)
         NetworkCUPSPrinterEnabled (troubleshooter)
 
+    def display (self):
+        if self.troubleshooter.answers['cups_queue_listed']:
+            return False
+
 class PrinterNotListed(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Printer not listed")
@@ -854,6 +873,9 @@ class PrinterNotListed(Question):
         LocalOrRemote (troubleshooter)
 
     def display (self):
+        if self.troubleshooter.answers['cups_queue_listed']:
+            return False
+
         # Find out if CUPS is running.
         self.answers = {}
         failure = False
@@ -1150,7 +1172,11 @@ class PrinterStateReasons(Question):
 
     def display (self):
         troubleshooter = self.troubleshooter
-        queue = troubleshooter.answers['cups_queue']
+        try:
+            queue = troubleshooter.answers['cups_queue']
+        except KeyError:
+            return False
+
         cups.setServer ('')
         c = cups.Connection ()
         dict = c.getPrinterAttributes (queue)
@@ -1204,6 +1230,9 @@ class QueueRejectingJobs(Question):
 
     def display (self):
         troubleshooter = self.troubleshooter
+        if not troubleshooter.answers['cups_queue_listed']:
+            return False
+
         if troubleshooter.answers['is_cups_class']:
             queue = troubleshooter.answers['cups_class_dict']
         else:
@@ -1246,6 +1275,9 @@ class QueueNotEnabled(Question):
 
     def display (self):
         troubleshooter = self.troubleshooter
+        if not troubleshoot.answers['cups_queue_listed']:
+            return False
+
         if troubleshooter.answers['is_cups_class']:
             queue = troubleshooter.answers['cups_class_dict']
         else:
@@ -1293,8 +1325,10 @@ class ServerFirewalled(Question):
 
     def display (self):
         answers = self.troubleshooter.answers
-        if (answers.get ('cups_queue_listed', False) and
-            answers.has_key ('remote_server_connect_ipp') and
+        if not answers['cups_queue_listed']:
+            return False
+
+        if (answers.has_key ('remote_server_connect_ipp') and
             answers['remote_server_connect_ipp'] == False):
             self.label.set_text (_("Please check to see if a firewall or "
                                    "router configuration is blocking TCP "
@@ -1327,6 +1361,9 @@ class CheckPrinterSanity(Question):
 
         # Find out if this is a printer or a class.
         answers = self.troubleshooter.answers
+        if not answers['cups_queue_listed']:
+            return False
+
         name = answers['cups_queue']
         try:
             c = cups.Connection ()
