@@ -1,8 +1,8 @@
 # Dutch translation of system-config-printer
-# Copyright (C) 2003, 2004, 2005, 2006, 2007 The Free Software Foundation, Inc.
+# Copyright (C) 2003, 2004, 2005, 2006, 2007, 2008 The Free Software Foundation, Inc.
 #
 # Tino Meinen <a.t.meinen@chello.nl>, 2003.
-# Peter van Egdom <p.van.egdom@gmail.com>, 2003, 2004, 2005, 2006, 2007.
+# Peter van Egdom <p.van.egdom@gmail.com>, 2003, 2004, 2005, 2006, 2007, 2008.
 # Stijn Bibaer <stijn.bibaer@pandora.be>, 2006.
 # Bart Couvreur <couf@fedoraproject.org>, 2007.
 # ----------------------------------------------
@@ -11,10 +11,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-02-13 18:09+0000\n"
-"PO-Revision-Date: 2007-09-27 21:51+0200\n"
+"POT-Creation-Date: 2008-02-14 17:47-0700\n"
+"PO-Revision-Date: 2008-02-16 23:39+0100\n"
 "Last-Translator: Peter van Egdom <p.van.egdom@gmail.com>\n"
-"Language-Team: Dutch <vertaling@nl.linux.org>\n"
+"Language-Team: Dutch <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Inactief"
 
-#: ../cupshelpers.py:34 ../troubleshoot.py:872 ../applet.py:731
+#: ../cupshelpers.py:34 ../troubleshoot.py:901 ../applet.py:640
 msgid "Processing"
 msgstr "Verwerken"
 
@@ -32,14 +32,14 @@ msgstr "Verwerken"
 msgid "Busy"
 msgstr "Bezig"
 
-#: ../cupshelpers.py:36 ../troubleshoot.py:873 ../applet.py:732
+#: ../cupshelpers.py:36 ../troubleshoot.py:902 ../applet.py:641
 msgid "Stopped"
 msgstr "Gestopt"
 
-#: ../cupshelpers.py:53 ../troubleshoot.py:648 ../troubleshoot.py:649
-#: ../troubleshoot.py:652 ../troubleshoot.py:653 ../troubleshoot.py:1415
-#: ../troubleshoot.py:1416 ../troubleshoot.py:1419 ../troubleshoot.py:1420
-#: ../applet.py:741
+#: ../cupshelpers.py:53 ../troubleshoot.py:659 ../troubleshoot.py:660
+#: ../troubleshoot.py:663 ../troubleshoot.py:664 ../troubleshoot.py:1459
+#: ../troubleshoot.py:1460 ../troubleshoot.py:1463 ../troubleshoot.py:1464
+#: ../applet.py:650
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -55,13 +55,13 @@ msgstr "Systeemstandaard _gebruiken"
 msgid "_Set Default"
 msgstr "Standaard _instellen"
 
-#: ../my-default-printer.py:151 ../troubleshoot.py:904 ../applet.py:186
-#: ../applet.py:226
+#: ../my-default-printer.py:151 ../troubleshoot.py:933 ../applet.py:95
+#: ../applet.py:135
 msgid "Printer"
 msgstr "Printer"
 
 #: ../my-default-printer.py:155 ../system-config-printer.py:2373
-#: ../troubleshoot.py:592 ../troubleshoot.py:1368
+#: ../troubleshoot.py:600 ../troubleshoot.py:1412
 msgid "Location"
 msgstr "Locatie"
 
@@ -168,23 +168,23 @@ msgstr ""
 "nadat deze conflicten zijn opgelost."
 
 #: ../system-config-printer.py:1241 ../system-config-printer.py:1257
-#: ../applet.py:349
+#: ../applet.py:258
 msgid "Not authorized"
 msgstr "Niet gemachtigd"
 
-#: ../system-config-printer.py:1242 ../applet.py:350
+#: ../system-config-printer.py:1242 ../applet.py:259
 msgid "The password may be incorrect."
 msgstr "Het wachtwoord kan onjuist zijn."
 
 #: ../system-config-printer.py:1245 ../system-config-printer.py:1278
-#: ../applet.py:353
+#: ../applet.py:262
 msgid "CUPS server error"
 msgstr "CUPS-server fout"
 
-#: ../system-config-printer.py:1246 ../applet.py:354
+#: ../system-config-printer.py:1246 ../applet.py:263
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
-msgstr "Er was een fout tijdens de CUPS-actie: '%s'."
+msgstr "Er was een fout tijdens de CUPS-bewerking: '%s'."
 
 #: ../system-config-printer.py:1258
 msgid ""
@@ -255,9 +255,9 @@ msgstr ""
 "omdat de printer niet gedeeld is."
 
 #: ../system-config-printer.py:1553
-#, fuzzy, python-format
+#, python-format
 msgid "Maintenance command submitted as job %d"
-msgstr "Testpagina ingediend als opdracht %d"
+msgstr ""
 
 #: ../system-config-printer.py:1649 ../system-config-printer.py:1791
 msgid "Error"
@@ -285,7 +285,7 @@ msgid "Cancel Tests"
 msgstr "Tests annuleren"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1836 ../troubleshoot.py:894
+#: ../system-config-printer.py:1836 ../troubleshoot.py:923
 #: ../system-config-printer.glade.h:208
 msgid "Print Test Page"
 msgstr "Testpagina afdrukken"
@@ -312,24 +312,24 @@ msgstr "Opmerking"
 #. IPP list columns
 #: ../system-config-printer.py:2367
 msgid "Queue"
-msgstr ""
+msgstr "Wachtrij"
 
 #: ../system-config-printer.py:2381
-#, fuzzy
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
-msgstr "PostScript Printer Description (*.ppd[.gz])"
+msgstr ""
+"PostScript Printer Description bestanden (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, "
+"*.PPD.GZ)"
 
 #: ../system-config-printer.py:2390
 msgid "All files (*)"
-msgstr ""
+msgstr "Alle bestanden (*)"
 
 #: ../system-config-printer.py:2425 ../system-config-printer.py:3741
 #: ../system-config-printer.py:3775
-#, fuzzy
 msgid "Search"
-msgstr "Bezig met zoeken"
+msgstr "Zoeken"
 
 #: ../system-config-printer.py:2428 ../system-config-printer.glade.h:155
 msgid "New Printer"
@@ -369,9 +369,8 @@ msgid " (Current)"
 msgstr " (Huidige)"
 
 #: ../system-config-printer.py:3188 ../system-config-printer.py:3449
-#, fuzzy
 msgid "Scanning..."
-msgstr "Schalen:"
+msgstr "Bezig met scannen..."
 
 #: ../system-config-printer.py:3360 ../system-config-printer.py:3427
 msgid "Verified"
@@ -395,7 +394,7 @@ msgstr ""
 
 #: ../system-config-printer.py:3487
 msgid "No queues"
-msgstr ""
+msgstr "Geen wachtrijen"
 
 #: ../system-config-printer.py:3488
 msgid "There are no queues available."
@@ -430,9 +429,8 @@ msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Lokale printer gedetecteerd door de Hardware Abstraction Layer (HAL)."
 
 #: ../system-config-printer.py:3787
-#, fuzzy
 msgid "-- Select printer model --"
-msgstr "Een printer uit de database selecteren"
+msgstr "-- Selecteer printermodel --"
 
 #: ../system-config-printer.py:3789
 msgid "-- No matches found --"
@@ -447,18 +445,16 @@ msgid "This PPD is generated by foomatic."
 msgstr "Deze PPD is gegenereerd door foomatic."
 
 #: ../system-config-printer.py:3994
-#, fuzzy
 msgid "OpenPrinting"
-msgstr "Afdrukken"
+msgstr "OpenPrinting"
 
 #: ../system-config-printer.py:3996
 msgid "Distributable"
 msgstr ""
 
 #: ../system-config-printer.py:3998
-#, fuzzy
 msgid "None"
-msgstr "geen"
+msgstr "Geen"
 
 #: ../system-config-printer.py:4006
 msgid "Not specified."
@@ -503,9 +499,8 @@ msgid "Support for downloadable drivers is not yet completed."
 msgstr ""
 
 #: ../system-config-printer.py:4115 ../system-config-printer.py:4152
-#, fuzzy
 msgid "No Installable Options"
-msgstr "Installeerbare opties"
+msgstr "Geen installeerbare opties"
 
 #: ../system-config-printer.py:4199
 msgid "Adding"
@@ -540,292 +535,272 @@ msgstr ""
 "niet geïnstalleerd. Installeer dit programma voordat deze printer wordt "
 "gebruikt."
 
-#: ../troubleshoot.py:46
+#: ../troubleshoot.py:49
 msgid ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
 msgstr ""
 
-#: ../troubleshoot.py:56
-#, fuzzy
+#: ../troubleshoot.py:59
 msgid "Authentication"
-msgstr "<b>Authenticatie</b>"
+msgstr "Authenticatie"
 
-#: ../troubleshoot.py:71
-#, fuzzy
+#: ../troubleshoot.py:74
 msgid "Password required"
-msgstr "Upgrade vereist"
+msgstr "Wachtwoord vereist"
 
-#: ../troubleshoot.py:79 ../system-config-printer.glade.h:195
+#: ../troubleshoot.py:82 ../system-config-printer.glade.h:195
 #: ../applet.glade.h:5
 msgid "Password:"
 msgstr "Wachtwoord:"
 
-#: ../troubleshoot.py:104
+#: ../troubleshoot.py:107
 msgid "Printing troubleshooter"
 msgstr ""
 
-#: ../troubleshoot.py:401
+#: ../troubleshoot.py:404
 msgid "Trouble-shooting Printing"
 msgstr ""
 
-#: ../troubleshoot.py:403
+#: ../troubleshoot.py:406
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
 msgstr ""
 
-#: ../troubleshoot.py:407
+#: ../troubleshoot.py:410
 msgid "Click 'Forward' to begin."
 msgstr ""
 
-#: ../troubleshoot.py:418
+#: ../troubleshoot.py:421
 msgid "Sorry!"
-msgstr ""
+msgstr "Sorry!"
 
-#: ../troubleshoot.py:419
+#: ../troubleshoot.py:422
 msgid ""
 "I have not been able to work out what the problem is, but I have collected "
 "some useful information to put in a bug report."
 msgstr ""
 
-#: ../troubleshoot.py:488
-#, fuzzy
+#: ../troubleshoot.py:491
 msgid "Queue Not Accepting Jobs"
-msgstr "Opdrachten worden geaccepteerd"
+msgstr ""
 
-#: ../troubleshoot.py:489
-#, fuzzy
+#: ../troubleshoot.py:492
 msgid "The CUPS printer on the server is not accepting jobs."
-msgstr "Deze gedeelde printer is niet toegankelijk."
+msgstr ""
 
-#: ../troubleshoot.py:513 ../troubleshoot.py:1259
+#: ../troubleshoot.py:517 ../troubleshoot.py:1298
 msgid "Queue Not Enabled"
 msgstr ""
 
-#: ../troubleshoot.py:514
-#, fuzzy
+#: ../troubleshoot.py:518
 msgid "The CUPS printer on the server is not enabled."
-msgstr "Deze gedeelde printer is niet toegankelijk."
+msgstr ""
 
-#: ../troubleshoot.py:531 ../troubleshoot.py:1253
+#: ../troubleshoot.py:538 ../troubleshoot.py:1292
 #, python-format
 msgid "The reason given is: `%s'."
 msgstr ""
 
-#: ../troubleshoot.py:533 ../troubleshoot.py:1255
+#: ../troubleshoot.py:540 ../troubleshoot.py:1294
 msgid "This may be due to the printer being disconnected or switched off."
 msgstr ""
 
-#: ../troubleshoot.py:549
+#: ../troubleshoot.py:552
 msgid "Queue Not Shared"
 msgstr ""
 
-#: ../troubleshoot.py:550
+#: ../troubleshoot.py:553
 msgid "The CUPS printer on the server is not shared."
 msgstr ""
 
-#: ../troubleshoot.py:584
-#, fuzzy
+#: ../troubleshoot.py:592
 msgid "Choose Network Printer"
-msgstr "Nieuwe printer"
+msgstr "Netwerkprinter kiezen"
 
-#: ../troubleshoot.py:585
+#: ../troubleshoot.py:593
 msgid ""
 "Please select the network printer you are trying to use from the list below. "
 "If it does not appear in the list, select 'Not listed'."
 msgstr ""
 
-#: ../troubleshoot.py:590 ../troubleshoot.py:1366
+#: ../troubleshoot.py:598 ../troubleshoot.py:1410
 msgid "Name"
 msgstr "Naam"
 
-#: ../troubleshoot.py:594 ../troubleshoot.py:1370
-#, fuzzy
+#: ../troubleshoot.py:602 ../troubleshoot.py:1414
 msgid "Information"
-msgstr "Locatie"
+msgstr "Informatie"
 
-#: ../troubleshoot.py:627 ../troubleshoot.py:1394
-#, fuzzy
+#: ../troubleshoot.py:638 ../troubleshoot.py:1438
 msgid "Not listed"
-msgstr "Niet verbonden"
+msgstr ""
 
-#: ../troubleshoot.py:788
-#, fuzzy
+#: ../troubleshoot.py:806
 msgid "Remote Address"
-msgstr "Printers op afstand"
+msgstr ""
 
-#: ../troubleshoot.py:789
+#: ../troubleshoot.py:807
 msgid ""
 "Please enter as many details as you can about the network address of this "
 "printer."
 msgstr ""
 
-#: ../troubleshoot.py:797
-#, fuzzy
+#: ../troubleshoot.py:815
 msgid "Server name:"
-msgstr "Gebruikersnaam:"
+msgstr ""
 
-#: ../troubleshoot.py:803
+#: ../troubleshoot.py:821
 msgid "Server IP address:"
 msgstr ""
 
-#: ../troubleshoot.py:824
-#, fuzzy
+#: ../troubleshoot.py:846
 msgid "Printer Location"
-msgstr "Printeropties"
+msgstr "Printerlocatie"
 
-#: ../troubleshoot.py:825
-#, fuzzy
+#: ../troubleshoot.py:847
 msgid "Is the printer connected to this computer or available on the network?"
-msgstr "Een printer verbonden met de parallelle poort."
+msgstr ""
 
-#: ../troubleshoot.py:827
-#, fuzzy
+#: ../troubleshoot.py:849
 msgid "Locally connected printer"
-msgstr "Printer %s echt verwijderen?"
+msgstr "Lokaal verbonden printer"
 
-#: ../troubleshoot.py:828
-#, fuzzy
+#: ../troubleshoot.py:850
 msgid "Network printer"
-msgstr "Nieuwe printer"
+msgstr "Netwerkprinter"
 
-#: ../troubleshoot.py:840
+#: ../troubleshoot.py:866
 msgid "CUPS Service Stopped"
 msgstr ""
 
-#: ../troubleshoot.py:841
+#: ../troubleshoot.py:867
 msgid ""
 "The CUPS print spooler does not appear to be running.  To correct this, "
 "choose System->Administration->Services from the main menu and look for the "
 "`cups' service."
 msgstr ""
 
-#: ../troubleshoot.py:870 ../applet.py:729
+#: ../troubleshoot.py:899 ../applet.py:638
 msgid "Pending"
 msgstr "Wachtend"
 
-#: ../troubleshoot.py:871 ../applet.py:730
+#: ../troubleshoot.py:900 ../applet.py:639
 msgid "Held"
 msgstr "Vastgehouden"
 
-#: ../troubleshoot.py:874 ../applet.py:733
+#: ../troubleshoot.py:903 ../applet.py:642
 msgid "Canceled"
 msgstr "Geannuleerd"
 
-#: ../troubleshoot.py:875 ../applet.py:734
+#: ../troubleshoot.py:904 ../applet.py:643
 msgid "Aborted"
 msgstr "Afgebroken"
 
-#: ../troubleshoot.py:876 ../applet.py:735
+#: ../troubleshoot.py:905 ../applet.py:644
 msgid "Completed"
 msgstr "Voltooid"
 
-#: ../troubleshoot.py:885
-#, fuzzy
+#: ../troubleshoot.py:914
 msgid "Test Page"
-msgstr "Testpagina afdrukken"
+msgstr "Testpagina"
 
-#: ../troubleshoot.py:897
+#: ../troubleshoot.py:926
 msgid "Cancel All Jobs"
-msgstr ""
+msgstr "Alle opdrachten annuleren"
 
-#: ../troubleshoot.py:902 ../applet.py:184
+#: ../troubleshoot.py:931 ../applet.py:93
 msgid "Job"
 msgstr "Opdracht"
 
-#: ../troubleshoot.py:906 ../applet.py:185
+#: ../troubleshoot.py:935 ../applet.py:94
 msgid "Document"
 msgstr "Document"
 
-#: ../troubleshoot.py:907 ../applet.py:189
+#: ../troubleshoot.py:936 ../applet.py:98
 msgid "Status"
 msgstr "Status"
 
-#: ../troubleshoot.py:928
+#: ../troubleshoot.py:957
 msgid "Did the test page print correctly?"
 msgstr ""
 
-#: ../troubleshoot.py:935
+#: ../troubleshoot.py:964
 msgid "Yes"
-msgstr ""
+msgstr "Ja"
 
-#: ../troubleshoot.py:936
+#: ../troubleshoot.py:965
 msgid "No"
-msgstr ""
+msgstr "Nee"
 
-#: ../troubleshoot.py:1118
-#, fuzzy
+#: ../troubleshoot.py:1147
 msgid "Status Messages"
-msgstr "Bericht"
+msgstr "Statusberichten"
 
-#: ../troubleshoot.py:1119
+#: ../troubleshoot.py:1148
 msgid "There are status messages associated with this queue."
 msgstr ""
 
-#: ../troubleshoot.py:1125
-#, fuzzy
+#: ../troubleshoot.py:1154
 msgid "Printer's state message:"
-msgstr "Printerstatus:"
+msgstr ""
 
-#: ../troubleshoot.py:1133
-#, fuzzy
+#: ../troubleshoot.py:1162
 msgid "Printer's state reasons:"
-msgstr "Printerstatus:"
+msgstr ""
 
-#: ../troubleshoot.py:1186
+#: ../troubleshoot.py:1219
 msgid "Queue Rejecting Jobs"
 msgstr ""
 
-#: ../troubleshoot.py:1211
+#: ../troubleshoot.py:1247
 #, python-format
 msgid "The queue `%s' is rejecting jobs."
 msgstr ""
 
-#: ../troubleshoot.py:1215
+#: ../troubleshoot.py:1251
 #, python-format
 msgid " The reason given is: `%s'."
 msgstr ""
 
-#: ../troubleshoot.py:1218
+#: ../troubleshoot.py:1254
 msgid ""
 "To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
 "`Policies' tab for the printer in the printer administration tool."
 msgstr ""
 
-#: ../troubleshoot.py:1260
+#: ../troubleshoot.py:1299
 #, python-format
 msgid "The queue `%s' is not enabled."
 msgstr ""
 
-#: ../troubleshoot.py:1263
+#: ../troubleshoot.py:1302
 msgid ""
 "To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
 "printer in the printer administration tool."
 msgstr ""
 
-#: ../troubleshoot.py:1278
+#: ../troubleshoot.py:1317
 msgid "Check Server Firewall"
 msgstr ""
 
-#: ../troubleshoot.py:1279
-#, fuzzy
+#: ../troubleshoot.py:1318
 msgid "It is not possible to connect to the server."
-msgstr "Er was een probleem bij het verbinden met de CUPS-server."
+msgstr "Het is niet mogelijk om een verbinding te maken met de server."
 
-#: ../troubleshoot.py:1292
+#: ../troubleshoot.py:1333
 #, python-format
 msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
 "port %d on server `%s'."
 msgstr ""
 
-#: ../troubleshoot.py:1360
-#, fuzzy
+#: ../troubleshoot.py:1404
 msgid "Choose Printer"
-msgstr "Printer kopieëren"
+msgstr "Printer kiezen"
 
-#: ../troubleshoot.py:1361
+#: ../troubleshoot.py:1405
 msgid ""
 "Please select the printer you are trying to use from the list below. If it "
 "does not appear in the list, select 'Not listed'."
@@ -872,32 +847,28 @@ msgid "<b>Description</b> (optional)"
 msgstr "<b>Omschrijving</b> (optioneel)"
 
 #: ../system-config-printer.glade.h:13
-#, fuzzy
 msgid "<b>Download Printer Driver</b>"
-msgstr "<b>Commentaar over het stuurprogramma</b>"
+msgstr "<b>Printerstuurprogramma downloaden</b>"
 
 #: ../system-config-printer.glade.h:14
 msgid "<b>Enter device URI</b>"
 msgstr "<b>Voer apparaat URI in</b>"
 
 #: ../system-config-printer.glade.h:15
-#, fuzzy
 msgid "<b>IPP Printer</b>"
-msgstr "<b>SMB-printer</b>"
+msgstr "<b>IPP-printer</b>"
 
 #: ../system-config-printer.glade.h:16
 msgid "<b>Image Options</b>"
 msgstr "<b>Afbeeldingsopties</b>"
 
 #: ../system-config-printer.glade.h:17
-#, fuzzy
 msgid "<b>Installed Options</b>"
-msgstr "<b>Afbeeldingsopties</b>"
+msgstr ""
 
 #: ../system-config-printer.glade.h:18
-#, fuzzy
 msgid "<b>License Terms</b>"
-msgstr "<b>Printernaam</b>"
+msgstr ""
 
 #: ../system-config-printer.glade.h:19
 msgid "<b>Location of the LPD network printer</b>"
@@ -912,9 +883,8 @@ msgid "<b>Location</b> (optional)"
 msgstr "<b>Locatie</b> (optioneel)"
 
 #: ../system-config-printer.glade.h:22
-#, fuzzy
 msgid "<b>Note</b>"
-msgstr "<b>Status</b>"
+msgstr "<b>Opmerking</b>"
 
 #: ../system-config-printer.glade.h:23
 msgid "<b>Other Options (Advanced)</b>"
@@ -938,12 +908,11 @@ msgstr "<b>SMB-printer</b>"
 
 #: ../system-config-printer.glade.h:28
 msgid "<b>Select Connection</b>"
-msgstr "<b>Selecteer verbinding</b>"
+msgstr "<b>Verbinding selecteren</b>"
 
 #: ../system-config-printer.glade.h:29
-#, fuzzy
 msgid "<b>Select Driver</b>"
-msgstr "<b>Standaardprinter</b>"
+msgstr "<b>Stuurprogramma selecteren</b>"
 
 #: ../system-config-printer.glade.h:30
 msgid "<b>Settings of the serial port</b>"
@@ -997,16 +966,14 @@ msgstr ""
 "\n"
 
 #: ../system-config-printer.glade.h:44
-#, fuzzy
 msgid "A CUPS configuration tool."
-msgstr "Printerconfiguratie - %s"
+msgstr "Een CUPS-configuratiehulpmiddel."
 
 #: ../system-config-printer.glade.h:45
 msgid "Accepting jobs"
 msgstr "Opdrachten worden geaccepteerd"
 
 #: ../system-config-printer.glade.h:46
-#, fuzzy
 msgid "Access Control"
 msgstr "Toegangscontrole"
 
@@ -1033,9 +1000,8 @@ msgstr ""
 "hunzelf)"
 
 #: ../system-config-printer.glade.h:52
-#, fuzzy
 msgid "Authentication required"
-msgstr "<b>Authenticatie</b>"
+msgstr "Authenticatie vereist"
 
 #: ../system-config-printer.glade.h:53
 msgid "Baud Rate"
@@ -1075,18 +1041,16 @@ msgid "Columns:"
 msgstr "Kolommen:"
 
 #: ../system-config-printer.glade.h:63
-#, fuzzy
 msgid "Comments..."
-msgstr "Opmerking"
+msgstr "Opmerkingen..."
 
 #: ../system-config-printer.glade.h:64
 msgid "Connect to CUPS server"
 msgstr "Verbinden met CUPS-server"
 
 #: ../system-config-printer.glade.h:65
-#, fuzzy
 msgid "Connect to a different print server"
-msgstr "Verbinden met CUPS-server"
+msgstr ""
 
 #: ../system-config-printer.glade.h:66
 msgid "Connecting"
@@ -1110,28 +1074,20 @@ msgid "Copy Printer"
 msgstr "Printer kopieëren"
 
 #: ../system-config-printer.glade.h:73
-#, fuzzy
 msgid "Copy this printer queue"
-msgstr "Printer kopieëren"
+msgstr ""
 
 #: ../system-config-printer.glade.h:74
-#, fuzzy
 msgid "Copyright © 2006-2007 Red Hat, Inc."
-msgstr "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "Copyright © 2006-2007 Red Hat, Inc."
 
 #: ../system-config-printer.glade.h:75
-#, fuzzy
 msgid "Create a new printer group"
 msgstr ""
-"Nieuwe printer %s wordt aangemaakt op\n"
-"%s.\n"
 
 #: ../system-config-printer.glade.h:76
-#, fuzzy
 msgid "Create a new printer queue"
 msgstr ""
-"Nieuwe printer %s wordt aangemaakt op\n"
-"%s.\n"
 
 #: ../system-config-printer.glade.h:77
 msgid "Data Bits"
@@ -1196,9 +1152,8 @@ msgstr ""
 "DTR/DSR (hardware)"
 
 #: ../system-config-printer.glade.h:99
-#, fuzzy
 msgid "Default Printer:"
-msgstr "Standaardprinter"
+msgstr "Standaardprinter:"
 
 #: ../system-config-printer.glade.h:100
 msgid "Delete this printer queue"
@@ -1229,9 +1184,8 @@ msgid "DirectJet"
 msgstr "DirectJet"
 
 #: ../system-config-printer.glade.h:108
-#, fuzzy
 msgid "Driver details"
-msgstr "Stuurprogramma's"
+msgstr ""
 
 #: ../system-config-printer.glade.h:109
 msgid "Empty"
@@ -1283,9 +1237,8 @@ msgid "Hold until:"
 msgstr "Vasthouden tot:"
 
 #: ../system-config-printer.glade.h:121
-#, fuzzy
 msgid "Host:"
-msgstr "Hostnaam"
+msgstr "Host:"
 
 #: ../system-config-printer.glade.h:122
 msgid "Hue adjustment:"
@@ -1308,9 +1261,8 @@ msgid "IPP Browser"
 msgstr ""
 
 #: ../system-config-printer.glade.h:127
-#, fuzzy
 msgid "Installed Options"
-msgstr "Installeerbare opties"
+msgstr ""
 
 #: ../system-config-printer.glade.h:128
 msgid "Job Options"
@@ -1350,7 +1302,7 @@ msgstr ""
 
 #: ../system-config-printer.glade.h:140
 msgid "License:"
-msgstr ""
+msgstr "Licentie:"
 
 #: ../system-config-printer.glade.h:141
 msgid "Lines per inch:"
@@ -1358,9 +1310,8 @@ msgstr "Regels per inch:"
 
 # aanpassen hier iets beter dan bewerken.
 #: ../system-config-printer.glade.h:142
-#, fuzzy
 msgid "Local Driver"
-msgstr "Lokale printers"
+msgstr "Lokaal stuurprogramma"
 
 #: ../system-config-printer.glade.h:143
 msgid "Location:"
@@ -1368,20 +1319,20 @@ msgstr "Locatie:"
 
 #. Not more than 25 characters
 #: ../system-config-printer.glade.h:145
-#, fuzzy
 msgid "Make Default"
-msgstr "Standaard _instellen"
+msgstr ""
 
 #: ../system-config-printer.glade.h:146
 msgid "Make and Model:"
 msgstr "Merk en model:"
 
 #: ../system-config-printer.glade.h:147
-#, fuzzy
 msgid ""
 "May contain any printable characters except \"/\", \"#\", and space.\n"
 "Name must be unique on the local machine!"
-msgstr "Mag elk afdrukbaar karakter bevatten behalve \"/\", \"#\", en spatie"
+msgstr ""
+"Mag elk afdrukbaar teken bevatten behalve \"/\", \"#\", en spatie.\n"
+"Naam moet uniek zijn op de lokale machine!"
 
 #: ../system-config-printer.glade.h:149
 msgid "Media:"
@@ -1514,9 +1465,8 @@ msgid "Policies"
 msgstr "Policies"
 
 #: ../system-config-printer.glade.h:198
-#, fuzzy
 msgid "Port number:"
-msgstr "Poortnummer"
+msgstr "Poortnummer:"
 
 #: ../system-config-printer.glade.h:199
 msgid ""
@@ -1531,7 +1481,6 @@ msgstr ""
 "Omgekeerd portret (180°)"
 
 #: ../system-config-printer.glade.h:203
-#, fuzzy
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1548,7 +1497,6 @@ msgstr "Mooi afdrukken"
 
 #. Not more than 25 characters
 #: ../system-config-printer.glade.h:206
-#, fuzzy
 msgid "Print Self-Test Page"
 msgstr "Testpagina afdrukken"
 
@@ -1557,22 +1505,20 @@ msgid "Printer State:"
 msgstr "Printerstatus:"
 
 #: ../system-config-printer.glade.h:211
-#, fuzzy
 msgid "Printer model:"
-msgstr "Printer toegevoegd"
+msgstr "Printermodel:"
 
 #: ../system-config-printer.glade.h:212
 msgid "Probe"
 msgstr "Detecteren"
 
 #: ../system-config-printer.glade.h:213
-#, fuzzy
 msgid "Provide PPD file"
 msgstr "PPD-bestand opgeven"
 
 #: ../system-config-printer.glade.h:214
 msgid "Queue:"
-msgstr ""
+msgstr "Wachtrij:"
 
 #: ../system-config-printer.glade.h:215
 msgid "Refresh the list of printer queues"
@@ -1627,18 +1573,16 @@ msgid "Search for a printer driver to download"
 msgstr ""
 
 #: ../system-config-printer.glade.h:228
-#, fuzzy
 msgid "Search terms:"
-msgstr "Zoeken naar printers"
+msgstr "Zoektermen:"
 
 #: ../system-config-printer.glade.h:229
 msgid "Select A File"
 msgstr "Selecteer een bestand"
 
 #: ../system-config-printer.glade.h:230
-#, fuzzy
 msgid "Select printer from database"
-msgstr "Een printer uit de database selecteren"
+msgstr "Selecteer een printer uit de database"
 
 #: ../system-config-printer.glade.h:231
 msgid "Serial"
@@ -1680,7 +1624,7 @@ msgstr "Begin-banner:"
 
 #: ../system-config-printer.glade.h:239
 msgid "Supplier:"
-msgstr ""
+msgstr "Leverancier:"
 
 #: ../system-config-printer.glade.h:240
 msgid "System-Config-Printer"
@@ -1766,7 +1710,7 @@ msgstr "Probeer de ingestelde opties over te kopieren vanaf de oude PPD. "
 
 #: ../system-config-printer.glade.h:254
 msgid "URI:"
-msgstr ""
+msgstr "URI:"
 
 #: ../system-config-printer.glade.h:255
 msgid "Use the new PPD (Postscript Printer Description) as is."
@@ -1791,9 +1735,8 @@ msgid "Word wrap"
 msgstr "Regels afbreken"
 
 #: ../system-config-printer.glade.h:260
-#, fuzzy
 msgid "Yes, I accept this license"
-msgstr "Opdrachten worden geaccepteerd"
+msgstr ""
 
 #: ../system-config-printer.glade.h:261
 msgid "_Do not apply"
@@ -1820,9 +1763,8 @@ msgid "_Install"
 msgstr "_Installeren"
 
 #: ../system-config-printer.glade.h:267
-#, fuzzy
 msgid "_Search"
-msgstr "Bezig met zoeken"
+msgstr "_Zoeken"
 
 #: ../system-config-printer.glade.h:268
 msgid "_Troubleshoot"
@@ -1845,21 +1787,25 @@ msgid "points"
 msgstr "punten"
 
 #: ../system-config-printer.glade.h:273
-#, fuzzy
 msgid ""
 "points\n"
 "(72 points per inch)"
-msgstr "punten (72 punten per inch)"
+msgstr ""
+"punten\n"
+"(72 punten per inch)"
 
 #: ../system-config-printer.glade.h:275
-#, fuzzy
 msgid "system-config-printer"
-msgstr "System-Config-Printer"
+msgstr "system-config-printer"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
 #: ../system-config-printer.glade.h:277
 msgid "translator-credits"
 msgstr ""
+"Tino Meinen <a.t.meinen@chello.nl>, 2003.\n"
+"Peter van Egdom <p.van.egdom@gmail.com>, 2003, 2004, 2005, 2006, 2007, 2008.\n"
+"Stijn Bibaer <stijn.bibaer@pandora.be>, 2006.\n"
+"Bart Couvreur <couf@fedoraproject.org>, 2007."
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1869,205 +1815,105 @@ msgstr "Printers configureren"
 msgid "Printing"
 msgstr "Afdrukken"
 
-#: ../applet.py:80
-msgid "Toner low"
-msgstr "Toner is bijna op"
-
-#: ../applet.py:81
-#, python-format
-msgid "Printer '%s' is low on toner."
-msgstr "Printer '%s' heeft bijna geen toner meer."
-
-#: ../applet.py:82
-msgid "Toner empty"
-msgstr "Toner is op"
-
-#: ../applet.py:83
-#, python-format
-msgid "Printer '%s' has no toner left."
-msgstr "Printer '%s' heeft geen toner meer."
-
-#: ../applet.py:84
-msgid "Cover open"
-msgstr "Kap staat open"
-
-#: ../applet.py:85
-#, python-format
-msgid "The cover is open on printer '%s'."
-msgstr "De kap van printer '%s' staat open."
-
-#: ../applet.py:86
-msgid "Door open"
-msgstr "Deur staat open"
-
-#: ../applet.py:87
-#, python-format
-msgid "The door is open on printer '%s'."
-msgstr "De deur van printer '%s' staat open."
-
-#: ../applet.py:88
-msgid "Paper low"
-msgstr "Papier is bijna op"
-
-#: ../applet.py:89
-#, python-format
-msgid "Printer '%s' is low on paper."
-msgstr "Printer '%s' heeft bijna geen papier meer."
-
-#: ../applet.py:90
-msgid "Out of paper"
-msgstr "Papier is op"
-
-#: ../applet.py:91
-#, python-format
-msgid "Printer '%s' is out of paper."
-msgstr "Printer '%s' heeft geen papier meer."
-
-#: ../applet.py:92
-msgid "Ink low"
-msgstr "Inkt is bijna op"
-
-#: ../applet.py:93
-#, python-format
-msgid "Printer '%s' is low on ink."
-msgstr "Printer '%s' heeft bijna geen inkt meer."
-
-#: ../applet.py:94
-msgid "Ink empty"
-msgstr "Inkt is op"
-
-#: ../applet.py:95
-#, python-format
-msgid "Printer '%s' has no ink left."
-msgstr "Printer '%s' heeft geen inkt meer."
-
 #: ../applet.py:96
-msgid "Not connected?"
-msgstr "Niet verbonden?"
-
-#: ../applet.py:97
-#, python-format
-msgid "Printer '%s' may not be connected."
-msgstr "Printer '%s' is mogelijk niet verbonden."
-
-#: ../applet.py:104
-msgid "Printer report"
-msgstr "Printerrapport"
-
-#: ../applet.py:106
-msgid "Printer warning"
-msgstr "Printerwaarschuwing"
-
-#: ../applet.py:108
-msgid "Printer error"
-msgstr "Printerfout"
-
-#: ../applet.py:109
-#, python-format
-msgid "Printer '%s': '%s'."
-msgstr "Printer '%s': '%s'."
-
-#: ../applet.py:187
 msgid "Size"
 msgstr "Grootte"
 
-#: ../applet.py:188
+#: ../applet.py:97
 msgid "Time submitted"
 msgstr "Tijd ingediend"
 
-#: ../applet.py:239
+#: ../applet.py:148
 msgid "Message"
 msgstr "Bericht"
 
-#: ../applet.py:592
+#: ../applet.py:501
 msgid "1 hour ago"
 msgstr "1 uur geleden"
 
-#: ../applet.py:594
+#: ../applet.py:503
 msgid "1 hour and 1 minute ago"
 msgstr "1 uur en 1 minuut geleden"
 
-#: ../applet.py:596
+#: ../applet.py:505
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "1 uur en %d minuten geleden"
 
-#: ../applet.py:599
+#: ../applet.py:508
 #, python-format
 msgid "%d hours ago"
 msgstr "%d uren geleden"
 
-#: ../applet.py:601
+#: ../applet.py:510
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d uren en 1 minuut geleden"
 
-#: ../applet.py:603
+#: ../applet.py:512
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d uren en %d minuten geleden"
 
-#: ../applet.py:609
+#: ../applet.py:518
 msgid "a minute ago"
 msgstr "een minuut geleden"
 
-#: ../applet.py:611
+#: ../applet.py:520
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d minuten geleden"
 
-#: ../applet.py:666
+#: ../applet.py:575
 msgid "No documents queued"
 msgstr "Geen documenten in de wachtrij"
 
-#: ../applet.py:669
+#: ../applet.py:578
 msgid "1 document queued"
 msgstr "1 document in de wachtrij"
 
-#: ../applet.py:672
+#: ../applet.py:581
 #, python-format
 msgid "%d documents queued"
 msgstr "%d documenten in de wachtrij"
 
-#: ../applet.py:1026
+#: ../applet.py:936
 msgid "Printer added"
 msgstr "Printer toegevoegd"
 
-#: ../applet.py:1028
+#: ../applet.py:938
 msgid "Missing printer driver"
-msgstr "Stuurprogramma voor printer ontbreekt"
+msgstr "Printerstuurprogramma ontbreekt"
 
-#: ../applet.py:1032
-#, fuzzy
+#: ../applet.py:942
 msgid "Install printer driver"
-msgstr "Stuurprogramma installeren"
+msgstr "Printerstuurprogramma installeren"
 
-#: ../applet.py:1033
+#: ../applet.py:943
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr ""
 
-#: ../applet.py:1036
-#, fuzzy
+#: ../applet.py:946
 msgid "Install"
-msgstr "_Installeren"
+msgstr "Installeren"
 
-#: ../applet.py:1039
+#: ../applet.py:949
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "`%s' is klaar om afgedrukt te worden."
 
-#: ../applet.py:1042
+#: ../applet.py:952
 msgid "Configure"
 msgstr "Configureren"
 
 #. Model mismatch
-#: ../applet.py:1045
+#: ../applet.py:955
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "`%s' is toegevoegd, en maakt gebruik van het `%s' stuurprogramma."
 
-#: ../applet.py:1049
+#: ../applet.py:959
 msgid "Find driver"
 msgstr "Stuurprogramma zoeken"
 
@@ -2100,9 +1946,8 @@ msgid "_Hold"
 msgstr "_Vasthouden"
 
 #: ../applet.glade.h:13
-#, fuzzy
 msgid "_Refresh"
-msgstr "_Vrijgeven"
+msgstr "_Vernieuwen"
 
 #: ../applet.glade.h:14
 msgid "_Release"
@@ -2131,6 +1976,72 @@ msgstr "Printopdrachten beheren"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Selecteer standaardprinter"
+
+#~ msgid "Toner low"
+#~ msgstr "Toner is bijna op"
+
+#~ msgid "Printer '%s' is low on toner."
+#~ msgstr "Printer '%s' heeft bijna geen toner meer."
+
+#~ msgid "Toner empty"
+#~ msgstr "Toner is op"
+
+#~ msgid "Printer '%s' has no toner left."
+#~ msgstr "Printer '%s' heeft geen toner meer."
+
+#~ msgid "Cover open"
+#~ msgstr "Kap staat open"
+
+#~ msgid "The cover is open on printer '%s'."
+#~ msgstr "De kap van printer '%s' staat open."
+
+#~ msgid "Door open"
+#~ msgstr "Deur staat open"
+
+#~ msgid "The door is open on printer '%s'."
+#~ msgstr "De deur van printer '%s' staat open."
+
+#~ msgid "Paper low"
+#~ msgstr "Papier is bijna op"
+
+#~ msgid "Printer '%s' is low on paper."
+#~ msgstr "Printer '%s' heeft bijna geen papier meer."
+
+#~ msgid "Out of paper"
+#~ msgstr "Papier is op"
+
+#~ msgid "Printer '%s' is out of paper."
+#~ msgstr "Printer '%s' heeft geen papier meer."
+
+#~ msgid "Ink low"
+#~ msgstr "Inkt is bijna op"
+
+#~ msgid "Printer '%s' is low on ink."
+#~ msgstr "Printer '%s' heeft bijna geen inkt meer."
+
+#~ msgid "Ink empty"
+#~ msgstr "Inkt is op"
+
+#~ msgid "Printer '%s' has no ink left."
+#~ msgstr "Printer '%s' heeft geen inkt meer."
+
+#~ msgid "Not connected?"
+#~ msgstr "Niet verbonden?"
+
+#~ msgid "Printer '%s' may not be connected."
+#~ msgstr "Printer '%s' is mogelijk niet verbonden."
+
+#~ msgid "Printer report"
+#~ msgstr "Printerrapport"
+
+#~ msgid "Printer warning"
+#~ msgstr "Printerwaarschuwing"
+
+#~ msgid "Printer error"
+#~ msgstr "Printerfout"
+
+#~ msgid "Printer '%s': '%s'."
+#~ msgstr "Printer '%s': '%s'."
 
 #, fuzzy
 #~ msgid ""
