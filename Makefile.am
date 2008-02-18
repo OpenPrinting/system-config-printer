@@ -4,20 +4,36 @@ nobase_pkgdata_SCRIPTS=				\
 	ppds.py					\
 	pysmb.py				\
 	system-config-printer.py		\
-	troubleshoot.py				\
+	troubleshoot/__init__.py		\
 	applet.py
 
-nobase_pkgdata_DATA=				\
-	config.py				\
-	cupshelpers.py				\
-	openprinting.py				\
-	options.py				\
-	optionwidgets.py			\
-	probe_printer.py			\
-	gtk_label_autowrap.py			\
-	gtk_treeviewtooltips.py			\
-	statereason.py				\
-	system-config-printer.glade		\
+nobase_pkgdata_DATA=					\
+	config.py					\
+	cupshelpers.py					\
+	openprinting.py					\
+	options.py					\
+	optionwidgets.py				\
+	probe_printer.py				\
+	gtk_label_autowrap.py				\
+	gtk_treeviewtooltips.py				\
+	statereason.py					\
+	system-config-printer.glade			\
+	troubleshoot/base.py				\
+	troubleshoot/CheckNetworkServerSanity.py	\
+	troubleshoot/CheckPrinterSanity.py		\
+	troubleshoot/ChooseNetworkPrinter.py		\
+	troubleshoot/ChoosePrinter.py			\
+	troubleshoot/LocalOrRemote.py			\
+	troubleshoot/NetworkCUPSPrinterShared.py	\
+	troubleshoot/PrinterStateReasons.py		\
+	troubleshoot/PrintTestPage.py			\
+	troubleshoot/QueueNotEnabled.py			\
+	troubleshoot/QueueRejectingJobs.py		\
+	troubleshoot/RemoteAddress.py			\
+	troubleshoot/SchedulerNotRunning.py		\
+	troubleshoot/ServerFirewalled.py		\
+	troubleshoot/Shrug.py				\
+	troubleshoot/Welcome.py				\
 	applet.glade
 
 nobase_sbin_SCRIPTS=\

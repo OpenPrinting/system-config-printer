@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+
+## Printing troubleshooter
+
+## Copyright (C) 2008 Red Hat, Inc.
+## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+from base import *
+from base import _
+class Welcome(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Welcome")
+        welcome = gtk.HBox ()
+        welcome.set_spacing (12)
+        welcome.set_border_width (12)
+        image = gtk.Image ()
+        image.set_alignment (0, 0)
+        image.set_from_stock (gtk.STOCK_PRINT, gtk.ICON_SIZE_DIALOG)
+        intro = gtk.Label ('<span weight="bold" size="larger">' +
+                           _("Trouble-shooting Printing") +
+                           '</span>\n\n' +
+                           _("In the next few screens I will ask you some "
+                             "questions about your problem with printing. "
+                             "Based on your answers I will try to suggest "
+                             "a solution.") + '\n\n' +
+                           _("Click 'Forward' to begin."))
+        intro.set_alignment (0, 0)
+        intro.set_use_markup (True)
+        intro.set_line_wrap (True)
+        welcome.pack_start (image, False, False, 0)
+        welcome.pack_start (intro, True, True, 0)
+        page = troubleshooter.new_page (welcome, self)
