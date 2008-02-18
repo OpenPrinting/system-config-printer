@@ -274,7 +274,9 @@ QUESTIONS = ["Welcome",
              "PrinterStateReasons",
 
              "ServerFirewalled",
+             "ErrorLogCheckpoint",
              "PrintTestPage",
+             "ErrorLogFetch",
              "PrinterStateReasons",
              "Shrug"]
 
