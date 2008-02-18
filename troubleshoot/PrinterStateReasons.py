@@ -57,6 +57,9 @@ class PrinterStateReasons(Question):
         if type (state_reasons_list) == unicode:
             state_reasons_list = [state_reasons_list]
 
+        self.state_message = state_message
+        self.state_reasons = state_reasons_list
+
         human_readable_errors = []
         human_readable_warnings = []
         for reason in state_reasons_list:
@@ -90,9 +93,9 @@ class PrinterStateReasons(Question):
         # nothing changed.
         if troubleshooter.answers.has_key ('printer-state-message'):
             if (troubleshooter.answers['printer-state-message'] ==
-                state_message and
+                self.state_message and
                 troubleshooter.answers['printer-state-reasons'] ==
-                state_reasons):
+                self.state_reasons):
                 return False
 
         return True
@@ -101,5 +104,5 @@ class PrinterStateReasons(Question):
         if not self.displayed:
             return {}
 
-        return { 'printer-state-message': self.state_message_label.get_text (),
-                 'printer-state-reasons': self.state_reasons_label.get_text () }
+        return { 'printer-state-message': self.state_message,
+                 'printer-state-reasons': self.state_reasons }
