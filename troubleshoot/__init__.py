@@ -278,6 +278,7 @@ QUESTIONS = ["Welcome",
              "PrintTestPage",
              "ErrorLogFetch",
              "PrinterStateReasons",
+             "ErrorLogParse",
              "Shrug"]
 
 def run (quitfn=None):
