@@ -27,15 +27,30 @@ from base import _
 class ErrorLogCheckpoint(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Error log checkpoint")
-        troubleshooter.new_page (gtk.Label (), self)
+        page = self.initial_vbox (_("Debugging"),
+                                  _("I would like to enable debugging output "
+                                    "from the CUPS scheduler.  This may "
+                                    "cause the scheduler to restart.  Click "
+                                    "the button below to enable debugging."))
+        button = gtk.Button (_("Enable Debugging"))
+        buttonbox = gtk.HButtonBox ()
+        buttonbox.set_border_width (0)
+        buttonbox.set_layout (gtk.BUTTONBOX_START)
+        buttonbox.pack_start (button, False, False, 0)
+        self.button = button
+        page.pack_start (buttonbox, False, False, 0)
+        self.label = gtk.Label ()
+        self.label.set_alignment (0, 0)
+        self.label.set_line_wrap (True)
+        page.pack_start (self.label, False, False, 0)
+        troubleshooter.new_page (page, self)
+        self.persistent_answers = {}
 
     def display (self):
-        return False
-
-    def collect_answer (self):
+        self.answers = {}
         answers = self.troubleshooter.answers
         if not answers['cups_queue_listed']:
-            return {}
+            return False
 
         # Fail if auth required.
         cups.setPasswordCB (lambda x: '')
@@ -43,16 +58,104 @@ class ErrorLogCheckpoint(Question):
         try:
             c = cups.Connection ()
         except RuntimeError:
+            return False
+
+        try:
+            settings = c.adminGetServerSettings ()
+        except cups.IPPError:
+            settings = {}
+
+        if len (settings.keys ()) == 0:
+            # Requires root
+            return True
+
+        try:
+            if int (settings[cups.CUPS_SERVER_DEBUG_LOGGING]) != 0:
+                # Already enabled
+                return False
+        except KeyError:
+            pass
+        except ValueError:
+            pass
+
+        return True
+
+    def connect_signals (self, handler):
+        self.button_sigid = self.button.connect ('clicked', self.enable_clicked)
+
+    def disconnect_signals (self):
+        self.button.disconnect (self.button_sigid)
+
+    def collect_answer (self):
+        answers = self.troubleshooter.answers
+        if not answers['cups_queue_listed']:
             return {}
 
+        self.answers = self.persistent_answers.copy ()
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.close (tmpfd)
         try:
+            cups.setUser ('')
+            c = cups.Connection ()
             c.getFile ('/admin/log/error_log', tmpfname)
+        except RuntimeError:
+            os.remove (tmpfname)
+            return self.answers
         except cups.IPPError:
             os.remove (tmpfname)
-            return {}
+            return self.answers
 
         statbuf = os.stat (tmpfname)
         os.remove (tmpfname)
-        return { 'error_log_checkpoint': statbuf[6] }
+        self.answers['error_log_checkpoint'] = statbuf[6]
+        return self.answers
+
+    def enable_clicked (self, button):
+        auth = None
+        for user in ['', 'root']:
+            cups.setUser (user)
+            if user == '':
+                # First try with the current user and no password.
+                cups.setPasswordCB (lambda x: '')
+            else:
+                # Then try with root and an authentication dialog.
+                auth = AuthenticationDialog ()
+                cups.setPasswordCB (auth.callback)
+
+            try:
+                c = cups.Connection ()
+            except RuntimeError:
+                return
+
+            try:
+                if auth:
+                    auth.suppress_dialog ()
+                settings = c.adminGetServerSettings ()
+            except cups.IPPError:
+                settings = {}
+
+            if len (settings.keys ()) == 0:
+                if user != '':
+                    return
+
+        try:
+            prev = int (settings[cups.CUPS_SERVER_DEBUG_LOGGING])
+        except KeyError:
+            prev = 0
+
+        if prev == 0:
+            settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '1'
+            success = False
+            try:
+                if auth:
+                    auth.suppress_dialog ()
+                c.adminSetServerSettings (settings)
+                success = True
+            except cups.IPPError:
+                pass
+
+            if success:
+                self.persistent_answers['error_log_debug_logging_set'] = True
+                self.label.set_text (_("Debug logging enabled."))
+        else:
+            self.label.set_text (_("Debug logging was already enabled."))

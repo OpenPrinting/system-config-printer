@@ -1,5 +1,27 @@
 2008-02-19  Tim Waugh  <twaugh@redhat.com>
 
+	* troubleshoot/ErrorLogParse.py (ErrorLogParse.display): Don't
+	trigger on error_log fetch.
+
+	* troubleshoot/ErrorLogFetch.py (ErrorLogFetch.__init__): Disable
+	debug logging if we enabled it.
+	(ErrorLogFetch.display): Fetch error_log here instead of in
+	collect_answer.
+	(ErrorLogFetch.connect_signals): New method.
+	(ErrorLogFetch.disconnect_signals): New method.
+	(ErrorLogFetch.button_clicked): New method.  Disable debug
+	logging.
+
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.__init__): Enable debug logging if not set.
+	(ErrorLogCheckpoint.display): Fetch server settings.
+	(ErrorLogCheckpoint.connect_signals): New method.
+	(ErrorLogCheckpoint.disconnect_signals): New method.
+	(ErrorLogCheckpoint.enable_clicked): New method.  Enable debug
+	logging.
+
+	* troubleshoot/base.py (AuthenticationDialog): Added some fixes.
+
 	* troubleshoot/PrintTestPage.py (PrintTestPage.update_jobs_list):
 	Work around old pycups bug.
 	(PrintTestPage.__init__): Allow other documents to be printed and

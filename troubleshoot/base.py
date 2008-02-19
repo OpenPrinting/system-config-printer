@@ -37,9 +37,19 @@ TEXT_start_print_admin_tool = _("To start this tool, select "
 class AuthenticationDialog:
     def __init__ (self, parent=None):
         self.parent = parent
-        cups.setPasswordCB (self.callback)
+        self.suppress = False
+
+    def suppress_dialog (self):
+        self.suppress = True
 
     def callback (self, prompt):
+        if self.suppress:
+            self.suppress = False
+            try:
+                return self.last_password
+            except AttributeError:
+                pass
+
         dialog = gtk.Dialog (_("Authentication"),
                              self.parent,
                              gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
@@ -78,12 +88,7 @@ class AuthenticationDialog:
             return ''
 
         self.last_password = self.password.get_text ()
-        if self.username.get_text () != cups.getUser ():
-            # Switch to another username for this action.
-            print "Switch"
-            cups.setUser (self.username.get_text ())
-            self.need_reconnect = True
-            return ''
+        return self.last_password
 
 class Question:
     def __init__ (self, troubleshooter, name=None):
