@@ -456,7 +456,7 @@ class JobManager:
 
                 if self.notify:
                     self.notify.close ()
-                self.notify = pynotify.Notification (title, text)
+                self.notify = pynotify.Notification (title, text, 'printer')
                 self.set_statusicon_visibility ()
                 # Let the icon show itself, ready for the notification
                 while gtk.events_pending ():
@@ -475,6 +475,13 @@ class JobManager:
 
     def on_notification_closed(self, notify):
         self.notify = None
+        reason = self.notified_reason
+        if reason.get_reason () == "connecting-to-device":
+            try:
+                del self.connecting_to_device[reason.get_printer ()]
+            except KeyError:
+                pass
+
         if self.trayicon:
             # Any reason to keep the status icon around?
             self.set_statusicon_visibility ()
@@ -954,7 +961,7 @@ class NewPrinterNotification(dbus.service.Object):
         else: # Model mismatch
             text = _("`%s' has been added, using the `%s' driver.") % \
                    (name, driver)
-            n = pynotify.Notification (title, text)
+            n = pynotify.Notification (title, text, 'printer')
             n.set_urgency (pynotify.URGENCY_CRITICAL)
             n.add_action ("find-driver", _("Find driver"),
                           lambda x, y: self.find_driver (x, y, name))

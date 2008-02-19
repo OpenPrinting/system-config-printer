@@ -1,5 +1,11 @@
 2008-02-19  Tim Waugh  <twaugh@redhat.com>
 
+	* applet.py (JobManager.on_notification_closed): Reset connecting
+	timer when notification is closed.
+	(JobManager.check_state_reasons): Use printer icon in notification
+	bubble.
+	(NewPrinterNotification.NewPrinter): Likewise.
+
 	* troubleshoot/Shrug.py (Shrug.on_save_clicked): Save as
 	troubleshoot.txt by default.
 
