@@ -22,6 +22,9 @@
 from base import *
 from base import _
 class ErrorLogParse(Question):
+
+    ## This could be a LOT smarter.
+
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Error log parse")
         page = self.initial_vbox (_("Error log messages"),
@@ -47,6 +50,7 @@ class ErrorLogParse(Question):
                 line.find ("no errors") == -1 and
                 line.find ("error_log") == -1):
                 display = True
+                break
 
         if display:
             self.buffer.set_text (reduce (lambda x, y: x + '\n' + y, 
