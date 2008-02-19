@@ -1,5 +1,9 @@
 2008-02-19  Tim Waugh  <twaugh@redhat.com>
 
+	* troubleshoot/PrintTestPage.py
+	(PrintTestPage.collect_answer.collect_jobs.each): Try to use
+	getJobAttributes if available.
+
 	* applet.py (JobManager.on_notification_closed): Reset connecting
 	timer when notification is closed.
 	(JobManager.check_state_reasons): Use printer icon in notification

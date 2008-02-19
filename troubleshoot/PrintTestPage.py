@@ -203,8 +203,8 @@ class PrintTestPage(Question):
         class collect_jobs:
             def __init__ (self, model):
                 self.jobs = []
-                c = cups.Connection ()
-                self.job_attrs = c.getJobs (which_jobs='all')
+                self.cups = cups.Connection ()
+                self.job_attrs = None
                 model.foreach (self.each, None)
 
             def each (self, model, path, iter, user_data):
@@ -212,7 +212,14 @@ class PrintTestPage(Question):
                  doc, status) = model.get (iter, 0, 1, 2, 3, 4)
                 attrs = None
                 if test:
-                    attrs = self.job_attrs[jobid]
+                    try:
+                        attrs = self.cups.getJobAttributes (jobid)
+                    except AttributeError:
+                        # getJobAttributes was introduced in pycups 1.9.35.
+                        if self.job_attrs == None:
+                            self.job_attrs = self.cups.getJobs(which_jobs='all')
+                        attrs = self.job_attrs[jobid]
+
                 self.jobs.append ((test, jobid, printer, doc, status, attrs))
 
         model = self.treeview.get_model ()
