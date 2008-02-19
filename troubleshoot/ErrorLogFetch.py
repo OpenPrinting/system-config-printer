@@ -54,7 +54,7 @@ class ErrorLogFetch(Question):
         except KeyError:
             checkpoint = None
 
-        if self.answers.has_key ('error_log'):
+        if self.persistent_answers.has_key ('error_log'):
             checkpoint = None
 
         if checkpoint != None:
@@ -144,4 +144,4 @@ class ErrorLogFetch(Question):
                 self.persistent_answers['error_log_debug_logging_unset'] = True
                 self.label.set_text (_("Debug logging disabled."))
         else:
-            self.label.set_text (_("Debug logging was already disbled."))
+            self.label.set_text (_("Debug logging was already disabled."))
