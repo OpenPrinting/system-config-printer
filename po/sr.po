@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.0.7.32.x.sr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-02-13 18:10-0700\n"
+"POT-Creation-Date: 2008-02-19 17:06+0000\n"
 "PO-Revision-Date: 2008-02-14 19:04-0500\n"
 "Last-Translator: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>\n"
 "Language-Team: Serbian <fedora-trans-sr@redhat.com>\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Мирује"
 
-#: ../cupshelpers.py:34 ../troubleshoot.py:879 ../applet.py:731
+#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:30 ../applet.py:647
 msgid "Processing"
 msgstr "Обрађује"
 
@@ -32,14 +32,17 @@ msgstr "Обрађује"
 msgid "Busy"
 msgstr "Заузет"
 
-#: ../cupshelpers.py:36 ../troubleshoot.py:880 ../applet.py:732
+#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:31 ../applet.py:648
 msgid "Stopped"
 msgstr "Заустављен"
 
-#: ../cupshelpers.py:53 ../troubleshoot.py:648 ../troubleshoot.py:649
-#: ../troubleshoot.py:652 ../troubleshoot.py:653 ../troubleshoot.py:1422
-#: ../troubleshoot.py:1423 ../troubleshoot.py:1426 ../troubleshoot.py:1427
-#: ../applet.py:741
+#: ../cupshelpers.py:53 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../troubleshoot/ChooseNetworkPrinter.py:97
+#: ../troubleshoot/ChooseNetworkPrinter.py:100
+#: ../troubleshoot/ChooseNetworkPrinter.py:101
+#: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
+#: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
+#: ../applet.py:657
 msgid "Unknown"
 msgstr "Непознато"
 
@@ -55,13 +58,14 @@ msgstr "_Користи подразумеване системске вредн
 msgid "_Set Default"
 msgstr "По_стави као подразумевани"
 
-#: ../my-default-printer.py:151 ../troubleshoot.py:911 ../applet.py:186
-#: ../applet.py:226
+#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:68
+#: ../applet.py:95 ../applet.py:135
 msgid "Printer"
 msgstr "Штампач"
 
 #: ../my-default-printer.py:155 ../system-config-printer.py:2373
-#: ../troubleshoot.py:592 ../troubleshoot.py:1375
+#: ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Локација"
 
@@ -167,20 +171,20 @@ msgstr ""
 "се сукоби разреше."
 
 #: ../system-config-printer.py:1241 ../system-config-printer.py:1257
-#: ../applet.py:349
+#: ../applet.py:258
 msgid "Not authorized"
 msgstr "Неовлашћен"
 
-#: ../system-config-printer.py:1242 ../applet.py:350
+#: ../system-config-printer.py:1242 ../applet.py:259
 msgid "The password may be incorrect."
 msgstr "Лозинка је можда нетачна."
 
 #: ../system-config-printer.py:1245 ../system-config-printer.py:1278
-#: ../applet.py:353
+#: ../applet.py:262
 msgid "CUPS server error"
 msgstr "Грешка CUPS сервера"
 
-#: ../system-config-printer.py:1246 ../applet.py:354
+#: ../system-config-printer.py:1246 ../applet.py:263
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Десила се грешка током CUPS радње: „%s“."
@@ -284,8 +288,8 @@ msgid "Cancel Tests"
 msgstr "Откажи пробе"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1836 ../troubleshoot.py:901
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.py:1836 ../system-config-printer.glade.h:208
+#: ../troubleshoot/PrintTestPage.py:56
 msgid "Print Test Page"
 msgstr "Одштампај пробну страницу"
 
@@ -529,295 +533,6 @@ msgid ""
 msgstr ""
 "Штампач „%s“ захтева „%s“ програм али он није тренутно инсталиран.  Молим "
 "инсталирајте га пре коришћења штампача."
-
-#: ../troubleshoot.py:46
-msgid ""
-"To start this tool, select System->Administration->Printing from the main "
-"menu."
-msgstr ""
-"Да бисте покренули ову алатку, изаберите Систем -> Администрација -> "
-"Штампање у главном менију."
-
-#: ../troubleshoot.py:56
-msgid "Authentication"
-msgstr "Аутентификација"
-
-#: ../troubleshoot.py:71
-msgid "Password required"
-msgstr "Лозинка је неопходна"
-
-#: ../troubleshoot.py:79 ../system-config-printer.glade.h:195
-#: ../applet.glade.h:5
-msgid "Password:"
-msgstr "Лозинка:"
-
-#: ../troubleshoot.py:104
-msgid "Printing troubleshooter"
-msgstr "Решавање проблема штампања"
-
-#: ../troubleshoot.py:401
-msgid "Trouble-shooting Printing"
-msgstr "Решавање проблема штампања"
-
-#: ../troubleshoot.py:403
-msgid ""
-"In the next few screens I will ask you some questions about your problem "
-"with printing. Based on your answers I will try to suggest a solution."
-msgstr ""
-"Следећих неколико екрана ће вас питати у вези проблема са штампањем. На "
-"основу датих одговора предложиће вам се могуће решење."
-
-#: ../troubleshoot.py:407
-msgid "Click 'Forward' to begin."
-msgstr "Притисните „Напред“ да би почели."
-
-#: ../troubleshoot.py:418
-msgid "Sorry!"
-msgstr "Извините."
-
-#: ../troubleshoot.py:419
-msgid ""
-"I have not been able to work out what the problem is, but I have collected "
-"some useful information to put in a bug report."
-msgstr ""
-"Није било могуће наћи разлог за проблем, али неки корисни подаци су "
-"прикупљени који се могу ставити у извештај о грешци."
-
-#: ../troubleshoot.py:488
-msgid "Queue Not Accepting Jobs"
-msgstr "Ред не прихвата послове"
-
-#: ../troubleshoot.py:489
-msgid "The CUPS printer on the server is not accepting jobs."
-msgstr "CUPS штампач на серверу не прихвата послове."
-
-#: ../troubleshoot.py:513 ../troubleshoot.py:1266
-msgid "Queue Not Enabled"
-msgstr "Ред није омогућен"
-
-#: ../troubleshoot.py:514
-msgid "The CUPS printer on the server is not enabled."
-msgstr "CUPS штампач на серверу није омогућен."
-
-#: ../troubleshoot.py:531 ../troubleshoot.py:1260
-#, python-format
-msgid "The reason given is: `%s'."
-msgstr "Дати разлог је: „%s“."
-
-#: ../troubleshoot.py:533 ../troubleshoot.py:1262
-msgid "This may be due to the printer being disconnected or switched off."
-msgstr "Ово може збити због тога што је штампач ископчан или искључен."
-
-#: ../troubleshoot.py:549
-msgid "Queue Not Shared"
-msgstr "Ред није дељен"
-
-#: ../troubleshoot.py:550
-msgid "The CUPS printer on the server is not shared."
-msgstr "CUPS штампач на серверу није дељен."
-
-#: ../troubleshoot.py:584
-msgid "Choose Network Printer"
-msgstr "Изаберите мрежни штампач"
-
-#: ../troubleshoot.py:585
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-"Изаберите мрежни штампач који покушавате да користите са доњег списка. Ако "
-"није на списку, изаберите „Није на списку“."
-
-#: ../troubleshoot.py:590 ../troubleshoot.py:1373
-msgid "Name"
-msgstr "Име"
-
-#: ../troubleshoot.py:594 ../troubleshoot.py:1377
-msgid "Information"
-msgstr "Подаци"
-
-#: ../troubleshoot.py:627 ../troubleshoot.py:1401
-msgid "Not listed"
-msgstr "Није на списку"
-
-#: ../troubleshoot.py:795
-msgid "Remote Address"
-msgstr "Удаљена адреса"
-
-#: ../troubleshoot.py:796
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr "Унесите колико год можете детаља у вези мрежне адресе овог штампача."
-
-#: ../troubleshoot.py:804
-msgid "Server name:"
-msgstr "Име сервера:"
-
-#: ../troubleshoot.py:810
-msgid "Server IP address:"
-msgstr "ИП адреса сервера:"
-
-#: ../troubleshoot.py:831
-msgid "Printer Location"
-msgstr "Локација штампача"
-
-#: ../troubleshoot.py:832
-msgid "Is the printer connected to this computer or available on the network?"
-msgstr "Да ли је штампач прикључен на овај рачунар или је доступан на мрежи?"
-
-#: ../troubleshoot.py:834
-msgid "Locally connected printer"
-msgstr "Локално прикључен штампач"
-
-#: ../troubleshoot.py:835
-msgid "Network printer"
-msgstr "Мрежни штампач"
-
-#: ../troubleshoot.py:847
-msgid "CUPS Service Stopped"
-msgstr "CUPS сервис заустављен"
-
-#: ../troubleshoot.py:848
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
-msgstr ""
-"CUPS сервис штампања није покренут.  Да бисте исправили ово, изаберите "
-"Систем -> Администрација -> Сервиси из главног меније и нађите „cups“ сервис."
-
-#: ../troubleshoot.py:877 ../applet.py:729
-msgid "Pending"
-msgstr "На чекању"
-
-#: ../troubleshoot.py:878 ../applet.py:730
-msgid "Held"
-msgstr "Задржано"
-
-#: ../troubleshoot.py:881 ../applet.py:733
-msgid "Canceled"
-msgstr "Отказано"
-
-#: ../troubleshoot.py:882 ../applet.py:734
-msgid "Aborted"
-msgstr "Обустављено"
-
-#: ../troubleshoot.py:883 ../applet.py:735
-msgid "Completed"
-msgstr "Завршено"
-
-#: ../troubleshoot.py:892
-msgid "Test Page"
-msgstr "Пробна страница"
-
-#: ../troubleshoot.py:904
-msgid "Cancel All Jobs"
-msgstr "Откажи све послове"
-
-#: ../troubleshoot.py:909 ../applet.py:184
-msgid "Job"
-msgstr "Посао"
-
-#: ../troubleshoot.py:913 ../applet.py:185
-msgid "Document"
-msgstr "Документ"
-
-#: ../troubleshoot.py:914 ../applet.py:189
-msgid "Status"
-msgstr "Стање"
-
-#: ../troubleshoot.py:935
-msgid "Did the test page print correctly?"
-msgstr "Да ли је страница одштампана правилно?"
-
-#: ../troubleshoot.py:942
-msgid "Yes"
-msgstr "Да"
-
-#: ../troubleshoot.py:943
-msgid "No"
-msgstr "Не"
-
-#: ../troubleshoot.py:1125
-msgid "Status Messages"
-msgstr "Поруке стања"
-
-#: ../troubleshoot.py:1126
-msgid "There are status messages associated with this queue."
-msgstr "Има порука стања повезаних са овим редом."
-
-#: ../troubleshoot.py:1132
-msgid "Printer's state message:"
-msgstr "Поруке стања штампача:"
-
-#: ../troubleshoot.py:1140
-msgid "Printer's state reasons:"
-msgstr "Разлози стања штампача:"
-
-#: ../troubleshoot.py:1193
-msgid "Queue Rejecting Jobs"
-msgstr "Ред одбија послове"
-
-#: ../troubleshoot.py:1218
-#, python-format
-msgid "The queue `%s' is rejecting jobs."
-msgstr "Ред „%s“ одбија послове."
-
-#: ../troubleshoot.py:1222
-#, python-format
-msgid " The reason given is: `%s'."
-msgstr "Разлог је: „%s“."
-
-#: ../troubleshoot.py:1225
-msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
-msgstr ""
-"Да би ред прихватао послове, штиклирајте „Прихватање послова“ кућицу у "
-"језичку „Полисе“ за дати штампач у алатки за администрацију штампача."
-
-#: ../troubleshoot.py:1267
-#, python-format
-msgid "The queue `%s' is not enabled."
-msgstr "Ред „%s“ није омогућен."
-
-#: ../troubleshoot.py:1270
-msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-"Да бисте омогућили, штиклирајте кућицу „Омогућено“ у језичку „Полисе“ за "
-"дати штампач у алатки за администрацију штампача."
-
-#: ../troubleshoot.py:1285
-msgid "Check Server Firewall"
-msgstr "Проверите заштитни зид сервера"
-
-#: ../troubleshoot.py:1286
-msgid "It is not possible to connect to the server."
-msgstr "Повезивање са сервером није могуће."
-
-#: ../troubleshoot.py:1299
-#, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
-msgstr ""
-"Проверите дали подешавања заштитног зида или рутера блокирају TCP порт %d на "
-"серверу `%s'."
-
-#: ../troubleshoot.py:1367
-msgid "Choose Printer"
-msgstr "Изаберите штампач"
-
-#: ../troubleshoot.py:1368
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
-"Изаберите штампач који желите користити са доњег списка. Ако не постоји, "
-"изаберите „Није на списку“. "
 
 #: ../system-config-printer.glade.h:1
 msgid " "
@@ -1467,6 +1182,11 @@ msgstr "Страница по листу:"
 msgid "Parity"
 msgstr "Парност"
 
+#: ../system-config-printer.glade.h:195 ../troubleshoot/base.py:76
+#: ../applet.glade.h:5
+msgid "Password:"
+msgstr "Лозинка:"
+
 #: ../system-config-printer.glade.h:196
 msgid "Please Wait"
 msgstr "Сачекајте"
@@ -1840,203 +1560,491 @@ msgstr "Подешавање штампача"
 msgid "Printing"
 msgstr "Штампање"
 
-#: ../applet.py:80
+#: ../statereason.py:73
 msgid "Toner low"
 msgstr "Тонер скоро празан"
 
-#: ../applet.py:81
+#: ../statereason.py:74
 #, python-format
 msgid "Printer '%s' is low on toner."
 msgstr "Штампачу „%s“ је тонер скоро празан."
 
-#: ../applet.py:82
+#: ../statereason.py:75
 msgid "Toner empty"
 msgstr "Тонер празан"
 
-#: ../applet.py:83
+#: ../statereason.py:76
 #, python-format
 msgid "Printer '%s' has no toner left."
 msgstr "Штампачу „%s“ је тонер празан."
 
-#: ../applet.py:84
+#: ../statereason.py:77
 msgid "Cover open"
 msgstr "Отворен поклопац"
 
-#: ../applet.py:85
+#: ../statereason.py:78
 #, python-format
 msgid "The cover is open on printer '%s'."
 msgstr "Поклопац је отворен на штампачу „%s“."
 
-#: ../applet.py:86
+#: ../statereason.py:79
 msgid "Door open"
 msgstr "Врата отворена"
 
-#: ../applet.py:87
+#: ../statereason.py:80
 #, python-format
 msgid "The door is open on printer '%s'."
 msgstr "Врата су отворен на штампачу „%s“."
 
-#: ../applet.py:88
+#: ../statereason.py:81
 msgid "Paper low"
 msgstr "Мало папира"
 
-#: ../applet.py:89
+#: ../statereason.py:82
 #, python-format
 msgid "Printer '%s' is low on paper."
 msgstr "Штампачу „%s“ је остало веома мало папира."
 
-#: ../applet.py:90
+#: ../statereason.py:83
 msgid "Out of paper"
 msgstr "Нема папира"
 
-#: ../applet.py:91
+#: ../statereason.py:84
 #, python-format
 msgid "Printer '%s' is out of paper."
 msgstr "Штампач „%s“ је остао без папира."
 
-#: ../applet.py:92
+#: ../statereason.py:85
 msgid "Ink low"
 msgstr "Мало боје"
 
-#: ../applet.py:93
+#: ../statereason.py:86
 #, python-format
 msgid "Printer '%s' is low on ink."
 msgstr "Штампачу „%s“ је остало веома мало боје."
 
-#: ../applet.py:94
+#: ../statereason.py:87
 msgid "Ink empty"
 msgstr "Нестало боје"
 
-#: ../applet.py:95
+#: ../statereason.py:88
 #, python-format
 msgid "Printer '%s' has no ink left."
 msgstr "Штампач „%s“ је остао без боје."
 
-#: ../applet.py:96
+#: ../statereason.py:89
 msgid "Not connected?"
 msgstr "Није спојен?"
 
-#: ../applet.py:97
+#: ../statereason.py:90
 #, python-format
 msgid "Printer '%s' may not be connected."
 msgstr "Штампач „%s“ можда није спојен."
 
-#: ../applet.py:104
+#: ../statereason.py:97
 msgid "Printer report"
 msgstr "Извештај штампача"
 
-#: ../applet.py:106
+#: ../statereason.py:99
 msgid "Printer warning"
 msgstr "Упозорење штампача"
 
-#: ../applet.py:108
+#: ../statereason.py:101
 msgid "Printer error"
 msgstr "Грешка штампача"
 
-#: ../applet.py:109
+#: ../statereason.py:102
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr "Штампач „%s“: „%s“."
 
-#: ../applet.py:187
+#: ../troubleshoot/__init__.py:37
+msgid "Printing troubleshooter"
+msgstr "Решавање проблема штампања"
+
+#: ../troubleshoot/base.py:33
+msgid ""
+"To start this tool, select System->Administration->Printing from the main "
+"menu."
+msgstr ""
+"Да бисте покренули ову алатку, изаберите Систем -> Администрација -> "
+"Штампање у главном менију."
+
+#: ../troubleshoot/base.py:53
+msgid "Authentication"
+msgstr "Аутентификација"
+
+#: ../troubleshoot/base.py:68
+msgid "Password required"
+msgstr "Лозинка је неопходна"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:29
+msgid "Choose Network Printer"
+msgstr "Изаберите мрежни штампач"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:30
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+"Изаберите мрежни штампач који покушавате да користите са доњег списка. Ако "
+"није на списку, изаберите „Није на списку“."
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36
+msgid "Name"
+msgstr "Име"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:39
+#: ../troubleshoot/ChoosePrinter.py:40
+msgid "Information"
+msgstr "Подаци"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:75
+#: ../troubleshoot/ChoosePrinter.py:64
+msgid "Not listed"
+msgstr "Није на списку"
+
+#: ../troubleshoot/ChoosePrinter.py:30
+msgid "Choose Printer"
+msgstr "Изаберите штампач"
+
+#: ../troubleshoot/ChoosePrinter.py:31
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+"Изаберите штампач који желите користити са доњег списка. Ако не постоји, "
+"изаберите „Није на списку“. "
+
+#: ../troubleshoot/LocalOrRemote.py:27
+msgid "Printer Location"
+msgstr "Локација штампача"
+
+#: ../troubleshoot/LocalOrRemote.py:28
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "Да ли је штампач прикључен на овај рачунар или је доступан на мрежи?"
+
+#: ../troubleshoot/LocalOrRemote.py:30
+msgid "Locally connected printer"
+msgstr "Локално прикључен штампач"
+
+#: ../troubleshoot/LocalOrRemote.py:31
+msgid "Network printer"
+msgstr "Мрежни штампач"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr "Ред није дељен"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr "CUPS штампач на серверу није дељен."
+
+#: ../troubleshoot/PrinterStateReasons.py:29
+msgid "Status Messages"
+msgstr "Поруке стања"
+
+#: ../troubleshoot/PrinterStateReasons.py:30
+msgid "There are status messages associated with this queue."
+msgstr "Има порука стања повезаних са овим редом."
+
+#: ../troubleshoot/PrinterStateReasons.py:53
+#, fuzzy, python-format
+msgid "The printer's state message is: `%s'."
+msgstr "Поруке стања штампача:"
+
+#: ../troubleshoot/PrinterStateReasons.py:78
+msgid "Errors are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:83
+msgid "Warnings are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:28 ../applet.py:645
+msgid "Pending"
+msgstr "На чекању"
+
+#: ../troubleshoot/PrintTestPage.py:29 ../applet.py:646
+msgid "Held"
+msgstr "Задржано"
+
+#: ../troubleshoot/PrintTestPage.py:32 ../applet.py:649
+msgid "Canceled"
+msgstr "Отказано"
+
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:650
+msgid "Aborted"
+msgstr "Обустављено"
+
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:651
+msgid "Completed"
+msgstr "Завршено"
+
+#: ../troubleshoot/PrintTestPage.py:43
+msgid "Test Page"
+msgstr "Пробна страница"
+
+#: ../troubleshoot/PrintTestPage.py:44
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:59
+msgid "Cancel All Jobs"
+msgstr "Откажи све послове"
+
+#: ../troubleshoot/PrintTestPage.py:65
+#, fuzzy
+msgid "Test"
+msgstr "Поврати"
+
+#: ../troubleshoot/PrintTestPage.py:66 ../applet.py:93
+msgid "Job"
+msgstr "Посао"
+
+#: ../troubleshoot/PrintTestPage.py:70 ../applet.py:94
+msgid "Document"
+msgstr "Документ"
+
+#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:98
+msgid "Status"
+msgstr "Стање"
+
+#: ../troubleshoot/PrintTestPage.py:95
+#, fuzzy
+msgid "Did the marked print jobs print correctly?"
+msgstr "Да ли је страница одштампана правилно?"
+
+#: ../troubleshoot/PrintTestPage.py:102
+msgid "Yes"
+msgstr "Да"
+
+#: ../troubleshoot/PrintTestPage.py:103
+msgid "No"
+msgstr "Не"
+
+#: ../troubleshoot/QueueNotEnabled.py:57
+#: ../troubleshoot/QueueRejectingJobs.py:67
+#, python-format
+msgid "The reason given is: `%s'."
+msgstr "Дати разлог је: „%s“."
+
+#: ../troubleshoot/QueueNotEnabled.py:59
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr "Ово може збити због тога што је штампач ископчан или искључен."
+
+#: ../troubleshoot/QueueNotEnabled.py:63
+msgid "Queue Not Enabled"
+msgstr "Ред није омогућен"
+
+#: ../troubleshoot/QueueNotEnabled.py:64
+#, python-format
+msgid "The queue `%s' is not enabled."
+msgstr "Ред „%s“ није омогућен."
+
+#: ../troubleshoot/QueueNotEnabled.py:72
+msgid ""
+"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+"Да бисте омогућили, штиклирајте кућицу „Омогућено“ у језичку „Полисе“ за "
+"дати штампач у алатки за администрацију штампача."
+
+#: ../troubleshoot/QueueRejectingJobs.py:32
+msgid "Queue Rejecting Jobs"
+msgstr "Ред одбија послове"
+
+#: ../troubleshoot/QueueRejectingJobs.py:64
+#, python-format
+msgid "The queue `%s' is rejecting jobs."
+msgstr "Ред „%s“ одбија послове."
+
+#: ../troubleshoot/QueueRejectingJobs.py:71
+msgid ""
+"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
+"`Policies' tab for the printer in the printer administration tool."
+msgstr ""
+"Да би ред прихватао послове, штиклирајте „Прихватање послова“ кућицу у "
+"језичку „Полисе“ за дати штампач у алатки за администрацију штампача."
+
+#: ../troubleshoot/RemoteAddress.py:27
+msgid "Remote Address"
+msgstr "Удаљена адреса"
+
+#: ../troubleshoot/RemoteAddress.py:28
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr "Унесите колико год можете детаља у вези мрежне адресе овог штампача."
+
+#: ../troubleshoot/RemoteAddress.py:36
+msgid "Server name:"
+msgstr "Име сервера:"
+
+#: ../troubleshoot/RemoteAddress.py:43
+msgid "Server IP address:"
+msgstr "ИП адреса сервера:"
+
+#: ../troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr "CUPS сервис заустављен"
+
+#: ../troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"`cups' service."
+msgstr ""
+"CUPS сервис штампања није покренут.  Да бисте исправили ово, изаберите "
+"Систем -> Администрација -> Сервиси из главног меније и нађите „cups“ сервис."
+
+#: ../troubleshoot/ServerFirewalled.py:27
+msgid "Check Server Firewall"
+msgstr "Проверите заштитни зид сервера"
+
+#: ../troubleshoot/ServerFirewalled.py:28
+msgid "It is not possible to connect to the server."
+msgstr "Повезивање са сервером није могуће."
+
+#: ../troubleshoot/ServerFirewalled.py:43
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server `%s'."
+msgstr ""
+"Проверите дали подешавања заштитног зида или рутера блокирају TCP порт %d на "
+"серверу `%s'."
+
+#: ../troubleshoot/Shrug.py:27
+msgid "Sorry!"
+msgstr "Извините."
+
+#: ../troubleshoot/Shrug.py:28
+msgid ""
+"I have not been able to work out what the problem is, but I have collected "
+"some useful information to put in a bug report."
+msgstr ""
+"Није било могуће наћи разлог за проблем, али неки корисни подаци су "
+"прикупљени који се могу ставити у извештај о грешци."
+
+#: ../troubleshoot/Welcome.py:34
+msgid "Trouble-shooting Printing"
+msgstr "Решавање проблема штампања"
+
+#: ../troubleshoot/Welcome.py:36
+msgid ""
+"In the next few screens I will ask you some questions about your problem "
+"with printing. Based on your answers I will try to suggest a solution."
+msgstr ""
+"Следећих неколико екрана ће вас питати у вези проблема са штампањем. На "
+"основу датих одговора предложиће вам се могуће решење."
+
+#: ../troubleshoot/Welcome.py:40
+msgid "Click 'Forward' to begin."
+msgstr "Притисните „Напред“ да би почели."
+
+#: ../applet.py:96
 msgid "Size"
 msgstr "Величина"
 
-#: ../applet.py:188
+#: ../applet.py:97
 msgid "Time submitted"
 msgstr "Време слања"
 
-#: ../applet.py:239
+#: ../applet.py:148
 msgid "Message"
 msgstr "Порука"
 
-#: ../applet.py:592
+#: ../applet.py:508
 msgid "1 hour ago"
 msgstr "пре 1 сат"
 
-#: ../applet.py:594
+#: ../applet.py:510
 msgid "1 hour and 1 minute ago"
 msgstr "пре 1 сат и 1 минуту"
 
-#: ../applet.py:596
+#: ../applet.py:512
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "пре 1 сат и %d минута"
 
-#: ../applet.py:599
+#: ../applet.py:515
 #, python-format
 msgid "%d hours ago"
 msgstr "пре %d сати"
 
-#: ../applet.py:601
+#: ../applet.py:517
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "пре %d сати и 1 минуту"
 
-#: ../applet.py:603
+#: ../applet.py:519
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "пре %d сати и %d минута"
 
-#: ../applet.py:609
+#: ../applet.py:525
 msgid "a minute ago"
 msgstr "пре једне минуте"
 
-#: ../applet.py:611
+#: ../applet.py:527
 #, python-format
 msgid "%d minutes ago"
 msgstr "пре %d минута"
 
-#: ../applet.py:666
+#: ../applet.py:582
 msgid "No documents queued"
 msgstr "Нема докумената у реду"
 
-#: ../applet.py:669
+#: ../applet.py:585
 msgid "1 document queued"
 msgstr "1 документ у реду"
 
-#: ../applet.py:672
+#: ../applet.py:588
 #, python-format
 msgid "%d documents queued"
 msgstr "%d докумената у реду"
 
-#: ../applet.py:1026
+#: ../applet.py:943
 msgid "Printer added"
 msgstr "Штампач је додат"
 
-#: ../applet.py:1028
+#: ../applet.py:945
 msgid "Missing printer driver"
 msgstr "Недостаје управљачки програм штампача"
 
-#: ../applet.py:1032
+#: ../applet.py:949
 msgid "Install printer driver"
 msgstr "Инсталирајте управљачки програм"
 
-#: ../applet.py:1033
+#: ../applet.py:950
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "„%s“ захтева инсталацију управљачког програма: %s."
 
-#: ../applet.py:1036
+#: ../applet.py:953
 msgid "Install"
 msgstr "Инсталирај"
 
-#: ../applet.py:1039
+#: ../applet.py:956
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "„%s“ је спреман за штампање."
 
-#: ../applet.py:1042
+#: ../applet.py:959
 msgid "Configure"
 msgstr "Подеси"
 
 #. Model mismatch
-#: ../applet.py:1045
+#: ../applet.py:962
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "„%s“ је додат, користећи управљачки програм „%s“."
 
-#: ../applet.py:1049
+#: ../applet.py:966
 msgid "Find driver"
 msgstr "Нађи управљачки програм"
 
@@ -2099,3 +2107,18 @@ msgstr "Управљај пословима штампања"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Изабери подразумевани штампач"
+
+#~ msgid "Queue Not Accepting Jobs"
+#~ msgstr "Ред не прихвата послове"
+
+#~ msgid "The CUPS printer on the server is not accepting jobs."
+#~ msgstr "CUPS штампач на серверу не прихвата послове."
+
+#~ msgid "The CUPS printer on the server is not enabled."
+#~ msgstr "CUPS штампач на серверу није омогућен."
+
+#~ msgid "Printer's state reasons:"
+#~ msgstr "Разлози стања штампача:"
+
+#~ msgid " The reason given is: `%s'."
+#~ msgstr "Разлог је: „%s“."

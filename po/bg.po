@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: bg\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-02-13 18:09+0000\n"
+"POT-Creation-Date: 2008-02-19 17:06+0000\n"
 "PO-Revision-Date: 2007-09-28 18:24+0300\n"
 "Last-Translator: Doncho N. Gunchev <gunchev@gmail.com>\n"
 "Language-Team: Bulgarian <bg@li.org>\n"
@@ -25,7 +25,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Свободен"
 
-#: ../cupshelpers.py:34 ../troubleshoot.py:872 ../applet.py:731
+#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:30 ../applet.py:647
 msgid "Processing"
 msgstr "Обработва"
 
@@ -33,14 +33,17 @@ msgstr "Обработва"
 msgid "Busy"
 msgstr "Зает"
 
-#: ../cupshelpers.py:36 ../troubleshoot.py:873 ../applet.py:732
+#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:31 ../applet.py:648
 msgid "Stopped"
 msgstr "Спрян"
 
-#: ../cupshelpers.py:53 ../troubleshoot.py:648 ../troubleshoot.py:649
-#: ../troubleshoot.py:652 ../troubleshoot.py:653 ../troubleshoot.py:1415
-#: ../troubleshoot.py:1416 ../troubleshoot.py:1419 ../troubleshoot.py:1420
-#: ../applet.py:741
+#: ../cupshelpers.py:53 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../troubleshoot/ChooseNetworkPrinter.py:97
+#: ../troubleshoot/ChooseNetworkPrinter.py:100
+#: ../troubleshoot/ChooseNetworkPrinter.py:101
+#: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
+#: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
+#: ../applet.py:657
 msgid "Unknown"
 msgstr "Непознат"
 
@@ -56,13 +59,14 @@ msgstr "_Ползване на системния"
 msgid "_Set Default"
 msgstr "_Да бъде по подразбиране"
 
-#: ../my-default-printer.py:151 ../troubleshoot.py:904 ../applet.py:186
-#: ../applet.py:226
+#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:68
+#: ../applet.py:95 ../applet.py:135
 msgid "Printer"
 msgstr "Принтер"
 
 #: ../my-default-printer.py:155 ../system-config-printer.py:2373
-#: ../troubleshoot.py:592 ../troubleshoot.py:1368
+#: ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Местоположение"
 
@@ -168,20 +172,20 @@ msgstr ""
 "само след като той бъде разрешен."
 
 #: ../system-config-printer.py:1241 ../system-config-printer.py:1257
-#: ../applet.py:349
+#: ../applet.py:258
 msgid "Not authorized"
 msgstr "Не оторизиран"
 
-#: ../system-config-printer.py:1242 ../applet.py:350
+#: ../system-config-printer.py:1242 ../applet.py:259
 msgid "The password may be incorrect."
 msgstr "Паролата може да не е вярна."
 
 #: ../system-config-printer.py:1245 ../system-config-printer.py:1278
-#: ../applet.py:353
+#: ../applet.py:262
 msgid "CUPS server error"
 msgstr "Грешка на CUPS сървъра"
 
-#: ../system-config-printer.py:1246 ../applet.py:354
+#: ../system-config-printer.py:1246 ../applet.py:263
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Възникна грешка при по време на CUPS операцията: '%s'."
@@ -285,8 +289,8 @@ msgid "Cancel Tests"
 msgstr "Прекъсване на теста"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1836 ../troubleshoot.py:894
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.py:1836 ../system-config-printer.glade.h:208
+#: ../troubleshoot/PrintTestPage.py:56
 msgid "Print Test Page"
 msgstr "Печат на тестова страница"
 
@@ -535,297 +539,6 @@ msgid ""
 msgstr ""
 "Принтера '%s' изисква програмата '%s', която не е инсталирана в момента.  "
 "Моля инсталирайте я преди да ползвате този принтер."
-
-#: ../troubleshoot.py:46
-msgid ""
-"To start this tool, select System->Administration->Printing from the main "
-"menu."
-msgstr ""
-
-#: ../troubleshoot.py:56
-#, fuzzy
-msgid "Authentication"
-msgstr "Изисква се удостоверяване"
-
-#: ../troubleshoot.py:71
-#, fuzzy
-msgid "Password required"
-msgstr "Изисква се обновяване"
-
-#: ../troubleshoot.py:79 ../system-config-printer.glade.h:195
-#: ../applet.glade.h:5
-msgid "Password:"
-msgstr "Парола:"
-
-#: ../troubleshoot.py:104
-msgid "Printing troubleshooter"
-msgstr ""
-
-#: ../troubleshoot.py:401
-msgid "Trouble-shooting Printing"
-msgstr ""
-
-#: ../troubleshoot.py:403
-msgid ""
-"In the next few screens I will ask you some questions about your problem "
-"with printing. Based on your answers I will try to suggest a solution."
-msgstr ""
-
-#: ../troubleshoot.py:407
-msgid "Click 'Forward' to begin."
-msgstr ""
-
-#: ../troubleshoot.py:418
-msgid "Sorry!"
-msgstr ""
-
-#: ../troubleshoot.py:419
-msgid ""
-"I have not been able to work out what the problem is, but I have collected "
-"some useful information to put in a bug report."
-msgstr ""
-
-#: ../troubleshoot.py:488
-#, fuzzy
-msgid "Queue Not Accepting Jobs"
-msgstr "Приема задачи"
-
-#: ../troubleshoot.py:489
-#, fuzzy
-msgid "The CUPS printer on the server is not accepting jobs."
-msgstr "Споделения принтер е недостъпен."
-
-#: ../troubleshoot.py:513 ../troubleshoot.py:1259
-msgid "Queue Not Enabled"
-msgstr ""
-
-#: ../troubleshoot.py:514
-#, fuzzy
-msgid "The CUPS printer on the server is not enabled."
-msgstr "Споделения принтер е недостъпен."
-
-#: ../troubleshoot.py:531 ../troubleshoot.py:1253
-#, python-format
-msgid "The reason given is: `%s'."
-msgstr ""
-
-#: ../troubleshoot.py:533 ../troubleshoot.py:1255
-msgid "This may be due to the printer being disconnected or switched off."
-msgstr ""
-
-#: ../troubleshoot.py:549
-msgid "Queue Not Shared"
-msgstr ""
-
-#: ../troubleshoot.py:550
-msgid "The CUPS printer on the server is not shared."
-msgstr ""
-
-#: ../troubleshoot.py:584
-#, fuzzy
-msgid "Choose Network Printer"
-msgstr "Нов принтер"
-
-#: ../troubleshoot.py:585
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-
-#: ../troubleshoot.py:590 ../troubleshoot.py:1366
-msgid "Name"
-msgstr ""
-
-#: ../troubleshoot.py:594 ../troubleshoot.py:1370
-#, fuzzy
-msgid "Information"
-msgstr "Местоположение"
-
-#: ../troubleshoot.py:627 ../troubleshoot.py:1394
-#, fuzzy
-msgid "Not listed"
-msgstr "Няма връзка"
-
-#: ../troubleshoot.py:788
-#, fuzzy
-msgid "Remote Address"
-msgstr "Отдалечен принтер"
-
-#: ../troubleshoot.py:789
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr ""
-
-#: ../troubleshoot.py:797
-#, fuzzy
-msgid "Server name:"
-msgstr "Потребителско име:"
-
-#: ../troubleshoot.py:803
-msgid "Server IP address:"
-msgstr ""
-
-#: ../troubleshoot.py:824
-#, fuzzy
-msgid "Printer Location"
-msgstr "Настройки на принтера"
-
-#: ../troubleshoot.py:825
-#, fuzzy
-msgid "Is the printer connected to this computer or available on the network?"
-msgstr "Принтер свързан на паралелния порт."
-
-#: ../troubleshoot.py:827
-#, fuzzy
-msgid "Locally connected printer"
-msgstr "Наистина изтриване на принтер %s?"
-
-#: ../troubleshoot.py:828
-#, fuzzy
-msgid "Network printer"
-msgstr "Нов принтер"
-
-#: ../troubleshoot.py:840
-msgid "CUPS Service Stopped"
-msgstr ""
-
-#: ../troubleshoot.py:841
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
-msgstr ""
-
-#: ../troubleshoot.py:870 ../applet.py:729
-msgid "Pending"
-msgstr "Предстоящ"
-
-#: ../troubleshoot.py:871 ../applet.py:730
-msgid "Held"
-msgstr "Задържан"
-
-#: ../troubleshoot.py:874 ../applet.py:733
-msgid "Canceled"
-msgstr "Прекратен"
-
-#: ../troubleshoot.py:875 ../applet.py:734
-msgid "Aborted"
-msgstr "Отказан"
-
-#: ../troubleshoot.py:876 ../applet.py:735
-msgid "Completed"
-msgstr "Приклучен"
-
-#: ../troubleshoot.py:885
-#, fuzzy
-msgid "Test Page"
-msgstr "Печат на тестова страница"
-
-#: ../troubleshoot.py:897
-msgid "Cancel All Jobs"
-msgstr ""
-
-#: ../troubleshoot.py:902 ../applet.py:184
-msgid "Job"
-msgstr "Задача"
-
-#: ../troubleshoot.py:906 ../applet.py:185
-msgid "Document"
-msgstr "Документ"
-
-#: ../troubleshoot.py:907 ../applet.py:189
-msgid "Status"
-msgstr "Състояние"
-
-#: ../troubleshoot.py:928
-msgid "Did the test page print correctly?"
-msgstr ""
-
-#: ../troubleshoot.py:935
-msgid "Yes"
-msgstr ""
-
-#: ../troubleshoot.py:936
-msgid "No"
-msgstr ""
-
-#: ../troubleshoot.py:1118
-#, fuzzy
-msgid "Status Messages"
-msgstr "Съобщение"
-
-#: ../troubleshoot.py:1119
-msgid "There are status messages associated with this queue."
-msgstr ""
-
-#: ../troubleshoot.py:1125
-#, fuzzy
-msgid "Printer's state message:"
-msgstr "Състояние на принтера:"
-
-#: ../troubleshoot.py:1133
-#, fuzzy
-msgid "Printer's state reasons:"
-msgstr "Състояние на принтера:"
-
-#: ../troubleshoot.py:1186
-msgid "Queue Rejecting Jobs"
-msgstr ""
-
-#: ../troubleshoot.py:1211
-#, python-format
-msgid "The queue `%s' is rejecting jobs."
-msgstr ""
-
-#: ../troubleshoot.py:1215
-#, python-format
-msgid " The reason given is: `%s'."
-msgstr ""
-
-#: ../troubleshoot.py:1218
-msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
-msgstr ""
-
-#: ../troubleshoot.py:1260
-#, python-format
-msgid "The queue `%s' is not enabled."
-msgstr ""
-
-#: ../troubleshoot.py:1263
-msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-
-#: ../troubleshoot.py:1278
-msgid "Check Server Firewall"
-msgstr ""
-
-#: ../troubleshoot.py:1279
-#, fuzzy
-msgid "It is not possible to connect to the server."
-msgstr "Възникна проблем при свързване към CUPS сървъра."
-
-#: ../troubleshoot.py:1292
-#, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
-msgstr ""
-
-#: ../troubleshoot.py:1360
-#, fuzzy
-msgid "Choose Printer"
-msgstr "Копиране на принтер"
-
-#: ../troubleshoot.py:1361
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
 
 #: ../system-config-printer.glade.h:1
 msgid " "
@@ -1486,6 +1199,11 @@ msgstr "Страници на страна:"
 msgid "Parity"
 msgstr "Четност"
 
+#: ../system-config-printer.glade.h:195 ../troubleshoot/base.py:76
+#: ../applet.glade.h:5
+msgid "Password:"
+msgstr "Парола:"
+
 #: ../system-config-printer.glade.h:196
 msgid "Please Wait"
 msgstr "Моля изчакайте"
@@ -1867,205 +1585,489 @@ msgstr "Настройка на принтерите"
 msgid "Printing"
 msgstr "Печатане"
 
-#: ../applet.py:80
+#: ../statereason.py:73
 msgid "Toner low"
 msgstr "Тонер на привършване"
 
-#: ../applet.py:81
+#: ../statereason.py:74
 #, python-format
 msgid "Printer '%s' is low on toner."
 msgstr "На принтерът '%s' му свършва тонера."
 
-#: ../applet.py:82
+#: ../statereason.py:75
 msgid "Toner empty"
 msgstr "Тонер - празен"
 
-#: ../applet.py:83
+#: ../statereason.py:76
 #, python-format
 msgid "Printer '%s' has no toner left."
 msgstr "Принтера '%s' е без тонер."
 
-#: ../applet.py:84
+#: ../statereason.py:77
 msgid "Cover open"
 msgstr "Отворен капак"
 
-#: ../applet.py:85
+#: ../statereason.py:78
 #, python-format
 msgid "The cover is open on printer '%s'."
 msgstr "Отворен капак на принтер '%s'."
 
-#: ../applet.py:86
+#: ../statereason.py:79
 msgid "Door open"
 msgstr "Отворена вратичка"
 
-#: ../applet.py:87
+#: ../statereason.py:80
 #, python-format
 msgid "The door is open on printer '%s'."
 msgstr "Отворена вратичка на принтер '%s'."
 
-#: ../applet.py:88
+#: ../statereason.py:81
 msgid "Paper low"
 msgstr "Хартията привършва"
 
-#: ../applet.py:89
+#: ../statereason.py:82
 #, python-format
 msgid "Printer '%s' is low on paper."
 msgstr "Хартията привършва на принтер '%s'."
 
-#: ../applet.py:90
+#: ../statereason.py:83
 msgid "Out of paper"
 msgstr "Хартията свърши"
 
-#: ../applet.py:91
+#: ../statereason.py:84
 #, python-format
 msgid "Printer '%s' is out of paper."
 msgstr "Хартията свърши на принтер '%s'."
 
-#: ../applet.py:92
+#: ../statereason.py:85
 msgid "Ink low"
 msgstr "Мастилото привършва"
 
-#: ../applet.py:93
+#: ../statereason.py:86
 #, python-format
 msgid "Printer '%s' is low on ink."
 msgstr "Мастилото привършва на принтер '%s'."
 
-#: ../applet.py:94
+#: ../statereason.py:87
 msgid "Ink empty"
 msgstr "Мастилото свърши"
 
-#: ../applet.py:95
+#: ../statereason.py:88
 #, python-format
 msgid "Printer '%s' has no ink left."
 msgstr "Мастилото свърши на принтер '%s'."
 
-#: ../applet.py:96
+#: ../statereason.py:89
 msgid "Not connected?"
 msgstr "Няма връзка?"
 
-#: ../applet.py:97
+#: ../statereason.py:90
 #, python-format
 msgid "Printer '%s' may not be connected."
 msgstr "Принтера '%s' може би не е закачен."
 
-#: ../applet.py:104
+#: ../statereason.py:97
 msgid "Printer report"
 msgstr "Доклад на принтера"
 
-#: ../applet.py:106
+#: ../statereason.py:99
 msgid "Printer warning"
 msgstr "Предупреждение от принтера"
 
-#: ../applet.py:108
+#: ../statereason.py:101
 msgid "Printer error"
 msgstr "Грешка на принтера"
 
-#: ../applet.py:109
+#: ../statereason.py:102
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr "Принтер '%s': '%s'."
 
-#: ../applet.py:187
+#: ../troubleshoot/__init__.py:37
+msgid "Printing troubleshooter"
+msgstr ""
+
+#: ../troubleshoot/base.py:33
+msgid ""
+"To start this tool, select System->Administration->Printing from the main "
+"menu."
+msgstr ""
+
+#: ../troubleshoot/base.py:53
+#, fuzzy
+msgid "Authentication"
+msgstr "Изисква се удостоверяване"
+
+#: ../troubleshoot/base.py:68
+#, fuzzy
+msgid "Password required"
+msgstr "Изисква се обновяване"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:29
+#, fuzzy
+msgid "Choose Network Printer"
+msgstr "Нов принтер"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:30
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36
+msgid "Name"
+msgstr ""
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:39
+#: ../troubleshoot/ChoosePrinter.py:40
+#, fuzzy
+msgid "Information"
+msgstr "Местоположение"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:75
+#: ../troubleshoot/ChoosePrinter.py:64
+#, fuzzy
+msgid "Not listed"
+msgstr "Няма връзка"
+
+#: ../troubleshoot/ChoosePrinter.py:30
+#, fuzzy
+msgid "Choose Printer"
+msgstr "Копиране на принтер"
+
+#: ../troubleshoot/ChoosePrinter.py:31
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+
+#: ../troubleshoot/LocalOrRemote.py:27
+#, fuzzy
+msgid "Printer Location"
+msgstr "Настройки на принтера"
+
+#: ../troubleshoot/LocalOrRemote.py:28
+#, fuzzy
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "Принтер свързан на паралелния порт."
+
+#: ../troubleshoot/LocalOrRemote.py:30
+#, fuzzy
+msgid "Locally connected printer"
+msgstr "Наистина изтриване на принтер %s?"
+
+#: ../troubleshoot/LocalOrRemote.py:31
+#, fuzzy
+msgid "Network printer"
+msgstr "Нов принтер"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr ""
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:29
+#, fuzzy
+msgid "Status Messages"
+msgstr "Съобщение"
+
+#: ../troubleshoot/PrinterStateReasons.py:30
+msgid "There are status messages associated with this queue."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:53
+#, fuzzy, python-format
+msgid "The printer's state message is: `%s'."
+msgstr "Състояние на принтера:"
+
+#: ../troubleshoot/PrinterStateReasons.py:78
+msgid "Errors are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:83
+msgid "Warnings are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:28 ../applet.py:645
+msgid "Pending"
+msgstr "Предстоящ"
+
+#: ../troubleshoot/PrintTestPage.py:29 ../applet.py:646
+msgid "Held"
+msgstr "Задържан"
+
+#: ../troubleshoot/PrintTestPage.py:32 ../applet.py:649
+msgid "Canceled"
+msgstr "Прекратен"
+
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:650
+msgid "Aborted"
+msgstr "Отказан"
+
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:651
+msgid "Completed"
+msgstr "Приклучен"
+
+#: ../troubleshoot/PrintTestPage.py:43
+#, fuzzy
+msgid "Test Page"
+msgstr "Печат на тестова страница"
+
+#: ../troubleshoot/PrintTestPage.py:44
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:59
+msgid "Cancel All Jobs"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:65
+#, fuzzy
+msgid "Test"
+msgstr "Установяване наново"
+
+#: ../troubleshoot/PrintTestPage.py:66 ../applet.py:93
+msgid "Job"
+msgstr "Задача"
+
+#: ../troubleshoot/PrintTestPage.py:70 ../applet.py:94
+msgid "Document"
+msgstr "Документ"
+
+#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:98
+msgid "Status"
+msgstr "Състояние"
+
+#: ../troubleshoot/PrintTestPage.py:95
+msgid "Did the marked print jobs print correctly?"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:102
+msgid "Yes"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:103
+msgid "No"
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:57
+#: ../troubleshoot/QueueRejectingJobs.py:67
+#, python-format
+msgid "The reason given is: `%s'."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:59
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:63
+msgid "Queue Not Enabled"
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:64
+#, python-format
+msgid "The queue `%s' is not enabled."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:72
+msgid ""
+"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:32
+msgid "Queue Rejecting Jobs"
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:64
+#, python-format
+msgid "The queue `%s' is rejecting jobs."
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:71
+msgid ""
+"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
+"`Policies' tab for the printer in the printer administration tool."
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:27
+#, fuzzy
+msgid "Remote Address"
+msgstr "Отдалечен принтер"
+
+#: ../troubleshoot/RemoteAddress.py:28
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:36
+#, fuzzy
+msgid "Server name:"
+msgstr "Потребителско име:"
+
+#: ../troubleshoot/RemoteAddress.py:43
+msgid "Server IP address:"
+msgstr ""
+
+#: ../troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr ""
+
+#: ../troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"`cups' service."
+msgstr ""
+
+#: ../troubleshoot/ServerFirewalled.py:27
+msgid "Check Server Firewall"
+msgstr ""
+
+#: ../troubleshoot/ServerFirewalled.py:28
+#, fuzzy
+msgid "It is not possible to connect to the server."
+msgstr "Възникна проблем при свързване към CUPS сървъра."
+
+#: ../troubleshoot/ServerFirewalled.py:43
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server `%s'."
+msgstr ""
+
+#: ../troubleshoot/Shrug.py:27
+msgid "Sorry!"
+msgstr ""
+
+#: ../troubleshoot/Shrug.py:28
+msgid ""
+"I have not been able to work out what the problem is, but I have collected "
+"some useful information to put in a bug report."
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:34
+msgid "Trouble-shooting Printing"
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:36
+msgid ""
+"In the next few screens I will ask you some questions about your problem "
+"with printing. Based on your answers I will try to suggest a solution."
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:40
+msgid "Click 'Forward' to begin."
+msgstr ""
+
+#: ../applet.py:96
 msgid "Size"
 msgstr "Размер"
 
-#: ../applet.py:188
+#: ../applet.py:97
 msgid "Time submitted"
 msgstr "Предадено"
 
-#: ../applet.py:239
+#: ../applet.py:148
 msgid "Message"
 msgstr "Съобщение"
 
-#: ../applet.py:592
+#: ../applet.py:508
 msgid "1 hour ago"
 msgstr "Преди 1 час"
 
-#: ../applet.py:594
+#: ../applet.py:510
 msgid "1 hour and 1 minute ago"
 msgstr "Преди 1 час и 1 минута"
 
-#: ../applet.py:596
+#: ../applet.py:512
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "Преди 1 час и %d минути"
 
-#: ../applet.py:599
+#: ../applet.py:515
 #, python-format
 msgid "%d hours ago"
 msgstr "Преди %d часа"
 
-#: ../applet.py:601
+#: ../applet.py:517
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "Преди %d часа и 1 минута"
 
-#: ../applet.py:603
+#: ../applet.py:519
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "Преди %d часа и и %d минути"
 
-#: ../applet.py:609
+#: ../applet.py:525
 msgid "a minute ago"
 msgstr "Преди 1 минута"
 
-#: ../applet.py:611
+#: ../applet.py:527
 #, python-format
 msgid "%d minutes ago"
 msgstr "Преди %d минути"
 
-#: ../applet.py:666
+#: ../applet.py:582
 msgid "No documents queued"
 msgstr "Няма документи в опашката"
 
-#: ../applet.py:669
+#: ../applet.py:585
 msgid "1 document queued"
 msgstr "1 документ в опашката"
 
-#: ../applet.py:672
+#: ../applet.py:588
 #, python-format
 msgid "%d documents queued"
 msgstr "%d документ в опашката"
 
-#: ../applet.py:1026
+#: ../applet.py:943
 msgid "Printer added"
 msgstr "Принтера бе добавен"
 
-#: ../applet.py:1028
+#: ../applet.py:945
 msgid "Missing printer driver"
 msgstr "Липсва драйвер"
 
-#: ../applet.py:1032
+#: ../applet.py:949
 #, fuzzy
 msgid "Install printer driver"
 msgstr "Инсталиране на драйвер"
 
-#: ../applet.py:1033
+#: ../applet.py:950
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr ""
 
-#: ../applet.py:1036
+#: ../applet.py:953
 #, fuzzy
 msgid "Install"
 msgstr "_Инсталация"
 
-#: ../applet.py:1039
+#: ../applet.py:956
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "`%s' е готов за печат."
 
-#: ../applet.py:1042
+#: ../applet.py:959
 msgid "Configure"
 msgstr "Настройка"
 
 #. Model mismatch
-#: ../applet.py:1045
+#: ../applet.py:962
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "`%s' бе добавен, ползва драйвера `%s'."
 
-#: ../applet.py:1049
+#: ../applet.py:966
 msgid "Find driver"
 msgstr "Намиране на драйвер"
 
@@ -2129,6 +2131,22 @@ msgstr "Управление на задачите за печат"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Избор на принтер по подразбиране"
+
+#, fuzzy
+#~ msgid "Queue Not Accepting Jobs"
+#~ msgstr "Приема задачи"
+
+#, fuzzy
+#~ msgid "The CUPS printer on the server is not accepting jobs."
+#~ msgstr "Споделения принтер е недостъпен."
+
+#, fuzzy
+#~ msgid "The CUPS printer on the server is not enabled."
+#~ msgstr "Споделения принтер е недостъпен."
+
+#, fuzzy
+#~ msgid "Printer's state reasons:"
+#~ msgstr "Състояние на принтера:"
 
 #~ msgid ""
 #~ "THe remote server did not accept the print job, most likely because the "

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-02-14 17:47-0700\n"
+"POT-Creation-Date: 2008-02-19 17:06+0000\n"
 "PO-Revision-Date: 2008-02-16 23:39+0100\n"
 "Last-Translator: Peter van Egdom <p.van.egdom@gmail.com>\n"
 "Language-Team: Dutch <fedora-trans-list@redhat.com>\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Inactief"
 
-#: ../cupshelpers.py:34 ../troubleshoot.py:901 ../applet.py:640
+#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:30 ../applet.py:647
 msgid "Processing"
 msgstr "Verwerken"
 
@@ -32,14 +32,17 @@ msgstr "Verwerken"
 msgid "Busy"
 msgstr "Bezig"
 
-#: ../cupshelpers.py:36 ../troubleshoot.py:902 ../applet.py:641
+#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:31 ../applet.py:648
 msgid "Stopped"
 msgstr "Gestopt"
 
-#: ../cupshelpers.py:53 ../troubleshoot.py:659 ../troubleshoot.py:660
-#: ../troubleshoot.py:663 ../troubleshoot.py:664 ../troubleshoot.py:1459
-#: ../troubleshoot.py:1460 ../troubleshoot.py:1463 ../troubleshoot.py:1464
-#: ../applet.py:650
+#: ../cupshelpers.py:53 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../troubleshoot/ChooseNetworkPrinter.py:97
+#: ../troubleshoot/ChooseNetworkPrinter.py:100
+#: ../troubleshoot/ChooseNetworkPrinter.py:101
+#: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
+#: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
+#: ../applet.py:657
 msgid "Unknown"
 msgstr "Onbekend"
 
@@ -55,13 +58,14 @@ msgstr "Systeemstandaard _gebruiken"
 msgid "_Set Default"
 msgstr "Standaard _instellen"
 
-#: ../my-default-printer.py:151 ../troubleshoot.py:933 ../applet.py:95
-#: ../applet.py:135
+#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:68
+#: ../applet.py:95 ../applet.py:135
 msgid "Printer"
 msgstr "Printer"
 
 #: ../my-default-printer.py:155 ../system-config-printer.py:2373
-#: ../troubleshoot.py:600 ../troubleshoot.py:1412
+#: ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Locatie"
 
@@ -285,8 +289,8 @@ msgid "Cancel Tests"
 msgstr "Tests annuleren"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1836 ../troubleshoot.py:923
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.py:1836 ../system-config-printer.glade.h:208
+#: ../troubleshoot/PrintTestPage.py:56
 msgid "Print Test Page"
 msgstr "Testpagina afdrukken"
 
@@ -534,277 +538,6 @@ msgstr ""
 "Printer '%s' vereist het '%s' programma, maar dit programma is momenteel "
 "niet geïnstalleerd. Installeer dit programma voordat deze printer wordt "
 "gebruikt."
-
-#: ../troubleshoot.py:49
-msgid ""
-"To start this tool, select System->Administration->Printing from the main "
-"menu."
-msgstr ""
-
-#: ../troubleshoot.py:59
-msgid "Authentication"
-msgstr "Authenticatie"
-
-#: ../troubleshoot.py:74
-msgid "Password required"
-msgstr "Wachtwoord vereist"
-
-#: ../troubleshoot.py:82 ../system-config-printer.glade.h:195
-#: ../applet.glade.h:5
-msgid "Password:"
-msgstr "Wachtwoord:"
-
-#: ../troubleshoot.py:107
-msgid "Printing troubleshooter"
-msgstr ""
-
-#: ../troubleshoot.py:404
-msgid "Trouble-shooting Printing"
-msgstr ""
-
-#: ../troubleshoot.py:406
-msgid ""
-"In the next few screens I will ask you some questions about your problem "
-"with printing. Based on your answers I will try to suggest a solution."
-msgstr ""
-
-#: ../troubleshoot.py:410
-msgid "Click 'Forward' to begin."
-msgstr ""
-
-#: ../troubleshoot.py:421
-msgid "Sorry!"
-msgstr "Sorry!"
-
-#: ../troubleshoot.py:422
-msgid ""
-"I have not been able to work out what the problem is, but I have collected "
-"some useful information to put in a bug report."
-msgstr ""
-
-#: ../troubleshoot.py:491
-msgid "Queue Not Accepting Jobs"
-msgstr ""
-
-#: ../troubleshoot.py:492
-msgid "The CUPS printer on the server is not accepting jobs."
-msgstr ""
-
-#: ../troubleshoot.py:517 ../troubleshoot.py:1298
-msgid "Queue Not Enabled"
-msgstr ""
-
-#: ../troubleshoot.py:518
-msgid "The CUPS printer on the server is not enabled."
-msgstr ""
-
-#: ../troubleshoot.py:538 ../troubleshoot.py:1292
-#, python-format
-msgid "The reason given is: `%s'."
-msgstr ""
-
-#: ../troubleshoot.py:540 ../troubleshoot.py:1294
-msgid "This may be due to the printer being disconnected or switched off."
-msgstr ""
-
-#: ../troubleshoot.py:552
-msgid "Queue Not Shared"
-msgstr ""
-
-#: ../troubleshoot.py:553
-msgid "The CUPS printer on the server is not shared."
-msgstr ""
-
-#: ../troubleshoot.py:592
-msgid "Choose Network Printer"
-msgstr "Netwerkprinter kiezen"
-
-#: ../troubleshoot.py:593
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-
-#: ../troubleshoot.py:598 ../troubleshoot.py:1410
-msgid "Name"
-msgstr "Naam"
-
-#: ../troubleshoot.py:602 ../troubleshoot.py:1414
-msgid "Information"
-msgstr "Informatie"
-
-#: ../troubleshoot.py:638 ../troubleshoot.py:1438
-msgid "Not listed"
-msgstr ""
-
-#: ../troubleshoot.py:806
-msgid "Remote Address"
-msgstr ""
-
-#: ../troubleshoot.py:807
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr ""
-
-#: ../troubleshoot.py:815
-msgid "Server name:"
-msgstr ""
-
-#: ../troubleshoot.py:821
-msgid "Server IP address:"
-msgstr ""
-
-#: ../troubleshoot.py:846
-msgid "Printer Location"
-msgstr "Printerlocatie"
-
-#: ../troubleshoot.py:847
-msgid "Is the printer connected to this computer or available on the network?"
-msgstr ""
-
-#: ../troubleshoot.py:849
-msgid "Locally connected printer"
-msgstr "Lokaal verbonden printer"
-
-#: ../troubleshoot.py:850
-msgid "Network printer"
-msgstr "Netwerkprinter"
-
-#: ../troubleshoot.py:866
-msgid "CUPS Service Stopped"
-msgstr ""
-
-#: ../troubleshoot.py:867
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
-msgstr ""
-
-#: ../troubleshoot.py:899 ../applet.py:638
-msgid "Pending"
-msgstr "Wachtend"
-
-#: ../troubleshoot.py:900 ../applet.py:639
-msgid "Held"
-msgstr "Vastgehouden"
-
-#: ../troubleshoot.py:903 ../applet.py:642
-msgid "Canceled"
-msgstr "Geannuleerd"
-
-#: ../troubleshoot.py:904 ../applet.py:643
-msgid "Aborted"
-msgstr "Afgebroken"
-
-#: ../troubleshoot.py:905 ../applet.py:644
-msgid "Completed"
-msgstr "Voltooid"
-
-#: ../troubleshoot.py:914
-msgid "Test Page"
-msgstr "Testpagina"
-
-#: ../troubleshoot.py:926
-msgid "Cancel All Jobs"
-msgstr "Alle opdrachten annuleren"
-
-#: ../troubleshoot.py:931 ../applet.py:93
-msgid "Job"
-msgstr "Opdracht"
-
-#: ../troubleshoot.py:935 ../applet.py:94
-msgid "Document"
-msgstr "Document"
-
-#: ../troubleshoot.py:936 ../applet.py:98
-msgid "Status"
-msgstr "Status"
-
-#: ../troubleshoot.py:957
-msgid "Did the test page print correctly?"
-msgstr ""
-
-#: ../troubleshoot.py:964
-msgid "Yes"
-msgstr "Ja"
-
-#: ../troubleshoot.py:965
-msgid "No"
-msgstr "Nee"
-
-#: ../troubleshoot.py:1147
-msgid "Status Messages"
-msgstr "Statusberichten"
-
-#: ../troubleshoot.py:1148
-msgid "There are status messages associated with this queue."
-msgstr ""
-
-#: ../troubleshoot.py:1154
-msgid "Printer's state message:"
-msgstr ""
-
-#: ../troubleshoot.py:1162
-msgid "Printer's state reasons:"
-msgstr ""
-
-#: ../troubleshoot.py:1219
-msgid "Queue Rejecting Jobs"
-msgstr ""
-
-#: ../troubleshoot.py:1247
-#, python-format
-msgid "The queue `%s' is rejecting jobs."
-msgstr ""
-
-#: ../troubleshoot.py:1251
-#, python-format
-msgid " The reason given is: `%s'."
-msgstr ""
-
-#: ../troubleshoot.py:1254
-msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
-msgstr ""
-
-#: ../troubleshoot.py:1299
-#, python-format
-msgid "The queue `%s' is not enabled."
-msgstr ""
-
-#: ../troubleshoot.py:1302
-msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-
-#: ../troubleshoot.py:1317
-msgid "Check Server Firewall"
-msgstr ""
-
-#: ../troubleshoot.py:1318
-msgid "It is not possible to connect to the server."
-msgstr "Het is niet mogelijk om een verbinding te maken met de server."
-
-#: ../troubleshoot.py:1333
-#, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
-msgstr ""
-
-#: ../troubleshoot.py:1404
-msgid "Choose Printer"
-msgstr "Printer kiezen"
-
-#: ../troubleshoot.py:1405
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
 
 #: ../system-config-printer.glade.h:1
 msgid " "
@@ -1456,6 +1189,11 @@ msgstr "Pagina's per kant:"
 msgid "Parity"
 msgstr "Pariteit"
 
+#: ../system-config-printer.glade.h:195 ../troubleshoot/base.py:76
+#: ../applet.glade.h:5
+msgid "Password:"
+msgstr "Wachtwoord:"
+
 #: ../system-config-printer.glade.h:196
 msgid "Please Wait"
 msgstr "Even geduld"
@@ -1803,7 +1541,8 @@ msgstr "system-config-printer"
 msgid "translator-credits"
 msgstr ""
 "Tino Meinen <a.t.meinen@chello.nl>, 2003.\n"
-"Peter van Egdom <p.van.egdom@gmail.com>, 2003, 2004, 2005, 2006, 2007, 2008.\n"
+"Peter van Egdom <p.van.egdom@gmail.com>, 2003, 2004, 2005, 2006, 2007, "
+"2008.\n"
 "Stijn Bibaer <stijn.bibaer@pandora.be>, 2006.\n"
 "Bart Couvreur <couf@fedoraproject.org>, 2007."
 
@@ -1814,6 +1553,373 @@ msgstr "Printers configureren"
 #: ../system-config-printer.desktop.in.h:2
 msgid "Printing"
 msgstr "Afdrukken"
+
+#: ../statereason.py:73
+msgid "Toner low"
+msgstr "Toner is bijna op"
+
+#: ../statereason.py:74
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "Printer '%s' heeft bijna geen toner meer."
+
+#: ../statereason.py:75
+msgid "Toner empty"
+msgstr "Toner is op"
+
+#: ../statereason.py:76
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "Printer '%s' heeft geen toner meer."
+
+#: ../statereason.py:77
+msgid "Cover open"
+msgstr "Kap staat open"
+
+#: ../statereason.py:78
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "De kap van printer '%s' staat open."
+
+#: ../statereason.py:79
+msgid "Door open"
+msgstr "Deur staat open"
+
+#: ../statereason.py:80
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "De deur van printer '%s' staat open."
+
+#: ../statereason.py:81
+msgid "Paper low"
+msgstr "Papier is bijna op"
+
+#: ../statereason.py:82
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "Printer '%s' heeft bijna geen papier meer."
+
+#: ../statereason.py:83
+msgid "Out of paper"
+msgstr "Papier is op"
+
+#: ../statereason.py:84
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "Printer '%s' heeft geen papier meer."
+
+#: ../statereason.py:85
+msgid "Ink low"
+msgstr "Inkt is bijna op"
+
+#: ../statereason.py:86
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "Printer '%s' heeft bijna geen inkt meer."
+
+#: ../statereason.py:87
+msgid "Ink empty"
+msgstr "Inkt is op"
+
+#: ../statereason.py:88
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "Printer '%s' heeft geen inkt meer."
+
+#: ../statereason.py:89
+msgid "Not connected?"
+msgstr "Niet verbonden?"
+
+#: ../statereason.py:90
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "Printer '%s' is mogelijk niet verbonden."
+
+#: ../statereason.py:97
+msgid "Printer report"
+msgstr "Printerrapport"
+
+#: ../statereason.py:99
+msgid "Printer warning"
+msgstr "Printerwaarschuwing"
+
+#: ../statereason.py:101
+msgid "Printer error"
+msgstr "Printerfout"
+
+#: ../statereason.py:102
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "Printer '%s': '%s'."
+
+#: ../troubleshoot/__init__.py:37
+msgid "Printing troubleshooter"
+msgstr ""
+
+#: ../troubleshoot/base.py:33
+msgid ""
+"To start this tool, select System->Administration->Printing from the main "
+"menu."
+msgstr ""
+
+#: ../troubleshoot/base.py:53
+msgid "Authentication"
+msgstr "Authenticatie"
+
+#: ../troubleshoot/base.py:68
+msgid "Password required"
+msgstr "Wachtwoord vereist"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:29
+msgid "Choose Network Printer"
+msgstr "Netwerkprinter kiezen"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:30
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36
+msgid "Name"
+msgstr "Naam"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:39
+#: ../troubleshoot/ChoosePrinter.py:40
+msgid "Information"
+msgstr "Informatie"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:75
+#: ../troubleshoot/ChoosePrinter.py:64
+msgid "Not listed"
+msgstr ""
+
+#: ../troubleshoot/ChoosePrinter.py:30
+msgid "Choose Printer"
+msgstr "Printer kiezen"
+
+#: ../troubleshoot/ChoosePrinter.py:31
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+
+#: ../troubleshoot/LocalOrRemote.py:27
+msgid "Printer Location"
+msgstr "Printerlocatie"
+
+#: ../troubleshoot/LocalOrRemote.py:28
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr ""
+
+#: ../troubleshoot/LocalOrRemote.py:30
+msgid "Locally connected printer"
+msgstr "Lokaal verbonden printer"
+
+#: ../troubleshoot/LocalOrRemote.py:31
+msgid "Network printer"
+msgstr "Netwerkprinter"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr ""
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:29
+msgid "Status Messages"
+msgstr "Statusberichten"
+
+#: ../troubleshoot/PrinterStateReasons.py:30
+msgid "There are status messages associated with this queue."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:53
+#, python-format
+msgid "The printer's state message is: `%s'."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:78
+msgid "Errors are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:83
+msgid "Warnings are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:28 ../applet.py:645
+msgid "Pending"
+msgstr "Wachtend"
+
+#: ../troubleshoot/PrintTestPage.py:29 ../applet.py:646
+msgid "Held"
+msgstr "Vastgehouden"
+
+#: ../troubleshoot/PrintTestPage.py:32 ../applet.py:649
+msgid "Canceled"
+msgstr "Geannuleerd"
+
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:650
+msgid "Aborted"
+msgstr "Afgebroken"
+
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:651
+msgid "Completed"
+msgstr "Voltooid"
+
+#: ../troubleshoot/PrintTestPage.py:43
+msgid "Test Page"
+msgstr "Testpagina"
+
+#: ../troubleshoot/PrintTestPage.py:44
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:59
+msgid "Cancel All Jobs"
+msgstr "Alle opdrachten annuleren"
+
+#: ../troubleshoot/PrintTestPage.py:65
+#, fuzzy
+msgid "Test"
+msgstr "Opnieuw instellen"
+
+#: ../troubleshoot/PrintTestPage.py:66 ../applet.py:93
+msgid "Job"
+msgstr "Opdracht"
+
+#: ../troubleshoot/PrintTestPage.py:70 ../applet.py:94
+msgid "Document"
+msgstr "Document"
+
+#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:98
+msgid "Status"
+msgstr "Status"
+
+#: ../troubleshoot/PrintTestPage.py:95
+msgid "Did the marked print jobs print correctly?"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:102
+msgid "Yes"
+msgstr "Ja"
+
+#: ../troubleshoot/PrintTestPage.py:103
+msgid "No"
+msgstr "Nee"
+
+#: ../troubleshoot/QueueNotEnabled.py:57
+#: ../troubleshoot/QueueRejectingJobs.py:67
+#, python-format
+msgid "The reason given is: `%s'."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:59
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:63
+msgid "Queue Not Enabled"
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:64
+#, python-format
+msgid "The queue `%s' is not enabled."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:72
+msgid ""
+"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:32
+msgid "Queue Rejecting Jobs"
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:64
+#, python-format
+msgid "The queue `%s' is rejecting jobs."
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:71
+msgid ""
+"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
+"`Policies' tab for the printer in the printer administration tool."
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:27
+msgid "Remote Address"
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:28
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:36
+msgid "Server name:"
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:43
+msgid "Server IP address:"
+msgstr ""
+
+#: ../troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr ""
+
+#: ../troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"`cups' service."
+msgstr ""
+
+#: ../troubleshoot/ServerFirewalled.py:27
+msgid "Check Server Firewall"
+msgstr ""
+
+#: ../troubleshoot/ServerFirewalled.py:28
+msgid "It is not possible to connect to the server."
+msgstr "Het is niet mogelijk om een verbinding te maken met de server."
+
+#: ../troubleshoot/ServerFirewalled.py:43
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server `%s'."
+msgstr ""
+
+#: ../troubleshoot/Shrug.py:27
+msgid "Sorry!"
+msgstr "Sorry!"
+
+#: ../troubleshoot/Shrug.py:28
+msgid ""
+"I have not been able to work out what the problem is, but I have collected "
+"some useful information to put in a bug report."
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:34
+msgid "Trouble-shooting Printing"
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:36
+msgid ""
+"In the next few screens I will ask you some questions about your problem "
+"with printing. Based on your answers I will try to suggest a solution."
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:40
+msgid "Click 'Forward' to begin."
+msgstr ""
 
 #: ../applet.py:96
 msgid "Size"
@@ -1827,93 +1933,93 @@ msgstr "Tijd ingediend"
 msgid "Message"
 msgstr "Bericht"
 
-#: ../applet.py:501
+#: ../applet.py:508
 msgid "1 hour ago"
 msgstr "1 uur geleden"
 
-#: ../applet.py:503
+#: ../applet.py:510
 msgid "1 hour and 1 minute ago"
 msgstr "1 uur en 1 minuut geleden"
 
-#: ../applet.py:505
+#: ../applet.py:512
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "1 uur en %d minuten geleden"
 
-#: ../applet.py:508
+#: ../applet.py:515
 #, python-format
 msgid "%d hours ago"
 msgstr "%d uren geleden"
 
-#: ../applet.py:510
+#: ../applet.py:517
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d uren en 1 minuut geleden"
 
-#: ../applet.py:512
+#: ../applet.py:519
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d uren en %d minuten geleden"
 
-#: ../applet.py:518
+#: ../applet.py:525
 msgid "a minute ago"
 msgstr "een minuut geleden"
 
-#: ../applet.py:520
+#: ../applet.py:527
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d minuten geleden"
 
-#: ../applet.py:575
+#: ../applet.py:582
 msgid "No documents queued"
 msgstr "Geen documenten in de wachtrij"
 
-#: ../applet.py:578
+#: ../applet.py:585
 msgid "1 document queued"
 msgstr "1 document in de wachtrij"
 
-#: ../applet.py:581
+#: ../applet.py:588
 #, python-format
 msgid "%d documents queued"
 msgstr "%d documenten in de wachtrij"
 
-#: ../applet.py:936
+#: ../applet.py:943
 msgid "Printer added"
 msgstr "Printer toegevoegd"
 
-#: ../applet.py:938
+#: ../applet.py:945
 msgid "Missing printer driver"
 msgstr "Printerstuurprogramma ontbreekt"
 
-#: ../applet.py:942
+#: ../applet.py:949
 msgid "Install printer driver"
 msgstr "Printerstuurprogramma installeren"
 
-#: ../applet.py:943
+#: ../applet.py:950
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr ""
 
-#: ../applet.py:946
+#: ../applet.py:953
 msgid "Install"
 msgstr "Installeren"
 
-#: ../applet.py:949
+#: ../applet.py:956
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "`%s' is klaar om afgedrukt te worden."
 
-#: ../applet.py:952
+#: ../applet.py:959
 msgid "Configure"
 msgstr "Configureren"
 
 #. Model mismatch
-#: ../applet.py:955
+#: ../applet.py:962
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "`%s' is toegevoegd, en maakt gebruik van het `%s' stuurprogramma."
 
-#: ../applet.py:959
+#: ../applet.py:966
 msgid "Find driver"
 msgstr "Stuurprogramma zoeken"
 
@@ -1976,72 +2082,6 @@ msgstr "Printopdrachten beheren"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Selecteer standaardprinter"
-
-#~ msgid "Toner low"
-#~ msgstr "Toner is bijna op"
-
-#~ msgid "Printer '%s' is low on toner."
-#~ msgstr "Printer '%s' heeft bijna geen toner meer."
-
-#~ msgid "Toner empty"
-#~ msgstr "Toner is op"
-
-#~ msgid "Printer '%s' has no toner left."
-#~ msgstr "Printer '%s' heeft geen toner meer."
-
-#~ msgid "Cover open"
-#~ msgstr "Kap staat open"
-
-#~ msgid "The cover is open on printer '%s'."
-#~ msgstr "De kap van printer '%s' staat open."
-
-#~ msgid "Door open"
-#~ msgstr "Deur staat open"
-
-#~ msgid "The door is open on printer '%s'."
-#~ msgstr "De deur van printer '%s' staat open."
-
-#~ msgid "Paper low"
-#~ msgstr "Papier is bijna op"
-
-#~ msgid "Printer '%s' is low on paper."
-#~ msgstr "Printer '%s' heeft bijna geen papier meer."
-
-#~ msgid "Out of paper"
-#~ msgstr "Papier is op"
-
-#~ msgid "Printer '%s' is out of paper."
-#~ msgstr "Printer '%s' heeft geen papier meer."
-
-#~ msgid "Ink low"
-#~ msgstr "Inkt is bijna op"
-
-#~ msgid "Printer '%s' is low on ink."
-#~ msgstr "Printer '%s' heeft bijna geen inkt meer."
-
-#~ msgid "Ink empty"
-#~ msgstr "Inkt is op"
-
-#~ msgid "Printer '%s' has no ink left."
-#~ msgstr "Printer '%s' heeft geen inkt meer."
-
-#~ msgid "Not connected?"
-#~ msgstr "Niet verbonden?"
-
-#~ msgid "Printer '%s' may not be connected."
-#~ msgstr "Printer '%s' is mogelijk niet verbonden."
-
-#~ msgid "Printer report"
-#~ msgstr "Printerrapport"
-
-#~ msgid "Printer warning"
-#~ msgstr "Printerwaarschuwing"
-
-#~ msgid "Printer error"
-#~ msgstr "Printerfout"
-
-#~ msgid "Printer '%s': '%s'."
-#~ msgstr "Printer '%s': '%s'."
 
 #, fuzzy
 #~ msgid ""

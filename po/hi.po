@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hi\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-02-13 18:09+0000\n"
+"POT-Creation-Date: 2008-02-19 17:06+0000\n"
 "PO-Revision-Date: 2007-04-16 12:25+0530\n"
 "Last-Translator: hi <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -27,7 +27,7 @@ msgstr ""
 msgid "Idle"
 msgstr "निष्क्रिय"
 
-#: ../cupshelpers.py:34 ../troubleshoot.py:872 ../applet.py:731
+#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:30 ../applet.py:647
 msgid "Processing"
 msgstr "प्रक्रिया कर रहा है"
 
@@ -35,14 +35,17 @@ msgstr "प्रक्रिया कर रहा है"
 msgid "Busy"
 msgstr "व्यस्त"
 
-#: ../cupshelpers.py:36 ../troubleshoot.py:873 ../applet.py:732
+#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:31 ../applet.py:648
 msgid "Stopped"
 msgstr "रोकें "
 
-#: ../cupshelpers.py:53 ../troubleshoot.py:648 ../troubleshoot.py:649
-#: ../troubleshoot.py:652 ../troubleshoot.py:653 ../troubleshoot.py:1415
-#: ../troubleshoot.py:1416 ../troubleshoot.py:1419 ../troubleshoot.py:1420
-#: ../applet.py:741
+#: ../cupshelpers.py:53 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../troubleshoot/ChooseNetworkPrinter.py:97
+#: ../troubleshoot/ChooseNetworkPrinter.py:100
+#: ../troubleshoot/ChooseNetworkPrinter.py:101
+#: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
+#: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
+#: ../applet.py:657
 msgid "Unknown"
 msgstr "अज्ञात"
 
@@ -61,13 +64,14 @@ msgstr "सिस्टम मूलभूत में फिर सेट क�
 msgid "_Set Default"
 msgstr "मूलभूत"
 
-#: ../my-default-printer.py:151 ../troubleshoot.py:904 ../applet.py:186
-#: ../applet.py:226
+#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:68
+#: ../applet.py:95 ../applet.py:135
 msgid "Printer"
 msgstr "मुद्रक"
 
 #: ../my-default-printer.py:155 ../system-config-printer.py:2373
-#: ../troubleshoot.py:592 ../troubleshoot.py:1368
+#: ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../troubleshoot/ChoosePrinter.py:38
 #, fuzzy
 msgid "Location"
 msgstr "स्थानः"
@@ -174,20 +178,20 @@ msgstr ""
 "के बाद ही लागू हो सकता है."
 
 #: ../system-config-printer.py:1241 ../system-config-printer.py:1257
-#: ../applet.py:349
+#: ../applet.py:258
 msgid "Not authorized"
 msgstr "अधिकृत नहीं"
 
-#: ../system-config-printer.py:1242 ../applet.py:350
+#: ../system-config-printer.py:1242 ../applet.py:259
 msgid "The password may be incorrect."
 msgstr "शब्दकूट गलत हो सकता है."
 
 #: ../system-config-printer.py:1245 ../system-config-printer.py:1278
-#: ../applet.py:353
+#: ../applet.py:262
 msgid "CUPS server error"
 msgstr "CUPS सर्वर त्रुटि"
 
-#: ../system-config-printer.py:1246 ../applet.py:354
+#: ../system-config-printer.py:1246 ../applet.py:263
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS संक्रिया के दौरान एक गलती हुई: '%s'."
@@ -290,8 +294,8 @@ msgid "Cancel Tests"
 msgstr "जांच रद्द करें"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1836 ../troubleshoot.py:894
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.py:1836 ../system-config-printer.glade.h:208
+#: ../troubleshoot/PrintTestPage.py:56
 msgid "Print Test Page"
 msgstr "जाँच पृष्ठ छापें"
 
@@ -544,297 +548,6 @@ msgid ""
 msgstr ""
 "'%s' मुद्रक %s प्रोग्राम की जरूरत होती है लेकिन यह अभी अधिष्ठापित नहीं है.  कृपया इस "
 "मुद्रक के प्रयोग के पहले इसे अधिष्ठापित करें."
-
-#: ../troubleshoot.py:46
-msgid ""
-"To start this tool, select System->Administration->Printing from the main "
-"menu."
-msgstr ""
-
-#: ../troubleshoot.py:56
-#, fuzzy
-msgid "Authentication"
-msgstr "<b>सत्यापन</b>"
-
-#: ../troubleshoot.py:71
-#, fuzzy
-msgid "Password required"
-msgstr "उन्नत जरूरी"
-
-#: ../troubleshoot.py:79 ../system-config-printer.glade.h:195
-#: ../applet.glade.h:5
-msgid "Password:"
-msgstr "शब्दकूट:"
-
-#: ../troubleshoot.py:104
-msgid "Printing troubleshooter"
-msgstr ""
-
-#: ../troubleshoot.py:401
-msgid "Trouble-shooting Printing"
-msgstr ""
-
-#: ../troubleshoot.py:403
-msgid ""
-"In the next few screens I will ask you some questions about your problem "
-"with printing. Based on your answers I will try to suggest a solution."
-msgstr ""
-
-#: ../troubleshoot.py:407
-msgid "Click 'Forward' to begin."
-msgstr ""
-
-#: ../troubleshoot.py:418
-msgid "Sorry!"
-msgstr ""
-
-#: ../troubleshoot.py:419
-msgid ""
-"I have not been able to work out what the problem is, but I have collected "
-"some useful information to put in a bug report."
-msgstr ""
-
-#: ../troubleshoot.py:488
-#, fuzzy
-msgid "Queue Not Accepting Jobs"
-msgstr "कार्य स्वीकार कर रहा है"
-
-#: ../troubleshoot.py:489
-#, fuzzy
-msgid "The CUPS printer on the server is not accepting jobs."
-msgstr "यह छपाई साझा अभिगम योग्य नहीं है."
-
-#: ../troubleshoot.py:513 ../troubleshoot.py:1259
-msgid "Queue Not Enabled"
-msgstr ""
-
-#: ../troubleshoot.py:514
-#, fuzzy
-msgid "The CUPS printer on the server is not enabled."
-msgstr "यह छपाई साझा अभिगम योग्य नहीं है."
-
-#: ../troubleshoot.py:531 ../troubleshoot.py:1253
-#, python-format
-msgid "The reason given is: `%s'."
-msgstr ""
-
-#: ../troubleshoot.py:533 ../troubleshoot.py:1255
-msgid "This may be due to the printer being disconnected or switched off."
-msgstr ""
-
-#: ../troubleshoot.py:549
-msgid "Queue Not Shared"
-msgstr ""
-
-#: ../troubleshoot.py:550
-msgid "The CUPS printer on the server is not shared."
-msgstr ""
-
-#: ../troubleshoot.py:584
-#, fuzzy
-msgid "Choose Network Printer"
-msgstr "नया मुद्रक"
-
-#: ../troubleshoot.py:585
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-
-#: ../troubleshoot.py:590 ../troubleshoot.py:1366
-msgid "Name"
-msgstr "नाम"
-
-#: ../troubleshoot.py:594 ../troubleshoot.py:1370
-#, fuzzy
-msgid "Information"
-msgstr "स्थानः"
-
-#: ../troubleshoot.py:627 ../troubleshoot.py:1394
-#, fuzzy
-msgid "Not listed"
-msgstr "संबंधित नहीं"
-
-#: ../troubleshoot.py:788
-#, fuzzy
-msgid "Remote Address"
-msgstr "दूरस्थ मुद्रक"
-
-#: ../troubleshoot.py:789
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr ""
-
-#: ../troubleshoot.py:797
-#, fuzzy
-msgid "Server name:"
-msgstr "उपयोक्ता नामः"
-
-#: ../troubleshoot.py:803
-msgid "Server IP address:"
-msgstr ""
-
-#: ../troubleshoot.py:824
-#, fuzzy
-msgid "Printer Location"
-msgstr "मुद्रक विकल्प"
-
-#: ../troubleshoot.py:825
-#, fuzzy
-msgid "Is the printer connected to this computer or available on the network?"
-msgstr "समांतर पोर्ट में एक मुद्रक संबंधित."
-
-#: ../troubleshoot.py:827
-#, fuzzy
-msgid "Locally connected printer"
-msgstr "क्या मुद्रक %s को वास्तव मिटाना चाहते हैं?"
-
-#: ../troubleshoot.py:828
-#, fuzzy
-msgid "Network printer"
-msgstr "नया मुद्रक"
-
-#: ../troubleshoot.py:840
-msgid "CUPS Service Stopped"
-msgstr ""
-
-#: ../troubleshoot.py:841
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
-msgstr ""
-
-#: ../troubleshoot.py:870 ../applet.py:729
-msgid "Pending"
-msgstr "स्थगित"
-
-#: ../troubleshoot.py:871 ../applet.py:730
-msgid "Held"
-msgstr "रोकें"
-
-#: ../troubleshoot.py:874 ../applet.py:733
-msgid "Canceled"
-msgstr "रद्द"
-
-#: ../troubleshoot.py:875 ../applet.py:734
-msgid "Aborted"
-msgstr "छोड़ा"
-
-#: ../troubleshoot.py:876 ../applet.py:735
-msgid "Completed"
-msgstr "पूर्ण"
-
-#: ../troubleshoot.py:885
-#, fuzzy
-msgid "Test Page"
-msgstr "जाँच पृष्ठ छापें"
-
-#: ../troubleshoot.py:897
-msgid "Cancel All Jobs"
-msgstr ""
-
-#: ../troubleshoot.py:902 ../applet.py:184
-msgid "Job"
-msgstr "कार्य"
-
-#: ../troubleshoot.py:906 ../applet.py:185
-msgid "Document"
-msgstr "दस्तावेज"
-
-#: ../troubleshoot.py:907 ../applet.py:189
-msgid "Status"
-msgstr "प्रस्थिति"
-
-#: ../troubleshoot.py:928
-msgid "Did the test page print correctly?"
-msgstr ""
-
-#: ../troubleshoot.py:935
-msgid "Yes"
-msgstr ""
-
-#: ../troubleshoot.py:936
-msgid "No"
-msgstr ""
-
-#: ../troubleshoot.py:1118
-#, fuzzy
-msgid "Status Messages"
-msgstr "संदेश"
-
-#: ../troubleshoot.py:1119
-msgid "There are status messages associated with this queue."
-msgstr ""
-
-#: ../troubleshoot.py:1125
-#, fuzzy
-msgid "Printer's state message:"
-msgstr "मुद्रक स्थिति:"
-
-#: ../troubleshoot.py:1133
-#, fuzzy
-msgid "Printer's state reasons:"
-msgstr "मुद्रक स्थिति:"
-
-#: ../troubleshoot.py:1186
-msgid "Queue Rejecting Jobs"
-msgstr ""
-
-#: ../troubleshoot.py:1211
-#, python-format
-msgid "The queue `%s' is rejecting jobs."
-msgstr ""
-
-#: ../troubleshoot.py:1215
-#, python-format
-msgid " The reason given is: `%s'."
-msgstr ""
-
-#: ../troubleshoot.py:1218
-msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
-msgstr ""
-
-#: ../troubleshoot.py:1260
-#, python-format
-msgid "The queue `%s' is not enabled."
-msgstr ""
-
-#: ../troubleshoot.py:1263
-msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-
-#: ../troubleshoot.py:1278
-msgid "Check Server Firewall"
-msgstr ""
-
-#: ../troubleshoot.py:1279
-#, fuzzy
-msgid "It is not possible to connect to the server."
-msgstr "CUPS सर्वर में जोड़ने के दौरान समस्या थी."
-
-#: ../troubleshoot.py:1292
-#, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
-msgstr ""
-
-#: ../troubleshoot.py:1360
-#, fuzzy
-msgid "Choose Printer"
-msgstr "मुद्रक कॉपी करें"
-
-#: ../troubleshoot.py:1361
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
 
 #: ../system-config-printer.glade.h:1
 msgid " "
@@ -1509,6 +1222,11 @@ msgstr "पृष्ठ प्रति पक्ष:"
 msgid "Parity"
 msgstr "समानता"
 
+#: ../system-config-printer.glade.h:195 ../troubleshoot/base.py:76
+#: ../applet.glade.h:5
+msgid "Password:"
+msgstr "शब्दकूट:"
+
 #: ../system-config-printer.glade.h:196
 msgid "Please Wait"
 msgstr ""
@@ -1865,208 +1583,492 @@ msgstr "मुद्रक विन्यस्त करें"
 msgid "Printing"
 msgstr "छपाई कर रहा है"
 
-#: ../applet.py:80
+#: ../statereason.py:73
 msgid "Toner low"
 msgstr "टोनर कम"
 
-#: ../applet.py:81
+#: ../statereason.py:74
 #, python-format
 msgid "Printer '%s' is low on toner."
 msgstr "'%s' मुद्रक टोनर पर कम है."
 
-#: ../applet.py:82
+#: ../statereason.py:75
 msgid "Toner empty"
 msgstr "टोनर खाली"
 
-#: ../applet.py:83
+#: ../statereason.py:76
 #, python-format
 msgid "Printer '%s' has no toner left."
 msgstr "मुद्रक '%s' के पास कोई टोनर छूटा नहीं है."
 
-#: ../applet.py:84
+#: ../statereason.py:77
 msgid "Cover open"
 msgstr "कवर खुला"
 
-#: ../applet.py:85
+#: ../statereason.py:78
 #, python-format
 msgid "The cover is open on printer '%s'."
 msgstr "मुद्रक '%s' पर कवर खुला है."
 
-#: ../applet.py:86
+#: ../statereason.py:79
 msgid "Door open"
 msgstr "दरवाजा खुला"
 
-#: ../applet.py:87
+#: ../statereason.py:80
 #, python-format
 msgid "The door is open on printer '%s'."
 msgstr "दरवाजा '%s' मुद्रक पर खुला है."
 
-#: ../applet.py:88
+#: ../statereason.py:81
 msgid "Paper low"
 msgstr "कागज कम"
 
-#: ../applet.py:89
+#: ../statereason.py:82
 #, python-format
 msgid "Printer '%s' is low on paper."
 msgstr "मुद्रक '%s' कागज पर कम है."
 
-#: ../applet.py:90
+#: ../statereason.py:83
 msgid "Out of paper"
 msgstr "कागज के बाहर"
 
-#: ../applet.py:91
+#: ../statereason.py:84
 #, python-format
 msgid "Printer '%s' is out of paper."
 msgstr "मुद्रक '%s' कागज के बाहर है."
 
-#: ../applet.py:92
+#: ../statereason.py:85
 msgid "Ink low"
 msgstr "इंक कम है"
 
-#: ../applet.py:93
+#: ../statereason.py:86
 #, python-format
 msgid "Printer '%s' is low on ink."
 msgstr "मुद्रक '%s' में इंक कम है."
 
-#: ../applet.py:94
+#: ../statereason.py:87
 msgid "Ink empty"
 msgstr "इंक खाली है"
 
-#: ../applet.py:95
+#: ../statereason.py:88
 #, python-format
 msgid "Printer '%s' has no ink left."
 msgstr "मुद्रक '%s' के पास इंक नहीं बचा है."
 
-#: ../applet.py:96
+#: ../statereason.py:89
 msgid "Not connected?"
 msgstr "संबंधित नहीं?"
 
-#: ../applet.py:97
+#: ../statereason.py:90
 #, python-format
 msgid "Printer '%s' may not be connected."
 msgstr "मुद्रक '%s' संबंधित नहीं हो सकता है."
 
-#: ../applet.py:104
+#: ../statereason.py:97
 msgid "Printer report"
 msgstr "मुद्रक रिपोर्ट"
 
-#: ../applet.py:106
+#: ../statereason.py:99
 msgid "Printer warning"
 msgstr "मुद्रक चेतावनी"
 
-#: ../applet.py:108
+#: ../statereason.py:101
 msgid "Printer error"
 msgstr "मुद्रक त्रुटि"
 
-#: ../applet.py:109
+#: ../statereason.py:102
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr "मुद्रक '%s': '%s'."
 
-#: ../applet.py:187
+#: ../troubleshoot/__init__.py:37
+msgid "Printing troubleshooter"
+msgstr ""
+
+#: ../troubleshoot/base.py:33
+msgid ""
+"To start this tool, select System->Administration->Printing from the main "
+"menu."
+msgstr ""
+
+#: ../troubleshoot/base.py:53
+#, fuzzy
+msgid "Authentication"
+msgstr "<b>सत्यापन</b>"
+
+#: ../troubleshoot/base.py:68
+#, fuzzy
+msgid "Password required"
+msgstr "उन्नत जरूरी"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:29
+#, fuzzy
+msgid "Choose Network Printer"
+msgstr "नया मुद्रक"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:30
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36
+msgid "Name"
+msgstr "नाम"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:39
+#: ../troubleshoot/ChoosePrinter.py:40
+#, fuzzy
+msgid "Information"
+msgstr "स्थानः"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:75
+#: ../troubleshoot/ChoosePrinter.py:64
+#, fuzzy
+msgid "Not listed"
+msgstr "संबंधित नहीं"
+
+#: ../troubleshoot/ChoosePrinter.py:30
+#, fuzzy
+msgid "Choose Printer"
+msgstr "मुद्रक कॉपी करें"
+
+#: ../troubleshoot/ChoosePrinter.py:31
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+
+#: ../troubleshoot/LocalOrRemote.py:27
+#, fuzzy
+msgid "Printer Location"
+msgstr "मुद्रक विकल्प"
+
+#: ../troubleshoot/LocalOrRemote.py:28
+#, fuzzy
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "समांतर पोर्ट में एक मुद्रक संबंधित."
+
+#: ../troubleshoot/LocalOrRemote.py:30
+#, fuzzy
+msgid "Locally connected printer"
+msgstr "क्या मुद्रक %s को वास्तव मिटाना चाहते हैं?"
+
+#: ../troubleshoot/LocalOrRemote.py:31
+#, fuzzy
+msgid "Network printer"
+msgstr "नया मुद्रक"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr ""
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:29
+#, fuzzy
+msgid "Status Messages"
+msgstr "संदेश"
+
+#: ../troubleshoot/PrinterStateReasons.py:30
+msgid "There are status messages associated with this queue."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:53
+#, fuzzy, python-format
+msgid "The printer's state message is: `%s'."
+msgstr "मुद्रक स्थिति:"
+
+#: ../troubleshoot/PrinterStateReasons.py:78
+msgid "Errors are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:83
+msgid "Warnings are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:28 ../applet.py:645
+msgid "Pending"
+msgstr "स्थगित"
+
+#: ../troubleshoot/PrintTestPage.py:29 ../applet.py:646
+msgid "Held"
+msgstr "रोकें"
+
+#: ../troubleshoot/PrintTestPage.py:32 ../applet.py:649
+msgid "Canceled"
+msgstr "रद्द"
+
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:650
+msgid "Aborted"
+msgstr "छोड़ा"
+
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:651
+msgid "Completed"
+msgstr "पूर्ण"
+
+#: ../troubleshoot/PrintTestPage.py:43
+#, fuzzy
+msgid "Test Page"
+msgstr "जाँच पृष्ठ छापें"
+
+#: ../troubleshoot/PrintTestPage.py:44
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:59
+msgid "Cancel All Jobs"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:65
+#, fuzzy
+msgid "Test"
+msgstr "फिर सेट करें"
+
+#: ../troubleshoot/PrintTestPage.py:66 ../applet.py:93
+msgid "Job"
+msgstr "कार्य"
+
+#: ../troubleshoot/PrintTestPage.py:70 ../applet.py:94
+msgid "Document"
+msgstr "दस्तावेज"
+
+#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:98
+msgid "Status"
+msgstr "प्रस्थिति"
+
+#: ../troubleshoot/PrintTestPage.py:95
+msgid "Did the marked print jobs print correctly?"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:102
+msgid "Yes"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:103
+msgid "No"
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:57
+#: ../troubleshoot/QueueRejectingJobs.py:67
+#, python-format
+msgid "The reason given is: `%s'."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:59
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:63
+msgid "Queue Not Enabled"
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:64
+#, python-format
+msgid "The queue `%s' is not enabled."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:72
+msgid ""
+"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:32
+msgid "Queue Rejecting Jobs"
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:64
+#, python-format
+msgid "The queue `%s' is rejecting jobs."
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:71
+msgid ""
+"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
+"`Policies' tab for the printer in the printer administration tool."
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:27
+#, fuzzy
+msgid "Remote Address"
+msgstr "दूरस्थ मुद्रक"
+
+#: ../troubleshoot/RemoteAddress.py:28
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:36
+#, fuzzy
+msgid "Server name:"
+msgstr "उपयोक्ता नामः"
+
+#: ../troubleshoot/RemoteAddress.py:43
+msgid "Server IP address:"
+msgstr ""
+
+#: ../troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr ""
+
+#: ../troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"`cups' service."
+msgstr ""
+
+#: ../troubleshoot/ServerFirewalled.py:27
+msgid "Check Server Firewall"
+msgstr ""
+
+#: ../troubleshoot/ServerFirewalled.py:28
+#, fuzzy
+msgid "It is not possible to connect to the server."
+msgstr "CUPS सर्वर में जोड़ने के दौरान समस्या थी."
+
+#: ../troubleshoot/ServerFirewalled.py:43
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server `%s'."
+msgstr ""
+
+#: ../troubleshoot/Shrug.py:27
+msgid "Sorry!"
+msgstr ""
+
+#: ../troubleshoot/Shrug.py:28
+msgid ""
+"I have not been able to work out what the problem is, but I have collected "
+"some useful information to put in a bug report."
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:34
+msgid "Trouble-shooting Printing"
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:36
+msgid ""
+"In the next few screens I will ask you some questions about your problem "
+"with printing. Based on your answers I will try to suggest a solution."
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:40
+msgid "Click 'Forward' to begin."
+msgstr ""
+
+#: ../applet.py:96
 msgid "Size"
 msgstr "आकार"
 
-#: ../applet.py:188
+#: ../applet.py:97
 msgid "Time submitted"
 msgstr "समय सुपुर्द"
 
-#: ../applet.py:239
+#: ../applet.py:148
 msgid "Message"
 msgstr "संदेश"
 
-#: ../applet.py:592
+#: ../applet.py:508
 msgid "1 hour ago"
 msgstr "1 घंटा पहले"
 
-#: ../applet.py:594
+#: ../applet.py:510
 msgid "1 hour and 1 minute ago"
 msgstr "1 घंटा और 1 मिनट पहले"
 
-#: ../applet.py:596
+#: ../applet.py:512
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "1 घंटा और %d मिनट पहले"
 
-#: ../applet.py:599
+#: ../applet.py:515
 #, python-format
 msgid "%d hours ago"
 msgstr "%d घंटा पहले"
 
-#: ../applet.py:601
+#: ../applet.py:517
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d घंटा और 1 मिनट पहले"
 
-#: ../applet.py:603
+#: ../applet.py:519
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d घंटे और %d मिनट पहले"
 
-#: ../applet.py:609
+#: ../applet.py:525
 msgid "a minute ago"
 msgstr "एक मिनट पहले"
 
-#: ../applet.py:611
+#: ../applet.py:527
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d मिनट पहले"
 
-#: ../applet.py:666
+#: ../applet.py:582
 msgid "No documents queued"
 msgstr "कोई दस्तावेज कतार बद्ध नहीं"
 
-#: ../applet.py:669
+#: ../applet.py:585
 msgid "1 document queued"
 msgstr "1 दस्तावेज कतारबद्ध"
 
-#: ../applet.py:672
+#: ../applet.py:588
 #, python-format
 msgid "%d documents queued"
 msgstr "%d दस्तावेज कतारबद्ध"
 
-#: ../applet.py:1026
+#: ../applet.py:943
 #, fuzzy
 msgid "Printer added"
 msgstr "मुद्रक नाम"
 
-#: ../applet.py:1028
+#: ../applet.py:945
 #, fuzzy
 msgid "Missing printer driver"
 msgstr "गुम ड्राइवर"
 
-#: ../applet.py:1032
+#: ../applet.py:949
 #, fuzzy
 msgid "Install printer driver"
 msgstr "गुम ड्राइवर"
 
-#: ../applet.py:1033
+#: ../applet.py:950
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr ""
 
-#: ../applet.py:1036
+#: ../applet.py:953
 #, fuzzy
 msgid "Install"
 msgstr "गुम ड्राइवर"
 
-#: ../applet.py:1039
+#: ../applet.py:956
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr ""
 
-#: ../applet.py:1042
+#: ../applet.py:959
 #, fuzzy
 msgid "Configure"
 msgstr "मुद्रक विन्यस्त करें"
 
 #. Model mismatch
-#: ../applet.py:1045
+#: ../applet.py:962
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr ""
 
-#: ../applet.py:1049
+#: ../applet.py:966
 #, fuzzy
 msgid "Find driver"
 msgstr "गुम ड्राइवर"
@@ -2134,6 +2136,22 @@ msgstr "मुद्रण कार्य प्रबंधित करें
 #, fuzzy
 msgid "Select default printer"
 msgstr "डिफ़ॉल्ट मुद्रक बनायें"
+
+#, fuzzy
+#~ msgid "Queue Not Accepting Jobs"
+#~ msgstr "कार्य स्वीकार कर रहा है"
+
+#, fuzzy
+#~ msgid "The CUPS printer on the server is not accepting jobs."
+#~ msgstr "यह छपाई साझा अभिगम योग्य नहीं है."
+
+#, fuzzy
+#~ msgid "The CUPS printer on the server is not enabled."
+#~ msgstr "यह छपाई साझा अभिगम योग्य नहीं है."
+
+#, fuzzy
+#~ msgid "Printer's state reasons:"
+#~ msgstr "मुद्रक स्थिति:"
 
 #, fuzzy
 #~ msgid ""
