@@ -40,9 +40,13 @@ class PrintTestPage(Question):
         page.set_border_width (12)
 
         label = gtk.Label ('<span weight="bold" size="larger">' +
-                           _("Test Page") + '</span>')
+                           _("Test Page") + '</span>\n\n' +
+                           _("Now print a test page.  If you are having "
+                             "problems printing a specific document, print "
+                             "that document now and mark the print job below."))
         label.set_alignment (0, 0)
         label.set_use_markup (True)
+        label.set_line_wrap (True)
         page.pack_start (label, False, False, 0)
 
         hbox = gtk.HButtonBox ()
@@ -57,13 +61,17 @@ class PrintTestPage(Question):
         page.pack_start (hbox, False, False, 0)
 
         tv = gtk.TreeView ()
-        job = gtk.TreeViewColumn (_("Job"), gtk.CellRendererText (), text=0)
+        test_cell = gtk.CellRendererToggle ()
+        test = gtk.TreeViewColumn (_("Test"), test_cell, active=0)
+        job = gtk.TreeViewColumn (_("Job"), gtk.CellRendererText (), text=1)
         printer_cell = gtk.CellRendererText ()
-        printer = gtk.TreeViewColumn (_("Printer"), printer_cell, text=1)
+        printer = gtk.TreeViewColumn (_("Printer"), printer_cell, text=2)
         name_cell = gtk.CellRendererText ()
-        name = gtk.TreeViewColumn (_("Document"), name_cell, text=2)
+        name = gtk.TreeViewColumn (_("Document"), name_cell, text=3)
         status = gtk.TreeViewColumn (_("Status"), gtk.CellRendererText (),
-                                     text=3)
+                                     text=4)
+        test_cell.set_radio (False)
+        self.test_cell = test_cell
         printer.set_resizable (True)
         printer_cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
         printer_cell.set_property ("width-chars", 20)
@@ -71,6 +79,7 @@ class PrintTestPage(Question):
         name_cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
         name_cell.set_property ("width-chars", 20)
         status.set_resizable (True)
+        tv.append_column (test)
         tv.append_column (job)
         tv.append_column (printer)
         tv.append_column (name)
@@ -83,7 +92,7 @@ class PrintTestPage(Question):
         self.treeview = tv
         page.pack_start (sw)
 
-        label = gtk.Label (_("Did the test page print correctly?"))
+        label = gtk.Label (_("Did the marked print jobs print correctly?"))
         label.set_line_wrap (True)
         label.set_alignment (0, 0)
         page.pack_start (label, False, False, 0)
@@ -99,37 +108,19 @@ class PrintTestPage(Question):
         self.persistent_answers = {}
         troubleshooter.new_page (page, self)
 
-    def update_job (self, jobid, job_dict):
-        iter = self.job_to_iter[jobid]
-        model = self.treeview.get_model ()
-        try:
-            printer_name = job_dict['printer-name']
-        except KeyError:
-            try:
-                uri = job_dict['job-printer-uri']
-                r = uri.rfind ('/')
-                printer_name = uri[r + 1:]
-            except KeyError:
-                printer_name = None
-
-        if printer_name != None:
-            model.set_value (iter, 1, printer_name)
-
-        model.set_value (iter, 2, job_dict['job-name'])
-        model.set_value (iter, 3, self.STATE[job_dict['job-state']])
-
     def display (self):
         if not self.troubleshooter.answers.has_key ('cups_queue'):
             return False
 
-        model = gtk.ListStore (gobject.TYPE_INT,
+        model = gtk.ListStore (gobject.TYPE_BOOLEAN,
+                               gobject.TYPE_INT,
                                gobject.TYPE_STRING,
                                gobject.TYPE_STRING,
                                gobject.TYPE_STRING)
         self.treeview.set_model (model)
         self.job_to_iter = {}
 
-        jobs = self.persistent_answers.get ('test_page_job_id', [])
+        test_jobs = self.persistent_answers.get ('test_page_job_id', [])
         cups.setServer ('')
         c = cups.Connection ()
 
@@ -147,7 +138,7 @@ class PrintTestPage(Question):
             jobs_on_this_printer = []
 
         # ...as well as any other jobs we've previous submitted as test pages.
-        jobs = list (set(jobs).union (set (jobs_on_this_printer)))
+        jobs = list (set(test_jobs).union (set (jobs_on_this_printer)))
 
         completed_jobs_dict = None
         for job in jobs:
@@ -163,35 +154,19 @@ class PrintTestPage(Question):
 
             iter = model.append (None)
             self.job_to_iter[job] = iter
-            model.set_value (iter, 0, job)
+            model.set_value (iter, 0, job in test_jobs)
+            model.set_value (iter, 1, job)
             self.update_job (job, j)
 
         return True
-
-    def print_clicked (self, widget):
-        self.persistent_answers['test_page_attempted'] = True
-        answers = self.troubleshooter.answers
-        c = cups.Connection ()
-        jobid = c.printTestPage (answers['cups_queue'])
-        jobs = self.persistent_answers.get ('test_page_job_id', [])
-        jobs.append (jobid)
-        self.persistent_answers['test_page_job_id'] = jobs
-
-    def cancel_clicked (self, widget):
-        self.persistent_answers['test_page_jobs_cancelled'] = True
-        c = cups.Connection ()
-        for jobid, iter in self.job_to_iter.iteritems ():
-            try:
-                c.cancelJob (jobid)
-            except cups.IPPError, (e, s):
-                if e != cups.IPP_NOT_POSSIBLE:
-                    raise
 
     def connect_signals (self, handler):
         self.print_sigid = self.print_button.connect ("clicked",
                                                       self.print_clicked)
         self.cancel_sigid = self.cancel_button.connect ("clicked",
                                                         self.cancel_clicked)
+        self.test_sigid = self.test_cell.connect ('toggled',
+                                                  self.test_toggled)
 
         cups.setServer ('')
         c = cups.Connection ()
@@ -207,6 +182,7 @@ class PrintTestPage(Question):
     def disconnect_signals (self):
         self.print_button.disconnect (self.print_sigid)
         self.cancel_button.disconnect (self.cancel_sigid)
+        self.test_cell.disconnect (self.test_sigid)
         c = cups.Connection ()
         c.cancelSubscription (self.sub_id)
         try:
@@ -227,14 +203,65 @@ class PrintTestPage(Question):
         class collect_jobs:
             def __init__ (self, model):
                 self.jobs = []
+                c = cups.Connection ()
+                self.job_attrs = c.getJobs (which_jobs='all')
                 model.foreach (self.each, None)
 
             def each (self, model, path, iter, user_data):
-                self.jobs.append (model.get (iter, 0, 1, 2))
+                (test, jobid, printer,
+                 doc, status) = model.get (iter, 0, 1, 2, 3, 4)
+                attrs = None
+                if test:
+                    attrs = self.job_attrs[jobid]
+                self.jobs.append ((test, jobid, printer, doc, status, attrs))
 
         model = self.treeview.get_model ()
         self.answers['test_page_job_status'] = collect_jobs (model).jobs
         return self.answers
+
+    def update_job (self, jobid, job_dict):
+        iter = self.job_to_iter[jobid]
+        model = self.treeview.get_model ()
+        try:
+            printer_name = job_dict['printer-name']
+        except KeyError:
+            try:
+                uri = job_dict['job-printer-uri']
+                r = uri.rfind ('/')
+                printer_name = uri[r + 1:]
+            except KeyError:
+                printer_name = None
+
+        if printer_name != None:
+            model.set_value (iter, 2, printer_name)
+
+        model.set_value (iter, 3, job_dict['job-name'])
+        model.set_value (iter, 4, self.STATE[job_dict['job-state']])
+
+    def print_clicked (self, widget):
+        self.persistent_answers['test_page_attempted'] = True
+        answers = self.troubleshooter.answers
+        c = cups.Connection ()
+        jobid = c.printTestPage (answers['cups_queue'])
+        jobs = self.persistent_answers.get ('test_page_job_id', [])
+        jobs.append (jobid)
+        self.persistent_answers['test_page_job_id'] = jobs
+
+    def cancel_clicked (self, widget):
+        self.persistent_answers['test_page_jobs_cancelled'] = True
+        c = cups.Connection ()
+        for jobid, iter in self.job_to_iter.iteritems ():
+            try:
+                c.cancelJob (jobid)
+            except cups.IPPError, (e, s):
+                if e != cups.IPP_NOT_POSSIBLE:
+                    raise
+
+    def test_toggled (self, cell, path):
+        model = self.treeview.get_model ()
+        iter = model.get_iter (path)
+        active = model.get_value (iter, 0)
+        model.set_value (iter, 0, not active)
 
     def update_jobs_list (self):
         c = cups.Connection ()
@@ -249,7 +276,14 @@ class PrintTestPage(Question):
         queue = answers['cups_queue']
         test_jobs = self.persistent_answers.get('test_page_job_id', [])
         for event in notifications['events']:
-            self.sub_seq = event['notify-sequence-number']
+            seq = event['notify-sequence-number']
+            try:
+                if seq <= self.sub_seq:
+                    # Work around a bug in pycups < 1.9.34
+                    continue
+            except AttributeError:
+                pass
+            self.sub_seq = seq
             job = event['notify-job-id']
 
             nse = event['notify-subscribed-event']
@@ -258,7 +292,8 @@ class PrintTestPage(Question):
                     event['printer-name'] == queue):
                     iter = model.append (None)
                     self.job_to_iter[job] = iter
-                    model.set_value (iter, 0, job)
+                    model.set_value (iter, 0, job in test_jobs)
+                    model.set_value (iter, 1, job)
                 else:
                     continue
             elif not self.job_to_iter.has_key (job):

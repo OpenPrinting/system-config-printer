@@ -1,3 +1,19 @@
+2008-02-19  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/PrintTestPage.py (PrintTestPage.update_jobs_list):
+	Work around old pycups bug.
+	(PrintTestPage.__init__): Allow other documents to be printed and
+	tracked using a check-box in each job row.
+	(PrintTestPage.update_job): Update columns IDs.
+	(PrintTestPage.display): Update store column types, and initialise
+	check-boxes.
+	(PrintTestPage.test_toggled): New method.
+	(PrintTestPage.connect_signals): Connect toggle signal.
+	(PrintTestPage.disconnect_signals): Disconnect it.
+	(PrintTestPage.collect_answer.collect_jobs.each): Include job
+	attributes for selected jobs.
+	(PrintTestPage.update_jobs_list): Initialise check-box.
+
 2008-02-18  Tim Waugh  <twaugh@redhat.com>
 
 	* troubleshoot/ErrorLogFetch.py: New module.
