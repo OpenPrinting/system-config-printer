@@ -68,6 +68,8 @@ class ErrorLogCheckpoint(Question):
         if len (settings.keys ()) == 0:
             # Requires root
             return True
+        else:
+            self.answers['cups_server_settings'] = settings
 
         try:
             if int (settings[cups.CUPS_SERVER_DEBUG_LOGGING]) != 0:
@@ -91,7 +93,7 @@ class ErrorLogCheckpoint(Question):
         if not answers['cups_queue_listed']:
             return {}
 
-        self.answers = self.persistent_answers.copy ()
+        self.answers.update (self.persistent_answers)
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.close (tmpfd)
         try:
@@ -136,6 +138,7 @@ class ErrorLogCheckpoint(Question):
                 if user != '':
                     return
 
+        self.answers['cups_server_settings'] = settings.copy ()
         try:
             prev = int (settings[cups.CUPS_SERVER_DEBUG_LOGGING])
         except KeyError:
