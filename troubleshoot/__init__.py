@@ -211,7 +211,9 @@ class Troubleshooter:
         page = self.ntbk.get_current_page ()
         n = 1
         for i in range (page):
-            answers = self.question_answers[i]
+            answers = self.question_answers[i].copy ()
+            for hidden in filter (lambda x: x.startswith ("_"), answers.keys()):
+                del answers[hidden]
             if len (answers.keys ()) == 0:
                 continue
             text += "Page %d (%s):" % (n, self.questions[i]) + '\n'

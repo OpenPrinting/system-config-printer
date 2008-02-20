@@ -97,7 +97,7 @@ class ErrorLogFetch(Question):
         return answers
 
     def button_clicked (self, button):
-        auth = None
+        auth = self.troubleshooter.answers['_authentication_dialog']
         for user in ['', 'root']:
             cups.setUser (user)
             if user == '':
@@ -105,7 +105,6 @@ class ErrorLogFetch(Question):
                 cups.setPasswordCB (lambda x: '')
             else:
                 # Then try with root and an authentication dialog.
-                auth = AuthenticationDialog ()
                 cups.setPasswordCB (auth.callback)
 
             try:
@@ -114,8 +113,7 @@ class ErrorLogFetch(Question):
                 return
 
             try:
-                if auth:
-                    auth.suppress_dialog ()
+                auth.suppress_dialog ()
                 settings = c.adminGetServerSettings ()
             except cups.IPPError:
                 settings = {}
@@ -133,8 +131,7 @@ class ErrorLogFetch(Question):
             settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '0'
             success = False
             try:
-                if auth:
-                    auth.suppress_dialog ()
+                auth.suppress_dialog ()
                 c.adminSetServerSettings (settings)
                 success = True
             except cups.IPPError:
