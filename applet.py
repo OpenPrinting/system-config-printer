@@ -863,8 +863,7 @@ if trayicon:
         sys.exit (1)
 
 ####
-#### NewPrinterNotification DBus server (the 'new' way).  Note: this interface
-#### is not final yet.
+#### NewPrinterNotification DBus server (the 'new' way).
 ####
 PDS_PATH="/com/redhat/NewPrinterNotification"
 PDS_IFACE="com.redhat.NewPrinterNotification"
