@@ -86,6 +86,8 @@ class StateReason:
                                   _("Printer '%s' is low on ink.")),
             'marker-supply-empty': (_("Ink empty"),
                                     _("Printer '%s' has no ink left.")),
+            'offline': (_("Printer off-line"),
+                        _("Printer `%s' is currently off-line.")),
             'connecting-to-device': (_("Not connected?"),
                                      _("Printer '%s' may not be connected.")),
             }
