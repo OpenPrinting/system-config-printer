@@ -90,6 +90,8 @@ class StateReason:
                         _("Printer `%s' is currently off-line.")),
             'connecting-to-device': (_("Not connected?"),
                                      _("Printer '%s' may not be connected.")),
+            'other': (_("Printer error"),
+                      _("There is a problem on printer `%s'.")),
             }
         try:
             (title, text) = messages[self.get_reason ()]
