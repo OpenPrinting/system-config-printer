@@ -46,9 +46,7 @@ class ErrorLogParse(Question):
 
         display = False
         for line in error_log:
-            if (line.find ("error") != -1 and
-                line.find ("no errors") == -1 and
-                line.find ("error_log") == -1):
+            if line[0] == 'E':
                 display = True
                 break
 
