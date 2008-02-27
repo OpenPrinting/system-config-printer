@@ -1,5 +1,12 @@
 2008-02-27  Tim Waugh  <twaugh@redhat.com>
 
+	* troubleshoot/PrintTestPage.py (PrintTestPage.connect_signals):
+	Connect to the system D-Bus.
+	(PrintTestPage.disconnect_signals): Disconnect from D-Bus.
+	(PrintTestPage.handle_dbus_signal): Schedule a refresh.
+	(PrintTestPage.update_jobs_list): Schedule the next refresh
+	according to notify-get-interval.
+
 	* troubleshoot/ErrorLogParse.py (ErrorLogParse.display): Use log
 	severity indicator.
 
