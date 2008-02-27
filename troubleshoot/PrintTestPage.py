@@ -20,10 +20,15 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+import dbus
+import dbus.glib
 import gobject
 import pango
 from base import *
 from base import _
+
+DBUS_PATH="/com/redhat/PrinterSpooler"
+DBUS_IFACE="com.redhat.PrinterSpooler"
 class PrintTestPage(Question):
     STATE = { cups.IPP_JOB_PENDING: _("Pending"),
               cups.IPP_JOB_HELD: _("Held"),
@@ -177,9 +182,25 @@ class PrintTestPage(Question):
                                                     "job-progress",
                                                     "job-state-changed"])
 
+        try:
+            bus = dbus.SystemBus ()
+        except:
+            bus = None
+
+        self.bus = bus
+        if bus:
+            bus.add_signal_receiver (self.handle_dbus_signal,
+                                     path=DBUS_PATH,
+                                     dbus_interface=DBUS_IFACE)
+
         self.timer = gobject.timeout_add (1000, self.update_jobs_list)
 
     def disconnect_signals (self):
+        if self.bus:
+            self.bus.remove_signal_receiver (self.handle_dbus_signal,
+                                             path=DBUS_PATH,
+                                             dbus_interface=DBUS_IFACE)
+                                             
         self.print_button.disconnect (self.print_sigid)
         self.cancel_button.disconnect (self.cancel_sigid)
         self.test_cell.disconnect (self.test_sigid)
@@ -225,6 +246,11 @@ class PrintTestPage(Question):
         model = self.treeview.get_model ()
         self.answers['test_page_job_status'] = collect_jobs (model).jobs
         return self.answers
+
+    def handle_dbus_signal (self, *args):
+        debugprint ("D-Bus signal caught: updating jobs list soon")
+        gobject.source_remove (self.timer)
+        self.timer = gobject.timeout_add (200, self.update_jobs_list)
 
     def update_job (self, jobid, job_dict):
         iter = self.job_to_iter[jobid]
@@ -313,4 +339,13 @@ class PrintTestPage(Question):
                 self.persistent_answers['test_page_completions'] = comp
 
             self.update_job (job, event)
-        return True
+
+        # Update again when we're told to. (But we might update sooner if
+        # there is a D-Bus signal.)
+        gobject.source_remove (self.timer)
+        self.timer = gobject.timeout_add (1000 *
+                                          notifications['notify-get-interval'],
+                                          self.update_jobs_list)
+        debugprint ("Update again in %ds" %
+                    notifications['notify-get-interval'])
+        return False
