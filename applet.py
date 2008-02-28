@@ -31,6 +31,14 @@ SEARCHING_ICON="document-print-preview"
 CONNECTING_TIMEOUT = 60 # seconds
 MIN_REFRESH_INTERVAL = 1 # seconds
 
+def debugprint(x):
+    global debug
+    if debug:
+        try:
+            print x
+        except:
+            pass
+
 def collect_printer_state_reasons (connection):
     result = []
     printers = connection.getPrinters ()
@@ -82,8 +90,6 @@ class JobManager:
         self.connecting_to_device = {} # dict of printer->time first seen
         self.still_connecting = set()
         self.will_update_job_creation_times = False # whether timeout is set
-        self.will_refresh = False # whether timeout is set
-        self.last_refreshed = 0
         self.special_status_icon = False
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE, domain = DOMAIN)
@@ -196,10 +202,20 @@ class JobManager:
                                  path="/com/redhat/PrinterSpooler",
                                  dbus_interface="com.redhat.PrinterSpooler")
 
+        self.sub_id = -1
         self.refresh ()
 
         if not self.trayicon:
             self.MainWindow.show ()
+
+    def cleanup (self):
+        if self.sub_id != -1:
+            try:
+                c = cups.Connection ()
+                c.cancelSubscription (self.sub_id)
+                debugprint ("Canceled subscription %d" % self.sub_id)
+            except:
+                pass
 
     # Handle "special" status icon
     def set_special_statusicon (self, iconname):
@@ -297,7 +313,7 @@ class JobManager:
         del c
 
         if self.update_connecting_devices (printer_reasons):
-            self.refresh ()
+            self.get_notifications ()
 
         # Don't run this callback again.
         return False
@@ -337,7 +353,8 @@ class JobManager:
         self.connecting_to_device = connecting_to_device
         return trouble
 
-    def check_state_reasons(self, connection, my_printers=set()):
+    def check_state_reasons(self, my_printers=set()):
+        connection = cups.Connection ()
         printer_reasons = collect_printer_state_reasons (connection)
 
         # Look for any new reasons since we last checked.
@@ -539,23 +556,105 @@ class JobManager:
         # Return code controls whether the timeout will recur.
         return self.will_update_job_creation_times
 
+    def get_notifications(self):
+        debugprint ("get_notifications")
+        try:
+            c = cups.Connection ()
+
+            try:
+                try:
+                    notifications = c.getNotifications ([self.sub_id],
+                                                        [self.sub_seq + 1])
+                except AttributeError:
+                    notifications = c.getNotifications ([self.sub_id])
+            except cups.IPPError, (e, m):
+                if e == cups.IPP_NOT_FOUND:
+                    # Subscription lease has expired.
+                    self.sub_id = -1
+                    self.refresh ()
+                    return False
+
+                return True
+        except:
+            return True
+
+        jobs = self.jobs.copy ()
+        for event in notifications['events']:
+            seq = event['notify-sequence-number']
+            try:
+                if seq <= self.sub_seq:
+                    # Work around a bug in pycups < 1.9.34
+                    continue
+            except AttributeError:
+                pass
+            self.sub_seq = seq
+            jobid = event['notify-job-id']
+            nse = event['notify-subscribed-event']
+            debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
+            if nse == 'job-created':
+                try:
+                    attrs = c.getJobAttributes (jobid)
+                    jobs[jobid] = {'job-k-octets': attrs['job-k-octets']}
+                except AttributeError:
+                    jobs[jobid] = {'job-k-octets': 0}
+            elif nse == 'job-completed':
+                if self.which_jobs == "not-completed":
+                    try:
+                        del jobs[jobid]
+                    except KeyError:
+                        pass
+                    continue
+
+            try:
+                job = jobs[jobid]
+            except KeyError:
+                continue
+
+            for attribute in ['job-state',
+                              'job-name']:
+                job[attribute] = event[attribute]
+            job['job-printer-uri'] = event['notify-printer-uri']
+
+        self.update (jobs)
+        self.jobs = jobs
+
+        # Update again when we're told to. (But we might update sooner if
+        # there is a D-Bus signal.)
+        gobject.source_remove (self.update_timer)
+        interval = 1000 * notifications['notify-get-interval']
+        self.update_timer = gobject.timeout_add (interval,
+                                                 self.get_notifications)
+        debugprint ("Update again in %dms" % interval)
+        return False
+
     def refresh(self):
-        now = time.time ()
-        if (now - self.last_refreshed) < MIN_REFRESH_INTERVAL:
-            if self.will_refresh:
-                return
-
-            gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
-                                 self.refresh)
-            self.will_refresh = True
-            return
-
-        self.will_refresh = False
-        self.last_refreshed = now
-        print "refresh"
+        debugprint ("refresh")
 
         try:
             c = cups.Connection ()
+        except RuntimeError:
+            return
+
+        if self.sub_id != -1:
+            c.cancelSubscription (self.sub_id)
+            gobject.source_remove (self.update_timer)
+            debugprint ("Canceled subscription %d" % self.sub_id)
+
+        try:
+            del self.sub_seq
+        except AttributeError:
+            pass
+        self.sub_id = c.createSubscription ("/",
+                                            events=["job-created",
+                                                    "job-completed",
+                                                    "job-stopped",
+                                                    "job-progress",
+                                                    "job-state-changed"])
+        self.update_timer = gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
+                                                 self.get_notifications)
+        debugprint ("Created subscription %d" % self.sub_id)
+
+        try:
             jobs = c.getJobs (which_jobs=self.which_jobs, my_jobs=True)
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
@@ -563,16 +662,22 @@ class JobManager:
         except RuntimeError:
             return
 
+        self.update (jobs)
+
+        self.jobs = jobs
+        self.update_job_creation_times ()
+        return False
+
+    def update(self, jobs):
+        debugprint ("update")
+        # Count active jobs
         if self.which_jobs == "not-completed":
             num_jobs = len (jobs)
         else:
-            try:
-                num_jobs = len (c.getJobs (my_jobs=True))
-            except cups.IPPError, (e, m):
-                self.show_IPP_Error (e, m)
-                return
-            except RuntimeError:
-                return
+            num_jobs = len (filter (lambda x:
+                                        x['job-state'] <= cups.IPP_JOB_STOPPED,
+                                    jobs.values ()))
+            debugprint ("%d active jobs of %d" % (num_jobs, len (jobs)))
 
         if self.trayicon:
             self.num_jobs = num_jobs
@@ -597,8 +702,7 @@ class JobManager:
             i = uri.rfind ('/')
             my_printers.add (uri[i + 1:])
 
-        self.check_state_reasons (c, my_printers)
-        del c
+        self.check_state_reasons (my_printers)
 
         if self.trayicon:
             # If there are no jobs but there is a printer
@@ -656,9 +760,6 @@ class JobManager:
             if state == None:
                 state = _("Unknown")
             self.store.set_value (iter, 5, state)
-
-        self.jobs = jobs
-        self.update_job_creation_times ()
 
     def set_statusicon_visibility (self):
         if self.trayicon:
@@ -761,13 +862,12 @@ class JobManager:
         except RuntimeError:
             return
 
-        self.refresh ()
-
     def on_refresh_activate(self, menuitem):
         self.refresh ()
 
     def handle_dbus_signal(self, *args):
-        self.refresh ()
+        gobject.source_remove (self.update_timer)
+        self.update_timer = gobject.timeout_add (200, self.get_notifications)
 
     ## Printer status window
     def set_printer_status_icon (self, column, cell, model, iter, *user_data):
@@ -810,17 +910,19 @@ def show_version ():
 #### Main program entry
 ####
 
-global waitloop, runloop, jobmanager
+global waitloop, runloop, jobmanager, debug
 
 trayicon = True
 service_running = False
 waitloop = runloop = None
 jobmanager = None
+debug = 0
 
 import sys, getopt
 try:
     opts, args = getopt.gnu_getopt (sys.argv[1:], '',
                                     ['no-tray-icon',
+                                     'debug',
                                      'help',
                                      'version'])
 except getopt.GetoptError:
@@ -836,6 +938,8 @@ for opt, optarg in opts:
         sys.exit (0)
     if opt == "--no-tray-icon":
         trayicon = False
+    elif opt == "--debug":
+        debug = 1
 
 import dbus
 import dbus.glib
@@ -1075,4 +1179,8 @@ if jobmanager == None:
     jobmanager = JobManager(bus, runloop,
                             service_running=service_running, trayicon=trayicon)
 
-runloop.run()
+try:
+    runloop.run()
+except KeyboardInterrupt:
+    pass
+jobmanager.cleanup () # Why doesn't __del__ work?

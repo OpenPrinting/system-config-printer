@@ -1,4 +1,28 @@
-2008-02-27  Tim Waugh  <twaugh@redhat.com>
+2008-02-28  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (debugprint): New function.
+	(JobManager.__init__): No longer need will_refresh or
+	last_refreshed attributes.
+	(JobManager.__init__): Initialise subscription ID.
+	(JobManager.refresh): Cancel existing subscription and create new
+	subscription.  No longer need throttling.
+	(JobManager.cleanup): New method.  Cancel subscription.
+	(JobManager.get_notifications): New method.
+	(JobManager.handle_dbus_signal): Use get_notifications instead of
+	refresh.
+	(JobManager.check_still_connecting): Use get_notifications, not
+	refresh.
+	(JobManager.check_state_reasons): Don't take a CUPS connection as
+	argument.  For now, open a new connection, although this should
+	not be needed really.
+	(JobManager.update): New method, split out from old refresh
+	method.  Don't fetch job list again; we already have enough
+	information.
+	(JobManager.on_job_reprint_activate): Don't need to call refresh
+	now.
+	(JobManager.handle_dbus_signal): Schedule a call to
+	get_notifications.
+	(top level): New --debug option.
 
 	* troubleshoot/PrintTestPage.py (PrintTestPage.connect_signals):
 	Connect to the system D-Bus.
