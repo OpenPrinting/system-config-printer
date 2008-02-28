@@ -39,8 +39,17 @@ def debugprint(x):
         except:
             pass
 
+def state_reason_is_harmless (reason):
+    if (reason.startswith ("moving-to-paused") or
+        reason.startswith ("paused") or
+        reason.startswith ("shutdown") or
+        reason.startswith ("stopping") or
+        reason.startswith ("stopped-partly")):
+        return True
+    return False
+
 def collect_printer_state_reasons (connection):
-    result = []
+    result = {}
     printers = connection.getPrinters ()
     for name, printer in printers.iteritems ():
         reasons = printer["printer-state-reasons"]
@@ -50,28 +59,35 @@ def collect_printer_state_reasons (connection):
         for reason in reasons:
             if reason == "none":
                 break
-            if (reason.startswith ("moving-to-paused") or
-                reason.startswith ("paused") or
-                reason.startswith ("shutdown") or
-                reason.startswith ("stopping") or
-                reason.startswith ("stopped-partly")):
+            if state_reason_is_harmless (reason):
                 continue
-            result.append (StateReason (name, reason))
+            if not result.has_key (name):
+                result[name] = []
+            result[name].append (StateReason (name, reason))
     return result
 
-def worst_printer_state_reason (connection, printer_reasons=None):
+def worst_printer_state_reason (printer_reasons=None, connection=None):
     """Fetches the printer list and checks printer-state-reason for
     each printer, returning a StateReason for the most severe
     printer-state-reason, or None."""
     worst_reason = None
+
     if printer_reasons == None:
+        if connection == None:
+            try:
+                connection = cups.Connection ()
+            except:
+                return None
+
         printer_reasons = collect_printer_state_reasons (connection)
-    for reason in printer_reasons:
-        if worst_reason == None:
-            worst_reason = reason
-            continue
-        if reason > worst_reason:
-            worst_reason = reason
+
+    for printer, reasons in printer_reasons.iteritems ():
+        for reason in reasons:
+            if worst_reason == None:
+                worst_reason = reason
+                continue
+            if reason > worst_reason:
+                worst_reason = reason
 
     return worst_reason
 
@@ -86,6 +102,7 @@ class JobManager:
         self.jobs = {}
         self.jobiters = {}
         self.which_jobs = "not-completed"
+        self.printer_state_reasons = {}
         self.hidden = False
         self.connecting_to_device = {} # dict of printer->time first seen
         self.still_connecting = set()
@@ -308,31 +325,28 @@ class JobManager:
 
     def check_still_connecting(self):
         """Timer callback to check on connecting-to-device reasons."""
-        c = cups.Connection ()
-        printer_reasons = collect_printer_state_reasons (c)
-        del c
-
-        if self.update_connecting_devices (printer_reasons):
+        if self.update_connecting_devices ():
             self.get_notifications ()
 
         # Don't run this callback again.
         return False
 
-    def update_connecting_devices(self, printer_reasons=[]):
+    def update_connecting_devices(self):
         """Updates connecting_to_device dict and still_connecting set.
         Returns True if a device has been connecting too long."""
         time_now = time.time ()
         connecting_to_device = {}
         trouble = False
-        for reason in printer_reasons:
-            if reason.get_reason () == "connecting-to-device":
-                # Build a new connecting_to_device dict.  If our existing
-                # dict already has an entry for this printer, use that.
-                printer = reason.get_printer ()
-                t = self.connecting_to_device.get (printer, time_now)
-                connecting_to_device[printer] = t
-                if time_now - t >= CONNECTING_TIMEOUT:
-                    trouble = True
+        for printer, reasons in self.printer_state_reasons.iteritems ():
+            for reason in reasons:
+                if reason.get_reason () == "connecting-to-device":
+                    # Build a new connecting_to_device dict.  If our existing
+                    # dict already has an entry for this printer, use that.
+                    printer = reason.get_printer ()
+                    t = self.connecting_to_device.get (printer, time_now)
+                    connecting_to_device[printer] = t
+                    if time_now - t >= CONNECTING_TIMEOUT:
+                        trouble = True
 
         # Clear any previously-notified errors that are now fine.
         remove = set()
@@ -354,36 +368,36 @@ class JobManager:
         return trouble
 
     def check_state_reasons(self, my_printers=set()):
-        connection = cups.Connection ()
-        printer_reasons = collect_printer_state_reasons (connection)
-
         # Look for any new reasons since we last checked.
         old_reasons_seen_keys = self.reasons_seen.keys ()
         reasons_now = set()
         need_recheck = False
-        for reason in printer_reasons:
-            tuple = reason.get_tuple ()
-            printer = reason.get_printer ()
-            reasons_now.add (tuple)
-            if not self.reasons_seen.has_key (tuple):
-                # New reason.
-                iter = self.store_printers.append (None)
-                self.store_printers.set_value (iter, 0, reason.get_level ())
-                self.store_printers.set_value (iter, 1, reason.get_printer ())
-                title, text = reason.get_description ()
-                self.store_printers.set_value (iter, 2, text)
-                self.reasons_seen[tuple] = iter
-                if (reason.get_reason () == "connecting-to-device" and
-                    not self.connecting_to_device.has_key (printer)):
-                    # First time we've seen this.
-                    need_recheck = True
+        for printer, reasons in self.printer_state_reasons.iteritems ():
+            for reason in reasons:
+                tuple = reason.get_tuple ()
+                printer = reason.get_printer ()
+                reasons_now.add (tuple)
+                if not self.reasons_seen.has_key (tuple):
+                    # New reason.
+                    iter = self.store_printers.append (None)
+                    self.store_printers.set_value (iter, 0,
+                                                   reason.get_level ())
+                    self.store_printers.set_value (iter, 1,
+                                                   reason.get_printer ())
+                    title, text = reason.get_description ()
+                    self.store_printers.set_value (iter, 2, text)
+                    self.reasons_seen[tuple] = iter
+                    if (reason.get_reason () == "connecting-to-device" and
+                        not self.connecting_to_device.has_key (printer)):
+                        # First time we've seen this.
+                        need_recheck = True
 
         if need_recheck:
             # Check on them again in a minute's time.
             gobject.timeout_add (CONNECTING_TIMEOUT * 1000,
                                  self.check_still_connecting)
 
-        self.update_connecting_devices (printer_reasons)
+        self.update_connecting_devices ()
         items = self.reasons_seen.keys ()
         for tuple in items:
             if not tuple in reasons_now:
@@ -400,7 +414,7 @@ class JobManager:
         # Update statusbar and icon with most severe printer reason
         # across all printers.
         self.icon_has_emblem = False
-        reason = worst_printer_state_reason (connection, printer_reasons)
+        reason = worst_printer_state_reason (self.printer_state_reasons)
         if reason != None and reason.get_level () >= StateReason.WARNING:
             title, text = reason.get_description ()
             if self.statusbar_set:
@@ -435,11 +449,11 @@ class JobManager:
                 self.statusbar_set = False
 
         # Send notifications for printers we've got jobs queued for.
-        my_reasons = []
-        for reason in printer_reasons:
-            if reason.get_printer () in my_printers:
-                my_reasons.append (reason)
-        reason = worst_printer_state_reason (connection, my_reasons)
+        my_reasons = {}
+        for printer in my_printers:
+            if self.printer_state_reasons.has_key (printer):
+                my_reasons[printer] = self.printer_state_reasons[printer]
+        reason = worst_printer_state_reason (my_reasons)
 
         # If connecting-to-device is the worst reason, check if it's been
         # like that for more than a minute.  If so, let's put a warning
@@ -588,9 +602,30 @@ class JobManager:
             except AttributeError:
                 pass
             self.sub_seq = seq
-            jobid = event['notify-job-id']
             nse = event['notify-subscribed-event']
             debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
+            if nse.startswith ('printer-'):
+                name = event['printer-name']
+                if nse == 'printer-deleted':
+                    if self.printer_state_reasons.has_key (name):
+                        del self.printer_state_reasons[name]
+                else:
+                    printer_state_reasons = event['printer-state-reasons']
+                    if type (printer_state_reasons) == str:
+                        # Work around a bug in pycups < 1.9.36
+                        printer_state_reasons = [printer_state_reasons]
+
+                    reasons = []
+                    for reason in printer_state_reasons:
+                        if reason == "none":
+                            break
+                        if state_reason_is_harmless (reason):
+                            continue
+                        reasons.append (StateReason (name, reason))
+                    self.printer_state_reasons[name] = reasons
+                continue
+
+            jobid = event['notify-job-id']
             if nse == 'job-created':
                 try:
                     attrs = c.getJobAttributes (jobid)
@@ -617,14 +652,6 @@ class JobManager:
 
         self.update (jobs)
         self.jobs = jobs
-
-        # Update again when we're told to. (But we might update sooner if
-        # there is a D-Bus signal.)
-        gobject.source_remove (self.update_timer)
-        interval = 1000 * notifications['notify-get-interval']
-        self.update_timer = gobject.timeout_add (interval,
-                                                 self.get_notifications)
-        debugprint ("Update again in %dms" % interval)
         return False
 
     def refresh(self):
@@ -649,13 +676,16 @@ class JobManager:
                                                     "job-completed",
                                                     "job-stopped",
                                                     "job-progress",
-                                                    "job-state-changed"])
+                                                    "job-state-changed",
+                                                    "printer-deleted",
+                                                    "printer-state-changed"])
         self.update_timer = gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
                                                  self.get_notifications)
         debugprint ("Created subscription %d" % self.sub_id)
 
         try:
             jobs = c.getJobs (which_jobs=self.which_jobs, my_jobs=True)
+            self.printer_state_reasons = collect_printer_state_reasons (c)
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
             return
@@ -1126,7 +1156,7 @@ if trayicon:
             c = cups.Connection ()
             if len (c.getJobs (my_jobs=True)):
                 return True
-            reason = worst_printer_state_reason (c)
+            reason = worst_printer_state_reason (connection=c)
             if reason != None and reason.get_level () >= StateReason.WARNING:
                 return True
         except:

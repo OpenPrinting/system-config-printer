@@ -23,6 +23,23 @@
 	(JobManager.handle_dbus_signal): Schedule a call to
 	get_notifications.
 	(top level): New --debug option.
+	(state_reason_is_harmless): New function, split out from
+	collect_printer_state_reasons.
+	(collect_printer_state_reasons): Collate reasons by printer name.
+	(worst_printer_state_reason): Handle reasons collation.
+	(JobManager.update_connecting_devices): Likewise.
+	(JobManager.check_state_reasons): Likewise.
+	(JobManager.check_still_connecting): No longer need to connect to
+	CUPS here.
+	(JobManager.check_state_reasons): Likewise.
+	(JobManager.get_notifications): Remove state reasons for deleted
+	printers, and update state reasons for printers whose state has
+	changed.
+	(JobManager.get_notifications): Don't update when the
+	notify-get-interval tells us to; instead, rely on D-Bus for this.
+	(JobManager.refresh): Add printer-deleted and
+	printer-state-changed to the list of interesting events.
+	(JobManager.refresh): Fetch printer state reasons.
 
 	* troubleshoot/PrintTestPage.py (PrintTestPage.connect_signals):
 	Connect to the system D-Bus.
