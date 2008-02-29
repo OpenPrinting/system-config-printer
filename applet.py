@@ -714,7 +714,7 @@ class JobManager:
         else:
             active_jobs = filter (lambda x:
                                       x['job-state'] <= cups.IPP_JOB_STOPPED,
-                                  jobs.values ()))
+                                  jobs.values ())
         num_jobs = len (active_jobs)
 
         if self.trayicon:
