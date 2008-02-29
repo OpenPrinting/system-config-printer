@@ -1,3 +1,17 @@
+2008-02-29  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.update): Make a list of active jobs
+	indexed by printer name.
+	(JobManager.check_state_reasons): Only display a
+	connecting-to-device warning if we have a job processing on that
+	device.
+	(JobManager.toggle_window_display): New force_show parameter.
+	(JobManager.get_notifications): Handle job-stopped event by
+	displaying a dialog when running as a tray icon.
+	(JobManager.print_error_dialog_response): New method.  Invoke the
+	troubleshooter if user selects 'Diagnose'.
+	(JobManager.on_troubleshoot_quit): New method.
+
 2008-02-28  Tim Waugh  <twaugh@redhat.com>
 
 	* applet.py (debugprint): New function.

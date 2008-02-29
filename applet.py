@@ -300,8 +300,12 @@ class JobManager:
         self.ErrorDialog.run()
         self.ErrorDialog.hide()
 
-    def toggle_window_display(self, icon):
-        if self.MainWindow.get_property('visible'):
+    def toggle_window_display(self, icon, force_show=False):
+        visible = self.MainWindow.get_property('visible')
+        if force_show:
+            visible = False
+
+        if visible:
             self.MainWindow.hide()
             if self.show_printer_status.get_active ():
                 self.PrintersWindow.hide()
@@ -367,7 +371,7 @@ class JobManager:
         self.connecting_to_device = connecting_to_device
         return trouble
 
-    def check_state_reasons(self, my_printers=set()):
+    def check_state_reasons(self, my_printers=set(), printer_jobs={}):
         # Look for any new reasons since we last checked.
         old_reasons_seen_keys = self.reasons_seen.keys ()
         reasons_now = set()
@@ -456,21 +460,29 @@ class JobManager:
         reason = worst_printer_state_reason (my_reasons)
 
         # If connecting-to-device is the worst reason, check if it's been
-        # like that for more than a minute.  If so, let's put a warning
-        # bubble up.
+        # like that for more than a minute.  If so, and there is job being
+        # processed for that device, let's put a warning bubble up.
         if (self.trayicon and reason != None and
             reason.get_reason () == "connecting-to-device"):
             now = time.time ()
             printer = reason.get_printer ()
             start = self.connecting_to_device.get (printer, now)
             if now - start >= CONNECTING_TIMEOUT:
-                # This will be in our list of reasons we've already seen,
-                # which ordinarily stops us notifying the user.  In this
-                # case, pretend we haven't seen it before.
-                self.still_connecting.add (printer)
-                old_reasons_seen_keys.remove (reason.get_tuple ())
-                reason = StateReason (printer,
-                                      reason.get_reason () + "-error")
+                have_processing_job = False
+                for job, data in printer_jobs.get (printer, {}).iteritems ():
+                    state = data.get ('job-state', cups.IPP_JOB_CANCELED)
+                    if state == cups.IPP_JOB_PROCESSING:
+                        have_processing_job = True
+                        break
+
+                if have_processing_job:
+                    # This will be in our list of reasons we've already seen,
+                    # which ordinarily stops us notifying the user.  In this
+                    # case, pretend we haven't seen it before.
+                    self.still_connecting.add (printer)
+                    old_reasons_seen_keys.remove (reason.get_tuple ())
+                    reason = StateReason (printer,
+                                          reason.get_reason () + "-error")
 
         if (self.trayicon and reason != None and
             reason.get_level () >= StateReason.WARNING):
@@ -570,6 +582,19 @@ class JobManager:
         # Return code controls whether the timeout will recur.
         return self.will_update_job_creation_times
 
+    def print_error_dialog_response(self, dialog, response):
+        dialog.hide ()
+        dialog.destroy ()
+        if response == gtk.RESPONSE_NO:
+            # Diagnose
+            if not self.__dict__.has_key ('troubleshooter'):
+                import troubleshoot
+                troubleshooter = troubleshoot.run (self.on_troubleshoot_quit)
+                self.troubleshooter = troubleshooter
+
+    def on_troubleshoot_quit(self, troubleshooter):
+        del self.troubleshooter
+
     def get_notifications(self):
         debugprint ("get_notifications")
         try:
@@ -605,6 +630,7 @@ class JobManager:
             nse = event['notify-subscribed-event']
             debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
             if nse.startswith ('printer-'):
+                # Printer events
                 name = event['printer-name']
                 if nse == 'printer-deleted':
                     if self.printer_state_reasons.has_key (name):
@@ -625,6 +651,7 @@ class JobManager:
                     self.printer_state_reasons[name] = reasons
                 continue
 
+            # Job events
             jobid = event['notify-job-id']
             if nse == 'job-created':
                 try:
@@ -649,6 +676,64 @@ class JobManager:
                               'job-name']:
                 job[attribute] = event[attribute]
             job['job-printer-uri'] = event['notify-printer-uri']
+
+            if nse == 'job-stopped' and self.trayicon:
+                # Why has the job stopped?  Unfortunately the only
+                # clue we get is the notify-text, which is not
+                # translated into our native language.  We'd better
+                # try parsing it.  In CUPS-1.3.6 the possible strings
+                # are:
+                #
+                # "Job stopped due to filter errors; please consult
+                # the error_log file for details."
+                #
+                # "Job stopped due to backend errors; please consult
+                # the error_log file for details."
+                #
+                # "Job held due to backend errors; please consult the
+                # error_log file for details."
+                #
+                # "Authentication is required for job %d."
+                notify_text = event['notify-text']
+                document = job['job-name']
+                if notify_text.find ("backend errors") != -1:
+                    message = _("There was a problem sending document `%s' "
+                                "(job %d) to the printer.") % (document, jobid)
+                elif notify_text.find ("filter errors") != -1:
+                    message = _("There was a problem processing document `%s' "
+                                "(job %d).") % (document, jobid)
+                else:
+                    # Give up and use the untranslated provided.
+                    message = _("There was a problem printing document `%s' "
+                                "(job %d): `%s'.") % (document, jobid,
+                                                      notify_text)
+
+                self.toggle_window_display (self.statusicon, force_show=True)
+                dialog = gtk.Dialog (_("Print Error"), self.MainWindow, 0,
+                                     (_("_Diagnose"), gtk.RESPONSE_NO,
+                                        gtk.STOCK_OK, gtk.RESPONSE_OK))
+                dialog.set_default_response (gtk.RESPONSE_OK)
+                dialog.set_border_width (6)
+                dialog.set_resizable (False)
+                dialog.set_icon_name (ICON)
+                hbox = gtk.HBox (False, 12)
+                hbox.set_border_width (6)
+                image = gtk.Image ()
+                image.set_from_stock ('gtk-dialog-error',
+                                      gtk.ICON_SIZE_DIALOG)
+                hbox.pack_start (image, False, False, 0)
+                vbox = gtk.VBox (False, 12)
+                label = gtk.Label ('<span weight="bold" size="larger">' +
+                                   _("Print Error") + '</span>\n\n' +
+                                   message)
+                label.set_use_markup (True)
+                label.set_line_wrap (True)
+                label.set_alignment (0, 0)
+                vbox.pack_start (label, False, False, 0)
+                hbox.pack_start (vbox, False, False, 0)
+                dialog.vbox.pack_start (hbox)
+                dialog.connect ('response', self.print_error_dialog_response)
+                dialog.show_all ()
 
         self.update (jobs)
         self.jobs = jobs
@@ -702,12 +787,12 @@ class JobManager:
         debugprint ("update")
         # Count active jobs
         if self.which_jobs == "not-completed":
-            num_jobs = len (jobs)
+            active_jobs = jobs
         else:
-            num_jobs = len (filter (lambda x:
-                                        x['job-state'] <= cups.IPP_JOB_STOPPED,
-                                    jobs.values ()))
-            debugprint ("%d active jobs of %d" % (num_jobs, len (jobs)))
+            active_jobs = filter (lambda x:
+                                      x['job-state'] <= cups.IPP_JOB_STOPPED,
+                                  jobs.values ())
+        num_jobs = len (active_jobs)
 
         if self.trayicon:
             self.num_jobs = num_jobs
@@ -724,15 +809,20 @@ class JobManager:
                 self.set_statusicon_from_pixbuf (self.icon_jobs)
 
         my_printers = set()
+        printer_jobs = {}
         for job, data in jobs.iteritems ():
             state = data.get ('job-state', cups.IPP_JOB_CANCELED)
             if state >= cups.IPP_JOB_CANCELED:
                 continue
             uri = data.get ('job-printer-uri', '/')
             i = uri.rfind ('/')
-            my_printers.add (uri[i + 1:])
+            printer = uri[i + 1:]
+            my_printers.add (printer)
+            if not printer_jobs.has_key (printer):
+                printer_jobs[printer] = {}
+            printer_jobs[printer][job] = data
 
-        self.check_state_reasons (my_printers)
+        self.check_state_reasons (my_printers, printer_jobs)
 
         if self.trayicon:
             # If there are no jobs but there is a printer
