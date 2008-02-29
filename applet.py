@@ -367,7 +367,7 @@ class JobManager:
         self.connecting_to_device = connecting_to_device
         return trouble
 
-    def check_state_reasons(self, my_printers=set()):
+    def check_state_reasons(self, my_printers=set(), printer_jobs={}):
         # Look for any new reasons since we last checked.
         old_reasons_seen_keys = self.reasons_seen.keys ()
         reasons_now = set()
@@ -456,21 +456,29 @@ class JobManager:
         reason = worst_printer_state_reason (my_reasons)
 
         # If connecting-to-device is the worst reason, check if it's been
-        # like that for more than a minute.  If so, let's put a warning
-        # bubble up.
+        # like that for more than a minute.  If so, and there is job being
+        # processed for that device, let's put a warning bubble up.
         if (self.trayicon and reason != None and
             reason.get_reason () == "connecting-to-device"):
             now = time.time ()
             printer = reason.get_printer ()
             start = self.connecting_to_device.get (printer, now)
             if now - start >= CONNECTING_TIMEOUT:
-                # This will be in our list of reasons we've already seen,
-                # which ordinarily stops us notifying the user.  In this
-                # case, pretend we haven't seen it before.
-                self.still_connecting.add (printer)
-                old_reasons_seen_keys.remove (reason.get_tuple ())
-                reason = StateReason (printer,
-                                      reason.get_reason () + "-error")
+                have_processing_job = False
+                for job, data in printer_jobs.get (printer, {}).iteritems ():
+                    state = data.get ('job-state', cups.IPP_JOB_CANCELED)
+                    if state == cups.IPP_JOB_PROCESSING:
+                        have_processing_job = True
+                        break
+
+                if have_processing_job:
+                    # This will be in our list of reasons we've already seen,
+                    # which ordinarily stops us notifying the user.  In this
+                    # case, pretend we haven't seen it before.
+                    self.still_connecting.add (printer)
+                    old_reasons_seen_keys.remove (reason.get_tuple ())
+                    reason = StateReason (printer,
+                                          reason.get_reason () + "-error")
 
         if (self.trayicon and reason != None and
             reason.get_level () >= StateReason.WARNING):
@@ -702,12 +710,12 @@ class JobManager:
         debugprint ("update")
         # Count active jobs
         if self.which_jobs == "not-completed":
-            num_jobs = len (jobs)
+            active_jobs = jobs
         else:
-            num_jobs = len (filter (lambda x:
-                                        x['job-state'] <= cups.IPP_JOB_STOPPED,
-                                    jobs.values ()))
-            debugprint ("%d active jobs of %d" % (num_jobs, len (jobs)))
+            active_jobs = filter (lambda x:
+                                      x['job-state'] <= cups.IPP_JOB_STOPPED,
+                                  jobs.values ()))
+        num_jobs = len (active_jobs)
 
         if self.trayicon:
             self.num_jobs = num_jobs
@@ -724,15 +732,20 @@ class JobManager:
                 self.set_statusicon_from_pixbuf (self.icon_jobs)
 
         my_printers = set()
+        printer_jobs = {}
         for job, data in jobs.iteritems ():
             state = data.get ('job-state', cups.IPP_JOB_CANCELED)
             if state >= cups.IPP_JOB_CANCELED:
                 continue
             uri = data.get ('job-printer-uri', '/')
             i = uri.rfind ('/')
-            my_printers.add (uri[i + 1:])
+            printer = uri[i + 1:]
+            my_printers.add (printer)
+            if not printer_jobs.has_key (printer):
+                printer_jobs[printer] = {}
+            printer_jobs[printer][job] = data
 
-        self.check_state_reasons (my_printers)
+        self.check_state_reasons (my_printers, printer_jobs)
 
         if self.trayicon:
             # If there are no jobs but there is a printer
