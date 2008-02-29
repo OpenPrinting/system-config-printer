@@ -300,8 +300,12 @@ class JobManager:
         self.ErrorDialog.run()
         self.ErrorDialog.hide()
 
-    def toggle_window_display(self, icon):
-        if self.MainWindow.get_property('visible'):
+    def toggle_window_display(self, icon, force_show=False):
+        visible = self.MainWindow.get_property('visible')
+        if force_show:
+            visible = False
+
+        if visible:
             self.MainWindow.hide()
             if self.show_printer_status.get_active ():
                 self.PrintersWindow.hide()
@@ -578,6 +582,19 @@ class JobManager:
         # Return code controls whether the timeout will recur.
         return self.will_update_job_creation_times
 
+    def print_error_dialog_response(self, dialog, response):
+        dialog.hide ()
+        dialog.destroy ()
+        if response == gtk.RESPONSE_NO:
+            # Diagnose
+            if not self.__dict__.has_key ('troubleshooter'):
+                import troubleshoot
+                troubleshooter = troubleshoot.run (self.on_troubleshoot_quit)
+                self.troubleshooter = troubleshooter
+
+    def on_troubleshoot_quit(self, troubleshooter):
+        del self.troubleshooter
+
     def get_notifications(self):
         debugprint ("get_notifications")
         try:
@@ -613,6 +630,7 @@ class JobManager:
             nse = event['notify-subscribed-event']
             debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
             if nse.startswith ('printer-'):
+                # Printer events
                 name = event['printer-name']
                 if nse == 'printer-deleted':
                     if self.printer_state_reasons.has_key (name):
@@ -633,6 +651,7 @@ class JobManager:
                     self.printer_state_reasons[name] = reasons
                 continue
 
+            # Job events
             jobid = event['notify-job-id']
             if nse == 'job-created':
                 try:
@@ -657,6 +676,64 @@ class JobManager:
                               'job-name']:
                 job[attribute] = event[attribute]
             job['job-printer-uri'] = event['notify-printer-uri']
+
+            if nse == 'job-stopped' and self.trayicon:
+                # Why has the job stopped?  Unfortunately the only
+                # clue we get is the notify-text, which is not
+                # translated into our native language.  We'd better
+                # try parsing it.  In CUPS-1.3.6 the possible strings
+                # are:
+                #
+                # "Job stopped due to filter errors; please consult
+                # the error_log file for details."
+                #
+                # "Job stopped due to backend errors; please consult
+                # the error_log file for details."
+                #
+                # "Job held due to backend errors; please consult the
+                # error_log file for details."
+                #
+                # "Authentication is required for job %d."
+                notify_text = event['notify-text']
+                document = job['job-name']
+                if notify_text.find ("backend errors") != -1:
+                    message = _("There was a problem sending document `%s' "
+                                "(job %d) to the printer.") % (document, jobid)
+                elif notify_text.find ("filter errors") != -1:
+                    message = _("There was a problem processing document `%s' "
+                                "(job %d).") % (document, jobid)
+                else:
+                    # Give up and use the untranslated provided.
+                    message = _("There was a problem printing document `%s' "
+                                "(job %d): `%s'.") % (document, jobid,
+                                                      notify_text)
+
+                self.toggle_window_display (self.statusicon, force_show=True)
+                dialog = gtk.Dialog (_("Print Error"), self.MainWindow, 0,
+                                     (_("_Diagnose"), gtk.RESPONSE_NO,
+                                        gtk.STOCK_OK, gtk.RESPONSE_OK))
+                dialog.set_default_response (gtk.RESPONSE_OK)
+                dialog.set_border_width (6)
+                dialog.set_resizable (False)
+                dialog.set_icon_name (ICON)
+                hbox = gtk.HBox (False, 12)
+                hbox.set_border_width (6)
+                image = gtk.Image ()
+                image.set_from_stock ('gtk-dialog-error',
+                                      gtk.ICON_SIZE_DIALOG)
+                hbox.pack_start (image, False, False, 0)
+                vbox = gtk.VBox (False, 12)
+                label = gtk.Label ('<span weight="bold" size="larger">' +
+                                   _("Print Error") + '</span>\n\n' +
+                                   message)
+                label.set_use_markup (True)
+                label.set_line_wrap (True)
+                label.set_alignment (0, 0)
+                vbox.pack_start (label, False, False, 0)
+                hbox.pack_start (vbox, False, False, 0)
+                dialog.vbox.pack_start (hbox)
+                dialog.connect ('response', self.print_error_dialog_response)
+                dialog.show_all ()
 
         self.update (jobs)
         self.jobs = jobs
