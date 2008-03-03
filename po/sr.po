@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.0.7.32.x.sr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-02-19 17:17+0000\n"
+"POT-Creation-Date: 2008-03-03 17:02+0000\n"
 "PO-Revision-Date: 2008-02-14 19:04-0500\n"
 "Last-Translator: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>\n"
 "Language-Team: Serbian <fedora-trans-sr@redhat.com>\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Мирује"
 
-#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:30 ../applet.py:647
+#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:885
 msgid "Processing"
 msgstr "Обрађује"
 
@@ -32,7 +32,7 @@ msgstr "Обрађује"
 msgid "Busy"
 msgstr "Заузет"
 
-#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:31 ../applet.py:648
+#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:886
 msgid "Stopped"
 msgstr "Заустављен"
 
@@ -42,7 +42,7 @@ msgstr "Заустављен"
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
 #: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
-#: ../applet.py:657
+#: ../applet.py:895
 msgid "Unknown"
 msgstr "Непознато"
 
@@ -58,8 +58,8 @@ msgstr "_Користи подразумеване системске вредн
 msgid "_Set Default"
 msgstr "По_стави као подразумевани"
 
-#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:68
-#: ../applet.py:95 ../applet.py:135
+#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:73
+#: ../applet.py:119 ../applet.py:159
 msgid "Printer"
 msgstr "Штампач"
 
@@ -171,20 +171,20 @@ msgstr ""
 "се сукоби разреше."
 
 #: ../system-config-printer.py:1241 ../system-config-printer.py:1257
-#: ../applet.py:258
+#: ../applet.py:292
 msgid "Not authorized"
 msgstr "Неовлашћен"
 
-#: ../system-config-printer.py:1242 ../applet.py:259
+#: ../system-config-printer.py:1242 ../applet.py:293
 msgid "The password may be incorrect."
 msgstr "Лозинка је можда нетачна."
 
 #: ../system-config-printer.py:1245 ../system-config-printer.py:1278
-#: ../applet.py:262
+#: ../applet.py:296
 msgid "CUPS server error"
 msgstr "Грешка CUPS сервера"
 
-#: ../system-config-printer.py:1246 ../applet.py:263
+#: ../system-config-printer.py:1246 ../applet.py:297
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Десила се грешка током CUPS радње: „%s“."
@@ -289,7 +289,7 @@ msgstr "Откажи пробе"
 
 #. Not more than 25 characters
 #: ../system-config-printer.py:1836 ../system-config-printer.glade.h:208
-#: ../troubleshoot/PrintTestPage.py:56
+#: ../troubleshoot/PrintTestPage.py:61
 msgid "Print Test Page"
 msgstr "Одштампај пробну страницу"
 
@@ -684,6 +684,7 @@ msgstr ""
 "\n"
 "Све промене које сте направили ће бити изгубљене ако их не примените."
 
+#. Why doesn't __del__ work?
 #: ../system-config-printer.glade.h:41 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
@@ -1182,7 +1183,7 @@ msgstr "Страница по листу:"
 msgid "Parity"
 msgstr "Парност"
 
-#: ../system-config-printer.glade.h:195 ../troubleshoot/base.py:76
+#: ../system-config-printer.glade.h:195 ../troubleshoot/Welcome.py:64
 #: ../applet.glade.h:5
 msgid "Password:"
 msgstr "Лозинка:"
@@ -1633,27 +1634,42 @@ msgid "Printer '%s' has no ink left."
 msgstr "Штампач „%s“ је остао без боје."
 
 #: ../statereason.py:89
+#, fuzzy
+msgid "Printer off-line"
+msgstr "Локација штампача"
+
+#: ../statereason.py:90
+#, fuzzy, python-format
+msgid "Printer `%s' is currently off-line."
+msgstr "Штампач „%s“ је остао без папира."
+
+#: ../statereason.py:91
 msgid "Not connected?"
 msgstr "Није спојен?"
 
-#: ../statereason.py:90
+#: ../statereason.py:92
 #, python-format
 msgid "Printer '%s' may not be connected."
 msgstr "Штампач „%s“ можда није спојен."
 
-#: ../statereason.py:97
-msgid "Printer report"
-msgstr "Извештај штампача"
-
-#: ../statereason.py:99
-msgid "Printer warning"
-msgstr "Упозорење штампача"
-
-#: ../statereason.py:101
+#: ../statereason.py:93 ../statereason.py:105
 msgid "Printer error"
 msgstr "Грешка штампача"
 
-#: ../statereason.py:102
+#: ../statereason.py:94
+#, fuzzy, python-format
+msgid "There is a problem on printer `%s'."
+msgstr "Врата су отворен на штампачу „%s“."
+
+#: ../statereason.py:101
+msgid "Printer report"
+msgstr "Извештај штампача"
+
+#: ../statereason.py:103
+msgid "Printer warning"
+msgstr "Упозорење штампача"
+
+#: ../statereason.py:106
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr "Штампач „%s“: „%s“."
@@ -1669,14 +1685,6 @@ msgid ""
 msgstr ""
 "Да бисте покренули ову алатку, изаберите Систем -> Администрација -> "
 "Штампање у главном менију."
-
-#: ../troubleshoot/base.py:53
-msgid "Authentication"
-msgstr "Аутентификација"
-
-#: ../troubleshoot/base.py:68
-msgid "Password required"
-msgstr "Лозинка је неопходна"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
 msgid "Choose Network Printer"
@@ -1750,11 +1758,11 @@ msgstr ""
 msgid "Disable Debugging"
 msgstr ""
 
-#: ../troubleshoot/ErrorLogFetch.py:145
+#: ../troubleshoot/ErrorLogFetch.py:142
 msgid "Debug logging disabled."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogFetch.py:147
+#: ../troubleshoot/ErrorLogFetch.py:144
 msgid "Debug logging was already disabled."
 msgstr ""
 
@@ -1811,67 +1819,67 @@ msgstr ""
 msgid "Warnings are listed below:"
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:28 ../applet.py:645
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:883
 msgid "Pending"
 msgstr "На чекању"
 
-#: ../troubleshoot/PrintTestPage.py:29 ../applet.py:646
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:884
 msgid "Held"
 msgstr "Задржано"
 
-#: ../troubleshoot/PrintTestPage.py:32 ../applet.py:649
+#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:887
 msgid "Canceled"
 msgstr "Отказано"
 
-#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:650
+#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:888
 msgid "Aborted"
 msgstr "Обустављено"
 
-#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:651
+#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:889
 msgid "Completed"
 msgstr "Завршено"
 
-#: ../troubleshoot/PrintTestPage.py:43
+#: ../troubleshoot/PrintTestPage.py:48
 msgid "Test Page"
 msgstr "Пробна страница"
 
-#: ../troubleshoot/PrintTestPage.py:44
+#: ../troubleshoot/PrintTestPage.py:49
 msgid ""
 "Now print a test page.  If you are having problems printing a specific "
 "document, print that document now and mark the print job below."
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:59
+#: ../troubleshoot/PrintTestPage.py:64
 msgid "Cancel All Jobs"
 msgstr "Откажи све послове"
 
-#: ../troubleshoot/PrintTestPage.py:65
+#: ../troubleshoot/PrintTestPage.py:70
 #, fuzzy
 msgid "Test"
 msgstr "Поврати"
 
-#: ../troubleshoot/PrintTestPage.py:66 ../applet.py:93
+#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:117
 msgid "Job"
 msgstr "Посао"
 
-#: ../troubleshoot/PrintTestPage.py:70 ../applet.py:94
+#: ../troubleshoot/PrintTestPage.py:75 ../applet.py:118
 msgid "Document"
 msgstr "Документ"
 
-#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:98
+#: ../troubleshoot/PrintTestPage.py:76 ../applet.py:122
 msgid "Status"
 msgstr "Стање"
 
-#: ../troubleshoot/PrintTestPage.py:95
+#: ../troubleshoot/PrintTestPage.py:100
 #, fuzzy
 msgid "Did the marked print jobs print correctly?"
 msgstr "Да ли је страница одштампана правилно?"
 
-#: ../troubleshoot/PrintTestPage.py:102
+#: ../troubleshoot/PrintTestPage.py:107
 msgid "Yes"
 msgstr "Да"
 
-#: ../troubleshoot/PrintTestPage.py:103
+#: ../troubleshoot/PrintTestPage.py:108
 msgid "No"
 msgstr "Не"
 
@@ -1979,11 +1987,19 @@ msgstr ""
 "Није било могуће наћи разлог за проблем, али неки корисни подаци су "
 "прикупљени који се могу ставити у извештај о грешци."
 
-#: ../troubleshoot/Welcome.py:34
+#: ../troubleshoot/Welcome.py:41
+msgid "Authentication"
+msgstr "Аутентификација"
+
+#: ../troubleshoot/Welcome.py:56
+msgid "Password required"
+msgstr "Лозинка је неопходна"
+
+#: ../troubleshoot/Welcome.py:95
 msgid "Trouble-shooting Printing"
 msgstr "Решавање проблема штампања"
 
-#: ../troubleshoot/Welcome.py:36
+#: ../troubleshoot/Welcome.py:97
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
@@ -1991,109 +2007,139 @@ msgstr ""
 "Следећих неколико екрана ће вас питати у вези проблема са штампањем. На "
 "основу датих одговора предложиће вам се могуће решење."
 
-#: ../troubleshoot/Welcome.py:40
+#: ../troubleshoot/Welcome.py:101
 msgid "Click 'Forward' to begin."
 msgstr "Притисните „Напред“ да би почели."
 
-#: ../applet.py:96
+#: ../applet.py:120
 msgid "Size"
 msgstr "Величина"
 
-#: ../applet.py:97
+#: ../applet.py:121
 msgid "Time submitted"
 msgstr "Време слања"
 
-#: ../applet.py:148
+#: ../applet.py:172
 msgid "Message"
 msgstr "Порука"
 
-#: ../applet.py:508
+#: ../applet.py:552
 msgid "1 hour ago"
 msgstr "пре 1 сат"
 
-#: ../applet.py:510
+#: ../applet.py:554
 msgid "1 hour and 1 minute ago"
 msgstr "пре 1 сат и 1 минуту"
 
-#: ../applet.py:512
+#: ../applet.py:556
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "пре 1 сат и %d минута"
 
-#: ../applet.py:515
+#: ../applet.py:559
 #, python-format
 msgid "%d hours ago"
 msgstr "пре %d сати"
 
-#: ../applet.py:517
+#: ../applet.py:561
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "пре %d сати и 1 минуту"
 
-#: ../applet.py:519
+#: ../applet.py:563
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "пре %d сати и %d минута"
 
-#: ../applet.py:525
+#: ../applet.py:569
 msgid "a minute ago"
 msgstr "пре једне минуте"
 
-#: ../applet.py:527
+#: ../applet.py:571
 #, python-format
 msgid "%d minutes ago"
 msgstr "пре %d минута"
 
-#: ../applet.py:582
+#: ../applet.py:703
+#, fuzzy, python-format
+msgid "There was a problem sending document `%s' (job %d) to the printer."
+msgstr "Десила се грешка током повезивања на CUPS сервер."
+
+#: ../applet.py:706
+#, python-format
+msgid "There was a problem processing document `%s' (job %d)."
+msgstr ""
+
+#. Give up and use the untranslated provided.
+#: ../applet.py:710
+#, python-format
+msgid "There was a problem printing document `%s' (job %d): `%s'."
+msgstr ""
+
+#: ../applet.py:715 ../applet.py:731
+#, fuzzy
+msgid "Print Error"
+msgstr "Грешка штампача"
+
+#: ../applet.py:716
+msgid "_Diagnose"
+msgstr ""
+
+#: ../applet.py:737
+#, fuzzy, python-format
+msgid "The printer called `%s' has been disabled."
+msgstr "Ред „%s“ није омогућен."
+
+#: ../applet.py:816
 msgid "No documents queued"
 msgstr "Нема докумената у реду"
 
-#: ../applet.py:585
+#: ../applet.py:819
 msgid "1 document queued"
 msgstr "1 документ у реду"
 
-#: ../applet.py:588
+#: ../applet.py:822
 #, python-format
 msgid "%d documents queued"
 msgstr "%d докумената у реду"
 
-#: ../applet.py:943
+#: ../applet.py:1180
 msgid "Printer added"
 msgstr "Штампач је додат"
 
-#: ../applet.py:945
+#: ../applet.py:1182
 msgid "Missing printer driver"
 msgstr "Недостаје управљачки програм штампача"
 
-#: ../applet.py:949
+#: ../applet.py:1186
 msgid "Install printer driver"
 msgstr "Инсталирајте управљачки програм"
 
-#: ../applet.py:950
+#: ../applet.py:1187
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "„%s“ захтева инсталацију управљачког програма: %s."
 
-#: ../applet.py:953
+#: ../applet.py:1190
 msgid "Install"
 msgstr "Инсталирај"
 
-#: ../applet.py:956
+#: ../applet.py:1193
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "„%s“ је спреман за штампање."
 
-#: ../applet.py:959
+#: ../applet.py:1196
 msgid "Configure"
 msgstr "Подеси"
 
 #. Model mismatch
-#: ../applet.py:962
+#: ../applet.py:1199
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "„%s“ је додат, користећи управљачки програм „%s“."
 
-#: ../applet.py:966
+#: ../applet.py:1203
 msgid "Find driver"
 msgstr "Нађи управљачки програм"
 

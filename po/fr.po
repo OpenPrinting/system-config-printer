@@ -17,7 +17,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: fr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-02-19 17:17+0000\n"
+"POT-Creation-Date: 2008-03-03 17:02+0000\n"
 "PO-Revision-Date: 2008-02-17 19:24+0000\n"
 "Last-Translator: Josselin Mouette <joss@debian.org>\n"
 "Language-Team: Français <traduc@traduc.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Inactif"
 
-#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:30 ../applet.py:647
+#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:885
 msgid "Processing"
 msgstr "Traitement en cours"
 
@@ -39,7 +39,7 @@ msgstr "Traitement en cours"
 msgid "Busy"
 msgstr "Occupé"
 
-#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:31 ../applet.py:648
+#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:886
 msgid "Stopped"
 msgstr "Arrêté"
 
@@ -49,7 +49,7 @@ msgstr "Arrêté"
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
 #: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
-#: ../applet.py:657
+#: ../applet.py:895
 msgid "Unknown"
 msgstr "Inconnu"
 
@@ -65,8 +65,8 @@ msgstr "_Utiliser la valeur par défaut"
 msgid "_Set Default"
 msgstr "_Définir la valeur par défaut"
 
-#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:68
-#: ../applet.py:95 ../applet.py:135
+#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:73
+#: ../applet.py:119 ../applet.py:159
 msgid "Printer"
 msgstr "Imprimante"
 
@@ -178,20 +178,20 @@ msgstr ""
 "avoir résolu ces conflits."
 
 #: ../system-config-printer.py:1241 ../system-config-printer.py:1257
-#: ../applet.py:258
+#: ../applet.py:292
 msgid "Not authorized"
 msgstr "Non autorisé"
 
-#: ../system-config-printer.py:1242 ../applet.py:259
+#: ../system-config-printer.py:1242 ../applet.py:293
 msgid "The password may be incorrect."
 msgstr "Le mot de passe est peut-être incorrect."
 
 #: ../system-config-printer.py:1245 ../system-config-printer.py:1278
-#: ../applet.py:262
+#: ../applet.py:296
 msgid "CUPS server error"
 msgstr "Erreur du serveur CUPS"
 
-#: ../system-config-printer.py:1246 ../applet.py:263
+#: ../system-config-printer.py:1246 ../applet.py:297
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Une erreur s'est produite lors de l'opération CUPS : « %s »."
@@ -296,7 +296,7 @@ msgstr "Annuler les tests"
 
 #. Not more than 25 characters
 #: ../system-config-printer.py:1836 ../system-config-printer.glade.h:208
-#: ../troubleshoot/PrintTestPage.py:56
+#: ../troubleshoot/PrintTestPage.py:61
 msgid "Print Test Page"
 msgstr "Imprimer la page de test"
 
@@ -696,6 +696,7 @@ msgstr ""
 "Toutes les modifications que vous avez faites seront perdues à moins que "
 "vous ne les appliquiez."
 
+#. Why doesn't __del__ work?
 #: ../system-config-printer.glade.h:41 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
@@ -1197,7 +1198,7 @@ msgstr "Pages par feuille :"
 msgid "Parity"
 msgstr "Parité"
 
-#: ../system-config-printer.glade.h:195 ../troubleshoot/base.py:76
+#: ../system-config-printer.glade.h:195 ../troubleshoot/Welcome.py:64
 #: ../applet.glade.h:5
 msgid "Password:"
 msgstr "Mot de passe :"
@@ -1647,27 +1648,42 @@ msgid "Printer '%s' has no ink left."
 msgstr "La cartouche d'encre de l'imprimante « %s » est vide."
 
 #: ../statereason.py:89
+#, fuzzy
+msgid "Printer off-line"
+msgstr "Emplacement de l'imprimante"
+
+#: ../statereason.py:90
+#, fuzzy, python-format
+msgid "Printer `%s' is currently off-line."
+msgstr "L'imprimante « %s » n'a plus de papier."
+
+#: ../statereason.py:91
 msgid "Not connected?"
 msgstr "Non connecté(e) ?"
 
-#: ../statereason.py:90
+#: ../statereason.py:92
 #, python-format
 msgid "Printer '%s' may not be connected."
 msgstr "L'imprimante « %s » peut ne pas être connectée."
 
-#: ../statereason.py:97
-msgid "Printer report"
-msgstr "Rapport de l'imprimante"
-
-#: ../statereason.py:99
-msgid "Printer warning"
-msgstr "Avertissement de l'imprimante"
-
-#: ../statereason.py:101
+#: ../statereason.py:93 ../statereason.py:105
 msgid "Printer error"
 msgstr "Erreur de l'imprimante"
 
-#: ../statereason.py:102
+#: ../statereason.py:94
+#, fuzzy, python-format
+msgid "There is a problem on printer `%s'."
+msgstr "La porte de l'imprimante « %s » est ouverte."
+
+#: ../statereason.py:101
+msgid "Printer report"
+msgstr "Rapport de l'imprimante"
+
+#: ../statereason.py:103
+msgid "Printer warning"
+msgstr "Avertissement de l'imprimante"
+
+#: ../statereason.py:106
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr "Imprimante « %s » : « %s »."
@@ -1683,14 +1699,6 @@ msgid ""
 msgstr ""
 "Pour démarrer cet outils, sélectionnez Système->Administration->Impression "
 "depuis le menu principal."
-
-#: ../troubleshoot/base.py:53
-msgid "Authentication"
-msgstr "Authentification"
-
-#: ../troubleshoot/base.py:68
-msgid "Password required"
-msgstr "Mot de passe requis"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
 msgid "Choose Network Printer"
@@ -1765,11 +1773,11 @@ msgstr ""
 msgid "Disable Debugging"
 msgstr ""
 
-#: ../troubleshoot/ErrorLogFetch.py:145
+#: ../troubleshoot/ErrorLogFetch.py:142
 msgid "Debug logging disabled."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogFetch.py:147
+#: ../troubleshoot/ErrorLogFetch.py:144
 msgid "Debug logging was already disabled."
 msgstr ""
 
@@ -1828,67 +1836,67 @@ msgstr ""
 msgid "Warnings are listed below:"
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:28 ../applet.py:645
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:883
 msgid "Pending"
 msgstr "En attente"
 
-#: ../troubleshoot/PrintTestPage.py:29 ../applet.py:646
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:884
 msgid "Held"
 msgstr "Maintenu"
 
-#: ../troubleshoot/PrintTestPage.py:32 ../applet.py:649
+#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:887
 msgid "Canceled"
 msgstr "Annulé"
 
-#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:650
+#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:888
 msgid "Aborted"
 msgstr "Abandonné"
 
-#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:651
+#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:889
 msgid "Completed"
 msgstr "Achevé"
 
-#: ../troubleshoot/PrintTestPage.py:43
+#: ../troubleshoot/PrintTestPage.py:48
 msgid "Test Page"
 msgstr "Page de test"
 
-#: ../troubleshoot/PrintTestPage.py:44
+#: ../troubleshoot/PrintTestPage.py:49
 msgid ""
 "Now print a test page.  If you are having problems printing a specific "
 "document, print that document now and mark the print job below."
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:59
+#: ../troubleshoot/PrintTestPage.py:64
 msgid "Cancel All Jobs"
 msgstr "Annuler toutes les tâches"
 
-#: ../troubleshoot/PrintTestPage.py:65
+#: ../troubleshoot/PrintTestPage.py:70
 #, fuzzy
 msgid "Test"
 msgstr "Réinitialiser"
 
-#: ../troubleshoot/PrintTestPage.py:66 ../applet.py:93
+#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:117
 msgid "Job"
 msgstr "Tâche"
 
-#: ../troubleshoot/PrintTestPage.py:70 ../applet.py:94
+#: ../troubleshoot/PrintTestPage.py:75 ../applet.py:118
 msgid "Document"
 msgstr "Document"
 
-#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:98
+#: ../troubleshoot/PrintTestPage.py:76 ../applet.py:122
 msgid "Status"
 msgstr "État"
 
-#: ../troubleshoot/PrintTestPage.py:95
+#: ../troubleshoot/PrintTestPage.py:100
 #, fuzzy
 msgid "Did the marked print jobs print correctly?"
 msgstr "La page de test s'est-elle imprimée correctement ?"
 
-#: ../troubleshoot/PrintTestPage.py:102
+#: ../troubleshoot/PrintTestPage.py:107
 msgid "Yes"
 msgstr "Oui"
 
-#: ../troubleshoot/PrintTestPage.py:103
+#: ../troubleshoot/PrintTestPage.py:108
 msgid "No"
 msgstr "Non"
 
@@ -2001,11 +2009,19 @@ msgstr ""
 "Je n'ai pas pu déterminer quel est le problème, mais j'ai pu réunir des "
 "informations utiles pour la rédaction d'un rapport de bogue."
 
-#: ../troubleshoot/Welcome.py:34
+#: ../troubleshoot/Welcome.py:41
+msgid "Authentication"
+msgstr "Authentification"
+
+#: ../troubleshoot/Welcome.py:56
+msgid "Password required"
+msgstr "Mot de passe requis"
+
+#: ../troubleshoot/Welcome.py:95
 msgid "Trouble-shooting Printing"
 msgstr "Dépannage des problèmes d'impression"
 
-#: ../troubleshoot/Welcome.py:36
+#: ../troubleshoot/Welcome.py:97
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
@@ -2014,109 +2030,139 @@ msgstr ""
 "problème d'impression. À partir de vos réponses, je vais tenter de suggérer "
 "une solution."
 
-#: ../troubleshoot/Welcome.py:40
+#: ../troubleshoot/Welcome.py:101
 msgid "Click 'Forward' to begin."
 msgstr "Cliquez sur « Suivant » pour commencer."
 
-#: ../applet.py:96
+#: ../applet.py:120
 msgid "Size"
 msgstr "Taille"
 
-#: ../applet.py:97
+#: ../applet.py:121
 msgid "Time submitted"
 msgstr "Heure de soumission"
 
-#: ../applet.py:148
+#: ../applet.py:172
 msgid "Message"
 msgstr "Message"
 
-#: ../applet.py:508
+#: ../applet.py:552
 msgid "1 hour ago"
 msgstr "il y a une heure"
 
-#: ../applet.py:510
+#: ../applet.py:554
 msgid "1 hour and 1 minute ago"
 msgstr "il y a une heure et une minute"
 
-#: ../applet.py:512
+#: ../applet.py:556
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "il y a une heure et %d minutes"
 
-#: ../applet.py:515
+#: ../applet.py:559
 #, python-format
 msgid "%d hours ago"
 msgstr "il y a %d heures"
 
-#: ../applet.py:517
+#: ../applet.py:561
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "il y a %d heures et une minute"
 
-#: ../applet.py:519
+#: ../applet.py:563
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "il y a %d heures et %d minutes"
 
-#: ../applet.py:525
+#: ../applet.py:569
 msgid "a minute ago"
 msgstr "il y a une minute"
 
-#: ../applet.py:527
+#: ../applet.py:571
 #, python-format
 msgid "%d minutes ago"
 msgstr "il y a %d minutes"
 
-#: ../applet.py:582
+#: ../applet.py:703
+#, fuzzy, python-format
+msgid "There was a problem sending document `%s' (job %d) to the printer."
+msgstr "Il y a eu un problème lors de la connexion au serveur CUPS."
+
+#: ../applet.py:706
+#, python-format
+msgid "There was a problem processing document `%s' (job %d)."
+msgstr ""
+
+#. Give up and use the untranslated provided.
+#: ../applet.py:710
+#, python-format
+msgid "There was a problem printing document `%s' (job %d): `%s'."
+msgstr ""
+
+#: ../applet.py:715 ../applet.py:731
+#, fuzzy
+msgid "Print Error"
+msgstr "Erreur de l'imprimante"
+
+#: ../applet.py:716
+msgid "_Diagnose"
+msgstr ""
+
+#: ../applet.py:737
+#, fuzzy, python-format
+msgid "The printer called `%s' has been disabled."
+msgstr "La file « %s » est désactivée."
+
+#: ../applet.py:816
 msgid "No documents queued"
 msgstr "Aucun document en attente"
 
-#: ../applet.py:585
+#: ../applet.py:819
 msgid "1 document queued"
 msgstr "1 document dans la file d'attente"
 
-#: ../applet.py:588
+#: ../applet.py:822
 #, python-format
 msgid "%d documents queued"
 msgstr "%d documents dans la file d'attente"
 
-#: ../applet.py:943
+#: ../applet.py:1180
 msgid "Printer added"
 msgstr "L'imprimante a été ajoutée"
 
-#: ../applet.py:945
+#: ../applet.py:1182
 msgid "Missing printer driver"
 msgstr "Pilote d'imprimante manquant"
 
-#: ../applet.py:949
+#: ../applet.py:1186
 msgid "Install printer driver"
 msgstr "Installer le pilote d'impression"
 
-#: ../applet.py:950
+#: ../applet.py:1187
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "« %s » nécessite l'installation d'un pilote : %s."
 
-#: ../applet.py:953
+#: ../applet.py:1190
 msgid "Install"
 msgstr "Installer"
 
-#: ../applet.py:956
+#: ../applet.py:1193
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "« %s » est prête pour imprimer."
 
-#: ../applet.py:959
+#: ../applet.py:1196
 msgid "Configure"
 msgstr "Configurer"
 
 #. Model mismatch
-#: ../applet.py:962
+#: ../applet.py:1199
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "« %s » a été ajoutée, utilisant le pilote « %s »."
 
-#: ../applet.py:966
+#: ../applet.py:1203
 msgid "Find driver"
 msgstr "Chercher le pilote"
 
