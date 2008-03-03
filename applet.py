@@ -21,6 +21,7 @@ import cups
 import sys
 import statereason
 from statereason import StateReason
+import pprint
 
 APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
@@ -629,6 +630,7 @@ class JobManager:
             self.sub_seq = seq
             nse = event['notify-subscribed-event']
             debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
+            debugprint (pprint.pformat (event))
             if nse.startswith ('printer-'):
                 # Printer events
                 name = event['printer-name']
@@ -675,7 +677,8 @@ class JobManager:
             for attribute in ['job-state',
                               'job-name']:
                 job[attribute] = event[attribute]
-            job['job-printer-uri'] = event['notify-printer-uri']
+            if event.has_key ('notify-printer-uri'):
+                job['job-printer-uri'] = event['notify-printer-uri']
 
             if nse == 'job-stopped' and self.trayicon:
                 # Why has the job stopped?  Unfortunately the only
@@ -723,9 +726,20 @@ class JobManager:
                                       gtk.ICON_SIZE_DIALOG)
                 hbox.pack_start (image, False, False, 0)
                 vbox = gtk.VBox (False, 12)
-                label = gtk.Label ('<span weight="bold" size="larger">' +
-                                   _("Print Error") + '</span>\n\n' +
-                                   message)
+
+                markup = ('<span weight="bold" size="larger">' +
+                          _("Print Error") + '</span>\n\n' +
+                          message)
+                try:
+                    if event['printer-state'] == cups.IPP_PRINTER_STOPPED:
+                        name = event['printer-name']
+                        markup += ' '
+                        markup += (_("The printer called `%s' has "
+                                     "been disabled.") % name)
+                except KeyError:
+                    pass
+
+                label = gtk.Label (markup)
                 label.set_use_markup (True)
                 label.set_line_wrap (True)
                 label.set_alignment (0, 0)

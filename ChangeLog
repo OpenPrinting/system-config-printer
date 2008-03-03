@@ -1,3 +1,10 @@
+2008-03-03  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.get_notifications): The notify-printer-uri
+	attribute may not be set.
+	(JobManager.get_notifications): If the printer has been disabled
+	as a result of a failed job, say so.
+
 2008-02-29  Tim Waugh  <twaugh@redhat.com>
 
 	* applet.py (JobManager.update): Make a list of active jobs
