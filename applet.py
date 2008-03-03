@@ -21,6 +21,7 @@ import cups
 import sys
 import statereason
 from statereason import StateReason
+import pprint
 
 APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
@@ -629,6 +630,7 @@ class JobManager:
             self.sub_seq = seq
             nse = event['notify-subscribed-event']
             debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
+            debugprint (pprint.pformat (event))
             if nse.startswith ('printer-'):
                 # Printer events
                 name = event['printer-name']
@@ -675,7 +677,8 @@ class JobManager:
             for attribute in ['job-state',
                               'job-name']:
                 job[attribute] = event[attribute]
-            job['job-printer-uri'] = event['notify-printer-uri']
+            if event.has_key ('notify-printer-uri'):
+                job['job-printer-uri'] = event['notify-printer-uri']
 
             if nse == 'job-stopped' and self.trayicon:
                 # Why has the job stopped?  Unfortunately the only
