@@ -3416,7 +3416,7 @@ class NewPrinterGUI(GtkGUI):
                     attributes = c.getPrinterAttributes (match.group (4))
                 verified = True
             except cups.IPPError, (e, msg):
-                debugprint ("Failed to get attributes: " + e + " " + msg)
+                debugprint ("Failed to get attributes: %s (%d)" % (msg, e))
             except:
                 nonfatalException ()
         else:
