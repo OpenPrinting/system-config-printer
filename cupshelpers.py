@@ -1,8 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -81,6 +81,7 @@ class Printer:
     def getAttributes(self):
         attrs = self.connection.getPrinterAttributes(self.name)
         self.attributes = {}
+        self.other_attributes = {}
         self.possible_attributes = {
             'landscape' : ('False', ['True', 'False']),
             'page-border' : ('none', ['none', 'single', 'single-thick',
@@ -112,6 +113,12 @@ class Printer:
                 if attrs.has_key(name+"-supported"):
                     self.possible_attributes[name] = (
                         value, attrs[name+"-supported"]) 
+            elif (not key.endswith ("-supported") and
+                  key != 'job-sheets-default' and
+                  key != 'printer-error-policy' and
+                  key != 'printer-op-policy' and
+                  not key.startswith ('requesting-user-name-')):
+                self.other_attributes[key] = value
         
         self.job_sheet_start, self.job_sheet_end = attrs.get(
             'job-sheets-default', ('none', 'none'))

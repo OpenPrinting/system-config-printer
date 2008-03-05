@@ -1,5 +1,11 @@
 2008-03-05  Tim Waugh  <twaugh@redhat.com>
 
+	* cupshelpers.py (Printer.getAttributes): Store all other
+	attributes.
+
+	* system-config-printer.py (GUI.fillPrinterTab): Use
+	server-is-sharing-printers attribute if present.
+
 	* applet.py (collect_printer_state_reasons): Fix work-around.
 	(JobManager.get_notifications): Likewise.
 
