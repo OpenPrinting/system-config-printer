@@ -54,7 +54,7 @@ def collect_printer_state_reasons (connection):
     printers = connection.getPrinters ()
     for name, printer in printers.iteritems ():
         reasons = printer["printer-state-reasons"]
-        if type (reasons) == str:
+        if type (reasons) != list:
             # Work around a bug that was fixed in pycups-1.9.20.
             reasons = [reasons]
         for reason in reasons:
@@ -639,7 +639,7 @@ class JobManager:
                         del self.printer_state_reasons[name]
                 else:
                     printer_state_reasons = event['printer-state-reasons']
-                    if type (printer_state_reasons) == str:
+                    if type (printer_state_reasons) != list:
                         # Work around a bug in pycups < 1.9.36
                         printer_state_reasons = [printer_state_reasons]
 
