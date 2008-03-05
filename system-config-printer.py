@@ -1717,8 +1717,24 @@ class GUI(GtkGUI):
         self.chkPShared.set_active(printer.is_shared)
         try:
             if printer.is_shared:
-                flag = cups.CUPS_SERVER_SHARE_PRINTERS
-                publishing = int (self.server_settings[flag])
+                try:
+                    # CUPS 1.4
+                    attr = 'server-is-sharing-printers'
+                    publishing = printer.other_attributes[attr]
+                except KeyError:
+                    try:
+                        flag = cups.CUPS_SERVER_SHARE_PRINTERS
+                        publishing = int (self.server_settings[flag])
+                    except AttributeError:
+                        # Haven't fetched server settings yet, so don't
+                        # show the warning.
+                        publishing = True
+                    except KeyError:
+                        # We've previously tried to fetch server
+                        # settings but failed.  Don't show the
+                        # warning.
+                        publishing = True
+
                 if publishing:
                     self.lblNotPublished.hide_all ()
                 else:
@@ -1726,6 +1742,7 @@ class GUI(GtkGUI):
             else:
                 self.lblNotPublished.hide_all ()
         except:
+            nonfatalException()
             self.lblNotPublished.hide_all ()
 
         # Job sheets
