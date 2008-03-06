@@ -23,6 +23,7 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/CheckPrinterSanity.py		\
 	troubleshoot/ChooseNetworkPrinter.py		\
 	troubleshoot/ChoosePrinter.py			\
+	troubleshoot/DeviceListed.py			\
 	troubleshoot/ErrorLogCheckpoint.py		\
 	troubleshoot/ErrorLogFetch.py			\
 	troubleshoot/ErrorLogParse.py			\
