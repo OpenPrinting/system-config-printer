@@ -265,6 +265,7 @@ QUESTIONS = ["Welcome",
 
              "SchedulerNotRunning",
              "LocalOrRemote",
+             "DeviceListed",
              "RemoteAddress",
              "CheckNetworkServerSanity",
              "ChooseNetworkPrinter",
