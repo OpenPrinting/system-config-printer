@@ -260,10 +260,10 @@ class Troubleshooter:
             return {}
 
 QUESTIONS = ["Welcome",
+             "SchedulerNotRunning",
              "ChoosePrinter",
              "CheckPrinterSanity",
 
-             "SchedulerNotRunning",
              "LocalOrRemote",
              "DeviceListed",
              "RemoteAddress",
