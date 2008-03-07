@@ -264,6 +264,7 @@ QUESTIONS = ["Welcome",
              "CheckLocalServerPublishing",
              "ChoosePrinter",
              "CheckPrinterSanity",
+             "CheckPPDSanity",
 
              "LocalOrRemote",
              "DeviceListed",

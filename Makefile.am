@@ -21,6 +21,7 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/base.py				\
 	troubleshoot/CheckLocalServerPublishing.py	\
 	troubleshoot/CheckNetworkServerSanity.py	\
+	troubleshoot/CheckPPDSanity.py			\
 	troubleshoot/CheckPrinterSanity.py		\
 	troubleshoot/ChooseNetworkPrinter.py		\
 	troubleshoot/ChoosePrinter.py			\
