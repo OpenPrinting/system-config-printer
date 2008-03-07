@@ -4,18 +4,41 @@ nobase_pkgdata_SCRIPTS=				\
 	ppds.py					\
 	pysmb.py				\
 	system-config-printer.py		\
+	troubleshoot/__init__.py		\
 	applet.py
 
-nobase_pkgdata_DATA=				\
-	config.py				\
-	cupsd.py				\
-	cupshelpers.py				\
-	options.py				\
-	optionwidgets.py			\
-	probe_printer.py			\
-	gtk_label_autowrap.py			\
-	statereason.py				\
-	system-config-printer.glade		\
+nobase_pkgdata_DATA=					\
+	config.py					\
+	cupsd.py					\
+	cupshelpers.py					\
+	options.py					\
+	optionwidgets.py				\
+	probe_printer.py				\
+	gtk_label_autowrap.py				\
+	statereason.py					\
+	system-config-printer.glade			\
+	troubleshoot/base.py				\
+	troubleshoot/CheckLocalServerPublishing.py	\
+	troubleshoot/CheckNetworkServerSanity.py	\
+	troubleshoot/CheckPPDSanity.py			\
+	troubleshoot/CheckPrinterSanity.py		\
+	troubleshoot/ChooseNetworkPrinter.py		\
+	troubleshoot/ChoosePrinter.py			\
+	troubleshoot/DeviceListed.py			\
+	troubleshoot/ErrorLogCheckpoint.py		\
+	troubleshoot/ErrorLogFetch.py			\
+	troubleshoot/ErrorLogParse.py			\
+	troubleshoot/LocalOrRemote.py			\
+	troubleshoot/NetworkCUPSPrinterShared.py	\
+	troubleshoot/PrinterStateReasons.py		\
+	troubleshoot/PrintTestPage.py			\
+	troubleshoot/QueueNotEnabled.py			\
+	troubleshoot/QueueRejectingJobs.py		\
+	troubleshoot/RemoteAddress.py			\
+	troubleshoot/SchedulerNotRunning.py		\
+	troubleshoot/ServerFirewalled.py		\
+	troubleshoot/Shrug.py				\
+	troubleshoot/Welcome.py				\
 	applet.glade
 
 nobase_sbin_SCRIPTS=\

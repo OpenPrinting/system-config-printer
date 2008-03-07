@@ -1,5 +1,25 @@
 2008-03-07  Tim Waugh  <twaugh@redhat.com>
 
+	* troubleshoot/__init__.py, troubleshoot/base.py,
+	troubleshoot/CheckLocalServerPublishing.py,
+	troubleshoot/CheckNetworkServerSanity.py,
+	troubleshoot/CheckPPDSanity.py,
+	troubleshoot/CheckPrinterSanity.py,
+	troubleshoot/ChooseNetworkPrinter.py,
+	troubleshoot/ChoosePrinter.py, troubleshoot/DeviceListed.py,
+	troubleshoot/ErrorLogCheckPoint.py, troubleshoot/ErrorLogFetch.py,
+	troubleshoot/ErrorLogParse.py, troubleshoot/LocalOrRemote.py,
+	troubleshoot/NetworkCUPSPrinterShared.py,
+	troubleshoot/PrinterStateReasons.py,
+	troubleshoot/PrintTestPage.py, troubleshoot/QueueNotEnabled.py,
+	troubleshoot/QueueRejectingJobs.py, troubleshoot/RemoteAddress.py,
+	troubleshoot/SchedulerNotRunning.py,
+	troubleshoot/ServerFirewalled.py, troubleshoot/Shrug.py,
+	troubleshoot/Welcome.py: New modules.
+	* po/POTFILES.in: Translate them.
+	* Makefile.am (nobase_pkgdata_SCRIPTS, nobase_pkgdata_DATA): Ship
+	them.
+
 	* applet.py (StateReason): Moved...
 	* statereason.py: ...here.  New module.
 	* po/POTFILES.in: Translate it.
