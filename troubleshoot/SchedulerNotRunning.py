@@ -35,7 +35,7 @@ class SchedulerNotRunning(Question):
 
     def display (self):
         self.answers = {}
-        if self.troubleshooter.answers['cups_queue_listed']:
+        if self.troubleshooter.answers.get ('cups_queue_listed', False):
             return False
 
         # Find out if CUPS is running.
