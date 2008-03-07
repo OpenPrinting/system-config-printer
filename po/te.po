@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: te\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-03-03 17:48+0000\n"
+"POT-Creation-Date: 2008-03-07 15:46+0000\n"
 "PO-Revision-Date: 2007-01-16 11:47+0530\n"
 "Last-Translator: Sree Ganesh <sthottem@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Idle"
 
-#: ../cupshelpers.py:28 ../applet.py:731
+#: ../cupshelpers.py:28 ../troubleshoot/PrintTestPage.py:35 ../applet.py:640
 msgid "Processing"
 msgstr "విధానం"
 
@@ -29,11 +29,18 @@ msgstr "విధానం"
 msgid "Busy"
 msgstr "వత్తిడి"
 
-#: ../cupshelpers.py:30 ../applet.py:732
+#: ../cupshelpers.py:30 ../troubleshoot/PrintTestPage.py:36 ../applet.py:641
 msgid "Stopped"
 msgstr "ఆగింది"
 
-#: ../cupshelpers.py:47 ../applet.py:741
+#: ../cupshelpers.py:47 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../troubleshoot/ChooseNetworkPrinter.py:97
+#: ../troubleshoot/ChooseNetworkPrinter.py:100
+#: ../troubleshoot/ChooseNetworkPrinter.py:101
+#: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
+#: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
+#: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
+#: ../applet.py:650
 msgid "Unknown"
 msgstr "తెలియనిది"
 
@@ -52,11 +59,12 @@ msgid "_Set Default"
 msgstr "సిద్ధం"
 
 #: ../my-default-printer.py:148 ../system-config-printer.glade.h:198
-#: ../applet.py:186 ../applet.py:226
+#: ../troubleshoot/PrintTestPage.py:73 ../applet.py:95 ../applet.py:135
 msgid "Printer"
 msgstr "ముద్రకం"
 
-#: ../my-default-printer.py:152
+#: ../my-default-printer.py:152 ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../troubleshoot/ChoosePrinter.py:38
 #, fuzzy
 msgid "Location"
 msgstr "స్థానం:"
@@ -181,20 +189,20 @@ msgstr ""
 "ఈ విభేదకాలు తొలగించిన తరువాత మాత్రమే."
 
 #: ../system-config-printer.py:1288 ../system-config-printer.py:1304
-#: ../applet.py:349
+#: ../applet.py:258
 msgid "Not authorized"
 msgstr "అధికారం లేదు"
 
-#: ../system-config-printer.py:1289 ../applet.py:350
+#: ../system-config-printer.py:1289 ../applet.py:259
 msgid "The password may be incorrect."
 msgstr "అనుమతి పదం తప్పుకావచ్చు"
 
 #: ../system-config-printer.py:1292 ../system-config-printer.py:1325
-#: ../applet.py:353
+#: ../applet.py:262
 msgid "CUPS server error"
 msgstr "CUPS సర్వరుదోషం"
 
-#: ../system-config-printer.py:1293 ../applet.py:354
+#: ../system-config-printer.py:1293 ../applet.py:263
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS అమలులో ఒక దోషం: '%s'."
@@ -289,6 +297,7 @@ msgid "Cancel Tests"
 msgstr "పరిశీలనలను రద్దుచేయి"
 
 #: ../system-config-printer.py:1820 ../system-config-printer.glade.h:197
+#: ../troubleshoot/PrintTestPage.py:61
 msgid "Print Test Page"
 msgstr "పాఠ పుటను ముద్రించు"
 
@@ -826,7 +835,7 @@ msgstr "వర్ణన:"
 msgid "Device"
 msgstr "సాధనం"
 
-#: ../system-config-printer.glade.h:103
+#: ../system-config-printer.glade.h:103 ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "సాధనం URI"
 
@@ -967,6 +976,8 @@ msgid "More"
 msgstr ""
 
 #: ../system-config-printer.glade.h:144
+#: ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "పేరు"
 
@@ -1045,7 +1056,8 @@ msgstr ""
 msgid "Parity"
 msgstr "సాదృశ్యం"
 
-#: ../system-config-printer.glade.h:187 ../applet.glade.h:5
+#: ../system-config-printer.glade.h:187 ../troubleshoot/Welcome.py:64
+#: ../applet.glade.h:5
 msgid "Password:"
 msgstr "అనుమతిపదం:"
 
@@ -1302,252 +1314,626 @@ msgstr "ముద్రకాలను ఆకృతీకరించు"
 msgid "Printing"
 msgstr "ముద్రించు"
 
-#: ../applet.py:80
+#: ../statereason.py:73
 msgid "Toner low"
 msgstr ""
 
-#: ../applet.py:81
+#: ../statereason.py:74
 #, python-format
 msgid "Printer '%s' is low on toner."
 msgstr ""
 
-#: ../applet.py:82
+#: ../statereason.py:75
 msgid "Toner empty"
 msgstr ""
 
-#: ../applet.py:83
+#: ../statereason.py:76
 #, python-format
 msgid "Printer '%s' has no toner left."
 msgstr ""
 
-#: ../applet.py:84
+#: ../statereason.py:77
 msgid "Cover open"
 msgstr ""
 
-#: ../applet.py:85
+#: ../statereason.py:78
 #, python-format
 msgid "The cover is open on printer '%s'."
 msgstr ""
 
-#: ../applet.py:86
+#: ../statereason.py:79
 msgid "Door open"
 msgstr ""
 
-#: ../applet.py:87
+#: ../statereason.py:80
 #, python-format
 msgid "The door is open on printer '%s'."
 msgstr ""
 
-#: ../applet.py:88
+#: ../statereason.py:81
 msgid "Paper low"
 msgstr ""
 
-#: ../applet.py:89
+#: ../statereason.py:82
 #, python-format
 msgid "Printer '%s' is low on paper."
 msgstr ""
 
-#: ../applet.py:90
+#: ../statereason.py:83
 msgid "Out of paper"
 msgstr ""
 
-#: ../applet.py:91
+#: ../statereason.py:84
 #, python-format
 msgid "Printer '%s' is out of paper."
 msgstr ""
 
-#: ../applet.py:92
+#: ../statereason.py:85
 msgid "Ink low"
 msgstr ""
 
-#: ../applet.py:93
+#: ../statereason.py:86
 #, python-format
 msgid "Printer '%s' is low on ink."
 msgstr ""
 
-#: ../applet.py:94
+#: ../statereason.py:87
 msgid "Ink empty"
 msgstr ""
 
-#: ../applet.py:95
+#: ../statereason.py:88
 #, python-format
 msgid "Printer '%s' has no ink left."
 msgstr ""
 
-#: ../applet.py:96
+#: ../statereason.py:89
+#, fuzzy
+msgid "Printer off-line"
+msgstr "ముద్రకం పేరు"
+
+#: ../statereason.py:90
+#, python-format
+msgid "Printer `%s' is currently off-line."
+msgstr ""
+
+#: ../statereason.py:91
 #, fuzzy
 msgid "Not connected?"
 msgstr "అనుసంధించబడలేదు"
 
-#: ../applet.py:97
+#: ../statereason.py:92
 #, python-format
 msgid "Printer '%s' may not be connected."
 msgstr ""
 
-#: ../applet.py:104
-#, fuzzy
-msgid "Printer report"
-msgstr "ముద్రణా ఐచ్ఛికాలు"
-
-#: ../applet.py:106
-#, fuzzy
-msgid "Printer warning"
-msgstr "ముద్రించు"
-
-#: ../applet.py:108
+#: ../statereason.py:93 ../statereason.py:105
 #, fuzzy
 msgid "Printer error"
 msgstr "సర్వరు దోషం"
 
-#: ../applet.py:109
+#: ../statereason.py:94
+#, fuzzy, python-format
+msgid "There is a problem on printer `%s'."
+msgstr "CUPS అమలులో ఒక దోషం: '%s'."
+
+#: ../statereason.py:101
+#, fuzzy
+msgid "Printer report"
+msgstr "ముద్రణా ఐచ్ఛికాలు"
+
+#: ../statereason.py:103
+#, fuzzy
+msgid "Printer warning"
+msgstr "ముద్రించు"
+
+#: ../statereason.py:106
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr ""
 
-#: ../applet.py:184
-msgid "Job"
+#: ../troubleshoot/__init__.py:37
+msgid "Printing troubleshooter"
 msgstr ""
 
-#: ../applet.py:185
-#, fuzzy
-msgid "Document"
-msgstr "వ్యాఖ్య"
-
-#: ../applet.py:187
-msgid "Size"
+#: ../troubleshoot/base.py:33
+msgid ""
+"To start this tool, select System->Administration->Printing from the main "
+"menu."
 msgstr ""
 
-#: ../applet.py:188
-#, fuzzy
-msgid "Time submitted"
-msgstr "సమర్పించబడింది"
-
-#: ../applet.py:189
-#, fuzzy
-msgid "Status"
-msgstr "స్థితి %d"
-
-#: ../applet.py:239
-msgid "Message"
+#: ../troubleshoot/CheckLocalServerPublishing.py:28
+msgid "Server Not Exporting Printers"
 msgstr ""
 
-#: ../applet.py:592
-msgid "1 hour ago"
+#: ../troubleshoot/CheckLocalServerPublishing.py:29
+msgid ""
+"Although one or more printers are marked as being shared, this print server "
+"is not exporting shared printers to the network."
 msgstr ""
 
-#: ../applet.py:594
-msgid "1 hour and 1 minute ago"
+#: ../troubleshoot/CheckLocalServerPublishing.py:33
+msgid ""
+"Enable the 'Share published printers connected to this system' option in the "
+"server settings using the printing administration tool."
 msgstr ""
 
-#: ../applet.py:596
-#, python-format
-msgid "1 hour and %d minutes ago"
-msgstr ""
-
-#: ../applet.py:599
-#, python-format
-msgid "%d hours ago"
-msgstr ""
-
-#: ../applet.py:601
-#, python-format
-msgid "%d hours and 1 minute ago"
-msgstr ""
-
-#: ../applet.py:603
-#, python-format
-msgid "%d hours and %d minutes ago"
-msgstr ""
-
-#: ../applet.py:609
-msgid "a minute ago"
-msgstr ""
-
-#: ../applet.py:611
-#, python-format
-msgid "%d minutes ago"
-msgstr ""
-
-#: ../applet.py:666
-msgid "No documents queued"
-msgstr ""
-
-#: ../applet.py:669
-msgid "1 document queued"
-msgstr ""
-
-#: ../applet.py:672
-#, python-format
-msgid "%d documents queued"
-msgstr ""
-
-#: ../applet.py:729
-#, fuzzy
-msgid "Pending"
-msgstr "ముద్రించు"
-
-#: ../applet.py:730
-#, fuzzy
-msgid "Held"
-msgstr "సహాయం (_H)"
-
-#: ../applet.py:733
-#, fuzzy
-msgid "Canceled"
-msgstr "పరిశీలనలను రద్దుచేయి"
-
-#: ../applet.py:734
-#, fuzzy
-msgid "Aborted"
-msgstr "గురించి"
-
-#: ../applet.py:735
-#, fuzzy
-msgid "Completed"
-msgstr "వ్యాఖ్య"
-
-#: ../applet.py:1026
-#, fuzzy
-msgid "Printer added"
-msgstr "ముద్రకం పేరు"
-
-#: ../applet.py:1028
-#, fuzzy
-msgid "Missing printer driver"
-msgstr "తప్పిపోయిన డ్రైవరు"
-
-#: ../applet.py:1032
-#, fuzzy
-msgid "Install printer driver"
-msgstr "తప్పిపోయిన డ్రైవరు"
-
-#: ../applet.py:1033
-#, python-format
-msgid "`%s' requires driver installation: %s."
-msgstr ""
-
-#: ../applet.py:1036
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:945
 #, fuzzy
 msgid "Install"
 msgstr "తప్పిపోయిన డ్రైవరు"
 
-#: ../applet.py:1039
+#: ../troubleshoot/CheckPPDSanity.py:80
+#, fuzzy
+msgid "Invalid PPD File"
+msgstr "PPD ఫైలుని సమకూర్చు"
+
+#: ../troubleshoot/CheckPPDSanity.py:88
+#, python-format
+msgid ""
+"The PPD file for printer `%s' does not conform to the specification.  "
+"Possible reason follows:"
+msgstr ""
+
+#. Perhaps cupstestppd is not in the path.
+#: ../troubleshoot/CheckPPDSanity.py:94
+#, fuzzy, python-format
+msgid "There is a problem with the PPD file for printer `%s'."
+msgstr "CUPS అమలులో ఒక దోషం: '%s'."
+
+#: ../troubleshoot/CheckPPDSanity.py:104
+#, fuzzy
+msgid "Missing Printer Driver"
+msgstr "తప్పిపోయిన డ్రైవరు"
+
+#: ../troubleshoot/CheckPPDSanity.py:107
+#, fuzzy, python-format
+msgid "Printer `%s' requires the %s package but it is not currently installed."
+msgstr ""
+"'%s' ముద్రకంకు %s ప్యాకేజీలు కావలసి ఉంది కానీ ఇది ప్రస్తుతం సంస్థాపించబడలేదు.  ఈ ముద్రకాన్ని "
+"ఉపయోగించటానికి ముందే దీన్ని సంస్థాపించండి."
+
+#: ../troubleshoot/CheckPPDSanity.py:112
+#, fuzzy, python-format
+msgid ""
+"Printer `%s' requires the `%s' program but it is not currently installed."
+msgstr ""
+"'%s' ముద్రకంకు %s ప్యాకేజీలు కావలసి ఉంది కానీ ఇది ప్రస్తుతం సంస్థాపించబడలేదు.  ఈ ముద్రకాన్ని "
+"ఉపయోగించటానికి ముందే దీన్ని సంస్థాపించండి."
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:29
+#, fuzzy
+msgid "Choose Network Printer"
+msgstr "కొత్త ముద్రకం"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:30
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:39
+#: ../troubleshoot/ChoosePrinter.py:40 ../troubleshoot/DeviceListed.py:38
+#, fuzzy
+msgid "Information"
+msgstr "స్థానం:"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:75
+#: ../troubleshoot/ChoosePrinter.py:64 ../troubleshoot/DeviceListed.py:70
+#, fuzzy
+msgid "Not listed"
+msgstr "అనుసంధించబడలేదు"
+
+#: ../troubleshoot/ChoosePrinter.py:30
+#, fuzzy
+msgid "Choose Printer"
+msgstr "ముద్రకాన్ని కాపీచేయి"
+
+#: ../troubleshoot/ChoosePrinter.py:31
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+
+#: ../troubleshoot/DeviceListed.py:30
+#, fuzzy
+msgid "Choose Device"
+msgstr "URIసాధనాని మార్చు"
+
+#: ../troubleshoot/DeviceListed.py:31
+msgid ""
+"Please select the device you want to use from the list below. If it does not "
+"appear in the list, select 'Not listed'."
+msgstr ""
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:30
+#: ../troubleshoot/ErrorLogFetch.py:30
+msgid "Debugging"
+msgstr ""
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:31
+msgid ""
+"I would like to enable debugging output from the CUPS scheduler.  This may "
+"cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr ""
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:35
+msgid "Enable Debugging"
+msgstr ""
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:159
+msgid "Debug logging enabled."
+msgstr ""
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:161
+msgid "Debug logging was already enabled."
+msgstr ""
+
+#: ../troubleshoot/ErrorLogFetch.py:31
+msgid ""
+"I would like to disable debugging output from the CUPS scheduler.  This may "
+"cause the scheduler to restart.  Click the button below to disable debugging."
+msgstr ""
+
+#: ../troubleshoot/ErrorLogFetch.py:35
+msgid "Disable Debugging"
+msgstr ""
+
+#: ../troubleshoot/ErrorLogFetch.py:142
+msgid "Debug logging disabled."
+msgstr ""
+
+#: ../troubleshoot/ErrorLogFetch.py:144
+msgid "Debug logging was already disabled."
+msgstr ""
+
+#: ../troubleshoot/ErrorLogParse.py:30
+msgid "Error log messages"
+msgstr ""
+
+#: ../troubleshoot/ErrorLogParse.py:31
+msgid "There are messages in the error log."
+msgstr ""
+
+#: ../troubleshoot/LocalOrRemote.py:27
+#, fuzzy
+msgid "Printer Location"
+msgstr "ముద్రణా ఐచ్ఛికాలు"
+
+#: ../troubleshoot/LocalOrRemote.py:28
+#, fuzzy
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "దానితోఉన్న పోర్టుకి అనుసంధించబడిన ముద్రకం."
+
+#: ../troubleshoot/LocalOrRemote.py:30
+#, fuzzy
+msgid "Locally connected printer"
+msgstr "నిజంగా %s ముద్రకాన్ని తొలగించాలా?"
+
+#: ../troubleshoot/LocalOrRemote.py:31
+#, fuzzy
+msgid "Network printer"
+msgstr "కొత్త ముద్రకం"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr ""
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:29
+msgid "Status Messages"
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:30
+msgid "There are status messages associated with this queue."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:53
+#, python-format
+msgid "The printer's state message is: `%s'."
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:78
+msgid "Errors are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:83
+msgid "Warnings are listed below:"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:638
+#, fuzzy
+msgid "Pending"
+msgstr "ముద్రించు"
+
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:639
+#, fuzzy
+msgid "Held"
+msgstr "సహాయం (_H)"
+
+#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:642
+#, fuzzy
+msgid "Canceled"
+msgstr "పరిశీలనలను రద్దుచేయి"
+
+#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:643
+#, fuzzy
+msgid "Aborted"
+msgstr "గురించి"
+
+#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:644
+#, fuzzy
+msgid "Completed"
+msgstr "వ్యాఖ్య"
+
+#: ../troubleshoot/PrintTestPage.py:48
+#, fuzzy
+msgid "Test Page"
+msgstr "పాఠ పుటను ముద్రించు"
+
+#: ../troubleshoot/PrintTestPage.py:49
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:64
+msgid "Cancel All Jobs"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:70
+msgid "Test"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:93
+msgid "Job"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:75 ../applet.py:94
+#, fuzzy
+msgid "Document"
+msgstr "వ్యాఖ్య"
+
+#: ../troubleshoot/PrintTestPage.py:76 ../applet.py:98
+#, fuzzy
+msgid "Status"
+msgstr "స్థితి %d"
+
+#: ../troubleshoot/PrintTestPage.py:100
+msgid "Did the marked print jobs print correctly?"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:107
+msgid "Yes"
+msgstr ""
+
+#: ../troubleshoot/PrintTestPage.py:108
+msgid "No"
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:57
+#: ../troubleshoot/QueueRejectingJobs.py:67
+#, python-format
+msgid "The reason given is: `%s'."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:59
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:63
+msgid "Queue Not Enabled"
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:64
+#, python-format
+msgid "The queue `%s' is not enabled."
+msgstr ""
+
+#: ../troubleshoot/QueueNotEnabled.py:72
+msgid ""
+"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:32
+msgid "Queue Rejecting Jobs"
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:64
+#, python-format
+msgid "The queue `%s' is rejecting jobs."
+msgstr ""
+
+#: ../troubleshoot/QueueRejectingJobs.py:71
+msgid ""
+"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
+"`Policies' tab for the printer in the printer administration tool."
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:27
+#, fuzzy
+msgid "Remote Address"
+msgstr "ముద్రకాలను తొలగించు"
+
+#: ../troubleshoot/RemoteAddress.py:28
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr ""
+
+#: ../troubleshoot/RemoteAddress.py:36
+#, fuzzy
+msgid "Server name:"
+msgstr "వినియోగదారుని పేరు:"
+
+#: ../troubleshoot/RemoteAddress.py:43
+msgid "Server IP address:"
+msgstr ""
+
+#: ../troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr ""
+
+#: ../troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"`cups' service."
+msgstr ""
+
+#: ../troubleshoot/ServerFirewalled.py:27
+msgid "Check Server Firewall"
+msgstr ""
+
+#: ../troubleshoot/ServerFirewalled.py:28
+#, fuzzy
+msgid "It is not possible to connect to the server."
+msgstr "CUPS అమలులో ఒక దోషం: '%s'."
+
+#: ../troubleshoot/ServerFirewalled.py:43
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server `%s'."
+msgstr ""
+
+#: ../troubleshoot/Shrug.py:27
+msgid "Sorry!"
+msgstr ""
+
+#: ../troubleshoot/Shrug.py:28
+msgid ""
+"I have not been able to work out what the problem is, but I have collected "
+"some useful information to put in a bug report."
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:41
+#, fuzzy
+msgid "Authentication"
+msgstr "<b>ప్రామాణీకరణ</b>"
+
+#: ../troubleshoot/Welcome.py:56
+#, fuzzy
+msgid "Password required"
+msgstr "నవీకరణ అవసరం"
+
+#: ../troubleshoot/Welcome.py:95
+msgid "Trouble-shooting Printing"
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:97
+msgid ""
+"In the next few screens I will ask you some questions about your problem "
+"with printing. Based on your answers I will try to suggest a solution."
+msgstr ""
+
+#: ../troubleshoot/Welcome.py:101
+msgid "Click 'Forward' to begin."
+msgstr ""
+
+#: ../applet.py:96
+msgid "Size"
+msgstr ""
+
+#: ../applet.py:97
+#, fuzzy
+msgid "Time submitted"
+msgstr "సమర్పించబడింది"
+
+#: ../applet.py:148
+msgid "Message"
+msgstr ""
+
+#: ../applet.py:501
+msgid "1 hour ago"
+msgstr ""
+
+#: ../applet.py:503
+msgid "1 hour and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:505
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:508
+#, python-format
+msgid "%d hours ago"
+msgstr ""
+
+#: ../applet.py:510
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr ""
+
+#: ../applet.py:512
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr ""
+
+#: ../applet.py:518
+msgid "a minute ago"
+msgstr ""
+
+#: ../applet.py:520
+#, python-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ../applet.py:575
+msgid "No documents queued"
+msgstr ""
+
+#: ../applet.py:578
+msgid "1 document queued"
+msgstr ""
+
+#: ../applet.py:581
+#, python-format
+msgid "%d documents queued"
+msgstr ""
+
+#: ../applet.py:935
+#, fuzzy
+msgid "Printer added"
+msgstr "ముద్రకం పేరు"
+
+#: ../applet.py:937
+#, fuzzy
+msgid "Missing printer driver"
+msgstr "తప్పిపోయిన డ్రైవరు"
+
+#: ../applet.py:941
+#, fuzzy
+msgid "Install printer driver"
+msgstr "తప్పిపోయిన డ్రైవరు"
+
+#: ../applet.py:942
+#, python-format
+msgid "`%s' requires driver installation: %s."
+msgstr ""
+
+#: ../applet.py:948
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr ""
 
-#: ../applet.py:1042
+#: ../applet.py:951
 #, fuzzy
 msgid "Configure"
 msgstr "ముద్రకాలను ఆకృతీకరించు"
 
 #. Model mismatch
-#: ../applet.py:1045
+#: ../applet.py:954
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr ""
 
-#: ../applet.py:1049
+#: ../applet.py:958
 #, fuzzy
 msgid "Find driver"
 msgstr "తప్పిపోయిన డ్రైవరు"
