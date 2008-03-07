@@ -19,6 +19,7 @@ nobase_pkgdata_DATA=					\
 	statereason.py					\
 	system-config-printer.glade			\
 	troubleshoot/base.py				\
+	troubleshoot/CheckLocalServerPublishing.py	\
 	troubleshoot/CheckNetworkServerSanity.py	\
 	troubleshoot/CheckPrinterSanity.py		\
 	troubleshoot/ChooseNetworkPrinter.py		\
