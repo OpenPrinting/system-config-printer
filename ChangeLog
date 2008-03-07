@@ -1,5 +1,11 @@
 2008-03-07  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.populateList): Fix default printer
+	detection.
+
+	* applet.py (JobManager.get_notifications): No need to import
+	pprint except when debugging.
+
 	* troubleshoot/__init__.py (QUESTIONS): Run it.
 	* troubleshoot/CheckPPDSanity.py: New module.
 	* Makefile.am (nobase_pkgdata_DATA): Ship it.

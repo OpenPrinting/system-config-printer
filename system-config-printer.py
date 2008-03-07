@@ -618,8 +618,6 @@ class GUI(GtkGUI):
         remote_classes = []
 
         for name, printer in self.printers.iteritems():
-            if printer.default:
-                self.default_printer = name
             self.servers.add(printer.getServer())
 
             if printer.remote:
