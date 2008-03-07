@@ -261,6 +261,7 @@ class Troubleshooter:
 
 QUESTIONS = ["Welcome",
              "SchedulerNotRunning",
+             "CheckLocalServerPublishing",
              "ChoosePrinter",
              "CheckPrinterSanity",
 
