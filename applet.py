@@ -681,7 +681,28 @@ class JobManager:
                 job['job-printer-uri'] = event['notify-printer-uri']
 
             if nse == 'job-stopped' and self.trayicon:
-                # Why has the job stopped?  Unfortunately the only
+                # Why has the job stopped?  It might be due to a job
+                # error of some sort, or it might be that the backend
+                # requires authentication.  If the latter, the job will
+                # be held not stopped, and the job-hold-until attribute
+                # will be 'auth-info-required'.
+                if job['job-state'] == cups.IPP_JOB_HELD:
+                    try:
+                        # Fetch the job-hold-until attribute, as this is
+                        # not provided in the notification attributes.
+                        job = c.getJobAttributes (jobid)
+                        jobs[jobid] = job
+                    except cups.IPPError:
+                        pass
+
+                if (job['job-state'] == cups.IPP_JOB_HELD and
+                    job['job-hold-until'] == 'auth-info-required'):
+                    # TODO: ask user for authentication and authenticate
+                    # the job.
+                    debugprint ("Authentication required")
+                    continue
+
+                # Other than that, unfortunately the only
                 # clue we get is the notify-text, which is not
                 # translated into our native language.  We'd better
                 # try parsing it.  In CUPS-1.3.6 the possible strings
