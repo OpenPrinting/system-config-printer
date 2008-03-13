@@ -656,6 +656,9 @@ class JobManager:
             if nse == 'job-created':
                 try:
                     attrs = c.getJobAttributes (jobid)
+                    if attrs['job-originating-user-name'] != cups.getUser ():
+                        continue
+
                     jobs[jobid] = {'job-k-octets': attrs['job-k-octets']}
                 except AttributeError:
                     jobs[jobid] = {'job-k-octets': 0}
