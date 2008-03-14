@@ -212,6 +212,32 @@ class GtkGUI:
         result.sort()
         return result
 
+class PrinterContextMenu(GtkGUI):
+    def __init__ (self, parent, event, iconview, path):
+        self.parent = parent
+        self.xml = parent.xml
+        self.iconview = iconview
+        self.path = path
+        self.getWidgets ("printer_context_menu",
+                         "printer_context_edit",
+                         "printer_context_disable",
+                         "printer_context_enable",
+                         "printer_context_delete",
+                         "printer_context_set_as_default",
+                         "printer_context_view_print_queue")
+        for widget in [self.printer_context_disable,
+                       self.printer_context_enable,
+                       self.printer_context_delete,
+                       self.printer_context_set_as_default,
+                       self.printer_context_view_print_queue]:
+            widget.set_sensitive (False)
+        self.xml.signal_autoconnect (self)
+        self.printer_context_menu.popup (None, None, None,
+                                         event.button,
+                                         event.get_time (), None)
+
+    def on_printer_context_edit_activate (self, menuitem):
+        self.parent.dests_iconview_item_activated (self.iconview, self.path)
 
 class GUI(GtkGUI):
 
@@ -358,6 +384,8 @@ class GUI(GtkGUI):
                                      self.dests_iconview_item_activated)
         self.dests_iconview.connect ('selection-changed',
                                      self.dests_iconview_selection_changed)
+        self.dests_iconview.connect ('button_release_event',
+                                     self.dests_iconview_button_release_event)
         self.dests_iconview_selection_changed (self.dests_iconview)
 
         # setup some lists
@@ -569,6 +597,13 @@ class GUI(GtkGUI):
             widget.set_sensitive(len (paths) > 0)
         for widget in [self.delete, self.btnDelete]:
             widget.set_sensitive(is_local)
+
+    def dests_iconview_button_release_event (self, iconview, event):
+        if event.button > 1:
+            paths = iconview.get_selected_items ()
+            if len (paths) == 1:
+                PrinterContextMenu (self, event, iconview, paths[0])
+        return False
 
     def on_server_settings_activate (self, menuitem):
         finished = False
