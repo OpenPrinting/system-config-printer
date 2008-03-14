@@ -266,6 +266,7 @@ class GUI(GtkGUI):
                         "lblNotPublished",
                           "btnPMakeDefault", "lblPDefault",
                         "btnPrintTestPage", "btnSelfTest", "btnCleanHeads",
+                        "btnConflict",
            
                          "cmbPStartBanner", "cmbPEndBanner",
                           "cmbPErrorPolicy", "cmbPOperationPolicy",
@@ -1121,11 +1122,6 @@ class GUI(GtkGUI):
 
     # set Apply/Revert buttons sensitive    
     def setDataButtonState(self):
-        return # XXX
-        for button in [self.btnApply, self.btnRevert]:
-            button.set_sensitive(bool(self.changed) and
-                                 not bool(self.conflicts))
-
         try: # Might not be a printer selected
             possible = (self.ppd and
                         not bool (self.changed) and
