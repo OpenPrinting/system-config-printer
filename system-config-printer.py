@@ -224,23 +224,34 @@ class PrinterContextMenu(GtkGUI):
                          "printer_context_delete",
                          "printer_context_set_as_default",
                          "printer_context_view_print_queue")
-        for widget in [self.printer_context_disable,
-                       self.printer_context_enable,
-                       self.printer_context_delete,
-                       self.printer_context_set_as_default,
-                       self.printer_context_view_print_queue]:
-            widget.set_sensitive (False)
         self.xml.signal_autoconnect (self)
 
-    def popup (self, event, iconview, path):
+    def popup (self, event, iconview, paths):
         self.iconview = iconview
-        self.path = path
+        self.paths = paths
+
+        n = len (paths)
+
+        # Actions that require a single destination
+        for widget in [self.printer_context_edit,
+                        self.printer_context_set_as_default]:
+            widget.set_sensitive (n == 1)
+
+        # Actions that require at least one destination
+        for widget in [self.printer_context_disable,
+                       self.printer_context_enable,
+                       self.printer_context_delete]:
+            widget.set_sensitive (n > 0)
+
+        # Actions that do not require a destination
+        self.printer_context_view_print_queue.set_sensitive (True)
+
         self.printer_context_menu.popup (None, None, None,
                                          event.button,
                                          event.get_time (), None)
 
     def on_printer_context_edit_activate (self, menuitem):
-        self.parent.dests_iconview_item_activated (self.iconview, self.path)
+        self.parent.dests_iconview_item_activated (self.iconview, self.paths[0])
 
 class GUI(GtkGUI):
 
@@ -607,8 +618,7 @@ class GUI(GtkGUI):
     def dests_iconview_button_release_event (self, iconview, event):
         if event.button > 1:
             paths = iconview.get_selected_items ()
-            if len (paths) == 1:
-                self.printer_context_menu.popup (event, iconview, paths[0])
+            self.printer_context_menu.popup (event, iconview, paths)
         return False
 
     def on_server_settings_activate (self, menuitem):
