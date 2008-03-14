@@ -541,7 +541,15 @@ class GUI(GtkGUI):
             return
 
         self.PrinterPropertiesDialog.set_transient_for (self.MainWindow)
-        self.PrinterPropertiesDialog.run ()
+        finished = False
+        while not finished:
+            response = self.PrinterPropertiesDialog.run ()
+            if response == gtk.RESPONSE_OK:
+                if not self.save_printer (self.printer):
+                    finished = True
+            else:
+                finished = True
+
         self.PrinterPropertiesDialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
