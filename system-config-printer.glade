@@ -45,11 +45,23 @@
 		<widget class="GtkMenu" id="menuitem4_menu">
 
 		  <child>
-		    <widget class="GtkMenuItem" id="server_settings">
+		    <widget class="GtkImageMenuItem" id="server_settings">
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">_Server Settings...</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_server_settings_activate" last_modification_time="Fri, 14 Mar 2008 12:02:35 GMT"/>
+
+		      <child internal-child="image">
+			<widget class="GtkImage" id="image39">
+			  <property name="visible">True</property>
+			  <property name="stock">gtk-preferences</property>
+			  <property name="icon_size">1</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+		      </child>
 		    </widget>
 		  </child>
 
@@ -61,7 +73,7 @@
 		      <signal name="activate" handler="on_connect_activate" last_modification_time="Mon, 20 Mar 2006 10:48:28 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image36">
+			<widget class="GtkImage" id="image40">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-connect</property>
 			  <property name="icon_size">1</property>
@@ -104,7 +116,7 @@
 		      <signal name="activate" handler="on_new_printer_activate" last_modification_time="Wed, 22 Feb 2006 09:27:42 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image37">
+			<widget class="GtkImage" id="image41">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-add</property>
 			  <property name="icon_size">1</property>
@@ -125,7 +137,7 @@
 		      <signal name="activate" handler="on_new_class_activate" last_modification_time="Wed, 22 Feb 2006 09:27:42 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image38">
+			<widget class="GtkImage" id="image42">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-add</property>
 			  <property name="icon_size">1</property>
@@ -178,7 +190,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image39">
+			<widget class="GtkImage" id="image43">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-help</property>
 			  <property name="icon_size">1</property>
