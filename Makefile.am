@@ -18,6 +18,7 @@ nobase_pkgdata_DATA=					\
 	gtk_treeviewtooltips.py				\
 	statereason.py					\
 	system-config-printer.glade			\
+	icons/i-network-printer.png			\
 	troubleshoot/base.py				\
 	troubleshoot/CheckLocalServerPublishing.py	\
 	troubleshoot/CheckNetworkServerSanity.py	\

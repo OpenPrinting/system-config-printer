@@ -73,6 +73,7 @@ import gettext
 gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
 pkgdata = '/usr/share/' + domain
+iconpath = pkgdata + '/icons/'
 glade_file = pkgdata + '/' + domain + '.glade'
 sys.path.append (pkgdata)
 
@@ -728,7 +729,23 @@ class GUI(GtkGUI):
             if not printers: continue
             for name in printers:
                 object = self.printers[name]
-                pixbuf = theme.load_icon ('gnome-dev-printer', 48, 0)
+                if object.discovered:
+                    icon = 'i-network-printer'
+                else:
+                    icon = 'gnome-dev-printer'
+
+                try:
+                    pixbuf = theme.load_icon (icon, 48, 0)
+                except gobject.GError:
+                    # Not in theme.
+                    for p in [iconpath, 'icons/']:
+                        try:
+                            pixbuf = gtk.gdk.pixbuf_new_from_file ("%s%s.png" %
+                                                                   (p, icon))
+                            break
+                        except gobject.GError:
+                            pass
+
                 self.mainlist.append (row=[object, pixbuf, name, ''])
 
         if change_ppd:
