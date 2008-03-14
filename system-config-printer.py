@@ -214,11 +214,9 @@ class GtkGUI:
         return result
 
 class PrinterContextMenu(GtkGUI):
-    def __init__ (self, parent, event, iconview, path):
+    def __init__ (self, parent):
         self.parent = parent
         self.xml = parent.xml
-        self.iconview = iconview
-        self.path = path
         self.getWidgets ("printer_context_menu",
                          "printer_context_edit",
                          "printer_context_disable",
@@ -233,6 +231,10 @@ class PrinterContextMenu(GtkGUI):
                        self.printer_context_view_print_queue]:
             widget.set_sensitive (False)
         self.xml.signal_autoconnect (self)
+
+    def popup (self, event, iconview, path):
+        self.iconview = iconview
+        self.path = path
         self.printer_context_menu.popup (None, None, None,
                                          event.button,
                                          event.get_time (), None)
@@ -351,6 +353,9 @@ class GUI(GtkGUI):
                         )
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
+
+        # Printer Context Menu
+        self.printer_context_menu = PrinterContextMenu (self)
 
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
@@ -603,7 +608,7 @@ class GUI(GtkGUI):
         if event.button > 1:
             paths = iconview.get_selected_items ()
             if len (paths) == 1:
-                PrinterContextMenu (self, event, iconview, paths[0])
+                self.printer_context_menu.popup (event, iconview, paths[0])
         return False
 
     def on_server_settings_activate (self, menuitem):
