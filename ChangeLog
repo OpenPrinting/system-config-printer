@@ -1,5 +1,13 @@
 2008-03-14  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.on_btnApplyApply_clicked):
+	Removed.
+	(GUI.on_btnApplyCancel_clicked): Likewise.
+	(GUI.on_btnApplyDiscard_clicked): Likewise.
+	(GUI): No need to check for unapplied changes.
+	(GUI.on_quit_activate): Likewise.
+	(GUI.on_copy_activate): Likewise.
+
 	* cupshelpers.py (getPrinters): Avoid fetching printers.conf when
 	not needed.
 

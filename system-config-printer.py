@@ -318,7 +318,7 @@ class GUI(GtkGUI):
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo",
                         "InstallDialog", "lblInstall",
-                        "ApplyDialog", "AboutDialog",
+                        "AboutDialog",
                         "WaitWindow", "lblWait",
                         )
         self.tooltips = gtk.Tooltips()
@@ -710,16 +710,6 @@ class GUI(GtkGUI):
         self.btnConnect.set_sensitive (len (widget.get_active_text ()) > 0)
 
     def on_connect_activate(self, widget):
-        # check for unapplied changes
-        if self.changed:
-            response = self.ApplyDialog.run()
-            self.ApplyDialog.hide()
-            err = False
-            if response == gtk.RESPONSE_APPLY:
-                err = self.apply()
-            if err or response == gtk.RESPONSE_CANCEL:
-                return
-
         # Use browsed queues to build up a list of known IPP servers
         servers = self.getServers()
         current_server = (self.printer and self.printer.getServer()) \
@@ -913,17 +903,6 @@ class GUI(GtkGUI):
                 pass
 
         self.populateList()
-
-    # Unapplied changes dialog
-
-    def on_btnApplyApply_clicked(self, button):
-        self.ApplyDialog.response(gtk.RESPONSE_APPLY)
-
-    def on_btnApplyCancel_clicked(self, button):
-        self.ApplyDialog.response(gtk.RESPONSE_CANCEL)
-
-    def on_btnApplyDiscard_clicked(self, button):
-        self.ApplyDialog.response(gtk.RESPONSE_REJECT)
 
     # Data handling
 
@@ -1953,35 +1932,11 @@ class GUI(GtkGUI):
     # Quit
     
     def on_quit_activate(self, widget, event=None):
-        # check for unapplied changes
-        if self.changed:
-            response = self.ApplyDialog.run()
-            self.ApplyDialog.hide()
-            err = False
-            if response == gtk.RESPONSE_APPLY:
-                err = self.apply()
-            if err or response == gtk.RESPONSE_CANCEL:
-                # TODO: how do we just carry on as normal?
-                return
         gtk.main_quit()
 
     # Copy
         
     def on_copy_activate(self, widget):
-        # check for unapplied changes
-        if self.changed:
-            response = self.ApplyDialog.run()
-            self.ApplyDialog.hide()
-            err = False
-
-            if response == gtk.RESPONSE_REJECT:
-                self.changed = set() # avoid asking the user
-                self.on_tvMainList_cursor_changed(self.tvMainList)
-            elif response == gtk.RESPONSE_APPLY:
-                err = self.apply()
-            if err or response == gtk.RESPONSE_CANCEL:
-                return
-
         self.entCopyName.set_text(self.printer.name)
         result = self.NewPrinterName.run()
         self.NewPrinterName.hide()
