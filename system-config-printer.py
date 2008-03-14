@@ -243,13 +243,14 @@ class GUI(GtkGUI):
         xml = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE", glade_file)
         self.xml = gtk.glade.XML(xml, domain = domain)
 
-        self.getWidgets("MainWindow", "tvMainList", "ntbkMain",
+        self.getWidgets("MainWindow", "dests_iconview",
+                        "PrinterPropertiesDialog",
+                        "ServerSettingsDialog",
+                        "server_settings",
                         "statusbarMain",
                         "btnNewPrinter", "btnNewClass", "btnCopy", "btnDelete",
                         "new_printer", "new_class", "copy", "delete",
                         "btnGotoServer",
-
-                        "btnApply", "btnRevert", "btnConflict",
 
                         "chkServerBrowse", "chkServerShare",
                         "chkServerShareAny",
@@ -340,24 +341,23 @@ class GUI(GtkGUI):
         self.status_context_id = self.statusbarMain.get_context_id(
             "Connection")
         self.setConnected()
-        self.ntbkMain.set_show_tabs(False)
         self.prompt_primary = self.lblPasswordPrompt.get_label ()
 
-        # Setup main list
-        column = gtk.TreeViewColumn()
-        cell = gtk.CellRendererText()
-        cell.markup = True
-        column.pack_start(cell, True)
-        self.tvMainList.append_column(column)
-        self.mainlist = gtk.TreeStore(str, str)
+        # Setup icon view
+        self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
+                                      gtk.gdk.Pixbuf,        # Pixbuf
+                                      gobject.TYPE_STRING,   # Name
+                                      gobject.TYPE_STRING)   # Tooltip
         
-        self.tvMainList.set_model(self.mainlist)
-        column.set_attributes(cell, text=0)
-        selection = self.tvMainList.get_selection()
-        selection.set_mode(gtk.SELECTION_BROWSE)
-        selection.set_select_function(self.maySelectItem)
-
-        self.mainlist.append(None, (_("Server Settings"), 'Settings'))
+        self.dests_iconview.set_model(self.mainlist)
+        self.dests_iconview.set_pixbuf_column (1)
+        self.dests_iconview.set_text_column (2)
+        self.dests_iconview.set_tooltip_column (3)
+        self.dests_iconview.connect ('item-activated',
+                                     self.dests_iconview_item_activated)
+        self.dests_iconview.connect ('selection-changed',
+                                     self.dests_iconview_selection_changed)
+        self.dests_iconview_selection_changed (self.dests_iconview)
 
         # setup some lists
         m = gtk.SELECTION_MULTIPLE
@@ -532,6 +532,56 @@ class GUI(GtkGUI):
             self.populateList()
             self.show_HTTP_Error(s)
 
+    def dests_iconview_item_activated (self, iconview, path):
+        model = iconview.get_model ()
+        iter = model.get_iter (path)
+        name = model.get_value (iter, 2)
+        try:
+            self.fillPrinterTab (name)
+        except RuntimeError:
+            # Perhaps cupsGetPPD2 failed for a browsed printer.
+            return
+
+        self.PrinterPropertiesDialog.set_transient_for (self.MainWindow)
+        finished = False
+        while not finished:
+            response = self.PrinterPropertiesDialog.run ()
+            if response == gtk.RESPONSE_OK:
+                if not self.save_printer (self.printer):
+                    finished = True
+            else:
+                finished = True
+
+        self.PrinterPropertiesDialog.hide ()
+
+    def dests_iconview_selection_changed (self, iconview):
+        paths = iconview.get_selected_items ()
+        is_local = False
+        if len (paths):
+            model = iconview.get_model ()
+            iter = model.get_iter (paths[0])
+            object = model.get_value (iter, 0)
+            if not object.discovered:
+                is_local = True
+
+        for widget in [self.copy, self.btnCopy]:
+            widget.set_sensitive(len (paths) > 0)
+        for widget in [self.delete, self.btnDelete]:
+            widget.set_sensitive(is_local)
+
+    def on_server_settings_activate (self, menuitem):
+        finished = False
+        while not finished:
+            self.fillServerTab ()
+            response = self.ServerSettingsDialog.run ()
+            if response == gtk.RESPONSE_OK:
+                if not self.save_serversettings ():
+                    finished = True
+            else:
+                finished = True
+
+        self.ServerSettingsDialog.hide ()
+
     def busy (self, win = None):
         if not win:
             win = self.MainWindow
@@ -584,8 +634,6 @@ class GUI(GtkGUI):
         return known_servers
 
     def populateList(self, start_printer = None, change_ppd = False):
-        old_name, old_type = self.getSelectedItem()
-
         select_path = None
 
         if self.cups:
@@ -632,69 +680,20 @@ class GUI(GtkGUI):
         remote_printers.sort()
         remote_classes.sort()
 
-        if (old_name != "" and
-            (not old_name in local_printers) and
-            (not old_name in local_classes) and
-            (not old_name in remote_printers) and
-            (not old_name in remote_classes)):
-            # The previously selected printer no longer exists.
-            old_name = ""
-
-        if (self.default_printer != None and
-            start_printer == None and
-            old_name == ""):
-            start_printer = self.default_printer
-
-        if not start_printer:
-            start_printer = old_name
-
-        expanded = {
-            "_printers" : True,
-            "_classes" : True,
-            "_remote_printers" : True,
-            "_remote_classes" : True,
-            }
-
         # remove old printers/classes
-        iter = self.mainlist.get_iter_first()
-        iter = self.mainlist.iter_next(iter) # step over server settings
-        while iter:
-            entry = self.mainlist.get_value(iter, 1)
-            path = self.mainlist.get_path(iter)
-            expanded[entry] = self.tvMainList.row_expanded(path)
-            more_entries =  self.mainlist.remove(iter)
-            if not more_entries: break
+        self.mainlist.clear ()
         
         # add new
-        for printers, text, name in (
-            (local_printers, _("Local Printers"), "_printers"),
-            (local_classes, _("Local Classes"), "_classes"),
-            (remote_printers, _("Remote Printers"), "_remote_printers"),
-            (remote_classes, _("Remote Classes"), "_remote_classes")):
+        theme = gtk.icon_theme_get_default ()
+        for printers in (local_printers,
+                         local_classes,
+                         remote_printers,
+                         remote_classes):
             if not printers: continue
-            iter = self.mainlist.append(None, (text, name))
-            path = self.mainlist.get_path(iter)
-
-            for printer_name in printers:
-                if start_printer == None:
-                    start_printer = printer_name
-                p_iter = self.mainlist.append(iter, (printer_name, "Printer"))
-                if printer_name==start_printer:
-                    select_path = self.mainlist.get_path(p_iter)
-                    expanded[name] = True
-            if expanded[name]:
-                self.tvMainList.expand_row(path, False)
-
-        # Selection
-        selection = self.tvMainList.get_selection()
-        if old_type == "Settings":
-            select_path = (0,)
-        if select_path:
-            selection.select_path(select_path)
-        else:
-            selection.select_path((0,))
-
-        self.on_tvMainList_cursor_changed(self.tvMainList)
+            for name in printers:
+                object = self.printers[name]
+                pixbuf = theme.load_icon ('gnome-dev-printer', 48, 0)
+                self.mainlist.append (row=[object, pixbuf, name, ''])
 
         if change_ppd:
             self.on_btnChangePPD_clicked (self.btnChangePPD)
@@ -704,30 +703,6 @@ class GUI(GtkGUI):
             treeview.collapse_row(path)
         else:
             treeview.expand_row(path, False)
-
-    def maySelectItem(self, selection):
-        result = self.mainlist.get_value(
-            self.mainlist.get_iter(selection), 1)
-        if result[0] == "_":
-            return False
-        if self.changed:
-            response = self.ApplyDialog.run()
-            self.ApplyDialog.hide()
-            err = False
-            if response == gtk.RESPONSE_APPLY:
-                err = self.apply()
-            if err or response == gtk.RESPONSE_CANCEL:
-                return False
-        self.changed = set() # of options
-        return True
-
-    def getSelectedItem(self):
-        model, iter = self.tvMainList.get_selection().get_selected()
-        if iter is None:
-            return ("", 'None')
-        name, type = model.get_value(iter, 0), model.get_value(iter, 1)
-        name = name.decode ('utf-8')
-        return name.strip(), type
 
     # Connect to Server
 
@@ -1167,6 +1142,7 @@ class GUI(GtkGUI):
 
     # set Apply/Revert buttons sensitive    
     def setDataButtonState(self):
+        return # XXX
         for button in [self.btnApply, self.btnRevert]:
             button.set_sensitive(bool(self.changed) and
                                  not bool(self.conflicts))
@@ -1573,45 +1549,6 @@ class GUI(GtkGUI):
 
     def on_btnCleanHeads_clicked(self, button):
         self.maintenance_command ("Clean all")
-
-    # select Item
-
-    def on_tvMainList_cursor_changed(self, list):
-        if self.changed:
-            # The unapplied changes for this item have not been saved,
-            # and the user just pressed "Cancel".
-            return
-        name, type = self.getSelectedItem()
-        model, self.mainListSelected = self.tvMainList.get_selection().get_selected()
-        item_selected = True
-        if type == "Settings":
-            self.ntbkMain.set_current_page(0)
-            if self.cups:
-                self.fillServerTab()
-            else:
-                # No connection to CUPS.  Make sure the Apply/Revert buttons
-                # are not sensitive.
-                self.setDataButtonState()
-            item_selected = False
-        elif type in ['Printer', 'Class']:
-            try:
-                self.fillPrinterTab(name)
-            except RuntimeError:
-                # Perhaps cupsGetPPD2 failed for a browsed printer.
-                self.ntbkMain.set_current_page(2)
-                return
-
-            self.ntbkMain.set_current_page(1)
-        elif type == "None":
-            self.ntbkMain.set_current_page(2)
-            self.setDataButtonState()
-            item_selected = False
-
-        is_local = item_selected and not self.printers[name].discovered
-        for widget in [self.copy, self.btnCopy]:
-            widget.set_sensitive(item_selected)
-        for widget in [self.delete, self.btnDelete]:
-            widget.set_sensitive(is_local)
 
     def fillComboBox(self, combobox, values, value):
         combobox.get_model().clear()
