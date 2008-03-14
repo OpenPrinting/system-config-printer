@@ -245,6 +245,8 @@ class GUI(GtkGUI):
 
         self.getWidgets("MainWindow", "dests_iconview",
                         "PrinterPropertiesDialog",
+                        "ServerSettingsDialog",
+                        "server_settings",
                         "statusbarMain",
                         "btnNewPrinter", "btnNewClass", "btnCopy", "btnDelete",
                         "new_printer", "new_class", "copy", "delete",
@@ -566,6 +568,19 @@ class GUI(GtkGUI):
             widget.set_sensitive(len (paths) > 0)
         for widget in [self.delete, self.btnDelete]:
             widget.set_sensitive(is_local)
+
+    def on_server_settings_activate (self, menuitem):
+        finished = False
+        while not finished:
+            self.fillServerTab ()
+            response = self.ServerSettingsDialog.run ()
+            if response == gtk.RESPONSE_OK:
+                if not self.save_serversettings ():
+                    finished = True
+            else:
+                finished = True
+
+        self.ServerSettingsDialog.hide ()
 
     def busy (self, win = None):
         if not win:
