@@ -64,6 +64,8 @@ from gtk_treeviewtooltips import TreeViewTooltips
 import openprinting
 import urllib
 import troubleshoot
+import applet
+applet.do_imports ()
 
 domain='system-config-printer'
 import locale
@@ -252,6 +254,21 @@ class PrinterContextMenu(GtkGUI):
 
     def on_printer_context_edit_activate (self, menuitem):
         self.parent.dests_iconview_item_activated (self.iconview, self.paths[0])
+
+    def on_printer_context_view_print_queue_activate (self, menuitem):
+        if len (self.paths):
+            specific_dests = []
+            model = self.iconview.get_model ()
+            for path in self.paths:
+                iter = model.get_iter (path)
+                name = model.get_value (iter, 2)
+                specific_dests.append (name)
+            applet.JobManager (applet.dbus.SystemBus(), None,
+                               trayicon=False, my_jobs=False,
+                               specific_dests=specific_dests)
+        else:
+            applet.JobManager (applet.dbus.SystemBus(), None,
+                               trayicon=False, my_jobs=False)
 
 class GUI(GtkGUI):
 

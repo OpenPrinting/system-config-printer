@@ -23,6 +23,13 @@ import statereason
 from statereason import StateReason
 import pprint
 
+import dbus
+import dbus.glib
+import dbus.service
+import gobject
+import pynotify
+import time
+
 APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
 GLADE="applet.glade"
@@ -93,12 +100,15 @@ def worst_printer_state_reason (printer_reasons=None, connection=None):
     return worst_reason
 
 class JobManager:
-    def __init__(self, bus, loop, service_running=False, trayicon=True,
-                 suppress_icon_hide=False):
+    def __init__(self, bus=None, loop=None, service_running=False,
+                 trayicon=True, suppress_icon_hide=False,
+                 my_jobs=True, specific_dests=None):
         self.loop = loop
         self.service_running = service_running
         self.trayicon = trayicon
         self.suppress_icon_hide = suppress_icon_hide
+        self.my_jobs = my_jobs
+        self.specific_dests = specific_dests
 
         self.jobs = {}
         self.jobiters = {}
@@ -216,6 +226,9 @@ class JobManager:
             self.notified_reason = None
 
         # D-Bus
+        if bus == None:
+            bus = DBus.SystemBus ()
+
         bus.add_signal_receiver (self.handle_dbus_signal,
                                  path="/com/redhat/PrinterSpooler",
                                  dbus_interface="com.redhat.PrinterSpooler")
@@ -263,7 +276,7 @@ class JobManager:
             self.statusicon.set_from_pixbuf (pb)
 
     def on_delete_event(self, *args):
-        if self.trayicon:
+        if self.trayicon or not self.loop:
             self.MainWindow.hide ()
             if self.show_printer_status.get_active ():
                 self.PrintersWindow.hide ()
@@ -656,9 +669,14 @@ class JobManager:
             # Job events
             jobid = event['notify-job-id']
             if nse == 'job-created':
+                if (self.specific_dests != None and
+                    event['printer-name'] not in self.specific_dests):
+                    continue
+
                 try:
                     attrs = c.getJobAttributes (jobid)
-                    if attrs['job-originating-user-name'] != cups.getUser ():
+                    if (self.my_jobs and
+                        attrs['job-originating-user-name'] != cups.getUser ()):
                         continue
 
                     jobs[jobid] = {'job-k-octets': attrs['job-k-octets']}
@@ -807,13 +825,21 @@ class JobManager:
         debugprint ("Created subscription %d" % self.sub_id)
 
         try:
-            jobs = c.getJobs (which_jobs=self.which_jobs, my_jobs=True)
+            jobs = c.getJobs (which_jobs=self.which_jobs, my_jobs=self.my_jobs)
             self.printer_state_reasons = collect_printer_state_reasons (c)
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
             return
         except RuntimeError:
             return
+
+        if self.specific_dests != None:
+            for jobid in jobs.keys ():
+                uri = jobs[jobid].get('job-printer-uri', '/')
+                i = uri.rfind ('/')
+                printer = uri[i + 1:]
+                if printer not in self.specific_dests:
+                    del jobs[jobid]
 
         self.update (jobs)
 
@@ -974,7 +1000,8 @@ class JobManager:
         self.set_statusicon_visibility ()
 
     def on_icon_quit_activate (self, menuitem):
-        self.loop.quit ()
+        if self.loop:
+            self.loop.quit ()
 
     def on_job_cancel_activate(self, menuitem):
         try:
@@ -1041,89 +1068,6 @@ class JobManager:
     def set_printer_status_name (self, column, cell, model, iter, *user_data):
         cell.set_property("text", model.get_value (iter, 1))
 
-gtk_loaded = False
-def do_imports():
-    global gtk_loaded
-    if not gtk_loaded:
-        gtk_loaded = True
-        global gtk, pango, pynotify, gettext, _
-        import gtk, gtk.glade, pango
-        import pynotify
-        import time
-        import gettext
-        from gettext import gettext as _
-        gettext.textdomain (DOMAIN)
-        gtk.glade.bindtextdomain (DOMAIN)
-        statereason.set_gettext_function (_)
-
-PROGRAM_NAME="system-config-printer-applet"
-def show_help ():
-    print "usage: %s [--no-tray-icon]" % PROGRAM_NAME
-
-def show_version ():
-    import config
-    print "%s %s" % (PROGRAM_NAME, config.VERSION)
-    
-####
-#### Main program entry
-####
-
-global waitloop, runloop, jobmanager, debug
-
-trayicon = True
-service_running = False
-waitloop = runloop = None
-jobmanager = None
-debug = 0
-
-import sys, getopt
-try:
-    opts, args = getopt.gnu_getopt (sys.argv[1:], '',
-                                    ['no-tray-icon',
-                                     'debug',
-                                     'help',
-                                     'version'])
-except getopt.GetoptError:
-    show_help ()
-    sys.exit (1)
-
-for opt, optarg in opts:
-    if opt == "--help":
-        show_help ()
-        sys.exit (0)
-    if opt == "--version":
-        show_version ()
-        sys.exit (0)
-    if opt == "--no-tray-icon":
-        trayicon = False
-    elif opt == "--debug":
-        debug = 1
-
-import dbus
-import dbus.glib
-import dbus.service
-import gobject
-import pynotify
-import time
-
-#Must be done before connecting to D-Bus (for some reason).
-if not pynotify.init (PROGRAM_NAME):
-    print >> sys.stderr, ("%s: unable to initialize pynotify" %
-                          PROGRAM_NAME)
-
-if trayicon:
-    # Stop running when the session ends.
-    def monitor_session (*args):
-        pass
-
-    try:
-        bus = dbus.SessionBus()
-        bus.add_signal_receiver (monitor_session)
-    except:
-        print >> sys.stderr, "%s: failed to connect to session D-Bus" % \
-              PROGRAM_NAME
-        sys.exit (1)
-
 ####
 #### NewPrinterNotification DBus server (the 'new' way).
 ####
@@ -1148,7 +1092,7 @@ class NewPrinterNotification(dbus.service.Object):
         if jobmanager == None:
             waitloop.quit ()
             runloop = gobject.MainLoop ()
-            jobmanager = JobManager(bus, runloop,
+            jobmanager = JobManager(bus=bus, loop=runloop,
                                     service_running=service_running,
                                     trayicon=trayicon, suppress_icon_hide=True)
 
@@ -1262,83 +1206,162 @@ class NewPrinterNotification(dbus.service.Object):
         elif pid == -1:
             print "Error forking process"
 
-try:
-    bus = dbus.SystemBus()
-except:
-    print >> sys.stderr, "%s: failed to connect to system D-Bus" % PROGRAM_NAME
-    sys.exit (1)
+gtk_loaded = False
+def do_imports():
+    global gtk_loaded
+    if not gtk_loaded:
+        gtk_loaded = True
+        global gtk, pango, pynotify, gettext, _
+        import gtk, gtk.glade, pango
+        import pynotify
+        import time
+        import gettext
+        from gettext import gettext as _
+        gettext.textdomain (DOMAIN)
+        gtk.glade.bindtextdomain (DOMAIN)
+        statereason.set_gettext_function (_)
 
-if trayicon:
+PROGRAM_NAME="system-config-printer-applet"
+def show_help ():
+    print "usage: %s [--no-tray-icon]" % PROGRAM_NAME
+
+def show_version ():
+    import config
+    print "%s %s" % (PROGRAM_NAME, config.VERSION)
+    
+####
+#### Main program entry
+####
+
+global waitloop, runloop, jobmanager, debug
+
+trayicon = True
+service_running = False
+waitloop = runloop = None
+jobmanager = None
+debug = 0
+
+if __name__ == '__main__':
+    import sys, getopt
     try:
-        NewPrinterNotification(bus)
-        service_running = True
-    except:
-        print >> sys.stderr, \
-              "%s: failed to start NewPrinterNotification service" % \
-              PROGRAM_NAME
+        opts, args = getopt.gnu_getopt (sys.argv[1:], '',
+                                        ['no-tray-icon',
+                                         'debug',
+                                         'help',
+                                         'version'])
+    except getopt.GetoptError:
+        show_help ()
+        sys.exit (1)
 
-if trayicon:
-    # Start off just waiting for print jobs or printer errors.
-    def any_jobs_or_errors ():
-        try:
-            c = cups.Connection ()
-            if len (c.getJobs (my_jobs=True)):
-                return True
-            reason = worst_printer_state_reason (connection=c)
-            if reason != None and reason.get_level () >= StateReason.WARNING:
-                return True
-        except:
+    for opt, optarg in opts:
+        if opt == "--help":
+            show_help ()
+            sys.exit (0)
+        if opt == "--version":
+            show_version ()
+            sys.exit (0)
+        if opt == "--no-tray-icon":
+            trayicon = False
+        elif opt == "--debug":
+            debug = 1
+
+    # Must be done before connecting to D-Bus (for some reason).
+    if not pynotify.init (PROGRAM_NAME):
+        print >> sys.stderr, ("%s: unable to initialize pynotify" %
+                              PROGRAM_NAME)
+
+    if trayicon:
+        # Stop running when the session ends.
+        def monitor_session (*args):
             pass
 
-        return False
+        try:
+            bus = dbus.SessionBus()
+            bus.add_signal_receiver (monitor_session)
+        except:
+            print >> sys.stderr, "%s: failed to connect to session D-Bus" % \
+                PROGRAM_NAME
+            sys.exit (1)
 
-    if not any_jobs_or_errors ():
+    try:
+        bus = dbus.SystemBus()
+    except:
+        print >> sys.stderr, ("%s: failed to connect to system D-Bus" %
+                              PROGRAM_NAME)
+        sys.exit (1)
 
-        ###
-        class WaitForJobs:
-            MIN_CHECK_INTERVAL=5 # seconds
+    if trayicon:
+        try:
+            NewPrinterNotification(bus)
+            service_running = True
+        except:
+            print >> sys.stderr, \
+                "%s: failed to start NewPrinterNotification service" % \
+                PROGRAM_NAME
 
-            def __init__ (self):
-                self.last_check = time.time()
-                self.timer = None
+    if trayicon:
+        # Start off just waiting for print jobs or printer errors.
+        def any_jobs_or_errors ():
+            try:
+                c = cups.Connection ()
+                if len (c.getJobs (my_jobs=True)):
+                    return True
+                reason = worst_printer_state_reason (connection=c)
+                if (reason != None and
+                    reason.get_level () >= StateReason.WARNING):
+                    return True
+            except:
+                pass
 
-            def check_for_jobs (self, *args):
-                now = time.time ()
-                since_last_check = now - self.last_check
-                if since_last_check < self.MIN_CHECK_INTERVAL:
-                    if self.timer != None:
+            return False
+
+        if not any_jobs_or_errors ():
+
+            ###
+            class WaitForJobs:
+                MIN_CHECK_INTERVAL=5 # seconds
+
+                def __init__ (self):
+                    self.last_check = time.time()
+                    self.timer = None
+
+                def check_for_jobs (self, *args):
+                    now = time.time ()
+                    since_last_check = now - self.last_check
+                    if since_last_check < self.MIN_CHECK_INTERVAL:
+                        if self.timer != None:
+                            return
+
+                        self.timer = gobject.timeout_add (self.MIN_CHECK_INTERVAL *
+                                                          1000,
+                                                          self.check_for_jobs)
                         return
 
-                    self.timer = gobject.timeout_add (self.MIN_CHECK_INTERVAL *
-                                                      1000,
-                                                      self.check_for_jobs)
-                    return
+                    self.timer = None
+                    self.last_check = now
+                    if any_jobs_or_errors ():
+                        waitloop.quit ()
+            ###
 
-                self.timer = None
-                self.last_check = now
-                if any_jobs_or_errors ():
-                    waitloop.quit ()
-        ###
+            jobwaiter = WaitForJobs()
+            bus.add_signal_receiver (jobwaiter.check_for_jobs,
+                                     path="/com/redhat/PrinterSpooler",
+                                     dbus_interface="com.redhat.PrinterSpooler")
+            waitloop = gobject.MainLoop ()
+            waitloop.run()
+            waitloop = None
+            bus.remove_signal_receiver (jobwaiter.check_for_jobs,
+                                        path="/com/redhat/PrinterSpooler",
+                                        dbus_interface="com.redhat.PrinterSpooler")
 
-        jobwaiter = WaitForJobs()
-        bus.add_signal_receiver (jobwaiter.check_for_jobs,
-                                 path="/com/redhat/PrinterSpooler",
-                                 dbus_interface="com.redhat.PrinterSpooler")
-        waitloop = gobject.MainLoop ()
-        waitloop.run()
-        waitloop = None
-        bus.remove_signal_receiver (jobwaiter.check_for_jobs,
-                                    path="/com/redhat/PrinterSpooler",
-                                    dbus_interface="com.redhat.PrinterSpooler")
+    if jobmanager == None:
+        do_imports()
+        runloop = gobject.MainLoop ()
+        jobmanager = JobManager(bus=bus, loop=runloop,
+                                service_running=service_running, trayicon=trayicon)
 
-if jobmanager == None:
-    do_imports()
-    runloop = gobject.MainLoop ()
-    jobmanager = JobManager(bus, runloop,
-                            service_running=service_running, trayicon=trayicon)
-
-try:
-    runloop.run()
-except KeyboardInterrupt:
-    pass
-jobmanager.cleanup () # Why doesn't __del__ work?
+    try:
+        runloop.run()
+    except KeyboardInterrupt:
+        pass
+    jobmanager.cleanup () # Why doesn't __del__ work?

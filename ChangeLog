@@ -1,5 +1,16 @@
 2008-03-14  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py: Import applet.
+	(PrinterContextMenu.on_printer_context_view_print_queue_activate):
+	Use JobManager to display jobs for selected printers.
+
+	* applet.py (JobManager.__init__): Add my_jobs and specific_dests
+	arguments.
+	(JobManager.refresh): Use my_jobs argument.
+	(JobManager.get_notifications): Likewise.
+	(JobManager.refresh): Ignore jobs not matching specific_dests.
+	(JobManager.get_notifications): Likewise.
+
 	* icons/i-network-printer.png: New file.
 	* Makefile.am (nobase_pkgdata_DATA): Ship icon.
 	* system-config-printer.py (GUI.populateList): Use different icon
