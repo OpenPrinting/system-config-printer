@@ -763,8 +763,16 @@ class GUI(GtkGUI):
                 object = self.printers[name]
                 if object.discovered:
                     icon = 'i-network-printer'
+                    if object.is_class:
+                        tip = _("Remote class")
+                    else:
+                        tip = _("Remote printer")
                 else:
                     icon = 'gnome-dev-printer'
+                    if object.is_class:
+                        tip = _("Local class")
+                    else:
+                        tip = _("Local printer")
 
                 try:
                     pixbuf = theme.load_icon (icon, 48, 0)
@@ -778,7 +786,7 @@ class GUI(GtkGUI):
                         except gobject.GError:
                             pass
 
-                self.mainlist.append (row=[object, pixbuf, name, ''])
+                self.mainlist.append (row=[object, pixbuf, name, tip])
 
         if change_ppd:
             self.on_btnChangePPD_clicked (self.btnChangePPD)
