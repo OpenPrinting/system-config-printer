@@ -21,12 +21,8 @@
 import cups, pprint, os, tempfile, re
 from rhpl.translate import _, N_
 import locale
-
-def debugprint(x):
-    try:
-        print x
-    except:
-        pass
+from debug import *
+set_debugging (True)
 
 class Printer:
 

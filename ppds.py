@@ -26,13 +26,7 @@ import string
 import locale
 import os.path
 import re
-
-global debugging
-debugging = False
-
-def debugprint (s):
-    if debugging:
-        print s
+from debug import *
 
 def ppdMakeModelSplit (ppd_make_and_model):
     """Convert the ppd-make-and-model field into a (make, model) pair."""
@@ -774,7 +768,7 @@ def main():
         elif opt == "--list-ids":
             list_ids = True
         elif opt == "--debug":
-            debugging = True
+            set_debugging (True)
 
     picklefile="pickled-ppds"
     import pickle

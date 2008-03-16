@@ -10,6 +10,7 @@ nobase_pkgdata_SCRIPTS=				\
 nobase_pkgdata_DATA=					\
 	config.py					\
 	cupshelpers.py					\
+	debug.py					\
 	openprinting.py					\
 	options.py					\
 	optionwidgets.py				\

@@ -57,6 +57,7 @@ import pysmb
 import cupshelpers, options
 import gobject # for TYPE_STRING and TYPE_PYOBJECT
 from optionwidgets import OptionWidget
+from debug import *
 import ppds
 import probe_printer
 import gtk_label_autowrap
@@ -83,11 +84,7 @@ busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 ellipsis = unichr(0x2026)
 
-def debugprint(x):
-    try:
-        print x
-    except:
-        pass
+set_debugging (True)
 
 try:
     try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY

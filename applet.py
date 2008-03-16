@@ -21,6 +21,7 @@ import cups
 import sys
 import statereason
 from statereason import StateReason
+from debug import *
 import pprint
 
 import dbus
@@ -38,14 +39,6 @@ SEARCHING_ICON="document-print-preview"
 
 CONNECTING_TIMEOUT = 60 # seconds
 MIN_REFRESH_INTERVAL = 1 # seconds
-
-def debugprint(x):
-    global debug
-    if debug:
-        try:
-            print x
-        except:
-            pass
 
 def state_reason_is_harmless (reason):
     if (reason.startswith ("moving-to-paused") or
@@ -1233,13 +1226,12 @@ def show_version ():
 #### Main program entry
 ####
 
-global waitloop, runloop, jobmanager, debug
+global waitloop, runloop, jobmanager
 
 trayicon = True
 service_running = False
 waitloop = runloop = None
 jobmanager = None
-debug = 0
 
 if __name__ == '__main__':
     import sys, getopt
@@ -1263,7 +1255,7 @@ if __name__ == '__main__':
         if opt == "--no-tray-icon":
             trayicon = False
         elif opt == "--debug":
-            debug = 1
+            set_debugging (True)
 
     # Must be done before connecting to D-Bus (for some reason).
     if not pynotify.init (PROGRAM_NAME):
