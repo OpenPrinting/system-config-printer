@@ -11,6 +11,7 @@ nobase_pkgdata_DATA=					\
 	config.py					\
 	cupshelpers.py					\
 	debug.py					\
+	jobviewer.py					\
 	openprinting.py					\
 	options.py					\
 	optionwidgets.py				\
