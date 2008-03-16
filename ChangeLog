@@ -1,5 +1,10 @@
 2008-03-16  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.__init__): Default trayicon to False.
+	* system-config-printer.py
+	(PrinterContextMenu.on_printer_context_view_print_queue_activate):
+	No need to specify trayicon=False.
+
 	* jobviewer.py: Moved JobManager here and renamed as JobViewer.
 	* po/POTFILES.in: Translate jobviewer.
 	* Makefile.am (nobase_pkgdata_DATA): Ship it.

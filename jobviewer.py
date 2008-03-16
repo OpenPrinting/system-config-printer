@@ -104,7 +104,7 @@ def worst_printer_state_reason (printer_reasons=None, connection=None):
 
 class JobViewer:
     def __init__(self, bus=None, loop=None, service_running=False,
-                 trayicon=True, suppress_icon_hide=False,
+                 trayicon=False, suppress_icon_hide=False,
                  my_jobs=True, specific_dests=None):
         self.loop = loop
         self.service_running = service_running

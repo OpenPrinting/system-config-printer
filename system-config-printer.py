@@ -259,12 +259,10 @@ class PrinterContextMenu(GtkGUI):
                 iter = model.get_iter (path)
                 name = model.get_value (iter, 2)
                 specific_dests.append (name)
-            jobviewer.JobViewer (None, None,
-                              trayicon=False, my_jobs=False,
-                              specific_dests=specific_dests)
+            jobviewer.JobViewer (None, None, my_jobs=False,
+                                 specific_dests=specific_dests)
         else:
-            jobviewer.JobViewer (None, None,
-                                 trayicon=False, my_jobs=False)
+            jobviewer.JobViewer (None, None, my_jobs=False)
 
 class GUI(GtkGUI):
 
