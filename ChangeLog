@@ -1,6 +1,9 @@
 2008-03-16  Tim Waugh  <twaugh@redhat.com>
 
 	* jobviewer.py (JobViewer.__init__): Default trayicon to False.
+	(JobViewer.on_delete_event): Cancel subscriptions when run from
+	main applications.
+
 	* system-config-printer.py
 	(PrinterContextMenu.on_printer_context_view_print_queue_activate):
 	No need to specify trayicon=False.

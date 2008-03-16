@@ -283,6 +283,9 @@ class JobViewer:
             self.MainWindow.hide ()
             if self.show_printer_status.get_active ():
                 self.PrintersWindow.hide ()
+
+            if not self.loop:
+                self.cleanup ()
         else:
             self.loop.quit ()
         return True
