@@ -65,8 +65,7 @@ from gtk_treeviewtooltips import TreeViewTooltips
 import openprinting
 import urllib
 import troubleshoot
-import applet
-applet.do_imports ()
+import jobviewer
 
 domain='system-config-printer'
 import locale
@@ -260,12 +259,12 @@ class PrinterContextMenu(GtkGUI):
                 iter = model.get_iter (path)
                 name = model.get_value (iter, 2)
                 specific_dests.append (name)
-            applet.JobManager (applet.dbus.SystemBus(), None,
-                               trayicon=False, my_jobs=False,
-                               specific_dests=specific_dests)
+            jobviewer.JobViewer (None, None,
+                              trayicon=False, my_jobs=False,
+                              specific_dests=specific_dests)
         else:
-            applet.JobManager (applet.dbus.SystemBus(), None,
-                               trayicon=False, my_jobs=False)
+            jobviewer.JobViewer (None, None,
+                                 trayicon=False, my_jobs=False)
 
 class GUI(GtkGUI):
 
