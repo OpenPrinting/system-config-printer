@@ -587,6 +587,19 @@ class GUI(GtkGUI):
             self.populateList()
             self.show_HTTP_Error(s)
 
+        try:
+            self.dests_iconview.resize_children ()
+            (width, height) = self.dests_iconview.size_request ()
+            (x, menubarh) = self.xml.get_widget ("menubar").size_request ()
+            (x, toolbarh) = self.xml.get_widget ("toolbar").size_request ()
+            (x, sbarh) = self.xml.get_widget ("statusbarMain").size_request ()
+            height += menubarh + toolbarh + sbarh + 10
+            if height > 400:
+                height = 400
+            self.MainWindow.resize (20 + width, height)
+        except:
+            nonfatalException ()
+
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
         iter = model.get_iter (path)
