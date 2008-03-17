@@ -61,6 +61,7 @@ class ErrorLogFetch(Question):
             c = self.troubleshooter.answers['_authenticated_connection']
             prompt = c._get_prompt_allowed ()
             c._set_prompt_allowed (False)
+            c._connect ()
             (tmpfd, tmpfname) = tempfile.mkstemp ()
             os.close (tmpfd)
             success = False
