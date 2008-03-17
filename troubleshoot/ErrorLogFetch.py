@@ -58,27 +58,26 @@ class ErrorLogFetch(Question):
             checkpoint = None
 
         if checkpoint != None:
-            # Fail if auth required.
-            cups.setPasswordCB (lambda x: '')
-            cups.setServer ('')
-            try:
-                c = cups.Connection ()
-            except RuntimeError:
-                return {}
-
+            c = self.troubleshooter.answers['_authenticated_connection']
+            prompt = c._get_prompt_allowed ()
+            c._set_prompt_allowed (False)
             (tmpfd, tmpfname) = tempfile.mkstemp ()
             os.close (tmpfd)
+            success = False
             try:
                 c.getFile ('/admin/log/error_log', tmpfname)
-            except cups.IPPError:
+                success = True
+            except cups.HTTPError:
                 os.remove (tmpfname)
-                return {}
 
-            f = file (tmpfname)
-            f.seek (checkpoint)
-            lines = f.readlines ()
-            os.remove (tmpfname)
-            self.answers = { 'error_log': map (lambda x: x.strip (), lines) }
+            c._set_prompt_allowed (prompt)
+            if success:
+                f = file (tmpfname)
+                f.seek (checkpoint)
+                lines = f.readlines ()
+                os.remove (tmpfname)
+                self.answers = { 'error_log': map (lambda x: x.strip (),
+                                                   lines) }
 
         if answers.has_key ('error_log_debug_logging_set'):
             return True
@@ -97,30 +96,19 @@ class ErrorLogFetch(Question):
         return answers
 
     def button_clicked (self, button):
-        auth = self.troubleshooter.answers['_authentication_dialog']
-        for user in ['', 'root']:
-            cups.setUser (user)
-            if user == '':
-                # First try with the current user and no password.
-                cups.setPasswordCB (lambda x: '')
-            else:
-                # Then try with root and an authentication dialog.
-                cups.setPasswordCB (auth.callback)
+        c = self.troubleshooter.answers['_authenticated_connection']
+        try:
+            settings = c.adminGetServerSettings ()
+        except cups.IPPError:
+            settings = {}
 
+        if len (settings.keys ()) == 0:
+            cups.setUser ('root')
+            c._connect ()
             try:
-                c = cups.Connection ()
-            except RuntimeError:
-                return
-
-            try:
-                auth.suppress_dialog ()
                 settings = c.adminGetServerSettings ()
             except cups.IPPError:
                 settings = {}
-
-            if len (settings.keys ()) == 0:
-                if user != '':
-                    return
 
         try:
             prev = int (settings[cups.CUPS_SERVER_DEBUG_LOGGING])
@@ -131,7 +119,6 @@ class ErrorLogFetch(Question):
             settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '0'
             success = False
             try:
-                auth.suppress_dialog ()
                 c.adminSetServerSettings (settings)
                 success = True
             except cups.IPPError:

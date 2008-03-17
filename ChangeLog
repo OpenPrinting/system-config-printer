@@ -1,5 +1,11 @@
 2008-03-17  Tim Waugh  <twaugh@redhat.com>
 
+	* authconn.py (Connection._authloop): Raise IPPError if
+	adminGetServerSettings returns no settings.
+
+	* troubleshoot/ErrorLogFetch.py (ErrorLogFetch.button_clicked):
+	Changed to use authconn.Connection.
+
 	* authconn.py (Connection.__init__): Initialise _use_user correctly.
 	(Connection._set_prompt_allowed): Allow caller to disallow
 	prompting.
@@ -7,7 +13,7 @@
 
 	* troubleshoot/ErrorLogCheckpoint.py
 	(ErrorLogCheckpoint.enable_clicked): Changed to use
-	AuthenticatedConnection.
+	authconn.Connection.
 
 	* troubleshoot/Welcome.py (AuthenticationDialog): Removed.  Use
 	authconn.Connection instead.

@@ -96,8 +96,8 @@ class ErrorLogCheckpoint(Question):
         self.answers.update (self.persistent_answers)
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.close (tmpfd)
+        c = self.troubleshooter.answers['_authenticated_connection']
         try:
-            cups.setUser ('')
             c = cups.Connection ()
             c.getFile ('/admin/log/error_log', tmpfname)
         except RuntimeError:
@@ -113,17 +113,17 @@ class ErrorLogCheckpoint(Question):
         return self.answers
 
     def enable_clicked (self, button):
-        authconn = self.troubleshooter.answers['_authenticated_connection']
+        c = self.troubleshooter.answers['_authenticated_connection']
         try:
-            settings = authconn.adminGetServerSettings ()
+            settings = c.adminGetServerSettings ()
         except cups.IPPError:
             settings = {}
 
         if len (settings.keys ()) == 0:
             cups.setUser ('root')
-            authconn._connect ()
+            c._connect ()
             try:
-                settings = authconn.adminGetServerSettings ()
+                settings = c.adminGetServerSettings ()
             except cups.IPPError:
                 settings = {}
 
@@ -137,7 +137,8 @@ class ErrorLogCheckpoint(Question):
             settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '1'
             success = False
             try:
-                authconn.adminSetServerSettings (settings)
+                debugprint ("Settings to set: " + repr (settings))
+                c.adminSetServerSettings (settings)
                 success = True
             except cups.IPPError:
                 pass

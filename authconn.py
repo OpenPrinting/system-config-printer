@@ -33,17 +33,18 @@ class Connection:
         self._connect ()
         self._prompt_allowed = True
 
-    def _set_prompt_allowed (allowed):
-        self._prompt_allowed = allowed
+    def _get_prompt_allowed (self, ):
+        return self._prompt_allowed
 
-    def _make_binding (self, fn):
-        return lambda *args, **kwds: self._authloop (fn, *args, **kwds)
+    def _set_prompt_allowed (self, allowed):
+        self._prompt_allowed = allowed
 
     def _connect (self):
         self._connection = cups.Connection ()
         self._use_user = cups.getUser ()
         self._server = cups.getServer ()
         self._user = self._use_user
+        debugprint ("Connected as user %s" % self._user)
         methodtype = type (self._connection.getPrinters)
         for fname in dir (self._connection):
             if fname[0] == '_':
@@ -51,9 +52,12 @@ class Connection:
             fn = getattr (self._connection, fname)
             if type (fn) != methodtype:
                 continue
-            setattr (self, fname, self._make_binding (fn))
+            setattr (self, fname, self._make_binding (fname, fn))
 
-    def _authloop (self, fn, *args, **kwds):
+    def _make_binding (self, fname, fn):
+        return lambda *args, **kwds: self._authloop (fname, fn, *args, **kwds)
+
+    def _authloop (self, fname, fn, *args, **kwds):
         self._has_failed = False
         self._auth_called = False
         self._passes = 0
@@ -61,6 +65,12 @@ class Connection:
         while self._perform_authentication () != 0:
             try:
                 result = fn.__call__ (*args, **kwds)
+
+                if fname == 'adminGetServerSettings':
+                    # Special case for a rubbish bit of API.
+                    if result == {}:
+                        # Authentication failed, but we aren't told that.
+                        raise cups.IPPError (cups.IPP_NOT_AUTHORIZED, '')
                 break
             except cups.IPPError, (e, m):
                 if not self._cancel and e == cups.IPP_NOT_AUTHORIZED:
