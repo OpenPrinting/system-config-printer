@@ -23,13 +23,24 @@ import gtk
 import pprint
 import sys
 import traceback
+
+if __name__ == "__main__":
+    import os.path
+    import gettext
+    gettext.textdomain ('system-config-printer')
+
+    if sys.argv[0][0] != '/':
+        cwd = os.getcwd ()
+        path = cwd + os.path.sep + sys.argv[0]
+    else:
+        path = sys.argv[0]
+    sub = os.path.dirname (path)
+    root = os.path.dirname (sub)
+    sys.path.append (root)
+
 import base
 from base import *
 from base import _
-
-if __name__ == "__main__":
-    import gettext
-    gettext.textdomain ('system-config-printer')
 
 class Troubleshooter:
     def __init__ (self, quitfn=None):
@@ -203,7 +214,7 @@ class Troubleshooter:
 
         self.set_back_forward_buttons ()
 
-        if debug:
+        if get_debugging ():
             self._dump_answers ()
 
     def answers_as_text (self):
@@ -293,7 +304,6 @@ def run (quitfn=None):
         try:
             if not module in modules_imported:
                 exec ("from %s import %s" % (module, module))
-                exec ("%s.debug = %d" % (module, debug))
                 modules_imported.append (module)
 
             exec ("%s (troubleshooter)" % module)
@@ -303,25 +313,13 @@ def run (quitfn=None):
 
 if __name__ == "__main__":
     import sys, getopt
-    base.debug = 0
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
                                         ['debug'])
         for opt, optarg in opts:
             if opt == '--debug':
-                base.debug = 1
+                set_debugging (True)
     except getopt.GetoptError:
         pass
-
-    import os.path
-    if sys.argv[0][0] != '/':
-        cwd = os.getcwd ()
-        path = cwd + os.path.sep + sys.argv[0]
-    else:
-        path = sys.argv[0]
-    sub = os.path.dirname (path)
-    root = os.path.dirname (sub)
-    debugprint ("Appending %s to path" % root)
-    sys.path.append (root)
     run (gtk.main_quit)
     gtk.main ()

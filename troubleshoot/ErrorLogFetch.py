@@ -101,15 +101,7 @@ class ErrorLogFetch(Question):
         try:
             settings = c.adminGetServerSettings ()
         except cups.IPPError:
-            settings = {}
-
-        if len (settings.keys ()) == 0:
-            cups.setUser ('root')
-            c._connect ()
-            try:
-                settings = c.adminGetServerSettings ()
-            except cups.IPPError:
-                settings = {}
+            return
 
         try:
             prev = int (settings[cups.CUPS_SERVER_DEBUG_LOGGING])

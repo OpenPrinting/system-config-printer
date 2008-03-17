@@ -1,5 +1,14 @@
 2008-03-17  Tim Waugh  <twaugh@redhat.com>
 
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.enable_clicked): No need to work around
+	adminGetServerSettings weirdness.
+	* troubleshoot/ErrorLogFetch.py (ErrorLogFetch.button_clicked):
+	Likewise.
+
+	* troubleshoot/base.py: Use debug module.
+	* troubleshoot/__init__.py (run): Likewise.
+
 	* troubleshoot/ErrorLogFetch.py (ErrorLogFetch.display): Reconnect
 	in case cupsd has restarted.
 
