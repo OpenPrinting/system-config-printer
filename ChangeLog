@@ -1,5 +1,11 @@
 2008-03-17  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.on_job_cancel_activate): Use
+	authconn.Connection.
+	(JobViewer.on_job_hold_activate): Likewise.
+	(JobViewer.on_job_release_activate): Likewise.
+	(JobViewer.on_job_reprint_activate): Likewise.
+
 	* troubleshoot/ErrorLogCheckpoint.py
 	(ErrorLogCheckpoint.enable_clicked): No need to work around
 	adminGetServerSettings weirdness.

@@ -17,6 +17,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import authconn
 import cups
 import dbus
 import dbus.glib
@@ -1011,7 +1012,7 @@ class JobViewer:
 
     def on_job_cancel_activate(self, menuitem):
         try:
-            c = cups.Connection ()
+            c = authconn.Connection (self.MainWindow)
             c.cancelJob (self.jobid)
             del c
         except cups.IPPError, (e, m):
@@ -1022,7 +1023,7 @@ class JobViewer:
 
     def on_job_hold_activate(self, menuitem):
         try:
-            c = cups.Connection ()
+            c = authconn.Connection (self.MainWindow)
             c.setJobHoldUntil (self.jobid, "indefinite")
             del c
         except cups.IPPError, (e, m):
@@ -1033,7 +1034,7 @@ class JobViewer:
 
     def on_job_release_activate(self, menuitem):
         try:
-            c = cups.Connection ()
+            c = authconn.Connection (self.MainWindow)
             c.setJobHoldUntil (self.jobid, "no-hold")
             del c
         except cups.IPPError, (e, m):
@@ -1044,7 +1045,7 @@ class JobViewer:
 
     def on_job_reprint_activate(self, menuitem):
         try:
-            c = cups.Connection ()
+            c = authconn.Connection (self.MainWindow)
             c.restartJob (self.jobid)
             del c
         except cups.IPPError, (e, m):
