@@ -151,7 +151,7 @@ fix-glade:
 
 run:
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/system-config-printer.glade \
-	python $(top_srcdir)/system-config-printer.py
+	python $(top_srcdir)/system-config-printer.py --debug
 
 help:
 	@echo "Usage: make <target>"

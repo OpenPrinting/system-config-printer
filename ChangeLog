@@ -1,5 +1,15 @@
 2008-03-17  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (main): New option --debug.
+	* man/system-config-printer.xml: Document it.
+	* Makefile.am (run): Run with debugging enabled.
+
+	* system-config-printer.py (GUI.__init__): Use authconn.Connection.
+	(GUI.on_connect_activate): Pass in the parent window widget.
+	(GUI.connect): Use authconn.Connection.
+	(GUI.reconnect): Likewise.
+	(GUI.on_btnRefresh_clicked): Likewise.
+
 	* jobviewer.py (JobViewer.on_job_cancel_activate): Use
 	authconn.Connection.
 	(JobViewer.on_job_hold_activate): Likewise.
