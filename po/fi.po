@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-03-10 11:01+0000\n"
-"PO-Revision-Date: 2008-02-04 01:54+0200\n"
+"POT-Creation-Date: 2008-03-10 18:04+0000\n"
+"PO-Revision-Date: 2008-03-17 22:17+0200\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
 "MIME-Version: 1.0\n"
@@ -587,7 +587,7 @@ msgstr "<b>Kuva-asetukset</b>"
 
 #: ../system-config-printer.glade.h:17
 msgid "<b>Installed Options</b>"
-msgstr "<b>Asennetut lisäominaisuudet</b>"
+msgstr "<b>Asennetut valinnat</b>"
 
 #: ../system-config-printer.glade.h:18
 msgid "<b>License Terms</b>"
@@ -1023,7 +1023,6 @@ msgstr ""
 "Alhaalta ylös, oikealta vasemmalle"
 
 #: ../system-config-printer.glade.h:140
-#, fuzzy
 msgid "License:"
 msgstr "Lisenssi:"
 
@@ -1192,7 +1191,7 @@ msgstr "Odota, ole hyvä"
 
 #: ../system-config-printer.glade.h:197
 msgid "Policies"
-msgstr "Käytännöt"
+msgstr "Menettelytavat"
 
 #: ../system-config-printer.glade.h:198
 msgid "Port number:"
@@ -1487,9 +1486,8 @@ msgid "Yes, I accept this license"
 msgstr "Kyllä, hyväksyn tämän lisenssin"
 
 #: ../system-config-printer.glade.h:261
-#, fuzzy
 msgid "_Connect..."
-msgstr "Yhdistää"
+msgstr "_Yhdistä..."
 
 #: ../system-config-printer.glade.h:262
 msgid "_Do not apply"
@@ -1517,7 +1515,7 @@ msgstr "_Hae"
 
 #: ../system-config-printer.glade.h:268
 msgid "_Troubleshoot"
-msgstr ""
+msgstr "_Ongelmanratkaisu"
 
 #: ../system-config-printer.glade.h:269
 msgid "_Verify..."
@@ -1536,7 +1534,6 @@ msgid "points"
 msgstr "pistettä"
 
 #: ../system-config-printer.glade.h:273
-#, fuzzy
 msgid ""
 "points\n"
 "(72 points per inch)"
@@ -1638,14 +1635,13 @@ msgid "Printer '%s' has no ink left."
 msgstr "Tulostimen ”%s” muste on lopussa."
 
 #: ../statereason.py:89
-#, fuzzy
 msgid "Printer off-line"
-msgstr "Tulostimen asetukset"
+msgstr "Tulostin poissa käytöstä"
 
 #: ../statereason.py:90
-#, fuzzy, python-format
+#, python-format
 msgid "Printer `%s' is currently off-line."
-msgstr "Paperi on loppu tulostimesta ”%s”."
+msgstr "Tulostin ”%s” on poissa käytöstä."
 
 #: ../statereason.py:91
 msgid "Not connected?"
@@ -1661,9 +1657,9 @@ msgid "Printer error"
 msgstr "Tulostinvirhe"
 
 #: ../statereason.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem on printer `%s'."
-msgstr "Tulostimen ”%s” luukku on auki."
+msgstr "Tulostimessa ”%s” on ongelma."
 
 #: ../statereason.py:101
 msgid "Printer report"
@@ -1680,38 +1676,44 @@ msgstr "Tulostin ”%s”: ”%s”."
 
 #: ../troubleshoot/__init__.py:37
 msgid "Printing troubleshooter"
-msgstr ""
+msgstr "Tulostuksen ongelmanratkaisu"
 
 #: ../troubleshoot/base.py:33
 msgid ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
 msgstr ""
+"Tämä työkalu käynnistetään valitsemalla päävalikosta "
+"Järjestelmä->Ylläpito->Tulostus."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:28
 msgid "Server Not Exporting Printers"
-msgstr ""
+msgstr "Palvelin ei näytä tulostimia"
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:29
 msgid ""
 "Although one or more printers are marked as being shared, this print server "
 "is not exporting shared printers to the network."
 msgstr ""
+"Vaikka yksi tai useampia tulostimia on merkitty jaettavaksi, tämä "
+"tulostuspalvelin ei näytä jaettuja tulostimia verkkoon."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:33
 msgid ""
 "Enable the 'Share published printers connected to this system' option in the "
 "server settings using the printing administration tool."
 msgstr ""
+"Ota käyttöön ”Jaa tähän järjestelmään kytketyt julkiset kirjoittimet” "
+"-valinta palvelimen asetuksista käyttämällä tulostuksen "
+"ylläpitotyökalua."
 
 #: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:1188
 msgid "Install"
 msgstr "Asenna"
 
 #: ../troubleshoot/CheckPPDSanity.py:80
-#, fuzzy
 msgid "Invalid PPD File"
-msgstr "Anna PPD-tiedosto"
+msgstr "Virheellinen PPD-tiedosto"
 
 #: ../troubleshoot/CheckPPDSanity.py:88
 #, python-format
@@ -1719,39 +1721,41 @@ msgid ""
 "The PPD file for printer `%s' does not conform to the specification.  "
 "Possible reason follows:"
 msgstr ""
+"Tulostimen ”%s” PPD-tiedosto ei ole määrittelyn mukainen. Mahdollinen "
+"syy:"
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem with the PPD file for printer `%s'."
-msgstr "Tulostimen ”%s” luukku on auki."
+msgstr "Tulostimen ”%s” PPD-tiedostossa on ongelma."
 
 #: ../troubleshoot/CheckPPDSanity.py:104
-#, fuzzy
 msgid "Missing Printer Driver"
 msgstr "Tulostinajuri puuttuu"
 
 #: ../troubleshoot/CheckPPDSanity.py:107
-#, fuzzy, python-format
+#, python-format
 msgid "Printer `%s' requires the %s package but it is not currently installed."
-msgstr "Tulostin ”%s” vaatii paketin ”%s”, mutta sitä ei ole asennettu."
+msgstr "Tulostin ”%s” vaatii paketin %s, mutta sitä ei ole asennettu."
 
 #: ../troubleshoot/CheckPPDSanity.py:112
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Printer `%s' requires the `%s' program but it is not currently installed."
-msgstr "Tulostin ”%s” vaatii paketin ”%s”, mutta sitä ei ole asennettu."
+msgstr "Tulostin ”%s” vaatii ohjelman ”%s”, mutta sitä ei ole asennettu."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
-#, fuzzy
 msgid "Choose Network Printer"
-msgstr "Uusi tulostin"
+msgstr "Valitse verkkotulostin"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:30
 msgid ""
 "Please select the network printer you are trying to use from the list below. "
 "If it does not appear in the list, select 'Not listed'."
 msgstr ""
+"Valitse alla olevasta luettelosta verkkotulostin, jota yrität käyttää. "
+"Jos se ei ole luettelossa, valitse ”Ei luettelossa”."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
@@ -1760,136 +1764,139 @@ msgstr "Nimi"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:39
 #: ../troubleshoot/ChoosePrinter.py:40 ../troubleshoot/DeviceListed.py:38
-#, fuzzy
 msgid "Information"
-msgstr "Sijainti"
+msgstr "Tiedot"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:75
 #: ../troubleshoot/ChoosePrinter.py:64 ../troubleshoot/DeviceListed.py:70
-#, fuzzy
 msgid "Not listed"
-msgstr "Ei kytketty"
+msgstr "Ei luettelossa"
 
 #: ../troubleshoot/ChoosePrinter.py:30
-#, fuzzy
 msgid "Choose Printer"
-msgstr "Kopioi tulostin"
+msgstr "Valitse tulostin"
 
 #: ../troubleshoot/ChoosePrinter.py:31
 msgid ""
 "Please select the printer you are trying to use from the list below. If it "
 "does not appear in the list, select 'Not listed'."
 msgstr ""
+"Valitse alla olevasta luettelosta tulostin, jota yrität käyttää. "
+"Jos se ei ole luettelossa, valitse ”Ei luettelossa”."
 
 #: ../troubleshoot/DeviceListed.py:30
-#, fuzzy
 msgid "Choose Device"
-msgstr "Vaihda laitteen osoitetta"
+msgstr "Valitse laite"
 
 #: ../troubleshoot/DeviceListed.py:31
 msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
+"Valitse alla olevasta luettelosta laite, jota haluat käyttää. "
+"Jos se ei ole luettelossa, valitse ”Ei luettelossa”."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:30
 #: ../troubleshoot/ErrorLogFetch.py:30
 msgid "Debugging"
-msgstr ""
+msgstr "Vianjäljitys"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid ""
 "I would like to enable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to enable debugging."
 msgstr ""
+"Haluan ottaa käyttöön CUPS-vuorottajan vianjäljitystulosteen. Tämä voi "
+"aiheuttaa vuorottajan uudelleenkäynnistymisen. Alla olevan painikkeen "
+"napsauttaminen ottaa käyttöön vianjäljityksen."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:35
 msgid "Enable Debugging"
-msgstr ""
+msgstr "Ota vianjäljitys käyttöön"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:159
 msgid "Debug logging enabled."
-msgstr ""
+msgstr "Vianjäljityslokin tekeminen käytössä."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:161
 msgid "Debug logging was already enabled."
-msgstr ""
+msgstr "Vianjäljityslokin tekeminen oli jo käytössä."
 
 #: ../troubleshoot/ErrorLogFetch.py:31
 msgid ""
 "I would like to disable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to disable debugging."
 msgstr ""
+"Haluan poistaa käytöstä CUPS-vuorottajan vianjäljitystulosteen. Tämä voi "
+"aiheuttaa vuorottajan uudelleenkäynnistymisen. Alla olevan painikkeen "
+"napsauttaminen poistaa käytöstä vianjäljityksen."
 
 #: ../troubleshoot/ErrorLogFetch.py:35
 msgid "Disable Debugging"
-msgstr ""
+msgstr "Poista vianjäljitys käytöstä"
 
 #: ../troubleshoot/ErrorLogFetch.py:142
 msgid "Debug logging disabled."
-msgstr ""
+msgstr "Vianjäljityslokin tekeminen poissa käytöstä."
 
 #: ../troubleshoot/ErrorLogFetch.py:144
 msgid "Debug logging was already disabled."
-msgstr ""
+msgstr "Vianjäljityslokin tekeminen oli jo poissa käytöstä."
 
 #: ../troubleshoot/ErrorLogParse.py:30
 msgid "Error log messages"
-msgstr ""
+msgstr "Vikalokin viestit"
 
 #: ../troubleshoot/ErrorLogParse.py:31
 msgid "There are messages in the error log."
-msgstr ""
+msgstr "Vikalokissa on viestejä."
 
 #: ../troubleshoot/LocalOrRemote.py:27
-#, fuzzy
 msgid "Printer Location"
-msgstr "Tulostimen asetukset"
+msgstr "Tulostimen sijainti"
 
 #: ../troubleshoot/LocalOrRemote.py:28
-#, fuzzy
 msgid "Is the printer connected to this computer or available on the network?"
-msgstr "Rinnakkaisporttiin liitetty tulostin."
+msgstr ""
+"Onko tulostin liitetty tähän tietokoneeseen vai käytettävissä "
+"verkon kautta?"
 
 #: ../troubleshoot/LocalOrRemote.py:30
-#, fuzzy
 msgid "Locally connected printer"
-msgstr "Haluatko varmasti poistaa tulostimen %s?"
+msgstr "Paikallisesti kytketty tulostin"
 
 #: ../troubleshoot/LocalOrRemote.py:31
-#, fuzzy
 msgid "Network printer"
-msgstr "Uusi tulostin"
+msgstr "Verkkotulostin"
 
 #: ../troubleshoot/NetworkCUPSPrinterShared.py:28
 msgid "Queue Not Shared"
-msgstr ""
+msgstr "Jonoa ei ole jaettu"
 
 #: ../troubleshoot/NetworkCUPSPrinterShared.py:29
 msgid "The CUPS printer on the server is not shared."
-msgstr ""
+msgstr "Palvelimen CUPS-tulostinta ei ole jaettu."
 
 #: ../troubleshoot/PrinterStateReasons.py:29
-#, fuzzy
 msgid "Status Messages"
-msgstr "Viesti"
+msgstr "Tilaviestit"
 
 #: ../troubleshoot/PrinterStateReasons.py:30
 msgid "There are status messages associated with this queue."
-msgstr ""
+msgstr "Tähän jonoon liittyy tilaviestejä."
 
 #: ../troubleshoot/PrinterStateReasons.py:53
-#, fuzzy, python-format
+#, python-format
 msgid "The printer's state message is: `%s'."
-msgstr "Tulostimen tilat:"
+msgstr "Tulostimen tilaviesti on: ”%s”."
 
 #: ../troubleshoot/PrinterStateReasons.py:78
 msgid "Errors are listed below:"
-msgstr ""
+msgstr "Virheet on lueteltu alla:"
 
 #: ../troubleshoot/PrinterStateReasons.py:83
 msgid "Warnings are listed below:"
-msgstr ""
+msgstr "Varoitukset on lueteltu alla:"
 
 #: ../troubleshoot/PrintTestPage.py:33 ../applet.py:881
 msgid "Pending"
@@ -1913,24 +1920,24 @@ msgid "Completed"
 msgstr "Valmiina"
 
 #: ../troubleshoot/PrintTestPage.py:48
-#, fuzzy
 msgid "Test Page"
-msgstr "Tulosta testisivu"
+msgstr "Testisivu"
 
 #: ../troubleshoot/PrintTestPage.py:49
 msgid ""
 "Now print a test page.  If you are having problems printing a specific "
 "document, print that document now and mark the print job below."
 msgstr ""
+"Tulosta nyt testisivu. Jos tietyn dokumentin kanssa on ongelmia, tulosta "
+"se dokumentti nyt ja merkitse tulostustyö alla."
 
 #: ../troubleshoot/PrintTestPage.py:64
 msgid "Cancel All Jobs"
-msgstr ""
+msgstr "Peruuta kaikki työt"
 
 #: ../troubleshoot/PrintTestPage.py:70
-#, fuzzy
 msgid "Test"
-msgstr "Oletukset"
+msgstr "Testi"
 
 #: ../troubleshoot/PrintTestPage.py:71 ../applet.py:116
 msgid "Job"
@@ -1946,80 +1953,81 @@ msgstr "Tila"
 
 #: ../troubleshoot/PrintTestPage.py:100
 msgid "Did the marked print jobs print correctly?"
-msgstr ""
+msgstr "Tulostuivatko merkityt tulostustyöt oikein?"
 
 #: ../troubleshoot/PrintTestPage.py:107
 msgid "Yes"
-msgstr ""
+msgstr "Kyllä"
 
 #: ../troubleshoot/PrintTestPage.py:108
-#, fuzzy
 msgid "No"
-msgstr "Ei yhtään"
+msgstr "Ei"
 
 #: ../troubleshoot/QueueNotEnabled.py:57
 #: ../troubleshoot/QueueRejectingJobs.py:67
 #, python-format
 msgid "The reason given is: `%s'."
-msgstr ""
+msgstr "Annettu syy on: ”%s”."
 
 #: ../troubleshoot/QueueNotEnabled.py:59
 msgid "This may be due to the printer being disconnected or switched off."
-msgstr ""
+msgstr "Tämä voi johtua siitä, että tulostin irrotettu tai kyketty pois käytöstä."
 
 #: ../troubleshoot/QueueNotEnabled.py:63
 msgid "Queue Not Enabled"
-msgstr ""
+msgstr "Jono ei käytössä"
 
 #: ../troubleshoot/QueueNotEnabled.py:64
 #, python-format
 msgid "The queue `%s' is not enabled."
-msgstr ""
+msgstr "Jono ”%s” ei ole käytössä."
 
 #: ../troubleshoot/QueueNotEnabled.py:72
 msgid ""
 "To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
 "printer in the printer administration tool."
 msgstr ""
+"Ota jono käyttöön valitsemalla ”Käytössä” tulostimen "
+"ylläpitotyökalun ”Menettelytavat”-välilehdellä."
 
 #: ../troubleshoot/QueueRejectingJobs.py:32
 msgid "Queue Rejecting Jobs"
-msgstr ""
+msgstr "Jono hylkää töitä"
 
 #: ../troubleshoot/QueueRejectingJobs.py:64
 #, python-format
 msgid "The queue `%s' is rejecting jobs."
-msgstr ""
+msgstr "Jono ”%s” hylkää töitä."
 
 #: ../troubleshoot/QueueRejectingJobs.py:71
 msgid ""
 "To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
 "`Policies' tab for the printer in the printer administration tool."
 msgstr ""
+"Aseta jono hyväksymään töitä valitsemalla ”Hyväksyy töitä” tulostimen "
+"ylläpitotyökalun ”Menettelytavat”-välilehdellä."
 
 #: ../troubleshoot/RemoteAddress.py:27
-#, fuzzy
 msgid "Remote Address"
-msgstr "Etätulostimet"
+msgstr "Etäosoite"
 
 #: ../troubleshoot/RemoteAddress.py:28
 msgid ""
 "Please enter as many details as you can about the network address of this "
 "printer."
-msgstr ""
+msgstr "Anna mahdollisimman paljon tietoja tämän tulostimen verkko-osoitteesta."
 
 #: ../troubleshoot/RemoteAddress.py:36
-#, fuzzy
 msgid "Server name:"
-msgstr "Käyttäjätunnus:"
+msgstr "Palvelimen nimi:"
 
 #: ../troubleshoot/RemoteAddress.py:43
 msgid "Server IP address:"
-msgstr ""
+msgstr "Palvelimen IP-osoite:"
 
 #: ../troubleshoot/SchedulerNotRunning.py:28
 msgid "CUPS Service Stopped"
-msgstr ""
+msgstr "CUPS-palvelu on pysäytetty"
 
 #: ../troubleshoot/SchedulerNotRunning.py:29
 msgid ""
@@ -2027,56 +2035,60 @@ msgid ""
 "choose System->Administration->Services from the main menu and look for the "
 "`cups' service."
 msgstr ""
+"CUPS-tulostusjonottaja ei näytä olevan käynnissä. Tämän voi korjata "
+"valitsemalla päävalikosta Järjestelmä->Ylläpito->Palvelut ja etsimällä "
+"”cups”-palvelun."
 
 #: ../troubleshoot/ServerFirewalled.py:27
 msgid "Check Server Firewall"
-msgstr ""
+msgstr "Tarkista palvelimen palomuuri"
 
 #: ../troubleshoot/ServerFirewalled.py:28
-#, fuzzy
 msgid "It is not possible to connect to the server."
-msgstr "CUPS-palvelimeen yhdistämisessä oli ongelma."
+msgstr "Palvelimelle ei voida yhdistää."
 
 #: ../troubleshoot/ServerFirewalled.py:43
 #, python-format
 msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
 "port %d on server `%s'."
-msgstr ""
+msgstr "Tarkista estääkö palomuuri tai reititin pääsyn palvelimen ”%s” TCP-porttiin %d."
 
 #: ../troubleshoot/Shrug.py:27
 msgid "Sorry!"
-msgstr ""
+msgstr "Valitan!"
 
 #: ../troubleshoot/Shrug.py:28
 msgid ""
 "I have not been able to work out what the problem is, but I have collected "
 "some useful information to put in a bug report."
 msgstr ""
+"En ole saanut selville, mikä ongelma on, mutta olen kerännyt hyödyllistä "
+"tietoa vikailmoitukseen laitettavaksi."
 
 #: ../troubleshoot/Welcome.py:41
-#, fuzzy
 msgid "Authentication"
-msgstr "Todennus vaaditaan"
+msgstr "Todennus"
 
 #: ../troubleshoot/Welcome.py:56
-#, fuzzy
 msgid "Password required"
-msgstr "Tarvitaan pävitys"
+msgstr "Salasana vaaditaan"
 
 #: ../troubleshoot/Welcome.py:95
 msgid "Trouble-shooting Printing"
-msgstr ""
+msgstr "Tulostuksen vianjäljitys"
 
 #: ../troubleshoot/Welcome.py:97
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
 msgstr ""
+"Muutamassa seuraavassa ruudussa kysyn joitakin kysymyksiä tulostusongelmasta. "
+"Vastausten perusteella yritän ehdottaa ratkaisua."
 
 #: ../troubleshoot/Welcome.py:101
 msgid "Click 'Forward' to begin."
-msgstr ""
+msgstr "Aloita napsauttamalla ”Eteenpäin”."
 
 #: ../applet.py:119
 msgid "Size"
@@ -2128,34 +2140,33 @@ msgid "%d minutes ago"
 msgstr "%d minuuttia sitten"
 
 #: ../applet.py:701
-#, fuzzy, python-format
+#, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr "CUPS-palvelimeen yhdistämisessä oli ongelma."
+msgstr "Dokumentin ”%s” (työ %d) lähettämisessä tulostimelle oli ongelma."
 
 #: ../applet.py:704
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
-msgstr ""
+msgstr "Dokumentin ”%s” (työ %d) käsittelyssä oli ongelma."
 
 #. Give up and use the untranslated provided.
 #: ../applet.py:708
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
-msgstr ""
+msgstr "Dokumentin ”%s” (työ %d) tulostamisessa oli ongelma: ”%s”."
 
 #: ../applet.py:713 ../applet.py:729
-#, fuzzy
 msgid "Print Error"
-msgstr "Tulostinvirhe"
+msgstr "Tulostusvirhe"
 
 #: ../applet.py:714
 msgid "_Diagnose"
-msgstr ""
+msgstr "_Diagnosoi"
 
 #: ../applet.py:735
 #, python-format
 msgid "The printer called `%s' has been disabled."
-msgstr ""
+msgstr "Tulostin ”%s” on poistettu käytöstä."
 
 #: ../applet.py:814
 msgid "No documents queued"
