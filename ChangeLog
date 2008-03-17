@@ -2,6 +2,12 @@
 
 	* system-config-printer.py (GUI.__init__): Set initial window size
 	appropriately.
+	(GUI.fillServerTab): Removed old code.
+	(GUI.on_tvMainList_row_activated): Removed.
+	(GUI.on_btnRevert_clicked): Removed.
+	(GUI.fillServerTab): Propagate the exception.
+	(GUI.on_server_settings_activate): Catch the exception and
+	return.
 
 	* system-config-printer.glade: Removed unnecessary button box
 	buttons.

@@ -644,7 +644,12 @@ class GUI(GtkGUI):
     def on_server_settings_activate (self, menuitem):
         finished = False
         while not finished:
-            self.fillServerTab ()
+            try:
+                self.fillServerTab ()
+            except cups.IPPError:
+                # Not authorized.
+                return
+
             response = self.ServerSettingsDialog.run ()
             if response == gtk.RESPONSE_OK:
                 if not self.save_serversettings ():
@@ -793,12 +798,6 @@ class GUI(GtkGUI):
 
         if change_ppd:
             self.on_btnChangePPD_clicked (self.btnChangePPD)
-
-    def on_tvMainList_row_activated(self, treeview, path, column):
-        if treeview.row_expanded(path):
-            treeview.collapse_row(path)
-        else:
-            treeview.expand_row(path, False)
 
     # Connect to Server
 
@@ -1217,7 +1216,7 @@ class GUI(GtkGUI):
     def on_entNewJobOption_activate(self, widget):
         self.on_btnNewJobOption_clicked (widget) # wrong widget but ok
 
-    # set Apply/Revert buttons sensitive    
+    # set buttons sensitivity
     def setDataButtonState(self):
         try: # Might not be a printer selected
             possible = (self.ppd and
@@ -1457,12 +1456,6 @@ class GUI(GtkGUI):
         #self.ppd.markDefaults()
         for option in self.options.itervalues():
             option.writeback()
-
-    # revert changes
-
-    def on_btnRevert_clicked(self, button):
-        self.changed = set() # avoid asking the user
-        self.on_tvMainList_cursor_changed(self.tvMainList)
 
     # set default printer
     
@@ -2107,9 +2100,7 @@ class GUI(GtkGUI):
             self.server_settings = self.cups.adminGetServerSettings()
         except cups.IPPError, (e, m):
             self.show_IPP_Error(e, m)
-            self.tvMainList.get_selection().unselect_all()
-            self.on_tvMainList_cursor_changed(self.tvMainList)
-            return
+            raise
 
         for widget, setting in [
             (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
