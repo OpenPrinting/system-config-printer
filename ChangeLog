@@ -1,5 +1,17 @@
 2008-03-17  Tim Waugh  <twaugh@redhat.com>
 
+	* authconn.py (Connection.__init__): Initialise _use_user correctly.
+	(Connection._set_prompt_allowed): Allow caller to disallow
+	prompting.
+	(Connection._authloop): Handle cups.HTTPError.
+
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.enable_clicked): Changed to use
+	AuthenticatedConnection.
+
+	* troubleshoot/Welcome.py (AuthenticationDialog): Removed.  Use
+	authconn.Connection instead.
+
 	* authconn.py: New file.
 	* po/POTFILES.in: Translate it.
 	* Makefile.am (nobase_pkgdata_DATA): Ship it.

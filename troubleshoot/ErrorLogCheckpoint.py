@@ -113,30 +113,19 @@ class ErrorLogCheckpoint(Question):
         return self.answers
 
     def enable_clicked (self, button):
-        auth = self.troubleshooter.answers['_authentication_dialog']
-        for user in ['', 'root']:
-            cups.setUser (user)
-            if user == '':
-                # First try with the current user and no password.
-                cups.setPasswordCB (lambda x: '')
-            else:
-                # Then try with root and an authentication dialog.
-                cups.setPasswordCB (auth.callback)
+        authconn = self.troubleshooter.answers['_authenticated_connection']
+        try:
+            settings = authconn.adminGetServerSettings ()
+        except cups.IPPError:
+            settings = {}
 
+        if len (settings.keys ()) == 0:
+            cups.setUser ('root')
+            authconn._connect ()
             try:
-                c = cups.Connection ()
-            except RuntimeError:
-                return
-
-            try:
-                auth.suppress_dialog ()
-                settings = c.adminGetServerSettings ()
+                settings = authconn.adminGetServerSettings ()
             except cups.IPPError:
                 settings = {}
-
-            if len (settings.keys ()) == 0:
-                if user != '':
-                    return
 
         self.answers['cups_server_settings'] = settings.copy ()
         try:
@@ -148,10 +137,11 @@ class ErrorLogCheckpoint(Question):
             settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '1'
             success = False
             try:
-                auth.suppress_dialog ()
-                c.adminSetServerSettings (settings)
+                authconn.adminSetServerSettings (settings)
                 success = True
             except cups.IPPError:
+                pass
+            except RuntimeError:
                 pass
 
             if success:

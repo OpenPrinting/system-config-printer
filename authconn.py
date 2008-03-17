@@ -26,20 +26,24 @@ def set_gettext_function (fn):
     global _
     _ = fn
 
-class AuthenticatedConnection:
+class Connection:
     def __init__ (self, parent):
-        self._use_user = ''
         self._use_password = ''
         self._parent = parent
         self._connect ()
+        self._prompt_allowed = True
+
+    def _set_prompt_allowed (allowed):
+        self._prompt_allowed = allowed
 
     def _make_binding (self, fn):
         return lambda *args, **kwds: self._authloop (fn, *args, **kwds)
 
     def _connect (self):
         self._connection = cups.Connection ()
+        self._use_user = cups.getUser ()
         self._server = cups.getServer ()
-        self._user = cups.getUser ()
+        self._user = self._use_user
         methodtype = type (self._connection.getPrinters)
         for fname in dir (self._connection):
             if fname[0] == '_':
@@ -60,6 +64,11 @@ class AuthenticatedConnection:
                 break
             except cups.IPPError, (e, m):
                 if not self._cancel and e == cups.IPP_NOT_AUTHORIZED:
+                    self._failed ()
+                else:
+                    raise
+            except cups.HTTPError, (s,):
+                if not self._cancel and s == cups.HTTP_UNAUTHORIZED:
                     self._failed ()
                 else:
                     raise
@@ -111,6 +120,9 @@ class AuthenticatedConnection:
                 cups.setUser (self._use_user)
                 self._connect ()
                 return 1
+
+        if not self._prompt_allowed:
+            return -1
 
         # Prompt.
         d = gtk.Dialog (_("Authentication"), self._parent,
@@ -172,5 +184,5 @@ class AuthenticatedConnection:
 if __name__ == '__main__':
     # Test it out.
     set_debugging (True)
-    c = AuthenticatedConnection (None)
-    print c.cancelAllJobs ("test")
+    c = Connection (None)
+    print c.getFile ('/admin/conf/cupsd.conf', '/dev/stdout')
