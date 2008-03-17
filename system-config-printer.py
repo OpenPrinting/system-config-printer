@@ -293,9 +293,8 @@ class GUI(GtkGUI):
                         "ServerSettingsDialog",
                         "server_settings",
                         "statusbarMain",
-                        "btnNewPrinter", "btnNewClass", "btnCopy", "btnDelete",
+                        "btnNewPrinter", "btnNewClass",
                         "new_printer", "new_class", "copy", "delete",
-                        "btnGotoServer",
 
                         "chkServerBrowse", "chkServerShare",
                         "chkServerShareAny",
@@ -620,10 +619,8 @@ class GUI(GtkGUI):
             if not object.discovered:
                 is_local = True
 
-        for widget in [self.copy, self.btnCopy]:
-            widget.set_sensitive(len (paths) > 0)
-        for widget in [self.delete, self.btnDelete]:
-            widget.set_sensitive(is_local)
+        self.copy.set_sensitive(len (paths) == 1)
+        self.delete.set_sensitive(is_local)
 
     def dests_iconview_button_release_event (self, iconview, event):
         if event.button > 1:
