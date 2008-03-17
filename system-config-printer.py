@@ -590,13 +590,12 @@ class GUI(GtkGUI):
         try:
             self.dests_iconview.resize_children ()
             (width, height) = self.dests_iconview.size_request ()
-            (x, menubarh) = self.xml.get_widget ("menubar").size_request ()
-            (x, toolbarh) = self.xml.get_widget ("toolbar").size_request ()
-            (x, sbarh) = self.xml.get_widget ("statusbarMain").size_request ()
-            height += menubarh + toolbarh + sbarh + 10
-            if height > 400:
-                height = 400
-            self.MainWindow.resize (20 + width, height)
+            self.dests_iconview.set_size_request (20 + width, height)
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+            (width, height) = self.MainWindow.get_size ()
+            self.dests_iconview.set_size_request (-1, -1)
+            self.MainWindow.resize (width, height)
         except:
             nonfatalException ()
 
