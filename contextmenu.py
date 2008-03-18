@@ -72,20 +72,23 @@ class PrinterContextMenu:
             if any_discovered and any_enabled and any_disabled:
                 break
 
+        def show_widget (widget, condition):
+            if condition:
+                widget.show ()
+            else:
+                widget.hide ()
+
         # Actions that require a single destination
-        self.printer_context_edit.set_sensitive (n == 1 and not any_discovered)
-        self.printer_context_set_as_default.set_sensitive (n == 1 and
-                                                           not is_default)
+        show_widget (self.printer_context_edit, n == 1 and not any_discovered)
+        show_widget (self.printer_context_set_as_default,
+                     n == 1 and not is_default)
 
         # Actions that require at least one destination
-        self.printer_context_disable.set_sensitive (n > 0 and any_enabled and
-                                                    not any_discovered)
-        self.printer_context_enable.set_sensitive (n > 0 and any_disabled and
-                                                   not any_discovered)
-        self.printer_context_delete.set_sensitive (n > 0 and not any_discovered)
-
-        # Actions that do not require a destination
-        self.printer_context_view_print_queue.set_sensitive (True)
+        show_widget (self.printer_context_disable,
+                     n > 0 and any_enabled and not any_discovered)
+        show_widget (self.printer_context_enable,
+                     n > 0 and any_disabled and not any_discovered)
+        show_widget (self.printer_context_delete, n > 0 and not any_discovered)
 
         self.printer_context_menu.popup (None, None, None,
                                          event.button,
