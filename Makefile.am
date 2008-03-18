@@ -10,6 +10,7 @@ nobase_pkgdata_SCRIPTS=				\
 nobase_pkgdata_DATA=					\
 	authconn.py					\
 	config.py					\
+	contextmenu.py					\
 	cupshelpers.py					\
 	debug.py					\
 	jobviewer.py					\
