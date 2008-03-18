@@ -161,7 +161,6 @@ class GUI(GtkGUI):
         self.connect_user = cups.getUser()
         self.password = ''
         self.passwd_retry = False
-        cups.setPasswordCB(self.cupsPasswdCallback)        
 
         self.changed = set() # of options
 
@@ -765,7 +764,6 @@ class GUI(GtkGUI):
         """
         cups.setServer(self.connect_server)
         cups.setUser(self.connect_user)
-        cups.setPasswordCB(self.cupsPasswdCallback)
         # cups.setEncryption (...)
 
         self.password = ''
@@ -850,39 +848,6 @@ class GUI(GtkGUI):
     def on_btnCancelConnect_clicked(self, widget):
         """Close Connect dialog"""
         self.ConnectWindow.hide()
-
-    # Password handling
-
-    def cupsPasswdCallback(self, querystring):
-        if self.passwd_retry or len(self.password) == 0:
-            waiting = self.WaitWindow.get_property('visible')
-            if waiting:
-                self.WaitWindow.hide ()
-            self.lblPasswordPrompt.set_label (self.prompt_primary +
-                                              querystring)
-            self.PasswordDialog.set_transient_for (self.MainWindow)
-            self.entPasswd.grab_focus ()
-
-            result = self.PasswordDialog.run()
-            self.PasswordDialog.hide()
-            if waiting:
-                self.WaitWindow.show ()
-            while gtk.events_pending ():
-                gtk.main_iteration ()
-            if result == gtk.RESPONSE_OK:
-                self.password = self.entPasswd.get_text()
-            else:
-                self.password = ''
-            self.passwd_retry = False
-        else:
-            self.passwd_retry = True
-        return self.password
-    
-    def on_btnPasswdOk_clicked(self, widget):
-        self.PasswordDialog.response(0)
-
-    def on_btnPasswdCancel_clicked(self, widget):
-        self.PasswordDialog.response(1)
 
     # refresh
     
@@ -2400,7 +2365,7 @@ class NewPrinterGUI(GtkGUI):
             debugprint ("Connecting (PPDs)")
             cups.setServer (self.mainapp.connect_server)
             cups.setUser (self.mainapp.connect_user)
-            cups.setPasswordCB (self.mainapp.cupsPasswdCallback)
+            cups.setPasswordCB (lambda x: '')
             # cups.setEncryption (...)
             c = cups.Connection ()
             debugprint ("Fetching PPDs")
@@ -2787,7 +2752,7 @@ class NewPrinterGUI(GtkGUI):
             debugprint ("Connecting (devices)")
             cups.setServer (self.mainapp.connect_server)
             cups.setUser (self.mainapp.connect_user)
-            cups.setPasswordCB (self.mainapp.cupsPasswdCallback)
+            cups.setPasswordCB (lambda x: '')
             # cups.setEncryption (...)
             c = cups.Connection ()
             debugprint ("Fetching devices")
