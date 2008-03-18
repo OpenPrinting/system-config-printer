@@ -271,6 +271,17 @@ class PrinterContextMenu(GtkGUI):
     def on_printer_context_edit_activate (self, menuitem):
         self.parent.dests_iconview_item_activated (self.iconview, self.paths[0])
 
+    def on_printer_context_enable_activate (self, menuitem, enable=True):
+        model = self.iconview.get_model ()
+        for i in range (len (self.paths)):
+            iter = model.get_iter (self.paths[i])
+            printer = model.get_value (iter, 0)
+            printer.setEnabled (enable)
+        self.parent.populateList ()
+
+    def on_printer_context_disable_activate (self, menuitem):
+        self.on_printer_context_enable_activate (menuitem, enable=False)
+
     def on_printer_context_set_as_default_activate (self, menuitem):
         model = self.iconview.get_model ()
         iter = model.get_iter (self.paths[0])
