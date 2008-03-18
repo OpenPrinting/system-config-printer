@@ -229,10 +229,18 @@ class PrinterContextMenu(GtkGUI):
 
         n = len (paths)
 
+        if n == 1:
+            model = self.iconview.get_model ()
+            iter = model.get_iter (paths[0])
+            name = model.get_value (iter, 2)
+            is_default = name == self.parent.default_printer
+        else:
+            is_default = False
+
         # Actions that require a single destination
-        for widget in [self.printer_context_edit,
-                        self.printer_context_set_as_default]:
-            widget.set_sensitive (n == 1)
+        self.printer_context_edit.set_sensitive (n == 1)
+        self.printer_context_set_as_default.set_sensitive (n == 1 and
+                                                           not is_default)
 
         # Actions that require at least one destination
         for widget in [self.printer_context_disable,
