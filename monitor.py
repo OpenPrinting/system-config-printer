@@ -460,3 +460,12 @@ class Monitor:
     def handle_dbus_signal(self, *args):
         gobject.source_remove (self.update_timer)
         self.update_timer = gobject.timeout_add (200, self.get_notifications)
+
+if __name__ == '__main__':
+    set_debugging (True)
+    m = Monitor (Watcher ())
+    loop = gobject.MainLoop ()
+    try:
+        loop.run ()
+    finally:
+        m.cleanup ()
