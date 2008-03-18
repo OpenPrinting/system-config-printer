@@ -793,6 +793,17 @@ class GUI(GtkGUI):
                         except gobject.GError:
                             pass
 
+                if name == self.default_printer:
+                    default_emblem = theme.load_icon ('emblem-default', 24, 0)
+                    copy = pixbuf.copy ()
+                    default_emblem.composite (copy, 0, 0,
+                                              copy.get_width (),
+                                              copy.get_height (),
+                                              0, 0,
+                                              1.0, 1.0,
+                                              gtk.gdk.INTERP_NEAREST, 255)
+                    pixbuf = copy
+
                 self.mainlist.append (row=[object, pixbuf, name, tip])
 
         if change_ppd:
