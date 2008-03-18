@@ -193,14 +193,8 @@ class JobViewer:
         self.store_printers = gtk.TreeStore (int, str, str)
         self.treeview_printers.set_model(self.store_printers)
 
-        self.lblPasswordPrompt = self.xml.get_widget('lblPasswordPrompt')
-        self.PasswordDialog = self.xml.get_widget('PasswordDialog')
-        self.entPasswd = self.xml.get_widget('entPasswd')
-        self.prompt_primary = self.lblPasswordPrompt.get_label ()
         self.lblError = self.xml.get_widget('lblError')
         self.ErrorDialog = self.xml.get_widget('ErrorDialog')
-
-        cups.setPasswordCB(self.cupsPasswdCallback)
 
         if self.trayicon:
             self.statusicon = gtk.StatusIcon ()
@@ -305,16 +299,6 @@ class JobViewer:
         self.show_printer_status.set_active (False)
         self.PrintersWindow.hide()
         return True
-
-    def cupsPasswdCallback(self, querystring):
-        self.lblPasswordPrompt.set_label (self.prompt_primary + querystring)
-        self.PasswordDialog.set_transient_for (self.MainWindow)
-        self.entPasswd.grab_focus ()
-        result = self.PasswordDialog.run()
-        self.PasswordDialog.hide()
-        if result == gtk.RESPONSE_OK:
-            return self.entPasswd.get_text()
-        return ''
 
     def show_IPP_Error(self, exception, message):
         if exception == cups.IPP_NOT_AUTHORIZED:
