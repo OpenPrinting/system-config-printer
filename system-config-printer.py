@@ -241,7 +241,6 @@ class GUI(GtkGUI):
                         "ConnectDialog", "chkEncrypted", "cmbServername",
                         "entUser", "btnConnect",
                         "ConnectingDialog", "lblConnecting",
-                        "PasswordDialog", "lblPasswordPrompt", "entPasswd",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo",
@@ -277,7 +276,6 @@ class GUI(GtkGUI):
         self.status_context_id = self.statusbarMain.get_context_id(
             "Connection")
         self.setConnected()
-        self.prompt_primary = self.lblPasswordPrompt.get_label ()
 
         # Setup icon view
         self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
