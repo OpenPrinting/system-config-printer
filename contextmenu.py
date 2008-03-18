@@ -130,7 +130,6 @@ class PrinterContextMenu:
                                           exit_handler=self.on_jobviewer_exit)
 
         self.jobviewers.append (viewer)
-        print self.jobviewers
 
     def on_jobviewer_exit (self, viewer):
         i = self.jobviewers.index (viewer)
