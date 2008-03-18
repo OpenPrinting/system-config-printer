@@ -68,6 +68,18 @@ class StateReason:
         self.canonical_reason = reason
         return self.canonical_reason
 
+    def __repr__ (self):
+        if self.level == self.REPORT:
+            level = "REPORT"
+        elif self.level == self.WARNING:
+            level = "WARNING"
+        else:
+            level = "ERROR"
+
+        return "<statereason.StateReason (%s,%s,%s)>" % (level,
+                                                         self.get_printer (),
+                                                         self.get_reason ())
+
     def get_description (self):
         messages = {
             'toner-low': (_("Toner low"),
