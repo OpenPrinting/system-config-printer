@@ -239,27 +239,31 @@ class PrinterContextMenu(GtkGUI):
 
         any_disabled = False
         any_enabled = False
+        any_discovered = False
         for i in range (n):
             iter = model.get_iter (paths[i])
             object = model.get_value (iter, 0)
+            if object.discovered:
+                any_discovered = True
             if object.enabled:
                 any_enabled = True
-                if any_disabled:
-                    break
             else:
                 any_disabled = True
-                if any_enabled:
-                    break
+
+            if any_discovered and any_enabled and any_disabled:
+                break
 
         # Actions that require a single destination
-        self.printer_context_edit.set_sensitive (n == 1)
+        self.printer_context_edit.set_sensitive (n == 1 and not any_discovered)
         self.printer_context_set_as_default.set_sensitive (n == 1 and
                                                            not is_default)
 
         # Actions that require at least one destination
-        self.printer_context_disable.set_sensitive (n > 0 and any_enabled)
-        self.printer_context_enable.set_sensitive (n > 0 and any_disabled)
-        self.printer_context_delete.set_sensitive (n > 0)
+        self.printer_context_disable.set_sensitive (n > 0 and any_enabled and
+                                                    not any_discovered)
+        self.printer_context_enable.set_sensitive (n > 0 and any_disabled and
+                                                   not any_discovered)
+        self.printer_context_delete.set_sensitive (n > 0 and not any_discovered)
 
         # Actions that do not require a destination
         self.printer_context_view_print_queue.set_sensitive (True)
@@ -281,6 +285,9 @@ class PrinterContextMenu(GtkGUI):
 
     def on_printer_context_disable_activate (self, menuitem):
         self.on_printer_context_enable_activate (menuitem, enable=False)
+
+    def on_printer_context_delete_activate (self, menuitem):
+        self.parent.on_delete_activate (menuitem)
 
     def on_printer_context_set_as_default_activate (self, menuitem):
         model = self.iconview.get_model ()
@@ -1312,22 +1319,6 @@ class GUI(GtkGUI):
         self.conflict_dialog.run()
         self.conflict_dialog.hide()
 
-    # Apply Changes
-    
-    def on_btnApply_clicked(self, widget):
-        err = self.apply()
-        if not err:
-            self.populateList()
-        else:
-            nonfatalException()
-        
-    def apply(self):
-        name, type = self.getSelectedItem()
-        if type in ("Printer", "Class"):
-            return self.save_printer(self.printer)
-        elif type == "Settings":
-            return self.save_serversettings()
-        
     def show_IPP_Error(self, exception, message):
         if exception == cups.IPP_NOT_AUTHORIZED:
             error_text = ('<span weight="bold" size="larger">' +
@@ -2102,18 +2093,23 @@ class GUI(GtkGUI):
     # Delete
 
     def on_delete_activate(self, widget):
-        name, type = self.getSelectedItem()
-
-        # Confirm
-        if type == "Printer":
-            message_format = _("Really delete printer %s?")
+        paths = self.dests_iconview.get_selected_items ()
+        model = self.dests_iconview.get_model ()
+        n = len (paths)
+        if n == 1:
+            iter = model.get_iter (paths[0])
+            object = model.get_value (iter, 0)
+            name = model.get_value (iter, 2)
+            if object.is_class:
+                message_format = _("Really delete class `%s'?") % name
+            else:
+                message_format = _("Really delete printer `%s'?") % name
         else:
-            message_format = _("Really delete class %s?")
+            message_format = _("Really delete selected destinations?")
 
-        dialog = gtk.MessageDialog(
-            self.MainWindow,
-            buttons=gtk.BUTTONS_OK_CANCEL,
-            message_format=message_format % name)
+        dialog = gtk.MessageDialog(self.MainWindow,
+                                   buttons=gtk.BUTTONS_OK_CANCEL,
+                                   message_format=message_format)
         result = dialog.run()
         dialog.destroy()
 
@@ -2121,7 +2117,10 @@ class GUI(GtkGUI):
             return
 
         try:
-            self.cups.deletePrinter(name)
+            for i in range (n):
+                iter = model.get_iter (paths[i])
+                name = model.get_value (iter, 2)
+                self.cups.deletePrinter (name)
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
 
