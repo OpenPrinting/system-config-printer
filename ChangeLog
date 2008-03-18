@@ -3,6 +3,10 @@
 	* system-config-printer.py (GUI.populateList): Add default emblem.
 	(PrinterContextMenu.popup): Don't include Set As Default in the
 	context menu if the printer is already the default.
+	(GUI.set_default_printer): New method.
+	(GUI.on_btnPMakeDefault_clicked): Use it.
+	(PrinterContextMenu.on_printer_context_set_as_default_activate):
+	Likewise.
 
 2008-03-17  Tim Waugh  <twaugh@redhat.com>
 

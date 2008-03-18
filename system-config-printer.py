@@ -258,6 +258,12 @@ class PrinterContextMenu(GtkGUI):
     def on_printer_context_edit_activate (self, menuitem):
         self.parent.dests_iconview_item_activated (self.iconview, self.paths[0])
 
+    def on_printer_context_set_as_default_activate (self, menuitem):
+        model = self.iconview.get_model ()
+        iter = model.get_iter (self.paths[0])
+        name = model.get_value (iter, 2)
+        self.parent.set_default_printer (name)
+
     def on_printer_context_view_print_queue_activate (self, menuitem):
         if len (self.paths):
             specific_dests = []
@@ -1476,10 +1482,9 @@ class GUI(GtkGUI):
             option.writeback()
 
     # set default printer
-    
-    def on_btnPMakeDefault_clicked(self, button):
+    def set_default_printer (self, name):
         try:
-            self.cups.setDefault(self.printer.name)
+            self.cups.setDefault(name)
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
             return
@@ -1541,6 +1546,9 @@ class GUI(GtkGUI):
             self.setConnected()
             self.populateList()
             self.show_HTTP_Error(s)
+    
+    def on_btnPMakeDefault_clicked(self, button):
+        self.set_default_printer (self.printer.name)
 
     # print test page
     
