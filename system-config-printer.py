@@ -67,6 +67,7 @@ import urllib
 import troubleshoot
 import contextmenu
 import authconn
+from smburi import SMBURI
 
 domain='system-config-printer'
 import locale
@@ -111,70 +112,6 @@ def validDeviceURI (uri):
     if uri.find (":/") > 0:
         return True
     return False
-
-class SMBURI:
-    def __init__ (self,
-                  uri=None,
-                  group='', host='', share='', user='', password=''):
-        if uri:
-            if group or host or share or user or password:
-                raise RuntimeError
-
-            self.uri = uri
-        else:
-            self.uri = self._construct (group, host, share,
-                                        user=user, password=password)
-
-    def _construct (self, group, host, share, user='', password=''):
-        uri_password = ''
-        if password:
-            uri_password = ':' + urllib.quote (password)
-        if user:
-            uri_password += '@'
-        return "%s%s%s/%s/%s" % (urllib.quote (user), uri_password,
-                                 urllib.quote (group),
-                                 urllib.quote (host),
-                                 urllib.quote (share))
-
-    def get_uri (self):
-        return self.uri
-
-    def sanitize_uri (self):
-        group, host, share, user, password = self.separate ()
-        return self._construct (group, host, share)
-
-    def separate (self):
-        uri = self.get_uri ()
-        user = ''
-        password = ''
-        auth = uri.find ('@')
-        if auth != -1:
-            u = uri[:auth].find(':')
-            if u != -1:
-                user = uri[:u]
-                password = uri[u + 1:auth]
-            else:
-                user = uri[:auth]
-            uri = uri[auth + 1:]
-        sep = uri.count ('/')
-        group = ''
-        if sep == 2:
-            g = uri.find('/')
-            group = uri[:g]
-            uri = uri[g + 1:]
-        if sep < 1:
-            host = 'localhost'
-        else:
-            h = uri.find('/')
-            host = uri[:h]
-            uri = uri[h + 1:]
-            p = host.find(':')
-            if p != -1:
-                host = host[:p]
-        share = uri
-        return (urllib.unquote (group), urllib.unquote (host),
-                urllib.unquote (share),
-                urllib.unquote (user), urllib.unquote (password))
 
 class GtkGUI:
 
