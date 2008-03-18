@@ -824,23 +824,16 @@ class GUI(GtkGUI):
         # invalidated by a server restart, so it is better for us to
         # handle the reconnection ourselves.
 
-        # Disconnect.
-        self.cups = None
-        self.setConnected()
-
-        cups.setServer(self.connect_server)
-        cups.setUser(self.connect_user)
         attempt = 1
         while attempt <= 5:
             try:
-                self.cups = authconn.Connection (self.MainWindow)
+                self.cups._connect ()
                 break
             except RuntimeError:
                 # Connection failed.
                 time.sleep(1)
                 attempt += 1
 
-        self.setConnected()
         self.passwd_retry = False
 
     def on_btnCancelConnect_clicked(self, widget):
