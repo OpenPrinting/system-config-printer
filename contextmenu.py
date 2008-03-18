@@ -36,6 +36,11 @@ class PrinterContextMenu:
             widget = self.xml.get_widget (name)
             setattr (self, name, widget)
         self.xml.signal_autoconnect (self)
+        self.jobviewers = []
+
+    def cleanup (self):
+        while len (self.jobviewers) > 0:
+            self.jobviewers[0].cleanup () # this will call on_jobviewer_exit
 
     def popup (self, event, iconview, paths):
         self.iconview = iconview
@@ -117,7 +122,16 @@ class PrinterContextMenu:
                 iter = model.get_iter (path)
                 name = model.get_value (iter, 2)
                 specific_dests.append (name)
-            jobviewer.JobViewer (None, None, my_jobs=False,
-                                 specific_dests=specific_dests)
+            viewer = jobviewer.JobViewer (None, None, my_jobs=False,
+                                          specific_dests=specific_dests,
+                                          exit_handler=self.on_jobviewer_exit)
         else:
-            jobviewer.JobViewer (None, None, my_jobs=False)
+            viewer = jobviewer.JobViewer (None, None, my_jobs=False,
+                                          exit_handler=self.on_jobviewer_exit)
+
+        self.jobviewers.append (viewer)
+        print self.jobviewers
+
+    def on_jobviewer_exit (self, viewer):
+        i = self.jobviewers.index (viewer)
+        del self.jobviewers[i]

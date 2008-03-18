@@ -106,13 +106,14 @@ def worst_printer_state_reason (printer_reasons=None, connection=None):
 class JobViewer:
     def __init__(self, bus=None, loop=None, service_running=False,
                  trayicon=False, suppress_icon_hide=False,
-                 my_jobs=True, specific_dests=None):
+                 my_jobs=True, specific_dests=None, exit_handler=None):
         self.loop = loop
         self.service_running = service_running
         self.trayicon = trayicon
         self.suppress_icon_hide = suppress_icon_hide
         self.my_jobs = my_jobs
         self.specific_dests = specific_dests
+        self.exit_handler = exit_handler
 
         self.jobs = {}
         self.jobiters = {}
@@ -236,6 +237,7 @@ class JobViewer:
         bus.add_signal_receiver (self.handle_dbus_signal,
                                  path="/com/redhat/PrinterSpooler",
                                  dbus_interface="com.redhat.PrinterSpooler")
+        self.bus = bus
 
         self.sub_id = -1
         self.refresh ()
@@ -251,6 +253,13 @@ class JobViewer:
                 debugprint ("Canceled subscription %d" % self.sub_id)
             except:
                 pass
+
+        self.bus.remove_signal_receiver (self.handle_dbus_signal,
+                                         path="/com/redhat/PrinterSpooler",
+                                         dbus_interface="com.redhat.PrinterSpooler")
+
+        if self.exit_handler:
+            self.exit_handler (self)
 
     # Handle "special" status icon
     def set_special_statusicon (self, iconname):
@@ -286,6 +295,7 @@ class JobViewer:
                 self.PrintersWindow.hide ()
 
             if not self.loop:
+                # Being run from main app, not applet
                 self.cleanup ()
         else:
             self.loop.quit ()

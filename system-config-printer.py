@@ -1898,6 +1898,7 @@ class GUI(GtkGUI):
     # Quit
     
     def on_quit_activate(self, widget, event=None):
+        self.printer_context_menu.cleanup ()
         gtk.main_quit()
 
     # Copy
