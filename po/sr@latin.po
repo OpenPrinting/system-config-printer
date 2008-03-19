@@ -1,4 +1,4 @@
-# translation of system-config-printer.0.7.32.x.sr.po to Serbian
+# translation of system-config-printer.0.7.82.x.sr.po to Serbian
 # Serbian translations for system-config-printer
 # Copyright (C) 2005 Red Hat, Inc.
 # This file is distributed under the same license as the system-config-printer package.
@@ -7,10 +7,10 @@
 # Miloš Komarčević <kmilos@gmail.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: system-config-printer.0.7.32.x.sr\n"
+"Project-Id-Version: system-config-printer.0.7.82.x.sr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-02-13 18:10-0700\n"
-"PO-Revision-Date: 2008-02-14 19:04-0500\n"
+"POT-Creation-Date: 2008-03-10 18:37+0000\n"
+"PO-Revision-Date: 2008-03-15 17:37-0400\n"
 "Last-Translator: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>\n"
 "Language-Team: Serbian <fedora-trans-sr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Miruje"
 
-#: ../cupshelpers.py:34 ../troubleshoot.py:879 ../applet.py:731
+#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:883
 msgid "Processing"
 msgstr "Obrađuje"
 
@@ -32,14 +32,18 @@ msgstr "Obrađuje"
 msgid "Busy"
 msgstr "Zauzet"
 
-#: ../cupshelpers.py:36 ../troubleshoot.py:880 ../applet.py:732
+#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:884
 msgid "Stopped"
 msgstr "Zaustavljen"
 
-#: ../cupshelpers.py:53 ../troubleshoot.py:648 ../troubleshoot.py:649
-#: ../troubleshoot.py:652 ../troubleshoot.py:653 ../troubleshoot.py:1422
-#: ../troubleshoot.py:1423 ../troubleshoot.py:1426 ../troubleshoot.py:1427
-#: ../applet.py:741
+#: ../cupshelpers.py:53 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../troubleshoot/ChooseNetworkPrinter.py:97
+#: ../troubleshoot/ChooseNetworkPrinter.py:100
+#: ../troubleshoot/ChooseNetworkPrinter.py:101
+#: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
+#: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
+#: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
+#: ../applet.py:893
 msgid "Unknown"
 msgstr "Nepoznato"
 
@@ -55,13 +59,14 @@ msgstr "_Koristi podrazumevane sistemske vrednosti"
 msgid "_Set Default"
 msgstr "Po_stavi kao podrazumevani"
 
-#: ../my-default-printer.py:151 ../troubleshoot.py:911 ../applet.py:186
-#: ../applet.py:226
+#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:73
+#: ../applet.py:118 ../applet.py:158
 msgid "Printer"
 msgstr "Štampač"
 
-#: ../my-default-printer.py:155 ../system-config-printer.py:2373
-#: ../troubleshoot.py:592 ../troubleshoot.py:1375
+#: ../my-default-printer.py:155 ../system-config-printer.py:2388
+#: ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Lokacija"
 
@@ -119,27 +124,27 @@ msgstr "Podešavanje štampača - %s"
 msgid "Connected to %s"
 msgstr "Spojen sa %s"
 
-#: ../system-config-printer.py:561 ../system-config-printer.py:1273
+#: ../system-config-printer.py:561 ../system-config-printer.py:1271
 msgid "Not connected"
 msgstr "Nije spojen"
 
-#: ../system-config-printer.py:672
+#: ../system-config-printer.py:670
 msgid "Local Printers"
 msgstr "Lokalni štampač"
 
-#: ../system-config-printer.py:673
+#: ../system-config-printer.py:671
 msgid "Local Classes"
 msgstr "Lokalne klase"
 
-#: ../system-config-printer.py:674
+#: ../system-config-printer.py:672
 msgid "Remote Printers"
 msgstr "Udaljeni štampači"
 
-#: ../system-config-printer.py:675
+#: ../system-config-printer.py:673
 msgid "Remote Classes"
 msgstr "Udaljene klase"
 
-#: ../system-config-printer.py:783
+#: ../system-config-printer.py:781
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -148,15 +153,15 @@ msgstr ""
 "Spajam se sa serverom:\n"
 "%s"
 
-#: ../system-config-printer.py:1202
+#: ../system-config-printer.py:1200
 msgid "Installable Options"
 msgstr "Opcije koje se mogu instalirati"
 
-#: ../system-config-printer.py:1203 ../system-config-printer.glade.h:209
+#: ../system-config-printer.py:1201 ../system-config-printer.glade.h:209
 msgid "Printer Options"
 msgstr "Opcije štampača"
 
-#: ../system-config-printer.py:1212
+#: ../system-config-printer.py:1210
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -166,26 +171,26 @@ msgstr ""
 "Promene će biti primenjene kada\n"
 "se sukobi razreše."
 
-#: ../system-config-printer.py:1241 ../system-config-printer.py:1257
-#: ../applet.py:349
+#: ../system-config-printer.py:1239 ../system-config-printer.py:1255
+#: ../applet.py:291
 msgid "Not authorized"
 msgstr "Neovlašćen"
 
-#: ../system-config-printer.py:1242 ../applet.py:350
+#: ../system-config-printer.py:1240 ../applet.py:292
 msgid "The password may be incorrect."
 msgstr "Lozinka je možda netačna."
 
-#: ../system-config-printer.py:1245 ../system-config-printer.py:1278
-#: ../applet.py:353
+#: ../system-config-printer.py:1243 ../system-config-printer.py:1276
+#: ../applet.py:295
 msgid "CUPS server error"
 msgstr "Greška CUPS servera"
 
-#: ../system-config-printer.py:1246 ../applet.py:354
+#: ../system-config-printer.py:1244 ../applet.py:296
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Desila se greška tokom CUPS radnje: „%s“."
 
-#: ../system-config-printer.py:1258
+#: ../system-config-printer.py:1256
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
@@ -193,59 +198,59 @@ msgstr ""
 "Lozinka je možda neispravna, ili je server možda podešen da odbija udaljenu "
 "administraciju."
 
-#: ../system-config-printer.py:1263
+#: ../system-config-printer.py:1261
 msgid "Bad request"
 msgstr "Loš zahtev"
 
-#: ../system-config-printer.py:1265
+#: ../system-config-printer.py:1263
 msgid "Not found"
 msgstr "Nije pronađen"
 
-#: ../system-config-printer.py:1267
+#: ../system-config-printer.py:1265
 msgid "Request timeout"
 msgstr "Zahtevu je isteklo vreme"
 
-#: ../system-config-printer.py:1269
+#: ../system-config-printer.py:1267
 msgid "Upgrade required"
 msgstr "Neophodna je nadogradnja"
 
-#: ../system-config-printer.py:1271
+#: ../system-config-printer.py:1269
 msgid "Server error"
 msgstr "Greška servera"
 
-#: ../system-config-printer.py:1275
+#: ../system-config-printer.py:1273
 #, python-format
 msgid "status %d"
 msgstr "status %d"
 
-#: ../system-config-printer.py:1279
+#: ../system-config-printer.py:1277
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "Došlo je do HTTP greške: %s."
 
-#: ../system-config-printer.py:1303
+#: ../system-config-printer.py:1301
 msgid "This will delete this class!"
 msgstr "Ovo će izbrisati ovu klasu!"
 
-#: ../system-config-printer.py:1304
+#: ../system-config-printer.py:1302
 msgid "Proceed anyway?"
 msgstr "Svakako nastavi?"
 
-#: ../system-config-printer.py:1518 ../system-config-printer.py:1552
+#: ../system-config-printer.py:1516 ../system-config-printer.py:1550
 msgid "Submitted"
 msgstr "Poslato"
 
-#: ../system-config-printer.py:1519
+#: ../system-config-printer.py:1517
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Probna stranica je poslata kao posao %d"
 
-#: ../system-config-printer.py:1530 ../system-config-printer.py:1562
-#: ../system-config-printer.py:3482
+#: ../system-config-printer.py:1528 ../system-config-printer.py:1560
+#: ../system-config-printer.py:3497
 msgid "Not possible"
 msgstr "Nije moguće"
 
-#: ../system-config-printer.py:1531 ../system-config-printer.py:1563
+#: ../system-config-printer.py:1529 ../system-config-printer.py:1561
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -253,160 +258,160 @@ msgstr ""
 "Udaljeni server nije prihvatio posao za štampanje, najverovatnije zato što "
 "štampač nije deljen."
 
-#: ../system-config-printer.py:1553
+#: ../system-config-printer.py:1551
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Naredba za održavanje je poslata kao posao %d"
 
-#: ../system-config-printer.py:1649 ../system-config-printer.py:1791
+#: ../system-config-printer.py:1647 ../system-config-printer.py:1806
 msgid "Error"
 msgstr "Greška"
 
-#: ../system-config-printer.py:1650
+#: ../system-config-printer.py:1648
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Desila se greška tokom povezivanja na CUPS server."
 
-#: ../system-config-printer.py:1703
+#: ../system-config-printer.py:1701
 msgid "This is the default printer"
 msgstr "Ovo je podrazumevani štampač"
 
-#: ../system-config-printer.py:1707
+#: ../system-config-printer.py:1705
 msgid "No default printer set."
 msgstr "Podrazumevani štampač nije postavljen."
 
-#: ../system-config-printer.py:1792
+#: ../system-config-printer.py:1807
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Vrednost opcije „%s“ je „%s“ i ne može biti uređivana."
 
-#: ../system-config-printer.py:1832
+#: ../system-config-printer.py:1847
 msgid "Cancel Tests"
 msgstr "Otkaži probe"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1836 ../troubleshoot.py:901
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.py:1851 ../system-config-printer.glade.h:208
+#: ../troubleshoot/PrintTestPage.py:61
 msgid "Print Test Page"
 msgstr "Odštampaj probnu stranicu"
 
-#: ../system-config-printer.py:2066
+#: ../system-config-printer.py:2081
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "Stvarno izbrisati štampač %s?"
 
-#: ../system-config-printer.py:2068
+#: ../system-config-printer.py:2083
 #, python-format
 msgid "Really delete class %s?"
 msgstr "Stvarno izbrisati klasu %s?"
 
 #. SMB list columns
-#: ../system-config-printer.py:2345
+#: ../system-config-printer.py:2360
 msgid "Share"
 msgstr "Deljeni resurs"
 
-#: ../system-config-printer.py:2351
+#: ../system-config-printer.py:2366
 msgid "Comment"
 msgstr "Primedba"
 
 #. IPP list columns
-#: ../system-config-printer.py:2367
+#: ../system-config-printer.py:2382
 msgid "Queue"
 msgstr "Red"
 
-#: ../system-config-printer.py:2381
+#: ../system-config-printer.py:2396
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "Datoteke opisa PostScript štampača (*.ppd,*.PPD, *.ppd.gz, *PPD.gz, *.PPD.GZ)"
 
-#: ../system-config-printer.py:2390
+#: ../system-config-printer.py:2405
 msgid "All files (*)"
 msgstr "Sve datoteke (*)"
 
-#: ../system-config-printer.py:2425 ../system-config-printer.py:3741
-#: ../system-config-printer.py:3775
+#: ../system-config-printer.py:2440 ../system-config-printer.py:3756
+#: ../system-config-printer.py:3790
 msgid "Search"
 msgstr "Pretraga"
 
-#: ../system-config-printer.py:2428 ../system-config-printer.glade.h:155
+#: ../system-config-printer.py:2443 ../system-config-printer.glade.h:155
 msgid "New Printer"
 msgstr "Novi štampač"
 
-#: ../system-config-printer.py:2438 ../system-config-printer.glade.h:154
+#: ../system-config-printer.py:2453 ../system-config-printer.glade.h:154
 msgid "New Class"
 msgstr "Nova klasa"
 
-#: ../system-config-printer.py:2443
+#: ../system-config-printer.py:2458
 msgid "Change Device URI"
 msgstr "Promeni URI uređaja"
 
-#: ../system-config-printer.py:2452
+#: ../system-config-printer.py:2467
 msgid "Change Driver"
 msgstr "Promeni upravljački program"
 
-#: ../system-config-printer.py:2551 ../system-config-printer.py:2775
-#: ../system-config-printer.py:2941 ../system-config-printer.py:3764
+#: ../system-config-printer.py:2566 ../system-config-printer.py:2790
+#: ../system-config-printer.py:2956 ../system-config-printer.py:3779
 msgid "Searching"
 msgstr "Pretraživanje"
 
-#: ../system-config-printer.py:2552 ../system-config-printer.py:2776
+#: ../system-config-printer.py:2567 ../system-config-printer.py:2791
 msgid "Searching for drivers"
 msgstr "Traži upravljačke programe"
 
-#: ../system-config-printer.py:2942
+#: ../system-config-printer.py:2957
 msgid "Searching for printers"
 msgstr "Traži štampače"
 
-#: ../system-config-printer.py:3160
+#: ../system-config-printer.py:3175
 msgid "Other"
 msgstr "Ostali"
 
-#: ../system-config-printer.py:3162
+#: ../system-config-printer.py:3177
 msgid " (Current)"
 msgstr " (Tekući)"
 
-#: ../system-config-printer.py:3188 ../system-config-printer.py:3449
+#: ../system-config-printer.py:3203 ../system-config-printer.py:3464
 msgid "Scanning..."
 msgstr "Pregledanje..."
 
-#: ../system-config-printer.py:3360 ../system-config-printer.py:3427
+#: ../system-config-printer.py:3375 ../system-config-printer.py:3442
 msgid "Verified"
 msgstr "Proveren"
 
-#: ../system-config-printer.py:3361 ../system-config-printer.py:3428
+#: ../system-config-printer.py:3376 ../system-config-printer.py:3443
 msgid "This print share is accessible."
 msgstr "Ovaj deljeni štampač je pristupačan."
 
-#: ../system-config-printer.py:3368 ../system-config-printer.py:3434
+#: ../system-config-printer.py:3383 ../system-config-printer.py:3449
 msgid "Inaccessible"
 msgstr "Nepristupačan"
 
-#: ../system-config-printer.py:3369 ../system-config-printer.py:3435
+#: ../system-config-printer.py:3384 ../system-config-printer.py:3450
 msgid "This print share is not accessible."
 msgstr "Ovaj deljeni štampač nije pristupačan."
 
-#: ../system-config-printer.py:3483
+#: ../system-config-printer.py:3498
 msgid "It is not possible to obtain a list of queues from this host."
 msgstr "Nije moguće dobaviti spisak redova sa ovog domaćina."
 
-#: ../system-config-printer.py:3487
+#: ../system-config-printer.py:3502
 msgid "No queues"
 msgstr "Nema redova"
 
-#: ../system-config-printer.py:3488
+#: ../system-config-printer.py:3503
 msgid "There are no queues available."
 msgstr "Nema dostupnih redova."
 
-#: ../system-config-printer.py:3545
+#: ../system-config-printer.py:3560
 msgid "A printer connected to the parallel port."
 msgstr "Štampač priključen na paralelni port."
 
-#: ../system-config-printer.py:3547
+#: ../system-config-printer.py:3562
 msgid "A printer connected to a USB port."
 msgstr "Štampač priključen na USB port."
 
-#: ../system-config-printer.py:3549
+#: ../system-config-printer.py:3564
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -414,7 +419,7 @@ msgstr ""
 "HPLIP softver upravlja štampačem, ili funkcijom za štampanje višenamenskog "
 "uređaja."
 
-#: ../system-config-printer.py:3552
+#: ../system-config-printer.py:3567
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -422,49 +427,49 @@ msgstr ""
 "HPLIP softver upravlja faks mašinom, ili funkcijom za slanje faksa "
 "višenamenskog uređaja."
 
-#: ../system-config-printer.py:3555
+#: ../system-config-printer.py:3570
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "Lokalni štampač otkriven od strane Sloja za hardversku apstrakciju (HAL)."
 
-#: ../system-config-printer.py:3787
+#: ../system-config-printer.py:3802
 msgid "-- Select printer model --"
 msgstr "— Izaberite model štampača —"
 
-#: ../system-config-printer.py:3789
+#: ../system-config-printer.py:3804
 msgid "-- No matches found --"
 msgstr "— Ništa nije nađeno —"
 
-#: ../system-config-printer.py:3954
+#: ../system-config-printer.py:3969
 msgid " (recommended)"
 msgstr " (preporučeno)"
 
-#: ../system-config-printer.py:3968
+#: ../system-config-printer.py:3983
 msgid "This PPD is generated by foomatic."
 msgstr "Ovaj PPD je napravio foomatic."
 
-#: ../system-config-printer.py:3994
+#: ../system-config-printer.py:4009
 msgid "OpenPrinting"
 msgstr "OtvoriŠtampanje"
 
-#: ../system-config-printer.py:3996
+#: ../system-config-printer.py:4011
 msgid "Distributable"
 msgstr "Razdeljiv"
 
-#: ../system-config-printer.py:3998
+#: ../system-config-printer.py:4013
 msgid "None"
 msgstr "Ništa"
 
-#: ../system-config-printer.py:4006
+#: ../system-config-printer.py:4021
 msgid "Not specified."
 msgstr "Nije navedeno."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4033
+#: ../system-config-printer.py:4048
 msgid "Database error"
 msgstr "Greška u bazi podataka"
 
-#: ../system-config-printer.py:4034
+#: ../system-config-printer.py:4049
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "„%s“ upravljački program ne može biti korišćen sa štampačem „%s %s“."
@@ -472,56 +477,56 @@ msgstr "„%s“ upravljački program ne može biti korišćen sa štampačem �
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4044
+#: ../system-config-printer.py:4059
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
 "Moraćete instalirati „%s“ paket da biste koristili ovaj upravljački program."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4051
+#: ../system-config-printer.py:4066
 msgid "PPD error"
 msgstr "PPD greška"
 
-#: ../system-config-printer.py:4053
+#: ../system-config-printer.py:4068
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Čitanje PPD datoteke nije uspelo. Mogući razlozi slede:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4064
+#: ../system-config-printer.py:4079
 msgid "Downloadable drivers"
 msgstr "Preuzimljivi upravljački programi"
 
-#: ../system-config-printer.py:4065
+#: ../system-config-printer.py:4080
 msgid "Support for downloadable drivers is not yet completed."
 msgstr "Podrška za preuzimljive upravljačke programe još uvek nije potpuna."
 
-#: ../system-config-printer.py:4115 ../system-config-printer.py:4152
+#: ../system-config-printer.py:4130 ../system-config-printer.py:4167
 msgid "No Installable Options"
 msgstr "Nema opcija koje se mogu instalirati"
 
-#: ../system-config-printer.py:4199
+#: ../system-config-printer.py:4214
 msgid "Adding"
 msgstr "Dodavanje"
 
-#: ../system-config-printer.py:4200
+#: ../system-config-printer.py:4215
 msgid "Adding printer"
 msgstr "Dodavanje štampača"
 
-#: ../system-config-printer.py:4352
+#: ../system-config-printer.py:4367
 msgid "Install driver"
 msgstr "Instaliraj upravljački program"
 
-#: ../system-config-printer.py:4353
+#: ../system-config-printer.py:4368
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "Štampač „%s“ zahteva paket „%s“ ali on nije trenutno instaliran. "
 
-#: ../system-config-printer.py:4360
+#: ../system-config-printer.py:4375
 msgid "Missing driver"
 msgstr "Nedostaje upravljački program"
 
-#: ../system-config-printer.py:4361
+#: ../system-config-printer.py:4376
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -529,295 +534,6 @@ msgid ""
 msgstr ""
 "Štampač „%s“ zahteva „%s“ program ali on nije trenutno instaliran.  Molim "
 "instalirajte ga pre korišćenja štampača."
-
-#: ../troubleshoot.py:46
-msgid ""
-"To start this tool, select System->Administration->Printing from the main "
-"menu."
-msgstr ""
-"Da biste pokrenuli ovu alatku, izaberite Sistem -> Administracija -> "
-"Štampanje u glavnom meniju."
-
-#: ../troubleshoot.py:56
-msgid "Authentication"
-msgstr "Autentifikacija"
-
-#: ../troubleshoot.py:71
-msgid "Password required"
-msgstr "Lozinka je neophodna"
-
-#: ../troubleshoot.py:79 ../system-config-printer.glade.h:195
-#: ../applet.glade.h:5
-msgid "Password:"
-msgstr "Lozinka:"
-
-#: ../troubleshoot.py:104
-msgid "Printing troubleshooter"
-msgstr "Rešavanje problema štampanja"
-
-#: ../troubleshoot.py:401
-msgid "Trouble-shooting Printing"
-msgstr "Rešavanje problema štampanja"
-
-#: ../troubleshoot.py:403
-msgid ""
-"In the next few screens I will ask you some questions about your problem "
-"with printing. Based on your answers I will try to suggest a solution."
-msgstr ""
-"Sledećih nekoliko ekrana će vas pitati u vezi problema sa štampanjem. Na "
-"osnovu datih odgovora predložiće vam se moguće rešenje."
-
-#: ../troubleshoot.py:407
-msgid "Click 'Forward' to begin."
-msgstr "Pritisnite „Napred“ da bi počeli."
-
-#: ../troubleshoot.py:418
-msgid "Sorry!"
-msgstr "Izvinite."
-
-#: ../troubleshoot.py:419
-msgid ""
-"I have not been able to work out what the problem is, but I have collected "
-"some useful information to put in a bug report."
-msgstr ""
-"Nije bilo moguće naći razlog za problem, ali neki korisni podaci su "
-"prikupljeni koji se mogu staviti u izveštaj o grešci."
-
-#: ../troubleshoot.py:488
-msgid "Queue Not Accepting Jobs"
-msgstr "Red ne prihvata poslove"
-
-#: ../troubleshoot.py:489
-msgid "The CUPS printer on the server is not accepting jobs."
-msgstr "CUPS štampač na serveru ne prihvata poslove."
-
-#: ../troubleshoot.py:513 ../troubleshoot.py:1266
-msgid "Queue Not Enabled"
-msgstr "Red nije omogućen"
-
-#: ../troubleshoot.py:514
-msgid "The CUPS printer on the server is not enabled."
-msgstr "CUPS štampač na serveru nije omogućen."
-
-#: ../troubleshoot.py:531 ../troubleshoot.py:1260
-#, python-format
-msgid "The reason given is: `%s'."
-msgstr "Dati razlog je: „%s“."
-
-#: ../troubleshoot.py:533 ../troubleshoot.py:1262
-msgid "This may be due to the printer being disconnected or switched off."
-msgstr "Ovo može zbiti zbog toga što je štampač iskopčan ili isključen."
-
-#: ../troubleshoot.py:549
-msgid "Queue Not Shared"
-msgstr "Red nije deljen"
-
-#: ../troubleshoot.py:550
-msgid "The CUPS printer on the server is not shared."
-msgstr "CUPS štampač na serveru nije deljen."
-
-#: ../troubleshoot.py:584
-msgid "Choose Network Printer"
-msgstr "Izaberite mrežni štampač"
-
-#: ../troubleshoot.py:585
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-"Izaberite mrežni štampač koji pokušavate da koristite sa donjeg spiska. Ako "
-"nije na spisku, izaberite „Nije na spisku“."
-
-#: ../troubleshoot.py:590 ../troubleshoot.py:1373
-msgid "Name"
-msgstr "Ime"
-
-#: ../troubleshoot.py:594 ../troubleshoot.py:1377
-msgid "Information"
-msgstr "Podaci"
-
-#: ../troubleshoot.py:627 ../troubleshoot.py:1401
-msgid "Not listed"
-msgstr "Nije na spisku"
-
-#: ../troubleshoot.py:795
-msgid "Remote Address"
-msgstr "Udaljena adresa"
-
-#: ../troubleshoot.py:796
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr "Unesite koliko god možete detalja u vezi mrežne adrese ovog štampača."
-
-#: ../troubleshoot.py:804
-msgid "Server name:"
-msgstr "Ime servera:"
-
-#: ../troubleshoot.py:810
-msgid "Server IP address:"
-msgstr "IP adresa servera:"
-
-#: ../troubleshoot.py:831
-msgid "Printer Location"
-msgstr "Lokacija štampača"
-
-#: ../troubleshoot.py:832
-msgid "Is the printer connected to this computer or available on the network?"
-msgstr "Da li je štampač priključen na ovaj računar ili je dostupan na mreži?"
-
-#: ../troubleshoot.py:834
-msgid "Locally connected printer"
-msgstr "Lokalno priključen štampač"
-
-#: ../troubleshoot.py:835
-msgid "Network printer"
-msgstr "Mrežni štampač"
-
-#: ../troubleshoot.py:847
-msgid "CUPS Service Stopped"
-msgstr "CUPS servis zaustavljen"
-
-#: ../troubleshoot.py:848
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
-msgstr ""
-"CUPS servis štampanja nije pokrenut.  Da biste ispravili ovo, izaberite "
-"Sistem -> Administracija -> Servisi iz glavnog menije i nađite „cups“ servis."
-
-#: ../troubleshoot.py:877 ../applet.py:729
-msgid "Pending"
-msgstr "Na čekanju"
-
-#: ../troubleshoot.py:878 ../applet.py:730
-msgid "Held"
-msgstr "Zadržano"
-
-#: ../troubleshoot.py:881 ../applet.py:733
-msgid "Canceled"
-msgstr "Otkazano"
-
-#: ../troubleshoot.py:882 ../applet.py:734
-msgid "Aborted"
-msgstr "Obustavljeno"
-
-#: ../troubleshoot.py:883 ../applet.py:735
-msgid "Completed"
-msgstr "Završeno"
-
-#: ../troubleshoot.py:892
-msgid "Test Page"
-msgstr "Probna stranica"
-
-#: ../troubleshoot.py:904
-msgid "Cancel All Jobs"
-msgstr "Otkaži sve poslove"
-
-#: ../troubleshoot.py:909 ../applet.py:184
-msgid "Job"
-msgstr "Posao"
-
-#: ../troubleshoot.py:913 ../applet.py:185
-msgid "Document"
-msgstr "Dokument"
-
-#: ../troubleshoot.py:914 ../applet.py:189
-msgid "Status"
-msgstr "Stanje"
-
-#: ../troubleshoot.py:935
-msgid "Did the test page print correctly?"
-msgstr "Da li je stranica odštampana pravilno?"
-
-#: ../troubleshoot.py:942
-msgid "Yes"
-msgstr "Da"
-
-#: ../troubleshoot.py:943
-msgid "No"
-msgstr "Ne"
-
-#: ../troubleshoot.py:1125
-msgid "Status Messages"
-msgstr "Poruke stanja"
-
-#: ../troubleshoot.py:1126
-msgid "There are status messages associated with this queue."
-msgstr "Ima poruka stanja povezanih sa ovim redom."
-
-#: ../troubleshoot.py:1132
-msgid "Printer's state message:"
-msgstr "Poruke stanja štampača:"
-
-#: ../troubleshoot.py:1140
-msgid "Printer's state reasons:"
-msgstr "Razlozi stanja štampača:"
-
-#: ../troubleshoot.py:1193
-msgid "Queue Rejecting Jobs"
-msgstr "Red odbija poslove"
-
-#: ../troubleshoot.py:1218
-#, python-format
-msgid "The queue `%s' is rejecting jobs."
-msgstr "Red „%s“ odbija poslove."
-
-#: ../troubleshoot.py:1222
-#, python-format
-msgid " The reason given is: `%s'."
-msgstr "Razlog je: „%s“."
-
-#: ../troubleshoot.py:1225
-msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
-msgstr ""
-"Da bi red prihvatao poslove, štiklirajte „Prihvatanje poslova“ kućicu u "
-"jezičku „Polise“ za dati štampač u alatki za administraciju štampača."
-
-#: ../troubleshoot.py:1267
-#, python-format
-msgid "The queue `%s' is not enabled."
-msgstr "Red „%s“ nije omogućen."
-
-#: ../troubleshoot.py:1270
-msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-"Da biste omogućili, štiklirajte kućicu „Omogućeno“ u jezičku „Polise“ za "
-"dati štampač u alatki za administraciju štampača."
-
-#: ../troubleshoot.py:1285
-msgid "Check Server Firewall"
-msgstr "Proverite zaštitni zid servera"
-
-#: ../troubleshoot.py:1286
-msgid "It is not possible to connect to the server."
-msgstr "Povezivanje sa serverom nije moguće."
-
-#: ../troubleshoot.py:1299
-#, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
-msgstr ""
-"Proverite dali podešavanja zaštitnog zida ili rutera blokiraju TCP port %d na "
-"serveru `%s'."
-
-#: ../troubleshoot.py:1367
-msgid "Choose Printer"
-msgstr "Izaberite štampač"
-
-#: ../troubleshoot.py:1368
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
-"Izaberite štampač koji želite koristiti sa donjeg spiska. Ako ne postoji, "
-"izaberite „Nije na spisku“. "
 
 #: ../system-config-printer.glade.h:1
 msgid " "
@@ -969,6 +685,7 @@ msgstr ""
 "\n"
 "Sve promene koje ste napravili će biti izgubljene ako ih ne primenite."
 
+#. Why doesn't __del__ work?
 #: ../system-config-printer.glade.h:41 ../applet.glade.h:1
 msgid ""
 "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
@@ -1177,7 +894,7 @@ msgstr "Zabrani štampanje svima osim ovim korisnicima:"
 msgid "Description:"
 msgstr "Opis:"
 
-#: ../system-config-printer.glade.h:103
+#: ../system-config-printer.glade.h:103 ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "URI uređaja"
 
@@ -1466,6 +1183,11 @@ msgstr "Stranica po listu:"
 #: ../system-config-printer.glade.h:194
 msgid "Parity"
 msgstr "Parnost"
+
+#: ../system-config-printer.glade.h:195 ../troubleshoot/Welcome.py:64
+#: ../applet.glade.h:5
+msgid "Password:"
+msgstr "Lozinka:"
 
 #: ../system-config-printer.glade.h:196
 msgid "Please Wait"
@@ -1766,20 +1488,20 @@ msgid "Yes, I accept this license"
 msgstr "Da, prihvatam ovu licencu"
 
 #: ../system-config-printer.glade.h:261
+msgid "_Connect..."
+msgstr "_Poveži..."
+
+#: ../system-config-printer.glade.h:262
 msgid "_Do not apply"
 msgstr "_Ne primenjuj"
 
-#: ../system-config-printer.glade.h:262
+#: ../system-config-printer.glade.h:263
 msgid "_Edit"
 msgstr "_Uredi"
 
-#: ../system-config-printer.glade.h:263 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:264 ../applet.glade.h:10
 msgid "_File"
 msgstr "_Datoteka"
-
-#: ../system-config-printer.glade.h:264
-msgid "_Goto Server"
-msgstr "_Idi na server"
 
 #: ../system-config-printer.glade.h:265
 msgid "_Help"
@@ -1840,203 +1562,656 @@ msgstr "Podešavanje štampača"
 msgid "Printing"
 msgstr "Štampanje"
 
-#: ../applet.py:80
+#: ../statereason.py:73
 msgid "Toner low"
 msgstr "Toner skoro prazan"
 
-#: ../applet.py:81
+#: ../statereason.py:74
 #, python-format
 msgid "Printer '%s' is low on toner."
 msgstr "Štampaču „%s“ je toner skoro prazan."
 
-#: ../applet.py:82
+#: ../statereason.py:75
 msgid "Toner empty"
 msgstr "Toner prazan"
 
-#: ../applet.py:83
+#: ../statereason.py:76
 #, python-format
 msgid "Printer '%s' has no toner left."
 msgstr "Štampaču „%s“ je toner prazan."
 
-#: ../applet.py:84
+#: ../statereason.py:77
 msgid "Cover open"
 msgstr "Otvoren poklopac"
 
-#: ../applet.py:85
+#: ../statereason.py:78
 #, python-format
 msgid "The cover is open on printer '%s'."
 msgstr "Poklopac je otvoren na štampaču „%s“."
 
-#: ../applet.py:86
+#: ../statereason.py:79
 msgid "Door open"
 msgstr "Vrata otvorena"
 
-#: ../applet.py:87
+#: ../statereason.py:80
 #, python-format
 msgid "The door is open on printer '%s'."
 msgstr "Vrata su otvoren na štampaču „%s“."
 
-#: ../applet.py:88
+#: ../statereason.py:81
 msgid "Paper low"
 msgstr "Malo papira"
 
-#: ../applet.py:89
+#: ../statereason.py:82
 #, python-format
 msgid "Printer '%s' is low on paper."
 msgstr "Štampaču „%s“ je ostalo veoma malo papira."
 
-#: ../applet.py:90
+#: ../statereason.py:83
 msgid "Out of paper"
 msgstr "Nema papira"
 
-#: ../applet.py:91
+#: ../statereason.py:84
 #, python-format
 msgid "Printer '%s' is out of paper."
 msgstr "Štampač „%s“ je ostao bez papira."
 
-#: ../applet.py:92
+#: ../statereason.py:85
 msgid "Ink low"
 msgstr "Malo boje"
 
-#: ../applet.py:93
+#: ../statereason.py:86
 #, python-format
 msgid "Printer '%s' is low on ink."
 msgstr "Štampaču „%s“ je ostalo veoma malo boje."
 
-#: ../applet.py:94
+#: ../statereason.py:87
 msgid "Ink empty"
 msgstr "Nestalo boje"
 
-#: ../applet.py:95
+#: ../statereason.py:88
 #, python-format
 msgid "Printer '%s' has no ink left."
 msgstr "Štampač „%s“ je ostao bez boje."
 
-#: ../applet.py:96
+#: ../statereason.py:89
+msgid "Printer off-line"
+msgstr "Štampač van mreže"
+
+#: ../statereason.py:90
+#, python-format
+msgid "Printer `%s' is currently off-line."
+msgstr "Štampač „%s“ je trenutno van mreže."
+
+#: ../statereason.py:91
 msgid "Not connected?"
 msgstr "Nije spojen?"
 
-#: ../applet.py:97
+#: ../statereason.py:92
 #, python-format
 msgid "Printer '%s' may not be connected."
 msgstr "Štampač „%s“ možda nije spojen."
 
-#: ../applet.py:104
-msgid "Printer report"
-msgstr "Izveštaj štampača"
-
-#: ../applet.py:106
-msgid "Printer warning"
-msgstr "Upozorenje štampača"
-
-#: ../applet.py:108
+#: ../statereason.py:93 ../statereason.py:105
 msgid "Printer error"
 msgstr "Greška štampača"
 
-#: ../applet.py:109
+#: ../statereason.py:94
+#, python-format
+msgid "There is a problem on printer `%s'."
+msgstr "Štampač „%s“ ima problem."
+
+#: ../statereason.py:101
+msgid "Printer report"
+msgstr "Izveštaj štampača"
+
+#: ../statereason.py:103
+msgid "Printer warning"
+msgstr "Upozorenje štampača"
+
+#: ../statereason.py:106
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr "Štampač „%s“: „%s“."
 
-#: ../applet.py:187
+#: ../troubleshoot/__init__.py:37
+msgid "Printing troubleshooter"
+msgstr "Rešavanje problema štampanja"
+
+#: ../troubleshoot/base.py:33
+msgid ""
+"To start this tool, select System->Administration->Printing from the main "
+"menu."
+msgstr ""
+"Da biste pokrenuli ovu alatku, izaberite Sistem -> Administracija -> "
+"Štampanje u glavnom meniju."
+
+#: ../troubleshoot/CheckLocalServerPublishing.py:28
+msgid "Server Not Exporting Printers"
+msgstr "Server ne izvozi štampače"
+
+#: ../troubleshoot/CheckLocalServerPublishing.py:29
+msgid ""
+"Although one or more printers are marked as being shared, this print server "
+"is not exporting shared printers to the network."
+msgstr ""
+"Iako je jedan ili više štampača označeno kao deljeni, ovaj server štampanja ne "
+"izvozi deljene štampače na mrežu."
+
+#: ../troubleshoot/CheckLocalServerPublishing.py:33
+msgid ""
+"Enable the 'Share published printers connected to this system' option in the "
+"server settings using the printing administration tool."
+msgstr ""
+"Omogući opciju „Deli objavljene štampače spojene na ovaj sistem“ u postavkama "
+"servera koristeći alatku za administraciju štampanja."
+
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:1188
+msgid "Install"
+msgstr "Instaliraj"
+
+#: ../troubleshoot/CheckPPDSanity.py:80
+msgid "Invalid PPD File"
+msgstr "Neispravna PPD datoteka"
+
+#: ../troubleshoot/CheckPPDSanity.py:88
+#, python-format
+msgid ""
+"The PPD file for printer `%s' does not conform to the specification.  "
+"Possible reason follows:"
+msgstr ""
+"PPD dadoteka za štampač „%s“ ne prati specifikacije.  Mogući razlozi prate:"
+
+#. Perhaps cupstestppd is not in the path.
+#: ../troubleshoot/CheckPPDSanity.py:94
+#, python-format
+msgid "There is a problem with the PPD file for printer `%s'."
+msgstr "PPD dadoteka za štampač „%s“ ima grešku."
+
+#: ../troubleshoot/CheckPPDSanity.py:104
+msgid "Missing Printer Driver"
+msgstr "Nedostaje upravljački program štampača"
+
+#: ../troubleshoot/CheckPPDSanity.py:107
+#, python-format
+msgid "Printer `%s' requires the %s package but it is not currently installed."
+msgstr "Štampač „%s“ zahteva paket „%s“ koji nije trenutno instaliran. "
+
+#: ../troubleshoot/CheckPPDSanity.py:112
+#, python-format
+msgid ""
+"Printer `%s' requires the `%s' program but it is not currently installed."
+msgstr "Štampač „%s“ zahteva paket „%s“ koji nije trenutno instaliran. "
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:29
+msgid "Choose Network Printer"
+msgstr "Izaberite mrežni štampač"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:30
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+"Izaberite mrežni štampač koji pokušavate da koristite sa donjeg spiska. Ako "
+"nije na spisku, izaberite „Nije na spisku“."
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
+msgid "Name"
+msgstr "Ime"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:39
+#: ../troubleshoot/ChoosePrinter.py:40 ../troubleshoot/DeviceListed.py:38
+msgid "Information"
+msgstr "Podaci"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:75
+#: ../troubleshoot/ChoosePrinter.py:64 ../troubleshoot/DeviceListed.py:70
+msgid "Not listed"
+msgstr "Nije na spisku"
+
+#: ../troubleshoot/ChoosePrinter.py:30
+msgid "Choose Printer"
+msgstr "Izaberite štampač"
+
+#: ../troubleshoot/ChoosePrinter.py:31
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+"Izaberite štampač koji želite koristiti sa donjeg spiska. Ako ne postoji, "
+"izaberite „Nije na spisku“. "
+
+#: ../troubleshoot/DeviceListed.py:30
+msgid "Choose Device"
+msgstr "Izaberite uređaj"
+
+#: ../troubleshoot/DeviceListed.py:31
+msgid ""
+"Please select the device you want to use from the list below. If it does not "
+"appear in the list, select 'Not listed'."
+msgstr ""
+"Izaberite štampač koji želite koristiti sa donjeg spiska. Ako se ne javlja na "
+"spisku, izaberite „Nije na spisku“. "
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:30
+#: ../troubleshoot/ErrorLogFetch.py:30
+msgid "Debugging"
+msgstr "Uklanjanje grešaka"
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:31
+msgid ""
+"I would like to enable debugging output from the CUPS scheduler.  This may "
+"cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr ""
+"Želeo bih da omogućim zapisivanje u dnevnik podataka za uklanjanje grešaka iz "
+"CUPS planera.  Ovo može izazvati ponovno pokretanje planera.  Kliknite na "
+"dugme ispod da omogućite dnevnik za uklanjanje grešaka."
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:35
+msgid "Enable Debugging"
+msgstr "Omogući dnevnik za uklanjanje grešaka"
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:159
+msgid "Debug logging enabled."
+msgstr "Zapisivanje u dnevnik omogućeno."
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:161
+msgid "Debug logging was already enabled."
+msgstr "Zapisivanje u dnevnik je već omogućeno."
+
+#: ../troubleshoot/ErrorLogFetch.py:31
+msgid ""
+"I would like to disable debugging output from the CUPS scheduler.  This may "
+"cause the scheduler to restart.  Click the button below to disable debugging."
+msgstr ""
+"Želeo bih da onemogućim zapisivanje u dnevnik podataka za uklanjanje grešaka iz "
+"CUPS planera.  Ovo može izazvati ponovno pokretanje planera.  Kliknite na "
+"dugme ispod da bi onemogućili zapisivanje podataka za uklanjanje grešaka."
+
+#: ../troubleshoot/ErrorLogFetch.py:35
+msgid "Disable Debugging"
+msgstr "Onemogući zapisivanje u dnevnik"
+
+#: ../troubleshoot/ErrorLogFetch.py:142
+msgid "Debug logging disabled."
+msgstr "Zapisivanje podataka o uklanjanju grešaka u dnevnik je onemogućeno."
+
+#: ../troubleshoot/ErrorLogFetch.py:144
+msgid "Debug logging was already disabled."
+msgstr "Zapisivanje podataka o uklanjanju grešaka u dnevnik je već onemogućeno."
+
+#: ../troubleshoot/ErrorLogParse.py:30
+msgid "Error log messages"
+msgstr "Dnevnik poruka o greškama"
+
+#: ../troubleshoot/ErrorLogParse.py:31
+msgid "There are messages in the error log."
+msgstr "Dnevnik o greškama ima poruke."
+
+#: ../troubleshoot/LocalOrRemote.py:27
+msgid "Printer Location"
+msgstr "Lokacija štampača"
+
+#: ../troubleshoot/LocalOrRemote.py:28
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "Da li je štampač priključen na ovaj računar ili je dostupan na mreži?"
+
+#: ../troubleshoot/LocalOrRemote.py:30
+msgid "Locally connected printer"
+msgstr "Lokalno priključen štampač"
+
+#: ../troubleshoot/LocalOrRemote.py:31
+msgid "Network printer"
+msgstr "Mrežni štampač"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr "Red nije deljen"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr "CUPS štampač na serveru nije deljen."
+
+#: ../troubleshoot/PrinterStateReasons.py:29
+msgid "Status Messages"
+msgstr "Poruke stanja"
+
+#: ../troubleshoot/PrinterStateReasons.py:30
+msgid "There are status messages associated with this queue."
+msgstr "Ima poruka stanja povezanih sa ovim redom."
+
+#: ../troubleshoot/PrinterStateReasons.py:53
+#, python-format
+msgid "The printer's state message is: `%s'."
+msgstr "Poruka stanja štampača je: „%s“."
+
+#: ../troubleshoot/PrinterStateReasons.py:78
+msgid "Errors are listed below:"
+msgstr "Greške su ispisane ispod:"
+
+#: ../troubleshoot/PrinterStateReasons.py:83
+msgid "Warnings are listed below:"
+msgstr "Upozorenja su ispisana ispod:"
+
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:881
+msgid "Pending"
+msgstr "Na čekanju"
+
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:882
+msgid "Held"
+msgstr "Zadržano"
+
+#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:885
+msgid "Canceled"
+msgstr "Otkazano"
+
+#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:886
+msgid "Aborted"
+msgstr "Obustavljeno"
+
+#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:887
+msgid "Completed"
+msgstr "Završeno"
+
+#: ../troubleshoot/PrintTestPage.py:48
+msgid "Test Page"
+msgstr "Probna stranica"
+
+#: ../troubleshoot/PrintTestPage.py:49
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+"Sada odštampajte probnu stranicu.  Ako imate problema prilikom štampanja "
+"određenog dokumenta, odštampajte taj dokument sada i označite posao štampanja "
+"ispod."
+
+#: ../troubleshoot/PrintTestPage.py:64
+msgid "Cancel All Jobs"
+msgstr "Otkaži sve poslove"
+
+#: ../troubleshoot/PrintTestPage.py:70
+msgid "Test"
+msgstr "Proba"
+
+#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:116
+msgid "Job"
+msgstr "Posao"
+
+#: ../troubleshoot/PrintTestPage.py:75 ../applet.py:117
+msgid "Document"
+msgstr "Dokument"
+
+#: ../troubleshoot/PrintTestPage.py:76 ../applet.py:121
+msgid "Status"
+msgstr "Stanje"
+
+#: ../troubleshoot/PrintTestPage.py:100
+msgid "Did the marked print jobs print correctly?"
+msgstr "Da li je označeni posao štampanja pravilno odštampan?"
+
+#: ../troubleshoot/PrintTestPage.py:107
+msgid "Yes"
+msgstr "Da"
+
+#: ../troubleshoot/PrintTestPage.py:108
+msgid "No"
+msgstr "Ne"
+
+#: ../troubleshoot/QueueNotEnabled.py:57
+#: ../troubleshoot/QueueRejectingJobs.py:67
+#, python-format
+msgid "The reason given is: `%s'."
+msgstr "Dati razlog je: „%s“."
+
+#: ../troubleshoot/QueueNotEnabled.py:59
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr "Ovo može zbiti zbog toga što je štampač iskopčan ili isključen."
+
+#: ../troubleshoot/QueueNotEnabled.py:63
+msgid "Queue Not Enabled"
+msgstr "Red nije omogućen"
+
+#: ../troubleshoot/QueueNotEnabled.py:64
+#, python-format
+msgid "The queue `%s' is not enabled."
+msgstr "Red „%s“ nije omogućen."
+
+#: ../troubleshoot/QueueNotEnabled.py:72
+msgid ""
+"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+"Da biste omogućili, štiklirajte kućicu „Omogućeno“ u jezičku „Polise“ za "
+"dati štampač u alatki za administraciju štampača."
+
+#: ../troubleshoot/QueueRejectingJobs.py:32
+msgid "Queue Rejecting Jobs"
+msgstr "Red odbija poslove"
+
+#: ../troubleshoot/QueueRejectingJobs.py:64
+#, python-format
+msgid "The queue `%s' is rejecting jobs."
+msgstr "Red „%s“ odbija poslove."
+
+#: ../troubleshoot/QueueRejectingJobs.py:71
+msgid ""
+"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
+"`Policies' tab for the printer in the printer administration tool."
+msgstr ""
+"Da bi red prihvatao poslove, štiklirajte „Prihvatanje poslova“ kućicu u "
+"jezičku „Polise“ za dati štampač u alatki za administraciju štampača."
+
+#: ../troubleshoot/RemoteAddress.py:27
+msgid "Remote Address"
+msgstr "Udaljena adresa"
+
+#: ../troubleshoot/RemoteAddress.py:28
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr "Unesite koliko god možete detalja u vezi mrežne adrese ovog štampača."
+
+#: ../troubleshoot/RemoteAddress.py:36
+msgid "Server name:"
+msgstr "Ime servera:"
+
+#: ../troubleshoot/RemoteAddress.py:43
+msgid "Server IP address:"
+msgstr "IP adresa servera:"
+
+#: ../troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr "CUPS servis zaustavljen"
+
+#: ../troubleshoot/SchedulerNotRunning.py:29
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"`cups' service."
+msgstr ""
+"CUPS servis štampanja nije pokrenut.  Da biste ispravili ovo, izaberite "
+"Sistem -> Administracija -> Servisi iz glavnog menije i nađite „cups“ servis."
+
+#: ../troubleshoot/ServerFirewalled.py:27
+msgid "Check Server Firewall"
+msgstr "Proverite zaštitni zid servera"
+
+#: ../troubleshoot/ServerFirewalled.py:28
+msgid "It is not possible to connect to the server."
+msgstr "Povezivanje sa serverom nije moguće."
+
+#: ../troubleshoot/ServerFirewalled.py:43
+#, python-format
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server `%s'."
+msgstr ""
+"Proverite dali podešavanja zaštitnog zida ili rutera blokiraju TCP port %d na "
+"serveru `%s'."
+
+#: ../troubleshoot/Shrug.py:27
+msgid "Sorry!"
+msgstr "Izvinite."
+
+#: ../troubleshoot/Shrug.py:28
+msgid ""
+"I have not been able to work out what the problem is, but I have collected "
+"some useful information to put in a bug report."
+msgstr ""
+"Nije bilo moguće naći razlog za problem, ali neki korisni podaci su "
+"prikupljeni koji se mogu staviti u izveštaj o grešci."
+
+#: ../troubleshoot/Welcome.py:41
+msgid "Authentication"
+msgstr "Autentifikacija"
+
+#: ../troubleshoot/Welcome.py:56
+msgid "Password required"
+msgstr "Lozinka je neophodna"
+
+#: ../troubleshoot/Welcome.py:95
+msgid "Trouble-shooting Printing"
+msgstr "Rešavanje problema štampanja"
+
+#: ../troubleshoot/Welcome.py:97
+msgid ""
+"In the next few screens I will ask you some questions about your problem "
+"with printing. Based on your answers I will try to suggest a solution."
+msgstr ""
+"Sledećih nekoliko ekrana će vas pitati u vezi problema sa štampanjem. Na "
+"osnovu datih odgovora predložiće vam se moguće rešenje."
+
+#: ../troubleshoot/Welcome.py:101
+msgid "Click 'Forward' to begin."
+msgstr "Pritisnite „Napred“ da bi počeli."
+
+#: ../applet.py:119
 msgid "Size"
 msgstr "Veličina"
 
-#: ../applet.py:188
+#: ../applet.py:120
 msgid "Time submitted"
 msgstr "Vreme slanja"
 
-#: ../applet.py:239
+#: ../applet.py:171
 msgid "Message"
 msgstr "Poruka"
 
-#: ../applet.py:592
+#: ../applet.py:551
 msgid "1 hour ago"
 msgstr "pre 1 sat"
 
-#: ../applet.py:594
+#: ../applet.py:553
 msgid "1 hour and 1 minute ago"
 msgstr "pre 1 sat i 1 minutu"
 
-#: ../applet.py:596
+#: ../applet.py:555
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "pre 1 sat i %d minuta"
 
-#: ../applet.py:599
+#: ../applet.py:558
 #, python-format
 msgid "%d hours ago"
 msgstr "pre %d sati"
 
-#: ../applet.py:601
+#: ../applet.py:560
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "pre %d sati i 1 minutu"
 
-#: ../applet.py:603
+#: ../applet.py:562
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "pre %d sati i %d minuta"
 
-#: ../applet.py:609
+#: ../applet.py:568
 msgid "a minute ago"
 msgstr "pre jedne minute"
 
-#: ../applet.py:611
+#: ../applet.py:570
 #, python-format
 msgid "%d minutes ago"
 msgstr "pre %d minuta"
 
-#: ../applet.py:666
+#: ../applet.py:701
+#, python-format
+msgid "There was a problem sending document `%s' (job %d) to the printer."
+msgstr "Desila se greška tokom slanja dokumenta „%s“ (ID posla %d) štampaču."
+
+#: ../applet.py:704
+#, python-format
+msgid "There was a problem processing document `%s' (job %d)."
+msgstr "Došlo je do problema prilikom obrade dokumenta „%s“ (ID posla %d)."
+
+#. Give up and use the untranslated provided.
+#: ../applet.py:708
+#, python-format
+msgid "There was a problem printing document `%s' (job %d): `%s'."
+msgstr ""
+"Došlo je do problema prilikom štampanja dokumenta „%s“ (ID posla %d): „%s“."
+
+#: ../applet.py:713 ../applet.py:729
+msgid "Print Error"
+msgstr "Greška u štampanju"
+
+#: ../applet.py:714
+msgid "_Diagnose"
+msgstr "_Utvrdite problem"
+
+#: ../applet.py:735
+#, python-format
+msgid "The printer called `%s' has been disabled."
+msgstr "Štampač „%s“ je onemogućen."
+
+#: ../applet.py:814
 msgid "No documents queued"
 msgstr "Nema dokumenata u redu"
 
-#: ../applet.py:669
+#: ../applet.py:817
 msgid "1 document queued"
 msgstr "1 dokument u redu"
 
-#: ../applet.py:672
+#: ../applet.py:820
 #, python-format
 msgid "%d documents queued"
 msgstr "%d dokumenata u redu"
 
-#: ../applet.py:1026
+#: ../applet.py:1178
 msgid "Printer added"
 msgstr "Štampač je dodat"
 
-#: ../applet.py:1028
+#: ../applet.py:1180
 msgid "Missing printer driver"
 msgstr "Nedostaje upravljački program štampača"
 
-#: ../applet.py:1032
+#: ../applet.py:1184
 msgid "Install printer driver"
 msgstr "Instalirajte upravljački program"
 
-#: ../applet.py:1033
+#: ../applet.py:1185
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "„%s“ zahteva instalaciju upravljačkog programa: %s."
 
-#: ../applet.py:1036
-msgid "Install"
-msgstr "Instaliraj"
-
-#: ../applet.py:1039
+#: ../applet.py:1191
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "„%s“ je spreman za štampanje."
 
-#: ../applet.py:1042
+#: ../applet.py:1194
 msgid "Configure"
 msgstr "Podesi"
 
 #. Model mismatch
-#: ../applet.py:1045
+#: ../applet.py:1197
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "„%s“ je dodat, koristeći upravljački program „%s“."
 
-#: ../applet.py:1049
+#: ../applet.py:1201
 msgid "Find driver"
 msgstr "Nađi upravljački program"
 
