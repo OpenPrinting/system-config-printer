@@ -80,10 +80,10 @@ class Watcher:
     def now_connected (self, monitor, printer):
         debugprint (repr (monitor) + ": `%s' now connected" % printer)
 
-    def job_added (self, monitor, jobid, eventname, event):
+    def job_added (self, monitor, jobid, eventname, event, jobdata):
         debugprint (repr (monitor) + ": job %d added" % jobid)
 
-    def job_event (self, monitor, jobid, eventname, event):
+    def job_event (self, monitor, jobid, eventname, event, jobdata):
         debugprint (repr (monitor) + ": job %d has event `%s'" %
                     (jobid, eventname))
 
@@ -342,12 +342,13 @@ class Monitor:
                         attrs['job-originating-user-name'] != cups.getUser ()):
                         continue
 
-                    jobs[jobid] = {'job-k-octets': attrs['job-k-octets']}
+                    jobs[jobid] = attrs
                 except AttributeError:
                     jobs[jobid] = {'job-k-octets': 0}
 
                 deferred_calls.append ((self.watcher.job_added,
-                                        (self, jobid, nse, event)))
+                                        (self, jobid, nse, event,
+                                         jobs[jobid].copy ())))
             elif nse == 'job-completed':
                 if self.which_jobs == "not-completed":
                     try:
@@ -371,7 +372,7 @@ class Monitor:
                 job['job-printer-uri'] = event['notify-printer-uri']
 
             deferred_calls.append ((self.watcher.job_event,
-                                   (self, jobid, nse, event)))
+                                   (self, jobid, nse, event, job.copy ())))
 
         self.update (jobs)
         self.jobs = jobs
