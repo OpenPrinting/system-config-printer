@@ -90,12 +90,13 @@ class JobViewer (monitor.Watcher):
         self.jobiters = {}
         self.which_jobs = "not-completed"
         self.printer_state_reasons = {}
-        self.hidden = False
+        self.num_jobs_when_hidden = 0
         self.connecting_to_device = {} # dict of printer->time first seen
         self.state_reason_notifications = {}
         self.job_creation_times_timer = None
         self.special_status_icon = False
         self.new_printer_notifications = {}
+        self.reasoniters = {}
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE, domain = DOMAIN)
         self.xml.signal_autoconnect(self)
@@ -227,7 +228,6 @@ class JobViewer (monitor.Watcher):
         self.new_printer_notifications[printer] = notification
         notification.set_data ('printer-name', printer)
         notification.connect ('closed', self.on_new_printer_notification_closed)
-        self.hidden = False
         self.set_statusicon_visibility ()
         # Let the icon show itself, ready for the notification
         while gtk.events_pending ():
@@ -431,12 +431,12 @@ class JobViewer (monitor.Watcher):
 
         self.jobs = jobs
 
-        if len (jobs.keys ()) > 0:
-            self.set_statusicon_from_pixbuf (self.icon_jobs)
-        else:
-            self.set_statusicon_from_pixbuf (self.icon_no_jobs)
-
-        self.set_statusicon_visibility ()
+        if self.trayicon:
+            if len (jobs.keys ()) > 0:
+                self.set_statusicon_from_pixbuf (self.icon_jobs)
+            else:
+                self.set_statusicon_from_pixbuf (self.icon_no_jobs)
+            self.set_statusicon_visibility ()
 
     def set_statusicon_visibility (self):
         if not self.trayicon:
@@ -451,16 +451,14 @@ class JobViewer (monitor.Watcher):
         open_notifications = len (self.new_printer_notifications.keys ())
         open_notifications += len (self.state_reason_notifications.keys ())
         num_jobs = len (self.jobs.keys ())
-        if self.hidden and num_jobs > self.num_jobs_when_hidden:
-            self.hidden = False
 
         debugprint ("open notifications: %d" % open_notifications)
         debugprint ("num_jobs: %d" % num_jobs)
+        debugprint ("num_jobs_when_hidden: %d" % self.num_jobs_when_hidden)
 
         self.statusicon.set_visible (self.special_status_icon or
                                      open_notifications > 0 or
-                                     ((not self.hidden) and
-                                      num_jobs > 0))
+                                     num_jobs > self.num_jobs_when_hidden)
 
     def on_treeview_button_press_event(self, treeview, event):
         if event.button != 3:
@@ -499,7 +497,6 @@ class JobViewer (monitor.Watcher):
             self.notify = None
 
         self.num_jobs_when_hidden = len (self.jobs.keys ())
-        self.hidden = True
         self.set_statusicon_visibility ()
 
     def on_icon_quit_activate (self, menuitem):
@@ -554,6 +551,34 @@ class JobViewer (monitor.Watcher):
         self.refresh ()
 
     ## Notifications
+    def notify_printer_state_reason (self, reason):
+        tuple = reason.get_tuple ()
+        if self.state_reason_notifications.has_key (tuple):
+            debugprint ("Already sent notification for %s" % repr (reason))
+            return
+
+        level = reason.get_level ()
+        if (level == StateReason.ERROR or
+            reason.get_reason () == "connecting-to-device"):
+            urgency = pynotify.URGENCY_NORMAL
+        else:
+            urgency = pynotify.URGENCY_LOW
+
+        (title, text) = reason.get_description ()
+        notification = pynotify.Notification (title, text, 'printer')
+        notification.set_data ('printer-state-reason', reason)
+        notification.set_urgency (urgency)
+        notification.set_timeout (pynotify.EXPIRES_NEVER)
+        notification.connect ('closed',
+                              self.on_state_reason_notification_closed)
+        self.state_reason_notifications[reason.get_tuple ()] = notification
+        self.set_statusicon_visibility ()
+        # Let the icon show itself, ready for the notification
+        while gtk.events_pending ():
+            gtk.main_iteration ()
+        notification.attach_to_status_icon (self.statusicon)
+        notification.show ()
+
     def on_state_reason_notification_closed (self, notification):
         debugprint ("Notification %s closed" % repr (notification))
         reason = notification.get_data ('printer-state-reason')
@@ -565,36 +590,6 @@ class JobViewer (monitor.Watcher):
 
         debugprint ("Unable to find closed notification")
 
-    def notify_printer_state_reason (self, reason):
-        tuple = reason.get_tuple ()
-        if self.state_reason_notifications.has_key (tuple):
-            debugprint ("Already sent notification for %s" % repr (reason))
-            return
-
-        level = reason.get_level ()
-        if (level == StateReason.ERROR or
-            reason.get_reason () == "connecting-to-device"):
-            urgency = pynotify.URGENCY_NORMAL
-            timeout = pynotify.EXPIRES_NEVER
-        else:
-            urgency = pynotify.URGENCY_LOW
-            timeout = pynotify.EXPIRES_DEFAULT
-
-        (title, text) = reason.get_description ()
-        notification = pynotify.Notification (title, text, 'printer')
-        notification.set_data ('printer-state-reason', reason)
-        notification.set_urgency (urgency)
-        notification.set_timeout (timeout)
-        notification.connect ('closed',
-                              self.on_state_reason_notification_closed)
-        self.state_reason_notifications[reason.get_tuple ()] = notification
-        self.set_statusicon_visibility ()
-        # Let the icon show itself, ready for the notification
-        while gtk.events_pending ():
-            gtk.main_iteration ()
-        notification.attach_to_status_icon (self.statusicon)
-        notification.show ()
-
     ## monitor.Watcher interface
     def job_added (self, mon, jobid, eventname, event, jobdata):
         monitor.Watcher.job_added (self, mon, jobid, eventname, event, jobdata)
@@ -602,8 +597,10 @@ class JobViewer (monitor.Watcher):
         # completed jobs and one was reprinted.
         if not self.jobiters.has_key (jobid):
             self.add_job (jobid, jobdata)
-        self.set_statusicon_from_pixbuf (self.icon_jobs)
-        self.set_statusicon_visibility ()
+
+        if self.trayicon:
+            self.set_statusicon_from_pixbuf (self.icon_jobs)
+            self.set_statusicon_visibility ()
 
     def job_event (self, mon, jobid, eventname, event, jobdata):
         monitor.Watcher.job_event (self, mon, jobid, eventname, event, jobdata)
@@ -616,13 +613,20 @@ class JobViewer (monitor.Watcher):
             del self.jobiters[jobid]
             del self.jobs[jobid]
 
-        if len (self.jobs.keys ()) == 0:
-            self.set_statusicon_from_pixbuf (self.icon_no_jobs)
-
-        self.set_statusicon_visibility ()
+        if self.trayicon:
+            if len (self.jobs.keys ()) == 0:
+                self.set_statusicon_from_pixbuf (self.icon_no_jobs)
+            self.set_statusicon_visibility ()
 
     def state_reason_added (self, mon, reason):
         monitor.Watcher.state_reason_added (self, mon, reason)
+
+        (title, text) = reason.get_description ()
+        iter = self.store_printers.append (None)
+        self.store_printers.set_value (iter, 0, reason.get_level ())
+        self.store_printers.set_value (iter, 1, reason.get_printer ())
+        self.store_printers.set_value (iter, 2, text)
+        self.reasoniters[reason.get_tuple ()] = iter
 
         if not self.trayicon:
             return
@@ -645,6 +649,12 @@ class JobViewer (monitor.Watcher):
 
     def state_reason_removed (self, mon, reason):
         monitor.Watcher.state_reason_removed (self, mon, reason)
+
+        try:
+            iter = self.reasoniters[reason.get_tuple ()]
+            self.store_printers.remove (iter)
+        except KeyError:
+            debugprint ("Reason iter not found")
 
         if not self.trayicon:
             return
