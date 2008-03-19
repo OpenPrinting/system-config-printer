@@ -2446,6 +2446,31 @@ class NewPrinterGUI(GtkGUI):
                 self.device.uri = self.getDeviceURI()
                 if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
                     host = self.getNetworkPrinterMakeModel(self.device)
+                    faxuri = None
+                    if host:
+                        faxuri = self.get_hplip_uri_for_network_printer(host,
+                                                                        "fax")
+                    if faxuri:
+                        dialog = gtk.Dialog(self.device.info,
+                                            self.NewPrinterWindow,
+                                            gtk.DIALOG_MODAL |
+                                            gtk.DIALOG_DESTROY_WITH_PARENT,
+                                            (_("Printer"), 1,
+                                             _("Fax"), 2))
+                        label = gtk.Label(_("This printer supports both printing and sending faxes.\nThis print queue should be used for which functionality?"))
+                        dialog.vbox.pack_start(label, True, True, 0)
+                        label.show()
+                        queue_type = dialog.run()
+                        dialog.destroy()
+                        if (queue_type == 2):
+                            self.device.uri = faxuri;
+                            self.auto_make, self.auto_model = "HP", "Fax"
+                            self.device.id = "MFG:" + self.auto_make + \
+                                             ";MDL:" + self.auto_model + \
+                                             ";DES:" + self.auto_make + " " + \
+                                             self.auto_model + ";"
+                            self.device.id_dict = \
+                               cupshelpers.parseDeviceID (self.device.id)
                 uri = self.device.uri
                 if uri and uri.startswith ("smb://"):
                     uri = SMBURI (uri=uri[6:]).sanitize_uri ()
