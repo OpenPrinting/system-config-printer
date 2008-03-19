@@ -253,7 +253,7 @@ if __name__ == '__main__':
                 "%s: failed to start NewPrinterNotification service" % \
                 PROGRAM_NAME
 
-    if trayicon:
+    if trayicon and get_debugging () == False:
         # Start off just waiting for print jobs or printer errors.
         def any_jobs_or_errors ():
             try:
@@ -319,4 +319,4 @@ if __name__ == '__main__':
         runloop.run()
     except KeyboardInterrupt:
         pass
-    viewer.cleanup () # Why doesn't __del__ work?
+    viewer.cleanup ()
