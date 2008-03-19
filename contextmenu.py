@@ -114,8 +114,9 @@ class PrinterContextMenu:
     def on_printer_context_set_as_default_activate (self, menuitem):
         model = self.iconview.get_model ()
         iter = model.get_iter (self.paths[0])
-        name = model.get_value (iter, 2)
-        self.parent.set_default_printer (name)
+        printer = model.get_value (iter, 0)
+        printer.setAsDefault ()
+        self.parent.populateList ()
 
     def on_printer_context_view_print_queue_activate (self, menuitem):
         if len (self.paths):

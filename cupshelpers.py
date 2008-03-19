@@ -240,6 +240,55 @@ class Printer:
                 ret.append (id)
         return ret
 
+    def setAsDefault(self):
+        self.connection.setDefault(self.name)
+
+        # Also need to check system-wide lpoptions because that's how
+        # previous Fedora versions set the default (bug #217395).
+        (tmpfd, tmpfname) = tempfile.mkstemp ()
+        try:
+            resource = "/admin/conf/lpoptions"
+            self.connection.getFile(resource, tmpfname)
+        except cups.HTTPError, (s,):
+            try:
+                os.remove (tmpfname)
+            except OSError:
+                pass
+
+            if s == cups.HTTP_NOT_FOUND:
+                return
+
+            raise cups.HTTPError (s)
+
+        lines = file (tmpfname).readlines ()
+        changed = False
+        i = 0
+        for line in lines:
+            if line.startswith ("Default "):
+                # This is the system-wide default.
+                name = line.split (' ')[1]
+                if name != self.name:
+                    # Stop it from over-riding the server default.
+                    lines[i] = "Dest " + line[8:]
+                    changed = True
+                i += 1
+
+        if changed:
+            file (tmpfname, 'w').writelines (lines)
+            try:
+                self.connection.putFile (resource, tmpfname)
+            except cups.HTTPError, (s,):
+                os.remove (tmpfname)
+                return
+
+            # Now reconnect because the server needs to reload.
+            self.reconnect ()
+
+        try:
+            os.remove (tmpfname)
+        except OSError:
+            pass
+
 def getPrinters(connection):
     printers = connection.getPrinters()
     classes = connection.getClasses()

@@ -27,6 +27,7 @@ import gettext
 import gobject
 import gtk
 import gtk.glade
+import monitor
 import pango
 import pynotify
 import sys
@@ -48,36 +49,6 @@ GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
 
-CONNECTING_TIMEOUT = 60 # seconds
-MIN_REFRESH_INTERVAL = 1 # seconds
-
-def state_reason_is_harmless (reason):
-    if (reason.startswith ("moving-to-paused") or
-        reason.startswith ("paused") or
-        reason.startswith ("shutdown") or
-        reason.startswith ("stopping") or
-        reason.startswith ("stopped-partly")):
-        return True
-    return False
-
-def collect_printer_state_reasons (connection):
-    result = {}
-    printers = connection.getPrinters ()
-    for name, printer in printers.iteritems ():
-        reasons = printer["printer-state-reasons"]
-        if type (reasons) != list:
-            # Work around a bug that was fixed in pycups-1.9.20.
-            reasons = [reasons]
-        for reason in reasons:
-            if reason == "none":
-                break
-            if state_reason_is_harmless (reason):
-                continue
-            if not result.has_key (name):
-                result[name] = []
-            result[name].append (StateReason (name, reason))
-    return result
-
 def worst_printer_state_reason (printer_reasons=None, connection=None):
     """Fetches the printer list and checks printer-state-reason for
     each printer, returning a StateReason for the most severe
@@ -91,7 +62,7 @@ def worst_printer_state_reason (printer_reasons=None, connection=None):
             except:
                 return None
 
-        printer_reasons = collect_printer_state_reasons (connection)
+        printer_reasons = monitor.collect_printer_state_reasons (connection)
 
     for printer, reasons in printer_reasons.iteritems ():
         for reason in reasons:
@@ -103,7 +74,7 @@ def worst_printer_state_reason (printer_reasons=None, connection=None):
 
     return worst_reason
 
-class JobViewer:
+class JobViewer (monitor.Watcher):
     def __init__(self, bus=None, loop=None, service_running=False,
                  trayicon=False, suppress_icon_hide=False,
                  my_jobs=True, specific_dests=None, exit_handler=None):
@@ -228,30 +199,14 @@ class JobViewer:
         if bus == None:
             bus = dbus.SystemBus ()
 
-        bus.add_signal_receiver (self.handle_dbus_signal,
-                                 path="/com/redhat/PrinterSpooler",
-                                 dbus_interface="com.redhat.PrinterSpooler")
-        self.bus = bus
-
-        self.sub_id = -1
-        self.refresh ()
+        self.monitor = monitor.Monitor (self, bus=bus, my_jobs=my_jobs,
+                                        specific_dests=specific_dests)
 
         if not self.trayicon:
             self.MainWindow.show ()
 
     def cleanup (self):
-        if self.sub_id != -1:
-            try:
-                c = cups.Connection ()
-                c.cancelSubscription (self.sub_id)
-                debugprint ("Canceled subscription %d" % self.sub_id)
-            except:
-                pass
-
-        self.bus.remove_signal_receiver (self.handle_dbus_signal,
-                                         path="/com/redhat/PrinterSpooler",
-                                         dbus_interface="com.redhat.PrinterSpooler")
-
+        self.monitor.cleanup ()
         if self.exit_handler:
             self.exit_handler (self)
 
@@ -331,9 +286,9 @@ class JobViewer:
 
     def on_show_completed_jobs_activate(self, menuitem):
         if menuitem.get_active():
-            self.which_jobs = "all"
+            self.monitor.which_jobs = "all"
         else:
-            self.which_jobs = "not-completed"
+            self.monitor.which_jobs = "not-completed"
         self.refresh()
 
     def on_show_printer_status_activate(self, menuitem):
@@ -342,208 +297,6 @@ class JobViewer:
         else:
             self.PrintersWindow.hide()
 
-    def check_still_connecting(self):
-        """Timer callback to check on connecting-to-device reasons."""
-        if self.update_connecting_devices ():
-            self.get_notifications ()
-
-        # Don't run this callback again.
-        return False
-
-    def update_connecting_devices(self):
-        """Updates connecting_to_device dict and still_connecting set.
-        Returns True if a device has been connecting too long."""
-        time_now = time.time ()
-        connecting_to_device = {}
-        trouble = False
-        for printer, reasons in self.printer_state_reasons.iteritems ():
-            for reason in reasons:
-                if reason.get_reason () == "connecting-to-device":
-                    # Build a new connecting_to_device dict.  If our existing
-                    # dict already has an entry for this printer, use that.
-                    printer = reason.get_printer ()
-                    t = self.connecting_to_device.get (printer, time_now)
-                    connecting_to_device[printer] = t
-                    if time_now - t >= CONNECTING_TIMEOUT:
-                        trouble = True
-
-        # Clear any previously-notified errors that are now fine.
-        remove = set()
-        for printer in self.still_connecting:
-            if not self.connecting_to_device.has_key (printer):
-                remove.add (printer)
-                if self.trayicon and self.notify:
-                    r = self.notified_reason
-                    if (r.get_printer () == printer and
-                        r.get_reason () == 'connecting-to-device'):
-                        # We had sent a notification for this reason.
-                        # Close it.
-                        self.notify.close ()
-                        self.notify = None
-
-        self.still_connecting = self.still_connecting.difference (remove)
-
-        self.connecting_to_device = connecting_to_device
-        return trouble
-
-    def check_state_reasons(self, my_printers=set(), printer_jobs={}):
-        # Look for any new reasons since we last checked.
-        old_reasons_seen_keys = self.reasons_seen.keys ()
-        reasons_now = set()
-        need_recheck = False
-        for printer, reasons in self.printer_state_reasons.iteritems ():
-            for reason in reasons:
-                tuple = reason.get_tuple ()
-                printer = reason.get_printer ()
-                reasons_now.add (tuple)
-                if not self.reasons_seen.has_key (tuple):
-                    # New reason.
-                    iter = self.store_printers.append (None)
-                    self.store_printers.set_value (iter, 0,
-                                                   reason.get_level ())
-                    self.store_printers.set_value (iter, 1,
-                                                   reason.get_printer ())
-                    title, text = reason.get_description ()
-                    self.store_printers.set_value (iter, 2, text)
-                    self.reasons_seen[tuple] = iter
-                    if (reason.get_reason () == "connecting-to-device" and
-                        not self.connecting_to_device.has_key (printer)):
-                        # First time we've seen this.
-                        need_recheck = True
-
-        if need_recheck:
-            # Check on them again in a minute's time.
-            gobject.timeout_add (CONNECTING_TIMEOUT * 1000,
-                                 self.check_still_connecting)
-
-        self.update_connecting_devices ()
-        items = self.reasons_seen.keys ()
-        for tuple in items:
-            if not tuple in reasons_now:
-                # Reason no longer present.
-                iter = self.reasons_seen[tuple]
-                self.store_printers.remove (iter)
-                del self.reasons_seen[tuple]
-                if (self.trayicon and self.notify and
-                    self.notified_reason.get_tuple () == tuple):
-                    # We had sent a notification for this reason.  Close it.
-                    self.notify.close ()
-                    self.notify = None
-
-        # Update statusbar and icon with most severe printer reason
-        # across all printers.
-        self.icon_has_emblem = False
-        reason = worst_printer_state_reason (self.printer_state_reasons)
-        if reason != None and reason.get_level () >= StateReason.WARNING:
-            title, text = reason.get_description ()
-            if self.statusbar_set:
-                self.statusbar.pop (0)
-            self.statusbar.push (0, text)
-            self.worst_reason_text = text
-            self.statusbar_set = True
-
-            if self.trayicon:
-                icon = StateReason.LEVEL_ICON[reason.get_level ()]
-                pixbuf = self.statusicon.get_pixbuf ().copy ()
-                theme = gtk.icon_theme_get_default ()
-                try:
-                    emblem = theme.load_icon (icon, 22, 0)
-                    emblem.composite (pixbuf,
-                                      pixbuf.get_width () / 2,
-                                      pixbuf.get_height () / 2,
-                                      emblem.get_width () / 2,
-                                      emblem.get_height () / 2,
-                                      pixbuf.get_width () / 2,
-                                      pixbuf.get_height () / 2,
-                                      0.5, 0.5,
-                                      gtk.gdk.INTERP_BILINEAR, 255)
-                    self.set_statusicon_from_pixbuf (pixbuf)
-                    self.icon_has_emblem = True
-                except gobject.GError, exc:
-                    pass # Couldn't load icon.
-        else:
-            # No errors
-            if self.statusbar_set:
-                self.statusbar.pop (0)
-                self.statusbar_set = False
-
-        # Send notifications for printers we've got jobs queued for.
-        my_reasons = {}
-        for printer in my_printers:
-            if self.printer_state_reasons.has_key (printer):
-                my_reasons[printer] = self.printer_state_reasons[printer]
-        reason = worst_printer_state_reason (my_reasons)
-
-        # If connecting-to-device is the worst reason, check if it's been
-        # like that for more than a minute.  If so, and there is job being
-        # processed for that device, let's put a warning bubble up.
-        if (self.trayicon and reason != None and
-            reason.get_reason () == "connecting-to-device"):
-            now = time.time ()
-            printer = reason.get_printer ()
-            start = self.connecting_to_device.get (printer, now)
-            if now - start >= CONNECTING_TIMEOUT:
-                have_processing_job = False
-                for job, data in printer_jobs.get (printer, {}).iteritems ():
-                    state = data.get ('job-state', cups.IPP_JOB_CANCELED)
-                    if state == cups.IPP_JOB_PROCESSING:
-                        have_processing_job = True
-                        break
-
-                if have_processing_job:
-                    # This will be in our list of reasons we've already seen,
-                    # which ordinarily stops us notifying the user.  In this
-                    # case, pretend we haven't seen it before.
-                    self.still_connecting.add (printer)
-                    old_reasons_seen_keys.remove (reason.get_tuple ())
-                    reason = StateReason (printer,
-                                          reason.get_reason () + "-error")
-
-        if (self.trayicon and reason != None and
-            reason.get_level () >= StateReason.WARNING):
-            if not reason.get_tuple () in old_reasons_seen_keys:
-                level = reason.get_level ()
-                if level == StateReason.WARNING:
-                    notify_urgency = pynotify.URGENCY_LOW
-                    timeout = pynotify.EXPIRES_DEFAULT
-                else:
-                    notify_urgency = pynotify.URGENCY_NORMAL
-                    timeout = pynotify.EXPIRES_NEVER
-
-                (title, text) = reason.get_description ()
-
-                if self.notify:
-                    self.notify.close ()
-                self.notify = pynotify.Notification (title, text, 'printer')
-                self.set_statusicon_visibility ()
-                # Let the icon show itself, ready for the notification
-                while gtk.events_pending ():
-                    gtk.main_iteration ()
-
-                self.notify.attach_to_status_icon (self.statusicon)
-
-                while gtk.events_pending ():
-                    gtk.main_iteration ()
-
-                self.notify.set_urgency (notify_urgency)
-                self.notify.set_timeout (timeout)
-                self.notify.connect ('closed', self.on_notification_closed)
-                self.notify.show ()
-                self.notified_reason = reason
-
-    def on_notification_closed(self, notify):
-        self.notify = None
-        reason = self.notified_reason
-        if reason.get_reason () == "connecting-to-device":
-            try:
-                del self.connecting_to_device[reason.get_printer ()]
-            except KeyError:
-                pass
-
-        if self.trayicon:
-            # Any reason to keep the status icon around?
-            self.set_statusicon_visibility ()
-
     def update_job_creation_times(self):
         now = time.time ()
         need_update = False
@@ -551,7 +304,7 @@ class JobViewer:
             if self.jobs.has_key (job):
                 iter = self.jobiters[job]
 
-            t = "Unknown"
+            t = _("Unknown")
             if data.has_key ('time-at-creation'):
                 created = data['time-at-creation']
                 ago = now - created
@@ -610,341 +363,61 @@ class JobViewer:
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
 
-    def get_notifications(self):
-        debugprint ("get_notifications")
-        try:
-            c = cups.Connection ()
+    def update_job (self, job, data):
+        store = self.store
+        iter = self.jobiters[job]
 
+        printer = _("Unknown")
+        uri = data.get('job-printer-uri', '')
+        i = uri.rfind ('/')
+        if i != -1:
+            printer = uri[i + 1:]
+        store.set_value (iter, 2, printer)
+
+        size = _("Unknown")
+        if data.has_key ('job-k-octets'):
+            size = str (data['job-k-octets']) + 'k'
+        store.set_value (iter, 3, size)
+
+        state = None
+        if data.has_key ('job-state'):
             try:
-                try:
-                    notifications = c.getNotifications ([self.sub_id],
-                                                        [self.sub_seq + 1])
-                except AttributeError:
-                    notifications = c.getNotifications ([self.sub_id])
-            except cups.IPPError, (e, m):
-                if e == cups.IPP_NOT_FOUND:
-                    # Subscription lease has expired.
-                    self.sub_id = -1
-                    self.refresh ()
-                    return False
-
-                return True
-        except:
-            return True
-
-        jobs = self.jobs.copy ()
-        for event in notifications['events']:
-            seq = event['notify-sequence-number']
-            try:
-                if seq <= self.sub_seq:
-                    # Work around a bug in pycups < 1.9.34
-                    continue
-            except AttributeError:
+                jstate = data['job-state']
+                s = int (jstate)
+                state = { cups.IPP_JOB_PENDING: _("Pending"),
+                          cups.IPP_JOB_HELD: _("Held"),
+                          cups.IPP_JOB_PROCESSING: _("Processing"),
+                          cups.IPP_JOB_STOPPED: _("Stopped"),
+                          cups.IPP_JOB_CANCELED: _("Canceled"),
+                          cups.IPP_JOB_ABORTED: _("Aborted"),
+                          cups.IPP_JOB_COMPLETED: _("Completed") }[s]
+            except ValueError:
                 pass
-            self.sub_seq = seq
-            nse = event['notify-subscribed-event']
-            debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
-            debugprint (pprint.pformat (event))
-            if nse.startswith ('printer-'):
-                # Printer events
-                name = event['printer-name']
-                if nse == 'printer-deleted':
-                    if self.printer_state_reasons.has_key (name):
-                        del self.printer_state_reasons[name]
-                else:
-                    printer_state_reasons = event['printer-state-reasons']
-                    if type (printer_state_reasons) != list:
-                        # Work around a bug in pycups < 1.9.36
-                        printer_state_reasons = [printer_state_reasons]
+            except IndexError:
+                pass
 
-                    reasons = []
-                    for reason in printer_state_reasons:
-                        if reason == "none":
-                            break
-                        if state_reason_is_harmless (reason):
-                            continue
-                        reasons.append (StateReason (name, reason))
-                    self.printer_state_reasons[name] = reasons
-                continue
-
-            # Job events
-            jobid = event['notify-job-id']
-            if nse == 'job-created':
-                if (self.specific_dests != None and
-                    event['printer-name'] not in self.specific_dests):
-                    continue
-
-                try:
-                    attrs = c.getJobAttributes (jobid)
-                    if (self.my_jobs and
-                        attrs['job-originating-user-name'] != cups.getUser ()):
-                        continue
-
-                    jobs[jobid] = {'job-k-octets': attrs['job-k-octets']}
-                except AttributeError:
-                    jobs[jobid] = {'job-k-octets': 0}
-            elif nse == 'job-completed':
-                if self.which_jobs == "not-completed":
-                    try:
-                        del jobs[jobid]
-                    except KeyError:
-                        pass
-                    continue
-
-            try:
-                job = jobs[jobid]
-            except KeyError:
-                continue
-
-            for attribute in ['job-state',
-                              'job-name']:
-                job[attribute] = event[attribute]
-            if event.has_key ('notify-printer-uri'):
-                job['job-printer-uri'] = event['notify-printer-uri']
-
-            if nse == 'job-stopped' and self.trayicon:
-                # Why has the job stopped?  It might be due to a job
-                # error of some sort, or it might be that the backend
-                # requires authentication.  If the latter, the job will
-                # be held not stopped, and the job-hold-until attribute
-                # will be 'auth-info-required'.
-                if job['job-state'] == cups.IPP_JOB_HELD:
-                    try:
-                        # Fetch the job-hold-until attribute, as this is
-                        # not provided in the notification attributes.
-                        job = c.getJobAttributes (jobid)
-                        jobs[jobid] = job
-                    except cups.IPPError:
-                        pass
-
-                if (job['job-state'] == cups.IPP_JOB_HELD and
-                    job['job-hold-until'] == 'auth-info-required'):
-                    # TODO: ask user for authentication and authenticate
-                    # the job.
-                    debugprint ("Authentication required")
-                    continue
-
-                # Other than that, unfortunately the only
-                # clue we get is the notify-text, which is not
-                # translated into our native language.  We'd better
-                # try parsing it.  In CUPS-1.3.6 the possible strings
-                # are:
-                #
-                # "Job stopped due to filter errors; please consult
-                # the error_log file for details."
-                #
-                # "Job stopped due to backend errors; please consult
-                # the error_log file for details."
-                #
-                # "Job held due to backend errors; please consult the
-                # error_log file for details."
-                #
-                # "Authentication is required for job %d."
-                notify_text = event['notify-text']
-                document = job['job-name']
-                if notify_text.find ("backend errors") != -1:
-                    message = _("There was a problem sending document `%s' "
-                                "(job %d) to the printer.") % (document, jobid)
-                elif notify_text.find ("filter errors") != -1:
-                    message = _("There was a problem processing document `%s' "
-                                "(job %d).") % (document, jobid)
-                else:
-                    # Give up and use the untranslated provided.
-                    message = _("There was a problem printing document `%s' "
-                                "(job %d): `%s'.") % (document, jobid,
-                                                      notify_text)
-
-                self.toggle_window_display (self.statusicon, force_show=True)
-                dialog = gtk.Dialog (_("Print Error"), self.MainWindow, 0,
-                                     (_("_Diagnose"), gtk.RESPONSE_NO,
-                                        gtk.STOCK_OK, gtk.RESPONSE_OK))
-                dialog.set_default_response (gtk.RESPONSE_OK)
-                dialog.set_border_width (6)
-                dialog.set_resizable (False)
-                dialog.set_icon_name (ICON)
-                hbox = gtk.HBox (False, 12)
-                hbox.set_border_width (6)
-                image = gtk.Image ()
-                image.set_from_stock ('gtk-dialog-error',
-                                      gtk.ICON_SIZE_DIALOG)
-                hbox.pack_start (image, False, False, 0)
-                vbox = gtk.VBox (False, 12)
-
-                markup = ('<span weight="bold" size="larger">' +
-                          _("Print Error") + '</span>\n\n' +
-                          message)
-                try:
-                    if event['printer-state'] == cups.IPP_PRINTER_STOPPED:
-                        name = event['printer-name']
-                        markup += ' '
-                        markup += (_("The printer called `%s' has "
-                                     "been disabled.") % name)
-                except KeyError:
-                    pass
-
-                label = gtk.Label (markup)
-                label.set_use_markup (True)
-                label.set_line_wrap (True)
-                label.set_alignment (0, 0)
-                vbox.pack_start (label, False, False, 0)
-                hbox.pack_start (vbox, False, False, 0)
-                dialog.vbox.pack_start (hbox)
-                dialog.connect ('response', self.print_error_dialog_response)
-                dialog.show_all ()
-
-        self.update (jobs)
-        self.jobs = jobs
-        return False
+        if state == None:
+            state = _("Unknown")
+        store.set_value (iter, 5, state)        
 
     def refresh(self):
-        debugprint ("refresh")
-
-        try:
-            c = cups.Connection ()
-        except RuntimeError:
-            return
-
-        if self.sub_id != -1:
-            c.cancelSubscription (self.sub_id)
-            gobject.source_remove (self.update_timer)
-            debugprint ("Canceled subscription %d" % self.sub_id)
-
-        try:
-            del self.sub_seq
-        except AttributeError:
-            pass
-        self.sub_id = c.createSubscription ("/",
-                                            events=["job-created",
-                                                    "job-completed",
-                                                    "job-stopped",
-                                                    "job-progress",
-                                                    "job-state-changed",
-                                                    "printer-deleted",
-                                                    "printer-state-changed"])
-        self.update_timer = gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
-                                                 self.get_notifications)
-        debugprint ("Created subscription %d" % self.sub_id)
-
-        try:
-            jobs = c.getJobs (which_jobs=self.which_jobs, my_jobs=self.my_jobs)
-            self.printer_state_reasons = collect_printer_state_reasons (c)
-        except cups.IPPError, (e, m):
-            self.show_IPP_Error (e, m)
-            return
-        except RuntimeError:
-            return
-
-        if self.specific_dests != None:
-            for jobid in jobs.keys ():
-                uri = jobs[jobid].get('job-printer-uri', '/')
-                i = uri.rfind ('/')
-                printer = uri[i + 1:]
-                if printer not in self.specific_dests:
-                    del jobs[jobid]
-
-        self.update (jobs)
-
-        self.jobs = jobs
-        self.update_job_creation_times ()
-        return False
-
-    def update(self, jobs):
-        debugprint ("update")
-        # Count active jobs
-        if self.which_jobs == "not-completed":
-            active_jobs = jobs
-        else:
-            active_jobs = filter (lambda x:
-                                      x['job-state'] <= cups.IPP_JOB_STOPPED,
-                                  jobs.values ())
-        num_jobs = len (active_jobs)
-
-        if self.trayicon:
-            self.num_jobs = num_jobs
-            if self.hidden and self.num_jobs != self.num_jobs_when_hidden:
-                self.hidden = False
-            if num_jobs == 0:
-                tooltip = _("No documents queued")
-                self.set_statusicon_from_pixbuf (self.icon_no_jobs)
-            elif num_jobs == 1:
-                tooltip = _("1 document queued")
-                self.set_statusicon_from_pixbuf (self.icon_jobs)
-            else:
-                tooltip = _("%d documents queued") % num_jobs
-                self.set_statusicon_from_pixbuf (self.icon_jobs)
-
-        my_printers = set()
-        printer_jobs = {}
+        debugprint ("jobviewer: refresh")
+        self.monitor.refresh ()
+        self.jobs = self.monitor.get_jobs ()
         for job, data in jobs.iteritems ():
-            state = data.get ('job-state', cups.IPP_JOB_CANCELED)
-            if state >= cups.IPP_JOB_CANCELED:
-                continue
-            uri = data.get ('job-printer-uri', '/')
-            i = uri.rfind ('/')
-            printer = uri[i + 1:]
-            my_printers.add (printer)
-            if not printer_jobs.has_key (printer):
-                printer_jobs[printer] = {}
-            printer_jobs[printer][job] = data
-
-        self.check_state_reasons (my_printers, printer_jobs)
-
-        if self.trayicon:
-            # If there are no jobs but there is a printer
-            # warning/error indicated by the icon, set the icon
-            # tooltip to the reason description.
-            if self.num_jobs == 0 and self.icon_has_emblem:
-                tooltip = self.worst_reason_text
-
-            self.statusicon.set_tooltip (tooltip)
-            self.set_statusicon_visibility ()
-
-        for job in self.jobs:
-            if not jobs.has_key (job):
-                self.store.remove (self.jobiters[job])
-                del self.jobiters[job]
-
-        for job, data in jobs.iteritems():
-            if self.jobs.has_key (job):
+            if self.jobiters.has_key (job):
                 iter = self.jobiters[job]
             else:
                 iter = self.store.append (None)
                 self.store.set_value (iter, 0, job)
-                self.store.set_value (iter, 1, data.get('job-name', 'Unknown'))
+                self.store.set_value (iter, 1,
+                                      data.get('job-name', _("Unknown")))
                 self.jobiters[job] = iter
 
-            printer = "Unknown"
-            uri = data.get('job-printer-uri', '')
-            i = uri.rfind ('/')
-            if i != -1:
-                printer = uri[i + 1:]
-            self.store.set_value (iter, 2, printer)
+            self.update_job (job, data)
 
-            if data.has_key ('job-k-octets'):
-                size = str (data['job-k-octets']) + 'k'
-            else:
-                size = 'Unknown'
-            self.store.set_value (iter, 3, size)
-
-            state = None
-            if data.has_key ('job-state'):
-                try:
-                    jstate = data['job-state']
-                    s = int (jstate)
-                    state = { cups.IPP_JOB_PENDING: _("Pending"),
-                              cups.IPP_JOB_HELD: _("Held"),
-                              cups.IPP_JOB_PROCESSING: _("Processing"),
-                              cups.IPP_JOB_STOPPED: _("Stopped"),
-                              cups.IPP_JOB_CANCELED: _("Canceled"),
-                              cups.IPP_JOB_ABORTED: _("Aborted"),
-                              cups.IPP_JOB_COMPLETED: _("Completed") }[s]
-                except ValueError:
-                    pass
-                except IndexError:
-                    pass    
-            if state == None:
-                state = _("Unknown")
-            self.store.set_value (iter, 5, state)
+        self.update_job_creation_times ()
+        return False
 
     def set_statusicon_visibility (self):
         if self.trayicon:
@@ -1050,10 +523,6 @@ class JobViewer:
 
     def on_refresh_activate(self, menuitem):
         self.refresh ()
-
-    def handle_dbus_signal(self, *args):
-        gobject.source_remove (self.update_timer)
-        self.update_timer = gobject.timeout_add (200, self.get_notifications)
 
     ## Printer status window
     def set_printer_status_icon (self, column, cell, model, iter, *user_data):

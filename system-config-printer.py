@@ -1293,61 +1293,19 @@ class GUI(GtkGUI):
 
     # set default printer
     def set_default_printer (self, name):
+        printer = self.printers[name]
         try:
-            self.cups.setDefault(name)
+            printer.setAsDefault ()
+        except cups.HTTPError, (s,):
+            self.show_HTTP_Error (s)
+            return
         except cups.IPPError, (e, msg):
             self.show_IPP_Error(e, msg)
             return
 
-        # Also need to check system-wide lpoptions because that's how
-        # previous Fedora versions set the default (bug #217395).
-        (tmpfd, tmpfname) = tempfile.mkstemp ()
-        success = False
-        try:
-            resource = "/admin/conf/lpoptions"
-            self.cups.getFile(resource, tmpfname)
-            success = True
-        except cups.HTTPError, (s,):
-            try:
-                os.remove (tmpfname)
-            except OSError:
-                pass
-
-            if s != cups.HTTP_NOT_FOUND:
-                self.show_HTTP_Error(s)
-                return
-
-        if success:
-            lines = file (tmpfname).readlines ()
-            changed = False
-            i = 0
-            for line in lines:
-                if line.startswith ("Default "):
-                    # This is the system-wide default.
-                    name = line.split (' ')[1]
-                    if name != self.printer.name:
-                        # Stop it from over-riding the server default.
-                        lines[i] = "Dest " + line[8:]
-                        changed = True
-                i += 1
-
-            if changed:
-                file (tmpfname, 'w').writelines (lines)
-                try:
-                    self.cups.putFile (resource, tmpfname)
-                except cups.HTTPError, (s,):
-                    os.remove (tmpfname)
-                    debugprint (s)
-                    self.show_HTTP_Error(s)
-                    return
-
-                # Now reconnect because the server needs to reload.
-                self.reconnect ()
-
-        try:
-            os.remove (tmpfname)
-        except OSError:
-            pass
+        # Now reconnect in case the server needed to reload.  This may
+        # happen if we replaced the lpoptions file.
+        self.reconnect ()
 
         try:
             self.populateList()
