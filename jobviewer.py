@@ -92,7 +92,7 @@ class JobViewer (monitor.Watcher):
         self.printer_state_reasons = {}
         self.hidden = False
         self.connecting_to_device = {} # dict of printer->time first seen
-        self.still_connecting = set()
+        self.still_connecting_notifications = {}
         self.job_creation_times_timer = None
         self.special_status_icon = False
 
@@ -530,7 +530,16 @@ class JobViewer (monitor.Watcher):
     def on_refresh_activate(self, menuitem):
         self.refresh ()
 
-    ## Watcher interface
+    ## Notifications
+    def on_notification_closed (self, notification):
+        for printer, n in self.still_connecting_notifications.iteritems ():
+            if notification == n:
+                del self.still_connecting_notifications[printer]
+                return
+
+        debugprint ("Unable to find closed notification")
+
+    ## monitor.Watcher interface
     def job_added (self, monitor, jobid, eventname, event, jobdata):
         # We may be showing this job already, perhaps because we are showing
         # completed jobs and one was reprinted.
@@ -545,6 +554,34 @@ class JobViewer (monitor.Watcher):
             self.store.remove (self.jobiters[jobid])
             del self.jobiters[jobid]
             del self.jobs[jobid]
+
+    def still_connecting (self, monitor, printer):
+        if self.still_connecting_notifications.has_key (printer):
+            debugprint ("Unexpected still_connecting signal")
+            return
+
+        if not self.trayicon:
+            return
+
+        reason = statereason.StateReason (printer,
+                                          "connecting-to-device-error")
+        (title, text) = reason.get_description ()
+        notification = pynotify.Notification (title, text, 'printer')
+        notification.set_urgency (pynotify.URGENCY_NORMAL)
+        notification.set_timeout (pynotify.EXPIRES_NEVER)
+        notification.connect ('closed', self.on_notification_closed)
+        self.still_connecting_notifications[printer] = notification
+        notification.show ()
+
+    def now_connected (self, monitor, printer):
+        try:
+            notification = self.still_connecting_notifications[printer]
+        except KeyError:
+            debugprint ("Unexpected now_connected signal")
+            return
+
+        notification.close ()
+        del self.still_connecting_notifications[printer]
 
     ## Printer status window
     def set_printer_status_icon (self, column, cell, model, iter, *user_data):
