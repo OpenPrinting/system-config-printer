@@ -92,7 +92,7 @@ class JobViewer (monitor.Watcher):
         self.printer_state_reasons = {}
         self.hidden = False
         self.connecting_to_device = {} # dict of printer->time first seen
-        self.still_connecting_notifications = {}
+        self.state_reason_notifications = {}
         self.job_creation_times_timer = None
         self.special_status_icon = False
 
@@ -291,7 +291,7 @@ class JobViewer (monitor.Watcher):
             self.monitor.which_jobs = "all"
         else:
             self.monitor.which_jobs = "not-completed"
-        self.refresh()
+        self.refresh(refresh_monitor=True)
 
     def on_show_printer_status_activate(self, menuitem):
         if self.show_printer_status.get_active ():
@@ -413,9 +413,10 @@ class JobViewer (monitor.Watcher):
             state = _("Unknown")
         store.set_value (iter, 5, state)
 
-    def refresh(self):
+    def refresh(self, refresh_monitor=False):
         debugprint ("jobviewer: refresh")
-        self.monitor.refresh ()
+        if refresh_monitor:
+            self.monitor.refresh ()
         jobs = self.monitor.get_jobs ()
         self.store.clear ()
         self.jobiters = {}
@@ -532,56 +533,160 @@ class JobViewer (monitor.Watcher):
 
     ## Notifications
     def on_notification_closed (self, notification):
-        for printer, n in self.still_connecting_notifications.iteritems ():
-            if notification == n:
-                del self.still_connecting_notifications[printer]
-                return
+        debugprint ("Notification %s closed" % repr (notification))
+        try:
+            reason = notification.get_data ('printer-state-reason')
+        except:
+            reason = None
+        if reason == None:
+            # Perhaps a notification of a new printer.
+            return
+
+        tuple = reason.get_tuple ()
+        if self.state_reason_notifications[tuple] == notification:
+            del self.state_reason_notifications[tuple]
+            return
 
         debugprint ("Unable to find closed notification")
 
+    def notify_printer_state_reason (self, reason):
+        tuple = reason.get_tuple ()
+        if self.state_reason_notifications.has_key (tuple):
+            debugprint ("Already sent notification for %s" % repr (reason))
+            return
+
+        level = reason.get_level ()
+        if (level == StateReason.ERROR or
+            reason.get_reason () == "connecting-to-device"):
+            urgency = pynotify.URGENCY_NORMAL
+            timeout = pynotify.EXPIRES_NEVER
+        else:
+            urgency = pynotify.URGENCY_LOW
+            timeout = pynotify.EXPIRES_DEFAULT
+
+        (title, text) = reason.get_description ()
+        notification = pynotify.Notification (title, text, 'printer')
+        notification.set_data ('printer-state-reason', reason)
+        notification.set_urgency (urgency)
+        notification.set_timeout (timeout)
+        notification.connect ('closed', self.on_notification_closed)
+        self.state_reason_notifications[reason.get_tuple ()] = notification
+        notification.show ()
+
     ## monitor.Watcher interface
-    def job_added (self, monitor, jobid, eventname, event, jobdata):
+    def job_added (self, mon, jobid, eventname, event, jobdata):
+        monitor.Watcher.job_added (self, mon, jobid, eventname, event, jobdata)
         # We may be showing this job already, perhaps because we are showing
         # completed jobs and one was reprinted.
         if not self.jobiters.has_key (jobid):
             self.add_job (jobid, jobdata)
 
-    def job_event (self, monitor, jobid, eventname, event, jobdata):
+    def job_event (self, mon, jobid, eventname, event, jobdata):
+        monitor.Watcher.job_event (self, mon, jobid, eventname, event, jobdata)
         self.update_job (jobid, jobdata)
 
-    def job_removed (self, monitor, jobid, eventname, event):
+    def job_removed (self, mon, jobid, eventname, event):
+        monitor.Watcher.job_removed (self, mon, jobid, eventname, event)
         if self.jobiters.has_key (jobid):
             self.store.remove (self.jobiters[jobid])
             del self.jobiters[jobid]
             del self.jobs[jobid]
 
-    def still_connecting (self, monitor, printer):
-        if self.still_connecting_notifications.has_key (printer):
-            debugprint ("Unexpected still_connecting signal")
-            return
+    def state_reason_added (self, mon, reason):
+        monitor.Watcher.state_reason_added (self, mon, reason)
 
         if not self.trayicon:
             return
 
-        reason = statereason.StateReason (printer,
-                                          "connecting-to-device-error")
-        (title, text) = reason.get_description ()
-        notification = pynotify.Notification (title, text, 'printer')
-        notification.set_urgency (pynotify.URGENCY_NORMAL)
-        notification.set_timeout (pynotify.EXPIRES_NEVER)
-        notification.connect ('closed', self.on_notification_closed)
-        self.still_connecting_notifications[printer] = notification
-        notification.show ()
-
-    def now_connected (self, monitor, printer):
+        printer = reason.get_printer ()
         try:
-            notification = self.still_connecting_notifications[printer]
+            l = self.printer_state_reasons[printer]
+        except KeyError:
+            l = []
+            self.printer_state_reasons[printer] = l
+
+        l.append (reason)
+
+        level = reason.get_level ()
+        if level < StateReason.WARNING:
+            # Not important enough to justify a notification.
+            return
+
+        self.notify_printer_state_reason (reason)
+
+    def state_reason_removed (self, mon, reason):
+        monitor.Watcher.state_reason_removed (self, mon, reason)
+
+        if not self.trayicon:
+            return
+
+        printer = reason.get_printer ()
+        try:
+            reasons = self.printer_state_reasons[printer]
+        except KeyError:
+            debugprint ("Printer not found")
+            return
+
+        try:
+            i = reasons.index (reason)
+        except IndexError:
+            debugprint ("Reason not found")
+            return
+
+        del reasons[i]
+
+        tuple = reason.get_tuple ()
+        try:
+            notification = self.state_reason_notifications[tuple]
+        except KeyError:
+            debugprint ("Unexpected state_reason_removed signal")
+            return
+
+        notification.close ()
+
+    def still_connecting (self, mon, reason):
+        monitor.Watcher.still_connecting (self, mon, reason)
+        if not self.trayicon:
+            return
+
+        self.notify_printer_state_reason (reason)
+
+    def now_connected (self, mon, printer):
+        monitor.Watcher.now_connected (self, mon, printer)
+
+        if not self.trayicon:
+            return
+
+        # Find the connecting-to-device state reason.
+        try:
+            reasons = self.printer_state_reasons[printer]
+            reason = None
+            for r in reasons:
+                if r.get_reason () == "connecting-to-device":
+                    reason = r
+                    break
+        except KeyError:
+            debugprint ("Couldn't find state reason (no reasons)!")
+
+        if reason != None:
+            tuple = reason.get_tuple ()
+        else:
+            debugprint ("Couldn't find state reason in list!")
+            for (level,
+                 p,
+                 r) in self.state_reason_notifications.keys ():
+                if p == printer and r == "connecting-to-device":
+                    debugprint ("Found from notifications list")
+                    tuple = (level, p, r)
+                    break
+
+        try:
+            notification = self.state_reason_notifications[tuple]
         except KeyError:
             debugprint ("Unexpected now_connected signal")
             return
 
         notification.close ()
-        del self.still_connecting_notifications[printer]
 
     ## Printer status window
     def set_printer_status_icon (self, column, cell, model, iter, *user_data):

@@ -33,7 +33,7 @@ import statereason
 from statereason import StateReason
 statereason.set_gettext_function (_)
 
-CONNECTING_TIMEOUT = 60 # seconds
+CONNECTING_TIMEOUT = 10 # seconds
 MIN_REFRESH_INTERVAL = 1 # seconds
 
 def state_reason_is_harmless (reason):
@@ -74,8 +74,9 @@ class Watcher:
     def state_reason_removed (self, monitor, reason):
         debugprint (repr (monitor) + ": -" + repr (reason))
 
-    def still_connecting (self, monitor, printer):
-        debugprint (repr (monitor) + ": `%s' still connecting" % printer)
+    def still_connecting (self, monitor, reason):
+        debugprint (repr (monitor) + ": `%s' still connecting" %
+                    reason.get_printer ())
 
     def now_connected (self, monitor, printer):
         debugprint (repr (monitor) + ": `%s' now connected" % printer)
@@ -125,9 +126,6 @@ class Monitor:
 
     def get_jobs (self):
         return self.jobs.copy ()
-
-    def get_printer_state_reasons (self):
-        return self.printer_state_reasons.copy ()
 
     def cleanup (self):
         if self.sub_id != -1:
@@ -185,7 +183,7 @@ class Monitor:
                     if time_now - t >= CONNECTING_TIMEOUT:
                         if have_processing_job:
                             self.still_connecting.add (printer)
-                            self.watcher.still_connecting (self, printer)
+                            self.watcher.still_connecting (self, reason)
                             if self.connecting_timers.has_key (printer):
                                 gobject.source_remove (self.connecting_timers
                                                        [printer])
