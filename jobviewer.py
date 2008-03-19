@@ -93,7 +93,7 @@ class JobViewer (monitor.Watcher):
         self.hidden = False
         self.connecting_to_device = {} # dict of printer->time first seen
         self.still_connecting = set()
-        self.will_update_job_creation_times = False # whether timeout is set
+        self.job_creation_times_timer = None
         self.special_status_icon = False
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE, domain = DOMAIN)
@@ -201,6 +201,8 @@ class JobViewer (monitor.Watcher):
 
         self.monitor = monitor.Monitor (self, bus=bus, my_jobs=my_jobs,
                                         specific_dests=specific_dests)
+
+        self.refresh ()
 
         if not self.trayicon:
             self.MainWindow.show ()
@@ -339,16 +341,17 @@ class JobViewer (monitor.Watcher):
 
             self.store.set_value (iter, 4, t)
 
-        if need_update and not self.will_update_job_creation_times:
-            gobject.timeout_add (60 * 1000,
-                                 self.update_job_creation_times)
-            self.will_update_job_creation_times = True
+        if need_update and not self.job_creation_times_timer:
+            t = gobject.timeout_add (60 * 1000, self.update_job_creation_times)
+            self.job_creation_times_timer = t
 
         if not need_update:
-            self.will_update_job_creation_times = False
+            if self.job_creation_times_timer:
+                gobject.source_remove (self.job_creation_times_timer)
+                self.job_creation_times_timer = None
 
         # Return code controls whether the timeout will recur.
-        return self.will_update_job_creation_times
+        return need_update
 
     def print_error_dialog_response(self, dialog, response):
         dialog.hide ()
@@ -363,9 +366,19 @@ class JobViewer (monitor.Watcher):
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
 
+    def add_job (self, job, data):
+        store = self.store
+        iter = self.store.append (None)
+        store.set_value (iter, 0, job)
+        store.set_value (iter, 1, data.get('job-name', _("Unknown")))
+        self.jobiters[job] = iter
+        self.update_job (job, data)
+        self.update_job_creation_times ()
+
     def update_job (self, job, data):
         store = self.store
         iter = self.jobiters[job]
+        self.jobs[job] = data
 
         printer = _("Unknown")
         uri = data.get('job-printer-uri', '')
@@ -398,25 +411,18 @@ class JobViewer (monitor.Watcher):
 
         if state == None:
             state = _("Unknown")
-        store.set_value (iter, 5, state)        
+        store.set_value (iter, 5, state)
 
     def refresh(self):
         debugprint ("jobviewer: refresh")
         self.monitor.refresh ()
-        self.jobs = self.monitor.get_jobs ()
+        jobs = self.monitor.get_jobs ()
+        self.store.clear ()
+        self.jobiters = {}
         for job, data in jobs.iteritems ():
-            if self.jobiters.has_key (job):
-                iter = self.jobiters[job]
-            else:
-                iter = self.store.append (None)
-                self.store.set_value (iter, 0, job)
-                self.store.set_value (iter, 1,
-                                      data.get('job-name', _("Unknown")))
-                self.jobiters[job] = iter
+            self.add_job (job, data)
 
-            self.update_job (job, data)
-
-        self.update_job_creation_times ()
+        self.jobs = jobs
         return False
 
     def set_statusicon_visibility (self):
@@ -523,6 +529,22 @@ class JobViewer (monitor.Watcher):
 
     def on_refresh_activate(self, menuitem):
         self.refresh ()
+
+    ## Watcher interface
+    def job_added (self, monitor, jobid, eventname, event, jobdata):
+        # We may be showing this job already, perhaps because we are showing
+        # completed jobs and one was reprinted.
+        if not self.jobiters.has_key (jobid):
+            self.add_job (jobid, jobdata)
+
+    def job_event (self, monitor, jobid, eventname, event, jobdata):
+        self.update_job (jobid, jobdata)
+
+    def job_removed (self, monitor, jobid, eventname, event):
+        if self.jobiters.has_key (jobid):
+            self.store.remove (self.jobiters[jobid])
+            del self.jobiters[jobid]
+            del self.jobs[jobid]
 
     ## Printer status window
     def set_printer_status_icon (self, column, cell, model, iter, *user_data):

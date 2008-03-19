@@ -1,5 +1,13 @@
 2008-03-19  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.add_job): New method.
+	(JobViewer.update_job): New method.
+	(JobViewer.refresh): Use add_job
+	(JobViewer.update_job_creation_times): Better timer handling.
+	(JobViewer.job_added): New method, part of Watcher interface.
+	(JobViewer.job_event): Likewise.
+	(JobViewer.job_removed): Likewise.
+
 	* cupshelpers.py (Printer.setAsDefault): New method.
 	* system-config-printer.py (GUI.set_default_printer): Use it.
 
