@@ -1,3 +1,19 @@
+2008-03-20  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.sort_jobs_by_printer): Better error
+	checking.
+	(Monitor.check_state_reasons): Don't only process
+	connecting-to-device when it is a newly added state reason.
+
+	* jobviewer.py (JobViewer.state_reason_added): Mark state reason
+	as not notified.
+	(JobViewer.notify_printer_state_reason): Mark state reason as
+	notified.
+	(JobViewer.state_reason_added): Only send a notification if the
+	user has a job on this printer.
+	(JobViewer.job_added): Notify user of current state reasons on
+	this printer.
+
 2008-03-19  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* system-config-printer.py (NewPrinterGUI.nextNPTab): If a network

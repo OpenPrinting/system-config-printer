@@ -551,6 +551,14 @@ class JobViewer (monitor.Watcher):
         self.refresh ()
 
     ## Notifications
+    def notify_printer_state_reason_if_important (self, reason):
+        level = reason.get_level ()
+        if level < StateReason.WARNING:
+            # Not important enough to justify a notification.
+            return
+
+        self.notify_printer_state_reason (reason)
+
     def notify_printer_state_reason (self, reason):
         tuple = reason.get_tuple ()
         if self.state_reason_notifications.has_key (tuple):
@@ -566,6 +574,7 @@ class JobViewer (monitor.Watcher):
 
         (title, text) = reason.get_description ()
         notification = pynotify.Notification (title, text, 'printer')
+        reason.user_notified = True
         notification.set_data ('printer-state-reason', reason)
         notification.set_urgency (urgency)
         notification.set_timeout (pynotify.EXPIRES_NEVER)
@@ -602,6 +611,20 @@ class JobViewer (monitor.Watcher):
             self.set_statusicon_from_pixbuf (self.icon_jobs)
             self.set_statusicon_visibility ()
 
+            state = jobdata.get ('job-state', cups.IPP_JOB_CANCELED)
+            if state >= cups.IPP_JOB_CANCELED:
+                return
+
+            uri = jobdata.get ('job-printer-uri', '')
+            i = uri.rfind ('/')
+            if i == -1:
+                return
+
+            printer = uri[i + 1:]
+            for reason in self.printer_state_reasons[printer]:
+                if not reason.user_notified:
+                    self.notify_printer_state_reason_if_important (reason)
+
     def job_event (self, mon, jobid, eventname, event, jobdata):
         monitor.Watcher.job_event (self, mon, jobid, eventname, event, jobdata)
         self.update_job (jobid, jobdata)
@@ -622,30 +645,39 @@ class JobViewer (monitor.Watcher):
         monitor.Watcher.state_reason_added (self, mon, reason)
 
         (title, text) = reason.get_description ()
+        printer = reason.get_printer ()
         iter = self.store_printers.append (None)
         self.store_printers.set_value (iter, 0, reason.get_level ())
-        self.store_printers.set_value (iter, 1, reason.get_printer ())
+        self.store_printers.set_value (iter, 1, printer)
         self.store_printers.set_value (iter, 2, text)
         self.reasoniters[reason.get_tuple ()] = iter
 
         if not self.trayicon:
             return
 
-        printer = reason.get_printer ()
         try:
             l = self.printer_state_reasons[printer]
         except KeyError:
             l = []
             self.printer_state_reasons[printer] = l
 
+        reason.user_notified = False
         l.append (reason)
 
-        level = reason.get_level ()
-        if level < StateReason.WARNING:
-            # Not important enough to justify a notification.
-            return
-
-        self.notify_printer_state_reason (reason)
+        # Find out if the user has jobs queued for that printer.
+        for job, data in self.jobs.iteritems ():
+            state = data.get ('job-state', cups.IPP_JOB_CANCELED)
+            if state >= cups.IPP_JOB_CANCELED:
+                continue
+            uri = data.get ('job-printer-uri', '')
+            i = uri.rfind ('/')
+            if i == -1:
+                continue
+            p = uri[i + 1:]
+            if p == printer:
+                # Yes!  Notify them of the state reason, if necessary.
+                self.notify_printer_state_reason_if_important (reason)
+                break
 
     def state_reason_removed (self, mon, reason):
         monitor.Watcher.state_reason_removed (self, mon, reason)

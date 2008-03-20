@@ -224,35 +224,34 @@ class Monitor:
                 reasons_now.add (tuple)
                 if not self.reasons_seen.has_key (tuple):
                     # New reason.
-                    if (reason.get_reason () == "connecting-to-device" and
-                        not self.connecting_to_device.has_key (printer)):
-                        # First time we've seen this.
-
-                        have_processing_job = False
-                        for job, data in \
-                                printer_jobs.get (printer, {}).iteritems ():
-                            state = data.get ('job-state',
-                                              cups.IPP_JOB_CANCELED)
-                            if state == cups.IPP_JOB_PROCESSING:
-                                have_processing_job = True
-                                break
-
-                        if have_processing_job:
-                            t = gobject.timeout_add ((1 + CONNECTING_TIMEOUT)
-                                                     * 1000,
-                                                     self.check_still_connecting,
-                                                     printer)
-                            self.connecting_timers[printer] = t
-                            debugprint ("Start connecting timer for `%s'" %
-                                        printer)
-                        else:
-                            # Don't notify about this, as it must be stale.
-                            debugprint ("Ignoring stale connecting-to-device")
-                            debugprint (pprint.pformat (printer_jobs))
-                            continue
-
                     self.watcher.state_reason_added (self, reason)
                     self.reasons_seen[tuple] = reason
+
+                if (reason.get_reason () == "connecting-to-device" and
+                    not self.connecting_to_device.has_key (printer)):
+                    # First time we've seen this.
+
+                    have_processing_job = False
+                    for job, data in \
+                            printer_jobs.get (printer, {}).iteritems ():
+                        state = data.get ('job-state',
+                                          cups.IPP_JOB_CANCELED)
+                        if state == cups.IPP_JOB_PROCESSING:
+                            have_processing_job = True
+                            break
+
+                    if have_processing_job:
+                        t = gobject.timeout_add ((1 + CONNECTING_TIMEOUT)
+                                                 * 1000,
+                                                 self.check_still_connecting,
+                                                 printer)
+                        self.connecting_timers[printer] = t
+                        debugprint ("Start connecting timer for `%s'" %
+                                    printer)
+                    else:
+                        # Don't notify about this, as it must be stale.
+                        debugprint ("Ignoring stale connecting-to-device")
+                        debugprint (pprint.pformat (printer_jobs))
 
         self.update_connecting_devices (printer_jobs)
         items = self.reasons_seen.keys ()
@@ -441,8 +440,10 @@ class Monitor:
             state = data.get ('job-state', cups.IPP_JOB_CANCELED)
             if state >= cups.IPP_JOB_CANCELED:
                 continue
-            uri = data.get ('job-printer-uri', '/')
+            uri = data.get ('job-printer-uri', '')
             i = uri.rfind ('/')
+            if i == -1:
+                continue
             printer = uri[i + 1:]
             my_printers.add (printer)
             if not printer_jobs.has_key (printer):
