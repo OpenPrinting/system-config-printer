@@ -1818,7 +1818,18 @@ class GUI(GtkGUI):
     # Copy
         
     def on_copy_activate(self, widget):
-        self.entCopyName.set_text(self.printer.name)
+        iconview = self.dests_iconview
+        paths = iconview.get_selected_items ()
+        model = self.dests_iconview.get_model ()
+        iter = model.get_iter (paths[0])
+        name = model.get_value (iter, 2)
+        try:
+            self.fillPrinterTab (name)
+        except RuntimeError:
+            # Perhaps cupsGetPPD2 failed for a browsed printer
+            pass
+
+        self.entCopyName.set_text(name)
         result = self.NewPrinterName.run()
         self.NewPrinterName.hide()
 
