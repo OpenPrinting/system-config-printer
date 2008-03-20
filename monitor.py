@@ -81,6 +81,9 @@ class Watcher:
     def now_connected (self, monitor, printer):
         debugprint (repr (monitor) + ": `%s' now connected" % printer)
 
+    def current_jobs (self, monitor, jobs):
+        debugprint (repr (monitor) + ": jobs list provided")
+
     def job_added (self, monitor, jobid, eventname, event, jobdata):
         debugprint (repr (monitor) + ": job %d added" % jobid)
 
@@ -425,6 +428,7 @@ class Monitor:
                 if printer not in self.specific_dests:
                     del jobs[jobid]
 
+        self.watcher.current_jobs (self, jobs.copy ())
         self.update (jobs)
 
         self.jobs = jobs

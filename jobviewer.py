@@ -163,14 +163,7 @@ class JobViewer (monitor.Watcher):
             self.set_statusicon_from_pixbuf (self.icon_no_jobs)
             self.statusicon.connect ('activate', self.toggle_window_display)
             self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
-
-            # We need the statusicon to actually get placed on the screen
-            # in case refresh() wants to attach a notification to it.
-            while gtk.events_pending ():
-                gtk.main_iteration ()
-
-            self.notify = None
-            self.notified_reason = None
+            self.statusicon.set_visible (False)
 
         # D-Bus
         if bus == None:
@@ -178,8 +171,6 @@ class JobViewer (monitor.Watcher):
 
         self.monitor = monitor.Monitor (self, bus=bus, my_jobs=my_jobs,
                                         specific_dests=specific_dests)
-
-        self.refresh ()
 
         if not self.trayicon:
             self.MainWindow.show ()
@@ -272,7 +263,7 @@ class JobViewer (monitor.Watcher):
             self.monitor.which_jobs = "all"
         else:
             self.monitor.which_jobs = "not-completed"
-        self.refresh(refresh_monitor=True)
+        self.monitor.refresh()
 
     def on_show_printer_status_activate(self, menuitem):
         if self.show_printer_status.get_active ():
@@ -394,25 +385,6 @@ class JobViewer (monitor.Watcher):
             state = _("Unknown")
         store.set_value (iter, 5, state)
 
-    def refresh(self, refresh_monitor=False):
-        debugprint ("jobviewer: refresh")
-        if refresh_monitor:
-            self.monitor.refresh ()
-        jobs = self.monitor.get_jobs ()
-        self.store.clear ()
-        self.jobiters = {}
-        for job, data in jobs.iteritems ():
-            self.add_job (job, data)
-
-        self.jobs = jobs
-
-        if self.trayicon:
-            if len (jobs.keys ()) > 0:
-                self.set_statusicon_from_pixbuf (self.icon_jobs)
-            else:
-                self.set_statusicon_from_pixbuf (self.icon_no_jobs)
-            self.set_statusicon_visibility ()
-
     def set_statusicon_visibility (self):
         if not self.trayicon:
             return
@@ -467,10 +439,6 @@ class JobViewer (monitor.Watcher):
         self.icon_popupmenu.popup (None, None, None, button, time)
 
     def on_icon_hide_activate(self, menuitem):
-        if self.notify:
-            self.notify.close ()
-            self.notify = None
-
         self.num_jobs_when_hidden = len (self.jobs.keys ())
         self.set_statusicon_visibility ()
 
@@ -523,7 +491,7 @@ class JobViewer (monitor.Watcher):
             return
 
     def on_refresh_activate(self, menuitem):
-        self.refresh ()
+        self.monitor.refresh ()
 
     ## Notifications
     def notify_printer_state_reason_if_important (self, reason):
@@ -575,6 +543,21 @@ class JobViewer (monitor.Watcher):
         debugprint ("Unable to find closed notification")
 
     ## monitor.Watcher interface
+    def current_jobs (self, mon, jobs):
+        self.store.clear ()
+        self.jobiters = {}
+        for job, data in jobs.iteritems ():
+            self.add_job (job, data)
+
+        self.jobs = jobs
+
+        if self.trayicon:
+            if len (jobs.keys ()) > 0:
+                self.set_statusicon_from_pixbuf (self.icon_jobs)
+            else:
+                self.set_statusicon_from_pixbuf (self.icon_no_jobs)
+            self.set_statusicon_visibility ()
+
     def job_added (self, mon, jobid, eventname, event, jobdata):
         monitor.Watcher.job_added (self, mon, jobid, eventname, event, jobdata)
         # We may be showing this job already, perhaps because we are showing

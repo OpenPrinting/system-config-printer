@@ -1,5 +1,12 @@
 2008-03-20  Tim Waugh  <twaugh@redhat.com>
 
+	* monitor.py (Watcher.current_jobs): New Watcher interface
+	method.
+	(Monitor.refresh): Call it.
+	* jobviewer.py (JobViewer.current_jobs): Implement it.
+	(JobViewer.refresh): Removed.
+	(JobViewer.__init__): Start with icon hidden; removed dead code.
+
 	* applet.py (show_version.any_jobs): Just check for jobs, not
 	errors.
 	* jobviewer.py (worst_printer_state_reason): Removed.
