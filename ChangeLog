@@ -1,5 +1,17 @@
 2008-03-20  Tim Waugh  <twaugh@redhat.com>
 
+	* monitor.py (Monitor.get_notifications): Small fix for
+	job_removed calls.
+	(Monitor.get_notifications): Call state_reason_removed for each
+	reason associated with a removed printer.
+	(Watcher.current_printers_and_jobs): Provide printers as well.
+	(Monitor.refresh): Fetch list of printers.
+	(Monitor.get_notifications): Track added and removed printers.
+	(Watcher.printer_added): New method.
+	(Watcher.printer_removed): New method.
+
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Adjusted.
+
 	* monitor.py (Watcher.current_jobs): New Watcher interface
 	method.
 	(Monitor.refresh): Call it.

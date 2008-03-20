@@ -81,8 +81,8 @@ class Watcher:
     def now_connected (self, monitor, printer):
         debugprint (repr (monitor) + ": `%s' now connected" % printer)
 
-    def current_jobs (self, monitor, jobs):
-        debugprint (repr (monitor) + ": jobs list provided")
+    def current_printers_and_jobs (self, monitor, printers, jobs):
+        debugprint (repr (monitor) + ": printers and jobs lists provided")
 
     def job_added (self, monitor, jobid, eventname, event, jobdata):
         debugprint (repr (monitor) + ": job %d added" % jobid)
@@ -94,9 +94,15 @@ class Watcher:
     def job_removed (self, monitor, jobid, eventname, event):
         debugprint (repr (monitor) + ": job %d removed" % jobid)
 
+    def printer_added (self, monitor, printer):
+        debugprint (repr (monitor) + ": printer `%s' added" % printer)
+
     def printer_event (self, monitor, printer, eventname, event):
         debugprint (repr (monitor) + ": printer `%s' has event `%s'" %
                     (printer, eventname))
+
+    def printer_removed (self, monitor, printer):
+        debugprint (repr (monitor) + ": printer `%s' removed" % printer)
 
 class Monitor:
     # Monitor jobs and printers.
@@ -109,6 +115,7 @@ class Monitor:
         self.specific_dests = specific_dests
         self.jobs = {}
         self.printer_state_reasons = {}
+        self.printers = set()
 
         self.which_jobs = "not-completed"
         self.reasons_seen = {}
@@ -304,10 +311,27 @@ class Monitor:
             if nse.startswith ('printer-'):
                 # Printer events
                 name = event['printer-name']
-                if nse == 'printer-deleted':
+                if nse == 'printer-added' and name not in self.printers:
+                    self.printers.add (name)
+                    deferred_calls.append ((self.watcher.printer_added,
+                                            (self, name)))
+
+                elif nse == 'printer-deleted' and name in self.printers:
+                    self.printers.remove (name)
+                    items = self.reasons_seen.keys ()
+                    for tuple in items:
+                        if tuple[1] == name:
+                            reason = self.reasons_seen[tuple]
+                            del self.reasons_seen[tuple]
+                            deferred_calls.append ((self.watcher.state_reason_removed,
+                                                    (self, reason)))
+                            
                     if self.printer_state_reasons.has_key (name):
                         del self.printer_state_reasons[name]
-                else:
+
+                    deferred_calls.append ((self.watcher.printer_removed,
+                                            (self, name)))
+                elif name in self.printers:
                     printer_state_reasons = event['printer-state-reasons']
                     if type (printer_state_reasons) != list:
                         # Work around a bug in pycups < 1.9.36
@@ -322,8 +346,8 @@ class Monitor:
                         reasons.append (StateReason (name, reason))
                     self.printer_state_reasons[name] = reasons
 
-                deferred_calls.append ((self.watcher.printer_event,
-                                       (self, name, nse, event)))
+                    deferred_calls.append ((self.watcher.printer_event,
+                                            (self, name, nse, event)))
                 continue
 
             # Job events
@@ -350,15 +374,13 @@ class Monitor:
                                         (self, jobid, nse, event,
                                          jobs[jobid].copy ())))
             elif nse == 'job-completed':
-                if self.which_jobs == "not-completed":
-                    try:
-                        del jobs[jobid]
-                    except KeyError:
-                        pass
-
+                try:
+                    del jobs[jobid]
                     deferred_calls.append ((self.watcher.job_removed,
                                             (self, jobid, nse, event)))
-                    continue
+                except KeyError:
+                    pass
+                continue
 
             try:
                 job = jobs[jobid]
@@ -406,6 +428,7 @@ class Monitor:
                                                     "job-stopped",
                                                     "job-progress",
                                                     "job-state-changed",
+                                                    "printer-added",
                                                     "printer-deleted",
                                                     "printer-state-changed"])
         self.update_timer = gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
@@ -415,6 +438,15 @@ class Monitor:
         try:
             jobs = c.getJobs (which_jobs=self.which_jobs, my_jobs=self.my_jobs)
             self.printer_state_reasons = collect_printer_state_reasons (c)
+            dests = c.getDests ()
+            printers = set()
+            for (printer, instance) in dests.keys ():
+                if printer == None:
+                    continue
+                if instance != None:
+                    continue
+                printers.add (printer)
+            self.printers = printers
         except cups.IPPError, (e, m):
             return
         except RuntimeError:
@@ -428,7 +460,8 @@ class Monitor:
                 if printer not in self.specific_dests:
                     del jobs[jobid]
 
-        self.watcher.current_jobs (self, jobs.copy ())
+        self.watcher.current_printers_and_jobs (self, self.printers.copy (),
+                                                jobs.copy ())
         self.update (jobs)
 
         self.jobs = jobs

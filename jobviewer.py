@@ -543,7 +543,7 @@ class JobViewer (monitor.Watcher):
         debugprint ("Unable to find closed notification")
 
     ## monitor.Watcher interface
-    def current_jobs (self, mon, jobs):
+    def current_printers_and_jobs (self, mon, printers, jobs):
         self.store.clear ()
         self.jobiters = {}
         for job, data in jobs.iteritems ():
