@@ -49,31 +49,6 @@ GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
 
-def worst_printer_state_reason (printer_reasons=None, connection=None):
-    """Fetches the printer list and checks printer-state-reason for
-    each printer, returning a StateReason for the most severe
-    printer-state-reason, or None."""
-    worst_reason = None
-
-    if printer_reasons == None:
-        if connection == None:
-            try:
-                connection = cups.Connection ()
-            except:
-                return None
-
-        printer_reasons = monitor.collect_printer_state_reasons (connection)
-
-    for printer, reasons in printer_reasons.iteritems ():
-        for reason in reasons:
-            if worst_reason == None:
-                worst_reason = reason
-                continue
-            if reason > worst_reason:
-                worst_reason = reason
-
-    return worst_reason
-
 class JobViewer (monitor.Watcher):
     def __init__(self, bus=None, loop=None, service_running=False,
                  trayicon=False, suppress_icon_hide=False,

@@ -255,21 +255,17 @@ if __name__ == '__main__':
 
     if trayicon and get_debugging () == False:
         # Start off just waiting for print jobs or printer errors.
-        def any_jobs_or_errors ():
+        def any_jobs ():
             try:
                 c = cups.Connection ()
                 if len (c.getJobs (my_jobs=True)):
-                    return True
-                reason = worst_printer_state_reason (connection=c)
-                if (reason != None and
-                    reason.get_level () >= StateReason.WARNING):
                     return True
             except:
                 pass
 
             return False
 
-        if not any_jobs_or_errors ():
+        if not any_jobs ():
 
             ###
             class WaitForJobs:
@@ -293,7 +289,7 @@ if __name__ == '__main__':
 
                     self.timer = None
                     self.last_check = now
-                    if any_jobs_or_errors ():
+                    if any_jobs ():
                         waitloop.quit ()
             ###
 
