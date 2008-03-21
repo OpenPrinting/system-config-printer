@@ -1,3 +1,14 @@
+2008-03-21  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py (NewPrinterGUI.nextNPTab): Support that
+	HP has now two fax PPDs ("HP Fax" and "HP Fax 2").
+	(NewPrinterGUI.fillDeviceTab): Likewise.
+	(NewPrinterGUI.get_hpfax_device_id): New method. Get device ID for
+	an HPLIP fax URI, so that correct PPD ("HP Fax" or "HP Fax 2") can
+	get selected.
+	(NewPrinterGUI.get_hplip_uri_for_network_printer): Strip newline
+	from device URI.
+
 2008-03-20  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.on_copy_activate): Adapted to

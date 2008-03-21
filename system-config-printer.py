@@ -2474,14 +2474,15 @@ class NewPrinterGUI(GtkGUI):
                         queue_type = dialog.run()
                         dialog.destroy()
                         if (queue_type == 2):
-                            self.device.uri = faxuri;
-                            self.auto_make, self.auto_model = "HP", "Fax"
+                            self.device.id_dict = \
+                               self.get_hpfax_device_id(faxuri)
+                            self.device.uri = faxuri
+                            self.auto_make = self.device.id_dict["MFG"]
+                            self.auto_model = self.device.id_dict["MDL"]
                             self.device.id = "MFG:" + self.auto_make + \
                                              ";MDL:" + self.auto_model + \
-                                             ";DES:" + self.auto_make + " " + \
-                                             self.auto_model + ";"
-                            self.device.id_dict = \
-                               cupshelpers.parseDeviceID (self.device.id)
+                                             ";DES:" + \
+                                             self.device.id_dict["DES"] + ";"
                 uri = self.device.uri
                 if uri and uri.startswith ("smb://"):
                     uri = SMBURI (uri=uri[6:]).sanitize_uri ()
@@ -2790,6 +2791,26 @@ class NewPrinterGUI(GtkGUI):
             raise result
         return result
 
+    def get_hpfax_device_id(self, faxuri):
+        os.environ["URI"] = faxuri
+        cmd = 'hp-info -d "${URI}" | grep fax-type 2>/dev/null'
+        debugprint (faxuri + ": " + cmd)
+        p = os.popen(cmd, 'r')
+        for output in p:
+            faxtype = -1;
+            res = re.search ("(\d+)", output)
+            if res:
+                resg = res.groups()
+                faxtype = resg[0]
+            if faxtype >= 0: break
+        p.close()
+        if faxtype < 0:
+            return None
+        elif faxtype == 4:
+            return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax 2;DES:HP Fax 2;')
+        else:
+            return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax;DES:HP Fax;')
+
     def get_hplip_uri_for_network_printer(self, host, mode):
         if mode == "print": mod = "-c"
         elif mode == "fax": mod = "-f"
@@ -2799,8 +2820,8 @@ class NewPrinterGUI(GtkGUI):
         cmd = 'hp-makeuri ' + mod + ' "${HOST}" 2> /dev/null'
         debugprint (host + ": " + cmd)
         p = os.popen(cmd, 'r')
-        uri = p.read()
-        p.close()
+        uri = p.read ().strip ()
+        p.close ()
         return uri
 
     def getNetworkPrinterMakeModel(self, device):
@@ -2820,7 +2841,7 @@ class NewPrinterGUI(GtkGUI):
             cmd = '/usr/lib/cups/backend/snmp "${HOST}" 2>/dev/null'
             debugprint (host + ": " + cmd)
             p = os.popen(cmd, 'r')
-            output = p.read()
+            output = p.read ().strip ()
             p.close()
             mm = re.sub("^\s*\S+\s+\S+\s+\"", "", output)
             mm = re.sub("\"\s+.*$", "", mm)
@@ -2840,7 +2861,7 @@ class NewPrinterGUI(GtkGUI):
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
         # Check whether the device is supported by HPLIP and replace
-        # its URI by an HPLIP URI. Add an entry for fax is needed
+        # its URI by an HPLIP URI
         if host:
             hplipuri = self.get_hplip_uri_for_network_printer(host, "print")
             if hplipuri:
@@ -2950,11 +2971,19 @@ class NewPrinterGUI(GtkGUI):
                         faxuri = self.get_hplip_uri_for_network_printer(host,
                                                                         "fax")
                     if faxuri:
+                        fax_id_dict = \
+                            self.get_hpfax_device_id(faxuri)
                         self.devices.append(cupshelpers.Device(faxuri,
                               **{'device-class' : "direct",
                                  'device-info' : device.info + " HP Fax HPLIP",
-                                 'device-device-make-and-model' : "HP Fax",
-                                 'device-id' : "MFG:HP;MDL:Fax;DES:HP Fax;"}))
+                                 'device-device-make-and-model' : \
+                                     fax_id_dict["MFG"] + " " + \
+                                     fax_id_dict["MDL"],
+                                 'device-id' : \
+                                     "MFG:" + fax_id_dict["MFG"] + \
+                                     ";MDL:" + fax_id_dict["MDL"] + \
+                                     ";DES:" + \
+                                     fax_id_dict["DES"] + ";"}))
                     if device.uri.startswith ("hp:"):
                         device.type = "hp" 
                         device.info += (" HPLIP")
