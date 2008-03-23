@@ -1,3 +1,11 @@
+2008-03-24  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* ppds.py (PPDs.orderPPDNamesByPreference): For HP LaserJet
+	12xx/13xx prefer HPIJS over PostScript, as they do not have enough
+	memory to render complex graphics with their on-board PostScript
+	interpreter. This is a workaround for the time being until HP fixes
+	this in the HPLIP-generated PPDs.
+
 2008-03-22  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* ppds.py (ppdMakeModelSplit): Improved filtering of driver information

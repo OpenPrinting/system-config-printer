@@ -314,6 +314,12 @@ class PPDs:
                 if t == DRIVER_TYPE_FOOMATIC_HPIJS:
                     # Prefer HPIJS for HP devices.
                     t = DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP
+                    # For HP LaserJet 12xx/13xx prefer HPIJS over
+                    # PostScript, as they do not have enough memory
+                    # to render complex graphics with their on-board
+                    # PostScript interpreter
+                    if re.search(r"(?i)HP[-_]LaserJet_1[23]\d\d", x):
+                        t = DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT
             return t
 
         def sort_ppdnames (a, b):
