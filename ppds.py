@@ -40,7 +40,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
     # If the string starts with a known model name (like "LaserJet") assume
     # that the manufacturer name is missing and add the manufacturer name
     # corresponding to the model name
-    if re.search ("^(deskjet|laserjet|designjet|officejet|photosmart)", \
+    if re.search ("^(deskjet|laserjet|designjet|officejet|photosmart|psc|edgeline)", \
                       ppd_make_and_model, re.I):
         make = "HP"
         model = ppd_make_and_model
@@ -137,15 +137,19 @@ def ppdMakeModelSplit (ppd_make_and_model):
     if wth != -1:
         model = model[:wth]
 
-    make = re.sub ("(?i)KONICA[\s_-]*MINOLTA", "KONICA MINOLTA", make, 1)
-    model = re.sub ("(?i)\s*\(recommended\)", "", model)
-    model = re.sub ("(?i)\s*-\s*PostScript", "", model)
-    model = re.sub ("(?i)\s*Postscript", "", model)
-    model = re.sub ("(?i)\s*series", "", model)
-    model = re.sub ("(?i)\s*PS", "", model)
-    model = re.sub ("(?i)\s*PXL", "", model)
-    model = re.sub ("(?i)[\s_-]*BT", "", model)
-    model = re.sub ("(?i)\s*\(Bluetooth\)", "", model)
+    make = re.sub (r"(?i)KONICA[\s_-]*MINOLTA", "KONICA MINOLTA", make, 1)
+    model = re.sub (r"(?i)\s*\(recommended\)", "", model)
+    model = re.sub (r"(?i)\s*-\s*PostScript\b", "", model)
+    model = re.sub (r"(?i)\s*\bPostscript\b", "", model)
+    model = re.sub (r"(?i)\s*\bseries\b", "", model)
+    model = re.sub (r"(?i)\s*\bPS[123]?\b", "", model)
+    model = re.sub (r"(?i)\s*\bPXL", "", model)
+    model = re.sub (r"(?i)[\s_-]+BT\b", "", model)
+    model = re.sub (r"(?i)\s*\(Bluetooth\)", "", model)
+    model = re.sub (r"(?i)\s+Printer\b", "", model)
+    model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\s*-*\s*[0-9\.]+", "", model)
+    model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\b", "", model)
+    model = re.sub (r"(?i)\s*-\s*$", "", model)
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
         if make == mfr.upper ():
