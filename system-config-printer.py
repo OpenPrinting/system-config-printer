@@ -159,8 +159,6 @@ class GUI(GtkGUI):
         self.connect_server = (self.printer and self.printer.getServer()) \
                                or cups.getServer()	
         self.connect_user = cups.getUser()
-        self.password = ''
-        self.passwd_retry = False
 
         self.changed = set() # of options
 
@@ -764,8 +762,6 @@ class GUI(GtkGUI):
         cups.setUser(self.connect_user)
         # cups.setEncryption (...)
 
-        self.password = ''
-
         if self.connect_server[0] == '/':
             # UNIX domain socket.  This may potentially fail if the server
             # settings have been changed and cupsd has written out a
@@ -833,8 +829,6 @@ class GUI(GtkGUI):
                 # Connection failed.
                 time.sleep(1)
                 attempt += 1
-
-        self.passwd_retry = False
 
     def on_btnCancelConnect_clicked(self, widget):
         """Close Connect dialog"""
@@ -1169,7 +1163,6 @@ class GUI(GtkGUI):
             if not printer.is_class and self.ppd: 
                 self.getPrinterSettings()
                 if self.ppd.nondefaultsMarked() or saveall:
-                    self.passwd_retry = False # use cached Passwd 
                     self.cups.addPrinter(name, ppd=self.ppd)
 
             if printer.is_class:
@@ -1210,24 +1203,18 @@ class GUI(GtkGUI):
             shared = self.chkPShared.get_active()
 
             if info!=printer.info or saveall:
-                self.passwd_retry = False # use cached Passwd 
                 self.cups.setPrinterInfo(name, info)
             if location!=printer.location or saveall:
-                self.passwd_retry = False # use cached Passwd 
                 self.cups.setPrinterLocation(name, location)
             if (not printer.is_class and
                 (device_uri!=printer.device_uri or saveall)):
-                self.passwd_retry = False # use cached Passwd 
                 self.cups.setPrinterDevice(name, device_uri)
 
             if enabled != printer.enabled or saveall:
-                self.passwd_retry = False # use cached Passwd 
                 self.printer.setEnabled(enabled)
             if accepting == printer.rejecting or saveall:
-                self.passwd_retry = False # use cached Passwd 
                 self.printer.setAccepting(accepting)
             if shared != printer.is_shared or saveall:
-                self.passwd_retry = False # use cached Passwd 
                 self.printer.setShared(shared)
                 
             job_sheet_start = self.cmbPStartBanner.get_active_text()
@@ -1237,13 +1224,10 @@ class GUI(GtkGUI):
 
             if (job_sheet_start != printer.job_sheet_start or
                 job_sheet_end != printer.job_sheet_end) or saveall:
-                self.passwd_retry = False # use cached Passwd
                 printer.setJobSheets(job_sheet_start, job_sheet_end)
             if error_policy != printer.error_policy or saveall:
-                self.passwd_retry = False # use cached Passwd
                 printer.setErrorPolicy(error_policy)
             if op_policy != printer.op_policy or saveall:
-                self.passwd_retry = False # use cached Passwd
                 printer.setOperationPolicy(op_policy)
 
             default_allow = self.rbtnPAllow.get_active()
@@ -1251,7 +1235,6 @@ class GUI(GtkGUI):
 
             if (default_allow != printer.default_allow or
                 except_users != printer.except_users) or saveall:
-                self.passwd_retry = False # use cached Passwd
                 printer.setAccess(default_allow, except_users)
 
             for option in printer.attributes:
@@ -4033,7 +4016,6 @@ class NewPrinterGUI(GtkGUI):
             members = self.getCurrentClassMembers(self.tvNCMembers)
             try:
                 for member in members:
-                    self.passwd_retry = False # use cached Passwd 
                     self.mainapp.cups.addPrinterToClass(member, name)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
@@ -4062,7 +4044,6 @@ class NewPrinterGUI(GtkGUI):
             while gtk.events_pending ():
                 gtk.main_iteration ()
             try:
-                self.passwd_retry = False # use cached Passwd
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
                     self.mainapp.cups.addPrinter(name, ppdname=ppd,
                          device=uri, info=info, location=location)
@@ -4090,9 +4071,7 @@ class NewPrinterGUI(GtkGUI):
             self.ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer"):
             try:
-                self.passwd_retry = False # use cached Passwd 
                 self.mainapp.cups.setPrinterLocation(name, location)
-                self.passwd_retry = False # use cached Passwd 
                 self.mainapp.cups.setPrinterInfo(name, info)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
@@ -4100,7 +4079,6 @@ class NewPrinterGUI(GtkGUI):
         elif self.dialog_mode == "device":
             try:
                 uri = self.getDeviceURI()
-                self.passwd_retry = False # use cached Passwd 
                 self.mainapp.cups.addPrinter(name, device=uri)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
@@ -4122,19 +4100,16 @@ class NewPrinterGUI(GtkGUI):
                     # the old options over.  Do this by setting it to a
                     # raw queue (no PPD) first.
                     try:
-                        self.passwd_retry = False # use cached Passwd
                         self.mainapp.cups.addPrinter(name, ppdname='raw')
                     except cups.IPPError, (e, msg):
                         self.show_IPP_Error(e, msg)
                 try:
-                    self.passwd_retry = False # use cached Passwd
                     self.mainapp.cups.addPrinter(name, ppdname=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
                     return
 
                 try:
-                    self.passwd_retry = False # use cached Passwd
                     filename = self.mainapp.cups.getPPD(name)
                     ppd = cups.PPD(filename)
                     os.unlink(filename)
@@ -4155,7 +4130,6 @@ class NewPrinterGUI(GtkGUI):
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
 
                 try:
-                    self.passwd_retry = False # use cached Passwd
                     self.mainapp.cups.addPrinter(name, ppd=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
