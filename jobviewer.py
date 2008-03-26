@@ -63,6 +63,7 @@ class JobViewer (monitor.Watcher):
 
         self.jobs = {}
         self.jobiters = {}
+        self.active_jobs = set() # of job IDs
         self.which_jobs = "not-completed"
         self.printer_state_reasons = {}
         self.num_jobs_when_hidden = 0
@@ -493,6 +494,86 @@ class JobViewer (monitor.Watcher):
     def on_refresh_activate(self, menuitem):
         self.monitor.refresh ()
 
+    def job_is_active (self, jobdata):
+        state = jobdata.get ('job-state', cups.IPP_JOB_CANCELED)
+        if state >= cups.IPP_JOB_CANCELED:
+            return False
+
+        return True
+
+    ## Icon manipulation
+    def add_state_reason_emblem (self, pixbuf):
+        # Found out which printer state reasons apply to our active jobs.
+        upset_printers = set()
+        for printer, reasons in self.printer_state_reasons.iteritems ():
+            if len (reasons) > 0:
+                upset_printers.add (printer)
+        debugprint ("Upset printers: %s" % upset_printers)
+
+        my_upset_printers = set()
+        if len (upset_printers):
+            my_upset_printers = set()
+            for jobid in self.active_jobs:
+                uri = self.jobs[jobid].get ('job-printer-uri', '')
+                i = uri.rfind ('/')
+                if i != -1:
+                    printer = uri[i + 1:]
+                    if printer in upset_printers:
+                        my_upset_printers.add (printer)
+            debugprint ("My upset printers: %s" % my_upset_printers)
+
+        my_reasons = []
+        for printer in my_upset_printers:
+            my_reasons.extend (self.printer_state_reasons[printer])
+
+        # Find out which is the most problematic.
+        if len (my_reasons) > 0:
+            worst_reason = my_reasons[0]
+            for reason in my_reasons:
+                if reason > worst_reason:
+                    worst_reason = reason
+            self.worst_reason = worst_reason
+            debugprint ("Worst reason: %s" % worst_reason)
+
+            level = worst_reason.get_level ()
+            if level > StateReason.REPORT:
+                # Add an emblem to the icon.
+                icon = StateReason.LEVEL_ICON[level]
+                pixbuf = pixbuf.copy ()
+                theme = gtk.icon_theme_get_default ()
+
+                emblem = theme.load_icon (icon, 22, 0)
+                emblem.composite (pixbuf,
+                                  pixbuf.get_width () / 2,
+                                  pixbuf.get_height () / 2,
+                                  emblem.get_width () / 2,
+                                  emblem.get_height () / 2,
+                                  pixbuf.get_width () / 2,
+                                  pixbuf.get_height () / 2,
+                                  0.5, 0.5,
+                                  gtk.gdk.INTERP_BILINEAR, 255)
+
+        return pixbuf
+
+    def get_icon_pixbuf (self, have_jobs=None):
+        if not self.trayicon:
+            return
+
+        if have_jobs == None:
+            have_jobs = len (self.jobs.keys ()) > 0
+
+        if have_jobs:
+            pixbuf = self.icon_jobs
+        else:
+            pixbuf = self.icon_no_jobs
+
+        try:
+            pixbuf = self.add_state_reason_emblem (pixbuf)
+        except:
+            raise
+
+        return pixbuf
+
     ## Notifications
     def notify_printer_state_reason_if_important (self, reason):
         level = reason.get_level ()
@@ -550,12 +631,14 @@ class JobViewer (monitor.Watcher):
             self.add_job (job, data)
 
         self.jobs = jobs
+        self.active_jobs = set()
+        for jobid, jobdata in jobs.iteritems ():
+            if self.job_is_active (jobdata):
+                self.active_jobs.add (jobid)
 
         if self.trayicon:
-            if len (jobs.keys ()) > 0:
-                self.set_statusicon_from_pixbuf (self.icon_jobs)
-            else:
-                self.set_statusicon_from_pixbuf (self.icon_no_jobs)
+            pixbuf = self.get_icon_pixbuf ()
+            self.set_statusicon_from_pixbuf (pixbuf)
             self.set_statusicon_visibility ()
 
     def job_added (self, mon, jobid, eventname, event, jobdata):
@@ -565,12 +648,13 @@ class JobViewer (monitor.Watcher):
         if not self.jobiters.has_key (jobid):
             self.add_job (jobid, jobdata)
 
+        self.active_jobs.add (jobid)
         if self.trayicon:
-            self.set_statusicon_from_pixbuf (self.icon_jobs)
+            pixbuf = self.get_icon_pixbuf (have_jobs=True)
+            self.set_statusicon_from_pixbuf (pixbuf)
             self.set_statusicon_visibility ()
 
-            state = jobdata.get ('job-state', cups.IPP_JOB_CANCELED)
-            if state >= cups.IPP_JOB_CANCELED:
+            if not self.job_is_active (jobdata):
                 return
 
             uri = jobdata.get ('job-printer-uri', '')
@@ -585,6 +669,10 @@ class JobViewer (monitor.Watcher):
 
     def job_event (self, mon, jobid, eventname, event, jobdata):
         monitor.Watcher.job_event (self, mon, jobid, eventname, event, jobdata)
+        if self.job_is_active (jobdata):
+            self.active_jobs.add (jobid)
+        elif jobid in self.active_jobs:
+            self.active_jobs.remove (jobid)
         self.update_job (jobid, jobdata)
 
     def job_removed (self, mon, jobid, eventname, event):
@@ -594,9 +682,12 @@ class JobViewer (monitor.Watcher):
             del self.jobiters[jobid]
             del self.jobs[jobid]
 
+        if jobid in self.active_jobs:
+            self.active_jobs.remove (jobid)
+
         if self.trayicon:
-            if len (self.jobs.keys ()) == 0:
-                self.set_statusicon_from_pixbuf (self.icon_no_jobs)
+            pixbuf = self.get_icon_pixbuf ()
+            self.set_statusicon_from_pixbuf (pixbuf)
             self.set_statusicon_visibility ()
 
     def state_reason_added (self, mon, reason):
@@ -621,11 +712,13 @@ class JobViewer (monitor.Watcher):
 
         reason.user_notified = False
         l.append (reason)
+        pixbuf = self.get_icon_pixbuf ()
+        self.set_statusicon_from_pixbuf (pixbuf)
+        self.set_statusicon_visibility ()
 
         # Find out if the user has jobs queued for that printer.
         for job, data in self.jobs.iteritems ():
-            state = data.get ('job-state', cups.IPP_JOB_CANCELED)
-            if state >= cups.IPP_JOB_CANCELED:
+            if not self.job_is_active (data):
                 continue
             uri = data.get ('job-printer-uri', '')
             i = uri.rfind ('/')
@@ -667,11 +760,13 @@ class JobViewer (monitor.Watcher):
         tuple = reason.get_tuple ()
         try:
             notification = self.state_reason_notifications[tuple]
+            notification.close ()
         except KeyError:
-            debugprint ("Unexpected state_reason_removed signal")
-            return
+            pass
 
-        notification.close ()
+        pixbuf = self.get_icon_pixbuf ()
+        self.set_statusicon_from_pixbuf (pixbuf)
+        self.set_statusicon_visibility ()
 
     def still_connecting (self, mon, reason):
         monitor.Watcher.still_connecting (self, mon, reason)
