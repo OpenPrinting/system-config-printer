@@ -521,6 +521,7 @@ class JobViewer (monitor.Watcher):
             my_reasons.extend (self.printer_state_reasons[printer])
 
         # Find out which is the most problematic.
+        self.worst_reason = None
         if len (my_reasons) > 0:
             worst_reason = my_reasons[0]
             for reason in my_reasons:
@@ -567,6 +568,40 @@ class JobViewer (monitor.Watcher):
             raise
 
         return pixbuf
+
+    def set_statusicon_tooltip (self):
+        if not self.trayicon:
+            return
+
+        if self.worst_reason != None:
+            # Check that it's valid.
+            printer = self.worst_reason.get_printer ()
+            found = False
+            for reason in self.printer_state_reasons[printer]:
+                if reason == self.worst_reason:
+                    found = True
+                    break
+            if not found:
+                self.worst_reason = None
+
+        if self.worst_reason != None:
+            (title, tooltip) = self.worst_reason.get_description ()
+        else:
+            num_jobs = len (self.jobs)
+            if num_jobs == 0:
+                tooltip = _("No documents queued")
+            elif num_jobs == 1:
+                tooltip = _("1 document queued")
+            else:
+                tooltip = _("%d documents queued") % num_jobs
+
+        self.statusicon.set_tooltip (tooltip)
+
+    def update_statusicon (self, have_jobs=None):
+        pixbuf = self.get_icon_pixbuf (have_jobs=have_jobs)
+        self.set_statusicon_from_pixbuf (pixbuf)
+        self.set_statusicon_visibility ()
+        self.set_statusicon_tooltip ()
 
     ## Notifications
     def notify_printer_state_reason_if_important (self, reason):
@@ -631,9 +666,7 @@ class JobViewer (monitor.Watcher):
                 self.active_jobs.add (jobid)
 
         if self.trayicon:
-            pixbuf = self.get_icon_pixbuf ()
-            self.set_statusicon_from_pixbuf (pixbuf)
-            self.set_statusicon_visibility ()
+            self.update_statusicon ()
 
     def job_added (self, mon, jobid, eventname, event, jobdata):
         monitor.Watcher.job_added (self, mon, jobid, eventname, event, jobdata)
@@ -653,9 +686,7 @@ class JobViewer (monitor.Watcher):
 
         self.active_jobs.add (jobid)
         if self.trayicon:
-            pixbuf = self.get_icon_pixbuf (have_jobs=True)
-            self.set_statusicon_from_pixbuf (pixbuf)
-            self.set_statusicon_visibility ()
+            self.update_statusicon (have_jobs=True)
 
             if not self.job_is_active (jobdata):
                 return
@@ -692,9 +723,7 @@ class JobViewer (monitor.Watcher):
             self.active_jobs.remove (jobid)
 
         if self.trayicon:
-            pixbuf = self.get_icon_pixbuf ()
-            self.set_statusicon_from_pixbuf (pixbuf)
-            self.set_statusicon_visibility ()
+            self.update_statusicon ()
 
     def state_reason_added (self, mon, reason):
         monitor.Watcher.state_reason_added (self, mon, reason)
@@ -718,9 +747,7 @@ class JobViewer (monitor.Watcher):
 
         reason.user_notified = False
         l.append (reason)
-        pixbuf = self.get_icon_pixbuf ()
-        self.set_statusicon_from_pixbuf (pixbuf)
-        self.set_statusicon_visibility ()
+        self.update_statusicon ()
 
         # Find out if the user has jobs queued for that printer.
         for job, data in self.jobs.iteritems ():
@@ -765,9 +792,7 @@ class JobViewer (monitor.Watcher):
         except KeyError:
             pass
 
-        pixbuf = self.get_icon_pixbuf ()
-        self.set_statusicon_from_pixbuf (pixbuf)
-        self.set_statusicon_visibility ()
+        self.update_statusicon ()
 
     def still_connecting (self, mon, reason):
         monitor.Watcher.still_connecting (self, mon, reason)
