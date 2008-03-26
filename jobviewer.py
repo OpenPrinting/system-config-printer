@@ -353,11 +353,7 @@ class JobViewer (monitor.Watcher):
         iter = self.jobiters[job]
         self.jobs[job] = data
 
-        printer = _("Unknown")
-        uri = data.get('job-printer-uri', '')
-        i = uri.rfind ('/')
-        if i != -1:
-            printer = uri[i + 1:]
+        printer = data['job-printer-name']
         store.set_value (iter, 2, printer)
 
         size = _("Unknown")
@@ -514,12 +510,10 @@ class JobViewer (monitor.Watcher):
         if len (upset_printers):
             my_upset_printers = set()
             for jobid in self.active_jobs:
-                uri = self.jobs[jobid].get ('job-printer-uri', '')
-                i = uri.rfind ('/')
-                if i != -1:
-                    printer = uri[i + 1:]
-                    if printer in upset_printers:
-                        my_upset_printers.add (printer)
+                # 'job-printer-name' is set by job_added/job_event
+                printer = self.jobs[jobid]['job-printer-name']
+                if printer in upset_printers:
+                    my_upset_printers.add (printer)
             debugprint ("My upset printers: %s" % my_upset_printers)
 
         my_reasons = []
@@ -643,6 +637,15 @@ class JobViewer (monitor.Watcher):
 
     def job_added (self, mon, jobid, eventname, event, jobdata):
         monitor.Watcher.job_added (self, mon, jobid, eventname, event, jobdata)
+
+        uri = jobdata.get ('job-printer-uri', '')
+        i = uri.rfind ('/')
+        if i != -1:
+            printer = uri[i + 1:]
+        else:
+            printer = _("Unknown")
+        jobdata['job-printer-name'] = printer
+
         # We may be showing this job already, perhaps because we are showing
         # completed jobs and one was reprinted.
         if not self.jobiters.has_key (jobid):
@@ -657,18 +660,21 @@ class JobViewer (monitor.Watcher):
             if not self.job_is_active (jobdata):
                 return
 
-            uri = jobdata.get ('job-printer-uri', '')
-            i = uri.rfind ('/')
-            if i == -1:
-                return
-
-            printer = uri[i + 1:]
             for reason in self.printer_state_reasons[printer]:
                 if not reason.user_notified:
                     self.notify_printer_state_reason_if_important (reason)
 
     def job_event (self, mon, jobid, eventname, event, jobdata):
         monitor.Watcher.job_event (self, mon, jobid, eventname, event, jobdata)
+
+        uri = jobdata.get ('job-printer-uri', '')
+        i = uri.rfind ('/')
+        if i != -1:
+            printer = uri[i + 1:]
+        else:
+            printer = _("Unknown")
+        jobdata['job-printer-name'] = printer
+
         if self.job_is_active (jobdata):
             self.active_jobs.add (jobid)
         elif jobid in self.active_jobs:
@@ -720,12 +726,7 @@ class JobViewer (monitor.Watcher):
         for job, data in self.jobs.iteritems ():
             if not self.job_is_active (data):
                 continue
-            uri = data.get ('job-printer-uri', '')
-            i = uri.rfind ('/')
-            if i == -1:
-                continue
-            p = uri[i + 1:]
-            if p == printer:
+            if data['job-printer-name'] == printer:
                 # Yes!  Notify them of the state reason, if necessary.
                 self.notify_printer_state_reason_if_important (reason)
                 break
