@@ -545,7 +545,7 @@ class JobViewer (monitor.Watcher):
         try:
             pixbuf = self.add_state_reason_emblem (pixbuf)
         except:
-            raise
+            nonfatalException ()
 
         return pixbuf
 

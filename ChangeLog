@@ -1,5 +1,11 @@
 2008-03-26  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (fatalException): Moved...
+	* debug.py (fatalException): ...here.
+	* system-config-printer.py (nonfatalException): Moved...
+	* debug.py (nonfatalException): ...here.
+	* jobviewer.py (JobViewer.get_icon_pixbuf): Use it.
+
 	* jobviewer.py (JobViewer.__init__): Removed dead code.
 	(JobViewer.update_status): Renamed.  Update statusbar.
 	(JobViewer.add_state_reason_emblem): Moved worst reason search...

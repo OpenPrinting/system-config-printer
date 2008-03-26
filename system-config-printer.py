@@ -91,22 +91,6 @@ except AttributeError:
     # cups module was compiled with CUPS < 1.3
     try_CUPS_SERVER_REMOTE_ANY = "_remote_any"
 
-def fatalException (exitcode=1):
-    nonfatalException (type="fatal", end="Exiting")
-    sys.exit (exitcode)
-
-def nonfatalException (type="non-fatal", end="Continuing anyway.."):
-    debugprint ("Caught %s exception.  Traceback:" % type)
-    (type, value, tb) = sys.exc_info ()
-    tblast = traceback.extract_tb (tb, limit=None)
-    if len (tblast):
-        tblast = tblast[:len (tblast) - 1]
-    extxt = traceback.format_exception_only (type, value)
-    for line in traceback.format_tb(tb):
-        debugprint (line.strip ())
-    debugprint (extxt[0].strip ())
-    debugprint (end)
-
 def validDeviceURI (uri):
     """Returns True is the provided URI is valid."""
     if uri.find (":/") > 0:
