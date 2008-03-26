@@ -106,7 +106,6 @@ class JobViewer (monitor.Watcher):
 
         self.statusbar = self.xml.get_widget ('statusbar')
         self.statusbar_set = False
-        self.reasons_seen = {}
 
         self.job_popupmenu = self.xml.get_widget ('job_popupmenu')
         self.icon_popupmenu = self.xml.get_widget ('icon_popupmenu')
@@ -499,38 +498,19 @@ class JobViewer (monitor.Watcher):
 
     ## Icon manipulation
     def add_state_reason_emblem (self, pixbuf):
-        # Found out which printer state reasons apply to our active jobs.
-        upset_printers = set()
-        for printer, reasons in self.printer_state_reasons.iteritems ():
-            if len (reasons) > 0:
-                upset_printers.add (printer)
-        debugprint ("Upset printers: %s" % upset_printers)
+        if self.worst_reason != None:
+            # Check that it's valid.
+            printer = self.worst_reason.get_printer ()
+            found = False
+            for reason in self.printer_state_reasons[printer]:
+                if reason == self.worst_reason:
+                    found = True
+                    break
+            if not found:
+                self.worst_reason = None
 
-        my_upset_printers = set()
-        if len (upset_printers):
-            my_upset_printers = set()
-            for jobid in self.active_jobs:
-                # 'job-printer-name' is set by job_added/job_event
-                printer = self.jobs[jobid]['job-printer-name']
-                if printer in upset_printers:
-                    my_upset_printers.add (printer)
-            debugprint ("My upset printers: %s" % my_upset_printers)
-
-        my_reasons = []
-        for printer in my_upset_printers:
-            my_reasons.extend (self.printer_state_reasons[printer])
-
-        # Find out which is the most problematic.
-        self.worst_reason = None
-        if len (my_reasons) > 0:
-            worst_reason = my_reasons[0]
-            for reason in my_reasons:
-                if reason > worst_reason:
-                    worst_reason = reason
-            self.worst_reason = worst_reason
-            debugprint ("Worst reason: %s" % worst_reason)
-
-            level = worst_reason.get_level ()
+        if self.worst_reason != None:
+            level = self.worst_reason.get_level ()
             if level > StateReason.REPORT:
                 # Add an emblem to the icon.
                 icon = StateReason.LEVEL_ICON[level]
@@ -569,24 +549,11 @@ class JobViewer (monitor.Watcher):
 
         return pixbuf
 
-    def set_statusicon_tooltip (self):
+    def set_statusicon_tooltip (self, tooltip=None):
         if not self.trayicon:
             return
 
-        if self.worst_reason != None:
-            # Check that it's valid.
-            printer = self.worst_reason.get_printer ()
-            found = False
-            for reason in self.printer_state_reasons[printer]:
-                if reason == self.worst_reason:
-                    found = True
-                    break
-            if not found:
-                self.worst_reason = None
-
-        if self.worst_reason != None:
-            (title, tooltip) = self.worst_reason.get_description ()
-        else:
+        if tooltip == None:
             num_jobs = len (self.jobs)
             if num_jobs == 0:
                 tooltip = _("No documents queued")
@@ -597,11 +564,55 @@ class JobViewer (monitor.Watcher):
 
         self.statusicon.set_tooltip (tooltip)
 
-    def update_statusicon (self, have_jobs=None):
-        pixbuf = self.get_icon_pixbuf (have_jobs=have_jobs)
-        self.set_statusicon_from_pixbuf (pixbuf)
-        self.set_statusicon_visibility ()
-        self.set_statusicon_tooltip ()
+    def update_status (self, have_jobs=None):
+        # Found out which printer state reasons apply to our active jobs.
+        upset_printers = set()
+        for printer, reasons in self.printer_state_reasons.iteritems ():
+            if len (reasons) > 0:
+                upset_printers.add (printer)
+        debugprint ("Upset printers: %s" % upset_printers)
+
+        my_upset_printers = set()
+        if len (upset_printers):
+            my_upset_printers = set()
+            for jobid in self.active_jobs:
+                # 'job-printer-name' is set by job_added/job_event
+                printer = self.jobs[jobid]['job-printer-name']
+                if printer in upset_printers:
+                    my_upset_printers.add (printer)
+            debugprint ("My upset printers: %s" % my_upset_printers)
+
+        my_reasons = []
+        for printer in my_upset_printers:
+            my_reasons.extend (self.printer_state_reasons[printer])
+
+        # Find out which is the most problematic.
+        self.worst_reason = None
+        if len (my_reasons) > 0:
+            worst_reason = my_reasons[0]
+            for reason in my_reasons:
+                if reason > worst_reason:
+                    worst_reason = reason
+            self.worst_reason = worst_reason
+            debugprint ("Worst reason: %s" % worst_reason)
+
+        if self.worst_reason != None:
+            (title, tooltip) = self.worst_reason.get_description ()
+            if self.statusbar_set:
+                self.statusbar.pop (0)
+            self.statusbar.push (0, tooltip)
+            self.statusbar_set = True
+        else:
+            tooltip = None
+            if self.statusbar_set:
+                self.statusbar.pop (0)
+                self.statusbar_set = False
+
+        if self.trayicon:
+            pixbuf = self.get_icon_pixbuf (have_jobs=have_jobs)
+            self.set_statusicon_from_pixbuf (pixbuf)
+            self.set_statusicon_visibility ()
+            self.set_statusicon_tooltip (tooltip=tooltip)
 
     ## Notifications
     def notify_printer_state_reason_if_important (self, reason):
@@ -656,8 +667,16 @@ class JobViewer (monitor.Watcher):
     def current_printers_and_jobs (self, mon, printers, jobs):
         self.store.clear ()
         self.jobiters = {}
-        for job, data in jobs.iteritems ():
-            self.add_job (job, data)
+        for jobid, jobdata in jobs.iteritems ():
+            uri = jobdata.get ('job-printer-uri', '')
+            i = uri.rfind ('/')
+            if i != -1:
+                printer = uri[i + 1:]
+            else:
+                printer = _("Unknown")
+            jobdata['job-printer-name'] = printer
+
+            self.add_job (jobid, jobdata)
 
         self.jobs = jobs
         self.active_jobs = set()
@@ -665,8 +684,7 @@ class JobViewer (monitor.Watcher):
             if self.job_is_active (jobdata):
                 self.active_jobs.add (jobid)
 
-        if self.trayicon:
-            self.update_statusicon ()
+        self.update_status ()
 
     def job_added (self, mon, jobid, eventname, event, jobdata):
         monitor.Watcher.job_added (self, mon, jobid, eventname, event, jobdata)
@@ -685,9 +703,8 @@ class JobViewer (monitor.Watcher):
             self.add_job (jobid, jobdata)
 
         self.active_jobs.add (jobid)
+        self.update_status (have_jobs=True)
         if self.trayicon:
-            self.update_statusicon (have_jobs=True)
-
             if not self.job_is_active (jobdata):
                 return
 
@@ -722,8 +739,7 @@ class JobViewer (monitor.Watcher):
         if jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
 
-        if self.trayicon:
-            self.update_statusicon ()
+        self.update_status ()
 
     def state_reason_added (self, mon, reason):
         monitor.Watcher.state_reason_added (self, mon, reason)
@@ -736,9 +752,6 @@ class JobViewer (monitor.Watcher):
         self.store_printers.set_value (iter, 2, text)
         self.reasoniters[reason.get_tuple ()] = iter
 
-        if not self.trayicon:
-            return
-
         try:
             l = self.printer_state_reasons[printer]
         except KeyError:
@@ -747,7 +760,10 @@ class JobViewer (monitor.Watcher):
 
         reason.user_notified = False
         l.append (reason)
-        self.update_statusicon ()
+        self.update_status ()
+
+        if not self.trayicon:
+            return
 
         # Find out if the user has jobs queued for that printer.
         for job, data in self.jobs.iteritems ():
@@ -767,9 +783,6 @@ class JobViewer (monitor.Watcher):
         except KeyError:
             debugprint ("Reason iter not found")
 
-        if not self.trayicon:
-            return
-
         printer = reason.get_printer ()
         try:
             reasons = self.printer_state_reasons[printer]
@@ -785,14 +798,17 @@ class JobViewer (monitor.Watcher):
 
         del reasons[i]
 
+        self.update_status ()
+
+        if not self.trayicon:
+            return
+
         tuple = reason.get_tuple ()
         try:
             notification = self.state_reason_notifications[tuple]
             notification.close ()
         except KeyError:
             pass
-
-        self.update_statusicon ()
 
     def still_connecting (self, mon, reason):
         monitor.Watcher.still_connecting (self, mon, reason)
