@@ -1,4 +1,4 @@
-# translation of system-config-printer.0.7.32.x.sr.po to Serbian
+# translation of system-config-printer.0.7.82.x.sr.po to Serbian
 # Serbian translations for system-config-printer
 # Copyright (C) 2005 Red Hat, Inc.
 # This file is distributed under the same license as the system-config-printer package.
@@ -7,10 +7,10 @@
 # Miloš Komarčević <kmilos@gmail.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: system-config-printer.0.7.32.x.sr\n"
+"Project-Id-Version: system-config-printer.0.7.82.x.sr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-03-07 18:03+0000\n"
-"PO-Revision-Date: 2008-02-14 19:04-0500\n"
+"POT-Creation-Date: 2008-03-14 10:52+0000\n"
+"PO-Revision-Date: 2008-03-15 17:37-0400\n"
 "Last-Translator: Igor Miletic <grejigl-gnomeprevod@yahoo.ca>\n"
 "Language-Team: Serbian <fedora-trans-sr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgstr ""
 msgid "Idle"
 msgstr "Мирује"
 
-#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:885
+#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:909
 msgid "Processing"
 msgstr "Обрађује"
 
@@ -32,7 +32,7 @@ msgstr "Обрађује"
 msgid "Busy"
 msgstr "Заузет"
 
-#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:886
+#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:910
 msgid "Stopped"
 msgstr "Заустављен"
 
@@ -43,7 +43,7 @@ msgstr "Заустављен"
 #: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
 #: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
 #: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
-#: ../applet.py:895
+#: ../applet.py:919
 msgid "Unknown"
 msgstr "Непознато"
 
@@ -1488,9 +1488,8 @@ msgid "Yes, I accept this license"
 msgstr "Да, прихватам ову лиценцу"
 
 #: ../system-config-printer.glade.h:261
-#, fuzzy
 msgid "_Connect..."
-msgstr "Спајање"
+msgstr "_Повежи..."
 
 #: ../system-config-printer.glade.h:262
 msgid "_Do not apply"
@@ -1636,14 +1635,13 @@ msgid "Printer '%s' has no ink left."
 msgstr "Штампач „%s“ је остао без боје."
 
 #: ../statereason.py:89
-#, fuzzy
 msgid "Printer off-line"
-msgstr "Локација штампача"
+msgstr "Штампач ван мреже"
 
 #: ../statereason.py:90
-#, fuzzy, python-format
+#, python-format
 msgid "Printer `%s' is currently off-line."
-msgstr "Штампач „%s“ је остао без папира."
+msgstr "Штампач „%s“ је тренутно ван мреже."
 
 #: ../statereason.py:91
 msgid "Not connected?"
@@ -1659,9 +1657,9 @@ msgid "Printer error"
 msgstr "Грешка штампача"
 
 #: ../statereason.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem on printer `%s'."
-msgstr "Врата су отворен на штампачу „%s“."
+msgstr "Штампач „%s“ има проблем."
 
 #: ../statereason.py:101
 msgid "Printer report"
@@ -1690,28 +1688,31 @@ msgstr ""
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:28
 msgid "Server Not Exporting Printers"
-msgstr ""
+msgstr "Сервер не извози штампаче"
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:29
 msgid ""
 "Although one or more printers are marked as being shared, this print server "
 "is not exporting shared printers to the network."
 msgstr ""
+"Иако је један или више штампача означено као дељени, овај сервер штампања не "
+"извози дељене штампаче на мрежу."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:33
 msgid ""
 "Enable the 'Share published printers connected to this system' option in the "
 "server settings using the printing administration tool."
 msgstr ""
+"Омогући опцију „Дели објављене штампаче спојене на овај систем“ у поставкама "
+"сервера користећи алатку за администрацију штампања."
 
-#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:1190
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:1214
 msgid "Install"
 msgstr "Инсталирај"
 
 #: ../troubleshoot/CheckPPDSanity.py:80
-#, fuzzy
 msgid "Invalid PPD File"
-msgstr "Приложите PPD датотеку"
+msgstr "Неисправна PPD датотека"
 
 #: ../troubleshoot/CheckPPDSanity.py:88
 #, python-format
@@ -1719,28 +1720,28 @@ msgid ""
 "The PPD file for printer `%s' does not conform to the specification.  "
 "Possible reason follows:"
 msgstr ""
+"PPD дадотека за штампач „%s“ не прати спецификације.  Могући разлози прате:"
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem with the PPD file for printer `%s'."
-msgstr "Врата су отворен на штампачу „%s“."
+msgstr "PPD дадотека за штампач „%s“ има грешку."
 
 #: ../troubleshoot/CheckPPDSanity.py:104
-#, fuzzy
 msgid "Missing Printer Driver"
 msgstr "Недостаје управљачки програм штампача"
 
 #: ../troubleshoot/CheckPPDSanity.py:107
-#, fuzzy, python-format
+#, python-format
 msgid "Printer `%s' requires the %s package but it is not currently installed."
-msgstr "Штампач „%s“ захтева пакет „%s“ али он није тренутно инсталиран. "
+msgstr "Штампач „%s“ захтева пакет „%s“ који није тренутно инсталиран. "
 
 #: ../troubleshoot/CheckPPDSanity.py:112
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Printer `%s' requires the `%s' program but it is not currently installed."
-msgstr "Штампач „%s“ захтева пакет „%s“ али он није тренутно инсталиран. "
+msgstr "Штампач „%s“ захтева пакет „%s“ који није тренутно инсталиран. "
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
 msgid "Choose Network Printer"
@@ -1782,67 +1783,71 @@ msgstr ""
 "изаберите „Није на списку“. "
 
 #: ../troubleshoot/DeviceListed.py:30
-#, fuzzy
 msgid "Choose Device"
-msgstr "Промени УРИ уређаја"
+msgstr "Изаберите уређај"
 
 #: ../troubleshoot/DeviceListed.py:31
-#, fuzzy
 msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
-"Изаберите штампач који желите користити са доњег списка. Ако не постоји, "
-"изаберите „Није на списку“. "
+"Изаберите штампач који желите користити са доњег списка. Ако се не јавља на "
+"списку, изаберите „Није на списку“. "
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:30
 #: ../troubleshoot/ErrorLogFetch.py:30
 msgid "Debugging"
-msgstr ""
+msgstr "Уклањање грешака"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid ""
 "I would like to enable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to enable debugging."
 msgstr ""
+"Желео бих да омогућим записивање у дневник података за уклањање грешака из "
+"CUPS планера.  Ово може изазвати поновно покретање планера.  Кликните на "
+"дугме испод да омогућите дневник за уклањање грешака."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:35
 msgid "Enable Debugging"
-msgstr ""
+msgstr "Омогући дневник за уклањање грешака"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:159
 msgid "Debug logging enabled."
-msgstr ""
+msgstr "Записивање у дневник омогућено."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:161
 msgid "Debug logging was already enabled."
-msgstr ""
+msgstr "Записивање у дневник је већ омогућено."
 
 #: ../troubleshoot/ErrorLogFetch.py:31
 msgid ""
 "I would like to disable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to disable debugging."
 msgstr ""
+"Желео бих да онемогућим записивање у дневник података за уклањање грешака из "
+"CUPS планера.  Ово може изазвати поновно покретање планера.  Кликните на "
+"дугме испод да би онемогућили записивање података за уклањање грешака."
 
 #: ../troubleshoot/ErrorLogFetch.py:35
 msgid "Disable Debugging"
-msgstr ""
+msgstr "Онемогући записивање у дневник"
 
 #: ../troubleshoot/ErrorLogFetch.py:142
 msgid "Debug logging disabled."
-msgstr ""
+msgstr "Записивање података о уклањању грешака у дневник је онемогућено."
 
 #: ../troubleshoot/ErrorLogFetch.py:144
 msgid "Debug logging was already disabled."
-msgstr ""
+msgstr "Записивање података о уклањању грешака у дневник је већ онемогућено."
 
 #: ../troubleshoot/ErrorLogParse.py:30
 msgid "Error log messages"
-msgstr ""
+msgstr "Дневник порука о грешкама"
 
 #: ../troubleshoot/ErrorLogParse.py:31
 msgid "There are messages in the error log."
-msgstr ""
+msgstr "Дневник о грешкама има поруке."
 
 #: ../troubleshoot/LocalOrRemote.py:27
 msgid "Printer Location"
@@ -1877,35 +1882,35 @@ msgid "There are status messages associated with this queue."
 msgstr "Има порука стања повезаних са овим редом."
 
 #: ../troubleshoot/PrinterStateReasons.py:53
-#, fuzzy, python-format
+#, python-format
 msgid "The printer's state message is: `%s'."
-msgstr "Поруке стања штампача:"
+msgstr "Порука стања штампача је: „%s“."
 
 #: ../troubleshoot/PrinterStateReasons.py:78
 msgid "Errors are listed below:"
-msgstr ""
+msgstr "Грешке су исписане испод:"
 
 #: ../troubleshoot/PrinterStateReasons.py:83
 msgid "Warnings are listed below:"
-msgstr ""
+msgstr "Упозорења су исписана испод:"
 
-#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:883
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:907
 msgid "Pending"
 msgstr "На чекању"
 
-#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:884
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:908
 msgid "Held"
 msgstr "Задржано"
 
-#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:887
+#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:911
 msgid "Canceled"
 msgstr "Отказано"
 
-#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:888
+#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:912
 msgid "Aborted"
 msgstr "Обустављено"
 
-#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:889
+#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:913
 msgid "Completed"
 msgstr "Завршено"
 
@@ -1918,15 +1923,17 @@ msgid ""
 "Now print a test page.  If you are having problems printing a specific "
 "document, print that document now and mark the print job below."
 msgstr ""
+"Сада одштампајте пробну страницу.  Ако имате проблема приликом штампања "
+"одређеног документа, одштампајте тај документ сада и означите посао штампања "
+"испод."
 
 #: ../troubleshoot/PrintTestPage.py:64
 msgid "Cancel All Jobs"
 msgstr "Откажи све послове"
 
 #: ../troubleshoot/PrintTestPage.py:70
-#, fuzzy
 msgid "Test"
-msgstr "Поврати"
+msgstr "Проба"
 
 #: ../troubleshoot/PrintTestPage.py:71 ../applet.py:117
 msgid "Job"
@@ -1941,9 +1948,8 @@ msgid "Status"
 msgstr "Стање"
 
 #: ../troubleshoot/PrintTestPage.py:100
-#, fuzzy
 msgid "Did the marked print jobs print correctly?"
-msgstr "Да ли је страница одштампана правилно?"
+msgstr "Да ли је означени посао штампања правилно одштампан?"
 
 #: ../troubleshoot/PrintTestPage.py:107
 msgid "Yes"
@@ -2130,82 +2136,82 @@ msgstr "пре једне минуте"
 msgid "%d minutes ago"
 msgstr "пре %d минута"
 
-#: ../applet.py:703
-#, fuzzy, python-format
+#: ../applet.py:727
+#, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr "Десила се грешка током повезивања на CUPS сервер."
+msgstr "Десила се грешка током слања документа „%s“ (ИД посла %d) штампачу."
 
-#: ../applet.py:706
+#: ../applet.py:730
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
-msgstr ""
+msgstr "Дошло је до проблема приликом обраде документа „%s“ (ИД посла %d)."
 
 #. Give up and use the untranslated provided.
-#: ../applet.py:710
+#: ../applet.py:734
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
+"Дошло је до проблема приликом штампања документа „%s“ (ИД посла %d): „%s“."
 
-#: ../applet.py:715 ../applet.py:731
-#, fuzzy
+#: ../applet.py:739 ../applet.py:755
 msgid "Print Error"
-msgstr "Грешка штампача"
+msgstr "Грешка у штампању"
 
-#: ../applet.py:716
+#: ../applet.py:740
 msgid "_Diagnose"
-msgstr ""
+msgstr "_Утврдите проблем"
 
-#: ../applet.py:737
-#, fuzzy, python-format
+#: ../applet.py:761
+#, python-format
 msgid "The printer called `%s' has been disabled."
-msgstr "Ред „%s“ није омогућен."
+msgstr "Штампач „%s“ је онемогућен."
 
-#: ../applet.py:816
+#: ../applet.py:840
 msgid "No documents queued"
 msgstr "Нема докумената у реду"
 
-#: ../applet.py:819
+#: ../applet.py:843
 msgid "1 document queued"
 msgstr "1 документ у реду"
 
-#: ../applet.py:822
+#: ../applet.py:846
 #, python-format
 msgid "%d documents queued"
 msgstr "%d докумената у реду"
 
-#: ../applet.py:1180
+#: ../applet.py:1204
 msgid "Printer added"
 msgstr "Штампач је додат"
 
-#: ../applet.py:1182
+#: ../applet.py:1206
 msgid "Missing printer driver"
 msgstr "Недостаје управљачки програм штампача"
 
-#: ../applet.py:1186
+#: ../applet.py:1210
 msgid "Install printer driver"
 msgstr "Инсталирајте управљачки програм"
 
-#: ../applet.py:1187
+#: ../applet.py:1211
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "„%s“ захтева инсталацију управљачког програма: %s."
 
-#: ../applet.py:1193
+#: ../applet.py:1217
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "„%s“ је спреман за штампање."
 
-#: ../applet.py:1196
+#: ../applet.py:1220
 msgid "Configure"
 msgstr "Подеси"
 
 #. Model mismatch
-#: ../applet.py:1199
+#: ../applet.py:1223
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "„%s“ је додат, користећи управљачки програм „%s“."
 
-#: ../applet.py:1203
+#: ../applet.py:1227
 msgid "Find driver"
 msgstr "Нађи управљачки програм"
 
@@ -2268,21 +2274,3 @@ msgstr "Управљај пословима штампања"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Изабери подразумевани штампач"
-
-#~ msgid "_Goto Server"
-#~ msgstr "_Иди на сервер"
-
-#~ msgid "Queue Not Accepting Jobs"
-#~ msgstr "Ред не прихвата послове"
-
-#~ msgid "The CUPS printer on the server is not accepting jobs."
-#~ msgstr "CUPS штампач на серверу не прихвата послове."
-
-#~ msgid "The CUPS printer on the server is not enabled."
-#~ msgstr "CUPS штампач на серверу није омогућен."
-
-#~ msgid "Printer's state reasons:"
-#~ msgstr "Разлози стања штампача:"
-
-#~ msgid " The reason given is: `%s'."
-#~ msgstr "Разлог је: „%s“."
