@@ -1818,10 +1818,18 @@ class GUI(GtkGUI):
         for option in self.printer.attributes.keys ():
             if self.server_side_options.has_key (option):
                 continue
-            supported = ""
+            value = self.printer.attributes[option]
             if self.printer.possible_attributes.has_key (option):
                 supported = self.printer.possible_attributes[option][1]
-            self.add_job_option (option, value=self.printer.attributes[option],
+            else:
+                if isinstance (value, bool):
+                    supported = ["true", "false"]
+                    value = str (value).lower ()
+                else:
+                    supported = ""
+                    value = str (value)
+
+            self.add_job_option (option, value=value,
                                  supported=supported, is_new=False,
                                  editable=editable)
         self.entNewJobOption.set_text ('')
