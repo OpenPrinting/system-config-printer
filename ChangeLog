@@ -1,5 +1,11 @@
 2008-03-31  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.fillPrinterTab): If supported
+	values are not known but the value is a Boolean, we can work out
+	the supported values (Ubuntu #207338).
+	(GUI.fillPrinterOptions): Initialise inputslot/manualfeed
+	variables regardless of whether there are option groups.
+
 	* system-config-printer.glade (PrinterPropertiesDialog): Fixed
 	expand/fill flags in the job options tab (Ubuntu #208304).
 
