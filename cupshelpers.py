@@ -248,7 +248,12 @@ class Printer:
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         try:
             resource = "/admin/conf/lpoptions"
-            self.connection.getFile(resource, tmpfname)
+
+            try:
+                # Specifying the fd is allowed in pycups >= 1.9.38
+                self.connection.getFile(resource, fd=tmpfd)
+            except TypeError:
+                self.connection.getFile(resource, tmpfname)
         except cups.HTTPError, (s,):
             try:
                 os.remove (tmpfname)
@@ -400,16 +405,21 @@ class PrintersConf:
 
     def fetch(self, file):
         fd, filename = tempfile.mkstemp("printer.conf")
-        os.close(fd)
         try:
-            self.connection.getFile(file, filename)
+            try:
+                # Specifying the fd is allowed in pycups >= 1.9.38
+                self.connection.getFile(file, fd=fd)
+            except TypeError:
+                self.connection.getFile(file, filename)
         except cups.HTTPError, e:
+            os.close(fd)
             if (e.args[0] == cups.HTTP_UNAUTHORIZED or
                 e.args[0] == cups.HTTP_NOT_FOUND):
                 return []
             else:
                 raise e
 
+        os.close(fd)
         lines = open(filename).readlines()
         os.unlink(filename)
         return lines
