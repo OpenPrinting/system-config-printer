@@ -109,10 +109,12 @@ class Monitor:
     DBUS_PATH="/com/redhat/PrinterSpooler"
     DBUS_IFACE="com.redhat.PrinterSpooler"
 
-    def __init__(self, watcher, bus=None, my_jobs=True, specific_dests=None):
+    def __init__(self, watcher, bus=None, my_jobs=True, specific_dests=None,
+                 monitor_jobs=True):
         self.watcher = watcher
         self.my_jobs = my_jobs
         self.specific_dests = specific_dests
+        self.monitor_jobs = monitor_jobs
         self.jobs = {}
         self.printer_state_reasons = {}
         self.printers = set()
@@ -422,21 +424,27 @@ class Monitor:
         except AttributeError:
             pass
 
-        self.sub_id = c.createSubscription ("/",
-                                            events=["job-created",
-                                                    "job-completed",
-                                                    "job-stopped",
-                                                    "job-progress",
-                                                    "job-state-changed",
-                                                    "printer-added",
-                                                    "printer-deleted",
-                                                    "printer-state-changed"])
+        events = ["printer-added",
+                  "printer-deleted",
+                  "printer-state-changed"]
+        if self.monitor_jobs:
+            events.extend (["job-created",
+                            "job-completed",
+                            "job-stopped",
+                            "job-progress",
+                            "job-state-changed"])
+
+        self.sub_id = c.createSubscription ("/", events=events)
         self.update_timer = gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
                                                  self.get_notifications)
         debugprint ("Created subscription %d" % self.sub_id)
 
         try:
-            jobs = c.getJobs (which_jobs=self.which_jobs, my_jobs=self.my_jobs)
+            if self.monitor_jobs:
+                jobs = c.getJobs (which_jobs=self.which_jobs,
+                                  my_jobs=self.my_jobs)
+            else:
+                jobs = {}
             self.printer_state_reasons = collect_printer_state_reasons (c)
             dests = c.getDests ()
             printers = set()
