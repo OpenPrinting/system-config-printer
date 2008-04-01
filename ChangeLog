@@ -1,5 +1,8 @@
 2008-04-01  Tim Waugh  <twaugh@redhat.com>
 
+	* applet.py (JobManager.check_still_connecting): Prevent traceback
+	if CUPS is no longer running (Ubuntu #203818).
+
 	* my-default-printer.py (Dialog.__init__): Sort printers by name
 	(bug #439804).
 

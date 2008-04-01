@@ -292,7 +292,12 @@ class JobManager:
 
     def check_still_connecting(self):
         """Timer callback to check on connecting-to-device reasons."""
-        c = cups.Connection ()
+        try:
+            c = cups.Connection ()
+        except RuntimeError:
+            # Need to run this callback again.
+            return True
+
         printer_reasons = collect_printer_state_reasons (c)
         del c
 
