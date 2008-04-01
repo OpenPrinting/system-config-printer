@@ -159,6 +159,7 @@ help:
 	@echo " run                Run system-config-printer with local glade file"
 
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
+	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1
 
