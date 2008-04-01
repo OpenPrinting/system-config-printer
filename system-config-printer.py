@@ -533,18 +533,28 @@ class GUI(GtkGUI):
             self.show_HTTP_Error(s)
 
     def busy (self, win = None):
-        if not win:
-            win = self.MainWindow
-        win.window.set_cursor (busy_cursor)
-        while gtk.events_pending ():
-            gtk.main_iteration ()
+        try:
+            if not win:
+                win = self.MainWindow
+            gdkwin = win.window
+            if gdkwin:
+                gdkwin.set_cursor (busy_cursor)
+                while gtk.events_pending ():
+                    gtk.main_iteration ()
+        except:
+            nonfatalException ()
             
     def ready (self, win = None):
-        if not win:
-            win = self.MainWindow
-        win.window.set_cursor (ready_cursor)
-        while gtk.events_pending ():
-            gtk.main_iteration ()
+        try:
+            if not win:
+                win = self.MainWindow
+            gdkwin = win.window
+            if gdkwin:
+                gdkwin.set_cursor (ready_cursor)
+                while gtk.events_pending ():
+                    gtk.main_iteration ()
+        except:
+            nonfatalException ()
 
     def setConnected(self):
         connected = bool(self.cups)
