@@ -144,13 +144,16 @@ class Dialog:
         vbox.set_border_width (6)
 
         self.model = gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_STRING)
+        self.model.set_sort_column_id (0, gtk.SORT_ASCENDING)
         view = gtk.TreeView (self.model)
         col = gtk.TreeViewColumn (_("Printer"), gtk.CellRendererText (),
                                   text=0)
+        col.set_sort_column_id (0)
         view.append_column (col)
 
         col = gtk.TreeViewColumn (_("Location"), gtk.CellRendererText (),
                                   text=1)
+        col.set_sort_column_id (1)
         view.append_column (col)
         self.view = view
 
