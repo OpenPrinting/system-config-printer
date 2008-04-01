@@ -30,6 +30,9 @@ class SMBURI:
             if group or host or share or user or password:
                 raise RuntimeError
 
+            if uri.startswith ("smb://"):
+                uri = uri[6:]
+
             self.uri = uri
         else:
             self.uri = self._construct (group, host, share,
