@@ -77,7 +77,7 @@ class CheckNetworkServerSanity(Question):
         self.answers['remote_server_try_connect'] = server_name
 
         if (self.answers['remote_server_name_resolves'] and
-            answers.get ('cups_device_uri_scheme', 'ipp')):
+            answers.get ('cups_device_uri_scheme', 'ipp') == 'ipp'):
             try:
                 cups.setServer (server_name)
                 cups.setPort (server_port)
