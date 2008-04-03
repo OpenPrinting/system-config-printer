@@ -1,5 +1,11 @@
 2008-04-03  Tim Waugh  <twaugh@redhat.com>
 
+	* monitor.py (Watcher.cups_connection_error): New API method.
+	(Watcher.cups_ipp_error): New API method.
+	(Monitor.get_notifications): Add cups_connection_error and
+	cups_ipp_error hooks.
+	(Monitor.refresh): Likewise.
+
 	* jobviewer.py (JobViewer.current_printers_and_jobs): Fetch full
 	job attributes for each job initially.
 	(JobViewer.update_job): If proxy authentication is necessary,

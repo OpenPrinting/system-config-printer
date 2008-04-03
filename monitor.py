@@ -104,6 +104,13 @@ class Watcher:
     def printer_removed (self, monitor, printer):
         debugprint (repr (monitor) + ": printer `%s' removed" % printer)
 
+    def cups_connection_error (self, monitor):
+        debugprint (repr (monitor) + ": CUPS connection error")
+
+    def cups_ipp_error (self, monitor, e, m):
+        debugprint (repr (monitor) + ": CUPS IPP error (%d, %s)" %
+                    (e, repr (m)))
+
 class Monitor:
     # Monitor jobs and printers.
     DBUS_PATH="/com/redhat/PrinterSpooler"
@@ -292,8 +299,10 @@ class Monitor:
                     self.refresh ()
                     return False
 
+                self.watcher.cups_ipp_error (self, e, m)
                 return True
-        except:
+        except RuntimeError:
+            self.watcher.cups_connection_error (self)
             return True
 
         deferred_calls = []
@@ -371,6 +380,9 @@ class Monitor:
                     jobs[jobid] = attrs
                 except AttributeError:
                     jobs[jobid] = {'job-k-octets': 0}
+                except cups.IPPError, (e, m):
+                    self.watcher.cups_ipp_error (self, e, m)
+                    jobs[jobid] = {'job-k-octets': 0}
 
                 deferred_calls.append ((self.watcher.job_added,
                                         (self, jobid, nse, event,
@@ -412,10 +424,15 @@ class Monitor:
         try:
             c = cups.Connection ()
         except RuntimeError:
+            self.watcher.cups_connection_error (self)
             return
 
         if self.sub_id != -1:
-            c.cancelSubscription (self.sub_id)
+            try:
+                c.cancelSubscription (self.sub_id)
+            except cups.IPPError, (e, m):
+                self.watcher.cups_ipp_error (self, e, m)
+
             gobject.source_remove (self.update_timer)
             debugprint ("Canceled subscription %d" % self.sub_id)
 
@@ -434,7 +451,11 @@ class Monitor:
                             "job-progress",
                             "job-state-changed"])
 
-        self.sub_id = c.createSubscription ("/", events=events)
+        try:
+            self.sub_id = c.createSubscription ("/", events=events)
+        except cups.IPPError, (e, m):
+            self.watcher.cups_ipp_error (self, e, m)
+
         self.update_timer = gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
                                                  self.get_notifications)
         debugprint ("Created subscription %d" % self.sub_id)
@@ -456,8 +477,10 @@ class Monitor:
                 printers.add (printer)
             self.printers = printers
         except cups.IPPError, (e, m):
+            self.watcher.cups_ipp_error (self, e, m)
             return
         except RuntimeError:
+            self.watcher.cups_connection_error (self)
             return
 
         if self.specific_dests != None:
