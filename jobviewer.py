@@ -806,7 +806,6 @@ class JobViewer (monitor.Watcher):
             # stopped, and the job-hold-until attribute will be
             # 'auth-info-required'.  This will be checked for in
             # update_job.
-            debugprint ("Job %d stopped: why?" % jobid)
             if jobdata['job-state'] == cups.IPP_JOB_HELD:
                 try:
                     # Fetch the job-hold-until attribute, as this is
@@ -841,7 +840,7 @@ class JobViewer (monitor.Watcher):
                 #
                 # "Authentication is required for job %d."
                 notify_text = event['notify-text']
-                document = job['job-name']
+                document = jobdata['job-name']
                 if notify_text.find ("backend errors") != -1:
                     message = _("There was a problem sending document `%s' "
                                 "(job %d) to the printer.") % (document, jobid)
