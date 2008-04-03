@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: tr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-03-07 18:03+0000\n"
+"POT-Creation-Date: 2008-04-03 16:23+0100\n"
 "PO-Revision-Date: 2005-04-17 14:52+0200\n"
 "Last-Translator: Bahadır Yağan <bahadir.yagan@mht.com.tr>\n"
 "Language-Team: Turkish <fedora-trans-tr@redhat.com>\n"
@@ -16,56 +16,238 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.3\n"
 
-#: ../cupshelpers.py:33
+#: ../authconn.py:30 ../system-config-printer.glade.h:254
+#, fuzzy
+msgid "Username:"
+msgstr "Kullanıcı:"
+
+#: ../authconn.py:31 ../system-config-printer.glade.h:190 ../applet.glade.h:5
+msgid "Password:"
+msgstr "Parola:"
+
+#: ../authconn.py:32
+#, fuzzy
+msgid "Domain:"
+msgstr "Üst boşluk (pt):"
+
+#: ../authconn.py:34
+#, fuzzy
+msgid "Authentication"
+msgstr "Kimlik kanıtlama"
+
+#: ../cupshelpers.py:28
 msgid "Idle"
 msgstr ""
 
-#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:885
+#: ../cupshelpers.py:29 ../jobviewer.py:371
+#: ../troubleshoot/PrintTestPage.py:35
 msgid "Processing"
 msgstr ""
 
-#: ../cupshelpers.py:35
+#: ../cupshelpers.py:30
 msgid "Busy"
 msgstr ""
 
-#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:886
+#: ../cupshelpers.py:31 ../jobviewer.py:372
+#: ../troubleshoot/PrintTestPage.py:36
 msgid "Stopped"
 msgstr ""
 
-#: ../cupshelpers.py:53 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../cupshelpers.py:48 ../jobviewer.py:282 ../jobviewer.py:346
+#: ../jobviewer.py:359 ../jobviewer.py:382 ../jobviewer.py:424
+#: ../jobviewer.py:739 ../jobviewer.py:774 ../jobviewer.py:800
+#: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:97
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
 #: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
 #: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
-#: ../applet.py:895
 #, fuzzy
 msgid "Unknown"
 msgstr "(bilinmeyen)"
+
+#: ../jobviewer.py:82 ../troubleshoot/PrintTestPage.py:71
+#, fuzzy
+msgid "Job"
+msgstr "Veli"
+
+#: ../jobviewer.py:83 ../troubleshoot/PrintTestPage.py:75
+#, fuzzy
+msgid "Document"
+msgstr "Açıklama"
+
+#: ../jobviewer.py:84 ../jobviewer.py:123 ../my-default-printer.py:152
+#: ../system-config-printer.py:2486 ../troubleshoot/PrintTestPage.py:73
+#, fuzzy
+msgid "Printer"
+msgstr "Yazıcı:"
+
+#: ../jobviewer.py:85
+#, fuzzy
+msgid "Size"
+msgstr "Sayfa Boyu"
+
+#: ../jobviewer.py:86
+msgid "Time submitted"
+msgstr ""
+
+#: ../jobviewer.py:87 ../troubleshoot/PrintTestPage.py:76
+msgid "Status"
+msgstr ""
+
+#: ../jobviewer.py:136
+msgid "Message"
+msgstr ""
+
+#: ../jobviewer.py:236 ../system-config-printer.py:1114
+#: ../system-config-printer.py:1130
+msgid "Not authorized"
+msgstr ""
+
+#: ../jobviewer.py:237 ../system-config-printer.py:1115
+msgid "The password may be incorrect."
+msgstr ""
+
+#: ../jobviewer.py:240 ../system-config-printer.py:1118
+#: ../system-config-printer.py:1151
+msgid "CUPS server error"
+msgstr ""
+
+#: ../jobviewer.py:241 ../system-config-printer.py:1119
+#, fuzzy, python-format
+msgid "There was an error during the CUPS operation: '%s'."
+msgstr "Deneme sayfası yazdırılırken bir hata oluştu."
+
+#: ../jobviewer.py:294
+msgid "1 hour ago"
+msgstr ""
+
+#: ../jobviewer.py:296
+msgid "1 hour and 1 minute ago"
+msgstr ""
+
+#: ../jobviewer.py:298
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr ""
+
+#: ../jobviewer.py:301
+#, python-format
+msgid "%d hours ago"
+msgstr ""
+
+#: ../jobviewer.py:303
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr ""
+
+#: ../jobviewer.py:305
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr ""
+
+#: ../jobviewer.py:311
+msgid "a minute ago"
+msgstr ""
+
+#: ../jobviewer.py:313
+#, python-format
+msgid "%d minutes ago"
+msgstr ""
+
+#: ../jobviewer.py:369 ../troubleshoot/PrintTestPage.py:33
+#, fuzzy
+msgid "Pending"
+msgstr "Yazdırma"
+
+#: ../jobviewer.py:370 ../troubleshoot/PrintTestPage.py:34
+#, fuzzy
+msgid "Held"
+msgstr "_Yardım"
+
+#: ../jobviewer.py:373 ../troubleshoot/PrintTestPage.py:37
+#, fuzzy
+msgid "Canceled"
+msgstr "İp_tal"
+
+#: ../jobviewer.py:374 ../troubleshoot/PrintTestPage.py:38
+#, fuzzy
+msgid "Aborted"
+msgstr "Hakkında"
+
+#: ../jobviewer.py:375 ../troubleshoot/PrintTestPage.py:39
+#, fuzzy
+msgid "Completed"
+msgstr "Açıklama"
+
+#: ../jobviewer.py:422
+#, python-format
+msgid "Authentication required for printing document `%s' (job %d)"
+msgstr ""
+
+#: ../jobviewer.py:622
+msgid "No documents queued"
+msgstr ""
+
+#: ../jobviewer.py:624
+msgid "1 document queued"
+msgstr ""
+
+#: ../jobviewer.py:626
+#, python-format
+msgid "%d documents queued"
+msgstr ""
+
+#: ../jobviewer.py:852
+#, fuzzy, python-format
+msgid "There was a problem sending document `%s' (job %d) to the printer."
+msgstr ""
+"%s, %s kuyruğuna\n"
+"gönderilirken bir sorun oluştu:\n"
+"\n"
+
+#: ../jobviewer.py:855
+#, python-format
+msgid "There was a problem processing document `%s' (job %d)."
+msgstr ""
+
+#. Give up and use the untranslated provided.
+#: ../jobviewer.py:859
+#, python-format
+msgid "There was a problem printing document `%s' (job %d): `%s'."
+msgstr ""
+
+#: ../jobviewer.py:864 ../jobviewer.py:880
+#, fuzzy
+msgid "Print Error"
+msgstr "Yazıcı: "
+
+#: ../jobviewer.py:865
+msgid "_Diagnose"
+msgstr ""
+
+#: ../jobviewer.py:886
+#, python-format
+msgid "The printer called `%s' has been disabled."
+msgstr ""
 
 #: ../my-default-printer.py:136 ../my-default-printer.desktop.in.h:1
 #, fuzzy
 msgid "Default Printer"
 msgstr "JetDirect Yazıcı"
 
-#: ../my-default-printer.py:140 ../my-default-printer.py:171
+#: ../my-default-printer.py:140 ../my-default-printer.py:174
 #, fuzzy
 msgid "_Use System Default"
 msgstr "Ö_ntanımlı yap"
 
-#: ../my-default-printer.py:141 ../my-default-printer.py:173
+#: ../my-default-printer.py:141 ../my-default-printer.py:176
 #, fuzzy
 msgid "_Set Default"
 msgstr "Ö_ntanımlı"
 
-#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:73
-#: ../applet.py:119 ../applet.py:159
-#, fuzzy
-msgid "Printer"
-msgstr "Yazıcı:"
-
-#: ../my-default-printer.py:155 ../system-config-printer.py:2388
+#: ../my-default-printer.py:157 ../system-config-printer.py:2195
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 #, fuzzy
@@ -76,202 +258,179 @@ msgstr "_Eylem"
 msgid "Conflicts with:"
 msgstr ""
 
-#: ../system-config-printer.py:360
-#, fuzzy
-msgid "Server Settings"
-msgstr "Sürücü seçenekleri"
-
-#: ../system-config-printer.py:366 ../system-config-printer.py:368
+#: ../system-config-printer.py:286 ../system-config-printer.py:288
 msgid "Members of this class"
 msgstr ""
 
-#: ../system-config-printer.py:367 ../system-config-printer.py:369
+#: ../system-config-printer.py:287 ../system-config-printer.py:289
 msgid "Others"
 msgstr ""
 
-#: ../system-config-printer.py:370
+#: ../system-config-printer.py:290
 #, fuzzy
 msgid "Devices"
 msgstr "Aygıt"
 
-#: ../system-config-printer.py:371
+#: ../system-config-printer.py:291
 msgid "Makes"
 msgstr ""
 
-#: ../system-config-printer.py:372
+#: ../system-config-printer.py:292
 #, fuzzy
 msgid "Models"
 msgstr "Model"
 
-#: ../system-config-printer.py:373
+#: ../system-config-printer.py:293
 #, fuzzy
 msgid "Drivers"
 msgstr "Sürücü"
 
-#: ../system-config-printer.py:374 ../system-config-printer.glade.h:107
+#: ../system-config-printer.py:294 ../system-config-printer.glade.h:102
 #, fuzzy
 msgid "Downloadable Drivers"
 msgstr "Kullanılabilir sürücüler:"
 
-#: ../system-config-printer.py:375
+#: ../system-config-printer.py:295
 #, fuzzy
 msgid "Users"
 msgstr "Kullanıcı"
 
-#: ../system-config-printer.py:402
+#: ../system-config-printer.py:322
 msgid "Automatic rotation"
 msgstr ""
 
-#: ../system-config-printer.py:556
+#: ../system-config-printer.py:561
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Yazıcı yapılandırması - %s"
 
-#: ../system-config-printer.py:559
+#: ../system-config-printer.py:564
 #, python-format
 msgid "Connected to %s"
 msgstr ""
 
-#: ../system-config-printer.py:561 ../system-config-printer.py:1271
+#: ../system-config-printer.py:566 ../system-config-printer.py:1146
 #, fuzzy
 msgid "Not connected"
 msgstr "_Yerel-bağlı"
 
-#: ../system-config-printer.py:670
+#: ../system-config-printer.py:653
 #, fuzzy
-msgid "Local Printers"
-msgstr "Yerel Yazıcı"
-
-#: ../system-config-printer.py:671
-msgid "Local Classes"
-msgstr ""
-
-#: ../system-config-printer.py:672
-#, fuzzy
-msgid "Remote Printers"
+msgid "Remote class"
 msgstr "Novell Yazıcı"
 
-#: ../system-config-printer.py:673
-msgid "Remote Classes"
+#: ../system-config-printer.py:655
+#, fuzzy
+msgid "Remote printer"
+msgstr "Novell Yazıcı"
+
+#: ../system-config-printer.py:659
+msgid "Local class"
 msgstr ""
 
-#: ../system-config-printer.py:781
+#: ../system-config-printer.py:661
+#, fuzzy
+msgid "Local printer"
+msgstr "Yerel Yazıcı"
+
+#: ../system-config-printer.py:730
 #, python-format
 msgid ""
 "Connecting to server:\n"
 "%s"
 msgstr ""
 
-#: ../system-config-printer.py:1200
+#: ../system-config-printer.py:1091
 msgid "Installable Options"
 msgstr ""
 
-#: ../system-config-printer.py:1201 ../system-config-printer.glade.h:209
+#: ../system-config-printer.py:1092 ../system-config-printer.glade.h:204
 #, fuzzy
 msgid "Printer Options"
 msgstr "Süzgeç seçenekleri"
 
-#: ../system-config-printer.py:1210
+#: ../system-config-printer.py:1101
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
 "these conflicts are resolved."
 msgstr ""
 
-#: ../system-config-printer.py:1239 ../system-config-printer.py:1255
-#: ../applet.py:292
-msgid "Not authorized"
-msgstr ""
-
-#: ../system-config-printer.py:1240 ../applet.py:293
-msgid "The password may be incorrect."
-msgstr ""
-
-#: ../system-config-printer.py:1243 ../system-config-printer.py:1276
-#: ../applet.py:296
-msgid "CUPS server error"
-msgstr ""
-
-#: ../system-config-printer.py:1244 ../applet.py:297
-#, fuzzy, python-format
-msgid "There was an error during the CUPS operation: '%s'."
-msgstr "Deneme sayfası yazdırılırken bir hata oluştu."
-
-#: ../system-config-printer.py:1256
+#: ../system-config-printer.py:1131
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
 msgstr ""
 
-#: ../system-config-printer.py:1261
+#: ../system-config-printer.py:1136
 msgid "Bad request"
 msgstr ""
 
-#: ../system-config-printer.py:1263
+#: ../system-config-printer.py:1138
 #, fuzzy
 msgid "Not found"
 msgstr "_Yerel-bağlı"
 
-#: ../system-config-printer.py:1265
+#: ../system-config-printer.py:1140
 msgid "Request timeout"
 msgstr ""
 
-#: ../system-config-printer.py:1267
+#: ../system-config-printer.py:1142
 msgid "Upgrade required"
 msgstr ""
 
-#: ../system-config-printer.py:1269
+#: ../system-config-printer.py:1144
 msgid "Server error"
 msgstr ""
 
-#: ../system-config-printer.py:1273
+#: ../system-config-printer.py:1148
 #, python-format
 msgid "status %d"
 msgstr ""
 
-#: ../system-config-printer.py:1277
+#: ../system-config-printer.py:1152
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr ""
 
-#: ../system-config-printer.py:1301
+#: ../system-config-printer.py:1175
 msgid "This will delete this class!"
 msgstr ""
 
-#: ../system-config-printer.py:1302
+#: ../system-config-printer.py:1176
 msgid "Proceed anyway?"
 msgstr ""
 
-#: ../system-config-printer.py:1516 ../system-config-printer.py:1550
+#: ../system-config-printer.py:1334 ../system-config-printer.py:1368
 msgid "Submitted"
 msgstr ""
 
-#: ../system-config-printer.py:1517
+#: ../system-config-printer.py:1335
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr ""
 
-#: ../system-config-printer.py:1528 ../system-config-printer.py:1560
-#: ../system-config-printer.py:3497
+#: ../system-config-printer.py:1346 ../system-config-printer.py:1378
+#: ../system-config-printer.py:3358
 msgid "Not possible"
 msgstr ""
 
-#: ../system-config-printer.py:1529 ../system-config-printer.py:1561
+#: ../system-config-printer.py:1347 ../system-config-printer.py:1379
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr ""
 
-#: ../system-config-printer.py:1551
+#: ../system-config-printer.py:1369
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr ""
 
-#: ../system-config-printer.py:1647 ../system-config-printer.py:1806
+#: ../system-config-printer.py:1426 ../system-config-printer.py:1585
 msgid "Error"
 msgstr "Hata"
 
-#: ../system-config-printer.py:1648
+#: ../system-config-printer.py:1427
 #, fuzzy
 msgid "There was a problem connecting to the CUPS server."
 msgstr ""
@@ -279,217 +438,232 @@ msgstr ""
 "gönderilirken bir sorun oluştu:\n"
 "\n"
 
-#: ../system-config-printer.py:1701
+#: ../system-config-printer.py:1480
 #, fuzzy
 msgid "This is the default printer"
 msgstr "Bu yazıcı için bir açıklamadır."
 
-#: ../system-config-printer.py:1705
+#: ../system-config-printer.py:1484
 msgid "No default printer set."
 msgstr ""
 
-#: ../system-config-printer.py:1807
+#: ../system-config-printer.py:1586
 #, fuzzy, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Yazıcının biçemi anlaşılamadığından düzenlenemez."
 
-#: ../system-config-printer.py:1847
+#: ../system-config-printer.py:1634
 #, fuzzy
 msgid "Cancel Tests"
 msgstr "İptal"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1851 ../system-config-printer.glade.h:208
+#: ../system-config-printer.py:1638 ../system-config-printer.glade.h:203
 #: ../troubleshoot/PrintTestPage.py:61
 #, fuzzy
 msgid "Print Test Page"
 msgstr "Yazıcı bilgileri:"
 
-#: ../system-config-printer.py:2081
+#: ../system-config-printer.py:1860
 #, fuzzy, python-format
-msgid "Really delete printer %s?"
+msgid "Really delete class `%s'?"
 msgstr "\"%s\" gerçekten silinecek mi?"
 
-#: ../system-config-printer.py:2083
+#: ../system-config-printer.py:1862
 #, fuzzy, python-format
-msgid "Really delete class %s?"
+msgid "Really delete printer `%s'?"
+msgstr "\"%s\" gerçekten silinecek mi?"
+
+#: ../system-config-printer.py:1864
+#, fuzzy
+msgid "Really delete selected destinations?"
 msgstr "\"%s\" gerçekten silinecek mi?"
 
 #. SMB list columns
-#: ../system-config-printer.py:2360
+#: ../system-config-printer.py:2167
 msgid "Share"
 msgstr "Paylaşım"
 
-#: ../system-config-printer.py:2366
+#: ../system-config-printer.py:2173
 msgid "Comment"
 msgstr "Açıklama"
 
 #. IPP list columns
-#: ../system-config-printer.py:2382
+#: ../system-config-printer.py:2189
 msgid "Queue"
 msgstr "Kuyruk"
 
-#: ../system-config-printer.py:2396
+#: ../system-config-printer.py:2203
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 
-#: ../system-config-printer.py:2405
+#: ../system-config-printer.py:2212
 msgid "All files (*)"
 msgstr ""
 
-#: ../system-config-printer.py:2440 ../system-config-printer.py:3756
-#: ../system-config-printer.py:3790
+#: ../system-config-printer.py:2247 ../system-config-printer.py:3617
+#: ../system-config-printer.py:3651
 #, fuzzy
 msgid "Search"
 msgstr "Uyarı"
 
-#: ../system-config-printer.py:2443 ../system-config-printer.glade.h:155
+#: ../system-config-printer.py:2250 ../system-config-printer.glade.h:150
 #, fuzzy
 msgid "New Printer"
 msgstr "Novell Yazıcı"
 
-#: ../system-config-printer.py:2453 ../system-config-printer.glade.h:154
+#: ../system-config-printer.py:2260 ../system-config-printer.glade.h:149
 msgid "New Class"
 msgstr ""
 
-#: ../system-config-printer.py:2458
+#: ../system-config-printer.py:2265
 msgid "Change Device URI"
 msgstr ""
 
-#: ../system-config-printer.py:2467
+#: ../system-config-printer.py:2274
 #, fuzzy
 msgid "Change Driver"
 msgstr "Türünü Değiştir"
 
-#: ../system-config-printer.py:2566 ../system-config-printer.py:2790
-#: ../system-config-printer.py:2956 ../system-config-printer.py:3779
+#: ../system-config-printer.py:2373 ../system-config-printer.py:2623
+#: ../system-config-printer.py:2789 ../system-config-printer.py:3640
 #, fuzzy
 msgid "Searching"
 msgstr "Uyarı"
 
-#: ../system-config-printer.py:2567 ../system-config-printer.py:2791
+#: ../system-config-printer.py:2374 ../system-config-printer.py:2624
 #, fuzzy
 msgid "Searching for drivers"
 msgstr "Paylaşım özellikleri"
 
-#: ../system-config-printer.py:2957
+#: ../system-config-printer.py:2487
+msgid "Fax"
+msgstr ""
+
+#: ../system-config-printer.py:2488
+msgid ""
+"This printer supports both printing and sending faxes.\n"
+"This print queue should be used for which functionality?"
+msgstr ""
+
+#: ../system-config-printer.py:2790
 #, fuzzy
 msgid "Searching for printers"
 msgstr "Paylaşım özellikleri"
 
-#: ../system-config-printer.py:3175
+#: ../system-config-printer.py:3036
 msgid "Other"
 msgstr ""
 
-#: ../system-config-printer.py:3177
+#: ../system-config-printer.py:3038
 msgid " (Current)"
 msgstr ""
 
-#: ../system-config-printer.py:3203 ../system-config-printer.py:3464
+#: ../system-config-printer.py:3064 ../system-config-printer.py:3325
 msgid "Scanning..."
 msgstr ""
 
-#: ../system-config-printer.py:3375 ../system-config-printer.py:3442
+#: ../system-config-printer.py:3236 ../system-config-printer.py:3303
 #, fuzzy
 msgid "Verified"
 msgstr "(Belirtin:"
 
-#: ../system-config-printer.py:3376 ../system-config-printer.py:3443
+#: ../system-config-printer.py:3237 ../system-config-printer.py:3304
 msgid "This print share is accessible."
 msgstr ""
 
-#: ../system-config-printer.py:3383 ../system-config-printer.py:3449
+#: ../system-config-printer.py:3244 ../system-config-printer.py:3310
 msgid "Inaccessible"
 msgstr ""
 
-#: ../system-config-printer.py:3384 ../system-config-printer.py:3450
+#: ../system-config-printer.py:3245 ../system-config-printer.py:3311
 msgid "This print share is not accessible."
 msgstr ""
 
-#: ../system-config-printer.py:3498
+#: ../system-config-printer.py:3359
 msgid "It is not possible to obtain a list of queues from this host."
 msgstr ""
 
-#: ../system-config-printer.py:3502
+#: ../system-config-printer.py:3363
 #, fuzzy
 msgid "No queues"
 msgstr "Yeni _kuyruk"
 
-#: ../system-config-printer.py:3503
+#: ../system-config-printer.py:3364
 #, fuzzy
 msgid "There are no queues available."
 msgstr "Bu sürücünün değiştirilebilir seçenekleri yok"
 
-#: ../system-config-printer.py:3560
+#: ../system-config-printer.py:3421
 msgid "A printer connected to the parallel port."
 msgstr ""
 
-#: ../system-config-printer.py:3562
+#: ../system-config-printer.py:3423
 msgid "A printer connected to a USB port."
 msgstr ""
 
-#: ../system-config-printer.py:3564
+#: ../system-config-printer.py:3425
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr ""
 
-#: ../system-config-printer.py:3567
+#: ../system-config-printer.py:3428
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr ""
 
-#: ../system-config-printer.py:3570
+#: ../system-config-printer.py:3431
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 
-#: ../system-config-printer.py:3802
+#: ../system-config-printer.py:3663
 #, fuzzy
 msgid "-- Select printer model --"
 msgstr "Bir yazıcı modeli seçmelisiniz."
 
-#: ../system-config-printer.py:3804
+#: ../system-config-printer.py:3665
 msgid "-- No matches found --"
 msgstr ""
 
-#: ../system-config-printer.py:3969
+#: ../system-config-printer.py:3830
 #, fuzzy
 msgid " (recommended)"
 msgstr ""
 "(önerilen sürücü:\n"
 "%s)"
 
-#: ../system-config-printer.py:3983
+#: ../system-config-printer.py:3844
 msgid "This PPD is generated by foomatic."
 msgstr ""
 
-#: ../system-config-printer.py:4009
+#: ../system-config-printer.py:3870
 #, fuzzy
 msgid "OpenPrinting"
 msgstr "Yazdırma"
 
-#: ../system-config-printer.py:4011
+#: ../system-config-printer.py:3872
 msgid "Distributable"
 msgstr ""
 
-#: ../system-config-printer.py:4013
+#: ../system-config-printer.py:3874
 msgid "None"
 msgstr "Hiçbiri"
 
-#: ../system-config-printer.py:4021
+#: ../system-config-printer.py:3882
 #, fuzzy
 msgid "Not specified."
 msgstr "Bir aygıt belirtmelisiniz."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4048
+#: ../system-config-printer.py:3909
 msgid "Database error"
 msgstr ""
 
-#: ../system-config-printer.py:4049
+#: ../system-config-printer.py:3910
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr ""
@@ -497,60 +671,60 @@ msgstr ""
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4059
+#: ../system-config-printer.py:3920
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4066
+#: ../system-config-printer.py:3927
 msgid "PPD error"
 msgstr ""
 
-#: ../system-config-printer.py:4068
+#: ../system-config-printer.py:3929
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr ""
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4079
+#: ../system-config-printer.py:3940
 #, fuzzy
 msgid "Downloadable drivers"
 msgstr "Kullanılabilir sürücüler:"
 
-#: ../system-config-printer.py:4080
+#: ../system-config-printer.py:3941
 msgid "Support for downloadable drivers is not yet completed."
 msgstr ""
 
-#: ../system-config-printer.py:4130 ../system-config-printer.py:4167
+#: ../system-config-printer.py:3991 ../system-config-printer.py:4028
 msgid "No Installable Options"
 msgstr ""
 
-#: ../system-config-printer.py:4214
+#: ../system-config-printer.py:4074
 #, fuzzy
 msgid "Adding"
 msgstr "Yazdırma"
 
-#: ../system-config-printer.py:4215
+#: ../system-config-printer.py:4075
 #, fuzzy
 msgid "Adding printer"
 msgstr "Yeni yazdırma kuyruğu ekle"
 
-#: ../system-config-printer.py:4367
+#: ../system-config-printer.py:4219
 #, fuzzy
 msgid "Install driver"
 msgstr "Yazıcı sürücüsü"
 
-#: ../system-config-printer.py:4368
+#: ../system-config-printer.py:4220
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 
-#: ../system-config-printer.py:4375
+#: ../system-config-printer.py:4227
 #, fuzzy
 msgid "Missing driver"
 msgstr "Yazıcı sürücüsü"
 
-#: ../system-config-printer.py:4376
+#: ../system-config-printer.py:4228
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -710,151 +884,140 @@ msgid ""
 "Any changes you have made will be lost unless you apply them."
 msgstr ""
 
-#. Why doesn't __del__ work?
-#: ../system-config-printer.glade.h:41 ../applet.glade.h:1
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
-"\n"
-msgstr ""
-
-#: ../system-config-printer.glade.h:44
+#: ../system-config-printer.glade.h:41
 #, fuzzy
 msgid "A CUPS configuration tool."
 msgstr "Yazıcı yapılandırması"
 
-#: ../system-config-printer.glade.h:45
+#: ../system-config-printer.glade.h:42
 msgid "Accepting jobs"
 msgstr ""
 
-#: ../system-config-printer.glade.h:46
+#: ../system-config-printer.glade.h:43
 msgid "Access Control"
 msgstr ""
 
-#: ../system-config-printer.glade.h:47
+#: ../system-config-printer.glade.h:44
 msgid "Add or Remove Members"
 msgstr ""
 
-#: ../system-config-printer.glade.h:48
+#: ../system-config-printer.glade.h:45
 msgid "Allow printing for everyone except these users:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:49
+#: ../system-config-printer.glade.h:46
 msgid "Allow printing from the Internet"
 msgstr ""
 
-#: ../system-config-printer.glade.h:50
+#: ../system-config-printer.glade.h:47
 msgid "Allow remote administration"
 msgstr ""
 
-#: ../system-config-printer.glade.h:51
+#: ../system-config-printer.glade.h:48
 msgid "Allow users to cancel any job (not just their own)"
 msgstr ""
 
-#: ../system-config-printer.glade.h:52
+#: ../system-config-printer.glade.h:49
 #, fuzzy
 msgid "Authentication required"
 msgstr "Kimlik kanıtlama"
 
-#: ../system-config-printer.glade.h:53
+#: ../system-config-printer.glade.h:50
+#, fuzzy
+msgid "Basic Server Settings"
+msgstr "Sürücü seçenekleri"
+
+#: ../system-config-printer.glade.h:51
 msgid "Baud Rate"
 msgstr ""
 
-#: ../system-config-printer.glade.h:54
+#: ../system-config-printer.glade.h:52
 #, fuzzy
 msgid "Bottom margin:"
 msgstr "Alt boşluk (pt):"
 
-#: ../system-config-printer.glade.h:55
+#: ../system-config-printer.glade.h:53
 msgid "Brightness:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:56
+#: ../system-config-printer.glade.h:54
 msgid "Browse..."
 msgstr ""
 
-#: ../system-config-printer.glade.h:57
+#: ../system-config-printer.glade.h:55
 #, fuzzy
 msgid "CUPS server:"
 msgstr "Sunucu:"
 
-#: ../system-config-printer.glade.h:58
+#: ../system-config-printer.glade.h:56
 #, fuzzy
 msgid "Change..."
 msgstr "_Paylaşım..."
 
-#: ../system-config-printer.glade.h:59
+#: ../system-config-printer.glade.h:57
 #, fuzzy
 msgid "Characters per inch:"
 msgstr "karakter/inç"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:61
+#: ../system-config-printer.glade.h:59
 msgid "Clean Print Heads"
 msgstr ""
 
-#: ../system-config-printer.glade.h:62
+#: ../system-config-printer.glade.h:60
 #, fuzzy
 msgid "Columns:"
 msgstr "Açıklama"
 
-#: ../system-config-printer.glade.h:63
+#: ../system-config-printer.glade.h:61
 #, fuzzy
 msgid "Comments..."
 msgstr "Açıklama"
 
-#: ../system-config-printer.glade.h:64
+#: ../system-config-printer.glade.h:62
 msgid "Connect to CUPS server"
 msgstr ""
 
-#: ../system-config-printer.glade.h:65
-msgid "Connect to a different print server"
-msgstr ""
-
-#: ../system-config-printer.glade.h:66
+#: ../system-config-printer.glade.h:63
 msgid "Connecting"
 msgstr ""
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:65
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
 "%s\n"
 msgstr ""
 
-#: ../system-config-printer.glade.h:71
+#: ../system-config-printer.glade.h:68
 msgid "Copies:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:72
+#: ../system-config-printer.glade.h:69
 #, fuzzy
 msgid "Copy Printer"
 msgstr "Yazıcı:"
 
-#: ../system-config-printer.glade.h:73
-#, fuzzy
-msgid "Copy this printer queue"
-msgstr "Bir yazdırma kuyruğunu düzenle"
-
-#: ../system-config-printer.glade.h:74
+#: ../system-config-printer.glade.h:70
 msgid "Copyright © 2006-2007 Red Hat, Inc."
 msgstr ""
 
-#: ../system-config-printer.glade.h:75
+#: ../system-config-printer.glade.h:71
 #, fuzzy
 msgid "Create a new printer group"
 msgstr "Yeni Yazdırma Kuyruğu Oluştur"
 
-#: ../system-config-printer.glade.h:76
+#: ../system-config-printer.glade.h:72
 #, fuzzy
 msgid "Create a new printer queue"
 msgstr "Yeni Yazdırma Kuyruğu Oluştur"
 
-#: ../system-config-printer.glade.h:77
+#: ../system-config-printer.glade.h:73
 #, fuzzy
 msgid "Data Bits"
 msgstr "Ayrıntılar"
 
-#: ../system-config-printer.glade.h:78
+#: ../system-config-printer.glade.h:74
 msgid ""
 "Default\n"
 "1200\n"
@@ -867,7 +1030,7 @@ msgid ""
 "115200"
 msgstr ""
 
-#: ../system-config-printer.glade.h:87
+#: ../system-config-printer.glade.h:83
 #, fuzzy
 msgid ""
 "Default\n"
@@ -875,7 +1038,7 @@ msgid ""
 "7"
 msgstr "Öntanımlı"
 
-#: ../system-config-printer.glade.h:90
+#: ../system-config-printer.glade.h:86
 msgid ""
 "Default\n"
 "None\n"
@@ -883,7 +1046,7 @@ msgid ""
 "Even"
 msgstr ""
 
-#: ../system-config-printer.glade.h:94
+#: ../system-config-printer.glade.h:90
 msgid ""
 "Default\n"
 "None\n"
@@ -892,149 +1055,143 @@ msgid ""
 "DTR/DSR (Hardware)"
 msgstr ""
 
-#: ../system-config-printer.glade.h:99
+#: ../system-config-printer.glade.h:95
 #, fuzzy
 msgid "Default Printer:"
 msgstr "JetDirect Yazıcı"
 
-#: ../system-config-printer.glade.h:100
-#, fuzzy
-msgid "Delete this printer queue"
-msgstr "Seçili kuyruğu sil"
-
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:96
 msgid "Deny printing for everyone except these users:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:97
 #, fuzzy
 msgid "Description:"
 msgstr "Açıklama"
 
-#: ../system-config-printer.glade.h:103 ../troubleshoot/DeviceListed.py:40
+#: ../system-config-printer.glade.h:98 ../troubleshoot/DeviceListed.py:40
 #, fuzzy
 msgid "Device URI"
 msgstr "Aygıt: "
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:99
 #, fuzzy
 msgid "Device URI:"
 msgstr "Aygıt:"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:100
 #, fuzzy
 msgid "Device description."
 msgstr "Açıklama"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:101
 msgid "DirectJet"
 msgstr ""
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:103
 #, fuzzy
 msgid "Driver details"
 msgstr "Sürücü"
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:104
+msgid "E_nable"
+msgstr ""
+
+#: ../system-config-printer.glade.h:105
 msgid "Empty"
 msgstr ""
 
-#: ../system-config-printer.glade.h:110
+#: ../system-config-printer.glade.h:106
 msgid "Enabled"
 msgstr ""
 
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:107
 msgid "Ending Banner:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:108
 msgid "Enter some search terms for the model of your printer."
 msgstr ""
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:109
 msgid "Error Policy: \t"
 msgstr ""
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:110
 msgid "Find _Queue..."
 msgstr ""
 
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:111
 #, fuzzy
 msgid "Finishings:"
 msgstr "Bitir"
 
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.glade.h:112
 msgid "Flow Control"
 msgstr ""
 
-#: ../system-config-printer.glade.h:117
+#: ../system-config-printer.glade.h:113
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr ""
 
-#: ../system-config-printer.glade.h:118
+#: ../system-config-printer.glade.h:114
 msgid "Gamma:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:119
-#, fuzzy
-msgid "Goto Server"
-msgstr "Sunucu"
-
-#: ../system-config-printer.glade.h:120
+#: ../system-config-printer.glade.h:115
 msgid "Hold until:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:121
+#: ../system-config-printer.glade.h:116
 #, fuzzy
 msgid "Host:"
 msgstr "Makina IP:"
 
-#: ../system-config-printer.glade.h:122
+#: ../system-config-printer.glade.h:117
 msgid "Hue adjustment:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:123
+#: ../system-config-printer.glade.h:118
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr ""
 
-#: ../system-config-printer.glade.h:124
+#: ../system-config-printer.glade.h:119
 msgid "Human-readable location such as \"Lab 1\""
 msgstr ""
 
-#: ../system-config-printer.glade.h:125
+#: ../system-config-printer.glade.h:120
 #, fuzzy
 msgid "IPP"
 msgstr "IP:"
 
-#: ../system-config-printer.glade.h:126
+#: ../system-config-printer.glade.h:121
 msgid "IPP Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:127
+#: ../system-config-printer.glade.h:122
 #, fuzzy
 msgid "Installed Options"
 msgstr "Süzgeç seçenekleri"
 
-#: ../system-config-printer.glade.h:128
+#: ../system-config-printer.glade.h:123
 msgid "Job Options"
 msgstr ""
 
-#: ../system-config-printer.glade.h:129
+#: ../system-config-printer.glade.h:124
 msgid "Job priority:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:130
+#: ../system-config-printer.glade.h:125
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:131
+#: ../system-config-printer.glade.h:126
 #, fuzzy
 msgid "Left margin:"
 msgstr "Sol boşluk (pt):"
 
-#: ../system-config-printer.glade.h:132
+#: ../system-config-printer.glade.h:127
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -1046,78 +1203,78 @@ msgid ""
 "Bottom to top, right to left"
 msgstr ""
 
-#: ../system-config-printer.glade.h:140
+#: ../system-config-printer.glade.h:135
 msgid "License:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:141
+#: ../system-config-printer.glade.h:136
 #, fuzzy
 msgid "Lines per inch:"
 msgstr "Satır/inç"
 
-#: ../system-config-printer.glade.h:142
+#: ../system-config-printer.glade.h:137
 #, fuzzy
 msgid "Local Driver"
 msgstr "Yerel Yazıcı"
 
-#: ../system-config-printer.glade.h:143
+#: ../system-config-printer.glade.h:138
 #, fuzzy
 msgid "Location:"
 msgstr "_Eylem"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:145
+#: ../system-config-printer.glade.h:140
 #, fuzzy
 msgid "Make Default"
 msgstr "Ö_ntanımlı"
 
-#: ../system-config-printer.glade.h:146
+#: ../system-config-printer.glade.h:141
 #, fuzzy
 msgid "Make and Model:"
 msgstr "Üretici ve model gerekli.\n"
 
-#: ../system-config-printer.glade.h:147
+#: ../system-config-printer.glade.h:142
 msgid ""
 "May contain any printable characters except \"/\", \"#\", and space.\n"
 "Name must be unique on the local machine!"
 msgstr ""
 
-#: ../system-config-printer.glade.h:149
+#: ../system-config-printer.glade.h:144
 msgid "Media:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:150
+#: ../system-config-printer.glade.h:145
 msgid "Members"
 msgstr ""
 
-#: ../system-config-printer.glade.h:151
+#: ../system-config-printer.glade.h:146
 #, fuzzy
 msgid "Mirror"
 msgstr "Hata"
 
-#: ../system-config-printer.glade.h:152
+#: ../system-config-printer.glade.h:147
 msgid "More"
 msgstr ""
 
-#: ../system-config-printer.glade.h:153
+#: ../system-config-printer.glade.h:148
 msgid "New Clas_s"
 msgstr ""
 
-#: ../system-config-printer.glade.h:156
+#: ../system-config-printer.glade.h:151
 #, fuzzy
 msgid "New _Printer"
 msgstr "Novell Yazıcı"
 
-#: ../system-config-printer.glade.h:157
+#: ../system-config-printer.glade.h:152
 #, fuzzy
 msgid "New name for the printer"
 msgstr "Novell Yazıcı"
 
-#: ../system-config-printer.glade.h:158
+#: ../system-config-printer.glade.h:153
 msgid "No, I do not accept this license"
 msgstr ""
 
-#: ../system-config-printer.glade.h:159
+#: ../system-config-printer.glade.h:154
 msgid ""
 "None\n"
 "Staple\n"
@@ -1149,51 +1306,46 @@ msgid ""
 "Bind (bottom)"
 msgstr ""
 
-#: ../system-config-printer.glade.h:187
+#: ../system-config-printer.glade.h:182
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
 "Two-sided (short edge)"
 msgstr ""
 
-#: ../system-config-printer.glade.h:190
+#: ../system-config-printer.glade.h:185
 msgid "Operation Policy:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:191
+#: ../system-config-printer.glade.h:186
 msgid "Orientation:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:192
+#: ../system-config-printer.glade.h:187
 msgid "Pages per side layout:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:193
+#: ../system-config-printer.glade.h:188
 msgid "Pages per side:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:189
 msgid "Parity"
 msgstr ""
 
-#: ../system-config-printer.glade.h:195 ../troubleshoot/Welcome.py:64
-#: ../applet.glade.h:5
-msgid "Password:"
-msgstr "Parola:"
-
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:191
 msgid "Please Wait"
 msgstr ""
 
-#: ../system-config-printer.glade.h:197
+#: ../system-config-printer.glade.h:192
 msgid "Policies"
 msgstr ""
 
-#: ../system-config-printer.glade.h:198
+#: ../system-config-printer.glade.h:193
 msgid "Port number:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:194
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1201,161 +1353,171 @@ msgid ""
 "Reverse portrait (180°)"
 msgstr ""
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:198
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
 "part of the Windows<sup>®</sup> driver."
 msgstr ""
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:199
 msgid "Pretty print"
 msgstr ""
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:206
+#: ../system-config-printer.glade.h:201
 #, fuzzy
 msgid "Print Self-Test Page"
 msgstr "Yazıcı bilgileri:"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:205
+#, fuzzy
+msgid "Printer Properties"
+msgstr "Yazıcı: "
+
+#: ../system-config-printer.glade.h:206
 #, fuzzy
 msgid "Printer State:"
 msgstr "Yazıcı bilgileri:"
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:207
 #, fuzzy
 msgid "Printer model:"
 msgstr "Yazıcı modeli"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:208
 msgid "Probe"
 msgstr ""
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:209
 msgid "Provide PPD file"
 msgstr ""
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:210
 msgid "Queue:"
 msgstr "Kuyruk:"
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:211
 msgid "Refresh the list of printer queues"
 msgstr ""
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:212
 msgid "Require encryption"
 msgstr ""
 
-#: ../system-config-printer.glade.h:217
+#: ../system-config-printer.glade.h:213
 #, fuzzy
 msgid "Reset"
 msgstr "Deneme"
 
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:214
 #, fuzzy
 msgid "Reset to system default"
 msgstr "Ö_ntanımlı yap"
 
-#: ../system-config-printer.glade.h:219
+#: ../system-config-printer.glade.h:215
 #, fuzzy
 msgid "Right margin:"
 msgstr "Sağ boşluk (pt):"
 
-#: ../system-config-printer.glade.h:220
+#: ../system-config-printer.glade.h:216
 msgid "SCSI"
 msgstr ""
 
-#: ../system-config-printer.glade.h:221
+#: ../system-config-printer.glade.h:217
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:222
+#: ../system-config-printer.glade.h:218
 msgid "SMB Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:223
+#: ../system-config-printer.glade.h:219
 msgid "Saturation:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:224
+#: ../system-config-printer.glade.h:220
 msgid "Save debugging information for troubleshooting"
 msgstr ""
 
-#: ../system-config-printer.glade.h:225
+#: ../system-config-printer.glade.h:221
 msgid "Scale to fit"
 msgstr ""
 
-#: ../system-config-printer.glade.h:226
+#: ../system-config-printer.glade.h:222
 msgid "Scaling:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:227
+#: ../system-config-printer.glade.h:223
 msgid "Search for a printer driver to download"
 msgstr ""
 
-#: ../system-config-printer.glade.h:228
+#: ../system-config-printer.glade.h:224
 #, fuzzy
 msgid "Search terms:"
 msgstr "Paylaşım: "
 
-#: ../system-config-printer.glade.h:229
+#: ../system-config-printer.glade.h:225
 msgid "Select A File"
 msgstr ""
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:226
 #, fuzzy
 msgid "Select printer from database"
 msgstr "Bir Yazıcı Sürücüsü Seç"
 
-#: ../system-config-printer.glade.h:231
+#: ../system-config-printer.glade.h:227
 #, fuzzy
 msgid "Serial"
 msgstr "Genel"
 
-#: ../system-config-printer.glade.h:232
+#: ../system-config-printer.glade.h:228
+#, fuzzy
+msgid "Set As Default"
+msgstr "Ö_ntanımlı"
+
+#: ../system-config-printer.glade.h:229
 #, fuzzy
 msgid "Settings"
 msgstr "Ayarlanıyor"
 
-#: ../system-config-printer.glade.h:233
+#: ../system-config-printer.glade.h:230
 msgid "Share published printers connected to this system"
 msgstr ""
 
-#: ../system-config-printer.glade.h:234
+#: ../system-config-printer.glade.h:231
 msgid "Shared"
 msgstr "Paylaşılmış"
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:232
 msgid "Show printers shared by other systems"
 msgstr ""
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:233
 msgid "Sides:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:234
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
 msgstr ""
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:235
 msgid "Starting Banner:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:239
+#: ../system-config-printer.glade.h:236
 msgid "Supplier:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:240
+#: ../system-config-printer.glade.h:237
 #, fuzzy
 msgid "System-Config-Printer"
 msgstr "Yazıcıları yapılandır"
 
-#: ../system-config-printer.glade.h:241
+#: ../system-config-printer.glade.h:238
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1364,27 +1526,27 @@ msgid ""
 "printer."
 msgstr ""
 
-#: ../system-config-printer.glade.h:242
+#: ../system-config-printer.glade.h:239
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
 "of the driver's supplier."
 msgstr ""
 
-#: ../system-config-printer.glade.h:243
+#: ../system-config-printer.glade.h:240
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr ""
 
-#: ../system-config-printer.glade.h:244
+#: ../system-config-printer.glade.h:241
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
 "lost and options only present in the new PPD will be set to default."
 msgstr ""
 
-#: ../system-config-printer.glade.h:245
+#: ../system-config-printer.glade.h:242
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1401,86 +1563,95 @@ msgid ""
 "Ave, Cambridge, MA 02139, USA."
 msgstr ""
 
-#: ../system-config-printer.glade.h:250
+#: ../system-config-printer.glade.h:247
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
 msgstr ""
 
-#: ../system-config-printer.glade.h:251
+#: ../system-config-printer.glade.h:248
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 
-#: ../system-config-printer.glade.h:252
+#: ../system-config-printer.glade.h:249
 #, fuzzy
 msgid "Top margin:"
 msgstr "Üst boşluk (pt):"
 
-#: ../system-config-printer.glade.h:253
+#: ../system-config-printer.glade.h:250
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr ""
 
-#: ../system-config-printer.glade.h:254
+#: ../system-config-printer.glade.h:251
 msgid "URI:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:255
+#: ../system-config-printer.glade.h:252
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr ""
 
-#: ../system-config-printer.glade.h:256
+#: ../system-config-printer.glade.h:253
 msgid "User name:"
 msgstr "Kullanıcı:"
 
-#: ../system-config-printer.glade.h:257
+#: ../system-config-printer.glade.h:255
 #, fuzzy
-msgid "Username:"
-msgstr "Kullanıcı:"
+msgid "View Print _Queue"
+msgstr "Temel Yazdırma Kuyruğu"
 
-#: ../system-config-printer.glade.h:258
+#: ../system-config-printer.glade.h:256
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
 msgstr ""
 
-#: ../system-config-printer.glade.h:259
+#: ../system-config-printer.glade.h:257
 msgid "Word wrap"
 msgstr ""
 
-#: ../system-config-printer.glade.h:260
+#: ../system-config-printer.glade.h:258
 msgid "Yes, I accept this license"
 msgstr ""
 
-#: ../system-config-printer.glade.h:261
+#: ../system-config-printer.glade.h:259
 #, fuzzy
 msgid "_Connect..."
 msgstr "Açıklama"
 
-#: ../system-config-printer.glade.h:262
+#: ../system-config-printer.glade.h:260
+msgid "_Disable"
+msgstr ""
+
+#: ../system-config-printer.glade.h:261
 msgid "_Do not apply"
 msgstr ""
 
-#: ../system-config-printer.glade.h:263
+#: ../system-config-printer.glade.h:262
 #, fuzzy
 msgid "_Edit"
 msgstr "Düzenle"
 
-#: ../system-config-printer.glade.h:264 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:263 ../applet.glade.h:10
 msgid "_File"
 msgstr ""
 
-#: ../system-config-printer.glade.h:265
+#: ../system-config-printer.glade.h:264
 msgid "_Help"
 msgstr "_Yardım"
 
-#: ../system-config-printer.glade.h:266
+#: ../system-config-printer.glade.h:265
 msgid "_Install"
 msgstr ""
 
-#: ../system-config-printer.glade.h:267
+#: ../system-config-printer.glade.h:266
 #, fuzzy
 msgid "_Search"
 msgstr "Uyarı"
+
+#: ../system-config-printer.glade.h:267
+#, fuzzy
+msgid "_Server Settings..."
+msgstr "Sürücü seçenekleri"
 
 #: ../system-config-printer.glade.h:268
 msgid "_Troubleshoot"
@@ -1530,104 +1701,104 @@ msgstr "Bir Jetdirect Yazıcı Yapılandır"
 msgid "Printing"
 msgstr "Yazdırma"
 
-#: ../statereason.py:73
-msgid "Toner low"
-msgstr ""
-
-#: ../statereason.py:74
-#, python-format
-msgid "Printer '%s' is low on toner."
-msgstr ""
-
-#: ../statereason.py:75
-msgid "Toner empty"
-msgstr ""
-
-#: ../statereason.py:76
-#, python-format
-msgid "Printer '%s' has no toner left."
-msgstr ""
-
-#: ../statereason.py:77
-msgid "Cover open"
-msgstr ""
-
-#: ../statereason.py:78
-#, python-format
-msgid "The cover is open on printer '%s'."
-msgstr ""
-
-#: ../statereason.py:79
-msgid "Door open"
-msgstr ""
-
-#: ../statereason.py:80
-#, python-format
-msgid "The door is open on printer '%s'."
-msgstr ""
-
-#: ../statereason.py:81
-msgid "Paper low"
-msgstr ""
-
-#: ../statereason.py:82
-#, python-format
-msgid "Printer '%s' is low on paper."
-msgstr ""
-
-#: ../statereason.py:83
-msgid "Out of paper"
-msgstr ""
-
-#: ../statereason.py:84
-#, python-format
-msgid "Printer '%s' is out of paper."
-msgstr ""
-
 #: ../statereason.py:85
-msgid "Ink low"
+msgid "Toner low"
 msgstr ""
 
 #: ../statereason.py:86
 #, python-format
-msgid "Printer '%s' is low on ink."
+msgid "Printer '%s' is low on toner."
 msgstr ""
 
 #: ../statereason.py:87
-msgid "Ink empty"
+msgid "Toner empty"
 msgstr ""
 
 #: ../statereason.py:88
 #, python-format
-msgid "Printer '%s' has no ink left."
+msgid "Printer '%s' has no toner left."
 msgstr ""
 
 #: ../statereason.py:89
+msgid "Cover open"
+msgstr ""
+
+#: ../statereason.py:90
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr ""
+
+#: ../statereason.py:91
+msgid "Door open"
+msgstr ""
+
+#: ../statereason.py:92
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr ""
+
+#: ../statereason.py:93
+msgid "Paper low"
+msgstr ""
+
+#: ../statereason.py:94
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr ""
+
+#: ../statereason.py:95
+msgid "Out of paper"
+msgstr ""
+
+#: ../statereason.py:96
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr ""
+
+#: ../statereason.py:97
+msgid "Ink low"
+msgstr ""
+
+#: ../statereason.py:98
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr ""
+
+#: ../statereason.py:99
+msgid "Ink empty"
+msgstr ""
+
+#: ../statereason.py:100
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr ""
+
+#: ../statereason.py:101
 #, fuzzy
 msgid "Printer off-line"
 msgstr "Süzgeç seçenekleri"
 
-#: ../statereason.py:90
+#: ../statereason.py:102
 #, python-format
 msgid "Printer `%s' is currently off-line."
 msgstr ""
 
-#: ../statereason.py:91
+#: ../statereason.py:103
 #, fuzzy
 msgid "Not connected?"
 msgstr "_Yerel-bağlı"
 
-#: ../statereason.py:92
+#: ../statereason.py:104
 #, python-format
 msgid "Printer '%s' may not be connected."
 msgstr ""
 
-#: ../statereason.py:93 ../statereason.py:105
+#: ../statereason.py:105 ../statereason.py:117
 #, fuzzy
 msgid "Printer error"
 msgstr "Yazıcı: "
 
-#: ../statereason.py:94
+#: ../statereason.py:106
 #, fuzzy, python-format
 msgid "There is a problem on printer `%s'."
 msgstr ""
@@ -1635,26 +1806,26 @@ msgstr ""
 "gönderilirken bir sorun oluştu:\n"
 "\n"
 
-#: ../statereason.py:101
+#: ../statereason.py:113
 #, fuzzy
 msgid "Printer report"
 msgstr "Yazıcı: "
 
-#: ../statereason.py:103
+#: ../statereason.py:115
 #, fuzzy
 msgid "Printer warning"
 msgstr "Yazdırma"
 
-#: ../statereason.py:106
+#: ../statereason.py:118
 #, fuzzy, python-format
 msgid "Printer '%s': '%s'."
 msgstr "Yazıcı: "
 
-#: ../troubleshoot/__init__.py:37
+#: ../troubleshoot/__init__.py:48
 msgid "Printing troubleshooter"
 msgstr ""
 
-#: ../troubleshoot/base.py:33
+#: ../troubleshoot/base.py:26
 msgid ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
@@ -1676,7 +1847,7 @@ msgid ""
 "server settings using the printing administration tool."
 msgstr ""
 
-#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:1190
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:128
 #, fuzzy
 msgid "Install"
 msgstr "Yazıcı sürücüsü"
@@ -1785,11 +1956,11 @@ msgstr ""
 msgid "Enable Debugging"
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:159
+#: ../troubleshoot/ErrorLogCheckpoint.py:142
 msgid "Debug logging enabled."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:161
+#: ../troubleshoot/ErrorLogCheckpoint.py:144
 msgid "Debug logging was already enabled."
 msgstr ""
 
@@ -1803,11 +1974,11 @@ msgstr ""
 msgid "Disable Debugging"
 msgstr ""
 
-#: ../troubleshoot/ErrorLogFetch.py:142
+#: ../troubleshoot/ErrorLogFetch.py:122
 msgid "Debug logging disabled."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogFetch.py:144
+#: ../troubleshoot/ErrorLogFetch.py:124
 msgid "Debug logging was already disabled."
 msgstr ""
 
@@ -1869,31 +2040,6 @@ msgstr ""
 msgid "Warnings are listed below:"
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:883
-#, fuzzy
-msgid "Pending"
-msgstr "Yazdırma"
-
-#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:884
-#, fuzzy
-msgid "Held"
-msgstr "_Yardım"
-
-#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:887
-#, fuzzy
-msgid "Canceled"
-msgstr "İp_tal"
-
-#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:888
-#, fuzzy
-msgid "Aborted"
-msgstr "Hakkında"
-
-#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:889
-#, fuzzy
-msgid "Completed"
-msgstr "Açıklama"
-
 #: ../troubleshoot/PrintTestPage.py:48
 #, fuzzy
 msgid "Test Page"
@@ -1913,20 +2059,6 @@ msgstr ""
 #, fuzzy
 msgid "Test"
 msgstr "_Deneme"
-
-#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:117
-#, fuzzy
-msgid "Job"
-msgstr "Veli"
-
-#: ../troubleshoot/PrintTestPage.py:75 ../applet.py:118
-#, fuzzy
-msgid "Document"
-msgstr "Açıklama"
-
-#: ../troubleshoot/PrintTestPage.py:76 ../applet.py:122
-msgid "Status"
-msgstr ""
 
 #: ../troubleshoot/PrintTestPage.py:100
 msgid "Did the marked print jobs print correctly?"
@@ -2043,166 +2175,66 @@ msgid ""
 "some useful information to put in a bug report."
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:41
-#, fuzzy
-msgid "Authentication"
-msgstr "Kimlik kanıtlama"
-
-#: ../troubleshoot/Welcome.py:56
-#, fuzzy
-msgid "Password required"
-msgstr "Parola:"
-
-#: ../troubleshoot/Welcome.py:95
+#: ../troubleshoot/Welcome.py:36
 msgid "Trouble-shooting Printing"
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:97
+#: ../troubleshoot/Welcome.py:38
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:101
+#: ../troubleshoot/Welcome.py:42
 msgid "Click 'Forward' to begin."
 msgstr ""
 
-#: ../applet.py:120
-#, fuzzy
-msgid "Size"
-msgstr "Sayfa Boyu"
-
-#: ../applet.py:121
-msgid "Time submitted"
-msgstr ""
-
-#: ../applet.py:172
-msgid "Message"
-msgstr ""
-
-#: ../applet.py:552
-msgid "1 hour ago"
-msgstr ""
-
-#: ../applet.py:554
-msgid "1 hour and 1 minute ago"
-msgstr ""
-
-#: ../applet.py:556
-#, python-format
-msgid "1 hour and %d minutes ago"
-msgstr ""
-
-#: ../applet.py:559
-#, python-format
-msgid "%d hours ago"
-msgstr ""
-
-#: ../applet.py:561
-#, python-format
-msgid "%d hours and 1 minute ago"
-msgstr ""
-
-#: ../applet.py:563
-#, python-format
-msgid "%d hours and %d minutes ago"
-msgstr ""
-
-#: ../applet.py:569
-msgid "a minute ago"
-msgstr ""
-
-#: ../applet.py:571
-#, python-format
-msgid "%d minutes ago"
-msgstr ""
-
-#: ../applet.py:703
-#, fuzzy, python-format
-msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr ""
-"%s, %s kuyruğuna\n"
-"gönderilirken bir sorun oluştu:\n"
-"\n"
-
-#: ../applet.py:706
-#, python-format
-msgid "There was a problem processing document `%s' (job %d)."
-msgstr ""
-
-#. Give up and use the untranslated provided.
-#: ../applet.py:710
-#, python-format
-msgid "There was a problem printing document `%s' (job %d): `%s'."
-msgstr ""
-
-#: ../applet.py:715 ../applet.py:731
-#, fuzzy
-msgid "Print Error"
-msgstr "Yazıcı: "
-
-#: ../applet.py:716
-msgid "_Diagnose"
-msgstr ""
-
-#: ../applet.py:737
-#, python-format
-msgid "The printer called `%s' has been disabled."
-msgstr ""
-
-#: ../applet.py:816
-msgid "No documents queued"
-msgstr ""
-
-#: ../applet.py:819
-msgid "1 document queued"
-msgstr ""
-
-#: ../applet.py:822
-#, python-format
-msgid "%d documents queued"
-msgstr ""
-
-#: ../applet.py:1180
+#: ../applet.py:118
 #, fuzzy
 msgid "Printer added"
 msgstr "Yazıcı modeli"
 
-#: ../applet.py:1182
+#: ../applet.py:120
 #, fuzzy
 msgid "Missing printer driver"
 msgstr "Yazıcı sürücüsü"
 
-#: ../applet.py:1186
+#: ../applet.py:124
 #, fuzzy
 msgid "Install printer driver"
 msgstr "Yazıcı sürücüsü"
 
-#: ../applet.py:1187
+#: ../applet.py:125
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr ""
 
-#: ../applet.py:1193
+#: ../applet.py:131
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr ""
 
-#: ../applet.py:1196
+#: ../applet.py:134
 #, fuzzy
 msgid "Configure"
 msgstr "Bir Jetdirect Yazıcı Yapılandır"
 
 #. Model mismatch
-#: ../applet.py:1199
+#: ../applet.py:137
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr ""
 
-#: ../applet.py:1203
+#: ../applet.py:141
 #, fuzzy
 msgid "Find driver"
 msgstr "Yazıcı sürücüsü"
+
+#: ../applet.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
 
 #: ../applet.glade.h:4
 msgid "Document print status"
@@ -2268,6 +2300,22 @@ msgstr ""
 #, fuzzy
 msgid "Select default printer"
 msgstr "JetDirect Yazıcı"
+
+#, fuzzy
+#~ msgid "Copy this printer queue"
+#~ msgstr "Bir yazdırma kuyruğunu düzenle"
+
+#, fuzzy
+#~ msgid "Delete this printer queue"
+#~ msgstr "Seçili kuyruğu sil"
+
+#, fuzzy
+#~ msgid "Goto Server"
+#~ msgstr "Sunucu"
+
+#, fuzzy
+#~ msgid "Password required"
+#~ msgstr "Parola:"
 
 #, fuzzy
 #~ msgid "_Goto Server"
@@ -3021,9 +3069,6 @@ msgstr "JetDirect Yazıcı"
 
 #~ msgid "Text Only Printer"
 #~ msgstr "Salt Metin Yazıcı"
-
-#~ msgid "Raw Print Queue"
-#~ msgstr "Temel Yazdırma Kuyruğu"
 
 #~ msgid "Custom Filter"
 #~ msgstr "Özel Süzgeç"

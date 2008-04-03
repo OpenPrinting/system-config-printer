@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: hi\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-03-07 18:03+0000\n"
+"POT-Creation-Date: 2008-04-03 16:23+0100\n"
 "PO-Revision-Date: 2007-04-16 12:25+0530\n"
 "Last-Translator: hi <rranjan@redhat.com>\n"
 "Language-Team: Hindi <fedora-trans-hi@redhat.com>\n"
@@ -23,54 +23,224 @@ msgstr ""
 "\n"
 "\n"
 
-#: ../cupshelpers.py:33
+#: ../authconn.py:30 ../system-config-printer.glade.h:254
+msgid "Username:"
+msgstr "उपयोक्ता नाम:"
+
+#: ../authconn.py:31 ../system-config-printer.glade.h:190 ../applet.glade.h:5
+msgid "Password:"
+msgstr "शब्दकूट:"
+
+#: ../authconn.py:32
+#, fuzzy
+msgid "Domain:"
+msgstr "शीर्ष हाशिया:"
+
+#: ../authconn.py:34
+#, fuzzy
+msgid "Authentication"
+msgstr "<b>सत्यापन</b>"
+
+#: ../cupshelpers.py:28
 msgid "Idle"
 msgstr "निष्क्रिय"
 
-#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:885
+#: ../cupshelpers.py:29 ../jobviewer.py:371
+#: ../troubleshoot/PrintTestPage.py:35
 msgid "Processing"
 msgstr "प्रक्रिया कर रहा है"
 
-#: ../cupshelpers.py:35
+#: ../cupshelpers.py:30
 msgid "Busy"
 msgstr "व्यस्त"
 
-#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:886
+#: ../cupshelpers.py:31 ../jobviewer.py:372
+#: ../troubleshoot/PrintTestPage.py:36
 msgid "Stopped"
 msgstr "रोकें "
 
-#: ../cupshelpers.py:53 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../cupshelpers.py:48 ../jobviewer.py:282 ../jobviewer.py:346
+#: ../jobviewer.py:359 ../jobviewer.py:382 ../jobviewer.py:424
+#: ../jobviewer.py:739 ../jobviewer.py:774 ../jobviewer.py:800
+#: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:97
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
 #: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
 #: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
-#: ../applet.py:895
 msgid "Unknown"
 msgstr "अज्ञात"
+
+#: ../jobviewer.py:82 ../troubleshoot/PrintTestPage.py:71
+msgid "Job"
+msgstr "कार्य"
+
+#: ../jobviewer.py:83 ../troubleshoot/PrintTestPage.py:75
+msgid "Document"
+msgstr "दस्तावेज"
+
+#: ../jobviewer.py:84 ../jobviewer.py:123 ../my-default-printer.py:152
+#: ../system-config-printer.py:2486 ../troubleshoot/PrintTestPage.py:73
+msgid "Printer"
+msgstr "मुद्रक"
+
+#: ../jobviewer.py:85
+msgid "Size"
+msgstr "आकार"
+
+#: ../jobviewer.py:86
+msgid "Time submitted"
+msgstr "समय सुपुर्द"
+
+#: ../jobviewer.py:87 ../troubleshoot/PrintTestPage.py:76
+msgid "Status"
+msgstr "प्रस्थिति"
+
+#: ../jobviewer.py:136
+msgid "Message"
+msgstr "संदेश"
+
+#: ../jobviewer.py:236 ../system-config-printer.py:1114
+#: ../system-config-printer.py:1130
+msgid "Not authorized"
+msgstr "अधिकृत नहीं"
+
+#: ../jobviewer.py:237 ../system-config-printer.py:1115
+msgid "The password may be incorrect."
+msgstr "शब्दकूट गलत हो सकता है."
+
+#: ../jobviewer.py:240 ../system-config-printer.py:1118
+#: ../system-config-printer.py:1151
+msgid "CUPS server error"
+msgstr "CUPS सर्वर त्रुटि"
+
+#: ../jobviewer.py:241 ../system-config-printer.py:1119
+#, python-format
+msgid "There was an error during the CUPS operation: '%s'."
+msgstr "CUPS संक्रिया के दौरान एक गलती हुई: '%s'."
+
+#: ../jobviewer.py:294
+msgid "1 hour ago"
+msgstr "1 घंटा पहले"
+
+#: ../jobviewer.py:296
+msgid "1 hour and 1 minute ago"
+msgstr "1 घंटा और 1 मिनट पहले"
+
+#: ../jobviewer.py:298
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr "1 घंटा और %d मिनट पहले"
+
+#: ../jobviewer.py:301
+#, python-format
+msgid "%d hours ago"
+msgstr "%d घंटा पहले"
+
+#: ../jobviewer.py:303
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr "%d घंटा और 1 मिनट पहले"
+
+#: ../jobviewer.py:305
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr "%d घंटे और %d मिनट पहले"
+
+#: ../jobviewer.py:311
+msgid "a minute ago"
+msgstr "एक मिनट पहले"
+
+#: ../jobviewer.py:313
+#, python-format
+msgid "%d minutes ago"
+msgstr "%d मिनट पहले"
+
+#: ../jobviewer.py:369 ../troubleshoot/PrintTestPage.py:33
+msgid "Pending"
+msgstr "स्थगित"
+
+#: ../jobviewer.py:370 ../troubleshoot/PrintTestPage.py:34
+msgid "Held"
+msgstr "रोकें"
+
+#: ../jobviewer.py:373 ../troubleshoot/PrintTestPage.py:37
+msgid "Canceled"
+msgstr "रद्द"
+
+#: ../jobviewer.py:374 ../troubleshoot/PrintTestPage.py:38
+msgid "Aborted"
+msgstr "छोड़ा"
+
+#: ../jobviewer.py:375 ../troubleshoot/PrintTestPage.py:39
+msgid "Completed"
+msgstr "पूर्ण"
+
+#: ../jobviewer.py:422
+#, python-format
+msgid "Authentication required for printing document `%s' (job %d)"
+msgstr ""
+
+#: ../jobviewer.py:622
+msgid "No documents queued"
+msgstr "कोई दस्तावेज कतार बद्ध नहीं"
+
+#: ../jobviewer.py:624
+msgid "1 document queued"
+msgstr "1 दस्तावेज कतारबद्ध"
+
+#: ../jobviewer.py:626
+#, python-format
+msgid "%d documents queued"
+msgstr "%d दस्तावेज कतारबद्ध"
+
+#: ../jobviewer.py:852
+#, fuzzy, python-format
+msgid "There was a problem sending document `%s' (job %d) to the printer."
+msgstr "CUPS सर्वर में जोड़ने के दौरान समस्या थी."
+
+#: ../jobviewer.py:855
+#, python-format
+msgid "There was a problem processing document `%s' (job %d)."
+msgstr ""
+
+#. Give up and use the untranslated provided.
+#: ../jobviewer.py:859
+#, python-format
+msgid "There was a problem printing document `%s' (job %d): `%s'."
+msgstr ""
+
+#: ../jobviewer.py:864 ../jobviewer.py:880
+#, fuzzy
+msgid "Print Error"
+msgstr "मुद्रक त्रुटि"
+
+#: ../jobviewer.py:865
+msgid "_Diagnose"
+msgstr ""
+
+#: ../jobviewer.py:886
+#, python-format
+msgid "The printer called `%s' has been disabled."
+msgstr ""
 
 #: ../my-default-printer.py:136 ../my-default-printer.desktop.in.h:1
 #, fuzzy
 msgid "Default Printer"
 msgstr "डिफ़ॉल्ट मुद्रक बनायें"
 
-#: ../my-default-printer.py:140 ../my-default-printer.py:171
+#: ../my-default-printer.py:140 ../my-default-printer.py:174
 #, fuzzy
 msgid "_Use System Default"
 msgstr "सिस्टम मूलभूत में फिर सेट करें"
 
-#: ../my-default-printer.py:141 ../my-default-printer.py:173
+#: ../my-default-printer.py:141 ../my-default-printer.py:176
 #, fuzzy
 msgid "_Set Default"
 msgstr "मूलभूत"
 
-#: ../my-default-printer.py:151 ../troubleshoot/PrintTestPage.py:73
-#: ../applet.py:119 ../applet.py:159
-msgid "Printer"
-msgstr "मुद्रक"
-
-#: ../my-default-printer.py:155 ../system-config-printer.py:2388
+#: ../my-default-printer.py:157 ../system-config-printer.py:2195
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 #, fuzzy
@@ -81,77 +251,77 @@ msgstr "स्थानः"
 msgid "Conflicts with:"
 msgstr "इसके साथ विरोध:"
 
-#: ../system-config-printer.py:360
-msgid "Server Settings"
-msgstr "चालक जमावट"
-
-#: ../system-config-printer.py:366 ../system-config-printer.py:368
+#: ../system-config-printer.py:286 ../system-config-printer.py:288
 msgid "Members of this class"
 msgstr "इस वर्ग के सदस्य"
 
-#: ../system-config-printer.py:367 ../system-config-printer.py:369
+#: ../system-config-printer.py:287 ../system-config-printer.py:289
 msgid "Others"
 msgstr "अन्य"
 
-#: ../system-config-printer.py:370
+#: ../system-config-printer.py:290
 msgid "Devices"
 msgstr "युक्ति"
 
-#: ../system-config-printer.py:371
+#: ../system-config-printer.py:291
 msgid "Makes"
 msgstr "मुखौटा"
 
-#: ../system-config-printer.py:372
+#: ../system-config-printer.py:292
 msgid "Models"
 msgstr "मॉडल"
 
-#: ../system-config-printer.py:373
+#: ../system-config-printer.py:293
 msgid "Drivers"
 msgstr "चालक"
 
-#: ../system-config-printer.py:374 ../system-config-printer.glade.h:107
+#: ../system-config-printer.py:294 ../system-config-printer.glade.h:102
 msgid "Downloadable Drivers"
 msgstr ""
 
-#: ../system-config-printer.py:375
+#: ../system-config-printer.py:295
 msgid "Users"
 msgstr "उपयोक्ता"
 
-#: ../system-config-printer.py:402
+#: ../system-config-printer.py:322
 msgid "Automatic rotation"
 msgstr ""
 
-#: ../system-config-printer.py:556
+#: ../system-config-printer.py:561
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "मुद्रक विन्यास - %s"
 
-#: ../system-config-printer.py:559
+#: ../system-config-printer.py:564
 #, python-format
 msgid "Connected to %s"
 msgstr "%s से संबंधित"
 
-#: ../system-config-printer.py:561 ../system-config-printer.py:1271
+#: ../system-config-printer.py:566 ../system-config-printer.py:1146
 msgid "Not connected"
 msgstr "संबंधित नहीं"
 
-#: ../system-config-printer.py:670
-msgid "Local Printers"
-msgstr "स्थानीय मुद्रक"
-
-#: ../system-config-printer.py:671
-msgid "Local Classes"
-msgstr "स्थानीय वर्ग"
-
-#: ../system-config-printer.py:672
-msgid "Remote Printers"
-msgstr "दूरस्थ मुद्रक"
-
-#: ../system-config-printer.py:673
-msgid "Remote Classes"
+#: ../system-config-printer.py:653
+#, fuzzy
+msgid "Remote class"
 msgstr "दूरस्थ वर्ग"
 
-#: ../system-config-printer.py:781
+#: ../system-config-printer.py:655
+#, fuzzy
+msgid "Remote printer"
+msgstr "दूरस्थ मुद्रक"
+
+#: ../system-config-printer.py:659
+#, fuzzy
+msgid "Local class"
+msgstr "स्थानीय वर्ग"
+
+#: ../system-config-printer.py:661
+#, fuzzy
+msgid "Local printer"
+msgstr "स्थानीय मुद्रक"
+
+#: ../system-config-printer.py:730
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -160,15 +330,15 @@ msgstr ""
 "सर्वर से जोड़ रहा है:\n"
 "%s"
 
-#: ../system-config-printer.py:1200
+#: ../system-config-printer.py:1091
 msgid "Installable Options"
 msgstr "अधिष्ठापन योग्य विकल्प"
 
-#: ../system-config-printer.py:1201 ../system-config-printer.glade.h:209
+#: ../system-config-printer.py:1092 ../system-config-printer.glade.h:204
 msgid "Printer Options"
 msgstr "मुद्रक विकल्प"
 
-#: ../system-config-printer.py:1210
+#: ../system-config-printer.py:1101
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -178,85 +348,66 @@ msgstr ""
 "बदलाव इन विरोधों के समाधान\n"
 "के बाद ही लागू हो सकता है."
 
-#: ../system-config-printer.py:1239 ../system-config-printer.py:1255
-#: ../applet.py:292
-msgid "Not authorized"
-msgstr "अधिकृत नहीं"
-
-#: ../system-config-printer.py:1240 ../applet.py:293
-msgid "The password may be incorrect."
-msgstr "शब्दकूट गलत हो सकता है."
-
-#: ../system-config-printer.py:1243 ../system-config-printer.py:1276
-#: ../applet.py:296
-msgid "CUPS server error"
-msgstr "CUPS सर्वर त्रुटि"
-
-#: ../system-config-printer.py:1244 ../applet.py:297
-#, python-format
-msgid "There was an error during the CUPS operation: '%s'."
-msgstr "CUPS संक्रिया के दौरान एक गलती हुई: '%s'."
-
-#: ../system-config-printer.py:1256
+#: ../system-config-printer.py:1131
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
 msgstr ""
 "शब्दकूट गलत हो सकता है, या सर्वर को दूरस्थ प्रशासन मना करने के लिये विन्यस्त हो सकता है."
 
-#: ../system-config-printer.py:1261
+#: ../system-config-printer.py:1136
 msgid "Bad request"
 msgstr "गलत आग्रह"
 
-#: ../system-config-printer.py:1263
+#: ../system-config-printer.py:1138
 msgid "Not found"
 msgstr "नहीं मिला"
 
-#: ../system-config-printer.py:1265
+#: ../system-config-printer.py:1140
 msgid "Request timeout"
 msgstr "आग्रह समय समाप्त"
 
-#: ../system-config-printer.py:1267
+#: ../system-config-printer.py:1142
 msgid "Upgrade required"
 msgstr "उन्नत जरूरी"
 
-#: ../system-config-printer.py:1269
+#: ../system-config-printer.py:1144
 msgid "Server error"
 msgstr "सर्वर त्रुटि"
 
-#: ../system-config-printer.py:1273
+#: ../system-config-printer.py:1148
 #, python-format
 msgid "status %d"
 msgstr "प्रस्थिति %d"
 
-#: ../system-config-printer.py:1277
+#: ../system-config-printer.py:1152
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "एक HTTP त्रुटि थी: %s."
 
-#: ../system-config-printer.py:1301
+#: ../system-config-printer.py:1175
 msgid "This will delete this class!"
 msgstr "यह इस वर्ग को मिटा देगा!"
 
-#: ../system-config-printer.py:1302
+#: ../system-config-printer.py:1176
 msgid "Proceed anyway?"
 msgstr "किसी तरह बढ़ें?"
 
-#: ../system-config-printer.py:1516 ../system-config-printer.py:1550
+#: ../system-config-printer.py:1334 ../system-config-printer.py:1368
 msgid "Submitted"
 msgstr "सुपुर्द"
 
-#: ../system-config-printer.py:1517
+#: ../system-config-printer.py:1335
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "%d कार्य के रूप में जांच पृष्ठ सुपुर्द किया गया"
 
-#: ../system-config-printer.py:1528 ../system-config-printer.py:1560
-#: ../system-config-printer.py:3497
+#: ../system-config-printer.py:1346 ../system-config-printer.py:1378
+#: ../system-config-printer.py:3358
 msgid "Not possible"
 msgstr "संभव नहीं"
 
-#: ../system-config-printer.py:1529 ../system-config-printer.py:1561
+#: ../system-config-printer.py:1347 ../system-config-printer.py:1379
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -264,221 +415,236 @@ msgstr ""
 "दूरस्थ सर्वर छपाई कार्य स्वीकार नहीं करता है, ज्यादा संभव इस कारण से कि मुद्रक साझाकृत "
 "नहीं है."
 
-#: ../system-config-printer.py:1551
+#: ../system-config-printer.py:1369
 #, fuzzy, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "%d कार्य के रूप में जांच पृष्ठ सुपुर्द किया गया"
 
-#: ../system-config-printer.py:1647 ../system-config-printer.py:1806
+#: ../system-config-printer.py:1426 ../system-config-printer.py:1585
 msgid "Error"
 msgstr "त्रुटि"
 
-#: ../system-config-printer.py:1648
+#: ../system-config-printer.py:1427
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS सर्वर में जोड़ने के दौरान समस्या थी."
 
-#: ../system-config-printer.py:1701
+#: ../system-config-printer.py:1480
 msgid "This is the default printer"
 msgstr "यह मूलभूत मुद्रक है"
 
-#: ../system-config-printer.py:1705
+#: ../system-config-printer.py:1484
 msgid "No default printer set."
 msgstr "कोई मूलभूत मुद्रक सेट नहीं है."
 
-#: ../system-config-printer.py:1807
+#: ../system-config-printer.py:1586
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
-#: ../system-config-printer.py:1847
+#: ../system-config-printer.py:1634
 msgid "Cancel Tests"
 msgstr "जांच रद्द करें"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1851 ../system-config-printer.glade.h:208
+#: ../system-config-printer.py:1638 ../system-config-printer.glade.h:203
 #: ../troubleshoot/PrintTestPage.py:61
 msgid "Print Test Page"
 msgstr "जाँच पृष्ठ छापें"
 
-#: ../system-config-printer.py:2081
-#, python-format
-msgid "Really delete printer %s?"
-msgstr "क्या मुद्रक %s को वास्तव मिटाना चाहते हैं?"
-
-#: ../system-config-printer.py:2083
-#, python-format
-msgid "Really delete class %s?"
+#: ../system-config-printer.py:1860
+#, fuzzy, python-format
+msgid "Really delete class `%s'?"
 msgstr "क्या %s वर्ग को सचमुच मिटाना चाहते हैं?"
 
+#: ../system-config-printer.py:1862
+#, fuzzy, python-format
+msgid "Really delete printer `%s'?"
+msgstr "क्या मुद्रक %s को वास्तव मिटाना चाहते हैं?"
+
+#: ../system-config-printer.py:1864
+#, fuzzy
+msgid "Really delete selected destinations?"
+msgstr "क्या मुद्रक %s को वास्तव मिटाना चाहते हैं?"
+
 #. SMB list columns
-#: ../system-config-printer.py:2360
+#: ../system-config-printer.py:2167
 msgid "Share"
 msgstr "साझा करें"
 
-#: ../system-config-printer.py:2366
+#: ../system-config-printer.py:2173
 msgid "Comment"
 msgstr "टिप्पणी"
 
 #. IPP list columns
-#: ../system-config-printer.py:2382
+#: ../system-config-printer.py:2189
 msgid "Queue"
 msgstr ""
 
-#: ../system-config-printer.py:2396
+#: ../system-config-printer.py:2203
 #, fuzzy
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr "पोस्ट स्क्रिप्ट मुद्रक विवरण (*.ppd[.gz])"
 
-#: ../system-config-printer.py:2405
+#: ../system-config-printer.py:2212
 msgid "All files (*)"
 msgstr ""
 
-#: ../system-config-printer.py:2440 ../system-config-printer.py:3756
-#: ../system-config-printer.py:3790
+#: ../system-config-printer.py:2247 ../system-config-printer.py:3617
+#: ../system-config-printer.py:3651
 #, fuzzy
 msgid "Search"
 msgstr "मुद्रक के लिये नया नाम"
 
-#: ../system-config-printer.py:2443 ../system-config-printer.glade.h:155
+#: ../system-config-printer.py:2250 ../system-config-printer.glade.h:150
 msgid "New Printer"
 msgstr "नया मुद्रक"
 
-#: ../system-config-printer.py:2453 ../system-config-printer.glade.h:154
+#: ../system-config-printer.py:2260 ../system-config-printer.glade.h:149
 msgid "New Class"
 msgstr "नया वर्ग"
 
-#: ../system-config-printer.py:2458
+#: ../system-config-printer.py:2265
 msgid "Change Device URI"
 msgstr "युक्ति URI बदलें"
 
-#: ../system-config-printer.py:2467
+#: ../system-config-printer.py:2274
 msgid "Change Driver"
 msgstr "चालक बदलें"
 
-#: ../system-config-printer.py:2566 ../system-config-printer.py:2790
-#: ../system-config-printer.py:2956 ../system-config-printer.py:3779
+#: ../system-config-printer.py:2373 ../system-config-printer.py:2623
+#: ../system-config-printer.py:2789 ../system-config-printer.py:3640
 msgid "Searching"
 msgstr ""
 
-#: ../system-config-printer.py:2567 ../system-config-printer.py:2791
+#: ../system-config-printer.py:2374 ../system-config-printer.py:2624
 msgid "Searching for drivers"
 msgstr ""
 
-#: ../system-config-printer.py:2957
+#: ../system-config-printer.py:2487
+msgid "Fax"
+msgstr ""
+
+#: ../system-config-printer.py:2488
+msgid ""
+"This printer supports both printing and sending faxes.\n"
+"This print queue should be used for which functionality?"
+msgstr ""
+
+#: ../system-config-printer.py:2790
 #, fuzzy
 msgid "Searching for printers"
 msgstr "मुद्रक के लिये नया नाम"
 
-#: ../system-config-printer.py:3175
+#: ../system-config-printer.py:3036
 msgid "Other"
 msgstr "अन्य"
 
-#: ../system-config-printer.py:3177
+#: ../system-config-printer.py:3038
 msgid " (Current)"
 msgstr " (वर्तमान)"
 
-#: ../system-config-printer.py:3203 ../system-config-printer.py:3464
+#: ../system-config-printer.py:3064 ../system-config-printer.py:3325
 #, fuzzy
 msgid "Scanning..."
 msgstr "माप रहा है:"
 
-#: ../system-config-printer.py:3375 ../system-config-printer.py:3442
+#: ../system-config-printer.py:3236 ../system-config-printer.py:3303
 msgid "Verified"
 msgstr "जांचा गया"
 
-#: ../system-config-printer.py:3376 ../system-config-printer.py:3443
+#: ../system-config-printer.py:3237 ../system-config-printer.py:3304
 msgid "This print share is accessible."
 msgstr "छपाई साझा अभिगम योग्य है."
 
-#: ../system-config-printer.py:3383 ../system-config-printer.py:3449
+#: ../system-config-printer.py:3244 ../system-config-printer.py:3310
 msgid "Inaccessible"
 msgstr "अनभिगम्य"
 
-#: ../system-config-printer.py:3384 ../system-config-printer.py:3450
+#: ../system-config-printer.py:3245 ../system-config-printer.py:3311
 msgid "This print share is not accessible."
 msgstr "यह छपाई साझा अभिगम योग्य नहीं है."
 
-#: ../system-config-printer.py:3498
+#: ../system-config-printer.py:3359
 msgid "It is not possible to obtain a list of queues from this host."
 msgstr ""
 
-#: ../system-config-printer.py:3502
+#: ../system-config-printer.py:3363
 msgid "No queues"
 msgstr ""
 
-#: ../system-config-printer.py:3503
+#: ../system-config-printer.py:3364
 msgid "There are no queues available."
 msgstr ""
 
-#: ../system-config-printer.py:3560
+#: ../system-config-printer.py:3421
 msgid "A printer connected to the parallel port."
 msgstr "समांतर पोर्ट में एक मुद्रक संबंधित."
 
-#: ../system-config-printer.py:3562
+#: ../system-config-printer.py:3423
 msgid "A printer connected to a USB port."
 msgstr "USB पोर्ट में एक मुद्रक संबंधित."
 
-#: ../system-config-printer.py:3564
+#: ../system-config-printer.py:3425
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr ""
 "HPLIP सॉफ्टवेयर जो एक मुद्रक को चलाता है, या बहुल प्रकार्य युक्ति का मुद्रक प्रकार्य."
 
-#: ../system-config-printer.py:3567
+#: ../system-config-printer.py:3428
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr ""
 "HPLIP सॉफ्टवेयर जो एक फैक्स मशीन को चलाता है, या बहुल प्रकार्य युक्ति का फैक्स प्रकार्य."
 
-#: ../system-config-printer.py:3570
+#: ../system-config-printer.py:3431
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "हार्डवेयर सारांश स्तर (HAL) के द्वारा स्थानीय मुद्रक पाया गया."
 
-#: ../system-config-printer.py:3802
+#: ../system-config-printer.py:3663
 #, fuzzy
 msgid "-- Select printer model --"
 msgstr "डाटाबेस से मुद्रक चुनें"
 
-#: ../system-config-printer.py:3804
+#: ../system-config-printer.py:3665
 msgid "-- No matches found --"
 msgstr ""
 
-#: ../system-config-printer.py:3969
+#: ../system-config-printer.py:3830
 msgid " (recommended)"
 msgstr " (अनुशंसित)"
 
-#: ../system-config-printer.py:3983
+#: ../system-config-printer.py:3844
 msgid "This PPD is generated by foomatic."
 msgstr "यह PPD foomatic के द्वारा बनाया गया है."
 
-#: ../system-config-printer.py:4009
+#: ../system-config-printer.py:3870
 #, fuzzy
 msgid "OpenPrinting"
 msgstr "छपाई कर रहा है"
 
-#: ../system-config-printer.py:4011
+#: ../system-config-printer.py:3872
 msgid "Distributable"
 msgstr ""
 
-#: ../system-config-printer.py:4013
+#: ../system-config-printer.py:3874
 #, fuzzy
 msgid "None"
 msgstr "कुछ नहीं"
 
-#: ../system-config-printer.py:4021
+#: ../system-config-printer.py:3882
 msgid "Not specified."
 msgstr ""
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4048
+#: ../system-config-printer.py:3909
 msgid "Database error"
 msgstr "डाटाबेस त्रुटि"
 
-#: ../system-config-printer.py:4049
+#: ../system-config-printer.py:3910
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' ड्राइवर  '%s %s' मुद्रक के साथ प्रयुक्त नहीं हो सकता है."
@@ -486,62 +652,62 @@ msgstr "'%s' ड्राइवर  '%s %s' मुद्रक के साथ 
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4059
+#: ../system-config-printer.py:3920
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
 "आपको '%s' संकुल को अधिष्ठापित करने की जरूरत होगी इस ड्राइवर को प्रयोग करने के लिये."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4066
+#: ../system-config-printer.py:3927
 msgid "PPD error"
 msgstr "PPD त्रुटि"
 
-#: ../system-config-printer.py:4068
+#: ../system-config-printer.py:3929
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD फाइल को पढ़ने में विफल.  संभावित कारण आगे है:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4079
+#: ../system-config-printer.py:3940
 msgid "Downloadable drivers"
 msgstr ""
 
-#: ../system-config-printer.py:4080
+#: ../system-config-printer.py:3941
 msgid "Support for downloadable drivers is not yet completed."
 msgstr ""
 
-#: ../system-config-printer.py:4130 ../system-config-printer.py:4167
+#: ../system-config-printer.py:3991 ../system-config-printer.py:4028
 #, fuzzy
 msgid "No Installable Options"
 msgstr "अधिष्ठापन योग्य विकल्प"
 
-#: ../system-config-printer.py:4214
+#: ../system-config-printer.py:4074
 #, fuzzy
 msgid "Adding"
 msgstr "स्थगित"
 
-#: ../system-config-printer.py:4215
+#: ../system-config-printer.py:4075
 #, fuzzy
 msgid "Adding printer"
 msgstr "मुद्रक विन्यस्त करें"
 
-#: ../system-config-printer.py:4367
+#: ../system-config-printer.py:4219
 #, fuzzy
 msgid "Install driver"
 msgstr "गुम ड्राइवर"
 
-#: ../system-config-printer.py:4368
+#: ../system-config-printer.py:4220
 #, fuzzy, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "'%s' मुद्रक %s संकुल की जरूरत होती है लेकिन यह अभी अधिष्ठापित नहीं है.  कृपया इस मुद्रक के "
 "प्रयोग के पहले इसे अधिष्ठापित करें."
 
-#: ../system-config-printer.py:4375
+#: ../system-config-printer.py:4227
 msgid "Missing driver"
 msgstr "गुम ड्राइवर"
 
-#: ../system-config-printer.py:4376
+#: ../system-config-printer.py:4228
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -708,111 +874,102 @@ msgstr ""
 "\n"
 "जबतक आप उसे लागू नहीं करते हैं किया गया कोई बदलाव खत्म हो जायेगा."
 
-#. Why doesn't __del__ work?
-#: ../system-config-printer.glade.h:41 ../applet.glade.h:1
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
-"\n"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">शब्दकूट जरूरी</span>\n"
-"\n"
-
-#: ../system-config-printer.glade.h:44
+#: ../system-config-printer.glade.h:41
 #, fuzzy
 msgid "A CUPS configuration tool."
 msgstr "मुद्रक विन्यास - %s"
 
-#: ../system-config-printer.glade.h:45
+#: ../system-config-printer.glade.h:42
 msgid "Accepting jobs"
 msgstr "कार्य स्वीकार कर रहा है"
 
-#: ../system-config-printer.glade.h:46
+#: ../system-config-printer.glade.h:43
 #, fuzzy
 msgid "Access Control"
 msgstr "अभिगम नियंत्रण"
 
-#: ../system-config-printer.glade.h:47
+#: ../system-config-printer.glade.h:44
 msgid "Add or Remove Members"
 msgstr "सदस्यों को जोड़ें या हटायें"
 
-#: ../system-config-printer.glade.h:48
+#: ../system-config-printer.glade.h:45
 msgid "Allow printing for everyone except these users:"
 msgstr "इन उपयोक्ता के अलावे प्रत्येक के लिये मुद्रण की अनुमति दें:"
 
-#: ../system-config-printer.glade.h:49
+#: ../system-config-printer.glade.h:46
 #, fuzzy
 msgid "Allow printing from the Internet"
 msgstr "इन उपयोक्ता के अलावे प्रत्येक के लिये मुद्रण की अनुमति दें:"
 
-#: ../system-config-printer.glade.h:50
+#: ../system-config-printer.glade.h:47
 msgid "Allow remote administration"
 msgstr "दूरस्थ प्रशासन की अनुमति दें"
 
-#: ../system-config-printer.glade.h:51
+#: ../system-config-printer.glade.h:48
 msgid "Allow users to cancel any job (not just their own)"
 msgstr "किसी कार्य को रद्द करने के लिये उपयोक्ता को अनुमति दें (न कि उनका अपना)"
 
-#: ../system-config-printer.glade.h:52
+#: ../system-config-printer.glade.h:49
 #, fuzzy
 msgid "Authentication required"
 msgstr "<b>सत्यापन</b>"
 
-#: ../system-config-printer.glade.h:53
+#: ../system-config-printer.glade.h:50
+#, fuzzy
+msgid "Basic Server Settings"
+msgstr "<b> मूल सर्वर जमावट</b>"
+
+#: ../system-config-printer.glade.h:51
 msgid "Baud Rate"
 msgstr "बॉड दर"
 
-#: ../system-config-printer.glade.h:54
+#: ../system-config-printer.glade.h:52
 msgid "Bottom margin:"
 msgstr "तल हाशिया:"
 
-#: ../system-config-printer.glade.h:55
+#: ../system-config-printer.glade.h:53
 msgid "Brightness:"
 msgstr "चमकीलापन:"
 
-#: ../system-config-printer.glade.h:56
+#: ../system-config-printer.glade.h:54
 msgid "Browse..."
 msgstr ""
 
-#: ../system-config-printer.glade.h:57
+#: ../system-config-printer.glade.h:55
 msgid "CUPS server:"
 msgstr "CUPS सर्वर"
 
-#: ../system-config-printer.glade.h:58
+#: ../system-config-printer.glade.h:56
 msgid "Change..."
 msgstr "बदलें..."
 
-#: ../system-config-printer.glade.h:59
+#: ../system-config-printer.glade.h:57
 msgid "Characters per inch:"
 msgstr "संप्रतीक प्रति इंच:"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:61
+#: ../system-config-printer.glade.h:59
 msgid "Clean Print Heads"
 msgstr ""
 
-#: ../system-config-printer.glade.h:62
+#: ../system-config-printer.glade.h:60
 msgid "Columns:"
 msgstr "स्तंभ: "
 
-#: ../system-config-printer.glade.h:63
+#: ../system-config-printer.glade.h:61
 #, fuzzy
 msgid "Comments..."
 msgstr "टिप्पणी"
 
-#: ../system-config-printer.glade.h:64
+#: ../system-config-printer.glade.h:62
 msgid "Connect to CUPS server"
 msgstr "CUPS सर्वर से जोड़ें"
 
-#: ../system-config-printer.glade.h:65
-#, fuzzy
-msgid "Connect to a different print server"
-msgstr "CUPS सर्वर से जोड़ें"
-
-#: ../system-config-printer.glade.h:66
+#: ../system-config-printer.glade.h:63
 msgid "Connecting"
 msgstr "जोड़ रहा है"
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:65
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -821,43 +978,38 @@ msgstr ""
 "सर्वर से जोड़ रहा है:\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:71
+#: ../system-config-printer.glade.h:68
 msgid "Copies:"
 msgstr "कॉपी:"
 
-#: ../system-config-printer.glade.h:72
+#: ../system-config-printer.glade.h:69
 msgid "Copy Printer"
 msgstr "मुद्रक कॉपी करें"
 
-#: ../system-config-printer.glade.h:73
-#, fuzzy
-msgid "Copy this printer queue"
-msgstr "मुद्रक कॉपी करें"
-
-#: ../system-config-printer.glade.h:74
+#: ../system-config-printer.glade.h:70
 #, fuzzy
 msgid "Copyright © 2006-2007 Red Hat, Inc."
 msgstr "कॉपीराइट 2006, 2007 Red Hat, Inc."
 
-#: ../system-config-printer.glade.h:75
+#: ../system-config-printer.glade.h:71
 #, fuzzy
 msgid "Create a new printer group"
 msgstr ""
 "नया मुद्रक %s यहां पर बनाने जा रहा है\n"
 "%s.\n"
 
-#: ../system-config-printer.glade.h:76
+#: ../system-config-printer.glade.h:72
 #, fuzzy
 msgid "Create a new printer queue"
 msgstr ""
 "नया मुद्रक %s यहां पर बनाने जा रहा है\n"
 "%s.\n"
 
-#: ../system-config-printer.glade.h:77
+#: ../system-config-printer.glade.h:73
 msgid "Data Bits"
 msgstr "डाटा बिट्स"
 
-#: ../system-config-printer.glade.h:78
+#: ../system-config-printer.glade.h:74
 msgid ""
 "Default\n"
 "1200\n"
@@ -879,7 +1031,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../system-config-printer.glade.h:87
+#: ../system-config-printer.glade.h:83
 msgid ""
 "Default\n"
 "8\n"
@@ -889,7 +1041,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../system-config-printer.glade.h:90
+#: ../system-config-printer.glade.h:86
 msgid ""
 "Default\n"
 "None\n"
@@ -901,7 +1053,7 @@ msgstr ""
 "विसम\n"
 "सम"
 
-#: ../system-config-printer.glade.h:94
+#: ../system-config-printer.glade.h:90
 msgid ""
 "Default\n"
 "None\n"
@@ -915,140 +1067,137 @@ msgstr ""
 "RTS/CTS (हार्डवेयर)\n"
 "DTR/DSR (हार्डवेयर)"
 
-#: ../system-config-printer.glade.h:99
+#: ../system-config-printer.glade.h:95
 #, fuzzy
 msgid "Default Printer:"
 msgstr "डिफ़ॉल्ट मुद्रक बनायें"
 
-#: ../system-config-printer.glade.h:100
-msgid "Delete this printer queue"
-msgstr ""
-
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:96
 msgid "Deny printing for everyone except these users:"
 msgstr "इन उपयोक्ता के अलावे प्रत्येक के लिये छपाई मना करें:"
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:97
 msgid "Description:"
 msgstr "विवरणः"
 
-#: ../system-config-printer.glade.h:103 ../troubleshoot/DeviceListed.py:40
+#: ../system-config-printer.glade.h:98 ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "युक्ति URI"
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:99
 msgid "Device URI:"
 msgstr "युक्ति URI:"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:100
 msgid "Device description."
 msgstr "युक्ति विवरणः"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:101
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:103
 #, fuzzy
 msgid "Driver details"
 msgstr "चालक"
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:104
+#, fuzzy
+msgid "E_nable"
+msgstr "सक्षम"
+
+#: ../system-config-printer.glade.h:105
 msgid "Empty"
 msgstr "खाली"
 
-#: ../system-config-printer.glade.h:110
+#: ../system-config-printer.glade.h:106
 msgid "Enabled"
 msgstr "सक्षम"
 
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:107
 msgid "Ending Banner:"
 msgstr "समाप्ति बैनर:"
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:108
 msgid "Enter some search terms for the model of your printer."
 msgstr ""
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:109
 msgid "Error Policy: \t"
 msgstr "त्रुटि नीति: \t"
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:110
 msgid "Find _Queue..."
 msgstr ""
 
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:111
 msgid "Finishings:"
 msgstr "समाप्त कर रहा है:"
 
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.glade.h:112
 msgid "Flow Control"
 msgstr "प्रवाह नियंत्रण"
 
-#: ../system-config-printer.glade.h:117
+#: ../system-config-printer.glade.h:113
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr ""
 
-#: ../system-config-printer.glade.h:118
+#: ../system-config-printer.glade.h:114
 msgid "Gamma:"
 msgstr "गामा:"
 
-#: ../system-config-printer.glade.h:119
-msgid "Goto Server"
-msgstr "सर्वर पर जायें"
-
-#: ../system-config-printer.glade.h:120
+#: ../system-config-printer.glade.h:115
 msgid "Hold until:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:121
+#: ../system-config-printer.glade.h:116
 #, fuzzy
 msgid "Host:"
 msgstr "होस्टनाम"
 
-#: ../system-config-printer.glade.h:122
+#: ../system-config-printer.glade.h:117
 msgid "Hue adjustment:"
 msgstr "ह्यू समायोजन:"
 
-#: ../system-config-printer.glade.h:123
+#: ../system-config-printer.glade.h:118
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "मानव पठनीय विवरण जैसे कि \"HP LaserJet with Duplexer\""
 
-#: ../system-config-printer.glade.h:124
+#: ../system-config-printer.glade.h:119
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "मानव पठनीय स्थान जैसे कि \"Lab 1\""
 
-#: ../system-config-printer.glade.h:125
+#: ../system-config-printer.glade.h:120
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:126
+#: ../system-config-printer.glade.h:121
 msgid "IPP Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:127
+#: ../system-config-printer.glade.h:122
 #, fuzzy
 msgid "Installed Options"
 msgstr "अधिष्ठापन योग्य विकल्प"
 
-#: ../system-config-printer.glade.h:128
+#: ../system-config-printer.glade.h:123
 msgid "Job Options"
 msgstr "कार्य विकल्प"
 
-#: ../system-config-printer.glade.h:129
+#: ../system-config-printer.glade.h:124
 msgid "Job priority:"
 msgstr "कार्य प्राथमिकता:"
 
-#: ../system-config-printer.glade.h:130
+#: ../system-config-printer.glade.h:125
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:131
+#: ../system-config-printer.glade.h:126
 msgid "Left margin:"
 msgstr "बायां हाशिया:"
 
-#: ../system-config-printer.glade.h:132
+#: ../system-config-printer.glade.h:127
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -1068,73 +1217,73 @@ msgstr ""
 "तल से शीर्ष तक, बायें से दाहिने\n"
 "तल से शीर्ष तक, दाहिने से बायें"
 
-#: ../system-config-printer.glade.h:140
+#: ../system-config-printer.glade.h:135
 msgid "License:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:141
+#: ../system-config-printer.glade.h:136
 msgid "Lines per inch:"
 msgstr "प्रति इंच पंक्तियां:"
 
-#: ../system-config-printer.glade.h:142
+#: ../system-config-printer.glade.h:137
 #, fuzzy
 msgid "Local Driver"
 msgstr "स्थानीय मुद्रक"
 
-#: ../system-config-printer.glade.h:143
+#: ../system-config-printer.glade.h:138
 msgid "Location:"
 msgstr "स्थानः"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:145
+#: ../system-config-printer.glade.h:140
 #, fuzzy
 msgid "Make Default"
 msgstr "मूलभूत"
 
-#: ../system-config-printer.glade.h:146
+#: ../system-config-printer.glade.h:141
 msgid "Make and Model:"
 msgstr "निर्माण और मॉडल:"
 
-#: ../system-config-printer.glade.h:147
+#: ../system-config-printer.glade.h:142
 #, fuzzy
 msgid ""
 "May contain any printable characters except \"/\", \"#\", and space.\n"
 "Name must be unique on the local machine!"
 msgstr "\"/\", \"#\", और स्थान के किसी छपाई योग्य संप्रतीक रख सकता है"
 
-#: ../system-config-printer.glade.h:149
+#: ../system-config-printer.glade.h:144
 msgid "Media:"
 msgstr "मीडिया:"
 
-#: ../system-config-printer.glade.h:150
+#: ../system-config-printer.glade.h:145
 msgid "Members"
 msgstr "सदस्यों"
 
-#: ../system-config-printer.glade.h:151
+#: ../system-config-printer.glade.h:146
 msgid "Mirror"
 msgstr "मिरर"
 
-#: ../system-config-printer.glade.h:152
+#: ../system-config-printer.glade.h:147
 msgid "More"
 msgstr "अधिक"
 
-#: ../system-config-printer.glade.h:153
+#: ../system-config-printer.glade.h:148
 msgid "New Clas_s"
 msgstr "नया वर्ग (_s)"
 
-#: ../system-config-printer.glade.h:156
+#: ../system-config-printer.glade.h:151
 msgid "New _Printer"
 msgstr "नया मुद्रक (_P)"
 
-#: ../system-config-printer.glade.h:157
+#: ../system-config-printer.glade.h:152
 msgid "New name for the printer"
 msgstr "मुद्रक के लिये नया नाम"
 
-#: ../system-config-printer.glade.h:158
+#: ../system-config-printer.glade.h:153
 msgid "No, I do not accept this license"
 msgstr ""
 
-#: ../system-config-printer.glade.h:159
+#: ../system-config-printer.glade.h:154
 msgid ""
 "None\n"
 "Staple\n"
@@ -1194,7 +1343,7 @@ msgstr ""
 "बांधें (दाहिना)\n"
 "बांधें (तल)"
 
-#: ../system-config-printer.glade.h:187
+#: ../system-config-printer.glade.h:182
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1204,45 +1353,40 @@ msgstr ""
 "द्विपक्षीय (लंबा किनारा)\n"
 "द्विपक्षीय (छोटा किनारा)"
 
-#: ../system-config-printer.glade.h:190
+#: ../system-config-printer.glade.h:185
 msgid "Operation Policy:"
 msgstr "प्रक्रिया नीति:"
 
-#: ../system-config-printer.glade.h:191
+#: ../system-config-printer.glade.h:186
 msgid "Orientation:"
 msgstr "अभिमुखन:"
 
-#: ../system-config-printer.glade.h:192
+#: ../system-config-printer.glade.h:187
 msgid "Pages per side layout:"
 msgstr "पृष्ठ प्रति स्लाइड लेआउट:"
 
-#: ../system-config-printer.glade.h:193
+#: ../system-config-printer.glade.h:188
 msgid "Pages per side:"
 msgstr "पृष्ठ प्रति पक्ष:"
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:189
 msgid "Parity"
 msgstr "समानता"
 
-#: ../system-config-printer.glade.h:195 ../troubleshoot/Welcome.py:64
-#: ../applet.glade.h:5
-msgid "Password:"
-msgstr "शब्दकूट:"
-
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:191
 msgid "Please Wait"
 msgstr ""
 
-#: ../system-config-printer.glade.h:197
+#: ../system-config-printer.glade.h:192
 msgid "Policies"
 msgstr "नीति"
 
-#: ../system-config-printer.glade.h:198
+#: ../system-config-printer.glade.h:193
 #, fuzzy
 msgid "Port number:"
 msgstr "पोर्ट संख्या"
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:194
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1254,7 +1398,7 @@ msgstr ""
 "विपरीत भूदृश्य (270°)\n"
 "विपरीत व्यक्तिचित्र (180°)"
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:198
 #, fuzzy
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
@@ -1265,129 +1409,139 @@ msgstr ""
 "मुद्रक के साथ आता है. पोस्टस्क्रिप्ट मुद्रक के लिये वे हमेशा Windows<sup>®</sup> चालक का "
 "हिस्सा है."
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:199
 msgid "Pretty print"
 msgstr "बढ़िया छपाई"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:206
+#: ../system-config-printer.glade.h:201
 #, fuzzy
 msgid "Print Self-Test Page"
 msgstr "जाँच पृष्ठ छापें"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:205
+#, fuzzy
+msgid "Printer Properties"
+msgstr "मुद्रक रिपोर्ट"
+
+#: ../system-config-printer.glade.h:206
 msgid "Printer State:"
 msgstr "मुद्रक स्थिति:"
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:207
 #, fuzzy
 msgid "Printer model:"
 msgstr "मुद्रक नाम"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:208
 msgid "Probe"
 msgstr "जांच"
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:209
 #, fuzzy
 msgid "Provide PPD file"
 msgstr "PPD फाइल दें"
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:210
 msgid "Queue:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:211
 msgid "Refresh the list of printer queues"
 msgstr ""
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:212
 msgid "Require encryption"
 msgstr "गोपन जरूरी"
 
-#: ../system-config-printer.glade.h:217
+#: ../system-config-printer.glade.h:213
 msgid "Reset"
 msgstr "फिर सेट करें"
 
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:214
 msgid "Reset to system default"
 msgstr "सिस्टम मूलभूत में फिर सेट करें"
 
-#: ../system-config-printer.glade.h:219
+#: ../system-config-printer.glade.h:215
 msgid "Right margin:"
 msgstr "बायां हाशिया:"
 
-#: ../system-config-printer.glade.h:220
+#: ../system-config-printer.glade.h:216
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../system-config-printer.glade.h:221
+#: ../system-config-printer.glade.h:217
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:222
+#: ../system-config-printer.glade.h:218
 msgid "SMB Browser"
 msgstr ""
 
-#: ../system-config-printer.glade.h:223
+#: ../system-config-printer.glade.h:219
 msgid "Saturation:"
 msgstr "संतृप्ति:"
 
-#: ../system-config-printer.glade.h:224
+#: ../system-config-printer.glade.h:220
 msgid "Save debugging information for troubleshooting"
 msgstr "विघ्ननिवारण के लिये डिबगिंग सूचना सहेजें"
 
-#: ../system-config-printer.glade.h:225
+#: ../system-config-printer.glade.h:221
 msgid "Scale to fit"
 msgstr "मापक में सटीक"
 
-#: ../system-config-printer.glade.h:226
+#: ../system-config-printer.glade.h:222
 msgid "Scaling:"
 msgstr "माप रहा है:"
 
-#: ../system-config-printer.glade.h:227
+#: ../system-config-printer.glade.h:223
 msgid "Search for a printer driver to download"
 msgstr ""
 
-#: ../system-config-printer.glade.h:228
+#: ../system-config-printer.glade.h:224
 #, fuzzy
 msgid "Search terms:"
 msgstr "मुद्रक के लिये नया नाम"
 
-#: ../system-config-printer.glade.h:229
+#: ../system-config-printer.glade.h:225
 msgid "Select A File"
 msgstr "एक फ़ाइल चुनें"
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:226
 #, fuzzy
 msgid "Select printer from database"
 msgstr "डाटाबेस से मुद्रक चुनें"
 
-#: ../system-config-printer.glade.h:231
+#: ../system-config-printer.glade.h:227
 msgid "Serial"
 msgstr "धारावाहिक"
 
-#: ../system-config-printer.glade.h:232
+#: ../system-config-printer.glade.h:228
+#, fuzzy
+msgid "Set As Default"
+msgstr "मूलभूत"
+
+#: ../system-config-printer.glade.h:229
 msgid "Settings"
 msgstr "जमावट"
 
-#: ../system-config-printer.glade.h:233
+#: ../system-config-printer.glade.h:230
 msgid "Share published printers connected to this system"
 msgstr "इस सिस्टम से जुड़े प्रकाशित मुद्रक साझा करें"
 
-#: ../system-config-printer.glade.h:234
+#: ../system-config-printer.glade.h:231
 msgid "Shared"
 msgstr "साझा"
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:232
 msgid "Show printers shared by other systems"
 msgstr "अन्य सिस्टम द्वारा साझा सिस्टम दिखाएँ"
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:233
 msgid "Sides:"
 msgstr "किनारा:"
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:234
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1396,19 +1550,19 @@ msgstr ""
 "इस मुद्रक के लिये मूलभूत कार्य विकल्प निर्दिष्ट करें.  इस मुद्रण सर्वर पर आने वाले काम यह "
 "विकल्प रखेगा अगर वे पहले से अनुप्रयोग द्वारा सेट नहीं है."
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:235
 msgid "Starting Banner:"
 msgstr "प्रारंभिक बैनर:"
 
-#: ../system-config-printer.glade.h:239
+#: ../system-config-printer.glade.h:236
 msgid "Supplier:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:240
+#: ../system-config-printer.glade.h:237
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:241
+#: ../system-config-printer.glade.h:238
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1420,20 +1574,20 @@ msgstr ""
 "और साथ ही PPD फाइल बड़ी संख्या में (गैर पोस्टस्क्रिप्ट) मुद्रक उत्पन्न कर सकता है. लेकिन "
 "सामान्य रूप से निर्माता PPD फाइल देता है मुद्रक के विशेष गुण में पहुंच के लिये."
 
-#: ../system-config-printer.glade.h:242
+#: ../system-config-printer.glade.h:239
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
 "of the driver's supplier."
 msgstr ""
 
-#: ../system-config-printer.glade.h:243
+#: ../system-config-printer.glade.h:240
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr ""
 
-#: ../system-config-printer.glade.h:244
+#: ../system-config-printer.glade.h:241
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1443,7 +1597,7 @@ msgstr ""
 "जमावट जो कि नये PPD में मौजूद नहीं है वह गुम हो जायेगा और नया PPD में सिरफ विकल्प मूलभूत "
 "रूप में सेट किया जायेगा."
 
-#: ../system-config-printer.glade.h:245
+#: ../system-config-printer.glade.h:242
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1460,7 +1614,7 @@ msgid ""
 "Ave, Cambridge, MA 02139, USA."
 msgstr ""
 
-#: ../system-config-printer.glade.h:250
+#: ../system-config-printer.glade.h:247
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -1468,78 +1622,89 @@ msgstr ""
 "इस तरीके से सारे मौजूदा विकल्प जमावट खत्म हो जायेंगे. नया PPD का मूलभूत जमावट को प्रयोग "
 "किया जायेगा."
 
-#: ../system-config-printer.glade.h:251
+#: ../system-config-printer.glade.h:248
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "एक नया विकल्प जोड़ने के लिये, इसके नाम को नीचे के बॉक्स में डालें और जोड़ने के लिये क्लिक करें."
 
-#: ../system-config-printer.glade.h:252
+#: ../system-config-printer.glade.h:249
 msgid "Top margin:"
 msgstr "शीर्ष हाशिया:"
 
-#: ../system-config-printer.glade.h:253
+#: ../system-config-printer.glade.h:250
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "पुराने PPD से विकल्प जमावट कॉपी करने को कोशिश करें. "
 
-#: ../system-config-printer.glade.h:254
+#: ../system-config-printer.glade.h:251
 msgid "URI:"
 msgstr ""
 
-#: ../system-config-printer.glade.h:255
+#: ../system-config-printer.glade.h:252
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "नया PPD (पोस्टस्क्रिप्ट मुद्रक विवरण) का प्रयोग करें जैसा है."
 
-#: ../system-config-printer.glade.h:256
+#: ../system-config-printer.glade.h:253
 msgid "User name:"
 msgstr "उपयोक्ता नामः"
 
-#: ../system-config-printer.glade.h:257
-msgid "Username:"
-msgstr "उपयोक्ता नाम:"
+#: ../system-config-printer.glade.h:255
+#, fuzzy
+msgid "View Print _Queue"
+msgstr "नया मुद्रक"
 
-#: ../system-config-printer.glade.h:258
+#: ../system-config-printer.glade.h:256
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
 msgstr ""
 
-#: ../system-config-printer.glade.h:259
+#: ../system-config-printer.glade.h:257
 msgid "Word wrap"
 msgstr "शब्द लपेटन"
 
-#: ../system-config-printer.glade.h:260
+#: ../system-config-printer.glade.h:258
 #, fuzzy
 msgid "Yes, I accept this license"
 msgstr "कार्य स्वीकार कर रहा है"
 
-#: ../system-config-printer.glade.h:261
+#: ../system-config-printer.glade.h:259
 #, fuzzy
 msgid "_Connect..."
 msgstr "जोड़ रहा है"
 
-#: ../system-config-printer.glade.h:262
+#: ../system-config-printer.glade.h:260
+#, fuzzy
+msgid "_Disable"
+msgstr "फ़ाइल (_F)"
+
+#: ../system-config-printer.glade.h:261
 msgid "_Do not apply"
 msgstr "लागू मत करें (_D)"
 
-#: ../system-config-printer.glade.h:263
+#: ../system-config-printer.glade.h:262
 msgid "_Edit"
 msgstr "संपादन (_E)"
 
-#: ../system-config-printer.glade.h:264 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:263 ../applet.glade.h:10
 msgid "_File"
 msgstr "फ़ाइल (_F)"
 
-#: ../system-config-printer.glade.h:265
+#: ../system-config-printer.glade.h:264
 msgid "_Help"
 msgstr "मदद (_H)"
 
-#: ../system-config-printer.glade.h:266
+#: ../system-config-printer.glade.h:265
 msgid "_Install"
 msgstr ""
 
-#: ../system-config-printer.glade.h:267
+#: ../system-config-printer.glade.h:266
 msgid "_Search"
 msgstr ""
+
+#: ../system-config-printer.glade.h:267
+#, fuzzy
+msgid "_Server Settings..."
+msgstr "चालक जमावट"
 
 #: ../system-config-printer.glade.h:268
 msgid "_Troubleshoot"
@@ -1586,124 +1751,124 @@ msgstr "मुद्रक विन्यस्त करें"
 msgid "Printing"
 msgstr "छपाई कर रहा है"
 
-#: ../statereason.py:73
+#: ../statereason.py:85
 msgid "Toner low"
 msgstr "टोनर कम"
 
-#: ../statereason.py:74
+#: ../statereason.py:86
 #, python-format
 msgid "Printer '%s' is low on toner."
 msgstr "'%s' मुद्रक टोनर पर कम है."
 
-#: ../statereason.py:75
+#: ../statereason.py:87
 msgid "Toner empty"
 msgstr "टोनर खाली"
 
-#: ../statereason.py:76
+#: ../statereason.py:88
 #, python-format
 msgid "Printer '%s' has no toner left."
 msgstr "मुद्रक '%s' के पास कोई टोनर छूटा नहीं है."
 
-#: ../statereason.py:77
+#: ../statereason.py:89
 msgid "Cover open"
 msgstr "कवर खुला"
 
-#: ../statereason.py:78
+#: ../statereason.py:90
 #, python-format
 msgid "The cover is open on printer '%s'."
 msgstr "मुद्रक '%s' पर कवर खुला है."
 
-#: ../statereason.py:79
+#: ../statereason.py:91
 msgid "Door open"
 msgstr "दरवाजा खुला"
 
-#: ../statereason.py:80
+#: ../statereason.py:92
 #, python-format
 msgid "The door is open on printer '%s'."
 msgstr "दरवाजा '%s' मुद्रक पर खुला है."
 
-#: ../statereason.py:81
+#: ../statereason.py:93
 msgid "Paper low"
 msgstr "कागज कम"
 
-#: ../statereason.py:82
+#: ../statereason.py:94
 #, python-format
 msgid "Printer '%s' is low on paper."
 msgstr "मुद्रक '%s' कागज पर कम है."
 
-#: ../statereason.py:83
+#: ../statereason.py:95
 msgid "Out of paper"
 msgstr "कागज के बाहर"
 
-#: ../statereason.py:84
+#: ../statereason.py:96
 #, python-format
 msgid "Printer '%s' is out of paper."
 msgstr "मुद्रक '%s' कागज के बाहर है."
 
-#: ../statereason.py:85
+#: ../statereason.py:97
 msgid "Ink low"
 msgstr "इंक कम है"
 
-#: ../statereason.py:86
+#: ../statereason.py:98
 #, python-format
 msgid "Printer '%s' is low on ink."
 msgstr "मुद्रक '%s' में इंक कम है."
 
-#: ../statereason.py:87
+#: ../statereason.py:99
 msgid "Ink empty"
 msgstr "इंक खाली है"
 
-#: ../statereason.py:88
+#: ../statereason.py:100
 #, python-format
 msgid "Printer '%s' has no ink left."
 msgstr "मुद्रक '%s' के पास इंक नहीं बचा है."
 
-#: ../statereason.py:89
+#: ../statereason.py:101
 #, fuzzy
 msgid "Printer off-line"
 msgstr "मुद्रक विकल्प"
 
-#: ../statereason.py:90
+#: ../statereason.py:102
 #, fuzzy, python-format
 msgid "Printer `%s' is currently off-line."
 msgstr "मुद्रक '%s' कागज के बाहर है."
 
-#: ../statereason.py:91
+#: ../statereason.py:103
 msgid "Not connected?"
 msgstr "संबंधित नहीं?"
 
-#: ../statereason.py:92
+#: ../statereason.py:104
 #, python-format
 msgid "Printer '%s' may not be connected."
 msgstr "मुद्रक '%s' संबंधित नहीं हो सकता है."
 
-#: ../statereason.py:93 ../statereason.py:105
+#: ../statereason.py:105 ../statereason.py:117
 msgid "Printer error"
 msgstr "मुद्रक त्रुटि"
 
-#: ../statereason.py:94
+#: ../statereason.py:106
 #, fuzzy, python-format
 msgid "There is a problem on printer `%s'."
 msgstr "दरवाजा '%s' मुद्रक पर खुला है."
 
-#: ../statereason.py:101
+#: ../statereason.py:113
 msgid "Printer report"
 msgstr "मुद्रक रिपोर्ट"
 
-#: ../statereason.py:103
+#: ../statereason.py:115
 msgid "Printer warning"
 msgstr "मुद्रक चेतावनी"
 
-#: ../statereason.py:106
+#: ../statereason.py:118
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr "मुद्रक '%s': '%s'."
 
-#: ../troubleshoot/__init__.py:37
+#: ../troubleshoot/__init__.py:48
 msgid "Printing troubleshooter"
 msgstr ""
 
-#: ../troubleshoot/base.py:33
+#: ../troubleshoot/base.py:26
 msgid ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
@@ -1725,7 +1890,7 @@ msgid ""
 "server settings using the printing administration tool."
 msgstr ""
 
-#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:1190
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:128
 #, fuzzy
 msgid "Install"
 msgstr "गुम ड्राइवर"
@@ -1833,11 +1998,11 @@ msgstr ""
 msgid "Enable Debugging"
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:159
+#: ../troubleshoot/ErrorLogCheckpoint.py:142
 msgid "Debug logging enabled."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:161
+#: ../troubleshoot/ErrorLogCheckpoint.py:144
 msgid "Debug logging was already enabled."
 msgstr ""
 
@@ -1851,11 +2016,11 @@ msgstr ""
 msgid "Disable Debugging"
 msgstr ""
 
-#: ../troubleshoot/ErrorLogFetch.py:142
+#: ../troubleshoot/ErrorLogFetch.py:122
 msgid "Debug logging disabled."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogFetch.py:144
+#: ../troubleshoot/ErrorLogFetch.py:124
 msgid "Debug logging was already disabled."
 msgstr ""
 
@@ -1917,26 +2082,6 @@ msgstr ""
 msgid "Warnings are listed below:"
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:883
-msgid "Pending"
-msgstr "स्थगित"
-
-#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:884
-msgid "Held"
-msgstr "रोकें"
-
-#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:887
-msgid "Canceled"
-msgstr "रद्द"
-
-#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:888
-msgid "Aborted"
-msgstr "छोड़ा"
-
-#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:889
-msgid "Completed"
-msgstr "पूर्ण"
-
 #: ../troubleshoot/PrintTestPage.py:48
 #, fuzzy
 msgid "Test Page"
@@ -1956,18 +2101,6 @@ msgstr ""
 #, fuzzy
 msgid "Test"
 msgstr "फिर सेट करें"
-
-#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:117
-msgid "Job"
-msgstr "कार्य"
-
-#: ../troubleshoot/PrintTestPage.py:75 ../applet.py:118
-msgid "Document"
-msgstr "दस्तावेज"
-
-#: ../troubleshoot/PrintTestPage.py:76 ../applet.py:122
-msgid "Status"
-msgstr "प्रस्थिति"
 
 #: ../troubleshoot/PrintTestPage.py:100
 msgid "Did the marked print jobs print correctly?"
@@ -2078,162 +2211,68 @@ msgid ""
 "some useful information to put in a bug report."
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:41
-#, fuzzy
-msgid "Authentication"
-msgstr "<b>सत्यापन</b>"
-
-#: ../troubleshoot/Welcome.py:56
-#, fuzzy
-msgid "Password required"
-msgstr "उन्नत जरूरी"
-
-#: ../troubleshoot/Welcome.py:95
+#: ../troubleshoot/Welcome.py:36
 msgid "Trouble-shooting Printing"
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:97
+#: ../troubleshoot/Welcome.py:38
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:101
+#: ../troubleshoot/Welcome.py:42
 msgid "Click 'Forward' to begin."
 msgstr ""
 
-#: ../applet.py:120
-msgid "Size"
-msgstr "आकार"
-
-#: ../applet.py:121
-msgid "Time submitted"
-msgstr "समय सुपुर्द"
-
-#: ../applet.py:172
-msgid "Message"
-msgstr "संदेश"
-
-#: ../applet.py:552
-msgid "1 hour ago"
-msgstr "1 घंटा पहले"
-
-#: ../applet.py:554
-msgid "1 hour and 1 minute ago"
-msgstr "1 घंटा और 1 मिनट पहले"
-
-#: ../applet.py:556
-#, python-format
-msgid "1 hour and %d minutes ago"
-msgstr "1 घंटा और %d मिनट पहले"
-
-#: ../applet.py:559
-#, python-format
-msgid "%d hours ago"
-msgstr "%d घंटा पहले"
-
-#: ../applet.py:561
-#, python-format
-msgid "%d hours and 1 minute ago"
-msgstr "%d घंटा और 1 मिनट पहले"
-
-#: ../applet.py:563
-#, python-format
-msgid "%d hours and %d minutes ago"
-msgstr "%d घंटे और %d मिनट पहले"
-
-#: ../applet.py:569
-msgid "a minute ago"
-msgstr "एक मिनट पहले"
-
-#: ../applet.py:571
-#, python-format
-msgid "%d minutes ago"
-msgstr "%d मिनट पहले"
-
-#: ../applet.py:703
-#, fuzzy, python-format
-msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr "CUPS सर्वर में जोड़ने के दौरान समस्या थी."
-
-#: ../applet.py:706
-#, python-format
-msgid "There was a problem processing document `%s' (job %d)."
-msgstr ""
-
-#. Give up and use the untranslated provided.
-#: ../applet.py:710
-#, python-format
-msgid "There was a problem printing document `%s' (job %d): `%s'."
-msgstr ""
-
-#: ../applet.py:715 ../applet.py:731
-#, fuzzy
-msgid "Print Error"
-msgstr "मुद्रक त्रुटि"
-
-#: ../applet.py:716
-msgid "_Diagnose"
-msgstr ""
-
-#: ../applet.py:737
-#, python-format
-msgid "The printer called `%s' has been disabled."
-msgstr ""
-
-#: ../applet.py:816
-msgid "No documents queued"
-msgstr "कोई दस्तावेज कतार बद्ध नहीं"
-
-#: ../applet.py:819
-msgid "1 document queued"
-msgstr "1 दस्तावेज कतारबद्ध"
-
-#: ../applet.py:822
-#, python-format
-msgid "%d documents queued"
-msgstr "%d दस्तावेज कतारबद्ध"
-
-#: ../applet.py:1180
+#: ../applet.py:118
 #, fuzzy
 msgid "Printer added"
 msgstr "मुद्रक नाम"
 
-#: ../applet.py:1182
+#: ../applet.py:120
 #, fuzzy
 msgid "Missing printer driver"
 msgstr "गुम ड्राइवर"
 
-#: ../applet.py:1186
+#: ../applet.py:124
 #, fuzzy
 msgid "Install printer driver"
 msgstr "गुम ड्राइवर"
 
-#: ../applet.py:1187
+#: ../applet.py:125
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr ""
 
-#: ../applet.py:1193
+#: ../applet.py:131
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr ""
 
-#: ../applet.py:1196
+#: ../applet.py:134
 #, fuzzy
 msgid "Configure"
 msgstr "मुद्रक विन्यस्त करें"
 
 #. Model mismatch
-#: ../applet.py:1199
+#: ../applet.py:137
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr ""
 
-#: ../applet.py:1203
+#: ../applet.py:141
 #, fuzzy
 msgid "Find driver"
 msgstr "गुम ड्राइवर"
+
+#: ../applet.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">शब्दकूट जरूरी</span>\n"
+"\n"
 
 #: ../applet.glade.h:4
 msgid "Document print status"
@@ -2298,6 +2337,21 @@ msgstr "मुद्रण कार्य प्रबंधित करें
 #, fuzzy
 msgid "Select default printer"
 msgstr "डिफ़ॉल्ट मुद्रक बनायें"
+
+#, fuzzy
+#~ msgid "Connect to a different print server"
+#~ msgstr "CUPS सर्वर से जोड़ें"
+
+#, fuzzy
+#~ msgid "Copy this printer queue"
+#~ msgstr "मुद्रक कॉपी करें"
+
+#~ msgid "Goto Server"
+#~ msgstr "सर्वर पर जायें"
+
+#, fuzzy
+#~ msgid "Password required"
+#~ msgstr "उन्नत जरूरी"
 
 #~ msgid "_Goto Server"
 #~ msgstr "सर्वर पर जायें (_G)"
