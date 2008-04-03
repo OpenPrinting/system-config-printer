@@ -73,6 +73,7 @@ class JobViewer (monitor.Watcher):
         self.special_status_icon = False
         self.new_printer_notifications = {}
         self.reasoniters = {}
+        self.auth_info_dialog = None
 
         self.xml = gtk.glade.XML(APPDIR + "/" + GLADE, domain = DOMAIN)
         self.xml.signal_autoconnect(self)
@@ -381,6 +382,61 @@ class JobViewer (monitor.Watcher):
             state = _("Unknown")
         store.set_value (iter, 5, state)
 
+        # Check whether authentication is required.
+        if (self.trayicon and
+            data['job-state'] == cups.IPP_JOB_HELD and
+            data.get ('job-hold-until', 'none') == 'auth-info-required' and
+            not self.auth_info_dialog):
+            # Find out which auth-info is required.
+            try:
+                c = authconn.Connection (self.MainWindow)
+                try:
+                    uri = data['job-printer-uri']
+                    attributes = c.getPrinterAttributes (uri = uri)
+                except TypeError: # uri keyword introduced in pycups-1.9.32
+                    debugprint ("Fetching printer attributes by name")
+                    attributes = c.getPrinterAttributes (printer)
+            except cups.IPPError, (e, m):
+                self.show_IPP_Error (e, m)
+                return
+            except RuntimeError:
+                debugprint ("Failed to connect when fetching printer attrs")
+                return
+
+            try:
+                auth_info_required = attributes['auth-info-required']
+            except KeyError:
+                debugprint ("No auth-info-required attribute; guessing instead")
+                auth_info_required = ['username', 'password']
+
+            if not isinstance (auth_info_required, list):
+                auth_info_required = [auth_info_required]
+            dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
+            dialog.set_prompt (_("Authentication required for "
+                                 "printing document `%s' (job %d)") %
+                               (data.get('job-name', _("Unknown")), job))
+            self.auth_info_dialog = dialog
+            dialog.connect ('response', self.auth_info_dialog_response)
+            dialog.set_data ('job-id', job)
+            dialog.show_all ()
+
+    def auth_info_dialog_response (self, dialog, response):
+        dialog.hide ()
+        self.auth_info_dialog = None
+        if response != gtk.RESPONSE_OK:
+            return
+
+        auth_info = dialog.get_auth_info ()
+        jobid = dialog.get_data ('job-id')
+        try:
+            c = authconn.Connection (self.MainWindow)
+            c.authenticateJob (jobid, auth_info)
+        except RuntimeError:
+            debugprint ("Error connecting to CUPS for authentication")
+        except cups.IPPError, (e, m):
+            self.show_IPP_Error (e, m)
+            pass
+
     def set_statusicon_visibility (self):
         if not self.trayicon:
             return
@@ -677,6 +733,20 @@ class JobViewer (monitor.Watcher):
             jobdata['job-printer-name'] = printer
 
             self.add_job (jobid, jobdata)
+
+            # Fetch complete attributes for these jobs.
+            attrs = None
+            try:
+                c = cups.Connection ()
+                attrs = c.getJobAttributes (jobid)
+            except RuntimeError:
+                pass
+            except AttributeError:
+                pass
+
+            if attrs:
+                jobdata.update (attrs)
+                self.update_job (jobid, jobdata)
 
         self.jobs = jobs
         self.active_jobs = set()

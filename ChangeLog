@@ -1,5 +1,12 @@
 2008-04-03  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Fetch full
+	job attributes for each job initially.
+	(JobViewer.update_job): If proxy authentication is necessary,
+	prompt for authentication information.
+	(JobViewer.auth_info_dialog_response): Collect authentication
+	information and perform proxy authentication.
+
 	* authconn.py (AuthDialog): New class.
 	(Connection._perform_authentication): Use it.
 
