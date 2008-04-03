@@ -797,6 +797,101 @@ class JobViewer (monitor.Watcher):
             self.active_jobs.add (jobid)
         elif jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
+
+        # Look out for stopped jobs.
+        if self.trayicon and eventname == 'job-stopped':
+            # Why has the job stopped?  It might be due to a job error
+            # of some sort, or it might be that the backend requires
+            # authentication.  If the latter, the job will be held not
+            # stopped, and the job-hold-until attribute will be
+            # 'auth-info-required'.  This will be checked for in
+            # update_job.
+            debugprint ("Job %d stopped: why?" % jobid)
+            if jobdata['job-state'] == cups.IPP_JOB_HELD:
+                try:
+                    # Fetch the job-hold-until attribute, as this is
+                    # not provided in the notification attributes.
+                    c = cups.Connection ()
+                    attrs = c.getJobAttributes (jobid)
+                    jobdata.update (attrs)
+                except cups.IPPError:
+                    pass
+                except RuntimeError:
+                    pass
+
+            if (jobdata['job-state'] == cups.IPP_JOB_HELD and
+                jobdata['job-hold-until'] == 'auth-info-required'):
+                # Leave this to update_job to deal with.
+                pass
+            else:
+                # Other than that, unfortunately the only
+                # clue we get is the notify-text, which is not
+                # translated into our native language.  We'd better
+                # try parsing it.  In CUPS-1.3.6 the possible strings
+                # are:
+                #
+                # "Job stopped due to filter errors; please consult
+                # the error_log file for details."
+                #
+                # "Job stopped due to backend errors; please consult
+                # the error_log file for details."
+                #
+                # "Job held due to backend errors; please consult the
+                # error_log file for details."
+                #
+                # "Authentication is required for job %d."
+                notify_text = event['notify-text']
+                document = job['job-name']
+                if notify_text.find ("backend errors") != -1:
+                    message = _("There was a problem sending document `%s' "
+                                "(job %d) to the printer.") % (document, jobid)
+                elif notify_text.find ("filter errors") != -1:
+                    message = _("There was a problem processing document `%s' "
+                                "(job %d).") % (document, jobid)
+                else:
+                    # Give up and use the untranslated provided.
+                    message = _("There was a problem printing document `%s' "
+                                "(job %d): `%s'.") % (document, jobid,
+                                                      notify_text)
+
+                self.toggle_window_display (self.statusicon, force_show=True)
+                dialog = gtk.Dialog (_("Print Error"), self.MainWindow, 0,
+                                     (_("_Diagnose"), gtk.RESPONSE_NO,
+                                        gtk.STOCK_OK, gtk.RESPONSE_OK))
+                dialog.set_default_response (gtk.RESPONSE_OK)
+                dialog.set_border_width (6)
+                dialog.set_resizable (False)
+                dialog.set_icon_name (ICON)
+                hbox = gtk.HBox (False, 12)
+                hbox.set_border_width (6)
+                image = gtk.Image ()
+                image.set_from_stock ('gtk-dialog-error',
+                                      gtk.ICON_SIZE_DIALOG)
+                hbox.pack_start (image, False, False, 0)
+                vbox = gtk.VBox (False, 12)
+
+                markup = ('<span weight="bold" size="larger">' +
+                          _("Print Error") + '</span>\n\n' +
+                          message)
+                try:
+                    if event['printer-state'] == cups.IPP_PRINTER_STOPPED:
+                        name = event['printer-name']
+                        markup += ' '
+                        markup += (_("The printer called `%s' has "
+                                     "been disabled.") % name)
+                except KeyError:
+                    pass
+
+                label = gtk.Label (markup)
+                label.set_use_markup (True)
+                label.set_line_wrap (True)
+                label.set_alignment (0, 0)
+                vbox.pack_start (label, False, False, 0)
+                hbox.pack_start (vbox, False, False, 0)
+                dialog.vbox.pack_start (hbox)
+                dialog.connect ('response', self.print_error_dialog_response)
+                dialog.show_all ()
+
         self.update_job (jobid, jobdata)
 
     def job_removed (self, mon, jobid, eventname, event):

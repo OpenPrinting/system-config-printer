@@ -8,6 +8,9 @@
 	information and perform proxy authentication.
 	(JobViewer.job_added): Prevent traceback when there are no printer
 	state reasons.
+	(JobViewer.job_event): Display a print error dialog when a job
+	stops for any reason other than authentication required (rescued
+	from applet.py revision 2145).
 
 	* authconn.py (AuthDialog): New class.
 	(Connection._perform_authentication): Use it.
