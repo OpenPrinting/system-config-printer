@@ -387,6 +387,13 @@ class JobViewer (monitor.Watcher):
             data['job-state'] == cups.IPP_JOB_HELD and
             data.get ('job-hold-until', 'none') == 'auth-info-required' and
             not self.auth_info_dialog):
+            try:
+                cups.require ("1.9.37")
+            except:
+                debugprint ("Authentication required but "
+                            "authenticateJob() not available")
+                return
+
             # Find out which auth-info is required.
             try:
                 c = authconn.Connection (self.MainWindow)
