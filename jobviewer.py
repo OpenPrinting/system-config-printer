@@ -381,10 +381,6 @@ class JobViewer (monitor.Watcher):
             state = _("Unknown")
         store.set_value (iter, 5, state)
 
-        # Check whether authentication is required.
-        if (self.auth_info_dialog and
-            data['job-hold-until'] == 'auth-info-required'):
-
     def set_statusicon_visibility (self):
         if not self.trayicon:
             return
