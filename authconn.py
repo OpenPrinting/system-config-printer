@@ -26,8 +26,73 @@ def set_gettext_function (fn):
     global _
     _ = fn
 
+class AuthDialog(gtk.Dialog):
+    AUTH_FIELD={'username': _("Username:"),
+                'password': _("Password:"),
+                'domain': _("Domain:")}
+
+    def __init__ (self, title=_("Authentication"), parent=None,
+                  flags=gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
+                  buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                           gtk.STOCK_OK, gtk.RESPONSE_OK),
+                  auth_info_required=['username', 'password']):
+        gtk.Dialog.__init__ (self, title, parent, flags, buttons)
+        self.auth_info_required = auth_info_required
+        self.set_default_response (gtk.RESPONSE_OK)
+        self.set_border_width (6)
+        self.set_resizable (False)
+        hbox = gtk.HBox (False, 12)
+        hbox.set_border_width (6)
+        image = gtk.Image ()
+        image.set_from_stock ('gtk-dialog-authentication',
+                              gtk.ICON_SIZE_DIALOG)
+        hbox.pack_start (image, False, False, 0)
+        vbox = gtk.VBox (False, 12)
+        self.prompt_label = gtk.Label ()
+        vbox.pack_start (self.prompt_label, False, False, 0)
+
+        num_fields = len (auth_info_required)
+        table = gtk.Table (num_fields, 2)
+        table.set_row_spacings (6)
+        table.set_col_spacings (6)
+
+        self.field_entry = []
+        for i in range (num_fields):
+            field = auth_info_required[i]
+            label = gtk.Label (self.AUTH_FIELD[field])
+            label.set_alignment (0, 0.5)
+            table.attach (label, 0, 1, i, i + 1)
+            entry = gtk.Entry ()
+            entry.set_visibility (field != 'password')
+            entry.set_activates_default (True)
+            table.attach (entry, 1, 2, i, i + 1, 0, 0)
+            self.field_entry.append (entry)
+
+        vbox.pack_start (table, False, False, 0)
+        hbox.pack_start (vbox, False, False, 0)
+        self.vbox.pack_start (hbox)
+        self.vbox.show_all ()
+
+    def set_prompt (self, prompt):
+        self.prompt_label.set_markup ('<span weight="bold" size="larger">' +
+                                      prompt + '</span>')
+        self.prompt_label.set_use_markup (True)
+        self.prompt_label.set_alignment (0, 0)
+        self.prompt_label.set_line_wrap (True)
+
+    def set_auth_info (self, auth_info):
+        for i in range (len (self.field_entry)):
+            self.field_entry[i].set_text (auth_info[i])
+
+    def get_auth_info (self):
+        return map (lambda x: x.get_text (), self.field_entry)
+
+    def field_grab_focus (self, field):
+        i = self.auth_info_required.index (field)
+        self.field_entry[i].grab_focus ()
+
 class Connection:
-    def __init__ (self, parent):
+    def __init__ (self, parent=None):
         self._use_password = ''
         self._parent = parent
         self._connect ()
@@ -135,45 +200,10 @@ class Connection:
             return -1
 
         # Prompt.
-        d = gtk.Dialog (_("Authentication"), self._parent,
-                        gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
-                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                         gtk.STOCK_OK, gtk.RESPONSE_OK))
-        d.set_default_response (gtk.RESPONSE_OK)
-        d.set_border_width (6)
-        d.set_resizable (False)
-        hbox = gtk.HBox (False, 12)
-        hbox.set_border_width (6)
-        image = gtk.Image ()
-        image.set_from_stock ('gtk-dialog-authentication',
-                              gtk.ICON_SIZE_DIALOG)
-        hbox.pack_start (image, False, False, 0)
-        vbox = gtk.VBox (False, 12)
-        label = gtk.Label ('<span weight="bold" size="larger">' +
-                           self._prompt + '</span>')
-        label.set_use_markup (True)
-        label.set_alignment (0, 0)
-        label.set_line_wrap (True)
-        vbox.pack_start (label, False, False, 0)
-
-        table = gtk.Table (2, 2)
-        table.set_row_spacings (6)
-        table.set_col_spacings (6)
-        table.attach (gtk.Label ("Username:"), 0, 1, 0, 1, 0, 0)
-        username_entry = gtk.Entry ()
-        table.attach (username_entry, 1, 2, 0, 1, 0, 0)
-        table.attach (gtk.Label ("Password:"), 0, 1, 1, 2, 0, 0)
-        password_entry = gtk.Entry ()
-        password_entry.set_activates_default (True)
-        password_entry.set_visibility (False)
-        table.attach (password_entry, 1, 2, 1, 2, 0, 0)
-        vbox.pack_start (table, False, False, 0)
-        hbox.pack_start (vbox, False, False, 0)
-        d.vbox.pack_start (hbox)
-        d.show_all ()
-
-        username_entry.set_text (self._use_user)
-        password_entry.grab_focus ()
+        d = AuthDialog (parent=self._parent)
+        d.set_prompt (self._prompt)
+        d.set_auth_info ([self._use_user, ''])
+        d.field_grab_focus ('password')
         response = d.run ()
         d.hide ()
 
@@ -181,8 +211,8 @@ class Connection:
             self._cancel = True
             return -1
 
-        self._use_user = username_entry.get_text ()
-        self._use_password = password_entry.get_text ()
+        (self._use_user,
+         self._use_password) = d.get_auth_info ()
 
         if self._user != self._use_user:
             cups.setUser (self._use_user)
