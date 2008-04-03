@@ -67,6 +67,7 @@ import urllib
 import troubleshoot
 import contextmenu
 import authconn
+import monitor
 from smburi import SMBURI
 
 domain='system-config-printer'
@@ -131,7 +132,7 @@ class GtkGUI:
         result.sort()
         return result
 
-class GUI(GtkGUI):
+class GUI(GtkGUI, monitor.Watcher):
 
     def __init__(self, start_printer = None, change_ppd = False):
 
@@ -441,6 +442,8 @@ class GUI(GtkGUI):
         for option in opts:
             self.job_options_widgets[option.widget] = option
             self.job_options_buttons[option.button] = option
+
+        self.monitor = monitor.Monitor (self, monitor_jobs=False)
 
         try:
             self.populateList(start_printer, change_ppd)
@@ -2014,6 +2017,32 @@ class GUI(GtkGUI):
             name += str (suffix)
         return name
 
+    ## Watcher interface helpers
+    def printer_added_or_removed (self):
+        # Just fetch the list of printers again.  This is too simplistic.
+        printers = set()
+        paths = self.dests_iconview.get_selected_items ()
+        model = self.dests_iconview.get_model ()
+        for path in paths:
+            iter = model.get_iter (path)
+            name = model.get_value (iter, 2)
+            printers.add (name)
+        self.populateList ()
+        model = self.dests_iconview.get_model ()
+        def maybe_select (model, path, iter):
+            name = model.get_value (iter, 2)
+            if name in printers:
+                self.dests_iconview.select_path (path)
+        model.foreach (maybe_select)
+
+    ## Watcher interface
+    def printer_added (self, mon, printer):
+        monitor.Watcher.printer_added (self, monitor, printer)
+        self.printer_added_or_removed ()
+
+    def printer_removed (self, mon, printer):
+        monitor.Watcher.printer_removed (self, monitor, printer)
+        self.printer_added_or_removed ()
 
 class NewPrinterGUI(GtkGUI):
 

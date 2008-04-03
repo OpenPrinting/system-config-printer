@@ -1,5 +1,12 @@
 2008-04-03  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.printer_added_or_removed): New
+	method.
+	(GUI.printer_added): New method.
+	(GUI.printer_removed): New method.
+	(GUI.__init__): Start a monitor to watch for added and removed
+	printers.
+
 	* monitor.py (Watcher.cups_connection_error): New API method.
 	(Watcher.cups_ipp_error): New API method.
 	(Monitor.get_notifications): Add cups_connection_error and
