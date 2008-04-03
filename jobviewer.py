@@ -778,7 +778,7 @@ class JobViewer (monitor.Watcher):
             if not self.job_is_active (jobdata):
                 return
 
-            for reason in self.printer_state_reasons[printer]:
+            for reason in self.printer_state_reasons.get (printer, []):
                 if not reason.user_notified:
                     self.notify_printer_state_reason_if_important (reason)
 
