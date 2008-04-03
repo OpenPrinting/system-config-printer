@@ -6,6 +6,8 @@
 	(GUI.printer_removed): New method.
 	(GUI.__init__): Start a monitor to watch for added and removed
 	printers.
+	(GUI.dests_iconview_item_activated): If the printer is discovered,
+	don't allow the OK button to be clicked in the properties dialog.
 
 	* monitor.py (Watcher.cups_connection_error): New API method.
 	(Watcher.cups_ipp_error): New API method.

@@ -156,6 +156,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.getWidgets("MainWindow", "dests_iconview",
                         "PrinterPropertiesDialog",
+                        "btnPrinterPropertiesOK",
                         "ServerSettingsDialog",
                         "server_settings",
                         "statusbarMain",
@@ -469,6 +470,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = iconview.get_model ()
         iter = model.get_iter (path)
         name = model.get_value (iter, 2)
+        object = model.get_value (iter, 0)
         try:
             self.fillPrinterTab (name)
         except RuntimeError:
@@ -476,6 +478,7 @@ class GUI(GtkGUI, monitor.Watcher):
             return
 
         self.PrinterPropertiesDialog.set_transient_for (self.MainWindow)
+        self.btnPrinterPropertiesOK.set_sensitive (not object.discovered)
         finished = False
         while not finished:
             response = self.PrinterPropertiesDialog.run ()
