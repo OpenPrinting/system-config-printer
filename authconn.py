@@ -64,10 +64,10 @@ class AuthDialog(gtk.Dialog):
             table.attach (label, 0, 1, i, i + 1)
             entry = gtk.Entry ()
             entry.set_visibility (field != 'password')
-            entry.set_activates_default (True)
             table.attach (entry, 1, 2, i, i + 1, 0, 0)
             self.field_entry.append (entry)
 
+        self.field_entry[num_fields - 1].set_activates_default (True)
         vbox.pack_start (table, False, False, 0)
         hbox.pack_start (vbox, False, False, 0)
         self.vbox.pack_start (hbox)
