@@ -1892,6 +1892,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     # About dialog
     def on_about_activate(self, widget):
+        self.AboutDialog.set_transient_for (self.MainWindow)
         self.AboutDialog.run()
         self.AboutDialog.hide()
 
