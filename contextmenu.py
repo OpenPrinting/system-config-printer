@@ -128,10 +128,12 @@ class PrinterContextMenu:
                 specific_dests.append (name)
             viewer = jobviewer.JobViewer (None, None, my_jobs=False,
                                           specific_dests=specific_dests,
-                                          exit_handler=self.on_jobviewer_exit)
+                                          exit_handler=self.on_jobviewer_exit,
+                                          parent=self.parent.MainWindow)
         else:
             viewer = jobviewer.JobViewer (None, None, my_jobs=False,
-                                          exit_handler=self.on_jobviewer_exit)
+                                          exit_handler=self.on_jobviewer_exit,
+                                          parent=self.parent.MainWindow)
 
         self.jobviewers.append (viewer)
 

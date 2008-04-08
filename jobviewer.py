@@ -52,7 +52,8 @@ SEARCHING_ICON="document-print-preview"
 class JobViewer (monitor.Watcher):
     def __init__(self, bus=None, loop=None, service_running=False,
                  trayicon=False, suppress_icon_hide=False,
-                 my_jobs=True, specific_dests=None, exit_handler=None):
+                 my_jobs=True, specific_dests=None, exit_handler=None,
+                 parent=None):
         self.loop = loop
         self.service_running = service_running
         self.trayicon = trayicon
@@ -104,6 +105,10 @@ class JobViewer (monitor.Watcher):
         self.MainWindow = self.xml.get_widget ('MainWindow')
         self.MainWindow.set_icon_name (ICON)
         self.MainWindow.hide ()
+
+        if parent:
+            debugprint ("Set transient for" + repr (parent))
+            self.MainWindow.set_transient_for (parent)
 
         self.statusbar = self.xml.get_widget ('statusbar')
         self.statusbar_set = False
