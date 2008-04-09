@@ -160,6 +160,8 @@ class Dialog:
         view.append_column (col)
         self.view = view
 
+        view.get_selection ().connect ('changed', self.selection_changed)
+
         scrollwin = gtk.ScrolledWindow ()
         scrollwin.set_shadow_type (gtk.SHADOW_IN)
         scrollwin.set_policy (gtk.POLICY_AUTOMATIC,
@@ -175,6 +177,13 @@ class Dialog:
                 self.system_default_button = button
             elif button.get_label () == _("_Set Default"):
                 self.set_default_button = button
+
+    def selection_changed (self, selection):
+        (model, iter) = selection.get_selected ()
+        if iter:
+            self.last_iter_selected = iter
+        else:
+            selection.select_iter (self.last_iter_selected)
 
     def run (self):
         c = cups.Connection ()
