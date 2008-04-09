@@ -1,3 +1,11 @@
+2008-04-09  Tim Waugh  <twaugh@redhat.com>
+
+	* my-default-printer.py (Dialog.selection_changed): New method.
+	Prevent selected item being de-selected.
+	(Dialog.__init__): Connect TreeSelection changed signal to
+	selection_changed method.
+	This fixes Ubuntu #214579.
+
 2008-04-01  Tim Waugh  <twaugh@redhat.com>
 
 	* applet.py (JobManager.check_still_connecting): Prevent traceback
