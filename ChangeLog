@@ -1,3 +1,11 @@
+2008-04-09  Tim Waugh  <twaugh@redhat.com>
+
+	* my-default-printer.py (Dialog.selection_changed): New method.
+	Prevent selected item being de-selected.
+	(Dialog.__init__): Connect TreeSelection changed signal to
+	selection_changed method.
+	This fixes Ubuntu #214579.
+
 2008-04-08  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.on_about_activate): Make the About
