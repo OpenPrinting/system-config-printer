@@ -1,3 +1,11 @@
+2008-04-10  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.get_notifications): Update after
+	notify-get-interval period if we haven't ever had a D-Bus signal
+	from CUPS.
+	(Monitor.__init__): Initialise flag.
+	(Monitor.handle_dbus_signal): Set flag.
+
 2008-04-09  Tim Waugh  <twaugh@redhat.com>
 
 	* my-default-printer.py (Dialog.selection_changed): New method.

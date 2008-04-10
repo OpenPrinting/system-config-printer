@@ -131,6 +131,7 @@ class Monitor:
         self.connecting_timers = {}
         self.still_connecting = set()
         self.connecting_to_device = {}
+        self.received_any_dbus_signals = False
 
         if bus == None:
             bus = dbus.SystemBus ()
@@ -416,6 +417,14 @@ class Monitor:
         for (fn, args) in deferred_calls:
             fn (*args)
 
+        # Update again when we're told to.  If we're getting CUPS
+        # D-Bus signals, however, rely on those instead.
+        if not self.received_any_dbus_signals:
+            gobject.source_remove (self.update_timer)
+            interval = 1000 * notifications['notify-get-interval']
+            self.update_timer = gobject.timeout_add (interval,
+                                                     self.get_notifications)
+
         return False
 
     def refresh(self):
@@ -528,6 +537,8 @@ class Monitor:
     def handle_dbus_signal(self, *args):
         gobject.source_remove (self.update_timer)
         self.update_timer = gobject.timeout_add (200, self.get_notifications)
+        if not self.received_any_signals:
+            self.received_any_dbus_signals = True
 
 if __name__ == '__main__':
     set_debugging (True)
