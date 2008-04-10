@@ -1803,6 +1803,7 @@ class GUI(GtkGUI, monitor.Watcher):
     # Quit
     
     def on_quit_activate(self, widget, event=None):
+        self.monitor.cleanup ()
         self.printer_context_menu.cleanup ()
         gtk.main_quit()
 

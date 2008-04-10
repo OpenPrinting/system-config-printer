@@ -1,5 +1,8 @@
 2008-04-10  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.on_quit_activate): Clean up
+	monitor instance so we don't leak CUPS subscriptions.
+
 	* monitor.py (Monitor.get_notifications): Update after
 	notify-get-interval period if we haven't ever had a D-Bus signal
 	from CUPS.
