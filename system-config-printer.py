@@ -661,7 +661,8 @@ class GUI(GtkGUI, monitor.Watcher):
                         tip = _("Local printer")
 
                 try:
-                    pixbuf = theme.load_icon (icon, 48, 0)
+                    (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
+                    pixbuf = theme.load_icon (icon, w, 0)
                 except gobject.GError:
                     # Not in theme.
                     for p in [iconpath, 'icons/']:
@@ -673,7 +674,8 @@ class GUI(GtkGUI, monitor.Watcher):
                             pass
 
                 if name == self.default_printer:
-                    default_emblem = theme.load_icon ('emblem-default', 24, 0)
+                    (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
+                    default_emblem = theme.load_icon ('emblem-default', w/2, 0)
                     copy = pixbuf.copy ()
                     default_emblem.composite (copy, 0, 0,
                                               copy.get_width (),
