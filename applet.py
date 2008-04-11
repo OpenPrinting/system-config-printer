@@ -269,7 +269,7 @@ if __name__ == '__main__':
 
             ###
             class WaitForJobs:
-                MIN_CHECK_INTERVAL=5 # seconds
+                MIN_CHECK_INTERVAL=60 # seconds
 
                 def __init__ (self):
                     self.last_check = time.time()
