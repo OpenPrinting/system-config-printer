@@ -1255,56 +1255,45 @@ if trayicon:
               PROGRAM_NAME
 
 if trayicon:
-    # Start off just waiting for print jobs or printer errors.
-    def any_jobs_or_errors ():
+    # Start off just waiting for print jobs.
+    def any_jobs ():
         try:
             c = cups.Connection ()
             if len (c.getJobs (my_jobs=True)):
-                return True
-            reason = worst_printer_state_reason (connection=c)
-            if reason != None and reason.get_level () >= StateReason.WARNING:
                 return True
         except:
             pass
 
         return False
 
-    if not any_jobs_or_errors ():
+    if not any_jobs ():
 
         ###
         class WaitForJobs:
-            MIN_CHECK_INTERVAL=5 # seconds
-
             def __init__ (self):
-                self.last_check = time.time()
                 self.timer = None
+
+            def handle_dbus_signal (self, *args):
+                if self.timer:
+                    gobject.source_remove (self.timer)
+                self.timer = gobject.timeout_add (200, self.check_for_jobs)
 
             def check_for_jobs (self, *args):
-                now = time.time ()
-                since_last_check = now - self.last_check
-                if since_last_check < self.MIN_CHECK_INTERVAL:
-                    if self.timer != None:
-                        return
-
-                    self.timer = gobject.timeout_add (self.MIN_CHECK_INTERVAL *
-                                                      1000,
-                                                      self.check_for_jobs)
-                    return
-
-                self.timer = None
-                self.last_check = now
-                if any_jobs_or_errors ():
+                if any_jobs ():
                     waitloop.quit ()
+
+                # Don't run this timer again.
+                return False
         ###
 
         jobwaiter = WaitForJobs()
-        bus.add_signal_receiver (jobwaiter.check_for_jobs,
+        bus.add_signal_receiver (jobwaiter.handle_dbus_signal,
                                  path="/com/redhat/PrinterSpooler",
                                  dbus_interface="com.redhat.PrinterSpooler")
         waitloop = gobject.MainLoop ()
         waitloop.run()
         waitloop = None
-        bus.remove_signal_receiver (jobwaiter.check_for_jobs,
+        bus.remove_signal_receiver (jobwaiter.handle_dbus_signal,
                                     path="/com/redhat/PrinterSpooler",
                                     dbus_interface="com.redhat.PrinterSpooler")
 
