@@ -254,7 +254,7 @@ if __name__ == '__main__':
                 PROGRAM_NAME
 
     if trayicon and get_debugging () == False:
-        # Start off just waiting for print jobs or printer errors.
+        # Start off just waiting for print jobs.
         def any_jobs ():
             try:
                 c = cups.Connection ()
