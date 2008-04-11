@@ -166,7 +166,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         "chkServerBrowse", "chkServerShare",
                         "chkServerShareAny",
                         "chkServerRemoteAdmin", "chkServerAllowCancelAll",
-                        "chkServerLogDebug",
+                        "chkServerLogDebug", "hboxServerBrowse",
 
                         "ntbkPrinter",
                          "entPDescription", "entPLocation",
@@ -247,6 +247,12 @@ class GUI(GtkGUI, monitor.Watcher):
         self.AboutDialog.set_version(config.VERSION)
         self.AboutDialog.set_icon_name('printer')
         self.AboutDialog.set_logo_icon_name('printer')
+
+        # Set up "Problems?" link button
+        problems = gtk.LinkButton ('', label=_("Problems?"))
+        self.hboxServerBrowse.pack_end (problems, False, False, 0)
+        problems.connect ('clicked', self.on_problems_linkbutton_clicked)
+        problems.show ()
 
         self.static_tabs = 3
 
@@ -518,6 +524,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 # Not authorized.
                 return
 
+            self.ServerSettingsDialog.set_transient_for (self.MainWindow)
             response = self.ServerSettingsDialog.run ()
             if response == gtk.RESPONSE_OK:
                 if not self.save_serversettings ():
@@ -1888,7 +1895,8 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_troubleshoot_activate(self, widget):
         if not self.__dict__.has_key ('troubleshooter'):
-            self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit)
+            self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit,
+                                                    parent=self.MainWindow)
 
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
@@ -1975,6 +1983,12 @@ class GUI(GtkGUI, monitor.Watcher):
             self.fillServerTab()
         except:
             nonfatalException()
+
+    ### The "Problems?" clickable label
+    def on_problems_linkbutton_clicked (self, *args):
+        if not self.__dict__.has_key ('troubleshooter'):
+            self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit,
+                                                    parent=self.ServerSettingsDialog)
 
     # ====================================================================
     # == New Printer Dialog ==============================================
