@@ -269,9 +269,12 @@ if __name__ == '__main__':
 
             ###
             class WaitForJobs:
+                def __init__ (self):
+                    self.timer = None
+
                 def handle_dbus_signal (self, *args):
-                    self.received_any_dbus_signals = True
-                    gobject.source_remove (self.timer)
+                    if self.timer:
+                        gobject.source_remove (self.timer)
                     self.timer = gobject.timeout_add (200, self.check_for_jobs)
 
                 def check_for_jobs (self, *args):
@@ -284,13 +287,13 @@ if __name__ == '__main__':
             ###
 
             jobwaiter = WaitForJobs()
-            bus.add_signal_receiver (jobwaiter.check_for_jobs,
+            bus.add_signal_receiver (jobwaiter.handle_dbus_signal,
                                      path="/com/redhat/PrinterSpooler",
                                      dbus_interface="com.redhat.PrinterSpooler")
             waitloop = gobject.MainLoop ()
             waitloop.run()
             waitloop = None
-            bus.remove_signal_receiver (jobwaiter.check_for_jobs,
+            bus.remove_signal_receiver (jobwaiter.handle_dbus_signal,
                                         path="/com/redhat/PrinterSpooler",
                                         dbus_interface="com.redhat.PrinterSpooler")
 
