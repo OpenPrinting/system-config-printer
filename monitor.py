@@ -537,7 +537,7 @@ class Monitor:
     def handle_dbus_signal(self, *args):
         gobject.source_remove (self.update_timer)
         self.update_timer = gobject.timeout_add (200, self.get_notifications)
-        if not self.received_any_signals:
+        if not self.received_any_dbus_signals:
             self.received_any_dbus_signals = True
 
 if __name__ == '__main__':
