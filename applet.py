@@ -269,28 +269,18 @@ if __name__ == '__main__':
 
             ###
             class WaitForJobs:
-                MIN_CHECK_INTERVAL=60 # seconds
-
-                def __init__ (self):
-                    self.last_check = time.time()
-                    self.timer = None
+                def handle_dbus_signal (self, *args):
+                    self.received_any_dbus_signals = True
+                    gobject.source_remove (self.timer)
+                    self.timer = gobject.timeout_add (200, self.check_for_jobs)
 
                 def check_for_jobs (self, *args):
-                    now = time.time ()
-                    since_last_check = now - self.last_check
-                    if since_last_check < self.MIN_CHECK_INTERVAL:
-                        if self.timer != None:
-                            return
-
-                        self.timer = gobject.timeout_add (self.MIN_CHECK_INTERVAL *
-                                                          1000,
-                                                          self.check_for_jobs)
-                        return
-
-                    self.timer = None
-                    self.last_check = now
+                    debugprint ("checking for jobs")
                     if any_jobs ():
                         waitloop.quit ()
+
+                    # Don't run this timer again.
+                    return False
             ###
 
             jobwaiter = WaitForJobs()
