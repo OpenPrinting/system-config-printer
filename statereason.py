@@ -95,7 +95,11 @@ class StateReason:
             }
         try:
             (title, text) = messages[self.get_reason ()]
-            text = text % self.get_printer ()
+            try:
+                text = text % self.get_printer ()
+            except TypeError:
+                # Probably an incorrect translation, missing a '%s'.
+                pass
         except KeyError:
             if self.get_level () == self.REPORT:
                 title = _("Printer report")
