@@ -1,8 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2007 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -60,14 +60,34 @@ class LpdServer:
         if not s: return False
         print name
         
-        s.send('\0x02%s\n' % name) # cmd send job to queue
-        data = s.recv(1024) # receive status
-        print repr(data)
-        s.close()
+        try:
+            s.send('\0x02%s\n' % name) # cmd send job to queue
+            data = s.recv(1024) # receive status
+            print repr(data)
+        except socket.error, msg:
+            print msg
+            try:
+                s.close ()
+            except:
+                pass
+
+            return False
+
         if len(data)>0 and data[0]==0:
-            s.send('\0x01\n') # abort job again
+            try:
+                s.send('\0x01\n') # abort job again
+                s.close ()
+            except:
+                pass
+
             result.append(name)
             return True
+
+        try:
+            s.close()
+        except:
+            pass
+
         return False
 
     def probe(self):
