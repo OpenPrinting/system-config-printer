@@ -2389,7 +2389,9 @@ class GUI:
             if nr == 2:
                 self.btnNPBack.hide()
                 self.btnNPForward.show()
-                self.btnNPForward.set_sensitive(True)
+                self.btnNPForward.set_sensitive(bool(
+                        self.rbtnNPFoomatic.get_active() or
+                        self.filechooserPPD.get_filename()))
                 return
             else:
                 self.btnNPBack.show()
