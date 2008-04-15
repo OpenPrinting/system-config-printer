@@ -29,7 +29,6 @@ import gtk
 import gtk.glade
 import monitor
 import pango
-import pynotify
 import sys
 import time
 
