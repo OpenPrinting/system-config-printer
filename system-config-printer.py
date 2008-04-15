@@ -2853,7 +2853,17 @@ class NewPrinterGUI(GtkGUI):
             if nr == 2:
                 self.btnNPBack.hide()
                 self.btnNPForward.show()
-                self.btnNPForward.set_sensitive(True)
+                downloadable_selected = False
+                if self.rbtnNPDownloadableDriverSearch.get_active ():
+                    combobox = self.cmbNPDownloadableDriverFoundPrinters
+                    iter = combobox.get_active_iter ()
+                    if iter and combobox.get_model ().get_value (iter, 1):
+                        downloadable_selected = True
+
+                self.btnNPForward.set_sensitive(bool(
+                        self.rbtnNPFoomatic.get_active() or
+                        self.filechooserPPD.get_filename() or
+                        downloadable_selected))
                 return
             else:
                 self.btnNPBack.show()
