@@ -48,6 +48,9 @@ def state_reason_is_harmless (reason):
         return True
     return False
 
+global cached_printer_state_reasons
+cached_printer_state_reasons = {} # indexed by printer, then by reason
+
 def collect_printer_state_reasons (connection):
     result = {}
     printers = connection.getPrinters ()
@@ -63,7 +66,21 @@ def collect_printer_state_reasons (connection):
                 continue
             if not result.has_key (name):
                 result[name] = []
-            result[name].append (StateReason (name, reason))
+
+            try:
+                r = cached_printer_state_reasons[name][reason]
+            except KeyError:
+                r = StateReason (name, reason)
+                r.user_notified = False
+
+            result[name].append (r)
+
+        try:
+            cached_printer_state_reasons[name] = {}
+            for r in result[name]:
+                cached_printer_state_reasons[name][r.get_reason ()] = r
+        except KeyError:
+            pass
     return result
 
 def worst_printer_state_reason (printer_reasons=None, connection=None):
@@ -329,6 +346,7 @@ class JobManager:
 
     def check_still_connecting(self):
         """Timer callback to check on connecting-to-device reasons."""
+        debugprint ("still-connecting timer fired")
         if self.update_connecting_devices ():
             self.get_notifications ()
 
@@ -373,7 +391,6 @@ class JobManager:
 
     def check_state_reasons(self, my_printers=set(), printer_jobs={}):
         # Look for any new reasons since we last checked.
-        old_reasons_seen_keys = self.reasons_seen.keys ()
         reasons_now = set()
         need_recheck = False
         for printer, reasons in self.printer_state_reasons.iteritems ():
@@ -398,7 +415,8 @@ class JobManager:
 
         if need_recheck:
             # Check on them again in a minute's time.
-            gobject.timeout_add (CONNECTING_TIMEOUT * 1000,
+            debugprint ("still-connecting timer started")
+            gobject.timeout_add ((1 + CONNECTING_TIMEOUT) * 1000,
                                  self.check_still_connecting)
 
         self.update_connecting_devices ()
@@ -476,45 +494,42 @@ class JobManager:
                         break
 
                 if have_processing_job:
-                    # This will be in our list of reasons we've already seen,
-                    # which ordinarily stops us notifying the user.  In this
-                    # case, pretend we haven't seen it before.
                     self.still_connecting.add (printer)
-                    old_reasons_seen_keys.remove (reason.get_tuple ())
-                    reason = StateReason (printer,
-                                          reason.get_reason () + "-error")
 
         if (self.trayicon and reason != None and
-            reason.get_level () >= StateReason.WARNING):
-            if not reason.get_tuple () in old_reasons_seen_keys:
-                level = reason.get_level ()
-                if level == StateReason.WARNING:
-                    notify_urgency = pynotify.URGENCY_LOW
-                    timeout = pynotify.EXPIRES_DEFAULT
-                else:
-                    notify_urgency = pynotify.URGENCY_NORMAL
-                    timeout = pynotify.EXPIRES_NEVER
+            (not reason.user_notified) and
+            (reason.get_level () >= StateReason.WARNING or
+             (reason.get_reason () == 'connecting-to-device' and
+              reason.get_printer () in self.still_connecting))):
+            reason.user_notified = True
+            level = reason.get_level ()
+            if level == StateReason.WARNING:
+                notify_urgency = pynotify.URGENCY_LOW
+                timeout = pynotify.EXPIRES_DEFAULT
+            else:
+                notify_urgency = pynotify.URGENCY_NORMAL
+                timeout = pynotify.EXPIRES_NEVER
 
-                (title, text) = reason.get_description ()
+            (title, text) = reason.get_description ()
 
-                if self.notify:
-                    self.notify.close ()
-                self.notify = pynotify.Notification (title, text, 'printer')
-                self.set_statusicon_visibility ()
-                # Let the icon show itself, ready for the notification
-                while gtk.events_pending ():
-                    gtk.main_iteration ()
+            if self.notify:
+                self.notify.close ()
+            self.notify = pynotify.Notification (title, text, 'printer')
+            self.set_statusicon_visibility ()
+            # Let the icon show itself, ready for the notification
+            while gtk.events_pending ():
+                gtk.main_iteration ()
 
-                self.notify.attach_to_status_icon (self.statusicon)
+            self.notify.attach_to_status_icon (self.statusicon)
 
-                while gtk.events_pending ():
-                    gtk.main_iteration ()
+            while gtk.events_pending ():
+                gtk.main_iteration ()
 
-                self.notify.set_urgency (notify_urgency)
-                self.notify.set_timeout (timeout)
-                self.notify.connect ('closed', self.on_notification_closed)
-                self.notify.show ()
-                self.notified_reason = reason
+            self.notify.set_urgency (notify_urgency)
+            self.notify.set_timeout (timeout)
+            self.notify.connect ('closed', self.on_notification_closed)
+            self.notify.show ()
+            self.notified_reason = reason
 
     def on_notification_closed(self, notify):
         self.notify = None
@@ -647,7 +662,17 @@ class JobManager:
                             break
                         if state_reason_is_harmless (reason):
                             continue
-                        reasons.append (StateReason (name, reason))
+                        try:
+                            r = cached_printer_state_reasons[name][reason]
+                        except KeyError:
+                            r = StateReason (name, reason)
+                            r.user_notified = False
+
+                        reasons.append (r)
+
+                    cached_printer_state_reasons[name] = {}
+                    for r in reasons:
+                        cached_printer_state_reasons[name][r.get_reason ()] = r
                     self.printer_state_reasons[name] = reasons
                 continue
 
@@ -752,6 +777,8 @@ class JobManager:
 
         self.update (jobs)
         self.jobs = jobs
+
+        debugprint (cached_printer_state_reasons)
         return False
 
     def refresh(self):

@@ -1,3 +1,13 @@
+2008-04-15  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (cached_printer_state_reasons): New global.
+	(collect_printer_state_reasons): Use cached state reason objects
+	for better notification behaviour.
+	(JobManager.get_notifications): Likewise.
+	(JobManager.check_state_reasons): Check user_notified attribute
+	(bug #442491).
+	(JobManager.check_state_reasons): Fix timer period.
+
 2008-04-13  Tim Waugh  <twaugh@redhat.com>
 
 	* statereason.py (StateReason.get_description): Don't crash on
