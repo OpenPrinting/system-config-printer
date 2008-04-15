@@ -2066,6 +2066,7 @@ class GUI(GtkGUI):
                 return
 
         self.entCopyName.set_text(self.printer.name)
+        self.NewPrinterName.set_transient_for (self.MainWindow)
         result = self.NewPrinterName.run()
         self.NewPrinterName.hide()
 
@@ -2073,9 +2074,9 @@ class GUI(GtkGUI):
             return
 
         self.printer.name = self.entCopyName.get_text()
-        self.printer.class_members = [] # for classes make shure all members
+        self.printer.class_members = [] # for classes make sure all members
                                         # will get added 
-        
+
         self.save_printer(self.printer, saveall=True)
         self.populateList(start_printer=self.printer.name)
 
