@@ -1424,7 +1424,9 @@ class GUI:
                 if option not in self.server_side_options:
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
-                if option.is_changed() or saveall:
+                if (option.is_changed() or
+                    saveall and
+                    option.get_current_value () != option.system_default):
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
