@@ -269,8 +269,23 @@ if __name__ == '__main__':
 
             ###
             class WaitForJobs:
-                def __init__ (self):
+                DBUS_PATH="/com/redhat/PrinterSpooler"
+                DBUS_IFACE="com.redhat.PrinterSpooler"
+
+                def __init__ (self, bus):
+                    self.bus = bus
                     self.timer = None
+                    bus.add_signal_receiver (self.handle_dbus_signal,
+                                             path=self.DBUS_PATH,
+                                             dbus_interface=self.DBUS_IFACE)
+
+                def __del__ (self):
+                    bus = self.bus
+                    bus.remove_signal_receiver (self.handle_dbus_signal,
+                                                path=self.DBUS_PATH,
+                                                dbus_interface=self.DBUS_IFACE)
+                    if self.timer:
+                        gobject.source_remove (self.timer)
 
                 def handle_dbus_signal (self, *args):
                     if self.timer:
@@ -280,21 +295,17 @@ if __name__ == '__main__':
                 def check_for_jobs (self, *args):
                     debugprint ("checking for jobs")
                     if any_jobs ():
+                        gobject.source_remove (self.timer)
                         waitloop.quit ()
 
                     # Don't run this timer again.
                     return False
             ###
 
-            jobwaiter = WaitForJobs()
-            bus.add_signal_receiver (jobwaiter.handle_dbus_signal,
-                                     path="/com/redhat/PrinterSpooler",
-                                     dbus_interface="com.redhat.PrinterSpooler")
+            jobwaiter = WaitForJobs(bus)
             waitloop = gobject.MainLoop ()
             waitloop.run()
-            bus.remove_signal_receiver (jobwaiter.handle_dbus_signal,
-                                        path="/com/redhat/PrinterSpooler",
-                                        dbus_interface="com.redhat.PrinterSpooler")
+            del jobwaiter
             waitloop = None
 
     if viewer == None:
