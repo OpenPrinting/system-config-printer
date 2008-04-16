@@ -156,6 +156,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.getWidgets("MainWindow", "dests_iconview",
                         "PrinterPropertiesDialog",
+                        "tvPrinterProperties",
                         "btnPrinterPropertiesOK",
                         "ServerSettingsDialog",
                         "server_settings",
@@ -314,6 +315,13 @@ class GUI(GtkGUI, monitor.Watcher):
             buttons=gtk.BUTTONS_OK)
         
         self.xml.signal_autoconnect(self)
+
+        # Printer Properties tree view
+        col = gtk.TreeViewColumn ('', gtk.CellRendererText (), markup=0)
+        self.tvPrinterProperties.append_column (col)
+        sel = self.tvPrinterProperties.get_selection ()
+        sel.connect ('changed', self.on_tvPrinterProperties_selection_changed)
+        sel.set_mode (gtk.SELECTION_SINGLE)
 
         # Job Options widgets.
         opts = [ options.OptionAlwaysShown ("copies", int, 1,
@@ -485,6 +493,11 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.PrinterPropertiesDialog.set_transient_for (self.MainWindow)
         self.btnPrinterPropertiesOK.set_sensitive (not object.discovered)
+        treeview = self.tvPrinterProperties
+        sel = treeview.get_selection ()
+        sel.select_path ((0,))
+        self.on_tvPrinterProperties_selection_changed (sel)
+        self.on_tvPrinterProperties_cursor_changed (treeview)
         finished = False
         while not finished:
             response = self.PrinterPropertiesDialog.run ()
@@ -1089,6 +1102,7 @@ class GUI(GtkGUI, monitor.Watcher):
         installablebold = False
         optionsbold = False
         if self.conflicts:
+            debugprint ("Conflicts detected")
             self.btnConflict.show()
             for option in self.conflicts:
                 if option.tab_label == self.lblPInstallOptions:
@@ -1105,6 +1119,18 @@ class GUI(GtkGUI, monitor.Watcher):
             optionstext = "<b>%s</b>" % optionstext
         self.lblPInstallOptions.set_markup (installabletext)
         self.lblPOptions.set_markup (optionstext)
+
+        store = self.tvPrinterProperties.get_model ()
+        if store:
+            for n in range (self.ntbkPrinter.get_n_pages ()):
+                page = self.ntbkPrinter.get_nth_page (n)
+                label = self.ntbkPrinter.get_tab_label (page)
+                if label == self.lblPInstallOptions:
+                    iter = store.get_iter ((n,))
+                    store.set_value (iter, 0, installabletext)
+                elif label == self.lblPOptions:
+                    iter = store.get_iter ((n,))
+                    store.set_value (iter, 0, optionstext)
 
     def on_btnConflict_clicked(self, button):
         message = _("There are conflicting options.\n"
@@ -1284,6 +1310,28 @@ class GUI(GtkGUI, monitor.Watcher):
         #self.ppd.markDefaults()
         for option in self.options.itervalues():
             option.writeback()
+
+    ### Printer Properties tree view signal handlers
+    def on_tvPrinterProperties_selection_changed (self, selection):
+        # Prevent selection from being de-selected.
+        (model, iter) = selection.get_selected ()
+        if iter:
+            self.printer_properties_last_iter_selected = iter
+        else:
+            try:
+                iter = self.printer_properties_last_iter_selected
+            except AttributeError:
+                # Not set yet.
+                return
+
+            if model.iter_is_valid (iter):
+                selection.select_iter (iter)
+
+    def on_tvPrinterProperties_cursor_changed (self, treeview):
+        # Adjust notebook to reflect selected item.
+        (store, iter) = treeview.get_selection ().get_selected ()
+        n = store.get_value (iter, 1)
+        self.ntbkPrinter.set_current_page (n)
 
     # set default printer
     def set_default_printer (self, name):
@@ -1635,6 +1683,18 @@ class GUI(GtkGUI, monitor.Watcher):
         else:
             # real Printer
             self.fillPrinterOptions(name, editablePPD)
+
+        # Now update the tree view (which we use instead of the notebook tabs).
+        store = gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_INT)
+        self.ntbkPrinter.set_show_tabs (False)
+        for n in range (self.ntbkPrinter.get_n_pages ()):
+            page = self.ntbkPrinter.get_nth_page (n)
+            label = self.ntbkPrinter.get_tab_label (page)
+            iter = store.append (None)
+            store.set_value (iter, 0, label.get_text ())
+            store.set_value (iter, 1, n)
+        sel = self.tvPrinterProperties.get_selection ()
+        self.tvPrinterProperties.set_model (store)
 
         self.changed = set() # of options
         self.setDataButtonState()

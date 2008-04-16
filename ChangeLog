@@ -1,3 +1,20 @@
+2008-04-16  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade (PrinterPropertiesDialog): Use a
+	TreeView to display option groupings instead of Notebook tabs.
+	* system-config-printer.py (GUI.__init__): Set tree view column,
+	selection mode and signals.
+	(GUI.dests_iconview_item_activated): Select first page of the
+	properties notebook.
+	(GUI.on_tvPrinterProperties_selection_changed): Prevent selection
+	from being de-selected.
+	(GUI.on_tvPrinterProperties_cursor_changed): Flip notebook to
+	correct page.
+	(GUI.fillPrinterTab): Fill in tree view rows according to notebook
+	tabs.
+	(GUI.setDataButtonState): Display conflicts using bold markup in
+	the tree view.
+
 2008-04-15  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.save_printer): Avoid copied queue
