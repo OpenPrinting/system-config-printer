@@ -292,10 +292,10 @@ if __name__ == '__main__':
                                      dbus_interface="com.redhat.PrinterSpooler")
             waitloop = gobject.MainLoop ()
             waitloop.run()
-            waitloop = None
             bus.remove_signal_receiver (jobwaiter.handle_dbus_signal,
                                         path="/com/redhat/PrinterSpooler",
                                         dbus_interface="com.redhat.PrinterSpooler")
+            waitloop = None
 
     if viewer == None:
         import jobviewer
