@@ -1885,19 +1885,89 @@ class GUI(GtkGUI, monitor.Watcher):
         gtk.main_quit()
 
     # Copy
-        
+
+    def copy_printer (self, new_name):
+        self.printer.name = new_name
+        self.printer.class_members = [] # for classes make sure all members
+                                        # will get added 
+
+        return self.save_printer(self.printer, saveall=True)
+
+    def rename_printer (self, old_name, new_name):
+        if old_name == new_name:
+            return
+
+        try:
+            self.fillPrinterTab (old_name)
+        except RuntimeError:
+            # Perhaps cupsGetPPD2 failed for a browsed printer
+            pass
+
+        jobs = self.printer.jobsQueued ()
+        if len (jobs) > 0:
+            raise RuntimeError
+
+        rejecting = self.printer.rejecting
+        if not rejecting:
+            self.printer.setAccepting (False)
+            jobs = self.printer.jobsQueued ()
+            if len (jobs) > 0:
+                self.printer.setAccepting (True)
+                raise RuntimeError
+
+        if self.copy_printer (new_name):
+            # Failure.
+            self.populateList ()
+            return
+
+        # Restore rejecting state.
+        if not rejecting:
+            try:
+                self.printer.setAccepting (True)
+            except cups.HTTPError, (s,):
+                self.show_HTTP_Error (s)
+                # Not fatal.
+            except cups.IPPError, (e, msg):
+                self.show_IPP_Error, (e, msg)
+                # Not fatal.
+
+        # Fix up default printer.
+        if self.default_printer == old_name:
+            try:
+                self.printer.setAsDefault ()
+            except cups.HTTPError, (s,):
+                self.show_HTTP_Error (s)
+                # Not fatal.
+            except CUPS.IPPError, (e, msg):
+                self.show_IPP_Error (e, msg)
+                # Not fatal.
+
+        # Finally, delete the old printer.
+        try:
+            self.cups.deletePrinter (old_name)
+        except cups.HTTPError, (s,):
+            self.show_HTTP_Error (s)
+            # Not fatal
+        except cups.IPPError, (e, msg):
+            self.show_IPP_Error (e, msg)
+            # Not fatal.
+
+        # ..and select the new printer.
+        def select_new_printer (model, path, iter):
+            name = model.get_value (iter, 2)
+            print name, new_name
+            if name == new_name:
+                self.dests_iconview.select_path (path)
+        self.populateList ()
+        model = self.dests_iconview.get_model ()
+        model.foreach (select_new_printer)
+
     def on_copy_activate(self, widget):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (paths[0])
         name = model.get_value (iter, 2)
-        try:
-            self.fillPrinterTab (name)
-        except RuntimeError:
-            # Perhaps cupsGetPPD2 failed for a browsed printer
-            pass
-
         self.entCopyName.set_text(name)
         self.NewPrinterName.set_transient_for (self.MainWindow)
         result = self.NewPrinterName.run()
@@ -1906,11 +1976,13 @@ class GUI(GtkGUI, monitor.Watcher):
         if result == gtk.RESPONSE_CANCEL:
             return
 
-        self.printer.name = self.entCopyName.get_text()
-        self.printer.class_members = [] # for classes make sure all members
-                                        # will get added 
+        try:
+            self.fillPrinterTab (name)
+        except RuntimeError:
+            # Perhaps cupsGetPPD2 failed for a browsed printer
+            pass
 
-        self.save_printer(self.printer, saveall=True)
+        self.copy_printer (self.entCopyName.get_text ())
         self.populateList(start_printer=self.printer.name)
 
     def on_entCopyName_changed(self, widget):

@@ -218,8 +218,8 @@ class Printer:
         else:
             self.connection.setPrinterUsersAllowed(self.name, except_users)
 
-    def testsQueued(self):
-        """Returns a list of job IDs for test pages in the queue for this
+    def jobsQueued(self, only_tests=False):
+        """Returns a list of job IDs for jobs in the queue for this
         printer."""
         ret = []
         try:
@@ -236,9 +236,16 @@ class Printer:
             if uri != self.name:
                 continue
 
-            if attrs.has_key ('job-name') and attrs['job-name'] == 'Test Page':
+            if (not only_tests or
+                (attrs.has_key ('job-name') and
+                 attrs['job-name'] == 'Test Page')):
                 ret.append (id)
         return ret
+
+    def testsQueued(self):
+        """Returns a list of job IDs for test pages in the queue for this
+        printer."""
+        return self.jobsQueued (only_tests=True)
 
     def setAsDefault(self):
         self.connection.setDefault(self.name)

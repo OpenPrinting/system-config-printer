@@ -4,6 +4,19 @@
 
 2008-04-16  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.copy_printer): New method.
+	(GUI.on_copy_activate): Use it.
+	(GUI.rename_printer): New method.
+
+	* cupshelpers.py (Printer.jobsQueued): New method.
+	(Printer.testsQueued): Use it.
+
+	* contextmenu.py
+	(PrinterContextMenu.on_printer_context_rename_activate): New
+	method.
+	(PrinterContextMenu.printer_name_edited): New method.
+	(PrinterContextMenu.printer_name_edit_cancel): New method.
+
 	* system-config-printer.py (CUPS_server_hostname): New function.
 	(GUI.setConnected): Use it.
 	(GUI.dests_iconview_item_activated): Set printer properties dialog
