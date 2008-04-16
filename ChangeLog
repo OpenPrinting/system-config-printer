@@ -1,5 +1,10 @@
 2008-04-16  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (CUPS_server_hostname): New function.
+	(GUI.setConnected): Use it.
+	(GUI.dests_iconview_item_activated): Set printer properties dialog
+	title to show printer and hostname.
+
 	* system-config-printer.glade (PrinterPropertiesDialog): Use a
 	TreeView to display option groupings instead of Notebook tabs.
 	* system-config-printer.py (GUI.__init__): Set tree view column,

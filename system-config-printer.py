@@ -98,6 +98,12 @@ def validDeviceURI (uri):
         return True
     return False
 
+def CUPS_server_hostname ():
+    host = cups.getServer ()
+    if host[0] == '/':
+        return 'localhost'
+    return host
+
 class GtkGUI:
 
     def getWidgets(self, *names):
@@ -498,6 +504,9 @@ class GUI(GtkGUI, monitor.Watcher):
         sel.select_path ((0,))
         self.on_tvPrinterProperties_selection_changed (sel)
         self.on_tvPrinterProperties_cursor_changed (treeview)
+        host = CUPS_server_hostname ()
+        self.PrinterPropertiesDialog.set_title (_("Printer Properties - "
+                                                  "`%s' on %s") % (name, host))
         finished = False
         while not finished:
             response = self.PrinterPropertiesDialog.run ()
@@ -574,10 +583,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def setConnected(self):
         connected = bool(self.cups)
 
-        host = cups.getServer()
-
-        if host[0] == '/':
-            host = 'localhost'
+        host = CUPS_server_hostname ()
         self.MainWindow.set_title(_("Printer configuration - %s") % host)
 
         if connected:
