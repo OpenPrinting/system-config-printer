@@ -4343,6 +4343,7 @@ class NewPrinterGUI(GtkGUI):
 
         self.NewPrinterWindow.hide()
         self.mainapp.populateList(start_printer=name)
+        self.mainapp.fillPrinterTab (name)
         if check:
             try:
                 self.checkDriverExists (name, ppd=checkppd)
