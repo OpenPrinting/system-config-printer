@@ -3514,6 +3514,22 @@ class GUI:
             except:
                 nonfatalException()
 
+            # Also check to see whether the media option has become
+            # invalid.  This can happen if it had previously been
+            # explicitly set to a page size that is not offered with
+            # the new PPD (see bug #441836).
+            try:
+                option = self.server_side_options['media']
+                if option.get_current_value () == None:
+                    debugprint ("Invalid media option: resetting")
+                    option.reset ()
+                    self.changed.add (option)
+                    self.save_printer (self.printer)
+            except KeyError:
+                pass
+            except:
+                nonfatalException()
+
     def checkDriverExists(self, name, ppd=None):
         """Check that the driver for an existing queue actually
         exists, and prompt to install the appropriate package
