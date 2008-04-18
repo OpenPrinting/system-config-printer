@@ -2495,22 +2495,23 @@ class NewPrinterGUI(GtkGUI):
             if ppd:
                 attr = ppd.findAttr("Manufacturer")
                 if attr:
-                    self.auto_make = attr.value
+                    mfr = attr.value
                 else:
-                    self.auto_make = ""
+                    mfr = ""
+                makeandmodel = mfr
                 attr = ppd.findAttr("ModelName")
                 if not attr: attr = ppd.findAttr("ShortNickName")
                 if not attr: attr = ppd.findAttr("NickName")
                 if attr:
-                    if attr.value.startswith(self.auto_make):
-                        self.auto_model = attr.value[len(self.auto_make):].strip ()
+                    if attr.value.startswith(mfr):
+                        makeandmodel = attr.value
                     else:
-                        try:
-                            self.auto_model = attr.value.split(" ", 1)[1]
-                        except IndexError:
-                            self.auto_model = ""
+                        makeandmodel += ' ' + attr.value
                 else:
-                    self.auto_model = ""
+                    makeandmodel = ''
+
+                (self.auto_make,
+                 self.auto_model) = ppds.ppdMakeModelSplit (makeandmodel)
             else:
                 # Special CUPS names for a raw queue.
                 self.auto_make = 'Raw'
