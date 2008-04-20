@@ -2,148 +2,314 @@
 # Copyright © 2004-2007 Free Software Foundation
 # This file is distributed under the same license as the system-config-printer package.
 # Xavier Conde Rueda <xavi.conde@gmail.com>, 2004, 2006, 2007.
+# David Planella Molas <david.planella@gmail.com>, 2007, 2008.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: printconf\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-04-03 13:20+0100\n"
-"PO-Revision-Date: 2007-05-06 10:22+0100\n"
-"Last-Translator: Xavier Conde Rueda <xavi.conde@gmail.com>\n"
+"POT-Creation-Date: 2008-04-16 10:57+0000\n"
+"PO-Revision-Date: 2008-04-16 20:21+0200\n"
+"Last-Translator: David Planella Molas <david.planella@gmail.com>\n"
 "Language-Team: Catalan <fedora@softcatala.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../cupshelpers.py:33
+#: ../authconn.py:30 ../system-config-printer.glade.h:254
+msgid "Username:"
+msgstr "Nom de l'usuari:"
+
+#: ../authconn.py:31 ../system-config-printer.glade.h:190 ../applet.glade.h:5
+msgid "Password:"
+msgstr "Contrasenya:"
+
+#: ../authconn.py:32
+msgid "Domain:"
+msgstr "Domini:"
+
+#: ../authconn.py:34
+msgid "Authentication"
+msgstr "Autenticació"
+
+#: ../cupshelpers.py:28
 msgid "Idle"
 msgstr "Inactiva"
 
-#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:886
+#: ../cupshelpers.py:29 ../jobviewer.py:375
+#: ../troubleshoot/PrintTestPage.py:35
 msgid "Processing"
 msgstr "Processant"
 
-#: ../cupshelpers.py:35
+#: ../cupshelpers.py:30
 msgid "Busy"
 msgstr "Ocupada"
 
-#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:887
+#: ../cupshelpers.py:31 ../jobviewer.py:376
+#: ../troubleshoot/PrintTestPage.py:36
 msgid "Stopped"
 msgstr "Aturada"
 
-#: ../cupshelpers.py:53 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../cupshelpers.py:48 ../jobviewer.py:286 ../jobviewer.py:350
+#: ../jobviewer.py:363 ../jobviewer.py:386 ../jobviewer.py:428
+#: ../jobviewer.py:743 ../jobviewer.py:778 ../jobviewer.py:804
+#: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:97
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
 #: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
 #: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
-#: ../applet.py:896
 msgid "Unknown"
 msgstr "Desconegut"
 
-#: ../my-default-printer.py:136 ../my-default-printer.desktop.in.h:1
-#, fuzzy
-msgid "Default Printer"
-msgstr "Fes-la predeterminada"
+#: ../jobviewer.py:82 ../troubleshoot/PrintTestPage.py:71
+msgid "Job"
+msgstr "Tasca"
 
-#: ../my-default-printer.py:140 ../my-default-printer.py:174
-#, fuzzy
-msgid "_Use System Default"
-msgstr "Reinicialitza als valors per defecte del sistema"
+#: ../jobviewer.py:83 ../troubleshoot/PrintTestPage.py:75
+msgid "Document"
+msgstr "Document"
 
-#: ../my-default-printer.py:141 ../my-default-printer.py:176
-#, fuzzy
-msgid "_Set Default"
-msgstr "per defecte"
-
-#: ../my-default-printer.py:152 ../troubleshoot/PrintTestPage.py:73
-#: ../applet.py:118 ../applet.py:158
+#: ../jobviewer.py:84 ../jobviewer.py:127 ../my-default-printer.py:152
+#: ../system-config-printer.py:2507 ../troubleshoot/PrintTestPage.py:73
 msgid "Printer"
 msgstr "Impressora"
 
-#: ../my-default-printer.py:157 ../system-config-printer.py:2406
+#: ../jobviewer.py:85
+msgid "Size"
+msgstr "Mida"
+
+#: ../jobviewer.py:86
+msgid "Time submitted"
+msgstr "Hora d'enviament"
+
+#: ../jobviewer.py:87 ../troubleshoot/PrintTestPage.py:76
+msgid "Status"
+msgstr "Estat"
+
+#: ../jobviewer.py:140
+msgid "Message"
+msgstr "Missatge"
+
+#: ../jobviewer.py:240 ../system-config-printer.py:1123
+#: ../system-config-printer.py:1139
+msgid "Not authorized"
+msgstr "No és permès"
+
+#: ../jobviewer.py:241 ../system-config-printer.py:1124
+msgid "The password may be incorrect."
+msgstr "Pot ser que la contrasenya sigui incorrecta."
+
+#: ../jobviewer.py:244 ../system-config-printer.py:1127
+#: ../system-config-printer.py:1160
+msgid "CUPS server error"
+msgstr "Error del servidor CUPS"
+
+#: ../jobviewer.py:245 ../system-config-printer.py:1128
+#, python-format
+msgid "There was an error during the CUPS operation: '%s'."
+msgstr "S'ha produït un error durant l'operació del CUPS: «%s»."
+
+#: ../jobviewer.py:298
+msgid "1 hour ago"
+msgstr "fa 1 hora"
+
+#: ../jobviewer.py:300
+msgid "1 hour and 1 minute ago"
+msgstr "fa 1 hora i 1 minut"
+
+#: ../jobviewer.py:302
+#, python-format
+msgid "1 hour and %d minutes ago"
+msgstr "fa 1 hora i %d minuts"
+
+#: ../jobviewer.py:305
+#, python-format
+msgid "%d hours ago"
+msgstr "fa %d hores"
+
+#: ../jobviewer.py:307
+#, python-format
+msgid "%d hours and 1 minute ago"
+msgstr "fa %d hores i 1 minut"
+
+#: ../jobviewer.py:309
+#, python-format
+msgid "%d hours and %d minutes ago"
+msgstr "fa %d hores i %d minuts"
+
+#: ../jobviewer.py:315
+msgid "a minute ago"
+msgstr "fa un minut"
+
+#: ../jobviewer.py:317
+#, python-format
+msgid "%d minutes ago"
+msgstr "fa %d minuts"
+
+#: ../jobviewer.py:373 ../troubleshoot/PrintTestPage.py:33
+msgid "Pending"
+msgstr "Pendent"
+
+#: ../jobviewer.py:374 ../troubleshoot/PrintTestPage.py:34
+msgid "Held"
+msgstr "Suspès"
+
+#: ../jobviewer.py:377 ../troubleshoot/PrintTestPage.py:37
+msgid "Canceled"
+msgstr "Cancel·lat"
+
+#: ../jobviewer.py:378 ../troubleshoot/PrintTestPage.py:38
+msgid "Aborted"
+msgstr "Interromput"
+
+#: ../jobviewer.py:379 ../troubleshoot/PrintTestPage.py:39
+msgid "Completed"
+msgstr "Completat"
+
+#: ../jobviewer.py:426
+#, python-format
+msgid "Authentication required for printing document `%s' (job %d)"
+msgstr "Cal autenticar-se per a imprimir el document «%s» (tasca %d)"
+
+#: ../jobviewer.py:626
+msgid "No documents queued"
+msgstr "Cap document encuat"
+
+#: ../jobviewer.py:628
+msgid "1 document queued"
+msgstr "1 document encuat"
+
+#: ../jobviewer.py:630
+#, python-format
+msgid "%d documents queued"
+msgstr "%d documents encuats"
+
+#: ../jobviewer.py:856
+#, python-format
+msgid "There was a problem sending document `%s' (job %d) to the printer."
+msgstr "Hi ha hagut un problema en enviar el document «%s» (tasca %d) a la impressora."
+
+#: ../jobviewer.py:859
+#, python-format
+msgid "There was a problem processing document `%s' (job %d)."
+msgstr "Hi ha hagut un problema en processar el document «%s» (tasca %d)."
+
+#. Give up and use the untranslated provided.
+#: ../jobviewer.py:863
+#, python-format
+msgid "There was a problem printing document `%s' (job %d): `%s'."
+msgstr "Hi ha hagut un problema en imprimir el document «%s» (tasca %d): «%s»."
+
+#: ../jobviewer.py:868 ../jobviewer.py:884
+msgid "Print Error"
+msgstr "Error d'impressió"
+
+#: ../jobviewer.py:869
+msgid "_Diagnose"
+msgstr "_Diagnostica"
+
+#: ../jobviewer.py:890
+#, python-format
+msgid "The printer called `%s' has been disabled."
+msgstr "S'ha inhabilitat la impressora «%s»."
+
+#: ../my-default-printer.py:136 ../my-default-printer.desktop.in.h:1
+msgid "Default Printer"
+msgstr "Impressora predeterminada"
+
+# FIXME és massa llarg per a un botó, però ara mateix no tinc res millor (dpm)
+#: ../my-default-printer.py:140 ../my-default-printer.py:176
+msgid "_Use System Default"
+msgstr "_Utilitza la del sistema"
+
+#: ../my-default-printer.py:141 ../my-default-printer.py:178
+msgid "_Set Default"
+msgstr "_Fes-la la predeterminada"
+
+#: ../my-default-printer.py:157 ../system-config-printer.py:2216
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
-#, fuzzy
 msgid "Location"
-msgstr "Ubicació:"
+msgstr "Ubicació"
 
 #: ../optionwidgets.py:116
 msgid "Conflicts with:"
 msgstr "Té un conflicte amb:"
 
-#: ../system-config-printer.py:360
-msgid "Server Settings"
-msgstr "Opcions del servidor"
+#. Set up "Problems?" link button
+#: ../system-config-printer.py:252
+msgid "Problems?"
+msgstr "Problemes?"
 
-#: ../system-config-printer.py:366 ../system-config-printer.py:368
+#: ../system-config-printer.py:292 ../system-config-printer.py:294
 msgid "Members of this class"
 msgstr "Membres d'aquesta classe"
 
-#: ../system-config-printer.py:367 ../system-config-printer.py:369
+#: ../system-config-printer.py:293 ../system-config-printer.py:295
 msgid "Others"
-msgstr "D'altres"
+msgstr "Altres"
 
-#: ../system-config-printer.py:370
+#: ../system-config-printer.py:296
 msgid "Devices"
 msgstr "Dispositius"
 
-#: ../system-config-printer.py:371
+#: ../system-config-printer.py:297
 msgid "Makes"
 msgstr "Fabricants"
 
-#: ../system-config-printer.py:372
+#: ../system-config-printer.py:298
 msgid "Models"
 msgstr "Models"
 
-#: ../system-config-printer.py:373
+#: ../system-config-printer.py:299
 msgid "Drivers"
 msgstr "Controladors"
 
-#: ../system-config-printer.py:374 ../system-config-printer.glade.h:107
+#: ../system-config-printer.py:300 ../system-config-printer.glade.h:102
 msgid "Downloadable Drivers"
-msgstr ""
+msgstr "Controladors que es poden baixar"
 
-#: ../system-config-printer.py:375
+#: ../system-config-printer.py:301
 msgid "Users"
 msgstr "Usuaris"
 
-#: ../system-config-printer.py:402
+#: ../system-config-printer.py:328
 msgid "Automatic rotation"
-msgstr ""
+msgstr "Rotació automàtica"
 
-#: ../system-config-printer.py:566
+#: ../system-config-printer.py:568
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Configuració de la impressora - %s"
 
-#: ../system-config-printer.py:569
+#: ../system-config-printer.py:571
 #, python-format
 msgid "Connected to %s"
 msgstr "Connectat a %s"
 
-#: ../system-config-printer.py:571 ../system-config-printer.py:1281
+#: ../system-config-printer.py:573 ../system-config-printer.py:1155
 msgid "Not connected"
 msgstr "Sense connectar"
 
-#: ../system-config-printer.py:680
-msgid "Local Printers"
-msgstr "Impressores locals"
+#: ../system-config-printer.py:660
+msgid "Remote class"
+msgstr "Classe remota"
 
-#: ../system-config-printer.py:681
-msgid "Local Classes"
-msgstr "Classes locals"
+#: ../system-config-printer.py:662
+msgid "Remote printer"
+msgstr "Impressora remota"
 
-#: ../system-config-printer.py:682
-msgid "Remote Printers"
-msgstr "Impressores remotes"
+#: ../system-config-printer.py:666
+msgid "Local class"
+msgstr "Classe local"
 
-#: ../system-config-printer.py:683
-msgid "Remote Classes"
-msgstr "Classes remotes"
+#: ../system-config-printer.py:668
+msgid "Local printer"
+msgstr "Impressora local"
 
-#: ../system-config-printer.py:791
+#: ../system-config-printer.py:739
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -152,15 +318,15 @@ msgstr ""
 "S'està connectant al servidor:\n"
 "%s"
 
-#: ../system-config-printer.py:1210
+#: ../system-config-printer.py:1100
 msgid "Installable Options"
 msgstr "Opcions instal·lables"
 
-#: ../system-config-printer.py:1211 ../system-config-printer.glade.h:209
+#: ../system-config-printer.py:1101 ../system-config-printer.glade.h:204
 msgid "Printer Options"
 msgstr "Opcions de la impressora"
 
-#: ../system-config-printer.py:1220
+#: ../system-config-printer.py:1110
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -170,86 +336,67 @@ msgstr ""
 "Els canvis només es podran aplicar\n"
 "després de resoldre aquests conflictes."
 
-#: ../system-config-printer.py:1249 ../system-config-printer.py:1265
-#: ../applet.py:291
-msgid "Not authorized"
-msgstr "Sense autoritzar"
-
-#: ../system-config-printer.py:1250 ../applet.py:292
-msgid "The password may be incorrect."
-msgstr "La contrasenya pot ser incorrecta."
-
-#: ../system-config-printer.py:1253 ../system-config-printer.py:1286
-#: ../applet.py:295
-msgid "CUPS server error"
-msgstr "Error del servidor CUPS"
-
-#: ../system-config-printer.py:1254 ../applet.py:296
-#, python-format
-msgid "There was an error during the CUPS operation: '%s'."
-msgstr "S'ha produït un error durant l'operació del CUPS: «%s»."
-
-#: ../system-config-printer.py:1266
+#: ../system-config-printer.py:1140
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
 msgstr ""
-"La contrasenya pot ser incorrecta, o el servidor pot estar configurat per "
-"rebutjar l'administració remota."
+"Pot ser que la contrasenya sigui incorrecta o que el servidor estigui "
+"configurat per arebutjar l'administració remota."
 
-#: ../system-config-printer.py:1271
+#: ../system-config-printer.py:1145
 msgid "Bad request"
-msgstr "Petició incorrecta"
+msgstr "Sol·licitud incorrecta"
 
-#: ../system-config-printer.py:1273
+#: ../system-config-printer.py:1147
 msgid "Not found"
 msgstr "No s'ha trobat"
 
-#: ../system-config-printer.py:1275
+#: ../system-config-printer.py:1149
 msgid "Request timeout"
-msgstr "Temps d'espera de la petició"
+msgstr "S'ha exhaurit el temps d'espera de la sol·licitud"
 
-#: ../system-config-printer.py:1277
+#: ../system-config-printer.py:1151
 msgid "Upgrade required"
-msgstr "Es necessita actualitzar"
+msgstr "S'ha de dur a terme una actualització"
 
-#: ../system-config-printer.py:1279
+#: ../system-config-printer.py:1153
 msgid "Server error"
 msgstr "Error del servidor"
 
-#: ../system-config-printer.py:1283
+#: ../system-config-printer.py:1157
 #, python-format
 msgid "status %d"
 msgstr "estat %d"
 
-#: ../system-config-printer.py:1287
+#: ../system-config-printer.py:1161
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "S'ha produït un error HTTP: %s"
 
-#: ../system-config-printer.py:1311
+#: ../system-config-printer.py:1184
 msgid "This will delete this class!"
-msgstr "S'esborrarà la classe"
+msgstr "Això farà que se suprimeixi aquesta classe."
 
-#: ../system-config-printer.py:1312
+#: ../system-config-printer.py:1185
 msgid "Proceed anyway?"
 msgstr "Voleu continuar de totes maneres?"
 
-#: ../system-config-printer.py:1526 ../system-config-printer.py:1560
+#: ../system-config-printer.py:1345 ../system-config-printer.py:1379
 msgid "Submitted"
 msgstr "Enviat"
 
-#: ../system-config-printer.py:1527
+#: ../system-config-printer.py:1346
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "La pàgina de prova s'ha enviat com a tasca %d"
 
-#: ../system-config-printer.py:1538 ../system-config-printer.py:1570
-#: ../system-config-printer.py:3515
+#: ../system-config-printer.py:1357 ../system-config-printer.py:1389
+#: ../system-config-printer.py:3389
 msgid "Not possible"
 msgstr "Impossible"
 
-#: ../system-config-printer.py:1539 ../system-config-printer.py:1571
+#: ../system-config-printer.py:1358 ../system-config-printer.py:1390
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -257,164 +404,178 @@ msgstr ""
 "El servidor remot no ha acceptat la tasca d'impressió. Probablement la "
 "impressora no s'està compartint."
 
-#: ../system-config-printer.py:1561
-#, fuzzy, python-format
+#: ../system-config-printer.py:1380
+#, python-format
 msgid "Maintenance command submitted as job %d"
-msgstr "La pàgina de prova s'ha enviat com a tasca %d"
+msgstr "L'ordre de manteniment s'ha enviat com a tasca %d"
 
-#: ../system-config-printer.py:1657 ../system-config-printer.py:1816
+#: ../system-config-printer.py:1437 ../system-config-printer.py:1596
 msgid "Error"
 msgstr "Error"
 
-#: ../system-config-printer.py:1658
+#: ../system-config-printer.py:1438
 msgid "There was a problem connecting to the CUPS server."
-msgstr "Hi ha hagu un problema en connectar al servidor CUPS."
+msgstr "Hi ha hagut un problema en connectar-se al servidor CUPS."
 
-#: ../system-config-printer.py:1711
+#: ../system-config-printer.py:1491
 msgid "This is the default printer"
 msgstr "Aquesta és la impressora predeterminada"
 
-#: ../system-config-printer.py:1715
+#: ../system-config-printer.py:1495
 msgid "No default printer set."
-msgstr "No s'ha establert la impressora predeterminada."
+msgstr "No s'ha establert cap impressora predeterminada."
 
-#: ../system-config-printer.py:1817
+#: ../system-config-printer.py:1597
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
-msgstr ""
+msgstr "L'opció «%s» té el valor «%s» i no es pot editar."
 
-#: ../system-config-printer.py:1865
+#: ../system-config-printer.py:1645
 msgid "Cancel Tests"
 msgstr "Cancel·la les proves"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1869 ../system-config-printer.glade.h:208
+#: ../system-config-printer.py:1649 ../system-config-printer.glade.h:203
 #: ../troubleshoot/PrintTestPage.py:61
 msgid "Print Test Page"
 msgstr "Imprimeix una pàgina de prova"
 
-#: ../system-config-printer.py:2099
+#: ../system-config-printer.py:1873
 #, python-format
-msgid "Really delete printer %s?"
-msgstr "Esteu segur que voleu suprimir l'impressora %s?"
+msgid "Really delete class `%s'?"
+msgstr "Esteu segur que voleu suprimir la classe «%s»?"
 
-#: ../system-config-printer.py:2101
+#: ../system-config-printer.py:1875
 #, python-format
-msgid "Really delete class %s?"
-msgstr "Esteu segur que voleu suprimir la classe %s?"
+msgid "Really delete printer `%s'?"
+msgstr "Esteu segur que voleu suprimir la impressora «%s»?"
+
+#: ../system-config-printer.py:1877
+msgid "Really delete selected destinations?"
+msgstr "Esteu segur que voleu suprimir les ubicacions seleccionades?"
 
 # Recurs compartit (josep)
 #. SMB list columns
-#: ../system-config-printer.py:2378
+#: ../system-config-printer.py:2188
 msgid "Share"
-msgstr "Recurs"
+msgstr "Recurs compartit"
 
-#: ../system-config-printer.py:2384
+#: ../system-config-printer.py:2194
 msgid "Comment"
 msgstr "Comentari"
 
 #. IPP list columns
-#: ../system-config-printer.py:2400
+#: ../system-config-printer.py:2210
 msgid "Queue"
-msgstr ""
+msgstr "Cua"
 
-#: ../system-config-printer.py:2414
-#, fuzzy
+#: ../system-config-printer.py:2224
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
-msgstr "Descripció d'impressora Postscript (*.ppd[.gz])"
-
-#: ../system-config-printer.py:2423
-msgid "All files (*)"
 msgstr ""
+"Descripció d'impressora Postscript (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD."
+"GZ)"
 
-#: ../system-config-printer.py:2458 ../system-config-printer.py:3774
-#: ../system-config-printer.py:3808
-#, fuzzy
+#: ../system-config-printer.py:2233
+msgid "All files (*)"
+msgstr "Tots els fitxers (*)"
+
+#: ../system-config-printer.py:2268 ../system-config-printer.py:3648
+#: ../system-config-printer.py:3682
 msgid "Search"
-msgstr "Nou nom per a la impressora"
+msgstr "Cerca"
 
-#: ../system-config-printer.py:2461 ../system-config-printer.glade.h:155
+#: ../system-config-printer.py:2271 ../system-config-printer.glade.h:150
 msgid "New Printer"
-msgstr "Nova impressora"
+msgstr "Impressora nova"
 
-#: ../system-config-printer.py:2471 ../system-config-printer.glade.h:154
+#: ../system-config-printer.py:2281 ../system-config-printer.glade.h:149
 msgid "New Class"
-msgstr "Nova classe"
+msgstr "Classe nova"
 
-#: ../system-config-printer.py:2476
+#: ../system-config-printer.py:2286
 msgid "Change Device URI"
-msgstr "Canvia la URI del dispositiu"
+msgstr "Canvia l'URI del dispositiu"
 
-#: ../system-config-printer.py:2485
+#: ../system-config-printer.py:2295
 msgid "Change Driver"
 msgstr "Canvia el controlador"
 
-#: ../system-config-printer.py:2584 ../system-config-printer.py:2808
-#: ../system-config-printer.py:2974 ../system-config-printer.py:3797
+#: ../system-config-printer.py:2394 ../system-config-printer.py:2644
+#: ../system-config-printer.py:2820 ../system-config-printer.py:3671
 msgid "Searching"
-msgstr ""
+msgstr "Cerca"
 
-#: ../system-config-printer.py:2585 ../system-config-printer.py:2809
+#: ../system-config-printer.py:2395 ../system-config-printer.py:2645
 msgid "Searching for drivers"
+msgstr "S'estan cercant controladors"
+
+#: ../system-config-printer.py:2508
+msgid "Fax"
+msgstr "Fax"
+
+#: ../system-config-printer.py:2509
+msgid ""
+"This printer supports both printing and sending faxes.\n"
+"This print queue should be used for which functionality?"
 msgstr ""
+"Aquesta impressora pot imprimir i enviar faxos.\n"
+"Per a quina funcionalitat s'hauria d'utilitzar aquesta cua d'impressió?"
 
-#: ../system-config-printer.py:2975
-#, fuzzy
+#: ../system-config-printer.py:2821
 msgid "Searching for printers"
-msgstr "Nou nom per a la impressora"
+msgstr "S'estan cercant impressores"
 
-#: ../system-config-printer.py:3193
+#: ../system-config-printer.py:3067
 msgid "Other"
 msgstr "Altre"
 
-#: ../system-config-printer.py:3195
+#: ../system-config-printer.py:3069
 msgid " (Current)"
 msgstr " (Actual)"
 
-#: ../system-config-printer.py:3221 ../system-config-printer.py:3482
-#, fuzzy
+#: ../system-config-printer.py:3095 ../system-config-printer.py:3356
 msgid "Scanning..."
-msgstr "Escalat:"
+msgstr "S'està analitzant..."
 
-#: ../system-config-printer.py:3393 ../system-config-printer.py:3460
+#: ../system-config-printer.py:3267 ../system-config-printer.py:3334
 msgid "Verified"
 msgstr "Verificat"
 
-#: ../system-config-printer.py:3394 ../system-config-printer.py:3461
+#: ../system-config-printer.py:3268 ../system-config-printer.py:3335
 msgid "This print share is accessible."
 msgstr "Aquesta impressora compartida és accessible."
 
-#: ../system-config-printer.py:3401 ../system-config-printer.py:3467
+#: ../system-config-printer.py:3275 ../system-config-printer.py:3341
 msgid "Inaccessible"
 msgstr "Inaccessible"
 
-#: ../system-config-printer.py:3402 ../system-config-printer.py:3468
+#: ../system-config-printer.py:3276 ../system-config-printer.py:3342
 msgid "This print share is not accessible."
 msgstr "Aquesta impressora compartida no és accessible."
 
-#: ../system-config-printer.py:3516
+#: ../system-config-printer.py:3390
 msgid "It is not possible to obtain a list of queues from this host."
-msgstr ""
+msgstr "No es pot obtenir una llista de les cues d'aquest ordinador."
 
-#: ../system-config-printer.py:3520
+#: ../system-config-printer.py:3394
 msgid "No queues"
-msgstr ""
+msgstr "Cap cua"
 
-#: ../system-config-printer.py:3521
+#: ../system-config-printer.py:3395
 msgid "There are no queues available."
-msgstr ""
+msgstr "No hi ha cap cua disponible."
 
-#: ../system-config-printer.py:3578
+#: ../system-config-printer.py:3452
 msgid "A printer connected to the parallel port."
 msgstr "Una impressora connectada al port paral·lel."
 
-#: ../system-config-printer.py:3580
+#: ../system-config-printer.py:3454
 msgid "A printer connected to a USB port."
 msgstr "Una impressora connectada un port USB."
 
-#: ../system-config-printer.py:3582
+#: ../system-config-printer.py:3456
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -422,7 +583,7 @@ msgstr ""
 "El programari HPLIP que controla una impressora, o la funció d'impressió "
 "d'un dispositiu multifunció."
 
-#: ../system-config-printer.py:3585
+#: ../system-config-printer.py:3459
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -430,52 +591,50 @@ msgstr ""
 "El programari HPLIP que controla un fax, o la funció de fax d'un dispositiu "
 "multifunció."
 
-#: ../system-config-printer.py:3588
+#: ../system-config-printer.py:3462
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "La impressora local detectada per la capa d'abstracció de maquinari (HAL)."
 
-#: ../system-config-printer.py:3820
-#, fuzzy
+#: ../system-config-printer.py:3694
 msgid "-- Select printer model --"
-msgstr "Selecciona la impressora de la base de dades"
+msgstr "-- Seleccioneu el model d'impressora --"
 
-#: ../system-config-printer.py:3822
+#: ../system-config-printer.py:3696
 msgid "-- No matches found --"
-msgstr ""
+msgstr "-- No s'ha trobat cap concordança --"
 
-#: ../system-config-printer.py:3987
+#: ../system-config-printer.py:3861
 msgid " (recommended)"
 msgstr " (recomanat)"
 
-#: ../system-config-printer.py:4001
+#: ../system-config-printer.py:3875
 msgid "This PPD is generated by foomatic."
-msgstr "Aquest PPD ha sigut generat pel foomatic."
+msgstr "Aquest PPD l'ha generat el foomatic."
 
-#: ../system-config-printer.py:4027
-#, fuzzy
+# FIXME: (dpm)
+#: ../system-config-printer.py:3901
 msgid "OpenPrinting"
-msgstr "Impressió"
+msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:4029
+#: ../system-config-printer.py:3903
 msgid "Distributable"
-msgstr ""
+msgstr "Distribuïble"
 
-#: ../system-config-printer.py:4031
-#, fuzzy
+#: ../system-config-printer.py:3905
 msgid "None"
 msgstr "cap"
 
-#: ../system-config-printer.py:4039
+#: ../system-config-printer.py:3913
 msgid "Not specified."
-msgstr ""
+msgstr "No especificat."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4066
+#: ../system-config-printer.py:3940
 msgid "Database error"
 msgstr "Error de la base de dades"
 
-#: ../system-config-printer.py:4067
+#: ../system-config-printer.py:3941
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "El controlador «%s» no es pot fer servir amb la impressora «%s %s»."
@@ -483,69 +642,65 @@ msgstr "El controlador «%s» no es pot fer servir amb la impressora «%s %s»."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4077
+#: ../system-config-printer.py:3951
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
-"Haureu d'instal·lar el paquet «%s» per poder emprar aquest controlador."
+"Haureu d'instal·lar el paquet «%s» per a poder utilitzar aquest controlador."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4084
+#: ../system-config-printer.py:3958
 msgid "PPD error"
 msgstr "Error en el PPD"
 
-#: ../system-config-printer.py:4086
+#: ../system-config-printer.py:3960
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "No s'ha pogut llegir el fitxer PPD, aquests en poden ser els motius:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4097
+#: ../system-config-printer.py:3971
 msgid "Downloadable drivers"
-msgstr ""
+msgstr "Controladors que es poden baixar"
 
-#: ../system-config-printer.py:4098
+#: ../system-config-printer.py:3972
 msgid "Support for downloadable drivers is not yet completed."
 msgstr ""
+"El funcionament amb controladors que es poden baixar no està del tot complet."
 
-#: ../system-config-printer.py:4148 ../system-config-printer.py:4185
-#, fuzzy
+#: ../system-config-printer.py:4022 ../system-config-printer.py:4059
 msgid "No Installable Options"
-msgstr "Opcions instal·lables"
+msgstr "No hi ha opcions instal·lables"
 
-#: ../system-config-printer.py:4232
-#, fuzzy
+#: ../system-config-printer.py:4105
 msgid "Adding"
-msgstr "Pendent"
+msgstr "Addició"
 
-#: ../system-config-printer.py:4233
-#, fuzzy
+#: ../system-config-printer.py:4106
 msgid "Adding printer"
-msgstr "Configureu impressores"
+msgstr "S'està afegint la impressora"
 
-#: ../system-config-printer.py:4385
-#, fuzzy
+#: ../system-config-printer.py:4250
 msgid "Install driver"
-msgstr "Manca el controlador"
+msgstr "Instal·la el controlador"
 
-#: ../system-config-printer.py:4386
-#, fuzzy, python-format
+#: ../system-config-printer.py:4251
+#, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
-msgstr ""
-"La impressora '%s' necessita el paquet %s però no està instal·lat encara. "
-"Instal·leu-lo abans de fer servir aquesta impressora."
+msgstr "La impressora «%s» necessita el paquet %s, però no està instal·lat."
 
-#: ../system-config-printer.py:4393
+#: ../system-config-printer.py:4258
 msgid "Missing driver"
 msgstr "Manca el controlador"
 
-#: ../system-config-printer.py:4394
+#: ../system-config-printer.py:4259
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
 "Please install it before using this printer."
 msgstr ""
-"La impressora '%s' necessita el programa %s però no està instal·lat encara. "
-"Instal·leu-lo abans de fer servir aquesta impressora."
+"La impressora «»%s«» necessita el programa %s però encara no està "
+"instal·lat. L'haureu d'instal·lar abans de poder fer servir aquesta "
+"impressora."
 
 #: ../system-config-printer.glade.h:1
 msgid " "
@@ -588,35 +743,29 @@ msgid "<b>Description</b> (optional)"
 msgstr "<b>Descripció</b> (opcional)"
 
 #: ../system-config-printer.glade.h:13
-#, fuzzy
 msgid "<b>Download Printer Driver</b>"
-msgstr "<b>Commentari quant al controlador</b>"
+msgstr "<b>Baixa el controlador de la impressora</b>"
 
 #: ../system-config-printer.glade.h:14
-#, fuzzy
 msgid "<b>Enter device URI</b>"
-msgstr "Introduïu l'URI del dispositiu"
+msgstr "<b>Introduïu l'URI del dispositiu</b>"
 
 #: ../system-config-printer.glade.h:15
-#, fuzzy
 msgid "<b>IPP Printer</b>"
-msgstr "<b>Nom de la impressora</b>"
+msgstr "<b>Impressora IPP</b>"
 
 # FIXME
 #: ../system-config-printer.glade.h:16
 msgid "<b>Image Options</b>"
 msgstr "<b>Opcions per a les imatges</b>"
 
-# FIXME
 #: ../system-config-printer.glade.h:17
-#, fuzzy
 msgid "<b>Installed Options</b>"
-msgstr "<b>Opcions per a les imatges</b>"
+msgstr "<b>Opcions instal·lades</b>"
 
 #: ../system-config-printer.glade.h:18
-#, fuzzy
 msgid "<b>License Terms</b>"
-msgstr "<b>Nom de la impressora</b>"
+msgstr "<b>Condicions de la llicència</b>"
 
 #: ../system-config-printer.glade.h:19
 msgid "<b>Location of the LPD network printer</b>"
@@ -631,9 +780,8 @@ msgid "<b>Location</b> (optional)"
 msgstr "<b>Ubicació</b> (opcional)"
 
 #: ../system-config-printer.glade.h:22
-#, fuzzy
 msgid "<b>Note</b>"
-msgstr "<b>Estat</b>"
+msgstr "<b>Nota</b>"
 
 #: ../system-config-printer.glade.h:23
 msgid "<b>Other Options (Advanced)</b>"
@@ -649,21 +797,19 @@ msgstr "<b>Nom de la impressora</b>"
 
 #: ../system-config-printer.glade.h:26
 msgid "<b>Printers to be members of this Class</b>"
-msgstr "<b>Impressores que pertanyeran a aquesta classe</b>"
+msgstr "<b>Impressores a pertànyer a aquesta classe</b>"
 
 #: ../system-config-printer.glade.h:27
-#, fuzzy
 msgid "<b>SMB Printer</b>"
-msgstr "<b>Nom de la impressora</b>"
+msgstr "<b>Impressora SMB</b>"
 
 #: ../system-config-printer.glade.h:28
 msgid "<b>Select Connection</b>"
-msgstr "<b>Selecciona la connexió</b>"
+msgstr "<b>Seleccioneu la connexió</b>"
 
 #: ../system-config-printer.glade.h:29
-#, fuzzy
 msgid "<b>Select Driver</b>"
-msgstr "<b>Impressora predeterminada</b>"
+msgstr "<b>Seleccioneu el controlador</b>"
 
 #: ../system-config-printer.glade.h:30
 msgid "<b>Settings of the serial port</b>"
@@ -679,7 +825,7 @@ msgstr "<b>Estat</b>"
 
 #: ../system-config-printer.glade.h:33
 msgid "<b>Tests and Maintenance</b>"
-msgstr ""
+msgstr "<b>Comprovacions i manteniment</b>"
 
 #: ../system-config-printer.glade.h:34
 msgid "<b>Text Options</b>"
@@ -705,113 +851,98 @@ msgid ""
 msgstr ""
 "<span weight=\"bold\" size=\"larger\">Voleu aplicar els canvis?</span>\n"
 "\n"
-"Els canvis que heu fet es perdran si no els apliqueu."
+"Es perdran els canvis que heu fet si no els apliqueu."
 
-#. Why doesn't __del__ work?
-#: ../system-config-printer.glade.h:41 ../applet.glade.h:1
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
-"\n"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Cal contrasenya</span>\n"
-"\n"
-
-#: ../system-config-printer.glade.h:44
-#, fuzzy
+#: ../system-config-printer.glade.h:41
 msgid "A CUPS configuration tool."
-msgstr "Configuració de la impressora - %s"
+msgstr "Una eina de configuració del CUPS."
 
-#: ../system-config-printer.glade.h:45
+#: ../system-config-printer.glade.h:42
 msgid "Accepting jobs"
-msgstr "S'accepten tasques"
+msgstr "Acceptació de tasques"
 
-#: ../system-config-printer.glade.h:46
-#, fuzzy
+#: ../system-config-printer.glade.h:43
 msgid "Access Control"
 msgstr "Control d'accés"
 
-#: ../system-config-printer.glade.h:47
+#: ../system-config-printer.glade.h:44
 msgid "Add or Remove Members"
-msgstr "Afegeix o suprimeix membres"
+msgstr "Addició o supressió de membres"
 
-#: ../system-config-printer.glade.h:48
+#: ../system-config-printer.glade.h:45
 msgid "Allow printing for everyone except these users:"
 msgstr "Tots els usuaris poden imprimir, excepte els següents:"
 
-#: ../system-config-printer.glade.h:49
-#, fuzzy
+#: ../system-config-printer.glade.h:46
 msgid "Allow printing from the Internet"
-msgstr "Tots els usuaris poden imprimir, excepte els següents:"
+msgstr "Permet la impressió des d'Internet"
 
-#: ../system-config-printer.glade.h:50
+#: ../system-config-printer.glade.h:47
 msgid "Allow remote administration"
 msgstr "Permet l'administració remota"
 
-#: ../system-config-printer.glade.h:51
+#: ../system-config-printer.glade.h:48
 msgid "Allow users to cancel any job (not just their own)"
 msgstr "Permet que els usuaris cancel·lin les tasques de qualsevol usuari"
 
-#: ../system-config-printer.glade.h:52
-#, fuzzy
+#: ../system-config-printer.glade.h:49
 msgid "Authentication required"
-msgstr "<b>Autenticació</b>"
+msgstr "Es requereix autenticació"
 
-#: ../system-config-printer.glade.h:53
+#: ../system-config-printer.glade.h:50
+msgid "Basic Server Settings"
+msgstr "Configuració bàsica del servidor"
+
+#: ../system-config-printer.glade.h:51
 msgid "Baud Rate"
 msgstr "Velocitat"
 
-#: ../system-config-printer.glade.h:54
+#: ../system-config-printer.glade.h:52
 msgid "Bottom margin:"
 msgstr "Marge inferior:"
 
-#: ../system-config-printer.glade.h:55
+#: ../system-config-printer.glade.h:53
 msgid "Brightness:"
 msgstr "Brillantor:"
 
-#: ../system-config-printer.glade.h:56
+#: ../system-config-printer.glade.h:54
 msgid "Browse..."
-msgstr ""
+msgstr "Navega..."
 
-#: ../system-config-printer.glade.h:57
+#: ../system-config-printer.glade.h:55
 msgid "CUPS server:"
 msgstr "Servidor CUPS:"
 
-#: ../system-config-printer.glade.h:58
+#: ../system-config-printer.glade.h:56
 msgid "Change..."
 msgstr "Canvia..."
 
-#: ../system-config-printer.glade.h:59
+#: ../system-config-printer.glade.h:57
 msgid "Characters per inch:"
 msgstr "Caràcters per polzada:"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:61
+#: ../system-config-printer.glade.h:59
 msgid "Clean Print Heads"
-msgstr ""
+msgstr "Neteja els capçals"
 
-#: ../system-config-printer.glade.h:62
+#: ../system-config-printer.glade.h:60
 msgid "Columns:"
 msgstr "Columnes:"
 
-#: ../system-config-printer.glade.h:63
-#, fuzzy
+#: ../system-config-printer.glade.h:61
 msgid "Comments..."
-msgstr "Comentari"
+msgstr "Comentaris..."
 
-#: ../system-config-printer.glade.h:64
+#: ../system-config-printer.glade.h:62
 msgid "Connect to CUPS server"
 msgstr "Connecta al servidor CUPS"
 
-#: ../system-config-printer.glade.h:65
-#, fuzzy
-msgid "Connect to a different print server"
-msgstr "Connecta al servidor CUPS"
-
-#: ../system-config-printer.glade.h:66
+#: ../system-config-printer.glade.h:63
 msgid "Connecting"
 msgstr "Connexió"
 
-#: ../system-config-printer.glade.h:68
+#: ../system-config-printer.glade.h:65
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -820,43 +951,31 @@ msgstr ""
 "S'està connectant al servidor:\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:71
+#: ../system-config-printer.glade.h:68
 msgid "Copies:"
 msgstr "Còpies:"
 
-#: ../system-config-printer.glade.h:72
+#: ../system-config-printer.glade.h:69
 msgid "Copy Printer"
 msgstr "Copia la impressora"
 
-#: ../system-config-printer.glade.h:73
-#, fuzzy
-msgid "Copy this printer queue"
-msgstr "Copia la impressora"
-
-#: ../system-config-printer.glade.h:74
-#, fuzzy
+#: ../system-config-printer.glade.h:70
 msgid "Copyright © 2006-2007 Red Hat, Inc."
-msgstr "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "Copyright © 2006-2007 Red Hat, Inc."
 
-#: ../system-config-printer.glade.h:75
-#, fuzzy
+#: ../system-config-printer.glade.h:71
 msgid "Create a new printer group"
-msgstr ""
-"Es crearà una nova impressora «%s» a\n"
-"«%s».\n"
+msgstr "Crea un grup d'impressores nou"
 
-#: ../system-config-printer.glade.h:76
-#, fuzzy
+#: ../system-config-printer.glade.h:72
 msgid "Create a new printer queue"
-msgstr ""
-"Es crearà una nova impressora «%s» a\n"
-"«%s».\n"
+msgstr "Crea una cua d'impressió nova"
 
-#: ../system-config-printer.glade.h:77
+#: ../system-config-printer.glade.h:73
 msgid "Data Bits"
 msgstr "Bits de dades"
 
-#: ../system-config-printer.glade.h:78
+#: ../system-config-printer.glade.h:74
 msgid ""
 "Default\n"
 "1200\n"
@@ -878,7 +997,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../system-config-printer.glade.h:87
+#: ../system-config-printer.glade.h:83
 msgid ""
 "Default\n"
 "8\n"
@@ -888,7 +1007,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../system-config-printer.glade.h:90
+#: ../system-config-printer.glade.h:86
 msgid ""
 "Default\n"
 "None\n"
@@ -900,7 +1019,7 @@ msgstr ""
 "Senar\n"
 "Parell"
 
-#: ../system-config-printer.glade.h:94
+#: ../system-config-printer.glade.h:90
 msgid ""
 "Default\n"
 "None\n"
@@ -914,141 +1033,135 @@ msgstr ""
 "RTS/CTS (maquinari)\n"
 "DTR/DSR (maquinari)"
 
-#: ../system-config-printer.glade.h:99
-#, fuzzy
+#: ../system-config-printer.glade.h:95
 msgid "Default Printer:"
-msgstr "Fes-la predeterminada"
+msgstr "Impressora predeterminada:"
 
-#: ../system-config-printer.glade.h:100
-msgid "Delete this printer queue"
-msgstr ""
-
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:96
 msgid "Deny printing for everyone except these users:"
-msgstr "Només poden imprimir els següents usuaris:"
+msgstr "Només poden imprimir els usuaris següents:"
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:97
 msgid "Description:"
 msgstr "Descripció:"
 
-#: ../system-config-printer.glade.h:103 ../troubleshoot/DeviceListed.py:40
+#: ../system-config-printer.glade.h:98 ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "URI del dispositiu"
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:99
 msgid "Device URI:"
 msgstr "URI del dispositiu:"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:100
 msgid "Device description."
 msgstr "Descripció del dispositiu."
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:101
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:108
-#, fuzzy
+#: ../system-config-printer.glade.h:103
 msgid "Driver details"
-msgstr "Controladors"
+msgstr "Detalls del controlador"
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:104
+msgid "E_nable"
+msgstr "Ha_bilita"
+
+#: ../system-config-printer.glade.h:105
 msgid "Empty"
 msgstr "Buit"
 
-#: ../system-config-printer.glade.h:110
+#: ../system-config-printer.glade.h:106
 msgid "Enabled"
-msgstr "Habilitat"
+msgstr "Habilitada"
 
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:107
 msgid "Ending Banner:"
-msgstr "Peu de pàgina:"
+msgstr "Bàner de peu de pàgina:"
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:108
 msgid "Enter some search terms for the model of your printer."
-msgstr ""
+msgstr "Introduïu alguns termes de cerca per al model de la impressora."
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:109
 msgid "Error Policy: \t"
 msgstr "Política d'errors: \t"
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:110
 msgid "Find _Queue..."
-msgstr ""
+msgstr "Cerca una c_ua..."
 
 # FIXME
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:111
 msgid "Finishings:"
 msgstr "Acabaments:"
 
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.glade.h:112
 msgid "Flow Control"
 msgstr "Control de flux"
 
-#: ../system-config-printer.glade.h:117
+#: ../system-config-printer.glade.h:113
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr ""
+"Hi ha controladors que es poden baixar per a la impressora que heu "
+"seleccionat."
 
-#: ../system-config-printer.glade.h:118
+#: ../system-config-printer.glade.h:114
 msgid "Gamma:"
 msgstr "Gamma:"
 
-#: ../system-config-printer.glade.h:119
-msgid "Goto Server"
-msgstr "Vés al servidor"
-
-#: ../system-config-printer.glade.h:120
+#: ../system-config-printer.glade.h:115
 msgid "Hold until:"
-msgstr ""
+msgstr "Suspèn fins:"
 
-#: ../system-config-printer.glade.h:121
-#, fuzzy
+#: ../system-config-printer.glade.h:116
 msgid "Host:"
-msgstr "Nom de l'ordinador"
+msgstr "Ordinador:"
 
-#: ../system-config-printer.glade.h:122
+#: ../system-config-printer.glade.h:117
 msgid "Hue adjustment:"
 msgstr "Ajustament del to:"
 
-#: ../system-config-printer.glade.h:123
+#: ../system-config-printer.glade.h:118
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Descripció de la impressora, com ara «HP LaserJet amb Duplexer»"
 
-#: ../system-config-printer.glade.h:124
+#: ../system-config-printer.glade.h:119
 msgid "Human-readable location such as \"Lab 1\""
-msgstr "Descripció de la ubicació, per exemple «Lab 1»"
+msgstr "Descripció de la ubicació, per exemple «Laboratori 1»"
 
-#: ../system-config-printer.glade.h:125
+#: ../system-config-printer.glade.h:120
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:126
+#: ../system-config-printer.glade.h:121
 msgid "IPP Browser"
-msgstr ""
+msgstr "Navegador IPP"
 
-#: ../system-config-printer.glade.h:127
-#, fuzzy
+#: ../system-config-printer.glade.h:122
 msgid "Installed Options"
-msgstr "Opcions instal·lables"
+msgstr "Opcions instal·lades"
 
-#: ../system-config-printer.glade.h:128
+#: ../system-config-printer.glade.h:123
 msgid "Job Options"
-msgstr "Opcions de la tasca"
+msgstr "Opcions de les tasques"
 
-#: ../system-config-printer.glade.h:129
+#: ../system-config-printer.glade.h:124
 msgid "Job priority:"
-msgstr "Prioritat del treball:"
+msgstr "Prioritat de les tasques:"
 
-#: ../system-config-printer.glade.h:130
+#: ../system-config-printer.glade.h:125
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:131
+#: ../system-config-printer.glade.h:126
 msgid "Left margin:"
 msgstr "Marge esquerre:"
 
-#: ../system-config-printer.glade.h:132
+#: ../system-config-printer.glade.h:127
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -1068,75 +1181,73 @@ msgstr ""
 "De baix a dalt, d'esquerra a dreta\n"
 "De dalt a baix, de dreta a esquerra"
 
-#: ../system-config-printer.glade.h:140
+#: ../system-config-printer.glade.h:135
 msgid "License:"
-msgstr ""
+msgstr "Llicència:"
 
-#: ../system-config-printer.glade.h:141
+#: ../system-config-printer.glade.h:136
 msgid "Lines per inch:"
 msgstr "Línies per polzada:"
 
-#: ../system-config-printer.glade.h:142
-#, fuzzy
+#: ../system-config-printer.glade.h:137
 msgid "Local Driver"
-msgstr "Impressores locals"
+msgstr "Controlador local"
 
-#: ../system-config-printer.glade.h:143
+#: ../system-config-printer.glade.h:138
 msgid "Location:"
 msgstr "Ubicació:"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:145
-#, fuzzy
+#: ../system-config-printer.glade.h:140
 msgid "Make Default"
-msgstr "per defecte"
+msgstr "Fes-la predeterminada"
 
-#: ../system-config-printer.glade.h:146
+#: ../system-config-printer.glade.h:141
 msgid "Make and Model:"
 msgstr "Fabricant i model:"
 
-#: ../system-config-printer.glade.h:147
-#, fuzzy
+#: ../system-config-printer.glade.h:142
 msgid ""
 "May contain any printable characters except \"/\", \"#\", and space.\n"
 "Name must be unique on the local machine!"
-msgstr "Pot tenir qualsevol caràcter excepte «/», «#» i l'espai"
+msgstr ""
+"Pot tenir qualsevol caràcter excepte «/», «#» i l'espai.\n"
+"El nom ha d'ésser únic a l'ordinador local."
 
-#: ../system-config-printer.glade.h:149
+#: ../system-config-printer.glade.h:144
 msgid "Media:"
-msgstr "Suport:"
+msgstr "Suports:"
 
-#: ../system-config-printer.glade.h:150
+#: ../system-config-printer.glade.h:145
 msgid "Members"
 msgstr "Membres"
 
 # FIXME
-#: ../system-config-printer.glade.h:151
+#: ../system-config-printer.glade.h:146
 msgid "Mirror"
 msgstr "Inverteix"
 
-#: ../system-config-printer.glade.h:152
+#: ../system-config-printer.glade.h:147
 msgid "More"
 msgstr "Més"
 
-#: ../system-config-printer.glade.h:153
+#: ../system-config-printer.glade.h:148
 msgid "New Clas_s"
-msgstr "Nova cla_sse"
+msgstr "Cla_sse nova"
 
-#: ../system-config-printer.glade.h:156
+#: ../system-config-printer.glade.h:151
 msgid "New _Printer"
-msgstr "Nova im_pressora"
+msgstr "Im_pressora nova"
 
-#: ../system-config-printer.glade.h:157
+#: ../system-config-printer.glade.h:152
 msgid "New name for the printer"
-msgstr "Nou nom per a la impressora"
+msgstr "Nom nou de la impressora"
 
-#: ../system-config-printer.glade.h:158
+#: ../system-config-printer.glade.h:153
 msgid "No, I do not accept this license"
-msgstr ""
+msgstr "No, no accepto aquesta llicència"
 
-#: ../system-config-printer.glade.h:159
-#, fuzzy
+#: ../system-config-printer.glade.h:154
 msgid ""
 "None\n"
 "Staple\n"
@@ -1168,16 +1279,35 @@ msgid ""
 "Bind (bottom)"
 msgstr ""
 "Cap\n"
-"Grapes\n"
+"Grapa\n"
 "Forats\n"
 "Coberta\n"
 "Lligat\n"
 "Cosit pel mig\n"
 "Cosit a un costat\n"
 "Doblegat\n"
-"Tallat"
+"Tallat\n"
+"Embalat\n"
+"Confeccionador de llibrets\n"
+"Separador de tasques\n"
+"Grapa (superior esquerre)\n"
+"Grapa (inferior esquerre)\n"
+"Grapa (superior dret)\n"
+"Grapa (inferior dret)\n"
+"Cosit a un costat (esquerre)\n"
+"Cosit a un costat (superior)\n"
+"Cosit a un costat (dret)\n"
+"Cosit a un costat (inferior)\n"
+"Grapa doble (esquerre)\n"
+"Grapa doble (superior)\n"
+"Grapa doble (dret)\n"
+"Grapa doble (inferior)\n"
+"Coberta (esquerre)\n"
+"Coberta (superior)\n"
+"Coberta (dret)\n"
+"Coberta (inferior)"
 
-#: ../system-config-printer.glade.h:187
+#: ../system-config-printer.glade.h:182
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1187,45 +1317,39 @@ msgstr ""
 "Dues cares (cantó llarg)\n"
 "Dues cares (cantó curt)"
 
-#: ../system-config-printer.glade.h:190
+#: ../system-config-printer.glade.h:185
 msgid "Operation Policy:"
 msgstr "Política d'operacions:"
 
-#: ../system-config-printer.glade.h:191
+#: ../system-config-printer.glade.h:186
 msgid "Orientation:"
 msgstr "Orientació:"
 
-#: ../system-config-printer.glade.h:192
+#: ../system-config-printer.glade.h:187
 msgid "Pages per side layout:"
 msgstr "Disposició de les pàgines per cara:"
 
-#: ../system-config-printer.glade.h:193
+#: ../system-config-printer.glade.h:188
 msgid "Pages per side:"
 msgstr "Pàgines per cara:"
 
-#: ../system-config-printer.glade.h:194
+#: ../system-config-printer.glade.h:189
 msgid "Parity"
 msgstr "Paritat"
 
-#: ../system-config-printer.glade.h:195 ../troubleshoot/Welcome.py:64
-#: ../applet.glade.h:5
-msgid "Password:"
-msgstr "Contrasenya:"
-
-#: ../system-config-printer.glade.h:196
+#: ../system-config-printer.glade.h:191
 msgid "Please Wait"
-msgstr ""
+msgstr "Espereu, si us plau"
 
-#: ../system-config-printer.glade.h:197
+#: ../system-config-printer.glade.h:192
 msgid "Policies"
 msgstr "Polítiques"
 
-#: ../system-config-printer.glade.h:198
-#, fuzzy
+#: ../system-config-printer.glade.h:193
 msgid "Port number:"
-msgstr "Número de port"
+msgstr "Número de port:"
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:194
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1237,162 +1361,165 @@ msgstr ""
 "Apaïsat invertit (270°)\n"
 "Vertical invertit (180°)"
 
-#: ../system-config-printer.glade.h:203
-#, fuzzy
+#: ../system-config-printer.glade.h:198
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
 "part of the Windows<sup>®</sup> driver."
 msgstr ""
-"Els fitxers de descripció de la impressora PostScript (PPD) poden trobar-se "
-"al disc dels controladors de la impressora. Per a les impressores "
-"PostScript, solen formar part del controlador del Windows<sup>®</sup>."
+"Els fitxers de descripció de la impressora PostScript (PPD) són sovint al "
+"disc dels controladors de la impressora. Per a les impressores PostScript, "
+"solen formar part del controlador del Windows<sup>®</sup>."
 
-#: ../system-config-printer.glade.h:204
+# FIXME http://en.wikipedia.org/wiki/Prettyprint (dpm)
+#: ../system-config-printer.glade.h:199
 msgid "Pretty print"
-msgstr ""
+msgstr "Decoració del format"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:206
-#, fuzzy
+#: ../system-config-printer.glade.h:201
 msgid "Print Self-Test Page"
-msgstr "Imprimeix una pàgina de prova"
+msgstr "Imprimeix la pàgina de comprovació"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:205
+msgid "Printer Properties"
+msgstr "Propietats de la impressora"
+
+#: ../system-config-printer.glade.h:206
 msgid "Printer State:"
 msgstr "Estat de la impressora:"
 
-#: ../system-config-printer.glade.h:211
-#, fuzzy
+#: ../system-config-printer.glade.h:207
 msgid "Printer model:"
-msgstr "Nom de la impressora"
+msgstr "Model del la impressora:"
+
+#: ../system-config-printer.glade.h:208
+msgid "Probe"
+msgstr "Sondeja"
+
+#: ../system-config-printer.glade.h:209
+msgid "Provide PPD file"
+msgstr "Proporcioneu un fitxer PPD"
+
+#: ../system-config-printer.glade.h:210
+msgid "Queue:"
+msgstr "Cua:"
+
+#: ../system-config-printer.glade.h:211
+msgid "Refresh the list of printer queues"
+msgstr "Refresca la llista de cues d'impressió"
 
 #: ../system-config-printer.glade.h:212
-msgid "Probe"
-msgstr "Prova"
+msgid "Require encryption"
+msgstr "Requereix xifratge"
 
 #: ../system-config-printer.glade.h:213
-#, fuzzy
-msgid "Provide PPD file"
-msgstr "Proporciona un fitxer PPD"
-
-#: ../system-config-printer.glade.h:214
-msgid "Queue:"
-msgstr ""
-
-#: ../system-config-printer.glade.h:215
-msgid "Refresh the list of printer queues"
-msgstr ""
-
-#: ../system-config-printer.glade.h:216
-msgid "Require encryption"
-msgstr "Es requereix xifratge"
-
-#: ../system-config-printer.glade.h:217
 msgid "Reset"
 msgstr "Reinicialitza"
 
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:214
 msgid "Reset to system default"
-msgstr "Reinicialitza als valors per defecte del sistema"
+msgstr "Reinicialitza als valors predeterminats del sistema"
 
-#: ../system-config-printer.glade.h:219
+#: ../system-config-printer.glade.h:215
 msgid "Right margin:"
 msgstr "Marge dret:"
 
-#: ../system-config-printer.glade.h:220
+#: ../system-config-printer.glade.h:216
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../system-config-printer.glade.h:221
+#: ../system-config-printer.glade.h:217
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:222
+#: ../system-config-printer.glade.h:218
 msgid "SMB Browser"
-msgstr ""
+msgstr "Navegador SMB"
 
-#: ../system-config-printer.glade.h:223
+#: ../system-config-printer.glade.h:219
 msgid "Saturation:"
 msgstr "Saturació:"
 
-#: ../system-config-printer.glade.h:224
+#: ../system-config-printer.glade.h:220
 msgid "Save debugging information for troubleshooting"
 msgstr "Desa la informació de depuració per a analitzar els errors"
 
-#: ../system-config-printer.glade.h:225
+#: ../system-config-printer.glade.h:221
 msgid "Scale to fit"
 msgstr "Millor ajust"
 
-#: ../system-config-printer.glade.h:226
+#: ../system-config-printer.glade.h:222
 msgid "Scaling:"
 msgstr "Escalat:"
 
-#: ../system-config-printer.glade.h:227
+#: ../system-config-printer.glade.h:223
 msgid "Search for a printer driver to download"
-msgstr ""
+msgstr "Cerca un controlador d'impressora a baixar"
 
-#: ../system-config-printer.glade.h:228
-#, fuzzy
+#: ../system-config-printer.glade.h:224
 msgid "Search terms:"
-msgstr "Nou nom per a la impressora"
+msgstr "Termes de la cerca:"
 
-#: ../system-config-printer.glade.h:229
+#: ../system-config-printer.glade.h:225
 msgid "Select A File"
 msgstr "Escolliu un fitxer"
 
-#: ../system-config-printer.glade.h:230
-#, fuzzy
+#: ../system-config-printer.glade.h:226
 msgid "Select printer from database"
-msgstr "Selecciona la impressora de la base de dades"
+msgstr "Seleccioneu una impressora de la base de dades"
 
-#: ../system-config-printer.glade.h:231
+#: ../system-config-printer.glade.h:227
 msgid "Serial"
 msgstr "Sèrie"
 
-#: ../system-config-printer.glade.h:232
+#: ../system-config-printer.glade.h:228
+msgid "Set As Default"
+msgstr "Fes-la la predeterminada"
+
+#: ../system-config-printer.glade.h:229
 msgid "Settings"
 msgstr "Configuració"
 
-#: ../system-config-printer.glade.h:233
+#: ../system-config-printer.glade.h:230
 msgid "Share published printers connected to this system"
 msgstr "Comparteix les impressores publicades connectades a aquest sistema"
 
-#: ../system-config-printer.glade.h:234
+#: ../system-config-printer.glade.h:231
 msgid "Shared"
-msgstr "Compartit"
+msgstr "Compartida"
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:232
 msgid "Show printers shared by other systems"
 msgstr "Mostra les impressores compartides per altres sistemes"
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:233
 msgid "Sides:"
 msgstr "Cares:"
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:234
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
 "the application."
 msgstr ""
-"Estableix les opcions per defecte dels treballs d'aquesta impressora. Si "
+"Estableix les opcions per defecte de les tasques d'aquesta impressora. Si "
 "l'aplicació no les ha establert, s'afegiran aquestes opcions als treballs "
-"que aribin a aquest servidor."
+"que arribin a aquest servidor d'impressió."
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:235
 msgid "Starting Banner:"
-msgstr "Encapçalament:"
+msgstr "Bàner d'inici:"
 
-#: ../system-config-printer.glade.h:239
+#: ../system-config-printer.glade.h:236
 msgid "Supplier:"
-msgstr ""
+msgstr "Proveïdor:"
 
-#: ../system-config-printer.glade.h:240
+#: ../system-config-printer.glade.h:237
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:241
+#: ../system-config-printer.glade.h:238
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1402,24 +1529,29 @@ msgid ""
 msgstr ""
 "La base de dades d'impressores del foomatic conté fitxers de descripció de "
 "la impressora (PPD) proporcionats pels fabricants i també pot generar "
-"fitxers PPD per a un gran nombre d'impressores no PostScript. Però en "
-"general els fitxers PPD dels fabricants proporcionen un millor accés a la "
+"fitxers PPD per a un gran nombre d'impressores no PostScript. En general, "
+"però, els fitxers PPD dels fabricants proporcionen un millor accés a la "
 "impressora."
 
-#: ../system-config-printer.glade.h:242
+#: ../system-config-printer.glade.h:239
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
 "of the driver's supplier."
 msgstr ""
+"Aquests controladors no els distribueix el proveïdor del sistema operatiu i "
+"no n'obtindreu assistència comercial. Vegeu les condicions d'assistència "
+"tècnica i de llicència del proveïdor del controlador."
 
-#: ../system-config-printer.glade.h:243
+#: ../system-config-printer.glade.h:240
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr ""
+"Aquest controlador pot funcionar amb maquinari addicional que es pot "
+"instal·lar a la impressora."
 
-#: ../system-config-printer.glade.h:244
+#: ../system-config-printer.glade.h:241
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1429,7 +1561,7 @@ msgstr ""
 "significat. Les opcions que no existeixin en el nou PPD es perdran, i les "
 "que només apareguin al nou PPD es faran servir amb el valor predeterminat."
 
-#: ../system-config-printer.glade.h:245
+#: ../system-config-printer.glade.h:242
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1445,92 +1577,114 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
 "Ave, Cambridge, MA 02139, USA."
 msgstr ""
+"Aquest programa és programari lliure; el podeu redistribuir i/o modificar "
+"sota els termes de la Llicència Publica General GNU tal i com ha estat "
+"publicada per la Free Software Foundation; ja sigui la versió 2 de la "
+"llicència, o (si ho preferiu) qualsevol versió posterior.\n"
+"\n"
+"Aquest programa es distribueix amb l'expectativa que serà útil, però SENSE "
+"CAP GARANTIA; ni tan sols la garantia implícita de COMERCIALITZACIÓ o "
+"ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR. Vegeu la Llicència Publica General "
+"GNU per a obtenir-ne més detalls.\n"
+"\n"
+"Hauríeu d'haver rebut una còpia de la Llicència Pública General GNU "
+"juntament amb aquest programa; en cas contrari, escriviu a la Free Software "
+"Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, "
+"USA."
 
-#: ../system-config-printer.glade.h:250
+#: ../system-config-printer.glade.h:247
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
 msgstr ""
 "Es perdran totes les opcions de configuració actuals. Es farà servir la "
-"configuració predeterminada del nou PPD."
+"configuració predeterminada del nou PPD. "
 
-#: ../system-config-printer.glade.h:251
+#: ../system-config-printer.glade.h:248
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
-"Per a afegir una opció nova, introduïu-ne el nom a la caixa d'aquí sota i "
-"feu clic a afegeix."
+"Per a afegir una opció nova, introduïu-ne el nom al quadre d'aquí sota i feu "
+"clic a «Afegeix»."
 
-#: ../system-config-printer.glade.h:252
+#: ../system-config-printer.glade.h:249
 msgid "Top margin:"
 msgstr "Marge superior:"
 
-#: ../system-config-printer.glade.h:253
+#: ../system-config-printer.glade.h:250
 msgid "Try to copy the option settings over from the old PPD. "
-msgstr "Intenta copiar les opcions de configuració al damunt de l'antic PPD."
+msgstr "Intenta copiar les opcions de configuració de l'antic PPD. "
 
-#: ../system-config-printer.glade.h:254
+#: ../system-config-printer.glade.h:251
 msgid "URI:"
-msgstr ""
+msgstr "URI:"
 
-#: ../system-config-printer.glade.h:255
+#: ../system-config-printer.glade.h:252
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "Empra el nou PPD (descripció d'impressora Postscript) tal com és."
 
-#: ../system-config-printer.glade.h:256
+#: ../system-config-printer.glade.h:253
 msgid "User name:"
 msgstr "Nom de l'usuari:"
 
-#: ../system-config-printer.glade.h:257
-msgid "Username:"
-msgstr "Nom de l'usuari:"
+#: ../system-config-printer.glade.h:255
+msgid "View Print _Queue"
+msgstr "Mostra la _cua d'impressió"
 
-#: ../system-config-printer.glade.h:258
+#: ../system-config-printer.glade.h:256
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
 msgstr ""
+"Amb aquesta opció no es baixarà cap controlador. En els passos següents se "
+"seleccionarà un controlador instal·lat localment."
+
+#: ../system-config-printer.glade.h:257
+msgid "Word wrap"
+msgstr "Ajustament de paraules"
+
+#: ../system-config-printer.glade.h:258
+msgid "Yes, I accept this license"
+msgstr "Sí, accepto aquesta llicència"
 
 #: ../system-config-printer.glade.h:259
-msgid "Word wrap"
-msgstr "Talla les paraules"
+msgid "_Connect..."
+msgstr "_Connecta..."
 
 #: ../system-config-printer.glade.h:260
-#, fuzzy
-msgid "Yes, I accept this license"
-msgstr "S'accepten tasques"
+msgid "_Disable"
+msgstr "In_habilita"
 
 #: ../system-config-printer.glade.h:261
-#, fuzzy
-msgid "_Connect..."
-msgstr "Connexió"
+msgid "_Do not apply"
+msgstr "_No ho apliquis"
 
 #: ../system-config-printer.glade.h:262
-msgid "_Do not apply"
-msgstr "_No apliquis"
-
-#: ../system-config-printer.glade.h:263
 msgid "_Edit"
 msgstr "_Edita"
 
-#: ../system-config-printer.glade.h:264 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:263 ../applet.glade.h:10
 msgid "_File"
 msgstr "_Fitxer"
 
-#: ../system-config-printer.glade.h:265
+#: ../system-config-printer.glade.h:264
 msgid "_Help"
 msgstr "A_juda"
 
-#: ../system-config-printer.glade.h:266
+#: ../system-config-printer.glade.h:265
 msgid "_Install"
-msgstr ""
+msgstr "_Instal·la"
+
+#: ../system-config-printer.glade.h:266
+msgid "_Search"
+msgstr "_Cerca"
 
 #: ../system-config-printer.glade.h:267
-msgid "_Search"
-msgstr ""
+msgid "_Server Settings..."
+msgstr "Paràmetres del _servidor..."
 
 #: ../system-config-printer.glade.h:268
 msgid "_Troubleshoot"
-msgstr ""
+msgstr "_Resolució de problemes"
 
 #: ../system-config-printer.glade.h:269
 msgid "_Verify..."
@@ -1549,178 +1703,183 @@ msgid "points"
 msgstr "punts"
 
 #: ../system-config-printer.glade.h:273
-#, fuzzy
 msgid ""
 "points\n"
 "(72 points per inch)"
-msgstr "punts (72 punts per polzada)"
+msgstr ""
+"punts\n"
+"(72 punts per polzada)"
 
 #: ../system-config-printer.glade.h:275
-#, fuzzy
 msgid "system-config-printer"
-msgstr "System-Config-Printer"
+msgstr "system-config-printer"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
 #: ../system-config-printer.glade.h:277
 msgid "translator-credits"
 msgstr ""
+"Xavier Conde Rueda <xavi.conde@gmail.com>\n"
+"David Planella Molas <david.planella@gmail.com>"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
-msgstr "Configureu impressores"
+msgstr "Configuració d'impressores"
 
 #: ../system-config-printer.desktop.in.h:2
 msgid "Printing"
 msgstr "Impressió"
 
-#: ../statereason.py:73
+#: ../statereason.py:85
 msgid "Toner low"
 msgstr "Poc tòner"
 
-#: ../statereason.py:74
+#: ../statereason.py:86
 #, python-format
 msgid "Printer '%s' is low on toner."
 msgstr "La impressora «%s» té poc tòner."
 
-#: ../statereason.py:75
+#: ../statereason.py:87
 msgid "Toner empty"
 msgstr "Tòner buit"
 
-#: ../statereason.py:76
+#: ../statereason.py:88
 #, python-format
 msgid "Printer '%s' has no toner left."
 msgstr "La impressora «%s» no té tòner."
 
-#: ../statereason.py:77
+#: ../statereason.py:89
 msgid "Cover open"
 msgstr "Tapa oberta"
 
-#: ../statereason.py:78
+#: ../statereason.py:90
 #, python-format
 msgid "The cover is open on printer '%s'."
 msgstr "La impressora «%s» té la tapa oberta"
 
-#: ../statereason.py:79
+#: ../statereason.py:91
 msgid "Door open"
 msgstr "Porta oberta"
 
-#: ../statereason.py:80
+#: ../statereason.py:92
 #, python-format
 msgid "The door is open on printer '%s'."
 msgstr "La impressora «%s» té la porta oberta."
 
-#: ../statereason.py:81
+#: ../statereason.py:93
 msgid "Paper low"
 msgstr "Poc paper"
 
-#: ../statereason.py:82
+#: ../statereason.py:94
 #, python-format
 msgid "Printer '%s' is low on paper."
 msgstr "La impressora «%s» té poc paper."
 
-#: ../statereason.py:83
+#: ../statereason.py:95
 msgid "Out of paper"
 msgstr "Sense paper"
 
-#: ../statereason.py:84
+#: ../statereason.py:96
 #, python-format
 msgid "Printer '%s' is out of paper."
 msgstr "La impressora «%s» no té paper."
 
-#: ../statereason.py:85
+#: ../statereason.py:97
 msgid "Ink low"
 msgstr "Poca tinta"
 
-#: ../statereason.py:86
+#: ../statereason.py:98
 #, python-format
 msgid "Printer '%s' is low on ink."
 msgstr "La impressora «%s» té poca tinta."
 
-#: ../statereason.py:87
+#: ../statereason.py:99
 msgid "Ink empty"
 msgstr "Sense tinta"
 
-#: ../statereason.py:88
+#: ../statereason.py:100
 #, python-format
 msgid "Printer '%s' has no ink left."
 msgstr "La impressora «%s» no té tinta."
 
-#: ../statereason.py:89
-#, fuzzy
+#: ../statereason.py:101
 msgid "Printer off-line"
-msgstr "Opcions de la impressora"
+msgstr "La impressora està fora de línia"
 
-#: ../statereason.py:90
-#, fuzzy, python-format
+#: ../statereason.py:102
+#, python-format
 msgid "Printer `%s' is currently off-line."
-msgstr "La impressora «%s» no té paper."
+msgstr "La impressora «%s» està fora de línia."
 
-#: ../statereason.py:91
+#: ../statereason.py:103
 msgid "Not connected?"
 msgstr "Sense connectar?"
 
-#: ../statereason.py:92
+#: ../statereason.py:104
 #, python-format
 msgid "Printer '%s' may not be connected."
-msgstr "La impressora «%s» potser no està connectada."
+msgstr "Pot ser que la impressora «%s» no estigui connectada."
 
-#: ../statereason.py:93 ../statereason.py:105
+#: ../statereason.py:105 ../statereason.py:121
 msgid "Printer error"
 msgstr "Error de la impressora"
 
-#: ../statereason.py:94
-#, fuzzy, python-format
+#: ../statereason.py:106
+#, python-format
 msgid "There is a problem on printer `%s'."
-msgstr "La impressora «%s» té la porta oberta."
+msgstr "Hi ha un problema amb la impressora «%s»."
 
-#: ../statereason.py:101
+#: ../statereason.py:117
 msgid "Printer report"
 msgstr "Informe de la impressora"
 
-#: ../statereason.py:103
+#: ../statereason.py:119
 msgid "Printer warning"
-msgstr "Avís de la impressió"
+msgstr "Avís de la impressora"
 
-#: ../statereason.py:106
+#: ../statereason.py:122
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr "Impressora «%s»: «%s»."
 
-#: ../troubleshoot/__init__.py:37
+#: ../troubleshoot/__init__.py:53
 msgid "Printing troubleshooter"
-msgstr ""
+msgstr "Resolució de problemes de la impressió"
 
-#: ../troubleshoot/base.py:33
+#: ../troubleshoot/base.py:26
 msgid ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
 msgstr ""
+"Seleccioneu l'entrada de menú principal Sistema->Administració->Impressió "
+"per a utilitzar aquesta eina."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:28
 msgid "Server Not Exporting Printers"
-msgstr ""
+msgstr "El servidor no exporta les impressores"
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:29
 msgid ""
 "Although one or more printers are marked as being shared, this print server "
 "is not exporting shared printers to the network."
 msgstr ""
+"Tot i que una o més impressores estan marcades com a compartides, aquest "
+"sservidor d'impressió no les exporta a la xarxa."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:33
 msgid ""
 "Enable the 'Share published printers connected to this system' option in the "
 "server settings using the printing administration tool."
 msgstr ""
+"Habiliteu l'opció «Comparteix les impressores publicades connectades a aquest "
+"sistema» en els paràmetres del servidor amb l'eina d'administració de la impressió."
 
-#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:1191
-#, fuzzy
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:128
 msgid "Install"
-msgstr "Manca el controlador"
+msgstr "Instal·la"
 
 #: ../troubleshoot/CheckPPDSanity.py:80
-#, fuzzy
 msgid "Invalid PPD File"
-msgstr "Proporciona un fitxer PPD"
+msgstr "El fitxer PPD no és vàlid"
 
 #: ../troubleshoot/CheckPPDSanity.py:88
 #, python-format
@@ -1728,43 +1887,41 @@ msgid ""
 "The PPD file for printer `%s' does not conform to the specification.  "
 "Possible reason follows:"
 msgstr ""
+"El fitxer PPD de la impressora «%s» no s'adiu a l'especificació. "
+"La següent n'és una raó possible:"
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:94
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem with the PPD file for printer `%s'."
-msgstr "La impressora «%s» té la porta oberta."
+msgstr "Hi ha un problema amb el fitxer PPD de la impressora «%s»."
 
 #: ../troubleshoot/CheckPPDSanity.py:104
-#, fuzzy
 msgid "Missing Printer Driver"
-msgstr "Manca el controlador"
+msgstr "Manca el controlador de la impressora"
 
 #: ../troubleshoot/CheckPPDSanity.py:107
-#, fuzzy, python-format
+#, python-format
 msgid "Printer `%s' requires the %s package but it is not currently installed."
-msgstr ""
-"La impressora '%s' necessita el paquet %s però no està instal·lat encara. "
-"Instal·leu-lo abans de fer servir aquesta impressora."
+msgstr "La impressora «%s» necessita el paquet %s, però no està instal·lat."
 
 #: ../troubleshoot/CheckPPDSanity.py:112
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Printer `%s' requires the `%s' program but it is not currently installed."
-msgstr ""
-"La impressora '%s' necessita el paquet %s però no està instal·lat encara. "
-"Instal·leu-lo abans de fer servir aquesta impressora."
+msgstr "La impressora «%s» necessita el programa %s, però no està instal·lat."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
-#, fuzzy
 msgid "Choose Network Printer"
-msgstr "Nova impressora"
+msgstr "Escolliu una impressora de xarxa"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:30
 msgid ""
 "Please select the network printer you are trying to use from the list below. "
 "If it does not appear in the list, select 'Not listed'."
 msgstr ""
+"Seleccioneu la impressora de xarxa que vulgueu utilitzar de la llista de "
+"sota. Si no hi apareix, escolliu «No és a la llista»."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
@@ -1773,264 +1930,243 @@ msgstr "Nom"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:39
 #: ../troubleshoot/ChoosePrinter.py:40 ../troubleshoot/DeviceListed.py:38
-#, fuzzy
 msgid "Information"
-msgstr "Ubicació:"
+msgstr "Informació"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:75
 #: ../troubleshoot/ChoosePrinter.py:64 ../troubleshoot/DeviceListed.py:70
-#, fuzzy
 msgid "Not listed"
-msgstr "Sense connectar"
+msgstr "No és a la llista"
 
 #: ../troubleshoot/ChoosePrinter.py:30
-#, fuzzy
 msgid "Choose Printer"
-msgstr "Copia la impressora"
+msgstr "Escolliu una impressora"
 
 #: ../troubleshoot/ChoosePrinter.py:31
 msgid ""
 "Please select the printer you are trying to use from the list below. If it "
 "does not appear in the list, select 'Not listed'."
 msgstr ""
+"Seleccioneu la impressora que vulgueu utilitzar de la llista de sota. Si no "
+"hi apareix, escolliu «No és a la llista»."
 
 #: ../troubleshoot/DeviceListed.py:30
-#, fuzzy
 msgid "Choose Device"
-msgstr "Canvia la URI del dispositiu"
+msgstr "Trieu el dispositiu"
 
 #: ../troubleshoot/DeviceListed.py:31
 msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
+"Seleccioneu el dispositiu que vulgueu utilitzar de la llista de sota. Si no "
+"hi apareix, escolliu «No és a la llista»."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:30
 #: ../troubleshoot/ErrorLogFetch.py:30
 msgid "Debugging"
-msgstr ""
+msgstr "Depuració"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid ""
 "I would like to enable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to enable debugging."
 msgstr ""
+"S'hauria d'habilitar la depuració en el planificador del CUPS, cosa que pot "
+"causar el seu reinici. Feu clic al botó de sota per a habilitar la depuració."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:35
 msgid "Enable Debugging"
-msgstr ""
+msgstr "Habilita la depuració"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:159
+#: ../troubleshoot/ErrorLogCheckpoint.py:142
 msgid "Debug logging enabled."
-msgstr ""
+msgstr "S'ha habilitat el registre de la depuració"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:161
+#: ../troubleshoot/ErrorLogCheckpoint.py:144
 msgid "Debug logging was already enabled."
-msgstr ""
+msgstr "Ja estava habilitat el registre de la depuració"
 
 #: ../troubleshoot/ErrorLogFetch.py:31
 msgid ""
 "I would like to disable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to disable debugging."
 msgstr ""
+"S'hauria d'inhabilitar la depuració en el planificador del CUPS, cosa que "
+"pot causar el seu reinici. Feu clic al botó de sota per a inhabilitar la "
+"depuració."
 
 #: ../troubleshoot/ErrorLogFetch.py:35
 msgid "Disable Debugging"
-msgstr ""
+msgstr "Inhabilita la depuració"
 
-#: ../troubleshoot/ErrorLogFetch.py:142
+#: ../troubleshoot/ErrorLogFetch.py:122
 msgid "Debug logging disabled."
-msgstr ""
+msgstr "S'ha inhabilitat el registre de la depuració."
 
-#: ../troubleshoot/ErrorLogFetch.py:144
+#: ../troubleshoot/ErrorLogFetch.py:124
 msgid "Debug logging was already disabled."
-msgstr ""
+msgstr "Ja estava inhabilitat el registre de la depuració."
 
 #: ../troubleshoot/ErrorLogParse.py:30
 msgid "Error log messages"
-msgstr ""
+msgstr "Missatges en el registre d'errors"
 
 #: ../troubleshoot/ErrorLogParse.py:31
 msgid "There are messages in the error log."
-msgstr ""
+msgstr "Hi ha missatges en el registre d'errors."
 
 #: ../troubleshoot/LocalOrRemote.py:27
-#, fuzzy
 msgid "Printer Location"
-msgstr "Opcions de la impressora"
+msgstr "Ubicació de la impressora"
 
 #: ../troubleshoot/LocalOrRemote.py:28
-#, fuzzy
 msgid "Is the printer connected to this computer or available on the network?"
-msgstr "Una impressora connectada al port paral·lel."
+msgstr ""
+"La impressora està connectada a aquest ordinador o bé està disponible a la "
+"xarxa?"
 
 #: ../troubleshoot/LocalOrRemote.py:30
-#, fuzzy
 msgid "Locally connected printer"
-msgstr "Esteu segur que voleu suprimir l'impressora %s?"
+msgstr "Impressora connectada localment"
 
 #: ../troubleshoot/LocalOrRemote.py:31
-#, fuzzy
 msgid "Network printer"
-msgstr "Nova impressora"
+msgstr "Impressora de xarxa"
 
 #: ../troubleshoot/NetworkCUPSPrinterShared.py:28
 msgid "Queue Not Shared"
-msgstr ""
+msgstr "La cua no és compartida"
 
 #: ../troubleshoot/NetworkCUPSPrinterShared.py:29
 msgid "The CUPS printer on the server is not shared."
-msgstr ""
+msgstr "La impressora CUPS del servidor no és compartida."
 
 #: ../troubleshoot/PrinterStateReasons.py:29
-#, fuzzy
 msgid "Status Messages"
-msgstr "Missatge"
+msgstr "Missatges d'estat"
 
 #: ../troubleshoot/PrinterStateReasons.py:30
 msgid "There are status messages associated with this queue."
-msgstr ""
+msgstr "Hi ha missatges d'estat associats a aquesta cua."
 
 #: ../troubleshoot/PrinterStateReasons.py:53
-#, fuzzy, python-format
+#, python-format
 msgid "The printer's state message is: `%s'."
-msgstr "Estat de la impressora:"
+msgstr "Missatge de l'estat de la impressora: «%s»."
 
 #: ../troubleshoot/PrinterStateReasons.py:78
 msgid "Errors are listed below:"
-msgstr ""
+msgstr "Es mostren els errors aquí sota:"
 
 #: ../troubleshoot/PrinterStateReasons.py:83
 msgid "Warnings are listed below:"
-msgstr ""
-
-#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:884
-msgid "Pending"
-msgstr "Pendent"
-
-#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:885
-msgid "Held"
-msgstr "Suspès"
-
-#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:888
-msgid "Canceled"
-msgstr "Cancel·lat"
-
-#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:889
-msgid "Aborted"
-msgstr "Interromput"
-
-#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:890
-msgid "Completed"
-msgstr "Completat"
+msgstr "Es mostren els avisos aquí sota:"
 
 #: ../troubleshoot/PrintTestPage.py:48
-#, fuzzy
 msgid "Test Page"
-msgstr "Imprimeix una pàgina de prova"
+msgstr "Pàgina de prova"
 
 #: ../troubleshoot/PrintTestPage.py:49
 msgid ""
 "Now print a test page.  If you are having problems printing a specific "
 "document, print that document now and mark the print job below."
 msgstr ""
+"Ara hauríeu d'imprimir una pàgina de prova. Si teniu problemes en imprimir "
+"un document determinat, proveu d'imprimir-lo ara i marqueu la tasca "
+"d'impressió d'aquí sota."
 
 #: ../troubleshoot/PrintTestPage.py:64
 msgid "Cancel All Jobs"
-msgstr ""
+msgstr "Cancel·la totes les tasques"
 
 #: ../troubleshoot/PrintTestPage.py:70
-#, fuzzy
 msgid "Test"
-msgstr "Reinicialitza"
-
-#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:116
-msgid "Job"
-msgstr "Tasca"
-
-#: ../troubleshoot/PrintTestPage.py:75 ../applet.py:117
-msgid "Document"
-msgstr "Document"
-
-#: ../troubleshoot/PrintTestPage.py:76 ../applet.py:121
-msgid "Status"
-msgstr "Estat"
+msgstr "Prova"
 
 #: ../troubleshoot/PrintTestPage.py:100
 msgid "Did the marked print jobs print correctly?"
-msgstr ""
+msgstr "S'han imprimit correctament les tasques d'impressió marcades?"
 
 #: ../troubleshoot/PrintTestPage.py:107
 msgid "Yes"
-msgstr ""
+msgstr "Sí"
 
 #: ../troubleshoot/PrintTestPage.py:108
 msgid "No"
-msgstr ""
+msgstr "No"
 
 #: ../troubleshoot/QueueNotEnabled.py:57
 #: ../troubleshoot/QueueRejectingJobs.py:67
 #, python-format
 msgid "The reason given is: `%s'."
-msgstr ""
+msgstr "S'ha donat el motiu següent: «%s»."
 
 #: ../troubleshoot/QueueNotEnabled.py:59
 msgid "This may be due to the printer being disconnected or switched off."
 msgstr ""
+"Això pot ser degut al fet que la impressora estigui desconnectada o bé "
+"apagada."
 
 #: ../troubleshoot/QueueNotEnabled.py:63
 msgid "Queue Not Enabled"
-msgstr ""
+msgstr "La cua no està habilitada"
 
 #: ../troubleshoot/QueueNotEnabled.py:64
 #, python-format
 msgid "The queue `%s' is not enabled."
-msgstr ""
+msgstr "La cua «%s» no està habilitada."
 
 #: ../troubleshoot/QueueNotEnabled.py:72
 msgid ""
 "To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
 "printer in the printer administration tool."
 msgstr ""
+"Per habilitar-la, seleccioneu la casella de verificació «Habilitada» a la "
+"pestanya de «Polítiques» de la impressora en l'eina d'administració "
+"d'impressores."
 
 #: ../troubleshoot/QueueRejectingJobs.py:32
 msgid "Queue Rejecting Jobs"
-msgstr ""
+msgstr "La cua rebutja les tasques"
 
 #: ../troubleshoot/QueueRejectingJobs.py:64
 #, python-format
 msgid "The queue `%s' is rejecting jobs."
-msgstr ""
+msgstr "La cua «%s» rebutja les tasques."
 
 #: ../troubleshoot/QueueRejectingJobs.py:71
 msgid ""
 "To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
 "`Policies' tab for the printer in the printer administration tool."
 msgstr ""
+"Per a fer que la cua accepti tasques, seleccioneu la casella de verificació "
+"«Accepta tasques» a la pestanya de «Polítiques» de la impressora en l'eina "
+"d'administració d'impressores."
 
 #: ../troubleshoot/RemoteAddress.py:27
-#, fuzzy
 msgid "Remote Address"
-msgstr "Impressores remotes"
+msgstr "Adreça remota"
 
 #: ../troubleshoot/RemoteAddress.py:28
 msgid ""
 "Please enter as many details as you can about the network address of this "
 "printer."
 msgstr ""
+"Introduïu tanta informació com sigui possible sobre l'adreça de xarxa de la "
+"impressora."
 
 #: ../troubleshoot/RemoteAddress.py:36
-#, fuzzy
 msgid "Server name:"
-msgstr "Nom de l'usuari:"
+msgstr "Nom del servidor:"
 
 #: ../troubleshoot/RemoteAddress.py:43
 msgid "Server IP address:"
-msgstr ""
+msgstr "Adreça IP del servidor:"
 
 #: ../troubleshoot/SchedulerNotRunning.py:28
 msgid "CUPS Service Stopped"
-msgstr ""
+msgstr "El servei CUPS està aturat"
 
 #: ../troubleshoot/SchedulerNotRunning.py:29
 msgid ""
@@ -2038,15 +2174,17 @@ msgid ""
 "choose System->Administration->Services from the main menu and look for the "
 "`cups' service."
 msgstr ""
+"Sembla ser que el gestor de cues d'impressió CUPS no s'està executant. Per a "
+"arreglar-ho, escolliu Sistema->Administració->Serveis en el menú principal i "
+"cerqueu el servei del «CUPS»."
 
 #: ../troubleshoot/ServerFirewalled.py:27
 msgid "Check Server Firewall"
-msgstr ""
+msgstr "Comproveu el tallafoc del servidor"
 
 #: ../troubleshoot/ServerFirewalled.py:28
-#, fuzzy
 msgid "It is not possible to connect to the server."
-msgstr "Hi ha hagu un problema en connectar al servidor CUPS."
+msgstr "No es pot connectar al servidor."
 
 #: ../troubleshoot/ServerFirewalled.py:43
 #, python-format
@@ -2054,181 +2192,89 @@ msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
 "port %d on server `%s'."
 msgstr ""
+"Comproveu si un tallafoc o la configuració de l'encaminador bloquen el port "
+"TCP %d al servidor «%s»."
 
 #: ../troubleshoot/Shrug.py:27
 msgid "Sorry!"
-msgstr ""
+msgstr "Disculpeu"
 
 #: ../troubleshoot/Shrug.py:28
 msgid ""
 "I have not been able to work out what the problem is, but I have collected "
 "some useful information to put in a bug report."
 msgstr ""
+"No s'ha pogut determinar quin és el problema, però s'ha recollit prou "
+"informació útil per a incloure-la en un informe d'error."
 
-#: ../troubleshoot/Welcome.py:41
-#, fuzzy
-msgid "Authentication"
-msgstr "<b>Autenticació</b>"
-
-#: ../troubleshoot/Welcome.py:56
-#, fuzzy
-msgid "Password required"
-msgstr "Es necessita actualitzar"
-
-#: ../troubleshoot/Welcome.py:95
+#: ../troubleshoot/Welcome.py:36
 msgid "Trouble-shooting Printing"
-msgstr ""
+msgstr "Resolució dels problemes de la impressió"
 
-#: ../troubleshoot/Welcome.py:97
+#: ../troubleshoot/Welcome.py:38
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
 msgstr ""
+"A les pantalles següents se us faran unes quantes preguntes sobre el "
+"problema amb la impressió, i basant-se en les respostes, se us suggerirà una "
+"solució si és possible."
 
-#: ../troubleshoot/Welcome.py:101
+#: ../troubleshoot/Welcome.py:42
 msgid "Click 'Forward' to begin."
-msgstr ""
+msgstr "Feu clic a «Endavant» per a començar."
 
-#: ../applet.py:119
-msgid "Size"
-msgstr "Mida"
+#: ../applet.py:118
+msgid "Printer added"
+msgstr "S'ha afegit la impressora"
 
 #: ../applet.py:120
-msgid "Time submitted"
-msgstr "Hora d'enviament"
-
-#: ../applet.py:171
-msgid "Message"
-msgstr "Missatge"
-
-#: ../applet.py:551
-msgid "1 hour ago"
-msgstr "fa 1 hora"
-
-#: ../applet.py:553
-msgid "1 hour and 1 minute ago"
-msgstr "fa 1 hora i 1 minut"
-
-#: ../applet.py:555
-#, python-format
-msgid "1 hour and %d minutes ago"
-msgstr "fa 1 hora i %d minuts"
-
-#: ../applet.py:558
-#, python-format
-msgid "%d hours ago"
-msgstr "fa %d hores"
-
-#: ../applet.py:560
-#, python-format
-msgid "%d hours and 1 minute ago"
-msgstr "fa %d hores i 1 minut"
-
-#: ../applet.py:562
-#, python-format
-msgid "%d hours and %d minutes ago"
-msgstr "fa %d hores i %d minuts"
-
-#: ../applet.py:568
-msgid "a minute ago"
-msgstr "fa un minut"
-
-#: ../applet.py:570
-#, python-format
-msgid "%d minutes ago"
-msgstr "fa %d minuts"
-
-#: ../applet.py:704
-#, fuzzy, python-format
-msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr "Hi ha hagu un problema en connectar al servidor CUPS."
-
-#: ../applet.py:707
-#, python-format
-msgid "There was a problem processing document `%s' (job %d)."
-msgstr ""
-
-#. Give up and use the untranslated provided.
-#: ../applet.py:711
-#, python-format
-msgid "There was a problem printing document `%s' (job %d): `%s'."
-msgstr ""
-
-#: ../applet.py:716 ../applet.py:732
-#, fuzzy
-msgid "Print Error"
-msgstr "Error de la impressora"
-
-#: ../applet.py:717
-msgid "_Diagnose"
-msgstr ""
-
-#: ../applet.py:738
-#, python-format
-msgid "The printer called `%s' has been disabled."
-msgstr ""
-
-#: ../applet.py:817
-msgid "No documents queued"
-msgstr "Cap document encuat"
-
-#: ../applet.py:820
-msgid "1 document queued"
-msgstr "1 document encuat"
-
-#: ../applet.py:823
-#, python-format
-msgid "%d documents queued"
-msgstr "%d documents encuats"
-
-#: ../applet.py:1181
-#, fuzzy
-msgid "Printer added"
-msgstr "Nom de la impressora"
-
-#: ../applet.py:1183
-#, fuzzy
 msgid "Missing printer driver"
-msgstr "Manca el controlador"
+msgstr "Manca el controlador de la impressora"
 
-#: ../applet.py:1187
-#, fuzzy
+#: ../applet.py:124
 msgid "Install printer driver"
-msgstr "Manca el controlador"
+msgstr "Instal·la el controlador de la impressora"
 
-#: ../applet.py:1188
+#: ../applet.py:125
 #, python-format
 msgid "`%s' requires driver installation: %s."
-msgstr ""
+msgstr "«%s» requereix la instal·lació d'un controlador: %s."
 
-#: ../applet.py:1194
+#: ../applet.py:131
 #, python-format
 msgid "`%s' is ready for printing."
-msgstr ""
+msgstr "«%s» està a punt per a imprimir."
 
-#: ../applet.py:1197
-#, fuzzy
+#: ../applet.py:134
 msgid "Configure"
-msgstr "Configureu impressores"
+msgstr "Configura"
 
 #. Model mismatch
-#: ../applet.py:1200
+#: ../applet.py:137
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
-msgstr ""
+msgstr "S'ha afegit «%s», que utilitzarà el controlador «%s»."
 
-#: ../applet.py:1204
-#, fuzzy
+#: ../applet.py:141
 msgid "Find driver"
-msgstr "Manca el controlador"
+msgstr "Cerca el controlador"
+
+#: ../applet.glade.h:1
+msgid ""
+"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+"\n"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">Cal contrasenya</span>\n"
+"\n"
 
 #: ../applet.glade.h:4
 msgid "Document print status"
-msgstr "Estat d'impressió del document"
+msgstr "Estat d'impressió dels documents"
 
 #: ../applet.glade.h:6
 msgid "Printer status"
-msgstr "Estat de la impressora"
+msgstr "Estat de les impressores"
 
 #: ../applet.glade.h:7
 msgid "Re_print"
@@ -2251,9 +2297,8 @@ msgid "_Hold"
 msgstr "_Suspèn"
 
 #: ../applet.glade.h:13
-#, fuzzy
 msgid "_Refresh"
-msgstr "Allibe_ra"
+msgstr "R_efresca"
 
 #: ../applet.glade.h:14
 msgid "_Release"
@@ -2264,48 +2309,55 @@ msgid "_View"
 msgstr "_Visualitza"
 
 #: ../print-applet.desktop.in.h:1
-#, fuzzy
 msgid "Print Queue Applet"
 msgstr "Miniaplicació de la cua d'impressió"
 
 #: ../print-applet.desktop.in.h:2
 msgid "System tray icon for managing print jobs"
-msgstr "Icona de la safata del sistema per a gestionar tasques d'impressió"
+msgstr "Icona de l'àrea de notificació per a gestionar les tasques d'impressió"
 
 #: ../manage-print-jobs.desktop.in.h:1
 msgid "Cancel, pause, resume or reprint jobs"
-msgstr "Cancel·la, atura, continua o torna a imprimir tasques"
+msgstr "Cancel·la, posa en pausa, reprèn o torna a imprimir tasques"
 
 #: ../manage-print-jobs.desktop.in.h:2
-#, fuzzy
 msgid "Manage Print Jobs"
-msgstr "Gestiona tasques d'impressió"
+msgstr "Gestió de tasques d'impressió"
 
 #: ../my-default-printer.desktop.in.h:2
-#, fuzzy
 msgid "Select default printer"
-msgstr "Fes-la predeterminada"
+msgstr "Seleccioneu la impressora predeterminada"
+
+#~ msgid "Connect to a different print server"
+#~ msgstr "Connecta a un servidor d'impressió diferent"
+
+#~ msgid "Copy this printer queue"
+#~ msgstr "Copia aquesta cua d'impressió"
+
+#~ msgid "Delete this printer queue"
+#~ msgstr "Suprimeix aquesta cua d'impressió"
+
+#~ msgid "Goto Server"
+#~ msgstr "Vés al servidor"
 
 #~ msgid "_Goto Server"
 #~ msgstr "_Vés al servidor"
 
-#, fuzzy
+#~ msgid "Password required"
+#~ msgstr "Cal una contrasenya"
+
 #~ msgid "Queue Not Accepting Jobs"
-#~ msgstr "S'accepten tasques"
+#~ msgstr "La cua no accepta tasques"
 
-#, fuzzy
 #~ msgid "The CUPS printer on the server is not accepting jobs."
-#~ msgstr "Aquesta impressora compartida no és accessible."
+#~ msgstr "La impressora CUPS del servidor no accepta tasques."
 
-#, fuzzy
 #~ msgid "The CUPS printer on the server is not enabled."
-#~ msgstr "Aquesta impressora compartida no és accessible."
+#~ msgstr "La impressora CUPS del servidor no està habilitada."
 
-#, fuzzy
 #~ msgid "Printer's state reasons:"
-#~ msgstr "Estat de la impressora:"
+#~ msgstr "Motius de l'estat de la impressora:"
 
-#, fuzzy
 #~ msgid ""
 #~ "THe remote server did not accept the print job, most likely because the "
 #~ "printer is not shared."
@@ -2329,7 +2381,7 @@ msgstr "Fes-la predeterminada"
 #~ msgstr " PPD "
 
 #~ msgid "<b>Comment about the Printer</b>"
-#~ msgstr "<b>Commentari quant a la impressora</b>"
+#~ msgstr "<b>Comentari sobre la impressora</b>"
 
 #~ msgid "<b>Information about the PPD</b>"
 #~ msgstr "<b>Informació quant al PPD</b>"
@@ -2365,7 +2417,7 @@ msgstr "Fes-la predeterminada"
 #~ msgstr "Controlador"
 
 #~ msgid "Make Default Printer"
-#~ msgstr "Fes-la predeterminada"
+#~ msgstr "Fes-la impressora predeterminada"
 
 #~ msgid "PPD"
 #~ msgstr "PPD"
@@ -2381,4 +2433,16 @@ msgstr "Fes-la predeterminada"
 #~ "del foomatic."
 
 #~ msgid "This PPD is provided by CUPS."
-#~ msgstr "El CUPS proporciona aquest PPD."
+#~ msgstr "Aquest PPD s'ha obtingut del CUPS."
+
+#~ msgid "Port number"
+#~ msgstr "Número de port"
+
+#~ msgid "PostScript Printer Description (*.ppd[.gz])"
+#~ msgstr "Descripció d'impressora Postscript (*.ppd[.gz])"
+
+#~ msgid "points (72 points per inch)"
+#~ msgstr "punts (72 punts per polzada)"
+
+#~ msgid " The reason given is: `%s'."
+#~ msgstr " S'ha donat el motiu següent: «%s»."
