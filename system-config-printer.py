@@ -2526,7 +2526,7 @@ class NewPrinterGUI(GtkGUI):
             for widget in [self.entNPLocation,
                            self.entNPDescription,
                            self.entSMBURI, self.entSMBUsername,
-                           self.entSMBPassword, self.entNPTDirectJetHostname]:
+                           self.entSMBPassword]:
                 widget.set_text('')
 
             try:
