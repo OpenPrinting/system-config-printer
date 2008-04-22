@@ -133,7 +133,7 @@ $(man_MANS): $(top_srcdir)/man/system-config-printer.xml
 
 distcheck-hook: update-po
 
-update-po:
+update-po: missing-languages
 	$(MAKE) -C po update-po
 
 missing-languages:
