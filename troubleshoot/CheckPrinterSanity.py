@@ -78,18 +78,22 @@ class CheckPrinterSanity(Question):
                     cmdline = 'LC_ALL=C nmblookup -W "$GROUP" "$HOST"'
                 else:
                     cmdline = 'LC_ALL=C nmblookup "$HOST"'
-                p = subprocess.Popen (cmdline, shell=True,
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE)
-                (stdout, stderr) = p.communicate ()
-                self.answers['nmblookup_output'] = (stdout, stderr)
-                for line in stdout.split ('\n'):
-                    if line.startswith ("querying"):
-                        continue
-                    spc = line.find (' ')
-                    if spc != -1:
-                        self.answers['remote_server_name'] = line[:spc]
-                        break
+                try:
+                    p = subprocess.Popen (cmdline, shell=True,
+                                          stdout=subprocess.PIPE,
+                                          stderr=subprocess.PIPE)
+                    (stdout, stderr) = p.communicate ()
+                    self.answers['nmblookup_output'] = (stdout, stderr)
+                    for line in stdout.split ('\n'):
+                        if line.startswith ("querying"):
+                            continue
+                        spc = line.find (' ')
+                        if spc != -1:
+                            self.answers['remote_server_name'] = line[:spc]
+                            break
+                except:
+                    # Problem executing command.
+                    pass
             elif scheme == "hp":
                 os.environ['URI'] = uri
                 try:
@@ -102,6 +106,7 @@ class CheckPrinterSanity(Question):
                     self.answers['hplip_output'] = (stdout.split ('\n'),
                                                     stderr.split ('\n'))
                 except:
+                    # Problem executing command.
                     pass
 
             r = cups_printer_dict['printer-type'] & cups.CUPS_PRINTER_REMOTE
