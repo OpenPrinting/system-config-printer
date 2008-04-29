@@ -80,6 +80,7 @@ class CheckPrinterSanity(Question):
                     cmdline = 'LC_ALL=C nmblookup "$HOST"'
                 try:
                     p = subprocess.Popen (cmdline, shell=True,
+                                          stdin=file("/dev/null"),
                                           stdout=subprocess.PIPE,
                                           stderr=subprocess.PIPE)
                     (stdout, stderr) = p.communicate ()
