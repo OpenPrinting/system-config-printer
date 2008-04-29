@@ -90,6 +90,19 @@ class CheckPrinterSanity(Question):
                     if spc != -1:
                         self.answers['remote_server_name'] = line[:spc]
                         break
+            elif scheme == "hp":
+                os.environ['URI'] = uri
+                try:
+                    p = subprocess.Popen ('LC_ALL=C hp-info -d "$URI"',
+                                          shell=True,
+                                          stdin=file("/dev/null"),
+                                          stdout=subprocess.PIPE,
+                                          stderr=subprocess.PIPE)
+                    (stdout, stderr) = p.communicate ()
+                    self.answers['hplip_output'] = (stdout.split ('\n'),
+                                                    stderr.split ('\n'))
+                except:
+                    pass
 
             r = cups_printer_dict['printer-type'] & cups.CUPS_PRINTER_REMOTE
             self.answers['cups_printer_remote'] = r
