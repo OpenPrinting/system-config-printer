@@ -70,7 +70,7 @@ class QueueNotEnabled(Question):
         if not answers['cups_printer_remote']:
             text += '\n\n'
             text += _("To enable it, select the `Enabled' checkbox in the "
-                      "`Policies' tab for the printer in the printer "
+                      "`Settings' tab for the printer in the printer "
                       "administration tool.")
             text += ' ' + TEXT_start_print_admin_tool
 

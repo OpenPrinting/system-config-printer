@@ -69,7 +69,7 @@ class QueueRejectingJobs(Question):
         if not answers['cups_printer_remote']:
             text += "\n\n"
             text += _("To make the queue accept jobs, select the "
-                      "`Accepting Jobs' checkbox in the `Policies' "
+                      "`Accepting Jobs' checkbox in the `Settings' "
                       "tab for the printer in the printer administration "
                       "tool.") + ' ' + TEXT_start_print_admin_tool
 
