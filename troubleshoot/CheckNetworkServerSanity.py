@@ -107,11 +107,16 @@ class CheckNetworkServerSanity(Question):
         # Try traceroute if we haven't already.
         if (self.answers['remote_server_name_resolves'] and
             not answers.has_key ('remote_server_traceroute')):
-            p = subprocess.Popen (['traceroute', '-w', '1', server_name],
-                                  stdout=subprocess.PIPE,
-                                  stderr=subprocess.PIPE)
-            (stdout, stderr) = p.communicate ()
-            self.answers['remote_server_traceroute'] = (stdout, stderr)
+            try:
+                p = subprocess.Popen (['traceroute', '-w', '1', server_name],
+                                      stdin=file("/dev/null"),
+                                      stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE)
+                (stdout, stderr) = p.communicate ()
+                self.answers['remote_server_traceroute'] = (stdout, stderr)
+            except:
+                # Problem executing command.
+                pass
 
         return False
 

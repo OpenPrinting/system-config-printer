@@ -81,6 +81,7 @@ class CheckPPDSanity(Question):
             self.answers['cups_printer_ppd_valid'] = False
             try:
                 p = subprocess.Popen (['cupstestppd', '-rvv', tmpf],
+                                      stdin=file("/dev/null"),
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE)
                 (stdout, stderr) = p.communicate ()
