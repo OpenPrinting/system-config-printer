@@ -1140,6 +1140,8 @@ class NewPrinterNotification(dbus.service.Object):
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
 
+    INSTALL_PACKAGES_COMMAND="/usr/bin/system-install-packages"
+
     def __init__ (self, bus):
         self.bus = bus
         self.getting_ready = 0
@@ -1215,8 +1217,10 @@ class NewPrinterNotification(dbus.service.Object):
             text = _("`%s' requires driver installation: %s.") % (name, pkgs)
             n = pynotify.Notification (title, text)
             n.set_urgency (pynotify.URGENCY_CRITICAL)
-            n.add_action ("install-driver", _("Install"),
-                          lambda x, y: self.install_driver (x, y, missing_pkgs))
+            if os.access (self.INSTALL_PACKAGES_COMMAND, os.X_OK):
+                n.add_action ("install-driver", _("Install"),
+                              lambda x, y: self.install_driver (x, y,
+                                                                missing_pkgs))
         elif status == self.STATUS_SUCCESS:
             text = _("`%s' is ready for printing.") % name
             n = pynotify.Notification (title, text)
@@ -1259,7 +1263,7 @@ class NewPrinterNotification(dbus.service.Object):
         pid = os.fork ()
         if pid == 0:
             # Child.
-            argv = ["/usr/bin/system-install-packages"]
+            argv = [self.INSTALL_PACKAGES_COMMAND]
             argv.extend (missing_pkgs)
             os.execv (argv[0], argv)
             sys.exit (1)
