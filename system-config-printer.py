@@ -58,6 +58,7 @@ from cupsd import CupsConfig
 import probe_printer
 import gtk_label_autowrap
 import urllib
+import troubleshoot
 
 domain='system-config-printer'
 import locale
@@ -2102,6 +2103,14 @@ class GUI:
 
         self.changed = set()
         self.populateList()
+
+    def on_troubleshoot_activate(self, widget):
+        if not self.__dict__.has_key ('troubleshooter'):
+            self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit,
+                                                    parent=self.MainWindow)
+
+    def on_troubleshoot_quit(self, troubleshooter):
+        del self.troubleshooter
 
     # About dialog
     def on_about_activate(self, widget):

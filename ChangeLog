@@ -1,5 +1,13 @@
 2008-04-30  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: Add Troubleshoot to the Help menu.
+	* system-config-printer.py: Import troubleshoot module.
+	(GUI.on_troubleshoot_activate): New method.
+	(GUI.on_troubleshoot_quit): New method.
+	* troubleshoot/__init__.py (Troubleshooter.__init__): Set
+	transient for parent.
+	(run): Pass through parent argument.
+
 	* troubleshoot/QueueNotEnabled.py (QueueNotEnabled.display):
 	Corrected reference to Enabled checkbox (part of bug #444690).
 	* troubleshoot/QueueRejectingJobs.py (QueueRejectingJobs.display):

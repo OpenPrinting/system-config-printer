@@ -32,8 +32,13 @@ if __name__ == "__main__":
     gettext.textdomain ('system-config-printer')
 
 class Troubleshooter:
-    def __init__ (self, quitfn=None):
+    def __init__ (self, quitfn=None, parent=None):
         main = gtk.Window ()
+        if parent:
+            main.set_transient_for (parent)
+            main.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
+            main.set_modal (True)
+
         main.set_title (_("Printing troubleshooter"))
         main.set_property ("default-width", 400)
         main.set_property ("default-height", 350)
@@ -286,8 +291,8 @@ QUESTIONS = ["Welcome",
              "ErrorLogParse",
              "Shrug"]
 
-def run (quitfn=None):
-    troubleshooter = Troubleshooter (quitfn)
+def run (quitfn=None, parent=None):
+    troubleshooter = Troubleshooter (quitfn, parent=parent)
     modules_imported = []
     for module in QUESTIONS:
         try:
