@@ -28,7 +28,12 @@ import sys
 
 domain='system-config-printer'
 import locale
-locale.setlocale (locale.LC_ALL, "")
+try:
+    locale.setlocale (locale.LC_ALL, "")
+except locale.Error, e:
+    os.environ['LC_ALL'] = 'C'
+    locale.setlocale (locale.LC_ALL, "")
+
 from gettext import gettext as _
 import gettext
 gettext.textdomain (domain)
