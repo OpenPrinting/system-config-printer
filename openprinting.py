@@ -77,7 +77,10 @@ class OpenPrinting:
     def __init__(self, language=None):
         if language == None:
             import locale
-            language = locale.getlocale(locale.LC_MESSAGES)
+            try:
+                language = locale.getlocale(locale.LC_MESSAGES)
+            except locale.Error, e:
+                language = 'C'
         self.language = language
 
         # XXX Read configuration file.
