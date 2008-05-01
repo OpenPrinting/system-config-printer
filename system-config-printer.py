@@ -72,7 +72,11 @@ from smburi import SMBURI
 
 domain='system-config-printer'
 import locale
-locale.setlocale (locale.LC_ALL, "")
+try:
+    locale.setlocale (locale.LC_ALL, "")
+except locale.Error:
+    os.environ['LC_ALL'] = 'C'
+    locale.setlocale (locale.LC_ALL, "")
 from gettext import gettext as _
 import gettext
 gettext.textdomain (domain)
@@ -142,8 +146,15 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def __init__(self, start_printer = None, change_ppd = False):
 
-        self.language = locale.getlocale(locale.LC_MESSAGES)
-        self.encoding = locale.getlocale(locale.LC_CTYPE)
+        try:
+            self.language = locale.getlocale(locale.LC_MESSAGES)
+            self.encoding = locale.getlocale(locale.LC_CTYPE)
+        except:
+            nonfatalException()
+            os.environ['LC_ALL'] = 'C'
+            locale.setlocale (locale.LC_ALL, "")
+            self.language = locale.getlocale(locale.LC_MESSAGES)
+            self.encoding = locale.getlocale(locale.LC_CTYPE)
         
         self.printer = None
         self.conflicts = set() # of options
