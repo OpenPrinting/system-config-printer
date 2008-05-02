@@ -8,8 +8,10 @@ nobase_pkgdata_SCRIPTS=				\
 	applet.py
 
 nobase_pkgdata_DATA=					\
+	authconn.py					\
 	config.py					\
 	cupshelpers.py					\
+	debug.py					\
 	openprinting.py					\
 	options.py					\
 	optionwidgets.py				\

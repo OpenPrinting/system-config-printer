@@ -64,6 +64,7 @@ from gtk_treeviewtooltips import TreeViewTooltips
 import openprinting
 import urllib
 import troubleshoot
+import authconn
 
 domain='system-config-printer'
 import locale
@@ -244,11 +245,6 @@ class GUI(GtkGUI):
 
         self.servers = set((self.connect_server,))
 
-        try:
-            self.cups = cups.Connection()
-        except RuntimeError:
-            self.cups = None
-
         # WIDGETS
         # =======
         xml = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE", glade_file)
@@ -347,6 +343,11 @@ class GUI(GtkGUI):
         self.static_tabs = 3
 
         gtk_label_autowrap.set_autowrap(self.MainWindow)
+
+        try:
+            self.cups = authconn.Connection(self.MainWindow)
+        except RuntimeError:
+            self.cups = None
 
         self.status_context_id = self.statusbarMain.get_context_id(
             "Connection")
@@ -810,9 +811,11 @@ class GUI(GtkGUI):
         cups.setServer(self.connect_server)
         cups.setUser(self.connect_user)
         # Now start a new thread for connection.
-        args = ()
+        args = []
         if self.printer:
-            args = (self.printer.name,)
+            args = [self.printer.name]
+        args.append (self.MainWindow)
+        args = tuple (args)
         self.connect_thread = thread.start_new_thread(self.connect, args)
 
     def on_cancel_connect_clicked(self, widget):
@@ -824,7 +827,7 @@ class GUI(GtkGUI):
         self.connect_thread = None
         self.ConnectingDialog.hide()
 
-    def connect(self, start_printer=None):
+    def connect(self, start_printer=None, parent=None):
         """
         Open a connection to a new server. Is executed in a separate thread!
         """
@@ -852,7 +855,7 @@ class GUI(GtkGUI):
                 cups.setServer ("localhost")
 
         try:
-            connection = cups.Connection()
+            connection = authconn.Connection(parent)
             self.newPrinterGUI.dropPPDs ()
         except RuntimeError, s:
             if self.connect_thread != thread.get_ident(): return
@@ -902,7 +905,7 @@ class GUI(GtkGUI):
         attempt = 1
         while attempt <= 5:
             try:
-                self.cups = cups.Connection ()
+                self.cups._connect ()
                 break
             except RuntimeError:
                 # Connection failed.
@@ -954,7 +957,7 @@ class GUI(GtkGUI):
     def on_btnRefresh_clicked(self, button):
         if self.cups == None:
             try:
-                self.cups = cups.Connection()
+                self.cups = authconn.Connection(self.MainWindow)
             except RuntimeError:
                 pass
 

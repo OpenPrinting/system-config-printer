@@ -1,3 +1,17 @@
+2008-05-02  Tim Waugh  <twaugh@redhat.com>
+
+	* debug.py: New file.
+	* Makefile.am (nobase_pkgdata_DATA): Ship it and install it.
+
+	* authconn.py: New file.
+	* Makefile.am (nobase_pkgdata_DATA): Ship it and install it.
+	* po/POTFILES.in: Translate it.
+	* system-config-printer.py (GUI.__init__): Use
+	authconn.Connection (bug #444306).
+	(GUI.connect): Likewise.
+	(GUI.on_btnRefresh_clicked): Likewise.
+	(GUI.reconnect): Use _connect to reconnect.
+
 2008-05-01  Tim Waugh  <twaugh@redhat.com>
 
 	* my-default-printer.py: Guard against locale errors (bug
