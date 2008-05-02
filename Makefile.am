@@ -49,10 +49,8 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/Welcome.py				\
 	applet.glade
 
-nobase_sbin_SCRIPTS=\
-	system-config-printer
-
 bin_SCRIPTS=\
+	system-config-printer			\
 	system-config-printer-applet		\
 	my-default-printer
 
