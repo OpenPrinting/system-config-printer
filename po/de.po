@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.0.7.82.x.de\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-04-07 21:04+0000\n"
+"POT-Creation-Date: 2008-05-02 16:26+0100\n"
 "PO-Revision-Date: 2008-04-07 14:51+0100\n"
 "Last-Translator: Hendrik Richter <hendrikr@gnome.org>\n"
 "Language-Team:  <en@li.org>\n"
@@ -28,11 +28,29 @@ msgstr ""
 "X-Poedit-Language: German\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
+#: ../authconn.py:30 ../system-config-printer.glade.h:257
+msgid "Username:"
+msgstr "Benutzername:"
+
+#: ../authconn.py:31 ../system-config-printer.glade.h:195
+#: ../troubleshoot/Welcome.py:64 ../applet.glade.h:5
+msgid "Password:"
+msgstr "Passwort:"
+
+#: ../authconn.py:32
+#, fuzzy
+msgid "Domain:"
+msgstr "Oberer Seitenrand:"
+
+#: ../authconn.py:34 ../troubleshoot/Welcome.py:41
+msgid "Authentication"
+msgstr "Authentifizierung"
+
 #: ../cupshelpers.py:33
 msgid "Idle"
 msgstr "Untätig"
 
-#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:886
+#: ../cupshelpers.py:34 ../troubleshoot/PrintTestPage.py:35 ../applet.py:913
 msgid "Processing"
 msgstr "Ausführend"
 
@@ -40,7 +58,7 @@ msgstr "Ausführend"
 msgid "Busy"
 msgstr "Beschäftigt"
 
-#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:887
+#: ../cupshelpers.py:36 ../troubleshoot/PrintTestPage.py:36 ../applet.py:914
 msgid "Stopped"
 msgstr "Angehalten"
 
@@ -51,28 +69,28 @@ msgstr "Angehalten"
 #: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
 #: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
 #: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
-#: ../applet.py:896
+#: ../applet.py:923
 msgid "Unknown"
 msgstr "Unbekannt"
 
-#: ../my-default-printer.py:136 ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:141 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
 msgstr "Vorgabedrucker"
 
-#: ../my-default-printer.py:140 ../my-default-printer.py:174
+#: ../my-default-printer.py:145 ../my-default-printer.py:181
 msgid "_Use System Default"
 msgstr "Vorgabeeinstell_ung des Systems verwenden"
 
-#: ../my-default-printer.py:141 ../my-default-printer.py:176
+#: ../my-default-printer.py:146 ../my-default-printer.py:183
 msgid "_Set Default"
 msgstr "_Vorgabe setzen"
 
-#: ../my-default-printer.py:152 ../troubleshoot/PrintTestPage.py:73
-#: ../applet.py:118 ../applet.py:158
+#: ../my-default-printer.py:157 ../troubleshoot/PrintTestPage.py:73
+#: ../applet.py:135 ../applet.py:175
 msgid "Printer"
 msgstr "Drucker"
 
-#: ../my-default-printer.py:157 ../system-config-printer.py:2406
+#: ../my-default-printer.py:162 ../system-config-printer.py:2425
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
@@ -82,77 +100,77 @@ msgstr "Ort"
 msgid "Conflicts with:"
 msgstr "Konflikte mit:"
 
-#: ../system-config-printer.py:360
+#: ../system-config-printer.py:372
 msgid "Server Settings"
 msgstr "Server-Einstellungen"
 
-#: ../system-config-printer.py:366 ../system-config-printer.py:368
+#: ../system-config-printer.py:378 ../system-config-printer.py:380
 msgid "Members of this class"
 msgstr "Mitglieder dieser Klasse"
 
-#: ../system-config-printer.py:367 ../system-config-printer.py:369
+#: ../system-config-printer.py:379 ../system-config-printer.py:381
 msgid "Others"
 msgstr "Andere"
 
-#: ../system-config-printer.py:370
+#: ../system-config-printer.py:382
 msgid "Devices"
 msgstr "Geräte"
 
-#: ../system-config-printer.py:371
+#: ../system-config-printer.py:383
 msgid "Makes"
 msgstr "Erstellt"
 
-#: ../system-config-printer.py:372
+#: ../system-config-printer.py:384
 msgid "Models"
 msgstr "Modelle"
 
-#: ../system-config-printer.py:373
+#: ../system-config-printer.py:385
 msgid "Drivers"
 msgstr "Treiber"
 
-#: ../system-config-printer.py:374 ../system-config-printer.glade.h:107
+#: ../system-config-printer.py:386 ../system-config-printer.glade.h:107
 msgid "Downloadable Drivers"
 msgstr "Herunterladbare Treiber"
 
-#: ../system-config-printer.py:375
+#: ../system-config-printer.py:387
 msgid "Users"
 msgstr "Benutzer"
 
-#: ../system-config-printer.py:402
+#: ../system-config-printer.py:414
 msgid "Automatic rotation"
 msgstr "Automatische Drehung"
 
-#: ../system-config-printer.py:566
+#: ../system-config-printer.py:578
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Druckereinstellungen – %s"
 
-#: ../system-config-printer.py:569
+#: ../system-config-printer.py:581
 #, python-format
 msgid "Connected to %s"
 msgstr "Verbunden mit %s"
 
-#: ../system-config-printer.py:571 ../system-config-printer.py:1281
+#: ../system-config-printer.py:583 ../system-config-printer.py:1295
 msgid "Not connected"
 msgstr "Nicht verbunden"
 
-#: ../system-config-printer.py:680
+#: ../system-config-printer.py:692
 msgid "Local Printers"
 msgstr "Lokale Drucker"
 
-#: ../system-config-printer.py:681
+#: ../system-config-printer.py:693
 msgid "Local Classes"
 msgstr "Lokale Klassen"
 
-#: ../system-config-printer.py:682
+#: ../system-config-printer.py:694
 msgid "Remote Printers"
 msgstr "Entfernte Drucker"
 
-#: ../system-config-printer.py:683
+#: ../system-config-printer.py:695
 msgid "Remote Classes"
 msgstr "Entfernte Klassen"
 
-#: ../system-config-printer.py:791
+#: ../system-config-printer.py:803
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -161,15 +179,15 @@ msgstr ""
 "Verbinden mit Server:\n"
 "%s"
 
-#: ../system-config-printer.py:1210
+#: ../system-config-printer.py:1224
 msgid "Installable Options"
 msgstr "Installierbare Optionen"
 
-#: ../system-config-printer.py:1211 ../system-config-printer.glade.h:209
+#: ../system-config-printer.py:1225 ../system-config-printer.glade.h:209
 msgid "Printer Options"
 msgstr "Druckeroptionen"
 
-#: ../system-config-printer.py:1220
+#: ../system-config-printer.py:1234
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -179,26 +197,26 @@ msgstr ""
 "Änderungen können nur übernommen werden,\n"
 "nachdem diese Konflikte gelöst wurden."
 
-#: ../system-config-printer.py:1249 ../system-config-printer.py:1265
-#: ../applet.py:291
+#: ../system-config-printer.py:1263 ../system-config-printer.py:1279
+#: ../applet.py:308
 msgid "Not authorized"
 msgstr "Nicht berechtigt"
 
-#: ../system-config-printer.py:1250 ../applet.py:292
+#: ../system-config-printer.py:1264 ../applet.py:309
 msgid "The password may be incorrect."
 msgstr "Das Passwort ist möglicherweise falsch."
 
-#: ../system-config-printer.py:1253 ../system-config-printer.py:1286
-#: ../applet.py:295
+#: ../system-config-printer.py:1267 ../system-config-printer.py:1300
+#: ../applet.py:312
 msgid "CUPS server error"
 msgstr "Fehler des CUPS-Servers"
 
-#: ../system-config-printer.py:1254 ../applet.py:296
+#: ../system-config-printer.py:1268 ../applet.py:313
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Beim Betrieb von CUPS ist ein Fehler aufgetreten: »%s«."
 
-#: ../system-config-printer.py:1266
+#: ../system-config-printer.py:1280
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
@@ -206,59 +224,59 @@ msgstr ""
 "Das Passwort ist möglicherweise falsch oder der Server ist so konfiguriert, "
 "dass er Administration aus der Ferne verweigert."
 
-#: ../system-config-printer.py:1271
+#: ../system-config-printer.py:1285
 msgid "Bad request"
 msgstr "Fehlerhafte Anfrage"
 
-#: ../system-config-printer.py:1273
+#: ../system-config-printer.py:1287
 msgid "Not found"
 msgstr "Nicht gefunden"
 
-#: ../system-config-printer.py:1275
+#: ../system-config-printer.py:1289
 msgid "Request timeout"
 msgstr "Zeitüberschreitung der Anfrage"
 
-#: ../system-config-printer.py:1277
+#: ../system-config-printer.py:1291
 msgid "Upgrade required"
 msgstr "Upgrade erforderlich"
 
-#: ../system-config-printer.py:1279
+#: ../system-config-printer.py:1293
 msgid "Server error"
 msgstr "Server-Fehler"
 
-#: ../system-config-printer.py:1283
+#: ../system-config-printer.py:1297
 #, python-format
 msgid "status %d"
 msgstr "Status %d"
 
-#: ../system-config-printer.py:1287
+#: ../system-config-printer.py:1301
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "Ein HTTP-Fehler ist aufgetreten: %s."
 
-#: ../system-config-printer.py:1311
+#: ../system-config-printer.py:1325
 msgid "This will delete this class!"
 msgstr "Damit wird diese Klasse gelöscht!"
 
-#: ../system-config-printer.py:1312
+#: ../system-config-printer.py:1326
 msgid "Proceed anyway?"
 msgstr "Trotzdem durchführen?"
 
-#: ../system-config-printer.py:1526 ../system-config-printer.py:1560
+#: ../system-config-printer.py:1542 ../system-config-printer.py:1576
 msgid "Submitted"
 msgstr "Übertragen"
 
-#: ../system-config-printer.py:1527
+#: ../system-config-printer.py:1543
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testseite als Auftrag %d übertragen"
 
-#: ../system-config-printer.py:1538 ../system-config-printer.py:1570
-#: ../system-config-printer.py:3515
+#: ../system-config-printer.py:1554 ../system-config-printer.py:1586
+#: ../system-config-printer.py:3545
 msgid "Not possible"
 msgstr "Nicht möglich"
 
-#: ../system-config-printer.py:1539 ../system-config-printer.py:1571
+#: ../system-config-printer.py:1555 ../system-config-printer.py:1587
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -266,67 +284,67 @@ msgstr ""
 "Der entfernte Server akzeptiert keine Aufträge. Wahrscheinlich liegt es "
 "daran, dass der Drucker nicht freigegeben ist."
 
-#: ../system-config-printer.py:1561
+#: ../system-config-printer.py:1577
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Wartungsbefehl als Auftrag %d übertragen"
 
-#: ../system-config-printer.py:1657 ../system-config-printer.py:1816
+#: ../system-config-printer.py:1673 ../system-config-printer.py:1832
 msgid "Error"
 msgstr "Fehler"
 
-#: ../system-config-printer.py:1658
+#: ../system-config-printer.py:1674
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Bei der Verbindung mit dem CUPS-Server ist ein Fehler aufgetreten."
 
-#: ../system-config-printer.py:1711
+#: ../system-config-printer.py:1727
 msgid "This is the default printer"
 msgstr "Dies ist der Vorgabedrucker"
 
-#: ../system-config-printer.py:1715
+#: ../system-config-printer.py:1731
 msgid "No default printer set."
 msgstr "Es wurde kein Vorgabedrucker eingestellt."
 
-#: ../system-config-printer.py:1817
+#: ../system-config-printer.py:1833
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Option »%s« hat den Wert »%s« und kann nicht bearbeitet werden."
 
-#: ../system-config-printer.py:1865
+#: ../system-config-printer.py:1881
 msgid "Cancel Tests"
 msgstr "Tests abbrechen"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:1869 ../system-config-printer.glade.h:208
+#: ../system-config-printer.py:1885 ../system-config-printer.glade.h:208
 #: ../troubleshoot/PrintTestPage.py:61
 msgid "Print Test Page"
 msgstr "Testseite drucken"
 
-#: ../system-config-printer.py:2099
+#: ../system-config-printer.py:2116
 #, python-format
 msgid "Really delete printer %s?"
 msgstr "Soll der Drucker »%s« wirklich gelöscht werden?"
 
-#: ../system-config-printer.py:2101
+#: ../system-config-printer.py:2118
 #, python-format
 msgid "Really delete class %s?"
 msgstr "Soll die Klasse »%s« wirklich gelöscht werden?"
 
 #. SMB list columns
-#: ../system-config-printer.py:2378
+#: ../system-config-printer.py:2397
 msgid "Share"
 msgstr "Freigabe"
 
-#: ../system-config-printer.py:2384
+#: ../system-config-printer.py:2403
 msgid "Comment"
 msgstr "Kommentar"
 
 #. IPP list columns
-#: ../system-config-printer.py:2400
+#: ../system-config-printer.py:2419
 msgid "Queue"
 msgstr "Warteschlange"
 
-#: ../system-config-printer.py:2414
+#: ../system-config-printer.py:2433
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -334,95 +352,95 @@ msgstr ""
 "PostScript Drucker-Beschreibungsdatei (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 
-#: ../system-config-printer.py:2423
+#: ../system-config-printer.py:2442
 msgid "All files (*)"
 msgstr "Alle Dateien (*)"
 
-#: ../system-config-printer.py:2458 ../system-config-printer.py:3774
-#: ../system-config-printer.py:3808
+#: ../system-config-printer.py:2477 ../system-config-printer.py:3804
+#: ../system-config-printer.py:3838
 msgid "Search"
 msgstr "Suche"
 
-#: ../system-config-printer.py:2461 ../system-config-printer.glade.h:155
+#: ../system-config-printer.py:2480 ../system-config-printer.glade.h:155
 msgid "New Printer"
 msgstr "Neuer Drucker"
 
-#: ../system-config-printer.py:2471 ../system-config-printer.glade.h:154
+#: ../system-config-printer.py:2490 ../system-config-printer.glade.h:154
 msgid "New Class"
 msgstr "Neue Klasse"
 
-#: ../system-config-printer.py:2476
+#: ../system-config-printer.py:2495
 msgid "Change Device URI"
 msgstr "Geräte-URI ändern"
 
-#: ../system-config-printer.py:2485
+#: ../system-config-printer.py:2504
 msgid "Change Driver"
 msgstr "Treiber ändern"
 
-#: ../system-config-printer.py:2584 ../system-config-printer.py:2808
-#: ../system-config-printer.py:2974 ../system-config-printer.py:3797
+#: ../system-config-printer.py:2604 ../system-config-printer.py:2828
+#: ../system-config-printer.py:3004 ../system-config-printer.py:3827
 msgid "Searching"
 msgstr "Suchen"
 
-#: ../system-config-printer.py:2585 ../system-config-printer.py:2809
+#: ../system-config-printer.py:2605 ../system-config-printer.py:2829
 msgid "Searching for drivers"
 msgstr "Suche nach Treibern"
 
-#: ../system-config-printer.py:2975
+#: ../system-config-printer.py:3005
 msgid "Searching for printers"
 msgstr "Suche nach Druckern"
 
-#: ../system-config-printer.py:3193
+#: ../system-config-printer.py:3223
 msgid "Other"
 msgstr "Sonstiges"
 
-#: ../system-config-printer.py:3195
+#: ../system-config-printer.py:3225
 msgid " (Current)"
 msgstr " (aktuell)"
 
-#: ../system-config-printer.py:3221 ../system-config-printer.py:3482
+#: ../system-config-printer.py:3251 ../system-config-printer.py:3512
 msgid "Scanning..."
 msgstr "Absuchen …"
 
-#: ../system-config-printer.py:3393 ../system-config-printer.py:3460
+#: ../system-config-printer.py:3423 ../system-config-printer.py:3490
 msgid "Verified"
 msgstr "verifiziert"
 
-#: ../system-config-printer.py:3394 ../system-config-printer.py:3461
+#: ../system-config-printer.py:3424 ../system-config-printer.py:3491
 msgid "This print share is accessible."
 msgstr "Auf diese Drucker-Freigabe kann zugegriffen werden."
 
-#: ../system-config-printer.py:3401 ../system-config-printer.py:3467
+#: ../system-config-printer.py:3431 ../system-config-printer.py:3497
 msgid "Inaccessible"
 msgstr "Zugriff verweigert"
 
-#: ../system-config-printer.py:3402 ../system-config-printer.py:3468
+#: ../system-config-printer.py:3432 ../system-config-printer.py:3498
 msgid "This print share is not accessible."
 msgstr "Auf diese Drucker-Freigabe kann nicht zugegriffen werden."
 
-#: ../system-config-printer.py:3516
+#: ../system-config-printer.py:3546
 msgid "It is not possible to obtain a list of queues from this host."
 msgstr ""
 "Es ist nicht möglich, von diesem Host eine Liste der Warteschlangen zu "
 "erhalten."
 
-#: ../system-config-printer.py:3520
+#: ../system-config-printer.py:3550
 msgid "No queues"
 msgstr "Keine Warteschlangen"
 
-#: ../system-config-printer.py:3521
+#: ../system-config-printer.py:3551
 msgid "There are no queues available."
 msgstr "Es sind keine Warteschlangen verfügbar."
 
-#: ../system-config-printer.py:3578
+#: ../system-config-printer.py:3608
 msgid "A printer connected to the parallel port."
 msgstr "Ein an der parallelen schnittstelle angeschlossener Drucker."
 
-#: ../system-config-printer.py:3580
+#: ../system-config-printer.py:3610
 msgid "A printer connected to a USB port."
 msgstr "Ein an der USB-Schnittstelle angeschlossener Drucker."
 
-#: ../system-config-printer.py:3582
+#: ../system-config-printer.py:3612
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -430,7 +448,7 @@ msgstr ""
 "HPLIP-Software, die einen Drucker betreibt oder die Druckerfunktion eines "
 "multifunktionalen Geräts."
 
-#: ../system-config-printer.py:3585
+#: ../system-config-printer.py:3615
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -438,49 +456,49 @@ msgstr ""
 "HPLIP-Software, die eine Fax-Maschine betreibt oder die Fax-Funktion eines "
 "multifunktionalen Geräts."
 
-#: ../system-config-printer.py:3588
+#: ../system-config-printer.py:3618
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "Lokaler Drucker, der vom Hardware Abstraction Layer (HAL) erkannt wurde."
 
-#: ../system-config-printer.py:3820
+#: ../system-config-printer.py:3850
 msgid "-- Select printer model --"
 msgstr "-- Drucker-Modell auswählen --"
 
-#: ../system-config-printer.py:3822
+#: ../system-config-printer.py:3852
 msgid "-- No matches found --"
 msgstr "-- Kein Übereinstimmung gefunden --"
 
-#: ../system-config-printer.py:3987
+#: ../system-config-printer.py:4017
 msgid " (recommended)"
 msgstr " (empfohlen)"
 
-#: ../system-config-printer.py:4001
+#: ../system-config-printer.py:4031
 msgid "This PPD is generated by foomatic."
 msgstr "PPD wird von foomatic erstellt."
 
-#: ../system-config-printer.py:4027
+#: ../system-config-printer.py:4057
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:4029
+#: ../system-config-printer.py:4059
 msgid "Distributable"
 msgstr "Verteilbar"
 
-#: ../system-config-printer.py:4031
+#: ../system-config-printer.py:4061
 msgid "None"
 msgstr "Keine"
 
-#: ../system-config-printer.py:4039
+#: ../system-config-printer.py:4069
 msgid "Not specified."
 msgstr "Nicht angegeben"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4066
+#: ../system-config-printer.py:4096
 msgid "Database error"
 msgstr "Datenbankfehler"
 
-#: ../system-config-printer.py:4067
+#: ../system-config-printer.py:4097
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Der Treiber »%s« kann nicht mit Drucker »%s %s« verwendet werden."
@@ -488,59 +506,59 @@ msgstr "Der Treiber »%s« kann nicht mit Drucker »%s %s« verwendet werden."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4077
+#: ../system-config-printer.py:4107
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Sie müssen das Paket »%s« installieren, um diesen Treiber zu benutzen."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4084
+#: ../system-config-printer.py:4114
 msgid "PPD error"
 msgstr "PPD-Fehler"
 
-#: ../system-config-printer.py:4086
+#: ../system-config-printer.py:4116
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD-Dateien konnten nicht gelesen werden. Mögliche Ursache:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4097
+#: ../system-config-printer.py:4127
 msgid "Downloadable drivers"
 msgstr "Herunterladbare Treiber"
 
-#: ../system-config-printer.py:4098
+#: ../system-config-printer.py:4128
 msgid "Support for downloadable drivers is not yet completed."
 msgstr ""
 "Unterstützung für herunterladbare Treiber ist momentan noch nicht "
 "vollständig."
 
-#: ../system-config-printer.py:4148 ../system-config-printer.py:4185
+#: ../system-config-printer.py:4178 ../system-config-printer.py:4215
 msgid "No Installable Options"
 msgstr "Keine installierbaren Optionen"
 
-#: ../system-config-printer.py:4232
+#: ../system-config-printer.py:4262
 msgid "Adding"
 msgstr "Wird hinzugefügt"
 
-#: ../system-config-printer.py:4233
+#: ../system-config-printer.py:4263
 msgid "Adding printer"
 msgstr "Drucker hinzufügen"
 
-#: ../system-config-printer.py:4385
+#: ../system-config-printer.py:4431
 msgid "Install driver"
 msgstr "Treiber installieren"
 
-#: ../system-config-printer.py:4386
+#: ../system-config-printer.py:4432
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Der Drucker »%s« benötigt das Paket »%s«, welches derzeit nicht installiert "
 "ist."
 
-#: ../system-config-printer.py:4393
+#: ../system-config-printer.py:4439
 msgid "Missing driver"
 msgstr "Fehlender Treiber"
 
-#: ../system-config-printer.py:4394
+#: ../system-config-printer.py:4440
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -1200,11 +1218,6 @@ msgstr "Seiten pro Seite:"
 msgid "Parity"
 msgstr "Parität"
 
-#: ../system-config-printer.glade.h:195 ../troubleshoot/Welcome.py:64
-#: ../applet.glade.h:5
-msgid "Password:"
-msgstr "Passwort:"
-
 #: ../system-config-printer.glade.h:196
 msgid "Please Wait"
 msgstr "Bitte warten"
@@ -1235,9 +1248,9 @@ msgid ""
 "disk that comes with the printer. For PostScript printers they are often "
 "part of the Windows<sup>®</sup> driver."
 msgstr ""
-"»PostScript Printer Description«-Dateien (PPD) sind häufig auf der Treiber-CD "
-"zu finden, die dem Drucker beiliegt. Für PostScript-Drucker sind sie häufig "
-"Teil der Windows-Treiber."
+"»PostScript Printer Description«-Dateien (PPD) sind häufig auf der Treiber-"
+"CD zu finden, die dem Drucker beiliegt. Für PostScript-Drucker sind sie "
+"häufig Teil der Windows-Treiber."
 
 #: ../system-config-printer.glade.h:204
 msgid "Pretty print"
@@ -1490,10 +1503,6 @@ msgstr "Die neue PPD (Postscript Printer Description) verwenden, wie sie ist."
 msgid "User name:"
 msgstr "Benutzername:"
 
-#: ../system-config-printer.glade.h:257
-msgid "Username:"
-msgstr "Benutzername:"
-
 #: ../system-config-printer.glade.h:258
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
@@ -1686,7 +1695,7 @@ msgstr "Nicht angeschlossen?"
 msgid "Printer '%s' may not be connected."
 msgstr "Drucker »%s« ist möglicherweise nicht angeschlossen."
 
-#: ../statereason.py:93 ../statereason.py:105
+#: ../statereason.py:93 ../statereason.py:109
 msgid "Printer error"
 msgstr "Drucker-Fehler"
 
@@ -1695,20 +1704,20 @@ msgstr "Drucker-Fehler"
 msgid "There is a problem on printer `%s'."
 msgstr "Es gibt ein Problem mit dem Drucker »%s«."
 
-#: ../statereason.py:101
+#: ../statereason.py:105
 msgid "Printer report"
 msgstr "Drucker-Bericht"
 
-#: ../statereason.py:103
+#: ../statereason.py:107
 msgid "Printer warning"
 msgstr "Drucker-Warnung"
 
-#: ../statereason.py:106
+#: ../statereason.py:110
 #, python-format
 msgid "Printer '%s': '%s'."
 msgstr "Drucker »%s«: »%s«."
 
-#: ../troubleshoot/__init__.py:37
+#: ../troubleshoot/__init__.py:42
 msgid "Printing troubleshooter"
 msgstr "Drucker-Fehlersuche"
 
@@ -1740,7 +1749,7 @@ msgstr ""
 "Aktivieren Sie die Option »Freigeben der veröffentlichten Drucker auf diesem "
 "System« in den »Server«-Einstellungen des »Drucker«-Administrationswerkzeugs."
 
-#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:1191
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:1221
 msgid "Install"
 msgstr "Installieren"
 
@@ -1748,7 +1757,7 @@ msgstr "Installieren"
 msgid "Invalid PPD File"
 msgstr "Ungültige PPD-Datei"
 
-#: ../troubleshoot/CheckPPDSanity.py:88
+#: ../troubleshoot/CheckPPDSanity.py:89
 #, python-format
 msgid ""
 "The PPD file for printer `%s' does not conform to the specification.  "
@@ -1758,29 +1767,29 @@ msgstr ""
 "Mögliche Gründe folgen:"
 
 #. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:94
+#: ../troubleshoot/CheckPPDSanity.py:95
 #, python-format
 msgid "There is a problem with the PPD file for printer `%s'."
 msgstr "Es gibt ein Problem mit der PPD-Datei für den Drucker »%s«."
 
-#: ../troubleshoot/CheckPPDSanity.py:104
+#: ../troubleshoot/CheckPPDSanity.py:105
 msgid "Missing Printer Driver"
 msgstr "Fehlender Druckertreiber"
 
-#: ../troubleshoot/CheckPPDSanity.py:107
+#: ../troubleshoot/CheckPPDSanity.py:108
 #, python-format
 msgid "Printer `%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Der Drucker »%s« benötigt das Paket »%s«, welches derzeit nicht installiert "
 "ist."
 
-#: ../troubleshoot/CheckPPDSanity.py:112
+#: ../troubleshoot/CheckPPDSanity.py:113
 #, python-format
 msgid ""
 "Printer `%s' requires the `%s' program but it is not currently installed."
 msgstr ""
-"Der Drucker »%s« benötigt das Programm »%s«, welches derzeit nicht installiert "
-"ist."
+"Der Drucker »%s« benötigt das Programm »%s«, welches derzeit nicht "
+"installiert ist."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
 msgid "Choose Network Printer"
@@ -1937,23 +1946,23 @@ msgstr "Die Fehler sind unten aufgelistet:"
 msgid "Warnings are listed below:"
 msgstr "Die Warnungen sind unten aufgelistet:"
 
-#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:884
+#: ../troubleshoot/PrintTestPage.py:33 ../applet.py:911
 msgid "Pending"
 msgstr "Ausstehend"
 
-#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:885
+#: ../troubleshoot/PrintTestPage.py:34 ../applet.py:912
 msgid "Held"
 msgstr "Angehalten"
 
-#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:888
+#: ../troubleshoot/PrintTestPage.py:37 ../applet.py:915
 msgid "Canceled"
 msgstr "Abgebrochen"
 
-#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:889
+#: ../troubleshoot/PrintTestPage.py:38 ../applet.py:916
 msgid "Aborted"
 msgstr "Abgebrochen"
 
-#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:890
+#: ../troubleshoot/PrintTestPage.py:39 ../applet.py:917
 msgid "Completed"
 msgstr "Abgeschlossen"
 
@@ -1978,15 +1987,15 @@ msgstr "Alle Aufträge abbrechen"
 msgid "Test"
 msgstr "Prüfen"
 
-#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:116
+#: ../troubleshoot/PrintTestPage.py:71 ../applet.py:133
 msgid "Job"
 msgstr "Auftrag"
 
-#: ../troubleshoot/PrintTestPage.py:75 ../applet.py:117
+#: ../troubleshoot/PrintTestPage.py:75 ../applet.py:134
 msgid "Document"
 msgstr "Dokument"
 
-#: ../troubleshoot/PrintTestPage.py:76 ../applet.py:121
+#: ../troubleshoot/PrintTestPage.py:76 ../applet.py:138
 msgid "Status"
 msgstr "Status"
 
@@ -2112,10 +2121,6 @@ msgstr ""
 "Das Problem konnte nicht ermittelt werden, aber es wurden einige nützliche "
 "Daten gesammelt, die Sie einem Fehlerbericht beifügen können."
 
-#: ../troubleshoot/Welcome.py:41
-msgid "Authentication"
-msgstr "Authentifizierung"
-
 #: ../troubleshoot/Welcome.py:56
 msgid "Password required"
 msgstr "Passwort erforderlich"
@@ -2137,135 +2142,135 @@ msgstr ""
 msgid "Click 'Forward' to begin."
 msgstr "Klicken Sie auf »Weiter«, um zu beginnen."
 
-#: ../applet.py:119
+#: ../applet.py:136
 msgid "Size"
 msgstr "Größe"
 
-#: ../applet.py:120
+#: ../applet.py:137
 msgid "Time submitted"
 msgstr "Übertragene Zeit"
 
-#: ../applet.py:171
+#: ../applet.py:188
 msgid "Message"
 msgstr "Nachricht"
 
-#: ../applet.py:551
+#: ../applet.py:566
 msgid "1 hour ago"
 msgstr "Vor einer Stunde"
 
-#: ../applet.py:553
+#: ../applet.py:568
 msgid "1 hour and 1 minute ago"
 msgstr "Vor einer Stunde und einer Minute"
 
-#: ../applet.py:555
+#: ../applet.py:570
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "Vor einer Stunde und %d Minuten"
 
-#: ../applet.py:558
+#: ../applet.py:573
 #, python-format
 msgid "%d hours ago"
 msgstr "Vor %d Stunden"
 
-#: ../applet.py:560
+#: ../applet.py:575
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "Vor %d Stunden und einer Minute"
 
-#: ../applet.py:562
+#: ../applet.py:577
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "Vor %d Stunden und %d Minuten"
 
-#: ../applet.py:568
+#: ../applet.py:583
 msgid "a minute ago"
 msgstr "Vor einer Minute"
 
-#: ../applet.py:570
+#: ../applet.py:585
 #, python-format
 msgid "%d minutes ago"
 msgstr "Vor %d Minuten"
 
-#: ../applet.py:704
+#: ../applet.py:729
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr ""
 "Beim Senden des Dokuments »%s« (Auftrag %d) an den Drucker ist ein Problem "
 "aufgetreten."
 
-#: ../applet.py:707
+#: ../applet.py:732
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr ""
 "Beim Verarbeiten des Dokuments »%s« (Auftrag %d) ist ein Problem aufgetreten."
 
 #. Give up and use the untranslated provided.
-#: ../applet.py:711
+#: ../applet.py:736
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
-"Beim Drucken des Dokuments »%s« (Auftrag %d) ist ein Problem aufgetreten: "
-" »%s«."
+"Beim Drucken des Dokuments »%s« (Auftrag %d) ist ein Problem aufgetreten:  »%"
+"s«."
 
-#: ../applet.py:716 ../applet.py:732
+#: ../applet.py:741 ../applet.py:757
 msgid "Print Error"
 msgstr "Drucker-Fehler"
 
-#: ../applet.py:717
+#: ../applet.py:742
 msgid "_Diagnose"
 msgstr "_Diagnose"
 
-#: ../applet.py:738
+#: ../applet.py:763
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "Der Drucker »%s« wurde deaktiviert."
 
-#: ../applet.py:817
+#: ../applet.py:844
 msgid "No documents queued"
 msgstr "Keine Dokumente in der Warteschlange"
 
-#: ../applet.py:820
+#: ../applet.py:847
 msgid "1 document queued"
 msgstr "Ein Dokument in der Warteschlange"
 
-#: ../applet.py:823
+#: ../applet.py:850
 #, python-format
 msgid "%d documents queued"
 msgstr "%d Dokumente in der Warteschlange"
 
-#: ../applet.py:1181
+#: ../applet.py:1210
 msgid "Printer added"
 msgstr "Drucker hinzugefügt"
 
-#: ../applet.py:1183
+#: ../applet.py:1212
 msgid "Missing printer driver"
 msgstr "Fehlender Druckertreiber"
 
-#: ../applet.py:1187
+#: ../applet.py:1216
 msgid "Install printer driver"
 msgstr "Druckertreiber installieren"
 
-#: ../applet.py:1188
+#: ../applet.py:1217
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "»%s« benötigt Treiber-Installation: %s."
 
-#: ../applet.py:1194
+#: ../applet.py:1225
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "»%s« ist druckbereit."
 
-#: ../applet.py:1197
+#: ../applet.py:1228
 msgid "Configure"
 msgstr "Einstellungen"
 
 #. Model mismatch
-#: ../applet.py:1200
+#: ../applet.py:1231
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "»%s« wurde mit dem Treiber »%s« hinzugefügt."
 
-#: ../applet.py:1204
+#: ../applet.py:1235
 msgid "Find driver"
 msgstr "Treiber finden"
 
