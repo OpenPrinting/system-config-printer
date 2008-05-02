@@ -1530,14 +1530,21 @@ class GUI(GtkGUI):
             if opt:
                 custom_testpage = os.path.join(pkgdata, 'testpage-%s.ps' % opt.defchoice.lower())
 
+
+            # Connect as the current user so that the test page can be managed
+            # as a normal job.
+            user = cups.getUser ()
+            cups.setUser ('')
+            c = cups.Connection ()
             if custom_testpage and os.path.exists(custom_testpage):
                 debugprint ('Printing custom test page ' + custom_testpage)
-                job_id = self.cups.printTestPage(self.printer.name,
-                    file=custom_testpage)
+                job_id = c.printTestPage(self.printer.name,
+                                         file=custom_testpage)
             else:
                 debugprint ('Printing default test page')
-                job_id = self.cups.printTestPage(self.printer.name)
+                job_id = c.printTestPage(self.printer.name)
 
+            cups.setUser (user)
             self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
                                      _("Submitted") + '</span>\n\n' +
                                      _("Test page submitted as "
