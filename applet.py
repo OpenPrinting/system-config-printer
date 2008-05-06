@@ -61,7 +61,10 @@ class NewPrinterNotification(dbus.service.Object):
         global waitloop, runloop, viewer
         import jobviewer
         if viewer == None:
-            waitloop.quit ()
+            try:
+                waitloop.quit ()
+            except:
+                pass
             runloop = gobject.MainLoop ()
             viewer = jobviewer.JobViewer(bus=bus, loop=runloop,
                                          service_running=service_running,
@@ -300,7 +303,10 @@ if __name__ == '__main__':
                     debugprint ("checking for jobs")
                     if any_jobs ():
                         gobject.source_remove (self.timer)
-                        waitloop.quit ()
+                        try:
+                            waitloop.quit ()
+                        except:
+                            pass
 
                     # Don't run this timer again.
                     return False
