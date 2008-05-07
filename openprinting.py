@@ -115,13 +115,13 @@ class OpenPrinting:
         the_thread.start()
         return the_thread
 
-    def searchPrinters(self, searchterm, callback, user_data=None):
+    def searchPrinters(self, make, callback, user_data=None):
         """
-        searchPrinters(searchterm, callback, user_data) -> integer
+        searchPrinters(make, callback, user_data) -> integer
 
-        Search for printers using a search term.
-        @type searchterm: string
-        @param searchterm: search term
+        Search for printers by a manufacturer.
+        @type make: string
+        @param make: printer manufacturer
         @type callback: function
         @param callback: callback function, taking (integer, user_data, string)
         parameters with the first parameter being the status code, zero for
@@ -170,7 +170,7 @@ class OpenPrinting:
 
         # Common parameters for the request
         params = { 'type': 'printers',
-                   'printer': searchterm,
+                   'make': make,
                    'format': 'xml' }
         return self.webQuery(params, parse_result, (callback, user_data))
 
@@ -300,7 +300,7 @@ class OpenPrinting:
         params = { 'type': 'drivers',
                    'moreinfo': '1',
                    'showprinterid': '1',
-                   'onlydownload': '1',
+                   'onlyppdfiles': '1',
                    'onlynewestdriverpackages': '1',
                    'architectures': platform.machine(),
                    'noobsoletes': '1',

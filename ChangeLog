@@ -1,5 +1,19 @@
 2008-05-07  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (NewPrinterGUI.getNPPPD): Implemented
+	PPD download.  Use urlopen to download PPD file from
+	openprinting.org.  Patch from George Liu.
+
+	* system-config-printer.glade: Re-worked some of the downloadable
+	PPD interface.  Patch from George Liu.
+
+	* openprinting.py (OpenPrinting.searchPrinters): Replaced web
+	query filter printer=(searchterm) with make=(make).  All models by
+	the printer manufacturer will be returned.  Patch from George
+	Liu.
+	(OpenPrinting.listDrivers): Changed search term onlydownloads to
+	onlyppdfiles.  Patch from George Liu.
+
 	* system-config-printer.py
 	(NewPrinterGUI.on_cmbNPDownloadableDriverFoundPrinters_changed):
 	Fixed typo (patch from George Liu).

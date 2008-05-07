@@ -4087,11 +4087,24 @@ class NewPrinterGUI(GtkGUI):
                 driver = model.get_value (iter, 1)
                 if driver.has_key ('ppds'):
                     # Only need to download a PPD.
-                    file_to_download = driver
-
-                ppd = "XXX"
+                    if (len(driver['ppds']) > 0):
+                        file_to_download = driver['ppds'][0]
+                        debugprint ("ppd file to download [" + file_to_download+ "]")
+                        file_to_download = file_to_download.strip()
+                        if (len(file_to_download) > 0):
+                            ppdurlobj = urllib.urlopen(file_to_download)
+                            ppdcontent = ppdurlobj.read()
+                            ppdurlobj.close()
+                            ppdname = tempfile.mktemp()
+                            debugprint(ppdname)
+                            ppdfile = open(ppdname, 'w')
+                            ppdfile.write(ppdcontent)
+                            ppd = cups.PPD(ppdfile.name)
+                            ppdfile.close()
+                            os.unlink(ppdname)
 
         except RuntimeError, e:
+            debugprint ("RuntimeError: " + str(e))
             if self.rbtnNPFoomatic.get_active():
                 # Foomatic database problem of some sort.
                 err_title = _('Database error')
@@ -4126,9 +4139,8 @@ class NewPrinterGUI(GtkGUI):
             else:
                 # Failed to get PPD downloaded from OpenPrinting XXX
                 err_title = _('Downloadable drivers')
-                err_text = _("Support for downloadable "
-                             "drivers is not yet completed.")
-
+                err = _("Failed to get PPD downloaded from OpenPrinting.org.")
+            
             error_text = ('<span weight="bold" size="larger">' +
                           err_title + '</span>\n\n' + err)
             self.lblError.set_markup(error_text)
@@ -4137,6 +4149,7 @@ class NewPrinterGUI(GtkGUI):
             self.ErrorDialog.hide()
             return None
 
+        debugprint("ppd: " + repr(ppd))
         if isinstance(ppd, str) or isinstance(ppd, unicode):
             try:
                 if (ppd != "raw"):
