@@ -3883,7 +3883,7 @@ class NewPrinterGUI(GtkGUI):
         if self.openprinting_query_handle != None:
             self.openprinting.cancelOperation (self.openprinting_query_handle)
             self.openprinting_query_handle = None
-            self.drivers_lock_release()
+            self.drivers_lock.release()
 
         model = widget.get_model ()
         iter = widget.get_active_iter ()
