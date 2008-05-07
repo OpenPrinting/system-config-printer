@@ -88,7 +88,7 @@ class OpenPrinting:
 
         # Restrictions on driver choices XXX Parameters to be taken from
         # config file
-        self.onlyfree = 0
+        self.onlyfree = 1
         self.onlymanufacturer = 0
 
     def cancelOperation(self, handle):
