@@ -2808,6 +2808,8 @@ class NewPrinterGUI(GtkGUI):
         # fill Installable Options tab
         if next_page_nr == 6 and step > 0:
             self.ppd = self.getNPPPD()
+            if self.ppd == None:
+                return
             if next_page_nr == 6:
                 # Prepare Installable Options screen.
                 if isinstance(self.ppd, cups.PPD):
