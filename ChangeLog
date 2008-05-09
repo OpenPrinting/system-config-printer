@@ -1,5 +1,9 @@
 2008-05-08  Tim Waugh  <twaugh@redhat.com>
 
+	* cupshelpers.py (Printer.setAsDefault): Try specifying the file
+	descriptor for getFile (requires pycups >= 1.9.38).
+	(PrintersConf.fetch): Likewise.
+
 	* system-config-printer.py (NewPrinterGUI.nextNPTab): Don't flip
 	to the next page if there is an error obtaining the PPD.
 
