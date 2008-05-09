@@ -2217,11 +2217,11 @@ class GUI(GtkGUI, monitor.Watcher):
 
     ## Watcher interface
     def printer_added (self, mon, printer):
-        monitor.Watcher.printer_added (self, monitor, printer)
+        monitor.Watcher.printer_added (self, mon, printer)
         self.printer_added_or_removed ()
 
     def printer_removed (self, mon, printer):
-        monitor.Watcher.printer_removed (self, monitor, printer)
+        monitor.Watcher.printer_removed (self, mon, printer)
         self.printer_added_or_removed ()
 
 class NewPrinterGUI(GtkGUI):
