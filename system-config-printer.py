@@ -2220,6 +2220,10 @@ class GUI(GtkGUI, monitor.Watcher):
         monitor.Watcher.printer_added (self, mon, printer)
         self.printer_added_or_removed ()
 
+    def printer_event (self, mon, printer, eventname, event):
+        monitor.Watcher.printer_event (self, mon, printer, eventname, event)
+        self.printer_added_or_removed ()
+
     def printer_removed (self, mon, printer):
         monitor.Watcher.printer_removed (self, mon, printer)
         self.printer_added_or_removed ()
