@@ -2188,9 +2188,9 @@ class GUI(GtkGUI, monitor.Watcher):
     
     def makeNameUnique(self, name):
         """Make a suggested queue name valid and unique."""
-        name = name.replace (" ", "_")
-        name = name.replace ("/", "_")
-        name = name.replace ("#", "_")
+        name = name.replace (" ", "-")
+        name = name.replace ("/", "-")
+        name = name.replace ("#", "-")
         if not self.checkNPName (name):
             suffix=2
             while not self.checkNPName (name + str (suffix)):
