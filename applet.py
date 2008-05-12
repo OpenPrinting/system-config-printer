@@ -30,6 +30,18 @@ import dbus.service
 import gobject
 import pynotify
 import time
+import locale
+import gettext
+from gettext import gettext as _
+DOMAIN="system-config-printer"
+gettext.textdomain (DOMAIN)
+statereason.set_gettext_function (_)
+try:
+    locale.setlocale (locale.LC_ALL, "")
+except locale.Error, e:
+    import os
+    os.environ['LC_ALL'] = 'C'
+    locale.setlocale (locale.LC_ALL, "")
 
 APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
