@@ -274,11 +274,25 @@ class PrintTestPage(Question):
     def print_clicked (self, widget):
         self.persistent_answers['test_page_attempted'] = True
         answers = self.troubleshooter.answers
-        c = cups.Connection ()
-        jobid = c.printTestPage (answers['cups_queue'])
-        jobs = self.persistent_answers.get ('test_page_job_id', [])
-        jobs.append (jobid)
-        self.persistent_answers['test_page_job_id'] = jobs
+        try:
+            c = cups.Connection ()
+            jobid = c.printTestPage (answers['cups_queue'])
+            jobs = self.persistent_answers.get ('test_page_job_id', [])
+            jobs.append (jobid)
+            self.persistent_answers['test_page_job_id'] = jobs
+        except RuntimeError:
+            self.persistent_answers['test_page_submit_failure'] = 'connect'
+        except cups.IPPError, (e, s):
+            self.persistent_answers['test_page_submit_failure'] = (e, s)
+            dialog = gtk.Dialog (_("Error submitting test page"),
+                                 None,
+                                 gtk.DIALOG_MODAL |
+                                 gtk.DIALOG_DESTROY_WITH_PARENT,
+                                 (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
+            label = gtk.Label (_("Error submitting test page: %s") % s)
+            dialog.vbox.pack_start (label)
+            dialog.run ()
+            dialog.hide ()
 
     def cancel_clicked (self, widget):
         self.persistent_answers['test_page_jobs_cancelled'] = True
@@ -288,7 +302,7 @@ class PrintTestPage(Question):
                 c.cancelJob (jobid)
             except cups.IPPError, (e, s):
                 if e != cups.IPP_NOT_POSSIBLE:
-                    raise
+                    self.persistent_answers['test_page_cancel_failure'] = (e, s)
 
     def test_toggled (self, cell, path):
         model = self.treeview.get_model ()
