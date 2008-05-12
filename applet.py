@@ -176,6 +176,8 @@ class NewPrinterNotification(dbus.service.Object):
             sys.exit (1)
         elif pid == -1:
             print "Error forking process"
+        else:
+            gobject.timeout_add (60 * 1000, self.collect_exit_code, pid)
         
     def configure (self, notification, action, name):
         self.run_config_tool (["--configure-printer", name])
@@ -194,6 +196,24 @@ class NewPrinterNotification(dbus.service.Object):
             sys.exit (1)
         elif pid == -1:
             print "Error forking process"
+        else:
+            gobject.timeout_add (60 * 1000, self.collect_exit_code, pid)
+
+    def collect_exit_code (self, pid):
+        # We do this with timers instead of signals because we already
+        # have gobject imported, but don't (yet) import signal;
+        # let's try not to inflate the process size.
+        import os
+        try:
+            print "Waiting for child %d" % pid
+            (pid, status) = os.waitpid (pid, os.WNOHANG)
+            if pid == 0:
+                # Run this timer again.
+                return True
+        except OSError:
+            pass
+
+        return False
 
 PROGRAM_NAME="system-config-printer-applet"
 def show_help ():
