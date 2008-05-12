@@ -1,3 +1,11 @@
+2008-05-12  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/PrintTestPage.py (PrintTestPage.print_clicked):
+	Handle failure to connect to CUPS and failure to submit the test
+	page (Ubuntu #222494).
+	(PrintTestPage.cancel_clicked): Record failure reason instead of
+	raising exception.
+
 2008-05-08  Tim Waugh  <twaugh@redhat.com>
 
 	* configure.in: Version 0.7.82.3.
