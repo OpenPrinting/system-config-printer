@@ -47,7 +47,11 @@ def state_reason_is_harmless (reason):
 
 def collect_printer_state_reasons (connection):
     result = {}
-    printers = connection.getPrinters ()
+    try:
+        printers = connection.getPrinters ()
+    except cups.IPPError:
+        return result
+
     for name, printer in printers.iteritems ():
         reasons = printer["printer-state-reasons"]
         if type (reasons) != list:
