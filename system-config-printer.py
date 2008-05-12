@@ -1317,9 +1317,12 @@ class GUI(GtkGUI, monitor.Watcher):
             self.populateList ()
         else:
             # Update our copy of the printer's settings.
-            printers = cupshelpers.getPrinters (self.cups)
-            this_printer = { name: printers[name] }
-            self.printers.update (this_printer)
+            try:
+                printers = cupshelpers.getPrinters (self.cups)
+                this_printer = { name: printers[name] }
+                self.printers.update (this_printer)
+            except cups.IPPError, (e, s):
+                self.show_IPP_Error(e, s)
 
         return False
 
