@@ -203,7 +203,7 @@ class JobViewer (monitor.Watcher):
         # Let the icon show itself, ready for the notification
         while gtk.events_pending ():
             gtk.main_iteration ()
-        notification.attach_to_status_icon (jobmanager.statusicon)
+        notification.attach_to_status_icon (self.statusicon)
         notification.show ()
 
     def on_new_printer_notification_closed (self, notification):
