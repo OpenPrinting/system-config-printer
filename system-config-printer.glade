@@ -52,7 +52,7 @@
 		      <signal name="activate" handler="on_server_settings_activate" last_modification_time="Fri, 14 Mar 2008 12:02:35 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image39">
+			<widget class="GtkImage" id="image58">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-preferences</property>
 			  <property name="icon_size">1</property>
@@ -73,7 +73,7 @@
 		      <signal name="activate" handler="on_connect_activate" last_modification_time="Mon, 20 Mar 2006 10:48:28 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image40">
+			<widget class="GtkImage" id="image59">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-connect</property>
 			  <property name="icon_size">1</property>
@@ -116,7 +116,7 @@
 		      <signal name="activate" handler="on_new_printer_activate" last_modification_time="Wed, 22 Feb 2006 09:27:42 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image41">
+			<widget class="GtkImage" id="image60">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-add</property>
 			  <property name="icon_size">1</property>
@@ -137,7 +137,7 @@
 		      <signal name="activate" handler="on_new_class_activate" last_modification_time="Wed, 22 Feb 2006 09:27:42 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image42">
+			<widget class="GtkImage" id="image61">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-add</property>
 			  <property name="icon_size">1</property>
@@ -147,6 +147,21 @@
 			  <property name="ypad">0</property>
 			</widget>
 		      </child>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkSeparatorMenuItem" id="separator2">
+		      <property name="visible">True</property>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkMenuItem" id="rename">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_Rename</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_rename_activate" last_modification_time="Tue, 13 May 2008 11:34:02 GMT"/>
 		    </widget>
 		  </child>
 
@@ -190,7 +205,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image43">
+			<widget class="GtkImage" id="image62">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-help</property>
 			  <property name="icon_size">1</property>

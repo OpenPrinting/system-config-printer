@@ -1,5 +1,19 @@
 2008-05-13  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.printer_name_edit_cancel): Moved
+	from...
+	* contextmenu.py (PrinterContextMenu.printer_name_edit_cancel):
+	...here.
+	* system-config-printer.py (GUI.printer_name_edited): Moved
+	from...
+	* contextmenu.py
+	(PrinterContextMenu.printer_name_edited): ...here.
+	* system-config-printer.py (GUI.on_rename_activate): New method,
+	from...
+	* contextmenu.py
+	(PrinterContextMenu.on_printer_context_rename_activate): ...here.
+	Call main class's handler.
+
 	* system-config-printer.glade: Add 'Copy' entry to printer context
 	menu.
 	* contextmenu.py

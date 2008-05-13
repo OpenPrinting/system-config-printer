@@ -179,7 +179,8 @@ class GUI(GtkGUI, monitor.Watcher):
                         "server_settings",
                         "statusbarMain",
                         "btnNewPrinter", "btnNewClass",
-                        "new_printer", "new_class", "copy", "delete",
+                        "new_printer", "new_class",
+                        "rename", "copy", "delete",
 
                         "chkServerBrowse", "chkServerShare",
                         "chkServerShareAny",
@@ -539,6 +540,7 @@ class GUI(GtkGUI, monitor.Watcher):
             if not object.discovered:
                 is_local = True
 
+        self.rename.set_sensitive(len (paths) == 1 and is_local)
         self.copy.set_sensitive(len (paths) == 1)
         self.delete.set_sensitive(is_local)
 
@@ -1913,6 +1915,41 @@ class GUI(GtkGUI, monitor.Watcher):
                                         # will get added 
 
         return self.save_printer(self.printer, saveall=True)
+
+    # Rename
+    def on_rename_activate(self, widget):
+        tuple = self.dests_iconview.get_cursor ()
+        if tuple == None:
+            return
+
+        (path, cell) = tuple
+        cell.set_property ('editable', True)
+        self.dests_iconview.set_cursor (path, cell, start_editing=True)
+        ids = []
+        ids.append (cell.connect ('edited', self.printer_name_edited))
+        ids.append (cell.connect ('editing-canceled',
+                                 self.printer_name_edit_cancel))
+        self.rename_sigids = ids
+
+    def printer_name_edited (self, cell, path, newname):
+        model = self.dests_iconview.get_model ()
+        iter = model.get_iter (path)
+        name = model.get_value (iter, 2)
+        debugprint ("edited: %s -> %s" % (name, newname))
+        try:
+            self.rename_printer (name, newname)
+        finally:
+            cell.stop_editing (canceled=False)
+            cell.set_property ('editable', False)
+            for id in self.rename_sigids:
+                cell.disconnect (id)
+
+    def printer_name_edit_cancel (self, cell):
+        debugprint ("editing-canceled")
+        cell.stop_editing (canceled=True)
+        cell.set_property ('editable', False)
+        for id in self.rename_sigids:
+            cell.disconnect (id)
 
     def rename_printer (self, old_name, new_name):
         if old_name == new_name:

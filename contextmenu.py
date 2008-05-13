@@ -105,38 +105,7 @@ class PrinterContextMenu:
 
     ### Rename
     def on_printer_context_rename_activate (self, menuitem):
-        tuple = self.parent.dests_iconview.get_cursor ()
-        if tuple == None:
-            return
-
-        (path, cell) = tuple
-        cell.set_property ('editable', True)
-        self.parent.dests_iconview.set_cursor (path, cell, start_editing=True)
-        ids = []
-        ids.append (cell.connect ('edited', self.printer_name_edited))
-        ids.append (cell.connect ('editing-canceled',
-                                 self.printer_name_edit_cancel))
-        self.rename_sigids = ids
-
-    def printer_name_edited (self, cell, path, newname):
-        model = self.parent.dests_iconview.get_model ()
-        iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
-        debugprint ("edited: %s -> %s" % (name, newname))
-        try:
-            self.parent.rename_printer (name, newname)
-        finally:
-            cell.stop_editing (canceled=False)
-            cell.set_property ('editable', False)
-            for id in self.rename_sigids:
-                cell.disconnect (id)
-
-    def printer_name_edit_cancel (self, cell):
-        debugprint ("editing-canceled")
-        cell.stop_editing (canceled=True)
-        cell.set_property ('editable', False)
-        for id in self.rename_sigids:
-            cell.disconnect (id)
+        self.parent.on_rename_activate (menuitem)
 
     ### Enable
     def on_printer_context_enable_activate (self, menuitem, enable=True):
