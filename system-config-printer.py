@@ -181,7 +181,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         "btnNewPrinter", "btnNewClass",
                         "new_printer", "new_class",
                         "rename", "copy", "delete",
-                        "set_as_default",
+                        "enable", "disable", "set_as_default",
 
                         "chkServerBrowse", "chkServerShare",
                         "chkServerShareAny",
@@ -533,20 +533,31 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def dests_iconview_selection_changed (self, iconview):
         paths = iconview.get_selected_items ()
-        is_local = False
-        if len (paths):
+        any_disabled = False
+        any_enabled = False
+        any_discovered = False
+        n = len (paths)
+        for i in range (n):
             model = iconview.get_model ()
-            iter = model.get_iter (paths[0])
+            iter = model.get_iter (paths[i])
             object = model.get_value (iter, 0)
             name = model.get_value (iter, 2)
-            if not object.discovered:
-                is_local = True
+            if object.discovered:
+                any_discovered = True
+            if object.enabled:
+                any_enabled = True
+            else:
+                any_disabled = True
+            if any_discovered and any_enabled and any_disabled:
+                break
 
-        self.rename.set_sensitive(len (paths) == 1 and is_local)
-        self.copy.set_sensitive(len (paths) == 1)
-        self.delete.set_sensitive(is_local)
-        self.set_as_default.set_sensitive(len (paths) == 1 and
+        self.copy.set_sensitive(n == 1)
+        self.rename.set_sensitive(n == 1 and not any_discovered)
+        self.set_as_default.set_sensitive(n == 1 and
                                           self.default_printer != name)
+        self.disable.set_sensitive(n > 0 and any_enabled and not any_discovered)
+        self.enable.set_sensitive(n > 0 and any_disabled and not any_discovered)
+        self.delete.set_sensitive(n > 0 and not any_discovered)
 
     def dests_iconview_button_release_event (self, iconview, event):
         if event.button > 1:
@@ -2095,6 +2106,21 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.changed = set()
         self.populateList()
+
+    # Enable
+    def on_enable_activate(self, menuitem, enable=True):
+        iconview = self.dests_iconview
+        paths = iconview.get_selected_items ()
+        model = iconview.get_model ()
+        for i in range (len (paths)):
+            iter = model.get_iter (paths[i])
+            printer = model.get_value (iter, 0)
+            printer.setEnabled (enable)
+        self.populateList ()
+
+    # Disable
+    def on_disable_activate(self, menuitem):
+        self.on_enable_activate (menuitem, enable=False)
 
     # Set As Default
     def on_set_as_default_activate(self, menuitem):
