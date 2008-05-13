@@ -65,6 +65,7 @@ class ErrorLogCheckpoint(Question):
         except cups.IPPError:
             settings = {}
 
+        self.label.set_text ('')
         if len (settings.keys ()) == 0:
             # Requires root
             return True
