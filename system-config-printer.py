@@ -181,6 +181,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         "btnNewPrinter", "btnNewClass",
                         "new_printer", "new_class",
                         "rename", "copy", "delete",
+                        "set_as_default",
 
                         "chkServerBrowse", "chkServerShare",
                         "chkServerShareAny",
@@ -537,12 +538,15 @@ class GUI(GtkGUI, monitor.Watcher):
             model = iconview.get_model ()
             iter = model.get_iter (paths[0])
             object = model.get_value (iter, 0)
+            name = model.get_value (iter, 2)
             if not object.discovered:
                 is_local = True
 
         self.rename.set_sensitive(len (paths) == 1 and is_local)
         self.copy.set_sensitive(len (paths) == 1)
         self.delete.set_sensitive(is_local)
+        self.set_as_default.set_sensitive(len (paths) == 1 and
+                                          self.default_printer != name)
 
     def dests_iconview_button_release_event (self, iconview, event):
         if event.button > 1:
@@ -1907,15 +1911,6 @@ class GUI(GtkGUI, monitor.Watcher):
         self.printer_context_menu.cleanup ()
         gtk.main_quit()
 
-    # Copy
-
-    def copy_printer (self, new_name):
-        self.printer.name = new_name
-        self.printer.class_members = [] # for classes make sure all members
-                                        # will get added 
-
-        return self.save_printer(self.printer, saveall=True)
-
     # Rename
     def on_rename_activate(self, widget):
         tuple = self.dests_iconview.get_cursor ()
@@ -2020,6 +2015,15 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         model.foreach (select_new_printer)
 
+    # Copy
+
+    def copy_printer (self, new_name):
+        self.printer.name = new_name
+        self.printer.class_members = [] # for classes make sure all members
+                                        # will get added 
+
+        return self.save_printer(self.printer, saveall=True)
+
     def on_copy_activate(self, widget):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
@@ -2091,6 +2095,16 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.changed = set()
         self.populateList()
+
+    # Set As Default
+    def on_set_as_default_activate(self, menuitem):
+        iconview = self.dests_iconview
+        paths = iconview.get_selected_items ()
+        model = iconview.get_model ()
+        iter = model.get_iter (paths[0])
+        printer = model.get_value (iter, 0)
+        printer.setAsDefault ()
+        self.populateList ()
 
     def on_troubleshoot_activate(self, widget):
         if not self.__dict__.has_key ('troubleshooter'):
