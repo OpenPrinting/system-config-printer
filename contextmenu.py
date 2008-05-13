@@ -32,6 +32,7 @@ class PrinterContextMenu:
                      "printer_context_rename",
                      "printer_context_disable",
                      "printer_context_enable",
+                     "printer_context_copy",
                      "printer_context_delete",
                      "printer_context_set_as_default",
                      "printer_context_view_print_queue"]:
@@ -82,6 +83,7 @@ class PrinterContextMenu:
 
         # Actions that require a single destination
         show_widget (self.printer_context_edit, n == 1)
+        show_widget (self.printer_context_copy, n == 1)
         show_widget (self.printer_context_rename, n == 1 and not any_discovered)
         show_widget (self.printer_context_set_as_default,
                      n == 1 and not is_default)
@@ -148,6 +150,10 @@ class PrinterContextMenu:
     ### Disable
     def on_printer_context_disable_activate (self, menuitem):
         self.on_printer_context_enable_activate (menuitem, enable=False)
+
+    ### Copy
+    def on_printer_context_copy_activate (self, menuitem):
+        self.parent.on_copy_activate (menuitem)
 
     ### Delete
     def on_printer_context_delete_activate (self, menuitem):
