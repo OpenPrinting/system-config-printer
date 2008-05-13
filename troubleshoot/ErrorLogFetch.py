@@ -81,6 +81,7 @@ class ErrorLogFetch(Question):
             self.answers = { 'error_log': map (lambda x: x.strip (), lines) }
 
         if answers.has_key ('error_log_debug_logging_set'):
+            self.label.set_text ('')
             return True
 
         return False
