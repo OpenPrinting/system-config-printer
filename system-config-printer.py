@@ -4185,8 +4185,8 @@ class NewPrinterGUI(GtkGUI):
                             debugprint(ppdname)
                             ppdfile = open(ppdname, 'w')
                             ppdfile.write(ppdcontent)
-                            ppd = cups.PPD(ppdfile.name)
                             ppdfile.close()
+                            ppd = cups.PPD(ppdname)
                             os.unlink(ppdname)
 
         except RuntimeError, e:
