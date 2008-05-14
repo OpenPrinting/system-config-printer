@@ -2747,7 +2747,10 @@ class NewPrinterGUI(GtkGUI):
                                             gtk.DIALOG_DESTROY_WITH_PARENT,
                                             (_("Printer"), 1,
                                              _("Fax"), 2))
-                        label = gtk.Label(_("This printer supports both printing and sending faxes.\nThis print queue should be used for which functionality?"))
+                        label = gtk.Label(_("This printer supports both "
+                                            "printing and sending faxes.  "
+                                            "Which functionality should be "
+                                            "used for this queue?"))
                         dialog.vbox.pack_start(label, True, True, 0)
                         label.show()
                         queue_type = dialog.run()
@@ -4225,7 +4228,7 @@ class NewPrinterGUI(GtkGUI):
             else:
                 # Failed to get PPD downloaded from OpenPrinting XXX
                 err_title = _('Downloadable drivers')
-                err = _("Failed to get PPD downloaded from OpenPrinting.org.")
+                err = _("Failed to download PPD.")
             
             error_text = ('<span weight="bold" size="larger">' +
                           err_title + '</span>\n\n' + err)
