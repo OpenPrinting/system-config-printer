@@ -1,3 +1,19 @@
+2008-05-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.desktop.in, manage-print-jobs.desktop.in,
+	print-applet.desktop.in, my-default-printer.desktop.in: Just exec
+	binary name, not path name.
+
+	* system-config-printer-applet: Generate this with autoconf so
+	that configured paths can be used.
+	* my-default-printer: Likewise.
+	* system-config-printer: Likewise.
+	* configure.in: Generate above scripts.
+
+	* config.py.in: Get DATADIR from autoconf.
+	* config.py.in (Paths): New class to handle pathname expansion.
+	* system-config-printer.py: Use config.Paths to get pkgdatadir.
+
 2008-05-13  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.dests_iconview_selection_changed):

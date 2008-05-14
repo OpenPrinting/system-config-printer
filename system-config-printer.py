@@ -81,9 +81,9 @@ from gettext import gettext as _
 import gettext
 gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
-pkgdata = '/usr/share/' + domain
-iconpath = pkgdata + '/icons/'
-glade_file = pkgdata + '/' + domain + '.glade'
+pkgdata = config.Paths ().get_path ('pkgdatadir')
+iconpath = os.path.join (pkgdata, '/icons/')
+glade_file = os.path.join (pkgdata, domain + '.glade')
 sys.path.append (pkgdata)
 
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
