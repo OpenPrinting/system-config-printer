@@ -46,6 +46,7 @@ class AuthDialog(gtk.Dialog):
         image = gtk.Image ()
         image.set_from_stock ('gtk-dialog-authentication',
                               gtk.ICON_SIZE_DIALOG)
+        image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
         vbox = gtk.VBox (False, 12)
         self.prompt_label = gtk.Label ()
