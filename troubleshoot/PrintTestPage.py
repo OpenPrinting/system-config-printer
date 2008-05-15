@@ -23,7 +23,9 @@ import cups
 import dbus
 import dbus.glib
 import gobject
+import os
 import pango
+import tempfile
 from base import *
 from base import _
 
@@ -274,19 +276,48 @@ class PrintTestPage(Question):
     def print_clicked (self, widget):
         self.persistent_answers['test_page_attempted'] = True
         answers = self.troubleshooter.answers
+        c = None
         try:
             c = cups.Connection ()
-            jobid = c.printTestPage (answers['cups_queue'])
-            jobs = self.persistent_answers.get ('test_page_job_id', [])
-            jobs.append (jobid)
-            self.persistent_answers['test_page_job_id'] = jobs
         except RuntimeError:
             self.persistent_answers['test_page_submit_failure'] = 'connect'
-        except cups.IPPError, (e, s):
-            self.persistent_answers['test_page_submit_failure'] = (e, s)
-            show_error_dialog (_("Error submitting test page"),
-                               _("There was an error during the CUPS "
-                                 "operation: '%s'.") % s)
+            return
+
+        tmpfname = None
+        mimetypes = [None, 'text/plain']
+        for mimetype in mimetypes:
+            try:
+                if mimetype == None:
+                    # Default test page.
+                    jobid = c.printTestPage (answers['cups_queue'])
+                elif mimetype == 'text/plain':
+                    (tmpfd, tmpfname) = tempfile.mkstemp ()
+                    os.write (tmpfd, "This is a test page.\n")
+                    os.close (tmpfd)
+                    jobid = c.printTestPage (answers['cups_queue'],
+                                             file=tmpfname,
+                                             format=mimetype)
+                    os.unlink (tmpfname)
+                    tmpfname = None
+
+                jobs = self.persistent_answers.get ('test_page_job_id', [])
+                jobs.append (jobid)
+                self.persistent_answers['test_page_job_id'] = jobs
+                break
+            except cups.IPPError, (e, s):
+                if (e == cups.IPP_DOCUMENT_FORMAT and
+                    mimetypes.index (mimetype) < (len (mimetypes) - 1)):
+                    # Try next format.
+                    if tmpfname != None:
+                        os.unlink (tmpfname)
+                        tmpfname = None
+                    continue
+
+                self.persistent_answers['test_page_submit_failure'] = (e, s)
+                show_error_dialog (_("Error submitting test page"),
+                                   _("There was an error during the CUPS "
+                                     "operation: '%s'.") % s)
+                break
 
     def cancel_clicked (self, widget):
         self.persistent_answers['test_page_jobs_cancelled'] = True
