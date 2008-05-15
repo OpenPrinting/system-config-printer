@@ -1190,7 +1190,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.lblError.set_markup(error_text)
         self.ErrorDialog.set_transient_for (self.MainWindow)
         self.ErrorDialog.run()
-        self.ErrorDialog.hide()        
+        self.ErrorDialog.hide()
             
     def show_HTTP_Error(self, status):
         if (status == cups.HTTP_UNAUTHORIZED or
