@@ -284,15 +284,9 @@ class PrintTestPage(Question):
             self.persistent_answers['test_page_submit_failure'] = 'connect'
         except cups.IPPError, (e, s):
             self.persistent_answers['test_page_submit_failure'] = (e, s)
-            dialog = gtk.Dialog (_("Error submitting test page"),
-                                 None,
-                                 gtk.DIALOG_MODAL |
-                                 gtk.DIALOG_DESTROY_WITH_PARENT,
-                                 (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
-            label = gtk.Label (_("Error submitting test page: %s") % s)
-            dialog.vbox.pack_start (label)
-            dialog.run ()
-            dialog.hide ()
+            show_error_dialog (_("Error submitting test page"),
+                               _("There was an error during the CUPS "
+                                 "operation: '%s'.") % s)
 
     def cancel_clicked (self, widget):
         self.persistent_answers['test_page_jobs_cancelled'] = True

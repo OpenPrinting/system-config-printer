@@ -97,3 +97,29 @@ class Multichoice(Question):
         for button, answer_tag in self.widgets:
             if button.get_active ():
                 return { self.question_tag: answer_tag }
+
+def show_error_dialog (title, text, parent=None):
+    dialog = gtk.Dialog (title, parent,
+                         gtk.DIALOG_MODAL |
+                         gtk.DIALOG_DESTROY_WITH_PARENT,
+                         (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
+    dialog.set_default_response (gtk.RESPONSE_OK)
+    dialog.set_border_width (6)
+    dialog.set_resizable (False)
+    hbox = gtk.HBox (False, 12)
+    hbox.set_border_width (6)
+    image = gtk.Image ()
+    image.set_from_stock ('gtk-dialog-error', gtk.ICON_SIZE_DIALOG)
+    image.set_alignment (0.0, 0.0)
+    hbox.pack_start (image, False, False, 0)
+    label = gtk.Label ()
+    label.set_markup ('<span weight="bold" size="larger">' + title +
+                      '</span>\n\n' + text)
+    label.set_use_markup (True)
+    label.set_alignment (0, 0)
+    label.set_line_wrap (True)
+    hbox.pack_start (label, False, False, 0)
+    dialog.vbox.pack_start (hbox, False, False, 0)
+    dialog.show_all ()
+    dialog.run ()
+    dialog.hide ()
