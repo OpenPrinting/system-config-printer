@@ -2575,14 +2575,6 @@ class NewPrinterGUI(GtkGUI):
                            self.entSMBPassword]:
                 widget.set_text('')
 
-            try:
-                p = os.popen ('/bin/hostname', 'r')
-                hostname = p.read ().strip ()
-                p.close ()
-                self.entNPLocation.set_text (hostname)
-            except:
-                nonfatalException ()
-
         self.entNPTDirectJetPort.set_text('9100')
         self.setNPButtons()
         self.NewPrinterWindow.show()
@@ -3689,6 +3681,7 @@ class NewPrinterGUI(GtkGUI):
         page = self.new_printer_device_tabs.get(device.type, 1)
         self.ntbkNPType.set_current_page(page)
 
+        location = ''
         type = device.type
         url = device.uri.split(":", 1)[-1]
         if page == 0:
@@ -3723,6 +3716,7 @@ class NewPrinterGUI(GtkGUI):
 
                 self.entNPTDirectJetHostname.set_text (host)
                 self.entNPTDirectJetPort.set_text (str (port))
+                location = host
         elif device.type=="serial":
             if not device.is_class:
                 options = device.uri.split("?")[1]
@@ -3775,6 +3769,7 @@ class NewPrinterGUI(GtkGUI):
                 self.lblIPPURI.set_text(device.uri)
                 self.lblIPPURI.show()
                 self.entNPTIPPQueuename.show()
+                location = server
             else:
                 self.entNPTIPPHostname.set_text('')
                 self.entNPTIPPQueuename.set_text('/printers/')
@@ -3791,6 +3786,7 @@ class NewPrinterGUI(GtkGUI):
                     printer = ""
                 self.cmbentNPTLpdHost.child.set_text (host)
                 self.cmbentNPTLpdQueue.child.set_text (printer)
+                location = host
         elif device.uri == "lpd":
             pass
         elif device.uri == "smb":
@@ -3803,6 +3799,16 @@ class NewPrinterGUI(GtkGUI):
             self.btnSMBVerify.set_sensitive(True)
         else:
             self.entNPTDevice.set_text(device.uri)
+
+        try:
+            if len (location) == 0 and self.device.device_class == "direct":
+                p = os.popen ('/bin/hostname', 'r')
+                location = p.read ().strip ()
+                p.close ()
+            self.entNPLocation.set_text (location)
+            print "Location:", location
+        except:
+            nonfatalException ()
 
         self.setNPButtons()
 

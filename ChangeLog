@@ -1,5 +1,10 @@
 2008-05-15  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (NewPrinterGUI.init): Only set location
+	to current hostname if the added printer is directly connected.
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Don't set location
+	of remote printers to the local hostname.
+
 	* troubleshoot/base.py (show_error_dialog): New method.
 	* troubleshoot/PrintTestPage.py (PrintTestPage.print_clicked): Use
 	it.
