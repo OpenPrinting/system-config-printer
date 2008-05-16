@@ -1,5 +1,12 @@
 2008-05-16  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: Removed default printer parts from
+	the printer properties dialog, as this is now done in the main
+	window.
+	* system-config-printer.py (GUI.fillPrinterTab): Removed
+	references to printer properties default printer widgets.
+	(GUI.on_btnPMakeDefault_clicked): Likewise.
+
 	* system-config-printer.py (GUI.fillPrinterTab): Moved some
 	code...
 	(GUI.updatePrinterProperties): ...here.

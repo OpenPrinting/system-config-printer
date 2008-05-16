@@ -195,7 +195,6 @@ class GUI(GtkGUI, monitor.Watcher):
                           "btnSelectDevice", "btnChangePPD",
                           "chkPEnabled", "chkPAccepting", "chkPShared",
                         "lblNotPublished",
-                          "btnPMakeDefault", "lblPDefault",
                         "btnPrintTestPage", "btnSelfTest", "btnCleanHeads",
                         "btnConflict",
            
@@ -1393,9 +1392,6 @@ class GUI(GtkGUI, monitor.Watcher):
             self.populateList()
             self.show_HTTP_Error(s)
     
-    def on_btnPMakeDefault_clicked(self, button):
-        self.set_default_printer (self.printer.name)
-
     # print test page
     
     def on_btnPrintTestPage_clicked(self, button):
@@ -1562,15 +1558,6 @@ class GUI(GtkGUI, monitor.Watcher):
             else:
                 widget.show()
             
-
-        # default printer
-        self.btnPMakeDefault.set_sensitive(not printer.default)
-        if printer.default:
-            self.lblPDefault.set_text(_("This is the default printer"))
-        elif self.default_printer:
-            self.lblPDefault.set_text(self.default_printer)
-        else:
-            self.lblPDefault.set_text(_("No default printer set."))
 
         # Policy tab
         # ----------
