@@ -2535,6 +2535,7 @@ class NewPrinterGUI(GtkGUI):
             self.NewPrinterWindow.set_title(_("Change Driver"))
             self.ntbkNewPrinter.set_current_page(2)
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
+            self.rbtnChangePPDKeepSettings.set_active(True)
 
             self.auto_model = ""
             ppd = self.mainapp.ppd
@@ -2914,7 +2915,6 @@ class NewPrinterGUI(GtkGUI):
 
         if self.dialog_mode == "ppd":
             if nr == 5: # Apply
-                self.rbtnChangePPDKeepSettings.set_active(True)
                 return
             elif nr == 6:
                 self.btnNPForward.hide()
