@@ -1,5 +1,24 @@
 2008-05-16  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (NewPrinterGUI.__init__,
+	NewPrinterGUI.browse_smb_hosts_thread,
+	NewPrinterGUI.on_tvSMBBrowser_row_activated,
+	NewPrinterGUI.on_btnSMBBrowseOk_clicked): Start of new SMB code.
+
+	* system-config-printer.glade: Adjusted SMB authentication
+	screen.
+	* system-config-printer.py (NewPrinterGUI.on_entSMBURI_changed,
+	NewPrinterGUI.on_btnSMBVerify_clicked,
+	NewPrinterGUI.getDeviceURI): User interface adjustment.
+
+	* system-config-printer.py (NewPrinterGUI.smbbrowser_cell_share):
+	New method.
+	(NewPrinterGUI.smbbrowser_cell_comment): New method.
+	(NewPrinterGUI.browse_smb_hosts_thread_auth_callback): New method.
+
+	* pysmb.py: Try to import smbc module.
+	(AuthContext): New class.
+
 	* system-config-printer.py
 	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Removed debugging.
 

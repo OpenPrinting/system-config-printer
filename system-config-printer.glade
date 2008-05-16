@@ -2432,14 +2432,14 @@ DTR/DSR (Hardware)</property>
 			      <property name="right_padding">0</property>
 
 			      <child>
-				<widget class="GtkFrame" id="frame23">
+				<widget class="GtkFrame" id="frame37">
 				  <property name="visible">True</property>
 				  <property name="label_xalign">0</property>
 				  <property name="label_yalign">0.5</property>
 				  <property name="shadow_type">GTK_SHADOW_NONE</property>
 
 				  <child>
-				    <widget class="GtkAlignment" id="alignment50">
+				    <widget class="GtkAlignment" id="alignment95">
 				      <property name="visible">True</property>
 				      <property name="xalign">0.5</property>
 				      <property name="yalign">0.5</property>
@@ -2447,112 +2447,192 @@ DTR/DSR (Hardware)</property>
 				      <property name="yscale">1</property>
 				      <property name="top_padding">6</property>
 				      <property name="bottom_padding">0</property>
-				      <property name="left_padding">18</property>
+				      <property name="left_padding">12</property>
 				      <property name="right_padding">0</property>
 
 				      <child>
-					<widget class="GtkTable" id="tblSMBAuth">
+					<widget class="GtkVBox" id="vbox68">
 					  <property name="visible">True</property>
-					  <property name="sensitive">False</property>
-					  <property name="n_rows">2</property>
-					  <property name="n_columns">2</property>
 					  <property name="homogeneous">False</property>
-					  <property name="row_spacing">6</property>
-					  <property name="column_spacing">6</property>
+					  <property name="spacing">6</property>
 
 					  <child>
-					    <widget class="GtkLabel" id="label133">
-					      <property name="visible">True</property>
-					      <property name="label" translatable="yes">Password:</property>
-					      <property name="use_underline">False</property>
-					      <property name="use_markup">False</property>
-					      <property name="justify">GTK_JUSTIFY_LEFT</property>
-					      <property name="wrap">False</property>
-					      <property name="selectable">False</property>
-					      <property name="xalign">0</property>
-					      <property name="yalign">0.5</property>
-					      <property name="xpad">0</property>
-					      <property name="ypad">0</property>
-					      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-					      <property name="width_chars">-1</property>
-					      <property name="single_line_mode">False</property>
-					      <property name="angle">0</property>
-					    </widget>
-					    <packing>
-					      <property name="left_attach">0</property>
-					      <property name="right_attach">1</property>
-					      <property name="top_attach">1</property>
-					      <property name="bottom_attach">2</property>
-					      <property name="x_options">fill</property>
-					      <property name="y_options"></property>
-					    </packing>
-					  </child>
-
-					  <child>
-					    <widget class="GtkLabel" id="label132">
-					      <property name="visible">True</property>
-					      <property name="label" translatable="yes">Username:</property>
-					      <property name="use_underline">False</property>
-					      <property name="use_markup">False</property>
-					      <property name="justify">GTK_JUSTIFY_LEFT</property>
-					      <property name="wrap">False</property>
-					      <property name="selectable">False</property>
-					      <property name="xalign">0</property>
-					      <property name="yalign">0.5</property>
-					      <property name="xpad">0</property>
-					      <property name="ypad">0</property>
-					      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
-					      <property name="width_chars">-1</property>
-					      <property name="single_line_mode">False</property>
-					      <property name="angle">0</property>
-					    </widget>
-					    <packing>
-					      <property name="left_attach">0</property>
-					      <property name="right_attach">1</property>
-					      <property name="top_attach">0</property>
-					      <property name="bottom_attach">1</property>
-					      <property name="x_options">fill</property>
-					      <property name="y_options"></property>
-					    </packing>
-					  </child>
-
-					  <child>
-					    <widget class="GtkEntry" id="entSMBPassword">
+					    <widget class="GtkRadioButton" id="rbtnSMBAuthPrompt">
 					      <property name="visible">True</property>
 					      <property name="can_focus">True</property>
-					      <property name="editable">True</property>
-					      <property name="visibility">False</property>
-					      <property name="max_length">0</property>
-					      <property name="text"></property>
-					      <property name="has_frame">True</property>
-					      <property name="activates_default">False</property>
+					      <property name="label" translatable="yes">Prompt user if authentication is required</property>
+					      <property name="use_underline">True</property>
+					      <property name="relief">GTK_RELIEF_NORMAL</property>
+					      <property name="focus_on_click">True</property>
+					      <property name="active">True</property>
+					      <property name="inconsistent">False</property>
+					      <property name="draw_indicator">True</property>
 					    </widget>
 					    <packing>
-					      <property name="left_attach">1</property>
-					      <property name="right_attach">2</property>
-					      <property name="top_attach">1</property>
-					      <property name="bottom_attach">2</property>
-					      <property name="y_options"></property>
+					      <property name="padding">0</property>
+					      <property name="expand">False</property>
+					      <property name="fill">False</property>
 					    </packing>
 					  </child>
 
 					  <child>
-					    <widget class="GtkEntry" id="entSMBUsername">
+					    <widget class="GtkVBox" id="vbox69">
 					      <property name="visible">True</property>
-					      <property name="can_focus">True</property>
-					      <property name="editable">True</property>
-					      <property name="visibility">True</property>
-					      <property name="max_length">0</property>
-					      <property name="text"></property>
-					      <property name="has_frame">True</property>
-					      <property name="activates_default">False</property>
+					      <property name="homogeneous">False</property>
+					      <property name="spacing">0</property>
+
+					      <child>
+						<widget class="GtkRadioButton" id="rbtnSMBAuthSet">
+						  <property name="visible">True</property>
+						  <property name="can_focus">True</property>
+						  <property name="label" translatable="yes">Set authentication details now</property>
+						  <property name="use_underline">True</property>
+						  <property name="relief">GTK_RELIEF_NORMAL</property>
+						  <property name="focus_on_click">True</property>
+						  <property name="active">False</property>
+						  <property name="inconsistent">False</property>
+						  <property name="draw_indicator">True</property>
+						  <property name="group">rbtnSMBAuthPrompt</property>
+						  <signal name="toggled" handler="on_rbtnSMBAuthSet_toggled" last_modification_time="Fri, 16 May 2008 14:40:23 GMT"/>
+						</widget>
+						<packing>
+						  <property name="padding">0</property>
+						  <property name="expand">False</property>
+						  <property name="fill">False</property>
+						</packing>
+					      </child>
+
+					      <child>
+						<widget class="GtkAlignment" id="alignment50">
+						  <property name="visible">True</property>
+						  <property name="xalign">0.5</property>
+						  <property name="yalign">0.5</property>
+						  <property name="xscale">1</property>
+						  <property name="yscale">1</property>
+						  <property name="top_padding">6</property>
+						  <property name="bottom_padding">0</property>
+						  <property name="left_padding">18</property>
+						  <property name="right_padding">0</property>
+
+						  <child>
+						    <widget class="GtkTable" id="tblSMBAuth">
+						      <property name="visible">True</property>
+						      <property name="sensitive">False</property>
+						      <property name="n_rows">2</property>
+						      <property name="n_columns">2</property>
+						      <property name="homogeneous">False</property>
+						      <property name="row_spacing">6</property>
+						      <property name="column_spacing">6</property>
+
+						      <child>
+							<widget class="GtkLabel" id="label133">
+							  <property name="visible">True</property>
+							  <property name="label" translatable="yes">Password:</property>
+							  <property name="use_underline">False</property>
+							  <property name="use_markup">False</property>
+							  <property name="justify">GTK_JUSTIFY_LEFT</property>
+							  <property name="wrap">False</property>
+							  <property name="selectable">False</property>
+							  <property name="xalign">0</property>
+							  <property name="yalign">0.5</property>
+							  <property name="xpad">0</property>
+							  <property name="ypad">0</property>
+							  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+							  <property name="width_chars">-1</property>
+							  <property name="single_line_mode">False</property>
+							  <property name="angle">0</property>
+							</widget>
+							<packing>
+							  <property name="left_attach">0</property>
+							  <property name="right_attach">1</property>
+							  <property name="top_attach">1</property>
+							  <property name="bottom_attach">2</property>
+							  <property name="x_options">fill</property>
+							  <property name="y_options"></property>
+							</packing>
+						      </child>
+
+						      <child>
+							<widget class="GtkLabel" id="label132">
+							  <property name="visible">True</property>
+							  <property name="label" translatable="yes">Username:</property>
+							  <property name="use_underline">False</property>
+							  <property name="use_markup">False</property>
+							  <property name="justify">GTK_JUSTIFY_LEFT</property>
+							  <property name="wrap">False</property>
+							  <property name="selectable">False</property>
+							  <property name="xalign">0</property>
+							  <property name="yalign">0.5</property>
+							  <property name="xpad">0</property>
+							  <property name="ypad">0</property>
+							  <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+							  <property name="width_chars">-1</property>
+							  <property name="single_line_mode">False</property>
+							  <property name="angle">0</property>
+							</widget>
+							<packing>
+							  <property name="left_attach">0</property>
+							  <property name="right_attach">1</property>
+							  <property name="top_attach">0</property>
+							  <property name="bottom_attach">1</property>
+							  <property name="x_options">fill</property>
+							  <property name="y_options"></property>
+							</packing>
+						      </child>
+
+						      <child>
+							<widget class="GtkEntry" id="entSMBPassword">
+							  <property name="visible">True</property>
+							  <property name="can_focus">True</property>
+							  <property name="editable">True</property>
+							  <property name="visibility">False</property>
+							  <property name="max_length">0</property>
+							  <property name="text"></property>
+							  <property name="has_frame">True</property>
+							  <property name="activates_default">False</property>
+							</widget>
+							<packing>
+							  <property name="left_attach">1</property>
+							  <property name="right_attach">2</property>
+							  <property name="top_attach">1</property>
+							  <property name="bottom_attach">2</property>
+							  <property name="y_options"></property>
+							</packing>
+						      </child>
+
+						      <child>
+							<widget class="GtkEntry" id="entSMBUsername">
+							  <property name="visible">True</property>
+							  <property name="can_focus">True</property>
+							  <property name="editable">True</property>
+							  <property name="visibility">True</property>
+							  <property name="max_length">0</property>
+							  <property name="text"></property>
+							  <property name="has_frame">True</property>
+							  <property name="activates_default">False</property>
+							</widget>
+							<packing>
+							  <property name="left_attach">1</property>
+							  <property name="right_attach">2</property>
+							  <property name="top_attach">0</property>
+							  <property name="bottom_attach">1</property>
+							  <property name="y_options"></property>
+							</packing>
+						      </child>
+						    </widget>
+						  </child>
+						</widget>
+						<packing>
+						  <property name="padding">0</property>
+						  <property name="expand">True</property>
+						  <property name="fill">True</property>
+						</packing>
+					      </child>
 					    </widget>
 					    <packing>
-					      <property name="left_attach">1</property>
-					      <property name="right_attach">2</property>
-					      <property name="top_attach">0</property>
-					      <property name="bottom_attach">1</property>
-					      <property name="y_options"></property>
+					      <property name="padding">0</property>
+					      <property name="expand">True</property>
+					      <property name="fill">True</property>
 					    </packing>
 					  </child>
 					</widget>
@@ -2561,17 +2641,22 @@ DTR/DSR (Hardware)</property>
 				  </child>
 
 				  <child>
-				    <widget class="GtkCheckButton" id="chkSMBAuth">
+				    <widget class="GtkLabel" id="label227">
 				      <property name="visible">True</property>
-				      <property name="can_focus">True</property>
-				      <property name="label" translatable="yes">Authentication required</property>
-				      <property name="use_underline">True</property>
-				      <property name="relief">GTK_RELIEF_NORMAL</property>
-				      <property name="focus_on_click">True</property>
-				      <property name="active">False</property>
-				      <property name="inconsistent">False</property>
-				      <property name="draw_indicator">True</property>
-				      <signal name="toggled" handler="on_chkSMBAuth_toggled" last_modification_time="Fri, 31 Aug 2007 12:16:01 GMT"/>
+				      <property name="label" translatable="yes">&lt;b&gt;Authentication&lt;/b&gt;</property>
+				      <property name="use_underline">False</property>
+				      <property name="use_markup">True</property>
+				      <property name="justify">GTK_JUSTIFY_LEFT</property>
+				      <property name="wrap">False</property>
+				      <property name="selectable">False</property>
+				      <property name="xalign">0.5</property>
+				      <property name="yalign">0.5</property>
+				      <property name="xpad">0</property>
+				      <property name="ypad">0</property>
+				      <property name="ellipsize">PANGO_ELLIPSIZE_NONE</property>
+				      <property name="width_chars">-1</property>
+				      <property name="single_line_mode">False</property>
+				      <property name="angle">0</property>
 				    </widget>
 				    <packing>
 				      <property name="type">label_item</property>

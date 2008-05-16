@@ -2340,7 +2340,8 @@ class NewPrinterGUI(GtkGUI):
                         "btnIPPBrowseOk",
                         "entNPTDirectJetHostname", "entNPTDirectJetPort",
                         "SMBBrowseDialog", "entSMBURI", "tvSMBBrowser", "tblSMBAuth",
-                        "chkSMBAuth", "entSMBUsername", "entSMBPassword",
+                        "rbtnSMBAuthPrompt", "rbtnSMBAuthSet",
+                        "entSMBUsername", "entSMBPassword",
                         "btnSMBBrowseOk", "btnSMBVerify",
                            "entNPTDevice",
                            "tvNCMembers", "tvNCNotMembers",
@@ -2398,23 +2399,41 @@ class NewPrinterGUI(GtkGUI):
         combobox.add_attribute(cell, 'text', 0)
 
         # SMB browser
-        self.smb_store = gtk.TreeStore (str, # host or share
-                                        str, # comment
-                                        gobject.TYPE_PYOBJECT, # domain dict
-                                        gobject.TYPE_PYOBJECT) # host dict
+        if pysmb.USE_OLD_CODE:
+            self.smb_store = gtk.TreeStore (str, # host or share
+                                            str, # comment
+                                            gobject.TYPE_PYOBJECT, # domain dict
+                                            gobject.TYPE_PYOBJECT) # host dict
+        else:
+            self.smb_store = gtk.TreeStore (gobject.TYPE_PYOBJECT)
+
         self.tvSMBBrowser.set_model (self.smb_store)
-        self.smb_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
 
         # SMB list columns
-        col = gtk.TreeViewColumn (_("Share"), gtk.CellRendererText (),
-                                  text=0)
-        col.set_resizable (True)
-        col.set_sort_column_id (0)
-        self.tvSMBBrowser.append_column (col)
+        if pysmb.USE_OLD_CODE:
+            self.smb_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
+            col = gtk.TreeViewColumn (_("Share"), gtk.CellRendererText (),
+                                      text=0)
+            col.set_resizable (True)
+            col.set_sort_column_id (0)
+            self.tvSMBBrowser.append_column (col)
 
-        col = gtk.TreeViewColumn (_("Comment"), gtk.CellRendererText (),
-                                  text=1)
-        self.tvSMBBrowser.append_column (col)
+            col = gtk.TreeViewColumn (_("Comment"), gtk.CellRendererText (),
+                                      text=1)
+            self.tvSMBBrowser.append_column (col)
+        else:
+            col = gtk.TreeViewColumn (_("Share"))
+            cell = gtk.CellRendererText ()
+            col.pack_start (cell, False)
+            col.set_cell_data_func (cell, self.smbbrowser_cell_share)
+            self.tvSMBBrowser.append_column (col)
+
+            col = gtk.TreeViewColumn (_("Comment"))
+            cell = gtk.CellRendererText ()
+            col.pack_start (cell, False)
+            col.set_cell_data_func (cell, self.smbbrowser_cell_comment)
+            self.tvSMBBrowser.append_column (col)
+
         slct = self.tvSMBBrowser.get_selection ()
         slct.set_select_function (self.smb_select_function)
         
@@ -3297,13 +3316,15 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.get_selection().select_path(0)
         self.on_tvNPDevices_cursor_changed(self.tvNPDevices)
 
+    def on_entNPTDevice_changed(self, entry):
+        self.setNPButtons()
+
+    ## SMB browsing
+
     def browse_smb_hosts(self):
         if not self.smb_lock.acquire(0):
             return
         thread.start_new_thread(self.browse_smb_hosts_thread, ())
-
-    def on_entNPTDevice_changed(self, entry):
-        self.setNPButtons()
 
     def browse_smb_hosts_thread(self):
         """Initialise the SMB tree store."""
@@ -3311,27 +3332,44 @@ class NewPrinterGUI(GtkGUI):
         gtk.gdk.threads_enter()
         store = self.smb_store
         store.clear ()
-        store.append(None, (_('Scanning...'), '', None, None))
+        if pysmb.USE_OLD_CODE:
+            store.append(None, (_('Scanning...'), '', None, None))
         try:
             self.busy(self.SMBBrowseDialog)
         except:
             nonfatalException()
         gtk.gdk.threads_leave()
 
-
-
-        iter = None
-        domains = pysmb.get_domain_list ()
+        if pysmb.USE_OLD_CODE:
+            domains = pysmb.get_domain_list ()
+        else:
+            self.smbcc = pysmb.smbc.Context (debug=0,
+                                             flags=pysmb.smbc.FLAG_NO_AUTO_ANONYMOUS_LOGON,
+                                             auth_fn=self.browse_smb_hosts_thread_auth_callback)
+            self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+            while self.smbc_auth.perform_authentication () > 0:
+                try:
+                    workgroups = self.smbcc.opendir ("smb://").getdents ()
+                except:
+                    self.smbc_auth.failed ()
+                    workgroups = None
 
         gtk.gdk.threads_enter()
         store.clear ()
-        for domain in domains.keys ():
-            d = domains[domain]
-            iter = store.append (None)
-            if iter:
-                dummy = store.append (iter)
-            store.set_value (iter, 0, d['DOMAIN'])
-            store.set_value (iter, 2, d)
+        if pysmb.USE_OLD_CODE:
+            for domain in domains.keys ():
+                d = domains[domain]
+                iter = store.append (None)
+                if iter:
+                    dummy = store.append (iter)
+                store.set_value (iter, 0, d['DOMAIN'])
+                store.set_value (iter, 2, d)
+        else:
+            store.clear ()
+            if workgroups:
+                for workgroup in workgroups:
+                    iter = store.append (None, [workgroup])
+                    i = store.append (iter)
 
         try:
             self.ready(self.SMBBrowseDialog)
@@ -3341,11 +3379,29 @@ class NewPrinterGUI(GtkGUI):
         self.smb_lock.release()
         gtk.gdk.threads_leave()
 
+    def browse_smb_hosts_thread_auth_callback (self, server, share, workgroup,
+                                               user, password):
+        return self.smbc_auth.callback (server, share, workgroup, user,
+                                        password)
 
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
         iter = self.smb_store.get_iter (path)
         return not self.smb_store.iter_has_child (iter)
+
+    def smbbrowser_cell_share (self, column, cell, model, iter):
+        entry = model.get_value (iter, 0)
+        share = ''
+        if entry != None:
+            share = entry.name
+        cell.set_property ('text', share)
+
+    def smbbrowser_cell_comment (self, column, cell, model, iter):
+        entry = model.get_value (iter, 0)
+        comment = ''
+        if entry != None:
+            comment = entry.comment
+        cell.set_property ('text', comment)
 
     def on_tvSMBBrowser_row_activated (self, view, path, column):
         """Handle double-clicks in the SMB tree view."""
@@ -3362,58 +3418,126 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvSMBBrowser_row_expanded (self, view, iter, path):
         """Handler for expanding a row in the SMB tree view."""
-        store = self.smb_store
-        if len (path) == 2:
-            # Click on host, look for shares
-            try:
-                if self.expanding_row:
-                    return
-            except:
-                self.expanding_row = 1
+        if pysmb.USE_OLD_CODE:
+            store = self.smb_store
+            if len (path) == 2:
+                # Click on host, look for shares
+                try:
+                    if self.expanding_row:
+                        return
+                except:
+                    self.expanding_row = 1
 
-            host = store.get_value (iter, 3)
-            if host:
-                self.busy (self.NewPrinterWindow)
-                printers = pysmb.get_printer_list (host)
-                while store.iter_has_child (iter):
-                    i = store.iter_nth_child (iter, 0)
-                    store.remove (i)
-                for printer in printers.keys():
-                    i = store.append (iter)
-                    store.set_value (i, 0, printer)
-                    store.set_value (i, 1, printers[printer])
-                self.ready (self.NewPrinterWindow)
+                host = store.get_value (iter, 3)
+                if host:
+                    self.busy (self.NewPrinterWindow)
+                    printers = pysmb.get_printer_list (host)
+                    while store.iter_has_child (iter):
+                        i = store.iter_nth_child (iter, 0)
+                        store.remove (i)
+                    for printer in printers.keys():
+                        i = store.append (iter)
+                        store.set_value (i, 0, printer)
+                        store.set_value (i, 1, printers[printer])
+                    self.ready (self.NewPrinterWindow)
 
-            view.expand_row (path, 1)
-            del self.expanding_row
+                view.expand_row (path, 1)
+                del self.expanding_row
+            else:
+                # Click on domain, look for hosts
+                try:
+                    if self.expanding_row:
+                        return
+                except:
+                    self.expanding_row = 1
+
+                domain = store.get_value (iter, 2)
+                if domain:
+                    self.busy (self.NewPrinterWindow)
+                    hosts = pysmb.get_host_list_from_domain (domain['DOMAIN'])
+                    if len(hosts) <= 0:
+                        hosts = pysmb.get_host_list (domain['IP'])
+                    while store.iter_has_child (iter):
+                        i = store.iter_nth_child (iter, 0)
+                        store.remove (i)
+                    i = None
+                    for host in hosts.keys():
+                        h = hosts[host]
+                        i = store.append (iter)
+                        if i:
+                            dummy = store.append (i)
+                        store.set_value (i, 0, h['NAME'])
+                        store.set_value (i, 3, h)
+                    self.ready (self.NewPrinterWindow)
+                view.expand_row (path, 0)
+                del self.expanding_row
         else:
-            # Click on domain, look for hosts
-            try:
-                if self.expanding_row:
-                    return
-            except:
-                self.expanding_row = 1
+            model = view.get_model ()
+            entry = model.get_value (iter, 0)
+            if entry == None:
+                return
 
-            domain = store.get_value (iter, 2)
-            if domain:
-                self.busy (self.NewPrinterWindow)
-                hosts = pysmb.get_host_list_from_domain (domain['DOMAIN'])
-                if len(hosts) <= 0:
-                    hosts = pysmb.get_host_list (domain['IP'])
-                while store.iter_has_child (iter):
-                    i = store.iter_nth_child (iter, 0)
-                    store.remove (i)
-                i = None
-                for host in hosts.keys():
-                    h = hosts[host]
-                    i = store.append (iter)
-                    if i:
-                        dummy = store.append (i)
-                    store.set_value (i, 0, h['NAME'])
-                    store.set_value (i, 3, h)
-                self.ready (self.NewPrinterWindow)
-            view.expand_row (path, 0)
-            del self.expanding_row
+            if len (path) == 1:
+                # Workgroup
+                try:
+                    if self.expanding_row:
+                        return
+                except:
+                    self.expanding_row = 1
+
+                while model.iter_has_child (iter):
+                    i = model.iter_nth_child (iter, 0)
+                    model.remove (i)
+
+                uri = "smb://%s" % entry.name
+                self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+                while self.smbc_auth.perform_authentication () > 0:
+                    try:
+                        servers = self.smbcc.opendir (uri).getdents ()
+                    except:
+                        self.smbc_auth.failed ()
+                        servers = None
+
+                if servers:
+                    for server in servers:
+                        i = model.append (iter, [server])
+                        n = model.append (i)
+
+                view.expand_row (path, 0)
+                del self.expanding_row
+
+            elif len (path) == 2:
+                # Server
+                try:
+                    if self.expanding_row:
+                        return
+                except:
+                    self.expanding_row = 1
+
+                while model.iter_has_child (iter):
+                    i = model.iter_nth_child (iter, 0)
+                    model.remove (i)
+                uri = "smb://%s" % entry.name
+
+                self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+                while self.smbc_auth.perform_authentication () > 0:
+                    try:
+                        shares = self.smbcc.opendir (uri).getdents ()
+                    except RuntimeError, (e, m):
+                        self.smbc_auth.failed ()
+                        shares = None
+                        if e != 13 and e != 1:
+                            del self.expanding_row
+                            raise
+
+                if shares:
+                    for share in shares:
+                        if share.smbc_type == pysmb.smbc.PRINTER_SHARE:
+                            i = model.append (iter, [share])
+                            debugprint (repr (share))
+
+                view.expand_row (path, 0)
+                del self.expanding_row
 
     def on_entSMBURI_changed (self, ent):
         uri = ent.get_text ()
@@ -3425,10 +3549,10 @@ class NewPrinterGUI(GtkGUI):
         if user or password:
             uri = SMBURI (group=group, host=host, share=share).get_uri ()
             ent.set_text(uri)
-            self.chkSMBAuth.set_active(True)
+            self.rbtnSMBAuthSet.set_active(True)
         else:
-            self.chkSMBAuth.set_active(False)
-        
+            self.rbtnSMBAuthPrompt.set_active(True)
+
         self.btnSMBVerify.set_sensitive(bool(uri))
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
@@ -3452,7 +3576,13 @@ class NewPrinterGUI(GtkGUI):
         group = store.get_value (domain_iter, 0)
         host = store.get_value (parent_iter, 0)
         share = store.get_value (iter, 0)
-        uri = SMBURI (group=group, host=host, share=share).get_uri ()
+        if pysmb.USE_OLD_CODE:
+            uri = SMBURI (group=group, host=host, share=share).get_uri ()
+        else:
+            uri = SMBURI (group=group.name,
+                          host=host.name,
+                          share=share.name).get_uri ()
+
         self.entSMBUsername.set_text ('')
         self.entSMBPassword.set_text ('')
         self.entSMBURI.set_text (uri)
@@ -3465,7 +3595,7 @@ class NewPrinterGUI(GtkGUI):
     def on_btnSMBBrowseRefresh_clicked(self, button):
         self.browse_smb_hosts()
 
-    def on_chkSMBAuth_toggled(self, widget):
+    def on_rbtnSMBAuthSet_toggled(self, widget):
         self.tblSMBAuth.set_sensitive(widget.get_active())
 
     def on_btnSMBVerify_clicked(self, button):
@@ -3473,7 +3603,7 @@ class NewPrinterGUI(GtkGUI):
         (group, host, share, u, p) = SMBURI (uri=uri).separate ()
         user = ''
         passwd = ''
-        if self.chkSMBAuth.get_active():
+        if self.rbtnSMBAuthSet.get_active():
             user = self.entSMBUsername.get_text ()
             passwd = self.entSMBPassword.get_text ()
         accessible = pysmb.printer_share_accessible ("//%s/%s" %
@@ -3852,7 +3982,7 @@ class NewPrinterGUI(GtkGUI):
             (group, host, share, u, p) = SMBURI (uri=uri).separate ()
             user = ''
             password = ''
-            if self.chkSMBAuth.get_active ():
+            if self.rbtnSMBAuthSet.get_active ():
                 user = self.entSMBUsername.get_text ()
                 password = self.entSMBPassword.get_text ()
             uri = SMBURI (group=group, host=host, share=share,
