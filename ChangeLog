@@ -1,3 +1,11 @@
+2008-05-16  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.setTestButton): Removed.
+	(GUI.fillPrinterTab): Don't call setTestButton.
+	(GUI.on_btnPrintTestPage_clicked): Likewise, and don't ever
+	cancel.
+	(GUI.setDataButtonState): Removed cancellation handling.
+
 2008-05-15  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (NewPrinterGUI.init): Only set location

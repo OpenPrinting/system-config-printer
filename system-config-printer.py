@@ -1124,8 +1124,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         self.printer.enabled and
                         not self.printer.rejecting)
 
-            if not self.test_button_cancels:
-                self.btnPrintTestPage.set_sensitive (possible)
+            self.btnPrintTestPage.set_sensitive (possible)
 
             commands = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
             self.btnSelfTest.set_sensitive (commands and possible)
@@ -1400,16 +1399,6 @@ class GUI(GtkGUI, monitor.Watcher):
     # print test page
     
     def on_btnPrintTestPage_clicked(self, button):
-        if self.test_button_cancels:
-            jobs = self.printer.testsQueued ()
-            for job in jobs:
-                debugprint ("Canceling job %s" % job)
-                try:
-                    self.cups.cancelJob (job)
-                except cups.IPPError, (e, msg):
-                    self.show_IPP_Error(e, msg)
-            self.setTestButton (self.printer)
-            return
         try:
             # if we have a page size specific custom test page, use it;
             # otherwise use cups' default one
@@ -1438,7 +1427,6 @@ class GUI(GtkGUI, monitor.Watcher):
                                      _("Test page submitted as "
                                        "job %d") % job_id)
             self.InfoDialog.set_transient_for (self.MainWindow)
-            self.setTestButton (self.printer)
             self.InfoDialog.run ()
             self.InfoDialog.hide ()
         except cups.IPPError, (e, msg):
@@ -1585,8 +1573,6 @@ class GUI(GtkGUI, monitor.Watcher):
             self.lblPDefault.set_text(self.default_printer)
         else:
             self.lblPDefault.set_text(_("No default printer set."))
-
-        self.setTestButton (printer)
 
         # Policy tab
         # ----------
@@ -1742,16 +1728,6 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.changed = set() # of options
         self.setDataButtonState()
-
-    def setTestButton (self, printer):
-        if printer.testsQueued ():
-            self.test_button_cancels = True
-            self.btnPrintTestPage.set_label (_('Cancel Tests'))
-            self.btnPrintTestPage.set_sensitive (True)
-        else:
-            self.test_button_cancels = False
-            self.btnPrintTestPage.set_label (_('Print Test Page'))
-            self.setDataButtonState ()
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
