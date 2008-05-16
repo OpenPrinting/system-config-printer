@@ -3787,7 +3787,6 @@ class NewPrinterGUI(GtkGUI):
                 location = p.read ().strip ()
                 p.close ()
             self.entNPLocation.set_text (location)
-            print "Location:", location
         except:
             nonfatalException ()
 
