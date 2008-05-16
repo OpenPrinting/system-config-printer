@@ -1,5 +1,14 @@
 2008-05-16  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.fillPrinterTab): Moved some
+	code...
+	(GUI.updatePrinterProperties): ...here.
+	(GUI.printer_event): Update state etc.
+
+	* cupshelpers.py (Printer.__init__): Moved some code...
+	(Printer.update): ...here.
+	(Printer.getAttributes): Update state etc.
+
 	* system-config-printer.py (GUI.setTestButton): Removed.
 	(GUI.fillPrinterTab): Don't call setTestButton.
 	(GUI.on_btnPrintTestPage_clicked): Likewise, and don't ever

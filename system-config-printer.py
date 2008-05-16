@@ -1537,8 +1537,6 @@ class GUI(GtkGUI, monitor.Watcher):
         # Description page
         self.entPDescription.set_text(printer.info)
         self.entPLocation.set_text(printer.location)
-        self.lblPMakeModel.set_text(printer.make_and_model)
-        self.lblPState.set_text(printer.state_description)
 
         uri = printer.device_uri
         if uri.startswith("smb://"):
@@ -1577,10 +1575,6 @@ class GUI(GtkGUI, monitor.Watcher):
         # Policy tab
         # ----------
 
-        # State
-        self.chkPEnabled.set_active(printer.enabled)
-        self.chkPAccepting.set_active(not printer.rejecting)
-        self.chkPShared.set_active(printer.is_shared)
         try:
             if printer.is_shared:
                 try:
@@ -1612,27 +1606,14 @@ class GUI(GtkGUI, monitor.Watcher):
             self.lblNotPublished.hide_all ()
 
         # Job sheets
-        self.fillComboBox(self.cmbPStartBanner, printer.job_sheets_supported,
-                          printer.job_sheet_start),
-        self.fillComboBox(self.cmbPEndBanner, printer.job_sheets_supported,
-                          printer.job_sheet_end)
         self.cmbPStartBanner.set_sensitive(editable)
         self.cmbPEndBanner.set_sensitive(editable)
 
         # Policies
-        self.fillComboBox(self.cmbPErrorPolicy, printer.error_policy_supported,
-                          printer.error_policy)
-        self.fillComboBox(self.cmbPOperationPolicy,
-                          printer.op_policy_supported,
-                          printer.op_policy)
         self.cmbPErrorPolicy.set_sensitive(editable)
         self.cmbPOperationPolicy.set_sensitive(editable)
 
         # Access control
-        self.rbtnPAllow.set_active(printer.default_allow)
-        self.rbtnPDeny.set_active(not printer.default_allow)
-        self.setPUsers(printer.except_users)
-
         self.entPUser.set_text("")
 
         # Server side options (Job options)
@@ -1727,7 +1708,40 @@ class GUI(GtkGUI, monitor.Watcher):
         self.tvPrinterProperties.set_model (store)
 
         self.changed = set() # of options
+        self.updatePrinterProperties ()
         self.setDataButtonState()
+
+    def updatePrinterProperties(self):
+        debugprint ("update printer properties")
+        printer = self.printer
+        self.lblPMakeModel.set_text(printer.make_and_model)
+        self.lblPState.set_text(printer.state_description)
+        if len (self.changed) == 0:
+            debugprint ("no changes yet: full printer properties update")
+            # State
+            self.chkPEnabled.set_active(printer.enabled)
+            self.chkPAccepting.set_active(not printer.rejecting)
+            self.chkPShared.set_active(printer.is_shared)
+
+            # Job sheets
+            self.fillComboBox(self.cmbPStartBanner,
+                              printer.job_sheets_supported,
+                              printer.job_sheet_start),
+            self.fillComboBox(self.cmbPEndBanner, printer.job_sheets_supported,
+                              printer.job_sheet_end)
+
+            # Policies
+            self.fillComboBox(self.cmbPErrorPolicy,
+                              printer.error_policy_supported,
+                              printer.error_policy)
+            self.fillComboBox(self.cmbPOperationPolicy,
+                              printer.op_policy_supported,
+                              printer.op_policy)
+
+            # Access control
+            self.rbtnPAllow.set_active(printer.default_allow)
+            self.rbtnPDeny.set_active(not printer.default_allow)
+            self.setPUsers(printer.except_users)
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
@@ -2279,6 +2293,10 @@ class GUI(GtkGUI, monitor.Watcher):
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
         self.printer_added_or_removed ()
+
+        if self.PrinterPropertiesDialog.get_property('visible'):
+            self.printer.getAttributes ()
+            self.updatePrinterProperties ()
 
     def printer_removed (self, mon, printer):
         monitor.Watcher.printer_removed (self, mon, printer)

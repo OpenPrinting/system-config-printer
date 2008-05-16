@@ -34,24 +34,7 @@ class Printer:
         self.name = name
         self.connection = connection
         self.class_members = []
-        self.device_uri = kw.get('device-uri', "")
-        self.info = kw.get('printer-info', "")
-        self.is_shared = kw.get('printer-is-shared', None)
-        self.location = kw.get('printer-location', "")
-        self.make_and_model = kw.get('printer-make-and-model', "")
-        self.state = kw.get('printer-state', 0)
-        self.type = kw.get('printer-type', 0)
-        self.uri_supported = kw.get('printer-uri-supported', "")
-        self._expand_flags()
-
-        self.state_description = self.printer_states.get(
-            self.state, _("Unknown"))
-
-        self.enabled = self.state != cups.IPP_PRINTER_STOPPED
-
-        if self.is_shared is None:
-            self.is_shared = not self.not_shared
-        del self.not_shared
+        self.update (**kw)
 
         if self.is_class:
             self._ppd = False
@@ -72,6 +55,23 @@ class Printer:
                 # set as attribute
                 setattr(self, attr_name,
                         bool(self.type & getattr(cups, name)))
+
+    def update(self, **kw):
+        self.state = kw.get('printer-state', 0)
+        self.enabled = self.state != cups.IPP_PRINTER_STOPPED
+        self.state_description = self.printer_states.get(
+            self.state, _("Unknown"))
+        self.device_uri = kw.get('device-uri', "")
+        self.info = kw.get('printer-info', "")
+        self.is_shared = kw.get('printer-is-shared', None)
+        self.location = kw.get('printer-location', "")
+        self.make_and_model = kw.get('printer-make-and-model', "")
+        self.type = kw.get('printer-type', 0)
+        self.uri_supported = kw.get('printer-uri-supported', "")
+        self._expand_flags()
+        if self.is_shared is None:
+            self.is_shared = not self.not_shared
+        del self.not_shared
 
     def getAttributes(self):
         attrs = self.connection.getPrinterAttributes(self.name)
@@ -133,6 +133,7 @@ class Printer:
         elif attrs.has_key('requesting-user-name-denied'):
             self.except_users = attrs['requesting-user-name-denied']
         self.except_users_string = ', '.join(self.except_users)
+        self.update (**attrs)
 
     def getServer(self):
         """return Server URI or None"""
