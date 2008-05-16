@@ -1,5 +1,12 @@
 2008-05-16  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py
+	(NewPrinterGUI.on_rbtnChangePPDasIs_toggled): Removed.
+	(NewPrinterGUI.nextNPTab): Fetch the PPD before the copy-settings
+	page and avoid showing an empty installable options page.
+	(NewPrinterGUI.setNPButtons): Set buttons appropriately on the
+	copy-settings page.
+
 	* system-config-printer.py (NewPrinterGUI.setNPButtons): Initial
 	value for radio button should be set in init...
 	(NewPrinterGUI.init): ...here.

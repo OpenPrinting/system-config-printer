@@ -2852,31 +2852,41 @@ class NewPrinterGUI(GtkGUI):
         next_page_nr = order[order.index(page_nr)+step]
 
         # fill Installable Options tab
-        if next_page_nr == 6 and step > 0:
+        fetch_ppd = False
+        try:
+            if order.index (5) > -1:
+                # There is a copy settings page in this set
+                fetch_ppd = next_page_nr == 5 and step > 0
+        except ValueError:
+            fetch_ppd = next_page_nr == 6 and step > 0
+    
+        debugprint ("Will fetch ppd? %d" % fetch_ppd)
+        if fetch_ppd:
             self.ppd = self.getNPPPD()
+            self.installable_options = False
             if self.ppd == None:
                 return
-            if next_page_nr == 6:
-                # Prepare Installable Options screen.
-                if isinstance(self.ppd, cups.PPD):
-                    self.fillNPInstallableOptions()
-                else:
-                    self.installable_options = None
-                    # Put a label there explaining why the page is empty.
-                    ppd = self.ppd
-                    self.ppd = None
-                    self.fillNPInstallableOptions()
-                    self.ppd = ppd
 
-                # step over if empty and not in PPD mode
-                if self.dialog_mode != "ppd" and not self.installable_options:
+            # Prepare Installable Options screen.
+            if isinstance(self.ppd, cups.PPD):
+                self.fillNPInstallableOptions()
+            else:
+                # Put a label there explaining why the page is empty.
+                ppd = self.ppd
+                self.ppd = None
+                self.fillNPInstallableOptions()
+                self.ppd = ppd
+
+            if not self.installable_options:
+                if next_page_nr == 6:
+                    # step over if empty
                     next_page_nr = order[order.index(next_page_nr)+1]
 
-        # Step over empty Installable Options tab
+        # Step over empty Installable Options tab when moving backwards.
         if next_page_nr == 6 and not self.installable_options and step<0:
             next_page_nr = order[order.index(next_page_nr)-1]
 
-        if next_page_nr == 7: # About to show downloadable drivers
+        if step > 0 and next_page_nr == 7: # About to show downloadable drivers
             if self.drivers_lock.locked ():
                 # Still searching for drivers.
                 self.lblWait.set_markup ('<span weight="bold" size="larger">' +
@@ -2915,6 +2925,15 @@ class NewPrinterGUI(GtkGUI):
 
         if self.dialog_mode == "ppd":
             if nr == 5: # Apply
+                if not self.installable_options:
+                    # There are no installable options, so this is the
+                    # last page.
+                    debugprint ("No installable options")
+                    self.btnNPForward.hide ()
+                    self.btnNPApply.show ()
+                else:
+                    self.btnNPForward.show ()
+                    self.btnNPApply.hide ()
                 return
             elif nr == 6:
                 self.btnNPForward.hide()
@@ -4373,19 +4392,10 @@ class NewPrinterGUI(GtkGUI):
 
         return ppd
 
-    # use PPD as Is?
-
-    def on_rbtnChangePPDasIs_toggled(self, button):
-        if button.get_active():
-            self.btnNPForward.show()
-            self.btnNPApply.hide()                        
-        else:
-            self.btnNPForward.hide()
-            self.btnNPApply.show()
-
     # Installable Options
 
     def fillNPInstallableOptions(self):
+        debugprint ("Examining installable options")
         self.installable_options = False
         self.options = { }
 
@@ -4397,6 +4407,7 @@ class NewPrinterGUI(GtkGUI):
             l = gtk.Label(_("No Installable Options"))
             container.add(l)
             l.show()
+            debugprint ("No PPD so no installable options")
             return
 
         # build option tabs
