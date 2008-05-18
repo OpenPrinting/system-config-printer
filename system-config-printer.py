@@ -3011,17 +3011,17 @@ class GUI:
 
             self.lblNPDeviceDescription.set_text (text)
         elif device.type=="socket":
-            if device.uri.startswith ("socket"):
-                host = device.uri[9:]
-                i = host.find (":")
-                if i != -1:
-                    port = int (host[i + 1:])
-                    host = host[:i]
-                else:
-                    port = 9100
-
-                self.entNPTDirectJetHostname.set_text (host)
-                self.entNPTDirectJetPort.set_text (str (port))
+            (scheme, rest) = urllib.splittype (device.uri)
+            host = ''
+            port = 9100
+            debugprint ("socket: scheme is %s" % scheme)
+            if scheme == "socket":
+                (hostport, rest) = urllib.splithost (rest)
+                (host, port) = urllib.splitnport (hostport, defport=port)
+                debugprint ("socket: host is %s, port is %s" % (host,
+                                                                repr (port)))
+            self.entNPTDirectJetHostname.set_text (host)
+            self.entNPTDirectJetPort.set_text (str (port))
         elif device.type=="serial":
             if not device.is_class:
                 options = device.uri.split("?")[1]
