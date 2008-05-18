@@ -3363,7 +3363,10 @@ class NewPrinterGUI(GtkGUI):
         if pysmb.USE_OLD_CODE:
             domains = pysmb.get_domain_list ()
         else:
-            self.smbcc = pysmb.smbc.Context (debug=0,
+            debug = 0
+            if get_debugging ():
+                debug=1
+            self.smbcc = pysmb.smbc.Context (debug=debug,
                                              flags=pysmb.smbc.FLAG_NO_AUTO_ANONYMOUS_LOGON,
                                              auth_fn=self.browse_smb_hosts_thread_auth_callback)
             self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)

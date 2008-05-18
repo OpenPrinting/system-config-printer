@@ -52,11 +52,16 @@ class AuthContext:
             return 0
 
         debugprint ("pysmb: authentication pass: %d" % self.passes)
+        if not self.auth_called:
+            debugprint ("pysmb: auth callback not called?!")
+            return 0
+
         self.has_failed = False
         if self.auth_called and not self.tried_guest:
             self.use_user = 'guest'
             self.use_password = ''
             self.tried_guest = True
+            debugprint ("pysmb: try auth as guest")
             return 1
 
         # After that, prompt
