@@ -718,6 +718,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     pixbuf = theme.load_icon (icon, w, 0)
                 except gobject.GError:
                     # Not in theme.
+                    pixbuf = None
                     for p in [iconpath, 'icons/']:
                         try:
                             pixbuf = gtk.gdk.pixbuf_new_from_file ("%s%s.png" %
