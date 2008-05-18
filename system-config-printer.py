@@ -82,7 +82,7 @@ import gettext
 gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
 pkgdata = config.Paths ().get_path ('pkgdatadir')
-iconpath = os.path.join (pkgdata, '/icons/')
+iconpath = os.path.join (pkgdata, 'icons/')
 glade_file = os.path.join (pkgdata, domain + '.glade')
 sys.path.append (pkgdata)
 
