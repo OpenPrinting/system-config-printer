@@ -3385,7 +3385,6 @@ class NewPrinterGUI(GtkGUI):
 
         gtk.gdk.threads_enter()
         store.clear ()
-        debugprint ("Before code switch")
         if pysmb.USE_OLD_CODE:
             for domain in domains.keys ():
                 d = domains[domain]
