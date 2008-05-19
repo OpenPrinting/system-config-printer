@@ -23,6 +23,7 @@
 # config is generated from config.py.in by configure
 import config
 
+import errno
 import sys, os, tempfile, time, traceback, re, httplib
 import signal, thread
 try:
@@ -3367,18 +3368,24 @@ class NewPrinterGUI(GtkGUI):
             if get_debugging ():
                 debug=1
             self.smbcc = pysmb.smbc.Context (debug=debug,
-                                             flags=pysmb.smbc.FLAG_NO_AUTO_ANONYMOUS_LOGON,
                                              auth_fn=self.browse_smb_hosts_thread_auth_callback)
             self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-            while self.smbc_auth.perform_authentication () > 0:
-                try:
-                    workgroups = self.smbcc.opendir ("smb://").getdents ()
-                except:
-                    self.smbc_auth.failed ()
+            try:
+                while self.smbc_auth.perform_authentication () > 0:
+                    try:
+                        workgroups = self.smbcc.opendir ("smb://").getdents ()
+                    except Exception, e:
+                        self.smbc_auth.failed (e)
+            except RuntimeError, (e, s):
+                if e == errno.ENOENT:
                     workgroups = None
+                else:
+                    debugprint ("Runtime error: %s" % repr ((e, s)))
+                    raise
 
         gtk.gdk.threads_enter()
         store.clear ()
+        debugprint ("Before code switch")
         if pysmb.USE_OLD_CODE:
             for domain in domains.keys ():
                 d = domains[domain]
@@ -3388,7 +3395,6 @@ class NewPrinterGUI(GtkGUI):
                 store.set_value (iter, 0, d['DOMAIN'])
                 store.set_value (iter, 2, d)
         else:
-            store.clear ()
             if workgroups:
                 for workgroup in workgroups:
                     iter = store.append (None, [workgroup])
@@ -3514,12 +3520,19 @@ class NewPrinterGUI(GtkGUI):
 
                 uri = "smb://%s" % entry.name
                 self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-                while self.smbc_auth.perform_authentication () > 0:
-                    try:
-                        servers = self.smbcc.opendir (uri).getdents ()
-                    except:
-                        self.smbc_auth.failed ()
+                try:
+                    while self.smbc_auth.perform_authentication () > 0:
+                        try:
+                            servers = self.smbcc.opendir (uri).getdents ()
+                        except Exception, e:
+                            self.smbc_auth.failed (e)
+                except RuntimeError, (e, s):
+                    if e == errno.ENOENT:
                         servers = None
+                    else:
+                        debugprint ("Runtime error: %s" % repr ((e, s)))
+                        del self.expanding_row
+                        raise
 
                 if servers:
                     for server in servers:
@@ -3543,15 +3556,17 @@ class NewPrinterGUI(GtkGUI):
                 uri = "smb://%s" % entry.name
 
                 self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-                while self.smbc_auth.perform_authentication () > 0:
-                    try:
-                        shares = self.smbcc.opendir (uri).getdents ()
-                    except RuntimeError, (e, m):
-                        self.smbc_auth.failed ()
-                        shares = None
-                        if e != 13 and e != 1:
-                            del self.expanding_row
-                            raise
+                try:
+                    while self.smbc_auth.perform_authentication () > 0:
+                        try:
+                            shares = self.smbcc.opendir (uri).getdents ()
+                        except Exception, e:
+                            self.smbc_auth.failed (e)
+                except RuntimeError, (e, s):
+                    shares = None
+                    if e != errno.EACCES and e != errno.EPERM:
+                        del self.expanding_row
+                        raise
 
                 if shares:
                     for share in shares:

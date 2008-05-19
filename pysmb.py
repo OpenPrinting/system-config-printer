@@ -125,8 +125,10 @@ class AuthContext:
     def initial_authentication (self):
         pass
 
-    def failed (self):
+    def failed (self, exc=None):
         self.has_failed = True
+        if exc and not self.auth_called:
+            raise exc
 
     def callback (self, server, share, workgroup, user, password):
         debugprint ("pysmb: got password callback")
