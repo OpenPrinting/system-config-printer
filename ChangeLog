@@ -1,5 +1,10 @@
 2008-05-20  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: Removed user entry box in the
+	connection dialog.
+	* system-config-printer.py (GUI.on_connect_activate): Removed
+	references to user entry box.
+
 	* system-config-printer.py
 	(NewPrinterGUI.on_btnSMBVerify_clicked): Don't use
 	pysmb.printer_share_accessible for access checks unless we are

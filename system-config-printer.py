@@ -243,7 +243,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         "entNewJobOption", "btnNewJobOption",
                         # small dialogs
                         "ConnectDialog", "chkEncrypted", "cmbServername",
-                        "entUser", "btnConnect",
+                        "btnConnect",
                         "ConnectingDialog", "lblConnecting",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
                         "ErrorDialog", "lblError",
@@ -763,7 +763,6 @@ class GUI(GtkGUI, monitor.Watcher):
         self.cmbServername.show()
 
         self.cmbServername.child.set_text (current_server)
-        self.entUser.set_text (cups.getUser())
         self.chkEncrypted.set_active (cups.getEncryption() ==
                                       cups.HTTP_ENCRYPT_ALWAYS)
 
@@ -782,7 +781,6 @@ class GUI(GtkGUI, monitor.Watcher):
             cups.setEncryption(cups.HTTP_ENCRYPT_IF_REQUESTED)
 
         servername = self.cmbServername.child.get_text()
-        user = self.entUser.get_text()
 
         self.lblConnecting.set_text(_("Connecting to server:\n%s") %
                                     servername)
@@ -790,10 +788,10 @@ class GUI(GtkGUI, monitor.Watcher):
         self.ConnectingDialog.set_transient_for(self.MainWindow)
         self.ConnectingDialog.show()
         self.connect_server = servername
-        self.connect_user = user
         # We need to set the connecting user in this thread as well.
         cups.setServer(self.connect_server)
-        cups.setUser(self.connect_user)
+        cups.setUser('')
+        self.connect_user = cups.getUser()
         # Now start a new thread for connection.
         args = []
         if self.printer:
