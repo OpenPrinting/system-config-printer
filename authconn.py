@@ -215,10 +215,9 @@ class Connection:
         (self._use_user,
          self._use_password) = d.get_auth_info ()
 
-        if self._user != self._use_user:
-            cups.setUser (self._use_user)
-            debugprint ("Authentication: Reconnect")
-            self._connect ()
+        cups.setUser (self._use_user)
+        debugprint ("Authentication: Reconnect")
+        self._connect ()
 
         return 1
 
