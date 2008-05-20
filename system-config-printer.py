@@ -3452,6 +3452,7 @@ class NewPrinterGUI(GtkGUI):
         iter = store.get_iter (path)
         if store.iter_depth (iter) == 2:
             # This is a share, not a host.
+            self.btnSMBBrowseOk.clicked ()
             return
 
         if view.row_expanded (path):
