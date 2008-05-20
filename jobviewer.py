@@ -106,7 +106,6 @@ class JobViewer (monitor.Watcher):
         self.MainWindow.hide ()
 
         if parent:
-            debugprint ("Set transient for" + repr (parent))
             self.MainWindow.set_transient_for (parent)
 
         self.statusbar = self.xml.get_widget ('statusbar')
