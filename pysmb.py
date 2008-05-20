@@ -33,14 +33,14 @@ import pwd
 from debug import *
 
 class AuthContext:
-    def __init__ (self, parent):
+    def __init__ (self, parent=None, workgroup='', user='', passwd=''):
         self.passes = 0
         self.has_failed = False
         self.auth_called = False
         self.tried_guest = False
-        self.use_user = ''
-        self.use_password = ''
-        self.use_workgroup = ''
+        self.use_user = user
+        self.use_password = passwd
+        self.use_workgroup = workgroup
         self.parent = parent
 
     def perform_authentication (self):

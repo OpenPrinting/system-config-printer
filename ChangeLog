@@ -1,6 +1,14 @@
 2008-05-20  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py
+	(NewPrinterGUI.on_btnSMBVerify_clicked): Don't use
+	pysmb.printer_share_accessible for access checks unless we are
+	using the old browsing code.
+
+	* pysmb.py (AuthContext.__init__): Allow initial credentials to be
+	set.
+
+	* system-config-printer.py
 	(NewPrinterGUI.browse_smb_hosts_thread): Fixed 'scanning...'
 	message for new SMB browse code.
 

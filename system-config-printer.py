@@ -3374,7 +3374,7 @@ class NewPrinterGUI(GtkGUI):
         else:
             debug = 0
             if get_debugging ():
-                debug=1
+                debug = 1
             self.smbcc = pysmb.smbc.Context (debug=debug,
                                              auth_fn=self.browse_smb_hosts_thread_auth_callback)
             self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
@@ -3648,14 +3648,50 @@ class NewPrinterGUI(GtkGUI):
         (group, host, share, u, p) = SMBURI (uri=uri).separate ()
         user = ''
         passwd = ''
-        if self.rbtnSMBAuthSet.get_active():
+        auth_set = self.rbtnSMBAuthSet.get_active()
+        if auth_set:
             user = self.entSMBUsername.get_text ()
             passwd = self.entSMBPassword.get_text ()
-        accessible = pysmb.printer_share_accessible ("//%s/%s" %
-                                                     (host, share),
-                                                     group = group,
-                                                     user = user,
-                                                     passwd = passwd)
+
+        if pysmb.USE_OLD_CODE:
+            accessible = pysmb.printer_share_accessible ("//%s/%s" %
+                                                         (host, share),
+                                                         group = group,
+                                                         user = user,
+                                                         passwd = passwd)
+        else:
+            accessible = False
+            try:
+                debug = 0
+                if get_debugging ():
+                    debug = 1
+
+                if auth_set:
+                    def do_auth (svr, shr, wg, un, pw):
+                        return (group, user, passwd)
+                    ctx = pysmb.smbc.Context (debug=debug, auth_fn=do_auth)
+                    f = ctx.open ("smb://%s/%s" % (host, share),
+                                  os.O_RDWR, 0777)
+                    accessible = True
+                else:
+                    auth_fn = self.browse_smb_hosts_thread_auth_callback
+                    ctx = pysmb.smbc.Context (debug=debug, auth_fn=auth_fn)
+                    self.smbc_auth = pysmb.AuthContext (self.NewPrinterWindow,
+                                                        workgroup=group,
+                                                        user=user,
+                                                        passwd=passwd)
+                    while self.smbc_auth.perform_authentication () > 0:
+                        try:
+                            f = ctx.open ("smb://%s/%s" % (host, share),
+                                          os.O_RDWR, 0777)
+                            accessible = True
+                        except Exception, e:
+                            self.smbc_auth.failed (e)
+            except RuntimeError, (e, s):
+                debugprint ("Error accessing share: %s" % repr ((e, s)))
+            except:
+                nonfatalException()
+
         if accessible:
             self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
                                      _("Verified") + '</span>\n\n' +
