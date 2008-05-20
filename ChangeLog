@@ -1,5 +1,13 @@
 2008-05-20  Tim Waugh  <twaugh@redhat.com>
 
+	* cupshelpers.py (Printer.getAttributes): Avoid losing SMB
+	authentication details.
+
+	* system-config-printer.py (NewPrinterGUI.on_entSMBURI_changed):
+	Don't reset authentication radio button if not necessary.
+
+2008-05-20  Tim Waugh  <twaugh@redhat.com>
+
 	* configure.in: Version 0.9.92.
 
 2008-05-20  Tim Waugh  <twaugh@redhat.com>

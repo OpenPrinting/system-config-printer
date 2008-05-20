@@ -3603,7 +3603,7 @@ class NewPrinterGUI(GtkGUI):
             uri = SMBURI (group=group, host=host, share=share).get_uri ()
             ent.set_text(uri)
             self.rbtnSMBAuthSet.set_active(True)
-        else:
+        elif self.entSMBUsername.get_text () == '':
             self.rbtnSMBAuthPrompt.set_active(True)
 
         self.btnSMBVerify.set_sensitive(bool(uri))
