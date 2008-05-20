@@ -561,7 +561,16 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def dests_iconview_button_release_event (self, iconview, event):
         if event.button > 1:
+            click_path = iconview.get_path_at_pos (int (event.x),
+                                                   int (event.y))
             paths = iconview.get_selected_items ()
+            if click_path == None:
+                iconview.unselect_all ()
+                paths = []
+            elif click_path not in paths:
+                iconview.unselect_all ()
+                iconview.select_path (click_path)
+                paths = [click_path]
             self.printer_context_menu.popup (event, iconview, paths)
         return False
 
