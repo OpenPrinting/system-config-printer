@@ -3355,6 +3355,14 @@ class NewPrinterGUI(GtkGUI):
         store.clear ()
         if pysmb.USE_OLD_CODE:
             store.append(None, (_('Scanning...'), '', None, None))
+        else:
+            class X:
+                pass
+            dummy = X()
+            dummy.smbc_type = pysmb.smbc.PRINTER_SHARE
+            dummy.name = _('Scanning...')
+            dummy.comment = ''
+            store.append(None, [dummy])
         try:
             self.busy(self.SMBBrowseDialog)
         except:
