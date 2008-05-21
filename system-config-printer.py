@@ -3382,15 +3382,15 @@ class NewPrinterGUI(GtkGUI):
             debug = 0
             if get_debugging ():
                 debug = 1
-            self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-            self.smbcc = pysmb.smbc.Context (debug=debug,
-                                             auth_fn=self.smbc_auth.callback)
+            smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+            ctx = pysmb.smbc.Context (debug=debug,
+                                      auth_fn=smbc_auth.callback)
             try:
-                while self.smbc_auth.perform_authentication () > 0:
+                while smbc_auth.perform_authentication () > 0:
                     try:
-                        workgroups = self.smbcc.opendir ("smb://").getdents ()
+                        workgroups = ctx.opendir ("smb://").getdents ()
                     except Exception, e:
-                        self.smbc_auth.failed (e)
+                        smbc_auth.failed (e)
             except RuntimeError, (e, s):
                 workgroups = None
                 if e != errno.ENOENT:
@@ -3528,11 +3528,11 @@ class NewPrinterGUI(GtkGUI):
 
                 uri = "smb://%s" % entry.name
                 smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-                self.smbcc.functionAuthData = smbc_auth.callback
+                ctx.functionAuthData = smbc_auth.callback
                 try:
                     while smbc_auth.perform_authentication () > 0:
                         try:
-                            servers = self.smbcc.opendir (uri).getdents ()
+                            servers = ctx.opendir (uri).getdents ()
                         except Exception, e:
                             smbc_auth.failed (e)
                 except RuntimeError, (e, s):
@@ -3561,12 +3561,16 @@ class NewPrinterGUI(GtkGUI):
                     model.remove (i)
                 uri = "smb://%s" % entry.name
 
+                debug = 0
+                if get_debugging ():
+                    debug = 1
                 smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-                self.smbcc.functionAuthData = smbc_auth.callback
+                ctx = pysmb.smbc.Context (debug=debug,
+                                          auth_fn=smbc_auth.callback)
                 try:
                     while smbc_auth.perform_authentication () > 0:
                         try:
-                            shares = self.smbcc.opendir (uri).getdents ()
+                            shares = ctx.opendir (uri).getdents ()
                         except Exception, e:
                             smbc_auth.failed (e)
                 except RuntimeError, (e, s):
@@ -3666,6 +3670,7 @@ class NewPrinterGUI(GtkGUI):
                     debug = 1
 
                 if auth_set:
+                    # No prompting.
                     def do_auth (svr, shr, wg, un, pw):
                         return (group, user, passwd)
                     ctx = pysmb.smbc.Context (debug=debug, auth_fn=do_auth)
@@ -3673,6 +3678,7 @@ class NewPrinterGUI(GtkGUI):
                                   os.O_RDWR, 0777)
                     accessible = True
                 else:
+                    # May need to prompt.
                     smbc_auth = pysmb.AuthContext (self.NewPrinterWindow,
                                                         workgroup=group,
                                                         user=user,
