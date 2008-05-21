@@ -3400,8 +3400,8 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
 
         gtk.gdk.threads_enter()
-        store.clear ()
         if pysmb.USE_OLD_CODE:
+            store.clear ()
             for domain in domains.keys ():
                 d = domains[domain]
                 iter = store.append (None)
@@ -3411,6 +3411,7 @@ class NewPrinterGUI(GtkGUI):
                 store.set_value (iter, 2, d)
         else:
             if workgroups:
+                store.clear ()
                 for workgroup in workgroups:
                     iter = store.append (None, [workgroup])
                     i = store.append (iter)
@@ -3525,10 +3526,6 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     self.expanding_row = 1
 
-                while model.iter_has_child (iter):
-                    i = model.iter_nth_child (iter, 0)
-                    model.remove (i)
-
                 uri = "smb://%s" % entry.name
                 debug = 0
                 if get_debugging ():
@@ -3550,6 +3547,10 @@ class NewPrinterGUI(GtkGUI):
                     nonfatalException()
 
                 if servers:
+                    while model.iter_has_child (iter):
+                        i = model.iter_nth_child (iter, 0)
+                        model.remove (i)
+
                     for server in servers:
                         i = model.append (iter, [server])
                         n = model.append (i)
@@ -3564,10 +3565,6 @@ class NewPrinterGUI(GtkGUI):
                         return
                 except:
                     self.expanding_row = 1
-
-                while model.iter_has_child (iter):
-                    i = model.iter_nth_child (iter, 0)
-                    model.remove (i)
 
                 uri = "smb://%s" % entry.name
                 debug = 0
@@ -3590,6 +3587,10 @@ class NewPrinterGUI(GtkGUI):
                     nonfatalException()
 
                 if shares:
+                    while model.iter_has_child (iter):
+                        i = model.iter_nth_child (iter, 0)
+                        model.remove (i)
+
                     for share in shares:
                         if share.smbc_type == pysmb.smbc.PRINTER_SHARE:
                             i = model.append (iter, [share])
