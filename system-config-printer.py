@@ -3676,6 +3676,7 @@ class NewPrinterGUI(GtkGUI):
                                                          passwd = passwd)
         else:
             accessible = False
+            self.busy ()
             try:
                 debug = 0
                 if get_debugging ():
@@ -3708,6 +3709,7 @@ class NewPrinterGUI(GtkGUI):
                 debugprint ("Error accessing share: %s" % repr ((e, s)))
             except:
                 nonfatalException()
+            self.ready ()
 
         if accessible:
             self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
