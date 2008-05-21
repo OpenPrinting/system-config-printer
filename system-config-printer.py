@@ -3392,11 +3392,9 @@ class NewPrinterGUI(GtkGUI):
                     except Exception, e:
                         self.smbc_auth.failed (e)
             except RuntimeError, (e, s):
-                if e == errno.ENOENT:
-                    workgroups = None
-                else:
+                workgroups = None
+                if e != errno.ENOENT:
                     debugprint ("Runtime error: %s" % repr ((e, s)))
-                    raise
 
         gtk.gdk.threads_enter()
         store.clear ()
@@ -3542,12 +3540,9 @@ class NewPrinterGUI(GtkGUI):
                         except Exception, e:
                             self.smbc_auth.failed (e)
                 except RuntimeError, (e, s):
-                    if e == errno.ENOENT:
-                        servers = None
-                    else:
+                    servers = None
+                    if e != errno.ENOENT:
                         debugprint ("Runtime error: %s" % repr ((e, s)))
-                        del self.expanding_row
-                        raise
 
                 if servers:
                     for server in servers:
@@ -3580,8 +3575,7 @@ class NewPrinterGUI(GtkGUI):
                 except RuntimeError, (e, s):
                     shares = None
                     if e != errno.EACCES and e != errno.EPERM:
-                        del self.expanding_row
-                        raise
+                        debugprint ("Runtime error: %s" % repr ((e, s)))
 
                 if shares:
                     for share in shares:
