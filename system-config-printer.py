@@ -3382,9 +3382,9 @@ class NewPrinterGUI(GtkGUI):
             debug = 0
             if get_debugging ():
                 debug = 1
-            self.smbcc = pysmb.smbc.Context (debug=debug,
-                                             auth_fn=self.browse_smb_hosts_thread_auth_callback)
             self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+            self.smbcc = pysmb.smbc.Context (debug=debug,
+                                             auth_fn=self.smbc_auth.callback)
             try:
                 while self.smbc_auth.perform_authentication () > 0:
                     try:
@@ -3419,11 +3419,6 @@ class NewPrinterGUI(GtkGUI):
 
         self.smb_lock.release()
         gtk.gdk.threads_leave()
-
-    def browse_smb_hosts_thread_auth_callback (self, server, share, workgroup,
-                                               user, password):
-        return self.smbc_auth.callback (server, share, workgroup, user,
-                                        password)
 
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
@@ -3532,13 +3527,14 @@ class NewPrinterGUI(GtkGUI):
                     model.remove (i)
 
                 uri = "smb://%s" % entry.name
-                self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+                smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+                self.smbcc.functionAuthData = smbc_auth.callback
                 try:
-                    while self.smbc_auth.perform_authentication () > 0:
+                    while smbc_auth.perform_authentication () > 0:
                         try:
                             servers = self.smbcc.opendir (uri).getdents ()
                         except Exception, e:
-                            self.smbc_auth.failed (e)
+                            smbc_auth.failed (e)
                 except RuntimeError, (e, s):
                     servers = None
                     if e != errno.ENOENT:
@@ -3565,13 +3561,14 @@ class NewPrinterGUI(GtkGUI):
                     model.remove (i)
                 uri = "smb://%s" % entry.name
 
-                self.smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+                smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+                self.smbcc.functionAuthData = smbc_auth.callback
                 try:
-                    while self.smbc_auth.perform_authentication () > 0:
+                    while smbc_auth.perform_authentication () > 0:
                         try:
                             shares = self.smbcc.opendir (uri).getdents ()
                         except Exception, e:
-                            self.smbc_auth.failed (e)
+                            smbc_auth.failed (e)
                 except RuntimeError, (e, s):
                     shares = None
                     if e != errno.EACCES and e != errno.EPERM:
@@ -3676,19 +3673,19 @@ class NewPrinterGUI(GtkGUI):
                                   os.O_RDWR, 0777)
                     accessible = True
                 else:
-                    auth_fn = self.browse_smb_hosts_thread_auth_callback
-                    ctx = pysmb.smbc.Context (debug=debug, auth_fn=auth_fn)
-                    self.smbc_auth = pysmb.AuthContext (self.NewPrinterWindow,
+                    smbc_auth = pysmb.AuthContext (self.NewPrinterWindow,
                                                         workgroup=group,
                                                         user=user,
                                                         passwd=passwd)
-                    while self.smbc_auth.perform_authentication () > 0:
+                    ctx = pysmb.smbc.Context (debug=debug,
+                                              auth_fn=smbc_auth.callback)
+                    while smbc_auth.perform_authentication () > 0:
                         try:
                             f = ctx.open ("smb://%s/%s" % (host, share),
                                           os.O_RDWR, 0777)
                             accessible = True
                         except Exception, e:
-                            self.smbc_auth.failed (e)
+                            smbc_auth.failed (e)
             except RuntimeError, (e, s):
                 debugprint ("Error accessing share: %s" % repr ((e, s)))
             except:
