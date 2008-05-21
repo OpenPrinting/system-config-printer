@@ -3386,6 +3386,7 @@ class NewPrinterGUI(GtkGUI):
             smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
             ctx = pysmb.smbc.Context (debug=debug,
                                       auth_fn=smbc_auth.callback)
+            workgroups = None
             try:
                 while smbc_auth.perform_authentication () > 0:
                     try:
@@ -3393,9 +3394,10 @@ class NewPrinterGUI(GtkGUI):
                     except Exception, e:
                         smbc_auth.failed (e)
             except RuntimeError, (e, s):
-                workgroups = None
                 if e != errno.ENOENT:
                     debugprint ("Runtime error: %s" % repr ((e, s)))
+            except:
+                nonfatalException()
 
         gtk.gdk.threads_enter()
         store.clear ()
@@ -3528,8 +3530,13 @@ class NewPrinterGUI(GtkGUI):
                     model.remove (i)
 
                 uri = "smb://%s" % entry.name
+                debug = 0
+                if get_debugging ():
+                    debug = 1
                 smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-                ctx.functionAuthData = smbc_auth.callback
+                ctx = pysmb.smbc.Context (debug=debug,
+                                          auth_fn=smbc_auth.callback)
+                servers = None
                 try:
                     while smbc_auth.perform_authentication () > 0:
                         try:
@@ -3537,9 +3544,10 @@ class NewPrinterGUI(GtkGUI):
                         except Exception, e:
                             smbc_auth.failed (e)
                 except RuntimeError, (e, s):
-                    servers = None
                     if e != errno.ENOENT:
                         debugprint ("Runtime error: %s" % repr ((e, s)))
+                except:
+                    nonfatalException()
 
                 if servers:
                     for server in servers:
@@ -3560,14 +3568,15 @@ class NewPrinterGUI(GtkGUI):
                 while model.iter_has_child (iter):
                     i = model.iter_nth_child (iter, 0)
                     model.remove (i)
-                uri = "smb://%s" % entry.name
 
+                uri = "smb://%s" % entry.name
                 debug = 0
                 if get_debugging ():
                     debug = 1
                 smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
                 ctx = pysmb.smbc.Context (debug=debug,
                                           auth_fn=smbc_auth.callback)
+                shares = None
                 try:
                     while smbc_auth.perform_authentication () > 0:
                         try:
@@ -3575,9 +3584,10 @@ class NewPrinterGUI(GtkGUI):
                         except Exception, e:
                             smbc_auth.failed (e)
                 except RuntimeError, (e, s):
-                    shares = None
                     if e != errno.EACCES and e != errno.EPERM:
                         debugprint ("Runtime error: %s" % repr ((e, s)))
+                except:
+                    nonfatalException()
 
                 if shares:
                     for share in shares:
