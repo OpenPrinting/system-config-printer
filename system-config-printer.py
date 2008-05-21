@@ -79,6 +79,7 @@ except locale.Error:
     os.environ['LC_ALL'] = 'C'
     locale.setlocale (locale.LC_ALL, "")
 from gettext import gettext as _
+monitor.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
