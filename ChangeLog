@@ -1,3 +1,15 @@
+2008-05-22  Tim Waugh  <twaugh@redhat.com>
+
+	* authconn.py (Connection._authloop): Move some initial variable
+	settings...
+	(Connection._perform_authentication): ...here, for the first
+	pass.
+	(Connection._perform_authentication): If no prompting is allowed,
+	set _cancel and return non-zero so that we break out of the
+	authentication loop.
+	(Connection._perform_authentication): Likewise if we are about to
+	prompt the user but never got a password callback from libcups.
+
 2008-05-21  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py

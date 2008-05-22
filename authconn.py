@@ -124,10 +124,7 @@ class Connection:
         return lambda *args, **kwds: self._authloop (fname, fn, *args, **kwds)
 
     def _authloop (self, fname, fn, *args, **kwds):
-        self._has_failed = False
-        self._auth_called = False
         self._passes = 0
-        self._cancel = False
         while self._perform_authentication () != 0:
             try:
                 result = fn.__call__ (*args, **kwds)
@@ -167,10 +164,12 @@ class Connection:
         self._passes += 1
 
         debugprint ("Authentication pass: %d" % self._passes)
-        self._auth_called = False
         if self._passes == 1:
             # Haven't yet tried the operation.  Set the password
             # callback and return > 0 so we try it for the first time.
+            self._has_failed = False
+            self._auth_called = False
+            self._cancel = False
             cups.setPasswordCB (self._password_callback)
             debugprint ("Authentication: password callback set")
             return 1
@@ -181,7 +180,9 @@ class Connection:
             debugprint ("Authentication: Operation successful")
             return 0
 
+        # Reset failure flag.
         self._has_failed = False
+
         if self._passes == 2:
             # Tried the operation without a password and it failed.
             if self._user != 'root' and self._server[0] == '/':
@@ -194,11 +195,23 @@ class Connection:
                 debugprint ("Authentication: Try as root")
                 self._use_user = 'root'
                 cups.setUser (self._use_user)
+                self._auth_called = False
                 self._connect ()
                 return 1
 
         if not self._prompt_allowed:
-            return -1
+            debugprint ("Authentication: prompting not allowed")
+            self._cancel = True
+            return 1
+
+        if not self._auth_called:
+            # We aren't even getting a chance to supply credentials.
+            debugprint ("Authentication: giving up")
+            self._cancel = True
+            return 1
+
+        # Reset the flag indicating whether we were given an auth callback.
+        self._auth_called = False
 
         # Prompt.
         d = AuthDialog (parent=self._parent)
