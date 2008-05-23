@@ -82,13 +82,18 @@ class JobViewer (monitor.Watcher):
         self.treeview = self.xml.get_widget ('treeview')
         text=0
         for name in [_("Job"),
+                     _("User"),
                      _("Document"),
                      _("Printer"),
                      _("Size"),
                      _("Time submitted"),
                      _("Status")]:
+            if text == 1 and trayicon:
+                # Skip the user column for the trayicon.
+                text += 1
+                continue
             cell = gtk.CellRendererText()
-            if text == 1 or text == 2:
+            if text == 2 or text == 3:
                 # Ellipsize the 'Document' and 'Printer' columns.
                 cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
                 cell.set_property ("width-chars", 20)
@@ -98,7 +103,7 @@ class JobViewer (monitor.Watcher):
             text += 1
 
         self.treeview.get_selection().set_mode(gtk.SELECTION_SINGLE)
-        self.store = gtk.TreeStore(int, str, str, str, str, str)
+        self.store = gtk.TreeStore(int, str, str, str, str, str, str)
         self.store.set_sort_column_id (0, gtk.SORT_DESCENDING)
         self.treeview.set_model(self.store)
         self.treeview.set_rules_hint (True)
@@ -302,7 +307,7 @@ class JobViewer (monitor.Watcher):
                     else:
                         t = _("%d minutes ago") % mins
 
-            self.store.set_value (iter, 4, t)
+            self.store.set_value (iter, 5, t)
 
         if need_update and not self.job_creation_times_timer:
             t = gobject.timeout_add (60 * 1000, self.update_job_creation_times)
@@ -333,7 +338,9 @@ class JobViewer (monitor.Watcher):
         store = self.store
         iter = self.store.append (None)
         store.set_value (iter, 0, job)
-        store.set_value (iter, 1, data.get('job-name', _("Unknown")))
+        store.set_value (iter, 1, data.get('job-originating-user-name',
+                                           _("Unknown")))
+        store.set_value (iter, 2, data.get('job-name', _("Unknown")))
         self.jobiters[job] = iter
         self.update_job (job, data)
         self.update_job_creation_times ()
@@ -344,12 +351,12 @@ class JobViewer (monitor.Watcher):
         self.jobs[job] = data
 
         printer = data['job-printer-name']
-        store.set_value (iter, 2, printer)
+        store.set_value (iter, 3, printer)
 
         size = _("Unknown")
         if data.has_key ('job-k-octets'):
             size = str (data['job-k-octets']) + 'k'
-        store.set_value (iter, 3, size)
+        store.set_value (iter, 4, size)
 
         state = None
         if data.has_key ('job-state'):
@@ -370,7 +377,7 @@ class JobViewer (monitor.Watcher):
 
         if state == None:
             state = _("Unknown")
-        store.set_value (iter, 5, state)
+        store.set_value (iter, 6, state)
 
         # Check whether authentication is required.
         if (self.trayicon and
