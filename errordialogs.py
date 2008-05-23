@@ -53,3 +53,41 @@ def show_error_dialog (title, text, parent=None):
     dialog.show_all ()
     dialog.run ()
     dialog.hide ()
+
+def show_IPP_Error(exception, message, parent=None):
+    if exception == cups.IPP_NOT_AUTHORIZED:
+        title = _('Not authorized')
+        text = _('The password may be incorrect.')
+    else:
+        title = (_("There was an error during the CUPS "
+                   "operation: '%s'.")) % message
+
+    show_error_dialog (title, text, parent)
+            
+def show_HTTP_Error(status, parent=None):
+    if (status == cups.HTTP_UNAUTHORIZED or
+        status == cups.HTTP_FORBIDDEN):
+        title = _('Not authorized')
+        text = (_('The password may be incorrect, or the '
+                  'server may be configured to deny '
+                  'remote administration.'))
+    else:
+        title = _('CUPS server error')
+        if status == cups.HTTP_BAD_REQUEST:
+            msg = _("Bad request")
+        elif status == cups.HTTP_NOT_FOUND:
+            msg = _("Not found")
+        elif status == cups.HTTP_REQUEST_TIMEOUT:
+            msg = _("Request timeout")
+        elif status == cups.HTTP_UPGRADE_REQUIRED:
+            msg = _("Upgrade required")
+        elif status == cups.HTTP_SERVER_ERROR:
+            msg = _("Server error")
+        elif status == -1:
+            msg = _("Not connected")
+        else:
+            msg = _("status %d") % status
+
+        text = _("There was an HTTP error: %s.") % msg
+
+    show_error_dialog (title, text, parent)

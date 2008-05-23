@@ -1,5 +1,19 @@
 2008-05-23  Tim Waugh  <twaugh@redhat.com>
 
+	* applet.glade (ErrorDialog): Removed.
+	* jobviewer.py (JobViewer.show_IPP_Error): Use errordialogs
+	module.
+
+	* system-config-printer.glade (ErrorDialog): Removed.
+	* system-config-printer.py: Use show_error_dialog() instead of the
+	glade ErrorDialog widget.
+
+	* system-config-printer.py (GUI.show_HTTP_Error): Moved...
+	* errordialogs.py (show_HTTP_Error): ...here.
+
+	* system-config-printer.py (GUI.show_IPP_Error): Moved...
+	* errordialogs.py (show_IPP_Error): ...here.
+
 	* troubleshoot/__init__.py (Troubleshooter.get_window): New
 	method.
 	* troubleshoot/PrintTestPage.py (PrintTestPage.print_clicked): Use

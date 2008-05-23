@@ -34,6 +34,7 @@ import time
 
 from debug import *
 import statereason
+import errordialogs
 import pprint
 
 from gettext import gettext as _
@@ -42,6 +43,7 @@ gettext.textdomain (DOMAIN)
 gtk.glade.bindtextdomain (DOMAIN)
 from statereason import StateReason
 statereason.set_gettext_function (_)
+errordialogs.set_gettext_function (_)
 
 APPDIR="/usr/share/system-config-printer"
 GLADE="applet.glade"
@@ -145,9 +147,6 @@ class JobViewer (monitor.Watcher):
         self.store_printers = gtk.TreeStore (int, str, str)
         self.treeview_printers.set_model(self.store_printers)
 
-        self.lblError = self.xml.get_widget('lblError')
-        self.ErrorDialog = self.xml.get_widget('ErrorDialog')
-
         if self.trayicon:
             self.statusicon = gtk.StatusIcon ()
             theme = gtk.icon_theme_get_default ()
@@ -234,19 +233,7 @@ class JobViewer (monitor.Watcher):
         return True
 
     def show_IPP_Error(self, exception, message):
-        if exception == cups.IPP_NOT_AUTHORIZED:
-            error_text = ('<span weight="bold" size="larger">' +
-                          _('Not authorized') + '</span>\n\n' +
-                          _('The password may be incorrect.'))
-        else:
-            error_text = ('<span weight="bold" size="larger">' +
-                          _('CUPS server error') + '</span>\n\n' +
-                          _("There was an error during the CUPS "\
-                            "operation: '%s'.")) % message
-        self.lblError.set_markup(error_text)
-        self.ErrorDialog.set_transient_for (self.MainWindow)
-        self.ErrorDialog.run()
-        self.ErrorDialog.hide()
+        return errordialogs.show_IPP_Error (exception, message, self.MainWindow)
 
     def toggle_window_display(self, icon, force_show=False):
         visible = self.MainWindow.get_property('visible')

@@ -70,6 +70,8 @@ import contextmenu
 import authconn
 import monitor
 from smburi import SMBURI
+import errordialogs
+from errordialogs import *
 
 domain='system-config-printer'
 import locale
@@ -80,6 +82,7 @@ except locale.Error:
     locale.setlocale (locale.LC_ALL, "")
 from gettext import gettext as _
 monitor.set_gettext_function (_)
+errordialogs.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
@@ -247,7 +250,6 @@ class GUI(GtkGUI, monitor.Watcher):
                         "btnConnect",
                         "ConnectingDialog", "lblConnecting",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
-                        "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo",
                         "InstallDialog", "lblInstall",
                         "AboutDialog",
@@ -486,7 +488,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups = None
             self.setConnected()
             self.populateList()
-            self.show_HTTP_Error(s)
+            show_HTTP_Error(s, self.MainWindow)
 
         try:
             self.dests_iconview.resize_children ()
@@ -672,7 +674,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     else:
                         self.default_printer = None
             except cups.IPPError, (e, m):
-                self.show_IPP_Error(e, m)
+                show_IPP_Error(e, m, self.MainWindow)
                 self.printers = {}
                 self.default_printer = None
         else:
@@ -850,14 +852,14 @@ class GUI(GtkGUI, monitor.Watcher):
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
-            self.show_IPP_Error(None, s)
+            show_IPP_Error(None, s, parent)
             gtk.gdk.threads_leave()
             return        
         except cups.IPPError, (e, s):
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
             self.ConnectingDialog.hide()
-            self.show_IPP_Error(e, s)
+            show_IPP_Error(e, s, parent)
             gtk.gdk.threads_leave()
             return
 
@@ -873,7 +875,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups = None
             self.setConnected()
             self.populateList()
-            self.show_HTTP_Error(s)
+            show_HTTP_Error(s, parent)
 
         gtk.gdk.threads_leave()
 
@@ -1185,53 +1187,6 @@ class GUI(GtkGUI, monitor.Watcher):
         self.conflict_dialog.run()
         self.conflict_dialog.hide()
 
-    def show_IPP_Error(self, exception, message):
-        if exception == cups.IPP_NOT_AUTHORIZED:
-            error_text = ('<span weight="bold" size="larger">' +
-                          _('Not authorized') + '</span>\n\n' +
-                          _('The password may be incorrect.'))
-        else:
-            error_text = ('<span weight="bold" size="larger">' +
-                          _('CUPS server error') + '</span>\n\n' +
-                          _("There was an error during the CUPS "\
-                            "operation: '%s'.")) % message
-        self.lblError.set_markup(error_text)
-        self.ErrorDialog.set_transient_for (self.MainWindow)
-        self.ErrorDialog.run()
-        self.ErrorDialog.hide()
-            
-    def show_HTTP_Error(self, status):
-        if (status == cups.HTTP_UNAUTHORIZED or
-            status == cups.HTTP_FORBIDDEN):
-            error_text = ('<span weight="bold" size="larger">' +
-                          _('Not authorized') + '</span>\n\n' +
-                          _('The password may be incorrect, or the '
-                            'server may be configured to deny '
-                            'remote administration.'))
-        else:
-            if status == cups.HTTP_BAD_REQUEST:
-                msg = _("Bad request")
-            elif status == cups.HTTP_NOT_FOUND:
-                msg = _("Not found")
-            elif status == cups.HTTP_REQUEST_TIMEOUT:
-                msg = _("Request timeout")
-            elif status == cups.HTTP_UPGRADE_REQUIRED:
-                msg = _("Upgrade required")
-            elif status == cups.HTTP_SERVER_ERROR:
-                msg = _("Server error")
-            elif status == -1:
-                msg = _("Not connected")
-            else:
-                msg = _("status %d") % status
-
-            error_text = ('<span weight="bold" size="larger">' +
-                          _('CUPS server error') + '</span>\n\n' +
-                          _("There was an HTTP error: %s.")) % msg
-        self.lblError.set_markup(error_text)
-        self.ErrorDialog.set_transient_for (self.MainWindow)
-        self.ErrorDialog.run()
-        self.ErrorDialog.hide()        
-            
     def save_printer(self, printer, saveall=False):
         class_deleted = False
         name = printer.name
@@ -1324,7 +1279,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
-            self.show_IPP_Error(e, s)
+            show_IPP_Error(e, s, self.PrinterPropertiesDialog)
             return True
         self.changed = set() # of options
 
@@ -1347,7 +1302,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 this_printer = { name: printers[name] }
                 self.printers.update (this_printer)
             except cups.IPPError, (e, s):
-                self.show_IPP_Error(e, s)
+                show_IPP_Error(e, s, self.PrinterPropertiesDialog)
 
         return False
 
@@ -1384,10 +1339,10 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             printer.setAsDefault ()
         except cups.HTTPError, (s,):
-            self.show_HTTP_Error (s)
+            show_HTTP_Error (s, self.MainWindow)
             return
         except cups.IPPError, (e, msg):
-            self.show_IPP_Error(e, msg)
+            show_IPP_Error(e, msg, self.MainWindow)
             return
 
         # Now reconnect in case the server needed to reload.  This may
@@ -1400,7 +1355,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups = None
             self.setConnected()
             self.populateList()
-            self.show_HTTP_Error(s)
+            show_HTTP_Error(s, self.MainWindow)
     
     # print test page
     
@@ -1439,17 +1394,14 @@ class GUI(GtkGUI, monitor.Watcher):
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self.connect_server != 'localhost' and
                 self.connect_server[0] != '/'):
-                self.lblError.set_markup ('<span weight="bold" size="larger">'+
-                                          _("Not possible") + '</span>\n\n' +
-                                          _("The remote server did not accept "
-                                            "the print job, most likely "
-                                            "because the printer is not "
-                                            "shared."))
-                self.ErrorDialog.set_transient_for (self.MainWindow)
-                self.ErrorDialog.run ()
-                self.ErrorDialog.hide ()
+                show_error_dialog (_("Not possible"),
+                                   _("The remote server did not accept "
+                                     "the print job, most likely "
+                                     "because the printer is not "
+                                     "shared."),
+                                   self.MainWindow)
             else:
-                self.show_IPP_Error(e, msg)
+                show_IPP_Error(e, msg, self.MainWindow)
 
     def maintenance_command (self, command):
         (tmpfd, tmpfname) = tempfile.mkstemp ()
@@ -1471,17 +1423,14 @@ class GUI(GtkGUI, monitor.Watcher):
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self.printer.name != 'localhost'):
-                self.lblError.set_markup ('<span weight="bold" size="larger">'+
-                                          _("Not possible") + '</span>\n\n' +
-                                          _("The remote server did not accept "
-                                            "the print job, most likely "
-                                            "because the printer is not "
-                                            "shared."))
-                self.ErrorDialog.set_transient_for (self.MainWindow)
-                self.ErrorDialog.run ()
-                self.ErrorDialog.hide ()
+                show_error_dialog (_("Not possible"),
+                                   _("The remote server did not accept "
+                                     "the print job, most likely "
+                                     "because the printer is not "
+                                     "shared."),
+                                   self.MainWindow)
             else:
-                self.show_IPP_Error(e, msg)
+                show_IPP_Error(e, msg, self.MainWindow)
 
     def on_btnSelfTest_clicked(self, button):
         self.maintenance_command ("PrintSelfTestPage")
@@ -1512,20 +1461,17 @@ class GUI(GtkGUI, monitor.Watcher):
             self.ppd = printer.getPPD()
         except cups.IPPError, (e, m):
             # Some IPP error other than IPP_NOT_FOUND.
-            self.show_IPP_Error(e, m)
+            show_IPP_Error(e, m, self.MainWindow)
             # Treat it as a raw queue.
             self.ppd = False
         except RuntimeError:
             # The underlying cupsGetPPD2() function returned NULL without
             # setting an IPP error, so it'll be something like a failed
             # connection.
-            self.lblError.set_markup('<span weight="bold" size="larger">' +
-                                     _("Error") + '</span>\n\n' +
-                                     _("There was a problem connecting to "
-                                       "the CUPS server."))
-            self.ErrorDialog.set_transient_for(self.MainWindow)
-            self.ErrorDialog.run()
-            self.ErrorDialog.hide()
+            show_error_dialog (_("Error"),
+                               _("There was a problem connecting to "
+                                 "the CUPS server."),
+                               self.MainWindow)
             raise
 
         for widget in (self.entPDescription, self.entPLocation,
@@ -1647,15 +1593,11 @@ class GUI(GtkGUI, monitor.Watcher):
                     self.server_side_options[option.name] = option
                 except:
                     option_editable = False
-                    self.lblError.set_markup ('<span weight="bold" ' +
-                                              'size="larger">' +
-                                              _("Error") + '</span>\n\n' +
-                                              _("Option '%s' has value '%s' "
-                                                "and cannot be edited.") %
-                                              (option.name, value))
-                    self.ErrorDialog.set_transient_for (self.MainWindow)
-                    self.ErrorDialog.run()
-                    self.ErrorDialog.hide()
+                    show_error_dialog (_("Error"),
+                                       _("Option '%s' has value '%s' "
+                                         "and cannot be edited.") %
+                                       (option.name, value),
+                                       self.MainWindow)
             option.widget.set_sensitive (option_editable)
             if not editable:
                 option.button.set_sensitive (False)
@@ -1976,10 +1918,10 @@ class GUI(GtkGUI, monitor.Watcher):
             try:
                 self.printer.setAccepting (True)
             except cups.HTTPError, (s,):
-                self.show_HTTP_Error (s)
+                show_HTTP_Error (s, self.MainWindow)
                 # Not fatal.
             except cups.IPPError, (e, msg):
-                self.show_IPP_Error, (e, msg)
+                show_IPP_Error, (e, msg, self.MainWindow)
                 # Not fatal.
 
         # Fix up default printer.
@@ -1987,20 +1929,20 @@ class GUI(GtkGUI, monitor.Watcher):
             try:
                 self.printer.setAsDefault ()
             except cups.HTTPError, (s,):
-                self.show_HTTP_Error (s)
+                show_HTTP_Error (s, self.MainWindow)
                 # Not fatal.
             except CUPS.IPPError, (e, msg):
-                self.show_IPP_Error (e, msg)
+                show_IPP_Error (e, msg, self.MainWindow)
                 # Not fatal.
 
         # Finally, delete the old printer.
         try:
             self.cups.deletePrinter (old_name)
         except cups.HTTPError, (s,):
-            self.show_HTTP_Error (s)
+            show_HTTP_Error (s, self.MainWindow)
             # Not fatal
         except cups.IPPError, (e, msg):
-            self.show_IPP_Error (e, msg)
+            show_IPP_Error (e, msg, self.MainWindow)
             # Not fatal.
 
         # ..and select the new printer.
@@ -2089,7 +2031,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 name = model.get_value (iter, 2)
                 self.cups.deletePrinter (name)
         except cups.IPPError, (e, msg):
-            self.show_IPP_Error(e, msg)
+            show_IPP_Error(e, msg, self.MainWindow)
 
         self.changed = set()
         self.populateList()
@@ -2142,7 +2084,7 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             self.server_settings = self.cups.adminGetServerSettings()
         except cups.IPPError, (e, m):
-            self.show_IPP_Error(e, m)
+            show_IPP_Error(e, m, self.MainWindow)
             raise
 
         for widget, setting in [
@@ -2191,10 +2133,10 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             self.cups.adminSetServerSettings(setting_dict)
         except cups.IPPError, (e, m):
-            self.show_IPP_Error(e, m)
+            show_IPP_Error(e, m, self.ServerSettingsDialog)
             return True
         except RuntimeError, s:
-            self.show_IPP_Error(None, s)
+            show_IPP_Error(None, s, self.ServerSettingsDialog)
             return True
         self.changed = set()
         self.setDataButtonState()
@@ -2377,15 +2319,12 @@ class NewPrinterGUI(GtkGUI):
                         "rbtnNPDownloadLicenseYes",
                         "rbtnNPDownloadLicenseNo",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
-                        "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo")
         # share with mainapp
         self.WaitWindow = mainapp.WaitWindow
         self.lblWait = mainapp.lblWait
         self.busy = mainapp.busy
         self.ready = mainapp.ready
-        self.show_IPP_Error = mainapp.show_IPP_Error
-        self.show_HTTP_Error = mainapp.show_HTTP_Error
 
         gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
@@ -2485,6 +2424,9 @@ class NewPrinterGUI(GtkGUI):
         self.filechooserPPD.add_filter(ppd_filter)
 
         self.xml.signal_autoconnect(self)
+
+    def show_IPP_Error (self, exception, message):
+        return show_IPP_Error (exception, message, parent=self.NewPrinterWindow)
 
     def option_changed(self, option):
         if option.is_changed():
@@ -3720,12 +3662,8 @@ class NewPrinterGUI(GtkGUI):
             self.InfoDialog.hide ()
             return
 
-        self.lblError.set_markup ('<span weight="bold" size="larger">' +
-                                  _("Inaccessible") + '</span>\n\n' +
-                                  _("This print share is not accessible."))
-        self.ErrorDialog.set_transient_for (self.NewPrinterWindow)
-        self.ErrorDialog.run()
-        self.ErrorDialog.hide ()
+        show_error_dialog (_("Inaccessible"),
+                           _("This print share is not accessible."))
 
     ### IPP Browsing
     def update_IPP_URI_label(self):
@@ -3786,12 +3724,9 @@ class NewPrinterGUI(GtkGUI):
             self.InfoDialog.run()
             self.InfoDialog.hide ()
         else:
-            self.lblError.set_markup ('<span weight="bold" size="larger">' +
-                                      _("Inaccessible") + '</span>\n\n' +
-                                      _("This print share is not accessible."))
-            self.ErrorDialog.set_transient_for (self.NewPrinterWindow)
-            self.ErrorDialog.run ()
-            self.ErrorDialog.hide ()
+            show_error_dialog (_("Inaccessible"),
+                               _("This print share is not accessible."),
+                               self.NewPrinterWindow)
 
     def browse_ipp_queues(self):
         if not self.ipp_lock.acquire(0):
@@ -3834,19 +3769,14 @@ class NewPrinterGUI(GtkGUI):
         if len (printers) + len (classes) == 0:
             # Display 'No queues' dialog
             if failed:
-                markup = '<span weight="bold" size="larger">' + \
-                         _("Not possible") + '</span>\n\n' + \
-                         _("It is not possible to obtain a list of queues " \
-                           "from this host.")
+                title = _("Not possible")
+                text = (_("It is not possible to obtain a list of queues "
+                          "from this host."))
             else:
-                markup = '<span weight="bold" size="larger">' + \
-                         _("No queues") + '</span>\n\n' + \
-                         _("There are no queues available.")
+                title = _("No queues")
+                text = _("There are no queues available.")
 
-            self.lblError.set_markup (markup)
-            self.ErrorDialog.set_transient_for (self.IPPBrowseDialog)
-            self.ErrorDialog.run ()
-            self.ErrorDialog.hide ()
+            self.show_error_dialog (title, text, self.IPPBrowseDialog)
             self.IPPBrowseDialog.hide ()
 
         try:
@@ -4445,13 +4375,8 @@ class NewPrinterGUI(GtkGUI):
                 # Failed to get PPD downloaded from OpenPrinting XXX
                 err_title = _('Downloadable drivers')
                 err = _("Failed to download PPD.")
-            
-            error_text = ('<span weight="bold" size="larger">' +
-                          err_title + '</span>\n\n' + err)
-            self.lblError.set_markup(error_text)
-            self.ErrorDialog.set_transient_for(self.NewPrinterWindow)
-            self.ErrorDialog.run()
-            self.ErrorDialog.hide()
+
+            show_error_dialog (err_title, err, self.NewPrinterWindow)
             return None
 
         debugprint("ppd: " + repr(ppd))
@@ -4737,35 +4662,33 @@ class NewPrinterGUI(GtkGUI):
                                 (name, pkg))
                 dialog = self.InstallDialog
                 self.lblInstall.set_markup(install_text)
+                dialog.set_transient_for (self.MainWindow)
+                response = dialog.run ()
+                dialog.hide ()
+                if response == gtk.RESPONSE_OK:
+                    # Install the package.
+                    def wait_child (sig, stack):
+                        (pid, status) = os.wait ()
+
+                    signal.signal (signal.SIGCHLD, wait_child)
+                    pid = os.fork ()
+                    if pid == 0:
+                        # Child.
+                        try:
+                            os.execv (install, [install, pkg])
+                        except:
+                            pass
+                        sys.exit (1)
+                    elif pid == -1:
+                        pass # should handle error
             else:
-                error_text = ('<span weight="bold" size="larger">' +
-                              _('Missing driver') + '</span>\n\n' +
-                              _("Printer '%s' requires the '%s' program but "
-                                "it is not currently installed.  Please "
-                                "install it before using this printer.") %
-                              (name, (exes + pkgs)[0]))
-                dialog = self.ErrorDialog
-                self.lblError.set_markup(error_text)
+                show_error_dialog (_('Missing driver'),
+                                   _("Printer '%s' requires the '%s' program "
+                                     "but it is not currently installed.  "
+                                     "Please install it before using this "
+                                     "printer.") % (name, (exes + pkgs)[0]),
+                                   self.MainWindow)
 
-            dialog.set_transient_for (self.MainWindow)
-            response = dialog.run ()
-            dialog.hide ()
-            if pkg and response == gtk.RESPONSE_OK:
-                # Install the package.
-                def wait_child (sig, stack):
-                    (pid, status) = os.wait ()
-
-                signal.signal (signal.SIGCHLD, wait_child)
-                pid = os.fork ()
-                if pid == 0:
-                    # Child.
-                    try:
-                        os.execv (install, [install, pkg])
-                    except:
-                        pass
-                    sys.exit (1)
-                elif pid == -1:
-                    pass # should handle error
 
 def main(start_printer = None, change_ppd = False):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
