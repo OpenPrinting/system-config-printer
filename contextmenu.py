@@ -20,8 +20,15 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import cups
+import errordialogs
 import jobviewer
 from debug import *
+
+_ = lambda x: x
+def set_gettext_function (x):
+    global _
+    _ = x
 
 class PrinterContextMenu:
     def __init__ (self, parent):
@@ -113,7 +120,12 @@ class PrinterContextMenu:
         for i in range (len (self.paths)):
             iter = model.get_iter (self.paths[i])
             printer = model.get_value (iter, 0)
-            printer.setEnabled (enable)
+            try:
+                printer.setEnabled (enable)
+            except cups.IPPError, (e, m):
+                errordialogs.show_IPP_Error (e, m, self.parent.MainWindow)
+                # Give up on this operation.
+                break
         self.parent.populateList ()
 
     ### Disable
@@ -132,9 +144,8 @@ class PrinterContextMenu:
     def on_printer_context_set_as_default_activate (self, menuitem):
         model = self.iconview.get_model ()
         iter = model.get_iter (self.paths[0])
-        printer = model.get_value (iter, 0)
-        printer.setAsDefault ()
-        self.parent.populateList ()
+        name = model.get_value (iter, 2)
+        self.parent.set_default_printer (name)
 
     ### View print queue
     def on_printer_context_view_print_queue_activate (self, menuitem):

@@ -1,5 +1,12 @@
 2008-05-23  Tim Waugh  <twaugh@redhat.com>
 
+	* contextmenu.py
+	(PrinterContextMenu.on_printer_context_set_as_default_activate):
+	Use GUI.set_default_printer so that we handle errors correctly,
+	and in case the server needed to reload.
+	(PrinterContextMenu.on_printer_context_enable_activate): Handle
+	IPP errors.
+
 	* applet.glade (ErrorDialog): Removed.
 	* jobviewer.py (JobViewer.show_IPP_Error): Use errordialogs
 	module.
