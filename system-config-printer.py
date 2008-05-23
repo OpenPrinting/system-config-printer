@@ -3355,8 +3355,8 @@ class NewPrinterGUI(GtkGUI):
                 store.set_value (iter, 0, d['DOMAIN'])
                 store.set_value (iter, 2, d)
         else:
+            store.clear ()
             if workgroups:
-                store.clear ()
                 for workgroup in workgroups:
                     iter = store.append (None, [workgroup])
                     i = store.append (iter)
