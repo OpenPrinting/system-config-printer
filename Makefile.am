@@ -13,6 +13,7 @@ nobase_pkgdata_DATA=					\
 	contextmenu.py					\
 	cupshelpers.py					\
 	debug.py					\
+	errordialogs.py					\
 	jobviewer.py					\
 	monitor.py					\
 	openprinting.py					\

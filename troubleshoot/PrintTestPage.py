@@ -26,8 +26,13 @@ import gobject
 import os
 import pango
 import tempfile
+
 from base import *
 from base import _
+
+import errordialogs
+errordialogs.set_gettext_function (_)
+from errordialogs import *
 
 DBUS_PATH="/com/redhat/PrinterSpooler"
 DBUS_IFACE="com.redhat.PrinterSpooler"
@@ -316,7 +321,8 @@ class PrintTestPage(Question):
                 self.persistent_answers['test_page_submit_failure'] = (e, s)
                 show_error_dialog (_("Error submitting test page"),
                                    _("There was an error during the CUPS "
-                                     "operation: '%s'.") % s)
+                                     "operation: '%s'.") % s,
+                                   self.troubleshooter.get_window ())
                 break
 
     def cancel_clicked (self, widget):

@@ -113,6 +113,11 @@ class Troubleshooter:
         if self.quitfn:
             self.quitfn (self)
 
+    def get_window (self):
+        # Any error dialogs etc from the modules need to be able
+        # to set themselves transient for this window.
+        return self.main
+
     def no_more_questions (self, question):
         page = self.questions.index (question)
         debugprint ("Page %d: No more questions." % page)
