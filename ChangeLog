@@ -1,5 +1,10 @@
 2008-05-23  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py
+	(GUI.populateList): New keyword parameter prompt_allowed.
+	(GUI.printer_added_or_removed.maybe_select): Don't allow auth
+	prompting when re-populating the printer list.
+
 	* contextmenu.py
 	(PrinterContextMenu.on_printer_context_set_as_default_activate):
 	Use GUI.set_default_printer so that we handle errors correctly,

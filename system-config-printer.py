@@ -655,10 +655,12 @@ class GUI(GtkGUI, monitor.Watcher):
         known_servers.sort()
         return known_servers
 
-    def populateList(self, start_printer = None, change_ppd = False):
+    def populateList(self, start_printer=None, change_ppd=False,
+                     prompt_allowed=True):
         select_path = None
 
         if self.cups:
+            self.cups._set_prompt_allowed (prompt_allowed)
             try:
                 # get Printers
                 self.printers = cupshelpers.getPrinters(self.cups)
@@ -2217,7 +2219,7 @@ class GUI(GtkGUI, monitor.Watcher):
             iter = model.get_iter (path)
             name = model.get_value (iter, 2)
             printers.add (name)
-        self.populateList ()
+        self.populateList (prompt_allowed=False)
         model = self.dests_iconview.get_model ()
         def maybe_select (model, path, iter):
             name = model.get_value (iter, 2)
