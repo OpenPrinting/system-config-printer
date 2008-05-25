@@ -1062,6 +1062,7 @@ def do_imports():
         from gettext import gettext as _
         gettext.textdomain (DOMAIN)
         gtk.glade.bindtextdomain (DOMAIN)
+        gtk.window_set_default_icon_name ('printer')
         statereason.set_gettext_function (_)
 
 PROGRAM_NAME="system-config-printer-applet"

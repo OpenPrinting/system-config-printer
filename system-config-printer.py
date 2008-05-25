@@ -329,6 +329,7 @@ class GUI(GtkGUI):
                         )
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
+        gtk.window_set_default_icon_name ('printer')
 
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
@@ -338,7 +339,6 @@ class GUI(GtkGUI):
         self.AboutDialog.set_program_name(domain)
         self.AboutDialog.set_version(config.VERSION)
         self.AboutDialog.set_icon_name('printer')
-        self.AboutDialog.set_logo_icon_name('printer')
 
         self.static_tabs = 3
 
