@@ -258,6 +258,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         )
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
+        gtk.window_set_default_icon_name ('printer')
 
         # Printer Context Menu
         self.printer_context_menu = contextmenu.PrinterContextMenu (self)
@@ -270,7 +271,6 @@ class GUI(GtkGUI, monitor.Watcher):
         self.AboutDialog.set_program_name(domain)
         self.AboutDialog.set_version(config.VERSION)
         self.AboutDialog.set_icon_name('printer')
-        self.AboutDialog.set_logo_icon_name('printer')
 
         # Set up "Problems?" link button
         problems = gtk.LinkButton ('', label=_("Problems?"))

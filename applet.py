@@ -352,7 +352,9 @@ if __name__ == '__main__':
 
     if viewer == None:
         import jobviewer
+        import gtk
         runloop = gobject.MainLoop ()
+        gtk.window_set_default_icon_name ('printer')
         viewer = jobviewer.JobViewer(bus=bus, loop=runloop,
                                      service_running=service_running,
                                      trayicon=trayicon)
