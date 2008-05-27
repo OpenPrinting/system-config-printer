@@ -2958,7 +2958,9 @@ class NewPrinterGUI(GtkGUI):
             if self.ntbkNPDownloadableDriverProperties.get_current_page() == 1:
                 accepted = self.rbtnNPDownloadLicenseYes.get_active ()
             else:
-                accepted = True
+                treeview = self.tvNPDownloadableDrivers
+                model, iter = treeview.get_selection ().get_selected ()
+                accepted = (iter != None)
 
             self.btnNPForward.set_sensitive(accepted)
             
