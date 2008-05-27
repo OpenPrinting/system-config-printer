@@ -4204,6 +4204,14 @@ class NewPrinterGUI(GtkGUI):
             
         self.on_tvNPMakes_cursor_changed(self.tvNPMakes)
 
+        # Also pre-fill the OpenPrinting.org search box.
+        search = ''
+        if self.auto_make != None:
+            search += self.auto_make
+            if self.auto_model != None:
+                search += " " + self.auto_model
+        self.entNPDownloadableDriverSearch.set_text (search)
+
     def on_tvNPMakes_cursor_changed(self, tvNPMakes):
         selection = tvNPMakes.get_selection()
         model, iter = selection.get_selected()
