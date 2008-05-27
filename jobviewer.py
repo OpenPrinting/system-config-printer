@@ -117,6 +117,21 @@ class JobViewer (monitor.Watcher):
         self.MainWindow.set_icon_name (ICON)
         self.MainWindow.hide ()
 
+        if specific_dests:
+            the_dests = reduce (lambda x, y: x + ", " + y, specific_dests)
+
+        if my_jobs:
+            if specific_dests:
+                title = _("my jobs on %s") % the_dests
+            else:
+                title = _("my jobs")
+        else:
+            if specific_dests:
+                title = "%s" % the_dests
+            else:
+                title = _("all jobs")
+        self.MainWindow.set_title (_("Document Print Status (%s)") % title)
+
         if parent:
             self.MainWindow.set_transient_for (parent)
 
