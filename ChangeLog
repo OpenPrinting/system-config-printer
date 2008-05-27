@@ -1,5 +1,13 @@
 2008-05-27  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.__init__): Allow directory
+	containing glade files to be overridden.
+	* jobviewer.py (JobViewer.__init__): Likewise.
+	Get pkgdatadir from config module.
+
+	* Makefile.am (run): Give path to directory containing glade
+	files, not to specific glade file.
+
 	* system-config-printer.glade: Added 'Create Class' menu item to
 	printer context menu.
 	* contextmenu.py

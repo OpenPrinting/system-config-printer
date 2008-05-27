@@ -152,7 +152,7 @@ fix-glade:
 	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' *.glade
 
 run:
-	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/system-config-printer.glade \
+	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir) \
 	python $(top_srcdir)/system-config-printer.py --debug
 
 help:

@@ -89,7 +89,6 @@ gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
 pkgdata = config.Paths ().get_path ('pkgdatadir')
 iconpath = os.path.join (pkgdata, 'icons/')
-glade_file = os.path.join (pkgdata, domain + '.glade')
 sys.path.append (pkgdata)
 
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
@@ -174,7 +173,8 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # WIDGETS
         # =======
-        xml = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE", glade_file)
+        glade_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE", pkgdata)
+        xml = os.path.join (glade_dir, domain + '.glade')
         self.xml = gtk.glade.XML(xml, domain = domain)
 
         self.getWidgets("MainWindow", "dests_iconview",

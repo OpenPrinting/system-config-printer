@@ -28,11 +28,13 @@ import gobject
 import gtk
 import gtk.glade
 import monitor
+import os
 import pango
 import sys
 import time
 
 from debug import *
+import config
 import statereason
 import errordialogs
 import pprint
@@ -45,7 +47,7 @@ from statereason import StateReason
 statereason.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
 
-APPDIR="/usr/share/system-config-printer"
+pkgdata = config.Paths ().get_path ('pkgdatadir')
 GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
@@ -77,7 +79,10 @@ class JobViewer (monitor.Watcher):
         self.reasoniters = {}
         self.auth_info_dialog = None
 
-        self.xml = gtk.glade.XML(APPDIR + "/" + GLADE, domain = DOMAIN)
+        glade_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE",
+                                    pkgdata)
+        xml = os.path.join (glade_dir, 'applet.glade')
+        self.xml = gtk.glade.XML (xml, domain = DOMAIN)
         self.xml.signal_autoconnect(self)
         self.treeview = self.xml.get_widget ('treeview')
         text=0
