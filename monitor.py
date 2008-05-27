@@ -33,7 +33,7 @@ import statereason
 from statereason import StateReason
 statereason.set_gettext_function (_)
 
-CONNECTING_TIMEOUT = 10 # seconds
+CONNECTING_TIMEOUT = 60 # seconds
 MIN_REFRESH_INTERVAL = 1 # seconds
 
 def state_reason_is_harmless (reason):
