@@ -2335,13 +2335,6 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPType.set_show_tabs(False)
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
-        # Optionally disable downloadable driver support.
-        if not config.DOWNLOADABLE_DRIVER_SUPPORT:
-            self.rbtnNPDownloadableDriverSearch.set_sensitive(False)
-            self.hsNPDownloadableDriver.hide ()
-            self.rbtnNPDownloadableDriverSearch.hide ()
-            self.alignNPDownloadableDriver.hide ()
-
         # Set up OpenPrinting widgets.
         self.openprinting = openprinting.OpenPrinting ()
         self.openprinting_query_handle = None
