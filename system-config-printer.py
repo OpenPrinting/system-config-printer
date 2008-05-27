@@ -2460,6 +2460,7 @@ class NewPrinterGUI(GtkGUI):
             # Start on devices page (1, not 0)
             self.ntbkNewPrinter.set_current_page(1)
             self.fillDeviceTab()
+            self.rbtnNPFoomatic.set_active (True)
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
             # Start fetching information from CUPS in the background
             self.new_printer_PPDs_loaded = False
@@ -2482,6 +2483,7 @@ class NewPrinterGUI(GtkGUI):
         elif self.dialog_mode == "ppd":
             self.NewPrinterWindow.set_title(_("Change Driver"))
             self.ntbkNewPrinter.set_current_page(2)
+            self.rbtnNPFoomatic.set_active (True)
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
             self.rbtnChangePPDKeepSettings.set_active(True)
 
