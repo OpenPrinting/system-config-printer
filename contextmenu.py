@@ -42,6 +42,7 @@ class PrinterContextMenu:
                      "printer_context_copy",
                      "printer_context_delete",
                      "printer_context_set_as_default",
+                     "printer_context_create_class",
                      "printer_context_view_print_queue"]:
             widget = self.xml.get_widget (name)
             setattr (self, name, widget)
@@ -102,6 +103,9 @@ class PrinterContextMenu:
                      n > 0 and any_disabled and not any_discovered)
         show_widget (self.printer_context_delete, n > 0 and not any_discovered)
 
+        # Actions that require more than one destination
+        show_widget (self.printer_context_create_class, n > 1)
+
         self.printer_context_menu.popup (None, None, None,
                                          event.button,
                                          event.get_time (), None)
@@ -146,6 +150,26 @@ class PrinterContextMenu:
         iter = model.get_iter (self.paths[0])
         name = model.get_value (iter, 2)
         self.parent.set_default_printer (name)
+
+    ### Create Class
+    def on_printer_context_create_class_activate (self, menuitem):
+        class_members = []
+        model = self.iconview.get_model ()
+        for path in self.paths:
+            iter = model.get_iter (path)
+            name = model.get_value (iter, 2)
+            class_members.append (name)
+        self.parent.newPrinterGUI.init ("class")
+        out_model = self.parent.newPrinterGUI.tvNCNotMembers.get_model ()
+        in_model = self.parent.newPrinterGUI.tvNCMembers.get_model ()
+        iter = out_model.get_iter_first ()
+        while iter != None:
+            next = out_model.iter_next (iter)
+            data = out_model.get (iter, 0)
+            if data[0] in class_members:
+                in_model.append (data)
+                out_model.remove (iter)
+            iter = next
 
     ### View print queue
     def on_printer_context_view_print_queue_activate (self, menuitem):

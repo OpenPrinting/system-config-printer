@@ -1,5 +1,10 @@
 2008-05-27  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: Added 'Create Class' menu item to
+	printer context menu.
+	* contextmenu.py
+	(PrinterContextMenu.on_printer_context_create_class): New method.
+
 	* system-config-printer.py (GUI.__init__): Set toolbar buttons at
 	runtime instead of using glade, in order to have a MenuToolButton
 	for New Printer/New Class.
