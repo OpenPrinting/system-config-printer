@@ -1,5 +1,10 @@
 2008-05-27  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.__init__): Set toolbar buttons at
+	runtime instead of using glade, in order to have a MenuToolButton
+	for New Printer/New Class.
+	* system-config-printer.glade: Removed toolbar buttons.
+
 	* errordialogs.py (show_IPP_Error): Fixed typo.
 
 	* system-config-printer.py (NewPrinterGUI.setNPButtons): Don't

@@ -184,10 +184,11 @@ class GUI(GtkGUI, monitor.Watcher):
                         "ServerSettingsDialog",
                         "server_settings",
                         "statusbarMain",
-                        "btnNewPrinter", "btnNewClass",
                         "new_printer", "new_class",
                         "rename", "copy", "delete",
                         "enable", "disable", "set_as_default",
+
+                        "toolbar",
 
                         "chkServerBrowse", "chkServerShare",
                         "chkServerShareAny",
@@ -259,6 +260,34 @@ class GUI(GtkGUI, monitor.Watcher):
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
         gtk.window_set_default_icon_name ('printer')
+
+        # Toolbar
+        # Glade-2 doesn't have support for MenuToolButton, so we do that here.
+        self.btnNew = gtk.MenuToolButton ('gtk-new')
+        self.btnNew.set_is_important (True)
+        newmenu = gtk.Menu ()
+        newprinter = gtk.ImageMenuItem (_("Printer"))
+        printericon = gtk.Image ()
+        printericon.set_from_icon_name ("printer", gtk.ICON_SIZE_MENU)
+        newprinter.set_image (printericon)
+        newprinter.connect ('activate', self.on_new_printer_activate)
+        self.btnNew.connect ('clicked', self.on_new_printer_activate)
+        newclass = gtk.ImageMenuItem (_("Class"))
+        classicon = gtk.Image ()
+        classicon.set_from_icon_name ("gtk-dnd-multiple", gtk.ICON_SIZE_MENU)
+        newclass.set_image (classicon)
+        newclass.connect ('activate', self.on_new_class_activate)
+        newprinter.show ()
+        newclass.show ()
+        newmenu.attach (newprinter, 0, 1, 0, 1)
+        newmenu.attach (newclass, 0, 1, 1, 2)
+        self.btnNew.set_menu (newmenu)
+        self.toolbar.add (self.btnNew)
+        self.toolbar.add (gtk.SeparatorToolItem ())
+        refreshbutton = gtk.ToolButton ('gtk-refresh')
+        refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
+        self.toolbar.add (refreshbutton)
+        self.toolbar.show_all ()
 
         # Printer Context Menu
         self.printer_context_menu = contextmenu.PrinterContextMenu (self)
@@ -633,7 +662,7 @@ class GUI(GtkGUI, monitor.Watcher):
             status_msg = _("Not connected")
         self.statusbarMain.push(self.status_context_id, status_msg)
 
-        for widget in (self.btnNewPrinter, self.btnNewClass,
+        for widget in (self.btnNew,
                        self.new_printer, self.new_class,
                        self.chkServerBrowse, self.chkServerShare,
                        self.chkServerRemoteAdmin,
