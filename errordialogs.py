@@ -59,8 +59,9 @@ def show_IPP_Error(exception, message, parent=None):
         title = _('Not authorized')
         text = _('The password may be incorrect.')
     else:
-        title = (_("There was an error during the CUPS "
-                   "operation: '%s'.")) % message
+        title = _("CUPS server error")
+        text = (_("There was an error during the CUPS "
+                  "operation: '%s'.")) % message
 
     show_error_dialog (title, text, parent)
             
