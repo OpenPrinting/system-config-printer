@@ -113,7 +113,8 @@ class CheckNetworkServerSanity(Question):
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE)
                 (stdout, stderr) = p.communicate ()
-                self.answers['remote_server_traceroute'] = (stdout, stderr)
+                self.answers['remote_server_traceroute'] = (stdout.split ('\n'),
+                                                            stderr.split ('\n'))
             except:
                 # Problem executing command.
                 pass
