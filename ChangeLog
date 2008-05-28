@@ -1,5 +1,13 @@
 2008-05-28  Tim Waugh  <twaugh@redhat.com>
 
+	* troubleshoot/DeviceListed.py (DeviceListed.collect_answer):
+	Return all answers, including any set during the display method.
+	(DeviceListed.display): Set cups_device_dict answer if the queue
+	already exists, to make it easier to determine IEEE 1284 strings
+	of devices that already have queues set up.
+	* troubleshoot/DeviceListed.py (DeviceListed.display): Don't fetch
+	devices if the selected queue is remote.
+
 	* troubleshoot/ErrorLogCheckpoint.py
 	(ErrorLogCheckpoint.enable_clicked): Set MaxLogSize to 0 to avoid
 	cupsd rotating the log while the test page is printed.

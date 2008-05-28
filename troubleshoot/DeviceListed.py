@@ -55,10 +55,10 @@ class DeviceListed(Question):
         troubleshooter.new_page (page1, self)
 
     def display (self):
+        self.answers = {}
         answers = self.troubleshooter.answers
-        if answers['cups_queue_listed']:
-            return False
-        if answers['printer_is_remote']:
+        if (answers['printer_is_remote'] or
+            answers.get ('cups_printer_remote', False)):
             return False
 
         model = gtk.ListStore (gobject.TYPE_STRING,
@@ -97,6 +97,17 @@ class DeviceListed(Question):
         except RuntimeError:
             pass
 
+        if answers['cups_queue_listed']:
+            try:
+                printer_dict = answers['cups_printer_dict']
+                uri = printer_dict['device-uri']
+                device = devices[uri]
+                self.answers['cups_device_dict'] = device
+            except KeyError:
+                pass
+
+            return False
+
         return True
 
     def connect_signals (self, handler):
@@ -113,7 +124,7 @@ class DeviceListed(Question):
 
     def collect_answer (self):
         if not self.displayed:
-            return {}
+            return self.answers
 
         model, iter = self.treeview.get_selection ().get_selected ()
         device = model.get_value (iter, 3)
@@ -129,10 +140,13 @@ class DeviceListed(Question):
                     if device:
                         self.devices[uri] = device
 
-            return { 'cups_device_listed': False,
-                     'cups_devices_available': enum_devices (model).devices }
+            self.answers['cups_device_listed'] = False
+            avail = enum_devices (model).devices
+            self.answers['cups_devices_available'] = avail
         else:
             uri = model.get_value (iter, 2)
-            return { 'cups_device_listed': True,
-                     'cups_device_uri': uri,
-                     'cups_device_attributes': device }
+            self.answers['cups_device_listed'] = True
+            self.answers['cups_device_uri'] = uri
+            self.answers['cups_device_attributes'] = device
+
+        return self.answers
