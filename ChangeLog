@@ -1,5 +1,11 @@
 2008-05-28  Tim Waugh  <twaugh@redhat.com>
 
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.enable_clicked): Set MaxLogSize to 0 to avoid
+	cupsd rotating the log while the test page is printed.
+	* troubleshoot/ErrorLogFetch.py (ErrorLogFetch.button_clicked):
+	Reset MaxLogSize.
+
 	* troubleshoot/ErrorLogFetch.py (ErrorLogFetch.display): Reconnect
 	in case cupsd has restarted.
 
