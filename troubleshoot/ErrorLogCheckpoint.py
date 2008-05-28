@@ -97,8 +97,8 @@ class ErrorLogCheckpoint(Question):
         self.answers.update (self.persistent_answers)
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.close (tmpfd)
+        c = self.troubleshooter.answers['_authenticated_connection']
         try:
-            cups.setUser ('')
             c = cups.Connection ()
             c.getFile ('/admin/log/error_log', tmpfname)
         except RuntimeError:
@@ -114,23 +114,16 @@ class ErrorLogCheckpoint(Question):
         return self.answers
 
     def enable_clicked (self, button):
-        auth = self.troubleshooter.answers['_authentication_dialog']
-        for user in ['', 'root']:
-            cups.setUser (user)
-            if user == '':
-                # First try with the current user and no password.
-                cups.setPasswordCB (lambda x: '')
-            else:
-                # Then try with root and an authentication dialog.
-                cups.setPasswordCB (auth.callback)
+        c = self.troubleshooter.answers['_authenticated_connection']
+        try:
+            settings = c.adminGetServerSettings ()
+        except cups.IPPError:
+            settings = {}
 
+        if len (settings.keys ()) == 0:
+            cups.setUser ('root')
+            c._connect ()
             try:
-                c = cups.Connection ()
-            except RuntimeError:
-                return
-
-            try:
-                auth.suppress_dialog ()
                 settings = c.adminGetServerSettings ()
             except cups.IPPError:
                 settings = {}
@@ -149,7 +142,7 @@ class ErrorLogCheckpoint(Question):
             settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '1'
             success = False
             try:
-                auth.suppress_dialog ()
+                debugprint ("Settings to set: " + repr (settings))
                 c.adminSetServerSettings (settings)
                 success = True
             except cups.IPPError:
