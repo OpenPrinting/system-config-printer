@@ -21,14 +21,7 @@
 
 import gtk
 from gettext import gettext as _
-
-debug=0
-def debugprint (x):
-    if debug:
-        try:
-            print x
-        except:
-            pass
+from debug import *
 
 TEXT_start_print_admin_tool = _("To start this tool, select "
                                 "System->Administration->Printing "

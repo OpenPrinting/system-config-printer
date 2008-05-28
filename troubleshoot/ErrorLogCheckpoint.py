@@ -118,19 +118,7 @@ class ErrorLogCheckpoint(Question):
         try:
             settings = c.adminGetServerSettings ()
         except cups.IPPError:
-            settings = {}
-
-        if len (settings.keys ()) == 0:
-            cups.setUser ('root')
-            c._connect ()
-            try:
-                settings = c.adminGetServerSettings ()
-            except cups.IPPError:
-                settings = {}
-
-            if len (settings.keys ()) == 0:
-                if user != '':
-                    return
+            return
 
         self.answers['cups_server_settings'] = settings.copy ()
         try:
@@ -146,6 +134,8 @@ class ErrorLogCheckpoint(Question):
                 c.adminSetServerSettings (settings)
                 success = True
             except cups.IPPError:
+                pass
+            except RuntimeError:
                 pass
 
             if success:
