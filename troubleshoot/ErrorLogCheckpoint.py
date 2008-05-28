@@ -140,13 +140,19 @@ class ErrorLogCheckpoint(Question):
                     return
 
         self.answers['cups_server_settings'] = settings.copy ()
+        MAXLOGSIZE='MaxLogSize'
         try:
-            prev = int (settings[cups.CUPS_SERVER_DEBUG_LOGGING])
+            prev_debug = int (settings[cups.CUPS_SERVER_DEBUG_LOGGING])
         except KeyError:
-            prev = 0
+            prev_debug = 0
+        try:
+            prev_logsize = int (settings[MAXLOGSIZE])
+        except KeyError:
+            prev_logsize = -1
 
-        if prev == 0:
+        if prev_debug == 0 or prev_logsize != 0:
             settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '1'
+            settings[MAXLOGSIZE] = '0'
             success = False
             try:
                 auth.suppress_dialog ()

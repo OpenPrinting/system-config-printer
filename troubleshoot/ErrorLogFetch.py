@@ -123,23 +123,18 @@ class ErrorLogFetch(Question):
                 if user != '':
                     return
 
+        settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '0'
+        answers = self.troubleshooter.answers
+        orig_settings = answers['cups_server_settings']
+        settings['MaxLogSize'] = orig_settings.get ('MaxLogSize', '2000000')
+        success = False
         try:
-            prev = int (settings[cups.CUPS_SERVER_DEBUG_LOGGING])
-        except KeyError:
-            prev = 0
+            auth.suppress_dialog ()
+            c.adminSetServerSettings (settings)
+            success = True
+        except cups.IPPError:
+            pass
 
-        if prev != 0:
-            settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '0'
-            success = False
-            try:
-                auth.suppress_dialog ()
-                c.adminSetServerSettings (settings)
-                success = True
-            except cups.IPPError:
-                pass
-
-            if success:
-                self.persistent_answers['error_log_debug_logging_unset'] = True
-                self.label.set_text (_("Debug logging disabled."))
-        else:
-            self.label.set_text (_("Debug logging was already disabled."))
+        if success:
+            self.persistent_answers['error_log_debug_logging_unset'] = True
+            self.label.set_text (_("Debug logging disabled."))
