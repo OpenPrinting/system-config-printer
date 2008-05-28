@@ -111,7 +111,7 @@ class CheckPrinterSanity(Question):
                     pass
 
             r = cups_printer_dict['printer-type'] & cups.CUPS_PRINTER_REMOTE
-            self.answers['cups_printer_remote'] = r
+            self.answers['cups_printer_remote'] = (r != 0)
         return False
 
     def collect_answer (self):
