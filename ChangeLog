@@ -1,5 +1,10 @@
 2008-05-29  Tim Waugh  <twaugh@redhat.com>
 
+	* troubleshoot/PrintTestPage.py (PrintTestPage.update_jobs_list):
+	Mark jobs as test jobs by default so that people who don't realise
+	they need to click the check-box still get sufficient information
+	in the troubleshoot.txt file.
+
 	* jobviewer.py (JobViewer.update_job): If the job's
 	auth-info-required attribute indicates Kerberos negotiation, try
 	to authenticate the job without providing an auth-info attribute.
