@@ -435,6 +435,21 @@ class JobViewer (monitor.Watcher):
 
             if not isinstance (auth_info_required, list):
                 auth_info_required = [auth_info_required]
+
+            if auth_info_required == ['negotiate']:
+                # Try Kerberos authentication.
+                try:
+                    debugprint ("Trying Kerberos auth for job %d" % jobid)
+                    c.authenticateJob (jobid)
+                except TypeError:
+                    # Requires pycups-1.9.39 for optional auth parameter.
+                    # Treat this as a normal job error.
+                    debugprint ("... need newer pycups for that")
+                    return
+                except cups.IPPError, (e, m):
+                    self.show_IPP_Error (e, m)
+                    return
+
             dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
             dialog.set_prompt (_("Authentication required for "
                                  "printing document `%s' (job %d)") %
