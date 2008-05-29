@@ -1,5 +1,15 @@
 2008-05-29  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.__init__): Renamed start_printer
+	argument to configure_printer.  Activate the relevant item.
+	(GUI.populateList): No longer needs start_printer argument.
+	(GUI.connect): Likewise.
+	(GUI.on_connect_activate): Don't give start_printer argument to
+	new thread.
+	(GUI.on_copy_activate): Omit start_printer argument.
+	(NewPrinterGUI.on_btnNPApply_clicked): Likewise.
+	(main): Renamed start_printer argument to configure_printer.
+
 	* system-config-printer.py (GUI.__init__): Connect IconView's
 	popup-menu signal to...
 	(GUI.dests_iconview_popup_menu): ...this new signal handler.

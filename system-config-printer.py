@@ -149,7 +149,7 @@ class GtkGUI:
 
 class GUI(GtkGUI, monitor.Watcher):
 
-    def __init__(self, start_printer = None, change_ppd = False):
+    def __init__(self, configure_printer = None, change_ppd = False):
 
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
@@ -515,7 +515,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.monitor = monitor.Monitor (self, monitor_jobs=False)
 
         try:
-            self.populateList(start_printer, change_ppd)
+            self.populateList(change_ppd)
         except cups.HTTPError, (s,):
             self.cups = None
             self.setConnected()
@@ -533,6 +533,18 @@ class GUI(GtkGUI, monitor.Watcher):
             self.MainWindow.resize (width, height)
         except:
             nonfatalException ()
+
+        if configure_printer:
+            # Need to find the entry in the iconview model and activate it.
+            model = self.dests_iconview.get_model ()
+            iter = model.get_iter_first ()
+            while iter != None:
+                name = model.get_value (iter, 2)
+                if name == configure_printer:
+                    path = model.get_path (iter)
+                    self.dests_iconview.item_activated (path)
+                    break
+                iter = model.iter_next (iter)
 
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
@@ -690,8 +702,7 @@ class GUI(GtkGUI, monitor.Watcher):
         known_servers.sort()
         return known_servers
 
-    def populateList(self, start_printer=None, change_ppd=False,
-                     prompt_allowed=True):
+    def populateList(self, change_ppd=False, prompt_allowed=True):
         select_path = None
 
         if self.cups:
@@ -843,12 +854,8 @@ class GUI(GtkGUI, monitor.Watcher):
         cups.setUser('')
         self.connect_user = cups.getUser()
         # Now start a new thread for connection.
-        args = []
-        if self.printer:
-            args = [self.printer.name]
-        args.append (self.MainWindow)
-        args = tuple (args)
-        self.connect_thread = thread.start_new_thread(self.connect, args)
+        self.connect_thread = thread.start_new_thread(self.connect,
+                                                      (self.MainWindow,))
 
     def on_cancel_connect_clicked(self, widget):
         """
@@ -859,7 +866,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.connect_thread = None
         self.ConnectingDialog.hide()
 
-    def connect(self, start_printer=None, parent=None):
+    def connect(self, parent=None):
         """
         Open a connection to a new server. Is executed in a separate thread!
         """
@@ -908,7 +915,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.ConnectingDialog.hide()
             self.cups = connection
             self.setConnected()
-            self.populateList(start_printer=start_printer)
+            self.populateList()
 	except cups.HTTPError, (s,):
             self.cups = None
             self.setConnected()
@@ -2023,7 +2030,7 @@ class GUI(GtkGUI, monitor.Watcher):
             pass
 
         self.copy_printer (self.entCopyName.get_text ())
-        self.populateList(start_printer=self.printer.name)
+        self.populateList()
 
     def on_entCopyName_changed(self, widget):
         # restrict
@@ -4639,7 +4646,7 @@ class NewPrinterGUI(GtkGUI):
                 checkppd = ppd
 
         self.NewPrinterWindow.hide()
-        self.mainapp.populateList(start_printer=name)
+        self.mainapp.populateList()
         self.mainapp.fillPrinterTab (name)
         if check:
             try:
@@ -4733,11 +4740,11 @@ class NewPrinterGUI(GtkGUI):
                                    self.MainWindow)
 
 
-def main(start_printer = None, change_ppd = False):
+def main(configure_printer = None, change_ppd = False):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init()
 
-    mainwindow = GUI(start_printer, change_ppd)
+    mainwindow = GUI(configure_printer, change_ppd)
     if gtk.__dict__.has_key("main"):
         gtk.main()
     else:
@@ -4755,16 +4762,16 @@ if __name__ == "__main__":
         show_help ()
         sys.exit (1)
 
-    start_printer = None
+    configure_printer = None
     change_ppd = False
     for opt, optarg in opts:
         if (opt == "--configure-printer" or
             opt == "--choose-driver"):
-            start_printer = optarg
+            configure_printer = optarg
             if opt == "--choose-driver":
                 change_ppd = True
 
         elif opt == '--debug':
             set_debugging (True)
 
-    main(start_printer, change_ppd)
+    main(configure_printer, change_ppd)
