@@ -20,6 +20,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import gtk.gdk
+
 import cups
 import errordialogs
 import jobviewer
@@ -106,9 +108,15 @@ class PrinterContextMenu:
         # Actions that require more than one destination
         show_widget (self.printer_context_create_class, n > 1)
 
-        self.printer_context_menu.popup (None, None, None,
-                                         event.button,
-                                         event.get_time (), None)
+        if event == None:
+            event_button = 0
+            event_time = gtk.gdk.Event (gtk.gdk.NOTHING).get_time ()
+        else:
+            event_button = event.button
+            event_time = event.get_time ()
+
+        self.printer_context_menu.popup (None, None, None, event_button,
+                                         event_time, None)
 
     ### Edit
     def on_printer_context_edit_activate (self, menuitem):

@@ -336,6 +336,8 @@ class GUI(GtkGUI, monitor.Watcher):
                                      self.dests_iconview_selection_changed)
         self.dests_iconview.connect ('button_release_event',
                                      self.dests_iconview_button_release_event)
+        self.dests_iconview.connect ('popup-menu',
+                                     self.dests_iconview_popup_menu)
         self.dests_iconview_selection_changed (self.dests_iconview)
 
         # setup some lists
@@ -591,6 +593,10 @@ class GUI(GtkGUI, monitor.Watcher):
         self.disable.set_sensitive(n > 0 and any_enabled and not any_discovered)
         self.enable.set_sensitive(n > 0 and any_disabled and not any_discovered)
         self.delete.set_sensitive(n > 0 and not any_discovered)
+
+    def dests_iconview_popup_menu (self, iconview):
+        paths = iconview.get_selected_items ()
+        self.printer_context_menu.popup (None, iconview, paths)
 
     def dests_iconview_button_release_event (self, iconview, event):
         if event.button > 1:

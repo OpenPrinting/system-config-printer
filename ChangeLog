@@ -1,5 +1,11 @@
 2008-05-29  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.__init__): Connect IconView's
+	popup-menu signal to...
+	(GUI.dests_iconview_popup_menu): ...this new signal handler.
+	* contextmenu.py (PrinterContextMenu.popup): Allow event to be
+	None, for the case of the gtk.Widget popup-menu signal.
+
 	* troubleshoot/PrintTestPage.py (PrintTestPage.update_jobs_list):
 	Mark jobs as test jobs by default so that people who don't realise
 	they need to click the check-box still get sufficient information
