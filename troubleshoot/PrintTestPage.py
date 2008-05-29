@@ -364,7 +364,7 @@ class PrintTestPage(Question):
                     event['printer-name'] == queue):
                     iter = model.append (None)
                     self.job_to_iter[job] = iter
-                    model.set_value (iter, 0, job in test_jobs)
+                    model.set_value (iter, 0, True)
                     model.set_value (iter, 1, job)
                 else:
                     continue
