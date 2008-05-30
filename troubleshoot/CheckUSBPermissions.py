@@ -1,0 +1,158 @@
+#!/usr/bin/env python
+
+## Printing troubleshooter
+
+## Copyright (C) 2008 Red Hat, Inc.
+## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+import glob
+import os
+import subprocess
+import urllib
+from base import *
+class CheckUSBPermissions(Question):
+    def __init__ (self, troubleshooter):
+        Question.__init__ (self, troubleshooter, "Check USB permissions")
+        troubleshooter.new_page (gtk.Label (), self)
+
+    def display (self):
+        self.answers = {}
+        answers = self.troubleshooter.answers
+        if answers['cups_queue_listed']:
+            if answers['is_cups_class']:
+                return False
+
+            cups_printer_dict = answers['cups_printer_dict']
+            device_uri = cups_printer_dict['device-uri']
+        elif answers.get ('cups_device_listed', False):
+            device_uri = answers['cups_device_uri']
+        else:
+            return False
+
+        (scheme, rest) = urllib.splittype (device_uri)
+        if scheme not in ['hp', 'hpfax', 'usb', 'hal']:
+            return False
+
+        LSUSB = "/sbin/lsusb"
+        if not os.access (LSUSB, os.X_OK):
+            return False
+
+        GETFACL = "/usr/bin/getfacl"
+        if not os.access (GETFACL, os.X_OK):
+            return False
+
+        # Run lsusb
+        try:
+            lsusb = subprocess.Popen ("LC_ALL=C " + LSUSB + " -v", shell=True,
+                                      stdin=file("/dev/null"),
+                                      stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE)
+            (lsusb_stdout, lsusb_stderr) = lsusb.communicate ()
+        except:
+            # Problem executing command.
+            return False
+
+        # Now parse it.
+        dev_by_id = {}
+        this_dev = None
+        for line in lsusb_stdout.split ('\n'):
+            if (this_dev != None and
+                ((line.find ("bInterfaceClass") != -1 and
+                  line.find ("7 Printer") != -1) or
+                 (line.find ("bInterfaceSubClass") != -1 and
+                  line.find ("1 Printer") != -1))):
+                mfr = dev_by_id.get (this_mfr_id, {})
+                mdl = mfr.get (this_mdl_id, [])
+                mdl.append (this_dev)
+                mfr[this_mdl_id] = mdl
+                dev_by_id[this_mfr_id] = mfr
+                this_dev = None
+                continue
+
+            separators = [ ('Bus ', 3),
+                           (' Device ', 3),
+                           (': ID ', 4),
+                           (':', 4),
+                           (' ', -1)]
+            fields = []
+            i = 0
+            p = line
+            while i < len (separators):
+                (sep, length) = separators[i]
+                if not p.startswith (sep):
+                    break
+                start = len (sep)
+                if length == -1:
+                    end = len (p)
+                    fields.append (p[start:])
+                else:
+                    end = start + length
+                    fields.append (p[start:end])
+
+                p = p[end:]
+                i += 1
+
+            if i < len (separators):
+                continue
+
+            if not scheme.startswith ('hp') and fields[2] != '03f0':
+                # Skip non-HP printers if we know we're using HPLIP.
+                continue
+
+            this_dev = { 'bus': fields[0],
+                         'dev': fields[1],
+                         'name': fields[4],
+                         'full': line }
+            this_mfr_id = fields[2]
+            this_mdl_id = fields[3]
+
+        infos = {}
+        paths = []
+        if not scheme.startswith ('hp'):
+            paths.extend (glob.glob ("/dev/usb/lp?"))
+        for mfr_id, mdls in dev_by_id.iteritems ():
+            for mdl_id, devs in mdls.iteritems ():
+                for dev in devs:
+                    path = "/dev/bus/usb/%s/%s" % (dev['bus'], dev['dev'])
+                    paths.append (path)
+                    infos[path] = dev['full']
+
+        perms = []
+        for path in paths:
+            try:
+                getfacl = subprocess.Popen ("LC_ALL=C %s %s" % (GETFACL, path),
+                                            shell=True,
+                                            stdin=file("/dev/null"),
+                                            stdout=subprocess.PIPE,
+                                            stderr=subprocess.PIPE)
+                (getfacl_stdout, getfacl_stderr) = getfacl.communicate ()
+                output = filter (lambda x: len (x) > 0,
+                                 getfacl_stdout.split ('\n'))
+            except:
+                # Problem executing command.
+                output = []
+
+            info = infos.get (path, path)
+            perms.append ((info, output))
+
+        self.answers['getfacl_output'] = perms
+
+        # Don't actually display anything, just collect information.
+        return False
+
+    def collect_answer (self):
+        return self.answers
