@@ -1,3 +1,15 @@
+2008-05-30  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): No longer needs
+	change_ppd argument.
+	(GUI.__init__): Don't give change_ppd argument to populateList.
+	(GUI.printer_properties_response): New method.
+	(GUI.__init__): Connect the response signal to it.
+	(GUI.dests_iconview_item_activated): Just show the dialog, don't
+	call its run method.
+	(GUI.__init__): Click the Change PPD... button if the change_ppd
+	argument was given.
+
 2008-05-29  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.__init__): Renamed start_printer

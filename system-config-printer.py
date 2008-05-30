@@ -370,6 +370,10 @@ class GUI(GtkGUI, monitor.Watcher):
         
         self.xml.signal_autoconnect(self)
 
+        # Printer Properties dialog
+        self.PrinterPropertiesDialog.connect ('response',
+                                              self.printer_properties_response)
+
         # Printer Properties tree view
         col = gtk.TreeViewColumn ('', gtk.CellRendererText (), markup=0)
         self.tvPrinterProperties.append_column (col)
@@ -515,7 +519,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.monitor = monitor.Monitor (self, monitor_jobs=False)
 
         try:
-            self.populateList(change_ppd)
+            self.populateList()
         except cups.HTTPError, (s,):
             self.cups = None
             self.setConnected()
@@ -543,6 +547,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 if name == configure_printer:
                     path = model.get_path (iter)
                     self.dests_iconview.item_activated (path)
+                    if change_ppd:
+                        self.btnChangePPD.clicked ()
                     break
                 iter = model.iter_next (iter)
 
@@ -567,16 +573,12 @@ class GUI(GtkGUI, monitor.Watcher):
         host = CUPS_server_hostname ()
         self.PrinterPropertiesDialog.set_title (_("Printer Properties - "
                                                   "`%s' on %s") % (name, host))
-        finished = False
-        while not finished:
-            response = self.PrinterPropertiesDialog.run ()
-            if response == gtk.RESPONSE_OK:
-                if not self.save_printer (self.printer):
-                    finished = True
-            else:
-                finished = True
+        self.PrinterPropertiesDialog.show ()
 
-        self.PrinterPropertiesDialog.hide ()
+    def printer_properties_response (self, dialog, response):
+        if (response != gtk.RESPONSE_OK or
+            not self.save_printer (self.printer)):
+            dialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
         paths = iconview.get_selected_items ()
@@ -702,7 +704,7 @@ class GUI(GtkGUI, monitor.Watcher):
         known_servers.sort()
         return known_servers
 
-    def populateList(self, change_ppd=False, prompt_allowed=True):
+    def populateList(self, prompt_allowed=True):
         select_path = None
 
         if self.cups:
@@ -802,9 +804,6 @@ class GUI(GtkGUI, monitor.Watcher):
                     pixbuf = copy
 
                 self.mainlist.append (row=[object, pixbuf, name, tip])
-
-        if change_ppd:
-            self.on_btnChangePPD_clicked (self.btnChangePPD)
 
     # Connect to Server
 
