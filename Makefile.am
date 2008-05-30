@@ -121,7 +121,6 @@ EXTRA_DIST=\
 	newprinternotification.conf \
 	bootstrap \
 	mkinstalldirs \
-	system-config-printer.gladep \
 	system-config-printer.desktop.in \
 	manage-print-jobs.desktop.in \
 	my-default-printer.desktop.in \
