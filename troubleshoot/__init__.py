@@ -289,6 +289,8 @@ QUESTIONS = ["Welcome",
 
              "LocalOrRemote",
              "DeviceListed",
+             "CheckUSBPermissions",
+
              "RemoteAddress",
              "CheckNetworkServerSanity",
              "ChooseNetworkPrinter",
