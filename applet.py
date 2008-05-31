@@ -311,8 +311,9 @@ if __name__ == '__main__':
                 DBUS_PATH="/com/redhat/PrinterSpooler"
                 DBUS_IFACE="com.redhat.PrinterSpooler"
 
-                def __init__ (self, bus):
+                def __init__ (self, bus, waitloop):
                     self.bus = bus
+                    self.waitloop = waitloop
                     self.timer = None
                     bus.add_signal_receiver (self.handle_dbus_signal,
                                              path=self.DBUS_PATH,
@@ -335,17 +336,14 @@ if __name__ == '__main__':
                     debugprint ("checking for jobs")
                     if any_jobs ():
                         gobject.source_remove (self.timer)
-                        try:
-                            waitloop.quit ()
-                        except:
-                            pass
+                        self.waitloop.quit ()
 
                     # Don't run this timer again.
                     return False
             ###
 
-            jobwaiter = WaitForJobs(bus)
             waitloop = gobject.MainLoop ()
+            jobwaiter = WaitForJobs(bus, waitloop)
             waitloop.run()
             del jobwaiter
             waitloop = None
