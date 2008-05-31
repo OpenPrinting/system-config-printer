@@ -1042,7 +1042,8 @@ if trayicon:
         class WaitForJobs:
             MIN_CHECK_INTERVAL=5 # seconds
 
-            def __init__ (self):
+            def __init__ (self, waitloop):
+                self.waitloop = waitloop
                 self.last_check = time.time()
                 self.timer = None
 
@@ -1061,16 +1062,15 @@ if trayicon:
                 self.timer = None
                 self.last_check = now
                 if any_jobs_or_errors ():
-                    waitloop.quit ()
+                    self.waitloop.quit ()
         ###
 
-        jobwaiter = WaitForJobs()
+        waitloop = gobject.MainLoop ()
+        jobwaiter = WaitForJobs(waitloop)
         bus.add_signal_receiver (jobwaiter.check_for_jobs,
                                  path="/com/redhat/PrinterSpooler",
                                  dbus_interface="com.redhat.PrinterSpooler")
-        waitloop = gobject.MainLoop ()
         waitloop.run()
-        waitloop = None
         bus.remove_signal_receiver (jobwaiter.check_for_jobs,
                                     path="/com/redhat/PrinterSpooler",
                                     dbus_interface="com.redhat.PrinterSpooler")
