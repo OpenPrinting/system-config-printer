@@ -1326,7 +1326,8 @@ if trayicon:
 
         ###
         class WaitForJobs:
-            def __init__ (self):
+            def __init__ (self, waitloop):
+                self.waitloop = waitloop
                 self.timer = None
 
             def handle_dbus_signal (self, *args):
@@ -1336,17 +1337,17 @@ if trayicon:
 
             def check_for_jobs (self, *args):
                 if any_jobs ():
-                    waitloop.quit ()
+                    self.waitloop.quit ()
 
                 # Don't run this timer again.
                 return False
         ###
 
-        jobwaiter = WaitForJobs()
+        waitloop = gobject.MainLoop ()
+        jobwaiter = WaitForJobs(waitloop)
         bus.add_signal_receiver (jobwaiter.handle_dbus_signal,
                                  path="/com/redhat/PrinterSpooler",
                                  dbus_interface="com.redhat.PrinterSpooler")
-        waitloop = gobject.MainLoop ()
         waitloop.run()
         waitloop = None
         bus.remove_signal_receiver (jobwaiter.handle_dbus_signal,
