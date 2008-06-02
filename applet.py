@@ -710,6 +710,7 @@ class JobManager:
             if event.has_key ('notify-printer-uri'):
                 job['job-printer-uri'] = event['notify-printer-uri']
 
+            may_be_problem = False
             if nse == 'job-stopped' and self.trayicon:
                 # Why has the job stopped?  Unfortunately the only
                 # clue we get is the notify-text, which is not
@@ -727,20 +728,28 @@ class JobManager:
                 # error_log file for details."
                 #
                 # "Authentication is required for job %d."
+                #
+                # "Job stopped due to printer being paused"
+                # [This should be ignored, as the job was doing just
+                # fine until the printer was stopped for other reasons.]
                 notify_text = event['notify-text']
                 document = job['job-name']
+                may_be_problem = True
                 if notify_text.find ("backend errors") != -1:
                     message = _("There was a problem sending document `%s' "
                                 "(job %d) to the printer.") % (document, jobid)
                 elif notify_text.find ("filter errors") != -1:
                     message = _("There was a problem processing document `%s' "
                                 "(job %d).") % (document, jobid)
+                elif notify_text.find ("being paused") != -1:
+                    may_be_problem = False
                 else:
-                    # Give up and use the untranslated provided.
+                    # Give up and use the provided message untranslated.
                     message = _("There was a problem printing document `%s' "
                                 "(job %d): `%s'.") % (document, jobid,
                                                       notify_text)
 
+            if may_be_problem:
                 self.toggle_window_display (self.statusicon, force_show=True)
                 dialog = gtk.Dialog (_("Print Error"), self.MainWindow, 0,
                                      (_("_Diagnose"), gtk.RESPONSE_NO,
