@@ -857,10 +857,11 @@ class JobViewer (monitor.Watcher):
                 except RuntimeError:
                     pass
 
+            may_be_problem = True
             if (jobdata['job-state'] == cups.IPP_JOB_HELD and
                 jobdata['job-hold-until'] == 'auth-info-required'):
                 # Leave this to update_job to deal with.
-                pass
+                may_be_problem = False
             else:
                 # Other than that, unfortunately the only
                 # clue we get is the notify-text, which is not
@@ -878,6 +879,11 @@ class JobViewer (monitor.Watcher):
                 # error_log file for details."
                 #
                 # "Authentication is required for job %d."
+                # [This case is handled in the update_job method.]
+                #
+                # "Job stopped due to printer being paused"
+                # [This should be ignored, as the job was doing just
+                # fine until the printer was stopped for other reasons.]
                 notify_text = event['notify-text']
                 document = jobdata['job-name']
                 if notify_text.find ("backend errors") != -1:
@@ -886,12 +892,15 @@ class JobViewer (monitor.Watcher):
                 elif notify_text.find ("filter errors") != -1:
                     message = _("There was a problem processing document `%s' "
                                 "(job %d).") % (document, jobid)
+                elif notify_text.find ("being paused") != -1:
+                    may_be_problem = False
                 else:
-                    # Give up and use the untranslated provided.
+                    # Give up and use the provided message untranslated.
                     message = _("There was a problem printing document `%s' "
                                 "(job %d): `%s'.") % (document, jobid,
                                                       notify_text)
 
+            if may_be_problem:
                 self.toggle_window_display (self.statusicon, force_show=True)
                 dialog = gtk.Dialog (_("Print Error"), self.MainWindow, 0,
                                      (_("_Diagnose"), gtk.RESPONSE_NO,
