@@ -122,6 +122,7 @@ class JobManager:
 
         self.jobs = {}
         self.jobiters = {}
+        self.stopped_job_prompts = set () # of job IDs
         self.which_jobs = "not-completed"
         self.printer_state_reasons = {}
         self.hidden = False
@@ -601,9 +602,10 @@ class JobManager:
         # Return code controls whether the timeout will recur.
         return self.will_update_job_creation_times
 
-    def print_error_dialog_response(self, dialog, response):
+    def print_error_dialog_response(self, dialog, response, jobid):
         dialog.hide ()
         dialog.destroy ()
+        self.stopped_job_prompts.remove (jobid)
         if response == gtk.RESPONSE_NO:
             # Diagnose
             if not self.__dict__.has_key ('troubleshooter'):
@@ -711,7 +713,8 @@ class JobManager:
                 job['job-printer-uri'] = event['notify-printer-uri']
 
             may_be_problem = False
-            if nse == 'job-stopped' and self.trayicon:
+            if (nse == 'job-stopped' and self.trayicon and
+                not jobid in self.stopped_job_prompts):
                 # Why has the job stopped?  Unfortunately the only
                 # clue we get is the notify-text, which is not
                 # translated into our native language.  We'd better
@@ -785,7 +788,9 @@ class JobManager:
                 vbox.pack_start (label, False, False, 0)
                 hbox.pack_start (vbox, False, False, 0)
                 dialog.vbox.pack_start (hbox)
-                dialog.connect ('response', self.print_error_dialog_response)
+                dialog.connect ('response',
+                                self.print_error_dialog_response, jobid)
+                self.stopped_job_prompts.add (jobid)
                 dialog.show_all ()
 
         self.update (jobs)

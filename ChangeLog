@@ -1,3 +1,13 @@
+2008-06-03  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py (JobManager.__init__): Initialise set of stopped job
+	IDs for which we are showing a dialog.
+	(JobManager.get_notifications): Don't show stopped-job dialog if
+	we are already showing one for this job.
+	(JobManager.get_notifications): Add job ID to set before showing
+	dialog.
+	(JobManager.print_error_dialog_response): Remove job ID from set.
+
 2008-06-02  Tim Waugh  <twaugh@redhat.com>
 
 	* applet.py (JobManager.get_notifications): Ignore stopped jobs
