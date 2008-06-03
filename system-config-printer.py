@@ -1538,7 +1538,7 @@ class GUI(GtkGUI):
             # as a normal job.
             user = cups.getUser ()
             cups.setUser ('')
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.MainWindow, try_as_root=False)
             if custom_testpage and os.path.exists(custom_testpage):
                 debugprint ('Printing custom test page ' + custom_testpage)
                 job_id = c.printTestPage(self.printer.name,

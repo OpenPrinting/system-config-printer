@@ -1,5 +1,17 @@
 2008-06-03  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.on_btnPrintTestPage_clicked):
+	Don't automatically try authenticating as root if asked for a
+	password when printing a test page, as the authentication is
+	likely to be needed for the remote print server.
+
+	* authconn.py (Connection.__init__): New optional parameter
+	try_as_root.
+	(Connection._perform_authentication): Only try as root if allowed
+	to.
+
+2008-06-03  Tim Waugh  <twaugh@redhat.com>
+
 	* applet.py (JobManager.__init__): Initialise set of stopped job
 	IDs for which we are showing a dialog.
 	(JobManager.get_notifications): Don't show stopped-job dialog if
