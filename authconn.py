@@ -93,9 +93,10 @@ class AuthDialog(gtk.Dialog):
         self.field_entry[i].grab_focus ()
 
 class Connection:
-    def __init__ (self, parent=None):
+    def __init__ (self, parent=None, try_as_root=True):
         self._use_password = ''
         self._parent = parent
+        self._try_as_root = try_as_root
         self._connect ()
         self._prompt_allowed = True
 
@@ -185,7 +186,9 @@ class Connection:
 
         if self._passes == 2:
             # Tried the operation without a password and it failed.
-            if self._user != 'root' and self._server[0] == '/':
+            if (self._try_as_root and
+                self._user != 'root' and
+                self._server[0] == '/'):
                 # This is a UNIX domain socket connection so we should
                 # not have needed a password, and so the operation must
                 # not be something that the current user is authorised to
