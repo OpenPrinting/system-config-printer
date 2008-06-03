@@ -155,6 +155,10 @@ run:
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir) \
 	python $(top_srcdir)/system-config-printer.py --debug
 
+run-applet:
+	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir) \
+	python $(top_srcdir)/applet.py --debug
+
 help:
 	@echo "Usage: make <target>"
 	@echo "Available targets:"
