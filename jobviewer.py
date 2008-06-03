@@ -68,6 +68,7 @@ class JobViewer (monitor.Watcher):
         self.jobs = {}
         self.jobiters = {}
         self.active_jobs = set() # of job IDs
+        self.stopped_job_prompts = set() # of job IDs
         self.which_jobs = "not-completed"
         self.printer_state_reasons = {}
         self.num_jobs_when_hidden = 0
@@ -341,9 +342,10 @@ class JobViewer (monitor.Watcher):
         # Return code controls whether the timeout will recur.
         return need_update
 
-    def print_error_dialog_response(self, dialog, response):
+    def print_error_dialog_response(self, dialog, response, jobid):
         dialog.hide ()
         dialog.destroy ()
+        self.stopped_job_prompts.remove (jobid)
         if response == gtk.RESPONSE_NO:
             # Diagnose
             if not self.__dict__.has_key ('troubleshooter'):
@@ -838,7 +840,8 @@ class JobViewer (monitor.Watcher):
             self.active_jobs.remove (jobid)
 
         # Look out for stopped jobs.
-        if self.trayicon and eventname == 'job-stopped':
+        if (self.trayicon and eventname == 'job-stopped' and
+            not jobid in self.stopped_job_prompts):
             # Why has the job stopped?  It might be due to a job error
             # of some sort, or it might be that the backend requires
             # authentication.  If the latter, the job will be held not
@@ -936,7 +939,9 @@ class JobViewer (monitor.Watcher):
                 vbox.pack_start (label, False, False, 0)
                 hbox.pack_start (vbox, False, False, 0)
                 dialog.vbox.pack_start (hbox)
-                dialog.connect ('response', self.print_error_dialog_response)
+                dialog.connect ('response',
+                                self.print_error_dialog_response, jobid)
+                self.stopped_job_prompts.add (jobid)
                 dialog.show_all ()
 
         self.update_job (jobid, jobdata)
