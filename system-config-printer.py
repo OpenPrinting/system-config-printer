@@ -323,7 +323,6 @@ class GUI(GtkGUI):
                         "NewPrinterName", "entCopyName", "btnCopyOk",
                         "ErrorDialog", "lblError",
                         "InfoDialog", "lblInfo",
-                        "InstallDialog", "lblInstall",
                         "ApplyDialog", "AboutDialog",
                         "WaitWindow", "lblWait",
                         )
@@ -2365,7 +2364,8 @@ class NewPrinterGUI(GtkGUI):
                         "rbtnNPDownloadLicenseNo",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
                         "ErrorDialog", "lblError",
-                        "InfoDialog", "lblInfo")
+                        "InfoDialog", "lblInfo",
+                        "InstallDialog", "lblInstall")
         # share with mainapp
         self.WaitWindow = mainapp.WaitWindow
         self.lblWait = mainapp.lblWait
@@ -4467,7 +4467,7 @@ class NewPrinterGUI(GtkGUI):
                 dialog = self.ErrorDialog
                 self.lblError.set_markup(error_text)
 
-            dialog.set_transient_for (self.MainWindow)
+            dialog.set_transient_for (self.mainapp.MainWindow)
             response = dialog.run ()
             dialog.hide ()
             if pkg and response == gtk.RESPONSE_OK:

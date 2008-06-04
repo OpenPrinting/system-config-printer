@@ -1,3 +1,10 @@
+2008-06-04  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Don't fetch
+	InstallDialog widget here...
+	(NewPrinterGUI.__init__): ...fetch it here instead (bug #449860).
+	(NewPrinterGUI.checkDriverExists): Fixed traceback.
+
 2008-06-03  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.on_btnPrintTestPage_clicked):
