@@ -1,5 +1,11 @@
 2008-06-04  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.connect): Always show traceback
+	for unhandled exceptions if debugging.
+	(NewPrinterGUI.getDevices_thread): Likewise.
+
+2008-06-04  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.__init__): Don't fetch
 	InstallDialog widget here...
 	(NewPrinterGUI.__init__): ...fetch it here instead (bug #449860).
