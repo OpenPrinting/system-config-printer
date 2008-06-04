@@ -253,7 +253,6 @@ class GUI(GtkGUI, monitor.Watcher):
                         "ConnectingDialog", "lblConnecting",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
                         "InfoDialog", "lblInfo",
-                        "InstallDialog", "lblInstall",
                         "AboutDialog",
                         "WaitWindow", "lblWait",
                         )
@@ -2363,7 +2362,8 @@ class NewPrinterGUI(GtkGUI):
                         "rbtnNPDownloadLicenseYes",
                         "rbtnNPDownloadLicenseNo",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
-                        "InfoDialog", "lblInfo")
+                        "InfoDialog", "lblInfo",
+                        "InstallDialog", "lblInstall")
         # share with mainapp
         self.WaitWindow = mainapp.WaitWindow
         self.lblWait = mainapp.lblWait
@@ -4722,7 +4722,7 @@ class NewPrinterGUI(GtkGUI):
                                 (name, pkg))
                 dialog = self.InstallDialog
                 self.lblInstall.set_markup(install_text)
-                dialog.set_transient_for (self.MainWindow)
+                dialog.set_transient_for (self.mainapp.MainWindow)
                 response = dialog.run ()
                 dialog.hide ()
                 if response == gtk.RESPONSE_OK:
@@ -4747,7 +4747,7 @@ class NewPrinterGUI(GtkGUI):
                                      "but it is not currently installed.  "
                                      "Please install it before using this "
                                      "printer.") % (name, (exes + pkgs)[0]),
-                                   self.MainWindow)
+                                   self.mainapp.MainWindow)
 
 
 def main(configure_printer = None, change_ppd = False):
