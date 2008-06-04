@@ -894,6 +894,8 @@ class GUI:
             except RuntimeError:
                 # When we connect, avoid the domain socket.
                 cups.setServer ("localhost")
+            except:
+                nonfatalException ()
 
         try:
             connection = cups.Connection()
@@ -912,6 +914,8 @@ class GUI:
             self.show_IPP_Error(e, s)
             gtk.gdk.threads_leave()
             return
+        except:
+            nonfatalException ()
 
         if self.connect_thread != thread.get_ident(): return
         gtk.gdk.threads_enter()
@@ -926,6 +930,8 @@ class GUI:
             self.setConnected()
             self.populateList()
             self.show_HTTP_Error(s)
+        except:
+            nonfatalException ()
 
         gtk.gdk.threads_leave()
 
@@ -2518,7 +2524,7 @@ class GUI:
         except cups.IPPError, (e, msg):
             self.devices_result = cups.IPPError (e, msg)
         except:
-            print "Exception in getDevices_thread"
+            nonfatalException ()
             self.devices_result = None
 
         try:
