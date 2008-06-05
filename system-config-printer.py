@@ -2189,6 +2189,26 @@ class GUI(GtkGUI, monitor.Watcher):
             return True
         self.changed = set()
         self.setDataButtonState()
+
+        old_setting = self.server_settings.get (cups.CUPS_SERVER_SHARE_PRINTERS,
+                                                '0')
+        new_setting = setting_dict.get (cups.CUPS_SERVER_SHARE_PRINTERS, '0')
+        if (old_setting == '0' and new_setting != '0'):
+            # We have just enabled print queue sharing.
+            # Ideally, this is the time we would check the firewall
+            # settings on this machine and request that the IPP TCP port
+            # be unblocked.  Unfortunately, this is not yet possible
+            # (bug #440469).  However, we can display a dialog to suggest
+            # that now might be a good time to review the firewall settings.
+            show_info_dialog (_("Review Firewall"),
+                              _("You may need to adjust the firewall "
+                                "to allow network printing to this "
+                                "computer.") + '\n\n' +
+                              _("To do this, select "
+                                "System->Administration->Firewall "
+                                "from the main menu."),
+                              parent=self.ServerSettingsDialog)
+
         time.sleep(1) # give the server a chance to process our request
 
         # Now reconnect, in case the server needed to reload.
