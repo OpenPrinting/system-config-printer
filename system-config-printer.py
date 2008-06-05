@@ -3379,20 +3379,23 @@ class NewPrinterGUI(GtkGUI):
         """Initialise the SMB tree store."""
 
         gtk.gdk.threads_enter()
-        store = self.smb_store
-        store.clear ()
-        if pysmb.USE_OLD_CODE:
-            store.append(None, (_('Scanning...'), '', None, None))
-        else:
-            class X:
-                pass
-            dummy = X()
-            dummy.smbc_type = pysmb.smbc.PRINTER_SHARE
-            dummy.name = _('Scanning...')
-            dummy.comment = ''
-            store.append(None, [dummy])
         try:
-            self.busy(self.SMBBrowseDialog)
+            store = self.smb_store
+            store.clear ()
+            if pysmb.USE_OLD_CODE:
+                store.append(None, (_('Scanning...'), '', None, None))
+            else:
+                class X:
+                    pass
+                dummy = X()
+                dummy.smbc_type = pysmb.smbc.PRINTER_SHARE
+                dummy.name = _('Scanning...')
+                dummy.comment = ''
+                store.append(None, [dummy])
+            try:
+                self.busy(self.SMBBrowseDialog)
+            except:
+                nonfatalException()
         except:
             nonfatalException()
         gtk.gdk.threads_leave()
@@ -3420,28 +3423,31 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
 
         gtk.gdk.threads_enter()
-        if pysmb.USE_OLD_CODE:
-            store.clear ()
-            for domain in domains.keys ():
-                d = domains[domain]
-                iter = store.append (None)
-                if iter:
-                    dummy = store.append (iter)
-                store.set_value (iter, 0, d['DOMAIN'])
-                store.set_value (iter, 2, d)
-        else:
-            store.clear ()
-            if workgroups:
-                for workgroup in workgroups:
-                    iter = store.append (None, [workgroup])
-                    i = store.append (iter)
-
         try:
-            self.ready(self.SMBBrowseDialog)
+            if pysmb.USE_OLD_CODE:
+                store.clear ()
+                for domain in domains.keys ():
+                    d = domains[domain]
+                    iter = store.append (None)
+                    if iter:
+                        dummy = store.append (iter)
+                    store.set_value (iter, 0, d['DOMAIN'])
+                    store.set_value (iter, 2, d)
+            else:
+                store.clear ()
+                if workgroups:
+                    for workgroup in workgroups:
+                        iter = store.append (None, [workgroup])
+                        i = store.append (iter)
+
+            try:
+                self.ready(self.SMBBrowseDialog)
+            except:
+                nonfatalException()
+
+            self.smb_lock.release()
         except:
             nonfatalException()
-
-        self.smb_lock.release()
         gtk.gdk.threads_leave()
 
     def smb_select_function (self, path):
@@ -3813,15 +3819,18 @@ class NewPrinterGUI(GtkGUI):
 
     def browse_ipp_queues_thread(self):
         gtk.gdk.threads_enter()
-        store = self.ipp_store
-        store.clear ()
-        store.append(None, (_('Scanning...'), '', None))
         try:
-            self.busy(self.IPPBrowseDialog)
+            store = self.ipp_store
+            store.clear ()
+            store.append(None, (_('Scanning...'), '', None))
+            try:
+                self.busy(self.IPPBrowseDialog)
+            except:
+                nonfatalException()
+
+            host = self.entNPTIPPHostname.get_text()
         except:
             nonfatalException()
-
-        host = self.entNPTIPPHostname.get_text()
         gtk.gdk.threads_leave()
 
         cups.setServer (host)
@@ -3839,33 +3848,35 @@ class NewPrinterGUI(GtkGUI):
             failed = True
 
         gtk.gdk.threads_enter()
-
-        store.clear ()
-        for printer, dict in printers.iteritems ():
-            iter = store.append (None)
-            store.set_value (iter, 0, printer)
-            store.set_value (iter, 1, dict.get ('printer-location', ''))
-            store.set_value (iter, 2, dict)
-
-        if len (printers) + len (classes) == 0:
-            # Display 'No queues' dialog
-            if failed:
-                title = _("Not possible")
-                text = (_("It is not possible to obtain a list of queues "
-                          "from this host."))
-            else:
-                title = _("No queues")
-                text = _("There are no queues available.")
-
-            self.show_error_dialog (title, text, self.IPPBrowseDialog)
-            self.IPPBrowseDialog.hide ()
-
         try:
-            self.ready(self.IPPBrowseDialog)
+            store.clear ()
+            for printer, dict in printers.iteritems ():
+                iter = store.append (None)
+                store.set_value (iter, 0, printer)
+                store.set_value (iter, 1, dict.get ('printer-location', ''))
+                store.set_value (iter, 2, dict)
+
+            if len (printers) + len (classes) == 0:
+                # Display 'No queues' dialog
+                if failed:
+                    title = _("Not possible")
+                    text = (_("It is not possible to obtain a list of queues "
+                              "from this host."))
+                else:
+                    title = _("No queues")
+                    text = _("There are no queues available.")
+
+                self.show_error_dialog (title, text, self.IPPBrowseDialog)
+                self.IPPBrowseDialog.hide ()
+
+            try:
+                self.ready(self.IPPBrowseDialog)
+            except:
+                nonfatalException()
+
+            self.ipp_lock.release()
         except:
             nonfatalException()
-
-        self.ipp_lock.release()
         gtk.gdk.threads_leave()
 
     def on_tvIPPBrowser_cursor_changed(self, widget):
@@ -4152,39 +4163,42 @@ class NewPrinterGUI(GtkGUI):
         button = self.btnNPDownloadableDriverSearch
         label = self.btnNPDownloadableDriverSearch_label
         gtk.gdk.threads_enter ()
-        label.set_text (_("Search"))
-        button.set_sensitive (True)
-        if status != 0:
-            # Should report error.
-            print printers
-            print traceback.extract_tb(printers[2], limit=None)
-            gtk.gdk.threads_leave ()
-            return
+        try:
+            label.set_text (_("Search"))
+            button.set_sensitive (True)
+            if status != 0:
+                # Should report error.
+                print printers
+                print traceback.extract_tb(printers[2], limit=None)
+                gtk.gdk.threads_leave ()
+                return
 
-        model = gtk.ListStore (str, str)
-        if len (printers) != 1:
-            if len (printers) > 1:
-                first = _("-- Select printer model --")
-            else:
-                first = _("-- No matches found --")
+            model = gtk.ListStore (str, str)
+            if len (printers) != 1:
+                if len (printers) > 1:
+                    first = _("-- Select printer model --")
+                else:
+                    first = _("-- No matches found --")
 
-            iter = model.append (None)
-            model.set_value (iter, 0, first)
-            model.set_value (iter, 1, None)
+                iter = model.append (None)
+                model.set_value (iter, 0, first)
+                model.set_value (iter, 1, None)
 
-        sorted_list = []
-        for id, name in printers.iteritems ():
-            sorted_list.append ((id, name))
+            sorted_list = []
+            for id, name in printers.iteritems ():
+                sorted_list.append ((id, name))
 
-        sorted_list.sort (lambda x, y: cups.modelSort (x[1], y[1]))
-        for id, name in sorted_list:
-            iter = model.append (None)
-            model.set_value (iter, 0, name)
-            model.set_value (iter, 1, id)
-        combobox = self.cmbNPDownloadableDriverFoundPrinters
-        combobox.set_model (model)
-        combobox.set_active (0)
-        self.setNPButtons ()
+            sorted_list.sort (lambda x, y: cups.modelSort (x[1], y[1]))
+            for id, name in sorted_list:
+                iter = model.append (None)
+                model.set_value (iter, 0, name)
+                model.set_value (iter, 1, id)
+            combobox = self.cmbNPDownloadableDriverFoundPrinters
+            combobox.set_model (model)
+            combobox.set_active (0)
+            self.setNPButtons ()
+        except:
+            nonfatalException()
         gtk.gdk.threads_leave ()
 
     def on_cmbNPDownloadableDriverFoundPrinters_changed(self, widget):
