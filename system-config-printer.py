@@ -3831,6 +3831,9 @@ class NewPrinterGUI(GtkGUI):
             c = cups.Connection()
             printers = c.getPrinters ()
             del c
+        except cups.IPPError, (e, m):
+            debugprint ("IPP browser: %s" % m)
+            failed = True
         except:
             nonfatalException()
             failed = True
