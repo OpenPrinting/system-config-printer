@@ -127,7 +127,8 @@ EXTRA_DIST=\
 	print-applet.desktop.in \
 	intltool-extract.in \
 	intltool-merge.in \
-	intltool-update.in
+	intltool-update.in \
+	po/system-config-printer.pot
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
