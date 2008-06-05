@@ -28,7 +28,7 @@ def set_gettext_function (fn):
     global _
     _ = fn
 
-def show_error_dialog (title, text, parent=None):
+def show_dialog (title, text, icon, parent=None):
     dialog = gtk.Dialog (title, parent,
                          gtk.DIALOG_MODAL |
                          gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -39,7 +39,7 @@ def show_error_dialog (title, text, parent=None):
     hbox = gtk.HBox (False, 12)
     hbox.set_border_width (6)
     image = gtk.Image ()
-    image.set_from_stock ('gtk-dialog-error', gtk.ICON_SIZE_DIALOG)
+    image.set_from_stock (icon, gtk.ICON_SIZE_DIALOG)
     image.set_alignment (0.0, 0.0)
     hbox.pack_start (image, False, False, 0)
     label = gtk.Label ()
@@ -53,6 +53,12 @@ def show_error_dialog (title, text, parent=None):
     dialog.show_all ()
     dialog.run ()
     dialog.hide ()
+
+def show_info_dialog (title, text, parent=None):
+    return show_dialog (title, text, 'gtk-dialog-info', parent=parent)
+
+def show_error_dialog (title, text, parent=None):
+    return show_dialog (title, text, 'gtk-dialog-error', parent=parent)
 
 def show_IPP_Error(exception, message, parent=None):
     if exception == cups.IPP_NOT_AUTHORIZED:
