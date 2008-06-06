@@ -26,6 +26,7 @@ import pynotify
 import gettext
 import gobject
 import gtk
+import gtk.gdk
 import gtk.glade
 import monitor
 import os
@@ -113,6 +114,9 @@ class JobViewer (monitor.Watcher):
         self.store.set_sort_column_id (0, gtk.SORT_DESCENDING)
         self.treeview.set_model(self.store)
         self.treeview.set_rules_hint (True)
+        self.treeview.connect ('button_release_event',
+                               self.on_treeview_button_release_event)
+        self.treeview.connect ('popup-menu', self.on_treeview_popup_menu)
 
         self.MainWindow = self.xml.get_widget ('MainWindow')
         self.MainWindow.set_icon_name (ICON)
@@ -500,10 +504,15 @@ class JobViewer (monitor.Watcher):
                                      open_notifications > 0 or
                                      num_jobs > self.num_jobs_when_hidden)
 
-    def on_treeview_button_press_event(self, treeview, event):
-        if event.button != 3:
-            return
+    def on_treeview_popup_menu (self, treeview):
+        event = gtk.gdk.Event (gtk.gdk.NOTHING)
+        self.show_treeview_popup_menu (treeview, event, 0)
 
+    def on_treeview_button_release_event(self, treeview, event):
+        if event.button == 3:
+            self.show_treeview_popup_menu (treeview, event, event.button)
+
+    def show_treeview_popup_menu (self, treeview, event, event_button):
         # Right-clicked.
         store, iter = treeview.get_selection ().get_selected ()
         if iter == None:
@@ -525,7 +534,7 @@ class JobViewer (monitor.Watcher):
                 self.release.set_sensitive (False)
             if (not job.get('job-preserved', False)):
                 self.reprint.set_sensitive (False)
-        self.job_popupmenu.popup (None, None, None, event.button,
+        self.job_popupmenu.popup (None, None, None, event_button,
                                   event.get_time ())
 
     def on_icon_popupmenu(self, icon, button, time):

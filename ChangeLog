@@ -1,3 +1,17 @@
+2008-06-06  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.glade: Remove treeview signal connection for
+	button_press_event.
+	* jobviewer.py (JobViewer.__init__): Connect treeview's
+	button_release_event and popup-menu signals.
+	(JobViewer.show_treeview_popup_menu): New method, to adjust the
+	visible menu items of the job context menu and show it.
+	(JobViewer.on_treeview_button_press_event): Renamed...
+	(JobViewer.on_treeview_button_release_event): ...to this.  Use
+	show_treeview_popup_menu.
+	(JobViewer.on_treeview_popup_menu): New method.  Fixes
+	https://fedorahosted.org/system-config-printer/ticket/5.
+
 2008-06-05  Tim Waugh  <twaugh@redhat.com>
 
 	* Makefile.am: Ship translation template file.
