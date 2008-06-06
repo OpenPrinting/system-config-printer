@@ -170,6 +170,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.changed = set() # of options
 
         self.servers = set((self.connect_server,))
+        self.server_is_publishing = False
 
         # WIDGETS
         # =======
@@ -1551,6 +1552,12 @@ class GUI(GtkGUI, monitor.Watcher):
         printer = self.printers[name] 
         self.printer = printer
         printer.getAttributes ()
+        try:
+            # CUPS 1.4
+            publishing = printer.other_attributes['server-is-sharing-printers']
+            self.server_is_publishing = publishing
+        except KeyError:
+            pass
 
         editable = not self.printer.discovered
         editablePPD = not self.printer.remote
@@ -1618,25 +1625,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         try:
             if printer.is_shared:
-                try:
-                    # CUPS 1.4
-                    attr = 'server-is-sharing-printers'
-                    publishing = printer.other_attributes[attr]
-                except KeyError:
-                    try:
-                        flag = cups.CUPS_SERVER_SHARE_PRINTERS
-                        publishing = int (self.server_settings[flag])
-                    except AttributeError:
-                        # Haven't fetched server settings yet, so don't
-                        # show the warning.
-                        publishing = True
-                    except KeyError:
-                        # We've previously tried to fetch server
-                        # settings but failed.  Don't show the
-                        # warning.
-                        publishing = True
-
-                if publishing:
+                if self.server_is_publishing:
                     self.lblNotPublished.hide_all ()
                 else:
                     self.lblNotPublished.show_all ()
@@ -2148,6 +2137,7 @@ class GUI(GtkGUI, monitor.Watcher):
             printer.setEnabled (enable)
         self.populateList ()
 
+    # Shared
     def on_shared_activate(self, menuitem):
         if self.updating_widgets:
             return
@@ -2159,7 +2149,18 @@ class GUI(GtkGUI, monitor.Watcher):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
             printer.setShared (share)
+        if share:
+            self.advise_publish ()
         self.populateList ()
+
+    def advise_publish(self):
+        if not self.server_is_publishing:
+            show_info_dialog (_("Publish Shared Printers"),
+                              _("Shared printers are not available "
+                                "to other people unless the "
+                                "'Publish shared printers' option is "
+                                "enabled in the server settings."),
+                              parent=self.MainWindow)
 
     # Set As Default
     def on_set_as_default_activate(self, menuitem):
@@ -2212,6 +2213,14 @@ class GUI(GtkGUI, monitor.Watcher):
                 widget.set_active(False)
                 widget.set_sensitive(False)
         self.setDataButtonState()
+
+        try:
+            flag = cups.CUPS_SERVER_SHARE_PRINTERS
+            publishing = int (self.server_settings[flag])
+            self.server_is_publishing = publishing
+        except AttributeError:
+            pass
+
         # Set sensitivity of 'Allow printing from the Internet'.
         self.on_server_changed (self.chkServerShare) # (any will do here)
         

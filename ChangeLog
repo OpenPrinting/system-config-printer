@@ -1,5 +1,16 @@
 2008-06-06  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.__init__): Initialise
+	server_is_publishing variable.
+	(GUI.fillPrinterTab): Update it from server-is-sharing-printers
+	attribute if available (CUPS 1.4).
+	(GUI.fillServerTab): Update it from CUPS_SERVER_SHARE_PRINTERS
+	setting.
+	(GUI.advise_publish): New method.
+	(GUI.on_shared_activate): Use it.
+
+2008-06-06  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.glade: New Shared checkbox menu item, both
 	for the menu bar and the context menu.
 

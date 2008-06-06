@@ -53,7 +53,7 @@
 		      <signal name="activate" handler="on_connect_activate" last_modification_time="Mon, 20 Mar 2006 10:48:28 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image103">
+			<widget class="GtkImage" id="image108">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-connect</property>
 			  <property name="icon_size">1</property>
@@ -75,7 +75,7 @@
 		      <signal name="activate" handler="on_server_settings_activate" last_modification_time="Fri, 14 Mar 2008 12:02:35 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image104">
+			<widget class="GtkImage" id="image109">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-preferences</property>
 			  <property name="icon_size">1</property>
@@ -111,7 +111,7 @@
 			      <signal name="activate" handler="on_new_printer_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image105">
+				<widget class="GtkImage" id="image110">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-print</property>
 				  <property name="icon_size">1</property>
@@ -132,7 +132,7 @@
 			      <signal name="activate" handler="on_new_class_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image106">
+				<widget class="GtkImage" id="image111">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-dnd-multiple</property>
 				  <property name="icon_size">1</property>
@@ -238,7 +238,7 @@
 		      <signal name="activate" handler="on_set_as_default_activate" last_modification_time="Tue, 13 May 2008 11:45:27 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image107">
+			<widget class="GtkImage" id="image112">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-home</property>
 			  <property name="icon_size">1</property>
@@ -267,10 +267,10 @@
 		  <child>
 		    <widget class="GtkCheckMenuItem" id="view_discovered_printers">
 		      <property name="visible">True</property>
-		      <property name="tooltip" translatable="yes">Show printers discovered by browsing</property>
+		      <property name="tooltip" translatable="yes">Show printers shared by other systems</property>
 		      <property name="label" translatable="yes">_Discovered Printers</property>
 		      <property name="use_underline">True</property>
-		      <property name="active">True</property>
+		      <property name="active">False</property>
 		      <signal name="activate" handler="on_view_discovered_printers_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
 		    </widget>
 		  </child>
@@ -297,7 +297,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image108">
+			<widget class="GtkImage" id="image113">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-help</property>
 			  <property name="icon_size">1</property>
@@ -6215,7 +6215,7 @@ Till Kamppeter &lt;till.kamppeter@gmail.com&gt;</property>
 		    <widget class="GtkCheckButton" id="chkServerShare">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">Share published printers connected to this system</property>
+		      <property name="label" translatable="yes">Publish shared printers connected to this system</property>
 		      <property name="use_underline">True</property>
 		      <property name="relief">GTK_RELIEF_NORMAL</property>
 		      <property name="focus_on_click">True</property>
