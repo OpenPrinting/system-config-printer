@@ -1,5 +1,26 @@
 2008-06-06  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: Changed Enable/Disable menu items
+	to a single Enabled checkbox menu item, both for the menu bar and
+	the context menu.
+
+	* system-config-printer.py (GUI.on_enable_activate): Renamed...
+	(GUI.on_enabled_activate): ...to this.  Use checkbox.
+	(GUI.on_disable_activate): Removed.
+	(GUI.dests_iconview_selection_changed): Update Enabled checkbox
+	state.
+
+	* contextmenu.py
+	(PrinterContextMenu.on_printer_context_enable_activate):
+	Renamed...
+	(PrinterContextMenu.on_printer_context_enabled_activate): ...to
+	this.  Use checkbox.
+	(PrinterContextMenu.on_printer_context_disable_activate):
+	Removed.
+	(PrinterContextMenu.popup): Update Enabled checkbox state.
+
+2008-06-06  Tim Waugh  <twaugh@redhat.com>
+
 	* cupshelpers.py (Printer.update): Work around pycups bug with
 	printer-uri-supported.
 

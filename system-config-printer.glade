@@ -53,7 +53,7 @@
 		      <signal name="activate" handler="on_connect_activate" last_modification_time="Mon, 20 Mar 2006 10:48:28 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image87">
+			<widget class="GtkImage" id="image94">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-connect</property>
 			  <property name="icon_size">1</property>
@@ -75,7 +75,7 @@
 		      <signal name="activate" handler="on_server_settings_activate" last_modification_time="Fri, 14 Mar 2008 12:02:35 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image88">
+			<widget class="GtkImage" id="image95">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-preferences</property>
 			  <property name="icon_size">1</property>
@@ -111,7 +111,7 @@
 			      <signal name="activate" handler="on_new_printer_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image89">
+				<widget class="GtkImage" id="image96">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-print</property>
 				  <property name="icon_size">1</property>
@@ -132,7 +132,7 @@
 			      <signal name="activate" handler="on_new_class_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image90">
+				<widget class="GtkImage" id="image97">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-dnd-multiple</property>
 				  <property name="icon_size">1</property>
@@ -211,44 +211,12 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkImageMenuItem" id="disable">
+		    <widget class="GtkCheckMenuItem" id="enabled">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Disable</property>
+		      <property name="label" translatable="yes">_Enabled</property>
 		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_disable_activate" last_modification_time="Tue, 13 May 2008 11:54:33 GMT"/>
-
-		      <child internal-child="image">
-			<widget class="GtkImage" id="image91">
-			  <property name="visible">True</property>
-			  <property name="stock">gtk-media-pause</property>
-			  <property name="icon_size">1</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
-			</widget>
-		      </child>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkImageMenuItem" id="enable">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">E_nable</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_enable_activate" last_modification_time="Tue, 13 May 2008 11:54:33 GMT"/>
-
-		      <child internal-child="image">
-			<widget class="GtkImage" id="image92">
-			  <property name="visible">True</property>
-			  <property name="stock">gtk-media-play</property>
-			  <property name="icon_size">1</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
-			</widget>
-		      </child>
+		      <property name="active">False</property>
+		      <signal name="activate" handler="on_enabled_activate" last_modification_time="Fri, 06 Jun 2008 09:43:18 GMT"/>
 		    </widget>
 		  </child>
 
@@ -260,7 +228,7 @@
 		      <signal name="activate" handler="on_set_as_default_activate" last_modification_time="Tue, 13 May 2008 11:45:27 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image93">
+			<widget class="GtkImage" id="image98">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-home</property>
 			  <property name="icon_size">1</property>
@@ -319,7 +287,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image94">
+			<widget class="GtkImage" id="image99">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-help</property>
 			  <property name="icon_size">1</property>
@@ -10886,44 +10854,12 @@ Reverse portrait (180°)</property>
   </child>
 
   <child>
-    <widget class="GtkImageMenuItem" id="printer_context_disable">
+    <widget class="GtkCheckMenuItem" id="printer_context_enabled">
       <property name="visible">True</property>
-      <property name="label" translatable="yes">_Disable</property>
+      <property name="label" translatable="yes">E_nabled</property>
       <property name="use_underline">True</property>
-      <signal name="activate" handler="on_printer_context_disable_activate" last_modification_time="Fri, 14 Mar 2008 13:43:39 GMT"/>
-
-      <child internal-child="image">
-	<widget class="GtkImage" id="image75">
-	  <property name="visible">True</property>
-	  <property name="stock">gtk-media-pause</property>
-	  <property name="icon_size">1</property>
-	  <property name="xalign">0.5</property>
-	  <property name="yalign">0.5</property>
-	  <property name="xpad">0</property>
-	  <property name="ypad">0</property>
-	</widget>
-      </child>
-    </widget>
-  </child>
-
-  <child>
-    <widget class="GtkImageMenuItem" id="printer_context_enable">
-      <property name="visible">True</property>
-      <property name="label" translatable="yes">E_nable</property>
-      <property name="use_underline">True</property>
-      <signal name="activate" handler="on_printer_context_enable_activate" last_modification_time="Fri, 14 Mar 2008 13:43:39 GMT"/>
-
-      <child internal-child="image">
-	<widget class="GtkImage" id="image76">
-	  <property name="visible">True</property>
-	  <property name="stock">gtk-media-play</property>
-	  <property name="icon_size">1</property>
-	  <property name="xalign">0.5</property>
-	  <property name="yalign">0.5</property>
-	  <property name="xpad">0</property>
-	  <property name="ypad">0</property>
-	</widget>
-      </child>
+      <property name="active">False</property>
+      <signal name="activate" handler="on_printer_context_enabled_activate" last_modification_time="Fri, 06 Jun 2008 10:19:14 GMT"/>
     </widget>
   </child>
 
@@ -10953,7 +10889,7 @@ Reverse portrait (180°)</property>
       <signal name="activate" handler="on_printer_context_set_as_default_activate" last_modification_time="Fri, 14 Mar 2008 14:13:33 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image77">
+	<widget class="GtkImage" id="image100">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-home</property>
 	  <property name="icon_size">1</property>
@@ -10975,7 +10911,7 @@ Reverse portrait (180°)</property>
       <signal name="activate" handler="on_printer_context_create_class_activate" last_modification_time="Tue, 27 May 2008 14:46:16 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image78">
+	<widget class="GtkImage" id="image101">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-dnd-multiple</property>
 	  <property name="icon_size">1</property>
@@ -11002,7 +10938,7 @@ Reverse portrait (180°)</property>
       <signal name="activate" handler="on_printer_context_view_print_queue_activate" last_modification_time="Fri, 14 Mar 2008 13:43:39 GMT"/>
 
       <child internal-child="image">
-	<widget class="GtkImage" id="image79">
+	<widget class="GtkImage" id="image102">
 	  <property name="visible">True</property>
 	  <property name="stock">gtk-find</property>
 	  <property name="icon_size">1</property>

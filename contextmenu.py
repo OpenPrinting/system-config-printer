@@ -39,8 +39,7 @@ class PrinterContextMenu:
         for name in ["printer_context_menu",
                      "printer_context_edit",
                      "printer_context_rename",
-                     "printer_context_disable",
-                     "printer_context_enable",
+                     "printer_context_enabled",
                      "printer_context_copy",
                      "printer_context_delete",
                      "printer_context_set_as_default",
@@ -50,6 +49,7 @@ class PrinterContextMenu:
             setattr (self, name, widget)
         self.xml.signal_autoconnect (self)
         self.jobviewers = []
+        self.updating_widgets = False
 
     def cleanup (self):
         while len (self.jobviewers) > 0:
@@ -91,6 +91,8 @@ class PrinterContextMenu:
             else:
                 widget.hide ()
 
+        self.updating_widgets = True
+
         # Actions that require a single destination
         show_widget (self.printer_context_edit, n == 1)
         show_widget (self.printer_context_copy, n == 1)
@@ -99,11 +101,13 @@ class PrinterContextMenu:
                      n == 1 and not is_default)
 
         # Actions that require at least one destination
-        show_widget (self.printer_context_disable,
-                     n > 0 and any_enabled and not any_discovered)
-        show_widget (self.printer_context_enable,
-                     n > 0 and any_disabled and not any_discovered)
         show_widget (self.printer_context_delete, n > 0 and not any_discovered)
+        show_widget (self.printer_context_enabled, n > 0 and not any_discovered)
+        self.printer_context_enabled.set_active (any_discovered or
+                                                 not any_disabled)
+        self.printer_context_enabled.set_inconsistent (n > 1 and
+                                                       any_enabled and
+                                                       any_disabled)
 
         # Actions that require more than one destination
         show_widget (self.printer_context_create_class, n > 1)
@@ -115,6 +119,7 @@ class PrinterContextMenu:
             event_button = event.button
             event_time = event.get_time ()
 
+        self.updating_widgets = False
         self.printer_context_menu.popup (None, None, None, event_button,
                                          event_time, None)
 
@@ -126,8 +131,11 @@ class PrinterContextMenu:
     def on_printer_context_rename_activate (self, menuitem):
         self.parent.on_rename_activate (menuitem)
 
-    ### Enable
-    def on_printer_context_enable_activate (self, menuitem, enable=True):
+    ### Enabled
+    def on_printer_context_enabled_activate (self, menuitem):
+        if self.updating_widgets:
+            return
+        enable = menuitem.get_active ()
         model = self.iconview.get_model ()
         for i in range (len (self.paths)):
             iter = model.get_iter (self.paths[i])
@@ -139,10 +147,6 @@ class PrinterContextMenu:
                 # Give up on this operation.
                 break
         self.parent.populateList ()
-
-    ### Disable
-    def on_printer_context_disable_activate (self, menuitem):
-        self.on_printer_context_enable_activate (menuitem, enable=False)
 
     ### Copy
     def on_printer_context_copy_activate (self, menuitem):

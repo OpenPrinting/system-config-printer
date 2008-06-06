@@ -173,6 +173,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # WIDGETS
         # =======
+        self.updating_widgets = False
         glade_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE", pkgdata)
         xml = os.path.join (glade_dir, domain + '.glade')
         self.xml = gtk.glade.XML(xml, domain = domain)
@@ -186,7 +187,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         "statusbarMain",
                         "new_printer", "new_class",
                         "rename", "copy", "delete",
-                        "enable", "disable", "set_as_default",
+                        "enabled", "set_as_default",
                         "view_discovered_printers",
 
                         "toolbar",
@@ -583,6 +584,7 @@ class GUI(GtkGUI, monitor.Watcher):
             dialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
+        self.updating_widgets = True
         paths = iconview.get_selected_items ()
         any_disabled = False
         any_enabled = False
@@ -606,9 +608,11 @@ class GUI(GtkGUI, monitor.Watcher):
         self.rename.set_sensitive(n == 1 and not any_discovered)
         self.set_as_default.set_sensitive(n == 1 and
                                           self.default_printer != name)
-        self.disable.set_sensitive(n > 0 and any_enabled and not any_discovered)
-        self.enable.set_sensitive(n > 0 and any_disabled and not any_discovered)
+        self.enabled.set_sensitive(n > 0 and not any_discovered)
+        self.enabled.set_inconsistent (n > 1 and any_enabled and any_disabled)
+        self.enabled.set_active (any_discovered or not any_disabled)
         self.delete.set_sensitive(n > 0 and not any_discovered)
+        self.updating_widgets = False
 
     def dests_iconview_popup_menu (self, iconview):
         paths = iconview.get_selected_items ()
@@ -2120,8 +2124,11 @@ class GUI(GtkGUI, monitor.Watcher):
         self.changed = set()
         self.populateList()
 
-    # Enable
-    def on_enable_activate(self, menuitem, enable=True):
+    # Enable/disable
+    def on_enabled_activate(self, menuitem):
+        if self.updating_widgets:
+            return
+        enable = menuitem.get_active ()
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
@@ -2130,10 +2137,6 @@ class GUI(GtkGUI, monitor.Watcher):
             printer = model.get_value (iter, 0)
             printer.setEnabled (enable)
         self.populateList ()
-
-    # Disable
-    def on_disable_activate(self, menuitem):
-        self.on_enable_activate (menuitem, enable=False)
 
     # Set As Default
     def on_set_as_default_activate(self, menuitem):
