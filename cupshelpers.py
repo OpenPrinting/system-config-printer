@@ -47,6 +47,8 @@ class Printer:
         self.state = kw.get('printer-state', 0)
         self.type = kw.get('printer-type', 0)
         self.uri_supported = kw.get('printer-uri-supported', "")
+        if type (self.uri_supported) == list:
+            self.uri_supported = self.uri_supported[0]
         self._expand_flags()
 
         self.state_description = self.printer_states.get(
