@@ -40,6 +40,7 @@ class PrinterContextMenu:
                      "printer_context_edit",
                      "printer_context_rename",
                      "printer_context_enabled",
+                     "printer_context_shared",
                      "printer_context_copy",
                      "printer_context_delete",
                      "printer_context_set_as_default",
@@ -72,6 +73,8 @@ class PrinterContextMenu:
         any_disabled = False
         any_enabled = False
         any_discovered = False
+        any_shared = False
+        any_unshared = False
         for i in range (n):
             iter = model.get_iter (paths[i])
             object = model.get_value (iter, 0)
@@ -81,8 +84,13 @@ class PrinterContextMenu:
                 any_enabled = True
             else:
                 any_disabled = True
+            if object.is_shared:
+                any_shared = True
+            else:
+                any_unshared = True
 
-            if any_discovered and any_enabled and any_disabled:
+            if (any_discovered and any_enabled and any_disabled and
+                any_shared and any_unshared):
                 break
 
         def show_widget (widget, condition):
@@ -108,6 +116,12 @@ class PrinterContextMenu:
         self.printer_context_enabled.set_inconsistent (n > 1 and
                                                        any_enabled and
                                                        any_disabled)
+        show_widget (self.printer_context_shared, n > 0 and not any_discovered)
+        self.printer_context_shared.set_active (any_discovered or
+                                                not any_unshared)
+        self.printer_context_shared.set_inconsistent (n > 1 and
+                                                      any_shared and
+                                                      any_unshared)
 
         # Actions that require more than one destination
         show_widget (self.printer_context_create_class, n > 1)
@@ -142,6 +156,23 @@ class PrinterContextMenu:
             printer = model.get_value (iter, 0)
             try:
                 printer.setEnabled (enable)
+            except cups.IPPError, (e, m):
+                errordialogs.show_IPP_Error (e, m, self.parent.MainWindow)
+                # Give up on this operation.
+                break
+        self.parent.populateList ()
+
+    ### Shared
+    def on_printer_context_shared_activate (self, menuitem):
+        if self.updating_widgets:
+            return
+        share = menuitem.get_active ()
+        model = self.iconview.get_model ()
+        for i in range (len (self.paths)):
+            iter = model.get_iter (self.paths[i])
+            printer = model.get_value (iter, 0)
+            try:
+                printer.setShared (share)
             except cups.IPPError, (e, m):
                 errordialogs.show_IPP_Error (e, m, self.parent.MainWindow)
                 # Give up on this operation.

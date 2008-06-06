@@ -53,7 +53,7 @@
 		      <signal name="activate" handler="on_connect_activate" last_modification_time="Mon, 20 Mar 2006 10:48:28 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image94">
+			<widget class="GtkImage" id="image103">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-connect</property>
 			  <property name="icon_size">1</property>
@@ -75,7 +75,7 @@
 		      <signal name="activate" handler="on_server_settings_activate" last_modification_time="Fri, 14 Mar 2008 12:02:35 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image95">
+			<widget class="GtkImage" id="image104">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-preferences</property>
 			  <property name="icon_size">1</property>
@@ -111,7 +111,7 @@
 			      <signal name="activate" handler="on_new_printer_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image96">
+				<widget class="GtkImage" id="image105">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-print</property>
 				  <property name="icon_size">1</property>
@@ -132,7 +132,7 @@
 			      <signal name="activate" handler="on_new_class_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image97">
+				<widget class="GtkImage" id="image106">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-dnd-multiple</property>
 				  <property name="icon_size">1</property>
@@ -221,6 +221,16 @@
 		  </child>
 
 		  <child>
+		    <widget class="GtkCheckMenuItem" id="shared">
+		      <property name="visible">True</property>
+		      <property name="label" translatable="yes">_Shared</property>
+		      <property name="use_underline">True</property>
+		      <property name="active">False</property>
+		      <signal name="activate" handler="on_shared_activate" last_modification_time="Fri, 06 Jun 2008 10:42:59 GMT"/>
+		    </widget>
+		  </child>
+
+		  <child>
 		    <widget class="GtkImageMenuItem" id="set_as_default">
 		      <property name="visible">True</property>
 		      <property name="label" translatable="yes">Set As De_fault</property>
@@ -228,7 +238,7 @@
 		      <signal name="activate" handler="on_set_as_default_activate" last_modification_time="Tue, 13 May 2008 11:45:27 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image98">
+			<widget class="GtkImage" id="image107">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-home</property>
 			  <property name="icon_size">1</property>
@@ -287,7 +297,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image99">
+			<widget class="GtkImage" id="image108">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-help</property>
 			  <property name="icon_size">1</property>
@@ -10854,16 +10864,6 @@ Reverse portrait (180°)</property>
   </child>
 
   <child>
-    <widget class="GtkCheckMenuItem" id="printer_context_enabled">
-      <property name="visible">True</property>
-      <property name="label" translatable="yes">E_nabled</property>
-      <property name="use_underline">True</property>
-      <property name="active">False</property>
-      <signal name="activate" handler="on_printer_context_enabled_activate" last_modification_time="Fri, 06 Jun 2008 10:19:14 GMT"/>
-    </widget>
-  </child>
-
-  <child>
     <widget class="GtkImageMenuItem" id="printer_context_copy">
       <property name="visible">True</property>
       <property name="label">gtk-copy</property>
@@ -10878,6 +10878,32 @@ Reverse portrait (180°)</property>
       <property name="label">gtk-delete</property>
       <property name="use_stock">True</property>
       <signal name="activate" handler="on_printer_context_delete_activate" last_modification_time="Fri, 14 Mar 2008 14:13:33 GMT"/>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkSeparatorMenuItem" id="separator7">
+      <property name="visible">True</property>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkCheckMenuItem" id="printer_context_enabled">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">E_nabled</property>
+      <property name="use_underline">True</property>
+      <property name="active">False</property>
+      <signal name="activate" handler="on_printer_context_enabled_activate" last_modification_time="Fri, 06 Jun 2008 10:19:14 GMT"/>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkCheckMenuItem" id="printer_context_shared">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">_Shared</property>
+      <property name="use_underline">True</property>
+      <property name="active">False</property>
+      <signal name="activate" handler="on_printer_context_shared_activate" last_modification_time="Fri, 06 Jun 2008 09:11:26 GMT"/>
     </widget>
   </child>
 

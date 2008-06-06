@@ -187,7 +187,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         "statusbarMain",
                         "new_printer", "new_class",
                         "rename", "copy", "delete",
-                        "enabled", "set_as_default",
+                        "enabled", "shared", "set_as_default",
                         "view_discovered_printers",
 
                         "toolbar",
@@ -589,6 +589,8 @@ class GUI(GtkGUI, monitor.Watcher):
         any_disabled = False
         any_enabled = False
         any_discovered = False
+        any_shared = False
+        any_unshared = False
         n = len (paths)
         for i in range (n):
             model = iconview.get_model ()
@@ -601,7 +603,12 @@ class GUI(GtkGUI, monitor.Watcher):
                 any_enabled = True
             else:
                 any_disabled = True
-            if any_discovered and any_enabled and any_disabled:
+            if object.is_shared:
+                any_shared = True
+            else:
+                any_unshared = True
+            if (any_discovered and any_enabled and any_disabled and
+                any_shared and any_unshared):
                 break
 
         self.copy.set_sensitive(n == 1)
@@ -611,6 +618,9 @@ class GUI(GtkGUI, monitor.Watcher):
         self.enabled.set_sensitive(n > 0 and not any_discovered)
         self.enabled.set_inconsistent (n > 1 and any_enabled and any_disabled)
         self.enabled.set_active (any_discovered or not any_disabled)
+        self.shared.set_sensitive(n > 0 and not any_discovered)
+        self.shared.set_inconsistent (n > 1 and any_enabled and any_disabled)
+        self.shared.set_active (any_discovered or not any_unshared)
         self.delete.set_sensitive(n > 0 and not any_discovered)
         self.updating_widgets = False
 
@@ -2136,6 +2146,19 @@ class GUI(GtkGUI, monitor.Watcher):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
             printer.setEnabled (enable)
+        self.populateList ()
+
+    def on_shared_activate(self, menuitem):
+        if self.updating_widgets:
+            return
+        share = menuitem.get_active ()
+        iconview = self.dests_iconview
+        paths = iconview.get_selected_items ()
+        model = iconview.get_model ()
+        for i in range (len (paths)):
+            iter = model.get_iter (paths[i])
+            printer = model.get_value (iter, 0)
+            printer.setShared (share)
         self.populateList ()
 
     # Set As Default
