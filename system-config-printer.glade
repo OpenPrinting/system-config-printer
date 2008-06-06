@@ -38,21 +38,44 @@
 	  <child>
 	    <widget class="GtkMenuItem" id="menuitem4">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">_File</property>
+	      <property name="label" translatable="yes">_Server</property>
 	      <property name="use_underline">True</property>
 
 	      <child>
 		<widget class="GtkMenu" id="menuitem4_menu">
 
 		  <child>
+		    <widget class="GtkImageMenuItem" id="goto_server">
+		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Choose a different CUPS server</property>
+		      <property name="label" translatable="yes">_Connect...</property>
+		      <property name="use_underline">True</property>
+		      <signal name="activate" handler="on_connect_activate" last_modification_time="Mon, 20 Mar 2006 10:48:28 GMT"/>
+
+		      <child internal-child="image">
+			<widget class="GtkImage" id="image87">
+			  <property name="visible">True</property>
+			  <property name="stock">gtk-connect</property>
+			  <property name="icon_size">1</property>
+			  <property name="xalign">0.5</property>
+			  <property name="yalign">0.5</property>
+			  <property name="xpad">0</property>
+			  <property name="ypad">0</property>
+			</widget>
+		      </child>
+		    </widget>
+		  </child>
+
+		  <child>
 		    <widget class="GtkImageMenuItem" id="server_settings">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Server Settings...</property>
+		      <property name="tooltip" translatable="yes">Adjust server settings</property>
+		      <property name="label" translatable="yes">_Settings...</property>
 		      <property name="use_underline">True</property>
 		      <signal name="activate" handler="on_server_settings_activate" last_modification_time="Fri, 14 Mar 2008 12:02:35 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image67">
+			<widget class="GtkImage" id="image88">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-preferences</property>
 			  <property name="icon_size">1</property>
@@ -66,23 +89,69 @@
 		  </child>
 
 		  <child>
-		    <widget class="GtkImageMenuItem" id="goto_server">
+		    <widget class="GtkSeparatorMenuItem" id="separator5">
 		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Connect...</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_connect_activate" last_modification_time="Mon, 20 Mar 2006 10:48:28 GMT"/>
+		    </widget>
+		  </child>
 
-		      <child internal-child="image">
-			<widget class="GtkImage" id="image68">
-			  <property name="visible">True</property>
-			  <property name="stock">gtk-connect</property>
-			  <property name="icon_size">1</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
+		  <child>
+		    <widget class="GtkImageMenuItem" id="new2">
+		      <property name="visible">True</property>
+		      <property name="label">gtk-new</property>
+		      <property name="use_stock">True</property>
+
+		      <child>
+			<widget class="GtkMenu" id="new2_menu">
+
+			  <child>
+			    <widget class="GtkImageMenuItem" id="new_printer">
+			      <property name="visible">True</property>
+			      <property name="label" translatable="yes">_Printer</property>
+			      <property name="use_underline">True</property>
+			      <signal name="activate" handler="on_new_printer_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
+
+			      <child internal-child="image">
+				<widget class="GtkImage" id="image89">
+				  <property name="visible">True</property>
+				  <property name="stock">gtk-print</property>
+				  <property name="icon_size">1</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
+				  <property name="xpad">0</property>
+				  <property name="ypad">0</property>
+				</widget>
+			      </child>
+			    </widget>
+			  </child>
+
+			  <child>
+			    <widget class="GtkImageMenuItem" id="new_class">
+			      <property name="visible">True</property>
+			      <property name="label" translatable="yes">_Class</property>
+			      <property name="use_underline">True</property>
+			      <signal name="activate" handler="on_new_class_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
+
+			      <child internal-child="image">
+				<widget class="GtkImage" id="image90">
+				  <property name="visible">True</property>
+				  <property name="stock">gtk-dnd-multiple</property>
+				  <property name="icon_size">1</property>
+				  <property name="xalign">0.5</property>
+				  <property name="yalign">0.5</property>
+				  <property name="xpad">0</property>
+				  <property name="ypad">0</property>
+				</widget>
+			      </child>
+			    </widget>
+			  </child>
 			</widget>
 		      </child>
+		    </widget>
+		  </child>
+
+		  <child>
+		    <widget class="GtkSeparatorMenuItem" id="separator6">
+		      <property name="visible">True</property>
 		    </widget>
 		  </child>
 
@@ -102,59 +171,11 @@
 	  <child>
 	    <widget class="GtkMenuItem" id="menuitem5">
 	      <property name="visible">True</property>
-	      <property name="label" translatable="yes">_Edit</property>
+	      <property name="label" translatable="yes">_Printer</property>
 	      <property name="use_underline">True</property>
 
 	      <child>
 		<widget class="GtkMenu" id="menuitem5_menu">
-
-		  <child>
-		    <widget class="GtkImageMenuItem" id="new_printer">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">New _Printer</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_new_printer_activate" last_modification_time="Wed, 22 Feb 2006 09:27:42 GMT"/>
-
-		      <child internal-child="image">
-			<widget class="GtkImage" id="image69">
-			  <property name="visible">True</property>
-			  <property name="stock">gtk-add</property>
-			  <property name="icon_size">1</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
-			</widget>
-		      </child>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkImageMenuItem" id="new_class">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">New Clas_s</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_new_class_activate" last_modification_time="Wed, 22 Feb 2006 09:27:42 GMT"/>
-
-		      <child internal-child="image">
-			<widget class="GtkImage" id="image70">
-			  <property name="visible">True</property>
-			  <property name="stock">gtk-add</property>
-			  <property name="icon_size">1</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
-			</widget>
-		      </child>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkSeparatorMenuItem" id="separator2">
-		      <property name="visible">True</property>
-		    </widget>
-		  </child>
 
 		  <child>
 		    <widget class="GtkMenuItem" id="rename">
@@ -197,7 +218,7 @@
 		      <signal name="activate" handler="on_disable_activate" last_modification_time="Tue, 13 May 2008 11:54:33 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image71">
+			<widget class="GtkImage" id="image91">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-media-pause</property>
 			  <property name="icon_size">1</property>
@@ -218,7 +239,7 @@
 		      <signal name="activate" handler="on_enable_activate" last_modification_time="Tue, 13 May 2008 11:54:33 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image72">
+			<widget class="GtkImage" id="image92">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-media-play</property>
 			  <property name="icon_size">1</property>
@@ -239,7 +260,7 @@
 		      <signal name="activate" handler="on_set_as_default_activate" last_modification_time="Tue, 13 May 2008 11:45:27 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image73">
+			<widget class="GtkImage" id="image93">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-home</property>
 			  <property name="icon_size">1</property>
@@ -249,6 +270,30 @@
 			  <property name="ypad">0</property>
 			</widget>
 		      </child>
+		    </widget>
+		  </child>
+		</widget>
+	      </child>
+	    </widget>
+	  </child>
+
+	  <child>
+	    <widget class="GtkMenuItem" id="view1">
+	      <property name="visible">True</property>
+	      <property name="label" translatable="yes">_View</property>
+	      <property name="use_underline">True</property>
+
+	      <child>
+		<widget class="GtkMenu" id="view1_menu">
+
+		  <child>
+		    <widget class="GtkCheckMenuItem" id="view_discovered_printers">
+		      <property name="visible">True</property>
+		      <property name="tooltip" translatable="yes">Show printers discovered by browsing</property>
+		      <property name="label" translatable="yes">_Discovered Printers</property>
+		      <property name="use_underline">True</property>
+		      <property name="active">True</property>
+		      <signal name="activate" handler="on_view_discovered_printers_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
 		    </widget>
 		  </child>
 		</widget>
@@ -274,7 +319,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image74">
+			<widget class="GtkImage" id="image94">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-help</property>
 			  <property name="icon_size">1</property>
