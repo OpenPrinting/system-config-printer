@@ -1,8 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -41,6 +41,8 @@ class Printer:
         self.state = kw.get('printer-state', 0)
         self.type = kw.get('printer-type', 0)
         self.uri_supported = kw.get('printer-uri-supported', "")
+        if type (self.uri_supported) == list:
+            self.uri_supported = self.uri_supported[0]
         self._expand_flags()
 
         self.state_description = self.printer_states.get(
