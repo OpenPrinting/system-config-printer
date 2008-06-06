@@ -1,5 +1,21 @@
 2008-06-06  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: New Shared checkbox menu item, both
+	for the menu bar and the context menu.
+
+	* system-config-printer.py (GUI.on_shared_activate): New method.
+	(GUI.dests_iconview_selection_changed): Update Shared checkbox
+	state.
+
+	* contextmenu.py
+	(PrinterContextMenu.on_printer_context_shared_activate): New
+	method.
+	(PrinterContextMenu.popup): Update Shared checkbox state.
+
+	Fixes https://fedorahosted.org/system-config-printer/ticket/1.
+
+2008-06-06  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.glade: Changed Enable/Disable menu items
 	to a single Enabled checkbox menu item, both for the menu bar and
 	the context menu.
