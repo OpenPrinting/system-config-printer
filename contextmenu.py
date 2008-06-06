@@ -177,6 +177,8 @@ class PrinterContextMenu:
                 errordialogs.show_IPP_Error (e, m, self.parent.MainWindow)
                 # Give up on this operation.
                 break
+        if share:
+            self.parent.advise_publish ()
         self.parent.populateList ()
 
     ### Copy
