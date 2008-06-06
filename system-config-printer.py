@@ -722,8 +722,16 @@ class GUI(GtkGUI, monitor.Watcher):
         return known_servers
 
     def populateList(self, prompt_allowed=True):
-        select_path = None
+        # Save selection of printers.
+        selected_printers = set()
+        paths = self.dests_iconview.get_selected_items ()
+        model = self.dests_iconview.get_model ()
+        for path in paths:
+            iter = model.get_iter (path)
+            name = model.get_value (iter, 2)
+            selected_printers.add (name)
 
+        select_path = None
         if self.cups:
             self.cups._set_prompt_allowed (prompt_allowed)
             try:
@@ -853,6 +861,14 @@ class GUI(GtkGUI, monitor.Watcher):
                     pixbuf = copy
 
                 self.mainlist.append (row=[object, pixbuf, name, tip])
+
+        # Restore selection of printers.
+        model = self.dests_iconview.get_model ()
+        def maybe_select (model, path, iter):
+            name = model.get_value (iter, 2)
+            if name in selected_printers:
+                self.dests_iconview.select_path (path)
+        model.foreach (maybe_select)
 
     # Connect to Server
 
@@ -2348,20 +2364,7 @@ class GUI(GtkGUI, monitor.Watcher):
     ## Watcher interface helpers
     def printer_added_or_removed (self):
         # Just fetch the list of printers again.  This is too simplistic.
-        printers = set()
-        paths = self.dests_iconview.get_selected_items ()
-        model = self.dests_iconview.get_model ()
-        for path in paths:
-            iter = model.get_iter (path)
-            name = model.get_value (iter, 2)
-            printers.add (name)
         self.populateList (prompt_allowed=False)
-        model = self.dests_iconview.get_model ()
-        def maybe_select (model, path, iter):
-            name = model.get_value (iter, 2)
-            if name in printers:
-                self.dests_iconview.select_path (path)
-        model.foreach (maybe_select)
 
     ## Watcher interface
     def printer_added (self, mon, printer):
