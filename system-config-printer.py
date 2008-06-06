@@ -755,6 +755,31 @@ class GUI(GtkGUI, monitor.Watcher):
         self.mainlist.clear ()
         
         # add new
+        PRINTER_TYPE = { 'discovered-printer':
+                             (_("Network printer (discovered)"),
+                              'i-network-printer'),
+                         'discovered-class':
+                             (_("Network class (discovered)"),
+                              'i-network-printer'),
+                         'local-printer':
+                             (_("Printer"),
+                              'gnome-dev-printer'),
+                         'local-fax':
+                             (_("Fax"),
+                              'gnome-dev-printer'),
+                         'local-class':
+                             (_("Class"),
+                              'gnome-dev-printer'),
+                         'ipp-printer':
+                             (_("Network printer"),
+                              'i-network-printer'),
+                         'smb-printer':
+                             (_("Network print share"),
+                              'gnome-dev-printer'),
+                         'network-printer':
+                             (_("Network printer"),
+                              'i-network-printer'),
+                         }
         theme = gtk.icon_theme_get_default ()
         for printers in (local_printers,
                          local_classes,
@@ -762,20 +787,27 @@ class GUI(GtkGUI, monitor.Watcher):
                          remote_classes):
             if not printers: continue
             for name in printers:
+                type = 'local-printer'
                 object = self.printers[name]
                 if object.discovered:
-                    icon = 'i-network-printer'
                     if object.is_class:
-                        tip = _("Remote class")
+                        type = 'discovered-class'
                     else:
-                        tip = _("Remote printer")
+                        type = 'discovered-printer'
+                elif object.is_class:
+                    type = 'local-class'
                 else:
-                    icon = 'gnome-dev-printer'
-                    if object.is_class:
-                        tip = _("Local class")
-                    else:
-                        tip = _("Local printer")
+                    (scheme, rest) = urllib.splittype (object.device_uri)
+                    if scheme == 'ipp':
+                        type = 'ipp-printer'
+                    elif scheme == 'smb':
+                        type = 'smb-printer'
+                    elif scheme == 'hpfax':
+                        type = 'local-fax'
+                    elif scheme in ['socket', 'lpd']:
+                        type = 'network-printer'
 
+                (tip, icon) = PRINTER_TYPE[type]
                 try:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
                     pixbuf = theme.load_icon (icon, w, 0)
