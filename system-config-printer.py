@@ -187,6 +187,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         "new_printer", "new_class",
                         "rename", "copy", "delete",
                         "enable", "disable", "set_as_default",
+                        "view_discovered_printers",
 
                         "toolbar",
 
@@ -259,6 +260,8 @@ class GUI(GtkGUI, monitor.Watcher):
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
         gtk.window_set_default_icon_name ('printer')
+
+        self.view_discovered_printers.set_sensitive (False)
 
         # Toolbar
         # Glade-2 doesn't have support for MenuToolButton, so we do that here.
