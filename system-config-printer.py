@@ -904,6 +904,7 @@ class GUI(GtkGUI, monitor.Watcher):
             cups.setEncryption(cups.HTTP_ENCRYPT_ALWAYS)
         else:
             cups.setEncryption(cups.HTTP_ENCRYPT_IF_REQUESTED)
+        self.connect_encrypt = cups.getEncryption ()
 
         servername = self.cmbServername.child.get_text()
 
@@ -936,7 +937,7 @@ class GUI(GtkGUI, monitor.Watcher):
         """
         cups.setServer(self.connect_server)
         cups.setUser(self.connect_user)
-        # cups.setEncryption (...)
+        cups.setEncryption (self.connect_encrypt)
 
         if self.connect_server[0] == '/':
             # UNIX domain socket.  This may potentially fail if the server
