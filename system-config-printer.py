@@ -3738,6 +3738,7 @@ class NewPrinterGUI(GtkGUI):
         (group, host, share, u, p) = SMBURI (uri=uri).separate ()
         user = ''
         passwd = ''
+        reason = None
         auth_set = self.rbtnSMBAuthSet.get_active()
         if auth_set:
             user = self.entSMBUsername.get_text ()
@@ -3782,6 +3783,7 @@ class NewPrinterGUI(GtkGUI):
                             smbc_auth.failed (e)
             except RuntimeError, (e, s):
                 debugprint ("Error accessing share: %s" % repr ((e, s)))
+                reason = s
             except:
                 nonfatalException()
             self.ready ()
@@ -3795,8 +3797,10 @@ class NewPrinterGUI(GtkGUI):
             self.InfoDialog.hide ()
             return
 
-        show_error_dialog (_("Inaccessible"),
-                           _("This print share is not accessible."))
+        text = _("This print share is not accessible.")
+        if reason:
+            text = reason
+        show_error_dialog (_("Print Share Inaccessible"), text)
 
     ### IPP Browsing
     def update_IPP_URI_label(self):
