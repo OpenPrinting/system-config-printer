@@ -26,6 +26,7 @@ try:
 except ImportError:
     USE_OLD_CODE=True
 
+import errno
 import gobject
 import gtk
 import os
@@ -38,6 +39,7 @@ class AuthContext:
         self.has_failed = False
         self.auth_called = False
         self.tried_guest = False
+        self.cancel = False
         self.use_user = user
         self.use_password = passwd
         self.use_workgroup = workgroup
@@ -54,6 +56,7 @@ class AuthContext:
         debugprint ("pysmb: authentication pass: %d" % self.passes)
         if not self.auth_called:
             debugprint ("pysmb: auth callback not called?!")
+            self.cancel = True
             return 0
 
         self.has_failed = False
@@ -63,6 +66,8 @@ class AuthContext:
             self.tried_guest = True
             debugprint ("pysmb: try auth as guest")
             return 1
+
+        self.auth_called = False
 
         # After that, prompt
         d = gtk.Dialog ("Authentication", self.parent,
@@ -115,6 +120,7 @@ class AuthContext:
         d.hide ()
 
         if response == gtk.RESPONSE_CANCEL:
+            self.cancel = True
             return -1
 
         self.use_user = username_entry.get_text ()
@@ -127,8 +133,13 @@ class AuthContext:
 
     def failed (self, exc=None):
         self.has_failed = True
-        if exc and not self.auth_called:
-            raise exc
+        debugprint ("pysmb: operation failed: %s" % repr (exc))
+
+        if exc:
+            if (self.cancel or
+                (type (exc) == RuntimeError and
+                 not (exc.args[0] in [errno.EACCES, errno.EPERM]))):
+                    raise exc
 
     def callback (self, server, share, workgroup, user, password):
         debugprint ("pysmb: got password callback")

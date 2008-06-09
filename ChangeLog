@@ -1,5 +1,15 @@
 2008-06-09  Tim Waugh  <twaugh@redhat.com>
 
+	* pysmb.py (AuthContext.__init__): New variable, cancel.  Clear
+	it.
+	(AuthContext.perform_authentication): Set it when Cancel button
+	pressed.
+	(AuthContext.failed): Raise exception if operation is canceled;
+	also if operation failed due to some error unrelated to
+	authentication.
+
+2008-06-09  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (NewPrinterGUI.__init__): Removed smb_lock.
 	(NewPrinterGUI.browse_smb_hosts_thread): Removed.
 	(NewPrinterGUI.browse_smb_hosts): Do top-level browsing here.
