@@ -255,7 +255,6 @@ class GUI(GtkGUI, monitor.Watcher):
                         "btnConnect",
                         "ConnectingDialog", "lblConnecting",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
-                        "InfoDialog", "lblInfo",
                         "AboutDialog",
                         "WaitWindow", "lblWait",
                         )
@@ -1499,13 +1498,9 @@ class GUI(GtkGUI, monitor.Watcher):
                 job_id = c.printTestPage(self.printer.name)
 
             cups.setUser (user)
-            self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
-                                     _("Submitted") + '</span>\n\n' +
-                                     _("Test page submitted as "
-                                       "job %d") % job_id)
-            self.InfoDialog.set_transient_for (self.MainWindow)
-            self.InfoDialog.run ()
-            self.InfoDialog.hide ()
+            show_info_dialog (_("Submitted"),
+                              _("Test page submitted as job %d") % job_id,
+                              parent=self.MainWindow)
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self.connect_server != 'localhost' and
@@ -1529,13 +1524,10 @@ class GUI(GtkGUI, monitor.Watcher):
                                               format=format,
                                               file=tmpfname,
                                               user=self.connect_user)
-            self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
-                                     _("Submitted") + '</span>\n\n' +
-                                     _("Maintenance command submitted as "
-                                       "job %d") % job_id)
-            self.InfoDialog.set_transient_for (self.MainWindow)
-            self.InfoDialog.run ()
-            self.InfoDialog.hide ()
+            show_info_dialog (_("Submitted"),
+                              _("Maintenance command submitted as "
+                                "job %d") % job_id,
+                              parent=self.MainWindow)
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self.printer.name != 'localhost'):
@@ -2461,7 +2453,6 @@ class NewPrinterGUI(GtkGUI):
                         "rbtnNPDownloadLicenseYes",
                         "rbtnNPDownloadLicenseNo",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
-                        "InfoDialog", "lblInfo",
                         "InstallDialog", "lblInstall")
         # share with mainapp
         self.WaitWindow = mainapp.WaitWindow
@@ -3789,12 +3780,9 @@ class NewPrinterGUI(GtkGUI):
             self.ready ()
 
         if accessible:
-            self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
-                                     _("Verified") + '</span>\n\n' +
-                                     _("This print share is accessible."))
-            self.InfoDialog.set_transient_for (self.NewPrinterWindow)
-            self.InfoDialog.run()
-            self.InfoDialog.hide ()
+            show_info_dialog (_("Print Share Verified"),
+                              _("This print share is accessible."),
+                              parent=self.NewPrinterWindow)
             return
 
         text = _("This print share is not accessible.")
@@ -3855,12 +3843,9 @@ class NewPrinterGUI(GtkGUI):
             debugprint (uri)
 
         if verified:
-            self.lblInfo.set_markup ('<span weight="bold" size="larger">' +
-                                     _("Verified") + '</span>\n\n' +
-                                     _("This print share is accessible."))
-            self.InfoDialog.set_transient_for (self.NewPrinterWindow)
-            self.InfoDialog.run()
-            self.InfoDialog.hide ()
+            show_info_dialog (_("Print Share Verified"),
+                              _("This print share is accessible."),
+                              parent=self.NewPrinterWindow)
         else:
             show_error_dialog (_("Inaccessible"),
                                _("This print share is not accessible."),
