@@ -3801,6 +3801,7 @@ class NewPrinterGUI(GtkGUI):
         if reason:
             text = reason
         show_error_dialog (_("Print Share Inaccessible"), text)
+                           parent=self.NewPrinterWindow)
 
     ### IPP Browsing
     def update_IPP_URI_label(self):
