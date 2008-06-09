@@ -2416,7 +2416,6 @@ class NewPrinterGUI(GtkGUI):
         # Synchronisation objects.
         self.ppds_lock = thread.allocate_lock()
         self.devices_lock = thread.allocate_lock()
-        self.smb_lock = thread.allocate_lock()
         self.ipp_lock = thread.allocate_lock()
         self.drivers_lock = thread.allocate_lock()
 
@@ -3445,38 +3444,34 @@ class NewPrinterGUI(GtkGUI):
     ## SMB browsing
 
     def browse_smb_hosts(self):
-        if not self.smb_lock.acquire(0):
-            return
-        thread.start_new_thread(self.browse_smb_hosts_thread, ())
-
-    def browse_smb_hosts_thread(self):
         """Initialise the SMB tree store."""
-
-        gtk.gdk.threads_enter()
-        try:
-            store = self.smb_store
-            store.clear ()
-            if pysmb.USE_OLD_CODE:
-                store.append(None, (_('Scanning...'), '', None, None))
-            else:
-                class X:
-                    pass
-                dummy = X()
-                dummy.smbc_type = pysmb.smbc.PRINTER_SHARE
-                dummy.name = _('Scanning...')
-                dummy.comment = ''
-                store.append(None, [dummy])
-            try:
-                self.busy(self.SMBBrowseDialog)
-            except:
-                nonfatalException()
-        except:
-            nonfatalException()
-        gtk.gdk.threads_leave()
-
+        store = self.smb_store
+        store.clear ()
+        self.busy(self.SMBBrowseDialog)
         if pysmb.USE_OLD_CODE:
+            store.append(None, (_('Scanning...'), '', None, None))
+            while gtk.events_pending ():
+                gtk.main_iteration ()
             domains = pysmb.get_domain_list ()
+            store.clear ()
+            for domain in domains.keys ():
+                d = domains[domain]
+                iter = store.append (None)
+                if iter:
+                    dummy = store.append (iter)
+                store.set_value (iter, 0, d['DOMAIN'])
+                store.set_value (iter, 2, d)
         else:
+            class X:
+                pass
+            dummy = X()
+            dummy.smbc_type = pysmb.smbc.PRINTER_SHARE
+            dummy.name = _('Scanning...')
+            dummy.comment = ''
+            store.append(None, [dummy])
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
             debug = 0
             if get_debugging ():
                 debug = 1
@@ -3494,35 +3489,15 @@ class NewPrinterGUI(GtkGUI):
                 if e != errno.ENOENT:
                     debugprint ("Runtime error: %s" % repr ((e, s)))
             except:
-                nonfatalException()
+                nonfatalException ()
 
-        gtk.gdk.threads_enter()
-        try:
-            if pysmb.USE_OLD_CODE:
-                store.clear ()
-                for domain in domains.keys ():
-                    d = domains[domain]
-                    iter = store.append (None)
-                    if iter:
-                        dummy = store.append (iter)
-                    store.set_value (iter, 0, d['DOMAIN'])
-                    store.set_value (iter, 2, d)
-            else:
-                store.clear ()
-                if workgroups:
-                    for workgroup in workgroups:
-                        iter = store.append (None, [workgroup])
-                        i = store.append (iter)
+            store.clear ()
+            if workgroups:
+                for workgroup in workgroups:
+                    iter = store.append (None, [workgroup])
+                    i = store.append (iter)
 
-            try:
-                self.ready(self.SMBBrowseDialog)
-            except:
-                nonfatalException()
-
-            self.smb_lock.release()
-        except:
-            nonfatalException()
-        gtk.gdk.threads_leave()
+        self.ready(self.SMBBrowseDialog)
 
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
