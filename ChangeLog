@@ -1,5 +1,14 @@
 2008-06-09  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.on_btnPrintTestPage_clicked): Use
+	show_info_dialog.
+	(GUI.maintenance_command): Likewise.
+	(NewPrinterGUI.on_btnSMBVerify_clicked): Likewise.
+	(NewPrinterGUI.on_btnIPPVerify_clicked): Likewise.
+	* system-config-printer.glade (InfoDialog): Removed.
+
+2008-06-09  Tim Waugh  <twaugh@redhat.com>
+
 	(NewPrinterGUI.on_btnSMBVerify_clicked): Set verification failure
 	dialog transient for parent.
 
