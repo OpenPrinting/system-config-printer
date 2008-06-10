@@ -167,6 +167,7 @@ help:
 	@echo " missing-languages  Show which po files are not shipped"
 	@echo " fix-glade          Sanitize the glade files"
 	@echo " run                Run system-config-printer with local glade file"
+	@echo " run-applet         Run system-config-printer-applet with local glade file"
 
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
