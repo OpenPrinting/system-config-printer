@@ -28,6 +28,7 @@ import gobject
 import gtk
 import gtk.gdk
 import gtk.glade
+from glade import GtkGUI
 import monitor
 import os
 import pango
@@ -53,7 +54,7 @@ GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
 
-class JobViewer (monitor.Watcher):
+class JobViewer (GtkGUI, monitor.Watcher):
     def __init__(self, bus=None, loop=None, service_running=False,
                  trayicon=False, suppress_icon_hide=False,
                  my_jobs=True, specific_dests=None, exit_handler=None,
@@ -81,12 +82,22 @@ class JobViewer (monitor.Watcher):
         self.reasoniters = {}
         self.auth_info_dialog = None
 
-        glade_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE",
-                                    pkgdata)
-        xml = os.path.join (glade_dir, 'applet.glade')
-        self.xml = gtk.glade.XML (xml, domain = DOMAIN)
-        self.xml.signal_autoconnect(self)
-        self.treeview = self.xml.get_widget ('treeview')
+        self.getWidgets ({"JobsWindow":
+                              ["JobsWindow",
+                               "treeview",
+                               "statusbar",
+                               "show_printer_status"],
+                          "job_popupmenu":
+                              ["job_popupmenu",
+                               "cancel",
+                               "hold",
+                               "release",
+                               "reprint"],
+                          "statusicon_popupmenu":
+                              ["statusicon_popupmenu"],
+                          "PrinterStatusWindow":
+                              ["PrinterStatusWindow",
+                               "treeview_printers"]})
         text=0
         for name in [_("Job"),
                      _("User"),
@@ -118,9 +129,8 @@ class JobViewer (monitor.Watcher):
                                self.on_treeview_button_release_event)
         self.treeview.connect ('popup-menu', self.on_treeview_popup_menu)
 
-        self.MainWindow = self.xml.get_widget ('MainWindow')
-        self.MainWindow.set_icon_name (ICON)
-        self.MainWindow.hide ()
+        self.JobsWindow.set_icon_name (ICON)
+        self.JobsWindow.hide ()
 
         if specific_dests:
             the_dests = reduce (lambda x, y: x + ", " + y, specific_dests)
@@ -135,26 +145,15 @@ class JobViewer (monitor.Watcher):
                 title = "%s" % the_dests
             else:
                 title = _("all jobs")
-        self.MainWindow.set_title (_("Document Print Status (%s)") % title)
+        self.JobsWindow.set_title (_("Document Print Status (%s)") % title)
 
         if parent:
-            self.MainWindow.set_transient_for (parent)
+            self.JobsWindow.set_transient_for (parent)
 
-        self.statusbar = self.xml.get_widget ('statusbar')
         self.statusbar_set = False
 
-        self.job_popupmenu = self.xml.get_widget ('job_popupmenu')
-        self.icon_popupmenu = self.xml.get_widget ('icon_popupmenu')
-        self.cancel = self.xml.get_widget ('cancel')
-        self.hold = self.xml.get_widget ('hold')
-        self.release = self.xml.get_widget ('release')
-        self.reprint = self.xml.get_widget ('reprint')
-
-        self.show_printer_status = self.xml.get_widget ('show_printer_status')
-        self.PrintersWindow = self.xml.get_widget ('PrintersWindow')
-        self.PrintersWindow.set_icon_name (ICON)
-        self.PrintersWindow.hide ()
-        self.treeview_printers = self.xml.get_widget ('treeview_printers')
+        self.PrinterStatusWindow.set_icon_name (ICON)
+        self.PrinterStatusWindow.hide ()
         column = gtk.TreeViewColumn(_("Printer"))
         icon = gtk.CellRendererPixbuf()
         column.pack_start (icon, False)
@@ -206,7 +205,7 @@ class JobViewer (monitor.Watcher):
                                         specific_dests=specific_dests)
 
         if not self.trayicon:
-            self.MainWindow.show ()
+            self.JobsWindow.show ()
 
     def cleanup (self):
         self.monitor.cleanup ()
@@ -246,9 +245,9 @@ class JobViewer (monitor.Watcher):
 
     def on_delete_event(self, *args):
         if self.trayicon or not self.loop:
-            self.MainWindow.hide ()
+            self.JobsWindow.hide ()
             if self.show_printer_status.get_active ():
-                self.PrintersWindow.hide ()
+                self.PrinterStatusWindow.hide ()
 
             if not self.loop:
                 # Being run from main app, not applet
@@ -259,25 +258,25 @@ class JobViewer (monitor.Watcher):
 
     def on_printer_status_delete_event(self, *args):
         self.show_printer_status.set_active (False)
-        self.PrintersWindow.hide()
+        self.PrinterStatusWindow.hide()
         return True
 
     def show_IPP_Error(self, exception, message):
-        return errordialogs.show_IPP_Error (exception, message, self.MainWindow)
+        return errordialogs.show_IPP_Error (exception, message, self.JobsWindow)
 
     def toggle_window_display(self, icon, force_show=False):
-        visible = self.MainWindow.get_property('visible')
+        visible = self.JobsWindow.get_property('visible')
         if force_show:
             visible = False
 
         if visible:
-            self.MainWindow.hide()
+            self.JobsWindow.hide()
             if self.show_printer_status.get_active ():
-                self.PrintersWindow.hide()
+                self.PrinterStatusWindow.hide()
         else:
-            self.MainWindow.show()
+            self.JobsWindow.show()
             if self.show_printer_status.get_active ():
-                self.PrintersWindow.show()
+                self.PrinterStatusWindow.show()
 
     def on_show_completed_jobs_activate(self, menuitem):
         if menuitem.get_active():
@@ -288,9 +287,9 @@ class JobViewer (monitor.Watcher):
 
     def on_show_printer_status_activate(self, menuitem):
         if self.show_printer_status.get_active ():
-            self.PrintersWindow.show()
+            self.PrinterStatusWindow.show()
         else:
-            self.PrintersWindow.hide()
+            self.PrinterStatusWindow.hide()
 
     def update_job_creation_times(self):
         now = time.time ()
@@ -419,7 +418,7 @@ class JobViewer (monitor.Watcher):
 
             # Find out which auth-info is required.
             try:
-                c = authconn.Connection (self.MainWindow)
+                c = authconn.Connection (self.JobsWindow)
                 try:
                     uri = data['job-printer-uri']
                     attributes = c.getPrinterAttributes (uri = uri)
@@ -474,7 +473,7 @@ class JobViewer (monitor.Watcher):
         auth_info = dialog.get_auth_info ()
         jobid = dialog.get_data ('job-id')
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.JobsWindow)
             c.authenticateJob (jobid, auth_info)
         except RuntimeError:
             debugprint ("Error connecting to CUPS for authentication")
@@ -538,7 +537,7 @@ class JobViewer (monitor.Watcher):
                                   event.get_time ())
 
     def on_icon_popupmenu(self, icon, button, time):
-        self.icon_popupmenu.popup (None, None, None, button, time)
+        self.statusicon_popupmenu.popup (None, None, None, button, time)
 
     def on_icon_hide_activate(self, menuitem):
         self.num_jobs_when_hidden = len (self.jobs.keys ())
@@ -550,7 +549,7 @@ class JobViewer (monitor.Watcher):
 
     def on_job_cancel_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.JobsWindow)
             c.cancelJob (self.jobid)
             del c
         except cups.IPPError, (e, m):
@@ -561,7 +560,7 @@ class JobViewer (monitor.Watcher):
 
     def on_job_hold_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.JobsWindow)
             c.setJobHoldUntil (self.jobid, "indefinite")
             del c
         except cups.IPPError, (e, m):
@@ -572,7 +571,7 @@ class JobViewer (monitor.Watcher):
 
     def on_job_release_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.JobsWindow)
             c.setJobHoldUntil (self.jobid, "no-hold")
             del c
         except cups.IPPError, (e, m):
@@ -583,7 +582,7 @@ class JobViewer (monitor.Watcher):
 
     def on_job_reprint_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.JobsWindow)
             c.restartJob (self.jobid)
             del c
         except cups.IPPError, (e, m):
@@ -914,7 +913,7 @@ class JobViewer (monitor.Watcher):
 
             if may_be_problem:
                 self.toggle_window_display (self.statusicon, force_show=True)
-                dialog = gtk.Dialog (_("Print Error"), self.MainWindow, 0,
+                dialog = gtk.Dialog (_("Print Error"), self.JobsWindow, 0,
                                      (_("_Diagnose"), gtk.RESPONSE_NO,
                                         gtk.STOCK_OK, gtk.RESPONSE_OK))
                 dialog.set_default_response (gtk.RESPONSE_OK)

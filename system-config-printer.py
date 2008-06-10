@@ -169,89 +169,125 @@ class GUI(GtkGUI, monitor.Watcher):
         # WIDGETS
         # =======
         self.updating_widgets = False
-        glade_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE", pkgdata)
-        xml = os.path.join (glade_dir, domain + '.glade')
-        self.xml = gtk.glade.XML(xml, domain = domain)
-
-        self.getWidgets("MainWindow", "dests_iconview",
-                        "PrinterPropertiesDialog",
-                        "tvPrinterProperties",
-                        "btnPrinterPropertiesOK",
-                        "ServerSettingsDialog",
-                        "server_settings",
-                        "statusbarMain",
-                        "new_printer", "new_class",
-                        "rename", "copy", "delete",
-                        "enabled", "shared", "set_as_default",
-                        "view_discovered_printers",
-
-                        "toolbar",
-
-                        "chkServerBrowse", "chkServerShare",
-                        "chkServerShareAny",
-                        "chkServerRemoteAdmin", "chkServerAllowCancelAll",
-                        "chkServerLogDebug", "hboxServerBrowse",
-
-                        "ntbkPrinter",
-                         "entPDescription", "entPLocation",
-                          "lblPMakeModel", "lblPMakeModel2",
-                          "lblPState", "entPDevice", "lblPDevice2",
-                          "btnSelectDevice", "btnChangePPD",
-                          "chkPEnabled", "chkPAccepting", "chkPShared",
-                        "lblNotPublished",
-                        "btnPrintTestPage", "btnSelfTest", "btnCleanHeads",
-                        "btnConflict",
+        self.getWidgets({"PrintersWindow":
+                             ["PrintersWindow",
+                              "dests_iconview",
+                              "statusbarMain",
+                              "toolbar",
+                              "server_settings",
+                              "new_printer",
+                              "new_class",
+                              "rename",
+                              "copy",
+                              "delete",
+                              "enabled",
+                              "shared",
+                              "set_as_default",
+                              "view_discovered_printers"],
+                         "AboutDialog":
+                             ["AboutDialog"],
+                         "WaitWindow":
+                             ["WaitWindow",
+                              "lblWait"],
+                         "ConnectDialog":
+                             ["ConnectDialog",
+                              "chkEncrypted",
+                              "cmbServername",
+                              "btnConnect"],
+                         "ConnectingDialog":
+                             ["ConnectingDialog",
+                              "lblConnecting"],
+                         "NewPrinterName":
+                             ["NewPrinterName",
+                              "entCopyName",
+                              "btnCopyOk"],
+                         "ServerSettingsDialog":
+                             ["ServerSettingsDialog",
+                              "chkServerBrowse",
+                              "chkServerShare",
+                              "chkServerShareAny",
+                              "chkServerRemoteAdmin",
+                              "chkServerAllowCancelAll",
+                              "chkServerLogDebug",
+                              "hboxServerBrowse"],
+                         "PrinterPropertiesDialog":
+                             ["PrinterPropertiesDialog",
+                              "tvPrinterProperties",
+                              "btnPrinterPropertiesOK",
+                              "ntbkPrinter",
+                              "entPDescription",
+                              "entPLocation",
+                              "lblPMakeModel",
+                              "lblPMakeModel2",
+                              "lblPState",
+                              "entPDevice",
+                              "lblPDevice2",
+                              "btnSelectDevice",
+                              "btnChangePPD",
+                              "chkPEnabled",
+                              "chkPAccepting",
+                              "chkPShared",
+                              "lblNotPublished",
+                              "btnPrintTestPage",
+                              "btnSelfTest",
+                              "btnCleanHeads",
+                              "btnConflict",
            
-                         "cmbPStartBanner", "cmbPEndBanner",
-                          "cmbPErrorPolicy", "cmbPOperationPolicy",
+                              "cmbPStartBanner",
+                              "cmbPEndBanner",
+                              "cmbPErrorPolicy",
+                              "cmbPOperationPolicy",
 
-                         "rbtnPAllow", "rbtnPDeny", "tvPUsers",
-                          "entPUser", "btnPAddUser", "btnPDelUser", 
+                              "rbtnPAllow",
+                              "rbtnPDeny",
+                              "tvPUsers",
+                              "entPUser",
+                              "btnPAddUser",
+                              "btnPDelUser", 
 
-                        "lblPInstallOptions",
-                         "swPInstallOptions", "vbPInstallOptions", 
-                         "swPOptions",
-                          "lblPOptions", "vbPOptions",
-                         "algnClassMembers", "vbClassMembers",
-                          "lblClassMembers",
-                          "tvClassMembers", "tvClassNotMembers",
-                          "btnClassAddMember", "btnClassDelMember",
-                        # Job options
-                        "sbJOCopies", "btnJOResetCopies",
-                        "cmbJOOrientationRequested", "btnJOResetOrientationRequested",
-                        "cbJOFitplot", "btnJOResetFitplot",
-                        "cmbJONumberUp", "btnJOResetNumberUp",
-                        "cmbJONumberUpLayout", "btnJOResetNumberUpLayout",
-                        "sbJOBrightness", "btnJOResetBrightness",
-                        "cmbJOFinishings", "btnJOResetFinishings",
-                        "sbJOJobPriority", "btnJOResetJobPriority",
-                        "cmbJOMedia", "btnJOResetMedia",
-                        "cmbJOSides", "btnJOResetSides",
-                        "cmbJOHoldUntil", "btnJOResetHoldUntil",
-                        "cbJOMirror", "btnJOResetMirror",
-                        "sbJOScaling", "btnJOResetScaling",
-                        "sbJOSaturation", "btnJOResetSaturation",
-                        "sbJOHue", "btnJOResetHue",
-                        "sbJOGamma", "btnJOResetGamma",
-                        "sbJOCpi", "btnJOResetCpi",
-                        "sbJOLpi", "btnJOResetLpi",
-                        "sbJOPageLeft", "btnJOResetPageLeft",
-                        "sbJOPageRight", "btnJOResetPageRight",
-                        "sbJOPageTop", "btnJOResetPageTop",
-                        "sbJOPageBottom", "btnJOResetPageBottom",
-                        "cbJOPrettyPrint", "btnJOResetPrettyPrint",
-                        "cbJOWrap", "btnJOResetWrap",
-                        "sbJOColumns", "btnJOResetColumns",
-                        "tblJOOther",
-                        "entNewJobOption", "btnNewJobOption",
-                        # small dialogs
-                        "ConnectDialog", "chkEncrypted", "cmbServername",
-                        "btnConnect",
-                        "ConnectingDialog", "lblConnecting",
-                        "NewPrinterName", "entCopyName", "btnCopyOk",
-                        "AboutDialog",
-                        "WaitWindow", "lblWait",
-                        )
+                              "lblPInstallOptions",
+                              "swPInstallOptions",
+                              "vbPInstallOptions", 
+                              "swPOptions",
+                              "lblPOptions",
+                              "vbPOptions",
+                              "algnClassMembers",
+                              "vbClassMembers",
+                              "lblClassMembers",
+                              "tvClassMembers",
+                              "tvClassNotMembers",
+                              "btnClassAddMember",
+                              "btnClassDelMember",
+
+                              # Job options
+                              "sbJOCopies", "btnJOResetCopies",
+                              "cmbJOOrientationRequested", "btnJOResetOrientationRequested",
+                              "cbJOFitplot", "btnJOResetFitplot",
+                              "cmbJONumberUp", "btnJOResetNumberUp",
+                              "cmbJONumberUpLayout", "btnJOResetNumberUpLayout",
+                              "sbJOBrightness", "btnJOResetBrightness",
+                              "cmbJOFinishings", "btnJOResetFinishings",
+                              "sbJOJobPriority", "btnJOResetJobPriority",
+                              "cmbJOMedia", "btnJOResetMedia",
+                              "cmbJOSides", "btnJOResetSides",
+                              "cmbJOHoldUntil", "btnJOResetHoldUntil",
+                              "cbJOMirror", "btnJOResetMirror",
+                              "sbJOScaling", "btnJOResetScaling",
+                              "sbJOSaturation", "btnJOResetSaturation",
+                              "sbJOHue", "btnJOResetHue",
+                              "sbJOGamma", "btnJOResetGamma",
+                              "sbJOCpi", "btnJOResetCpi",
+                              "sbJOLpi", "btnJOResetLpi",
+                              "sbJOPageLeft", "btnJOResetPageLeft",
+                              "sbJOPageRight", "btnJOResetPageRight",
+                              "sbJOPageTop", "btnJOResetPageTop",
+                              "sbJOPageBottom", "btnJOResetPageBottom",
+                              "cbJOPrettyPrint", "btnJOResetPrettyPrint",
+                              "cbJOWrap", "btnJOResetWrap",
+                              "sbJOColumns", "btnJOResetColumns",
+                              "tblJOOther",
+                              "entNewJobOption", "btnNewJobOption"]})
+
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
         gtk.window_set_default_icon_name ('printer')
@@ -291,7 +327,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
-        np.NewPrinterWindow.set_transient_for(self.MainWindow)
+        np.NewPrinterWindow.set_transient_for(self.PrintersWindow)
 
         # Set up "About" dialog
         self.AboutDialog.set_program_name(domain)
@@ -306,10 +342,10 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.static_tabs = 3
 
-        gtk_label_autowrap.set_autowrap(self.MainWindow)
+        gtk_label_autowrap.set_autowrap(self.PrintersWindow)
 
         try:
-            self.cups = authconn.Connection(self.MainWindow)
+            self.cups = authconn.Connection(self.PrintersWindow)
         except RuntimeError:
             self.cups = None
 
@@ -365,8 +401,6 @@ class GUI(GtkGUI, monitor.Watcher):
             parent=None, flags=0, type=gtk.MESSAGE_WARNING,
             buttons=gtk.BUTTONS_OK)
         
-        self.xml.signal_autoconnect(self)
-
         # Printer Properties dialog
         self.PrinterPropertiesDialog.connect ('response',
                                               self.printer_properties_response)
@@ -521,7 +555,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups = None
             self.setConnected()
             self.populateList()
-            show_HTTP_Error(s, self.MainWindow)
+            show_HTTP_Error(s, self.PrintersWindow)
 
         try:
             self.dests_iconview.resize_children ()
@@ -529,9 +563,9 @@ class GUI(GtkGUI, monitor.Watcher):
             self.dests_iconview.set_size_request (20 + width, height)
             while gtk.events_pending ():
                 gtk.main_iteration ()
-            (width, height) = self.MainWindow.get_size ()
+            (width, height) = self.PrintersWindow.get_size ()
             self.dests_iconview.set_size_request (-1, -1)
-            self.MainWindow.resize (width, height)
+            self.PrintersWindow.resize (width, height)
         except:
             nonfatalException ()
 
@@ -557,7 +591,7 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             self.fillPrinterTab (name)
         except cups.IPPError, (e, m):
-            show_IPP_Error (e, m, self.MainWindow)
+            show_IPP_Error (e, m, self.PrintersWindow)
             if e == cups.IPP_SERVICE_UNAVAILABLE:
                 self.cups = None
                 self.setConnected ()
@@ -567,7 +601,7 @@ class GUI(GtkGUI, monitor.Watcher):
             # Perhaps cupsGetPPD2 failed for a browsed printer.
             return
 
-        self.PrinterPropertiesDialog.set_transient_for (self.MainWindow)
+        self.PrinterPropertiesDialog.set_transient_for (self.PrintersWindow)
         self.btnPrinterPropertiesOK.set_sensitive (not object.discovered)
         treeview = self.tvPrinterProperties
         sel = treeview.get_selection ()
@@ -653,7 +687,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 # Not authorized.
                 return
 
-            self.ServerSettingsDialog.set_transient_for (self.MainWindow)
+            self.ServerSettingsDialog.set_transient_for (self.PrintersWindow)
             response = self.ServerSettingsDialog.run ()
             if response == gtk.RESPONSE_OK:
                 if not self.save_serversettings ():
@@ -666,7 +700,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def busy (self, win = None):
         try:
             if not win:
-                win = self.MainWindow
+                win = self.PrintersWindow
             gdkwin = win.window
             if gdkwin:
                 gdkwin.set_cursor (busy_cursor)
@@ -678,7 +712,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def ready (self, win = None):
         try:
             if not win:
-                win = self.MainWindow
+                win = self.PrintersWindow
             gdkwin = win.window
             if gdkwin:
                 gdkwin.set_cursor (ready_cursor)
@@ -691,7 +725,7 @@ class GUI(GtkGUI, monitor.Watcher):
         connected = bool(self.cups)
 
         host = CUPS_server_hostname ()
-        self.MainWindow.set_title(_("Printer configuration - %s") % host)
+        self.PrintersWindow.set_title(_("Printer configuration - %s") % host)
 
         if connected:
             status_msg = _("Connected to %s") % host
@@ -750,7 +784,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     else:
                         self.default_printer = None
             except cups.IPPError, (e, m):
-                show_IPP_Error(e, m, self.MainWindow)
+                show_IPP_Error(e, m, self.PrintersWindow)
                 self.printers = {}
                 self.default_printer = None
         else:
@@ -892,7 +926,7 @@ class GUI(GtkGUI, monitor.Watcher):
                                       cups.HTTP_ENCRYPT_ALWAYS)
 
         self.cmbServername.grab_focus ()
-        self.ConnectDialog.set_transient_for (self.MainWindow)
+        self.ConnectDialog.set_transient_for (self.PrintersWindow)
         response = self.ConnectDialog.run()
 
         self.ConnectDialog.hide()
@@ -911,7 +945,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.lblConnecting.set_text(_("Connecting to server:\n%s") %
                                     servername)
         self.newPrinterGUI.dropPPDs()
-        self.ConnectingDialog.set_transient_for(self.MainWindow)
+        self.ConnectingDialog.set_transient_for(self.PrintersWindow)
         self.ConnectingDialog.show()
         self.connect_server = servername
         # We need to set the connecting user in this thread as well.
@@ -920,7 +954,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.connect_user = cups.getUser()
         # Now start a new thread for connection.
         self.connect_thread = thread.start_new_thread(self.connect,
-                                                      (self.MainWindow,))
+                                                      (self.PrintersWindow,))
 
     def on_cancel_connect_clicked(self, widget):
         """
@@ -1022,7 +1056,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def on_btnRefresh_clicked(self, button):
         if self.cups == None:
             try:
-                self.cups = authconn.Connection(self.MainWindow)
+                self.cups = authconn.Connection(self.PrintersWindow)
             except RuntimeError:
                 pass
 
@@ -1457,10 +1491,10 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             printer.setAsDefault ()
         except cups.HTTPError, (s,):
-            show_HTTP_Error (s, self.MainWindow)
+            show_HTTP_Error (s, self.PrintersWindow)
             return
         except cups.IPPError, (e, msg):
-            show_IPP_Error(e, msg, self.MainWindow)
+            show_IPP_Error(e, msg, self.PrintersWindow)
             return
 
         # Now reconnect in case the server needed to reload.  This may
@@ -1473,7 +1507,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups = None
             self.setConnected()
             self.populateList()
-            show_HTTP_Error(s, self.MainWindow)
+            show_HTTP_Error(s, self.PrintersWindow)
     
     # print test page
     
@@ -1491,7 +1525,7 @@ class GUI(GtkGUI, monitor.Watcher):
             # as a normal job.
             user = cups.getUser ()
             cups.setUser ('')
-            c = authconn.Connection (self.MainWindow, try_as_root=False)
+            c = authconn.Connection (self.PrintersWindow, try_as_root=False)
             if custom_testpage and os.path.exists(custom_testpage):
                 debugprint ('Printing custom test page ' + custom_testpage)
                 job_id = c.printTestPage(self.printer.name,
@@ -1503,7 +1537,7 @@ class GUI(GtkGUI, monitor.Watcher):
             cups.setUser (user)
             show_info_dialog (_("Submitted"),
                               _("Test page submitted as job %d") % job_id,
-                              parent=self.MainWindow)
+                              parent=self.PrintersWindow)
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self.connect_server != 'localhost' and
@@ -1513,9 +1547,9 @@ class GUI(GtkGUI, monitor.Watcher):
                                      "the print job, most likely "
                                      "because the printer is not "
                                      "shared."),
-                                   self.MainWindow)
+                                   self.PrintersWindow)
             else:
-                show_IPP_Error(e, msg, self.MainWindow)
+                show_IPP_Error(e, msg, self.PrintersWindow)
 
     def maintenance_command (self, command):
         (tmpfd, tmpfname) = tempfile.mkstemp ()
@@ -1530,7 +1564,7 @@ class GUI(GtkGUI, monitor.Watcher):
             show_info_dialog (_("Submitted"),
                               _("Maintenance command submitted as "
                                 "job %d") % job_id,
-                              parent=self.MainWindow)
+                              parent=self.PrintersWindow)
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self.printer.name != 'localhost'):
@@ -1539,9 +1573,9 @@ class GUI(GtkGUI, monitor.Watcher):
                                      "the print job, most likely "
                                      "because the printer is not "
                                      "shared."),
-                                   self.MainWindow)
+                                   self.PrintersWindow)
             else:
-                show_IPP_Error(e, msg, self.MainWindow)
+                show_IPP_Error(e, msg, self.PrintersWindow)
 
     def on_btnSelfTest_clicked(self, button):
         self.maintenance_command ("PrintSelfTestPage")
@@ -1578,7 +1612,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.ppd = printer.getPPD()
         except cups.IPPError, (e, m):
             # Some IPP error other than IPP_NOT_FOUND.
-            show_IPP_Error(e, m, self.MainWindow)
+            show_IPP_Error(e, m, self.PrintersWindow)
             # Treat it as a raw queue.
             self.ppd = False
         except RuntimeError:
@@ -1588,7 +1622,7 @@ class GUI(GtkGUI, monitor.Watcher):
             show_error_dialog (_("Error"),
                                _("There was a problem connecting to "
                                  "the CUPS server."),
-                               self.MainWindow)
+                               self.PrintersWindow)
             raise
 
         for widget in (self.entPDescription, self.entPLocation,
@@ -1696,7 +1730,7 @@ class GUI(GtkGUI, monitor.Watcher):
                                        _("Option '%s' has value '%s' "
                                          "and cannot be edited.") %
                                        (option.name, value),
-                                       self.MainWindow)
+                                       self.PrintersWindow)
             option.widget.set_sensitive (option_editable)
             if not editable:
                 option.button.set_sensitive (False)
@@ -2017,10 +2051,10 @@ class GUI(GtkGUI, monitor.Watcher):
             try:
                 self.printer.setAccepting (True)
             except cups.HTTPError, (s,):
-                show_HTTP_Error (s, self.MainWindow)
+                show_HTTP_Error (s, self.PrintersWindow)
                 # Not fatal.
             except cups.IPPError, (e, msg):
-                show_IPP_Error, (e, msg, self.MainWindow)
+                show_IPP_Error, (e, msg, self.PrintersWindow)
                 # Not fatal.
 
         # Fix up default printer.
@@ -2028,20 +2062,20 @@ class GUI(GtkGUI, monitor.Watcher):
             try:
                 self.printer.setAsDefault ()
             except cups.HTTPError, (s,):
-                show_HTTP_Error (s, self.MainWindow)
+                show_HTTP_Error (s, self.PrintersWindow)
                 # Not fatal.
             except CUPS.IPPError, (e, msg):
-                show_IPP_Error (e, msg, self.MainWindow)
+                show_IPP_Error (e, msg, self.PrintersWindow)
                 # Not fatal.
 
         # Finally, delete the old printer.
         try:
             self.cups.deletePrinter (old_name)
         except cups.HTTPError, (s,):
-            show_HTTP_Error (s, self.MainWindow)
+            show_HTTP_Error (s, self.PrintersWindow)
             # Not fatal
         except cups.IPPError, (e, msg):
-            show_IPP_Error (e, msg, self.MainWindow)
+            show_IPP_Error (e, msg, self.PrintersWindow)
             # Not fatal.
 
         # ..and select the new printer.
@@ -2070,7 +2104,7 @@ class GUI(GtkGUI, monitor.Watcher):
         iter = model.get_iter (paths[0])
         name = model.get_value (iter, 2)
         self.entCopyName.set_text(name)
-        self.NewPrinterName.set_transient_for (self.MainWindow)
+        self.NewPrinterName.set_transient_for (self.PrintersWindow)
         result = self.NewPrinterName.run()
         self.NewPrinterName.hide()
 
@@ -2115,7 +2149,7 @@ class GUI(GtkGUI, monitor.Watcher):
         else:
             message_format = _("Really delete selected destinations?")
 
-        dialog = gtk.MessageDialog(self.MainWindow,
+        dialog = gtk.MessageDialog(self.PrintersWindow,
                                    buttons=gtk.BUTTONS_OK_CANCEL,
                                    message_format=message_format)
         result = dialog.run()
@@ -2130,7 +2164,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 name = model.get_value (iter, 2)
                 self.cups.deletePrinter (name)
         except cups.IPPError, (e, msg):
-            show_IPP_Error(e, msg, self.MainWindow)
+            show_IPP_Error(e, msg, self.PrintersWindow)
 
         self.changed = set()
         self.populateList()
@@ -2172,7 +2206,7 @@ class GUI(GtkGUI, monitor.Watcher):
                                 "to other people unless the "
                                 "'Publish shared printers' option is "
                                 "enabled in the server settings."),
-                              parent=self.MainWindow)
+                              parent=self.PrintersWindow)
 
     # Set As Default
     def on_set_as_default_activate(self, menuitem):
@@ -2187,14 +2221,14 @@ class GUI(GtkGUI, monitor.Watcher):
     def on_troubleshoot_activate(self, widget):
         if not self.__dict__.has_key ('troubleshooter'):
             self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit,
-                                                    parent=self.MainWindow)
+                                                    parent=self.PrintersWindow)
 
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
 
     # About dialog
     def on_about_activate(self, widget):
-        self.AboutDialog.set_transient_for (self.MainWindow)
+        self.AboutDialog.set_transient_for (self.PrintersWindow)
         self.AboutDialog.run()
         self.AboutDialog.hide()
 
@@ -2207,7 +2241,7 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             self.server_settings = self.cups.adminGetServerSettings()
         except cups.IPPError, (e, m):
-            show_IPP_Error(e, m, self.MainWindow)
+            show_IPP_Error(e, m, self.PrintersWindow)
             raise
 
         for widget, setting in [
@@ -2315,9 +2349,9 @@ class GUI(GtkGUI, monitor.Watcher):
 
     # new printer
     def on_new_printer_activate(self, widget):
-        self.busy (self.MainWindow)
+        self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("printer")
-        self.ready (self.MainWindow)
+        self.ready (self.PrintersWindow)
 
     # new class
     def on_new_class_activate(self, widget):
@@ -2325,15 +2359,15 @@ class GUI(GtkGUI, monitor.Watcher):
 
     # change device
     def on_btnSelectDevice_clicked(self, button):
-        self.busy (self.MainWindow)
+        self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("device")
-        self.ready (self.MainWindow)
+        self.ready (self.PrintersWindow)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
-        self.busy (self.MainWindow)
+        self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("ppd")
-        self.ready (self.MainWindow)
+        self.ready (self.PrintersWindow)
 
     def checkNPName(self, name):
         if not name: return False
@@ -2408,7 +2442,6 @@ class NewPrinterGUI(GtkGUI):
 
     def __init__(self, mainapp):
         self.mainapp = mainapp
-        self.xml = mainapp.xml
         self.tooltips = mainapp.tooltips
         self.language = mainapp.language
         
@@ -2423,49 +2456,78 @@ class NewPrinterGUI(GtkGUI):
         self.ipp_lock = thread.allocate_lock()
         self.drivers_lock = thread.allocate_lock()
 
-        self.getWidgets("NewPrinterWindow", "ntbkNewPrinter",
-                         "btnNPBack", "btnNPForward", "btnNPApply",
-                          "entNPName", "entNPDescription", "entNPLocation",
-                          "tvNPDevices", "ntbkNPType",
-                        "lblNPDeviceDescription",
-                           "cmbNPTSerialBaud", "cmbNPTSerialParity",
-                            "cmbNPTSerialBits", "cmbNPTSerialFlow",
-                           "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
-                           "entNPTIPPHostname", "btnIPPFindQueue",
-                        "lblIPPURI", "entNPTIPPQueuename",
-                        "btnIPPVerify",
-                        "IPPBrowseDialog", "tvIPPBrowser",
-                        "btnIPPBrowseOk",
-                        "entNPTDirectJetHostname", "entNPTDirectJetPort",
-                        "SMBBrowseDialog", "entSMBURI", "tvSMBBrowser", "tblSMBAuth",
-                        "rbtnSMBAuthPrompt", "rbtnSMBAuthSet",
-                        "entSMBUsername", "entSMBPassword",
-                        "btnSMBBrowseOk", "btnSMBVerify",
-                           "entNPTDevice",
-                           "tvNCMembers", "tvNCNotMembers",
-                          "rbtnNPPPD", "tvNPMakes", 
-                          "rbtnNPFoomatic", "filechooserPPD",
-                        "hsNPDownloadableDriver",
-                          "rbtnNPDownloadableDriverSearch",
-                        "alignNPDownloadableDriver",
-                          "entNPDownloadableDriverSearch",
-                        "btnNPDownloadableDriverSearch",
-                        "cmbNPDownloadableDriverFoundPrinters",
-                        
-                          "tvNPModels", "tvNPDrivers",
-                          "rbtnChangePPDasIs", "rbtnChangePPDKeepSettings",
-                        "scrNPInstallableOptions", "vbNPInstallOptions",
-                        "tvNPDownloadableDrivers",
-                        "ntbkNPDownloadableDriverProperties",
-                        "lblNPDownloadableDriverSupplier",
-                        "lblNPDownloadableDriverLicense",
-                        "lblNPDownloadableDriverDescription",
-                        "frmNPDownloadableDriverLicenseTerms",
-                        "tvNPDownloadableDriverLicense",
-                        "rbtnNPDownloadLicenseYes",
-                        "rbtnNPDownloadLicenseNo",
-                        "NewPrinterName", "entCopyName", "btnCopyOk",
-                        "InstallDialog", "lblInstall")
+        self.getWidgets({"NewPrinterWindow":
+                             ["NewPrinterWindow",
+                              "ntbkNewPrinter",
+                              "btnNPBack",
+                              "btnNPForward",
+                              "btnNPApply",
+                              "entNPName",
+                              "entNPDescription",
+                              "entNPLocation",
+                              "tvNPDevices",
+                              "ntbkNPType",
+                              "lblNPDeviceDescription",
+                              "cmbNPTSerialBaud",
+                              "cmbNPTSerialParity",
+                              "cmbNPTSerialBits",
+                              "cmbNPTSerialFlow",
+                              "cmbentNPTLpdHost",
+                              "cmbentNPTLpdQueue",
+                              "entNPTIPPHostname",
+                              "btnIPPFindQueue",
+                              "lblIPPURI",
+                              "entNPTIPPQueuename",
+                              "btnIPPVerify",
+                              "entNPTDirectJetHostname",
+                              "entNPTDirectJetPort",
+                              "entSMBURI",
+                              "tblSMBAuth",
+                              "rbtnSMBAuthPrompt",
+                              "rbtnSMBAuthSet",
+                              "entSMBUsername",
+                              "entSMBPassword",
+                              "btnSMBVerify",
+                              "entNPTDevice",
+                              "tvNCMembers",
+                              "tvNCNotMembers",
+                              "rbtnNPPPD",
+                              "tvNPMakes", 
+                              "rbtnNPFoomatic",
+                              "filechooserPPD",
+                              "hsNPDownloadableDriver",
+                              "rbtnNPDownloadableDriverSearch",
+                              "alignNPDownloadableDriver",
+                              "entNPDownloadableDriverSearch",
+                              "btnNPDownloadableDriverSearch",
+                              "cmbNPDownloadableDriverFoundPrinters",
+                              "tvNPModels",
+                              "tvNPDrivers",
+                              "rbtnChangePPDasIs",
+                              "rbtnChangePPDKeepSettings",
+                              "scrNPInstallableOptions",
+                              "vbNPInstallOptions",
+                              "tvNPDownloadableDrivers",
+                              "ntbkNPDownloadableDriverProperties",
+                              "lblNPDownloadableDriverSupplier",
+                              "lblNPDownloadableDriverLicense",
+                              "lblNPDownloadableDriverDescription",
+                              "frmNPDownloadableDriverLicenseTerms",
+                              "tvNPDownloadableDriverLicense",
+                              "rbtnNPDownloadLicenseYes",
+                              "rbtnNPDownloadLicenseNo"],
+                         "IPPBrowseDialog":
+                             ["IPPBrowseDialog",
+                              "tvIPPBrowser",
+                              "btnIPPBrowseOk"],
+                         "SMBBrowseDialog":
+                             ["SMBBrowseDialog",
+                              "tvSMBBrowser",
+                              "btnSMBBrowseOk"],
+                         "InstallDialog":
+                             ["InstallDialog",
+                              "lblInstall"]})
+
         # share with mainapp
         self.WaitWindow = mainapp.WaitWindow
         self.lblWait = mainapp.lblWait
@@ -2562,8 +2624,6 @@ class NewPrinterGUI(GtkGUI):
         ppd_filter.add_pattern("*")
         self.filechooserPPD.add_filter(ppd_filter)
 
-        self.xml.signal_autoconnect(self)
-
     def show_IPP_Error (self, exception, message):
         return show_IPP_Error (exception, message, parent=self.NewPrinterWindow)
 
@@ -2622,7 +2682,7 @@ class NewPrinterGUI(GtkGUI):
             try:
                 self.loadPPDs()
             except cups.IPPError, (e, m):
-                show_IPP_Error (e, m, parent=self.mainapp.MainWindow)
+                show_IPP_Error (e, m, parent=self.mainapp.PrintersWindow)
                 return
             except Exception, e:
                 return
@@ -2668,7 +2728,7 @@ class NewPrinterGUI(GtkGUI):
             try:
                 self.loadPPDs ()
             except cups.IPPError, (e, m):
-                show_IPP_Error (e, m, parent=self.mainapp.MainWindow)
+                show_IPP_Error (e, m, parent=self.mainapp.PrintersWindow)
                 return
             except:
                 return
@@ -2736,7 +2796,7 @@ class NewPrinterGUI(GtkGUI):
                                          _('Searching') + '</span>\n\n' +
                                          _('Searching for drivers'))
                 if not parent:
-                    parent = self.mainapp.MainWindow
+                    parent = self.mainapp.PrintersWindow
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show ()
 
@@ -3187,7 +3247,7 @@ class NewPrinterGUI(GtkGUI):
                                          _('Searching') + '</span>\n\n' +
                                          _('Searching for printers'))
                 if not parent:
-                    parent = self.mainapp.MainWindow
+                    parent = self.mainapp.PrintersWindow
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show ()
 
@@ -4820,7 +4880,7 @@ class NewPrinterGUI(GtkGUI):
                                 (name, pkg))
                 dialog = self.InstallDialog
                 self.lblInstall.set_markup(install_text)
-                dialog.set_transient_for (self.mainapp.MainWindow)
+                dialog.set_transient_for (self.mainapp.PrintersWindow)
                 response = dialog.run ()
                 dialog.hide ()
                 if response == gtk.RESPONSE_OK:
@@ -4845,7 +4905,7 @@ class NewPrinterGUI(GtkGUI):
                                      "but it is not currently installed.  "
                                      "Please install it before using this "
                                      "printer.") % (name, (exes + pkgs)[0]),
-                                   self.mainapp.MainWindow)
+                                   self.mainapp.PrintersWindow)
 
 
 def main(configure_printer = None, change_ppd = False):

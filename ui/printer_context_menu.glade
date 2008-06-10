@@ -1,0 +1,141 @@
+<?xml version="1.0" standalone="no"?> <!--*- mode: xml -*-->
+<!DOCTYPE glade-interface SYSTEM "http://glade.gnome.org/glade-2.0.dtd">
+
+<glade-interface>
+
+<widget class="GtkMenu" id="printer_context_menu">
+
+  <child>
+    <widget class="GtkImageMenuItem" id="printer_context_edit">
+      <property name="visible">True</property>
+      <property name="label">gtk-edit</property>
+      <property name="use_stock">True</property>
+      <signal name="activate" handler="on_printer_context_edit_activate" last_modification_time="Fri, 14 Mar 2008 13:43:39 GMT"/>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkMenuItem" id="printer_context_rename">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">_Rename</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_printer_context_rename_activate" last_modification_time="Wed, 16 Apr 2008 13:29:19 GMT"/>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="printer_context_copy">
+      <property name="visible">True</property>
+      <property name="label">gtk-copy</property>
+      <property name="use_stock">True</property>
+      <signal name="activate" handler="on_printer_context_copy_activate" last_modification_time="Tue, 13 May 2008 11:28:10 GMT"/>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="printer_context_delete">
+      <property name="visible">True</property>
+      <property name="label">gtk-delete</property>
+      <property name="use_stock">True</property>
+      <signal name="activate" handler="on_printer_context_delete_activate" last_modification_time="Fri, 14 Mar 2008 14:13:33 GMT"/>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkSeparatorMenuItem" id="separator7">
+      <property name="visible">True</property>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkCheckMenuItem" id="printer_context_enabled">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">E_nabled</property>
+      <property name="use_underline">True</property>
+      <property name="active">False</property>
+      <signal name="activate" handler="on_printer_context_enabled_activate" last_modification_time="Fri, 06 Jun 2008 10:19:14 GMT"/>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkCheckMenuItem" id="printer_context_shared">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">_Shared</property>
+      <property name="use_underline">True</property>
+      <property name="active">False</property>
+      <signal name="activate" handler="on_printer_context_shared_activate" last_modification_time="Fri, 06 Jun 2008 09:11:26 GMT"/>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="printer_context_set_as_default">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">Set As Default</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_printer_context_set_as_default_activate" last_modification_time="Fri, 14 Mar 2008 14:13:33 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image100">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-home</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="printer_context_create_class">
+      <property name="visible">True</property>
+      <property name="tooltip" translatable="yes">Create a class from the selected printers (for failover or load-balancing)</property>
+      <property name="label" translatable="yes">_Create Class</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_printer_context_create_class_activate" last_modification_time="Tue, 27 May 2008 14:46:16 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image101">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-dnd-multiple</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkSeparatorMenuItem" id="separator1">
+      <property name="visible">True</property>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkImageMenuItem" id="printer_context_view_print_queue">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">View Print _Queue</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_printer_context_view_print_queue_activate" last_modification_time="Fri, 14 Mar 2008 13:43:39 GMT"/>
+
+      <child internal-child="image">
+	<widget class="GtkImage" id="image102">
+	  <property name="visible">True</property>
+	  <property name="stock">gtk-find</property>
+	  <property name="icon_size">1</property>
+	  <property name="xalign">0.5</property>
+	  <property name="yalign">0.5</property>
+	  <property name="xpad">0</property>
+	  <property name="ypad">0</property>
+	</widget>
+      </child>
+    </widget>
+  </child>
+</widget>
+
+</glade-interface>

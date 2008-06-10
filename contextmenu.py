@@ -24,6 +24,7 @@ import gtk.gdk
 
 import cups
 import errordialogs
+from glade import GtkGUI
 import jobviewer
 from debug import *
 
@@ -32,23 +33,21 @@ def set_gettext_function (x):
     global _
     _ = x
 
-class PrinterContextMenu:
+class PrinterContextMenu (GtkGUI):
     def __init__ (self, parent):
         self.parent = parent
-        self.xml = parent.xml
-        for name in ["printer_context_menu",
-                     "printer_context_edit",
-                     "printer_context_rename",
-                     "printer_context_enabled",
-                     "printer_context_shared",
-                     "printer_context_copy",
-                     "printer_context_delete",
-                     "printer_context_set_as_default",
-                     "printer_context_create_class",
-                     "printer_context_view_print_queue"]:
-            widget = self.xml.get_widget (name)
-            setattr (self, name, widget)
-        self.xml.signal_autoconnect (self)
+        self.getWidgets ({"printer_context_menu":
+                              ["printer_context_menu",
+                               "printer_context_edit",
+                               "printer_context_rename",
+                               "printer_context_enabled",
+                               "printer_context_shared",
+                               "printer_context_copy",
+                               "printer_context_delete",
+                               "printer_context_set_as_default",
+                               "printer_context_create_class",
+                               "printer_context_view_print_queue"]})
+
         self.jobviewers = []
         self.updating_widgets = False
 
@@ -157,7 +156,7 @@ class PrinterContextMenu:
             try:
                 printer.setEnabled (enable)
             except cups.IPPError, (e, m):
-                errordialogs.show_IPP_Error (e, m, self.parent.MainWindow)
+                errordialogs.show_IPP_Error (e, m, self.parent.PrintersWindow)
                 # Give up on this operation.
                 break
         self.parent.populateList ()
@@ -174,7 +173,7 @@ class PrinterContextMenu:
             try:
                 printer.setShared (share)
             except cups.IPPError, (e, m):
-                errordialogs.show_IPP_Error (e, m, self.parent.MainWindow)
+                errordialogs.show_IPP_Error (e, m, self.parent.PrintersWindow)
                 # Give up on this operation.
                 break
         if share:
@@ -228,11 +227,11 @@ class PrinterContextMenu:
             viewer = jobviewer.JobViewer (None, None, my_jobs=False,
                                           specific_dests=specific_dests,
                                           exit_handler=self.on_jobviewer_exit,
-                                          parent=self.parent.MainWindow)
+                                          parent=self.parent.PrintersWindow)
         else:
             viewer = jobviewer.JobViewer (None, None, my_jobs=False,
                                           exit_handler=self.on_jobviewer_exit,
-                                          parent=self.parent.MainWindow)
+                                          parent=self.parent.PrintersWindow)
 
         self.jobviewers.append (viewer)
 

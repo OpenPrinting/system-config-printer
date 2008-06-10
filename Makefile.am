@@ -25,7 +25,18 @@ nobase_pkgdata_DATA=					\
 	gtk_treeviewtooltips.py				\
 	smburi.py					\
 	statereason.py					\
-	system-config-printer.glade			\
+	ui/AboutDialog.glade				\
+	ui/ConnectDialog.glade				\
+	ui/ConnectingDialog.glade			\
+	ui/InstallDialog.glade				\
+	ui/IPPBrowseDialog.glade			\
+	ui/NewPrinterName.glade				\
+	ui/NewPrinterWindow.glade			\
+	ui/printer_context_menu.glade			\
+	ui/PrinterPropertiesDialog.glade		\
+	ui/ServerSettingsDialog.glade			\
+	ui/SMBBrowseDialog.glade			\
+	ui/WaitWindow.glade				\
 	icons/i-network-printer.png			\
 	troubleshoot/base.py				\
 	troubleshoot/CheckLocalServerPublishing.py	\
@@ -150,14 +161,14 @@ missing-languages:
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
 
 fix-glade:
-	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' *.glade
+	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' $(top_srcdir)/ui/*.glade
 
 run:
-	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir) \
+	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/ui \
 	python $(top_srcdir)/system-config-printer.py --debug
 
 run-applet:
-	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir) \
+	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/ui \
 	python $(top_srcdir)/applet.py --debug
 
 help:

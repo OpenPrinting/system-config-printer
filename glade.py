@@ -20,11 +20,21 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-class GtkGUI:
+import gtk.glade
+import os
 
-    def getWidgets(self, *names):
-        for name in names:
-            widget = self.xml.get_widget(name)
-            if widget is None:
-                raise ValueError, "Widget '%s' not found" % name
-            setattr(self, name, widget)
+import config
+pkgdata = config.Paths ().get_path ('pkgdatadir')
+
+class GtkGUI:
+    def getWidgets(self, widgets):
+        glade_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE",
+                                    os.path.join (pkgdata, "ui"))
+        for xmlfile, names in widgets.iteritems ():
+            xml = gtk.glade.XML (os.path.join (glade_dir, xmlfile + ".glade"))
+            for name in names:
+                widget = xml.get_widget(name)
+                if widget is None:
+                    raise ValueError, "Widget '%s' not found" % name
+                setattr(self, name, widget)
+            xml.signal_autoconnect (self)

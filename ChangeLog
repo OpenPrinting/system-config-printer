@@ -1,6 +1,44 @@
 2008-06-10  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.__init__): Use glade.GtkGUI.
+
+	* applet.glade: Split into...
+	* ui/JobsWindow.glade, ui/PrinterStatusWindow.glade,
+	ui/job_popupmenu.glade, ui/statusicon_popupmenu.glade: ...new
+	files.
+	
+2008-06-10  Tim Waugh  <twaugh@redhat.com>
+
+	* ui/MainWindow.glade:  Renamed to...
+	* ui/PrintersWindow.glade: ...this, to avoid collisions with
+	the applet's glade XML.
+
+2008-06-10  Tim Waugh  <twaugh@redhat.com>
+
 	* Makefile.am (help): Added help for run-applet.
+
+2008-06-10  Tim Waugh  <twaugh@redhat.com>
+
+	* contextmenu.py (PrinterContextMenu.__init__): Use glade.GtkGUI.
+
+	* glade.py (GtkGUI.getWidgets): Adapted.
+
+	* Makefile.am (run): Point to ui directory.
+	(run-applet): Likewise.
+
+	* system-config-printer.py (GtkGUI.getWidgets): Adapted.
+
+	* ui/AboutDialog.glade, ui/ConnectDialog.glade,
+	ui/ConnectingDialog.glade, ui/InstallDialog.glade,
+	ui/IPPBrowseDialog.glade, ui/NewPrinterName.glade,
+	ui/NewPrinterWindow.glade, ui/printer_context_menu.glade,
+	ui/PrinterPropertiesDialog.glade, ui/ServerSettingsDialog.glade,
+	ui/SMBBrowseDialog.glade, ui/WaitWindow.glade: New files.
+	* system-config-printer.glade: Removed.
+
+	* Makefile.am (nobase_pkgdata_DATA): Ship separate glade files
+	instead of all-in-one glade file for main application.
+	* POTFILES.in: Translate them.
 
 2008-06-10  Tim Waugh  <twaugh@redhat.com>
 
