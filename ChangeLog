@@ -1,5 +1,15 @@
 2008-06-10  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (NewPrinterGUI.getPPDs_thread):
+	Propagate all exceptions.
+	(NewPrinterGUI.fetchPPDs): Likewise.
+	(NewPrinterGUI.init): Handle exceptions here to some degree.
+	(GUI.cups_connection_error): New method.  Watch for connection
+	errors.
+	(GUI.dests_iconview_item_activated): Watch for connection errors.
+
+2008-06-10  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.on_btnRefresh_clicked): Update
 	status bar with connection status if we tried to connect.
 
