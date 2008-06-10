@@ -57,6 +57,7 @@ cups.require ("1.9.27")
 import pysmb
 import cupshelpers, options
 import gobject # for TYPE_STRING and TYPE_PYOBJECT
+from glade import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
 import ppds
@@ -139,15 +140,6 @@ def getCurrentClassMembers(treeview):
         iter = model.iter_next(iter)
     result.sort()
     return result
-
-class GtkGUI:
-
-    def getWidgets(self, *names):
-        for name in names:
-            widget = self.xml.get_widget(name)
-            if widget is None:
-                raise ValueError, "Widget '%s' not found" % name
-            setattr(self, name, widget)
 
 class GUI(GtkGUI, monitor.Watcher):
 
