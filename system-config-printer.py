@@ -562,6 +562,13 @@ class GUI(GtkGUI, monitor.Watcher):
         object = model.get_value (iter, 0)
         try:
             self.fillPrinterTab (name)
+        except cups.IPPError, (e, m):
+            show_IPP_Error (e, m, self.MainWindow)
+            if e == cups.IPP_SERVICE_UNAVAILABLE:
+                self.cups = None
+                self.setConnected ()
+                self.populateList ()
+            return
         except RuntimeError:
             # Perhaps cupsGetPPD2 failed for a browsed printer.
             return
@@ -2378,6 +2385,15 @@ class GUI(GtkGUI, monitor.Watcher):
         monitor.Watcher.printer_removed (self, mon, printer)
         self.printer_added_or_removed ()
 
+    def cups_connection_error (self, mon):
+        monitor.Watcher.cups_connection_error (self, mon)
+        try:
+            self.cups.getClasses ()
+        except:
+            self.cups = None
+            self.setConnected ()
+            self.populateList ()
+
 class NewPrinterGUI(GtkGUI):
 
     new_printer_device_tabs = {
@@ -2614,6 +2630,8 @@ class NewPrinterGUI(GtkGUI):
             except cups.IPPError, (e, m):
                 show_IPP_Error (e, m, parent=self.mainapp.MainWindow)
                 return
+            except Exception, e:
+                return
 
             self.fillDeviceTab(self.mainapp.printer.device_uri)
             # Start fetching information from CUPS in the background
@@ -2658,6 +2676,8 @@ class NewPrinterGUI(GtkGUI):
             except cups.IPPError, (e, m):
                 show_IPP_Error (e, m, parent=self.mainapp.MainWindow)
                 return
+            except:
+                return
 
             self.fillMakeList()
 
@@ -2701,9 +2721,9 @@ class NewPrinterGUI(GtkGUI):
             del c
         except cups.IPPError, (e, msg):
             self.ppds_result = cups.IPPError (e, msg)
-        except:
+        except Exception, e:
             nonfatalException()
-            self.ppds_result = { }
+            self.ppds_result = e
 
         debugprint ("Releasing PPDs lock")
         self.ppds_lock.release ()
@@ -2736,7 +2756,7 @@ class NewPrinterGUI(GtkGUI):
 
         debugprint ("Got PPDs")
         result = self.ppds_result # atomic operation
-        if isinstance (result, cups.IPPError):
+        if isinstance (result, Exception):
             # Propagate exception.
             raise result
         return result
