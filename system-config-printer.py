@@ -113,6 +113,33 @@ def CUPS_server_hostname ():
         return 'localhost'
     return host
 
+# Both the printer properties window and the new printer window
+# need to be able to drive 'class members' selections.
+def moveClassMembers(treeview_from, treeview_to):
+    selection = treeview_from.get_selection()
+    model_from, rows = selection.get_selected_rows()
+    rows = [gtk.TreeRowReference(model_from, row) for row in rows]
+
+    model_to = treeview_to.get_model()
+        
+    for row in rows:
+        path = row.get_path()
+        iter = model_from.get_iter(path)
+            
+        row_data = model_from.get(iter, 0)
+        model_to.append(row_data)
+        model_from.remove(iter)
+
+def getCurrentClassMembers(treeview):
+    model = treeview.get_model()
+    iter = model.get_iter_root()
+    result = []
+    while iter:
+        result.append(model.get(iter, 0)[0])
+        iter = model.iter_next(iter)
+    result.sort()
+    return result
+
 class GtkGUI:
 
     def getWidgets(self, *names):
@@ -121,31 +148,6 @@ class GtkGUI:
             if widget is None:
                 raise ValueError, "Widget '%s' not found" % name
             setattr(self, name, widget)
-
-    def moveClassMembers(self, treeview_from, treeview_to):
-        selection = treeview_from.get_selection()
-        model_from, rows = selection.get_selected_rows()
-        rows = [gtk.TreeRowReference(model_from, row) for row in rows]
-
-        model_to = treeview_to.get_model()
-        
-        for row in rows:
-            path = row.get_path()
-            iter = model_from.get_iter(path)
-            
-            row_data = model_from.get(iter, 0)
-            model_to.append(row_data)
-            model_from.remove(iter)
-
-    def getCurrentClassMembers(self, treeview):
-        model = treeview.get_model()
-        iter = model.get_iter_root()
-        result = []
-        while iter:
-            result.append(model.get(iter, 0)[0])
-            iter = model.iter_next(iter)
-        result.sort()
-        return result
 
 class GUI(GtkGUI, monitor.Watcher):
 
@@ -1323,7 +1325,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
             if printer.is_class:
                 # update member list
-                new_members = self.getCurrentClassMembers(self.tvClassMembers)
+                new_members = getCurrentClassMembers(self.tvClassMembers)
                 if not new_members:
                     dialog = gtk.MessageDialog(
                         flags=0, type=gtk.MESSAGE_WARNING,
@@ -1932,18 +1934,18 @@ class GUI(GtkGUI, monitor.Watcher):
                     model_not_members.append((name, ))
                 
     def on_btnClassAddMember_clicked(self, button):
-        self.moveClassMembers(self.tvClassNotMembers,
-                              self.tvClassMembers)
-        if self.getCurrentClassMembers(self.tvClassMembers) != self.printer.class_members:
+        moveClassMembers(self.tvClassNotMembers,
+                         self.tvClassMembers)
+        if getCurrentClassMembers(self.tvClassMembers) != self.printer.class_members:
             self.changed.add(self.tvClassMembers)
         else:
             self.changed.discard(self.tvClassMembers)
         self.setDataButtonState()
         
     def on_btnClassDelMember_clicked(self, button):
-        self.moveClassMembers(self.tvClassMembers,
-                              self.tvClassNotMembers)
-        if self.getCurrentClassMembers(self.tvClassMembers) != self.printer.class_members:
+        moveClassMembers(self.tvClassMembers,
+                         self.tvClassNotMembers)
+        if getCurrentClassMembers(self.tvClassMembers) != self.printer.class_members:
             self.changed.add(self.tvClassMembers)
         else:
             self.changed.discard(self.tvClassMembers)
@@ -2785,14 +2787,14 @@ class NewPrinterGUI(GtkGUI):
             model.append((printer.name,))
 
     def on_btnNCAddMember_clicked(self, button):
-        self.moveClassMembers(self.tvNCNotMembers, self.tvNCMembers)
+        moveClassMembers(self.tvNCNotMembers, self.tvNCMembers)
         self.btnNPApply.set_sensitive(
-            bool(self.getCurrentClassMembers(self.tvNCMembers)))
+            bool(getCurrentClassMembers(self.tvNCMembers)))
         
     def on_btnNCDelMember_clicked(self, button):
-        self.moveClassMembers(self.tvNCMembers, self.tvNCNotMembers)        
+        moveClassMembers(self.tvNCMembers, self.tvNCNotMembers)        
         self.btnNPApply.set_sensitive(
-            bool(self.getCurrentClassMembers(self.tvNCMembers)))
+            bool(getCurrentClassMembers(self.tvNCMembers)))
 
     # Navigation buttons
 
@@ -3117,7 +3119,7 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPForward.hide()
             self.btnNPApply.show()
             self.btnNPApply.set_sensitive(
-                bool(self.getCurrentClassMembers(self.tvNCMembers)))
+                bool(getCurrentClassMembers(self.tvNCMembers)))
         if nr == 7: # Downloadable drivers
             if self.ntbkNPDownloadableDriverProperties.get_current_page() == 1:
                 accepted = self.rbtnNPDownloadLicenseYes.get_active ()
@@ -4634,7 +4636,7 @@ class NewPrinterGUI(GtkGUI):
         ppd = self.ppd
 
         if self.dialog_mode=="class":
-            members = self.getCurrentClassMembers(self.tvNCMembers)
+            members = getCurrentClassMembers(self.tvNCMembers)
             try:
                 for member in members:
                     self.mainapp.cups.addPrinterToClass(member, name)
