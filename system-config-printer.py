@@ -3788,7 +3788,7 @@ class NewPrinterGUI(GtkGUI):
         text = _("This print share is not accessible.")
         if reason:
             text = reason
-        show_error_dialog (_("Print Share Inaccessible"), text)
+        show_error_dialog (_("Print Share Inaccessible"), text,
                            parent=self.NewPrinterWindow)
 
     ### IPP Browsing
