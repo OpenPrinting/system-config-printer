@@ -1025,6 +1025,8 @@ class GUI(GtkGUI, monitor.Watcher):
             except RuntimeError:
                 pass
 
+            self.setConnected()
+
         self.populateList()
 
     # Data handling
