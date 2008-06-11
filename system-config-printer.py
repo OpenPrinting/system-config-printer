@@ -4247,7 +4247,9 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
             # Clear printer list.
             model = gtk.ListStore (str, str)
-            self.cmbNPDownloadableDriverFoundPrinters.set_model (model)
+            combobox = self.cmbNPDownloadableDriverFoundPrinters
+            combobox.set_model (model)
+            combobox.set_sensitive (False)
 
         for widget in [self.entNPDownloadableDriverSearch,
                        self.cmbNPDownloadableDriverFoundPrinters]:
@@ -4272,6 +4274,7 @@ class NewPrinterGUI(GtkGUI):
         self.openprinting_query_handle = \
             self.openprinting.searchPrinters (searchterm,
                                               self.openprinting_printers_found)
+        self.cmbNPDownloadableDriverFoundPrinters.set_sensitive (False)
 
     def openprinting_printers_found (self, status, user_data, printers):
         self.openprinting_query_handle = None
@@ -4311,6 +4314,7 @@ class NewPrinterGUI(GtkGUI):
             combobox = self.cmbNPDownloadableDriverFoundPrinters
             combobox.set_model (model)
             combobox.set_active (0)
+            combobox.set_sensitive (True)
             self.setNPButtons ()
         except:
             nonfatalException()

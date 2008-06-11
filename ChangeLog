@@ -1,3 +1,14 @@
+2008-06-11  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.openprinting_printers_found): Set the combobox
+	sensitive.
+	(NewPrinterGUI.on_btnNPDownloadableDriverSearch_clicked): Set the
+	combobox insensitive.
+	(NewPrinterGUI.on_rbtnNPFoomatic_toggled): Set the combobox
+	insensitive if the search is cancelled.
+	Part of https://fedorahosted.org/system-config-printer/ticket/25.
+
 2008-06-10  Tim Waugh  <twaugh@redhat.com>
 
 	* jobviewer.py (JobViewer.__init__): Use glade.GtkGUI.
