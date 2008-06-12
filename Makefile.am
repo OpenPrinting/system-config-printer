@@ -61,7 +61,7 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/ServerFirewalled.py		\
 	troubleshoot/Shrug.py				\
 	troubleshoot/Welcome.py				\
-	applet.glade
+	applet.py
 
 bin_SCRIPTS=\
 	system-config-printer			\
