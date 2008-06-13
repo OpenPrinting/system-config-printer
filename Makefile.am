@@ -30,12 +30,17 @@ nobase_pkgdata_DATA=					\
 	ui/ConnectingDialog.glade			\
 	ui/InstallDialog.glade				\
 	ui/IPPBrowseDialog.glade			\
+	ui/job_popupmenu.glade				\
+	ui/JobsWindow.glade				\
 	ui/NewPrinterName.glade				\
 	ui/NewPrinterWindow.glade			\
 	ui/printer_context_menu.glade			\
 	ui/PrinterPropertiesDialog.glade		\
+	ui/PrinterStatusWindow.glade			\
+	ui/PrintersWindow.glade				\
 	ui/ServerSettingsDialog.glade			\
 	ui/SMBBrowseDialog.glade			\
+	ui/statusicon_popupmenu.glade			\
 	ui/WaitWindow.glade				\
 	icons/i-network-printer.png			\
 	troubleshoot/base.py				\
@@ -60,8 +65,7 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/SchedulerNotRunning.py		\
 	troubleshoot/ServerFirewalled.py		\
 	troubleshoot/Shrug.py				\
-	troubleshoot/Welcome.py				\
-	applet.glade
+	troubleshoot/Welcome.py
 
 bin_SCRIPTS=\
 	system-config-printer			\
