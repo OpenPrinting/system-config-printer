@@ -1,5 +1,10 @@
 2008-06-13  Tim Waugh  <twaugh@redhat.com>
 
+	* cupshelpers.py (Printer.update): Work-around pycups bug.  The
+	printer-uri-supported attribute should always be a list.
+
+2008-06-13  Tim Waugh  <twaugh@redhat.com>
+
 	* Makefile.am (nobase_pkgdata_DATA): Replaced applet.glade with
 	ui/job_popupmenu.glade, ui/JobsWindow.glade,
 	ui/PrinterStatusWindow.glade, and ui/statusicon_popupmenu.glade.
