@@ -68,8 +68,8 @@ class Printer:
         self.make_and_model = kw.get('printer-make-and-model', "")
         self.type = kw.get('printer-type', 0)
         self.uri_supported = kw.get('printer-uri-supported', "")
-        if type (self.uri_supported) == list:
-            self.uri_supported = self.uri_supported[0]
+        if type (self.uri_supported) != list:
+            self.uri_supported = [self.uri_supported]
         self._expand_flags()
         if self.is_shared is None:
             self.is_shared = not self.not_shared
@@ -145,9 +145,9 @@ class Printer:
 
     def getServer(self):
         """return Server URI or None"""
-        if not self.uri_supported.startswith('ipp://'):
+        if not self.uri_supported[0].startswith('ipp://'):
             return None
-        uri = self.uri_supported[6:]
+        uri = self.uri_supported[0][6:]
         uri = uri.split('/')[0]
         uri = uri.split(':')[0]
         if uri == "localhost.localdomain":
