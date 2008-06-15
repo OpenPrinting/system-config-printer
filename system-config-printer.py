@@ -73,6 +73,7 @@ import monitor
 from smburi import SMBURI
 import errordialogs
 from errordialogs import *
+from ToolbarSearchEntry import *
 
 domain='system-config-printer'
 import locale
@@ -582,6 +583,22 @@ class GUI(GtkGUI, monitor.Watcher):
                         self.btnChangePPD.clicked ()
                     break
                 iter = model.iter_next (iter)
+
+        self.setup_toolbar_for_search_entry ()
+
+    def setup_toolbar_for_search_entry (self):
+        separator = gtk.SeparatorToolItem ()
+        separator.set_draw (False)
+
+        self.toolbar.insert (separator, -1)
+        self.toolbar.child_set_property (separator, "expand", True)
+
+        entry = ToolbarSearchEntry ()
+
+        tool_item = gtk.ToolItem ()
+        tool_item.add (entry)
+        self.toolbar.insert (tool_item, -1)
+        self.toolbar.show_all ()
 
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
