@@ -25,6 +25,7 @@ nobase_pkgdata_DATA=					\
 	gtk_treeviewtooltips.py				\
 	smburi.py					\
 	statereason.py					\
+	userdefault.py					\
 	ui/AboutDialog.glade				\
 	ui/ConnectDialog.glade				\
 	ui/ConnectingDialog.glade			\
