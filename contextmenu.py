@@ -26,6 +26,7 @@ import cups
 import errordialogs
 import jobviewer
 from debug import *
+import userdefault
 
 _ = lambda x: x
 def set_gettext_function (x):
@@ -66,9 +67,6 @@ class PrinterContextMenu:
         if n == 1:
             iter = model.get_iter (paths[0])
             name = model.get_value (iter, 2)
-            is_default = name == self.parent.default_printer
-        else:
-            is_default = False
 
         any_disabled = False
         any_enabled = False
@@ -105,8 +103,12 @@ class PrinterContextMenu:
         show_widget (self.printer_context_edit, n == 1)
         show_widget (self.printer_context_copy, n == 1)
         show_widget (self.printer_context_rename, n == 1 and not any_discovered)
-        show_widget (self.printer_context_set_as_default,
-                     n == 1 and not is_default)
+        userdef = userdefault.UserDefaultPrinter ().get ()
+        if (n != 1 or
+            (userdef == None and self.parent.default_printer == name)):
+            self.printer_context_set_as_default.hide ()
+        else:
+            self.printer_context_set_as_default.show ()
 
         # Actions that require at least one destination
         show_widget (self.printer_context_delete, n > 0 and not any_discovered)
