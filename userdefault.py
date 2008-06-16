@@ -17,6 +17,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import gtk
 import os
 import subprocess
 
@@ -82,3 +83,85 @@ class UserDefaultPrinter:
 
     def __repr__ (self):
         return "<UserDefaultPrinter (%s)>" % repr (self.get ())
+
+class UserDefaultPrompt:
+    def __init__ (self,
+                  set_default_fn,
+                  refresh_fn,
+                  name,
+                  title,
+                  parent,
+                  primarylabel,
+                  systemwidelabel,
+                  clearpersonallabel,
+                  personallabel):
+        self.set_default_fn = set_default_fn
+        self.refresh_fn = refresh_fn
+        self.name = name
+        dialog = gtk.Dialog (title,
+                             parent,
+                             gtk.DIALOG_MODAL |
+                             gtk.DIALOG_DESTROY_WITH_PARENT |
+                             gtk.DIALOG_NO_SEPARATOR,
+                             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                              gtk.STOCK_OK, gtk.RESPONSE_OK))
+        dialog.set_default_response (gtk.RESPONSE_OK)
+        dialog.set_border_width (6)
+        dialog.set_resizable (False)
+        hbox = gtk.HBox (False, 12)
+        hbox.set_border_width (6)
+        image = gtk.Image ()
+        image.set_from_stock ('gtk-dialog-question', gtk.ICON_SIZE_DIALOG)
+        image.set_alignment (0.0, 0.0)
+        hbox.pack_start (image, False, False, 0)
+        vboxouter = gtk.VBox (False, 6)
+        primary = gtk.Label ()
+        primary.set_markup ('<span weight="bold" size="larger">' +
+                            primarylabel + '</span>')
+        primary.set_line_wrap (True)
+        primary.set_alignment (0.0, 0.0)
+        vboxouter.pack_start (primary, False, False, 0)
+        vboxradio = gtk.VBox (False, 0)
+        systemwide = gtk.RadioButton (label=systemwidelabel)
+        vboxradio.pack_start (systemwide, False, False, 0)
+        clearpersonal = gtk.CheckButton (clearpersonallabel)
+        alignment = gtk.Alignment (0, 0, 0, 0)
+        alignment.set_padding (0, 0, 12, 0)
+        alignment.add (clearpersonal)
+        vboxradio.pack_start (alignment)
+        vboxouter.pack_start (vboxradio, False, False, 0)
+        personal = gtk.RadioButton (group=systemwide,
+                                    label=personallabel)
+        vboxouter.pack_start (personal, False, False, 0)
+        hbox.pack_start (vboxouter, False, False, 0)
+        dialog.vbox.pack_start (hbox, False, False, 0)
+        systemwide.set_active (True)
+        clearpersonal.set_active (True)
+        self.userdef = UserDefaultPrinter ()
+        clearpersonal.set_sensitive (self.userdef.get () != None)
+
+        self.systemwide = systemwide
+        self.clearpersonal = clearpersonal
+        self.personal = personal
+        systemwide.connect ("toggled", self.on_toggled)
+        dialog.connect ("response", self.on_response)
+        dialog.show_all ()
+
+    def on_toggled (self, button):
+        self.clearpersonal.set_sensitive (self.userdef.get () != None and
+                                          self.systemwide.get_active ())
+
+    def on_response (self, dialog, response_id):
+        if response_id != gtk.RESPONSE_OK:
+            dialog.hide ()
+            return
+
+        if self.systemwide.get_active ():
+            if self.clearpersonal.get_active ():
+                self.userdef.clear ()
+            self.set_default_fn (self.name)
+        else:
+            self.userdef.set (self.name)
+            self.refresh_fn ()
+
+        dialog.hide ()

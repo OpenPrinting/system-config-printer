@@ -195,7 +195,7 @@ class PrinterContextMenu (GtkGUI):
         model = self.iconview.get_model ()
         iter = model.get_iter (self.paths[0])
         name = model.get_value (iter, 2)
-        self.parent.set_default_printer (name)
+        self.parent.set_system_or_user_default_printer (name)
 
     ### Create Class
     def on_printer_context_create_class_activate (self, menuitem):
