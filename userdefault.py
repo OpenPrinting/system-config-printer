@@ -111,7 +111,7 @@ class UserDefaultPrompt:
         hbox = gtk.HBox (False, 12)
         hbox.set_border_width (6)
         image = gtk.Image ()
-        image.set_from_stock ('gtk-dialog-question', gtk.ICON_SIZE_DIALOG)
+        image.set_from_stock (gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_DIALOG)
         image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
         vboxouter = gtk.VBox (False, 6)

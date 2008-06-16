@@ -55,10 +55,10 @@ def show_dialog (title, text, icon, parent=None):
     dialog.hide ()
 
 def show_info_dialog (title, text, parent=None):
-    return show_dialog (title, text, 'gtk-dialog-info', parent=parent)
+    return show_dialog (title, text, gtk.STOCK_DIALOG_INFO, parent=parent)
 
 def show_error_dialog (title, text, parent=None):
-    return show_dialog (title, text, 'gtk-dialog-error', parent=parent)
+    return show_dialog (title, text, gtk.STOCK_DIALOG_ERROR, parent=parent)
 
 def show_IPP_Error(exception, message, parent=None):
     if exception == cups.IPP_NOT_AUTHORIZED:

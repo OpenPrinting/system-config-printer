@@ -923,7 +923,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 hbox = gtk.HBox (False, 12)
                 hbox.set_border_width (6)
                 image = gtk.Image ()
-                image.set_from_stock ('gtk-dialog-error',
+                image.set_from_stock (gtk.STOCK_DIALOG_ERROR,
                                       gtk.ICON_SIZE_DIALOG)
                 hbox.pack_start (image, False, False, 0)
                 vbox = gtk.VBox (False, 12)
