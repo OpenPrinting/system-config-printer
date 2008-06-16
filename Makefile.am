@@ -25,6 +25,7 @@ nobase_pkgdata_DATA=					\
 	smburi.py					\
 	statereason.py					\
 	system-config-printer.glade			\
+	userdefault.py					\
 	icons/i-network-printer.png			\
 	troubleshoot/base.py				\
 	troubleshoot/CheckLocalServerPublishing.py	\
