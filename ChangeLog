@@ -1,5 +1,25 @@
 2008-06-16  Tim Waugh  <twaugh@redhat.com>
 
+	* pysmb.py (AuthContext.perform_authentication): Use
+	STOCK_DIALOG_AUTHENTICATION instead of literal string.
+
+	* optionwidgets.py (Option.__init__): Use STOCK_DIALOG_WARNING and
+	ICON_SIZE_SMALL_TOOLBAR instead of literal strings and ints.
+
+	* authconn.py (AuthDialog.__init__): Use
+	STOCK_DIALOG_AUTHENTICATION instead of literal string.
+
+	* errordialogs.py (show_info_dialog): Use STOCK_DIALOG_INFO
+	instead of literal string.
+	(show_error_dialog): Use STOCK_DIALOG_ERROR instead of literal
+	string.
+	* jobviewer.py (JobViewer.job_event): Likewise.
+
+	* userdefault.py (UserDefaultPrompt.__init__): Use
+	STOCK_DIALOG_QUESTION instead of a literal string.
+
+2008-06-16  Tim Waugh  <twaugh@redhat.com>
+
 	* userdefault.py (UserDefaultPrompt): New class, implementing a
 	user/system default printer dialog.
 	* system-config-printer.py

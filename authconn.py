@@ -44,7 +44,7 @@ class AuthDialog(gtk.Dialog):
         hbox = gtk.HBox (False, 12)
         hbox.set_border_width (6)
         image = gtk.Image ()
-        image.set_from_stock ('gtk-dialog-authentication',
+        image.set_from_stock (gtk.STOCK_DIALOG_AUTHENTICATION,
                               gtk.ICON_SIZE_DIALOG)
         image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
