@@ -1,3 +1,13 @@
+2008-06-16  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py: Initial implementation.
+	* ui/PrintersWindow.glade: Removed the height request from the
+	GtkWindow. Removed horizontal scrolling from the printer groups
+	treeview's GtkScrolledWindow.
+	* system-config-printer.py (GUI.__init__): Use GroupsPane. Moved
+	GUI.setup_toolbar_for_search_entry before the icon_view resizing
+	block.
+
 2008-06-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* ui/PrintersWindow.glade: Make the window have a minimum size so

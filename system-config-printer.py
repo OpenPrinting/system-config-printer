@@ -74,6 +74,7 @@ from smburi import SMBURI
 import errordialogs
 from errordialogs import *
 from ToolbarSearchEntry import *
+from GroupsPane import *
 
 domain='system-config-printer'
 import locale
@@ -184,6 +185,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               "enabled",
                               "shared",
                               "set_as_default",
+                              "groups_treeview",
                               "view_discovered_printers"],
                          "AboutDialog":
                              ["AboutDialog"],
@@ -558,6 +560,10 @@ class GUI(GtkGUI, monitor.Watcher):
             self.populateList()
             show_HTTP_Error(s, self.PrintersWindow)
 
+        self.setup_toolbar_for_search_entry ()
+
+        self.groups_pane = GroupsPane (self.groups_treeview)
+
         try:
             self.dests_iconview.resize_children ()
             (width, height) = self.dests_iconview.size_request ()
@@ -583,8 +589,6 @@ class GUI(GtkGUI, monitor.Watcher):
                         self.btnChangePPD.clicked ()
                     break
                 iter = model.iter_next (iter)
-
-        self.setup_toolbar_for_search_entry ()
 
     def setup_toolbar_for_search_entry (self):
         separator = gtk.SeparatorToolItem ()
