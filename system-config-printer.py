@@ -766,7 +766,6 @@ class GUI(GtkGUI, monitor.Watcher):
             name = model.get_value (iter, 2)
             selected_printers.add (name)
 
-        select_path = None
         if self.cups:
             self.cups._set_prompt_allowed (prompt_allowed)
             try:
