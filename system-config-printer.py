@@ -73,6 +73,7 @@ import monitor
 from smburi import SMBURI
 import errordialogs
 from errordialogs import *
+import userdefault
 
 domain='system-config-printer'
 import locale
@@ -790,6 +791,8 @@ class GUI(GtkGUI, monitor.Watcher):
         else:
             self.printers = {}
             self.default_printer = None
+
+        userdef = userdefault.UserDefaultPrinter ().get ()
         
         local_printers = []
         local_classes = []
@@ -882,9 +885,15 @@ class GUI(GtkGUI, monitor.Watcher):
                         except gobject.GError:
                             pass
 
+                emblem = None
                 if name == self.default_printer:
+                    emblem = 'emblem-default'
+                elif name == userdef:
+                    emblem = 'emblem-favorite'
+
+                if emblem:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
-                    default_emblem = theme.load_icon ('emblem-default', w/2, 0)
+                    default_emblem = theme.load_icon (emblem, w/2, 0)
                     copy = pixbuf.copy ()
                     default_emblem.composite (copy, 0, 0,
                                               copy.get_width (),
