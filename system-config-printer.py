@@ -1467,6 +1467,27 @@ class GUI(GtkGUI, monitor.Watcher):
         self.ntbkPrinter.set_current_page (n)
 
     # set default printer
+    def set_system_or_user_default_printer (self, name):
+        # First, decide if this is already the system default, in which
+        # case we only need to clear the user default.
+        userdef = userdefault.UserDefaultPrinter ()
+        if name == self.default_printer:
+            userdef.clear ()
+            self.populateList ()
+            return
+
+        userdefault.UserDefaultPrompt (self.set_default_printer,
+                                       self.populateList,
+                                       name,
+                                       _("Set Default Printer"),
+                                       self.MainWindow,
+                                       _("Do you want to set this as "
+                                         "the system-wide default printer?"),
+                                       _("Set as the _system-wide "
+                                         "default printer"),
+                                       _("_Clear my personal default setting"),
+                                       _("Set as my _personal default printer"))
+
     def set_default_printer (self, name):
         printer = self.printers[name]
         try:
@@ -2195,9 +2216,8 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         iter = model.get_iter (paths[0])
-        printer = model.get_value (iter, 0)
-        printer.setAsDefault ()
-        self.populateList ()
+        name = model.get_value (iter, 2)
+        self.set_system_or_user_default_printer (name)
 
     def on_troubleshoot_activate(self, widget):
         if not self.__dict__.has_key ('troubleshooter'):

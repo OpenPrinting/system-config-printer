@@ -1,5 +1,16 @@
 2008-06-16  Tim Waugh  <twaugh@redhat.com>
 
+	* userdefault.py (UserDefaultPrompt): New class, implementing a
+	user/system default printer dialog.
+	* system-config-printer.py
+	(GUI.set_system_or_user_default_printer): New method.  Display
+	dialog.
+	(PrinterContextMenu.on_printer_context_set_as_default_activate):
+	Use new method.
+	(GUI.on_set_as_default_activate): Likewise.
+
+2008-06-16  Tim Waugh  <twaugh@redhat.com>
+
 	* contextmenu.py (PrinterContextMenu.popup): Show the Set As
 	Default menu item for the system default printer except when no
 	user default is set.
