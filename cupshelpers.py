@@ -108,8 +108,13 @@ class Printer:
                 self.attributes[name] = value
                     
                 if attrs.has_key(name+"-supported"):
-                    self.possible_attributes[name] = (
-                        value, attrs[name+"-supported"]) 
+                    supported = attrs[name+"-supported"]
+                    # Work around pycups bug fixed in 1.9.40:
+                    # finishings-supported should be a list.
+                    if (type (supported) != list and
+                        type (supported) != tuple):
+                        supported = [supported]
+                    self.possible_attributes[name] = (value, supported)
             elif (not key.endswith ("-supported") and
                   key != 'job-sheets-default' and
                   key != 'printer-error-policy' and
