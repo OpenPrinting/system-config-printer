@@ -1,6 +1,7 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -90,6 +91,16 @@ class OptionAlwaysShown(OptionInterface):
         self.ipp_type = ipp_type
         self.set_default (system_default)
         self.combobox_map = combobox_map
+        if combobox_map != None and ipp_type == int:
+            model = self.widget.get_model ()
+            i = 0
+            dict = {}
+            iter = model.get_iter_first ()
+            while iter:
+                dict[combobox_map[i]] = model.get_value (iter, 0)
+                i += 1
+                iter = model.iter_next (iter)
+            self.combobox_dict = dict
         self.use_supported = use_supported
         self.reinit (None)
 
@@ -104,14 +115,22 @@ class OptionAlwaysShown(OptionInterface):
         The special value None for original_value resets the option to the
         system default."""
         if (supported != None and
-            self.use_supported and
-            type(self.widget) == gtk.ComboBox and
-            self.ipp_type == str):
-            model = self.widget.get_model ()
-            model.clear ()
-            for each in supported:
-                iter = model.append ()
-                model.set_value (iter, 0, each)
+            self.use_supported):
+            if (type(self.widget) == gtk.ComboBox and
+                self.ipp_type == str):
+                model = self.widget.get_model ()
+                model.clear ()
+                for each in supported:
+                    iter = model.append ()
+                    model.set_value (iter, 0, each)
+            elif (type(self.widget) == gtk.ComboBox and
+                  self.ipp_type == int and
+                  self.combobox_map != None):
+                model = self.widget.get_model ()
+                model.clear ()
+                for each in supported:
+                    iter = model.append ()
+                    model.set_value (iter, 0, self.combobox_dict[each])
         if original_value != None:
             self.original_value = self.ipp_type (original_value)
             self.set_widget_value (self.original_value)

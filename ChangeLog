@@ -1,5 +1,13 @@
 2008-06-17  Tim Waugh  <twaugh@redhat.com>
 
+	* options.py (OptionAlwaysShown.reinit): Support use_supported for
+	combobox_map-using options such as finishings.
+	* system-config-printer.py (GUI.__init__): Set use_supported true
+	for the finishings options.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/32.
+
+2008-06-17  Tim Waugh  <twaugh@redhat.com>
+
 	* cupshelpers.py (Printer.getAttributes): Work around a pycups
 	bug fixed in 1.9.40: finishings-supported should be a list.
 
