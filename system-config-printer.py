@@ -598,11 +598,25 @@ class GUI(GtkGUI, monitor.Watcher):
         self.toolbar.child_set_property (separator, "expand", True)
 
         entry = ToolbarSearchEntry ()
+        entry.connect ('search', self.on_search_entry_search)
 
         tool_item = gtk.ToolItem ()
         tool_item.add (entry)
         self.toolbar.insert (tool_item, -1)
         self.toolbar.show_all ()
+
+    def on_search_entry_search (self, entry, text):
+        if len (text) > 0:
+            self.groups_pane.add_current_search ()
+            printers_subset = {}
+            # FIXME: this might be slow and block the UI
+            for name in self.printers.keys ():
+                if name.find (text) != -1:
+                    printers_subset[name] = self.printers[name]
+            self.reset_icon_view_model (printers_subset)
+        else:
+            self.groups_pane.remove_current_search ()
+            self.reset_icon_view_model (self.printers)
 
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
@@ -776,49 +790,13 @@ class GUI(GtkGUI, monitor.Watcher):
         known_servers.sort()
         return known_servers
 
-    def populateList(self, prompt_allowed=True):
-        # Save selection of printers.
-        selected_printers = set()
-        paths = self.dests_iconview.get_selected_items ()
-        model = self.dests_iconview.get_model ()
-        for path in paths:
-            iter = model.get_iter (path)
-            name = model.get_value (iter, 2)
-            selected_printers.add (name)
-
-        if self.cups:
-            self.cups._set_prompt_allowed (prompt_allowed)
-            try:
-                # get Printers
-                self.printers = cupshelpers.getPrinters(self.cups)
-
-                # Get default printer.
-                try:
-                    self.default_printer = self.cups.getDefault ()
-                except AttributeError: # getDefault appeared in pycups-1.9.31
-                    # This fetches the list of printers and classes *again*,
-                    # just to find out the default printer.
-                    dests = self.cups.getDests ()
-                    if dests.has_key ((None,None)):
-                        self.default_printer = dests[(None,None)].name
-                    else:
-                        self.default_printer = None
-            except cups.IPPError, (e, m):
-                show_IPP_Error(e, m, self.PrintersWindow)
-                self.printers = {}
-                self.default_printer = None
-        else:
-            self.printers = {}
-            self.default_printer = None
-
+    def reset_icon_view_model (self, printer_set):
         local_printers = []
         local_classes = []
         remote_printers = []
         remote_classes = []
 
-        for name, printer in self.printers.iteritems():
-            self.servers.add(printer.getServer())
-
+        for name, printer in printer_set.iteritems():
             if printer.remote:
                 if printer.is_class: remote_classes.append(name)
                 else: remote_printers.append(name)
@@ -868,7 +846,7 @@ class GUI(GtkGUI, monitor.Watcher):
             if not printers: continue
             for name in printers:
                 type = 'local-printer'
-                object = self.printers[name]
+                object = printer_set[name]
                 if object.discovered:
                     if object.is_class:
                         type = 'discovered-class'
@@ -915,6 +893,46 @@ class GUI(GtkGUI, monitor.Watcher):
                     pixbuf = copy
 
                 self.mainlist.append (row=[object, pixbuf, name, tip])
+
+    def populateList(self, prompt_allowed=True):
+        # Save selection of printers.
+        selected_printers = set()
+        paths = self.dests_iconview.get_selected_items ()
+        model = self.dests_iconview.get_model ()
+        for path in paths:
+            iter = model.get_iter (path)
+            name = model.get_value (iter, 2)
+            selected_printers.add (name)
+
+        if self.cups:
+            self.cups._set_prompt_allowed (prompt_allowed)
+            try:
+                # get Printers
+                self.printers = cupshelpers.getPrinters(self.cups)
+
+                # Get default printer.
+                try:
+                    self.default_printer = self.cups.getDefault ()
+                except AttributeError: # getDefault appeared in pycups-1.9.31
+                    # This fetches the list of printers and classes *again*,
+                    # just to find out the default printer.
+                    dests = self.cups.getDests ()
+                    if dests.has_key ((None,None)):
+                        self.default_printer = dests[(None,None)].name
+                    else:
+                        self.default_printer = None
+            except cups.IPPError, (e, m):
+                show_IPP_Error(e, m, self.PrintersWindow)
+                self.printers = {}
+                self.default_printer = None
+        else:
+            self.printers = {}
+            self.default_printer = None
+
+        for name, printer in self.printers.iteritems ():
+            self.servers.add(printer.getServer())
+
+        self.reset_icon_view_model (self.printers)
 
         # Restore selection of printers.
         model = self.dests_iconview.get_model ()

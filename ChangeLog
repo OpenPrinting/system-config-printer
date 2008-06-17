@@ -1,5 +1,14 @@
 2008-06-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
+	* system-config-printer.py (GUI.on_search_entry_search): Do the
+	filtering on the search signal handler.
+	* system-config-printer.py (GUI.populateList): Moved the part of
+	this function that updates the icon view...
+	* system-config-printer.py (GUI.reset_icon_view_model): ... into
+	here to be reusable.
+
+2008-06-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
 	* ToolbarSearchEntry.py (ToolbarSearchEntry.__init__): Change the
 	label to "Filter" since it better describes what we do here.
 	* GroupsPane.py (GroupsPane): Add a "Current search" item when
