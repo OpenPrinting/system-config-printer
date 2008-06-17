@@ -431,7 +431,8 @@ class GUI(GtkGUI, monitor.Watcher):
                                                              20, 21, 22, 23,
                                                              24, 25, 26, 27,
                                                              28, 29, 30, 31,
-                                                             50, 51, 52, 53 ]),
+                                                             50, 51, 52, 53 ],
+                                            use_supported = True),
 
                  options.OptionAlwaysShown ("job-priority", int, 50,
                                             self.sbJOJobPriority,
