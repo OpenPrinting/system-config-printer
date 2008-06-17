@@ -63,7 +63,7 @@ class ToolbarSearchEntry (gtk.HBox):
         self.is_a11y_theme = theme == 'HighContrast' or theme == 'LowContrast'
 
         label = gtk.Label ()
-        label.set_text_with_mnemonic (_("_Search:"))
+        label.set_text_with_mnemonic (_("_Filter:"))
         label.set_justify (gtk.JUSTIFY_RIGHT)
         self.pack_start (label, False, True, 0);
 
