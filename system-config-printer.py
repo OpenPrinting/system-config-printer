@@ -561,8 +561,10 @@ class GUI(GtkGUI, monitor.Watcher):
             show_HTTP_Error(s, self.PrintersWindow)
 
         self.setup_toolbar_for_search_entry ()
-
         self.groups_pane = GroupsPane (self.groups_treeview)
+        self.groups_treeview.get_selection ().connect (
+            'changed',
+            self.on_groups_treeview_selection_changed)
 
         try:
             self.dests_iconview.resize_children ()
@@ -590,6 +592,10 @@ class GUI(GtkGUI, monitor.Watcher):
                     break
                 iter = model.iter_next (iter)
 
+    def on_groups_treeview_selection_changed (self, UNUSED):
+        if self.groups_treeview.get_selection ().count_selected_rows () != 0:
+            self.search_entry.clear ()
+
     def setup_toolbar_for_search_entry (self):
         separator = gtk.SeparatorToolItem ()
         separator.set_draw (False)
@@ -597,17 +603,17 @@ class GUI(GtkGUI, monitor.Watcher):
         self.toolbar.insert (separator, -1)
         self.toolbar.child_set_property (separator, "expand", True)
 
-        entry = ToolbarSearchEntry ()
-        entry.connect ('search', self.on_search_entry_search)
+        self.search_entry = ToolbarSearchEntry ()
+        self.search_entry.connect ('search', self.on_search_entry_search)
 
         tool_item = gtk.ToolItem ()
-        tool_item.add (entry)
+        tool_item.add (self.search_entry)
         self.toolbar.insert (tool_item, -1)
         self.toolbar.show_all ()
 
     def on_search_entry_search (self, entry, text):
         if len (text) > 0:
-            self.groups_pane.add_current_search ()
+            self.groups_pane.set_searching ()
             printers_subset = {}
             # FIXME: this might be slow and block the UI
             for name in self.printers.keys ():
@@ -615,7 +621,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     printers_subset[name] = self.printers[name]
             self.reset_icon_view_model (printers_subset)
         else:
-            self.groups_pane.remove_current_search ()
+            self.groups_pane.unset_searching ()
             self.reset_icon_view_model (self.printers)
 
     def dests_iconview_item_activated (self, iconview, path):

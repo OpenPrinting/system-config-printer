@@ -5,11 +5,12 @@ from gettext import gettext as _
 class GroupsPane:
     def __init__ (self, treeview):
         self.list_store = None
-        self.current_search_iter = None
+        self.all_printers_iter = None
         self.selection = None
 
-        self.list_store = gtk.ListStore (gtk.gdk.Pixbuf,
-                                         gobject.TYPE_STRING)
+        self.list_store = gtk.ListStore (gtk.gdk.Pixbuf,        # icon
+                                         gobject.TYPE_STRING,   # label
+                                         gobject.TYPE_BOOLEAN)  # separator?
         treeview.set_model (self.list_store)
         tvcolumn = gtk.TreeViewColumn ()
         treeview.append_column (tvcolumn)
@@ -27,19 +28,21 @@ class GroupsPane:
         except gobject.GError:
             pixbuf = None
 
-        iter = self.list_store.append (row = [pixbuf, _("All Printers")])
+        self.all_printers_iter = self.list_store.append (row = [pixbuf,
+                                                                _("All Printers"),
+                                                                False])
 
         self.selection = treeview.get_selection ()
-        self.selection.select_iter (iter)
+        self.selection.select_iter (self.all_printers_iter)
 
-    def add_current_search (self):
-        if self.current_search_iter == None:
-            self.current_search_iter = self.list_store.append (
-                row = [None, _("<i>Current search</i>")])
-            self.selection.select_iter (self.current_search_iter)
+        treeview.set_row_separator_func (self.row_separator_func)
+        self.list_store.append (row = [None, None, True])
 
-    def remove_current_search (self):
-        if self.current_search_iter != None:
-            self.list_store.remove (self.current_search_iter)
-            self.current_search_iter = None
-            self.selection.select_iter (self.list_store.get_iter_first ())
+    def set_searching (self):
+        self.selection.unselect_all ()
+
+    def unset_searching (self):
+        self.selection.select_iter (self.all_printers_iter)
+
+    def row_separator_func (self, model, iter):
+        return model.get_value (iter, 2)
