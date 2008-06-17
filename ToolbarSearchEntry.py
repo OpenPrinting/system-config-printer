@@ -152,7 +152,7 @@ class ToolbarSearchEntry (gtk.HBox):
         return self.entry.get_text () != ''
 
     def on_activate (self, UNUSED_entry):
-        self.emit ('activate')
+        self.emit ('search', self.entry.get_text ())
 
     def grab_focus (self):
         self.entry.grab_focus ()
