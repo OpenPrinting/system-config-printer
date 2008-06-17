@@ -50,7 +50,6 @@ class ToolbarSearchEntry (gtk.HBox):
 
     def __init__ (self):
         self.entry = None
-        self.clearing = False
         self.timeout = 0
         self.is_a11y_theme = False
         self.search_timeout = 300
@@ -96,9 +95,7 @@ class ToolbarSearchEntry (gtk.HBox):
             gobject.source_remove (self.timeout)
             self.timeout = 0
 
-        self.clearing = True
         self.entry.set_text ("")
-        self.clearing = False
 
     def set_text (self, text):
         self.entry.set_text (text)
@@ -123,14 +120,11 @@ class ToolbarSearchEntry (gtk.HBox):
     def on_changed (self, UNUSED):
         self.check_style ()
 
-        if self.clearing == True:
-            return
-
         if self.timeout != 0:
             gobject.source_remove (self.timeout)
             self.timeout = 0
 
-       	# emit it now if we're clearing the entry
+       	# emit it now if we have no more text
         if len (self.entry.get_text ()) > 0:
             self.timeout = gobject.timeout_add (self.search_timeout,
                                                 self.on_search_timeout)
