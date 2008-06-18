@@ -617,8 +617,9 @@ class GUI(GtkGUI, monitor.Watcher):
             self.groups_pane.set_searching ()
             printers_subset = {}
             # FIXME: this might be slow and block the UI
+            pattern = re.compile (text, re.I) # ignore case
             for name in self.printers.keys ():
-                if name.find (text) != -1:
+                if pattern.search (name) != None:
                     printers_subset[name] = self.printers[name]
             self.reset_icon_view_model (printers_subset)
         else:
