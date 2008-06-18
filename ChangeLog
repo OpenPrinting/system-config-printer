@@ -1,5 +1,13 @@
 2008-06-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
+	* system-config-printer.py (GUI.__init__): Moved the search and
+	printer groups setup code earlier since we will need to access the
+	search entry in ...
+	* system-config-printer.py (GUI.populateList): ... here. This
+	allows the refresh button to work properly.
+
+2008-06-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
 	* ToolbarSearchEntry.py (ToolbarSearchEntry.on_activate): It makes
 	more sense to emit the search signal here too.
 

@@ -356,6 +356,13 @@ class GUI(GtkGUI, monitor.Watcher):
             "Connection")
         self.setConnected()
 
+        # Setup search and printer groups
+        self.setup_toolbar_for_search_entry ()
+        self.groups_pane = GroupsPane (self.groups_treeview)
+        self.groups_treeview.get_selection ().connect (
+            'changed',
+            self.on_groups_treeview_selection_changed)
+
         # Setup icon view
         self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
                                       gtk.gdk.Pixbuf,        # Pixbuf
@@ -559,12 +566,6 @@ class GUI(GtkGUI, monitor.Watcher):
             self.setConnected()
             self.populateList()
             show_HTTP_Error(s, self.PrintersWindow)
-
-        self.setup_toolbar_for_search_entry ()
-        self.groups_pane = GroupsPane (self.groups_treeview)
-        self.groups_treeview.get_selection ().connect (
-            'changed',
-            self.on_groups_treeview_selection_changed)
 
         try:
             self.dests_iconview.resize_children ()
@@ -901,6 +902,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.mainlist.append (row=[object, pixbuf, name, tip])
 
     def populateList(self, prompt_allowed=True):
+        self.search_entry.clear ()
+
         # Save selection of printers.
         selected_printers = set()
         paths = self.dests_iconview.get_selected_items ()
