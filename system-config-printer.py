@@ -3968,8 +3968,8 @@ class NewPrinterGUI(GtkGUI):
                     title = _("No queues")
                     text = _("There are no queues available.")
 
-                show_error_dialog (title, text, self.IPPBrowseDialog)
                 self.IPPBrowseDialog.hide ()
+                show_error_dialog (title, text, self.NewPrinterWindow)
 
             try:
                 self.ready(self.IPPBrowseDialog)
