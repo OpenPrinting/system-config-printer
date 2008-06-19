@@ -3963,7 +3963,9 @@ class NewPrinterGUI(GtkGUI):
                 if failed:
                     title = _("Not possible")
                     text = (_("It is not possible to obtain a list of queues "
-                              "from this host."))
+                              "from `%s'.") % host + '\n\n' +
+                            _("Obtaining a list of queues is a CUPS extension "
+                              "to IPP.  Network printers do not support it."))
                 else:
                     title = _("No queues")
                     text = _("There are no queues available.")
