@@ -1,3 +1,13 @@
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Give names to the separators in
+	the printer context menu.
+	* contextmenu.py (PrinterContextMenu.__init__): Fetch named
+	separator widgets from glade file.
+	(PrinterContextMenu.__init__.popup): Show separators only when
+	there is something to separate.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/31.
+
 2008-06-17  Tim Waugh  <twaugh@redhat.com>
 
 	* cupshelpers.py (Printer.getAttributes): Work around a pycups

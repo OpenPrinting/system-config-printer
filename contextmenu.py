@@ -38,14 +38,19 @@ class PrinterContextMenu:
         self.parent = parent
         self.xml = parent.xml
         for name in ["printer_context_menu",
+
                      "printer_context_edit",
+                     "printer_context_copy",
                      "printer_context_rename",
+                     "printer_context_delete",
+                     "printer_context_sep1",
+
                      "printer_context_enabled",
                      "printer_context_shared",
-                     "printer_context_copy",
-                     "printer_context_delete",
                      "printer_context_set_as_default",
                      "printer_context_create_class",
+                     "printer_context_sep2",
+
                      "printer_context_view_print_queue"]:
             widget = self.xml.get_widget (name)
             setattr (self, name, widget)
@@ -127,6 +132,22 @@ class PrinterContextMenu:
 
         # Actions that require more than one destination
         show_widget (self.printer_context_create_class, n > 1)
+
+        # Separators
+        sep1_group = [self.printer_context_edit,
+                      self.printer_context_copy,
+                      self.printer_context_rename,
+                      self.printer_context_delete]
+        sep2_group = [self.printer_context_enabled,
+                      self.printer_context_shared,
+                      self.printer_context_set_as_default,
+                      self.printer_context_create_class]
+        sep1 = reduce (lambda x, y: x or y,
+                       map (lambda x: x.get_property ('visible'), sep1_group))
+        sep2 = reduce (lambda x, y: x or y,
+                       map (lambda x: x.get_property ('visible'), sep2_group))
+        show_widget (self.printer_context_sep1, sep1)
+        show_widget (self.printer_context_sep2, sep2)
 
         if event == None:
             event_button = 0
