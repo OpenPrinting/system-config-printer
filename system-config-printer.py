@@ -97,6 +97,10 @@ busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 ellipsis = unichr(0x2026)
 
+TEXT_start_firewall_tool = _("To do this, select "
+                             "System->Administration->Firewall "
+                             "from the main menu.")
+
 try:
     try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY
 except AttributeError:
@@ -2349,9 +2353,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               _("You may need to adjust the firewall "
                                 "to allow network printing to this "
                                 "computer.") + '\n\n' +
-                              _("To do this, select "
-                                "System->Administration->Firewall "
-                                "from the main menu."),
+                              TEXT_start_firewall_tool,
                               parent=self.ServerSettingsDialog)
 
         time.sleep(1) # give the server a chance to process our request
@@ -3595,6 +3597,16 @@ class NewPrinterGUI(GtkGUI):
 
         self.ready(self.SMBBrowseDialog)
 
+        if store.get_iter_first () == None:
+            self.SMBBrowseDialog.hide ()
+            show_info_dialog (_("No Print Shares"),
+                              _("There were no print shares found.  "
+                                "Please check that the Samba service is "
+                                "marked as trusted in your firewall "
+                                "configuration.") + '\n\n' +
+                              TEXT_start_firewall_tool,
+                              parent=self.NewPrinterWindow)
+
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
         iter = self.smb_store.get_iter (path)
@@ -4005,13 +4017,15 @@ class NewPrinterGUI(GtkGUI):
                 if failed:
                     title = _("Not possible")
                     text = (_("It is not possible to obtain a list of queues "
-                              "from this host."))
+                              "from `%s'.") % host + '\n\n' +
+                            _("Obtaining a list of queues is a CUPS extension "
+                              "to IPP.  Network printers do not support it."))
                 else:
                     title = _("No queues")
                     text = _("There are no queues available.")
 
-                show_error_dialog (title, text, self.IPPBrowseDialog)
                 self.IPPBrowseDialog.hide ()
+                show_error_dialog (title, text, self.NewPrinterWindow)
 
             try:
                 self.ready(self.IPPBrowseDialog)

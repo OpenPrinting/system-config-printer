@@ -1,3 +1,52 @@
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.browse_ipp_queues_thread): More informative dialog
+	when queue list cannot be fetched.
+	Part of https://fedorahosted.org/system-config-printer/ticket/26.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.browse_ipp_queues_thread): Hide browse window if
+	there was a problem browsing.
+	Part of https://fedorahosted.org/system-config-printer/ticket/26.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.browse_smb_hosts): If no
+	hosts are found, advise user to check firewall.
+	Part of https://fedorahosted.org/system-config-printer/ticket/26.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (TEXT_start_firewall_tool): Moved this
+	translatable string to a global variable.
+	(GUI.save_serversettings): Use the global variable.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (PrinterURIIndex): New class, for mapping printer
+	URIs to printer names.
+	(JobViewer.printer_event): New method.  Update printer URI index.
+	(JobViewer.printer_removed): New method.  Update printer URI
+	index.
+	(JobViewer.current_printers_and_jobs): Instantiate printer URI
+	index, and use it to look up printer names by job-printer-uri.
+	(JobViewer.job_added): Look up printer names by job-printer-uri.
+	(JobViewer.job_event): Likewise.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/29.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Give names to the separators in
+	the printer context menu.
+	* contextmenu.py (PrinterContextMenu.__init__): Fetch named
+	separator widgets from glade file.
+	(PrinterContextMenu.__init__.popup): Show separators only when
+	there is something to separate.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/31.
+
 2008-06-17  Tim Waugh  <twaugh@redhat.com>
 
 	* options.py (OptionAlwaysShown.reinit): Support use_supported for
