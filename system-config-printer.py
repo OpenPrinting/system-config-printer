@@ -96,6 +96,10 @@ busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 ellipsis = unichr(0x2026)
 
+TEXT_start_firewall_tool = _("To do this, select "
+                             "System->Administration->Firewall "
+                             "from the main menu.")
+
 try:
     try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY
 except AttributeError:
@@ -2321,9 +2325,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               _("You may need to adjust the firewall "
                                 "to allow network printing to this "
                                 "computer.") + '\n\n' +
-                              _("To do this, select "
-                                "System->Administration->Firewall "
-                                "from the main menu."),
+                              TEXT_start_firewall_tool,
                               parent=self.ServerSettingsDialog)
 
         time.sleep(1) # give the server a chance to process our request
