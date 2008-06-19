@@ -3543,6 +3543,16 @@ class NewPrinterGUI(GtkGUI):
 
         self.ready(self.SMBBrowseDialog)
 
+        if store.get_iter_first () == None:
+            self.SMBBrowseDialog.hide ()
+            show_info_dialog (_("No Print Shares"),
+                              _("There were no print shares found.  "
+                                "Please check that the Samba service is "
+                                "marked as trusted in your firewall "
+                                "configuration.") + '\n\n' +
+                              TEXT_start_firewall_tool,
+                              parent=self.NewPrinterWindow)
+
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
         iter = self.smb_store.get_iter (path)
