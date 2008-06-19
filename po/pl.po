@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2008-06-13 08:43+0100\n"
-"PO-Revision-Date: 2008-05-20 20:04+0200\n"
+"PO-Revision-Date: 2008-06-13 13:05+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -64,7 +64,7 @@ msgstr "Nieznany"
 
 #: ../errordialogs.py:65 ../errordialogs.py:77
 msgid "Not authorized"
-msgstr "Nieupoważnione"
+msgstr "Nie uwierzytelniono"
 
 #: ../errordialogs.py:66
 msgid "The password may be incorrect."
@@ -84,8 +84,8 @@ msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
 msgstr ""
-"Hasło może być niepoprawne lub serwer może być skonfigurowany do odmawiania "
-"zdalnej administracji."
+"Hasło może być niepoprawne lub serwer może nie pozwalać na zdalną "
+"administrację."
 
 #: ../errordialogs.py:84
 msgid "Bad request"
@@ -101,7 +101,7 @@ msgstr "Przekroczono czas oczekiwania na żądanie"
 
 #: ../errordialogs.py:90
 msgid "Upgrade required"
-msgstr "Aktualizacja jest wymagana"
+msgstr "Wymagana jest aktualizacja"
 
 #: ../errordialogs.py:92
 msgid "Server error"
@@ -126,9 +126,8 @@ msgid "Job"
 msgstr "Zadanie"
 
 #: ../jobviewer.py:103
-#, fuzzy
 msgid "User"
-msgstr "Użytkownicy"
+msgstr "Użytkownik"
 
 #: ../jobviewer.py:104 ../troubleshoot/PrintTestPage.py:82
 msgid "Document"
@@ -155,21 +154,20 @@ msgstr "Stan"
 #: ../jobviewer.py:140
 #, python-format
 msgid "my jobs on %s"
-msgstr ""
+msgstr "moje zadania na %s"
 
 #: ../jobviewer.py:142
 msgid "my jobs"
-msgstr ""
+msgstr "moje zadania"
 
 #: ../jobviewer.py:147
-#, fuzzy
 msgid "all jobs"
-msgstr "Anuluj wszystkie zadania"
+msgstr "wszystkie zadania"
 
 #: ../jobviewer.py:148
-#, fuzzy, python-format
+#, python-format
 msgid "Document Print Status (%s)"
-msgstr "Stan wydruku dokumentu"
+msgstr "Stan wydruku dokumentu (%s)"
 
 #: ../jobviewer.py:170
 msgid "Message"
@@ -304,9 +302,8 @@ msgid "Conflicts with:"
 msgstr "Jest w konflikcie z:"
 
 #: ../system-config-printer.py:308 ../system-config-printer.py:831
-#, fuzzy
 msgid "Class"
-msgstr "Nowa klasa"
+msgstr "Klasa"
 
 #. Set up "Problems?" link button
 #: ../system-config-printer.py:338
@@ -365,13 +362,12 @@ msgid "Connected to %s"
 msgstr "Połączone do %s"
 
 #: ../system-config-printer.py:819
-#, fuzzy
 msgid "Network printer (discovered)"
-msgstr "Drukarka sieciowa"
+msgstr "Drukarka sieciowa (wykryta)"
 
 #: ../system-config-printer.py:822
 msgid "Network class (discovered)"
-msgstr ""
+msgstr "Klasa sieciowa (wykryta)"
 
 #: ../system-config-printer.py:828 ../system-config-printer.py:2910
 msgid "Fax"
@@ -383,9 +379,8 @@ msgid "Network printer"
 msgstr "Drukarka sieciowa"
 
 #: ../system-config-printer.py:837
-#, fuzzy
 msgid "Network print share"
-msgstr "Drukarka sieciowa"
+msgstr "Udział drukowania sieciowego"
 
 #: ../system-config-printer.py:945
 #, python-format
@@ -482,13 +477,16 @@ msgstr "Usunąć wybrane cele?"
 
 #: ../system-config-printer.py:2204
 msgid "Publish Shared Printers"
-msgstr ""
+msgstr "Publikowanie współdzielonych drukarek"
 
 #: ../system-config-printer.py:2205
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
 msgstr ""
+"Współdzielone drukarki nie są dostępne dla innych, jeśli opcja "
+"\"Publikowanie współdzielonych drukarek\" nie jest włączona w ustawieniach "
+"serwera."
 
 #. We have just enabled print queue sharing.
 #. Ideally, this is the time we would check the firewall
@@ -497,22 +495,22 @@ msgstr ""
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
 #: ../system-config-printer.py:2319
-#, fuzzy
 msgid "Review Firewall"
-msgstr "Należy sprawdzić zaporę sieciową serwera"
+msgstr "Należy przejrzeć zaporę sieciową"
 
 #: ../system-config-printer.py:2320
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
+"Należy dostosować zaporę sieciową, aby umożliwić drukowanie sieciowe na tym "
+"komputerze."
 
 #: ../system-config-printer.py:2323
-#, fuzzy
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr ""
-"Aby uruchomić to narzędzie, należy wybrać System->Administracja->Drukowanie "
-"z menu głównego."
+"Aby to zrobić, należy wybrać System->Administracja->Zapora sieciowa z menu "
+"głównego."
 
 #: ../system-config-printer.py:2565 ../system-config-printer.py:2575
 msgid "Share"
@@ -596,7 +594,7 @@ msgstr "Skanowanie..."
 
 #: ../system-config-printer.py:3859 ../system-config-printer.py:3922
 msgid "Print Share Verified"
-msgstr ""
+msgstr "Sprawdzono udział drukowania"
 
 #: ../system-config-printer.py:3860 ../system-config-printer.py:3923
 msgid "This print share is accessible."
@@ -607,9 +605,8 @@ msgid "This print share is not accessible."
 msgstr "Ten udział drukowania jest niedostępny."
 
 #: ../system-config-printer.py:3867
-#, fuzzy
 msgid "Print Share Inaccessible"
-msgstr "Ten udział drukowania jest dostępny."
+msgstr "Udział drukowania jest niedostępny"
 
 #: ../system-config-printer.py:3926
 msgid "Inaccessible"
@@ -762,9 +759,8 @@ msgid "A CUPS configuration tool."
 msgstr "Narzędzie konfiguracji CUPS."
 
 #: ../ui/AboutDialog.glade.h:2
-#, fuzzy
 msgid "Copyright © 2006-2008 Red Hat, Inc."
-msgstr "Copyright © 2006-2007 Red Hat, Inc."
+msgstr "Copyright © 2006-2008 Red Hat, Inc."
 
 #: ../ui/AboutDialog.glade.h:3
 msgid ""
@@ -1098,7 +1094,6 @@ msgid "Local Driver"
 msgstr "Lokalny sterownik"
 
 #: ../ui/NewPrinterWindow.glade.h:62
-#, fuzzy
 msgid "Make and model:"
 msgstr "Producent i model:"
 
@@ -1174,7 +1169,7 @@ msgstr "Ustaw teraz szczegóły uwierzytelnienia"
 
 #: ../ui/NewPrinterWindow.glade.h:81
 msgid "Short name for this printer such as \"laserjet\""
-msgstr ""
+msgstr "Krótka nazwa dla tej drukarki, taka jak \"laserjet\""
 
 #: ../ui/NewPrinterWindow.glade.h:82
 msgid "Supplier:"
@@ -1266,11 +1261,12 @@ msgstr "_Sprawdź..."
 msgid ""
 "Create a class from the selected printers (for failover or load-balancing)"
 msgstr ""
+"Utworzenie klasy z wybranych drukarek (do przekazywania błędnych wydruków "
+"lub rozdzielenia obciążenia)"
 
 #: ../ui/printer_context_menu.glade.h:2
-#, fuzzy
 msgid "E_nabled"
-msgstr "_Włącz"
+msgstr "Włączo_na"
 
 #: ../ui/printer_context_menu.glade.h:3
 msgid "Set As Default"
@@ -1281,18 +1277,16 @@ msgid "View Print _Queue"
 msgstr "Wyświetl _kolejkę wydruku"
 
 #: ../ui/printer_context_menu.glade.h:5
-#, fuzzy
 msgid "_Create Class"
-msgstr "Zdalna klasa"
+msgstr "_Utwórz klasę"
 
 #: ../ui/printer_context_menu.glade.h:6 ../ui/PrintersWindow.glade.h:12
 msgid "_Rename"
 msgstr "Zmień _nazwę"
 
 #: ../ui/printer_context_menu.glade.h:7 ../ui/PrintersWindow.glade.h:15
-#, fuzzy
 msgid "_Shared"
-msgstr "Współdzielona"
+msgstr "W_spółdzielona"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:1
 msgid " "
@@ -1713,14 +1707,12 @@ msgid "Printer status"
 msgstr "Stan drukarki"
 
 #: ../ui/PrintersWindow.glade.h:1
-#, fuzzy
 msgid "Adjust server settings"
-msgstr "Podstawowe ustawienia serwera"
+msgstr "Dostosuj ustawienia serwera"
 
 #: ../ui/PrintersWindow.glade.h:2
-#, fuzzy
 msgid "Choose a different CUPS server"
-msgstr "Połącz się z serwerem CUPS"
+msgstr "Wybierz inny serwer CUPS"
 
 #: ../ui/PrintersWindow.glade.h:3
 msgid "Set As De_fault"
@@ -1735,9 +1727,8 @@ msgid "System-Config-Printer"
 msgstr "system-config-printer"
 
 #: ../ui/PrintersWindow.glade.h:6
-#, fuzzy
 msgid "_Class"
-msgstr "Nowa klasa"
+msgstr "_Klasa"
 
 #: ../ui/PrintersWindow.glade.h:7
 msgid "_Connect..."
@@ -1745,31 +1736,27 @@ msgstr "Połą_cz..."
 
 #: ../ui/PrintersWindow.glade.h:8
 msgid "_Discovered Printers"
-msgstr ""
+msgstr "Wykryte _drukarki"
 
 #: ../ui/PrintersWindow.glade.h:9
-#, fuzzy
 msgid "_Enabled"
-msgstr "Włączona"
+msgstr "_Włączona"
 
 #: ../ui/PrintersWindow.glade.h:10
 msgid "_Help"
 msgstr "Pomo_c"
 
 #: ../ui/PrintersWindow.glade.h:11
-#, fuzzy
 msgid "_Printer"
-msgstr "Drukarka"
+msgstr "_Drukarka"
 
 #: ../ui/PrintersWindow.glade.h:13
-#, fuzzy
 msgid "_Server"
-msgstr "Błąd serwera"
+msgstr "_Serwer"
 
 #: ../ui/PrintersWindow.glade.h:14
-#, fuzzy
 msgid "_Settings..."
-msgstr "Ustawienia"
+msgstr "U_stawienia..."
 
 #: ../ui/PrintersWindow.glade.h:16
 msgid "_Troubleshoot"
@@ -1798,9 +1785,8 @@ msgid "Basic Server Settings"
 msgstr "Podstawowe ustawienia serwera"
 
 #: ../ui/ServerSettingsDialog.glade.h:6
-#, fuzzy
 msgid "Publish shared printers connected to this system"
-msgstr "Współdzielenie opublikowanych drukarek połączonych do tego systemu"
+msgstr "Publikowanie współdzielonych drukarek połączonych do tego systemu"
 
 #: ../ui/ServerSettingsDialog.glade.h:7
 msgid "Save debugging information for troubleshooting"
@@ -2365,74 +2351,3 @@ msgstr "Zarządzanie zadaniami wydruku"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Wybór domyślnej drukarki"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
-#~ "\n"
-#~ "Any changes you have made will be lost unless you apply them."
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Zastosować zmiany?</span>\n"
-#~ "\n"
-#~ "Wszystkie wykonane zmiany zostaną utracone, jeśli nie zostaną zastosowane."
-
-#~ msgid "_Do not apply"
-#~ msgstr "_Nie zastosuj"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Wymagane jest hasło</span>\n"
-#~ "\n"
-
-#~ msgid "Verified"
-#~ msgstr "Sprawdzona"
-
-#~ msgid "Remote class"
-#~ msgstr "Zdalna klasa"
-
-#~ msgid "Remote printer"
-#~ msgstr "Zdalna drukarka"
-
-#~ msgid "Local class"
-#~ msgstr "Lokalna klasa"
-
-#~ msgid "Local printer"
-#~ msgstr "Lokalna drukarka"
-
-#~ msgid "New Clas_s"
-#~ msgstr "Nowa kla_sa"
-
-#~ msgid "New _Printer"
-#~ msgstr "Nowa _drukarka"
-
-#~ msgid "_Disable"
-#~ msgstr "Wyłą_cz"
-
-#~ msgid "_Edit"
-#~ msgstr "_Edycja"
-
-#~ msgid "_Server Settings..."
-#~ msgstr "Ustawienia _serwera..."
-
-#~ msgid "Debug logging was already disabled."
-#~ msgstr "Dziennik debugowania jest już wyłączony."
-
-#~ msgid "Create a new printer group"
-#~ msgstr "Utwórz nową grupę drukarek"
-
-#~ msgid "Create a new printer queue"
-#~ msgstr "Utwórz nową kolejkę drukarki"
-
-#~ msgid "Make:"
-#~ msgstr "Producent:"
-
-#~ msgid ""
-#~ "May contain any printable characters except \"/\", \"#\", and space.\n"
-#~ "Name must be unique on the local machine!"
-#~ msgstr ""
-#~ "Może zawierać każdy drukowalny znak, oprócz  \"/\", \"#\" i spacji.\n"
-#~ "Nazwa musi być unikalna na lokalnym komputerze!"
-
-#~ msgid "Refresh the list of printer queues"
-#~ msgstr "Odśwież listę kolejek drukarek"
