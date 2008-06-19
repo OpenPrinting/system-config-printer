@@ -1,5 +1,18 @@
 2008-06-19  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (PrinterURIIndex): New class, for mapping printer
+	URIs to printer names.
+	(JobViewer.printer_event): New method.  Update printer URI index.
+	(JobViewer.printer_removed): New method.  Update printer URI
+	index.
+	(JobViewer.current_printers_and_jobs): Instantiate printer URI
+	index, and use it to look up printer names by job-printer-uri.
+	(JobViewer.job_added): Look up printer names by job-printer-uri.
+	(JobViewer.job_event): Likewise.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/29.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.glade: Give names to the separators in
 	the printer context menu.
 	* contextmenu.py (PrinterContextMenu.__init__): Fetch named

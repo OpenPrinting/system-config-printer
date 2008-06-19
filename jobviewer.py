@@ -53,6 +53,91 @@ GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
 
+class PrinterURIIndex:
+    def __init__ (self, names=None):
+        self.printer = {}
+        self.names = names
+
+    def update_from_attrs (self, printer, attrs):
+        uris = []
+        if attrs.has_key ('printer-uri-supported'):
+            uri_supported = attrs['printer-uri-supported']
+            if type (uri_supported) != list:
+                uri_supported = [uri_supported]
+            uris.extend (uri_supported)
+        if attrs.has_key ('notify-printer-uri'):
+            uris.append (attrs['notify-printer-uri'])
+        if attrs.has_key ('printer-more-info'):
+            uris.append (attrs['printer-more-info'])
+
+        for uri in uris:
+            self.printer[uri] = printer
+
+    def remove_printer (self, printer):
+        # Remove references to this printer in the URI map.
+        uris = self.printer.keys ()
+        for uri in uris:
+            if self.printer[uri] == printer:
+                del self.printer[uri]
+
+    def lookup (self, uri, connection=None):
+        try:
+            return self.printer[uri]
+        except KeyError:
+            if connection == None:
+                connection = cups.Connection ()
+
+            r = ['printer-name', 'printer-uri-supported', 'printer-more-info']
+            try:
+                attrs = connection.getPrinterAttributes (uri=uri,
+                                                         requested_attributes=r)
+            except TypeError:
+                # requested_attributes argument is new in pycups 1.9.40.
+                attrs = connection.getPrinterAttributes (uri=uri)
+            except TypeError:
+                # uri argument is new in pycups 1.9.32.  We'll have to try
+                # each named printer.
+                debugprint ("PrinterURIIndex: using slow method")
+                if self.names == None:
+                    dests = connection.getDests ()
+                    names = set()
+                    for (printer, instance) in dests.keys ():
+                        if printer == None:
+                            continue
+                        if instance != None:
+                            continue
+                        names.add (printer)
+                    self.names = names
+
+                r = ['printer-uri-supported', 'printer-more-info']
+                for name in self.names:
+                    try:
+                        attrs = connection.getPrinterAttributes (name,
+                                                                 requested_attributes=r)
+                    except TypeError:
+                        # requested_attributes argument is new in pycups 1.9.40.
+                        attrs = connection.getPrinterAttributes (name)
+
+                    self.update_from_attrs (name, attrs)
+                    try:
+                        return self.printer[uri]
+                    except KeyError:
+                        pass
+                raise KeyError
+            except cups.IPPError:
+                # URI not known.
+                raise KeyError
+
+            name = attrs['printer-name']
+            self.update_from_attrs (name, attrs)
+            self.printer[uri] = name
+            try:
+                return self.printer[uri]
+            except KeyError:
+                pass
+        raise KeyError
+
+
 class JobViewer (monitor.Watcher):
     def __init__(self, bus=None, loop=None, service_running=False,
                  trayicon=False, suppress_icon_hide=False,
@@ -773,13 +858,15 @@ class JobViewer (monitor.Watcher):
     def current_printers_and_jobs (self, mon, printers, jobs):
         self.store.clear ()
         self.jobiters = {}
+        self.printer_uri_index = PrinterURIIndex (names=printers)
+        connection = None
         for jobid, jobdata in jobs.iteritems ():
             uri = jobdata.get ('job-printer-uri', '')
-            i = uri.rfind ('/')
-            if i != -1:
-                printer = uri[i + 1:]
-            else:
-                printer = _("Unknown")
+            try:
+                printer = self.printer_uri_index.lookup (uri,
+                                                         connection=connection)
+            except KeyError:
+                printer = uri
             jobdata['job-printer-name'] = printer
 
             self.add_job (jobid, jobdata)
@@ -787,8 +874,9 @@ class JobViewer (monitor.Watcher):
             # Fetch complete attributes for these jobs.
             attrs = None
             try:
-                c = cups.Connection ()
-                attrs = c.getJobAttributes (jobid)
+                if connection == None:
+                    connection = cups.Connection ()
+                attrs = connection.getJobAttributes (jobid)
             except RuntimeError:
                 pass
             except AttributeError:
@@ -810,11 +898,10 @@ class JobViewer (monitor.Watcher):
         monitor.Watcher.job_added (self, mon, jobid, eventname, event, jobdata)
 
         uri = jobdata.get ('job-printer-uri', '')
-        i = uri.rfind ('/')
-        if i != -1:
-            printer = uri[i + 1:]
-        else:
-            printer = _("Unknown")
+        try:
+            printer = self.printer_uri_index.lookup (uri)
+        except KeyError:
+            printer = uri
         jobdata['job-printer-name'] = printer
 
         # We may be showing this job already, perhaps because we are showing
@@ -836,11 +923,10 @@ class JobViewer (monitor.Watcher):
         monitor.Watcher.job_event (self, mon, jobid, eventname, event, jobdata)
 
         uri = jobdata.get ('job-printer-uri', '')
-        i = uri.rfind ('/')
-        if i != -1:
-            printer = uri[i + 1:]
-        else:
-            printer = _("Unknown")
+        try:
+            printer = self.printer_uri_index.lookup (uri)
+        except KeyError:
+            printer = uri
         jobdata['job-printer-name'] = printer
 
         if self.job_is_active (jobdata):
@@ -1079,6 +1165,14 @@ class JobViewer (monitor.Watcher):
             return
 
         notification.close ()
+
+    def printer_event (self, mon, printer, eventname, event):
+        monitor.Watcher.printer_event (self, mon, printer, eventname, event)
+        self.printer_uri_index.update_from_attrs (printer, event)
+
+    def printer_removed (self, mon, printer):
+        monitor.Watcher.printer_removed (self, mon, printer)
+        self.printer_uri_index.remove_printer (printer)
 
     ## Printer status window
     def set_printer_status_icon (self, column, cell, model, iter, *user_data):
