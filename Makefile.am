@@ -186,10 +186,18 @@ help:
 	@echo " run                Run system-config-printer with local glade file"
 	@echo " run-applet         Run system-config-printer-applet with local glade file"
 
+test-ppd-module.sh:
+	echo "#!/bin/sh" > "$@"
+	echo "python ppds.py" >> "$@"
+	chmod 755 "$@"
+
+TESTS = test-ppd-module.sh
+
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
-	*.desktop man/*.1
+	*.desktop man/*.1 \
+	test-ppd-module.sh
 
 .PHONY: update-po missing-languages fix-glade run help
 
