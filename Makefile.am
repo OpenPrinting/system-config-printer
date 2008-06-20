@@ -26,23 +26,23 @@ nobase_pkgdata_DATA=					\
 	smburi.py					\
 	statereason.py					\
 	userdefault.py					\
-	ui/AboutDialog.glade				\
-	ui/ConnectDialog.glade				\
-	ui/ConnectingDialog.glade			\
-	ui/InstallDialog.glade				\
-	ui/IPPBrowseDialog.glade			\
-	ui/job_popupmenu.glade				\
-	ui/JobsWindow.glade				\
-	ui/NewPrinterName.glade				\
-	ui/NewPrinterWindow.glade			\
-	ui/printer_context_menu.glade			\
-	ui/PrinterPropertiesDialog.glade		\
-	ui/PrinterStatusWindow.glade			\
-	ui/PrintersWindow.glade				\
-	ui/ServerSettingsDialog.glade			\
-	ui/SMBBrowseDialog.glade			\
-	ui/statusicon_popupmenu.glade			\
-	ui/WaitWindow.glade				\
+	glade/AboutDialog.glade				\
+	glade/ConnectDialog.glade				\
+	glade/ConnectingDialog.glade			\
+	glade/InstallDialog.glade				\
+	glade/IPPBrowseDialog.glade			\
+	glade/job_popupmenu.glade				\
+	glade/JobsWindow.glade				\
+	glade/NewPrinterName.glade				\
+	glade/NewPrinterWindow.glade			\
+	glade/printer_context_menu.glade			\
+	glade/PrinterPropertiesDialog.glade		\
+	glade/PrinterStatusWindow.glade			\
+	glade/PrintersWindow.glade				\
+	glade/ServerSettingsDialog.glade			\
+	glade/SMBBrowseDialog.glade			\
+	glade/statusicon_popupmenu.glade			\
+	glade/WaitWindow.glade				\
 	icons/i-network-printer.png			\
 	troubleshoot/base.py				\
 	troubleshoot/CheckLocalServerPublishing.py	\
@@ -166,14 +166,14 @@ missing-languages:
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
 
 fix-glade:
-	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' $(top_srcdir)/ui/*.glade
+	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' $(top_srcdir)/glade/*.glade
 
 run:
-	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/ui \
+	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
 	python $(top_srcdir)/system-config-printer.py --debug
 
 run-applet:
-	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/ui \
+	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
 	python $(top_srcdir)/applet.py --debug
 
 help:
