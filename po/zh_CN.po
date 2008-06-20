@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.trunk\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-06-13 08:43+0100\n"
+"POT-Creation-Date: 2008-06-20 17:29+0100\n"
 "PO-Revision-Date: 2008-03-28 11:40+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Simplified Chinese <zh@li.org>\n"
@@ -28,11 +28,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../authconn.py:30 ../ui/NewPrinterWindow.glade.h:91
+#: ../authconn.py:30 ../glade/NewPrinterWindow.glade.h:91
 msgid "Username:"
 msgstr "用户名："
 
-#: ../authconn.py:31 ../ui/NewPrinterWindow.glade.h:66
+#: ../authconn.py:31 ../glade/NewPrinterWindow.glade.h:66
 msgid "Password:"
 msgstr "密码："
 
@@ -49,7 +49,7 @@ msgstr "身份验证"
 msgid "Idle"
 msgstr "空闲"
 
-#: ../cupshelpers.py:29 ../jobviewer.py:393
+#: ../cupshelpers.py:29 ../jobviewer.py:478
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Processing"
 msgstr "进行中"
@@ -58,15 +58,14 @@ msgstr "进行中"
 msgid "Busy"
 msgstr "忙"
 
-#: ../cupshelpers.py:31 ../jobviewer.py:394
+#: ../cupshelpers.py:31 ../jobviewer.py:479
 #: ../troubleshoot/PrintTestPage.py:43
 msgid "Stopped"
 msgstr "停止"
 
-#: ../cupshelpers.py:63 ../jobviewer.py:301 ../jobviewer.py:367
-#: ../jobviewer.py:368 ../jobviewer.py:381 ../jobviewer.py:404
-#: ../jobviewer.py:461 ../jobviewer.py:781 ../jobviewer.py:816
-#: ../jobviewer.py:842 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../cupshelpers.py:63 ../jobviewer.py:386 ../jobviewer.py:452
+#: ../jobviewer.py:453 ../jobviewer.py:466 ../jobviewer.py:489
+#: ../jobviewer.py:546 ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:97
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
@@ -119,7 +118,7 @@ msgstr "需要升级"
 msgid "Server error"
 msgstr "服务器错误"
 
-#: ../errordialogs.py:94 ../system-config-printer.py:733
+#: ../errordialogs.py:94 ../system-config-printer.py:739
 msgid "Not connected"
 msgstr "未连接"
 
@@ -133,161 +132,161 @@ msgstr "状态 %d"
 msgid "There was an HTTP error: %s."
 msgstr "发生 HTTP 错误： %s 。"
 
-#: ../jobviewer.py:102 ../troubleshoot/PrintTestPage.py:78
+#: ../jobviewer.py:187 ../troubleshoot/PrintTestPage.py:78
 msgid "Job"
 msgstr "任务"
 
-#: ../jobviewer.py:103
+#: ../jobviewer.py:188
 #, fuzzy
 msgid "User"
 msgstr "用户"
 
-#: ../jobviewer.py:104 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:189 ../troubleshoot/PrintTestPage.py:82
 msgid "Document"
 msgstr "文档"
 
-#: ../jobviewer.py:105 ../jobviewer.py:157 ../my-default-printer.py:157
-#: ../system-config-printer.py:302 ../system-config-printer.py:825
-#: ../system-config-printer.py:2909 ../troubleshoot/PrintTestPage.py:80
+#: ../jobviewer.py:190 ../jobviewer.py:242 ../my-default-printer.py:157
+#: ../system-config-printer.py:307 ../system-config-printer.py:832
+#: ../system-config-printer.py:2940 ../troubleshoot/PrintTestPage.py:80
 msgid "Printer"
 msgstr "打印机"
 
-#: ../jobviewer.py:106
+#: ../jobviewer.py:191
 msgid "Size"
 msgstr "大小"
 
-#: ../jobviewer.py:107
+#: ../jobviewer.py:192
 msgid "Time submitted"
 msgstr "提交时间"
 
-#: ../jobviewer.py:108 ../troubleshoot/PrintTestPage.py:83
+#: ../jobviewer.py:193 ../troubleshoot/PrintTestPage.py:83
 msgid "Status"
 msgstr "状态"
 
-#: ../jobviewer.py:140
+#: ../jobviewer.py:225
 #, python-format
 msgid "my jobs on %s"
 msgstr ""
 
-#: ../jobviewer.py:142
+#: ../jobviewer.py:227
 msgid "my jobs"
 msgstr ""
 
-#: ../jobviewer.py:147
+#: ../jobviewer.py:232
 #, fuzzy
 msgid "all jobs"
 msgstr "取消所有任务"
 
-#: ../jobviewer.py:148
+#: ../jobviewer.py:233
 #, fuzzy, python-format
 msgid "Document Print Status (%s)"
 msgstr "文档打印状态"
 
-#: ../jobviewer.py:170
+#: ../jobviewer.py:255
 msgid "Message"
 msgstr "信息"
 
-#: ../jobviewer.py:313
+#: ../jobviewer.py:398
 msgid "1 hour ago"
 msgstr "一小时前"
 
-#: ../jobviewer.py:315
+#: ../jobviewer.py:400
 msgid "1 hour and 1 minute ago"
 msgstr "一小时零一分钟前"
 
-#: ../jobviewer.py:317
+#: ../jobviewer.py:402
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "一小时零 %d 分钟前"
 
-#: ../jobviewer.py:320
+#: ../jobviewer.py:405
 #, python-format
 msgid "%d hours ago"
 msgstr "%d 小时前"
 
-#: ../jobviewer.py:322
+#: ../jobviewer.py:407
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d 小时零一分钟前"
 
-#: ../jobviewer.py:324
+#: ../jobviewer.py:409
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d 小时零 %d 分钟前"
 
-#: ../jobviewer.py:330
+#: ../jobviewer.py:415
 msgid "a minute ago"
 msgstr "一分钟前"
 
-#: ../jobviewer.py:332
+#: ../jobviewer.py:417
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d 分钟前"
 
-#: ../jobviewer.py:391 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:476 ../troubleshoot/PrintTestPage.py:40
 msgid "Pending"
 msgstr "等待处理"
 
-#: ../jobviewer.py:392 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:477 ../troubleshoot/PrintTestPage.py:41
 msgid "Held"
 msgstr "帮助（_H）"
 
-#: ../jobviewer.py:395 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:480 ../troubleshoot/PrintTestPage.py:44
 msgid "Canceled"
 msgstr "取消"
 
-#: ../jobviewer.py:396 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:481 ../troubleshoot/PrintTestPage.py:45
 msgid "Aborted"
 msgstr "失败的"
 
-#: ../jobviewer.py:397 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:482 ../troubleshoot/PrintTestPage.py:46
 msgid "Completed"
 msgstr "完成"
 
-#: ../jobviewer.py:459
+#: ../jobviewer.py:544
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr ""
 
-#: ../jobviewer.py:664
+#: ../jobviewer.py:749
 msgid "No documents queued"
 msgstr "没有文档在排队"
 
-#: ../jobviewer.py:666
+#: ../jobviewer.py:751
 msgid "1 document queued"
 msgstr "一个文档在排队"
 
-#: ../jobviewer.py:668
+#: ../jobviewer.py:753
 #, python-format
 msgid "%d documents queued"
 msgstr "%d 文档在排队"
 
-#: ../jobviewer.py:901
+#: ../jobviewer.py:987
 #, fuzzy, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "连接到 CUPS 服务器时出现问题。"
 
-#: ../jobviewer.py:904
+#: ../jobviewer.py:990
 #, fuzzy, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "打印机 `%s' 有问题。"
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:910
+#: ../jobviewer.py:996
 #, fuzzy, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "打印机 `%s' 有问题。"
 
-#: ../jobviewer.py:916 ../jobviewer.py:932
+#: ../jobviewer.py:1002 ../jobviewer.py:1018
 #, fuzzy
 msgid "Print Error"
 msgstr "打印机错误"
 
-#: ../jobviewer.py:917
+#: ../jobviewer.py:1003
 msgid "_Diagnose"
 msgstr ""
 
-#: ../jobviewer.py:938
+#: ../jobviewer.py:1024
 #, fuzzy, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "队列 `%s' 未启用。"
@@ -304,102 +303,107 @@ msgstr "使用系统默认(_U)"
 msgid "_Set Default"
 msgstr "设置默认（_S）"
 
-#: ../my-default-printer.py:162 ../system-config-printer.py:2606
+#: ../my-default-printer.py:162 ../system-config-printer.py:2637
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "位置"
 
-#: ../optionwidgets.py:116
+#: ../optionwidgets.py:117
 msgid "Conflicts with:"
 msgstr "冲突："
 
-#: ../system-config-printer.py:308 ../system-config-printer.py:831
+#: ../system-config-printer.py:100
+#, fuzzy
+msgid "To do this, select System->Administration->Firewall from the main menu."
+msgstr "要启动这个工具，请在主菜单中选择「系统」->「管理」->「正在打印」。"
+
+#: ../system-config-printer.py:313 ../system-config-printer.py:838
 #, fuzzy
 msgid "Class"
 msgstr "新 Class"
 
 #. Set up "Problems?" link button
-#: ../system-config-printer.py:338
+#: ../system-config-printer.py:343
 #, fuzzy
 msgid "Problems?"
 msgstr "检测"
 
-#: ../system-config-printer.py:380 ../system-config-printer.py:382
+#: ../system-config-printer.py:385 ../system-config-printer.py:387
 msgid "Members of this class"
 msgstr "这个类型的成员"
 
-#: ../system-config-printer.py:381 ../system-config-printer.py:383
+#: ../system-config-printer.py:386 ../system-config-printer.py:388
 msgid "Others"
 msgstr "其它"
 
-#: ../system-config-printer.py:384
+#: ../system-config-printer.py:389
 msgid "Devices"
 msgstr "设备"
 
-#: ../system-config-printer.py:385
+#: ../system-config-printer.py:390
 msgid "Makes"
 msgstr "Makes"
 
-#: ../system-config-printer.py:386
+#: ../system-config-printer.py:391
 msgid "Models"
 msgstr "型号"
 
-#: ../system-config-printer.py:387
+#: ../system-config-printer.py:392
 msgid "Drivers"
 msgstr "驱动程序"
 
-#: ../system-config-printer.py:388 ../ui/NewPrinterWindow.glade.h:49
+#: ../system-config-printer.py:393 ../glade/NewPrinterWindow.glade.h:49
 msgid "Downloadable Drivers"
 msgstr "可以下载的驱动"
 
-#: ../system-config-printer.py:389
+#: ../system-config-printer.py:394
 msgid "Users"
 msgstr "用户"
 
-#: ../system-config-printer.py:425
+#: ../system-config-printer.py:430
 msgid "Automatic rotation"
 msgstr "自动轮换"
 
-#: ../system-config-printer.py:612
+#: ../system-config-printer.py:618
 #, fuzzy, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "打印机报告"
 
-#: ../system-config-printer.py:728
+#: ../system-config-printer.py:734
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "打印机配置 - %s"
 
-#: ../system-config-printer.py:731
+#: ../system-config-printer.py:737
 #, python-format
 msgid "Connected to %s"
 msgstr "连接到 %s"
 
-#: ../system-config-printer.py:819
+#: ../system-config-printer.py:826
 #, fuzzy
 msgid "Network printer (discovered)"
 msgstr "网络打印机"
 
-#: ../system-config-printer.py:822
+#: ../system-config-printer.py:829
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:828 ../system-config-printer.py:2910
+#: ../system-config-printer.py:835 ../system-config-printer.py:2941
 msgid "Fax"
 msgstr ""
 
-#: ../system-config-printer.py:834 ../system-config-printer.py:840
+#: ../system-config-printer.py:841 ../system-config-printer.py:847
 #: ../troubleshoot/LocalOrRemote.py:31
 msgid "Network printer"
 msgstr "网络打印机"
 
-#: ../system-config-printer.py:837
+#: ../system-config-printer.py:844
 #, fuzzy
 msgid "Network print share"
 msgstr "网络打印机"
 
-#: ../system-config-printer.py:945
+#: ../system-config-printer.py:958
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -408,15 +412,16 @@ msgstr ""
 "连接到服务器：\n"
 "%s"
 
-#: ../system-config-printer.py:1310
+#: ../system-config-printer.py:1323
 msgid "Installable Options"
 msgstr "可安装选项"
 
-#: ../system-config-printer.py:1311 ../ui/PrinterPropertiesDialog.glade.h:106
+#: ../system-config-printer.py:1324
+#: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Printer Options"
 msgstr "打印机选项"
 
-#: ../system-config-printer.py:1332
+#: ../system-config-printer.py:1345
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -426,35 +431,58 @@ msgstr ""
 "只有在冲突被解决后，才能应用所做\n"
 "修改。"
 
-#: ../system-config-printer.py:1359
+#: ../system-config-printer.py:1372
 msgid "This will delete this class!"
 msgstr "这将删除这个 class！"
 
-#: ../system-config-printer.py:1360
+#: ../system-config-printer.py:1373
 msgid "Proceed anyway?"
 msgstr "继续处理？"
 
-#: ../system-config-printer.py:1538 ../system-config-printer.py:1564
+#: ../system-config-printer.py:1514
+#, fuzzy
+msgid "Set Default Printer"
+msgstr "默认打印机"
+
+#: ../system-config-printer.py:1516
+msgid "Do you want to set this as the system-wide default printer?"
+msgstr ""
+
+#: ../system-config-printer.py:1518
+#, fuzzy
+msgid "Set as the _system-wide default printer"
+msgstr "这是默认的打印机"
+
+#: ../system-config-printer.py:1520
+msgid "_Clear my personal default setting"
+msgstr ""
+
+#: ../system-config-printer.py:1521
+#, fuzzy
+msgid "Set as my _personal default printer"
+msgstr "选择默认打印机"
+
+#: ../system-config-printer.py:1572 ../system-config-printer.py:1598
 msgid "Submitted"
 msgstr "发送"
 
-#: ../system-config-printer.py:1539
+#: ../system-config-printer.py:1573
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "测试页作为任务 %d 被发送"
 
-#: ../system-config-printer.py:1545 ../system-config-printer.py:1571
-#: ../system-config-printer.py:3977
+#: ../system-config-printer.py:1579 ../system-config-printer.py:1605
+#: ../system-config-printer.py:4018
 msgid "Not possible"
 msgstr "不可能"
 
-#: ../system-config-printer.py:1546 ../system-config-printer.py:1572
+#: ../system-config-printer.py:1580 ../system-config-printer.py:1606
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "远程的服务器没有接受这个打印任务，这可能是因为那个打印机没有共享。"
 
-#: ../system-config-printer.py:1565
+#: ../system-config-printer.py:1599
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "将维护命令作为任务 %d 提交"
@@ -462,39 +490,39 @@ msgstr "将维护命令作为任务 %d 提交"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1622 ../system-config-printer.py:1729
+#: ../system-config-printer.py:1656 ../system-config-printer.py:1763
 msgid "Error"
 msgstr "错误"
 
-#: ../system-config-printer.py:1623
+#: ../system-config-printer.py:1657
 msgid "There was a problem connecting to the CUPS server."
 msgstr "连接到 CUPS 服务器时出现问题。"
 
-#: ../system-config-printer.py:1730
+#: ../system-config-printer.py:1764
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "选项 '%s' 有值 '%s'，且无法编辑。"
 
-#: ../system-config-printer.py:2146
+#: ../system-config-printer.py:2180
 #, fuzzy, python-format
 msgid "Really delete class `%s'?"
 msgstr "真的要删除类型 %s 吗？"
 
-#: ../system-config-printer.py:2148
+#: ../system-config-printer.py:2182
 #, fuzzy, python-format
 msgid "Really delete printer `%s'?"
 msgstr "真的要删除打印机 %s 吗？"
 
-#: ../system-config-printer.py:2150
+#: ../system-config-printer.py:2184
 #, fuzzy
 msgid "Really delete selected destinations?"
 msgstr "真的要删除打印机 %s 吗？"
 
-#: ../system-config-printer.py:2204
+#: ../system-config-printer.py:2238
 msgid "Publish Shared Printers"
 msgstr ""
 
-#: ../system-config-printer.py:2205
+#: ../system-config-printer.py:2239
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -506,194 +534,207 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2319
+#: ../system-config-printer.py:2352
 #, fuzzy
 msgid "Review Firewall"
 msgstr "检查服务器防火墙"
 
-#: ../system-config-printer.py:2320
+#: ../system-config-printer.py:2353
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
-#: ../system-config-printer.py:2323
-#, fuzzy
-msgid "To do this, select System->Administration->Firewall from the main menu."
-msgstr "要启动这个工具，请在主菜单中选择「系统」->「管理」->「正在打印」。"
-
-#: ../system-config-printer.py:2565 ../system-config-printer.py:2575
+#: ../system-config-printer.py:2596 ../system-config-printer.py:2606
 msgid "Share"
 msgstr "共享"
 
-#: ../system-config-printer.py:2571 ../system-config-printer.py:2581
+#: ../system-config-printer.py:2602 ../system-config-printer.py:2612
 msgid "Comment"
 msgstr "注解"
 
 #. IPP list columns
-#: ../system-config-printer.py:2600
+#: ../system-config-printer.py:2631
 msgid "Queue"
 msgstr "队列"
 
-#: ../system-config-printer.py:2614
+#: ../system-config-printer.py:2645
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "PostScript 打印机描述文件（*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ）"
 
-#: ../system-config-printer.py:2623
+#: ../system-config-printer.py:2654
 msgid "All files (*)"
 msgstr "所有文件（*）"
 
-#: ../system-config-printer.py:2659 ../system-config-printer.py:4247
-#: ../system-config-printer.py:4285
+#: ../system-config-printer.py:2690 ../system-config-printer.py:4290
+#: ../system-config-printer.py:4328
 msgid "Search"
 msgstr "搜索"
 
-#: ../system-config-printer.py:2662 ../ui/NewPrinterWindow.glade.h:63
+#: ../system-config-printer.py:2693 ../glade/NewPrinterWindow.glade.h:63
 msgid "New Printer"
 msgstr "新打印机"
 
-#: ../system-config-printer.py:2673
+#: ../system-config-printer.py:2704
 msgid "New Class"
 msgstr "新 Class"
 
-#: ../system-config-printer.py:2678
+#: ../system-config-printer.py:2709
 msgid "Change Device URI"
 msgstr "改变设备 URI"
 
-#: ../system-config-printer.py:2695
+#: ../system-config-printer.py:2726
 msgid "Change Driver"
 msgstr "改变驱动"
 
-#: ../system-config-printer.py:2796 ../system-config-printer.py:3061
-#: ../system-config-printer.py:3247 ../system-config-printer.py:4272
+#: ../system-config-printer.py:2827 ../system-config-printer.py:3092
+#: ../system-config-printer.py:3278 ../system-config-printer.py:4315
 msgid "Searching"
 msgstr "正在搜索"
 
-#: ../system-config-printer.py:2797 ../system-config-printer.py:3062
+#: ../system-config-printer.py:2828 ../system-config-printer.py:3093
 msgid "Searching for drivers"
 msgstr "正在搜索驱动程序"
 
-#: ../system-config-printer.py:2911
+#: ../system-config-printer.py:2942
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr ""
 
-#: ../system-config-printer.py:3248
+#: ../system-config-printer.py:3279
 msgid "Searching for printers"
 msgstr "正在搜索打印机"
 
-#: ../system-config-printer.py:3494
+#: ../system-config-printer.py:3525
 msgid "Other"
 msgstr "其它"
 
-#: ../system-config-printer.py:3496
+#: ../system-config-printer.py:3527
 msgid " (Current)"
 msgstr " (当前)"
 
-#: ../system-config-printer.py:3519 ../system-config-printer.py:3536
-#: ../system-config-printer.py:3940
+#: ../system-config-printer.py:3550 ../system-config-printer.py:3567
+#: ../system-config-printer.py:3981
 msgid "Scanning..."
 msgstr "扫描中..."
 
-#: ../system-config-printer.py:3859 ../system-config-printer.py:3922
+#: ../system-config-printer.py:3602
+#, fuzzy
+msgid "No Print Shares"
+msgstr "网络打印机"
+
+#: ../system-config-printer.py:3603
+msgid ""
+"There were no print shares found.  Please check that the Samba service is "
+"marked as trusted in your firewall configuration."
+msgstr ""
+
+#: ../system-config-printer.py:3900 ../system-config-printer.py:3963
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:3860 ../system-config-printer.py:3923
+#: ../system-config-printer.py:3901 ../system-config-printer.py:3964
 msgid "This print share is accessible."
 msgstr "这个打印机共享可以被访问。"
 
-#: ../system-config-printer.py:3864 ../system-config-printer.py:3927
+#: ../system-config-printer.py:3905 ../system-config-printer.py:3968
 msgid "This print share is not accessible."
 msgstr "这个打印机共享不能被访问。"
 
-#: ../system-config-printer.py:3867
+#: ../system-config-printer.py:3908
 #, fuzzy
 msgid "Print Share Inaccessible"
 msgstr "这个打印机共享可以被访问。"
 
-#: ../system-config-printer.py:3926
+#: ../system-config-printer.py:3967
 msgid "Inaccessible"
 msgstr "不能访问"
 
-#: ../system-config-printer.py:3978
-msgid "It is not possible to obtain a list of queues from this host."
+#: ../system-config-printer.py:4019
+#, fuzzy, python-format
+msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "不可能从这个主机中获得队列列表。"
 
-#: ../system-config-printer.py:3981
+#: ../system-config-printer.py:4021
+msgid ""
+"Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
+"not support it."
+msgstr ""
+
+#: ../system-config-printer.py:4024
 msgid "No queues"
 msgstr "没有队列"
 
-#: ../system-config-printer.py:3982
+#: ../system-config-printer.py:4025
 msgid "There are no queues available."
 msgstr "没有可用队列。"
 
-#: ../system-config-printer.py:4039
+#: ../system-config-printer.py:4082
 msgid "A printer connected to the parallel port."
 msgstr "一个打印机连接到并行口。"
 
-#: ../system-config-printer.py:4041
+#: ../system-config-printer.py:4084
 msgid "A printer connected to a USB port."
 msgstr "一个打印机连接到一个 USB 端口。"
 
-#: ../system-config-printer.py:4043
+#: ../system-config-printer.py:4086
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "HPLIP 软件驱动一个打印机，或多功能设备中的打印机功能。"
 
-#: ../system-config-printer.py:4046
+#: ../system-config-printer.py:4089
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "HPLIP 软件驱动一个传真机，或多功能设备中的传真机功能。"
 
-#: ../system-config-printer.py:4049
+#: ../system-config-printer.py:4092
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Hardware Abstraction Layer (HAL) 发现了本地打印机。"
 
-#: ../system-config-printer.py:4297
+#: ../system-config-printer.py:4340
 msgid "-- Select printer model --"
 msgstr "-- 选择打印机型号 --"
 
-#: ../system-config-printer.py:4299
+#: ../system-config-printer.py:4342
 msgid "-- No matches found --"
 msgstr "-- 没有发现匹配的型号 --"
 
-#: ../system-config-printer.py:4475
+#: ../system-config-printer.py:4518
 msgid " (recommended)"
 msgstr "（推荐）"
 
-#: ../system-config-printer.py:4489
+#: ../system-config-printer.py:4532
 msgid "This PPD is generated by foomatic."
 msgstr "这个 PPD 被 foomatic 产生。"
 
-#: ../system-config-printer.py:4515
+#: ../system-config-printer.py:4558
 msgid "OpenPrinting"
 msgstr "开放打印"
 
-#: ../system-config-printer.py:4517
+#: ../system-config-printer.py:4560
 msgid "Distributable"
 msgstr "可分配的"
 
-#: ../system-config-printer.py:4519
+#: ../system-config-printer.py:4562
 msgid "None"
 msgstr "无"
 
-#: ../system-config-printer.py:4527
+#: ../system-config-printer.py:4570
 msgid "Not specified."
 msgstr "没有特定的。"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4567
+#: ../system-config-printer.py:4610
 msgid "Database error"
 msgstr "数据库错误"
 
-#: ../system-config-printer.py:4568
+#: ../system-config-printer.py:4611
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "“%s”驱动不能够和打印机“%s %s”一起使用。"
@@ -701,71 +742,71 @@ msgstr "“%s”驱动不能够和打印机“%s %s”一起使用。"
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4578
+#: ../system-config-printer.py:4621
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "您将需要安装“%s”包来使用这个驱动。"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4585
+#: ../system-config-printer.py:4628
 msgid "PPD error"
 msgstr "PPD错误"
 
-#: ../system-config-printer.py:4587
+#: ../system-config-printer.py:4630
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "读取PPD文件错误。可能由以下原因造成："
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4598
+#: ../system-config-printer.py:4641
 msgid "Downloadable drivers"
 msgstr "可下载的驱动程序"
 
-#: ../system-config-printer.py:4599
+#: ../system-config-printer.py:4642
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:4635 ../system-config-printer.py:4673
+#: ../system-config-printer.py:4678 ../system-config-printer.py:4716
 msgid "No Installable Options"
 msgstr "没有安装选项"
 
-#: ../system-config-printer.py:4719
+#: ../system-config-printer.py:4762
 msgid "Adding"
 msgstr "添加中"
 
-#: ../system-config-printer.py:4720
+#: ../system-config-printer.py:4763
 msgid "Adding printer"
 msgstr "正在添加打印机"
 
-#: ../system-config-printer.py:4881
+#: ../system-config-printer.py:4924
 msgid "Install driver"
 msgstr "安装驱动程序"
 
-#: ../system-config-printer.py:4882
+#: ../system-config-printer.py:4925
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "打印机‘%s’要求的 %s 软件包目前没有安装。"
 
-#: ../system-config-printer.py:4907
+#: ../system-config-printer.py:4950
 msgid "Missing driver"
 msgstr "缺少驱动"
 
-#: ../system-config-printer.py:4908
+#: ../system-config-printer.py:4951
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
 "Please install it before using this printer."
 msgstr "打印机“%s”需要的“%s”程序目前没有安装。请在使用打印机之前安装它。"
 
-#: ../ui/AboutDialog.glade.h:1
+#: ../glade/AboutDialog.glade.h:1
 msgid "A CUPS configuration tool."
 msgstr "CUPS 配置工具"
 
-#: ../ui/AboutDialog.glade.h:2
+#: ../glade/AboutDialog.glade.h:2
 #, fuzzy
 msgid "Copyright © 2006-2008 Red Hat, Inc."
 msgstr "版权 2006-2007 Red Hat, Inc."
 
-#: ../ui/AboutDialog.glade.h:3
+#: ../glade/AboutDialog.glade.h:3
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -782,32 +823,32 @@ msgid ""
 "Ave, Cambridge, MA 02139, USA."
 msgstr ""
 
-#: ../ui/AboutDialog.glade.h:8
+#: ../glade/AboutDialog.glade.h:8
 msgid "system-config-printer"
 msgstr "system-config-printer"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../ui/AboutDialog.glade.h:10
+#: ../glade/AboutDialog.glade.h:10
 msgid "translator-credits"
 msgstr "译者"
 
-#: ../ui/ConnectDialog.glade.h:1
+#: ../glade/ConnectDialog.glade.h:1
 msgid "CUPS server:"
 msgstr "CUPS 服务器："
 
-#: ../ui/ConnectDialog.glade.h:2
+#: ../glade/ConnectDialog.glade.h:2
 msgid "Connect to CUPS server"
 msgstr "连接到 CUPS 服务器"
 
-#: ../ui/ConnectDialog.glade.h:3
+#: ../glade/ConnectDialog.glade.h:3
 msgid "Require encryption"
 msgstr "需要加密"
 
-#: ../ui/ConnectingDialog.glade.h:1
+#: ../glade/ConnectingDialog.glade.h:1
 msgid "Connecting"
 msgstr "连接"
 
-#: ../ui/ConnectingDialog.glade.h:3
+#: ../glade/ConnectingDialog.glade.h:3
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -816,148 +857,148 @@ msgstr ""
 "连接到服务器：\n"
 "%s\n"
 
-#: ../ui/InstallDialog.glade.h:1
+#: ../glade/InstallDialog.glade.h:1
 msgid "_Install"
 msgstr "安装（_I）"
 
-#: ../ui/IPPBrowseDialog.glade.h:1
+#: ../glade/IPPBrowseDialog.glade.h:1
 msgid "IPP Browser"
 msgstr "IPP 浏览器"
 
-#: ../ui/job_popupmenu.glade.h:1
+#: ../glade/job_popupmenu.glade.h:1
 msgid "Re_print"
 msgstr "重新打印（_p）"
 
-#: ../ui/job_popupmenu.glade.h:2
+#: ../glade/job_popupmenu.glade.h:2
 msgid "_Hold"
 msgstr "保持（_H）"
 
-#: ../ui/job_popupmenu.glade.h:3
+#: ../glade/job_popupmenu.glade.h:3
 msgid "_Release"
 msgstr "释放（_R）"
 
-#: ../ui/JobsWindow.glade.h:1
+#: ../glade/JobsWindow.glade.h:1
 msgid "Show _completed jobs"
 msgstr "显示完成的任务（_c）"
 
-#: ../ui/JobsWindow.glade.h:2
+#: ../glade/JobsWindow.glade.h:2
 msgid "Show _printer status"
 msgstr "显示打印机状态（_p）"
 
-#: ../ui/JobsWindow.glade.h:3
+#: ../glade/JobsWindow.glade.h:3
 msgid "_File"
 msgstr "(_F)文件"
 
-#: ../ui/JobsWindow.glade.h:4
+#: ../glade/JobsWindow.glade.h:4
 msgid "_Refresh"
 msgstr "刷新（_R）"
 
-#: ../ui/JobsWindow.glade.h:5 ../ui/PrintersWindow.glade.h:17
+#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:17
 msgid "_View"
 msgstr "查看（_V）"
 
-#: ../ui/NewPrinterName.glade.h:1
+#: ../glade/NewPrinterName.glade.h:1
 msgid "Copy Printer"
 msgstr "复制打印机"
 
-#: ../ui/NewPrinterName.glade.h:2
+#: ../glade/NewPrinterName.glade.h:2
 msgid "New name for the printer"
 msgstr "打印机的新名字"
 
-#: ../ui/NewPrinterWindow.glade.h:1
+#: ../glade/NewPrinterWindow.glade.h:1
 #, fuzzy
 msgid "<b>Authentication</b>"
 msgstr "身份验证"
 
-#: ../ui/NewPrinterWindow.glade.h:2
+#: ../glade/NewPrinterWindow.glade.h:2
 msgid "<b>Description</b>"
 msgstr "<b>描述</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:3
+#: ../glade/NewPrinterWindow.glade.h:3
 msgid "<b>Description</b> (optional)"
 msgstr "<b>描述</b> (可选)"
 
-#: ../ui/NewPrinterWindow.glade.h:4
+#: ../glade/NewPrinterWindow.glade.h:4
 msgid "<b>Download Printer Driver</b>"
 msgstr "<b>下载打印机驱动程序</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:5
+#: ../glade/NewPrinterWindow.glade.h:5
 msgid "<b>Enter device URI</b>"
 msgstr "<b>输入设备 URI</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:6
+#: ../glade/NewPrinterWindow.glade.h:6
 msgid "<b>IPP Printer</b>"
 msgstr "<b>IPP 打印机</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:7
+#: ../glade/NewPrinterWindow.glade.h:7
 msgid "<b>Installed Options</b>"
 msgstr "<b>安装选项</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:8
+#: ../glade/NewPrinterWindow.glade.h:8
 msgid "<b>License Terms</b>"
 msgstr "<b>许可证术语</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:9
+#: ../glade/NewPrinterWindow.glade.h:9
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>LPD 网络打印机的位置</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:10
+#: ../glade/NewPrinterWindow.glade.h:10
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>网络打印机的位置</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:11
+#: ../glade/NewPrinterWindow.glade.h:11
 msgid "<b>Location</b> (optional)"
 msgstr "<b>位置</b> (可选)"
 
-#: ../ui/NewPrinterWindow.glade.h:12
+#: ../glade/NewPrinterWindow.glade.h:12
 msgid "<b>Note</b>"
 msgstr "<b>注记</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:13
+#: ../glade/NewPrinterWindow.glade.h:13
 msgid "<b>Printer Name</b>"
 msgstr "<b>打印机名</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:14
+#: ../glade/NewPrinterWindow.glade.h:14
 msgid "<b>Printers to be members of this Class</b>"
 msgstr "<b>属于这个 Class 成员的打印机</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:15
+#: ../glade/NewPrinterWindow.glade.h:15
 msgid "<b>SMB Printer</b>"
 msgstr "<b>SMB 打印机</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:16
+#: ../glade/NewPrinterWindow.glade.h:16
 msgid "<b>Select Connection</b>"
 msgstr "<b>选择连接</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:17
+#: ../glade/NewPrinterWindow.glade.h:17
 msgid "<b>Select Driver</b>"
 msgstr "<b>选择驱动程序</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:18
+#: ../glade/NewPrinterWindow.glade.h:18
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>串口设置</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:19
+#: ../glade/NewPrinterWindow.glade.h:19
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
 
-#: ../ui/NewPrinterWindow.glade.h:20
+#: ../glade/NewPrinterWindow.glade.h:20
 msgid "Baud Rate"
 msgstr "波特率"
 
-#: ../ui/NewPrinterWindow.glade.h:21
+#: ../glade/NewPrinterWindow.glade.h:21
 msgid "Browse..."
 msgstr "浏览..."
 
-#: ../ui/NewPrinterWindow.glade.h:22
+#: ../glade/NewPrinterWindow.glade.h:22
 msgid "Comments..."
 msgstr "注解..."
 
-#: ../ui/NewPrinterWindow.glade.h:23
+#: ../glade/NewPrinterWindow.glade.h:23
 msgid "Data Bits"
 msgstr "数据位"
 
-#: ../ui/NewPrinterWindow.glade.h:24
+#: ../glade/NewPrinterWindow.glade.h:24
 msgid ""
 "Default\n"
 "1200\n"
@@ -979,7 +1020,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../ui/NewPrinterWindow.glade.h:33
+#: ../glade/NewPrinterWindow.glade.h:33
 msgid ""
 "Default\n"
 "8\n"
@@ -989,7 +1030,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../ui/NewPrinterWindow.glade.h:36
+#: ../glade/NewPrinterWindow.glade.h:36
 msgid ""
 "Default\n"
 "None\n"
@@ -1001,7 +1042,7 @@ msgstr ""
 "单数\n"
 "双数"
 
-#: ../ui/NewPrinterWindow.glade.h:40
+#: ../glade/NewPrinterWindow.glade.h:40
 msgid ""
 "Default\n"
 "None\n"
@@ -1015,89 +1056,90 @@ msgstr ""
 "RTS/CTS (硬件)\n"
 "DTR/DSR (硬件)"
 
-#: ../ui/NewPrinterWindow.glade.h:45 ../ui/PrinterPropertiesDialog.glade.h:33
+#: ../glade/NewPrinterWindow.glade.h:45
+#: ../glade/PrinterPropertiesDialog.glade.h:33
 msgid "Description:"
 msgstr "描述："
 
-#: ../ui/NewPrinterWindow.glade.h:46 ../troubleshoot/DeviceListed.py:40
+#: ../glade/NewPrinterWindow.glade.h:46 ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "设备 URI"
 
-#: ../ui/NewPrinterWindow.glade.h:47
+#: ../glade/NewPrinterWindow.glade.h:47
 msgid "Device description."
 msgstr "设备描述。"
 
-#: ../ui/NewPrinterWindow.glade.h:48
+#: ../glade/NewPrinterWindow.glade.h:48
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../ui/NewPrinterWindow.glade.h:50
+#: ../glade/NewPrinterWindow.glade.h:50
 msgid "Driver details"
 msgstr "驱动程序详情"
 
-#: ../ui/NewPrinterWindow.glade.h:51
+#: ../glade/NewPrinterWindow.glade.h:51
 msgid "Empty"
 msgstr "空"
 
-#: ../ui/NewPrinterWindow.glade.h:52
+#: ../glade/NewPrinterWindow.glade.h:52
 msgid "Find _Queue..."
 msgstr "查找队列（_Q）..."
 
-#: ../ui/NewPrinterWindow.glade.h:53
+#: ../glade/NewPrinterWindow.glade.h:53
 msgid "Flow Control"
 msgstr "流控制"
 
-#: ../ui/NewPrinterWindow.glade.h:54
+#: ../glade/NewPrinterWindow.glade.h:54
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr "您选择的打印机有可驱动程序可供下载。"
 
-#: ../ui/NewPrinterWindow.glade.h:55
+#: ../glade/NewPrinterWindow.glade.h:55
 msgid "Host:"
 msgstr "主机："
 
-#: ../ui/NewPrinterWindow.glade.h:56
+#: ../glade/NewPrinterWindow.glade.h:56
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "易读的描述信息，如 \"HP LaserJet with Duplexer\""
 
-#: ../ui/NewPrinterWindow.glade.h:57
+#: ../glade/NewPrinterWindow.glade.h:57
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "位置信息，如 \"Lab 1\""
 
-#: ../ui/NewPrinterWindow.glade.h:58
+#: ../glade/NewPrinterWindow.glade.h:58
 msgid "IPP"
 msgstr "IPP"
 
-#: ../ui/NewPrinterWindow.glade.h:59
+#: ../glade/NewPrinterWindow.glade.h:59
 msgid "LPD"
 msgstr "LPD"
 
-#: ../ui/NewPrinterWindow.glade.h:60
+#: ../glade/NewPrinterWindow.glade.h:60
 msgid "License:"
 msgstr "许可证："
 
-#: ../ui/NewPrinterWindow.glade.h:61
+#: ../glade/NewPrinterWindow.glade.h:61
 msgid "Local Driver"
 msgstr "本地驱动程序"
 
-#: ../ui/NewPrinterWindow.glade.h:62
+#: ../glade/NewPrinterWindow.glade.h:62
 #, fuzzy
 msgid "Make and model:"
 msgstr "制造商和型号："
 
-#: ../ui/NewPrinterWindow.glade.h:64
+#: ../glade/NewPrinterWindow.glade.h:64
 msgid "No, I do not accept this license"
 msgstr "不，我不会接受这个许可证"
 
-#: ../ui/NewPrinterWindow.glade.h:65
+#: ../glade/NewPrinterWindow.glade.h:65
 msgid "Parity"
 msgstr "Parity"
 
-#: ../ui/NewPrinterWindow.glade.h:67
+#: ../glade/NewPrinterWindow.glade.h:67
 msgid "Port number:"
 msgstr "端口号："
 
-#: ../ui/NewPrinterWindow.glade.h:68
+#: ../glade/NewPrinterWindow.glade.h:68
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1107,65 +1149,65 @@ msgstr ""
 "附带的驱动盘中找到。对于 PostScript 打印机，它们通常是 Windows<sup>®</sup> 驱"
 "动程序的一部分。"
 
-#: ../ui/NewPrinterWindow.glade.h:69
+#: ../glade/NewPrinterWindow.glade.h:69
 msgid "Printer model:"
 msgstr "打印机型号："
 
-#: ../ui/NewPrinterWindow.glade.h:70
+#: ../glade/NewPrinterWindow.glade.h:70
 msgid "Probe"
 msgstr "检测"
 
-#: ../ui/NewPrinterWindow.glade.h:71
+#: ../glade/NewPrinterWindow.glade.h:71
 #, fuzzy
 msgid "Prompt user if authentication is required"
 msgstr "需要验证"
 
-#: ../ui/NewPrinterWindow.glade.h:72
+#: ../glade/NewPrinterWindow.glade.h:72
 msgid "Provide PPD file"
 msgstr "提供 PPD 文件"
 
-#: ../ui/NewPrinterWindow.glade.h:73
+#: ../glade/NewPrinterWindow.glade.h:73
 msgid "Queue:"
 msgstr "队列："
 
-#: ../ui/NewPrinterWindow.glade.h:74
+#: ../glade/NewPrinterWindow.glade.h:74
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../ui/NewPrinterWindow.glade.h:75
+#: ../glade/NewPrinterWindow.glade.h:75
 msgid "SMB"
 msgstr "SMB"
 
-#: ../ui/NewPrinterWindow.glade.h:76
+#: ../glade/NewPrinterWindow.glade.h:76
 msgid "Search for a printer driver to download"
 msgstr "搜索要下载的打印机驱动程序"
 
-#: ../ui/NewPrinterWindow.glade.h:77
+#: ../glade/NewPrinterWindow.glade.h:77
 msgid "Select A File"
 msgstr "选择一个文件"
 
-#: ../ui/NewPrinterWindow.glade.h:78
+#: ../glade/NewPrinterWindow.glade.h:78
 msgid "Select printer from database"
 msgstr "从数据库中选择打印机"
 
-#: ../ui/NewPrinterWindow.glade.h:79
+#: ../glade/NewPrinterWindow.glade.h:79
 msgid "Serial"
 msgstr "串口"
 
-#: ../ui/NewPrinterWindow.glade.h:80
+#: ../glade/NewPrinterWindow.glade.h:80
 #, fuzzy
 msgid "Set authentication details now"
 msgstr "需要验证"
 
-#: ../ui/NewPrinterWindow.glade.h:81
+#: ../glade/NewPrinterWindow.glade.h:81
 msgid "Short name for this printer such as \"laserjet\""
 msgstr ""
 
-#: ../ui/NewPrinterWindow.glade.h:82
+#: ../glade/NewPrinterWindow.glade.h:82
 msgid "Supplier:"
 msgstr "供应商："
 
-#: ../ui/NewPrinterWindow.glade.h:83
+#: ../glade/NewPrinterWindow.glade.h:83
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1177,7 +1219,7 @@ msgstr ""
 "(PPD) 文件，并可以为多个（非 PostScript) 打印机产生 PPD 文件。但是，在通常情"
 "况下，打印机厂商提供的 PPD 文件会提供更好的功能。"
 
-#: ../ui/NewPrinterWindow.glade.h:84
+#: ../glade/NewPrinterWindow.glade.h:84
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
@@ -1186,13 +1228,13 @@ msgstr ""
 "这些驱动程序不是来自您的操作系统供应商，而且不会包含在他们的商业支持中。请参"
 "考驱动程序供应商的支持和许可证术语。"
 
-#: ../ui/NewPrinterWindow.glade.h:85
+#: ../glade/NewPrinterWindow.glade.h:85
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr "这个启动程序支持可能在打印机中安装的附加硬件。"
 
-#: ../ui/NewPrinterWindow.glade.h:86
+#: ../glade/NewPrinterWindow.glade.h:86
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1201,25 +1243,25 @@ msgstr ""
 "这是通过假设有相同名称的选项有相同含义的条件下进行的。没有在新 PPD 中包括的选"
 "项设置将丢失，只有在新 PPD 中的选项会被设置为默认。"
 
-#: ../ui/NewPrinterWindow.glade.h:87
+#: ../glade/NewPrinterWindow.glade.h:87
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
 msgstr "当前所有的选项设置都将流失。新 PPD 的默认设置将会被使用。"
 
-#: ../ui/NewPrinterWindow.glade.h:88
+#: ../glade/NewPrinterWindow.glade.h:88
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "尝试从旧的 PPD 中复制选项设置。"
 
-#: ../ui/NewPrinterWindow.glade.h:89
+#: ../glade/NewPrinterWindow.glade.h:89
 msgid "URI:"
 msgstr "URI："
 
-#: ../ui/NewPrinterWindow.glade.h:90
+#: ../glade/NewPrinterWindow.glade.h:90
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "使用新的 PPD (Postscript Printer Description)。"
 
-#: ../ui/NewPrinterWindow.glade.h:92
+#: ../glade/NewPrinterWindow.glade.h:92
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -1227,58 +1269,58 @@ msgstr ""
 "选择此选项将不会进行任何驱动程序下载行动。在下一步中会选择本地安装的驱动程"
 "序。"
 
-#: ../ui/NewPrinterWindow.glade.h:93
+#: ../glade/NewPrinterWindow.glade.h:93
 msgid "Yes, I accept this license"
 msgstr "是，我接受这个许可证"
 
-#: ../ui/NewPrinterWindow.glade.h:94
+#: ../glade/NewPrinterWindow.glade.h:94
 msgid "_Search"
 msgstr "搜索（_S）"
 
-#: ../ui/NewPrinterWindow.glade.h:95
+#: ../glade/NewPrinterWindow.glade.h:95
 msgid "_Verify..."
 msgstr "验证（_V）..."
 
-#: ../ui/printer_context_menu.glade.h:1
+#: ../glade/printer_context_menu.glade.h:1
 msgid ""
 "Create a class from the selected printers (for failover or load-balancing)"
 msgstr ""
 
-#: ../ui/printer_context_menu.glade.h:2
+#: ../glade/printer_context_menu.glade.h:2
 #, fuzzy
 msgid "E_nabled"
 msgstr "启用"
 
-#: ../ui/printer_context_menu.glade.h:3
+#: ../glade/printer_context_menu.glade.h:3
 #, fuzzy
 msgid "Set As Default"
 msgstr "设置默认（_S）"
 
-#: ../ui/printer_context_menu.glade.h:4
+#: ../glade/printer_context_menu.glade.h:4
 #, fuzzy
 msgid "View Print _Queue"
 msgstr "新打印机"
 
-#: ../ui/printer_context_menu.glade.h:5
+#: ../glade/printer_context_menu.glade.h:5
 #, fuzzy
 msgid "_Create Class"
 msgstr "远程 class"
 
-#: ../ui/printer_context_menu.glade.h:6 ../ui/PrintersWindow.glade.h:12
+#: ../glade/printer_context_menu.glade.h:6 ../glade/PrintersWindow.glade.h:12
 #, fuzzy
 msgid "_Rename"
 msgstr "释放（_R）"
 
-#: ../ui/printer_context_menu.glade.h:7 ../ui/PrintersWindow.glade.h:15
+#: ../glade/printer_context_menu.glade.h:7 ../glade/PrintersWindow.glade.h:15
 #, fuzzy
 msgid "_Shared"
 msgstr "共享"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:1
+#: ../glade/PrinterPropertiesDialog.glade.h:1
 msgid " "
 msgstr " "
 
-#: ../ui/PrinterPropertiesDialog.glade.h:2
+#: ../glade/PrinterPropertiesDialog.glade.h:2
 msgid ""
 "1\n"
 "2\n"
@@ -1294,50 +1336,50 @@ msgstr ""
 "9\n"
 "16"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:8
+#: ../glade/PrinterPropertiesDialog.glade.h:8
 #, fuzzy
 msgid "72 points per inch"
 msgstr ""
 "点\n"
 "（每英寸 72 个点）"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:9
+#: ../glade/PrinterPropertiesDialog.glade.h:9
 msgid "<b>Banner</b>"
 msgstr "<b>Banner</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:10
+#: ../glade/PrinterPropertiesDialog.glade.h:10
 msgid "<b>Common Options</b>"
 msgstr "<b>条用选项</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:11
+#: ../glade/PrinterPropertiesDialog.glade.h:11
 msgid "<b>Image Options</b>"
 msgstr "<b>映像选项</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:12
+#: ../glade/PrinterPropertiesDialog.glade.h:12
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>其它选项（高级）</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:13
+#: ../glade/PrinterPropertiesDialog.glade.h:13
 msgid "<b>Policies</b>"
 msgstr "<b>策略</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:14
+#: ../glade/PrinterPropertiesDialog.glade.h:14
 msgid "<b>Settings</b>"
 msgstr "<b>设置</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:15
+#: ../glade/PrinterPropertiesDialog.glade.h:15
 msgid "<b>State</b>"
 msgstr "<b>状态</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:16
+#: ../glade/PrinterPropertiesDialog.glade.h:16
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>测试及维护</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:17
+#: ../glade/PrinterPropertiesDialog.glade.h:17
 msgid "<b>Text Options</b>"
 msgstr "<b>文本选项</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:18
+#: ../glade/PrinterPropertiesDialog.glade.h:18
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -1345,104 +1387,104 @@ msgstr ""
 "<i>未发布\n"
 "请参看服务器设置</i>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:20
+#: ../glade/PrinterPropertiesDialog.glade.h:20
 msgid "Accepting jobs"
 msgstr "接受任务"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:21
+#: ../glade/PrinterPropertiesDialog.glade.h:21
 msgid "Access Control"
 msgstr "访问控制"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:22
+#: ../glade/PrinterPropertiesDialog.glade.h:22
 msgid "Add or Remove Members"
 msgstr "添加或删除成员"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:23
+#: ../glade/PrinterPropertiesDialog.glade.h:23
 msgid "Allow printing for everyone except these users:"
 msgstr "允许为除以下用户外的所有用户打印："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:24
+#: ../glade/PrinterPropertiesDialog.glade.h:24
 msgid "Bottom margin:"
 msgstr "底边距："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:25
+#: ../glade/PrinterPropertiesDialog.glade.h:25
 msgid "Brightness:"
 msgstr "亮度："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:26
+#: ../glade/PrinterPropertiesDialog.glade.h:26
 msgid "Change..."
 msgstr "改变..."
 
-#: ../ui/PrinterPropertiesDialog.glade.h:27
+#: ../glade/PrinterPropertiesDialog.glade.h:27
 msgid "Characters per inch:"
 msgstr "每英寸字符数："
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.glade.h:29
+#: ../glade/PrinterPropertiesDialog.glade.h:29
 msgid "Clean Print Heads"
 msgstr "清洗打印头"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:30
+#: ../glade/PrinterPropertiesDialog.glade.h:30
 msgid "Columns:"
 msgstr "列："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:31
+#: ../glade/PrinterPropertiesDialog.glade.h:31
 msgid "Copies:"
 msgstr "副本："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:32
+#: ../glade/PrinterPropertiesDialog.glade.h:32
 msgid "Deny printing for everyone except these users:"
 msgstr "不允许为除以下用户外的所有用户打印："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:34
+#: ../glade/PrinterPropertiesDialog.glade.h:34
 msgid "Device URI:"
 msgstr "设备 URI："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:35
+#: ../glade/PrinterPropertiesDialog.glade.h:35
 msgid "Enabled"
 msgstr "启用"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:36
+#: ../glade/PrinterPropertiesDialog.glade.h:36
 msgid "Ending Banner:"
 msgstr "结束 Banner："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:37
+#: ../glade/PrinterPropertiesDialog.glade.h:37
 msgid "Error Policy: \t"
 msgstr "错误策略：\t"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:38
+#: ../glade/PrinterPropertiesDialog.glade.h:38
 msgid "Finishings:"
 msgstr "完成："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:39
+#: ../glade/PrinterPropertiesDialog.glade.h:39
 msgid "Gamma:"
 msgstr "Gamma："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:40
+#: ../glade/PrinterPropertiesDialog.glade.h:40
 msgid "Hold until:"
 msgstr "保留到："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:41
+#: ../glade/PrinterPropertiesDialog.glade.h:41
 msgid "Hue adjustment:"
 msgstr "色彩调整："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:42
+#: ../glade/PrinterPropertiesDialog.glade.h:42
 msgid "Installed Options"
 msgstr "安装选项"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:43
+#: ../glade/PrinterPropertiesDialog.glade.h:43
 msgid "Job Options"
 msgstr "任务选项"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:44
+#: ../glade/PrinterPropertiesDialog.glade.h:44
 msgid "Job priority:"
 msgstr "任务优先权："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:45
+#: ../glade/PrinterPropertiesDialog.glade.h:45
 msgid "Left margin:"
 msgstr "左边距："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:46
+#: ../glade/PrinterPropertiesDialog.glade.h:46
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -1462,35 +1504,35 @@ msgstr ""
 "Bottom to top, left to right\n"
 "Bottom to top, right to left"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:54
+#: ../glade/PrinterPropertiesDialog.glade.h:54
 msgid "Lines per inch:"
 msgstr "每英寸行数："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:55
+#: ../glade/PrinterPropertiesDialog.glade.h:55
 msgid "Location:"
 msgstr "位置："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:56
+#: ../glade/PrinterPropertiesDialog.glade.h:56
 msgid "Make and Model:"
 msgstr "制造商和型号："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:57
+#: ../glade/PrinterPropertiesDialog.glade.h:57
 msgid "Media:"
 msgstr "介质："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:58
+#: ../glade/PrinterPropertiesDialog.glade.h:58
 msgid "Members"
 msgstr "成员"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:59
+#: ../glade/PrinterPropertiesDialog.glade.h:59
 msgid "Mirror"
 msgstr "镜像"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:60
+#: ../glade/PrinterPropertiesDialog.glade.h:60
 msgid "More"
 msgstr "更多"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../glade/PrinterPropertiesDialog.glade.h:61
 msgid ""
 "None\n"
 "Staple\n"
@@ -1550,7 +1592,7 @@ msgstr ""
 "Bind (right)\n"
 "Bind (bottom)"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:89
+#: ../glade/PrinterPropertiesDialog.glade.h:89
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1560,27 +1602,27 @@ msgstr ""
 "双面（长边距）\n"
 "双面（短边距）"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:92
+#: ../glade/PrinterPropertiesDialog.glade.h:92
 msgid "Operation Policy:"
 msgstr "操作策略："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:93
+#: ../glade/PrinterPropertiesDialog.glade.h:93
 msgid "Orientation:"
 msgstr "定位："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:94
+#: ../glade/PrinterPropertiesDialog.glade.h:94
 msgid "Pages per side layout:"
 msgstr "每个页布局张数："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:95
+#: ../glade/PrinterPropertiesDialog.glade.h:95
 msgid "Pages per side:"
 msgstr "每页张数："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:96
+#: ../glade/PrinterPropertiesDialog.glade.h:96
 msgid "Policies"
 msgstr "策略"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:97
+#: ../glade/PrinterPropertiesDialog.glade.h:97
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1592,67 +1634,67 @@ msgstr ""
 "Reverse landscape (270°)\n"
 "Reverse portrait (180°)"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:101
+#: ../glade/PrinterPropertiesDialog.glade.h:101
 msgid "Pretty print"
 msgstr "美化打印"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.glade.h:103
+#: ../glade/PrinterPropertiesDialog.glade.h:103
 msgid "Print Self-Test Page"
 msgstr "打印测试页"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.glade.h:105
+#: ../glade/PrinterPropertiesDialog.glade.h:105
 #: ../troubleshoot/PrintTestPage.py:68
 msgid "Print Test Page"
 msgstr "打印测试页"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:107
+#: ../glade/PrinterPropertiesDialog.glade.h:107
 #, fuzzy
 msgid "Printer Properties"
 msgstr "打印机报告"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:108
+#: ../glade/PrinterPropertiesDialog.glade.h:108
 msgid "Printer State:"
 msgstr "打印机状态："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:109
+#: ../glade/PrinterPropertiesDialog.glade.h:109
 msgid "Reset"
 msgstr "重新设置"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:110
+#: ../glade/PrinterPropertiesDialog.glade.h:110
 msgid "Reset to system default"
 msgstr "重新设为系统默认"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:111
+#: ../glade/PrinterPropertiesDialog.glade.h:111
 msgid "Right margin:"
 msgstr "右边距："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:112
+#: ../glade/PrinterPropertiesDialog.glade.h:112
 msgid "Saturation:"
 msgstr "饱和："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:113
+#: ../glade/PrinterPropertiesDialog.glade.h:113
 msgid "Scale to fit"
 msgstr "适合的进制"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:114
+#: ../glade/PrinterPropertiesDialog.glade.h:114
 msgid "Scaling:"
 msgstr "Scaling："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:115
+#: ../glade/PrinterPropertiesDialog.glade.h:115
 msgid "Settings"
 msgstr "设置"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:116
+#: ../glade/PrinterPropertiesDialog.glade.h:116
 msgid "Shared"
 msgstr "共享"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:117
+#: ../glade/PrinterPropertiesDialog.glade.h:117
 msgid "Sides:"
 msgstr "边："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:118
+#: ../glade/PrinterPropertiesDialog.glade.h:118
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1661,142 +1703,142 @@ msgstr ""
 "为这台打印机指定默认任务选项。这样会为到达这台打印服务器的任务添加这些选项，"
 "如果应用程序没有为它们设定选项。"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:119
+#: ../glade/PrinterPropertiesDialog.glade.h:119
 msgid "Starting Banner:"
 msgstr "开始 Banner："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:120
+#: ../glade/PrinterPropertiesDialog.glade.h:120
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr "要添加新选项，请在选择框中输入其名称并点击添加。"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:121
+#: ../glade/PrinterPropertiesDialog.glade.h:121
 msgid "Top margin:"
 msgstr "顶边距："
 
-#: ../ui/PrinterPropertiesDialog.glade.h:122
+#: ../glade/PrinterPropertiesDialog.glade.h:122
 msgid "Word wrap"
 msgstr "Word wrap"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:123
+#: ../glade/PrinterPropertiesDialog.glade.h:123
 msgid "default"
 msgstr "默认"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:124
+#: ../glade/PrinterPropertiesDialog.glade.h:124
 msgid "none"
 msgstr "无"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:125
+#: ../glade/PrinterPropertiesDialog.glade.h:125
 msgid "points"
 msgstr "点"
 
-#: ../ui/PrinterStatusWindow.glade.h:1
+#: ../glade/PrinterStatusWindow.glade.h:1
 msgid "Printer status"
 msgstr "打印机状态"
 
-#: ../ui/PrintersWindow.glade.h:1
+#: ../glade/PrintersWindow.glade.h:1
 #, fuzzy
 msgid "Adjust server settings"
 msgstr "<b>基本服务器设置</b>"
 
-#: ../ui/PrintersWindow.glade.h:2
+#: ../glade/PrintersWindow.glade.h:2
 #, fuzzy
 msgid "Choose a different CUPS server"
 msgstr "连接到不同的打印服务器"
 
-#: ../ui/PrintersWindow.glade.h:3
+#: ../glade/PrintersWindow.glade.h:3
 #, fuzzy
 msgid "Set As De_fault"
 msgstr "设置默认（_S）"
 
-#: ../ui/PrintersWindow.glade.h:4 ../ui/ServerSettingsDialog.glade.h:8
+#: ../glade/PrintersWindow.glade.h:4 ../glade/ServerSettingsDialog.glade.h:8
 msgid "Show printers shared by other systems"
 msgstr "显示被其它系统共享的打印机"
 
-#: ../ui/PrintersWindow.glade.h:5
+#: ../glade/PrintersWindow.glade.h:5
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../ui/PrintersWindow.glade.h:6
+#: ../glade/PrintersWindow.glade.h:6
 #, fuzzy
 msgid "_Class"
 msgstr "新 Class"
 
-#: ../ui/PrintersWindow.glade.h:7
+#: ../glade/PrintersWindow.glade.h:7
 #, fuzzy
 msgid "_Connect..."
 msgstr "连接"
 
-#: ../ui/PrintersWindow.glade.h:8
+#: ../glade/PrintersWindow.glade.h:8
 msgid "_Discovered Printers"
 msgstr ""
 
-#: ../ui/PrintersWindow.glade.h:9
+#: ../glade/PrintersWindow.glade.h:9
 #, fuzzy
 msgid "_Enabled"
 msgstr "启用"
 
-#: ../ui/PrintersWindow.glade.h:10
+#: ../glade/PrintersWindow.glade.h:10
 msgid "_Help"
 msgstr "帮助(_H)"
 
-#: ../ui/PrintersWindow.glade.h:11
+#: ../glade/PrintersWindow.glade.h:11
 #, fuzzy
 msgid "_Printer"
 msgstr "打印机"
 
-#: ../ui/PrintersWindow.glade.h:13
+#: ../glade/PrintersWindow.glade.h:13
 #, fuzzy
 msgid "_Server"
 msgstr "(_G)转到服务器"
 
-#: ../ui/PrintersWindow.glade.h:14
+#: ../glade/PrintersWindow.glade.h:14
 #, fuzzy
 msgid "_Settings..."
 msgstr "设置"
 
-#: ../ui/PrintersWindow.glade.h:16
+#: ../glade/PrintersWindow.glade.h:16
 msgid "_Troubleshoot"
 msgstr "故障排除（_T）"
 
-#: ../ui/ServerSettingsDialog.glade.h:1
+#: ../glade/ServerSettingsDialog.glade.h:1
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>基本服务器设置</b>"
 
-#: ../ui/ServerSettingsDialog.glade.h:2
+#: ../glade/ServerSettingsDialog.glade.h:2
 msgid "Allow printing from the Internet"
 msgstr "允许从互联网打印"
 
-#: ../ui/ServerSettingsDialog.glade.h:3
+#: ../glade/ServerSettingsDialog.glade.h:3
 msgid "Allow remote administration"
 msgstr "允许远程管理"
 
-#: ../ui/ServerSettingsDialog.glade.h:4
+#: ../glade/ServerSettingsDialog.glade.h:4
 msgid "Allow users to cancel any job (not just their own)"
 msgstr "允许用户取消任何任务（包括不是自己的任务）"
 
-#: ../ui/ServerSettingsDialog.glade.h:5
+#: ../glade/ServerSettingsDialog.glade.h:5
 #, fuzzy
 msgid "Basic Server Settings"
 msgstr "<b>基本服务器设置</b>"
 
-#: ../ui/ServerSettingsDialog.glade.h:6
+#: ../glade/ServerSettingsDialog.glade.h:6
 #, fuzzy
 msgid "Publish shared printers connected to this system"
 msgstr "共享连接到这个系统上的公共打印机"
 
-#: ../ui/ServerSettingsDialog.glade.h:7
+#: ../glade/ServerSettingsDialog.glade.h:7
 msgid "Save debugging information for troubleshooting"
 msgstr "保存纠错信息以便进行错误排除"
 
-#: ../ui/SMBBrowseDialog.glade.h:1
+#: ../glade/SMBBrowseDialog.glade.h:1
 msgid "SMB Browser"
 msgstr "SMB 浏览器"
 
-#: ../ui/statusicon_popupmenu.glade.h:1
+#: ../glade/statusicon_popupmenu.glade.h:1
 msgid "_Hide"
 msgstr "隐藏（_H）"
 
-#: ../ui/WaitWindow.glade.h:1
+#: ../glade/WaitWindow.glade.h:1
 msgid "Please Wait"
 msgstr "请等待"
 
@@ -2411,9 +2453,6 @@ msgstr "选择默认打印机"
 
 #~ msgid "Refresh the list of printer queues"
 #~ msgstr "刷新打印机队列列表"
-
-#~ msgid "This is the default printer"
-#~ msgstr "这是默认的打印机"
 
 #~ msgid "No default printer set."
 #~ msgstr "没有默认打印机设置。"

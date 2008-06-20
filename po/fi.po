@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-06-13 08:43+0100\n"
+"POT-Creation-Date: 2008-06-20 17:29+0100\n"
 "PO-Revision-Date: 2008-02-04 01:54+0200\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
@@ -19,11 +19,11 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../authconn.py:30 ../ui/NewPrinterWindow.glade.h:91
+#: ../authconn.py:30 ../glade/NewPrinterWindow.glade.h:91
 msgid "Username:"
 msgstr "Käyttäjätunnus:"
 
-#: ../authconn.py:31 ../ui/NewPrinterWindow.glade.h:66
+#: ../authconn.py:31 ../glade/NewPrinterWindow.glade.h:66
 msgid "Password:"
 msgstr "Salasana:"
 
@@ -41,7 +41,7 @@ msgstr "Todennus vaaditaan"
 msgid "Idle"
 msgstr "Jouten"
 
-#: ../cupshelpers.py:29 ../jobviewer.py:393
+#: ../cupshelpers.py:29 ../jobviewer.py:478
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Processing"
 msgstr "Käsittelee"
@@ -50,15 +50,14 @@ msgstr "Käsittelee"
 msgid "Busy"
 msgstr "Varattu"
 
-#: ../cupshelpers.py:31 ../jobviewer.py:394
+#: ../cupshelpers.py:31 ../jobviewer.py:479
 #: ../troubleshoot/PrintTestPage.py:43
 msgid "Stopped"
 msgstr "Pysäytetty"
 
-#: ../cupshelpers.py:63 ../jobviewer.py:301 ../jobviewer.py:367
-#: ../jobviewer.py:368 ../jobviewer.py:381 ../jobviewer.py:404
-#: ../jobviewer.py:461 ../jobviewer.py:781 ../jobviewer.py:816
-#: ../jobviewer.py:842 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../cupshelpers.py:63 ../jobviewer.py:386 ../jobviewer.py:452
+#: ../jobviewer.py:453 ../jobviewer.py:466 ../jobviewer.py:489
+#: ../jobviewer.py:546 ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:97
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
@@ -112,7 +111,7 @@ msgstr "Tarvitaan pävitys"
 msgid "Server error"
 msgstr "Palvelinvirhe"
 
-#: ../errordialogs.py:94 ../system-config-printer.py:733
+#: ../errordialogs.py:94 ../system-config-printer.py:739
 msgid "Not connected"
 msgstr "Ei kytketty"
 
@@ -126,161 +125,161 @@ msgstr "tila %d"
 msgid "There was an HTTP error: %s."
 msgstr "Tapahtui HTTP-virhe: %s."
 
-#: ../jobviewer.py:102 ../troubleshoot/PrintTestPage.py:78
+#: ../jobviewer.py:187 ../troubleshoot/PrintTestPage.py:78
 msgid "Job"
 msgstr "Työ"
 
-#: ../jobviewer.py:103
+#: ../jobviewer.py:188
 #, fuzzy
 msgid "User"
 msgstr "Käyttäjät"
 
-#: ../jobviewer.py:104 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:189 ../troubleshoot/PrintTestPage.py:82
 msgid "Document"
 msgstr "Tulostustyö"
 
-#: ../jobviewer.py:105 ../jobviewer.py:157 ../my-default-printer.py:157
-#: ../system-config-printer.py:302 ../system-config-printer.py:825
-#: ../system-config-printer.py:2909 ../troubleshoot/PrintTestPage.py:80
+#: ../jobviewer.py:190 ../jobviewer.py:242 ../my-default-printer.py:157
+#: ../system-config-printer.py:307 ../system-config-printer.py:832
+#: ../system-config-printer.py:2940 ../troubleshoot/PrintTestPage.py:80
 msgid "Printer"
 msgstr "Tulostin"
 
-#: ../jobviewer.py:106
+#: ../jobviewer.py:191
 msgid "Size"
 msgstr "Koko"
 
-#: ../jobviewer.py:107
+#: ../jobviewer.py:192
 msgid "Time submitted"
 msgstr "Lähetysaika"
 
-#: ../jobviewer.py:108 ../troubleshoot/PrintTestPage.py:83
+#: ../jobviewer.py:193 ../troubleshoot/PrintTestPage.py:83
 msgid "Status"
 msgstr "Tila"
 
-#: ../jobviewer.py:140
+#: ../jobviewer.py:225
 #, python-format
 msgid "my jobs on %s"
 msgstr ""
 
-#: ../jobviewer.py:142
+#: ../jobviewer.py:227
 msgid "my jobs"
 msgstr ""
 
-#: ../jobviewer.py:147
+#: ../jobviewer.py:232
 msgid "all jobs"
 msgstr ""
 
-#: ../jobviewer.py:148
+#: ../jobviewer.py:233
 #, fuzzy, python-format
 msgid "Document Print Status (%s)"
 msgstr "Tulostustyön tila"
 
-#: ../jobviewer.py:170
+#: ../jobviewer.py:255
 msgid "Message"
 msgstr "Viesti"
 
-#: ../jobviewer.py:313
+#: ../jobviewer.py:398
 msgid "1 hour ago"
 msgstr "1 tunti sitten"
 
-#: ../jobviewer.py:315
+#: ../jobviewer.py:400
 msgid "1 hour and 1 minute ago"
 msgstr "1 tunti ja 1 minuutti sitten"
 
-#: ../jobviewer.py:317
+#: ../jobviewer.py:402
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "1 tunti ja %d minuuttia sitten"
 
-#: ../jobviewer.py:320
+#: ../jobviewer.py:405
 #, python-format
 msgid "%d hours ago"
 msgstr "%d tuntia sitten"
 
-#: ../jobviewer.py:322
+#: ../jobviewer.py:407
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d tuntia ja minuutti sitten"
 
-#: ../jobviewer.py:324
+#: ../jobviewer.py:409
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d tuntia ja %d minuuttia sitten"
 
-#: ../jobviewer.py:330
+#: ../jobviewer.py:415
 msgid "a minute ago"
 msgstr "minuutti sitten"
 
-#: ../jobviewer.py:332
+#: ../jobviewer.py:417
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d minuuttia sitten"
 
-#: ../jobviewer.py:391 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:476 ../troubleshoot/PrintTestPage.py:40
 msgid "Pending"
 msgstr "Odottaa vuoroa"
 
 # tarkista
-#: ../jobviewer.py:392 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:477 ../troubleshoot/PrintTestPage.py:41
 msgid "Held"
 msgstr "Pysäytetty"
 
-#: ../jobviewer.py:395 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:480 ../troubleshoot/PrintTestPage.py:44
 msgid "Canceled"
 msgstr "Peruutettu"
 
-#: ../jobviewer.py:396 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:481 ../troubleshoot/PrintTestPage.py:45
 msgid "Aborted"
 msgstr "Keskeytetty"
 
-#: ../jobviewer.py:397 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:482 ../troubleshoot/PrintTestPage.py:46
 msgid "Completed"
 msgstr "Valmiina"
 
-#: ../jobviewer.py:459
+#: ../jobviewer.py:544
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr ""
 
-#: ../jobviewer.py:664
+#: ../jobviewer.py:749
 msgid "No documents queued"
 msgstr "Tulostusjonossa ei ole töitä"
 
-#: ../jobviewer.py:666
+#: ../jobviewer.py:751
 msgid "1 document queued"
 msgstr "1 tulostustyö jonossa"
 
-#: ../jobviewer.py:668
+#: ../jobviewer.py:753
 #, python-format
 msgid "%d documents queued"
 msgstr "%d tulostustyötä jonossa"
 
-#: ../jobviewer.py:901
+#: ../jobviewer.py:987
 #, fuzzy, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "CUPS-palvelimeen yhdistämisessä oli ongelma."
 
-#: ../jobviewer.py:904
+#: ../jobviewer.py:990
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr ""
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:910
+#: ../jobviewer.py:996
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
 
-#: ../jobviewer.py:916 ../jobviewer.py:932
+#: ../jobviewer.py:1002 ../jobviewer.py:1018
 #, fuzzy
 msgid "Print Error"
 msgstr "Tulostinvirhe"
 
-#: ../jobviewer.py:917
+#: ../jobviewer.py:1003
 msgid "_Diagnose"
 msgstr ""
 
-#: ../jobviewer.py:938
+#: ../jobviewer.py:1024
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr ""
@@ -297,103 +296,107 @@ msgstr "_Käytä järjestelmän oletusarvoa"
 msgid "_Set Default"
 msgstr "_Aseta oletustulostimeksi"
 
-#: ../my-default-printer.py:162 ../system-config-printer.py:2606
+#: ../my-default-printer.py:162 ../system-config-printer.py:2637
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Sijainti"
 
-#: ../optionwidgets.py:116
+#: ../optionwidgets.py:117
 msgid "Conflicts with:"
 msgstr "Ristiriidassa:"
 
-#: ../system-config-printer.py:308 ../system-config-printer.py:831
+#: ../system-config-printer.py:100
+msgid "To do this, select System->Administration->Firewall from the main menu."
+msgstr ""
+
+#: ../system-config-printer.py:313 ../system-config-printer.py:838
 #, fuzzy
 msgid "Class"
 msgstr "Uusi luokka"
 
 #. Set up "Problems?" link button
-#: ../system-config-printer.py:338
+#: ../system-config-printer.py:343
 #, fuzzy
 msgid "Problems?"
 msgstr "Tunnista"
 
-#: ../system-config-printer.py:380 ../system-config-printer.py:382
+#: ../system-config-printer.py:385 ../system-config-printer.py:387
 msgid "Members of this class"
 msgstr "Tämän luokan jäsenet"
 
-#: ../system-config-printer.py:381 ../system-config-printer.py:383
+#: ../system-config-printer.py:386 ../system-config-printer.py:388
 msgid "Others"
 msgstr "Muut"
 
-#: ../system-config-printer.py:384
+#: ../system-config-printer.py:389
 msgid "Devices"
 msgstr "Laitteet"
 
-#: ../system-config-printer.py:385
+#: ../system-config-printer.py:390
 msgid "Makes"
 msgstr "Merkit"
 
-#: ../system-config-printer.py:386
+#: ../system-config-printer.py:391
 msgid "Models"
 msgstr "Mallit"
 
-#: ../system-config-printer.py:387
+#: ../system-config-printer.py:392
 msgid "Drivers"
 msgstr "Ajurit"
 
-#: ../system-config-printer.py:388 ../ui/NewPrinterWindow.glade.h:49
+#: ../system-config-printer.py:393 ../glade/NewPrinterWindow.glade.h:49
 msgid "Downloadable Drivers"
 msgstr "Ladattavissa olevat ajurit"
 
-#: ../system-config-printer.py:389
+#: ../system-config-printer.py:394
 msgid "Users"
 msgstr "Käyttäjät"
 
-#: ../system-config-printer.py:425
+#: ../system-config-printer.py:430
 msgid "Automatic rotation"
 msgstr "Automaattinen kääntö"
 
-#: ../system-config-printer.py:612
+#: ../system-config-printer.py:618
 #, fuzzy, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "Tulostinraportti"
 
-#: ../system-config-printer.py:728
+#: ../system-config-printer.py:734
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Tulostinasetukset - %s"
 
-#: ../system-config-printer.py:731
+#: ../system-config-printer.py:737
 #, python-format
 msgid "Connected to %s"
 msgstr "Yhdistetty kohteeseen %s"
 
-#: ../system-config-printer.py:819
+#: ../system-config-printer.py:826
 #, fuzzy
 msgid "Network printer (discovered)"
 msgstr "Uusi tulostin"
 
-#: ../system-config-printer.py:822
+#: ../system-config-printer.py:829
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:828 ../system-config-printer.py:2910
+#: ../system-config-printer.py:835 ../system-config-printer.py:2941
 msgid "Fax"
 msgstr ""
 
-#: ../system-config-printer.py:834 ../system-config-printer.py:840
+#: ../system-config-printer.py:841 ../system-config-printer.py:847
 #: ../troubleshoot/LocalOrRemote.py:31
 #, fuzzy
 msgid "Network printer"
 msgstr "Uusi tulostin"
 
-#: ../system-config-printer.py:837
+#: ../system-config-printer.py:844
 #, fuzzy
 msgid "Network print share"
 msgstr "Uusi tulostin"
 
-#: ../system-config-printer.py:945
+#: ../system-config-printer.py:958
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -402,15 +405,16 @@ msgstr ""
 "Yhdistetään palvelimeen:\n"
 "%s"
 
-#: ../system-config-printer.py:1310
+#: ../system-config-printer.py:1323
 msgid "Installable Options"
 msgstr "Asennettavissa olevat valinnat"
 
-#: ../system-config-printer.py:1311 ../ui/PrinterPropertiesDialog.glade.h:106
+#: ../system-config-printer.py:1324
+#: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Printer Options"
 msgstr "Tulostimen asetukset"
 
-#: ../system-config-printer.py:1332
+#: ../system-config-printer.py:1345
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -420,29 +424,52 @@ msgstr ""
 "Muutokset voidaan ottaa käyttöön\n"
 "vasta kun ristiriidat on ratkaistu."
 
-#: ../system-config-printer.py:1359
+#: ../system-config-printer.py:1372
 msgid "This will delete this class!"
 msgstr "Tämä luokka poistetaan!"
 
-#: ../system-config-printer.py:1360
+#: ../system-config-printer.py:1373
 msgid "Proceed anyway?"
 msgstr "Jatketaanko silti?"
 
-#: ../system-config-printer.py:1538 ../system-config-printer.py:1564
+#: ../system-config-printer.py:1514
+#, fuzzy
+msgid "Set Default Printer"
+msgstr "Oletustulostin"
+
+#: ../system-config-printer.py:1516
+msgid "Do you want to set this as the system-wide default printer?"
+msgstr ""
+
+#: ../system-config-printer.py:1518
+#, fuzzy
+msgid "Set as the _system-wide default printer"
+msgstr "Tämä on oletustulostin."
+
+#: ../system-config-printer.py:1520
+msgid "_Clear my personal default setting"
+msgstr ""
+
+#: ../system-config-printer.py:1521
+#, fuzzy
+msgid "Set as my _personal default printer"
+msgstr "Valitse oletustulostin"
+
+#: ../system-config-printer.py:1572 ../system-config-printer.py:1598
 msgid "Submitted"
 msgstr "Lähetetty"
 
-#: ../system-config-printer.py:1539
+#: ../system-config-printer.py:1573
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testisivu lähetetty työnä %d"
 
-#: ../system-config-printer.py:1545 ../system-config-printer.py:1571
-#: ../system-config-printer.py:3977
+#: ../system-config-printer.py:1579 ../system-config-printer.py:1605
+#: ../system-config-printer.py:4018
 msgid "Not possible"
 msgstr "Ei mahdollista"
 
-#: ../system-config-printer.py:1546 ../system-config-printer.py:1572
+#: ../system-config-printer.py:1580 ../system-config-printer.py:1606
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -450,7 +477,7 @@ msgstr ""
 "Etäpalvelin ei hyväksynyt tulostustyötä, luultavasti koska tulostinta ei ole "
 "jaettu."
 
-#: ../system-config-printer.py:1565
+#: ../system-config-printer.py:1599
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Huoltokomento lähetetty työnä %d"
@@ -458,39 +485,39 @@ msgstr "Huoltokomento lähetetty työnä %d"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1622 ../system-config-printer.py:1729
+#: ../system-config-printer.py:1656 ../system-config-printer.py:1763
 msgid "Error"
 msgstr "Virhe"
 
-#: ../system-config-printer.py:1623
+#: ../system-config-printer.py:1657
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS-palvelimeen yhdistämisessä oli ongelma."
 
-#: ../system-config-printer.py:1730
+#: ../system-config-printer.py:1764
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Asetuksella ”%s” on arvo ”%s” eikä sitä voi muokata."
 
-#: ../system-config-printer.py:2146
+#: ../system-config-printer.py:2180
 #, fuzzy, python-format
 msgid "Really delete class `%s'?"
 msgstr "Haluatko varmasti poistaa luokan %s?"
 
-#: ../system-config-printer.py:2148
+#: ../system-config-printer.py:2182
 #, fuzzy, python-format
 msgid "Really delete printer `%s'?"
 msgstr "Haluatko varmasti poistaa tulostimen %s?"
 
-#: ../system-config-printer.py:2150
+#: ../system-config-printer.py:2184
 #, fuzzy
 msgid "Really delete selected destinations?"
 msgstr "Haluatko varmasti poistaa tulostimen %s?"
 
-#: ../system-config-printer.py:2204
+#: ../system-config-printer.py:2238
 msgid "Publish Shared Printers"
 msgstr ""
 
-#: ../system-config-printer.py:2205
+#: ../system-config-printer.py:2239
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -502,34 +529,30 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2319
+#: ../system-config-printer.py:2352
 msgid "Review Firewall"
 msgstr ""
 
-#: ../system-config-printer.py:2320
+#: ../system-config-printer.py:2353
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
-#: ../system-config-printer.py:2323
-msgid "To do this, select System->Administration->Firewall from the main menu."
-msgstr ""
-
-#: ../system-config-printer.py:2565 ../system-config-printer.py:2575
+#: ../system-config-printer.py:2596 ../system-config-printer.py:2606
 msgid "Share"
 msgstr "Jako"
 
-#: ../system-config-printer.py:2571 ../system-config-printer.py:2581
+#: ../system-config-printer.py:2602 ../system-config-printer.py:2612
 msgid "Comment"
 msgstr "Kommentti"
 
 #. IPP list columns
-#: ../system-config-printer.py:2600
+#: ../system-config-printer.py:2631
 msgid "Queue"
 msgstr "Jono"
 
-#: ../system-config-printer.py:2614
+#: ../system-config-printer.py:2645
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -537,159 +560,177 @@ msgstr ""
 "Postscript Printer Description -tiedostot (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, "
 "*.PPD.GZ)"
 
-#: ../system-config-printer.py:2623
+#: ../system-config-printer.py:2654
 msgid "All files (*)"
 msgstr "Kaikki tiedostot (*)"
 
-#: ../system-config-printer.py:2659 ../system-config-printer.py:4247
-#: ../system-config-printer.py:4285
+#: ../system-config-printer.py:2690 ../system-config-printer.py:4290
+#: ../system-config-printer.py:4328
 msgid "Search"
 msgstr "Haku"
 
-#: ../system-config-printer.py:2662 ../ui/NewPrinterWindow.glade.h:63
+#: ../system-config-printer.py:2693 ../glade/NewPrinterWindow.glade.h:63
 msgid "New Printer"
 msgstr "Uusi tulostin"
 
-#: ../system-config-printer.py:2673
+#: ../system-config-printer.py:2704
 msgid "New Class"
 msgstr "Uusi luokka"
 
-#: ../system-config-printer.py:2678
+#: ../system-config-printer.py:2709
 msgid "Change Device URI"
 msgstr "Vaihda laitteen osoitetta"
 
-#: ../system-config-printer.py:2695
+#: ../system-config-printer.py:2726
 msgid "Change Driver"
 msgstr "Vaihda ajuria"
 
-#: ../system-config-printer.py:2796 ../system-config-printer.py:3061
-#: ../system-config-printer.py:3247 ../system-config-printer.py:4272
+#: ../system-config-printer.py:2827 ../system-config-printer.py:3092
+#: ../system-config-printer.py:3278 ../system-config-printer.py:4315
 msgid "Searching"
 msgstr "Etsitään"
 
-#: ../system-config-printer.py:2797 ../system-config-printer.py:3062
+#: ../system-config-printer.py:2828 ../system-config-printer.py:3093
 msgid "Searching for drivers"
 msgstr "Etsitään ajureita"
 
-#: ../system-config-printer.py:2911
+#: ../system-config-printer.py:2942
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr ""
 
-#: ../system-config-printer.py:3248
+#: ../system-config-printer.py:3279
 msgid "Searching for printers"
 msgstr "Etsitään tulostimia"
 
-#: ../system-config-printer.py:3494
+#: ../system-config-printer.py:3525
 msgid "Other"
 msgstr "Muu"
 
-#: ../system-config-printer.py:3496
+#: ../system-config-printer.py:3527
 msgid " (Current)"
 msgstr " (Nykyinen)"
 
-#: ../system-config-printer.py:3519 ../system-config-printer.py:3536
-#: ../system-config-printer.py:3940
+#: ../system-config-printer.py:3550 ../system-config-printer.py:3567
+#: ../system-config-printer.py:3981
 msgid "Scanning..."
 msgstr "Haetaan..."
 
-#: ../system-config-printer.py:3859 ../system-config-printer.py:3922
+#: ../system-config-printer.py:3602
+#, fuzzy
+msgid "No Print Shares"
+msgstr "Uusi tulostin"
+
+#: ../system-config-printer.py:3603
+msgid ""
+"There were no print shares found.  Please check that the Samba service is "
+"marked as trusted in your firewall configuration."
+msgstr ""
+
+#: ../system-config-printer.py:3900 ../system-config-printer.py:3963
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:3860 ../system-config-printer.py:3923
+#: ../system-config-printer.py:3901 ../system-config-printer.py:3964
 msgid "This print share is accessible."
 msgstr "Tämä tulostinjako on käytettävissä."
 
-#: ../system-config-printer.py:3864 ../system-config-printer.py:3927
+#: ../system-config-printer.py:3905 ../system-config-printer.py:3968
 msgid "This print share is not accessible."
 msgstr "Tämä tulostinjako ei ole käytettävissä."
 
-#: ../system-config-printer.py:3867
+#: ../system-config-printer.py:3908
 #, fuzzy
 msgid "Print Share Inaccessible"
 msgstr "Tämä tulostinjako on käytettävissä."
 
-#: ../system-config-printer.py:3926
+#: ../system-config-printer.py:3967
 msgid "Inaccessible"
 msgstr "Ei käytettävissä"
 
-#: ../system-config-printer.py:3978
-msgid "It is not possible to obtain a list of queues from this host."
+#: ../system-config-printer.py:4019
+#, fuzzy, python-format
+msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "Tältä koneelta ei voi saada luetteloa jonoista."
 
-#: ../system-config-printer.py:3981
+#: ../system-config-printer.py:4021
+msgid ""
+"Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
+"not support it."
+msgstr ""
+
+#: ../system-config-printer.py:4024
 msgid "No queues"
 msgstr "Ei jonoja"
 
-#: ../system-config-printer.py:3982
+#: ../system-config-printer.py:4025
 msgid "There are no queues available."
 msgstr "Yhtään jonoa ei ole saatavilla."
 
-#: ../system-config-printer.py:4039
+#: ../system-config-printer.py:4082
 msgid "A printer connected to the parallel port."
 msgstr "Rinnakkaisporttiin liitetty tulostin."
 
-#: ../system-config-printer.py:4041
+#: ../system-config-printer.py:4084
 msgid "A printer connected to a USB port."
 msgstr "USB-porttiin liitetty tulostin"
 
-#: ../system-config-printer.py:4043
+#: ../system-config-printer.py:4086
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr ""
 "Tulostinta tai monitoimilaitteen tulostinosaa käyttävä HPLIP-ohjelmisto."
 
-#: ../system-config-printer.py:4046
+#: ../system-config-printer.py:4089
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "Faksia tai monitoimilaitteen faksiosaa käyttävä HPLIP-ohjelmisto."
 
-#: ../system-config-printer.py:4049
+#: ../system-config-printer.py:4092
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Hardware Abstraction Layerin (HAL) tunnistama paikallinen tulostin."
 
-#: ../system-config-printer.py:4297
+#: ../system-config-printer.py:4340
 msgid "-- Select printer model --"
 msgstr "-- Valitse tulostimen malli --"
 
-#: ../system-config-printer.py:4299
+#: ../system-config-printer.py:4342
 msgid "-- No matches found --"
 msgstr "-- Ei osumia --"
 
-#: ../system-config-printer.py:4475
+#: ../system-config-printer.py:4518
 msgid " (recommended)"
 msgstr " (suositeltu)"
 
-#: ../system-config-printer.py:4489
+#: ../system-config-printer.py:4532
 msgid "This PPD is generated by foomatic."
 msgstr "Tämän PPD:n on luonut foomatic."
 
-#: ../system-config-printer.py:4515
+#: ../system-config-printer.py:4558
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:4517
+#: ../system-config-printer.py:4560
 msgid "Distributable"
 msgstr "Jaettava"
 
-#: ../system-config-printer.py:4519
+#: ../system-config-printer.py:4562
 msgid "None"
 msgstr "Ei yhtään"
 
-#: ../system-config-printer.py:4527
+#: ../system-config-printer.py:4570
 msgid "Not specified."
 msgstr "Ei määriteltyi."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4567
+#: ../system-config-printer.py:4610
 msgid "Database error"
 msgstr "Tietokantavirhe"
 
-#: ../system-config-printer.py:4568
+#: ../system-config-printer.py:4611
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Ajuria ”%s” ei voi käyttää tulostimen ”%s %s” kanssa."
@@ -697,55 +738,55 @@ msgstr "Ajuria ”%s” ei voi käyttää tulostimen ”%s %s” kanssa."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4578
+#: ../system-config-printer.py:4621
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Tämän ajurin käyttö vaatii paketin ”%s” asentamista."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4585
+#: ../system-config-printer.py:4628
 msgid "PPD error"
 msgstr "PPD-virhe"
 
-#: ../system-config-printer.py:4587
+#: ../system-config-printer.py:4630
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD-tiedoston lukeminen epäonnistui. Mahdollisia syitä:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4598
+#: ../system-config-printer.py:4641
 msgid "Downloadable drivers"
 msgstr "Ladattavissa olevat ajurit"
 
-#: ../system-config-printer.py:4599
+#: ../system-config-printer.py:4642
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:4635 ../system-config-printer.py:4673
+#: ../system-config-printer.py:4678 ../system-config-printer.py:4716
 msgid "No Installable Options"
 msgstr "Ei asennettavia valintoja"
 
-#: ../system-config-printer.py:4719
+#: ../system-config-printer.py:4762
 msgid "Adding"
 msgstr "Lisätään"
 
-#: ../system-config-printer.py:4720
+#: ../system-config-printer.py:4763
 msgid "Adding printer"
 msgstr "Lisätään tulostinta"
 
-#: ../system-config-printer.py:4881
+#: ../system-config-printer.py:4924
 msgid "Install driver"
 msgstr "Asenna ajuri"
 
-#: ../system-config-printer.py:4882
+#: ../system-config-printer.py:4925
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "Tulostin ”%s” vaatii paketin ”%s”, mutta sitä ei ole asennettu."
 
-#: ../system-config-printer.py:4907
+#: ../system-config-printer.py:4950
 msgid "Missing driver"
 msgstr "Puuttuva ajuri"
 
-#: ../system-config-printer.py:4908
+#: ../system-config-printer.py:4951
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -754,16 +795,16 @@ msgstr ""
 "Tulostin ”%s” vaatii ohjelman ”%s”, mutta sitä ei ole asennettu. Asenna "
 "ohjelma ennen tämän tulostimen käyttöä."
 
-#: ../ui/AboutDialog.glade.h:1
+#: ../glade/AboutDialog.glade.h:1
 msgid "A CUPS configuration tool."
 msgstr "CUPS-asetustyökalu."
 
-#: ../ui/AboutDialog.glade.h:2
+#: ../glade/AboutDialog.glade.h:2
 #, fuzzy
 msgid "Copyright © 2006-2008 Red Hat, Inc."
 msgstr "Tekijänoikeus © 2006-2007 Red Hat, Inc."
 
-#: ../ui/AboutDialog.glade.h:3
+#: ../glade/AboutDialog.glade.h:3
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -793,12 +834,12 @@ msgstr ""
 "kirjoita osoitteeseen  Free Software Foundation, Inc., 675 Mass Ave, "
 "Cambridge, MA 02139, USA."
 
-#: ../ui/AboutDialog.glade.h:8
+#: ../glade/AboutDialog.glade.h:8
 msgid "system-config-printer"
 msgstr "system-config-printer"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../ui/AboutDialog.glade.h:10
+#: ../glade/AboutDialog.glade.h:10
 msgid "translator-credits"
 msgstr ""
 "Mikko Ikola, 2004.\n"
@@ -806,23 +847,23 @@ msgstr ""
 "Ville-Pekka Vainio, 2006-2008.\n"
 "Ilkka Tuohela, 2007."
 
-#: ../ui/ConnectDialog.glade.h:1
+#: ../glade/ConnectDialog.glade.h:1
 msgid "CUPS server:"
 msgstr "CUPS-palvelin:"
 
-#: ../ui/ConnectDialog.glade.h:2
+#: ../glade/ConnectDialog.glade.h:2
 msgid "Connect to CUPS server"
 msgstr "Yhdistä CUPS-palvelimelle"
 
-#: ../ui/ConnectDialog.glade.h:3
+#: ../glade/ConnectDialog.glade.h:3
 msgid "Require encryption"
 msgstr "Vaadi salausta"
 
-#: ../ui/ConnectingDialog.glade.h:1
+#: ../glade/ConnectingDialog.glade.h:1
 msgid "Connecting"
 msgstr "Yhdistää"
 
-#: ../ui/ConnectingDialog.glade.h:3
+#: ../glade/ConnectingDialog.glade.h:3
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -831,151 +872,151 @@ msgstr ""
 "Yhdistää palvelimelle:\n"
 "%s\n"
 
-#: ../ui/InstallDialog.glade.h:1
+#: ../glade/InstallDialog.glade.h:1
 msgid "_Install"
 msgstr "_Asenna"
 
-#: ../ui/IPPBrowseDialog.glade.h:1
+#: ../glade/IPPBrowseDialog.glade.h:1
 msgid "IPP Browser"
 msgstr "IPP-selain"
 
-#: ../ui/job_popupmenu.glade.h:1
+#: ../glade/job_popupmenu.glade.h:1
 msgid "Re_print"
 msgstr "Tulosta _uudelleen"
 
 # tarkista
-#: ../ui/job_popupmenu.glade.h:2
+#: ../glade/job_popupmenu.glade.h:2
 msgid "_Hold"
 msgstr "_Pysäytä"
 
 # tarkista
-#: ../ui/job_popupmenu.glade.h:3
+#: ../glade/job_popupmenu.glade.h:3
 msgid "_Release"
 msgstr "_Vapauta"
 
-#: ../ui/JobsWindow.glade.h:1
+#: ../glade/JobsWindow.glade.h:1
 msgid "Show _completed jobs"
 msgstr "Näytä _valmistuneet työt"
 
-#: ../ui/JobsWindow.glade.h:2
+#: ../glade/JobsWindow.glade.h:2
 msgid "Show _printer status"
 msgstr "Näytä _tulostimen tila"
 
-#: ../ui/JobsWindow.glade.h:3
+#: ../glade/JobsWindow.glade.h:3
 msgid "_File"
 msgstr "_Tiedosto"
 
 # tarkista
-#: ../ui/JobsWindow.glade.h:4
+#: ../glade/JobsWindow.glade.h:4
 msgid "_Refresh"
 msgstr "_Päivitä"
 
-#: ../ui/JobsWindow.glade.h:5 ../ui/PrintersWindow.glade.h:17
+#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:17
 msgid "_View"
 msgstr "_Näytä"
 
-#: ../ui/NewPrinterName.glade.h:1
+#: ../glade/NewPrinterName.glade.h:1
 msgid "Copy Printer"
 msgstr "Kopioi tulostin"
 
-#: ../ui/NewPrinterName.glade.h:2
+#: ../glade/NewPrinterName.glade.h:2
 msgid "New name for the printer"
 msgstr "Tulostimen uusi nimi"
 
-#: ../ui/NewPrinterWindow.glade.h:1
+#: ../glade/NewPrinterWindow.glade.h:1
 #, fuzzy
 msgid "<b>Authentication</b>"
 msgstr "Todennus vaaditaan"
 
-#: ../ui/NewPrinterWindow.glade.h:2
+#: ../glade/NewPrinterWindow.glade.h:2
 msgid "<b>Description</b>"
 msgstr "<b>Kuvaus</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:3
+#: ../glade/NewPrinterWindow.glade.h:3
 msgid "<b>Description</b> (optional)"
 msgstr "<b>Kuvaus</b> (valinnainen)"
 
-#: ../ui/NewPrinterWindow.glade.h:4
+#: ../glade/NewPrinterWindow.glade.h:4
 msgid "<b>Download Printer Driver</b>"
 msgstr "<b>Lataa tulostinajuri</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:5
+#: ../glade/NewPrinterWindow.glade.h:5
 msgid "<b>Enter device URI</b>"
 msgstr "<b>Syötä laitteen osoite</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:6
+#: ../glade/NewPrinterWindow.glade.h:6
 msgid "<b>IPP Printer</b>"
 msgstr "<b>IPP-tulostin</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:7
+#: ../glade/NewPrinterWindow.glade.h:7
 msgid "<b>Installed Options</b>"
 msgstr "<b>Asennetut lisäominaisuudet</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:8
+#: ../glade/NewPrinterWindow.glade.h:8
 msgid "<b>License Terms</b>"
 msgstr "<b>Lisenssiehdot</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:9
+#: ../glade/NewPrinterWindow.glade.h:9
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>LPD-verkkokirjoittimen sijainti</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:10
+#: ../glade/NewPrinterWindow.glade.h:10
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>Verkkokirjoittimen sijainti</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:11
+#: ../glade/NewPrinterWindow.glade.h:11
 msgid "<b>Location</b> (optional)"
 msgstr "<b>Sijainti</b> (valinnainen)"
 
-#: ../ui/NewPrinterWindow.glade.h:12
+#: ../glade/NewPrinterWindow.glade.h:12
 msgid "<b>Note</b>"
 msgstr "<b>Huomautus</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:13
+#: ../glade/NewPrinterWindow.glade.h:13
 msgid "<b>Printer Name</b>"
 msgstr "<b>Tulostimen nimi</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:14
+#: ../glade/NewPrinterWindow.glade.h:14
 msgid "<b>Printers to be members of this Class</b>"
 msgstr "<b>Kirjoittimet, jotka tulevat tämän luokan jäseniksi</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:15
+#: ../glade/NewPrinterWindow.glade.h:15
 msgid "<b>SMB Printer</b>"
 msgstr "<b>SMB-tulostin</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:16
+#: ../glade/NewPrinterWindow.glade.h:16
 msgid "<b>Select Connection</b>"
 msgstr "<b>Valitse yhteys</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:17
+#: ../glade/NewPrinterWindow.glade.h:17
 msgid "<b>Select Driver</b>"
 msgstr "<b>Valittu ajuri</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:18
+#: ../glade/NewPrinterWindow.glade.h:18
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>Sarjaportin asetukset</b>"
 
-#: ../ui/NewPrinterWindow.glade.h:19
+#: ../glade/NewPrinterWindow.glade.h:19
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[työryhmä/]palvelin[:portti]/tulostin</i>"
 
-#: ../ui/NewPrinterWindow.glade.h:20
+#: ../glade/NewPrinterWindow.glade.h:20
 msgid "Baud Rate"
 msgstr "Nopeus (baud)"
 
-#: ../ui/NewPrinterWindow.glade.h:21
+#: ../glade/NewPrinterWindow.glade.h:21
 msgid "Browse..."
 msgstr "Selaa..."
 
-#: ../ui/NewPrinterWindow.glade.h:22
+#: ../glade/NewPrinterWindow.glade.h:22
 msgid "Comments..."
 msgstr "Kommentit..."
 
-#: ../ui/NewPrinterWindow.glade.h:23
+#: ../glade/NewPrinterWindow.glade.h:23
 msgid "Data Bits"
 msgstr "Databitit"
 
-#: ../ui/NewPrinterWindow.glade.h:24
+#: ../glade/NewPrinterWindow.glade.h:24
 msgid ""
 "Default\n"
 "1200\n"
@@ -997,7 +1038,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../ui/NewPrinterWindow.glade.h:33
+#: ../glade/NewPrinterWindow.glade.h:33
 msgid ""
 "Default\n"
 "8\n"
@@ -1007,7 +1048,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../ui/NewPrinterWindow.glade.h:36
+#: ../glade/NewPrinterWindow.glade.h:36
 msgid ""
 "Default\n"
 "None\n"
@@ -1019,7 +1060,7 @@ msgstr ""
 "Pariton\n"
 "Parillinen"
 
-#: ../ui/NewPrinterWindow.glade.h:40
+#: ../glade/NewPrinterWindow.glade.h:40
 msgid ""
 "Default\n"
 "None\n"
@@ -1033,90 +1074,91 @@ msgstr ""
 "RTS/CTS (Laitteisto)\n"
 "DTR/DSR (Laitteisto)"
 
-#: ../ui/NewPrinterWindow.glade.h:45 ../ui/PrinterPropertiesDialog.glade.h:33
+#: ../glade/NewPrinterWindow.glade.h:45
+#: ../glade/PrinterPropertiesDialog.glade.h:33
 msgid "Description:"
 msgstr "Kuvaus:"
 
-#: ../ui/NewPrinterWindow.glade.h:46 ../troubleshoot/DeviceListed.py:40
+#: ../glade/NewPrinterWindow.glade.h:46 ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "Laitteen osoite"
 
-#: ../ui/NewPrinterWindow.glade.h:47
+#: ../glade/NewPrinterWindow.glade.h:47
 msgid "Device description."
 msgstr "Laitteen kuvaus."
 
-#: ../ui/NewPrinterWindow.glade.h:48
+#: ../glade/NewPrinterWindow.glade.h:48
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../ui/NewPrinterWindow.glade.h:50
+#: ../glade/NewPrinterWindow.glade.h:50
 msgid "Driver details"
 msgstr "Ajurin tiedot"
 
-#: ../ui/NewPrinterWindow.glade.h:51
+#: ../glade/NewPrinterWindow.glade.h:51
 msgid "Empty"
 msgstr "Tyhjä"
 
-#: ../ui/NewPrinterWindow.glade.h:52
+#: ../glade/NewPrinterWindow.glade.h:52
 msgid "Find _Queue..."
 msgstr "Etsi _jono..."
 
-#: ../ui/NewPrinterWindow.glade.h:53
+#: ../glade/NewPrinterWindow.glade.h:53
 msgid "Flow Control"
 msgstr "Vuonhallinta"
 
-#: ../ui/NewPrinterWindow.glade.h:54
+#: ../glade/NewPrinterWindow.glade.h:54
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr "Valitulle tulostimelle on ladattavissa ajurit."
 
-#: ../ui/NewPrinterWindow.glade.h:55
+#: ../glade/NewPrinterWindow.glade.h:55
 msgid "Host:"
 msgstr "Tietokone:"
 
-#: ../ui/NewPrinterWindow.glade.h:56
+#: ../glade/NewPrinterWindow.glade.h:56
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Selväkielinen kuvaus, kuten \"HP LaserJet\""
 
-#: ../ui/NewPrinterWindow.glade.h:57
+#: ../glade/NewPrinterWindow.glade.h:57
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "Selväkielinen sijainti, kuten \"Huone 1\""
 
-#: ../ui/NewPrinterWindow.glade.h:58
+#: ../glade/NewPrinterWindow.glade.h:58
 msgid "IPP"
 msgstr "IPP"
 
-#: ../ui/NewPrinterWindow.glade.h:59
+#: ../glade/NewPrinterWindow.glade.h:59
 msgid "LPD"
 msgstr "LPD"
 
-#: ../ui/NewPrinterWindow.glade.h:60
+#: ../glade/NewPrinterWindow.glade.h:60
 #, fuzzy
 msgid "License:"
 msgstr "Lisenssi:"
 
-#: ../ui/NewPrinterWindow.glade.h:61
+#: ../glade/NewPrinterWindow.glade.h:61
 msgid "Local Driver"
 msgstr "Paikallinen ajuri"
 
-#: ../ui/NewPrinterWindow.glade.h:62
+#: ../glade/NewPrinterWindow.glade.h:62
 #, fuzzy
 msgid "Make and model:"
 msgstr "Merkki ja malli"
 
-#: ../ui/NewPrinterWindow.glade.h:64
+#: ../glade/NewPrinterWindow.glade.h:64
 msgid "No, I do not accept this license"
 msgstr "Ei, en hyväksy tätä lisenssiä"
 
-#: ../ui/NewPrinterWindow.glade.h:65
+#: ../glade/NewPrinterWindow.glade.h:65
 msgid "Parity"
 msgstr "Pariteetti"
 
-#: ../ui/NewPrinterWindow.glade.h:67
+#: ../glade/NewPrinterWindow.glade.h:67
 msgid "Port number:"
 msgstr "Porttinumero:"
 
-#: ../ui/NewPrinterWindow.glade.h:68
+#: ../glade/NewPrinterWindow.glade.h:68
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1126,65 +1168,65 @@ msgstr ""
 "mukana tulevalla ajurilevyllä. PostScript-kirjoittimien PPD-tiedostot ovat "
 "yleensä osa Windows<sup>®</sup>-ajuria."
 
-#: ../ui/NewPrinterWindow.glade.h:69
+#: ../glade/NewPrinterWindow.glade.h:69
 msgid "Printer model:"
 msgstr "Tulostimen malli:"
 
-#: ../ui/NewPrinterWindow.glade.h:70
+#: ../glade/NewPrinterWindow.glade.h:70
 msgid "Probe"
 msgstr "Tunnista"
 
-#: ../ui/NewPrinterWindow.glade.h:71
+#: ../glade/NewPrinterWindow.glade.h:71
 #, fuzzy
 msgid "Prompt user if authentication is required"
 msgstr "Todennus vaaditaan"
 
-#: ../ui/NewPrinterWindow.glade.h:72
+#: ../glade/NewPrinterWindow.glade.h:72
 msgid "Provide PPD file"
 msgstr "Anna PPD-tiedosto"
 
-#: ../ui/NewPrinterWindow.glade.h:73
+#: ../glade/NewPrinterWindow.glade.h:73
 msgid "Queue:"
 msgstr "Jono:"
 
-#: ../ui/NewPrinterWindow.glade.h:74
+#: ../glade/NewPrinterWindow.glade.h:74
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../ui/NewPrinterWindow.glade.h:75
+#: ../glade/NewPrinterWindow.glade.h:75
 msgid "SMB"
 msgstr "SMB"
 
-#: ../ui/NewPrinterWindow.glade.h:76
+#: ../glade/NewPrinterWindow.glade.h:76
 msgid "Search for a printer driver to download"
 msgstr "Hae ladattavaa tulostinajuria"
 
-#: ../ui/NewPrinterWindow.glade.h:77
+#: ../glade/NewPrinterWindow.glade.h:77
 msgid "Select A File"
 msgstr "Valitse tiedosto"
 
-#: ../ui/NewPrinterWindow.glade.h:78
+#: ../glade/NewPrinterWindow.glade.h:78
 msgid "Select printer from database"
 msgstr "Valitse tulostin tietokannasta"
 
-#: ../ui/NewPrinterWindow.glade.h:79
+#: ../glade/NewPrinterWindow.glade.h:79
 msgid "Serial"
 msgstr "Sarja"
 
-#: ../ui/NewPrinterWindow.glade.h:80
+#: ../glade/NewPrinterWindow.glade.h:80
 #, fuzzy
 msgid "Set authentication details now"
 msgstr "Todennus vaaditaan"
 
-#: ../ui/NewPrinterWindow.glade.h:81
+#: ../glade/NewPrinterWindow.glade.h:81
 msgid "Short name for this printer such as \"laserjet\""
 msgstr ""
 
-#: ../ui/NewPrinterWindow.glade.h:82
+#: ../glade/NewPrinterWindow.glade.h:82
 msgid "Supplier:"
 msgstr "Toimittaja"
 
-#: ../ui/NewPrinterWindow.glade.h:83
+#: ../glade/NewPrinterWindow.glade.h:83
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1198,7 +1240,7 @@ msgstr ""
 "valmistajien toimittamat PPD-tiedostot tarjoavat paremman tuen kirjoittimen "
 "ominaisuuksille."
 
-#: ../ui/NewPrinterWindow.glade.h:84
+#: ../glade/NewPrinterWindow.glade.h:84
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
@@ -1208,13 +1250,13 @@ msgstr ""
 "kaupallinen tuki kata niitä.  Katso ajurin toimittajan tuki- ja "
 "lisenssiehdot."
 
-#: ../ui/NewPrinterWindow.glade.h:85
+#: ../glade/NewPrinterWindow.glade.h:85
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr "Tämä ajuri tukee tulostimeen asennettavia lisälaitteita."
 
-#: ../ui/NewPrinterWindow.glade.h:86
+#: ../glade/NewPrinterWindow.glade.h:86
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1224,7 +1266,7 @@ msgstr ""
 "Asetukset, joita ei ole uudessa PPD:ssä menetetään ja asetukset, jotka ovat "
 "vain uudessa PPD:ssä asetetaan oletusarvoonsa."
 
-#: ../ui/NewPrinterWindow.glade.h:87
+#: ../glade/NewPrinterWindow.glade.h:87
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -1232,20 +1274,20 @@ msgstr ""
 "Näin kaikki nykyiset asetukset menetetään. Uuden PPD:n oletusasetukset "
 "otetaan käyttöön."
 
-#: ../ui/NewPrinterWindow.glade.h:88
+#: ../glade/NewPrinterWindow.glade.h:88
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "Yritä kopioida asetukset vanhasta PPD:stä."
 
-#: ../ui/NewPrinterWindow.glade.h:89
+#: ../glade/NewPrinterWindow.glade.h:89
 msgid "URI:"
 msgstr "URI:"
 
-#: ../ui/NewPrinterWindow.glade.h:90
+#: ../glade/NewPrinterWindow.glade.h:90
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr ""
 "Käytä uutta PPD (Postscript Printer Description) -tiedostoa sellaisenaan."
 
-#: ../ui/NewPrinterWindow.glade.h:92
+#: ../glade/NewPrinterWindow.glade.h:92
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -1253,59 +1295,59 @@ msgstr ""
 "Tämän valinnan vuoksi ajuria ei ladata. Seuraavissa vaiheissa valitaan "
 "paikallisesti asennettu ajuri."
 
-#: ../ui/NewPrinterWindow.glade.h:93
+#: ../glade/NewPrinterWindow.glade.h:93
 msgid "Yes, I accept this license"
 msgstr "Kyllä, hyväksyn tämän lisenssin"
 
-#: ../ui/NewPrinterWindow.glade.h:94
+#: ../glade/NewPrinterWindow.glade.h:94
 msgid "_Search"
 msgstr "_Hae"
 
-#: ../ui/NewPrinterWindow.glade.h:95
+#: ../glade/NewPrinterWindow.glade.h:95
 msgid "_Verify..."
 msgstr "_Varmenna..."
 
-#: ../ui/printer_context_menu.glade.h:1
+#: ../glade/printer_context_menu.glade.h:1
 msgid ""
 "Create a class from the selected printers (for failover or load-balancing)"
 msgstr ""
 
-#: ../ui/printer_context_menu.glade.h:2
+#: ../glade/printer_context_menu.glade.h:2
 #, fuzzy
 msgid "E_nabled"
 msgstr "Käytössä"
 
-#: ../ui/printer_context_menu.glade.h:3
+#: ../glade/printer_context_menu.glade.h:3
 #, fuzzy
 msgid "Set As Default"
 msgstr "_Aseta oletustulostimeksi"
 
-#: ../ui/printer_context_menu.glade.h:4
+#: ../glade/printer_context_menu.glade.h:4
 #, fuzzy
 msgid "View Print _Queue"
 msgstr "Uusi tulostin"
 
-#: ../ui/printer_context_menu.glade.h:5
+#: ../glade/printer_context_menu.glade.h:5
 #, fuzzy
 msgid "_Create Class"
 msgstr "Etäluokat"
 
 # tarkista
-#: ../ui/printer_context_menu.glade.h:6 ../ui/PrintersWindow.glade.h:12
+#: ../glade/printer_context_menu.glade.h:6 ../glade/PrintersWindow.glade.h:12
 #, fuzzy
 msgid "_Rename"
 msgstr "_Vapauta"
 
-#: ../ui/printer_context_menu.glade.h:7 ../ui/PrintersWindow.glade.h:15
+#: ../glade/printer_context_menu.glade.h:7 ../glade/PrintersWindow.glade.h:15
 #, fuzzy
 msgid "_Shared"
 msgstr "Jaettu"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:1
+#: ../glade/PrinterPropertiesDialog.glade.h:1
 msgid " "
 msgstr " "
 
-#: ../ui/PrinterPropertiesDialog.glade.h:2
+#: ../glade/PrinterPropertiesDialog.glade.h:2
 msgid ""
 "1\n"
 "2\n"
@@ -1321,50 +1363,50 @@ msgstr ""
 "9\n"
 "16"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:8
+#: ../glade/PrinterPropertiesDialog.glade.h:8
 #, fuzzy
 msgid "72 points per inch"
 msgstr ""
 "pistettä\n"
 "(72 pistettä tuumaa kohti)"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:9
+#: ../glade/PrinterPropertiesDialog.glade.h:9
 msgid "<b>Banner</b>"
 msgstr "<b>Palkki</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:10
+#: ../glade/PrinterPropertiesDialog.glade.h:10
 msgid "<b>Common Options</b>"
 msgstr "<b>Yleiset asetukset</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:11
+#: ../glade/PrinterPropertiesDialog.glade.h:11
 msgid "<b>Image Options</b>"
 msgstr "<b>Kuva-asetukset</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:12
+#: ../glade/PrinterPropertiesDialog.glade.h:12
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>Lisäasetukset</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:13
+#: ../glade/PrinterPropertiesDialog.glade.h:13
 msgid "<b>Policies</b>"
 msgstr "<b>Menettelytavat</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:14
+#: ../glade/PrinterPropertiesDialog.glade.h:14
 msgid "<b>Settings</b>"
 msgstr "<b>Asetukset</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:15
+#: ../glade/PrinterPropertiesDialog.glade.h:15
 msgid "<b>State</b>"
 msgstr "<b>Tila</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:16
+#: ../glade/PrinterPropertiesDialog.glade.h:16
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>Testit ja ylläpito</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:17
+#: ../glade/PrinterPropertiesDialog.glade.h:17
 msgid "<b>Text Options</b>"
 msgstr "<b>Tekstiasetukset</b>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:18
+#: ../glade/PrinterPropertiesDialog.glade.h:18
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -1372,104 +1414,104 @@ msgstr ""
 "<i>Ei julkaistu\n"
 "Katso palvelinasetukset</i>"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:20
+#: ../glade/PrinterPropertiesDialog.glade.h:20
 msgid "Accepting jobs"
 msgstr "Hyväksyy uusia töitä"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:21
+#: ../glade/PrinterPropertiesDialog.glade.h:21
 msgid "Access Control"
 msgstr "Pääsynvalvonta"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:22
+#: ../glade/PrinterPropertiesDialog.glade.h:22
 msgid "Add or Remove Members"
 msgstr "Lisää tai poista jäseniä"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:23
+#: ../glade/PrinterPropertiesDialog.glade.h:23
 msgid "Allow printing for everyone except these users:"
 msgstr "Salli tulostus kaikille muille paitsi näille käyttäjille:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:24
+#: ../glade/PrinterPropertiesDialog.glade.h:24
 msgid "Bottom margin:"
 msgstr "Alamariginaali:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:25
+#: ../glade/PrinterPropertiesDialog.glade.h:25
 msgid "Brightness:"
 msgstr "Kirkkaus:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:26
+#: ../glade/PrinterPropertiesDialog.glade.h:26
 msgid "Change..."
 msgstr "Muuta..."
 
-#: ../ui/PrinterPropertiesDialog.glade.h:27
+#: ../glade/PrinterPropertiesDialog.glade.h:27
 msgid "Characters per inch:"
 msgstr "Merkkejä tuumaa kohti:"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.glade.h:29
+#: ../glade/PrinterPropertiesDialog.glade.h:29
 msgid "Clean Print Heads"
 msgstr "Puhdista tulostuspäät"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:30
+#: ../glade/PrinterPropertiesDialog.glade.h:30
 msgid "Columns:"
 msgstr "Sarakkeita:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:31
+#: ../glade/PrinterPropertiesDialog.glade.h:31
 msgid "Copies:"
 msgstr "Kopioita:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:32
+#: ../glade/PrinterPropertiesDialog.glade.h:32
 msgid "Deny printing for everyone except these users:"
 msgstr "Estä tulostus kaikilta muilta paitsi näiltä käyttäjiltä:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:34
+#: ../glade/PrinterPropertiesDialog.glade.h:34
 msgid "Device URI:"
 msgstr "Laitteen URI:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:35
+#: ../glade/PrinterPropertiesDialog.glade.h:35
 msgid "Enabled"
 msgstr "Käytössä"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:36
+#: ../glade/PrinterPropertiesDialog.glade.h:36
 msgid "Ending Banner:"
 msgstr "Lopetusbanneri:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:37
+#: ../glade/PrinterPropertiesDialog.glade.h:37
 msgid "Error Policy: \t"
 msgstr "Virhekäytäntö:\t"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:38
+#: ../glade/PrinterPropertiesDialog.glade.h:38
 msgid "Finishings:"
 msgstr "Viimeistelyt:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:39
+#: ../glade/PrinterPropertiesDialog.glade.h:39
 msgid "Gamma:"
 msgstr "Gamma:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:40
+#: ../glade/PrinterPropertiesDialog.glade.h:40
 msgid "Hold until:"
 msgstr "Pidä pysäytettynä kunnes:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:41
+#: ../glade/PrinterPropertiesDialog.glade.h:41
 msgid "Hue adjustment:"
 msgstr "Sävynsäätö:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:42
+#: ../glade/PrinterPropertiesDialog.glade.h:42
 msgid "Installed Options"
 msgstr "Asennetut valinnat"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:43
+#: ../glade/PrinterPropertiesDialog.glade.h:43
 msgid "Job Options"
 msgstr "Työn valitsimet"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:44
+#: ../glade/PrinterPropertiesDialog.glade.h:44
 msgid "Job priority:"
 msgstr "Työn prioriteetti:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:45
+#: ../glade/PrinterPropertiesDialog.glade.h:45
 msgid "Left margin:"
 msgstr "Vasen marginaali:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:46
+#: ../glade/PrinterPropertiesDialog.glade.h:46
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -1489,36 +1531,36 @@ msgstr ""
 "Alhaalta ylös, vasemmalta oikealle\n"
 "Alhaalta ylös, oikealta vasemmalle"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:54
+#: ../glade/PrinterPropertiesDialog.glade.h:54
 msgid "Lines per inch:"
 msgstr "&Rivejä tuumaa kohti:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:55
+#: ../glade/PrinterPropertiesDialog.glade.h:55
 msgid "Location:"
 msgstr "Sijainti:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:56
+#: ../glade/PrinterPropertiesDialog.glade.h:56
 msgid "Make and Model:"
 msgstr "Merkki ja malli"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:57
+#: ../glade/PrinterPropertiesDialog.glade.h:57
 msgid "Media:"
 msgstr "Media:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:58
+#: ../glade/PrinterPropertiesDialog.glade.h:58
 msgid "Members"
 msgstr "Jäsenet"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:59
+#: ../glade/PrinterPropertiesDialog.glade.h:59
 msgid "Mirror"
 msgstr "Peilaa"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:60
+#: ../glade/PrinterPropertiesDialog.glade.h:60
 msgid "More"
 msgstr "Lisää"
 
 # Jonkun pitäisi tarkastaa...
-#: ../ui/PrinterPropertiesDialog.glade.h:61
+#: ../glade/PrinterPropertiesDialog.glade.h:61
 #, fuzzy
 msgid ""
 "None\n"
@@ -1579,7 +1621,7 @@ msgstr ""
 "Sidonta (oikea)\n"
 "Sidonta (ala)"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:89
+#: ../glade/PrinterPropertiesDialog.glade.h:89
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1589,27 +1631,27 @@ msgstr ""
 "Kaksipuolinen (pitkä reunus)\n"
 "Kaksipuolinen (lyhyt reunus)"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:92
+#: ../glade/PrinterPropertiesDialog.glade.h:92
 msgid "Operation Policy:"
 msgstr "Toimintakäytäntö:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:93
+#: ../glade/PrinterPropertiesDialog.glade.h:93
 msgid "Orientation:"
 msgstr "Suunta:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:94
+#: ../glade/PrinterPropertiesDialog.glade.h:94
 msgid "Pages per side layout:"
 msgstr "Sivua arkille -asettelu:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:95
+#: ../glade/PrinterPropertiesDialog.glade.h:95
 msgid "Pages per side:"
 msgstr "Sivua arkille:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:96
+#: ../glade/PrinterPropertiesDialog.glade.h:96
 msgid "Policies"
 msgstr "Käytännöt"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:97
+#: ../glade/PrinterPropertiesDialog.glade.h:97
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1622,67 +1664,67 @@ msgstr ""
 "Käännetty pysty (180°)"
 
 # Better ideas?
-#: ../ui/PrinterPropertiesDialog.glade.h:101
+#: ../glade/PrinterPropertiesDialog.glade.h:101
 msgid "Pretty print"
 msgstr "Tulosta siististi"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.glade.h:103
+#: ../glade/PrinterPropertiesDialog.glade.h:103
 msgid "Print Self-Test Page"
 msgstr "Tulosta itsetestisivu"
 
 #. Not more than 25 characters
-#: ../ui/PrinterPropertiesDialog.glade.h:105
+#: ../glade/PrinterPropertiesDialog.glade.h:105
 #: ../troubleshoot/PrintTestPage.py:68
 msgid "Print Test Page"
 msgstr "Tulosta testisivu"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:107
+#: ../glade/PrinterPropertiesDialog.glade.h:107
 #, fuzzy
 msgid "Printer Properties"
 msgstr "Tulostinraportti"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:108
+#: ../glade/PrinterPropertiesDialog.glade.h:108
 msgid "Printer State:"
 msgstr "Tulostimen tilat:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:109
+#: ../glade/PrinterPropertiesDialog.glade.h:109
 msgid "Reset"
 msgstr "Oletukset"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:110
+#: ../glade/PrinterPropertiesDialog.glade.h:110
 msgid "Reset to system default"
 msgstr "Palaa järjestelmän oletukseen"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:111
+#: ../glade/PrinterPropertiesDialog.glade.h:111
 msgid "Right margin:"
 msgstr "Oikea marginaali:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:112
+#: ../glade/PrinterPropertiesDialog.glade.h:112
 msgid "Saturation:"
 msgstr "Värikylläisyys:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:113
+#: ../glade/PrinterPropertiesDialog.glade.h:113
 msgid "Scale to fit"
 msgstr "Skaalaa sopivaan kokoon"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:114
+#: ../glade/PrinterPropertiesDialog.glade.h:114
 msgid "Scaling:"
 msgstr "Skaalaus:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:115
+#: ../glade/PrinterPropertiesDialog.glade.h:115
 msgid "Settings"
 msgstr "Asetukset"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:116
+#: ../glade/PrinterPropertiesDialog.glade.h:116
 msgid "Shared"
 msgstr "Jaettu"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:117
+#: ../glade/PrinterPropertiesDialog.glade.h:117
 msgid "Sides:"
 msgstr "Puolet:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:118
+#: ../glade/PrinterPropertiesDialog.glade.h:118
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1692,146 +1734,146 @@ msgstr ""
 "tulostuspalvelimelle saapuviin töihin lisätään nämä asetukset, jos sovellus "
 "ei ole jo asettanut niitä."
 
-#: ../ui/PrinterPropertiesDialog.glade.h:119
+#: ../glade/PrinterPropertiesDialog.glade.h:119
 msgid "Starting Banner:"
 msgstr "Aloitusbanneri:"
 
 # This will have to be checked!
-#: ../ui/PrinterPropertiesDialog.glade.h:120
+#: ../glade/PrinterPropertiesDialog.glade.h:120
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "Lisätäksesi uuden valitsimen syötä sen nimi alla olevaan kenttään ja "
 "napsauta Lisää."
 
-#: ../ui/PrinterPropertiesDialog.glade.h:121
+#: ../glade/PrinterPropertiesDialog.glade.h:121
 msgid "Top margin:"
 msgstr "Ylämarginaali:"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:122
+#: ../glade/PrinterPropertiesDialog.glade.h:122
 msgid "Word wrap"
 msgstr "Rivitys"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:123
+#: ../glade/PrinterPropertiesDialog.glade.h:123
 msgid "default"
 msgstr "oletus"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:124
+#: ../glade/PrinterPropertiesDialog.glade.h:124
 msgid "none"
 msgstr "ei mitään"
 
-#: ../ui/PrinterPropertiesDialog.glade.h:125
+#: ../glade/PrinterPropertiesDialog.glade.h:125
 msgid "points"
 msgstr "pistettä"
 
-#: ../ui/PrinterStatusWindow.glade.h:1
+#: ../glade/PrinterStatusWindow.glade.h:1
 msgid "Printer status"
 msgstr "Tulostimen tila"
 
-#: ../ui/PrintersWindow.glade.h:1
+#: ../glade/PrintersWindow.glade.h:1
 #, fuzzy
 msgid "Adjust server settings"
 msgstr "<b>Palvelimen perusasetukset</b>"
 
-#: ../ui/PrintersWindow.glade.h:2
+#: ../glade/PrintersWindow.glade.h:2
 #, fuzzy
 msgid "Choose a different CUPS server"
 msgstr "Yhdistä toiseen tulostuspalvelimeen"
 
-#: ../ui/PrintersWindow.glade.h:3
+#: ../glade/PrintersWindow.glade.h:3
 #, fuzzy
 msgid "Set As De_fault"
 msgstr "_Aseta oletustulostimeksi"
 
-#: ../ui/PrintersWindow.glade.h:4 ../ui/ServerSettingsDialog.glade.h:8
+#: ../glade/PrintersWindow.glade.h:4 ../glade/ServerSettingsDialog.glade.h:8
 msgid "Show printers shared by other systems"
 msgstr "Näytä muiden järjestelmien jakamat kirjoittimet"
 
-#: ../ui/PrintersWindow.glade.h:5
+#: ../glade/PrintersWindow.glade.h:5
 msgid "System-Config-Printer"
 msgstr "Aseta tulostimet"
 
-#: ../ui/PrintersWindow.glade.h:6
+#: ../glade/PrintersWindow.glade.h:6
 #, fuzzy
 msgid "_Class"
 msgstr "Uusi luokka"
 
-#: ../ui/PrintersWindow.glade.h:7
+#: ../glade/PrintersWindow.glade.h:7
 #, fuzzy
 msgid "_Connect..."
 msgstr "Yhdistää"
 
-#: ../ui/PrintersWindow.glade.h:8
+#: ../glade/PrintersWindow.glade.h:8
 msgid "_Discovered Printers"
 msgstr ""
 
-#: ../ui/PrintersWindow.glade.h:9
+#: ../glade/PrintersWindow.glade.h:9
 #, fuzzy
 msgid "_Enabled"
 msgstr "Käytössä"
 
-#: ../ui/PrintersWindow.glade.h:10
+#: ../glade/PrintersWindow.glade.h:10
 msgid "_Help"
 msgstr "_Ohje"
 
-#: ../ui/PrintersWindow.glade.h:11
+#: ../glade/PrintersWindow.glade.h:11
 #, fuzzy
 msgid "_Printer"
 msgstr "Tulostin"
 
-#: ../ui/PrintersWindow.glade.h:13
+#: ../glade/PrintersWindow.glade.h:13
 #, fuzzy
 msgid "_Server"
 msgstr "_Palvelin"
 
-#: ../ui/PrintersWindow.glade.h:14
+#: ../glade/PrintersWindow.glade.h:14
 #, fuzzy
 msgid "_Settings..."
 msgstr "Asetukset"
 
-#: ../ui/PrintersWindow.glade.h:16
+#: ../glade/PrintersWindow.glade.h:16
 msgid "_Troubleshoot"
 msgstr ""
 
-#: ../ui/ServerSettingsDialog.glade.h:1
+#: ../glade/ServerSettingsDialog.glade.h:1
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>Palvelimen perusasetukset</b>"
 
-#: ../ui/ServerSettingsDialog.glade.h:2
+#: ../glade/ServerSettingsDialog.glade.h:2
 msgid "Allow printing from the Internet"
 msgstr "Salli tulostus Internetistä"
 
-#: ../ui/ServerSettingsDialog.glade.h:3
+#: ../glade/ServerSettingsDialog.glade.h:3
 msgid "Allow remote administration"
 msgstr "Salli etäylläpito"
 
-#: ../ui/ServerSettingsDialog.glade.h:4
+#: ../glade/ServerSettingsDialog.glade.h:4
 msgid "Allow users to cancel any job (not just their own)"
 msgstr ""
 "Salli käyttäjien peruuttaa mikä tahansa työ (ei pelkästään heidän omiaan)"
 
-#: ../ui/ServerSettingsDialog.glade.h:5
+#: ../glade/ServerSettingsDialog.glade.h:5
 #, fuzzy
 msgid "Basic Server Settings"
 msgstr "<b>Palvelimen perusasetukset</b>"
 
-#: ../ui/ServerSettingsDialog.glade.h:6
+#: ../glade/ServerSettingsDialog.glade.h:6
 #, fuzzy
 msgid "Publish shared printers connected to this system"
 msgstr "Jaa tähän järjestelmään kytketyt julkiset kirjoittimet"
 
-#: ../ui/ServerSettingsDialog.glade.h:7
+#: ../glade/ServerSettingsDialog.glade.h:7
 msgid "Save debugging information for troubleshooting"
 msgstr "Tallenna ohjelmavirheiden jäljitystiedot vianetsintää varten"
 
-#: ../ui/SMBBrowseDialog.glade.h:1
+#: ../glade/SMBBrowseDialog.glade.h:1
 msgid "SMB Browser"
 msgstr "SMB-selain"
 
-#: ../ui/statusicon_popupmenu.glade.h:1
+#: ../glade/statusicon_popupmenu.glade.h:1
 msgid "_Hide"
 msgstr "_Piilota"
 
-#: ../ui/WaitWindow.glade.h:1
+#: ../glade/WaitWindow.glade.h:1
 msgid "Please Wait"
 msgstr "Odota, ole hyvä"
 
@@ -2439,9 +2481,6 @@ msgstr "Valitse oletustulostin"
 
 #~ msgid "Refresh the list of printer queues"
 #~ msgstr "Päivitä tulostusjonojen luettelo"
-
-#~ msgid "This is the default printer"
-#~ msgstr "Tämä on oletustulostin."
 
 #~ msgid "No default printer set."
 #~ msgstr "Oletustulostinta ei ole asetettu."
