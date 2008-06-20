@@ -315,7 +315,7 @@ class PPDs:
             models_list = self.makes[make].keys ()
         except KeyError:
             return []
-        models_list.sort (cups.modelSort)
+        models_list.sort (key=unicode.lower, cmp=cups.modelSort)
         return models_list
 
     def getInfoFromModel (self, make, model):
