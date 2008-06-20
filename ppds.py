@@ -139,7 +139,6 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = re.sub (r"(?i)\s*\bPXL", "", model)
     model = re.sub (r"(?i)[\s_-]+BT\b", "", model)
     model = re.sub (r"(?i)\s*\(Bluetooth\)", "", model)
-    model = re.sub (r"(?i)\s+Printer\b", "", model)
     model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\s*-*\s*[0-9\.]+", "", model)
     model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\b", "", model)
     model = re.sub (r"(?i)\s*-\s*$", "", model)
@@ -818,36 +817,65 @@ def main():
     print "\nID matching tests\n"
 
     idlist = [
-        "MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;DES:EPSON Stylus D78;",
-        "MFG:Hewlett-Packard;MDL:LaserJet 1200 Series;CMD:MLC,PCL,POSTSCRIPT;CLS:PRINTER;",
-        "MFG:Hewlett-Packard;MDL:LaserJet 3390 Series;CMD:MLC,PCL,POSTSCRIPT;CLS:PRINTER;",
-        "MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;CLS:PRINTER;1284.4DL:4d,4e,1;",
-        "MFG:HP;MDL:PSC 2200 Series;CLS:PRINTER;DES:PSC 2200 Series;", # from HPLIP
-        "MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;",
-        "CLASS:PRINTER;MODEL:HP LaserJet 6MP;MANUFACTURER:Hewlett-Packard;DESCRIPTION:Hewlett-Packard LaserJet 6MP Printer;COMMAND SET:PJL,MLC,PCLXL,PCL,POSTSCRIPT;",
-        "MFG:Canon;CMD:BJL,BJRaster3,BSCCe;SOJ:TXT01;MDL:iP3000;CLS:PRINTER;DES:Canon iP3000;VER:1.09;STA:10;FSI:03;",
-        "MFG:HP;MDL:Deskjet 5400 series;CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;1284.4DL:4d,4e,1;CLS:PRINTER;DES:5440;",
-        "MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
-        "MFG:New;MDL:Unknown PCL6 Printer;CMD:PCLXL;",
-        "MFG:New;MDL:Unknown PCL5e Printer;CMD:PCL5e;",
-        "MFG:New;MDL:Unknown PCL5c Printer;CMD:PCL5c;",
-        "MFG:New;MDL:Unknown PCL5 Printer;CMD:PCL5;",
-        "MFG:New;MDL:Unknown PCL3 Printer;CMD:PCL;",
-        "MFG:New;MDL:Unknown ESC/P Printer;CMD:ESCP2E;",
-        "MFG:New;MDL:Unknown Printer;",
+        ("MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;"
+         "DES:EPSON Stylus D78;", 1, 'Epson Stylus D68'),
+        ("MFG:Hewlett-Packard;MDL:LaserJet 1200 Series;"
+         "CMD:MLC,PCL,POSTSCRIPT;CLS:PRINTER;", 0, 'HP LaserJet 1200'),
+        ("MFG:Hewlett-Packard;MDL:LaserJet 3390 Series;"
+         "CMD:MLC,PCL,POSTSCRIPT;CLS:PRINTER;", 0, 'HP LaserJet 3390'),
+        ("MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;"
+         "CLS:PRINTER;1284.4DL:4d,4e,1;", 0, "HP PSC 2210"),
+        ("MFG:HP;MDL:PSC 2200 Series;CLS:PRINTER;DES:PSC 2200 Series;",
+         1, "HP PSC 2210"),# from HPLIP
+        ("MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;"
+         "DES:Hewlett-Packard DeskJet 990C;", 0, "HP DeskJet 990C"),
+        ("CLASS:PRINTER;MODEL:HP LaserJet 6MP;MANUFACTURER:Hewlett-Packard;"
+         "DESCRIPTION:Hewlett-Packard LaserJet 6MP Printer;"
+         "COMMAND SET:PJL,MLC,PCLXL,PCL,POSTSCRIPT;", 0, "HP LaserJet 6MP"),
+        ("MFG:Canon;CMD:BJL,BJRaster3,BSCCe;SOJ:TXT01;MDL:iP3000;CLS:PRINTER;"
+         "DES:Canon iP3000;VER:1.09;STA:10;FSI:03;", 1, "Canon PIXMA iP3000"),
+        ("MFG:HP;MDL:Deskjet 5400 series;CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;"
+         "1284.4DL:4d,4e,1;CLS:PRINTER;DES:5440;", 1, "HP DeskJet 5440"),
+        ("MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
+         2, "Generic postscript printer"),
+        ("MFG:New;MDL:Unknown PCL6 Printer;CMD:PCLXL;", 2, "Generic PCL 6"),
+        ("MFG:New;MDL:Unknown PCL5e Printer;CMD:PCL5e;", 2, "Generic PCL 5e"),
+        ("MFG:New;MDL:Unknown PCL5c Printer;CMD:PCL5c;", 2, "Generic PCL 5c"),
+        ("MFG:New;MDL:Unknown PCL5 Printer;CMD:PCL5;", 2, "Generic PCL 5"),
+        ("MFG:New;MDL:Unknown PCL3 Printer;CMD:PCL;", 2, "Generic PCL"),
+        ("MFG:New;MDL:Unknown ESC/P Printer;CMD:ESCP2E;", 2, "Generic ESC/P"),
+        ("MFG:New;MDL:Unknown Printer;", 100, None),
         ]
 
     if stdin_deviceid:
         idlist = [raw_input ('Device ID: ')]
 
-    for id in idlist:
+    all_passed = True
+    for id, max_status_code, modelre in idlist:
         id_dict = parseDeviceID (id)
-        print id_dict["MFG"], id_dict["MDL"]
-        ppdname = ppds.getPPDNameFromDeviceID (id_dict["MFG"],
-                                               id_dict["MDL"],
-                                               id_dict["DES"],
-                                               id_dict["CMD"])
-        print " ", ppdname
+        (status, ppdname) = ppds.getPPDNameFromDeviceID (id_dict["MFG"],
+                                                         id_dict["MDL"],
+                                                         id_dict["DES"],
+                                                         id_dict["CMD"])
+        if status < max_status_code:
+            success = True
+        elif status == max_status_code:
+            ppddict = ppds.getInfoFromPPDName (ppdname)
+            match = re.match (modelre, ppddict['ppd-make-and-model'], re.I)
+            success = match != None
+        else:
+            success = False
+
+        if success:
+            result = "PASS"
+        else:
+            result = "*** FAIL ***"
+
+        print "%s: %s %s" % (result, id_dict["MFG"], id_dict["MDL"])
+        all_passed = all_passed and success
+
+    if not all_passed:
+        raise RuntimeError
 
 if __name__ == "__main__":
     main()
