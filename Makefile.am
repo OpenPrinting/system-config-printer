@@ -172,7 +172,7 @@ help:
 
 test-ppd-module.sh:
 	echo "#!/bin/sh" > "$@"
-	echo "python ppds.py" >> "$@"
+	echo "python $(top_srcdir)/ppds.py" >> "$@"
 	chmod 755 "$@"
 
 TESTS = test-ppd-module.sh
@@ -181,7 +181,7 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
-	test-ppd-module.sh
+	test-ppd-module.sh pickled-ppds
 
 .PHONY: update-po missing-languages fix-glade run help
 
