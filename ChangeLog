@@ -1,5 +1,12 @@
 2008-06-20  Tim Waugh  <twaugh@redhat.com>
 
+	* ppds.py (ppdMakeModelSplit): Don't strip " Printer" from the end
+	of the ppd-make-and-model string.  Generic printers should be
+	named like "Generic XYZ Printer".
+	Fixes https://fedorahosted.org/system-config-printer/ticket/33.
+
+2008-06-20  Tim Waugh  <twaugh@redhat.com>
+
 	* ppds.py (main): Check the results of the test suite against
 	maximum permissable status code and regular expression for
 	expected ppd-make-and-model string.

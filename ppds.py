@@ -145,7 +145,6 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = re.sub (r"(?i)\s*\bPXL", "", model)
     model = re.sub (r"(?i)[\s_-]+BT\b", "", model)
     model = re.sub (r"(?i)\s*\(Bluetooth\)", "", model)
-    model = re.sub (r"(?i)\s+Printer\b", "", model)
     model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\s*-*\s*[0-9\.]+", "", model)
     model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\b", "", model)
     model = re.sub (r"(?i)\s*-\s*$", "", model)
