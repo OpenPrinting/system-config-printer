@@ -129,7 +129,11 @@ class AuthContext:
         return 1
 
     def initial_authentication (self):
-        pass
+        try:
+            context = smbc.Context ()
+            self.use_workgroup = context.workgroup
+        except:
+            pass
 
     def failed (self, exc=None):
         self.has_failed = True
