@@ -847,8 +847,8 @@ class GUI(GtkGUI, monitor.Watcher):
                         type = 'network-printer'
 
                 (tip, icon) = PRINTER_TYPE[type]
+                (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
                 try:
-                    (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
                     pixbuf = theme.load_icon (icon, w, 0)
                 except gobject.GError:
                     # Not in theme.
@@ -860,6 +860,15 @@ class GUI(GtkGUI, monitor.Watcher):
                             break
                         except gobject.GError:
                             pass
+
+                    if pixbuf == None:
+                        try:
+                            pixbuf = theme.load_icon ('printer', w, 0)
+                        except:
+                            # Just create an empty pixbuf.
+                            pixbuf = gtk.gdk.Pixbuf (gtk.gdk.COLORSPACE_RGB,
+                                                     True, 8, w, h)
+                            pixbuf.fill (0)
 
                 emblem = None
                 if name == self.default_printer:
