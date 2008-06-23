@@ -15,6 +15,7 @@ nobase_pkgdata_DATA=					\
 	optionwidgets.py				\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
+	smburi.py					\
 	statereason.py					\
 	system-config-printer.glade			\
 	troubleshoot/base.py				\

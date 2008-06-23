@@ -59,6 +59,7 @@ import probe_printer
 import gtk_label_autowrap
 import urllib
 import troubleshoot
+from smburi import SMBURI
 
 domain='system-config-printer'
 import locale
