@@ -65,6 +65,7 @@ import openprinting
 import urllib
 import troubleshoot
 import authconn
+from smburi import SMBURI
 
 domain='system-config-printer'
 import locale
