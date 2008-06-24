@@ -1,9 +1,11 @@
 SUBDIRS=po
 
 EXPORT_MODULES=\
+	cupshelpers/__init__.py \
+	cupshelpers/cupshelpers.py \
 	ppds.py
 
-python_SCRIPTS = $(EXPORT_MODULES)
+nobase_python_SCRIPTS = $(EXPORT_MODULES)
 
 nobase_pkgdata_SCRIPTS=				\
 	my-default-printer.py			\
@@ -17,7 +19,6 @@ nobase_pkgdata_DATA=					\
 	authconn.py					\
 	config.py					\
 	contextmenu.py					\
-	cupshelpers.py					\
 	debug.py					\
 	errordialogs.py					\
 	jobviewer.py					\
