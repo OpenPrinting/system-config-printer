@@ -62,7 +62,6 @@ from debug import *
 import probe_printer
 import gtk_label_autowrap
 from gtk_treeviewtooltips import TreeViewTooltips
-import openprinting
 import urllib
 import troubleshoot
 import contextmenu
@@ -2530,7 +2529,7 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         # Set up OpenPrinting widgets.
-        self.openprinting = openprinting.OpenPrinting ()
+        self.openprinting = cupshelpers.openprinting.OpenPrinting ()
         self.openprinting_query_handle = None
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         cell = gtk.CellRendererText()

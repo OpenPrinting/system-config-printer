@@ -29,3 +29,4 @@ from cupshelpers import				\
     setPPDPageSize
 
 import ppds
+import openprinting

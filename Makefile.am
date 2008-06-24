@@ -1,9 +1,10 @@
 SUBDIRS=po
 
-EXPORT_MODULES=\
-	cupshelpers/__init__.py \
-	cupshelpers/cupshelpers.py \
-	cupshelpers/ppds.py
+EXPORT_MODULES=					\
+	cupshelpers/__init__.py			\
+	cupshelpers/cupshelpers.py		\
+	cupshelpers/ppds.py			\
+	cupshelpers/openprinting.py
 
 nobase_python_SCRIPTS = $(EXPORT_MODULES)
 
@@ -23,7 +24,6 @@ nobase_pkgdata_DATA=					\
 	errordialogs.py					\
 	jobviewer.py					\
 	monitor.py					\
-	openprinting.py					\
 	options.py					\
 	optionwidgets.py				\
 	probe_printer.py				\

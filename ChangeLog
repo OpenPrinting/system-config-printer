@@ -1,5 +1,14 @@
 2008-06-24  Tim Waugh  <twaugh@redhat.com>
 
+	* openprinting.py: Moved...
+	* cupshelpers/openprinting.py: ...here.
+	* cupshelpers/__init__.py: Import it.
+	* Makefile.am (EXPORT_MODULES): Export openprinting.
+	* system-config-printer.py (NewPrinterGUI.__init__): Updated.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/34.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
 	* openprinting.py (normalize_space): This function has private
 	scope.
 	(QueryThread): This class has private scope.
