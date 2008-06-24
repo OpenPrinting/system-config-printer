@@ -26,8 +26,8 @@ class GroupsPane (gtk.ScrolledWindow):
                             [GroupsPaneItem])
         }
 
-    def __init__ (self, *args, **kwargs):
-        super (GroupsPane, self).__init__ (*args, **kwargs)
+    def __init__ (self, first_group_item):
+        super (GroupsPane, self).__init__ ()
 
         self.tree_view = None
         self.store = None
@@ -68,7 +68,7 @@ class GroupsPane (gtk.ScrolledWindow):
         self.tree_view.connect ('row-activated', self.on_row_activated)
 
         selection = self.tree_view.get_selection ()
-        selection.select_iter (self.store.append (AllPrintersItem ()))
+        selection.select_iter (self.store.append (first_group_item))
         self.store.append (FavouritesItem ())
         self.store.append (SeparatorItem ())
 

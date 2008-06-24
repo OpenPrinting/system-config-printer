@@ -1,5 +1,14 @@
 2008-06-24  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
+	* GroupsPane.py (GroupsPane.__init__): Receive the first groups
+	item as a contructor parameter.
+	* system-config-printer.py (GUI.populateList): Rework filtering
+	and current groups item selection to do all their work here. This
+	way everything is kept in sync. Thanks to Tim Waugh for helping
+	with this.
+
+2008-06-24  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
 	* GroupsPane.py: Make GroupsPane a proper widget. It's now a
 	ScrolledWindow containing a TreeView and taking care of all the
 	TreeView's functionality.
