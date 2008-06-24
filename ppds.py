@@ -167,7 +167,7 @@ DRIVER_TYPE_FOOMATIC = 70
 DRIVER_TYPE_CUPS = 80
 DRIVER_TYPE_FOOMATIC_GENERIC = 90
 DRIVER_DOES_NOT_WORK = 999
-def getDriverType (ppdname, ppds=None):
+def _getDriverType (ppdname, ppds=None):
     """Decides which of the above types ppdname is."""
     if ppdname.startswith ("gutenprint"):
         if ppdname.find ("/simple/") != -1:
@@ -307,7 +307,7 @@ class PPDs:
         make_model = dict['ppd-make-and-model']
         mfg, mdl = ppdMakeModelSplit (make_model)
         def getDriverTypeWithBias (x, mfg):
-            t = getDriverType (x, ppds=self)
+            t = _getDriverType (x, ppds=self)
             if mfg == "HP":
                 if t == DRIVER_TYPE_FOOMATIC_HPIJS:
                     # Prefer HPIJS for HP devices.
@@ -745,10 +745,10 @@ class PPDs:
 
         self.ids = ids
 
-def show_help():
+def _show_help():
     print "usage: ppds.py [--deviceid] [--list-models] [--list-ids] [--debug]"
 
-def main():
+def _main():
     import sys, getopt
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
@@ -758,7 +758,7 @@ def main():
                                          'list-ids',
                                          'debug'])
     except getopt.GetoptError:
-        show_help()
+        _show_help()
         sys.exit (1)
 
     stdin_deviceid = False
@@ -878,4 +878,4 @@ def main():
         raise RuntimeError
 
 if __name__ == "__main__":
-    main()
+    _main()
