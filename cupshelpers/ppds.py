@@ -21,7 +21,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
-from cupshelpers import parseDeviceID
+from .cupshelpers import parseDeviceID
 import string
 import locale
 import os.path
@@ -820,7 +820,7 @@ class PPDs:
 def _show_help():
     print "usage: ppds.py [--deviceid] [--list-models] [--list-ids] [--debug]"
 
-def _main():
+def self_test():
     import sys, getopt
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
@@ -948,6 +948,3 @@ def _main():
 
     if not all_passed:
         raise RuntimeError
-
-if __name__ == "__main__":
-    _main()

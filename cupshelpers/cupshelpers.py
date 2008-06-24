@@ -19,18 +19,19 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups, pprint, os, tempfile, re
-from rhpl.translate import _, N_
 import locale
 from debug import *
 
 class Printer:
-
-    printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
-                       cups.IPP_PRINTER_PROCESSING: _("Processing"),
-                       cups.IPP_PRINTER_BUSY: _("Busy"),
-                       cups.IPP_PRINTER_STOPPED: _("Stopped") }
-
     def __init__(self, name, connection, **kw):
+        """
+        @param name: printer name
+        @type name: string
+        @param connection: CUPS connection
+        @type connection: CUPS.Connection object
+        @param kw: printer attributes
+        @type kw: dict indexed by string
+        """
         self.name = name
         self.connection = connection
         self.class_members = []
@@ -57,10 +58,14 @@ class Printer:
                         bool(self.type & getattr(cups, name)))
 
     def update(self, **kw):
+        """
+        Update object from printer attributes.
+
+        @param kw: printer attributes
+        @type kw: dict indexed by string
+        """
         self.state = kw.get('printer-state', 0)
         self.enabled = self.state != cups.IPP_PRINTER_STOPPED
-        self.state_description = self.printer_states.get(
-            self.state, _("Unknown"))
         self.device_uri = kw.get('device-uri', "")
         self.info = kw.get('printer-info', "")
         self.is_shared = kw.get('printer-is-shared', None)
@@ -76,6 +81,12 @@ class Printer:
         del self.not_shared
 
     def getAttributes(self):
+        """
+        Fetch further attributes for the printer.
+
+        Normally only a small set of attributes is fetched.  This
+        method is for fetching more.
+        """
         attrs = self.connection.getPrinterAttributes(self.name)
         self.attributes = {}
         self.other_attributes = {}
@@ -149,7 +160,11 @@ class Printer:
         self.update (**attrs)
 
     def getServer(self):
-        """return Server URI or None"""
+        """
+        Find out which server defines this printer.
+
+        @returns: server URI or None
+        """
         if not self.uri_supported[0].startswith('ipp://'):
             return None
         uri = self.uri_supported[0][6:]
@@ -161,8 +176,10 @@ class Printer:
 
     def getPPD(self):
         """
-        return cups.PPD object or False for raw queues
-        raise cups.IPPError
+        Obtain the printer's PPD.
+
+        @returns: cups.PPD object, or False for raw queues
+        @raise cups.IPPError: IPP error
         """
         if self._ppd is None:
             try:
@@ -177,6 +194,14 @@ class Printer:
         return self._ppd
 
     def setOption(self, name, value):
+        """
+        Set a printer's option.
+
+        @param name: option name
+        @type name: string
+        @param value: option value
+        @type value: option-specific
+        """
         if isinstance (value, float):
             radixchar = locale.nl_langinfo (locale.RADIXCHAR)
             if radixchar != '.':
@@ -185,9 +210,23 @@ class Printer:
         self.connection.addPrinterOptionDefault(self.name, name, value)
 
     def unsetOption(self, name):
+        """
+        Unset a printer's option.
+
+        @param name: option name
+        @type name: string
+        """
         self.connection.deletePrinterOptionDefault(self.name, name)
 
     def setEnabled(self, on, reason=None):
+        """
+        Set the printer's enabled state.
+
+        @param on: whether it will be enabled
+        @type on: bool
+        @param reason: reason for this state
+        @type reason: string
+        """
         if on:
             self.connection.enablePrinter(self.name)
         else:
@@ -197,6 +236,14 @@ class Printer:
                 self.connection.disablePrinter(self.name)
 
     def setAccepting(self, on, reason=None):
+        """
+        Set the printer's accepting state.
+
+        @param on: whether it will be accepting
+        @type on: bool
+        @param reason: reason for this state
+        @type reason: string
+        """
         if on:
             self.connection.acceptJobs(self.name)
         else:
@@ -206,18 +253,52 @@ class Printer:
                 self.connection.rejectJobs(self.name)
 
     def setShared(self,on):
+        """
+        Set the printer's shared state.
+
+        @param on: whether it will be accepting
+        @type on: bool
+        """
         self.connection.setPrinterShared(self.name, on)
 
     def setErrorPolicy (self, policy):
+        """
+        Set the printer's error policy.
+
+        @param policy: error policy
+        @type policy: string
+        """
         self.connection.setPrinterErrorPolicy(self.name, policy)
 
     def setOperationPolicy(self, policy):
+        """
+        Set the printer's operation policy.
+
+        @param policy: operation policy
+        @type policy: string
+        """
         self.connection.setPrinterOpPolicy(self.name, policy)    
 
     def setJobSheets(self, start, end):
+        """
+        Set the printer's job sheets.
+
+        @param start: start sheet
+        @type start: string
+        @param end: end sheet
+        @type end: string
+        """
         self.connection.setPrinterJobSheets(self.name, start, end)
 
     def setAccess(self, allow, except_users):
+        """
+        Set access control list.
+
+        @param allow: whether to allow by default, otherwise deny
+        @type allow: bool
+        @param except_users: exception list
+        @type except_users: string list
+        """
         if isinstance(except_users, str):
             users = except_users.split()
             users = [u.split(",") for u in users]
@@ -233,8 +314,13 @@ class Printer:
             self.connection.setPrinterUsersAllowed(self.name, except_users)
 
     def jobsQueued(self, only_tests=False):
-        """Returns a list of job IDs for jobs in the queue for this
-        printer."""
+        """
+        Find out whether jobs are queued for this printer.
+
+        @param only_tests: whether to restrict search to test pages
+        @type only_tests: bool
+        @returns: list of job IDs
+        """
         ret = []
         try:
             jobs = self.connection.getJobs ()
@@ -257,11 +343,17 @@ class Printer:
         return ret
 
     def testsQueued(self):
-        """Returns a list of job IDs for test pages in the queue for this
-        printer."""
+        """
+        Find out whether test jobs are queued for this printer.
+
+        @returns: list of job IDs
+        """
         return self.jobsQueued (only_tests=True)
 
     def setAsDefault(self):
+        """
+        Set this printer as the system default.
+        """
         self.connection.setDefault(self.name)
 
         # Also need to check system-wide lpoptions because that's how
@@ -316,6 +408,13 @@ class Printer:
             pass
 
 def getPrinters(connection):
+    """
+    Obtain a list of printers.
+
+    @param connection: CUPS connection
+    @type connection: CUPS.Connection object
+    @returns: L{Printer} list
+    """
     printers = connection.getPrinters()
     classes = connection.getClasses()
     printers_conf = None
@@ -330,7 +429,7 @@ def getPrinters(connection):
             # smb: URIs may have been sanitized (authentication details
             # removed), so fetch the actual details from printers.conf.
             if not printers_conf:
-                printers_conf = PrintersConf(connection)
+                printers_conf = _PrintersConf(connection)
             if printers_conf.device_uris.has_key(name):
                 printer.device_uri = printers_conf.device_uris[name]
         if not printer.__dict__.has_key ('discovered'):
@@ -343,12 +442,19 @@ def getPrinters(connection):
                 # that we can decide which queue entries in the main window
                 # should be editable/deletable and which not
                 if not printers_conf:
-                    printers_conf = PrintersConf(connection)
+                    printers_conf = _PrintersConf(connection)
                 if not printers_conf.device_uris.has_key(name):
                     printer.discovered = True
     return printers
 
 def parseDeviceID (id):
+    """
+    Parse an IEEE 1284 Device ID, so that it may be indexed by field name.
+
+    @param id: IEEE 1284 Device ID, without the two leading length bytes
+    @type id: string
+    @returns: dict indexed by field name
+    """
     id_dict = {}
     pieces = id.split(";")
     for piece in pieces:
@@ -368,12 +474,17 @@ def parseDeviceID (id):
     return id_dict
 
 class Device:
-
-    prototypes = {
-        'ipp' : "ipp://%s"
-        }
+    """
+    This class represents a CUPS device.
+    """
 
     def __init__(self, uri, **kw):
+        """
+        @param uri: device URI
+        @type uri: string
+        @param kw: device attributes
+        @type kw: dict
+        """
         self.uri = uri
         self.device_class = kw.get('device-class', 'Unknown') # XXX better default
         self.info = kw.get('device-info', '')
@@ -389,6 +500,9 @@ class Device:
         self.id_dict = parseDeviceID (self.id)
 
     def __cmp__(self, other):
+        """
+        Compare devices by order of preference.
+        """
         if self.is_class != other.is_class:
             if other.is_class:
                 return -1
@@ -418,8 +532,12 @@ class Device:
         
         return result
 
-class PrintersConf:
+class _PrintersConf:
     def __init__(self, connection):
+        """
+        @param connection: CUPS connection
+        @type connection: CUPS.Connection object
+        """
         self.device_uris = {}
         self.connection = connection
         self.parse(self.fetch('/admin/conf/printers.conf'))
@@ -465,7 +583,12 @@ class PrintersConf:
 
 def getDevices(connection):
     """
-    raise cups.IPPError
+    Obtain a list of available CUPS devices.
+
+    @param connection: CUPS connection
+    @type connection: cups.Connection object
+    @returns: a list of L{Device} objects
+    @raise cups.IPPError: IPP Error
     """
     devices = connection.getDevices()
     for uri, data in devices.iteritems():
@@ -476,8 +599,16 @@ def getDevices(connection):
     return devices
 
 def activateNewPrinter(connection, name):
-    """Set a new printer enabled, accepting jobs, and
-    (if necessary) the default printer."""
+    """
+    Set a new printer enabled, accepting jobs, and (if necessary) the
+    default printer.
+
+    @param connection: CUPS connection
+    @type connection: cups.Connection object
+    @param name: printer name
+    @type name: string
+    @raise cups.IPPError: IPP error
+    """
     connection.enablePrinter (name)
     connection.acceptJobs (name)
 
@@ -496,18 +627,26 @@ def activateNewPrinter(connection, name):
     if not default_is_set:
         connection.setDefault (name)
 
-def getPPDGroupOptions(group):
-    options = group.options[:]
-    for g in group.subgroups:
-        options.extend(getPPDGroupOptions(g))
-    return options
-
-def iteratePPDOptions(ppd):
-    for group in ppd.optionGroups:
-        for option in getPPDGroupOptions(group):
-            yield option
-
 def copyPPDOptions(ppd1, ppd2):
+    """
+    Copy default options between PPDs.
+
+    @param ppd1: source PPD
+    @type ppd1: cups.PPD object
+    @param ppd2: destination PPD
+    @type ppd2: cups.PPD object
+    """
+    def getPPDGroupOptions(group):
+    	options = group.options[:]
+        for g in group.subgroups:
+            options.extend(getPPDGroupOptions(g))
+        return options
+
+    def iteratePPDOptions(ppd):
+    	for group in ppd.optionGroups:
+            for option in getPPDGroupOptions(group):
+            	yield option
+
     for option in iteratePPDOptions(ppd1):
         if option.keyword == "PageRegion":
             continue
@@ -520,6 +659,15 @@ def copyPPDOptions(ppd1, ppd2):
                     debugprint ("set %s = %s" % (new_option.keyword, value))
                     
 def setPPDPageSize(ppd, language):
+    """
+    Set the PPD page size according to locale.
+
+    @param ppd: PPD
+    @type ppd: cups.PPD object
+    @param language: language, as given by the first element of
+    locale.setlocale
+    @type language: string
+    """
     # Just set the page size to A4 or Letter, that's all.
     # Use the same method CUPS uses.
     size = 'A4'
@@ -534,9 +682,14 @@ def setPPDPageSize(ppd, language):
         debugprint ("Failed to set PageSize (%s not available?)" % size)
 
 def missingPackagesAndExecutables(ppd):
-    """Check that all relevant executables for a PPD are installed.
+    """
+    Check that all relevant executables for a PPD are installed.
 
-    ppd: cups.PPD object"""
+    @param ppd: PPD
+    @type ppd: cups.PPD object
+    @returns: string list pair, representing missing packages and
+    missing executables
+    """
 
     # First, a local function.  How to check that something exists
     # in a path:
@@ -682,11 +835,11 @@ def missingPackagesAndExecutables(ppd):
 
     return (pkgs_to_install, exes_to_install)
 
-def main():
+def _main():
     c = cups.Connection()
     #printers = getPrinters(c)
     for device in getDevices(c).itervalues():
         print device.uri, device.id_dict
 
 if __name__=="__main__":
-    main()
+    _main()

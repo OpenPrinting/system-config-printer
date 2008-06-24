@@ -1,5 +1,71 @@
 2008-06-24  Tim Waugh  <twaugh@redhat.com>
 
+	* Makefile.am (nobase_pkgdata_SCRIPTS): No need to install
+	exported modules in pkgdatadir now.
+	(EXTRA_DIST): Ship exported modules.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* openprinting.py: Moved...
+	* cupshelpers/openprinting.py: ...here.
+	* cupshelpers/__init__.py: Import it.
+	* Makefile.am (EXPORT_MODULES): Export openprinting.
+	* system-config-printer.py (NewPrinterGUI.__init__): Updated.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/34.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* openprinting.py (normalize_space): This function has private
+	scope.
+	(QueryThread): This class has private scope.
+	Better docstrings throughout.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py (main): This function has private
+	scope.
+	(iteratePPDOptions): Likewise.
+	(getPPDGroupOptions): Likewise.
+	(PrintersConf): This class has private scope.
+	Better docstrings throughout.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py (Printer.printer_states): Moved...
+	* system-config-printer.py (GUI.printer_states): ...here.
+	(GUI.updatePrinterProperties): Updated.
+	* cupshelpers/cupshelpers.py (Printer): Removed instance variable
+	state_description.
+	* cupshelpers/cupshelpers.py: Don't import rhpl.translate.
+	* po/POTFILES.in: Don't translate cupshelpers.py.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py: Moved...
+	* cupshelpers/ppds.py: ...here.  Use implicit relative path to
+	import parseDeviceID.
+	(PPDs._main): Renamed self_test.
+	* Makefile.am (test-ppd-module.sh): Adjusted.
+	* cupshelpers/__init__.py: Import ppds module.
+
+	* system-config-printer.py (NewPrinterGUI.init): The ppds module
+	is now part of cupshelpers.
+	(NewPrinterGUI.getPPDs_thread): Likewise.
+	(NewPrinterGUI.nextNPTab): Likewise.
+	(NewPrinterGUI.getNetworkPrinterMakeModel): Likewise.
+	* applet.py (NewPrinterNotification.NewPrinter): Likewise.
+	* Makefile.am (nobase_pkgdata_SCRIPTS): Track file move.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py: Moved...
+	* cupshelpers/cupshelpers.py: ...here.
+	* cupshelpers/__init__.py: New module.
+	* Makefile.am (EXPORT_MODULES): Export cupshelpers.
+	* POTFILES.in: Track file move.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
 	* configure.in: Add AM_PATH_PYTHON.
 	* Makefile.am (pythondir_SCRIPTS): Install exported modules.
 

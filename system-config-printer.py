@@ -65,11 +65,9 @@ import gobject # for TYPE_STRING and TYPE_PYOBJECT
 from glade import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
-import ppds
 import probe_printer
 import gtk_label_autowrap
 from gtk_treeviewtooltips import TreeViewTooltips
-import openprinting
 import urllib
 import troubleshoot
 import contextmenu
@@ -152,6 +150,11 @@ def getCurrentClassMembers(treeview):
     return result
 
 class GUI(GtkGUI, monitor.Watcher):
+
+    printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
+                       cups.IPP_PRINTER_PROCESSING: _("Processing"),
+                       cups.IPP_PRINTER_BUSY: _("Busy"),
+                       cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
     def __init__(self, configure_printer = None, change_ppd = False):
 
@@ -1835,7 +1838,8 @@ class GUI(GtkGUI, monitor.Watcher):
         debugprint ("update printer properties")
         printer = self.printer
         self.lblPMakeModel.set_text(printer.make_and_model)
-        self.lblPState.set_text(printer.state_description)
+        self.lblPState.set_text(self.printer_states.get (printer.state,
+                                                         _("Unknown")))
         if len (self.changed) == 0:
             debugprint ("no changes yet: full printer properties update")
             # State
@@ -2587,7 +2591,7 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         # Set up OpenPrinting widgets.
-        self.openprinting = openprinting.OpenPrinting ()
+        self.openprinting = cupshelpers.openprinting.OpenPrinting ()
         self.openprinting_query_handle = None
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         cell = gtk.CellRendererText()
@@ -2748,7 +2752,8 @@ class NewPrinterGUI(GtkGUI):
                     makeandmodel = ''
 
                 (self.auto_make,
-                 self.auto_model) = ppds.ppdMakeModelSplit (makeandmodel)
+                 self.auto_model) = \
+                 cupshelpers.ppds.ppdMakeModelSplit (makeandmodel)
             else:
                 # Special CUPS names for a raw queue.
                 self.auto_make = 'Raw'
@@ -2799,7 +2804,8 @@ class NewPrinterGUI(GtkGUI):
             c = cups.Connection ()
             debugprint ("Fetching PPDs")
             ppds_dict = c.getPPDs()
-            self.ppds_result = ppds.PPDs(ppds_dict, language=language)
+            self.ppds_result = cupshelpers.ppds.PPDs(ppds_dict,
+                                                     language=language)
             debugprint ("Closing connection (PPDs)")
             del c
         except cups.IPPError, (e, msg):
@@ -3004,7 +3010,8 @@ class NewPrinterGUI(GtkGUI):
                     if ppdname:
                         ppddict = self.ppds.getInfoFromPPDName (ppdname)
                         make_model = ppddict['ppd-make-and-model']
-                        (make, model) = ppds.ppdMakeModelSplit (make_model)
+                        (make, model) = \
+                            cupshelpers.ppds.ppdMakeModelSplit (make_model)
                         self.auto_make = make
                         self.auto_model = model
                 except:
@@ -3361,7 +3368,7 @@ class NewPrinterGUI(GtkGUI):
         if make_and_model and not device.id:
             mk = None
             md = None
-            (mk, md) = ppds.ppdMakeModelSplit (make_and_model)
+            (mk, md) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
         # Check whether the device is supported by HPLIP and replace

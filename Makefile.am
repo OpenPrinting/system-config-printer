@@ -1,29 +1,29 @@
 SUBDIRS=po
 
-EXPORT_MODULES=\
-	ppds.py
+EXPORT_MODULES=					\
+	cupshelpers/__init__.py			\
+	cupshelpers/cupshelpers.py		\
+	cupshelpers/ppds.py			\
+	cupshelpers/openprinting.py
 
-python_SCRIPTS = $(EXPORT_MODULES)
+nobase_python_SCRIPTS = $(EXPORT_MODULES)
 
 nobase_pkgdata_SCRIPTS=				\
 	my-default-printer.py			\
 	pysmb.py				\
 	system-config-printer.py		\
 	troubleshoot/__init__.py		\
-	applet.py				\
-	$(EXPORT_MODULES)
+	applet.py
 
 nobase_pkgdata_DATA=					\
 	authconn.py					\
 	config.py					\
 	contextmenu.py					\
-	cupshelpers.py					\
 	debug.py					\
 	errordialogs.py					\
 	glade.py					\
 	jobviewer.py					\
 	monitor.py					\
-	openprinting.py					\
 	options.py					\
 	optionwidgets.py				\
 	probe_printer.py				\
@@ -140,6 +140,7 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
+	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
 	newprinternotification.conf \
 	bootstrap \
@@ -197,8 +198,10 @@ help:
 	@echo " run-applet         Run system-config-printer-applet with local glade file"
 
 test-ppd-module.sh:
-	echo "#!/bin/sh" > "$@"
-	echo "python $(top_srcdir)/ppds.py" >> "$@"
+	echo "#!/usr/bin/env python" > "$@"
+	echo "import sys; sys.path.append ('$(top_srcdir)')" >> "$@"
+	echo "from cupshelpers.ppds import self_test" >> "$@"
+	echo "self_test()" >> "$@"
 	chmod 755 "$@"
 
 TESTS = test-ppd-module.sh
