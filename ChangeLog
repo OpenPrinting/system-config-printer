@@ -1,3 +1,26 @@
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Add AM_PATH_PYTHON.
+	* Makefile.am (pythondir_SCRIPTS): Install exported modules.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am (EXPORT_MODULES): New variable.
+	(html): New rule.  Build API documentation for exported modules
+	using epydoc.
+	(distclean-local): Clean documentation.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py: Better docstrings throughout.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py (getDriverType): Made this function private as it is not
+	part of the API for this module.
+	(show_help): Likewise.
+	(main): Likewise.
+
 2008-06-23  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py: New global PYSMB_AVAILABLE.
