@@ -1,11 +1,15 @@
 SUBDIRS=po
+
+EXPORT_MODULES=\
+	ppds.py
+
 nobase_pkgdata_SCRIPTS=				\
 	my-default-printer.py			\
-	ppds.py					\
 	pysmb.py				\
 	system-config-printer.py		\
 	troubleshoot/__init__.py		\
-	applet.py
+	applet.py				\
+	$(EXPORT_MODULES)
 
 nobase_pkgdata_DATA=					\
 	authconn.py					\
@@ -138,6 +142,10 @@ desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 $(man_MANS): $(top_srcdir)/man/system-config-printer.xml
 	xmlto man -o man $<
 
+html:	$(EXPORT_MODULES)
+	rm -rf html
+	epydoc -o html --html $(EXPORT_MODULES)
+
 distcheck-hook: update-po
 
 update-po: missing-languages
@@ -182,6 +190,9 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
 	test-ppd-module.sh pickled-ppds
+
+distclean-local:
+	rm -rf html
 
 .PHONY: update-po missing-languages fix-glade run help
 
