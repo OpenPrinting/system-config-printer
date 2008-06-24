@@ -1,3 +1,23 @@
+2008-06-23  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py: New global PYSMB_AVAILABLE.
+	(NewPrinterGUI.__init__): Make SMB browse button insensitive if
+	pysmb is not available.  Removed legacy pysmb code.
+	(NewPrinterGUI.browse_smb_hosts): Removed legacy pysmb code.
+	(NewPrinterGUI.on_tvSMBBrowser_row_expanded): Likewise.
+	(NewPrinterGUI.on_btnSMBBrowseOk_clicked): Likewise.
+	(NewPrinterGUI.on_btnSMBVerify_clicked): Likewise.
+
+	* pysmb.py (get_wins_server): Removed.
+	(get_domain_list): Removed.
+	(get_host_list): Removed.
+	(get_host_list_from_domain): Removed.
+	(get_host_info): Removed.
+	(get_printer_list): Removed.
+	(printer_share_accessible): Removed.
+
+	Fixes https://fedorahosted.org/system-config-printer/ticket/35.
+
 2008-06-24  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py
