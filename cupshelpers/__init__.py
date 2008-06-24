@@ -20,13 +20,10 @@
 from cupshelpers import				\
     Device,					\
     Printer,					\
-    PrintersConf,				\
     activateNewPrinter,				\
     copyPPDOptions,				\
     getDevices,					\
-    getPPDGroupOptions,				\
     getPrinters,				\
-    iteratePPDOptions,				\
     missingPackagesAndExecutables,		\
     parseDeviceID,				\
     setPPDPageSize
