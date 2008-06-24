@@ -1,3 +1,27 @@
+2008-06-24  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py: Make GroupsPane a proper widget. It's now a
+	ScrolledWindow containing a TreeView and taking care of all the
+	TreeView's functionality.
+	* GroupsPaneModel.py: New file containing a ListStore subclass to
+	implement the GroupsPane item list and several classes
+	implementing such item types.
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.get_text): Added this
+	method for convenience.
+	* system-config-printer.py (GUI.__init__): Use the GroupsPane
+	widget.
+	* system-config-printer.py (GUI.filter_iconview): New method to
+	allow filtering not just from the search signal handler. We now
+	filter from the current iconview model instead of from canonical
+	printers list.
+	* system-config-printer.py (GUI.on_groups_pane_item_activated):
+	New signal handler to change the iconview's model when a different
+	group pane item is selected. Just a sketch for now.
+	* system-config-printer.py (GUI.populateList): Don't update the
+	iconview's model from here for now.
+	* ui/PrintersWindow.glade: Don't build a TreeView from glade. It's
+	done on code now.
+
 2008-06-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* system-config-printer.py (GUI.on_search_entry_search): Use a

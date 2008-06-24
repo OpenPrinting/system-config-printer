@@ -97,6 +97,9 @@ class ToolbarSearchEntry (gtk.HBox):
 
         self.entry.set_text ("")
 
+    def get_text (self):
+        return self.entry.get_text ()
+
     def set_text (self, text):
         self.entry.set_text (text)
 

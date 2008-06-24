@@ -75,6 +75,7 @@ import errordialogs
 from errordialogs import *
 from ToolbarSearchEntry import *
 from GroupsPane import *
+from GroupsPaneModel import *
 
 domain='system-config-printer'
 import locale
@@ -185,7 +186,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               "enabled",
                               "shared",
                               "set_as_default",
-                              "groups_treeview",
+                              "hpaned1",
                               "view_discovered_printers"],
                          "AboutDialog":
                              ["AboutDialog"],
@@ -358,10 +359,14 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # Setup search and printer groups
         self.setup_toolbar_for_search_entry ()
-        self.groups_pane = GroupsPane (self.groups_treeview)
-        self.groups_treeview.get_selection ().connect (
-            'changed',
-            self.on_groups_treeview_selection_changed)
+        self.current_filter_text = ""
+        # Need to have a dummy widget in glade or it will put the iconview on
+        # the first position
+        self.hpaned1.get_child1 ().destroy ()
+        self.groups_pane = GroupsPane ()
+        self.hpaned1.add1 (self.groups_pane)
+        self.groups_pane.connect ('item-activated',
+                                  self.on_groups_pane_item_activated)
 
         # Setup icon view
         self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
@@ -567,6 +572,8 @@ class GUI(GtkGUI, monitor.Watcher):
             self.populateList()
             show_HTTP_Error(s, self.PrintersWindow)
 
+        self.reset_icon_view_model (self.printers)
+
         try:
             self.dests_iconview.resize_children ()
             (width, height) = self.dests_iconview.size_request ()
@@ -593,10 +600,6 @@ class GUI(GtkGUI, monitor.Watcher):
                     break
                 iter = model.iter_next (iter)
 
-    def on_groups_treeview_selection_changed (self, UNUSED):
-        if self.groups_treeview.get_selection ().count_selected_rows () != 0:
-            self.search_entry.clear ()
-
     def setup_toolbar_for_search_entry (self):
         separator = gtk.SeparatorToolItem ()
         separator.set_draw (False)
@@ -612,19 +615,36 @@ class GUI(GtkGUI, monitor.Watcher):
         self.toolbar.insert (tool_item, -1)
         self.toolbar.show_all ()
 
-    def on_search_entry_search (self, entry, text):
+    def on_search_entry_search (self, UNUSED, text):
+        self.filter_iconview (text)
+
+    def filter_iconview (self, text):
+        if len (self.current_filter_text) == 0:
+            self.previous_printers_subset = {}
+            for row in self.mainlist:
+                self.previous_printers_subset[row[0].name] = row[0]
+
+        self.current_filter_text = text
+
         if len (text) > 0:
-            self.groups_pane.set_searching ()
             printers_subset = {}
             # FIXME: this might be slow and block the UI
             pattern = re.compile (text, re.I) # ignore case
-            for name in self.printers.keys ():
-                if pattern.search (name) != None:
-                    printers_subset[name] = self.printers[name]
+            for row in self.mainlist:
+                if pattern.search (row[0].name) != None:
+                    printers_subset[row[0].name] = row[0]
             self.reset_icon_view_model (printers_subset)
         else:
-            self.groups_pane.unset_searching ()
+            self.reset_icon_view_model (self.previous_printers_subset)
+
+    def on_groups_pane_item_activated (self, UNUSED, item):
+        if isinstance (item, AllPrintersItem):
+            self.populateList ()
             self.reset_icon_view_model (self.printers)
+        elif isinstance (item, FavouritesItem):
+            self.reset_icon_view_model ({})
+
+        self.filter_iconview (self.search_entry.get_text ())
 
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
@@ -903,8 +923,6 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.mainlist.append (row=[object, pixbuf, name, tip])
 
     def populateList(self, prompt_allowed=True):
-        self.search_entry.clear ()
-
         # Save selection of printers.
         selected_printers = set()
         paths = self.dests_iconview.get_selected_items ()
@@ -941,8 +959,6 @@ class GUI(GtkGUI, monitor.Watcher):
 
         for name, printer in self.printers.iteritems ():
             self.servers.add(printer.getServer())
-
-        self.reset_icon_view_model (self.printers)
 
         # Restore selection of printers.
         model = self.dests_iconview.get_model ()
