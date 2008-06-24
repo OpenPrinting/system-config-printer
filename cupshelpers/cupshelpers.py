@@ -19,17 +19,10 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups, pprint, os, tempfile, re
-from rhpl.translate import _, N_
 import locale
 from debug import *
 
 class Printer:
-
-    printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
-                       cups.IPP_PRINTER_PROCESSING: _("Processing"),
-                       cups.IPP_PRINTER_BUSY: _("Busy"),
-                       cups.IPP_PRINTER_STOPPED: _("Stopped") }
-
     def __init__(self, name, connection, **kw):
         self.name = name
         self.connection = connection
@@ -59,8 +52,6 @@ class Printer:
     def update(self, **kw):
         self.state = kw.get('printer-state', 0)
         self.enabled = self.state != cups.IPP_PRINTER_STOPPED
-        self.state_description = self.printer_states.get(
-            self.state, _("Unknown"))
         self.device_uri = kw.get('device-uri', "")
         self.info = kw.get('printer-info', "")
         self.is_shared = kw.get('printer-is-shared', None)

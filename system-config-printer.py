@@ -153,6 +153,11 @@ class GtkGUI:
 
 class GUI(GtkGUI, monitor.Watcher):
 
+    printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
+                       cups.IPP_PRINTER_PROCESSING: _("Processing"),
+                       cups.IPP_PRINTER_BUSY: _("Busy"),
+                       cups.IPP_PRINTER_STOPPED: _("Stopped") }
+
     def __init__(self, configure_printer = None, change_ppd = False):
 
         try:
@@ -1801,7 +1806,8 @@ class GUI(GtkGUI, monitor.Watcher):
         debugprint ("update printer properties")
         printer = self.printer
         self.lblPMakeModel.set_text(printer.make_and_model)
-        self.lblPState.set_text(printer.state_description)
+        self.lblPState.set_text(self.printer_states.get (printer.state,
+                                                         _("Unknown")))
         if len (self.changed) == 0:
             debugprint ("no changes yet: full printer properties update")
             # State

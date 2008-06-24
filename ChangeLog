@@ -1,5 +1,15 @@
 2008-06-24  Tim Waugh  <twaugh@redhat.com>
 
+	* cupshelpers/cupshelpers.py (Printer.printer_states): Moved...
+	* system-config-printer.py (GUI.printer_states): ...here.
+	(GUI.updatePrinterProperties): Updated.
+	* cupshelpers/cupshelpers.py (Printer): Removed instance variable
+	state_description.
+	* cupshelpers/cupshelpers.py: Don't import rhpl.translate.
+	* po/POTFILES.in: Don't translate cupshelpers.py.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
 	* ppds.py: Moved...
 	* cupshelpers/ppds.py: ...here.  Use implicit relative path to
 	import parseDeviceID.
