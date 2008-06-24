@@ -3,6 +3,8 @@ SUBDIRS=po
 EXPORT_MODULES=\
 	ppds.py
 
+python_SCRIPTS = $(EXPORT_MODULES)
+
 nobase_pkgdata_SCRIPTS=				\
 	my-default-printer.py			\
 	pysmb.py				\
