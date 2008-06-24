@@ -23,7 +23,7 @@ import urllib, httplib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 
-def normalize_space (text):
+def _normalize_space (text):
     result = text.strip ()
     result = result.replace ('\n', ' ')
     i = result.find ('  ')
@@ -32,7 +32,7 @@ def normalize_space (text):
         i = result.find ('  ')
     return result
 
-class QueryThread (threading.Thread):
+class _QueryThread (threading.Thread):
     def __init__ (self, parent, parameters, callback, user_data=None):
         threading.Thread.__init__ (self)
         self.parent = parent
@@ -75,6 +75,11 @@ class QueryThread (threading.Thread):
 
 class OpenPrinting:
     def __init__(self, language=None):
+        """
+        @param language: language, as given by the first element of
+        locale.setlocale().
+        @type language: string
+        """
         if language == None:
             import locale
             try:
@@ -92,6 +97,11 @@ class OpenPrinting:
         self.onlymanufacturer = 0
 
     def cancelOperation(self, handle):
+        """
+        Cancel an operation.
+
+        @param handle: query/operation handle
+        """
         # Just prevent the callback.
         try:
             handle.callback = None
@@ -100,9 +110,8 @@ class OpenPrinting:
 
     def webQuery(self, parameters, callback, user_data=None):
         """
-        webQuery(parameters, callback, user_data) -> integer
-
         Run a web query for a driver.
+
         @type parameters: dict
         @param parameters: URL parameters
         @type callback: function
@@ -111,15 +120,14 @@ class OpenPrinting:
         success
         @return: query handle
         """
-        the_thread = QueryThread (self, parameters, callback, user_data)
+        the_thread = _QueryThread (self, parameters, callback, user_data)
         the_thread.start()
         return the_thread
 
     def searchPrinters(self, searchterm, callback, user_data=None):
         """
-        searchPrinters(make, callback, user_data) -> integer
-
         Search for printers using a search term.
+
         @type searchterm: string
         @param searchterm: search term
         @type callback: function
@@ -176,9 +184,8 @@ class OpenPrinting:
 
     def listDrivers(self, model, callback, user_data=None):
         """
-        listDrivers(model, callback, user_data) -> integer
-
         Obtain a list of printer drivers.
+
         @type model: string
         @param model: foomatic printer model string
         @type callback: function
