@@ -29,7 +29,13 @@ import re
 from debug import *
 
 def ppdMakeModelSplit (ppd_make_and_model):
-    """Convert the ppd-make-and-model field into a (make, model) pair."""
+    """
+    Split a ppd-make-and-model string into a canonical make and model pair.
+
+    @type ppd_make_and_model: string
+    @param ppd_make_and_model: IPP ppd-make-and-model attribute
+    @return: a string pair representing the make and the model
+    """
 
     # If the string starts with a known model name (like "LaserJet") assume
     # that the manufacturer name is missing and add the manufacturer name
@@ -209,6 +215,14 @@ def _getDriverType (ppdname, ppds=None):
 
 
 class PPDs:
+    """
+    This class is for handling the list of PPDs returned by CUPS.  It
+    indexes by PPD name and device ID, filters by natural language so
+    that foreign-language PPDs are not included, and sorts by driver
+    type.  If an exactly-matching PPD is not available, it can
+    substitute with a PPD for a similar model or for a generic driver.
+    """
+
     # Status of match.
     STATUS_SUCCESS = 0
     STATUS_MODEL_MISMATCH = 1
@@ -216,7 +230,14 @@ class PPDs:
     STATUS_NO_DRIVER = 3
 
     def __init__ (self, ppds, language=None):
-        """Takes a dict of PPDs, as returned by cups.Connection.getPPDs()."""
+        """
+        @type ppds: dict
+        @param ppds: dict of PPDs as returned by cups.Connection.getPPDs()
+
+        @type language: string
+	@param language: language name, as given by the first element
+        of the pair returned by locale.getlocale()
+        """
         self.ppds = ppds.copy ()
         self.makes = None
         self.ids = None
@@ -264,7 +285,10 @@ class PPDs:
                 self.ppds['raw']['ppd-make-and-model'] = "Generic " + makemodel
 
     def getMakes (self):
-        """Returns a sorted list of strings."""
+        """
+	@returns: a list of strings representing makes, sorted according
+        to the current locale
+	"""
         self._init_makes ()
         makes_list = self.makes.keys ()
         makes_list.sort (locale.strcoll)
@@ -277,7 +301,10 @@ class PPDs:
         return makes_list
 
     def getModels (self, make):
-        """Returns a sorted list of strings."""
+        """
+	@returns: a list of strings representing models, sorted using
+	cups.modelSort()
+	"""
         self._init_makes ()
         try:
             models_list = self.makes[make].keys ()
@@ -287,7 +314,13 @@ class PPDs:
         return models_list
 
     def getInfoFromModel (self, make, model):
-        """Returns a dict of ppd-name:ppd-dict."""
+        """
+	Obtain a list of PPDs that are suitable for use with a
+        particular printer model, given its make and model name.
+
+	@returns: a dict, indexed by ppd-name, of dicts representing
+        PPDs (as given by cups.Connection.getPPDs)"
+	"""
         self._init_makes ()
         try:
             return self.makes[make][model]
@@ -295,11 +328,22 @@ class PPDs:
             return {}
 
     def getInfoFromPPDName (self, ppdname):
-        """Returns a ppd-dict."""
+        """
+	@returns: a dict representing a PPD, as given by
+	cups.Connection.getPPDs
+	"""
         return self.ppds[ppdname]
 
     def orderPPDNamesByPreference (self, ppdnamelist=[]):
-        """Returns a sorted list of ppd-names."""
+        """
+
+	Sort a list of PPD names by (hard-coded) preferred driver
+	type.
+
+	@param ppdnamelist: PPD names
+	@type ppdnamelist: string list
+	@returns: string list
+	"""
         if len (ppdnamelist) < 1:
             return ppdnamelist
 
@@ -380,7 +424,35 @@ class PPDs:
 
     def getPPDNameFromDeviceID (self, mfg, mdl, description="",
                                 commandsets=[], uri=None):
-        """Returns a (status,ppd-name) integer,string pair."""
+        """
+	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
+	The status is one of:
+
+	  - L{STATUS_SUCCESS}: the match was successful, and an exact
+            match was found
+
+	  - L{STATUS_MODEL_MISMATCH}: a similar match was found, but
+            the model name does not exactly match
+
+	  - L{STATUS_GENERIC_DRIVER}: no match was found, but a
+            generic driver is available that can drive this device
+            according to its command set list
+
+	  - L{STATUS_NO_DRIVER}: no match was found at all, and the
+            returned PPD name is a last resort
+
+	@param mfg: MFG or MANUFACTURER field
+	@type mfg: string
+	@param mdl: MDL or MODEL field
+	@type mdl: string
+	@param description: DES or DESCRIPTION field, optional
+	@type description: string
+	@param commandsets: CMD or COMMANDSET field, optional
+	@type commandsets: string
+	@param uri: device URI, optional (only needed for debugging)
+	@type uri: string
+	@returns: an integer,string pair of (status,ppd-name)
+	"""
         debugprint ("\n%s %s" % (mfg, mdl))
         self._init_ids ()
         id_matched = False
