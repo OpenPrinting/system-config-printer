@@ -13,8 +13,7 @@ nobase_pkgdata_SCRIPTS=				\
 	pysmb.py				\
 	system-config-printer.py		\
 	troubleshoot/__init__.py		\
-	applet.py				\
-	$(EXPORT_MODULES)
+	applet.py
 
 nobase_pkgdata_DATA=					\
 	authconn.py					\
@@ -125,6 +124,7 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
+	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
 	newprinternotification.conf \
 	bootstrap \
