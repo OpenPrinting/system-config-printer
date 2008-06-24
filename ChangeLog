@@ -1,5 +1,22 @@
 2008-06-24  Tim Waugh  <twaugh@redhat.com>
 
+	* ppds.py: Moved...
+	* cupshelpers/ppds.py: ...here.  Use implicit relative path to
+	import parseDeviceID.
+	(PPDs._main): Renamed self_test.
+	* Makefile.am (test-ppd-module.sh): Adjusted.
+	* cupshelpers/__init__.py: Import ppds module.
+
+	* system-config-printer.py (NewPrinterGUI.init): The ppds module
+	is now part of cupshelpers.
+	(NewPrinterGUI.getPPDs_thread): Likewise.
+	(NewPrinterGUI.nextNPTab): Likewise.
+	(NewPrinterGUI.getNetworkPrinterMakeModel): Likewise.
+	* applet.py (NewPrinterNotification.NewPrinter): Likewise.
+	* Makefile.am (nobase_pkgdata_SCRIPTS): Track file move.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
 	* cupshelpers.py: Moved...
 	* cupshelpers/cupshelpers.py: ...here.
 	* cupshelpers/__init__.py: New module.

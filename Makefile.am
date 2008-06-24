@@ -3,7 +3,7 @@ SUBDIRS=po
 EXPORT_MODULES=\
 	cupshelpers/__init__.py \
 	cupshelpers/cupshelpers.py \
-	ppds.py
+	cupshelpers/ppds.py
 
 nobase_python_SCRIPTS = $(EXPORT_MODULES)
 
@@ -182,8 +182,10 @@ help:
 	@echo " run-applet         Run system-config-printer-applet with local glade file"
 
 test-ppd-module.sh:
-	echo "#!/bin/sh" > "$@"
-	echo "python $(top_srcdir)/ppds.py" >> "$@"
+	echo "#!/usr/bin/env python" > "$@"
+	echo "import sys; sys.path.append ('$(top_srcdir)')" >> "$@"
+	echo "from cupshelpers.ppds import self_test" >> "$@"
+	echo "self_test()" >> "$@"
 	chmod 755 "$@"
 
 TESTS = test-ppd-module.sh

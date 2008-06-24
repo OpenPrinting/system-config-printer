@@ -59,7 +59,6 @@ import cupshelpers, options
 import gobject # for TYPE_STRING and TYPE_PYOBJECT
 from optionwidgets import OptionWidget
 from debug import *
-import ppds
 import probe_printer
 import gtk_label_autowrap
 from gtk_treeviewtooltips import TreeViewTooltips
@@ -2705,7 +2704,8 @@ class NewPrinterGUI(GtkGUI):
                     makeandmodel = ''
 
                 (self.auto_make,
-                 self.auto_model) = ppds.ppdMakeModelSplit (makeandmodel)
+                 self.auto_model) = \
+                 cupshelpers.ppds.ppdMakeModelSplit (makeandmodel)
             else:
                 # Special CUPS names for a raw queue.
                 self.auto_make = 'Raw'
@@ -2756,7 +2756,8 @@ class NewPrinterGUI(GtkGUI):
             c = cups.Connection ()
             debugprint ("Fetching PPDs")
             ppds_dict = c.getPPDs()
-            self.ppds_result = ppds.PPDs(ppds_dict, language=language)
+            self.ppds_result = cupshelpers.ppds.PPDs(ppds_dict,
+                                                     language=language)
             debugprint ("Closing connection (PPDs)")
             del c
         except cups.IPPError, (e, msg):
@@ -2961,7 +2962,8 @@ class NewPrinterGUI(GtkGUI):
                     if ppdname:
                         ppddict = self.ppds.getInfoFromPPDName (ppdname)
                         make_model = ppddict['ppd-make-and-model']
-                        (make, model) = ppds.ppdMakeModelSplit (make_model)
+                        (make, model) = \
+                            cupshelpers.ppds.ppdMakeModelSplit (make_model)
                         self.auto_make = make
                         self.auto_model = model
                 except:
@@ -3318,7 +3320,7 @@ class NewPrinterGUI(GtkGUI):
         if make_and_model and not device.id:
             mk = None
             md = None
-            (mk, md) = ppds.ppdMakeModelSplit (make_and_model)
+            (mk, md) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
         # Check whether the device is supported by HPLIP and replace

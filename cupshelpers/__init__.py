@@ -30,3 +30,5 @@ from cupshelpers import				\
     missingPackagesAndExecutables,		\
     parseDeviceID,				\
     setPPDPageSize
+
+import ppds
