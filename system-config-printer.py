@@ -3671,7 +3671,7 @@ class NewPrinterGUI(GtkGUI):
                 smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
                 ctx = pysmb.smbc.Context (debug=debug,
                                           auth_fn=smbc_auth.callback)
-                servers = None
+                servers = []
                 try:
                     while smbc_auth.perform_authentication () > 0:
                         try:
@@ -3684,14 +3684,13 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     nonfatalException()
 
-                if servers:
-                    while model.iter_has_child (iter):
-                        i = model.iter_nth_child (iter, 0)
-                        model.remove (i)
+                while model.iter_has_child (iter):
+                    i = model.iter_nth_child (iter, 0)
+                    model.remove (i)
 
-                    for server in servers:
-                        i = model.append (iter, [server])
-                        n = model.append (i)
+                for server in servers:
+                    i = model.append (iter, [server])
+                    n = model.append (i)
 
                 view.expand_row (path, 0)
                 del self.expanding_row
@@ -3711,7 +3710,7 @@ class NewPrinterGUI(GtkGUI):
                 smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
                 ctx = pysmb.smbc.Context (debug=debug,
                                           auth_fn=smbc_auth.callback)
-                shares = None
+                shares = []
                 try:
                     while smbc_auth.perform_authentication () > 0:
                         try:
@@ -3724,15 +3723,14 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     nonfatalException()
 
-                if shares:
-                    while model.iter_has_child (iter):
-                        i = model.iter_nth_child (iter, 0)
-                        model.remove (i)
+                while model.iter_has_child (iter):
+                    i = model.iter_nth_child (iter, 0)
+                    model.remove (i)
 
-                    for share in shares:
-                        if share.smbc_type == pysmb.smbc.PRINTER_SHARE:
-                            i = model.append (iter, [share])
-                            debugprint (repr (share))
+                for share in shares:
+                    if share.smbc_type == pysmb.smbc.PRINTER_SHARE:
+                        i = model.append (iter, [share])
+                        debugprint (repr (share))
 
                 view.expand_row (path, 0)
                 del self.expanding_row
