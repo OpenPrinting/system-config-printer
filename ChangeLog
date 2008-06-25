@@ -1,3 +1,9 @@
+2008-06-25  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/CheckPrinterSanity.py (CheckPrinterSanity.display):
+	Prevent hp-info from accessing X display, so that it does not
+	start the HPLIP systray applet (bug #452371 comment #4).
+
 2008-06-23  Tim Waugh  <twaugh@redhat.com>
 
 	* smburi.py (SMBURI.__init__): Accept full URIs.
