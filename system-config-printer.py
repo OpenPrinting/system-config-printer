@@ -3261,7 +3261,8 @@ class NewPrinterGUI(GtkGUI):
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
-        cmd = 'LC_ALL=C hp-info -d "${URI}" | grep fax-type 2>/dev/null'
+        cmd = 'LC_ALL=C DISPLAY= hp-info -d "${URI}" |'\
+            ' grep fax-type 2>/dev/null'
         debugprint (faxuri + ": " + cmd)
         p = os.popen(cmd, 'r')
         for output in p:
