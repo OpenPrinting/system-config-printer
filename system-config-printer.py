@@ -25,6 +25,7 @@ import config
 
 import errno
 import sys, os, tempfile, time, traceback, re, httplib
+import subprocess
 import signal, thread
 try:
     import gtk.glade
@@ -3304,17 +3305,27 @@ class NewPrinterGUI(GtkGUI):
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
-        cmd = 'hp-info -d "${URI}" | grep fax-type 2>/dev/null'
+        cmd = 'LC_ALL=C DISPLAY= hp-info -d "${URI}"'
         debugprint (faxuri + ": " + cmd)
-        p = os.popen(cmd, 'r')
-        for output in p:
-            faxtype = -1;
-            res = re.search ("(\d+)", output)
+        try:
+            p = subprocess.Popen (cmd, shell=True,
+                                  stdin=file("/dev/null"),
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE)
+            (stdout, stderr) = p.communicate ()
+        except:
+            # Problem executing command.
+            return None
+
+        for line in stdout.split ("\n"):
+            if line.find ("fax-type") == -1:
+                continue
+            faxtype = -1
+            res = re.search ("(\d+)", line)
             if res:
                 resg = res.groups()
                 faxtype = resg[0]
             if faxtype >= 0: break
-        p.close()
         if faxtype < 0:
             return None
         elif faxtype == 4:
@@ -3323,16 +3334,24 @@ class NewPrinterGUI(GtkGUI):
             return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax;DES:HP Fax;')
 
     def get_hplip_uri_for_network_printer(self, host, mode):
+        os.environ["HOST"] = host
         if mode == "print": mod = "-c"
         elif mode == "fax": mod = "-f"
         else: mod = "-c"
-        uri = None
-        os.environ["HOST"] = host
-        cmd = 'hp-makeuri ' + mod + ' "${HOST}" 2> /dev/null'
+        cmd = 'hp-makeuri ' + mod + ' "${HOST}"'
         debugprint (host + ": " + cmd)
-        p = os.popen(cmd, 'r')
-        uri = p.read ().strip ()
-        p.close ()
+        uri = None
+        try:
+            p = subprocess.Popen (cmd, shell=True,
+                                  stdin=file("/dev/null"),
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE)
+            (stdout, stderr) = p.communicate ()
+        except:
+            # Problem executing command.
+            return None
+
+        uri = stdout.strip ()
         return uri
 
     def getNetworkPrinterMakeModel(self, device):
@@ -3349,14 +3368,23 @@ class NewPrinterGUI(GtkGUI):
         # Try to get make and model via SNMP
         if host:
             os.environ["HOST"] = host
-            cmd = '/usr/lib/cups/backend/snmp "${HOST}" 2>/dev/null'
+            cmd = '/usr/lib/cups/backend/snmp "${HOST}"'
             debugprint (host + ": " + cmd)
-            p = os.popen(cmd, 'r')
-            output = p.read ().strip ()
-            p.close()
-            mm = re.sub("^\s*\S+\s+\S+\s+\"", "", output)
-            mm = re.sub("\"\s+.*$", "", mm)
-            if mm and mm != "": device.make_and_model = mm
+            stdout = None
+            try:
+                p = subprocess.Popen (cmd, shell=True,
+                                      stdin=file("/dev/null"),
+                                      stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE)
+                (stdout, stderr) = p.communicate ()
+            except:
+                # Problem executing command.
+                pass
+
+            if stdout != None:
+                mm = re.sub("^\s*\S+\s+\S+\s+\"", "", stdout)
+                mm = re.sub("\"\s+.*$", "", mm)
+                if mm and mm != "": device.make_and_model = mm
         # Extract make and model and create a pseudo device ID, so
         # that a PPD/driver can be assigned to the device
         make_and_model = None
@@ -4118,9 +4146,16 @@ class NewPrinterGUI(GtkGUI):
 
         try:
             if len (location) == 0 and self.device.device_class == "direct":
-                p = os.popen ('/bin/hostname', 'r')
-                location = p.read ().strip ()
-                p.close ()
+                try:
+                    p = subprocess.Popen (['/bin/hostname'],
+                                          stdin=file("/dev/null"),
+                                          stdout=subprocess.PIPE,
+                                          stderr=subprocess.PIPE)
+                    (stdout, stderr) = p.communicate ()
+                    location = stdout.strip ()
+                except:
+                    # Problem executing command.
+                    pass
             self.entNPLocation.set_text (location)
         except:
             nonfatalException ()
@@ -4554,13 +4589,19 @@ class NewPrinterGUI(GtkGUI):
                 filename = self.filechooserPPD.get_filename()
                 err = _('Failed to read PPD file.  Possible reason '
                         'follows:') + '\n'
-                os.environ["PPD"] = filename
-                # We want this to be in the current natural language,
-                # so we intentionally don't set LC_ALL=C here.
-                p = os.popen ('/usr/bin/cupstestppd -rvv "$PPD"', 'r')
-                output = p.readlines ()
-                p.close ()
-                err += reduce (lambda x, y: x + y, output)
+                try:
+                    # We want this to be in the current natural language,
+                    # so we intentionally don't set LC_ALL=C here.
+                    p = subprocess.Popen (['/usr/bin/cupstestppd',
+                                           '-rvv', filename],
+                                          stdin=file("/dev/null"),
+                                          stdout=subprocess.PIPE,
+                                          stderr=subprocess.PIPE)
+                    (stdout, stderr) = p.communicate ()
+                    err += stdout
+                except:
+                    # Problem executing command.
+                    raise
             else:
                 # Failed to get PPD downloaded from OpenPrinting XXX
                 err_title = _('Downloadable drivers')
