@@ -20,7 +20,7 @@
 
 import cups, pprint, os, tempfile, re
 import locale
-from debug import *
+from . import _debugprint
 
 class Printer:
     def __init__(self, name, connection, **kw):
@@ -656,7 +656,7 @@ def copyPPDOptions(ppd1, ppd2):
             for choice in new_option.choices:
                 if choice["choice"]==value:
                     ppd2.markOption(new_option.keyword, value)
-                    debugprint ("set %s = %s" % (new_option.keyword, value))
+                    _debugprint ("set %s = %s" % (new_option.keyword, value))
                     
 def setPPDPageSize(ppd, language):
     """
@@ -677,9 +677,9 @@ def setPPDPageSize(ppd, language):
             size = 'Letter'
     try:
         ppd.markOption ('PageSize', size)
-        debugprint ("set PageSize = %s" % size)
+        _debugprint ("set PageSize = %s" % size)
     except:
-        debugprint ("Failed to set PageSize (%s not available?)" % size)
+        _debugprint ("Failed to set PageSize (%s not available?)" % size)
 
 def missingPackagesAndExecutables(ppd):
     """
@@ -702,10 +702,10 @@ def missingPackagesAndExecutables(ppd):
             return "true"
         if name[0] == '/':
             if os.access (name, os.X_OK):
-                debugprint ("%s: found" % name)
+                _debugprint ("%s: found" % name)
                 return name
             else:
-                debugprint ("%s: NOT found" % name)
+                _debugprint ("%s: NOT found" % name)
                 return None
         if name.find ("=") != -1:
             return "builtin"
@@ -720,9 +720,9 @@ def missingPackagesAndExecutables(ppd):
         for component in path.split (':'):
             file = component.rstrip (os.path.sep) + os.path.sep + name
             if os.access (file, os.X_OK):
-                debugprint ("%s: found" % file)
+                _debugprint ("%s: found" % file)
                 return file
-        debugprint ("%s: NOT found in %s" % (name,path))
+        _debugprint ("%s: NOT found in %s" % (name,path))
         return None
 
     pkgs_to_install = []
@@ -828,7 +828,7 @@ def missingPackagesAndExecutables(ppd):
             pkg = None
 
         if pkg:
-            debugprint ("%s included in package %s" % (exe, pkg))
+            _debugprint ("%s included in package %s" % (exe, pkg))
             pkgs_to_install.append (pkg)
         else:
             exes_to_install.append (exe)

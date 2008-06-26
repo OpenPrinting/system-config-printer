@@ -26,7 +26,7 @@ import string
 import locale
 import os.path
 import re
-from debug import *
+from . import _debugprint
 
 def ppdMakeModelSplit (ppd_make_and_model):
     """
@@ -238,6 +238,7 @@ class PPDs:
 	@param language: language name, as given by the first element
         of the pair returned by locale.getlocale()
         """
+        print _debugprint
         self.ppds = ppds.copy ()
         self.makes = None
         self.ids = None
@@ -453,7 +454,7 @@ class PPDs:
 	@type uri: string
 	@returns: an integer,string pair of (status,ppd-name)
 	"""
-        debugprint ("\n%s %s" % (mfg, mdl))
+        _debugprint ("\n%s %s" % (mfg, mdl))
         self._init_ids ()
         id_matched = False
         try:
@@ -473,7 +474,7 @@ class PPDs:
             if not id_matched:
                 ppdnamelist = None
 
-        debugprint ("Trying make/model names")
+        _debugprint ("Trying make/model names")
         mfgl = mfg.lower ()
         mdls = None
         self._init_makes ()
@@ -528,7 +529,7 @@ class PPDs:
                 ppdnamelist = generic
 
         if not ppdnamelist:
-            debugprint ("Text-only fallback")
+            _debugprint ("Text-only fallback")
             status = self.STATUS_NO_DRIVER
             ppdnamelist = ["textonly.ppd"]
             tppdfound = 0
@@ -538,7 +539,7 @@ class PPDs:
                     ppdnamelist = [ppdpath]
                     break
             if tppdfound == 0:
-                debugprint ("No text-only driver?!  Using postscript.ppd")
+                _debugprint ("No text-only driver?!  Using postscript.ppd")
                 ppdnamelist = ["postscript.ppd"]
                 psppdfound = 0
                 for ppdpath in self.ppds.keys ():
@@ -547,11 +548,11 @@ class PPDs:
                         ppdnamelist = [ppdpath]
                         break
                 if psppdfound == 0:
-                    debugprint ("No postscript.ppd; choosing any")
+                    _debugprint ("No postscript.ppd; choosing any")
                     ppdnamelist = [self.ppds.keys ()[0]]
 
         if id_matched:
-            debugprint ("Checking DES field")
+            _debugprint ("Checking DES field")
             inexact = set()
             if description:
                 for ppdname in ppdnamelist:
@@ -564,7 +565,7 @@ class PPDs:
                         inexact.add (ppdname)
 
             exact = set (ppdnamelist).difference (inexact)
-            debugprint ("discarding: %s" % inexact)
+            _debugprint ("discarding: %s" % inexact)
             if len (exact) >= 1:
                 ppdnamelist = list (exact)
 
@@ -573,7 +574,7 @@ class PPDs:
         # to decide, so let's sort them in order of preference and
         # take the first.
         ppdnamelist = self.orderPPDNamesByPreference (ppdnamelist)
-        debugprint (str (ppdnamelist))
+        _debugprint (str (ppdnamelist))
 
         if not id_matched:
             print "No ID match for device %s:" % uri
@@ -596,7 +597,7 @@ class PPDs:
         This function could be made a lot smarter.
         """
 
-        debugprint ("Trying best match")
+        _debugprint ("Trying best match")
         mdll = mdl.lower ()
         if mdll.endswith (" series"):
             # Strip " series" from the end of the MDL field.
@@ -614,10 +615,10 @@ class PPDs:
         candidates = [mdlnamesl[i - 1]]
         if i + 1 < len (mdlnamesl):
             candidates.append (mdlnamesl[i + 1])
-            debugprint (candidates[0][0] + " <= " + mdl + " <= " +
+            _debugprint (candidates[0][0] + " <= " + mdl + " <= " +
                         candidates[1][0])
         else:
-            debugprint (candidates[0][0] + " <= " + mdl)
+            _debugprint (candidates[0][0] + " <= " + mdl)
 
         # Look at the models immediately before and after ours in the
         # sorted list, and pick the one with the longest initial match.
@@ -626,7 +627,7 @@ class PPDs:
             if len (prefix) > best_matchlen:
                 best_mdl = mdls[candidate].keys ()
                 best_matchlen = len (prefix)
-                debugprint ("%s: match length %d" % (candidate, best_matchlen))
+                _debugprint ("%s: match length %d" % (candidate, best_matchlen))
 
         # Did we match more than half of the model name?
         if best_mdl and best_matchlen > (len (mdll) / 2):
@@ -675,7 +676,7 @@ class PPDs:
                 modelnumber = int (modelid[digits_start:digits_end])
             modelpattern = (modelid[:digits_start] + "%d" +
                             modelid[digits_end:])
-            debugprint ("Searching for model ID '%s', '%s' %% %d" %
+            _debugprint ("Searching for model ID '%s', '%s' %% %d" %
                         (modelid, modelpattern, modelnumber))
             ignore_digits = 0
             best_mdl = None
@@ -683,7 +684,7 @@ class PPDs:
             while ignore_digits < digits:
                 div = pow (10, ignore_digits)
                 modelid = modelpattern % ((modelnumber / div) * div)
-                debugprint ("Ignoring %d of %d digits, trying %s" %
+                _debugprint ("Ignoring %d of %d digits, trying %s" %
                             (ignore_digits, digits, modelid))
 
                 for (name, ppds) in mdlitems:
@@ -799,10 +800,10 @@ class PPDs:
 
             bad = False
             if len (lmfg) == 0:
-                debugprint ("Missing MFG field for %s" % ppdname)
+                _debugprint ("Missing MFG field for %s" % ppdname)
                 bad = True
             if len (lmdl) == 0:
-                debugprint ("Missing MDL field for %s" % ppdname)
+                _debugprint ("Missing MDL field for %s" % ppdname)
                 bad = True
             if bad:
                 continue
@@ -847,8 +848,6 @@ def self_test():
             list_models = True
         elif opt == "--list-ids":
             list_ids = True
-        elif opt == "--debug":
-            set_debugging (True)
 
     picklefile="pickled-ppds"
     import pickle
