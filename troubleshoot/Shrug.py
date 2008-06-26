@@ -30,11 +30,14 @@ class Shrug(Question):
                                     "some useful information to put in a "
                                     "bug report."))
 
+        expander = gtk.Expander (_("Diagnostic Output (Advanced)"))
+        expander.set_expanded (False)
         sw = gtk.ScrolledWindow ()
+        expander.add (sw)
         textview = gtk.TextView ()
         textview.set_editable (False)
         sw.add (textview)
-        page.pack_start (sw)
+        page.pack_start (expander)
         self.buffer = textview.get_buffer ()
 
         box = gtk.HButtonBox ()
@@ -43,13 +46,8 @@ class Shrug(Question):
         box.set_layout (gtk.BUTTONBOX_END)
         page.pack_start (box, False, False, 0)
 
-        self.copy = gtk.Button (stock='gtk-copy')
-        box.pack_start (self.copy, False, False, 0)
-
         self.save = gtk.Button (stock='gtk-save')
         box.pack_start (self.save, False, False, 0)
-
-        self.clipboard = gtk.Clipboard ()
 
         troubleshooter.new_page (page, self)
 
@@ -58,17 +56,10 @@ class Shrug(Question):
         return True
 
     def connect_signals (self, handler):
-        self.copy_sigid = self.copy.connect ('clicked', self.on_copy_clicked)
         self.save_sigid = self.save.connect ('clicked', self.on_save_clicked)
 
     def disconnect_signals (self):
-        self.copy.disconnect (self.copy_sigid)
         self.save.disconnect (self.save_sigid)
-
-    def on_copy_clicked (self, button):
-        text = self.buffer.get_text (self.buffer.get_start_iter (),
-                                     self.buffer.get_end_iter ())
-        self.clipboard.set_text (text)
 
     def on_save_clicked (self, button):
         dialog = gtk.FileChooserDialog (parent=self.troubleshooter.main,
