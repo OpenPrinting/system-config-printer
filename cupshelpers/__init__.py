@@ -17,6 +17,23 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+def _no_debug (x):
+    return
+
+_debugprint_fn = _no_debug
+def _debugprint (x):
+    _debugprint_fn (x)
+
+def set_debugprint_fn (debugprint):
+    """
+    Set debugging hook.
+
+    @param debugprint: function to print debug output
+    @type debugprint: fn (str) -> None
+    """
+    global _debugprint_fn
+    _debugprint_fn = debugprint
+
 from cupshelpers import				\
     Device,					\
     Printer,					\
