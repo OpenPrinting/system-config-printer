@@ -247,7 +247,7 @@ class OpenPrinting:
                                       'shortdescription' ]:
                         element = driver.find (attribute)
                         if element != None:
-                            dict[attribute] = normalize_space (element.text)
+                            dict[attribute] = _normalize_space (element.text)
 
                     element = driver.find ('licensetext')
                     if element != None:
