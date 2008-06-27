@@ -19,7 +19,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups, pprint, os, tempfile, re
-from rhpl.translate import _, N_
+from gettext import gettext as _
 import locale
 
 def debugprint(x):
