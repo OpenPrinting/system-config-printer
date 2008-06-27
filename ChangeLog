@@ -1,5 +1,13 @@
 2008-06-27  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (NewPrinterGUI.getPPDs_thread): Don't
+	try to display a password dialog from this thread: it doesn't
+	work.
+	(NewPrinterGUI.getDevices_thread): Likewise.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/46.
+
+2008-06-27  Tim Waugh  <twaugh@redhat.com>
+
 	* cupshelpers.py: Use gettext instead of rhpl.translate (bug
 	#452575).
 
