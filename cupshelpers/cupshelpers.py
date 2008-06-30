@@ -23,6 +23,8 @@ import locale
 from . import _debugprint
 
 class Printer:
+    _flags_blacklist = ["options", "local"]
+
     def __init__(self, name, connection, **kw):
         """
         @param name: printer name
@@ -42,7 +44,8 @@ class Printer:
         else:
             self._ppd = None # load on demand
 
-    _flags_blacklist = ["options", "local"]
+    def __repr__ (self):
+        return "<cupshelpers.Printer \"%s\">" % self.name
 
     def _expand_flags(self):
         prefix = "CUPS_PRINTER_"
@@ -498,6 +501,9 @@ class Device:
         #self.id = 'MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;DES:Hewlett-Packard DeskJet 990C;SN:US05N1J00XLG;S:00808880800010032C1000000C2000000;P:0800,FL,B0;J:                    ;'
 
         self.id_dict = parseDeviceID (self.id)
+
+    def __repr__ (self):
+        return "<cupshelpers.Device \"%s\">" % self.uri
 
     def __cmp__(self, other):
         """
