@@ -542,7 +542,7 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             self.dests_iconview.resize_children ()
             (width, height) = self.dests_iconview.size_request ()
-            self.dests_iconview.set_size_request (20 + width, height)
+            self.dests_iconview.set_size_request (width, height)
             while gtk.events_pending ():
                 gtk.main_iteration ()
             (width, height) = self.MainWindow.get_size ()
