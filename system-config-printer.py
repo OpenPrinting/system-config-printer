@@ -228,6 +228,7 @@ class GUI(GtkGUI, monitor.Watcher):
                              ["PrinterPropertiesDialog",
                               "tvPrinterProperties",
                               "btnPrinterPropertiesOK",
+                              "btnPrinterPropertiesApply",
                               "ntbkPrinter",
                               "entPDescription",
                               "entPLocation",
@@ -572,10 +573,25 @@ class GUI(GtkGUI, monitor.Watcher):
             self.populateList()
             show_HTTP_Error(s, self.PrintersWindow)
 
+        # Attempt to size the window appropriately.
         try:
+            (max_width, max_height) = (600, 400)
             self.dests_iconview.resize_children ()
             (width, height) = self.dests_iconview.size_request ()
-            self.dests_iconview.set_size_request (20 + width, height)
+            if height > max_height:
+                # Too tall.  Try at maximum width.
+                self.dests_iconview.set_size_request (max_width, -1)
+                self.dests_iconview.resize_children ()
+                while gtk.events_pending ():
+                    gtk.main_iteration ()
+                (width, height) = self.dests_iconview.size_request ()
+
+                # Finally, limit both the width and height.
+                (width, height) = map (min,
+                                       (width, height),
+                                       (max_width, max_height))
+
+            self.dests_iconview.set_size_request (width, height)
             while gtk.events_pending ():
                 gtk.main_iteration ()
             (width, height) = self.PrintersWindow.get_size ()
@@ -618,6 +634,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.PrinterPropertiesDialog.set_transient_for (self.PrintersWindow)
         self.btnPrinterPropertiesOK.set_sensitive (not object.discovered)
+        self.setDataButtonState ()
         treeview = self.tvPrinterProperties
         sel = treeview.get_selection ()
         sel.select_path ((0,))
@@ -629,8 +646,15 @@ class GUI(GtkGUI, monitor.Watcher):
         self.PrinterPropertiesDialog.show ()
 
     def printer_properties_response (self, dialog, response):
-        if (response != gtk.RESPONSE_OK or
-            not self.save_printer (self.printer)):
+        if (response == gtk.RESPONSE_OK or
+            response == gtk.RESPONSE_APPLY):
+            success = self.save_printer (self.printer)
+
+        if response == gtk.RESPONSE_APPLY:
+            self.setDataButtonState ()
+
+        if ((response == gtk.RESPONSE_OK and not success) or
+            response == gtk.RESPONSE_CANCEL):
             dialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
@@ -1358,6 +1382,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 elif label == self.lblPOptions:
                     iter = store.get_iter ((n,))
                     store.set_value (iter, 0, optionstext)
+
+        self.btnPrinterPropertiesApply.set_sensitive (len (self.changed) > 0)
 
     def on_btnConflict_clicked(self, button):
         message = _("There are conflicting options.\n"
