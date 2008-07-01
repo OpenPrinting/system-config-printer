@@ -539,9 +539,24 @@ class GUI(GtkGUI, monitor.Watcher):
             self.populateList()
             show_HTTP_Error(s, self.MainWindow)
 
+        # Attempt to size the window appropriately.
         try:
+            (max_width, max_height) = (600, 400)
             self.dests_iconview.resize_children ()
             (width, height) = self.dests_iconview.size_request ()
+            if height > max_height:
+                # Too tall.  Try at maximum width.
+                self.dests_iconview.set_size_request (max_width, -1)
+                self.dests_iconview.resize_children ()
+                while gtk.events_pending ():
+                    gtk.main_iteration ()
+                (width, height) = self.dests_iconview.size_request ()
+
+                # Finally, limit both the width and height.
+                (width, height) = map (min,
+                                       (width, height),
+                                       (max_width, max_height))
+
             self.dests_iconview.set_size_request (width, height)
             while gtk.events_pending ():
                 gtk.main_iteration ()
