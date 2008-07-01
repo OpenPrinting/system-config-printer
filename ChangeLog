@@ -1,5 +1,16 @@
 2008-07-01  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: Added 'Apply' button to printer
+	properties dialog.
+	* system-config-printer.py (GUI.__init__): Fetch Apply button
+	widget.
+	(GUI.setDataButtonState): Set Apply button sensitibity.
+	(GUI.dests_iconview_item_activated): Set data button state.
+	(GUI.printer_properties_response): Handle APPLY response.
+	Fixes trac #54.
+
+2008-07-01  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.__init__): Limit the initial size
 	of the window (trac #53).
 

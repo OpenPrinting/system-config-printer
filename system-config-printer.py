@@ -192,6 +192,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         "PrinterPropertiesDialog",
                         "tvPrinterProperties",
                         "btnPrinterPropertiesOK",
+                        "btnPrinterPropertiesApply",
                         "ServerSettingsDialog",
                         "server_settings",
                         "statusbarMain",
@@ -600,6 +601,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.PrinterPropertiesDialog.set_transient_for (self.MainWindow)
         self.btnPrinterPropertiesOK.set_sensitive (not object.discovered)
+        self.setDataButtonState ()
         treeview = self.tvPrinterProperties
         sel = treeview.get_selection ()
         sel.select_path ((0,))
@@ -611,8 +613,15 @@ class GUI(GtkGUI, monitor.Watcher):
         self.PrinterPropertiesDialog.show ()
 
     def printer_properties_response (self, dialog, response):
-        if (response != gtk.RESPONSE_OK or
-            not self.save_printer (self.printer)):
+        if (response == gtk.RESPONSE_OK or
+            response == gtk.RESPONSE_APPLY):
+            success = self.save_printer (self.printer)
+
+        if response == gtk.RESPONSE_APPLY:
+            self.setDataButtonState ()
+
+        if ((response == gtk.RESPONSE_OK and not success) or
+            response == gtk.RESPONSE_CANCEL):
             dialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
@@ -1340,6 +1349,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 elif label == self.lblPOptions:
                     iter = store.get_iter ((n,))
                     store.set_value (iter, 0, optionstext)
+
+        self.btnPrinterPropertiesApply.set_sensitive (len (self.changed) > 0)
 
     def on_btnConflict_clicked(self, button):
         message = _("There are conflicting options.\n"
