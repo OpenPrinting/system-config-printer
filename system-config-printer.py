@@ -4207,17 +4207,8 @@ class NewPrinterGUI(GtkGUI):
 
         try:
             if len (location) == 0 and self.device.device_class == "direct":
-                try:
-                    p = subprocess.Popen (['/bin/hostname'],
-                                          stdin=file("/dev/null"),
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE)
-                    (stdout, stderr) = p.communicate ()
-                    location = stdout.strip ()
-                except:
-                    # Problem executing command.
-                    pass
-            self.entNPLocation.set_text (location)
+                u = os.uname ()
+                self.entNPLocation.set_text (u[1])
         except:
             nonfatalException ()
 

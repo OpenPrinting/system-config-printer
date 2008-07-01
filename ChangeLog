@@ -1,5 +1,11 @@
 2008-07-01  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Use uname call
+	instead of parsing /bin/hostname output (trac #52).
+
+2008-07-01  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.glade: Added 'Apply' button to printer
 	properties dialog.
 	* system-config-printer.py (GUI.__init__): Fetch Apply button
