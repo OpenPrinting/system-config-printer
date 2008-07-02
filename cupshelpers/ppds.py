@@ -21,7 +21,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
-from .cupshelpers import parseDeviceID
+from cupshelpers import parseDeviceID
 import string
 import locale
 import os.path
