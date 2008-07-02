@@ -16,33 +16,32 @@
 
 import gobject
 import gtk
-
+import libxml2
+from XmlHelper import xml_helper
 from gettext import gettext as _
 
-# FIXME: we should make subclasses of these objects so that they define all of
-# their behaviour on the subclasses like setting the icon, label and so on. We
-# might even make them have a method to call externally and show us a popup
-# menu. Also we might define here the behaviour on drag and drop.
 class GroupsPaneItem (gobject.GObject):
     def __init__ (self):
         super (GroupsPaneItem, self).__init__ ()
 
         self.icon = None
-        self.label = None
+        self.name = None
         self.separator = False
+
+    def load_icon (self, icon_name):
+        theme = gtk.icon_theme_get_default ()
+        try:
+            return theme.load_icon (icon_name,
+                                    gtk.ICON_SIZE_MENU, 0)
+        except gobject.GError:
+            return None
 
 class AllPrintersItem (GroupsPaneItem):
     def __init__ (self):
         super (AllPrintersItem, self).__init__ ()
 
-        theme = gtk.icon_theme_get_default ()
-        try:
-            self.icon = theme.load_icon ('gnome-dev-printer',
-                                         gtk.ICON_SIZE_MENU, 0)
-        except gobject.GError:
-            pass
-
-        self.label = _("All Printers")
+        self.icon = self.load_icon ('printer')
+        self.name = _("All Printers")
 
 class SeparatorItem (GroupsPaneItem):
     def __init__ (self):
@@ -54,14 +53,45 @@ class FavouritesItem (GroupsPaneItem):
     def __init__ (self):
         super (FavouritesItem, self).__init__ ()
 
-        theme = gtk.icon_theme_get_default ()
-        try:
-            self.icon = theme.load_icon ('gnome-dev-printer',
-                                         gtk.ICON_SIZE_MENU, 0)
-        except gobject.GError:
-            pass
+        self.icon = self.load_icon ('emblem-favorite')
+        self.name = _("Favourites")
 
-        self.label = _("Favourites")
+# Helper common base class, do not instantiate
+class MutableItem (GroupsPaneItem):
+    def __init__ (self, name, xml_node = None):
+        super (MutableItem, self).__init__ ()
+
+        self.name = name
+        self.xml_node = xml_node
+
+    def rename (self, new_name):
+        self.xml_node.setProp ("name", new_name)
+        xml_helper.write ()
+
+        self.name = new_name
+
+    def delete (self):
+        self.xml_node.unlinkNode ()
+        self.xml_node.freeNode ()
+        xml_helper.write ()
+
+class StaticGroupItem (MutableItem):
+    def __init__ (self, name, xml_node = None):
+        super (StaticGroupItem, self).__init__ (name, xml_node)
+
+        self.icon = self.load_icon ('folder')
+
+        if not self.xml_node:
+            self.xml_node = libxml2.newNode ("static-group")
+            self.xml_node.newProp ("name", self.name)
+            self.xml_node.newChild (None, "queues", None)
+            xml_helper.add_group (self.xml_node)
+
+class SavedSearchGroupItem (MutableItem):
+    def __init__ (self, name):
+        super (SavedSearchGroupItem, self).__init__ (name)
+
+        self.icon = self.load_icon ('folder-saved-search')
 
 class GroupsPaneModel (gtk.ListStore):
     def __init__ (self):
@@ -69,3 +99,31 @@ class GroupsPaneModel (gtk.ListStore):
 
     def append (self, item):
         return super (GroupsPaneModel, self).append ([item])
+
+    def get (self, titer):
+        return self[titer][0]
+
+    def lookup_by_name (self, name):
+        for item in self:
+            if name == item[0].name:
+                return item[0]
+
+        return None
+
+    def append_by_type (self, new_item):
+        new_item_type = type (new_item)
+
+        titer = self.get_iter_first ()
+        while titer:
+            if type (self.get_value (titer, 0)) == new_item_type:
+                break
+
+            titer = self.iter_next (titer)
+
+        while titer:
+            if type (self.get_value (titer, 0)) != new_item_type:
+                break
+
+            titer = self.iter_next (titer)
+
+        return self.insert_before (titer, [new_item])

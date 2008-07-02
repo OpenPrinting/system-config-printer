@@ -1,3 +1,16 @@
+2008-07-02  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.__init__): Small code shuffle.
+	* XmlHelper.py (XmlHelper): New file implementing a class to
+	handle the low level xml processing. Instantiates a global
+	singleton handler so that all modules have access to it.
+	* GroupsPaneModel.py (GroupsPaneModel): Added some utility
+	methods.
+	* GroupsPaneModel.py: Abstracted some common functionality in
+	common base classes for the several groups pane item types.
+	* GroupsPane.py: Implemented group adding, renaming and
+	deletion. Also a popup menu to access that functionality.
+
 2008-06-24  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* GroupsPane.py (GroupsPane.__init__): Receive the first groups

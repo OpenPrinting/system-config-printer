@@ -360,14 +360,15 @@ class GUI(GtkGUI, monitor.Watcher):
         # Setup search and printer groups
         self.setup_toolbar_for_search_entry ()
         self.current_filter_text = ""
+
+        self.groups_pane = GroupsPane ()
+        self.current_groups_pane_item = self.groups_pane.get_selected_item ()
+        self.groups_pane.connect ('item-activated',
+                                  self.on_groups_pane_item_activated)
         # Need to have a dummy widget in glade or it will put the iconview on
         # the first position
         self.hpaned1.get_child1 ().destroy ()
-        self.current_groups_pane_item = AllPrintersItem ()
-        self.groups_pane = GroupsPane (self.current_groups_pane_item)
         self.hpaned1.add1 (self.groups_pane)
-        self.groups_pane.connect ('item-activated',
-                                  self.on_groups_pane_item_activated)
 
         # Setup icon view
         self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
@@ -841,7 +842,10 @@ class GUI(GtkGUI, monitor.Watcher):
         if isinstance (self.current_groups_pane_item, AllPrintersItem):
             printers_set = self.printers
         elif isinstance (self.current_groups_pane_item, FavouritesItem):
-            printers_set = {}
+            printers_set = {} # FIXME
+        elif isinstance (self.current_groups_pane_item, StaticGroupItem):
+            printers_set = {} # FIXME
+#            printers_set = self.current_groups_pane_item.get_queues ()
         else:
             printers_set = self.printers
             nonfatalException ()
