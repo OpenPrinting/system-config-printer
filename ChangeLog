@@ -1,8 +1,11 @@
 2008-06-20  Till Kamppeter  <till.kamppeter@gmail.com>
 
-	* cupshelpers/ppds.py: "from .cupshelpers import ..." ->
-	"from cupshelpers import ...". The dot breaks byte-compiling
-	which is standard in Debian's Python library packages.
+	* cupshelpers/ppds.py, cupshelpers/cupshelpers.py: "from . import
+	..."  -> "from __init__ import ...". This breaks also
+	byte-compilation.
+	* cupshelpers/ppds.py: "from .cupshelpers import ..." -> "from
+	cupshelpers import ...". The dot breaks byte-compiling which is
+	standard in Debian's Python library packages.
 
 2008-07-01  Tim Waugh  <twaugh@redhat.com>
 

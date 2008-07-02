@@ -26,7 +26,7 @@ import string
 import locale
 import os.path
 import re
-from . import _debugprint
+from __init__ import _debugprint
 
 def ppdMakeModelSplit (ppd_make_and_model):
     """
