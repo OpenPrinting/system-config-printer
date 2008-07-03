@@ -911,6 +911,9 @@ def self_test():
          "DES:Canon iP3000;VER:1.09;STA:10;FSI:03;", 1, "Canon PIXMA iP3000"),
         ("MFG:HP;MDL:Deskjet 5400 series;CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;"
          "1284.4DL:4d,4e,1;CLS:PRINTER;DES:5440;", 1, "HP DeskJet 5440"),
+        ("MFG:Hewlett-Packard;MDL:HP LaserJet 3390;"
+         "CMD:PJL,MLC,PCL,POSTSCRIPT,PCLXL;",
+         0, "HP LaserJet 3390.*Postscript"),
 
         # Generic models
         ("MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
