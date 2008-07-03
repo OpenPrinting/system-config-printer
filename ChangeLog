@@ -1,3 +1,11 @@
+2008-06-20  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* cupshelpers/ppds.py: Made PostScript printers reliably be used
+	with the manufacturer's PPD file. The manufacturer's PPD appeared
+	as a separate model (at least for HP) and so got never used.
+	Made SpliX and Gutenprint PPDs also be recognized as such if the
+	drivers are downloaded from OpenPrinting (as LSB driver packages).
+
 2008-07-01  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py
