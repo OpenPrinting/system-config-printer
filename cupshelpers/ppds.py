@@ -888,6 +888,10 @@ def self_test():
     print "\nID matching tests\n"
 
     idlist = [
+        # Format is:
+        # (ID string, max status code, expected driver RE match)
+
+        # Specific models
         ("MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;"
          "DES:EPSON Stylus D78;", 1, 'Epson Stylus D68'),
         ("MFG:Hewlett-Packard;MDL:LaserJet 1200 Series;"
@@ -907,6 +911,8 @@ def self_test():
          "DES:Canon iP3000;VER:1.09;STA:10;FSI:03;", 1, "Canon PIXMA iP3000"),
         ("MFG:HP;MDL:Deskjet 5400 series;CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;"
          "1284.4DL:4d,4e,1;CLS:PRINTER;DES:5440;", 1, "HP DeskJet 5440"),
+
+        # Generic models
         ("MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
          2, "Generic postscript printer"),
         ("MFG:New;MDL:Unknown PCL6 Printer;CMD:PCLXL;", 2, "Generic PCL 6"),
