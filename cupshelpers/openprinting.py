@@ -182,7 +182,7 @@ class OpenPrinting:
                    'format': 'xml' }
         return self.webQuery(params, parse_result, (callback, user_data))
 
-    def listDrivers(self, model, callback, user_data=None):
+    def listDrivers(self, model, callback, user_data=None, extra_options=None):
         """
         Obtain a list of printer drivers.
 
@@ -192,6 +192,9 @@ class OpenPrinting:
         @param callback: callback function, taking (integer, user_data, string)
         parameters with the first parameter being the status code, zero for
         success
+        @type extra_options: string -> string dictionary
+        @param extra_options: Additional search options, see
+        http://www.linuxfoundation.org/en/OpenPrinting/Database/Query
         @return: query handle
         """
 
@@ -307,7 +310,6 @@ class OpenPrinting:
         params = { 'type': 'drivers',
                    'moreinfo': '1',
                    'showprinterid': '1',
-                   'onlyppdfiles': '1',
                    'onlynewestdriverpackages': '1',
                    'architectures': platform.machine(),
                    'noobsoletes': '1',
@@ -315,6 +317,8 @@ class OpenPrinting:
                    'onlymanufacturer': str (self.onlymanufacturer),
                    'printer': model,
                    'format': 'xml'}
+        if extra_options:
+            params.update(extra_options)
         return self.webQuery(params, parse_result, (callback, user_data))
 
 if __name__ == "__main__":
