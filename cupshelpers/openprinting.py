@@ -249,7 +249,7 @@ class OpenPrinting:
                     for attribute in ['name', 'url', 'supplier', 'license',
                                       'shortdescription' ]:
                         element = driver.find (attribute)
-                        if element != None:
+                        if element != None and element.text != None:
                             dict[attribute] = _normalize_space (element.text)
 
                     element = driver.find ('licensetext')
