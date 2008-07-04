@@ -4364,7 +4364,8 @@ class NewPrinterGUI(GtkGUI):
         self.drivers_lock.acquire(0)
         self.openprinting_query_handle = \
             self.openprinting.listDrivers (id,
-                                           self.openprinting_drivers_found)
+                                           self.openprinting_drivers_found,
+                                           extra_options={'onlyppdfiles':'1'})
 
     def openprinting_drivers_found (self, status, user_data, drivers):
         if status != 0:

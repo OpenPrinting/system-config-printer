@@ -23,6 +23,8 @@ import urllib, httplib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 
+from . import Device
+
 def _normalize_space (text):
     result = text.strip ()
     result = result.replace ('\n', ' ')
@@ -182,16 +184,20 @@ class OpenPrinting:
                    'format': 'xml' }
         return self.webQuery(params, parse_result, (callback, user_data))
 
-    def listDrivers(self, model, callback, user_data=None):
+    def listDrivers(self, model, callback, user_data=None, extra_options=None):
         """
         Obtain a list of printer drivers.
 
-        @type model: string
-        @param model: foomatic printer model string
+        @type model: string or cupshelpers.Device
+        @param model: foomatic printer model string or a cupshelpers.Device
+        object
         @type callback: function
         @param callback: callback function, taking (integer, user_data, string)
         parameters with the first parameter being the status code, zero for
         success
+        @type extra_options: string -> string dictionary
+        @param extra_options: Additional search options, see
+        http://www.linuxfoundation.org/en/OpenPrinting/Database/Query
         @return: query handle
         """
 
@@ -246,7 +252,7 @@ class OpenPrinting:
                     for attribute in ['name', 'url', 'supplier', 'license',
                                       'shortdescription' ]:
                         element = driver.find (attribute)
-                        if element != None:
+                        if element != None and element.text != None:
                             dict[attribute] = _normalize_space (element.text)
 
                     element = driver.find ('licensetext')
@@ -304,10 +310,12 @@ class OpenPrinting:
             except:
                 callback (1, user_data, sys.exc_info ())
 
+        if isinstance(model, Device):
+            model = model.id
+
         params = { 'type': 'drivers',
                    'moreinfo': '1',
                    'showprinterid': '1',
-                   'onlyppdfiles': '1',
                    'onlynewestdriverpackages': '1',
                    'architectures': platform.machine(),
                    'noobsoletes': '1',
@@ -315,6 +323,8 @@ class OpenPrinting:
                    'onlymanufacturer': str (self.onlymanufacturer),
                    'printer': model,
                    'format': 'xml'}
+        if extra_options:
+            params.update(extra_options)
         return self.webQuery(params, parse_result, (callback, user_data))
 
 if __name__ == "__main__":
