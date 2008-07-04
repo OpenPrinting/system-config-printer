@@ -147,6 +147,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = re.sub (r"(?i)\s*\(Bluetooth\)", "", model)
     model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\s*-*\s*[0-9\.]+", "", model)
     model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\b", "", model)
+    model = re.sub (r"(?i)\s*PostScript\s*$", "", model)
     model = re.sub (r"(?i)\s*-\s*$", "", model)
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
@@ -175,12 +176,13 @@ DRIVER_TYPE_FOOMATIC_GENERIC = 90
 DRIVER_DOES_NOT_WORK = 999
 def _getDriverType (ppdname, ppds=None):
     """Decides which of the above types ppdname is."""
-    if ppdname.startswith ("gutenprint"):
-        if ppdname.find ("/simple/") != -1:
+    if ppdname.find ("gutenprint") != -1:
+        if (ppdname.find ("/simple/") != -1 or
+            ppdname.find (".sim-") != -1):
             return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
         else:
             return DRIVER_TYPE_GUTENPRINT_NATIVE
-    if ppdname.find ("SpliX")!= -1:
+    if ppdname.find ("splix")!= -1:
         return DRIVER_TYPE_SPLIX
     if (ppdname.find (":") == -1 and
         ppdname.find ("/cups-included/") != -1):
