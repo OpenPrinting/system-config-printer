@@ -23,6 +23,8 @@ import urllib, httplib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 
+from . import Device
+
 def _normalize_space (text):
     result = text.strip ()
     result = result.replace ('\n', ' ')
@@ -186,8 +188,9 @@ class OpenPrinting:
         """
         Obtain a list of printer drivers.
 
-        @type model: string
-        @param model: foomatic printer model string
+        @type model: string or cupshelpers.Device
+        @param model: foomatic printer model string or a cupshelpers.Device
+        object
         @type callback: function
         @param callback: callback function, taking (integer, user_data, string)
         parameters with the first parameter being the status code, zero for
@@ -306,6 +309,9 @@ class OpenPrinting:
                 callback (0, user_data, drivers)
             except:
                 callback (1, user_data, sys.exc_info ())
+
+        if isinstance(model, Device):
+            model = model.id
 
         params = { 'type': 'drivers',
                    'moreinfo': '1',
