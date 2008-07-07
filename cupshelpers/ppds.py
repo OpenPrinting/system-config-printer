@@ -244,7 +244,6 @@ class PPDs:
 	@param language: language name, as given by the first element
         of the pair returned by locale.getlocale()
         """
-        print _debugprint
         self.ppds = ppds.copy ()
         self.makes = None
         self.ids = None
