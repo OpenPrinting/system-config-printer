@@ -17,6 +17,14 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+__all__  = ['set_debugprint_fn',
+            'Device', 'Printer', 'activateNewPrinter',
+            'copyPPDOptions', 'getDevices', 'getPrinters',
+            'missingPackagesAndExecutables', 'parseDeviceID',
+            'setPPDPageSize',
+            'ppds',
+            'openprinting']
+
 def _no_debug (x):
     return
 
