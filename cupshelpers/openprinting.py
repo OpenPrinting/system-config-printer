@@ -22,8 +22,9 @@
 import urllib, httplib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
-
 from cupshelpers import Device
+
+__all__ = ['OpenPrinting']
 
 def _normalize_space (text):
     result = text.strip ()

@@ -28,6 +28,10 @@ import os.path
 import re
 from . import _debugprint
 
+__all__ = ['ppdMakeModelSplit',
+           'PPDs',
+           'self_test']
+
 def ppdMakeModelSplit (ppd_make_and_model):
     """
     Split a ppd-make-and-model string into a canonical make and model pair.
