@@ -307,6 +307,7 @@ class JobViewer (monitor.Watcher):
     def unset_special_statusicon (self):
         self.special_status_icon = False
         self.statusicon.set_from_pixbuf (self.saved_statusicon_pixbuf)
+        self.set_statusicon_visibility ()
 
     def notify_new_printer (self, printer, notification):
         self.new_printer_notifications[printer] = notification
