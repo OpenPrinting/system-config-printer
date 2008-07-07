@@ -1,3 +1,27 @@
+2008-07-07  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* ui/PrintersWindow.glade: Added a Group menu item to the
+	menubar. The attached menu is built programatically.
+	* contextmenu.py (PrinterContextMenu.popup): Protect potential
+	NoneType object access.
+	* GroupsPaneModel.py (StaticGroupItem): Implemented reading and
+	saving queues.
+	* system-config-printer.py (GUI.populateList): Use an unreadable
+	emblem on printer icons for queues which are no longer available.
+	* system-config-printer.py (GUI): Protect several potential
+	NoneType object accesses. Certainly there are a lot more.
+	* system-config-printer.py (GUI.dests_iconview_drag_data_get): New
+	method for D&D.
+	* system-config-printer.py (GUI.dests_iconview_selection_changed):
+	Reorganized the code a bit to update the GroupsPane.
+	* system-config-printer.py (GUI.__init__): Add the GroupsPane
+	UIManager's accelerator group to the main window.
+	Build a menu for the Group menubar item.
+	* GroupsPane.py (GroupsPane): Added various methods for D&D.
+	Reorganized the popup menu around gtk.Actions and gtk.UIManager.
+	Implemented an action to create a group from the main window's
+	current iconview queue selection.
+
 2008-07-02  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* system-config-printer.py (GUI.__init__): Small code shuffle.

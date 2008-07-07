@@ -20,6 +20,8 @@ import libxml2
 from XmlHelper import xml_helper
 from gettext import gettext as _
 
+from debug import *
+
 class GroupsPaneItem (gobject.GObject):
     def __init__ (self):
         super (GroupsPaneItem, self).__init__ ()
@@ -27,6 +29,7 @@ class GroupsPaneItem (gobject.GObject):
         self.icon = None
         self.name = None
         self.separator = False
+        self.printer_queues = []
 
     def load_icon (self, icon_name):
         theme = gtk.icon_theme_get_default ()
@@ -86,6 +89,32 @@ class StaticGroupItem (MutableItem):
             self.xml_node.newProp ("name", self.name)
             self.xml_node.newChild (None, "queues", None)
             xml_helper.add_group (self.xml_node)
+        else:
+            if not self.xml_node.children.children:
+                # no queues
+                return
+            else:
+                queue_node = self.xml_node.children.children
+                while queue_node:
+                    self.printer_queues.append (queue_node.prop ("name"))
+                    queue_node = queue_node.next
+
+    def add_queues (self, queue_list):
+        queues_node = self.xml_node.children
+
+        if not queues_node or queues_node.name != "queues":
+            nonfatalException ()
+            # create one anyway
+            queues_node = self.xml_node.newChild (None, "queues", None)
+
+        for queue_name in queue_list:
+            if queue_name not in self.printer_queues:
+                queue_node = libxml2.newNode ("queue")
+                queue_node.newProp ("name", queue_name)
+                queues_node.addChild (queue_node)
+                self.printer_queues.append (queue_name)
+
+        xml_helper.write ()
 
 class SavedSearchGroupItem (MutableItem):
     def __init__ (self, name):

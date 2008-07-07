@@ -77,6 +77,8 @@ class PrinterContextMenu (GtkGUI):
         for i in range (n):
             iter = model.get_iter (paths[i])
             object = model.get_value (iter, 0)
+            if not object:
+                continue
             if object.discovered:
                 any_discovered = True
             if object.enabled:

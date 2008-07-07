@@ -187,6 +187,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               "shared",
                               "set_as_default",
                               "hpaned1",
+                              "group_menubar_item",
                               "view_discovered_printers"],
                          "AboutDialog":
                              ["AboutDialog"],
@@ -365,10 +366,24 @@ class GUI(GtkGUI, monitor.Watcher):
         self.current_groups_pane_item = self.groups_pane.get_selected_item ()
         self.groups_pane.connect ('item-activated',
                                   self.on_groups_pane_item_activated)
+        self.PrintersWindow.add_accel_group (
+            self.groups_pane.ui_manager.get_accel_group ())
         # Need to have a dummy widget in glade or it will put the iconview on
         # the first position
         self.hpaned1.get_child1 ().destroy ()
         self.hpaned1.add1 (self.groups_pane)
+
+        # Group menubar item
+        menu = gtk.Menu ()
+        item = self.groups_pane.ui_manager.get_action (
+            "/new-group").create_menu_item ()
+        item.show ()
+        menu.append (item)
+        item = self.groups_pane.ui_manager.get_action (
+            "/new-group-from-selection").create_menu_item ()
+        item.show ()
+        menu.append (item)
+        self.group_menubar_item.set_submenu (menu)
 
         # Setup icon view
         self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
@@ -389,6 +404,13 @@ class GUI(GtkGUI, monitor.Watcher):
         self.dests_iconview.connect ('popup-menu',
                                      self.dests_iconview_popup_menu)
         self.dests_iconview_selection_changed (self.dests_iconview)
+#         self.dests_iconview.enable_model_drag_source (gtk.gdk.BUTTON1_MASK,
+#                                                       # should use a variable
+#                                                       # instead of 0
+#                                                       [("queue", 0, 0)],
+#                                                       gtk.gdk.ACTION_COPY)
+#         self.dests_iconview.connect ("drag-data-get",
+#                                      self.dests_iconview_drag_data_get)
 
         # setup some lists
         m = gtk.SELECTION_MULTIPLE
@@ -628,6 +650,9 @@ class GUI(GtkGUI, monitor.Watcher):
         iter = model.get_iter (path)
         name = model.get_value (iter, 2)
         object = model.get_value (iter, 0)
+        if not object:
+            return
+
         try:
             self.fillPrinterTab (name)
         except cups.IPPError, (e, m):
@@ -666,12 +691,15 @@ class GUI(GtkGUI, monitor.Watcher):
         any_discovered = False
         any_shared = False
         any_unshared = False
-        n = len (paths)
-        for i in range (n):
-            model = iconview.get_model ()
-            iter = model.get_iter (paths[i])
+        self.groups_pane.currently_selected_queues = []
+        model = iconview.get_model ()
+        for path in paths:
+            iter = model.get_iter (path)
             object = model.get_value (iter, 0)
+            if not object:
+                continue
             name = model.get_value (iter, 2)
+            self.groups_pane.currently_selected_queues.append (name)
             if object.discovered:
                 any_discovered = True
             if object.enabled:
@@ -682,10 +710,10 @@ class GUI(GtkGUI, monitor.Watcher):
                 any_shared = True
             else:
                 any_unshared = True
-            if (any_discovered and any_enabled and any_disabled and
-                any_shared and any_unshared):
-                break
 
+        n = len (paths)
+        self.groups_pane.ui_manager.get_action (
+            "/new-group-from-selection").set_sensitive (n > 0)
         self.copy.set_sensitive(n == 1)
         self.rename.set_sensitive(n == 1 and not any_discovered)
         self.set_as_default.set_sensitive(n == 1 and
@@ -717,6 +745,21 @@ class GUI(GtkGUI, monitor.Watcher):
                 paths = [click_path]
             self.printer_context_menu.popup (event, iconview, paths)
         return False
+
+    def dests_iconview_drag_data_get (self, iconview, context,
+                                      selection_data, info, timestamp):
+        if info == 0: # FIXME: should use an "enum" here
+            model = iconview.get_model ()
+            paths = iconview.get_selected_items ()
+            selected_printer_names = ""
+            for path in paths:
+                selected_printer_names += \
+                    model.get_value (model.get_iter (path), 2) + "\n"
+
+            if len (selected_printer_names) > 0:
+                selection_data.set_text (selected_printer_names, -1)
+        else:
+            nonfatalException ()
 
     def on_server_settings_activate (self, menuitem):
         finished = False
@@ -844,8 +887,13 @@ class GUI(GtkGUI, monitor.Watcher):
         elif isinstance (self.current_groups_pane_item, FavouritesItem):
             printers_set = {} # FIXME
         elif isinstance (self.current_groups_pane_item, StaticGroupItem):
-            printers_set = {} # FIXME
-#            printers_set = self.current_groups_pane_item.get_queues ()
+            printers_set = {}
+            for printer_name in self.current_groups_pane_item.printer_queues:
+                try:
+                    printer = self.printers[printer_name]
+                    printers_set[printer_name] = printer
+                except KeyError:
+                    printers_set[printer_name] = None
         else:
             printers_set = self.printers
             nonfatalException ()
@@ -861,6 +909,9 @@ class GUI(GtkGUI, monitor.Watcher):
             printers_set = printers_subset
 
         for name, printer in printers_set.iteritems():
+            if not printer:
+                local_printers.append (name)
+                continue
             if printer.remote:
                 if printer.is_class: remote_classes.append(name)
                 else: remote_printers.append(name)
@@ -911,23 +962,25 @@ class GUI(GtkGUI, monitor.Watcher):
             for name in printers:
                 type = 'local-printer'
                 object = printers_set[name]
-                if object.discovered:
-                    if object.is_class:
-                        type = 'discovered-class'
+
+                if object:
+                    if object.discovered:
+                        if object.is_class:
+                            type = 'discovered-class'
+                        else:
+                            type = 'discovered-printer'
+                    elif object.is_class:
+                        type = 'local-class'
                     else:
-                        type = 'discovered-printer'
-                elif object.is_class:
-                    type = 'local-class'
-                else:
-                    (scheme, rest) = urllib.splittype (object.device_uri)
-                    if scheme == 'ipp':
-                        type = 'ipp-printer'
-                    elif scheme == 'smb':
-                        type = 'smb-printer'
-                    elif scheme == 'hpfax':
-                        type = 'local-fax'
-                    elif scheme in ['socket', 'lpd']:
-                        type = 'network-printer'
+                        (scheme, rest) = urllib.splittype (object.device_uri)
+                        if scheme == 'ipp':
+                            type = 'ipp-printer'
+                        elif scheme == 'smb':
+                            type = 'smb-printer'
+                        elif scheme == 'hpfax':
+                            type = 'local-fax'
+                        elif scheme in ['socket', 'lpd']:
+                            type = 'network-printer'
 
                 (tip, icon) = PRINTER_TYPE[type]
                 try:
@@ -947,6 +1000,18 @@ class GUI(GtkGUI, monitor.Watcher):
                 if name == self.default_printer:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
                     default_emblem = theme.load_icon ('emblem-default', w/2, 0)
+                    copy = pixbuf.copy ()
+                    default_emblem.composite (copy, 0, 0,
+                                              copy.get_width (),
+                                              copy.get_height (),
+                                              0, 0,
+                                              1.0, 1.0,
+                                              gtk.gdk.INTERP_NEAREST, 255)
+                    pixbuf = copy
+
+                if not object:
+                    (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
+                    default_emblem = theme.load_icon ('emblem-unreadable', w/2, 0)
                     copy = pixbuf.copy ()
                     default_emblem.composite (copy, 0, 0,
                                               copy.get_width (),
@@ -2204,7 +2269,7 @@ class GUI(GtkGUI, monitor.Watcher):
             iter = model.get_iter (paths[0])
             object = model.get_value (iter, 0)
             name = model.get_value (iter, 2)
-            if object.is_class:
+            if object and object.is_class:
                 message_format = _("Really delete class `%s'?") % name
             else:
                 message_format = _("Really delete printer `%s'?") % name
@@ -2242,6 +2307,8 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
+            if not printer:
+                continue
             printer.setEnabled (enable)
         self.populateList ()
 
@@ -2256,6 +2323,8 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
+            if not printer:
+                continue
             printer.setShared (share)
         if share:
             self.advise_publish ()
@@ -2277,6 +2346,8 @@ class GUI(GtkGUI, monitor.Watcher):
         model = iconview.get_model ()
         iter = model.get_iter (paths[0])
         printer = model.get_value (iter, 0)
+        if not printer:
+            return
         printer.setAsDefault ()
         self.populateList ()
 

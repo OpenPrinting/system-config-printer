@@ -27,13 +27,16 @@ class GroupsPane (gtk.ScrolledWindow):
                             [GroupsPaneItem])
         }
 
+    DND_DROP_TYPE_QUEUE = 0
+
     def __init__ (self):
         super (GroupsPane, self).__init__ ()
 
         self.tree_view = None
         self.store = None
-        self.action_group = None
-        self.popup_menu_main_list = []
+        self.popup_menu = None
+        self.ui_manager = None
+        self.currently_selected_queues = []
 
         self.set_policy (gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
 
@@ -63,36 +66,68 @@ class GroupsPane (gtk.ScrolledWindow):
         self.add (self.tree_view)
         self.show_all ()
 
-        selection = self.tree_view.get_selection ()
-        selection.set_mode (gtk.SELECTION_BROWSE)
-
         self.tree_view.connect ('key-press-event',
                                 self.on_key_press_event)
+        self.tree_view.connect ('button-release-event',
+                                self.on_button_release_event)
         self.tree_view.connect ('button-press-event',
                                 self.on_single_click_activate)
         self.tree_view.connect ('row-activated',
                                 self.on_row_activated)
-        self.tree_view.connect ('button-release-event',
-                                self.on_button_release)
         self.tree_view.connect ('popup-menu',
                                 self.on_popup_menu)
 
+#         self.tree_view.enable_model_drag_dest ([("queue", 0,
+#                                                  self.DND_DROP_TYPE_QUEUE)],
+#                                                gtk.gdk.ACTION_COPY)
+#         self.tree_view.connect ("drag-data-received",
+#                                 self.on_drag_data_received)
+#         self.tree_view.connect ("drag-drop",
+#                                 self.on_drag_drop)
+#         self.tree_view.connect ("drag-motion",
+#                                 self.on_drag_motion)
+
+        # actions
+        action_group = gtk.ActionGroup ("GroupsPaneActionGroup")
+        action_group.add_actions ([
+                ("new-group", gtk.STOCK_NEW, _("_New Group"),
+                 "<Ctrl>g", None, self.on_new_group_activate),
+                ("new-group-from-selection", None,
+                 _("_New Group from Selection"),
+                 "<Ctrl><Shift>g", None,
+                 self.on_new_group_from_selection_activate),
+                ("rename-group", None, _("_Rename"),
+                 None, None, self.on_rename_group_activate),
+                ("delete-group", gtk.STOCK_DELETE, None,
+                 None, None, self.on_delete_group_activate),
+                ])
+        action_group.get_action (
+            "new-group-from-selection").set_sensitive (False)
+        action_group.get_action (
+            "rename-group").set_sensitive (False)
+        action_group.get_action (
+            "delete-group").set_sensitive (False)
+
+        self.ui_manager = gtk.UIManager ()
+        self.ui_manager.insert_action_group (action_group, -1)
+        self.ui_manager.add_ui_from_string (
+"""
+<ui>
+ <accelerator action="new-group"/>
+ <accelerator action="new-group-from-selection"/>
+ <accelerator action="rename-group"/>
+ <accelerator action="delete-group"/>
+</ui>
+"""
+)
+        selection = self.tree_view.get_selection ()
+        selection.connect ("changed", self.on_selection_changed)
+        selection.set_mode (gtk.SELECTION_BROWSE)
         selection.select_iter (self.store.append (AllPrintersItem ()))
-        self.store.append (FavouritesItem ())
+#        self.store.append (FavouritesItem ())
         self.store.append (SeparatorItem ())
         for group_name, group_node in xml_helper.get_static_groups ():
             self.store.append (StaticGroupItem (group_name, group_node))
-
-        # groups actions
-        self.action_group = gtk.ActionGroup ('groups_actions')
-        self.action_group.add_actions ([
-                ('new_group', gtk.STOCK_NEW, _('_New Group'),
-                 None, None, self.on_new_group_activate)
-                ])
-
-        # popup menu's persistent items
-        item = self.action_group.get_action ('new_group').create_menu_item ()
-        self.popup_menu_main_list.append (item)
 
     def icon_cell_data_func (self, column, cell, model, iter):
         icon = model.get_value (iter, 0).icon
@@ -148,15 +183,24 @@ class GroupsPane (gtk.ScrolledWindow):
     def on_single_click_activate (self, tree_view, event):
         # idea from eel_gtk_tree_view_set_activate_on_single_click ()
         if event.button == 1:
-            t = self.tree_view.get_path_at_pos (event.x, event.y)
+            t = self.tree_view.get_path_at_pos (int (event.x),
+                                                int (event.y))
             if t != None:
                 self.tree_view.row_activated (t[0], t[1])
 
         return False
 
     def on_row_activated (self, tree_view, path, column):
+        tree_view.get_selection ().select_path (path)
         item = self.store.get_value (self.store.get_iter (path), 0)
         self.emit ('item-activated', item)
+
+    def on_selection_changed (self, selection):
+        model, titer = selection.get_selected ()
+        group_item = model.get (titer)
+        sensitivity = isinstance (group_item, MutableItem)
+        self.ui_manager.get_action ("/rename-group").set_sensitive (sensitivity)
+        self.ui_manager.get_action ("/delete-group").set_sensitive (sensitivity)
 
     def row_separator_func (self, model, iter):
         return model.get_value (iter, 0).separator
@@ -171,18 +215,9 @@ class GroupsPane (gtk.ScrolledWindow):
             activate_time = event.time
 
         menu = self.build_popup_menu ()
-        menu.connect ('unmap', self.on_popup_menu_unmap)
-        menu.attach_to_widget (self, self.on_popup_menu_detach)
         menu.popup (None, None, None, button, activate_time)
 
-    def on_popup_menu_unmap (self, menu):
-        menu.destroy ()
-
-    def on_popup_menu_detach (self, menu, UNUSED):
-        for item in menu.get_children ():
-            menu.remove (item)
-
-    def on_button_release (self, tree_view, event):
+    def on_button_release_event (self, tree_view, event):
         if event.button == 3:
             self.do_popup_menu (event)
 
@@ -193,41 +228,35 @@ class GroupsPane (gtk.ScrolledWindow):
 
         return True
 
-#     def on_selection_changed (self, selection):
-#         model, titer = selection.get_selected ()
-#         item = model.get (titer)
-#         self.popup_menu = item.get_menu ()
-
     def build_popup_menu (self):
-        menu = gtk.Menu ()
-
-        for item in self.popup_menu_main_list:
+        if not self.popup_menu:
+            self.popup_menu = gtk.Menu ()
+            item = self.ui_manager.get_action (
+                "/new-group").create_menu_item ()
             item.show ()
-            menu.append (item)
-
-        model, titer = self.tree_view.get_selection ().get_selected ()
-        group_item = model.get (titer)
-        if isinstance (group_item, MutableItem):
+            self.popup_menu.append (item)
+            item = self.ui_manager.get_action (
+                "/new-group-from-selection").create_menu_item ()
+            item.show ()
+            self.popup_menu.append (item)
             item = gtk.SeparatorMenuItem ()
             item.show ()
-            menu.append (item)
-
-            item = gtk.MenuItem (_("_Rename"))
-            item.connect ('activate', self.on_popup_menu_group_rename)
+            self.popup_menu.append (item)
+            item = self.ui_manager.get_action (
+                "/rename-group").create_menu_item ()
             item.show ()
-            menu.append (item)
-
-            item = gtk.ImageMenuItem (gtk.STOCK_DELETE)
-            item.connect ('activate', self.on_popup_menu_group_delete)
+            self.popup_menu.append (item)
+            item = self.ui_manager.get_action (
+                "/delete-group").create_menu_item ()
             item.show ()
-            menu.append (item)
+            self.popup_menu.append (item)
 
-        return menu
+        return self.popup_menu
 
-    def on_popup_menu_group_rename (self, UNUSED):
+    def on_rename_group_activate (self, UNUSED):
         self.rename_selected_group ()
 
-    def on_popup_menu_group_delete (self, UNUSED):
+    def on_delete_group_activate (self, UNUSED):
         self.delete_selected_group ()
 
     def rename_selected_group (self):
@@ -273,6 +302,9 @@ class GroupsPane (gtk.ScrolledWindow):
         dialog.destroy ()
 
         if response == gtk.RESPONSE_ACCEPT:
+            self.tree_view.row_activated (
+                self.store.get_path (self.store.get_iter_first ()),
+                self.tree_view.get_column (0))
             self.store.remove (titer)
             group_item.delete ()
 
@@ -295,6 +327,61 @@ class GroupsPane (gtk.ScrolledWindow):
 
     def on_new_group_activate (self, UNUSED):
         item = StaticGroupItem (self.generate_new_group_name ())
-        self.store.append_by_type (item)
+        titer = self.store.append_by_type (item)
+        self.tree_view.row_activated (
+            self.store.get_path (titer),
+            self.tree_view.get_column (0))
+        self.rename_selected_group ()
+
+    def on_new_group_from_selection_activate (self, UNUSED):
+        item = StaticGroupItem (self.generate_new_group_name ())
+        titer = self.store.append_by_type (item)
+        item.add_queues (self.currently_selected_queues)
+        self.tree_view.row_activated (
+            self.store.get_path (titer),
+            self.tree_view.get_column (0))
+        self.rename_selected_group ()
+
+    def is_drop_target (self, tree_view, x, y):
+        try:
+            path, position = self.tree_view.get_dest_row_at_pos (x, y)
+            titer = self.store.get_iter (path)
+            group_item = self.store.get (titer)
+        except TypeError:
+            return False
+
+        if not isinstance (group_item, StaticGroupItem):
+            return False
+
+        return True
+
+    def on_drag_data_received (self, tree_view, context, x, y,
+                               selection_data, info, timestamp):
+        selection_text = selection.get_text ()
+        if not selection_text  or info != DND_DROP_TYPE_QUEUE:
+            context.finish (False, False, timestamp)
+            return
+
+        path, position = self.tree_view.get_dest_row_at_pos (x, y)
+        titer = self.store.get_iter (path)
+        group_item = self.store.get (titer)
+        if not isinstance (group_item, StaticGroupItem):
+            context.finish (False, False, timestamp)
+            return
+
+        group_item.add_queues (selection_text.splitlines ())
+        context.finish (True, False, timestamp)
+
+    def on_drag_drop (self, tree_view, context, x, y, timestamp):
+        return self.is_drop_target (tree_view, x, y)
+
+    def on_drag_motion (self, tree_view, context, x, y, timestamp):
+        if not self.is_drop_target (tree_view, x, y):
+            return False
+
+        path, position = self.tree_view.get_dest_row_at_pos (x, y)
+        self.tree_view.set_drag_dest_row (path,
+                                          gtk.TREE_VIEW_DROP_INTO_OR_AFTER)
+        return True
 
 gobject.type_register (GroupsPane)
