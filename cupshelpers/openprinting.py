@@ -23,7 +23,7 @@ import urllib, httplib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 
-from . import Device
+from cupshelpers import Device
 
 def _normalize_space (text):
     result = text.strip ()
