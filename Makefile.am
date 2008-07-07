@@ -6,7 +6,47 @@ EXPORT_MODULES=					\
 	cupshelpers/ppds.py			\
 	cupshelpers/openprinting.py
 
-nobase_python_SCRIPTS = $(EXPORT_MODULES)
+### Automake hooks for Distutils.
+# The distutils module doesn't understand srcdir != builddir,
+# so we copy in, along with the cupshelpers modules, into
+# the builddir for 'all', 'install-exec', and 'clean' hooks.
+.stamp-distutils-in-builddir:	setup.py $(EXPORT_MODULES)
+	if [ "$(top_srcdir)" != "$(top_builddir)" ]; then	\
+		cp $(top_srcdir)/setup.py .;			\
+		mkdir cupshelpers;				\
+		for file in $(EXPORT_MODULES); do		\
+			cp $(top_srcdir)/$$file $$file;		\
+		done;						\
+	fi
+	touch .stamp-distutils-in-builddir
+
+# Use distutils to build the module.
+all-local: .stamp-distutils-in-builddir
+	$(PYTHON) setup.py build
+
+# Use distutils to install the module.
+install-exec-local: .stamp-distutils-in-builddir
+	$(PYTHON) setup.py install --prefix=$(DESTDIR)$(prefix)
+
+# Uninstall the module, crossing our fingers that we know enough
+# about how distutils works to do this.  Unfortunately, distutils
+# doesn't provide a way to do this itself.
+uninstall-local:
+	rm -f $(DESTDIR)/$(pythondir)/cupshelpers*.egg-info
+	for file in $(EXPORT_MODULES); do				\
+		rm -f $(DESTDIR)/$(pythondir)/$$file*;			\
+	done
+
+# Tell distutils to clean up.
+clean-local:
+	-$(PYTHON) setup.py clean --all
+	if [ "$(top_srcdir)" != "$(top_builddir)" ]; then	\
+		rm -f setup.py;					\
+		for file in $(EXPORT_MODULES); do		\
+			rm -f $$file*;				\
+		done;						\
+	fi
+	rm -f .stamp-distutils-in-builddir
 
 nobase_pkgdata_SCRIPTS=				\
 	my-default-printer.py			\
@@ -124,6 +164,7 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
+	setup.py \
 	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
 	newprinternotification.conf \

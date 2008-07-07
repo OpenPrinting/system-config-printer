@@ -1,5 +1,16 @@
 2008-07-07  Tim Waugh  <twaugh@redhat.com>
 
+	* setup.py: New module.  Configuration for distutils.
+	* Makefile.am (EXTRA_DIST): Ship it.
+	(.stamp-distutils-in-builddir): Convince distutils to work when
+	srcdir is different to builddir.
+	(all-local): Build cupshelpers module using distutils.
+	(install-exec-local): Install it using distutils.
+	(clean-local): Clean using distutils.
+	(uninstall-local): Remove installed module.
+
+2008-07-07  Tim Waugh  <twaugh@redhat.com>
+
 	* cupshelpers/__init__.py (__all__): Define public names.
 	* cupshelpers/openprinting.py (__all__): Likewise.
 	* cupshelpers/ppds.py (__all__): Likewise.
