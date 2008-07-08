@@ -3588,7 +3588,7 @@ class NewPrinterGUI(GtkGUI):
 
             debug = 0
             if get_debugging ():
-                debug = 1
+                debug = 10
             smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
             ctx = pysmb.smbc.Context (debug=debug,
                                       auth_fn=smbc_auth.callback)
@@ -3728,7 +3728,7 @@ class NewPrinterGUI(GtkGUI):
                 uri = "smb://%s" % entry.name
                 debug = 0
                 if get_debugging ():
-                    debug = 1
+                    debug = 10
                 smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
                 ctx = pysmb.smbc.Context (debug=debug,
                                           auth_fn=smbc_auth.callback)
@@ -3767,7 +3767,7 @@ class NewPrinterGUI(GtkGUI):
                 uri = "smb://%s" % entry.name
                 debug = 0
                 if get_debugging ():
-                    debug = 1
+                    debug = 10
                 smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
                 ctx = pysmb.smbc.Context (debug=debug,
                                           auth_fn=smbc_auth.callback)
@@ -3878,7 +3878,7 @@ class NewPrinterGUI(GtkGUI):
             try:
                 debug = 0
                 if get_debugging ():
-                    debug = 1
+                    debug = 10
 
                 if auth_set:
                     # No prompting.
