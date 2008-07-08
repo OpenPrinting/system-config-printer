@@ -1,5 +1,15 @@
 2008-07-08  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: Added 'Close' button to printer
+	properties dialog.
+	* system-config-printer.py (GUI.__init__): Fetch 'Close' button
+	widget.
+	(GUI.dests_iconview_item_activated): Show Close button only when
+	the printer is a discovered one, and Apply/Cancel/OK otherwise.
+	Fixes trac #61.
+
+2008-07-08  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (NewPrinterGUI.browse_smb_hosts):
 	Increase smbc debugging level.
 	(NewPrinterGUI.on_tvSMBBrowser_row_expanded): Likewise.

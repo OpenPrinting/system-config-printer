@@ -191,8 +191,10 @@ class GUI(GtkGUI, monitor.Watcher):
         self.getWidgets("MainWindow", "dests_iconview",
                         "PrinterPropertiesDialog",
                         "tvPrinterProperties",
+                        "btnPrinterPropertiesCancel",
                         "btnPrinterPropertiesOK",
                         "btnPrinterPropertiesApply",
+                        "btnPrinterPropertiesClose",
                         "ServerSettingsDialog",
                         "server_settings",
                         "statusbarMain",
@@ -600,7 +602,17 @@ class GUI(GtkGUI, monitor.Watcher):
             return
 
         self.PrinterPropertiesDialog.set_transient_for (self.MainWindow)
-        self.btnPrinterPropertiesOK.set_sensitive (not object.discovered)
+        for button in [self.btnPrinterPropertiesCancel,
+                       self.btnPrinterPropertiesOK,
+                       self.btnPrinterPropertiesApply]:
+            if object.discovered:
+                button.hide ()
+            else:
+                button.show ()
+        if object.discovered:
+            self.btnPrinterPropertiesClose.show ()
+        else:
+            self.btnPrinterPropertiesClose.hide ()
         self.setDataButtonState ()
         treeview = self.tvPrinterProperties
         sel = treeview.get_selection ()
