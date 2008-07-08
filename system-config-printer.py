@@ -227,8 +227,10 @@ class GUI(GtkGUI, monitor.Watcher):
                          "PrinterPropertiesDialog":
                              ["PrinterPropertiesDialog",
                               "tvPrinterProperties",
+                              "btnPrinterPropertiesCancel",
                               "btnPrinterPropertiesOK",
                               "btnPrinterPropertiesApply",
+                              "btnPrinterPropertiesClose",
                               "ntbkPrinter",
                               "entPDescription",
                               "entPLocation",
@@ -633,7 +635,17 @@ class GUI(GtkGUI, monitor.Watcher):
             return
 
         self.PrinterPropertiesDialog.set_transient_for (self.PrintersWindow)
-        self.btnPrinterPropertiesOK.set_sensitive (not object.discovered)
+        for button in [self.btnPrinterPropertiesCancel,
+                       self.btnPrinterPropertiesOK,
+                       self.btnPrinterPropertiesApply]:
+            if object.discovered:
+                button.hide ()
+            else:
+                button.show ()
+        if object.discovered:
+            self.btnPrinterPropertiesClose.show ()
+        else:
+            self.btnPrinterPropertiesClose.hide ()
         self.setDataButtonState ()
         treeview = self.tvPrinterProperties
         sel = treeview.get_selection ()
@@ -3617,7 +3629,7 @@ class NewPrinterGUI(GtkGUI):
 
         debug = 0
         if get_debugging ():
-            debug = 1
+            debug = 10
         smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
         ctx = pysmb.smbc.Context (debug=debug,
                                   auth_fn=smbc_auth.callback)
@@ -3703,7 +3715,7 @@ class NewPrinterGUI(GtkGUI):
             uri = "smb://%s" % entry.name
             debug = 0
             if get_debugging ():
-                debug = 1
+                debug = 10
             smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
             ctx = pysmb.smbc.Context (debug=debug,
                                       auth_fn=smbc_auth.callback)
@@ -3742,7 +3754,7 @@ class NewPrinterGUI(GtkGUI):
             uri = "smb://%s" % entry.name
             debug = 0
             if get_debugging ():
-                debug = 1
+                debug = 10
             smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
             ctx = pysmb.smbc.Context (debug=debug,
                                       auth_fn=smbc_auth.callback)
@@ -3843,7 +3855,7 @@ class NewPrinterGUI(GtkGUI):
         try:
             debug = 0
             if get_debugging ():
-                debug = 1
+                debug = 10
 
             if auth_set:
                 # No prompting.
