@@ -678,8 +678,8 @@ class GUI(GtkGUI, monitor.Watcher):
         any_shared = False
         any_unshared = False
         n = len (paths)
+        model = iconview.get_model ()
         for i in range (n):
-            model = iconview.get_model ()
             iter = model.get_iter (paths[i])
             object = model.get_value (iter, 0)
             name = model.get_value (iter, 2)
