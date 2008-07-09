@@ -20,6 +20,7 @@
 
 import cups, pprint, os, tempfile, re
 import locale
+from . import _debugprint
 
 class Printer:
     _flags_blacklist = ["options", "local"]

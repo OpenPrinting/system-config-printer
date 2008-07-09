@@ -1,5 +1,30 @@
 2008-07-09  Tim Waugh  <twaugh@redhat.com>
 
+	* cupshelpers/openprinting.py: Moved top-level test code...
+	(_simple_gui): ...here.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/ppds.py: Removed self_test from public interface.
+	It can still be called during 'make check'.
+	(PPDs.self_test): Renamed so that it starts with an underscore.
+	* Makefile.am (test-ppd-module.sh): Track name change.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.init): Clear text entry
+	fields before filling devices list, so that when
+	self.on_tvNPDevices_cursor_changed() pre-fills the location field
+	it doesn't get reset afterwards.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Fixed location
+	pre-fill.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.dests_iconview_selection_changed):
 	Factored out get_model() from this loop.
 

@@ -22,7 +22,7 @@
 import urllib, httplib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
-from cupshelpers import Device
+from . import Device
 
 __all__ = ['OpenPrinting']
 
@@ -328,7 +328,7 @@ class OpenPrinting:
             params.update(extra_options)
         return self.webQuery(params, parse_result, (callback, user_data))
 
-if __name__ == "__main__":
+def _simple_gui ():
     import gtk, pprint
     gtk.gdk.threads_init ()
     class QueryApp:

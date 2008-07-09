@@ -2730,6 +2730,17 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPDownloadableDriverSearch_label = label
         label.set_text (_("Search"))
 
+        if self.dialog_mode in ("printer", "class"):
+            self.entNPName.set_text (self.mainapp.makeNameUnique(self.dialog_mode))
+            self.entNPName.grab_focus()
+            for widget in [self.entNPLocation,
+                           self.entNPDescription,
+                           self.entSMBURI, self.entSMBUsername,
+                           self.entSMBPassword]:
+                widget.set_text('')
+
+        self.entNPTDirectJetPort.set_text('9100')
+
         if self.dialog_mode == "printer":
             self.NewPrinterWindow.set_title(_("New Printer"))
             # Start on devices page (1, not 0)
@@ -2808,16 +2819,6 @@ class NewPrinterGUI(GtkGUI):
 
             self.fillMakeList()
 
-        if self.dialog_mode in ("printer", "class"):
-            self.entNPName.set_text (self.mainapp.makeNameUnique(self.dialog_mode))
-            self.entNPName.grab_focus()
-            for widget in [self.entNPLocation,
-                           self.entNPDescription,
-                           self.entSMBURI, self.entSMBUsername,
-                           self.entSMBPassword]:
-                widget.set_text('')
-
-        self.entNPTDirectJetPort.set_text('9100')
         self.setNPButtons()
         self.NewPrinterWindow.show()
 
@@ -4184,8 +4185,12 @@ class NewPrinterGUI(GtkGUI):
 
         try:
             if len (location) == 0 and self.device.device_class == "direct":
+                # Set location to the name of this host.
                 u = os.uname ()
-                self.entNPLocation.set_text (u[1])
+                location = u[1]
+
+            # Pre-fill location field.
+            self.entNPLocation.set_text (location)
         except:
             nonfatalException ()
 

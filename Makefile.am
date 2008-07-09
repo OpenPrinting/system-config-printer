@@ -241,8 +241,8 @@ help:
 test-ppd-module.sh:
 	echo "#!/usr/bin/env python" > "$@"
 	echo "import sys; sys.path.append ('$(top_srcdir)')" >> "$@"
-	echo "from cupshelpers.ppds import self_test" >> "$@"
-	echo "self_test()" >> "$@"
+	echo "from cupshelpers.ppds import _self_test" >> "$@"
+	echo "_self_test(sys.argv)" >> "$@"
 	chmod 755 "$@"
 
 TESTS = test-ppd-module.sh

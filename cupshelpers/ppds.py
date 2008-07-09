@@ -29,8 +29,7 @@ import re
 from . import _debugprint
 
 __all__ = ['ppdMakeModelSplit',
-           'PPDs',
-           'self_test']
+           'PPDs']
 
 def ppdMakeModelSplit (ppd_make_and_model):
     """
@@ -826,10 +825,10 @@ class PPDs:
 def _show_help():
     print "usage: ppds.py [--deviceid] [--list-models] [--list-ids] [--debug]"
 
-def self_test():
+def _self_test(argv):
     import sys, getopt
     try:
-        opts, args = getopt.gnu_getopt (sys.argv[1:], '',
+        opts, args = getopt.gnu_getopt (argv[1:], '',
                                         ['help',
                                          'deviceid',
                                          'list-models',
