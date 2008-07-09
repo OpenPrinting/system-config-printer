@@ -29,7 +29,7 @@ pkgdata = config.Paths ().get_path ('pkgdatadir')
 class GtkGUI:
     def getWidgets(self, widgets):
         glade_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE",
-                                    os.path.join (pkgdata, "ui"))
+                                    os.path.join (pkgdata, "glade"))
         for xmlfile, names in widgets.iteritems ():
             xml = gtk.glade.XML (os.path.join (glade_dir, xmlfile + ".glade"))
             for name in names:

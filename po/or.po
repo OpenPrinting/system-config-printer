@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.trunk.or\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-06-10 09:54+0100\n"
+"POT-Creation-Date: 2008-06-27 18:07+0100\n"
 "PO-Revision-Date: 2008-04-09 12:49+0530\n"
 "Last-Translator: saroj kumar padhy <saroz.kumar@gmail.com>\n"
 "Language-Team: Oriya <oriya-group@lists.sarovar.org>\n"
@@ -47,11 +47,11 @@ msgstr ""
 "\n"
 "\n"
 
-#: ../authconn.py:30 ../system-config-printer.glade.h:249
+#: ../authconn.py:30 ../glade/NewPrinterWindow.glade.h:91
 msgid "Username:"
 msgstr "ଚାଳକ ନାମ:"
 
-#: ../authconn.py:31 ../system-config-printer.glade.h:184 ../applet.glade.h:4
+#: ../authconn.py:31 ../glade/NewPrinterWindow.glade.h:66
 msgid "Password:"
 msgstr "ପ୍ରବେଶ ସଙ୍କେତ:"
 
@@ -63,37 +63,6 @@ msgstr "ଉପର ମାର୍ଜିନ:"
 #: ../authconn.py:34
 msgid "Authentication"
 msgstr "ବୈଧିକରଣ"
-
-#: ../cupshelpers.py:28
-msgid "Idle"
-msgstr "ନିଷ୍କ୍ରିୟ"
-
-#: ../cupshelpers.py:29 ../jobviewer.py:394
-#: ../troubleshoot/PrintTestPage.py:42
-msgid "Processing"
-msgstr "ପ୍ରକ୍ରିୟା କରୁଅଛି"
-
-#: ../cupshelpers.py:30
-msgid "Busy"
-msgstr "ବ୍ଯସ୍ତ"
-
-#: ../cupshelpers.py:31 ../jobviewer.py:395
-#: ../troubleshoot/PrintTestPage.py:43
-msgid "Stopped"
-msgstr "ଅଟକିଛି"
-
-#: ../cupshelpers.py:63 ../jobviewer.py:302 ../jobviewer.py:368
-#: ../jobviewer.py:369 ../jobviewer.py:382 ../jobviewer.py:405
-#: ../jobviewer.py:462 ../jobviewer.py:782 ../jobviewer.py:817
-#: ../jobviewer.py:843 ../troubleshoot/ChooseNetworkPrinter.py:96
-#: ../troubleshoot/ChooseNetworkPrinter.py:97
-#: ../troubleshoot/ChooseNetworkPrinter.py:100
-#: ../troubleshoot/ChooseNetworkPrinter.py:101
-#: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
-#: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
-#: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
-msgid "Unknown"
-msgstr "ଅଜଣା"
 
 #: ../errordialogs.py:65 ../errordialogs.py:77
 msgid "Not authorized"
@@ -140,7 +109,7 @@ msgstr "ଉନ୍ନୟନ ଆବଶ୍ଯକ"
 msgid "Server error"
 msgstr "ସେବକ ତୃଟି"
 
-#: ../errordialogs.py:94 ../system-config-printer.py:705
+#: ../errordialogs.py:94 ../system-config-printer.py:748
 msgid "Not connected"
 msgstr "ସଂଯୋଜିତ ହୋଇ ନାହିଁ"
 
@@ -154,161 +123,183 @@ msgstr "ସ୍ଥିତି %d"
 msgid "There was an HTTP error: %s."
 msgstr "ସେଠାରେ ଗୋଟିଏ HTTP ତୃଟି ଥିଲା: %s।"
 
-#: ../jobviewer.py:91 ../troubleshoot/PrintTestPage.py:78
+#: ../jobviewer.py:187 ../troubleshoot/PrintTestPage.py:78
 msgid "Job"
 msgstr "କାର୍ଯ୍ଯ"
 
-#: ../jobviewer.py:92
+#: ../jobviewer.py:188
 #, fuzzy
 msgid "User"
 msgstr "ଚାଳକ"
 
-#: ../jobviewer.py:93 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:189 ../troubleshoot/PrintTestPage.py:82
 msgid "Document"
 msgstr "ଦଲିଲ"
 
-#: ../jobviewer.py:94 ../jobviewer.py:158 ../my-default-printer.py:157
-#: ../system-config-printer.py:272 ../system-config-printer.py:797
-#: ../system-config-printer.py:2855 ../troubleshoot/PrintTestPage.py:80
+#: ../jobviewer.py:190 ../jobviewer.py:242 ../my-default-printer.py:157
+#: ../system-config-printer.py:316 ../system-config-printer.py:841
+#: ../system-config-printer.py:2945 ../troubleshoot/PrintTestPage.py:80
 msgid "Printer"
 msgstr "ମୁଦ୍ରଣୀ"
 
-#: ../jobviewer.py:95
+#: ../jobviewer.py:191
 msgid "Size"
 msgstr "ଆକାର"
 
-#: ../jobviewer.py:96
+#: ../jobviewer.py:192
 msgid "Time submitted"
 msgstr "ଦାଖଲ କରାଯାଇଥିବା ସମୟ"
 
-#: ../jobviewer.py:97 ../troubleshoot/PrintTestPage.py:83
+#: ../jobviewer.py:193 ../troubleshoot/PrintTestPage.py:83
 msgid "Status"
 msgstr "ସ୍ଥିତି"
 
-#: ../jobviewer.py:130
+#: ../jobviewer.py:225
 #, python-format
 msgid "my jobs on %s"
 msgstr ""
 
-#: ../jobviewer.py:132
+#: ../jobviewer.py:227
 msgid "my jobs"
 msgstr ""
 
-#: ../jobviewer.py:137
+#: ../jobviewer.py:232
 #, fuzzy
 msgid "all jobs"
 msgstr "ସବୁ କାମଗୁଡିକ ବାତିଲ କରନ୍ତୁ"
 
-#: ../jobviewer.py:138
+#: ../jobviewer.py:233
 #, fuzzy, python-format
 msgid "Document Print Status (%s)"
 msgstr "ଦଲିଲ ମୁଦ୍ରଣ ସ୍ଥିତି"
 
-#: ../jobviewer.py:171
+#: ../jobviewer.py:255
 msgid "Message"
 msgstr "ସନ୍ଦେଶ"
 
-#: ../jobviewer.py:314
+#: ../jobviewer.py:386 ../jobviewer.py:452 ../jobviewer.py:453
+#: ../jobviewer.py:466 ../jobviewer.py:489 ../jobviewer.py:546
+#: ../system-config-printer.py:1843 ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../troubleshoot/ChooseNetworkPrinter.py:97
+#: ../troubleshoot/ChooseNetworkPrinter.py:100
+#: ../troubleshoot/ChooseNetworkPrinter.py:101
+#: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
+#: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
+#: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
+msgid "Unknown"
+msgstr "ଅଜଣା"
+
+#: ../jobviewer.py:398
 msgid "1 hour ago"
 msgstr "ଗୋଟିଏ ଘଣ୍ଟା ପୂର୍ବରୁ"
 
-#: ../jobviewer.py:316
+#: ../jobviewer.py:400
 msgid "1 hour and 1 minute ago"
 msgstr "ଗୋଟିଏ ଘଣ୍ଟା ଏବଂ ଗୋଟିଏ ମିନିଟ ପୂର୍ବରୁ"
 
-#: ../jobviewer.py:318
+#: ../jobviewer.py:402
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "ଗୋଟିଏ ଘଣ୍ଟା ଏବଂ %d ମିନିଟ ପୂର୍ବରୁ"
 
-#: ../jobviewer.py:321
+#: ../jobviewer.py:405
 #, python-format
 msgid "%d hours ago"
 msgstr "%d ଘଣ୍ଟା ପୂର୍ବରୁ"
 
-#: ../jobviewer.py:323
+#: ../jobviewer.py:407
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d ଘଣ୍ଟା ଏବଂ ଗୋଟିଏ ମିନିଟ ପୂର୍ବରୁ"
 
-#: ../jobviewer.py:325
+#: ../jobviewer.py:409
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d ଘଣ୍ଟା ଏବଂ %d ମିନିଟ ପୂର୍ବରୁ"
 
-#: ../jobviewer.py:331
+#: ../jobviewer.py:415
 msgid "a minute ago"
 msgstr "ଗୋଟିଏ ମିନିଟ ପୂର୍ବରୁ"
 
-#: ../jobviewer.py:333
+#: ../jobviewer.py:417
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d ମିନିଟ ପୂର୍ବରୁ"
 
-#: ../jobviewer.py:392 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:476 ../troubleshoot/PrintTestPage.py:40
 msgid "Pending"
 msgstr "ଅନିଷ୍ପନ୍ନ"
 
-#: ../jobviewer.py:393 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:477 ../troubleshoot/PrintTestPage.py:41
 msgid "Held"
 msgstr "ଅଟକା ଯାଇଛି"
 
-#: ../jobviewer.py:396 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:478 ../system-config-printer.py:156
+#: ../troubleshoot/PrintTestPage.py:42
+msgid "Processing"
+msgstr "ପ୍ରକ୍ରିୟା କରୁଅଛି"
+
+#: ../jobviewer.py:479 ../system-config-printer.py:158
+#: ../troubleshoot/PrintTestPage.py:43
+msgid "Stopped"
+msgstr "ଅଟକିଛି"
+
+#: ../jobviewer.py:480 ../troubleshoot/PrintTestPage.py:44
 msgid "Canceled"
 msgstr "ବାତିଲ କରାଯାଇଛି"
 
-#: ../jobviewer.py:397 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:481 ../troubleshoot/PrintTestPage.py:45
 msgid "Aborted"
 msgstr "ପରିତ୍ଯାଗ କରାଯାଇଛି"
 
-#: ../jobviewer.py:398 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:482 ../troubleshoot/PrintTestPage.py:46
 msgid "Completed"
 msgstr "ସମାପ୍ତ"
 
-#: ../jobviewer.py:460
+#: ../jobviewer.py:544
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr ""
 
-#: ../jobviewer.py:665
+#: ../jobviewer.py:749
 msgid "No documents queued"
 msgstr "କୌଣସି ଦଲିଲ କ୍ରମରେ ନାହିଁ"
 
-#: ../jobviewer.py:667
+#: ../jobviewer.py:751
 msgid "1 document queued"
 msgstr "ଗୋଟିଏ ଦଲିଲ କ୍ରମରେ ଅଛି"
 
-#: ../jobviewer.py:669
+#: ../jobviewer.py:753
 #, python-format
 msgid "%d documents queued"
 msgstr "%d ଦଲିଲ ଗୁଡିକ କ୍ରମରେ ଅଛନ୍ତି"
 
-#: ../jobviewer.py:902
+#: ../jobviewer.py:987
 #, fuzzy, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "CUPS ସେବକ ସହିତ ସଂଯୋଗ କରିବା ବେଳେ ଗୋଟିଏ ସମସ୍ଯା ସୃଷ୍ଟି ହେଲା।"
 
-#: ../jobviewer.py:905
+#: ../jobviewer.py:990
 #, fuzzy, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "'%s' ମୁଦ୍ରଣୀରେ ଏକ ତ୍ରୁଟି ରହିଛି।"
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:911
+#: ../jobviewer.py:996
 #, fuzzy, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "'%s' ମୁଦ୍ରଣୀରେ ଏକ ତ୍ରୁଟି ରହିଛି।"
 
-#: ../jobviewer.py:917 ../jobviewer.py:933
+#: ../jobviewer.py:1002 ../jobviewer.py:1018
 #, fuzzy
 msgid "Print Error"
 msgstr "ମୁଦ୍ରଣୀ ତୃଟି"
 
-#: ../jobviewer.py:918
+#: ../jobviewer.py:1003
 msgid "_Diagnose"
 msgstr ""
 
-#: ../jobviewer.py:939
+#: ../jobviewer.py:1024
 #, fuzzy, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "କ୍ରମ `%s' ସକ୍ରିୟ ହୋଇନାହିଂ"
@@ -325,102 +316,115 @@ msgstr "ତନ୍ତ୍ରର ପୂର୍ବନିର୍ଦ୍ଧାରିତ �
 msgid "_Set Default"
 msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ବିନ୍ଯାସକୁ ସେଟ କରନ୍ତୁ (_S)"
 
-#: ../my-default-printer.py:162 ../system-config-printer.py:2550
+#: ../my-default-printer.py:162 ../system-config-printer.py:2640
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "ଅବସ୍ଥାନ"
 
-#: ../optionwidgets.py:116
+#: ../optionwidgets.py:117
 msgid "Conflicts with:"
 msgstr "ଏହା ସହିତ ବିରୋଧ:"
 
-#: ../system-config-printer.py:278 ../system-config-printer.py:803
+#: ../system-config-printer.py:104
+#, fuzzy
+msgid "To do this, select System->Administration->Firewall from the main menu."
+msgstr "ଏହି ଉପକରଣ ଆରମ୍ଭ କରିବା ପାଈଂ, ମୁଖ୍ଯ ମେନୁରୁ ତନ୍ତ୍ର->ପ୍ରଶାସନ->ମୁଦ୍ରଣ ଚୟନ କରନ୍ତୁ."
+
+#: ../system-config-printer.py:155
+msgid "Idle"
+msgstr "ନିଷ୍କ୍ରିୟ"
+
+#: ../system-config-printer.py:157
+msgid "Busy"
+msgstr "ବ୍ଯସ୍ତ"
+
+#: ../system-config-printer.py:322 ../system-config-printer.py:847
 #, fuzzy
 msgid "Class"
 msgstr "ନୂତନ ଶ୍ରେଣୀ"
 
 #. Set up "Problems?" link button
-#: ../system-config-printer.py:308
+#: ../system-config-printer.py:352
 #, fuzzy
 msgid "Problems?"
 msgstr "ଖୋଜନ୍ତୁ"
 
-#: ../system-config-printer.py:350 ../system-config-printer.py:352
+#: ../system-config-printer.py:394 ../system-config-printer.py:396
 msgid "Members of this class"
 msgstr "ଏହି ଶ୍ରେଣୀର ସଦସ୍ଯ ମାନେ"
 
-#: ../system-config-printer.py:351 ../system-config-printer.py:353
+#: ../system-config-printer.py:395 ../system-config-printer.py:397
 msgid "Others"
 msgstr "ଅନ୍ଯାନ୍ଯ"
 
-#: ../system-config-printer.py:354
+#: ../system-config-printer.py:398
 msgid "Devices"
 msgstr "ଯନ୍ତ୍ର"
 
-#: ../system-config-printer.py:355
+#: ../system-config-printer.py:399
 msgid "Makes"
 msgstr "ପ୍ରସ୍ତୁତ କରେ"
 
-#: ../system-config-printer.py:356
+#: ../system-config-printer.py:400
 msgid "Models"
 msgstr "ମୋଡେଲ"
 
-#: ../system-config-printer.py:357
+#: ../system-config-printer.py:401
 msgid "Drivers"
 msgstr "ଡ୍ରାଇଭର"
 
-#: ../system-config-printer.py:358 ../system-config-printer.glade.h:103
+#: ../system-config-printer.py:402 ../glade/NewPrinterWindow.glade.h:49
 msgid "Downloadable Drivers"
 msgstr "ଆହରଣ ଯୋଗ୍ଯ ଡ୍ରାଇଭର ଗୁଡିକ"
 
-#: ../system-config-printer.py:359
+#: ../system-config-printer.py:403
 msgid "Users"
 msgstr "ଚାଳକ"
 
-#: ../system-config-printer.py:397
+#: ../system-config-printer.py:439
 msgid "Automatic rotation"
 msgstr "ସ୍ଯୟଂଚାଳିତ ଘୁର୍ନ୍ଯ"
 
-#: ../system-config-printer.py:584
+#: ../system-config-printer.py:627
 #, fuzzy, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "ମୁଦ୍ରଣୀ ଗୁଣଧର୍ମ"
 
-#: ../system-config-printer.py:700
+#: ../system-config-printer.py:743
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "ମୁଦ୍ରଣୀ ବିନ୍ଯାସ - %s"
 
-#: ../system-config-printer.py:703
+#: ../system-config-printer.py:746
 #, python-format
 msgid "Connected to %s"
 msgstr "%s ସହିତ ସଂଯୋଗ କରାଯାଇଛି"
 
-#: ../system-config-printer.py:791
+#: ../system-config-printer.py:835
 #, fuzzy
 msgid "Network printer (discovered)"
 msgstr "ଜାଲକ ମୁଦ୍ରଣୀ"
 
-#: ../system-config-printer.py:794
+#: ../system-config-printer.py:838
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:800 ../system-config-printer.py:2856
+#: ../system-config-printer.py:844 ../system-config-printer.py:2946
 msgid "Fax"
 msgstr "ଫ୍ଯାକ୍ସ"
 
-#: ../system-config-printer.py:806 ../system-config-printer.py:812
+#: ../system-config-printer.py:850 ../system-config-printer.py:856
 #: ../troubleshoot/LocalOrRemote.py:31
 msgid "Network printer"
 msgstr "ଜାଲକ ମୁଦ୍ରଣୀ"
 
-#: ../system-config-printer.py:809
+#: ../system-config-printer.py:853
 #, fuzzy
 msgid "Network print share"
 msgstr "ଜାଲକ ମୁଦ୍ରଣୀ"
 
-#: ../system-config-printer.py:917
+#: ../system-config-printer.py:976
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -429,15 +433,16 @@ msgstr ""
 "ସେବକ ସହିତ ସଂଯୋଗ କରିବା ବିଷୟରେ:\n"
 "%s"
 
-#: ../system-config-printer.py:1282
+#: ../system-config-printer.py:1341
 msgid "Installable Options"
 msgstr "ସ୍ଥାପନ ଯୋଗ୍ଯ ବିକଳ୍ପ"
 
-#: ../system-config-printer.py:1283 ../system-config-printer.glade.h:198
+#: ../system-config-printer.py:1342
+#: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Printer Options"
 msgstr "ମୁଦ୍ରଣୀ ବିକଳ୍ପ"
 
-#: ../system-config-printer.py:1304
+#: ../system-config-printer.py:1363
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -447,36 +452,59 @@ msgstr ""
 "ଏହି ବିବାଦ ମାନଙ୍କର ସମାଧାନ ହେଲା ପରେ\n"
 "ପରିବର୍ତନ ଗୁଡିକ କେବଳ ଲାଗୁ ହେବ।"
 
-#: ../system-config-printer.py:1331
+#: ../system-config-printer.py:1390
 msgid "This will delete this class!"
 msgstr "ଏହି ପ୍ରକ୍ରିୟା ଟି ଏହି ଶ୍ରେଣୀ କୁ ଅପସାରିତ କରିଦେବ!"
 
-#: ../system-config-printer.py:1332
+#: ../system-config-printer.py:1391
 msgid "Proceed anyway?"
 msgstr "ତଥାପି ଆଗକୁ ବଢନ୍ତୁ?"
 
-#: ../system-config-printer.py:1510 ../system-config-printer.py:1536
+#: ../system-config-printer.py:1532
+#, fuzzy
+msgid "Set Default Printer"
+msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ମୂଦ୍ରଣୀ"
+
+#: ../system-config-printer.py:1534
+msgid "Do you want to set this as the system-wide default printer?"
+msgstr ""
+
+#: ../system-config-printer.py:1536
+#, fuzzy
+msgid "Set as the _system-wide default printer"
+msgstr "ଏହା ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ ମୁଦ୍ରଣୀ ଅଟେ"
+
+#: ../system-config-printer.py:1538
+msgid "_Clear my personal default setting"
+msgstr ""
+
+#: ../system-config-printer.py:1539
+#, fuzzy
+msgid "Set as my _personal default printer"
+msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ମୂଦ୍ରଣୀ ଚୟନ କରନ୍ତୁ"
+
+#: ../system-config-printer.py:1590 ../system-config-printer.py:1616
 msgid "Submitted"
 msgstr "ଦାଖଲ କରାଯାଇଛି"
 
-#: ../system-config-printer.py:1511
+#: ../system-config-printer.py:1591
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "%d କାର୍ଯ୍ଯ ରୂପରେ ପରୀକ୍ଷଣ ପୃଷ୍ଠାକୁ ଦାଖଲ କରାଯାଇଛି"
 
-#: ../system-config-printer.py:1517 ../system-config-printer.py:1543
-#: ../system-config-printer.py:3923
+#: ../system-config-printer.py:1597 ../system-config-printer.py:1623
+#: ../system-config-printer.py:3971
 msgid "Not possible"
 msgstr "ସମ୍ଭବ ନୁହେଁ"
 
-#: ../system-config-printer.py:1518 ../system-config-printer.py:1544
+#: ../system-config-printer.py:1598 ../system-config-printer.py:1624
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr ""
 "ଦୂର ସେବକଟି ମୁଦ୍ରଣ କାର୍ଯ୍ଯକୁ ସ୍ବୀକାର କରିଲା ନାହିଁ, ସମ୍ଭବତ ଏଥିପାଇଁ ଯେ ମୁଦ୍ରଣୀକି ସହଭାଗ କରାଯାଇ ନାହିଁ।"
 
-#: ../system-config-printer.py:1537
+#: ../system-config-printer.py:1617
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "%d କାର୍ଯ୍ଯ ରୂପରେ ପରୀକ୍ଷଣ ନିର୍ଦ୍ଦେଶ ଦାଖଲ କରାଯାଇଛି"
@@ -484,38 +512,38 @@ msgstr "%d କାର୍ଯ୍ଯ ରୂପରେ ପରୀକ୍ଷଣ ନିର
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1594 ../system-config-printer.py:1701
+#: ../system-config-printer.py:1674 ../system-config-printer.py:1781
 msgid "Error"
 msgstr "ତୃଟି"
 
-#: ../system-config-printer.py:1595
+#: ../system-config-printer.py:1675
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS ସେବକ ସହିତ ସଂଯୋଗ କରିବା ବେଳେ ଗୋଟିଏ ସମସ୍ଯା ସୃଷ୍ଟି ହେଲା।"
 
-#: ../system-config-printer.py:1702
+#: ../system-config-printer.py:1782
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "ଚୟନ '%s' ର ମୂଲ୍ଯ '%s'। ଏବଂ ଏହା ପରିବର୍ତନ କରାଯାଇ ପାରିବ ନାହିଁ।"
 
-#: ../system-config-printer.py:2118
+#: ../system-config-printer.py:2199
 #, python-format
 msgid "Really delete class `%s'?"
 msgstr "%s ଶ୍ରେଣୀକୁ ପ୍ରକୃତରେ ଅପସାରଣ କରିବେ କି? "
 
-#: ../system-config-printer.py:2120
+#: ../system-config-printer.py:2201
 #, python-format
 msgid "Really delete printer `%s'?"
 msgstr "%s ମୁଦ୍ରଣୀକୁ ପ୍ରକୃତରେ ଅପସାରଣ କରିବେ କି?"
 
-#: ../system-config-printer.py:2122
+#: ../system-config-printer.py:2203
 msgid "Really delete selected destinations?"
 msgstr "ଚୟନ କରିଥିବା ଲକ୍ଷଗୁଡିକୁ ପ୍ରକୃତରେ ଅପସାରଣ କରିବେ କି?"
 
-#: ../system-config-printer.py:2176
+#: ../system-config-printer.py:2257
 msgid "Publish Shared Printers"
 msgstr ""
 
-#: ../system-config-printer.py:2177
+#: ../system-config-printer.py:2258
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -527,77 +555,73 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2291
+#: ../system-config-printer.py:2371
 #, fuzzy
 msgid "Review Firewall"
 msgstr "ସେବକ ଫାଇର୍ବାଲ୍ ପରୀକ୍ଷ୍ୟା କରନ୍ତୁ"
 
-#: ../system-config-printer.py:2292
+#: ../system-config-printer.py:2372
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
-#: ../system-config-printer.py:2295
-#, fuzzy
-msgid "To do this, select System->Administration->Firewall from the main menu."
-msgstr "ଏହି ଉପକରଣ ଆରମ୍ଭ କରିବା ପାଈଂ, ମୁଖ୍ଯ ମେନୁରୁ ତନ୍ତ୍ର->ପ୍ରଶାସନ->ମୁଦ୍ରଣ ଚୟନ କରନ୍ତୁ."
-
-#: ../system-config-printer.py:2509 ../system-config-printer.py:2519
+#. SMB list columns
+#: ../system-config-printer.py:2609
 msgid "Share"
 msgstr "ସହଭାଗ"
 
-#: ../system-config-printer.py:2515 ../system-config-printer.py:2525
+#: ../system-config-printer.py:2615
 msgid "Comment"
 msgstr "ଟିପ୍ପଣୀ"
 
 #. IPP list columns
-#: ../system-config-printer.py:2544
+#: ../system-config-printer.py:2634
 msgid "Queue"
 msgstr "କ୍ରମ"
 
-#: ../system-config-printer.py:2558
+#: ../system-config-printer.py:2648
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ମୁଦ୍ରଣୀ ବର୍ଣ୍ଣନା ଫାଇଲ୍ ଗୁଡାକ (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
 
-#: ../system-config-printer.py:2567
+#: ../system-config-printer.py:2657
 msgid "All files (*)"
 msgstr "ସମସ୍ତ ଫାଇଲ୍ (*)"
 
-#: ../system-config-printer.py:2605 ../system-config-printer.py:4193
-#: ../system-config-printer.py:4228
+#: ../system-config-printer.py:2693 ../system-config-printer.py:4250
+#: ../system-config-printer.py:4288
 msgid "Search"
 msgstr "ଖୋଜନ୍ତୁ"
 
-#: ../system-config-printer.py:2608 ../system-config-printer.glade.h:145
+#: ../system-config-printer.py:2696 ../glade/NewPrinterWindow.glade.h:63
 msgid "New Printer"
 msgstr "ନୂତନ ମୁଦ୍ରଣୀ"
 
-#: ../system-config-printer.py:2619
+#: ../system-config-printer.py:2707
 msgid "New Class"
 msgstr "ନୂତନ ଶ୍ରେଣୀ"
 
-#: ../system-config-printer.py:2624
+#: ../system-config-printer.py:2712
 msgid "Change Device URI"
 msgstr "ଯନ୍ତ୍ର ୟୁ.ଆର.ଆଇ. କୁ ପରିବର୍ତନ କରନ୍ତୁ"
 
-#: ../system-config-printer.py:2641
+#: ../system-config-printer.py:2729
 msgid "Change Driver"
 msgstr "ଡ୍ରାଇଭର କୁ ପରିବର୍ତନ କରନ୍ତୁ"
 
-#: ../system-config-printer.py:2742 ../system-config-printer.py:3007
-#: ../system-config-printer.py:3193 ../system-config-printer.py:4216
+#: ../system-config-printer.py:2832 ../system-config-printer.py:3098
+#: ../system-config-printer.py:3284 ../system-config-printer.py:4275
 msgid "Searching"
 msgstr "ଖୋଜା ଚାଲିଛି"
 
-#: ../system-config-printer.py:2743 ../system-config-printer.py:3008
+#: ../system-config-printer.py:2833 ../system-config-printer.py:3099
 msgid "Searching for drivers"
 msgstr "ଡ୍ରାଇଭର୍ ଖୋଜା ଚାଲିଛି"
 
-#: ../system-config-printer.py:2857
+#: ../system-config-printer.py:2947
 #, fuzzy
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
@@ -606,118 +630,135 @@ msgstr ""
 "ଏହି ମୁଦ୍ରଣୀ ମୁଦ୍ରଣ ଏବଂ ଫାକ୍ସ ପଠାଇବା ଦୁଇଟିକୁ ସହାୟତା କରୁଛି.\n"
 "ଏହି ମୁଦ୍ରଣ କ୍ରମ କେଉଁ କାର୍ଯ୍ୟ ପାଇଂ ବ୍ଯବହାର ହେଉଛି?"
 
-#: ../system-config-printer.py:3194
+#: ../system-config-printer.py:3285
 msgid "Searching for printers"
 msgstr "ମୁଦ୍ରଣୀ ଖୋଜା ଚାଲିଛି"
 
-#: ../system-config-printer.py:3440
+#: ../system-config-printer.py:3558
 msgid "Other"
 msgstr "ଅନ୍ଯାନ୍ଯ"
 
-#: ../system-config-printer.py:3442
+#: ../system-config-printer.py:3560
 msgid " (Current)"
 msgstr " (ବର୍ତମାନ)"
 
-#: ../system-config-printer.py:3465 ../system-config-printer.py:3482
-#: ../system-config-printer.py:3886
+#: ../system-config-printer.py:3586 ../system-config-printer.py:3934
 msgid "Scanning..."
 msgstr "କ୍ରମବୀକ୍ଷ୍ଯଣ ଚାଲିଛି..."
 
-#: ../system-config-printer.py:3805 ../system-config-printer.py:3868
+#: ../system-config-printer.py:3621
+#, fuzzy
+msgid "No Print Shares"
+msgstr "ଜାଲକ ମୁଦ୍ରଣୀ"
+
+#: ../system-config-printer.py:3622
+msgid ""
+"There were no print shares found.  Please check that the Samba service is "
+"marked as trusted in your firewall configuration."
+msgstr ""
+
+#: ../system-config-printer.py:3853 ../system-config-printer.py:3916
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:3806 ../system-config-printer.py:3869
+#: ../system-config-printer.py:3854 ../system-config-printer.py:3917
 msgid "This print share is accessible."
 msgstr "ଏହି ମୁଦ୍ରଣ ସହଭାଗଟି ଅଭିଗମ ଯୋଗ୍ଯ ଅଟେ।"
 
-#: ../system-config-printer.py:3810 ../system-config-printer.py:3873
+#: ../system-config-printer.py:3858 ../system-config-printer.py:3921
 msgid "This print share is not accessible."
 msgstr "ଏହି ମୁଦ୍ରଣ ସହଭାଗଟି ଅଭିଗମ ଯୋଗ୍ଯ ନୁହେଁ।"
 
-#: ../system-config-printer.py:3813
+#: ../system-config-printer.py:3861
 #, fuzzy
 msgid "Print Share Inaccessible"
 msgstr "ଏହି ମୁଦ୍ରଣ ସହଭାଗଟି ଅଭିଗମ ଯୋଗ୍ଯ ଅଟେ।"
 
-#: ../system-config-printer.py:3872
+#: ../system-config-printer.py:3920
 msgid "Inaccessible"
 msgstr "ଅନଭିଗମ୍ଯ"
 
-#: ../system-config-printer.py:3924
-msgid "It is not possible to obtain a list of queues from this host."
+#: ../system-config-printer.py:3972
+#, fuzzy, python-format
+msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "ଏହି ହୋଷ୍ଟ୍ ରୁ କ୍ରମ ତାଲିକା ପାଇବା ଅସମ୍ଭବ"
 
-#: ../system-config-printer.py:3927
+#: ../system-config-printer.py:3974
+msgid ""
+"Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
+"not support it."
+msgstr ""
+
+#: ../system-config-printer.py:3977
 msgid "No queues"
 msgstr "କୌଣସି କ୍ରମ ନାହିଁ"
 
-#: ../system-config-printer.py:3928
+#: ../system-config-printer.py:3978
 msgid "There are no queues available."
 msgstr "କୌଣସି କ୍ରମ ଉପଲବ୍ଧ ନୁହେଁ."
 
-#: ../system-config-printer.py:3985
+#: ../system-config-printer.py:4035
 msgid "A printer connected to the parallel port."
 msgstr "ଗୋଟିଏ ସମାନ୍ତରାଳ ସଂଯୋଗିକୀ ସହିତ ଗୋଟିଏ ମୁଦ୍ରଣୀକୁ ଯୋଗ କରାଯାଇଛି।"
 
-#: ../system-config-printer.py:3987
+#: ../system-config-printer.py:4037
 msgid "A printer connected to a USB port."
 msgstr "ଗୋଟିଏ USB ସଂଯୋଗିକୀ ସହିତ ଗୋଟିଏ ମୁଦ୍ରଣୀକୁ ଯୋଗ କରାଯାଇଛି।"
 
-#: ../system-config-printer.py:3989
+#: ../system-config-printer.py:4039
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "HPLIP ଗୋଟିଏ ମୁଦ୍ରଣୀକୁ ଚଳାଉଛି, କିମ୍ବା ମୁଦ୍ରଣୀଟି ବହୁ କାର୍ଯ୍ଯସମ୍ପନ୍ନ ଉପକରଣ ଅଟେ।"
 
-#: ../system-config-printer.py:3992
+#: ../system-config-printer.py:4042
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "HPLIP ଗୋଟିଏ ଫ୍ଯାକ୍ସ ମେସିନ ଚଳାଉଛି, କିମ୍ବା ଫ୍ଯାକ୍ସ ମେସିନଟି ବହୁ କାର୍ଯ୍ଯସମ୍ପନ୍ନ ଉପକରଣ ଅଟେ।"
 
-#: ../system-config-printer.py:3995
+#: ../system-config-printer.py:4045
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "ହାର୍ଡୱେର ପୃଥକୀକରଣ ସ୍ତର (HAL) ଦ୍ବାରା ସ୍ଥାନୀୟ ମୁଦ୍ରଣୀଟି ମିଳିଲା।"
 
-#: ../system-config-printer.py:4240
+#: ../system-config-printer.py:4300
 msgid "-- Select printer model --"
 msgstr "-- ମୁଦ୍ରଣୀ ମଡେଲ୍ ବାଛନ୍ତୁ --"
 
-#: ../system-config-printer.py:4242
+#: ../system-config-printer.py:4302
 msgid "-- No matches found --"
 msgstr "-- କୌଣସି ମେଳ ମିଳିଲା ନାହିଁ --"
 
-#: ../system-config-printer.py:4417
+#: ../system-config-printer.py:4478
 msgid " (recommended)"
 msgstr " (ଗ୍ରହଣୀୟ)"
 
-#: ../system-config-printer.py:4431
+#: ../system-config-printer.py:4492
 msgid "This PPD is generated by foomatic."
 msgstr "ଏହି PPD foomatic ଦ୍ବାରା ସୃଷ୍ଟି କରାଯାଇଛି।"
 
-#: ../system-config-printer.py:4457
+#: ../system-config-printer.py:4518
 msgid "OpenPrinting"
 msgstr "ଖୋଲା ମୁଦ୍ରଣ କରୁଅଛି"
 
-#: ../system-config-printer.py:4459
+#: ../system-config-printer.py:4520
 msgid "Distributable"
 msgstr "ବଣ୍ଟନ ଯୋଗ୍ଯ"
 
-#: ../system-config-printer.py:4461
+#: ../system-config-printer.py:4522
 msgid "None"
 msgstr "କିଛି ନୁହେଁ"
 
-#: ../system-config-printer.py:4469
+#: ../system-config-printer.py:4530
 msgid "Not specified."
 msgstr "ଉଲ୍ଲେଖ କରାଯାଇ ନାହିଁ"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4509
+#: ../system-config-printer.py:4570
 msgid "Database error"
 msgstr "ତଥ୍ଯାଧାର ତୃଟି"
 
-#: ../system-config-printer.py:4510
+#: ../system-config-printer.py:4571
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' ଡ୍ରାଇଭରକୁ '%s %s' ମୁଦ୍ରଣୀ ସହିତ ବ୍ଯବହାର କରିହେବ ନାହିଁ।"
@@ -725,55 +766,55 @@ msgstr "'%s' ଡ୍ରାଇଭରକୁ '%s %s' ମୁଦ୍ରଣୀ ସହି
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4520
+#: ../system-config-printer.py:4581
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "ଏହି ଡ୍ରାଇଭରକୁ ଚଳାଇବା ପାଇଁ ଆପଣ '%s' ପ୍ଯାକେଜକୁ ସ୍ଥାପନ କରିବା ଉଚିତ।"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4527
+#: ../system-config-printer.py:4588
 msgid "PPD error"
 msgstr "PPD ତୃଟି"
 
-#: ../system-config-printer.py:4529
+#: ../system-config-printer.py:4590
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD ଫାଇଲକୁ ପଢିବାରେ ତୃଟି।  ସମ୍ଭାବ୍ଯ କାରଣ ଗୁଡିକୁ ହେଲା:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4540
+#: ../system-config-printer.py:4607
 msgid "Downloadable drivers"
 msgstr "ଆହରଣ ଯୋଗ୍ଯ ଡ୍ରାଇଭର ଗୁଡାକ"
 
-#: ../system-config-printer.py:4541
+#: ../system-config-printer.py:4608
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:4577 ../system-config-printer.py:4615
+#: ../system-config-printer.py:4644 ../system-config-printer.py:4682
 msgid "No Installable Options"
 msgstr "ସ୍ଥାପନ ଯୋଗ୍ଯ ଚୟନ ଗୁଡିକ ନାହିଁ"
 
-#: ../system-config-printer.py:4661
+#: ../system-config-printer.py:4728
 msgid "Adding"
 msgstr "ଯୋଗ କରୁଅଛି"
 
-#: ../system-config-printer.py:4662
+#: ../system-config-printer.py:4729
 msgid "Adding printer"
 msgstr "ମୁଦ୍ରଣୀ ଯୋଗ କରୁଅଛି"
 
-#: ../system-config-printer.py:4823
+#: ../system-config-printer.py:4890
 msgid "Install driver"
 msgstr "ଡ୍ରାଇଭର ସ୍ଥାପନ କରନ୍ତୁ"
 
-#: ../system-config-printer.py:4824
+#: ../system-config-printer.py:4891
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "'%s' ମୁଦ୍ରଣୀ '%s' ପ୍ଯାକେଜ ମାନଙ୍କୁ ଆବଶ୍ଯକ କରିଥାଏ କିନ୍ତୁ ଏହା ବର୍ତ୍ତମାନ ସ୍ଥାପିତ ହୋଇନାହିଁ।"
 
-#: ../system-config-printer.py:4849
+#: ../system-config-printer.py:4916
 msgid "Missing driver"
 msgstr "ଅନୁପସ୍ଥିତ ଡ୍ରାଇଭର"
 
-#: ../system-config-printer.py:4850
+#: ../system-config-printer.py:4917
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -782,866 +823,16 @@ msgstr ""
 "'%s' ମୁଦ୍ରଣୀ '%s' ପ୍ରୋଗ୍ରାମକୁ ଆବଶ୍ଯକ କରିଥାଏ କିନ୍ତୁ ଏହା ବର୍ତ୍ତମାନ ସ୍ଥାପିତ ହୋଇନାହିଁ।  ଏହି "
 "ମୁଦ୍ରଣୀକୁ ବ୍ଯବହାର କରିବା ପୂର୍ବରୁ ଦୟାକରି ଏହାକୁ ସ୍ଥାପନ କରନ୍ତୁ।"
 
-#: ../system-config-printer.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../system-config-printer.glade.h:2
-msgid ""
-"1\n"
-"2\n"
-"4\n"
-"6\n"
-"9\n"
-"16"
-msgstr ""
-"1\n"
-"2\n"
-"4\n"
-"6\n"
-"9\n"
-"16"
-
-#: ../system-config-printer.glade.h:8
-#, fuzzy
-msgid "72 points per inch"
-msgstr ""
-"ବିନ୍ଦୁ ଗୁଡିକ \n"
-"(ଇଞ୍ଚ ପ୍ରତି ୭୨ଟି ବିନ୍ଦୁ)"
-
-#: ../system-config-printer.glade.h:9
-#, fuzzy
-msgid "<b>Authentication</b>"
-msgstr "ବୈଧିକରଣ"
-
-#: ../system-config-printer.glade.h:10
-msgid "<b>Banner</b>"
-msgstr "<b>ବ୍ଯାନର</b>"
-
-#: ../system-config-printer.glade.h:11
-msgid "<b>Basic Server Settings</b>"
-msgstr "<b>ସେବକର ମୌଳିକ ବିନ୍ଯାସ</b>"
-
-#: ../system-config-printer.glade.h:12
-msgid "<b>Common Options</b>"
-msgstr "<b>ସାଧାରଣ ବିକଳ୍ପ</b>"
-
-#: ../system-config-printer.glade.h:13
-msgid "<b>Description</b>"
-msgstr "<b>ବର୍ଣ୍ଣନା</b>"
-
-#: ../system-config-printer.glade.h:14
-msgid "<b>Description</b> (optional)"
-msgstr "<b>ବର୍ଣ୍ଣନା</b> (ବୈକଲ୍ପିକ)"
-
-#: ../system-config-printer.glade.h:15
-msgid "<b>Download Printer Driver</b>"
-msgstr "<b>ମୁଦ୍ରଣୀ ଡ୍ରାଇଭର ଆହରଣ କରନ୍ତୁ</b>"
-
-#: ../system-config-printer.glade.h:16
-msgid "<b>Enter device URI</b>"
-msgstr "<b>ଯନ୍ତ୍ର ୟୁ.ଆର.ଆଇ. ଭରଣ କରନ୍ତୁ</b>"
-
-#: ../system-config-printer.glade.h:17
-msgid "<b>IPP Printer</b>"
-msgstr "<b>ଆଇ.ପି.ପି. ମୁଦ୍ରଣୀ </b>"
-
-#: ../system-config-printer.glade.h:18
-msgid "<b>Image Options</b>"
-msgstr "<b>ପ୍ରତିଛବି ବିକଳ୍ପ</b>"
-
-#: ../system-config-printer.glade.h:19
-msgid "<b>Installed Options</b>"
-msgstr "<b>ଆହରଣ ହୋଇଥିବା ବିକଳ୍ପ</b>"
-
-#: ../system-config-printer.glade.h:20
-msgid "<b>License Terms</b>"
-msgstr "<b>ଅନୁମତି ପତ୍ର ଶବ୍ଦ ଗୁଡିକ</b>"
-
-#: ../system-config-printer.glade.h:21
-msgid "<b>Location of the LPD network printer</b>"
-msgstr "<b>LPD ନେଟୱାର୍କ ମୁଦ୍ରଣୀର ଅବସ୍ଥାନ</b>"
-
-#: ../system-config-printer.glade.h:22
-msgid "<b>Location of the network printer</b>"
-msgstr "<b>ନେଟୱାର୍କ ମୁଦ୍ରଣୀର ଅବସ୍ଥାନ</b>"
-
-#: ../system-config-printer.glade.h:23
-msgid "<b>Location</b> (optional)"
-msgstr "<b>ଅବସ୍ଥାନ</b> (ବୈକଲ୍ପିକ)"
-
-#: ../system-config-printer.glade.h:24
-msgid "<b>Note</b>"
-msgstr "<b>ଲକ୍ଷ୍ଯ କରନ୍ତୁ</b>"
-
-#: ../system-config-printer.glade.h:25
-msgid "<b>Other Options (Advanced)</b>"
-msgstr "<b>ଅନ୍ଯାନ୍ଯ ବିକଳ୍ପ (ଉନ୍ନତ)</b>"
-
-#: ../system-config-printer.glade.h:26
-msgid "<b>Policies</b>"
-msgstr "<b>ନୀତି</b>"
-
-#: ../system-config-printer.glade.h:27
-msgid "<b>Printer Name</b>"
-msgstr "<b>ମୁଦ୍ରଣୀ ନାମ</b>"
-
-#: ../system-config-printer.glade.h:28
-msgid "<b>Printers to be members of this Class</b>"
-msgstr "</b>ମୁଦ୍ରଣୀ ଯିଏ ଏହି ଶ୍ରେଣୀ ର ସଦସ୍ଯ ହେବ</b>"
-
-#: ../system-config-printer.glade.h:29
-msgid "<b>SMB Printer</b>"
-msgstr "<b>ଏସ୍.ଏମ୍.ବି. ମୁଦ୍ରଣୀ</b>"
-
-#: ../system-config-printer.glade.h:30
-msgid "<b>Select Connection</b>"
-msgstr "<b>ସଂଯୋଗକୁ ଚୟନ କରନ୍ତୁ</b>"
-
-#: ../system-config-printer.glade.h:31
-msgid "<b>Select Driver</b>"
-msgstr "<b>ମୁଦ୍ରଣୀ ଚୟନ କରନ୍ତୁ</b>"
-
-#: ../system-config-printer.glade.h:32
-msgid "<b>Settings of the serial port</b>"
-msgstr "<b>ଅନୁକ୍ରମ ସଂଯୋଗିକୀର ବିନ୍ଯାସ</b>"
-
-#: ../system-config-printer.glade.h:33
-msgid "<b>Settings</b>"
-msgstr "<b>ବିନ୍ଯାସ</b"
-
-#: ../system-config-printer.glade.h:34
-msgid "<b>State</b>"
-msgstr "<b>ସ୍ଥିତି</b>"
-
-#: ../system-config-printer.glade.h:35
-msgid "<b>Tests and Maintenance</b>"
-msgstr "<b>ପରୀକ୍ଷଣ ତତ୍ବାବଧାରଣ</b>"
-
-#: ../system-config-printer.glade.h:36
-msgid "<b>Text Options</b>"
-msgstr "<b>ପାଠ୍ଯ ବିକଳ୍ପ</b>"
-
-#: ../system-config-printer.glade.h:37
-msgid ""
-"<i>Not published\n"
-"See server settings</i>"
-msgstr ""
-"<i>ପ୍ରକାଶିତ ହୋଇନାହିଁ\n"
-"ସେବକ ବିନ୍ଯାସକୁ ଦେଖନ୍ତୁ</i>"
-
-#: ../system-config-printer.glade.h:39
-msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
-
-#: ../system-config-printer.glade.h:40
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
-"\n"
-"Any changes you have made will be lost unless you apply them."
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">ପରିବର୍ତନକୁ ପ୍ରୟୋଗ କରିବ କି?</span>\n"
-"\n"
-"ଆପଣ ପରିବର୍ତନକୁ ପ୍ରୟୋଗ ନକଲେ ତାହା ନଷ୍ଟ ହୋଇଯିବ।"
-
-#: ../system-config-printer.glade.h:43
+#: ../glade/AboutDialog.glade.h:1
 msgid "A CUPS configuration tool."
 msgstr "ଏକ CUPS ମୁଦ୍ରଣୀ ରୂପରେଖ ସାଧନ ।"
 
-#: ../system-config-printer.glade.h:44
-msgid "Accepting jobs"
-msgstr "କାର୍ଯ୍ଯକୁ ସ୍ବୀକାର କରୁଅଛି"
-
-#: ../system-config-printer.glade.h:45
-msgid "Access Control"
-msgstr "ପ୍ରବେଶାନୁମତି ନିୟନ୍ତ୍ରଣ"
-
-#: ../system-config-printer.glade.h:46
-msgid "Add or Remove Members"
-msgstr "ସଦସ୍ଯ ମାନଙ୍କୁ ଯୋଗ କିମ୍ବା ଅପସାରିତ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:47
-#, fuzzy
-msgid "Adjust server settings"
-msgstr "ସେବକର ମୌଳିକ ବିନ୍ଯାସ"
-
-#: ../system-config-printer.glade.h:48
-msgid "Allow printing for everyone except these users:"
-msgstr "ଏହି ଉପଭୋକ୍ତା ମାନଙ୍କ ଛଡା ସମସ୍ତଙ୍କ ପାଇଁ ମୁଦ୍ରଣର ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ:"
-
-#: ../system-config-printer.glade.h:49
-msgid "Allow printing from the Internet"
-msgstr "ଇଣ୍ତ୍ରରନେଟ୍ ରୁ ମୁଦ୍ରଣର ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:50
-msgid "Allow remote administration"
-msgstr "ଦୂର ପ୍ରଶାସନକୁ ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:51
-msgid "Allow users to cancel any job (not just their own)"
-msgstr "ଯେକୌଣସି କାର୍ଯ୍ଯକୁ ବାତିଲ କରିବା ପାଇଁ ଚାଳକକୁ ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ (ନା କେବଳ ତାଙ୍କ ନିଜର)"
-
-#: ../system-config-printer.glade.h:52
-msgid "Basic Server Settings"
-msgstr "ସେବକର ମୌଳିକ ବିନ୍ଯାସ"
-
-#: ../system-config-printer.glade.h:53
-msgid "Baud Rate"
-msgstr "ବାଡ୍ ହାର"
-
-#: ../system-config-printer.glade.h:54
-msgid "Bottom margin:"
-msgstr "ନିମ୍ନ ମାର୍ଜିନ:"
-
-#: ../system-config-printer.glade.h:55
-msgid "Brightness:"
-msgstr "ଉଜ୍ଜ୍ବଳତା:"
-
-#: ../system-config-printer.glade.h:56
-msgid "Browse..."
-msgstr "ବ୍ରାଉଜ୍..."
-
-#: ../system-config-printer.glade.h:57
-msgid "CUPS server:"
-msgstr "CUPS ସେବକ:"
-
-#: ../system-config-printer.glade.h:58
-msgid "Change..."
-msgstr "ବଦଳାନ୍ତୁ..."
-
-#: ../system-config-printer.glade.h:59
-msgid "Characters per inch:"
-msgstr "ଇଞ୍ଚ ପ୍ରତି ଅକ୍ଷର ଗୁଡିକ:"
-
-#: ../system-config-printer.glade.h:60
-#, fuzzy
-msgid "Choose a different CUPS server"
-msgstr "CUPS ସେବକ ସହିତ ସଂଯୋଗ କରନ୍ତୁ"
-
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:62
-msgid "Clean Print Heads"
-msgstr "ମୁଦ୍ରଣ ଶୀର୍ଷ ଗୁଡିକ ସଫା କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:63
-msgid "Columns:"
-msgstr "ସ୍ତମ୍ଭ:"
-
-#: ../system-config-printer.glade.h:64
-msgid "Comments..."
-msgstr "ଟିପ୍ପଣୀ..."
-
-#: ../system-config-printer.glade.h:65
-msgid "Connect to CUPS server"
-msgstr "CUPS ସେବକ ସହିତ ସଂଯୋଗ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:66
-msgid "Connecting"
-msgstr "ସଂଯୋଗ କରୁଅଛି"
-
-#: ../system-config-printer.glade.h:68
-#, no-c-format
-msgid ""
-"Connecting to Server:\n"
-"%s\n"
-msgstr ""
-"ସେବକ ସହିତ ସଂଯୋଗ କରୁଅଛି:\n"
-"%s\n"
-
-#: ../system-config-printer.glade.h:71
-msgid "Copies:"
-msgstr "ପ୍ରତିରୂପ ଗୁଡିକ:"
-
-#: ../system-config-printer.glade.h:72
-msgid "Copy Printer"
-msgstr "ମୁଦ୍ରଣୀର ନକଲ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:73
+#: ../glade/AboutDialog.glade.h:2
 #, fuzzy
 msgid "Copyright © 2006-2008 Red Hat, Inc."
 msgstr "ସ୍ବତ୍ତ୍ବାଧୀକାର © ୨୦୦୬, ୨୦୦୭ ରେଡ୍ ହ୍ଯାଟ, ନିଗମିତ।"
 
-#: ../system-config-printer.glade.h:74
-msgid ""
-"Create a class from the selected printers (for failover or load-balancing)"
-msgstr ""
-
-#: ../system-config-printer.glade.h:75
-msgid "Data Bits"
-msgstr "ତଥ୍ଯ ବିଟ୍ସ"
-
-#: ../system-config-printer.glade.h:76
-msgid ""
-"Default\n"
-"1200\n"
-"2400\n"
-"4800\n"
-"9600\n"
-"19200\n"
-"38400\n"
-"57600\n"
-"115200"
-msgstr ""
-"ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ\n"
-"1200\n"
-"2400\n"
-"4800\n"
-"9600\n"
-"19200\n"
-"38400\n"
-"57600\n"
-"115200"
-
-#: ../system-config-printer.glade.h:85
-msgid ""
-"Default\n"
-"8\n"
-"7"
-msgstr ""
-"ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ\n"
-"8\n"
-"7"
-
-#: ../system-config-printer.glade.h:88
-msgid ""
-"Default\n"
-"None\n"
-"Odd\n"
-"Even"
-msgstr ""
-"ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ\n"
-"କିଛି ନୁହେଁ\n"
-"ଅଯୁଗ୍ମ\n"
-"ଯୁଗ୍ମ"
-
-#: ../system-config-printer.glade.h:92
-msgid ""
-"Default\n"
-"None\n"
-"XON/XOFF (Software)\n"
-"RTS/CTS (Hardware)\n"
-"DTR/DSR (Hardware)"
-msgstr ""
-"ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ\n"
-"କିଛି ନୁହେଁ\n"
-"XON/XOFF (ସଫଟୱେର)\n"
-"RTS/CTS (ହାର୍ଡୱେର)\n"
-"DTR/DSR (ହାର୍ଡୱେର)"
-
-#: ../system-config-printer.glade.h:97
-msgid "Deny printing for everyone except these users:"
-msgstr "ଏହି ଉପଭୋକ୍ତା ମାନଙ୍କ ଛଡା ସମସ୍ତଙ୍କୁ ମୁଦ୍ରଣ ପାଇଁ ମନା କରିଦିଅନ୍ତୁ:"
-
-#: ../system-config-printer.glade.h:98
-msgid "Description:"
-msgstr "ବର୍ଣ୍ଣନା:"
-
-#: ../system-config-printer.glade.h:99 ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "ଯନ୍ତ୍ର ୟୁ.ଆର.ଆଇ."
-
-#: ../system-config-printer.glade.h:100
-msgid "Device URI:"
-msgstr "ଯନ୍ତ୍ର ୟୁ.ଆର.ଆଇ.:"
-
-#: ../system-config-printer.glade.h:101
-msgid "Device description."
-msgstr "ଉପକରଣ ବର୍ଣ୍ଣନା।"
-
-#: ../system-config-printer.glade.h:102
-msgid "DirectJet"
-msgstr "DirectJet"
-
-#: ../system-config-printer.glade.h:104
-msgid "Driver details"
-msgstr "ଡ୍ରାଇଭର ବିସ୍ତ୍ରୁତ ବିବରଣୀ"
-
-#: ../system-config-printer.glade.h:105
-#, fuzzy
-msgid "E_nabled"
-msgstr "ସକ୍ରିୟ କରନ୍ତୁି(_n)"
-
-#: ../system-config-printer.glade.h:106
-msgid "Empty"
-msgstr "ଖାଲି"
-
-#: ../system-config-printer.glade.h:107
-msgid "Enabled"
-msgstr "ସକ୍ରିୟ କରାଯାଇଛି"
-
-#: ../system-config-printer.glade.h:108
-msgid "Ending Banner:"
-msgstr "ସମାପ୍ତି ବ୍ଯାନର:"
-
-#: ../system-config-printer.glade.h:109
-msgid "Error Policy: \t"
-msgstr "ତୃଟି ନୀତି: \t"
-
-#: ../system-config-printer.glade.h:110
-msgid "Find _Queue..."
-msgstr "କ୍ରମ ଖୋଜନ୍ତୁ ...(_Q)"
-
-#: ../system-config-printer.glade.h:111
-msgid "Finishings:"
-msgstr "ସମାପନ:"
-
-#: ../system-config-printer.glade.h:112
-msgid "Flow Control"
-msgstr "ପ୍ରବାହ ନିୟନ୍ତ୍ରଣ"
-
-#: ../system-config-printer.glade.h:113
-msgid ""
-"For the printer you have selected there are drivers available for download."
-msgstr "ଆପଣ ଯେଉଂ ମୁଦ୍ରଣୀ ଚୟନ କରିଛନ୍ତି କେତେଗୁଡା ଡ୍ରାଇଭର ଆହରଣ ପାଇଂ ଉପଲବ୍ଧ ଅଛି"
-
-#: ../system-config-printer.glade.h:114
-msgid "Gamma:"
-msgstr "ଗାମା:"
-
-#: ../system-config-printer.glade.h:115
-msgid "Hold until:"
-msgstr "ଏତିକି ସମୟ ସ୍ଥଗିତ କରନ୍ତୁ:"
-
-#: ../system-config-printer.glade.h:116
-msgid "Host:"
-msgstr "ଆଧାର:"
-
-#: ../system-config-printer.glade.h:117
-msgid "Hue adjustment:"
-msgstr "ରଙ୍ଗ ନିୟନ୍ତ୍ରଣ:"
-
-#: ../system-config-printer.glade.h:118
-msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-msgstr "ମାନବ ପଠନୀୟ ବିବରଣୀ ଯେପରିକି  \"HP LaserJet with Duplexer\""
-
-#: ../system-config-printer.glade.h:119
-msgid "Human-readable location such as \"Lab 1\""
-msgstr "ମାନବ ପଠନୀୟ ଅବସ୍ଥାନ ଯେପରିକି \"Lab 1\""
-
-#: ../system-config-printer.glade.h:120
-msgid "IPP"
-msgstr "IPP"
-
-#: ../system-config-printer.glade.h:121
-msgid "IPP Browser"
-msgstr "IPP ଖୋଜାଳି"
-
-#: ../system-config-printer.glade.h:122
-msgid "Installed Options"
-msgstr "ସ୍ଥାପିତ ବିକଳ୍ପ"
-
-#: ../system-config-printer.glade.h:123
-msgid "Job Options"
-msgstr "କାର୍ଯ୍ଯ ବିକଳ୍ପ"
-
-#: ../system-config-printer.glade.h:124
-msgid "Job priority:"
-msgstr "କାର୍ଯ୍ଯ ଅଗ୍ରାଧିକାର:"
-
-#: ../system-config-printer.glade.h:125
-msgid "LPD"
-msgstr "LPD"
-
-#: ../system-config-printer.glade.h:126
-msgid "Left margin:"
-msgstr "ବାମ ମାର୍ଜିନ:"
-
-#: ../system-config-printer.glade.h:127
-msgid ""
-"Left to right, top to bottom\n"
-"Left to right, bottom to top\n"
-"Right to left, top to bottom\n"
-"Right to left, bottom to top\n"
-"Top to bottom, left to right\n"
-"Top to bottom, right to left\n"
-"Bottom to top, left to right\n"
-"Bottom to top, right to left"
-msgstr ""
-"ବାମରୁ ଡାହାଣକୁ, ଉପରୁ ତଳକୁ\n"
-"ବାମରୁ ଡାହାଣକୁ, ତଳୁ ଉପରକୁ\n"
-"ଡାହାଣରୁ ବାମକୁ, ଉପରୁ ତଳକୁ\n"
-"ଡାହାଣରୁ ବାମକୁ, ତଳୁ ଉପରକୁ\n"
-"ଉପରୁ ତଳକୁ, ବାମରୁ ଡାହାଣକୁ\n"
-"ଉପରୁ ତଳକୁ, ଡାହାଣରୁ ବାମକୁ\n"
-"ତଳୁ ଉପରକୁ, ବାମରୁ ଡାହାଣକୁ\n"
-"ତଳୁ ଉପରକୁ, ଡାହାଣରୁ ବାମକୁ"
-
-#: ../system-config-printer.glade.h:135
-msgid "License:"
-msgstr "ଅନୁମତି ପତ୍ର:"
-
-#: ../system-config-printer.glade.h:136
-msgid "Lines per inch:"
-msgstr "ଇଞ୍ଚ ପ୍ରତି ଧାଡି ସଂଖ୍ଯା:"
-
-#: ../system-config-printer.glade.h:137
-msgid "Local Driver"
-msgstr "ସ୍ଥାନୀୟ ଡ୍ରାଇଭର୍"
-
-#: ../system-config-printer.glade.h:138
-msgid "Location:"
-msgstr "ଅବସ୍ଥାନ:"
-
-#: ../system-config-printer.glade.h:139
-msgid "Make and Model:"
-msgstr "ନିର୍ମାଣ ଏବଂ ମଡେଲ:"
-
-#: ../system-config-printer.glade.h:140
-#, fuzzy
-msgid "Make and model:"
-msgstr "ନିର୍ମାଣ ଏବଂ ମଡେଲ:"
-
-#: ../system-config-printer.glade.h:141
-msgid "Media:"
-msgstr "ମାଧ୍ଯମ:"
-
-#: ../system-config-printer.glade.h:142
-msgid "Members"
-msgstr "ସଦସ୍ଯ ମାନେ"
-
-#: ../system-config-printer.glade.h:143
-msgid "Mirror"
-msgstr "ମିରର"
-
-#: ../system-config-printer.glade.h:144
-msgid "More"
-msgstr "ଅଧିକ"
-
-#: ../system-config-printer.glade.h:146
-msgid "New name for the printer"
-msgstr "ମୁଦ୍ରଣୀ ପାଇଁ ନୂତନ ନାମ"
-
-#: ../system-config-printer.glade.h:147
-msgid "No, I do not accept this license"
-msgstr "ନାହିଁ, ମୁ ଏହି ଅନୁମତି ପତ୍ର ଗ୍ରହଣ କରୁନାହିଁ"
-
-#: ../system-config-printer.glade.h:148
-msgid ""
-"None\n"
-"Staple\n"
-"Punch\n"
-"Cover\n"
-"Bind\n"
-"Saddle stitch\n"
-"Edge stitch\n"
-"Fold\n"
-"Trim\n"
-"Bale\n"
-"Booklet maker\n"
-"Job offset\n"
-"Staple (top left)\n"
-"Staple (bottom left)\n"
-"Staple (top right)\n"
-"Staple (bottom right)\n"
-"Edge stitch (left)\n"
-"Edge stitch (top)\n"
-"Edge stitch (right)\n"
-"Edge stitch (bottom)\n"
-"Staple dual (left)\n"
-"Staple dual (top)\n"
-"Staple dual (right)\n"
-"Staple dual (bottom)\n"
-"Bind (left)\n"
-"Bind (top)\n"
-"Bind (right)\n"
-"Bind (bottom)"
-msgstr ""
-"None\n"
-"Staple\n"
-"Punch\n"
-"Cover\n"
-"Bind\n"
-"Saddle stitch\n"
-"Edge stitch\n"
-"Fold\n"
-"Trim\n"
-"Bale\n"
-"Booklet maker\n"
-"Job offset\n"
-"Staple (top left)\n"
-"Staple (bottom left)\n"
-"Staple (top right)\n"
-"Staple (bottom right)\n"
-"Edge stitch (left)\n"
-"Edge stitch (top)\n"
-"Edge stitch (right)\n"
-"Edge stitch (bottom)\n"
-"Staple dual (left)\n"
-"Staple dual (top)\n"
-"Staple dual (right)\n"
-"Staple dual (bottom)\n"
-"Bind (left)\n"
-"Bind (top)\n"
-"Bind (right)\n"
-"Bind (bottom)"
-
-#: ../system-config-printer.glade.h:176
-msgid ""
-"One-sided\n"
-"Two-sided (long edge)\n"
-"Two-sided (short edge)"
-msgstr ""
-"ଗୋଟିଏ-ପାର୍ଶ୍ବ\n"
-"ଦୁଇଟି ପାର୍ଶ୍ବ (ବଡ ଧଡ଼ି)\n"
-"ଦୁଇଟି ପାର୍ଶ୍ବ (ଛୋଟ ଧଡ଼ି)"
-
-#: ../system-config-printer.glade.h:179
-msgid "Operation Policy:"
-msgstr "ପ୍ରକ୍ରିୟା ନୀତି:"
-
-#: ../system-config-printer.glade.h:180
-msgid "Orientation:"
-msgstr "ଅନୁସ୍ଥାପନ:"
-
-#: ../system-config-printer.glade.h:181
-msgid "Pages per side layout:"
-msgstr "ପ୍ରତ୍ଯେକ ପାର୍ଶ୍ବ ବିନ୍ଯାସରେ ପୃଷ୍ଠା ସଂଖ୍ଯା:"
-
-#: ../system-config-printer.glade.h:182
-msgid "Pages per side:"
-msgstr "ପ୍ରତ୍ଯେକ ପାର୍ଶ୍ବରେ ପୃଷ୍ଠା ସଂଖ୍ଯା:"
-
-#: ../system-config-printer.glade.h:183
-msgid "Parity"
-msgstr "ସମତା"
-
-#: ../system-config-printer.glade.h:185
-msgid "Please Wait"
-msgstr "ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:186
-msgid "Policies"
-msgstr "ନୀତି"
-
-#: ../system-config-printer.glade.h:187
-msgid "Port number:"
-msgstr "ସଂଯୋଗିକୀ ନମ୍ବର:"
-
-#: ../system-config-printer.glade.h:188
-msgid ""
-"Portrait (no rotation)\n"
-"Landscape (90°)\n"
-"Reverse landscape (270°)\n"
-"Reverse portrait (180°)"
-msgstr ""
-"ଚିତ୍ର (କୌଣସି ଘୁର୍ଣ୍ଣନ ନାହିଁ)\n"
-"ପାରିପାର୍ଶ୍ବିକ ଦୃଶ୍ୟ (୯୦°)\n"
-"ଓଲଟା ଦୃଶ୍ଯ (୨୭୦°) \n"
-"ଓଲଟା ଚିତ୍ର (୧୮୦°)"
-
-#: ../system-config-printer.glade.h:192
-msgid ""
-"PostScript Printer Description (PPD) files can often be found on the driver "
-"disk that comes with the printer. For PostScript printers they are often "
-"part of the Windows<sup>®</sup> driver."
-msgstr ""
-"ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ମୁଦ୍ରଣୀ ବର୍ଣ୍ଣନା (PPD) ଫାଇଲ ଗୁଡିକ ଅଧିକାଂଶ ସମୟରେ ମୁଦ୍ରଣୀ ସହିତ ଥିବା ଡ୍ରାଇଭର "
-"ଡିସ୍କରେ ମିଳିଥାଏ। ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ମୁଦ୍ରଣୀ ପାଇଁ ସେଗୁଡିକ ଅଧିକାଂଶ ସମୟରେ ଓ୍ବିଣ୍ଡୋଜ<sup>®</sup> ଚାଳକର "
-"ଅଂଶ ଅଟନ୍ତି।"
-
-#: ../system-config-printer.glade.h:193
-msgid "Pretty print"
-msgstr "ସୁନ୍ଦର ମୁଦ୍ରଣ"
-
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:195
-msgid "Print Self-Test Page"
-msgstr "ସ୍ବଂପରୀକ୍ଷଣ ପୃଷ୍ଠାକୁ ମୂଦ୍ରିତ କରନ୍ତୁ"
-
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:197 ../troubleshoot/PrintTestPage.py:68
-msgid "Print Test Page"
-msgstr "ପରୀକ୍ଷଣ ପୃଷ୍ଠାକୁ ମୂଦ୍ରିତ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:199
-msgid "Printer Properties"
-msgstr "ମୁଦ୍ରଣୀ ଗୁଣଧର୍ମ"
-
-#: ../system-config-printer.glade.h:200
-msgid "Printer State:"
-msgstr "ମୁଦ୍ରଣୀ ସ୍ଥିତି:"
-
-#: ../system-config-printer.glade.h:201
-msgid "Printer model:"
-msgstr "ମୁଦ୍ରଣୀ ମଡେଲ୍:"
-
-#: ../system-config-printer.glade.h:202
-msgid "Probe"
-msgstr "ଖୋଜନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:203
-#, fuzzy
-msgid "Prompt user if authentication is required"
-msgstr "ବୈଧିକରଣ ଆବଶ୍ଯକ"
-
-#: ../system-config-printer.glade.h:204
-msgid "Provide PPD file"
-msgstr "PPD ଫାଇଲ ପ୍ରଦାନ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:205
-#, fuzzy
-msgid "Publish shared printers connected to this system"
-msgstr "ଏହି ତନ୍ତ୍ର ସହିତ ସଂଯୋଜିତ ପ୍ରକାଶିତ ମୁଦ୍ରଣୀ ମାନଙ୍କୁ ସହଭାଗ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:206
-msgid "Queue:"
-msgstr "କ୍ରମ:"
-
-#: ../system-config-printer.glade.h:207
-msgid "Require encryption"
-msgstr "ଗୋପନୀୟତା ଆବଶ୍ଯକ"
-
-#: ../system-config-printer.glade.h:208
-msgid "Reset"
-msgstr "ପୁନଃସ୍ଥାପନ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:209
-msgid "Reset to system default"
-msgstr "ତନ୍ତ୍ର ପୂର୍ବନିର୍ଦ୍ଧାରିତକୁ ପୁନଃସ୍ଥାପନ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:210
-msgid "Right margin:"
-msgstr "ଡାହାଣ ମାର୍ଜିନ:"
-
-#: ../system-config-printer.glade.h:211
-msgid "SCSI"
-msgstr "SCSI"
-
-#: ../system-config-printer.glade.h:212
-msgid "SMB"
-msgstr "SMB"
-
-#: ../system-config-printer.glade.h:213
-msgid "SMB Browser"
-msgstr "SMB ଖୋଜାଳି"
-
-#: ../system-config-printer.glade.h:214
-msgid "Saturation:"
-msgstr "ପରିପୂର୍ଣ୍ଣତା:"
-
-#: ../system-config-printer.glade.h:215
-msgid "Save debugging information for troubleshooting"
-msgstr "ବିଘ୍ନନିବାରଣ ପାଇଁ ତୃଟିମୁକ୍ତ ସୂଚନା ମାନଙ୍କୁ ସଂରକ୍ଷଣ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:216
-msgid "Scale to fit"
-msgstr "ଖାପ ଖୁଆଇବା ପାଇଁ ଆକାର ପରିବର୍ତ୍ତନ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:217
-msgid "Scaling:"
-msgstr "ଆକାର ପରିବର୍ତ୍ତନ:"
-
-#: ../system-config-printer.glade.h:218
-msgid "Search for a printer driver to download"
-msgstr "ଗୋଟିଏ ମୂଦ୍ରଣୀ ଡ୍ରାଇଭର ଆହରଣ ପାଈଂ ଖୋଜନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:219
-msgid "Select A File"
-msgstr "ଗୋଟିଏ ଫାଇଲକୁ ବାଛନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:220
-msgid "Select printer from database"
-msgstr "ତଥ୍ଯାଧାରରୁ ମୁଦ୍ରଣୀ ବାଛନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:221
-msgid "Serial"
-msgstr "ଅନୁକ୍ରମ"
-
-#: ../system-config-printer.glade.h:222
-#, fuzzy
-msgid "Set As De_fault"
-msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ଭାବେ ସେଟ୍ କରନ୍ତୁS)"
-
-#: ../system-config-printer.glade.h:223
-msgid "Set As Default"
-msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ଭାବେ ସେଟ୍ କରନ୍ତୁS)"
-
-#: ../system-config-printer.glade.h:224
-#, fuzzy
-msgid "Set authentication details now"
-msgstr "ବୈଧିକରଣ ଆବଶ୍ଯକ"
-
-#: ../system-config-printer.glade.h:225
-msgid "Settings"
-msgstr "ବିନ୍ଯାସ"
-
-#: ../system-config-printer.glade.h:226
-msgid "Shared"
-msgstr "ସହଭାଗ କରାଯାଇଛି"
-
-#: ../system-config-printer.glade.h:227
-msgid "Short name for this printer such as \"laserjet\""
-msgstr ""
-
-#: ../system-config-printer.glade.h:228
-msgid "Show printers shared by other systems"
-msgstr "ଅନ୍ଯ ତନ୍ତ୍ର ଦ୍ବାରା ସହଭାଗିତ ମୁଦ୍ରଣୀ ମାନଙ୍କୁ ପ୍ରଦର୍ଶନ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:229
-msgid "Sides:"
-msgstr "କେତୋଟି ପାର୍ଶ୍ବ:"
-
-#: ../system-config-printer.glade.h:230
-msgid ""
-"Specify the default job options for this printer.  Jobs arriving at this "
-"print server will have these options added if they are not already set by "
-"the application."
-msgstr ""
-"ଏହି ମୁଦ୍ରଣୀ ପାଇଁ ପୂର୍ବନିର୍ଦ୍ଧାରିତ କାର୍ଯ୍ଯ ବିକଳ୍ପ ମାନଙ୍କୁ ଉଲ୍ଲେଖ କରନ୍ତୁ।  ଏହି ମୁଦ୍ରଣୀ ସେବକରେ ଆସୁଥିବା "
-"କାର୍ଯ୍ଯ ମାନଙ୍କରେ ଏହି ବିକଳ୍ପ ମାନଙ୍କୁ ଯୋଗ କରାଯିବ ଯଦି ସେମାନଙ୍କୁ ପୂର୍ବରୁ ପ୍ରୟୋଗ ଦ୍ବାରା ବିନ୍ଯାସ "
-"କରାଯାଇ ନାହିଁ।"
-
-#: ../system-config-printer.glade.h:231
-msgid "Starting Banner:"
-msgstr "ପ୍ରାରମ୍ଭିକ ବ୍ଯାନର:"
-
-#: ../system-config-printer.glade.h:232
-msgid "Supplier:"
-msgstr "ଭରଣ କର୍ତା:"
-
-#: ../system-config-printer.glade.h:233
-msgid "System-Config-Printer"
-msgstr "System-Config-Printer"
-
-#: ../system-config-printer.glade.h:234
-msgid ""
-"The foomatic printer database contains various manufacturer provided "
-"PostScript Printer Description (PPD) files and also can generate PPD files "
-"for a large number of (non PostScript) printers. But in general manufacturer "
-"provided PPD files provide better access to the specific features of the "
-"printer."
-msgstr ""
-"foomatic ମୁଦ୍ରଣୀ ତଥ୍ଯାଧାର ବିଭିନ୍ନ ନିର୍ମାତା ମାନଙ୍କ ଦ୍ବାରା ଦିଆଯାଇଥିବା ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ବର୍ଣ୍ଣନା "
-"(PPD) ଫାଇଲ ମାନଙ୍କୁ ଧାରଣ କରିଅଛି ଏବଂ ଏହା ମଧ୍ଯ ବହୁଳ ସଂଖ୍ଯକ (ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ବିହୀନ) ମୁଦ୍ରଣୀ "
-"ମାନଙ୍କ ପାଇଁ PPD ଫାଇଲ ସୃଷ୍ଟି କରିଥାଏ। କିନ୍ତୁ ସାଧାରଣତଃ ନିର୍ମାତାଙ୍କ ଦ୍ବାରା ପ୍ରଦାନ କରାଯାଇଥିବା "
-"PPD ଫାଇଲ ଗୁଡିକ ମୁଦ୍ରଣୀର ବିଶେଷ ଗୁଣ ମାନଙ୍କୁ ବ୍ଯବହାର କରିବା ପାଇଁ ଉନ୍ନତ ଅଭିଗମ ପ୍ରଦାନ କରିଥାଏ।"
-
-#: ../system-config-printer.glade.h:235
-msgid ""
-"These drivers do not come from your operating system supplier and will not "
-"be covered by their commercial support.  See the support and license terms "
-"of the driver's supplier."
-msgstr ""
-"ଏହି ଡ୍ରାଇଭର ଗୁଡିକ ଆପଣକଂ ପ୍ରଚାଳନ ତନ୍ତ୍ର ଭରଣ କର୍ତ୍ତାରୁ ଆସିନାହିଂ ଏବଂ ଏହା ସେମାନକଂ ବାଣିଜ୍ୟ "
-"ସହାୟତାରେ ଆସିବ ନାହିଂ. ଡ୍ରାଇଭର ଭରଣ କର୍ତ୍ତାର ସହାୟକ ଓ ଅନୁମତି ପତ୍ର ଶବ୍ଦ ଗୁଡିକ ଦେଖନ୍ତୁ."
-
-#: ../system-config-printer.glade.h:236
-msgid ""
-"This driver supports additional hardware that may be installed in the "
-"printer."
-msgstr "ଏହି ଡ୍ରାଇଭର ଅତିରିକ୍ତ ହାର୍ଡୱେର ସହାୟତା ଦଉଛି ଯାହା ମୁଦ୍ରଣୀ ରେ ସ୍ଥାପିତ ହୋଇଥିବ."
-
-#: ../system-config-printer.glade.h:237
-msgid ""
-"This is done by assuming that options with the same name do have the same "
-"meaning. Settings of options that are not present in the new PPD will be "
-"lost and options only present in the new PPD will be set to default."
-msgstr ""
-"ଏହା ଏଭଳି ମନେକରି କରାଯାଏ ଯେ ସମନାମ ବିଶିଷ୍ଟି ବିକଳ୍ପ ଗୁଡିକ ସମଅର୍ଥ ବିଶିଷ୍ଟ। ନୂତନ PPDରେ ନଥିବା ବିକଳ୍ପ "
-"ମାନଙ୍କର ବିନ୍ଯାସ ଗୁଡିକ କ୍ଷୟ ହୋଇଯିବ ଏବଂ କେବଳ ନୂତନ PPDରେ ଉପସ୍ଥିତ ବିକଳ୍ପ ମାନଙ୍କୁ ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ "
-"ଭାବରେ ସେଟ କରାଯିବ।"
-
-#: ../system-config-printer.glade.h:238
+#: ../glade/AboutDialog.glade.h:3
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1668,7 +859,429 @@ msgstr ""
 " ଆପଣ ଏହି ପ୍ରୋଗ୍ରାମ ସହିତ ଗ୍ନୁ ସାଧାରଣ ସାର୍ବଜନୀନ ଅନୁମତି ପତ୍ର ପାଈଥିବେ; ଯଦି ପାଇନାହାନ୍ତି ତେବେ "
 "ମୁକ୍ତ ସଫ୍ଟୱେର ପ୍ରତିଷ୍ଠାନ ନିଗମିତ, ୬୭୫ ମାସ୍ ଏଭ୍, କେମ୍ବ୍ରିଜ୍, ଏମ୍ଏ୦୨୧୩୯, ଇଉ.ଏସ୍.ଏ. କୁ ଲେଖନ୍ତୁ."
 
-#: ../system-config-printer.glade.h:243
+#: ../glade/AboutDialog.glade.h:8
+msgid "system-config-printer"
+msgstr "System-Config-Printer"
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../glade/AboutDialog.glade.h:10
+msgid "translator-credits"
+msgstr "ଅନୁବାଦ-ସ୍ବୀକ୍ରୁତୀ"
+
+#: ../glade/ConnectDialog.glade.h:1
+msgid "CUPS server:"
+msgstr "CUPS ସେବକ:"
+
+#: ../glade/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "CUPS ସେବକ ସହିତ ସଂଯୋଗ କରନ୍ତୁ"
+
+#: ../glade/ConnectDialog.glade.h:3
+msgid "Require encryption"
+msgstr "ଗୋପନୀୟତା ଆବଶ୍ଯକ"
+
+#: ../glade/ConnectingDialog.glade.h:1
+msgid "Connecting"
+msgstr "ସଂଯୋଗ କରୁଅଛି"
+
+#: ../glade/ConnectingDialog.glade.h:3
+#, no-c-format
+msgid ""
+"Connecting to Server:\n"
+"%s\n"
+msgstr ""
+"ସେବକ ସହିତ ସଂଯୋଗ କରୁଅଛି:\n"
+"%s\n"
+
+#: ../glade/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "ସ୍ଥାପନ କରନ୍ତୁ (_I)"
+
+#: ../glade/IPPBrowseDialog.glade.h:1
+msgid "IPP Browser"
+msgstr "IPP ଖୋଜାଳି"
+
+#: ../glade/job_popupmenu.glade.h:1
+msgid "Re_print"
+msgstr "ପୁନର୍ବାର ମୁଦ୍ରଣ କରନ୍ତୁ (_p)"
+
+#: ../glade/job_popupmenu.glade.h:2
+msgid "_Hold"
+msgstr "ଅଟକାନ୍ତୁ (_H)"
+
+#: ../glade/job_popupmenu.glade.h:3
+msgid "_Release"
+msgstr "ପ୍ରକାଶନ (_R)"
+
+#: ../glade/JobsWindow.glade.h:1
+msgid "Show _completed jobs"
+msgstr "ସମାପ୍ତ ହୋଇଥିବା କାର୍ଯ୍ଯ ଗୁଡିକୁ ଦେଖାନ୍ତୁ (_c)"
+
+#: ../glade/JobsWindow.glade.h:2
+msgid "Show _printer status"
+msgstr "ମୁଦ୍ରଣୀ ସ୍ଥିତି ପ୍ରଦର୍ଶନ କରନ୍ତୁ (_p)"
+
+#: ../glade/JobsWindow.glade.h:3
+msgid "_File"
+msgstr "ଫାଇଲ (_F)"
+
+#: ../glade/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "ସତେଜନ କରନ୍ତୁ (_R)"
+
+#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:17
+msgid "_View"
+msgstr "ଦୃଶ୍ଯ (_V)"
+
+#: ../glade/NewPrinterName.glade.h:1
+msgid "Copy Printer"
+msgstr "ମୁଦ୍ରଣୀର ନକଲ କରନ୍ତୁ"
+
+#: ../glade/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "ମୁଦ୍ରଣୀ ପାଇଁ ନୂତନ ନାମ"
+
+#: ../glade/NewPrinterWindow.glade.h:1
+#, fuzzy
+msgid "<b>Authentication</b>"
+msgstr "ବୈଧିକରଣ"
+
+#: ../glade/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>ବର୍ଣ୍ଣନା</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>ବର୍ଣ୍ଣନା</b> (ବୈକଲ୍ପିକ)"
+
+#: ../glade/NewPrinterWindow.glade.h:4
+msgid "<b>Download Printer Driver</b>"
+msgstr "<b>ମୁଦ୍ରଣୀ ଡ୍ରାଇଭର ଆହରଣ କରନ୍ତୁ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:5
+msgid "<b>Enter device URI</b>"
+msgstr "<b>ଯନ୍ତ୍ର ୟୁ.ଆର.ଆଇ. ଭରଣ କରନ୍ତୁ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:6
+msgid "<b>IPP Printer</b>"
+msgstr "<b>ଆଇ.ପି.ପି. ମୁଦ୍ରଣୀ </b>"
+
+#: ../glade/NewPrinterWindow.glade.h:7
+msgid "<b>Installed Options</b>"
+msgstr "<b>ଆହରଣ ହୋଇଥିବା ବିକଳ୍ପ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:8
+msgid "<b>License Terms</b>"
+msgstr "<b>ଅନୁମତି ପତ୍ର ଶବ୍ଦ ଗୁଡିକ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:9
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>LPD ନେଟୱାର୍କ ମୁଦ୍ରଣୀର ଅବସ୍ଥାନ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:10
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>ନେଟୱାର୍କ ମୁଦ୍ରଣୀର ଅବସ୍ଥାନ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:11
+msgid "<b>Location</b> (optional)"
+msgstr "<b>ଅବସ୍ଥାନ</b> (ବୈକଲ୍ପିକ)"
+
+#: ../glade/NewPrinterWindow.glade.h:12
+msgid "<b>Note</b>"
+msgstr "<b>ଲକ୍ଷ୍ଯ କରନ୍ତୁ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>ମୁଦ୍ରଣୀ ନାମ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:14
+msgid "<b>Printers to be members of this Class</b>"
+msgstr "</b>ମୁଦ୍ରଣୀ ଯିଏ ଏହି ଶ୍ରେଣୀ ର ସଦସ୍ଯ ହେବ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:15
+msgid "<b>SMB Printer</b>"
+msgstr "<b>ଏସ୍.ଏମ୍.ବି. ମୁଦ୍ରଣୀ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:16
+msgid "<b>Select Connection</b>"
+msgstr "<b>ସଂଯୋଗକୁ ଚୟନ କରନ୍ତୁ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:17
+msgid "<b>Select Driver</b>"
+msgstr "<b>ମୁଦ୍ରଣୀ ଚୟନ କରନ୍ତୁ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:18
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>ଅନୁକ୍ରମ ସଂଯୋଗିକୀର ବିନ୍ଯାସ</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:19
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
+
+#: ../glade/NewPrinterWindow.glade.h:20
+msgid "Baud Rate"
+msgstr "ବାଡ୍ ହାର"
+
+#: ../glade/NewPrinterWindow.glade.h:21
+msgid "Browse..."
+msgstr "ବ୍ରାଉଜ୍..."
+
+#: ../glade/NewPrinterWindow.glade.h:22
+msgid "Comments..."
+msgstr "ଟିପ୍ପଣୀ..."
+
+#: ../glade/NewPrinterWindow.glade.h:23
+msgid "Data Bits"
+msgstr "ତଥ୍ଯ ବିଟ୍ସ"
+
+#: ../glade/NewPrinterWindow.glade.h:24
+msgid ""
+"Default\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+msgstr ""
+"ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ\n"
+"1200\n"
+"2400\n"
+"4800\n"
+"9600\n"
+"19200\n"
+"38400\n"
+"57600\n"
+"115200"
+
+#: ../glade/NewPrinterWindow.glade.h:33
+msgid ""
+"Default\n"
+"8\n"
+"7"
+msgstr ""
+"ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ\n"
+"8\n"
+"7"
+
+#: ../glade/NewPrinterWindow.glade.h:36
+msgid ""
+"Default\n"
+"None\n"
+"Odd\n"
+"Even"
+msgstr ""
+"ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ\n"
+"କିଛି ନୁହେଁ\n"
+"ଅଯୁଗ୍ମ\n"
+"ଯୁଗ୍ମ"
+
+#: ../glade/NewPrinterWindow.glade.h:40
+msgid ""
+"Default\n"
+"None\n"
+"XON/XOFF (Software)\n"
+"RTS/CTS (Hardware)\n"
+"DTR/DSR (Hardware)"
+msgstr ""
+"ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ\n"
+"କିଛି ନୁହେଁ\n"
+"XON/XOFF (ସଫଟୱେର)\n"
+"RTS/CTS (ହାର୍ଡୱେର)\n"
+"DTR/DSR (ହାର୍ଡୱେର)"
+
+#: ../glade/NewPrinterWindow.glade.h:45
+#: ../glade/PrinterPropertiesDialog.glade.h:33
+msgid "Description:"
+msgstr "ବର୍ଣ୍ଣନା:"
+
+#: ../glade/NewPrinterWindow.glade.h:46 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "ଯନ୍ତ୍ର ୟୁ.ଆର.ଆଇ."
+
+#: ../glade/NewPrinterWindow.glade.h:47
+msgid "Device description."
+msgstr "ଉପକରଣ ବର୍ଣ୍ଣନା।"
+
+#: ../glade/NewPrinterWindow.glade.h:48
+msgid "DirectJet"
+msgstr "DirectJet"
+
+#: ../glade/NewPrinterWindow.glade.h:50
+msgid "Driver details"
+msgstr "ଡ୍ରାଇଭର ବିସ୍ତ୍ରୁତ ବିବରଣୀ"
+
+#: ../glade/NewPrinterWindow.glade.h:51
+msgid "Empty"
+msgstr "ଖାଲି"
+
+#: ../glade/NewPrinterWindow.glade.h:52
+msgid "Find _Queue..."
+msgstr "କ୍ରମ ଖୋଜନ୍ତୁ ...(_Q)"
+
+#: ../glade/NewPrinterWindow.glade.h:53
+msgid "Flow Control"
+msgstr "ପ୍ରବାହ ନିୟନ୍ତ୍ରଣ"
+
+#: ../glade/NewPrinterWindow.glade.h:54
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr "ଆପଣ ଯେଉଂ ମୁଦ୍ରଣୀ ଚୟନ କରିଛନ୍ତି କେତେଗୁଡା ଡ୍ରାଇଭର ଆହରଣ ପାଇଂ ଉପଲବ୍ଧ ଅଛି"
+
+#: ../glade/NewPrinterWindow.glade.h:55
+msgid "Host:"
+msgstr "ଆଧାର:"
+
+#: ../glade/NewPrinterWindow.glade.h:56
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "ମାନବ ପଠନୀୟ ବିବରଣୀ ଯେପରିକି  \"HP LaserJet with Duplexer\""
+
+#: ../glade/NewPrinterWindow.glade.h:57
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "ମାନବ ପଠନୀୟ ଅବସ୍ଥାନ ଯେପରିକି \"Lab 1\""
+
+#: ../glade/NewPrinterWindow.glade.h:58
+msgid "IPP"
+msgstr "IPP"
+
+#: ../glade/NewPrinterWindow.glade.h:59
+msgid "LPD"
+msgstr "LPD"
+
+#: ../glade/NewPrinterWindow.glade.h:60
+msgid "License:"
+msgstr "ଅନୁମତି ପତ୍ର:"
+
+#: ../glade/NewPrinterWindow.glade.h:61
+msgid "Local Driver"
+msgstr "ସ୍ଥାନୀୟ ଡ୍ରାଇଭର୍"
+
+#: ../glade/NewPrinterWindow.glade.h:62
+#, fuzzy
+msgid "Make and model:"
+msgstr "ନିର୍ମାଣ ଏବଂ ମଡେଲ:"
+
+#: ../glade/NewPrinterWindow.glade.h:64
+msgid "No, I do not accept this license"
+msgstr "ନାହିଁ, ମୁ ଏହି ଅନୁମତି ପତ୍ର ଗ୍ରହଣ କରୁନାହିଁ"
+
+#: ../glade/NewPrinterWindow.glade.h:65
+msgid "Parity"
+msgstr "ସମତା"
+
+#: ../glade/NewPrinterWindow.glade.h:67
+msgid "Port number:"
+msgstr "ସଂଯୋଗିକୀ ନମ୍ବର:"
+
+#: ../glade/NewPrinterWindow.glade.h:68
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ମୁଦ୍ରଣୀ ବର୍ଣ୍ଣନା (PPD) ଫାଇଲ ଗୁଡିକ ଅଧିକାଂଶ ସମୟରେ ମୁଦ୍ରଣୀ ସହିତ ଥିବା ଡ୍ରାଇଭର "
+"ଡିସ୍କରେ ମିଳିଥାଏ। ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ମୁଦ୍ରଣୀ ପାଇଁ ସେଗୁଡିକ ଅଧିକାଂଶ ସମୟରେ ଓ୍ବିଣ୍ଡୋଜ<sup>®</sup> ଚାଳକର "
+"ଅଂଶ ଅଟନ୍ତି।"
+
+#: ../glade/NewPrinterWindow.glade.h:69
+msgid "Printer model:"
+msgstr "ମୁଦ୍ରଣୀ ମଡେଲ୍:"
+
+#: ../glade/NewPrinterWindow.glade.h:70
+msgid "Probe"
+msgstr "ଖୋଜନ୍ତୁ"
+
+#: ../glade/NewPrinterWindow.glade.h:71
+#, fuzzy
+msgid "Prompt user if authentication is required"
+msgstr "ବୈଧିକରଣ ଆବଶ୍ଯକ"
+
+#: ../glade/NewPrinterWindow.glade.h:72
+msgid "Provide PPD file"
+msgstr "PPD ଫାଇଲ ପ୍ରଦାନ କରନ୍ତୁ"
+
+#: ../glade/NewPrinterWindow.glade.h:73
+msgid "Queue:"
+msgstr "କ୍ରମ:"
+
+#: ../glade/NewPrinterWindow.glade.h:74
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../glade/NewPrinterWindow.glade.h:75
+msgid "SMB"
+msgstr "SMB"
+
+#: ../glade/NewPrinterWindow.glade.h:76
+msgid "Search for a printer driver to download"
+msgstr "ଗୋଟିଏ ମୂଦ୍ରଣୀ ଡ୍ରାଇଭର ଆହରଣ ପାଈଂ ଖୋଜନ୍ତୁ"
+
+#: ../glade/NewPrinterWindow.glade.h:77
+msgid "Select A File"
+msgstr "ଗୋଟିଏ ଫାଇଲକୁ ବାଛନ୍ତୁ"
+
+#: ../glade/NewPrinterWindow.glade.h:78
+msgid "Select printer from database"
+msgstr "ତଥ୍ଯାଧାରରୁ ମୁଦ୍ରଣୀ ବାଛନ୍ତୁ"
+
+#: ../glade/NewPrinterWindow.glade.h:79
+msgid "Serial"
+msgstr "ଅନୁକ୍ରମ"
+
+#: ../glade/NewPrinterWindow.glade.h:80
+#, fuzzy
+msgid "Set authentication details now"
+msgstr "ବୈଧିକରଣ ଆବଶ୍ଯକ"
+
+#: ../glade/NewPrinterWindow.glade.h:81
+msgid "Short name for this printer such as \"laserjet\""
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:82
+msgid "Supplier:"
+msgstr "ଭରଣ କର୍ତା:"
+
+#: ../glade/NewPrinterWindow.glade.h:83
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"foomatic ମୁଦ୍ରଣୀ ତଥ୍ଯାଧାର ବିଭିନ୍ନ ନିର୍ମାତା ମାନଙ୍କ ଦ୍ବାରା ଦିଆଯାଇଥିବା ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ବର୍ଣ୍ଣନା "
+"(PPD) ଫାଇଲ ମାନଙ୍କୁ ଧାରଣ କରିଅଛି ଏବଂ ଏହା ମଧ୍ଯ ବହୁଳ ସଂଖ୍ଯକ (ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ବିହୀନ) ମୁଦ୍ରଣୀ "
+"ମାନଙ୍କ ପାଇଁ PPD ଫାଇଲ ସୃଷ୍ଟି କରିଥାଏ। କିନ୍ତୁ ସାଧାରଣତଃ ନିର୍ମାତାଙ୍କ ଦ୍ବାରା ପ୍ରଦାନ କରାଯାଇଥିବା "
+"PPD ଫାଇଲ ଗୁଡିକ ମୁଦ୍ରଣୀର ବିଶେଷ ଗୁଣ ମାନଙ୍କୁ ବ୍ଯବହାର କରିବା ପାଇଁ ଉନ୍ନତ ଅଭିଗମ ପ୍ରଦାନ କରିଥାଏ।"
+
+#: ../glade/NewPrinterWindow.glade.h:84
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"ଏହି ଡ୍ରାଇଭର ଗୁଡିକ ଆପଣକଂ ପ୍ରଚାଳନ ତନ୍ତ୍ର ଭରଣ କର୍ତ୍ତାରୁ ଆସିନାହିଂ ଏବଂ ଏହା ସେମାନକଂ ବାଣିଜ୍ୟ "
+"ସହାୟତାରେ ଆସିବ ନାହିଂ. ଡ୍ରାଇଭର ଭରଣ କର୍ତ୍ତାର ସହାୟକ ଓ ଅନୁମତି ପତ୍ର ଶବ୍ଦ ଗୁଡିକ ଦେଖନ୍ତୁ."
+
+#: ../glade/NewPrinterWindow.glade.h:85
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr "ଏହି ଡ୍ରାଇଭର ଅତିରିକ୍ତ ହାର୍ଡୱେର ସହାୟତା ଦଉଛି ଯାହା ମୁଦ୍ରଣୀ ରେ ସ୍ଥାପିତ ହୋଇଥିବ."
+
+#: ../glade/NewPrinterWindow.glade.h:86
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"ଏହା ଏଭଳି ମନେକରି କରାଯାଏ ଯେ ସମନାମ ବିଶିଷ୍ଟି ବିକଳ୍ପ ଗୁଡିକ ସମଅର୍ଥ ବିଶିଷ୍ଟ। ନୂତନ PPDରେ ନଥିବା ବିକଳ୍ପ "
+"ମାନଙ୍କର ବିନ୍ଯାସ ଗୁଡିକ କ୍ଷୟ ହୋଇଯିବ ଏବଂ କେବଳ ନୂତନ PPDରେ ଉପସ୍ଥିତ ବିକଳ୍ପ ମାନଙ୍କୁ ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ "
+"ଭାବରେ ସେଟ କରାଯିବ।"
+
+#: ../glade/NewPrinterWindow.glade.h:87
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -1676,34 +1289,20 @@ msgstr ""
 "ଏଭଲି ଭାବରେ ସମସ୍ତ ପ୍ରଚଳିତ ବିକଳ୍ପ ବିନ୍ଯାସ କ୍ଷୟ ହୋଇଯିବ। ନୂତନ PPDର ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ ବିନ୍ଯାସ ବ୍ଯବହ୍ରୁତ "
 "ହେବ।"
 
-#: ../system-config-printer.glade.h:244
-msgid "To add a new option, enter its name in the box below and click to add."
-msgstr ""
-"ଗୋଟିଏ ନୂତନ ବିକଳ୍ପ ଯୋଗ କରିବା ପାଇଁ, ତଳେ ଦିଆଯାଇଥିବା ବାକ୍ସରେ ଏହାର ନାମକୁ ଭରଣ କରନ୍ତୁ ଏବଂ ଯୋଗ "
-"କରନ୍ତୁ ବଟନକୁ ଦବାନ୍ତୁ।"
-
-#: ../system-config-printer.glade.h:245
-msgid "Top margin:"
-msgstr "ଉପର ମାର୍ଜିନ:"
-
-#: ../system-config-printer.glade.h:246
+#: ../glade/NewPrinterWindow.glade.h:88
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "ପୁରୁଣା PPDରୁ ବିକଳ୍ପ ବିନ୍ଯାସକୁ ନକଲ କରିବା ପାଇଁ ପ୍ରଚେଷ୍ଟା କରନ୍ତୁ।"
 
-#: ../system-config-printer.glade.h:247
+#: ../glade/NewPrinterWindow.glade.h:89
 msgid "URI:"
 msgstr "ୟୁ.ଆର.ଆଇ.:"
 
-#: ../system-config-printer.glade.h:248
+#: ../glade/NewPrinterWindow.glade.h:90
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr ""
 "ନୂତନ PPD (ପୋଷ୍ଟସ୍କ୍ରିପ୍ଟ ମୁଦ୍ରଣୀ ବର୍ଣ୍ଣନା) ଯେମିତି ଅଛି, ତାହାକୁ ସେହିଭଳି ଭାବରେ ବ୍ଯବହାର କରନ୍ତୁ।"
 
-#: ../system-config-printer.glade.h:250
-msgid "View Print _Queue"
-msgstr " ମୁଦ୍ରଣ କ୍ର ଦେଖାଅ(_Q)ମ"
-
-#: ../system-config-printer.glade.h:251
+#: ../glade/NewPrinterWindow.glade.h:92
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -1711,110 +1310,576 @@ msgstr ""
 "ଏହି ବିକଳ୍ପରେ କୌଣସି ଡ୍ରାଇଭର ଆହରଣ କରାଯିବ ନାହିଂ. ପର ସୋପାନୀ ଗୁଡିକରେ ସ୍ଥାନୀୟ ସ୍ଥାପିତ ହୋଇଥିବା "
 "ଡ୍ରାଇଭର ଚୟନ କରାଯିବ."
 
-#: ../system-config-printer.glade.h:252
-msgid "Word wrap"
-msgstr "ଧାଡି ବିଭାଜନ କରନ୍ତୁ"
-
-#: ../system-config-printer.glade.h:253
+#: ../glade/NewPrinterWindow.glade.h:93
 msgid "Yes, I accept this license"
 msgstr "ହଂ, ମୁଁ ଏହି ଅନୁମତି ପତ୍ରକୁ ଯ୍ଯକୁ ସ୍ବୀକାର କରୁଅଛି"
 
-#: ../system-config-printer.glade.h:254
+#: ../glade/NewPrinterWindow.glade.h:94
+msgid "_Search"
+msgstr "ଖୋଜନ୍ତୁ (_S)"
+
+#: ../glade/NewPrinterWindow.glade.h:95
+msgid "_Verify..."
+msgstr "ଯାଞ୍ଚ କରନ୍ତୁ (_V)..."
+
+#: ../glade/printer_context_menu.glade.h:1
+msgid ""
+"Create a class from the selected printers (for failover or load-balancing)"
+msgstr ""
+
+#: ../glade/printer_context_menu.glade.h:2
 #, fuzzy
-msgid "_Class"
-msgstr "ନୂତନ ଶ୍ରେଣୀ"
+msgid "E_nabled"
+msgstr "ସକ୍ରିୟ କରନ୍ତୁି(_n)"
 
-#: ../system-config-printer.glade.h:255
-msgid "_Connect..."
-msgstr "ସଂଯୋଗ କରନ୍ତୁ...(_C)"
+#: ../glade/printer_context_menu.glade.h:3
+msgid "Set As Default"
+msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ଭାବେ ସେଟ୍ କରନ୍ତୁS)"
 
-#: ../system-config-printer.glade.h:256
+#: ../glade/printer_context_menu.glade.h:4
+msgid "View Print _Queue"
+msgstr " ମୁଦ୍ରଣ କ୍ର ଦେଖାଅ(_Q)ମ"
+
+#: ../glade/printer_context_menu.glade.h:5
 #, fuzzy
 msgid "_Create Class"
 msgstr "ଦୂର ଶ୍ରେଣୀ"
 
-#: ../system-config-printer.glade.h:257
-msgid "_Discovered Printers"
-msgstr ""
-
-#: ../system-config-printer.glade.h:258
-msgid "_Do not apply"
-msgstr "ପ୍ରୟୋଗ କରନ୍ତୁ ନାହିଁ (_D)"
-
-#: ../system-config-printer.glade.h:259
-#, fuzzy
-msgid "_Enabled"
-msgstr "ସକ୍ରିୟ କରାଯାଇଛି"
-
-#: ../system-config-printer.glade.h:260
-msgid "_Help"
-msgstr "ସହାୟତା (_H)"
-
-#: ../system-config-printer.glade.h:261
-msgid "_Install"
-msgstr "ସ୍ଥାପନ କରନ୍ତୁ (_I)"
-
-#: ../system-config-printer.glade.h:262
-#, fuzzy
-msgid "_Printer"
-msgstr "ମୁଦ୍ରଣୀ"
-
-#: ../system-config-printer.glade.h:263
+#: ../glade/printer_context_menu.glade.h:6 ../glade/PrintersWindow.glade.h:12
 #, fuzzy
 msgid "_Rename"
 msgstr "ପ୍ରକାଶନ (_R)"
 
-#: ../system-config-printer.glade.h:264
-msgid "_Search"
-msgstr "ଖୋଜନ୍ତୁ (_S)"
-
-#: ../system-config-printer.glade.h:265
-#, fuzzy
-msgid "_Server"
-msgstr "ସେବକ ତୃଟି"
-
-#: ../system-config-printer.glade.h:266
-#, fuzzy
-msgid "_Settings..."
-msgstr "ବିନ୍ଯାସ"
-
-#: ../system-config-printer.glade.h:267
+#: ../glade/printer_context_menu.glade.h:7 ../glade/PrintersWindow.glade.h:15
 #, fuzzy
 msgid "_Shared"
 msgstr "ସହଭାଗ କରାଯାଇଛି"
 
-#: ../system-config-printer.glade.h:268
-msgid "_Troubleshoot"
-msgstr "ବିଘ୍ନନିବାରଣ (_T)"
+#: ../glade/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
 
-#: ../system-config-printer.glade.h:269
-msgid "_Verify..."
-msgstr "ଯାଞ୍ଚ କରନ୍ତୁ (_V)..."
+#: ../glade/PrinterPropertiesDialog.glade.h:2
+msgid ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
 
-#: ../system-config-printer.glade.h:270 ../applet.glade.h:14
-msgid "_View"
-msgstr "ଦୃଶ୍ଯ (_V)"
+#: ../glade/PrinterPropertiesDialog.glade.h:8
+#, fuzzy
+msgid "72 points per inch"
+msgstr ""
+"ବିନ୍ଦୁ ଗୁଡିକ \n"
+"(ଇଞ୍ଚ ପ୍ରତି ୭୨ଟି ବିନ୍ଦୁ)"
 
-#: ../system-config-printer.glade.h:271
+#: ../glade/PrinterPropertiesDialog.glade.h:9
+msgid "<b>Banner</b>"
+msgstr "<b>ବ୍ଯାନର</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Common Options</b>"
+msgstr "<b>ସାଧାରଣ ବିକଳ୍ପ</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Image Options</b>"
+msgstr "<b>ପ୍ରତିଛବି ବିକଳ୍ପ</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>ଅନ୍ଯାନ୍ଯ ବିକଳ୍ପ (ଉନ୍ନତ)</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:13
+msgid "<b>Policies</b>"
+msgstr "<b>ନୀତି</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:14
+msgid "<b>Settings</b>"
+msgstr "<b>ବିନ୍ଯାସ</b"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:15
+msgid "<b>State</b>"
+msgstr "<b>ସ୍ଥିତି</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:16
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>ପରୀକ୍ଷଣ ତତ୍ବାବଧାରଣ</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:17
+msgid "<b>Text Options</b>"
+msgstr "<b>ପାଠ୍ଯ ବିକଳ୍ପ</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:18
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>ପ୍ରକାଶିତ ହୋଇନାହିଁ\n"
+"ସେବକ ବିନ୍ଯାସକୁ ଦେଖନ୍ତୁ</i>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:20
+msgid "Accepting jobs"
+msgstr "କାର୍ଯ୍ଯକୁ ସ୍ବୀକାର କରୁଅଛି"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:21
+msgid "Access Control"
+msgstr "ପ୍ରବେଶାନୁମତି ନିୟନ୍ତ୍ରଣ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:22
+msgid "Add or Remove Members"
+msgstr "ସଦସ୍ଯ ମାନଙ୍କୁ ଯୋଗ କିମ୍ବା ଅପସାରିତ କରନ୍ତୁ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:23
+msgid "Allow printing for everyone except these users:"
+msgstr "ଏହି ଉପଭୋକ୍ତା ମାନଙ୍କ ଛଡା ସମସ୍ତଙ୍କ ପାଇଁ ମୁଦ୍ରଣର ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:24
+msgid "Bottom margin:"
+msgstr "ନିମ୍ନ ମାର୍ଜିନ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:25
+msgid "Brightness:"
+msgstr "ଉଜ୍ଜ୍ବଳତା:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:26
+msgid "Change..."
+msgstr "ବଦଳାନ୍ତୁ..."
+
+#: ../glade/PrinterPropertiesDialog.glade.h:27
+msgid "Characters per inch:"
+msgstr "ଇଞ୍ଚ ପ୍ରତି ଅକ୍ଷର ଗୁଡିକ:"
+
+#. Not more than 25 characters
+#: ../glade/PrinterPropertiesDialog.glade.h:29
+msgid "Clean Print Heads"
+msgstr "ମୁଦ୍ରଣ ଶୀର୍ଷ ଗୁଡିକ ସଫା କରନ୍ତୁ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:30
+msgid "Columns:"
+msgstr "ସ୍ତମ୍ଭ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:31
+msgid "Copies:"
+msgstr "ପ୍ରତିରୂପ ଗୁଡିକ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:32
+msgid "Deny printing for everyone except these users:"
+msgstr "ଏହି ଉପଭୋକ୍ତା ମାନଙ୍କ ଛଡା ସମସ୍ତଙ୍କୁ ମୁଦ୍ରଣ ପାଇଁ ମନା କରିଦିଅନ୍ତୁ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:34
+msgid "Device URI:"
+msgstr "ଯନ୍ତ୍ର ୟୁ.ଆର.ଆଇ.:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:35
+msgid "Enabled"
+msgstr "ସକ୍ରିୟ କରାଯାଇଛି"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:36
+msgid "Ending Banner:"
+msgstr "ସମାପ୍ତି ବ୍ଯାନର:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:37
+msgid "Error Policy: \t"
+msgstr "ତୃଟି ନୀତି: \t"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:38
+msgid "Finishings:"
+msgstr "ସମାପନ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:39
+msgid "Gamma:"
+msgstr "ଗାମା:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:40
+msgid "Hold until:"
+msgstr "ଏତିକି ସମୟ ସ୍ଥଗିତ କରନ୍ତୁ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:41
+msgid "Hue adjustment:"
+msgstr "ରଙ୍ଗ ନିୟନ୍ତ୍ରଣ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:42
+msgid "Installed Options"
+msgstr "ସ୍ଥାପିତ ବିକଳ୍ପ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:43
+msgid "Job Options"
+msgstr "କାର୍ଯ୍ଯ ବିକଳ୍ପ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:44
+msgid "Job priority:"
+msgstr "କାର୍ଯ୍ଯ ଅଗ୍ରାଧିକାର:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:45
+msgid "Left margin:"
+msgstr "ବାମ ମାର୍ଜିନ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:46
+msgid ""
+"Left to right, top to bottom\n"
+"Left to right, bottom to top\n"
+"Right to left, top to bottom\n"
+"Right to left, bottom to top\n"
+"Top to bottom, left to right\n"
+"Top to bottom, right to left\n"
+"Bottom to top, left to right\n"
+"Bottom to top, right to left"
+msgstr ""
+"ବାମରୁ ଡାହାଣକୁ, ଉପରୁ ତଳକୁ\n"
+"ବାମରୁ ଡାହାଣକୁ, ତଳୁ ଉପରକୁ\n"
+"ଡାହାଣରୁ ବାମକୁ, ଉପରୁ ତଳକୁ\n"
+"ଡାହାଣରୁ ବାମକୁ, ତଳୁ ଉପରକୁ\n"
+"ଉପରୁ ତଳକୁ, ବାମରୁ ଡାହାଣକୁ\n"
+"ଉପରୁ ତଳକୁ, ଡାହାଣରୁ ବାମକୁ\n"
+"ତଳୁ ଉପରକୁ, ବାମରୁ ଡାହାଣକୁ\n"
+"ତଳୁ ଉପରକୁ, ଡାହାଣରୁ ବାମକୁ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:54
+msgid "Lines per inch:"
+msgstr "ଇଞ୍ଚ ପ୍ରତି ଧାଡି ସଂଖ୍ଯା:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:55
+msgid "Location:"
+msgstr "ଅବସ୍ଥାନ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:56
+msgid "Make and Model:"
+msgstr "ନିର୍ମାଣ ଏବଂ ମଡେଲ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:57
+msgid "Media:"
+msgstr "ମାଧ୍ଯମ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:58
+msgid "Members"
+msgstr "ସଦସ୍ଯ ମାନେ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:59
+msgid "Mirror"
+msgstr "ମିରର"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:60
+msgid "More"
+msgstr "ଅଧିକ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:61
+msgid ""
+"None\n"
+"Staple\n"
+"Punch\n"
+"Cover\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Staple (top left)\n"
+"Staple (bottom left)\n"
+"Staple (top right)\n"
+"Staple (bottom right)\n"
+"Edge stitch (left)\n"
+"Edge stitch (top)\n"
+"Edge stitch (right)\n"
+"Edge stitch (bottom)\n"
+"Staple dual (left)\n"
+"Staple dual (top)\n"
+"Staple dual (right)\n"
+"Staple dual (bottom)\n"
+"Bind (left)\n"
+"Bind (top)\n"
+"Bind (right)\n"
+"Bind (bottom)"
+msgstr ""
+"None\n"
+"Staple\n"
+"Punch\n"
+"Cover\n"
+"Bind\n"
+"Saddle stitch\n"
+"Edge stitch\n"
+"Fold\n"
+"Trim\n"
+"Bale\n"
+"Booklet maker\n"
+"Job offset\n"
+"Staple (top left)\n"
+"Staple (bottom left)\n"
+"Staple (top right)\n"
+"Staple (bottom right)\n"
+"Edge stitch (left)\n"
+"Edge stitch (top)\n"
+"Edge stitch (right)\n"
+"Edge stitch (bottom)\n"
+"Staple dual (left)\n"
+"Staple dual (top)\n"
+"Staple dual (right)\n"
+"Staple dual (bottom)\n"
+"Bind (left)\n"
+"Bind (top)\n"
+"Bind (right)\n"
+"Bind (bottom)"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:89
+msgid ""
+"One-sided\n"
+"Two-sided (long edge)\n"
+"Two-sided (short edge)"
+msgstr ""
+"ଗୋଟିଏ-ପାର୍ଶ୍ବ\n"
+"ଦୁଇଟି ପାର୍ଶ୍ବ (ବଡ ଧଡ଼ି)\n"
+"ଦୁଇଟି ପାର୍ଶ୍ବ (ଛୋଟ ଧଡ଼ି)"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:92
+msgid "Operation Policy:"
+msgstr "ପ୍ରକ୍ରିୟା ନୀତି:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:93
+msgid "Orientation:"
+msgstr "ଅନୁସ୍ଥାପନ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:94
+msgid "Pages per side layout:"
+msgstr "ପ୍ରତ୍ଯେକ ପାର୍ଶ୍ବ ବିନ୍ଯାସରେ ପୃଷ୍ଠା ସଂଖ୍ଯା:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:95
+msgid "Pages per side:"
+msgstr "ପ୍ରତ୍ଯେକ ପାର୍ଶ୍ବରେ ପୃଷ୍ଠା ସଂଖ୍ଯା:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:96
+msgid "Policies"
+msgstr "ନୀତି"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:97
+msgid ""
+"Portrait (no rotation)\n"
+"Landscape (90°)\n"
+"Reverse landscape (270°)\n"
+"Reverse portrait (180°)"
+msgstr ""
+"ଚିତ୍ର (କୌଣସି ଘୁର୍ଣ୍ଣନ ନାହିଁ)\n"
+"ପାରିପାର୍ଶ୍ବିକ ଦୃଶ୍ୟ (୯୦°)\n"
+"ଓଲଟା ଦୃଶ୍ଯ (୨୭୦°) \n"
+"ଓଲଟା ଚିତ୍ର (୧୮୦°)"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:101
+msgid "Pretty print"
+msgstr "ସୁନ୍ଦର ମୁଦ୍ରଣ"
+
+#. Not more than 25 characters
+#: ../glade/PrinterPropertiesDialog.glade.h:103
+msgid "Print Self-Test Page"
+msgstr "ସ୍ବଂପରୀକ୍ଷଣ ପୃଷ୍ଠାକୁ ମୂଦ୍ରିତ କରନ୍ତୁ"
+
+#. Not more than 25 characters
+#: ../glade/PrinterPropertiesDialog.glade.h:105
+#: ../troubleshoot/PrintTestPage.py:68
+msgid "Print Test Page"
+msgstr "ପରୀକ୍ଷଣ ପୃଷ୍ଠାକୁ ମୂଦ୍ରିତ କରନ୍ତୁ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:107
+msgid "Printer Properties"
+msgstr "ମୁଦ୍ରଣୀ ଗୁଣଧର୍ମ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:108
+msgid "Printer State:"
+msgstr "ମୁଦ୍ରଣୀ ସ୍ଥିତି:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:109
+msgid "Reset"
+msgstr "ପୁନଃସ୍ଥାପନ କରନ୍ତୁ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:110
+msgid "Reset to system default"
+msgstr "ତନ୍ତ୍ର ପୂର୍ବନିର୍ଦ୍ଧାରିତକୁ ପୁନଃସ୍ଥାପନ କରନ୍ତୁ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:111
+msgid "Right margin:"
+msgstr "ଡାହାଣ ମାର୍ଜିନ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:112
+msgid "Saturation:"
+msgstr "ପରିପୂର୍ଣ୍ଣତା:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:113
+msgid "Scale to fit"
+msgstr "ଖାପ ଖୁଆଇବା ପାଇଁ ଆକାର ପରିବର୍ତ୍ତନ କରନ୍ତୁ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:114
+msgid "Scaling:"
+msgstr "ଆକାର ପରିବର୍ତ୍ତନ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:115
+msgid "Settings"
+msgstr "ବିନ୍ଯାସ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:116
+msgid "Shared"
+msgstr "ସହଭାଗ କରାଯାଇଛି"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:117
+msgid "Sides:"
+msgstr "କେତୋଟି ପାର୍ଶ୍ବ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:118
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"ଏହି ମୁଦ୍ରଣୀ ପାଇଁ ପୂର୍ବନିର୍ଦ୍ଧାରିତ କାର୍ଯ୍ଯ ବିକଳ୍ପ ମାନଙ୍କୁ ଉଲ୍ଲେଖ କରନ୍ତୁ।  ଏହି ମୁଦ୍ରଣୀ ସେବକରେ ଆସୁଥିବା "
+"କାର୍ଯ୍ଯ ମାନଙ୍କରେ ଏହି ବିକଳ୍ପ ମାନଙ୍କୁ ଯୋଗ କରାଯିବ ଯଦି ସେମାନଙ୍କୁ ପୂର୍ବରୁ ପ୍ରୟୋଗ ଦ୍ବାରା ବିନ୍ଯାସ "
+"କରାଯାଇ ନାହିଁ।"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:119
+msgid "Starting Banner:"
+msgstr "ପ୍ରାରମ୍ଭିକ ବ୍ଯାନର:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:120
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"ଗୋଟିଏ ନୂତନ ବିକଳ୍ପ ଯୋଗ କରିବା ପାଇଁ, ତଳେ ଦିଆଯାଇଥିବା ବାକ୍ସରେ ଏହାର ନାମକୁ ଭରଣ କରନ୍ତୁ ଏବଂ ଯୋଗ "
+"କରନ୍ତୁ ବଟନକୁ ଦବାନ୍ତୁ।"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:121
+msgid "Top margin:"
+msgstr "ଉପର ମାର୍ଜିନ:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:122
+msgid "Word wrap"
+msgstr "ଧାଡି ବିଭାଜନ କରନ୍ତୁ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:123
 msgid "default"
 msgstr "ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ"
 
-#: ../system-config-printer.glade.h:272
+#: ../glade/PrinterPropertiesDialog.glade.h:124
 msgid "none"
 msgstr "କିଛି ନୁହେଁ"
 
-#: ../system-config-printer.glade.h:273
+#: ../glade/PrinterPropertiesDialog.glade.h:125
 msgid "points"
 msgstr "ବିନ୍ଦୁ"
 
-#: ../system-config-printer.glade.h:274
-msgid "system-config-printer"
+#: ../glade/PrinterStatusWindow.glade.h:1
+msgid "Printer status"
+msgstr "ମୁଦ୍ରଣୀ ସ୍ଥିତି"
+
+#: ../glade/PrintersWindow.glade.h:1
+#, fuzzy
+msgid "Adjust server settings"
+msgstr "ସେବକର ମୌଳିକ ବିନ୍ଯାସ"
+
+#: ../glade/PrintersWindow.glade.h:2
+#, fuzzy
+msgid "Choose a different CUPS server"
+msgstr "CUPS ସେବକ ସହିତ ସଂଯୋଗ କରନ୍ତୁ"
+
+#: ../glade/PrintersWindow.glade.h:3
+#, fuzzy
+msgid "Set As De_fault"
+msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ଭାବେ ସେଟ୍ କରନ୍ତୁS)"
+
+#: ../glade/PrintersWindow.glade.h:4 ../glade/ServerSettingsDialog.glade.h:8
+msgid "Show printers shared by other systems"
+msgstr "ଅନ୍ଯ ତନ୍ତ୍ର ଦ୍ବାରା ସହଭାଗିତ ମୁଦ୍ରଣୀ ମାନଙ୍କୁ ପ୍ରଦର୍ଶନ କରନ୍ତୁ"
+
+#: ../glade/PrintersWindow.glade.h:5
+msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:276
-msgid "translator-credits"
-msgstr "ଅନୁବାଦ-ସ୍ବୀକ୍ରୁତୀ"
+#: ../glade/PrintersWindow.glade.h:6
+#, fuzzy
+msgid "_Class"
+msgstr "ନୂତନ ଶ୍ରେଣୀ"
+
+#: ../glade/PrintersWindow.glade.h:7
+msgid "_Connect..."
+msgstr "ସଂଯୋଗ କରନ୍ତୁ...(_C)"
+
+#: ../glade/PrintersWindow.glade.h:8
+msgid "_Discovered Printers"
+msgstr ""
+
+#: ../glade/PrintersWindow.glade.h:9
+#, fuzzy
+msgid "_Enabled"
+msgstr "ସକ୍ରିୟ କରାଯାଇଛି"
+
+#: ../glade/PrintersWindow.glade.h:10
+msgid "_Help"
+msgstr "ସହାୟତା (_H)"
+
+#: ../glade/PrintersWindow.glade.h:11
+#, fuzzy
+msgid "_Printer"
+msgstr "ମୁଦ୍ରଣୀ"
+
+#: ../glade/PrintersWindow.glade.h:13
+#, fuzzy
+msgid "_Server"
+msgstr "ସେବକ ତୃଟି"
+
+#: ../glade/PrintersWindow.glade.h:14
+#, fuzzy
+msgid "_Settings..."
+msgstr "ବିନ୍ଯାସ"
+
+#: ../glade/PrintersWindow.glade.h:16
+msgid "_Troubleshoot"
+msgstr "ବିଘ୍ନନିବାରଣ (_T)"
+
+#: ../glade/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>ସେବକର ମୌଳିକ ବିନ୍ଯାସ</b>"
+
+#: ../glade/ServerSettingsDialog.glade.h:2
+msgid "Allow printing from the Internet"
+msgstr "ଇଣ୍ତ୍ରରନେଟ୍ ରୁ ମୁଦ୍ରଣର ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ"
+
+#: ../glade/ServerSettingsDialog.glade.h:3
+msgid "Allow remote administration"
+msgstr "ଦୂର ପ୍ରଶାସନକୁ ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ"
+
+#: ../glade/ServerSettingsDialog.glade.h:4
+msgid "Allow users to cancel any job (not just their own)"
+msgstr "ଯେକୌଣସି କାର୍ଯ୍ଯକୁ ବାତିଲ କରିବା ପାଇଁ ଚାଳକକୁ ଅନୁମତି ପ୍ରଦାନ କରନ୍ତୁ (ନା କେବଳ ତାଙ୍କ ନିଜର)"
+
+#: ../glade/ServerSettingsDialog.glade.h:5
+msgid "Basic Server Settings"
+msgstr "ସେବକର ମୌଳିକ ବିନ୍ଯାସ"
+
+#: ../glade/ServerSettingsDialog.glade.h:6
+#, fuzzy
+msgid "Publish shared printers connected to this system"
+msgstr "ଏହି ତନ୍ତ୍ର ସହିତ ସଂଯୋଜିତ ପ୍ରକାଶିତ ମୁଦ୍ରଣୀ ମାନଙ୍କୁ ସହଭାଗ କରନ୍ତୁ"
+
+#: ../glade/ServerSettingsDialog.glade.h:7
+msgid "Save debugging information for troubleshooting"
+msgstr "ବିଘ୍ନନିବାରଣ ପାଇଁ ତୃଟିମୁକ୍ତ ସୂଚନା ମାନଙ୍କୁ ସଂରକ୍ଷଣ କରନ୍ତୁ"
+
+#: ../glade/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "SMB ଖୋଜାଳି"
+
+#: ../glade/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "ଲୁଚାନ୍ତୁ (_H)"
+
+#: ../glade/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -2286,6 +2351,10 @@ msgstr ""
 "ମୁଁ ବର୍ତ୍ତମାନ ଯାଏଁ ସମସ୍ଯାଟି କଣ ଜାଣିପାରୁନାହିଁ, କିନ୍ତୁ ମୁଁ ଦୋଷ ବିବରଣୀ ପାଈଂ କେତେଗୁଡା ଦରକାରୀ ସୂଚନା "
 "ସଂଗ୍ରହ କରିଛି."
 
+#: ../troubleshoot/Shrug.py:33
+msgid "Diagnostic Output (Advanced)"
+msgstr ""
+
 #: ../troubleshoot/Welcome.py:36
 msgid "Trouble-shooting Printing"
 msgstr "ମୁଦ୍ରଣ ସକାଶେ ବିଘ୍ନନିବାରଣ ଚାଲିଛି"
@@ -2338,50 +2407,6 @@ msgstr "`%s' କୁ `%s' ଡ୍ରାଇଭର ବ୍ଯବହାର କରି �
 msgid "Find driver"
 msgstr "ଡ୍ରାଇଭର ଖୋଜନ୍ତୁ"
 
-#: ../applet.glade.h:1
-msgid ""
-"<span weight=\"bold\" size=\"larger\">Password required</span>\n"
-"\n"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">ପ୍ରବେଶ ସଙ୍କେତ ଆବଶ୍ଯକ</span>\n"
-"\n"
-
-#: ../applet.glade.h:5
-msgid "Printer status"
-msgstr "ମୁଦ୍ରଣୀ ସ୍ଥିତି"
-
-#: ../applet.glade.h:6
-msgid "Re_print"
-msgstr "ପୁନର୍ବାର ମୁଦ୍ରଣ କରନ୍ତୁ (_p)"
-
-#: ../applet.glade.h:7
-msgid "Show _completed jobs"
-msgstr "ସମାପ୍ତ ହୋଇଥିବା କାର୍ଯ୍ଯ ଗୁଡିକୁ ଦେଖାନ୍ତୁ (_c)"
-
-#: ../applet.glade.h:8
-msgid "Show _printer status"
-msgstr "ମୁଦ୍ରଣୀ ସ୍ଥିତି ପ୍ରଦର୍ଶନ କରନ୍ତୁ (_p)"
-
-#: ../applet.glade.h:9
-msgid "_File"
-msgstr "ଫାଇଲ (_F)"
-
-#: ../applet.glade.h:10
-msgid "_Hide"
-msgstr "ଲୁଚାନ୍ତୁ (_H)"
-
-#: ../applet.glade.h:11
-msgid "_Hold"
-msgstr "ଅଟକାନ୍ତୁ (_H)"
-
-#: ../applet.glade.h:12
-msgid "_Refresh"
-msgstr "ସତେଜନ କରନ୍ତୁ (_R)"
-
-#: ../applet.glade.h:13
-msgid "_Release"
-msgstr "ପ୍ରକାଶନ (_R)"
-
 #: ../print-applet.desktop.in.h:1
 msgid "Print Queue Applet"
 msgstr "ମୂଦ୍ରଣୀ ଧାଡି ଆପ୍ଲେଟ"
@@ -2401,6 +2426,25 @@ msgstr "ମୁଦ୍ରଣ କାର୍ଯ୍ଯକୁ ପରିଚାଳନା 
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ମୂଦ୍ରଣୀ ଚୟନ କରନ୍ତୁ"
+
+#~ msgid ""
+#~ "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+#~ "\n"
+#~ "Any changes you have made will be lost unless you apply them."
+#~ msgstr ""
+#~ "<span weight=\"bold\" size=\"larger\">ପରିବର୍ତନକୁ ପ୍ରୟୋଗ କରିବ କି?</span>\n"
+#~ "\n"
+#~ "ଆପଣ ପରିବର୍ତନକୁ ପ୍ରୟୋଗ ନକଲେ ତାହା ନଷ୍ଟ ହୋଇଯିବ।"
+
+#~ msgid "_Do not apply"
+#~ msgstr "ପ୍ରୟୋଗ କରନ୍ତୁ ନାହିଁ (_D)"
+
+#~ msgid ""
+#~ "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
+#~ "\n"
+#~ msgstr ""
+#~ "<span weight=\"bold\" size=\"larger\">ପ୍ରବେଶ ସଙ୍କେତ ଆବଶ୍ଯକ</span>\n"
+#~ "\n"
 
 #~ msgid "Verified"
 #~ msgstr "ଯାଞ୍ଚ କରାଯାଇଛି"
@@ -2454,9 +2498,6 @@ msgstr "ପୂର୍ବନିର୍ଦ୍ଧାରିତ ମୂଦ୍ରଣୀ �
 
 #~ msgid "Refresh the list of printer queues"
 #~ msgstr "ମୁଦ୍ରଣୀ କ୍ରମ ଗୁଡିକର ତାଲିକା କୁ ସତେଜନ କରନ୍ତୁ"
-
-#~ msgid "This is the default printer"
-#~ msgstr "ଏହା ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ ମୁଦ୍ରଣୀ ଅଟେ"
 
 #~ msgid "No default printer set."
 #~ msgstr "କୌଣସି ପୂର୍ବ ନିର୍ଦ୍ଧାରିତ ମୁଦ୍ରଣୀକୁ ସେଟ କରାଯାଇ ନାହିଁ।"

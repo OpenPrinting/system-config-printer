@@ -1,7 +1,55 @@
 SUBDIRS=po
+
+EXPORT_MODULES=					\
+	cupshelpers/__init__.py			\
+	cupshelpers/cupshelpers.py		\
+	cupshelpers/ppds.py			\
+	cupshelpers/openprinting.py
+
+### Automake hooks for Distutils.
+# The distutils module doesn't understand srcdir != builddir,
+# so we copy in, along with the cupshelpers modules, into
+# the builddir for 'all', 'install-exec', and 'clean' hooks.
+.stamp-distutils-in-builddir:	setup.py $(EXPORT_MODULES)
+	if [ "$(top_srcdir)" != "$(top_builddir)" ]; then	\
+		cp $(top_srcdir)/setup.py .;			\
+		mkdir cupshelpers;				\
+		for file in $(EXPORT_MODULES); do		\
+			cp $(top_srcdir)/$$file $$file;		\
+		done;						\
+	fi
+	touch .stamp-distutils-in-builddir
+
+# Use distutils to build the module.
+all-local: .stamp-distutils-in-builddir
+	$(PYTHON) setup.py build
+
+# Use distutils to install the module.
+install-exec-local: .stamp-distutils-in-builddir
+	$(PYTHON) setup.py install --prefix=$(DESTDIR)$(prefix)
+
+# Uninstall the module, crossing our fingers that we know enough
+# about how distutils works to do this.  Unfortunately, distutils
+# doesn't provide a way to do this itself.
+uninstall-local:
+	rm -f $(DESTDIR)/$(pythondir)/cupshelpers*.egg-info
+	for file in $(EXPORT_MODULES); do				\
+		rm -f $(DESTDIR)/$(pythondir)/$$file*;			\
+	done
+
+# Tell distutils to clean up.
+clean-local:
+	-$(PYTHON) setup.py clean --all
+	if [ "$(top_srcdir)" != "$(top_builddir)" ]; then	\
+		rm -f setup.py;					\
+		for file in $(EXPORT_MODULES); do		\
+			rm -f $$file*;				\
+		done;						\
+	fi
+	rm -f .stamp-distutils-in-builddir
+
 nobase_pkgdata_SCRIPTS=				\
 	my-default-printer.py			\
-	ppds.py					\
 	pysmb.py				\
 	system-config-printer.py		\
 	troubleshoot/__init__.py		\
@@ -11,13 +59,11 @@ nobase_pkgdata_DATA=					\
 	authconn.py					\
 	config.py					\
 	contextmenu.py					\
-	cupshelpers.py					\
 	debug.py					\
 	errordialogs.py					\
 	glade.py					\
 	jobviewer.py					\
 	monitor.py					\
-	openprinting.py					\
 	options.py					\
 	optionwidgets.py				\
 	probe_printer.py				\
@@ -25,18 +71,24 @@ nobase_pkgdata_DATA=					\
 	gtk_treeviewtooltips.py				\
 	smburi.py					\
 	statereason.py					\
-	ui/AboutDialog.glade				\
-	ui/ConnectDialog.glade				\
-	ui/ConnectingDialog.glade			\
-	ui/InstallDialog.glade				\
-	ui/IPPBrowseDialog.glade			\
-	ui/NewPrinterName.glade				\
-	ui/NewPrinterWindow.glade			\
-	ui/printer_context_menu.glade			\
-	ui/PrinterPropertiesDialog.glade		\
-	ui/ServerSettingsDialog.glade			\
-	ui/SMBBrowseDialog.glade			\
-	ui/WaitWindow.glade				\
+	userdefault.py					\
+	glade/AboutDialog.glade				\
+	glade/ConnectDialog.glade				\
+	glade/ConnectingDialog.glade			\
+	glade/InstallDialog.glade				\
+	glade/IPPBrowseDialog.glade			\
+	glade/job_popupmenu.glade				\
+	glade/JobsWindow.glade				\
+	glade/NewPrinterName.glade				\
+	glade/NewPrinterWindow.glade			\
+	glade/printer_context_menu.glade			\
+	glade/PrinterPropertiesDialog.glade		\
+	glade/PrinterStatusWindow.glade			\
+	glade/PrintersWindow.glade				\
+	glade/ServerSettingsDialog.glade			\
+	glade/SMBBrowseDialog.glade			\
+	glade/statusicon_popupmenu.glade			\
+	glade/WaitWindow.glade				\
 	icons/i-network-printer.png			\
 	troubleshoot/base.py				\
 	troubleshoot/CheckLocalServerPublishing.py	\
@@ -60,8 +112,7 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/SchedulerNotRunning.py		\
 	troubleshoot/ServerFirewalled.py		\
 	troubleshoot/Shrug.py				\
-	troubleshoot/Welcome.py				\
-	applet.py
+	troubleshoot/Welcome.py
 
 bin_SCRIPTS=\
 	system-config-printer			\
@@ -129,6 +180,8 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
+	setup.py \
+	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
 	newprinternotification.conf \
 	bootstrap \
@@ -149,6 +202,10 @@ desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 $(man_MANS): $(top_srcdir)/man/system-config-printer.xml
 	xmlto man -o man $<
 
+html:	$(EXPORT_MODULES)
+	rm -rf html
+	epydoc -o html --html $(EXPORT_MODULES)
+
 distcheck-hook: update-po
 
 update-po: missing-languages
@@ -161,14 +218,14 @@ missing-languages:
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
 
 fix-glade:
-	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' $(top_srcdir)/ui/*.glade
+	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' $(top_srcdir)/glade/*.glade
 
 run:
-	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/ui \
+	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
 	python $(top_srcdir)/system-config-printer.py --debug
 
 run-applet:
-	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/ui \
+	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
 	python $(top_srcdir)/applet.py --debug
 
 help:
@@ -181,10 +238,23 @@ help:
 	@echo " run                Run system-config-printer with local glade file"
 	@echo " run-applet         Run system-config-printer-applet with local glade file"
 
+test-ppd-module.sh:
+	echo "#!/usr/bin/env python" > "$@"
+	echo "import sys; sys.path.append ('$(top_srcdir)')" >> "$@"
+	echo "from cupshelpers.ppds import _self_test" >> "$@"
+	echo "_self_test(sys.argv)" >> "$@"
+	chmod 755 "$@"
+
+TESTS = test-ppd-module.sh
+
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
-	*.desktop man/*.1
+	*.desktop man/*.1 \
+	test-ppd-module.sh pickled-ppds
+
+distclean-local:
+	rm -rf html
 
 .PHONY: update-po missing-languages fix-glade run help
 

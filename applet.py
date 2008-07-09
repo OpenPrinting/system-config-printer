@@ -128,7 +128,7 @@ class NewPrinterNotification(dbus.service.Object):
         (missing_pkgs,
          missing_exes) = cupshelpers.missingPackagesAndExecutables (ppd)
 
-        from ppds import ppdMakeModelSplit
+        from cupshelpers.ppds import ppdMakeModelSplit
         (make, model) = ppdMakeModelSplit (printer['printer-make-and-model'])
         driver = make + " " + model
         if status < self.STATUS_GENERIC_DRIVER:

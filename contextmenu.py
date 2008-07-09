@@ -27,6 +27,7 @@ import errordialogs
 from glade import GtkGUI
 import jobviewer
 from debug import *
+import userdefault
 
 _ = lambda x: x
 def set_gettext_function (x):
@@ -39,13 +40,17 @@ class PrinterContextMenu (GtkGUI):
         self.getWidgets ({"printer_context_menu":
                               ["printer_context_menu",
                                "printer_context_edit",
+                               "printer_context_copy",
                                "printer_context_rename",
+                               "printer_context_delete",
+                               "printer_context_sep1",
+
                                "printer_context_enabled",
                                "printer_context_shared",
-                               "printer_context_copy",
-                               "printer_context_delete",
                                "printer_context_set_as_default",
                                "printer_context_create_class",
+                               "printer_context_sep2",
+
                                "printer_context_view_print_queue"]})
 
         self.jobviewers = []
@@ -65,9 +70,6 @@ class PrinterContextMenu (GtkGUI):
         if n == 1:
             iter = model.get_iter (paths[0])
             name = model.get_value (iter, 2)
-            is_default = name == self.parent.default_printer
-        else:
-            is_default = False
 
         any_disabled = False
         any_enabled = False
@@ -106,8 +108,12 @@ class PrinterContextMenu (GtkGUI):
         show_widget (self.printer_context_edit, n == 1)
         show_widget (self.printer_context_copy, n == 1)
         show_widget (self.printer_context_rename, n == 1 and not any_discovered)
-        show_widget (self.printer_context_set_as_default,
-                     n == 1 and not is_default)
+        userdef = userdefault.UserDefaultPrinter ().get ()
+        if (n != 1 or
+            (userdef == None and self.parent.default_printer == name)):
+            self.printer_context_set_as_default.hide ()
+        else:
+            self.printer_context_set_as_default.show ()
 
         # Actions that require at least one destination
         show_widget (self.printer_context_delete, n > 0 and not any_discovered)
@@ -126,6 +132,22 @@ class PrinterContextMenu (GtkGUI):
 
         # Actions that require more than one destination
         show_widget (self.printer_context_create_class, n > 1)
+
+        # Separators
+        sep1_group = [self.printer_context_edit,
+                      self.printer_context_copy,
+                      self.printer_context_rename,
+                      self.printer_context_delete]
+        sep2_group = [self.printer_context_enabled,
+                      self.printer_context_shared,
+                      self.printer_context_set_as_default,
+                      self.printer_context_create_class]
+        sep1 = reduce (lambda x, y: x or y,
+                       map (lambda x: x.get_property ('visible'), sep1_group))
+        sep2 = reduce (lambda x, y: x or y,
+                       map (lambda x: x.get_property ('visible'), sep2_group))
+        show_widget (self.printer_context_sep1, sep1)
+        show_widget (self.printer_context_sep2, sep2)
 
         if event == None:
             event_button = 0
@@ -195,7 +217,7 @@ class PrinterContextMenu (GtkGUI):
         model = self.iconview.get_model ()
         iter = model.get_iter (self.paths[0])
         name = model.get_value (iter, 2)
-        self.parent.set_default_printer (name)
+        self.parent.set_system_or_user_default_printer (name)
 
     ### Create Class
     def on_printer_context_create_class_activate (self, menuitem):

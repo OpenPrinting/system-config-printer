@@ -1,3 +1,472 @@
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/openprinting.py: Moved top-level test code...
+	(_simple_gui): ...here.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/ppds.py: Removed self_test from public interface.
+	It can still be called during 'make check'.
+	(PPDs.self_test): Renamed so that it starts with an underscore.
+	* Makefile.am (test-ppd-module.sh): Track name change.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.init): Clear text entry
+	fields before filling devices list, so that when
+	self.on_tvNPDevices_cursor_changed() pre-fills the location field
+	it doesn't get reset afterwards.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Fixed location
+	pre-fill.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.dests_iconview_selection_changed):
+	Factored out get_model() from this loop.
+
+2008-07-08  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Added 'Close' button to printer
+	properties dialog.
+	* system-config-printer.py (GUI.__init__): Fetch 'Close' button
+	widget.
+	(GUI.dests_iconview_item_activated): Show Close button only when
+	the printer is a discovered one, and Apply/Cancel/OK otherwise.
+	Fixes trac #61.
+
+2008-07-08  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.browse_smb_hosts):
+	Increase smbc debugging level.
+	(NewPrinterGUI.on_tvSMBBrowser_row_expanded): Likewise.
+	(NewPrinterGUI.on_btnSMBVerify_clicked): Likewise.
+
+2008-07-07  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.unset_special_statusicon): Set status
+	icon visibility.  We might need to hide the icon at this point.
+
+2008-07-07  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/ppds.py (PPDs.__init__): Removed unneeded debugging
+	output.
+
+2008-07-07  Tim Waugh  <twaugh@redhat.com>
+
+	* setup.py: New module.  Configuration for distutils.
+	* Makefile.am (EXTRA_DIST): Ship it.
+	(.stamp-distutils-in-builddir): Convince distutils to work when
+	srcdir is different to builddir.
+	(all-local): Build cupshelpers module using distutils.
+	(install-exec-local): Install it using distutils.
+	(clean-local): Clean using distutils.
+	(uninstall-local): Remove installed module.
+
+2008-07-07  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/__init__.py (__all__): Define public names.
+	* cupshelpers/openprinting.py (__all__): Likewise.
+	* cupshelpers/ppds.py (__all__): Likewise.
+
+2008-07-04  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_cmbNPDownloadableDriverFoundPrinters_changed):
+	Only download PPD files, not drivers.
+
+2008-07-04  Tim Waugh  <twaugh@redhat.com>
+
+	* glade/PrintersWindow.glade: Moved Ctrl+N accelerator from
+	'New', which has a sub-menu, to New->Printer (trac #55).
+
+2008-06-20  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* cupshelpers/ppds.py: Made PostScript printers reliably be used
+	with the manufacturer's PPD file. The manufacturer's PPD appeared
+	as a separate model (at least for HP) and so got never used.
+	Made SpliX and Gutenprint PPDs also be recognized as such if the
+	drivers are downloaded from OpenPrinting (as LSB driver packages).
+
+2008-07-01  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Use uname call
+	instead of parsing /bin/hostname output (trac #52).
+
+2008-07-01  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Added 'Apply' button to printer
+	properties dialog.
+	* system-config-printer.py (GUI.__init__): Fetch Apply button
+	widget.
+	(GUI.setDataButtonState): Set Apply button sensitibity.
+	(GUI.dests_iconview_item_activated): Set data button state.
+	(GUI.printer_properties_response): Handle APPLY response.
+	Fixes trac #54.
+
+2008-07-01  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Limit the initial size
+	of the window (trac #53).
+
+2008-07-01  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): No need to adjust width
+	here.
+
+2008-06-30  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py (Printer.__repr__): New method.
+	(Device.__repr__): New method.
+
+2008-06-26  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/Shrug.py: Hide the diagnostic output in an
+	expander, and remove the copy-to-clipboard function.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/41.
+
+2008-06-26  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/openprinting.py
+	(OpenPrinting.listDrivers.parse_result): Use _normalize_space
+	instead of normalize_space.
+
+2008-06-26  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/__init__.py (set_debugprint_fn): New function to set
+	debugging hook.
+
+	* cupshelpers/cupshelpers.py: Don't import debug.
+	Use _debugprint instead of debugprint throughout.
+
+	* cupshelpers/ppds.py: Import _debugprint from the main
+	cupshelpers module.  Use _debugprint throughout.
+
+	Fixes https://fedorahosted.org/system-config-printer/ticket/50.
+
+2008-06-26  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.getNetworkPrinterMakeModel): Use subprocess module
+	instead of os.popen.
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Likewise.
+	(NewPrinterGUI.getNPPPD): Likewise.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/44.
+
+2008-06-25  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.get_hpfax_device_id):
+	Use subprocess module instead of os.popen.
+	(NewPrinterGUI.get_hplip_uri_for_network_printer): Likewise.
+
+2008-06-25  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.get_hpfax_device_id):
+	Prevent hp-info from accessing X display.
+
+2008-06-25  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.get_hpfax_device_id):
+	Run hp-info in the C locale.
+
+2008-06-25  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/CheckPrinterSanity.py (CheckPrinterSanity.display):
+	Prevent hp-info from accessing X display, so that it does not
+	start the HPLIP systray applet (bug #452371 comment #4).
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am (nobase_pkgdata_SCRIPTS): No need to install
+	exported modules in pkgdatadir now.
+	(EXTRA_DIST): Ship exported modules.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* openprinting.py: Moved...
+	* cupshelpers/openprinting.py: ...here.
+	* cupshelpers/__init__.py: Import it.
+	* Makefile.am (EXPORT_MODULES): Export openprinting.
+	* system-config-printer.py (NewPrinterGUI.__init__): Updated.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/34.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* openprinting.py (normalize_space): This function has private
+	scope.
+	(QueryThread): This class has private scope.
+	Better docstrings throughout.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py (main): This function has private
+	scope.
+	(iteratePPDOptions): Likewise.
+	(getPPDGroupOptions): Likewise.
+	(PrintersConf): This class has private scope.
+	Better docstrings throughout.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py (Printer.printer_states): Moved...
+	* system-config-printer.py (GUI.printer_states): ...here.
+	(GUI.updatePrinterProperties): Updated.
+	* cupshelpers/cupshelpers.py (Printer): Removed instance variable
+	state_description.
+	* cupshelpers/cupshelpers.py: Don't import rhpl.translate.
+	* po/POTFILES.in: Don't translate cupshelpers.py.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py: Moved...
+	* cupshelpers/ppds.py: ...here.  Use implicit relative path to
+	import parseDeviceID.
+	(PPDs._main): Renamed self_test.
+	* Makefile.am (test-ppd-module.sh): Adjusted.
+	* cupshelpers/__init__.py: Import ppds module.
+
+	* system-config-printer.py (NewPrinterGUI.init): The ppds module
+	is now part of cupshelpers.
+	(NewPrinterGUI.getPPDs_thread): Likewise.
+	(NewPrinterGUI.nextNPTab): Likewise.
+	(NewPrinterGUI.getNetworkPrinterMakeModel): Likewise.
+	* applet.py (NewPrinterNotification.NewPrinter): Likewise.
+	* Makefile.am (nobase_pkgdata_SCRIPTS): Track file move.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py: Moved...
+	* cupshelpers/cupshelpers.py: ...here.
+	* cupshelpers/__init__.py: New module.
+	* Makefile.am (EXPORT_MODULES): Export cupshelpers.
+	* POTFILES.in: Track file move.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Add AM_PATH_PYTHON.
+	* Makefile.am (pythondir_SCRIPTS): Install exported modules.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am (EXPORT_MODULES): New variable.
+	(html): New rule.  Build API documentation for exported modules
+	using epydoc.
+	(distclean-local): Clean documentation.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py: Better docstrings throughout.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py (getDriverType): Made this function private as it is not
+	part of the API for this module.
+	(show_help): Likewise.
+	(main): Likewise.
+
+2008-06-23  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py: New global PYSMB_AVAILABLE.
+	(NewPrinterGUI.__init__): Make SMB browse button insensitive if
+	pysmb is not available.  Removed legacy pysmb code.
+	(NewPrinterGUI.browse_smb_hosts): Removed legacy pysmb code.
+	(NewPrinterGUI.on_tvSMBBrowser_row_expanded): Likewise.
+	(NewPrinterGUI.on_btnSMBBrowseOk_clicked): Likewise.
+	(NewPrinterGUI.on_btnSMBVerify_clicked): Likewise.
+
+	* pysmb.py (get_wins_server): Removed.
+	(get_domain_list): Removed.
+	(get_host_list): Removed.
+	(get_host_list_from_domain): Removed.
+	(get_host_info): Removed.
+	(get_printer_list): Removed.
+	(printer_share_accessible): Removed.
+
+	Fixes https://fedorahosted.org/system-config-printer/ticket/35.
+
+2008-06-24  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvSMBBrowser_row_expanded): Remove expander
+	arrow when there are no sub-entries.
+
+2008-06-23  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): Better icon
+	fallbacks.  Fixes traceback seen in bug #452371 comment #2.
+
+2008-06-20  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am (DISTCLEANFILES): Clean up PPDs cache file.
+	* Makefile.am (test-ppd-module.sh): Use top_srcdir.
+	Now 'make distcheck' passes again.
+
+2008-06-20  Tim Waugh  <twaugh@redhat.com>
+
+	* ui: Renamed to glade to avoid intltool bug #452255.
+	* Makefile.am: Updated.
+	* po/POTFILES.in: Updated.
+	* glade.py (GtkGUI.getWidgets): Updated.
+	
+2008-06-20  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py (ppdMakeModelSplit): Don't strip " Printer" from the end
+	of the ppd-make-and-model string.  Generic printers should be
+	named like "Generic XYZ Printer".
+	Fixes https://fedorahosted.org/system-config-printer/ticket/33.
+
+2008-06-20  Tim Waugh  <twaugh@redhat.com>
+
+	* ppds.py (main): Check the results of the test suite against
+	maximum permissable status code and regular expression for
+	expected ppd-make-and-model string.
+	* Makefile.am (test-ppd-module.sh): Create shell script to run
+	PPDs test suite.
+	* Makefile.am (TESTS): Run it.
+	* Makefile.am (DISTCLEANFILES): Clean it up.
+
+2008-06-20  Tim Waugh  <twaugh@redhat.com>
+
+	* pysmb.py (AuthContext.initial_authentication): Pre-fill SMB
+	workgroup from smbc.Context.workgroup.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/30.
+
+2008-06-20  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* ppds.py: Case-insensitive sorting of printer model list.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.browse_ipp_queues_thread): More informative dialog
+	when queue list cannot be fetched.
+	Part of https://fedorahosted.org/system-config-printer/ticket/26.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.browse_ipp_queues_thread): Hide browse window if
+	there was a problem browsing.
+	Part of https://fedorahosted.org/system-config-printer/ticket/26.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.browse_smb_hosts): If no
+	hosts are found, advise user to check firewall.
+	Part of https://fedorahosted.org/system-config-printer/ticket/26.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (TEXT_start_firewall_tool): Moved this
+	translatable string to a global variable.
+	(GUI.save_serversettings): Use the global variable.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (PrinterURIIndex): New class, for mapping printer
+	URIs to printer names.
+	(JobViewer.printer_event): New method.  Update printer URI index.
+	(JobViewer.printer_removed): New method.  Update printer URI
+	index.
+	(JobViewer.current_printers_and_jobs): Instantiate printer URI
+	index, and use it to look up printer names by job-printer-uri.
+	(JobViewer.job_added): Look up printer names by job-printer-uri.
+	(JobViewer.job_event): Likewise.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/29.
+
+2008-06-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Give names to the separators in
+	the printer context menu.
+	* contextmenu.py (PrinterContextMenu.__init__): Fetch named
+	separator widgets from glade file.
+	(PrinterContextMenu.__init__.popup): Show separators only when
+	there is something to separate.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/31.
+
+2008-06-17  Tim Waugh  <twaugh@redhat.com>
+
+	* options.py (OptionAlwaysShown.reinit): Support use_supported for
+	combobox_map-using options such as finishings.
+	* system-config-printer.py (GUI.__init__): Set use_supported true
+	for the finishings options.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/32.
+
+2008-06-17  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (Printer.getAttributes): Work around a pycups
+	bug fixed in 1.9.40: finishings-supported should be a list.
+
+2008-06-16  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.populateList): Remove unused
+	select_path local variable.
+
+2008-06-16  Tim Waugh  <twaugh@redhat.com>
+
+	* pysmb.py (AuthContext.perform_authentication): Use
+	STOCK_DIALOG_AUTHENTICATION instead of literal string.
+
+	* optionwidgets.py (Option.__init__): Use STOCK_DIALOG_WARNING and
+	ICON_SIZE_SMALL_TOOLBAR instead of literal strings and ints.
+
+	* authconn.py (AuthDialog.__init__): Use
+	STOCK_DIALOG_AUTHENTICATION instead of literal string.
+
+	* errordialogs.py (show_info_dialog): Use STOCK_DIALOG_INFO
+	instead of literal string.
+	(show_error_dialog): Use STOCK_DIALOG_ERROR instead of literal
+	string.
+	* jobviewer.py (JobViewer.job_event): Likewise.
+
+	* userdefault.py (UserDefaultPrompt.__init__): Use
+	STOCK_DIALOG_QUESTION instead of a literal string.
+
+2008-06-16  Tim Waugh  <twaugh@redhat.com>
+
+	* userdefault.py (UserDefaultPrompt): New class, implementing a
+	user/system default printer dialog.
+	* system-config-printer.py
+	(GUI.set_system_or_user_default_printer): New method.  Display
+	dialog.
+	(PrinterContextMenu.on_printer_context_set_as_default_activate):
+	Use new method.
+	(GUI.on_set_as_default_activate): Likewise.
+
+2008-06-16  Tim Waugh  <twaugh@redhat.com>
+
+	* contextmenu.py (PrinterContextMenu.popup): Show the Set As
+	Default menu item for the system default printer except when no
+	user default is set.
+
+2008-06-16  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): Display emblem for
+	user default printer.
+
+2008-06-16  Tim Waugh  <twaugh@redhat.com>
+
+	* userdefault.py: New module.
+	* Makefile.am (nobase_pkgdata_DATA): Ship it.
+
+2008-06-13  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers.py (Printer.update): Work-around pycups bug.  The
+	printer-uri-supported attribute should always be a list.
+
+2008-06-13  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am (nobase_pkgdata_DATA): Replaced applet.glade with
+	ui/job_popupmenu.glade, ui/JobsWindow.glade,
+	ui/PrinterStatusWindow.glade, and ui/statusicon_popupmenu.glade.
+	Added missing ui/PrintersWindow.glade.
+	* po/POTFILES.in: Likewise.
+	Fixes https://fedorahosted.org/system-config-printer/ticket/27.
+
 2008-07-07  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* ui/PrintersWindow.glade: Added a Group menu item to the

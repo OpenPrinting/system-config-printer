@@ -25,6 +25,7 @@ import config
 
 import errno
 import sys, os, tempfile, time, traceback, re, httplib
+import subprocess
 import signal, thread
 try:
     import gtk.glade
@@ -54,17 +55,20 @@ if len(sys.argv)>1 and sys.argv[1] == '--help':
 import cups
 cups.require ("1.9.27")
 
-import pysmb
+try:
+    import pysmb
+    PYSMB_AVAILABLE=True
+except:
+    PYSMB_AVAILABLE=False
+
 import cupshelpers, options
 import gobject # for TYPE_STRING and TYPE_PYOBJECT
 from glade import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
-import ppds
 import probe_printer
 import gtk_label_autowrap
 from gtk_treeviewtooltips import TreeViewTooltips
-import openprinting
 import urllib
 import troubleshoot
 import contextmenu
@@ -73,6 +77,7 @@ import monitor
 from smburi import SMBURI
 import errordialogs
 from errordialogs import *
+import userdefault
 from ToolbarSearchEntry import *
 from GroupsPane import *
 from GroupsPaneModel import *
@@ -98,6 +103,10 @@ sys.path.append (pkgdata)
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 ellipsis = unichr(0x2026)
+
+TEXT_start_firewall_tool = _("To do this, select "
+                             "System->Administration->Firewall "
+                             "from the main menu.")
 
 try:
     try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY
@@ -145,6 +154,11 @@ def getCurrentClassMembers(treeview):
     return result
 
 class GUI(GtkGUI, monitor.Watcher):
+
+    printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
+                       cups.IPP_PRINTER_PROCESSING: _("Processing"),
+                       cups.IPP_PRINTER_BUSY: _("Busy"),
+                       cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
     def __init__(self, configure_printer = None, change_ppd = False):
 
@@ -218,7 +232,10 @@ class GUI(GtkGUI, monitor.Watcher):
                          "PrinterPropertiesDialog":
                              ["PrinterPropertiesDialog",
                               "tvPrinterProperties",
+                              "btnPrinterPropertiesCancel",
                               "btnPrinterPropertiesOK",
+                              "btnPrinterPropertiesApply",
+                              "btnPrinterPropertiesClose",
                               "ntbkPrinter",
                               "entPDescription",
                               "entPLocation",
@@ -497,7 +514,8 @@ class GUI(GtkGUI, monitor.Watcher):
                                                              20, 21, 22, 23,
                                                              24, 25, 26, 27,
                                                              28, 29, 30, 31,
-                                                             50, 51, 52, 53 ]),
+                                                             50, 51, 52, 53 ],
+                                            use_supported = True),
 
                  options.OptionAlwaysShown ("job-priority", int, 50,
                                             self.sbJOJobPriority,
@@ -596,10 +614,25 @@ class GUI(GtkGUI, monitor.Watcher):
             self.populateList()
             show_HTTP_Error(s, self.PrintersWindow)
 
+        # Attempt to size the window appropriately.
         try:
+            (max_width, max_height) = (600, 400)
             self.dests_iconview.resize_children ()
             (width, height) = self.dests_iconview.size_request ()
-            self.dests_iconview.set_size_request (20 + width, height)
+            if height > max_height:
+                # Too tall.  Try at maximum width.
+                self.dests_iconview.set_size_request (max_width, -1)
+                self.dests_iconview.resize_children ()
+                while gtk.events_pending ():
+                    gtk.main_iteration ()
+                (width, height) = self.dests_iconview.size_request ()
+
+                # Finally, limit both the width and height.
+                (width, height) = map (min,
+                                       (width, height),
+                                       (max_width, max_height))
+
+            self.dests_iconview.set_size_request (width, height)
             while gtk.events_pending ():
                 gtk.main_iteration ()
             (width, height) = self.PrintersWindow.get_size ()
@@ -667,7 +700,18 @@ class GUI(GtkGUI, monitor.Watcher):
             return
 
         self.PrinterPropertiesDialog.set_transient_for (self.PrintersWindow)
-        self.btnPrinterPropertiesOK.set_sensitive (not object.discovered)
+        for button in [self.btnPrinterPropertiesCancel,
+                       self.btnPrinterPropertiesOK,
+                       self.btnPrinterPropertiesApply]:
+            if object.discovered:
+                button.hide ()
+            else:
+                button.show ()
+        if object.discovered:
+            self.btnPrinterPropertiesClose.show ()
+        else:
+            self.btnPrinterPropertiesClose.hide ()
+        self.setDataButtonState ()
         treeview = self.tvPrinterProperties
         sel = treeview.get_selection ()
         sel.select_path ((0,))
@@ -679,8 +723,15 @@ class GUI(GtkGUI, monitor.Watcher):
         self.PrinterPropertiesDialog.show ()
 
     def printer_properties_response (self, dialog, response):
-        if (response != gtk.RESPONSE_OK or
-            not self.save_printer (self.printer)):
+        if (response == gtk.RESPONSE_OK or
+            response == gtk.RESPONSE_APPLY):
+            success = self.save_printer (self.printer)
+
+        if response == gtk.RESPONSE_APPLY:
+            self.setDataButtonState ()
+
+        if ((response == gtk.RESPONSE_OK and not success) or
+            response == gtk.RESPONSE_CANCEL):
             dialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
@@ -876,6 +927,8 @@ class GUI(GtkGUI, monitor.Watcher):
         for name, printer in self.printers.iteritems():
             self.servers.add(printer.getServer())
 
+        userdef = userdefault.UserDefaultPrinter ().get ()
+
         local_printers = []
         local_classes = []
         remote_printers = []
@@ -983,8 +1036,8 @@ class GUI(GtkGUI, monitor.Watcher):
                             type = 'network-printer'
 
                 (tip, icon) = PRINTER_TYPE[type]
+                (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
                 try:
-                    (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
                     pixbuf = theme.load_icon (icon, w, 0)
                 except gobject.GError:
                     # Not in theme.
@@ -997,9 +1050,24 @@ class GUI(GtkGUI, monitor.Watcher):
                         except gobject.GError:
                             pass
 
+                    if pixbuf == None:
+                        try:
+                            pixbuf = theme.load_icon ('printer', w, 0)
+                        except:
+                            # Just create an empty pixbuf.
+                            pixbuf = gtk.gdk.Pixbuf (gtk.gdk.COLORSPACE_RGB,
+                                                     True, 8, w, h)
+                            pixbuf.fill (0)
+
+                emblem = None
                 if name == self.default_printer:
+                    emblem = 'emblem-default'
+                elif name == userdef:
+                    emblem = 'emblem-favorite'
+
+                if emblem:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
-                    default_emblem = theme.load_icon ('emblem-default', w/2, 0)
+                    default_emblem = theme.load_icon (emblem, w/2, 0)
                     copy = pixbuf.copy ()
                     default_emblem.composite (copy, 0, 0,
                                               copy.get_width (),
@@ -1455,6 +1523,8 @@ class GUI(GtkGUI, monitor.Watcher):
                     iter = store.get_iter ((n,))
                     store.set_value (iter, 0, optionstext)
 
+        self.btnPrinterPropertiesApply.set_sensitive (len (self.changed) > 0)
+
     def on_btnConflict_clicked(self, button):
         message = _("There are conflicting options.\n"
                     "Changes can only be applied after\n"
@@ -1613,6 +1683,27 @@ class GUI(GtkGUI, monitor.Watcher):
         self.ntbkPrinter.set_current_page (n)
 
     # set default printer
+    def set_system_or_user_default_printer (self, name):
+        # First, decide if this is already the system default, in which
+        # case we only need to clear the user default.
+        userdef = userdefault.UserDefaultPrinter ()
+        if name == self.default_printer:
+            userdef.clear ()
+            self.populateList ()
+            return
+
+        userdefault.UserDefaultPrompt (self.set_default_printer,
+                                       self.populateList,
+                                       name,
+                                       _("Set Default Printer"),
+                                       self.PrintersWindow,
+                                       _("Do you want to set this as "
+                                         "the system-wide default printer?"),
+                                       _("Set as the _system-wide "
+                                         "default printer"),
+                                       _("_Clear my personal default setting"),
+                                       _("Set as my _personal default printer"))
+
     def set_default_printer (self, name):
         printer = self.printers[name]
         try:
@@ -1914,7 +2005,8 @@ class GUI(GtkGUI, monitor.Watcher):
         debugprint ("update printer properties")
         printer = self.printer
         self.lblPMakeModel.set_text(printer.make_and_model)
-        self.lblPState.set_text(printer.state_description)
+        self.lblPState.set_text(self.printer_states.get (printer.state,
+                                                         _("Unknown")))
         if len (self.changed) == 0:
             debugprint ("no changes yet: full printer properties update")
             # State
@@ -2345,11 +2437,8 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         iter = model.get_iter (paths[0])
-        printer = model.get_value (iter, 0)
-        if not printer:
-            return
-        printer.setAsDefault ()
-        self.populateList ()
+        name = model.get_value (iter, 2)
+        self.set_system_or_user_default_printer (name)
 
     def on_troubleshoot_activate(self, widget):
         if not self.__dict__.has_key ('troubleshooter'):
@@ -2453,9 +2542,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               _("You may need to adjust the firewall "
                                 "to allow network printing to this "
                                 "computer.") + '\n\n' +
-                              _("To do this, select "
-                                "System->Administration->Firewall "
-                                "from the main menu."),
+                              TEXT_start_firewall_tool,
                               parent=self.ServerSettingsDialog)
 
         time.sleep(1) # give the server a chance to process our request
@@ -2615,6 +2702,7 @@ class NewPrinterGUI(GtkGUI):
                               "entNPTDirectJetHostname",
                               "entNPTDirectJetPort",
                               "entSMBURI",
+                              "btnSMBBrowse",
                               "tblSMBAuth",
                               "rbtnSMBAuthPrompt",
                               "rbtnSMBAuthSet",
@@ -2674,7 +2762,7 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         # Set up OpenPrinting widgets.
-        self.openprinting = openprinting.OpenPrinting ()
+        self.openprinting = cupshelpers.openprinting.OpenPrinting ()
         self.openprinting_query_handle = None
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         cell = gtk.CellRendererText()
@@ -2682,40 +2770,23 @@ class NewPrinterGUI(GtkGUI):
         combobox.add_attribute(cell, 'text', 0)
 
         # SMB browser
-        if pysmb.USE_OLD_CODE:
-            self.smb_store = gtk.TreeStore (str, # host or share
-                                            str, # comment
-                                            gobject.TYPE_PYOBJECT, # domain dict
-                                            gobject.TYPE_PYOBJECT) # host dict
-        else:
-            self.smb_store = gtk.TreeStore (gobject.TYPE_PYOBJECT)
+        self.smb_store = gtk.TreeStore (gobject.TYPE_PYOBJECT)
+        self.btnSMBBrowse.set_sensitive (PYSMB_AVAILABLE)
 
         self.tvSMBBrowser.set_model (self.smb_store)
 
         # SMB list columns
-        if pysmb.USE_OLD_CODE:
-            self.smb_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
-            col = gtk.TreeViewColumn (_("Share"), gtk.CellRendererText (),
-                                      text=0)
-            col.set_resizable (True)
-            col.set_sort_column_id (0)
-            self.tvSMBBrowser.append_column (col)
+        col = gtk.TreeViewColumn (_("Share"))
+        cell = gtk.CellRendererText ()
+        col.pack_start (cell, False)
+        col.set_cell_data_func (cell, self.smbbrowser_cell_share)
+        self.tvSMBBrowser.append_column (col)
 
-            col = gtk.TreeViewColumn (_("Comment"), gtk.CellRendererText (),
-                                      text=1)
-            self.tvSMBBrowser.append_column (col)
-        else:
-            col = gtk.TreeViewColumn (_("Share"))
-            cell = gtk.CellRendererText ()
-            col.pack_start (cell, False)
-            col.set_cell_data_func (cell, self.smbbrowser_cell_share)
-            self.tvSMBBrowser.append_column (col)
-
-            col = gtk.TreeViewColumn (_("Comment"))
-            cell = gtk.CellRendererText ()
-            col.pack_start (cell, False)
-            col.set_cell_data_func (cell, self.smbbrowser_cell_comment)
-            self.tvSMBBrowser.append_column (col)
+        col = gtk.TreeViewColumn (_("Comment"))
+        cell = gtk.CellRendererText ()
+        col.pack_start (cell, False)
+        col.set_cell_data_func (cell, self.smbbrowser_cell_comment)
+        self.tvSMBBrowser.append_column (col)
 
         slct = self.tvSMBBrowser.get_selection ()
         slct.set_select_function (self.smb_select_function)
@@ -2791,6 +2862,17 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPDownloadableDriverSearch_label = label
         label.set_text (_("Search"))
 
+        if self.dialog_mode in ("printer", "class"):
+            self.entNPName.set_text (self.mainapp.makeNameUnique(self.dialog_mode))
+            self.entNPName.grab_focus()
+            for widget in [self.entNPLocation,
+                           self.entNPDescription,
+                           self.entSMBURI, self.entSMBUsername,
+                           self.entSMBPassword]:
+                widget.set_text('')
+
+        self.entNPTDirectJetPort.set_text('9100')
+
         if self.dialog_mode == "printer":
             self.NewPrinterWindow.set_title(_("New Printer"))
             # Start on devices page (1, not 0)
@@ -2852,7 +2934,8 @@ class NewPrinterGUI(GtkGUI):
                     makeandmodel = ''
 
                 (self.auto_make,
-                 self.auto_model) = ppds.ppdMakeModelSplit (makeandmodel)
+                 self.auto_model) = \
+                 cupshelpers.ppds.ppdMakeModelSplit (makeandmodel)
             else:
                 # Special CUPS names for a raw queue.
                 self.auto_make = 'Raw'
@@ -2868,16 +2951,6 @@ class NewPrinterGUI(GtkGUI):
 
             self.fillMakeList()
 
-        if self.dialog_mode in ("printer", "class"):
-            self.entNPName.set_text (self.mainapp.makeNameUnique(self.dialog_mode))
-            self.entNPName.grab_focus()
-            for widget in [self.entNPLocation,
-                           self.entNPDescription,
-                           self.entSMBURI, self.entSMBUsername,
-                           self.entSMBPassword]:
-                widget.set_text('')
-
-        self.entNPTDirectJetPort.set_text('9100')
         self.setNPButtons()
         self.NewPrinterWindow.show()
 
@@ -2903,7 +2976,8 @@ class NewPrinterGUI(GtkGUI):
             c = cups.Connection ()
             debugprint ("Fetching PPDs")
             ppds_dict = c.getPPDs()
-            self.ppds_result = ppds.PPDs(ppds_dict, language=language)
+            self.ppds_result = cupshelpers.ppds.PPDs(ppds_dict,
+                                                     language=language)
             debugprint ("Closing connection (PPDs)")
             del c
         except cups.IPPError, (e, msg):
@@ -3108,7 +3182,8 @@ class NewPrinterGUI(GtkGUI):
                     if ppdname:
                         ppddict = self.ppds.getInfoFromPPDName (ppdname)
                         make_model = ppddict['ppd-make-and-model']
-                        (make, model) = ppds.ppdMakeModelSplit (make_model)
+                        (make, model) = \
+                            cupshelpers.ppds.ppdMakeModelSplit (make_model)
                         self.auto_make = make
                         self.auto_model = model
                 except:
@@ -3401,17 +3476,27 @@ class NewPrinterGUI(GtkGUI):
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
-        cmd = 'hp-info -d "${URI}" | grep fax-type 2>/dev/null'
+        cmd = 'LC_ALL=C DISPLAY= hp-info -d "${URI}"'
         debugprint (faxuri + ": " + cmd)
-        p = os.popen(cmd, 'r')
-        for output in p:
-            faxtype = -1;
-            res = re.search ("(\d+)", output)
+        try:
+            p = subprocess.Popen (cmd, shell=True,
+                                  stdin=file("/dev/null"),
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE)
+            (stdout, stderr) = p.communicate ()
+        except:
+            # Problem executing command.
+            return None
+
+        for line in stdout.split ("\n"):
+            if line.find ("fax-type") == -1:
+                continue
+            faxtype = -1
+            res = re.search ("(\d+)", line)
             if res:
                 resg = res.groups()
                 faxtype = resg[0]
             if faxtype >= 0: break
-        p.close()
         if faxtype < 0:
             return None
         elif faxtype == 4:
@@ -3420,16 +3505,24 @@ class NewPrinterGUI(GtkGUI):
             return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax;DES:HP Fax;')
 
     def get_hplip_uri_for_network_printer(self, host, mode):
+        os.environ["HOST"] = host
         if mode == "print": mod = "-c"
         elif mode == "fax": mod = "-f"
         else: mod = "-c"
-        uri = None
-        os.environ["HOST"] = host
-        cmd = 'hp-makeuri ' + mod + ' "${HOST}" 2> /dev/null'
+        cmd = 'hp-makeuri ' + mod + ' "${HOST}"'
         debugprint (host + ": " + cmd)
-        p = os.popen(cmd, 'r')
-        uri = p.read ().strip ()
-        p.close ()
+        uri = None
+        try:
+            p = subprocess.Popen (cmd, shell=True,
+                                  stdin=file("/dev/null"),
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE)
+            (stdout, stderr) = p.communicate ()
+        except:
+            # Problem executing command.
+            return None
+
+        uri = stdout.strip ()
         return uri
 
     def getNetworkPrinterMakeModel(self, device):
@@ -3446,14 +3539,23 @@ class NewPrinterGUI(GtkGUI):
         # Try to get make and model via SNMP
         if host:
             os.environ["HOST"] = host
-            cmd = '/usr/lib/cups/backend/snmp "${HOST}" 2>/dev/null'
+            cmd = '/usr/lib/cups/backend/snmp "${HOST}"'
             debugprint (host + ": " + cmd)
-            p = os.popen(cmd, 'r')
-            output = p.read ().strip ()
-            p.close()
-            mm = re.sub("^\s*\S+\s+\S+\s+\"", "", output)
-            mm = re.sub("\"\s+.*$", "", mm)
-            if mm and mm != "": device.make_and_model = mm
+            stdout = None
+            try:
+                p = subprocess.Popen (cmd, shell=True,
+                                      stdin=file("/dev/null"),
+                                      stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE)
+                (stdout, stderr) = p.communicate ()
+            except:
+                # Problem executing command.
+                pass
+
+            if stdout != None:
+                mm = re.sub("^\s*\S+\s+\S+\s+\"", "", stdout)
+                mm = re.sub("\"\s+.*$", "", mm)
+                if mm and mm != "": device.make_and_model = mm
         # Extract make and model and create a pseudo device ID, so
         # that a PPD/driver can be assigned to the device
         make_and_model = None
@@ -3465,7 +3567,7 @@ class NewPrinterGUI(GtkGUI):
         if make_and_model and not device.id:
             mk = None
             md = None
-            (mk, md) = ppds.ppdMakeModelSplit (make_and_model)
+            (mk, md) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
         # Check whether the device is supported by HPLIP and replace
@@ -3648,56 +3750,52 @@ class NewPrinterGUI(GtkGUI):
         store = self.smb_store
         store.clear ()
         self.busy(self.SMBBrowseDialog)
-        if pysmb.USE_OLD_CODE:
-            store.append(None, (_('Scanning...'), '', None, None))
-            while gtk.events_pending ():
-                gtk.main_iteration ()
-            domains = pysmb.get_domain_list ()
-            store.clear ()
-            for domain in domains.keys ():
-                d = domains[domain]
-                iter = store.append (None)
-                if iter:
-                    dummy = store.append (iter)
-                store.set_value (iter, 0, d['DOMAIN'])
-                store.set_value (iter, 2, d)
-        else:
-            class X:
-                pass
-            dummy = X()
-            dummy.smbc_type = pysmb.smbc.PRINTER_SHARE
-            dummy.name = _('Scanning...')
-            dummy.comment = ''
-            store.append(None, [dummy])
-            while gtk.events_pending ():
-                gtk.main_iteration ()
+        class X:
+            pass
+        dummy = X()
+        dummy.smbc_type = pysmb.smbc.PRINTER_SHARE
+        dummy.name = _('Scanning...')
+        dummy.comment = ''
+        store.append(None, [dummy])
+        while gtk.events_pending ():
+            gtk.main_iteration ()
 
-            debug = 0
-            if get_debugging ():
-                debug = 1
-            smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-            ctx = pysmb.smbc.Context (debug=debug,
-                                      auth_fn=smbc_auth.callback)
-            workgroups = None
-            try:
-                while smbc_auth.perform_authentication () > 0:
-                    try:
-                        workgroups = ctx.opendir ("smb://").getdents ()
-                    except Exception, e:
-                        smbc_auth.failed (e)
-            except RuntimeError, (e, s):
-                if e != errno.ENOENT:
-                    debugprint ("Runtime error: %s" % repr ((e, s)))
-            except:
-                nonfatalException ()
+        debug = 0
+        if get_debugging ():
+            debug = 10
+        smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+        ctx = pysmb.smbc.Context (debug=debug,
+                                  auth_fn=smbc_auth.callback)
+        workgroups = None
+        try:
+            while smbc_auth.perform_authentication () > 0:
+                try:
+                    workgroups = ctx.opendir ("smb://").getdents ()
+                except Exception, e:
+                    smbc_auth.failed (e)
+        except RuntimeError, (e, s):
+            if e != errno.ENOENT:
+                debugprint ("Runtime error: %s" % repr ((e, s)))
+        except:
+            nonfatalException ()
 
-            store.clear ()
-            if workgroups:
-                for workgroup in workgroups:
-                    iter = store.append (None, [workgroup])
-                    i = store.append (iter)
+        store.clear ()
+        if workgroups:
+            for workgroup in workgroups:
+                iter = store.append (None, [workgroup])
+                i = store.append (iter)
 
         self.ready(self.SMBBrowseDialog)
+
+        if store.get_iter_first () == None:
+            self.SMBBrowseDialog.hide ()
+            show_info_dialog (_("No Print Shares"),
+                              _("There were no print shares found.  "
+                                "Please check that the Samba service is "
+                                "marked as trusted in your firewall "
+                                "configuration.") + '\n\n' +
+                              TEXT_start_firewall_tool,
+                              parent=self.NewPrinterWindow)
 
     def smb_select_function (self, path):
         """Don't allow this path to be selected unless it is a leaf."""
@@ -3734,145 +3832,89 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvSMBBrowser_row_expanded (self, view, iter, path):
         """Handler for expanding a row in the SMB tree view."""
-        if pysmb.USE_OLD_CODE:
-            store = self.smb_store
-            if len (path) == 2:
-                # Click on host, look for shares
-                try:
-                    if self.expanding_row:
-                        return
-                except:
-                    self.expanding_row = 1
+        model = view.get_model ()
+        entry = model.get_value (iter, 0)
+        if entry == None:
+            return
 
-                host = store.get_value (iter, 3)
-                if host:
-                    self.busy (self.NewPrinterWindow)
-                    printers = pysmb.get_printer_list (host)
-                    while store.iter_has_child (iter):
-                        i = store.iter_nth_child (iter, 0)
-                        store.remove (i)
-                    for printer in printers.keys():
-                        i = store.append (iter)
-                        store.set_value (i, 0, printer)
-                        store.set_value (i, 1, printers[printer])
-                    self.ready (self.NewPrinterWindow)
+        if len (path) == 1:
+            # Workgroup
+            try:
+                if self.expanding_row:
+                    return
+            except:
+                self.expanding_row = 1
 
-                view.expand_row (path, 1)
-                del self.expanding_row
-            else:
-                # Click on domain, look for hosts
-                try:
-                    if self.expanding_row:
-                        return
-                except:
-                    self.expanding_row = 1
+            uri = "smb://%s" % entry.name
+            debug = 0
+            if get_debugging ():
+                debug = 10
+            smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+            ctx = pysmb.smbc.Context (debug=debug,
+                                      auth_fn=smbc_auth.callback)
+            servers = []
+            try:
+                while smbc_auth.perform_authentication () > 0:
+                    try:
+                        servers = ctx.opendir (uri).getdents ()
+                    except Exception, e:
+                        smbc_auth.failed (e)
+            except RuntimeError, (e, s):
+                if e != errno.ENOENT:
+                    debugprint ("Runtime error: %s" % repr ((e, s)))
+            except:
+                nonfatalException()
 
-                domain = store.get_value (iter, 2)
-                if domain:
-                    self.busy (self.NewPrinterWindow)
-                    hosts = pysmb.get_host_list_from_domain (domain['DOMAIN'])
-                    if len(hosts) <= 0:
-                        hosts = pysmb.get_host_list (domain['IP'])
-                    while store.iter_has_child (iter):
-                        i = store.iter_nth_child (iter, 0)
-                        store.remove (i)
-                    i = None
-                    for host in hosts.keys():
-                        h = hosts[host]
-                        i = store.append (iter)
-                        if i:
-                            dummy = store.append (i)
-                        store.set_value (i, 0, h['NAME'])
-                        store.set_value (i, 3, h)
-                    self.ready (self.NewPrinterWindow)
-                view.expand_row (path, 0)
-                del self.expanding_row
-        else:
-            model = view.get_model ()
-            entry = model.get_value (iter, 0)
-            if entry == None:
-                return
+            while model.iter_has_child (iter):
+                i = model.iter_nth_child (iter, 0)
+                model.remove (i)
 
-            if len (path) == 1:
-                # Workgroup
-                try:
-                    if self.expanding_row:
-                        return
-                except:
-                    self.expanding_row = 1
+            for server in servers:
+                i = model.append (iter, [server])
+                n = model.append (i)
 
-                uri = "smb://%s" % entry.name
-                debug = 0
-                if get_debugging ():
-                    debug = 1
-                smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-                ctx = pysmb.smbc.Context (debug=debug,
-                                          auth_fn=smbc_auth.callback)
-                servers = None
-                try:
-                    while smbc_auth.perform_authentication () > 0:
-                        try:
-                            servers = ctx.opendir (uri).getdents ()
-                        except Exception, e:
-                            smbc_auth.failed (e)
-                except RuntimeError, (e, s):
-                    if e != errno.ENOENT:
-                        debugprint ("Runtime error: %s" % repr ((e, s)))
-                except:
-                    nonfatalException()
+            view.expand_row (path, 0)
+            del self.expanding_row
 
-                if servers:
-                    while model.iter_has_child (iter):
-                        i = model.iter_nth_child (iter, 0)
-                        model.remove (i)
+        elif len (path) == 2:
+            # Server
+            try:
+                if self.expanding_row:
+                    return
+            except:
+                self.expanding_row = 1
 
-                    for server in servers:
-                        i = model.append (iter, [server])
-                        n = model.append (i)
+            uri = "smb://%s" % entry.name
+            debug = 0
+            if get_debugging ():
+                debug = 10
+            smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
+            ctx = pysmb.smbc.Context (debug=debug,
+                                      auth_fn=smbc_auth.callback)
+            shares = []
+            try:
+                while smbc_auth.perform_authentication () > 0:
+                    try:
+                        shares = ctx.opendir (uri).getdents ()
+                    except Exception, e:
+                        smbc_auth.failed (e)
+            except RuntimeError, (e, s):
+                if e != errno.EACCES and e != errno.EPERM:
+                    debugprint ("Runtime error: %s" % repr ((e, s)))
+            except:
+                nonfatalException()
 
-                view.expand_row (path, 0)
-                del self.expanding_row
+            while model.iter_has_child (iter):
+                i = model.iter_nth_child (iter, 0)
+                model.remove (i)
 
-            elif len (path) == 2:
-                # Server
-                try:
-                    if self.expanding_row:
-                        return
-                except:
-                    self.expanding_row = 1
+            for share in shares:
+                if share.smbc_type == pysmb.smbc.PRINTER_SHARE:
+                    i = model.append (iter, [share])
+                    debugprint (repr (share))
 
-                uri = "smb://%s" % entry.name
-                debug = 0
-                if get_debugging ():
-                    debug = 1
-                smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
-                ctx = pysmb.smbc.Context (debug=debug,
-                                          auth_fn=smbc_auth.callback)
-                shares = None
-                try:
-                    while smbc_auth.perform_authentication () > 0:
-                        try:
-                            shares = ctx.opendir (uri).getdents ()
-                        except Exception, e:
-                            smbc_auth.failed (e)
-                except RuntimeError, (e, s):
-                    if e != errno.EACCES and e != errno.EPERM:
-                        debugprint ("Runtime error: %s" % repr ((e, s)))
-                except:
-                    nonfatalException()
-
-                if shares:
-                    while model.iter_has_child (iter):
-                        i = model.iter_nth_child (iter, 0)
-                        model.remove (i)
-
-                    for share in shares:
-                        if share.smbc_type == pysmb.smbc.PRINTER_SHARE:
-                            i = model.append (iter, [share])
-                            debugprint (repr (share))
-
-                view.expand_row (path, 0)
-                del self.expanding_row
+            view.expand_row (path, 0)
+            del self.expanding_row
 
     def on_entSMBURI_changed (self, ent):
         uri = ent.get_text ()
@@ -3911,12 +3953,9 @@ class NewPrinterGUI(GtkGUI):
         group = store.get_value (domain_iter, 0)
         host = store.get_value (parent_iter, 0)
         share = store.get_value (iter, 0)
-        if pysmb.USE_OLD_CODE:
-            uri = SMBURI (group=group, host=host, share=share).get_uri ()
-        else:
-            uri = SMBURI (group=group.name,
-                          host=host.name,
-                          share=share.name).get_uri ()
+        uri = SMBURI (group=group.name,
+                      host=host.name,
+                      share=share.name).get_uri ()
 
         self.entSMBUsername.set_text ('')
         self.entSMBPassword.set_text ('')
@@ -3944,49 +3983,42 @@ class NewPrinterGUI(GtkGUI):
             user = self.entSMBUsername.get_text ()
             passwd = self.entSMBPassword.get_text ()
 
-        if pysmb.USE_OLD_CODE:
-            accessible = pysmb.printer_share_accessible ("//%s/%s" %
-                                                         (host, share),
-                                                         group = group,
-                                                         user = user,
-                                                         passwd = passwd)
-        else:
-            accessible = False
-            self.busy ()
-            try:
-                debug = 0
-                if get_debugging ():
-                    debug = 1
+        accessible = False
+        self.busy ()
+        try:
+            debug = 0
+            if get_debugging ():
+                debug = 10
 
-                if auth_set:
-                    # No prompting.
-                    def do_auth (svr, shr, wg, un, pw):
-                        return (group, user, passwd)
-                    ctx = pysmb.smbc.Context (debug=debug, auth_fn=do_auth)
-                    f = ctx.open ("smb://%s/%s" % (host, share),
-                                  os.O_RDWR, 0777)
-                    accessible = True
-                else:
-                    # May need to prompt.
-                    smbc_auth = pysmb.AuthContext (self.NewPrinterWindow,
-                                                        workgroup=group,
-                                                        user=user,
-                                                        passwd=passwd)
-                    ctx = pysmb.smbc.Context (debug=debug,
-                                              auth_fn=smbc_auth.callback)
-                    while smbc_auth.perform_authentication () > 0:
-                        try:
-                            f = ctx.open ("smb://%s/%s" % (host, share),
-                                          os.O_RDWR, 0777)
-                            accessible = True
-                        except Exception, e:
-                            smbc_auth.failed (e)
-            except RuntimeError, (e, s):
-                debugprint ("Error accessing share: %s" % repr ((e, s)))
-                reason = s
-            except:
-                nonfatalException()
-            self.ready ()
+            if auth_set:
+                # No prompting.
+                def do_auth (svr, shr, wg, un, pw):
+                    return (group, user, passwd)
+                ctx = pysmb.smbc.Context (debug=debug, auth_fn=do_auth)
+                f = ctx.open ("smb://%s/%s" % (host, share),
+                              os.O_RDWR, 0777)
+                accessible = True
+            else:
+                # May need to prompt.
+                smbc_auth = pysmb.AuthContext (self.NewPrinterWindow,
+                                               workgroup=group,
+                                               user=user,
+                                               passwd=passwd)
+                ctx = pysmb.smbc.Context (debug=debug,
+                                          auth_fn=smbc_auth.callback)
+                while smbc_auth.perform_authentication () > 0:
+                    try:
+                        f = ctx.open ("smb://%s/%s" % (host, share),
+                                      os.O_RDWR, 0777)
+                        accessible = True
+                    except Exception, e:
+                        smbc_auth.failed (e)
+        except RuntimeError, (e, s):
+            debugprint ("Error accessing share: %s" % repr ((e, s)))
+            reason = s
+        except:
+            nonfatalException()
+        self.ready ()
 
         if accessible:
             show_info_dialog (_("Print Share Verified"),
@@ -4109,13 +4141,15 @@ class NewPrinterGUI(GtkGUI):
                 if failed:
                     title = _("Not possible")
                     text = (_("It is not possible to obtain a list of queues "
-                              "from this host."))
+                              "from `%s'.") % host + '\n\n' +
+                            _("Obtaining a list of queues is a CUPS extension "
+                              "to IPP.  Network printers do not support it."))
                 else:
                     title = _("No queues")
                     text = _("There are no queues available.")
 
-                show_error_dialog (title, text, self.IPPBrowseDialog)
                 self.IPPBrowseDialog.hide ()
+                show_error_dialog (title, text, self.NewPrinterWindow)
 
             try:
                 self.ready(self.IPPBrowseDialog)
@@ -4283,9 +4317,11 @@ class NewPrinterGUI(GtkGUI):
 
         try:
             if len (location) == 0 and self.device.device_class == "direct":
-                p = os.popen ('/bin/hostname', 'r')
-                location = p.read ().strip ()
-                p.close ()
+                # Set location to the name of this host.
+                u = os.uname ()
+                location = u[1]
+
+            # Pre-fill location field.
             self.entNPLocation.set_text (location)
         except:
             nonfatalException ()
@@ -4477,7 +4513,8 @@ class NewPrinterGUI(GtkGUI):
         self.drivers_lock.acquire(0)
         self.openprinting_query_handle = \
             self.openprinting.listDrivers (id,
-                                           self.openprinting_drivers_found)
+                                           self.openprinting_drivers_found,
+                                           extra_options={'onlyppdfiles':'1'})
 
     def openprinting_drivers_found (self, status, user_data, drivers):
         if status != 0:
@@ -4719,13 +4756,19 @@ class NewPrinterGUI(GtkGUI):
                 filename = self.filechooserPPD.get_filename()
                 err = _('Failed to read PPD file.  Possible reason '
                         'follows:') + '\n'
-                os.environ["PPD"] = filename
-                # We want this to be in the current natural language,
-                # so we intentionally don't set LC_ALL=C here.
-                p = os.popen ('/usr/bin/cupstestppd -rvv "$PPD"', 'r')
-                output = p.readlines ()
-                p.close ()
-                err += reduce (lambda x, y: x + y, output)
+                try:
+                    # We want this to be in the current natural language,
+                    # so we intentionally don't set LC_ALL=C here.
+                    p = subprocess.Popen (['/usr/bin/cupstestppd',
+                                           '-rvv', filename],
+                                          stdin=file("/dev/null"),
+                                          stdout=subprocess.PIPE,
+                                          stderr=subprocess.PIPE)
+                    (stdout, stderr) = p.communicate ()
+                    err += stdout
+                except:
+                    # Problem executing command.
+                    raise
             else:
                 # Failed to get PPD downloaded from OpenPrinting XXX
                 err_title = _('Downloadable drivers')
