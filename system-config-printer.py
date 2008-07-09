@@ -4219,8 +4219,12 @@ class NewPrinterGUI(GtkGUI):
 
         try:
             if len (location) == 0 and self.device.device_class == "direct":
+                # Set location to the name of this host.
                 u = os.uname ()
-                self.entNPLocation.set_text (u[1])
+                location = u[1]
+
+            # Pre-fill location field.
+            self.entNPLocation.set_text (location)
         except:
             nonfatalException ()
 
