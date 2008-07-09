@@ -328,7 +328,7 @@ class OpenPrinting:
             params.update(extra_options)
         return self.webQuery(params, parse_result, (callback, user_data))
 
-if __name__ == "__main__":
+def _simple_gui ():
     import gtk, pprint
     gtk.gdk.threads_init ()
     class QueryApp:
