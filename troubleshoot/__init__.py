@@ -40,7 +40,6 @@ if __name__ == "__main__":
 
 import base
 from base import *
-from base import _
 
 class Troubleshooter:
     def __init__ (self, quitfn=None, parent=None):

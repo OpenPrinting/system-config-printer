@@ -21,7 +21,6 @@
 
 import cups
 from base import *
-from base import _
 class CheckLocalServerPublishing(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Is local server publishing?")

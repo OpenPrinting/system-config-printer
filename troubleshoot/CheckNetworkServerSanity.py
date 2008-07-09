@@ -23,7 +23,6 @@ import cups
 import socket
 import subprocess
 from base import *
-from base import _
 class CheckNetworkServerSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check network server sanity")

@@ -24,7 +24,6 @@ import cupshelpers
 import os
 import subprocess
 from base import *
-from base import _
 
 install_cmd = "/usr/bin/system-install-packages"
 

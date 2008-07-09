@@ -22,7 +22,6 @@
 import cups
 import gobject
 from base import *
-from base import _
 class ChooseNetworkPrinter(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Choose network printer")

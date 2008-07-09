@@ -20,7 +20,6 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from base import *
-from base import _
 class RemoteAddress(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Remote address")
