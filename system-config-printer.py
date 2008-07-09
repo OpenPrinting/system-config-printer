@@ -3021,6 +3021,31 @@ class NewPrinterGUI(GtkGUI):
                     except:
                         pass
 
+                    # We also want to fetch the printer-info and
+                    # printer-location attributes, to pre-fill those
+                    # fields for this new queue.
+                    oldserver = cups.getServer()
+                    oldport = cups.getPort()
+                    try:
+                        cups.setServer (resg[0])
+                        if len (resg[1]) > 0:
+                            cups.setPort (int (resg[1]))
+                        else:
+                            cups.setPort (631)
+
+                        c = cups.Connection ()
+                        r = ['printer-info', 'printer-location']
+                        attrs = c.getPrinterAttributes (uri=uri,
+                                                        requested_attributes=r)
+                        info = attrs.get ('printer-info', '')
+                        location = attrs.get ('printer-location', '')
+                        if len (info) > 0:
+                            self.entNPDescription.set_text (info)
+                        if len (location) > 0:
+                            self.entNPLocation.set_text (location)
+                    except:
+                        nonfatalException ()
+
                 ppdname = None
                 try:
                     if self.remotecupsqueue:
