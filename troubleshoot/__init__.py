@@ -285,6 +285,7 @@ QUESTIONS = ["Welcome",
              "ChoosePrinter",
              "CheckPrinterSanity",
              "CheckPPDSanity",
+             "Locale",
 
              "LocalOrRemote",
              "DeviceListed",
