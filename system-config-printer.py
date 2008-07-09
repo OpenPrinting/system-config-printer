@@ -4374,9 +4374,15 @@ class NewPrinterGUI(GtkGUI):
                 model.set_value (iter, 0, first)
                 model.set_value (iter, 1, None)
 
+            select_index = 0
+            index = 1
             sorted_list = []
+            sought = self.entNPDownloadableDriverSearch.get_text ().lower ()
             for id, name in printers.iteritems ():
                 sorted_list.append ((id, name))
+                if name.lower () == sought:
+                    select_index = index
+                index += 1
 
             sorted_list.sort (lambda x, y: cups.modelSort (x[1], y[1]))
             for id, name in sorted_list:
@@ -4385,7 +4391,7 @@ class NewPrinterGUI(GtkGUI):
                 model.set_value (iter, 1, id)
             combobox = self.cmbNPDownloadableDriverFoundPrinters
             combobox.set_model (model)
-            combobox.set_active (0)
+            combobox.set_active (select_index)
             combobox.set_sensitive (True)
             self.setNPButtons ()
         except:
