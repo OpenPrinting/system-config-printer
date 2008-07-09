@@ -1,5 +1,12 @@
 2008-07-09  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (NewPrinterGUI.init): Clear text entry
+	fields before filling devices list, so that when
+	self.on_tvNPDevices_cursor_changed() pre-fills the location field
+	it doesn't get reset afterwards.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py
 	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Fixed location
 	pre-fill.
