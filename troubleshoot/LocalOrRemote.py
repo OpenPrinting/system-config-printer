@@ -20,7 +20,6 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from base import *
-from base import _
 class LocalOrRemote(Multichoice):
     def __init__ (self, troubleshooter):
         Multichoice.__init__ (self, troubleshooter, "printer_is_remote",

@@ -28,7 +28,6 @@ import pango
 import tempfile
 
 from base import *
-from base import _
 
 import errordialogs
 errordialogs.set_gettext_function (_)

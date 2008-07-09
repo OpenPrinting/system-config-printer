@@ -25,7 +25,6 @@ import smburi
 import subprocess
 import urllib
 from base import *
-from base import _
 class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check printer sanity")

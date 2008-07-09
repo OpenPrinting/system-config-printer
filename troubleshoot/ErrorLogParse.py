@@ -20,7 +20,6 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from base import *
-from base import _
 class ErrorLogParse(Question):
 
     ## This could be a LOT smarter.

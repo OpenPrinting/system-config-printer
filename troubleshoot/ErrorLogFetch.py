@@ -23,7 +23,6 @@ import cups
 import os
 import tempfile
 from base import *
-from base import _
 class ErrorLogFetch(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Error log fetch")

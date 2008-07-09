@@ -22,7 +22,6 @@
 import cups
 import gobject
 from base import *
-from base import _
 class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
         # First question: which printer? (page 1)
