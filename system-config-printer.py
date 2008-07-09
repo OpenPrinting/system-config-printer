@@ -4366,7 +4366,7 @@ class NewPrinterGUI(GtkGUI):
             model = gtk.ListStore (str, str)
             if len (printers) != 1:
                 if len (printers) > 1:
-                    first = _("-- Select printer model --")
+                    first = _("-- Select from search results --")
                 else:
                     first = _("-- No matches found --")
 
