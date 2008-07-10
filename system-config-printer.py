@@ -3763,7 +3763,7 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     self.expanding_row = 1
 
-                uri = "smb://%s" % entry.name
+                uri = "smb://%s/" % entry.name
                 debug = 0
                 if get_debugging ():
                     debug = 10
@@ -3802,7 +3802,7 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     self.expanding_row = 1
 
-                uri = "smb://%s" % entry.name
+                uri = "smb://%s/" % entry.name
                 debug = 0
                 if get_debugging ():
                     debug = 10
