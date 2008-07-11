@@ -1,5 +1,13 @@
 2008-07-11  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.__init__): Connect the response
+	signal from the server settings dialog to a handler for it.
+	(GUI.on_server_settings_activate): Don't call run() here, just
+	display the dialog.  The response signal will call...
+	(GUI.server_settings_response): ...this new handler.
+
+2008-07-11  Tim Waugh  <twaugh@redhat.com>
+
 	* errordialogs.py (show_HTTP_Error): Fixed traceback.
 
 2008-07-10  Tim Waugh  <twaugh@redhat.com>

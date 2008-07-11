@@ -378,6 +378,9 @@ class GUI(GtkGUI, monitor.Watcher):
             treeview.append_column(column)
             treeview.get_selection().set_mode(selection_mode)
 
+        # Server Settings dialog
+        self.ServerSettingsDialog.connect ('response',
+                                           self.server_settings_response)
 
         self.conflict_dialog = gtk.MessageDialog(
             parent=None, flags=0, type=gtk.MESSAGE_WARNING,
@@ -697,23 +700,21 @@ class GUI(GtkGUI, monitor.Watcher):
         return False
 
     def on_server_settings_activate (self, menuitem):
-        finished = False
-        while not finished:
-            try:
-                self.fillServerTab ()
-            except cups.IPPError:
-                # Not authorized.
-                return
+        try:
+            self.fillServerTab ()
+        except cups.IPPError:
+            # Not authorized.
+            return
 
-            self.ServerSettingsDialog.set_transient_for (self.MainWindow)
-            response = self.ServerSettingsDialog.run ()
-            if response == gtk.RESPONSE_OK:
-                if not self.save_serversettings ():
-                    finished = True
-            else:
-                finished = True
+        self.ServerSettingsDialog.set_transient_for (self.MainWindow)
+        self.ServerSettingsDialog.show ()
 
-        self.ServerSettingsDialog.hide ()
+    def server_settings_response (self, dialog, response):
+        if response == gtk.RESPONSE_OK:
+            if not self.save_serversettings ():
+                dialog.hide ()
+        else:
+            dialog.hide ()
 
     def busy (self, win = None):
         try:
