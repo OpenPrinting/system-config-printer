@@ -93,7 +93,7 @@ def show_HTTP_Error(status, parent=None):
         elif status == -1:
             msg = _("Not connected")
         else:
-            msg = _("status %d") % status
+            msg = _("status %s") % status
 
         text = _("There was an HTTP error: %s.") % msg
 
