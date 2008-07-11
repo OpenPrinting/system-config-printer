@@ -72,6 +72,7 @@ from smburi import SMBURI
 import errordialogs
 from errordialogs import *
 import userdefault
+from AdvancedServerSettings import AdvancedServerSettingsDialog
 
 domain='system-config-printer'
 import locale
@@ -711,8 +712,12 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def server_settings_response (self, dialog, response):
         if response == gtk.RESPONSE_OK:
+            # OK
             if not self.save_serversettings ():
                 dialog.hide ()
+        elif response == gtk.RESPONSE_YES:
+            # Advanced
+            AdvancedServerSettingsDialog (self.cups, dialog)
         else:
             dialog.hide ()
 
