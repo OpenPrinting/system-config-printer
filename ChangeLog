@@ -1,3 +1,19 @@
+2008-07-12  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* Makefile.am (nobase_pkgdata_DATA): Remove contextmenu.py and
+	glade/printer_context_menu.glade.
+	* glade/printer_context_menu.glade: Removed.
+	* glade/PrintersWindow.glade: Remove the Printer menu
+	definition. It's handled in system-config-printer.py now. Glade
+	added some GtkImage id noise.
+	* system-config-printer.py
+	(GUI.dests_iconview_button_press_event): Popup the context menu on
+	button-press-event instead of on button-release-event like other
+	menus.
+	* system-config-printer.py (GUI): The Printer menubar item and the
+	iconview's menu is now the same and a proxy to a set of
+	gtk.Actions grouped on a gtk.UIManager instance.
+
 2008-07-07  Tim Waugh  <twaugh@redhat.com>
 
 	* jobviewer.py (JobViewer.unset_special_statusicon): Set status
