@@ -55,7 +55,7 @@ class _QueryThread (threading.Thread):
                   (urllib.urlencode (self.parameters),
                    self.parent.language[0],
                    self.parent.language[0]))
-        print "http://%s%s?%s" % (self.parent.base_url, query_command, params)
+        self.url = "http://%s%s?%s" % (self.parent.base_url, query_command, params)
         # Send request
         result = None
         status = 1
