@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: printconf 0\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-07-10 16:32+0100\n"
+"POT-Creation-Date: 2008-07-14 17:31+0100\n"
 "PO-Revision-Date: 2007-06-17 20:53+0100\n"
 "Last-Translator: Renato Pavicic <renato<-at->translator-shop.org>\n"
 "Language-Team: Croatian <http://www.translator-shop.org>\n"
@@ -10,6 +10,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: TransDict server\n"
+
+#: ../AdvancedServerSettings.py:40
+#, fuzzy
+msgid "Advanced Server Settings"
+msgstr "<b>Osnovne postavke poslužitelja</b>"
+
+#: ../AdvancedServerSettings.py:57
+#, fuzzy
+msgid "Job History"
+msgstr "Prioritet zadatka:"
+
+#: ../AdvancedServerSettings.py:68
+msgid "Do not preserve job history"
+msgstr ""
+
+#: ../AdvancedServerSettings.py:70
+msgid "Preserve job history but not files"
+msgstr ""
+
+#: ../AdvancedServerSettings.py:73
+msgid "Preserve job files (allow reprinting)"
+msgstr ""
+
+#: ../AdvancedServerSettings.py:81
+#, fuzzy
+msgid "Browse Servers"
+msgstr "Kreni na poslužitelj"
+
+#: ../AdvancedServerSettings.py:92
+msgid ""
+"Usually print servers broadcast their queues.  Specify print servers below "
+"to periodically ask for queues instead."
+msgstr ""
+
+#: ../AdvancedServerSettings.py:213
+#, fuzzy
+msgid "Enter IP address"
+msgstr "Pisač je dodan"
 
 #: ../authconn.py:30 ../system-config-printer.glade.h:246
 msgid "Username:"
@@ -74,13 +112,13 @@ msgstr "Potrebna je nadogradnja"
 msgid "Server error"
 msgstr "Pogreška poslužitelja"
 
-#: ../errordialogs.py:94 ../system-config-printer.py:751
+#: ../errordialogs.py:94 ../system-config-printer.py:757
 msgid "Not connected"
 msgstr "Nije povezan"
 
 #: ../errordialogs.py:96
-#, python-format
-msgid "status %d"
+#, fuzzy, python-format
+msgid "status %s"
 msgstr "stanje %d"
 
 #: ../errordialogs.py:98
@@ -102,8 +140,8 @@ msgid "Document"
 msgstr "Dokument"
 
 #: ../jobviewer.py:179 ../jobviewer.py:243 ../my-default-printer.py:157
-#: ../system-config-printer.py:284 ../system-config-printer.py:844
-#: ../system-config-printer.py:2941 ../troubleshoot/PrintTestPage.py:79
+#: ../system-config-printer.py:285 ../system-config-printer.py:850
+#: ../system-config-printer.py:2947 ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "Pisač"
 
@@ -143,7 +181,7 @@ msgstr "Poruka"
 
 #: ../jobviewer.py:388 ../jobviewer.py:454 ../jobviewer.py:455
 #: ../jobviewer.py:468 ../jobviewer.py:491 ../jobviewer.py:548
-#: ../system-config-printer.py:1848 ../troubleshoot/ChooseNetworkPrinter.py:95
+#: ../system-config-printer.py:1854 ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
@@ -198,12 +236,12 @@ msgstr "Čekanje"
 msgid "Held"
 msgstr "Zadrži"
 
-#: ../jobviewer.py:480 ../system-config-printer.py:157
+#: ../jobviewer.py:480 ../system-config-printer.py:158
 #: ../troubleshoot/PrintTestPage.py:41
 msgid "Processing"
 msgstr "Obrada"
 
-#: ../jobviewer.py:481 ../system-config-printer.py:159
+#: ../jobviewer.py:481 ../system-config-printer.py:160
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Stopped"
 msgstr "Zaustavljeno "
@@ -280,7 +318,7 @@ msgstr "_Upotrijebi zadano sustavom"
 msgid "_Set Default"
 msgstr "_Postavi zadanim"
 
-#: ../my-default-printer.py:162 ../system-config-printer.py:2633
+#: ../my-default-printer.py:162 ../system-config-printer.py:2639
 #: ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
@@ -290,105 +328,105 @@ msgstr "Lokacija"
 msgid "Conflicts with:"
 msgstr "Sukobi s:"
 
-#: ../system-config-printer.py:98
+#: ../system-config-printer.py:99
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr ""
 
-#: ../system-config-printer.py:156
+#: ../system-config-printer.py:157
 msgid "Idle"
 msgstr "Neaktivno"
 
-#: ../system-config-printer.py:158
+#: ../system-config-printer.py:159
 msgid "Busy"
 msgstr "Zauzeto"
 
-#: ../system-config-printer.py:290 ../system-config-printer.py:850
+#: ../system-config-printer.py:291 ../system-config-printer.py:856
 #, fuzzy
 msgid "Class"
 msgstr "Nova klasa"
 
 #. Set up "Problems?" link button
-#: ../system-config-printer.py:320
+#: ../system-config-printer.py:321
 #, fuzzy
 msgid "Problems?"
 msgstr "Ispitaj"
 
-#: ../system-config-printer.py:362 ../system-config-printer.py:364
+#: ../system-config-printer.py:363 ../system-config-printer.py:365
 msgid "Members of this class"
 msgstr "Članovi ove klase"
 
-#: ../system-config-printer.py:363 ../system-config-printer.py:365
+#: ../system-config-printer.py:364 ../system-config-printer.py:366
 msgid "Others"
 msgstr "Ostali"
 
-#: ../system-config-printer.py:366
+#: ../system-config-printer.py:367
 msgid "Devices"
 msgstr "Uređaji"
 
-#: ../system-config-printer.py:367
+#: ../system-config-printer.py:368
 msgid "Makes"
 msgstr "Makes"
 
-#: ../system-config-printer.py:368
+#: ../system-config-printer.py:369
 msgid "Models"
 msgstr "Modeli"
 
-#: ../system-config-printer.py:369
+#: ../system-config-printer.py:370
 msgid "Drivers"
 msgstr "Upravljački programi"
 
-#: ../system-config-printer.py:370 ../system-config-printer.glade.h:100
+#: ../system-config-printer.py:371 ../system-config-printer.glade.h:100
 msgid "Downloadable Drivers"
 msgstr ""
 
-#: ../system-config-printer.py:371
+#: ../system-config-printer.py:372
 msgid "Users"
 msgstr "Korisnici"
 
-#: ../system-config-printer.py:409
+#: ../system-config-printer.py:413
 msgid "Automatic rotation"
 msgstr ""
 
-#: ../system-config-printer.py:623
+#: ../system-config-printer.py:627
 #, fuzzy, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "Izvještaj pisača"
 
-#: ../system-config-printer.py:746
+#: ../system-config-printer.py:752
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Konfiguracija pisača - %s"
 
-#: ../system-config-printer.py:749
+#: ../system-config-printer.py:755
 #, python-format
 msgid "Connected to %s"
 msgstr "Povezan s %s"
 
-#: ../system-config-printer.py:838
+#: ../system-config-printer.py:844
 #, fuzzy
 msgid "Network printer (discovered)"
 msgstr "Novi pisač"
 
-#: ../system-config-printer.py:841
+#: ../system-config-printer.py:847
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:847 ../system-config-printer.py:2942
+#: ../system-config-printer.py:853 ../system-config-printer.py:2948
 msgid "Fax"
 msgstr ""
 
-#: ../system-config-printer.py:853 ../system-config-printer.py:859
+#: ../system-config-printer.py:859 ../system-config-printer.py:865
 #: ../troubleshoot/LocalOrRemote.py:30
 #, fuzzy
 msgid "Network printer"
 msgstr "Novi pisač"
 
-#: ../system-config-printer.py:856
+#: ../system-config-printer.py:862
 #, fuzzy
 msgid "Network print share"
 msgstr "Novi pisač"
 
-#: ../system-config-printer.py:979
+#: ../system-config-printer.py:985
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -397,15 +435,15 @@ msgstr ""
 "Povezivanje s poslužiteljem:\n"
 "%s"
 
-#: ../system-config-printer.py:1344
+#: ../system-config-printer.py:1350
 msgid "Installable Options"
 msgstr "Opcije instaliranja"
 
-#: ../system-config-printer.py:1345 ../system-config-printer.glade.h:195
+#: ../system-config-printer.py:1351 ../system-config-printer.glade.h:195
 msgid "Printer Options"
 msgstr "Opcije pisača"
 
-#: ../system-config-printer.py:1368
+#: ../system-config-printer.py:1374
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -415,52 +453,52 @@ msgstr ""
 "Izmjene mogu biti primijenjene\n"
 "tek nakon razrješavanja sukoba."
 
-#: ../system-config-printer.py:1395
+#: ../system-config-printer.py:1401
 msgid "This will delete this class!"
 msgstr "Izbrisat ćete klasu!"
 
-#: ../system-config-printer.py:1396
+#: ../system-config-printer.py:1402
 msgid "Proceed anyway?"
 msgstr "Ipak nastaviti?"
 
-#: ../system-config-printer.py:1537
+#: ../system-config-printer.py:1543
 #, fuzzy
 msgid "Set Default Printer"
 msgstr "Zadani pisač"
 
-#: ../system-config-printer.py:1539
+#: ../system-config-printer.py:1545
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr ""
 
-#: ../system-config-printer.py:1541
+#: ../system-config-printer.py:1547
 #, fuzzy
 msgid "Set as the _system-wide default printer"
 msgstr "Ovo je zadani pisač"
 
-#: ../system-config-printer.py:1543
+#: ../system-config-printer.py:1549
 msgid "_Clear my personal default setting"
 msgstr ""
 
-#: ../system-config-printer.py:1544
+#: ../system-config-printer.py:1550
 #, fuzzy
 msgid "Set as my _personal default printer"
 msgstr "Odaberi zadani pisač"
 
-#: ../system-config-printer.py:1595 ../system-config-printer.py:1621
+#: ../system-config-printer.py:1601 ../system-config-printer.py:1627
 msgid "Submitted"
 msgstr "Podneseno"
 
-#: ../system-config-printer.py:1596
+#: ../system-config-printer.py:1602
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Probna stranica je podnesena kao zadatak %d"
 
-#: ../system-config-printer.py:1602 ../system-config-printer.py:1628
-#: ../system-config-printer.py:4070
+#: ../system-config-printer.py:1608 ../system-config-printer.py:1634
+#: ../system-config-printer.py:4076
 msgid "Not possible"
 msgstr "Nije ostvarivo"
 
-#: ../system-config-printer.py:1603 ../system-config-printer.py:1629
+#: ../system-config-printer.py:1609 ../system-config-printer.py:1635
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -468,7 +506,7 @@ msgstr ""
 "Udaljeni poslužitelj nije prihvatio ispisni zadatak. Najvjerojatniji razlog "
 "je da pisač nije dijeljen."
 
-#: ../system-config-printer.py:1622
+#: ../system-config-printer.py:1628
 #, fuzzy, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Probna stranica je podnesena kao zadatak %d"
@@ -476,39 +514,39 @@ msgstr "Probna stranica je podnesena kao zadatak %d"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1679 ../system-config-printer.py:1786
+#: ../system-config-printer.py:1685 ../system-config-printer.py:1792
 msgid "Error"
 msgstr "Pogreška"
 
-#: ../system-config-printer.py:1680
+#: ../system-config-printer.py:1686
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Tijekom povezivanja s CUPS poslužiteljem došlo je do problema."
 
-#: ../system-config-printer.py:1787
+#: ../system-config-printer.py:1793
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
-#: ../system-config-printer.py:2204
+#: ../system-config-printer.py:2210
 #, fuzzy, python-format
 msgid "Really delete class `%s'?"
 msgstr "Zaista izbrisati klasu %s?"
 
-#: ../system-config-printer.py:2206
+#: ../system-config-printer.py:2212
 #, fuzzy, python-format
 msgid "Really delete printer `%s'?"
 msgstr "Zaista izbrisati pisač %s?"
 
-#: ../system-config-printer.py:2208
+#: ../system-config-printer.py:2214
 #, fuzzy
 msgid "Really delete selected destinations?"
 msgstr "Zaista izbrisati pisač %s?"
 
-#: ../system-config-printer.py:2262
+#: ../system-config-printer.py:2268
 msgid "Publish Shared Printers"
 msgstr ""
 
-#: ../system-config-printer.py:2263
+#: ../system-config-printer.py:2269
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -520,215 +558,215 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2376
+#: ../system-config-printer.py:2382
 msgid "Review Firewall"
 msgstr ""
 
-#: ../system-config-printer.py:2377
+#: ../system-config-printer.py:2383
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
-#: ../system-config-printer.py:2592 ../system-config-printer.py:2602
+#: ../system-config-printer.py:2598 ../system-config-printer.py:2608
 msgid "Share"
 msgstr "Dijeljenje"
 
-#: ../system-config-printer.py:2598 ../system-config-printer.py:2608
+#: ../system-config-printer.py:2604 ../system-config-printer.py:2614
 msgid "Comment"
 msgstr "Komentar"
 
 #. IPP list columns
-#: ../system-config-printer.py:2627
+#: ../system-config-printer.py:2633
 msgid "Queue"
 msgstr ""
 
-#: ../system-config-printer.py:2641
+#: ../system-config-printer.py:2647
 #, fuzzy
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr "PostScript opis pisača (*.ppd[.gz])"
 
-#: ../system-config-printer.py:2650
+#: ../system-config-printer.py:2656
 msgid "All files (*)"
 msgstr ""
 
-#: ../system-config-printer.py:2688 ../system-config-printer.py:4344
-#: ../system-config-printer.py:4382
+#: ../system-config-printer.py:2694 ../system-config-printer.py:4350
+#: ../system-config-printer.py:4388
 #, fuzzy
 msgid "Search"
 msgstr "Novi naziv za pisači"
 
-#: ../system-config-printer.py:2702 ../system-config-printer.glade.h:142
+#: ../system-config-printer.py:2708 ../system-config-printer.glade.h:142
 msgid "New Printer"
 msgstr "Novi pisač"
 
-#: ../system-config-printer.py:2713
+#: ../system-config-printer.py:2719
 msgid "New Class"
 msgstr "Nova klasa"
 
-#: ../system-config-printer.py:2718
+#: ../system-config-printer.py:2724
 msgid "Change Device URI"
 msgstr "Promjeni URI uređaja"
 
-#: ../system-config-printer.py:2735
+#: ../system-config-printer.py:2741
 msgid "Change Driver"
 msgstr "Promijeni upr. program"
 
-#: ../system-config-printer.py:2828 ../system-config-printer.py:3119
-#: ../system-config-printer.py:3305 ../system-config-printer.py:4369
+#: ../system-config-printer.py:2834 ../system-config-printer.py:3125
+#: ../system-config-printer.py:3311 ../system-config-printer.py:4375
 msgid "Searching"
 msgstr ""
 
-#: ../system-config-printer.py:2829 ../system-config-printer.py:3120
+#: ../system-config-printer.py:2835 ../system-config-printer.py:3126
 msgid "Searching for drivers"
 msgstr ""
 
-#: ../system-config-printer.py:2943
+#: ../system-config-printer.py:2949
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr ""
 
-#: ../system-config-printer.py:3306
+#: ../system-config-printer.py:3312
 #, fuzzy
 msgid "Searching for printers"
 msgstr "Novi naziv za pisači"
 
-#: ../system-config-printer.py:3579
+#: ../system-config-printer.py:3585
 msgid "Other"
 msgstr "Ostalo"
 
-#: ../system-config-printer.py:3581
+#: ../system-config-printer.py:3587
 msgid " (Current)"
 msgstr " (Trenutan)"
 
-#: ../system-config-printer.py:3604 ../system-config-printer.py:3621
-#: ../system-config-printer.py:4033
+#: ../system-config-printer.py:3610 ../system-config-printer.py:3627
+#: ../system-config-printer.py:4039
 #, fuzzy
 msgid "Scanning..."
 msgstr "Omjer:"
 
-#: ../system-config-printer.py:3656
+#: ../system-config-printer.py:3662
 #, fuzzy
 msgid "No Print Shares"
 msgstr "Novi pisač"
 
-#: ../system-config-printer.py:3657
+#: ../system-config-printer.py:3663
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
 
-#: ../system-config-printer.py:3952 ../system-config-printer.py:4015
+#: ../system-config-printer.py:3958 ../system-config-printer.py:4021
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:3953 ../system-config-printer.py:4016
+#: ../system-config-printer.py:3959 ../system-config-printer.py:4022
 msgid "This print share is accessible."
 msgstr "Ovo je dijeljenje ispisa dostupno."
 
-#: ../system-config-printer.py:3957 ../system-config-printer.py:4020
+#: ../system-config-printer.py:3963 ../system-config-printer.py:4026
 msgid "This print share is not accessible."
 msgstr "Ovo dijeljenje ispisa nije dostupno."
 
-#: ../system-config-printer.py:3960
+#: ../system-config-printer.py:3966
 #, fuzzy
 msgid "Print Share Inaccessible"
 msgstr "Ovo je dijeljenje ispisa dostupno."
 
-#: ../system-config-printer.py:4019
+#: ../system-config-printer.py:4025
 msgid "Inaccessible"
 msgstr "Nedostupno"
 
-#: ../system-config-printer.py:4071
+#: ../system-config-printer.py:4077
 #, fuzzy, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "Tijekom povezivanja s CUPS poslužiteljem došlo je do problema."
 
-#: ../system-config-printer.py:4073
+#: ../system-config-printer.py:4079
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
 msgstr ""
 
-#: ../system-config-printer.py:4076
+#: ../system-config-printer.py:4082
 msgid "No queues"
 msgstr ""
 
-#: ../system-config-printer.py:4077
+#: ../system-config-printer.py:4083
 msgid "There are no queues available."
 msgstr ""
 
-#: ../system-config-printer.py:4134
+#: ../system-config-printer.py:4140
 msgid "A printer connected to the parallel port."
 msgstr "Pisač povezan na paralelan port."
 
-#: ../system-config-printer.py:4136
+#: ../system-config-printer.py:4142
 msgid "A printer connected to a USB port."
 msgstr "Pisač povezan na USB port."
 
-#: ../system-config-printer.py:4138
+#: ../system-config-printer.py:4144
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "HPLIP softverski pisač ili funkcija pisača višenamjenskog uređaja."
 
-#: ../system-config-printer.py:4141
+#: ../system-config-printer.py:4147
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr ""
 "HPLIP softverski faks uređaj ili funkcija faksa višenamjenskog uređaja."
 
-#: ../system-config-printer.py:4144
+#: ../system-config-printer.py:4150
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "Lokalni pisač otrkiven pomoću Hardverskog apsraktnog sloja (HAL - Hardware "
 "Abstraction Layer)."
 
-#: ../system-config-printer.py:4394
+#: ../system-config-printer.py:4400
 #, fuzzy
 msgid "-- Select from search results --"
 msgstr "Pisač odaberi iz beze podataka"
 
-#: ../system-config-printer.py:4396
+#: ../system-config-printer.py:4402
 msgid "-- No matches found --"
 msgstr ""
 
-#: ../system-config-printer.py:4579
+#: ../system-config-printer.py:4585
 msgid " (recommended)"
 msgstr "(preporučeni)"
 
-#: ../system-config-printer.py:4593
+#: ../system-config-printer.py:4599
 msgid "This PPD is generated by foomatic."
 msgstr "Ovu PPD datoteku generirao je foomatic."
 
-#: ../system-config-printer.py:4619
+#: ../system-config-printer.py:4625
 #, fuzzy
 msgid "OpenPrinting"
 msgstr "Ispisivanje"
 
-#: ../system-config-printer.py:4621
+#: ../system-config-printer.py:4627
 msgid "Distributable"
 msgstr ""
 
-#: ../system-config-printer.py:4623
+#: ../system-config-printer.py:4629
 #, fuzzy
 msgid "None"
 msgstr "bez"
 
-#: ../system-config-printer.py:4631
+#: ../system-config-printer.py:4637
 msgid "Not specified."
 msgstr ""
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4671
+#: ../system-config-printer.py:4677
 msgid "Database error"
 msgstr "Pogreška baze podataka"
 
-#: ../system-config-printer.py:4672
+#: ../system-config-printer.py:4678
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Upravljački program '%s' nije moguće upotrijebiti za pisač '%s %s'."
@@ -736,7 +774,7 @@ msgstr "Upravljački program '%s' nije moguće upotrijebiti za pisač '%s %s'."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4682
+#: ../system-config-printer.py:4688
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
@@ -744,55 +782,55 @@ msgstr ""
 "paket '%s'."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4689
+#: ../system-config-printer.py:4695
 msgid "PPD error"
 msgstr "Pogreška PPD datoteke"
 
-#: ../system-config-printer.py:4691
+#: ../system-config-printer.py:4697
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Čitanje PPD datoteke nije uspjelo. Mogući razlozi:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4708
+#: ../system-config-printer.py:4714
 msgid "Downloadable drivers"
 msgstr ""
 
-#: ../system-config-printer.py:4709
+#: ../system-config-printer.py:4715
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:4745 ../system-config-printer.py:4783
+#: ../system-config-printer.py:4751 ../system-config-printer.py:4789
 #, fuzzy
 msgid "No Installable Options"
 msgstr "Opcije instaliranja"
 
-#: ../system-config-printer.py:4829
+#: ../system-config-printer.py:4835
 #, fuzzy
 msgid "Adding"
 msgstr "Čekanje"
 
-#: ../system-config-printer.py:4830
+#: ../system-config-printer.py:4836
 #, fuzzy
 msgid "Adding printer"
 msgstr "Konfiguriranje pisača"
 
-#: ../system-config-printer.py:4991
+#: ../system-config-printer.py:4997
 #, fuzzy
 msgid "Install driver"
 msgstr "Potraži upravljački program"
 
-#: ../system-config-printer.py:4992
+#: ../system-config-printer.py:4998
 #, fuzzy, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Pisač '%s' potražuje paket %s, koji trenutno nije instaliran. Prije upotrebe "
 "ovog pisača instalirajte taj paket."
 
-#: ../system-config-printer.py:5017
+#: ../system-config-printer.py:5023
 msgid "Missing driver"
 msgstr "Nedostaje upravljački program"
 
-#: ../system-config-printer.py:5018
+#: ../system-config-printer.py:5024
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2525,9 +2563,6 @@ msgstr "Odaberi zadani pisač"
 #, fuzzy
 #~ msgid "Copy this printer queue"
 #~ msgstr "Kopiraj pisač"
-
-#~ msgid "Goto Server"
-#~ msgstr "Kreni na poslužitelj"
 
 #, fuzzy
 #~ msgid "Password required"
