@@ -56,6 +56,7 @@ nobase_pkgdata_SCRIPTS=				\
 	applet.py
 
 nobase_pkgdata_DATA=					\
+	AdvancedServerSettings.py			\
 	authconn.py					\
 	config.py					\
 	contextmenu.py					\
