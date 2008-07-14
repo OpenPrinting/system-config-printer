@@ -55,7 +55,7 @@ class _QueryThread (threading.Thread):
                   (urllib.urlencode (self.parameters),
                    self.parent.language[0],
                    self.parent.language[0]))
-        print "http://%s%s?%s" % (self.parent.base_url, query_command, params)
+        self.url = "http://%s%s?%s" % (self.parent.base_url, query_command, params)
         # Send request
         result = None
         status = 1
@@ -286,10 +286,15 @@ class OpenPrinting:
                             for package in arch.findall ('package'):
                                 rpm = {}
                                 for attribute in ['realversion','version',
-                                                  'release', 'url']:
+                                                  'release', 'url', 'pkgsys']:
                                     element = package.find (attribute)
                                     if element != None:
                                         rpm[attribute] = element.text
+
+                                repositories = package.find ('repositories')
+                                if repositories != None:
+                                    for pkgsys in repositories.getchildren ():
+                                        rpm.setdefault('repositories', {})[pkgsys.tag] = pkgsys.text
 
                                 rpms[package.attrib['file']] = rpm
                             packages[arch.tag] = rpms
