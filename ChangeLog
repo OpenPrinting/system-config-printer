@@ -1,3 +1,11 @@
+2008-07-14  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.on_enabled_activate): Call
+	populateList() on an idle callback. This is a workaround for an
+	endless loop that was occuring with the previous commit.
+	* system-config-printer.py (GUI.on_edit_activate): Add a dummy
+	parameter to comply with the signal handler signature.
+
 2008-07-12  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* Makefile.am (nobase_pkgdata_DATA): Remove contextmenu.py and

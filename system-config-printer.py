@@ -2351,7 +2351,12 @@ class GUI(GtkGUI, monitor.Watcher):
                 errordialogs.show_IPP_Error (e, m, self.PrintersWindow)
                 # Give up on this operation.
                 break
-        self.populateList ()
+
+        def populateList_wrapper ():
+            self.populateList ()
+            return False
+        gobject.idle_add (populateList_wrapper)
+
 
     # Shared
     def on_shared_activate(self, menuitem):
@@ -2387,7 +2392,7 @@ class GUI(GtkGUI, monitor.Watcher):
         name = model.get_value (iter, 2)
         self.set_system_or_user_default_printer (name)
 
-    def on_edit_activate (self):
+    def on_edit_activate (self, UNUSED):
         paths = self.dests_iconview.get_selected_items ()
         self.dests_iconview_item_activated (self.dests_iconview, paths[0])
 
