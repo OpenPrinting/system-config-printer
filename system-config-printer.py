@@ -2370,7 +2370,14 @@ class GUI(GtkGUI, monitor.Watcher):
             printer.setShared (share)
         if share:
             self.advise_publish ()
-        self.monitor.update ()
+
+        # For some reason CUPS doesn't give us a notification about
+        # printers changing 'shared' state, so refresh instead of
+        # update.  We have to defer this to prevent signal problems.
+        def deferred_refresh ():
+            self.populateList ()
+            return False
+        gobject.idle_add (deferred_refresh)
 
     def advise_publish(self):
         if not self.server_is_publishing:
