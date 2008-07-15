@@ -377,6 +377,7 @@ class GUI(GtkGUI, monitor.Watcher):
 </ui>
 """
 )
+        self.ui_manager.ensure_update ()
         self.PrintersWindow.add_accel_group (self.ui_manager.get_accel_group ())
 
         self.printer_context_menu = gtk.Menu ()
