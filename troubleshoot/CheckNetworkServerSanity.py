@@ -23,7 +23,12 @@ import cups
 import socket
 import subprocess
 from base import *
-from base import _
+
+try:
+    import smbc
+except:
+    pass
+
 class CheckNetworkServerSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check network server sanity")
@@ -103,6 +108,18 @@ class CheckNetworkServerSanity(Question):
                         self.answers['remote_cups_queue_attributes'] = attr
                     except:
                         pass
+
+        if (self.answers['remote_server_name_resolves'] and
+            not self.answers['remote_server_connect_ipp']):
+            # Try to see if we can connect using smbc.
+            try:
+                context = smbc.Context ()
+                name = self.answers['remote_server_try_connect']
+                shares = context.opendir ("smb://%s" % name).getdents ()
+                self.answers['remote_server_smb'] = True
+                self.answers['remote_server_smb_shares'] = shares
+            except:
+                pass
 
         # Try traceroute if we haven't already.
         if (self.answers['remote_server_name_resolves'] and

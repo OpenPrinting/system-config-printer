@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.trunk\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-06-27 18:07+0100\n"
+"POT-Creation-Date: 2008-07-14 17:35+0100\n"
 "PO-Revision-Date: 2008-03-28 11:40+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Simplified Chinese <zh@li.org>\n"
@@ -27,6 +27,44 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
+
+#: ../AdvancedServerSettings.py:40
+#, fuzzy
+msgid "Advanced Server Settings"
+msgstr "<b>基本服务器设置</b>"
+
+#: ../AdvancedServerSettings.py:57
+#, fuzzy
+msgid "Job History"
+msgstr "任务优先权："
+
+#: ../AdvancedServerSettings.py:68
+msgid "Do not preserve job history"
+msgstr ""
+
+#: ../AdvancedServerSettings.py:70
+msgid "Preserve job history but not files"
+msgstr ""
+
+#: ../AdvancedServerSettings.py:73
+msgid "Preserve job files (allow reprinting)"
+msgstr ""
+
+#: ../AdvancedServerSettings.py:81
+#, fuzzy
+msgid "Browse Servers"
+msgstr "转到服务器"
+
+#: ../AdvancedServerSettings.py:92
+msgid ""
+"Usually print servers broadcast their queues.  Specify print servers below "
+"to periodically ask for queues instead."
+msgstr ""
+
+#: ../AdvancedServerSettings.py:213
+#, fuzzy
+msgid "Enter IP address"
+msgstr "服务器 IP 地址："
 
 #: ../authconn.py:30 ../glade/NewPrinterWindow.glade.h:91
 msgid "Username:"
@@ -57,7 +95,7 @@ msgstr "密码可能不正确。"
 msgid "CUPS server error"
 msgstr "CUPS 服务器错误"
 
-#: ../errordialogs.py:69 ../troubleshoot/PrintTestPage.py:323
+#: ../errordialogs.py:69 ../troubleshoot/PrintTestPage.py:322
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS 操作中出现一个错误：'%s'。"
@@ -88,13 +126,13 @@ msgstr "需要升级"
 msgid "Server error"
 msgstr "服务器错误"
 
-#: ../errordialogs.py:94 ../system-config-printer.py:748
+#: ../errordialogs.py:94 ../system-config-printer.py:790
 msgid "Not connected"
 msgstr "未连接"
 
 #: ../errordialogs.py:96
-#, python-format
-msgid "status %d"
+#, fuzzy, python-format
+msgid "status %s"
 msgstr "状态 %d"
 
 #: ../errordialogs.py:98
@@ -102,7 +140,7 @@ msgstr "状态 %d"
 msgid "There was an HTTP error: %s."
 msgstr "发生 HTTP 错误： %s 。"
 
-#: ../jobviewer.py:187 ../troubleshoot/PrintTestPage.py:78
+#: ../jobviewer.py:187 ../troubleshoot/PrintTestPage.py:77
 msgid "Job"
 msgstr "任务"
 
@@ -111,13 +149,13 @@ msgstr "任务"
 msgid "User"
 msgstr "用户"
 
-#: ../jobviewer.py:189 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:189 ../troubleshoot/PrintTestPage.py:81
 msgid "Document"
 msgstr "文档"
 
 #: ../jobviewer.py:190 ../jobviewer.py:242 ../my-default-printer.py:157
-#: ../system-config-printer.py:316 ../system-config-printer.py:841
-#: ../system-config-printer.py:2945 ../troubleshoot/PrintTestPage.py:80
+#: ../system-config-printer.py:320 ../system-config-printer.py:883
+#: ../system-config-printer.py:2990 ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "打印机"
 
@@ -129,7 +167,7 @@ msgstr "大小"
 msgid "Time submitted"
 msgstr "提交时间"
 
-#: ../jobviewer.py:193 ../troubleshoot/PrintTestPage.py:83
+#: ../jobviewer.py:193 ../troubleshoot/PrintTestPage.py:82
 msgid "Status"
 msgstr "状态"
 
@@ -156,129 +194,129 @@ msgstr "文档打印状态"
 msgid "Message"
 msgstr "信息"
 
-#: ../jobviewer.py:386 ../jobviewer.py:452 ../jobviewer.py:453
-#: ../jobviewer.py:466 ../jobviewer.py:489 ../jobviewer.py:546
-#: ../system-config-printer.py:1843 ../troubleshoot/ChooseNetworkPrinter.py:96
-#: ../troubleshoot/ChooseNetworkPrinter.py:97
+#: ../jobviewer.py:387 ../jobviewer.py:453 ../jobviewer.py:454
+#: ../jobviewer.py:467 ../jobviewer.py:490 ../jobviewer.py:547
+#: ../system-config-printer.py:1887 ../troubleshoot/ChooseNetworkPrinter.py:95
+#: ../troubleshoot/ChooseNetworkPrinter.py:96
+#: ../troubleshoot/ChooseNetworkPrinter.py:99
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
-#: ../troubleshoot/ChooseNetworkPrinter.py:101
-#: ../troubleshoot/ChoosePrinter.py:85 ../troubleshoot/ChoosePrinter.py:86
-#: ../troubleshoot/ChoosePrinter.py:89 ../troubleshoot/ChoosePrinter.py:90
-#: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
+#: ../troubleshoot/ChoosePrinter.py:84 ../troubleshoot/ChoosePrinter.py:85
+#: ../troubleshoot/ChoosePrinter.py:88 ../troubleshoot/ChoosePrinter.py:89
+#: ../troubleshoot/DeviceListed.py:83 ../troubleshoot/DeviceListed.py:84
 msgid "Unknown"
 msgstr "未知"
 
-#: ../jobviewer.py:398
+#: ../jobviewer.py:399
 msgid "1 hour ago"
 msgstr "一小时前"
 
-#: ../jobviewer.py:400
+#: ../jobviewer.py:401
 msgid "1 hour and 1 minute ago"
 msgstr "一小时零一分钟前"
 
-#: ../jobviewer.py:402
+#: ../jobviewer.py:403
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "一小时零 %d 分钟前"
 
-#: ../jobviewer.py:405
+#: ../jobviewer.py:406
 #, python-format
 msgid "%d hours ago"
 msgstr "%d 小时前"
 
-#: ../jobviewer.py:407
+#: ../jobviewer.py:408
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d 小时零一分钟前"
 
-#: ../jobviewer.py:409
+#: ../jobviewer.py:410
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d 小时零 %d 分钟前"
 
-#: ../jobviewer.py:415
+#: ../jobviewer.py:416
 msgid "a minute ago"
 msgstr "一分钟前"
 
-#: ../jobviewer.py:417
+#: ../jobviewer.py:418
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d 分钟前"
 
-#: ../jobviewer.py:476 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:477 ../troubleshoot/PrintTestPage.py:39
 msgid "Pending"
 msgstr "等待处理"
 
-#: ../jobviewer.py:477 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:478 ../troubleshoot/PrintTestPage.py:40
 msgid "Held"
 msgstr "帮助（_H）"
 
-#: ../jobviewer.py:478 ../system-config-printer.py:156
-#: ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:479 ../system-config-printer.py:157
+#: ../troubleshoot/PrintTestPage.py:41
 msgid "Processing"
 msgstr "进行中"
 
-#: ../jobviewer.py:479 ../system-config-printer.py:158
-#: ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:480 ../system-config-printer.py:159
+#: ../troubleshoot/PrintTestPage.py:42
 msgid "Stopped"
 msgstr "停止"
 
-#: ../jobviewer.py:480 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:481 ../troubleshoot/PrintTestPage.py:43
 msgid "Canceled"
 msgstr "取消"
 
-#: ../jobviewer.py:481 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:482 ../troubleshoot/PrintTestPage.py:44
 msgid "Aborted"
 msgstr "失败的"
 
-#: ../jobviewer.py:482 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:483 ../troubleshoot/PrintTestPage.py:45
 msgid "Completed"
 msgstr "完成"
 
-#: ../jobviewer.py:544
+#: ../jobviewer.py:545
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr ""
 
-#: ../jobviewer.py:749
+#: ../jobviewer.py:750
 msgid "No documents queued"
 msgstr "没有文档在排队"
 
-#: ../jobviewer.py:751
+#: ../jobviewer.py:752
 msgid "1 document queued"
 msgstr "一个文档在排队"
 
-#: ../jobviewer.py:753
+#: ../jobviewer.py:754
 #, python-format
 msgid "%d documents queued"
 msgstr "%d 文档在排队"
 
-#: ../jobviewer.py:987
+#: ../jobviewer.py:988
 #, fuzzy, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "连接到 CUPS 服务器时出现问题。"
 
-#: ../jobviewer.py:990
+#: ../jobviewer.py:991
 #, fuzzy, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "打印机 `%s' 有问题。"
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:996
+#: ../jobviewer.py:997
 #, fuzzy, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "打印机 `%s' 有问题。"
 
-#: ../jobviewer.py:1002 ../jobviewer.py:1018
+#: ../jobviewer.py:1003 ../jobviewer.py:1019
 #, fuzzy
 msgid "Print Error"
 msgstr "打印机错误"
 
-#: ../jobviewer.py:1003
+#: ../jobviewer.py:1004
 msgid "_Diagnose"
 msgstr ""
 
-#: ../jobviewer.py:1024
+#: ../jobviewer.py:1025
 #, fuzzy, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "队列 `%s' 未启用。"
@@ -295,9 +333,9 @@ msgstr "使用系统默认(_U)"
 msgid "_Set Default"
 msgstr "设置默认（_S）"
 
-#: ../my-default-printer.py:162 ../system-config-printer.py:2640
-#: ../troubleshoot/ChooseNetworkPrinter.py:37
-#: ../troubleshoot/ChoosePrinter.py:38
+#: ../my-default-printer.py:162 ../system-config-printer.py:2684
+#: ../troubleshoot/ChooseNetworkPrinter.py:36
+#: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
 msgstr "位置"
 
@@ -305,105 +343,105 @@ msgstr "位置"
 msgid "Conflicts with:"
 msgstr "冲突："
 
-#: ../system-config-printer.py:104
+#: ../system-config-printer.py:105
 #, fuzzy
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr "要启动这个工具，请在主菜单中选择「系统」->「管理」->「正在打印」。"
 
-#: ../system-config-printer.py:155
+#: ../system-config-printer.py:156
 msgid "Idle"
 msgstr "空闲"
 
-#: ../system-config-printer.py:157
+#: ../system-config-printer.py:158
 msgid "Busy"
 msgstr "忙"
 
-#: ../system-config-printer.py:322 ../system-config-printer.py:847
+#: ../system-config-printer.py:326 ../system-config-printer.py:889
 #, fuzzy
 msgid "Class"
 msgstr "新 Class"
 
 #. Set up "Problems?" link button
-#: ../system-config-printer.py:352
+#: ../system-config-printer.py:356
 #, fuzzy
 msgid "Problems?"
 msgstr "检测"
 
-#: ../system-config-printer.py:394 ../system-config-printer.py:396
+#: ../system-config-printer.py:398 ../system-config-printer.py:400
 msgid "Members of this class"
 msgstr "这个类型的成员"
 
-#: ../system-config-printer.py:395 ../system-config-printer.py:397
+#: ../system-config-printer.py:399 ../system-config-printer.py:401
 msgid "Others"
 msgstr "其它"
 
-#: ../system-config-printer.py:398
+#: ../system-config-printer.py:402
 msgid "Devices"
 msgstr "设备"
 
-#: ../system-config-printer.py:399
+#: ../system-config-printer.py:403
 msgid "Makes"
 msgstr "Makes"
 
-#: ../system-config-printer.py:400
+#: ../system-config-printer.py:404
 msgid "Models"
 msgstr "型号"
 
-#: ../system-config-printer.py:401
+#: ../system-config-printer.py:405
 msgid "Drivers"
 msgstr "驱动程序"
 
-#: ../system-config-printer.py:402 ../glade/NewPrinterWindow.glade.h:49
+#: ../system-config-printer.py:406 ../glade/NewPrinterWindow.glade.h:49
 msgid "Downloadable Drivers"
 msgstr "可以下载的驱动"
 
-#: ../system-config-printer.py:403
+#: ../system-config-printer.py:407
 msgid "Users"
 msgstr "用户"
 
-#: ../system-config-printer.py:439
+#: ../system-config-printer.py:446
 msgid "Automatic rotation"
 msgstr "自动轮换"
 
-#: ../system-config-printer.py:627
+#: ../system-config-printer.py:660
 #, fuzzy, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "打印机报告"
 
-#: ../system-config-printer.py:743
+#: ../system-config-printer.py:785
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "打印机配置 - %s"
 
-#: ../system-config-printer.py:746
+#: ../system-config-printer.py:788
 #, python-format
 msgid "Connected to %s"
 msgstr "连接到 %s"
 
-#: ../system-config-printer.py:835
+#: ../system-config-printer.py:877
 #, fuzzy
 msgid "Network printer (discovered)"
 msgstr "网络打印机"
 
-#: ../system-config-printer.py:838
+#: ../system-config-printer.py:880
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:844 ../system-config-printer.py:2946
+#: ../system-config-printer.py:886 ../system-config-printer.py:2991
 msgid "Fax"
 msgstr ""
 
-#: ../system-config-printer.py:850 ../system-config-printer.py:856
-#: ../troubleshoot/LocalOrRemote.py:31
+#: ../system-config-printer.py:892 ../system-config-printer.py:898
+#: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "网络打印机"
 
-#: ../system-config-printer.py:853
+#: ../system-config-printer.py:895
 #, fuzzy
 msgid "Network print share"
 msgstr "网络打印机"
 
-#: ../system-config-printer.py:976
+#: ../system-config-printer.py:1018
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -412,16 +450,16 @@ msgstr ""
 "连接到服务器：\n"
 "%s"
 
-#: ../system-config-printer.py:1341
+#: ../system-config-printer.py:1383
 msgid "Installable Options"
 msgstr "可安装选项"
 
-#: ../system-config-printer.py:1342
+#: ../system-config-printer.py:1384
 #: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Printer Options"
 msgstr "打印机选项"
 
-#: ../system-config-printer.py:1363
+#: ../system-config-printer.py:1407
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -431,58 +469,58 @@ msgstr ""
 "只有在冲突被解决后，才能应用所做\n"
 "修改。"
 
-#: ../system-config-printer.py:1390
+#: ../system-config-printer.py:1434
 msgid "This will delete this class!"
 msgstr "这将删除这个 class！"
 
-#: ../system-config-printer.py:1391
+#: ../system-config-printer.py:1435
 msgid "Proceed anyway?"
 msgstr "继续处理？"
 
-#: ../system-config-printer.py:1532
+#: ../system-config-printer.py:1576
 #, fuzzy
 msgid "Set Default Printer"
 msgstr "默认打印机"
 
-#: ../system-config-printer.py:1534
+#: ../system-config-printer.py:1578
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr ""
 
-#: ../system-config-printer.py:1536
+#: ../system-config-printer.py:1580
 #, fuzzy
 msgid "Set as the _system-wide default printer"
 msgstr "这是默认的打印机"
 
-#: ../system-config-printer.py:1538
+#: ../system-config-printer.py:1582
 msgid "_Clear my personal default setting"
 msgstr ""
 
-#: ../system-config-printer.py:1539
+#: ../system-config-printer.py:1583
 #, fuzzy
 msgid "Set as my _personal default printer"
 msgstr "选择默认打印机"
 
-#: ../system-config-printer.py:1590 ../system-config-printer.py:1616
+#: ../system-config-printer.py:1634 ../system-config-printer.py:1660
 msgid "Submitted"
 msgstr "发送"
 
-#: ../system-config-printer.py:1591
+#: ../system-config-printer.py:1635
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "测试页作为任务 %d 被发送"
 
-#: ../system-config-printer.py:1597 ../system-config-printer.py:1623
-#: ../system-config-printer.py:3971
+#: ../system-config-printer.py:1641 ../system-config-printer.py:1667
+#: ../system-config-printer.py:4041
 msgid "Not possible"
 msgstr "不可能"
 
-#: ../system-config-printer.py:1598 ../system-config-printer.py:1624
+#: ../system-config-printer.py:1642 ../system-config-printer.py:1668
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "远程的服务器没有接受这个打印任务，这可能是因为那个打印机没有共享。"
 
-#: ../system-config-printer.py:1617
+#: ../system-config-printer.py:1661
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "将维护命令作为任务 %d 提交"
@@ -490,39 +528,39 @@ msgstr "将维护命令作为任务 %d 提交"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1674 ../system-config-printer.py:1781
+#: ../system-config-printer.py:1718 ../system-config-printer.py:1825
 msgid "Error"
 msgstr "错误"
 
-#: ../system-config-printer.py:1675
+#: ../system-config-printer.py:1719
 msgid "There was a problem connecting to the CUPS server."
 msgstr "连接到 CUPS 服务器时出现问题。"
 
-#: ../system-config-printer.py:1782
+#: ../system-config-printer.py:1826
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "选项 '%s' 有值 '%s'，且无法编辑。"
 
-#: ../system-config-printer.py:2199
+#: ../system-config-printer.py:2243
 #, fuzzy, python-format
 msgid "Really delete class `%s'?"
 msgstr "真的要删除类型 %s 吗？"
 
-#: ../system-config-printer.py:2201
+#: ../system-config-printer.py:2245
 #, fuzzy, python-format
 msgid "Really delete printer `%s'?"
 msgstr "真的要删除打印机 %s 吗？"
 
-#: ../system-config-printer.py:2203
+#: ../system-config-printer.py:2247
 #, fuzzy
 msgid "Really delete selected destinations?"
 msgstr "真的要删除打印机 %s 吗？"
 
-#: ../system-config-printer.py:2257
+#: ../system-config-printer.py:2301
 msgid "Publish Shared Printers"
 msgstr ""
 
-#: ../system-config-printer.py:2258
+#: ../system-config-printer.py:2302
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -534,207 +572,208 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2371
+#: ../system-config-printer.py:2415
 #, fuzzy
 msgid "Review Firewall"
 msgstr "检查服务器防火墙"
 
-#: ../system-config-printer.py:2372
+#: ../system-config-printer.py:2416
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
 #. SMB list columns
-#: ../system-config-printer.py:2609
+#: ../system-config-printer.py:2653
 msgid "Share"
 msgstr "共享"
 
-#: ../system-config-printer.py:2615
+#: ../system-config-printer.py:2659
 msgid "Comment"
 msgstr "注解"
 
 #. IPP list columns
-#: ../system-config-printer.py:2634
+#: ../system-config-printer.py:2678
 msgid "Queue"
 msgstr "队列"
 
-#: ../system-config-printer.py:2648
+#: ../system-config-printer.py:2692
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "PostScript 打印机描述文件（*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ）"
 
-#: ../system-config-printer.py:2657
+#: ../system-config-printer.py:2701
 msgid "All files (*)"
 msgstr "所有文件（*）"
 
-#: ../system-config-printer.py:2693 ../system-config-printer.py:4250
-#: ../system-config-printer.py:4288
+#: ../system-config-printer.py:2737 ../system-config-printer.py:4315
+#: ../system-config-printer.py:4353
 msgid "Search"
 msgstr "搜索"
 
-#: ../system-config-printer.py:2696 ../glade/NewPrinterWindow.glade.h:63
+#: ../system-config-printer.py:2751 ../glade/NewPrinterWindow.glade.h:63
 msgid "New Printer"
 msgstr "新打印机"
 
-#: ../system-config-printer.py:2707
+#: ../system-config-printer.py:2762
 msgid "New Class"
 msgstr "新 Class"
 
-#: ../system-config-printer.py:2712
+#: ../system-config-printer.py:2767
 msgid "Change Device URI"
 msgstr "改变设备 URI"
 
-#: ../system-config-printer.py:2729
+#: ../system-config-printer.py:2784
 msgid "Change Driver"
 msgstr "改变驱动"
 
-#: ../system-config-printer.py:2832 ../system-config-printer.py:3098
-#: ../system-config-printer.py:3284 ../system-config-printer.py:4275
+#: ../system-config-printer.py:2877 ../system-config-printer.py:3168
+#: ../system-config-printer.py:3354 ../system-config-printer.py:4340
 msgid "Searching"
 msgstr "正在搜索"
 
-#: ../system-config-printer.py:2833 ../system-config-printer.py:3099
+#: ../system-config-printer.py:2878 ../system-config-printer.py:3169
 msgid "Searching for drivers"
 msgstr "正在搜索驱动程序"
 
-#: ../system-config-printer.py:2947
+#: ../system-config-printer.py:2992
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr ""
 
-#: ../system-config-printer.py:3285
+#: ../system-config-printer.py:3355
 msgid "Searching for printers"
 msgstr "正在搜索打印机"
 
-#: ../system-config-printer.py:3558
+#: ../system-config-printer.py:3628
 msgid "Other"
 msgstr "其它"
 
-#: ../system-config-printer.py:3560
+#: ../system-config-printer.py:3630
 msgid " (Current)"
 msgstr " (当前)"
 
-#: ../system-config-printer.py:3586 ../system-config-printer.py:3934
+#: ../system-config-printer.py:3656 ../system-config-printer.py:4004
 msgid "Scanning..."
 msgstr "扫描中..."
 
-#: ../system-config-printer.py:3621
+#: ../system-config-printer.py:3691
 #, fuzzy
 msgid "No Print Shares"
 msgstr "网络打印机"
 
-#: ../system-config-printer.py:3622
+#: ../system-config-printer.py:3692
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
 
-#: ../system-config-printer.py:3853 ../system-config-printer.py:3916
+#: ../system-config-printer.py:3923 ../system-config-printer.py:3986
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:3854 ../system-config-printer.py:3917
+#: ../system-config-printer.py:3924 ../system-config-printer.py:3987
 msgid "This print share is accessible."
 msgstr "这个打印机共享可以被访问。"
 
-#: ../system-config-printer.py:3858 ../system-config-printer.py:3921
+#: ../system-config-printer.py:3928 ../system-config-printer.py:3991
 msgid "This print share is not accessible."
 msgstr "这个打印机共享不能被访问。"
 
-#: ../system-config-printer.py:3861
+#: ../system-config-printer.py:3931
 #, fuzzy
 msgid "Print Share Inaccessible"
 msgstr "这个打印机共享可以被访问。"
 
-#: ../system-config-printer.py:3920
+#: ../system-config-printer.py:3990
 msgid "Inaccessible"
 msgstr "不能访问"
 
-#: ../system-config-printer.py:3972
+#: ../system-config-printer.py:4042
 #, fuzzy, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "不可能从这个主机中获得队列列表。"
 
-#: ../system-config-printer.py:3974
+#: ../system-config-printer.py:4044
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
 msgstr ""
 
-#: ../system-config-printer.py:3977
+#: ../system-config-printer.py:4047
 msgid "No queues"
 msgstr "没有队列"
 
-#: ../system-config-printer.py:3978
+#: ../system-config-printer.py:4048
 msgid "There are no queues available."
 msgstr "没有可用队列。"
 
-#: ../system-config-printer.py:4035
+#: ../system-config-printer.py:4105
 msgid "A printer connected to the parallel port."
 msgstr "一个打印机连接到并行口。"
 
-#: ../system-config-printer.py:4037
+#: ../system-config-printer.py:4107
 msgid "A printer connected to a USB port."
 msgstr "一个打印机连接到一个 USB 端口。"
 
-#: ../system-config-printer.py:4039
+#: ../system-config-printer.py:4109
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "HPLIP 软件驱动一个打印机，或多功能设备中的打印机功能。"
 
-#: ../system-config-printer.py:4042
+#: ../system-config-printer.py:4112
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "HPLIP 软件驱动一个传真机，或多功能设备中的传真机功能。"
 
-#: ../system-config-printer.py:4045
+#: ../system-config-printer.py:4115
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Hardware Abstraction Layer (HAL) 发现了本地打印机。"
 
-#: ../system-config-printer.py:4300
-msgid "-- Select printer model --"
+#: ../system-config-printer.py:4365
+#, fuzzy
+msgid "-- Select from search results --"
 msgstr "-- 选择打印机型号 --"
 
-#: ../system-config-printer.py:4302
+#: ../system-config-printer.py:4367
 msgid "-- No matches found --"
 msgstr "-- 没有发现匹配的型号 --"
 
-#: ../system-config-printer.py:4478
+#: ../system-config-printer.py:4550
 msgid " (recommended)"
 msgstr "（推荐）"
 
-#: ../system-config-printer.py:4492
+#: ../system-config-printer.py:4564
 msgid "This PPD is generated by foomatic."
 msgstr "这个 PPD 被 foomatic 产生。"
 
-#: ../system-config-printer.py:4518
+#: ../system-config-printer.py:4590
 msgid "OpenPrinting"
 msgstr "开放打印"
 
-#: ../system-config-printer.py:4520
+#: ../system-config-printer.py:4592
 msgid "Distributable"
 msgstr "可分配的"
 
-#: ../system-config-printer.py:4522
+#: ../system-config-printer.py:4594
 msgid "None"
 msgstr "无"
 
-#: ../system-config-printer.py:4530
+#: ../system-config-printer.py:4602
 msgid "Not specified."
 msgstr "没有特定的。"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4570
+#: ../system-config-printer.py:4642
 msgid "Database error"
 msgstr "数据库错误"
 
-#: ../system-config-printer.py:4571
+#: ../system-config-printer.py:4643
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "“%s”驱动不能够和打印机“%s %s”一起使用。"
@@ -742,55 +781,55 @@ msgstr "“%s”驱动不能够和打印机“%s %s”一起使用。"
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4581
+#: ../system-config-printer.py:4653
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "您将需要安装“%s”包来使用这个驱动。"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4588
+#: ../system-config-printer.py:4660
 msgid "PPD error"
 msgstr "PPD错误"
 
-#: ../system-config-printer.py:4590
+#: ../system-config-printer.py:4662
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "读取PPD文件错误。可能由以下原因造成："
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4607
+#: ../system-config-printer.py:4679
 msgid "Downloadable drivers"
 msgstr "可下载的驱动程序"
 
-#: ../system-config-printer.py:4608
+#: ../system-config-printer.py:4680
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:4644 ../system-config-printer.py:4682
+#: ../system-config-printer.py:4716 ../system-config-printer.py:4754
 msgid "No Installable Options"
 msgstr "没有安装选项"
 
-#: ../system-config-printer.py:4728
+#: ../system-config-printer.py:4800
 msgid "Adding"
 msgstr "添加中"
 
-#: ../system-config-printer.py:4729
+#: ../system-config-printer.py:4801
 msgid "Adding printer"
 msgstr "正在添加打印机"
 
-#: ../system-config-printer.py:4890
+#: ../system-config-printer.py:4962
 msgid "Install driver"
 msgstr "安装驱动程序"
 
-#: ../system-config-printer.py:4891
+#: ../system-config-printer.py:4963
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "打印机‘%s’要求的 %s 软件包目前没有安装。"
 
-#: ../system-config-printer.py:4916
+#: ../system-config-printer.py:4988
 msgid "Missing driver"
 msgstr "缺少驱动"
 
-#: ../system-config-printer.py:4917
+#: ../system-config-printer.py:4989
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -893,7 +932,7 @@ msgstr "(_F)文件"
 msgid "_Refresh"
 msgstr "刷新（_R）"
 
-#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:17
+#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:18
 msgid "_View"
 msgstr "查看（_V）"
 
@@ -1061,7 +1100,7 @@ msgstr ""
 msgid "Description:"
 msgstr "描述："
 
-#: ../glade/NewPrinterWindow.glade.h:46 ../troubleshoot/DeviceListed.py:40
+#: ../glade/NewPrinterWindow.glade.h:46 ../troubleshoot/DeviceListed.py:39
 msgid "Device URI"
 msgstr "设备 URI"
 
@@ -1306,12 +1345,12 @@ msgstr "新打印机"
 msgid "_Create Class"
 msgstr "远程 class"
 
-#: ../glade/printer_context_menu.glade.h:6 ../glade/PrintersWindow.glade.h:12
+#: ../glade/printer_context_menu.glade.h:6 ../glade/PrintersWindow.glade.h:13
 #, fuzzy
 msgid "_Rename"
 msgstr "释放（_R）"
 
-#: ../glade/printer_context_menu.glade.h:7 ../glade/PrintersWindow.glade.h:15
+#: ../glade/printer_context_menu.glade.h:7 ../glade/PrintersWindow.glade.h:16
 #, fuzzy
 msgid "_Shared"
 msgstr "共享"
@@ -1645,7 +1684,7 @@ msgstr "打印测试页"
 
 #. Not more than 25 characters
 #: ../glade/PrinterPropertiesDialog.glade.h:105
-#: ../troubleshoot/PrintTestPage.py:68
+#: ../troubleshoot/PrintTestPage.py:67
 msgid "Print Test Page"
 msgstr "打印测试页"
 
@@ -1783,20 +1822,25 @@ msgstr "帮助(_H)"
 
 #: ../glade/PrintersWindow.glade.h:11
 #, fuzzy
+msgid "_New"
+msgstr "查看（_V）"
+
+#: ../glade/PrintersWindow.glade.h:12
+#, fuzzy
 msgid "_Printer"
 msgstr "打印机"
 
-#: ../glade/PrintersWindow.glade.h:13
+#: ../glade/PrintersWindow.glade.h:14
 #, fuzzy
 msgid "_Server"
 msgstr "(_G)转到服务器"
 
-#: ../glade/PrintersWindow.glade.h:14
+#: ../glade/PrintersWindow.glade.h:15
 #, fuzzy
 msgid "_Settings..."
 msgstr "设置"
 
-#: ../glade/PrintersWindow.glade.h:16
+#: ../glade/PrintersWindow.glade.h:17
 msgid "_Troubleshoot"
 msgstr "故障排除（_T）"
 
@@ -1962,42 +2006,42 @@ msgstr "打印机警告"
 msgid "Printer '%s': '%s'."
 msgstr "打印机 '%s'：'%s'"
 
-#: ../troubleshoot/__init__.py:53
+#: ../troubleshoot/__init__.py:52
 msgid "Printing troubleshooter"
 msgstr "打印故障排除"
 
-#: ../troubleshoot/base.py:26
+#: ../troubleshoot/base.py:33
 msgid ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
 msgstr "要启动这个工具，请在主菜单中选择「系统」->「管理」->「正在打印」。"
 
-#: ../troubleshoot/CheckLocalServerPublishing.py:28
+#: ../troubleshoot/CheckLocalServerPublishing.py:27
 msgid "Server Not Exporting Printers"
 msgstr ""
 
-#: ../troubleshoot/CheckLocalServerPublishing.py:29
+#: ../troubleshoot/CheckLocalServerPublishing.py:28
 msgid ""
 "Although one or more printers are marked as being shared, this print server "
 "is not exporting shared printers to the network."
 msgstr ""
 
-#: ../troubleshoot/CheckLocalServerPublishing.py:33
+#: ../troubleshoot/CheckLocalServerPublishing.py:32
 msgid ""
 "Enable the 'Share published printers connected to this system' option in the "
 "server settings using the printing administration tool."
 msgstr ""
 
-#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:146
+#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:146
 msgid "Install"
 msgstr "安装"
 
-#: ../troubleshoot/CheckPPDSanity.py:80
+#: ../troubleshoot/CheckPPDSanity.py:93
 #, fuzzy
 msgid "Invalid PPD File"
 msgstr "提供 PPD 文件"
 
-#: ../troubleshoot/CheckPPDSanity.py:89
+#: ../troubleshoot/CheckPPDSanity.py:102
 #, python-format
 msgid ""
 "The PPD file for printer `%s' does not conform to the specification.  "
@@ -2005,32 +2049,32 @@ msgid ""
 msgstr ""
 
 #. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:95
+#: ../troubleshoot/CheckPPDSanity.py:108
 #, fuzzy, python-format
 msgid "There is a problem with the PPD file for printer `%s'."
 msgstr "打印机 `%s' 有问题。"
 
-#: ../troubleshoot/CheckPPDSanity.py:105
+#: ../troubleshoot/CheckPPDSanity.py:118
 #, fuzzy
 msgid "Missing Printer Driver"
 msgstr "缺少打印机驱动程序"
 
-#: ../troubleshoot/CheckPPDSanity.py:108
+#: ../troubleshoot/CheckPPDSanity.py:121
 #, fuzzy, python-format
 msgid "Printer `%s' requires the %s package but it is not currently installed."
 msgstr "打印机‘%s’要求的 %s 软件包目前没有安装。"
 
-#: ../troubleshoot/CheckPPDSanity.py:113
+#: ../troubleshoot/CheckPPDSanity.py:126
 #, fuzzy, python-format
 msgid ""
 "Printer `%s' requires the `%s' program but it is not currently installed."
 msgstr "打印机‘%s’要求的 %s 软件包目前没有安装。"
 
-#: ../troubleshoot/ChooseNetworkPrinter.py:29
+#: ../troubleshoot/ChooseNetworkPrinter.py:28
 msgid "Choose Network Printer"
 msgstr "选择网络打印机"
 
-#: ../troubleshoot/ChooseNetworkPrinter.py:30
+#: ../troubleshoot/ChooseNetworkPrinter.py:29
 msgid ""
 "Please select the network printer you are trying to use from the list below. "
 "If it does not appear in the list, select 'Not listed'."
@@ -2038,26 +2082,26 @@ msgstr ""
 "请从以下列表中选择您要使用的网络打印机。如果没有您想要的打印机，请选择‘未列"
 "出’。"
 
-#: ../troubleshoot/ChooseNetworkPrinter.py:35
-#: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
+#: ../troubleshoot/ChooseNetworkPrinter.py:34
+#: ../troubleshoot/ChoosePrinter.py:35 ../troubleshoot/DeviceListed.py:35
 msgid "Name"
 msgstr "名称"
 
-#: ../troubleshoot/ChooseNetworkPrinter.py:39
-#: ../troubleshoot/ChoosePrinter.py:40 ../troubleshoot/DeviceListed.py:38
+#: ../troubleshoot/ChooseNetworkPrinter.py:38
+#: ../troubleshoot/ChoosePrinter.py:39 ../troubleshoot/DeviceListed.py:37
 msgid "Information"
 msgstr "信息"
 
-#: ../troubleshoot/ChooseNetworkPrinter.py:75
-#: ../troubleshoot/ChoosePrinter.py:64 ../troubleshoot/DeviceListed.py:70
+#: ../troubleshoot/ChooseNetworkPrinter.py:74
+#: ../troubleshoot/ChoosePrinter.py:63 ../troubleshoot/DeviceListed.py:69
 msgid "Not listed"
 msgstr "未列出"
 
-#: ../troubleshoot/ChoosePrinter.py:30
+#: ../troubleshoot/ChoosePrinter.py:29
 msgid "Choose Printer"
 msgstr "选择打印机"
 
-#: ../troubleshoot/ChoosePrinter.py:31
+#: ../troubleshoot/ChoosePrinter.py:30
 msgid ""
 "Please select the printer you are trying to use from the list below. If it "
 "does not appear in the list, select 'Not listed'."
@@ -2065,12 +2109,12 @@ msgstr ""
 "请从以下列表中选择您要使用的网络打印机。如果没有您想要的打印机，请选择‘未列"
 "出’。"
 
-#: ../troubleshoot/DeviceListed.py:30
+#: ../troubleshoot/DeviceListed.py:29
 #, fuzzy
 msgid "Choose Device"
 msgstr "改变设备 URI"
 
-#: ../troubleshoot/DeviceListed.py:31
+#: ../troubleshoot/DeviceListed.py:30
 #, fuzzy
 msgid ""
 "Please select the device you want to use from the list below. If it does not "
@@ -2079,12 +2123,12 @@ msgstr ""
 "请从以下列表中选择您要使用的网络打印机。如果没有您想要的打印机，请选择‘未列"
 "出’。"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:30
-#: ../troubleshoot/ErrorLogFetch.py:30
+#: ../troubleshoot/ErrorLogCheckpoint.py:29
+#: ../troubleshoot/ErrorLogFetch.py:29
 msgid "Debugging"
 msgstr "调试中"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:31
+#: ../troubleshoot/ErrorLogCheckpoint.py:30
 msgid ""
 "I would like to enable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to enable debugging."
@@ -2092,19 +2136,19 @@ msgstr ""
 "我希望从 CIPS 调度程序中启用调试输出。这可能导致调度程序重启。点击以下按钮启"
 "用调试功能。"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:35
+#: ../troubleshoot/ErrorLogCheckpoint.py:34
 msgid "Enable Debugging"
 msgstr "启用调试"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:149
+#: ../troubleshoot/ErrorLogCheckpoint.py:148
 msgid "Debug logging enabled."
 msgstr "启用调试日志。"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:151
+#: ../troubleshoot/ErrorLogCheckpoint.py:150
 msgid "Debug logging was already enabled."
 msgstr "已经启用调试日志。"
 
-#: ../troubleshoot/ErrorLogFetch.py:31
+#: ../troubleshoot/ErrorLogFetch.py:30
 msgid ""
 "I would like to disable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to disable debugging."
@@ -2112,68 +2156,68 @@ msgstr ""
 "我希望从 CIPS 调度程序中启用调试输出。这可能导致调度程序重启。点击以下按钮启"
 "用调试功能。"
 
-#: ../troubleshoot/ErrorLogFetch.py:35
+#: ../troubleshoot/ErrorLogFetch.py:34
 msgid "Disable Debugging"
 msgstr "禁用调试"
 
-#: ../troubleshoot/ErrorLogFetch.py:120
+#: ../troubleshoot/ErrorLogFetch.py:119
 msgid "Debug logging disabled."
 msgstr "禁用调试日志。"
 
-#: ../troubleshoot/ErrorLogParse.py:30
+#: ../troubleshoot/ErrorLogParse.py:29
 msgid "Error log messages"
 msgstr "出错日志信息"
 
-#: ../troubleshoot/ErrorLogParse.py:31
+#: ../troubleshoot/ErrorLogParse.py:30
 msgid "There are messages in the error log."
 msgstr "出错日志中的信息。"
 
-#: ../troubleshoot/LocalOrRemote.py:27
+#: ../troubleshoot/LocalOrRemote.py:26
 msgid "Printer Location"
 msgstr "打印机位置"
 
-#: ../troubleshoot/LocalOrRemote.py:28
+#: ../troubleshoot/LocalOrRemote.py:27
 msgid "Is the printer connected to this computer or available on the network?"
 msgstr "打印机是否连接到这台计算机或者在网络中可用？"
 
-#: ../troubleshoot/LocalOrRemote.py:30
+#: ../troubleshoot/LocalOrRemote.py:29
 msgid "Locally connected printer"
 msgstr "本地连接的打印机"
 
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:27
 msgid "Queue Not Shared"
 msgstr "队列不共享"
 
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
 msgid "The CUPS printer on the server is not shared."
 msgstr "服务器中的 CUPS 打印机是不共享的。"
 
-#: ../troubleshoot/PrinterStateReasons.py:29
+#: ../troubleshoot/PrinterStateReasons.py:28
 msgid "Status Messages"
 msgstr "状态信息"
 
-#: ../troubleshoot/PrinterStateReasons.py:30
+#: ../troubleshoot/PrinterStateReasons.py:29
 msgid "There are status messages associated with this queue."
 msgstr "有一些与这个队列有关的状态信息。"
 
-#: ../troubleshoot/PrinterStateReasons.py:53
+#: ../troubleshoot/PrinterStateReasons.py:52
 #, python-format
 msgid "The printer's state message is: `%s'."
 msgstr "打印机状态信息为：`%s'。"
 
-#: ../troubleshoot/PrinterStateReasons.py:78
+#: ../troubleshoot/PrinterStateReasons.py:77
 msgid "Errors are listed below:"
 msgstr "错误列出如下："
 
-#: ../troubleshoot/PrinterStateReasons.py:83
+#: ../troubleshoot/PrinterStateReasons.py:82
 msgid "Warnings are listed below:"
 msgstr "警告列出如下："
 
-#: ../troubleshoot/PrintTestPage.py:55
+#: ../troubleshoot/PrintTestPage.py:54
 msgid "Test Page"
 msgstr "打印测试页"
 
-#: ../troubleshoot/PrintTestPage.py:56
+#: ../troubleshoot/PrintTestPage.py:55
 msgid ""
 "Now print a test page.  If you are having problems printing a specific "
 "document, print that document now and mark the print job below."
@@ -2181,65 +2225,65 @@ msgstr ""
 "现在打印一张测试页。如果您在答应某个文档时出现问题，请现在打印该文档并在下面"
 "标出打印任务。"
 
-#: ../troubleshoot/PrintTestPage.py:71
+#: ../troubleshoot/PrintTestPage.py:70
 msgid "Cancel All Jobs"
 msgstr "取消所有任务"
 
-#: ../troubleshoot/PrintTestPage.py:77
+#: ../troubleshoot/PrintTestPage.py:76
 msgid "Test"
 msgstr "测试"
 
-#: ../troubleshoot/PrintTestPage.py:107
+#: ../troubleshoot/PrintTestPage.py:106
 msgid "Did the marked print jobs print correctly?"
 msgstr "标记的打印任务正确打印了吗？ "
 
-#: ../troubleshoot/PrintTestPage.py:114
+#: ../troubleshoot/PrintTestPage.py:113
 msgid "Yes"
 msgstr "是"
 
-#: ../troubleshoot/PrintTestPage.py:115
+#: ../troubleshoot/PrintTestPage.py:114
 msgid "No"
 msgstr "否"
 
-#: ../troubleshoot/PrintTestPage.py:322
+#: ../troubleshoot/PrintTestPage.py:321
 msgid "Error submitting test page"
 msgstr ""
 
-#: ../troubleshoot/QueueNotEnabled.py:57
-#: ../troubleshoot/QueueRejectingJobs.py:67
+#: ../troubleshoot/QueueNotEnabled.py:56
+#: ../troubleshoot/QueueRejectingJobs.py:66
 #, python-format
 msgid "The reason given is: `%s'."
 msgstr "理由是：`%s'。"
 
-#: ../troubleshoot/QueueNotEnabled.py:59
+#: ../troubleshoot/QueueNotEnabled.py:58
 msgid "This may be due to the printer being disconnected or switched off."
 msgstr "可能是因为打印机未连接或者关闭。"
 
-#: ../troubleshoot/QueueNotEnabled.py:63
+#: ../troubleshoot/QueueNotEnabled.py:62
 msgid "Queue Not Enabled"
 msgstr "未启用队列"
 
-#: ../troubleshoot/QueueNotEnabled.py:64
+#: ../troubleshoot/QueueNotEnabled.py:63
 #, python-format
 msgid "The queue `%s' is not enabled."
 msgstr "队列 `%s' 未启用。"
 
-#: ../troubleshoot/QueueNotEnabled.py:72
+#: ../troubleshoot/QueueNotEnabled.py:71
 msgid ""
 "To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
 "printer in the printer administration tool."
 msgstr "启用它，请在打印机管理工具‘策略’标签中为打印机选项‘启用’选择框。"
 
-#: ../troubleshoot/QueueRejectingJobs.py:32
+#: ../troubleshoot/QueueRejectingJobs.py:31
 msgid "Queue Rejecting Jobs"
 msgstr "队列拒绝任务"
 
-#: ../troubleshoot/QueueRejectingJobs.py:64
+#: ../troubleshoot/QueueRejectingJobs.py:63
 #, python-format
 msgid "The queue `%s' is rejecting jobs."
 msgstr "队列 `%s' 拒绝任务。"
 
-#: ../troubleshoot/QueueRejectingJobs.py:71
+#: ../troubleshoot/QueueRejectingJobs.py:70
 msgid ""
 "To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
 "`Policies' tab for the printer in the printer administration tool."
@@ -2247,29 +2291,29 @@ msgstr ""
 "要使队列接受任务，请在打印机管理工具‘策略’标签中为打印机选项‘接受任务’选择"
 "框。"
 
-#: ../troubleshoot/RemoteAddress.py:27
+#: ../troubleshoot/RemoteAddress.py:26
 msgid "Remote Address"
 msgstr "远程地址"
 
-#: ../troubleshoot/RemoteAddress.py:28
+#: ../troubleshoot/RemoteAddress.py:27
 msgid ""
 "Please enter as many details as you can about the network address of this "
 "printer."
 msgstr "请尽量详细的输入这台打印机的网络地址。"
 
-#: ../troubleshoot/RemoteAddress.py:36
+#: ../troubleshoot/RemoteAddress.py:35
 msgid "Server name:"
 msgstr "服务器名称："
 
-#: ../troubleshoot/RemoteAddress.py:43
+#: ../troubleshoot/RemoteAddress.py:42
 msgid "Server IP address:"
 msgstr "服务器 IP 地址："
 
-#: ../troubleshoot/SchedulerNotRunning.py:28
+#: ../troubleshoot/SchedulerNotRunning.py:27
 msgid "CUPS Service Stopped"
 msgstr "CUPS 服务停止"
 
-#: ../troubleshoot/SchedulerNotRunning.py:29
+#: ../troubleshoot/SchedulerNotRunning.py:28
 msgid ""
 "The CUPS print spooler does not appear to be running.  To correct this, "
 "choose System->Administration->Services from the main menu and look for the "
@@ -2278,41 +2322,41 @@ msgstr ""
 "没有显示 CUPS 打印机假脱机程序正在运行。要改正这个设定，请在主菜单中选择「系"
 "统」->「管理」->「服务」，并查找‘cups’服务。"
 
-#: ../troubleshoot/ServerFirewalled.py:27
+#: ../troubleshoot/ServerFirewalled.py:26
 msgid "Check Server Firewall"
 msgstr "检查服务器防火墙"
 
-#: ../troubleshoot/ServerFirewalled.py:28
+#: ../troubleshoot/ServerFirewalled.py:27
 msgid "It is not possible to connect to the server."
 msgstr "不可能连接到服务器。"
 
-#: ../troubleshoot/ServerFirewalled.py:43
+#: ../troubleshoot/ServerFirewalled.py:42
 #, python-format
 msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
 "port %d on server `%s'."
 msgstr "请查看防火墙或者路由器配置是否在服务器 `%s' 阻断了 TCP 端口 %d。"
 
-#: ../troubleshoot/Shrug.py:27
+#: ../troubleshoot/Shrug.py:26
 msgid "Sorry!"
 msgstr "对不起！"
 
-#: ../troubleshoot/Shrug.py:28
+#: ../troubleshoot/Shrug.py:27
 msgid ""
 "I have not been able to work out what the problem is, but I have collected "
 "some useful information to put in a bug report."
 msgstr ""
 "我无法解决这个问题，但我已经收集了一些有用信息，并将其加入 bug 报告中。"
 
-#: ../troubleshoot/Shrug.py:33
+#: ../troubleshoot/Shrug.py:32
 msgid "Diagnostic Output (Advanced)"
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:36
+#: ../troubleshoot/Welcome.py:35
 msgid "Trouble-shooting Printing"
 msgstr "打印故障排除"
 
-#: ../troubleshoot/Welcome.py:38
+#: ../troubleshoot/Welcome.py:37
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
@@ -2320,7 +2364,7 @@ msgstr ""
 "在下面的页面中，我将问您几个有关有问题的打印的问题。根据您的回答，我将试着提"
 "出解决建议。"
 
-#: ../troubleshoot/Welcome.py:42
+#: ../troubleshoot/Welcome.py:41
 msgid "Click 'Forward' to begin."
 msgstr "点击‘前进’开始。"
 
@@ -2491,9 +2535,6 @@ msgstr "选择默认打印机"
 
 #~ msgid "Delete this printer queue"
 #~ msgstr "删除这个打印机队列"
-
-#~ msgid "Goto Server"
-#~ msgstr "转到服务器"
 
 #~ msgid "Password required"
 #~ msgstr "需要密码"

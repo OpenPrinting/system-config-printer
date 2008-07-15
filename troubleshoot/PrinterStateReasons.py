@@ -22,7 +22,6 @@
 import cups
 import statereason
 from base import *
-from base import _
 class PrinterStateReasons(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Printer state reasons")

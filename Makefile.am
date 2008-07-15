@@ -56,9 +56,9 @@ nobase_pkgdata_SCRIPTS=				\
 	applet.py
 
 nobase_pkgdata_DATA=					\
+	AdvancedServerSettings.py			\
 	authconn.py					\
 	config.py					\
-	contextmenu.py					\
 	debug.py					\
 	errordialogs.py					\
 	glade.py					\
@@ -81,7 +81,6 @@ nobase_pkgdata_DATA=					\
 	glade/JobsWindow.glade				\
 	glade/NewPrinterName.glade				\
 	glade/NewPrinterWindow.glade			\
-	glade/printer_context_menu.glade			\
 	glade/PrinterPropertiesDialog.glade		\
 	glade/PrinterStatusWindow.glade			\
 	glade/PrintersWindow.glade				\

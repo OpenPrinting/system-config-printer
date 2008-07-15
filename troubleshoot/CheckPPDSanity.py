@@ -24,7 +24,6 @@ import cupshelpers
 import os
 import subprocess
 from base import *
-from base import _
 
 install_cmd = "/usr/bin/system-install-packages"
 
@@ -76,6 +75,20 @@ class CheckPPDSanity(Question):
         try:
             ppd = cups.PPD (tmpf)
             self.answers['cups_printer_ppd_valid'] = True
+
+            def options (options_list):
+                o = {}
+                for option in options_list:
+                    o[option.keyword] = option.defchoice
+                return o
+
+            defaults = {}
+            for group in ppd.optionGroups:
+                g = options (group.options)
+                for subgroup in group.subgroups:
+                    g[subgroup.name] = options (subgroup.options)
+                defaults[group.name] = g
+            self.answers['cups_printer_ppd_defaults'] = defaults
         except RuntimeError:
             title = _("Invalid PPD File")
             self.answers['cups_printer_ppd_valid'] = False

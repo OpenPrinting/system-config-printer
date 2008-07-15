@@ -1,3 +1,138 @@
+2008-07-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_shared_activate): Can't use
+	self.monitor.update() here because CUPS doesn't give us an IPP
+	notification for this.  Defer a call to populateList() instead.
+
+2008-07-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_enabled_activate): Tell the
+	monitor to check for updates.
+	(GUI.on_shared_activate): Likewise.
+	(GUI.save_printer): Likewise.
+	(GUI.rename_printer): Likewise.
+	(GUI.on_copy_activate): Likewise.
+	(GUI.on_delete_activate): Likewise.
+
+2008-07-15  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.update): Renamed...
+	(Monitor.update_jobs): ...to this.
+	(Monitor.get_notifications): Track name change.
+	(Monitor.refresh): Likewise.
+	(Monitor.update): New method for queuing an update (i.e. a call to
+	get_notifications).
+	(Monitor.handle_dbus_signal): Use it.
+
+2008-07-15  Tim Waugh  <twaugh@redhat.com>
+
+	* po/POTFILES.in: Don't try to translate
+	glade/printer_context_menu.glade since that has been removed.
+
+2008-07-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.__init__): Call ensure_update() on
+	the UIManager to get rid of the warning about not being able to
+	create an accelerator label.
+
+2008-07-14  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.on_enabled_activate): Call
+	populateList() on an idle callback. This is a workaround for an
+	endless loop that was occuring with the previous commit.
+	* system-config-printer.py (GUI.on_edit_activate): Add a dummy
+	parameter to comply with the signal handler signature.
+
+2008-07-12  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* Makefile.am (nobase_pkgdata_DATA): Remove contextmenu.py and
+	glade/printer_context_menu.glade.
+	* glade/printer_context_menu.glade: Removed.
+	* glade/PrintersWindow.glade: Remove the Printer menu
+	definition. It's handled in system-config-printer.py now. Glade
+	added some GtkImage id noise.
+	* system-config-printer.py
+	(GUI.dests_iconview_button_press_event): Popup the context menu on
+	button-press-event instead of on button-release-event like other
+	menus.
+	* system-config-printer.py (GUI): The Printer menubar item and the
+	iconview's menu is now the same and a proxy to a set of
+	gtk.Actions grouped on a gtk.UIManager instance.
+
+2008-07-14  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am (nobase_pkgdata_DATA): Ship new module.
+	* po/POTFILES.in: Translate it.
+
+2008-07-11  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.server_settings_response): Display
+	Advanced Server Settings dialog when Advanced is clicked in the
+	Server Settings dialog.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* glade/ServerSettingsDialog.glade: Added 'Advanced...' button to
+	server settings dialog.
+
+2008-07-11  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Connect the response
+	signal from the server settings dialog to a handler for it.
+	(GUI.on_server_settings_activate): Don't call run() here, just
+	display the dialog.  The response signal will call...
+	(GUI.server_settings_response): ...this new handler.
+
+2008-07-11  Tim Waugh  <twaugh@redhat.com>
+
+	* errordialogs.py (show_HTTP_Error): Fixed traceback.
+
+2008-07-10  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvSMBBrowser_row_expanded): Use URI exactly as
+	specified in libsmbclient man page.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.nextNPTab): When adding
+	an IPP printer, pre-fill the info and location fields from the
+	remote queue (trac #37).
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/CheckPPDSanity.py (CheckPPDSanity.display): Report
+	PPD option defaults.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/Locale.py: New module.
+	* troubleshoot/__init__.py (Troubleshooter._collect_answer): Run
+	it (trac #38).
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/CheckNetworkServerSanity.py
+	(CheckNetworkServerSanity.display): Look for SMB shares (trac
+	#47).
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/base.py: Make _ a public name for this module.
+	* troubleshoot/*.py: Don't explicitly import _.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.openprinting_printers_found): More descriptive
+	'select model' text.  Part of trac #25.
+
+2008-07-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.openprinting_printers_found): If an exact match is
+	found, pre-select it.  Part of trac #25.
+
 2008-07-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* GroupsPane.py (GroupsPane.on_button_press_event): Pop up the

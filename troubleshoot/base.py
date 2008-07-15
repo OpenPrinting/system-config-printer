@@ -23,6 +23,13 @@ import gtk
 from gettext import gettext as _
 from debug import *
 
+__all__ = [ 'gtk',
+            '_',
+            'debugprint', 'get_debugging', 'set_debugging',
+            'Question',
+            'Multichoice',
+            'TEXT_start_print_admin_tool' ]
+
 TEXT_start_print_admin_tool = _("To start this tool, select "
                                 "System->Administration->Printing "
                                 "from the main menu.")

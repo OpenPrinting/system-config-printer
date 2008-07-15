@@ -21,7 +21,6 @@
 
 import cups
 from base import *
-from base import _
 class QueueRejectingJobs(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Queue rejecting jobs?")
