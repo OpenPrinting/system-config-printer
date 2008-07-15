@@ -415,7 +415,7 @@ class Monitor:
             deferred_calls.append ((self.watcher.job_event,
                                    (self, jobid, nse, event, job.copy ())))
 
-        self.update (jobs)
+        self.update_jobs (jobs)
         self.jobs = jobs
 
         for (fn, args) in deferred_calls:
@@ -506,7 +506,7 @@ class Monitor:
 
         self.watcher.current_printers_and_jobs (self, self.printers.copy (),
                                                 jobs.copy ())
-        self.update (jobs)
+        self.update_jobs (jobs)
 
         self.jobs = jobs
         return False
@@ -533,14 +533,17 @@ class Monitor:
 
         return (printer_jobs, my_printers)
 
-    def update(self, jobs):
-        debugprint ("update")
+    def update_jobs(self, jobs):
+        debugprint ("update_jobs")
         (printer_jobs, my_printers) = self.sort_jobs_by_printer (jobs)
         self.check_state_reasons (my_printers, printer_jobs)
 
-    def handle_dbus_signal(self, *args):
+    def update(self):
         gobject.source_remove (self.update_timer)
         self.update_timer = gobject.timeout_add (200, self.get_notifications)
+
+    def handle_dbus_signal(self, *args):
+        self.update ()
         if not self.received_any_dbus_signals:
             self.received_any_dbus_signals = True
 

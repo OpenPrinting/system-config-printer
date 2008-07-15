@@ -53,7 +53,7 @@
 		      <signal name="activate" handler="on_connect_activate" last_modification_time="Mon, 20 Mar 2006 10:48:28 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image108">
+			<widget class="GtkImage" id="image115">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-connect</property>
 			  <property name="icon_size">1</property>
@@ -75,7 +75,7 @@
 		      <signal name="activate" handler="on_server_settings_activate" last_modification_time="Fri, 14 Mar 2008 12:02:35 GMT"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image109">
+			<widget class="GtkImage" id="image116">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-preferences</property>
 			  <property name="icon_size">1</property>
@@ -101,7 +101,7 @@
 		      <property name="use_underline">True</property>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image115">
+			<widget class="GtkImage" id="image117">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-new</property>
 			  <property name="icon_size">1</property>
@@ -124,7 +124,7 @@
 			      <accelerator key="N" modifiers="GDK_CONTROL_MASK" signal="activate"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image110">
+				<widget class="GtkImage" id="image118">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-print</property>
 				  <property name="icon_size">1</property>
@@ -145,7 +145,7 @@
 			      <signal name="activate" handler="on_new_class_activate" last_modification_time="Fri, 06 Jun 2008 09:04:42 GMT"/>
 
 			      <child internal-child="image">
-				<widget class="GtkImage" id="image111">
+				<widget class="GtkImage" id="image119">
 				  <property name="visible">True</property>
 				  <property name="stock">gtk-dnd-multiple</property>
 				  <property name="icon_size">1</property>
@@ -182,89 +182,10 @@
 	  </child>
 
 	  <child>
-	    <widget class="GtkMenuItem" id="menuitem5">
+	    <widget class="GtkMenuItem" id="printer_menubar_item">
 	      <property name="visible">True</property>
 	      <property name="label" translatable="yes">_Printer</property>
 	      <property name="use_underline">True</property>
-
-	      <child>
-		<widget class="GtkMenu" id="menuitem5_menu">
-
-		  <child>
-		    <widget class="GtkMenuItem" id="rename">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Rename</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_rename_activate" last_modification_time="Tue, 13 May 2008 11:34:02 GMT"/>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkImageMenuItem" id="copy">
-		      <property name="visible">True</property>
-		      <property name="label">gtk-copy</property>
-		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_copy_activate" last_modification_time="Wed, 22 Feb 2006 09:28:22 GMT"/>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkImageMenuItem" id="delete">
-		      <property name="visible">True</property>
-		      <property name="label">gtk-delete</property>
-		      <property name="use_stock">True</property>
-		      <signal name="activate" handler="on_delete_activate" last_modification_time="Wed, 22 Feb 2006 09:28:22 GMT"/>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkSeparatorMenuItem" id="separator4">
-		      <property name="visible">True</property>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkCheckMenuItem" id="enabled">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Enabled</property>
-		      <property name="use_underline">True</property>
-		      <property name="active">False</property>
-		      <signal name="activate" handler="on_enabled_activate" last_modification_time="Fri, 06 Jun 2008 09:43:18 GMT"/>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkCheckMenuItem" id="shared">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">_Shared</property>
-		      <property name="use_underline">True</property>
-		      <property name="active">False</property>
-		      <signal name="activate" handler="on_shared_activate" last_modification_time="Fri, 06 Jun 2008 10:42:59 GMT"/>
-		    </widget>
-		  </child>
-
-		  <child>
-		    <widget class="GtkImageMenuItem" id="set_as_default">
-		      <property name="visible">True</property>
-		      <property name="label" translatable="yes">Set As De_fault</property>
-		      <property name="use_underline">True</property>
-		      <signal name="activate" handler="on_set_as_default_activate" last_modification_time="Tue, 13 May 2008 11:45:27 GMT"/>
-
-		      <child internal-child="image">
-			<widget class="GtkImage" id="image112">
-			  <property name="visible">True</property>
-			  <property name="stock">gtk-home</property>
-			  <property name="icon_size">1</property>
-			  <property name="xalign">0.5</property>
-			  <property name="yalign">0.5</property>
-			  <property name="xpad">0</property>
-			  <property name="ypad">0</property>
-			</widget>
-		      </child>
-		    </widget>
-		  </child>
-		</widget>
-	      </child>
 	    </widget>
 	  </child>
 
@@ -310,7 +231,7 @@
 		      <accelerator key="F1" modifiers="0" signal="activate"/>
 
 		      <child internal-child="image">
-			<widget class="GtkImage" id="image113">
+			<widget class="GtkImage" id="image120">
 			  <property name="visible">True</property>
 			  <property name="stock">gtk-help</property>
 			  <property name="icon_size">1</property>

@@ -71,7 +71,7 @@ import gtk_label_autowrap
 from gtk_treeviewtooltips import TreeViewTooltips
 import urllib
 import troubleshoot
-import contextmenu
+import jobviewer
 import authconn
 import monitor
 from smburi import SMBURI
@@ -90,7 +90,6 @@ except locale.Error:
 from gettext import gettext as _
 monitor.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
-contextmenu.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
@@ -192,12 +191,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               "server_settings",
                               "new_printer",
                               "new_class",
-                              "rename",
-                              "copy",
-                              "delete",
-                              "enabled",
-                              "shared",
-                              "set_as_default",
+                              "printer_menubar_item",
                               "view_discovered_printers"],
                          "AboutDialog":
                              ["AboutDialog"],
@@ -340,8 +334,77 @@ class GUI(GtkGUI, monitor.Watcher):
         self.toolbar.add (refreshbutton)
         self.toolbar.show_all ()
 
-        # Printer Context Menu
-        self.printer_context_menu = contextmenu.PrinterContextMenu (self)
+        # Printer Actions
+        printer_manager_action_group = \
+            gtk.ActionGroup ("PrinterManagerActionGroup")
+        printer_manager_action_group.add_actions ([
+                ("rename-printer", None, _("_Rename"),
+                 None, None, self.on_rename_activate),
+                ("copy-printer", gtk.STOCK_COPY, None,
+                 "<Ctrl>c", None, self.on_copy_activate),
+                ("delete-printer", gtk.STOCK_DELETE, None,
+                 None, None, self.on_delete_activate),
+                ("set-default-printer", gtk.STOCK_HOME, _("Set As De_fault"),
+                 None, None, self.on_set_as_default_activate),
+                ("edit-printer", gtk.STOCK_EDIT, None,
+                 None, None, self.on_edit_activate),
+                ("create-class", gtk.STOCK_DND_MULTIPLE, _("_Create class"),
+                 None, None, self.on_create_class_activate),
+                ("view-print-queue", gtk.STOCK_FIND, _("View Print _Queue"),
+                 None, None, self.on_view_print_queue_activate),
+                ])
+        printer_manager_action_group.add_toggle_actions ([
+                ("enable-printer", None, _("E_nabled"),
+                 None, None, self.on_enabled_activate),
+                ("share-printer", None, _("_Shared"),
+                 None, None, self.on_shared_activate),
+                ])
+        for action in printer_manager_action_group.list_actions ():
+            action.set_sensitive (False)
+        printer_manager_action_group.get_action ("view-print-queue").set_sensitive (True)
+
+        self.ui_manager = gtk.UIManager ()
+        self.ui_manager.insert_action_group (printer_manager_action_group, -1)
+        self.ui_manager.add_ui_from_string (
+"""
+<ui>
+ <accelerator action="rename-printer"/>
+ <accelerator action="copy-printer"/>
+ <accelerator action="delete-printer"/>
+ <accelerator action="set-default-printer"/>
+ <accelerator action="edit-printer"/>
+ <accelerator action="create-class"/>
+ <accelerator action="view-print-queue"/>
+ <accelerator action="enable-printer"/>
+ <accelerator action="share-printer"/>
+</ui>
+"""
+)
+        self.ui_manager.ensure_update ()
+        self.PrintersWindow.add_accel_group (self.ui_manager.get_accel_group ())
+
+        self.printer_context_menu = gtk.Menu ()
+        for action_name in ["edit-printer",
+                            "copy-printer",
+                            "rename-printer",
+                            "delete-printer",
+                            None,
+                            "enable-printer",
+                            "share-printer",
+                            "create-class",
+                            "set-default-printer",
+                            None,
+                            "view-print-queue"]:
+            if not action_name:
+                item = gtk.SeparatorMenuItem ()
+            else:
+                action = printer_manager_action_group.get_action (action_name)
+                item = action.create_menu_item ()
+            item.show ()
+            self.printer_context_menu.append (item)
+        self.printer_menubar_item.set_submenu (self.printer_context_menu)
+
+        self.jobviewers = [] # to keep track of jobviewer windows
 
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
@@ -385,8 +448,8 @@ class GUI(GtkGUI, monitor.Watcher):
                                      self.dests_iconview_item_activated)
         self.dests_iconview.connect ('selection-changed',
                                      self.dests_iconview_selection_changed)
-        self.dests_iconview.connect ('button_release_event',
-                                     self.dests_iconview_button_release_event)
+        self.dests_iconview.connect ('button-press-event',
+                                     self.dests_iconview_button_press_event)
         self.dests_iconview.connect ('popup-menu',
                                      self.dests_iconview_popup_menu)
         self.dests_iconview_selection_changed (self.dests_iconview)
@@ -701,36 +764,59 @@ class GUI(GtkGUI, monitor.Watcher):
                 any_shared and any_unshared):
                 break
 
-        self.copy.set_sensitive(n == 1)
-        self.rename.set_sensitive(n == 1 and not any_discovered)
-        self.set_as_default.set_sensitive(n == 1 and
-                                          self.default_printer != name)
-        self.enabled.set_sensitive(n > 0 and not any_discovered)
-        self.enabled.set_inconsistent (n > 1 and any_enabled and any_disabled)
-        self.enabled.set_active (any_discovered or not any_disabled)
-        self.shared.set_sensitive(n > 0 and not any_discovered)
-        self.shared.set_inconsistent (n > 1 and any_enabled and any_disabled)
-        self.shared.set_active (any_discovered or not any_unshared)
-        self.delete.set_sensitive(n > 0 and not any_discovered)
+        self.ui_manager.get_action ("/edit-printer").set_sensitive (n == 1)
+
+        self.ui_manager.get_action ("/copy-printer").set_sensitive (n == 1)
+
+        self.ui_manager.get_action ("/rename-printer").set_sensitive (
+            n == 1 and not any_discovered)
+
+        userdef = userdefault.UserDefaultPrinter ().get ()
+        if (n != 1 or
+            (userdef == None and self.default_printer == name)):
+            set_default_sensitivity = False
+        else:
+            set_default_sensitivity = True
+
+        self.ui_manager.get_action ("/set-default-printer").set_sensitive (
+            set_default_sensitivity)
+
+        action = self.ui_manager.get_action ("/enable-printer")
+        action.set_sensitive (n > 0 and not any_discovered)
+        for widget in action.get_proxies ():
+            if isinstance (widget, gtk.CheckMenuItem):
+                widget.set_inconsistent (n > 1 and any_enabled and any_disabled)
+        action.set_active (any_discovered or not any_disabled)
+
+        action = self.ui_manager.get_action ("/share-printer")
+        action.set_sensitive (n > 0 and not any_discovered)
+        for widget in action.get_proxies ():
+            if isinstance (widget, gtk.CheckMenuItem):
+                widget.set_inconsistent (n > 1 and any_shared and any_unshared)
+        action.set_active (any_discovered or not any_unshared)
+
+        self.ui_manager.get_action ("/delete-printer").set_sensitive (
+            n > 0 and not any_discovered)
+
+        self.ui_manager.get_action ("/create-class").set_sensitive (n > 1)
+
         self.updating_widgets = False
 
     def dests_iconview_popup_menu (self, iconview):
-        paths = iconview.get_selected_items ()
-        self.printer_context_menu.popup (None, iconview, paths)
+        self.printer_context_menu.popup (None, None, None, 0, 0L)
 
-    def dests_iconview_button_release_event (self, iconview, event):
+    def dests_iconview_button_press_event (self, iconview, event):
         if event.button > 1:
             click_path = iconview.get_path_at_pos (int (event.x),
                                                    int (event.y))
             paths = iconview.get_selected_items ()
             if click_path == None:
                 iconview.unselect_all ()
-                paths = []
             elif click_path not in paths:
                 iconview.unselect_all ()
                 iconview.select_path (click_path)
-                paths = [click_path]
-            self.printer_context_menu.popup (event, iconview, paths)
+            self.printer_context_menu.popup (None, None, None,
+                                             event.button, event.time)
         return False
 
     def on_server_settings_activate (self, menuitem):
@@ -1521,7 +1607,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 nonfatalException()
 
         if class_deleted:
-            self.populateList ()
+            self.monitor.update ()
         else:
             # Update our copy of the printer's settings.
             try:
@@ -2078,11 +2164,12 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_quit_activate(self, widget, event=None):
         self.monitor.cleanup ()
-        self.printer_context_menu.cleanup ()
+        while len (self.jobviewers) > 0:
+            self.jobviewers[0].cleanup () # this will call on_jobviewer_exit
         gtk.main_quit()
 
     # Rename
-    def on_rename_activate(self, widget):
+    def on_rename_activate(self, UNUSED):
         tuple = self.dests_iconview.get_cursor ()
         if tuple == None:
             return
@@ -2140,7 +2227,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if self.copy_printer (new_name):
             # Failure.
-            self.populateList ()
+            self.monitor.update ()
             return
 
         # Restore rejecting state.
@@ -2194,7 +2281,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         return self.save_printer(self.printer, saveall=True)
 
-    def on_copy_activate(self, widget):
+    def on_copy_activate(self, UNUSED):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
@@ -2215,7 +2302,7 @@ class GUI(GtkGUI, monitor.Watcher):
             pass
 
         self.copy_printer (self.entCopyName.get_text ())
-        self.populateList()
+        self.monitor.update ()
 
     def on_entCopyName_changed(self, widget):
         # restrict
@@ -2231,7 +2318,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     # Delete
 
-    def on_delete_activate(self, widget):
+    def on_delete_activate(self, UNUSED):
         paths = self.dests_iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         n = len (paths)
@@ -2264,21 +2351,28 @@ class GUI(GtkGUI, monitor.Watcher):
             show_IPP_Error(e, msg, self.PrintersWindow)
 
         self.changed = set()
-        self.populateList()
+        self.monitor.update ()
 
     # Enable/disable
-    def on_enabled_activate(self, menuitem):
+    def on_enabled_activate(self, toggle_action):
         if self.updating_widgets:
             return
-        enable = menuitem.get_active ()
+        enable = toggle_action.get_active ()
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            printer.setEnabled (enable)
-        self.populateList ()
+            try:
+                printer.setEnabled (enable)
+            except cups.IPPError, (e, m):
+                errordialogs.show_IPP_Error (e, m, self.PrintersWindow)
+                # Give up on this operation.
+                break
+
+        self.monitor.update ()
+
 
     # Shared
     def on_shared_activate(self, menuitem):
@@ -2294,7 +2388,7 @@ class GUI(GtkGUI, monitor.Watcher):
             printer.setShared (share)
         if share:
             self.advise_publish ()
-        self.populateList ()
+        self.monitor.update ()
 
     def advise_publish(self):
         if not self.server_is_publishing:
@@ -2306,13 +2400,61 @@ class GUI(GtkGUI, monitor.Watcher):
                               parent=self.PrintersWindow)
 
     # Set As Default
-    def on_set_as_default_activate(self, menuitem):
+    def on_set_as_default_activate(self, UNUSED):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         iter = model.get_iter (paths[0])
         name = model.get_value (iter, 2)
         self.set_system_or_user_default_printer (name)
+
+    def on_edit_activate (self, UNUSED):
+        paths = self.dests_iconview.get_selected_items ()
+        self.dests_iconview_item_activated (self.dests_iconview, paths[0])
+
+    def on_create_class_activate (self, UNUSED):
+        paths = self.dests_iconview.get_selected_items ()
+        class_members = []
+        model = self.dests_iconview.get_model ()
+        for path in paths:
+            iter = model.get_iter (path)
+            name = model.get_value (iter, 2)
+            class_members.append (name)
+        self.newPrinterGUI.init ("class")
+        out_model = self.newPrinterGUI.tvNCNotMembers.get_model ()
+        in_model = self.newPrinterGUI.tvNCMembers.get_model ()
+        iter = out_model.get_iter_first ()
+        while iter != None:
+            next = out_model.iter_next (iter)
+            data = out_model.get (iter, 0)
+            if data[0] in class_members:
+                in_model.append (data)
+                out_model.remove (iter)
+            iter = next
+
+    def on_view_print_queue_activate (self, UNUSED):
+        paths = self.dests_iconview.get_selected_items ()
+        if len (paths):
+            specific_dests = []
+            model = self.dests_iconview.get_model ()
+            for path in paths:
+                iter = model.get_iter (path)
+                name = model.get_value (iter, 2)
+                specific_dests.append (name)
+            viewer = jobviewer.JobViewer (None, None, my_jobs=False,
+                                          specific_dests=specific_dests,
+                                          exit_handler=self.on_jobviewer_exit,
+                                          parent=self.PrintersWindow)
+        else:
+            viewer = jobviewer.JobViewer (None, None, my_jobs=False,
+                                          exit_handler=self.on_jobviewer_exit,
+                                          parent=self.PrintersWindow)
+
+        self.jobviewers.append (viewer)
+
+    def on_jobviewer_exit (self, viewer):
+        i = self.jobviewers.index (viewer)
+        del self.jobviewers[i]
 
     def on_troubleshoot_activate(self, widget):
         if not self.__dict__.has_key ('troubleshooter'):
