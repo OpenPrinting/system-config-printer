@@ -1589,7 +1589,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 nonfatalException()
 
         if class_deleted:
-            self.populateList ()
+            self.monitor.update ()
         else:
             # Update our copy of the printer's settings.
             try:
@@ -2209,7 +2209,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if self.copy_printer (new_name):
             # Failure.
-            self.populateList ()
+            self.monitor.update ()
             return
 
         # Restore rejecting state.
@@ -2284,7 +2284,7 @@ class GUI(GtkGUI, monitor.Watcher):
             pass
 
         self.copy_printer (self.entCopyName.get_text ())
-        self.populateList()
+        self.monitor.update ()
 
     def on_entCopyName_changed(self, widget):
         # restrict
@@ -2333,7 +2333,7 @@ class GUI(GtkGUI, monitor.Watcher):
             show_IPP_Error(e, msg, self.PrintersWindow)
 
         self.changed = set()
-        self.populateList()
+        self.monitor.update ()
 
     # Enable/disable
     def on_enabled_activate(self, toggle_action):
@@ -2353,10 +2353,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 # Give up on this operation.
                 break
 
-        def populateList_wrapper ():
-            self.populateList ()
-            return False
-        gobject.idle_add (populateList_wrapper)
+        self.monitor.update ()
 
 
     # Shared
@@ -2373,7 +2370,7 @@ class GUI(GtkGUI, monitor.Watcher):
             printer.setShared (share)
         if share:
             self.advise_publish ()
-        self.populateList ()
+        self.monitor.update ()
 
     def advise_publish(self):
         if not self.server_is_publishing:
