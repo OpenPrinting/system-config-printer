@@ -1,5 +1,15 @@
 2008-07-15  Tim Waugh  <twaugh@redhat.com>
 
+	* monitor.py (Monitor.update): Renamed...
+	(Monitor.update_jobs): ...to this.
+	(Monitor.get_notifications): Track name change.
+	(Monitor.refresh): Likewise.
+	(Monitor.update): New method for queuing an update (i.e. a call to
+	get_notifications).
+	(Monitor.handle_dbus_signal): Use it.
+
+2008-07-15  Tim Waugh  <twaugh@redhat.com>
+
 	* po/POTFILES.in: Don't try to translate
 	glade/printer_context_menu.glade since that has been removed.
 
