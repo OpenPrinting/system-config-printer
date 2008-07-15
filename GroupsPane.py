@@ -68,8 +68,8 @@ class GroupsPane (gtk.ScrolledWindow):
 
         self.tree_view.connect ('key-press-event',
                                 self.on_key_press_event)
-        self.tree_view.connect ('button-release-event',
-                                self.on_button_release_event)
+        self.tree_view.connect ('button-press-event',
+                                self.on_button_press_event)
         self.tree_view.connect ('button-press-event',
                                 self.on_single_click_activate)
         self.tree_view.connect ('row-activated',
@@ -208,17 +208,24 @@ class GroupsPane (gtk.ScrolledWindow):
     def do_popup_menu (self, event):
         # idea from eel_pop_up_context_menu ()
         button = 0
-        activate_time = 0 # GDK_CURRENT_TIME
+        activate_time = 0L # GDK_CURRENT_TIME
         if event:
+            activate_time = event.time
             if event.type != gtk.gdk.BUTTON_RELEASE:
                 button = event.button
-            activate_time = event.time
 
         menu = self.build_popup_menu ()
         menu.popup (None, None, None, button, activate_time)
 
-    def on_button_release_event (self, tree_view, event):
+    def on_button_press_event (self, tree_view, event):
         if event.button == 3:
+            selection = tree_view.get_selection ()
+            model, selected_paths = selection.get_selected_rows ()
+            click_info = tree_view.get_path_at_pos (int (event.x),
+                                                    int (event.y))
+            if click_info and (click_info[0] not in selected_paths):
+                selection.select_path (click_info[0])
+
             self.do_popup_menu (event)
 
         return False
