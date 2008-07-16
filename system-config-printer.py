@@ -455,16 +455,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.hpaned1.add1 (self.groups_pane)
 
         # Group menubar item
-        menu = gtk.Menu ()
-        item = self.groups_pane.ui_manager.get_action (
-            "/new-group").create_menu_item ()
-        item.show ()
-        menu.append (item)
-        item = self.groups_pane.ui_manager.get_action (
-            "/new-group-from-selection").create_menu_item ()
-        item.show ()
-        menu.append (item)
-        self.group_menubar_item.set_submenu (menu)
+        self.group_menubar_item.set_submenu (self.groups_pane.groups_menu)
 
         # Setup icon view
         self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object

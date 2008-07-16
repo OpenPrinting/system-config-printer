@@ -34,7 +34,7 @@ class GroupsPane (gtk.ScrolledWindow):
 
         self.tree_view = None
         self.store = None
-        self.popup_menu = None
+        self.groups_menu = None
         self.ui_manager = None
         self.currently_selected_queues = []
 
@@ -120,6 +120,22 @@ class GroupsPane (gtk.ScrolledWindow):
 </ui>
 """
 )
+        self.ui_manager.ensure_update ()
+
+        self.groups_menu = gtk.Menu ()
+        for action_name in ["new-group",
+                            "new-group-from-selection",
+                            None,
+                            "rename-group",
+                            "delete-group"]:
+            if not action_name:
+                item = gtk.SeparatorMenuItem ()
+            else:
+                action = action_group.get_action (action_name)
+                item = action.create_menu_item ()
+            item.show ()
+            self.groups_menu.append (item)
+
         selection = self.tree_view.get_selection ()
         selection.connect ("changed", self.on_selection_changed)
         selection.set_mode (gtk.SELECTION_BROWSE)
@@ -214,8 +230,7 @@ class GroupsPane (gtk.ScrolledWindow):
             if event.type != gtk.gdk.BUTTON_RELEASE:
                 button = event.button
 
-        menu = self.build_popup_menu ()
-        menu.popup (None, None, None, button, activate_time)
+        self.groups_menu.popup (None, None, None, button, activate_time)
 
     def on_button_press_event (self, tree_view, event):
         if event.button == 3:
@@ -234,31 +249,6 @@ class GroupsPane (gtk.ScrolledWindow):
         self.do_popup_menu (None)
 
         return True
-
-    def build_popup_menu (self):
-        if not self.popup_menu:
-            self.popup_menu = gtk.Menu ()
-            item = self.ui_manager.get_action (
-                "/new-group").create_menu_item ()
-            item.show ()
-            self.popup_menu.append (item)
-            item = self.ui_manager.get_action (
-                "/new-group-from-selection").create_menu_item ()
-            item.show ()
-            self.popup_menu.append (item)
-            item = gtk.SeparatorMenuItem ()
-            item.show ()
-            self.popup_menu.append (item)
-            item = self.ui_manager.get_action (
-                "/rename-group").create_menu_item ()
-            item.show ()
-            self.popup_menu.append (item)
-            item = self.ui_manager.get_action (
-                "/delete-group").create_menu_item ()
-            item.show ()
-            self.popup_menu.append (item)
-
-        return self.popup_menu
 
     def on_rename_group_activate (self, UNUSED):
         self.rename_selected_group ()
