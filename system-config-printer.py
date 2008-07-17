@@ -3636,11 +3636,11 @@ class NewPrinterGUI(GtkGUI):
             smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
             ctx = pysmb.smbc.Context (debug=debug,
                                       auth_fn=smbc_auth.callback)
-            workgroups = None
+            entries = None
             try:
                 while smbc_auth.perform_authentication () > 0:
                     try:
-                        workgroups = ctx.opendir ("smb://").getdents ()
+                        entries = ctx.opendir ("smb://").getdents ()
                     except Exception, e:
                         smbc_auth.failed (e)
             except RuntimeError, (e, s):
@@ -3650,10 +3650,12 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException ()
 
             store.clear ()
-            if workgroups:
-                for workgroup in workgroups:
-                    iter = store.append (None, [workgroup])
-                    i = store.append (iter)
+            if entries:
+                for entry in entries:
+                    if entry.smbc_type in [pysmb.smbc.WORKGROUP,
+                                           pysmb.smbc.SERVER]:
+                        iter = store.append (None, [entry])
+                        i = store.append (iter)
 
         self.ready(self.SMBBrowseDialog)
 
@@ -3761,7 +3763,7 @@ class NewPrinterGUI(GtkGUI):
             if entry == None:
                 return
 
-            if len (path) == 1:
+            if entry.smbc_type == pysmb.smbc.WORKGROUP:
                 # Workgroup
                 try:
                     if self.expanding_row:
@@ -3800,7 +3802,7 @@ class NewPrinterGUI(GtkGUI):
                 view.expand_row (path, 0)
                 del self.expanding_row
 
-            elif len (path) == 2:
+            elif entry.smbc_type == pysmb.smbc.SERVER:
                 # Server
                 try:
                     if self.expanding_row:

@@ -1,3 +1,11 @@
+2008-07-17  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.browse_smb_hosts): Allow
+	servers to be shown at the top level.
+	(NewPrinterGUI.on_tvSMBBrowser_row_expanded): Use smbc_type to
+	determine how to act, rather than the tree depth.
+	Fixes trac #45.
+
 2008-07-14  Tim Waugh  <twaugh@redhat.com>
 
 	* Makefile.am (nobase_pkgdata_DATA): Ship new module.
