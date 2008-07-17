@@ -1,6 +1,12 @@
 2008-07-17  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py
+	(NewPrinterGUI.on_tvSMBBrowser_cursor_changed): Prevent
+	traceback.
+
+2008-07-17  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
 	(NewPrinterGUI.on_tvSMBBrowser_row_activated): Use smbc_type to
 	determine how to act rather than the tree depth.
 	(NewPrinterGUI.on_tvSMBBrowser_cursor_changed): Likewise.
