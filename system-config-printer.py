@@ -3870,15 +3870,8 @@ class NewPrinterGUI(GtkGUI):
         """Handle double-clicks in the SMB tree view."""
         store = self.smb_store
         iter = store.get_iter (path)
-        is_share = False
-        if (pysmb.USE_OLD_CODE and store.iter_depth (iter) == 2):
-            is_share = True
-        elif not pysmb.USE_OLD_CODE:
-            entry = store.get_value (iter, 0)
-            if entry and entry.smbc_type == pysmb.smbc.PRINTER_SHARE:
-                is_share = True
-
-        if is_share:
+        entry = store.get_value (iter, 0)
+        if entry and entry.smbc_type == pysmb.smbc.PRINTER_SHARE:
             # This is a share, not a host.
             self.btnSMBBrowseOk.clicked ()
             return
@@ -3998,12 +3991,9 @@ class NewPrinterGUI(GtkGUI):
         store, iter = self.tvSMBBrowser.get_selection().get_selected()
         is_share = False
         if iter:
-            if pysmb.USE_OLD_CODE:
-                is_share = store.iter_depth (iter)
-            else:
-                entry = store.get_value (iter, 0)
-                if entry:
-                    is_share = entry.smbc_type == pysmb.smbc.PRINTER_SHARE
+            entry = store.get_value (iter, 0)
+            if entry:
+                is_share = entry.smbc_type == pysmb.smbc.PRINTER_SHARE
 
         self.btnSMBBrowseOk.set_sensitive(iter != None and is_share)
 
@@ -4016,12 +4006,9 @@ class NewPrinterGUI(GtkGUI):
         store, iter = self.tvSMBBrowser.get_selection().get_selected()
         is_share = False
         if iter:
-            if pysmb.USE_OLD_CODE:
-                is_share = store.iter_depth (iter) == 2
-            else:
-                entry = store.get_value (iter, 0)
-                if entry:
-                    is_share = entry.smbc_type == pysmb.smbc.PRINTER_SHARE
+            entry = store.get_value (iter, 0)
+            if entry:
+                is_share = entry.smbc_type == pysmb.smbc.PRINTER_SHARE
 
         if not iter or not is_share:
             self.SMBBrowseDialog.hide()
@@ -4031,17 +4018,13 @@ class NewPrinterGUI(GtkGUI):
         domain_iter = store.iter_parent (parent_iter)
         share = store.get_value (iter, 0)
         host = store.get_value (parent_iter, 0)
-        if pysmb.USE_OLD_CODE:
-            group = store.get_value (domain_iter, 0)
-            uri = SMBURI (group=group, host=host, share=share).get_uri ()
+        if domain_iter:
+            group = store.get_value (domain_iter, 0).name
         else:
-            if domain_iter:
-                group = store.get_value (domain_iter, 0).name
-            else:
-                group = ''
-            uri = SMBURI (group=group,
-                          host=host.name,
-                          share=share.name).get_uri ()
+            group = ''
+        uri = SMBURI (group=group,
+                      host=host.name,
+                      share=share.name).get_uri ()
 
         self.entSMBUsername.set_text ('')
         self.entSMBPassword.set_text ('')
