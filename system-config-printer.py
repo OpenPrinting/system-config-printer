@@ -3870,7 +3870,15 @@ class NewPrinterGUI(GtkGUI):
         """Handle double-clicks in the SMB tree view."""
         store = self.smb_store
         iter = store.get_iter (path)
-        if store.iter_depth (iter) == 2:
+        is_share = False
+        if (pysmb.USE_OLD_CODE and store.iter_depth (iter) == 2):
+            is_share = True
+        elif not pysmb.USE_OLD_CODE:
+            entry = store.get_value (iter, 0)
+            if entry and entry.smbc_type == pysmb.smbc.PRINTER_SHARE:
+                is_share = True
+
+        if is_share:
             # This is a share, not a host.
             self.btnSMBBrowseOk.clicked ()
             return
@@ -3889,6 +3897,9 @@ class NewPrinterGUI(GtkGUI):
 
         if entry.smbc_type == pysmb.smbc.WORKGROUP:
             # Workgroup
+            # Be careful though: if there is a server with the
+            # same name as the workgroup we will get a list of its
+            # shares, not the workgroup's servers.
             try:
                 if self.expanding_row:
                     return
@@ -3902,11 +3913,11 @@ class NewPrinterGUI(GtkGUI):
             smbc_auth = pysmb.AuthContext (self.SMBBrowseDialog)
             ctx = pysmb.smbc.Context (debug=debug,
                                       auth_fn=smbc_auth.callback)
-            servers = []
+            entries = []
             try:
                 while smbc_auth.perform_authentication () > 0:
                     try:
-                        servers = ctx.opendir (uri).getdents ()
+                        entries = ctx.opendir (uri).getdents ()
                     except Exception, e:
                         smbc_auth.failed (e)
             except RuntimeError, (e, s):
@@ -3919,9 +3930,10 @@ class NewPrinterGUI(GtkGUI):
                 i = model.iter_nth_child (iter, 0)
                 model.remove (i)
 
-            for server in servers:
-                i = model.append (iter, [server])
-                n = model.append (i)
+            for entry in entries:
+                i = model.append (iter, [entry])
+                if entry.smbc_type == pysmb.smbc.SERVER:
+                    n = model.append (i)
 
             view.expand_row (path, 0)
             del self.expanding_row
@@ -3984,8 +3996,17 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
         store, iter = self.tvSMBBrowser.get_selection().get_selected()
-        self.btnSMBBrowseOk.set_sensitive(iter != None
-                                          and store.iter_depth(iter) == 2)
+        if iter:
+            if pysmb.USE_OLD_CODE:
+                is_share = store.iter_depth (iter)
+            else:
+                entry = store.get_value (iter, 0)
+                if entry:
+                    is_share == entry.smbc_type == pysmb.smb.PRINTER_SHARE
+        else:
+            is_share = False
+
+        self.btnSMBBrowseOk.set_sensitive(iter != None and is_share)
 
     def on_btnSMBBrowse_clicked(self, button):
         self.btnSMBBrowseOk.set_sensitive(False)
@@ -3994,18 +4015,34 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnSMBBrowseOk_clicked(self, button):
         store, iter = self.tvSMBBrowser.get_selection().get_selected()
-        if not iter or store.iter_depth(iter) != 2:
+        is_share = False
+        if iter:
+            if pysmb.USE_OLD_CODE:
+                is_share = store.iter_depth (iter) == 2
+            else:
+                entry = store.get_value (iter, 0)
+                if entry:
+                    is_share = entry.smbc_type == PRINTER_SHARE
+
+        if not iter or not is_share:
             self.SMBBrowseDialog.hide()
             return
 
         parent_iter = store.iter_parent (iter)
         domain_iter = store.iter_parent (parent_iter)
-        group = store.get_value (domain_iter, 0)
-        host = store.get_value (parent_iter, 0)
         share = store.get_value (iter, 0)
-        uri = SMBURI (group=group.name,
-                      host=host.name,
-                      share=share.name).get_uri ()
+        host = store.get_value (parent_iter, 0)
+        if pysmb.USE_OLD_CODE:
+            group = store.get_value (domain_iter, 0)
+            uri = SMBURI (group=group, host=host, share=share).get_uri ()
+        else:
+            if domain_iter:
+                group = store.get_value (domain_iter, 0).name
+            else:
+                group = ''
+            uri = SMBURI (group=group,
+                          host=host.name,
+                          share=share.name).get_uri ()
 
         self.entSMBUsername.set_text ('')
         self.entSMBPassword.set_text ('')
