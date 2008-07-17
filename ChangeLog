@@ -1,6 +1,13 @@
 2008-07-17  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py
+	(NewPrinterGUI.on_tvSMBBrowser_row_expanded): Guard against shares
+	being found instead of servers.  In this case, only use printer
+	shares.
+
+2008-07-17  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
 	(NewPrinterGUI.on_tvSMBBrowser_row_activated): Removed
 	USE_OLD_CODE check.
 	(NewPrinterGUI.on_tvSMBBrowser_cursor_changed): Likewise.
