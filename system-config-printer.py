@@ -3807,7 +3807,9 @@ class NewPrinterGUI(GtkGUI):
                     model.remove (i)
 
                 for entry in entries:
-                    i = model.append (iter, [entry])
+                    if entry.smbc_type in [pysmb.smbc.SERVER,
+                                           pysmb.smbc.PRINTER_SHARE]:
+                        i = model.append (iter, [entry])
                     if entry.smbc_type == pysmb.smbc.SERVER:
                         n = model.append (i)
 
