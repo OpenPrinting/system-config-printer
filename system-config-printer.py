@@ -3996,15 +3996,14 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
         store, iter = self.tvSMBBrowser.get_selection().get_selected()
+        is_share = False
         if iter:
             if pysmb.USE_OLD_CODE:
                 is_share = store.iter_depth (iter)
             else:
                 entry = store.get_value (iter, 0)
                 if entry:
-                    is_share == entry.smbc_type == pysmb.smb.PRINTER_SHARE
-        else:
-            is_share = False
+                    is_share = entry.smbc_type == pysmb.smbc.PRINTER_SHARE
 
         self.btnSMBBrowseOk.set_sensitive(iter != None and is_share)
 
@@ -4022,7 +4021,7 @@ class NewPrinterGUI(GtkGUI):
             else:
                 entry = store.get_value (iter, 0)
                 if entry:
-                    is_share = entry.smbc_type == PRINTER_SHARE
+                    is_share = entry.smbc_type == pysmb.smbc.PRINTER_SHARE
 
         if not iter or not is_share:
             self.SMBBrowseDialog.hide()
