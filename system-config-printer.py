@@ -357,6 +357,8 @@ class GUI(GtkGUI, monitor.Watcher):
                  None, None, self.on_create_class_activate),
                 ("view-print-queue", gtk.STOCK_FIND, _("View Print _Queue"),
                  None, None, self.on_view_print_queue_activate),
+                ("add-to-group", None, _("_Add to Group"),
+                 None, None, None),
                 ])
         printer_manager_action_group.add_toggle_actions ([
                 ("enable-printer", None, _("E_nabled"),
@@ -380,6 +382,7 @@ class GUI(GtkGUI, monitor.Watcher):
  <accelerator action="edit-printer"/>
  <accelerator action="create-class"/>
  <accelerator action="view-print-queue"/>
+ <accelerator action="add-to-group"/>
  <accelerator action="enable-printer"/>
  <accelerator action="share-printer"/>
 </ui>
@@ -399,6 +402,7 @@ class GUI(GtkGUI, monitor.Watcher):
                             "create-class",
                             "set-default-printer",
                             None,
+                            "add-to-group",
                             "view-print-queue"]:
             if not action_name:
                 item = gtk.SeparatorMenuItem ()
@@ -447,6 +451,8 @@ class GUI(GtkGUI, monitor.Watcher):
         self.current_groups_pane_item = self.groups_pane.get_selected_item ()
         self.groups_pane.connect ('item-activated',
                                   self.on_groups_pane_item_activated)
+        self.groups_pane.connect ('items-changed',
+                                  self.on_groups_pane_items_changed)
         self.PrintersWindow.add_accel_group (
             self.groups_pane.ui_manager.get_accel_group ())
         # Need to have a dummy widget in glade or it will put the iconview on
@@ -456,6 +462,16 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # Group menubar item
         self.group_menubar_item.set_submenu (self.groups_pane.groups_menu)
+
+        # "Add to Group" submenu
+        self.add_to_group_menu = gtk.Menu ()
+        self.update_add_to_group_menu ()
+        action = printer_manager_action_group.get_action ("add-to-group")
+        for proxy in action.get_proxies ():
+            if isinstance (proxy, gtk.MenuItem):
+                item = proxy
+                break
+        item.set_submenu (self.add_to_group_menu)
 
         # Setup icon view
         self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
@@ -736,6 +752,29 @@ class GUI(GtkGUI, monitor.Watcher):
         self.current_groups_pane_item = item
         self.populateList ()
 
+    def on_add_to_group_menu_item_activate (self, menuitem, group):
+        group.add_queues (self.groups_pane.currently_selected_queues)
+
+    def update_add_to_group_menu (self):
+        for child in self.add_to_group_menu.get_children ():
+            self.add_to_group_menu.remove (child)
+        static_groups = self.groups_pane.get_static_groups ()
+        for group in static_groups:
+            item = gtk.MenuItem (group.name, False)
+            item.connect ("activate",
+                          self.on_add_to_group_menu_item_activate, group)
+            self.add_to_group_menu.append (item)
+        if len (static_groups) > 0:
+            item = gtk.SeparatorMenuItem ()
+            self.add_to_group_menu.append (item)
+        action = self.groups_pane.ui_manager.get_action ("/new-group-from-selection")
+        item = action.create_menu_item ()
+        self.add_to_group_menu.append (item)
+        self.add_to_group_menu.show_all ()
+
+    def on_groups_pane_items_changed (self, UNUSED):
+        self.update_add_to_group_menu ()
+
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
         iter = model.get_iter (path)
@@ -859,6 +898,8 @@ class GUI(GtkGUI, monitor.Watcher):
             n > 0 and not any_discovered)
 
         self.ui_manager.get_action ("/create-class").set_sensitive (n > 1)
+
+        self.ui_manager.get_action ("/add-to-group").set_sensitive (n > 0)
 
         self.updating_widgets = False
 

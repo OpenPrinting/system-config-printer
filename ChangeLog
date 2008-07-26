@@ -1,3 +1,21 @@
+2008-07-26  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane): New signal "items-changed".
+	* GroupsPane.py (GroupsPane.on_group_name_edited):
+	* GroupsPane.py (GroupsPane.on_delete_selected_group_response):
+	* GroupsPane.py (GroupsPane.on_new_group_activate):
+	* GroupsPane.py (GroupsPane.on_new_group_from_selection_activate):
+	Emit it.
+	* GroupsPane.py (GroupsPane.get_static_groups): New method.
+	* system-config-printer.py (GUI.__init__): New action "add-to-group".
+	* system-config-printer.py
+	(GUI.on_add_to_group_menu_item_activate): Add selected
+	printer queues to a group.
+	* system-config-printer.py (GUI.update_add_to_group_menu): Build
+	the add-to-group submenu.
+	* system-config-printer.py (GUI.on_groups_pane_items_changed):
+	Handle group items changes.
+
 2008-07-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* GroupsPane.py (GroupsPane.__init__): Build the groups menu on

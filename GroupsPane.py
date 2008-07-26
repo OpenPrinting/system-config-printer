@@ -24,7 +24,9 @@ from XmlHelper import xml_helper
 class GroupsPane (gtk.ScrolledWindow):
     __gsignals__ = {
         'item-activated' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                            [GroupsPaneItem])
+                            [GroupsPaneItem]),
+        'items-changed' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                           []),
         }
 
     DND_DROP_TYPE_QUEUE = 0
@@ -173,6 +175,7 @@ class GroupsPane (gtk.ScrolledWindow):
             return
 
         group_item.rename (new_text)
+        self.emit ("items-changed")
 
     def on_group_name_editing_canceled (self, cell):
         cell.set_properties (editable = False)
@@ -304,6 +307,7 @@ class GroupsPane (gtk.ScrolledWindow):
                 self.tree_view.get_column (0))
             self.store.remove (titer)
             group_item.delete ()
+            self.emit ("items-changed")
 
     def get_selected_item (self):
         model, titer = self.tree_view.get_selection ().get_selected ()
@@ -325,6 +329,7 @@ class GroupsPane (gtk.ScrolledWindow):
     def on_new_group_activate (self, UNUSED):
         item = StaticGroupItem (self.generate_new_group_name ())
         titer = self.store.append_by_type (item)
+        self.emit ("items-changed")
         self.tree_view.row_activated (
             self.store.get_path (titer),
             self.tree_view.get_column (0))
@@ -333,6 +338,7 @@ class GroupsPane (gtk.ScrolledWindow):
     def on_new_group_from_selection_activate (self, UNUSED):
         item = StaticGroupItem (self.generate_new_group_name ())
         titer = self.store.append_by_type (item)
+        self.emit ("items-changed")
         item.add_queues (self.currently_selected_queues)
         self.tree_view.row_activated (
             self.store.get_path (titer),
@@ -380,5 +386,13 @@ class GroupsPane (gtk.ScrolledWindow):
         self.tree_view.set_drag_dest_row (path,
                                           gtk.TREE_VIEW_DROP_INTO_OR_AFTER)
         return True
+
+    def get_static_groups (self):
+        static_groups = []
+        for row in self.store:
+            if isinstance (row[0], StaticGroupItem):
+                static_groups.append (row[0])
+        return static_groups
+
 
 gobject.type_register (GroupsPane)
