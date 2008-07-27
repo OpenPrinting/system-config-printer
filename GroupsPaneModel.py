@@ -102,17 +102,28 @@ class StaticGroupItem (MutableItem):
     def add_queues (self, queue_list):
         queues_node = self.xml_node.children
 
-        if not queues_node or queues_node.name != "queues":
-            nonfatalException ()
-            # create one anyway
-            queues_node = self.xml_node.newChild (None, "queues", None)
-
         for queue_name in queue_list:
             if queue_name not in self.printer_queues:
                 queue_node = libxml2.newNode ("queue")
                 queue_node.newProp ("name", queue_name)
                 queues_node.addChild (queue_node)
                 self.printer_queues.append (queue_name)
+
+        xml_helper.write ()
+
+    def remove_queues (self, queue_list):
+        queues_node = self.xml_node.children
+
+        for queue_name in queue_list:
+            if queue_name in self.printer_queues:
+                queue_node = self.xml_node.children.children
+                while queue_node:
+                    if queue_node.prop ("name") == queue_name:
+                        break
+                    queue_node = queue_node.next
+                queue_node.unlinkNode ()
+                queue_node.freeNode ()
+                self.printer_queues.remove (queue_name)
 
         xml_helper.write ()
 

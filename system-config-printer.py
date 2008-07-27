@@ -1061,10 +1061,14 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # Choose a view according to the groups pane item
         if isinstance (self.current_groups_pane_item, AllPrintersItem):
+            delete_action = self.ui_manager.get_action ("/delete-printer")
+            delete_action.set_properties (label = None)
             printers_set = self.printers
         elif isinstance (self.current_groups_pane_item, FavouritesItem):
             printers_set = {} # FIXME
         elif isinstance (self.current_groups_pane_item, StaticGroupItem):
+            delete_action = self.ui_manager.get_action ("/delete-printer")
+            delete_action.set_properties (label = _("Remove from Group"))
             printers_set = {}
             for printer_name in self.current_groups_pane_item.printer_queues:
                 try:
@@ -2480,6 +2484,18 @@ class GUI(GtkGUI, monitor.Watcher):
     # Delete
 
     def on_delete_activate(self, UNUSED):
+        if isinstance (self.current_groups_pane_item, StaticGroupItem):
+            paths = self.dests_iconview.get_selected_items ()
+            model = self.dests_iconview.get_model ()
+            selected_names = []
+            for path in paths:
+                selected_names.append (model[path][2])
+            self.current_groups_pane_item.remove_queues (selected_names)
+            self.populateList ()
+        else:
+            self.delete_selected_printer_queues ()
+
+    def delete_selected_printer_queues (self):
         paths = self.dests_iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         n = len (paths)

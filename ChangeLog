@@ -1,3 +1,19 @@
+2008-07-27  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPaneModel.py (StaticGroupItem.add_queues): Removed bogus
+	code to check if a static group xml node has a child called
+	"queues". We make sure that always happens anyway. Better error
+	handling for the XML handling code can be done later.
+	* GroupsPaneModel.py (StaticGroupItem.remove_queues): New method.
+	* system-config-printer.py (GUI.populateList): Change the
+	delete-printer action's label to "Remove from Group" when a static
+	group is active.
+	* system-config-printer.py (GUI.delete_selected_printer_queues):
+	New method with the old contents of...
+	* system-config-printer.py (GUI.on_delete_activate): ...this. Now
+	this method handles the remove from static group case and calls
+	the previously mentioned one when in the All Printers view.
+
 2008-07-26  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* GroupsPane.py (GroupsPane): New signal "items-changed".
