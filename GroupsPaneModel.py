@@ -140,8 +140,8 @@ class GroupsPaneModel (gtk.ListStore):
     def append (self, item):
         return super (GroupsPaneModel, self).append ([item])
 
-    def get (self, titer):
-        return self[titer][0]
+    def get (self, iter_or_path):
+        return self[iter_or_path][0]
 
     def lookup_by_name (self, name):
         for item in self:

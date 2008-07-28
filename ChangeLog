@@ -1,3 +1,10 @@
+2008-07-28  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPaneModel.py (GroupsPaneModel.get): This function can be
+	used with either a TreeIter or a path thanks to the gtk.ListStore
+	implementors. Use this function all over GroupsPane.py where it
+	saves us from doing path-to-iter and iter-to-path conversions.
+
 2008-07-27  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* GroupsPaneModel.py (StaticGroupItem.add_queues): Removed bogus

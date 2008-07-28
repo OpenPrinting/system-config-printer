@@ -148,11 +148,11 @@ class GroupsPane (gtk.ScrolledWindow):
             self.store.append (StaticGroupItem (group_name, group_node))
 
     def icon_cell_data_func (self, column, cell, model, iter):
-        icon = model.get_value (iter, 0).icon
+        icon = model.get (iter).icon
         cell.set_properties (pixbuf = icon)
 
     def label_cell_data_func (self, column, cell, model, iter):
-        label = model.get_value (iter, 0).name
+        label = model.get (iter).name
         cell.set_properties (text = label)
 
     def on_group_name_edited (self, cell, path, new_text):
@@ -211,7 +211,7 @@ class GroupsPane (gtk.ScrolledWindow):
 
     def on_row_activated (self, tree_view, path, column):
         tree_view.get_selection ().select_path (path)
-        item = self.store.get_value (self.store.get_iter (path), 0)
+        item = self.store.get (path)
         self.emit ('item-activated', item)
 
     def on_selection_changed (self, selection):
@@ -222,7 +222,7 @@ class GroupsPane (gtk.ScrolledWindow):
         self.ui_manager.get_action ("/delete-group").set_sensitive (sensitivity)
 
     def row_separator_func (self, model, iter):
-        return model.get_value (iter, 0).separator
+        return model.get (iter).separator
 
     def do_popup_menu (self, event):
         # idea from eel_pop_up_context_menu ()
@@ -348,8 +348,7 @@ class GroupsPane (gtk.ScrolledWindow):
     def is_drop_target (self, tree_view, x, y):
         try:
             path, position = self.tree_view.get_dest_row_at_pos (x, y)
-            titer = self.store.get_iter (path)
-            group_item = self.store.get (titer)
+            group_item = self.store.get (path)
         except TypeError:
             return False
 
@@ -366,8 +365,7 @@ class GroupsPane (gtk.ScrolledWindow):
             return
 
         path, position = self.tree_view.get_dest_row_at_pos (x, y)
-        titer = self.store.get_iter (path)
-        group_item = self.store.get (titer)
+        group_item = self.store.get (path)
         if not isinstance (group_item, StaticGroupItem):
             context.finish (False, False, timestamp)
             return
