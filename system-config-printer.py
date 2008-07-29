@@ -3026,6 +3026,9 @@ class NewPrinterGUI(GtkGUI):
                     except:
                         nonfatalException ()
 
+                    cups.setServer (oldserver)
+                    cups.setPort (oldport)
+
                 ppdname = None
                 try:
                     if self.remotecupsqueue:
