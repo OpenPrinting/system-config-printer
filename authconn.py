@@ -97,6 +97,9 @@ class Connection:
         self._use_password = ''
         self._parent = parent
         self._try_as_root = try_as_root
+        self._use_user = cups.getUser ()
+        self._server = cups.getServer ()
+        self._port = cups.getPort()
         self._connect ()
         self._prompt_allowed = True
 
@@ -107,9 +110,10 @@ class Connection:
         self._prompt_allowed = allowed
 
     def _connect (self):
+        cups.setUser (self._use_user)
+        cups.setServer (self._server)
+        cups.setPort (self._port)
         self._connection = cups.Connection ()
-        self._use_user = cups.getUser ()
-        self._server = cups.getServer ()
         self._user = self._use_user
         debugprint ("Connected as user %s" % self._user)
         methodtype = type (self._connection.getPrinters)

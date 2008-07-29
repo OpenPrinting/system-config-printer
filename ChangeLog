@@ -1,5 +1,12 @@
 2008-07-29  Tim Waugh  <twaugh@redhat.com>
 
+	* authconn.py (Connection.__init__): Note current settings for
+	CUPS user, server and port.
+	(Connection._connect): Reset user, server and port settings before
+	connection (trac #79).
+
+2008-07-29  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.printer_properties_response):
 	Re-read the PPD after applying changes (trac #76).
 
