@@ -346,7 +346,7 @@ class GUI(GtkGUI, monitor.Watcher):
                  None, None, self.on_delete_activate),
                 ("set-default-printer", gtk.STOCK_HOME, _("Set As De_fault"),
                  None, None, self.on_set_as_default_activate),
-                ("edit-printer", gtk.STOCK_EDIT, None,
+                ("edit-printer", gtk.STOCK_PROPERTIES, None,
                  None, None, self.on_edit_activate),
                 ("create-class", gtk.STOCK_DND_MULTIPLE, _("_Create class"),
                  None, None, self.on_create_class_activate),
