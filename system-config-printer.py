@@ -815,6 +815,11 @@ class GUI(GtkGUI, monitor.Watcher):
             elif click_path not in paths:
                 iconview.unselect_all ()
                 iconview.select_path (click_path)
+                cells = iconview.get_cells ()
+                for cell in cells:
+                    if type (cell) == gtk.CellRendererText:
+                        break
+                iconview.set_cursor (click_path, cell)
             self.printer_context_menu.popup (None, None, None,
                                              event.button, event.time)
         return False
@@ -2204,6 +2209,11 @@ class GUI(GtkGUI, monitor.Watcher):
             cell.disconnect (id)
 
     def rename_printer (self, old_name, new_name):
+        def jobs_error ():
+            show_error_dialog (_("Cannot Rename"),
+                               _("There are queued jobs."),
+                               parent=self.MainWindow)
+            
         if old_name == new_name:
             return
 
@@ -2215,7 +2225,8 @@ class GUI(GtkGUI, monitor.Watcher):
 
         jobs = self.printer.jobsQueued ()
         if len (jobs) > 0:
-            raise RuntimeError
+            jobs_error ()
+            return
 
         rejecting = self.printer.rejecting
         if not rejecting:
@@ -2223,7 +2234,8 @@ class GUI(GtkGUI, monitor.Watcher):
             jobs = self.printer.jobsQueued ()
             if len (jobs) > 0:
                 self.printer.setAccepting (True)
-                raise RuntimeError
+                jobs_error ()
+                return
 
         if self.copy_printer (new_name):
             # Failure.
