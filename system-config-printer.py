@@ -2084,6 +2084,11 @@ class GUI(GtkGUI, monitor.Watcher):
             cell.disconnect (id)
 
     def rename_printer (self, old_name, new_name):
+        def jobs_error ():
+            show_error_dialog (_("Cannot Rename"),
+                               _("There are queued jobs."),
+                               parent=self.MainWindow)
+            
         if old_name == new_name:
             return
 
@@ -2095,7 +2100,8 @@ class GUI(GtkGUI, monitor.Watcher):
 
         jobs = self.printer.jobsQueued ()
         if len (jobs) > 0:
-            raise RuntimeError
+            jobs_error ()
+            return
 
         rejecting = self.printer.rejecting
         if not rejecting:
@@ -2103,7 +2109,8 @@ class GUI(GtkGUI, monitor.Watcher):
             jobs = self.printer.jobsQueued ()
             if len (jobs) > 0:
                 self.printer.setAccepting (True)
-                raise RuntimeError
+                jobs_error ()
+                return
 
         if self.copy_printer (new_name):
             # Failure.
