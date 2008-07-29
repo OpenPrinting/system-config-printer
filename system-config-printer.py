@@ -730,6 +730,11 @@ class GUI(GtkGUI, monitor.Watcher):
             success = self.save_printer (self.printer)
 
         if response == gtk.RESPONSE_APPLY:
+            try:
+                self.fillPrinterTab (self.printer.name)
+            except:
+                pass
+
             self.setDataButtonState ()
 
         if ((response == gtk.RESPONSE_OK and not success) or
@@ -3215,6 +3220,9 @@ class NewPrinterGUI(GtkGUI):
                             self.entNPLocation.set_text (location)
                     except:
                         nonfatalException ()
+
+                    cups.setServer (oldserver)
+                    cups.setPort (oldport)
 
                 ppdname = None
                 try:
