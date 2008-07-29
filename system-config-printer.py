@@ -2807,6 +2807,9 @@ class NewPrinterGUI(GtkGUI):
         # SMB browser
         self.smb_store = gtk.TreeStore (gobject.TYPE_PYOBJECT)
         self.btnSMBBrowse.set_sensitive (PYSMB_AVAILABLE)
+        if not PYSMB_AVAILABLE:
+            self.btnSMBBrowse.set_tooltip_text (_("Browsing not available "
+                                                  "(pysmbc not installed)"))
 
         self.tvSMBBrowser.set_model (self.smb_store)
 
