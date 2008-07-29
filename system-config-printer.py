@@ -696,6 +696,11 @@ class GUI(GtkGUI, monitor.Watcher):
             elif click_path not in paths:
                 iconview.unselect_all ()
                 iconview.select_path (click_path)
+                cells = iconview.get_cells ()
+                for cell in cells:
+                    if type (cell) == gtk.CellRendererText:
+                        break
+                iconview.set_cursor (click_path, cell)
                 paths = [click_path]
             self.printer_context_menu.popup (event, iconview, paths)
         return False
