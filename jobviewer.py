@@ -642,9 +642,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
             if (e != cups.IPP_NOT_POSSIBLE and
                 e != cups.IPP_NOT_FOUND):
                 self.show_IPP_Error (e, m)
+            self.monitor.update ()
             return
         except RuntimeError:
             return
+
+        self.monitor.update ()
 
     def on_job_hold_activate(self, menuitem):
         try:
@@ -655,9 +658,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
             if (e != cups.IPP_NOT_POSSIBLE and
                 e != cups.IPP_NOT_FOUND):
                 self.show_IPP_Error (e, m)
+            self.monitor.update ()
             return
         except RuntimeError:
             return
+
+        self.monitor.update ()
 
     def on_job_release_activate(self, menuitem):
         try:
@@ -668,9 +674,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
             if (e != cups.IPP_NOT_POSSIBLE and
                 e != cups.IPP_NOT_FOUND):
                 self.show_IPP_Error (e, m)
+            self.monitor.update ()
             return
         except RuntimeError:
             return
+
+        self.monitor.update ()
 
     def on_job_reprint_activate(self, menuitem):
         try:
@@ -679,9 +688,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
             del c
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
+            self.monitor.update ()
             return
         except RuntimeError:
             return
+
+        self.monitor.update ()
 
     def on_refresh_activate(self, menuitem):
         self.monitor.refresh ()
