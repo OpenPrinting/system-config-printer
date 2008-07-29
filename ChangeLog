@@ -1,5 +1,13 @@
 2008-07-29  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.on_job_cancel_activate): Ask the monitor
+	to refresh after cancelling a job.
+	(JobViewer.on_job_hold_activate): Likewise for held jobs.
+	(JobViewer.on_job_release_activate): Likewise for released jobs.
+	(JobViewer.on_job_reprint_activate): Likewise for reprinted jobs.
+
+2008-07-29  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.on_job_cancel_activate): Don't display
 	an error dialog if a job to cancel has already been cancelled.
 	(JobViewer.on_job_hold_activate): Likewise for held jobs.
