@@ -639,7 +639,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             c.cancelJob (self.jobid)
             del c
         except cups.IPPError, (e, m):
-            self.show_IPP_Error (e, m)
+            if (e != cups.IPP_NOT_POSSIBLE and
+                e != cups.IPP_NOT_FOUND):
+                self.show_IPP_Error (e, m)
             return
         except RuntimeError:
             return
@@ -650,7 +652,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             c.setJobHoldUntil (self.jobid, "indefinite")
             del c
         except cups.IPPError, (e, m):
-            self.show_IPP_Error (e, m)
+            if (e != cups.IPP_NOT_POSSIBLE and
+                e != cups.IPP_NOT_FOUND):
+                self.show_IPP_Error (e, m)
             return
         except RuntimeError:
             return
@@ -661,7 +665,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             c.setJobHoldUntil (self.jobid, "no-hold")
             del c
         except cups.IPPError, (e, m):
-            self.show_IPP_Error (e, m)
+            if (e != cups.IPP_NOT_POSSIBLE and
+                e != cups.IPP_NOT_FOUND):
+                self.show_IPP_Error (e, m)
             return
         except RuntimeError:
             return
