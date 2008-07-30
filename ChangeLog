@@ -1,3 +1,22 @@
+2008-07-30  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.populateList): Remove no longer
+	existing printer queues from the currently selected static
+	group. It seems the cleanliest way to do this, even if a bit too
+	lazy. Both the user removing the printer in All Printers and the
+	auto discovered printers going away should be covered.
+	Also, reverted these points from commit
+	7e7cf4188fc790f705c3e837e1ef69699133b145:
+
+		* system-config-printer.py (GUI.populateList): Use an
+		unreadable emblem on printer icons for queues which are no
+		longer available.
+		* system-config-printer.py (GUI): Protect several
+		potential NoneType object accesses. Certainly there are a
+		lot more.
+
+	since they are no longer needed with this change.
+
 2008-07-28  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* GroupsPaneModel.py (GroupsPaneModel.get): This function can be

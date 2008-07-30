@@ -780,8 +780,6 @@ class GUI(GtkGUI, monitor.Watcher):
         iter = model.get_iter (path)
         name = model.get_value (iter, 2)
         object = model.get_value (iter, 0)
-        if not object:
-            return
 
         try:
             self.fillPrinterTab (name)
@@ -844,8 +842,6 @@ class GUI(GtkGUI, monitor.Watcher):
         for path in paths:
             iter = model.get_iter (path)
             object = model.get_value (iter, 0)
-            if not object:
-                continue
             name = model.get_value (iter, 2)
             self.groups_pane.currently_selected_queues.append (name)
             if object.discovered:
@@ -1070,12 +1066,14 @@ class GUI(GtkGUI, monitor.Watcher):
             delete_action = self.ui_manager.get_action ("/delete-printer")
             delete_action.set_properties (label = _("Remove from Group"))
             printers_set = {}
+            deleted_printers = []
             for printer_name in self.current_groups_pane_item.printer_queues:
                 try:
                     printer = self.printers[printer_name]
                     printers_set[printer_name] = printer
                 except KeyError:
-                    printers_set[printer_name] = None
+                    deleted_printers.append (printer_name)
+            self.current_groups_pane_item.remove_queues (deleted_printers)
         else:
             printers_set = self.printers
             nonfatalException ()
@@ -1091,9 +1089,6 @@ class GUI(GtkGUI, monitor.Watcher):
             printers_set = printers_subset
 
         for name, printer in printers_set.iteritems():
-            if not printer:
-                local_printers.append (name)
-                continue
             if printer.remote:
                 if printer.is_class: remote_classes.append(name)
                 else: remote_printers.append(name)
@@ -1144,25 +1139,23 @@ class GUI(GtkGUI, monitor.Watcher):
             for name in printers:
                 type = 'local-printer'
                 object = printers_set[name]
-
-                if object:
-                    if object.discovered:
-                        if object.is_class:
-                            type = 'discovered-class'
-                        else:
-                            type = 'discovered-printer'
-                    elif object.is_class:
-                        type = 'local-class'
+                if object.discovered:
+                    if object.is_class:
+                        type = 'discovered-class'
                     else:
-                        (scheme, rest) = urllib.splittype (object.device_uri)
-                        if scheme == 'ipp':
-                            type = 'ipp-printer'
-                        elif scheme == 'smb':
-                            type = 'smb-printer'
-                        elif scheme == 'hpfax':
-                            type = 'local-fax'
-                        elif scheme in ['socket', 'lpd']:
-                            type = 'network-printer'
+                        type = 'discovered-printer'
+                elif object.is_class:
+                    type = 'local-class'
+                else:
+                    (scheme, rest) = urllib.splittype (object.device_uri)
+                    if scheme == 'ipp':
+                        type = 'ipp-printer'
+                    elif scheme == 'smb':
+                        type = 'smb-printer'
+                    elif scheme == 'hpfax':
+                        type = 'local-fax'
+                    elif scheme in ['socket', 'lpd']:
+                        type = 'network-printer'
 
                 (tip, icon) = PRINTER_TYPE[type]
                 (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
@@ -1197,18 +1190,6 @@ class GUI(GtkGUI, monitor.Watcher):
                 if emblem:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
                     default_emblem = theme.load_icon (emblem, w/2, 0)
-                    copy = pixbuf.copy ()
-                    default_emblem.composite (copy, 0, 0,
-                                              copy.get_width (),
-                                              copy.get_height (),
-                                              0, 0,
-                                              1.0, 1.0,
-                                              gtk.gdk.INTERP_NEAREST, 255)
-                    pixbuf = copy
-
-                if not object:
-                    (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
-                    default_emblem = theme.load_icon ('emblem-unreadable', w/2, 0)
                     copy = pixbuf.copy ()
                     default_emblem.composite (copy, 0, 0,
                                               copy.get_width (),
@@ -2503,7 +2484,7 @@ class GUI(GtkGUI, monitor.Watcher):
             iter = model.get_iter (paths[0])
             object = model.get_value (iter, 0)
             name = model.get_value (iter, 2)
-            if object and object.is_class:
+            if object.is_class:
                 message_format = _("Really delete class `%s'?") % name
             else:
                 message_format = _("Really delete printer `%s'?") % name
@@ -2541,8 +2522,6 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            if not printer:
-                continue
             try:
                 printer.setEnabled (enable)
             except cups.IPPError, (e, m):
@@ -2563,8 +2542,6 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            if not printer:
-                continue
             printer.setShared (share)
         if share:
             self.advise_publish ()
