@@ -1,5 +1,14 @@
 2008-07-31  Till Kamppeter  <till.kamppeter@gmail.com>
 
+	* options.py (get_widget_value): Work around broken get_value()
+	method in gtk.SpinButton class of pygtk. get_value() does not
+	return an updated value when only typing in the input field, it
+	only gives the updated value when clicking the spin arrows or
+	switching to another widget. This leads to the "Apply" button
+	staying gray when typing into the input field of the
+	spinbox. Replaced get_value() by the get_text() method inherited
+	from gtk.Entry class to solve the problem (trac #83).
+	
 	* ppds.py: Case-insensitive sorting of printer model list.
 
 2008-07-29  Tim Waugh  <twaugh@redhat.com>

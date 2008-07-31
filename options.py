@@ -169,7 +169,7 @@ class OptionAlwaysShown(OptionInterface):
     def get_widget_value(self):
         t = type(self.widget)
         if t == gtk.SpinButton:
-            return self.ipp_type (self.widget.get_value ())
+            return self.ipp_type (self.widget.get_text ())
         elif t == gtk.ComboBox:
             if self.combobox_map:
                 return self.combobox_map[self.widget.get_active()]
