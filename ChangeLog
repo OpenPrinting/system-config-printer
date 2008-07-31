@@ -1,5 +1,11 @@
 2008-07-31  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (NewPrinterGUI.nextNPTab): Don't load
+	PPDs if we are creating an explicit queue for a remote CUPS
+	queue (trac #72).
+
+2008-07-31  Tim Waugh  <twaugh@redhat.com>
+
 	* options.py (OptionAlwaysShown.get_widget_value): Prevent
 	traceback when editing the text of a SpinButton widget (e.g. when
 	the box is empty).

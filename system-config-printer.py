@@ -2936,18 +2936,6 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     nonfatalException ()
 
-                if not self.new_printer_PPDs_loaded:
-                    try:
-                        self.loadPPDs(self.NewPrinterWindow)
-                    except cups.IPPError, (e, msg):
-                        self.ready (self.NewPrinterWindow)
-                        self.show_IPP_Error(e, msg)
-                        return
-                    except:
-                        self.ready (self.NewPrinterWindow)
-                        return
-                self.new_printer_PPDs_loaded = True
-
                 self.auto_make, self.auto_model = None, None
                 self.device.uri = self.getDeviceURI()
                 if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
@@ -3029,6 +3017,19 @@ class NewPrinterGUI(GtkGUI):
                     cups.setServer (oldserver)
                     cups.setPort (oldport)
 
+                if (not self.remotecupsqueue and
+                    not self.new_printer_PPDs_loaded):
+                    try:
+                        self.loadPPDs(self.NewPrinterWindow)
+                    except cups.IPPError, (e, msg):
+                        self.ready (self.NewPrinterWindow)
+                        self.show_IPP_Error(e, msg)
+                        return
+                    except:
+                        self.ready (self.NewPrinterWindow)
+                        return
+                    self.new_printer_PPDs_loaded = True
+
                 ppdname = None
                 try:
                     if self.remotecupsqueue:
@@ -3055,7 +3056,7 @@ class NewPrinterGUI(GtkGUI):
                                                     [],
                                                     self.device.uri)
                         
-                    if ppdname:
+                    if ppdname and not self.remotecupsqueue:
                         ppddict = self.ppds.getInfoFromPPDName (ppdname)
                         make_model = ppddict['ppd-make-and-model']
                         (make, model) = \
@@ -3065,7 +3066,8 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     nonfatalException ()
 
-                self.fillMakeList()
+                if not self.remotecupsqueue:
+                    self.fillMakeList()
             elif page_nr == 3: # Model has been selected
                 if not self.device.id:
                     # Choose an appropriate name when no Device ID
