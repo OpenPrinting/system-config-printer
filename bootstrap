@@ -6,7 +6,8 @@ autoconf
 
 # If this is a git repository, and git-merge-changelog is available,
 # use it.
-if [ -d .git ] && git --version 2>/dev/null >/dev/null; then
+if [ -d .git ] && git --version 2>/dev/null >/dev/null && \
+  git-merge-changelog 2>/dev/null >/dev/null; then
   git config merge.merge-changelog.name 'GNU-style ChangeLog merge driver'
   git config merge.merge-changelog.driver 'git-merge-changelog %O %A %B'
 fi
