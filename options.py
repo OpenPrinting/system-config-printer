@@ -169,7 +169,17 @@ class OptionAlwaysShown(OptionInterface):
     def get_widget_value(self):
         t = type(self.widget)
         if t == gtk.SpinButton:
-            return self.ipp_type (self.widget.get_value ())
+            # Ideally we would use self.widget.get_value() here, but
+            # it doesn't work if the value has been typed in and then
+            # the Apply button immediately clicked.  To handle this,
+            # we use self.widget.get_text() and fall back to
+            # get_value() if the result cannot be interpreted as the
+            # type we expect.
+            try:
+                return self.ipp_type (self.widget.get_text ())
+            except ValueError:
+                # Can't convert result of get_text() to ipp_type.
+                return self.ipp_type (self.widget.get_value ())
         elif t == gtk.ComboBox:
             if self.combobox_map:
                 return self.combobox_map[self.widget.get_active()]
