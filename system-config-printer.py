@@ -3698,6 +3698,24 @@ class NewPrinterGUI(GtkGUI):
                         iter = store.append (None, [entry])
                         i = store.append (iter)
 
+        specified_uri = SMBURI (uri=self.entSMBURI.get_text ())
+        (group, host, share, user, password) = specified_uri.separate ()
+        if len (host) > 0 and not pysmb.USE_OLD_CODE:
+            # The user has specified a server before clicking Browse.
+            # Append the server as a top-level entry.
+            class FakeEntry:
+                pass
+            toplevel = FakeEntry ()
+            toplevel.smbc_type = pysmb.smbc.SERVER
+            toplevel.name = host
+            toplevel.comment = ''
+            iter = store.append (None, [toplevel])
+            i = store.append (iter)
+
+            # Now expand it.
+            path = store.get_path (iter)
+            self.tvSMBBrowser.expand_row (path, 0)
+
         self.ready(self.SMBBrowseDialog)
 
         if store.get_iter_first () == None:
