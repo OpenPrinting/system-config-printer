@@ -2128,6 +2128,16 @@ class GUI(GtkGUI, monitor.Watcher):
         if self.copy_printer (new_name):
             # Failure.
             self.populateList ()
+
+            # Restore original accepting/rejecting state.
+            if not rejecting:
+                try:
+                    self.printers[old_name].setAccepting (True)
+                except cups.HTTPError, (s,):
+                    show_HTTP_Error (s, self.MainWindow)
+                except cups.IPPError, (e, msg):
+                    show_IPP_Error (e, msg, self.MainWindow)
+
             return
 
         # Restore rejecting state.
