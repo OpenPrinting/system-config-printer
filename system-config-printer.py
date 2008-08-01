@@ -1979,8 +1979,11 @@ class GUI(GtkGUI, monitor.Watcher):
         debugprint ("update printer properties")
         printer = self.printer
         self.lblPMakeModel.set_text(printer.make_and_model)
-        self.lblPState.set_text(self.printer_states.get (printer.state,
-                                                         _("Unknown")))
+        state = self.printer_states.get (printer.state, _("Unknown"))
+        reason = printer.other_attributes.get ('printer-state-message', '')
+        if len (reason) > 0:
+            state += ' - ' + reason
+        self.lblPState.set_text(state)
         if len (self.changed) == 0:
             debugprint ("no changes yet: full printer properties update")
             # State
@@ -2179,12 +2182,27 @@ class GUI(GtkGUI, monitor.Watcher):
         gtk.main_quit()
 
     # Rename
+    def is_rename_possible (self, name):
+        jobs = self.printers[name].jobsQueued ()
+        if len (jobs) > 0:
+            show_error_dialog (_("Cannot Rename"),
+                               _("There are queued jobs."),
+                               parent=self.MainWindow)
+            return False
+
+        return True
+
     def on_rename_activate(self, UNUSED):
         tuple = self.dests_iconview.get_cursor ()
         if tuple == None:
             return
 
         (path, cell) = tuple
+        model = self.dests_iconview.get_model ()
+        iter = model.get_iter (path)
+        name = model.get_value (iter, 2)
+        if not self.is_rename_possible (name):
+            return
         cell.set_property ('editable', True)
         self.dests_iconview.set_cursor (path, cell, start_editing=True)
         ids = []
@@ -2214,11 +2232,6 @@ class GUI(GtkGUI, monitor.Watcher):
             cell.disconnect (id)
 
     def rename_printer (self, old_name, new_name):
-        def jobs_error ():
-            show_error_dialog (_("Cannot Rename"),
-                               _("There are queued jobs."),
-                               parent=self.MainWindow)
-            
         if old_name == new_name:
             return
 
@@ -2228,23 +2241,29 @@ class GUI(GtkGUI, monitor.Watcher):
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
 
-        jobs = self.printer.jobsQueued ()
-        if len (jobs) > 0:
-            jobs_error ()
+        if not self.is_rename_possible (old_name):
             return
 
         rejecting = self.printer.rejecting
         if not rejecting:
             self.printer.setAccepting (False)
-            jobs = self.printer.jobsQueued ()
-            if len (jobs) > 0:
+            if not self.is_rename_possible (old_name):
                 self.printer.setAccepting (True)
-                jobs_error ()
                 return
 
         if self.copy_printer (new_name):
             # Failure.
             self.monitor.update ()
+
+            # Restore original accepting/rejecting state.
+            if not rejecting:
+                try:
+                    self.printers[old_name].setAccepting (True)
+                except cups.HTTPError, (s,):
+                    show_HTTP_Error (s, self.MainWindow)
+                except cups.IPPError, (e, msg):
+                    show_IPP_Error (e, msg, self.MainWindow)
+
             return
 
         # Restore rejecting state.
@@ -2255,7 +2274,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 show_HTTP_Error (s, self.PrintersWindow)
                 # Not fatal.
             except cups.IPPError, (e, msg):
-                show_IPP_Error, (e, msg, self.PrintersWindow)
+                show_IPP_Error (e, msg, self.PrintersWindow)
                 # Not fatal.
 
         # Fix up default printer.
@@ -3859,6 +3878,24 @@ class NewPrinterGUI(GtkGUI):
                                        pysmb.smbc.SERVER]:
                     iter = store.append (None, [entry])
                     i = store.append (iter)
+
+        specified_uri = SMBURI (uri=self.entSMBURI.get_text ())
+        (group, host, share, user, password) = specified_uri.separate ()
+        if len (host) > 0 and not pysmb.USE_OLD_CODE:
+            # The user has specified a server before clicking Browse.
+            # Append the server as a top-level entry.
+            class FakeEntry:
+                pass
+            toplevel = FakeEntry ()
+            toplevel.smbc_type = pysmb.smbc.SERVER
+            toplevel.name = host
+            toplevel.comment = ''
+            iter = store.append (None, [toplevel])
+            i = store.append (iter)
+
+            # Now expand it.
+            path = store.get_path (iter)
+            self.tvSMBBrowser.expand_row (path, 0)
 
         self.ready(self.SMBBrowseDialog)
 
