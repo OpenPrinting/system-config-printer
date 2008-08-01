@@ -359,6 +359,8 @@ class GUI(GtkGUI, monitor.Watcher):
                  None, None, self.on_view_print_queue_activate),
                 ("add-to-group", None, _("_Add to Group"),
                  None, None, None),
+                ("save-as-group", None, _("Save Results as _Group..."),
+                 None, None, self.on_save_as_group_activate),
                 ])
         printer_manager_action_group.add_toggle_actions ([
                 ("enable-printer", None, _("E_nabled"),
@@ -383,6 +385,7 @@ class GUI(GtkGUI, monitor.Watcher):
  <accelerator action="create-class"/>
  <accelerator action="view-print-queue"/>
  <accelerator action="add-to-group"/>
+ <accelerator action="save-as-group"/>
  <accelerator action="enable-printer"/>
  <accelerator action="share-printer"/>
 </ui>
@@ -472,6 +475,18 @@ class GUI(GtkGUI, monitor.Watcher):
                 item = proxy
                 break
         item.set_submenu (self.add_to_group_menu)
+
+        # Search entry drop down menu
+        menu = gtk.Menu ()
+        for action_name in ["save-as-group",]:
+            if not action_name:
+                item = gtk.SeparatorMenuItem ()
+            else:
+                action = printer_manager_action_group.get_action (action_name)
+                item = action.create_menu_item ()
+            menu.append (item)
+        menu.show_all ()
+        self.search_entry.set_drop_down_menu (menu)
 
         # Setup icon view
         self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
@@ -745,6 +760,8 @@ class GUI(GtkGUI, monitor.Watcher):
         self.toolbar.show_all ()
 
     def on_search_entry_search (self, UNUSED, text):
+        self.ui_manager.get_action ("/save-as-group").set_sensitive (
+            text and True or False)
         self.current_filter_text = text
         self.populateList ()
 
@@ -2627,6 +2644,14 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
+
+    def on_save_as_group_activate (self, UNUSED):
+        model = self.dests_iconview.get_model ()
+        printer_queues = []
+        for object in model:
+            printer_queues.append (object[2])
+        self.groups_pane.create_new_group (printer_queues,
+                                           self.current_filter_text)
 
     # About dialog
     def on_about_activate(self, widget):

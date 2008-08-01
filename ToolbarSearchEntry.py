@@ -53,6 +53,7 @@ class ToolbarSearchEntry (gtk.HBox):
         self.timeout = 0
         self.is_a11y_theme = False
         self.search_timeout = 300
+        self.menu = None
 
         gtk.HBox.__gobject_init__ (self)
         self.set_spacing (HIG.PAD_NORMAL)
@@ -69,6 +70,9 @@ class ToolbarSearchEntry (gtk.HBox):
 
         self.entry = sexy.IconEntry ()
         self.entry.add_clear_button ()
+        self.entry.set_icon (sexy.ICON_ENTRY_PRIMARY,
+                             gtk.image_new_from_stock (gtk.STOCK_FIND,
+                                                       gtk.ICON_SIZE_MENU))
 
         label.set_mnemonic_widget (self.entry)
 
@@ -77,6 +81,7 @@ class ToolbarSearchEntry (gtk.HBox):
         self.entry.connect ('changed', self.on_changed)
         self.entry.connect ('focus_out_event', self.on_focus_out_event)
         self.entry.connect ('activate', self.on_activate)
+        self.entry.connect ("icon-pressed", self.on_icon_pressed)
 
     def do_get_property (self, property):
         if property.name == 'search_timeout':
@@ -159,5 +164,21 @@ class ToolbarSearchEntry (gtk.HBox):
 
     def grab_focus (self):
         self.entry.grab_focus ()
+
+    def set_drop_down_menu (self, menu):
+        if menu:
+            self.entry.set_icon_highlight (sexy.ICON_ENTRY_PRIMARY, True)
+            self.menu = menu
+        else:
+            self.entry.set_icon_highlight (sexy.ICON_ENTRY_PRIMARY, False)
+            self.menu = None
+
+    def on_icon_pressed (self, UNUSED, icon_position, button):
+        if icon_position != sexy.ICON_ENTRY_PRIMARY:
+            return
+        if not self.menu:
+            return
+
+        self.menu.popup (None, None, None, button, 0L)
 
 gobject.type_register (ToolbarSearchEntry)

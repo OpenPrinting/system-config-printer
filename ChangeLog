@@ -1,3 +1,24 @@
+2008-08-01  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane.on_new_group_activate):
+	* GroupsPane.py (GroupsPane.on_new_group_from_selection_activate):
+	Redefine these methods in terms of...
+	* GroupsPane.py (GroupsPane.create_new_group): ... this new, more
+	general, one.
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.__init__): Create a
+	clickable icon to drop a menu.
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.set_drop_down_menu):
+	New method to set the drop down menu.
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.on_icon_pressed): New
+	method to show the menu.
+	* system-config-printer.py (GUI.__init__): New action to save the
+	filtered printer queues as a static group. Also, create and set the
+	search entry drop down menu.
+	* system-config-printer.py (GUI.on_search_entry_search): Set the
+	save-as-group action sensitivity.
+	* system-config-printer.py (GUI.on_save_as_group_activate): Save
+	the currently displayed printer queues as a static group.
+
 2008-07-30  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* system-config-printer.py (GUI.populateList): Remove no longer

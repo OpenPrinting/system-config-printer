@@ -326,24 +326,22 @@ class GroupsPane (gtk.ScrolledWindow):
                 return new_name
             i += 1
 
-    def on_new_group_activate (self, UNUSED):
-        item = StaticGroupItem (self.generate_new_group_name ())
+    def create_new_group (self, printer_queues, group_name = None):
+        item = StaticGroupItem (
+            group_name and group_name or self.generate_new_group_name ())
         titer = self.store.append_by_type (item)
         self.emit ("items-changed")
+        item.add_queues (printer_queues)
         self.tree_view.row_activated (
             self.store.get_path (titer),
             self.tree_view.get_column (0))
         self.rename_selected_group ()
 
+    def on_new_group_activate (self, UNUSED):
+        self.create_new_group ([])
+
     def on_new_group_from_selection_activate (self, UNUSED):
-        item = StaticGroupItem (self.generate_new_group_name ())
-        titer = self.store.append_by_type (item)
-        self.emit ("items-changed")
-        item.add_queues (self.currently_selected_queues)
-        self.tree_view.row_activated (
-            self.store.get_path (titer),
-            self.tree_view.get_column (0))
-        self.rename_selected_group ()
+        self.create_new_group (self.currently_selected_queues)
 
     def is_drop_target (self, tree_view, x, y):
         try:
