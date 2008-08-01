@@ -44,10 +44,15 @@ class SMBURI:
             uri_password = ':' + urllib.quote (password)
         if user:
             uri_password += '@'
-        return "%s%s%s/%s/%s" % (urllib.quote (user), uri_password,
-                                 urllib.quote (group),
-                                 urllib.quote (host),
-                                 urllib.quote (share))
+        uri = "%s%s%s" % (urllib.quote (user),
+                          uri_password,
+                          urllib.quote (group))
+        if len (uri) > 0:
+            uri += '/'
+        uri += urllib.quote (host)
+        if len (share) > 0:
+            uri += "/" + urllib.quote (share)
+        return uri
 
     def get_uri (self):
         return self.uri
@@ -76,7 +81,7 @@ class SMBURI:
             group = uri[:g]
             uri = uri[g + 1:]
         if sep < 1:
-            host = 'localhost'
+            host = ''
         else:
             h = uri.find('/')
             host = uri[:h]

@@ -1,5 +1,12 @@
 2008-08-01  Tim Waugh  <twaugh@redhat.com>
 
+	* smburi.py (SMBURI._construct): Construct minimal URI so that
+	typing in a complete URI works without it becoming disrupted.
+	(SMBURI.separate): If no hostname is present, use the empty string
+	instead of 'localhost'.
+
+2008-08-01  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.is_rename_possible): New method to
 	determine whether a rename can go ahead and display an error
 	dialog if not.
