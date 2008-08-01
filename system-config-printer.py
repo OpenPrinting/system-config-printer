@@ -1860,8 +1860,11 @@ class GUI(GtkGUI, monitor.Watcher):
         debugprint ("update printer properties")
         printer = self.printer
         self.lblPMakeModel.set_text(printer.make_and_model)
-        self.lblPState.set_text(self.printer_states.get (printer.state,
-                                                         _("Unknown")))
+        state = self.printer_states.get (printer.state, _("Unknown"))
+        reason = printer.other_attributes.get ('printer-state-message', '')
+        if len (reason) > 0:
+            state += ' - ' + reason
+        self.lblPState.set_text(state)
         if len (self.changed) == 0:
             debugprint ("no changes yet: full printer properties update")
             # State
