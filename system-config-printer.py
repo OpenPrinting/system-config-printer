@@ -2138,7 +2138,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 show_HTTP_Error (s, self.MainWindow)
                 # Not fatal.
             except cups.IPPError, (e, msg):
-                show_IPP_Error, (e, msg, self.MainWindow)
+                show_IPP_Error (e, msg, self.MainWindow)
                 # Not fatal.
 
         # Fix up default printer.
