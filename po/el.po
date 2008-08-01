@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: el\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-07-14 17:35+0100\n"
+"POT-Creation-Date: 2008-08-01 22:23+0100\n"
 "PO-Revision-Date: 2007-09-24 20:29+0100\n"
 "Last-Translator: Dimitris Glezos <dimitris@glezos.com>\n"
 "Language-Team: Greek <fedora-trans-el@redhat.com>\n"
@@ -123,7 +123,7 @@ msgstr "Απαιτείται αναβάθμιση"
 msgid "Server error"
 msgstr "Σφάλμα εξυπηρετητή"
 
-#: ../errordialogs.py:94 ../system-config-printer.py:790
+#: ../errordialogs.py:94 ../system-config-printer.py:886
 msgid "Not connected"
 msgstr "Χωρίς σύνδεση"
 
@@ -151,8 +151,8 @@ msgid "Document"
 msgstr "Έγγραφο"
 
 #: ../jobviewer.py:190 ../jobviewer.py:242 ../my-default-printer.py:157
-#: ../system-config-printer.py:320 ../system-config-printer.py:883
-#: ../system-config-printer.py:2990 ../troubleshoot/PrintTestPage.py:79
+#: ../system-config-printer.py:314 ../system-config-printer.py:979
+#: ../system-config-printer.py:3166 ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "Εκτυπωτής"
 
@@ -192,7 +192,7 @@ msgstr "Μήνυμα"
 
 #: ../jobviewer.py:387 ../jobviewer.py:453 ../jobviewer.py:454
 #: ../jobviewer.py:467 ../jobviewer.py:490 ../jobviewer.py:547
-#: ../system-config-printer.py:1887 ../troubleshoot/ChooseNetworkPrinter.py:95
+#: ../system-config-printer.py:1982 ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
@@ -247,12 +247,12 @@ msgstr "Σε αναμονή"
 msgid "Held"
 msgstr "Σε αναμονή"
 
-#: ../jobviewer.py:479 ../system-config-printer.py:157
+#: ../jobviewer.py:479 ../system-config-printer.py:156
 #: ../troubleshoot/PrintTestPage.py:41
 msgid "Processing"
 msgstr "Γίνεται επεξεργασία"
 
-#: ../jobviewer.py:480 ../system-config-printer.py:159
+#: ../jobviewer.py:480 ../system-config-printer.py:158
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Stopped"
 msgstr "Σταματημένος"
@@ -274,45 +274,45 @@ msgstr "Ολοκληρώθηκε"
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr ""
 
-#: ../jobviewer.py:750
+#: ../jobviewer.py:768
 msgid "No documents queued"
 msgstr "Δεν υπάρχουν έγγραφα στην ουρά"
 
-#: ../jobviewer.py:752
+#: ../jobviewer.py:770
 msgid "1 document queued"
 msgstr "1 έγγραφο στην ουρά"
 
-#: ../jobviewer.py:754
+#: ../jobviewer.py:772
 #, python-format
 msgid "%d documents queued"
 msgstr "%d έγγραφα στην ουρά"
 
-#: ../jobviewer.py:988
+#: ../jobviewer.py:1006
 #, fuzzy, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "Διαπιστώθηκε σφάλμα κατά τη λειτουργία του εξυπηρετητή CUPS."
 
-#: ../jobviewer.py:991
+#: ../jobviewer.py:1009
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr ""
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:997
+#: ../jobviewer.py:1015
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
 
-#: ../jobviewer.py:1003 ../jobviewer.py:1019
+#: ../jobviewer.py:1021 ../jobviewer.py:1037
 #, fuzzy
 msgid "Print Error"
 msgstr "Σφάλμα εκτυπωτή"
 
-#: ../jobviewer.py:1004
+#: ../jobviewer.py:1022
 msgid "_Diagnose"
 msgstr ""
 
-#: ../jobviewer.py:1025
+#: ../jobviewer.py:1043
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr ""
@@ -329,7 +329,7 @@ msgstr "Ε_παναφορά στην προεπιλογή συστήματος"
 msgid "_Set Default"
 msgstr "_Προεπιλογή"
 
-#: ../my-default-printer.py:162 ../system-config-printer.py:2684
+#: ../my-default-printer.py:162 ../system-config-printer.py:2872
 #: ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
@@ -339,105 +339,135 @@ msgstr "Τοποθεσία"
 msgid "Conflicts with:"
 msgstr "Συγκρούεται με:"
 
-#: ../system-config-printer.py:105
+#: ../system-config-printer.py:104
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr ""
 
-#: ../system-config-printer.py:156
+#: ../system-config-printer.py:155
 msgid "Idle"
 msgstr "Αδρανής"
 
-#: ../system-config-printer.py:158
+#: ../system-config-printer.py:157
 msgid "Busy"
 msgstr "Απασχολημένος"
 
-#: ../system-config-printer.py:326 ../system-config-printer.py:889
+#: ../system-config-printer.py:320 ../system-config-printer.py:985
 #, fuzzy
 msgid "Class"
 msgstr "Νέα κλάση(*.ppd[.gz])"
 
+#: ../system-config-printer.py:341
+#, fuzzy
+msgid "_Rename"
+msgstr "Απελευ_θέρωση"
+
+#: ../system-config-printer.py:347
+#, fuzzy
+msgid "Set As De_fault"
+msgstr "_Προεπιλογή"
+
+#: ../system-config-printer.py:351
+#, fuzzy
+msgid "_Create class"
+msgstr "Απομακρυσμένες κλάσεις"
+
+#: ../system-config-printer.py:353
+#, fuzzy
+msgid "View Print _Queue"
+msgstr "Νέος εκτυπωτής"
+
+#: ../system-config-printer.py:357
+#, fuzzy
+msgid "E_nabled"
+msgstr "Ενεργό"
+
+#: ../system-config-printer.py:359
+#, fuzzy
+msgid "_Shared"
+msgstr "Κοινή χρήση"
+
 #. Set up "Problems?" link button
-#: ../system-config-printer.py:356
+#: ../system-config-printer.py:419
 #, fuzzy
 msgid "Problems?"
 msgstr "Αναζήτηση"
 
-#: ../system-config-printer.py:398 ../system-config-printer.py:400
+#: ../system-config-printer.py:461 ../system-config-printer.py:463
 msgid "Members of this class"
 msgstr "Μέλη αυτής της κλάσης"
 
-#: ../system-config-printer.py:399 ../system-config-printer.py:401
+#: ../system-config-printer.py:462 ../system-config-printer.py:464
 msgid "Others"
 msgstr "Άλλα"
 
-#: ../system-config-printer.py:402
+#: ../system-config-printer.py:465
 msgid "Devices"
 msgstr "Συσκευές"
 
-#: ../system-config-printer.py:403
+#: ../system-config-printer.py:466
 msgid "Makes"
 msgstr "Δημιουργεί"
 
-#: ../system-config-printer.py:404
+#: ../system-config-printer.py:467
 msgid "Models"
 msgstr "Μοντέλο"
 
-#: ../system-config-printer.py:405
+#: ../system-config-printer.py:468
 msgid "Drivers"
 msgstr "Οδηγοί"
 
-#: ../system-config-printer.py:406 ../glade/NewPrinterWindow.glade.h:49
+#: ../system-config-printer.py:469 ../glade/NewPrinterWindow.glade.h:49
 msgid "Downloadable Drivers"
 msgstr ""
 
-#: ../system-config-printer.py:407
+#: ../system-config-printer.py:470
 msgid "Users"
 msgstr "Χρήστες"
 
-#: ../system-config-printer.py:446
+#: ../system-config-printer.py:509
 msgid "Automatic rotation"
 msgstr ""
 
-#: ../system-config-printer.py:660
+#: ../system-config-printer.py:723
 #, fuzzy, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "Αναφορά εκτυπωτή"
 
-#: ../system-config-printer.py:785
+#: ../system-config-printer.py:881
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Ρύθμιση εκτυπωτή - %s"
 
-#: ../system-config-printer.py:788
+#: ../system-config-printer.py:884
 #, python-format
 msgid "Connected to %s"
 msgstr "Συνδέθηκε στο %s"
 
-#: ../system-config-printer.py:877
+#: ../system-config-printer.py:973
 #, fuzzy
 msgid "Network printer (discovered)"
 msgstr "Νέος εκτυπωτής"
 
-#: ../system-config-printer.py:880
+#: ../system-config-printer.py:976
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:886 ../system-config-printer.py:2991
+#: ../system-config-printer.py:982 ../system-config-printer.py:3167
 msgid "Fax"
 msgstr ""
 
-#: ../system-config-printer.py:892 ../system-config-printer.py:898
+#: ../system-config-printer.py:988 ../system-config-printer.py:994
 #: ../troubleshoot/LocalOrRemote.py:30
 #, fuzzy
 msgid "Network printer"
 msgstr "Νέος εκτυπωτής"
 
-#: ../system-config-printer.py:895
+#: ../system-config-printer.py:991
 #, fuzzy
 msgid "Network print share"
 msgstr "Νέος εκτυπωτής"
 
-#: ../system-config-printer.py:1018
+#: ../system-config-printer.py:1114
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -446,16 +476,16 @@ msgstr ""
 "Σύνδεση στην εξυπηρετητή:\n"
 "%s"
 
-#: ../system-config-printer.py:1383
+#: ../system-config-printer.py:1479
 msgid "Installable Options"
 msgstr "Επιλογές για εγκατάσταση"
 
-#: ../system-config-printer.py:1384
+#: ../system-config-printer.py:1480
 #: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Printer Options"
 msgstr "Επιλογές εκτυπωτή"
 
-#: ../system-config-printer.py:1407
+#: ../system-config-printer.py:1503
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -465,52 +495,52 @@ msgstr ""
 "Οι αλλαγές μπορούν να εφαρμοστούν\n"
 "μετά την επίλυση των συγκρούσεων."
 
-#: ../system-config-printer.py:1434
+#: ../system-config-printer.py:1530
 msgid "This will delete this class!"
 msgstr "Αυτό θα διαγράψει την κλάση!"
 
-#: ../system-config-printer.py:1435
+#: ../system-config-printer.py:1531
 msgid "Proceed anyway?"
 msgstr "Συνέχεια ούτως ή άλλως;"
 
-#: ../system-config-printer.py:1576
+#: ../system-config-printer.py:1672
 #, fuzzy
 msgid "Set Default Printer"
 msgstr "Προεπιλεγμένος εκτυπωτή"
 
-#: ../system-config-printer.py:1578
+#: ../system-config-printer.py:1674
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr ""
 
-#: ../system-config-printer.py:1580
+#: ../system-config-printer.py:1676
 #, fuzzy
 msgid "Set as the _system-wide default printer"
 msgstr "Αυτός είναι ο προεπιλεγμένος εκτυπωτής"
 
-#: ../system-config-printer.py:1582
+#: ../system-config-printer.py:1678
 msgid "_Clear my personal default setting"
 msgstr ""
 
-#: ../system-config-printer.py:1583
+#: ../system-config-printer.py:1679
 #, fuzzy
 msgid "Set as my _personal default printer"
 msgstr "Επιλογή προεπιλεγμένου εκτυπωτή"
 
-#: ../system-config-printer.py:1634 ../system-config-printer.py:1660
+#: ../system-config-printer.py:1730 ../system-config-printer.py:1756
 msgid "Submitted"
 msgstr "Καταχωρήθηκε"
 
-#: ../system-config-printer.py:1635
+#: ../system-config-printer.py:1731
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Η δοκιμαστική σελίδα καταχωρήθηκε σαν εργασία %d"
 
-#: ../system-config-printer.py:1641 ../system-config-printer.py:1667
-#: ../system-config-printer.py:4041
+#: ../system-config-printer.py:1737 ../system-config-printer.py:1763
+#: ../system-config-printer.py:4275
 msgid "Not possible"
 msgstr "Δεν είναι εφικτό"
 
-#: ../system-config-printer.py:1642 ../system-config-printer.py:1668
+#: ../system-config-printer.py:1738 ../system-config-printer.py:1764
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -518,7 +548,7 @@ msgstr ""
 "Ο απομακρυσμένος διακομιστής δε δέχθηκε την εκτύπωση, κατά πάσα πιθανότητα ο "
 "εκτυπωτής δε διατίθεται για κοινή χρίση."
 
-#: ../system-config-printer.py:1661
+#: ../system-config-printer.py:1757
 #, fuzzy, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Η δοκιμαστική σελίδα καταχωρήθηκε σαν εργασία %d"
@@ -526,39 +556,48 @@ msgstr "Η δοκιμαστική σελίδα καταχωρήθηκε σαν �
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1718 ../system-config-printer.py:1825
+#: ../system-config-printer.py:1814 ../system-config-printer.py:1921
 msgid "Error"
 msgstr "Σφάλμα"
 
-#: ../system-config-printer.py:1719
+#: ../system-config-printer.py:1815
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Διαπιστώθηκε σφάλμα κατά τη λειτουργία του εξυπηρετητή CUPS."
 
-#: ../system-config-printer.py:1826
+#: ../system-config-printer.py:1922
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
-#: ../system-config-printer.py:2243
+#: ../system-config-printer.py:2188
+#, fuzzy
+msgid "Cannot Rename"
+msgstr "Απελευ_θέρωση"
+
+#: ../system-config-printer.py:2189
+msgid "There are queued jobs."
+msgstr ""
+
+#: ../system-config-printer.py:2366
 #, fuzzy, python-format
 msgid "Really delete class `%s'?"
 msgstr "Σίγουρα να διαγραφεί η κλάση %s;"
 
-#: ../system-config-printer.py:2245
+#: ../system-config-printer.py:2368
 #, fuzzy, python-format
 msgid "Really delete printer `%s'?"
 msgstr "Σίγουρα να διαγραφεί ο εκτυπωτής %s;"
 
-#: ../system-config-printer.py:2247
+#: ../system-config-printer.py:2370
 #, fuzzy
 msgid "Really delete selected destinations?"
 msgstr "Σίγουρα να διαγραφεί ο εκτυπωτής %s;"
 
-#: ../system-config-printer.py:2301
+#: ../system-config-printer.py:2438
 msgid "Publish Shared Printers"
 msgstr ""
 
-#: ../system-config-printer.py:2302
+#: ../system-config-printer.py:2439
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -570,155 +609,159 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2415
+#: ../system-config-printer.py:2600
 msgid "Review Firewall"
 msgstr ""
 
-#: ../system-config-printer.py:2416
+#: ../system-config-printer.py:2601
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
+#: ../system-config-printer.py:2835
+msgid "Browsing not available (pysmbc not installed)"
+msgstr ""
+
 #. SMB list columns
-#: ../system-config-printer.py:2653
+#: ../system-config-printer.py:2841
 msgid "Share"
 msgstr "Κοινή χρήση"
 
-#: ../system-config-printer.py:2659
+#: ../system-config-printer.py:2847
 msgid "Comment"
 msgstr "Σχόλιο"
 
 #. IPP list columns
-#: ../system-config-printer.py:2678
+#: ../system-config-printer.py:2866
 msgid "Queue"
 msgstr ""
 
-#: ../system-config-printer.py:2692
+#: ../system-config-printer.py:2880
 #, fuzzy
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr "Περιγραφή εκτυπωτή PostScript (*.ppd[.gz])"
 
-#: ../system-config-printer.py:2701
+#: ../system-config-printer.py:2889
 msgid "All files (*)"
 msgstr ""
 
-#: ../system-config-printer.py:2737 ../system-config-printer.py:4315
-#: ../system-config-printer.py:4353
+#: ../system-config-printer.py:2925 ../system-config-printer.py:4549
+#: ../system-config-printer.py:4587
 #, fuzzy
 msgid "Search"
 msgstr "Εκτελείται αναζήτηση"
 
-#: ../system-config-printer.py:2751 ../glade/NewPrinterWindow.glade.h:63
+#: ../system-config-printer.py:2939 ../glade/NewPrinterWindow.glade.h:63
 msgid "New Printer"
 msgstr "Νέος εκτυπωτής"
 
-#: ../system-config-printer.py:2762
+#: ../system-config-printer.py:2950
 msgid "New Class"
 msgstr "Νέα κλάση(*.ppd[.gz])"
 
-#: ../system-config-printer.py:2767
+#: ../system-config-printer.py:2955
 msgid "Change Device URI"
 msgstr "Αλλαγή URI συσκευής"
 
-#: ../system-config-printer.py:2784
+#: ../system-config-printer.py:2972
 msgid "Change Driver"
 msgstr "Αλλαγή οδηγού"
 
-#: ../system-config-printer.py:2877 ../system-config-printer.py:3168
-#: ../system-config-printer.py:3354 ../system-config-printer.py:4340
+#: ../system-config-printer.py:3065 ../system-config-printer.py:3361
+#: ../system-config-printer.py:3547 ../system-config-printer.py:4574
 msgid "Searching"
 msgstr "Εκτελείται αναζήτηση"
 
-#: ../system-config-printer.py:2878 ../system-config-printer.py:3169
+#: ../system-config-printer.py:3066 ../system-config-printer.py:3362
 msgid "Searching for drivers"
 msgstr "Εκτελείται αναζήτηση για οδηγούς"
 
-#: ../system-config-printer.py:2992
+#: ../system-config-printer.py:3168
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr ""
 
-#: ../system-config-printer.py:3355
+#: ../system-config-printer.py:3548
 msgid "Searching for printers"
 msgstr "Εκτελείται αναζήτηση για εκτυπωτές"
 
-#: ../system-config-printer.py:3628
+#: ../system-config-printer.py:3821
 msgid "Other"
 msgstr "Άλλο"
 
-#: ../system-config-printer.py:3630
+#: ../system-config-printer.py:3823
 msgid " (Current)"
 msgstr " (Τρέχον)"
 
-#: ../system-config-printer.py:3656 ../system-config-printer.py:4004
+#: ../system-config-printer.py:3849 ../system-config-printer.py:4238
 #, fuzzy
 msgid "Scanning..."
 msgstr "Μεγέθυνση:"
 
-#: ../system-config-printer.py:3691
+#: ../system-config-printer.py:3904
 #, fuzzy
 msgid "No Print Shares"
 msgstr "Νέος εκτυπωτής"
 
-#: ../system-config-printer.py:3692
+#: ../system-config-printer.py:3905
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
 
-#: ../system-config-printer.py:3923 ../system-config-printer.py:3986
+#: ../system-config-printer.py:4157 ../system-config-printer.py:4220
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:3924 ../system-config-printer.py:3987
+#: ../system-config-printer.py:4158 ../system-config-printer.py:4221
 msgid "This print share is accessible."
 msgstr "Ο κοινόχρηστος εκτυπωτής είναι προσβάσιμος."
 
-#: ../system-config-printer.py:3928 ../system-config-printer.py:3991
+#: ../system-config-printer.py:4162 ../system-config-printer.py:4225
 msgid "This print share is not accessible."
 msgstr "Ο κοινόχρηστος εκτυπωτής δεν είναι προσβάσιμος."
 
-#: ../system-config-printer.py:3931
+#: ../system-config-printer.py:4165
 #, fuzzy
 msgid "Print Share Inaccessible"
 msgstr "Ο κοινόχρηστος εκτυπωτής είναι προσβάσιμος."
 
-#: ../system-config-printer.py:3990
+#: ../system-config-printer.py:4224
 msgid "Inaccessible"
 msgstr "Μη προσβάσιμο"
 
-#: ../system-config-printer.py:4042
+#: ../system-config-printer.py:4276
 #, fuzzy, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "Διαπιστώθηκε σφάλμα κατά τη λειτουργία του εξυπηρετητή CUPS."
 
-#: ../system-config-printer.py:4044
+#: ../system-config-printer.py:4278
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
 msgstr ""
 
-#: ../system-config-printer.py:4047
+#: ../system-config-printer.py:4281
 msgid "No queues"
 msgstr ""
 
-#: ../system-config-printer.py:4048
+#: ../system-config-printer.py:4282
 msgid "There are no queues available."
 msgstr ""
 
-#: ../system-config-printer.py:4105
+#: ../system-config-printer.py:4339
 msgid "A printer connected to the parallel port."
 msgstr "Ένας εκτυπωτής συνδεδεμένος στην παράλληλη θύρα."
 
-#: ../system-config-printer.py:4107
+#: ../system-config-printer.py:4341
 msgid "A printer connected to a USB port."
 msgstr "Ένας εκτυπωτής συνδεδεμένος στη θύρα USB."
 
-#: ../system-config-printer.py:4109
+#: ../system-config-printer.py:4343
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -726,7 +769,7 @@ msgstr ""
 "Λογισμικό HPLIP για οδήγηση εκτυπωτή ή η λειτουργία εκτύπωσης μιας πολυ-"
 "λειτουργικής συσκευής."
 
-#: ../system-config-printer.py:4112
+#: ../system-config-printer.py:4346
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -734,52 +777,52 @@ msgstr ""
 "Λογισμικό HPLIP για οδήγηση φαξ ή η λειτουργία φαξμιας πολυ-λειτουργικής "
 "συσκευής."
 
-#: ../system-config-printer.py:4115
+#: ../system-config-printer.py:4349
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "Τοπικός εκτυπωτής που ανιχνεύτηκε από το Hardware Abstraction Layer (HAL)."
 
-#: ../system-config-printer.py:4365
+#: ../system-config-printer.py:4599
 #, fuzzy
 msgid "-- Select from search results --"
 msgstr "Επιλογή εκτυπωτή από βάση δεδομένων"
 
-#: ../system-config-printer.py:4367
+#: ../system-config-printer.py:4601
 msgid "-- No matches found --"
 msgstr ""
 
-#: ../system-config-printer.py:4550
+#: ../system-config-printer.py:4784
 msgid " (recommended)"
 msgstr " (προτεινόμενος)"
 
-#: ../system-config-printer.py:4564
+#: ../system-config-printer.py:4798
 msgid "This PPD is generated by foomatic."
 msgstr "Αυτό το PPD δημιουργήθηκε από το foomatic."
 
-#: ../system-config-printer.py:4590
+#: ../system-config-printer.py:4824
 #, fuzzy
 msgid "OpenPrinting"
 msgstr "Εκτύπωση"
 
-#: ../system-config-printer.py:4592
+#: ../system-config-printer.py:4826
 msgid "Distributable"
 msgstr ""
 
-#: ../system-config-printer.py:4594
+#: ../system-config-printer.py:4828
 #, fuzzy
 msgid "None"
 msgstr "Κανένας"
 
-#: ../system-config-printer.py:4602
+#: ../system-config-printer.py:4836
 msgid "Not specified."
 msgstr ""
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4642
+#: ../system-config-printer.py:4876
 msgid "Database error"
 msgstr "Σφάλμα βάσης δεδομένων"
 
-#: ../system-config-printer.py:4643
+#: ../system-config-printer.py:4877
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Ο οδηγός '%s' δε μπορεί να χρησιμοποιηθεί με τον εκτυπωτή '%s %s'."
@@ -787,7 +830,7 @@ msgstr "Ο οδηγός '%s' δε μπορεί να χρησιμοποιηθεί
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4653
+#: ../system-config-printer.py:4887
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
@@ -795,51 +838,51 @@ msgstr ""
 "τον οδηγό."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4660
+#: ../system-config-printer.py:4894
 msgid "PPD error"
 msgstr "Σφάλμα PPD"
 
-#: ../system-config-printer.py:4662
+#: ../system-config-printer.py:4896
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Αποτυχία ανάγνωσης αρχείου PPD. Πιθανή αιτία ακολουθεί:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4679
+#: ../system-config-printer.py:4913
 msgid "Downloadable drivers"
 msgstr ""
 
-#: ../system-config-printer.py:4680
+#: ../system-config-printer.py:4914
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:4716 ../system-config-printer.py:4754
+#: ../system-config-printer.py:4950 ../system-config-printer.py:4988
 #, fuzzy
 msgid "No Installable Options"
 msgstr "Επιλογές για εγκατάσταση"
 
-#: ../system-config-printer.py:4800
+#: ../system-config-printer.py:5034
 msgid "Adding"
 msgstr "Προσθήκη"
 
-#: ../system-config-printer.py:4801
+#: ../system-config-printer.py:5035
 msgid "Adding printer"
 msgstr "Προσθήκη εκτυπωτή"
 
-#: ../system-config-printer.py:4962
+#: ../system-config-printer.py:5196
 msgid "Install driver"
 msgstr "Εγκατάσταση οδηγού"
 
-#: ../system-config-printer.py:4963
+#: ../system-config-printer.py:5197
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Ο εκτυπωτής '%s' απαιτεί το πακέτο %s, το οποίο όμως δεν είναι εγκατεστημένο."
 
-#: ../system-config-printer.py:4988
+#: ../system-config-printer.py:5222
 msgid "Missing driver"
 msgstr "Λείπει οδηγός"
 
-#: ../system-config-printer.py:4989
+#: ../system-config-printer.py:5223
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -948,7 +991,7 @@ msgstr "_Αρχείο"
 msgid "_Refresh"
 msgstr "Απελευ_θέρωση"
 
-#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:18
+#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:14
 msgid "_View"
 msgstr "_Προβολή"
 
@@ -1354,41 +1397,6 @@ msgstr "Εκτελείται αναζήτηση"
 #: ../glade/NewPrinterWindow.glade.h:95
 msgid "_Verify..."
 msgstr "E_παλήθευση..."
-
-#: ../glade/printer_context_menu.glade.h:1
-msgid ""
-"Create a class from the selected printers (for failover or load-balancing)"
-msgstr ""
-
-#: ../glade/printer_context_menu.glade.h:2
-#, fuzzy
-msgid "E_nabled"
-msgstr "Ενεργό"
-
-#: ../glade/printer_context_menu.glade.h:3
-#, fuzzy
-msgid "Set As Default"
-msgstr "_Προεπιλογή"
-
-#: ../glade/printer_context_menu.glade.h:4
-#, fuzzy
-msgid "View Print _Queue"
-msgstr "Νέος εκτυπωτής"
-
-#: ../glade/printer_context_menu.glade.h:5
-#, fuzzy
-msgid "_Create Class"
-msgstr "Απομακρυσμένες κλάσεις"
-
-#: ../glade/printer_context_menu.glade.h:6 ../glade/PrintersWindow.glade.h:13
-#, fuzzy
-msgid "_Rename"
-msgstr "Απελευ_θέρωση"
-
-#: ../glade/printer_context_menu.glade.h:7 ../glade/PrintersWindow.glade.h:16
-#, fuzzy
-msgid "_Shared"
-msgstr "Κοινή χρήση"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:1
 msgid " "
@@ -1823,63 +1831,53 @@ msgstr "<b>Βασικές επιλογές οδηγού</b>"
 msgid "Choose a different CUPS server"
 msgstr "Σύνδεση στον εξυπηρετητή CUPS"
 
-#: ../glade/PrintersWindow.glade.h:3
-#, fuzzy
-msgid "Set As De_fault"
-msgstr "_Προεπιλογή"
-
-#: ../glade/PrintersWindow.glade.h:4 ../glade/ServerSettingsDialog.glade.h:8
+#: ../glade/PrintersWindow.glade.h:3 ../glade/ServerSettingsDialog.glade.h:8
 msgid "Show printers shared by other systems"
 msgstr "Εμφάνιση εκτυπωτών κοινόχρηστων από άλλα συστήματα"
 
-#: ../glade/PrintersWindow.glade.h:5
+#: ../glade/PrintersWindow.glade.h:4
 msgid "System-Config-Printer"
 msgstr "Ρύθμιση εκτυπωτών"
 
-#: ../glade/PrintersWindow.glade.h:6
+#: ../glade/PrintersWindow.glade.h:5
 #, fuzzy
 msgid "_Class"
 msgstr "Νέα κλάση(*.ppd[.gz])"
 
-#: ../glade/PrintersWindow.glade.h:7
+#: ../glade/PrintersWindow.glade.h:6
 #, fuzzy
 msgid "_Connect..."
 msgstr "Σύνδεση"
 
-#: ../glade/PrintersWindow.glade.h:8
+#: ../glade/PrintersWindow.glade.h:7
 msgid "_Discovered Printers"
 msgstr ""
 
-#: ../glade/PrintersWindow.glade.h:9
-#, fuzzy
-msgid "_Enabled"
-msgstr "Ενεργό"
-
-#: ../glade/PrintersWindow.glade.h:10
+#: ../glade/PrintersWindow.glade.h:8
 msgid "_Help"
 msgstr "_Βοήθεια"
 
-#: ../glade/PrintersWindow.glade.h:11
+#: ../glade/PrintersWindow.glade.h:9
 #, fuzzy
 msgid "_New"
 msgstr "_Προβολή"
 
-#: ../glade/PrintersWindow.glade.h:12
+#: ../glade/PrintersWindow.glade.h:10
 #, fuzzy
 msgid "_Printer"
 msgstr "Εκτυπωτής"
 
-#: ../glade/PrintersWindow.glade.h:14
+#: ../glade/PrintersWindow.glade.h:11
 #, fuzzy
 msgid "_Server"
 msgstr "_Μετάβαση στον εξυπηρετητή"
 
-#: ../glade/PrintersWindow.glade.h:15
+#: ../glade/PrintersWindow.glade.h:12
 #, fuzzy
 msgid "_Settings..."
 msgstr "Επιλογές"
 
-#: ../glade/PrintersWindow.glade.h:17
+#: ../glade/PrintersWindow.glade.h:13
 msgid "_Troubleshoot"
 msgstr ""
 
@@ -2463,6 +2461,14 @@ msgstr "Διαχείριση εργασιών εκτύπωσης"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Επιλογή προεπιλεγμένου εκτυπωτή"
+
+#, fuzzy
+#~ msgid "Set As Default"
+#~ msgstr "_Προεπιλογή"
+
+#, fuzzy
+#~ msgid "_Enabled"
+#~ msgstr "Ενεργό"
 
 #~ msgid ""
 #~ "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
