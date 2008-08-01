@@ -2062,12 +2062,27 @@ class GUI(GtkGUI, monitor.Watcher):
         gtk.main_quit()
 
     # Rename
+    def is_rename_possible (self, name):
+        jobs = self.printers[name].jobsQueued ()
+        if len (jobs) > 0:
+            show_error_dialog (_("Cannot Rename"),
+                               _("There are queued jobs."),
+                               parent=self.MainWindow)
+            return False
+
+        return True
+
     def on_rename_activate(self, widget):
         tuple = self.dests_iconview.get_cursor ()
         if tuple == None:
             return
 
         (path, cell) = tuple
+        model = self.dests_iconview.get_model ()
+        iter = model.get_iter (path)
+        name = model.get_value (iter, 2)
+        if not self.is_rename_possible (name):
+            return
         cell.set_property ('editable', True)
         self.dests_iconview.set_cursor (path, cell, start_editing=True)
         ids = []
@@ -2097,11 +2112,6 @@ class GUI(GtkGUI, monitor.Watcher):
             cell.disconnect (id)
 
     def rename_printer (self, old_name, new_name):
-        def jobs_error ():
-            show_error_dialog (_("Cannot Rename"),
-                               _("There are queued jobs."),
-                               parent=self.MainWindow)
-            
         if old_name == new_name:
             return
 
@@ -2111,18 +2121,14 @@ class GUI(GtkGUI, monitor.Watcher):
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
 
-        jobs = self.printer.jobsQueued ()
-        if len (jobs) > 0:
-            jobs_error ()
+        if not self.is_rename_possible (old_name):
             return
 
         rejecting = self.printer.rejecting
         if not rejecting:
             self.printer.setAccepting (False)
-            jobs = self.printer.jobsQueued ()
-            if len (jobs) > 0:
+            if not self.is_rename_possible (old_name):
                 self.printer.setAccepting (True)
-                jobs_error ()
                 return
 
         if self.copy_printer (new_name):
