@@ -1874,8 +1874,8 @@ class GUI:
                     i = store.append (iter)
                     store.set_value (i, 0, h['NAME'])
                     store.set_value (i, 3, h)
-                if i:
-                    dummy = store.append (i)
+                    if i:
+                        dummy = store.append (i)
                 self.ready (self.NewPrinterWindow)
             view.expand_row (path, 0)
             del self.expanding_row
