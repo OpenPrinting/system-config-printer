@@ -2550,8 +2550,9 @@ class GUI:
             cmdline = cmdline.replace ('&quot;', '"')
             cmdline = cmdline.replace ('&lt;', '<')
             cmdline = cmdline.replace ('&gt;', '>')
-            if cmdline.find ("(") != -1:
-                # Don't try to handle sub-shells.
+            if (cmdline.find ("(") != -1 or
+                cmdline.find ("&") != -1):
+                # Don't try to handle sub-shells or unreplaced HTML entities.
                 cmdline = ""
 
             # Strip out foomatic '%'-style place-holders
