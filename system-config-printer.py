@@ -1940,7 +1940,7 @@ class GUI:
 
     def on_tvSMBBrowser_cursor_changed (self, view):
         store, iter = view.get_selection ().get_selected ()
-        if not iter:
+        if not iter or store.iter_depth(iter) != 2:
             return
 
         parent_iter = store.iter_parent (iter)
