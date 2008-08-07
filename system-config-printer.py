@@ -597,7 +597,9 @@ class GUI:
 
     def reconnect (self):
         """Reconnect to CUPS after the server has reloaded."""
-        print "FIXME: need to reconnect to CUPS here"
+        # libcups will handle the reconnection; we just need to tell it
+        # to do something.
+        self.cups.getClasses ()
 
     def on_btnCancelConnect_clicked(self, widget):
         """Close Connect dialog"""
@@ -2704,7 +2706,7 @@ class GUI:
             return True
         self.changed = set()
         self.setDataButtonState()
-        time.sleep(0.1) # give the server a chance to process our request
+        time.sleep(1) # give the server a chance to process our request
 
         # Now reconnect, in case the server needed to reload.
         self.reconnect ()
