@@ -1710,7 +1710,7 @@ class GUI:
         else:
             self.btnNPBack.show()
         if nr == 1: # Device
-            pass
+            self.btnNPForward.set_sensitive(True)
         if nr == 2: # Make/PPD file
             self.btnNPForward.set_sensitive(bool(
                 self.rbtnNPFoomatic.get_active() or
