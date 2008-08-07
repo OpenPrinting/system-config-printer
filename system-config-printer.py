@@ -62,6 +62,7 @@ sys.path.append (pkgdata)
 
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
+ellipsis = unichr(0x2026)
 
 def percentEncode (text):
     """Percent-encode ASCII text ready for inclusion in a URI."""
@@ -943,6 +944,9 @@ class GUI:
             location = self.entPLocation.get_text()
             info = self.entPDescription.get_text()
             device_uri = self.entPDevice.get_text()
+            if device_uri.find (ellipsis) != -1:
+                # The URI is sanitized and not editable.
+                device_uri = printer.device_uri
 
             enabled = self.chkPEnabled.get_active()
             accepting = self.chkPAccepting.get_active()
@@ -1143,7 +1147,6 @@ class GUI:
         if uri.startswith("smb://"):
             group, host, share, user, password = self.parse_SMBURI(uri[6:])
             if password:
-                ellipsis = unichr(0x2026)
                 uri = "smb://"
                 if len (user) or len (password):
                     uri += ellipsis
@@ -2310,7 +2313,6 @@ class GUI:
             # Don't reveal SMB authentication details.
             if uri[:6] == "smb://":
                 (group, host, share, u, p) = self.parse_SMBURI (uri[6:])
-                ellipsis = unichr(0x2026)
                 uri = "smb://"
                 if len (u) or len (p):
                     uri += ellipsis
