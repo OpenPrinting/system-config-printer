@@ -2051,7 +2051,7 @@ class GUI:
             printer = self.foomatic.getPrinter(printer_name)
             if printer:
                 self.auto_make, self.auto_model = printer.make, printer.model
-                self.fillMakeList()
+        self.fillMakeList()
 
     def on_btnNPTLpdProbe_clicked(self, button):
         # read hostname, probe, fill printer names
