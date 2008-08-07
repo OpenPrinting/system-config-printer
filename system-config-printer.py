@@ -1228,7 +1228,10 @@ class GUI:
         attrs.sort()
         for attr in attrs:
             value = printer.attributes[attr]
-            supported = printer.possible_attributes[attr][1]
+            if attr in printer.possible_attributes:
+                supported = printer.possible_attributes[attr][1]
+            else:
+                supported = ""
             self.add_option(attr, value, supported, is_new=False,
                             editable=editable)
 
