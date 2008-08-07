@@ -899,7 +899,7 @@ class GUI:
 
             error_text = ('<span weight="bold" size="larger">' +
                           _('CUPS server error') + '</span>\n\n' +
-                          _("There was an HTTP error: %s.")) % message
+                          _("There was an HTTP error: %s.")) % msg
         self.lblError.set_markup(error_text)
         self.ErrorDialog.set_transient_for (self.MainWindow)
         self.ErrorDialog.run()
