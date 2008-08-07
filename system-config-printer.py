@@ -466,7 +466,18 @@ class GUI:
     def maySelectItem(self, selection):
         result = self.mainlist.get_value(
             self.mainlist.get_iter(selection), 1)
-        return result[0] != "_"
+        if result[0] == "_":
+            return False
+        if self.changed:
+            response = self.ApplyDialog.run()
+            self.ApplyDialog.hide()
+            err = False
+            if response == gtk.RESPONSE_APPLY:
+                err = self.apply()
+            self.changed = False
+            if err or response == gtk.RESPONSE_CANCEL:
+                return False
+        return True
 
     def getSelectedItem(self):
         model, iter = self.tvMainList.get_selection().get_selected()
@@ -1073,17 +1084,6 @@ class GUI:
     # select Item
 
     def on_tvMainList_cursor_changed(self, list):
-        if self.changed:
-            response = self.ApplyDialog.run()
-            self.ApplyDialog.hide()
-            err = False
-            if response == gtk.RESPONSE_APPLY:
-                err = self.apply()
-            if err or response == gtk.RESPONSE_CANCEL:
-                self.tvMainList.get_selection().select_iter(
-                    self.mainListSelected)
-                return
-
         name, type = self.getSelectedItem()
         model, self.mainListSelected = self.tvMainList.get_selection().get_selected()
         item_selected = True
