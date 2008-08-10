@@ -368,9 +368,17 @@ class GUI(GtkGUI, monitor.Watcher):
                 ("share-printer", None, _("_Shared"),
                  None, None, self.on_shared_activate),
                 ])
+        printer_manager_action_group.add_radio_actions ([
+                ("filter-name", None, _("Name")),
+                ("filter-description", None, _("Description / Location")),
+                ("filter-manufacturer", None, _("Manufacturer / Model")),
+                ], 1, self.on_filter_criterion_changed)
         for action in printer_manager_action_group.list_actions ():
             action.set_sensitive (False)
         printer_manager_action_group.get_action ("view-print-queue").set_sensitive (True)
+        printer_manager_action_group.get_action ("filter-name").set_sensitive (True)
+        printer_manager_action_group.get_action ("filter-description").set_sensitive (True)
+        printer_manager_action_group.get_action ("filter-manufacturer").set_sensitive (True)
 
         self.ui_manager = gtk.UIManager ()
         self.ui_manager.insert_action_group (printer_manager_action_group, -1)
@@ -388,6 +396,9 @@ class GUI(GtkGUI, monitor.Watcher):
  <accelerator action="save-as-group"/>
  <accelerator action="enable-printer"/>
  <accelerator action="share-printer"/>
+ <accelerator action="filter-name"/>
+ <accelerator action="filter-description"/>
+ <accelerator action="filter-manufacturer"/>
 </ui>
 """
 )
@@ -449,6 +460,7 @@ class GUI(GtkGUI, monitor.Watcher):
         # Setup search and printer groups
         self.setup_toolbar_for_search_entry ()
         self.current_filter_text = ""
+        self.current_filter_mode = "filter-name"
 
         self.groups_pane = GroupsPane ()
         self.current_groups_pane_item = self.groups_pane.get_selected_item ()
@@ -478,7 +490,11 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # Search entry drop down menu
         menu = gtk.Menu ()
-        for action_name in ["save-as-group",]:
+        for action_name in ["filter-name",
+                            "filter-description",
+                            "filter-manufacturer",
+                            None,
+                            "save-as-group"]:
             if not action_name:
                 item = gtk.SeparatorMenuItem ()
             else:
@@ -792,6 +808,10 @@ class GUI(GtkGUI, monitor.Watcher):
     def on_groups_pane_items_changed (self, UNUSED):
         self.update_add_to_group_menu ()
 
+    def on_filter_criterion_changed (self, UNUSED, selected_action):
+        self.current_filter_mode = selected_action.get_name ()
+        self.populateList ()
+
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
         iter = model.get_iter (path)
@@ -1098,11 +1118,24 @@ class GUI(GtkGUI, monitor.Watcher):
         # Filter printers
         if len (self.current_filter_text) > 0:
             printers_subset = {}
-            # FIXME: this might be slow and block the UI
             pattern = re.compile (self.current_filter_text, re.I) # ignore case
-            for name in printers_set.keys ():
-                if pattern.search (name) != None:
-                    printers_subset[name] = printers_set[name]
+
+            if self.current_filter_mode == "filter-name":
+                for name in printers_set.keys ():
+                    if pattern.search (name) != None:
+                        printers_subset[name] = printers_set[name]
+            elif self.current_filter_mode == "filter-description":
+                for name, printer in printers_set.iteritems ():
+                    if (pattern.search (printer.info) != None or
+                        pattern.search (printer.location) != None):
+                        printers_subset[name] = printers_set[name]
+            elif self.current_filter_mode == "filter-manufacturer":
+                for name, printer in printers_set.iteritems ():
+                    if pattern.search (printer.make_and_model) != None:
+                        printers_subset[name] = printers_set[name]
+            else:
+                nonfatalException ()
+
             printers_set = printers_subset
 
         for name, printer in printers_set.iteritems():
