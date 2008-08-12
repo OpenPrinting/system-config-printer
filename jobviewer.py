@@ -31,6 +31,7 @@ import gtk.glade
 import monitor
 import os
 import pango
+import pwd
 import sys
 import time
 
@@ -543,6 +544,26 @@ class JobViewer (monitor.Watcher):
                     return
 
             dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
+
+            # Pre-fill 'username' field.
+            if 'username' in auth_info_required:
+                try:
+                    auth_info = map (lambda x: '', auth_info_required)
+                    username = pwd.getpwuid (os.getuid ())[0]
+                    ind = auth_info_required.index ('username')
+                    auth_info[ind] = username
+                    dialog.set_auth_info (auth_info)
+
+                    index = 0
+                    for field in auth_info_required:
+                        if auth_info[index] == '':
+                            # Focus on the first empty field.
+                            dialog.field_grab_focus (field)
+                            break
+                        index += 1
+                except:
+                    nonfatalException ()
+
             dialog.set_prompt (_("Authentication required for "
                                  "printing document `%s' (job %d)") %
                                (data.get('job-name', _("Unknown")), job))
