@@ -1,3 +1,31 @@
+2008-08-12  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane.__init__): Load search groups from the
+	xml file.
+	* GroupsPane.py (GroupsPane._create_new_group_common): Share some
+	code between...
+	* GroupsPane.py (GroupsPane.create_new_search_group): ... this new
+	method...
+	* GroupsPane.py (GroupsPane.create_new_group): ... and this one.
+	* GroupsPaneModel.py (SavedSearchGroupItem.__init__): Implemented
+	search group saving and loading from xml.
+	* SearchCriterion.py (SearchCriterion): New class with the
+	necessary definitions to put in the search group xml serialization
+	and be compatible with Project Presto's ospm.
+	* XmlHelper.py (XmlHelper.get_search_groups): New method.
+	* system-config-printer.py (GUI.__init__): Added a search entry
+	popdown menu item to save a search group.
+	* system-config-printer.py (GUI.on_search_entry_search): Set the
+	previous menu item sensitivity.
+	* system-config-printer.py (GUI.on_groups_pane_item_activated):
+	Clear the search entry when changing groups and fill the search
+	entry when a search group has been selected.
+	* system-config-printer.py (GUI.populateList): Handle search
+	groups like AllPrinters since it's only the filtering that makes
+	the difference.
+	* system-config-printer.py (GUI.on_save_as_search_group_activate):
+	New method.
+
 2008-08-10  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* system-config-printer.py (GUI.__init__):

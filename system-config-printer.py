@@ -82,6 +82,7 @@ from AdvancedServerSettings import AdvancedServerSettingsDialog
 from ToolbarSearchEntry import *
 from GroupsPane import *
 from GroupsPaneModel import *
+from SearchCriterion import *
 
 domain='system-config-printer'
 import locale
@@ -359,8 +360,10 @@ class GUI(GtkGUI, monitor.Watcher):
                  None, None, self.on_view_print_queue_activate),
                 ("add-to-group", None, _("_Add to Group"),
                  None, None, None),
-                ("save-as-group", None, _("Save Results as _Group..."),
+                ("save-as-group", None, _("Save Results as _Group"),
                  None, None, self.on_save_as_group_activate),
+                ("save-as-search-group", None, _("Save Filter as _Search Group"),
+                 None, None, self.on_save_as_search_group_activate),
                 ])
         printer_manager_action_group.add_toggle_actions ([
                 ("enable-printer", None, _("E_nabled"),
@@ -370,7 +373,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 ])
         printer_manager_action_group.add_radio_actions ([
                 ("filter-name", None, _("Name")),
-                ("filter-description", None, _("Description / Location")),
+                ("filter-description", None, _("Description")),
+                ("filter-location", None, _("Location")),
                 ("filter-manufacturer", None, _("Manufacturer / Model")),
                 ], 1, self.on_filter_criterion_changed)
         for action in printer_manager_action_group.list_actions ():
@@ -378,6 +382,7 @@ class GUI(GtkGUI, monitor.Watcher):
         printer_manager_action_group.get_action ("view-print-queue").set_sensitive (True)
         printer_manager_action_group.get_action ("filter-name").set_sensitive (True)
         printer_manager_action_group.get_action ("filter-description").set_sensitive (True)
+        printer_manager_action_group.get_action ("filter-location").set_sensitive (True)
         printer_manager_action_group.get_action ("filter-manufacturer").set_sensitive (True)
 
         self.ui_manager = gtk.UIManager ()
@@ -394,10 +399,12 @@ class GUI(GtkGUI, monitor.Watcher):
  <accelerator action="view-print-queue"/>
  <accelerator action="add-to-group"/>
  <accelerator action="save-as-group"/>
+ <accelerator action="save-as-search-group"/>
  <accelerator action="enable-printer"/>
  <accelerator action="share-printer"/>
  <accelerator action="filter-name"/>
  <accelerator action="filter-description"/>
+ <accelerator action="filter-location"/>
  <accelerator action="filter-manufacturer"/>
 </ui>
 """
@@ -492,9 +499,11 @@ class GUI(GtkGUI, monitor.Watcher):
         menu = gtk.Menu ()
         for action_name in ["filter-name",
                             "filter-description",
+                            "filter-location",
                             "filter-manufacturer",
                             None,
-                            "save-as-group"]:
+                            "save-as-group",
+                            "save-as-search-group"]:
             if not action_name:
                 item = gtk.SeparatorMenuItem ()
             else:
@@ -778,10 +787,29 @@ class GUI(GtkGUI, monitor.Watcher):
     def on_search_entry_search (self, UNUSED, text):
         self.ui_manager.get_action ("/save-as-group").set_sensitive (
             text and True or False)
+        self.ui_manager.get_action ("/save-as-search-group").set_sensitive (
+            text and True or False)
         self.current_filter_text = text
         self.populateList ()
 
     def on_groups_pane_item_activated (self, UNUSED, item):
+        self.search_entry.clear ()
+
+        if isinstance (item, SavedSearchGroupItem):
+            crit = item.criteria[0]
+            if crit.subject == SearchCriterion.SUBJECT_NAME:
+                self.ui_manager.get_action ("/filter-name").activate ()
+            elif crit.subject == SearchCriterion.SUBJECT_DESC:
+                self.ui_manager.get_action ("/filter-description").activate ()
+            elif crit.subject == SearchCriterion.SUBJECT_LOCATION:
+                self.ui_manager.get_action ("/filter-location").activate ()
+            elif crit.subject == SearchCriterion.SUBJECT_MANUF:
+                self.ui_manager.get_action ("/filter-manufacturer").activate ()
+            else:
+                nonfatalException ()
+
+            self.search_entry.set_text (crit.value)
+
         self.current_groups_pane_item = item
         self.populateList ()
 
@@ -1093,7 +1121,8 @@ class GUI(GtkGUI, monitor.Watcher):
         remote_classes = []
 
         # Choose a view according to the groups pane item
-        if isinstance (self.current_groups_pane_item, AllPrintersItem):
+        if (isinstance (self.current_groups_pane_item, AllPrintersItem) or
+            isinstance (self.current_groups_pane_item, SavedSearchGroupItem)):
             delete_action = self.ui_manager.get_action ("/delete-printer")
             delete_action.set_properties (label = None)
             printers_set = self.printers
@@ -1126,8 +1155,11 @@ class GUI(GtkGUI, monitor.Watcher):
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-description":
                 for name, printer in printers_set.iteritems ():
-                    if (pattern.search (printer.info) != None or
-                        pattern.search (printer.location) != None):
+                    if pattern.search (printer.info) != None:
+                        printers_subset[name] = printers_set[name]
+            elif self.current_filter_mode == "filter-location":
+                for name, printer in printers_set.iteritems ():
+                    if pattern.search (printer.location) != None:
                         printers_subset[name] = printers_set[name]
             elif self.current_filter_mode == "filter-manufacturer":
                 for name, printer in printers_set.iteritems ():
@@ -2685,6 +2717,27 @@ class GUI(GtkGUI, monitor.Watcher):
             printer_queues.append (object[2])
         self.groups_pane.create_new_group (printer_queues,
                                            self.current_filter_text)
+
+    def on_save_as_search_group_activate (self, UNUSED):
+        criterion = None
+        if self.current_filter_mode == "filter-name":
+            criterion = SearchCriterion (subject = SearchCriterion.SUBJECT_NAME,
+                                         value   = self.current_filter_text)
+        elif self.current_filter_mode == "filter-description":
+            criterion = SearchCriterion (subject = SearchCriterion.SUBJECT_DESC,
+                                         value   = self.current_filter_text)
+        elif self.current_filter_mode == "filter-location":
+            criterion = SearchCriterion (subject = SearchCriterion.SUBJECT_LOCATION,
+                                         value   = self.current_filter_text)
+        elif self.current_filter_mode == "filter-manufacturer":
+            criterion = SearchCriterion (subject = SearchCriterion.SUBJECT_MANUF,
+                                         value   = self.current_filter_text)
+        else:
+            nonfatalException ()
+            return
+
+        self.groups_pane.create_new_search_group (criterion,
+                                                  self.current_filter_text)
 
     # About dialog
     def on_about_activate(self, widget):

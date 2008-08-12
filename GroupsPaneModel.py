@@ -18,6 +18,7 @@ import gobject
 import gtk
 import libxml2
 from XmlHelper import xml_helper
+from SearchCriterion import *
 from gettext import gettext as _
 
 from debug import *
@@ -29,7 +30,6 @@ class GroupsPaneItem (gobject.GObject):
         self.icon = None
         self.name = None
         self.separator = False
-        self.printer_queues = []
 
     def load_icon (self, icon_name):
         theme = gtk.icon_theme_get_default ()
@@ -83,6 +83,7 @@ class StaticGroupItem (MutableItem):
         super (StaticGroupItem, self).__init__ (name, xml_node)
 
         self.icon = self.load_icon ('folder')
+        self.printer_queues = []
 
         if not self.xml_node:
             self.xml_node = libxml2.newNode ("static-group")
@@ -128,10 +129,49 @@ class StaticGroupItem (MutableItem):
         xml_helper.write ()
 
 class SavedSearchGroupItem (MutableItem):
-    def __init__ (self, name):
-        super (SavedSearchGroupItem, self).__init__ (name)
+    def __init__ (self, name, criteria = [],
+                  match_all = False, xml_node = None):
+        super (SavedSearchGroupItem, self).__init__ (name, xml_node)
 
         self.icon = self.load_icon ('folder-saved-search')
+        self.criteria = criteria
+        self.match_all = match_all
+
+        if not self.xml_node:
+            self.xml_node = libxml2.newNode ("search-group")
+            self.xml_node.newProp ("name", self.name)
+            criteria_node = self.xml_node.newChild (None, "criterias", None)
+            criteria_node.newProp ("match", self.match_all and "all" or "any")
+            for criterion in self.criteria:
+                criterion_node = criteria_node.newChild (None, "criteria", None)
+                criterion_node.newChild (None, "subject",
+                                         str (criterion.subject))
+                criterion_node.newChild (None, "rule",
+                                         str (criterion.rule))
+                criterion_node.newChild (None, "value",
+                                         str (criterion.value))
+            xml_helper.add_group (self.xml_node)
+        else:
+            criteria_node = self.xml_node.children
+            self.match_all = criteria_node.prop ("match") == "all"
+            criterion_node = criteria_node.children
+            while criterion_node:
+                criterion = SearchCriterion ()
+
+                crit_child = criterion_node.children
+                while crit_child:
+                    if crit_child.name == "subject":
+                        criterion.subject = int (crit_child.content)
+                    elif crit_child.name == "rule":
+                        criterion.rule = int (crit_child.content)
+                    elif crit_child.name == "value":
+                        criterion.value = crit_child.content
+                    else:
+                        pass
+                    crit_child = crit_child.next
+
+                self.criteria.append (criterion)
+                criterion_node = criterion_node.next
 
 class GroupsPaneModel (gtk.ListStore):
     def __init__ (self):

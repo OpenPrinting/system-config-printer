@@ -67,6 +67,9 @@ class XmlHelper (object):
     def get_static_groups (self):
         return self.__parse_groups ("static-group")
 
+    def get_search_groups (self):
+        return self.__parse_groups ("search-group")
+
     def add_group (self, group_node):
         self.xml_doc.getRootElement ().addChild (group_node)
         self.write ()

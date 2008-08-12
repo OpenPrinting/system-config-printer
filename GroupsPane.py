@@ -146,6 +146,9 @@ class GroupsPane (gtk.ScrolledWindow):
         self.store.append (SeparatorItem ())
         for group_name, group_node in xml_helper.get_static_groups ():
             self.store.append (StaticGroupItem (group_name, group_node))
+        for group_name, group_node in xml_helper.get_search_groups ():
+            self.store.append (SavedSearchGroupItem (group_name,
+                                                     xml_node = group_node))
 
     def icon_cell_data_func (self, column, cell, model, iter):
         icon = model.get (iter).icon
@@ -326,16 +329,25 @@ class GroupsPane (gtk.ScrolledWindow):
                 return new_name
             i += 1
 
-    def create_new_group (self, printer_queues, group_name = None):
-        item = StaticGroupItem (
-            group_name and group_name or self.generate_new_group_name ())
+    def _create_new_group_common (self, item):
         titer = self.store.append_by_type (item)
         self.emit ("items-changed")
-        item.add_queues (printer_queues)
         self.tree_view.row_activated (
             self.store.get_path (titer),
             self.tree_view.get_column (0))
         self.rename_selected_group ()
+
+    def create_new_search_group (self, criterion, group_name = None):
+        item = SavedSearchGroupItem (
+            group_name and group_name or self.generate_new_group_name (),
+            criteria = [criterion])
+        self._create_new_group_common (item)
+
+    def create_new_group (self, printer_queues, group_name = None):
+        item = StaticGroupItem (
+            group_name and group_name or self.generate_new_group_name ())
+        item.add_queues (printer_queues)
+        self._create_new_group_common (item)
 
     def on_new_group_activate (self, UNUSED):
         self.create_new_group ([])
