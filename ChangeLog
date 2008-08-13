@@ -1,3 +1,12 @@
+2008-08-14  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.__init__):
+	* system-config-printer.py (NewPrinterGUI.__init__): Since some
+	dialogs are reused we can't let the delete-event's default handler
+	destroy them.
+	* system-config-printer.py (on_delete_just_hide): This method is
+	connected to those dialog's delete-event (trac #88).
+
 2008-08-02  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py
