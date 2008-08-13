@@ -130,7 +130,13 @@ class Connection:
 
     def _authloop (self, fname, fn, *args, **kwds):
         self._passes = 0
+        c = self._connection
         while self._perform_authentication () != 0:
+            if c != self._connection:
+                # We have reconnected.
+                fn = getattr (self._connection, fname)
+                c = self._connection
+
             try:
                 result = fn.__call__ (*args, **kwds)
 
@@ -146,15 +152,17 @@ class Connection:
                 else:
                     raise
             except cups.HTTPError, (s,):
-                if not self._cancel and s == cups.HTTP_UNAUTHORIZED:
-                    self._failed ()
+                if not self._cancel and (s == cups.HTTP_UNAUTHORIZED or
+                                         s == cups.HTTP_FORBIDDEN):
+                    self._failed (s == cups.HTTP_FORBIDDEN)
                 else:
                     raise
 
         return result
 
-    def _failed (self):
+    def _failed (self, forbidden=False):
         self._has_failed = True
+        self._forbidden = forbidden
 
     def _password_callback (self, prompt):
         debugprint ("Got password callback")
@@ -173,6 +181,7 @@ class Connection:
             # Haven't yet tried the operation.  Set the password
             # callback and return > 0 so we try it for the first time.
             self._has_failed = False
+            self._forbidden = False
             self._auth_called = False
             self._cancel = False
             cups.setPasswordCB (self._password_callback)
@@ -192,16 +201,17 @@ class Connection:
             # Tried the operation without a password and it failed.
             if (self._try_as_root and
                 self._user != 'root' and
-                self._server[0] == '/'):
+                (self._server[0] == '/' or self._forbidden)):
                 # This is a UNIX domain socket connection so we should
-                # not have needed a password, and so the operation must
-                # not be something that the current user is authorised to
-                # do.  They need to try as root, and supply the password.
-                # However, to get the right prompt, we need to try as
-                # root but with no password first.
+                # not have needed a password (or it is not a UDS but
+                # we got an HTTP_FORBIDDEN response), and so the
+                # operation must not be something that the current
+                # user is authorised to do.  They need to try as root,
+                # and supply the password.  However, to get the right
+                # prompt, we need to try as root but with no password
+                # first.
                 debugprint ("Authentication: Try as root")
                 self._use_user = 'root'
-                cups.setUser (self._use_user)
                 self._auth_called = False
                 self._connect ()
                 return 1
