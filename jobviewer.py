@@ -162,6 +162,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.num_jobs_when_hidden = 0
         self.connecting_to_device = {} # dict of printer->time first seen
         self.state_reason_notifications = {}
+        self.auth_notifications = {}
         self.job_creation_times_timer = None
         self.special_status_icon = False
         self.new_printer_notifications = {}
@@ -320,7 +321,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         notification.attach_to_status_icon (self.statusicon)
         notification.show ()
 
-    def on_new_printer_notification_closed (self, notification):
+    def on_new_printer_notification_closed (self, notification, reason=None):
         printer = notification.get_data ('printer-name')
         del self.new_printer_notifications[printer]
         self.set_statusicon_visibility ()
@@ -499,83 +500,115 @@ class JobViewer (GtkGUI, monitor.Watcher):
         store.set_value (iter, 6, state)
 
         # Check whether authentication is required.
-        if (self.trayicon and job_requires_auth and
-            not self.auth_info_dialog):
-            try:
-                cups.require ("1.9.37")
-            except:
-                debugprint ("Authentication required but "
-                            "authenticateJob() not available")
-                return
-
-            # Find out which auth-info is required.
-            try:
-                c = authconn.Connection (self.JobsWindow)
+        if self.trayicon:
+            if (job_requires_auth and
+                not self.auth_notifications.has_key (job) and
+                not self.auth_info_dialog):
                 try:
-                    uri = data['job-printer-uri']
-                    attributes = c.getPrinterAttributes (uri = uri)
-                except TypeError: # uri keyword introduced in pycups-1.9.32
-                    debugprint ("Fetching printer attributes by name")
-                    attributes = c.getPrinterAttributes (printer)
+                    cups.require ("1.9.37")
+                except:
+                    debugprint ("Authentication required but "
+                                "authenticateJob() not available")
+                    return
+
+                title = _("Authentication Required")
+                text = _("Job requires authentication to proceed.")
+                notification = pynotify.Notification (title, text, 'printer')
+                notification.set_data ('job-id', job)
+                notification.set_urgency (pynotify.URGENCY_NORMAL)
+                notification.set_timeout (pynotify.EXPIRES_NEVER)
+                notification.connect ('closed',
+                                      self.on_auth_notification_closed)
+                self.set_statusicon_visibility ()
+                notification.attach_to_status_icon (self.statusicon)
+                notification.add_action ("authenticate", _("Authenticate"),
+                                         self.on_auth_notification_authenticate)
+                notification.show ()
+                self.auth_notifications[job] = notification
+            elif (not job_requires_auth and
+                  self.auth_notifications.has_key (job)):
+                self.auth_notifications[job].close ()
+
+    def on_auth_notification_closed (self, notification, reason=None):
+        job = notification.get_data ('job-id')
+        debugprint ("auth notification closed for job %s" % job)
+        del self.auth_notifications[job]
+
+    def on_auth_notification_authenticate (self, notification, action):
+        job = notification.get_data ('job-id')
+        debugprint ("auth notification authenticate for job %s" % job)
+        self.display_auth_info_dialog (job)
+
+    def display_auth_info_dialog (self, job):
+        data = self.jobs[job]
+        # Find out which auth-info is required.
+        try:
+            c = authconn.Connection (self.MainWindow)
+            try:
+                uri = data['job-printer-uri']
+                attributes = c.getPrinterAttributes (uri = uri)
+            except TypeError: # uri keyword introduced in pycups-1.9.32
+                debugprint ("Fetching printer attributes by name")
+                attributes = c.getPrinterAttributes (printer)
+        except cups.IPPError, (e, m):
+            self.show_IPP_Error (e, m)
+            return
+        except RuntimeError:
+            debugprint ("Failed to connect when fetching printer attrs")
+            return
+
+        try:
+            auth_info_required = attributes['auth-info-required']
+        except KeyError:
+            debugprint ("No auth-info-required attribute; guessing instead")
+            auth_info_required = ['username', 'password']
+
+        if not isinstance (auth_info_required, list):
+            auth_info_required = [auth_info_required]
+
+        if auth_info_required == ['negotiate']:
+            # Try Kerberos authentication.
+            try:
+                debugprint ("Trying Kerberos auth for job %d" % jobid)
+                c.authenticateJob (jobid)
+            except TypeError:
+                # Requires pycups-1.9.39 for optional auth parameter.
+                # Treat this as a normal job error.
+                debugprint ("... need newer pycups for that")
+                return
             except cups.IPPError, (e, m):
                 self.show_IPP_Error (e, m)
                 return
-            except RuntimeError:
-                debugprint ("Failed to connect when fetching printer attrs")
-                return
 
+        dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
+        dialog.set_position (gtk.WIN_POS_CENTER)
+
+        # Pre-fill 'username' field.
+        if 'username' in auth_info_required:
             try:
-                auth_info_required = attributes['auth-info-required']
-            except KeyError:
-                debugprint ("No auth-info-required attribute; guessing instead")
-                auth_info_required = ['username', 'password']
+                auth_info = map (lambda x: '', auth_info_required)
+                username = pwd.getpwuid (os.getuid ())[0]
+                ind = auth_info_required.index ('username')
+                auth_info[ind] = username
+                dialog.set_auth_info (auth_info)
 
-            if not isinstance (auth_info_required, list):
-                auth_info_required = [auth_info_required]
+                index = 0
+                for field in auth_info_required:
+                    if auth_info[index] == '':
+                        # Focus on the first empty field.
+                        dialog.field_grab_focus (field)
+                        break
+                    index += 1
+            except:
+                nonfatalException ()
 
-            if auth_info_required == ['negotiate']:
-                # Try Kerberos authentication.
-                try:
-                    debugprint ("Trying Kerberos auth for job %d" % jobid)
-                    c.authenticateJob (jobid)
-                except TypeError:
-                    # Requires pycups-1.9.39 for optional auth parameter.
-                    # Treat this as a normal job error.
-                    debugprint ("... need newer pycups for that")
-                    return
-                except cups.IPPError, (e, m):
-                    self.show_IPP_Error (e, m)
-                    return
-
-            dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
-            dialog.set_position (gtk.WIN_POS_CENTER)
-
-            # Pre-fill 'username' field.
-            if 'username' in auth_info_required:
-                try:
-                    auth_info = map (lambda x: '', auth_info_required)
-                    username = pwd.getpwuid (os.getuid ())[0]
-                    ind = auth_info_required.index ('username')
-                    auth_info[ind] = username
-                    dialog.set_auth_info (auth_info)
-
-                    index = 0
-                    for field in auth_info_required:
-                        if auth_info[index] == '':
-                            # Focus on the first empty field.
-                            dialog.field_grab_focus (field)
-                            break
-                        index += 1
-                except:
-                    nonfatalException ()
-
-            dialog.set_prompt (_("Authentication required for "
-                                 "printing document `%s' (job %d)") %
-                               (data.get('job-name', _("Unknown")), job))
-            self.auth_info_dialog = dialog
-            dialog.connect ('response', self.auth_info_dialog_response)
-            dialog.set_data ('job-id', job)
-            dialog.show_all ()
+        dialog.set_prompt (_("Authentication required for "
+                             "printing document `%s' (job %d)") %
+                           (data.get('job-name', _("Unknown")), job))
+        self.auth_info_dialog = dialog
+        dialog.connect ('response', self.auth_info_dialog_response)
+        dialog.set_data ('job-id', job)
+        dialog.show_all ()
 
     def auth_info_dialog_response (self, dialog, response):
         dialog.hide ()
@@ -888,7 +921,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         notification.attach_to_status_icon (self.statusicon)
         notification.show ()
 
-    def on_state_reason_notification_closed (self, notification):
+    def on_state_reason_notification_closed (self, notification, reason=None):
         debugprint ("Notification %s closed" % repr (notification))
         reason = notification.get_data ('printer-state-reason')
         tuple = reason.get_tuple ()
