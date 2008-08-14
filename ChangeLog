@@ -1,5 +1,15 @@
 2008-08-14  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.update_job): Display a notification when
+	a job requires authentication (trac #91).
+	(JobViewer.on_auth_notification_authenticate): New method.
+	Display an authentication dialog when the notification's
+	authenticate action is triggered.
+	(JobViewer.on_auth_notification_closed): New method.  Handle an
+	auth notification being closed.
+
+2008-08-14  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.update_job): Moved code for displaying
 	authentication dialog...
 	(JobViewer.display_auth_info_dialog): ...here.  New method.

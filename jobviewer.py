@@ -161,6 +161,7 @@ class JobViewer (monitor.Watcher):
         self.num_jobs_when_hidden = 0
         self.connecting_to_device = {} # dict of printer->time first seen
         self.state_reason_notifications = {}
+        self.auth_notifications = {}
         self.job_creation_times_timer = None
         self.special_status_icon = False
         self.new_printer_notifications = {}
@@ -500,18 +501,46 @@ class JobViewer (monitor.Watcher):
         store.set_value (iter, 6, state)
 
         # Check whether authentication is required.
-        if (self.trayicon and job_requires_auth and
-            not self.auth_info_dialog):
-            try:
-                cups.require ("1.9.37")
-            except:
-                debugprint ("Authentication required but "
-                            "authenticateJob() not available")
-                return
+        if self.trayicon:
+            if (job_requires_auth and
+                not self.auth_notifications.has_key (job) and
+                not self.auth_info_dialog):
+                try:
+                    cups.require ("1.9.37")
+                except:
+                    debugprint ("Authentication required but "
+                                "authenticateJob() not available")
+                    return
 
-            self.show_auth_info_dialog (job)
+                title = _("Authentication Required")
+                text = _("Job requires authentication to proceed.")
+                notification = pynotify.Notification (title, text, 'printer')
+                notification.set_data ('job-id', job)
+                notification.set_urgency (pynotify.URGENCY_NORMAL)
+                notification.set_timeout (pynotify.EXPIRES_NEVER)
+                notification.connect ('closed',
+                                      self.on_auth_notification_closed)
+                self.set_statusicon_visibility ()
+                notification.attach_to_status_icon (self.statusicon)
+                notification.add_action ("authenticate", _("Authenticate"),
+                                         self.on_auth_notification_authenticate)
+                notification.show ()
+                self.auth_notifications[job] = notification
+            elif (not job_requires_auth and
+                  self.auth_notifications.has_key (job)):
+                self.auth_notifications[job].close ()
 
-    def show_auth_info_dialog (self, job):
+    def on_auth_notification_closed (self, notification):
+        job = notification.get_data ('job-id')
+        debugprint ("auth notification closed for job %s" % job)
+        del self.auth_notifications[job]
+
+    def on_auth_notification_authenticate (self, notification, action):
+        job = notification.get_data ('job-id')
+        debugprint ("auth notification authenticate for job %s" % job)
+        self.display_auth_info_dialog (job)
+
+    def display_auth_info_dialog (self, job):
         data = self.jobs[job]
         # Find out which auth-info is required.
         try:
