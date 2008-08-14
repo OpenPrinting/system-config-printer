@@ -32,6 +32,7 @@ from glade import GtkGUI
 import monitor
 import os
 import pango
+import pwd
 import sys
 import time
 
@@ -470,17 +471,24 @@ class JobViewer (GtkGUI, monitor.Watcher):
         store.set_value (iter, 4, size)
 
         state = None
+        job_requires_auth = False
         if data.has_key ('job-state'):
             try:
                 jstate = data['job-state']
                 s = int (jstate)
-                state = { cups.IPP_JOB_PENDING: _("Pending"),
-                          cups.IPP_JOB_HELD: _("Held"),
-                          cups.IPP_JOB_PROCESSING: _("Processing"),
-                          cups.IPP_JOB_STOPPED: _("Stopped"),
-                          cups.IPP_JOB_CANCELED: _("Canceled"),
-                          cups.IPP_JOB_ABORTED: _("Aborted"),
-                          cups.IPP_JOB_COMPLETED: _("Completed") }[s]
+                job_requires_auth = (jstate == cups.IPP_JOB_HELD and
+                                     data.get ('job-hold-until', 'none') ==
+                                     'auth-info-required')
+                if job_requires_auth:
+                    state = _("Held for authentication")
+                else:
+                    state = { cups.IPP_JOB_PENDING: _("Pending"),
+                              cups.IPP_JOB_HELD: _("Held"),
+                              cups.IPP_JOB_PROCESSING: _("Processing"),
+                              cups.IPP_JOB_STOPPED: _("Stopped"),
+                              cups.IPP_JOB_CANCELED: _("Canceled"),
+                              cups.IPP_JOB_ABORTED: _("Aborted"),
+                              cups.IPP_JOB_COMPLETED: _("Completed") }[s]
             except ValueError:
                 pass
             except IndexError:
@@ -491,9 +499,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         store.set_value (iter, 6, state)
 
         # Check whether authentication is required.
-        if (self.trayicon and
-            data['job-state'] == cups.IPP_JOB_HELD and
-            data.get ('job-hold-until', 'none') == 'auth-info-required' and
+        if (self.trayicon and job_requires_auth and
             not self.auth_info_dialog):
             try:
                 cups.require ("1.9.37")
@@ -542,6 +548,27 @@ class JobViewer (GtkGUI, monitor.Watcher):
                     return
 
             dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
+            dialog.set_position (gtk.WIN_POS_CENTER)
+
+            # Pre-fill 'username' field.
+            if 'username' in auth_info_required:
+                try:
+                    auth_info = map (lambda x: '', auth_info_required)
+                    username = pwd.getpwuid (os.getuid ())[0]
+                    ind = auth_info_required.index ('username')
+                    auth_info[ind] = username
+                    dialog.set_auth_info (auth_info)
+
+                    index = 0
+                    for field in auth_info_required:
+                        if auth_info[index] == '':
+                            # Focus on the first empty field.
+                            dialog.field_grab_focus (field)
+                            break
+                        index += 1
+                except:
+                    nonfatalException ()
+
             dialog.set_prompt (_("Authentication required for "
                                  "printing document `%s' (job %d)") %
                                (data.get('job-name', _("Unknown")), job))

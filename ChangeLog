@@ -1,3 +1,37 @@
+2008-08-14  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.__init__):
+	* system-config-printer.py (NewPrinterGUI.__init__): Since some
+	dialogs are reused we can't let the delete-event's default handler
+	destroy them.
+	* system-config-printer.py (on_delete_just_hide): This method is
+	connected to those dialog's delete-event (trac #88).
+
+2008-08-14  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.update_job): When a job is held for
+	authentication, say so in the status column.
+
+2008-08-14  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.update_job): Show authentication dialog
+	in the middle of the screen (trac #90).
+
+2008-08-13  Tim Waugh  <twaugh@redhat.com>
+
+	* authconn.py (Connection._authloop): Re-bind to the named method
+	on reconnection.  Handle HTTP_FORBIDDEN (trac #89).
+	(Connection._failed): New optional parameter forbidden.  Remember
+	whether we saw HTTP_FORBIDDEN.
+	(Connection._perform_authentication): Initialise self._forbidden.
+	Use it to decide whether to try as root.  Don't call setUser()
+	here; _connect() will do that.
+
+2008-08-12  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.update_job): Pre-fill the username field
+	when asking for authentication for the job (trac #87).
+
 2008-08-02  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py
