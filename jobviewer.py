@@ -322,7 +322,7 @@ class JobViewer (monitor.Watcher):
         notification.attach_to_status_icon (self.statusicon)
         notification.show ()
 
-    def on_new_printer_notification_closed (self, notification):
+    def on_new_printer_notification_closed (self, notification, reason=None):
         printer = notification.get_data ('printer-name')
         del self.new_printer_notifications[printer]
         self.set_statusicon_visibility ()
@@ -530,7 +530,7 @@ class JobViewer (monitor.Watcher):
                   self.auth_notifications.has_key (job)):
                 self.auth_notifications[job].close ()
 
-    def on_auth_notification_closed (self, notification):
+    def on_auth_notification_closed (self, notification, reason=None):
         job = notification.get_data ('job-id')
         debugprint ("auth notification closed for job %s" % job)
         del self.auth_notifications[job]
@@ -922,7 +922,7 @@ class JobViewer (monitor.Watcher):
         notification.attach_to_status_icon (self.statusicon)
         notification.show ()
 
-    def on_state_reason_notification_closed (self, notification):
+    def on_state_reason_notification_closed (self, notification, reason=None):
         debugprint ("Notification %s closed" % repr (notification))
         reason = notification.get_data ('printer-state-reason')
         tuple = reason.get_tuple ()
