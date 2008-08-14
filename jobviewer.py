@@ -472,17 +472,24 @@ class JobViewer (monitor.Watcher):
         store.set_value (iter, 4, size)
 
         state = None
+        job_requires_auth = False
         if data.has_key ('job-state'):
             try:
                 jstate = data['job-state']
                 s = int (jstate)
-                state = { cups.IPP_JOB_PENDING: _("Pending"),
-                          cups.IPP_JOB_HELD: _("Held"),
-                          cups.IPP_JOB_PROCESSING: _("Processing"),
-                          cups.IPP_JOB_STOPPED: _("Stopped"),
-                          cups.IPP_JOB_CANCELED: _("Canceled"),
-                          cups.IPP_JOB_ABORTED: _("Aborted"),
-                          cups.IPP_JOB_COMPLETED: _("Completed") }[s]
+                job_requires_auth = (jstate == cups.IPP_JOB_HELD and
+                                     data.get ('job-hold-until', 'none') ==
+                                     'auth-info-required')
+                if job_requires_auth:
+                    state = _("Held for authentication")
+                else:
+                    state = { cups.IPP_JOB_PENDING: _("Pending"),
+                              cups.IPP_JOB_HELD: _("Held"),
+                              cups.IPP_JOB_PROCESSING: _("Processing"),
+                              cups.IPP_JOB_STOPPED: _("Stopped"),
+                              cups.IPP_JOB_CANCELED: _("Canceled"),
+                              cups.IPP_JOB_ABORTED: _("Aborted"),
+                              cups.IPP_JOB_COMPLETED: _("Completed") }[s]
             except ValueError:
                 pass
             except IndexError:
@@ -493,9 +500,7 @@ class JobViewer (monitor.Watcher):
         store.set_value (iter, 6, state)
 
         # Check whether authentication is required.
-        if (self.trayicon and
-            data['job-state'] == cups.IPP_JOB_HELD and
-            data.get ('job-hold-until', 'none') == 'auth-info-required' and
+        if (self.trayicon and job_requires_auth and
             not self.auth_info_dialog):
             try:
                 cups.require ("1.9.37")
