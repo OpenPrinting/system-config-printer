@@ -509,74 +509,78 @@ class JobViewer (monitor.Watcher):
                             "authenticateJob() not available")
                 return
 
-            # Find out which auth-info is required.
+            self.show_auth_info_dialog (job)
+
+    def show_auth_info_dialog (self, job):
+        data = self.jobs[job]
+        # Find out which auth-info is required.
+        try:
+            c = authconn.Connection (self.MainWindow)
             try:
-                c = authconn.Connection (self.MainWindow)
-                try:
-                    uri = data['job-printer-uri']
-                    attributes = c.getPrinterAttributes (uri = uri)
-                except TypeError: # uri keyword introduced in pycups-1.9.32
-                    debugprint ("Fetching printer attributes by name")
-                    attributes = c.getPrinterAttributes (printer)
+                uri = data['job-printer-uri']
+                attributes = c.getPrinterAttributes (uri = uri)
+            except TypeError: # uri keyword introduced in pycups-1.9.32
+                debugprint ("Fetching printer attributes by name")
+                attributes = c.getPrinterAttributes (printer)
+        except cups.IPPError, (e, m):
+            self.show_IPP_Error (e, m)
+            return
+        except RuntimeError:
+            debugprint ("Failed to connect when fetching printer attrs")
+            return
+
+        try:
+            auth_info_required = attributes['auth-info-required']
+        except KeyError:
+            debugprint ("No auth-info-required attribute; guessing instead")
+            auth_info_required = ['username', 'password']
+
+        if not isinstance (auth_info_required, list):
+            auth_info_required = [auth_info_required]
+
+        if auth_info_required == ['negotiate']:
+            # Try Kerberos authentication.
+            try:
+                debugprint ("Trying Kerberos auth for job %d" % jobid)
+                c.authenticateJob (jobid)
+            except TypeError:
+                # Requires pycups-1.9.39 for optional auth parameter.
+                # Treat this as a normal job error.
+                debugprint ("... need newer pycups for that")
+                return
             except cups.IPPError, (e, m):
                 self.show_IPP_Error (e, m)
                 return
-            except RuntimeError:
-                debugprint ("Failed to connect when fetching printer attrs")
-                return
 
+        dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
+        dialog.set_position (gtk.WIN_POS_CENTER)
+
+        # Pre-fill 'username' field.
+        if 'username' in auth_info_required:
             try:
-                auth_info_required = attributes['auth-info-required']
-            except KeyError:
-                debugprint ("No auth-info-required attribute; guessing instead")
-                auth_info_required = ['username', 'password']
+                auth_info = map (lambda x: '', auth_info_required)
+                username = pwd.getpwuid (os.getuid ())[0]
+                ind = auth_info_required.index ('username')
+                auth_info[ind] = username
+                dialog.set_auth_info (auth_info)
 
-            if not isinstance (auth_info_required, list):
-                auth_info_required = [auth_info_required]
+                index = 0
+                for field in auth_info_required:
+                    if auth_info[index] == '':
+                        # Focus on the first empty field.
+                        dialog.field_grab_focus (field)
+                        break
+                    index += 1
+            except:
+                nonfatalException ()
 
-            if auth_info_required == ['negotiate']:
-                # Try Kerberos authentication.
-                try:
-                    debugprint ("Trying Kerberos auth for job %d" % jobid)
-                    c.authenticateJob (jobid)
-                except TypeError:
-                    # Requires pycups-1.9.39 for optional auth parameter.
-                    # Treat this as a normal job error.
-                    debugprint ("... need newer pycups for that")
-                    return
-                except cups.IPPError, (e, m):
-                    self.show_IPP_Error (e, m)
-                    return
-
-            dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
-            dialog.set_position (gtk.WIN_POS_CENTER)
-
-            # Pre-fill 'username' field.
-            if 'username' in auth_info_required:
-                try:
-                    auth_info = map (lambda x: '', auth_info_required)
-                    username = pwd.getpwuid (os.getuid ())[0]
-                    ind = auth_info_required.index ('username')
-                    auth_info[ind] = username
-                    dialog.set_auth_info (auth_info)
-
-                    index = 0
-                    for field in auth_info_required:
-                        if auth_info[index] == '':
-                            # Focus on the first empty field.
-                            dialog.field_grab_focus (field)
-                            break
-                        index += 1
-                except:
-                    nonfatalException ()
-
-            dialog.set_prompt (_("Authentication required for "
-                                 "printing document `%s' (job %d)") %
-                               (data.get('job-name', _("Unknown")), job))
-            self.auth_info_dialog = dialog
-            dialog.connect ('response', self.auth_info_dialog_response)
-            dialog.set_data ('job-id', job)
-            dialog.show_all ()
+        dialog.set_prompt (_("Authentication required for "
+                             "printing document `%s' (job %d)") %
+                           (data.get('job-name', _("Unknown")), job))
+        self.auth_info_dialog = dialog
+        dialog.connect ('response', self.auth_info_dialog_response)
+        dialog.set_data ('job-id', job)
+        dialog.show_all ()
 
     def auth_info_dialog_response (self, dialog, response):
         dialog.hide ()
