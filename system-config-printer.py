@@ -152,6 +152,10 @@ class GtkGUI:
         result.sort()
         return result
 
+def on_delete_just_hide (widget, event):
+    widget.hide ()
+    return True # stop other handlers
+
 class GUI(GtkGUI, monitor.Watcher):
 
     printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
@@ -271,6 +275,14 @@ class GUI(GtkGUI, monitor.Watcher):
                         "AboutDialog",
                         "WaitWindow", "lblWait",
                         )
+
+        # Since some dialogs are reused we can't let the delete-event's
+        # default handler destroy them
+        for dialog in [self.PrinterPropertiesDialog,
+                       self.ServerSettingsDialog,
+                       self.ConnectingDialog]:
+            dialog.connect ("delete-event", on_delete_just_hide)
+
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
         gtk.window_set_default_icon_name ('printer')
@@ -2597,6 +2609,13 @@ class NewPrinterGUI(GtkGUI):
                         "rbtnNPDownloadLicenseNo",
                         "NewPrinterName", "entCopyName", "btnCopyOk",
                         "InstallDialog", "lblInstall")
+
+        # Since some dialogs are reused we can't let the delete-event's
+        # default handler destroy them
+        for dialog in [self.IPPBrowseDialog,
+                       self.SMBBrowseDialog]:
+            dialog.connect ("delete-event", on_delete_just_hide)
+
         # share with mainapp
         self.WaitWindow = mainapp.WaitWindow
         self.lblWait = mainapp.lblWait
