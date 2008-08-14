@@ -544,6 +544,7 @@ class JobViewer (monitor.Watcher):
                     return
 
             dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
+            dialog.set_position (gtk.WIN_POS_CENTER)
 
             # Pre-fill 'username' field.
             if 'username' in auth_info_required:
