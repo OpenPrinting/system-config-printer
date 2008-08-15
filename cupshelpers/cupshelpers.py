@@ -558,6 +558,7 @@ class _PrintersConf:
                 self.connection.getFile(file, filename)
         except cups.HTTPError, e:
             os.close(fd)
+            os.unlink(filename)
             if (e.args[0] == cups.HTTP_UNAUTHORIZED or
                 e.args[0] == cups.HTTP_NOT_FOUND):
                 return []
