@@ -940,6 +940,7 @@ class JobViewer (monitor.Watcher):
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
         self.store.clear ()
+        self.jobs = {}
         self.jobiters = {}
         self.printer_uri_index = PrinterURIIndex (names=printers)
         connection = None
