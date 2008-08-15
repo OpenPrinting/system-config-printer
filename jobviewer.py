@@ -162,12 +162,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.num_jobs_when_hidden = 0
         self.connecting_to_device = {} # dict of printer->time first seen
         self.state_reason_notifications = {}
-        self.auth_notifications = {}
+        self.auth_notifications = {} # by job ID
+        self.auth_info_dialogs = {} # by job ID
         self.job_creation_times_timer = None
         self.special_status_icon = False
         self.new_printer_notifications = {}
         self.reasoniters = {}
-        self.auth_info_dialog = None
 
         self.getWidgets ({"JobsWindow":
                               ["JobsWindow",
@@ -503,7 +503,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if self.trayicon:
             if (job_requires_auth and
                 not self.auth_notifications.has_key (job) and
-                not self.auth_info_dialog):
+                not self.auth_info_dialogs.has_key (job)):
                 try:
                     cups.require ("1.9.37")
                 except:
@@ -605,19 +605,23 @@ class JobViewer (GtkGUI, monitor.Watcher):
         dialog.set_prompt (_("Authentication required for "
                              "printing document `%s' (job %d)") %
                            (data.get('job-name', _("Unknown")), job))
-        self.auth_info_dialog = dialog
+        self.auth_info_dialogs[job] = dialog
         dialog.connect ('response', self.auth_info_dialog_response)
+        dialog.connect ('delete-event', self.auth_info_dialog_delete)
         dialog.set_data ('job-id', job)
         dialog.show_all ()
 
+    def auth_info_dialog_delete (self, dialog, event):
+        self.auth_info_dialog_response (dialog, gtk.RESPONSE_CANCEL)
+
     def auth_info_dialog_response (self, dialog, response):
         dialog.hide ()
-        self.auth_info_dialog = None
+        jobid = dialog.get_data ('job-id')
+        del self.auth_info_dialogs[jobid]
         if response != gtk.RESPONSE_OK:
             return
 
         auth_info = dialog.get_auth_info ()
-        jobid = dialog.get_data ('job-id')
         try:
             c = authconn.Connection (self.JobsWindow)
             c.authenticateJob (jobid, auth_info)
@@ -935,6 +939,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
         self.store.clear ()
+        self.jobs = {}
         self.jobiters = {}
         self.printer_uri_index = PrinterURIIndex (names=printers)
         connection = None

@@ -1,3 +1,25 @@
+2008-08-15  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.display_auth_info_dialog): Allow more
+	than one authentication dialog at a time.
+
+2008-08-15  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Reset jobs
+	dict to keep it in synchronisation with the jobiters dict.  This
+	prevents a traceback after releasing a held job.
+
+2008-08-15  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py (_PrintersConf.fetch): Clean up
+	temporary file in case of error.
+
+2008-08-15  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.auth_info_dialog_delete): Handle
+	delete-event.
+	(JobViewer.display_auth_info_dialog): Connect to signal.
+
 2008-08-14  Tim Waugh  <twaugh@redhat.com>
 
 	* jobviewer.py (JobViewer.on_new_printer_notification_closed):
