@@ -217,7 +217,7 @@ class OpenPrinting:
                 #     'supplier': supplier,
                 #     'license': short license string e.g. GPLv2,
                 #     'licensetext': license text (HTML),
-                #     'freesoftware': Boolean,
+                #     'nonfreesoftware': Boolean,
                 #     'patents': Boolean,
                 #     'shortdescription': short description,
                 #     'recommended': Boolean,
@@ -260,9 +260,14 @@ class OpenPrinting:
                     if element != None:
                         dict['licensetext'] = element.text
 
-                    for boolean in ['freesoftware', 'recommended',
+                    for boolean in ['nonfreesoftware', 'recommended',
                                     'patents']:
                         dict[boolean] = driver.find (boolean) != None
+
+                    # Make a 'freesoftware' tag for compatibility with
+                    # how the OpenPrinting API used to work (see trac
+                    # #74).
+                    dict['freesoftware'] = not dict['nonfreesoftware']
 
                     if not dict.has_key ('name') or not dict.has_key ('url'):
                         continue
