@@ -608,8 +608,12 @@ class JobViewer (monitor.Watcher):
                            (data.get('job-name', _("Unknown")), job))
         self.auth_info_dialog = dialog
         dialog.connect ('response', self.auth_info_dialog_response)
+        dialog.connect ('delete-event', self.auth_info_dialog_delete)
         dialog.set_data ('job-id', job)
         dialog.show_all ()
+
+    def auth_info_dialog_delete (self, dialog, event):
+        self.auth_info_dialog_response (dialog, gtk.RESPONSE_CANCEL)
 
     def auth_info_dialog_response (self, dialog, response):
         dialog.hide ()
