@@ -161,12 +161,12 @@ class JobViewer (monitor.Watcher):
         self.num_jobs_when_hidden = 0
         self.connecting_to_device = {} # dict of printer->time first seen
         self.state_reason_notifications = {}
-        self.auth_notifications = {}
+        self.auth_notifications = {} # by job ID
+        self.auth_info_dialogs = {} # by job ID
         self.job_creation_times_timer = None
         self.special_status_icon = False
         self.new_printer_notifications = {}
         self.reasoniters = {}
-        self.auth_info_dialog = None
 
         glade_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE",
                                     pkgdata)
@@ -504,7 +504,7 @@ class JobViewer (monitor.Watcher):
         if self.trayicon:
             if (job_requires_auth and
                 not self.auth_notifications.has_key (job) and
-                not self.auth_info_dialog):
+                not self.auth_info_dialogs.has_key (job)):
                 try:
                     cups.require ("1.9.37")
                 except:
@@ -606,7 +606,7 @@ class JobViewer (monitor.Watcher):
         dialog.set_prompt (_("Authentication required for "
                              "printing document `%s' (job %d)") %
                            (data.get('job-name', _("Unknown")), job))
-        self.auth_info_dialog = dialog
+        self.auth_info_dialogs[job] = dialog
         dialog.connect ('response', self.auth_info_dialog_response)
         dialog.connect ('delete-event', self.auth_info_dialog_delete)
         dialog.set_data ('job-id', job)
@@ -617,12 +617,12 @@ class JobViewer (monitor.Watcher):
 
     def auth_info_dialog_response (self, dialog, response):
         dialog.hide ()
-        self.auth_info_dialog = None
+        jobid = dialog.get_data ('job-id')
+        del self.auth_info_dialogs[jobid]
         if response != gtk.RESPONSE_OK:
             return
 
         auth_info = dialog.get_auth_info ()
-        jobid = dialog.get_data ('job-id')
         try:
             c = authconn.Connection (self.MainWindow)
             c.authenticateJob (jobid, auth_info)
