@@ -226,14 +226,14 @@ class Connection:
         d.set_auth_info ([self._use_user, ''])
         d.field_grab_focus ('password')
         response = d.run ()
-        d.hide ()
-
-        if response == gtk.RESPONSE_CANCEL:
-            self._cancel = True
-            return -1
-
         (self._use_user,
          self._use_password) = d.get_auth_info ()
+        d.destroy ()
+
+        if (response == gtk.RESPONSE_CANCEL or
+            response == gtk.RESPONSE_DELETE_EVENT):
+            self._cancel = True
+            return -1
 
         cups.setUser (self._use_user)
         debugprint ("Authentication: Reconnect")

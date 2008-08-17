@@ -1,5 +1,11 @@
 2008-08-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
+	* authconn.py (Connection._perform_authentication): Destroy the
+	AuthDialog after run() since a new one is always created. Handle
+	response == gtk.RESPONSE_DELETE_EVENT as gtk.RESPONSE_CANCEL.
+
+2008-08-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
 	* glade/ConnectingDialog.glade: HIG fixes. Added a progress bar.
 	* system-config-printer.py (GUI.__init__): The delete-event
 	handler for ConnectingDialog must act as if the cancel button was
