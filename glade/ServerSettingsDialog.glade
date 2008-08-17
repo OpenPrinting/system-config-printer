@@ -4,11 +4,12 @@
 <glade-interface>
 
 <widget class="GtkDialog" id="ServerSettingsDialog">
+  <property name="border_width">6</property>
   <property name="title" translatable="yes">Basic Server Settings</property>
   <property name="type">GTK_WINDOW_TOPLEVEL</property>
   <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
   <property name="modal">True</property>
-  <property name="resizable">True</property>
+  <property name="resizable">False</property>
   <property name="destroy_with_parent">False</property>
   <property name="decorated">True</property>
   <property name="skip_taskbar_hint">False</property>
@@ -17,7 +18,7 @@
   <property name="gravity">GDK_GRAVITY_NORTH_WEST</property>
   <property name="focus_on_map">True</property>
   <property name="urgency_hint">False</property>
-  <property name="has_separator">True</property>
+  <property name="has_separator">False</property>
 
   <child internal-child="vbox">
     <widget class="GtkVBox" id="dialog-vbox10">
@@ -113,7 +114,7 @@
 			<widget class="GtkCheckButton" id="chkServerBrowse">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">Show printers shared by other systems</property>
+			  <property name="label" translatable="yes">_Show printers shared by other systems</property>
 			  <property name="use_underline">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="focus_on_click">True</property>
@@ -144,7 +145,7 @@
 		    <widget class="GtkCheckButton" id="chkServerShare">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">Publish shared printers connected to this system</property>
+		      <property name="label" translatable="yes">_Publish shared printers connected to this system</property>
 		      <property name="use_underline">True</property>
 		      <property name="relief">GTK_RELIEF_NORMAL</property>
 		      <property name="focus_on_click">True</property>
@@ -176,7 +177,7 @@
 			<widget class="GtkCheckButton" id="chkServerShareAny">
 			  <property name="visible">True</property>
 			  <property name="can_focus">True</property>
-			  <property name="label" translatable="yes">Allow printing from the Internet</property>
+			  <property name="label" translatable="yes">Allow printing from the _Internet</property>
 			  <property name="use_underline">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="focus_on_click">True</property>
@@ -198,7 +199,7 @@
 		    <widget class="GtkCheckButton" id="chkServerRemoteAdmin">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">Allow remote administration</property>
+		      <property name="label" translatable="yes">Allow _remote administration</property>
 		      <property name="use_underline">True</property>
 		      <property name="relief">GTK_RELIEF_NORMAL</property>
 		      <property name="focus_on_click">True</property>
@@ -218,7 +219,7 @@
 		    <widget class="GtkCheckButton" id="chkServerAllowCancelAll">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">Allow users to cancel any job (not just their own)</property>
+		      <property name="label" translatable="yes">Allow _users to cancel any job (not just their own)</property>
 		      <property name="use_underline">True</property>
 		      <property name="relief">GTK_RELIEF_NORMAL</property>
 		      <property name="focus_on_click">True</property>
@@ -238,7 +239,7 @@
 		    <widget class="GtkCheckButton" id="chkServerLogDebug">
 		      <property name="visible">True</property>
 		      <property name="can_focus">True</property>
-		      <property name="label" translatable="yes">Save debugging information for troubleshooting</property>
+		      <property name="label" translatable="yes">Save _debugging information for troubleshooting</property>
 		      <property name="use_underline">True</property>
 		      <property name="relief">GTK_RELIEF_NORMAL</property>
 		      <property name="focus_on_click">True</property>
