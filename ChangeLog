@@ -1,3 +1,17 @@
+2008-08-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* glade/ConnectingDialog.glade: HIG fixes. Added a progress bar.
+	* system-config-printer.py (GUI.__init__): The delete-event
+	handler for ConnectingDialog must act as if the cancel button was
+	pressed.
+	* system-config-printer.py (GUI.on_connectingdialog_delete): New
+	method to call the cancel button's click handler on delete-event
+	and avoid dialog destruction.
+	* system-config-printer.py (GUI.on_connect_activate): Changed
+	lblConnecting to use a markup string. Call...
+	* system-config-printer.py (GUI.update_connecting_pbar): ... this
+	to update the progress bar.
+
 2008-08-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* glade/ConnectDialog.glade: Adjusted spacing. Removed

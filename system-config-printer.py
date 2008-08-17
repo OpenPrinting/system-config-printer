@@ -209,7 +209,8 @@ class GUI(GtkGUI, monitor.Watcher):
                               "btnConnect"],
                          "ConnectingDialog":
                              ["ConnectingDialog",
-                              "lblConnecting"],
+                              "lblConnecting",
+                              "pbarConnecting"],
                          "NewPrinterName":
                              ["NewPrinterName",
                               "entCopyName",
@@ -307,9 +308,11 @@ class GUI(GtkGUI, monitor.Watcher):
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
         for dialog in [self.PrinterPropertiesDialog,
-                       self.ServerSettingsDialog,
-                       self.ConnectingDialog]:
+                       self.ServerSettingsDialog]:
             dialog.connect ("delete-event", on_delete_just_hide)
+
+        self.ConnectingDialog.connect ("delete-event",
+                                       self.on_connectingdialog_delete)
 
         self.tooltips = gtk.Tooltips()
         self.tooltips.enable()
@@ -1122,11 +1125,12 @@ class GUI(GtkGUI, monitor.Watcher):
 
         servername = self.cmbServername.child.get_text()
 
-        self.lblConnecting.set_text(_("Connecting to server:\n%s") %
-                                    servername)
+        self.lblConnecting.set_markup(_("<i>Opening connection to %s</i>") %
+                                      servername)
         self.newPrinterGUI.dropPPDs()
         self.ConnectingDialog.set_transient_for(self.PrintersWindow)
         self.ConnectingDialog.show()
+        gobject.timeout_add (40, self.update_connecting_pbar)
         self.connect_server = servername
         # We need to set the connecting user in this thread as well.
         cups.setServer(self.connect_server)
@@ -1135,6 +1139,17 @@ class GUI(GtkGUI, monitor.Watcher):
         # Now start a new thread for connection.
         self.connect_thread = thread.start_new_thread(self.connect,
                                                       (self.PrintersWindow,))
+
+    def update_connecting_pbar (self):
+        if not self.ConnectingDialog.get_property ("visible"):
+            return False # stop animation
+
+        self.pbarConnecting.pulse ()
+        return True
+
+    def on_connectingdialog_delete (self, widget, event):
+        self.on_cancel_connect_clicked (widget)
+        return True
 
     def on_cancel_connect_clicked(self, widget):
         """
