@@ -74,4 +74,4 @@ class XmlHelper (object):
         self.xml_doc.getRootElement ().addChild (group_node)
         self.write ()
 
-xml_helper = XmlHelper (os.path.expanduser ('~/.ospm-printer-groups.xml'))
+xml_helper = XmlHelper (os.path.expanduser ('~/.printer-groups.xml'))
