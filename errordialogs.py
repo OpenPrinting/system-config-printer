@@ -28,37 +28,22 @@ def set_gettext_function (fn):
     global _
     _ = fn
 
-def show_dialog (title, text, icon, parent=None):
-    dialog = gtk.Dialog (title, parent,
-                         gtk.DIALOG_MODAL |
-                         gtk.DIALOG_DESTROY_WITH_PARENT,
-                         (gtk.STOCK_CLOSE, gtk.RESPONSE_OK))
-    dialog.set_default_response (gtk.RESPONSE_OK)
-    dialog.set_border_width (6)
-    dialog.set_resizable (False)
-    hbox = gtk.HBox (False, 12)
-    hbox.set_border_width (6)
-    image = gtk.Image ()
-    image.set_from_stock (icon, gtk.ICON_SIZE_DIALOG)
-    image.set_alignment (0.0, 0.0)
-    hbox.pack_start (image, False, False, 0)
-    label = gtk.Label ()
-    label.set_markup ('<span weight="bold" size="larger">' + title +
-                      '</span>\n\n' + text)
-    label.set_use_markup (True)
-    label.set_alignment (0, 0)
-    label.set_line_wrap (True)
-    hbox.pack_start (label, False, False, 0)
-    dialog.vbox.pack_start (hbox, False, False, 0)
-    dialog.show_all ()
+def show_dialog (title, text, type, parent=None):
+    dialog = gtk.MessageDialog (parent,
+                                gtk.DIALOG_MODAL |
+                                gtk.DIALOG_DESTROY_WITH_PARENT,
+                                type,
+                                gtk.BUTTONS_OK,
+                                title)
+    dialog.format_secondary_text (text)
     dialog.run ()
-    dialog.hide ()
+    dialog.destroy ()
 
 def show_info_dialog (title, text, parent=None):
-    return show_dialog (title, text, gtk.STOCK_DIALOG_INFO, parent=parent)
+    return show_dialog (title, text, gtk.MESSAGE_INFO, parent=parent)
 
 def show_error_dialog (title, text, parent=None):
-    return show_dialog (title, text, gtk.STOCK_DIALOG_ERROR, parent=parent)
+    return show_dialog (title, text, gtk.MESSAGE_ERROR, parent=parent)
 
 def show_IPP_Error(exception, message, parent=None):
     if exception == cups.IPP_NOT_AUTHORIZED:
@@ -70,7 +55,7 @@ def show_IPP_Error(exception, message, parent=None):
                   "operation: '%s'.")) % message
 
     show_error_dialog (title, text, parent)
-            
+
 def show_HTTP_Error(status, parent=None):
     if (status == cups.HTTP_UNAUTHORIZED or
         status == cups.HTTP_FORBIDDEN):
