@@ -2257,9 +2257,13 @@ class GUI(GtkGUI, monitor.Watcher):
 
         rejecting = self.printer.rejecting
         if not rejecting:
-            self.printer.setAccepting (False)
-            if not self.is_rename_possible (old_name):
-                self.printer.setAccepting (True)
+            try:
+                self.printer.setAccepting (False)
+                if not self.is_rename_possible (old_name):
+                    self.printer.setAccepting (True)
+                    return
+            except cups.IPPError, (e, msg):
+                show_IPP_Error (e, msg, self.PrintersWindow)
                 return
 
         if self.copy_printer (new_name):
@@ -2429,11 +2433,18 @@ class GUI(GtkGUI, monitor.Watcher):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
+        success = False
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            printer.setShared (share)
-        if share:
+            try:
+                printer.setShared (share)
+                success = True
+            except cups.IPPError, (e, m):
+                show_IPP_Error(e, m, self.PrintersWindow)
+                # Give up on this operation.
+                break
+        if success and share:
             self.advise_publish ()
 
         # For some reason CUPS doesn't give us a notification about
