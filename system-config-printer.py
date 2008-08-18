@@ -2312,11 +2312,18 @@ class GUI(GtkGUI, monitor.Watcher):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
+        success = False
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            printer.setShared (share)
-        if share:
+            try:
+                printer.setShared (share)
+                success = True
+            except cups.IPPError, (e, m):
+                show_IPP_Error(e, m, self.MainWindow)
+                # Give up on this operation.
+                break
+        if success and share:
             self.advise_publish ()
         self.populateList ()
 
