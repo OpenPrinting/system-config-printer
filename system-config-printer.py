@@ -2138,9 +2138,13 @@ class GUI(GtkGUI, monitor.Watcher):
 
         rejecting = self.printer.rejecting
         if not rejecting:
-            self.printer.setAccepting (False)
-            if not self.is_rename_possible (old_name):
-                self.printer.setAccepting (True)
+            try:
+                self.printer.setAccepting (False)
+                if not self.is_rename_possible (old_name):
+                    self.printer.setAccepting (True)
+                    return
+            except cups.IPPError, (e, msg):
+                show_IPP_Error (e, msg, self.MainWindow)
                 return
 
         if self.copy_printer (new_name):
