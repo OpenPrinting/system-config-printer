@@ -169,7 +169,7 @@ class GroupsPane (gtk.ScrolledWindow):
             dialog = gtk.MessageDialog (self.get_toplevel (),
                                         gtk.DIALOG_DESTROY_WITH_PARENT,
                                         gtk.MESSAGE_ERROR,
-                                        gtk.BUTTONS_CLOSE,
+                                        gtk.BUTTONS_OK,
                                         _("The item could not be renamed."))
             dialog.format_secondary_text (_("The name \"") + new_text +
                                           _("\" is already in use. Please use a different name."))
