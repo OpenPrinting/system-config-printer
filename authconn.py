@@ -102,6 +102,13 @@ class Connection:
         self._port = cups.getPort()
         self._connect ()
         self._prompt_allowed = True
+        self._operation_stack = []
+
+    def _begin_operation (self, operation):
+        self._operation_stack.append (operation)
+
+    def _end_operation (self):
+        self._operation_stack.pop ()
 
     def _get_prompt_allowed (self, ):
         return self._prompt_allowed
@@ -231,7 +238,13 @@ class Connection:
         self._auth_called = False
 
         # Prompt.
-        d = AuthDialog (parent=self._parent)
+        if len (self._operation_stack) > 0:
+            d = AuthDialog (title=_("Authentication (%s)") %
+                            self._operation_stack[0],
+                            parent=self._parent)
+        else:
+            d = AuthDialog (parent=self._parent)
+
         d.set_prompt (self._prompt)
         d.set_auth_info ([self._use_user, ''])
         d.field_grab_focus ('password')
