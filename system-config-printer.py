@@ -1528,6 +1528,11 @@ class GUI(GtkGUI, monitor.Watcher):
         class_deleted = False
         name = printer.name
 
+        if printer.is_class:
+            self.cups._begin_operation (_("modifying class %s") % name)
+        else:
+            self.cups._begin_operation (_("modifying printer %s") % name)
+
         try:
             if not printer.is_class and self.ppd:
                 self.getPrinterSettings()
@@ -1546,6 +1551,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     result = dialog.run()
                     dialog.destroy()
                     if result==gtk.RESPONSE_NO:
+                        self.cups._end_operation ()
                         return True
                     class_deleted = True
 
@@ -1617,7 +1623,9 @@ class GUI(GtkGUI, monitor.Watcher):
 
         except cups.IPPError, (e, s):
             show_IPP_Error(e, s, self.PrinterPropertiesDialog)
+            self.cups._end_operation ()
             return True
+        self.cups._end_operation ()
         self.changed = set() # of options
 
         if not self.__dict__.has_key ("server_settings"):
@@ -1625,10 +1633,13 @@ class GUI(GtkGUI, monitor.Watcher):
             # but we have never fetched the server settings to see whether
             # the server is publishing shared printers.  Fetch the settings
             # now so that we can update the "not published" label if necessary.
+            self.cups._begin_operation (_("fetching server settings"))
             try:
                 self.server_settings = self.cups.adminGetServerSettings()
             except:
                 nonfatalException()
+
+            self.cups._end_operation ()
 
         if class_deleted:
             self.monitor.update ()
@@ -1696,14 +1707,19 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def set_default_printer (self, name):
         printer = self.printers[name]
+        self.cups._begin_operation (_("setting default printer"))
         try:
             printer.setAsDefault ()
         except cups.HTTPError, (s,):
             show_HTTP_Error (s, self.PrintersWindow)
+            self.cups._end_operation ()
             return
         except cups.IPPError, (e, msg):
             show_IPP_Error(e, msg, self.PrintersWindow)
+            self.cups._end_operation ()
             return
+
+        self.cups._end_operation ()
 
         # Now reconnect in case the server needed to reload.  This may
         # happen if we replaced the lpoptions file.
@@ -1720,20 +1736,21 @@ class GUI(GtkGUI, monitor.Watcher):
     # print test page
 
     def on_btnPrintTestPage_clicked(self, button):
+        # if we have a page size specific custom test page, use it;
+        # otherwise use cups' default one
+        custom_testpage = None
+        opt = self.ppd.findOption ("PageSize")
+        if opt:
+            custom_testpage = os.path.join(pkgdata, 'testpage-%s.ps' % opt.defchoice.lower())
+
+
+        # Connect as the current user so that the test page can be managed
+        # as a normal job.
+        user = cups.getUser ()
+        cups.setUser ('')
+        c = authconn.Connection (self.PrintersWindow, try_as_root=False)
+        c._begin_operation (_("printing test page"))
         try:
-            # if we have a page size specific custom test page, use it;
-            # otherwise use cups' default one
-            custom_testpage = None
-            opt = self.ppd.findOption ("PageSize")
-            if opt:
-                custom_testpage = os.path.join(pkgdata, 'testpage-%s.ps' % opt.defchoice.lower())
-
-
-            # Connect as the current user so that the test page can be managed
-            # as a normal job.
-            user = cups.getUser ()
-            cups.setUser ('')
-            c = authconn.Connection (self.PrintersWindow, try_as_root=False)
             if custom_testpage and os.path.exists(custom_testpage):
                 debugprint ('Printing custom test page ' + custom_testpage)
                 job_id = c.printTestPage(self.printer.name,
@@ -1741,11 +1758,6 @@ class GUI(GtkGUI, monitor.Watcher):
             else:
                 debugprint ('Printing default test page')
                 job_id = c.printTestPage(self.printer.name)
-
-            cups.setUser (user)
-            show_info_dialog (_("Submitted"),
-                              _("Test page submitted as job %d") % job_id,
-                              parent=self.PrintersWindow)
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self.connect_server != 'localhost' and
@@ -1759,10 +1771,17 @@ class GUI(GtkGUI, monitor.Watcher):
             else:
                 show_IPP_Error(e, msg, self.PrintersWindow)
 
+        c._end_operation ()
+        cups.setUser (user)
+        show_info_dialog (_("Submitted"),
+                          _("Test page submitted as job %d") % job_id,
+                          parent=self.PrintersWindow)
+
     def maintenance_command (self, command):
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.write (tmpfd, "#CUPS-COMMAND\n%s\n" % command)
         os.close (tmpfd)
+        self.cups._begin_operation (_("sending maintenance command"))
         try:
             format = "application/vnd.cups-command"
             job_id = self.cups.printTestPage (self.printer.name,
@@ -1784,6 +1803,8 @@ class GUI(GtkGUI, monitor.Watcher):
                                    self.PrintersWindow)
             else:
                 show_IPP_Error(e, msg, self.PrintersWindow)
+
+        self.cups._end_operation ()
 
     def on_btnSelfTest_clicked(self, button):
         self.maintenance_command ("PrintSelfTestPage")
@@ -2260,15 +2281,18 @@ class GUI(GtkGUI, monitor.Watcher):
         if not self.is_rename_possible (old_name):
             return
 
+        self.cups._begin_operation (_("renaming printer"))
         rejecting = self.printer.rejecting
         if not rejecting:
             try:
                 self.printer.setAccepting (False)
                 if not self.is_rename_possible (old_name):
                     self.printer.setAccepting (True)
+                    self.cups._end_operation ()
                     return
             except cups.IPPError, (e, msg):
                 show_IPP_Error (e, msg, self.PrintersWindow)
+                self.cups._end_operation ()
                 return
 
         if self.copy_printer (new_name):
@@ -2284,6 +2308,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 except cups.IPPError, (e, msg):
                     show_IPP_Error (e, msg, self.PrintersWindow)
 
+            self.cups._end_operation ()
             return
 
         # Restore rejecting state.
@@ -2318,6 +2343,8 @@ class GUI(GtkGUI, monitor.Watcher):
             show_IPP_Error (e, msg, self.PrintersWindow)
             # Not fatal.
 
+        self.cups._end_operation ()
+
         # ..and select the new printer.
         def select_new_printer (model, path, iter):
             name = model.get_value (iter, 2)
@@ -2335,7 +2362,10 @@ class GUI(GtkGUI, monitor.Watcher):
         self.printer.class_members = [] # for classes make sure all members
                                         # will get added
 
-        return self.save_printer(self.printer, saveall=True)
+        self.cups._begin_operation (_("copying printer"))
+        ret = self.save_printer(self.printer, saveall=True)
+        self.cups._end_operation ()
+        return ret
 
     def on_copy_activate(self, UNUSED):
         iconview = self.dests_iconview
@@ -2402,8 +2432,11 @@ class GUI(GtkGUI, monitor.Watcher):
             for i in range (n):
                 iter = model.get_iter (paths[i])
                 name = model.get_value (iter, 2)
+                self.cups._begin_operation (_("deleting printer %s") % name)
                 self.cups.deletePrinter (name)
+                self.cups._end_operation ()
         except cups.IPPError, (e, msg):
+            self.cups._end_operation ()
             show_IPP_Error(e, msg, self.PrintersWindow)
 
         self.changed = set()
@@ -2420,12 +2453,17 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
+            name = model.get_value (iter, 2)
+            self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 printer.setEnabled (enable)
             except cups.IPPError, (e, m):
                 errordialogs.show_IPP_Error (e, m, self.PrintersWindow)
                 # Give up on this operation.
+                self.cups._end_operation ()
                 break
+
+            self.cups._end_operation ()
 
         self.monitor.update ()
 
@@ -2442,13 +2480,18 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
+            self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 printer.setShared (share)
                 success = True
             except cups.IPPError, (e, m):
                 show_IPP_Error(e, m, self.PrintersWindow)
+                self.cups._end_operation ()
                 # Give up on this operation.
                 break
+
+            self.cups._end_operation ()
+
         if success and share:
             self.advise_publish ()
 
@@ -2546,11 +2589,15 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def fillServerTab(self):
         self.changed = set()
+        self.cups._begin_operation (_("fetching server settings"))
         try:
             self.server_settings = self.cups.adminGetServerSettings()
         except cups.IPPError, (e, m):
             show_IPP_Error(e, m, self.PrintersWindow)
+            self.cups._end_operation ()
             raise
+
+        self.cups._end_operation ()
 
         for widget, setting in [
             (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
@@ -2603,14 +2650,18 @@ class GUI(GtkGUI, monitor.Watcher):
             (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
             if not self.server_settings.has_key(setting): continue
             setting_dict[setting] = str(int(widget.get_active()))
+        self.cups._begin_operation (_("modifying server settings"))
         try:
             self.cups.adminSetServerSettings(setting_dict)
         except cups.IPPError, (e, m):
             show_IPP_Error(e, m, self.ServerSettingsDialog)
+            self.cups._end_operation ()
             return True
         except RuntimeError, s:
             show_IPP_Error(None, s, self.ServerSettingsDialog)
+            self.cups._end_operation ()
             return True
+        self.cups._end_operation ()
         self.changed = set()
         self.setDataButtonState()
 
@@ -5068,6 +5119,7 @@ class NewPrinterGUI(GtkGUI):
             self.WaitWindow.show ()
             while gtk.events_pending ():
                 gtk.main_iteration ()
+            self.mainapp.cups._begin_operation (_("adding printer %s") % name)
             try:
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
                     self.mainapp.cups.addPrinter(name, ppdname=ppd,
@@ -5087,27 +5139,38 @@ class NewPrinterGUI(GtkGUI):
                 self.ready (self.NewPrinterWindow)
                 self.WaitWindow.hide ()
                 self.show_IPP_Error(e, msg)
+                self.mainapp.cups._end_operation()
                 return
             except:
                 self.ready (self.NewPrinterWindow)
                 self.WaitWindow.hide ()
+                self.mainapp.cups._end_operation()
                 fatalException (1)
+            self.mainapp.cups._end_operation()
             self.WaitWindow.hide ()
             self.ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer"):
+            self.mainapp.cups._begin_operation (_("modifying printer %s") %
+                                                name)
             try:
                 self.mainapp.cups.setPrinterLocation(name, location)
                 self.mainapp.cups.setPrinterInfo(name, info)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
+                self.mainapp.cups._end_operation ()
                 return
+            self.mainapp.cups._end_operation ()
         elif self.dialog_mode == "device":
+            self.mainapp.cups._begin_operation (_("modifying printer %s") %
+                                                name)
             try:
                 uri = self.getDeviceURI()
                 self.mainapp.cups.addPrinter(name, device=uri)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
+                self.mainapp.cups._end_operation ()
                 return
+            self.mainapp.cups._end_operation ()
         elif self.dialog_mode == "ppd":
             if not ppd:
                 ppd = self.ppd = self.getNPPPD()
@@ -5116,6 +5179,8 @@ class NewPrinterGUI(GtkGUI):
                     self.nextNPTab(-1)
                     return
 
+            self.mainapp.cups._begin_operation (_("modifying printer %s") %
+                                                name)
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
             raw = False
@@ -5132,6 +5197,7 @@ class NewPrinterGUI(GtkGUI):
                     self.mainapp.cups.addPrinter(name, ppdname=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
+                    self.mainapp.cups._end_operation ()
                     return
 
                 try:
@@ -5143,6 +5209,7 @@ class NewPrinterGUI(GtkGUI):
                         raw = True
                     else:
                         self.show_IPP_Error(e, msg)
+                        self.mainapp.cups._end_operation ()
                         return
             else:
                 # We have an actual PPD to upload, not just a name.
@@ -5158,6 +5225,8 @@ class NewPrinterGUI(GtkGUI):
                     self.mainapp.cups.addPrinter(name, ppd=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
+
+            self.mainapp.cups._end_operation ()
 
             if not raw:
                 check = True
