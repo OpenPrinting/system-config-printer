@@ -1,5 +1,19 @@
 2008-08-18  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.__init__): Remember current host, port,
+	encryption settings.
+	(JobViewer.display_auth_info_dialog): Use them when making new
+	connections.
+	(JobViewer.auth_info_dialog_response): Likewise.
+	(JobViewer.on_job_cancel_activate): Likewise.
+	(JobViewer.on_job_hold_activate): Likewise.
+	(JobViewer.on_job_release_activate): Likewise.
+	(JobViewer.on_job_reprint_activate): Likewise.
+	(JobViewer.current_printers_and_jobs): Likewise.
+	(JobViewer.job_event): Likewise.
+
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.__init__): Initialise
 	connect_encrypt.
 
