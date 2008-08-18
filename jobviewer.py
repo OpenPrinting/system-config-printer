@@ -658,49 +658,64 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_job_cancel_activate(self, menuitem):
         try:
             c = authconn.Connection (self.JobsWindow)
+        except RuntimeError:
+            return
+
+        c._begin_operation (_("canceling job"))
+        try:
             c.cancelJob (self.jobid)
-            del c
         except cups.IPPError, (e, m):
             if (e != cups.IPP_NOT_POSSIBLE and
                 e != cups.IPP_NOT_FOUND):
                 self.show_IPP_Error (e, m)
             self.monitor.update ()
-            return
-        except RuntimeError:
+            c._end_operation ()
             return
 
+        c._end_operation ()
+        del c
         self.monitor.update ()
 
     def on_job_hold_activate(self, menuitem):
         try:
             c = authconn.Connection (self.JobsWindow)
+        except RuntimeError:
+            return
+
+        c._begin_operation (_("holding job"))
+        try:
             c.setJobHoldUntil (self.jobid, "indefinite")
-            del c
         except cups.IPPError, (e, m):
             if (e != cups.IPP_NOT_POSSIBLE and
                 e != cups.IPP_NOT_FOUND):
                 self.show_IPP_Error (e, m)
             self.monitor.update ()
-            return
-        except RuntimeError:
+            c._end_operation ()
             return
 
+        c._end_operation ()
+        del c
         self.monitor.update ()
 
     def on_job_release_activate(self, menuitem):
         try:
             c = authconn.Connection (self.JobsWindow)
+        except RuntimeError:
+            return
+
+        c._begin_operation (_("releasing job"))
+        try:
             c.setJobHoldUntil (self.jobid, "no-hold")
-            del c
         except cups.IPPError, (e, m):
             if (e != cups.IPP_NOT_POSSIBLE and
                 e != cups.IPP_NOT_FOUND):
                 self.show_IPP_Error (e, m)
             self.monitor.update ()
-            return
-        except RuntimeError:
+            c._end_operation ()
             return
 
+        c._end_operation ()
+        del c
         self.monitor.update ()
 
     def on_job_reprint_activate(self, menuitem):
