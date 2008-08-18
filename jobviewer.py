@@ -93,39 +93,6 @@ class PrinterURIIndex:
             try:
                 attrs = connection.getPrinterAttributes (uri=uri,
                                                          requested_attributes=r)
-            except TypeError:
-                # requested_attributes argument is new in pycups 1.9.40.
-                attrs = connection.getPrinterAttributes (uri=uri)
-            except TypeError:
-                # uri argument is new in pycups 1.9.32.  We'll have to try
-                # each named printer.
-                debugprint ("PrinterURIIndex: using slow method")
-                if self.names == None:
-                    dests = connection.getDests ()
-                    names = set()
-                    for (printer, instance) in dests.keys ():
-                        if printer == None:
-                            continue
-                        if instance != None:
-                            continue
-                        names.add (printer)
-                    self.names = names
-
-                r = ['printer-uri-supported', 'printer-more-info']
-                for name in self.names:
-                    try:
-                        attrs = connection.getPrinterAttributes (name,
-                                                                 requested_attributes=r)
-                    except TypeError:
-                        # requested_attributes argument is new in pycups 1.9.40.
-                        attrs = connection.getPrinterAttributes (name)
-
-                    self.update_from_attrs (name, attrs)
-                    try:
-                        return self.printer[uri]
-                    except KeyError:
-                        pass
-                raise KeyError
             except cups.IPPError:
                 # URI not known.
                 raise KeyError
@@ -544,12 +511,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         # Find out which auth-info is required.
         try:
             c = authconn.Connection (self.JobsWindow)
-            try:
-                uri = data['job-printer-uri']
-                attributes = c.getPrinterAttributes (uri = uri)
-            except TypeError: # uri keyword introduced in pycups-1.9.32
-                debugprint ("Fetching printer attributes by name")
-                attributes = c.getPrinterAttributes (printer)
+            uri = data['job-printer-uri']
+            attributes = c.getPrinterAttributes (uri = uri)
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
             return
@@ -571,11 +534,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
             try:
                 debugprint ("Trying Kerberos auth for job %d" % jobid)
                 c.authenticateJob (jobid)
-            except TypeError:
-                # Requires pycups-1.9.39 for optional auth parameter.
-                # Treat this as a normal job error.
-                debugprint ("... need newer pycups for that")
-                return
             except cups.IPPError, (e, m):
                 self.show_IPP_Error (e, m)
                 return

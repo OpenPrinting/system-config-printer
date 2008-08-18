@@ -1,5 +1,37 @@
 2008-08-18  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py: Require pycups >= 1.9.40.
+	(GUI.populateList): Removed pycups compatibility code.
+	(GUI.connect): Likewise.
+	(NewPrinterGUI.getPPDs_thread): Likewise.
+	(NewPrinterGUI.nextNPTab): Likewise.
+	(NewPrinterGUI.getDevices_thread): Likewise.
+	(NewPrinterGUI.on_btnIPPVerify_clicked): Likewise.
+	(NewPrinterGUI.browse_ipp_queues_thread): Likewise.
+	(NewPrinterGUI.getNPPPD): Likewise.
+
+	* AdvancedServerSettings.py
+	(AdvancedServerSettingsDialog.on_response): Removed pycups
+	compatibility code for pycups < 1.9.40.
+
+	* my-default-printer.py (Server.getSystemDefault): Removed pycups
+	compatibility code.
+
+	* monitor.py (collect_printer_state_reasons): Removed pycups
+	compatibility code.
+	(Monitor.cleanup): Likewise.
+	(Monitor.get_notifications): Likewise.
+	(Monitor.refresh): Likewise.
+
+	* authconn.py (Connection._connect): Removed pycups compatibility
+	code.
+
+	* jobviewer.py (PrinterURIIndex.lookup): Removed pycups
+	compatibility code.
+	(JobViewer.display_auth_info_dialog): Likewise.
+
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.__init__): Initialise
 	connect_encrypt.
 

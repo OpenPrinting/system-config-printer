@@ -126,11 +126,6 @@ class Server:
     def getSystemDefault (self):
         try:
             return self.cups_connection.getDefault ()
-        except AttributeError: # getDefault appeared in pycups-1.9.31
-            printers = self.cups_connection.getPrinters ()
-            for (name, info) in printers.iteritems ():
-                if info['printer-type'] & cups.CUPS_PRINTER_DEFAULT:
-                    return name
         except:
             pass
 

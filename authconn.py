@@ -127,17 +127,9 @@ class Connection:
 
     def _connect (self):
         cups.setUser (self._use_user)
-        try:
-            self._connection = cups.Connection (host=self._server,
-                                                port=self._port,
-                                                encryption=self._encryption)
-        except TypeError:
-            # Parameters for Connection() require pycups >= 1.9.40.
-            cups.setServer (self._server)
-            cups.setPort (self._port)
-            cups.setEncryption (self._encryption)
-            self._connection = cups.Connection ()
-
+        self._connection = cups.Connection (host=self._server,
+                                            port=self._port,
+                                            encryption=self._encryption)
         self._user = self._use_user
         debugprint ("Connected as user %s" % self._user)
         methodtype = type (self._connection.getPrinters)

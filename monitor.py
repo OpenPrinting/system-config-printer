@@ -54,9 +54,6 @@ def collect_printer_state_reasons (connection):
 
     for name, printer in printers.iteritems ():
         reasons = printer["printer-state-reasons"]
-        if type (reasons) != list:
-            # Work around a bug that was fixed in pycups-1.9.20.
-            reasons = [reasons]
         for reason in reasons:
             if reason == "none":
                 break
@@ -164,17 +161,9 @@ class Monitor:
     def cleanup (self):
         if self.sub_id != -1:
             try:
-                try:
-                    c = cups.Connection (host=self.host,
-                                         port=self.port,
-                                         encryption=self.encryption)
-                except TypeError:
-                    # Parameters to Connection() requires pycups >= 1.9.40.
-                    cups.setServer (self.host)
-                    cups.setPort (self.port)
-                    cups.setEncryption (self.encryption)
-                    c = cups.Connection ()
-
+                c = cups.Connection (host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
                 c.cancelSubscription (self.sub_id)
                 debugprint ("Canceled subscription %d" % self.sub_id)
             except:
@@ -309,16 +298,9 @@ class Monitor:
     def get_notifications(self):
         debugprint ("get_notifications")
         try:
-            try:
-                c = cups.Connection (host=self.host,
-                                     port=self.port,
-                                     encryption=self.encryption)
-            except TypeError:
-                # Parameters to Connection() requires pycups >= 1.9.40.
-                cups.setServer (self.host)
-                cups.setPort (self.port)
-                cups.setEncryption (self.encryption)
-                c = cups.Connection ()
+            c = cups.Connection (host=self.host,
+                                 port=self.port,
+                                 encryption=self.encryption)
 
             try:
                 try:
@@ -343,12 +325,6 @@ class Monitor:
         jobs = self.jobs.copy ()
         for event in notifications['events']:
             seq = event['notify-sequence-number']
-            try:
-                if seq <= self.sub_seq:
-                    # Work around a bug in pycups < 1.9.34
-                    continue
-            except AttributeError:
-                pass
             self.sub_seq = seq
             nse = event['notify-subscribed-event']
             debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
@@ -378,10 +354,6 @@ class Monitor:
                                             (self, name)))
                 elif name in self.printers:
                     printer_state_reasons = event['printer-state-reasons']
-                    if type (printer_state_reasons) != list:
-                        # Work around a bug in pycups < 1.9.36
-                        printer_state_reasons = [printer_state_reasons]
-
                     reasons = []
                     for reason in printer_state_reasons:
                         if reason == "none":
@@ -464,16 +436,9 @@ class Monitor:
         debugprint ("refresh")
 
         try:
-            try:
-                c = cups.Connection (host=self.host,
-                                     port=self.port,
-                                     encryption=self.encryption)
-            except TypeError:
-                # Parameters to Connection() requires pycups >= 1.9.40.
-                cups.setServer (self.host)
-                cups.setPort (self.port)
-                cups.setEncryption (self.encryption)
-                c = cups.Connection ()
+            c = cups.Connection (host=self.host,
+                                 port=self.port,
+                                 encryption=self.encryption)
         except RuntimeError:
             self.watcher.cups_connection_error (self)
             return
