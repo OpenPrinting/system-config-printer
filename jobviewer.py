@@ -255,8 +255,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if bus == None:
             bus = dbus.SystemBus ()
 
+        self.host = cups.getServer ()
+        self.port = cups.getPort ()
+        self.encryption = cups.getEncryption ()
         self.monitor = monitor.Monitor (self, bus=bus, my_jobs=my_jobs,
-                                        specific_dests=specific_dests)
+                                        specific_dests=specific_dests,
+                                        host=self.host, port=self.port,
+                                        encryption=self.encryption)
 
         if not self.trayicon:
             self.JobsWindow.show ()
@@ -510,7 +515,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         data = self.jobs[job]
         # Find out which auth-info is required.
         try:
-            c = authconn.Connection (self.JobsWindow)
+            c = authconn.Connection (self.JobsWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
             uri = data['job-printer-uri']
             attributes = c.getPrinterAttributes (uri = uri)
         except cups.IPPError, (e, m):
@@ -581,7 +589,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         auth_info = dialog.get_auth_info ()
         try:
-            c = authconn.Connection (self.JobsWindow)
+            c = authconn.Connection (self.JobsWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
             c.authenticateJob (jobid, auth_info)
         except RuntimeError:
             debugprint ("Error connecting to CUPS for authentication")
@@ -691,7 +702,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
 
         try:
-            c = authconn.Connection (self.JobsWindow)
+            c = authconn.Connection (self.JobsWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
         except RuntimeError:
             return
 
@@ -712,7 +726,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def on_job_hold_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.JobsWindow)
+            c = authconn.Connection (self.JobsWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
         except RuntimeError:
             return
 
@@ -733,7 +750,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def on_job_release_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.JobsWindow)
+            c = authconn.Connection (self.JobsWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
         except RuntimeError:
             return
 
@@ -754,7 +774,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def on_job_reprint_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.JobsWindow)
+            c = authconn.Connection (self.JobsWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
             c.restartJob (self.jobid)
             del c
         except cups.IPPError, (e, m):
@@ -965,7 +988,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             attrs = None
             try:
                 if connection == None:
-                    connection = cups.Connection ()
+                    connection = cups.Connection (host=self.host,
+                                                  port=self.port,
+                                                  encryption=self.encryption)
                 attrs = connection.getJobAttributes (jobid)
             except RuntimeError:
                 pass
@@ -1037,7 +1062,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 try:
                     # Fetch the job-hold-until attribute, as this is
                     # not provided in the notification attributes.
-                    c = cups.Connection ()
+                    c = cups.Connection (host=self.host,
+                                         port=self.port,
+                                         encryption=self.encryption)
                     attrs = c.getJobAttributes (jobid)
                     jobdata.update (attrs)
                 except cups.IPPError:
