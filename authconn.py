@@ -93,13 +93,22 @@ class AuthDialog(gtk.Dialog):
         self.field_entry[i].grab_focus ()
 
 class Connection:
-    def __init__ (self, parent=None, try_as_root=True):
+    def __init__ (self, parent=None, try_as_root=True,
+                  host=None, port=None, encryption=None):
+        if host != None:
+            cups.setServer (host)
+        if port != None:
+            cups.setPort (port)
+        if encryption != None:
+            cups.setEncryption (encryption)
+
         self._use_password = ''
         self._parent = parent
         self._try_as_root = try_as_root
         self._use_user = cups.getUser ()
         self._server = cups.getServer ()
         self._port = cups.getPort()
+        self._encryption = cups.getEncryption ()
         self._connect ()
         self._prompt_allowed = True
         self._operation_stack = []
@@ -118,9 +127,17 @@ class Connection:
 
     def _connect (self):
         cups.setUser (self._use_user)
-        cups.setServer (self._server)
-        cups.setPort (self._port)
-        self._connection = cups.Connection ()
+        try:
+            self._connection = cups.Connection (host=self._server,
+                                                port=self._port,
+                                                encryption=self._encryption)
+        except TypeError:
+            # Parameters for Connection() require pycups >= 1.9.40.
+            cups.setServer (self._server)
+            cups.setPort (self._port)
+            cups.setEncryption (self._encryption)
+            self._connection = cups.Connection ()
+
         self._user = self._use_user
         debugprint ("Connected as user %s" % self._user)
         methodtype = type (self._connection.getPrinters)

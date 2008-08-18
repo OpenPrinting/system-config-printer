@@ -177,6 +177,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.conflicts = set() # of options
         self.connect_server = (self.printer and self.printer.getServer()) \
                                or cups.getServer()
+        self.connect_encrypt = cups.getEncryption ()
         self.connect_user = cups.getUser()
 
         self.changed = set() # of options
@@ -1152,10 +1153,7 @@ class GUI(GtkGUI, monitor.Watcher):
         """
         Open a connection to a new server. Is executed in a separate thread!
         """
-        cups.setServer(self.connect_server)
         cups.setUser(self.connect_user)
-        cups.setEncryption (self.connect_encrypt)
-
         if self.connect_server[0] == '/':
             # UNIX domain socket.  This may potentially fail if the server
             # settings have been changed and cupsd has written out a
@@ -1163,7 +1161,14 @@ class GUI(GtkGUI, monitor.Watcher):
             # UNIX domain socket.  To handle this special case, try to
             # connect once and fall back to "localhost" on failure.
             try:
-                connection = cups.Connection ()
+                try:
+                    connection = cups.Connection (host=self.connect_server,
+                                                  encryption=self.connect_encrypt)
+                except TypeError:
+                    # Parameters to Connection() require pycups >= 1.9.40.
+                    cups.setServer(self.connect_server)
+                    cups.setEncryption (self.connect_encrypt)
+                    connection = cups.Connection ()
 
                 # Worked fine.  Disconnect, and we'll connect for real
                 # shortly.
@@ -1175,7 +1180,9 @@ class GUI(GtkGUI, monitor.Watcher):
                 nonfatalException ()
 
         try:
-            connection = authconn.Connection(parent)
+            connection = authconn.Connection(parent,
+                                             host=self.connect_server,
+                                             encryption=self.connect_encrypt)
             self.newPrinterGUI.dropPPDs ()
         except RuntimeError, s:
             if self.connect_thread != thread.get_ident(): return
@@ -1524,7 +1531,9 @@ class GUI(GtkGUI, monitor.Watcher):
         self.conflict_dialog.run()
         self.conflict_dialog.hide()
 
-    def save_printer(self, printer, saveall=False):
+    def save_printer(self, printer, saveall=False, parent=None):
+        if parent == None:
+            parent = self.PrinterPropertiesDialog
         class_deleted = False
         name = printer.name
 
@@ -1622,7 +1631,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
-            show_IPP_Error(e, s, self.PrinterPropertiesDialog)
+            show_IPP_Error(e, s, parent)
             self.cups._end_operation ()
             return True
         self.cups._end_operation ()
@@ -1748,7 +1757,9 @@ class GUI(GtkGUI, monitor.Watcher):
         # as a normal job.
         user = cups.getUser ()
         cups.setUser ('')
-        c = authconn.Connection (self.PrintersWindow, try_as_root=False)
+        c = authconn.Connection (self.PrintersWindow, try_as_root=False,
+                                 host=self.connect_server,
+                                 encryption=self.connect_encrypt)
         c._begin_operation (_("printing test page"))
         try:
             if custom_testpage and os.path.exists(custom_testpage):
@@ -2363,7 +2374,8 @@ class GUI(GtkGUI, monitor.Watcher):
                                         # will get added
 
         self.cups._begin_operation (_("copying printer"))
-        ret = self.save_printer(self.printer, saveall=True)
+        ret = self.save_printer(self.printer, saveall=True,
+                                parent=self.PrintersWindow)
         self.cups._end_operation ()
         return ret
 
@@ -3115,11 +3127,17 @@ class NewPrinterGUI(GtkGUI):
     def getPPDs_thread(self, language):
         try:
             debugprint ("Connecting (PPDs)")
-            cups.setServer (self.mainapp.connect_server)
             cups.setUser (self.mainapp.connect_user)
             cups.setPasswordCB (lambda x: '')
-            # cups.setEncryption (...)
-            c = cups.Connection ()
+            try:
+                c = cups.Connection (host=self.mainapp.connect_server,
+                                     encryption=self.mainapp.connect_encrypt)
+            except TypeError:
+                # Parameters for Connection() require pycups >= 1.9.40.
+                cups.setServer (self.mainapp.connect_server)
+                cups.setEncryption (self.mainapp.connect_encrypt)
+                c = cups.Connection ()
+
             debugprint ("Fetching PPDs")
             ppds_dict = c.getPPDs()
             self.ppds_result = cupshelpers.ppds.PPDs(ppds_dict,
@@ -3292,14 +3310,25 @@ class NewPrinterGUI(GtkGUI):
                     # fields for this new queue.
                     oldserver = cups.getServer()
                     oldport = cups.getPort()
+                    oldencrypt = cups.getEncryption ()
                     try:
-                        cups.setServer (resg[0])
+                        server = resg[0]
                         if len (resg[1]) > 0:
-                            cups.setPort (int (resg[1]))
+                            port = int (resg[1])
                         else:
-                            cups.setPort (631)
+                            port = 631
 
-                        c = cups.Connection ()
+                        try:
+                            c = cups.Connection (host=server,
+                                                 port=port,
+                                                 encryption=cups.HTTP_ENCRYPT_IF_REQUESTED)
+                        except TypeError:
+                            # Connection() parameters require pycups >= 1.9.40.
+                            cups.setServer (server)
+                            cups.setPort (port)
+                            cups.setEncryption (cups.HTTP_ENCRYPT_IF_REQUESTED)
+                            c = cups.Connection ()
+
                         r = ['printer-info', 'printer-location']
                         attrs = c.getPrinterAttributes (uri=uri,
                                                         requested_attributes=r)
@@ -3314,6 +3343,7 @@ class NewPrinterGUI(GtkGUI):
 
                     cups.setServer (oldserver)
                     cups.setPort (oldport)
+                    cups.setEncryption (oldencrypt)
 
                 if (not self.remotecupsqueue and
                     not self.new_printer_PPDs_loaded):
@@ -3595,11 +3625,16 @@ class NewPrinterGUI(GtkGUI):
     def getDevices_thread(self):
         try:
             debugprint ("Connecting (devices)")
-            cups.setServer (self.mainapp.connect_server)
             cups.setUser (self.mainapp.connect_user)
             cups.setPasswordCB (lambda x: '')
-            # cups.setEncryption (...)
-            c = cups.Connection ()
+            try:
+                c = cups.Connection (host=self.mainapp.connect_server,
+                                     encryption=self.mainapp.connect_encrypt)
+            except TypeError:
+                # Parameters to Connection() require pycups >= 1.9.40.
+                cups.setServer (self.mainapp.connect_server)
+                cups.setEncryption (self.mainapp.connect_encrypt)
+                c = cups.Connection ()
             debugprint ("Fetching devices")
             self.devices_result = cupshelpers.getDevices(c)
         except cups.IPPError, (e, msg):
@@ -4284,9 +4319,15 @@ class NewPrinterGUI(GtkGUI):
         match = re.match ("(ipp|https?)://([^/]+)(.*)/([^/]*)", uri)
         verified = False
         if match:
+            oldserver = cups.getServer ()
             try:
-                cups.setServer (match.group (2))
-                c = cups.Connection ()
+                try:
+                    c = cups.Connection (host=match.group (2))
+                except TypeError:
+                    # host parameter requires pycups >= 1.9.40.
+                    cups.setServer (match.group (2))
+                    c = cups.Connection ()
+
                 try:
                     attributes = c.getPrinterAttributes (uri = uri)
                 except TypeError: # uri keyword introduced in pycups 1.9.32
@@ -4297,6 +4338,7 @@ class NewPrinterGUI(GtkGUI):
                 debugprint ("Failed to get attributes: %s (%d)" % (msg, e))
             except:
                 nonfatalException ()
+            cups.setServer (oldserver)
         else:
             debugprint (uri)
 
@@ -4330,11 +4372,17 @@ class NewPrinterGUI(GtkGUI):
             nonfatalException()
         gtk.gdk.threads_leave()
 
-        cups.setServer (host)
+        oldserver = cups.getServer ()
         printers = classes = {}
         failed = False
         try:
-            c = cups.Connection()
+            try:
+                c = cups.Connection (host=host)
+            except TypeError:
+                # host parameter requires pycups >= 1.9.40.
+                cups.setServer (host)
+                c = cups.Connection()
+
             printers = c.getPrinters ()
             del c
         except cups.IPPError, (e, m):
@@ -4343,6 +4391,7 @@ class NewPrinterGUI(GtkGUI):
         except:
             nonfatalException()
             failed = True
+        cups.setServer (oldserver)
 
         gtk.gdk.threads_enter()
         try:

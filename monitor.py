@@ -121,7 +121,7 @@ class Monitor:
     DBUS_IFACE="com.redhat.PrinterSpooler"
 
     def __init__(self, watcher, bus=None, my_jobs=True, specific_dests=None,
-                 monitor_jobs=True):
+                 monitor_jobs=True, host=None, port=None, encryption=None):
         self.watcher = watcher
         self.my_jobs = my_jobs
         self.specific_dests = specific_dests
@@ -129,6 +129,16 @@ class Monitor:
         self.jobs = {}
         self.printer_state_reasons = {}
         self.printers = set()
+
+        if host:
+            cups.setServer (host)
+        if port:
+            cups.setPort (port)
+        if encryption:
+            cups.setEncryption (encryption)
+        self.host = cups.getServer ()
+        self.port = cups.getPort ()
+        self.encryption = cups.getEncryption ()
 
         self.which_jobs = "not-completed"
         self.reasons_seen = {}
@@ -154,7 +164,17 @@ class Monitor:
     def cleanup (self):
         if self.sub_id != -1:
             try:
-                c = cups.Connection ()
+                try:
+                    c = cups.Connection (host=self.host,
+                                         port=self.port,
+                                         encryption=self.encryption)
+                except TypeError:
+                    # Parameters to Connection() requires pycups >= 1.9.40.
+                    cups.setServer (self.host)
+                    cups.setPort (self.port)
+                    cups.setEncryption (self.encryption)
+                    c = cups.Connection ()
+
                 c.cancelSubscription (self.sub_id)
                 debugprint ("Canceled subscription %d" % self.sub_id)
             except:
@@ -289,7 +309,16 @@ class Monitor:
     def get_notifications(self):
         debugprint ("get_notifications")
         try:
-            c = cups.Connection ()
+            try:
+                c = cups.Connection (host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
+            except TypeError:
+                # Parameters to Connection() requires pycups >= 1.9.40.
+                cups.setServer (self.host)
+                cups.setPort (self.port)
+                cups.setEncryption (self.encryption)
+                c = cups.Connection ()
 
             try:
                 try:
@@ -435,7 +464,16 @@ class Monitor:
         debugprint ("refresh")
 
         try:
-            c = cups.Connection ()
+            try:
+                c = cups.Connection (host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
+            except TypeError:
+                # Parameters to Connection() requires pycups >= 1.9.40.
+                cups.setServer (self.host)
+                cups.setPort (self.port)
+                cups.setEncryption (self.encryption)
+                c = cups.Connection ()
         except RuntimeError:
             self.watcher.cups_connection_error (self)
             return
