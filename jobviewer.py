@@ -656,6 +656,40 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.loop.quit ()
 
     def on_job_cancel_activate(self, menuitem):
+        dialog = gtk.Dialog (_("Cancel Job"), self.JobsWindow,
+                             gtk.DIALOG_MODAL |
+                             gtk.DIALOG_DESTROY_WITH_PARENT |
+                             gtk.DIALOG_NO_SEPARATOR,
+                             (gtk.STOCK_NO, gtk.RESPONSE_NO,
+                              gtk.STOCK_YES, gtk.RESPONSE_YES))
+        dialog.set_default_response (gtk.RESPONSE_NO)
+        dialog.set_border_width (6)
+        dialog.set_resizable (False)
+        hbox = gtk.HBox (False, 12)
+        image = gtk.Image ()
+        image.set_from_stock (gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_DIALOG)
+        image.set_alignment (0.0, 0.0)
+        hbox.pack_start (image, False, False, 0)
+        label = gtk.Label (_("Do you really want to cancel this job?"))
+        label.set_line_wrap (True)
+        label.set_alignment (0.0, 0.0)
+        hbox.pack_start (label, False, False, 0)
+        dialog.vbox.pack_start (hbox, False, False, 0)
+        dialog.set_data ('job-id', self.jobid)
+        dialog.connect ("response", self.on_job_cancel_prompt_response)
+        dialog.connect ("delete-event", self.on_job_cancel_prompt_delete)
+        dialog.show_all ()
+
+    def on_job_cancel_prompt_delete (self, dialog, event):
+        self.on_job_cancel_prompt_response (dialog, gtk.RESPONSE_NO)
+
+    def on_job_cancel_prompt_response (self, dialog, response):
+        jobid = dialog.get_data ('job-id')
+        dialog.destroy ()
+
+        if response != gtk.RESPONSE_YES:
+            return
+
         try:
             c = authconn.Connection (self.JobsWindow)
         except RuntimeError:
@@ -663,7 +697,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         c._begin_operation (_("canceling job"))
         try:
-            c.cancelJob (self.jobid)
+            c.cancelJob (jobid)
         except cups.IPPError, (e, m):
             if (e != cups.IPP_NOT_POSSIBLE and
                 e != cups.IPP_NOT_FOUND):

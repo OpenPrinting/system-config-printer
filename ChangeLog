@@ -1,5 +1,14 @@
 2008-08-18  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.on_job_cancel_activate): Ask user if
+	they are sure they want to cancel the job.
+	(JobViewer.on_job_cancel_prompt_delete): Handle delete-event for
+	the dialog.
+	(JobViewer.on_job_cancel_prompt_response): Handle response for the
+	dialog.
+
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.on_job_cancel_activate): Set current
 	operation.
 	(JobViewer.on_job_hold_activate): Likewise.
