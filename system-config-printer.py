@@ -1108,6 +1108,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.chkEncrypted.set_active (cups.getEncryption() ==
                                       cups.HTTP_ENCRYPT_ALWAYS)
 
+        self.cmbServername.child.set_activates_default (True)
         self.cmbServername.grab_focus ()
         self.ConnectDialog.set_transient_for (self.PrintersWindow)
         response = self.ConnectDialog.run()
