@@ -1403,7 +1403,9 @@ class GUI(GtkGUI, monitor.Watcher):
         self.conflict_dialog.run()
         self.conflict_dialog.hide()
 
-    def save_printer(self, printer, saveall=False):
+    def save_printer(self, printer, saveall=False, parent=None):
+        if parent == None:
+            parent = self.PrinterPropertiesDialog
         class_deleted = False
         name = printer.name
         
@@ -1495,7 +1497,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):
-            show_IPP_Error(e, s, self.PrinterPropertiesDialog)
+            show_IPP_Error(e, s, parent)
             return True
         self.changed = set() # of options
 
@@ -2211,7 +2213,8 @@ class GUI(GtkGUI, monitor.Watcher):
         self.printer.class_members = [] # for classes make sure all members
                                         # will get added 
 
-        return self.save_printer(self.printer, saveall=True)
+        return self.save_printer(self.printer, saveall=True,
+                                 parent=self.MainWindow)
 
     def on_copy_activate(self, widget):
         iconview = self.dests_iconview

@@ -1,5 +1,12 @@
 2008-08-18  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.save_printer): Allow caller to set
+	parent window.
+	(GUI.copy_printer): Set parent window so that error dialogs are
+	transient for the main window.
+
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.on_shared_activate): Handle IPP
 	errors while setting shared status.
 
