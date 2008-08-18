@@ -2296,7 +2296,12 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            printer.setEnabled (enable)
+            try:
+                printer.setEnabled (enable)
+            except cups.IPPError, (e, m):
+                show_IPP_Error(e, m, self.MainWindow)
+                # Give up on this operation.
+                break
         self.populateList ()
 
     # Shared
