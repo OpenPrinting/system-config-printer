@@ -931,6 +931,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if self.cups:
             self.cups._set_prompt_allowed (prompt_allowed)
+            self.cups._begin_operation (_("obtaining queue details"))
             try:
                 # get Printers
                 self.printers = cupshelpers.getPrinters(self.cups)
@@ -950,6 +951,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 show_IPP_Error(e, m, self.PrintersWindow)
                 self.printers = {}
                 self.default_printer = None
+
+            self.cups._end_operation ()
         else:
             self.printers = {}
             self.default_printer = None
@@ -1631,6 +1634,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.monitor.update ()
         else:
             # Update our copy of the printer's settings.
+            self.cups._begin_operation (_("obtaining queue details"))
             try:
                 printers = cupshelpers.getPrinters (self.cups)
                 this_printer = { name: printers[name] }
@@ -1638,6 +1642,7 @@ class GUI(GtkGUI, monitor.Watcher):
             except cups.IPPError, (e, s):
                 show_IPP_Error(e, s, self.PrinterPropertiesDialog)
 
+            self.cups._end_operation ()
         return False
 
     def getPrinterSettings(self):
