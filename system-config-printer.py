@@ -2198,7 +2198,7 @@ class GUI(GtkGUI, monitor.Watcher):
         if len (jobs) > 0:
             show_error_dialog (_("Cannot Rename"),
                                _("There are queued jobs."),
-                               parent=self.MainWindow)
+                               parent=self.PrintersWindow)
             return False
 
         return True
@@ -2275,9 +2275,9 @@ class GUI(GtkGUI, monitor.Watcher):
                 try:
                     self.printers[old_name].setAccepting (True)
                 except cups.HTTPError, (s,):
-                    show_HTTP_Error (s, self.MainWindow)
+                    show_HTTP_Error (s, self.PrintersWindow)
                 except cups.IPPError, (e, msg):
-                    show_IPP_Error (e, msg, self.MainWindow)
+                    show_IPP_Error (e, msg, self.PrintersWindow)
 
             return
 

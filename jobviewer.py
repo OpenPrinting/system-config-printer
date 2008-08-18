@@ -543,7 +543,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         data = self.jobs[job]
         # Find out which auth-info is required.
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.JobsWindow)
             try:
                 uri = data['job-printer-uri']
                 attributes = c.getPrinterAttributes (uri = uri)
