@@ -1,3 +1,41 @@
+2008-08-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* errordialogs.py (show_dialog): Use gtk.MessageDialog instead of
+	gtk.Dialog as it saves us a lot of code and already complies with
+	the HIG. Also, destroy the dialog after running it.
+
+2008-08-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.on_connect_activate): Make
+	pressing Enter on the combo box's entry activate the default
+	dialog widget.
+
+2008-08-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* glade/ServerSettingsDialog.glade: Add border width. Remove
+	resizable and has_separator properties. Add mnemonics to the
+	check boxes' labels.
+
+2008-08-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* authconn.py (Connection._perform_authentication): Destroy the
+	AuthDialog after run() since a new one is always created. Handle
+	response == gtk.RESPONSE_DELETE_EVENT as gtk.RESPONSE_CANCEL.
+
+2008-08-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* glade/ConnectingDialog.glade: HIG fixes. Added a progress bar.
+	* system-config-printer.py (GUI.__init__): The delete-event
+	handler for ConnectingDialog must act as if the cancel button was
+	pressed.
+	* system-config-printer.py (GUI.on_connectingdialog_delete): New
+	method to call the cancel button's click handler on delete-event
+	and avoid dialog destruction.
+	* system-config-printer.py (GUI.on_connect_activate): Changed
+	lblConnecting to use a markup string. Call...
+	* system-config-printer.py (GUI.update_connecting_pbar): ... this
+	to update the progress bar.
+
 2008-08-19  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* cupshelpers/ppds.py (ppdMakeModelSplit): Replace the
