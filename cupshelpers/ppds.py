@@ -85,7 +85,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
         model = ppd_make_and_model
     elif re.search ("^(okipage|microline)", \
                       ppd_make_and_model, re.I):
-        make = "Okidata"
+        make = "Oki"
         model = ppd_make_and_model
     elif re.search ("^(konica[\s_-]*minolta)", \
                       ppd_make_and_model, re.I):
@@ -151,9 +151,10 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\s*-*\s*[0-9\.]+", "", model)
     model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\b", "", model)
     model = re.sub (r"(?i)\s*PostScript\s*$", "", model)
-    model = re.sub (r"(?i)\s*-\s*$", "", model)
+    model = re.sub (r"(?i)\s*\(\s*\)", "", model)
+    model = re.sub (r"(?i)\s*[\-\/]\s*$", "", model)
 
-    for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Okidata" ]:
+    for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Oki" ]:
         if make == mfr.upper ():
             make = mfr
 
