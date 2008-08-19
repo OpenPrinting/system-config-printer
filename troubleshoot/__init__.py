@@ -108,6 +108,11 @@ class Troubleshooter:
         except:
             self._report_traceback ()
 
+        # Delete the questions so that their __del__ hooks can run.
+        # Do this in reverse order of creation.
+        for i in xrange (len (self.questions)):
+            self.questions.pop ()
+
         self.main.hide ()
         if self.quitfn:
             self.quitfn (self)

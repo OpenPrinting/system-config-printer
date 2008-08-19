@@ -1,3 +1,68 @@
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.__init__): Remember current host, port,
+	encryption settings.
+	(JobViewer.display_auth_info_dialog): Use them when making new
+	connections.
+	(JobViewer.auth_info_dialog_response): Likewise.
+	(JobViewer.on_job_cancel_activate): Likewise.
+	(JobViewer.on_job_hold_activate): Likewise.
+	(JobViewer.on_job_release_activate): Likewise.
+	(JobViewer.on_job_reprint_activate): Likewise.
+	(JobViewer.current_printers_and_jobs): Likewise.
+	(JobViewer.job_event): Likewise.
+
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Initialise
+	connect_encrypt.
+
+	* system-config-printer.py (GUI.connect): Use parameters to
+	Connection() when possible.
+	(GUI.on_btnPrintTestPage_clicked): Likewise.  Make sure to restore
+	cups user.
+	(NewPrinterGUI.getPPDs_thread): Use parameter to Connection() when
+	possible.
+	(NewPrinterGUI.nextNPTab): Likewise.
+	(NewPrinterGUI.getDevices_thread): Likewise.
+	(NewPrinterGUI.on_btnIPPVerify_clicked): Likewise.  Restore
+	current server afterwards.
+	(NewPrinterGUI.browse_ipp_queues_thread): Likewise.
+
+	* authconn.py (Connection.__init__): New parameters host, port,
+	encryption.
+	(Connection._connect): Use them.  Use parameters to Connection()
+	when possible.
+
+	* monitor.py (Monitor.__init__): New parameters host, port,
+	encryption.
+	(Monitor.cleanup): Use them for new connections.  Use parameters
+	to Connection() when possible.
+	(Monitor.get_notifications): Likewise.
+	(Monitor.refresh): Likewise.
+
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.save_printer): Allow caller to set
+	parent window.
+	(GUI.copy_printer): Set parent window so that error dialogs are
+	transient for the main window.
+
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_shared_activate): Handle IPP
+	errors while setting shared status.
+
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_enabled_activate): Handle IPP
+	errors while enabling/disabling printer.
+
+2008-08-18  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.rename_printer): Handle IPP errors
+	while setting original printer to reject jobs.
+
 2008-08-19  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* cupshelpers/ppds.py (ppdMakeModelSplit): Replace the

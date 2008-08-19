@@ -289,8 +289,13 @@ class JobViewer (monitor.Watcher):
         if bus == None:
             bus = dbus.SystemBus ()
 
+        self.host = cups.getServer ()
+        self.port = cups.getPort ()
+        self.encryption = cups.getEncryption ()
         self.monitor = monitor.Monitor (self, bus=bus, my_jobs=my_jobs,
-                                        specific_dests=specific_dests)
+                                        specific_dests=specific_dests,
+                                        host=self.host, port=self.port,
+                                        encryption=self.encryption)
 
         if not self.trayicon:
             self.MainWindow.show ()
@@ -544,7 +549,10 @@ class JobViewer (monitor.Watcher):
         data = self.jobs[job]
         # Find out which auth-info is required.
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.MainWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
             try:
                 uri = data['job-printer-uri']
                 attributes = c.getPrinterAttributes (uri = uri)
@@ -624,7 +632,10 @@ class JobViewer (monitor.Watcher):
 
         auth_info = dialog.get_auth_info ()
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.MainWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
             c.authenticateJob (jobid, auth_info)
         except RuntimeError:
             debugprint ("Error connecting to CUPS for authentication")
@@ -700,7 +711,10 @@ class JobViewer (monitor.Watcher):
 
     def on_job_cancel_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.MainWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
             c.cancelJob (self.jobid)
             del c
         except cups.IPPError, (e, m):
@@ -716,7 +730,10 @@ class JobViewer (monitor.Watcher):
 
     def on_job_hold_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.MainWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
             c.setJobHoldUntil (self.jobid, "indefinite")
             del c
         except cups.IPPError, (e, m):
@@ -732,7 +749,10 @@ class JobViewer (monitor.Watcher):
 
     def on_job_release_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.MainWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
             c.setJobHoldUntil (self.jobid, "no-hold")
             del c
         except cups.IPPError, (e, m):
@@ -748,7 +768,10 @@ class JobViewer (monitor.Watcher):
 
     def on_job_reprint_activate(self, menuitem):
         try:
-            c = authconn.Connection (self.MainWindow)
+            c = authconn.Connection (self.MainWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
             c.restartJob (self.jobid)
             del c
         except cups.IPPError, (e, m):
@@ -959,7 +982,16 @@ class JobViewer (monitor.Watcher):
             attrs = None
             try:
                 if connection == None:
-                    connection = cups.Connection ()
+                    try:
+                        connection = cups.Connection (host=self.host,
+                                                      port=self.port,
+                                                      encryption=self.encryption)
+                    except TypeError:
+                        # Requires pycups >= 1.9.40.
+                        cups.setServer (self.host)
+                        cups.setPort (self.port)
+                        cups.setEncryption (self.encryption)
+                        connection = cups.Connection ()
                 attrs = connection.getJobAttributes (jobid)
             except RuntimeError:
                 pass
@@ -1031,7 +1063,16 @@ class JobViewer (monitor.Watcher):
                 try:
                     # Fetch the job-hold-until attribute, as this is
                     # not provided in the notification attributes.
-                    c = cups.Connection ()
+                    try:
+                        c = cups.Connection (host=self.host,
+                                             port=self.port,
+                                             encryption=self.encryption)
+                    except TypeError:
+                        # Requires pycups >= 1.9.40.
+                        cups.setServer (self.host)
+                        cups.setPort (self.port)
+                        cups.setEncryption (self.encryption)
+                        c = cups.Connection ()
                     attrs = c.getJobAttributes (jobid)
                     jobdata.update (attrs)
                 except cups.IPPError:
