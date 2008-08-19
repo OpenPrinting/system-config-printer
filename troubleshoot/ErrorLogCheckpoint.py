@@ -45,6 +45,21 @@ class ErrorLogCheckpoint(Question):
         troubleshooter.new_page (page, self)
         self.persistent_answers = {}
 
+    def __del__ (self):
+        if not self.persistent_answers['error_log_debug_logging_set']:
+            return
+
+        c = self.troubleshooter.answers['_authenticated_connection']
+        settings = c.adminGetServerSettings ()
+        if len (settings.keys ()) == 0:
+            return
+
+        settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '0'
+        answers = self.troubleshooter.answers
+        orig_settings = self.persistent_answers['cups_server_settings']
+        settings['MaxLogSize'] = orig_settings.get ('MaxLogSize', '2000000')
+        c.adminSetServerSettings (settings)
+
     def display (self):
         self.answers = {}
         answers = self.troubleshooter.answers
@@ -70,7 +85,7 @@ class ErrorLogCheckpoint(Question):
             # Requires root
             return True
         else:
-            self.answers['cups_server_settings'] = settings
+            self.persistent_answers['cups_server_settings'] = settings
 
         try:
             if int (settings[cups.CUPS_SERVER_DEBUG_LOGGING]) != 0:
@@ -126,7 +141,7 @@ class ErrorLogCheckpoint(Question):
         except cups.IPPError:
             return
 
-        self.answers['cups_server_settings'] = settings.copy ()
+        self.persistent_answers['cups_server_settings'] = settings.copy ()
         MAXLOGSIZE='MaxLogSize'
         try:
             prev_debug = int (settings[cups.CUPS_SERVER_DEBUG_LOGGING])
