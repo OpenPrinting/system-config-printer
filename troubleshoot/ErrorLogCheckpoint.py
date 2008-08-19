@@ -64,6 +64,7 @@ class ErrorLogCheckpoint(Question):
         except cups.IPPError:
             settings = {}
 
+        self.forward_allowed = False
         self.label.set_text ('')
         if len (settings.keys ()) == 0:
             # Requires root
@@ -83,7 +84,8 @@ class ErrorLogCheckpoint(Question):
         return True
 
     def connect_signals (self, handler):
-        self.button_sigid = self.button.connect ('clicked', self.enable_clicked)
+        self.button_sigid = self.button.connect ('clicked', self.enable_clicked,
+                                                 handler)
 
     def disconnect_signals (self):
         self.button.disconnect (self.button_sigid)
@@ -112,7 +114,12 @@ class ErrorLogCheckpoint(Question):
         self.answers['error_log_checkpoint'] = statbuf[6]
         return self.answers
 
-    def enable_clicked (self, button):
+    def can_click_forward (self):
+        return self.forward_allowed
+
+    def enable_clicked (self, button, handler):
+        self.forward_allowed = True
+        handler (button)
         c = self.troubleshooter.answers['_authenticated_connection']
         try:
             settings = c.adminGetServerSettings ()
