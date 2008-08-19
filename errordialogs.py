@@ -52,7 +52,7 @@ def show_dialog (title, text, icon, parent=None):
     dialog.vbox.pack_start (hbox, False, False, 0)
     dialog.show_all ()
     dialog.run ()
-    dialog.hide ()
+    dialog.destroy ()
 
 def show_info_dialog (title, text, parent=None):
     return show_dialog (title, text, gtk.STOCK_DIALOG_INFO, parent=parent)
