@@ -203,7 +203,7 @@ class AdvancedServerSettingsDialog:
         del self.handler_ids[reason]
 
     def __del__ (self):
-        self.dialog.hide ()
+        self.dialog.destroy ()
 
     def on_treeview_selection_changed (self, selection):
         self.remove.set_sensitive (selection.count_selected_rows () != 0)
