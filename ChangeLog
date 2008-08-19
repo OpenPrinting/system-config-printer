@@ -1,3 +1,30 @@
+2008-08-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* authconn.py (Connection._perform_authentication): Destroy the
+	AuthDialog after run() since a new one is always created. Handle
+	response == gtk.RESPONSE_DELETE_EVENT as gtk.RESPONSE_CANCEL.
+
+2008-08-19  Tim Waugh  <twaugh@redhat.com>
+
+	* pysmb.py (AuthContext.perform_authentication): Destroy this
+	dialog instead of hiding it.
+
+2008-08-19  Tim Waugh  <twaugh@redhat.com>
+
+	* errordialogs.py (show_dialog): Destroy these dialogs instead of
+	hiding them.
+
+2008-08-19  Tim Waugh  <twaugh@redhat.com>
+
+	* userdefault.py (UserDefaultPrompt.on_response): Destroy this
+	dialog instead of hiding it so that we avoid leaking it.
+
+2008-08-19  Tim Waugh  <twaugh@redhat.com>
+
+	* AdvancedServerSettings.py
+	(AdvancedServerSettingsDialog.__del__): Destroy this dialog
+	instead of hiding it so that we avoid leaking it.
+
 2008-08-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* errordialogs.py (show_dialog): Use gtk.MessageDialog instead of

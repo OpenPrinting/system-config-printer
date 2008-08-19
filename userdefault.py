@@ -153,7 +153,7 @@ class UserDefaultPrompt:
 
     def on_response (self, dialog, response_id):
         if response_id != gtk.RESPONSE_OK:
-            dialog.hide ()
+            dialog.destroy ()
             return
 
         if self.systemwide.get_active ():
@@ -164,4 +164,4 @@ class UserDefaultPrompt:
             self.userdef.set (self.name)
             self.refresh_fn ()
 
-        dialog.hide ()
+        dialog.destroy ()

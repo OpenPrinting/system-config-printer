@@ -112,7 +112,7 @@ class AuthContext:
         username_entry.set_text (self.use_user)
         domain_entry.set_text (self.use_workgroup)
         response = d.run ()
-        d.hide ()
+        d.destroy ()
 
         if response == gtk.RESPONSE_CANCEL:
             self.cancel = True
