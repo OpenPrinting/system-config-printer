@@ -189,13 +189,14 @@ class GUI(GtkGUI, monitor.Watcher):
         self.updating_widgets = False
         self.getWidgets({"PrintersWindow":
                              ["PrintersWindow",
+                              "view_area_vbox",
+                              "view_area_scrolledwindow",
                               "dests_iconview",
                               "statusbarMain",
                               "toolbar",
                               "server_settings",
                               "new_printer",
                               "new_class",
-                              "hpaned1",
                               "group_menubar_item",
                               "printer_menubar_item",
                               "view_discovered_printers"],
@@ -477,10 +478,11 @@ class GUI(GtkGUI, monitor.Watcher):
                                   self.on_groups_pane_items_changed)
         self.PrintersWindow.add_accel_group (
             self.groups_pane.ui_manager.get_accel_group ())
-        # Need to have a dummy widget in glade or it will put the iconview on
-        # the first position
-        self.hpaned1.get_child1 ().destroy ()
-        self.hpaned1.add1 (self.groups_pane)
+        self.view_area_hpaned = gtk.HPaned ()
+        self.view_area_hpaned.add1 (self.groups_pane)
+        self.groups_pane_visible = False
+        if len (self.groups_pane.get_static_groups ()) > 0:
+            self.show_or_hide_groups_pane ()
 
         # Group menubar item
         self.group_menubar_item.set_submenu (self.groups_pane.groups_menu)
@@ -792,6 +794,24 @@ class GUI(GtkGUI, monitor.Watcher):
         self.current_filter_text = text
         self.populateList ()
 
+    def show_or_hide_groups_pane (self):
+        groups = self.groups_pane.get_static_groups ()
+        has_content = len (groups) > 0
+        if has_content and not self.groups_pane_visible:
+            # Show it.
+            self.view_area_vbox.remove (self.view_area_scrolledwindow)
+            self.view_area_hpaned.add2 (self.view_area_scrolledwindow)
+            self.view_area_vbox.add (self.view_area_hpaned)
+            self.view_area_vbox.show_all ()
+            self.groups_pane_visible = True
+        elif self.groups_pane_visible and not has_content:
+            # Hide it.
+            self.view_area_vbox.remove (self.view_area_hpaned)
+            self.view_area_hpaned.remove (self.view_area_scrolledwindow)
+            self.view_area_vbox.add (self.view_area_scrolledwindow)
+            self.view_area_vbox.show_all ()
+            self.groups_pane_visible = False
+
     def on_groups_pane_item_activated (self, UNUSED, item):
         self.search_entry.clear ()
 
@@ -834,6 +854,8 @@ class GUI(GtkGUI, monitor.Watcher):
         self.add_to_group_menu.show_all ()
 
     def on_groups_pane_items_changed (self, UNUSED):
+        if not self.groups_pane_visible:
+            self.show_or_hide_groups_pane ()
         self.update_add_to_group_menu ()
 
     def on_filter_criterion_changed (self, UNUSED, selected_action):
