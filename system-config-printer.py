@@ -2862,13 +2862,12 @@ class NewPrinterGUI(GtkGUI):
                               "entNPTDevice",
                               "tvNCMembers",
                               "tvNCNotMembers",
+                              "ntbkPPDSource",
                               "rbtnNPPPD",
                               "tvNPMakes",
                               "rbtnNPFoomatic",
                               "filechooserPPD",
-                              "hsNPDownloadableDriver",
                               "rbtnNPDownloadableDriverSearch",
-                              "alignNPDownloadableDriver",
                               "entNPDownloadableDriverSearch",
                               "btnNPDownloadableDriverSearch",
                               "cmbNPDownloadableDriverFoundPrinters",
@@ -2914,6 +2913,7 @@ class NewPrinterGUI(GtkGUI):
         gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
         self.ntbkNewPrinter.set_show_tabs(False)
+        self.ntbkPPDSource.set_show_tabs(False)
         self.ntbkNPType.set_show_tabs(False)
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
@@ -4632,6 +4632,14 @@ class NewPrinterGUI(GtkGUI):
         rbtn3 = self.rbtnNPDownloadableDriverSearch.get_active()
         self.tvNPMakes.set_sensitive(rbtn1)
         self.filechooserPPD.set_sensitive(rbtn2)
+
+        if rbtn1:
+            page = 0
+        if rbtn2:
+            page = 1
+        if rbtn3:
+            page = 2
+        self.ntbkPPDSource.set_current_page (page)
 
         if not rbtn3 and self.openprinting_query_handle:
             # Need to cancel a search in progress.
