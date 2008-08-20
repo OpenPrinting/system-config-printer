@@ -3915,6 +3915,7 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     self.expanding_row = 1
 
+                self.busy (self.SMBBrowseDialog)
                 uri = "smb://%s/" % entry.name
                 debug = 0
                 if get_debugging ():
@@ -3948,6 +3949,7 @@ class NewPrinterGUI(GtkGUI):
 
                 view.expand_row (path, 0)
                 del self.expanding_row
+                self.ready (self.SMBBrowseDialog)
 
             elif entry.smbc_type == pysmb.smbc.SERVER:
                 # Server
@@ -3957,6 +3959,7 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     self.expanding_row = 1
 
+                self.busy (self.SMBBrowseDialog)
                 uri = "smb://%s/" % entry.name
                 debug = 0
                 if get_debugging ():
@@ -3988,6 +3991,7 @@ class NewPrinterGUI(GtkGUI):
 
                 view.expand_row (path, 0)
                 del self.expanding_row
+                self.ready (self.SMBBrowseDialog)
 
     def on_entSMBURI_changed (self, ent):
         uri = ent.get_text ()
