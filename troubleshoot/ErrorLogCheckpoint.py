@@ -46,7 +46,8 @@ class ErrorLogCheckpoint(Question):
         self.persistent_answers = {}
 
     def __del__ (self):
-        if not self.persistent_answers['error_log_debug_logging_set']:
+        if not self.persistent_answers.get ('error_log_debug_logging_set',
+                                            False):
             return
 
         c = self.troubleshooter.answers['_authenticated_connection']
