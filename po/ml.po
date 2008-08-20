@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ml\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-08-01 22:23+0100\n"
+"POT-Creation-Date: 2008-08-20 15:19+0100\n"
 "PO-Revision-Date: 2007-06-05 16:50+0530\n"
 "Last-Translator: Ani Peter <apeter@redhat.com>\n"
 "Language-Team: Malayalam <en@li.org>\n"
@@ -63,11 +63,11 @@ msgstr ""
 msgid "Enter IP address"
 msgstr "പ്രിന്‍ററ്‍ ചേറ്‍ത്തിരിക്കുന്നു"
 
-#: ../authconn.py:30 ../glade/NewPrinterWindow.glade.h:91
+#: ../authconn.py:30 ../glade/NewPrinterWindow.glade.h:93
 msgid "Username:"
 msgstr "യൂസര്‍നെയിം:"
 
-#: ../authconn.py:31 ../glade/NewPrinterWindow.glade.h:66
+#: ../authconn.py:31 ../glade/NewPrinterWindow.glade.h:68
 msgid "Password:"
 msgstr "പാസ്‌വേറ്‍ഡ്:"
 
@@ -81,24 +81,29 @@ msgstr "മുകളിലുളള മാറ്‍ജിന്‍:"
 msgid "Authentication"
 msgstr "<b>ഓഥന്‍റിക്കേഷന്‍</b>"
 
-#: ../errordialogs.py:65 ../errordialogs.py:77
+#: ../authconn.py:251
+#, fuzzy, python-format
+msgid "Authentication (%s)"
+msgstr "<b>ഓഥന്‍റിക്കേഷന്‍</b>"
+
+#: ../errordialogs.py:50 ../errordialogs.py:62
 msgid "Not authorized"
 msgstr "അംഗീകാരതയില്ല"
 
-#: ../errordialogs.py:66
+#: ../errordialogs.py:51
 msgid "The password may be incorrect."
 msgstr "പാസ്വേര്‍ഡ് കൊടുത്തത് തെറ്റാവാം."
 
-#: ../errordialogs.py:68 ../errordialogs.py:82
+#: ../errordialogs.py:53 ../errordialogs.py:67
 msgid "CUPS server error"
 msgstr "CUPS സര്‍വറില്‍ പിഴവ്"
 
-#: ../errordialogs.py:69 ../troubleshoot/PrintTestPage.py:322
+#: ../errordialogs.py:54 ../troubleshoot/PrintTestPage.py:322
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS ഓപ്പറേഷനില്‍ ഒരു പിഴവ് ഉണ്ടായിരുമന്നു: '%s'."
 
-#: ../errordialogs.py:78
+#: ../errordialogs.py:63
 msgid ""
 "The password may be incorrect, or the server may be configured to deny "
 "remote administration."
@@ -106,96 +111,96 @@ msgstr ""
 "പാസ്‍വേര്‍ഡ് തെറ്റാവാം, അല്ലെങ്കില്‍ വിദൂര അഡ്മിനിസ്ട്രേഷന്‍ നിഷേധിക്കുന്നതിനായി സര്‍വര്‍ "
 "ക്രമീകരിച്ചിട്ടുണ്ടാവാം."
 
-#: ../errordialogs.py:84
+#: ../errordialogs.py:69
 msgid "Bad request"
 msgstr "തെറ്റായ ആവശ്യം"
 
-#: ../errordialogs.py:86
+#: ../errordialogs.py:71
 msgid "Not found"
 msgstr "ലഭ്യമല്ല"
 
-#: ../errordialogs.py:88
+#: ../errordialogs.py:73
 msgid "Request timeout"
 msgstr "ആവശ്യപ്പെട്ടതിന്‍റെ സമയം കഴിഞ്ഞിരിക്കുന്നു"
 
-#: ../errordialogs.py:90
+#: ../errordialogs.py:75
 msgid "Upgrade required"
 msgstr "പുതുക്കല്‍ ആവശ്യമുണ്ട്"
 
-#: ../errordialogs.py:92
+#: ../errordialogs.py:77
 msgid "Server error"
 msgstr "സര്‍വര്‍ പിശക്"
 
-#: ../errordialogs.py:94 ../system-config-printer.py:886
+#: ../errordialogs.py:79 ../system-config-printer.py:904
 msgid "Not connected"
 msgstr "കണക്റ്റ് ചെയ്തിട്ടില്ല"
 
-#: ../errordialogs.py:96
+#: ../errordialogs.py:81
 #, fuzzy, python-format
 msgid "status %s"
 msgstr "നിലവാരം %d"
 
-#: ../errordialogs.py:98
+#: ../errordialogs.py:83
 #, python-format
 msgid "There was an HTTP error: %s."
 msgstr "ഒരു HTTP പിശക് ഉണ്ടായിരിക്കുന്നു: %s."
 
-#: ../jobviewer.py:187 ../troubleshoot/PrintTestPage.py:77
+#: ../jobviewer.py:156 ../troubleshoot/PrintTestPage.py:77
 msgid "Job"
 msgstr "ജോലി"
 
-#: ../jobviewer.py:188
+#: ../jobviewer.py:157
 #, fuzzy
 msgid "User"
 msgstr "യൂസറുകള്‍"
 
-#: ../jobviewer.py:189 ../troubleshoot/PrintTestPage.py:81
+#: ../jobviewer.py:158 ../troubleshoot/PrintTestPage.py:81
 msgid "Document"
 msgstr "ഡോക്യുമെന്‍റ്"
 
-#: ../jobviewer.py:190 ../jobviewer.py:242 ../my-default-printer.py:157
-#: ../system-config-printer.py:314 ../system-config-printer.py:979
-#: ../system-config-printer.py:3166 ../troubleshoot/PrintTestPage.py:79
+#: ../jobviewer.py:159 ../jobviewer.py:211 ../my-default-printer.py:152
+#: ../system-config-printer.py:332 ../system-config-printer.py:991
+#: ../system-config-printer.py:3265 ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "പ്രിന്‍റര്‍"
 
-#: ../jobviewer.py:191
+#: ../jobviewer.py:160
 msgid "Size"
 msgstr "വ്യാപ്തി"
 
-#: ../jobviewer.py:192
+#: ../jobviewer.py:161
 msgid "Time submitted"
 msgstr "നല്‍കിയിരിക്കുന്ന സമയം"
 
-#: ../jobviewer.py:193 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:162 ../troubleshoot/PrintTestPage.py:82
 msgid "Status"
 msgstr "നിലവാരം "
 
-#: ../jobviewer.py:225
+#: ../jobviewer.py:194
 #, python-format
 msgid "my jobs on %s"
 msgstr ""
 
-#: ../jobviewer.py:227
+#: ../jobviewer.py:196
 msgid "my jobs"
 msgstr ""
 
-#: ../jobviewer.py:232
+#: ../jobviewer.py:201
 msgid "all jobs"
 msgstr ""
 
-#: ../jobviewer.py:233
+#: ../jobviewer.py:202
 #, fuzzy, python-format
 msgid "Document Print Status (%s)"
 msgstr "ഫയലിന്‍റെ പ്റിന്‍റ് നിലവാരം"
 
-#: ../jobviewer.py:255
+#: ../jobviewer.py:224
 msgid "Message"
 msgstr "സന്ദേശം"
 
-#: ../jobviewer.py:387 ../jobviewer.py:453 ../jobviewer.py:454
-#: ../jobviewer.py:467 ../jobviewer.py:490 ../jobviewer.py:547
-#: ../system-config-printer.py:1982 ../troubleshoot/ChooseNetworkPrinter.py:95
+#: ../jobviewer.py:361 ../jobviewer.py:427 ../jobviewer.py:428
+#: ../jobviewer.py:441 ../jobviewer.py:471 ../jobviewer.py:573
+#: ../system-config-printer.py:2034 ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
@@ -205,137 +210,179 @@ msgstr "സന്ദേശം"
 msgid "Unknown"
 msgstr "അപരിചിതം"
 
-#: ../jobviewer.py:399
+#: ../jobviewer.py:373
 msgid "1 hour ago"
 msgstr "1 മണിക്കൂറ്‍ മുന്പ്"
 
-#: ../jobviewer.py:401
+#: ../jobviewer.py:375
 msgid "1 hour and 1 minute ago"
 msgstr "1 മണിക്കൂറും 1 മിനിറ്റിനും മുന്പ്"
 
-#: ../jobviewer.py:403
+#: ../jobviewer.py:377
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "1 മണിക്കൂറും %d മിനിറ്റുകള്‍ക്കും മുന്പ്"
 
-#: ../jobviewer.py:406
+#: ../jobviewer.py:380
 #, python-format
 msgid "%d hours ago"
 msgstr "%d മണിക്കൂറുകള്‍ക്ക് മുന്പ്"
 
-#: ../jobviewer.py:408
+#: ../jobviewer.py:382
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d മണിക്കൂറുകളും 1 മിനിറ്റിനും മുന്പ്"
 
-#: ../jobviewer.py:410
+#: ../jobviewer.py:384
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d മണിക്കൂറുകളും %d മിനിറ്റുകള്‍ക്കും മുന്പ്"
 
-#: ../jobviewer.py:416
+#: ../jobviewer.py:390
 msgid "a minute ago"
 msgstr "ഒരു മിനിറ്റ് മുന്പ്"
 
-#: ../jobviewer.py:418
+#: ../jobviewer.py:392
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d മിനിറ്റുകള്‍ക്ക് മുന്പ്"
 
-#: ../jobviewer.py:477 ../troubleshoot/PrintTestPage.py:39
+#: ../jobviewer.py:456
+#, fuzzy
+msgid "Held for authentication"
+msgstr "<b>ഓഥന്‍റിക്കേഷന്‍</b>"
+
+#: ../jobviewer.py:458 ../troubleshoot/PrintTestPage.py:39
 msgid "Pending"
 msgstr "ബാക്കിയുളള ജോലി"
 
-#: ../jobviewer.py:478 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:459 ../troubleshoot/PrintTestPage.py:40
 msgid "Held"
 msgstr "Held"
 
-#: ../jobviewer.py:479 ../system-config-printer.py:156
+#: ../jobviewer.py:460 ../system-config-printer.py:163
 #: ../troubleshoot/PrintTestPage.py:41
 msgid "Processing"
 msgstr "പ്രവര്‍ത്തനത്തില്‍"
 
-#: ../jobviewer.py:480 ../system-config-printer.py:158
+#: ../jobviewer.py:461 ../system-config-printer.py:165
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Stopped"
 msgstr "നിര്‍ത്തിയിരിക്കുന്നു"
 
-#: ../jobviewer.py:481 ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:462 ../troubleshoot/PrintTestPage.py:43
 msgid "Canceled"
 msgstr "റദ്ദാക്കിയിരിക്കുന്നു"
 
-#: ../jobviewer.py:482 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:463 ../troubleshoot/PrintTestPage.py:44
 msgid "Aborted"
 msgstr "നിറ്‍ത്തിയിരിക്കുന്നു"
 
-#: ../jobviewer.py:483 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:464 ../troubleshoot/PrintTestPage.py:45
 msgid "Completed"
 msgstr "പൂറ്‍ത്തിയാക്കിയിരിക്കുന്നു"
 
-#: ../jobviewer.py:545
+#: ../jobviewer.py:486
+#, fuzzy
+msgid "Authentication Required"
+msgstr "<b>ഓഥന്‍റിക്കേഷന്‍</b>"
+
+#: ../jobviewer.py:487
+#, fuzzy
+msgid "Job requires authentication to proceed."
+msgstr "<b>ഓഥന്‍റിക്കേഷന്‍</b>"
+
+#: ../jobviewer.py:496
+#, fuzzy
+msgid "Authenticate"
+msgstr "<b>ഓഥന്‍റിക്കേഷന്‍</b>"
+
+#: ../jobviewer.py:571
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr ""
 
-#: ../jobviewer.py:768
+#: ../jobviewer.py:670
+#, fuzzy
+msgid "Cancel Job"
+msgstr "റദ്ദാക്കിയിരിക്കുന്നു"
+
+#: ../jobviewer.py:684
+msgid "Do you really want to cancel this job?"
+msgstr ""
+
+#: ../jobviewer.py:712
+#, fuzzy
+msgid "canceling job"
+msgstr "ജോലികള്‍ അംഗീകരിക്കുക"
+
+#: ../jobviewer.py:736
+msgid "holding job"
+msgstr ""
+
+#: ../jobviewer.py:760
+msgid "releasing job"
+msgstr ""
+
+#: ../jobviewer.py:862
 msgid "No documents queued"
 msgstr "ഡോക്യുമെന്‍റ് ഒന്നും ക്യൂവിലില്ല"
 
-#: ../jobviewer.py:770
+#: ../jobviewer.py:864
 msgid "1 document queued"
 msgstr "1 ഡോക്യുമെന്‍റ് ക്യൂവിലുണ്ട്"
 
-#: ../jobviewer.py:772
+#: ../jobviewer.py:866
 #, python-format
 msgid "%d documents queued"
 msgstr "%d ഡോക്യുമെന്‍റ് ക്യൂവിലുണ്ട്"
 
-#: ../jobviewer.py:1006
+#: ../jobviewer.py:1105
 #, fuzzy, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "CUPS സറ്‍വറിലേക്ക് കണക്ട് ചെയ്യുന്പോള്‍ ഒരു പിശക് ഉണ്ടായിരിക്കുന്നു."
 
-#: ../jobviewer.py:1009
+#: ../jobviewer.py:1108
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr ""
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1015
+#: ../jobviewer.py:1114
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
 
-#: ../jobviewer.py:1021 ../jobviewer.py:1037
+#: ../jobviewer.py:1120 ../jobviewer.py:1136
 #, fuzzy
 msgid "Print Error"
 msgstr "പ്റിന്‍ററിന്‍റെ പിശക്"
 
-#: ../jobviewer.py:1022
+#: ../jobviewer.py:1121
 msgid "_Diagnose"
 msgstr ""
 
-#: ../jobviewer.py:1043
+#: ../jobviewer.py:1142
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr ""
 
-#: ../my-default-printer.py:141 ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:136 ../my-default-printer.desktop.in.h:1
 #, fuzzy
 msgid "Default Printer"
 msgstr "ഡീഫോള്‍ട്ട് പ്രിന്‍റര്‍ നിര്‍മ്മിക്കുക"
 
-#: ../my-default-printer.py:145 ../my-default-printer.py:181
+#: ../my-default-printer.py:140 ../my-default-printer.py:176
 #, fuzzy
 msgid "_Use System Default"
 msgstr "സിസ്റ്റം ഡീഫോള്‍ട്ടായി റീസെറ്റ് ചെയ്യുക"
 
-#: ../my-default-printer.py:146 ../my-default-printer.py:183
+#: ../my-default-printer.py:141 ../my-default-printer.py:178
 #, fuzzy
 msgid "_Set Default"
 msgstr "ഡീഫോള്‍ട്ട്"
 
-#: ../my-default-printer.py:162 ../system-config-printer.py:2872
+#: ../my-default-printer.py:157 ../system-config-printer.py:2972
 #: ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 #, fuzzy
@@ -350,149 +397,150 @@ msgstr "പൊരുത്തക്കേടുകള്‍ ഉളളത്:"
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr ""
 
-#: ../system-config-printer.py:155
+#: ../system-config-printer.py:162
 msgid "Idle"
 msgstr "പ്രവര്‍ത്തനത്തിലല്ല"
 
-#: ../system-config-printer.py:157
+#: ../system-config-printer.py:164
 msgid "Busy"
 msgstr "തിരക്കാണ്"
 
-#: ../system-config-printer.py:320 ../system-config-printer.py:985
+#: ../system-config-printer.py:338 ../system-config-printer.py:997
 #, fuzzy
 msgid "Class"
 msgstr "പുതിയ ക്ളാസ്സ്"
 
-#: ../system-config-printer.py:341
+#: ../system-config-printer.py:359
 #, fuzzy
 msgid "_Rename"
 msgstr "റിലീസ്(_R)"
 
-#: ../system-config-printer.py:347
+#: ../system-config-printer.py:365
 #, fuzzy
 msgid "Set As De_fault"
 msgstr "ഡീഫോള്‍ട്ട്"
 
-#: ../system-config-printer.py:351
+#: ../system-config-printer.py:369
 #, fuzzy
 msgid "_Create class"
 msgstr "റിമോട്ട് ക്ളാസ്സുകള്‍"
 
-#: ../system-config-printer.py:353
+#: ../system-config-printer.py:371
 #, fuzzy
 msgid "View Print _Queue"
 msgstr "പുതിയ പ്രിന്‍റര്‍"
 
-#: ../system-config-printer.py:357
+#: ../system-config-printer.py:375
 #, fuzzy
 msgid "E_nabled"
 msgstr "പ്രവര്‍ത്തന സജ്ജമാക്കുക"
 
-#: ../system-config-printer.py:359
+#: ../system-config-printer.py:377
 #, fuzzy
 msgid "_Shared"
 msgstr "ഷെയര്‍ ചെയ്യപ്പെട്ട"
 
 #. Set up "Problems?" link button
-#: ../system-config-printer.py:419
+#: ../system-config-printer.py:437
 #, fuzzy
 msgid "Problems?"
 msgstr "തിരയുക"
 
-#: ../system-config-printer.py:461 ../system-config-printer.py:463
+#: ../system-config-printer.py:479 ../system-config-printer.py:481
 msgid "Members of this class"
 msgstr "ഈ ക്ളാസ്സിലെ അംഗം "
 
-#: ../system-config-printer.py:462 ../system-config-printer.py:464
+#: ../system-config-printer.py:480 ../system-config-printer.py:482
 msgid "Others"
 msgstr "മറ്റുളളത്"
 
-#: ../system-config-printer.py:465
+#: ../system-config-printer.py:483
 msgid "Devices"
 msgstr "ഡിവൈസുകള്‍"
 
-#: ../system-config-printer.py:466
+#: ../system-config-printer.py:484
 msgid "Makes"
 msgstr "നിര്‍മ്മാണം"
 
-#: ../system-config-printer.py:467
+#: ../system-config-printer.py:485
 msgid "Models"
 msgstr "മോഡലുകള്‍"
 
-#: ../system-config-printer.py:468
+#: ../system-config-printer.py:486
 msgid "Drivers"
 msgstr "ഡ്രൈവറുകള്‍"
 
-#: ../system-config-printer.py:469 ../glade/NewPrinterWindow.glade.h:49
+#: ../system-config-printer.py:487 ../glade/NewPrinterWindow.glade.h:51
 msgid "Downloadable Drivers"
 msgstr ""
 
-#: ../system-config-printer.py:470
+#: ../system-config-printer.py:488
 msgid "Users"
 msgstr "യൂസറുകള്‍"
 
-#: ../system-config-printer.py:509
+#: ../system-config-printer.py:527
 msgid "Automatic rotation"
 msgstr ""
 
-#: ../system-config-printer.py:723
+#: ../system-config-printer.py:741
 #, fuzzy, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "പ്രിന്‍റര്‍ റിപോറ്‍ട്ട്"
 
-#: ../system-config-printer.py:881
+#: ../system-config-printer.py:899
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "പ്രിന്‍റര്‍ കോണ്‍ഫിഗറേഷന്‍ - %s"
 
-#: ../system-config-printer.py:884
+#: ../system-config-printer.py:902
 #, python-format
 msgid "Connected to %s"
 msgstr "%sലേക്ക് കണക്റ്റ് ചെയ്തിരിക്കുന്നു"
 
-#: ../system-config-printer.py:973
+#. Update our copy of the printer's settings.
+#: ../system-config-printer.py:941 ../system-config-printer.py:1661
+msgid "obtaining queue details"
+msgstr ""
+
+#: ../system-config-printer.py:985
 #, fuzzy
 msgid "Network printer (discovered)"
 msgstr "പുതിയ പ്രിന്‍റര്‍"
 
-#: ../system-config-printer.py:976
+#: ../system-config-printer.py:988
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:982 ../system-config-printer.py:3167
+#: ../system-config-printer.py:994 ../system-config-printer.py:3266
 msgid "Fax"
 msgstr ""
 
-#: ../system-config-printer.py:988 ../system-config-printer.py:994
+#: ../system-config-printer.py:1000 ../system-config-printer.py:1006
 #: ../troubleshoot/LocalOrRemote.py:30
 #, fuzzy
 msgid "Network printer"
 msgstr "പുതിയ പ്രിന്‍റര്‍"
 
-#: ../system-config-printer.py:991
+#: ../system-config-printer.py:1003
 #, fuzzy
 msgid "Network print share"
 msgstr "പുതിയ പ്രിന്‍റര്‍"
 
-#: ../system-config-printer.py:1114
-#, python-format
-msgid ""
-"Connecting to server:\n"
-"%s"
+#: ../system-config-printer.py:1127 ../glade/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
+msgid "<i>Opening connection to %s</i>"
 msgstr ""
-"സര്‍വറിലേക്ക് കണക്റ്റ് ചെയ്യപ്പെടുന്നു:\n"
-" %s"
 
-#: ../system-config-printer.py:1479
+#: ../system-config-printer.py:1504
 msgid "Installable Options"
 msgstr "ഇന്‍സ്റ്റോള്‍ ചെയ്യാന്‍ പറ്റുന്ന ഉപാധികള്‍"
 
-#: ../system-config-printer.py:1480
+#: ../system-config-printer.py:1505
 #: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Printer Options"
 msgstr "പ്രിന്‍റര്‍ ഉപാധികള്‍"
 
-#: ../system-config-printer.py:1503
+#: ../system-config-printer.py:1528
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -502,52 +550,74 @@ msgstr ""
 "ഇവ പരിഹരിച്ചതിന് ശേഷമേ\n"
 "മാറ്റങ്ങള്‍ വരുത്താന്‍ പറ്റൂ. "
 
-#: ../system-config-printer.py:1530
+#: ../system-config-printer.py:1545
+#, python-format
+msgid "modifying class %s"
+msgstr ""
+
+#: ../system-config-printer.py:1547 ../system-config-printer.py:2473
+#: ../system-config-printer.py:2499 ../system-config-printer.py:5173
+#: ../system-config-printer.py:5184 ../system-config-printer.py:5202
+#, fuzzy, python-format
+msgid "modifying printer %s"
+msgstr "പ്രിന്‍ററുകള്‍ സജ്ജമാക്കുക"
+
+#: ../system-config-printer.py:1562
 msgid "This will delete this class!"
 msgstr "ഈ ക്ളാസ്സിനെ ഇത് നീക്കം ചെയ്യും!"
 
-#: ../system-config-printer.py:1531
+#: ../system-config-printer.py:1563
 msgid "Proceed anyway?"
 msgstr "എന്തായാലും മുന്നോട്ട് പോകണമോ?"
 
-#: ../system-config-printer.py:1672
+#. We can authenticate with the server correctly at this point,
+#. but we have never fetched the server settings to see whether
+#. the server is publishing shared printers.  Fetch the settings
+#. now so that we can update the "not published" label if necessary.
+#: ../system-config-printer.py:1649 ../system-config-printer.py:2608
+#, fuzzy
+msgid "fetching server settings"
+msgstr "<b>ബേസിക്ക് സര്‍വര്‍ സെറ്റിങുകള്‍</b>"
+
+#: ../system-config-printer.py:1712
 #, fuzzy
 msgid "Set Default Printer"
 msgstr "ഡീഫോള്‍ട്ട് പ്രിന്‍റര്‍ നിര്‍മ്മിക്കുക"
 
-#: ../system-config-printer.py:1674
+#: ../system-config-printer.py:1714
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr ""
 
-#: ../system-config-printer.py:1676
+#: ../system-config-printer.py:1716
 #, fuzzy
 msgid "Set as the _system-wide default printer"
 msgstr "ഇതാണ് ഡീഫോള്‍ട്ട് പ്രിന്‍റര്‍"
 
-#: ../system-config-printer.py:1678
+#: ../system-config-printer.py:1718
 msgid "_Clear my personal default setting"
 msgstr ""
 
-#: ../system-config-printer.py:1679
+#: ../system-config-printer.py:1719
 #, fuzzy
 msgid "Set as my _personal default printer"
 msgstr "ഡീഫോള്‍ട്ട് പ്രിന്‍റര്‍ നിര്‍മ്മിക്കുക"
 
-#: ../system-config-printer.py:1730 ../system-config-printer.py:1756
-msgid "Submitted"
-msgstr "ഏല്പിച്ചു കഴിഞ്ഞിരിക്കുന്നു"
+#: ../system-config-printer.py:1723
+#, fuzzy
+msgid "setting default printer"
+msgstr "ഡീഫോള്‍ട്ട് പ്രിന്‍റര്‍ നിര്‍മ്മിക്കുക"
 
-#: ../system-config-printer.py:1731
-#, python-format
-msgid "Test page submitted as job %d"
-msgstr "%d എന്ന ജോലിയായി ടെസ്റ്റ് പേജ് ഏല്പിച്ചിരിക്കുന്നു"
+#: ../system-config-printer.py:1767
+#, fuzzy
+msgid "printing test page"
+msgstr "പ്രിന്‍ററ് ചെയ്ത് പരീക്ഷിക്കുവാനുളള പേജ്"
 
-#: ../system-config-printer.py:1737 ../system-config-printer.py:1763
-#: ../system-config-printer.py:4275
+#: ../system-config-printer.py:1780 ../system-config-printer.py:1813
+#: ../system-config-printer.py:4374
 msgid "Not possible"
 msgstr "സാധ്യമല്ല"
 
-#: ../system-config-printer.py:1738 ../system-config-printer.py:1764
+#: ../system-config-printer.py:1781 ../system-config-printer.py:1814
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -555,7 +625,20 @@ msgstr ""
 "റിമോട്ട് സര്‍വര്‍ പ്രിന്‍റ് ജോലി അംഗീകരിച്ചിട്ടില്ല, മിക്കവാറും പ്രിന്‍റര്‍ ഷെയര്‍ "
 "ചെയ്തിട്ടില്ലാത്തതാവും ഇതിന് കാരണം."
 
-#: ../system-config-printer.py:1757
+#: ../system-config-printer.py:1791 ../system-config-printer.py:1806
+msgid "Submitted"
+msgstr "ഏല്പിച്ചു കഴിഞ്ഞിരിക്കുന്നു"
+
+#: ../system-config-printer.py:1792
+#, python-format
+msgid "Test page submitted as job %d"
+msgstr "%d എന്ന ജോലിയായി ടെസ്റ്റ് പേജ് ഏല്പിച്ചിരിക്കുന്നു"
+
+#: ../system-config-printer.py:1799
+msgid "sending maintenance command"
+msgstr ""
+
+#: ../system-config-printer.py:1807
 #, fuzzy, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "%d എന്ന ജോലിയായി ടെസ്റ്റ് പേജ് ഏല്പിച്ചിരിക്കുന്നു"
@@ -563,52 +646,74 @@ msgstr "%d എന്ന ജോലിയായി ടെസ്റ്റ് പേ
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1814 ../system-config-printer.py:1921
+#: ../system-config-printer.py:1866 ../system-config-printer.py:1973
 msgid "Error"
 msgstr "പിശക്"
 
-#: ../system-config-printer.py:1815
+#: ../system-config-printer.py:1867
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS സറ്‍വറിലേക്ക് കണക്ട് ചെയ്യുന്പോള്‍ ഒരു പിശക് ഉണ്ടായിരിക്കുന്നു."
 
-#: ../system-config-printer.py:1922
+#: ../system-config-printer.py:1974
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
-#: ../system-config-printer.py:2188
+#: ../system-config-printer.py:2240
 #, fuzzy
 msgid "Cannot Rename"
 msgstr "റിലീസ്(_R)"
 
-#: ../system-config-printer.py:2189
+#: ../system-config-printer.py:2241
 msgid "There are queued jobs."
 msgstr ""
 
-#: ../system-config-printer.py:2366
+#: ../system-config-printer.py:2299
+#, fuzzy
+msgid "renaming printer"
+msgstr "പ്രിന്‍ററുകള്‍ സജ്ജമാക്കുക"
+
+#. for classes make sure all members
+#. will get added
+#: ../system-config-printer.py:2380
+#, fuzzy
+msgid "copying printer"
+msgstr "പ്രിന്‍ററുകള്‍ സജ്ജമാക്കുക"
+
+#: ../system-config-printer.py:2432
 #, fuzzy, python-format
 msgid "Really delete class `%s'?"
 msgstr "ക്ളാസ്സ് ഉറപ്പായും നീക്കം ചെയ്യണമോ %s?"
 
-#: ../system-config-printer.py:2368
+#: ../system-config-printer.py:2434
 #, fuzzy, python-format
 msgid "Really delete printer `%s'?"
 msgstr "ഉറപ്പായും നീക്കം ചെയ്യണമോ %s?"
 
-#: ../system-config-printer.py:2370
+#: ../system-config-printer.py:2436
 #, fuzzy
 msgid "Really delete selected destinations?"
 msgstr "ഉറപ്പായും നീക്കം ചെയ്യണമോ %s?"
 
-#: ../system-config-printer.py:2438
+#: ../system-config-printer.py:2451
+#, fuzzy, python-format
+msgid "deleting printer %s"
+msgstr "പ്രിന്‍ററുകള്‍ സജ്ജമാക്കുക"
+
+#: ../system-config-printer.py:2524
 msgid "Publish Shared Printers"
 msgstr ""
 
-#: ../system-config-printer.py:2439
+#: ../system-config-printer.py:2525
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
 msgstr ""
+
+#: ../system-config-printer.py:2669
+#, fuzzy
+msgid "modifying server settings"
+msgstr "<b>ബേസിക്ക് സര്‍വര്‍ സെറ്റിങുകള്‍</b>"
 
 #. We have just enabled print queue sharing.
 #. Ideally, this is the time we would check the firewall
@@ -616,159 +721,159 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2600
+#: ../system-config-printer.py:2694
 msgid "Review Firewall"
 msgstr ""
 
-#: ../system-config-printer.py:2601
+#: ../system-config-printer.py:2695
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
-#: ../system-config-printer.py:2835
+#: ../system-config-printer.py:2935
 msgid "Browsing not available (pysmbc not installed)"
 msgstr ""
 
 #. SMB list columns
-#: ../system-config-printer.py:2841
+#: ../system-config-printer.py:2941
 msgid "Share"
 msgstr "ഷെയര്‍"
 
-#: ../system-config-printer.py:2847
+#: ../system-config-printer.py:2947
 msgid "Comment"
 msgstr "കമന്‍റ്"
 
 #. IPP list columns
-#: ../system-config-printer.py:2866
+#: ../system-config-printer.py:2966
 msgid "Queue"
 msgstr ""
 
-#: ../system-config-printer.py:2880
+#: ../system-config-printer.py:2980
 #, fuzzy
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr "പോസ്റ്റ്സ്ക്രിപ്റ്റ് പ്രിന്‍റര്‍ വിവരണം (*.ppd[.gz])"
 
-#: ../system-config-printer.py:2889
+#: ../system-config-printer.py:2989
 msgid "All files (*)"
 msgstr ""
 
-#: ../system-config-printer.py:2925 ../system-config-printer.py:4549
-#: ../system-config-printer.py:4587
+#: ../system-config-printer.py:3025 ../system-config-printer.py:4656
+#: ../system-config-printer.py:4694
 #, fuzzy
 msgid "Search"
 msgstr "പ്രിന്‍ററിന് പുതിയ പേര്"
 
-#: ../system-config-printer.py:2939 ../glade/NewPrinterWindow.glade.h:63
+#: ../system-config-printer.py:3039 ../glade/NewPrinterWindow.glade.h:65
 msgid "New Printer"
 msgstr "പുതിയ പ്രിന്‍റര്‍"
 
-#: ../system-config-printer.py:2950
+#: ../system-config-printer.py:3050
 msgid "New Class"
 msgstr "പുതിയ ക്ളാസ്സ്"
 
-#: ../system-config-printer.py:2955
+#: ../system-config-printer.py:3055
 msgid "Change Device URI"
 msgstr "Device URI ഡിവൈസ് മാറ്റുക"
 
-#: ../system-config-printer.py:2972
+#: ../system-config-printer.py:3072
 msgid "Change Driver"
 msgstr "ഡ്രൈവര്‍ മാറ്റുക"
 
-#: ../system-config-printer.py:3065 ../system-config-printer.py:3361
-#: ../system-config-printer.py:3547 ../system-config-printer.py:4574
+#: ../system-config-printer.py:3164 ../system-config-printer.py:3458
+#: ../system-config-printer.py:3643 ../system-config-printer.py:4681
 msgid "Searching"
 msgstr ""
 
-#: ../system-config-printer.py:3066 ../system-config-printer.py:3362
+#: ../system-config-printer.py:3165 ../system-config-printer.py:3459
 msgid "Searching for drivers"
 msgstr ""
 
-#: ../system-config-printer.py:3168
+#: ../system-config-printer.py:3267
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr ""
 
-#: ../system-config-printer.py:3548
+#: ../system-config-printer.py:3644
 #, fuzzy
 msgid "Searching for printers"
 msgstr "പ്രിന്‍ററിന് പുതിയ പേര്"
 
-#: ../system-config-printer.py:3821
+#: ../system-config-printer.py:3917
 msgid "Other"
 msgstr "മറ്റുളളത്"
 
-#: ../system-config-printer.py:3823
+#: ../system-config-printer.py:3919
 msgid " (Current)"
 msgstr " (ഇപ്പോള്‍ നിലവിലുളളത്)"
 
-#: ../system-config-printer.py:3849 ../system-config-printer.py:4238
+#: ../system-config-printer.py:3945 ../system-config-printer.py:4336
 msgid "Scanning..."
 msgstr ""
 
-#: ../system-config-printer.py:3904
+#: ../system-config-printer.py:4000
 #, fuzzy
 msgid "No Print Shares"
 msgstr "പുതിയ പ്രിന്‍റര്‍"
 
-#: ../system-config-printer.py:3905
+#: ../system-config-printer.py:4001
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
 
-#: ../system-config-printer.py:4157 ../system-config-printer.py:4220
+#: ../system-config-printer.py:4258 ../system-config-printer.py:4318
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:4158 ../system-config-printer.py:4221
+#: ../system-config-printer.py:4259 ../system-config-printer.py:4319
 msgid "This print share is accessible."
 msgstr "ഈ പ്രിന്‍റ് ഷെയര്‍ കൈകാര്യം ചെയ്യാവുന്നതാണ്."
 
-#: ../system-config-printer.py:4162 ../system-config-printer.py:4225
+#: ../system-config-printer.py:4263 ../system-config-printer.py:4323
 msgid "This print share is not accessible."
 msgstr "ഈ പ്രിന്‍റ് ഷെയര്‍ കൈകാര്യം ചെയ്യാവുന്നതല്ല."
 
-#: ../system-config-printer.py:4165
+#: ../system-config-printer.py:4266
 #, fuzzy
 msgid "Print Share Inaccessible"
 msgstr "ഈ പ്രിന്‍റ് ഷെയര്‍ കൈകാര്യം ചെയ്യാവുന്നതാണ്."
 
-#: ../system-config-printer.py:4224
+#: ../system-config-printer.py:4322
 msgid "Inaccessible"
 msgstr "കൈകാര്യം ചെയ്യുവാന്‍ സാധ്യമല്ല"
 
-#: ../system-config-printer.py:4276
+#: ../system-config-printer.py:4375
 #, fuzzy, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "CUPS സറ്‍വറിലേക്ക് കണക്ട് ചെയ്യുന്പോള്‍ ഒരു പിശക് ഉണ്ടായിരിക്കുന്നു."
 
-#: ../system-config-printer.py:4278
+#: ../system-config-printer.py:4377
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
 msgstr ""
 
-#: ../system-config-printer.py:4281
+#: ../system-config-printer.py:4380
 msgid "No queues"
 msgstr ""
 
-#: ../system-config-printer.py:4282
+#: ../system-config-printer.py:4381
 msgid "There are no queues available."
 msgstr ""
 
-#: ../system-config-printer.py:4339
+#: ../system-config-printer.py:4438
 msgid "A printer connected to the parallel port."
 msgstr "പാരലല്‍ പോര്‍ട്ടിലേക്ക് ഒരു പ്രിന്‍റര്‍ കണക്ട് ചെയ്തിരിക്കുന്നു."
 
-#: ../system-config-printer.py:4341
+#: ../system-config-printer.py:4440
 msgid "A printer connected to a USB port."
 msgstr "USB പോര്‍ട്ടിലേക്ക് ഒരു പ്രിന്‍റര്‍ കണക്ട് ചെയ്തിരിക്കുന്നു."
 
-#: ../system-config-printer.py:4343
+#: ../system-config-printer.py:4442
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -776,7 +881,7 @@ msgstr ""
 "HPLIP സോഫ്റ്റ് വെയര്‍ ഒരു പ്രിന്‍റര്‍, അല്ലെങ്കില്‍ അനവധി പ്രവര്‍ത്തനങ്ങള്‍- ക്കുളള ഡിവൈസിന്‍റെ പ്രിന്‍റ് "
 "പ്രക്രിയ പ്രവര്‍ത്തിപ്പിക്കുന്നു."
 
-#: ../system-config-printer.py:4346
+#: ../system-config-printer.py:4445
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -784,51 +889,51 @@ msgstr ""
 "HPLIP സോഫ്റ്റ് വെയര്‍ ഒരു ഫാക്സ് മഷീന്‍, അല്ലെങ്കില്‍ അനവധി പ്രവര്‍ത്തനങ്ങള്‍- ക്കുളള ഡിവൈസിന്‍റെ "
 "ഫാക്സ് പ്രക്രിയ പ്രവര്‍ത്തിപ്പിക്കുന്നു."
 
-#: ../system-config-printer.py:4349
+#: ../system-config-printer.py:4448
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "ഹാര്‍ഡ് വെയര്‍ അബ്സ്ട്രാക്ഷന്‍ ലെയര്‍ (HAL) ലോക്കല്‍ പ്രിന്‍റര്‍ തിരിച്ചറിഞ്ഞിരിക്കുന്നു."
 
-#: ../system-config-printer.py:4599
+#: ../system-config-printer.py:4706
 #, fuzzy
 msgid "-- Select from search results --"
 msgstr "ഡേറ്റാബേയ്സില്‍ നിന്നും പ്രിന്‍റര്‍ തിരഞ്ഞെടുക്കുക"
 
-#: ../system-config-printer.py:4601
+#: ../system-config-printer.py:4708
 msgid "-- No matches found --"
 msgstr ""
 
-#: ../system-config-printer.py:4784
+#: ../system-config-printer.py:4889
 msgid " (recommended)"
 msgstr " (recommended)"
 
-#: ../system-config-printer.py:4798
+#: ../system-config-printer.py:4903
 msgid "This PPD is generated by foomatic."
 msgstr "PPD ഉത്പാദിപ്പിച്ചത് foomatic ആണ്."
 
-#: ../system-config-printer.py:4824
+#: ../system-config-printer.py:4929
 #, fuzzy
 msgid "OpenPrinting"
 msgstr "പ്രിന്‍റ് ചെയ്യുന്നു"
 
-#: ../system-config-printer.py:4826
+#: ../system-config-printer.py:4931
 msgid "Distributable"
 msgstr ""
 
-#: ../system-config-printer.py:4828
+#: ../system-config-printer.py:4933
 #, fuzzy
 msgid "None"
 msgstr "ഒന്നുമില്ല"
 
-#: ../system-config-printer.py:4836
+#: ../system-config-printer.py:4941
 msgid "Not specified."
 msgstr ""
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:4876
+#: ../system-config-printer.py:4981
 msgid "Database error"
 msgstr "ഡേറ്റാബേയ്സില്‍ പിഴവ്"
 
-#: ../system-config-printer.py:4877
+#: ../system-config-printer.py:4982
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' ഡ്രൈവര്‍ '%s %s' പ്രിന്‍ററിനൊപ്പം ഉപയോഗിക്കുവാന്‍ സാധ്യമല്ല."
@@ -836,61 +941,66 @@ msgstr "'%s' ഡ്രൈവര്‍ '%s %s' പ്രിന്‍ററിന�
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:4887
+#: ../system-config-printer.py:4992
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "ഈ ഡ്രൈവര്‍ ഉപയോഗിക്കുന്നതിനായി നിങ്ങള്‍ക്ക് '%s' പാക്കേജ് ഇന്‍സ്റ്റോള്‍ ചെയ്യേണ്ടതുണ്ട്."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:4894
+#: ../system-config-printer.py:4999
 msgid "PPD error"
 msgstr "PPD പിഴവ്"
 
-#: ../system-config-printer.py:4896
+#: ../system-config-printer.py:5001
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD ഫയല്‍ വായിക്കുവാന്‍ സാധ്യമായില്ല.  കാരണങ്ങള്‍ ഇവയാകാം:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:4913
+#: ../system-config-printer.py:5018
 msgid "Downloadable drivers"
 msgstr ""
 
-#: ../system-config-printer.py:4914
+#: ../system-config-printer.py:5019
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:4950 ../system-config-printer.py:4988
+#: ../system-config-printer.py:5052 ../system-config-printer.py:5090
 #, fuzzy
 msgid "No Installable Options"
 msgstr "ഇന്‍സ്റ്റോള്‍ ചെയ്യാന്‍ പറ്റുന്ന ഉപാധികള്‍"
 
-#: ../system-config-printer.py:5034
+#: ../system-config-printer.py:5136
 #, fuzzy
 msgid "Adding"
 msgstr "ബാക്കിയുളള ജോലി"
 
-#: ../system-config-printer.py:5035
+#: ../system-config-printer.py:5137
 #, fuzzy
 msgid "Adding printer"
 msgstr "പ്രിന്‍ററുകള്‍ സജ്ജമാക്കുക"
 
-#: ../system-config-printer.py:5196
+#: ../system-config-printer.py:5142
+#, fuzzy, python-format
+msgid "adding printer %s"
+msgstr "പ്രിന്‍ററുകള്‍ സജ്ജമാക്കുക"
+
+#: ../system-config-printer.py:5316
 #, fuzzy
 msgid "Install driver"
 msgstr "ഡ്രൈവര്‍ ലഭ്യമാക്കുക"
 
-#: ../system-config-printer.py:5197
+#: ../system-config-printer.py:5317
 #, fuzzy, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "പ്രിന്‍റര്‍ '%s'-ന് ആവശ്യമുളള %s പാക്കേജ് നില്‍വില്‍ ഇന്‍സ്റ്റോള്‍ ചെയ്തിട്ടില്ല.  ദയവായി ഇത് പ്രിന്‍റര്‍ "
 "ഉപയോഗിക്കുന്നതിന് മുന്പായി ഇന്‍സ്റ്റോള്‍ ചെയ്യുക."
 
-#: ../system-config-printer.py:5222
+#: ../system-config-printer.py:5342
 msgid "Missing driver"
 msgstr "ഡ്രൈവര്‍ ലഭ്യമല്ല"
 
-#: ../system-config-printer.py:5223
+#: ../system-config-printer.py:5343
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -937,7 +1047,8 @@ msgid "translator-credits"
 msgstr ""
 
 #: ../glade/ConnectDialog.glade.h:1
-msgid "CUPS server:"
+#, fuzzy
+msgid "CUPS _server:"
 msgstr "CUPS സര്‍വര്‍:"
 
 #: ../glade/ConnectDialog.glade.h:2
@@ -945,21 +1056,21 @@ msgid "Connect to CUPS server"
 msgstr "CUPS സര്‍വറിലേക്ക് കണക്റ്റ് ചെയ്യുക"
 
 #: ../glade/ConnectDialog.glade.h:3
-msgid "Require encryption"
+#, fuzzy
+msgid "Require _encryption"
 msgstr "എന്‍ക്രിപ്ഷന്‍ ആവശ്യമുണ്ട്"
 
-#: ../glade/ConnectingDialog.glade.h:1
-msgid "Connecting"
-msgstr "കണക്ട് ചെയ്യപ്പെടുന്നു"
-
 #: ../glade/ConnectingDialog.glade.h:3
-#, no-c-format
-msgid ""
-"Connecting to Server:\n"
-"%s\n"
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
 msgstr ""
-"സര്‍വറിലേക്ക് കണക്റ്റ് ചെയ്യപ്പെടുന്നു:\n"
-"%s\n"
+"<span weight=\"bold\" size=\"larger\">പാസ്വേര്‍ഡ് ആവശ്യമുണ്ട്</span>\n"
+"\n"
+
+#: ../glade/ConnectingDialog.glade.h:4
+#, fuzzy
+msgid "Connecting to CUPS server"
+msgstr "CUPS സര്‍വറിലേക്ക് കണക്റ്റ് ചെയ്യുക"
 
 #: ../glade/InstallDialog.glade.h:1
 msgid "_Install"
@@ -1025,94 +1136,118 @@ msgstr "<b>വിവരണം</b> (നിര്‍ബന്ധമില്ല)"
 
 #: ../glade/NewPrinterWindow.glade.h:4
 #, fuzzy
-msgid "<b>Download Printer Driver</b>"
-msgstr "<b>ഡ്രൈവറിനെപറ്റിയുളള കമന്‍റ്</b>"
-
-#: ../glade/NewPrinterWindow.glade.h:5
-#, fuzzy
 msgid "<b>Enter device URI</b>"
 msgstr "URI ഡിവൈസ് എന്‍ര്‍ ചെയ്യുക"
 
-#: ../glade/NewPrinterWindow.glade.h:6
+#: ../glade/NewPrinterWindow.glade.h:5
 #, fuzzy
 msgid "<b>IPP Printer</b>"
 msgstr "<b>പ്രിന്‍റര്‍ നെയിം</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:7
-#, fuzzy
-msgid "<b>Installed Options</b>"
-msgstr "<b>ഇമേജ് ഉപാധികള്‍</b>"
-
-#: ../glade/NewPrinterWindow.glade.h:8
+#: ../glade/NewPrinterWindow.glade.h:6
 #, fuzzy
 msgid "<b>License Terms</b>"
 msgstr "<b>പ്രിന്‍റര്‍ നെയിം</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:9
+#: ../glade/NewPrinterWindow.glade.h:7
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>LPD നെറ്റ്വര്‍ക്ക് പ്രിന്‍ററിന്‍റെ ലൊക്കേഷന്‍</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:10
+#: ../glade/NewPrinterWindow.glade.h:8
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>നെറ്റ്വര്‍ക്ക് പ്രിന്‍ററിന്‍റെ ലൊക്കേഷന്‍</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:11
+#: ../glade/NewPrinterWindow.glade.h:9
 msgid "<b>Location</b> (optional)"
 msgstr "<b>ലൊക്കേഷന്‍</b> (നിര്‍ബന്ധമില്ല)"
 
-#: ../glade/NewPrinterWindow.glade.h:12
+#: ../glade/NewPrinterWindow.glade.h:10
 #, fuzzy
 msgid "<b>Note</b>"
 msgstr "<b>അവ്സ്ഥ</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:13
+#: ../glade/NewPrinterWindow.glade.h:11
 msgid "<b>Printer Name</b>"
 msgstr "<b>പ്രിന്‍റര്‍ നെയിം</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:14
-msgid "<b>Printers to be members of this Class</b>"
-msgstr "<b>ഈ ക്ളാസ്സിലെ അംഗങ്ങള്‍ ആകുവാനുളള പ്രിന്‍ററുകള്‍</b>"
-
-#: ../glade/NewPrinterWindow.glade.h:15
+#: ../glade/NewPrinterWindow.glade.h:12
 #, fuzzy
 msgid "<b>SMB Printer</b>"
 msgstr "<b>പ്രിന്‍റര്‍ നെയിം</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:16
-msgid "<b>Select Connection</b>"
-msgstr "<b>കണക്ഷന്‍ തിരഞ്ഞെടുക്കുക</b>"
-
-#: ../glade/NewPrinterWindow.glade.h:17
+#: ../glade/NewPrinterWindow.glade.h:13
 #, fuzzy
 msgid "<b>Select Driver</b>"
 msgstr "<b>ഡീഫോള്‍ട്ട് പ്രിന്‍റര്‍</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:18
+#: ../glade/NewPrinterWindow.glade.h:14
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>സീരിയല്‍ പോര്‍ട്ടിന്‍റെ സെറ്റിങുകള്‍</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:19
+#: ../glade/NewPrinterWindow.glade.h:15
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
 
+#: ../glade/NewPrinterWindow.glade.h:16
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">പാസ്വേര്‍ഡ് ആവശ്യമുണ്ട്</span>\n"
+"\n"
+
+#: ../glade/NewPrinterWindow.glade.h:17
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">പാസ്വേര്‍ഡ് ആവശ്യമുണ്ട്</span>\n"
+"\n"
+
+#: ../glade/NewPrinterWindow.glade.h:18
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">പാസ്വേര്‍ഡ് ആവശ്യമുണ്ട്</span>\n"
+"\n"
+
+#: ../glade/NewPrinterWindow.glade.h:19
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">പാസ്വേര്‍ഡ് ആവശ്യമുണ്ട്</span>\n"
+"\n"
+
 #: ../glade/NewPrinterWindow.glade.h:20
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">പാസ്വേര്‍ഡ് ആവശ്യമുണ്ട്</span>\n"
+"\n"
+
+#: ../glade/NewPrinterWindow.glade.h:21
+#, fuzzy
+msgid "<span weight=\"bold\" size=\"larger\">Select Connection</span>"
+msgstr ""
+"<span weight=\"bold\" size=\"larger\">പാസ്വേര്‍ഡ് ആവശ്യമുണ്ട്</span>\n"
+"\n"
+
+#: ../glade/NewPrinterWindow.glade.h:22
 msgid "Baud Rate"
 msgstr "Baud Rate"
 
-#: ../glade/NewPrinterWindow.glade.h:21
+#: ../glade/NewPrinterWindow.glade.h:23
 msgid "Browse..."
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:22
+#: ../glade/NewPrinterWindow.glade.h:24
 #, fuzzy
 msgid "Comments..."
 msgstr "കമന്‍റ്"
 
-#: ../glade/NewPrinterWindow.glade.h:23
+#: ../glade/NewPrinterWindow.glade.h:25
 msgid "Data Bits"
 msgstr "ഡാറ്റാ ബിറ്റുകള്‍"
 
-#: ../glade/NewPrinterWindow.glade.h:24
+#: ../glade/NewPrinterWindow.glade.h:26
 msgid ""
 "Default\n"
 "1200\n"
@@ -1134,7 +1269,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../glade/NewPrinterWindow.glade.h:33
+#: ../glade/NewPrinterWindow.glade.h:35
 msgid ""
 "Default\n"
 "8\n"
@@ -1144,7 +1279,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../glade/NewPrinterWindow.glade.h:36
+#: ../glade/NewPrinterWindow.glade.h:38
 msgid ""
 "Default\n"
 "None\n"
@@ -1156,7 +1291,7 @@ msgstr ""
 "ഓഡ്\n"
 "ഈവന്‍"
 
-#: ../glade/NewPrinterWindow.glade.h:40
+#: ../glade/NewPrinterWindow.glade.h:42
 msgid ""
 "Default\n"
 "None\n"
@@ -1170,94 +1305,94 @@ msgstr ""
 "RTS/CTS (ഹാര്‍ഡ്വയര്‍)\n"
 "DTR/DSR (ഹാര്‍ഡ്വയര്‍)"
 
-#: ../glade/NewPrinterWindow.glade.h:45
+#: ../glade/NewPrinterWindow.glade.h:47
 #: ../glade/PrinterPropertiesDialog.glade.h:33
 msgid "Description:"
 msgstr "വിവരണം:"
 
-#: ../glade/NewPrinterWindow.glade.h:46 ../troubleshoot/DeviceListed.py:39
+#: ../glade/NewPrinterWindow.glade.h:48 ../troubleshoot/DeviceListed.py:39
 msgid "Device URI"
 msgstr "URI ഡിവൈസ് "
 
-#: ../glade/NewPrinterWindow.glade.h:47
+#: ../glade/NewPrinterWindow.glade.h:49
 msgid "Device description."
 msgstr "ഡിവൈസിന്‍റെ വിവരണം:"
 
-#: ../glade/NewPrinterWindow.glade.h:48
+#: ../glade/NewPrinterWindow.glade.h:50
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../glade/NewPrinterWindow.glade.h:50
+#: ../glade/NewPrinterWindow.glade.h:52
 #, fuzzy
 msgid "Driver details"
 msgstr "ഡ്രൈവറുകള്‍"
 
-#: ../glade/NewPrinterWindow.glade.h:51
+#: ../glade/NewPrinterWindow.glade.h:53
 msgid "Empty"
 msgstr "കാലി"
 
-#: ../glade/NewPrinterWindow.glade.h:52
+#: ../glade/NewPrinterWindow.glade.h:54
 msgid "Find _Queue..."
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:53
+#: ../glade/NewPrinterWindow.glade.h:55
 msgid "Flow Control"
 msgstr "ഫ്ളൊ കണ്ട്രോള്‍"
 
-#: ../glade/NewPrinterWindow.glade.h:54
+#: ../glade/NewPrinterWindow.glade.h:56
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:55
+#: ../glade/NewPrinterWindow.glade.h:57
 #, fuzzy
 msgid "Host:"
 msgstr "ഹോസ്റ്റ്നെയിം"
 
-#: ../glade/NewPrinterWindow.glade.h:56
+#: ../glade/NewPrinterWindow.glade.h:58
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "\"HP LaserJet with Duplexer\" പോലെയുളള വായിക്കുവാന്‍ സാധ്യമായ വിവരണങ്ങള്‍"
 
-#: ../glade/NewPrinterWindow.glade.h:57
+#: ../glade/NewPrinterWindow.glade.h:59
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "\"Lab 1\" പോലെയുളള വായിക്കുവാന്‍ സാധ്യമായ ലൊക്കേഷന്‍"
 
-#: ../glade/NewPrinterWindow.glade.h:58
+#: ../glade/NewPrinterWindow.glade.h:60
 msgid "IPP"
 msgstr "IPP"
 
-#: ../glade/NewPrinterWindow.glade.h:59
+#: ../glade/NewPrinterWindow.glade.h:61
 msgid "LPD"
 msgstr "LPD"
 
-#: ../glade/NewPrinterWindow.glade.h:60
+#: ../glade/NewPrinterWindow.glade.h:62
 msgid "License:"
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:61
+#: ../glade/NewPrinterWindow.glade.h:63
 #, fuzzy
 msgid "Local Driver"
 msgstr "ലോക്കല്‍ പ്രിന്‍ററുകള്‍"
 
-#: ../glade/NewPrinterWindow.glade.h:62
+#: ../glade/NewPrinterWindow.glade.h:64
 #, fuzzy
 msgid "Make and model:"
 msgstr "മെയ്ക്കും മോഡലും:"
 
-#: ../glade/NewPrinterWindow.glade.h:64
+#: ../glade/NewPrinterWindow.glade.h:66
 msgid "No, I do not accept this license"
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:65
+#: ../glade/NewPrinterWindow.glade.h:67
 msgid "Parity"
 msgstr "പാരിറ്റി"
 
-#: ../glade/NewPrinterWindow.glade.h:67
+#: ../glade/NewPrinterWindow.glade.h:69
 #, fuzzy
 msgid "Port number:"
 msgstr "പോര്‍ട്ട് നംബര്‍"
 
-#: ../glade/NewPrinterWindow.glade.h:68
+#: ../glade/NewPrinterWindow.glade.h:70
 #, fuzzy
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
@@ -1268,68 +1403,68 @@ msgstr ""
 "disk that comes with the printer. For PostScript printers they are often "
 "part of the Windows<sup>®</sup> driver."
 
-#: ../glade/NewPrinterWindow.glade.h:69
+#: ../glade/NewPrinterWindow.glade.h:71
 #, fuzzy
 msgid "Printer model:"
 msgstr "പ്രിന്‍ററ്‍ ചേറ്‍ത്തിരിക്കുന്നു"
 
-#: ../glade/NewPrinterWindow.glade.h:70
+#: ../glade/NewPrinterWindow.glade.h:72
 msgid "Probe"
 msgstr "തിരയുക"
 
-#: ../glade/NewPrinterWindow.glade.h:71
+#: ../glade/NewPrinterWindow.glade.h:73
 #, fuzzy
 msgid "Prompt user if authentication is required"
 msgstr "<b>ഓഥന്‍റിക്കേഷന്‍</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:72
+#: ../glade/NewPrinterWindow.glade.h:74
 #, fuzzy
 msgid "Provide PPD file"
 msgstr "PPD ഫൈല്‍ നല്‍കുക"
 
-#: ../glade/NewPrinterWindow.glade.h:73
+#: ../glade/NewPrinterWindow.glade.h:75
 msgid "Queue:"
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:74
+#: ../glade/NewPrinterWindow.glade.h:76
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../glade/NewPrinterWindow.glade.h:75
+#: ../glade/NewPrinterWindow.glade.h:77
 msgid "SMB"
 msgstr "SMB"
 
-#: ../glade/NewPrinterWindow.glade.h:76
+#: ../glade/NewPrinterWindow.glade.h:78
 msgid "Search for a printer driver to download"
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:77
+#: ../glade/NewPrinterWindow.glade.h:79
 msgid "Select A File"
 msgstr "ഫൈല്‍ തിരഞ്ഞെടുക്കുക"
 
-#: ../glade/NewPrinterWindow.glade.h:78
+#: ../glade/NewPrinterWindow.glade.h:80
 #, fuzzy
 msgid "Select printer from database"
 msgstr "ഡേറ്റാബേയ്സില്‍ നിന്നും പ്രിന്‍റര്‍ തിരഞ്ഞെടുക്കുക"
 
-#: ../glade/NewPrinterWindow.glade.h:79
+#: ../glade/NewPrinterWindow.glade.h:81
 msgid "Serial"
 msgstr "സീരിയല്‍"
 
-#: ../glade/NewPrinterWindow.glade.h:80
+#: ../glade/NewPrinterWindow.glade.h:82
 #, fuzzy
 msgid "Set authentication details now"
 msgstr "<b>ഓഥന്‍റിക്കേഷന്‍</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:81
+#: ../glade/NewPrinterWindow.glade.h:83
 msgid "Short name for this printer such as \"laserjet\""
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:82
+#: ../glade/NewPrinterWindow.glade.h:84
 msgid "Supplier:"
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:83
+#: ../glade/NewPrinterWindow.glade.h:85
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1343,20 +1478,20 @@ msgstr ""
 "provided PPD files provide better access to the specific features of the "
 "printer."
 
-#: ../glade/NewPrinterWindow.glade.h:84
+#: ../glade/NewPrinterWindow.glade.h:86
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
 "of the driver's supplier."
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:85
+#: ../glade/NewPrinterWindow.glade.h:87
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:86
+#: ../glade/NewPrinterWindow.glade.h:88
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1366,41 +1501,41 @@ msgstr ""
 "meaning. Settings of options that are not present in the new PPD will be "
 "lost and options only present in the new PPD will be set to default."
 
-#: ../glade/NewPrinterWindow.glade.h:87
+#: ../glade/NewPrinterWindow.glade.h:89
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
 msgstr ""
 "ഈ വിധം നിലവിലുളള എല്ലാ സെറ്റിങ്ങുകളും നഷ്ടമാകും. പുതിയ PPDയുടെ സെറ്റിങ് ഉപയോഗത്തില്‍ വരും. "
 
-#: ../glade/NewPrinterWindow.glade.h:88
+#: ../glade/NewPrinterWindow.glade.h:90
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "പഴയ PPDയില്‍ നിന്നും സെറ്റിങ്ങുകള്‍ പകര്‍ത്തുവാന്‍ ശ്രമിക്കുക. "
 
-#: ../glade/NewPrinterWindow.glade.h:89
+#: ../glade/NewPrinterWindow.glade.h:91
 msgid "URI:"
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:90
+#: ../glade/NewPrinterWindow.glade.h:92
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "പുതിയ PPD ഉപയോഗിക്കുക(Postscript Printer Description) ."
 
-#: ../glade/NewPrinterWindow.glade.h:92
+#: ../glade/NewPrinterWindow.glade.h:94
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:93
+#: ../glade/NewPrinterWindow.glade.h:95
 #, fuzzy
 msgid "Yes, I accept this license"
 msgstr "ജോലികള്‍ അംഗീകരിക്കുക"
 
-#: ../glade/NewPrinterWindow.glade.h:94
+#: ../glade/NewPrinterWindow.glade.h:96
 msgid "_Search"
 msgstr ""
 
-#: ../glade/NewPrinterWindow.glade.h:95
+#: ../glade/NewPrinterWindow.glade.h:97
 msgid "_Verify..."
 msgstr "ഉറപ്പ് വരുത്തുക(_V)..."
 
@@ -1791,7 +1926,7 @@ msgstr "<b>ബേസിക്ക് സര്‍വര്‍ സെറ്റി�
 msgid "Choose a different CUPS server"
 msgstr "CUPS സര്‍വറിലേക്ക് കണക്റ്റ് ചെയ്യുക"
 
-#: ../glade/PrintersWindow.glade.h:3 ../glade/ServerSettingsDialog.glade.h:8
+#: ../glade/PrintersWindow.glade.h:3
 msgid "Show printers shared by other systems"
 msgstr "മറ്റ് സിസ്റ്റമുകളും ഷെയര്‍ ചെയ്യുന്ന പ്രിന്‍ററുകള്‍ കാണിക്കുക"
 
@@ -1847,16 +1982,18 @@ msgstr "<b>ബേസിക്ക് സര്‍വര്‍ സെറ്റി�
 
 #: ../glade/ServerSettingsDialog.glade.h:2
 #, fuzzy
-msgid "Allow printing from the Internet"
-msgstr "ഈ യൂസറുകള്‍ ഒഴികെ ബാക്കി എല്ലാവര്‍ക്കും പ്രിന്‍റിങ് അനുവദിക്കുക:"
-
-#: ../glade/ServerSettingsDialog.glade.h:3
-msgid "Allow remote administration"
+msgid "Allow _remote administration"
 msgstr "റിമോട്ട് അഡ്മിനിസ്ട്രേഷന്‍ അനുവദിക്കുക"
 
-#: ../glade/ServerSettingsDialog.glade.h:4
-msgid "Allow users to cancel any job (not just their own)"
+#: ../glade/ServerSettingsDialog.glade.h:3
+#, fuzzy
+msgid "Allow _users to cancel any job (not just their own)"
 msgstr "ഏത് ജോലിയും റദ്ദാക്കുന്നതിനുളള അനുവാദം യൂസറുകള്‍ക്ക് നല്‍കുക (അവരുടെ മാത്രമല്ല)"
+
+#: ../glade/ServerSettingsDialog.glade.h:4
+#, fuzzy
+msgid "Allow printing from the _Internet"
+msgstr "ഈ യൂസറുകള്‍ ഒഴികെ ബാക്കി എല്ലാവര്‍ക്കും പ്രിന്‍റിങ് അനുവദിക്കുക:"
 
 #: ../glade/ServerSettingsDialog.glade.h:5
 #, fuzzy
@@ -1865,12 +2002,18 @@ msgstr "<b>ബേസിക്ക് സര്‍വര്‍ സെറ്റി�
 
 #: ../glade/ServerSettingsDialog.glade.h:6
 #, fuzzy
-msgid "Publish shared printers connected to this system"
-msgstr "Share published printers connected to this system"
+msgid "Save _debugging information for troubleshooting"
+msgstr "ട്രബിള്‍ഷൂട്ടിങിനായി ഢീബഗ്ഗിങ് വിവരങ്ങള്‍ സംരക്ഷിക്കുക"
 
 #: ../glade/ServerSettingsDialog.glade.h:7
-msgid "Save debugging information for troubleshooting"
-msgstr "ട്രബിള്‍ഷൂട്ടിങിനായി ഢീബഗ്ഗിങ് വിവരങ്ങള്‍ സംരക്ഷിക്കുക"
+#, fuzzy
+msgid "_Publish shared printers connected to this system"
+msgstr "Share published printers connected to this system"
+
+#: ../glade/ServerSettingsDialog.glade.h:8
+#, fuzzy
+msgid "_Show printers shared by other systems"
+msgstr "മറ്റ് സിസ്റ്റമുകളും ഷെയര്‍ ചെയ്യുന്ന പ്രിന്‍ററുകള്‍ കാണിക്കുക"
 
 #: ../glade/SMBBrowseDialog.glade.h:1
 msgid "SMB Browser"
@@ -2139,11 +2282,11 @@ msgstr ""
 msgid "Enable Debugging"
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:148
+#: ../troubleshoot/ErrorLogCheckpoint.py:171
 msgid "Debug logging enabled."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:150
+#: ../troubleshoot/ErrorLogCheckpoint.py:173
 msgid "Debug logging was already enabled."
 msgstr ""
 
@@ -2426,6 +2569,37 @@ msgstr "പ്റിന്‍റ് ചെയ്യുവാനുളളവ ക�
 msgid "Select default printer"
 msgstr "ഡീഫോള്‍ട്ട് പ്രിന്‍റര്‍ നിര്‍മ്മിക്കുക"
 
+#~ msgid ""
+#~ "Connecting to server:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "സര്‍വറിലേക്ക് കണക്റ്റ് ചെയ്യപ്പെടുന്നു:\n"
+#~ " %s"
+
+#~ msgid "Connecting"
+#~ msgstr "കണക്ട് ചെയ്യപ്പെടുന്നു"
+
+#~ msgid ""
+#~ "Connecting to Server:\n"
+#~ "%s\n"
+#~ msgstr ""
+#~ "സര്‍വറിലേക്ക് കണക്റ്റ് ചെയ്യപ്പെടുന്നു:\n"
+#~ "%s\n"
+
+#, fuzzy
+#~ msgid "<b>Download Printer Driver</b>"
+#~ msgstr "<b>ഡ്രൈവറിനെപറ്റിയുളള കമന്‍റ്</b>"
+
+#, fuzzy
+#~ msgid "<b>Installed Options</b>"
+#~ msgstr "<b>ഇമേജ് ഉപാധികള്‍</b>"
+
+#~ msgid "<b>Printers to be members of this Class</b>"
+#~ msgstr "<b>ഈ ക്ളാസ്സിലെ അംഗങ്ങള്‍ ആകുവാനുളള പ്രിന്‍ററുകള്‍</b>"
+
+#~ msgid "<b>Select Connection</b>"
+#~ msgstr "<b>കണക്ഷന്‍ തിരഞ്ഞെടുക്കുക</b>"
+
 #, fuzzy
 #~ msgid "Set As Default"
 #~ msgstr "ഡീഫോള്‍ട്ട്"
@@ -2445,13 +2619,6 @@ msgstr "ഡീഫോള്‍ട്ട് പ്രിന്‍റര്‍ ന�
 
 #~ msgid "_Do not apply"
 #~ msgstr "അപ്ളൈ ചെയ്യുവാന്‍ പാടില്ല(_D)"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Password required</span>\n"
-#~ "\n"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">പാസ്വേര്‍ഡ് ആവശ്യമുണ്ട്</span>\n"
-#~ "\n"
 
 #~ msgid "Verified"
 #~ msgstr "ഉറപ്പിച്ചിരിക്കുന്നു"
@@ -2517,10 +2684,6 @@ msgstr "ഡീഫോള്‍ട്ട് പ്രിന്‍റര്‍ ന�
 
 #~ msgid "Cancel Tests"
 #~ msgstr "പരീക്ഷണ പേജ് ഇല്ലാതാക്കുക"
-
-#, fuzzy
-#~ msgid "Authentication required"
-#~ msgstr "<b>ഓഥന്‍റിക്കേഷന്‍</b>"
 
 #, fuzzy
 #~ msgid "Default Printer:"
