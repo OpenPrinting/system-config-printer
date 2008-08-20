@@ -113,9 +113,12 @@ except AttributeError:
 
 def validDeviceURI (uri):
     """Returns True is the provided URI is valid."""
-    if uri.find (":/") > 0:
-        return True
-    return False
+    (scheme, rest) = urllib.splittype (uri)
+    if scheme == None or scheme == '':
+        return False
+    if rest == None or rest.strip ('/') == '':
+        return False
+    return True
 
 def CUPS_server_hostname ():
     host = cups.getServer ()
@@ -4054,6 +4057,7 @@ class NewPrinterGUI(GtkGUI):
             except:
                 self.expanding_row = 1
 
+            self.busy (self.SMBBrowseDialog)
             uri = "smb://%s/" % entry.name
             debug = 0
             if get_debugging ():
@@ -4087,6 +4091,7 @@ class NewPrinterGUI(GtkGUI):
 
             view.expand_row (path, 0)
             del self.expanding_row
+            self.ready (self.SMBBrowseDialog)
 
         elif entry.smbc_type == pysmb.smbc.SERVER:
             # Server
@@ -4096,6 +4101,7 @@ class NewPrinterGUI(GtkGUI):
             except:
                 self.expanding_row = 1
 
+            self.busy (self.SMBBrowseDialog)
             uri = "smb://%s/" % entry.name
             debug = 0
             if get_debugging ():
@@ -4127,6 +4133,7 @@ class NewPrinterGUI(GtkGUI):
 
             view.expand_row (path, 0)
             del self.expanding_row
+            self.ready (self.SMBBrowseDialog)
 
     def on_entSMBURI_changed (self, ent):
         uri = ent.get_text ()
@@ -4143,6 +4150,7 @@ class NewPrinterGUI(GtkGUI):
             self.rbtnSMBAuthPrompt.set_active(True)
 
         self.btnSMBVerify.set_sensitive(bool(uri))
+        self.setNPButtons ()
 
     def on_tvSMBBrowser_cursor_changed(self, widget):
         store, iter = self.tvSMBBrowser.get_selection().get_selected()
@@ -4570,7 +4578,7 @@ class NewPrinterGUI(GtkGUI):
             host = self.entNPTDirectJetHostname.get_text()
             port = self.entNPTDirectJetPort.get_text()
             device = "socket://" + host
-            if port:
+            if host and port:
                 device = device + ':' + port
         elif type in ("http", "ipp"): # IPP
             if self.lblIPPURI.get_property('visible'):
