@@ -141,6 +141,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
         model = model[:wth]
 
     make = re.sub (r"(?i)KONICA[\s_-]*MINOLTA", "KONICA MINOLTA", make, 1)
+    make = re.sub (r"(?i)HEWLETT[\s_-]PACKARD", "HP", make, 1)
     model = re.sub (r"(?i)\s*\(recommended\)", "", model)
     model = re.sub (r"(?i)\s*-\s*PostScript\b", "", model)
     model = re.sub (r"(?i)\s*\bseries\b", "", model)
