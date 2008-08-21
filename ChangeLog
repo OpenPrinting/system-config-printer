@@ -1,5 +1,14 @@
 2008-08-21  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.__init__): Don't set View
+	Discovered Printers menu item insensitive.
+	(GUI.populateList): Filter out discovered printers if necessary.
+	(GUI.on_view_discovered_printers_activate): New method.  Redraw
+	the printer list when View Discovered Printers is changed.
+	Fixes trac #15.
+
+2008-08-21  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (NewPrinterGUI.init): No need to start
 	a devices query here.
 

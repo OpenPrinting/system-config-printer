@@ -331,8 +331,6 @@ class GUI(GtkGUI, monitor.Watcher):
         self.tooltips.enable()
         gtk.window_set_default_icon_name ('printer')
 
-        self.view_discovered_printers.set_sensitive (False)
-
         # Toolbar
         # Glade-2 doesn't have support for MenuToolButton, so we do that here.
         self.btnNew = gtk.MenuToolButton ('gtk-new')
@@ -1196,6 +1194,14 @@ class GUI(GtkGUI, monitor.Watcher):
                         printers_subset[name] = printers_set[name]
             else:
                 nonfatalException ()
+
+            printers_set = printers_subset
+
+        if not self.view_discovered_printers.get_active ():
+            printers_subset = {}
+            for name, printer in printers_set.iteritems ():
+                if not printer.discovered:
+                    printers_subset[name] = printer
 
             printers_set = printers_subset
 
@@ -2848,6 +2854,9 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.view_area_vbox.add (self.view_area_scrolledwindow)
                 self.view_area_vbox.show_all ()
                 self.groups_pane_visible = False
+
+    def on_view_discovered_printers_activate (self, UNUSED):
+        self.populateList ()
 
     def on_troubleshoot_activate(self, widget):
         if not self.__dict__.has_key ('troubleshooter'):
