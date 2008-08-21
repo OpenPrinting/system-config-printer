@@ -3353,20 +3353,7 @@ class NewPrinterGUI(GtkGUI):
         elif self.dialog_mode == "device":
             self.NewPrinterWindow.set_title(_("Change Device URI"))
             self.ntbkNewPrinter.set_current_page(1)
-            self.queryDevices ()
-
-            try:
-                self.loadPPDs()
-            except cups.IPPError, (e, m):
-                show_IPP_Error (e, m, parent=self.mainapp.PrintersWindow)
-                return
-            except Exception, e:
-                return
-
             self.fillDeviceTab(self.mainapp.printer.device_uri)
-            # Start fetching information from CUPS in the background
-            self.new_printer_PPDs_loaded = False
-            self.queryPPDs ()
         elif self.dialog_mode == "ppd":
             self.NewPrinterWindow.set_title(_("Change Driver"))
             self.ntbkNewPrinter.set_current_page(2)
@@ -3783,8 +3770,13 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPBack.hide()
             self.btnNPForward.hide()
             self.btnNPApply.show()
-            uri = self.getDeviceURI ()
-            self.btnNPApply.set_sensitive (validDeviceURI (uri))
+            try:
+                uri = self.getDeviceURI ()
+                valid = validDeviceURI (uri)
+            except AttributeError:
+                # No device selected yet.
+                valid = False
+            self.btnNPApply.set_sensitive (valid)
             return
 
         if self.dialog_mode == "ppd":
@@ -3931,6 +3923,14 @@ class NewPrinterGUI(GtkGUI):
     def fetchDevices(self, parent=None):
         debugprint ("fetchDevices")
         self.queryDevices ()
+
+        try:
+            if not isinstance (self.devices_result, cups.IPPError):
+                # Return the result we got last time.
+                return self.devices_result.copy ()
+        except AttributeError:
+            pass
+
         time.sleep (0.1)
 
         # Keep the UI refreshed while we wait for the devices to load.
@@ -3959,7 +3959,7 @@ class NewPrinterGUI(GtkGUI):
         if isinstance (result, cups.IPPError):
             # Propagate exception.
             raise result
-        return result
+        return result.copy ()
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
@@ -4079,25 +4079,25 @@ class NewPrinterGUI(GtkGUI):
         # Return the host name/IP for further actions
         return host
 
-    def fillDeviceTab(self, current_uri=None, query=True):
-        if query:
-            try:
-                devices = self.fetchDevices()
-            except cups.IPPError, (e, msg):
-                self.show_IPP_Error(e, msg)
-                devices = {}
-            except:
-                nonfatalException()
-                devices = {}
+    def fillDeviceTab(self, current_uri=None):
+        try:
+            devices = self.fetchDevices()
+        except cups.IPPError, (e, msg):
+            self.show_IPP_Error(e, msg)
+            devices = {}
+        except:
+            nonfatalException()
+            devices = {}
 
-            if current_uri:
-                if devices.has_key (current_uri):
-                    current = devices.pop(current_uri)
-                else:
-                    current = cupshelpers.Device (current_uri)
-                    current.info = "Current device"
+        if current_uri:
+            if devices.has_key (current_uri):
+                current = devices.pop(current_uri)
+                current.info += _(" (Current)")
+            else:
+                current = cupshelpers.Device (current_uri)
+                current.info = "Current device"
 
-            devices = devices.values()
+        devices = devices.values()
 
         for device in devices:
             if device.type == "socket":
@@ -4167,19 +4167,32 @@ class NewPrinterGUI(GtkGUI):
         self.devices.sort()
         other = cupshelpers.Device('', **{'device-info' :_("Other")})
         self.devices.append (PhysicalDevice (other))
+        device_select_path = 0
+        connection_select_path = 0
         if current_uri:
-            current.info += _(" (Current)")
             current_device = PhysicalDevice (current)
-            self.devices.insert(0, current_device)
-            self.device = current
+            try:
+                i = self.devices.index (current_device)
+                self.devices[i].add_device (current)
+                device_select_path = i
+                devs = self.devices[i].get_devices ()
+                for i in xrange (len (devs)):
+                    if devs[i].uri == current_uri:
+                        connection_select_path = i
+                        break
+            except ValueError:
+                self.devices.insert(0, current_device)
+
         model = self.tvNPDevices.get_model()
         model.clear()
 
         for device in self.devices:
             model.append((device.get_info (),))
-
-        self.tvNPDevices.get_selection().select_path(0)
-        self.on_tvNPDevices_cursor_changed(self.tvNPDevices)
+            
+        column = self.tvNPDevices.get_column (0)
+        self.tvNPDevices.set_cursor (device_select_path, column)
+        column = self.tvNPDeviceURIs.get_column (0)
+        self.tvNPDeviceURIs.set_cursor (connection_select_path, column)
 
     def on_entNPTDevice_changed(self, entry):
         self.setNPButtons()
