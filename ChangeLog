@@ -1,3 +1,137 @@
+2008-08-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* XmlHelper.py (XmlHelper): Remove 'ospm' from the filename of the
+	xml printer group file.
+
+2008-08-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane.on_group_name_edited): Use
+	gtk.BUTTONS_OK instead of gtk.BUTTONS_CLOSE to comply with HIG.
+
+2008-08-12  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane.__init__): Load search groups from the
+	xml file.
+	* GroupsPane.py (GroupsPane._create_new_group_common): Share some
+	code between...
+	* GroupsPane.py (GroupsPane.create_new_search_group): ... this new
+	method...
+	* GroupsPane.py (GroupsPane.create_new_group): ... and this one.
+	* GroupsPaneModel.py (SavedSearchGroupItem.__init__): Implemented
+	search group saving and loading from xml.
+	* SearchCriterion.py (SearchCriterion): New class with the
+	necessary definitions to put in the search group xml serialization
+	and be compatible with Project Presto's ospm.
+	* XmlHelper.py (XmlHelper.get_search_groups): New method.
+	* system-config-printer.py (GUI.__init__): Added a search entry
+	popdown menu item to save a search group.
+	* system-config-printer.py (GUI.on_search_entry_search): Set the
+	previous menu item sensitivity.
+	* system-config-printer.py (GUI.on_groups_pane_item_activated):
+	Clear the search entry when changing groups and fill the search
+	entry when a search group has been selected.
+	* system-config-printer.py (GUI.populateList): Handle search
+	groups like AllPrinters since it's only the filtering that makes
+	the difference.
+	* system-config-printer.py (GUI.on_save_as_search_group_activate):
+	New method.
+
+2008-08-10  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.__init__):
+	* system-config-printer.py (GUI.on_filter_criterion_changed):
+	* system-config-printer.py (GUI.populateList): Add UI and code to
+	filter printers by name, description/location or
+	manufacturer/model.
+
+2008-08-01  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane.on_new_group_activate):
+	* GroupsPane.py (GroupsPane.on_new_group_from_selection_activate):
+	Redefine these methods in terms of...
+	* GroupsPane.py (GroupsPane.create_new_group): ... this new, more
+	general, one.
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.__init__): Create a
+	clickable icon to drop a menu.
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.set_drop_down_menu):
+	New method to set the drop down menu.
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.on_icon_pressed): New
+	method to show the menu.
+	* system-config-printer.py (GUI.__init__): New action to save the
+	filtered printer queues as a static group. Also, create and set the
+	search entry drop down menu.
+	* system-config-printer.py (GUI.on_search_entry_search): Set the
+	save-as-group action sensitivity.
+	* system-config-printer.py (GUI.on_save_as_group_activate): Save
+	the currently displayed printer queues as a static group.
+
+2008-07-30  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.populateList): Remove no longer
+	existing printer queues from the currently selected static
+	group. It seems the cleanliest way to do this, even if a bit too
+	lazy. Both the user removing the printer in All Printers and the
+	auto discovered printers going away should be covered.
+	Also, reverted these points from commit
+	7e7cf4188fc790f705c3e837e1ef69699133b145:
+
+		* system-config-printer.py (GUI.populateList): Use an
+		unreadable emblem on printer icons for queues which are no
+		longer available.
+		* system-config-printer.py (GUI): Protect several
+		potential NoneType object accesses. Certainly there are a
+		lot more.
+
+	since they are no longer needed with this change.
+
+2008-07-28  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPaneModel.py (GroupsPaneModel.get): This function can be
+	used with either a TreeIter or a path thanks to the gtk.ListStore
+	implementors. Use this function all over GroupsPane.py where it
+	saves us from doing path-to-iter and iter-to-path conversions.
+
+2008-07-27  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPaneModel.py (StaticGroupItem.add_queues): Removed bogus
+	code to check if a static group xml node has a child called
+	"queues". We make sure that always happens anyway. Better error
+	handling for the XML handling code can be done later.
+	* GroupsPaneModel.py (StaticGroupItem.remove_queues): New method.
+	* system-config-printer.py (GUI.populateList): Change the
+	delete-printer action's label to "Remove from Group" when a static
+	group is active.
+	* system-config-printer.py (GUI.delete_selected_printer_queues):
+	New method with the old contents of...
+	* system-config-printer.py (GUI.on_delete_activate): ...this. Now
+	this method handles the remove from static group case and calls
+	the previously mentioned one when in the All Printers view.
+
+2008-07-26  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane): New signal "items-changed".
+	* GroupsPane.py (GroupsPane.on_group_name_edited):
+	* GroupsPane.py (GroupsPane.on_delete_selected_group_response):
+	* GroupsPane.py (GroupsPane.on_new_group_activate):
+	* GroupsPane.py (GroupsPane.on_new_group_from_selection_activate):
+	Emit it.
+	* GroupsPane.py (GroupsPane.get_static_groups): New method.
+	* system-config-printer.py (GUI.__init__): New action "add-to-group".
+	* system-config-printer.py
+	(GUI.on_add_to_group_menu_item_activate): Add selected
+	printer queues to a group.
+	* system-config-printer.py (GUI.update_add_to_group_menu): Build
+	the add-to-group submenu.
+	* system-config-printer.py (GUI.on_groups_pane_items_changed):
+	Handle group items changes.
+
+2008-07-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane.__init__): Build the groups menu on
+	__init__().
+	* system-config-printer.py (GUI.__init__): Use the groups popup
+	menu as the menubar's Group menu.
+
 2008-08-21  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.glade: New expander in the New Printer
@@ -654,6 +788,12 @@
 	(NewPrinterGUI.openprinting_printers_found): If an exact match is
 	found, pre-select it.  Part of trac #25.
 
+2008-07-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane.on_button_press_event): Pop up the
+	menu on button-press-event to be consistent with how most context
+	menus work.
+
 2008-07-09  Tim Waugh  <twaugh@redhat.com>
 
 	* cupshelpers/openprinting.py: Moved top-level test code...
@@ -1122,6 +1262,168 @@
 	Added missing ui/PrintersWindow.glade.
 	* po/POTFILES.in: Likewise.
 	Fixes https://fedorahosted.org/system-config-printer/ticket/27.
+
+2008-07-07  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* ui/PrintersWindow.glade: Added a Group menu item to the
+	menubar. The attached menu is built programatically.
+	* contextmenu.py (PrinterContextMenu.popup): Protect potential
+	NoneType object access.
+	* GroupsPaneModel.py (StaticGroupItem): Implemented reading and
+	saving queues.
+	* system-config-printer.py (GUI.populateList): Use an unreadable
+	emblem on printer icons for queues which are no longer available.
+	* system-config-printer.py (GUI): Protect several potential
+	NoneType object accesses. Certainly there are a lot more.
+	* system-config-printer.py (GUI.dests_iconview_drag_data_get): New
+	method for D&D.
+	* system-config-printer.py (GUI.dests_iconview_selection_changed):
+	Reorganized the code a bit to update the GroupsPane.
+	* system-config-printer.py (GUI.__init__): Add the GroupsPane
+	UIManager's accelerator group to the main window.
+	Build a menu for the Group menubar item.
+	* GroupsPane.py (GroupsPane): Added various methods for D&D.
+	Reorganized the popup menu around gtk.Actions and gtk.UIManager.
+	Implemented an action to create a group from the main window's
+	current iconview queue selection.
+
+2008-07-02  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.__init__): Small code shuffle.
+	* XmlHelper.py (XmlHelper): New file implementing a class to
+	handle the low level xml processing. Instantiates a global
+	singleton handler so that all modules have access to it.
+	* GroupsPaneModel.py (GroupsPaneModel): Added some utility
+	methods.
+	* GroupsPaneModel.py: Abstracted some common functionality in
+	common base classes for the several groups pane item types.
+	* GroupsPane.py: Implemented group adding, renaming and
+	deletion. Also a popup menu to access that functionality.
+
+2008-06-24  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane.__init__): Receive the first groups
+	item as a contructor parameter.
+	* system-config-printer.py (GUI.populateList): Rework filtering
+	and current groups item selection to do all their work here. This
+	way everything is kept in sync. Thanks to Tim Waugh for helping
+	with this.
+
+2008-06-24  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py: Make GroupsPane a proper widget. It's now a
+	ScrolledWindow containing a TreeView and taking care of all the
+	TreeView's functionality.
+	* GroupsPaneModel.py: New file containing a ListStore subclass to
+	implement the GroupsPane item list and several classes
+	implementing such item types.
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.get_text): Added this
+	method for convenience.
+	* system-config-printer.py (GUI.__init__): Use the GroupsPane
+	widget.
+	* system-config-printer.py (GUI.filter_iconview): New method to
+	allow filtering not just from the search signal handler. We now
+	filter from the current iconview model instead of from canonical
+	printers list.
+	* system-config-printer.py (GUI.on_groups_pane_item_activated):
+	New signal handler to change the iconview's model when a different
+	group pane item is selected. Just a sketch for now.
+	* system-config-printer.py (GUI.populateList): Don't update the
+	iconview's model from here for now.
+	* ui/PrintersWindow.glade: Don't build a TreeView from glade. It's
+	done on code now.
+
+2008-06-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.on_search_entry_search): Use a
+	regular expression to ignore case while searching.
+
+2008-06-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.__init__): Moved the search and
+	printer groups setup code earlier since we will need to access the
+	search entry in ...
+	* system-config-printer.py (GUI.populateList): ... here. This
+	allows the refresh button to work properly.
+
+2008-06-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.on_activate): It makes
+	more sense to emit the search signal here too.
+
+2008-06-18  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py (GroupsPane): Add a separator.
+	* GroupsPane.py (GroupsPane): Change selection changes order.
+	* system-config-printer.py
+	(GUI.on_groups_treeview_selection_changed): Catch the treeview's
+	selection 'changed' signal.
+
+2008-06-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.on_search_entry_search): Do the
+	filtering on the search signal handler.
+	* system-config-printer.py (GUI.populateList): Moved the part of
+	this function that updates the icon view...
+	* system-config-printer.py (GUI.reset_icon_view_model): ... into
+	here to be reusable.
+
+2008-06-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* ToolbarSearchEntry.py (ToolbarSearchEntry.__init__): Change the
+	label to "Filter" since it better describes what we do here.
+	* GroupsPane.py (GroupsPane): Add a "Current search" item when
+	filtering is active.
+
+2008-06-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* ToolbarSearchEntry.py (ToolbarSearchEntry): Remove the clearing
+	variable since there aren't multiple threads accessing the UI.
+
+2008-06-17  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* ToolbarSearchEntry.py (ToolbarSearchEntry): Reimplemented based
+	on Rhythmbox's C version.
+
+2008-06-16  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.populateList): Remove unused
+	select_path local variable.
+
+2008-06-16  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* GroupsPane.py: Initial implementation.
+	* ui/PrintersWindow.glade: Removed the height request from the
+	GtkWindow. Removed horizontal scrolling from the printer groups
+	treeview's GtkScrolledWindow.
+	* system-config-printer.py (GUI.__init__): Use GroupsPane. Moved
+	GUI.setup_toolbar_for_search_entry before the icon_view resizing
+	block.
+
+2008-06-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* ui/PrintersWindow.glade: Make the window have a minimum size so
+	that the user can't resize to the point of making the search entry
+	disappear. There might be a better way to do this.
+
+2008-06-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* ui/PrintersWindow.glade: Added a HPaned widget with a TreeView
+	to hold printer groups.
+
+2008-06-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* system-config-printer.py (GUI.setup_toolbar_for_search_entry):
+	Put the search entry widget into place.
+
+2008-06-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* ToolbarSearchEntry.py: Initial widget implementation.
+
+2008-06-15  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
+	* HIG.py: New module to hold definitions usefull when applying
+	GNOME HIG rules programatically.
 
 2008-06-11  Tim Waugh  <twaugh@redhat.com>
 
