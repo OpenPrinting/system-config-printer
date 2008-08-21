@@ -66,6 +66,7 @@ nobase_pkgdata_DATA=					\
 	monitor.py					\
 	options.py					\
 	optionwidgets.py				\
+	PhysicalDevice.py				\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
 	gtk_treeviewtooltips.py				\
@@ -101,6 +102,7 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/ErrorLogCheckpoint.py		\
 	troubleshoot/ErrorLogFetch.py			\
 	troubleshoot/ErrorLogParse.py			\
+	troubleshoot/Locale.py				\
 	troubleshoot/LocalOrRemote.py			\
 	troubleshoot/NetworkCUPSPrinterShared.py	\
 	troubleshoot/PrinterStateReasons.py		\

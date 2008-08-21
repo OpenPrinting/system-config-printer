@@ -79,6 +79,7 @@ import errordialogs
 from errordialogs import *
 import userdefault
 from AdvancedServerSettings import AdvancedServerSettingsDialog
+from PhysicalDevice import PhysicalDevice
 
 domain='system-config-printer'
 import locale
@@ -481,6 +482,7 @@ class GUI(GtkGUI, monitor.Watcher):
             (_("Members of this class"), np.tvNCMembers, m),
             (_("Others"), np.tvNCNotMembers, m),
             (_("Devices"), np.tvNPDevices, s),
+            (_("Connections"), np.tvNPDeviceURIs, s),
             (_("Makes"), np.tvNPMakes,s),
             (_("Models"), np.tvNPModels,s),
             (_("Drivers"), np.tvNPDrivers,s),
@@ -2841,6 +2843,8 @@ class NewPrinterGUI(GtkGUI):
                               "tvNPDevices",
                               "ntbkNPType",
                               "lblNPDeviceDescription",
+                              "expNPDeviceURIs",
+                              "tvNPDeviceURIs",
                               "cmbNPTSerialBaud",
                               "cmbNPTSerialParity",
                               "cmbNPTSerialBits",
@@ -2927,6 +2931,10 @@ class NewPrinterGUI(GtkGUI):
         cell = gtk.CellRendererText()
         combobox.pack_start (cell, True)
         combobox.add_attribute(cell, 'text', 0)
+
+        # Devices expander
+        self.expNPDeviceURIs.connect ("notify::expanded",
+                                      self.on_expNPDeviceURIs_expanded)
 
         # SMB browser
         self.smb_store = gtk.TreeStore (gobject.TYPE_PYOBJECT)
@@ -3798,63 +3806,9 @@ class NewPrinterGUI(GtkGUI):
                     current = cupshelpers.Device (current_uri)
                     current.info = "Current device"
 
-            self.devices = devices.values()
+            devices = devices.values()
 
-        for device in self.devices:
-            if device.type == "usb":
-                # Find USB URIs with corresponding HPLIP URIs and mark them
-                # for deleting, so that the user will only get the HPLIP
-                # URIs for full device support in the list
-                ser = None
-                s = device.uri.find ("?serial=")
-                if s != -1:
-                    s += 8
-                    e = device.uri[s:].find ("?")
-                    if e == -1: e = len (device.uri)
-                    ser = device.uri[s:s+e]
-                mod = None
-                s = device.uri[6:].find ("/")
-                if s != -1:
-                    s += 7
-                    e = device.uri[s:].find ("?")
-                    if e == -1: e = len (device.uri)
-                    mod = device.uri[s:s+e].lower ().replace ("%20", "_")
-                    if mod.startswith ("hp_"):
-                        mod = mod[3:]
-                matchfound = 0
-                for hpdevice in self.devices:
-                    hpser = None
-                    hpmod = None
-                    uri = hpdevice.uri
-                    if not uri.startswith ("hp:"): continue
-                    if ser:
-                        s = uri.find ("?serial=")
-                        if s != -1:
-                            s += 8
-                            e = uri[s:].find ("?")
-                            if e == -1: e = len (uri)
-                            hpser = uri[s:s+e]
-                            if hpser != ser: continue
-                            matchfound = 1
-                    if mod and not (ser and hpser):
-                        s = uri.find ("/usb/")
-                        if s != -1:
-                            s += 5
-                            e = uri[s:].find ("?")
-                            if e == -1: e = len (uri)
-                            hpmod = uri[s:s+e].lower ()
-                            if hpmod.startswith ("hp_"):
-                                hpmod = hpmod[3:]
-                            if hpmod != mod: continue
-                            matchfound = 1
-                    if matchfound == 1: break
-                if matchfound == 1:
-                    device.uri = "delete"
-            if device.type == "hal":
-                # Remove HAL USB URIs, for these printers there are already
-                # USB URIs
-                if device.uri.startswith("hal:///org/freedesktop/Hal/devices/usb_device"):
-                    device.uri = "delete"
+        for device in devices:
             if device.type == "socket":
                 # Remove default port to more easily find duplicate URIs
                 device.uri = device.uri.replace (":9100", "")
@@ -3871,7 +3825,7 @@ class NewPrinterGUI(GtkGUI):
                     if faxuri:
                         fax_id_dict = \
                             self.get_hpfax_device_id(faxuri)
-                        self.devices.append(cupshelpers.Device(faxuri,
+                        devices.append(cupshelpers.Device(faxuri,
                               **{'device-class' : "direct",
                                  'device-info' : device.info + " HP Fax HPLIP",
                                  'device-device-make-and-model' : \
@@ -3888,11 +3842,10 @@ class NewPrinterGUI(GtkGUI):
             except:
                 nonfatalException ()
         # Mark duplicate URIs for deletion
-        for i in range (len (self.devices)):
-            for j in range (len (self.devices)):
-                if i == j: continue
-                device1 = self.devices[i]
-                device2 = self.devices[j]
+        for i in range (len (devices) - 1):
+            for j in range (i + 1, len (devices)):
+                device1 = devices[i]
+                device2 = devices[j]
                 if device1.uri == "delete" or device2.uri == "delete":
                     continue
                 if device1.uri == device2.uri:
@@ -3905,25 +3858,34 @@ class NewPrinterGUI(GtkGUI):
                         device1.uri = "delete"
                     else:
                         device2.uri = "delete"
-        self.devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
-                                                      "hpfax:/no_device_found",
-                                                      "hp", "hpfax",
-                                                      "hal", "beh",
-                                                      "scsi", "http", "delete"),
-                              self.devices)
-        self.devices.sort()
+        devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
+                                                 "hpfax:/no_device_found",
+                                                 "hp", "hpfax",
+                                                 "hal", "beh",
+                                                 "scsi", "http", "delete"),
+                         devices)
+        self.devices = []
+        for device in devices:
+            physicaldevice = PhysicalDevice (device)
+            try:
+                i = self.devices.index (physicaldevice)
+                self.devices[i].add_device (device)
+            except ValueError:
+                self.devices.append (physicaldevice)
 
-        self.devices.append(cupshelpers.Device('',
-             **{'device-info' :_("Other")}))
+        self.devices.sort()
+        other = cupshelpers.Device('', **{'device-info' :_("Other")})
+        self.devices.append (PhysicalDevice (other))
         if current_uri:
             current.info += _(" (Current)")
-            self.devices.insert(0, current)
+            current_device = PhysicalDevice (current)
+            self.devices.insert(0, current_device)
             self.device = current
         model = self.tvNPDevices.get_model()
         model.clear()
 
         for device in self.devices:
-            model.append((device.info,))
+            model.append((device.get_info (),))
 
         self.tvNPDevices.get_selection().select_path(0)
         self.on_tvNPDevices_cursor_changed(self.tvNPDevices)
@@ -4419,10 +4381,43 @@ class NewPrinterGUI(GtkGUI):
     def on_btnIPPBrowseRefresh_clicked(self, button):
         self.browse_ipp_queues()
 
+    def on_expNPDeviceURIs_expanded (self, widget, UNUSED):
+        # When the expanded is not expanded we want its packing to be
+        # 'expand = false' so that it aligns at the bottom (it packs
+        # to the end of its vbox).  But when it is expanded we'd like
+        # it to expand with the window.
+        #
+        # Adjust its 'expand' packing state depending on whether the
+        # widget is expanded.
+
+        parent = widget.get_parent ()
+        (expand, fill,
+         padding, pack_type) = parent.query_child_packing (widget)
+        expand = widget.get_expanded ()
+        parent.set_child_packing (widget, expand, fill,
+                                  padding, pack_type)
+
     def on_tvNPDevices_cursor_changed(self, widget):
+        model, iter = widget.get_selection ().get_selected()
+        path = model.get_path (iter)
+        physicaldevice = self.devices[path[0]]
+        model = gtk.ListStore (str,                    # printer-info
+                               gobject.TYPE_PYOBJECT)  # cupshelpers.Device
+        self.tvNPDeviceURIs.set_model (model)
+        n = 0
+        for device in physicaldevice.get_devices ():
+            model.append ((device.info, device))
+            n += 1
+        column = self.tvNPDeviceURIs.get_column (0)
+        self.tvNPDeviceURIs.set_cursor (0, column)
+        if n > 1:
+            self.expNPDeviceURIs.show_all ()
+        else:
+            self.expNPDeviceURIs.hide ()
+
+    def on_tvNPDeviceURIs_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
-        path = model.get_path(iter)
-        device = self.devices[path[0]]
+        device = model.get_value(iter, 1)
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get(device.type, 1)
