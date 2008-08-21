@@ -382,6 +382,7 @@ class GUI(GtkGUI, monitor.Watcher):
             (_("Members of this class"), np.tvNCMembers, m),
             (_("Others"), np.tvNCNotMembers, m),
             (_("Devices"), np.tvNPDevices, s),
+            (_("Connections"), np.tvNPDeviceURIs, s),
             (_("Makes"), np.tvNPMakes,s),
             (_("Models"), np.tvNPModels,s),
             (_("Drivers"), np.tvNPDrivers,s),
@@ -2605,6 +2606,8 @@ class NewPrinterGUI(GtkGUI):
                           "entNPName", "entNPDescription", "entNPLocation",
                           "tvNPDevices", "ntbkNPType",
                         "lblNPDeviceDescription",
+                        "expNPDeviceURIs",
+                        "tvNPDeviceURIs",
                            "cmbNPTSerialBaud", "cmbNPTSerialParity",
                             "cmbNPTSerialBits", "cmbNPTSerialFlow",
                            "cmbentNPTLpdHost", "cmbentNPTLpdQueue",
@@ -2668,6 +2671,10 @@ class NewPrinterGUI(GtkGUI):
         cell = gtk.CellRendererText()
         combobox.pack_start (cell, True)
         combobox.add_attribute(cell, 'text', 0)
+
+        # Devices expander
+        self.expNPDeviceURIs.connect ("notify::expanded",
+                                      self.on_expNPDeviceURIs_expanded)
 
         # SMB browser
         if pysmb.USE_OLD_CODE:
@@ -4265,10 +4272,43 @@ class NewPrinterGUI(GtkGUI):
     def on_btnIPPBrowseRefresh_clicked(self, button):
         self.browse_ipp_queues()
 
+    def on_expNPDeviceURIs_expanded (self, widget, UNUSED):
+        # When the expanded is not expanded we want its packing to be
+        # 'expand = false' so that it aligns at the bottom (it packs
+        # to the end of its vbox).  But when it is expanded we'd like
+        # it to expand with the window.
+        #
+        # Adjust its 'expand' packing state depending on whether the
+        # widget is expanded.
+
+        parent = widget.get_parent ()
+        (expand, fill,
+         padding, pack_type) = parent.query_child_packing (widget)
+        expand = widget.get_expanded ()
+        parent.set_child_packing (widget, expand, fill,
+                                  padding, pack_type)
+
     def on_tvNPDevices_cursor_changed(self, widget):
+        model, iter = widget.get_selection ().get_selected()
+        path = model.get_path (iter)
+        physicaldevice = self.devices[path[0]]
+        model = gtk.ListStore (str,                    # printer-info
+                               gobject.TYPE_PYOBJECT)  # cupshelpers.Device
+        self.tvNPDeviceURIs.set_model (model)
+        n = 0
+        for device in physicaldevice.get_devices ():
+            model.append ((device.info, device))
+            n += 1
+        column = self.tvNPDeviceURIs.get_column (0)
+        self.tvNPDeviceURIs.set_cursor (0, column)
+        if n > 1:
+            self.expNPDeviceURIs.show_all ()
+        else:
+            self.expNPDeviceURIs.hide ()
+
+    def on_tvNPDeviceURIs_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
-        path = model.get_path(iter)
-        device = self.devices[path[0]].get_devices ()[0]
+        device = model.get_value(iter, 1)
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get(device.type, 1)

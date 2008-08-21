@@ -1,5 +1,15 @@
 2008-08-21  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.glade: New expander in the New Printer
+	dialog on the Select Device page, for selecting a connection.
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDeviceURIs_cursor_changed): New method.
+	Update the description depending on the selected connection.
+	(NewPrinterGUI.on_expNPDeviceURIs_expanded): New method.  Adjust
+	the expander's packing depending on its expanded state.
+
+2008-08-21  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (NewPrinterGUI.fillDeviceTab): Let the
 	PhysicalDevice class handle duplicate merging.
 
