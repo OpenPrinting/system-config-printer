@@ -3671,9 +3671,8 @@ class NewPrinterGUI(GtkGUI):
             except:
                 nonfatalException ()
         # Mark duplicate URIs for deletion
-        for i in range (len (self.devices)):
-            for j in range (len (self.devices)):
-                if i == j: continue
+        for i in range (len (self.devices) - 1):
+            for j in range (i + 1, len (self.devices)):
                 device1 = self.devices[i]
                 device2 = self.devices[j]
                 if device1.uri == "delete" or device2.uri == "delete":
