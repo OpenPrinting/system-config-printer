@@ -3423,6 +3423,14 @@ class NewPrinterGUI(GtkGUI):
     def fetchDevices(self, parent=None):
         debugprint ("fetchDevices")
         self.queryDevices ()
+
+        try:
+            if not isinstance (self.devices_result, cups.IPPError):
+                # Return the result we got last time.
+                return self.devices_result.copy ()
+        except AttributeError:
+            pass
+
         time.sleep (0.1)
 
         # Keep the UI refreshed while we wait for the devices to load.
@@ -3451,7 +3459,7 @@ class NewPrinterGUI(GtkGUI):
         if isinstance (result, cups.IPPError):
             # Propagate exception.
             raise result
-        return result
+        return result.copy ()
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
@@ -3571,25 +3579,24 @@ class NewPrinterGUI(GtkGUI):
         # Return the host name/IP for further actions
         return host
 
-    def fillDeviceTab(self, current_uri=None, query=True):
-        if query:
-            try:
-                devices = self.fetchDevices()
-            except cups.IPPError, (e, msg):
-                self.show_IPP_Error(e, msg)
-                devices = {}
-            except:
-                nonfatalException()
-                devices = {}
+    def fillDeviceTab(self, current_uri=None):
+        try:
+            devices = self.fetchDevices()
+        except cups.IPPError, (e, msg):
+            self.show_IPP_Error(e, msg)
+            devices = {}
+        except:
+            nonfatalException()
+            devices = {}
 
-            if current_uri:
-                if devices.has_key (current_uri):
-                    current = devices.pop(current_uri)
-                else:
-                    current = cupshelpers.Device (current_uri)
-                    current.info = "Current device"
+        if current_uri:
+            if devices.has_key (current_uri):
+                current = devices.pop(current_uri)
+            else:
+                current = cupshelpers.Device (current_uri)
+                current.info = "Current device"
 
-            devices = devices.values()
+        devices = devices.values()
 
         for device in devices:
             if device.type == "socket":
