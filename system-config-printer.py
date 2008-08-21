@@ -2820,9 +2820,6 @@ class NewPrinterGUI(GtkGUI):
             self.ntbkNewPrinter.set_current_page(1)
             self.queryDevices ()
             self.fillDeviceTab(self.mainapp.printer.device_uri)
-            # Start fetching information from CUPS in the background
-            self.new_printer_PPDs_loaded = False
-            self.queryPPDs ()
         elif self.dialog_mode == "ppd":
             self.NewPrinterWindow.set_title(_("Change Driver"))
             self.ntbkNewPrinter.set_current_page(2)
