@@ -73,6 +73,7 @@ import errordialogs
 from errordialogs import *
 import userdefault
 from AdvancedServerSettings import AdvancedServerSettingsDialog
+from PhysicalDevice import PhysicalDevice
 
 domain='system-config-printer'
 import locale
@@ -3581,63 +3582,9 @@ class NewPrinterGUI(GtkGUI):
                     current = cupshelpers.Device (current_uri)
                     current.info = "Current device"
 
-            self.devices = devices.values()
+            devices = devices.values()
 
-        for device in self.devices:
-            if device.type == "usb":
-                # Find USB URIs with corresponding HPLIP URIs and mark them
-                # for deleting, so that the user will only get the HPLIP
-                # URIs for full device support in the list
-                ser = None
-                s = device.uri.find ("?serial=")
-                if s != -1:
-                    s += 8
-                    e = device.uri[s:].find ("?")
-                    if e == -1: e = len (device.uri)
-                    ser = device.uri[s:s+e]
-                mod = None
-                s = device.uri[6:].find ("/")
-                if s != -1:
-                    s += 7
-                    e = device.uri[s:].find ("?")
-                    if e == -1: e = len (device.uri)
-                    mod = device.uri[s:s+e].lower ().replace ("%20", "_")
-                    if mod.startswith ("hp_"):
-                        mod = mod[3:]
-                matchfound = 0
-                for hpdevice in self.devices:
-                    hpser = None
-                    hpmod = None
-                    uri = hpdevice.uri
-                    if not uri.startswith ("hp:"): continue
-                    if ser:
-                        s = uri.find ("?serial=")
-                        if s != -1:
-                            s += 8
-                            e = uri[s:].find ("?")
-                            if e == -1: e = len (uri)
-                            hpser = uri[s:s+e]
-                            if hpser != ser: continue
-                            matchfound = 1
-                    if mod and not (ser and hpser):
-                        s = uri.find ("/usb/")
-                        if s != -1:
-                            s += 5
-                            e = uri[s:].find ("?")
-                            if e == -1: e = len (uri)
-                            hpmod = uri[s:s+e].lower ()
-                            if hpmod.startswith ("hp_"):
-                                hpmod = hpmod[3:]
-                            if hpmod != mod: continue
-                            matchfound = 1
-                    if matchfound == 1: break
-                if matchfound == 1:
-                    device.uri = "delete"
-            if device.type == "hal":
-                # Remove HAL USB URIs, for these printers there are already
-                # USB URIs
-                if device.uri.startswith("hal:///org/freedesktop/Hal/devices/usb_device"):
-                    device.uri = "delete"
+        for device in devices:
             if device.type == "socket":
                 # Remove default port to more easily find duplicate URIs
                 device.uri = device.uri.replace (":9100", "")
@@ -3654,7 +3601,7 @@ class NewPrinterGUI(GtkGUI):
                     if faxuri:
                         fax_id_dict = \
                             self.get_hpfax_device_id(faxuri)
-                        self.devices.append(cupshelpers.Device(faxuri,
+                        devices.append(cupshelpers.Device(faxuri,
                               **{'device-class' : "direct",
                                  'device-info' : device.info + " HP Fax HPLIP",
                                  'device-device-make-and-model' : \
@@ -3671,10 +3618,10 @@ class NewPrinterGUI(GtkGUI):
             except:
                 nonfatalException ()
         # Mark duplicate URIs for deletion
-        for i in range (len (self.devices) - 1):
-            for j in range (i + 1, len (self.devices)):
-                device1 = self.devices[i]
-                device2 = self.devices[j]
+        for i in range (len (devices) - 1):
+            for j in range (i + 1, len (devices)):
+                device1 = devices[i]
+                device2 = devices[j]
                 if device1.uri == "delete" or device2.uri == "delete":
                     continue
                 if device1.uri == device2.uri:
@@ -3687,25 +3634,34 @@ class NewPrinterGUI(GtkGUI):
                         device1.uri = "delete"
                     else:
                         device2.uri = "delete"
-        self.devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
-                                                      "hpfax:/no_device_found",
-                                                      "hp", "hpfax",
-                                                      "hal", "beh",
-                                                      "scsi", "http", "delete"),
-                              self.devices)
-        self.devices.sort()
+        devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
+                                                 "hpfax:/no_device_found",
+                                                 "hp", "hpfax",
+                                                 "hal", "beh",
+                                                 "scsi", "http", "delete"),
+                         devices)
+        self.devices = []
+        for device in devices:
+            physicaldevice = PhysicalDevice (device)
+            try:
+                i = self.devices.index (physicaldevice)
+                self.devices[i].add_device (device)
+            except ValueError:
+                self.devices.append (physicaldevice)
 
-        self.devices.append(cupshelpers.Device('',
-             **{'device-info' :_("Other")}))
+        self.devices.sort()
+        other = cupshelpers.Device('', **{'device-info' :_("Other")})
+        self.devices.append (PhysicalDevice (other))
         if current_uri:
             current.info += _(" (Current)")
-            self.devices.insert(0, current)
+            current_device = PhysicalDevice (current)
+            self.devices.insert(0, current_device)
             self.device = current
         model = self.tvNPDevices.get_model()
         model.clear()
 
         for device in self.devices:
-            model.append((device.info,))
+            model.append((device.get_info (),))
             
         self.tvNPDevices.get_selection().select_path(0)
         self.on_tvNPDevices_cursor_changed(self.tvNPDevices)
@@ -4312,7 +4268,7 @@ class NewPrinterGUI(GtkGUI):
     def on_tvNPDevices_cursor_changed(self, widget):
         model, iter = widget.get_selection().get_selected()
         path = model.get_path(iter)
-        device = self.devices[path[0]]
+        device = self.devices[path[0]].get_devices ()[0]
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get(device.type, 1)
