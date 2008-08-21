@@ -3597,6 +3597,7 @@ class NewPrinterGUI(GtkGUI):
         if current_uri:
             if devices.has_key (current_uri):
                 current = devices.pop(current_uri)
+                current.info += _(" (Current)")
             else:
                 current = cupshelpers.Device (current_uri)
                 current.info = "Current device"
@@ -3671,19 +3672,32 @@ class NewPrinterGUI(GtkGUI):
         self.devices.sort()
         other = cupshelpers.Device('', **{'device-info' :_("Other")})
         self.devices.append (PhysicalDevice (other))
+        device_select_path = 0
+        connection_select_path = 0
         if current_uri:
-            current.info += _(" (Current)")
             current_device = PhysicalDevice (current)
-            self.devices.insert(0, current_device)
-            self.device = current
+            try:
+                i = self.devices.index (current_device)
+                self.devices[i].add_device (current)
+                device_select_path = i
+                devs = self.devices[i].get_devices ()
+                for i in xrange (len (devs)):
+                    if devs[i].uri == current_uri:
+                        connection_select_path = i
+                        break
+            except ValueError:
+                self.devices.insert(0, current_device)
+
         model = self.tvNPDevices.get_model()
         model.clear()
 
         for device in self.devices:
             model.append((device.get_info (),))
             
-        self.tvNPDevices.get_selection().select_path(0)
-        self.on_tvNPDevices_cursor_changed(self.tvNPDevices)
+        column = self.tvNPDevices.get_column (0)
+        self.tvNPDevices.set_cursor (device_select_path, column)
+        column = self.tvNPDeviceURIs.get_column (0)
+        self.tvNPDeviceURIs.set_cursor (connection_select_path, column)
 
     def on_entNPTDevice_changed(self, entry):
         self.setNPButtons()
