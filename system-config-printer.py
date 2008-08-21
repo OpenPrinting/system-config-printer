@@ -3269,8 +3269,13 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPBack.hide()
             self.btnNPForward.hide()
             self.btnNPApply.show()
-            uri = self.getDeviceURI ()
-            self.btnNPApply.set_sensitive (validDeviceURI (uri))
+            try:
+                uri = self.getDeviceURI ()
+                valid = validDeviceURI (uri)
+            except AttributeError:
+                # No device selected yet.
+                valid = False
+            self.btnNPApply.set_sensitive (valid)
             return
 
         if self.dialog_mode == "ppd":
