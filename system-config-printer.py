@@ -2819,15 +2819,6 @@ class NewPrinterGUI(GtkGUI):
             self.NewPrinterWindow.set_title(_("Change Device URI"))
             self.ntbkNewPrinter.set_current_page(1)
             self.queryDevices ()
-
-            try:
-                self.loadPPDs()
-            except cups.IPPError, (e, m):
-                show_IPP_Error (e, m, parent=self.mainapp.MainWindow)
-                return
-            except Exception, e:
-                return
-
             self.fillDeviceTab(self.mainapp.printer.device_uri)
             # Start fetching information from CUPS in the background
             self.new_printer_PPDs_loaded = False
