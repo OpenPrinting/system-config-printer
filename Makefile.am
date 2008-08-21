@@ -86,6 +86,7 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/ErrorLogCheckpoint.py		\
 	troubleshoot/ErrorLogFetch.py			\
 	troubleshoot/ErrorLogParse.py			\
+	troubleshoot/Locale.py				\
 	troubleshoot/LocalOrRemote.py			\
 	troubleshoot/NetworkCUPSPrinterShared.py	\
 	troubleshoot/PrinterStateReasons.py		\
