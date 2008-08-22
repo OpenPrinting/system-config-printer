@@ -501,7 +501,6 @@ class Monitor:
             events.extend (["job-created",
                             "job-completed",
                             "job-stopped",
-                            "job-progress",
                             "job-state-changed"])
 
         try:
