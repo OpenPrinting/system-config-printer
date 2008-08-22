@@ -295,7 +295,8 @@ class Monitor:
                     else:
                         # Don't notify about this, as it must be stale.
                         debugprint ("Ignoring stale connecting-to-device")
-                        debugprint (pprint.pformat (printer_jobs))
+                        if get_debugging ():
+                            debugprint (pprint.pformat (printer_jobs))
 
         self.update_connecting_devices (printer_jobs)
         items = self.reasons_seen.keys ()
@@ -352,7 +353,8 @@ class Monitor:
             self.sub_seq = seq
             nse = event['notify-subscribed-event']
             debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
-            debugprint (pprint.pformat (event))
+            if get_debugging ():
+                debugprint (pprint.pformat (event))
             if nse.startswith ('printer-'):
                 # Printer events
                 name = event['printer-name']
