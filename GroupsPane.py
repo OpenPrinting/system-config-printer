@@ -29,8 +29,6 @@ class GroupsPane (gtk.ScrolledWindow):
                            []),
         }
 
-    DND_DROP_TYPE_QUEUE = 0
-
     def __init__ (self):
         super (GroupsPane, self).__init__ ()
 
@@ -79,15 +77,14 @@ class GroupsPane (gtk.ScrolledWindow):
         self.tree_view.connect ('popup-menu',
                                 self.on_popup_menu)
 
-#         self.tree_view.enable_model_drag_dest ([("queue", 0,
-#                                                  self.DND_DROP_TYPE_QUEUE)],
-#                                                gtk.gdk.ACTION_COPY)
-#         self.tree_view.connect ("drag-data-received",
-#                                 self.on_drag_data_received)
-#         self.tree_view.connect ("drag-drop",
-#                                 self.on_drag_drop)
-#         self.tree_view.connect ("drag-motion",
-#                                 self.on_drag_motion)
+        self.tree_view.enable_model_drag_dest ([("queue", 0, 0)],
+                                               gtk.gdk.ACTION_COPY)
+        self.tree_view.connect ("drag-data-received",
+                                self.on_drag_data_received)
+        self.tree_view.connect ("drag-drop",
+                                self.on_drag_drop)
+        self.tree_view.connect ("drag-motion",
+                                self.on_drag_motion)
 
         # actions
         action_group = gtk.ActionGroup ("GroupsPaneActionGroup")
@@ -369,30 +366,36 @@ class GroupsPane (gtk.ScrolledWindow):
 
     def on_drag_data_received (self, tree_view, context, x, y,
                                selection_data, info, timestamp):
-        selection_text = selection.get_text ()
-        if not selection_text  or info != DND_DROP_TYPE_QUEUE:
+        if not selection_data.data  or info != 0:
+            context.finish (False, False, timestamp)
+            return
+
+        if not self.is_drop_target (tree_view, x, y):
             context.finish (False, False, timestamp)
             return
 
         path, position = self.tree_view.get_dest_row_at_pos (x, y)
         group_item = self.store.get (path)
-        if not isinstance (group_item, StaticGroupItem):
-            context.finish (False, False, timestamp)
-            return
-
-        group_item.add_queues (selection_text.splitlines ())
+        group_item.add_queues (selection_data.data.splitlines ())
         context.finish (True, False, timestamp)
 
     def on_drag_drop (self, tree_view, context, x, y, timestamp):
-        return self.is_drop_target (tree_view, x, y)
+        if not self.is_drop_target (tree_view, x, y):
+            return False
+
+        target_list = tree_view.drag_dest_get_target_list ()
+        target = tree_view.drag_dest_find_target (context, target_list)
+        tree_view.drag_get_data (context, target, timestamp)
+        return True
 
     def on_drag_motion (self, tree_view, context, x, y, timestamp):
         if not self.is_drop_target (tree_view, x, y):
             return False
 
-        path, position = self.tree_view.get_dest_row_at_pos (x, y)
-        self.tree_view.set_drag_dest_row (path,
-                                          gtk.TREE_VIEW_DROP_INTO_OR_AFTER)
+        path, position = tree_view.get_dest_row_at_pos (x, y)
+        tree_view.set_drag_dest_row (path, position)
+
+        context.drag_status (gtk.gdk.ACTION_COPY, timestamp)
         return True
 
     def get_static_groups (self):
@@ -402,5 +405,12 @@ class GroupsPane (gtk.ScrolledWindow):
                 static_groups.append (row[0])
         return static_groups
 
+    def n_groups (self):
+        n = 0
+        for row in self.store:
+            if (isinstance (row[0], StaticGroupItem) or
+                isinstance (row[0], SavedSearchGroupItem)):
+                    n += 1
+        return n
 
 gobject.type_register (GroupsPane)

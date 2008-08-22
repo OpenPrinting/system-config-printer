@@ -499,7 +499,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.view_area_hpaned = gtk.HPaned ()
         self.view_area_hpaned.add1 (self.groups_pane)
         self.groups_pane_visible = False
-        if len (self.groups_pane.get_static_groups ()) > 0:
+        if self.groups_pane.n_groups () > 0:
             self.view_groups.set_active (True)
 
         # Group menubar item
@@ -552,13 +552,13 @@ class GUI(GtkGUI, monitor.Watcher):
         self.dests_iconview.connect ('popup-menu',
                                      self.dests_iconview_popup_menu)
         self.dests_iconview_selection_changed (self.dests_iconview)
-#         self.dests_iconview.enable_model_drag_source (gtk.gdk.BUTTON1_MASK,
-#                                                       # should use a variable
-#                                                       # instead of 0
-#                                                       [("queue", 0, 0)],
-#                                                       gtk.gdk.ACTION_COPY)
-#         self.dests_iconview.connect ("drag-data-get",
-#                                      self.dests_iconview_drag_data_get)
+        self.dests_iconview.enable_model_drag_source (gtk.gdk.BUTTON1_MASK,
+                                                      # should use a variable
+                                                      # instead of 0
+                                                      [("queue", 0, 0)],
+                                                      gtk.gdk.ACTION_COPY)
+        self.dests_iconview.connect ("drag-data-get",
+                                     self.dests_iconview_drag_data_get)
 
         # setup some lists
         m = gtk.SELECTION_MULTIPLE
@@ -1025,7 +1025,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     model.get_value (model.get_iter (path), 2) + "\n"
 
             if len (selected_printer_names) > 0:
-                selection_data.set_text (selected_printer_names, -1)
+                selection_data.set ("queue", 8, selected_printer_names)
         else:
             nonfatalException ()
 
