@@ -482,7 +482,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.view_area_hpaned = gtk.HPaned ()
         self.view_area_hpaned.add1 (self.groups_pane)
         self.groups_pane_visible = False
-        if len (self.groups_pane.get_static_groups ()) > 0:
+        if self.groups_pane.n_groups () > 0:
             self.view_groups.set_active (True)
 
         # Group menubar item

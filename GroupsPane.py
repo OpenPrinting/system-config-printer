@@ -402,5 +402,12 @@ class GroupsPane (gtk.ScrolledWindow):
                 static_groups.append (row[0])
         return static_groups
 
+    def n_groups (self):
+        n = 0
+        for row in self.store:
+            if (isinstance (row[0], StaticGroupItem) or
+                isinstance (row[0], SavedSearchGroupItem)):
+                    n += 1
+        return n
 
 gobject.type_register (GroupsPane)
