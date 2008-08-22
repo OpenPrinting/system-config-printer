@@ -284,7 +284,8 @@ class Monitor:
                     else:
                         # Don't notify about this, as it must be stale.
                         debugprint ("Ignoring stale connecting-to-device")
-                        debugprint (pprint.pformat (printer_jobs))
+                        if get_debugging ():
+                            debugprint (pprint.pformat (printer_jobs))
 
         self.update_connecting_devices (printer_jobs)
         items = self.reasons_seen.keys ()
@@ -328,7 +329,8 @@ class Monitor:
             self.sub_seq = seq
             nse = event['notify-subscribed-event']
             debugprint ("%d %s %s" % (seq, nse, event['notify-text']))
-            debugprint (pprint.pformat (event))
+            if get_debugging ():
+                debugprint (pprint.pformat (event))
             if nse.startswith ('printer-'):
                 # Printer events
                 name = event['printer-name']
@@ -393,7 +395,9 @@ class Monitor:
                 deferred_calls.append ((self.watcher.job_added,
                                         (self, jobid, nse, event,
                                          jobs[jobid].copy ())))
-            elif nse == 'job-completed':
+            elif (nse == 'job-completed' or
+                  (nse == 'job-state-changed' and
+                   event['job-state'] == cups.IPP_JOB_COMPLETED)):
                 try:
                     del jobs[jobid]
                     deferred_calls.append ((self.watcher.job_removed,
@@ -464,7 +468,6 @@ class Monitor:
             events.extend (["job-created",
                             "job-completed",
                             "job-stopped",
-                            "job-progress",
                             "job-state-changed"])
 
         try:

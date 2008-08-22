@@ -297,7 +297,13 @@ if __name__ == '__main__':
         def any_jobs ():
             try:
                 c = cups.Connection ()
-                if len (c.getJobs (my_jobs=True)):
+                try:
+                    jobs = c.getJobs (my_jobs=True, limit=1)
+                except TypeError:
+                    # limit parameter requires pycups >= 1.9.42.
+                    jobs = c.getJobs (my_jobs=True)
+
+                if len (jobs):
                     return True
             except:
                 pass
