@@ -1,5 +1,14 @@
 2008-08-22  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
+	* GroupsPane.py (GroupsPane.__init__):
+	* GroupsPane.py (GroupsPane.on_drag_*):
+	* system-config-printer.py (GUI.__init__):
+	* system-config-printer.py (GUI.dests_iconview_drag_data_get):
+	Uncomment and rework the DnD signal handlers to finally provide
+	working DnD from the icon view to a static icon group.
+
+2008-08-22  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
+
 	* GroupsPane.py (GroupsPane.n_groups): New method to get the
 	number of groups.
 	* system-config-printer.py (GUI.__init__): Use it instead of
