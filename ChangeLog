@@ -1,5 +1,11 @@
 2008-08-22  Tim Waugh  <twaugh@redhat.com>
 
+	* monitor.py (Monitor.get_notifications): Handle job completion
+	when the state changes to 'completed'; don't wait for the
+	job-completed event.
+
+2008-08-22  Tim Waugh  <twaugh@redhat.com>
+
 	* monitor.py (Monitor.refresh): Don't request job-progress
 	events.
 

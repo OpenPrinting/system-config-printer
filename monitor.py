@@ -423,7 +423,9 @@ class Monitor:
                 deferred_calls.append ((self.watcher.job_added,
                                         (self, jobid, nse, event,
                                          jobs[jobid].copy ())))
-            elif nse == 'job-completed':
+            elif (nse == 'job-completed' or
+                  (nse == 'job-state-changed' and
+                   event['job-state'] == cups.IPP_JOB_COMPLETED)):
                 try:
                     del jobs[jobid]
                     deferred_calls.append ((self.watcher.job_removed,
