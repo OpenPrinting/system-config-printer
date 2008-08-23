@@ -458,6 +458,8 @@ class GUI(GtkGUI, monitor.Watcher):
         self.dests_iconview.set_pixbuf_column (1)
         self.dests_iconview.set_text_column (2)
         self.dests_iconview.set_tooltip_column (3)
+        self.dests_iconview.connect ('key-press-event',
+                                     self.dests_iconview_key_press_event)
         self.dests_iconview.connect ('item-activated',
                                      self.dests_iconview_item_activated)
         self.dests_iconview.connect ('selection-changed',
@@ -841,6 +843,25 @@ class GUI(GtkGUI, monitor.Watcher):
                 iconview.set_cursor (click_path, cell)
             self.printer_context_menu.popup (None, None, None,
                                              event.button, event.time)
+        return False
+
+    def dests_iconview_key_press_event (self, iconview, event):
+        modifiers = gtk.accelerator_get_default_mod_mask ()
+
+        if ((event.keyval == gtk.keysyms.BackSpace or
+             event.keyval == gtk.keysyms.Delete or
+             event.keyval == gtk.keysyms.KP_Delete) and
+            ((event.state & modifiers) == 0)):
+
+            self.ui_manager.get_action ("/delete-printer").activate ()
+            return True
+
+        if ((event.keyval == gtk.keysyms.F2) and
+            ((event.state & modifiers) == 0)):
+
+            self.ui_manager.get_action ("/rename-printer").activate ()
+            return True
+
         return False
 
     def on_server_settings_activate (self, menuitem):
