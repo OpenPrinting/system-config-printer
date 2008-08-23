@@ -2418,12 +2418,18 @@ class GUI(GtkGUI, monitor.Watcher):
             message_format = _("Really delete selected destinations?")
 
         dialog = gtk.MessageDialog(self.PrintersWindow,
-                                   buttons=gtk.BUTTONS_OK_CANCEL,
-                                   message_format=message_format)
+                                   gtk.DIALOG_DESTROY_WITH_PARENT |
+                                   gtk.DIALOG_MODAL,
+                                   gtk.MESSAGE_WARNING,
+                                   gtk.BUTTONS_NONE,
+                                   message_format)
+        dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
+                            gtk.STOCK_DELETE, gtk.RESPONSE_ACCEPT)
+        dialog.set_default_response (gtk.RESPONSE_REJECT)
         result = dialog.run()
         dialog.destroy()
 
-        if result == gtk.RESPONSE_CANCEL:
+        if result != gtk.RESPONSE_ACCEPT:
             return
 
         try:
