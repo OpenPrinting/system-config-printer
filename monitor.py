@@ -517,12 +517,22 @@ class Monitor:
                                                  self.get_notifications)
         debugprint ("Created subscription %d" % self.sub_id)
 
+        if self.monitor_jobs:
+            jobs = self.jobs.copy ()
+            if self.which_jobs not in ['all', 'completed']:
+                # Filter out completed jobs.
+                filtered = {}
+                for jobid, job in jobs.iteritems ():
+                    if job['job-state'] < cups.IPP_JOB_CANCELED:
+                        filtered[jobid] = job
+                jobs = filtered
+
+            self.fetch_first_job_id = 1
+            gobject.timeout_add (5, self.fetch_jobs)
+        else:
+            jobs = {}
+
         try:
-            if self.monitor_jobs:
-                jobs = c.getJobs (which_jobs=self.which_jobs,
-                                  my_jobs=self.my_jobs)
-            else:
-                jobs = {}
             self.printer_state_reasons = collect_printer_state_reasons (c)
             dests = c.getDests ()
             printers = set()
@@ -554,6 +564,80 @@ class Monitor:
 
         self.jobs = jobs
         return False
+
+    def fetch_jobs (self):
+        try:
+            try:
+                c = cups.Connection (host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
+            except TypeError:
+                # Parameters to Connection() requires pycups >= 1.9.40.
+                cups.setServer (self.host)
+                cups.setPort (self.port)
+                cups.setEncryption (self.encryption)
+                c = cups.Connection ()
+        except RuntimeError:
+            self.watcher.cups_connection_error (self)
+            return False
+
+        limit = 1
+        try:
+            fetched = c.getJobs (which_jobs=self.which_jobs,
+                                 my_jobs=self.my_jobs,
+                                 first_job_id=self.fetch_first_job_id,
+                                 limit=limit)
+        except TypeError:
+            # limit requires pycups >= 1.9.42
+            fetched = c.getJobs (which_jobs=self.which_jobs,
+                                 my_jobs=self.my_jobs)
+            limit = len (fetched) + 1
+        except cups.IPPError, (e, m):
+            self.watcher.cups_ipp_error (self, e, m)
+            return False
+
+        got = len (fetched)
+        debugprint ("Got %s jobs, asked for %s" % (got, limit))
+
+        deferred_calls = []
+        jobs = self.jobs.copy ()
+        jobids = fetched.keys ()
+        jobids.sort ()
+        if got > 0:
+            last_jobid = jobids[got - 1]
+        else:
+            last_jobid = self.fetch_first_job_id + limit
+        for jobid in xrange (self.fetch_first_job_id, last_jobid + 1):
+            try:
+                job = fetched[jobid]
+                if jobs.has_key (jobid):
+                    fn = self.watcher.job_event
+                else:
+                    fn = self.watcher.job_added
+
+                jobs[jobid] = job
+                deferred_calls.append ((fn,
+                                        (self, jobid, '', {}, job.copy ())))
+            except KeyError:
+                # No job by that ID.
+                if jobs.has_key (jobid):
+                    del jobs[jobid]
+                    deferred_calls.append ((self.watcher.job_removed,
+                                            (self, jobid, '', {})))
+
+        self.update (jobs)
+        self.jobs = jobs
+
+        for (fn, args) in deferred_calls:
+            fn (*args)
+
+        if got < limit:
+            # That's all.  Don't run this timer again.
+            return False
+
+        # Remember where we got up to and run this timer again.
+        self.fetch_first_job_id = jobid + 1
+        return True
 
     def sort_jobs_by_printer (self, jobs=None):
         if jobs == None:
