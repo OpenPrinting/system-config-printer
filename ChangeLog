@@ -1,3 +1,30 @@
+2008-08-26  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.fetch_jobs): Handle job fetching in parts on
+	a timer (trac #93).
+	(Monitor.refresh): Start timer.
+
+2008-08-26  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.refresh): Allow which_jobs to be specified
+	when refreshing.
+	* jobviewer.py (JobViewer.on_show_completed_jobs_activate): Give
+	new which_jobs value to monitor.refresh().
+
+2008-08-26  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.add_job): Efficiency improvement.
+
+2008-08-26  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.__init__): Removed self.which_jobs as
+	not used.
+
+2008-08-26  Tim Waugh  <twaugh@redhat.com>
+
+	* applet.py: Catch exceptions when printing non-fatal messages to
+	stderr.
+
 2008-08-23  Rui Tiago Cação Matos  <tiagomatos@gmail.com>
 
 	* system-config-printer.py (GUI.on_delete_activate): HIG

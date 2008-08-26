@@ -260,8 +260,11 @@ if __name__ == '__main__':
 
     # Must be done before connecting to D-Bus (for some reason).
     if not pynotify.init (PROGRAM_NAME):
-        print >> sys.stderr, ("%s: unable to initialize pynotify" %
-                              PROGRAM_NAME)
+        try:
+            print >> sys.stderr, ("%s: unable to initialize pynotify" %
+                                  PROGRAM_NAME)
+        except:
+            pass
 
     if trayicon:
         # Stop running when the session ends.
@@ -288,9 +291,12 @@ if __name__ == '__main__':
             NewPrinterNotification(bus)
             service_running = True
         except:
-            print >> sys.stderr, \
-                "%s: failed to start NewPrinterNotification service" % \
-                PROGRAM_NAME
+            try:
+                print >> sys.stderr, \
+                    "%s: failed to start NewPrinterNotification service" % \
+                    PROGRAM_NAME
+            except:
+                pass
 
     if trayicon and get_debugging () == False:
         # Start off just waiting for print jobs.

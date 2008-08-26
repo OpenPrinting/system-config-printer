@@ -124,7 +124,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.jobiters = {}
         self.active_jobs = set() # of job IDs
         self.stopped_job_prompts = set() # of job IDs
-        self.which_jobs = "not-completed"
         self.printer_state_reasons = {}
         self.num_jobs_when_hidden = 0
         self.connecting_to_device = {} # dict of printer->time first seen
@@ -340,10 +339,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def on_show_completed_jobs_activate(self, menuitem):
         if menuitem.get_active():
-            self.monitor.which_jobs = "all"
+            which_jobs = "all"
         else:
-            self.monitor.which_jobs = "not-completed"
-        self.monitor.refresh()
+            which_jobs = "not-completed"
+        self.monitor.refresh(which_jobs=which_jobs)
 
     def on_show_printer_status_activate(self, menuitem):
         if self.show_printer_status.get_active ():
@@ -428,7 +427,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         store.set_value (iter, 2, data.get('job-name', _("Unknown")))
         self.jobiters[job] = iter
         self.update_job (job, data)
-        self.update_job_creation_times ()
+        store.set_value (iter, 5, _("a minute ago"))
 
     def update_job (self, job, data):
         store = self.store
