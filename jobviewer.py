@@ -373,10 +373,10 @@ class JobViewer (monitor.Watcher):
 
     def on_show_completed_jobs_activate(self, menuitem):
         if menuitem.get_active():
-            self.monitor.which_jobs = "all"
+            which_jobs = "all"
         else:
-            self.monitor.which_jobs = "not-completed"
-        self.monitor.refresh()
+            which_jobs = "not-completed"
+        self.monitor.refresh(which_jobs=which_jobs)
 
     def on_show_printer_status_activate(self, menuitem):
         if self.show_printer_status.get_active ():

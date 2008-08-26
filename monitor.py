@@ -464,8 +464,11 @@ class Monitor:
 
         return False
 
-    def refresh(self):
+    def refresh(self, which_jobs=None):
         debugprint ("refresh")
+
+        if which_jobs != None:
+            self.which_jobs = which_jobs
 
         try:
             try:
