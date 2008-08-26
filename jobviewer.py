@@ -156,7 +156,6 @@ class JobViewer (monitor.Watcher):
         self.jobiters = {}
         self.active_jobs = set() # of job IDs
         self.stopped_job_prompts = set() # of job IDs
-        self.which_jobs = "not-completed"
         self.printer_state_reasons = {}
         self.num_jobs_when_hidden = 0
         self.connecting_to_device = {} # dict of printer->time first seen
