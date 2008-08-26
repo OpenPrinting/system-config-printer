@@ -461,7 +461,7 @@ class JobViewer (monitor.Watcher):
         store.set_value (iter, 2, data.get('job-name', _("Unknown")))
         self.jobiters[job] = iter
         self.update_job (job, data)
-        self.update_job_creation_times ()
+        store.set_value (iter, 5, _("a minute ago"))
 
     def update_job (self, job, data):
         store = self.store
