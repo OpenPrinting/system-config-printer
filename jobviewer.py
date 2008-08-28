@@ -108,6 +108,14 @@ class PrinterURIIndex:
 
 
 class JobViewer (GtkGUI, monitor.Watcher):
+    required_job_attributes = set(['job-hold-until',
+                                   'job-k-octets',
+                                   'job-name',
+                                   'job-originating-user-name',
+                                   'job-printer-uri',
+                                   'job-state',
+                                   'time-at-creation'])
+
     def __init__(self, bus=None, loop=None, service_running=False,
                  trayicon=False, suppress_icon_hide=False,
                  my_jobs=True, specific_dests=None, exit_handler=None,
@@ -342,7 +350,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             which_jobs = "all"
         else:
             which_jobs = "not-completed"
-        self.monitor.refresh(which_jobs=which_jobs)
+        self.monitor.refresh(which_jobs=which_jobs, refresh_all=False)
 
     def on_show_printer_status_activate(self, menuitem):
         if self.show_printer_status.get_active ():
@@ -983,14 +991,30 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
             self.add_job (jobid, jobdata)
 
-            # Fetch complete attributes for these jobs.
+            # Fetch required attributes for these jobs.
             attrs = None
+            r = self.required_job_attributes - set (jobdata.keys ())
+            if (jobdata.get ('job-state', cups.IPP_JOB_HELD) !=
+                cups.IPP_JOB_HELD):
+                r -= set (['job-hold-until'])
+
+            if not r:
+                debugprint ("no further attributes required")
+                continue
+
             try:
                 if connection == None:
                     connection = cups.Connection (host=self.host,
                                                   port=self.port,
                                                   encryption=self.encryption)
-                attrs = connection.getJobAttributes (jobid)
+
+                try:
+                    debugprint ("requesting %s" % r)
+                    attrs = connection.getJobAttributes (jobid,
+                                                         requested_attributes=r)
+                except TypeError:
+                    # requested_attributes requires pycups >= 1.9.42
+                    attrs = connection.getJobAttributes (jobid)
             except RuntimeError:
                 pass
             except AttributeError:
@@ -1058,18 +1082,30 @@ class JobViewer (GtkGUI, monitor.Watcher):
             # 'auth-info-required'.  This will be checked for in
             # update_job.
             if jobdata['job-state'] == cups.IPP_JOB_HELD:
-                try:
-                    # Fetch the job-hold-until attribute, as this is
-                    # not provided in the notification attributes.
-                    c = cups.Connection (host=self.host,
-                                         port=self.port,
-                                         encryption=self.encryption)
-                    attrs = c.getJobAttributes (jobid)
-                    jobdata.update (attrs)
-                except cups.IPPError:
-                    pass
-                except RuntimeError:
-                    pass
+                r = self.required_job_attributes - set (jobdata.keys ())
+                if not r:
+                    debugprint ("no further attributes required")
+                else:
+                    try:
+                        # Fetch the job-hold-until attribute, as this is
+                        # not provided in the notification attributes.
+                        c = cups.Connection (host=self.host,
+                                             port=self.port,
+                                             encryption=self.encryption)
+
+                        try:
+                            debugprint ("requesting %s" % r)
+                            attrs = c.getJobAttributes (jobid,
+                                                        requested_attributes=r)
+                        except TypeError:
+                            # requested_attributes requires pycups >= 1.9.42.
+                            attrs = c.getJobAttributes (jobid)
+
+                        jobdata.update (attrs)
+                    except cups.IPPError:
+                        pass
+                    except RuntimeError:
+                        pass
 
             may_be_problem = True
             if (jobdata['job-state'] == cups.IPP_JOB_HELD and

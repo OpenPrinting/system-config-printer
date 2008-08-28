@@ -3876,6 +3876,10 @@ class NewPrinterGUI(GtkGUI):
                 self.btnNPApply.show()
                 self.btnNPApply.set_sensitive(
                     self.mainapp.checkNPName(self.entNPName.get_text()))
+            if self.dialog_mode == "class":
+                # This is the first page for the New Class dialog, so
+                # hide the Back button.
+                self.btnNPBack.hide ()
         if nr == 2: # Make/PPD file
             downloadable_selected = False
             if self.rbtnNPDownloadableDriverSearch.get_active ():

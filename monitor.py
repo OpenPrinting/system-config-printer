@@ -398,13 +398,14 @@ class Monitor:
             elif (nse == 'job-completed' or
                   (nse == 'job-state-changed' and
                    event['job-state'] == cups.IPP_JOB_COMPLETED)):
-                try:
-                    del jobs[jobid]
-                    deferred_calls.append ((self.watcher.job_removed,
-                                            (self, jobid, nse, event)))
-                except KeyError:
-                    pass
-                continue
+                if not (self.which_jobs in ['completed', 'all']):
+                    try:
+                        del jobs[jobid]
+                        deferred_calls.append ((self.watcher.job_removed,
+                                                (self, jobid, nse, event)))
+                    except KeyError:
+                        pass
+                    continue
 
             try:
                 job = jobs[jobid]
@@ -436,7 +437,7 @@ class Monitor:
 
         return False
 
-    def refresh(self, which_jobs=None):
+    def refresh(self, which_jobs=None, refresh_all=True):
         debugprint ("refresh")
 
         if which_jobs != None:
@@ -493,7 +494,7 @@ class Monitor:
                 jobs = filtered
 
             self.fetch_first_job_id = 1
-            gobject.timeout_add (5, self.fetch_jobs)
+            gobject.timeout_add (5, self.fetch_jobs, refresh_all)
         else:
             jobs = {}
 
@@ -530,7 +531,7 @@ class Monitor:
         self.jobs = jobs
         return False
 
-    def fetch_jobs (self):
+    def fetch_jobs (self, refresh_all):
         try:
             try:
                 c = cups.Connection (host=self.host,
@@ -601,7 +602,12 @@ class Monitor:
             return False
 
         # Remember where we got up to and run this timer again.
-        self.fetch_first_job_id = jobid + 1
+        next = jobid + 1
+
+        while not refresh_all and self.jobs.has_key (next):
+            next += 1
+
+        self.fetch_first_job_id = next
         return True
 
     def sort_jobs_by_printer (self, jobs=None):

@@ -1,5 +1,30 @@
 2008-08-28  Tim Waugh  <twaugh@redhat.com>
 
+	* monitor.py (Monitor.refresh): New parameter refresh_all.
+	(Monitor.fetch_jobs): Skip over jobs we already know about unless
+	refresh_all is True.
+
+	* jobviewer.py (JobViewer.on_show_completed_jobs_activate): Don't
+	refresh all jobs, just completed ones.
+
+2008-08-28  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.get_notifications): Don't call job_removed
+	if we are interested in completed jobs.
+
+2008-08-28  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Only fetch
+	missing job attributes we require.
+	(JobViewer.job_event): Likewise.
+
+2008-08-27  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.setNPButtons): Hide Back
+	button on first page of New Class dialog.
+
+2008-08-28  Tim Waugh  <twaugh@redhat.com>
+
 	* monitor.py (Monitor.fetch_jobs): Fixed bad merge.  The old
 	update() method is now called update_jobs().
 
