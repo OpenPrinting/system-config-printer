@@ -426,13 +426,14 @@ class Monitor:
             elif (nse == 'job-completed' or
                   (nse == 'job-state-changed' and
                    event['job-state'] == cups.IPP_JOB_COMPLETED)):
-                try:
-                    del jobs[jobid]
-                    deferred_calls.append ((self.watcher.job_removed,
-                                            (self, jobid, nse, event)))
-                except KeyError:
-                    pass
-                continue
+                if not (self.which_jobs in ['completed', 'all']):
+                    try:
+                        del jobs[jobid]
+                        deferred_calls.append ((self.watcher.job_removed,
+                                                (self, jobid, nse, event)))
+                    except KeyError:
+                        pass
+                    continue
 
             try:
                 job = jobs[jobid]
