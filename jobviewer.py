@@ -384,7 +384,7 @@ class JobViewer (monitor.Watcher):
             which_jobs = "all"
         else:
             which_jobs = "not-completed"
-        self.monitor.refresh(which_jobs=which_jobs)
+        self.monitor.refresh(which_jobs=which_jobs, refresh_all=False)
 
     def on_show_printer_status_activate(self, menuitem):
         if self.show_printer_status.get_active ():

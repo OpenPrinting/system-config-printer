@@ -1,5 +1,14 @@
 2008-08-28  Tim Waugh  <twaugh@redhat.com>
 
+	* monitor.py (Monitor.refresh): New parameter refresh_all.
+	(Monitor.fetch_jobs): Skip over jobs we already know about unless
+	refresh_all is True.
+
+	* jobviewer.py (JobViewer.on_show_completed_jobs_activate): Don't
+	refresh all jobs, just completed ones.
+
+2008-08-28  Tim Waugh  <twaugh@redhat.com>
+
 	* monitor.py (Monitor.get_notifications): Don't call job_removed
 	if we are interested in completed jobs.
 
