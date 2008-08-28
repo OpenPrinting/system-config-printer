@@ -590,7 +590,7 @@ class Monitor:
                     deferred_calls.append ((self.watcher.job_removed,
                                             (self, jobid, '', {})))
 
-        self.update (jobs)
+        self.update_jobs (jobs)
         self.jobs = jobs
 
         for (fn, args) in deferred_calls:
