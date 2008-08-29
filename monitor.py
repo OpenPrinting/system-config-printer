@@ -533,16 +533,9 @@ class Monitor:
 
     def fetch_jobs (self, refresh_all):
         try:
-            try:
-                c = cups.Connection (host=self.host,
-                                     port=self.port,
-                                     encryption=self.encryption)
-            except TypeError:
-                # Parameters to Connection() requires pycups >= 1.9.40.
-                cups.setServer (self.host)
-                cups.setPort (self.port)
-                cups.setEncryption (self.encryption)
-                c = cups.Connection ()
+            c = cups.Connection (host=self.host,
+                                 port=self.port,
+                                 encryption=self.encryption)
         except RuntimeError:
             self.watcher.cups_connection_error (self)
             return False
@@ -553,11 +546,6 @@ class Monitor:
                                  my_jobs=self.my_jobs,
                                  first_job_id=self.fetch_first_job_id,
                                  limit=limit)
-        except TypeError:
-            # limit requires pycups >= 1.9.42
-            fetched = c.getJobs (which_jobs=self.which_jobs,
-                                 my_jobs=self.my_jobs)
-            limit = len (fetched) + 1
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
             return False

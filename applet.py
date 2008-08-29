@@ -303,12 +303,7 @@ if __name__ == '__main__':
         def any_jobs ():
             try:
                 c = cups.Connection ()
-                try:
-                    jobs = c.getJobs (my_jobs=True, limit=1)
-                except TypeError:
-                    # limit parameter requires pycups >= 1.9.42.
-                    jobs = c.getJobs (my_jobs=True)
-
+                jobs = c.getJobs (my_jobs=True, limit=1)
                 if len (jobs):
                     return True
             except:

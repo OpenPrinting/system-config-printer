@@ -1008,13 +1008,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                                   port=self.port,
                                                   encryption=self.encryption)
 
-                try:
-                    debugprint ("requesting %s" % r)
-                    attrs = connection.getJobAttributes (jobid,
-                                                         requested_attributes=r)
-                except TypeError:
-                    # requested_attributes requires pycups >= 1.9.42
-                    attrs = connection.getJobAttributes (jobid)
+                debugprint ("requesting %s" % r)
+                attrs = connection.getJobAttributes (jobid,
+                                                     requested_attributes=r)
             except RuntimeError:
                 pass
             except AttributeError:
@@ -1093,13 +1089,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                              port=self.port,
                                              encryption=self.encryption)
 
-                        try:
-                            debugprint ("requesting %s" % r)
-                            attrs = c.getJobAttributes (jobid,
-                                                        requested_attributes=r)
-                        except TypeError:
-                            # requested_attributes requires pycups >= 1.9.42.
-                            attrs = c.getJobAttributes (jobid)
+                        debugprint ("requesting %s" % r)
+                        attrs = c.getJobAttributes (jobid,
+                                                    requested_attributes=r)
 
                         jobdata.update (attrs)
                     except cups.IPPError:

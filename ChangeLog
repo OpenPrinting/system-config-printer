@@ -1,3 +1,20 @@
+2008-08-29  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py: Require pycups >= 1.9.42.
+
+	* AdvancedServerSettings.py
+	(AdvancedServerSettingsDialog.on_response): Removed legacy pycups
+	code.
+
+	* applet.py (any_jobs): Removed legacy pycups code.
+
+	* monitor.py (Monitor.fetch_jobs): Removed legacy pycups code.
+	(Monitor.fetch_jobs): Likewise.
+
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Removed
+	legacy pycups code.
+	(JobViewer.job_event): Likewise.
+
 2008-08-28  Tim Waugh  <twaugh@redhat.com>
 
 	* monitor.py (Monitor.refresh): New parameter refresh_all.

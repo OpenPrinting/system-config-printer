@@ -53,7 +53,7 @@ if len(sys.argv)>1 and sys.argv[1] == '--help':
     sys.exit (0)
 
 import cups
-cups.require ("1.9.40")
+cups.require ("1.9.42")
 
 try:
     import pysmb

@@ -316,8 +316,7 @@ class AdvancedServerSettingsDialog:
             browsepoll_lines += "BrowsePoll %s\n" % server
 
         f.seek (0)
-        (fd, name) = tempfile.mkstemp ()
-        conf = os.fdopen (fd, "w+")
+        conf = tempfile.TemporaryFile ()
         wrote_preserve_history = wrote_preserve_files = False
         wrote_browsepoll = False
         has_browsepoll = False
@@ -373,19 +372,14 @@ class AdvancedServerSettingsDialog:
         if not wrote_browsepoll:
             conf.write (browsepoll_lines)
 
-        conf.seek (0)
+        conf.flush ()
+        fd = conf.fileno ()
+        os.lseek (fd, 0, os.SEEK_SET)
         try:
-            try:
-                self.cupsconn.putFile ("/admin/conf/cupsd.conf", fd=fd)
-            except TypeError:
-                # Specifying file descriptor requires pycups >= 1.9.41
-                self.cupsconn.putFile ("/admin/conf/cupsd.conf", name)
+            self.cupsconn.putFile ("/admin/conf/cupsd.conf", fd=fd)
         except cups.HTTPError, s:
             show_HTTP_Error (s, dialog)
-            os.unlink (name)
             return
-
-        os.unlink (name)
 
         # Give the server a chance to process our request.
         time.sleep (1)
