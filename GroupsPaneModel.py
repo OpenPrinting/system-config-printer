@@ -57,7 +57,7 @@ class FavouritesItem (GroupsPaneItem):
         super (FavouritesItem, self).__init__ ()
 
         self.icon = self.load_icon ('emblem-favorite')
-        self.name = _("Favourites")
+        self.name = _("Favorites")
 
 # Helper common base class, do not instantiate
 class MutableItem (GroupsPaneItem):

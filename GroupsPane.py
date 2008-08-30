@@ -168,8 +168,9 @@ class GroupsPane (gtk.ScrolledWindow):
                                         gtk.MESSAGE_ERROR,
                                         gtk.BUTTONS_OK,
                                         _("The item could not be renamed."))
-            dialog.format_secondary_text (_("The name \"") + new_text +
-                                          _("\" is already in use. Please use a different name."))
+            dialog.format_secondary_text (_("The name \"%s\" is already "
+                                            "in use. Please use a different "
+                                            "name.") % new_text)
             dialog.connect ('response', lambda dialog, x: dialog.destroy ())
             dialog.show ()
             return
@@ -286,9 +287,9 @@ class GroupsPane (gtk.ScrolledWindow):
                                     gtk.DIALOG_MODAL,
                                     gtk.MESSAGE_WARNING,
                                     gtk.BUTTONS_NONE,
-                                    _("Are you sure you want to permanently delete \"") +
-                                    group_item.name +
-                                    _("\"?"))
+                                    _("Are you sure you want to "
+                                      "permanently delete \"%s\"?") %
+                                    group_item.name)
         dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
                             gtk.STOCK_DELETE, gtk.RESPONSE_ACCEPT)
         dialog.set_default_response (gtk.RESPONSE_REJECT)
