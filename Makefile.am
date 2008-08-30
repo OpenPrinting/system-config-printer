@@ -61,7 +61,10 @@ nobase_pkgdata_DATA=					\
 	config.py					\
 	debug.py					\
 	errordialogs.py					\
+	HIG.py						\
 	glade.py					\
+	GroupsPane.py					\
+	GroupsPaneModel.py				\
 	jobviewer.py					\
 	monitor.py					\
 	options.py					\
@@ -70,9 +73,12 @@ nobase_pkgdata_DATA=					\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
 	gtk_treeviewtooltips.py				\
+	SearchCriterion.py				\
 	smburi.py					\
 	statereason.py					\
+	ToolbarSearchEntry.py				\
 	userdefault.py					\
+	XmlHelper.py					\
 	glade/AboutDialog.glade				\
 	glade/ConnectDialog.glade				\
 	glade/ConnectingDialog.glade			\
