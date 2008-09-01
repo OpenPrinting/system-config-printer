@@ -2997,16 +2997,6 @@ class NewPrinterGUI(GtkGUI):
         elif self.dialog_mode == "printer":
             self.busy (self.NewPrinterWindow)
             if page_nr == 1: # Device (first page)
-                # Choose an appropriate name.
-                name = 'printer'
-                try:
-                    if self.device.id:
-                        name = self.device.id_dict["MDL"]
-                    name = self.mainapp.makeNameUnique (name)
-                    self.entNPName.set_text (name)
-                except:
-                    nonfatalException ()
-
                 self.auto_make, self.auto_model = None, None
                 self.device.uri = self.getDeviceURI()
                 if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
@@ -3244,6 +3234,21 @@ class NewPrinterGUI(GtkGUI):
                 self.WaitWindow.hide ()
 
             self.fillDownloadableDrivers()
+
+        if step > 0 and next_page_nr == 0: # About to choose a name.
+            # Suggest an appropriate name.
+            name = None
+            try:
+                if self.device.id:
+                    name = self.device.id_dict["MDL"]
+            except:
+                nonfatalException ()
+
+            if name == None:
+                name = 'printer'
+
+            name = self.mainapp.makeNameUnique (name)
+            self.entNPName.set_text (name)
 
         self.ntbkNewPrinter.set_current_page(next_page_nr)
 
