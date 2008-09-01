@@ -163,7 +163,8 @@ class Connection:
                         raise cups.IPPError (cups.IPP_NOT_AUTHORIZED, '')
                 break
             except cups.IPPError, (e, m):
-                if not self._cancel and e == cups.IPP_NOT_AUTHORIZED:
+                if not self._cancel and (e == cups.IPP_NOT_AUTHORIZED or
+                                         e == cups.IPP_FORBIDDEN):
                     self._failed ()
                 else:
                     raise
