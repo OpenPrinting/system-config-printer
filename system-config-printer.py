@@ -3244,6 +3244,14 @@ class NewPrinterGUI(GtkGUI):
             except:
                 nonfatalException ()
 
+            try:
+                if name == None and isinstance (self.ppd, cups.PPD):
+                    mname = self.ppd.findAttr ("modelName").value
+                    make, model = cupshelpers.ppds.ppdMakeModelSplit (mname)
+                    name = "%s %s" % (make, model)
+            except:
+                nonfatalException ()
+
             if name == None:
                 name = 'printer'
 
