@@ -1,3 +1,20 @@
+2008-09-01  Tim Waugh  <twaugh@redhat.com>
+
+	* glade/NewPrinterWindow.glade: Avoid display problem with
+	installable options.  We now have a label where the options table
+	will go, rather than starting the vbox empty.
+
+2008-09-01  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.nextNPTab): Use
+	modelName string from custom PPD file to suggest name for new
+	queue if no Device ID is available (trac #97).
+
+2008-09-01  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.nextNPTab): Rearranged
+	code for suggesting an appropriate name for a new printer.
+
 2008-08-30  Tim Waugh  <twaugh@redhat.com>
 
 	* authconn.py (Connection._authloop): Handle IPP_FORBIDDEN (bug
