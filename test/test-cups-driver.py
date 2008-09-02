@@ -108,14 +108,16 @@ for name in list:
     i += 1
     try:
         ppd = d.cat (name)
-        (fd, name) = tempfile.mkstemp ()
-        file (name, "w").write (ppd)
+        (fd, fname) = tempfile.mkstemp ()
+        f = os.fdopen (fd, "w")
+        f.write (ppd)
+        del f
         try:
-            PPD = cups.PPD (name)
+            PPD = cups.PPD (fname)
         except:
-            os.unlink (name)
+            os.unlink (fname)
             raise
-        os.unlink (name)
+        os.unlink (fname)
         attr = PPD.findAttr ('1284DeviceID')
         if attr:
             pieces = attr.value.split (';')
