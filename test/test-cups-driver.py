@@ -133,7 +133,7 @@ for name in list:
             if mfg and mdl:
                 id = "MFG:%s;MDL:%s;" % (mfg, mdl)
                 ids.add (id)
-        sys.stderr.write ("%3d%%\r" % (1.0 * i / n))
+        sys.stderr.write ("%3d%%\r" % (100 * i / n))
         sys.stderr.flush ()
     except KeyboardInterrupt:
         print "Keyboard interrupt\n"
