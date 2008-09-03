@@ -493,6 +493,8 @@ class PPDs:
             # Try again with replacements.
             if mfgl == "hewlett-packard":
                 mfgl = "hp"
+            elif mfgl == "lexmark international":
+                mfgl = "lexmark"
 
         # Remove manufacturer name from model field
         ppdnamelist2 = None
@@ -934,7 +936,7 @@ def _self_test(argv):
         ]
 
     if stdin_deviceid:
-        idlist = [raw_input ('Device ID: ')]
+        idlist = [(raw_input ('Device ID: '), 2, '')]
 
     all_passed = True
     for id, max_status_code, modelre in idlist:
