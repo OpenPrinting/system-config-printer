@@ -22,6 +22,7 @@ import cups
 from getopt import getopt
 import os
 import posix
+import re
 import shlex
 import signal
 import subprocess
@@ -92,16 +93,26 @@ class Driver:
             self.files[name] = stdout
             return stdout
 
-opts, args = getopt (sys.argv, "")
-me = args.pop (0)
+opts, args = getopt (sys.argv[1:], "m:")
 if len (args) != 1:
-    print "Syntax: %s DRIVER" % me
+    print "Syntax: test-cups-driver [-m REGEXP] DRIVER"
     sys.exit (1)
+
+match = None
+for opt, arg in opts:
+    if opt == '-m':
+        match = arg
+        break
 
 bad = []
 ids = set()
 d = Driver (args[0])
 list = d.list ()
+
+if match:
+    exp = re.compile (match)
+    list = filter (lambda x: exp.match (x), list)
+
 n = len (list)
 i = 0
 for name in list:
