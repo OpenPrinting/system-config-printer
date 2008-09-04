@@ -36,9 +36,13 @@ import signal
 import subprocess
 import tempfile
 
-class AlarmClock(Exception):
+class TimedOut(Exception):
     def __init__ (self):
         Exception.__init__ (self, "Timed out")
+
+class MissingExecutables(Exception):
+    def __init__ (self):
+        Exception.__init__ (self, "Missing executables")
 
 class Driver:
     def __init__ (self, driver):
@@ -48,7 +52,7 @@ class Driver:
         signal.signal (signal.SIGALRM, self._alarm)
 
     def _alarm (self, sig, stack):
-        raise AlarmClock
+        raise TimedOut
 
     def list (self):
         if self.ppds:
@@ -61,7 +65,7 @@ class Driver:
         try:
             (stdout, stderr) = p.communicate ()
             signal.alarm (0)
-        except AlarmClock:
+        except TimedOut:
             posix.kill (p.pid, signal.SIGKILL)
             raise
 
@@ -90,7 +94,7 @@ class Driver:
             try:
                 (stdout, stderr) = p.communicate ()
                 signal.alarm (0)
-            except AlarmClock:
+            except TimedOut:
                 posix.kill (p.pid, signal.SIGKILL)
                 raise
 
@@ -136,6 +140,11 @@ for name in list:
             os.unlink (fname)
             raise
         os.unlink (fname)
+
+        (pkgs, exes) = missingPackagesAndExecutables (PPD)
+        if pkgs or exes:
+            raise MissingExecutables
+
         attr = PPD.findAttr ('1284DeviceID')
         if attr:
             pieces = attr.value.split (';')
@@ -158,7 +167,7 @@ for name in list:
     except KeyboardInterrupt:
         print "Keyboard interrupt\n"
         break
-    except AlarmClock, e:
+    except TimedOut, e:
         bad.append ((name, e))
         print "Timed out fetching %s" % name
     except Exception, e:
