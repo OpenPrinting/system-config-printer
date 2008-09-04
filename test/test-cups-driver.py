@@ -18,7 +18,15 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import sys
+
 import cups
+try:
+    from cupshelpers import missingPackagesAndExecutables
+except ImportError:
+    sys.path.append ('..')
+    from cupshelpers import missingPackagesAndExecutables
+
 from getopt import getopt
 import os
 import posix
@@ -26,7 +34,6 @@ import re
 import shlex
 import signal
 import subprocess
-import sys
 import tempfile
 
 class AlarmClock(Exception):
