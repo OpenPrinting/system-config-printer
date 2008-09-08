@@ -1067,7 +1067,10 @@ class GUI(GtkGUI, monitor.Watcher):
                 dialog.hide ()
         elif response == gtk.RESPONSE_YES:
             # Advanced
-            AdvancedServerSettingsDialog (self.cups, dialog)
+            try:
+                AdvancedServerSettingsDialog (self.cups, dialog)
+            except:
+                return
         else:
             dialog.hide ()
 
