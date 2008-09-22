@@ -59,6 +59,7 @@ nobase_pkgdata_DATA=					\
 	AdvancedServerSettings.py			\
 	authconn.py					\
 	config.py					\
+	cupspk.py					\
 	debug.py					\
 	errordialogs.py					\
 	HIG.py						\

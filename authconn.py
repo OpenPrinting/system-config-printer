@@ -18,6 +18,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+import cupspk
 import gtk
 from debug import *
 
@@ -138,17 +139,29 @@ class Connection:
 
     def _connect (self):
         cups.setUser (self._use_user)
-        self._connection = cups.Connection (host=self._server,
+
+        self._use_pk = self._server[0] == '/' or self._server == 'localhost'
+        if self._use_pk:
+            create_object = cupspk.Connection
+        else:
+            create_object = cups.Connection
+
+        self._connection = create_object (host=self._server,
                                             port=self._port,
                                             encryption=self._encryption)
+
+        if self._use_pk:
+            self._connection.set_parent(self._parent)
+
         self._user = self._use_user
         debugprint ("Connected as user %s" % self._user)
-        methodtype = type (self._connection.getPrinters)
+        methodtype_lambda = type (self._connection.getPrinters)
+        methodtype_real = type (self._connection.addPrinter)
         for fname in dir (self._connection):
             if fname[0] == '_':
                 continue
             fn = getattr (self._connection, fname)
-            if type (fn) != methodtype:
+            if not type (fn) in [methodtype_lambda, methodtype_real]:
                 continue
             setattr (self, fname, self._make_binding (fname, fn))
 
@@ -175,6 +188,8 @@ class Connection:
                         raise cups.IPPError (cups.IPP_NOT_AUTHORIZED, '')
                 break
             except cups.IPPError, (e, m):
+                if self._use_pk and m == 'pkcancel':
+                    raise
                 if not self._cancel and (e == cups.IPP_NOT_AUTHORIZED or
                                          e == cups.IPP_FORBIDDEN):
                     self._failed (e == cups.IPP_FORBIDDEN)
