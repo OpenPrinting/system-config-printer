@@ -216,9 +216,16 @@ class OpenPrinting:
                 #     'url': url,
                 #     'supplier': supplier,
                 #     'license': short license string e.g. GPLv2,
-                #     'licensetext': license text (HTML),
+                #     'licensetext': license text (Plain text),
                 #     'nonfreesoftware': Boolean,
+                #     'thirdpartysupplied': Boolean,
+                #     'manufacturersupplied': Boolean,
                 #     'patents': Boolean,
+                #     'supportcontacts' (optional):
+                #       list of { 'name',
+                #                 'url',
+                #                 'level',
+                #               }
                 #     'shortdescription': short description,
                 #     'recommended': Boolean,
                 #     'functionality':
@@ -261,13 +268,31 @@ class OpenPrinting:
                         dict['licensetext'] = element.text
 
                     for boolean in ['nonfreesoftware', 'recommended',
-                                    'patents']:
+                                    'patents', 'thirdpartysupplied',
+                                    'manufacturersupplied']:
                         dict[boolean] = driver.find (boolean) != None
 
                     # Make a 'freesoftware' tag for compatibility with
                     # how the OpenPrinting API used to work (see trac
                     # #74).
                     dict['freesoftware'] = not dict['nonfreesoftware']
+
+                    supportcontacts = []
+                    container = driver.find ('supportcontacts')
+                    if container != None:
+                        for sc in container.findall ('supportcontact'):
+                            supportcontact = {}
+                            if sc.text != None:
+                                supportcontact['name'] = \
+                                    _normalize_space (sc.text)
+                            else:
+                                supportcontact['name'] = ""
+                            supportcontact['url'] = sc.attrib.get ('url')
+                            supportcontact['level'] = sc.attrib.get ('level')
+                            supportcontacts.append (supportcontact)
+
+                    if supportcontacts:
+                        dict['supportcontacts'] = supportcontacts
 
                     if not dict.has_key ('name') or not dict.has_key ('url'):
                         continue
