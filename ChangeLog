@@ -1,5 +1,20 @@
 2008-09-25  Till Kamppeter  <till.kamppeter@gmail.com>
 
+	* applet.py, cupshelpers/ppds.py, system-config-printer.py: Added
+	support for automatic printer driver download from OpenPrinting
+	via Jockey. If no exactly matching driver for a new printer is
+	found, Jockey is asked for a driver via D-Bus. If Jockey actually
+	downloads a driver this way, the PPD list is rebuilt and if one of
+	the new PPDs installed by the driver package matches the printer,
+	it is suggested with priority.
+
+	If hal-cups-utils reports a newly generated queue with a driver
+	which does not match exactly, we capture the device ID now so that
+	we can ask Jockey.
+
+	If Jockey is not installed or too old, the Jockey queries fail
+	gracefully and a locally installed driver is chosen.
+	
 	* cupshelpers/openprinting.py: When querying a driver entry from the
 	OpenPrinting database, add also the fields 
          - thirdpartysupplied
