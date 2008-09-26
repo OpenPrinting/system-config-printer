@@ -2977,7 +2977,7 @@ class NewPrinterGUI(GtkGUI):
                 waiting = True
                 self.lblWait.set_markup ('<span weight="bold" size="larger">' +
                                          _('Searching') + '</span>\n\n' +
-                                         _('Searching for downloadable drivers'))
+                                         _('Searching for drivers'))
                 if not parent:
                     parent = self.mainapp.MainWindow
                 self.WaitWindow.set_transient_for (parent)
