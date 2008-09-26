@@ -164,6 +164,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
 
 # Some drivers are just generally better than others.
 # Here is the preference list:
+DRIVER_TYPE_DOWNLOADED_NOW = 5
 DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT = 8
 DRIVER_TYPE_VENDOR = 10
 DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 15
@@ -341,7 +342,8 @@ class PPDs:
 	"""
         return self.ppds[ppdname]
 
-    def orderPPDNamesByPreference (self, ppdnamelist=[]):
+    def orderPPDNamesByPreference (self, ppdnamelist=[],
+                                   downloadedfiles=[]):
         """
 
 	Sort a list of PPD names by (hard-coded) preferred driver
@@ -359,6 +361,11 @@ class PPDs:
         mfg, mdl = ppdMakeModelSplit (make_model)
         def getDriverTypeWithBias (x, mfg):
             t = _getDriverType (x, ppds=self)
+            for file in downloadedfiles:
+                (path, slash, filename) = file.rpartition ("/")
+                (xpath, xslash, xfilename) = x.rpartition ("/")
+                if filename == xfilename:
+                    return DRIVER_TYPE_DOWNLOADED_NOW
             if mfg == "HP":
                 if t == DRIVER_TYPE_FOOMATIC_HPIJS:
                     # Prefer HPIJS for HP devices.
@@ -430,7 +437,8 @@ class PPDs:
         return ppdnamelist
 
     def getPPDNameFromDeviceID (self, mfg, mdl, description="",
-                                commandsets=[], uri=None):
+                                commandsets=[], uri=None,
+                                downloadedfiles=[]):
         """
 	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
 	The status is one of:
@@ -581,7 +589,8 @@ class PPDs:
         # Now we have to choose the "best" one.  This is quite tricky
         # to decide, so let's sort them in order of preference and
         # take the first.
-        ppdnamelist = self.orderPPDNamesByPreference (ppdnamelist)
+        ppdnamelist = self.orderPPDNamesByPreference (ppdnamelist,
+                                                      downloadedfiles)
         _debugprint (str (ppdnamelist))
 
         if not id_matched:

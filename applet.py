@@ -103,6 +103,7 @@ class NewPrinterNotification(dbus.service.Object):
 
     @dbus.service.method(PDS_IFACE, in_signature='isssss', out_signature='')
     def NewPrinter (self, status, name, mfg, mdl, des, cmd):
+        #status = 1
         global viewer
         self.wake_up ()
         c = cups.Connection ()
@@ -153,12 +154,14 @@ class NewPrinterNotification(dbus.service.Object):
             n.add_action ("configure", _("Configure"),
                           lambda x, y: self.configure (x, y, name))
         else: # Model mismatch
+            devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % \
+                (mfg, mdl, des, cmd)
             text = _("`%s' has been added, using the `%s' driver.") % \
                    (name, driver)
             n = pynotify.Notification (title, text, 'printer')
             n.set_urgency (pynotify.URGENCY_CRITICAL)
             n.add_action ("find-driver", _("Find driver"),
-                          lambda x, y: self.find_driver (x, y, name))
+                          lambda x, y: self.find_driver (x, y, name, devid))
 
         n.set_timeout (pynotify.EXPIRES_NEVER)
         viewer.notify_new_printer (name, n)
@@ -182,8 +185,10 @@ class NewPrinterNotification(dbus.service.Object):
     def configure (self, notification, action, name):
         self.run_config_tool (["--configure-printer", name])
 
-    def find_driver (self, notification, action, name):
-        self.run_config_tool (["--choose-driver", name])
+    def find_driver (self, notification, action, name, devid = ""):
+        args = ["--choose-driver", name]
+        if devid != "": args = args + ["--devid", devid]
+        self.run_config_tool (args)
 
     def install_driver (self, notification, action, missing_pkgs):
         import os
