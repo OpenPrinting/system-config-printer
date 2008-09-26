@@ -24,7 +24,11 @@
 
 import gobject
 import gtk
-import sexy
+try:
+    import sexy
+    has_sexy = True
+except:
+    has_sexy = False
 import HIG
 from gettext import gettext as _
 
@@ -49,6 +53,8 @@ class ToolbarSearchEntry (gtk.HBox):
         }
 
     def __init__ (self):
+        global has_sexy
+        self.sexy = has_sexy
         self.entry = None
         self.timeout = 0
         self.is_a11y_theme = False
@@ -68,11 +74,14 @@ class ToolbarSearchEntry (gtk.HBox):
         label.set_justify (gtk.JUSTIFY_RIGHT)
         self.pack_start (label, False, True, 0);
 
-        self.entry = sexy.IconEntry ()
-        self.entry.add_clear_button ()
-        self.entry.set_icon (sexy.ICON_ENTRY_PRIMARY,
-                             gtk.image_new_from_stock (gtk.STOCK_FIND,
-                                                       gtk.ICON_SIZE_MENU))
+        if self.sexy:
+            self.entry = sexy.IconEntry ()
+            self.entry.add_clear_button ()
+            self.entry.set_icon (sexy.ICON_ENTRY_PRIMARY,
+                                 gtk.image_new_from_stock (gtk.STOCK_FIND,
+                                                           gtk.ICON_SIZE_MENU))
+        else:
+            self.entry = gtk.Entry()
 
         label.set_mnemonic_widget (self.entry)
 
@@ -81,7 +90,8 @@ class ToolbarSearchEntry (gtk.HBox):
         self.entry.connect ('changed', self.on_changed)
         self.entry.connect ('focus_out_event', self.on_focus_out_event)
         self.entry.connect ('activate', self.on_activate)
-        self.entry.connect ("icon-pressed", self.on_icon_pressed)
+        if self.sexy:
+            self.entry.connect ("icon-pressed", self.on_icon_pressed)
 
     def do_get_property (self, property):
         if property.name == 'search_timeout':
@@ -166,6 +176,8 @@ class ToolbarSearchEntry (gtk.HBox):
         self.entry.grab_focus ()
 
     def set_drop_down_menu (self, menu):
+        if not self.sexy:
+            return
         if menu:
             self.entry.set_icon_highlight (sexy.ICON_ENTRY_PRIMARY, True)
             self.menu = menu
@@ -174,6 +186,8 @@ class ToolbarSearchEntry (gtk.HBox):
             self.menu = None
 
     def on_icon_pressed (self, UNUSED, icon_position, button):
+        if not self.sexy:
+            return
         if icon_position != sexy.ICON_ENTRY_PRIMARY:
             return
         if not self.menu:
