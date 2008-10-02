@@ -4,13 +4,14 @@
 # Sulyok Péter <peti@sulyok.hu>, 2004, 2008.
 # Arpad Biro <biro_arpad@yahoo.com>, 2004, 2006, 2007.
 # Gabor Kelemen <kelemeng@gnome.hu>, 2007.
+# KAMI911 <kami911@gmail.com>, 2007, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-09-29 17:51+0100\n"
-"PO-Revision-Date: 2008-04-12 01:09+0100\n"
-"Last-Translator: Sulyok Péter <peti@sulyok.hu>\n"
+"POT-Creation-Date: 2008-09-26 09:20+0000\n"
+"PO-Revision-Date: 2008-10-01 11:30+0100\n"
+"Last-Translator: Kami <kami911@gmail.com>\n"
 "Language-Team: Hungarian <fedora-trans-hu@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -18,47 +19,44 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../AdvancedServerSettings.py:40
-#, fuzzy
 msgid "Advanced Server Settings"
-msgstr "Alapvető kiszolgáló beállítások"
+msgstr "Haladó kiszolgáló beállítások"
 
 #: ../AdvancedServerSettings.py:57
-#, fuzzy
 msgid "Job History"
-msgstr "Feladat-prioritás:"
+msgstr "Feladat-előzmények"
 
 #: ../AdvancedServerSettings.py:68
 msgid "Do not preserve job history"
-msgstr ""
+msgstr "Ne őrizze meg a nyomtatási előzményeket"
 
 #: ../AdvancedServerSettings.py:70
 msgid "Preserve job history but not files"
-msgstr ""
+msgstr "Nyomtatási előzmények megőrzése feladat fájlok nélkül"
 
 #: ../AdvancedServerSettings.py:73
 msgid "Preserve job files (allow reprinting)"
-msgstr ""
+msgstr "Feladat fájlok megőrzése (újranyomtatás lehetséges)"
 
 #: ../AdvancedServerSettings.py:81
 msgid "Browse Servers"
-msgstr ""
+msgstr "Kiszolgálók tallózása"
 
 #: ../AdvancedServerSettings.py:92
-msgid ""
-"Usually print servers broadcast their queues.  Specify print servers below "
-"to periodically ask for queues instead."
-msgstr ""
+msgid "Usually print servers broadcast their queues.  Specify print servers below to periodically ask for queues instead."
+msgstr "A nyomtató kiszolgálók rendszerint kihirdetik a nyomtatási soraikat. Az alábbiakban megadott nyomtató kiszolgálók periodikusan le lesznek kérdezve az elérhető nyomtatási sorokért."
 
 #: ../AdvancedServerSettings.py:213
-#, fuzzy
 msgid "Enter IP address"
-msgstr "Kiszolgáló IP címe:"
+msgstr "Adja meg az IP címet"
 
-#: ../authconn.py:30 ../glade/NewPrinterWindow.glade.h:94
+#: ../authconn.py:30
+#: ../glade/NewPrinterWindow.glade.h:94
 msgid "Username:"
 msgstr "Felhasználónév:"
 
-#: ../authconn.py:31 ../glade/NewPrinterWindow.glade.h:69
+#: ../authconn.py:31
+#: ../glade/NewPrinterWindow.glade.h:69
 msgid "Password:"
 msgstr "Jelszó:"
 
@@ -71,11 +69,12 @@ msgid "Authentication"
 msgstr "Hitelesítés"
 
 #: ../authconn.py:252
-#, fuzzy, python-format
+#, python-format
 msgid "Authentication (%s)"
-msgstr "Hitelesítés"
+msgstr "Hitelesítés (%s)"
 
-#: ../errordialogs.py:50 ../errordialogs.py:62
+#: ../errordialogs.py:50
+#: ../errordialogs.py:62
 msgid "Not authorized"
 msgstr "Nincs jogosultság"
 
@@ -83,22 +82,20 @@ msgstr "Nincs jogosultság"
 msgid "The password may be incorrect."
 msgstr "Lehetséges, hogy helytelen a jelszó."
 
-#: ../errordialogs.py:53 ../errordialogs.py:67
+#: ../errordialogs.py:53
+#: ../errordialogs.py:67
 msgid "CUPS server error"
 msgstr "CUPS-kiszolgálóhiba"
 
-#: ../errordialogs.py:54 ../troubleshoot/PrintTestPage.py:322
+#: ../errordialogs.py:54
+#: ../troubleshoot/PrintTestPage.py:322
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Hiba történt a CUPS-művelet közben: „%s”."
 
 #: ../errordialogs.py:63
-msgid ""
-"The password may be incorrect, or the server may be configured to deny "
-"remote administration."
-msgstr ""
-"Lehetséges, hogy helytelen a jelszó, vagy pedig a kiszolgáló úgy van "
-"beállítva, hogy utasítsa el a távoli adminisztrációt."
+msgid "The password may be incorrect, or the server may be configured to deny remote administration."
+msgstr "Lehetséges, hogy helytelen a jelszó, vagy pedig a kiszolgáló úgy van beállítva, hogy utasítsa el a távoli adminisztrációt."
 
 #: ../errordialogs.py:69
 msgid "Bad request"
@@ -120,14 +117,15 @@ msgstr "Frissítés szükséges"
 msgid "Server error"
 msgstr "Kiszolgálóhiba"
 
-#: ../errordialogs.py:79 ../system-config-printer.py:1113
+#: ../errordialogs.py:79
+#: ../system-config-printer.py:1113
 msgid "Not connected"
 msgstr "Nincs csatlakoztatva"
 
 #: ../errordialogs.py:81
-#, fuzzy, python-format
+#, python-format
 msgid "status %s"
-msgstr "állapot: %d"
+msgstr "állapot: %s"
 
 #: ../errordialogs.py:83
 #, python-format
@@ -136,65 +134,68 @@ msgstr "HTTP-hiba történt: %s."
 
 #: ../GroupsPane.py:92
 msgid "_New Group"
-msgstr ""
+msgstr "Ú_j csoport"
 
 #: ../GroupsPane.py:95
 msgid "_New Group from Selection"
-msgstr ""
+msgstr "_Kiválasztásból új csoportot"
 
-#: ../GroupsPane.py:98 ../system-config-printer.py:369
+#: ../GroupsPane.py:98
+#: ../system-config-printer.py:369
 msgid "_Rename"
 msgstr "Átne_vezés"
 
 #: ../GroupsPane.py:170
 msgid "The item could not be renamed."
-msgstr ""
+msgstr "Ezt az elemet nem lehet átnevezni."
 
 #: ../GroupsPane.py:171
 #, python-format
 msgid "The name \"%s\" is already in use. Please use a different name."
-msgstr ""
+msgstr "A(z) „%s” elnevezés már használatban van. Adjon meg egy másik nevet."
 
 #: ../GroupsPane.py:290
 #, python-format
 msgid "Are you sure you want to permanently delete \"%s\"?"
-msgstr ""
+msgstr "Valóban végérvényesen el kívánja távolítani a(z) „%s” eszközt?"
 
 #: ../GroupsPane.py:296
-msgid ""
-"This will not delete any printer queues from your computer. To delete queues "
-"completely, you must delete them from the 'All Printers' group."
-msgstr ""
+msgid "This will not delete any printer queues from your computer. To delete queues completely, you must delete them from the 'All Printers' group."
+msgstr "Ez a művelet nem távolít el egyetlen nyomtatási sort se a számítógépről. A nyomtatási sorok végleges törléséhez törölje le a nyomtatási sorokat a „Minden nyomtató” csoportból."
 
 #: ../GroupsPane.py:318
 msgid "New Group"
-msgstr ""
+msgstr "Új csoport"
 
 #: ../GroupsPaneModel.py:47
-#, fuzzy
 msgid "All Printers"
-msgstr "Nyomtató"
+msgstr "Minden nyomtató"
 
 #: ../GroupsPaneModel.py:60
 msgid "Favorites"
-msgstr ""
+msgstr "Kedvencek"
 
-#: ../jobviewer.py:163 ../troubleshoot/PrintTestPage.py:77
+#: ../jobviewer.py:163
+#: ../troubleshoot/PrintTestPage.py:77
 msgid "Job"
 msgstr "Feladat"
 
 #: ../jobviewer.py:164
-#, fuzzy
 msgid "User"
-msgstr "Felhasználók"
+msgstr "Felhasználó"
 
-#: ../jobviewer.py:165 ../troubleshoot/PrintTestPage.py:81
+#: ../jobviewer.py:165
+#: ../troubleshoot/PrintTestPage.py:81
 msgid "Document"
 msgstr "Dokumentum"
 
-#: ../jobviewer.py:166 ../jobviewer.py:218 ../my-default-printer.py:152
-#: ../system-config-printer.py:342 ../system-config-printer.py:1259
-#: ../system-config-printer.py:3708 ../troubleshoot/PrintTestPage.py:79
+#: ../jobviewer.py:166
+#: ../jobviewer.py:218
+#: ../my-default-printer.py:152
+#: ../system-config-printer.py:342
+#: ../system-config-printer.py:1259
+#: ../system-config-printer.py:3708
+#: ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "Nyomtató"
 
@@ -206,42 +207,50 @@ msgstr "Méret"
 msgid "Time submitted"
 msgstr "Elküldési idő"
 
-#: ../jobviewer.py:169 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:169
+#: ../troubleshoot/PrintTestPage.py:82
 msgid "Status"
 msgstr "Állapot"
 
 #: ../jobviewer.py:201
 #, python-format
 msgid "my jobs on %s"
-msgstr ""
+msgstr "Saját feladatok a következőn: %s"
 
 #: ../jobviewer.py:203
 msgid "my jobs"
-msgstr ""
+msgstr "Saját feladatok"
 
 #: ../jobviewer.py:208
-#, fuzzy
 msgid "all jobs"
-msgstr "Minden feladat megszakítása"
+msgstr "Minden feladat"
 
 #: ../jobviewer.py:209
-#, fuzzy, python-format
+#, python-format
 msgid "Document Print Status (%s)"
-msgstr "A dokumentum nyomtatási állapota"
+msgstr "Dokumentum nyomtatási állapota (%s)"
 
 #: ../jobviewer.py:231
 msgid "Message"
 msgstr "Üzenet"
 
-#: ../jobviewer.py:368 ../jobviewer.py:434 ../jobviewer.py:435
-#: ../jobviewer.py:448 ../jobviewer.py:478 ../jobviewer.py:580
-#: ../system-config-printer.py:2302 ../troubleshoot/ChooseNetworkPrinter.py:95
+#: ../jobviewer.py:368
+#: ../jobviewer.py:434
+#: ../jobviewer.py:435
+#: ../jobviewer.py:448
+#: ../jobviewer.py:478
+#: ../jobviewer.py:580
+#: ../system-config-printer.py:2302
+#: ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
-#: ../troubleshoot/ChoosePrinter.py:84 ../troubleshoot/ChoosePrinter.py:85
-#: ../troubleshoot/ChoosePrinter.py:88 ../troubleshoot/ChoosePrinter.py:89
-#: ../troubleshoot/DeviceListed.py:83 ../troubleshoot/DeviceListed.py:84
+#: ../troubleshoot/ChoosePrinter.py:84
+#: ../troubleshoot/ChoosePrinter.py:85
+#: ../troubleshoot/ChoosePrinter.py:88
+#: ../troubleshoot/ChoosePrinter.py:89
+#: ../troubleshoot/DeviceListed.py:83
+#: ../troubleshoot/DeviceListed.py:84
 msgid "Unknown"
 msgstr "Ismeretlen"
 
@@ -273,7 +282,8 @@ msgstr "%d órával és 1 perccel ezelőtt"
 msgid "%d hours and %d minutes ago"
 msgstr "%d órával és %d perccel ezelőtt"
 
-#: ../jobviewer.py:397 ../jobviewer.py:438
+#: ../jobviewer.py:397
+#: ../jobviewer.py:438
 msgid "a minute ago"
 msgstr "1 perccel ezelőtt"
 
@@ -283,113 +293,114 @@ msgid "%d minutes ago"
 msgstr "%d perccel ezelőtt"
 
 #: ../jobviewer.py:463
-#, fuzzy
 msgid "Held for authentication"
-msgstr "Hitelesítés"
+msgstr "Visszatartás hitelesítésért"
 
-#: ../jobviewer.py:465 ../troubleshoot/PrintTestPage.py:39
+#: ../jobviewer.py:465
+#: ../troubleshoot/PrintTestPage.py:39
 msgid "Pending"
 msgstr "Felfüggesztve"
 
-#: ../jobviewer.py:466 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:466
+#: ../troubleshoot/PrintTestPage.py:40
 msgid "Held"
-msgstr "Tartva"
+msgstr "Visszatartott"
 
-#: ../jobviewer.py:467 ../system-config-printer.py:169
+#: ../jobviewer.py:467
+#: ../system-config-printer.py:169
 #: ../troubleshoot/PrintTestPage.py:41
 msgid "Processing"
 msgstr "Feldolgozás"
 
-#: ../jobviewer.py:468 ../system-config-printer.py:171
+#: ../jobviewer.py:468
+#: ../system-config-printer.py:171
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Stopped"
 msgstr "Leállítva"
 
-#: ../jobviewer.py:469 ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:469
+#: ../troubleshoot/PrintTestPage.py:43
 msgid "Canceled"
 msgstr "Törölve"
 
-#: ../jobviewer.py:470 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:470
+#: ../troubleshoot/PrintTestPage.py:44
 msgid "Aborted"
 msgstr "Megszakítva"
 
-#: ../jobviewer.py:471 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:471
+#: ../troubleshoot/PrintTestPage.py:45
 msgid "Completed"
 msgstr "Befejezve"
 
 #: ../jobviewer.py:493
-#, fuzzy
 msgid "Authentication Required"
-msgstr "Hitelesítés"
-
-#: ../jobviewer.py:494
-#, fuzzy
-msgid "Job requires authentication to proceed."
 msgstr "Hitelesítés szükséges"
 
+#: ../jobviewer.py:494
+msgid "Job requires authentication to proceed."
+msgstr "A feladat végrehajtásához hitelesítés szükséges."
+
 #: ../jobviewer.py:503
-#, fuzzy
 msgid "Authenticate"
 msgstr "Hitelesítés"
 
 #: ../jobviewer.py:578
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
-msgstr "Hitelesítés kell „%s” dokumentum (%d. munka) nyomtatásához."
+msgstr "Hitelesítés kell „%s” dokumentum (%d. feladat) nyomtatásához."
 
 #: ../jobviewer.py:677
-#, fuzzy
 msgid "Cancel Job"
-msgstr "Minden feladat megszakítása"
+msgstr "Feladat megszakítása"
 
 #: ../jobviewer.py:691
 msgid "Do you really want to cancel this job?"
-msgstr ""
+msgstr "Valóban meg kívánja szakítani a feladat végrehajtását?"
 
 #: ../jobviewer.py:719
-#, fuzzy
 msgid "canceling job"
-msgstr "Feladatokat elfogad"
+msgstr "Feladat megszakítás"
 
 #: ../jobviewer.py:743
 msgid "holding job"
-msgstr ""
+msgstr "Feladatok visszatartása"
 
 #: ../jobviewer.py:767
 msgid "releasing job"
-msgstr ""
+msgstr "Feladatok engedése"
 
 #: ../jobviewer.py:869
 msgid "No documents queued"
-msgstr "Nincs dokumentum a sorban"
+msgstr "Nincs dokumentum a nyomtatási sorban"
 
 #: ../jobviewer.py:871
 msgid "1 document queued"
-msgstr "1 dokumentum a sorban"
+msgstr "1 dokumentum a nyomtatási sorban"
 
 #: ../jobviewer.py:873
 #, python-format
 msgid "%d documents queued"
-msgstr "%d dokumentum a sorban"
+msgstr "%d dokumentum a nyomtatási sorban"
 
 #: ../jobviewer.py:1132
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr "Hiba történt „%s” dokumentum (%d. munka) nyomtatóra küldésekor."
+msgstr "Hiba történt „%s” dokumentum (%d. feladat) nyomtatóra küldésekor."
 
 #: ../jobviewer.py:1135
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
-msgstr "Hiba történt „%s” dokumentum (%d. munka) feldolgozása közben."
+msgstr "Hiba történt „%s” dokumentum (%d. feladat) feldolgozása közben."
 
 #. Give up and use the provided message untranslated.
 #: ../jobviewer.py:1141
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
-msgstr ""
-"„%s” dokumentum (%d. munka) nyomtatása közben a következő hiba történt: „%s”."
+msgstr "„%s” dokumentum (%d. feladat) nyomtatása közben a következő hiba történt: „%s”."
 
-#: ../jobviewer.py:1147 ../jobviewer.py:1163
+#: ../jobviewer.py:1147
+#: ../jobviewer.py:1163
 msgid "Print Error"
 msgstr "Nyomtatási hiba"
 
@@ -402,20 +413,25 @@ msgstr "_Diagnosztizál"
 msgid "The printer called `%s' has been disabled."
 msgstr "„%s” nevű nyomtató letiltva."
 
-#: ../my-default-printer.py:136 ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:136
+#: ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
 msgstr "Alapértelmezett nyomtató"
 
-#: ../my-default-printer.py:140 ../my-default-printer.py:176
+#: ../my-default-printer.py:140
+#: ../my-default-printer.py:176
 msgid "_Use System Default"
 msgstr "A rendszer _alapértelmezésének használata"
 
-#: ../my-default-printer.py:141 ../my-default-printer.py:178
+#: ../my-default-printer.py:141
+#: ../my-default-printer.py:178
 msgid "_Set Default"
 msgstr "_Beállítás alapértelmezettként"
 
-#: ../my-default-printer.py:157 ../system-config-printer.py:399
-#: ../system-config-printer.py:3315 ../troubleshoot/ChooseNetworkPrinter.py:36
+#: ../my-default-printer.py:157
+#: ../system-config-printer.py:399
+#: ../system-config-printer.py:3315
+#: ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
 msgstr "Hely"
@@ -425,11 +441,8 @@ msgid "Conflicts with:"
 msgstr "Ütközik ezzel:"
 
 #: ../system-config-printer.py:110
-#, fuzzy
 msgid "To do this, select System->Administration->Firewall from the main menu."
-msgstr ""
-"Az eszköz indításához válassza ki a Rendszer → Adminisztráció → Nyomtatás "
-"menüpontot a főmenüből."
+msgstr "A beállítás elvégzéséhez válassza ki a Rendszer → Adminisztráció → Tűzfal menüpontot a főmenüből."
 
 #: ../system-config-printer.py:168
 msgid "Idle"
@@ -439,20 +452,18 @@ msgstr "Üresjárat"
 msgid "Busy"
 msgstr "Foglalt"
 
-#: ../system-config-printer.py:348 ../system-config-printer.py:1265
-#, fuzzy
+#: ../system-config-printer.py:348
+#: ../system-config-printer.py:1265
 msgid "Class"
-msgstr "Új osztály"
+msgstr "Osztály"
 
 #: ../system-config-printer.py:375
-#, fuzzy
 msgid "Set As De_fault"
-msgstr "Alapértelmezettnek választ"
+msgstr "_Alapértelmezettnek választ"
 
 #: ../system-config-printer.py:379
-#, fuzzy
 msgid "_Create class"
-msgstr "Távoli osztály"
+msgstr "Osztály _létrehozása"
 
 #: ../system-config-printer.py:381
 msgid "View Print _Queue"
@@ -460,50 +471,51 @@ msgstr "Nyomtatási _sor megtekintése"
 
 #: ../system-config-printer.py:383
 msgid "_Add to Group"
-msgstr ""
+msgstr "_Hozzáadás csoporthoz"
 
 #: ../system-config-printer.py:385
 msgid "Save Results as _Group"
-msgstr ""
+msgstr "Eredmény mentése _csoportként"
 
 #: ../system-config-printer.py:387
 msgid "Save Filter as _Search Group"
-msgstr ""
+msgstr "Szűrő mentése _keresési _csoportként"
 
 #: ../system-config-printer.py:391
-#, fuzzy
 msgid "E_nabled"
-msgstr "E_ngedélyez"
+msgstr "E_ngedélyezve"
 
 #: ../system-config-printer.py:393
-#, fuzzy
 msgid "_Shared"
-msgstr "Megosztva"
+msgstr "Me_gosztva"
 
-#: ../system-config-printer.py:397 ../troubleshoot/ChooseNetworkPrinter.py:34
-#: ../troubleshoot/ChoosePrinter.py:35 ../troubleshoot/DeviceListed.py:35
+#: ../system-config-printer.py:397
+#: ../troubleshoot/ChooseNetworkPrinter.py:34
+#: ../troubleshoot/ChoosePrinter.py:35
+#: ../troubleshoot/DeviceListed.py:35
 msgid "Name"
 msgstr "Név"
 
 #: ../system-config-printer.py:398
-#, fuzzy
 msgid "Description"
-msgstr "Leírás:"
+msgstr "_Leírás"
 
 #: ../system-config-printer.py:400
 msgid "Manufacturer / Model"
-msgstr ""
+msgstr "Gyártó / Modell"
 
 #. Set up "Problems?" link button
 #: ../system-config-printer.py:471
 msgid "Problems?"
-msgstr "Bajok?"
+msgstr "Hibaelhárítás"
 
-#: ../system-config-printer.py:572 ../system-config-printer.py:574
+#: ../system-config-printer.py:572
+#: ../system-config-printer.py:574
 msgid "Members of this class"
 msgstr "Ezen osztály tagjai"
 
-#: ../system-config-printer.py:573 ../system-config-printer.py:575
+#: ../system-config-printer.py:573
+#: ../system-config-printer.py:575
 msgid "Others"
 msgstr "Többi"
 
@@ -512,9 +524,8 @@ msgid "Devices"
 msgstr "Eszközök"
 
 #: ../system-config-printer.py:577
-#, fuzzy
 msgid "Connections"
-msgstr "Kapcsolódás"
+msgstr "Kapcsolatok"
 
 #: ../system-config-printer.py:578
 msgid "Makes"
@@ -528,9 +539,10 @@ msgstr "Modellek"
 msgid "Drivers"
 msgstr "Meghajtóprogramok"
 
-#: ../system-config-printer.py:581 ../glade/NewPrinterWindow.glade.h:52
+#: ../system-config-printer.py:581
+#: ../glade/NewPrinterWindow.glade.h:52
 msgid "Downloadable Drivers"
-msgstr "Letölthető vezérlők"
+msgstr "Letölthető meghajtóprogramok"
 
 #: ../system-config-printer.py:582
 msgid "Users"
@@ -556,41 +568,43 @@ msgid "Connected to %s"
 msgstr "Csatlakoztatva ide: %s"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1150 ../system-config-printer.py:1929
+#: ../system-config-printer.py:1150
+#: ../system-config-printer.py:1929
 msgid "obtaining queue details"
-msgstr ""
+msgstr "Nyomtatási sor részleteinek lekérése"
 
 #: ../system-config-printer.py:1187
 msgid "Remove from Group"
-msgstr ""
+msgstr "_Eltávolítás a csoportból"
 
 #: ../system-config-printer.py:1253
-#, fuzzy
 msgid "Network printer (discovered)"
-msgstr "Hálózati nyomtató"
+msgstr "Hálózati nyomtató (felfedezett)"
 
 #: ../system-config-printer.py:1256
 msgid "Network class (discovered)"
-msgstr ""
+msgstr "Hálózati osztály (felfedezett)"
 
-#: ../system-config-printer.py:1262 ../system-config-printer.py:3709
+#: ../system-config-printer.py:1262
+#: ../system-config-printer.py:3709
 msgid "Fax"
 msgstr "Fax"
 
-#: ../system-config-printer.py:1268 ../system-config-printer.py:1274
+#: ../system-config-printer.py:1268
+#: ../system-config-printer.py:1274
 #: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "Hálózati nyomtató"
 
 #: ../system-config-printer.py:1271
-#, fuzzy
 msgid "Network print share"
-msgstr "Hálózati nyomtató"
+msgstr "Hálózati nyomtató-megosztás"
 
-#: ../system-config-printer.py:1395 ../glade/ConnectingDialog.glade.h:2
+#: ../system-config-printer.py:1395
+#: ../glade/ConnectingDialog.glade.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
-msgstr ""
+msgstr "<i>Kapcsolat létrehozása a következővel: %s</i>"
 
 #: ../system-config-printer.py:1772
 msgid "Installable Options"
@@ -614,14 +628,17 @@ msgstr ""
 #: ../system-config-printer.py:1813
 #, python-format
 msgid "modifying class %s"
-msgstr ""
+msgstr "A(z) %s osztály módosítása"
 
-#: ../system-config-printer.py:1815 ../system-config-printer.py:2759
-#: ../system-config-printer.py:2784 ../system-config-printer.py:5676
-#: ../system-config-printer.py:5687 ../system-config-printer.py:5705
-#, fuzzy, python-format
+#: ../system-config-printer.py:1815
+#: ../system-config-printer.py:2759
+#: ../system-config-printer.py:2784
+#: ../system-config-printer.py:5676
+#: ../system-config-printer.py:5687
+#: ../system-config-printer.py:5705
+#, python-format
 msgid "modifying printer %s"
-msgstr "Nyomtató hozzáadása"
+msgstr "%s nyomtató beállítása"
 
 #: ../system-config-printer.py:1830
 msgid "This will delete this class!"
@@ -635,69 +652,63 @@ msgstr "Szeretné mégis folytatni?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:1917 ../system-config-printer.py:2943
-#, fuzzy
+#: ../system-config-printer.py:1917
+#: ../system-config-printer.py:2943
 msgid "fetching server settings"
-msgstr "Alapvető kiszolgáló beállítások"
+msgstr "Kiszolgáló beállítások lekérése"
 
 #: ../system-config-printer.py:1980
-#, fuzzy
 msgid "Set Default Printer"
 msgstr "Alapértelmezett nyomtató"
 
 #: ../system-config-printer.py:1982
 msgid "Do you want to set this as the system-wide default printer?"
-msgstr ""
+msgstr "Valóban be kívánja állítani a rendszer alapértelmezett nyomtatójaként?"
 
 #: ../system-config-printer.py:1984
-#, fuzzy
 msgid "Set as the _system-wide default printer"
-msgstr "Ez az alapértelmezett nyomtató"
+msgstr "Beállítás _rendszer alapértelmezett nyomtatóként"
 
 #: ../system-config-printer.py:1986
 msgid "_Clear my personal default setting"
-msgstr ""
+msgstr "Saját alapértelmezett beállítások törlése"
 
 #: ../system-config-printer.py:1987
-#, fuzzy
 msgid "Set as my _personal default printer"
-msgstr "Alapértelmezett nyomtató kiválasztása"
+msgstr "Beállítás _saját alapértelmezett nyomtatóként"
 
 #: ../system-config-printer.py:1991
-#, fuzzy
 msgid "setting default printer"
 msgstr "Alapértelmezett nyomtató kiválasztása"
 
 #: ../system-config-printer.py:2035
-#, fuzzy
 msgid "printing test page"
-msgstr "Tesztlap nyomtatása"
+msgstr "Tesztoldal nyomtatása"
 
-#: ../system-config-printer.py:2048 ../system-config-printer.py:2081
+#: ../system-config-printer.py:2048
+#: ../system-config-printer.py:2081
 #: ../system-config-printer.py:4843
 msgid "Not possible"
 msgstr "Nem lehetséges"
 
-#: ../system-config-printer.py:2049 ../system-config-printer.py:2082
-msgid ""
-"The remote server did not accept the print job, most likely because the "
-"printer is not shared."
-msgstr ""
-"A távoli nyomtató nem fogadta el a nyomtatási feladatot - valószínűleg "
-"azért, mert nincs megosztva a nyomtató."
+#: ../system-config-printer.py:2049
+#: ../system-config-printer.py:2082
+msgid "The remote server did not accept the print job, most likely because the printer is not shared."
+msgstr "A távoli nyomtató nem fogadta el a nyomtatási feladatot - valószínűleg azért, mert nincs megosztva a nyomtató."
 
-#: ../system-config-printer.py:2059 ../system-config-printer.py:2074
+#: ../system-config-printer.py:2059
+#: ../system-config-printer.py:2074
 msgid "Submitted"
 msgstr "Elküldve"
 
 #: ../system-config-printer.py:2060
 #, python-format
 msgid "Test page submitted as job %d"
-msgstr "A tesztlap elküldve a következő feladat-azonosítóval: %d"
+msgstr "A tesztoldal elküldve a következő feladat-azonosítóval: %d"
 
 #: ../system-config-printer.py:2067
 msgid "sending maintenance command"
-msgstr ""
+msgstr "Karbantartási parancs küldése"
 
 #: ../system-config-printer.py:2075
 #, python-format
@@ -707,13 +718,14 @@ msgstr "A karbantartási feladat elküldve %d. feladatként"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2134 ../system-config-printer.py:2241
+#: ../system-config-printer.py:2134
+#: ../system-config-printer.py:2241
 msgid "Error"
 msgstr "Hiba"
 
 #: ../system-config-printer.py:2135
 msgid "There was a problem connecting to the CUPS server."
-msgstr "Hiba történt a CUPS-kiszolgálóhoz való kapcsolódás közben."
+msgstr "Hiba történt a CUPS-kiszolgálóhoz történő kapcsolódás közben."
 
 #: ../system-config-printer.py:2242
 #, python-format
@@ -721,26 +733,22 @@ msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "„%s” beállítás „%s” értékkel rendelkezik és nem változtatható meg."
 
 #: ../system-config-printer.py:2508
-#, fuzzy
 msgid "Cannot Rename"
-msgstr "Átne_vezés"
+msgstr "Nem nevezhető át"
 
 #: ../system-config-printer.py:2509
-#, fuzzy
 msgid "There are queued jobs."
-msgstr "Nincsen elérhető nyomtatási sor"
+msgstr "Dokumentumok vannak a nyomtatási sorban"
 
 #: ../system-config-printer.py:2567
-#, fuzzy
 msgid "renaming printer"
-msgstr "Nyomtató hozzáadása"
+msgstr "nyomtató átnevezése"
 
 #. for classes make sure all members
 #. will get added
 #: ../system-config-printer.py:2648
-#, fuzzy
 msgid "copying printer"
-msgstr "Nyomtató hozzáadása"
+msgstr "nyomtató másolása"
 
 #: ../system-config-printer.py:2712
 #, python-format
@@ -757,24 +765,21 @@ msgid "Really delete selected destinations?"
 msgstr "Valóban törli a kiválasztott célokat?"
 
 #: ../system-config-printer.py:2737
-#, fuzzy, python-format
+#, python-format
 msgid "deleting printer %s"
-msgstr "Nyomtató hozzáadása"
+msgstr "„%s” nyomtató törlése"
 
 #: ../system-config-printer.py:2809
 msgid "Publish Shared Printers"
-msgstr ""
+msgstr "Megosztott nyomtatók közzététele"
 
 #: ../system-config-printer.py:2810
-msgid ""
-"Shared printers are not available to other people unless the 'Publish shared "
-"printers' option is enabled in the server settings."
-msgstr ""
+msgid "Shared printers are not available to other people unless the 'Publish shared printers' option is enabled in the server settings."
+msgstr "A megosztott nyomtatók nem érhetőek el mások számára, amíg a „Megosztott nyomtatók közzététele” beállítást nem engedélyezi a kiszolgáló beállítási között."
 
 #: ../system-config-printer.py:3004
-#, fuzzy
 msgid "modifying server settings"
-msgstr "Alapvető kiszolgáló beállítások"
+msgstr "Kiszolgáló beállítások megváltoztatása"
 
 #. We have just enabled print queue sharing.
 #. Ideally, this is the time we would check the firewall
@@ -783,19 +788,16 @@ msgstr "Alapvető kiszolgáló beállítások"
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
 #: ../system-config-printer.py:3029
-#, fuzzy
 msgid "Review Firewall"
-msgstr "Ellenőrizze a kiszolgáló tűzfal-beállításait."
+msgstr "Tűzfal-beállítások ellenőrzése"
 
 #: ../system-config-printer.py:3030
-msgid ""
-"You may need to adjust the firewall to allow network printing to this "
-"computer."
-msgstr ""
+msgid "You may need to adjust the firewall to allow network printing to this computer."
+msgstr "Esetenként a rendszer tűzfala további beállításokat igényel, hogy a hálózati nyomtatás lehetséges legyen ezen a számítógépen keresztül."
 
 #: ../system-config-printer.py:3278
 msgid "Browsing not available (pysmbc not installed)"
-msgstr ""
+msgstr "Tallózás nem lehetséges (pysmbc nincs telepítve)"
 
 #. SMB list columns
 #: ../system-config-printer.py:3284
@@ -812,22 +814,21 @@ msgid "Queue"
 msgstr "Nyomtatási sor"
 
 #: ../system-config-printer.py:3323
-msgid ""
-"PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
-"PPD.GZ)"
-msgstr ""
-"PostScript nyomtatóleíró-fájlok (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
+msgid "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
+msgstr "PostScript nyomtatóleíró-fájlok (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
 
 #: ../system-config-printer.py:3332
 msgid "All files (*)"
 msgstr "Minden fájl (*)"
 
-#: ../system-config-printer.py:3368 ../system-config-printer.py:5158
+#: ../system-config-printer.py:3368
+#: ../system-config-printer.py:5158
 #: ../system-config-printer.py:5196
 msgid "Search"
 msgstr "Keresés"
 
-#: ../system-config-printer.py:3382 ../glade/NewPrinterWindow.glade.h:66
+#: ../system-config-printer.py:3382
+#: ../glade/NewPrinterWindow.glade.h:66
 msgid "New Printer"
 msgstr "Új nyomtató"
 
@@ -837,31 +838,32 @@ msgstr "Új osztály"
 
 #: ../system-config-printer.py:3398
 msgid "Change Device URI"
-msgstr "Az eszköz URI-jának módosítása"
+msgstr "Az eszköz URI azonosítójának módosítása"
 
 #: ../system-config-printer.py:3402
 msgid "Change Driver"
 msgstr "Meghajtóprogram módosítása"
 
-#: ../system-config-printer.py:3550 ../system-config-printer.py:3617
-#: ../system-config-printer.py:3920 ../system-config-printer.py:4145
+#: ../system-config-printer.py:3550
+#: ../system-config-printer.py:3617
+#: ../system-config-printer.py:3920
+#: ../system-config-printer.py:4145
 #: ../system-config-printer.py:5183
 msgid "Searching"
 msgstr "Keresés"
 
-#: ../system-config-printer.py:3551 ../system-config-printer.py:3618
+#: ../system-config-printer.py:3551
+msgid "Searching for downloadable drivers"
+msgstr "Letölthető meghajtóprogramok keresése"
+
+#: ../system-config-printer.py:3618
 #: ../system-config-printer.py:3921
 msgid "Searching for drivers"
-msgstr "Vezérlők keresése"
+msgstr "Meghajtóprogramok keresése"
 
 #: ../system-config-printer.py:3710
-#, fuzzy
-msgid ""
-"This printer supports both printing and sending faxes.  Which functionality "
-"should be used for this queue?"
-msgstr ""
-"Ez a nyomtató nyomtatást és faxok küldését is támogatja.\n"
-"Ezt a nyomtatási sort milyen feladatokra kellene használlni?"
+msgid "This printer supports both printing and sending faxes.  Which functionality should be used for this queue?"
+msgstr "Ez a nyomtató nyomtatást és faxok küldését is támogatja. Ezt a nyomtatási sort melyik feladatokra kellene használni?"
 
 #: ../system-config-printer.py:4146
 msgid "Searching for printers"
@@ -875,52 +877,50 @@ msgstr " (Aktuális)"
 msgid "Other"
 msgstr "Egyéb"
 
-#: ../system-config-printer.py:4414 ../system-config-printer.py:4805
+#: ../system-config-printer.py:4414
+#: ../system-config-printer.py:4805
 msgid "Scanning..."
 msgstr "Keresés..."
 
 #: ../system-config-printer.py:4469
-#, fuzzy
 msgid "No Print Shares"
-msgstr "Hálózati nyomtató"
+msgstr "Nincsenek nyomatómegosztások"
 
 #: ../system-config-printer.py:4470
-msgid ""
-"There were no print shares found.  Please check that the Samba service is "
-"marked as trusted in your firewall configuration."
-msgstr ""
+msgid "There were no print shares found.  Please check that the Samba service is marked as trusted in your firewall configuration."
+msgstr "Nem találhatóak megosztott nyomtatók. Ellenőrizze, hogy a Samba kiszolgáló szolgáltatás megbízhatónak van jelölve a tűzfal beállításaiban."
 
-#: ../system-config-printer.py:4727 ../system-config-printer.py:4787
+#: ../system-config-printer.py:4727
+#: ../system-config-printer.py:4787
 msgid "Print Share Verified"
-msgstr ""
+msgstr "Nyomtató-megosztás ellenőrizve"
 
-#: ../system-config-printer.py:4728 ../system-config-printer.py:4788
+#: ../system-config-printer.py:4728
+#: ../system-config-printer.py:4788
 msgid "This print share is accessible."
 msgstr "Ez a nyomtatási megosztás elérhető."
 
-#: ../system-config-printer.py:4732 ../system-config-printer.py:4792
+#: ../system-config-printer.py:4732
+#: ../system-config-printer.py:4792
 msgid "This print share is not accessible."
 msgstr "Ez a nyomtatási megosztás nem elérhető."
 
 #: ../system-config-printer.py:4735
-#, fuzzy
 msgid "Print Share Inaccessible"
-msgstr "Ez a nyomtatási megosztás elérhető."
+msgstr "Nyomatómegosztások elérhetetlenek"
 
 #: ../system-config-printer.py:4791
 msgid "Inaccessible"
 msgstr "Nem elérhető"
 
 #: ../system-config-printer.py:4844
-#, fuzzy, python-format
+#, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
-msgstr "Erről a gépről nem lehet lekérdezni a nyomtatási sorok listáját."
+msgstr "A(z) „%s” gépről nem lehet lekérdezni a nyomtatási sorok listáját."
 
 #: ../system-config-printer.py:4846
-msgid ""
-"Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
-"not support it."
-msgstr ""
+msgid "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do not support it."
+msgstr "A nyomtatási sorok listájának lekérése egy, az IPP protokollhoz szánt CUPS kiterjesztésen keresztül. A hálózati nyomtatók nem támogatják ezt a funkciót."
 
 #: ../system-config-printer.py:4849
 msgid "No queues"
@@ -939,29 +939,20 @@ msgid "A printer connected to a USB port."
 msgstr "Egy USB-portra kapcsolt nyomtató."
 
 #: ../system-config-printer.py:4944
-msgid ""
-"HPLIP software driving a printer, or the printer function of a multi-"
-"function device."
-msgstr ""
-"Egy nyomtatót vagy egy többfunkciós eszköz nyomtatási funkcióját vezérlő "
-"HPLIP meghajtóprogram."
+msgid "HPLIP software driving a printer, or the printer function of a multi-function device."
+msgstr "Egy nyomtatót vagy egy többfunkciós eszköz nyomtatási funkcióját vezérlő HPLIP meghajtóprogram."
 
 #: ../system-config-printer.py:4947
-msgid ""
-"HPLIP software driving a fax machine, or the fax function of a multi-"
-"function device."
-msgstr ""
-"Egy faxgépet vagy egy többfunkciós eszköz fax-funkcióját vezérlő HPLIP "
-"meghajtóprogram."
+msgid "HPLIP software driving a fax machine, or the fax function of a multi-function device."
+msgstr "Egy faxgépet vagy egy többfunkciós eszköz fax-funkcióját vezérlő HPLIP meghajtóprogram."
 
 #: ../system-config-printer.py:4950
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "A hardverabsztrakciós réteg (HAL) egy helyi nyomtatót érzékelt."
 
 #: ../system-config-printer.py:5208
-#, fuzzy
 msgid "-- Select from search results --"
-msgstr "-- Válassza ki a nyomtató típusát --"
+msgstr "-- Válasszon a keresés eredményéből --"
 
 #: ../system-config-printer.py:5210
 msgid "-- No matches found --"
@@ -973,7 +964,7 @@ msgstr " (javasolt)"
 
 #: ../system-config-printer.py:5406
 msgid "This PPD is generated by foomatic."
-msgstr "Ezt a PPD-t a Foomatic készítette."
+msgstr "Ezt a PPD fájlt a Foomatic készítette."
 
 #: ../system-config-printer.py:5432
 msgid "OpenPrinting"
@@ -1012,7 +1003,7 @@ msgstr "A meghajtóprogram használatához telepíteni kell a(z) „%s” csomag
 #. This error came from trying to open the PPD file.
 #: ../system-config-printer.py:5502
 msgid "PPD error"
-msgstr "PPD-hiba"
+msgstr "PPD-fájl hiba"
 
 #: ../system-config-printer.py:5504
 msgid "Failed to read PPD file.  Possible reason follows:"
@@ -1021,13 +1012,14 @@ msgstr "Nem sikerült beolvasni a PPD-fájlt. A lehetséges ok:"
 #. Failed to get PPD downloaded from OpenPrinting XXX
 #: ../system-config-printer.py:5521
 msgid "Downloadable drivers"
-msgstr "Letölthető vezérlők"
+msgstr "Letölthető meghajtóprogramok"
 
 #: ../system-config-printer.py:5522
 msgid "Failed to download PPD."
-msgstr ""
+msgstr "Nem sikerült letölteni a PPD-fájlt."
 
-#: ../system-config-printer.py:5555 ../system-config-printer.py:5593
+#: ../system-config-printer.py:5555
+#: ../system-config-printer.py:5593
 msgid "No Installable Options"
 msgstr "Nincs telepíthető opció"
 
@@ -1040,20 +1032,18 @@ msgid "Adding printer"
 msgstr "Nyomtató hozzáadása"
 
 #: ../system-config-printer.py:5645
-#, fuzzy, python-format
+#, python-format
 msgid "adding printer %s"
-msgstr "Nyomtató hozzáadása"
+msgstr "nyomtató hozzáadása: %s"
 
 #: ../system-config-printer.py:5819
 msgid "Install driver"
-msgstr "Vezérlő telepítése"
+msgstr "Meghajtóprogram telepítése"
 
 #: ../system-config-printer.py:5820
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
-msgstr ""
-"A(z) „%s” nyomtatóhoz szükség van a(z) %s csomagra, de az jelenleg nincs "
-"telepítve."
+msgstr "A(z) „%s” nyomtatóhoz szükség van a(z) %s csomagra, de az jelenleg nincs telepítve."
 
 #: ../system-config-printer.py:5845
 msgid "Missing driver"
@@ -1061,50 +1051,30 @@ msgstr "Hiányzó meghajtóprogram"
 
 #: ../system-config-printer.py:5846
 #, python-format
-msgid ""
-"Printer '%s' requires the '%s' program but it is not currently installed.  "
-"Please install it before using this printer."
-msgstr ""
-"„%s” nyomtatóhoz szükség van „%s” programra, de az jelenleg nincs telepítve. "
-"A nyomtató használata előtt telepítse azt."
+msgid "Printer '%s' requires the '%s' program but it is not currently installed.  Please install it before using this printer."
+msgstr "„%s” nyomtatóhoz szükség van „%s” programra, de az jelenleg nincs telepítve. A nyomtató használata előtt telepítse azt."
 
 #: ../glade/AboutDialog.glade.h:1
 msgid "A CUPS configuration tool."
 msgstr "CUPS beállítására szolgáló eszköz."
 
 #: ../glade/AboutDialog.glade.h:2
-#, fuzzy
 msgid "Copyright © 2006-2008 Red Hat, Inc."
-msgstr "Copyright © 2006-2007 Red Hat, Inc."
+msgstr "Copyright © 2006-2008 Red Hat, Inc."
 
 #: ../glade/AboutDialog.glade.h:3
 msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
-"Ave, Cambridge, MA 02139, USA."
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
 msgstr ""
-"Ez egy szabad szoftver, terjesztheti és/vagy módosíthatja a Free Software "
-"Foundation által kiadott GNU General Public License második (vagy bármely "
-"későbbi) változatában foglaltak alapján.\n"
+"Ez egy szabad szoftver, terjesztheti és/vagy módosíthatja a Free Software Foundation által kiadott GNU General Public License második (vagy bármely későbbi) változatában foglaltak alapján.\n"
 "\n"
-"Ezt a programot abban a reményben terjesztjük, hogy hasznos lesz, de nem "
-"vállalunk SEMMIFÉLE GARANCIÁT, még olyan értelemben sem, hogy a program "
-"alkalmas-e a KÖZREADÁSRA vagy EGY BIZONYOS FELADAT ELVÉGZÉSÉRE. További "
-"részletekért tanulmányozza a GNU GPL engedélyt.\n"
+"Ezt a programot abban a reményben terjesztjük, hogy hasznos lesz, de nem vállalunk SEMMIFÉLE GARANCIÁT, még olyan értelemben sem, hogy a program alkalmas-e a KÖZREADÁSRA vagy EGY BIZONYOS FELADAT ELVÉGZÉSÉRE. További részletekért tanulmányozza a GNU GPL engedélyt.\n"
 "\n"
-"A programhoz a GNU General Public License egy példánya is jár, ha nem kapta "
-"meg, írjon a Free Software Foundation Inc.-nek. Levélcímük: 51 Franklin St, "
-"Fifth Floor, Boston, MA 02110-1301, USA."
+"A programhoz a GNU General Public License egy példánya is jár, ha nem kapta meg, írjon a Free Software Foundation Inc. cégnek. Levélcímük: 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA."
 
 #: ../glade/AboutDialog.glade.h:8
 msgid "system-config-printer"
@@ -1114,7 +1084,7 @@ msgstr "system-config-printer"
 #: ../glade/AboutDialog.glade.h:10
 msgid "translator-credits"
 msgstr ""
-"  Sulyok Péter\n"
+"  KAMI http://hun.sf.net/  Sulyok Péter\n"
 "Launchpad Contributions:\n"
 "  Arpad Biro https://launchpad.net/~biro-arpad\n"
 "  Gabor Kelemen https://launchpad.net/~kelemeng\n"
@@ -1124,7 +1094,6 @@ msgstr ""
 "  ŐRY Máté https://launchpad.net/~orymate"
 
 #: ../glade/ConnectDialog.glade.h:1
-#, fuzzy
 msgid "CUPS _server:"
 msgstr "CUPS-kiszolgáló:"
 
@@ -1133,19 +1102,14 @@ msgid "Connect to CUPS server"
 msgstr "Kapcsolódás a CUPS-kiszolgálóhoz"
 
 #: ../glade/ConnectDialog.glade.h:3
-#, fuzzy
 msgid "Require _encryption"
 msgstr "Titkosítás megkövetelése"
 
 #: ../glade/ConnectingDialog.glade.h:3
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Jelszó kötelező</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">Kapcsolódás a CUPS-kiszolgálóhoz</span>"
 
 #: ../glade/ConnectingDialog.glade.h:4
-#, fuzzy
 msgid "Connecting to CUPS server"
 msgstr "Kapcsolódás a CUPS-kiszolgálóhoz"
 
@@ -1163,11 +1127,11 @@ msgstr "Újr_anyomtatás"
 
 #: ../glade/job_popupmenu.glade.h:2
 msgid "_Hold"
-msgstr "_Tartás"
+msgstr "_Visszatartás"
 
 #: ../glade/job_popupmenu.glade.h:3
 msgid "_Release"
-msgstr "Elen_gedés"
+msgstr "En_gedés"
 
 #: ../glade/JobsWindow.glade.h:1
 msgid "Show _completed jobs"
@@ -1185,7 +1149,8 @@ msgstr "_Fájl"
 msgid "_Refresh"
 msgstr "_Frissítés"
 
-#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:17
+#: ../glade/JobsWindow.glade.h:5
+#: ../glade/PrintersWindow.glade.h:17
 msgid "_View"
 msgstr "_Megjelenítés"
 
@@ -1198,9 +1163,8 @@ msgid "New name for the printer"
 msgstr "Új név a nyomtatónak"
 
 #: ../glade/NewPrinterWindow.glade.h:1
-#, fuzzy
 msgid "<b>Authentication</b>"
-msgstr "Hitelesítés"
+msgstr "<b>Hitelesítés</b>"
 
 #: ../glade/NewPrinterWindow.glade.h:2
 msgid "<b>Description</b>"
@@ -1212,7 +1176,7 @@ msgstr "<b>Leírás</b> (nem kötelező)"
 
 #: ../glade/NewPrinterWindow.glade.h:4
 msgid "<b>Enter device URI</b>"
-msgstr "<b>Adja meg az eszköz URI-jét</b>"
+msgstr "<b>Adja meg az eszköz URI azonosítóját</b>"
 
 #: ../glade/NewPrinterWindow.glade.h:5
 msgid "<b>IPP Printer</b>"
@@ -1224,7 +1188,7 @@ msgstr "<b>Engedély</b>"
 
 #: ../glade/NewPrinterWindow.glade.h:7
 msgid "<b>Location of the LPD network printer</b>"
-msgstr "<b>Az LPD-s hálózati nyomtató helye</b>"
+msgstr "<b>Az LPD hálózati nyomtató helye</b>"
 
 #: ../glade/NewPrinterWindow.glade.h:8
 msgid "<b>Location of the network printer</b>"
@@ -1248,7 +1212,7 @@ msgstr "<b>SMB nyomtató</b>"
 
 #: ../glade/NewPrinterWindow.glade.h:13
 msgid "<b>Select Driver</b>"
-msgstr "<b>Vezérlő kiválasztása</b>"
+msgstr "<b>Meghajtóprogram kiválasztása</b>"
 
 #: ../glade/NewPrinterWindow.glade.h:14
 msgid "<b>Settings of the serial port</b>"
@@ -1259,46 +1223,28 @@ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[munkacsoport/]kiszolgáló[:port]/nyomtató</i>"
 
 #: ../glade/NewPrinterWindow.glade.h:16
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Jelszó kötelező</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">Osztály tagjainak kiválasztása</span>"
 
 #: ../glade/NewPrinterWindow.glade.h:17
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Jelszó kötelező</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">Meghajtóprogram kiválasztása</span>"
 
 #: ../glade/NewPrinterWindow.glade.h:18
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Jelszó kötelező</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">Nyomtató leírása</span>"
 
 #: ../glade/NewPrinterWindow.glade.h:19
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Jelszó kötelező</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">Beállítások</span>"
 
 #: ../glade/NewPrinterWindow.glade.h:20
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Jelszó kötelező</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">Telepíthető kiegészítők</span>"
 
 #: ../glade/NewPrinterWindow.glade.h:21
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Jelszó kötelező</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">Eszköz kiválasztása</span>"
 
 #: ../glade/NewPrinterWindow.glade.h:22
 msgid "Baud Rate"
@@ -1313,13 +1259,12 @@ msgid "Comments..."
 msgstr "Megjegyzések..."
 
 #: ../glade/NewPrinterWindow.glade.h:25
-#, fuzzy
 msgid "Connection"
 msgstr "Kapcsolódás"
 
 #: ../glade/NewPrinterWindow.glade.h:26
 msgid "Data Bits"
-msgstr "Adatbitek"
+msgstr "Adat beállítások"
 
 #: ../glade/NewPrinterWindow.glade.h:27
 msgid ""
@@ -1384,7 +1329,8 @@ msgstr ""
 msgid "Description:"
 msgstr "Leírás:"
 
-#: ../glade/NewPrinterWindow.glade.h:49 ../troubleshoot/DeviceListed.py:39
+#: ../glade/NewPrinterWindow.glade.h:49
+#: ../troubleshoot/DeviceListed.py:39
 msgid "Device URI"
 msgstr "Az eszköz URI-ja"
 
@@ -1398,7 +1344,7 @@ msgstr "DirectJet"
 
 #: ../glade/NewPrinterWindow.glade.h:53
 msgid "Driver details"
-msgstr "Vezérlő részletei"
+msgstr "Meghajtóprogram részletei"
 
 #: ../glade/NewPrinterWindow.glade.h:54
 msgid "Empty"
@@ -1413,10 +1359,8 @@ msgid "Flow Control"
 msgstr "Áramlásvezérlés"
 
 #: ../glade/NewPrinterWindow.glade.h:57
-msgid ""
-"For the printer you have selected there are drivers available for download."
-msgstr ""
-"Letölthető az Ön által kiválasztott nyomtatóhoz tartozó meghajtóprogram."
+msgid "For the printer you have selected there are drivers available for download."
+msgstr "Letölthető az Ön által kiválasztott nyomtatóhoz tartozó meghajtóprogram."
 
 #: ../glade/NewPrinterWindow.glade.h:58
 msgid "Host:"
@@ -1427,12 +1371,11 @@ msgstr "Kiszolgáló:"
 # at the same time.
 #: ../glade/NewPrinterWindow.glade.h:59
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-msgstr ""
-"Ember által olvasható leírás, például „HP LaserJet kétoldalas nyomtatással”"
+msgstr "Közérthető leírás, például: „HP LaserJet kétoldalas nyomtatással”"
 
 #: ../glade/NewPrinterWindow.glade.h:60
 msgid "Human-readable location such as \"Lab 1\""
-msgstr "Ember által olvasható helymegadás, például „1-es labor”"
+msgstr "Közérthető helymegadás, például: „1-es labor”"
 
 #: ../glade/NewPrinterWindow.glade.h:61
 msgid "IPP"
@@ -1451,7 +1394,6 @@ msgid "Local Driver"
 msgstr "Helyi meghajtó"
 
 #: ../glade/NewPrinterWindow.glade.h:65
-#, fuzzy
 msgid "Make and model:"
 msgstr "Típus és modell:"
 
@@ -1468,14 +1410,8 @@ msgid "Port number:"
 msgstr "Port:"
 
 #: ../glade/NewPrinterWindow.glade.h:71
-msgid ""
-"PostScript Printer Description (PPD) files can often be found on the driver "
-"disk that comes with the printer. For PostScript printers they are often "
-"part of the Windows<sup>®</sup> driver."
-msgstr ""
-"A PostScript Printer Description (PPD) fájlokat általában a nyomtatóhoz "
-"mellékelt vezérlőprogramok lemezén találhat. PostScript nyomtatók esetén "
-"ezek általában a Windows<sup>®</sup> vezérlők részei."
+msgid "PostScript Printer Description (PPD) files can often be found on the driver disk that comes with the printer. For PostScript printers they are often part of the Windows<sup>®</sup> driver."
+msgstr "A PostScript Printer Description (PPD) fájlokat általában a nyomtatóhoz mellékelt meghajtóprogram lemezén találhat. PostScript nyomtatók esetén ezek általában a Windows<sup>®</sup> meghajtóprogram-csomagok részei."
 
 #: ../glade/NewPrinterWindow.glade.h:72
 msgid "Printer model:"
@@ -1486,9 +1422,8 @@ msgid "Probe"
 msgstr "Lekérdezés"
 
 #: ../glade/NewPrinterWindow.glade.h:74
-#, fuzzy
 msgid "Prompt user if authentication is required"
-msgstr "Hitelesítés szükséges"
+msgstr "Felhasználónév kérése, ha hitelesítés szükséges"
 
 #: ../glade/NewPrinterWindow.glade.h:75
 msgid "Provide PPD file"
@@ -1523,66 +1458,36 @@ msgid "Serial"
 msgstr "Soros"
 
 #: ../glade/NewPrinterWindow.glade.h:83
-#, fuzzy
 msgid "Set authentication details now"
-msgstr "Hitelesítés szükséges"
+msgstr "Hitelesítés beállítások elvégzése"
 
 #: ../glade/NewPrinterWindow.glade.h:84
 msgid "Short name for this printer such as \"laserjet\""
-msgstr ""
+msgstr "A nyomtató rövid elnevezése, például: „laserjet”"
 
 #: ../glade/NewPrinterWindow.glade.h:85
 msgid "Supplier:"
 msgstr "Szállító:"
 
 #: ../glade/NewPrinterWindow.glade.h:86
-msgid ""
-"The foomatic printer database contains various manufacturer provided "
-"PostScript Printer Description (PPD) files and also can generate PPD files "
-"for a large number of (non PostScript) printers. But in general manufacturer "
-"provided PPD files provide better access to the specific features of the "
-"printer."
-msgstr ""
-"A Foomatic nyomtató-adatbázis különféle, a gyártók által biztosított "
-"PostScript-nyomtatóleírási (PPD-) fájlokat tartalmaz, továbbá számos (nem "
-"PostScript-) nyomtatóhoz tud PPD-fájlt készíteni. Általában a gyártó által "
-"adott PPD-fájlok jobban kihasználják a nyomtató képességeit."
+msgid "The foomatic printer database contains various manufacturer provided PostScript Printer Description (PPD) files and also can generate PPD files for a large number of (non PostScript) printers. But in general manufacturer provided PPD files provide better access to the specific features of the printer."
+msgstr "A Foomatic nyomtató-adatbázis különféle, a gyártók által biztosított PostScript-nyomtatóleírási (PPD-) fájlokat tartalmaz, továbbá számos (nem PostScript-) nyomtatóhoz tud PPD-fájlt készíteni. Általában a gyártó által adott PPD-fájlok jobban kihasználják a nyomtató képességeit."
 
 #: ../glade/NewPrinterWindow.glade.h:87
-msgid ""
-"These drivers do not come from your operating system supplier and will not "
-"be covered by their commercial support.  See the support and license terms "
-"of the driver's supplier."
-msgstr ""
-"Ezeket a vezérlőket nem az operációs rendszer szállítója biztosítja és nem "
-"vonatkoznak rá a kereskedelmi támogatás feltételei. Tekintse meg a vezérlő "
-"szállítójának támogatás és engedély leírását."
+msgid "These drivers do not come from your operating system supplier and will not be covered by their commercial support.  See the support and license terms of the driver's supplier."
+msgstr "Ezeket a meghajtóprogramokat nem az operációs rendszer szállítója biztosítja és nem vonatkoznak rá a kereskedelmi támogatás feltételei. Tekintse meg a meghajtóprogram szállítójának támogatás és engedély leírását."
 
 #: ../glade/NewPrinterWindow.glade.h:88
-msgid ""
-"This driver supports additional hardware that may be installed in the "
-"printer."
-msgstr ""
-"Ez a vezérlő további hardvereket támogat, amiket a nyomtató tartalmazhat."
+msgid "This driver supports additional hardware that may be installed in the printer."
+msgstr "Ez a meghajtóprogram további hardver összetevőket támogat, amiket a nyomtató tartalmazhat."
 
 #: ../glade/NewPrinterWindow.glade.h:89
-msgid ""
-"This is done by assuming that options with the same name do have the same "
-"meaning. Settings of options that are not present in the new PPD will be "
-"lost and options only present in the new PPD will be set to default."
-msgstr ""
-"Ez annak feltételezésével történik, hogy az azonos nevű beállításoknak a "
-"jelentésük is azonos. Azok a beállítások elvesznek, amelyek az új PPD-ben "
-"nincsenek jelen; amelyek pedig csak az új PPD-ben szerepelnek, az "
-"alapértelmezett értéket kapják."
+msgid "This is done by assuming that options with the same name do have the same meaning. Settings of options that are not present in the new PPD will be lost and options only present in the new PPD will be set to default."
+msgstr "Ez annak feltételezésével történik, hogy az azonos nevű beállításoknak a jelentésük is azonos. Azok a beállítások elvesznek, amelyek az új PPD fájlban nincsenek jelen; amelyek pedig csak az új PPD fájlban szerepelnek, az alapértelmezett értéket kapják."
 
 #: ../glade/NewPrinterWindow.glade.h:90
-msgid ""
-"This way all current option settings will be lost. The default settings of "
-"the new PPD will be used. "
-msgstr ""
-"Így az összes jelenlegi beállítás elvész. Az új PPD alapértelmezett "
-"beállításai lesznek használva. "
+msgid "This way all current option settings will be lost. The default settings of the new PPD will be used. "
+msgstr "Így az összes jelenlegi beállítás elvész. Az új PPD alapértelmezett beállításai lesznek használva. "
 
 #: ../glade/NewPrinterWindow.glade.h:91
 msgid "Try to copy the option settings over from the old PPD. "
@@ -1594,16 +1499,11 @@ msgstr "URI:"
 
 #: ../glade/NewPrinterWindow.glade.h:93
 msgid "Use the new PPD (Postscript Printer Description) as is."
-msgstr ""
-"Az új PPD (PostScript-nyomtatóleírás) eredeti formában való használata."
+msgstr "Az új PPD (PostScript-nyomtatóleírás) eredeti formában való használata."
 
 #: ../glade/NewPrinterWindow.glade.h:95
-msgid ""
-"With this choice no driver download will be performed. In the next steps a "
-"locally installed driver will be selected."
-msgstr ""
-"Ezzel a választással vezérlő nem kerül letöltésre. A következő lépésekben "
-"egy helyben telepített vezérlő lesz kiválasztva."
+msgid "With this choice no driver download will be performed. In the next steps a locally installed driver will be selected."
+msgstr "Ezzel a választással meghajtóprogram nem kerül letöltésre. A következő lépésekben egy helyben telepített meghajtóprogram lesz kiválasztva."
 
 #: ../glade/NewPrinterWindow.glade.h:96
 msgid "Yes, I accept this license"
@@ -1638,11 +1538,8 @@ msgstr ""
 "16"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:8
-#, fuzzy
 msgid "72 points per inch"
-msgstr ""
-"pont\n"
-"(hüvelykenként 72 pont)"
+msgstr "hüvelykenként 72 pont"
 
 # banner: n. 1. The title page added to
 # printouts by most print spoolers (see spool).
@@ -1771,7 +1668,7 @@ msgstr "Gamma:"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:40
 msgid "Hold until:"
-msgstr "Felfüggesztés:"
+msgstr "Visszatartás:"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:41
 msgid "Hue adjustment:"
@@ -1950,13 +1847,13 @@ msgstr "Formázás"
 #. Not more than 25 characters
 #: ../glade/PrinterPropertiesDialog.glade.h:103
 msgid "Print Self-Test Page"
-msgstr "Tesztoldal nyomtatása"
+msgstr "Belső tesztoldal nyomtatása"
 
 #. Not more than 25 characters
 #: ../glade/PrinterPropertiesDialog.glade.h:105
 #: ../troubleshoot/PrintTestPage.py:67
 msgid "Print Test Page"
-msgstr "Tesztlap nyomtatása"
+msgstr "Tesztoldal nyomtatása"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:107
 msgid "Printer Properties"
@@ -2003,14 +1900,8 @@ msgid "Sides:"
 msgstr "Oldalak:"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:118
-msgid ""
-"Specify the default job options for this printer.  Jobs arriving at this "
-"print server will have these options added if they are not already set by "
-"the application."
-msgstr ""
-"Adja meg a nyomtató alapértelmezett feladat-beállításait. Az ezen "
-"nyomtatókiszolgálóra érkező feladatokra alkalmazva lesznek ezek a "
-"beállítások, ha az alkalmazás még nem tette ezt meg."
+msgid "Specify the default job options for this printer.  Jobs arriving at this print server will have these options added if they are not already set by the application."
+msgstr "Adja meg a nyomtató alapértelmezett feladat-beállításait. Az ezen nyomtatókiszolgálóra érkező feladatokra alkalmazva lesznek ezek a beállítások, ha az alkalmazás még nem tette ezt meg."
 
 #: ../glade/PrinterPropertiesDialog.glade.h:119
 msgid "Starting Banner:"
@@ -2018,9 +1909,7 @@ msgstr "Kezdő-fedőlap:"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:120
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr ""
-"Új beállítás felvételéhez adja meg annak nevét a lentebbi mezőben, majd "
-"kattintással végezze el a felvételt."
+msgstr "Új beállítás felvételéhez adja meg annak nevét a lentebbi mezőben, majd kattintással végezze el a felvételt."
 
 #: ../glade/PrinterPropertiesDialog.glade.h:121
 msgid "Top margin:"
@@ -2036,7 +1925,7 @@ msgstr "alapértelmezett"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:124
 msgid "none"
-msgstr "semmi"
+msgstr "nincs"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:125
 msgid "points"
@@ -2047,19 +1936,16 @@ msgid "Printer status"
 msgstr "A nyomtató állapota"
 
 #: ../glade/PrintersWindow.glade.h:1
-#, fuzzy
 msgid "Adjust server settings"
 msgstr "Alapvető kiszolgáló beállítások"
 
 #: ../glade/PrintersWindow.glade.h:2
-#, fuzzy
 msgid "Choose a different CUPS server"
-msgstr "Kapcsolódás a CUPS-kiszolgálóhoz"
+msgstr "Kapcsolódás más CUPS-kiszolgálóhoz"
 
 #: ../glade/PrintersWindow.glade.h:3
-#, fuzzy
 msgid "Show printer groups"
-msgstr "A nyomtató á_llapotának megjelenítése"
+msgstr "Nyomtatócsoportok megjelenítése"
 
 #: ../glade/PrintersWindow.glade.h:4
 msgid "Show printers shared by other systems"
@@ -2070,9 +1956,8 @@ msgid "System-Config-Printer"
 msgstr "Nyomtatóbeállítás"
 
 #: ../glade/PrintersWindow.glade.h:6
-#, fuzzy
 msgid "_Class"
-msgstr "Új osztály"
+msgstr "_Osztály"
 
 #: ../glade/PrintersWindow.glade.h:7
 msgid "_Connect..."
@@ -2080,39 +1965,35 @@ msgstr "_Kapcsolódás..."
 
 #: ../glade/PrintersWindow.glade.h:8
 msgid "_Discovered Printers"
-msgstr ""
+msgstr "_Felfedezett nyomtatók"
 
 #: ../glade/PrintersWindow.glade.h:9
 msgid "_Group"
-msgstr ""
+msgstr "_Csoport"
 
 #: ../glade/PrintersWindow.glade.h:10
 msgid "_Groups"
-msgstr ""
+msgstr "_Csoportok"
 
 #: ../glade/PrintersWindow.glade.h:11
 msgid "_Help"
 msgstr "_Súgó"
 
 #: ../glade/PrintersWindow.glade.h:12
-#, fuzzy
 msgid "_New"
-msgstr "_Megjelenítés"
+msgstr "Ú_j"
 
 #: ../glade/PrintersWindow.glade.h:13
-#, fuzzy
 msgid "_Printer"
-msgstr "Nyomtató"
+msgstr "_Nyomtató"
 
 #: ../glade/PrintersWindow.glade.h:14
-#, fuzzy
 msgid "_Server"
-msgstr "Kiszolgálóhiba"
+msgstr "_Kiszolgáló"
 
 #: ../glade/PrintersWindow.glade.h:15
-#, fuzzy
 msgid "_Settings..."
-msgstr "Beállítások"
+msgstr "_Beállítások..."
 
 #: ../glade/PrintersWindow.glade.h:16
 msgid "_Troubleshoot"
@@ -2123,39 +2004,32 @@ msgid "<b>Basic Server Settings</b>"
 msgstr "<b>Alapvető kiszolgáló-beállítások</b>"
 
 #: ../glade/ServerSettingsDialog.glade.h:2
-#, fuzzy
 msgid "Allow _remote administration"
-msgstr "Távoli adminisztráció engedélyezése"
+msgstr "_Távoli adminisztráció engedélyezése"
 
 #: ../glade/ServerSettingsDialog.glade.h:3
-#, fuzzy
 msgid "Allow _users to cancel any job (not just their own)"
-msgstr ""
-"A felhasználók bármely feladatot szakíthassák meg (ne csak a sajátjaikat)"
+msgstr "A felhasználók _bármely feladatot szakíthassák meg (ne csak a sajátjaikat)"
 
 #: ../glade/ServerSettingsDialog.glade.h:4
-#, fuzzy
 msgid "Allow printing from the _Internet"
-msgstr "Nyomtatás engedélyezése az internetről"
+msgstr "Nyomtatás engedélyezése az _internetről"
 
 #: ../glade/ServerSettingsDialog.glade.h:5
 msgid "Basic Server Settings"
 msgstr "Alapvető kiszolgáló beállítások"
 
 #: ../glade/ServerSettingsDialog.glade.h:6
-#, fuzzy
 msgid "Save _debugging information for troubleshooting"
-msgstr "Hibakeresési információ mentése problémamegoldáshoz"
+msgstr "Hibakeresési _információ mentése problémamegoldáshoz"
 
 #: ../glade/ServerSettingsDialog.glade.h:7
-#, fuzzy
 msgid "_Publish shared printers connected to this system"
-msgstr "Az ezen rendszerre kapcsolt nyilvános nyomtatók megosztása"
+msgstr "_Ezen rendszerre kapcsolt nyilvános nyomtatók megosztása"
 
 #: ../glade/ServerSettingsDialog.glade.h:8
-#, fuzzy
 msgid "_Show printers shared by other systems"
-msgstr "Más rendszerek által megosztott nyomtatók megjelenítése"
+msgstr "Más _rendszerek által megosztott nyomtatók megjelenítése"
 
 #: ../glade/SMBBrowseDialog.glade.h:1
 msgid "SMB Browser"
@@ -2267,7 +2141,8 @@ msgstr "Nincs csatlakoztatva?"
 msgid "Printer '%s' may not be connected."
 msgstr "Elképzelhető, hogy a(z) „%s” nyomtató nincs csatlakoztatva."
 
-#: ../statereason.py:105 ../statereason.py:121
+#: ../statereason.py:105
+#: ../statereason.py:121
 msgid "Printer error"
 msgstr "Nyomtatóhiba"
 
@@ -2290,44 +2165,31 @@ msgid "Printer '%s': '%s'."
 msgstr "„%s” nyomtató: „%s”."
 
 #: ../ToolbarSearchEntry.py:67
-#, fuzzy
 msgid "_Filter:"
-msgstr "_Fájl"
+msgstr "_Szűrő:"
 
 #: ../troubleshoot/__init__.py:52
 msgid "Printing troubleshooter"
 msgstr "Nyomtatási hibaelhárító"
 
 #: ../troubleshoot/base.py:33
-msgid ""
-"To start this tool, select System->Administration->Printing from the main "
-"menu."
-msgstr ""
-"Az eszköz indításához válassza ki a Rendszer → Adminisztráció → Nyomtatás "
-"menüpontot a főmenüből."
+msgid "To start this tool, select System->Administration->Printing from the main menu."
+msgstr "Az eszköz indításához válassza ki a Rendszer → Adminisztráció → Nyomtatás menüpontot a főmenüből."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:27
 msgid "Server Not Exporting Printers"
 msgstr "A kiszolgáló nem exportál nyomtatókat"
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:28
-msgid ""
-"Although one or more printers are marked as being shared, this print server "
-"is not exporting shared printers to the network."
-msgstr ""
-"Habár egy vagy több nyomtató megosztottnak jelölve, ez a kiszolgáló nem "
-"exportál megosztott nyomtatókat a hálózatra."
+msgid "Although one or more printers are marked as being shared, this print server is not exporting shared printers to the network."
+msgstr "Habár egy vagy több nyomtató megosztottnak jelölve, ez a kiszolgáló nem exportál megosztott nyomtatókat a hálózatra."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:32
-msgid ""
-"Enable the 'Share published printers connected to this system' option in the "
-"server settings using the printing administration tool."
-msgstr ""
-"„E rendszerbe kapcsolt nyilvános nyomtatók megosztása” lehetőség "
-"engedélyezése a kiszolgáló beállításokban a nyomtatás adminisztráció eszköz "
-"használatával."
+msgid "Enable the 'Share published printers connected to this system' option in the server settings using the printing administration tool."
+msgstr "„E rendszerbe kapcsolt nyilvános nyomtatók megosztása” lehetőség engedélyezése a kiszolgáló beállításokban a nyomtatás adminisztráció eszköz használatával."
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:147
+#: ../troubleshoot/CheckPPDSanity.py:44
+#: ../applet.py:147
 msgid "Install"
 msgstr "Telepítés"
 
@@ -2337,12 +2199,8 @@ msgstr "Érvénytelen PPD-fájl"
 
 #: ../troubleshoot/CheckPPDSanity.py:102
 #, python-format
-msgid ""
-"The PPD file for printer `%s' does not conform to the specification.  "
-"Possible reason follows:"
-msgstr ""
-"A PPD fájl „%s” nyomtatóhoz nem felel meg az előírásoknak. Lehetséges hiba a "
-"következő:"
+msgid "The PPD file for printer `%s' does not conform to the specification.  Possible reason follows:"
+msgstr "A PPD fájl „%s” nyomtatóhoz nem felel meg az előírásoknak. Lehetséges hiba a következő:"
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:108
@@ -2352,7 +2210,7 @@ msgstr "Baj van a „%s” nyomtatóhoz tartozó PPD fájllal."
 
 #: ../troubleshoot/CheckPPDSanity.py:118
 msgid "Missing Printer Driver"
-msgstr "Hiányzó nyomtató vezérlő"
+msgstr "Hiányzó nyomtató meghajtóprogram"
 
 #: ../troubleshoot/CheckPPDSanity.py:121
 #, python-format
@@ -2361,8 +2219,7 @@ msgstr "„%s” nyomtatóhoz %s csomag kell, de az jelenleg nincs telepítve."
 
 #: ../troubleshoot/CheckPPDSanity.py:126
 #, python-format
-msgid ""
-"Printer `%s' requires the `%s' program but it is not currently installed."
+msgid "Printer `%s' requires the `%s' program but it is not currently installed."
 msgstr "„%s” nyomtatóhoz „%s” program kell, de az jelenleg nincs telepítve."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:28
@@ -2370,21 +2227,18 @@ msgid "Choose Network Printer"
 msgstr "Válasszon hálózati nyomtatót"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-"Az alábbi listából válassza ki a használni kívánt hálózati nyomtatót. "
-"Amennyiben a kívánt nyomtatót nem találja meg a listában, kattintson a "
-"„Nincs a listán” gombra."
+msgid "Please select the network printer you are trying to use from the list below. If it does not appear in the list, select 'Not listed'."
+msgstr "Az alábbi listából válassza ki a használni kívánt hálózati nyomtatót. Amennyiben a kívánt nyomtatót nem találja meg a listában, kattintson a „Nincs a listán” gombra."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:38
-#: ../troubleshoot/ChoosePrinter.py:39 ../troubleshoot/DeviceListed.py:37
+#: ../troubleshoot/ChoosePrinter.py:39
+#: ../troubleshoot/DeviceListed.py:37
 msgid "Information"
 msgstr "Tájékoztatás"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:74
-#: ../troubleshoot/ChoosePrinter.py:63 ../troubleshoot/DeviceListed.py:69
+#: ../troubleshoot/ChoosePrinter.py:63
+#: ../troubleshoot/DeviceListed.py:69
 msgid "Not listed"
 msgstr "Nincs a listán"
 
@@ -2393,25 +2247,16 @@ msgid "Choose Printer"
 msgstr "Válasszon nyomtatót"
 
 #: ../troubleshoot/ChoosePrinter.py:30
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
-"Az alábbi listából válassza ki a használni kívánt hálózati nyomtatót. "
-"Amennyiben a kívánt nyomtatót nem találja meg a listában, válassza a „Nincs "
-"a listán” elemet."
+msgid "Please select the printer you are trying to use from the list below. If it does not appear in the list, select 'Not listed'."
+msgstr "Az alábbi listából válassza ki a használni kívánt hálózati nyomtatót. Amennyiben a kívánt nyomtatót nem találja meg a listában, válassza a „Nincs a listán” elemet."
 
 #: ../troubleshoot/DeviceListed.py:29
 msgid "Choose Device"
 msgstr "Eszköz választás"
 
 #: ../troubleshoot/DeviceListed.py:30
-msgid ""
-"Please select the device you want to use from the list below. If it does not "
-"appear in the list, select 'Not listed'."
-msgstr ""
-"Válassza ki a használni kívánt hálózati nyomtatót az alábbi listából! Ha "
-"nincs a listában, válassza a „Nincs a listán” elemet."
+msgid "Please select the device you want to use from the list below. If it does not appear in the list, select 'Not listed'."
+msgstr "Válassza ki a használni kívánt hálózati nyomtatót az alábbi listából! Ha nincs a listában, válassza a „Nincs a listán” elemet."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:29
 #: ../troubleshoot/ErrorLogFetch.py:29
@@ -2419,13 +2264,8 @@ msgid "Debugging"
 msgstr "Hibakeresés"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:30
-msgid ""
-"I would like to enable debugging output from the CUPS scheduler.  This may "
-"cause the scheduler to restart.  Click the button below to enable debugging."
-msgstr ""
-"Szeretném engedélyezni a kimenet hibakeresését a CUPS időzítőből. Ez "
-"okozhatja az időzítő újraindulását. Kattintson az alábbi gombra a "
-"hibakeresés engedélyezéséhez."
+msgid "I would like to enable debugging output from the CUPS scheduler.  This may cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr "Szeretném engedélyezni a kimenet hibakeresését a CUPS időzítőből. Ez okozhatja az időzítő újraindulását. Kattintson az alábbi gombra a hibakeresés engedélyezéséhez."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:34
 msgid "Enable Debugging"
@@ -2440,13 +2280,8 @@ msgid "Debug logging was already enabled."
 msgstr "A hibakeresés naplózását már engedélyezték."
 
 #: ../troubleshoot/ErrorLogFetch.py:30
-msgid ""
-"I would like to disable debugging output from the CUPS scheduler.  This may "
-"cause the scheduler to restart.  Click the button below to disable debugging."
-msgstr ""
-"Szeretném letiltatni a kimenet hibakeresését a CUPS időzítőben. Ez okozhatja "
-"az időzítő újraindulását. Kattintson az alábbi gombra a hibakeresés "
-"letiltásához."
+msgid "I would like to disable debugging output from the CUPS scheduler.  This may cause the scheduler to restart.  Click the button below to disable debugging."
+msgstr "Szeretném letiltatni a kimenet hibakeresését a CUPS időzítőben. Ez okozhatja az időzítő újraindulását. Kattintson az alábbi gombra a hibakeresés letiltásához."
 
 #: ../troubleshoot/ErrorLogFetch.py:34
 msgid "Disable Debugging"
@@ -2470,8 +2305,7 @@ msgstr "Nyomtató helye"
 
 #: ../troubleshoot/LocalOrRemote.py:27
 msgid "Is the printer connected to this computer or available on the network?"
-msgstr ""
-"A nyomtató a számítógéphez közvetlenül vagy hálózaton keresztül csatlakozik?"
+msgstr "A nyomtató a számítógéphez közvetlenül vagy hálózaton keresztül csatlakozik?"
 
 #: ../troubleshoot/LocalOrRemote.py:29
 msgid "Locally connected printer"
@@ -2511,13 +2345,8 @@ msgid "Test Page"
 msgstr "Tesztoldal"
 
 #: ../troubleshoot/PrintTestPage.py:55
-msgid ""
-"Now print a test page.  If you are having problems printing a specific "
-"document, print that document now and mark the print job below."
-msgstr ""
-"Most nyomtasson próbaoldalt! Ha bajok vannnak egy bizonyos dokumentum "
-"nyomtatásakor, nyomtassa azt a dokumentumot most, és jelölje be a nyomtatási "
-"munkát az alábbiakban!"
+msgid "Now print a test page.  If you are having problems printing a specific document, print that document now and mark the print job below."
+msgstr "Most nyomtasson próbaoldalt! Ha bajok vannak egy bizonyos dokumentum nyomtatásakor, nyomtassa azt a dokumentumot most, és jelölje be a nyomtatási munkát az alábbiakban!"
 
 #: ../troubleshoot/PrintTestPage.py:70
 msgid "Cancel All Jobs"
@@ -2541,7 +2370,7 @@ msgstr "Nem"
 
 #: ../troubleshoot/PrintTestPage.py:321
 msgid "Error submitting test page"
-msgstr ""
+msgstr "Hiba lépett fel a tesztoldal elküldésekor"
 
 #: ../troubleshoot/QueueNotEnabled.py:56
 #: ../troubleshoot/QueueRejectingJobs.py:66
@@ -2551,12 +2380,11 @@ msgstr "A hiba oka: „%s”"
 
 #: ../troubleshoot/QueueNotEnabled.py:58
 msgid "This may be due to the printer being disconnected or switched off."
-msgstr ""
-"Ennek oka lehet, hogy a nyomtató nincs csatlakoztatva vagy ki lett kapcsolva."
+msgstr "Ennek oka lehet, hogy a nyomtató nincs csatlakoztatva vagy ki lett kapcsolva."
 
 #: ../troubleshoot/QueueNotEnabled.py:62
 msgid "Queue Not Enabled"
-msgstr "A nyomtatási sor nem engedélyzett"
+msgstr "A nyomtatási sor nem engedélyezett"
 
 #: ../troubleshoot/QueueNotEnabled.py:63
 #, python-format
@@ -2564,12 +2392,8 @@ msgid "The queue `%s' is not enabled."
 msgstr "„%s” nyomtatási sor nincs engedélyezve."
 
 #: ../troubleshoot/QueueNotEnabled.py:71
-msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-"A nyomtató engedélyezéséhez, a nyomtató-adminisztrációs eszközben válassza "
-"ki a nyomtató Szabályzatok lapján az „Engedélyezés” jelölőnégyzetet."
+msgid "To enable it, select the `Enabled' checkbox in the `Policies' tab for the printer in the printer administration tool."
+msgstr "A nyomtató engedélyezéséhez, a nyomtató-adminisztrációs eszközben válassza ki a nyomtató Szabályzatok lapján az „Engedélyezés” jelölőnégyzetet."
 
 #: ../troubleshoot/QueueRejectingJobs.py:31
 msgid "Queue Rejecting Jobs"
@@ -2581,22 +2405,15 @@ msgid "The queue `%s' is rejecting jobs."
 msgstr "„%s” nyomtatási sor visszautasítja a feladatokat."
 
 #: ../troubleshoot/QueueRejectingJobs.py:70
-msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
-msgstr ""
-"Ahhoz, hogy a nyomtatási sor fogadja feladatokat, a nyomtató-adminisztrációs "
-"eszközben jelölje be a nyomtató Szabályzatok lapján a „Feladatokat elfogad” "
-"jelölőnégyzetet."
+msgid "To make the queue accept jobs, select the `Accepting Jobs' checkbox in the `Policies' tab for the printer in the printer administration tool."
+msgstr "Ahhoz, hogy a nyomtatási sor fogadja feladatokat, a nyomtató-adminisztrációs eszközben jelölje be a nyomtató Szabályzatok lapján a „Feladatokat elfogad” jelölőnégyzetet."
 
 #: ../troubleshoot/RemoteAddress.py:26
 msgid "Remote Address"
 msgstr "Távoli cím"
 
 #: ../troubleshoot/RemoteAddress.py:27
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
+msgid "Please enter as many details as you can about the network address of this printer."
 msgstr "Adjon meg minden ismert információt erről a hálózati nyomtató címéről."
 
 #: ../troubleshoot/RemoteAddress.py:35
@@ -2609,17 +2426,11 @@ msgstr "Kiszolgáló IP címe:"
 
 #: ../troubleshoot/SchedulerNotRunning.py:27
 msgid "CUPS Service Stopped"
-msgstr "A CUPS szolgátatás leállítva"
+msgstr "A CUPS szolgáltatás leállítva"
 
 #: ../troubleshoot/SchedulerNotRunning.py:28
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
-msgstr ""
-"A CUPS nyomtatásisor-kezelő nem fut. A javításhoz válassza ki a főmenüből a "
-"Rendszer → Adminisztráció → Szolgáltatások menüpontot és ellenőrizze a "
-"„cups” szolgáltatás beállításait."
+msgid "The CUPS print spooler does not appear to be running.  To correct this, choose System->Administration->Services from the main menu and look for the `cups' service."
+msgstr "A CUPS nyomtatásisor-kezelő nem fut. A javításhoz válassza ki a főmenüből a Rendszer → Adminisztráció → Szolgáltatások menüpontot és ellenőrizze a „cups” szolgáltatás beállításait."
 
 #: ../troubleshoot/ServerFirewalled.py:26
 msgid "Check Server Firewall"
@@ -2631,45 +2442,32 @@ msgstr "Nem sikerült a kiszolgálóhoz kapcsolódni."
 
 #: ../troubleshoot/ServerFirewalled.py:42
 #, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
-msgstr ""
-"Ellenőrizze, hogy (a)z %d. számú TCP portot „%s” kiszolgálón nem tiltják-e a "
-"hatályos tűzfal- és útválasztó beállítások."
+msgid "Please check to see if a firewall or router configuration is blocking TCP port %d on server `%s'."
+msgstr "Ellenőrizze, hogy (a)z %d. számú TCP portot „%s” kiszolgálón nem tiltják-e a hatályos tűzfal- és útválasztó beállítások."
 
 #: ../troubleshoot/Shrug.py:26
 msgid "Sorry!"
 msgstr "Elnézést!"
 
 #: ../troubleshoot/Shrug.py:27
-msgid ""
-"I have not been able to work out what the problem is, but I have collected "
-"some useful information to put in a bug report."
-msgstr ""
-"A megadott válaszok alapján nem állapítható meg a hiba oka. Azt tanácsoljuk, "
-"hogy az elérhető hasznos információk alapján készítsen egy hibajelentést."
+msgid "I have not been able to work out what the problem is, but I have collected some useful information to put in a bug report."
+msgstr "A megadott válaszok alapján nem állapítható meg a hiba oka. Azt tanácsoljuk, hogy az elérhető hasznos információk alapján készítsen egy hibajelentést."
 
 #: ../troubleshoot/Shrug.py:32
 msgid "Diagnostic Output (Advanced)"
-msgstr ""
+msgstr "Hibakereső naplózás (haladó)"
 
 #: ../troubleshoot/Welcome.py:35
 msgid "Trouble-shooting Printing"
 msgstr "Nyomtatás hibaelhárítása"
 
 #: ../troubleshoot/Welcome.py:37
-msgid ""
-"In the next few screens I will ask you some questions about your problem "
-"with printing. Based on your answers I will try to suggest a solution."
-msgstr ""
-"A következő képernyőkön néhány kérdésre kell válaszolnia a nyomtatási "
-"problémával kapcsolatban. A válaszok alapján tanácsokat fog kapni a hiba "
-"elhárításához."
+msgid "In the next few screens I will ask you some questions about your problem with printing. Based on your answers I will try to suggest a solution."
+msgstr "A következő képernyőkön néhány kérdésre kell válaszolnia a nyomtatási problémával kapcsolatban. A válaszok alapján tanácsokat fog kapni a hiba elhárításához."
 
 #: ../troubleshoot/Welcome.py:41
 msgid "Click 'Forward' to begin."
-msgstr "Kattintson a „Tovább” gomra a kezdéshez."
+msgstr "Kattintson a „Tovább” gombra a kezdéshez."
 
 #: ../applet.py:136
 msgid "Printer added"
@@ -2677,7 +2475,7 @@ msgstr "Nyomtató felvéve"
 
 #: ../applet.py:138
 msgid "Missing printer driver"
-msgstr "Hiányzó nyomtató-meghajtóprogram"
+msgstr "Hiányzó nyomtató meghajtóprogram"
 
 #: ../applet.py:142
 msgid "Install printer driver"
@@ -2732,33 +2530,26 @@ msgstr "Alapértelmezett nyomtató kiválasztása"
 #~ msgstr ""
 #~ "Csatlakozás ehhez a kiszolgálóhoz:\n"
 #~ "%s"
-
 #~ msgid ""
 #~ "Connecting to Server:\n"
 #~ "%s\n"
 #~ msgstr ""
 #~ "Kapcsolódás a kiszolgálóhoz:\n"
 #~ "%s\n"
-
 #~ msgid "<b>Download Printer Driver</b>"
 #~ msgstr "<b>Nyomtatóvezérlő letöltése</b>"
-
 #~ msgid "<b>Installed Options</b>"
 #~ msgstr "<b>Telepített opciók</b>"
-
 #~ msgid "<b>Printers to be members of this Class</b>"
 #~ msgstr "<b>Az osztályba felveendő nyomtatók</b>"
-
 #~ msgid "<b>Select Connection</b>"
 #~ msgstr "<b>Válasszon kapcsolatot</b>"
-
 #~ msgid "Set As Default"
 #~ msgstr "Alapértelmezettnek választ"
 
 #, fuzzy
 #~ msgid "_Enabled"
 #~ msgstr "Engedélyezve"
-
 #~ msgid ""
 #~ "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
 #~ "\n"
@@ -2767,53 +2558,38 @@ msgstr "Alapértelmezett nyomtató kiválasztása"
 #~ "<span weight=\"bold\" size=\"larger\">Alkalmazza a módosításokat?</span>\n"
 #~ "\n"
 #~ "Ha nem történik alkalmazás, akkor a módosítások elvesznek."
-
 #~ msgid "_Do not apply"
 #~ msgstr "_Ne legyen alkalmazás"
-
 #~ msgid "Verified"
 #~ msgstr "Ellenőrzött"
-
 #~ msgid "Remote class"
 #~ msgstr "Távoli osztály"
-
 #~ msgid "Remote printer"
 #~ msgstr "Távoli nyomtató"
-
 #~ msgid "Local class"
 #~ msgstr "Helyi osztály"
-
 #~ msgid "Local printer"
 #~ msgstr "Helyi nyomtató"
-
 #~ msgid "New Clas_s"
 #~ msgstr "Új _osztály"
-
 #~ msgid "New _Printer"
 #~ msgstr "Ú_j nyomtató"
-
 #~ msgid "_Disable"
 #~ msgstr "_Letiltás"
-
 #~ msgid "_Edit"
 #~ msgstr "S_zerkesztés"
-
 #~ msgid "_Server Settings..."
 #~ msgstr "Ki_szolgáló beállítások..."
-
 #~ msgid "Debug logging was already disabled."
 #~ msgstr "A hibakeresés naplózását már letiltották."
-
 #~ msgid "Create a new printer group"
 #~ msgstr "Új osztály létrehozása"
-
 #~ msgid "Create a new printer queue"
 #~ msgstr "Új nyomtatási sor létrehozása"
 
 #, fuzzy
 #~ msgid "Make:"
 #~ msgstr "Típusok"
-
 #~ msgid ""
 #~ "May contain any printable characters except \"/\", \"#\", and space.\n"
 #~ "Name must be unique on the local machine!"
@@ -2821,30 +2597,22 @@ msgstr "Alapértelmezett nyomtató kiválasztása"
 #~ "Tartalmazhatja bármely nyomtatható karaktert, kivéve ezeket: „/”, „#” és "
 #~ "szóköz.\n"
 #~ "A névnek egyedinek kell lennie a helyi gépen!"
-
 #~ msgid "Refresh the list of printer queues"
 #~ msgstr "Nyomtatási sorok listájának frissítése"
-
 #~ msgid "No default printer set."
 #~ msgstr "Nincs beállítva alapértelmezett nyomtató."
-
 #~ msgid "Cancel Tests"
 #~ msgstr "Tesztek megszakítása"
-
 #~ msgid "Default Printer:"
 #~ msgstr "Alapértelmezett nyomtató:"
-
 #~ msgid "Make Default"
 #~ msgstr "Beállítás alapértelmezettként"
-
 #~ msgid "User name:"
 #~ msgstr "Felhasználónév:"
-
 #~ msgid "Support for downloadable drivers is not yet completed."
 #~ msgstr "A letölthető vezérlők támogatása még nem teljes."
-
 #~ msgid "Enter some search terms for the model of your printer."
 #~ msgstr "Adjon meg keresési kifejezéseket a nyomtatójához."
-
 #~ msgid "Search terms:"
 #~ msgstr "Kereső kifejezés:"
+
