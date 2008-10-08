@@ -2646,8 +2646,6 @@ class NewPrinterGUI(GtkGUI):
                         "lblNPDownloadableDriverSupplier",
                         "lblNPDownloadableDriverLicense",
                         "lblNPDownloadableDriverDescription",
-                        "lblNPDownloadableDriverFunctionality",
-                        "lblNPDownloadableDriverSupportContacts",
                         "frmNPDownloadableDriverLicenseTerms",
                         "tvNPDownloadableDriverLicense",
                         "rbtnNPDownloadLicenseYes",
@@ -4845,8 +4843,6 @@ class NewPrinterGUI(GtkGUI):
         self.lblNPDownloadableDriverSupplier.set_text ('')
         self.lblNPDownloadableDriverLicense.set_text ('')
         self.lblNPDownloadableDriverDescription.set_text ('')
-        self.lblNPDownloadableDriverFunctionality.set_text ('')
-        self.lblNPDownloadableDriverSupportContacts.set_text ('')
         self.rbtnNPDownloadLicenseNo.set_active (True)
         self.frmNPDownloadableDriverLicenseTerms.hide ()
 
@@ -4998,93 +4994,16 @@ class NewPrinterGUI(GtkGUI):
         pprint.pprint (driver)
         self.ntbkNPDownloadableDriverProperties.set_current_page(1)
         supplier = driver.get('supplier', _("OpenPrinting"))
-        supplier_extra = ""
-        if driver['manufacturersupplied']:
-            supplier_extra = supplier_extra + _("the printer's manufacturer")
-        if driver['url']:
-            if supplier_extra:
-                supplier_extra = supplier_extra + _(", ")
-            supplier_extra = supplier_extra + driver['url']
-        if supplier_extra:
-            supplier = supplier + _(" (%s)") % supplier_extra
         self.lblNPDownloadableDriverSupplier.set_text (supplier)
         license = driver.get('license', _("Distributable"))
-        if driver['freesoftware'] or driver['nonfreesoftware'] or \
-                driver['patents']:
-            license = license + _(" (")
-        if driver['freesoftware']:
-            license = license + _("free software")
-        if driver['nonfreesoftware']:
-            license = license + _("non-free software")
-        if (driver['freesoftware'] or driver['nonfreesoftware']) and \
-                driver['patents']:
-            license = license + _(", ")
-        if driver['patents']:
-            license = license + _("driver contains (possibly) patented algorithms")
-        if driver['freesoftware'] or driver['nonfreesoftware'] or \
-                driver['patents']:
-            license = license + _(")")
         self.lblNPDownloadableDriverLicense.set_text (license)
         description = driver.get('shortdescription', _("None"))
-        self.lblNPDownloadableDriverDescription.set_markup (description)
-        functionality = ""
-        if driver['functionality']['graphics']:
-            functionality = functionality + _("Graphics: %s/100, ") % \
-                driver['functionality']['graphics']
-        if driver['functionality']['lineart']:
-            functionality = functionality + _("Line Art: %s/100, ") % \
-                driver['functionality']['lineart']
-        if driver['functionality']['photo']:
-            functionality = functionality + _("Photo: %s/100, ") % \
-                driver['functionality']['photo']
-        if driver['functionality']['text']:
-            functionality = functionality + _("Text: %s/100, ") % \
-                driver['functionality']['text']
-        if functionality:
-            functionality = functionality[0:functionality.rfind (_(", "))]
-            functionality = _("Output quality: ") + functionality
-        if driver['recommended']:
-            if functionality:
-                functionality = functionality + _(", ")
-            functionality = functionality + _("<b>Recommended Driver</b>")
-        self.lblNPDownloadableDriverFunctionality.set_markup (functionality)
-        supportcontacts = ""
-        if driver['supportcontacts']:
-            for supportentry in driver['supportcontacts']:
-                if supportentry['name']:
-                    supportcontact = " - " + supportentry['name']
-                    supportcontact_extra = ""
-                    if supportentry['url']:
-                        supportcontact_extra = supportcontact_extra + \
-                            supportentry['url']
-                    if supportentry['level']:
-                        if supportcontact_extra:
-                            supportcontact_extra = supportcontact_extra + _(", ")
-                        supportcontact_extra = supportcontact_extra + \
-                            supportentry['level']
-                    if supportcontact_extra:
-                        supportcontact = supportcontact + \
-                            _("\n(%s)") % supportcontact_extra
-                        if supportcontacts:
-                            supportcontacts = supportcontacts + "\n"
-                        supportcontacts = supportcontacts + supportcontact
-        if not supportcontacts:
-            supportcontacts = _("No support contacts known")
-        self.lblNPDownloadableDriverSupportContacts.set_text (supportcontacts)
-        if driver['licensetext']:
-            self.frmNPDownloadableDriverLicenseTerms.show ()
-            terms = driver.get('licensetext', _("Not specified."))
-            self.tvNPDownloadableDriverLicense.get_buffer ().set_text (terms)
-        else:
-            self.frmNPDownloadableDriverLicenseTerms.hide ()
+        self.lblNPDownloadableDriverDescription.set_text (description)
         if not driver['nonfreesoftware'] and not driver['patents']:
             self.rbtnNPDownloadLicenseYes.set_active (True)
-            self.rbtnNPDownloadLicenseYes.hide ()
-            self.rbtnNPDownloadLicenseNo.hide ()
+            self.frmNPDownloadableDriverLicenseTerms.hide ()
         else:
             self.rbtnNPDownloadLicenseNo.set_active (True)
-            self.rbtnNPDownloadLicenseYes.show ()
-            self.rbtnNPDownloadLicenseNo.show ()
             self.frmNPDownloadableDriverLicenseTerms.show ()
             terms = driver.get('licensetext', _("Not specified."))
             self.tvNPDownloadableDriverLicense.get_buffer ().set_text (terms)
