@@ -206,7 +206,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               "dests_iconview",
                               "statusbarMain",
                               "toolbar",
-                              "server_settings",
+                              "server_settings_menu_entry",
                               "new_printer",
                               "new_class",
                               "group_menubar_item",
@@ -1118,7 +1118,8 @@ class GUI(GtkGUI, monitor.Watcher):
                        self.chkServerBrowse, self.chkServerShare,
                        self.chkServerRemoteAdmin,
                        self.chkServerAllowCancelAll,
-                       self.chkServerLogDebug):
+                       self.chkServerLogDebug,
+                       self.server_settings_menu_entry):
             widget.set_sensitive(connected)
 
         sharing = self.chkServerShare.get_active ()
