@@ -1,3 +1,11 @@
+2008-10-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.glade: Renamed server_settings to
+	server_settings_menu_entry to avoid naming collision.
+	* system-config-printer.py (GUI.setConnected): Set Server
+	Settings... menu entry sensitive depending on whether we are
+	connected to a server (Ubuntu #280736).
+
 2008-09-29  Tim Waugh  <twaugh@redhat.com>
 
 	* configure.in: Version 1.0.8.
