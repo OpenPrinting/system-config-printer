@@ -62,8 +62,8 @@ def show_error_dialog (title, text, parent=None):
 
 def show_IPP_Error(exception, message, parent=None):
     if exception == cups.IPP_NOT_AUTHORIZED:
-        title = _('Not authorized')
-        text = _('The password may be incorrect.')
+        # In this case, the user has canceled an authentication dialog.
+        return
     else:
         title = _("CUPS server error")
         text = (_("There was an error during the CUPS "
