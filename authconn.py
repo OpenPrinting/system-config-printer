@@ -202,6 +202,7 @@ class Connection:
             self._forbidden = False
             self._auth_called = False
             self._cancel = False
+            self._dialog_shown = False
             cups.setPasswordCB (self._password_callback)
             debugprint ("Authentication: password callback set")
             return 1
@@ -248,11 +249,26 @@ class Connection:
         # Reset the flag indicating whether we were given an auth callback.
         self._auth_called = False
 
+        # If we're previously prompted, explain why we're prompting again.
+        if self._dialog_shown:
+            d = gtk.MessageDialog (self._parent,
+                                   gtk.DIALOG_MODAL |
+                                   gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_ERROR,
+                                   gtk.BUTTONS_CLOSE)
+            d.set_title (_("Not authorized"))
+            d.set_markup ('<span weight="bold" size="larger">' +
+                          _("Not authorized") + '</span>\n\n' +
+                          _("The password may be incorrect."))
+            d.run ()
+            d.destroy ()
+
         # Prompt.
         d = AuthDialog (parent=self._parent)
         d.set_prompt (self._prompt)
         d.set_auth_info ([self._use_user, ''])
         d.field_grab_focus ('password')
+        self._dialog_shown = True
         response = d.run ()
         (self._use_user,
          self._use_password) = d.get_auth_info ()

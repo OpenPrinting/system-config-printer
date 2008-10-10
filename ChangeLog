@@ -1,3 +1,11 @@
+2008-10-10  Tim Waugh  <twaugh@redhat.com>
+
+	* errordialogs.py (show_IPP_Error): Don't show an error dialog if
+	an IPP operation's authentication dialog is cancelled by the
+	user (bug #465407).
+	* authconn.py: Show an error dialog if the password was
+	incorrect (bug #465407).
+
 2008-10-09  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.glade: Renamed server_settings to
