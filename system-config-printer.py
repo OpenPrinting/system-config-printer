@@ -338,9 +338,21 @@ class GUI(GtkGUI, monitor.Watcher):
         self.AboutDialog.set_icon_name('printer')
 
         # Set up "Problems?" link button
-        problems = gtk.LinkButton ('', label=_("Problems?"))
+        class UnobtrusiveButton(gtk.Button):
+            def __init__ (self, **args):
+                gtk.Button.__init__ (self, **args)
+                self.set_relief (gtk.RELIEF_NONE)
+                label = self.get_child ()
+                text = label.get_text ()
+                print text
+                label.set_use_markup (True)
+                label.set_markup ('<span size="small" ' +
+                                  'underline="single" ' +
+                                  'color="#0000ee">%s</span>' % text)
+
+        problems = UnobtrusiveButton (label=_("Problems?"))
         self.hboxServerBrowse.pack_end (problems, False, False, 0)
-        problems.connect ('clicked', self.on_problems_linkbutton_clicked)
+        problems.connect ('clicked', self.on_problems_button_clicked)
         problems.show ()
 
         self.static_tabs = 3
@@ -2488,7 +2500,7 @@ class GUI(GtkGUI, monitor.Watcher):
             nonfatalException()
 
     ### The "Problems?" clickable label
-    def on_problems_linkbutton_clicked (self, *args):
+    def on_problems_button_clicked (self, *args):
         if not self.__dict__.has_key ('troubleshooter'):
             self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit,
                                                     parent=self.ServerSettingsDialog)
