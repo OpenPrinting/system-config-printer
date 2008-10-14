@@ -344,7 +344,6 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.set_relief (gtk.RELIEF_NONE)
                 label = self.get_child ()
                 text = label.get_text ()
-                print text
                 label.set_use_markup (True)
                 label.set_markup ('<span size="small" ' +
                                   'underline="single" ' +
