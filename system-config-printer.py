@@ -4245,8 +4245,10 @@ class NewPrinterGUI(GtkGUI):
                                                          group = group,
                                                          user = user,
                                                          passwd = passwd)
+            canceled = False
         else:
             accessible = False
+            canceled = False
             self.busy ()
             try:
                 debug = 0
@@ -4276,6 +4278,9 @@ class NewPrinterGUI(GtkGUI):
                             accessible = True
                         except Exception, e:
                             smbc_auth.failed (e)
+
+                    if not accessible:
+                        canceled = True
             except RuntimeError, (e, s):
                 debugprint ("Error accessing share: %s" % repr ((e, s)))
                 reason = s
@@ -4289,11 +4294,12 @@ class NewPrinterGUI(GtkGUI):
                               parent=self.NewPrinterWindow)
             return
 
-        text = _("This print share is not accessible.")
-        if reason:
-            text = reason
-        show_error_dialog (_("Print Share Inaccessible"), text,
-                           parent=self.NewPrinterWindow)
+        if not canceled:
+            text = _("This print share is not accessible.")
+            if reason:
+                text = reason
+            show_error_dialog (_("Print Share Inaccessible"), text,
+                               parent=self.NewPrinterWindow)
 
     ### IPP Browsing
     def update_IPP_URI_label(self):
