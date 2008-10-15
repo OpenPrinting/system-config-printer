@@ -27,6 +27,7 @@ except ImportError:
     USE_OLD_CODE=True
 
 import errno
+from gettext import gettext as _
 import gobject
 import gtk
 import os
@@ -71,7 +72,7 @@ class AuthContext:
         self.auth_called = False
 
         if self.dialog_shown:
-            d = gtk.MessageDialog (self._parent,
+            d = gtk.MessageDialog (self.parent,
                                    gtk.DIALOG_MODAL |
                                    gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_ERROR,
