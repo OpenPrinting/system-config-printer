@@ -47,7 +47,7 @@ class SMBURI:
         uri = "%s%s%s" % (urllib.quote (user),
                           uri_password,
                           urllib.quote (group))
-        if len (uri) > 0:
+        if len (group) > 0:
             uri += '/'
         uri += urllib.quote (host)
         if len (share) > 0:

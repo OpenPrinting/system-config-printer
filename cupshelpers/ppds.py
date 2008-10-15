@@ -594,7 +594,9 @@ class PPDs:
         _debugprint (str (ppdnamelist))
 
         if not id_matched:
-            print "No ID match for device %s:" % uri
+            sanitised_uri = re.sub (pattern="//[^@]*@/?", repl="//",
+                                    string=str (uri))
+            print "No ID match for device %s:" % sanitised_uri
             print "  <manufacturer>%s</manufacturer>" % mfg
             print "  <model>%s</model>" % mdl
             print "  <description>%s</description>" % description

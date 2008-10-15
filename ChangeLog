@@ -1,7 +1,19 @@
 2008-10-15  Tim Waugh  <twaugh@redhat.com>
 
+	* smburi.py (SMBURI._construct): Don't construct URIs containing
+	"@/".
+
+2008-10-15  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/ppds.py (PPDs.getInfoFromModel): Restrict URI in
+	debugging output.
+
+2008-10-15  Tim Waugh  <twaugh@redhat.com>
+
 	* pysmb.py (AuthContext.perform_authentication): Show an error
 	dialog if the password was incorrect (bug #465407).
+	* po/POTFILES.in: Translate pysmb.py (no new translatable
+	strings).
 
 2008-10-15  Tim Waugh  <twaugh@redhat.com>
 
