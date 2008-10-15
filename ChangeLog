@@ -1,5 +1,11 @@
 2008-10-15  Tim Waugh  <twaugh@redhat.com>
 
+	* pysmb.py (AuthContext.perform_authentication): Don't destroy
+	authentication dialog until after we've fetched the details (bug
+	#464003).
+
+2008-10-15  Tim Waugh  <twaugh@redhat.com>
+
 	* pysmb.py: Import gettext.
 
 2008-10-15  Tim Waugh  <twaugh@redhat.com>

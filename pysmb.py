@@ -133,7 +133,6 @@ class AuthContext:
         username_entry.set_text (self.use_user)
         domain_entry.set_text (self.use_workgroup)
         response = d.run ()
-        d.destroy ()
 
         if response == gtk.RESPONSE_CANCEL:
             self.cancel = True
@@ -142,6 +141,7 @@ class AuthContext:
         self.use_user = username_entry.get_text ()
         self.use_password = password_entry.get_text ()
         self.use_workgroup = domain_entry.get_text ()
+        d.destroy ()
         return 1
 
     def initial_authentication (self):
