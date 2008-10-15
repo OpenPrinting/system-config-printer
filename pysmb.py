@@ -38,6 +38,7 @@ class AuthContext:
         self.use_user = user
         self.use_password = passwd
         self.use_workgroup = workgroup
+        self.dialog_shown = False
         self.parent = parent
 
     def perform_authentication (self):
@@ -63,6 +64,19 @@ class AuthContext:
             return 1
 
         self.auth_called = False
+
+        if self.dialog_shown:
+            d = gtk.MessageDialog (self._parent,
+                                   gtk.DIALOG_MODAL |
+                                   gtk.DIALOG_DESTROY_WITH_PARENT,
+                                   gtk.MESSAGE_ERROR,
+                                   gtk.BUTTONS_CLOSE)
+            d.set_title (_("Not authorized"))
+            d.set_markup ('<span weight="bold" size="larger">' +
+                          _("Not authorized") + '</span>\n\n' +
+                          _("The password may be incorrect."))
+            d.run ()
+            d.destroy ()
 
         # After that, prompt
         d = gtk.Dialog ("Authentication", self.parent,
@@ -104,6 +118,7 @@ class AuthContext:
         vbox.pack_start (table, False, False, 0)
         hbox.pack_start (vbox, False, False, 0)
         d.vbox.pack_start (hbox)
+        self.dialog_shown = True
         d.show_all ()
 
         if self.use_user == 'guest':

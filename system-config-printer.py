@@ -474,7 +474,6 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.set_relief (gtk.RELIEF_NONE)
                 label = self.get_child ()
                 text = label.get_text ()
-                print text
                 label.set_use_markup (True)
                 label.set_markup ('<span size="small" ' +
                                   'underline="single" ' +
@@ -4700,6 +4699,7 @@ class NewPrinterGUI(GtkGUI):
             passwd = self.entSMBPassword.get_text ()
 
         accessible = False
+        canceled = False
         self.busy ()
         try:
             debug = 0
@@ -4729,6 +4729,9 @@ class NewPrinterGUI(GtkGUI):
                         accessible = True
                     except Exception, e:
                         smbc_auth.failed (e)
+
+                if not accessible:
+                    canceled = True
         except RuntimeError, (e, s):
             debugprint ("Error accessing share: %s" % repr ((e, s)))
             reason = s
@@ -4742,11 +4745,12 @@ class NewPrinterGUI(GtkGUI):
                               parent=self.NewPrinterWindow)
             return
 
-        text = _("This print share is not accessible.")
-        if reason:
-            text = reason
-        show_error_dialog (_("Print Share Inaccessible"), text,
-                           parent=self.NewPrinterWindow)
+        if not canceled:
+            text = _("This print share is not accessible.")
+            if reason:
+                text = reason
+            show_error_dialog (_("Print Share Inaccessible"), text,
+                               parent=self.NewPrinterWindow)
 
     ### IPP Browsing
     def update_IPP_URI_label(self):
