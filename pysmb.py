@@ -27,6 +27,7 @@ except ImportError:
     USE_OLD_CODE=True
 
 import errno
+from gettext import gettext as _
 import gobject
 import gtk
 import os
@@ -71,7 +72,7 @@ class AuthContext:
         self.auth_called = False
 
         if self.dialog_shown:
-            d = gtk.MessageDialog (self._parent,
+            d = gtk.MessageDialog (self.parent,
                                    gtk.DIALOG_MODAL |
                                    gtk.DIALOG_DESTROY_WITH_PARENT,
                                    gtk.MESSAGE_ERROR,
@@ -132,7 +133,6 @@ class AuthContext:
         username_entry.set_text (self.use_user)
         domain_entry.set_text (self.use_workgroup)
         response = d.run ()
-        d.destroy ()
 
         if response == gtk.RESPONSE_CANCEL:
             self.cancel = True
@@ -141,6 +141,7 @@ class AuthContext:
         self.use_user = username_entry.get_text ()
         self.use_password = password_entry.get_text ()
         self.use_workgroup = domain_entry.get_text ()
+        d.destroy ()
         return 1
 
     def initial_authentication (self):
