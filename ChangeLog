@@ -1,5 +1,13 @@
 2008-10-16  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.save_printer): Prevent traceback
+	when printer has been deleted.
+	* system-config-printer.py (GUI.populateList): Cancel properties
+	dialog if the printer we're editing has been deleted.
+	Fixes Ubuntu #284444.
+
+2008-10-16  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.__init__): Set the item width for
 	the icon view, for a nicer appearance.
 
