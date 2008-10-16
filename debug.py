@@ -24,7 +24,7 @@ _debug=False
 def debugprint (x):
     if _debug:
         try:
-            print x
+            print >>sys.stderr, x
         except:
             pass
 
