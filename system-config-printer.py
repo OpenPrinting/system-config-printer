@@ -554,6 +554,7 @@ class GUI(GtkGUI, monitor.Watcher):
                                       gobject.TYPE_STRING)   # Tooltip
 
         self.dests_iconview.set_model(self.mainlist)
+        self.dests_iconview.set_item_width (145)
         self.dests_iconview.set_pixbuf_column (1)
         self.dests_iconview.set_text_column (2)
         self.dests_iconview.set_tooltip_column (3)
@@ -1365,6 +1366,11 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.dests_iconview.select_path (path)
         model.foreach (maybe_select)
 
+        if (self.printer != None and
+            self.printer.name not in self.printers.keys ()):
+            # The printer we're editing has been deleted.
+            self.PrinterPropertiesDialog.response (gtk.RESPONSE_CANCEL)
+
     # Connect to Server
 
     def on_connect_servername_changed(self, widget):
@@ -1945,6 +1951,10 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.printers.update (this_printer)
             except cups.IPPError, (e, s):
                 show_IPP_Error(e, s, self.PrinterPropertiesDialog)
+            except KeyError:
+                # The printer was deleted in the mean time and the
+                # user made no changes.
+                self.populateList ()
 
             self.cups._end_operation ()
         return False
