@@ -374,6 +374,7 @@ class GUI(GtkGUI, monitor.Watcher):
                                       gobject.TYPE_STRING)   # Tooltip
         
         self.dests_iconview.set_model(self.mainlist)
+        self.dests_iconview.set_item_width (145)
         self.dests_iconview.set_pixbuf_column (1)
         self.dests_iconview.set_text_column (2)
         self.dests_iconview.set_tooltip_column (3)
