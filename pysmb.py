@@ -131,6 +131,7 @@ class AuthContext:
 
         if response == gtk.RESPONSE_CANCEL:
             self.cancel = True
+            d.destroy ()
             return -1
 
         self.use_user = username_entry.get_text ()

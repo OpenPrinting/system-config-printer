@@ -1,3 +1,13 @@
+2008-10-16  Tim Waugh  <twaugh@redhat.com>
+
+	* debug.py (debugprint): Send debug output to stderr to work
+	around the samba bug (#5805) that closes stdout.
+
+2008-10-16  Tim Waugh  <twaugh@redhat.com>
+
+	* pysmb.py (AuthContext.perform_authentication): Fixed the SMB
+	authentication dialog's cancel button (bug #467127).
+
 2008-10-15  Tim Waugh  <twaugh@redhat.com>
 
 	* pysmb.py (AuthContext.perform_authentication): Don't destroy
