@@ -147,7 +147,6 @@ install-desktopDATA: $(desktop_DATA)
 	mkdir -p $(DESTDIR)$(desktopdir)
 	desktop-file-install --vendor redhat	\
 	  --dir $(DESTDIR)$(desktopdir)		\
-	  --add-category X-Red-Hat-Base		\
 	  --add-category System			\
 	  --add-category Settings		\
 	  --add-category HardwareSettings	\
@@ -156,21 +155,18 @@ install-desktopDATA: $(desktop_DATA)
 	  system-config-printer.desktop
 	desktop-file-install --vendor redhat	\
 	  --dir $(DESTDIR)$(desktopdir)		\
-	  --add-category X-Red-Hat-Base		\
 	  --add-category System			\
 	  --add-category Monitor		\
 	  --add-category GTK			\
 	  manage-print-jobs.desktop
 	desktop-file-install --vendor redhat	\
 	  --dir $(DESTDIR)$(desktopdir)		\
-	  --add-category X-Red-Hat-Base		\
 	  --add-category Settings		\
 	  --add-category HardwareSettings	\
 	  --add-category GTK			\
 	  my-default-printer.desktop
 	desktop-file-install --vendor redhat	\
 	  --dir $(DESTDIR)$(autostartdir)	\
-	  --add-category X-Red-Hat-Base		\
 	  --add-category System			\
 	  --add-category Monitor		\
 	  --add-category GTK			\
