@@ -243,6 +243,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
             pixbuf = theme.load_icon (ICON, 22, 0)
             self.statusicon.set_from_pixbuf (pixbuf)
             self.icon_jobs = self.statusicon.get_pixbuf ()
+            self.icon_jobs_processing = theme.load_icon ("printer-printing",
+                                                         22, 0)
             self.icon_no_jobs = self.icon_jobs.copy ()
             self.icon_no_jobs.fill (0)
             self.icon_jobs.composite (self.icon_no_jobs,
@@ -849,6 +851,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         if have_jobs:
             pixbuf = self.icon_jobs
+            for jobid, jobdata in self.jobs.iteritems ():
+                jstate = jobdata.get ('job-state', cups.IPP_JOB_PENDING)
+                if jstate == cups.IPP_JOB_PROCESSING:
+                    pixbuf = self.icon_jobs_processing
+                    break
         else:
             pixbuf = self.icon_no_jobs
 
