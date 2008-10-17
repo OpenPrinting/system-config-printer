@@ -142,10 +142,13 @@ desktop_DATA =\
 desktopdir = $(datadir)/applications/
 autostartdir = $(sysconfdir)/xdg/autostart/
 
+DESKTOP_VENDOR=@DESKTOPVENDOR@
+DESKTOP_PREFIX=@DESKTOPPREFIX@
+
 install-desktopDATA: $(desktop_DATA)
 	mkdir -p $(DESTDIR)$(desktopdir)
 	mkdir -p $(DESTDIR)$(desktopdir)
-	desktop-file-install --vendor redhat	\
+	desktop-file-install $(DESKTOP_VENDOR)	\
 	  --dir $(DESTDIR)$(desktopdir)		\
 	  --add-category System			\
 	  --add-category Settings		\
@@ -153,19 +156,19 @@ install-desktopDATA: $(desktop_DATA)
 	  --add-category Printing		\
 	  --add-category GTK			\
 	  system-config-printer.desktop
-	desktop-file-install --vendor redhat	\
+	desktop-file-install $(DESKTOP_VENDOR)	\
 	  --dir $(DESTDIR)$(desktopdir)		\
 	  --add-category System			\
 	  --add-category Monitor		\
 	  --add-category GTK			\
 	  manage-print-jobs.desktop
-	desktop-file-install --vendor redhat	\
+	desktop-file-install $(DESKTOP_VENDOR)	\
 	  --dir $(DESTDIR)$(desktopdir)		\
 	  --add-category Settings		\
 	  --add-category HardwareSettings	\
 	  --add-category GTK			\
 	  my-default-printer.desktop
-	desktop-file-install --vendor redhat	\
+	desktop-file-install $(DESKTOP_VENDOR)	\
 	  --dir $(DESTDIR)$(autostartdir)	\
 	  --add-category System			\
 	  --add-category Monitor		\
@@ -173,10 +176,10 @@ install-desktopDATA: $(desktop_DATA)
 	  print-applet.desktop
 
 uninstall-desktopDATA:
-	rm -f $(DESTDIR)$(desktopdir)/redhat-system-config-printer.desktop
-	rm -f $(DESTDIR)$(desktopdir)/redhat-manage-print-jobs.desktop
-	rm -f $(DESTDIR)$(desktopdir)/redhat-my-default-printer.desktop
-	rm -f $(DESTDIR)$(autostartdir)/redhat-print-applet.desktop
+	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)system-config-printer.desktop
+	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)manage-print-jobs.desktop
+	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)my-default-printer.desktop
+	rm -f $(DESTDIR)$(autostartdir)/$(DESKTOP_PREFIX)print-applet.desktop
 
 EXTRA_DIST=\
 	$(nobase_pkgdata_SCRIPTS) \

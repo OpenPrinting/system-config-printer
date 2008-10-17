@@ -14,6 +14,24 @@ AC_SUBST(VERSION)
 AC_SUBST(GETTEXT_PACKAGE)
 AC_SUBST(CATOBJEXT)
 AC_SUBST(DATADIRNAME)
+
+# Let distributor specify if they want to use a vendor with desktop-file-install
+AC_ARG_WITH(desktop-vendor,
+              [AC_HELP_STRING([--with-desktop-vendor],
+                              [Specify the vendor for use in calls to desktop-file-install @<:@default=@:>@])],,
+                              [with_desktop_vendor=""])
+
+VENDOR=$with_desktop_vendor
+if test "x$VENDOR" = "x"; then
+    DESKTOPVENDOR=
+    DESKTOPPREFIX=
+else
+    DESKTOPVENDOR="--vendor $VENDOR"
+    DESKTOPPREFIX="$VENDOR-"
+fi
+AC_SUBST(DESKTOPVENDOR)
+AC_SUBST(DESKTOPPREFIX)
+
 ALL_LINGUAS="ar as bg bn_IN bn bs ca cs cy da de el en_GB es et fa fi fr gu he hi hr hu hy id is it ja ka kn ko lo lv mk ml mr ms my nb nl nn or pa pl pt_BR pt ro ru si sk sl sr@latin sr sv ta te tr uk vi zh_CN zh_TW"
 AC_CONFIG_FILES([
 Makefile
