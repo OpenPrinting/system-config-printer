@@ -327,7 +327,7 @@ class PPDs:
         particular printer model, given its make and model name.
 
 	@returns: a dict, indexed by ppd-name, of dicts representing
-        PPDs (as given by cups.Connection.getPPDs)"
+        PPDs (as given by cups.Connection.getPPDs)
 	"""
         self._init_makes ()
         try:
