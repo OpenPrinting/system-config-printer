@@ -1962,7 +1962,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.cups._end_operation ()
         self.changed = set() # of options
 
-        if not self.__dict__.has_key ("server_settings"):
+        if not self.cups._use_pk and not self.__dict__.has_key ("server_settings"):
             # We can authenticate with the server correctly at this point,
             # but we have never fetched the server settings to see whether
             # the server is publishing shared printers.  Fetch the settings
