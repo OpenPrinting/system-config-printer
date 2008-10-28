@@ -63,6 +63,7 @@ job_sheets = TranslationDict ({
 ppd = TranslationDict ({
         "General": _("General"),
 
+        # HPIJS options
         "Printout Mode": _("Printout mode"),
         "Draft (auto-detect paper type)": _("Draft (auto-detect-paper type)"),
         "Draft Grayscale (auto-detect paper type)":
