@@ -1,5 +1,13 @@
 2008-10-28  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.__init__): Set up policy
+	comboboxes to separate IPP string from its presentable value.
+	(GUI.on_printer_changed): Updated.
+	(GUI.save_printer): Likewise.
+	(GUI.fillComboBox): Likewise.
+
+2008-10-28  Tim Waugh  <twaugh@redhat.com>
+
 	* ppdippstr.py: New module holding translations for common IPP and
 	PPD strings (trac #103).
 	* Makefile.am (nobase_pkgdata_DATA): Ship it.

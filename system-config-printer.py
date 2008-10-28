@@ -459,6 +459,15 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.jobviewers = [] # to keep track of jobviewer windows
 
+        # Printer properties combo boxes
+        for combobox in [self.cmbPStartBanner,
+                         self.cmbPEndBanner,
+                         self.cmbPErrorPolicy,
+                         self.cmbPOperationPolicy]:
+            cell = gtk.CellRendererText ()
+            combobox.pack_start (cell, True)
+            combobox.add_attribute (cell, 'text', 0)
+
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
         np.NewPrinterWindow.set_transient_for(self.PrintersWindow)
@@ -1555,7 +1564,9 @@ class GUI(GtkGUI, monitor.Watcher):
         elif isinstance(widget, gtk.RadioButton):
             value = widget.get_active()
         elif isinstance(widget, gtk.ComboBox):
-            value = widget.get_active_text()
+            model = widget.get_model ()
+            iter = widget.get_active_iter()
+            value = model.get_value (iter, 1)
         else:
             raise ValueError, "Widget type not supported (yet)"
 
@@ -1892,10 +1903,15 @@ class GUI(GtkGUI, monitor.Watcher):
             if shared != printer.is_shared or saveall:
                 self.printer.setShared(shared)
 
-            job_sheet_start = self.cmbPStartBanner.get_active_text()
-            job_sheet_end = self.cmbPEndBanner.get_active_text()
-            error_policy = self.cmbPErrorPolicy.get_active_text()
-            op_policy = self.cmbPOperationPolicy.get_active_text()
+            def get_combo_value (cmb):
+                model = cmb.get_model ()
+                iter = cmb.get_active_iter ()
+                return model.get_value (iter, 1)
+
+            job_sheet_start = get_combo_value (self.cmbPStartBanner)
+            job_sheet_end = get_combo_value (self.cmbPEndBanner)
+            error_policy = get_combo_value (self.cmbPErrorPolicy)
+            op_policy = get_combo_value (self.cmbPOperationPolicy)
 
             if (job_sheet_start != printer.job_sheet_start or
                 job_sheet_end != printer.job_sheet_end) or saveall:
@@ -2122,11 +2138,18 @@ class GUI(GtkGUI, monitor.Watcher):
         if translationdict == None:
             translationdict = ppdippstr.TranslactionDict ()
 
-        combobox.get_model().clear()
+        model = gtk.ListStore (gobject.TYPE_STRING,
+                               gobject.TYPE_STRING)
+        combobox.set_model (model)
+        set_active = False
         for nr, val in enumerate(values):
-            combobox.append_text(translationdict.get (val))
-            if val == value: combobox.set_active(nr)
+            model.append ([(translationdict.get (val)), val])
+            if val == value:
+                combobox.set_active(nr)
+                set_active = True
 
+        if not set_active:
+            combobox.set_active (0)
 
     def fillPrinterTab(self, name):
         self.changed = set() # of options
