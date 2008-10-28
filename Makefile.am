@@ -70,6 +70,7 @@ nobase_pkgdata_DATA=					\
 	options.py					\
 	optionwidgets.py				\
 	PhysicalDevice.py				\
+	ppdippstr.py					\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
 	gtk_treeviewtooltips.py				\

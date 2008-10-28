@@ -99,6 +99,7 @@ errordialogs.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
 gtk.glade.bindtextdomain (domain)
+import ppdippstr
 pkgdata = config.Paths ().get_path ('pkgdatadir')
 iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
@@ -2117,10 +2118,13 @@ class GUI(GtkGUI, monitor.Watcher):
     def on_btnCleanHeads_clicked(self, button):
         self.maintenance_command ("Clean all")
 
-    def fillComboBox(self, combobox, values, value):
+    def fillComboBox(self, combobox, values, value, translationdict=None):
+        if translationdict == None:
+            translationdict = ppdippstr.TranslactionDict ()
+
         combobox.get_model().clear()
         for nr, val in enumerate(values):
-            combobox.append_text(val)
+            combobox.append_text(translationdict.get (val))
             if val == value: combobox.set_active(nr)
 
 
@@ -2336,17 +2340,21 @@ class GUI(GtkGUI, monitor.Watcher):
             # Job sheets
             self.fillComboBox(self.cmbPStartBanner,
                               printer.job_sheets_supported,
-                              printer.job_sheet_start),
+                              printer.job_sheet_start,
+                              ppdippstr.job_sheets),
             self.fillComboBox(self.cmbPEndBanner, printer.job_sheets_supported,
-                              printer.job_sheet_end)
+                              printer.job_sheet_end,
+                              ppdippstr.job_sheets)
 
             # Policies
             self.fillComboBox(self.cmbPErrorPolicy,
                               printer.error_policy_supported,
-                              printer.error_policy)
+                              printer.error_policy,
+                              ppdippstr.printer_error_policy)
             self.fillComboBox(self.cmbPOperationPolicy,
                               printer.op_policy_supported,
-                              printer.op_policy)
+                              printer.op_policy,
+                              ppdippstr.printer_op_policy)
 
             # Access control
             self.rbtnPAllow.set_active(printer.default_allow)
@@ -2397,7 +2405,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         self.static_tabs)
                 tab_label = self.lblPInstallOptions
             else:
-                frame = gtk.Frame("<b>%s</b>" % group.text)
+                frame = gtk.Frame("<b>%s</b>" % ppdippstr.ppd.get (group.text))
                 frame.get_label_widget().set_use_markup(True)
                 frame.set_shadow_type (gtk.SHADOW_NONE)
                 self.vbPOptions.pack_start (frame, False, False, 0)

@@ -1,3 +1,15 @@
+2008-10-28  Tim Waugh  <twaugh@redhat.com>
+
+	* ppdippstr.py: New module holding translations for common IPP and
+	PPD strings (trac #103).
+	* Makefile.am (nobase_pkgdata_DATA): Ship it.
+	* po/POTFILES.in: Translate it.
+	* optionwidgets.py (OptionBool.__init__, OptionPickOne.__init__):
+	Use it to translate PPD option names and values.
+	* system-config-printer.py (GUI.fillComboBox): Use it to translate
+	job sheet, printer operation and printer error policies.
+	(GUI.fillPrinterOptions): Use it to translate PPD group names.
+
 2008-10-17  Tim Waugh  <twaugh@redhat.com>
 
 	* jobviewer.py (JobViewer.get_icon_pixbuf): Use printer-printing

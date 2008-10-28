@@ -20,6 +20,7 @@
 
 import gtk.glade, cups
 from gettext import gettext as _
+import ppdippstr
 
 def OptionWidget(option, ppd, gui, tab_label=None):
     """Factory function"""
@@ -146,7 +147,7 @@ class Option:
 class OptionBool(Option):
 
     def __init__(self, option, ppd, gui, tab_label=None):
-        self.selector = gtk.CheckButton(option.text)
+        self.selector = gtk.CheckButton(ppdippstr.ppd.get (option.text))
         self.label = None
         self.false = u"False" # hack to allow "None" instead of "False"
         self.true = u"True"
@@ -172,7 +173,7 @@ class OptionPickOne(Option):
         self.selector = gtk.combo_box_new_text()
         #self.selector.set_alignment(0.0, 0.5)
 
-        label = option.text
+        label = ppdippstr.ppd.get (option.text)
         if not label.endswith (':'):
             label += ':'
         self.label = gtk.Label(label)
@@ -180,7 +181,7 @@ class OptionPickOne(Option):
         
         selected = None
         for nr, choice in enumerate(option.choices):
-            self.selector.append_text(choice['text'])
+            self.selector.append_text(ppdippstr.ppd.get (choice['text']))
             if option.defchoice == choice['choice']:
                 selected = nr
         if selected is not None:
