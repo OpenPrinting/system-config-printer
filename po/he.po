@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.1.0.x\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-09-29 17:51+0100\n"
+"POT-Creation-Date: 2008-10-28 13:10+0000\n"
 "PO-Revision-Date: 2008-09-18 17:52GMT\n"
 "Last-Translator: Oron Peled <oron@actcom.co.il>\n"
 "Language-Team: Hebrew\n"
@@ -97,24 +97,25 @@ msgid "Authentication"
 msgstr "אימות זהות"
 
 #
-# File: ../authconn.py, line: 34
-#: ../authconn.py:252
-#, fuzzy, python-format
-msgid "Authentication (%s)"
-msgstr "אימות זהות"
-
-#
 # File: ../errordialogs.py, line: 65
 # File: ../errordialogs.py, line: 77
-#: ../errordialogs.py:50 ../errordialogs.py:62
+#: ../authconn.py:258 ../authconn.py:260 ../errordialogs.py:62 ../pysmb.py:75
+#: ../pysmb.py:77
 msgid "Not authorized"
 msgstr "לא מורשה"
 
 #
 # File: ../errordialogs.py, line: 66
-#: ../errordialogs.py:51
+#: ../authconn.py:261 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "יתכן והססמה שגויה."
+
+#
+# File: ../authconn.py, line: 34
+#: ../authconn.py:267
+#, fuzzy, python-format
+msgid "Authentication (%s)"
+msgstr "אימות זהות"
 
 #
 # File: ../errordialogs.py, line: 68
@@ -172,7 +173,7 @@ msgstr "שגיאת שרת"
 #
 # File: ../errordialogs.py, line: 94
 # File: ../system-config-printer.py, line: 788
-#: ../errordialogs.py:79 ../system-config-printer.py:1113
+#: ../errordialogs.py:79 ../system-config-printer.py:1126
 msgid "Not connected"
 msgstr "לא מחובר"
 
@@ -200,7 +201,7 @@ msgstr ""
 
 #
 # File: ../system-config-printer.glade.h, line: 263
-#: ../GroupsPane.py:98 ../system-config-printer.py:369
+#: ../GroupsPane.py:98 ../system-config-printer.py:370
 msgid "_Rename"
 msgstr "_שינוי שם"
 
@@ -274,8 +275,8 @@ msgstr "מסמך"
 # File: ../system-config-printer.py, line: 3016
 # File: ../troubleshoot/PrintTestPage.py, line: 79
 #: ../jobviewer.py:166 ../jobviewer.py:218 ../my-default-printer.py:152
-#: ../system-config-printer.py:342 ../system-config-printer.py:1259
-#: ../system-config-printer.py:3708 ../troubleshoot/PrintTestPage.py:79
+#: ../system-config-printer.py:343 ../system-config-printer.py:1273
+#: ../system-config-printer.py:3738 ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "מדפסת"
 
@@ -348,9 +349,9 @@ msgstr "הודעה"
 # File: ../troubleshoot/ChoosePrinter.py, line: 89
 # File: ../troubleshoot/DeviceListed.py, line: 83
 # File: ../troubleshoot/DeviceListed.py, line: 84
-#: ../jobviewer.py:368 ../jobviewer.py:434 ../jobviewer.py:435
-#: ../jobviewer.py:448 ../jobviewer.py:478 ../jobviewer.py:580
-#: ../system-config-printer.py:2302 ../troubleshoot/ChooseNetworkPrinter.py:95
+#: ../jobviewer.py:370 ../jobviewer.py:436 ../jobviewer.py:437
+#: ../jobviewer.py:450 ../jobviewer.py:480 ../jobviewer.py:582
+#: ../system-config-printer.py:2328 ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
@@ -362,40 +363,40 @@ msgstr "לא ידוע"
 
 #
 # File: ../jobviewer.py, line: 414
-#: ../jobviewer.py:380
+#: ../jobviewer.py:382
 msgid "1 hour ago"
 msgstr "לפני שעה אחת"
 
 #
 # File: ../jobviewer.py, line: 416
-#: ../jobviewer.py:382
+#: ../jobviewer.py:384
 msgid "1 hour and 1 minute ago"
 msgstr "לפני שעה ודקה אחת"
 
 #
 # File: ../jobviewer.py, line: 418
-#: ../jobviewer.py:384
+#: ../jobviewer.py:386
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "לפני שעה אחת ו-%d דקות"
 
 #
 # File: ../jobviewer.py, line: 421
-#: ../jobviewer.py:387
+#: ../jobviewer.py:389
 #, python-format
 msgid "%d hours ago"
 msgstr "לפני %d שעות"
 
 #
 # File: ../jobviewer.py, line: 423
-#: ../jobviewer.py:389
+#: ../jobviewer.py:391
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "לפני %d שעות ודקה"
 
 #
 # File: ../jobviewer.py, line: 425
-#: ../jobviewer.py:391
+#: ../jobviewer.py:393
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "לפני %d שעות ו-%d דקות"
@@ -403,34 +404,34 @@ msgstr "לפני %d שעות ו-%d דקות"
 #
 # File: ../jobviewer.py, line: 431
 # File: ../jobviewer.py, line: 472
-#: ../jobviewer.py:397 ../jobviewer.py:438
+#: ../jobviewer.py:399 ../jobviewer.py:440
 msgid "a minute ago"
 msgstr "לפני דקה"
 
 #
 # File: ../jobviewer.py, line: 433
-#: ../jobviewer.py:399
+#: ../jobviewer.py:401
 #, python-format
 msgid "%d minutes ago"
 msgstr "לפני %d דקות"
 
 #
 # File: ../jobviewer.py, line: 497
-#: ../jobviewer.py:463
+#: ../jobviewer.py:465
 msgid "Held for authentication"
 msgstr "מוחזק עד לאימות"
 
 #
 # File: ../jobviewer.py, line: 499
 # File: ../troubleshoot/PrintTestPage.py, line: 39
-#: ../jobviewer.py:465 ../troubleshoot/PrintTestPage.py:39
+#: ../jobviewer.py:467 ../troubleshoot/PrintTestPage.py:39
 msgid "Pending"
 msgstr "ממתין"
 
 #
 # File: ../jobviewer.py, line: 500
 # File: ../troubleshoot/PrintTestPage.py, line: 40
-#: ../jobviewer.py:466 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:468 ../troubleshoot/PrintTestPage.py:40
 msgid "Held"
 msgstr "נשמר"
 
@@ -438,7 +439,7 @@ msgstr "נשמר"
 # File: ../jobviewer.py, line: 501
 # File: ../system-config-printer.py, line: 166
 # File: ../troubleshoot/PrintTestPage.py, line: 41
-#: ../jobviewer.py:467 ../system-config-printer.py:169
+#: ../jobviewer.py:469 ../system-config-printer.py:170
 #: ../troubleshoot/PrintTestPage.py:41
 msgid "Processing"
 msgstr "בתהליך"
@@ -447,7 +448,7 @@ msgstr "בתהליך"
 # File: ../jobviewer.py, line: 502
 # File: ../system-config-printer.py, line: 168
 # File: ../troubleshoot/PrintTestPage.py, line: 42
-#: ../jobviewer.py:468 ../system-config-printer.py:171
+#: ../jobviewer.py:470 ../system-config-printer.py:172
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Stopped"
 msgstr "מופסק"
@@ -455,104 +456,104 @@ msgstr "מופסק"
 #
 # File: ../jobviewer.py, line: 503
 # File: ../troubleshoot/PrintTestPage.py, line: 43
-#: ../jobviewer.py:469 ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:471 ../troubleshoot/PrintTestPage.py:43
 msgid "Canceled"
 msgstr "בוטל"
 
 #
 # File: ../jobviewer.py, line: 504
 # File: ../troubleshoot/PrintTestPage.py, line: 44
-#: ../jobviewer.py:470 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:472 ../troubleshoot/PrintTestPage.py:44
 msgid "Aborted"
 msgstr "התבטל"
 
 #
 # File: ../jobviewer.py, line: 505
 # File: ../troubleshoot/PrintTestPage.py, line: 45
-#: ../jobviewer.py:471 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:473 ../troubleshoot/PrintTestPage.py:45
 msgid "Completed"
 msgstr "הסתיים"
 
 #
 # File: ../jobviewer.py, line: 527
-#: ../jobviewer.py:493
+#: ../jobviewer.py:495
 msgid "Authentication Required"
 msgstr "נדרש אימות"
 
 #
 # File: ../jobviewer.py, line: 528
-#: ../jobviewer.py:494
+#: ../jobviewer.py:496
 msgid "Job requires authentication to proceed."
 msgstr "המשימה דורשת אימות כדי להמשיך."
 
 #
 # File: ../jobviewer.py, line: 537
-#: ../jobviewer.py:503
+#: ../jobviewer.py:505
 msgid "Authenticate"
 msgstr "אימות"
 
 #
 # File: ../jobviewer.py, line: 621
-#: ../jobviewer.py:578
+#: ../jobviewer.py:580
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "נדרש אימות עבור הדפסת המסמך `%s' (משימה %d)"
 
 #
 # File: ../troubleshoot/PrintTestPage.py, line: 70
-#: ../jobviewer.py:677
+#: ../jobviewer.py:679
 #, fuzzy
 msgid "Cancel Job"
 msgstr "ביטול כל המשימות"
 
-#: ../jobviewer.py:691
+#: ../jobviewer.py:693
 msgid "Do you really want to cancel this job?"
 msgstr ""
 
 #
 # File: ../system-config-printer.glade.h, line: 43
-#: ../jobviewer.py:719
+#: ../jobviewer.py:721
 #, fuzzy
 msgid "canceling job"
 msgstr "מקבל משימות"
 
-#: ../jobviewer.py:743
+#: ../jobviewer.py:745
 msgid "holding job"
 msgstr ""
 
-#: ../jobviewer.py:767
+#: ../jobviewer.py:769
 msgid "releasing job"
 msgstr ""
 
 #
 # File: ../jobviewer.py, line: 863
-#: ../jobviewer.py:869
+#: ../jobviewer.py:876
 msgid "No documents queued"
 msgstr "אין מסמכים בתור"
 
 #
 # File: ../jobviewer.py, line: 865
-#: ../jobviewer.py:871
+#: ../jobviewer.py:878
 msgid "1 document queued"
 msgstr "מסמך אחד בתור"
 
 #
 # File: ../jobviewer.py, line: 867
-#: ../jobviewer.py:873
+#: ../jobviewer.py:880
 #, python-format
 msgid "%d documents queued"
 msgstr "יש %d מסמכים בתור"
 
 #
 # File: ../jobviewer.py, line: 1148
-#: ../jobviewer.py:1132
+#: ../jobviewer.py:1139
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "קרתה תקלה בשליחת המסמך `%s' (משימה %d) למדפסת."
 
 #
 # File: ../jobviewer.py, line: 1151
-#: ../jobviewer.py:1135
+#: ../jobviewer.py:1142
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "קרתה תקלה בעיבוד המסמך `%s' (משימה %d)."
@@ -560,7 +561,7 @@ msgstr "קרתה תקלה בעיבוד המסמך `%s' (משימה %d)."
 #
 # File: ../jobviewer.py, line: 1157
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1141
+#: ../jobviewer.py:1148
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "קרתה תקלה בהדפסת המסמך `%s' (משימה %d): `%s'."
@@ -568,19 +569,19 @@ msgstr "קרתה תקלה בהדפסת המסמך `%s' (משימה %d): `%s'."
 #
 # File: ../jobviewer.py, line: 1163
 # File: ../jobviewer.py, line: 1179
-#: ../jobviewer.py:1147 ../jobviewer.py:1163
+#: ../jobviewer.py:1154 ../jobviewer.py:1170
 msgid "Print Error"
 msgstr "שגיאת הדפסה"
 
 #
 # File: ../jobviewer.py, line: 1164
-#: ../jobviewer.py:1148
+#: ../jobviewer.py:1155
 msgid "_Diagnose"
 msgstr "_אבחון"
 
 #
 # File: ../jobviewer.py, line: 1185
-#: ../jobviewer.py:1169
+#: ../jobviewer.py:1176
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "המדפסת הנקראת `%s' סומנה כלא פעילה."
@@ -611,83 +612,349 @@ msgstr "_קבע כברירת מחדל"
 # File: ../system-config-printer.py, line: 2737
 # File: ../troubleshoot/ChooseNetworkPrinter.py, line: 36
 # File: ../troubleshoot/ChoosePrinter.py, line: 37
-#: ../my-default-printer.py:157 ../system-config-printer.py:399
-#: ../system-config-printer.py:3315 ../troubleshoot/ChooseNetworkPrinter.py:36
+#: ../my-default-printer.py:157 ../system-config-printer.py:400
+#: ../system-config-printer.py:3345 ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
 msgstr "מיקום"
 
 #
 # File: ../optionwidgets.py, line: 117
-#: ../optionwidgets.py:117
+#: ../optionwidgets.py:118
 msgid "Conflicts with:"
 msgstr "מתנגש עם:"
 
 #
+# File: ../jobviewer.py, line: 504
+# File: ../troubleshoot/PrintTestPage.py, line: 44
+#: ../ppdippstr.py:37
+#, fuzzy
+msgid "Abort job"
+msgstr "התבטל"
+
+#
+# File: ../jobviewer.py, line: 226
+#: ../ppdippstr.py:38
+#, fuzzy
+msgid "Retry job"
+msgstr "המשימות שלי"
+
+#
+# File: ../system-config-printer.glade.h, line: 72
+#: ../ppdippstr.py:39
+#, fuzzy
+msgid "Stop printer"
+msgstr "העתקת מדפסת"
+
+#
+# File: ../my-default-printer.py, line: 141
+# File: ../my-default-printer.desktop.in.h, line: 1
+#: ../ppdippstr.py:44
+#, fuzzy
+msgid "Default behavior"
+msgstr "מדפסת ברירת המחדל"
+
+#
+# File: ../system-config-printer.py, line: 4852
+#: ../ppdippstr.py:49 ../system-config-printer.py:5471
+msgid "None"
+msgstr "ללא"
+
+#
+# File: ../system-config-printer.py, line: 308
+# File: ../system-config-printer.py, line: 887
+#: ../ppdippstr.py:50
+#, fuzzy
+msgid "Classified"
+msgstr "מחלקה"
+
+#: ../ppdippstr.py:51
+msgid "Confidential"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 265
+#: ../ppdippstr.py:52
+#, fuzzy
+msgid "Secret"
+msgstr "_שרת"
+
+#: ../ppdippstr.py:53
+msgid "Standard"
+msgstr ""
+
+#: ../ppdippstr.py:54
+msgid "Top secret"
+msgstr ""
+
+#: ../ppdippstr.py:55
+msgid "Unclassified"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 221
+#: ../ppdippstr.py:64
+#, fuzzy
+msgid "General"
+msgstr "טורי"
+
+#
+# File: ../system-config-printer.glade.h, line: 201
+#: ../ppdippstr.py:66
+#, fuzzy
+msgid "Printout mode"
+msgstr "דגם מדפסת:"
+
+#: ../ppdippstr.py:67
+msgid "Draft (auto-detect-paper type)"
+msgstr ""
+
+#: ../ppdippstr.py:69
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr ""
+
+#: ../ppdippstr.py:70
+msgid "Normal (auto-detect-paper type)"
+msgstr ""
+
+#: ../ppdippstr.py:72
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr ""
+
+#: ../ppdippstr.py:74
+msgid "High quality (auto-detect-paper type)"
+msgstr ""
+
+#: ../ppdippstr.py:76
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr ""
+
+#: ../ppdippstr.py:77
+msgid "Photo (on photo paper)"
+msgstr ""
+
+#: ../ppdippstr.py:79
+msgid "Best quality (color on photo paper)"
+msgstr ""
+
+#: ../ppdippstr.py:81
+msgid "Normal quality (color on photo paper)"
+msgstr ""
+
+#: ../ppdippstr.py:83
+msgid "Media source"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 201
+#: ../ppdippstr.py:84
+#, fuzzy
+msgid "Printer default"
+msgstr "דגם מדפסת:"
+
+#: ../ppdippstr.py:85
+msgid "Photo tray"
+msgstr ""
+
+#: ../ppdippstr.py:86
+msgid "Upper tray"
+msgstr ""
+
+#: ../ppdippstr.py:87
+msgid "Lower tray"
+msgstr ""
+
+#: ../ppdippstr.py:88
+msgid "CD or DVD tray"
+msgstr ""
+
+#: ../ppdippstr.py:89
+msgid "Envelope feeder"
+msgstr ""
+
+#: ../ppdippstr.py:90
+msgid "Large capacity tray"
+msgstr ""
+
+#: ../ppdippstr.py:91
+msgid "Manual feeder"
+msgstr ""
+
+#: ../ppdippstr.py:92
+msgid "Multi-purpose tray"
+msgstr ""
+
+#
+# File: ../system-config-printer.glade.h, line: 182
+#: ../ppdippstr.py:94
+#, fuzzy
+msgid "Page size"
+msgstr "עמודים לכל צד:"
+
+#: ../ppdippstr.py:95
+msgid "Custom"
+msgstr ""
+
+#: ../ppdippstr.py:96
+msgid "Photo or 4x6 inch index card"
+msgstr ""
+
+#: ../ppdippstr.py:97
+msgid "Photo or 5x7 inch index card"
+msgstr ""
+
+#: ../ppdippstr.py:98
+msgid "Photo with tear-off tab"
+msgstr ""
+
+#: ../ppdippstr.py:99
+msgid "3x5 inch index card"
+msgstr ""
+
+#: ../ppdippstr.py:100
+msgid "5x8 inch index card"
+msgstr ""
+
+#: ../ppdippstr.py:101
+msgid "A6 with tear-off tab"
+msgstr ""
+
+#: ../ppdippstr.py:102
+msgid "CD or DVD 80mm"
+msgstr ""
+
+#: ../ppdippstr.py:103
+msgid "CD or DVD 120mm"
+msgstr ""
+
+#
+# File: ../troubleshoot/Welcome.py, line: 35
+#: ../ppdippstr.py:105
+#, fuzzy
+msgid "Double-sided printing"
+msgstr "אבחון תקלות בהדפסה"
+
+#: ../ppdippstr.py:106
+msgid "Long edge (standard)"
+msgstr ""
+
+#: ../ppdippstr.py:107
+msgid "Short edge (flip)"
+msgstr ""
+
+#: ../ppdippstr.py:108
+msgid "Off"
+msgstr ""
+
+#: ../ppdippstr.py:111
+msgid "Resolution, quality, ink type, media type"
+msgstr ""
+
+#: ../ppdippstr.py:112
+msgid "Controlled by 'Printout mode'"
+msgstr ""
+
+#: ../ppdippstr.py:114
+msgid "300 dpi, color, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:116
+msgid "300 dpi, draft, color, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:118
+msgid "300 dpi, draft, grayscale, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "300 dpi, grayscale, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "600 dpi, color, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:124
+msgid "600 dpi, grayscale, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:126
+msgid "600 dpi, photo, black + color cartridge, photo paper"
+msgstr ""
+
+#: ../ppdippstr.py:128
+msgid "600 dpi, color, black + color cartridge, photo paper, normal"
+msgstr ""
+
+#: ../ppdippstr.py:130
+msgid "1200 dpi, photo, black + color cartridge, photo paper"
+msgstr ""
+
+#
 # File: ../system-config-printer.py, line: 100
-#: ../system-config-printer.py:110
+#: ../system-config-printer.py:111
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr "כדי לעשות את זה, בחר במערכת->ניהול->חומת אש מהתפריט הראשי."
 
 #
 # File: ../system-config-printer.py, line: 165
-#: ../system-config-printer.py:168
+#: ../system-config-printer.py:169
 msgid "Idle"
 msgstr "בהמתנה"
 
 #
 # File: ../system-config-printer.py, line: 167
-#: ../system-config-printer.py:170
+#: ../system-config-printer.py:171
 msgid "Busy"
 msgstr "תפוס"
 
 #
 # File: ../system-config-printer.py, line: 308
 # File: ../system-config-printer.py, line: 887
-#: ../system-config-printer.py:348 ../system-config-printer.py:1265
+#: ../system-config-printer.py:349 ../system-config-printer.py:1279
 msgid "Class"
 msgstr "מחלקה"
 
 #
 # File: ../system-config-printer.glade.h, line: 222
-#: ../system-config-printer.py:375
+#: ../system-config-printer.py:376
 msgid "Set As De_fault"
 msgstr "קבע כברי_רת מחדל"
 
 #
 # File: ../system-config-printer.glade.h, line: 256
-#: ../system-config-printer.py:379
+#: ../system-config-printer.py:380
 #, fuzzy
 msgid "_Create class"
 msgstr "י_צירת מחלקה"
 
 #
 # File: ../system-config-printer.glade.h, line: 250
-#: ../system-config-printer.py:381
+#: ../system-config-printer.py:382
 msgid "View Print _Queue"
 msgstr "ה_צגת תור הדפסה"
 
-#: ../system-config-printer.py:383
+#: ../system-config-printer.py:384
 msgid "_Add to Group"
 msgstr ""
 
-#: ../system-config-printer.py:385
+#: ../system-config-printer.py:386
 msgid "Save Results as _Group"
 msgstr ""
 
-#: ../system-config-printer.py:387
+#: ../system-config-printer.py:388
 msgid "Save Filter as _Search Group"
 msgstr ""
 
 #
 # File: ../system-config-printer.glade.h, line: 105
-#: ../system-config-printer.py:391
+#: ../system-config-printer.py:392
 msgid "E_nabled"
 msgstr "מופ_על"
 
 #
 # File: ../system-config-printer.glade.h, line: 267
-#: ../system-config-printer.py:393
+#: ../system-config-printer.py:394
 msgid "_Shared"
 msgstr "_משותף"
 
@@ -695,138 +962,137 @@ msgstr "_משותף"
 # File: ../troubleshoot/ChooseNetworkPrinter.py, line: 34
 # File: ../troubleshoot/ChoosePrinter.py, line: 35
 # File: ../troubleshoot/DeviceListed.py, line: 35
-#: ../system-config-printer.py:397 ../troubleshoot/ChooseNetworkPrinter.py:34
+#: ../system-config-printer.py:398 ../troubleshoot/ChooseNetworkPrinter.py:34
 #: ../troubleshoot/ChoosePrinter.py:35 ../troubleshoot/DeviceListed.py:35
 msgid "Name"
 msgstr "שם"
 
 #
 # File: ../system-config-printer.glade.h, line: 98
-#: ../system-config-printer.py:398
+#: ../system-config-printer.py:399
 #, fuzzy
 msgid "Description"
 msgstr "תיאור:‏"
 
-#: ../system-config-printer.py:400
+#: ../system-config-printer.py:401
 msgid "Manufacturer / Model"
 msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 338
-#. Set up "Problems?" link button
-#: ../system-config-printer.py:471
+#: ../system-config-printer.py:483
 msgid "Problems?"
 msgstr "בעיות?"
 
 #
 # File: ../system-config-printer.py, line: 380
 # File: ../system-config-printer.py, line: 382
-#: ../system-config-printer.py:572 ../system-config-printer.py:574
+#: ../system-config-printer.py:585 ../system-config-printer.py:587
 msgid "Members of this class"
 msgstr "חברים במחלקה הזו"
 
 #
 # File: ../system-config-printer.py, line: 381
 # File: ../system-config-printer.py, line: 383
-#: ../system-config-printer.py:573 ../system-config-printer.py:575
+#: ../system-config-printer.py:586 ../system-config-printer.py:588
 msgid "Others"
 msgstr "אחרים"
 
 #
 # File: ../system-config-printer.py, line: 384
-#: ../system-config-printer.py:576
+#: ../system-config-printer.py:589
 msgid "Devices"
 msgstr "התקנים"
 
 #
 # File: ../system-config-printer.py, line: 385
-#: ../system-config-printer.py:577
+#: ../system-config-printer.py:590
 msgid "Connections"
 msgstr "חיבורים"
 
 #
 # File: ../system-config-printer.py, line: 386
-#: ../system-config-printer.py:578
+#: ../system-config-printer.py:591
 msgid "Makes"
 msgstr "יצרנים"
 
 #
 # File: ../system-config-printer.py, line: 387
-#: ../system-config-printer.py:579
+#: ../system-config-printer.py:592
 msgid "Models"
 msgstr "דגמים"
 
 #
 # File: ../system-config-printer.py, line: 388
-#: ../system-config-printer.py:580
+#: ../system-config-printer.py:593
 msgid "Drivers"
 msgstr "מנהלי התקנים"
 
 #
 # File: ../system-config-printer.py, line: 389
 # File: ../system-config-printer.glade.h, line: 103
-#: ../system-config-printer.py:581 ../glade/NewPrinterWindow.glade.h:52
+#: ../system-config-printer.py:594 ../glade/NewPrinterWindow.glade.h:52
 msgid "Downloadable Drivers"
 msgstr "מנהלי התקנים הניתנים להורדה"
 
 #
 # File: ../system-config-printer.py, line: 390
-#: ../system-config-printer.py:582
+#: ../system-config-printer.py:595
 msgid "Users"
 msgstr "משתמשים"
 
 #
 # File: ../system-config-printer.py, line: 431
-#: ../system-config-printer.py:621
+#: ../system-config-printer.py:634
 msgid "Automatic rotation"
 msgstr "הטיה אוטומטית"
 
 #
 # File: ../system-config-printer.py, line: 645
-#: ../system-config-printer.py:909
+#: ../system-config-printer.py:922
 #, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "מאפייני מדפסת - `%s' על %s"
 
 #
 # File: ../system-config-printer.py, line: 783
-#: ../system-config-printer.py:1108
+#: ../system-config-printer.py:1121
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "הגדרות המדפסת - %s"
 
 #
 # File: ../system-config-printer.py, line: 786
-#: ../system-config-printer.py:1111
+#: ../system-config-printer.py:1124
 #, python-format
 msgid "Connected to %s"
 msgstr "מחובר אל %s"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1150 ../system-config-printer.py:1929
+#: ../system-config-printer.py:1164 ../system-config-printer.py:1948
 msgid "obtaining queue details"
 msgstr ""
 
-#: ../system-config-printer.py:1187
+#: ../system-config-printer.py:1201
 msgid "Remove from Group"
 msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 875
-#: ../system-config-printer.py:1253
+#: ../system-config-printer.py:1267
 msgid "Network printer (discovered)"
 msgstr "מדפסות רשת (שהתגלו)"
 
 #
 # File: ../system-config-printer.py, line: 878
-#: ../system-config-printer.py:1256
+#: ../system-config-printer.py:1270
 msgid "Network class (discovered)"
 msgstr "מחלקת רשת (שהתגלו)"
 
 #
 # File: ../system-config-printer.py, line: 884
 # File: ../system-config-printer.py, line: 3017
-#: ../system-config-printer.py:1262 ../system-config-printer.py:3709
+#: ../system-config-printer.py:1276 ../system-config-printer.py:3739
 msgid "Fax"
 msgstr "פקס"
 
@@ -834,39 +1100,39 @@ msgstr "פקס"
 # File: ../system-config-printer.py, line: 890
 # File: ../system-config-printer.py, line: 896
 # File: ../troubleshoot/LocalOrRemote.py, line: 30
-#: ../system-config-printer.py:1268 ../system-config-printer.py:1274
+#: ../system-config-printer.py:1282 ../system-config-printer.py:1288
 #: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "מדפסת רשת"
 
 #
 # File: ../system-config-printer.py, line: 893
-#: ../system-config-printer.py:1271
+#: ../system-config-printer.py:1285
 msgid "Network print share"
 msgstr "מדפסת רשת משותפת"
 
-#: ../system-config-printer.py:1395 ../glade/ConnectingDialog.glade.h:2
+#: ../system-config-printer.py:1414 ../glade/ConnectingDialog.glade.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 1387
-#: ../system-config-printer.py:1772
+#: ../system-config-printer.py:1791
 msgid "Installable Options"
 msgstr "אפשרויות הניתנות להתקנה"
 
 #
 # File: ../system-config-printer.py, line: 1388
 # File: ../system-config-printer.glade.h, line: 198
-#: ../system-config-printer.py:1773
+#: ../system-config-printer.py:1792
 #: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Printer Options"
 msgstr "אפשרויות מדפסת"
 
 #
 # File: ../system-config-printer.py, line: 1411
-#: ../system-config-printer.py:1796
+#: ../system-config-printer.py:1815
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -876,29 +1142,29 @@ msgstr ""
 "השינויים יחולו רק אחרי\n"
 "שהסתירות יפתרו."
 
-#: ../system-config-printer.py:1813
+#: ../system-config-printer.py:1832
 #, python-format
 msgid "modifying class %s"
 msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 5059
-#: ../system-config-printer.py:1815 ../system-config-printer.py:2759
-#: ../system-config-printer.py:2784 ../system-config-printer.py:5676
-#: ../system-config-printer.py:5687 ../system-config-printer.py:5705
+#: ../system-config-printer.py:1834 ../system-config-printer.py:2789
+#: ../system-config-printer.py:2814 ../system-config-printer.py:5711
+#: ../system-config-printer.py:5722 ../system-config-printer.py:5740
 #, fuzzy, python-format
 msgid "modifying printer %s"
 msgstr "מוסיף מדפסת"
 
 #
 # File: ../system-config-printer.py, line: 1440
-#: ../system-config-printer.py:1830
+#: ../system-config-printer.py:1849
 msgid "This will delete this class!"
 msgstr "המחלקה תימחק!"
 
 #
 # File: ../system-config-printer.py, line: 1441
-#: ../system-config-printer.py:1831
+#: ../system-config-printer.py:1850
 msgid "Proceed anyway?"
 msgstr "להמשיך בכל זאת?"
 
@@ -908,44 +1174,44 @@ msgstr "להמשיך בכל זאת?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:1917 ../system-config-printer.py:2943
+#: ../system-config-printer.py:1936 ../system-config-printer.py:2973
 #, fuzzy
 msgid "fetching server settings"
 msgstr "התאמת הגדרות שרת"
 
 #
 # File: ../system-config-printer.py, line: 1582
-#: ../system-config-printer.py:1980
+#: ../system-config-printer.py:2003
 msgid "Set Default Printer"
 msgstr "קביעת מדפסת ברירת מחדל"
 
 #
 # File: ../system-config-printer.py, line: 1584
-#: ../system-config-printer.py:1982
+#: ../system-config-printer.py:2005
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "האם לקבוע את המדפסת כברירת מחדל לכל המערכת?"
 
 #
 # File: ../system-config-printer.py, line: 1586
-#: ../system-config-printer.py:1984
+#: ../system-config-printer.py:2007
 msgid "Set as the _system-wide default printer"
 msgstr "קביעת המדפסת כברירת מחדל לכל _המערכת"
 
 #
 # File: ../system-config-printer.py, line: 1588
-#: ../system-config-printer.py:1986
+#: ../system-config-printer.py:2009
 msgid "_Clear my personal default setting"
 msgstr "_ניקוי ברירות המחדל האישיות שלי"
 
 #
 # File: ../system-config-printer.py, line: 1589
-#: ../system-config-printer.py:1987
+#: ../system-config-printer.py:2010
 msgid "Set as my _personal default printer"
 msgstr "קביעת המדפסת כברירת מחדל אישית שלי"
 
 #
 # File: ../my-default-printer.desktop.in.h, line: 2
-#: ../system-config-printer.py:1991
+#: ../system-config-printer.py:2014
 #, fuzzy
 msgid "setting default printer"
 msgstr "בחירת מדפסת ברירת המחדל"
@@ -953,7 +1219,7 @@ msgstr "בחירת מדפסת ברירת המחדל"
 #
 # File: ../system-config-printer.glade.h, line: 197
 # File: ../troubleshoot/PrintTestPage.py, line: 67
-#: ../system-config-printer.py:2035
+#: ../system-config-printer.py:2058
 #, fuzzy
 msgid "printing test page"
 msgstr "הדפסת עמוד ניסיון"
@@ -962,15 +1228,15 @@ msgstr "הדפסת עמוד ניסיון"
 # File: ../system-config-printer.py, line: 1648
 # File: ../system-config-printer.py, line: 1676
 # File: ../system-config-printer.py, line: 4260
-#: ../system-config-printer.py:2048 ../system-config-printer.py:2081
-#: ../system-config-printer.py:4843
+#: ../system-config-printer.py:2071 ../system-config-printer.py:2104
+#: ../system-config-printer.py:4878
 msgid "Not possible"
 msgstr "בלתי אפשרי"
 
 #
 # File: ../system-config-printer.py, line: 1649
 # File: ../system-config-printer.py, line: 1677
-#: ../system-config-printer.py:2049 ../system-config-printer.py:2082
+#: ../system-config-printer.py:2072 ../system-config-printer.py:2105
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -981,24 +1247,24 @@ msgstr ""
 #
 # File: ../system-config-printer.py, line: 1641
 # File: ../system-config-printer.py, line: 1669
-#: ../system-config-printer.py:2059 ../system-config-printer.py:2074
+#: ../system-config-printer.py:2082 ../system-config-printer.py:2097
 msgid "Submitted"
 msgstr "נשלח"
 
 #
 # File: ../system-config-printer.py, line: 1642
-#: ../system-config-printer.py:2060
+#: ../system-config-printer.py:2083
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "עמוד ניסיון נשלח כמשימה %d"
 
-#: ../system-config-printer.py:2067
+#: ../system-config-printer.py:2090
 msgid "sending maintenance command"
 msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 1670
-#: ../system-config-printer.py:2075
+#: ../system-config-printer.py:2098
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "פקודת תחזוקה נשלחה כמשימה %d"
@@ -1009,38 +1275,38 @@ msgstr "פקודת תחזוקה נשלחה כמשימה %d"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2134 ../system-config-printer.py:2241
+#: ../system-config-printer.py:2160 ../system-config-printer.py:2267
 msgid "Error"
 msgstr "שגיאה"
 
 #
 # File: ../system-config-printer.py, line: 1728
-#: ../system-config-printer.py:2135
+#: ../system-config-printer.py:2161
 msgid "There was a problem connecting to the CUPS server."
 msgstr "הייתה בעיה בהתחברות לשרת המדפסות."
 
 #
 # File: ../system-config-printer.py, line: 1835
-#: ../system-config-printer.py:2242
+#: ../system-config-printer.py:2268
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "לאפשרות '%s' ישנו הערך '%s' ולכן לא ניתן לערוך אותה."
 
 #
 # File: ../system-config-printer.py, line: 2100
-#: ../system-config-printer.py:2508
+#: ../system-config-printer.py:2538
 msgid "Cannot Rename"
 msgstr "לא ניתן לשנות שם"
 
 #
 # File: ../system-config-printer.py, line: 2101
-#: ../system-config-printer.py:2509
+#: ../system-config-printer.py:2539
 msgid "There are queued jobs."
 msgstr "יש משימות בתור."
 
 #
 # File: ../system-config-printer.py, line: 5059
-#: ../system-config-printer.py:2567
+#: ../system-config-printer.py:2597
 #, fuzzy
 msgid "renaming printer"
 msgstr "מוסיף מדפסת"
@@ -1049,47 +1315,47 @@ msgstr "מוסיף מדפסת"
 # File: ../system-config-printer.py, line: 5059
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:2648
+#: ../system-config-printer.py:2678
 #, fuzzy
 msgid "copying printer"
 msgstr "מוסיף מדפסת"
 
 #
 # File: ../system-config-printer.py, line: 2283
-#: ../system-config-printer.py:2712
+#: ../system-config-printer.py:2742
 #, python-format
 msgid "Really delete class `%s'?"
 msgstr "למחוק את המחלקה `%s'?"
 
 #
 # File: ../system-config-printer.py, line: 2285
-#: ../system-config-printer.py:2714
+#: ../system-config-printer.py:2744
 #, python-format
 msgid "Really delete printer `%s'?"
 msgstr "למחוק את המדפסת `%s'?"
 
 #
 # File: ../system-config-printer.py, line: 2287
-#: ../system-config-printer.py:2716
+#: ../system-config-printer.py:2746
 msgid "Really delete selected destinations?"
 msgstr "למחוק את היעדים הנבחרים?"
 
 #
 # File: ../system-config-printer.py, line: 5059
-#: ../system-config-printer.py:2737
+#: ../system-config-printer.py:2767
 #, fuzzy, python-format
 msgid "deleting printer %s"
 msgstr "מוסיף מדפסת"
 
 #
 # File: ../system-config-printer.py, line: 2353
-#: ../system-config-printer.py:2809
+#: ../system-config-printer.py:2839
 msgid "Publish Shared Printers"
 msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 2354
-#: ../system-config-printer.py:2810
+#: ../system-config-printer.py:2840
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -1097,7 +1363,7 @@ msgstr ""
 
 #
 # File: ../system-config-printer.glade.h, line: 46
-#: ../system-config-printer.py:3004
+#: ../system-config-printer.py:3034
 #, fuzzy
 msgid "modifying server settings"
 msgstr "התאמת הגדרות שרת"
@@ -1110,19 +1376,19 @@ msgstr "התאמת הגדרות שרת"
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:3029
+#: ../system-config-printer.py:3059
 msgid "Review Firewall"
 msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 2468
-#: ../system-config-printer.py:3030
+#: ../system-config-printer.py:3060
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
-#: ../system-config-printer.py:3278
+#: ../system-config-printer.py:3308
 msgid "Browsing not available (pysmbc not installed)"
 msgstr ""
 
@@ -1130,27 +1396,27 @@ msgstr ""
 # File: ../system-config-printer.py, line: 2696
 # File: ../system-config-printer.py, line: 2706
 #. SMB list columns
-#: ../system-config-printer.py:3284
+#: ../system-config-printer.py:3314
 msgid "Share"
 msgstr "שיתוף"
 
 #
 # File: ../system-config-printer.py, line: 2702
 # File: ../system-config-printer.py, line: 2712
-#: ../system-config-printer.py:3290
+#: ../system-config-printer.py:3320
 msgid "Comment"
 msgstr "הערה"
 
 #
 # File: ../system-config-printer.py, line: 2731
 #. IPP list columns
-#: ../system-config-printer.py:3309
+#: ../system-config-printer.py:3339
 msgid "Queue"
 msgstr "תור"
 
 #
 # File: ../system-config-printer.py, line: 2745
-#: ../system-config-printer.py:3323
+#: ../system-config-printer.py:3353
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -1159,7 +1425,7 @@ msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 2754
-#: ../system-config-printer.py:3332
+#: ../system-config-printer.py:3362
 msgid "All files (*)"
 msgstr "כל הקבצים (*)"
 
@@ -1167,33 +1433,33 @@ msgstr "כל הקבצים (*)"
 # File: ../system-config-printer.py, line: 2792
 # File: ../system-config-printer.py, line: 4575
 # File: ../system-config-printer.py, line: 4613
-#: ../system-config-printer.py:3368 ../system-config-printer.py:5158
-#: ../system-config-printer.py:5196
+#: ../system-config-printer.py:3398 ../system-config-printer.py:5193
+#: ../system-config-printer.py:5231
 msgid "Search"
 msgstr "חיפוש"
 
 #
 # File: ../system-config-printer.py, line: 2806
 # File: ../system-config-printer.glade.h, line: 145
-#: ../system-config-printer.py:3382 ../glade/NewPrinterWindow.glade.h:66
+#: ../system-config-printer.py:3412 ../glade/NewPrinterWindow.glade.h:66
 msgid "New Printer"
 msgstr "מדפסת חדשה"
 
 #
 # File: ../system-config-printer.py, line: 2817
-#: ../system-config-printer.py:3393
+#: ../system-config-printer.py:3423
 msgid "New Class"
 msgstr "מחלקה חדשה"
 
 #
 # File: ../system-config-printer.py, line: 2822
-#: ../system-config-printer.py:3398
+#: ../system-config-printer.py:3428
 msgid "Change Device URI"
 msgstr "שינוי כתובת ה-URI של המכשיר"
 
 #
 # File: ../system-config-printer.py, line: 2826
-#: ../system-config-printer.py:3402
+#: ../system-config-printer.py:3432
 msgid "Change Driver"
 msgstr "החלפת מנהל ההתקן"
 
@@ -1202,23 +1468,23 @@ msgstr "החלפת מנהל ההתקן"
 # File: ../system-config-printer.py, line: 3223
 # File: ../system-config-printer.py, line: 3454
 # File: ../system-config-printer.py, line: 4600
-#: ../system-config-printer.py:3550 ../system-config-printer.py:3617
-#: ../system-config-printer.py:3920 ../system-config-printer.py:4145
-#: ../system-config-printer.py:5183
+#: ../system-config-printer.py:3580 ../system-config-printer.py:3647
+#: ../system-config-printer.py:3950 ../system-config-printer.py:4175
+#: ../system-config-printer.py:5218
 msgid "Searching"
 msgstr "מחפש"
 
 #
 # File: ../system-config-printer.py, line: 2926
 # File: ../system-config-printer.py, line: 3224
-#: ../system-config-printer.py:3551 ../system-config-printer.py:3618
-#: ../system-config-printer.py:3921
+#: ../system-config-printer.py:3581 ../system-config-printer.py:3648
+#: ../system-config-printer.py:3951
 msgid "Searching for drivers"
 msgstr "חיפוש אחר מנהלי התקנים"
 
 #
 # File: ../system-config-printer.py, line: 3018
-#: ../system-config-printer.py:3710
+#: ../system-config-printer.py:3740
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
@@ -1226,19 +1492,19 @@ msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 3455
-#: ../system-config-printer.py:4146
+#: ../system-config-printer.py:4176
 msgid "Searching for printers"
 msgstr "מחפש מדפסות"
 
 #
 # File: ../system-config-printer.py, line: 3607
-#: ../system-config-printer.py:4298
+#: ../system-config-printer.py:4328
 msgid " (Current)"
 msgstr " (נוכחי)"
 
 #
 # File: ../system-config-printer.py, line: 3680
-#: ../system-config-printer.py:4371
+#: ../system-config-printer.py:4401
 msgid "Other"
 msgstr "אחר"
 
@@ -1246,19 +1512,19 @@ msgstr "אחר"
 # File: ../system-config-printer.py, line: 3720
 # File: ../system-config-printer.py, line: 3737
 # File: ../system-config-printer.py, line: 4216
-#: ../system-config-printer.py:4414 ../system-config-printer.py:4805
+#: ../system-config-printer.py:4444 ../system-config-printer.py:4840
 msgid "Scanning..."
 msgstr "סורק..."
 
 #
 # File: ../system-config-printer.py, line: 3792
-#: ../system-config-printer.py:4469
+#: ../system-config-printer.py:4499
 msgid "No Print Shares"
 msgstr "אין שיתופי מדפסת"
 
 #
 # File: ../system-config-printer.py, line: 3793
-#: ../system-config-printer.py:4470
+#: ../system-config-printer.py:4500
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1267,46 +1533,46 @@ msgstr ""
 #
 # File: ../system-config-printer.py, line: 4128
 # File: ../system-config-printer.py, line: 4198
-#: ../system-config-printer.py:4727 ../system-config-printer.py:4787
+#: ../system-config-printer.py:4761 ../system-config-printer.py:4822
 msgid "Print Share Verified"
 msgstr "שיתוף המדפסת מאומת"
 
 #
 # File: ../system-config-printer.py, line: 4129
 # File: ../system-config-printer.py, line: 4199
-#: ../system-config-printer.py:4728 ../system-config-printer.py:4788
+#: ../system-config-printer.py:4762 ../system-config-printer.py:4823
 msgid "This print share is accessible."
 msgstr "שיתוף המדפסת נגיש."
 
 #
 # File: ../system-config-printer.py, line: 4133
 # File: ../system-config-printer.py, line: 4203
-#: ../system-config-printer.py:4732 ../system-config-printer.py:4792
+#: ../system-config-printer.py:4767 ../system-config-printer.py:4827
 msgid "This print share is not accessible."
 msgstr "שיתוף המדפסת לא נגיש."
 
 #
 # File: ../system-config-printer.py, line: 4136
-#: ../system-config-printer.py:4735
+#: ../system-config-printer.py:4770
 msgid "Print Share Inaccessible"
 msgstr "שיתוף מדפסת לא נגיש"
 
 #
 # File: ../system-config-printer.py, line: 4202
-#: ../system-config-printer.py:4791
+#: ../system-config-printer.py:4826
 msgid "Inaccessible"
 msgstr "לא נגיש"
 
 #
 # File: ../system-config-printer.py, line: 4261
-#: ../system-config-printer.py:4844
+#: ../system-config-printer.py:4879
 #, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "לא ניתן לקבל רשימת תורי הדפסה מ-'%s'."
 
 #
 # File: ../system-config-printer.py, line: 4263
-#: ../system-config-printer.py:4846
+#: ../system-config-printer.py:4881
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
@@ -1316,31 +1582,31 @@ msgstr ""
 
 #
 # File: ../system-config-printer.py, line: 4266
-#: ../system-config-printer.py:4849
+#: ../system-config-printer.py:4884
 msgid "No queues"
 msgstr "אין תורים"
 
 #
 # File: ../system-config-printer.py, line: 4267
-#: ../system-config-printer.py:4850
+#: ../system-config-printer.py:4885
 msgid "There are no queues available."
 msgstr "אין תורים זמינים."
 
 #
 # File: ../system-config-printer.py, line: 4357
-#: ../system-config-printer.py:4940
+#: ../system-config-printer.py:4975
 msgid "A printer connected to the parallel port."
 msgstr "מדפסת מחוברת ליציאה המקבילית."
 
 #
 # File: ../system-config-printer.py, line: 4359
-#: ../system-config-printer.py:4942
+#: ../system-config-printer.py:4977
 msgid "A printer connected to a USB port."
 msgstr "מדפסת מחוברת ליציאת USB."
 
 #
 # File: ../system-config-printer.py, line: 4361
-#: ../system-config-printer.py:4944
+#: ../system-config-printer.py:4979
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1348,7 +1614,7 @@ msgstr "תוכנת ה-HPLIP המפעילה מדפסת, או את תכונת הה
 
 #
 # File: ../system-config-printer.py, line: 4364
-#: ../system-config-printer.py:4947
+#: ../system-config-printer.py:4982
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1356,69 +1622,63 @@ msgstr "תוכנת ה-HPLIP המפעילה פקס, או את תכונת הפקס
 
 #
 # File: ../system-config-printer.py, line: 4367
-#: ../system-config-printer.py:4950
+#: ../system-config-printer.py:4985
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "המדפסת המקומית מזוהה על ידי שכבת הפשטת חומרה (Hardware Abstraction Layer)."
 
 #
 # File: ../system-config-printer.py, line: 4625
-#: ../system-config-printer.py:5208
+#: ../system-config-printer.py:5243
 msgid "-- Select from search results --"
 msgstr "-- יש לבחור מתוצאות החיפוש --"
 
 #
 # File: ../system-config-printer.py, line: 4627
-#: ../system-config-printer.py:5210
+#: ../system-config-printer.py:5245
 msgid "-- No matches found --"
 msgstr "-- לא נמצאו התאמות --"
 
 #
 # File: ../system-config-printer.py, line: 4808
-#: ../system-config-printer.py:5392
+#: ../system-config-printer.py:5427
 msgid " (recommended)"
 msgstr "(מומלץ)"
 
 #
 # File: ../system-config-printer.py, line: 4822
-#: ../system-config-printer.py:5406
+#: ../system-config-printer.py:5441
 msgid "This PPD is generated by foomatic."
 msgstr "ה-PPD נוצר על ידי foomatic."
 
 #
 # File: ../system-config-printer.py, line: 4848
-#: ../system-config-printer.py:5432
+#: ../system-config-printer.py:5467
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
 #
 # File: ../system-config-printer.py, line: 4850
-#: ../system-config-printer.py:5434
+#: ../system-config-printer.py:5469
 msgid "Distributable"
 msgstr "ניתנים להפצה"
 
 #
-# File: ../system-config-printer.py, line: 4852
-#: ../system-config-printer.py:5436
-msgid "None"
-msgstr "ללא"
-
-#
 # File: ../system-config-printer.py, line: 4860
-#: ../system-config-printer.py:5444
+#: ../system-config-printer.py:5479
 msgid "Not specified."
 msgstr "לא מוגדר."
 
 #
 # File: ../system-config-printer.py, line: 4900
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:5484
+#: ../system-config-printer.py:5519
 msgid "Database error"
 msgstr "שגיאת מסד נתונים"
 
 #
 # File: ../system-config-printer.py, line: 4901
-#: ../system-config-printer.py:5485
+#: ../system-config-printer.py:5520
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "לא ניתן להשתמש במנהל ההתקן '%s' עם המדפסת '%s %s'."
@@ -1428,7 +1688,7 @@ msgstr "לא ניתן להשתמש במנהל ההתקן '%s' עם המדפסת 
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:5495
+#: ../system-config-printer.py:5530
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "צריך להתקין את החבילה '%s' כדי להשתמש במנהל התקן זה."
@@ -1436,77 +1696,77 @@ msgstr "צריך להתקין את החבילה '%s' כדי להשתמש במנ�
 #
 # File: ../system-config-printer.py, line: 4918
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:5502
+#: ../system-config-printer.py:5537
 msgid "PPD error"
 msgstr "שגיאת PPD"
 
 #
 # File: ../system-config-printer.py, line: 4920
-#: ../system-config-printer.py:5504
+#: ../system-config-printer.py:5539
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "נכשל בקריאת קובץ PPD. סיבות אפשריות:"
 
 #
 # File: ../system-config-printer.py, line: 4937
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:5521
+#: ../system-config-printer.py:5556
 msgid "Downloadable drivers"
 msgstr "מנהלי התקנים הניתנים להורדה"
 
 #
 # File: ../system-config-printer.py, line: 4938
-#: ../system-config-printer.py:5522
+#: ../system-config-printer.py:5557
 msgid "Failed to download PPD."
 msgstr "נכשל בהורדת PPD."
 
 #
 # File: ../system-config-printer.py, line: 4974
 # File: ../system-config-printer.py, line: 5012
-#: ../system-config-printer.py:5555 ../system-config-printer.py:5593
+#: ../system-config-printer.py:5590 ../system-config-printer.py:5628
 msgid "No Installable Options"
 msgstr "אין אפשרויות להתקנה"
 
 #
 # File: ../system-config-printer.py, line: 5058
-#: ../system-config-printer.py:5639
+#: ../system-config-printer.py:5674
 msgid "Adding"
 msgstr "מוסיף"
 
 #
 # File: ../system-config-printer.py, line: 5059
-#: ../system-config-printer.py:5640
+#: ../system-config-printer.py:5675
 msgid "Adding printer"
 msgstr "מוסיף מדפסת"
 
 #
 # File: ../system-config-printer.py, line: 5059
-#: ../system-config-printer.py:5645
+#: ../system-config-printer.py:5680
 #, fuzzy, python-format
 msgid "adding printer %s"
 msgstr "מוסיף מדפסת"
 
 #
 # File: ../system-config-printer.py, line: 5220
-#: ../system-config-printer.py:5819
+#: ../system-config-printer.py:5854
 msgid "Install driver"
 msgstr "התקנת מנהל התקן"
 
 #
 # File: ../system-config-printer.py, line: 5221
-#: ../system-config-printer.py:5820
+#: ../system-config-printer.py:5855
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "המדפסת '%s' זקוקה לחבילת ה-%s אבל היא אינה מותקנת כעת."
 
 #
 # File: ../system-config-printer.py, line: 5246
-#: ../system-config-printer.py:5845
+#: ../system-config-printer.py:5880
 msgid "Missing driver"
 msgstr "מנהל התקן חסר"
 
 #
 # File: ../system-config-printer.py, line: 5247
-#: ../system-config-printer.py:5846
+#: ../system-config-printer.py:5881
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -3087,7 +3347,7 @@ msgstr "מדפסת '%s': '%s'."
 
 #
 # File: ../applet.glade.h, line: 5
-#: ../ToolbarSearchEntry.py:67
+#: ../ToolbarSearchEntry.py:73
 #, fuzzy
 msgid "_Filter:"
 msgstr "_קובץ"
