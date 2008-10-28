@@ -428,7 +428,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
 
-    def add_job (self, job, data):
+    def add_job (self, job, data, connection=None):
         store = self.store
         iter = self.store.append (None)
         store.set_value (iter, 0, job)
@@ -438,6 +438,32 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.jobiters[job] = iter
         self.update_job (job, data)
         store.set_value (iter, 5, _("a minute ago"))
+
+        # Fetch required attributes for this job if they are missing.
+        attrs = None
+        r = self.required_job_attributes - set (data.keys ())
+        if (data.get ('job-state', cups.IPP_JOB_HELD) != cups.IPP_JOB_HELD):
+            r -= set (['job-hold-until'])
+
+        if r:
+            try:
+                if connection == None:
+                    connection = cups.Connection (host=self.host,
+                                                  port=self.port,
+                                                  encryption=self.encryption)
+
+                debugprint ("requesting %s" % r)
+                r = list (r)
+                attrs = connection.getJobAttributes (job,
+                                                     requested_attributes=r)
+            except RuntimeError:
+                pass
+            except AttributeError:
+                pass
+
+            if attrs:
+                data.update (attrs)
+                self.update_job (job, data)
 
     def update_job (self, job, data):
         store = self.store
@@ -996,36 +1022,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 printer = uri
             jobdata['job-printer-name'] = printer
 
-            self.add_job (jobid, jobdata)
-
-            # Fetch required attributes for these jobs.
-            attrs = None
-            r = self.required_job_attributes - set (jobdata.keys ())
-            if (jobdata.get ('job-state', cups.IPP_JOB_HELD) !=
-                cups.IPP_JOB_HELD):
-                r -= set (['job-hold-until'])
-
-            if not r:
-                debugprint ("no further attributes required")
-                continue
-
-            try:
-                if connection == None:
-                    connection = cups.Connection (host=self.host,
-                                                  port=self.port,
-                                                  encryption=self.encryption)
-
-                debugprint ("requesting %s" % r)
-                attrs = connection.getJobAttributes (jobid,
-                                                     requested_attributes=r)
-            except RuntimeError:
-                pass
-            except AttributeError:
-                pass
-
-            if attrs:
-                jobdata.update (attrs)
-                self.update_job (jobid, jobdata)
+            self.add_job (jobid, jobdata, connection=connection)
 
         self.jobs = jobs
         self.active_jobs = set()

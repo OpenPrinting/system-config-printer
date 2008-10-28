@@ -1,5 +1,13 @@
 2008-10-28  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Moved fetch
+	of required job attributes...
+	* jobviewer.py (JobViewer.add_job): ...here.  This is needed
+	because all jobs are added via add_job now, even pre-existing
+	ones.
+
+2008-10-28  Tim Waugh  <twaugh@redhat.com>
+
 	* system-config-printer.py (GUI.__init__): Set up policy
 	comboboxes to separate IPP string from its presentable value.
 	(GUI.on_printer_changed): Updated.
