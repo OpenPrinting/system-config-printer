@@ -76,6 +76,21 @@
       </child>
     </widget>
   </child>
+
+  <child>
+    <widget class="GtkSeparatorMenuItem" id="separator1">
+      <property name="visible">True</property>
+    </widget>
+  </child>
+
+  <child>
+    <widget class="GtkMenuItem" id="authenticate">
+      <property name="visible">True</property>
+      <property name="label" translatable="yes">Authenticate</property>
+      <property name="use_underline">True</property>
+      <signal name="activate" handler="on_job_authenticate_activate" last_modification_time="Tue, 28 Oct 2008 15:43:00 GMT"/>
+    </widget>
+  </child>
 </widget>
 
 </glade-interface>
