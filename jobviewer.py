@@ -153,7 +153,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                "cancel",
                                "hold",
                                "release",
-                               "reprint"],
+                               "reprint",
+                               "authenticate"],
                           "statusicon_popupmenu":
                               ["statusicon_popupmenu"],
                           "PrinterStatusWindow":
@@ -677,6 +678,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.hold.set_sensitive (True)
         self.release.set_sensitive (True)
         self.reprint.set_sensitive (True)
+        self.authenticate.set_sensitive (False)
         if job.has_key ('job-state'):
             s = job['job-state']
             if s >= cups.IPP_JOB_CANCELED:
@@ -687,6 +689,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 self.release.set_sensitive (False)
             if (not job.get('job-preserved', False)):
                 self.reprint.set_sensitive (False)
+
+        if job.get ('job-state', cups.IPP_JOB_CANCELED) == cups.IPP_JOB_HELD:
+            if job.get ('job-hold-until', 'none') == 'auth-info-required':
+                self.authenticate.set_sensitive (True)
+
         self.job_popupmenu.popup (None, None, None, event_button,
                                   event.get_time ())
 
@@ -823,6 +830,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
 
         self.monitor.update ()
+
+    def on_job_authenticate_activate(self, menuitem):
+        self.display_auth_info_dialog (self.jobid)
 
     def on_refresh_activate(self, menuitem):
         self.monitor.refresh ()
