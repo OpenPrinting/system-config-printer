@@ -465,6 +465,7 @@ class GUI(GtkGUI, monitor.Watcher):
                          self.cmbPErrorPolicy,
                          self.cmbPOperationPolicy]:
             cell = gtk.CellRendererText ()
+            combobox.clear ()
             combobox.pack_start (cell, True)
             combobox.add_attribute (cell, 'text', 0)
 
