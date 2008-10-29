@@ -138,6 +138,7 @@ class Server:
 
 class Dialog:
     def __init__ (self):
+        gtk.window_set_default_icon_name ('printer')
         self.dialog = gtk.Dialog (_("Default Printer"),
                                   None,
                                   gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
