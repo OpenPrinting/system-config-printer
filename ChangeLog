@@ -1,5 +1,19 @@
 2008-10-29  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.on_state_reason_notification_closed):
+	Set 'closed' data for notification instead of removing the object
+	from the state_reason_notifications dict.
+	(JobViewer.set_statusicon_visibility): Skip closed notifications
+	when counting how many open notifications there are.
+	(JobViewer.notify_printer_state_reason): No need to set
+	'printer-state-reason' data on object any more.
+	(JobViewer.state_reason_removed): Don't try closing notification
+	if it was already closed.  Remove the notification from the
+	state_reasons_notification dict now that the reason is cleared.
+	Adjust statusicon visibility appropriately.
+
+2008-10-29  Tim Waugh  <twaugh@redhat.com>
+
 	* my-default-printer.py (Dialog.__init__): Set default window icon
 	(Ubuntu #290469).
 
