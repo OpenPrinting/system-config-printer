@@ -647,7 +647,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
 
         open_notifications = len (self.new_printer_notifications.keys ())
-        open_notifications += len (self.state_reason_notifications.keys ())
+        for reason, notification in self.state_reason_notifications.iteritems():
+            if notification.get_data ('closed') != True:
+                open_notifications += 1
         num_jobs = len (self.jobs.keys ())
 
         debugprint ("open notifications: %d" % open_notifications)
@@ -992,7 +994,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         (title, text) = reason.get_description ()
         notification = pynotify.Notification (title, text, 'printer')
         reason.user_notified = True
-        notification.set_data ('printer-state-reason', reason)
         notification.set_urgency (urgency)
         notification.set_timeout (pynotify.EXPIRES_NEVER)
         notification.connect ('closed',
@@ -1007,14 +1008,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def on_state_reason_notification_closed (self, notification, reason=None):
         debugprint ("Notification %s closed" % repr (notification))
-        reason = notification.get_data ('printer-state-reason')
-        tuple = reason.get_tuple ()
-        if self.state_reason_notifications[tuple] == notification:
-            del self.state_reason_notifications[tuple]
-            self.set_statusicon_visibility ()
-            return
-
-        debugprint ("Unable to find closed notification")
+        notification.set_data ('closed', True)
+        self.set_statusicon_visibility ()
+        return
 
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
@@ -1276,7 +1272,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         tuple = reason.get_tuple ()
         try:
             notification = self.state_reason_notifications[tuple]
-            notification.close ()
+            if notification.get_data ('closed') != True:
+                notification.close ()
+            del self.state_reason_notifications[tuple]
+            self.set_statusicon_visibility ()
         except KeyError:
             pass
 
