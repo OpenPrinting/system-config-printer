@@ -564,7 +564,9 @@ class JobViewer (monitor.Watcher):
                 notification.show ()
             elif (not job_requires_auth and
                   self.auth_notifications.has_key (job)):
+                debugprint ("job %s no longer requires auth" % job)
                 self.auth_notifications[job].close ()
+                del self.auth_notifications[job]
 
     def on_auth_notification_closed (self, notification, reason=None):
         job = notification.get_data ('job-id')
