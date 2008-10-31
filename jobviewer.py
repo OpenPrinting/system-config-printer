@@ -468,16 +468,17 @@ class JobViewer (monitor.Watcher):
                                            _("Unknown")))
         store.set_value (iter, 2, data.get('job-name', _("Unknown")))
         self.jobiters[job] = iter
-        self.update_job (job, data)
+        self.update_job (job, data, connection=connection)
         store.set_value (iter, 5, _("a minute ago"))
 
+    def update_job (self, job, data, connection=None):
         # Fetch required attributes for this job if they are missing.
-        attrs = None
         r = self.required_job_attributes - set (data.keys ())
         if (data.get ('job-state', cups.IPP_JOB_HELD) != cups.IPP_JOB_HELD):
             r -= set (['job-hold-until'])
 
         if r:
+            attrs = None
             try:
                 if connection == None:
                     connection = cups.Connection (host=self.host,
@@ -495,9 +496,7 @@ class JobViewer (monitor.Watcher):
 
             if attrs:
                 data.update (attrs)
-                self.update_job (job, data)
 
-    def update_job (self, job, data):
         store = self.store
         iter = self.jobiters[job]
         self.jobs[job] = data

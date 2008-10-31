@@ -1,5 +1,12 @@
 2008-10-31  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.add_job): Moved fetch of required job
+	attributes...
+	(JobViewer.update_job): ...here so that job event handling has
+	access to all the attributes it requires.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.set_statusicon_visibility): Count auth
 	notifications as reasons to keep the status icon visible.
 
