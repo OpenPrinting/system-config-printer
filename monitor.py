@@ -626,6 +626,20 @@ class Monitor:
                     deferred_calls.append ((self.watcher.job_removed,
                                             (self, jobid, '', {})))
 
+        jobids = jobs.keys ()
+        jobids.sort ()
+        if got == 0:
+            trim = False
+            for i in range (len (jobids)):
+                jobid = jobids[i]
+                if not trim and jobid > last_jobid:
+                    trim = True
+            
+                if trim:
+                    del jobs[jobid]
+                    deferred_calls.append ((self.watcher.job_removed,
+                                            (self, jobid, '', {})))
+
         self.update (jobs)
         self.jobs = jobs
 
