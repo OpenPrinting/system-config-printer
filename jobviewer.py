@@ -687,6 +687,7 @@ class JobViewer (monitor.Watcher):
             return
 
         open_notifications = len (self.new_printer_notifications.keys ())
+        open_notifications += len (self.auth_notifications.keys ())
         for reason, notification in self.state_reason_notifications.iteritems():
             if notification.get_data ('closed') != True:
                 open_notifications += 1
