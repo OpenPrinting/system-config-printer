@@ -561,8 +561,10 @@ class JobViewer (monitor.Watcher):
                 notification.attach_to_status_icon (self.statusicon)
                 notification.add_action ("authenticate", _("Authenticate"),
                                          self.on_auth_notification_authenticate)
-                notification.show ()
                 self.auth_notifications[job] = notification
+                debugprint ("auth notification opened for job %s" % job)
+                self.set_statusicon_visibility ()
+                notification.show ()
             elif (not job_requires_auth and
                   self.auth_notifications.has_key (job)):
                 self.auth_notifications[job].close ()
