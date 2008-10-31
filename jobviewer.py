@@ -328,9 +328,6 @@ class JobViewer (monitor.Watcher):
         notification.set_data ('printer-name', printer)
         notification.connect ('closed', self.on_new_printer_notification_closed)
         self.set_statusicon_visibility ()
-        # Let the icon show itself, ready for the notification
-        while gtk.events_pending ():
-            gtk.main_iteration ()
         notification.attach_to_status_icon (self.statusicon)
         notification.show ()
 
@@ -702,6 +699,10 @@ class JobViewer (monitor.Watcher):
                                      open_notifications > 0 or
                                      num_jobs > self.num_jobs_when_hidden)
 
+        # Let the icon show/hide itself before continuing.
+        while gtk.events_pending ():
+            gtk.main_iteration ()
+
     def on_treeview_popup_menu (self, treeview):
         event = gtk.gdk.Event (gtk.gdk.NOTHING)
         self.show_treeview_popup_menu (treeview, event, 0)
@@ -979,9 +980,6 @@ class JobViewer (monitor.Watcher):
                               self.on_state_reason_notification_closed)
         self.state_reason_notifications[reason.get_tuple ()] = notification
         self.set_statusicon_visibility ()
-        # Let the icon show itself, ready for the notification
-        while gtk.events_pending ():
-            gtk.main_iteration ()
         notification.attach_to_status_icon (self.statusicon)
         notification.show ()
 
