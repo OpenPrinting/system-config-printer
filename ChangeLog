@@ -1,5 +1,12 @@
 2008-10-31  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.job_event): Remove job-hold-until from
+	provided job data unless it was also provided as part of the
+	notification.  Call update_job earlier to make sure all required
+	attributes are present.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.add_job): Use iter while it's fresh.
 
 2008-10-31  Tim Waugh  <twaugh@redhat.com>

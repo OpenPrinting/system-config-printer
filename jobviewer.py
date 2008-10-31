@@ -1058,6 +1058,12 @@ class JobViewer (monitor.Watcher):
         elif jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
 
+        if (jobdata.has_key ('job-hold-until') and
+            not event.has_key ('job-hold-until')):
+            del jobdata['job-hold-until']
+        self.update_job (jobid, jobdata)
+        jobdata = self.jobs[jobid]
+
         # Look out for stopped jobs.
         if (self.trayicon and eventname == 'job-stopped' and
             not jobid in self.stopped_job_prompts):
@@ -1065,45 +1071,12 @@ class JobViewer (monitor.Watcher):
             # of some sort, or it might be that the backend requires
             # authentication.  If the latter, the job will be held not
             # stopped, and the job-hold-until attribute will be
-            # 'auth-info-required'.  This will be checked for in
+            # 'auth-info-required'.  This was already checked for in
             # update_job.
-            if jobdata['job-state'] == cups.IPP_JOB_HELD:
-                r = self.required_job_attributes - set (jobdata.keys ())
-                if not r:
-                    debugprint ("no further attributes required")
-                else:
-                    try:
-                        # Fetch the job-hold-until attribute, as this is
-                        # not provided in the notification attributes.
-                        try:
-                            c = cups.Connection (host=self.host,
-                                                 port=self.port,
-                                                 encryption=self.encryption)
-                        except TypeError:
-                            # Requires pycups >= 1.9.40.
-                            cups.setServer (self.host)
-                            cups.setPort (self.port)
-                            cups.setEncryption (self.encryption)
-                            c = cups.Connection ()
-
-                        try:
-                            debugprint ("requesting %s" % r)
-                            attrs = c.getJobAttributes (jobid,
-                                                        requested_attributes=r)
-                        except TypeError:
-                            # requested_attributes requires pycups >= 1.9.42.
-                            attrs = c.getJobAttributes (jobid)
-
-                        jobdata.update (attrs)
-                    except cups.IPPError:
-                        pass
-                    except RuntimeError:
-                        pass
-
             may_be_problem = True
             if (jobdata['job-state'] == cups.IPP_JOB_HELD and
                 jobdata['job-hold-until'] == 'auth-info-required'):
-                # Leave this to update_job to deal with.
+                # update_job already dealt with this.
                 may_be_problem = False
             else:
                 # Other than that, unfortunately the only
@@ -1183,8 +1156,6 @@ class JobViewer (monitor.Watcher):
                                 self.print_error_dialog_response, jobid)
                 self.stopped_job_prompts.add (jobid)
                 dialog.show_all ()
-
-        self.update_job (jobid, jobdata)
 
     def job_removed (self, mon, jobid, eventname, event):
         monitor.Watcher.job_removed (self, mon, jobid, eventname, event)
