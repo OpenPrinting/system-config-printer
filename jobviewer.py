@@ -1193,6 +1193,10 @@ class JobViewer (monitor.Watcher):
         if jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
 
+        if self.auth_notifications.has_key (jobid):
+            self.auth_notifications[jobid].close ()
+            del self.auth_notifications[jobid]
+
         self.update_status ()
 
     def state_reason_added (self, mon, reason):
