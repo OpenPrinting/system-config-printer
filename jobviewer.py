@@ -994,6 +994,7 @@ class JobViewer (monitor.Watcher):
 
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
+        monitor.Watcher.current_printers_and_jobs (self, mon, printers, jobs)
         self.store.clear ()
         self.jobs = {}
         self.jobiters = {}
@@ -1117,6 +1118,7 @@ class JobViewer (monitor.Watcher):
                                                       notify_text)
 
             if may_be_problem:
+                debugprint ("Problem detected")
                 self.toggle_window_display (self.statusicon, force_show=True)
                 dialog = gtk.Dialog (_("Print Error"), self.MainWindow, 0,
                                      (_("_Diagnose"), gtk.RESPONSE_NO,
