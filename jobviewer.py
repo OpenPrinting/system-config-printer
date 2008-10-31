@@ -464,9 +464,10 @@ class JobViewer (monitor.Watcher):
         store.set_value (iter, 1, data.get('job-originating-user-name',
                                            _("Unknown")))
         store.set_value (iter, 2, data.get('job-name', _("Unknown")))
+        debugprint ("Job %d added" % job)
         self.jobiters[job] = iter
-        self.update_job (job, data, connection=connection)
         store.set_value (iter, 5, _("a minute ago"))
+        self.update_job (job, data, connection=connection)
 
     def update_job (self, job, data, connection=None):
         # Fetch required attributes for this job if they are missing.

@@ -1,5 +1,9 @@
 2008-10-31  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.add_job): Use iter while it's fresh.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.update_job): Delete auth notification
 	after closing it, otherwise we'll never show the notification for
 	this job again.
