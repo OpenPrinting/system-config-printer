@@ -628,7 +628,7 @@ class Monitor:
 
         jobids = jobs.keys ()
         jobids.sort ()
-        if got == 0:
+        if got < limit:
             trim = False
             for i in range (len (jobids)):
                 jobid = jobids[i]
