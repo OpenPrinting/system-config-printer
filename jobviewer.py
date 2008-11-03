@@ -576,22 +576,29 @@ class JobViewer (monitor.Watcher):
                 notification.set_timeout (pynotify.EXPIRES_NEVER)
                 notification.connect ('closed',
                                       self.on_auth_notification_closed)
-                notification.attach_to_status_icon (self.statusicon)
                 notification.add_action ("authenticate", _("Authenticate"),
                                          self.on_auth_notification_authenticate)
                 self.auth_notifications[job] = notification
                 debugprint ("auth notification opened for job %s" % job)
                 self.set_statusicon_visibility ()
-                notification.show ()
+
+                # In set_statusicon_visibility we process pending
+                # events, so we need to check that we still have a
+                # notification to show.
+                if notification.get_data ('closed') != True:
+                    notification.attach_to_status_icon (self.statusicon)
+                    notification.show ()
             elif (not job_requires_auth and
                   self.auth_notifications.has_key (job)):
                 debugprint ("job %s no longer requires auth" % job)
                 self.auth_notifications[job].close ()
+                self.auth_notifications[job].set_data ('closed', True)
                 del self.auth_notifications[job]
 
     def on_auth_notification_closed (self, notification, reason=None):
         job = notification.get_data ('job-id')
         debugprint ("auth notification closed for job %s" % job)
+        self.auth_notifications[job].set_data ('closed', True)
         del self.auth_notifications[job]
 
     def on_auth_notification_authenticate (self, notification, action):
@@ -1191,6 +1198,7 @@ class JobViewer (monitor.Watcher):
 
         if self.auth_notifications.has_key (jobid):
             self.auth_notifications[jobid].close ()
+            self.auth_notifications[jobid].set_data ('closed', True)
             del self.auth_notifications[jobid]
 
         self.update_status ()

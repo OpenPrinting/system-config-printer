@@ -1,5 +1,13 @@
 2008-11-03  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.update_job): Make sure the notification
+	is still valid after letting the status icon show itself.
+	(JobViewer.on_auth_notification_closed): Mark notification as
+	closed.
+	(JobViewer.job_removed): Likewise.
+
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.update_job): Restored compatibility code
 	for pycups < 1.9.40 when connecting to CUPS and requesting
 	specific job attributes.
