@@ -555,7 +555,6 @@ class JobViewer (monitor.Watcher):
                 notification.set_timeout (pynotify.EXPIRES_NEVER)
                 notification.connect ('closed',
                                       self.on_auth_notification_closed)
-                self.set_statusicon_visibility ()
                 notification.attach_to_status_icon (self.statusicon)
                 notification.add_action ("authenticate", _("Authenticate"),
                                          self.on_auth_notification_authenticate)
