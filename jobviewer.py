@@ -296,6 +296,7 @@ class JobViewer (monitor.Watcher):
         if bus == None:
             bus = dbus.SystemBus ()
 
+        self.set_process_pending (True)
         self.host = cups.getServer ()
         self.port = cups.getPort ()
         self.encryption = cups.getEncryption ()
@@ -321,6 +322,9 @@ class JobViewer (monitor.Watcher):
 
         if self.exit_handler:
             self.exit_handler (self)
+
+    def set_process_pending (self, whether):
+        self.process_pending_events = whether
 
     # Handle "special" status icon
     def set_special_statusicon (self, iconname):
@@ -730,7 +734,7 @@ class JobViewer (monitor.Watcher):
                                      num_jobs > self.num_jobs_when_hidden)
 
         # Let the icon show/hide itself before continuing.
-        while gtk.events_pending ():
+        while self.process_pending_events and gtk.events_pending ():
             gtk.main_iteration ()
 
     def on_treeview_popup_menu (self, treeview):
