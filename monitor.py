@@ -559,11 +559,10 @@ class Monitor:
                 if printer not in self.specific_dests:
                     del jobs[jobid]
 
+        self.update (jobs)
+        self.jobs = jobs
         self.watcher.current_printers_and_jobs (self, self.printers.copy (),
                                                 jobs.copy ())
-        self.update (jobs)
-
-        self.jobs = jobs
         return False
 
     def fetch_jobs (self, refresh_all):
