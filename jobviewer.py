@@ -489,14 +489,25 @@ class JobViewer (monitor.Watcher):
             attrs = None
             try:
                 if connection == None:
-                    connection = cups.Connection (host=self.host,
-                                                  port=self.port,
-                                                  encryption=self.encryption)
+                    try:
+                        connection = cups.Connection (host=self.host,
+                                                      port=self.port,
+                                                      encryption=self.encryption)
+                    except TypeError:
+                        # Requires pycups >= 1.9.40.
+                        cups.setServer (self.host)
+                        cups.setPort (self.port)
+                        cups.setEncryption (self.encryption)
+                        connection = cups.Connection ()
 
                 debugprint ("requesting %s" % r)
                 r = list (r)
-                attrs = connection.getJobAttributes (job,
-                                                     requested_attributes=r)
+                try:
+                    attrs = connection.getJobAttributes (job,
+                                                         requested_attributes=r)
+                except TypeError:
+                    # requested_attributes requires pycups >= 1.9.42
+                    attrs = connection.getJobAttributes (jobid)
             except RuntimeError:
                 pass
             except AttributeError:
