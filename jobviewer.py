@@ -309,6 +309,16 @@ class JobViewer (monitor.Watcher):
 
     def cleanup (self):
         self.monitor.cleanup ()
+
+        # Close any open notifications.
+        for l in [self.new_printer_notifications.values (),
+                  self.auth_notifications.values (),
+                  self.state_reason_notifications.values ()]:
+            for notification in l:
+                if notification.get_data ('closed') != True:
+                    notification.close ()
+                    notification.set_data ('closed', True)
+
         if self.exit_handler:
             self.exit_handler (self)
 
