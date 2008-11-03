@@ -1,3 +1,116 @@
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.update_job): Restored compatibility code
+	for pycups < 1.9.40 when connecting to CUPS and requesting
+	specific job attributes.
+
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.cleanup): Close open notifications on
+	exit (trac #106).
+
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.refresh): Fixed race condition causing stale
+	jobs (trac #107).
+
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.update_job): Already set status icon
+	visibility here.
+
+2008-11-02  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.fetch_jobs): Better logic for job trimming.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Better
+	debugging.
+	(JobViewer.job_event): Likewise.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.job_event): Remove job-hold-until from
+	provided job data unless it was also provided as part of the
+	notification.  Call update_job earlier to make sure all required
+	attributes are present.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.add_job): Use iter while it's fresh.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.update_job): Delete auth notification
+	after closing it, otherwise we'll never show the notification for
+	this job again.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.set_statusicon_visibility): Let the icon
+	show/hide itself before continuing.
+	(JobViewer.notify_new_printer): No longer need to do that here.
+	(JobViewer.notify_printer_state_reason): Likewise.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.update_job): Set status icon visibility
+	before making auth notification visible.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.add_job): Moved fetch of required job
+	attributes...
+	(JobViewer.update_job): ...here so that job event handling has
+	access to all the attributes it requires.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.set_statusicon_visibility): Count auth
+	notifications as reasons to keep the status icon visible.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.job_removed): Close outstanding auth
+	notifications when the job is removed.
+
+2008-10-31  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.fetch_jobs): Trim the remaining jobs after
+	the last job is returned.
+
+2008-10-28  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Moved fetch
+	of required job attributes...
+	* jobviewer.py (JobViewer.add_job): ...here.  This is needed
+	because all jobs are added via add_job now, even pre-existing
+	ones.
+
+2008-10-29  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.on_state_reason_notification_closed):
+	Set 'closed' data for notification instead of removing the object
+	from the state_reason_notifications dict.
+	(JobViewer.set_statusicon_visibility): Skip closed notifications
+	when counting how many open notifications there are.
+	(JobViewer.notify_printer_state_reason): No need to set
+	'printer-state-reason' data on object any more.
+	(JobViewer.state_reason_removed): Don't try closing notification
+	if it was already closed.  Remove the notification from the
+	state_reasons_notification dict now that the reason is cleared.
+	Adjust statusicon visibility appropriately.
+
+2008-10-29  Tim Waugh  <twaugh@redhat.com>
+
+	* my-default-printer.py (Dialog.__init__): Set default window icon
+	(Ubuntu #290469).
+
+2008-10-21  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 1.0.9.
+
 2008-10-16  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.save_printer): Prevent traceback

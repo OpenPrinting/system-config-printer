@@ -3412,9 +3412,12 @@ class NewPrinterGUI(GtkGUI):
         if step > 0 and next_page_nr == 0: # About to choose a name.
             # Suggest an appropriate name.
             name = None
+            descr = None
+
             try:
-                if self.device.id:
+                if self.device.id and not self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
                     name = self.device.id_dict["MDL"]
+                    descr = "%s %s" % (self.device.id_dict["MFG"], self.device.id_dict["MDL"])
             except:
                 nonfatalException ()
 
@@ -3423,6 +3426,7 @@ class NewPrinterGUI(GtkGUI):
                     mname = self.ppd.findAttr ("modelName").value
                     make, model = cupshelpers.ppds.ppdMakeModelSplit (mname)
                     name = "%s %s" % (make, model)
+                    descr = "%s %s" % (make, model)
             except:
                 nonfatalException ()
 
@@ -3431,6 +3435,9 @@ class NewPrinterGUI(GtkGUI):
 
             name = self.mainapp.makeNameUnique (name)
             self.entNPName.set_text (name)
+
+            if self.entNPDescription.get_text () == '' and descr:
+                self.entNPDescription.set_text (descr)
 
         self.ntbkNewPrinter.set_current_page(next_page_nr)
 
