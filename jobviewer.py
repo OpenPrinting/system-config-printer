@@ -33,6 +33,7 @@ import monitor
 import os
 import pango
 import pwd
+import subprocess
 import sys
 import time
 
@@ -720,6 +721,21 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_icon_hide_activate(self, menuitem):
         self.num_jobs_when_hidden = len (self.jobs.keys ())
         self.set_statusicon_visibility ()
+
+    def on_icon_configure_printers_activate(self, menuitem):
+        if self.loop:
+            env = {}
+            for name, value in os.environ.iteritems ():
+                if name == "SYSTEM_CONFIG_PRINTER_GLADE":
+                    continue
+                env[name] = value
+            p = subprocess.Popen ([ "system-config-printer" ],
+                                  close_fds=True, env=env)
+            gobject.timeout_add (10 * 1000, self.poll_subprocess, p)
+
+    def poll_subprocess(self, process):
+        returncode = process.poll ()
+        return returncode == None
 
     def on_icon_quit_activate (self, menuitem):
         if self.loop:

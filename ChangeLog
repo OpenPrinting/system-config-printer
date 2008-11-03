@@ -1,5 +1,14 @@
 2008-11-03  Tim Waugh  <twaugh@redhat.com>
 
+	* glade/statusicon_popupmenu.glade: Added a 'Configure Printers'
+	entry to the pop-up menu.
+	* jobviewer.py (JobViewer.on_icon_configure_printers_activate):
+	New method.  Launch system-config-printer.
+	(JobViewer.poll_subprocess): New method.  Collect exit status.
+	Fixes trac #96.
+
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.update_job): Restored compatibility code
 	for pycups < 1.9.40 when connecting to CUPS and requesting
 	specific job attributes.
