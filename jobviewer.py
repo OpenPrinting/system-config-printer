@@ -278,6 +278,16 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def cleanup (self):
         self.monitor.cleanup ()
+
+        # Close any open notifications.
+        for l in [self.new_printer_notifications.values (),
+                  self.auth_notifications.values (),
+                  self.state_reason_notifications.values ()]:
+            for notification in l:
+                if notification.get_data ('closed') != True:
+                    notification.close ()
+                    notification.set_data ('closed', True)
+
         if self.exit_handler:
             self.exit_handler (self)
 
@@ -297,9 +307,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         notification.set_data ('printer-name', printer)
         notification.connect ('closed', self.on_new_printer_notification_closed)
         self.set_statusicon_visibility ()
-        # Let the icon show itself, ready for the notification
-        while gtk.events_pending ():
-            gtk.main_iteration ()
         notification.attach_to_status_icon (self.statusicon)
         notification.show ()
 
@@ -436,17 +443,19 @@ class JobViewer (GtkGUI, monitor.Watcher):
         store.set_value (iter, 1, data.get('job-originating-user-name',
                                            _("Unknown")))
         store.set_value (iter, 2, data.get('job-name', _("Unknown")))
+        debugprint ("Job %d added" % job)
         self.jobiters[job] = iter
-        self.update_job (job, data)
         store.set_value (iter, 5, _("a minute ago"))
+        self.update_job (job, data, connection=connection)
 
+    def update_job (self, job, data, connection=None):
         # Fetch required attributes for this job if they are missing.
-        attrs = None
         r = self.required_job_attributes - set (data.keys ())
         if (data.get ('job-state', cups.IPP_JOB_HELD) != cups.IPP_JOB_HELD):
             r -= set (['job-hold-until'])
 
         if r:
+            attrs = None
             try:
                 if connection == None:
                     connection = cups.Connection (host=self.host,
@@ -464,9 +473,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
             if attrs:
                 data.update (attrs)
-                self.update_job (job, data)
 
-    def update_job (self, job, data):
         store = self.store
         iter = self.jobiters[job]
         self.jobs[job] = data
@@ -527,15 +534,18 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 notification.set_timeout (pynotify.EXPIRES_NEVER)
                 notification.connect ('closed',
                                       self.on_auth_notification_closed)
-                self.set_statusicon_visibility ()
                 notification.attach_to_status_icon (self.statusicon)
                 notification.add_action ("authenticate", _("Authenticate"),
                                          self.on_auth_notification_authenticate)
-                notification.show ()
                 self.auth_notifications[job] = notification
+                debugprint ("auth notification opened for job %s" % job)
+                self.set_statusicon_visibility ()
+                notification.show ()
             elif (not job_requires_auth and
                   self.auth_notifications.has_key (job)):
+                debugprint ("job %s no longer requires auth" % job)
                 self.auth_notifications[job].close ()
+                del self.auth_notifications[job]
 
     def on_auth_notification_closed (self, notification, reason=None):
         job = notification.get_data ('job-id')
@@ -647,6 +657,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
 
         open_notifications = len (self.new_printer_notifications.keys ())
+        open_notifications += len (self.auth_notifications.keys ())
         for reason, notification in self.state_reason_notifications.iteritems():
             if notification.get_data ('closed') != True:
                 open_notifications += 1
@@ -659,6 +670,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.statusicon.set_visible (self.special_status_icon or
                                      open_notifications > 0 or
                                      num_jobs > self.num_jobs_when_hidden)
+
+        # Let the icon show/hide itself before continuing.
+        while gtk.events_pending ():
+            gtk.main_iteration ()
 
     def on_treeview_popup_menu (self, treeview):
         event = gtk.gdk.Event (gtk.gdk.NOTHING)
@@ -1000,9 +1015,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
                               self.on_state_reason_notification_closed)
         self.state_reason_notifications[reason.get_tuple ()] = notification
         self.set_statusicon_visibility ()
-        # Let the icon show itself, ready for the notification
-        while gtk.events_pending ():
-            gtk.main_iteration ()
         notification.attach_to_status_icon (self.statusicon)
         notification.show ()
 
@@ -1014,6 +1026,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
+        monitor.Watcher.current_printers_and_jobs (self, mon, printers, jobs)
         self.store.clear ()
         self.jobs = {}
         self.jobiters = {}
@@ -1078,6 +1091,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
         elif jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
 
+        if (jobdata.has_key ('job-hold-until') and
+            not event.has_key ('job-hold-until')):
+            del jobdata['job-hold-until']
+        self.update_job (jobid, jobdata)
+        jobdata = self.jobs[jobid]
+
         # Look out for stopped jobs.
         if (self.trayicon and eventname == 'job-stopped' and
             not jobid in self.stopped_job_prompts):
@@ -1085,34 +1104,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
             # of some sort, or it might be that the backend requires
             # authentication.  If the latter, the job will be held not
             # stopped, and the job-hold-until attribute will be
-            # 'auth-info-required'.  This will be checked for in
+            # 'auth-info-required'.  This was already checked for in
             # update_job.
-            if jobdata['job-state'] == cups.IPP_JOB_HELD:
-                r = self.required_job_attributes - set (jobdata.keys ())
-                if not r:
-                    debugprint ("no further attributes required")
-                else:
-                    try:
-                        # Fetch the job-hold-until attribute, as this is
-                        # not provided in the notification attributes.
-                        c = cups.Connection (host=self.host,
-                                             port=self.port,
-                                             encryption=self.encryption)
-
-                        debugprint ("requesting %s" % r)
-                        attrs = c.getJobAttributes (jobid,
-                                                    requested_attributes=r)
-
-                        jobdata.update (attrs)
-                    except cups.IPPError:
-                        pass
-                    except RuntimeError:
-                        pass
-
             may_be_problem = True
             if (jobdata['job-state'] == cups.IPP_JOB_HELD and
                 jobdata['job-hold-until'] == 'auth-info-required'):
-                # Leave this to update_job to deal with.
+                # update_job already dealt with this.
                 may_be_problem = False
             else:
                 # Other than that, unfortunately the only
@@ -1153,6 +1150,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                                       notify_text)
 
             if may_be_problem:
+                debugprint ("Problem detected")
                 self.toggle_window_display (self.statusicon, force_show=True)
                 dialog = gtk.Dialog (_("Print Error"), self.JobsWindow, 0,
                                      (_("_Diagnose"), gtk.RESPONSE_NO,
@@ -1193,8 +1191,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 self.stopped_job_prompts.add (jobid)
                 dialog.show_all ()
 
-        self.update_job (jobid, jobdata)
-
     def job_removed (self, mon, jobid, eventname, event):
         monitor.Watcher.job_removed (self, mon, jobid, eventname, event)
         if self.jobiters.has_key (jobid):
@@ -1204,6 +1200,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         if jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
+
+        if self.auth_notifications.has_key (jobid):
+            self.auth_notifications[jobid].close ()
+            del self.auth_notifications[jobid]
 
         self.update_status ()
 

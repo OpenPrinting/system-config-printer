@@ -524,11 +524,10 @@ class Monitor:
                 if printer not in self.specific_dests:
                     del jobs[jobid]
 
+        self.update_jobs (jobs)
+        self.jobs = jobs
         self.watcher.current_printers_and_jobs (self, self.printers.copy (),
                                                 jobs.copy ())
-        self.update_jobs (jobs)
-
-        self.jobs = jobs
         return False
 
     def fetch_jobs (self, refresh_all):
@@ -575,6 +574,20 @@ class Monitor:
             except KeyError:
                 # No job by that ID.
                 if jobs.has_key (jobid):
+                    del jobs[jobid]
+                    deferred_calls.append ((self.watcher.job_removed,
+                                            (self, jobid, '', {})))
+
+        jobids = jobs.keys ()
+        jobids.sort ()
+        if got < limit:
+            trim = False
+            for i in range (len (jobids)):
+                jobid = jobids[i]
+                if not trim and jobid > last_jobid:
+                    trim = True
+            
+                if trim:
                     del jobs[jobid]
                     deferred_calls.append ((self.watcher.job_removed,
                                             (self, jobid, '', {})))
