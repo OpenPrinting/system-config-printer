@@ -1,5 +1,26 @@
 2008-11-03  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Don't
+	process pending events while processing new jobs list.
+
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.set_process_pending): Control whether
+	pending events may be processed.
+	(JobViewer.__init__): Initially they can.
+	(JobViewer.set_statusicon_visibility): Only process pending events
+	if allowed to.
+
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.update_job): Make sure the notification
+	is still valid after letting the status icon show itself.
+	(JobViewer.on_auth_notification_closed): Mark notification as
+	closed.
+	(JobViewer.job_removed): Likewise.
+
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
 	* glade/statusicon_popupmenu.glade: Added a 'Configure Printers'
 	entry to the pop-up menu.
 	* jobviewer.py (JobViewer.on_icon_configure_printers_activate):

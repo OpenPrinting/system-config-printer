@@ -266,6 +266,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if bus == None:
             bus = dbus.SystemBus ()
 
+        self.set_process_pending (True)
         self.host = cups.getServer ()
         self.port = cups.getPort ()
         self.encryption = cups.getEncryption ()
@@ -291,6 +292,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         if self.exit_handler:
             self.exit_handler (self)
+
+    def set_process_pending (self, whether):
+        self.process_pending_events = whether
 
     # Handle "special" status icon
     def set_special_statusicon (self, iconname):
@@ -535,22 +539,29 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 notification.set_timeout (pynotify.EXPIRES_NEVER)
                 notification.connect ('closed',
                                       self.on_auth_notification_closed)
-                notification.attach_to_status_icon (self.statusicon)
                 notification.add_action ("authenticate", _("Authenticate"),
                                          self.on_auth_notification_authenticate)
                 self.auth_notifications[job] = notification
                 debugprint ("auth notification opened for job %s" % job)
                 self.set_statusicon_visibility ()
-                notification.show ()
+
+                # In set_statusicon_visibility we process pending
+                # events, so we need to check that we still have a
+                # notification to show.
+                if notification.get_data ('closed') != True:
+                    notification.attach_to_status_icon (self.statusicon)
+                    notification.show ()
             elif (not job_requires_auth and
                   self.auth_notifications.has_key (job)):
                 debugprint ("job %s no longer requires auth" % job)
                 self.auth_notifications[job].close ()
+                self.auth_notifications[job].set_data ('closed', True)
                 del self.auth_notifications[job]
 
     def on_auth_notification_closed (self, notification, reason=None):
         job = notification.get_data ('job-id')
         debugprint ("auth notification closed for job %s" % job)
+        self.auth_notifications[job].set_data ('closed', True)
         del self.auth_notifications[job]
 
     def on_auth_notification_authenticate (self, notification, action):
@@ -673,7 +684,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                      num_jobs > self.num_jobs_when_hidden)
 
         # Let the icon show/hide itself before continuing.
-        while gtk.events_pending ():
+        while self.process_pending_events and gtk.events_pending ():
             gtk.main_iteration ()
 
     def on_treeview_popup_menu (self, treeview):
@@ -1043,6 +1054,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
         monitor.Watcher.current_printers_and_jobs (self, mon, printers, jobs)
+        self.set_process_pending (False)
         self.store.clear ()
         self.jobs = {}
         self.jobiters = {}
@@ -1065,6 +1077,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             if self.job_is_active (jobdata):
                 self.active_jobs.add (jobid)
 
+        self.set_process_pending (True)
         self.update_status ()
 
     def job_added (self, mon, jobid, eventname, event, jobdata):
@@ -1219,6 +1232,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         if self.auth_notifications.has_key (jobid):
             self.auth_notifications[jobid].close ()
+            self.auth_notifications[jobid].set_data ('closed', True)
             del self.auth_notifications[jobid]
 
         self.update_status ()
