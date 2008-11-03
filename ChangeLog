@@ -1,5 +1,10 @@
 2008-11-03  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.current_printers_and_jobs): Don't
+	process pending events while processing new jobs list.
+
+2008-11-03  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.set_process_pending): Control whether
 	pending events may be processed.
 	(JobViewer.__init__): Initially they can.

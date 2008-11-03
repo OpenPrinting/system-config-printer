@@ -1026,6 +1026,7 @@ class JobViewer (monitor.Watcher):
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
         monitor.Watcher.current_printers_and_jobs (self, mon, printers, jobs)
+        self.set_process_pending (False)
         self.store.clear ()
         self.jobs = {}
         self.jobiters = {}
@@ -1048,6 +1049,7 @@ class JobViewer (monitor.Watcher):
             if self.job_is_active (jobdata):
                 self.active_jobs.add (jobid)
 
+        self.set_process_pending (True)
         self.update_status ()
 
     def job_added (self, mon, jobid, eventname, event, jobdata):
