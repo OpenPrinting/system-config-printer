@@ -1,5 +1,10 @@
 2008-11-04  Tim Waugh  <twaugh@redhat.com>
 
+	* monitor.py (Monitor.update_connecting_devices): Only call
+	still_connecting once, not repeatedly.
+
+2008-11-04  Tim Waugh  <twaugh@redhat.com>
+
 	* monitor.py (Monitor.get_notifications): Prevent timer callbacks
 	while we handle client callbacks.
 	(Monitor.refresh): Likewise.

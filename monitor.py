@@ -237,8 +237,9 @@ class Monitor:
                     debugprint ("Connecting time: %d" % (time_now - t))
                     if time_now - t >= CONNECTING_TIMEOUT:
                         if have_processing_job:
-                            self.still_connecting.add (printer)
-                            self.watcher.still_connecting (self, reason)
+                            if printer not in self.still_connecting:
+                                self.still_connecting.add (printer)
+                                self.watcher.still_connecting (self, reason)
                             if self.connecting_timers.has_key (printer):
                                 gobject.source_remove (self.connecting_timers
                                                        [printer])
