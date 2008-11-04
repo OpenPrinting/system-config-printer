@@ -129,6 +129,7 @@ class Monitor:
         self.jobs = {}
         self.printer_state_reasons = {}
         self.printers = set()
+        self.process_pending_events = True
 
         if host:
             cups.setServer (host)
@@ -186,8 +187,18 @@ class Monitor:
 
         self.watcher.monitor_exited (self)
 
+    def set_process_pending (self, whether):
+        self.process_pending_events = whether
+
     def check_still_connecting(self, printer):
         """Timer callback to check on connecting-to-device reasons."""
+        if not self.process_pending_events:
+            # Defer the timer by setting a new one.
+            timer = gobject.timeout_add (200, self.check_still_connecting,
+                                         printer)
+            self.connecting_timers[printer] = timer
+            return False
+
         del self.connecting_timers[printer]
         debugprint ("Still-connecting timer fired for `%s'" % printer)
         (printer_jobs, my_printers) = self.sort_jobs_by_printer ()
@@ -308,6 +319,13 @@ class Monitor:
                 self.watcher.state_reason_removed (self, reason)
 
     def get_notifications(self):
+        if not self.process_pending_events:
+            # Defer the timer callback.
+            gobject.source_remove (self.update_timer)
+            self.update_timer = gobject.timeout_add (200,
+                                                     self.get_notifications)
+            return False
+
         debugprint ("get_notifications")
         try:
             try:
@@ -559,13 +577,17 @@ class Monitor:
                 if printer not in self.specific_dests:
                     del jobs[jobid]
 
-        self.update (jobs)
-        self.jobs = jobs
         self.watcher.current_printers_and_jobs (self, self.printers.copy (),
                                                 jobs.copy ())
+        self.update (jobs)
+        self.jobs = jobs
         return False
 
     def fetch_jobs (self, refresh_all):
+        if not self.process_pending_events:
+            # Skip this call.  We'll get called again soon.
+            return True
+
         try:
             try:
                 c = cups.Connection (host=self.host,
