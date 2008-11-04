@@ -637,6 +637,13 @@ class Monitor:
         for jobid in xrange (self.fetch_first_job_id, last_jobid + 1):
             try:
                 job = fetched[jobid]
+                if self.specific_dests != None:
+                    uri = job.get('job-printer-uri', '/')
+                    i = uri.rfind ('/')
+                    printer = uri[i + 1:]
+                    if printer not in self.specific_dests:
+                        raise KeyError
+
                 if jobs.has_key (jobid):
                     fn = self.watcher.job_event
                 else:
