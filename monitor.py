@@ -126,6 +126,7 @@ class Monitor:
         self.jobs = {}
         self.printer_state_reasons = {}
         self.printers = set()
+        self.process_pending_events = True
 
         if host:
             cups.setServer (host)
@@ -175,8 +176,18 @@ class Monitor:
 
         self.watcher.monitor_exited (self)
 
+    def set_process_pending (self, whether):
+        self.process_pending_events = whether
+
     def check_still_connecting(self, printer):
         """Timer callback to check on connecting-to-device reasons."""
+        if not self.process_pending_events:
+            # Defer the timer by setting a new one.
+            timer = gobject.timeout_add (200, self.check_still_connecting,
+                                         printer)
+            self.connecting_timers[printer] = timer
+            return False
+
         del self.connecting_timers[printer]
         debugprint ("Still-connecting timer fired for `%s'" % printer)
         (printer_jobs, my_printers) = self.sort_jobs_by_printer ()
@@ -215,8 +226,9 @@ class Monitor:
                     debugprint ("Connecting time: %d" % (time_now - t))
                     if time_now - t >= CONNECTING_TIMEOUT:
                         if have_processing_job:
-                            self.still_connecting.add (printer)
-                            self.watcher.still_connecting (self, reason)
+                            if printer not in self.still_connecting:
+                                self.still_connecting.add (printer)
+                                self.watcher.still_connecting (self, reason)
                             if self.connecting_timers.has_key (printer):
                                 gobject.source_remove (self.connecting_timers
                                                        [printer])
@@ -297,6 +309,13 @@ class Monitor:
                 self.watcher.state_reason_removed (self, reason)
 
     def get_notifications(self):
+        if not self.process_pending_events:
+            # Defer the timer callback.
+            gobject.source_remove (self.update_timer)
+            self.update_timer = gobject.timeout_add (200,
+                                                     self.get_notifications)
+            return False
+
         debugprint ("get_notifications")
         try:
             c = cups.Connection (host=self.host,
@@ -421,11 +440,13 @@ class Monitor:
             deferred_calls.append ((self.watcher.job_event,
                                    (self, jobid, nse, event, job.copy ())))
 
+        self.set_process_pending (False)
         self.update_jobs (jobs)
         self.jobs = jobs
 
         for (fn, args) in deferred_calls:
             fn (*args)
+        self.set_process_pending (True)
 
         # Update again when we're told to.  If we're getting CUPS
         # D-Bus signals, however, rely on those instead.
@@ -524,13 +545,19 @@ class Monitor:
                 if printer not in self.specific_dests:
                     del jobs[jobid]
 
-        self.update_jobs (jobs)
-        self.jobs = jobs
+        self.set_process_pending (False)
         self.watcher.current_printers_and_jobs (self, self.printers.copy (),
                                                 jobs.copy ())
+        self.update_jobs (jobs)
+        self.jobs = jobs
+        self.set_process_pending (True)
         return False
 
     def fetch_jobs (self, refresh_all):
+        if not self.process_pending_events:
+            # Skip this call.  We'll get called again soon.
+            return True
+
         try:
             c = cups.Connection (host=self.host,
                                  port=self.port,
@@ -563,6 +590,13 @@ class Monitor:
         for jobid in xrange (self.fetch_first_job_id, last_jobid + 1):
             try:
                 job = fetched[jobid]
+                if self.specific_dests != None:
+                    uri = job.get('job-printer-uri', '/')
+                    i = uri.rfind ('/')
+                    printer = uri[i + 1:]
+                    if printer not in self.specific_dests:
+                        raise KeyError
+
                 if jobs.has_key (jobid):
                     fn = self.watcher.job_event
                 else:
