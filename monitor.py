@@ -467,11 +467,13 @@ class Monitor:
             deferred_calls.append ((self.watcher.job_event,
                                    (self, jobid, nse, event, job.copy ())))
 
+        self.set_process_pending (False)
         self.update (jobs)
         self.jobs = jobs
 
         for (fn, args) in deferred_calls:
             fn (*args)
+        self.set_process_pending (True)
 
         # Update again when we're told to.  If we're getting CUPS
         # D-Bus signals, however, rely on those instead.
@@ -577,10 +579,12 @@ class Monitor:
                 if printer not in self.specific_dests:
                     del jobs[jobid]
 
+        self.set_process_pending (False)
         self.watcher.current_printers_and_jobs (self, self.printers.copy (),
                                                 jobs.copy ())
         self.update (jobs)
         self.jobs = jobs
+        self.set_process_pending (True)
         return False
 
     def fetch_jobs (self, refresh_all):
