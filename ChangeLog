@@ -274,6 +274,12 @@
 	* authconn.py: Show an error dialog if the password was
 	incorrect (bug #465407).
 
+2008-10-09  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Use message "Searching for
+	downloadable drivers" in the wait window when polling OpenPrinting
+	database vis Jockey.
+
 2008-10-09  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.glade: Renamed server_settings to
@@ -281,6 +287,16 @@
 	* system-config-printer.py (GUI.setConnected): Set Server
 	Settings... menu entry sensitive depending on whether we are
 	connected to a server (Ubuntu #280736).
+
+2008-10-06  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py, system-config-printer.glade: Display
+	more driver info for downloadable drivers from OpenPrinting:
+	Manufacturer/third-party-supplied? Free software? Patent issues?
+	Recommended? Functionality, support contacts. The license text
+	will now always be shown if available, but the user will only
+	asked whether he accepts it in the case of a non-free license or
+	patentissues.
 
 2008-09-29  Tim Waugh  <twaugh@redhat.com>
 
