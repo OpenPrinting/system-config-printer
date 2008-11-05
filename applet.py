@@ -61,8 +61,6 @@ class NewPrinterNotification(dbus.service.Object):
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
 
-    INSTALL_PACKAGES_COMMAND="/usr/bin/gpk-install-package-name"
-
     def __init__ (self, bus):
         self.bus = bus
         self.getting_ready = 0
@@ -143,10 +141,14 @@ class NewPrinterNotification(dbus.service.Object):
             text = _("`%s' requires driver installation: %s.") % (name, pkgs)
             n = pynotify.Notification (title, text)
             n.set_urgency (pynotify.URGENCY_CRITICAL)
-            if os.access (self.INSTALL_PACKAGES_COMMAND, os.X_OK):
+            import installpackage
+            try:
+                self.packagekit = installpackage.PackageKit ()
                 n.add_action ("install-driver", _("Install"),
                               lambda x, y: self.install_driver (x, y,
                                                                 missing_pkgs))
+            except:
+                pass
         elif status == self.STATUS_SUCCESS:
             text = _("`%s' is ready for printing.") % name
             n = pynotify.Notification (title, text)
@@ -191,18 +193,10 @@ class NewPrinterNotification(dbus.service.Object):
         self.run_config_tool (args)
 
     def install_driver (self, notification, action, missing_pkgs):
-        import os
-        pid = os.fork ()
-        if pid == 0:
-            # Child.
-            argv = [self.INSTALL_PACKAGES_COMMAND]
-            argv.extend (missing_pkgs)
-            os.execv (argv[0], argv)
-            sys.exit (1)
-        elif pid == -1:
-            print "Error forking process"
-        else:
-            gobject.timeout_add (60 * 1000, self.collect_exit_code, pid)
+        try:
+            self.packagekit.InstallPackageName (0, 0, missing_pkgs[0])
+        except:
+            pass
 
     def collect_exit_code (self, pid):
         # We do this with timers instead of signals because we already

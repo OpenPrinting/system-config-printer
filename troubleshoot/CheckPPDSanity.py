@@ -21,11 +21,10 @@
 
 import cups
 import cupshelpers
+import installpackage
 import os
 import subprocess
 from base import *
-
-install_cmd = "/usr/bin/gpk-install-package-name"
 
 class CheckPPDSanity(Question):
     def __init__ (self, troubleshooter):
@@ -116,7 +115,13 @@ class CheckPPDSanity(Question):
             self.answers['missing_pkgs_and_exes'] = (pkgs, exes)
             if len (pkgs) > 0 or len (exes) > 0:
                 title = _("Missing Printer Driver")
-                if len (pkgs) > 0 and os.access (install_cmd, os.X_OK):
+                if len (pkgs) > 0:
+                    try:
+                        self.packagekit = installpackage.PackageKit ()
+                    except:
+                        pkgs = []
+
+                if len (pkgs) > 0:
                     self.package = pkgs[0]
                     text = _("Printer `%s' requires the %s package but it "
                              "is not currently installed.") % (name,
@@ -147,4 +152,7 @@ class CheckPPDSanity(Question):
         pkgs = self.answers.get('packages_installed', [])
         pkgs.append (self.package)
         self.answers['packages_installed'] = pkgs
-        subprocess.Popen ([install_cmd, self.package])
+        try:
+            self.packagekit.InstallPackageName (0, 0, self.package)
+        except:
+            pass

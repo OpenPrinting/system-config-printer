@@ -78,6 +78,7 @@ import monitor
 from smburi import SMBURI
 import errordialogs
 from errordialogs import *
+import installpackage
 import userdefault
 from AdvancedServerSettings import AdvancedServerSettingsDialog
 from PhysicalDevice import PhysicalDevice
@@ -5985,8 +5986,15 @@ class NewPrinterGUI(GtkGUI):
         (pkgs, exes) = cupshelpers.missingPackagesAndExecutables (ppd)
         if len (pkgs) > 0 or len (exes) > 0:
             # We didn't find a necessary executable.  Complain.
-            install = "/usr/bin/gpk-install-package-name"
-            if len (pkgs) > 0 and os.access (install, os.X_OK):
+            can_install = False
+            if len (pkgs) > 0:
+                try:
+                    pk = installpackage.PackageKit ()
+                    can_install = True
+                except:
+                    pass
+
+            if can_install and len (pkgs) > 0:
                 pkg = pkgs[0]
                 install_text = ('<span weight="bold" size="larger">' +
                                 _('Install driver') + '</span>\n\n' +
@@ -6000,19 +6008,10 @@ class NewPrinterGUI(GtkGUI):
                 dialog.hide ()
                 if response == gtk.RESPONSE_OK:
                     # Install the package.
-                    def wait_child (sig, stack):
-                        (pid, status) = os.wait ()
-
-                    signal.signal (signal.SIGCHLD, wait_child)
-                    pid = os.fork ()
-                    if pid == 0:
-                        # Child.
-                        try:
-                            os.execv (install, [install, pkg])
-                        except:
-                            pass
-                        sys.exit (1)
-                    elif pid == -1:
+                    try:
+                        xid = self.mainapp.PrintersWindow.window.xid
+                        pk.InstallPackageName (xid, 0, pkg)
+                    except:
                         pass # should handle error
             else:
                 show_error_dialog (_('Missing driver'),
