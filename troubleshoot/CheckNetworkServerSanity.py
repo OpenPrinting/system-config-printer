@@ -110,7 +110,7 @@ class CheckNetworkServerSanity(Question):
                         pass
 
         if (self.answers['remote_server_name_resolves'] and
-            not self.answers['remote_server_connect_ipp']):
+            not self.answers.get ('remote_server_connect_ipp', False)):
             # Try to see if we can connect using smbc.
             try:
                 context = smbc.Context ()
