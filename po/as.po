@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.1.0.x\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-09-29 17:46+0100\n"
+"POT-Creation-Date: 2008-11-05 13:06+0000\n"
 "PO-Revision-Date: 2008-10-21 11:12+0530\n"
 "Last-Translator: Amitakhya Phukan <aphukan@fedoraproject.org>\n"
 "Language-Team: Assamese\n"
@@ -55,7 +55,7 @@ msgstr ""
 msgid "Enter IP address"
 msgstr "IP ঠিকনা লিখক"
 
-#: ../authconn.py:30 ../system-config-printer.glade.h:249
+#: ../authconn.py:30 ../system-config-printer.glade.h:250
 msgid "Username:"
 msgstr "ব্যৱহাৰকৰোঁতাৰ নাম:"
 
@@ -71,11 +71,12 @@ msgstr "ডোমেইন:"
 msgid "Authentication"
 msgstr "অনুমোদন"
 
-#: ../errordialogs.py:65 ../errordialogs.py:77
+#: ../authconn.py:259 ../authconn.py:261 ../errordialogs.py:77 ../pysmb.py:80
+#: ../pysmb.py:82
 msgid "Not authorized"
 msgstr "স্বীকৃতি নাই"
 
-#: ../errordialogs.py:66
+#: ../authconn.py:262 ../pysmb.py:83
 msgid "The password may be incorrect."
 msgstr "গুপ্তশব্দ অশুদ্ধ হ'ব পাৰে  ।"
 
@@ -115,7 +116,7 @@ msgstr "উন্নহয়নৰ প্ৰয়োজন"
 msgid "Server error"
 msgstr "সেৱকৰ ভুল"
 
-#: ../errordialogs.py:94 ../system-config-printer.py:791
+#: ../errordialogs.py:94 ../system-config-printer.py:804
 msgid "Not connected"
 msgstr "সংযোগ থকা নহয়"
 
@@ -141,9 +142,9 @@ msgstr "ব্যৱহাৰকৰোঁতা"
 msgid "Document"
 msgstr "ডকুমেন্ট"
 
-#: ../jobviewer.py:188 ../jobviewer.py:252 ../my-default-printer.py:157
-#: ../system-config-printer.py:305 ../system-config-printer.py:884
-#: ../system-config-printer.py:3144 ../troubleshoot/PrintTestPage.py:79
+#: ../jobviewer.py:188 ../jobviewer.py:252 ../my-default-printer.py:158
+#: ../system-config-printer.py:305 ../system-config-printer.py:898
+#: ../system-config-printer.py:3169 ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "মুদ্ৰক"
 
@@ -181,9 +182,9 @@ msgstr "আলেখ্যন মূদ্ৰণ কাৰ্য্যৰ অৱ
 msgid "Message"
 msgstr "বাৰ্তা"
 
-#: ../jobviewer.py:402 ../jobviewer.py:468 ../jobviewer.py:469
-#: ../jobviewer.py:482 ../jobviewer.py:512 ../jobviewer.py:623
-#: ../system-config-printer.py:1898 ../troubleshoot/ChooseNetworkPrinter.py:95
+#: ../jobviewer.py:413 ../jobviewer.py:479 ../jobviewer.py:480
+#: ../jobviewer.py:530 ../jobviewer.py:560 ../jobviewer.py:681
+#: ../system-config-printer.py:1921 ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
@@ -193,149 +194,149 @@ msgstr "বাৰ্তা"
 msgid "Unknown"
 msgstr "অজ্ঞাত"
 
-#: ../jobviewer.py:414
+#: ../jobviewer.py:425
 msgid "1 hour ago"
 msgstr "১ ঘন্টা পূৰ্বে"
 
-#: ../jobviewer.py:416
+#: ../jobviewer.py:427
 msgid "1 hour and 1 minute ago"
 msgstr "১ ঘন্টা আৰু ১ মিনিট পূৰ্বে"
 
-#: ../jobviewer.py:418
+#: ../jobviewer.py:429
 #, python-format
 msgid "1 hour and %d minutes ago"
 msgstr "১ ঘন্টা আৰু %d মিনিট পূৰ্বে"
 
-#: ../jobviewer.py:421
+#: ../jobviewer.py:432
 #, python-format
 msgid "%d hours ago"
 msgstr "%d ঘন্টা পূৰ্বে"
 
-#: ../jobviewer.py:423
+#: ../jobviewer.py:434
 #, python-format
 msgid "%d hours and 1 minute ago"
 msgstr "%d ঘন্টা আৰু ১ মিনিট পূৰ্বে"
 
-#: ../jobviewer.py:425
+#: ../jobviewer.py:436
 #, python-format
 msgid "%d hours and %d minutes ago"
 msgstr "%d ঘন্টা আৰু %d মিনিট পূৰ্বে"
 
-#: ../jobviewer.py:431 ../jobviewer.py:472
+#: ../jobviewer.py:442 ../jobviewer.py:483
 msgid "a minute ago"
 msgstr "এক মিনিট পূৰ্বে"
 
-#: ../jobviewer.py:433
+#: ../jobviewer.py:444
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d মিনিট পূৰ্বে"
 
-#: ../jobviewer.py:497
+#: ../jobviewer.py:545
 msgid "Held for authentication"
 msgstr "অনুমোদনৰ অপেক্ষাত"
 
-#: ../jobviewer.py:499 ../troubleshoot/PrintTestPage.py:39
+#: ../jobviewer.py:547 ../troubleshoot/PrintTestPage.py:39
 msgid "Pending"
 msgstr "অসমাপ্ত কাৰ্য্য"
 
-#: ../jobviewer.py:500 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:548 ../troubleshoot/PrintTestPage.py:40
 msgid "Held"
 msgstr "আটক কৰা"
 
-#: ../jobviewer.py:501 ../system-config-printer.py:167
+#: ../jobviewer.py:549 ../system-config-printer.py:167
 #: ../troubleshoot/PrintTestPage.py:41
 msgid "Processing"
 msgstr "সংসাধন কৰা হৈছে"
 
-#: ../jobviewer.py:502 ../system-config-printer.py:169
+#: ../jobviewer.py:550 ../system-config-printer.py:169
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Stopped"
 msgstr "বন্ধ"
 
-#: ../jobviewer.py:503 ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:551 ../troubleshoot/PrintTestPage.py:43
 msgid "Canceled"
 msgstr "বাতিল কৰা হৈছে"
 
-#: ../jobviewer.py:504 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:552 ../troubleshoot/PrintTestPage.py:44
 msgid "Aborted"
 msgstr "পৰিত্যক্ত"
 
-#: ../jobviewer.py:505 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:553 ../troubleshoot/PrintTestPage.py:45
 msgid "Completed"
 msgstr "সমাপ্ত"
 
-#: ../jobviewer.py:527
+#: ../jobviewer.py:575
 msgid "Authentication Required"
 msgstr "অনুমোদন আৱশ্যক"
 
-#: ../jobviewer.py:528
+#: ../jobviewer.py:576
 msgid "Job requires authentication to proceed."
 msgstr "এই কাৰ্য্যত আগবঢ়াৰ বাবে অনুমোদন আৱশ্যক ।"
 
-#: ../jobviewer.py:537
+#: ../jobviewer.py:583
 msgid "Authenticate"
 msgstr "অনুমোদন কৰা হ'ব"
 
-#: ../jobviewer.py:621
+#: ../jobviewer.py:679
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "`%s' আলেখ্যন মূদ্ৰণ কৰাৰ বাবে অনুমোদন প্ৰয়োজন (কাৰ্য্য সংখ্যা %d)"
 
-#: ../jobviewer.py:863
+#: ../jobviewer.py:928
 msgid "No documents queued"
 msgstr "কোনো আলেখ্যন অপেক্ষাত নাই"
 
-#: ../jobviewer.py:865
+#: ../jobviewer.py:930
 msgid "1 document queued"
 msgstr "১ আলেখ্যন অপেক্ষাত"
 
-#: ../jobviewer.py:867
+#: ../jobviewer.py:932
 #, python-format
 msgid "%d documents queued"
 msgstr "%d আলেখ্যন অপেক্ষাত"
 
-#: ../jobviewer.py:1148
+#: ../jobviewer.py:1140
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "`%s' নথিপত্ৰ (কাৰ্য্য সংখ্যা %d) মূদ্ৰণৰ বাবে পঠিয়াওঁতে সমস্যা ।"
 
-#: ../jobviewer.py:1151
+#: ../jobviewer.py:1143
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "`%s' নথিপত্ৰ (কাৰ্য্যসংখ্যা %d) সংসাধন কৰোঁতে সমস্যা হৈছে ।"
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1157
+#: ../jobviewer.py:1149
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "`%s' আলেখ্যন মূদ্ৰণ কৰোঁতে সমস্যা (কাৰ্য্য সংখ্যা %d): `%s' ।"
 
-#: ../jobviewer.py:1163 ../jobviewer.py:1179
+#: ../jobviewer.py:1156 ../jobviewer.py:1172
 msgid "Print Error"
 msgstr "মূদ্ৰণ সংক্ৰান্ত সমস্যা"
 
-#: ../jobviewer.py:1164
+#: ../jobviewer.py:1157
 msgid "_Diagnose"
 msgstr "বৈশিষ্ট্য সূচনা কৰা (_D)"
 
-#: ../jobviewer.py:1185
+#: ../jobviewer.py:1178
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "`%s' নামক মূদ্ৰক নিষ্ক্ৰিয় কৰা হৈছে ।"
 
-#: ../my-default-printer.py:141 ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:142 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
 msgstr "অৱিকল্পিত মুদ্ৰক"
 
-#: ../my-default-printer.py:145 ../my-default-printer.py:181
+#: ../my-default-printer.py:146 ../my-default-printer.py:182
 msgid "_Use System Default"
 msgstr "ব্যৱস্থাপ্ৰণালী অৱিকল্পিত (_U)"
 
-#: ../my-default-printer.py:146 ../my-default-printer.py:183
+#: ../my-default-printer.py:147 ../my-default-printer.py:184
 msgid "_Set Default"
 msgstr "অৱিকল্পিত নিৰ্ধাৰণ কৰক (_S)"
 
-#: ../my-default-printer.py:162 ../system-config-printer.py:2742
+#: ../my-default-printer.py:163 ../system-config-printer.py:2767
 #: ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
@@ -359,92 +360,91 @@ msgstr "অসাৰ"
 msgid "Busy"
 msgstr "ব্যস্ত"
 
-#: ../system-config-printer.py:311 ../system-config-printer.py:890
+#: ../system-config-printer.py:311 ../system-config-printer.py:904
 msgid "Class"
 msgstr "শ্ৰেণী"
 
-#. Set up "Problems?" link button
-#: ../system-config-printer.py:341
+#: ../system-config-printer.py:352
 msgid "Problems?"
 msgstr "সমস্যা?"
 
-#: ../system-config-printer.py:383 ../system-config-printer.py:385
+#: ../system-config-printer.py:396 ../system-config-printer.py:398
 msgid "Members of this class"
 msgstr "এই শ্ৰেণীৰ সদস্যসমূহ"
 
-#: ../system-config-printer.py:384 ../system-config-printer.py:386
+#: ../system-config-printer.py:397 ../system-config-printer.py:399
 msgid "Others"
 msgstr "অন্য"
 
-#: ../system-config-printer.py:387
+#: ../system-config-printer.py:400
 msgid "Devices"
 msgstr "যন্ত্ৰ"
 
-#: ../system-config-printer.py:388
+#: ../system-config-printer.py:401
 msgid "Connections"
 msgstr "সংযোগ"
 
-#: ../system-config-printer.py:389
+#: ../system-config-printer.py:402
 msgid "Makes"
 msgstr "নিৰ্মাণ"
 
-#: ../system-config-printer.py:390
+#: ../system-config-printer.py:403
 msgid "Models"
 msgstr "প্ৰতিমান"
 
-#: ../system-config-printer.py:391
+#: ../system-config-printer.py:404
 msgid "Drivers"
 msgstr "চালক"
 
-#: ../system-config-printer.py:392 ../system-config-printer.glade.h:103
+#: ../system-config-printer.py:405 ../system-config-printer.glade.h:103
 msgid "Downloadable Drivers"
 msgstr "ডাউন্‌লোড কৰিব পৰা চালক"
 
-#: ../system-config-printer.py:393
+#: ../system-config-printer.py:406
 msgid "Users"
 msgstr "ব্যৱহাৰকৰ্তা"
 
-#: ../system-config-printer.py:434
+#: ../system-config-printer.py:447
 msgid "Automatic rotation"
 msgstr "Automatic rotation"
 
-#: ../system-config-printer.py:648
+#: ../system-config-printer.py:661
 #, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "মূদ্ৰকৰ বৈশিষ্ট্য - `%s', %s ৰ ওপৰত"
 
-#: ../system-config-printer.py:786
+#: ../system-config-printer.py:799
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "মুদ্ৰকৰ বিন্যাস - %s"
 
-#: ../system-config-printer.py:789
+#: ../system-config-printer.py:802
 #, python-format
 msgid "Connected to %s"
 msgstr "%s লৈ সংযোজিত"
 
-#: ../system-config-printer.py:878
+#: ../system-config-printer.py:892
 msgid "Network printer (discovered)"
 msgstr "নে'টৱৰ্ক মূদ্ৰক (উদ্ভাৱন কৰা)"
 
-#: ../system-config-printer.py:881
+#: ../system-config-printer.py:895
 msgid "Network class (discovered)"
 msgstr "নে'টৱৰ্কৰ শ্ৰেণী (উদ্ভাৱন কৰা)"
 
-#: ../system-config-printer.py:887 ../system-config-printer.py:3145
+#: ../system-config-printer.py:901 ../system-config-printer.py:3170
 msgid "Fax"
 msgstr "ফেক্স"
 
-#: ../system-config-printer.py:893 ../system-config-printer.py:899
+#: ../system-config-printer.py:907 ../system-config-printer.py:913
 #: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "নে'টৱৰ্ক মূদ্ৰক"
 
-#: ../system-config-printer.py:896
+#: ../system-config-printer.py:910
 msgid "Network print share"
 msgstr "নে'টৱৰ্ক মূদ্ৰণৰ যৌথ ব্যৱহাৰ"
 
-#: ../system-config-printer.py:1019
+#: ../system-config-printer.py:1038
 #, python-format
 msgid ""
 "Connecting to server:\n"
@@ -453,15 +453,15 @@ msgstr ""
 "সেৱকলৈ যোগাযোগ কৰা হৈছে:\n"
 "%s"
 
-#: ../system-config-printer.py:1390
+#: ../system-config-printer.py:1409
 msgid "Installable Options"
 msgstr "সংস্থাপন কৰিব পৰা বিকল্প"
 
-#: ../system-config-printer.py:1391 ../system-config-printer.glade.h:198
+#: ../system-config-printer.py:1410 ../system-config-printer.glade.h:198
 msgid "Printer Options"
 msgstr "মুদ্ৰকৰ বিকল্প"
 
-#: ../system-config-printer.py:1414
+#: ../system-config-printer.py:1433
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -471,56 +471,56 @@ msgstr ""
 "এই সংঘাতসমূহ খণ্ডন কৰাৰ পিছতহে\n"
 "সাল সলনি সমূহ প্ৰয়োগ কৰিব পাৰি  ।"
 
-#: ../system-config-printer.py:1443
+#: ../system-config-printer.py:1462
 msgid "This will delete this class!"
 msgstr "এই কাৰ্য্যই এই শ্ৰেণীটো আঁতৰাব !"
 
-#: ../system-config-printer.py:1444
+#: ../system-config-printer.py:1463
 msgid "Proceed anyway?"
 msgstr "যিকোনো উপায়ে আগবাঢ়োঁ ?"
 
-#: ../system-config-printer.py:1585
+#: ../system-config-printer.py:1608
 msgid "Set Default Printer"
 msgstr "অবিকল্পিত মূদ্ৰক ৰূপে চিহ্নিত কৰা হ'ব"
 
-#: ../system-config-printer.py:1587
+#: ../system-config-printer.py:1610
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr ""
 "সম্পূৰ্ণ ব্যৱস্থাপ্ৰণালীৰ বাবে আপুনি এই মূদ্ৰকক অবিকল্পিত মূদ্ৰক ৰূপে নিৰ্ধাৰণ কৰিব নেকি ?"
 
-#: ../system-config-printer.py:1589
+#: ../system-config-printer.py:1612
 msgid "Set as the _system-wide default printer"
 msgstr "সম্পূৰ্ণ ব্যৱস্থাপ্ৰণালীৰ বাবে অবিকল্পিত মূদ্ৰক ৰূপে নিৰ্ধাৰণ কৰা হ'ব (_s)"
 
-#: ../system-config-printer.py:1591
+#: ../system-config-printer.py:1614
 msgid "_Clear my personal default setting"
 msgstr "ব্যক্তিগত ব্যৱহাৰৰ অবিকল্পিত মান আঁতৰুৱা হ'ব (_C)"
 
-#: ../system-config-printer.py:1592
+#: ../system-config-printer.py:1615
 msgid "Set as my _personal default printer"
 msgstr "ব্যক্তিগত অবিকল্পিত মূদ্ৰক ৰূপে চিহ্নিত কৰক (_p)"
 
-#: ../system-config-printer.py:1644 ../system-config-printer.py:1672
+#: ../system-config-printer.py:1667 ../system-config-printer.py:1695
 msgid "Submitted"
 msgstr "আগবঢ়োৱা হ'ল"
 
-#: ../system-config-printer.py:1645
+#: ../system-config-printer.py:1668
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "%d কাৰ্য্য হিচাপে পৰীক্ষাৰ পৃষ্ঠা আগবঢ়োৱা হৈছে"
 
-#: ../system-config-printer.py:1651 ../system-config-printer.py:1679
-#: ../system-config-printer.py:4407
+#: ../system-config-printer.py:1674 ../system-config-printer.py:1702
+#: ../system-config-printer.py:4445
 msgid "Not possible"
 msgstr "অসাধ্য"
 
-#: ../system-config-printer.py:1652 ../system-config-printer.py:1680
+#: ../system-config-printer.py:1675 ../system-config-printer.py:1703
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "দূৰৰ সেৱকে মুদ্ৰণৰ কাৰ্য্য গ্ৰহণ নকৰিলে,সম্ভৱতঃ মুদ্ৰকক অংশীদাৰ কৰা হোৱা নাই  ।"
 
-#: ../system-config-printer.py:1673
+#: ../system-config-printer.py:1696
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "%d কাৰ্য্য হিচাপে পৰীক্ষাৰ পৃষ্ঠা আগবঢ়োৱা হৈছে"
@@ -528,46 +528,46 @@ msgstr "%d কাৰ্য্য হিচাপে পৰীক্ষাৰ প
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1730 ../system-config-printer.py:1837
+#: ../system-config-printer.py:1753 ../system-config-printer.py:1860
 msgid "Error"
 msgstr "ভুল"
 
-#: ../system-config-printer.py:1731
+#: ../system-config-printer.py:1754
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS সেৱকলৈ সংযোগ কৰোঁতে এটা ভুল হ'ল  ।"
 
-#: ../system-config-printer.py:1838
+#: ../system-config-printer.py:1861
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Option '%s' has value '%s' and cannot be edited."
 
-#: ../system-config-printer.py:2103
+#: ../system-config-printer.py:2126
 msgid "Cannot Rename"
 msgstr "নাম পৰিবৰ্ত্তন কৰা সম্ভৱ নহয়"
 
-#: ../system-config-printer.py:2104
+#: ../system-config-printer.py:2127
 msgid "There are queued jobs."
 msgstr "অপেক্ষাত কাৰ্য্য উপস্থিত ।"
 
-#: ../system-config-printer.py:2286
+#: ../system-config-printer.py:2309
 #, python-format
 msgid "Really delete class `%s'?"
 msgstr "`%s' বিভাগ নিশ্চিতৰূপে আঁতৰুৱা হ'ব ?"
 
-#: ../system-config-printer.py:2288
+#: ../system-config-printer.py:2311
 #, python-format
 msgid "Really delete printer `%s'?"
 msgstr "`%s' মূদ্ৰক নিশ্চিতৰূপে আঁতৰুৱা হ'ব ?"
 
-#: ../system-config-printer.py:2290
+#: ../system-config-printer.py:2313
 msgid "Really delete selected destinations?"
 msgstr "নিৰ্ব্বচিত গন্তব্যস্থল নিশ্চিতৰূপে আঁতৰুৱা হ'ব ?"
 
-#: ../system-config-printer.py:2356
+#: ../system-config-printer.py:2379
 msgid "Publish Shared Printers"
 msgstr "যৌথৰূপে ব্যৱহৃত মূদ্ৰক প্ৰদৰ্শন কৰা হ'ব"
 
-#: ../system-config-printer.py:2357
+#: ../system-config-printer.py:2380
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -581,11 +581,11 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2470
+#: ../system-config-printer.py:2493
 msgid "Review Firewall"
 msgstr "ফায়াৰ্ৱালৰ বৈশিষ্ট্য পৰ্যালোচনা কৰক"
 
-#: ../system-config-printer.py:2471
+#: ../system-config-printer.py:2494
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
@@ -593,20 +593,20 @@ msgstr ""
 "এই কম্পিউটাৰত নে'টৱৰ্কৰ মাধ্যমে মূদ্ৰণ কৰাৰ বাবে ফায়াৰ্ৱালৰ বৈশিষ্ট্যৰ মান পৰিবৰ্ত্তন "
 "কৰা প্ৰয়োজন হ;ব পাৰে ।"
 
-#: ../system-config-printer.py:2701 ../system-config-printer.py:2711
+#: ../system-config-printer.py:2726 ../system-config-printer.py:2736
 msgid "Share"
 msgstr "অংশ"
 
-#: ../system-config-printer.py:2707 ../system-config-printer.py:2717
+#: ../system-config-printer.py:2732 ../system-config-printer.py:2742
 msgid "Comment"
 msgstr "মন্তব্য"
 
 #. IPP list columns
-#: ../system-config-printer.py:2736
+#: ../system-config-printer.py:2761
 msgid "Queue"
 msgstr "Queue"
 
-#: ../system-config-printer.py:2750
+#: ../system-config-printer.py:2775
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -614,43 +614,47 @@ msgstr ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 
-#: ../system-config-printer.py:2759
+#: ../system-config-printer.py:2784
 msgid "All files (*)"
 msgstr "সকল"
 
-#: ../system-config-printer.py:2797 ../system-config-printer.py:4722
-#: ../system-config-printer.py:4760
+#: ../system-config-printer.py:2822 ../system-config-printer.py:4760
+#: ../system-config-printer.py:4798
 msgid "Search"
 msgstr "বিচাৰক"
 
-#: ../system-config-printer.py:2811 ../system-config-printer.glade.h:145
+#: ../system-config-printer.py:2836 ../system-config-printer.glade.h:145
 msgid "New Printer"
 msgstr "নতুন মুদ্ৰক"
 
-#: ../system-config-printer.py:2822
+#: ../system-config-printer.py:2847
 msgid "New Class"
 msgstr "নতুন শ্ৰেণী"
 
-#: ../system-config-printer.py:2827
+#: ../system-config-printer.py:2852
 msgid "Change Device URI"
 msgstr "যন্ত্ৰৰ URI সলনি কৰক"
 
-#: ../system-config-printer.py:2831
+#: ../system-config-printer.py:2856
 msgid "Change Driver"
 msgstr "চালকৰ সলনি কৰক"
 
-#: ../system-config-printer.py:2979 ../system-config-printer.py:3053
-#: ../system-config-printer.py:3370 ../system-config-printer.py:3601
-#: ../system-config-printer.py:4747
+#: ../system-config-printer.py:3004 ../system-config-printer.py:3078
+#: ../system-config-printer.py:3395 ../system-config-printer.py:3633
+#: ../system-config-printer.py:4785
 msgid "Searching"
 msgstr "অনুসন্ধান"
 
-#: ../system-config-printer.py:2980 ../system-config-printer.py:3054
-#: ../system-config-printer.py:3371
+#: ../system-config-printer.py:3005
+#, fuzzy
+msgid "Searching for downloadable drivers"
+msgstr "অনুসন্ধান উল্লেখিত সময় অৱধি"
+
+#: ../system-config-printer.py:3079 ../system-config-printer.py:3396
 msgid "Searching for drivers"
 msgstr "অনুসন্ধান উল্লেখিত সময় অৱধি"
 
-#: ../system-config-printer.py:3146
+#: ../system-config-printer.py:3171
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
@@ -658,28 +662,28 @@ msgstr ""
 "এই মূদ্ৰকৰ পৰা ফেক্স আৰু মূদ্ৰণ উভয়ে কৰা সম্ভৱ ।  এই queue বাবে কি কাৰ্য্য নিৰ্ধাৰণ "
 "কৰা হ'ব ?"
 
-#: ../system-config-printer.py:3602
+#: ../system-config-printer.py:3634
 msgid "Searching for printers"
 msgstr "অনুসন্ধান উল্লেখিত সময় অৱধি"
 
-#: ../system-config-printer.py:3754
+#: ../system-config-printer.py:3786
 msgid " (Current)"
 msgstr " (বৰ্ত্তমানৰ)"
 
-#: ../system-config-printer.py:3827
+#: ../system-config-printer.py:3859
 msgid "Other"
 msgstr "অন্য"
 
-#: ../system-config-printer.py:3867 ../system-config-printer.py:3884
-#: ../system-config-printer.py:4363
+#: ../system-config-printer.py:3899 ../system-config-printer.py:3916
+#: ../system-config-printer.py:4401
 msgid "Scanning..."
 msgstr "চোৱা হৈছে..."
 
-#: ../system-config-printer.py:3939
+#: ../system-config-printer.py:3971
 msgid "No Print Shares"
 msgstr "কোনো মূদ্ৰণ শ্বেয়াৰ উপলব্ধ নাই"
 
-#: ../system-config-printer.py:3940
+#: ../system-config-printer.py:3972
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -687,32 +691,32 @@ msgstr ""
 "কোনো মূদ্ৰণ শ্বেয়াৰ পোৱা নাযায় । অনুগ্ৰহ কৰি ফায়াৰ্ৱাল বিন্যাসত Samba সেৱাক বিশ্বস্ত "
 "সেৱাৰ অন্তৰ্গত চিহ্নিত কৰা হৈছে নে নাই পৰীক্ষা কৰক ।"
 
-#: ../system-config-printer.py:4275 ../system-config-printer.py:4345
+#: ../system-config-printer.py:4312 ../system-config-printer.py:4383
 msgid "Print Share Verified"
 msgstr "মূদ্ৰণৰ শ্বেয়াৰ পৰীক্ষিত হৈছে"
 
-#: ../system-config-printer.py:4276 ../system-config-printer.py:4346
+#: ../system-config-printer.py:4313 ../system-config-printer.py:4384
 msgid "This print share is accessible."
 msgstr "এই মুদ্ৰণ অংশ অভিগম কৰিব পাৰি  ।"
 
-#: ../system-config-printer.py:4280 ../system-config-printer.py:4350
+#: ../system-config-printer.py:4318 ../system-config-printer.py:4388
 msgid "This print share is not accessible."
 msgstr "এই মুদ্ৰণ অংশ অভিগম কৰিব নোৱাৰি  ।"
 
-#: ../system-config-printer.py:4283
+#: ../system-config-printer.py:4321
 msgid "Print Share Inaccessible"
 msgstr "মূদ্ৰণৰ শ্বেয়াৰ ব্যৱহাৰযোগ্য নহয়"
 
-#: ../system-config-printer.py:4349
+#: ../system-config-printer.py:4387
 msgid "Inaccessible"
 msgstr "অভিগম কৰিব নোৱাৰি"
 
-#: ../system-config-printer.py:4408
+#: ../system-config-printer.py:4446
 #, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "`%s'ৰ পৰা queue তালিকা প্ৰাপ্ত কৰা সম্ভৱ নহয় ।"
 
-#: ../system-config-printer.py:4410
+#: ../system-config-printer.py:4448
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
@@ -720,80 +724,157 @@ msgstr ""
 "queue তালিকা প্ৰাপ্ত কৰাৰ বৈশিষ্ট্য মূলত IPP-ৰ বাবে CUPS-ৰ এটা অতিৰিক্ত বৈশিষ্ট্য ।  "
 "নে'টৱৰ্ক মূদ্ৰক দ্বাৰা এইটো সমৰ্থন কৰা নহয় ।"
 
-#: ../system-config-printer.py:4413
+#: ../system-config-printer.py:4451
 msgid "No queues"
 msgstr "না"
 
-#: ../system-config-printer.py:4414
+#: ../system-config-printer.py:4452
 msgid "There are no queues available."
 msgstr "There are no queues available."
 
-#: ../system-config-printer.py:4504
+#: ../system-config-printer.py:4542
 msgid "A printer connected to the parallel port."
 msgstr "পেৰেলেল প'ৰ্টত সংযোগ থকা মুদ্ৰক  ।"
 
-#: ../system-config-printer.py:4506
+#: ../system-config-printer.py:4544
 msgid "A printer connected to a USB port."
 msgstr "USB প'ৰ্টত সংযোগ থকা মুদ্ৰক  ।"
 
-#: ../system-config-printer.py:4508
+#: ../system-config-printer.py:4546
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr ""
 "HPLIP চালনাজ্ঞানে চলোৱা মুদ্ৰক, বা বিভিন্ন কাৰ্য্যকৰণ থকা যন্ত্ৰৰ মুদ্ৰণ কাৰ্য্য  ।"
 
-#: ../system-config-printer.py:4511
+#: ../system-config-printer.py:4549
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr ""
 "HPLIP চালনাজ্ঞানে চলোৱা ফেক্স যন্ত্ৰ, বা বিভিন্ন কাৰ্য্যকৰণ থকা যন্ত্ৰৰ ফেক্স কাৰ্য্য  ।"
 
-#: ../system-config-printer.py:4514
+#: ../system-config-printer.py:4552
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr ""
 "হাৰ্ডৱেৰ এব্সট্ৰেক্সন লেয়াৰ (যান্ত্ৰিক সামগ্ৰীৰ নিৰ্য্যাস বাহিৰ কৰা স্তৰ)(HAL)-এ "
 "উদ্ঘাটন কৰা স্থানীয় মুদ্ৰক  ।"
 
-#: ../system-config-printer.py:4772
+#: ../system-config-printer.py:4810
 msgid "-- Select from search results --"
 msgstr "-- অনুসন্ধানৰ পৰা নিৰ্ব্বাচন কৰা হ'ব --"
 
-#: ../system-config-printer.py:4774
+#: ../system-config-printer.py:4812
 msgid "-- No matches found --"
 msgstr "না"
 
-#: ../system-config-printer.py:4956
+#: ../system-config-printer.py:4996
 msgid " (recommended)"
 msgstr " (উপদেশ দিয়া হয়)"
 
-#: ../system-config-printer.py:4970
+#: ../system-config-printer.py:5010
 msgid "This PPD is generated by foomatic."
 msgstr "এই PPD foomatic ৰ দ্বাৰা উৎপন্ন কৰা হৈছে  ।"
 
-#: ../system-config-printer.py:4996
+#: ../system-config-printer.py:5036
 msgid "OpenPrinting"
 msgstr "মুদ্ৰণ কৰা কাৰ্য্য"
 
-#: ../system-config-printer.py:4998
+#: ../system-config-printer.py:5039
+msgid "the printer's manufacturer"
+msgstr ""
+
+#: ../system-config-printer.py:5042 ../system-config-printer.py:5057
+#: ../system-config-printer.py:5080 ../system-config-printer.py:5084
+#: ../system-config-printer.py:5098
+#, fuzzy
+msgid ", "
+msgstr " "
+
+#: ../system-config-printer.py:5045
+#, python-format
+msgid " (%s)"
+msgstr ""
+
+#: ../system-config-printer.py:5047
 msgid "Distributable"
 msgstr "বিতৰণ কৰিব পৰা"
 
-#: ../system-config-printer.py:5000
+#: ../system-config-printer.py:5050
+#, fuzzy
+msgid " ("
+msgstr " "
+
+#: ../system-config-printer.py:5052
+msgid "free software"
+msgstr ""
+
+#: ../system-config-printer.py:5054
+msgid "non-free software"
+msgstr ""
+
+#: ../system-config-printer.py:5059
+msgid "driver contains (possibly) patented algorithms"
+msgstr ""
+
+#: ../system-config-printer.py:5062
+msgid ")"
+msgstr ""
+
+#: ../system-config-printer.py:5064
 msgid "None"
 msgstr "শূণ্য"
 
-#: ../system-config-printer.py:5008
+#: ../system-config-printer.py:5068
+#, python-format
+msgid "Graphics: %s/100, "
+msgstr ""
+
+#: ../system-config-printer.py:5071
+#, python-format
+msgid "Line Art: %s/100, "
+msgstr ""
+
+#: ../system-config-printer.py:5074
+#, python-format
+msgid "Photo: %s/100, "
+msgstr ""
+
+#: ../system-config-printer.py:5077
+#, python-format
+msgid "Text: %s/100, "
+msgstr ""
+
+#: ../system-config-printer.py:5081
+msgid "Output quality: "
+msgstr ""
+
+#: ../system-config-printer.py:5085
+#, fuzzy
+msgid "<b>Recommended Driver</b>"
+msgstr "<b> চালক</b>"
+
+#: ../system-config-printer.py:5103
+#, python-format
+msgid ""
+"\n"
+"(%s)"
+msgstr ""
+
+#: ../system-config-printer.py:5108
+msgid "No support contacts known"
+msgstr ""
+
+#: ../system-config-printer.py:5112 ../system-config-printer.py:5125
 msgid "Not specified."
 msgstr "নিৰ্ধাৰিত নহয় ।"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:5048
+#: ../system-config-printer.py:5165
 msgid "Database error"
 msgstr "তথ্য ভঁৰালত ভুল"
 
-#: ../system-config-printer.py:5049
+#: ../system-config-printer.py:5166
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' চালক '%s %s' মুদ্ৰকৰ সৈতে ব্যৱহাৰ কৰিব পৰা নাযাব  ।"
@@ -801,56 +882,56 @@ msgstr "'%s' চালক '%s %s' মুদ্ৰকৰ সৈতে ব্য�
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:5059
+#: ../system-config-printer.py:5176
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "এই চালক ব্যৱহাৰ কৰিব'লৈ আপুনি '%s' সৰঞ্জাম সংস্থাপন কৰিব লাগিব  ।"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:5066
+#: ../system-config-printer.py:5183
 msgid "PPD error"
 msgstr "PPD ভুল"
 
-#: ../system-config-printer.py:5068
+#: ../system-config-printer.py:5185
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD নথিপত্ৰ পঢ়াত অক্ষম  । সম্ভৱপৰ কাৰণ এনে ধৰণৰ:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:5085
+#: ../system-config-printer.py:5202
 msgid "Downloadable drivers"
 msgstr "ডাউন্‌লোড কৰিব পৰা চালক"
 
-#: ../system-config-printer.py:5086
+#: ../system-config-printer.py:5203
 msgid "Failed to download PPD."
 msgstr "PPD ডাউনলোড কৰোঁতে ব্যৰ্থ ।"
 
-#: ../system-config-printer.py:5122 ../system-config-printer.py:5160
+#: ../system-config-printer.py:5239 ../system-config-printer.py:5277
 msgid "No Installable Options"
 msgstr "না বিকল্প"
 
-#: ../system-config-printer.py:5206
+#: ../system-config-printer.py:5323
 msgid "Adding"
 msgstr "মুদ্ৰণ কৰা কাৰ্য্য"
 
-#: ../system-config-printer.py:5207
+#: ../system-config-printer.py:5324
 msgid "Adding printer"
 msgstr "মুদ্ৰকৰ বিন্যাস কৰক"
 
-#: ../system-config-printer.py:5368
+#: ../system-config-printer.py:5485
 msgid "Install driver"
 msgstr "সন্ধানহীন চালক"
 
-#: ../system-config-printer.py:5369
+#: ../system-config-printer.py:5486
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Printer '%s' requires the %s package but it is not currently installed."
 
-#: ../system-config-printer.py:5394
+#: ../system-config-printer.py:5511
 msgid "Missing driver"
 msgstr "সন্ধানহীন চালক"
 
-#: ../system-config-printer.py:5395
+#: ../system-config-printer.py:5512
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -1666,10 +1747,15 @@ msgid "Supplier:"
 msgstr "Supplier:"
 
 #: ../system-config-printer.glade.h:233
+#, fuzzy
+msgid "Support:"
+msgstr "Supplier:"
+
+#: ../system-config-printer.glade.h:234
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:234
+#: ../system-config-printer.glade.h:235
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1682,14 +1768,14 @@ msgstr ""
 "পাৰে  । কিন্তু সাদাৰণতে উদ্যোগপতিয়ে যোগান ধৰা PPD নথিপত্ৰৰ দ্বাৰা মুদ্ৰকৰ নিৰ্দ্দিষ্ট "
 "বৈশিষ্টৰ উন্নত অভিগমন কৰিব পাৰি  ।"
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:236
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
 "of the driver's supplier."
 msgstr "সৰ্বমোট."
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:237
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
@@ -1697,7 +1783,7 @@ msgstr ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:238
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1707,7 +1793,7 @@ msgstr ""
 "নোহোৱা বিকল্পৰ পটভুমি হেৰুৱা যাব আৰু অকল নতুন PPD ত থকা বিকল্পসমূহহে অৱিকল্পিত ভাবে "
 "নিৰ্দ্দিষ্ট কৰা যাব  ।"
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:239
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1736,7 +1822,7 @@ msgstr ""
 "নিম্নলিখিত ঠিকনায় লিখে তা সংগ্ৰহ কৰক Free Software Foundation, Inc., 675 Mass "
 "Ave, Cambridge, MA 02139, USA ।"
 
-#: ../system-config-printer.glade.h:243
+#: ../system-config-printer.glade.h:244
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -1744,32 +1830,32 @@ msgstr ""
 "এই ধৰণে সকলো বৰ্ত্তমানৰ বিকল্পৰ পটভুমি হেৰুৱা যাব  । নতুন PPDৰ অৱিকল্পত পটভুমি "
 "ব্যৱহাৰ কৰা যাব  ।"
 
-#: ../system-config-printer.glade.h:244
+#: ../system-config-printer.glade.h:245
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "নতুন বিকল্প যোগ কৰাৰ বাবে নিম্নলিখিত বাক্সে সেটিৰ নাম লিখে যোগ কৰক ক্লিক কৰক ।"
 
-#: ../system-config-printer.glade.h:245
+#: ../system-config-printer.glade.h:246
 msgid "Top margin:"
 msgstr "উপৰেৰ প্ৰান্তৰেখা"
 
-#: ../system-config-printer.glade.h:246
+#: ../system-config-printer.glade.h:247
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "পূৰণি PPD ৰ পৰা বিকল্পৰ বিন্যাস নকল কৰিব'লৈ চেষ্টা কৰক  ।"
 
-#: ../system-config-printer.glade.h:247
+#: ../system-config-printer.glade.h:248
 msgid "URI:"
 msgstr "URI:"
 
-#: ../system-config-printer.glade.h:248
+#: ../system-config-printer.glade.h:249
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "যিদৰে আছে, তেনেকেই নতুন PPD (পোচ্-চ্‌ক্ৰিপ্‌ট মুদ্ৰক বিৱৰণ)ব্যৱহাৰ কৰক  ।"
 
-#: ../system-config-printer.glade.h:250
+#: ../system-config-printer.glade.h:251
 msgid "View Print _Queue"
 msgstr "মূদ্ৰণৰ queue প্ৰদৰ্শন কৰা হ'ব (_Q)"
 
-#: ../system-config-printer.glade.h:251
+#: ../system-config-printer.glade.h:252
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -1777,100 +1863,100 @@ msgstr ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
 
-#: ../system-config-printer.glade.h:252
+#: ../system-config-printer.glade.h:253
 msgid "Word wrap"
 msgstr "পংক্তি বিভাজন"
 
-#: ../system-config-printer.glade.h:253
+#: ../system-config-printer.glade.h:254
 msgid "Yes, I accept this license"
 msgstr "হয় প্ৰথম"
 
-#: ../system-config-printer.glade.h:254
+#: ../system-config-printer.glade.h:255
 msgid "_Class"
 msgstr "শ্ৰেণী (_C)"
 
-#: ../system-config-printer.glade.h:255
+#: ../system-config-printer.glade.h:256
 msgid "_Connect..."
 msgstr "সংযোগ স্থাপন কৰক... (_C_"
 
-#: ../system-config-printer.glade.h:256
+#: ../system-config-printer.glade.h:257
 msgid "_Create Class"
 msgstr "শ্ৰেণী নিৰ্মাণ কৰক (_C)"
 
-#: ../system-config-printer.glade.h:257
+#: ../system-config-printer.glade.h:258
 msgid "_Discovered Printers"
 msgstr "উদ্ভাৱন কৰা হোৱা মূদ্ৰক (_D)"
 
-#: ../system-config-printer.glade.h:258
+#: ../system-config-printer.glade.h:259
 msgid "_Enabled"
 msgstr "সক্ৰিয় (_E)"
 
-#: ../system-config-printer.glade.h:259
+#: ../system-config-printer.glade.h:260
 msgid "_Help"
 msgstr "সহায়(_H)"
 
-#: ../system-config-printer.glade.h:260
+#: ../system-config-printer.glade.h:261
 msgid "_Install"
 msgstr "সংস্থাপন কৰক (_I)"
 
-#: ../system-config-printer.glade.h:261
+#: ../system-config-printer.glade.h:262
 msgid "_New"
 msgstr "নতুন (_N)"
 
-#: ../system-config-printer.glade.h:262
+#: ../system-config-printer.glade.h:263
 msgid "_Printer"
 msgstr "মূদ্ৰক (_P)"
 
-#: ../system-config-printer.glade.h:263
+#: ../system-config-printer.glade.h:264
 msgid "_Rename"
 msgstr "নাম পৰিবৰ্ত্তন (_R)"
 
-#: ../system-config-printer.glade.h:264
+#: ../system-config-printer.glade.h:265
 msgid "_Search"
 msgstr "অনুসন্ধান কৰক (_S)"
 
-#: ../system-config-printer.glade.h:265
+#: ../system-config-printer.glade.h:266
 msgid "_Server"
 msgstr "সেৱক (_S)"
 
-#: ../system-config-printer.glade.h:266
+#: ../system-config-printer.glade.h:267
 msgid "_Settings..."
 msgstr "বৈশিষ্ট্যাৱলী...(_S)"
 
-#: ../system-config-printer.glade.h:267
+#: ../system-config-printer.glade.h:268
 msgid "_Shared"
 msgstr "যৌথৰূপে ব্যৱহৃত (_S)"
 
-#: ../system-config-printer.glade.h:268
+#: ../system-config-printer.glade.h:269
 msgid "_Troubleshoot"
 msgstr "সমস্যা সমাধান (_T)"
 
-#: ../system-config-printer.glade.h:269
+#: ../system-config-printer.glade.h:270
 msgid "_Verify..."
 msgstr "সত্যাখ্যান কৰক(_V)..."
 
-#: ../system-config-printer.glade.h:270 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:271 ../applet.glade.h:10
 msgid "_View"
 msgstr "প্ৰদৰ্শন (_V)"
 
-#: ../system-config-printer.glade.h:271
+#: ../system-config-printer.glade.h:272
 msgid "default"
 msgstr "অৱিকল্পিত"
 
-#: ../system-config-printer.glade.h:272
+#: ../system-config-printer.glade.h:273
 msgid "none"
 msgstr "একো নাই"
 
-#: ../system-config-printer.glade.h:273
+#: ../system-config-printer.glade.h:274
 msgid "points"
 msgstr "পয়েন্ট"
 
-#: ../system-config-printer.glade.h:274
+#: ../system-config-printer.glade.h:275
 msgid "system-config-printer"
 msgstr "System-Config-Printer"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:276
+#: ../system-config-printer.glade.h:277
 msgid "translator-credits"
 msgstr "অমিতাক্ষ ফুকন (aphukan@fedoraproject.org)"
 
