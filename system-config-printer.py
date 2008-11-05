@@ -3203,6 +3203,8 @@ class NewPrinterGUI(GtkGUI):
         "smb" : 7,
         }
 
+    DOWNLOADABLE_ONLYPPD=True
+
     def __init__(self, mainapp):
         self.mainapp = mainapp
         self.tooltips = mainapp.tooltips
@@ -3277,10 +3279,20 @@ class NewPrinterGUI(GtkGUI):
                               "tvNPDownloadableDrivers",
                               "ntbkNPDownloadableDriverProperties",
                               "lblNPDownloadableDriverSupplier",
+                              "cbNPDownloadableDriverSupplierVendor",
                               "lblNPDownloadableDriverLicense",
+                              "cbNPDownloadableDriverLicensePatents",
+                              "cbNPDownloadableDriverLicenseFree",
                               "lblNPDownloadableDriverDescription",
-                              "lblNPDownloadableDriverFunctionality",
                               "lblNPDownloadableDriverSupportContacts",
+                              "hsDownloadableDriverPerfText",
+                              "hsDownloadableDriverPerfLineArt",
+                              "hsDownloadableDriverPerfGraphics",
+                              "hsDownloadableDriverPerfPhoto",
+                              "lblDownloadableDriverPerfTextUnknown",
+                              "lblDownloadableDriverPerfLineArtUnknown",
+                              "lblDownloadableDriverPerfGraphicsUnknown",
+                              "lblDownloadableDriverPerfPhotoUnknown",
                               "frmNPDownloadableDriverLicenseTerms",
                               "tvNPDownloadableDriverLicense",
                               "rbtnNPDownloadLicenseYes",
@@ -3323,6 +3335,27 @@ class NewPrinterGUI(GtkGUI):
         cell = gtk.CellRendererText()
         combobox.pack_start (cell, True)
         combobox.add_attribute(cell, 'text', 0)
+        if self.DOWNLOADABLE_ONLYPPD:
+            for widget in [self.cbNPDownloadableDriverLicenseFree,
+                           self.cbNPDownloadableDriverLicensePatents]:
+                widget.hide ()
+
+        def protect_toggle (toggle_widget):
+            active = toggle_widget.get_data ('protect_active')
+            if active != None:
+                toggle_widget.set_active (active)
+
+        for widget in [self.cbNPDownloadableDriverSupplierVendor,
+                       self.cbNPDownloadableDriverLicenseFree,
+                       self.cbNPDownloadableDriverLicensePatents]:
+            widget.connect ('clicked', protect_toggle)
+
+        for widget in [self.hsDownloadableDriverPerfText,
+                       self.hsDownloadableDriverPerfLineArt,
+                       self.hsDownloadableDriverPerfGraphics,
+                       self.hsDownloadableDriverPerfPhoto]:
+            widget.connect ('change-value',
+                            lambda x, y, z: True)
 
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
@@ -5326,10 +5359,13 @@ class NewPrinterGUI(GtkGUI):
         # which drivers are available.
         debugprint ("Query drivers for %s" % id)
         self.drivers_lock.acquire(0)
+        extra_options = dict()
+        if self.DOWNLOADABLE_ONLYPPD:
+            extra_options['onlyppdfiles'] = '1'
         self.openprinting_query_handle = \
             self.openprinting.listDrivers (id,
                                            self.openprinting_drivers_found,
-                                           extra_options={'onlyppdfiles':'1'})
+                                           extra_options=extra_options)
 
     def openprinting_drivers_found (self, status, user_data, drivers):
         if status != 0:
@@ -5348,7 +5384,6 @@ class NewPrinterGUI(GtkGUI):
         self.lblNPDownloadableDriverSupplier.set_text ('')
         self.lblNPDownloadableDriverLicense.set_text ('')
         self.lblNPDownloadableDriverDescription.set_text ('')
-        self.lblNPDownloadableDriverFunctionality.set_text ('')
         self.lblNPDownloadableDriverSupportContacts.set_text ('')
         self.rbtnNPDownloadLicenseNo.set_active (True)
         self.frmNPDownloadableDriverLicenseTerms.hide ()
@@ -5501,56 +5536,46 @@ class NewPrinterGUI(GtkGUI):
         pprint.pprint (driver)
         self.ntbkNPDownloadableDriverProperties.set_current_page(1)
         supplier = driver.get('supplier', _("OpenPrinting"))
-        supplier_extra = ""
-        if driver['manufacturersupplied']:
-            supplier_extra = supplier_extra + _("the printer's manufacturer")
-        if driver['url']:
-            if supplier_extra:
-                supplier_extra = supplier_extra + _(", ")
-            supplier_extra = supplier_extra + driver['url']
-        if supplier_extra:
-            supplier = supplier + _(" (%s)") % supplier_extra
+        vendor = self.cbNPDownloadableDriverSupplierVendor
+        active = driver['manufacturersupplied']
+
+        def set_protect_active (widget, active):
+            widget.set_active (active)
+            widget.set_data ('protect_active', active)
+
+        set_protect_active (vendor, active)
         self.lblNPDownloadableDriverSupplier.set_text (supplier)
+
         license = driver.get('license', _("Distributable"))
-        if driver['freesoftware'] or driver['nonfreesoftware'] or \
-                driver['patents']:
-            license = license + _(" (")
-        if driver['freesoftware']:
-            license = license + _("free software")
-        if driver['nonfreesoftware']:
-            license = license + _("non-free software")
-        if (driver['freesoftware'] or driver['nonfreesoftware']) and \
-                driver['patents']:
-            license = license + _(", ")
-        if driver['patents']:
-            license = license + _("driver contains (possibly) patented algorithms")
-        if driver['freesoftware'] or driver['nonfreesoftware'] or \
-                driver['patents']:
-            license = license + _(")")
+        patents = self.cbNPDownloadableDriverLicensePatents
+        free = self.cbNPDownloadableDriverLicenseFree
+        set_protect_active (patents, driver['patents'])
+        set_protect_active (free, driver['freesoftware'])
         self.lblNPDownloadableDriverLicense.set_text (license)
+
         description = driver.get('shortdescription', _("None"))
         self.lblNPDownloadableDriverDescription.set_markup (description)
-        functionality = ""
-        if driver['functionality']['graphics']:
-            functionality = functionality + _("Graphics: %s/100, ") % \
-                driver['functionality']['graphics']
-        if driver['functionality']['lineart']:
-            functionality = functionality + _("Line Art: %s/100, ") % \
-                driver['functionality']['lineart']
-        if driver['functionality']['photo']:
-            functionality = functionality + _("Photo: %s/100, ") % \
-                driver['functionality']['photo']
-        if driver['functionality']['text']:
-            functionality = functionality + _("Text: %s/100, ") % \
-                driver['functionality']['text']
-        if functionality:
-            functionality = functionality[0:functionality.rfind (_(", "))]
-            functionality = _("Output quality: ") + functionality
-        if driver['recommended']:
-            if functionality:
-                functionality = functionality + _(", ")
-            functionality = functionality + _("<b>Recommended Driver</b>")
-        self.lblNPDownloadableDriverFunctionality.set_markup (functionality)
+
+        functionality = driver['functionality']
+        for field in ["Graphics", "LineArt", "Photo", "Text"]:
+            key = field.lower ()
+            value = None
+            hs = self.__dict__.get ("hsDownloadableDriverPerf%s" % field)
+            unknown = self.__dict__.get ("lblDownloadableDriverPerf%sUnknown"
+                                         % field)
+            if functionality.has_key (key):
+                if hs:
+                    try:
+                        value = int (functionality[key])
+                        hs.set_value (value)
+                        hs.show_all ()
+                        unknown.hide ()
+                    except:
+                        pass
+
+            if value == None:
+                hs.hide ()
+                unknown.show_all ()
         supportcontacts = ""
         if driver['supportcontacts']:
             for supportentry in driver['supportcontacts']:
