@@ -25,7 +25,7 @@ import os
 import subprocess
 from base import *
 
-install_cmd = "/usr/bin/system-install-packages"
+install_cmd = "/usr/bin/gpk-install-package-name"
 
 class CheckPPDSanity(Question):
     def __init__ (self, troubleshooter):
