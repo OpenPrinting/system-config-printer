@@ -1,3 +1,27 @@
+2008-10-06  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py, glade/NewPrinterWindow.glade: Display
+	more driver info for downloadable drivers from OpenPrinting:
+	Manufacturer/third-party-supplied? Free software? Patent issues?
+	Recommended? Functionality, support contacts. The license text
+	will now always be shown if available, but the user will only
+	asked whether he accepts it in the case of a non-free license or
+	patentissues.
+
+2008-11-05  Tim Waugh  <twaugh@redhat.com>
+
+	* configure.in: Version 1.0.10.
+
+2008-11-05  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/CheckNetworkServerSanity.py
+	(CheckNetworkServerSanity.display): Prevent traceback.
+
+2008-11-05  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/CheckPPDSanity.py: Use gpk-install-package-name
+	instead of system-install-packages.
+
 2008-11-05  Tim Waugh  <twaugh@redhat.com>
 
 	* applet.py (NewPrinterNotification): Use gpk-install-package-name
@@ -284,6 +308,12 @@
 	user (bug #465407).
 	* authconn.py: Show an error dialog if the password was
 	incorrect (bug #465407).
+
+2008-10-09  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Use message "Searching for
+	downloadable drivers" in the wait window when polling OpenPrinting
+	database vis Jockey.
 
 2008-10-09  Tim Waugh  <twaugh@redhat.com>
 
