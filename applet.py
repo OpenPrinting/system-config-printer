@@ -61,7 +61,7 @@ class NewPrinterNotification(dbus.service.Object):
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
 
-    INSTALL_PACKAGES_COMMAND="/usr/bin/system-install-packages"
+    INSTALL_PACKAGES_COMMAND="/usr/bin/gpk-install-package-name"
 
     def __init__ (self, bus):
         self.bus = bus
