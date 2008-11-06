@@ -123,11 +123,6 @@ class Printer:
                     
                 if attrs.has_key(name+"-supported"):
                     supported = attrs[name+"-supported"]
-                    # Work around pycups bug fixed in 1.9.40:
-                    # finishings-supported should be a list.
-                    if (type (supported) != list and
-                        type (supported) != tuple):
-                        supported = [supported]
                     self.possible_attributes[name] = (value, supported)
             elif (not key.endswith ("-supported") and
                   key != 'job-sheets-default' and
@@ -362,26 +357,19 @@ class Printer:
         # Also need to check system-wide lpoptions because that's how
         # previous Fedora versions set the default (bug #217395).
         (tmpfd, tmpfname) = tempfile.mkstemp ()
+        os.remove (tmpfname)
         try:
             resource = "/admin/conf/lpoptions"
-
-            try:
-                # Specifying the fd is allowed in pycups >= 1.9.38
-                self.connection.getFile(resource, fd=tmpfd)
-            except TypeError:
-                self.connection.getFile(resource, tmpfname)
+            self.connection.getFile(resource, fd=tmpfd)
         except cups.HTTPError, (s,):
-            try:
-                os.remove (tmpfname)
-            except OSError:
-                pass
-
             if s == cups.HTTP_NOT_FOUND:
                 return
 
             raise cups.HTTPError (s)
 
-        lines = file (tmpfname).readlines ()
+        f = os.fdopen (tmpfd, 'r+')
+        f.seek (0)
+        lines = f.readlines ()
         changed = False
         i = 0
         for line in lines:
@@ -395,20 +383,17 @@ class Printer:
                 i += 1
 
         if changed:
-            file (tmpfname, 'w').writelines (lines)
+            f.seek (0)
+            f.writelines (lines)
+            f.truncate ()
+            os.lseek (tmpfd, 0, os.SEEK_SET)
             try:
-                self.connection.putFile (resource, tmpfname)
+                self.connection.putFile (resource, fd=tmpfd)
             except cups.HTTPError, (s,):
-                os.remove (tmpfname)
                 return
 
             # Now reconnect because the server needs to reload.
             self.reconnect ()
-
-        try:
-            os.remove (tmpfname)
-        except OSError:
-            pass
 
 def getPrinters(connection):
     """
@@ -548,18 +533,7 @@ def activateNewPrinter(connection, name):
     connection.acceptJobs (name)
 
     # Set as the default if there is not already a default printer.
-    default_is_set = False
-    try:
-        if connection.getDefault () != None:
-            default_is_set = True
-    except AttributeError: # getDefault appeared in pycups-1.9.31
-        dests = connection.getDests ()
-        # If a default printer is set it will be available from
-        # key (None,None).
-        if dests.has_key ((None, None)):
-            default_is_set = True
-
-    if not default_is_set:
+    if connection.getDefault () == None:
         connection.setDefault (name)
 
 def copyPPDOptions(ppd1, ppd2):
