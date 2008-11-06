@@ -435,19 +435,6 @@ def getPrinters(connection):
                 printers_conf = _PrintersConf(connection)
             if printers_conf.device_uris.has_key(name):
                 printer.device_uri = printers_conf.device_uris[name]
-        if not printer.__dict__.has_key ('discovered'):
-            # The CUPS_PRINTER_DISCOVERED flag is new in pycups-1.9.37.
-            printer.discovered = False
-            if printer.device_uri.startswith ("ipp:"):
-                # ipp: Queues can be automatically created as a reaction
-                # to a queue broadcasted by a remote CUPS server. These
-                # queues are not listed in printers,conf. Mark them so
-                # that we can decide which queue entries in the main window
-                # should be editable/deletable and which not
-                if not printers_conf:
-                    printers_conf = _PrintersConf(connection)
-                if not printers_conf.device_uris.has_key(name):
-                    printer.discovered = True
     return printers
 
 def parseDeviceID (id):
