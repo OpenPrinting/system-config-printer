@@ -147,7 +147,8 @@ class Connection:
     def _authloop (self, fname, fn, *args, **kwds):
         self._passes = 0
         c = self._connection
-        while self._perform_authentication () != 0:
+        retry = False
+        while retry or self._perform_authentication () != 0:
             if c != self._connection:
                 # We have reconnected.
                 fn = getattr (self._connection, fname)
@@ -166,6 +167,28 @@ class Connection:
                 if not self._cancel and (e == cups.IPP_NOT_AUTHORIZED or
                                          e == cups.IPP_FORBIDDEN):
                     self._failed ()
+                elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
+                    d = gtk.MessageDialog (self._parent,
+                                           gtk.DIALOG_MODAL |
+                                           gtk.DIALOG_DESTROY_WITH_PARENT,
+                                           gtk.MESSAGE_ERROR,
+                                           gtk.BUTTONS_NONE,
+                                           _("CUPS server error"))
+                    d.format_secondary_text (_("There was an error during the "
+                                               "CUPS operation: '%s'." % m))
+                    d.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                   _("Retry"), gtk.RESPONSE_OK)
+                    d.set_default_response (gtk.RESPONSE_OK)
+                    response = d.run ()
+                    d.destroy ()
+
+                    if response == gtk.RESPONSE_OK:
+                        debugprint ("retrying operation...")
+                        retry = True
+                        self._passes -= 1
+                    else:
+                        self._cancel = True
+                        raise
                 else:
                     raise
             except cups.HTTPError, (s,):

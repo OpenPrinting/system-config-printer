@@ -49,6 +49,9 @@ def show_IPP_Error(exception, message, parent=None):
     if exception == cups.IPP_NOT_AUTHORIZED:
         # In this case, the user has canceled an authentication dialog.
         return
+    elif exception == cups.IPP_SERVICE_UNAVAILABLE:
+        # In this case, the user has canceled a retry dialog.
+        return
     else:
         title = _("CUPS server error")
         text = (_("There was an error during the CUPS "
