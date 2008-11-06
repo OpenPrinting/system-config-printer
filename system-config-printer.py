@@ -1616,8 +1616,9 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def set_default_printer (self, name):
         printer = self.printers[name]
+        reload = False
         try:
-            printer.setAsDefault ()
+            reload = printer.setAsDefault ()
         except cups.HTTPError, (s,):
             show_HTTP_Error (s, self.MainWindow)
             return
@@ -1627,7 +1628,8 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # Now reconnect in case the server needed to reload.  This may
         # happen if we replaced the lpoptions file.
-        self.reconnect ()
+        if reload:
+            self.reconnect ()
 
         try:
             self.populateList()
@@ -2221,14 +2223,18 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # Fix up default printer.
         if self.default_printer == old_name:
+            reload = False
             try:
-                self.printer.setAsDefault ()
+                reload = self.printer.setAsDefault ()
             except cups.HTTPError, (s,):
                 show_HTTP_Error (s, self.MainWindow)
                 # Not fatal.
             except CUPS.IPPError, (e, msg):
                 show_IPP_Error (e, msg, self.MainWindow)
                 # Not fatal.
+
+            if reload:
+                self.reconnect ()
 
         # Finally, delete the old printer.
         try:

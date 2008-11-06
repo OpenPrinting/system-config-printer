@@ -377,7 +377,7 @@ class Printer:
                 pass
 
             if s == cups.HTTP_NOT_FOUND:
-                return
+                return False
 
             raise cups.HTTPError (s)
 
@@ -400,15 +400,14 @@ class Printer:
                 self.connection.putFile (resource, tmpfname)
             except cups.HTTPError, (s,):
                 os.remove (tmpfname)
-                return
-
-            # Now reconnect because the server needs to reload.
-            self.reconnect ()
+                return False
 
         try:
             os.remove (tmpfname)
         except OSError:
             pass
+
+        return changed
 
 def getPrinters(connection):
     """
