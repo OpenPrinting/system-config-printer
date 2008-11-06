@@ -20,6 +20,8 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+import os
+import smburi
 import socket
 import subprocess
 from base import *
@@ -112,14 +114,32 @@ class CheckNetworkServerSanity(Question):
         if (self.answers['remote_server_name_resolves'] and
             not self.answers.get ('remote_server_connect_ipp', False)):
             # Try to see if we can connect using smbc.
+            context = None
             try:
                 context = smbc.Context ()
                 name = self.answers['remote_server_try_connect']
                 shares = context.opendir ("smb://%s" % name).getdents ()
                 self.answers['remote_server_smb'] = True
                 self.answers['remote_server_smb_shares'] = shares
-            except:
+            except NameError:
+                # No smbc support
                 pass
+            except RuntimeError, (e, s):
+                self.answers['remote_server_smb_shares'] = (e, s)
+
+            if context != None and answers.has_key ('cups_printer_dict'):
+                uri = answers['cups_printer_dict'].get ('device-uri', '')
+                u = smburi.SMBURI (uri)
+                (group, host, share, user, password) = u.separate ()
+                accessible = False
+                try:
+                    f  = context.open ("smb://%s/%s" % (host, share),
+                                       os.O_RDWR, 0777)
+                    accessible = True
+                except RuntimeError, (e, s):
+                    accessible = (e, s)
+
+                self.answers['remote_server_smb_share_anon_access'] = accessible
 
         # Try traceroute if we haven't already.
         if (self.answers['remote_server_name_resolves'] and
