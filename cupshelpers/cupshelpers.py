@@ -420,21 +420,12 @@ def getPrinters(connection):
     """
     printers = connection.getPrinters()
     classes = connection.getClasses()
-    printers_conf = None
     for name, printer in printers.iteritems():
         printer = Printer(name, connection, **printer)
         printers[name] = printer
         if classes.has_key(name):
             printer.class_members = classes[name]
             printer.class_members.sort()
-
-        if printer.device_uri.startswith ("smb:"):
-            # smb: URIs may have been sanitized (authentication details
-            # removed), so fetch the actual details from printers.conf.
-            if not printers_conf:
-                printers_conf = _PrintersConf(connection)
-            if printers_conf.device_uris.has_key(name):
-                printer.device_uri = printers_conf.device_uris[name]
     return printers
 
 def parseDeviceID (id):
@@ -524,56 +515,6 @@ class Device:
             result = cmp(self.info, other.info)
         
         return result
-
-class _PrintersConf:
-    def __init__(self, connection):
-        """
-        @param connection: CUPS connection
-        @type connection: CUPS.Connection object
-        """
-        self.device_uris = {}
-        self.connection = connection
-        self.parse(self.fetch('/admin/conf/printers.conf'))
-
-    def fetch(self, file):
-        fd, filename = tempfile.mkstemp("printer.conf")
-        try:
-            try:
-                # Specifying the fd is allowed in pycups >= 1.9.38
-                self.connection.getFile(file, fd=fd)
-            except TypeError:
-                self.connection.getFile(file, filename)
-        except cups.HTTPError, e:
-            os.close(fd)
-            os.unlink(filename)
-            if (e.args[0] == cups.HTTP_UNAUTHORIZED or
-                e.args[0] == cups.HTTP_NOT_FOUND):
-                return []
-            else:
-                raise e
-
-        os.close(fd)
-        lines = open(filename).readlines()
-        os.unlink(filename)
-        return lines
-
-    def parse(self, lines):
-        current_printer = None
-        for line in lines:
-            words = line.split()
-            if len(words) == 0:
-                continue
-            if words[0] == "DeviceURI":
-                if len (words) >= 2:
-                    self.device_uris[current_printer] = words[1]
-                else:
-                    self.device_uris[current_printer] = ''
-            else:
-                match = re.match(r"<(Default)?Printer ([^>]+)>\s*\n", line) 
-                if match:
-                    current_printer = match.group(2)
-                if line.strip().find("</Printer>") != -1:
-                    current_printer = None
 
 def getDevices(connection):
     """
