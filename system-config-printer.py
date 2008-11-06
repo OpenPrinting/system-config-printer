@@ -107,7 +107,6 @@ sys.path.append (pkgdata)
 
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
-ellipsis = unichr(0x2026)
 
 TEXT_start_firewall_tool = _("To do this, select "
                              "System->Administration->Firewall "
@@ -1883,9 +1882,6 @@ class GUI(GtkGUI, monitor.Watcher):
             location = self.entPLocation.get_text()
             info = self.entPDescription.get_text()
             device_uri = self.entPDevice.get_text()
-            if device_uri.find (ellipsis) != -1:
-                # The URI is sanitized and not editable.
-                device_uri = printer.device_uri
 
             enabled = self.chkPEnabled.get_active()
             accepting = self.chkPAccepting.get_active()
@@ -2206,17 +2202,6 @@ class GUI(GtkGUI, monitor.Watcher):
         self.entPLocation.set_text(printer.location)
 
         uri = printer.device_uri
-        if uri.startswith("smb://"):
-            (group, host, share,
-             user, password) = SMBURI (uri=uri[6:]).separate ()
-            if password:
-                uri = "smb://"
-                if len (user) or len (password):
-                    uri += ellipsis
-                uri += SMBURI (group=group, host=host, share=share).get_uri ()
-                self.entPDevice.set_sensitive(False)
-            else:
-                self.entPDevice.set_sensitive(True)
         self.entPDevice.set_text(uri)
         self.changed.discard(self.entPDevice)
 
