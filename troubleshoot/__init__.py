@@ -164,6 +164,20 @@ class Troubleshooter:
             self.close.hide ()
             self.cancel.show ()
 
+    def busy (self):
+        gdkwin = self.get_window ().window
+        if gdkwin:
+            gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.WATCH))
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
+    def ready (self):
+        gdkwin = self.get_window ().window
+        if gdkwin:
+            gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
     def on_back_clicked (self, widget):
         page = self.ntbk.get_current_page ()
         try:
@@ -171,6 +185,7 @@ class Troubleshooter:
         except:
             self._report_traceback ()
 
+        self.busy ()
         step = 1
         question = self.questions[page - step]
         self.ntbk.prev_page ()
@@ -183,6 +198,7 @@ class Troubleshooter:
 
         page -= step
 
+        self.ready ()
         answers = {}
         for i in range (page):
             answers.update (self.question_answers[i])
@@ -206,6 +222,7 @@ class Troubleshooter:
         except:
             self._report_traceback ()
 
+        self.busy ()
         step = 1
         question = self.questions[page + step]
         self.ntbk.next_page ()
@@ -221,6 +238,7 @@ class Troubleshooter:
 
         page += step
 
+        self.ready ()
         try:
             question.connect_signals (self.set_back_forward_buttons)
         except:
