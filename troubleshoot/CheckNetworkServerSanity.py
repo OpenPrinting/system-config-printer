@@ -115,7 +115,7 @@ class CheckNetworkServerSanity(Question):
             try:
                 context = smbc.Context ()
                 name = self.answers['remote_server_try_connect']
-                shares = context.opendir ("smb://%s" % name).getdents ()
+                shares = context.opendir ("smb://%s/" % name).getdents ()
                 self.answers['remote_server_smb'] = True
                 self.answers['remote_server_smb_shares'] = shares
             except:
