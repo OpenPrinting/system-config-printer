@@ -363,7 +363,7 @@ class Printer:
             self.connection.getFile(resource, fd=tmpfd)
         except cups.HTTPError, (s,):
             if s == cups.HTTP_NOT_FOUND:
-                return
+                return False
 
             raise cups.HTTPError (s)
 
@@ -390,10 +390,9 @@ class Printer:
             try:
                 self.connection.putFile (resource, fd=tmpfd)
             except cups.HTTPError, (s,):
-                return
+                return False
 
-            # Now reconnect because the server needs to reload.
-            self.reconnect ()
+        return changed
 
 def getPrinters(connection):
     """

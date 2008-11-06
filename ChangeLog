@@ -8,9 +8,24 @@
 	asked whether he accepts it in the case of a non-free license or
 	patentissues.
 
+2008-11-06  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py (Printer.setAsDefault): Removed
+	old reconnect call which caused a traceback.  Return a boolean
+	indicating whether reconnection is necessary.
+	* system-config-printer.py (GUI.set_default_printer): Reload only
+	if necessary.
+	(GUI.rename_printer): Likewise.
+	
 2008-11-05  Tim Waugh  <twaugh@redhat.com>
 
 	* configure.in: Version 1.0.10.
+
+2008-11-06  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.reconnect): Sleep before
+	reconnection attempt, not after.  The CUPS server doesn't
+	necessarily re-start immediately.
 
 2008-11-05  Tim Waugh  <twaugh@redhat.com>
 
