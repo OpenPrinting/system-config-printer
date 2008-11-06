@@ -1,5 +1,11 @@
 2008-11-06  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.reconnect): Sleep before
+	reconnection attempt, not after.  The CUPS server doesn't
+	necessarily re-start immediately.
+
+2008-11-06  Tim Waugh  <twaugh@redhat.com>
+
 	* cupshelpers/cupshelpers.py (Printer.setAsDefault): Removed
 	old reconnect call which caused a traceback.  Return a boolean
 	indicating whether reconnection is necessary.

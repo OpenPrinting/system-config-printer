@@ -1139,11 +1139,11 @@ class GUI(GtkGUI, monitor.Watcher):
         attempt = 1
         while attempt <= 5:
             try:
+                time.sleep(1)
                 self.cups._connect ()
                 break
             except RuntimeError:
                 # Connection failed.
-                time.sleep(1)
                 attempt += 1
 
     def on_btnCancelConnect_clicked(self, widget):
