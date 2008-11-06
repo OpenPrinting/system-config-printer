@@ -50,15 +50,18 @@ class PrintTestPage(Question):
         page.set_spacing (12)
         page.set_border_width (12)
 
-        label = gtk.Label ('<span weight="bold" size="larger">' +
-                           _("Test Page") + '</span>\n\n' +
-                           _("Now print a test page.  If you are having "
-                             "problems printing a specific document, print "
-                             "that document now and mark the print job below."))
+        label = gtk.Label ()
         label.set_alignment (0, 0)
         label.set_use_markup (True)
         label.set_line_wrap (True)
         page.pack_start (label, False, False, 0)
+        self.main_label = label
+        self.main_label_text = ('<span weight="bold" size="larger">' +
+                                _("Test Page") + '</span>\n\n' +
+                                _("Now print a test page.  If you are having "
+                                  "problems printing a specific document, "
+                                  "print that document now and mark the print "
+                                  "job below."))
 
         hbox = gtk.HButtonBox ()
         hbox.set_border_width (0)
@@ -120,8 +123,27 @@ class PrintTestPage(Question):
         troubleshooter.new_page (page, self)
 
     def display (self):
-        if not self.troubleshooter.answers.has_key ('cups_queue'):
+        answers = self.troubleshooter.answers
+        if not answers.has_key ('cups_queue'):
             return False
+
+        mediatype = None
+        defaults = answers.get ('cups_printer_ppd_defaults', {})
+        for opts in defaults.values ():
+            for opt, value in opts.iteritems ():
+                if opt == "MediaType":
+                    mediatype = value
+                    break
+
+        if mediatype != None:
+            mediatype_string = '\n\n' + (_("Remember to load paper of type "
+                                           "'%s' into the printer first.") %
+                                         mediatype)
+        else:
+            mediatype_string = ""
+
+        label_text = self.main_label_text + mediatype_string
+        self.main_label.set_markup (label_text)
 
         model = gtk.ListStore (gobject.TYPE_BOOLEAN,
                                gobject.TYPE_INT,
