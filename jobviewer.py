@@ -689,10 +689,10 @@ class JobViewer (monitor.Watcher):
         self.auth_info_dialog_response (dialog, gtk.RESPONSE_CANCEL)
 
     def auth_info_dialog_response (self, dialog, response):
-        dialog.hide ()
         jobid = dialog.get_data ('job-id')
         del self.auth_info_dialogs[jobid]
         if response != gtk.RESPONSE_OK:
+            dialog.destroy ()
             return
 
         auth_info = dialog.get_auth_info ()
@@ -707,6 +707,8 @@ class JobViewer (monitor.Watcher):
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
             pass
+
+        dialog.destroy ()
 
     def set_statusicon_visibility (self):
         if not self.trayicon:
