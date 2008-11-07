@@ -35,7 +35,8 @@ class AuthDialog(gtk.Dialog):
                   flags=gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
                   buttons=(gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                            gtk.STOCK_OK, gtk.RESPONSE_OK),
-                  auth_info_required=['username', 'password']):
+                  auth_info_required=['username', 'password'],
+                  allow_remember=False):
         gtk.Dialog.__init__ (self, title, parent, flags, buttons)
         self.auth_info_required = auth_info_required
         self.set_default_response (gtk.RESPONSE_OK)
@@ -72,6 +73,13 @@ class AuthDialog(gtk.Dialog):
         vbox.pack_start (table, False, False, 0)
         hbox.pack_start (vbox, False, False, 0)
         self.vbox.pack_start (hbox)
+
+        if allow_remember:
+            cb = gtk.CheckButton (_("Remember password"))
+            cb.set_active (False)
+            vbox.pack_start (cb)
+            self.remember_checkbox = cb
+
         self.vbox.show_all ()
 
     def set_prompt (self, prompt):
@@ -87,6 +95,9 @@ class AuthDialog(gtk.Dialog):
 
     def get_auth_info (self):
         return map (lambda x: x.get_text (), self.field_entry)
+
+    def get_remember_password (self):
+        return self.remember_checkbox.get_active ()
 
     def field_grab_focus (self, field):
         i = self.auth_info_required.index (field)

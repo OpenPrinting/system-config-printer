@@ -614,7 +614,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 self.show_IPP_Error (e, m)
                 return
 
-        dialog = authconn.AuthDialog (auth_info_required=auth_info_required)
+        dialog = authconn.AuthDialog (auth_info_required=auth_info_required,
+                                      allow_remember=USE_KEYRING)
         dialog.set_position (gtk.WIN_POS_CENTER)
 
         # Pre-fill 'username' field.
@@ -638,14 +639,15 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 else:
                     (serverport, rest) = urllib.splithost (rest)
                     (server, port) = urllib.splitnport (hostport)
-                keyring = gnomekeyring.get_default_keyring_sync ()
                 attrs = { "user": username,
                           "server": str (server.lower ()),
                           "protocol": str (scheme) }
+                dialog.set_data ("keyring-attrs", attrs)
+                ind = auth_info_required.index ('password')
+                dialog.set_data ("password-ind", ind)
                 type = gnomekeyring.ITEM_NETWORK_PASSWORD
                 try:
                     items = gnomekeyring.find_items_sync (type, attrs)
-                    ind = auth_info_required.index ('password')
                     auth_info[ind] = items[0].secret
                     dialog.set_auth_info (auth_info)
                 except gnomekeyring.NoMatchError:
@@ -683,17 +685,35 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
 
         auth_info = dialog.get_auth_info ()
+        remember = False
         try:
             c = authconn.Connection (self.JobsWindow,
                                      host=self.host,
                                      port=self.port,
                                      encryption=self.encryption)
             c.authenticateJob (jobid, auth_info)
+
+            remember = dialog.get_remember_password ()
         except RuntimeError:
             debugprint ("Error connecting to CUPS for authentication")
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
             pass
+
+        if remember:
+            try:
+                keyring = gnomekeyring.get_default_keyring_sync ()
+                type = gnomekeyring.ITEM_NETWORK_PASSWORD
+                attrs = dialog.get_data ("keyring-attrs")
+                if attrs != None:
+                    name = "%s@%s (%s)" % (attrs.get ("user"),
+                                           attrs.get ("server"),
+                                           attrs.get ("protocol"))
+                    secret = auth_info[dialog.get_data ("password-ind")]
+                    gnomekeyring.item_create_sync (keyring, type, name,
+                                                   attrs, secret, True)
+            except:
+                nonfatalException ()
 
     def set_statusicon_visibility (self):
         if not self.trayicon:
