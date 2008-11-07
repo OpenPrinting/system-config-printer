@@ -539,6 +539,86 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                 "authenticateJob() not available")
                     return
 
+                # Find out which auth-info is required.
+                try_keyring = USE_KEYRING
+                if try_keyring:
+                    try:
+                        c = authconn.Connection (self.JobsWindow,
+                                                 host=self.host,
+                                                 port=self.port,
+                                                 encryption=self.encryption)
+                        uri = data['job-printer-uri']
+                        attrs = ['auth-info-required', 'device-uri']
+                        attributes = c.getPrinterAttributes (uri = uri,
+                                                             requested_attributes=attrs)
+                        try:
+                            auth_info_required = attributes['auth-info-required']
+                        except KeyError:
+                            debugprint ("No auth-info-required attribute; "
+                                        "guessing instead")
+                            auth_info_required = ['username', 'password']
+
+                        if not isinstance (auth_info_required, list):
+                            auth_info_required = [auth_info_required]
+                            attributes['auth-info-required'] = auth_info_required
+
+                        data.update (attributes)
+                        if auth_info_required == ['negotiate']:
+                            # Try Kerberos authentication.
+                            try:
+                                debugprint ("Trying Kerberos auth for "
+                                            "job %d" % job)
+                                c.authenticateJob (job)
+                                self.monitor.update ()
+                                return
+                            except cups.IPPError, (e, m):
+                                nonfatalException ()
+                                return
+                    except cups.IPPError, (e, m):
+                        try_keyring = False
+                    except RuntimeError:
+                        try_keyring = False
+
+                if try_keyring and 'password' in auth_info_required:
+                    try:
+                        device_uri = attributes.get ("device-uri")
+                        (scheme, rest) = urllib.splittype (device_uri)
+                        if scheme == 'smb':
+                            uri = smburi.SMBURI (uri=device_uri)
+                            (group, server, share,
+                             user, password) = uri.separate ()
+                        else:
+                            (serverport, rest) = urllib.splithost (rest)
+                            (server, port) = urllib.splitnport (hostport)
+                        attrs = { "server": str (server.lower ()),
+                                  "protocol": str (scheme) }
+                        type = gnomekeyring.ITEM_NETWORK_PASSWORD
+                        auth_info = None
+                        try:
+                            items = gnomekeyring.find_items_sync (type, attrs)
+                            auth_info = map (lambda x: '', auth_info_required)
+                            ind = auth_info_required.index ('username')
+                            auth_info[ind] = items[0].attributes['user']
+                            ind = auth_info_required.index ('password')
+                            auth_info[ind] = items[0].secret
+                        except gnomekeyring.NoMatchError:
+                            debugprint ("gnomekeyring: no match for %s" % attrs)
+                        except gnomekeyring.DeniedError:
+                            debugprint ("gnomekeyring: denied for %s" % attrs)
+
+                        if auth_info != None:
+                            try:
+                                c.authenticateJob (job, auth_info)
+                                self.monitor.update ()
+                                debugprint ("Automatically authenticated "
+                                            "job %d" % job)
+                                return
+                            except cups.IPPError, (e, m):
+                                nonfatalException ()
+                                return
+                    except:
+                        nonfatalException ()
+
                 title = _("Authentication Required")
                 text = _("Job requires authentication to proceed.")
                 notification = pynotify.Notification (title, text, 'printer')
@@ -579,41 +659,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def display_auth_info_dialog (self, job):
         data = self.jobs[job]
-        # Find out which auth-info is required.
-        try:
-            c = authconn.Connection (self.JobsWindow,
-                                     host=self.host,
-                                     port=self.port,
-                                     encryption=self.encryption)
-            uri = data['job-printer-uri']
-            attrs = ['auth-info-required', 'device-uri']
-            attributes = c.getPrinterAttributes (uri = uri,
-                                                 requested_attributes=attrs)
-        except cups.IPPError, (e, m):
-            self.show_IPP_Error (e, m)
-            return
-        except RuntimeError:
-            debugprint ("Failed to connect when fetching printer attrs")
-            return
-
-        try:
-            auth_info_required = attributes['auth-info-required']
-        except KeyError:
-            debugprint ("No auth-info-required attribute; guessing instead")
-            auth_info_required = ['username', 'password']
-
-        if not isinstance (auth_info_required, list):
-            auth_info_required = [auth_info_required]
-
-        if auth_info_required == ['negotiate']:
-            # Try Kerberos authentication.
-            try:
-                debugprint ("Trying Kerberos auth for job %d" % jobid)
-                c.authenticateJob (jobid)
-            except cups.IPPError, (e, m):
-                self.show_IPP_Error (e, m)
-                return
-
+        auth_info_required = data['auth-info-required']
         dialog = authconn.AuthDialog (auth_info_required=auth_info_required,
                                       allow_remember=USE_KEYRING)
         dialog.set_position (gtk.WIN_POS_CENTER)
@@ -626,34 +672,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 ind = auth_info_required.index ('username')
                 auth_info[ind] = username
                 dialog.set_auth_info (auth_info)
-            except:
-                nonfatalException ()
-
-        if USE_KEYRING and 'password' in auth_info_required:
-            try:
-                device_uri = attributes.get ("device-uri")
-                (scheme, rest) = urllib.splittype (device_uri)
-                if scheme == 'smb':
-                    uri = smburi.SMBURI (uri=device_uri)
-                    (group, server, share, user, password) = uri.separate ()
-                else:
-                    (serverport, rest) = urllib.splithost (rest)
-                    (server, port) = urllib.splitnport (hostport)
-                attrs = { "user": username,
-                          "server": str (server.lower ()),
-                          "protocol": str (scheme) }
-                dialog.set_data ("keyring-attrs", attrs)
-                ind = auth_info_required.index ('password')
-                dialog.set_data ("password-ind", ind)
-                type = gnomekeyring.ITEM_NETWORK_PASSWORD
-                try:
-                    items = gnomekeyring.find_items_sync (type, attrs)
-                    auth_info[ind] = items[0].secret
-                    dialog.set_auth_info (auth_info)
-                except gnomekeyring.NoMatchError:
-                    debugprint ("gnomekeyring: no match for %s" % attrs)
-                except gnomekeyring.DeniedError:
-                    debugprint ("gnomekeyring: denied for %s" % attrs)
             except:
                 nonfatalException ()
 
