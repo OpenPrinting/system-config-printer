@@ -1,5 +1,13 @@
 2008-11-07  Tim Waugh  <twaugh@redhat.com>
 
+	* authconn.py (Connection._perform_authentication): Grab keyboard
+	and mouse when showing authentication dialog.
+	* pysmb.py (AuthContext.perform_authentication): Likewise.
+	* jobviewer.py (JobViewer.display_auth_info_dialog): Likewise.
+	(JobViewer.auth_info_dialog_response): Ungrab them.
+
+2008-11-07  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.auth_info_dialog_response): Don't leak
 	AuthDialog.
 

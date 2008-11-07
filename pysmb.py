@@ -126,13 +126,20 @@ class AuthContext:
         d.vbox.pack_start (hbox)
         self.dialog_shown = True
         d.show_all ()
+        d.show_now ()
 
         if self.use_user == 'guest':
             self.use_user = pwd.getpwuid (os.getuid ())[0]
             debugprint ("pysmb: try as %s" % self.use_user)
         username_entry.set_text (self.use_user)
         domain_entry.set_text (self.use_workgroup)
+
+        d.set_keep_above (True)
+        gtk.gdk.pointer_grab (d.window, True)
+        gtk.gdk.keyboard_grab (d.window, True)
         response = d.run ()
+        gtk.gdk.keyboard_ungrab ()
+        gtk.gdk.pointer_ungrab ()
 
         if response == gtk.RESPONSE_CANCEL:
             self.cancel = True

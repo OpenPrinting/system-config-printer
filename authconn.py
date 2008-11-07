@@ -268,8 +268,15 @@ class Connection:
         d.set_prompt (self._prompt)
         d.set_auth_info ([self._use_user, ''])
         d.field_grab_focus ('password')
+        d.set_keep_above (True)
+        d.show_all ()
+        d.show_now ()
+        gtk.gdk.keyboard_grab (d.window, True)
+        gtk.gdk.pointer_grab (d.window, True)
         self._dialog_shown = True
         response = d.run ()
+        gtk.gdk.pointer_ungrab ()
+        gtk.gdk.keyboard_ungrab ()
         (self._use_user,
          self._use_password) = d.get_auth_info ()
         d.destroy ()
