@@ -33,15 +33,23 @@ import monitor
 import os
 import pango
 import pwd
+import smburi
 import subprocess
 import sys
 import time
+import urllib
 
 from debug import *
 import config
 import statereason
 import errordialogs
 import pprint
+
+try:
+    import gnomekeyring
+    USE_KEYRING=True
+except ImportError:
+    USE_KEYRING=False
 
 from gettext import gettext as _
 DOMAIN="system-config-printer"
@@ -578,7 +586,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                      port=self.port,
                                      encryption=self.encryption)
             uri = data['job-printer-uri']
-            attributes = c.getPrinterAttributes (uri = uri)
+            attrs = ['auth-info-required', 'device-uri']
+            attributes = c.getPrinterAttributes (uri = uri,
+                                                 requested_attributes=attrs)
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
             return
@@ -608,23 +618,50 @@ class JobViewer (GtkGUI, monitor.Watcher):
         dialog.set_position (gtk.WIN_POS_CENTER)
 
         # Pre-fill 'username' field.
+        auth_info = map (lambda x: '', auth_info_required)
+        username = pwd.getpwuid (os.getuid ())[0]
         if 'username' in auth_info_required:
             try:
-                auth_info = map (lambda x: '', auth_info_required)
-                username = pwd.getpwuid (os.getuid ())[0]
                 ind = auth_info_required.index ('username')
                 auth_info[ind] = username
                 dialog.set_auth_info (auth_info)
-
-                index = 0
-                for field in auth_info_required:
-                    if auth_info[index] == '':
-                        # Focus on the first empty field.
-                        dialog.field_grab_focus (field)
-                        break
-                    index += 1
             except:
                 nonfatalException ()
+
+        if USE_KEYRING and 'password' in auth_info_required:
+            try:
+                device_uri = attributes.get ("device-uri")
+                (scheme, rest) = urllib.splittype (device_uri)
+                if scheme == 'smb':
+                    uri = smburi.SMBURI (uri=device_uri)
+                    (group, server, share, user, password) = uri.separate ()
+                else:
+                    (serverport, rest) = urllib.splithost (rest)
+                    (server, port) = urllib.splitnport (hostport)
+                keyring = gnomekeyring.get_default_keyring_sync ()
+                attrs = { "user": username,
+                          "server": str (server.lower ()),
+                          "protocol": str (scheme) }
+                type = gnomekeyring.ITEM_NETWORK_PASSWORD
+                try:
+                    items = gnomekeyring.find_items_sync (type, attrs)
+                    ind = auth_info_required.index ('password')
+                    auth_info[ind] = items[0].secret
+                    dialog.set_auth_info (auth_info)
+                except gnomekeyring.NoMatchError:
+                    debugprint ("gnomekeyring: no match for %s" % attrs)
+                except gnomekeyring.DeniedError:
+                    debugprint ("gnomekeyring: denied for %s" % attrs)
+            except:
+                nonfatalException ()
+
+        # Focus on the first empty field.
+        index = 0
+        for field in auth_info_required:
+            if auth_info[index] == '':
+                dialog.field_grab_focus (field)
+                break
+            index += 1
 
         dialog.set_prompt (_("Authentication required for "
                              "printing document `%s' (job %d)") %
