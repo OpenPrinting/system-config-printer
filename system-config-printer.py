@@ -810,19 +810,28 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if configure_printer:
             # Need to find the entry in the iconview model and activate it.
-            model = self.dests_iconview.get_model ()
-            iter = model.get_iter_first ()
-            while iter != None:
-                name = model.get_value (iter, 2)
-                if name == configure_printer:
-                    path = model.get_path (iter)
-                    self.dests_iconview.item_activated (path)
-                    if print_test_page:
-                        self.btnPrintTestPage.clicked ()
-                    if change_ppd:
-                        self.btnChangePPD.clicked ()
-                    break
-                iter = model.iter_next (iter)
+            try:
+                self.display_properties_dialog_for (configure_printer)
+                if print_test_page:
+                    self.btnPrintTestPage.clicked ()
+                if change_ppd:
+                    self.btnChangePPD.clicked ()
+            except RuntimeError:
+                pass
+
+    def display_properties_dialog_for (self, queue):
+        model = self.dests_iconview.get_model ()
+        iter = model.get_iter_first ()
+        while iter != None:
+            name = model.get_value (iter, 2)
+            if name == queue:
+                path = model.get_path (iter)
+                self.dests_iconview.item_activated (path)
+                break
+            iter = model.iter_next (iter)
+
+        if iter == None:
+            raise RuntimeError
 
     def setup_toolbar_for_search_entry (self):
         separator = gtk.SeparatorToolItem ()
@@ -5949,6 +5958,23 @@ class NewPrinterGUI(GtkGUI):
                 pass
             except:
                 nonfatalException()
+
+        # Finally, suggest printing a test page.
+        if self.dialog_mode == "printer":
+            q = gtk.MessageDialog (self.mainapp.PrintersWindow,
+                                   gtk.DIALOG_DESTROY_WITH_PARENT |
+                                   gtk.DIALOG_MODAL,
+                                   gtk.MESSAGE_QUESTION,
+                                   gtk.BUTTONS_YES_NO,
+                                   _("Would you like to print a test page?"))
+            response = q.run ()
+            q.destroy ()
+            if response == gtk.RESPONSE_YES:
+                # Display the properties dialog.
+                self.mainapp.display_properties_dialog_for (name)
+
+                # Click the test button.
+                self.mainapp.btnPrintTestPage.clicked ()
 
     def checkDriverExists(self, name, ppd=None):
         """Check that the driver for an existing queue actually
