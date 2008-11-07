@@ -47,7 +47,10 @@ def show_help():
            "            Select the named printer on start-up.\n\n"
            "  --choose-driver NAME\n"
            "            Select the named printer on start-up, and display\n"
-           "            a list of drivers.\n")
+           "            a list of drivers.\n"
+           "  --print-test-page NAME\n"
+           "            Select the named printer on start-up and print a\n"
+           "            test page to it.\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
     show_help ()
@@ -172,7 +175,7 @@ class GUI(GtkGUI, monitor.Watcher):
                        cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
     def __init__(self, configure_printer = None, change_ppd = False,
-                 devid = ""):
+                 devid = "", print_test_page = False):
 
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
@@ -814,6 +817,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 if name == configure_printer:
                     path = model.get_path (iter)
                     self.dests_iconview.item_activated (path)
+                    if print_test_page:
+                        self.btnPrintTestPage.clicked ()
                     if change_ppd:
                         self.btnChangePPD.clicked ()
                     break
@@ -6013,11 +6018,12 @@ class NewPrinterGUI(GtkGUI):
                                    self.mainapp.PrintersWindow)
 
 
-def main(configure_printer = None, change_ppd = False, devid = ""):
+def main(configure_printer = None, change_ppd = False, devid = "",
+         print_test_page = False):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init()
 
-    mainwindow = GUI(configure_printer, change_ppd, devid)
+    mainwindow = GUI(configure_printer, change_ppd, devid, print_test_page)
     if gtk.__dict__.has_key("main"):
         gtk.main()
     else:
@@ -6031,6 +6037,7 @@ if __name__ == "__main__":
                                         ['configure-printer=',
                                          'choose-driver=',
                                          'devid=',
+                                         'print-test-page=',
                                          'debug'])
     except getopt.GetoptError:
         show_help ()
@@ -6038,13 +6045,17 @@ if __name__ == "__main__":
 
     configure_printer = None
     change_ppd = False
+    print_test_page = False
     devid = ""
     for opt, optarg in opts:
         if (opt == "--configure-printer" or
-            opt == "--choose-driver"):
+            opt == "--choose-driver" or
+            opt == "--print-test-page"):
             configure_printer = optarg
             if opt == "--choose-driver":
                 change_ppd = True
+            elif opt == "print-test-page":
+                print_test_page = True
 
         elif opt == '--devid':
             devid = optarg
@@ -6052,4 +6063,4 @@ if __name__ == "__main__":
         elif opt == '--debug':
             set_debugging (True)
 
-    main(configure_printer, change_ppd, devid)
+    main(configure_printer, change_ppd, devid, print_test_page)
