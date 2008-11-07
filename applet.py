@@ -152,6 +152,8 @@ class NewPrinterNotification(dbus.service.Object):
             text = _("`%s' is ready for printing.") % name
             n = pynotify.Notification (title, text)
             n.set_urgency (pynotify.URGENCY_NORMAL)
+            n.add_action ("test-page", _("Print test page"),
+                          lambda x, y: self.print_test_page (x, y, name, devid))
             n.add_action ("configure", _("Configure"),
                           lambda x, y: self.configure (x, y, name))
         else: # Model mismatch
@@ -161,6 +163,8 @@ class NewPrinterNotification(dbus.service.Object):
                    (name, driver)
             n = pynotify.Notification (title, text, 'printer')
             n.set_urgency (pynotify.URGENCY_CRITICAL)
+            n.add_action ("test-page", _("Print test page"),
+                          lambda x, y: self.print_test_page (x, y, name, devid))
             n.add_action ("find-driver", _("Find driver"),
                           lambda x, y: self.find_driver (x, y, name, devid))
 
@@ -182,7 +186,13 @@ class NewPrinterNotification(dbus.service.Object):
             print "Error forking process"
         else:
             gobject.timeout_add (60 * 1000, self.collect_exit_code, pid)
-        
+
+    def print_test_page (self, notification, action, name, devid = ""):
+        args = ["--print-test-page", name]
+        if devid != "":
+            args.extend (["--devid", devid])
+        self.run_config_tool (args)
+
     def configure (self, notification, action, name):
         self.run_config_tool (["--configure-printer", name])
 
