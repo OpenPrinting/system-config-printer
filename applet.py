@@ -101,7 +101,6 @@ class NewPrinterNotification(dbus.service.Object):
 
     @dbus.service.method(PDS_IFACE, in_signature='isssss', out_signature='')
     def NewPrinter (self, status, name, mfg, mdl, des, cmd):
-        #status = 1
         global viewer
         self.wake_up ()
         c = cups.Connection ()
