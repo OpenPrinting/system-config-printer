@@ -612,14 +612,18 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                 if try_keyring and auth_info != None:
                     try:
+                        c._begin_operation (_("authenticating job"))
                         c.authenticateJob (job, auth_info)
+                        c._end_operation ()
                         self.monitor.update ()
                         debugprint ("Automatically authenticated job %d" % job)
                         return
                     except cups.IPPError, (e, m):
+                        c._end_operation ()
                         nonfatalException ()
                         return
                     except:
+                        c._end_operation ()
                         nonfatalException ()
 
                 title = _("Authentication Required")
@@ -706,20 +710,25 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
 
         auth_info = dialog.get_auth_info ()
-        remember = False
         try:
             c = authconn.Connection (self.JobsWindow,
                                      host=self.host,
                                      port=self.port,
                                      encryption=self.encryption)
-            c.authenticateJob (jobid, auth_info)
-
-            remember = dialog.get_remember_password ()
         except RuntimeError:
             debugprint ("Error connecting to CUPS for authentication")
+            return
+
+        remember = False
+        c._begin_operation (_("authenticating job"))
+        try:
+            c.authenticateJob (jobid, auth_info)
+            remember = dialog.get_remember_password ()
+            self.monitor.update ()
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
-            pass
+
+        c._end_operation ()
 
         if remember:
             try:
