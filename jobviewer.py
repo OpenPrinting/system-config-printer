@@ -576,6 +576,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 # Find out which auth-info is required.
                 try_keyring = USE_KEYRING
                 keyring_attrs = None
+                auth_info = None
                 if try_keyring and 'password' in auth_info_required:
                     auth_info_required = data.get ('auth-info-required', [])
                     device_uri = data.get ("device-uri")
@@ -600,7 +601,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                 if try_keyring and 'password' in auth_info_required:
                     type = gnomekeyring.ITEM_NETWORK_PASSWORD
-                    auth_info = None
                     try:
                         items = gnomekeyring.find_items_sync (type,
                                                               keyring_attrs)
