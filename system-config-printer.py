@@ -5605,7 +5605,7 @@ class NewPrinterGUI(GtkGUI):
         if not supportcontacts:
             supportcontacts = _("No support contacts known")
         self.lblNPDownloadableDriverSupportContacts.set_text (supportcontacts)
-        if driver['licensetext']:
+        if driver.has_key ('licensetext'):
             self.frmNPDownloadableDriverLicenseTerms.show ()
             terms = driver.get('licensetext', _("Not specified."))
             self.tvNPDownloadableDriverLicense.get_buffer ().set_text (terms)

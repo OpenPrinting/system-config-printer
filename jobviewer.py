@@ -718,15 +718,21 @@ class JobViewer (GtkGUI, monitor.Watcher):
         dialog.connect ('delete-event', self.auth_info_dialog_delete)
         dialog.set_data ('job-id', job)
         dialog.show_all ()
+        dialog.set_keep_above (True)
+        dialog.show_now ()
+        gtk.gdk.keyboard_grab (dialog.window, True)
+        gtk.gdk.pointer_grab (dialog.window, True)
 
     def auth_info_dialog_delete (self, dialog, event):
         self.auth_info_dialog_response (dialog, gtk.RESPONSE_CANCEL)
 
     def auth_info_dialog_response (self, dialog, response):
-        dialog.hide ()
+        gtk.gdk.pointer_ungrab ()
+        gtk.gdk.keyboard_ungrab ()
         jobid = dialog.get_data ('job-id')
         del self.auth_info_dialogs[jobid]
         if response != gtk.RESPONSE_OK:
+            dialog.destroy ()
             return
 
         auth_info = dialog.get_auth_info ()
@@ -773,6 +779,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                                    attrs, secret, True)
             except:
                 nonfatalException ()
+
+        dialog.destroy ()
 
     def set_statusicon_visibility (self):
         if not self.trayicon:

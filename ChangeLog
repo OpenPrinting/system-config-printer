@@ -1,3 +1,27 @@
+2008-11-07  Tim Waugh  <twaugh@redhat.com>
+
+	* authconn.py (Connection._perform_authentication): Grab keyboard
+	and mouse when showing authentication dialog.
+	* pysmb.py (AuthContext.perform_authentication): Likewise.
+	* jobviewer.py (JobViewer.display_auth_info_dialog): Likewise.
+	(JobViewer.auth_info_dialog_response): Ungrab them.
+
+2008-11-07  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.auth_info_dialog_response): Don't leak
+	AuthDialog.
+
+2008-11-06  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/CheckNetworkServerSanity.py
+	(CheckNetworkServerSanity.display): Use strictly correct smb URI.
+
+2008-11-06  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDownloadableDrivers_cursor_changed): Fixed
+	traceback in downloadable driver dialog.
+
 2008-10-06  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* system-config-printer.py, glade/NewPrinterWindow.glade: Display
