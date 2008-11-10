@@ -574,22 +574,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                 # Find out which auth-info is required.
                 try_keyring = USE_KEYRING
-                if try_keyring:
-                    auth_info_required = data.get ('auth-info-required', [])
-
-                    if auth_info_required == ['negotiate']:
-                            # Try Kerberos authentication.
-                            try:
-                                debugprint ("Trying Kerberos auth for "
-                                            "job %d" % job)
-                                c.authenticateJob (job)
-                                self.monitor.update ()
-                                return
-                            except cups.IPPError, (e, m):
-                                nonfatalException ()
-                                return
-
                 if try_keyring and 'password' in auth_info_required:
+                    auth_info_required = data.get ('auth-info-required', [])
                     device_uri = data.get ("device-uri")
                     (scheme, rest) = urllib.splittype (device_uri)
                     if scheme == 'smb':
