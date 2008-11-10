@@ -574,34 +574,38 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                 # Find out which auth-info is required.
                 try_keyring = USE_KEYRING
+                keyring_attrs = None
                 if try_keyring and 'password' in auth_info_required:
                     auth_info_required = data.get ('auth-info-required', [])
                     device_uri = data.get ("device-uri")
                     (scheme, rest) = urllib.splittype (device_uri)
-                    attrs = dict ()
+                    keyring_attrs = dict ()
                     if scheme == 'smb':
                         uri = smburi.SMBURI (uri=device_uri)
                         (group, server, share,
                          user, password) = uri.separate ()
-                        attrs["domain"] = str (group)
+                        keyring_attrs["domain"] = str (group)
                     else:
                         (serverport, rest) = urllib.splithost (rest)
                         (server, port) = urllib.splitnport (hostport)
-                    attrs.update ({ "server": str (server.lower ()),
-                                    "protocol": str (scheme) })
+                    keyring_attrs.update ({ "server": str (server.lower ()),
+                                            "protocol": str (scheme) })
                     type = gnomekeyring.ITEM_NETWORK_PASSWORD
                     auth_info = None
                     try:
-                        items = gnomekeyring.find_items_sync (type, attrs)
+                        items = gnomekeyring.find_items_sync (type,
+                                                              keyring_attrs)
                         auth_info = map (lambda x: '', auth_info_required)
                         ind = auth_info_required.index ('username')
-                        auth_info[ind] = items[0].attributes['user']
+                        auth_info[ind] = items[0].attributes.get ('user', '')
                         ind = auth_info_required.index ('password')
                         auth_info[ind] = items[0].secret
                     except gnomekeyring.NoMatchError:
-                        debugprint ("gnomekeyring: no match for %s" % attrs)
+                        debugprint ("gnomekeyring: no match for %s" %
+                                    keyring_attrs)
                     except gnomekeyring.DeniedError:
-                        debugprint ("gnomekeyring: denied for %s" % attrs)
+                        debugprint ("gnomekeyring: denied for %s" %
+                                    keyring_attrs)
 
                 if try_keyring and c == None:
                     try:
@@ -632,6 +636,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 text = _("Job requires authentication to proceed.")
                 notification = pynotify.Notification (title, text, 'printer')
                 notification.set_data ('job-id', job)
+                notification.set_data ('keyring-attrs', keyring_attrs)
                 notification.set_urgency (pynotify.URGENCY_NORMAL)
                 notification.set_timeout (pynotify.EXPIRES_NEVER)
                 notification.connect ('closed',
@@ -663,14 +668,17 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def on_auth_notification_authenticate (self, notification, action):
         job = notification.get_data ('job-id')
+        keyring_attrs = notification.get_data ('keyring-attrs')
         debugprint ("auth notification authenticate for job %s" % job)
-        self.display_auth_info_dialog (job)
+        self.display_auth_info_dialog (job, keyring_attrs)
 
-    def display_auth_info_dialog (self, job):
+    def display_auth_info_dialog (self, job, keyring_attrs=None):
         data = self.jobs[job]
         auth_info_required = data['auth-info-required']
         dialog = authconn.AuthDialog (auth_info_required=auth_info_required,
                                       allow_remember=USE_KEYRING)
+        dialog.set_data ('keyring-attrs', keyring_attrs)
+        dialog.set_data ('auth-info-required', auth_info_required)
         dialog.set_position (gtk.WIN_POS_CENTER)
 
         # Pre-fill 'username' field.
@@ -737,11 +745,19 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 keyring = gnomekeyring.get_default_keyring_sync ()
                 type = gnomekeyring.ITEM_NETWORK_PASSWORD
                 attrs = dialog.get_data ("keyring-attrs")
+                auth_info_required = dialog.get_data ('auth-info-required')
+                try:
+                    ind = auth_info_required.index ('username')
+                    attrs['user'] = auth_info[ind]
+                except IndexError:
+                    pass
+
                 if attrs != None:
                     name = "%s@%s (%s)" % (attrs.get ("user"),
                                            attrs.get ("server"),
                                            attrs.get ("protocol"))
-                    secret = auth_info[dialog.get_data ("password-ind")]
+                    ind = auth_info_required.index ('password')
+                    secret = auth_info[ind]
                     gnomekeyring.item_create_sync (keyring, type, name,
                                                    attrs, secret, True)
             except:
