@@ -589,8 +589,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
                     else:
                         (serverport, rest) = urllib.splithost (rest)
                         (server, port) = urllib.splitnport (hostport)
+                    username = pwd.getpwuid (os.getuid ())[0]
                     keyring_attrs.update ({ "server": str (server.lower ()),
-                                            "protocol": str (scheme) })
+                                            "protocol": str (scheme),
+                                            "user": str (username)})
 
                 if job in self.authenticated_jobs:
                     # We've already tried to authenticate this job before.
