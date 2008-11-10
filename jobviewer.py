@@ -117,8 +117,7 @@ class PrinterURIIndex:
 
 
 class JobViewer (GtkGUI, monitor.Watcher):
-    required_job_attributes = set(['job-hold-until',
-                                   'job-k-octets',
+    required_job_attributes = set(['job-k-octets',
                                    'job-name',
                                    'job-originating-user-name',
                                    'job-printer-uri',
@@ -464,8 +463,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def update_job (self, job, data, connection=None):
         # Fetch required attributes for this job if they are missing.
         r = self.required_job_attributes - set (data.keys ())
-        if (data.get ('job-state', cups.IPP_JOB_HELD) != cups.IPP_JOB_HELD):
-            r -= set (['job-hold-until'])
 
         if r:
             attrs = None
@@ -499,27 +496,63 @@ class JobViewer (GtkGUI, monitor.Watcher):
             size = str (data['job-k-octets']) + 'k'
         store.set_value (iter, 4, size)
 
-        state = None
         job_requires_auth = False
-        if data.has_key ('job-state'):
-            try:
-                jstate = data['job-state']
+        c = None
+        try:
+            jstate = data.get ('job-state', cups.IPP_JOB_PROCESSING)
+            s = int (jstate)
+
+            if s in [cups.IPP_JOB_HELD, cups.IPP_JOB_STOPPED]:
+                jattrs = ['job-state', 'job-hold-until']
+                pattrs = ['auth-info-required', 'device-uri']
+                uri = data.get ('job-printer-uri')
+                c = authconn.Connection (self.JobsWindow,
+                                         host=self.host,
+                                         port=self.port,
+                                         encryption=self.encryption)
+                attrs = c.getPrinterAttributes (uri = uri,
+                                                requested_attributes=pattrs)
+
+                try:
+                    auth_info_required = attrs['auth-info-required']
+                except KeyError:
+                    debugprint ("No auth-info-required attribute; "
+                                "guessing instead")
+                    auth_info_required = ['username', 'password']
+
+                if not isinstance (auth_info_required, list):
+                    auth_info_required = [auth_info_required]
+                    attrs['auth-info-required'] = auth_info_required
+
+                data.update (attrs)
+
+                attrs = c.getJobAttributes (job,
+                                            requested_attributes=jattrs)
+                data.update (attrs)
+                jstate = data.get ('job-state', cups.IPP_JOB_PROCESSING)
                 s = int (jstate)
-                job_requires_auth = (jstate == cups.IPP_JOB_HELD and
-                                     data.get ('job-hold-until', 'none') ==
-                                     'auth-info-required')
-                if job_requires_auth:
-                    state = _("Held for authentication")
-                else:
-                    state = { cups.IPP_JOB_PENDING: _("Pending"),
-                              cups.IPP_JOB_HELD: _("Held"),
-                              cups.IPP_JOB_PROCESSING: _("Processing"),
-                              cups.IPP_JOB_STOPPED: _("Stopped"),
-                              cups.IPP_JOB_CANCELED: _("Canceled"),
-                              cups.IPP_JOB_ABORTED: _("Aborted"),
-                              cups.IPP_JOB_COMPLETED: _("Completed") }[s]
-            except ValueError:
-                pass
+        except ValueError:
+            pass
+        except RuntimeError:
+            pass
+        except cups.IPPError, (e, m):
+            pass
+
+        job_requires_auth = (s == cups.IPP_JOB_HELD and
+                             data.get ('job-hold-until', 'none') ==
+                             'auth-info-required')
+        state = None
+        if job_requires_auth:
+            state = _("Held for authentication")
+        else:
+            try:
+                state = { cups.IPP_JOB_PENDING: _("Pending"),
+                          cups.IPP_JOB_HELD: _("Held"),
+                          cups.IPP_JOB_PROCESSING: _("Processing"),
+                          cups.IPP_JOB_STOPPED: _("Stopped"),
+                          cups.IPP_JOB_CANCELED: _("Canceled"),
+                          cups.IPP_JOB_ABORTED: _("Aborted"),
+                          cups.IPP_JOB_COMPLETED: _("Completed") }[s]
             except IndexError:
                 pass
 
@@ -542,28 +575,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 # Find out which auth-info is required.
                 try_keyring = USE_KEYRING
                 if try_keyring:
-                    try:
-                        c = authconn.Connection (self.JobsWindow,
-                                                 host=self.host,
-                                                 port=self.port,
-                                                 encryption=self.encryption)
-                        uri = data['job-printer-uri']
-                        attrs = ['auth-info-required', 'device-uri']
-                        attributes = c.getPrinterAttributes (uri = uri,
-                                                             requested_attributes=attrs)
-                        try:
-                            auth_info_required = attributes['auth-info-required']
-                        except KeyError:
-                            debugprint ("No auth-info-required attribute; "
-                                        "guessing instead")
-                            auth_info_required = ['username', 'password']
+                    auth_info_required = data.get ('auth-info-required', [])
 
-                        if not isinstance (auth_info_required, list):
-                            auth_info_required = [auth_info_required]
-                            attributes['auth-info-required'] = auth_info_required
-
-                        data.update (attributes)
-                        if auth_info_required == ['negotiate']:
+                    if auth_info_required == ['negotiate']:
                             # Try Kerberos authentication.
                             try:
                                 debugprint ("Trying Kerberos auth for "
@@ -574,48 +588,51 @@ class JobViewer (GtkGUI, monitor.Watcher):
                             except cups.IPPError, (e, m):
                                 nonfatalException ()
                                 return
-                    except cups.IPPError, (e, m):
-                        try_keyring = False
+
+                if try_keyring and 'password' in auth_info_required:
+                    device_uri = data.get ("device-uri")
+                    (scheme, rest) = urllib.splittype (device_uri)
+                    if scheme == 'smb':
+                        uri = smburi.SMBURI (uri=device_uri)
+                        (group, server, share,
+                         user, password) = uri.separate ()
+                    else:
+                        (serverport, rest) = urllib.splithost (rest)
+                        (server, port) = urllib.splitnport (hostport)
+                    attrs = { "server": str (server.lower ()),
+                              "protocol": str (scheme) }
+                    type = gnomekeyring.ITEM_NETWORK_PASSWORD
+                    auth_info = None
+                    try:
+                        items = gnomekeyring.find_items_sync (type, attrs)
+                        auth_info = map (lambda x: '', auth_info_required)
+                        ind = auth_info_required.index ('username')
+                        auth_info[ind] = items[0].attributes['user']
+                        ind = auth_info_required.index ('password')
+                        auth_info[ind] = items[0].secret
+                    except gnomekeyring.NoMatchError:
+                        debugprint ("gnomekeyring: no match for %s" % attrs)
+                    except gnomekeyring.DeniedError:
+                        debugprint ("gnomekeyring: denied for %s" % attrs)
+
+                if try_keyring and c == None:
+                    try:
+                        c = authconn.Connection (self.JobsWindow,
+                                                 host=self.host,
+                                                 port=self.port,
+                                                 encryption=self.encryption)
                     except RuntimeError:
                         try_keyring = False
 
-                if try_keyring and 'password' in auth_info_required:
+                if try_keyring and auth_info != None:
                     try:
-                        device_uri = attributes.get ("device-uri")
-                        (scheme, rest) = urllib.splittype (device_uri)
-                        if scheme == 'smb':
-                            uri = smburi.SMBURI (uri=device_uri)
-                            (group, server, share,
-                             user, password) = uri.separate ()
-                        else:
-                            (serverport, rest) = urllib.splithost (rest)
-                            (server, port) = urllib.splitnport (hostport)
-                        attrs = { "server": str (server.lower ()),
-                                  "protocol": str (scheme) }
-                        type = gnomekeyring.ITEM_NETWORK_PASSWORD
-                        auth_info = None
-                        try:
-                            items = gnomekeyring.find_items_sync (type, attrs)
-                            auth_info = map (lambda x: '', auth_info_required)
-                            ind = auth_info_required.index ('username')
-                            auth_info[ind] = items[0].attributes['user']
-                            ind = auth_info_required.index ('password')
-                            auth_info[ind] = items[0].secret
-                        except gnomekeyring.NoMatchError:
-                            debugprint ("gnomekeyring: no match for %s" % attrs)
-                        except gnomekeyring.DeniedError:
-                            debugprint ("gnomekeyring: denied for %s" % attrs)
-
-                        if auth_info != None:
-                            try:
-                                c.authenticateJob (job, auth_info)
-                                self.monitor.update ()
-                                debugprint ("Automatically authenticated "
-                                            "job %d" % job)
-                                return
-                            except cups.IPPError, (e, m):
-                                nonfatalException ()
-                                return
+                        c.authenticateJob (job, auth_info)
+                        self.monitor.update ()
+                        debugprint ("Automatically authenticated job %d" % job)
+                        return
+                    except cups.IPPError, (e, m):
+                        nonfatalException ()
+                        return
                     except:
                         nonfatalException ()
 
@@ -1195,9 +1212,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         elif jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
 
-        if (jobdata.has_key ('job-hold-until') and
-            not event.has_key ('job-hold-until')):
-            del jobdata['job-hold-until']
         self.update_job (jobid, jobdata)
         jobdata = self.jobs[jobid]
 
@@ -1211,8 +1225,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
             # 'auth-info-required'.  This was already checked for in
             # update_job.
             may_be_problem = True
-            if (jobdata['job-state'] == cups.IPP_JOB_HELD and
-                jobdata['job-hold-until'] == 'auth-info-required'):
+            jstate = jobdata['job-state']
+            if (jstate in [cups.IPP_JOB_PENDING, cups.IPP_JOB_PROCESSING] or
+                (jstate == cups.IPP_JOB_HELD and
+                 jobdata['job-hold-until'] == 'auth-info-required')):
                 # update_job already dealt with this.
                 may_be_problem = False
             else:
