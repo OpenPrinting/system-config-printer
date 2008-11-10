@@ -578,15 +578,17 @@ class JobViewer (GtkGUI, monitor.Watcher):
                     auth_info_required = data.get ('auth-info-required', [])
                     device_uri = data.get ("device-uri")
                     (scheme, rest) = urllib.splittype (device_uri)
+                    attrs = dict ()
                     if scheme == 'smb':
                         uri = smburi.SMBURI (uri=device_uri)
                         (group, server, share,
                          user, password) = uri.separate ()
+                        attrs["domain"] = str (group)
                     else:
                         (serverport, rest) = urllib.splithost (rest)
                         (server, port) = urllib.splitnport (hostport)
-                    attrs = { "server": str (server.lower ()),
-                              "protocol": str (scheme) }
+                    attrs.update ({ "server": str (server.lower ()),
+                                    "protocol": str (scheme) })
                     type = gnomekeyring.ITEM_NETWORK_PASSWORD
                     auth_info = None
                     try:
