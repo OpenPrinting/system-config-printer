@@ -150,6 +150,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.special_status_icon = False
         self.new_printer_notifications = {}
         self.reasoniters = {}
+        self.authenticated_jobs = set() # of job IDs
 
         self.getWidgets ({"JobsWindow":
                               ["JobsWindow",
@@ -590,6 +591,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
                         (server, port) = urllib.splitnport (hostport)
                     keyring_attrs.update ({ "server": str (server.lower ()),
                                             "protocol": str (scheme) })
+
+                if job in self.authenticated_jobs:
+                    # We've already tried to authenticate this job before.
+                    try_keyring = False
+
+                if try_keyring and 'password' in auth_info_required:
                     type = gnomekeyring.ITEM_NETWORK_PASSWORD
                     auth_info = None
                     try:
@@ -623,6 +630,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                         c._end_operation ()
                         self.monitor.update ()
                         debugprint ("Automatically authenticated job %d" % job)
+                        self.authenticated_jobs.add (job)
                         return
                     except cups.IPPError, (e, m):
                         c._end_operation ()
@@ -734,6 +742,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         try:
             c.authenticateJob (jobid, auth_info)
             remember = dialog.get_remember_password ()
+            self.authenticated_jobs.add (jobid)
             self.monitor.update ()
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
