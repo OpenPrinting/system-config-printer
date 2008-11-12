@@ -108,9 +108,10 @@ class PhysicalDevice:
         return cmp (self.sn, other.sn)
 
 if __name__ == '__main__':
-    import cups
-    c = cups.Connection ()
+    import authconn
+    c = authconn.Connection ()
     devices = cupshelpers.getDevices (c)
+
     physicaldevices = []
     for device in devices.values ():
         physicaldevice = PhysicalDevice (device)
