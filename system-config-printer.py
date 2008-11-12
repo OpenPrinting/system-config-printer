@@ -2633,7 +2633,6 @@ class NewPrinterGUI(GtkGUI):
         # Synchronisation objects.
         self.jockey_lock = thread.allocate_lock()
         self.ppds_lock = thread.allocate_lock()
-        self.devices_lock = thread.allocate_lock()
         self.ipp_lock = thread.allocate_lock()
         self.drivers_lock = thread.allocate_lock()
 
@@ -2847,7 +2846,6 @@ class NewPrinterGUI(GtkGUI):
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
             # Start fetching information from CUPS in the background
             self.new_printer_PPDs_loaded = False
-            self.queryPPDs ()
 
         elif self.dialog_mode == "class":
             self.NewPrinterWindow.set_title(_("New Class"))
@@ -3577,86 +3575,28 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPForward.set_sensitive(
                 self.mainapp.checkNPName(new_text))
 
-    # Device URI
-    def queryDevices(self):
-        if not self.devices_lock.acquire(0):
-            debugprint ("queryDevices: in progress")
-            return
-        debugprint ("Lock acquired for devices thread")
-        # Start new thread
-        thread.start_new_thread (self.getDevices_thread, ())
-        debugprint ("Devices thread started")
-
-    def getDevices_thread(self):
-        try:
-            debugprint ("Connecting (devices)")
-            cups.setUser (self.mainapp.connect_user)
-            cups.setPasswordCB (lambda x: '')
-            try:
-                c = cups.Connection (host=self.mainapp.connect_server,
-                                     encryption=self.mainapp.connect_encrypt)
-            except TypeError:
-                # Parameters to Connection() require pycups >= 1.9.40.
-                cups.setServer (self.mainapp.connect_server)
-                cups.setEncryption (self.mainapp.connect_encrypt)
-                c = cups.Connection ()
-            debugprint ("Fetching devices")
-            self.devices_result = cupshelpers.getDevices(c)
-        except cups.IPPError, (e, msg):
-            self.devices_result = cups.IPPError (e, msg)
-        except:
-            nonfatalException ()
-            self.devices_result = {}
-
-        try:
-            debugprint ("Closing connection (devices)")
-            del c
-        except:
-            pass
-
-        debugprint ("Releasing devices lock")
-        self.devices_lock.release ()
-
     def fetchDevices(self, parent=None):
         debugprint ("fetchDevices")
-        self.queryDevices ()
+        self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                 _('Searching') + '</span>\n\n' +
+                                 _('Searching for printers'))
+        if parent == None:
+            parent = self.mainapp.MainWindow
+        self.WaitWindow.set_transient_for (parent)
+        self.WaitWindow.show_now ()
+        while gtk.events_pending ():
+            gtk.main_iteration ()
 
+        debugprint ("Fetching devices")
         try:
-            if not isinstance (self.devices_result, cups.IPPError):
-                # Return the result we got last time.
-                return self.devices_result.copy ()
-        except AttributeError:
-            pass
-
-        time.sleep (0.1)
-
-        # Keep the UI refreshed while we wait for the devices to load.
-        waiting = False
-        while (self.devices_lock.locked()):
-            if not waiting:
-                waiting = True
-                self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                         _('Searching') + '</span>\n\n' +
-                                         _('Searching for printers'))
-                if not parent:
-                    parent = self.mainapp.MainWindow
-                self.WaitWindow.set_transient_for (parent)
-                self.WaitWindow.show ()
-
-            while gtk.events_pending ():
-                gtk.main_iteration ()
-
-            time.sleep (0.1)
-
-        if waiting:
+            devices = cupshelpers.getDevices(self.mainapp.cups)
+        except:
             self.WaitWindow.hide ()
+            raise
 
+        self.WaitWindow.hide ()
         debugprint ("Got devices")
-        result = self.devices_result # atomic operation
-        if isinstance (result, cups.IPPError):
-            # Propagate exception.
-            raise result
-        return result.copy ()
+        return devices
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri

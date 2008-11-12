@@ -70,7 +70,7 @@ class DeviceListed(Question):
 
         try:
             cups.setServer ('')
-            c = cups.Connection ()
+            c = answers['_authenticated_connection']
             devices = c.getDevices ()
             devices_list = []
             for uri, device in devices.iteritems ():
