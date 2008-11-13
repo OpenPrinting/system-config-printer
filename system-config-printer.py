@@ -2846,6 +2846,7 @@ class NewPrinterGUI(GtkGUI):
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
             # Start fetching information from CUPS in the background
             self.new_printer_PPDs_loaded = False
+            self.queryPPDs ()
 
         elif self.dialog_mode == "class":
             self.NewPrinterWindow.set_title(_("New Class"))
@@ -3071,7 +3072,8 @@ class NewPrinterGUI(GtkGUI):
     def fetchPPDs(self, parent=None):
         debugprint ("fetchPPDs")
         self.queryPPDs()
-        time.sleep (0.1)
+        debugprint ("sleep 0.1s (first time)")
+        #time.sleep (0.1)
 
         # Keep the UI refreshed while we wait for the devices to load.
         waiting = False
@@ -3084,11 +3086,14 @@ class NewPrinterGUI(GtkGUI):
                 if not parent:
                     parent = self.mainapp.MainWindow
                 self.WaitWindow.set_transient_for (parent)
-                self.WaitWindow.show ()
+                self.WaitWindow.show_now ()
+                debugprint ("Show wait window")
 
+            debugprint ("Keep refreshed!")
             while gtk.events_pending ():
                 gtk.main_iteration ()
 
+            debugprint ("sleep 0.1s")
             time.sleep (0.1)
 
         if waiting:
