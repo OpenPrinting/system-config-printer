@@ -5,14 +5,13 @@
 #
 # Igor Miletic <grejigl-gnomeprevod@yahoo.ca>, 2005, 2006, 2008.
 # Miloš Komarčević <kmilos@gmail.com>, 2007.
-#  <>, 2008.
 msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.0.7.82.x.sr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-11-05 13:06+0000\n"
-"PO-Revision-Date: 2008-10-21 21:08-0400\n"
-"Last-Translator:  <>\n"
+"POT-Creation-Date: 2008-11-05 13:19+0000\n"
+"PO-Revision-Date: 2008-11-12 23:49-0500\n"
+"Last-Translator:  Igor Miletic <grejigl-gnomeprevod@yahoo.ca>\n"
 "Language-Team: Serbian <fedora-trans-sr@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -50,9 +49,9 @@ msgid ""
 "Usually print servers broadcast their queues.  Specify print servers below "
 "to periodically ask for queues instead."
 msgstr ""
-"Uglavnom štamparski serveri odašilju redove za čekanje.  Umesto toga "
-"navedite servere za štampanje ispod kako bi se periodično slao upit za "
-"redove za čekanje."
+"Uglavnom štamparski serveri odašilju redove za čekanje.  Umesto toga navedite "
+"servere za štampanje ispod kako bi se periodično slao upit za redove za "
+"čekanje."
 
 #: ../AdvancedServerSettings.py:213
 msgid "Enter IP address"
@@ -284,7 +283,7 @@ msgstr "Prijavi"
 #: ../jobviewer.py:679
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
-msgstr "Autentifikacija je potrebna za štampanje dokumenta. „%s“ (job %d)"
+msgstr "Autentifikacija je potrebna za štampanje dokumenta. „%s“ (posao %d)"
 
 #: ../jobviewer.py:928
 msgid "No documents queued"
@@ -578,8 +577,8 @@ msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
 msgstr ""
-"Deljeni štampači nisu pristupačni drugim ljudima ukoliko opcija 'Objavi "
-"deljeni štampač' nije uključena u podešavanjima servera."
+"Deljeni štampači nisu pristupačni drugim ljudima ukoliko opcija 'Objavi deljeni "
+"štampač' nije uključena u podešavanjima servera."
 
 #. We have just enabled print queue sharing.
 #. Ideally, this is the time we would check the firewall
@@ -651,9 +650,8 @@ msgid "Searching"
 msgstr "Pretraživanje"
 
 #: ../system-config-printer.py:3005
-#, fuzzy
 msgid "Searching for downloadable drivers"
-msgstr "Traži upravljačke programe"
+msgstr "Pretraga za preuzimljive upravljačke programe"
 
 #: ../system-config-printer.py:3079 ../system-config-printer.py:3396
 msgid "Searching for drivers"
@@ -664,8 +662,8 @@ msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr ""
-"Ovaj štampač podržava i štampanje i slanje faksa. Koja funkcionalnost se "
-"treba iskoristiti za ovaj red za čekanje?"
+"Ovaj štampač podržava i štampanje i slanje faksa. Koja funkcionalnost se treba "
+"iskoristiti za ovaj red za čekanje?"
 
 #: ../system-config-printer.py:3634
 msgid "Searching for printers"
@@ -693,8 +691,8 @@ msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
-"Nije pronađen nijedan deljeni štampač. Molimo vas da proverite da li je "
-"Samba servis označen kao od poverenja u vašoj konfiguraciji zaštitnog zida."
+"Nije pronađen nijedan deljeni štampač. Molimo vas da proverite da li je Samba "
+"servis označen kao od poverenja u vašoj konfiguraciji zaštitnog zida."
 
 #: ../system-config-printer.py:4312 ../system-config-printer.py:4383
 msgid "Print Share Verified"
@@ -788,44 +786,42 @@ msgstr "OtvoriŠtampanje"
 
 #: ../system-config-printer.py:5039
 msgid "the printer's manufacturer"
-msgstr ""
+msgstr "proizvođač štampača"
 
 #: ../system-config-printer.py:5042 ../system-config-printer.py:5057
 #: ../system-config-printer.py:5080 ../system-config-printer.py:5084
 #: ../system-config-printer.py:5098
-#, fuzzy
 msgid ", "
-msgstr " "
+msgstr ", "
 
 #: ../system-config-printer.py:5045
 #, python-format
 msgid " (%s)"
-msgstr ""
+msgstr " (%s)"
 
 #: ../system-config-printer.py:5047
 msgid "Distributable"
 msgstr "Razdeljiv"
 
 #: ../system-config-printer.py:5050
-#, fuzzy
 msgid " ("
-msgstr " "
+msgstr " ("
 
 #: ../system-config-printer.py:5052
 msgid "free software"
-msgstr ""
+msgstr "slobodni program"
 
 #: ../system-config-printer.py:5054
 msgid "non-free software"
-msgstr ""
+msgstr "vlasnički program"
 
 #: ../system-config-printer.py:5059
 msgid "driver contains (possibly) patented algorithms"
-msgstr ""
+msgstr "upravljački program (verovatno) sadrži patentirane algoritme"
 
 #: ../system-config-printer.py:5062
 msgid ")"
-msgstr ""
+msgstr ")"
 
 #: ../system-config-printer.py:5064
 msgid "None"
@@ -834,31 +830,30 @@ msgstr "Ništa"
 #: ../system-config-printer.py:5068
 #, python-format
 msgid "Graphics: %s/100, "
-msgstr ""
+msgstr "Grafika: %s/100, "
 
 #: ../system-config-printer.py:5071
 #, python-format
 msgid "Line Art: %s/100, "
-msgstr ""
+msgstr "Crno-bela slika: %s/100, "
 
 #: ../system-config-printer.py:5074
 #, python-format
 msgid "Photo: %s/100, "
-msgstr ""
+msgstr "Fotografija: %s/100, "
 
 #: ../system-config-printer.py:5077
 #, python-format
 msgid "Text: %s/100, "
-msgstr ""
+msgstr "Tekst: %s/100, "
 
 #: ../system-config-printer.py:5081
 msgid "Output quality: "
-msgstr ""
+msgstr "Kvalitet: "
 
 #: ../system-config-printer.py:5085
-#, fuzzy
 msgid "<b>Recommended Driver</b>"
-msgstr "<b>Izaberite upravljački program</b>"
+msgstr "<b>Preporučeni upravljački program</b>"
 
 #: ../system-config-printer.py:5103
 #, python-format
@@ -866,10 +861,12 @@ msgid ""
 "\n"
 "(%s)"
 msgstr ""
+"\n"
+"(%s)"
 
 #: ../system-config-printer.py:5108
 msgid "No support contacts known"
-msgstr ""
+msgstr "Ne postoje kontakti za podršku"
 
 #: ../system-config-printer.py:5112 ../system-config-printer.py:5125
 msgid "Not specified."
@@ -1511,25 +1508,25 @@ msgid ""
 "Bind (bottom)"
 msgstr ""
 "Ništa\n"
-"Zaheftati\n"
+"Spojiti\n"
 "Probušiti\n"
 "Ukoričiti\n"
 "Povezati\n"
-"Zaheftati na prevoju\n"
-"Zaheftati na ivici\n"
+"Spojiti na prevoju\n"
+"Spojiti na ivici\n"
 "Presavijanje\n"
 "Iseći\n"
 "Paket\n"
 "Proizvođač brošure\n"
 "Kompenzacija posla\n"
-"Zaheftati (gore levo)\n"
-"Zaheftati (dole levo)\n"
-"Zaheftati (gore desno)\n"
-"Zaheftati (dole desno)\n"
-"Zaheftati na ivici (levo)\n"
-"Zaheftati na ivici (gore)\n"
-"Zaheftati na ivici (desno)\n"
-"Zaheftati na ivici (dole)\n"
+"Spojiti (gore levo)\n"
+"Spojiti (dole levo)\n"
+"Spojiti (gore desno)\n"
+"Spojiti (dole desno)\n"
+"Spojiti na ivici (levo)\n"
+"Spojiti na ivici (gore)\n"
+"Spojiti na ivici (desno)\n"
+"Spojiti na ivici (dole)\n"
 "Duplo zaheftavanje (levo)\n"
 "Duplo zaheftavanje (gore)\n"
 "Duplo zaheftavanje (desno)\n"
@@ -1760,9 +1757,8 @@ msgid "Supplier:"
 msgstr "Opskrbljivač:"
 
 #: ../system-config-printer.glade.h:233
-#, fuzzy
 msgid "Support:"
-msgstr "Opskrbljivač:"
+msgstr "Podrška:"
 
 #: ../system-config-printer.glade.h:234
 msgid "System-Config-Printer"
@@ -1777,9 +1773,9 @@ msgid ""
 "printer."
 msgstr ""
 "Foomatic baza štampača sadrži razne datoteke Opisa PostScript štampača (PPD) "
-"dostavljene od proizvođača. Takođe može napraviti PPD datoteke za veliki "
-"broj (ne PostScript) štampača. Ali u opštem slučaju PPD datoteke dostavljene "
-"od proizvođača daju bolji pristup posebnim alatima štampača."
+"dostavljene od proizvođača. Takođe može napraviti PPD datoteke za veliki broj "
+"(ne PostScript) štampača. Ali u opštem slučaju PPD datoteke dostavljene od "
+"proizvođača daju bolji pristup posebnim alatima štampača."
 
 #: ../system-config-printer.glade.h:236
 msgid ""
@@ -1787,18 +1783,17 @@ msgid ""
 "be covered by their commercial support.  See the support and license terms "
 "of the driver's supplier."
 msgstr ""
-"Ovi upravljački programi ne dolaze od kompanije koja pravi operativni "
-"sistem, i zbog toga nisu pokriveni njihovom komercijalnom podrškom.  "
-"Pogledajte termine podrške i licence opskrbljivača ovih upravljačkih "
-"programa."
+"Ovi upravljački programi ne dolaze od kompanije koja pravi operativni sistem, "
+"i zbog toga nisu pokriveni njihovom komercijalnom podrškom.  Pogledajte "
+"termine podrške i licence opskrbljivača ovih upravljačkih programa."
 
 #: ../system-config-printer.glade.h:237
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr ""
-"Ovaj upravljački program podržava dodatni hardver koji može biti instaliran "
-"u štampaču."
+"Ovaj upravljački program podržava dodatni hardver koji može biti instaliran u "
+"štampaču."
 
 #: ../system-config-printer.glade.h:238
 msgid ""
@@ -1806,9 +1801,9 @@ msgid ""
 "meaning. Settings of options that are not present in the new PPD will be "
 "lost and options only present in the new PPD will be set to default."
 msgstr ""
-"Ovo se radi pretpostavljajući da opcije sa istim imenom imaju i isto "
-"značenje. Podešavanja opcija koje nisu u novom PPD-u će biti izgubljene i "
-"samo opcije koje postoje u novom PPD-u će biti postavljene na podrazumevano."
+"Ovo se radi pretpostavljajući da opcije sa istim imenom imaju i isto značenje. "
+"Podešavanja opcija koje nisu u novom PPD-u će biti izgubljene i samo opcije "
+"koje postoje u novom PPD-u će biti postavljene na podrazumevano."
 
 #: ../system-config-printer.glade.h:239
 msgid ""
@@ -1826,8 +1821,8 @@ msgid ""
 "this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
 "Ave, Cambridge, MA 02139, USA."
 msgstr ""
-"Ovaj program je slobodan softver, možete ga razdeljivati i/ili izmenjivati "
-"pod uslovima GNU Opšte javne licence kao što je objavila Fondacija slobodnog "
+"Ovaj program je slobodan softver, možete ga razdeljivati i/ili izmenjivati pod "
+"uslovima GNU Opšte javne licence kao što je objavila Fondacija slobodnog "
 "softvera; ili licencom verzije 2, ili (po vašem izboru) bilo kojom kasnijom "
 "verzijom.\n"
 "\n"
@@ -2122,16 +2117,16 @@ msgid ""
 "Although one or more printers are marked as being shared, this print server "
 "is not exporting shared printers to the network."
 msgstr ""
-"Iako je jedan ili više štampača označeno kao deljeni, ovaj server štampanja "
-"ne izvozi deljene štampače na mrežu."
+"Iako je jedan ili više štampača označeno kao deljeni, ovaj server štampanja ne "
+"izvozi deljene štampače na mrežu."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:32
 msgid ""
 "Enable the 'Share published printers connected to this system' option in the "
 "server settings using the printing administration tool."
 msgstr ""
-"Omogući opciju „Deli objavljene štampače spojene na ovaj sistem“ u "
-"postavkama servera koristeći alatku za administraciju štampanja."
+"Omogući opciju „Deli objavljene štampače spojene na ovaj sistem“ u postavkama "
+"servera koristeći alatku za administraciju štampanja."
 
 #: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:147
 msgid "Install"
@@ -2218,8 +2213,8 @@ msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
-"Izaberite štampač koji želite koristiti sa donjeg spiska. Ako se ne javlja "
-"na spisku, izaberite „Nije na spisku“. "
+"Izaberite štampač koji želite koristiti sa donjeg spiska. Ako se ne javlja na "
+"spisku, izaberite „Nije na spisku“. "
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:29
 #: ../troubleshoot/ErrorLogFetch.py:29
@@ -2231,8 +2226,8 @@ msgid ""
 "I would like to enable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to enable debugging."
 msgstr ""
-"Želeo bih da omogućim zapisivanje u dnevnik podataka za uklanjanje grešaka "
-"iz CUPS planera.  Ovo može izazvati ponovno pokretanje planera.  Kliknite na "
+"Želeo bih da omogućim zapisivanje u dnevnik podataka za uklanjanje grešaka iz "
+"CUPS planera.  Ovo može izazvati ponovno pokretanje planera.  Kliknite na "
 "dugme ispod da omogućite dnevnik za uklanjanje grešaka."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:34
@@ -2252,8 +2247,8 @@ msgid ""
 "I would like to disable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to disable debugging."
 msgstr ""
-"Želeo bih da onemogućim zapisivanje u dnevnik podataka za uklanjanje grešaka "
-"iz CUPS planera.  Ovo može izazvati ponovno pokretanje planera.  Kliknite na "
+"Želeo bih da onemogućim zapisivanje u dnevnik podataka za uklanjanje grešaka iz "
+"CUPS planera.  Ovo može izazvati ponovno pokretanje planera.  Kliknite na "
 "dugme ispod da bi onemogućili zapisivanje podataka za uklanjanje grešaka."
 
 #: ../troubleshoot/ErrorLogFetch.py:34
@@ -2323,8 +2318,8 @@ msgid ""
 "document, print that document now and mark the print job below."
 msgstr ""
 "Sada odštampajte probnu stranicu.  Ako imate problema prilikom štampanja "
-"određenog dokumenta, odštampajte taj dokument sada i označite posao "
-"štampanja ispod."
+"određenog dokumenta, odštampajte taj dokument sada i označite posao štampanja "
+"ispod."
 
 #: ../troubleshoot/PrintTestPage.py:70
 msgid "Cancel All Jobs"
@@ -2439,8 +2434,8 @@ msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
 "port %d on server `%s'."
 msgstr ""
-"Proverite dali podešavanja zaštitnog zida ili rutera blokiraju TCP port %d "
-"na serveru `%s'."
+"Proverite dali podešavanja zaštitnog zida ili rutera blokiraju TCP port %d na "
+"serveru `%s'."
 
 #: ../troubleshoot/Shrug.py:26
 msgid "Sorry!"
