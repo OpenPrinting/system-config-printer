@@ -130,6 +130,7 @@ class Monitor:
         self.printer_state_reasons = {}
         self.printers = set()
         self.process_pending_events = True
+        self.fetch_jobs_timer = None
 
         if host:
             cups.setServer (host)
@@ -184,6 +185,13 @@ class Monitor:
         self.bus.remove_signal_receiver (self.handle_dbus_signal,
                                          path=self.DBUS_PATH,
                                          dbus_interface=self.DBUS_IFACE)
+
+        timers = self.connecting_timers.values ()
+        for timer in [self.update_timer, self.fetch_jobs_timer]:
+            if timer:
+                timers.append (timer)
+        for timer in timers:
+            gobject.source_remove (timer)
 
         self.watcher.monitor_exited (self)
 
@@ -550,7 +558,10 @@ class Monitor:
                 jobs = filtered
 
             self.fetch_first_job_id = 1
-            gobject.timeout_add (5, self.fetch_jobs, refresh_all)
+            if self.fetch_jobs_timer:
+                gobject.source_remove (self.fetch_jobs_timer)
+            self.fetch_jobs_timer = gobject.timeout_add (5, self.fetch_jobs,
+                                                         refresh_all)
         else:
             jobs = {}
 
@@ -606,6 +617,7 @@ class Monitor:
                 c = cups.Connection ()
         except RuntimeError:
             self.watcher.cups_connection_error (self)
+            self.fetch_jobs_timer = None
             return False
 
         limit = 1
@@ -621,6 +633,7 @@ class Monitor:
             limit = len (fetched) + 1
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
+            self.fetch_jobs_timer = None
             return False
 
         got = len (fetched)
@@ -681,6 +694,7 @@ class Monitor:
 
         if got < limit:
             # That's all.  Don't run this timer again.
+            self.fetch_jobs_timer = None
             return False
 
         # Remember where we got up to and run this timer again.
