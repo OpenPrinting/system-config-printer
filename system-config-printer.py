@@ -4203,12 +4203,15 @@ class NewPrinterGUI(GtkGUI):
             gtk.main_iteration ()
 
         debugprint ("Fetching devices")
+        self.mainapp.cups._begin_operation (_("fetching device list"))
         try:
             devices = cupshelpers.getDevices(self.mainapp.cups)
         except:
+            self.mainapp.cups._end_operation ()
             self.WaitWindow.hide ()
             raise
 
+        self.mainapp.cups._end_operation ()
         self.WaitWindow.hide ()
         debugprint ("Got devices")
         return devices
