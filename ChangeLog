@@ -1,3 +1,11 @@
+2008-11-13  Tim Waugh  <twaugh@redhat.com>
+
+	* authconn.py (Connection._authloop): Remember the distinction
+	between a canceled dialog and an authentication we've given up
+	on.
+	* errordialogs.py (show_IPP_Error): Only show IPP error dialog for
+	errors not caused by a canceled authentication dialog.
+
 2008-11-12  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (NewPrinterGUI.queryDevices,
