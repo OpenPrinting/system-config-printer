@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.HEAD\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-11-05 13:06+0000\n"
+"POT-Creation-Date: 2008-11-16 12:55+0000\n"
 "PO-Revision-Date: 2007-08-03 14:14+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -72,12 +72,17 @@ msgstr "위 여백:"
 msgid "Authentication"
 msgstr "<b>인증</b>"
 
-#: ../authconn.py:259 ../authconn.py:261 ../errordialogs.py:77 ../pysmb.py:80
+#: ../authconn.py:172
+#, fuzzy
+msgid "Operation canceled"
+msgstr "정책 작업: "
+
+#: ../authconn.py:264 ../authconn.py:266 ../errordialogs.py:77 ../pysmb.py:80
 #: ../pysmb.py:82
 msgid "Not authorized"
 msgstr "권한이 없습니다"
 
-#: ../authconn.py:262 ../pysmb.py:83
+#: ../authconn.py:267 ../pysmb.py:83
 msgid "The password may be incorrect."
 msgstr "패스워드가 일치하지 않습니다."
 
@@ -146,7 +151,7 @@ msgstr "문서"
 
 #: ../jobviewer.py:188 ../jobviewer.py:252 ../my-default-printer.py:158
 #: ../system-config-printer.py:305 ../system-config-printer.py:898
-#: ../system-config-printer.py:3169 ../troubleshoot/PrintTestPage.py:79
+#: ../system-config-printer.py:3178 ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "프린터"
 
@@ -186,7 +191,7 @@ msgstr "메세지"
 
 #: ../jobviewer.py:413 ../jobviewer.py:479 ../jobviewer.py:480
 #: ../jobviewer.py:530 ../jobviewer.py:560 ../jobviewer.py:681
-#: ../system-config-printer.py:1921 ../troubleshoot/ChooseNetworkPrinter.py:95
+#: ../system-config-printer.py:1923 ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
@@ -288,45 +293,45 @@ msgstr "<b>인증</b>"
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr ""
 
-#: ../jobviewer.py:928
+#: ../jobviewer.py:936
 msgid "No documents queued"
 msgstr "대기 상태에 있는 문서가 없음 "
 
-#: ../jobviewer.py:930
+#: ../jobviewer.py:938
 msgid "1 document queued"
 msgstr "1개의 문서가 대기 상태에 있음 "
 
-#: ../jobviewer.py:932
+#: ../jobviewer.py:940
 #, python-format
 msgid "%d documents queued"
 msgstr "%d 문서가 대기 상태에 있음 "
 
-#: ../jobviewer.py:1140
+#: ../jobviewer.py:1148
 #, fuzzy, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "CUPS 서버로 연결하는 도중 오류가 발생했습니다."
 
-#: ../jobviewer.py:1143
+#: ../jobviewer.py:1151
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr ""
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1149
+#: ../jobviewer.py:1157
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
 
-#: ../jobviewer.py:1156 ../jobviewer.py:1172
+#: ../jobviewer.py:1164 ../jobviewer.py:1180
 #, fuzzy
 msgid "Print Error"
 msgstr "프린터 오류"
 
-#: ../jobviewer.py:1157
+#: ../jobviewer.py:1165
 msgid "_Diagnose"
 msgstr ""
 
-#: ../jobviewer.py:1178
+#: ../jobviewer.py:1186
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr ""
@@ -343,7 +348,7 @@ msgstr "시스템의 기본값 사용(_U)"
 msgid "_Set Default"
 msgstr "기본 설정(_S)"
 
-#: ../my-default-printer.py:163 ../system-config-printer.py:2767
+#: ../my-default-printer.py:163 ../system-config-printer.py:2772
 #: ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
@@ -440,7 +445,7 @@ msgstr "새 프린터"
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:901 ../system-config-printer.py:3170
+#: ../system-config-printer.py:901 ../system-config-printer.py:3179
 msgid "Fax"
 msgstr ""
 
@@ -513,27 +518,27 @@ msgstr ""
 msgid "Set as my _personal default printer"
 msgstr "기본 프린터 선택"
 
-#: ../system-config-printer.py:1667 ../system-config-printer.py:1695
+#: ../system-config-printer.py:1669 ../system-config-printer.py:1697
 msgid "Submitted"
 msgstr "입력됨"
 
-#: ../system-config-printer.py:1668
+#: ../system-config-printer.py:1670
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "테스트 페이지는 %d 작업으로 입력되었습니다"
 
-#: ../system-config-printer.py:1674 ../system-config-printer.py:1702
-#: ../system-config-printer.py:4445
+#: ../system-config-printer.py:1676 ../system-config-printer.py:1704
+#: ../system-config-printer.py:4396
 msgid "Not possible"
 msgstr "불가능"
 
-#: ../system-config-printer.py:1675 ../system-config-printer.py:1703
+#: ../system-config-printer.py:1677 ../system-config-printer.py:1705
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "프린터가 공유되지 않아 원격서버를 통해 인쇄 작업을 실행할 수 없습니다."
 
-#: ../system-config-printer.py:1696
+#: ../system-config-printer.py:1698
 #, fuzzy, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "테스트 페이지는 %d 작업으로 입력되었습니다"
@@ -541,48 +546,48 @@ msgstr "테스트 페이지는 %d 작업으로 입력되었습니다"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1753 ../system-config-printer.py:1860
+#: ../system-config-printer.py:1755 ../system-config-printer.py:1862
 msgid "Error"
 msgstr "오류"
 
-#: ../system-config-printer.py:1754
+#: ../system-config-printer.py:1756
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS 서버로 연결하는 도중 오류가 발생했습니다."
 
-#: ../system-config-printer.py:1861
+#: ../system-config-printer.py:1863
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr ""
 
-#: ../system-config-printer.py:2126
+#: ../system-config-printer.py:2128
 #, fuzzy
 msgid "Cannot Rename"
 msgstr "취소(_R)"
 
-#: ../system-config-printer.py:2127
+#: ../system-config-printer.py:2129
 msgid "There are queued jobs."
 msgstr ""
 
-#: ../system-config-printer.py:2309
+#: ../system-config-printer.py:2315
 #, fuzzy, python-format
 msgid "Really delete class `%s'?"
 msgstr "정말로 클래스 %s(을)를 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:2311
+#: ../system-config-printer.py:2317
 #, fuzzy, python-format
 msgid "Really delete printer `%s'?"
 msgstr "정말로 프린터 %s(을)를 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:2313
+#: ../system-config-printer.py:2319
 #, fuzzy
 msgid "Really delete selected destinations?"
 msgstr "정말로 프린터 %s(을)를 삭제하시겠습니까?"
 
-#: ../system-config-printer.py:2379
+#: ../system-config-printer.py:2385
 msgid "Publish Shared Printers"
 msgstr ""
 
-#: ../system-config-printer.py:2380
+#: ../system-config-printer.py:2386
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -594,295 +599,295 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2493
+#: ../system-config-printer.py:2499
 msgid "Review Firewall"
 msgstr ""
 
-#: ../system-config-printer.py:2494
+#: ../system-config-printer.py:2500
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
-#: ../system-config-printer.py:2726 ../system-config-printer.py:2736
+#: ../system-config-printer.py:2731 ../system-config-printer.py:2741
 msgid "Share"
 msgstr "공유"
 
-#: ../system-config-printer.py:2732 ../system-config-printer.py:2742
+#: ../system-config-printer.py:2737 ../system-config-printer.py:2747
 msgid "Comment"
 msgstr "주석"
 
 #. IPP list columns
-#: ../system-config-printer.py:2761
+#: ../system-config-printer.py:2766
 msgid "Queue"
 msgstr ""
 
-#: ../system-config-printer.py:2775
+#: ../system-config-printer.py:2780
 #, fuzzy
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr "사후 프린터 설명 스크립트 (*.ppd[.gz])"
 
-#: ../system-config-printer.py:2784
+#: ../system-config-printer.py:2789
 msgid "All files (*)"
 msgstr ""
 
-#: ../system-config-printer.py:2822 ../system-config-printer.py:4760
-#: ../system-config-printer.py:4798
+#: ../system-config-printer.py:2827 ../system-config-printer.py:4711
+#: ../system-config-printer.py:4749
 #, fuzzy
 msgid "Search"
 msgstr "새 프린터 이름"
 
-#: ../system-config-printer.py:2836 ../system-config-printer.glade.h:145
+#: ../system-config-printer.py:2841 ../system-config-printer.glade.h:145
 msgid "New Printer"
 msgstr "새 프린터"
 
-#: ../system-config-printer.py:2847
+#: ../system-config-printer.py:2852
 msgid "New Class"
 msgstr "새 클래스"
 
-#: ../system-config-printer.py:2852
+#: ../system-config-printer.py:2857
 msgid "Change Device URI"
 msgstr "URI 장치 변경"
 
-#: ../system-config-printer.py:2856
+#: ../system-config-printer.py:2861
 msgid "Change Driver"
 msgstr "드라이버 변경"
 
-#: ../system-config-printer.py:3004 ../system-config-printer.py:3078
-#: ../system-config-printer.py:3395 ../system-config-printer.py:3633
-#: ../system-config-printer.py:4785
+#: ../system-config-printer.py:3009 ../system-config-printer.py:3084
+#: ../system-config-printer.py:3404 ../system-config-printer.py:3586
+#: ../system-config-printer.py:4736
 msgid "Searching"
 msgstr ""
 
-#: ../system-config-printer.py:3005
+#: ../system-config-printer.py:3010
 #, fuzzy
 msgid "Searching for downloadable drivers"
 msgstr "새 프린터 이름"
 
-#: ../system-config-printer.py:3079 ../system-config-printer.py:3396
+#: ../system-config-printer.py:3085 ../system-config-printer.py:3405
 msgid "Searching for drivers"
 msgstr ""
 
-#: ../system-config-printer.py:3171
+#: ../system-config-printer.py:3180
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr ""
 
-#: ../system-config-printer.py:3634
+#: ../system-config-printer.py:3587
 #, fuzzy
 msgid "Searching for printers"
 msgstr "새 프린터 이름"
 
-#: ../system-config-printer.py:3786
+#: ../system-config-printer.py:3737
 msgid " (Current)"
 msgstr " (현재)"
 
-#: ../system-config-printer.py:3859
+#: ../system-config-printer.py:3810
 msgid "Other"
 msgstr "기타"
 
-#: ../system-config-printer.py:3899 ../system-config-printer.py:3916
-#: ../system-config-printer.py:4401
+#: ../system-config-printer.py:3850 ../system-config-printer.py:3867
+#: ../system-config-printer.py:4352
 #, fuzzy
 msgid "Scanning..."
 msgstr "비례 축소:"
 
-#: ../system-config-printer.py:3971
+#: ../system-config-printer.py:3922
 #, fuzzy
 msgid "No Print Shares"
 msgstr "새 프린터"
 
-#: ../system-config-printer.py:3972
+#: ../system-config-printer.py:3923
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
 
-#: ../system-config-printer.py:4312 ../system-config-printer.py:4383
+#: ../system-config-printer.py:4263 ../system-config-printer.py:4334
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:4313 ../system-config-printer.py:4384
+#: ../system-config-printer.py:4264 ../system-config-printer.py:4335
 msgid "This print share is accessible."
 msgstr "프린터 공유를 액세스할 수 있습니다"
 
-#: ../system-config-printer.py:4318 ../system-config-printer.py:4388
+#: ../system-config-printer.py:4269 ../system-config-printer.py:4339
 msgid "This print share is not accessible."
 msgstr "프린터 공유를 액세스할 수 없습니다"
 
-#: ../system-config-printer.py:4321
+#: ../system-config-printer.py:4272
 #, fuzzy
 msgid "Print Share Inaccessible"
 msgstr "프린터 공유를 액세스할 수 있습니다"
 
-#: ../system-config-printer.py:4387
+#: ../system-config-printer.py:4338
 msgid "Inaccessible"
 msgstr "액세스할 수 없음"
 
-#: ../system-config-printer.py:4446
+#: ../system-config-printer.py:4397
 #, fuzzy, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "CUPS 서버로 연결하는 도중 오류가 발생했습니다."
 
-#: ../system-config-printer.py:4448
+#: ../system-config-printer.py:4399
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
 msgstr ""
 
-#: ../system-config-printer.py:4451
+#: ../system-config-printer.py:4402
 msgid "No queues"
 msgstr ""
 
-#: ../system-config-printer.py:4452
+#: ../system-config-printer.py:4403
 msgid "There are no queues available."
 msgstr ""
 
-#: ../system-config-printer.py:4542
+#: ../system-config-printer.py:4493
 msgid "A printer connected to the parallel port."
 msgstr "프린터가 병렬 포트에 연결되어 있습니다."
 
-#: ../system-config-printer.py:4544
+#: ../system-config-printer.py:4495
 msgid "A printer connected to a USB port."
 msgstr "프린터가 USB 포트에 연결되어 있습니다."
 
-#: ../system-config-printer.py:4546
+#: ../system-config-printer.py:4497
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "프린터를 다루는 HPLIP 소프트웨어, 또는 다중 기능 장치의 프린터 기능."
 
-#: ../system-config-printer.py:4549
+#: ../system-config-printer.py:4500
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "팩스기를 다루는 HPLIP 소프트웨어, 또는 다중 기능 장치의 팩스 기능."
 
-#: ../system-config-printer.py:4552
+#: ../system-config-printer.py:4503
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL (Hardware Abstraction Layer)에 의해 검색된 로컬 프린터."
 
-#: ../system-config-printer.py:4810
+#: ../system-config-printer.py:4761
 #, fuzzy
 msgid "-- Select from search results --"
 msgstr "데이타 베이스에서 프린터 선택"
 
-#: ../system-config-printer.py:4812
+#: ../system-config-printer.py:4763
 msgid "-- No matches found --"
 msgstr ""
 
-#: ../system-config-printer.py:4996
+#: ../system-config-printer.py:4947
 msgid " (recommended)"
 msgstr "(권장사항)"
 
-#: ../system-config-printer.py:5010
+#: ../system-config-printer.py:4961
 msgid "This PPD is generated by foomatic."
 msgstr "이 PPD는 foomatic에 의하여 생성됩니다"
 
-#: ../system-config-printer.py:5036
+#: ../system-config-printer.py:4987
 #, fuzzy
 msgid "OpenPrinting"
 msgstr "인쇄"
 
-#: ../system-config-printer.py:5039
+#: ../system-config-printer.py:4990
 msgid "the printer's manufacturer"
 msgstr ""
 
-#: ../system-config-printer.py:5042 ../system-config-printer.py:5057
-#: ../system-config-printer.py:5080 ../system-config-printer.py:5084
-#: ../system-config-printer.py:5098
+#: ../system-config-printer.py:4993 ../system-config-printer.py:5008
+#: ../system-config-printer.py:5031 ../system-config-printer.py:5035
+#: ../system-config-printer.py:5049
 #, fuzzy
 msgid ", "
 msgstr " "
 
-#: ../system-config-printer.py:5045
+#: ../system-config-printer.py:4996
 #, python-format
 msgid " (%s)"
 msgstr ""
 
-#: ../system-config-printer.py:5047
+#: ../system-config-printer.py:4998
 msgid "Distributable"
 msgstr ""
 
-#: ../system-config-printer.py:5050
+#: ../system-config-printer.py:5001
 #, fuzzy
 msgid " ("
 msgstr " "
 
-#: ../system-config-printer.py:5052
+#: ../system-config-printer.py:5003
 msgid "free software"
 msgstr ""
 
-#: ../system-config-printer.py:5054
+#: ../system-config-printer.py:5005
 msgid "non-free software"
 msgstr ""
 
-#: ../system-config-printer.py:5059
+#: ../system-config-printer.py:5010
 msgid "driver contains (possibly) patented algorithms"
 msgstr ""
 
-#: ../system-config-printer.py:5062
+#: ../system-config-printer.py:5013
 msgid ")"
 msgstr ""
 
-#: ../system-config-printer.py:5064
+#: ../system-config-printer.py:5015
 #, fuzzy
 msgid "None"
 msgstr "없음"
 
-#: ../system-config-printer.py:5068
+#: ../system-config-printer.py:5019
 #, python-format
 msgid "Graphics: %s/100, "
 msgstr ""
 
-#: ../system-config-printer.py:5071
+#: ../system-config-printer.py:5022
 #, python-format
 msgid "Line Art: %s/100, "
 msgstr ""
 
-#: ../system-config-printer.py:5074
+#: ../system-config-printer.py:5025
 #, python-format
 msgid "Photo: %s/100, "
 msgstr ""
 
-#: ../system-config-printer.py:5077
+#: ../system-config-printer.py:5028
 #, python-format
 msgid "Text: %s/100, "
 msgstr ""
 
-#: ../system-config-printer.py:5081
+#: ../system-config-printer.py:5032
 msgid "Output quality: "
 msgstr ""
 
-#: ../system-config-printer.py:5085
+#: ../system-config-printer.py:5036
 #, fuzzy
 msgid "<b>Recommended Driver</b>"
 msgstr "<b>기본 프린터</b> "
 
-#: ../system-config-printer.py:5103
+#: ../system-config-printer.py:5054
 #, python-format
 msgid ""
 "\n"
 "(%s)"
 msgstr ""
 
-#: ../system-config-printer.py:5108
+#: ../system-config-printer.py:5059
 msgid "No support contacts known"
 msgstr ""
 
-#: ../system-config-printer.py:5112 ../system-config-printer.py:5125
+#: ../system-config-printer.py:5063 ../system-config-printer.py:5076
 msgid "Not specified."
 msgstr ""
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:5165
+#: ../system-config-printer.py:5116
 msgid "Database error"
 msgstr "데이터베이스 오류"
 
-#: ../system-config-printer.py:5166
+#: ../system-config-printer.py:5117
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' 드라이버는 프린터 '%s %s'와 함께 사용할 수 없습니다."
@@ -890,58 +895,58 @@ msgstr "'%s' 드라이버는 프린터 '%s %s'와 함께 사용할 수 없습니
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:5176
+#: ../system-config-printer.py:5127
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "이 드라이버를 사용하기 위해 '%s' 패키지를 설치하셔야 합니다."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:5183
+#: ../system-config-printer.py:5134
 msgid "PPD error"
 msgstr "PPD 오류"
 
-#: ../system-config-printer.py:5185
+#: ../system-config-printer.py:5136
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "다음과 같은 이유로 PPD 파일 읽기를 실패했습니다:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:5202
+#: ../system-config-printer.py:5153
 msgid "Downloadable drivers"
 msgstr ""
 
-#: ../system-config-printer.py:5203
+#: ../system-config-printer.py:5154
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:5239 ../system-config-printer.py:5277
+#: ../system-config-printer.py:5190 ../system-config-printer.py:5228
 #, fuzzy
 msgid "No Installable Options"
 msgstr "설치 가능한 옵션 "
 
-#: ../system-config-printer.py:5323
+#: ../system-config-printer.py:5274
 #, fuzzy
 msgid "Adding"
 msgstr "보류"
 
-#: ../system-config-printer.py:5324
+#: ../system-config-printer.py:5275
 #, fuzzy
 msgid "Adding printer"
 msgstr "프린터 설정"
 
-#: ../system-config-printer.py:5485
+#: ../system-config-printer.py:5436
 msgid "Install driver"
 msgstr "드라이버 설치"
 
-#: ../system-config-printer.py:5486
+#: ../system-config-printer.py:5437
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "프린터 '%s'는 %s 패키지가 필요하나 이는 현재 설치되어 있지 않습니다."
 
-#: ../system-config-printer.py:5511
+#: ../system-config-printer.py:5462
 msgid "Missing driver"
 msgstr "드라이버가 없음"
 
-#: ../system-config-printer.py:5512
+#: ../system-config-printer.py:5463
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "

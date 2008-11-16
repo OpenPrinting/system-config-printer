@@ -19,7 +19,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.1.0.x\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-11-05 13:06+0000\n"
+"POT-Creation-Date: 2008-11-16 12:55+0000\n"
 "PO-Revision-Date: 2008-10-21 13:12+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Simplified Chinese <zh@li.org>\n"
@@ -78,12 +78,17 @@ msgstr "域："
 msgid "Authentication"
 msgstr "身份验证"
 
-#: ../authconn.py:259 ../authconn.py:261 ../errordialogs.py:77 ../pysmb.py:80
+#: ../authconn.py:172
+#, fuzzy
+msgid "Operation canceled"
+msgstr "操作策略："
+
+#: ../authconn.py:264 ../authconn.py:266 ../errordialogs.py:77 ../pysmb.py:80
 #: ../pysmb.py:82
 msgid "Not authorized"
 msgstr "没有被授权"
 
-#: ../authconn.py:262 ../pysmb.py:83
+#: ../authconn.py:267 ../pysmb.py:83
 msgid "The password may be incorrect."
 msgstr "密码可能不正确。"
 
@@ -150,7 +155,7 @@ msgstr "文档"
 
 #: ../jobviewer.py:188 ../jobviewer.py:252 ../my-default-printer.py:158
 #: ../system-config-printer.py:305 ../system-config-printer.py:898
-#: ../system-config-printer.py:3169 ../troubleshoot/PrintTestPage.py:79
+#: ../system-config-printer.py:3178 ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "打印机"
 
@@ -190,7 +195,7 @@ msgstr "信息"
 
 #: ../jobviewer.py:413 ../jobviewer.py:479 ../jobviewer.py:480
 #: ../jobviewer.py:530 ../jobviewer.py:560 ../jobviewer.py:681
-#: ../system-config-printer.py:1921 ../troubleshoot/ChooseNetworkPrinter.py:95
+#: ../system-config-printer.py:1923 ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
@@ -288,44 +293,44 @@ msgstr "验证"
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "打印文档 `%s'（任务 %d）需要验证"
 
-#: ../jobviewer.py:928
+#: ../jobviewer.py:936
 msgid "No documents queued"
 msgstr "没有文档在排队"
 
-#: ../jobviewer.py:930
+#: ../jobviewer.py:938
 msgid "1 document queued"
 msgstr "一个文档在排队"
 
-#: ../jobviewer.py:932
+#: ../jobviewer.py:940
 #, python-format
 msgid "%d documents queued"
 msgstr "%d 文档在排队"
 
-#: ../jobviewer.py:1140
+#: ../jobviewer.py:1148
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "向打印机发送文档 `%s'（任务 %d）时出错。"
 
-#: ../jobviewer.py:1143
+#: ../jobviewer.py:1151
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "执行文档 `%s' （任务 %d）打印时出错。"
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1149
+#: ../jobviewer.py:1157
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "打印文档 `%s'（任务 %d）：`%s' 时出错。"
 
-#: ../jobviewer.py:1156 ../jobviewer.py:1172
+#: ../jobviewer.py:1164 ../jobviewer.py:1180
 msgid "Print Error"
 msgstr "打印机错误"
 
-#: ../jobviewer.py:1157
+#: ../jobviewer.py:1165
 msgid "_Diagnose"
 msgstr "诊断（_D）"
 
-#: ../jobviewer.py:1178
+#: ../jobviewer.py:1186
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "打印机调用 `%s' 已经被禁用。"
@@ -342,7 +347,7 @@ msgstr "使用系统默认(_U)"
 msgid "_Set Default"
 msgstr "设置默认（_S）"
 
-#: ../my-default-printer.py:163 ../system-config-printer.py:2767
+#: ../my-default-printer.py:163 ../system-config-printer.py:2772
 #: ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
@@ -435,7 +440,7 @@ msgstr "网络打印机（找到的）"
 msgid "Network class (discovered)"
 msgstr "网络类型（找到的）"
 
-#: ../system-config-printer.py:901 ../system-config-printer.py:3170
+#: ../system-config-printer.py:901 ../system-config-printer.py:3179
 msgid "Fax"
 msgstr "传真"
 
@@ -503,27 +508,27 @@ msgstr "清除我的个人默认设置（_C）"
 msgid "Set as my _personal default printer"
 msgstr "设置为我的个人默认打印机（_p）"
 
-#: ../system-config-printer.py:1667 ../system-config-printer.py:1695
+#: ../system-config-printer.py:1669 ../system-config-printer.py:1697
 msgid "Submitted"
 msgstr "提交"
 
-#: ../system-config-printer.py:1668
+#: ../system-config-printer.py:1670
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "测试页作为任务 %d 被发送"
 
-#: ../system-config-printer.py:1674 ../system-config-printer.py:1702
-#: ../system-config-printer.py:4445
+#: ../system-config-printer.py:1676 ../system-config-printer.py:1704
+#: ../system-config-printer.py:4396
 msgid "Not possible"
 msgstr "不可能"
 
-#: ../system-config-printer.py:1675 ../system-config-printer.py:1703
+#: ../system-config-printer.py:1677 ../system-config-printer.py:1705
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "远程的服务器没有接受这个打印任务，这可能是因为那个打印机没有共享。"
 
-#: ../system-config-printer.py:1696
+#: ../system-config-printer.py:1698
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "将维护命令作为任务 %d 提交"
@@ -531,46 +536,46 @@ msgstr "将维护命令作为任务 %d 提交"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1753 ../system-config-printer.py:1860
+#: ../system-config-printer.py:1755 ../system-config-printer.py:1862
 msgid "Error"
 msgstr "错误"
 
-#: ../system-config-printer.py:1754
+#: ../system-config-printer.py:1756
 msgid "There was a problem connecting to the CUPS server."
 msgstr "连接到 CUPS 服务器时出现问题。"
 
-#: ../system-config-printer.py:1861
+#: ../system-config-printer.py:1863
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "选项 '%s' 有值 '%s'，且无法编辑。"
 
-#: ../system-config-printer.py:2126
+#: ../system-config-printer.py:2128
 msgid "Cannot Rename"
 msgstr "无法重新命名"
 
-#: ../system-config-printer.py:2127
+#: ../system-config-printer.py:2129
 msgid "There are queued jobs."
 msgstr "有排队的任务。"
 
-#: ../system-config-printer.py:2309
+#: ../system-config-printer.py:2315
 #, python-format
 msgid "Really delete class `%s'?"
 msgstr "真的要删除类型 `%s' 吗？"
 
-#: ../system-config-printer.py:2311
+#: ../system-config-printer.py:2317
 #, python-format
 msgid "Really delete printer `%s'?"
 msgstr "真的要删除打印机 `%s' 吗？"
 
-#: ../system-config-printer.py:2313
+#: ../system-config-printer.py:2319
 msgid "Really delete selected destinations?"
 msgstr "真的要删除选择的目的地吗？"
 
-#: ../system-config-printer.py:2379
+#: ../system-config-printer.py:2385
 msgid "Publish Shared Printers"
 msgstr "公布共享的打印机"
 
-#: ../system-config-printer.py:2380
+#: ../system-config-printer.py:2386
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -582,288 +587,288 @@ msgstr "除非在服务器设置中启用‘公布共享的打印机’，其他
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2493
+#: ../system-config-printer.py:2499
 msgid "Review Firewall"
 msgstr "浏览防火墙设置"
 
-#: ../system-config-printer.py:2494
+#: ../system-config-printer.py:2500
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr "您可能需要调整防火墙设置以便允许这台电脑可进行网络打印。"
 
-#: ../system-config-printer.py:2726 ../system-config-printer.py:2736
+#: ../system-config-printer.py:2731 ../system-config-printer.py:2741
 msgid "Share"
 msgstr "共享"
 
-#: ../system-config-printer.py:2732 ../system-config-printer.py:2742
+#: ../system-config-printer.py:2737 ../system-config-printer.py:2747
 msgid "Comment"
 msgstr "注解"
 
 #. IPP list columns
-#: ../system-config-printer.py:2761
+#: ../system-config-printer.py:2766
 msgid "Queue"
 msgstr "队列"
 
-#: ../system-config-printer.py:2775
+#: ../system-config-printer.py:2780
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "PostScript 打印机描述文件（*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ）"
 
-#: ../system-config-printer.py:2784
+#: ../system-config-printer.py:2789
 msgid "All files (*)"
 msgstr "所有文件（*）"
 
-#: ../system-config-printer.py:2822 ../system-config-printer.py:4760
-#: ../system-config-printer.py:4798
+#: ../system-config-printer.py:2827 ../system-config-printer.py:4711
+#: ../system-config-printer.py:4749
 msgid "Search"
 msgstr "搜索"
 
-#: ../system-config-printer.py:2836 ../system-config-printer.glade.h:145
+#: ../system-config-printer.py:2841 ../system-config-printer.glade.h:145
 msgid "New Printer"
 msgstr "新打印机"
 
-#: ../system-config-printer.py:2847
+#: ../system-config-printer.py:2852
 msgid "New Class"
 msgstr "新 Class"
 
-#: ../system-config-printer.py:2852
+#: ../system-config-printer.py:2857
 msgid "Change Device URI"
 msgstr "改变设备 URI"
 
-#: ../system-config-printer.py:2856
+#: ../system-config-printer.py:2861
 msgid "Change Driver"
 msgstr "改变驱动"
 
-#: ../system-config-printer.py:3004 ../system-config-printer.py:3078
-#: ../system-config-printer.py:3395 ../system-config-printer.py:3633
-#: ../system-config-printer.py:4785
+#: ../system-config-printer.py:3009 ../system-config-printer.py:3084
+#: ../system-config-printer.py:3404 ../system-config-printer.py:3586
+#: ../system-config-printer.py:4736
 msgid "Searching"
 msgstr "正在搜索"
 
-#: ../system-config-printer.py:3005
+#: ../system-config-printer.py:3010
 #, fuzzy
 msgid "Searching for downloadable drivers"
 msgstr "正在搜索驱动程序"
 
-#: ../system-config-printer.py:3079 ../system-config-printer.py:3396
+#: ../system-config-printer.py:3085 ../system-config-printer.py:3405
 msgid "Searching for drivers"
 msgstr "正在搜索驱动程序"
 
-#: ../system-config-printer.py:3171
+#: ../system-config-printer.py:3180
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr "这台打印机支持打印和发送传真。在这个队列中应该使用哪个功能？"
 
-#: ../system-config-printer.py:3634
+#: ../system-config-printer.py:3587
 msgid "Searching for printers"
 msgstr "正在搜索打印机"
 
-#: ../system-config-printer.py:3786
+#: ../system-config-printer.py:3737
 msgid " (Current)"
 msgstr " (当前)"
 
-#: ../system-config-printer.py:3859
+#: ../system-config-printer.py:3810
 msgid "Other"
 msgstr "其它"
 
-#: ../system-config-printer.py:3899 ../system-config-printer.py:3916
-#: ../system-config-printer.py:4401
+#: ../system-config-printer.py:3850 ../system-config-printer.py:3867
+#: ../system-config-printer.py:4352
 msgid "Scanning..."
 msgstr "扫描中..."
 
-#: ../system-config-printer.py:3971
+#: ../system-config-printer.py:3922
 msgid "No Print Shares"
 msgstr "没有打印共享"
 
-#: ../system-config-printer.py:3972
+#: ../system-config-printer.py:3923
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
 "没有找到打印共享。请查看在您的防火墙配置中是否将 Samba 服务标记为可信。"
 
-#: ../system-config-printer.py:4312 ../system-config-printer.py:4383
+#: ../system-config-printer.py:4263 ../system-config-printer.py:4334
 msgid "Print Share Verified"
 msgstr "打印共享确认"
 
-#: ../system-config-printer.py:4313 ../system-config-printer.py:4384
+#: ../system-config-printer.py:4264 ../system-config-printer.py:4335
 msgid "This print share is accessible."
 msgstr "这个打印机共享可以被访问。"
 
-#: ../system-config-printer.py:4318 ../system-config-printer.py:4388
+#: ../system-config-printer.py:4269 ../system-config-printer.py:4339
 msgid "This print share is not accessible."
 msgstr "这个打印机共享不能被访问。"
 
-#: ../system-config-printer.py:4321
+#: ../system-config-printer.py:4272
 msgid "Print Share Inaccessible"
 msgstr "无法访问打印共享"
 
-#: ../system-config-printer.py:4387
+#: ../system-config-printer.py:4338
 msgid "Inaccessible"
 msgstr "不能访问"
 
-#: ../system-config-printer.py:4446
+#: ../system-config-printer.py:4397
 #, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "不可能从 `%s' 中获得队列列表。"
 
-#: ../system-config-printer.py:4448
+#: ../system-config-printer.py:4399
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
 msgstr "获得队列列表是 CUPS 到 IPP 的扩展。网络打印机不支持此功能。"
 
-#: ../system-config-printer.py:4451
+#: ../system-config-printer.py:4402
 msgid "No queues"
 msgstr "没有队列"
 
-#: ../system-config-printer.py:4452
+#: ../system-config-printer.py:4403
 msgid "There are no queues available."
 msgstr "没有可用队列。"
 
-#: ../system-config-printer.py:4542
+#: ../system-config-printer.py:4493
 msgid "A printer connected to the parallel port."
 msgstr "一个打印机连接到并行口。"
 
-#: ../system-config-printer.py:4544
+#: ../system-config-printer.py:4495
 msgid "A printer connected to a USB port."
 msgstr "一个打印机连接到一个 USB 端口。"
 
-#: ../system-config-printer.py:4546
+#: ../system-config-printer.py:4497
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "HPLIP 软件驱动一个打印机，或多功能设备中的打印机功能。"
 
-#: ../system-config-printer.py:4549
+#: ../system-config-printer.py:4500
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "HPLIP 软件驱动一个传真机，或多功能设备中的传真机功能。"
 
-#: ../system-config-printer.py:4552
+#: ../system-config-printer.py:4503
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Hardware Abstraction Layer (HAL) 发现了本地打印机。"
 
-#: ../system-config-printer.py:4810
+#: ../system-config-printer.py:4761
 msgid "-- Select from search results --"
 msgstr "-- 从结果中选择 --"
 
-#: ../system-config-printer.py:4812
+#: ../system-config-printer.py:4763
 msgid "-- No matches found --"
 msgstr "-- 没有发现匹配的型号 --"
 
-#: ../system-config-printer.py:4996
+#: ../system-config-printer.py:4947
 msgid " (recommended)"
 msgstr "（推荐）"
 
-#: ../system-config-printer.py:5010
+#: ../system-config-printer.py:4961
 msgid "This PPD is generated by foomatic."
 msgstr "这个 PPD 被 foomatic 产生。"
 
-#: ../system-config-printer.py:5036
+#: ../system-config-printer.py:4987
 msgid "OpenPrinting"
 msgstr "开放打印"
 
-#: ../system-config-printer.py:5039
+#: ../system-config-printer.py:4990
 msgid "the printer's manufacturer"
 msgstr ""
 
-#: ../system-config-printer.py:5042 ../system-config-printer.py:5057
-#: ../system-config-printer.py:5080 ../system-config-printer.py:5084
-#: ../system-config-printer.py:5098
+#: ../system-config-printer.py:4993 ../system-config-printer.py:5008
+#: ../system-config-printer.py:5031 ../system-config-printer.py:5035
+#: ../system-config-printer.py:5049
 #, fuzzy
 msgid ", "
 msgstr " "
 
-#: ../system-config-printer.py:5045
+#: ../system-config-printer.py:4996
 #, python-format
 msgid " (%s)"
 msgstr ""
 
-#: ../system-config-printer.py:5047
+#: ../system-config-printer.py:4998
 msgid "Distributable"
 msgstr "可分配的"
 
-#: ../system-config-printer.py:5050
+#: ../system-config-printer.py:5001
 #, fuzzy
 msgid " ("
 msgstr " "
 
-#: ../system-config-printer.py:5052
+#: ../system-config-printer.py:5003
 msgid "free software"
 msgstr ""
 
-#: ../system-config-printer.py:5054
+#: ../system-config-printer.py:5005
 msgid "non-free software"
 msgstr ""
 
-#: ../system-config-printer.py:5059
+#: ../system-config-printer.py:5010
 msgid "driver contains (possibly) patented algorithms"
 msgstr ""
 
-#: ../system-config-printer.py:5062
+#: ../system-config-printer.py:5013
 msgid ")"
 msgstr ""
 
-#: ../system-config-printer.py:5064
+#: ../system-config-printer.py:5015
 msgid "None"
 msgstr "无"
 
-#: ../system-config-printer.py:5068
+#: ../system-config-printer.py:5019
 #, python-format
 msgid "Graphics: %s/100, "
 msgstr ""
 
-#: ../system-config-printer.py:5071
+#: ../system-config-printer.py:5022
 #, python-format
 msgid "Line Art: %s/100, "
 msgstr ""
 
-#: ../system-config-printer.py:5074
+#: ../system-config-printer.py:5025
 #, python-format
 msgid "Photo: %s/100, "
 msgstr ""
 
-#: ../system-config-printer.py:5077
+#: ../system-config-printer.py:5028
 #, python-format
 msgid "Text: %s/100, "
 msgstr ""
 
-#: ../system-config-printer.py:5081
+#: ../system-config-printer.py:5032
 msgid "Output quality: "
 msgstr ""
 
-#: ../system-config-printer.py:5085
+#: ../system-config-printer.py:5036
 #, fuzzy
 msgid "<b>Recommended Driver</b>"
 msgstr "<b>选择驱动程序</b>"
 
-#: ../system-config-printer.py:5103
+#: ../system-config-printer.py:5054
 #, python-format
 msgid ""
 "\n"
 "(%s)"
 msgstr ""
 
-#: ../system-config-printer.py:5108
+#: ../system-config-printer.py:5059
 msgid "No support contacts known"
 msgstr ""
 
-#: ../system-config-printer.py:5112 ../system-config-printer.py:5125
+#: ../system-config-printer.py:5063 ../system-config-printer.py:5076
 msgid "Not specified."
 msgstr "没有特定的。"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:5165
+#: ../system-config-printer.py:5116
 msgid "Database error"
 msgstr "数据库错误"
 
-#: ../system-config-printer.py:5166
+#: ../system-config-printer.py:5117
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "“%s”驱动不能够和打印机“%s %s”一起使用。"
@@ -871,55 +876,55 @@ msgstr "“%s”驱动不能够和打印机“%s %s”一起使用。"
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:5176
+#: ../system-config-printer.py:5127
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "您将需要安装“%s”包来使用这个驱动。"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:5183
+#: ../system-config-printer.py:5134
 msgid "PPD error"
 msgstr "PPD错误"
 
-#: ../system-config-printer.py:5185
+#: ../system-config-printer.py:5136
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "读取PPD文件错误。可能由以下原因造成："
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:5202
+#: ../system-config-printer.py:5153
 msgid "Downloadable drivers"
 msgstr "可下载的驱动程序"
 
-#: ../system-config-printer.py:5203
+#: ../system-config-printer.py:5154
 msgid "Failed to download PPD."
 msgstr "下载 PPD 失败。"
 
-#: ../system-config-printer.py:5239 ../system-config-printer.py:5277
+#: ../system-config-printer.py:5190 ../system-config-printer.py:5228
 msgid "No Installable Options"
 msgstr "没有安装选项"
 
-#: ../system-config-printer.py:5323
+#: ../system-config-printer.py:5274
 msgid "Adding"
 msgstr "添加中"
 
-#: ../system-config-printer.py:5324
+#: ../system-config-printer.py:5275
 msgid "Adding printer"
 msgstr "正在添加打印机"
 
-#: ../system-config-printer.py:5485
+#: ../system-config-printer.py:5436
 msgid "Install driver"
 msgstr "安装驱动程序"
 
-#: ../system-config-printer.py:5486
+#: ../system-config-printer.py:5437
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "打印机‘%s’要求的 %s 软件包目前没有安装。"
 
-#: ../system-config-printer.py:5511
+#: ../system-config-printer.py:5462
 msgid "Missing driver"
 msgstr "缺少驱动"
 
-#: ../system-config-printer.py:5512
+#: ../system-config-printer.py:5463
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
