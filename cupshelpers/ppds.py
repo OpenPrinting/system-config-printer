@@ -387,29 +387,34 @@ class PPDs:
                 else:
                     return -1
 
-            # Prefer C locale localized PPDs to other languages,
-            # just because we don't know the user's locale.
+            # Prefer C locale localized PPDs to other languages, just
+            # because we don't know the user's locale.  This only
+            # applies to PPDs provided by gutenprint 5.0; in 5.2 the
+            # PPDs are localized properly.
             def is_C_locale (x):
-                while x:
-                    i = x.find ("C")
-                    if i == -1:
-                        return False
-                    lword = False
-                    if i == 0:
-                        lword = True
-                    elif x[i - 1] not in string.letters:
-                        lword = True
+                try:
+                    while x:
+                        i = x.find ("C")
+                        if i == -1:
+                            return False
+                        lword = False
+                        if i == 0:
+                            lword = True
+                        elif x[i - 1] not in string.letters:
+                            lword = True
 
-                    if lword:
-                        rword = False
-                        if i == (len (x) - 1):
-                            rword = True
-                        elif x[i + 1] not in string.letters:
-                            rword = True
-                        if rword:
-                            return True
+                        if lword:
+                            rword = False
+                            if i == (len (x) - 1):
+                                rword = True
+                            elif x[i + 1] not in string.letters:
+                                rword = True
+                            if rword:
+                                return True
                         
-                    x = x[i + 1:]
+                        x = x[i + 1:]
+                except UnicodeDecodeError:
+                    return False
 
             ca = is_C_locale (a)
             cb = is_C_locale (b)
