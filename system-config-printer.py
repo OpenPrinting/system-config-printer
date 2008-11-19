@@ -5081,6 +5081,7 @@ class NewPrinterGUI(GtkGUI):
                 ppd = self.NPDrivers[nr]
             elif self.rbtnNPPPD.get_active():
                 ppd = cups.PPD(self.filechooserPPD.get_filename())
+                ppd.localize ()
             else:
                 # PPD of the driver downloaded from OpenPrinting XXX
                 treeview = self.tvNPDownloadableDrivers
@@ -5102,6 +5103,7 @@ class NewPrinterGUI(GtkGUI):
                             ppdfile.write(ppdcontent)
                             ppdfile.close()
                             ppd = cups.PPD(ppdname)
+                            ppd.localize ()
                             os.unlink(ppdname)
 
         except RuntimeError, e:
@@ -5157,6 +5159,7 @@ class NewPrinterGUI(GtkGUI):
                 if (ppd != "raw"):
                     f = self.mainapp.cups.getServerPPD(ppd)
                     ppd = cups.PPD(f)
+                    ppd.localize ()
                     os.unlink(f)
             except AttributeError:
                 nonfatalException()
@@ -5341,6 +5344,7 @@ class NewPrinterGUI(GtkGUI):
                 try:
                     filename = self.mainapp.cups.getPPD(name)
                     ppd = cups.PPD(filename)
+                    ppd.localize ()
                     os.unlink(filename)
                 except cups.IPPError, (e, msg):
                     if e == cups.IPP_NOT_FOUND:

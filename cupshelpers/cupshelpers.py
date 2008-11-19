@@ -188,6 +188,7 @@ class Printer:
             try:
                 filename = self.connection.getPPD(self.name)
                 self._ppd = cups.PPD(filename)
+                self._ppd.localize ()
                 os.unlink(filename)
             except cups.IPPError, (e, m):
                 if e == cups.IPP_NOT_FOUND:
