@@ -1,3 +1,31 @@
+2008-11-19  Tim Waugh  <twaugh@redhat.com>
+
+	* glade/ConnectDialog.glade: Pressing Return in the Connect
+	dialog activates the Connect... button.
+
+2008-11-18  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/ppds.py
+	(PPDs.orderPPDNamesByPreference.sort_ppdnames.is_C_locale): Catch
+	exceptions when examining file names (Ubuntu #299074).
+
+2008-11-13  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.init): Fetch PPDs in a
+	background thread, again.
+
+2008-11-13  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.cleanup): Remove any pending timers.
+
+2008-11-13  Tim Waugh  <twaugh@redhat.com>
+
+	* authconn.py (Connection._authloop): Remember the distinction
+	between a canceled dialog and an authentication we've given up
+	on.
+	* errordialogs.py (show_IPP_Error): Only show IPP error dialog for
+	errors not caused by a canceled authentication dialog.
+
 2008-11-12  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (NewPrinterGUI.queryDevices,

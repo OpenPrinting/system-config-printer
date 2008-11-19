@@ -46,7 +46,7 @@ def show_error_dialog (title, text, parent=None):
     return show_dialog (title, text, gtk.MESSAGE_ERROR, parent=parent)
 
 def show_IPP_Error(exception, message, parent=None):
-    if exception == cups.IPP_NOT_AUTHORIZED:
+    if exception == 0:
         # In this case, the user has canceled an authentication dialog.
         return
     elif exception == cups.IPP_SERVICE_UNAVAILABLE:

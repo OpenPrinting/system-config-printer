@@ -201,6 +201,9 @@ class Connection:
                         self._cancel = True
                         raise
                 else:
+                    if self._cancel and not self._cannot_auth:
+                        raise cups.IPPError (0, _("Operation canceled"))
+
                     raise
             except cups.HTTPError, (s,):
                 if not self._cancel and (s == cups.HTTP_UNAUTHORIZED or
@@ -235,6 +238,7 @@ class Connection:
             self._forbidden = False
             self._auth_called = False
             self._cancel = False
+            self._cannot_auth = False
             self._dialog_shown = False
             cups.setPasswordCB (self._password_callback)
             debugprint ("Authentication: password callback set")
@@ -277,6 +281,7 @@ class Connection:
             # We aren't even getting a chance to supply credentials.
             debugprint ("Authentication: giving up")
             self._cancel = True
+            self._cannot_auth = True
             return 1
 
         # Reset the flag indicating whether we were given an auth callback.
