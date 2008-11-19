@@ -177,7 +177,7 @@ class Connection:
             except cups.IPPError, (e, m):
                 if not self._cancel and (e == cups.IPP_NOT_AUTHORIZED or
                                          e == cups.IPP_FORBIDDEN):
-                    self._failed ()
+                    self._failed (e == cups.IPP_FORBIDDEN)
                 elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
                     d = gtk.MessageDialog (self._parent,
                                            gtk.DIALOG_MODAL |
@@ -244,6 +244,7 @@ class Connection:
             debugprint ("Authentication: password callback set")
             return 1
 
+        debugprint ("Forbidden: %s" % self._forbidden)
         if not self._has_failed:
             # Tried the operation and it worked.  Return 0 to signal to
             # break out of the loop.
@@ -253,7 +254,7 @@ class Connection:
         # Reset failure flag.
         self._has_failed = False
 
-        if self._passes == 2:
+        if self._passes >= 2:
             # Tried the operation without a password and it failed.
             if (self._try_as_root and
                 self._user != 'root' and
