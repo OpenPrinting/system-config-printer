@@ -25,6 +25,7 @@
 # add missing methods
 
 import os
+import sys
 
 import tempfile
 
@@ -146,14 +147,12 @@ class Connection:
         return pk_auth_ret != 0
 
 
-    def _handle_exception_with_auth(self, e, fallback, *args, **kwds):
+    def _handle_exception_with_auth(self, e):
         if e.get_dbus_name() != CUPS_PK_NEED_AUTH:
-            fallback(*args, **kwds)
             return False
 
         tokens = e.get_dbus_message().split(' ', 2)
         if len(tokens) != 3:
-            fallback(*args, **kwds)
             return False
 
         try:
@@ -164,7 +163,6 @@ class Connection:
             # FIXME: is xid working?
             ret = self._obtain_auth(tokens[0], xid)
         except dbus.exceptions.DBusException:
-            fallback(*args, **kwds)
             return False
 
         if not ret:
@@ -188,14 +186,22 @@ class Connection:
             fallback_function(*args, **kwds)
             return
 
+        pk_retval = "PolicyKit communication issue"
+
         while True:
             try:
                 # FIXME: async call or not?
-                pk_function(*pk_args)
+                pk_retval = pk_function(*pk_args)
                 break
             except dbus.exceptions.DBusException, e:
-                if not self._handle_exception_with_auth(e, fallback_function, *args, **kwds):
+                if not self._handle_exception_with_auth(e):
                     break
+
+        # The PolicyKit call did not work (either a PK-error and we got a dbus
+        # exception that wasn't handled, or an error in the mechanism itself)
+        if pk_retval != "":
+            print >>sys.stderr, "PolicyKit call to %s did not work: %s" % (pk_function_name, pk_retval)
+            fallback_function(*args, **kwds)
 
 
     def _args_to_tuple(self, types, *args):
