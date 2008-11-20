@@ -236,6 +236,10 @@ class Connection:
                     # we accept a mix between list and tuple
                     retval.append(list(args[i]))
                     continue
+                elif types[i] == list and args[i] == None:
+                    # None is an empty list
+                    retval.append([])
+                    continue
                 else:
                     exception = True
             retval.append(args[i])
@@ -371,8 +375,24 @@ class Connection:
                                         *args, **kwds)
 
 
-#    setPrinterUsersAllowed
-#    setPrinterUsersDenied
+    def setPrinterUsersAllowed(self, *args, **kwds):
+        (use_pycups, name, users) = self._args_to_tuple([str, list], *args)
+        pk_args = (name, users)
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'PrinterSetUsersAllowed', pk_args,
+                                        self._connection.setPrinterUsersAllowed,
+                                        *args, **kwds)
+
+
+    def setPrinterUsersDenied(self, *args, **kwds):
+        (use_pycups, name, users) = self._args_to_tuple([str, list], *args)
+        pk_args = (name, users)
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'PrinterSetUsersDenied', pk_args,
+                                        self._connection.setPrinterUsersDenied,
+                                        *args, **kwds)
 
     def addPrinterOptionDefault(self, *args, **kwds):
         # The values can be either a single string, or a list of strings, so
