@@ -214,9 +214,21 @@ class Connection:
                 if types[i] == str and type(args[i]) == unicode:
                     # we accept a mix between unicode and str
                     pass
+                elif types[i] == str and type(args[i]) == int:
+                    # we accept a mix between int and str
+                    retval.append(str(args[i]))
+                    continue
+                elif types[i] == str and type(args[i]) == bool:
+                    # we accept a mix between bool and str
+                    retval.append(str(args[i]))
+                    continue
                 elif types[i] == str and args[i] == None:
                     # None is an empty string for dbus
                     retval.append('')
+                    continue
+                elif types[i] == list and type(args[i]) == tuple:
+                    # we accept a mix between list and tuple
+                    retval.append(list(args[i]))
                     continue
                 else:
                     exception = True
@@ -357,9 +369,16 @@ class Connection:
 #    setPrinterUsersDenied
 
     def addPrinterOptionDefault(self, *args, **kwds):
-        #FIXME: value can be a sequence (need to fix dbus API too)
+        # The values can be either a single string, or a list of strings, so
+        # we have to handle this
         (use_pycups, name, option, value) = self._args_to_tuple([str, str, str], *args)
-        pk_args = (name, option, value)
+        # success
+        if not use_pycups:
+            values = (value,)
+        # okay, maybe we directly have values
+        else:
+            (use_pycups, name, option, values) = self._args_to_tuple([str, str, list], *args)
+        pk_args = (name, option, values)
 
         self._call_with_pk_and_fallback(use_pycups,
                                         'PrinterAddOptionDefault', pk_args,
