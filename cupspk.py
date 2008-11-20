@@ -183,8 +183,7 @@ class Connection:
                     pass
 
         if use_fallback or not pk_function:
-            fallback_function(*args, **kwds)
-            return
+            return fallback_function(*args, **kwds)
 
         pk_retval = "PolicyKit communication issue"
 
@@ -192,6 +191,20 @@ class Connection:
             try:
                 # FIXME: async call or not?
                 pk_retval = pk_function(*pk_args)
+
+                # if the PK call has more than one return values, we pop the
+                # first one as the error message
+                if type(pk_retval) == tuple:
+                    retval = pk_retval[1:]
+                    # if there's no error, then we can safely return what we
+                    # got
+                    if pk_retval[0] == '':
+                        # if there's only one item left in the tuple, we don't
+                        # want to return the tuple, but the item
+                        if len(retval) == 1:
+                            return retval[0]
+                        else:
+                            return retval
                 break
             except dbus.exceptions.DBusException, e:
                 if not self._handle_exception_with_auth(e):
@@ -201,7 +214,7 @@ class Connection:
         # exception that wasn't handled, or an error in the mechanism itself)
         if pk_retval != "":
             print >>sys.stderr, "PolicyKit call to %s did not work: %s" % (pk_function_name, pk_retval)
-            fallback_function(*args, **kwds)
+            return fallback_function(*args, **kwds)
 
 
     def _args_to_tuple(self, types, *args):
@@ -491,7 +504,28 @@ class Connection:
 
 #    printTestPage
 #    adminGetServerSettings
-#    adminSetServerSettings
+
+
+    def adminGetServerSettings(self, *args, **kwds):
+        use_pycups = False
+        pk_args = ()
+
+        return self._call_with_pk_and_fallback(use_pycups,
+                                               'ServerGetSettings', pk_args,
+                                               self._connection.adminGetServerSettings,
+                                               *args, **kwds)
+
+
+    def adminSetServerSettings(self, *args, **kwds):
+        (use_pycups, settings) = self._args_to_tuple([dict], *args)
+        pk_args = (settings,)
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'ServerSetSettings', pk_args,
+                                        self._connection.adminSetServerSettings,
+                                        *args, **kwds)
+
+
 #    getSubscriptions
 #    createSubscription
 #    getNotifications
