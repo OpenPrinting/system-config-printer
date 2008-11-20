@@ -445,9 +445,36 @@ class Connection:
                                         *args, **kwds)
 
 #    getPrinterAttributes
-#    addPrinterToClass
-#    deletePrinterFromClass
-#    deleteClass
+
+    def addPrinterToClass(self, *args, **kwds):
+        (use_pycups, printer, name) = self._args_to_tuple([str, str], *args)
+        pk_args = (name, printer)
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'ClassAddPrinter', pk_args,
+                                        self._connection.addPrinterToClass,
+                                        *args, **kwds)
+
+
+    def deletePrinterFromClass(self, *args, **kwds):
+        (use_pycups, printer, name) = self._args_to_tuple([str, str], *args)
+        pk_args = (name, printer)
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'ClassDeletePrinter', pk_args,
+                                        self._connection.deletePrinterFromClass,
+                                        *args, **kwds)
+
+
+    def deleteClass(self, *args, **kwds):
+        (use_pycups, name) = self._args_to_tuple([str], *args)
+        pk_args = (name,)
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'ClassDelete', pk_args,
+                                        self._connection.deleteClass,
+                                        *args, **kwds)
+
 #    getDefault
 
     def setDefault(self, *args, **kwds):
