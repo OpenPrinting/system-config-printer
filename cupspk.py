@@ -199,13 +199,15 @@ class Connection:
 
 
     def _args_to_tuple(self, types, *args):
+        retval = [ False ]
+
         if len(types) != len(args):
-            types.append(True)
-            return types
+            retval[0] = True
+            # We do this to have the right length for the returned value
+            retval.extend(types)
+            return tuple(types)
 
         exception = False
-
-        retval = []
 
         for i in range(len(types)):
             if type(args[i]) != types[i]:
@@ -220,7 +222,7 @@ class Connection:
                     exception = True
             retval.append(args[i])
 
-        retval.append(exception)
+        retval[0] = exception
 
         return tuple(retval)
 
@@ -255,7 +257,7 @@ class Connection:
 #    putFile
 
     def addPrinter(self, *args, **kwds):
-        (name, use_pycups) = self._args_to_tuple([str], *args)
+        (use_pycups, name) = self._args_to_tuple([str], *args)
         (filename, ppdname, info, location, device, ppd) = self._kwds_to_vars(['filename', 'ppdname', 'info', 'location', 'device', 'ppd'], **kwds)
 
         need_unlink = False
@@ -282,7 +284,7 @@ class Connection:
 
 
     def setPrinterDevice(self, *args, **kwds):
-        (name, device, use_pycups) = self._args_to_tuple([str, str], *args)
+        (use_pycups, name, device) = self._args_to_tuple([str, str], *args)
         pk_args = (name, device)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -292,7 +294,7 @@ class Connection:
 
 
     def setPrinterInfo(self, *args, **kwds):
-        (name, info, use_pycups) = self._args_to_tuple([str, str], *args)
+        (use_pycups, name, info) = self._args_to_tuple([str, str], *args)
         pk_args = (name, info)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -302,7 +304,7 @@ class Connection:
 
 
     def setPrinterLocation(self, *args, **kwds):
-        (name, location, use_pycups) = self._args_to_tuple([str, str], *args)
+        (use_pycups, name, location) = self._args_to_tuple([str, str], *args)
         pk_args = (name, location)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -312,7 +314,7 @@ class Connection:
 
 
     def setPrinterShared(self, *args, **kwds):
-        (name, shared, use_pycups) = self._args_to_tuple([str, bool], *args)
+        (use_pycups, name, shared) = self._args_to_tuple([str, bool], *args)
         pk_args = (name, shared)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -322,7 +324,7 @@ class Connection:
 
 
     def setPrinterJobSheets(self, *args, **kwds):
-        (name, start, end, use_pycups) = self._args_to_tuple([str, str, str], *args)
+        (use_pycups, name, start, end) = self._args_to_tuple([str, str, str], *args)
         pk_args = (name, start, end)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -332,7 +334,7 @@ class Connection:
 
 
     def setPrinterErrorPolicy(self, *args, **kwds):
-        (name, policy, use_pycups) = self._args_to_tuple([str, str], *args)
+        (use_pycups, name, policy) = self._args_to_tuple([str, str], *args)
         pk_args = (name, policy)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -342,7 +344,7 @@ class Connection:
 
 
     def setPrinterOpPolicy(self, *args, **kwds):
-        (name, policy, use_pycups) = self._args_to_tuple([str, str], *args)
+        (use_pycups, name, policy) = self._args_to_tuple([str, str], *args)
         pk_args = (name, policy)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -356,7 +358,7 @@ class Connection:
 
     def addPrinterOptionDefault(self, *args, **kwds):
         #FIXME: value can be a sequence (need to fix dbus API too)
-        (name, option, value, use_pycups) = self._args_to_tuple([str, str, str], *args)
+        (use_pycups, name, option, value) = self._args_to_tuple([str, str, str], *args)
         pk_args = (name, option, value)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -366,7 +368,7 @@ class Connection:
 
 
     def deletePrinterOptionDefault(self, *args, **kwds):
-        (name, option, use_pycups) = self._args_to_tuple([str, str], *args)
+        (use_pycups, name, option) = self._args_to_tuple([str, str], *args)
         pk_args = (name, option)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -376,7 +378,7 @@ class Connection:
 
 
     def deletePrinter(self, *args, **kwds):
-        (name, use_pycups) = self._args_to_tuple([str], *args)
+        (use_pycups, name) = self._args_to_tuple([str], *args)
         pk_args = (name,)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -391,7 +393,7 @@ class Connection:
 #    getDefault
 
     def setDefault(self, *args, **kwds):
-        (name, use_pycups) = self._args_to_tuple([str], *args)
+        (use_pycups, name) = self._args_to_tuple([str], *args)
         pk_args = (name,)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -402,7 +404,7 @@ class Connection:
 #    getPPD
 
     def enablePrinter(self, *args, **kwds):
-        (name, use_pycups) = self._args_to_tuple([str], *args)
+        (use_pycups, name) = self._args_to_tuple([str], *args)
         pk_args = (name, True)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -412,7 +414,7 @@ class Connection:
 
 
     def disablePrinter(self, *args, **kwds):
-        (name, use_pycups) = self._args_to_tuple([str], *args)
+        (use_pycups, name) = self._args_to_tuple([str], *args)
         pk_args = (name, False)
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -422,7 +424,7 @@ class Connection:
 
 
     def acceptJobs(self, *args, **kwds):
-        (name, use_pycups) = self._args_to_tuple([str], *args)
+        (use_pycups, name) = self._args_to_tuple([str], *args)
         pk_args = (name, True, '')
 
         self._call_with_pk_and_fallback(use_pycups,
@@ -432,7 +434,7 @@ class Connection:
 
 
     def rejectJobs(self, *args, **kwds):
-        (name, use_pycups) = self._args_to_tuple([str], *args)
+        (use_pycups, name) = self._args_to_tuple([str], *args)
         (reason,) = self._kwds_to_vars(['reason'], **kwds)
         pk_args = (name, False, reason)
 
