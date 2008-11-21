@@ -135,6 +135,7 @@ class Monitor:
             cups.setPort (port)
         if encryption:
             cups.setEncryption (encryption)
+        self.user = cups.getUser ()
         self.host = cups.getServer ()
         self.port = cups.getPort ()
         self.encryption = cups.getEncryption ()
@@ -162,7 +163,9 @@ class Monitor:
 
     def cleanup (self):
         if self.sub_id != -1:
+            user = cups.getUser ()
             try:
+                cups.setUser (self.user)
                 c = cups.Connection (host=self.host,
                                      port=self.port,
                                      encryption=self.encryption)
@@ -170,6 +173,7 @@ class Monitor:
                 debugprint ("Canceled subscription %d" % self.sub_id)
             except:
                 pass
+            cups.setUser (user)
 
         self.bus.remove_signal_receiver (self.handle_dbus_signal,
                                          path=self.DBUS_PATH,
@@ -325,7 +329,9 @@ class Monitor:
             return False
 
         debugprint ("get_notifications")
+        user = cups.getUser ()
         try:
+            cups.setUser (self.user)
             c = cups.Connection (host=self.host,
                                  port=self.port,
                                  encryption=self.encryption)
@@ -337,6 +343,7 @@ class Monitor:
                 except AttributeError:
                     notifications = c.getNotifications ([self.sub_id])
             except cups.IPPError, (e, m):
+                cups.setUser (user)
                 if e == cups.IPP_NOT_FOUND:
                     # Subscription lease has expired.
                     self.sub_id = -1
@@ -346,9 +353,11 @@ class Monitor:
                 self.watcher.cups_ipp_error (self, e, m)
                 return True
         except RuntimeError:
+            cups.setUser (user)
             self.watcher.cups_connection_error (self)
             return True
 
+        cups.setUser (user)
         deferred_calls = []
         jobs = self.jobs.copy ()
         for event in notifications['events']:
@@ -472,12 +481,15 @@ class Monitor:
         if which_jobs != None:
             self.which_jobs = which_jobs
 
+        user = cups.getUser ()
         try:
+            cups.setUser (self.user)
             c = cups.Connection (host=self.host,
                                  port=self.port,
                                  encryption=self.encryption)
         except RuntimeError:
             self.watcher.cups_connection_error (self)
+            cups.setUser (user)
             return
 
         if self.sub_id != -1:
@@ -507,6 +519,8 @@ class Monitor:
             self.sub_id = c.createSubscription ("/", events=events)
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
+
+        cups.setUser (user)
 
         self.update_timer = gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
                                                  self.get_notifications)
@@ -569,13 +583,16 @@ class Monitor:
             # Skip this call.  We'll get called again soon.
             return True
 
+        user = cups.getUser ()
         try:
+            cups.setUser (self.user)
             c = cups.Connection (host=self.host,
                                  port=self.port,
                                  encryption=self.encryption)
         except RuntimeError:
             self.watcher.cups_connection_error (self)
             self.fetch_jobs_timer = None
+            cups.setUser (user)
             return False
 
         limit = 1
@@ -587,8 +604,10 @@ class Monitor:
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
             self.fetch_jobs_timer = None
+            cups.setUser (user)
             return False
 
+        cups.setUser (user)
         got = len (fetched)
         debugprint ("Got %s jobs, asked for %s" % (got, limit))
 
