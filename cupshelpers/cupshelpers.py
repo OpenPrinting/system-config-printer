@@ -514,7 +514,7 @@ class Device:
                 return -1
             return 1
         if not self.is_class and (self.type != other.type):
-            # "hp"/"hpfax" before * before "usb" before "parallel" before
+            # "hp"/"hpfax" before "usb" before * before "parallel" before
             # "serial"
             if other.type == "serial":
                 return -1
@@ -524,13 +524,13 @@ class Device:
                 return -1
             if self.type == "parallel":
                 return 1
-            if other.type == "usb":
-                return -1
-            if self.type == "usb":
-                return 1
             if other.type == "hp" or other.type == "hpfax":
                 return 1
             if self.type == "hp" or self.type == "hpfax":
+                return -1
+            if other.type == "usb":
+                return 1
+            if self.type == "usb":
                 return -1
         result = cmp(bool(self.id), bool(other.id))
         if not result:
