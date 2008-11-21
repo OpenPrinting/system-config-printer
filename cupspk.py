@@ -288,8 +288,71 @@ class Connection:
 #    authenticateJob
 #    setJobHoldUntil
 #    restartJob
-#    getFile
-#    putFile
+
+    def getFile(self, *args, **kwds):
+        ''' Keeping this as an alternative for the code.
+            We don't use it because it's not possible to know if the call was a
+            PK-one (and so we push the content of a temporary filename to fd or
+            file) or a non-PK-one (in which case nothing should be done).
+
+                filename = None
+                fd = None
+                file = None
+                if use_pycups:
+                    if len(kwds) != 1:
+                        use_pycups = True
+                    elif kwds.has_key('filename'):
+                        filename = kwds['filename']
+                    elif kwds.has_key('fd'):
+                        fd = kwds['fd']
+                    elif kwds.has_key('file'):
+                        file = kwds['file']
+                    else:
+                        use_pycups = True
+
+                    if fd or file:
+        '''
+
+        if len(args) == 2:
+            (use_pycups, resource, filename) = self._args_to_tuple([str, str], *args)
+        else:
+            (use_pycups, resource) = self._args_to_tuple([str], *args)
+            if kwds.has_key('filename'):
+                filename = kwds['filename']
+            else:
+                if not use_pycups:
+                    raise TypeError()
+                else:
+                    filename = None
+
+        pk_args = (resource, filename)
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'FileGet', pk_args,
+                                        self._connection.getFile,
+                                        *args, **kwds)
+
+
+    def putFile(self, *args, **kwds):
+        if len(args) == 2:
+            (use_pycups, resource, filename) = self._args_to_tuple([str, str], *args)
+        else:
+            (use_pycups, resource) = self._args_to_tuple([str], *args)
+            if kwds.has_key('filename'):
+                filename = kwds['filename']
+            else:
+                if not use_pycups:
+                    raise TypeError()
+                else:
+                    filename = None
+
+        pk_args = (resource, filename)
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'FilePut', pk_args,
+                                        self._connection.putFile,
+                                        *args, **kwds)
+
 
     def addPrinter(self, *args, **kwds):
         (use_pycups, name) = self._args_to_tuple([str], *args)
