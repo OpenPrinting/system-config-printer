@@ -1,5 +1,13 @@
 2008-11-21  Tim Waugh  <twaugh@redhat.com>
 
+	* monitor.py (Monitor.__init__): Remember which user to connect as.
+	(Monitor.cleanup): Connect as correct user (trac #110).
+	(Monitor.get_notifications): Likewise.
+	(Monitor.refresh): Likewise.
+	(Monitor.fetch_jobs): Likewise.
+
+2008-11-21  Tim Waugh  <twaugh@redhat.com>
+
 	* cupshelpers/cupshelpers.py (Device.__cmp__): Sort usb devices
 	before hal devices (trac #109).
 
