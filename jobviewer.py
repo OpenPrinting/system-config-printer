@@ -458,7 +458,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         store.set_value (iter, 2, data.get('job-name', _("Unknown")))
         debugprint ("Job %d added" % job)
         self.jobiters[job] = iter
-        store.set_value (iter, 5, _("a minute ago"))
+        if not self.job_creation_times_timer:
+            t = gobject.timeout_add (1000, self.update_job_creation_times)
+            self.job_creation_times_timer = t
+
         self.update_job (job, data, connection=connection)
 
     def update_job (self, job, data, connection=None):

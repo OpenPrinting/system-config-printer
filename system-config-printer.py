@@ -1829,12 +1829,17 @@ class GUI(GtkGUI, monitor.Watcher):
             for n in range (self.ntbkPrinter.get_n_pages ()):
                 page = self.ntbkPrinter.get_nth_page (n)
                 label = self.ntbkPrinter.get_tab_label (page)
-                if label == self.lblPInstallOptions:
-                    iter = store.get_iter ((n,))
-                    store.set_value (iter, 0, installabletext)
-                elif label == self.lblPOptions:
-                    iter = store.get_iter ((n,))
-                    store.set_value (iter, 0, optionstext)
+                try:
+                    if label == self.lblPInstallOptions:
+                        iter = store.get_iter ((n,))
+                        store.set_value (iter, 0, installabletext)
+                    elif label == self.lblPOptions:
+                        iter = store.get_iter ((n,))
+                        store.set_value (iter, 0, optionstext)
+                except ValueError:
+                    # If we get here, the store has not yet been set
+                    # up (trac #111).
+                    pass
 
         self.btnPrinterPropertiesApply.set_sensitive (len (self.changed) > 0)
 
