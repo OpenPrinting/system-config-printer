@@ -1,5 +1,10 @@
 2008-11-21  Tim Waugh  <twaugh@redhat.com>
 
+	* system-config-printer.py (GUI.setDataButtonState): Avoid
+	use-before-set traceback (trac #111).
+
+2008-11-21  Tim Waugh  <twaugh@redhat.com>
+
 	* AdvancedServerSettings.py
 	(AdvancedServerSettingsDialog.__init__): Catch potential exception
 	if libcups removes the file on failure.
