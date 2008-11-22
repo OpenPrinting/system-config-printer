@@ -20,6 +20,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+import gobject
 import os
 import smburi
 import subprocess
@@ -102,10 +103,29 @@ class CheckPrinterSanity(Question):
                                           stdin=file("/dev/null"),
                                           stdout=subprocess.PIPE,
                                           stderr=subprocess.PIPE)
-                    (stdout, stderr) = p.communicate ()
-                    self.answers['hplip_output'] = (stdout.split ('\n'),
-                                                    stderr.split ('\n'))
-                except:
+                    self.answers['hplip_output'] = ('', '')
+                    self.hp_info_io_watch = []
+                    self.hp_info_watchers = 2
+                    for f in [p.stdout, p.stderr]:
+                        source = gobject.io_add_watch (f,
+                                                       gobject.IO_IN |
+                                                       gobject.IO_HUP |
+                                                       gobject.IO_ERR,
+                                                       self.hp_info_watcher,
+                                                       p)
+                        self.hp_info_io_watch.append (source)
+
+                    self.kill_timer = gobject.timeout_add (3000, gtk.main_quit)
+                    gtk.main ()
+                    gobject.source_remove (self.kill_timer)
+                    for source in self.hp_info_io_watch:
+                        gobject.source_remove (source)
+
+                    (stdout, stderr) = self.answers['hplip_output']
+                    self.answers['hplip_output'] = [stdout.split ('\n'),
+                                                    stderr.split ('\n'),
+                                                    p.poll ()]
+                except OSError:
                     # Problem executing command.
                     pass
 
@@ -115,3 +135,22 @@ class CheckPrinterSanity(Question):
 
     def collect_answer (self):
         return self.answers
+
+    def hp_info_watcher (self, source, condition, subp):
+        if condition & gobject.IO_IN:
+            (stdout, stderr) = self.answers['hplip_output']
+            got = source.read ()
+            if source == subp.stdout:
+                stdout += got
+            else:
+                stderr += got
+
+            self.answers['hplip_output'] = (stdout, stderr)
+
+        if condition & gobject.IO_HUP:
+            self.hp_info_watchers -= 1
+            if self.hp_info_watchers == 0:
+                gtk.main_quit ()
+                return False
+
+        return True
