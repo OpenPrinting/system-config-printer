@@ -1,5 +1,25 @@
 2008-11-21  Tim Waugh  <twaugh@redhat.com>
 
+	* configure.in: Version 1.0.11.
+
+2008-11-21  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.add_job): Update job creation times.
+
+2008-11-21  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.setDataButtonState): Avoid
+	use-before-set traceback (trac #111).
+
+2008-11-21  Tim Waugh  <twaugh@redhat.com>
+
+	* AdvancedServerSettings.py
+	(AdvancedServerSettingsDialog.__init__): Catch potential exception
+	if libcups removes the file on failure.
+	(AdvancedServerSettingsDialog.on_response): Likewise.
+
+2008-11-21  Tim Waugh  <twaugh@redhat.com>
+
 	* monitor.py (Monitor.__init__): Remember which user to connect as.
 	(Monitor.cleanup): Connect as correct user (trac #110).
 	(Monitor.get_notifications): Likewise.

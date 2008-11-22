@@ -128,7 +128,18 @@ class AdvancedServerSettingsDialog:
         # Fetch cupsd.conf
         f = tempfile.TemporaryFile ()
         try:
-            cupsconn.getFile (self.RESOURCE, file=f)
+            try:
+                self.cupsconn.getFile (self.RESOURCE, file=f)
+            except TypeError:
+                # Specifying a file object requires pycups >= 1.9.38
+                (fd, name) = tempfile.mkstemp ()
+                self.cupsconn.getFile (self.RESOURCE, name)
+                try:
+                    os.unlink (name)
+                except OSError:
+                    pass
+
+                f = os.fdopen (fd, "r+")
         except cups.HTTPError, s:
             show_HTTP_Error (s, dialog)
             raise
@@ -303,7 +314,11 @@ class AdvancedServerSettingsDialog:
                 # Specifying a file object requires pycups >= 1.9.38
                 (fd, name) = tempfile.mkstemp ()
                 self.cupsconn.getFile (self.RESOURCE, name)
-                os.unlink (name)
+                try:
+                    os.unlink (name)
+                except:
+                    pass
+
                 f = os.fdopen (fd, "r+")
         except cups.HTTPError, s:
             show_HTTP_Error (s, dialog)
