@@ -175,8 +175,6 @@ class Troubleshooter:
         gdkwin = self.get_window ().window
         if gdkwin:
             gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
-            while gtk.events_pending ():
-                gtk.main_iteration ()
 
     def on_back_clicked (self, widget):
         page = self.ntbk.get_current_page ()
