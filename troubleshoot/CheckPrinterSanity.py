@@ -98,33 +98,13 @@ class CheckPrinterSanity(Question):
             elif scheme == "hp":
                 os.environ['URI'] = uri
                 try:
-                    p = subprocess.Popen ('LC_ALL=C DISPLAY= hp-info -d "$URI"',
-                                          shell=True,
-                                          stdin=file("/dev/null"),
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE)
-                    self.answers['hplip_output'] = ('', '')
-                    self.hp_info_io_watch = []
-                    self.hp_info_watchers = 2
-                    for f in [p.stdout, p.stderr]:
-                        source = gobject.io_add_watch (f,
-                                                       gobject.IO_IN |
-                                                       gobject.IO_HUP |
-                                                       gobject.IO_ERR,
-                                                       self.hp_info_watcher,
-                                                       p)
-                        self.hp_info_io_watch.append (source)
-
-                    self.kill_timer = gobject.timeout_add (3000, gtk.main_quit)
-                    gtk.main ()
-                    gobject.source_remove (self.kill_timer)
-                    for source in self.hp_info_io_watch:
-                        gobject.source_remove (source)
-
-                    (stdout, stderr) = self.answers['hplip_output']
-                    self.answers['hplip_output'] = [stdout.split ('\n'),
-                                                    stderr.split ('\n'),
-                                                    p.poll ()]
+                    p = TimedSubprocess (timeout=3000,
+                                         args='LC_ALL=C DISPLAY= hp-info -d "$URI"',
+                                         shell=True,
+                                         stdin=file("/dev/null"),
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.PIPE)
+                    self.answers['hplip_output'] = p.run ()
                 except OSError:
                     # Problem executing command.
                     pass
@@ -135,22 +115,3 @@ class CheckPrinterSanity(Question):
 
     def collect_answer (self):
         return self.answers
-
-    def hp_info_watcher (self, source, condition, subp):
-        if condition & gobject.IO_IN:
-            (stdout, stderr) = self.answers['hplip_output']
-            got = source.read ()
-            if source == subp.stdout:
-                stdout += got
-            else:
-                stderr += got
-
-            self.answers['hplip_output'] = (stdout, stderr)
-
-        if condition & gobject.IO_HUP:
-            self.hp_info_watchers -= 1
-            if self.hp_info_watchers == 0:
-                gtk.main_quit ()
-                return False
-
-        return True

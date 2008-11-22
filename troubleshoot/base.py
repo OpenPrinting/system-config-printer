@@ -19,7 +19,9 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import gobject
 import gtk
+import subprocess
 from gettext import gettext as _
 from debug import *
 
@@ -28,7 +30,8 @@ __all__ = [ 'gtk',
             'debugprint', 'get_debugging', 'set_debugging',
             'Question',
             'Multichoice',
-            'TEXT_start_print_admin_tool' ]
+            'TEXT_start_print_admin_tool',
+            'TimedSubprocess' ]
 
 TEXT_start_print_admin_tool = _("To start this tool, select "
                                 "System->Administration->Printing "
@@ -97,3 +100,50 @@ class Multichoice(Question):
         for button, answer_tag in self.widgets:
             if button.get_active ():
                 return { self.question_tag: answer_tag }
+
+class TimedSubprocess:
+    def __init__ (self, timeout=60000, parent=None, **args):
+        self.subp = subprocess.Popen (**args)
+        self.output = dict()
+        self.io_source = []
+        self.watchers = 2
+        self.timeout = timeout
+        for f in [self.subp.stdout, self.subp.stderr]:
+            source = gobject.io_add_watch (f,
+                                           gobject.IO_IN |
+                                           gobject.IO_HUP |
+                                           gobject.IO_ERR,
+                                           self.watcher)
+            self.io_source.append (source)
+
+    def run (self):
+        self.timeout_source = gobject.timeout_add (self.timeout,
+                                                   self.do_timeout)
+        gtk.main ()
+        gobject.source_remove (self.timeout_source)
+        for source in self.io_source:
+            gobject.source_remove (source)
+        return (self.output.get (self.subp.stdout, '').split ('\n'),
+                self.output.get (self.subp.stderr, '').split ('\n'),
+                self.subp.poll ())
+
+    def do_timeout (self):
+        print "Stop"
+        gtk.main_quit ()
+        return False
+
+    def watcher (self, source, condition):
+        print "watcher %s" % condition
+        if condition & gobject.IO_IN:
+            buffer = self.output.get (source, '')
+            buffer += source.read ()
+            self.output[source] = buffer
+
+        if condition & gobject.IO_HUP:
+            self.watchers -= 1
+            if self.watchers == 0:
+                gtk.main_quit ()
+                print "Finished"
+                return False
+
+        return True
