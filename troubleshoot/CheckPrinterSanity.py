@@ -30,6 +30,7 @@ class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check printer sanity")
         troubleshooter.new_page (gtk.Label (), self)
+        self.troubleshooter = troubleshooter
 
     def display (self):
         # Collect information useful for the various checks.
@@ -98,7 +99,8 @@ class CheckPrinterSanity(Question):
             elif scheme == "hp":
                 os.environ['URI'] = uri
                 try:
-                    p = TimedSubprocess (timeout=3000,
+                    p = TimedSubprocess (parent=self.troubleshooter.get_window (),
+                                         timeout=3000,
                                          args='LC_ALL=C DISPLAY= hp-info -d "$URI"',
                                          shell=True,
                                          stdin=file("/dev/null"),
