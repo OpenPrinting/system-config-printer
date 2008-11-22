@@ -94,6 +94,7 @@ class Troubleshooter:
         ntbk.set_current_page (0)
         ntbk.set_show_tabs (False)
         self.ntbk = ntbk
+        self.current_page = 0
 
         self.questions = []
         self.question_answers = []
@@ -102,9 +103,8 @@ class Troubleshooter:
         main.show_all ()
 
     def quit (self, *args):
-        page = self.ntbk.get_current_page ()
         try:
-            self.questions[page].disconnect_signals ()
+            self.questions[self.current_page].disconnect_signals ()
         except:
             self._report_traceback ()
 
@@ -145,11 +145,12 @@ class Troubleshooter:
                 self._report_traceback ()
 
             self.ntbk.set_current_page (page)
+            self.current_page = page
         self.set_back_forward_buttons ()
         return page
 
     def set_back_forward_buttons (self, *args):
-        page = self.ntbk.get_current_page ()
+        page = self.current_page
         self.back.set_sensitive (page != 0)
         if len (self.questions) == page + 1:
             # Out of questions.
@@ -177,65 +178,58 @@ class Troubleshooter:
             gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
 
     def on_back_clicked (self, widget):
-        page = self.ntbk.get_current_page ()
         try:
-            self.questions[page].disconnect_signals ()
+            self.questions[self.current_page].disconnect_signals ()
         except:
             self._report_traceback ()
 
         self.busy ()
-        step = 1
-        question = self.questions[page - step]
-        self.ntbk.prev_page ()
+        self.current_page -= 1
+        question = self.questions[self.current_page]
         while not self._display (question):
             # Skip this one.            
-            debugprint ("Page %d: skip" % (page - step))
-            step += 1
-            question = self.questions[page - step]
-            self.ntbk.prev_page ()
+            debugprint ("Page %d: skip" % (self.current_page))
+            self.current_page -= 1
+            question = self.questions[self.current_page]
 
-        page -= step
-
+        self.ntbk.set_current_page (self.current_page)
         self.ready ()
         answers = {}
-        for i in range (page):
+        for i in range (self.current_page):
             answers.update (self.question_answers[i])
         self.answers = answers
 
         try:
-            self.questions[page].connect_signals (self.set_back_forward_buttons)
+            self.questions[self.current_page].\
+                connect_signals (self.set_back_forward_buttons)
         except:
             self._report_traceback ()
 
         self.set_back_forward_buttons ()
 
     def on_forward_clicked (self, widget):
-        page = self.ntbk.get_current_page ()
-        answer_dict = self._collect_answer (self.questions[page])
-        self.question_answers[page] = answer_dict
+        answer_dict = self._collect_answer (self.questions[self.current_page])
+        self.question_answers[self.current_page] = answer_dict
         self.answers.update (answer_dict)
 
         try:
-            self.questions[page].disconnect_signals ()
+            self.questions[self.current_page].disconnect_signals ()
         except:
             self._report_traceback ()
 
         self.busy ()
-        step = 1
-        question = self.questions[page + step]
-        self.ntbk.next_page ()
+        self.current_page += 1
+        question = self.questions[self.current_page]
         while not self._display (question):
             # Skip this one, but collect its answers.
             answer_dict = self._collect_answer (question)
-            self.question_answers[page + step] = answer_dict
+            self.question_answers[self.current_page] = answer_dict
             self.answers.update (answer_dict)
-            debugprint ("Page %d: skip" % (page + step))
-            step += 1
-            question = self.questions[page + step]
-            self.ntbk.next_page ()
+            debugprint ("Page %d: skip" % (self.current_page))
+            self.current_page += 1
+            question = self.questions[self.current_page]
 
-        page += step
-
+        self.ntbk.set_current_page (self.current_page)
         self.ready ()
         try:
             question.connect_signals (self.set_back_forward_buttons)
@@ -249,9 +243,8 @@ class Troubleshooter:
 
     def answers_as_text (self):
         text = ""
-        page = self.ntbk.get_current_page ()
         n = 1
-        for i in range (page):
+        for i in range (self.current_page):
             answers = self.question_answers[i].copy ()
             for hidden in filter (lambda x: x.startswith ("_"), answers.keys()):
                 del answers[hidden]
