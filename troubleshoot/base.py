@@ -108,6 +108,7 @@ class TimedSubprocess:
         self.io_source = []
         self.watchers = 2
         self.timeout = timeout
+        self.parent = parent
         for f in [self.subp.stdout, self.subp.stderr]:
             source = gobject.io_add_watch (f,
                                            gobject.IO_IN |
@@ -116,24 +117,27 @@ class TimedSubprocess:
                                            self.watcher)
             self.io_source.append (source)
 
+        self.wait_window = None
+
     def run (self):
         self.timeout_source = gobject.timeout_add (self.timeout,
                                                    self.do_timeout)
+        self.wait_source = gobject.timeout_add (1000, self.show_wait_window)
         gtk.main ()
-        gobject.source_remove (self.timeout_source)
+        self.io_source.extend ([self.timeout_source, self.wait_source])
         for source in self.io_source:
             gobject.source_remove (source)
+        if self.wait_window != None:
+            self.wait_window.destroy ()
         return (self.output.get (self.subp.stdout, '').split ('\n'),
                 self.output.get (self.subp.stderr, '').split ('\n'),
                 self.subp.poll ())
 
     def do_timeout (self):
-        print "Stop"
         gtk.main_quit ()
         return False
 
     def watcher (self, source, condition):
-        print "watcher %s" % condition
         if condition & gobject.IO_IN:
             buffer = self.output.get (source, '')
             buffer += source.read ()
@@ -143,7 +147,22 @@ class TimedSubprocess:
             self.watchers -= 1
             if self.watchers == 0:
                 gtk.main_quit ()
-                print "Finished"
                 return False
 
         return True
+
+    def show_wait_window (self):
+        wait = gtk.Window ()
+        if self.parent:
+            wait.set_transient_for (self.parent)
+        wait.set_modal (True)
+        wait.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
+        wait.set_border_width (12)
+        wait.set_title (_("Please wait"))
+        vbox = gtk.VBox ()
+        wait.add (vbox)
+        label = gtk.Label (_("Gathering information"))
+        vbox.pack_start (label)
+        wait.show_all ()
+        self.wait_window = wait
+        return False
