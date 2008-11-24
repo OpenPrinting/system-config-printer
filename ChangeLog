@@ -1,3 +1,29 @@
+2008-11-24  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/CheckLocalServerPublishing.py
+	(CheckLocalServerPublishing.__init__): Fixed option description
+	(bug #462934).
+
+2008-11-24  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.collect_answer): Prevent exception when
+	getFile fails.
+	* troubleshoot/ErrorLogFetch.py (ErrorLogFetch.display): Likewise.
+	* troubleshoot/PrintTestPage.py (PrintTestPage.print_clicked):
+	Likewise for printTestPage.
+
+2008-11-24  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.maintenance_command): Remove
+	temporary file.
+
+2008-11-24  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py
+	(missingPackagesAndExecutables): Don't leak file descriptors, and
+	clean up temporary files.
+
 2008-11-21  Tim Waugh  <twaugh@redhat.com>
 
 	* jobviewer.py (JobViewer.add_job): Update job creation times.

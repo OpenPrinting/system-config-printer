@@ -2148,6 +2148,8 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.cups._end_operation ()
 
+        os.unlink (tmpfname)
+
     def on_btnSelfTest_clicked(self, button):
         self.maintenance_command ("PrintSelfTestPage")
 

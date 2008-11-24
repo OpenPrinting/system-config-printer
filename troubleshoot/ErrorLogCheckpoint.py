@@ -119,10 +119,18 @@ class ErrorLogCheckpoint(Question):
             c = cups.Connection ()
             c.getFile ('/admin/log/error_log', tmpfname)
         except RuntimeError:
-            os.remove (tmpfname)
+            try:
+                os.remove (tmpfname)
+            except OSError:
+                pass
+
             return self.answers
         except cups.IPPError:
-            os.remove (tmpfname)
+            try:
+                os.remove (tmpfname)
+            except OSError:
+                pass
+
             return self.answers
 
         statbuf = os.stat (tmpfname)

@@ -686,9 +686,12 @@ def missingPackagesAndExecutables(ppd):
         # Look for '*cupsFilter' lines in the PPD and check that
         # the filters are installed.
         (tmpfd, tmpfname) = tempfile.mkstemp ()
+        os.unlink (tmpfname)
         ppd.writeFd (tmpfd)
+        os.lseek (tmpfd, 0, os.SEEK_SET)
+        f = os.fdopen (tmpfd, "r")
         search = "*cupsFilter:"
-        for line in file (tmpfname).readlines ():
+        for line in f.readlines ():
             if line.startswith (search):
                 line = line[len (search):].strip ().strip ('"')
                 try:

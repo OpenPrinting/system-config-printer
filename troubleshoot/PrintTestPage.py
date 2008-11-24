@@ -323,7 +323,11 @@ class PrintTestPage(Question):
                     jobid = c.printTestPage (answers['cups_queue'],
                                              file=tmpfname,
                                              format=mimetype)
-                    os.unlink (tmpfname)
+                    try:
+                        os.unlink (tmpfname)
+                    except OSError:
+                        pass
+
                     tmpfname = None
 
                 jobs = self.persistent_answers.get ('test_page_job_id', [])
