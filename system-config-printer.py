@@ -1715,6 +1715,8 @@ class GUI(GtkGUI, monitor.Watcher):
             else:
                 show_IPP_Error(e, msg, self.MainWindow)
 
+        os.unlink (tmpfname)
+
     def on_btnSelfTest_clicked(self, button):
         self.maintenance_command ("PrintSelfTestPage")
 
