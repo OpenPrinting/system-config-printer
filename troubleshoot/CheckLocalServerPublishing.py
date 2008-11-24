@@ -29,7 +29,7 @@ class CheckLocalServerPublishing(Question):
                                     "as being shared, this print server is "
                                     "not exporting shared printers to the "
                                     "network.") + '\n\n' +
-                                  _("Enable the 'Share published printers "
+                                  _("Enable the 'Publish shared printers "
                                     "connected to this system' option in "
                                     "the server settings using the printing "
                                     "administration tool.") + ' ' +
