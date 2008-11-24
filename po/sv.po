@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-11-18 13:18+0000\n"
+"POT-Creation-Date: 2008-11-24 17:26+0000\n"
 "PO-Revision-Date: 2008-11-18 09:14-0500\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -79,7 +79,7 @@ msgid "CUPS server error"
 msgstr "Fel i CUPS-server"
 
 #: ../authconn.py:188 ../errordialogs.py:57
-#: ../troubleshoot/PrintTestPage.py:344
+#: ../troubleshoot/PrintTestPage.py:348
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Det inträffade ett fel vid CUPS-operationen \"%s\"."
@@ -88,16 +88,21 @@ msgstr "Det inträffade ett fel vid CUPS-operationen \"%s\"."
 msgid "Retry"
 msgstr "Försök igen"
 
-#: ../authconn.py:292 ../authconn.py:294 ../errordialogs.py:65 ../pysmb.py:75
+#: ../authconn.py:205
+#, fuzzy
+msgid "Operation canceled"
+msgstr "Operationspolicy:"
+
+#: ../authconn.py:298 ../authconn.py:300 ../errordialogs.py:65 ../pysmb.py:75
 #: ../pysmb.py:77
 msgid "Not authorized"
 msgstr "Inte behörig"
 
-#: ../authconn.py:295 ../pysmb.py:78
+#: ../authconn.py:301 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "Lösenordet kan vara felaktigt."
 
-#: ../authconn.py:301
+#: ../authconn.py:307
 #, python-format
 msgid "Authentication (%s)"
 msgstr "Autentisering (%s)"
@@ -204,7 +209,7 @@ msgstr "Dokument"
 
 #: ../jobviewer.py:176 ../jobviewer.py:228 ../my-default-printer.py:153
 #: ../system-config-printer.py:346 ../system-config-printer.py:1298
-#: ../system-config-printer.py:3802 ../troubleshoot/PrintTestPage.py:82
+#: ../system-config-printer.py:3809 ../troubleshoot/PrintTestPage.py:82
 msgid "Printer"
 msgstr "Skrivare"
 
@@ -243,8 +248,8 @@ msgid "Message"
 msgstr "Meddelande"
 
 #: ../jobviewer.py:391 ../jobviewer.py:457 ../jobviewer.py:458
-#: ../jobviewer.py:495 ../jobviewer.py:561 ../jobviewer.py:715
-#: ../system-config-printer.py:2355 ../glade/NewPrinterWindow.glade.h:102
+#: ../jobviewer.py:498 ../jobviewer.py:564 ../jobviewer.py:718
+#: ../system-config-printer.py:2362 ../glade/NewPrinterWindow.glade.h:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
@@ -283,7 +288,7 @@ msgstr "%d timmar och 1 minut sedan"
 msgid "%d hours and %d minutes ago"
 msgstr "%d timmar och %d minuter sedan"
 
-#: ../jobviewer.py:420 ../jobviewer.py:461
+#: ../jobviewer.py:420
 msgid "a minute ago"
 msgstr "en minut sedan"
 
@@ -292,122 +297,122 @@ msgstr "en minut sedan"
 msgid "%d minutes ago"
 msgstr "%d minuter sedan"
 
-#: ../jobviewer.py:547
+#: ../jobviewer.py:550
 msgid "Held for authentication"
 msgstr "Hålls kvar för autentisering"
 
-#: ../jobviewer.py:550 ../troubleshoot/PrintTestPage.py:39
+#: ../jobviewer.py:553 ../troubleshoot/PrintTestPage.py:39
 msgid "Pending"
 msgstr "Väntar"
 
-#: ../jobviewer.py:551 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:554 ../troubleshoot/PrintTestPage.py:40
 msgid "Held"
 msgstr "Kvarhållen"
 
-#: ../jobviewer.py:552 ../system-config-printer.py:173
+#: ../jobviewer.py:555 ../system-config-printer.py:173
 #: ../troubleshoot/PrintTestPage.py:41
 msgid "Processing"
 msgstr "Behandlar"
 
-#: ../jobviewer.py:553 ../system-config-printer.py:175
+#: ../jobviewer.py:556 ../system-config-printer.py:175
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Stopped"
 msgstr "Stoppad"
 
-#: ../jobviewer.py:554 ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:557 ../troubleshoot/PrintTestPage.py:43
 msgid "Canceled"
 msgstr "Avbruten"
 
-#: ../jobviewer.py:555 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:558 ../troubleshoot/PrintTestPage.py:44
 msgid "Aborted"
 msgstr "Avbruten"
 
-#: ../jobviewer.py:556 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:559 ../troubleshoot/PrintTestPage.py:45
 msgid "Completed"
 msgstr "Färdig"
 
-#: ../jobviewer.py:630 ../jobviewer.py:749
+#: ../jobviewer.py:633 ../jobviewer.py:752
 msgid "authenticating job"
 msgstr "Autentiserar jobb"
 
-#: ../jobviewer.py:645
+#: ../jobviewer.py:648
 msgid "Authentication Required"
 msgstr "Autentisering krävs"
 
-#: ../jobviewer.py:646
+#: ../jobviewer.py:649
 msgid "Job requires authentication to proceed."
 msgstr "Jobbet kräver autentisering för att fortsätta."
 
-#: ../jobviewer.py:654 ../glade/job_popupmenu.glade.h:1
+#: ../jobviewer.py:657 ../glade/job_popupmenu.glade.h:1
 msgid "Authenticate"
 msgstr "Autentisera"
 
-#: ../jobviewer.py:713
+#: ../jobviewer.py:716
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "Autentisering krävs för utskrift av dokumentet \"%s\" (jobb %d)"
 
-#: ../jobviewer.py:880
+#: ../jobviewer.py:883
 msgid "Cancel Job"
 msgstr "Avbryt jobb"
 
-#: ../jobviewer.py:894
+#: ../jobviewer.py:897
 msgid "Do you really want to cancel this job?"
 msgstr "Vill du verkligen avbryta detta jobb?"
 
-#: ../jobviewer.py:922
+#: ../jobviewer.py:925
 msgid "canceling job"
 msgstr "avbryter jobb"
 
-#: ../jobviewer.py:946
+#: ../jobviewer.py:949
 msgid "holding job"
 msgstr "håller kvar jobb"
 
-#: ../jobviewer.py:970
+#: ../jobviewer.py:973
 msgid "releasing job"
 msgstr "släpper jobb"
 
-#: ../jobviewer.py:1080
+#: ../jobviewer.py:1083
 msgid "No documents queued"
 msgstr "Inga dokument köade"
 
-#: ../jobviewer.py:1082
+#: ../jobviewer.py:1085
 msgid "1 document queued"
 msgstr "1 dokument är köat"
 
-#: ../jobviewer.py:1084
+#: ../jobviewer.py:1087
 #, python-format
 msgid "%d documents queued"
 msgstr "%d dokument är köade"
 
-#: ../jobviewer.py:1291
+#: ../jobviewer.py:1294
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr ""
 "Det uppstod ett problem vid sändning av dokumentet \"%s\" (jobb %d) till "
 "skrivaren."
 
-#: ../jobviewer.py:1294
+#: ../jobviewer.py:1297
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "Det uppstod ett problem vid behandling av dokumentet \"%s\" (jobb %d)."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1300
+#: ../jobviewer.py:1303
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
 "Det uppstod ett problem vid utskrift av dokumentet \"%s\" (jobb %d): `%s'."
 
-#: ../jobviewer.py:1307 ../jobviewer.py:1323
+#: ../jobviewer.py:1310 ../jobviewer.py:1326
 msgid "Print Error"
 msgstr "Utskriftsfel"
 
-#: ../jobviewer.py:1308
+#: ../jobviewer.py:1311
 msgid "_Diagnose"
 msgstr "_Diagnosticera"
 
-#: ../jobviewer.py:1329
+#: ../jobviewer.py:1332
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "Skrivaren med namnet \"%s\" har inaktiverats."
@@ -425,7 +430,7 @@ msgid "_Set Default"
 msgstr "_Ställ in som standard"
 
 #: ../my-default-printer.py:158 ../system-config-printer.py:403
-#: ../system-config-printer.py:3410 ../troubleshoot/ChooseNetworkPrinter.py:36
+#: ../system-config-printer.py:3417 ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
 msgstr "Placering"
@@ -450,7 +455,7 @@ msgstr "Stoppa skrivare"
 msgid "Default behavior"
 msgstr "Standarduppförande"
 
-#: ../ppdippstr.py:49 ../system-config-printer.py:5511
+#: ../ppdippstr.py:49 ../system-config-printer.py:5518
 msgid "None"
 msgstr "Ingen"
 
@@ -785,7 +790,7 @@ msgid "Connected to %s"
 msgstr "Ansluten till %s"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1189 ../system-config-printer.py:1977
+#: ../system-config-printer.py:1189 ../system-config-printer.py:1982
 msgid "obtaining queue details"
 msgstr "hämtar ködetaljer"
 
@@ -801,7 +806,7 @@ msgstr "Nätverksskrivare (upptäckt)"
 msgid "Network class (discovered)"
 msgstr "Nätverksklass (upptäckt)"
 
-#: ../system-config-printer.py:1301 ../system-config-printer.py:3803
+#: ../system-config-printer.py:1301 ../system-config-printer.py:3810
 msgid "Fax"
 msgstr "Fax"
 
@@ -828,7 +833,7 @@ msgstr "Installerbara alternativ"
 msgid "Printer Options"
 msgstr "Skrivaralternativ"
 
-#: ../system-config-printer.py:1842
+#: ../system-config-printer.py:1847
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -838,23 +843,23 @@ msgstr ""
 "Ändringar kan bara användas efter\n"
 "dessa konflikter har lösts."
 
-#: ../system-config-printer.py:1859
+#: ../system-config-printer.py:1864
 #, python-format
 msgid "modifying class %s"
 msgstr "ändrar klassen %s"
 
-#: ../system-config-printer.py:1861 ../system-config-printer.py:2820
-#: ../system-config-printer.py:2845 ../system-config-printer.py:5804
-#: ../system-config-printer.py:5815 ../system-config-printer.py:5833
+#: ../system-config-printer.py:1866 ../system-config-printer.py:2827
+#: ../system-config-printer.py:2852 ../system-config-printer.py:5814
+#: ../system-config-printer.py:5825 ../system-config-printer.py:5843
 #, python-format
 msgid "modifying printer %s"
 msgstr "ändrar skrivaren %s"
 
-#: ../system-config-printer.py:1876
+#: ../system-config-printer.py:1881
 msgid "This will delete this class!"
 msgstr "Detta kommer ta bort denna klass!"
 
-#: ../system-config-printer.py:1877
+#: ../system-config-printer.py:1882
 msgid "Proceed anyway?"
 msgstr "Fortsätt ändå?"
 
@@ -862,44 +867,44 @@ msgstr "Fortsätt ändå?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:1965 ../system-config-printer.py:3004
+#: ../system-config-printer.py:1970 ../system-config-printer.py:3011
 msgid "fetching server settings"
 msgstr "hämtar serverinställningar"
 
-#: ../system-config-printer.py:2032
+#: ../system-config-printer.py:2037
 msgid "Set Default Printer"
 msgstr "Ange standardskrivare"
 
-#: ../system-config-printer.py:2034
+#: ../system-config-printer.py:2039
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "Vill du ange denna skrivare som systemets standard?"
 
-#: ../system-config-printer.py:2036
+#: ../system-config-printer.py:2041
 msgid "Set as the _system-wide default printer"
 msgstr "Ange som _systemets standardskrivare"
 
-#: ../system-config-printer.py:2038
+#: ../system-config-printer.py:2043
 msgid "_Clear my personal default setting"
 msgstr "_Töm min personliga standardinställning"
 
-#: ../system-config-printer.py:2039
+#: ../system-config-printer.py:2044
 msgid "Set as my _personal default printer"
 msgstr "Ange som min _personliga standardskrivare"
 
-#: ../system-config-printer.py:2044
+#: ../system-config-printer.py:2049
 msgid "setting default printer"
 msgstr "anger standardskrivare"
 
-#: ../system-config-printer.py:2089
+#: ../system-config-printer.py:2094
 msgid "printing test page"
 msgstr "skriver ut testsida"
 
-#: ../system-config-printer.py:2102 ../system-config-printer.py:2135
-#: ../system-config-printer.py:4900
+#: ../system-config-printer.py:2107 ../system-config-printer.py:2140
+#: ../system-config-printer.py:4907
 msgid "Not possible"
 msgstr "Inte möjligt"
 
-#: ../system-config-printer.py:2103 ../system-config-printer.py:2136
+#: ../system-config-printer.py:2108 ../system-config-printer.py:2141
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -907,20 +912,20 @@ msgstr ""
 "Fjärrservern accepterade inte utskriftsjobbet, troligen på grund av att "
 "skrivaren inte är utdelad."
 
-#: ../system-config-printer.py:2113 ../system-config-printer.py:2128
+#: ../system-config-printer.py:2118 ../system-config-printer.py:2133
 msgid "Submitted"
 msgstr "Skickad"
 
-#: ../system-config-printer.py:2114
+#: ../system-config-printer.py:2119
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testsida skickad som jobb %d"
 
-#: ../system-config-printer.py:2121
+#: ../system-config-printer.py:2126
 msgid "sending maintenance command"
 msgstr "skickar underhållskommando"
 
-#: ../system-config-printer.py:2129
+#: ../system-config-printer.py:2134
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Underhållskommando skickat som jobb %d"
@@ -928,61 +933,61 @@ msgstr "Underhållskommando skickat som jobb %d"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2198 ../system-config-printer.py:2294
+#: ../system-config-printer.py:2205 ../system-config-printer.py:2301
 msgid "Error"
 msgstr "Fel"
 
-#: ../system-config-printer.py:2199
+#: ../system-config-printer.py:2206
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Det uppstod ett problem vid anslutning till CUPS-servern."
 
-#: ../system-config-printer.py:2295
+#: ../system-config-printer.py:2302
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Alternativet \"%s\" har värdet \"%s\" och kan inte redigeras."
 
-#: ../system-config-printer.py:2565
+#: ../system-config-printer.py:2572
 msgid "Cannot Rename"
 msgstr "Kan inte byta namn"
 
-#: ../system-config-printer.py:2566
+#: ../system-config-printer.py:2573
 msgid "There are queued jobs."
 msgstr "Det finns kölagda jobb."
 
-#: ../system-config-printer.py:2624
+#: ../system-config-printer.py:2631
 msgid "renaming printer"
 msgstr "byter namn på skrivare"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:2709
+#: ../system-config-printer.py:2716
 msgid "copying printer"
 msgstr "kopierar skrivare"
 
-#: ../system-config-printer.py:2773
+#: ../system-config-printer.py:2780
 #, python-format
 msgid "Really delete class `%s'?"
 msgstr "Verkligen ta bort klassen \"%s\"?"
 
-#: ../system-config-printer.py:2775
+#: ../system-config-printer.py:2782
 #, python-format
 msgid "Really delete printer `%s'?"
 msgstr "Verkligen ta bort skrivaren \"%s\"?"
 
-#: ../system-config-printer.py:2777
+#: ../system-config-printer.py:2784
 msgid "Really delete selected destinations?"
 msgstr "Verkligen ta bort markerade mål?"
 
-#: ../system-config-printer.py:2798
+#: ../system-config-printer.py:2805
 #, python-format
 msgid "deleting printer %s"
 msgstr "tar bort skrivaren %s"
 
-#: ../system-config-printer.py:2870
+#: ../system-config-printer.py:2877
 msgid "Publish Shared Printers"
 msgstr "Publicera utdelade skrivare"
 
-#: ../system-config-printer.py:2871
+#: ../system-config-printer.py:2878
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -991,7 +996,7 @@ msgstr ""
 "alternativet \"Publicera utdelade skrivare\" har aktiverats i "
 "serverinställningarna."
 
-#: ../system-config-printer.py:3065
+#: ../system-config-printer.py:3072
 msgid "modifying server settings"
 msgstr "ändrar serverinställningar"
 
@@ -1001,11 +1006,11 @@ msgstr "ändrar serverinställningar"
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:3090
+#: ../system-config-printer.py:3097
 msgid "Review Firewall"
 msgstr "Granska brandväggen"
 
-#: ../system-config-printer.py:3091
+#: ../system-config-printer.py:3098
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
@@ -1013,25 +1018,25 @@ msgstr ""
 "Du kan behöva justera brandväggen för att tillåta nätverksutskrifter till "
 "denna dator."
 
-#: ../system-config-printer.py:3373
+#: ../system-config-printer.py:3380
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "Bläddring är inte tillgänglig (pysmbc inte installerad)"
 
 #. SMB list columns
-#: ../system-config-printer.py:3379
+#: ../system-config-printer.py:3386
 msgid "Share"
 msgstr "Utdelning"
 
-#: ../system-config-printer.py:3385
+#: ../system-config-printer.py:3392
 msgid "Comment"
 msgstr "Kommentar"
 
 #. IPP list columns
-#: ../system-config-printer.py:3404
+#: ../system-config-printer.py:3411
 msgid "Queue"
 msgstr "Kö"
 
-#: ../system-config-printer.py:3418
+#: ../system-config-printer.py:3425
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -1039,46 +1044,46 @@ msgstr ""
 "PostScript-skrivarbeskrivningsfiler (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD."
 "GZ)"
 
-#: ../system-config-printer.py:3427
+#: ../system-config-printer.py:3434
 msgid "All files (*)"
 msgstr "Alla filer (*)"
 
-#: ../system-config-printer.py:3463 ../system-config-printer.py:5215
-#: ../system-config-printer.py:5253
+#: ../system-config-printer.py:3470 ../system-config-printer.py:5222
+#: ../system-config-printer.py:5260
 msgid "Search"
 msgstr "Sök"
 
-#: ../system-config-printer.py:3477 ../glade/NewPrinterWindow.glade.h:71
+#: ../system-config-printer.py:3484 ../glade/NewPrinterWindow.glade.h:71
 msgid "New Printer"
 msgstr "Ny skrivare"
 
-#: ../system-config-printer.py:3487
+#: ../system-config-printer.py:3495
 msgid "New Class"
 msgstr "Ny klass"
 
-#: ../system-config-printer.py:3492
+#: ../system-config-printer.py:3500
 msgid "Change Device URI"
 msgstr "Ändra enhets-URI"
 
-#: ../system-config-printer.py:3496
+#: ../system-config-printer.py:3504
 msgid "Change Driver"
 msgstr "Ändra drivrutin"
 
-#: ../system-config-printer.py:3644 ../system-config-printer.py:3711
-#: ../system-config-printer.py:4014 ../system-config-printer.py:4196
-#: ../system-config-printer.py:5240
+#: ../system-config-printer.py:3652 ../system-config-printer.py:3718
+#: ../system-config-printer.py:4021 ../system-config-printer.py:4203
+#: ../system-config-printer.py:5247
 msgid "Searching"
 msgstr "Söker"
 
-#: ../system-config-printer.py:3645
+#: ../system-config-printer.py:3653
 msgid "Searching for downloadable drivers"
 msgstr "Söker efter drivrutiner som kan hämtas ner"
 
-#: ../system-config-printer.py:3712 ../system-config-printer.py:4015
+#: ../system-config-printer.py:3719 ../system-config-printer.py:4022
 msgid "Searching for drivers"
 msgstr "Söker efter drivrutiner"
 
-#: ../system-config-printer.py:3804
+#: ../system-config-printer.py:3811
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
@@ -1086,31 +1091,31 @@ msgstr ""
 "Denna skrivare har stöd för både utskrifter och att skicka fax. Vilken "
 "funktionalitet ska användas för denna kö?"
 
-#: ../system-config-printer.py:4197
+#: ../system-config-printer.py:4204
 msgid "Searching for printers"
 msgstr "Söker efter skrivare"
 
-#: ../system-config-printer.py:4206
+#: ../system-config-printer.py:4213
 msgid "fetching device list"
 msgstr "hämtar enhetslista"
 
-#: ../system-config-printer.py:4350
+#: ../system-config-printer.py:4357
 msgid " (Current)"
 msgstr " (Aktuell)"
 
-#: ../system-config-printer.py:4423
+#: ../system-config-printer.py:4430
 msgid "Other"
 msgstr "Övriga"
 
-#: ../system-config-printer.py:4466 ../system-config-printer.py:4862
+#: ../system-config-printer.py:4473 ../system-config-printer.py:4869
 msgid "Scanning..."
 msgstr "Söker..."
 
-#: ../system-config-printer.py:4521
+#: ../system-config-printer.py:4528
 msgid "No Print Shares"
 msgstr "Inga skrivarutdelningar"
 
-#: ../system-config-printer.py:4522
+#: ../system-config-printer.py:4529
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1118,32 +1123,32 @@ msgstr ""
 "Det gick inte att hitta några skrivarutdelningar. Kontrollera att Samba-"
 "tjänsten är markerad som pålitlig i din brandväggskonfiguration."
 
-#: ../system-config-printer.py:4783 ../system-config-printer.py:4844
+#: ../system-config-printer.py:4790 ../system-config-printer.py:4851
 msgid "Print Share Verified"
 msgstr "Skrivarutdelning validerad"
 
-#: ../system-config-printer.py:4784 ../system-config-printer.py:4845
+#: ../system-config-printer.py:4791 ../system-config-printer.py:4852
 msgid "This print share is accessible."
 msgstr "Den här utdelade skrivaren är tillgänglig."
 
-#: ../system-config-printer.py:4789 ../system-config-printer.py:4849
+#: ../system-config-printer.py:4796 ../system-config-printer.py:4856
 msgid "This print share is not accessible."
 msgstr "Den utdelade skrivaren är inte åtkomlig."
 
-#: ../system-config-printer.py:4792
+#: ../system-config-printer.py:4799
 msgid "Print Share Inaccessible"
 msgstr "Skrivarutdelning inte tillgänglig"
 
-#: ../system-config-printer.py:4848
+#: ../system-config-printer.py:4855
 msgid "Inaccessible"
 msgstr "Oåtkomlig"
 
-#: ../system-config-printer.py:4901
+#: ../system-config-printer.py:4908
 #, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "Det var inte möjligt att hämta en lista över köer från \"%s\"."
 
-#: ../system-config-printer.py:4903
+#: ../system-config-printer.py:4910
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
@@ -1151,23 +1156,23 @@ msgstr ""
 "Hämtning av en lista över köer är ett CUPS-tillägg till IPP. "
 "Nätverksskrivare har inte stöd för detta."
 
-#: ../system-config-printer.py:4906
+#: ../system-config-printer.py:4913
 msgid "No queues"
 msgstr "Inga köer"
 
-#: ../system-config-printer.py:4907
+#: ../system-config-printer.py:4914
 msgid "There are no queues available."
 msgstr "Det finns inga köer tillgängliga."
 
-#: ../system-config-printer.py:4997
+#: ../system-config-printer.py:5004
 msgid "A printer connected to the parallel port."
 msgstr "En skrivare ansluten till parallellporten."
 
-#: ../system-config-printer.py:4999
+#: ../system-config-printer.py:5006
 msgid "A printer connected to a USB port."
 msgstr "En skrivare ansluten till en USB-port."
 
-#: ../system-config-printer.py:5001
+#: ../system-config-printer.py:5008
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1175,7 +1180,7 @@ msgstr ""
 "HPLIP-programvara driver en skrivare eller skrivfunktionen för en "
 "multifunktionsenhet."
 
-#: ../system-config-printer.py:5004
+#: ../system-config-printer.py:5011
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1183,39 +1188,39 @@ msgstr ""
 "HPLIP-programvara en fax-maskin eller faxfunktionen för en "
 "multifunktionsenhet."
 
-#: ../system-config-printer.py:5007
+#: ../system-config-printer.py:5014
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Lokal skrivare upptäckt av Hardware Abstraction Layer (HAL)."
 
-#: ../system-config-printer.py:5265
+#: ../system-config-printer.py:5272
 msgid "-- Select from search results --"
 msgstr "-- Välj från sökresultatet --"
 
-#: ../system-config-printer.py:5267
+#: ../system-config-printer.py:5274
 msgid "-- No matches found --"
 msgstr "-- Inga sökträffar hittades --"
 
-#: ../system-config-printer.py:5453
+#: ../system-config-printer.py:5460
 msgid " (recommended)"
 msgstr " (rekommenderad)"
 
-#: ../system-config-printer.py:5467
+#: ../system-config-printer.py:5474
 msgid "This PPD is generated by foomatic."
 msgstr "Denna PPD är genererad av foomatic."
 
-#: ../system-config-printer.py:5493
+#: ../system-config-printer.py:5500
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:5504
+#: ../system-config-printer.py:5511
 msgid "Distributable"
 msgstr "Distribuerbar"
 
-#: ../system-config-printer.py:5545
+#: ../system-config-printer.py:5552
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:5550
+#: ../system-config-printer.py:5557
 #, python-format
 msgid ""
 "\n"
@@ -1224,20 +1229,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:5555
+#: ../system-config-printer.py:5562
 msgid "No support contacts known"
 msgstr "Inga stödkontakter kända"
 
-#: ../system-config-printer.py:5559 ../system-config-printer.py:5572
+#: ../system-config-printer.py:5566 ../system-config-printer.py:5579
 msgid "Not specified."
 msgstr "Inte angiven."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:5612
+#: ../system-config-printer.py:5621
 msgid "Database error"
 msgstr "Databasfel"
 
-#: ../system-config-printer.py:5613
+#: ../system-config-printer.py:5622
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Drivrutinen \"%s\" kan inte användas med skrivaren \"%s %s\"."
@@ -1245,66 +1250,66 @@ msgstr "Drivrutinen \"%s\" kan inte användas med skrivaren \"%s %s\"."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:5623
+#: ../system-config-printer.py:5632
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Du behöver installera paketet \"%s\" för att använda denna drivrutin."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:5630
+#: ../system-config-printer.py:5639
 msgid "PPD error"
 msgstr "PPD-fel"
 
-#: ../system-config-printer.py:5632
+#: ../system-config-printer.py:5641
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Misslyckades att läsa PPD-filen. Möjliga anledningar är:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:5649
+#: ../system-config-printer.py:5658
 msgid "Downloadable drivers"
 msgstr "Hämtningsbara drivrutiner"
 
-#: ../system-config-printer.py:5650
+#: ../system-config-printer.py:5659
 msgid "Failed to download PPD."
 msgstr "Misslyckades med att hämta PPD."
 
-#: ../system-config-printer.py:5683 ../system-config-printer.py:5721
+#: ../system-config-printer.py:5693 ../system-config-printer.py:5731
 msgid "No Installable Options"
 msgstr "Inga installerbara alternativ"
 
-#: ../system-config-printer.py:5767
+#: ../system-config-printer.py:5777
 msgid "Adding"
 msgstr "Lägger till"
 
-#: ../system-config-printer.py:5768
+#: ../system-config-printer.py:5778
 msgid "Adding printer"
 msgstr "Lägger till skrivare"
 
-#: ../system-config-printer.py:5773
+#: ../system-config-printer.py:5783
 #, python-format
 msgid "adding printer %s"
 msgstr "lägger till skrivaren %s"
 
-#: ../system-config-printer.py:5918
+#: ../system-config-printer.py:5929
 msgid "Would you like to print a test page?"
 msgstr "Vill du skriva ut en testsida?"
 
-#: ../system-config-printer.py:5971
+#: ../system-config-printer.py:5982
 msgid "Install driver"
 msgstr "Installera drivrutin"
 
-#: ../system-config-printer.py:5972
+#: ../system-config-printer.py:5983
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Skrivaren \"%s\" kräver paketet %s men det är inte installerat för "
 "närvarande."
 
-#: ../system-config-printer.py:5988
+#: ../system-config-printer.py:5999
 msgid "Missing driver"
 msgstr "Saknad drivrutin"
 
-#: ../system-config-printer.py:5989
+#: ../system-config-printer.py:6000
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2544,8 +2549,9 @@ msgstr ""
 "denna skrivarserver några utdelade skrivare till nätverket."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:32
+#, fuzzy
 msgid ""
-"Enable the 'Share published printers connected to this system' option in the "
+"Enable the 'Publish shared printers connected to this system' option in the "
 "server settings using the printing administration tool."
 msgstr ""
 "Aktivera alternativet \"Dela ut publicerade skrivare anslutna till detta "
@@ -2657,11 +2663,11 @@ msgstr ""
 msgid "Enable Debugging"
 msgstr "Aktivera felsökning"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:171
+#: ../troubleshoot/ErrorLogCheckpoint.py:179
 msgid "Debug logging enabled."
 msgstr "Felsökningslogg aktiverad."
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:173
+#: ../troubleshoot/ErrorLogCheckpoint.py:181
 msgid "Debug logging was already enabled."
 msgstr "Felsökningslogg var redan aktiverat."
 
@@ -2678,7 +2684,7 @@ msgstr ""
 msgid "Disable Debugging"
 msgstr "Inaktivera felsökning"
 
-#: ../troubleshoot/ErrorLogFetch.py:119
+#: ../troubleshoot/ErrorLogFetch.py:122
 msgid "Debug logging disabled."
 msgstr "Felsökningslogg inaktiverad."
 
@@ -2768,7 +2774,7 @@ msgstr "Nej"
 msgid "Remember to load paper of type '%s' into the printer first."
 msgstr "Kom ihåg att först ladda skrivaren med papper av typen \"%s\"."
 
-#: ../troubleshoot/PrintTestPage.py:343
+#: ../troubleshoot/PrintTestPage.py:347
 msgid "Error submitting test page"
 msgstr "Fel vid sändning av testsida"
 
