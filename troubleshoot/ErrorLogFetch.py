@@ -68,7 +68,10 @@ class ErrorLogFetch(Question):
                 c.getFile ('/admin/log/error_log', tmpfname)
                 success = True
             except cups.HTTPError:
-                os.remove (tmpfname)
+                try:
+                    os.remove (tmpfname)
+                except OSError:
+                    pass
 
             c._set_prompt_allowed (prompt)
             if success:
