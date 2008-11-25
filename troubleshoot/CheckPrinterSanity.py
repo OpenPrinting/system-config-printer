@@ -80,20 +80,23 @@ class CheckPrinterSanity(Question):
                 else:
                     cmdline = 'LC_ALL=C nmblookup "$HOST"'
                 try:
-                    p = subprocess.Popen (cmdline, shell=True,
-                                          stdin=file("/dev/null"),
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE)
-                    (stdout, stderr) = p.communicate ()
-                    self.answers['nmblookup_output'] = (stdout, stderr)
-                    for line in stdout.split ('\n'):
+                    p = TimedSubprocess (parent=self.troubleshooter.get_window (),
+                                         timeout=5000,
+                                         args=cmdline, shell=True,
+                                         stdin=file("/dev/null"),
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.PIPE)
+                    result = p.run ()
+                    self.answers['nmblookup_output'] = result
+                    for line in result[0]:
                         if line.startswith ("querying"):
                             continue
                         spc = line.find (' ')
                         if spc != -1:
+                            # Remember the IP address.
                             self.answers['remote_server_name'] = line[:spc]
                             break
-                except:
+                except OSError:
                     # Problem executing command.
                     pass
             elif scheme == "hp":
