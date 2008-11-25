@@ -24,6 +24,7 @@ import gobject
 import os
 import smburi
 import subprocess
+from timedops import TimedSubprocess
 import urllib
 from base import *
 class CheckPrinterSanity(Question):
