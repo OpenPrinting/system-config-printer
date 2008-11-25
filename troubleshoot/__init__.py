@@ -347,5 +347,6 @@ if __name__ == "__main__":
                 set_debugging (True)
     except getopt.GetoptError:
         pass
+    gtk.gdk.threads_init()
     run (gtk.main_quit)
     gtk.main ()
