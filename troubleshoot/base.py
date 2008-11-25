@@ -152,17 +152,23 @@ class TimedSubprocess:
         return True
 
     def show_wait_window (self):
-        wait = gtk.Window ()
+        wait = gtk.MessageDialog (self.parent,
+                                  gtk.DIALOG_MODAL |
+                                  gtk.DIALOG_DESTROY_WITH_PARENT,
+                                  gtk.MESSAGE_INFO,
+                                  gtk.BUTTONS_CANCEL,
+                                  _("Please wait"))
+        wait.connect ("delete_event", lambda *args: False)
+        wait.connect ("response", self.wait_window_response)
         if self.parent:
             wait.set_transient_for (self.parent)
-        wait.set_modal (True)
         wait.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
-        wait.set_border_width (12)
-        wait.set_title (_("Please wait"))
-        vbox = gtk.VBox ()
-        wait.add (vbox)
-        label = gtk.Label (_("Gathering information"))
-        vbox.pack_start (label)
+        wait.format_secondary_text (_("Gathering information"))
         wait.show_all ()
         self.wait_window = wait
         return False
+
+    def wait_window_response (self, dialog, response):
+        if (response == gtk.RESPONSE_CANCEL and self.watchers > 0):
+            debugprint ("Command canceled")
+            gtk.main_quit ()
