@@ -175,6 +175,7 @@ class TimedOperation:
         return False
 
     def show_wait_window (self):
+        gtk.gdk.threads_enter ()
         wait = gtk.MessageDialog (self.parent,
                                   gtk.DIALOG_MODAL |
                                   gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -188,6 +189,7 @@ class TimedOperation:
         wait.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
         wait.format_secondary_text (_("Gathering information"))
         wait.show_all ()
+        gtk.gdk.threads_leave ()
         self.wait_window = wait
         return False
 
