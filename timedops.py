@@ -152,30 +152,6 @@ class TimedOperation:
         self.thread.start ()
 
     def run (self):
-        if self.show_dialog:
-            self.wait_source = gobject.timeout_add (1000,
-                                                    self.show_wait_window)
-
-        self.timeout_source = gobject.timeout_add (50, self.check_thread)
-        gtk.main ()
-        gobject.source_remove (self.timeout_source)
-        if self.show_dialog:
-            gobject.source_remove (self.wait_source)
-        if self.wait_window != None:
-            self.wait_window.destroy ()
-        return self.thread.collect_result ()
-
-    def check_thread (self):
-        if self.thread.isAlive ():
-            # Thread still running.
-            return True
-
-        # Thread has finished.  Stop the sub-loop.
-        gtk.main_quit ()
-        return False
-
-    def show_wait_window (self):
-        gtk.gdk.threads_enter ()
         wait = gtk.MessageDialog (self.parent,
                                   gtk.DIALOG_MODAL |
                                   gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -189,8 +165,19 @@ class TimedOperation:
         wait.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
         wait.format_secondary_text (_("Gathering information"))
         wait.show_all ()
-        gtk.gdk.threads_leave ()
-        self.wait_window = wait
+        self.timeout_source = gobject.timeout_add (50, self.check_thread)
+        gtk.main ()
+        gobject.source_remove (self.timeout_source)
+        wait.destroy ()
+        return self.thread.collect_result ()
+
+    def check_thread (self):
+        if self.thread.isAlive ():
+            # Thread still running.
+            return True
+
+        # Thread has finished.  Stop the sub-loop.
+        gtk.main_quit ()
         return False
 
     def wait_window_response (self, dialog, response):
