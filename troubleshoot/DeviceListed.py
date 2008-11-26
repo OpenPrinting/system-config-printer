@@ -21,6 +21,7 @@
 
 import cups
 import gobject
+from timedops import TimedOperation
 from base import *
 class DeviceListed(Question):
     def __init__ (self, troubleshooter):
@@ -71,7 +72,8 @@ class DeviceListed(Question):
         devices = {}
         try:
             c = answers['_authenticated_connection']
-            devices = c.getDevices ()
+            p = TimedOperation (c.getDevices, parent=self.troubleshooter.get_window ())
+            devices = p.run ()
             devices_list = []
             for uri, device in devices.iteritems ():
                 if uri.find (':') == -1:
