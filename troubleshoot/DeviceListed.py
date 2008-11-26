@@ -68,6 +68,7 @@ class DeviceListed(Question):
         iter = model.append (None)
         model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
 
+        devices = {}
         try:
             cups.setServer ('')
             c = answers['_authenticated_connection']
