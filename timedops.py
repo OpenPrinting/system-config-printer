@@ -96,6 +96,9 @@ class TimedSubprocess:
             debugprint ("Command canceled")
             gtk.main_quit ()
 
+class OperationCanceled(RuntimeError):
+    pass
+
 class OperationThread(threading.Thread):
     def __init__ (self, target=None, args=(), kwargs={}):
         threading.Thread.__init__ (self)
@@ -118,7 +121,7 @@ class OperationThread(threading.Thread):
     def collect_result (self):
         if self.isAlive ():
             # We've been canceled.
-            raise RuntimeError
+            raise OperationCanceled()
 
         if self.exception:
             raise self.exception
