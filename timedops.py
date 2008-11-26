@@ -25,13 +25,15 @@ from gettext import gettext as _
 from debug import *
 
 class TimedSubprocess:
-    def __init__ (self, timeout=60000, parent=None, **args):
+    def __init__ (self, timeout=60000, parent=None, show_dialog=True,
+                  **args):
         self.subp = subprocess.Popen (**args)
         self.output = dict()
         self.io_source = []
         self.watchers = 2
         self.timeout = timeout
         self.parent = parent
+        self.show_dialog = show_dialog
         for f in [self.subp.stdout, self.subp.stderr]:
             source = gobject.io_add_watch (f,
                                            gobject.IO_IN |
@@ -43,11 +45,16 @@ class TimedSubprocess:
         self.wait_window = None
 
     def run (self):
+        if self.show_dialog:
+            self.wait_source = gobject.timeout_add (1000,
+                                                    self.show_wait_window)
+
         self.timeout_source = gobject.timeout_add (self.timeout,
                                                    self.do_timeout)
-        self.wait_source = gobject.timeout_add (1000, self.show_wait_window)
         gtk.main ()
-        self.io_source.extend ([self.timeout_source, self.wait_source])
+        gobject.source_remove (self.timeout_source)
+        if self.show_dialog:
+            gobject.source_remove (self.wait_source)
         for source in self.io_source:
             gobject.source_remove (source)
         if self.wait_window != None:
@@ -92,9 +99,14 @@ class TimedSubprocess:
         return False
 
     def wait_window_response (self, dialog, response):
-        if (response == gtk.RESPONSE_CANCEL and self.watchers > 0):
+        if response == gtk.RESPONSE_CANCEL:
+            self.cancel ()
+
+    def cancel (self):
+        if self.watchers > 0:
             debugprint ("Command canceled")
             gtk.main_quit ()
+            self.watchers = 0
 
 class OperationCanceled(RuntimeError):
     pass
@@ -129,20 +141,26 @@ class OperationThread(threading.Thread):
         return self.result
 
 class TimedOperation:
-    def __init__ (self, target, args=(), kwargs={}, parent=None):
+    def __init__ (self, target, args=(), kwargs={}, parent=None,
+                  show_dialog=True):
         self.wait_window = None
         self.parent = parent
+        self.show_dialog = show_dialog
         self.thread = OperationThread (target=target,
                                        args=args,
                                        kwargs=kwargs)
         self.thread.start ()
 
     def run (self):
-        self.wait_source = gobject.timeout_add (1000, self.show_wait_window)
+        if self.show_dialog:
+            self.wait_source = gobject.timeout_add (1000,
+                                                    self.show_wait_window)
+
         self.timeout_source = gobject.timeout_add (50, self.check_thread)
         gtk.main ()
-        for source in [self.wait_source, self.timeout_source]:
-            gobject.source_remove (source)
+        gobject.source_remove (self.timeout_source)
+        if self.show_dialog:
+            gobject.source_remove (self.wait_source)
         if self.wait_window != None:
             self.wait_window.destroy ()
         return self.thread.collect_result ()
@@ -175,5 +193,8 @@ class TimedOperation:
 
     def wait_window_response (self, dialog, response):
         if response == gtk.RESPONSE_CANCEL:
-            debugprint ("Command canceled")
-            gtk.main_quit ()
+            self.cancel ()
+
+    def cancel (self):
+        debugprint ("Command canceled")
+        gtk.main_quit ()
