@@ -116,7 +116,6 @@ class ErrorLogCheckpoint(Question):
         os.close (tmpfd)
         c = self.troubleshooter.answers['_authenticated_connection']
         try:
-            c = cups.Connection ()
             c.getFile ('/admin/log/error_log', tmpfname)
         except RuntimeError:
             try:
