@@ -47,7 +47,7 @@ class Welcome(Question):
         page = troubleshooter.new_page (welcome, self)
 
     def collect_answer (self):
-        parent = self.troubleshooter.main
+        parent = self.troubleshooter.get_window ()
         # Store the authentication dialog instance in the answers.  This
         # allows the password to be cached.
         return { '_authenticated_connection': authconn.Connection (parent) }
