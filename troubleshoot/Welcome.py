@@ -20,6 +20,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 from base import *
+from timedops import TimedOperation
 import authconn
 
 class Welcome(Question):
@@ -50,4 +51,10 @@ class Welcome(Question):
         parent = self.troubleshooter.get_window ()
         # Store the authentication dialog instance in the answers.  This
         # allows the password to be cached.
-        return { '_authenticated_connection': authconn.Connection (parent) }
+        self.op = TimedOperation (authconn.Connection,
+                                  args=(parent,),
+                                  parent=parent)
+        return { '_authenticated_connection': self.op.run () }
+
+    def cancel_operation (self):
+        self.op.cancel ()

@@ -24,7 +24,7 @@ import gobject
 import os
 import smburi
 import subprocess
-from timedops import TimedSubprocess
+from timedops import TimedOperation, TimedSubprocess
 import urllib
 from base import *
 class CheckPrinterSanity(Question):
@@ -44,18 +44,20 @@ class CheckPrinterSanity(Question):
 
         name = answers['cups_queue']
 
+        parent = self.troubleshooter.get_window ()
+
         # Find out if this is a printer or a class.
         try:
             cups.setServer ('')
-            c = cups.Connection ()
-            printers = c.getPrinters ()
+            c = TimedOperation (cups.Connection, parent=parent).run ()
+            printers = TimedOperation (c.getPrinters, parent=parent).run ()
             if printers.has_key (name):
                 self.answers['is_cups_class'] = False
                 queue = printers[name]
                 self.answers['cups_printer_dict'] = queue
             else:
                 self.answers['is_cups_class'] = True
-                classes = c.getClasses ()
+                classes = TimedOperation (c.getClasses, parent=parent).run ()
                 queue = classes[name]
                 self.answers['cups_class_dict'] = queue
         except:
@@ -81,7 +83,7 @@ class CheckPrinterSanity(Question):
                 else:
                     cmdline = 'LC_ALL=C nmblookup "$HOST"'
                 try:
-                    p = TimedSubprocess (parent=self.troubleshooter.get_window (),
+                    p = TimedSubprocess (parent=parent,
                                          timeout=5000,
                                          args=cmdline, shell=True,
                                          stdin=file("/dev/null"),
@@ -103,7 +105,7 @@ class CheckPrinterSanity(Question):
             elif scheme == "hp":
                 os.environ['URI'] = uri
                 try:
-                    p = TimedSubprocess (parent=self.troubleshooter.get_window (),
+                    p = TimedSubprocess (parent=parent,
                                          timeout=3000,
                                          args='LC_ALL=C DISPLAY= hp-info -d "$URI"',
                                          shell=True,

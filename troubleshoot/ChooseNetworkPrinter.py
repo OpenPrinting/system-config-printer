@@ -21,6 +21,7 @@
 
 import cups
 import gobject
+from timedops import TimedOperation
 from base import *
 class ChooseNetworkPrinter(Question):
     def __init__ (self, troubleshooter):
@@ -73,10 +74,14 @@ class ChooseNetworkPrinter(Question):
         iter = model.append (None)
         model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
 
+        parent = self.troubleshooter.get_window ()
+
         try:
             cups.setServer (server)
-            c = cups.Connection ()
-            dests = c.getDests ()
+            self.op = TimedOperation (cups.Connection, parent=parent)
+            c = self.op.run ()
+            self.op = TimedOperation (c.getDests, parent=parent)
+            dests = self.op.run ()
             printers = None
             dests_list = []
             for (name, instance), dest in dests.iteritems ():
@@ -89,7 +94,8 @@ class ChooseNetworkPrinter(Question):
                     queue = name
 
                 if printers == None:
-                    printers = c.getPrinters ()
+                    self.op = TimedOperation (c.getPrinters)
+                    printers = self.op.run ()
 
                 if not printers.has_key (name):
                     info = _("Unknown")
@@ -154,3 +160,6 @@ class ChooseNetworkPrinter(Question):
                      'remote_cups_dest': dest,
                      'remote_cups_queue': dest.name,
                      'remote_cups_instance': dest.instance }
+
+    def cancel_operation (self):
+        self.op.cancel ()

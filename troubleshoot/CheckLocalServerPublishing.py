@@ -20,6 +20,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+from timedops import TimedOperation
 from base import *
 class CheckLocalServerPublishing(Question):
     def __init__ (self, troubleshooter):
@@ -39,9 +40,10 @@ class CheckLocalServerPublishing(Question):
     def display (self):
         self.answers = {}
         cups.setServer ('')
+        parent = self.troubleshooter.get_window ()
         try:
-            c = cups.Connection ()
-            printers = c.getPrinters ()
+            c = self.timedop (cups.Connection, parent=parent).run ()
+            printers = self.timedop (c.getPrinters, parent=parent).run ()
             if len (printers) == 0:
                 return False
 
@@ -49,7 +51,9 @@ class CheckLocalServerPublishing(Question):
                 if printer.get ('printer-is-shared', False):
                     break
 
-            attr = c.getPrinterAttributes (name)
+            attr = self.timedop (c.getPrinterAttributes,
+                                 args=(name,),
+                                 parent=parent).run ()
         except RuntimeError:
             return False
         except cups.IPPError:
@@ -69,3 +73,10 @@ class CheckLocalServerPublishing(Question):
             return { 'local_server_exporting_printers': False }
 
         return {}
+
+    def cancel_operation (self):
+        self.op.cancel ()
+
+    def timedop (self, *args, **kwargs):
+        self.op = TimedOperation (*args, **kwargs)
+        return self.op

@@ -70,10 +70,11 @@ class DeviceListed(Question):
         model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
 
         devices = {}
+        parent = self.troubleshooter.get_window ()
         try:
             c = answers['_authenticated_connection']
-            p = TimedOperation (c.getDevices, parent=self.troubleshooter.get_window ())
-            devices = p.run ()
+            self.op = TimedOperation (c.getDevices, parent=parent)
+            devices = self.op.run ()
             devices_list = []
             for uri, device in devices.iteritems ():
                 if uri.find (':') == -1:
@@ -151,3 +152,6 @@ class DeviceListed(Question):
             self.answers['cups_device_attributes'] = device
 
         return self.answers
+
+    def cancel_operation (self):
+        self.op.cancel ()
