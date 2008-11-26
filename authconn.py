@@ -350,6 +350,13 @@ class Connection:
 
 if __name__ == '__main__':
     # Test it out.
+    from timedops import TimedOperation
+    gtk.gdk.threads_init ()
     set_debugging (True)
-    c = Connection (None)
-    print c.getFile ('/admin/conf/cupsd.conf', '/dev/stdout')
+    gtk.gdk.threads_enter ()
+    c = TimedOperation (Connection, args=(None,),
+                        kwargs={'lock': True}).run ()
+    print TimedOperation (c.getFile,
+                          args=('/admin/conf/cupsd.conf',
+                                '/dev/stdout')).run ()
+    gtk.gdk.threads_leave ()
