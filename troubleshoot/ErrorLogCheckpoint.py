@@ -22,6 +22,7 @@
 import cups
 import os
 import tempfile
+from timedops import TimedOperation
 from base import *
 class ErrorLogCheckpoint(Question):
     def __init__ (self, troubleshooter):
@@ -67,16 +68,20 @@ class ErrorLogCheckpoint(Question):
         if not answers['cups_queue_listed']:
             return False
 
-        # Fail if auth required.
-        cups.setPasswordCB (lambda x: '')
-        cups.setServer ('')
-        try:
+        parent = self.troubleshooter.get_window ()
+
+        def getServerSettings ():
+            # Fail if auth required.
+            cups.setPasswordCB (lambda x: '')
+            cups.setServer ('')
             c = cups.Connection ()
-        except RuntimeError:
-            return False
+            return c.adminGetServerSettings ()
 
         try:
-            settings = c.adminGetServerSettings ()
+            self.op = TimedOperation (getServerSettings, parent=parent)
+            settings = self.op.run ()
+        except RuntimeError:
+            return False
         except cups.IPPError:
             settings = {}
 
@@ -111,12 +116,16 @@ class ErrorLogCheckpoint(Question):
         if not answers['cups_queue_listed']:
             return {}
 
+        parent = self.troubleshooter.get_window ()
         self.answers.update (self.persistent_answers)
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.close (tmpfd)
         c = self.troubleshooter.answers['_authenticated_connection']
         try:
-            c.getFile ('/admin/log/error_log', tmpfname)
+            self.op = TimedOperation (c.getFile,
+                                      args=('/admin/log/error_log', tmpfname),
+                                      parent=parent)
+            self.op.run ()
         except RuntimeError:
             try:
                 os.remove (tmpfname)
@@ -143,9 +152,11 @@ class ErrorLogCheckpoint(Question):
     def enable_clicked (self, button, handler):
         self.forward_allowed = True
         handler (button)
+        parent = self.troubleshooter.get_window ()
         c = self.troubleshooter.answers['_authenticated_connection']
         try:
-            settings = c.adminGetServerSettings ()
+            self.op = TimedOperation (c.adminGetServerSettings, parent=parent)
+            settings = self.op.run ()
         except cups.IPPError:
             return
 
@@ -166,7 +177,10 @@ class ErrorLogCheckpoint(Question):
             success = False
             try:
                 debugprint ("Settings to set: " + repr (settings))
-                c.adminSetServerSettings (settings)
+                self.op = TimedOperation (c.adminSetServerSettings,
+                                          args=(settings,),
+                                          parent=parent)
+                self.op.run ()
                 success = True
             except cups.IPPError:
                 pass
@@ -178,3 +192,7 @@ class ErrorLogCheckpoint(Question):
                 self.label.set_text (_("Debug logging enabled."))
         else:
             self.label.set_text (_("Debug logging was already enabled."))
+
+    def cancel_operation (self):
+        self.op.cancel ()
+
