@@ -152,23 +152,28 @@ class TimedOperation:
         self.thread.start ()
 
     def run (self):
-        wait = gtk.MessageDialog (self.parent,
-                                  gtk.DIALOG_MODAL |
-                                  gtk.DIALOG_DESTROY_WITH_PARENT,
-                                  gtk.MESSAGE_INFO,
-                                  gtk.BUTTONS_CANCEL,
-                                  _("Please wait"))
-        wait.connect ("delete_event", lambda *args: False)
-        wait.connect ("response", self.wait_window_response)
-        if self.parent:
-            wait.set_transient_for (self.parent)
-        wait.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
-        wait.format_secondary_text (_("Gathering information"))
-        wait.show_all ()
+        if self.show_dialog:
+            wait = gtk.MessageDialog (self.parent,
+                                      gtk.DIALOG_MODAL |
+                                      gtk.DIALOG_DESTROY_WITH_PARENT,
+                                      gtk.MESSAGE_INFO,
+                                      gtk.BUTTONS_CANCEL,
+                                      _("Please wait"))
+            wait.connect ("delete_event", lambda *args: False)
+            wait.connect ("response", self.wait_window_response)
+            if self.parent:
+                wait.set_transient_for (self.parent)
+
+            wait.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
+            wait.format_secondary_text (_("Gathering information"))
+            wait.show_all ()
+
         self.timeout_source = gobject.timeout_add (50, self.check_thread)
         gtk.main ()
         gobject.source_remove (self.timeout_source)
-        wait.destroy ()
+        if self.show_dialog:
+            wait.destroy ()
+
         return self.thread.collect_result ()
 
     def check_thread (self):
