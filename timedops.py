@@ -24,7 +24,17 @@ import threading
 from gettext import gettext as _
 from debug import *
 
-class TimedSubprocess:
+class OperationCanceled(RuntimeError):
+    pass
+
+class Timed:
+    def run (self):
+        pass
+
+    def cancel (self):
+        pass
+
+class TimedSubprocess(Timed):
     def __init__ (self, timeout=60000, parent=None, show_dialog=True,
                   **args):
         self.subp = subprocess.Popen (**args)
@@ -108,9 +118,6 @@ class TimedSubprocess:
             gtk.main_quit ()
             self.watchers = 0
 
-class OperationCanceled(RuntimeError):
-    pass
-
 class OperationThread(threading.Thread):
     def __init__ (self, target=None, args=(), kwargs={}):
         threading.Thread.__init__ (self)
@@ -140,7 +147,7 @@ class OperationThread(threading.Thread):
 
         return self.result
 
-class TimedOperation:
+class TimedOperation(Timed):
     def __init__ (self, target, args=(), kwargs={}, parent=None,
                   show_dialog=False):
         self.wait_window = None
