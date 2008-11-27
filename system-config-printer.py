@@ -3747,35 +3747,7 @@ class NewPrinterGUI(GtkGUI):
             if device.type == "socket":
                 # Remove default port to more easily find duplicate URIs
                 device.uri = device.uri.replace (":9100", "")
-            try:
-                ## XXX This needs to be moved to *after* the device is
-                # selected.  Looping through all the network printers like
-                # this is far too slow.
-                if False and device.type in ("socket", "lpd", "ipp", "bluetooth"):
-                    host = self.getNetworkPrinterMakeModel(device)
-                    faxuri = None
-                    if host:
-                        faxuri = self.get_hplip_uri_for_network_printer(host,
-                                                                        "fax")
-                    if faxuri:
-                        fax_id_dict = \
-                            self.get_hpfax_device_id(faxuri)
-                        devices.append(cupshelpers.Device(faxuri,
-                              **{'device-class' : "direct",
-                                 'device-info' : device.info + " HP Fax HPLIP",
-                                 'device-device-make-and-model' : \
-                                     fax_id_dict["MFG"] + " " + \
-                                     fax_id_dict["MDL"],
-                                 'device-id' : \
-                                     "MFG:" + fax_id_dict["MFG"] + \
-                                     ";MDL:" + fax_id_dict["MDL"] + \
-                                     ";DES:" + \
-                                     fax_id_dict["DES"] + ";"}))
-                    if device.uri.startswith ("hp:"):
-                        device.type = "hp" 
-                        device.info += (" HPLIP")
-            except:
-                nonfatalException ()
+
         # Mark duplicate URIs for deletion
         for i in range (len (devices) - 1):
             for j in range (i + 1, len (devices)):
