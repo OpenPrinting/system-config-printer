@@ -43,6 +43,8 @@ from base import *
 
 class Troubleshooter:
     def __init__ (self, quitfn=None, parent=None):
+        self._in_module_call = False
+
         main = gtk.Window ()
         if parent:
             main.set_transient_for (parent)
@@ -103,6 +105,14 @@ class Troubleshooter:
         main.show_all ()
 
     def quit (self, *args):
+        if self._in_module_call:
+            try:
+                self.questions[self.current_page].cancel_operation ()
+            except:
+                self._report_traceback ()
+
+            return
+
         try:
             self.questions[self.current_page].disconnect_signals ()
         except:
@@ -271,11 +281,13 @@ class Troubleshooter:
 
     def _display (self, question):
         result = False
+        self._in_module_call = True
         try:
             result = question.display ()
         except:
             self._report_traceback ()
 
+        self._in_module_call = False
         question.displayed = result
         return result
 
@@ -287,11 +299,15 @@ class Troubleshooter:
             return True
 
     def _collect_answer (self, question):
+        answer = {}
+        self._in_module_call = True
         try:
-            return question.collect_answer ()
+            answer = question.collect_answer ()
         except:
             self._report_traceback ()
-            return {}
+
+        self._in_module_call = False
+        return answer
 
 QUESTIONS = ["Welcome",
              "SchedulerNotRunning",
