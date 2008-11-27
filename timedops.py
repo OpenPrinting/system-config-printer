@@ -142,7 +142,7 @@ class OperationThread(threading.Thread):
 
 class TimedOperation:
     def __init__ (self, target, args=(), kwargs={}, parent=None,
-                  show_dialog=True):
+                  show_dialog=False):
         self.wait_window = None
         self.parent = parent
         self.show_dialog = show_dialog
