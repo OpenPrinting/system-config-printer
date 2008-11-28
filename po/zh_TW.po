@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.1.0.x\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-11-24 17:24+0000\n"
+"POT-Creation-Date: 2008-11-28 17:44+0000\n"
 "PO-Revision-Date: 2008-11-18 10:34+1000\n"
 "Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
 "Language-Team:  <zh@li.org>\n"
@@ -58,11 +58,11 @@ msgstr ""
 msgid "Enter IP address"
 msgstr "輸入 IP 位址"
 
-#: ../authconn.py:30 ../system-config-printer.glade.h:250
+#: ../authconn.py:30 ../system-config-printer.glade.h:251
 msgid "Username:"
 msgstr "使用者名稱："
 
-#: ../authconn.py:31 ../system-config-printer.glade.h:184
+#: ../authconn.py:31 ../system-config-printer.glade.h:185
 msgid "Password:"
 msgstr "密碼："
 
@@ -150,7 +150,7 @@ msgstr "文件"
 
 #: ../jobviewer.py:188 ../jobviewer.py:252 ../my-default-printer.py:158
 #: ../system-config-printer.py:305 ../system-config-printer.py:898
-#: ../system-config-printer.py:3180 ../troubleshoot/PrintTestPage.py:79
+#: ../system-config-printer.py:3182 ../troubleshoot/PrintTestPage.py:79
 msgid "Printer"
 msgstr "印表機"
 
@@ -196,7 +196,7 @@ msgstr "訊息"
 #: ../troubleshoot/ChooseNetworkPrinter.py:100
 #: ../troubleshoot/ChoosePrinter.py:84 ../troubleshoot/ChoosePrinter.py:85
 #: ../troubleshoot/ChoosePrinter.py:88 ../troubleshoot/ChoosePrinter.py:89
-#: ../troubleshoot/DeviceListed.py:83 ../troubleshoot/DeviceListed.py:84
+#: ../troubleshoot/DeviceListed.py:84 ../troubleshoot/DeviceListed.py:85
 msgid "Unknown"
 msgstr "不明"
 
@@ -342,7 +342,7 @@ msgstr "使用系統預設值（_U）"
 msgid "_Set Default"
 msgstr "設定預設值（_S）"
 
-#: ../my-default-printer.py:163 ../system-config-printer.py:2779
+#: ../my-default-printer.py:163 ../system-config-printer.py:2780
 #: ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
@@ -400,7 +400,7 @@ msgstr "型號"
 msgid "Drivers"
 msgstr "驅動程式"
 
-#: ../system-config-printer.py:405 ../system-config-printer.glade.h:103
+#: ../system-config-printer.py:405 ../system-config-printer.glade.h:104
 msgid "Downloadable Drivers"
 msgstr "可下載的驅動程式"
 
@@ -435,7 +435,7 @@ msgstr "網路印表機（已發現）"
 msgid "Network class (discovered)"
 msgstr "網路組別（已發現）"
 
-#: ../system-config-printer.py:901 ../system-config-printer.py:3181
+#: ../system-config-printer.py:901 ../system-config-printer.py:3183
 msgid "Fax"
 msgstr "傳真"
 
@@ -461,7 +461,7 @@ msgstr ""
 msgid "Installable Options"
 msgstr "可安裝選項"
 
-#: ../system-config-printer.py:1410 ../system-config-printer.glade.h:198
+#: ../system-config-printer.py:1410 ../system-config-printer.glade.h:199
 msgid "Printer Options"
 msgstr "印表機選項"
 
@@ -513,7 +513,7 @@ msgid "Test page submitted as job %d"
 msgstr "測試頁已提交為 %d 工作"
 
 #: ../system-config-printer.py:1681 ../system-config-printer.py:1709
-#: ../system-config-printer.py:4398
+#: ../system-config-printer.py:4373
 msgid "Not possible"
 msgstr "不可能"
 
@@ -593,93 +593,97 @@ msgid ""
 "computer."
 msgstr "您可能需要調整防火牆來允許網路列印。"
 
-#: ../system-config-printer.py:2738 ../system-config-printer.py:2748
+#: ../system-config-printer.py:2739 ../system-config-printer.py:2749
 msgid "Share"
 msgstr "共享資源"
 
-#: ../system-config-printer.py:2744 ../system-config-printer.py:2754
+#: ../system-config-printer.py:2745 ../system-config-printer.py:2755
 msgid "Comment"
 msgstr "註解"
 
 #. IPP list columns
-#: ../system-config-printer.py:2773
+#: ../system-config-printer.py:2774
 msgid "Queue"
 msgstr "佇列"
 
-#: ../system-config-printer.py:2787
+#: ../system-config-printer.py:2788
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "PostScript 印表機的描述檔案（*.ppd、*.PPD、*.ppd.gz、*.PPD.gz、*.PPD.GZ）"
 
-#: ../system-config-printer.py:2796
+#: ../system-config-printer.py:2797
 msgid "All files (*)"
 msgstr "所有檔案（*）"
 
-#: ../system-config-printer.py:2834 ../system-config-printer.py:4713
-#: ../system-config-printer.py:4751
+#: ../system-config-printer.py:2835 ../system-config-printer.py:4735
+#: ../system-config-printer.py:4773
 msgid "Search"
 msgstr "搜尋"
 
-#: ../system-config-printer.py:2848 ../system-config-printer.glade.h:145
+#: ../system-config-printer.py:2849 ../system-config-printer.glade.h:146
 msgid "New Printer"
 msgstr "新印表機"
 
-#: ../system-config-printer.py:2859
+#: ../system-config-printer.py:2860
 msgid "New Class"
 msgstr "新組別"
 
-#: ../system-config-printer.py:2864
+#: ../system-config-printer.py:2865
 msgid "Change Device URI"
 msgstr "更改裝置 URI"
 
-#: ../system-config-printer.py:2868
+#: ../system-config-printer.py:2869
 msgid "Change Driver"
 msgstr "更改驅動程式"
 
-#: ../system-config-printer.py:3016 ../system-config-printer.py:3089
-#: ../system-config-printer.py:3406 ../system-config-printer.py:3588
-#: ../system-config-printer.py:4738
+#: ../system-config-printer.py:3017 ../system-config-printer.py:3090
+#: ../system-config-printer.py:3408 ../system-config-printer.py:3590
+#: ../system-config-printer.py:4760
 msgid "Searching"
 msgstr "搜尋中"
 
-#: ../system-config-printer.py:3017
+#: ../system-config-printer.py:3018
 msgid "Searching for downloadable drivers"
 msgstr "搜尋可下載的驅動程式"
 
-#: ../system-config-printer.py:3090 ../system-config-printer.py:3407
+#: ../system-config-printer.py:3091 ../system-config-printer.py:3409
 msgid "Searching for drivers"
 msgstr "搜尋驅動程式"
 
-#: ../system-config-printer.py:3182
+#: ../system-config-printer.py:3184
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr "此印表機支援列印和傳送傳真。此佇列應該會使用到哪些功能？"
 
-#: ../system-config-printer.py:3589
+#: ../system-config-printer.py:3591
 msgid "Searching for printers"
 msgstr "搜尋印表機"
 
-#: ../system-config-printer.py:3739
+#: ../system-config-printer.py:3721
 msgid " (Current)"
 msgstr "（當前）"
 
-#: ../system-config-printer.py:3812
+#: ../system-config-printer.py:3752
+msgid "HP Printer (HPLIP)"
+msgstr ""
+
+#: ../system-config-printer.py:3787
 msgid "Other"
 msgstr "其他"
 
-#: ../system-config-printer.py:3852 ../system-config-printer.py:3869
-#: ../system-config-printer.py:4354
+#: ../system-config-printer.py:3827 ../system-config-printer.py:3844
+#: ../system-config-printer.py:4329
 msgid "Scanning..."
 msgstr "掃描中..."
 
-#: ../system-config-printer.py:3924
+#: ../system-config-printer.py:3899 ../system-config-printer.py:4624
 msgid "No Print Shares"
 msgstr "沒有列印共享資源"
 
-#: ../system-config-printer.py:3925
+#: ../system-config-printer.py:3900
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -687,161 +691,165 @@ msgstr ""
 "未發現任何列印分享資源。請檢查 Samba 服務在您的防火牆配置中是否已被標記為信任"
 "的服務。"
 
-#: ../system-config-printer.py:4265 ../system-config-printer.py:4336
+#: ../system-config-printer.py:4240 ../system-config-printer.py:4311
 msgid "Print Share Verified"
 msgstr "列印共享資源已驗證"
 
-#: ../system-config-printer.py:4266 ../system-config-printer.py:4337
+#: ../system-config-printer.py:4241 ../system-config-printer.py:4312
 msgid "This print share is accessible."
 msgstr "此列印共享資源可存取。"
 
-#: ../system-config-printer.py:4271 ../system-config-printer.py:4341
+#: ../system-config-printer.py:4246 ../system-config-printer.py:4316
 msgid "This print share is not accessible."
 msgstr "此列印共享資源不可存取。"
 
-#: ../system-config-printer.py:4274
+#: ../system-config-printer.py:4249
 msgid "Print Share Inaccessible"
 msgstr "列印共享資源無法存取"
 
-#: ../system-config-printer.py:4340
+#: ../system-config-printer.py:4315
 msgid "Inaccessible"
 msgstr "不可存取"
 
-#: ../system-config-printer.py:4399
+#: ../system-config-printer.py:4374
 #, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "無法由 `%s' 取得佇列清單。"
 
-#: ../system-config-printer.py:4401
+#: ../system-config-printer.py:4376
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
 msgstr "佇列清單的擷取為 IPP 的 CUPS 延伸，網路印表機並不支援。"
 
-#: ../system-config-printer.py:4404
+#: ../system-config-printer.py:4379
 msgid "No queues"
 msgstr "沒有佇列"
 
-#: ../system-config-printer.py:4405
+#: ../system-config-printer.py:4380
 msgid "There are no queues available."
 msgstr "沒有可用的佇列。"
 
-#: ../system-config-printer.py:4495
+#: ../system-config-printer.py:4473
 msgid "A printer connected to the parallel port."
 msgstr "連接至平行埠的印表機。"
 
-#: ../system-config-printer.py:4497
+#: ../system-config-printer.py:4475
 msgid "A printer connected to a USB port."
 msgstr "連接至串列埠的印表機。"
 
-#: ../system-config-printer.py:4499
+#: ../system-config-printer.py:4477
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "HPLIP 軟體驅動印表機，或多功能裝置的印表機部份。"
 
-#: ../system-config-printer.py:4502
+#: ../system-config-printer.py:4480
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "HPLIP 軟體驅動傳真機，或多功能裝置的傳真機部份。"
 
-#: ../system-config-printer.py:4505
+#: ../system-config-printer.py:4483
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "由硬體箤取層（HAL）偵測到的本機印表機。"
 
-#: ../system-config-printer.py:4763
+#: ../system-config-printer.py:4625
+msgid "HPLIP cannot find the device."
+msgstr ""
+
+#: ../system-config-printer.py:4785
 msgid "-- Select from search results --"
 msgstr "-- 從搜尋結果進行選擇 --"
 
-#: ../system-config-printer.py:4765
+#: ../system-config-printer.py:4787
 msgid "-- No matches found --"
 msgstr "-- 沒有符合的結果 --"
 
-#: ../system-config-printer.py:4949
+#: ../system-config-printer.py:4971
 msgid " (recommended)"
 msgstr "（建議）"
 
-#: ../system-config-printer.py:4963
+#: ../system-config-printer.py:4985
 msgid "This PPD is generated by foomatic."
 msgstr "此 PPD 由 foomatic 產生。"
 
-#: ../system-config-printer.py:4989
+#: ../system-config-printer.py:5011
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:4992
+#: ../system-config-printer.py:5014
 msgid "the printer's manufacturer"
 msgstr "印表機製造商"
 
-#: ../system-config-printer.py:4995 ../system-config-printer.py:5010
-#: ../system-config-printer.py:5033 ../system-config-printer.py:5037
-#: ../system-config-printer.py:5051
+#: ../system-config-printer.py:5017 ../system-config-printer.py:5032
+#: ../system-config-printer.py:5055 ../system-config-printer.py:5059
+#: ../system-config-printer.py:5073
 msgid ", "
 msgstr ",  "
 
-#: ../system-config-printer.py:4998
+#: ../system-config-printer.py:5020
 #, python-format
 msgid " (%s)"
 msgstr " (%s)"
 
-#: ../system-config-printer.py:5000
+#: ../system-config-printer.py:5022
 msgid "Distributable"
 msgstr "可發佈"
 
-#: ../system-config-printer.py:5003
+#: ../system-config-printer.py:5025
 msgid " ("
 msgstr " ( "
 
-#: ../system-config-printer.py:5005
+#: ../system-config-printer.py:5027
 msgid "free software"
 msgstr "免費軟體"
 
-#: ../system-config-printer.py:5007
+#: ../system-config-printer.py:5029
 msgid "non-free software"
 msgstr "非免費軟體"
 
-#: ../system-config-printer.py:5012
+#: ../system-config-printer.py:5034
 msgid "driver contains (possibly) patented algorithms"
 msgstr "驅動程式（可能）包含著有專利的演算法"
 
-#: ../system-config-printer.py:5015
+#: ../system-config-printer.py:5037
 msgid ")"
 msgstr ")"
 
-#: ../system-config-printer.py:5017
+#: ../system-config-printer.py:5039
 msgid "None"
 msgstr "沒有"
 
-#: ../system-config-printer.py:5021
+#: ../system-config-printer.py:5043
 #, python-format
 msgid "Graphics: %s/100, "
 msgstr "圖形：%s/100, "
 
-#: ../system-config-printer.py:5024
+#: ../system-config-printer.py:5046
 #, python-format
 msgid "Line Art: %s/100, "
 msgstr "黑白影像：%s/100, "
 
-#: ../system-config-printer.py:5027
+#: ../system-config-printer.py:5049
 #, python-format
 msgid "Photo: %s/100, "
 msgstr "相片：%s/100, "
 
-#: ../system-config-printer.py:5030
+#: ../system-config-printer.py:5052
 #, python-format
 msgid "Text: %s/100, "
 msgstr "文字：%s/100, "
 
-#: ../system-config-printer.py:5034
+#: ../system-config-printer.py:5056
 msgid "Output quality: "
 msgstr "輸出品質："
 
-#: ../system-config-printer.py:5038
+#: ../system-config-printer.py:5060
 msgid "<b>Recommended Driver</b>"
 msgstr "<b>建議的驅動程式</b>"
 
-#: ../system-config-printer.py:5056
+#: ../system-config-printer.py:5078
 #, python-format
 msgid ""
 "\n"
@@ -850,20 +858,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:5061
+#: ../system-config-printer.py:5083
 msgid "No support contacts known"
 msgstr "支援部門不明"
 
-#: ../system-config-printer.py:5065 ../system-config-printer.py:5078
+#: ../system-config-printer.py:5087 ../system-config-printer.py:5100
 msgid "Not specified."
 msgstr "未指定。"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:5120
+#: ../system-config-printer.py:5142
 msgid "Database error"
 msgstr "資料庫錯誤"
 
-#: ../system-config-printer.py:5121
+#: ../system-config-printer.py:5143
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "「%s」驅動程式無法用於印表機「%s %s」。"
@@ -871,55 +879,55 @@ msgstr "「%s」驅動程式無法用於印表機「%s %s」。"
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:5131
+#: ../system-config-printer.py:5153
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "要使用這驅動程式，您需要安裝「%s」套件。"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:5138
+#: ../system-config-printer.py:5160
 msgid "PPD error"
 msgstr "PPD 錯誤"
 
-#: ../system-config-printer.py:5140
+#: ../system-config-printer.py:5162
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "讀取 PPD 檔案失敗。可能原因有："
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:5157
+#: ../system-config-printer.py:5179
 msgid "Downloadable drivers"
 msgstr "可下載的驅動程式"
 
-#: ../system-config-printer.py:5158
+#: ../system-config-printer.py:5180
 msgid "Failed to download PPD."
 msgstr "無法下載 PPD。"
 
-#: ../system-config-printer.py:5195 ../system-config-printer.py:5233
+#: ../system-config-printer.py:5217 ../system-config-printer.py:5255
 msgid "No Installable Options"
 msgstr "沒有可安裝的選項"
 
-#: ../system-config-printer.py:5279
+#: ../system-config-printer.py:5301
 msgid "Adding"
 msgstr "新增"
 
-#: ../system-config-printer.py:5280
+#: ../system-config-printer.py:5302
 msgid "Adding printer"
 msgstr "新增印表機"
 
-#: ../system-config-printer.py:5442
+#: ../system-config-printer.py:5464
 msgid "Install driver"
 msgstr "安裝驅動程式"
 
-#: ../system-config-printer.py:5443
+#: ../system-config-printer.py:5465
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "印表機「%s」需要 %s 套件，但此套件目前尚未被安裝。"
 
-#: ../system-config-printer.py:5468
+#: ../system-config-printer.py:5490
 msgid "Missing driver"
 msgstr "找不到驅動程式"
 
-#: ../system-config-printer.py:5469
+#: ../system-config-printer.py:5491
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -981,74 +989,79 @@ msgid "<b>Enter device URI</b>"
 msgstr "<b>輸入裝置 URI</b>"
 
 #: ../system-config-printer.glade.h:16
+#, fuzzy
+msgid "<b>HP Printer (HPLIP) via network</b>"
+msgstr "<b>印表機名稱</b>"
+
+#: ../system-config-printer.glade.h:17
 msgid "<b>IPP Printer</b>"
 msgstr "<b>IPP 印表機</b>"
 
-#: ../system-config-printer.glade.h:17
+#: ../system-config-printer.glade.h:18
 msgid "<b>Image Options</b>"
 msgstr "<b>圖形選項</b>"
 
-#: ../system-config-printer.glade.h:18
+#: ../system-config-printer.glade.h:19
 msgid "<b>License Terms</b>"
 msgstr "<b>使用條款</b>"
 
-#: ../system-config-printer.glade.h:19
+#: ../system-config-printer.glade.h:20
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>LPD 網路印表機位置</b>"
 
-#: ../system-config-printer.glade.h:20
+#: ../system-config-printer.glade.h:21
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>網路印表機位置</b>"
 
-#: ../system-config-printer.glade.h:21
+#: ../system-config-printer.glade.h:22
 msgid "<b>Location</b> (optional)"
 msgstr "<b>位置</b>（非必要）"
 
-#: ../system-config-printer.glade.h:22
+#: ../system-config-printer.glade.h:23
 msgid "<b>Note</b>"
 msgstr "<b>注意</b>"
 
-#: ../system-config-printer.glade.h:23
+#: ../system-config-printer.glade.h:24
 msgid "<b>Other Options (Advanced)</b>"
 msgstr "<b>其他選項（進階）</b>"
 
-#: ../system-config-printer.glade.h:24
+#: ../system-config-printer.glade.h:25
 msgid "<b>Policies</b>"
 msgstr "<b>政策</b>"
 
-#: ../system-config-printer.glade.h:25
+#: ../system-config-printer.glade.h:26
 msgid "<b>Printer Name</b>"
 msgstr "<b>印表機名稱</b>"
 
-#: ../system-config-printer.glade.h:26
+#: ../system-config-printer.glade.h:27
 msgid "<b>SMB Printer</b>"
 msgstr "<b>SMB 印表機</b>"
 
-#: ../system-config-printer.glade.h:27
+#: ../system-config-printer.glade.h:28
 msgid "<b>Select Driver</b>"
 msgstr "<b>選擇驅動程式</b>"
 
-#: ../system-config-printer.glade.h:28
+#: ../system-config-printer.glade.h:29
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>串列埠設定</b>"
 
-#: ../system-config-printer.glade.h:29
+#: ../system-config-printer.glade.h:30
 msgid "<b>Settings</b>"
 msgstr "<b>設定</b>"
 
-#: ../system-config-printer.glade.h:30
+#: ../system-config-printer.glade.h:31
 msgid "<b>State</b>"
 msgstr "<b>狀態</b>"
 
-#: ../system-config-printer.glade.h:31
+#: ../system-config-printer.glade.h:32
 msgid "<b>Tests and Maintenance</b>"
 msgstr "<b>測試與維護</b>"
 
-#: ../system-config-printer.glade.h:32
+#: ../system-config-printer.glade.h:33
 msgid "<b>Text Options</b>"
 msgstr "<b>文字選項</b>"
 
-#: ../system-config-printer.glade.h:33
+#: ../system-config-printer.glade.h:34
 msgid ""
 "<i>Not published\n"
 "See server settings</i>"
@@ -1056,128 +1069,128 @@ msgstr ""
 "<i>未發佈\n"
 "查看伺服器設定</i>"
 
-#: ../system-config-printer.glade.h:35
+#: ../system-config-printer.glade.h:36
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
 
-#: ../system-config-printer.glade.h:36
+#: ../system-config-printer.glade.h:37
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">選擇組別成員</span>"
 
-#: ../system-config-printer.glade.h:37
+#: ../system-config-printer.glade.h:38
 msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">選擇驅動程式</span>"
 
-#: ../system-config-printer.glade.h:38
+#: ../system-config-printer.glade.h:39
 msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">描述印表機</span>"
 
-#: ../system-config-printer.glade.h:39
+#: ../system-config-printer.glade.h:40
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">現有設定</span>"
 
-#: ../system-config-printer.glade.h:40
+#: ../system-config-printer.glade.h:41
 msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">可安裝的選項</span>"
 
-#: ../system-config-printer.glade.h:41
+#: ../system-config-printer.glade.h:42
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">選擇裝置</span>"
 
-#: ../system-config-printer.glade.h:42
+#: ../system-config-printer.glade.h:43
 msgid "A CUPS configuration tool."
 msgstr "CUPS 配置工具。"
 
-#: ../system-config-printer.glade.h:43
+#: ../system-config-printer.glade.h:44
 msgid "Accepting jobs"
 msgstr "接受工作"
 
-#: ../system-config-printer.glade.h:44
+#: ../system-config-printer.glade.h:45
 msgid "Access Control"
 msgstr "存取控制"
 
-#: ../system-config-printer.glade.h:45
+#: ../system-config-printer.glade.h:46
 msgid "Add or Remove Members"
 msgstr "加入或移除成員"
 
-#: ../system-config-printer.glade.h:46
+#: ../system-config-printer.glade.h:47
 msgid "Adjust server settings"
 msgstr "調整伺服器設定"
 
-#: ../system-config-printer.glade.h:47
+#: ../system-config-printer.glade.h:48
 msgid "Allow printing for everyone except these users:"
 msgstr "容許所有人列印，除了："
 
-#: ../system-config-printer.glade.h:48
+#: ../system-config-printer.glade.h:49
 msgid "Allow printing from the Internet"
 msgstr "允許由網際網路進行列印"
 
-#: ../system-config-printer.glade.h:49
+#: ../system-config-printer.glade.h:50
 msgid "Allow remote administration"
 msgstr "容許遠端管理"
 
-#: ../system-config-printer.glade.h:50
+#: ../system-config-printer.glade.h:51
 msgid "Allow users to cancel any job (not just their own)"
 msgstr "容許使用者取消任何工作（不單止他們自己的）"
 
-#: ../system-config-printer.glade.h:51
+#: ../system-config-printer.glade.h:52
 msgid "Basic Server Settings"
 msgstr "基本伺服器設定"
 
-#: ../system-config-printer.glade.h:52
+#: ../system-config-printer.glade.h:53
 msgid "Baud Rate"
 msgstr "Baud 速率"
 
-#: ../system-config-printer.glade.h:53
+#: ../system-config-printer.glade.h:54
 msgid "Bottom margin:"
 msgstr "下邊界："
 
-#: ../system-config-printer.glade.h:54
+#: ../system-config-printer.glade.h:55
 msgid "Brightness:"
 msgstr "亮度："
 
-#: ../system-config-printer.glade.h:55
+#: ../system-config-printer.glade.h:56
 msgid "Browse..."
 msgstr "瀏覽..."
 
-#: ../system-config-printer.glade.h:56
+#: ../system-config-printer.glade.h:57
 msgid "CUPS server:"
 msgstr "CUPS 伺服器："
 
-#: ../system-config-printer.glade.h:57
+#: ../system-config-printer.glade.h:58
 msgid "Change..."
 msgstr "更改..."
 
-#: ../system-config-printer.glade.h:58
+#: ../system-config-printer.glade.h:59
 msgid "Characters per inch:"
 msgstr "吋 / 字元："
 
-#: ../system-config-printer.glade.h:59
+#: ../system-config-printer.glade.h:60
 msgid "Choose a different CUPS server"
 msgstr "選擇不同的 CUPS 伺服器"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:61
+#: ../system-config-printer.glade.h:62
 msgid "Clean Print Heads"
 msgstr "清理列印頭"
 
-#: ../system-config-printer.glade.h:62
+#: ../system-config-printer.glade.h:63
 msgid "Columns:"
 msgstr "欄位："
 
-#: ../system-config-printer.glade.h:63
+#: ../system-config-printer.glade.h:64
 msgid "Comments..."
 msgstr "註解..."
 
-#: ../system-config-printer.glade.h:64
+#: ../system-config-printer.glade.h:65
 msgid "Connect to CUPS server"
 msgstr "連接至 CUPS 伺服器"
 
-#: ../system-config-printer.glade.h:65
+#: ../system-config-printer.glade.h:66
 msgid "Connecting"
 msgstr "正在連接"
 
-#: ../system-config-printer.glade.h:67
+#: ../system-config-printer.glade.h:68
 #, no-c-format
 msgid ""
 "Connecting to Server:\n"
@@ -1186,32 +1199,32 @@ msgstr ""
 "正在連接伺服器：\n"
 "%s\n"
 
-#: ../system-config-printer.glade.h:70
+#: ../system-config-printer.glade.h:71
 msgid "Connection"
 msgstr "連線"
 
-#: ../system-config-printer.glade.h:71
+#: ../system-config-printer.glade.h:72
 msgid "Copies:"
 msgstr "份數："
 
-#: ../system-config-printer.glade.h:72
+#: ../system-config-printer.glade.h:73
 msgid "Copy Printer"
 msgstr "複製印表機"
 
-#: ../system-config-printer.glade.h:73
+#: ../system-config-printer.glade.h:74
 msgid "Copyright © 2006-2008 Red Hat, Inc."
 msgstr "版權所有 © 2006-2008 Red Hat, Inc."
 
-#: ../system-config-printer.glade.h:74
+#: ../system-config-printer.glade.h:75
 msgid ""
 "Create a class from the selected printers (for failover or load-balancing)"
 msgstr "請由選擇的印表機來建立一個組別（以進行故障復原或負載平衡）"
 
-#: ../system-config-printer.glade.h:75
+#: ../system-config-printer.glade.h:76
 msgid "Data Bits"
 msgstr "資料位元"
 
-#: ../system-config-printer.glade.h:76
+#: ../system-config-printer.glade.h:77
 msgid ""
 "Default\n"
 "1200\n"
@@ -1233,7 +1246,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../system-config-printer.glade.h:85
+#: ../system-config-printer.glade.h:86
 msgid ""
 "Default\n"
 "8\n"
@@ -1243,7 +1256,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../system-config-printer.glade.h:88
+#: ../system-config-printer.glade.h:89
 msgid ""
 "Default\n"
 "None\n"
@@ -1255,7 +1268,7 @@ msgstr ""
 "Odd\n"
 "Even"
 
-#: ../system-config-printer.glade.h:92
+#: ../system-config-printer.glade.h:93
 msgid ""
 "Default\n"
 "None\n"
@@ -1269,124 +1282,124 @@ msgstr ""
 "RTS/CTS（硬體）\n"
 "DTR/DSR（硬體）"
 
-#: ../system-config-printer.glade.h:97
+#: ../system-config-printer.glade.h:98
 msgid "Deny printing for everyone except these users:"
 msgstr "拒絕所有人列印，除了："
 
-#: ../system-config-printer.glade.h:98
+#: ../system-config-printer.glade.h:99
 msgid "Description:"
 msgstr "說明："
 
-#: ../system-config-printer.glade.h:99 ../troubleshoot/DeviceListed.py:39
+#: ../system-config-printer.glade.h:100 ../troubleshoot/DeviceListed.py:39
 msgid "Device URI"
 msgstr "裝置 URI"
 
-#: ../system-config-printer.glade.h:100
+#: ../system-config-printer.glade.h:101
 msgid "Device URI:"
 msgstr "裝置 URI："
 
-#: ../system-config-printer.glade.h:101
+#: ../system-config-printer.glade.h:102
 msgid "Device description."
 msgstr "裝置說明："
 
-#: ../system-config-printer.glade.h:102
+#: ../system-config-printer.glade.h:103
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:104
+#: ../system-config-printer.glade.h:105
 msgid "Driver details"
 msgstr "驅動程式詳細資訊"
 
-#: ../system-config-printer.glade.h:105
+#: ../system-config-printer.glade.h:106
 msgid "E_nabled"
 msgstr "已啟用（_n）"
 
-#: ../system-config-printer.glade.h:106
+#: ../system-config-printer.glade.h:107
 msgid "Empty"
 msgstr "空"
 
-#: ../system-config-printer.glade.h:107
+#: ../system-config-printer.glade.h:108
 msgid "Enabled"
 msgstr "已啟用"
 
-#: ../system-config-printer.glade.h:108
+#: ../system-config-printer.glade.h:109
 msgid "Ending Banner:"
 msgstr "結尾橫幅："
 
-#: ../system-config-printer.glade.h:109
+#: ../system-config-printer.glade.h:110
 msgid "Error Policy: \t"
 msgstr "錯誤政策：\t"
 
-#: ../system-config-printer.glade.h:110
+#: ../system-config-printer.glade.h:111
 msgid "Find _Queue..."
 msgstr "尋找佇列...（_Q）"
 
-#: ../system-config-printer.glade.h:111
+#: ../system-config-printer.glade.h:112
 msgid "Finishings:"
 msgstr "輸出處理："
 
-#: ../system-config-printer.glade.h:112
+#: ../system-config-printer.glade.h:113
 msgid "Flow Control"
 msgstr "流量控制"
 
-#: ../system-config-printer.glade.h:113
+#: ../system-config-printer.glade.h:114
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr "您所選擇的印表機含有可下載的驅動程式。"
 
-#: ../system-config-printer.glade.h:114
+#: ../system-config-printer.glade.h:115
 msgid "Gamma:"
 msgstr "色彩亮度："
 
-#: ../system-config-printer.glade.h:115
+#: ../system-config-printer.glade.h:116
 msgid "Hold until:"
 msgstr "暫停直到："
 
-#: ../system-config-printer.glade.h:116
+#: ../system-config-printer.glade.h:117
 msgid "Host:"
 msgstr "主機："
 
-#: ../system-config-printer.glade.h:117
+#: ../system-config-printer.glade.h:118
 msgid "Hue adjustment:"
 msgstr "色調校正："
 
-#: ../system-config-printer.glade.h:118
+#: ../system-config-printer.glade.h:119
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "容易理解的說明，例如「帶有雙面列印的 HP 鐳射印表機」"
 
-#: ../system-config-printer.glade.h:119
+#: ../system-config-printer.glade.h:120
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "容易理解的位置說明，例如「一號實驗室」"
 
-#: ../system-config-printer.glade.h:120
+#: ../system-config-printer.glade.h:121
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.glade.h:121
+#: ../system-config-printer.glade.h:122
 msgid "IPP Browser"
 msgstr "IPP 瀏覽器"
 
-#: ../system-config-printer.glade.h:122
+#: ../system-config-printer.glade.h:123
 msgid "Installed Options"
 msgstr "已安裝的選項"
 
-#: ../system-config-printer.glade.h:123
+#: ../system-config-printer.glade.h:124
 msgid "Job Options"
 msgstr "工作選項"
 
-#: ../system-config-printer.glade.h:124
+#: ../system-config-printer.glade.h:125
 msgid "Job priority:"
 msgstr "工作優先權："
 
-#: ../system-config-printer.glade.h:125
+#: ../system-config-printer.glade.h:126
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:126
+#: ../system-config-printer.glade.h:127
 msgid "Left margin:"
 msgstr "左邊界："
 
-#: ../system-config-printer.glade.h:127
+#: ../system-config-printer.glade.h:128
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -1406,55 +1419,55 @@ msgstr ""
 "下到上，左到右\n"
 "下到上，右到左"
 
-#: ../system-config-printer.glade.h:135
+#: ../system-config-printer.glade.h:136
 msgid "License:"
 msgstr "使用條款："
 
-#: ../system-config-printer.glade.h:136
+#: ../system-config-printer.glade.h:137
 msgid "Lines per inch:"
 msgstr "吋 / 行："
 
-#: ../system-config-printer.glade.h:137
+#: ../system-config-printer.glade.h:138
 msgid "Local Driver"
 msgstr "本機驅動程式"
 
-#: ../system-config-printer.glade.h:138
+#: ../system-config-printer.glade.h:139
 msgid "Location:"
 msgstr "位置："
 
-#: ../system-config-printer.glade.h:139
+#: ../system-config-printer.glade.h:140
 msgid "Make and Model:"
 msgstr "廠牌與型號："
 
-#: ../system-config-printer.glade.h:140
+#: ../system-config-printer.glade.h:141
 msgid "Make and model:"
 msgstr "廠牌與型號："
 
-#: ../system-config-printer.glade.h:141
+#: ../system-config-printer.glade.h:142
 msgid "Media:"
 msgstr "媒體："
 
-#: ../system-config-printer.glade.h:142
+#: ../system-config-printer.glade.h:143
 msgid "Members"
 msgstr "成員"
 
-#: ../system-config-printer.glade.h:143
+#: ../system-config-printer.glade.h:144
 msgid "Mirror"
 msgstr "鏡像"
 
-#: ../system-config-printer.glade.h:144
+#: ../system-config-printer.glade.h:145
 msgid "More"
 msgstr "更多"
 
-#: ../system-config-printer.glade.h:146
+#: ../system-config-printer.glade.h:147
 msgid "New name for the printer"
 msgstr "印表機的新名稱"
 
-#: ../system-config-printer.glade.h:147
+#: ../system-config-printer.glade.h:148
 msgid "No, I do not accept this license"
 msgstr "不，我不接受此條款"
 
-#: ../system-config-printer.glade.h:148
+#: ../system-config-printer.glade.h:149
 msgid ""
 "None\n"
 "Staple\n"
@@ -1514,7 +1527,7 @@ msgstr ""
 "訂裝（右方）\n"
 "訂裝（下方）"
 
-#: ../system-config-printer.glade.h:176
+#: ../system-config-printer.glade.h:177
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -1524,39 +1537,39 @@ msgstr ""
 "雙面（長邊）\n"
 "雙面（短邊）"
 
-#: ../system-config-printer.glade.h:179
+#: ../system-config-printer.glade.h:180
 msgid "Operation Policy:"
 msgstr "操作政策："
 
-#: ../system-config-printer.glade.h:180
+#: ../system-config-printer.glade.h:181
 msgid "Orientation:"
 msgstr "列印方向："
 
-#: ../system-config-printer.glade.h:181
+#: ../system-config-printer.glade.h:182
 msgid "Pages per side layout:"
 msgstr "頁 / 面格式："
 
-#: ../system-config-printer.glade.h:182
+#: ../system-config-printer.glade.h:183
 msgid "Pages per side:"
 msgstr "頁 / 面："
 
-#: ../system-config-printer.glade.h:183
+#: ../system-config-printer.glade.h:184
 msgid "Parity"
 msgstr "同位檢查"
 
-#: ../system-config-printer.glade.h:185
+#: ../system-config-printer.glade.h:186
 msgid "Please Wait"
 msgstr "請稍等"
 
-#: ../system-config-printer.glade.h:186
+#: ../system-config-printer.glade.h:187
 msgid "Policies"
 msgstr "政策"
 
-#: ../system-config-printer.glade.h:187
+#: ../system-config-printer.glade.h:188
 msgid "Port number:"
 msgstr "通訊埠號碼："
 
-#: ../system-config-printer.glade.h:188
+#: ../system-config-printer.glade.h:189
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -1568,7 +1581,7 @@ msgstr ""
 "反向橫印（270°）\n"
 "反向直印（180°）"
 
-#: ../system-config-printer.glade.h:192
+#: ../system-config-printer.glade.h:193
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1577,145 +1590,145 @@ msgstr ""
 "PostScript 印表機描述（PPD）檔案通常可以在印表機所附的驅動程式磁片中找到。對 "
 "PostScript 的印表機來說，這通常是 Windows<sup>®</sup> 驅動程式中的一部分。"
 
-#: ../system-config-printer.glade.h:193
+#: ../system-config-printer.glade.h:194
 msgid "Pretty print"
 msgstr "美化列印"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:195
+#: ../system-config-printer.glade.h:196
 msgid "Print Self-Test Page"
 msgstr "列印自行測試頁"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:197 ../troubleshoot/PrintTestPage.py:67
+#: ../system-config-printer.glade.h:198 ../troubleshoot/PrintTestPage.py:67
 msgid "Print Test Page"
 msgstr "列印測試頁"
 
-#: ../system-config-printer.glade.h:199
+#: ../system-config-printer.glade.h:200
 msgid "Printer Properties"
 msgstr "印表機屬性"
 
-#: ../system-config-printer.glade.h:200
+#: ../system-config-printer.glade.h:201
 msgid "Printer State:"
 msgstr "印表機狀態："
 
-#: ../system-config-printer.glade.h:201
+#: ../system-config-printer.glade.h:202
 msgid "Printer model:"
 msgstr "印表機型號："
 
-#: ../system-config-printer.glade.h:202
+#: ../system-config-printer.glade.h:203
 msgid "Probe"
 msgstr "查探"
 
-#: ../system-config-printer.glade.h:203
+#: ../system-config-printer.glade.h:204
 msgid "Prompt user if authentication is required"
 msgstr "若需要身分核證的話提示用戶"
 
-#: ../system-config-printer.glade.h:204
+#: ../system-config-printer.glade.h:205
 msgid "Provide PPD file"
 msgstr "提供 PPD 檔案"
 
-#: ../system-config-printer.glade.h:205
+#: ../system-config-printer.glade.h:206
 msgid "Publish shared printers connected to this system"
 msgstr "公佈已連接到此系統的共享印表機"
 
-#: ../system-config-printer.glade.h:206
+#: ../system-config-printer.glade.h:207
 msgid "Queue:"
 msgstr "佇列："
 
-#: ../system-config-printer.glade.h:207
+#: ../system-config-printer.glade.h:208
 msgid "Require encryption"
 msgstr "需要加密"
 
-#: ../system-config-printer.glade.h:208
+#: ../system-config-printer.glade.h:209
 msgid "Reset"
 msgstr "重設"
 
-#: ../system-config-printer.glade.h:209
+#: ../system-config-printer.glade.h:210
 msgid "Reset to system default"
 msgstr "重設為系統預設值"
 
-#: ../system-config-printer.glade.h:210
+#: ../system-config-printer.glade.h:211
 msgid "Right margin:"
 msgstr "右邊界："
 
-#: ../system-config-printer.glade.h:211
+#: ../system-config-printer.glade.h:212
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../system-config-printer.glade.h:212
+#: ../system-config-printer.glade.h:213
 msgid "SMB"
 msgstr "SMB"
 
-#: ../system-config-printer.glade.h:213
+#: ../system-config-printer.glade.h:214
 msgid "SMB Browser"
 msgstr "SMB 瀏覽器"
 
-#: ../system-config-printer.glade.h:214
+#: ../system-config-printer.glade.h:215
 msgid "Saturation:"
 msgstr "色彩飽和度："
 
-#: ../system-config-printer.glade.h:215
+#: ../system-config-printer.glade.h:216
 msgid "Save debugging information for troubleshooting"
 msgstr "儲存除錯資訊，供障礙排除用"
 
-#: ../system-config-printer.glade.h:216
+#: ../system-config-printer.glade.h:217
 msgid "Scale to fit"
 msgstr "縮放以適合"
 
-#: ../system-config-printer.glade.h:217
+#: ../system-config-printer.glade.h:218
 msgid "Scaling:"
 msgstr "縮放列印："
 
-#: ../system-config-printer.glade.h:218
+#: ../system-config-printer.glade.h:219
 msgid "Search for a printer driver to download"
 msgstr "尋找可下載的印表機驅動程式"
 
-#: ../system-config-printer.glade.h:219
+#: ../system-config-printer.glade.h:220
 msgid "Select A File"
 msgstr "選取檔案"
 
-#: ../system-config-printer.glade.h:220
+#: ../system-config-printer.glade.h:221
 msgid "Select printer from database"
 msgstr "由資料庫中選取印表機"
 
-#: ../system-config-printer.glade.h:221
+#: ../system-config-printer.glade.h:222
 msgid "Serial"
 msgstr "串列"
 
-#: ../system-config-printer.glade.h:222
+#: ../system-config-printer.glade.h:223
 msgid "Set As De_fault"
 msgstr "設為預設（_f）"
 
-#: ../system-config-printer.glade.h:223
+#: ../system-config-printer.glade.h:224
 msgid "Set As Default"
 msgstr "設為預設值"
 
-#: ../system-config-printer.glade.h:224
+#: ../system-config-printer.glade.h:225
 msgid "Set authentication details now"
 msgstr "現在設定驗證詳細資料"
 
-#: ../system-config-printer.glade.h:225
+#: ../system-config-printer.glade.h:226
 msgid "Settings"
 msgstr "設定"
 
-#: ../system-config-printer.glade.h:226
+#: ../system-config-printer.glade.h:227
 msgid "Shared"
 msgstr "共享"
 
-#: ../system-config-printer.glade.h:227
+#: ../system-config-printer.glade.h:228
 msgid "Short name for this printer such as \"laserjet\""
 msgstr "此印表機的簡稱（例如「laserjet」）"
 
-#: ../system-config-printer.glade.h:228
+#: ../system-config-printer.glade.h:229
 msgid "Show printers shared by other systems"
 msgstr "顯示其他系統共享的印表機"
 
-#: ../system-config-printer.glade.h:229
+#: ../system-config-printer.glade.h:230
 msgid "Sides:"
 msgstr "面："
 
-#: ../system-config-printer.glade.h:230
+#: ../system-config-printer.glade.h:231
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -1724,23 +1737,23 @@ msgstr ""
 "為此印表機指定預設的工作選項。到達此印表機伺服器的工作若沒經過應用程式設置的"
 "話就將會被併入這些選項。"
 
-#: ../system-config-printer.glade.h:231
+#: ../system-config-printer.glade.h:232
 msgid "Starting Banner:"
 msgstr "起始橫幅："
 
-#: ../system-config-printer.glade.h:232
+#: ../system-config-printer.glade.h:233
 msgid "Supplier:"
 msgstr "供應商："
 
-#: ../system-config-printer.glade.h:233
+#: ../system-config-printer.glade.h:234
 msgid "Support:"
 msgstr "支援部門："
 
-#: ../system-config-printer.glade.h:234
+#: ../system-config-printer.glade.h:235
 msgid "System-Config-Printer"
 msgstr "System-Config-Printer"
 
-#: ../system-config-printer.glade.h:235
+#: ../system-config-printer.glade.h:236
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1752,7 +1765,7 @@ msgstr ""
 "案，也可以為許多（非 PostScript）印表機產生 PPD 檔案。但一般來說，製造商提供"
 "的 PPD 檔案能更有效地存取印表機的特定功能。"
 
-#: ../system-config-printer.glade.h:236
+#: ../system-config-printer.glade.h:237
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
@@ -1761,13 +1774,13 @@ msgstr ""
 "這些驅動程式並非來自您的作業系統供應商，並且不包含在它們的商業支援範圍之中。"
 "請查看驅動程式供應商的支援與授權條款。"
 
-#: ../system-config-printer.glade.h:237
+#: ../system-config-printer.glade.h:238
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
 msgstr "此驅動程式也支援可能安裝於印表機中的額外硬體。"
 
-#: ../system-config-printer.glade.h:238
+#: ../system-config-printer.glade.h:239
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1776,7 +1789,7 @@ msgstr ""
 "這藉由以下方式完成：假設擁有同樣名稱的選項，也擁有同樣的意義。不存在於新 PPD "
 "選項的設定都會佚失，只有在新 PPD 中的選項才會被設為預設值。"
 
-#: ../system-config-printer.glade.h:239
+#: ../system-config-printer.glade.h:240
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -1803,37 +1816,37 @@ msgstr ""
 "由軟件基金會（Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA "
 "02139, USA）。"
 
-#: ../system-config-printer.glade.h:244
+#: ../system-config-printer.glade.h:245
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
 msgstr "這樣所有選項的設定都會佚失。系統將使用新 PPD 的預設設定。"
 
-#: ../system-config-printer.glade.h:245
+#: ../system-config-printer.glade.h:246
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr "若要新增新選項，請將該選項的名稱輸入在下列方塊中並按下新增。"
 
-#: ../system-config-printer.glade.h:246
+#: ../system-config-printer.glade.h:247
 msgid "Top margin:"
 msgstr "上邊界："
 
-#: ../system-config-printer.glade.h:247
+#: ../system-config-printer.glade.h:248
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "試著從舊的 PPD 複製所有選項設定。"
 
-#: ../system-config-printer.glade.h:248
+#: ../system-config-printer.glade.h:249
 msgid "URI:"
 msgstr "URI："
 
-#: ../system-config-printer.glade.h:249
+#: ../system-config-printer.glade.h:250
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "如常使用新的 PPD（PostScript 印表機描述）。"
 
-#: ../system-config-printer.glade.h:251
+#: ../system-config-printer.glade.h:252
 msgid "View Print _Queue"
 msgstr "檢視列印佇列（_Q）"
 
-#: ../system-config-printer.glade.h:252
+#: ../system-config-printer.glade.h:253
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -1841,100 +1854,100 @@ msgstr ""
 "當選擇了此選項時，將不會有任何的驅動程式被下載。在之後的步驟中，有個本地安裝"
 "的驅動程式將會被選取。"
 
-#: ../system-config-printer.glade.h:253
+#: ../system-config-printer.glade.h:254
 msgid "Word wrap"
 msgstr "自動斷字"
 
-#: ../system-config-printer.glade.h:254
+#: ../system-config-printer.glade.h:255
 msgid "Yes, I accept this license"
 msgstr "是的，我接受使用條款"
 
-#: ../system-config-printer.glade.h:255
+#: ../system-config-printer.glade.h:256
 msgid "_Class"
 msgstr "組別（_C）"
 
-#: ../system-config-printer.glade.h:256
+#: ../system-config-printer.glade.h:257
 msgid "_Connect..."
 msgstr "正在連接（_C）..."
 
-#: ../system-config-printer.glade.h:257
+#: ../system-config-printer.glade.h:258
 msgid "_Create Class"
 msgstr "建立組別（_C）"
 
-#: ../system-config-printer.glade.h:258
+#: ../system-config-printer.glade.h:259
 msgid "_Discovered Printers"
 msgstr "發現的印表機（_D）"
 
-#: ../system-config-printer.glade.h:259
+#: ../system-config-printer.glade.h:260
 msgid "_Enabled"
 msgstr "已啟用（_E）"
 
-#: ../system-config-printer.glade.h:260
+#: ../system-config-printer.glade.h:261
 msgid "_Help"
 msgstr "說明（_H）"
 
-#: ../system-config-printer.glade.h:261
+#: ../system-config-printer.glade.h:262
 msgid "_Install"
 msgstr "安裝（_I）"
 
-#: ../system-config-printer.glade.h:262
+#: ../system-config-printer.glade.h:263
 msgid "_New"
 msgstr "新印表機（_N）"
 
-#: ../system-config-printer.glade.h:263
+#: ../system-config-printer.glade.h:264
 msgid "_Printer"
 msgstr "印表機（_P）"
 
-#: ../system-config-printer.glade.h:264
+#: ../system-config-printer.glade.h:265
 msgid "_Rename"
 msgstr "重新命名（_R）"
 
-#: ../system-config-printer.glade.h:265
+#: ../system-config-printer.glade.h:266
 msgid "_Search"
 msgstr "搜尋（_S）"
 
-#: ../system-config-printer.glade.h:266
+#: ../system-config-printer.glade.h:267
 msgid "_Server"
 msgstr "伺服器（_S）"
 
-#: ../system-config-printer.glade.h:267
+#: ../system-config-printer.glade.h:268
 msgid "_Settings..."
 msgstr "設定（S）..."
 
-#: ../system-config-printer.glade.h:268
+#: ../system-config-printer.glade.h:269
 msgid "_Shared"
 msgstr "共享（_S）"
 
-#: ../system-config-printer.glade.h:269
+#: ../system-config-printer.glade.h:270
 msgid "_Troubleshoot"
 msgstr "疑難排解（_T）"
 
-#: ../system-config-printer.glade.h:270
+#: ../system-config-printer.glade.h:271
 msgid "_Verify..."
 msgstr "驗證（_V）..."
 
-#: ../system-config-printer.glade.h:271 ../applet.glade.h:10
+#: ../system-config-printer.glade.h:272 ../applet.glade.h:10
 msgid "_View"
 msgstr "檢視（_V）"
 
-#: ../system-config-printer.glade.h:272
+#: ../system-config-printer.glade.h:273
 msgid "default"
 msgstr "預設"
 
-#: ../system-config-printer.glade.h:273
+#: ../system-config-printer.glade.h:274
 msgid "none"
 msgstr "沒有"
 
-#: ../system-config-printer.glade.h:274
+#: ../system-config-printer.glade.h:275
 msgid "points"
 msgstr "點"
 
-#: ../system-config-printer.glade.h:275
+#: ../system-config-printer.glade.h:276
 msgid "system-config-printer"
 msgstr "system-config-printer"
 
 #. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:277
+#: ../system-config-printer.glade.h:278
 msgid "translator-credits"
 msgstr "譯者姓名：莊佳儒（tchuang@redhat.com）"
 
@@ -2193,11 +2206,11 @@ msgstr ""
 msgid "Enable Debugging"
 msgstr "啟用除錯"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:179
+#: ../troubleshoot/ErrorLogCheckpoint.py:178
 msgid "Debug logging enabled."
 msgstr "除錯日誌已啟用。"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:181
+#: ../troubleshoot/ErrorLogCheckpoint.py:180
 msgid "Debug logging was already enabled."
 msgstr "除錯日誌已啟用。"
 
