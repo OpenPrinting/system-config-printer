@@ -2614,7 +2614,7 @@ class NewPrinterGUI(GtkGUI):
         "usb" : 0,
         "hal" : 0,
         "beh" : 0,
-        "hp" : 0,
+        "hp" : 8,
         "hpfax" : 0,
         "socket": 2,
         "ipp" : 3,
@@ -2664,6 +2664,7 @@ class NewPrinterGUI(GtkGUI):
                         "rbtnSMBAuthPrompt", "rbtnSMBAuthSet",
                         "entSMBUsername", "entSMBPassword",
                         "btnSMBBrowseOk", "btnSMBVerify",
+                        "entNPTHPHostname", "btnHPFindQueue", "lblHPURI",
                            "entNPTDevice",
                            "tvNCMembers", "tvNCNotMembers",
                           "rbtnNPPPD", "tvNPMakes", 
@@ -3748,6 +3749,29 @@ class NewPrinterGUI(GtkGUI):
                 # Remove default port to more easily find duplicate URIs
                 device.uri = device.uri.replace (":9100", "")
 
+        # Map generic URIs to something canonical
+        def replace_generic (device):
+            if device.uri == "hp:/no_device_found":
+                device.uri = "hp"
+            elif device.uri == "hpfax:/no_device_found":
+                device.uri = "hpfax"
+            return device
+
+        devices = map (replace_generic, devices)
+
+        # For HPLIP, only locally-connected devices are detected.  Add
+        # the generic URI to allow network devices to be searched for.
+        for each in devices:
+            if each.type == "hp" and each.uri != "hp":
+                # We know the hp backend is available because it has
+                # found a locally-connected device.
+                hp = cupshelpers.Device ("hp",
+                                         **{'device-class': 'network',
+                                            'device-info':
+                                                _("HP Printer (HPLIP)")})
+                devices.append (hp)
+                break
+
         # Mark duplicate URIs for deletion
         for i in range (len (devices) - 1):
             for j in range (i + 1, len (devices)):
@@ -3765,9 +3789,7 @@ class NewPrinterGUI(GtkGUI):
                         device1.uri = "delete"
                     else:
                         device2.uri = "delete"
-        devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
-                                                 "hpfax:/no_device_found",
-                                                 "hp", "hpfax",
+        devices = filter(lambda x: x.uri not in ("hpfax",
                                                  "hal", "beh",
                                                  "scsi", "http", "delete"),
                          devices)
@@ -4455,6 +4477,9 @@ class NewPrinterGUI(GtkGUI):
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get(device.type, 1)
+        if device.type == "hp" and device.uri != "hp":
+            page = 0
+
         self.ntbkNPType.set_current_page(page)
 
         location = ''
@@ -4573,6 +4598,8 @@ class NewPrinterGUI(GtkGUI):
             self.entSMBPassword.set_text ('')
             self.entSMBURI.set_text(device.uri[6:])
             self.btnSMBVerify.set_sensitive(True)
+        elif device.uri == "hp":
+            self.lblHPURI.set_text ('')
         else:
             self.entNPTDevice.set_text(device.uri)
 
@@ -4600,6 +4627,46 @@ class NewPrinterGUI(GtkGUI):
             self.cmbentNPTLpdQueue.append_text(printer)
         if printers:
             self.cmbentNPTLpdQueue.set_active(0)
+
+    def on_entNPTHPHostname_changed(self, ent):
+        self.lblHPURI.set_text ('')
+        s = ent.get_text ()
+        self.btnHPFindQueue.set_sensitive (len (s) > 0)
+        self.setNPButtons ()
+
+    def on_btnHPFindQueue_clicked(self, button):
+        host = self.entNPTHPHostname.get_text ()
+
+        # Check whether the device is supported by HPLIP
+        hplipuri = self.get_hplip_uri_for_network_printer(host, "print")
+        if hplipuri == None or hplipuri == '':
+            show_error_dialog (_("No Print Shares"),
+                               _("HPLIP cannot find the device."),
+                               self.NewPrinterWindow)
+            self.entNPTHPHostname.grab_focus ()
+            return
+
+        self.lblHPURI.set_text (hplipuri)
+        s = hplipuri.find ("/usb/")
+        if s == -1:
+            s = hplipuri.find ("/par/")
+
+        if s == -1:
+            s = hplipuri.find ("/net/")
+
+        if s != -1:
+            s += 5
+            e = hplipuri[s:].find ("?")
+            if e == -1:
+                e = len (hplipuri)
+
+            mdl = hplipuri[s:s+e].replace ("_", " ")
+            if mdl.startswith ("hp ") or mdl.startswith ("HP "):
+                mdl = mdl[3:]
+                self.device.make_and_model = "HP " + mdl
+                id = "MFG:HP;MDL:%s;DES:HP %s;" % (mdl, mdl)
+                self.device.id = id
+                self.device.id_dict = cupshelpers.parseDeviceID (id)
 
     def getDeviceURI(self):
         type = self.device.type
@@ -4655,6 +4722,8 @@ class NewPrinterGUI(GtkGUI):
             uri = SMBURI (group=group, host=host, share=share,
                           user=user, password=password).get_uri ()
             device = "smb://" + uri
+        elif self.device.uri == "hp":
+            device = self.lblHPURI.get_text ()
         elif not self.device.is_class:
             device = self.device.uri
         else:
