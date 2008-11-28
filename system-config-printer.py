@@ -3167,8 +3167,7 @@ class NewPrinterGUI(GtkGUI):
             if page_nr == 1: # Device (first page)
                 self.auto_make, self.auto_model = None, None
                 self.device.uri = self.getDeviceURI()
-                if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
-                    host = self.getNetworkPrinterMakeModel(self.device)
+                if self.device.type == "hp":
                     faxuri = None
                     if host:
                         faxuri = self.get_hplip_uri_for_network_printer(host,
