@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2008-11-24 17:26+0000\n"
+"POT-Creation-Date: 2008-11-28 17:46+0000\n"
 "PO-Revision-Date: 2008-11-18 09:14-0500\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
@@ -54,11 +54,11 @@ msgstr ""
 msgid "Enter IP address"
 msgstr "Ange IP-adress"
 
-#: ../authconn.py:30 ../glade/NewPrinterWindow.glade.h:104
+#: ../authconn.py:30 ../glade/NewPrinterWindow.glade.h:105
 msgid "Username:"
 msgstr "Användarnamn:"
 
-#: ../authconn.py:31 ../glade/NewPrinterWindow.glade.h:74
+#: ../authconn.py:31 ../glade/NewPrinterWindow.glade.h:75
 msgid "Password:"
 msgstr "Lösenord:"
 
@@ -135,7 +135,7 @@ msgstr "Uppgradering krävs"
 msgid "Server error"
 msgstr "Serverfel"
 
-#: ../errordialogs.py:82 ../system-config-printer.py:1151
+#: ../errordialogs.py:82 ../system-config-printer.py:1152
 msgid "Not connected"
 msgstr "Inte ansluten"
 
@@ -157,7 +157,7 @@ msgstr "_Ny grupp"
 msgid "_New Group from Selection"
 msgstr "_Ny grupp från markering"
 
-#: ../GroupsPane.py:98 ../system-config-printer.py:373
+#: ../GroupsPane.py:98 ../system-config-printer.py:374
 msgid "_Rename"
 msgstr "_Byt namn"
 
@@ -208,8 +208,8 @@ msgid "Document"
 msgstr "Dokument"
 
 #: ../jobviewer.py:176 ../jobviewer.py:228 ../my-default-printer.py:153
-#: ../system-config-printer.py:346 ../system-config-printer.py:1298
-#: ../system-config-printer.py:3809 ../troubleshoot/PrintTestPage.py:82
+#: ../system-config-printer.py:347 ../system-config-printer.py:1299
+#: ../system-config-printer.py:3814 ../troubleshoot/PrintTestPage.py:82
 msgid "Printer"
 msgstr "Skrivare"
 
@@ -248,8 +248,8 @@ msgid "Message"
 msgstr "Meddelande"
 
 #: ../jobviewer.py:391 ../jobviewer.py:457 ../jobviewer.py:458
-#: ../jobviewer.py:498 ../jobviewer.py:564 ../jobviewer.py:718
-#: ../system-config-printer.py:2362 ../glade/NewPrinterWindow.glade.h:102
+#: ../jobviewer.py:498 ../jobviewer.py:606 ../jobviewer.py:760
+#: ../system-config-printer.py:2363 ../glade/NewPrinterWindow.glade.h:103
 #: ../troubleshoot/ChooseNetworkPrinter.py:95
 #: ../troubleshoot/ChooseNetworkPrinter.py:96
 #: ../troubleshoot/ChooseNetworkPrinter.py:99
@@ -301,118 +301,150 @@ msgstr "%d minuter sedan"
 msgid "Held for authentication"
 msgstr "Hålls kvar för autentisering"
 
-#: ../jobviewer.py:553 ../troubleshoot/PrintTestPage.py:39
-msgid "Pending"
-msgstr "Väntar"
-
-#: ../jobviewer.py:554 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:552 ../troubleshoot/PrintTestPage.py:40
 msgid "Held"
 msgstr "Kvarhållen"
 
-#: ../jobviewer.py:555 ../system-config-printer.py:173
+#: ../jobviewer.py:579
+#, fuzzy, python-format
+msgid "Held until %s"
+msgstr "Håll kvar tills:"
+
+#: ../jobviewer.py:583
+#, fuzzy
+msgid "Held until day-time"
+msgstr "Håll kvar tills:"
+
+#: ../jobviewer.py:585
+#, fuzzy
+msgid "Held until evening"
+msgstr "Håll kvar tills:"
+
+#: ../jobviewer.py:587
+msgid "Held until night-time"
+msgstr ""
+
+#: ../jobviewer.py:589
+msgid "Held until second shift"
+msgstr ""
+
+#: ../jobviewer.py:591
+msgid "Held until third shift"
+msgstr ""
+
+#: ../jobviewer.py:593
+#, fuzzy
+msgid "Held until weekend"
+msgstr "Håll kvar tills:"
+
+#: ../jobviewer.py:596 ../troubleshoot/PrintTestPage.py:39
+msgid "Pending"
+msgstr "Väntar"
+
+#: ../jobviewer.py:597 ../system-config-printer.py:174
 #: ../troubleshoot/PrintTestPage.py:41
 msgid "Processing"
 msgstr "Behandlar"
 
-#: ../jobviewer.py:556 ../system-config-printer.py:175
+#: ../jobviewer.py:598 ../system-config-printer.py:176
 #: ../troubleshoot/PrintTestPage.py:42
 msgid "Stopped"
 msgstr "Stoppad"
 
-#: ../jobviewer.py:557 ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:599 ../troubleshoot/PrintTestPage.py:43
 msgid "Canceled"
 msgstr "Avbruten"
 
-#: ../jobviewer.py:558 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:600 ../troubleshoot/PrintTestPage.py:44
 msgid "Aborted"
 msgstr "Avbruten"
 
-#: ../jobviewer.py:559 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:601 ../troubleshoot/PrintTestPage.py:45
 msgid "Completed"
 msgstr "Färdig"
 
-#: ../jobviewer.py:633 ../jobviewer.py:752
+#: ../jobviewer.py:675 ../jobviewer.py:794
 msgid "authenticating job"
 msgstr "Autentiserar jobb"
 
-#: ../jobviewer.py:648
+#: ../jobviewer.py:690
 msgid "Authentication Required"
 msgstr "Autentisering krävs"
 
-#: ../jobviewer.py:649
+#: ../jobviewer.py:691
 msgid "Job requires authentication to proceed."
 msgstr "Jobbet kräver autentisering för att fortsätta."
 
-#: ../jobviewer.py:657 ../glade/job_popupmenu.glade.h:1
+#: ../jobviewer.py:699 ../glade/job_popupmenu.glade.h:1
 msgid "Authenticate"
 msgstr "Autentisera"
 
-#: ../jobviewer.py:716
+#: ../jobviewer.py:758
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "Autentisering krävs för utskrift av dokumentet \"%s\" (jobb %d)"
 
-#: ../jobviewer.py:883
+#: ../jobviewer.py:925
 msgid "Cancel Job"
 msgstr "Avbryt jobb"
 
-#: ../jobviewer.py:897
+#: ../jobviewer.py:939
 msgid "Do you really want to cancel this job?"
 msgstr "Vill du verkligen avbryta detta jobb?"
 
-#: ../jobviewer.py:925
+#: ../jobviewer.py:967
 msgid "canceling job"
 msgstr "avbryter jobb"
 
-#: ../jobviewer.py:949
+#: ../jobviewer.py:991
 msgid "holding job"
 msgstr "håller kvar jobb"
 
-#: ../jobviewer.py:973
+#: ../jobviewer.py:1015
 msgid "releasing job"
 msgstr "släpper jobb"
 
-#: ../jobviewer.py:1083
+#: ../jobviewer.py:1125
 msgid "No documents queued"
 msgstr "Inga dokument köade"
 
-#: ../jobviewer.py:1085
+#: ../jobviewer.py:1127
 msgid "1 document queued"
 msgstr "1 dokument är köat"
 
-#: ../jobviewer.py:1087
+#: ../jobviewer.py:1129
 #, python-format
 msgid "%d documents queued"
 msgstr "%d dokument är köade"
 
-#: ../jobviewer.py:1294
+#: ../jobviewer.py:1336
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr ""
 "Det uppstod ett problem vid sändning av dokumentet \"%s\" (jobb %d) till "
 "skrivaren."
 
-#: ../jobviewer.py:1297
+#: ../jobviewer.py:1339
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "Det uppstod ett problem vid behandling av dokumentet \"%s\" (jobb %d)."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1303
+#: ../jobviewer.py:1345
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
 "Det uppstod ett problem vid utskrift av dokumentet \"%s\" (jobb %d): `%s'."
 
-#: ../jobviewer.py:1310 ../jobviewer.py:1326
+#: ../jobviewer.py:1352 ../jobviewer.py:1368
 msgid "Print Error"
 msgstr "Utskriftsfel"
 
-#: ../jobviewer.py:1311
+#: ../jobviewer.py:1353
 msgid "_Diagnose"
 msgstr "_Diagnosticera"
 
-#: ../jobviewer.py:1332
+#: ../jobviewer.py:1374
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "Skrivaren med namnet \"%s\" har inaktiverats."
@@ -429,8 +461,8 @@ msgstr "_Använd systemstandarden"
 msgid "_Set Default"
 msgstr "_Ställ in som standard"
 
-#: ../my-default-printer.py:158 ../system-config-printer.py:403
-#: ../system-config-printer.py:3417 ../troubleshoot/ChooseNetworkPrinter.py:36
+#: ../my-default-printer.py:158 ../system-config-printer.py:404
+#: ../system-config-printer.py:3421 ../troubleshoot/ChooseNetworkPrinter.py:36
 #: ../troubleshoot/ChoosePrinter.py:37
 msgid "Location"
 msgstr "Placering"
@@ -455,7 +487,7 @@ msgstr "Stoppa skrivare"
 msgid "Default behavior"
 msgstr "Standarduppförande"
 
-#: ../ppdippstr.py:49 ../system-config-printer.py:5518
+#: ../ppdippstr.py:49 ../system-config-printer.py:5543
 msgid "None"
 msgstr "Ingen"
 
@@ -668,172 +700,172 @@ msgstr "600 dpi, färg, svart + färgpatron, fotopapper, normal"
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, foto, svart + färgpatron, fotopapper"
 
-#: ../system-config-printer.py:114
+#: ../system-config-printer.py:115
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr ""
 "Välj System->Administration->Brandvägg från huvudmenyn för att göra detta."
 
-#: ../system-config-printer.py:172
+#: ../system-config-printer.py:173
 msgid "Idle"
 msgstr "Overksam"
 
-#: ../system-config-printer.py:174
+#: ../system-config-printer.py:175
 msgid "Busy"
 msgstr "Upptagen"
 
-#: ../system-config-printer.py:352 ../system-config-printer.py:1304
+#: ../system-config-printer.py:353 ../system-config-printer.py:1305
 msgid "Class"
 msgstr "Klass"
 
-#: ../system-config-printer.py:379
+#: ../system-config-printer.py:380
 msgid "Set As De_fault"
 msgstr "Ange som sta_ndard"
 
-#: ../system-config-printer.py:383
+#: ../system-config-printer.py:384
 msgid "_Create class"
 msgstr "_Skapa klass"
 
-#: ../system-config-printer.py:385
+#: ../system-config-printer.py:386
 msgid "View Print _Queue"
 msgstr "Visa utskrifts_kö"
 
-#: ../system-config-printer.py:387
+#: ../system-config-printer.py:388
 msgid "_Add to Group"
 msgstr "_Lägg till i grupp"
 
-#: ../system-config-printer.py:389
+#: ../system-config-printer.py:390
 msgid "Save Results as _Group"
 msgstr "Spara resultat som _grupp"
 
-#: ../system-config-printer.py:391
+#: ../system-config-printer.py:392
 msgid "Save Filter as _Search Group"
 msgstr "Spara filter som _sökgrupp"
 
-#: ../system-config-printer.py:395
+#: ../system-config-printer.py:396
 msgid "E_nabled"
 msgstr "_Aktiverad"
 
-#: ../system-config-printer.py:397
+#: ../system-config-printer.py:398
 msgid "_Shared"
 msgstr "_Utdelad"
 
-#: ../system-config-printer.py:401 ../troubleshoot/ChooseNetworkPrinter.py:34
+#: ../system-config-printer.py:402 ../troubleshoot/ChooseNetworkPrinter.py:34
 #: ../troubleshoot/ChoosePrinter.py:35 ../troubleshoot/DeviceListed.py:35
 msgid "Name"
 msgstr "Namn"
 
-#: ../system-config-printer.py:402
+#: ../system-config-printer.py:403
 msgid "Description"
 msgstr "Beskrivning"
 
-#: ../system-config-printer.py:404
+#: ../system-config-printer.py:405
 msgid "Manufacturer / Model"
 msgstr "Tillverkare / Modell"
 
-#: ../system-config-printer.py:496
+#: ../system-config-printer.py:497
 msgid "Problems?"
 msgstr "Problem?"
 
-#: ../system-config-printer.py:599 ../system-config-printer.py:601
+#: ../system-config-printer.py:600 ../system-config-printer.py:602
 msgid "Members of this class"
 msgstr "Medlemmar av denna klass"
 
-#: ../system-config-printer.py:600 ../system-config-printer.py:602
+#: ../system-config-printer.py:601 ../system-config-printer.py:603
 msgid "Others"
 msgstr "Övriga"
 
-#: ../system-config-printer.py:603
+#: ../system-config-printer.py:604
 msgid "Devices"
 msgstr "Enheter"
 
-#: ../system-config-printer.py:604
+#: ../system-config-printer.py:605
 msgid "Connections"
 msgstr "Anslutningar"
 
-#: ../system-config-printer.py:605
+#: ../system-config-printer.py:606
 msgid "Makes"
 msgstr "Tillverkare"
 
-#: ../system-config-printer.py:606
+#: ../system-config-printer.py:607
 msgid "Models"
 msgstr "Modeller"
 
-#: ../system-config-printer.py:607
+#: ../system-config-printer.py:608
 msgid "Drivers"
 msgstr "Drivrutiner"
 
-#: ../system-config-printer.py:608 ../glade/NewPrinterWindow.glade.h:53
+#: ../system-config-printer.py:609 ../glade/NewPrinterWindow.glade.h:54
 msgid "Downloadable Drivers"
 msgstr "Hämtningsbara drivrutiner"
 
-#: ../system-config-printer.py:609
+#: ../system-config-printer.py:610
 msgid "Users"
 msgstr "Användare"
 
-#: ../system-config-printer.py:648
+#: ../system-config-printer.py:649
 msgid "Automatic rotation"
 msgstr "Automatisk rotering"
 
-#: ../system-config-printer.py:947
+#: ../system-config-printer.py:948
 #, python-format
 msgid "Printer Properties - `%s' on %s"
 msgstr "Skrivaregenskaper - \"%s\" på %s"
 
-#: ../system-config-printer.py:1146
+#: ../system-config-printer.py:1147
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Skrivarkonfiguration - %s"
 
-#: ../system-config-printer.py:1149
+#: ../system-config-printer.py:1150
 #, python-format
 msgid "Connected to %s"
 msgstr "Ansluten till %s"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1189 ../system-config-printer.py:1982
+#: ../system-config-printer.py:1190 ../system-config-printer.py:1983
 msgid "obtaining queue details"
 msgstr "hämtar ködetaljer"
 
-#: ../system-config-printer.py:1226
+#: ../system-config-printer.py:1227
 msgid "Remove from Group"
 msgstr "Ta bort från grupp"
 
-#: ../system-config-printer.py:1292
+#: ../system-config-printer.py:1293
 msgid "Network printer (discovered)"
 msgstr "Nätverksskrivare (upptäckt)"
 
-#: ../system-config-printer.py:1295
+#: ../system-config-printer.py:1296
 msgid "Network class (discovered)"
 msgstr "Nätverksklass (upptäckt)"
 
-#: ../system-config-printer.py:1301 ../system-config-printer.py:3810
+#: ../system-config-printer.py:1302 ../system-config-printer.py:3815
 msgid "Fax"
 msgstr "Fax"
 
-#: ../system-config-printer.py:1307 ../system-config-printer.py:1313
+#: ../system-config-printer.py:1308 ../system-config-printer.py:1314
 #: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "Nätverksskrivare"
 
-#: ../system-config-printer.py:1310
+#: ../system-config-printer.py:1311
 msgid "Network print share"
 msgstr "Skrivarutdelning på nätverket"
 
-#: ../system-config-printer.py:1439 ../glade/ConnectingDialog.glade.h:2
+#: ../system-config-printer.py:1440 ../glade/ConnectingDialog.glade.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Öppnar anslutning till %s</i>"
 
-#: ../system-config-printer.py:1818
+#: ../system-config-printer.py:1819
 msgid "Installable Options"
 msgstr "Installerbara alternativ"
 
-#: ../system-config-printer.py:1819
+#: ../system-config-printer.py:1820
 #: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Printer Options"
 msgstr "Skrivaralternativ"
 
-#: ../system-config-printer.py:1847
+#: ../system-config-printer.py:1848
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -843,23 +875,23 @@ msgstr ""
 "Ändringar kan bara användas efter\n"
 "dessa konflikter har lösts."
 
-#: ../system-config-printer.py:1864
+#: ../system-config-printer.py:1865
 #, python-format
 msgid "modifying class %s"
 msgstr "ändrar klassen %s"
 
-#: ../system-config-printer.py:1866 ../system-config-printer.py:2827
-#: ../system-config-printer.py:2852 ../system-config-printer.py:5814
-#: ../system-config-printer.py:5825 ../system-config-printer.py:5843
+#: ../system-config-printer.py:1867 ../system-config-printer.py:2828
+#: ../system-config-printer.py:2853 ../system-config-printer.py:5839
+#: ../system-config-printer.py:5850 ../system-config-printer.py:5868
 #, python-format
 msgid "modifying printer %s"
 msgstr "ändrar skrivaren %s"
 
-#: ../system-config-printer.py:1881
+#: ../system-config-printer.py:1882
 msgid "This will delete this class!"
 msgstr "Detta kommer ta bort denna klass!"
 
-#: ../system-config-printer.py:1882
+#: ../system-config-printer.py:1883
 msgid "Proceed anyway?"
 msgstr "Fortsätt ändå?"
 
@@ -867,44 +899,44 @@ msgstr "Fortsätt ändå?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:1970 ../system-config-printer.py:3011
+#: ../system-config-printer.py:1971 ../system-config-printer.py:3012
 msgid "fetching server settings"
 msgstr "hämtar serverinställningar"
 
-#: ../system-config-printer.py:2037
+#: ../system-config-printer.py:2038
 msgid "Set Default Printer"
 msgstr "Ange standardskrivare"
 
-#: ../system-config-printer.py:2039
+#: ../system-config-printer.py:2040
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "Vill du ange denna skrivare som systemets standard?"
 
-#: ../system-config-printer.py:2041
+#: ../system-config-printer.py:2042
 msgid "Set as the _system-wide default printer"
 msgstr "Ange som _systemets standardskrivare"
 
-#: ../system-config-printer.py:2043
+#: ../system-config-printer.py:2044
 msgid "_Clear my personal default setting"
 msgstr "_Töm min personliga standardinställning"
 
-#: ../system-config-printer.py:2044
+#: ../system-config-printer.py:2045
 msgid "Set as my _personal default printer"
 msgstr "Ange som min _personliga standardskrivare"
 
-#: ../system-config-printer.py:2049
+#: ../system-config-printer.py:2050
 msgid "setting default printer"
 msgstr "anger standardskrivare"
 
-#: ../system-config-printer.py:2094
+#: ../system-config-printer.py:2095
 msgid "printing test page"
 msgstr "skriver ut testsida"
 
-#: ../system-config-printer.py:2107 ../system-config-printer.py:2140
-#: ../system-config-printer.py:4907
+#: ../system-config-printer.py:2108 ../system-config-printer.py:2141
+#: ../system-config-printer.py:4885
 msgid "Not possible"
 msgstr "Inte möjligt"
 
-#: ../system-config-printer.py:2108 ../system-config-printer.py:2141
+#: ../system-config-printer.py:2109 ../system-config-printer.py:2142
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -912,20 +944,20 @@ msgstr ""
 "Fjärrservern accepterade inte utskriftsjobbet, troligen på grund av att "
 "skrivaren inte är utdelad."
 
-#: ../system-config-printer.py:2118 ../system-config-printer.py:2133
+#: ../system-config-printer.py:2119 ../system-config-printer.py:2134
 msgid "Submitted"
 msgstr "Skickad"
 
-#: ../system-config-printer.py:2119
+#: ../system-config-printer.py:2120
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testsida skickad som jobb %d"
 
-#: ../system-config-printer.py:2126
+#: ../system-config-printer.py:2127
 msgid "sending maintenance command"
 msgstr "skickar underhållskommando"
 
-#: ../system-config-printer.py:2134
+#: ../system-config-printer.py:2135
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Underhållskommando skickat som jobb %d"
@@ -933,61 +965,61 @@ msgstr "Underhållskommando skickat som jobb %d"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2205 ../system-config-printer.py:2301
+#: ../system-config-printer.py:2206 ../system-config-printer.py:2302
 msgid "Error"
 msgstr "Fel"
 
-#: ../system-config-printer.py:2206
+#: ../system-config-printer.py:2207
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Det uppstod ett problem vid anslutning till CUPS-servern."
 
-#: ../system-config-printer.py:2302
+#: ../system-config-printer.py:2303
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Alternativet \"%s\" har värdet \"%s\" och kan inte redigeras."
 
-#: ../system-config-printer.py:2572
+#: ../system-config-printer.py:2573
 msgid "Cannot Rename"
 msgstr "Kan inte byta namn"
 
-#: ../system-config-printer.py:2573
+#: ../system-config-printer.py:2574
 msgid "There are queued jobs."
 msgstr "Det finns kölagda jobb."
 
-#: ../system-config-printer.py:2631
+#: ../system-config-printer.py:2632
 msgid "renaming printer"
 msgstr "byter namn på skrivare"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:2716
+#: ../system-config-printer.py:2717
 msgid "copying printer"
 msgstr "kopierar skrivare"
 
-#: ../system-config-printer.py:2780
+#: ../system-config-printer.py:2781
 #, python-format
 msgid "Really delete class `%s'?"
 msgstr "Verkligen ta bort klassen \"%s\"?"
 
-#: ../system-config-printer.py:2782
+#: ../system-config-printer.py:2783
 #, python-format
 msgid "Really delete printer `%s'?"
 msgstr "Verkligen ta bort skrivaren \"%s\"?"
 
-#: ../system-config-printer.py:2784
+#: ../system-config-printer.py:2785
 msgid "Really delete selected destinations?"
 msgstr "Verkligen ta bort markerade mål?"
 
-#: ../system-config-printer.py:2805
+#: ../system-config-printer.py:2806
 #, python-format
 msgid "deleting printer %s"
 msgstr "tar bort skrivaren %s"
 
-#: ../system-config-printer.py:2877
+#: ../system-config-printer.py:2878
 msgid "Publish Shared Printers"
 msgstr "Publicera utdelade skrivare"
 
-#: ../system-config-printer.py:2878
+#: ../system-config-printer.py:2879
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -996,7 +1028,7 @@ msgstr ""
 "alternativet \"Publicera utdelade skrivare\" har aktiverats i "
 "serverinställningarna."
 
-#: ../system-config-printer.py:3072
+#: ../system-config-printer.py:3073
 msgid "modifying server settings"
 msgstr "ändrar serverinställningar"
 
@@ -1006,11 +1038,11 @@ msgstr "ändrar serverinställningar"
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:3097
+#: ../system-config-printer.py:3098
 msgid "Review Firewall"
 msgstr "Granska brandväggen"
 
-#: ../system-config-printer.py:3098
+#: ../system-config-printer.py:3099
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
@@ -1018,25 +1050,25 @@ msgstr ""
 "Du kan behöva justera brandväggen för att tillåta nätverksutskrifter till "
 "denna dator."
 
-#: ../system-config-printer.py:3380
+#: ../system-config-printer.py:3384
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "Bläddring är inte tillgänglig (pysmbc inte installerad)"
 
 #. SMB list columns
-#: ../system-config-printer.py:3386
+#: ../system-config-printer.py:3390
 msgid "Share"
 msgstr "Utdelning"
 
-#: ../system-config-printer.py:3392
+#: ../system-config-printer.py:3396
 msgid "Comment"
 msgstr "Kommentar"
 
 #. IPP list columns
-#: ../system-config-printer.py:3411
+#: ../system-config-printer.py:3415
 msgid "Queue"
 msgstr "Kö"
 
-#: ../system-config-printer.py:3425
+#: ../system-config-printer.py:3429
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -1044,46 +1076,46 @@ msgstr ""
 "PostScript-skrivarbeskrivningsfiler (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD."
 "GZ)"
 
-#: ../system-config-printer.py:3434
+#: ../system-config-printer.py:3438
 msgid "All files (*)"
 msgstr "Alla filer (*)"
 
-#: ../system-config-printer.py:3470 ../system-config-printer.py:5222
-#: ../system-config-printer.py:5260
+#: ../system-config-printer.py:3474 ../system-config-printer.py:5247
+#: ../system-config-printer.py:5285
 msgid "Search"
 msgstr "Sök"
 
-#: ../system-config-printer.py:3484 ../glade/NewPrinterWindow.glade.h:71
+#: ../system-config-printer.py:3488 ../glade/NewPrinterWindow.glade.h:72
 msgid "New Printer"
 msgstr "Ny skrivare"
 
-#: ../system-config-printer.py:3495
+#: ../system-config-printer.py:3499
 msgid "New Class"
 msgstr "Ny klass"
 
-#: ../system-config-printer.py:3500
+#: ../system-config-printer.py:3504
 msgid "Change Device URI"
 msgstr "Ändra enhets-URI"
 
-#: ../system-config-printer.py:3504
+#: ../system-config-printer.py:3508
 msgid "Change Driver"
 msgstr "Ändra drivrutin"
 
-#: ../system-config-printer.py:3652 ../system-config-printer.py:3718
-#: ../system-config-printer.py:4021 ../system-config-printer.py:4203
-#: ../system-config-printer.py:5247
+#: ../system-config-printer.py:3656 ../system-config-printer.py:3722
+#: ../system-config-printer.py:4026 ../system-config-printer.py:4208
+#: ../system-config-printer.py:5272
 msgid "Searching"
 msgstr "Söker"
 
-#: ../system-config-printer.py:3653
+#: ../system-config-printer.py:3657
 msgid "Searching for downloadable drivers"
 msgstr "Söker efter drivrutiner som kan hämtas ner"
 
-#: ../system-config-printer.py:3719 ../system-config-printer.py:4022
+#: ../system-config-printer.py:3723 ../system-config-printer.py:4027
 msgid "Searching for drivers"
 msgstr "Söker efter drivrutiner"
 
-#: ../system-config-printer.py:3811
+#: ../system-config-printer.py:3816
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
@@ -1091,31 +1123,36 @@ msgstr ""
 "Denna skrivare har stöd för både utskrifter och att skicka fax. Vilken "
 "funktionalitet ska användas för denna kö?"
 
-#: ../system-config-printer.py:4204
+#: ../system-config-printer.py:4209
 msgid "Searching for printers"
 msgstr "Söker efter skrivare"
 
-#: ../system-config-printer.py:4213
+#: ../system-config-printer.py:4218
 msgid "fetching device list"
 msgstr "hämtar enhetslista"
 
-#: ../system-config-printer.py:4357
+#: ../system-config-printer.py:4342
 msgid " (Current)"
 msgstr " (Aktuell)"
 
-#: ../system-config-printer.py:4430
+#: ../system-config-printer.py:4373
+#, fuzzy
+msgid "HP Printer (HPLIP)"
+msgstr "Skrivare"
+
+#: ../system-config-printer.py:4408
 msgid "Other"
 msgstr "Övriga"
 
-#: ../system-config-printer.py:4473 ../system-config-printer.py:4869
+#: ../system-config-printer.py:4451 ../system-config-printer.py:4847
 msgid "Scanning..."
 msgstr "Söker..."
 
-#: ../system-config-printer.py:4528
+#: ../system-config-printer.py:4506 ../system-config-printer.py:5136
 msgid "No Print Shares"
 msgstr "Inga skrivarutdelningar"
 
-#: ../system-config-printer.py:4529
+#: ../system-config-printer.py:4507
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1123,32 +1160,32 @@ msgstr ""
 "Det gick inte att hitta några skrivarutdelningar. Kontrollera att Samba-"
 "tjänsten är markerad som pålitlig i din brandväggskonfiguration."
 
-#: ../system-config-printer.py:4790 ../system-config-printer.py:4851
+#: ../system-config-printer.py:4768 ../system-config-printer.py:4829
 msgid "Print Share Verified"
 msgstr "Skrivarutdelning validerad"
 
-#: ../system-config-printer.py:4791 ../system-config-printer.py:4852
+#: ../system-config-printer.py:4769 ../system-config-printer.py:4830
 msgid "This print share is accessible."
 msgstr "Den här utdelade skrivaren är tillgänglig."
 
-#: ../system-config-printer.py:4796 ../system-config-printer.py:4856
+#: ../system-config-printer.py:4774 ../system-config-printer.py:4834
 msgid "This print share is not accessible."
 msgstr "Den utdelade skrivaren är inte åtkomlig."
 
-#: ../system-config-printer.py:4799
+#: ../system-config-printer.py:4777
 msgid "Print Share Inaccessible"
 msgstr "Skrivarutdelning inte tillgänglig"
 
-#: ../system-config-printer.py:4855
+#: ../system-config-printer.py:4833
 msgid "Inaccessible"
 msgstr "Oåtkomlig"
 
-#: ../system-config-printer.py:4908
+#: ../system-config-printer.py:4886
 #, python-format
 msgid "It is not possible to obtain a list of queues from `%s'."
 msgstr "Det var inte möjligt att hämta en lista över köer från \"%s\"."
 
-#: ../system-config-printer.py:4910
+#: ../system-config-printer.py:4888
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
@@ -1156,23 +1193,23 @@ msgstr ""
 "Hämtning av en lista över köer är ett CUPS-tillägg till IPP. "
 "Nätverksskrivare har inte stöd för detta."
 
-#: ../system-config-printer.py:4913
+#: ../system-config-printer.py:4891
 msgid "No queues"
 msgstr "Inga köer"
 
-#: ../system-config-printer.py:4914
+#: ../system-config-printer.py:4892
 msgid "There are no queues available."
 msgstr "Det finns inga köer tillgängliga."
 
-#: ../system-config-printer.py:5004
+#: ../system-config-printer.py:4985
 msgid "A printer connected to the parallel port."
 msgstr "En skrivare ansluten till parallellporten."
 
-#: ../system-config-printer.py:5006
+#: ../system-config-printer.py:4987
 msgid "A printer connected to a USB port."
 msgstr "En skrivare ansluten till en USB-port."
 
-#: ../system-config-printer.py:5008
+#: ../system-config-printer.py:4989
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1180,7 +1217,7 @@ msgstr ""
 "HPLIP-programvara driver en skrivare eller skrivfunktionen för en "
 "multifunktionsenhet."
 
-#: ../system-config-printer.py:5011
+#: ../system-config-printer.py:4992
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1188,39 +1225,43 @@ msgstr ""
 "HPLIP-programvara en fax-maskin eller faxfunktionen för en "
 "multifunktionsenhet."
 
-#: ../system-config-printer.py:5014
+#: ../system-config-printer.py:4995
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Lokal skrivare upptäckt av Hardware Abstraction Layer (HAL)."
 
-#: ../system-config-printer.py:5272
+#: ../system-config-printer.py:5137
+msgid "HPLIP cannot find the device."
+msgstr ""
+
+#: ../system-config-printer.py:5297
 msgid "-- Select from search results --"
 msgstr "-- Välj från sökresultatet --"
 
-#: ../system-config-printer.py:5274
+#: ../system-config-printer.py:5299
 msgid "-- No matches found --"
 msgstr "-- Inga sökträffar hittades --"
 
-#: ../system-config-printer.py:5460
+#: ../system-config-printer.py:5485
 msgid " (recommended)"
 msgstr " (rekommenderad)"
 
-#: ../system-config-printer.py:5474
+#: ../system-config-printer.py:5499
 msgid "This PPD is generated by foomatic."
 msgstr "Denna PPD är genererad av foomatic."
 
-#: ../system-config-printer.py:5500
+#: ../system-config-printer.py:5525
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:5511
+#: ../system-config-printer.py:5536
 msgid "Distributable"
 msgstr "Distribuerbar"
 
-#: ../system-config-printer.py:5552
+#: ../system-config-printer.py:5577
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:5557
+#: ../system-config-printer.py:5582
 #, python-format
 msgid ""
 "\n"
@@ -1229,20 +1270,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:5562
+#: ../system-config-printer.py:5587
 msgid "No support contacts known"
 msgstr "Inga stödkontakter kända"
 
-#: ../system-config-printer.py:5566 ../system-config-printer.py:5579
+#: ../system-config-printer.py:5591 ../system-config-printer.py:5604
 msgid "Not specified."
 msgstr "Inte angiven."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:5621
+#: ../system-config-printer.py:5646
 msgid "Database error"
 msgstr "Databasfel"
 
-#: ../system-config-printer.py:5622
+#: ../system-config-printer.py:5647
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Drivrutinen \"%s\" kan inte användas med skrivaren \"%s %s\"."
@@ -1250,66 +1291,66 @@ msgstr "Drivrutinen \"%s\" kan inte användas med skrivaren \"%s %s\"."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:5632
+#: ../system-config-printer.py:5657
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Du behöver installera paketet \"%s\" för att använda denna drivrutin."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:5639
+#: ../system-config-printer.py:5664
 msgid "PPD error"
 msgstr "PPD-fel"
 
-#: ../system-config-printer.py:5641
+#: ../system-config-printer.py:5666
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Misslyckades att läsa PPD-filen. Möjliga anledningar är:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:5658
+#: ../system-config-printer.py:5683
 msgid "Downloadable drivers"
 msgstr "Hämtningsbara drivrutiner"
 
-#: ../system-config-printer.py:5659
+#: ../system-config-printer.py:5684
 msgid "Failed to download PPD."
 msgstr "Misslyckades med att hämta PPD."
 
-#: ../system-config-printer.py:5693 ../system-config-printer.py:5731
+#: ../system-config-printer.py:5718 ../system-config-printer.py:5756
 msgid "No Installable Options"
 msgstr "Inga installerbara alternativ"
 
-#: ../system-config-printer.py:5777
+#: ../system-config-printer.py:5802
 msgid "Adding"
 msgstr "Lägger till"
 
-#: ../system-config-printer.py:5778
+#: ../system-config-printer.py:5803
 msgid "Adding printer"
 msgstr "Lägger till skrivare"
 
-#: ../system-config-printer.py:5783
+#: ../system-config-printer.py:5808
 #, python-format
 msgid "adding printer %s"
 msgstr "lägger till skrivaren %s"
 
-#: ../system-config-printer.py:5929
+#: ../system-config-printer.py:5954
 msgid "Would you like to print a test page?"
 msgstr "Vill du skriva ut en testsida?"
 
-#: ../system-config-printer.py:5982
+#: ../system-config-printer.py:6007
 msgid "Install driver"
 msgstr "Installera drivrutin"
 
-#: ../system-config-printer.py:5983
+#: ../system-config-printer.py:6008
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Skrivaren \"%s\" kräver paketet %s men det är inte installerat för "
 "närvarande."
 
-#: ../system-config-printer.py:5999
+#: ../system-config-printer.py:6024
 msgid "Missing driver"
 msgstr "Saknad drivrutin"
 
-#: ../system-config-printer.py:6000
+#: ../system-config-printer.py:6025
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -1457,98 +1498,103 @@ msgid "<b>Enter device URI</b>"
 msgstr "<b>Ange enhets-URI</b>"
 
 #: ../glade/NewPrinterWindow.glade.h:5
+#, fuzzy
+msgid "<b>HP Printer (HPLIP) via network</b>"
+msgstr "<b>Skrivarnamn</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:6
 msgid "<b>IPP Printer</b>"
 msgstr "<b>IPP-skrivare</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:6
+#: ../glade/NewPrinterWindow.glade.h:7
 msgid "<b>License Terms</b>"
 msgstr "<b>Licensvillkor</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:7
+#: ../glade/NewPrinterWindow.glade.h:8
 msgid "<b>Location of the LPD network printer</b>"
 msgstr "<b>Placering av LPD-nätverksskrivaren</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:8
+#: ../glade/NewPrinterWindow.glade.h:9
 msgid "<b>Location of the network printer</b>"
 msgstr "<b>Placering av nätverksskrivaren</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:9
+#: ../glade/NewPrinterWindow.glade.h:10
 msgid "<b>Location</b> (optional)"
 msgstr "<b>Placering</b> (valfritt)"
 
-#: ../glade/NewPrinterWindow.glade.h:10
+#: ../glade/NewPrinterWindow.glade.h:11
 msgid "<b>Note</b>"
 msgstr "<b>Anteckning</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:11
+#: ../glade/NewPrinterWindow.glade.h:12
 msgid "<b>Output Quality</b>"
 msgstr "<b>Utskriftskvalitet</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:12
+#: ../glade/NewPrinterWindow.glade.h:13
 msgid "<b>Printer Name</b>"
 msgstr "<b>Skrivarnamn</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:13
+#: ../glade/NewPrinterWindow.glade.h:14
 msgid "<b>SMB Printer</b>"
 msgstr "<b>SMB-skrivare</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:14
+#: ../glade/NewPrinterWindow.glade.h:15
 msgid "<b>Select Driver</b>"
 msgstr "<b>Välj drivrutin</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:15
+#: ../glade/NewPrinterWindow.glade.h:16
 msgid "<b>Settings of the serial port</b>"
 msgstr "<b>Inställningar för serieporten</b>"
 
-#: ../glade/NewPrinterWindow.glade.h:16
+#: ../glade/NewPrinterWindow.glade.h:17
 msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[arbetsgrupp/]server[:port]/skrivare</i>"
 
-#: ../glade/NewPrinterWindow.glade.h:17
+#: ../glade/NewPrinterWindow.glade.h:18
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Välj klassmedlemmar</span>"
 
-#: ../glade/NewPrinterWindow.glade.h:18
+#: ../glade/NewPrinterWindow.glade.h:19
 msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Välj drivrutin</span>"
 
-#: ../glade/NewPrinterWindow.glade.h:19
+#: ../glade/NewPrinterWindow.glade.h:20
 msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Beskriv skrivaren</span>"
 
-#: ../glade/NewPrinterWindow.glade.h:20
+#: ../glade/NewPrinterWindow.glade.h:21
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Befintliga inställningar</span>"
 
-#: ../glade/NewPrinterWindow.glade.h:21
+#: ../glade/NewPrinterWindow.glade.h:22
 msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Installerbara alternativ</span>"
 
-#: ../glade/NewPrinterWindow.glade.h:22
+#: ../glade/NewPrinterWindow.glade.h:23
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
 msgstr "<span weight=\"bold\" size=\"larger\">Välj enhet</span>"
 
-#: ../glade/NewPrinterWindow.glade.h:23
+#: ../glade/NewPrinterWindow.glade.h:24
 msgid "Baud Rate"
 msgstr "Baudhastighet"
 
-#: ../glade/NewPrinterWindow.glade.h:24
+#: ../glade/NewPrinterWindow.glade.h:25
 msgid "Browse..."
 msgstr "Bläddra"
 
-#: ../glade/NewPrinterWindow.glade.h:25
+#: ../glade/NewPrinterWindow.glade.h:26
 msgid "Comments..."
 msgstr "Kommentarer..."
 
-#: ../glade/NewPrinterWindow.glade.h:26
+#: ../glade/NewPrinterWindow.glade.h:27
 msgid "Connection"
 msgstr "Anslutning"
 
-#: ../glade/NewPrinterWindow.glade.h:27
+#: ../glade/NewPrinterWindow.glade.h:28
 msgid "Data Bits"
 msgstr "Databitar"
 
-#: ../glade/NewPrinterWindow.glade.h:28
+#: ../glade/NewPrinterWindow.glade.h:29
 msgid ""
 "Default\n"
 "1200\n"
@@ -1570,7 +1616,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../glade/NewPrinterWindow.glade.h:37
+#: ../glade/NewPrinterWindow.glade.h:38
 msgid ""
 "Default\n"
 "8\n"
@@ -1580,7 +1626,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../glade/NewPrinterWindow.glade.h:40
+#: ../glade/NewPrinterWindow.glade.h:41
 msgid ""
 "Default\n"
 "None\n"
@@ -1592,7 +1638,7 @@ msgstr ""
 "Udda\n"
 "Jämn"
 
-#: ../glade/NewPrinterWindow.glade.h:44
+#: ../glade/NewPrinterWindow.glade.h:45
 msgid ""
 "Default\n"
 "None\n"
@@ -1606,115 +1652,115 @@ msgstr ""
 "RTS/CTS (maskinvara)\n"
 "DTR/DSR (maskinvara)"
 
-#: ../glade/NewPrinterWindow.glade.h:49
+#: ../glade/NewPrinterWindow.glade.h:50
 #: ../glade/PrinterPropertiesDialog.glade.h:33
 msgid "Description:"
 msgstr "Beskrivning:"
 
-#: ../glade/NewPrinterWindow.glade.h:50 ../troubleshoot/DeviceListed.py:39
+#: ../glade/NewPrinterWindow.glade.h:51 ../troubleshoot/DeviceListed.py:39
 msgid "Device URI"
 msgstr "Enhets-URI"
 
-#: ../glade/NewPrinterWindow.glade.h:51
+#: ../glade/NewPrinterWindow.glade.h:52
 msgid "Device description."
 msgstr "Enhetsbeskrivning."
 
-#: ../glade/NewPrinterWindow.glade.h:52
+#: ../glade/NewPrinterWindow.glade.h:53
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../glade/NewPrinterWindow.glade.h:54
+#: ../glade/NewPrinterWindow.glade.h:55
 msgid "Driver details"
 msgstr "Detaljer om drivrutin"
 
-#: ../glade/NewPrinterWindow.glade.h:55
+#: ../glade/NewPrinterWindow.glade.h:56
 msgid "Empty"
 msgstr "Tom"
 
-#: ../glade/NewPrinterWindow.glade.h:56
+#: ../glade/NewPrinterWindow.glade.h:57
 msgid "Find _Queue..."
 msgstr "Sök _kö..."
 
-#: ../glade/NewPrinterWindow.glade.h:57
+#: ../glade/NewPrinterWindow.glade.h:58
 msgid "Flow Control"
 msgstr "Flödeskontroll"
 
-#: ../glade/NewPrinterWindow.glade.h:58
+#: ../glade/NewPrinterWindow.glade.h:59
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr ""
 "Det finns drivrutiner tillgängliga för hämtning för den skrivare som du har "
 "valt."
 
-#: ../glade/NewPrinterWindow.glade.h:59
+#: ../glade/NewPrinterWindow.glade.h:60
 msgid "Free software"
 msgstr "Fri programvara"
 
-#: ../glade/NewPrinterWindow.glade.h:60
+#: ../glade/NewPrinterWindow.glade.h:61
 msgid "Graphics:"
 msgstr "Grafik:"
 
-#: ../glade/NewPrinterWindow.glade.h:61
+#: ../glade/NewPrinterWindow.glade.h:62
 msgid "Host:"
 msgstr "Värd:"
 
-#: ../glade/NewPrinterWindow.glade.h:62
+#: ../glade/NewPrinterWindow.glade.h:63
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr "Läsbar beskrivning som t.ex. \"HP LaserJet med Duplexer\""
 
-#: ../glade/NewPrinterWindow.glade.h:63
+#: ../glade/NewPrinterWindow.glade.h:64
 msgid "Human-readable location such as \"Lab 1\""
 msgstr "Läsbar placering, som t.ex. \"Labb 1\""
 
-#: ../glade/NewPrinterWindow.glade.h:64
+#: ../glade/NewPrinterWindow.glade.h:65
 msgid "IPP"
 msgstr "IPP"
 
-#: ../glade/NewPrinterWindow.glade.h:65
+#: ../glade/NewPrinterWindow.glade.h:66
 msgid "LPD"
 msgstr "LPD"
 
-#: ../glade/NewPrinterWindow.glade.h:66
+#: ../glade/NewPrinterWindow.glade.h:67
 msgid "License:"
 msgstr "Licens:"
 
-#: ../glade/NewPrinterWindow.glade.h:67
+#: ../glade/NewPrinterWindow.glade.h:68
 msgid "Line art:"
 msgstr "Radkonst:"
 
-#: ../glade/NewPrinterWindow.glade.h:68
+#: ../glade/NewPrinterWindow.glade.h:69
 msgid "Local Driver"
 msgstr "Lokal drivrutin"
 
-#: ../glade/NewPrinterWindow.glade.h:69
+#: ../glade/NewPrinterWindow.glade.h:70
 msgid "Make and model:"
 msgstr "Märke och modell:"
 
-#: ../glade/NewPrinterWindow.glade.h:70
+#: ../glade/NewPrinterWindow.glade.h:71
 msgid "Manufacturer"
 msgstr "Tillverkare"
 
-#: ../glade/NewPrinterWindow.glade.h:72
+#: ../glade/NewPrinterWindow.glade.h:73
 msgid "No, I do not accept this license"
 msgstr "Nej, jag accepterar inte denna licens"
 
-#: ../glade/NewPrinterWindow.glade.h:73
+#: ../glade/NewPrinterWindow.glade.h:74
 msgid "Parity"
 msgstr "Paritet"
 
-#: ../glade/NewPrinterWindow.glade.h:75
+#: ../glade/NewPrinterWindow.glade.h:76
 msgid "Patented algorithms"
 msgstr "Patenterade algoritmer"
 
-#: ../glade/NewPrinterWindow.glade.h:76
+#: ../glade/NewPrinterWindow.glade.h:77
 msgid "Photo:"
 msgstr "Foto:"
 
-#: ../glade/NewPrinterWindow.glade.h:77
+#: ../glade/NewPrinterWindow.glade.h:78
 msgid "Port number:"
 msgstr "Portnummer:"
 
-#: ../glade/NewPrinterWindow.glade.h:78
+#: ../glade/NewPrinterWindow.glade.h:79
 msgid ""
 "PostScript Printer Description (PPD) files can often be found on the driver "
 "disk that comes with the printer. For PostScript printers they are often "
@@ -1724,71 +1770,71 @@ msgstr ""
 "drivrutinsskivan som levereras med skrivaren. För PostScript-skrivare är de "
 "ofta en del av Windows<sup>®</sup>-drivrutinen."
 
-#: ../glade/NewPrinterWindow.glade.h:79
+#: ../glade/NewPrinterWindow.glade.h:80
 msgid "Printer model:"
 msgstr "Skrivarmodell:"
 
-#: ../glade/NewPrinterWindow.glade.h:80
+#: ../glade/NewPrinterWindow.glade.h:81
 msgid "Probe"
 msgstr "Sök av"
 
-#: ../glade/NewPrinterWindow.glade.h:81
+#: ../glade/NewPrinterWindow.glade.h:82
 msgid "Prompt user if authentication is required"
 msgstr "Fråga användaren om autentisering krävs"
 
-#: ../glade/NewPrinterWindow.glade.h:82
+#: ../glade/NewPrinterWindow.glade.h:83
 msgid "Provide PPD file"
 msgstr "Tillhandahåll PPD-fil"
 
-#: ../glade/NewPrinterWindow.glade.h:83
+#: ../glade/NewPrinterWindow.glade.h:84
 msgid "Queue:"
 msgstr "Kö:"
 
-#: ../glade/NewPrinterWindow.glade.h:84
+#: ../glade/NewPrinterWindow.glade.h:85
 msgid "SCSI"
 msgstr "SCSI"
 
-#: ../glade/NewPrinterWindow.glade.h:85
+#: ../glade/NewPrinterWindow.glade.h:86
 msgid "SMB"
 msgstr "SMB"
 
-#: ../glade/NewPrinterWindow.glade.h:86
+#: ../glade/NewPrinterWindow.glade.h:87
 msgid "Search for a printer driver to download"
 msgstr "Sök efter en skrivardrivrutin att hämta ner"
 
-#: ../glade/NewPrinterWindow.glade.h:87
+#: ../glade/NewPrinterWindow.glade.h:88
 msgid "Select A File"
 msgstr "Välj en fil"
 
-#: ../glade/NewPrinterWindow.glade.h:88
+#: ../glade/NewPrinterWindow.glade.h:89
 msgid "Select printer from database"
 msgstr "Välj skrivare från databasen"
 
-#: ../glade/NewPrinterWindow.glade.h:89
+#: ../glade/NewPrinterWindow.glade.h:90
 msgid "Serial"
 msgstr "Seriell"
 
-#: ../glade/NewPrinterWindow.glade.h:90
+#: ../glade/NewPrinterWindow.glade.h:91
 msgid "Set authentication details now"
 msgstr "Ange autentiseringsdetaljer nu"
 
-#: ../glade/NewPrinterWindow.glade.h:91
+#: ../glade/NewPrinterWindow.glade.h:92
 msgid "Short name for this printer such as \"laserjet\""
 msgstr "Kort namn för denna skrivare, som t.ex. \"laserjet\""
 
-#: ../glade/NewPrinterWindow.glade.h:92
+#: ../glade/NewPrinterWindow.glade.h:93
 msgid "Supplier:"
 msgstr "Leverantör:"
 
-#: ../glade/NewPrinterWindow.glade.h:93
+#: ../glade/NewPrinterWindow.glade.h:94
 msgid "Support:"
 msgstr "Stöd:"
 
-#: ../glade/NewPrinterWindow.glade.h:94
+#: ../glade/NewPrinterWindow.glade.h:95
 msgid "Text:"
 msgstr "Text:"
 
-#: ../glade/NewPrinterWindow.glade.h:95
+#: ../glade/NewPrinterWindow.glade.h:96
 msgid ""
 "The foomatic printer database contains various manufacturer provided "
 "PostScript Printer Description (PPD) files and also can generate PPD files "
@@ -1802,7 +1848,7 @@ msgstr ""
 "tillverkarnas egna PPD-filer bättre tillgång till specifika funktioner för "
 "skrivaren."
 
-#: ../glade/NewPrinterWindow.glade.h:96
+#: ../glade/NewPrinterWindow.glade.h:97
 msgid ""
 "These drivers do not come from your operating system supplier and will not "
 "be covered by their commercial support.  See the support and license terms "
@@ -1812,7 +1858,7 @@ msgstr ""
 "deras kommersiella support gäller inte för dem. Se villkoren för support och "
 "licensvillkor för drivrutinens leverantör."
 
-#: ../glade/NewPrinterWindow.glade.h:97
+#: ../glade/NewPrinterWindow.glade.h:98
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
@@ -1820,7 +1866,7 @@ msgstr ""
 "Den här drivrutinen ger stöd för ytterligare maskinvara som kan installeras "
 "i skrivaren."
 
-#: ../glade/NewPrinterWindow.glade.h:98
+#: ../glade/NewPrinterWindow.glade.h:99
 msgid ""
 "This is done by assuming that options with the same name do have the same "
 "meaning. Settings of options that are not present in the new PPD will be "
@@ -1830,7 +1876,7 @@ msgstr ""
 "Inställningar av alternativ som inte finns i den nya PPD går förlorade och "
 "alternativ som bara finns i den nya PPD kommer ställas in som standard."
 
-#: ../glade/NewPrinterWindow.glade.h:99
+#: ../glade/NewPrinterWindow.glade.h:100
 msgid ""
 "This way all current option settings will be lost. The default settings of "
 "the new PPD will be used. "
@@ -1838,19 +1884,19 @@ msgstr ""
 "På det här sättet kommer alla nuvarande alternativinställningar gå "
 "förlorade. Standardinställningar för den nya PPD kommer att användas. "
 
-#: ../glade/NewPrinterWindow.glade.h:100
+#: ../glade/NewPrinterWindow.glade.h:101
 msgid "Try to copy the option settings over from the old PPD. "
 msgstr "Försök kopiera alternativinställningarna från den gamla PPD. "
 
-#: ../glade/NewPrinterWindow.glade.h:101
+#: ../glade/NewPrinterWindow.glade.h:102
 msgid "URI:"
 msgstr "URI:"
 
-#: ../glade/NewPrinterWindow.glade.h:103
+#: ../glade/NewPrinterWindow.glade.h:104
 msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "Använd den nya PPD (Postscript Printer Description) som den är."
 
-#: ../glade/NewPrinterWindow.glade.h:105
+#: ../glade/NewPrinterWindow.glade.h:106
 msgid ""
 "With this choice no driver download will be performed. In the next steps a "
 "locally installed driver will be selected."
@@ -1858,15 +1904,15 @@ msgstr ""
 "Med detta val kommer ingen drivrutin att hämtas ner. I de nästkommande "
 "stegen kommer en lokalt installerad drivrutin att väljas."
 
-#: ../glade/NewPrinterWindow.glade.h:106
+#: ../glade/NewPrinterWindow.glade.h:107
 msgid "Yes, I accept this license"
 msgstr "Ja, jag accepterar denna licens"
 
-#: ../glade/NewPrinterWindow.glade.h:107
+#: ../glade/NewPrinterWindow.glade.h:108
 msgid "_Search"
 msgstr "_Sök"
 
-#: ../glade/NewPrinterWindow.glade.h:108
+#: ../glade/NewPrinterWindow.glade.h:109
 msgid "_Verify..."
 msgstr "_Verifiera..."
 
@@ -2663,11 +2709,11 @@ msgstr ""
 msgid "Enable Debugging"
 msgstr "Aktivera felsökning"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:179
+#: ../troubleshoot/ErrorLogCheckpoint.py:178
 msgid "Debug logging enabled."
 msgstr "Felsökningslogg aktiverad."
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:181
+#: ../troubleshoot/ErrorLogCheckpoint.py:180
 msgid "Debug logging was already enabled."
 msgstr "Felsökningslogg var redan aktiverat."
 
@@ -4801,10 +4847,6 @@ msgstr "Välj standardskrivare"
 #, fuzzy
 #~ msgid "Novell Printer (NCP Queue)"
 #~ msgstr "Visa utskrifts_kö"
-
-#, fuzzy
-#~ msgid "Printer IP:"
-#~ msgstr "Skrivare"
 
 #, fuzzy
 #~ msgid "Select a print driver for your printer."
