@@ -47,10 +47,11 @@ def show_help():
            "            Select the named printer on start-up.\n\n"
            "  --choose-driver NAME\n"
            "            Select the named printer on start-up, and display\n"
-           "            a list of drivers.\n"
+           "            a list of drivers.\n\n"
            "  --print-test-page NAME\n"
            "            Select the named printer on start-up and print a\n"
-           "            test page to it.\n")
+           "            test page to it.\n\n"
+           "  --debug   Enable debugging output.\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
     show_help ()
