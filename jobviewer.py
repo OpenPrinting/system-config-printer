@@ -548,10 +548,52 @@ class JobViewer (GtkGUI, monitor.Watcher):
         state = None
         if job_requires_auth:
             state = _("Held for authentication")
+        elif s == cups.IPP_JOB_HELD:
+            state = _("Held")
+            until = data.get ('job-hold-until')
+            if until != None:
+                try:
+                    colon1 = until.find (':')
+                    if colon1 != -1:
+                        now = time.gmtime ()
+                        hh = int (until[:colon1])
+                        colon2 = until[colon1 + 1:].find (':')
+                        if colon2 != -1:
+                            colon2 += colon1 + 1
+                            mm = int (until[colon1 + 1:colon2])
+                            ss = int (until[colon2 + 1:])
+                        else:
+                            mm = int (until[colon1 + 1:])
+                            ss = 0
+
+                        day = now.tm_mday
+                        if (hh < now.tm_hour or
+                            hh == now.tm_hour and
+                            (mm < now.tm_min or
+                             mm == now.tm_min and ss < now.tm_sec)):
+                            day += 1
+
+                        hold = (now.tm_year, now.tm_mon, day,
+                                hh, mm, ss, 0, 0, -1)
+                        local = time.gmtime (time.mktime (hold))
+                        state = _("Held until %s") % time.strftime ("%X", local)
+                except ValueError:
+                    pass
+            if until == "day-time":
+                state = _("Held until day-time")
+            elif until == "evening":
+                state = _("Held until evening")
+            elif until == "night":
+                state = _("Held until night-time")
+            elif until == "second-shift":
+                state = _("Held until second shift")
+            elif until == "third-shift":
+                state = _("Held until third shift")
+            elif until == "weekend":
+                state = _("Held until weekend")
         else:
             try:
                 state = { cups.IPP_JOB_PENDING: _("Pending"),
-                          cups.IPP_JOB_HELD: _("Held"),
                           cups.IPP_JOB_PROCESSING: _("Processing"),
                           cups.IPP_JOB_STOPPED: _("Stopped"),
                           cups.IPP_JOB_CANCELED: _("Canceled"),
