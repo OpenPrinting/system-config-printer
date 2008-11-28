@@ -3167,7 +3167,9 @@ class NewPrinterGUI(GtkGUI):
             if page_nr == 1: # Device (first page)
                 self.auto_make, self.auto_model = None, None
                 self.device.uri = self.getDeviceURI()
-                if self.device.type == "hp":
+                if self.device.type in ["socket", "lpd", "ipp"]:
+                    self.getNetworkPrinterMakeModel ()
+                elif self.device.type == "hp":
                     faxuri = None
                     if host:
                         faxuri = self.get_hplip_uri_for_network_printer(host,
@@ -3656,7 +3658,8 @@ class NewPrinterGUI(GtkGUI):
         uri = stdout.strip ()
         return uri
 
-    def getNetworkPrinterMakeModel(self, device):
+    def getNetworkPrinterMakeModel(self):
+        device = self.device
         # Determine host name/IP
         host = None
         s = device.uri.find ("://")
@@ -3701,27 +3704,6 @@ class NewPrinterGUI(GtkGUI):
             (mk, md) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
-        # Check whether the device is supported by HPLIP and replace
-        # its URI by an HPLIP URI
-        if host:
-            hplipuri = self.get_hplip_uri_for_network_printer(host, "print")
-            if hplipuri:
-                device.uri = hplipuri
-                s = hplipuri.find ("/usb/")
-                if s == -1: s = hplipuri.find ("/par/")
-                if s == -1: s = hplipuri.find ("/net/")
-                if s != -1:
-                    s += 5
-                    e = hplipuri[s:].find ("?")
-                    if e == -1: e = len (hplipuri)
-                    mdl = hplipuri[s:s+e].replace ("_", " ")
-                    if mdl.startswith ("hp ") or mdl.startswith ("HP "):
-                        mdl = mdl[3:]
-                        device.make_and_model = "HP " + mdl
-                        device.id = "MFG:HP;MDL:" + mdl + ";DES:HP " + mdl + ";"
-                        device.id_dict = cupshelpers.parseDeviceID (device.id)
-        # Return the host name/IP for further actions
-        return host
 
     def fillDeviceTab(self, current_uri=None):
         try:
