@@ -53,6 +53,7 @@ class Welcome(Question):
         # allows the password to be cached.
         self.op = TimedOperation (authconn.Connection,
                                   args=(parent,),
+                                  kwargs={'lock': True},
                                   parent=parent)
         return { '_authenticated_connection': self.op.run () }
 
