@@ -137,6 +137,9 @@ class Connection:
     def _set_prompt_allowed (self, allowed):
         self._prompt_allowed = allowed
 
+    def _set_lock (self, whether):
+        self._lock = whether
+
     def _connect (self):
         cups.setUser (self._use_user)
         self._connection = cups.Connection (host=self._server,
@@ -181,6 +184,7 @@ class Connection:
                     self._failed (e == cups.IPP_FORBIDDEN)
                 elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
                     if self._lock:
+                        debugprint ("enter in new thread")
                         gtk.gdk.threads_enter ()
 
                     d = gtk.MessageDialog (self._parent,
@@ -197,6 +201,7 @@ class Connection:
                     response = d.run ()
                     d.destroy ()
                     if self._lock:
+                        debugprint ("leave in new thread")
                         gtk.gdk.threads_leave ()
 
                     if response == gtk.RESPONSE_OK:
@@ -295,6 +300,7 @@ class Connection:
         self._auth_called = False
 
         if self._lock:
+            debugprint ("enter in new thread for auth")
             gtk.gdk.threads_enter ()
 
         # If we're previously prompted, explain why we're prompting again.
@@ -335,6 +341,7 @@ class Connection:
          self._use_password) = d.get_auth_info ()
         d.destroy ()
         if self._lock:
+            debugprint ("leave in new thread for auth")
             gtk.gdk.threads_leave ()
 
         if (response == gtk.RESPONSE_CANCEL or
@@ -351,12 +358,14 @@ class Connection:
 if __name__ == '__main__':
     # Test it out.
     from timedops import TimedOperation
-    gtk.gdk.threads_init ()
     set_debugging (True)
+    gtk.gdk.threads_init ()
+    debugprint ("enter in main thread")
     gtk.gdk.threads_enter ()
-    c = TimedOperation (Connection, args=(None,),
-                        kwargs={'lock': True}).run ()
+    c = TimedOperation (Connection, args=(None,)).run ()
+    c._set_lock (True)
     print TimedOperation (c.getFile,
                           args=('/admin/conf/cupsd.conf',
                                 '/dev/stdout')).run ()
+    debugprint ("leave in main thread")
     gtk.gdk.threads_leave ()
