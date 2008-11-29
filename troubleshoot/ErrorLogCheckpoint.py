@@ -22,6 +22,7 @@
 import cups
 import os
 import tempfile
+import time
 from timedops import TimedOperation
 from base import *
 class ErrorLogCheckpoint(Question):
@@ -175,9 +176,24 @@ class ErrorLogCheckpoint(Question):
             settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '1'
             settings[MAXLOGSIZE] = '0'
             success = False
+
+            def set_settings (settings):
+                c.adminSetServerSettings (settings)
+
+                # Now reconnect.
+                attempt = 1
+                while attempt <= 5:
+                    try:
+                        time.sleep (1)
+                        c._connect ()
+                        break
+                    except RuntimeError:
+                        # Connection failed
+                        attempt += 1
+
             try:
                 debugprint ("Settings to set: " + repr (settings))
-                self.op = TimedOperation (c.adminSetServerSettings,
+                self.op = TimedOperation (set_settings,
                                           args=(settings,),
                                           parent=parent)
                 self.op.run ()
