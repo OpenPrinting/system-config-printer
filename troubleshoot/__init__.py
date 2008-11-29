@@ -188,6 +188,8 @@ class Troubleshooter:
             gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
 
     def on_back_clicked (self, widget):
+        self.forward.set_sensitive (False)
+        self.back.set_sensitive (False)
         try:
             self.questions[self.current_page].disconnect_signals ()
         except:
@@ -218,6 +220,8 @@ class Troubleshooter:
         self.set_back_forward_buttons ()
 
     def on_forward_clicked (self, widget):
+        self.forward.set_sensitive (False)
+        self.back.set_sensitive (False)
         answer_dict = self._collect_answer (self.questions[self.current_page])
         self.question_answers[self.current_page] = answer_dict
         self.answers.update (answer_dict)
