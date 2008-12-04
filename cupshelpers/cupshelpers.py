@@ -38,11 +38,11 @@ class Printer:
         self.connection = connection
         self.class_members = []
         self.update (**kw)
+        self._ppd = None # load on demand
 
-        if self.is_class:
-            self._ppd = False
-        else:
-            self._ppd = None # load on demand
+    def __del__ (self):
+        if self._ppd != None:
+            os.unlink(self._ppd)
 
     def __repr__ (self):
         return "<cupshelpers.Printer \"%s\">" % self.name
@@ -184,18 +184,21 @@ class Printer:
         @returns: cups.PPD object, or False for raw queues
         @raise cups.IPPError: IPP error
         """
+        result = None
         if self._ppd is None:
             try:
-                filename = self.connection.getPPD(self.name)
-                self._ppd = cups.PPD(filename)
-                self._ppd.localize ()
-                os.unlink(filename)
+                self._ppd = self.connection.getPPD(self.name)
+                result = cups.PPD (self._ppd)
             except cups.IPPError, (e, m):
                 if e == cups.IPP_NOT_FOUND:
-                    self._ppd = False
+                    result = False
                 else:
                     raise
-        return self._ppd
+
+        if result != False and self._ppd != None:
+            result = cups.PPD (self._ppd)
+
+        return result
 
     def setOption(self, name, value):
         """
