@@ -2194,6 +2194,8 @@ class GUI(GtkGUI, monitor.Watcher):
 
         try:
             self.ppd = printer.getPPD()
+            self.ppd_local = printer.getPPD()
+            self.ppd_local.localize()
         except cups.IPPError, (e, m):
             # Some IPP error other than IPP_NOT_FOUND.
             show_IPP_Error(e, m, self.PrintersWindow)
@@ -2425,19 +2427,20 @@ class GUI(GtkGUI, monitor.Watcher):
             return
         ppd = self.ppd
         ppd.markDefaults()
+        self.ppd_local.markDefaults()
 
         hasInstallableOptions = False
 
         # build option tabs
-        for group in ppd.optionGroups:
+        for group in self.ppd_local.optionGroups:
             if group.name == "InstallableOptions":
                 hasInstallableOptions = True
                 container = self.vbPInstallOptions
                 tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
                 if tab_nr == -1:
-                    self.ntbkPrinter.insert_page(
-                        self.swPInstallOptions, gtk.Label(group.text),
-                        self.static_tabs)
+                    self.ntbkPrinter.insert_page(self.swPInstallOptions,
+                                                 gtk.Label(group.text),
+                                                 self.static_tabs)
                 tab_label = self.lblPInstallOptions
             else:
                 frame = gtk.Frame("<b>%s</b>" % ppdippstr.ppd.get (group.text))
@@ -5614,7 +5617,6 @@ class NewPrinterGUI(GtkGUI):
                 ppd = self.NPDrivers[nr]
             elif self.rbtnNPPPD.get_active():
                 ppd = cups.PPD(self.filechooserPPD.get_filename())
-                ppd.localize ()
             else:
                 # PPD of the driver downloaded from OpenPrinting XXX
                 treeview = self.tvNPDownloadableDrivers
@@ -5636,7 +5638,6 @@ class NewPrinterGUI(GtkGUI):
                             ppdfile.write(ppdcontent)
                             ppdfile.close()
                             ppd = cups.PPD(ppdname)
-                            ppd.localize ()
                             os.unlink(ppdname)
 
         except RuntimeError, e:
@@ -5692,7 +5693,6 @@ class NewPrinterGUI(GtkGUI):
                 if (ppd != "raw"):
                     f = self.mainapp.cups.getServerPPD(ppd)
                     ppd = cups.PPD(f)
-                    ppd.localize ()
                     os.unlink(f)
             except RuntimeError:
                 nonfatalException()
@@ -5889,7 +5889,6 @@ class NewPrinterGUI(GtkGUI):
                 try:
                     filename = self.mainapp.cups.getPPD(name)
                     ppd = cups.PPD(filename)
-                    ppd.localize ()
                     os.unlink(filename)
                 except cups.IPPError, (e, msg):
                     if e == cups.IPP_NOT_FOUND:
