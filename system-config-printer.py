@@ -858,6 +858,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 show_IPP_Error(e, m, self.MainWindow)
                 self.printers = {}
                 self.default_printer = None
+
+            self.cups._set_prompt_allowed (True)
         else:
             self.printers = {}
             self.default_printer = None
