@@ -1200,6 +1200,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.default_printer = None
 
             self.cups._end_operation ()
+            self.cups._set_prompt_allowed (True)
         else:
             self.printers = {}
             self.default_printer = None
