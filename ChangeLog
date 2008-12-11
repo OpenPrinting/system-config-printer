@@ -1,3 +1,49 @@
+2008-12-11  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.enable_clicked): Reconnect after adjusting
+	server settings.
+	* troubleshoot/ErrorLogFetch.py (ErrorLogFetch.button_clicked):
+	Likewise.
+
+2008-12-11  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.enable_clicked): Handle values like '1m' for
+	MaxLogSize.
+
+2008-12-11  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.server_settings_response): Reload
+	server settings after advanced server settings dialog has
+	finished.
+
+2008-12-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): Allow prompting
+	again even if we disallowed it for one operation.
+
+2008-12-04  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.fillPrinterTab): Localize a copy
+	of the PPD, retaining the original in-memory representation.
+	(GUI.fillPrinterOptions): Use the localized PPD for widget labels,
+	and the original PPD for value writebacks.
+	(NewPrinterGUI.getNPPPD): Don't localize PPDs here.
+	(NewPrinterGUI.on_btnNPApply_clicked): Likewise.
+
+2008-12-04  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py (Printer.__init__, Printer.getPPD):
+	Cache the temporary PPD filename instead of the in-memory
+	representation, to allow for a separate localized in-memory copy.
+	(Printer.__del__): Remove the temporary PPD file.
+
+2008-11-27  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.fillDeviceTab): Removed
+	some dead code.
+
 2008-11-26  Tim Waugh  <twaugh@redhat.com>
 
 	* troubleshoot/ErrorLogCheckpoint.py
