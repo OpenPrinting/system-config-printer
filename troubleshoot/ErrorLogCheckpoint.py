@@ -22,6 +22,7 @@
 import cups
 import os
 import tempfile
+import time
 from base import *
 class ErrorLogCheckpoint(Question):
     def __init__ (self, troubleshooter):
@@ -157,10 +158,10 @@ class ErrorLogCheckpoint(Question):
             prev_debug = 0
         try:
             prev_logsize = int (settings[MAXLOGSIZE])
-        except KeyError:
+        except (KeyError, ValueError):
             prev_logsize = -1
 
-        if prev_debug == 0 or prev_logsize != 0:
+        if prev_debug == 0 or prev_logsize != '0':
             settings[cups.CUPS_SERVER_DEBUG_LOGGING] = '1'
             settings[MAXLOGSIZE] = '0'
             success = False
@@ -168,6 +169,17 @@ class ErrorLogCheckpoint(Question):
                 debugprint ("Settings to set: " + repr (settings))
                 c.adminSetServerSettings (settings)
                 success = True
+
+                # Now reconnect.
+                attempt = 1
+                while attempt <= 5:
+                    try:
+                        time.sleep (1)
+                        c._connect ()
+                        break
+                    except RuntimeError:
+                        # Connection failed
+                        attempt += 1
             except cups.IPPError:
                 pass
             except RuntimeError:

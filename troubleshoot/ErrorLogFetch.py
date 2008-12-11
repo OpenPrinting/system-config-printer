@@ -22,6 +22,7 @@
 import cups
 import os
 import tempfile
+import time
 from base import *
 class ErrorLogFetch(Question):
     def __init__ (self, troubleshooter):
@@ -114,6 +115,17 @@ class ErrorLogFetch(Question):
         try:
             c.adminSetServerSettings (settings)
             success = True
+
+            # Now reconnect.
+            attempt = 1
+            while attempt <= 5:
+                try:
+                    time.sleep (1)
+                    c._connect ()
+                    break
+                except RuntimeError:
+                    # Connection failed
+                    attempt += 1
         except cups.IPPError:
             pass
 
