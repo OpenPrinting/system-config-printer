@@ -765,6 +765,11 @@ class GUI(GtkGUI, monitor.Watcher):
                 AdvancedServerSettingsDialog (self.cups, dialog)
             except:
                 return
+
+            try:
+                self.fillServerTab ()
+            except cups.IPPError:
+                dialog.hide ()
         else:
             dialog.hide ()
 
