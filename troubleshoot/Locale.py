@@ -26,18 +26,38 @@ from base import *
 class Locale(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Locale issues")
-        troubleshooter.new_page (gtk.Label (), self)
+        page = self.initial_vbox (_("Incorrect Page Size"),
+                                  _("The page size for the print job was "
+                                    "not the printer's default page size.  "
+                                    "If this is not intentional it may cause "
+                                    "alignment problems."))
+
+        table = gtk.Table (2, 2)
+        table.set_row_spacings (6)
+        table.set_col_spacings (6)
+        page.pack_start (table)
+        self.printer_page_size = gtk.Label ()
+        self.printer_page_size.set_alignment (0, 0)
+        self.job_page_size = gtk.Label ()
+        self.job_page_size.set_alignment (0, 0)
+        label = gtk.Label (_("Print job page size:"))
+        label.set_alignment (0, 0)
+        table.attach (label, 0, 1, 0, 1, xoptions=gtk.FILL, yoptions=0)
+        table.attach (self.job_page_size, 1, 2, 0, 1,
+                      xoptions=gtk.FILL, yoptions=0)
+        label = gtk.Label (_("Printer page size:"))
+        label.set_alignment (0, 0)
+        table.attach (label, 0, 1, 1, 2, xoptions=gtk.FILL, yoptions=0)
+        table.attach (self.printer_page_size, 1, 2, 1, 2,
+                      xoptions=gtk.FILL, yoptions=0)
+        troubleshooter.new_page (page, self)
 
     def display (self):
-        return False
-
-    def collect_answer (self):
-        answers = {}
-
+        self.answers = {}
         (messages, encoding) = locale.getlocale (locale.LC_MESSAGES)
         (ctype, encoding) = locale.getlocale (locale.LC_CTYPE)
-        answers['user_locale_messages'] = messages
-        answers['user_locale_ctype'] = ctype
+        self.answers['user_locale_messages'] = messages
+        self.answers['user_locale_ctype'] = ctype
 
         try:
             i18n = file ("/etc/sysconfig/i18n").readlines ()
@@ -50,6 +70,43 @@ class Locale(Question):
         except:
             system_lang = None
 
-        answers['system_locale_lang'] = system_lang
+        self.answers['system_locale_lang'] = system_lang
 
-        return answers
+        printer_page_size = None
+        try:
+            ppd_defs = self.troubleshooter.answers['cups_printer_ppd_defaults']
+            for group, options in ppd_defs.iteritems ():
+                if options.has_key ("PageSize"):
+                    printer_page_size = options["PageSize"]
+                    break
+
+        except KeyError:
+            try:
+                attrs = self.troubleshooter.answers['remote_cups_queue_attributes']
+                printer_page_size = attrs["media-default"]
+            except KeyError:
+                pass
+
+        try:
+            job_status = self.troubleshooter.answers["test_page_job_status"]
+        except KeyError:
+            job_status = []
+
+        self.answers['printer_page_size'] = printer_page_size
+        if printer_page_size != None:
+            job_page_size = None
+            for (test, jobid, printer, doc, status, attrs) in job_status:
+                if test:
+                    if attrs.has_key ("PageSize"):
+                        job_page_size = attrs["PageSize"]
+                        self.answers['job_page_size'] = job_page_size
+                        if job_page_size != printer_page_size:
+                            self.printer_page_size.set_text (printer_page_size)
+                            self.job_page_size.set_text (job_page_size)
+                            return True
+
+        return False
+
+    def collect_answer (self):
+        return self.answers
+

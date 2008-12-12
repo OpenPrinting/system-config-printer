@@ -98,6 +98,7 @@ class Troubleshooter:
         self.questions = []
         self.question_answers = []
         self.answers = {}
+        self.moving_backwards = False
 
         main.show_all ()
 
@@ -148,6 +149,9 @@ class Troubleshooter:
         self.set_back_forward_buttons ()
         return page
 
+    def is_moving_backwards (self):
+        return self.moving_backwards
+
     def set_back_forward_buttons (self, *args):
         page = self.ntbk.get_current_page ()
         self.back.set_sensitive (page != 0)
@@ -177,6 +181,7 @@ class Troubleshooter:
             gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
 
     def on_back_clicked (self, widget):
+        self.moving_backwards = True
         page = self.ntbk.get_current_page ()
         try:
             self.questions[page].disconnect_signals ()
@@ -208,6 +213,7 @@ class Troubleshooter:
             self._report_traceback ()
 
         self.set_back_forward_buttons ()
+        self.moving_backwards = False
 
     def on_forward_clicked (self, widget):
         page = self.ntbk.get_current_page ()
@@ -306,7 +312,6 @@ QUESTIONS = ["Welcome",
              "ChoosePrinter",
              "CheckPrinterSanity",
              "CheckPPDSanity",
-             "Locale",
 
              "LocalOrRemote",
              "DeviceListed",
@@ -328,6 +333,7 @@ QUESTIONS = ["Welcome",
              "ErrorLogFetch",
              "PrinterStateReasons",
              "ErrorLogParse",
+             "Locale",
              "Shrug"]
 
 def run (quitfn=None, parent=None):
