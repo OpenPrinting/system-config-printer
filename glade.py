@@ -24,7 +24,7 @@ import gtk.glade
 import os
 
 import config
-pkgdata = config.Paths ().get_path ('pkgdatadir')
+pkgdata = config.pkgdatadir
 
 class GtkGUI:
     def getWidgets(self, widgets):
