@@ -49,7 +49,7 @@ from statereason import StateReason
 statereason.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
 
-pkgdata = config.Paths ().get_path ('pkgdatadir')
+pkgdata = config.pkgdatadir
 GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
