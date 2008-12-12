@@ -105,7 +105,7 @@ authconn.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
 gettext.bindtextdomain (domain, config.localedir)
-gtk.glade.bindtextdomain (domain)
+gtk.glade.bindtextdomain (domain, config.localedir)
 import ppdippstr
 pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
