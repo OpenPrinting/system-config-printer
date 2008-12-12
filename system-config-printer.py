@@ -614,7 +614,7 @@ class GUI(GtkGUI, monitor.Watcher):
             model = self.dests_iconview.get_model ()
             iter = model.get_iter_first ()
             while iter != None:
-                name = model.get_value (iter, 2)
+                name = unicode (model.get_value (iter, 2), 'utf-8')
                 if name == configure_printer:
                     path = model.get_path (iter)
                     self.dests_iconview.item_activated (path)
@@ -626,7 +626,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
         iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         object = model.get_value (iter, 0)
         try:
             self.fillPrinterTab (name)
@@ -694,7 +694,7 @@ class GUI(GtkGUI, monitor.Watcher):
             model = iconview.get_model ()
             iter = model.get_iter (paths[i])
             object = model.get_value (iter, 0)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             if object.discovered:
                 any_discovered = True
             if object.enabled:
@@ -841,7 +841,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         for path in paths:
             iter = model.get_iter (path)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             selected_printers.add (name)
 
         if self.cups:
@@ -996,7 +996,7 @@ class GUI(GtkGUI, monitor.Watcher):
         # Restore selection of printers.
         model = self.dests_iconview.get_model ()
         def maybe_select (model, path, iter):
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             if name in selected_printers:
                 self.dests_iconview.select_path (path)
         model.foreach (maybe_select)
@@ -2159,7 +2159,7 @@ class GUI(GtkGUI, monitor.Watcher):
         (path, cell) = tuple
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         if not self.is_rename_possible (name):
             return
         cell.set_property ('editable', True)
@@ -2173,7 +2173,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def printer_name_edited (self, cell, path, newname):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         debugprint ("edited: %s -> %s" % (name, newname))
         try:
             self.rename_printer (name, newname)
@@ -2267,7 +2267,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # ..and select the new printer.
         def select_new_printer (model, path, iter):
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             print name, new_name
             if name == new_name:
                 self.dests_iconview.select_path (path)
@@ -2290,7 +2290,7 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         self.entCopyName.set_text(name)
         self.NewPrinterName.set_transient_for (self.MainWindow)
         result = self.NewPrinterName.run()
@@ -2329,7 +2329,7 @@ class GUI(GtkGUI, monitor.Watcher):
         if n == 1:
             iter = model.get_iter (paths[0])
             object = model.get_value (iter, 0)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             if object.is_class:
                 message_format = _("Really delete class `%s'?") % name
             else:
@@ -2349,7 +2349,7 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             for i in range (n):
                 iter = model.get_iter (paths[i])
-                name = model.get_value (iter, 2)
+                name = unicode (model.get_value (iter, 2), 'utf-8')
                 self.cups.deletePrinter (name)
         except cups.IPPError, (e, msg):
             show_IPP_Error(e, msg, self.MainWindow)
@@ -2414,7 +2414,7 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         self.set_system_or_user_default_printer (name)
 
     def on_troubleshoot_activate(self, widget):
