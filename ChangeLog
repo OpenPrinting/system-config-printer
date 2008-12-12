@@ -1,3 +1,12 @@
+2008-12-12  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/__init__.py (Troubleshooter.is_moving_backwards):
+	Allow troubleshooter pages to know the direction we're going.
+
+	* troubleshoot/DeviceListed.py (DeviceListed.display): Don't
+	perform expensive operation if we're moving backwards and this
+	page will not be displayed.
+
 2008-12-11  Tim Waugh  <twaugh@redhat.com>
 
 	* troubleshoot/ErrorLogCheckpoint.py
