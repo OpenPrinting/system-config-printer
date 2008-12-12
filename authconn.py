@@ -22,14 +22,15 @@ import gtk
 from debug import *
 
 _ = lambda x: x
+N_ = lambda x: x
 def set_gettext_function (fn):
     global _
     _ = fn
 
 class AuthDialog(gtk.Dialog):
-    AUTH_FIELD={'username': _("Username:"),
-                'password': _("Password:"),
-                'domain': _("Domain:")}
+    AUTH_FIELD={'username': N_("Username:"),
+                'password': N_("Password:"),
+                'domain': N_("Domain:")}
 
     def __init__ (self, title=_("Authentication"), parent=None,
                   flags=gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
@@ -60,7 +61,7 @@ class AuthDialog(gtk.Dialog):
         self.field_entry = []
         for i in range (num_fields):
             field = auth_info_required[i]
-            label = gtk.Label (self.AUTH_FIELD.get (field, field))
+            label = gtk.Label (_(self.AUTH_FIELD.get (field, field)))
             label.set_alignment (0, 0.5)
             table.attach (label, 0, 1, i, i + 1)
             entry = gtk.Entry ()
