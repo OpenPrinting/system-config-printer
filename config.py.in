@@ -19,7 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 prefix="@prefix@"
+datarootdir="@datarootdir@"
 datadir="@datarootdir@"
+localedir="@localedir@"
 pkgdatadir="${datadir}/${PACKAGE}"
 VERSION="@VERSION@"
 PACKAGE="@PACKAGE@"
@@ -28,7 +30,8 @@ DOWNLOADABLE_DRIVER_SUPPORT=False
 import os
 class Paths:
       def __init__ (self):
-            vars = ['prefix', 'datadir', 'pkgdatadir', 'VERSION', 'PACKAGE']
+            vars = ['prefix', 'datadir', 'datarootdir', 'localedir',
+	            'pkgdatadir', 'VERSION', 'PACKAGE']
             for var in vars:
                   os.environ[var] = eval (var)
             self.paths = {}

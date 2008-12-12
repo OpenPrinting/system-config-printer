@@ -101,8 +101,10 @@ except locale.Error:
 from gettext import gettext as _
 monitor.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
+authconn.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
+gettext.bindtextdomain (domain, config.Paths ().get_path ('localedir'))
 gtk.glade.bindtextdomain (domain)
 import ppdippstr
 pkgdata = config.Paths ().get_path ('pkgdatadir')
