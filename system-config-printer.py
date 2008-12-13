@@ -1603,9 +1603,12 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_tvPrinterProperties_cursor_changed (self, treeview):
         # Adjust notebook to reflect selected item.
-        (store, iter) = treeview.get_selection ().get_selected ()
-        n = store.get_value (iter, 1)
-        self.ntbkPrinter.set_current_page (n)
+        (path, column) = treeview.get_cursor ()
+        if path != None:
+            model = treeview.get_model ()
+            iter = model.get_iter (path)
+            n = model.get_value (iter, 1)
+            self.ntbkPrinter.set_current_page (n)
 
     # set default printer
     def set_system_or_user_default_printer (self, name):
