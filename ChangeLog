@@ -1,3 +1,26 @@
+2008-12-13  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(GUI.on_tvPrinterProperties_cursor_changed): Use get_cursor here
+	(Ubuntu #282634).
+
+2008-12-13  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.on_btnNPApply_clicked):
+	Check we have a real PPD before trying to copy options (Ubuntu
+	#285133).
+
+2008-12-13  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_btnPrintTestPage_clicked):
+	Display an error dialog if unable to connect to server (Ubuntu
+	#286943).
+
+2008-12-13  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/ppds.py (PPDs._findBestMatchPPDs): Handle model
+	names with more than one set of digits (Ubuntu #251244).
+
 2008-12-12  Tim Waugh  <twaugh@redhat.com>
 
 	* troubleshoot/__init__.py (Troubleshooter.is_moving_backwards):

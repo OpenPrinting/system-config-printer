@@ -2027,9 +2027,12 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_tvPrinterProperties_cursor_changed (self, treeview):
         # Adjust notebook to reflect selected item.
-        (store, iter) = treeview.get_selection ().get_selected ()
-        n = store.get_value (iter, 1)
-        self.ntbkPrinter.set_current_page (n)
+        (path, column) = treeview.get_cursor ()
+        if path != None:
+            model = treeview.get_model ()
+            iter = model.get_iter (path)
+            n = model.get_value (iter, 1)
+            self.ntbkPrinter.set_current_page (n)
 
     # set default printer
     def set_system_or_user_default_printer (self, name):
@@ -2098,9 +2101,14 @@ class GUI(GtkGUI, monitor.Watcher):
         # as a normal job.
         user = cups.getUser ()
         cups.setUser ('')
-        c = authconn.Connection (self.PrintersWindow, try_as_root=False,
-                                 host=self.connect_server,
-                                 encryption=self.connect_encrypt)
+        try:
+            c = authconn.Connection (self.PrintersWindow, try_as_root=False,
+                                     host=self.connect_server,
+                                     encryption=self.connect_encrypt)
+        except RuntimeError, s:
+            show_IPP_Error (None, s, self.PrintersWindow)
+            return
+
         c._begin_operation (_("printing test page"))
         try:
             if custom_testpage and os.path.exists(custom_testpage):
@@ -5908,8 +5916,9 @@ class NewPrinterGUI(GtkGUI):
                         return
             else:
                 # We have an actual PPD to upload, not just a name.
-                if not self.rbtnChangePPDasIs.get_active():
-                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd) # XXX
+                if ((not self.rbtnChangePPDasIs.get_active()) and
+                    isinstance (self.mainapp.ppd, cups.PPD)):
+                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd)
                 else:
                     # write Installable Options to ppd
                     for option in self.options.itervalues():
