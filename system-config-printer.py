@@ -2109,6 +2109,7 @@ class GUI(GtkGUI, monitor.Watcher):
             show_IPP_Error (None, s, self.PrintersWindow)
             return
 
+        job_id = None
         c._begin_operation (_("printing test page"))
         try:
             if custom_testpage and os.path.exists(custom_testpage):
@@ -2133,9 +2134,11 @@ class GUI(GtkGUI, monitor.Watcher):
 
         c._end_operation ()
         cups.setUser (user)
-        show_info_dialog (_("Submitted"),
-                          _("Test page submitted as job %d") % job_id,
-                          parent=self.PrintersWindow)
+
+        if job_id != None:
+            show_info_dialog (_("Submitted"),
+                              _("Test page submitted as job %d") % job_id,
+                              parent=self.PrintersWindow)
 
     def maintenance_command (self, command):
         (tmpfd, tmpfname) = tempfile.mkstemp ()
