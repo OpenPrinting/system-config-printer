@@ -1684,6 +1684,8 @@ class GUI(GtkGUI, monitor.Watcher):
             show_info_dialog (_("Submitted"),
                               _("Test page submitted as job %d") % job_id,
                               parent=self.MainWindow)
+        except RuntimeError, s:
+            show_IPP_Error (None, s, self.MainWindow)
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
                 self.connect_server != 'localhost' and
