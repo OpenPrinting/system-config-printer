@@ -694,6 +694,8 @@ class PPDs:
                         digits_start = i
                     digits_end = i
                     digits += 1
+                elif digits_start != -1:
+                    break
             digits_end += 1
             modelnumber = 0
             if digits > 0:
