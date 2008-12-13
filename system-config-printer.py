@@ -5394,8 +5394,9 @@ class NewPrinterGUI(GtkGUI):
                         return
             else:
                 # We have an actual PPD to upload, not just a name.
-                if not self.rbtnChangePPDasIs.get_active():
-                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd) # XXX
+                if ((not self.rbtnChangePPDasIs.get_active()) and
+                    isinstance (self.mainapp.ppd, cups.PPD)):
+                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd)
                 else:
                     # write Installable Options to ppd
                     for option in self.options.itervalues():
