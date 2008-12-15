@@ -59,7 +59,7 @@ from statereason import StateReason
 statereason.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
 
-pkgdata = config.Paths ().get_path ('pkgdatadir')
+pkgdata = config.pkgdatadir
 GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
@@ -154,21 +154,62 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.getWidgets ({"JobsWindow":
                               ["JobsWindow",
+                               "job_menubar_item",
                                "treeview",
                                "statusbar",
                                "show_printer_status"],
-                          "job_popupmenu":
-                              ["job_popupmenu",
-                               "cancel",
-                               "hold",
-                               "release",
-                               "reprint",
-                               "authenticate"],
                           "statusicon_popupmenu":
                               ["statusicon_popupmenu"],
                           "PrinterStatusWindow":
                               ["PrinterStatusWindow",
                                "treeview_printers"]})
+
+        job_action_group = gtk.ActionGroup ("JobActionGroup")
+        job_action_group.add_actions ([
+                ("cancel-job", gtk.STOCK_CANCEL, None, None, None,
+                 self.on_job_cancel_activate),
+                ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None, None,
+                 self.on_job_hold_activate),
+                ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None, None,
+                 self.on_job_release_activate),
+                ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None, None,
+                 self.on_job_reprint_activate),
+                ("authenticate-job", None, _("_Authenticate"), None, None,
+                 self.on_job_authenticate_activate)
+                ])
+        self.job_ui_manager = gtk.UIManager ()
+        self.job_ui_manager.insert_action_group (job_action_group, -1)
+        self.job_ui_manager.add_ui_from_string (
+"""
+<ui>
+ <accelerator action="cancel-job"/>
+ <accelerator action="hold-job"/>
+ <accelerator action="release-job"/>
+ <accelerator action="reprint-job"/>
+ <accelerator action="authenticate-job"/>
+</ui>
+"""
+)
+        self.job_ui_manager.ensure_update ()
+        self.JobsWindow.add_accel_group (self.job_ui_manager.get_accel_group ())
+        self.job_context_menu = gtk.Menu ()
+        for action_name in ["cancel-job",
+                            "hold-job",
+                            "release-job",
+                            "reprint-job",
+                            None,
+                            "authenticate-job"]:
+            if not action_name:
+                item = gtk.SeparatorMenuItem ()
+            else:
+                action = job_action_group.get_action (action_name)
+                item = action.create_menu_item ()
+
+            item.show ()
+            self.job_context_menu.append (item)
+
+        self.job_menubar_item.set_submenu (self.job_context_menu)
+
         text=0
         for name in [_("Job"),
                      _("User"),
@@ -199,6 +240,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.treeview.connect ('button_release_event',
                                self.on_treeview_button_release_event)
         self.treeview.connect ('popup-menu', self.on_treeview_popup_menu)
+        self.treeview.connect ('cursor-changed',
+                               self.on_treeview_cursor_changed)
 
         self.JobsWindow.set_icon_name (ICON)
         self.JobsWindow.hide ()
@@ -864,36 +907,42 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if event.button == 3:
             self.show_treeview_popup_menu (treeview, event, event.button)
 
-    def show_treeview_popup_menu (self, treeview, event, event_button):
-        # Right-clicked.
+    def on_treeview_cursor_changed (self, treeview):
         store, iter = treeview.get_selection ().get_selected ()
         if iter == None:
             return
 
         self.jobid = self.store.get_value (iter, 0)
         job = self.jobs[self.jobid]
-        self.cancel.set_sensitive (True)
-        self.hold.set_sensitive (True)
-        self.release.set_sensitive (True)
-        self.reprint.set_sensitive (True)
-        self.authenticate.set_sensitive (False)
+        cancel = self.job_ui_manager.get_action ("/cancel-job")
+        hold = self.job_ui_manager.get_action ("/hold-job")
+        release = self.job_ui_manager.get_action ("/release-job")
+        reprint = self.job_ui_manager.get_action ("/reprint-job")
+        authenticate = self.job_ui_manager.get_action ("/authenticate-job")
+        cancel.set_sensitive (True)
+        hold.set_sensitive (True)
+        release.set_sensitive (True)
+        reprint.set_sensitive (True)
+        authenticate.set_sensitive (False)
         if job.has_key ('job-state'):
             s = job['job-state']
             if s >= cups.IPP_JOB_CANCELED:
-                self.cancel.set_sensitive (False)
+                cancel.set_sensitive (False)
             if s != cups.IPP_JOB_PENDING:
-                self.hold.set_sensitive (False)
+                hold.set_sensitive (False)
             if s != cups.IPP_JOB_HELD:
-                self.release.set_sensitive (False)
+                release.set_sensitive (False)
             if (not job.get('job-preserved', False)):
-                self.reprint.set_sensitive (False)
+                reprint.set_sensitive (False)
 
         if job.get ('job-state', cups.IPP_JOB_CANCELED) == cups.IPP_JOB_HELD:
             if job.get ('job-hold-until', 'none') == 'auth-info-required':
-                self.authenticate.set_sensitive (True)
+                authenticate.set_sensitive (True)
 
-        self.job_popupmenu.popup (None, None, None, event_button,
-                                  event.get_time ())
+    def show_treeview_popup_menu (self, treeview, event, event_button):
+        # Right-clicked.
+        self.job_context_menu.popup (None, None, None, event_button,
+                                     event.get_time ())
 
     def on_icon_popupmenu(self, icon, button, time):
         self.statusicon_popupmenu.popup (None, None, None, button, time)

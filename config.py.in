@@ -19,28 +19,9 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 prefix="@prefix@"
-datadir="@datarootdir@"
-pkgdatadir="${datadir}/${PACKAGE}"
+datadir="@datadir@"
+localedir="@localedir@"
+pkgdatadir="@datadir@/@PACKAGE@"
 VERSION="@VERSION@"
 PACKAGE="@PACKAGE@"
 DOWNLOADABLE_DRIVER_SUPPORT=False
-
-import os
-class Paths:
-      def __init__ (self):
-            vars = ['prefix', 'datadir', 'pkgdatadir', 'VERSION', 'PACKAGE']
-            for var in vars:
-                  os.environ[var] = eval (var)
-            self.paths = {}
-            changed = True
-            while changed:
-                  changed = False
-                  for var in vars:
-                        old = self.paths.get (var, None)
-                        self.paths[var] = os.path.expandvars (os.environ[var])
-                        os.environ[var] = self.paths[var]
-                        if old != self.paths[var]:
-                              changed = True
-
-      def get_path (self, var):
-            return self.paths[var]

@@ -101,6 +101,7 @@ class Troubleshooter:
         self.questions = []
         self.question_answers = []
         self.answers = {}
+        self.moving_backwards = False
 
         main.show_all ()
 
@@ -159,6 +160,9 @@ class Troubleshooter:
         self.set_back_forward_buttons ()
         return page
 
+    def is_moving_backwards (self):
+        return self.moving_backwards
+
     def set_back_forward_buttons (self, *args):
         page = self.current_page
         self.back.set_sensitive (page != 0)
@@ -190,6 +194,7 @@ class Troubleshooter:
     def on_back_clicked (self, widget):
         self.forward.set_sensitive (False)
         self.back.set_sensitive (False)
+        self.moving_backwards = True
         try:
             self.questions[self.current_page].disconnect_signals ()
         except:
@@ -218,6 +223,7 @@ class Troubleshooter:
             self._report_traceback ()
 
         self.set_back_forward_buttons ()
+        self.moving_backwards = False
 
     def on_forward_clicked (self, widget):
         self.forward.set_sensitive (False)
@@ -319,7 +325,6 @@ QUESTIONS = ["Welcome",
              "ChoosePrinter",
              "CheckPrinterSanity",
              "CheckPPDSanity",
-             "Locale",
 
              "LocalOrRemote",
              "DeviceListed",
@@ -341,6 +346,7 @@ QUESTIONS = ["Welcome",
              "ErrorLogFetch",
              "PrinterStateReasons",
              "ErrorLogParse",
+             "Locale",
              "Shrug"]
 
 def run (quitfn=None, parent=None):

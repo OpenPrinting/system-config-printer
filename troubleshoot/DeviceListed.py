@@ -71,33 +71,38 @@ class DeviceListed(Question):
 
         devices = {}
         parent = self.troubleshooter.get_window ()
-        try:
-            c = answers['_authenticated_connection']
-            self.op = TimedOperation (c.getDevices, parent=parent)
-            devices = self.op.run ()
-            devices_list = []
-            for uri, device in devices.iteritems ():
-                if uri.find (':') == -1:
-                    continue
+        # Skip device list if this page is hidden and we're skipping
+        # backwards past it.
+        if not (answers['cups_queue_listed'] and
+                self.troubleshooter.is_moving_backwards ()):
+            # Otherwise, fetch devices.
+            try:
+                c = answers['_authenticated_connection']
+                self.op = TimedOperation (c.getDevices, parent=parent)
+                devices = self.op.run ()
+                devices_list = []
+                for uri, device in devices.iteritems ():
+                    if uri.find (':') == -1:
+                        continue
 
-                if device.get('device-class') != 'direct':
-                    continue
+                    if device.get('device-class') != 'direct':
+                        continue
 
-                name = device.get('device-info', _("Unknown"))
-                info = device.get('device-make-and-model', _("Unknown"))
-                devices_list.append ((name, info, uri, device))
+                    name = device.get('device-info', _("Unknown"))
+                    info = device.get('device-make-and-model', _("Unknown"))
+                    devices_list.append ((name, info, uri, device))
 
-            devices_list.sort (lambda x, y: cmp (x[0], y[0]))
-            for name, info, uri, device in devices_list:
-                iter = model.append (None)
-                model.set (iter, 0, name, 1, info, 2, uri, 3, device)
+                devices_list.sort (lambda x, y: cmp (x[0], y[0]))
+                for name, info, uri, device in devices_list:
+                    iter = model.append (None)
+                    model.set (iter, 0, name, 1, info, 2, uri, 3, device)
 
-        except cups.HTTPError:
-            pass
-        except cups.IPPError:
-            pass
-        except RuntimeError:
-            pass
+            except cups.HTTPError:
+                pass
+            except cups.IPPError:
+                pass
+            except RuntimeError:
+                pass
 
         if answers['cups_queue_listed']:
             try:

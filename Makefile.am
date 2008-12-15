@@ -20,8 +20,17 @@ EXPORT_MODULES=					\
 	fi
 	touch .stamp-distutils-in-builddir
 
+config.py: config.py.in Makefile
+	sed \
+	  -e "s|\@prefix\@|$(prefix)|" \
+	  -e "s|\@datadir\@|$(datadir)|" \
+	  -e "s|\@localedir\@|$(localedir)|" \
+	  -e "s|\@VERSION\@|$(VERSION)|" \
+	  -e "s|\@PACKAGE\@|$(PACKAGE)|" \
+	  $< > $@
+
 # Use distutils to build the module.
-all-local: .stamp-distutils-in-builddir
+all-local: .stamp-distutils-in-builddir config.py
 	$(PYTHON) setup.py build
 
 # Use distutils to install the module.
@@ -86,7 +95,6 @@ nobase_pkgdata_DATA=					\
 	glade/ConnectingDialog.glade			\
 	glade/InstallDialog.glade				\
 	glade/IPPBrowseDialog.glade			\
-	glade/job_popupmenu.glade				\
 	glade/JobsWindow.glade				\
 	glade/NewPrinterName.glade				\
 	glade/NewPrinterWindow.glade			\
@@ -228,11 +236,11 @@ missing-languages:
 fix-glade:
 	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' $(top_srcdir)/glade/*.glade
 
-run:
+run:	config.py
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
 	python $(top_srcdir)/system-config-printer.py --debug
 
-run-applet:
+run-applet:	config.py
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
 	python $(top_srcdir)/applet.py --debug
 

@@ -101,11 +101,14 @@ except locale.Error:
 from gettext import gettext as _
 monitor.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
+authconn.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
-gtk.glade.bindtextdomain (domain)
+gettext.bindtextdomain (domain, config.localedir)
+gtk.glade.textdomain (domain)
+gtk.glade.bindtextdomain (domain, config.localedir)
 import ppdippstr
-pkgdata = config.Paths ().get_path ('pkgdatadir')
+pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
 
@@ -824,7 +827,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter_first ()
         while iter != None:
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             if name == queue:
                 path = model.get_path (iter)
                 self.dests_iconview.item_activated (path)
@@ -910,7 +913,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
         iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         object = model.get_value (iter, 0)
 
         try:
@@ -979,7 +982,7 @@ class GUI(GtkGUI, monitor.Watcher):
         for path in paths:
             iter = model.get_iter (path)
             object = model.get_value (iter, 0)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             self.groups_pane.currently_selected_queues.append (name)
             if object.discovered:
                 any_discovered = True
@@ -1187,7 +1190,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         for path in paths:
             iter = model.get_iter (path)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             selected_printers.add (name)
 
         if self.cups:
@@ -1394,7 +1397,7 @@ class GUI(GtkGUI, monitor.Watcher):
         # Restore selection of printers.
         model = self.dests_iconview.get_model ()
         def maybe_select (model, path, iter):
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             if name in selected_printers:
                 self.dests_iconview.select_path (path)
         model.foreach (maybe_select)
@@ -2024,9 +2027,12 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_tvPrinterProperties_cursor_changed (self, treeview):
         # Adjust notebook to reflect selected item.
-        (store, iter) = treeview.get_selection ().get_selected ()
-        n = store.get_value (iter, 1)
-        self.ntbkPrinter.set_current_page (n)
+        (path, column) = treeview.get_cursor ()
+        if path != None:
+            model = treeview.get_model ()
+            iter = model.get_iter (path)
+            n = model.get_value (iter, 1)
+            self.ntbkPrinter.set_current_page (n)
 
     # set default printer
     def set_system_or_user_default_printer (self, name):
@@ -2095,9 +2101,15 @@ class GUI(GtkGUI, monitor.Watcher):
         # as a normal job.
         user = cups.getUser ()
         cups.setUser ('')
-        c = authconn.Connection (self.PrintersWindow, try_as_root=False,
-                                 host=self.connect_server,
-                                 encryption=self.connect_encrypt)
+        try:
+            c = authconn.Connection (self.PrintersWindow, try_as_root=False,
+                                     host=self.connect_server,
+                                     encryption=self.connect_encrypt)
+        except RuntimeError, s:
+            show_IPP_Error (None, s, self.PrintersWindow)
+            return
+
+        job_id = None
         c._begin_operation (_("printing test page"))
         try:
             if custom_testpage and os.path.exists(custom_testpage):
@@ -2122,9 +2134,11 @@ class GUI(GtkGUI, monitor.Watcher):
 
         c._end_operation ()
         cups.setUser (user)
-        show_info_dialog (_("Submitted"),
-                          _("Test page submitted as job %d") % job_id,
-                          parent=self.PrintersWindow)
+
+        if job_id != None:
+            show_info_dialog (_("Submitted"),
+                              _("Test page submitted as job %d") % job_id,
+                              parent=self.PrintersWindow)
 
     def maintenance_command (self, command):
         (tmpfd, tmpfname) = tempfile.mkstemp ()
@@ -2594,7 +2608,7 @@ class GUI(GtkGUI, monitor.Watcher):
         (path, cell) = tuple
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         if not self.is_rename_possible (name):
             return
         cell.set_property ('editable', True)
@@ -2608,7 +2622,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def printer_name_edited (self, cell, path, newname):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         debugprint ("edited: %s -> %s" % (name, newname))
         try:
             self.rename_printer (name, newname)
@@ -2708,7 +2722,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # ..and select the new printer.
         def select_new_printer (model, path, iter):
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             print name, new_name
             if name == new_name:
                 self.dests_iconview.select_path (path)
@@ -2734,7 +2748,7 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         self.entCopyName.set_text(name)
         self.NewPrinterName.set_transient_for (self.PrintersWindow)
         result = self.NewPrinterName.run()
@@ -2785,7 +2799,7 @@ class GUI(GtkGUI, monitor.Watcher):
         if n == 1:
             iter = model.get_iter (paths[0])
             object = model.get_value (iter, 0)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             if object.is_class:
                 message_format = _("Really delete class `%s'?") % name
             else:
@@ -2811,7 +2825,7 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             for i in range (n):
                 iter = model.get_iter (paths[i])
-                name = model.get_value (iter, 2)
+                name = unicode (model.get_value (iter, 2), 'utf-8')
                 self.cups._begin_operation (_("deleting printer %s") % name)
                 self.cups.deletePrinter (name)
                 self.cups._end_operation ()
@@ -2833,7 +2847,7 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 printer.setEnabled (enable)
@@ -2897,7 +2911,7 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2), 'utf-8')
         self.set_system_or_user_default_printer (name)
 
     def on_edit_activate (self, UNUSED):
@@ -2910,7 +2924,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         for path in paths:
             iter = model.get_iter (path)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             class_members.append (name)
         self.newPrinterGUI.init ("class")
         out_model = self.newPrinterGUI.tvNCNotMembers.get_model ()
@@ -2931,7 +2945,7 @@ class GUI(GtkGUI, monitor.Watcher):
             model = self.dests_iconview.get_model ()
             for path in paths:
                 iter = model.get_iter (path)
-                name = model.get_value (iter, 2)
+                name = unicode (model.get_value (iter, 2), 'utf-8')
                 specific_dests.append (name)
             viewer = jobviewer.JobViewer (None, None, my_jobs=False,
                                           specific_dests=specific_dests,
@@ -4849,6 +4863,7 @@ class NewPrinterGUI(GtkGUI):
         thread.start_new_thread(self.browse_ipp_queues_thread, ())
 
     def browse_ipp_queues_thread(self):
+        host = None
         gtk.gdk.threads_enter()
         try:
             store = self.ipp_store
@@ -4867,8 +4882,12 @@ class NewPrinterGUI(GtkGUI):
         oldserver = cups.getServer ()
         printers = classes = {}
         failed = False
+        port = 631
+        if host != None:
+            (host, port) = urllib.splitnport (host, defport=port)
+
         try:
-            c = cups.Connection (host=host)
+            c = cups.Connection (host=host, port=port)
             printers = c.getPrinters ()
             del c
         except cups.IPPError, (e, m):
@@ -5905,8 +5924,9 @@ class NewPrinterGUI(GtkGUI):
                         return
             else:
                 # We have an actual PPD to upload, not just a name.
-                if not self.rbtnChangePPDasIs.get_active():
-                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd) # XXX
+                if ((not self.rbtnChangePPDasIs.get_active()) and
+                    isinstance (self.mainapp.ppd, cups.PPD)):
+                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd)
                 else:
                     # write Installable Options to ppd
                     for option in self.options.itervalues():
