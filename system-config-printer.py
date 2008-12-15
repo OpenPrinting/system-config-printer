@@ -827,7 +827,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter_first ()
         while iter != None:
-            name = unicode (model.get_value (iter, 2), 'utf-8')
+            name = unicode (model.get_value (iter, 2))
             if name == queue:
                 path = model.get_path (iter)
                 self.dests_iconview.item_activated (path)
@@ -913,7 +913,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
         iter = model.get_iter (path)
-        name = unicode (model.get_value (iter, 2), 'utf-8')
+        name = unicode (model.get_value (iter, 2))
         object = model.get_value (iter, 0)
 
         try:
@@ -982,7 +982,7 @@ class GUI(GtkGUI, monitor.Watcher):
         for path in paths:
             iter = model.get_iter (path)
             object = model.get_value (iter, 0)
-            name = unicode (model.get_value (iter, 2), 'utf-8')
+            name = unicode (model.get_value (iter, 2))
             self.groups_pane.currently_selected_queues.append (name)
             if object.discovered:
                 any_discovered = True
@@ -1190,7 +1190,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         for path in paths:
             iter = model.get_iter (path)
-            name = unicode (model.get_value (iter, 2), 'utf-8')
+            name = unicode (model.get_value (iter, 2))
             selected_printers.add (name)
 
         if self.cups:
@@ -1397,7 +1397,7 @@ class GUI(GtkGUI, monitor.Watcher):
         # Restore selection of printers.
         model = self.dests_iconview.get_model ()
         def maybe_select (model, path, iter):
-            name = unicode (model.get_value (iter, 2), 'utf-8')
+            name = unicode (model.get_value (iter, 2))
             if name in selected_printers:
                 self.dests_iconview.select_path (path)
         model.foreach (maybe_select)
@@ -2608,7 +2608,7 @@ class GUI(GtkGUI, monitor.Watcher):
         (path, cell) = tuple
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = unicode (model.get_value (iter, 2), 'utf-8')
+        name = unicode (model.get_value (iter, 2))
         if not self.is_rename_possible (name):
             return
         cell.set_property ('editable', True)
@@ -2622,7 +2622,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def printer_name_edited (self, cell, path, newname):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = unicode (model.get_value (iter, 2), 'utf-8')
+        name = unicode (model.get_value (iter, 2))
         debugprint ("edited: %s -> %s" % (name, newname))
         try:
             self.rename_printer (name, newname)
@@ -2722,7 +2722,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # ..and select the new printer.
         def select_new_printer (model, path, iter):
-            name = unicode (model.get_value (iter, 2), 'utf-8')
+            name = unicode (model.get_value (iter, 2))
             print name, new_name
             if name == new_name:
                 self.dests_iconview.select_path (path)
@@ -2748,7 +2748,7 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = unicode (model.get_value (iter, 2), 'utf-8')
+        name = unicode (model.get_value (iter, 2))
         self.entCopyName.set_text(name)
         self.NewPrinterName.set_transient_for (self.PrintersWindow)
         result = self.NewPrinterName.run()
@@ -2768,7 +2768,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_entCopyName_changed(self, widget):
         # restrict
-        text = widget.get_text()
+        text = unicode (widget.get_text())
         new_text = text
         new_text = new_text.replace("/", "")
         new_text = new_text.replace("#", "")
@@ -2799,7 +2799,7 @@ class GUI(GtkGUI, monitor.Watcher):
         if n == 1:
             iter = model.get_iter (paths[0])
             object = model.get_value (iter, 0)
-            name = unicode (model.get_value (iter, 2), 'utf-8')
+            name = model.get_value (iter, 2)
             if object.is_class:
                 message_format = _("Really delete class `%s'?") % name
             else:
@@ -2825,8 +2825,9 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             for i in range (n):
                 iter = model.get_iter (paths[i])
-                name = unicode (model.get_value (iter, 2), 'utf-8')
+                name = model.get_value (iter, 2)
                 self.cups._begin_operation (_("deleting printer %s") % name)
+                name = unicode (name)
                 self.cups.deletePrinter (name)
                 self.cups._end_operation ()
         except cups.IPPError, (e, msg):
@@ -2911,7 +2912,7 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = unicode (model.get_value (iter, 2), 'utf-8')
+        name = unicode (model.get_value (iter, 2))
         self.set_system_or_user_default_printer (name)
 
     def on_edit_activate (self, UNUSED):
@@ -3171,7 +3172,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def checkNPName(self, name):
         if not name: return False
-        name = name.lower()
+        name = unicode (name.lower())
         for printer in self.printers.values():
             if not printer.discovered and printer.name.lower()==name:
                 return False
@@ -4211,7 +4212,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_entNPName_changed(self, widget):
         # restrict
-        text = widget.get_text()
+        text = unicode (widget.get_text())
         new_text = text
         new_text = new_text.replace("/", "")
         new_text = new_text.replace("#", "")
@@ -5788,9 +5789,9 @@ class NewPrinterGUI(GtkGUI):
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
         if self.dialog_mode in ("class", "printer"):
-            name = self.entNPName.get_text()
-            location = self.entNPLocation.get_text()
-            info = self.entNPDescription.get_text()
+            name = unicode (self.entNPName.get_text())
+            location = unicode (self.entNPLocation.get_text())
+            info = unicode (self.entNPDescription.get_text())
         else:
             name = self.mainapp.printer.name
 
