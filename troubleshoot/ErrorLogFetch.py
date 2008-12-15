@@ -23,6 +23,7 @@ import cups
 import os
 import tempfile
 import time
+from timedops import TimedOperation
 from base import *
 class ErrorLogFetch(Question):
     def __init__ (self, troubleshooter):
@@ -45,9 +46,12 @@ class ErrorLogFetch(Question):
         page.pack_start (self.label, False, False, 0)
         troubleshooter.new_page (page, self)
         self.persistent_answers = {}
+        self.forward_allowed = True
 
     def display (self):
+        self.forward_allowed = True
         answers = self.troubleshooter.answers
+        parent = self.troubleshooter.get_window ()
         self.answers = {}
         try:
             checkpoint = answers['error_log_checkpoint']
@@ -57,8 +61,7 @@ class ErrorLogFetch(Question):
         if self.persistent_answers.has_key ('error_log'):
             checkpoint = None
 
-        if checkpoint != None:
-            c = self.troubleshooter.answers['_authenticated_connection']
+        def fetch_log (c):
             prompt = c._get_prompt_allowed ()
             c._set_prompt_allowed (False)
             c._connect ()
@@ -76,6 +79,13 @@ class ErrorLogFetch(Question):
 
             c._set_prompt_allowed (prompt)
             if success:
+                return tmpfname
+            return None
+
+        if checkpoint != None:
+            c = self.troubleshooter.answers['_authenticated_connection']
+            tmpfname = self.opresult (fetch_log, (c,), parent=parent)
+            if tmpfname != None:
                 f = file (tmpfname)
                 f.seek (checkpoint)
                 lines = f.readlines ()
@@ -91,19 +101,27 @@ class ErrorLogFetch(Question):
 
     def connect_signals (self, handler):
         self.button_sigid = self.button.connect ('clicked', self.button_clicked)
+        self.signal_handler = handler
 
     def disconnect_signals (self):
         self.button.disconnect (self.button_sigid)
+
+    def can_click_forward (self):
+        return self.forward_allowed
 
     def collect_answer (self):
         answers = self.persistent_answers.copy ()
         answers.update (self.answers)
         return answers
 
+    def cancel_operation (self):
+        self.op.cancel ()
+
     def button_clicked (self, button):
         c = self.troubleshooter.answers['_authenticated_connection']
+        parent = self.troubleshooter.get_window ()
         try:
-            settings = c.adminGetServerSettings ()
+            settings = self.opresult (c.adminGetServerSettings, parent=parent)
         except cups.IPPError:
             return
 
@@ -112,9 +130,8 @@ class ErrorLogFetch(Question):
         orig_settings = answers['cups_server_settings']
         settings['MaxLogSize'] = orig_settings.get ('MaxLogSize', '2000000')
         success = False
-        try:
+        def set_settings (settings):
             c.adminSetServerSettings (settings)
-            success = True
 
             # Now reconnect.
             attempt = 1
@@ -126,9 +143,41 @@ class ErrorLogFetch(Question):
                 except RuntimeError:
                     # Connection failed
                     attempt += 1
+
+        try:
+            self.opresult (set_settings,
+                           (settings,),
+                           parent=parent)
+            success = True
         except cups.IPPError:
             pass
 
         if success:
             self.persistent_answers['error_log_debug_logging_unset'] = True
             self.label.set_text (_("Debug logging disabled."))
+
+    def opresult (self, *args, **kwargs):
+        self.forward_allowed = False
+        try:
+            self.signal_handler ()
+        except AttributeError:
+            pass
+
+        self.op = TimedOperation (*args, **kwargs)
+        try:
+            result = self.op.run ()
+        except:
+            self.forward_allowed = True
+            try:
+                self.signal_handler ()
+            except AttributeError:
+                pass
+            raise
+
+        self.forward_allowed = True
+        try:
+            self.signal_handler ()
+        except AttributeError:
+            pass
+
+        return result
