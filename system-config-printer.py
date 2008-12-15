@@ -4340,6 +4340,7 @@ class NewPrinterGUI(GtkGUI):
         thread.start_new_thread(self.browse_ipp_queues_thread, ())
 
     def browse_ipp_queues_thread(self):
+        host = None
         gtk.gdk.threads_enter()
         try:
             store = self.ipp_store
@@ -4358,12 +4359,19 @@ class NewPrinterGUI(GtkGUI):
         oldserver = cups.getServer ()
         printers = classes = {}
         failed = False
+        port = 631
+        if host != None:
+            (host, port) = urllib.splitnport (host, defport=port)
+
         try:
             try:
-                c = cups.Connection (host=host)
+                c = cups.Connection (host=host, port=port)
             except TypeError:
                 # host parameter requires pycups >= 1.9.40.
-                cups.setServer (host)
+                cups.setPort (port)
+                if host != None:
+                    cups.setServer (host)
+
                 c = cups.Connection()
 
             printers = c.getPrinters ()
