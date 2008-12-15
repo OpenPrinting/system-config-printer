@@ -151,14 +151,14 @@ class ErrorLogCheckpoint(Question):
         return self.forward_allowed
 
     def enable_clicked (self, button, handler):
-        self.forward_allowed = True
-        handler (button)
         parent = self.troubleshooter.get_window ()
         c = self.troubleshooter.answers['_authenticated_connection']
         try:
             self.op = TimedOperation (c.adminGetServerSettings, parent=parent)
             settings = self.op.run ()
         except cups.IPPError:
+            self.forward_allowed = True
+            handler (button)
             return
 
         self.persistent_answers['cups_server_settings'] = settings.copy ()
@@ -208,6 +208,9 @@ class ErrorLogCheckpoint(Question):
                 self.label.set_text (_("Debug logging enabled."))
         else:
             self.label.set_text (_("Debug logging was already enabled."))
+
+        self.forward_allowed = True
+        handler (button)
 
     def cancel_operation (self):
         self.op.cancel ()
