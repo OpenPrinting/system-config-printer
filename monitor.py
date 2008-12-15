@@ -581,15 +581,8 @@ class Monitor:
 
         try:
             self.printer_state_reasons = collect_printer_state_reasons (c)
-            dests = c.getDests ()
-            printers = set()
-            for (printer, instance) in dests.keys ():
-                if printer == None:
-                    continue
-                if instance != None:
-                    continue
-                printers.add (printer)
-            self.printers = printers
+            dests = c.getPrinters ()
+            self.printers = set(dests.keys ())
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
             return
