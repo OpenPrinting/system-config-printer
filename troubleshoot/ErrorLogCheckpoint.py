@@ -53,6 +53,7 @@ class ErrorLogCheckpoint(Question):
             return
 
         c = self.troubleshooter.answers['_authenticated_connection']
+        c._set_lock (False)
         settings = c.adminGetServerSettings ()
         if len (settings.keys ()) == 0:
             return
