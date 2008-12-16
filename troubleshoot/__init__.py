@@ -70,7 +70,7 @@ class Troubleshooter:
         box.set_layout (gtk.BUTTONBOX_END)
 
         back = gtk.Button (stock='gtk-go-back')
-        back.connect ('clicked', self.on_back_clicked)
+        back.connect ('clicked', self._on_back_clicked)
         back.set_sensitive (False)
         self.back = back
 
@@ -83,7 +83,7 @@ class Troubleshooter:
         self.cancel = cancel
 
         forward = gtk.Button (stock='gtk-go-forward')
-        forward.connect ('clicked', self.on_forward_clicked)
+        forward.connect ('clicked', self._on_forward_clicked)
         forward.set_flags (gtk.CAN_DEFAULT | gtk.HAS_DEFAULT)
         self.forward = forward
 
@@ -140,7 +140,7 @@ class Troubleshooter:
         self.question_answers = self.question_answers[:page + 1]
         for p in range (self.ntbk.get_n_pages () - 1, page, -1):
             self.ntbk.remove_page (p)
-        self.set_back_forward_buttons ()
+        self._set_back_forward_buttons ()
 
     def new_page (self, widget, question):
         page = len (self.questions)
@@ -151,33 +151,31 @@ class Troubleshooter:
         widget.show_all ()
         if page == 0:
             try:
-                question.connect_signals (self.set_back_forward_buttons)
+                question.connect_signals (self._set_back_forward_buttons)
             except:
                 self._report_traceback ()
 
             self.ntbk.set_current_page (page)
             self.current_page = page
-        self.set_back_forward_buttons ()
+        self._set_back_forward_buttons ()
         return page
 
     def is_moving_backwards (self):
         return self.moving_backwards
 
-    def set_back_forward_buttons (self, *args):
-        page = self.current_page
-        self.back.set_sensitive (page != 0)
-        if len (self.questions) == page + 1:
-            # Out of questions.
-            debugprint ("Out of questions")
-            self.forward.set_sensitive (False)
-            self.close.show ()
-            self.cancel.hide ()
-        else:
-            can = self._can_click_forward (self.questions[page])
-            debugprint ("Page %d: can click forward? %s" % (page, can))
-            self.forward.set_sensitive (can)
-            self.close.hide ()
-            self.cancel.show ()
+    def answers_as_text (self):
+        text = ""
+        n = 1
+        for i in range (self.current_page):
+            answers = self.question_answers[i].copy ()
+            for hidden in filter (lambda x: x.startswith ("_"), answers.keys()):
+                del answers[hidden]
+            if len (answers.keys ()) == 0:
+                continue
+            text += "Page %d (%s):" % (n, self.questions[i]) + '\n'
+            text += pprint.pformat (answers) + '\n'
+            n += 1
+        return text.rstrip () + '\n'
 
     def busy (self):
         self.forward.set_sensitive (False)
@@ -193,9 +191,25 @@ class Troubleshooter:
         if gdkwin:
             gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
 
-        self.set_back_forward_buttons ()
+        self._set_back_forward_buttons ()
 
-    def on_back_clicked (self, widget):
+    def _set_back_forward_buttons (self, *args):
+        page = self.current_page
+        self.back.set_sensitive (page != 0)
+        if len (self.questions) == page + 1:
+            # Out of questions.
+            debugprint ("Out of questions")
+            self.forward.set_sensitive (False)
+            self.close.show ()
+            self.cancel.hide ()
+        else:
+            can = self._can_click_forward (self.questions[page])
+            debugprint ("Page %d: can click forward? %s" % (page, can))
+            self.forward.set_sensitive (can)
+            self.close.hide ()
+            self.cancel.show ()
+
+    def _on_back_clicked (self, widget):
         self.busy ()
         self.moving_backwards = True
         try:
@@ -219,14 +233,14 @@ class Troubleshooter:
 
         try:
             self.questions[self.current_page].\
-                connect_signals (self.set_back_forward_buttons)
+                connect_signals (self._set_back_forward_buttons)
         except:
             self._report_traceback ()
 
         self.moving_backwards = False
         self.ready ()
 
-    def on_forward_clicked (self, widget):
+    def _on_forward_clicked (self, widget):
         self.busy ()
         answer_dict = self._collect_answer (self.questions[self.current_page])
         self.question_answers[self.current_page] = answer_dict
@@ -250,27 +264,13 @@ class Troubleshooter:
 
         self.ntbk.set_current_page (self.current_page)
         try:
-            question.connect_signals (self.set_back_forward_buttons)
+            question.connect_signals (self._set_back_forward_buttons)
         except:
             self._report_traceback ()
 
         self.ready ()
         if get_debugging ():
             self._dump_answers ()
-
-    def answers_as_text (self):
-        text = ""
-        n = 1
-        for i in range (self.current_page):
-            answers = self.question_answers[i].copy ()
-            for hidden in filter (lambda x: x.startswith ("_"), answers.keys()):
-                del answers[hidden]
-            if len (answers.keys ()) == 0:
-                continue
-            text += "Page %d (%s):" % (n, self.questions[i]) + '\n'
-            text += pprint.pformat (answers) + '\n'
-            n += 1
-        return text.rstrip () + '\n'
 
     def _dump_answers (self):
         debugprint (self.answers_as_text ())
