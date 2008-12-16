@@ -180,6 +180,8 @@ class Troubleshooter:
             self.cancel.show ()
 
     def busy (self):
+        self.forward.set_sensitive (False)
+        self.back.set_sensitive (False)
         gdkwin = self.get_window ().window
         if gdkwin:
             gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.WATCH))
@@ -191,16 +193,16 @@ class Troubleshooter:
         if gdkwin:
             gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
 
+        self.set_back_forward_buttons ()
+
     def on_back_clicked (self, widget):
-        self.forward.set_sensitive (False)
-        self.back.set_sensitive (False)
+        self.busy ()
         self.moving_backwards = True
         try:
             self.questions[self.current_page].disconnect_signals ()
         except:
             self._report_traceback ()
 
-        self.busy ()
         self.current_page -= 1
         question = self.questions[self.current_page]
         while not self._display (question):
@@ -210,7 +212,6 @@ class Troubleshooter:
             question = self.questions[self.current_page]
 
         self.ntbk.set_current_page (self.current_page)
-        self.ready ()
         answers = {}
         for i in range (self.current_page):
             answers.update (self.question_answers[i])
@@ -222,12 +223,11 @@ class Troubleshooter:
         except:
             self._report_traceback ()
 
-        self.set_back_forward_buttons ()
         self.moving_backwards = False
+        self.ready ()
 
     def on_forward_clicked (self, widget):
-        self.forward.set_sensitive (False)
-        self.back.set_sensitive (False)
+        self.busy ()
         answer_dict = self._collect_answer (self.questions[self.current_page])
         self.question_answers[self.current_page] = answer_dict
         self.answers.update (answer_dict)
@@ -237,7 +237,6 @@ class Troubleshooter:
         except:
             self._report_traceback ()
 
-        self.busy ()
         self.current_page += 1
         question = self.questions[self.current_page]
         while not self._display (question):
@@ -250,14 +249,12 @@ class Troubleshooter:
             question = self.questions[self.current_page]
 
         self.ntbk.set_current_page (self.current_page)
-        self.ready ()
         try:
             question.connect_signals (self.set_back_forward_buttons)
         except:
             self._report_traceback ()
 
-        self.set_back_forward_buttons ()
-
+        self.ready ()
         if get_debugging ():
             self._dump_answers ()
 
