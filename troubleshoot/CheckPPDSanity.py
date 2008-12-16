@@ -24,6 +24,7 @@ import cupshelpers
 import installpackage
 import os
 import subprocess
+from timedops import TimedOperation, TimedSubprocess
 from base import *
 
 class CheckPPDSanity(Question):
@@ -57,12 +58,15 @@ class CheckPPDSanity(Question):
         if not answers['cups_queue_listed']:
             return False
 
+        parent = self.troubleshooter.get_window ()
         name = answers['cups_queue']
         tmpf = None
         try:
             cups.setServer ('')
-            c = cups.Connection ()
-            tmpf = c.getPPD (name)
+            self.op = TimedOperation (cups.Connection, parent=parent)
+            c = self.op.run ()
+            self.op = TimedOperation (c.getPPD, args=(name,), parent=parent)
+            tmpf = self.op.run ()
         except RuntimeError:
             return False
         except cups.IPPError:
@@ -92,16 +96,17 @@ class CheckPPDSanity(Question):
             title = _("Invalid PPD File")
             self.answers['cups_printer_ppd_valid'] = False
             try:
-                p = subprocess.Popen (['cupstestppd', '-rvv', tmpf],
-                                      stdin=file("/dev/null"),
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE)
-                (stdout, stderr) = p.communicate ()
-                self.answers['cupstestppd_output'] = (stdout, stderr)
+                self.op = TimedSubprocess (parent=parent,
+                                           args=['cupstestppd', '-rvv', tmpf],
+                                           stdin=file("/dev/null"),
+                                           stdout=subprocess.PIPE,
+                                           stderr=subprocess.PIPE)
+                result = self.op.run ()
+                self.answers['cupstestppd_output'] = result
                 text = _("The PPD file for printer `%s' does not conform "
                          "to the specification.  "
                          "Possible reason follows:") % name
-                text += '\n' + stdout
+                text += '\n' + reduce (lambda x, y: x + '\n' + y, result[0])
             except OSError:
                 # Perhaps cupstestppd is not in the path.
                 text = _("There is a problem with the PPD file for "
@@ -147,6 +152,9 @@ class CheckPPDSanity(Question):
 
     def collect_answer (self):
         return self.answers
+
+    def cancel_operation (self):
+        self.op.cancel ()
 
     def install_clicked (self, button):
         pkgs = self.answers.get('packages_installed', [])

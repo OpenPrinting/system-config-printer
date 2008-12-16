@@ -20,6 +20,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+from timedops import TimedOperation
 from base import *
 class SchedulerNotRunning(Question):
     def __init__ (self, troubleshooter):
@@ -37,10 +38,14 @@ class SchedulerNotRunning(Question):
         if self.troubleshooter.answers.get ('cups_queue_listed', False):
             return False
 
+        parent = self.troubleshooter.get_window ()
+
         # Find out if CUPS is running.
         failure = False
         try:
-            c = cups.Connection ()
+            self.op = TimedOperation (cups.Connection,
+                                      parent=parent)
+            c = self.op.run ()
         except RuntimeError:
             failure = True
 
@@ -52,3 +57,6 @@ class SchedulerNotRunning(Question):
 
     def collect_answer (self):
         return self.answers
+
+    def cancel_operation (self):
+        self.op.cancel ()

@@ -107,7 +107,7 @@ class AuthDialog(gtk.Dialog):
         self.field_entry[i].grab_focus ()
 
 class Connection:
-    def __init__ (self, parent=None, try_as_root=True,
+    def __init__ (self, parent=None, try_as_root=True, lock=False,
                   host=None, port=None, encryption=None):
         if host != None:
             cups.setServer (host)
@@ -126,6 +126,7 @@ class Connection:
         self._connect ()
         self._prompt_allowed = True
         self._operation_stack = []
+        self._lock = lock
 
     def _begin_operation (self, operation):
         self._operation_stack.append (operation)
@@ -138,6 +139,9 @@ class Connection:
 
     def _set_prompt_allowed (self, allowed):
         self._prompt_allowed = allowed
+
+    def _set_lock (self, whether):
+        self._lock = whether
 
     def _connect (self):
         cups.setUser (self._use_user)
@@ -184,6 +188,10 @@ class Connection:
                                          e == cups.IPP_FORBIDDEN):
                     self._failed (e == cups.IPP_FORBIDDEN)
                 elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
+                    if self._lock:
+                        debugprint ("enter in new thread")
+                        gtk.gdk.threads_enter ()
+
                     d = gtk.MessageDialog (self._parent,
                                            gtk.DIALOG_MODAL |
                                            gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -197,6 +205,9 @@ class Connection:
                     d.set_default_response (gtk.RESPONSE_OK)
                     response = d.run ()
                     d.destroy ()
+                    if self._lock:
+                        debugprint ("leave in new thread")
+                        gtk.gdk.threads_leave ()
 
                     if response == gtk.RESPONSE_OK:
                         debugprint ("retrying operation...")
@@ -293,6 +304,10 @@ class Connection:
         # Reset the flag indicating whether we were given an auth callback.
         self._auth_called = False
 
+        if self._lock:
+            debugprint ("enter in new thread for auth")
+            gtk.gdk.threads_enter ()
+
         # If we're previously prompted, explain why we're prompting again.
         if self._dialog_shown:
             d = gtk.MessageDialog (self._parent,
@@ -330,6 +345,9 @@ class Connection:
         (self._use_user,
          self._use_password) = d.get_auth_info ()
         d.destroy ()
+        if self._lock:
+            debugprint ("leave in new thread for auth")
+            gtk.gdk.threads_leave ()
 
         if (response == gtk.RESPONSE_CANCEL or
             response == gtk.RESPONSE_DELETE_EVENT):
@@ -344,6 +362,15 @@ class Connection:
 
 if __name__ == '__main__':
     # Test it out.
+    from timedops import TimedOperation
     set_debugging (True)
-    c = Connection (None)
-    print c.getFile ('/admin/conf/cupsd.conf', '/dev/stdout')
+    gtk.gdk.threads_init ()
+    debugprint ("enter in main thread")
+    gtk.gdk.threads_enter ()
+    c = TimedOperation (Connection, args=(None,)).run ()
+    c._set_lock (True)
+    print TimedOperation (c.getFile,
+                          args=('/admin/conf/cupsd.conf',
+                                '/dev/stdout')).run ()
+    debugprint ("leave in main thread")
+    gtk.gdk.threads_leave ()

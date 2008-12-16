@@ -43,6 +43,8 @@ from base import *
 
 class Troubleshooter:
     def __init__ (self, quitfn=None, parent=None):
+        self._in_module_call = False
+
         main = gtk.Window ()
         if parent:
             main.set_transient_for (parent)
@@ -68,7 +70,7 @@ class Troubleshooter:
         box.set_layout (gtk.BUTTONBOX_END)
 
         back = gtk.Button (stock='gtk-go-back')
-        back.connect ('clicked', self.on_back_clicked)
+        back.connect ('clicked', self._on_back_clicked)
         back.set_sensitive (False)
         self.back = back
 
@@ -81,7 +83,7 @@ class Troubleshooter:
         self.cancel = cancel
 
         forward = gtk.Button (stock='gtk-go-forward')
-        forward.connect ('clicked', self.on_forward_clicked)
+        forward.connect ('clicked', self._on_forward_clicked)
         forward.set_flags (gtk.CAN_DEFAULT | gtk.HAS_DEFAULT)
         self.forward = forward
 
@@ -94,6 +96,7 @@ class Troubleshooter:
         ntbk.set_current_page (0)
         ntbk.set_show_tabs (False)
         self.ntbk = ntbk
+        self.current_page = 0
 
         self.questions = []
         self.question_answers = []
@@ -103,9 +106,16 @@ class Troubleshooter:
         main.show_all ()
 
     def quit (self, *args):
-        page = self.ntbk.get_current_page ()
+        if self._in_module_call:
+            try:
+                self.questions[self.current_page].cancel_operation ()
+            except:
+                self._report_traceback ()
+
+            return
+
         try:
-            self.questions[page].disconnect_signals ()
+            self.questions[self.current_page].disconnect_signals ()
         except:
             self._report_traceback ()
 
@@ -130,7 +140,7 @@ class Troubleshooter:
         self.question_answers = self.question_answers[:page + 1]
         for p in range (self.ntbk.get_n_pages () - 1, page, -1):
             self.ntbk.remove_page (p)
-        self.set_back_forward_buttons ()
+        self._set_back_forward_buttons ()
 
     def new_page (self, widget, question):
         page = len (self.questions)
@@ -141,19 +151,50 @@ class Troubleshooter:
         widget.show_all ()
         if page == 0:
             try:
-                question.connect_signals (self.set_back_forward_buttons)
+                question.connect_signals (self._set_back_forward_buttons)
             except:
                 self._report_traceback ()
 
             self.ntbk.set_current_page (page)
-        self.set_back_forward_buttons ()
+            self.current_page = page
+        self._set_back_forward_buttons ()
         return page
 
     def is_moving_backwards (self):
         return self.moving_backwards
 
-    def set_back_forward_buttons (self, *args):
-        page = self.ntbk.get_current_page ()
+    def answers_as_text (self):
+        text = ""
+        n = 1
+        for i in range (self.current_page):
+            answers = self.question_answers[i].copy ()
+            for hidden in filter (lambda x: x.startswith ("_"), answers.keys()):
+                del answers[hidden]
+            if len (answers.keys ()) == 0:
+                continue
+            text += "Page %d (%s):" % (n, self.questions[i]) + '\n'
+            text += pprint.pformat (answers) + '\n'
+            n += 1
+        return text.rstrip () + '\n'
+
+    def busy (self):
+        self.forward.set_sensitive (False)
+        self.back.set_sensitive (False)
+        gdkwin = self.get_window ().window
+        if gdkwin:
+            gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.WATCH))
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
+    def ready (self):
+        gdkwin = self.get_window ().window
+        if gdkwin:
+            gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
+
+        self._set_back_forward_buttons ()
+
+    def _set_back_forward_buttons (self, *args):
+        page = self.current_page
         self.back.set_sensitive (page != 0)
         if len (self.questions) == page + 1:
             # Out of questions.
@@ -168,105 +209,68 @@ class Troubleshooter:
             self.close.hide ()
             self.cancel.show ()
 
-    def busy (self):
-        gdkwin = self.get_window ().window
-        if gdkwin:
-            gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.WATCH))
-            while gtk.events_pending ():
-                gtk.main_iteration ()
-
-    def ready (self):
-        gdkwin = self.get_window ().window
-        if gdkwin:
-            gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
-
-    def on_back_clicked (self, widget):
+    def _on_back_clicked (self, widget):
+        self.busy ()
         self.moving_backwards = True
-        page = self.ntbk.get_current_page ()
         try:
-            self.questions[page].disconnect_signals ()
+            self.questions[self.current_page].disconnect_signals ()
         except:
             self._report_traceback ()
 
-        self.busy ()
-        step = 1
-        question = self.questions[page - step]
-        self.ntbk.prev_page ()
+        self.current_page -= 1
+        question = self.questions[self.current_page]
         while not self._display (question):
             # Skip this one.            
-            debugprint ("Page %d: skip" % (page - step))
-            step += 1
-            question = self.questions[page - step]
-            self.ntbk.prev_page ()
+            debugprint ("Page %d: skip" % (self.current_page))
+            self.current_page -= 1
+            question = self.questions[self.current_page]
 
-        page -= step
-
-        self.ready ()
+        self.ntbk.set_current_page (self.current_page)
         answers = {}
-        for i in range (page):
+        for i in range (self.current_page):
             answers.update (self.question_answers[i])
         self.answers = answers
 
         try:
-            self.questions[page].connect_signals (self.set_back_forward_buttons)
+            self.questions[self.current_page].\
+                connect_signals (self._set_back_forward_buttons)
         except:
             self._report_traceback ()
 
-        self.set_back_forward_buttons ()
         self.moving_backwards = False
+        self.ready ()
 
-    def on_forward_clicked (self, widget):
-        page = self.ntbk.get_current_page ()
-        answer_dict = self._collect_answer (self.questions[page])
-        self.question_answers[page] = answer_dict
+    def _on_forward_clicked (self, widget):
+        self.busy ()
+        answer_dict = self._collect_answer (self.questions[self.current_page])
+        self.question_answers[self.current_page] = answer_dict
         self.answers.update (answer_dict)
 
         try:
-            self.questions[page].disconnect_signals ()
+            self.questions[self.current_page].disconnect_signals ()
         except:
             self._report_traceback ()
 
-        self.busy ()
-        step = 1
-        question = self.questions[page + step]
-        self.ntbk.next_page ()
+        self.current_page += 1
+        question = self.questions[self.current_page]
         while not self._display (question):
             # Skip this one, but collect its answers.
             answer_dict = self._collect_answer (question)
-            self.question_answers[page + step] = answer_dict
+            self.question_answers[self.current_page] = answer_dict
             self.answers.update (answer_dict)
-            debugprint ("Page %d: skip" % (page + step))
-            step += 1
-            question = self.questions[page + step]
-            self.ntbk.next_page ()
+            debugprint ("Page %d: skip" % (self.current_page))
+            self.current_page += 1
+            question = self.questions[self.current_page]
 
-        page += step
-
-        self.ready ()
+        self.ntbk.set_current_page (self.current_page)
         try:
-            question.connect_signals (self.set_back_forward_buttons)
+            question.connect_signals (self._set_back_forward_buttons)
         except:
             self._report_traceback ()
 
-        self.set_back_forward_buttons ()
-
+        self.ready ()
         if get_debugging ():
             self._dump_answers ()
-
-    def answers_as_text (self):
-        text = ""
-        page = self.ntbk.get_current_page ()
-        n = 1
-        for i in range (page):
-            answers = self.question_answers[i].copy ()
-            for hidden in filter (lambda x: x.startswith ("_"), answers.keys()):
-                del answers[hidden]
-            if len (answers.keys ()) == 0:
-                continue
-            text += "Page %d (%s):" % (n, self.questions[i]) + '\n'
-            text += pprint.pformat (answers) + '\n'
-            n += 1
-        return text.rstrip () + '\n'
 
     def _dump_answers (self):
         debugprint (self.answers_as_text ())
@@ -284,11 +288,13 @@ class Troubleshooter:
 
     def _display (self, question):
         result = False
+        self._in_module_call = True
         try:
             result = question.display ()
         except:
             self._report_traceback ()
 
+        self._in_module_call = False
         question.displayed = result
         return result
 
@@ -300,11 +306,15 @@ class Troubleshooter:
             return True
 
     def _collect_answer (self, question):
+        answer = {}
+        self._in_module_call = True
         try:
-            return question.collect_answer ()
+            answer = question.collect_answer ()
         except:
             self._report_traceback ()
-            return {}
+
+        self._in_module_call = False
+        return answer
 
 QUESTIONS = ["Welcome",
              "SchedulerNotRunning",
@@ -360,5 +370,8 @@ if __name__ == "__main__":
                 set_debugging (True)
     except getopt.GetoptError:
         pass
+    gtk.gdk.threads_init()
     run (gtk.main_quit)
+    gtk.gdk.threads_enter ()
     gtk.main ()
+    gtk.gdk.threads_leave ()

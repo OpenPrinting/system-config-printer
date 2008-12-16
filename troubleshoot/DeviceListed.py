@@ -21,6 +21,7 @@
 
 import cups
 import gobject
+from timedops import TimedOperation
 from base import *
 class DeviceListed(Question):
     def __init__ (self, troubleshooter):
@@ -69,14 +70,17 @@ class DeviceListed(Question):
         model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
 
         devices = {}
+        parent = self.troubleshooter.get_window ()
         # Skip device list if this page is hidden and we're skipping
         # backwards past it.
         if not (answers['cups_queue_listed'] and
                 self.troubleshooter.is_moving_backwards ()):
             # Otherwise, fetch devices.
+            self.authconn = answers['_authenticated_connection']
             try:
-                c = answers['_authenticated_connection']
-                devices = c.getDevices ()
+                self.op = TimedOperation (self.authconn.getDevices,
+                                          parent=parent)
+                devices = self.op.run ()
                 devices_list = []
                 for uri, device in devices.iteritems ():
                     if uri.find (':') == -1:
@@ -154,3 +158,13 @@ class DeviceListed(Question):
             self.answers['cups_device_attributes'] = device
 
         return self.answers
+
+    def cancel_operation (self):
+        self.op.cancel ()
+
+        # Abandon the CUPS connection and make another.
+        answers = self.troubleshooter.answers
+        factory = answers['_authenticated_connection_factory']
+        self.authconn = factory.get_connection ()
+        self.answers['_authenticated_connection'] = self.authconn
+

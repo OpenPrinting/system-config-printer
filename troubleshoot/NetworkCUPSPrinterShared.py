@@ -20,6 +20,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+from timedops import TimedOperation
 from base import *
 class NetworkCUPSPrinterShared(Question):
     def __init__ (self, troubleshooter):
@@ -36,6 +37,7 @@ class NetworkCUPSPrinterShared(Question):
             answers['remote_cups_queue_listed'] == False):
             return False
 
+        parent = self.troubleshooter.get_window ()
         if not answers.has_key ('remote_cups_queue_attributes'):
             if not (answers.has_key ('remote_server_try_connect') and
                     answers.has_key ('remote_cups_queue')):
@@ -43,8 +45,12 @@ class NetworkCUPSPrinterShared(Question):
 
             try:
                 cups.setServer (answers['remote_server_try_connect'])
-                c = cups.Connection ()
-                attr = c.getPrinterAttributes (answers['remote_cups_queue'])
+                self.op = TimedOperation (cups.Connection, parent=parent)
+                c = self.op.run ()
+                self.op = TimedOperation (c.getPrinterAttributes,
+                                          args=(answers['remote_cups_queue'],),
+                                          parent=parent)
+                attr = self.op.run ()
             except RuntimeError:
                 return False
             except cups.IPPError:
@@ -66,3 +72,6 @@ class NetworkCUPSPrinterShared(Question):
 
     def collect_answer (self):
         return self.answers
+
+    def cancel_operation (self):
+        self.op.cancel ()

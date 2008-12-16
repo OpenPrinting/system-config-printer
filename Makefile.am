@@ -86,6 +86,7 @@ nobase_pkgdata_DATA=					\
 	SearchCriterion.py				\
 	smburi.py					\
 	statereason.py					\
+	timedops.py					\
 	ToolbarSearchEntry.py				\
 	userdefault.py					\
 	XmlHelper.py					\
