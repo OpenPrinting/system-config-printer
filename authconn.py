@@ -157,6 +157,8 @@ class Connection:
                 fn = getattr (self._connection, fname)
                 c = self._connection
 
+            cups.setUser (self._use_user)
+
             try:
                 result = fn.__call__ (*args, **kwds)
 
