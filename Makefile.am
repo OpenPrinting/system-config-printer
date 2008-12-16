@@ -207,7 +207,8 @@ EXTRA_DIST=\
 	print-applet.desktop.in \
 	intltool-extract.in \
 	intltool-merge.in \
-	intltool-update.in
+	intltool-update.in \
+	config.py.in
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
@@ -266,7 +267,8 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
-	test-ppd-module.sh pickled-ppds
+	test-ppd-module.sh pickled-ppds \
+	config.py
 
 distclean-local:
 	rm -rf html
