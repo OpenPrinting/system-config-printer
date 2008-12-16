@@ -82,9 +82,11 @@ class ErrorLogFetch(Question):
                 return tmpfname
             return None
 
+        self.authconn = self.troubleshooter.answers['_authenticated_connection']
         if checkpoint != None:
-            c = self.troubleshooter.answers['_authenticated_connection']
-            tmpfname = self.opresult (fetch_log, (c,), parent=parent)
+            tmpfname = self.opresult (fetch_log,
+                                      (self.authconn,),
+                                      parent=parent)
             if tmpfname != None:
                 f = file (tmpfname)
                 f.seek (checkpoint)
@@ -117,11 +119,17 @@ class ErrorLogFetch(Question):
     def cancel_operation (self):
         self.op.cancel ()
 
+        # Abandon the CUPS connection and make another.
+        answers = self.troubleshooter.answers
+        factory = answers['_authenticated_connection_factory']
+        self.authconn = factory.get_connection ()
+        self.answers['_authenticated_connection'] = self.authconn
+
     def button_clicked (self, button):
-        c = self.troubleshooter.answers['_authenticated_connection']
         parent = self.troubleshooter.get_window ()
         try:
-            settings = self.opresult (c.adminGetServerSettings, parent=parent)
+            settings = self.opresult (self.authconn.adminGetServerSettings,
+                                      parent=parent)
         except cups.IPPError:
             return
 
@@ -130,15 +138,15 @@ class ErrorLogFetch(Question):
         orig_settings = answers['cups_server_settings']
         settings['MaxLogSize'] = orig_settings.get ('MaxLogSize', '2000000')
         success = False
-        def set_settings (settings):
-            c.adminSetServerSettings (settings)
+        def set_settings (connection, settings):
+            connection.adminSetServerSettings (settings)
 
             # Now reconnect.
             attempt = 1
             while attempt <= 5:
                 try:
                     time.sleep (1)
-                    c._connect ()
+                    connection._connect ()
                     break
                 except RuntimeError:
                     # Connection failed
@@ -146,7 +154,7 @@ class ErrorLogFetch(Question):
 
         try:
             self.opresult (set_settings,
-                           (settings,),
+                           (self.authconn, settings),
                            parent=parent)
             success = True
         except cups.IPPError:

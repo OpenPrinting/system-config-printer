@@ -23,6 +23,13 @@ from base import *
 from timedops import TimedOperation
 import authconn
 
+class AuthConnFactory:
+    def __init__ (self, parent):
+        self.parent = parent
+
+    def get_connection (self):
+        return authconn.Connection (self.parent, lock=True)
+
 class Welcome(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Welcome")
@@ -51,11 +58,10 @@ class Welcome(Question):
         parent = self.troubleshooter.get_window ()
         # Store the authentication dialog instance in the answers.  This
         # allows the password to be cached.
-        self.op = TimedOperation (authconn.Connection,
-                                  args=(parent,),
-                                  kwargs={'lock': True},
-                                  parent=parent)
-        return { '_authenticated_connection': self.op.run () }
+        factory = AuthConnFactory (parent)
+        self.op = TimedOperation (factory.get_connection, parent=parent)
+        return {'_authenticated_connection_factory': factory,
+                '_authenticated_connection': self.op.run () }
 
     def cancel_operation (self):
         self.op.cancel ()

@@ -76,9 +76,10 @@ class DeviceListed(Question):
         if not (answers['cups_queue_listed'] and
                 self.troubleshooter.is_moving_backwards ()):
             # Otherwise, fetch devices.
+            self.authconn = answers['_authenticated_connection']
             try:
-                c = answers['_authenticated_connection']
-                self.op = TimedOperation (c.getDevices, parent=parent)
+                self.op = TimedOperation (self.authconn.getDevices,
+                                          parent=parent)
                 devices = self.op.run ()
                 devices_list = []
                 for uri, device in devices.iteritems ():
@@ -160,3 +161,10 @@ class DeviceListed(Question):
 
     def cancel_operation (self):
         self.op.cancel ()
+
+        # Abandon the CUPS connection and make another.
+        answers = self.troubleshooter.answers
+        factory = answers['_authenticated_connection_factory']
+        self.authconn = factory.get_connection ()
+        self.answers['_authenticated_connection'] = self.authconn
+

@@ -69,6 +69,7 @@ class ErrorLogCheckpoint(Question):
         if not answers['cups_queue_listed']:
             return False
 
+        self.authconn = answers['_authenticated_connection']
         parent = self.troubleshooter.get_window ()
 
         def getServerSettings ():
@@ -121,9 +122,8 @@ class ErrorLogCheckpoint(Question):
         self.answers.update (self.persistent_answers)
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.close (tmpfd)
-        c = self.troubleshooter.answers['_authenticated_connection']
         try:
-            self.op = TimedOperation (c.getFile,
+            self.op = TimedOperation (self.authconn.getFile,
                                       args=('/admin/log/error_log', tmpfname),
                                       parent=parent)
             self.op.run ()
@@ -152,9 +152,9 @@ class ErrorLogCheckpoint(Question):
 
     def enable_clicked (self, button, handler):
         parent = self.troubleshooter.get_window ()
-        c = self.troubleshooter.answers['_authenticated_connection']
         try:
-            self.op = TimedOperation (c.adminGetServerSettings, parent=parent)
+            self.op = TimedOperation (self.authconn.adminGetServerSettings,
+                                      parent=parent)
             settings = self.op.run ()
         except cups.IPPError:
             self.forward_allowed = True
@@ -177,15 +177,15 @@ class ErrorLogCheckpoint(Question):
             settings[MAXLOGSIZE] = '0'
             success = False
 
-            def set_settings (settings):
-                c.adminSetServerSettings (settings)
+            def set_settings (connection, settings):
+                connection.adminSetServerSettings (settings)
 
                 # Now reconnect.
                 attempt = 1
                 while attempt <= 5:
                     try:
                         time.sleep (1)
-                        c._connect ()
+                        connection._connect ()
                         break
                     except RuntimeError:
                         # Connection failed
@@ -194,7 +194,7 @@ class ErrorLogCheckpoint(Question):
             try:
                 debugprint ("Settings to set: " + repr (settings))
                 self.op = TimedOperation (set_settings,
-                                          args=(settings,),
+                                          args=(self.authconn, settings,),
                                           parent=parent)
                 self.op.run ()
                 success = True
@@ -215,3 +215,8 @@ class ErrorLogCheckpoint(Question):
     def cancel_operation (self):
         self.op.cancel ()
 
+        # Abandon the CUPS connection and make another.
+        answers = self.troubleshooter.answers
+        factory = answers['_authenticated_connection_factory']
+        self.authconn = factory.get_connection ()
+        self.answers['_authenticated_connection'] = self.authconn
