@@ -153,11 +153,13 @@ class ErrorLogCheckpoint(Question):
 
     def enable_clicked (self, button, handler):
         parent = self.troubleshooter.get_window ()
+        self.troubleshooter.busy ()
         try:
             self.op = TimedOperation (self.authconn.adminGetServerSettings,
                                       parent=parent)
             settings = self.op.run ()
         except cups.IPPError:
+            self.troubleshooter.ready ()
             self.forward_allowed = True
             handler (button)
             return
@@ -211,6 +213,7 @@ class ErrorLogCheckpoint(Question):
             self.label.set_text (_("Debug logging was already enabled."))
 
         self.forward_allowed = True
+        self.troubleshooter.ready ()
         handler (button)
 
     def cancel_operation (self):
