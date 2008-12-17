@@ -26,6 +26,7 @@ import gobject
 import os
 import pango
 import tempfile
+import time
 from timedops import TimedOperation
 
 from base import *
@@ -334,7 +335,10 @@ class PrintTestPage(Question):
         model.set_value (iter, 4, self.STATE[job_dict['job-state']])
 
     def print_clicked (self, widget):
-        self.persistent_answers['test_page_attempted'] = True
+        now = time.time ()
+        tt = time.localtime (now)
+        when = time.strftime ("%d/%b/%Y:%T %z", tt)
+        self.persistent_answers['test_page_attempted'] = when
         answers = self.troubleshooter.answers
         parent = self.troubleshooter.get_window ()
 
