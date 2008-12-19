@@ -475,6 +475,9 @@ class Device:
         """
         Compare devices by order of preference.
         """
+        if other == None:
+            return -1
+
         if self.is_class != other.is_class:
             if other.is_class:
                 return -1
