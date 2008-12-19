@@ -3397,6 +3397,11 @@ class NewPrinterGUI(GtkGUI):
             widget.connect ('change-value',
                             lambda x, y, z: True)
 
+        # Device list
+        slct = self.tvNPDevices.get_selection ()
+        slct.set_select_function (self.device_select_function)
+        self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn)
+
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
                                       self.on_expNPDeviceURIs_expanded)
@@ -4448,11 +4453,27 @@ class NewPrinterGUI(GtkGUI):
                 self.devices.insert(0, current_device)
 
         model = gtk.TreeStore (gobject.TYPE_STRING,   # device-info
-                               gobject.TYPE_PYOBJECT) # PhysicalDevice obj
+                               gobject.TYPE_PYOBJECT, # PhysicalDevice obj
+                               gobject.TYPE_BOOLEAN)  # Separator?
+        network_iter = model.append (None, row=[_("Network Printer"),
+                                                None,
+                                                False])
+        find_nw_iter = model.append (network_iter, row=['', None, True])
         self.tvNPDevices.set_model (model)
 
         for device in self.devices:
-            model.append(None, row=[device.get_info (), device])
+            devs = device.get_devices ()
+            network = devs[0].device_class == 'network'
+            row=[device.get_info (), device, False]
+            if network:
+                if devs[0].uri != devs[0].type:
+                    # An actual network printer device.  Put this at the top.
+                    model.insert_before (network_iter, find_nw_iter, row=row)
+                else:
+                    # Just a method of finding one.
+                    model.append (network_iter, row=row)
+            else:
+                model.insert_before(None, network_iter, row=row)
             
         column = self.tvNPDevices.get_column (0)
         self.tvNPDevices.set_cursor (device_select_path, column)
@@ -4975,6 +4996,18 @@ class NewPrinterGUI(GtkGUI):
         expand = widget.get_expanded ()
         parent.set_child_packing (widget, expand, fill,
                                   padding, pack_type)
+
+    def device_row_separator_fn (self, model, iter):
+        return model.get_value (iter, 2)
+
+    def device_select_function (self, path):
+        """
+        Allow this path to be selected as long as there
+        is a device associated with it.
+        """
+        model = self.tvNPDevices.get_model ()
+        iter = model.get_iter (path)
+        return model.get_value (iter, 1) != None
 
     def on_tvNPDevices_cursor_changed(self, widget):
         model, iter = widget.get_selection ().get_selected()
