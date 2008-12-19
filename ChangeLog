@@ -1,3 +1,21 @@
+2008-12-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.in: Set prefix environment variable here,
+	partially reverting earlier change.
+	* system-config-printer-applet.in: Likewise.
+	* my-default-printer.in: Likewise.
+
+2008-12-19  Tim Waugh  <twaugh@redhat.com>
+
+	* PhysicalDevice.py (PhysicalDevice.get_info): The hpfax backend
+	wants to tell us that the device make and model is "HP Fax", so
+	ignore that useless field and use the device-info field instead.
+
+2008-12-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.nextNPTab): Prevent
+	traceback when adding a printer driven by HPLIP (bug #477107).
+
 2008-12-16  Tim Waugh  <twaugh@redhat.com>
 
 	* Makefile.am (EXTRA_DIST): Ship config.py.in.
