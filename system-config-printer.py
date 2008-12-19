@@ -3239,6 +3239,7 @@ class NewPrinterGUI(GtkGUI):
         "scsi" : 5,
         "serial" : 6,
         "smb" : 7,
+        "network": 9,
         }
 
     DOWNLOADABLE_ONLYPPD=True
@@ -3297,6 +3298,8 @@ class NewPrinterGUI(GtkGUI):
                               "btnSMBVerify",
                               "entNPTHPHostname",
                               "btnHPFindQueue",
+                              "entNPTNetworkHostname",
+                              "btnNetworkFind",
                               "lblHPURI",
                               "entNPTDevice",
                               "tvNCMembers",
@@ -3829,7 +3832,7 @@ class NewPrinterGUI(GtkGUI):
                 self.auto_make, self.auto_model = None, None
                 self.device.uri = self.getDeviceURI()
                 if self.device.type in ["socket", "lpd", "ipp"]:
-                    host = self.getNetworkPrinterMakeModel ()
+                    (host, uri) = self.getNetworkPrinterMakeModel ()
                     faxuri = None
                     if host:
                         faxuri = self.get_hplip_uri_for_network_printer(host,
@@ -4307,24 +4310,26 @@ class NewPrinterGUI(GtkGUI):
         uri = stdout.strip ()
         return uri
 
-    def getNetworkPrinterMakeModel(self):
+    def getNetworkPrinterMakeModel(self, host=None, device=None):
         """
         Try to determine the make and model for the currently selected
         network printer, and store this in the data structure for the
         printer.
-        Returns the hostname or None.
+        Returns (hostname or None, uri or None).
         """
-        device = self.device
+        uri = None
+        if device == None:
+            device = self.device
         # Determine host name/IP
-        host = None
-        s = device.uri.find ("://")
-        if s != -1:
-            s += 3
-            e = device.uri[s:].find (":")
-            if e == -1: e = device.uri[s:].find ("/")
-            if e == -1: e = device.uri[s:].find ("?")
-            if e == -1: e = len (device.uri)
-            host = device.uri[s:s+e]
+        if host == None:
+            s = device.uri.find ("://")
+            if s != -1:
+                s += 3
+                e = device.uri[s:].find (":")
+                if e == -1: e = device.uri[s:].find ("/")
+                if e == -1: e = device.uri[s:].find ("?")
+                if e == -1: e = len (device.uri)
+                host = device.uri[s:s+e]
         # Try to get make and model via SNMP
         if host:
             os.environ["HOST"] = host
@@ -4342,6 +4347,8 @@ class NewPrinterGUI(GtkGUI):
                 pass
 
             if stdout != None:
+                uri = re.sub("^\s*\S+\s+", "", stdout)
+                uri = re.sub("\s.*$", "", uri)
                 mm = re.sub("^\s*\S+\s+\S+\s+\"", "", stdout)
                 mm = re.sub("\"\s+.*$", "", mm)
                 if mm and mm != "": device.make_and_model = mm
@@ -4360,7 +4367,7 @@ class NewPrinterGUI(GtkGUI):
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
 
-        return host
+        return (host, uri)
 
     def fillDeviceTab(self, current_uri=None):
         try:
@@ -4465,7 +4472,14 @@ class NewPrinterGUI(GtkGUI):
         network_iter = model.append (None, row=[_("Network Printer"),
                                                 None,
                                                 False])
-        find_nw_iter = model.append (network_iter, row=['', None, True])
+        network_dict = { 'device-class': 'network',
+                         'device-info': _("Find Network Printer") }
+        network = cupshelpers.Device ('network', **network_dict)
+        find_nw_iter = model.append (network_iter,
+                                     row=[network_dict['device-info'],
+                                          PhysicalDevice (network), False])
+        model.insert_after (network_iter, find_nw_iter, row=['', None, True])
+        self.devices_find_nw_iter = find_nw_iter
         self.tvNPDevices.set_model (model)
 
         for device in self.devices:
@@ -5229,6 +5243,39 @@ class NewPrinterGUI(GtkGUI):
                 id = "MFG:HP;MDL:%s;DES:HP %s;" % (mdl, mdl)
                 self.device.id = id
                 self.device.id_dict = cupshelpers.parseDeviceID (id)
+
+    ### Find Network Printer
+    def on_entNPTNetworkHostname_changed(self, ent):
+        s = ent.get_text ()
+        self.btnNetworkFind.set_sensitive (len (s) > 0)
+        self.setNPButtons ()
+
+    def on_btnNetworkFind_clicked(self, button):
+        host = self.entNPTNetworkHostname.get_text ()
+        uri = self.get_hplip_uri_for_network_printer (host, "print")
+        device_dict = { 'device-class': 'network' }
+        new_device = cupshelpers.Device ('', **device_dict)
+        if uri:
+            new_device = cupshelpers.Device (uri, **device_dict)
+
+        (host, uri) = self.getNetworkPrinterMakeModel (host=host,
+                                                       device=new_device)
+        if uri:
+            new_device.uri = uri
+
+        debugprint ("New device: %s" % new_device)
+        if not new_device.uri:
+            show_error_dialog (_("Not Found"),
+                               _("No printer was found at that address."),
+                               parent=self.NewPrinterWindow)
+        else:
+            model = self.tvNPDevices.get_model ()
+            dev = PhysicalDevice (new_device)
+            iter = model.insert_before (None, self.devices_find_nw_iter,
+                                        row=[dev.get_info (), dev, False])
+            path = model.get_path (iter)
+            self.tvNPDevices.set_cursor (path)
+    ###
 
     def getDeviceURI(self):
         type = self.device.type
