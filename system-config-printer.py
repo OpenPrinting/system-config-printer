@@ -3186,8 +3186,7 @@ class NewPrinterGUI(GtkGUI):
                 self.auto_make, self.auto_model = None, None
                 self.device.uri = self.getDeviceURI()
                 if self.device.type in ["socket", "lpd", "ipp"]:
-                    self.getNetworkPrinterMakeModel ()
-                elif self.device.type == "hp":
+                    host = self.getNetworkPrinterMakeModel ()
                     faxuri = None
                     if host:
                         faxuri = self.get_hplip_uri_for_network_printer(host,
@@ -3677,6 +3676,12 @@ class NewPrinterGUI(GtkGUI):
         return uri
 
     def getNetworkPrinterMakeModel(self):
+        """
+        Try to determine the make and model for the currently selected
+        network printer, and store this in the data structure for the
+        printer.
+        Returns the hostname or None.
+        """
         device = self.device
         # Determine host name/IP
         host = None
@@ -3722,6 +3727,8 @@ class NewPrinterGUI(GtkGUI):
             (mk, md) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
+
+        return host
 
     def fillDeviceTab(self, current_uri=None):
         try:
