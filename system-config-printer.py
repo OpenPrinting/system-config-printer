@@ -4447,11 +4447,12 @@ class NewPrinterGUI(GtkGUI):
             except ValueError:
                 self.devices.insert(0, current_device)
 
-        model = self.tvNPDevices.get_model()
-        model.clear()
+        model = gtk.TreeStore (gobject.TYPE_STRING,   # device-info
+                               gobject.TYPE_PYOBJECT) # PhysicalDevice obj
+        self.tvNPDevices.set_model (model)
 
         for device in self.devices:
-            model.append((device.get_info (),))
+            model.append(None, row=[device.get_info (), device])
             
         column = self.tvNPDevices.get_column (0)
         self.tvNPDevices.set_cursor (device_select_path, column)
@@ -4977,8 +4978,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_tvNPDevices_cursor_changed(self, widget):
         model, iter = widget.get_selection ().get_selected()
-        path = model.get_path (iter)
-        physicaldevice = self.devices[path[0]]
+        physicaldevice = model.get_value (iter, 1)
         model = gtk.ListStore (str,                    # printer-info
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
