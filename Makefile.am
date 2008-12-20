@@ -74,6 +74,7 @@ nobase_pkgdata_DATA=					\
 	glade.py					\
 	GroupsPane.py					\
 	GroupsPaneModel.py				\
+	installpackage.py				\
 	jobviewer.py					\
 	monitor.py					\
 	options.py					\
