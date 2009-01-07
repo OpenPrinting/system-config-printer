@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 ## Copyright (C) 2006, 2007 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -4468,8 +4468,11 @@ class NewPrinterGUI(GtkGUI):
                                   padding, pack_type)
 
     def on_tvNPDevices_cursor_changed(self, widget):
-        model, iter = widget.get_selection ().get_selected()
-        path = model.get_path (iter)
+        path, column = widget.get_cursor ()
+        if path == None:
+            return
+
+        model = widget.get_model ()
         physicaldevice = self.devices[path[0]]
         model = gtk.ListStore (str,                    # printer-info
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
@@ -4952,14 +4955,12 @@ class NewPrinterGUI(GtkGUI):
         self.entNPDownloadableDriverSearch.set_text (search)
 
     def on_tvNPMakes_cursor_changed(self, tvNPMakes):
-        selection = tvNPMakes.get_selection()
-        model, iter = selection.get_selected()
-        if not iter:
-            # Interactively searching.
-            path, column = tvNPMakes.get_cursor()
+        path, column = tvNPMakes.get_cursor()
+        if path != None:
+            model = tvNPMakes.get_model ()
             iter = model.get_iter (path)
-        self.NPMake = model.get(iter, 0)[0]
-        self.fillModelList()
+            self.NPMake = model.get(iter, 0)[0]
+            self.fillModelList()
 
     def fillModelList(self):
         models = self.ppds.getModels(self.NPMake)
@@ -5019,15 +5020,13 @@ class NewPrinterGUI(GtkGUI):
         return markup
 
     def on_tvNPModels_cursor_changed(self, widget):        
-        model, iter = widget.get_selection().get_selected()
-        if not iter:
-            # Interactively searching.
-            path, column = widget.get_cursor()
+        path, column = widget.get_cursor()
+        if path != None:
+            model = widget.get_model ()
             iter = model.get_iter (path)
-        pmodel = model.get(iter, 0)[0]
-        self.fillDriverList(self.NPMake, pmodel)
-
-        self.on_tvNPDrivers_cursor_changed(self.tvNPDrivers)
+            pmodel = model.get(iter, 0)[0]
+            self.fillDriverList(self.NPMake, pmodel)
+            self.on_tvNPDrivers_cursor_changed(self.tvNPDrivers)
 
     def on_tvNPDrivers_cursor_changed(self, widget):
         self.setNPButtons()
