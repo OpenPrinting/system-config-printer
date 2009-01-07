@@ -540,19 +540,19 @@ class GUI(GtkGUI, monitor.Watcher):
                  options.OptionAlwaysShown ("lpi", float, 6.0,
                                             self.sbJOLpi, self.btnJOResetLpi),
 
-                 options.OptionAlwaysShown ("page-left", int, 18,
+                 options.OptionAlwaysShown ("page-left", int, 0,
                                             self.sbJOPageLeft,
                                             self.btnJOResetPageLeft),
 
-                 options.OptionAlwaysShown ("page-right", int, 18,
+                 options.OptionAlwaysShown ("page-right", int, 0,
                                             self.sbJOPageRight,
                                             self.btnJOResetPageRight),
 
-                 options.OptionAlwaysShown ("page-top", int, 36,
+                 options.OptionAlwaysShown ("page-top", int, 0,
                                             self.sbJOPageTop,
                                             self.btnJOResetPageTop),
 
-                 options.OptionAlwaysShown ("page-bottom", int, 36,
+                 options.OptionAlwaysShown ("page-bottom", int, 0,
                                             self.sbJOPageBottom,
                                             self.btnJOResetPageBottom),
 
