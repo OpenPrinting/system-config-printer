@@ -1606,7 +1606,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             debugprint ("Unexpected now_connected signal")
             return
 
-        notification.close ()
+        if notification.get_data ('closed') != True:
+            notification.close ()
+            notification.set_data ('closed', True)
 
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
