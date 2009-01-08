@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -149,6 +149,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.job_creation_times_timer = None
         self.special_status_icon = False
         self.new_printer_notifications = {}
+        self.completed_job_notifications = {}
         self.reasoniters = {}
         self.authenticated_jobs = set() # of job IDs
 
@@ -882,6 +883,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         open_notifications = len (self.new_printer_notifications.keys ())
         open_notifications += len (self.auth_notifications.keys ())
+        open_notifications += len (self.completed_job_notifications.keys ())
         for reason, notification in self.state_reason_notifications.iteritems():
             if notification.get_data ('closed') != True:
                 open_notifications += 1
@@ -1269,6 +1271,29 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.set_statusicon_visibility ()
         return
 
+    def notify_completed_job (self, jobid):
+        job = self.jobs.get (jobid, {})
+        document = job.get ('job-name', _("Unknown"))
+        printer = job.get ('job-printer-name', _("Unknown"))
+        notification = pynotify.Notification (_("Job %d completed") % jobid,
+                                              _("Document `%s' has finished "
+                                                "printing on `%s'.") %
+                                              (document, printer),
+                                              'printer')
+        notification.set_urgency (pynotify.URGENCY_LOW)
+        notification.connect ('closed',
+                              self.on_completed_job_notification_closed)
+        notification.set_data ('jobid', jobid)
+        self.completed_job_notifications[jobid] = notification
+        self.set_statusicon_visibility ()
+        notification.attach_to_status_icon (self.statusicon)
+        notification.show ()
+
+    def on_completed_job_notification_closed (self, notification, reason=None):
+        jobid = notification.get_data ('jobid')
+        del self.completed_job_notifications[jobid]
+        self.set_statusicon_visibility ()
+
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
         monitor.Watcher.current_printers_and_jobs (self, mon, printers, jobs)
@@ -1340,6 +1365,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.update_job (jobid, jobdata)
         jobdata = self.jobs[jobid]
+
+        # If the job has finished, let the user know.
+        if self.trayicon and (eventname == 'job-completed' or
+                              (eventname == 'job-state-changed' and
+                               event['job-state'] == cups.IPP_JOB_COMPLETED)):
+            self.notify_completed_job (jobid)
 
         # Look out for stopped jobs.
         if (self.trayicon and eventname == 'job-stopped' and
@@ -1439,6 +1470,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def job_removed (self, mon, jobid, eventname, event):
         monitor.Watcher.job_removed (self, mon, jobid, eventname, event)
+
+        # If the job has finished, let the user know.
+        if self.trayicon and (eventname == 'job-completed' or
+                              (eventname == 'job-state-changed' and
+                               event['job-state'] == cups.IPP_JOB_COMPLETED)):
+            self.notify_completed_job (jobid)
+
         if self.jobiters.has_key (jobid):
             self.store.remove (self.jobiters[jobid])
             del self.jobiters[jobid]
