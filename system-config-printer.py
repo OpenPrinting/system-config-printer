@@ -656,10 +656,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.btnPrinterPropertiesClose.hide ()
         self.setDataButtonState ()
         treeview = self.tvPrinterProperties
-        sel = treeview.get_selection ()
-        sel.select_path ((0,))
-        self.on_tvPrinterProperties_selection_changed (sel)
-        self.on_tvPrinterProperties_cursor_changed (treeview)
+        treeview.set_cursor ((0,))
         host = CUPS_server_hostname ()
         self.PrinterPropertiesDialog.set_title (_("Printer Properties - "
                                                   "`%s' on %s") % (name, host))
