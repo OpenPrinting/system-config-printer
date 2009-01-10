@@ -26,7 +26,7 @@ class GtkInkLevel (gtk.DrawingArea):
         self.connect ('expose-event', self.expose_event)
         self._level = level
         self._color = gtk.gdk.color_parse (color)
-        self.set_size_request (50, 50)
+        self.set_size_request (30, 45)
 
     def set_level (self, level):
         self._level = level
@@ -43,11 +43,14 @@ class GtkInkLevel (gtk.DrawingArea):
         ctx.clip ()
 
         (w, h) = self.window.get_size ()
-        if w < h:
-            h = w
-        elif h < w:
-            w = h
-        ctx.scale (w, h)
+        ratio = 1.0 * h / w
+        if ratio < 1.5:
+            w = h * 2.0 / 3.0
+        else:
+            h = w * 3.0 / 2.0
+        thickness = w /10.0
+        ctx.translate (thickness, thickness)
+        ctx.scale (w - 2 * thickness, h - 2 * thickness)
         self.draw (ctx)
 
     def draw (self, ctx):
@@ -57,11 +60,13 @@ class GtkInkLevel (gtk.DrawingArea):
         fill_point = self._level / 100.0
 
         ctx.move_to (0.5, 0.0)
-        ctx.curve_to (0.5, 0.25, 1.0, 1.0, 0.5, 1.0)
-        ctx.curve_to (0.0, 1.0, 0.5, 0.25, 0.5, 0.0)
+        ctx.curve_to (0.5, 0.33, 1.0, 0.5, 1.0, 0.67)
+        ctx.curve_to (1.0, 0.85, 0.85, 1.0, 0.5, 1.0)
+        ctx.curve_to (0.15, 1.0, 0.0, 0.85, 0.0, 0.67)
+        ctx.curve_to (0.0, 0.5, 0.1, 0.2, 0.5, 0.0)
         ctx.close_path ()
         ctx.set_source_rgb (r, g, b)
-        ctx.set_line_width (0.01)
+        ctx.set_line_width (0.1)
         ctx.stroke_preserve ()
         grad_width = 0.10
         grad_start = fill_point - (grad_width / 2)
