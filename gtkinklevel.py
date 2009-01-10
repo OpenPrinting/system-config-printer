@@ -26,30 +26,27 @@ class GtkInkLevel (gtk.DrawingArea):
         self.connect ('expose-event', self.expose_event)
         self._level = level
         self._color = gtk.gdk.color_parse (color)
-        self.set_size_request (50, 3)
+        self.set_size_request (50, 50)
 
     def set_level (self, level):
         self._level = level
         self.queue_resize ()
 
-    def expose_event (self, widget, event):
-        style = self.get_style ()
-        style.paint_box (widget.window, gtk.STATE_NORMAL,
-                         gtk.SHADOW_IN,
-                         event.area,
-                         widget,
-                         "box",
-                         event.area.x, event.area.y,
-                         event.area.width, event.area.height)
+    def get_level (self):
+        return self._level
 
+    def expose_event (self, widget, event):
         ctx = self.window.cairo_create ()
-        border = 1
-        ctx.rectangle (event.area.x + border, event.area.y + border,
-                       event.area.width - 2 * border,
-                       event.area.height - 2 * border)
+        ctx.rectangle (event.area.x, event.area.y,
+                       event.area.width,
+                       event.area.height)
         ctx.clip ()
 
         (w, h) = self.window.get_size ()
+        if w < h:
+            h = w
+        elif h < w:
+            w = h
         ctx.scale (w, h)
         self.draw (ctx)
 
@@ -58,31 +55,57 @@ class GtkInkLevel (gtk.DrawingArea):
         g = self._color.green / 65535.0
         b = self._color.blue / 65535.0
         fill_point = self._level / 100.0
+
+        ctx.move_to (0.5, 0.0)
+        ctx.curve_to (0.5, 0.25, 1.0, 1.0, 0.5, 1.0)
+        ctx.curve_to (0.0, 1.0, 0.5, 0.25, 0.5, 0.0)
+        ctx.close_path ()
+        ctx.set_source_rgb (r, g, b)
+        ctx.set_line_width (0.01)
+        ctx.stroke_preserve ()
         grad_width = 0.10
         grad_start = fill_point - (grad_width / 2)
         if grad_start < 0:
             grad_start = 0
 
-        pat = cairo.LinearGradient (0, 0, 1, 0)
+        pat = cairo.LinearGradient (0, 1, 0, 0)
         pat.add_color_stop_rgba (0, r, g, b, 1)
         pat.add_color_stop_rgba ((self._level - 5) / 100.0, r, g, b, 1)
         pat.add_color_stop_rgba ((self._level + 5)/ 100.0, 1, 1, 1, 1)
         pat.add_color_stop_rgba (1.0, 1, 1, 1, 1)
         ctx.set_source (pat)
-        ctx.rectangle (0, 0, 1, 1)
         ctx.fill ()
 
 if __name__ == '__main__':
     # Try it out.
+    import gobject
+    import time
+    def adjust_level (level):
+        l = level.get_level ()
+        l += 1
+        if l > 100:
+            l = 0
+        level.set_level (l)
+        return True
+
     w = gtk.Window ()
     w.set_border_width (12)
     vbox = gtk.VBox (spacing=6)
     w.add (vbox)
     hbox = gtk.HBox (spacing=6)
     vbox.pack_start (hbox, False, False, 0)
-    hbox.pack_start (gtk.Label ("Red"), False, False, 0)
-    level = GtkInkLevel ("red", level=60)
-    hbox.pack_start (level)
+    klevel = GtkInkLevel ("black", level=100)
+    clevel = GtkInkLevel ("cyan", level=60)
+    mlevel = GtkInkLevel ("magenta", level=30)
+    ylevel = GtkInkLevel ("yellow", level=100)
+    hbox.pack_start (klevel)
+    hbox.pack_start (clevel)
+    hbox.pack_start (mlevel)
+    hbox.pack_start (ylevel)
+    gobject.timeout_add (10, adjust_level, klevel)
+    gobject.timeout_add (10, adjust_level, clevel)
+    gobject.timeout_add (10, adjust_level, mlevel)
+    gobject.timeout_add (10, adjust_level, ylevel)
     w.show_all ()
     w.connect ('delete_event', gtk.main_quit)
     gtk.main ()
