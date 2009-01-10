@@ -43,7 +43,6 @@ class GtkInkLevel (gtk.DrawingArea):
                          event.area.width, event.area.height)
 
         ctx = self.window.cairo_create ()
-
         border = 1
         ctx.rectangle (event.area.x + border, event.area.y + border,
                        event.area.width - 2 * border,
@@ -51,29 +50,26 @@ class GtkInkLevel (gtk.DrawingArea):
         ctx.clip ()
 
         (w, h) = self.window.get_size ()
-        self.draw (ctx, w, h)
+        ctx.scale (w, h)
+        self.draw (ctx)
 
-    def draw (self, ctx, width, height):
-        #ctx.set_source_rgb (1.0, 1.0, 1.0)
-        #ctx.rectangle (0, 0, width, height)
-        #ctx.fill ()
-
+    def draw (self, ctx):
         r = self._color.red / 65535.0
         g = self._color.green / 65535.0
         b = self._color.blue / 65535.0
-        fill_point = self._level * width / 100
-        grad_width = width / 4
+        fill_point = self._level / 100.0
+        grad_width = 0.10
         grad_start = fill_point - (grad_width / 2)
         if grad_start < 0:
             grad_start = 0
 
-        pat = cairo.LinearGradient (0, 0, width, 0)
+        pat = cairo.LinearGradient (0, 0, 1, 0)
         pat.add_color_stop_rgba (0, r, g, b, 1)
         pat.add_color_stop_rgba ((self._level - 5) / 100.0, r, g, b, 1)
         pat.add_color_stop_rgba ((self._level + 5)/ 100.0, 1, 1, 1, 1)
         pat.add_color_stop_rgba (1.0, 1, 1, 1, 1)
         ctx.set_source (pat)
-        ctx.rectangle (0, 0, width, height)
+        ctx.rectangle (0, 0, 1, 1)
         ctx.fill ()
 
 if __name__ == '__main__':
