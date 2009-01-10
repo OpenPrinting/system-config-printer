@@ -327,7 +327,11 @@ class GUI(GtkGUI, monitor.Watcher):
                               "cbJOWrap", "btnJOResetWrap",
                               "sbJOColumns", "btnJOResetColumns",
                               "tblJOOther",
-                              "entNewJobOption", "btnNewJobOption"]})
+                              "entNewJobOption", "btnNewJobOption",
+
+                              # Marker levels
+                              "hboxMarkerLevels",
+                              "btnRefreshMarkerLevels"]})
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
@@ -2359,6 +2363,22 @@ class GUI(GtkGUI, monitor.Watcher):
         else:
             # real Printer
             self.fillPrinterOptions(name, editablePPD)
+
+        # Marker levels
+        for widget in self.hboxMarkerLevels.get_children ():
+            self.hboxMarkerLevels.remove (widget)
+
+        #label = gtk.Label(_("Marker levels are not reported for this printer."))
+        #self.hboxMarkerLevels.pack_start (label, False, False, 0)
+        import gtkinklevel
+        for name, color, level in [("Black", "black", 80),
+                                   ("Cyan", "cyan", 60),
+                                   ("Magenta", "magenta", 40),
+                                   ("Yellow", "yellow", 90)]:
+            inklevel = gtkinklevel.GtkInkLevel (color, level)
+            self.hboxMarkerLevels.pack_start (inklevel, False, False, 0)
+        self.hboxMarkerLevels.show_all ()
+        self.btnRefreshMarkerLevels.set_sensitive (False)
 
         # Now update the tree view (which we use instead of the notebook tabs).
         store = gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_INT)
