@@ -48,7 +48,7 @@ class GtkInkLevel (gtk.DrawingArea):
             w = h * 2.0 / 3.0
         else:
             h = w * 3.0 / 2.0
-        thickness = w /10.0
+        thickness = w / 10.0
         ctx.translate (thickness, thickness)
         ctx.scale (w - 2 * thickness, h - 2 * thickness)
         self.draw (ctx)
@@ -68,18 +68,22 @@ class GtkInkLevel (gtk.DrawingArea):
         ctx.set_source_rgb (r, g, b)
         ctx.set_line_width (0.1)
         ctx.stroke_preserve ()
-        grad_width = 0.10
-        grad_start = fill_point - (grad_width / 2)
-        if grad_start < 0:
-            grad_start = 0
+        if fill_point > 0.0:
+            grad_width = 0.10
+            grad_start = fill_point - (grad_width / 2)
+            if grad_start < 0:
+                grad_start = 0
 
-        pat = cairo.LinearGradient (0, 1, 0, 0)
-        pat.add_color_stop_rgba (0, r, g, b, 1)
-        pat.add_color_stop_rgba ((self._level - 5) / 100.0, r, g, b, 1)
-        pat.add_color_stop_rgba ((self._level + 5)/ 100.0, 1, 1, 1, 1)
-        pat.add_color_stop_rgba (1.0, 1, 1, 1, 1)
-        ctx.set_source (pat)
-        ctx.fill ()
+            pat = cairo.LinearGradient (0, 1, 0, 0)
+            pat.add_color_stop_rgba (0, r, g, b, 1)
+            pat.add_color_stop_rgba ((self._level - 5) / 100.0, r, g, b, 1)
+            pat.add_color_stop_rgba ((self._level + 5)/ 100.0, 1, 1, 1, 1)
+            pat.add_color_stop_rgba (1.0, 1, 1, 1, 1)
+            ctx.set_source (pat)
+            ctx.fill ()
+        else:
+            ctx.set_source_rgb (1, 1, 1)
+            ctx.fill ()
 
 if __name__ == '__main__':
     # Try it out.
