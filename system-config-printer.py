@@ -90,6 +90,7 @@ from ToolbarSearchEntry import *
 from GroupsPane import *
 from GroupsPaneModel import *
 from SearchCriterion import *
+import gtkinklevel
 
 domain='system-config-printer'
 import locale
@@ -330,7 +331,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               "entNewJobOption", "btnNewJobOption",
 
                               # Marker levels
-                              "hboxMarkerLevels",
+                              "vboxMarkerLevels",
                               "btnRefreshMarkerLevels"]})
 
         # Since some dialogs are reused we can't let the delete-event's
@@ -2365,19 +2366,51 @@ class GUI(GtkGUI, monitor.Watcher):
             self.fillPrinterOptions(name, editablePPD)
 
         # Marker levels
-        for widget in self.hboxMarkerLevels.get_children ():
-            self.hboxMarkerLevels.remove (widget)
+        for widget in self.vboxMarkerLevels.get_children ():
+            self.vboxMarkerLevels.remove (widget)
 
-        #label = gtk.Label(_("Marker levels are not reported for this printer."))
-        #self.hboxMarkerLevels.pack_start (label, False, False, 0)
-        import gtkinklevel
-        for name, color, level in [("Black", "black", 80),
-                                   ("Cyan", "cyan", 60),
-                                   ("Magenta", "magenta", 40),
-                                   ("Yellow", "yellow", 90)]:
-            inklevel = gtkinklevel.GtkInkLevel (color, level)
-            self.hboxMarkerLevels.pack_start (inklevel, False, False, 0)
-        self.hboxMarkerLevels.show_all ()
+        markers = [("Black", "black", 80),
+                   ("Cyan", "cyan", 60),
+                   ("Magenta", "magenta", 40),
+                   ("Yellow", "yellow", 90)]
+        markers = []
+        if len (markers) == 0:
+            alignment = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+            alignment.set_padding (24, 6, 24, 0)
+            label = gtk.Label(_("Marker levels are not reported "
+                                "for this printer."))
+            label.set_line_wrap (True)
+            label.set_alignment (0.0, 0.0)
+            alignment.add (label)
+            self.vboxMarkerLevels.pack_start (alignment, False, False, 0)
+        else:
+            num_markers = 0
+            cols = len (markers)
+            rows = 1 + (cols - 1) / 4
+            if cols > 4:
+                cols = 4
+            table = gtk.Table (rows=rows,
+                               columns=cols,
+                               homogeneous=True)
+            table.set_col_spacings (6)
+            table.set_row_spacings (12)
+            self.vboxMarkerLevels.pack_start (table)
+            for name, color, level in markers:
+                row = num_markers / 4
+                col = num_markers % 4
+
+                vbox = gtk.VBox (spacing=6)
+                subhbox = gtk.HBox ()
+                inklevel = gtkinklevel.GtkInkLevel (color, level)
+                subhbox.pack_start (inklevel, True, False, 0)
+                vbox.pack_start (subhbox, False, False, 0)
+                label = gtk.Label (name)
+                label.set_line_wrap (True)
+                vbox.pack_start (label, False, False, 0)
+                table.attach (vbox, col, col + 1, row, row + 1)
+                num_markers += 1
+
+        self.vboxMarkerLevels.show_all ()
         self.btnRefreshMarkerLevels.set_sensitive (False)
 
         # Now update the tree view (which we use instead of the notebook tabs).
