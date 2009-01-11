@@ -48,9 +48,11 @@ class GtkInkLevel (gtk.DrawingArea):
             w = h * 2.0 / 3.0
         else:
             h = w * 3.0 / 2.0
-        thickness = w / 10.0
+        thickness = 1
         ctx.translate (thickness, thickness)
         ctx.scale (w - 2 * thickness, h - 2 * thickness)
+        thickness = max (ctx.device_to_user_distance (thickness, thickness))
+        ctx.set_line_width (thickness)
         self.draw (ctx)
 
     def draw (self, ctx):
@@ -66,7 +68,6 @@ class GtkInkLevel (gtk.DrawingArea):
         ctx.curve_to (0.0, 0.5, 0.1, 0.2, 0.5, 0.0)
         ctx.close_path ()
         ctx.set_source_rgb (r, g, b)
-        ctx.set_line_width (0.1)
         ctx.stroke_preserve ()
         if fill_point > 0.0:
             grad_width = 0.10
