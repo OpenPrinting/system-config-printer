@@ -228,7 +228,8 @@ class Connection:
                                gtk.DIALOG_DESTROY_WITH_PARENT,
                                gtk.MESSAGE_ERROR,
                                gtk.BUTTONS_NONE,
-                               _("CUPS server error"))
+                               _("CUPS server error (%s)") %
+                               self._operation_stack[0])
         d.format_secondary_text (_("There was an error during the "
                                    "CUPS operation: '%s'." % message))
         d.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
