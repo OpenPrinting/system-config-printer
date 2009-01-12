@@ -3195,7 +3195,9 @@ class GUI(GtkGUI, monitor.Watcher):
     ## Watcher interface helpers
     def printer_added_or_removed (self):
         # Just fetch the list of printers again.  This is too simplistic.
+        gtk.gdk.threads_enter ()
         self.populateList (prompt_allowed=False)
+        gtk.gdk.threads_leave ()
 
     ## Watcher interface
     def printer_added (self, mon, printer):
@@ -3206,9 +3208,12 @@ class GUI(GtkGUI, monitor.Watcher):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
         self.printer_added_or_removed ()
 
+        gtk.gdk.threads_enter ()
         if self.PrinterPropertiesDialog.get_property('visible'):
             self.printer.getAttributes ()
             self.updatePrinterProperties ()
+
+        gtk.gdk.threads_leave ()
 
     def printer_removed (self, mon, printer):
         monitor.Watcher.printer_removed (self, mon, printer)
@@ -3220,8 +3225,10 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups.getClasses ()
         except:
             self.cups = None
+            gtk.gdk.threads_enter ()
             self.setConnected ()
             self.populateList ()
+            gtk.gdk.threads_leave ()
 
 class NewPrinterGUI(GtkGUI):
 
