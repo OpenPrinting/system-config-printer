@@ -5344,7 +5344,6 @@ class NewPrinterGUI(GtkGUI):
                          device=uri, info=info, location=location)
                     check = True
                     checkppd = ppd
-                cupshelpers.activateNewPrinter (self.mainapp.cups, name)
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
                 self.WaitWindow.hide ()
@@ -5358,6 +5357,7 @@ class NewPrinterGUI(GtkGUI):
             self.ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer"):
             try:
+                cupshelpers.activateNewPrinter (self.mainapp.cups, name)
                 self.mainapp.cups.setPrinterLocation(name, location)
                 self.mainapp.cups.setPrinterInfo(name, info)
             except cups.IPPError, (e, msg):
