@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -17,8 +17,10 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import threading
 import cups
 import cupspk
+import gobject
 import gtk
 from debug import *
 
@@ -128,6 +130,7 @@ class Connection:
         self._prompt_allowed = True
         self._operation_stack = []
         self._lock = lock
+        self._gui_event = threading.Event ()
 
     def _begin_operation (self, operation):
         self._operation_stack.append (operation)
@@ -204,27 +207,13 @@ class Connection:
                     self._failed (e == cups.IPP_FORBIDDEN)
                 elif not self._cancel and e == cups.IPP_SERVICE_UNAVAILABLE:
                     if self._lock:
-                        debugprint ("enter in new thread")
-                        gtk.gdk.threads_enter ()
+                        self._gui_event.clear ()
+                        gobject.timeout_add (1, self._ask_retry_server_error, m)
+                        self._gui_event.wait ()
+                    else:
+                        self._ask_retry_server_error (m)
 
-                    d = gtk.MessageDialog (self._parent,
-                                           gtk.DIALOG_MODAL |
-                                           gtk.DIALOG_DESTROY_WITH_PARENT,
-                                           gtk.MESSAGE_ERROR,
-                                           gtk.BUTTONS_NONE,
-                                           _("CUPS server error"))
-                    d.format_secondary_text (_("There was an error during the "
-                                               "CUPS operation: '%s'." % m))
-                    d.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                   _("Retry"), gtk.RESPONSE_OK)
-                    d.set_default_response (gtk.RESPONSE_OK)
-                    response = d.run ()
-                    d.destroy ()
-                    if self._lock:
-                        debugprint ("leave in new thread")
-                        gtk.gdk.threads_leave ()
-
-                    if response == gtk.RESPONSE_OK:
+                    if self._retry_response == gtk.RESPONSE_OK:
                         debugprint ("retrying operation...")
                         retry = True
                         self._passes -= 1
@@ -244,6 +233,34 @@ class Connection:
                     raise
 
         return result
+
+    def _ask_retry_server_error (self, message):
+        if self._lock:
+            gtk.gdk.threads_enter ()
+
+        d = gtk.MessageDialog (self._parent,
+                               gtk.DIALOG_MODAL |
+                               gtk.DIALOG_DESTROY_WITH_PARENT,
+                               gtk.MESSAGE_ERROR,
+                               gtk.BUTTONS_NONE,
+                               _("CUPS server error (%s)") %
+                               self._operation_stack[0])
+        d.format_secondary_text (_("There was an error during the "
+                                   "CUPS operation: '%s'." % message))
+        d.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                       _("Retry"), gtk.RESPONSE_OK)
+        d.set_default_response (gtk.RESPONSE_OK)
+        if self._lock:
+            d.connect ("response", self._on_retry_server_error_response)
+            gtk.gdk.threads_leave ()
+        else:
+            self._retry_response = d.run ()
+            d.destroy ()
+
+    def _on_retry_server_error_response (self, dialog, response):
+        self._retry_response = response
+        dialog.destroy ()
+        self._gui_event.set ()
 
     def _failed (self, forbidden=False):
         self._has_failed = True
@@ -319,23 +336,57 @@ class Connection:
         # Reset the flag indicating whether we were given an auth callback.
         self._auth_called = False
 
-        if self._lock:
-            debugprint ("enter in new thread for auth")
-            gtk.gdk.threads_enter ()
-
         # If we're previously prompted, explain why we're prompting again.
         if self._dialog_shown:
-            d = gtk.MessageDialog (self._parent,
-                                   gtk.DIALOG_MODAL |
-                                   gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_ERROR,
-                                   gtk.BUTTONS_CLOSE)
-            d.set_title (_("Not authorized"))
-            d.set_markup ('<span weight="bold" size="larger">' +
-                          _("Not authorized") + '</span>\n\n' +
-                          _("The password may be incorrect."))
+            if self._lock:
+                self._gui_event.clear ()
+                gobject.timeout_add (1, self._show_not_authorized_dialog)
+                self._gui_event.wait ()
+            else:
+                self._show_not_authorized_dialog ()
+
+        if self._lock:
+            self._gui_event.clear ()
+            gobject.timeout_add (1, self._perform_authentication_with_dialog)
+            self._gui_event.wait ()
+        else:
+            self._perform_authentication_with_dialog ()
+
+        if self._cancel:
+            debugprint ("cancelled")
+            return -1
+
+        cups.setUser (self._use_user)
+        debugprint ("Authentication: Reconnect")
+        self._connect ()
+        return 1
+
+    def _show_not_authorized_dialog (self):
+        if self._lock:
+            gtk.gdk.threads_enter ()
+        d = gtk.MessageDialog (self._parent,
+                               gtk.DIALOG_MODAL |
+                               gtk.DIALOG_DESTROY_WITH_PARENT,
+                               gtk.MESSAGE_ERROR,
+                               gtk.BUTTONS_CLOSE)
+        d.set_title (_("Not authorized"))
+        d.set_markup ('<span weight="bold" size="larger">' +
+                      _("Not authorized") + '</span>\n\n' +
+                      _("The password may be incorrect."))
+        if self._lock:
+            d.connect ("response", self._on_not_authorized_dialog_response)
+            gtk.gdk.threads_leave ()
+        else:
             d.run ()
             d.destroy ()
+
+    def _on_not_authorized_dialog_response (self, dialog, response):
+        self._gui_event.set ()
+        dialog.destroy ()
+
+    def _perform_authentication_with_dialog (self):
+        if self._lock:
+            gtk.gdk.threads_enter ()
 
         # Prompt.
         if len (self._operation_stack) > 0:
@@ -354,38 +405,35 @@ class Connection:
         gtk.gdk.keyboard_grab (d.window, True)
         gtk.gdk.pointer_grab (d.window, True)
         self._dialog_shown = True
-        response = d.run ()
+        if self._lock:
+            d.connect ("response", self._on_authentication_response)
+            gtk.gdk.threads_leave ()
+        else:
+            response = d.run ()
+            self._on_authentication_response (d, response)
+
+    def _on_authentication_response (self, dialog, response):
         gtk.gdk.pointer_ungrab ()
         gtk.gdk.keyboard_ungrab ()
         (self._use_user,
-         self._use_password) = d.get_auth_info ()
-        d.destroy ()
-        if self._lock:
-            debugprint ("leave in new thread for auth")
-            gtk.gdk.threads_leave ()
+         self._use_password) = dialog.get_auth_info ()
+        dialog.destroy ()
 
         if (response == gtk.RESPONSE_CANCEL or
             response == gtk.RESPONSE_DELETE_EVENT):
             self._cancel = True
-            return -1
 
-        cups.setUser (self._use_user)
-        debugprint ("Authentication: Reconnect")
-        self._connect ()
-
-        return 1
+        if self._lock:
+            self._gui_event.set ()
 
 if __name__ == '__main__':
     # Test it out.
+    gtk.gdk.threads_init ()
     from timedops import TimedOperation
     set_debugging (True)
-    gtk.gdk.threads_init ()
-    debugprint ("enter in main thread")
-    gtk.gdk.threads_enter ()
     c = TimedOperation (Connection, args=(None,)).run ()
+    debugprint ("Connected")
     c._set_lock (True)
     print TimedOperation (c.getFile,
                           args=('/admin/conf/cupsd.conf',
                                 '/dev/stdout')).run ()
-    debugprint ("leave in main thread")
-    gtk.gdk.threads_leave ()
