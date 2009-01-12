@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -57,6 +57,7 @@ class CheckUSBPermissions(Question):
             return False
 
         # Run lsusb
+        parent = self.troubleshooter.get_window ()
         try:
             self.op = TimedSubprocess (parent=parent,
                                        args="LC_ALL=C " + LSUSB + " -v",
