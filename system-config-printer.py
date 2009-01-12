@@ -943,10 +943,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.btnPrinterPropertiesClose.hide ()
         self.setDataButtonState ()
         treeview = self.tvPrinterProperties
-        sel = treeview.get_selection ()
-        sel.select_path ((0,))
-        self.on_tvPrinterProperties_selection_changed (sel)
-        self.on_tvPrinterProperties_cursor_changed (treeview)
+        treeview.set_cursor ((0,))
         host = CUPS_server_hostname ()
         self.PrinterPropertiesDialog.set_title (_("Printer Properties - "
                                                   "`%s' on %s") % (name, host))
@@ -3195,7 +3192,9 @@ class GUI(GtkGUI, monitor.Watcher):
     ## Watcher interface helpers
     def printer_added_or_removed (self):
         # Just fetch the list of printers again.  This is too simplistic.
+        gtk.gdk.threads_enter ()
         self.populateList (prompt_allowed=False)
+        gtk.gdk.threads_leave ()
 
     ## Watcher interface
     def printer_added (self, mon, printer):
@@ -3204,11 +3203,12 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
-        self.printer_added_or_removed ()
-
+        gtk.gdk.threads_enter ()
         if self.PrinterPropertiesDialog.get_property('visible'):
             self.printer.getAttributes ()
             self.updatePrinterProperties ()
+
+        gtk.gdk.threads_leave ()
 
     def printer_removed (self, mon, printer):
         monitor.Watcher.printer_removed (self, mon, printer)
@@ -3220,8 +3220,10 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups.getClasses ()
         except:
             self.cups = None
+            gtk.gdk.threads_enter ()
             self.setConnected ()
             self.populateList ()
+            gtk.gdk.threads_leave ()
 
 class NewPrinterGUI(GtkGUI):
 

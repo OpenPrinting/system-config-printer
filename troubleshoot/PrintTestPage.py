@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -130,6 +130,7 @@ class PrintTestPage(Question):
             return False
 
         parent = self.troubleshooter.get_window ()
+        self.authconn = answers['_authenticated_connection']
         mediatype = None
         defaults = answers.get ('cups_printer_ppd_defaults', {})
         for opts in defaults.values ():
@@ -159,7 +160,7 @@ class PrintTestPage(Question):
         test_jobs = self.persistent_answers.get ('test_page_job_id', [])
         cups.setServer ('')
         def get_jobs ():
-            c = cups.Connection ()
+            c = self.authconn
             jobs_dict = c.getJobs (which_jobs='not-completed',
                                    my_jobs=False)
             completed_jobs_dict = c.getJobs (which_jobs='completed')
@@ -209,7 +210,7 @@ class PrintTestPage(Question):
 
         def create_subscription ():
             cups.setServer ('')
-            c = cups.Connection ()
+            c = self.authconn
             sub_id = c.createSubscription ("/",
                                            events=["job-created",
                                                    "job-completed",
@@ -246,7 +247,7 @@ class PrintTestPage(Question):
         self.test_cell.disconnect (self.test_sigid)
 
         def cancel_subscription (sub_id):
-            c = cups.Connection ()
+            c = self.authconn
             c.cancelSubscription (sub_id)
 
         parent = self.troubleshooter.get_window ()
@@ -282,7 +283,7 @@ class PrintTestPage(Question):
         jobs = collect_jobs (model).jobs
         def collect_attributes (jobs):
             job_attrs = None
-            c = cups.Connection ()
+            c = self.authconn
             with_attrs = []
             for (test, jobid, printer, doc, status) in jobs:
                 attrs = None
@@ -309,6 +310,12 @@ class PrintTestPage(Question):
 
     def cancel_operation (self):
         self.op.cancel ()
+
+        # Abandon the CUPS connection and make another.
+        answers = self.troubleshooter.answers
+        factory = answers['_authenticated_connection_factory']
+        self.authconn = factory.get_connection ()
+        self.answers['_authenticated_connection'] = self.authconn
 
     def handle_dbus_signal (self, *args):
         debugprint ("D-Bus signal caught: updating jobs list soon")
@@ -343,7 +350,7 @@ class PrintTestPage(Question):
         parent = self.troubleshooter.get_window ()
 
         def print_test_page (*args, **kwargs):
-            c = cups.Connection ()
+            c = self.authconn
             return c.printTestPage (*args, **kwargs)
 
         tmpfname = None
@@ -352,18 +359,20 @@ class PrintTestPage(Question):
             try:
                 if mimetype == None:
                     # Default test page.
-                    jobid = TimedOperation (print_test_page,
-                                            (answers['cups_queue'],),
-                                            parent=parent).run ()
+                    self.op = TimedOperation (print_test_page,
+                                              (answers['cups_queue'],),
+                                              parent=parent)
+                    jobid = self.op.run ()
                 elif mimetype == 'text/plain':
                     (tmpfd, tmpfname) = tempfile.mkstemp ()
                     os.write (tmpfd, "This is a test page.\n")
                     os.close (tmpfd)
-                    jobid = TimedOperation (print_test_page,
-                                            (answers['cups_queue'],),
-                                            kwargs={'file': tmpfname,
-                                                    'format': mimetype},
-                                            parent=parent).run ()
+                    self.op = TimedOperation (print_test_page,
+                                              (answers['cups_queue'],),
+                                              kwargs={'file': tmpfname,
+                                                      'format': mimetype},
+                                              parent=parent)
+                    jobid = self.op.run ()
                     try:
                         os.unlink (tmpfname)
                     except OSError:
@@ -401,7 +410,7 @@ class PrintTestPage(Question):
             jobids.append (jobid)
 
         def cancel_jobs (jobids):
-            c = cups.Connection ()
+            c = self.authconn
             for jobid in jobids:
                 try:
                     c.cancelJob (jobid)
@@ -409,9 +418,10 @@ class PrintTestPage(Question):
                     if e != cups.IPP_NOT_POSSIBLE:
                         self.persistent_answers['test_page_cancel_failure'] = (e, s)
 
-        TimedOperation (cancel_jobs,
-                        (jobids,),
-                        parent=self.troubleshooter.get_window ()).run ()
+        self.op = TimedOperation (cancel_jobs,
+                                  (jobids,),
+                                  parent=self.troubleshooter.get_window ())
+        self.op.run ()
 
     def test_toggled (self, cell, path):
         model = self.treeview.get_model ()
@@ -421,7 +431,7 @@ class PrintTestPage(Question):
 
     def update_jobs_list (self):
         def get_notifications (self):
-            c = cups.Connection ()
+            c = self.authconn
             try:
                 notifications = c.getNotifications ([self.sub_id],
                                                     [self.sub_seq + 1])
@@ -435,9 +445,10 @@ class PrintTestPage(Question):
         gtk.gdk.threads_enter ()
 
         parent = self.troubleshooter.get_window ()
-        notifications = TimedOperation (get_notifications,
-                                        (self,),
-                                        parent=parent).run ()
+        self.op = TimedOperation (get_notifications,
+                                  (self,),
+                                  parent=parent)
+        notifications = self.op.run ()
 
         answers = self.troubleshooter.answers
         model = self.treeview.get_model ()
