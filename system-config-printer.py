@@ -3206,8 +3206,6 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
-        self.printer_added_or_removed ()
-
         gtk.gdk.threads_enter ()
         if self.PrinterPropertiesDialog.get_property('visible'):
             self.printer.getAttributes ()
