@@ -265,6 +265,9 @@
 				  <property name="width_chars">-1</property>
 				  <property name="single_line_mode">False</property>
 				  <property name="angle">0</property>
+				  <accessibility>
+				    <atkrelation target="entPDescription" type="label-for"/>
+				  </accessibility>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -293,6 +296,9 @@
 				  <property name="width_chars">-1</property>
 				  <property name="single_line_mode">False</property>
 				  <property name="angle">0</property>
+				  <accessibility>
+				    <atkrelation target="entPLocation" type="label-for"/>
+				  </accessibility>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -313,7 +319,11 @@
 				  <property name="max_length">0</property>
 				  <property name="text"></property>
 				  <property name="has_frame">True</property>
+				  <property name="invisible_char">•</property>
 				  <property name="activates_default">False</property>
+				  <accessibility>
+				    <atkrelation target="lblPDescription" type="labelled-by"/>
+				  </accessibility>
 				  <signal name="changed" handler="on_printer_changed" last_modification_time="Thu, 09 Mar 2006 09:55:36 GMT"/>
 				</widget>
 				<packing>
@@ -334,7 +344,11 @@
 				  <property name="max_length">0</property>
 				  <property name="text"></property>
 				  <property name="has_frame">True</property>
+				  <property name="invisible_char">•</property>
 				  <property name="activates_default">False</property>
+				  <accessibility>
+				    <atkrelation target="lblPLocation" type="labelled-by"/>
+				  </accessibility>
 				  <signal name="changed" handler="on_printer_changed" last_modification_time="Thu, 09 Mar 2006 09:56:06 GMT"/>
 				</widget>
 				<packing>
@@ -363,6 +377,9 @@
 				  <property name="width_chars">-1</property>
 				  <property name="single_line_mode">False</property>
 				  <property name="angle">0</property>
+				  <accessibility>
+				    <atkrelation target="entPDevice" type="label-for"/>
+				  </accessibility>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -417,7 +434,11 @@
 				      <property name="max_length">0</property>
 				      <property name="text"></property>
 				      <property name="has_frame">True</property>
+				      <property name="invisible_char">•</property>
 				      <property name="activates_default">False</property>
+				      <accessibility>
+					<atkrelation target="lblPDevice2" type="labelled-by"/>
+				      </accessibility>
 				      <signal name="changed" handler="on_printer_changed" last_modification_time="Thu, 09 Mar 2006 09:56:23 GMT"/>
 				    </widget>
 				    <packing>
@@ -954,6 +975,9 @@ See server settings&lt;/i&gt;</property>
 				  <property name="width_chars">-1</property>
 				  <property name="single_line_mode">False</property>
 				  <property name="angle">0</property>
+				  <accessibility>
+				    <atkrelation target="cmbPErrorPolicy" type="label-for"/>
+				  </accessibility>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -982,6 +1006,9 @@ See server settings&lt;/i&gt;</property>
 				  <property name="width_chars">-1</property>
 				  <property name="single_line_mode">False</property>
 				  <property name="angle">0</property>
+				  <accessibility>
+				    <atkrelation target="cmbPOperationPolicy" type="label-for"/>
+				  </accessibility>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -999,6 +1026,9 @@ See server settings&lt;/i&gt;</property>
 				  <property name="items" translatable="yes">default</property>
 				  <property name="add_tearoffs">False</property>
 				  <property name="focus_on_click">True</property>
+				  <accessibility>
+				    <atkrelation target="label77" type="labelled-by"/>
+				  </accessibility>
 				  <signal name="changed" handler="on_printer_changed" last_modification_time="Tue, 14 Mar 2006 10:52:50 GMT"/>
 				</widget>
 				<packing>
@@ -1016,6 +1046,9 @@ See server settings&lt;/i&gt;</property>
 				  <property name="items" translatable="yes">default</property>
 				  <property name="add_tearoffs">False</property>
 				  <property name="focus_on_click">True</property>
+				  <accessibility>
+				    <atkrelation target="label78" type="labelled-by"/>
+				  </accessibility>
 				  <signal name="changed" handler="on_printer_changed" last_modification_time="Tue, 14 Mar 2006 10:53:01 GMT"/>
 				</widget>
 				<packing>
@@ -1106,6 +1139,9 @@ See server settings&lt;/i&gt;</property>
 				  <property name="width_chars">-1</property>
 				  <property name="single_line_mode">False</property>
 				  <property name="angle">0</property>
+				  <accessibility>
+				    <atkrelation target="cmbPStartBanner" type="label-for"/>
+				  </accessibility>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -1134,6 +1170,9 @@ See server settings&lt;/i&gt;</property>
 				  <property name="width_chars">-1</property>
 				  <property name="single_line_mode">False</property>
 				  <property name="angle">0</property>
+				  <accessibility>
+				    <atkrelation target="cmbPEndBanner" type="label-for"/>
+				  </accessibility>
 				</widget>
 				<packing>
 				  <property name="left_attach">0</property>
@@ -1151,6 +1190,9 @@ See server settings&lt;/i&gt;</property>
 				  <property name="items" translatable="yes">none</property>
 				  <property name="add_tearoffs">False</property>
 				  <property name="focus_on_click">True</property>
+				  <accessibility>
+				    <atkrelation target="label73" type="labelled-by"/>
+				  </accessibility>
 				  <signal name="changed" handler="on_printer_changed" last_modification_time="Tue, 14 Mar 2006 10:52:11 GMT"/>
 				</widget>
 				<packing>
@@ -1168,6 +1210,9 @@ See server settings&lt;/i&gt;</property>
 				  <property name="items" translatable="yes">none</property>
 				  <property name="add_tearoffs">False</property>
 				  <property name="focus_on_click">True</property>
+				  <accessibility>
+				    <atkrelation target="label74" type="labelled-by"/>
+				  </accessibility>
 				  <signal name="changed" handler="on_printer_changed" last_modification_time="Tue, 14 Mar 2006 10:52:40 GMT"/>
 				</widget>
 				<packing>
@@ -1307,7 +1352,11 @@ See server settings&lt;/i&gt;</property>
 			  <property name="max_length">0</property>
 			  <property name="text"></property>
 			  <property name="has_frame">True</property>
+			  <property name="invisible_char">•</property>
 			  <property name="activates_default">True</property>
+			  <accessibility>
+			    <atkproperty name="AtkObject::accessible_description" translatable="yes">user</atkproperty>
+			  </accessibility>
 			  <signal name="changed" handler="on_entPUser_changed" last_modification_time="Mon, 27 Mar 2006 13:07:50 GMT"/>
 			</widget>
 			<packing>
@@ -1395,6 +1444,9 @@ See server settings&lt;/i&gt;</property>
 			  <property name="use_stock">True</property>
 			  <property name="relief">GTK_RELIEF_NORMAL</property>
 			  <property name="focus_on_click">True</property>
+			  <accessibility>
+			    <atkrelation target="entPUser" type="labelled-by"/>
+			  </accessibility>
 			  <signal name="clicked" handler="on_btnPAddUser_clicked" last_modification_time="Mon, 27 Mar 2006 10:15:35 GMT"/>
 			</widget>
 			<packing>
@@ -1548,6 +1600,9 @@ See server settings&lt;/i&gt;</property>
 				      <property name="can_focus">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
 				      <property name="focus_on_click">True</property>
+				      <accessibility>
+					<atkproperty name="AtkObject::accessible_description" translatable="yes">move left</atkproperty>
+				      </accessibility>
 				      <signal name="clicked" handler="on_btnClassAddMember_clicked" last_modification_time="Tue, 07 Mar 2006 10:19:06 GMT"/>
 
 				      <child>
@@ -1571,6 +1626,9 @@ See server settings&lt;/i&gt;</property>
 				      <property name="can_focus">True</property>
 				      <property name="relief">GTK_RELIEF_NORMAL</property>
 				      <property name="focus_on_click">True</property>
+				      <accessibility>
+					<atkproperty name="AtkObject::accessible_description" translatable="yes">move right</atkproperty>
+				      </accessibility>
 				      <signal name="clicked" handler="on_btnClassDelMember_clicked" last_modification_time="Tue, 07 Mar 2006 10:19:12 GMT"/>
 
 				      <child>
@@ -4385,6 +4443,7 @@ Reverse portrait (180°)</property>
 						  <property name="max_length">0</property>
 						  <property name="text" translatable="yes"></property>
 						  <property name="has_frame">True</property>
+						  <property name="invisible_char">•</property>
 						  <property name="activates_default">False</property>
 						  <signal name="changed" handler="on_entNewJobOption_changed" last_modification_time="Fri, 23 Feb 2007 15:48:17 GMT"/>
 						  <signal name="activate" handler="on_entNewJobOption_activate" last_modification_time="Fri, 23 Feb 2007 17:27:38 GMT"/>
