@@ -5089,7 +5089,7 @@ class NewPrinterGUI(GtkGUI):
             functionality = functionality + _("<b>Recommended Driver</b>")
         self.lblNPDownloadableDriverFunctionality.set_markup (functionality)
         supportcontacts = ""
-        if driver['supportcontacts']:
+        if driver.has_key ('supportcontacts'):
             for supportentry in driver['supportcontacts']:
                 if supportentry['name']:
                     supportcontact = " - " + supportentry['name']
