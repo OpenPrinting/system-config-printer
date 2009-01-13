@@ -5936,7 +5936,6 @@ class NewPrinterGUI(GtkGUI):
                          device=uri, info=info, location=location)
                     check = True
                     checkppd = ppd
-                cupshelpers.activateNewPrinter (self.mainapp.cups, name)
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
                 self.WaitWindow.hide ()
@@ -5955,6 +5954,7 @@ class NewPrinterGUI(GtkGUI):
             self.mainapp.cups._begin_operation (_("modifying printer %s") %
                                                 name)
             try:
+                cupshelpers.activateNewPrinter (self.mainapp.cups, name)
                 self.mainapp.cups.setPrinterLocation(name, location)
                 self.mainapp.cups.setPrinterInfo(name, info)
             except cups.IPPError, (e, msg):
