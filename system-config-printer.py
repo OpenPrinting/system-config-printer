@@ -5683,7 +5683,7 @@ class NewPrinterGUI(GtkGUI):
                 hs.hide ()
                 unknown.show_all ()
         supportcontacts = ""
-        if driver['supportcontacts']:
+        if driver.has_key ('supportcontacts'):
             for supportentry in driver['supportcontacts']:
                 if supportentry['name']:
                     supportcontact = " - " + supportentry['name']
