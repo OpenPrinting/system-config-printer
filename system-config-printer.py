@@ -2415,14 +2415,11 @@ class GUI(GtkGUI, monitor.Watcher):
         self.btnRefreshMarkerLevels.set_sensitive (can_refresh)
         if len (markers) == 0:
             if can_refresh:
-                alignment = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
-                alignment.set_padding (24, 6, 24, 0)
                 label = gtk.Label(_("Marker levels are not reported "
                                     "for this printer."))
                 label.set_line_wrap (True)
                 label.set_alignment (0.0, 0.0)
-                alignment.add (label)
-                self.vboxMarkerLevels.pack_start (alignment, False, False, 0)
+                self.vboxMarkerLevels.pack_start (label, False, False, 0)
             else:
                 tab_nr = self.ntbkPrinter.page_num(self.vbPMarkerLevels)
                 if tab_nr != -1:
