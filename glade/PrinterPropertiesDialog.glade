@@ -319,7 +319,6 @@
 				  <property name="max_length">0</property>
 				  <property name="text"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char">•</property>
 				  <property name="activates_default">False</property>
 				  <accessibility>
 				    <atkrelation target="lblPDescription" type="labelled-by"/>
@@ -344,7 +343,6 @@
 				  <property name="max_length">0</property>
 				  <property name="text"></property>
 				  <property name="has_frame">True</property>
-				  <property name="invisible_char">•</property>
 				  <property name="activates_default">False</property>
 				  <accessibility>
 				    <atkrelation target="lblPLocation" type="labelled-by"/>
@@ -434,7 +432,6 @@
 				      <property name="max_length">0</property>
 				      <property name="text"></property>
 				      <property name="has_frame">True</property>
-				      <property name="invisible_char">•</property>
 				      <property name="activates_default">False</property>
 				      <accessibility>
 					<atkrelation target="lblPDevice2" type="labelled-by"/>
@@ -1352,7 +1349,6 @@ See server settings&lt;/i&gt;</property>
 			  <property name="max_length">0</property>
 			  <property name="text"></property>
 			  <property name="has_frame">True</property>
-			  <property name="invisible_char">•</property>
 			  <property name="activates_default">True</property>
 			  <accessibility>
 			    <atkproperty name="AtkObject::accessible_description" translatable="yes">user</atkproperty>
@@ -1943,6 +1939,9 @@ See server settings&lt;/i&gt;</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="sbJOCopies" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -1971,6 +1970,9 @@ See server settings&lt;/i&gt;</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="cmbJOOrientationRequested" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -1999,6 +2001,9 @@ See server settings&lt;/i&gt;</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="cmbJONumberUp" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -2033,6 +2038,9 @@ See server settings&lt;/i&gt;</property>
 16</property>
 					      <property name="add_tearoffs">False</property>
 					      <property name="focus_on_click">True</property>
+					      <accessibility>
+						<atkrelation target="label141" type="labelled-by"/>
+					      </accessibility>
 					      <signal name="changed" handler="on_job_option_changed" last_modification_time="Thu, 22 Feb 2007 12:16:20 GMT"/>
 					    </widget>
 					  </child>
@@ -2103,6 +2111,9 @@ See server settings&lt;/i&gt;</property>
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
+						  <accessibility>
+						    <atkrelation target="cmbJONumberUpLayout" type="label-for"/>
+						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
@@ -2131,6 +2142,9 @@ See server settings&lt;/i&gt;</property>
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
+						  <accessibility>
+						    <atkrelation target="sbJOBrightness" type="label-for"/>
+						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
@@ -2176,6 +2190,9 @@ Bottom to top, left to right
 Bottom to top, right to left</property>
 						  <property name="add_tearoffs">False</property>
 						  <property name="focus_on_click">True</property>
+						  <accessibility>
+						    <atkrelation target="label167" type="labelled-by"/>
+						  </accessibility>
 						  <signal name="changed" handler="on_job_option_changed" last_modification_time="Fri, 23 Feb 2007 14:12:08 GMT"/>
 						</widget>
 						<packing>
@@ -2226,6 +2243,9 @@ Bottom to top, right to left</property>
 						      <property name="snap_to_ticks">False</property>
 						      <property name="wrap">False</property>
 						      <property name="adjustment">100 10 1000 1 0 0</property>
+						      <accessibility>
+							<atkrelation target="label168" type="labelled-by"/>
+						      </accessibility>
 						      <signal name="changed" handler="on_job_option_changed" last_modification_time="Fri, 23 Feb 2007 14:12:21 GMT"/>
 						    </widget>
 						    <packing>
@@ -2287,6 +2307,9 @@ Bottom to top, right to left</property>
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
+						  <accessibility>
+						    <atkrelation target="cmbJOFinishings" type="label-for"/>
+						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
@@ -2352,6 +2375,9 @@ Bind (right)
 Bind (bottom)</property>
 						  <property name="add_tearoffs">False</property>
 						  <property name="focus_on_click">True</property>
+						  <accessibility>
+						    <atkrelation target="label176" type="labelled-by"/>
+						  </accessibility>
 						  <signal name="changed" handler="on_job_option_changed" last_modification_time="Fri, 23 Feb 2007 14:12:08 GMT"/>
 						</widget>
 						<packing>
@@ -2381,6 +2407,9 @@ Bind (bottom)</property>
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
+						  <accessibility>
+						    <atkrelation target="sbJOJobPriority" type="label-for"/>
+						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
@@ -2403,6 +2432,9 @@ Bind (bottom)</property>
 						  <property name="snap_to_ticks">False</property>
 						  <property name="wrap">False</property>
 						  <property name="adjustment">50 0 100 1 0 0</property>
+						  <accessibility>
+						    <atkrelation target="label177" type="labelled-by"/>
+						  </accessibility>
 						  <signal name="changed" handler="on_job_option_changed" last_modification_time="Fri, 23 Feb 2007 14:12:21 GMT"/>
 						</widget>
 						<packing>
@@ -2519,6 +2551,9 @@ Bind (bottom)</property>
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
+						  <accessibility>
+						    <atkrelation target="cmbJOSides" type="label-for"/>
+						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
@@ -2538,6 +2573,9 @@ Two-sided (long edge)
 Two-sided (short edge)</property>
 						  <property name="add_tearoffs">False</property>
 						  <property name="focus_on_click">True</property>
+						  <accessibility>
+						    <atkrelation target="label179" type="labelled-by"/>
+						  </accessibility>
 						  <signal name="changed" handler="on_job_option_changed" last_modification_time="Fri, 23 Feb 2007 14:12:08 GMT"/>
 						</widget>
 						<packing>
@@ -2682,6 +2720,9 @@ Reverse landscape (270°)
 Reverse portrait (180°)</property>
 					  <property name="add_tearoffs">False</property>
 					  <property name="focus_on_click">True</property>
+					  <accessibility>
+					    <atkrelation target="label139" type="labelled-by"/>
+					  </accessibility>
 					  <signal name="changed" handler="on_job_option_changed" last_modification_time="Thu, 22 Feb 2007 12:15:13 GMT"/>
 					</widget>
 					<packing>
@@ -2705,6 +2746,9 @@ Reverse portrait (180°)</property>
 					  <property name="snap_to_ticks">False</property>
 					  <property name="wrap">False</property>
 					  <property name="adjustment">1 1 1000 1 0 0</property>
+					  <accessibility>
+					    <atkrelation target="label138" type="labelled-by"/>
+					  </accessibility>
 					  <signal name="changed" handler="on_job_option_changed" last_modification_time="Thu, 22 Feb 2007 12:15:06 GMT"/>
 					</widget>
 					<packing>
@@ -2880,6 +2924,9 @@ Reverse portrait (180°)</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="sbJOScaling" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -2943,6 +2990,9 @@ Reverse portrait (180°)</property>
 					      <property name="snap_to_ticks">False</property>
 					      <property name="wrap">False</property>
 					      <property name="adjustment">100 10 1000 1 0 0</property>
+					      <accessibility>
+						<atkrelation target="label144" type="labelled-by"/>
+					      </accessibility>
 					      <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 13:56:24 GMT"/>
 					    </widget>
 					    <packing>
@@ -3043,6 +3093,9 @@ Reverse portrait (180°)</property>
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
+						  <accessibility>
+						    <atkrelation target="sbJOSaturation" type="label-for"/>
+						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
@@ -3071,6 +3124,9 @@ Reverse portrait (180°)</property>
 						      <property name="snap_to_ticks">False</property>
 						      <property name="wrap">False</property>
 						      <property name="adjustment">100 10 1000 1 0 0</property>
+						      <accessibility>
+							<atkrelation target="label170" type="labelled-by"/>
+						      </accessibility>
 						      <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 13:56:24 GMT"/>
 						    </widget>
 						    <packing>
@@ -3152,6 +3208,9 @@ Reverse portrait (180°)</property>
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
+						  <accessibility>
+						    <atkrelation target="sbJOHue" type="label-for"/>
+						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
@@ -3180,6 +3239,9 @@ Reverse portrait (180°)</property>
 						      <property name="snap_to_ticks">False</property>
 						      <property name="wrap">False</property>
 						      <property name="adjustment">0 -180 180 1 0 0</property>
+						      <accessibility>
+							<atkrelation target="label172" type="labelled-by"/>
+						      </accessibility>
 						      <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 13:56:24 GMT"/>
 						    </widget>
 						    <packing>
@@ -3256,6 +3318,9 @@ Reverse portrait (180°)</property>
 						  <property name="snap_to_ticks">False</property>
 						  <property name="wrap">False</property>
 						  <property name="adjustment">1000 1 10000 10 0 0</property>
+						  <accessibility>
+						    <atkrelation target="label174" type="labelled-by"/>
+						  </accessibility>
 						  <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 13:56:24 GMT"/>
 						</widget>
 						<packing>
@@ -3284,6 +3349,9 @@ Reverse portrait (180°)</property>
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
+						  <accessibility>
+						    <atkrelation target="sbJOGamma" type="label-for"/>
+						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
@@ -3450,6 +3518,9 @@ Reverse portrait (180°)</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="sbJOCpi" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -3478,6 +3549,9 @@ Reverse portrait (180°)</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="sbJOLpi" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -3519,6 +3593,9 @@ Reverse portrait (180°)</property>
 						  <property name="snap_to_ticks">False</property>
 						  <property name="wrap">False</property>
 						  <property name="adjustment">18 0 100 1 0 0</property>
+						  <accessibility>
+						    <atkrelation target="label156" type="labelled-by"/>
+						  </accessibility>
 						  <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 15:57:14 GMT"/>
 						</widget>
 						<packing>
@@ -3582,6 +3659,9 @@ Reverse portrait (180°)</property>
 					      <property name="snap_to_ticks">False</property>
 					      <property name="wrap">False</property>
 					      <property name="adjustment">10 1 100 0.10000000149 0 0</property>
+					      <accessibility>
+						<atkrelation target="label150" type="labelled-by"/>
+					      </accessibility>
 					      <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 15:54:31 GMT"/>
 					    </widget>
 					    <packing>
@@ -3643,6 +3723,9 @@ Reverse portrait (180°)</property>
 					      <property name="snap_to_ticks">False</property>
 					      <property name="wrap">False</property>
 					      <property name="adjustment">6 1 100 0.10000000149 0 0</property>
+					      <accessibility>
+						<atkrelation target="label151" type="labelled-by"/>
+					      </accessibility>
 					      <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 15:55:39 GMT"/>
 					    </widget>
 					    <packing>
@@ -3704,6 +3787,9 @@ Reverse portrait (180°)</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="sbJOPageLeft" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -3733,6 +3819,9 @@ Reverse portrait (180°)</property>
 					      <property name="snap_to_ticks">False</property>
 					      <property name="wrap">False</property>
 					      <property name="adjustment">18 0 100 1 0 0</property>
+					      <accessibility>
+						<atkrelation target="label154" type="labelled-by"/>
+					      </accessibility>
 					      <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 15:56:41 GMT"/>
 					    </widget>
 					    <packing>
@@ -3794,6 +3883,9 @@ Reverse portrait (180°)</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="sbJOPageRight" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -3905,6 +3997,9 @@ Reverse portrait (180°)</property>
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
+						  <accessibility>
+						    <atkrelation target="sbJOColumns" type="label-for"/>
+						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
@@ -3927,6 +4022,9 @@ Reverse portrait (180°)</property>
 						  <property name="snap_to_ticks">False</property>
 						  <property name="wrap">False</property>
 						  <property name="adjustment">1 1 4 1 0 0</property>
+						  <accessibility>
+						    <atkrelation target="label175" type="labelled-by"/>
+						  </accessibility>
 						  <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 16:03:08 GMT"/>
 						</widget>
 						<packing>
@@ -4033,6 +4131,9 @@ Reverse portrait (180°)</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="sbJOPageTop" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -4062,6 +4163,9 @@ Reverse portrait (180°)</property>
 					      <property name="snap_to_ticks">False</property>
 					      <property name="wrap">False</property>
 					      <property name="adjustment">36 0 100 1 0 0</property>
+					      <accessibility>
+						<atkrelation target="label158" type="labelled-by"/>
+					      </accessibility>
 					      <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 15:58:06 GMT"/>
 					    </widget>
 					    <packing>
@@ -4123,6 +4227,9 @@ Reverse portrait (180°)</property>
 					  <property name="width_chars">-1</property>
 					  <property name="single_line_mode">False</property>
 					  <property name="angle">0</property>
+					  <accessibility>
+					    <atkrelation target="sbJOPageBottom" type="label-for"/>
+					  </accessibility>
 					</widget>
 					<packing>
 					  <property name="left_attach">0</property>
@@ -4152,6 +4259,9 @@ Reverse portrait (180°)</property>
 					      <property name="snap_to_ticks">False</property>
 					      <property name="wrap">False</property>
 					      <property name="adjustment">36 0 100 1 0 0</property>
+					      <accessibility>
+						<atkrelation target="label160" type="labelled-by"/>
+					      </accessibility>
 					      <signal name="changed" handler="on_job_option_changed" last_modification_time="Mon, 26 Feb 2007 16:01:04 GMT"/>
 					    </widget>
 					    <packing>
@@ -4443,7 +4553,6 @@ Reverse portrait (180°)</property>
 						  <property name="max_length">0</property>
 						  <property name="text" translatable="yes"></property>
 						  <property name="has_frame">True</property>
-						  <property name="invisible_char">•</property>
 						  <property name="activates_default">False</property>
 						  <signal name="changed" handler="on_entNewJobOption_changed" last_modification_time="Fri, 23 Feb 2007 15:48:17 GMT"/>
 						  <signal name="activate" handler="on_entNewJobOption_activate" last_modification_time="Fri, 23 Feb 2007 17:27:38 GMT"/>
