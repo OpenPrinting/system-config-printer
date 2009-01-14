@@ -300,6 +300,8 @@ class GUI(GtkGUI, monitor.Watcher):
                               "tvClassNotMembers",
                               "btnClassAddMember",
                               "btnClassDelMember",
+                              "vbPMarkerLevels",
+                              "lblPMarkerLevels",
 
                               # Job options
                               "sbJOCopies", "btnJOResetCopies",
@@ -2382,15 +2384,24 @@ class GUI(GtkGUI, monitor.Watcher):
                        marker_info['marker-levels'])
 
         if len (markers) == 0:
-            alignment = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
-            alignment.set_padding (24, 6, 24, 0)
-            label = gtk.Label(_("Marker levels are not reported "
-                                "for this printer."))
-            label.set_line_wrap (True)
-            label.set_alignment (0.0, 0.0)
-            alignment.add (label)
-            self.vboxMarkerLevels.pack_start (alignment, False, False, 0)
+            if (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0:
+                alignment = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                alignment.set_padding (24, 6, 24, 0)
+                label = gtk.Label(_("Marker levels are not reported "
+                                    "for this printer."))
+                label.set_line_wrap (True)
+                label.set_alignment (0.0, 0.0)
+                alignment.add (label)
+                self.vboxMarkerLevels.pack_start (alignment, False, False, 0)
+            else:
+                tab_nr = self.ntbkPrinter.page_num(self.vbPMarkerLevels)
+                if tab_nr != -1:
+                    self.ntbkPrinter.remove_page(tab_nr)
         else:
+            tab_nr = self.ntbkPrinter.page_num(self.vbPMarkerLevels)
+            if tab_nr == -1:
+                self.ntbkPrinter.append_page(self.vbPMarkerLevels,
+                                             self.lblPMarkerLevels)
             num_markers = 0
             cols = len (markers)
             rows = 1 + (cols - 1) / 4
