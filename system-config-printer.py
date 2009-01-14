@@ -3407,6 +3407,7 @@ class NewPrinterGUI(GtkGUI):
         slct = self.tvNPDevices.get_selection ()
         slct.set_select_function (self.device_select_function)
         self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn)
+        self.tvNPDevices.connect ("row-activated", self.device_row_activated)
 
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
@@ -5024,6 +5025,12 @@ class NewPrinterGUI(GtkGUI):
     def device_row_separator_fn (self, model, iter):
         return model.get_value (iter, 2)
 
+    def device_row_activated (self, view, path, column):
+        if view.row_expanded (path):
+            view.collapse_row (path)
+        else:
+            view.expand_row (path, False)
+
     def device_select_function (self, path):
         """
         Allow this path to be selected as long as there
@@ -5041,6 +5048,9 @@ class NewPrinterGUI(GtkGUI):
         model = widget.get_model ()
         iter = model.get_iter (path)
         physicaldevice = model.get_value (iter, 1)
+        if physicaldevice == None:
+            return
+
         model = gtk.ListStore (str,                    # printer-info
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
