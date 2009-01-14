@@ -2369,11 +2369,18 @@ class GUI(GtkGUI, monitor.Watcher):
         for widget in self.vboxMarkerLevels.get_children ():
             self.vboxMarkerLevels.remove (widget)
 
-        markers = [("Black", "black", 80),
-                   ("Cyan", "cyan", 60),
-                   ("Magenta", "magenta", 40),
-                   ("Yellow", "yellow", 90)]
-        markers = []
+        marker_info = dict()
+        for attr in ['marker-colors', 'marker-names', 'marker-types',
+                     'marker-levels']:
+            marker_info[attr] = printer.other_attributes.get (attr, [])
+
+        markers = map (lambda color, name, type, level:
+                           (color, name, type, level),
+                       marker_info['marker-colors'],
+                       marker_info['marker-names'],
+                       marker_info['marker-types'],
+                       marker_info['marker-levels'])
+
         if len (markers) == 0:
             alignment = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
             alignment.set_padding (24, 6, 24, 0)
@@ -2395,7 +2402,10 @@ class GUI(GtkGUI, monitor.Watcher):
             table.set_col_spacings (6)
             table.set_row_spacings (12)
             self.vboxMarkerLevels.pack_start (table)
-            for name, color, level in markers:
+            for color, name, marker_type, level in markers:
+                if name == None:
+                    name = ''
+
                 row = num_markers / 4
                 col = num_markers % 4
 
