@@ -90,6 +90,7 @@ from ToolbarSearchEntry import *
 from GroupsPane import *
 from GroupsPaneModel import *
 from SearchCriterion import *
+import gtkinklevel
 
 domain='system-config-printer'
 import locale
@@ -299,6 +300,9 @@ class GUI(GtkGUI, monitor.Watcher):
                               "tvClassNotMembers",
                               "btnClassAddMember",
                               "btnClassDelMember",
+                              "vbPMarkerLevels",
+                              "lblPMarkerLevels",
+                              "btnRefreshMarkerLevels",
 
                               # Job options
                               "sbJOCopies", "btnJOResetCopies",
@@ -327,7 +331,11 @@ class GUI(GtkGUI, monitor.Watcher):
                               "cbJOWrap", "btnJOResetWrap",
                               "sbJOColumns", "btnJOResetColumns",
                               "tblJOOther",
-                              "entNewJobOption", "btnNewJobOption"]})
+                              "entNewJobOption", "btnNewJobOption",
+
+                              # Marker levels
+                              "vboxMarkerLevels",
+                              "btnRefreshMarkerLevels"]})
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
@@ -475,6 +483,9 @@ class GUI(GtkGUI, monitor.Watcher):
             combobox.clear ()
             combobox.pack_start (cell, True)
             combobox.add_attribute (cell, 'text', 0)
+
+        btn = self.btnRefreshMarkerLevels
+        btn.connect ("clicked", self.on_btnRefreshMarkerLevels_clicked)
 
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
@@ -2360,6 +2371,14 @@ class GUI(GtkGUI, monitor.Watcher):
             # real Printer
             self.fillPrinterOptions(name, editablePPD)
 
+        self.updateMarkerLevels()
+        self.updatePrinterPropertiesTreeView()
+
+        self.changed = set() # of options
+        self.updatePrinterProperties ()
+        self.setDataButtonState()
+
+    def updatePrinterPropertiesTreeView (self):
         # Now update the tree view (which we use instead of the notebook tabs).
         store = gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_INT)
         self.ntbkPrinter.set_show_tabs (False)
@@ -2372,9 +2391,77 @@ class GUI(GtkGUI, monitor.Watcher):
         sel = self.tvPrinterProperties.get_selection ()
         self.tvPrinterProperties.set_model (store)
 
-        self.changed = set() # of options
-        self.updatePrinterProperties ()
-        self.setDataButtonState()
+    def updateMarkerLevels (self):
+        printer = self.printer
+
+        # Marker levels
+        for widget in self.vboxMarkerLevels.get_children ():
+            self.vboxMarkerLevels.remove (widget)
+
+        marker_info = dict()
+        for attr in ['marker-colors', 'marker-names', 'marker-types',
+                     'marker-levels']:
+            marker_info[attr] = printer.other_attributes.get (attr, [])
+
+        markers = map (lambda color, name, type, level:
+                           (color, name, type, level),
+                       marker_info['marker-colors'],
+                       marker_info['marker-names'],
+                       marker_info['marker-types'],
+                       marker_info['marker-levels'])
+        debugprint (markers)
+
+        can_refresh = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
+        self.btnRefreshMarkerLevels.set_sensitive (can_refresh)
+        if len (markers) == 0:
+            if can_refresh:
+                label = gtk.Label(_("Marker levels are not reported "
+                                    "for this printer."))
+                label.set_line_wrap (True)
+                label.set_alignment (0.0, 0.0)
+                self.vboxMarkerLevels.pack_start (label, False, False, 0)
+            else:
+                tab_nr = self.ntbkPrinter.page_num(self.vbPMarkerLevels)
+                if tab_nr != -1:
+                    self.ntbkPrinter.remove_page(tab_nr)
+        else:
+            tab_nr = self.ntbkPrinter.page_num(self.vbPMarkerLevels)
+            if tab_nr == -1:
+                self.ntbkPrinter.append_page(self.vbPMarkerLevels,
+                                             self.lblPMarkerLevels)
+            num_markers = 0
+            cols = len (markers)
+            rows = 1 + (cols - 1) / 4
+            if cols > 4:
+                cols = 4
+            table = gtk.Table (rows=rows,
+                               columns=cols,
+                               homogeneous=True)
+            table.set_col_spacings (6)
+            table.set_row_spacings (12)
+            self.vboxMarkerLevels.pack_start (table)
+            for color, name, marker_type, level in markers:
+                if name == None:
+                    name = ''
+
+                row = num_markers / 4
+                col = num_markers % 4
+
+                vbox = gtk.VBox (spacing=6)
+                subhbox = gtk.HBox ()
+                inklevel = gtkinklevel.GtkInkLevel (color, level)
+                subhbox.pack_start (inklevel, True, False, 0)
+                vbox.pack_start (subhbox, False, False, 0)
+                label = gtk.Label (name)
+                label.set_line_wrap (True)
+                vbox.pack_start (label, False, False, 0)
+                table.attach (vbox, col, col + 1, row, row + 1)
+                num_markers += 1
+
+        self.vboxMarkerLevels.show_all ()
+
+    def on_btnRefreshMarkerLevels_clicked (self, button):
+        self.maintenance_command ("ReportLevels")
 
     def updatePrinterProperties(self):
         debugprint ("update printer properties")
@@ -2415,6 +2502,11 @@ class GUI(GtkGUI, monitor.Watcher):
             self.rbtnPAllow.set_active(printer.default_allow)
             self.rbtnPDeny.set_active(not printer.default_allow)
             self.setPUsers(printer.except_users)
+
+            # Marker levels
+            self.updateMarkerLevels ()
+
+            self.updatePrinterPropertiesTreeView
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
@@ -3407,6 +3499,7 @@ class NewPrinterGUI(GtkGUI):
         slct = self.tvNPDevices.get_selection ()
         slct.set_select_function (self.device_select_function)
         self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn)
+        self.tvNPDevices.connect ("row-activated", self.device_row_activated)
 
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
@@ -5024,6 +5117,12 @@ class NewPrinterGUI(GtkGUI):
     def device_row_separator_fn (self, model, iter):
         return model.get_value (iter, 2)
 
+    def device_row_activated (self, view, path, column):
+        if view.row_expanded (path):
+            view.collapse_row (path)
+        else:
+            view.expand_row (path, False)
+
     def device_select_function (self, path):
         """
         Allow this path to be selected as long as there
@@ -5041,6 +5140,9 @@ class NewPrinterGUI(GtkGUI):
         model = widget.get_model ()
         iter = model.get_iter (path)
         physicaldevice = model.get_value (iter, 1)
+        if physicaldevice == None:
+            return
+
         model = gtk.ListStore (str,                    # printer-info
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
