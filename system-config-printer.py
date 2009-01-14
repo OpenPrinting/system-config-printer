@@ -2212,7 +2212,8 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             self.ppd = printer.getPPD()
             self.ppd_local = printer.getPPD()
-            self.ppd_local.localize()
+            if self.ppd_local != False:
+                self.ppd_local.localize()
         except cups.IPPError, (e, m):
             # Some IPP error other than IPP_NOT_FOUND.
             show_IPP_Error(e, m, self.PrintersWindow)
