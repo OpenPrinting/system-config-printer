@@ -302,6 +302,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               "btnClassDelMember",
                               "vbPMarkerLevels",
                               "lblPMarkerLevels",
+                              "btnRefreshMarkerLevels",
 
                               # Job options
                               "sbJOCopies", "btnJOResetCopies",
@@ -482,6 +483,9 @@ class GUI(GtkGUI, monitor.Watcher):
             combobox.clear ()
             combobox.pack_start (cell, True)
             combobox.add_attribute (cell, 'text', 0)
+
+        btn = self.btnRefreshMarkerLevels
+        btn.connect ("clicked", self.on_btnRefreshMarkerLevels_clicked)
 
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
@@ -2367,6 +2371,29 @@ class GUI(GtkGUI, monitor.Watcher):
             # real Printer
             self.fillPrinterOptions(name, editablePPD)
 
+        self.updateMarkerLevels()
+        self.updatePrinterPropertiesTreeView()
+
+        self.changed = set() # of options
+        self.updatePrinterProperties ()
+        self.setDataButtonState()
+
+    def updatePrinterPropertiesTreeView (self):
+        # Now update the tree view (which we use instead of the notebook tabs).
+        store = gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_INT)
+        self.ntbkPrinter.set_show_tabs (False)
+        for n in range (self.ntbkPrinter.get_n_pages ()):
+            page = self.ntbkPrinter.get_nth_page (n)
+            label = self.ntbkPrinter.get_tab_label (page)
+            iter = store.append (None)
+            store.set_value (iter, 0, label.get_text ())
+            store.set_value (iter, 1, n)
+        sel = self.tvPrinterProperties.get_selection ()
+        self.tvPrinterProperties.set_model (store)
+
+    def updateMarkerLevels (self):
+        printer = self.printer
+
         # Marker levels
         for widget in self.vboxMarkerLevels.get_children ():
             self.vboxMarkerLevels.remove (widget)
@@ -2382,9 +2409,12 @@ class GUI(GtkGUI, monitor.Watcher):
                        marker_info['marker-names'],
                        marker_info['marker-types'],
                        marker_info['marker-levels'])
+        debugprint (markers)
 
+        can_refresh = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
+        self.btnRefreshMarkerLevels.set_sensitive (can_refresh)
         if len (markers) == 0:
-            if (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0:
+            if can_refresh:
                 alignment = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
                 alignment.set_padding (24, 6, 24, 0)
                 label = gtk.Label(_("Marker levels are not reported "
@@ -2432,23 +2462,9 @@ class GUI(GtkGUI, monitor.Watcher):
                 num_markers += 1
 
         self.vboxMarkerLevels.show_all ()
-        self.btnRefreshMarkerLevels.set_sensitive (False)
 
-        # Now update the tree view (which we use instead of the notebook tabs).
-        store = gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_INT)
-        self.ntbkPrinter.set_show_tabs (False)
-        for n in range (self.ntbkPrinter.get_n_pages ()):
-            page = self.ntbkPrinter.get_nth_page (n)
-            label = self.ntbkPrinter.get_tab_label (page)
-            iter = store.append (None)
-            store.set_value (iter, 0, label.get_text ())
-            store.set_value (iter, 1, n)
-        sel = self.tvPrinterProperties.get_selection ()
-        self.tvPrinterProperties.set_model (store)
-
-        self.changed = set() # of options
-        self.updatePrinterProperties ()
-        self.setDataButtonState()
+    def on_btnRefreshMarkerLevels_clicked (self, button):
+        self.maintenance_command ("ReportLevels")
 
     def updatePrinterProperties(self):
         debugprint ("update printer properties")
@@ -2489,6 +2505,11 @@ class GUI(GtkGUI, monitor.Watcher):
             self.rbtnPAllow.set_active(printer.default_allow)
             self.rbtnPDeny.set_active(not printer.default_allow)
             self.setPUsers(printer.except_users)
+
+            # Marker levels
+            self.updateMarkerLevels ()
+
+            self.updatePrinterPropertiesTreeView
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
