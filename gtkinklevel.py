@@ -25,7 +25,11 @@ class GtkInkLevel (gtk.DrawingArea):
         gtk.DrawingArea.__init__ (self)
         self.connect ('expose-event', self.expose_event)
         self._level = level
-        self._color = gtk.gdk.color_parse (color)
+        try:
+            self._color = gtk.gdk.color_parse (color)
+        except ValueError:
+            self._color = gtk.gdk.color_parse ('#cccccc')
+
         self.set_size_request (30, 45)
 
     def set_level (self, level):
