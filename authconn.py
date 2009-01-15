@@ -102,7 +102,10 @@ class AuthDialog(gtk.Dialog):
         return map (lambda x: x.get_text (), self.field_entry)
 
     def get_remember_password (self):
-        return self.remember_checkbox.get_active ()
+        try:
+            return self.remember_checkbox.get_active ()
+        except AttributeError:
+            return False
 
     def field_grab_focus (self, field):
         i = self.auth_info_required.index (field)
