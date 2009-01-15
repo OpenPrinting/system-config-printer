@@ -1,3 +1,33 @@
+2009-01-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Prevent traceback.
+	(NewPrinterGUI.device_row_activated): Collapse/expand device rows
+	on activation.
+
+2009-01-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.fillPrinterTab): Avoid traceback
+	with raw queues.
+
+2009-01-13  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDownloadableDrivers_cursor_changed): Fixed
+	traceback (Ubuntu #316828).
+
+2009-01-13  Tim Waugh  <twaugh@redhat.com>
+
+	* glade/ConnectDialog.glade, glade/NewPrinterWindow.glade,
+	glade/PrinterPropertiesDialog.glade: Added accessibility
+	relations, patch from Ghee Teo (trac #136).
+
+2009-01-12  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.on_btnNPApply_clicked):
+	Treat classes the same as printers after adding them: enable them
+	and set them accepting jobs (trac #132).
+
 2009-01-12  Tim Waugh  <twaugh@redhat.com>
 
 	* monitor.py (Monitor.__init__): Handle exception from

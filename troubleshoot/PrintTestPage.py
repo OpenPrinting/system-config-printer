@@ -350,7 +350,8 @@ class PrintTestPage(Question):
         parent = self.troubleshooter.get_window ()
 
         def print_test_page (*args, **kwargs):
-            c = self.authconn
+            factory = answers['_authenticated_connection_factory']
+            c = factory.get_connection ()
             return c.printTestPage (*args, **kwargs)
 
         tmpfname = None
