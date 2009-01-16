@@ -762,15 +762,17 @@ class GUI(GtkGUI, monitor.Watcher):
         elif response == gtk.RESPONSE_YES:
             # Advanced
             try:
-                AdvancedServerSettingsDialog (self.cups, dialog)
+                AdvancedServerSettingsDialog (self.cups, dialog,
+                                              self.on_adv_server_settings_apply)
             except:
                 return
-
-            try:
-                self.fillServerTab ()
-            except cups.IPPError:
-                dialog.hide ()
         else:
+            dialog.hide ()
+
+    def on_adv_server_settings_apply (self):
+        try:
+            self.fillServerTab ()
+        except cups.IPPError:
             dialog.hide ()
 
     def busy (self, win = None):

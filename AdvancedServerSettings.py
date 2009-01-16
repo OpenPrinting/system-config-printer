@@ -2,8 +2,8 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -31,8 +31,9 @@ from errordialogs import *
 class AdvancedServerSettingsDialog:
     RESOURCE="/admin/conf/cupsd.conf"
 
-    def __init__ (self, cupsconn, parent=None):
+    def __init__ (self, cupsconn, parent=None, on_apply=None):
         self.cupsconn = cupsconn
+        self.on_apply = on_apply
 
         # Signal handler IDs.
         self.handler_ids = {}
@@ -429,4 +430,5 @@ class AdvancedServerSettingsDialog:
             pass
 
         self.disconnect ()
+        self.on_apply ()
         del self
