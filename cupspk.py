@@ -237,6 +237,10 @@ class Connection:
                     # we accept a mix between int and str
                     retval.append(str(args[i]))
                     continue
+                elif types[i] == str and type(args[i]) == float:
+                    # we accept a mix between float and str
+                    retval.append(str(args[i]))
+                    continue
                 elif types[i] == str and type(args[i]) == bool:
                     # we accept a mix between bool and str
                     retval.append(str(args[i]))
@@ -313,24 +317,60 @@ class Connection:
                     if fd or file:
         '''
 
+        file_object = None
+        fd = None
         if len(args) == 2:
             (use_pycups, resource, filename) = self._args_to_tuple([str, str], *args)
         else:
             (use_pycups, resource) = self._args_to_tuple([str], *args)
             if kwds.has_key('filename'):
                 filename = kwds['filename']
+            elif kwds.has_key('fd'):
+                fd = kwds['fd']
+            elif kwds.has_key('file'):
+                file_object = kwds['file']
             else:
                 if not use_pycups:
                     raise TypeError()
                 else:
                     filename = None
 
-        pk_args = (resource, filename)
+        if (not use_pycups) and (fd != None or file_object != None):
+            (tmpfd, tmpfname) = tempfile.mkstemp()
+            os.close (tmpfd)
 
-        self._call_with_pk_and_fallback(use_pycups,
-                                        'FileGet', pk_args,
-                                        self._connection.getFile,
-                                        *args, **kwds)
+            pk_args = (resource, tmpfname)
+            self._call_with_pk_and_fallback(use_pycups,
+                                            'FileGet', pk_args,
+                                            self._connection.getFile,
+                                            *args, **kwds)
+
+            tmpfd = os.open (tmpfname, os.O_RDONLY)
+            tmpfile = os.fdopen (tmpfd, 'r')
+            tmpfile.seek (0)
+
+            if fd != None:
+                os.lseek (fd, 0, os.SEEK_SET)
+                line = tmpfile.readline()
+                while line != '':
+                    os.write (fd, line)
+                    line = tmpfile.readline()
+            else:
+                file_object.seek (0)
+                line = tmpfile.readline()
+                while line != '':
+                    file_object.write (line)
+                    line = tmpfile.readline()
+
+            tmpfile.close ()
+            os.remove (tmpfname)
+        else:
+            pk_args = (resource, filename)
+
+            self._call_with_pk_and_fallback(use_pycups,
+                                            'FileGet', pk_args,
+                                            self._connection.getFile,
+                                            *args, **kwds)
 
 
     def putFile(self, *args, **kwds):
@@ -340,18 +380,51 @@ class Connection:
             (use_pycups, resource) = self._args_to_tuple([str], *args)
             if kwds.has_key('filename'):
                 filename = kwds['filename']
+            elif kwds.has_key('fd'):
+                fd = kwds['fd']
+            elif kwds.has_key('file'):
+                file_object = kwds['file']
             else:
                 if not use_pycups:
                     raise TypeError()
                 else:
                     filename = None
 
-        pk_args = (resource, filename)
+        if (not use_pycups) and (fd != None or file_object != None):
+            (tmpfd, tmpfname) = tempfile.mkstemp()
+            os.lseek (tmpfd, 0, os.SEEK_SET)
 
-        self._call_with_pk_and_fallback(use_pycups,
-                                        'FilePut', pk_args,
-                                        self._connection.putFile,
-                                        *args, **kwds)
+            if fd != None:
+                os.lseek (fd, 0, os.SEEK_SET)
+                buf = os.read (fd, 512)
+                while buf != '':
+                    os.write (tmpfd, buf)
+                    buf = os.read (fd, 512)
+            else:
+                file_object.seek (0)
+                line = file_object.readline ()
+                while line != '':
+                    os.write (tmpfd, line)
+                    line = file_object.readline ()
+
+            os.close (tmpfd)
+
+            pk_args = (resource, tmpfname)
+
+            self._call_with_pk_and_fallback(use_pycups,
+                                            'FilePut', pk_args,
+                                            self._connection.putFile,
+                                            *args, **kwds)
+
+            os.remove (tmpfname)
+        else:
+
+            pk_args = (resource, filename)
+
+            self._call_with_pk_and_fallback(use_pycups,
+                                            'FilePut', pk_args,
+                                            self._connection.putFile,
+                                            *args, **kwds)
 
 
     def addPrinter(self, *args, **kwds):
