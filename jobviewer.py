@@ -204,6 +204,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 item = gtk.SeparatorMenuItem ()
             else:
                 action = job_action_group.get_action (action_name)
+                action.set_sensitive (False)
                 item = action.create_menu_item ()
 
             item.show ()
@@ -910,22 +911,23 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.show_treeview_popup_menu (treeview, event, event.button)
 
     def on_treeview_cursor_changed (self, treeview):
-        store, iter = treeview.get_selection ().get_selected ()
-        if iter == None:
-            return
-
-        self.jobid = self.store.get_value (iter, 0)
-        job = self.jobs[self.jobid]
+        path, column = treeview.get_cursor ()
         cancel = self.job_ui_manager.get_action ("/cancel-job")
         hold = self.job_ui_manager.get_action ("/hold-job")
         release = self.job_ui_manager.get_action ("/release-job")
         reprint = self.job_ui_manager.get_action ("/reprint-job")
         authenticate = self.job_ui_manager.get_action ("/authenticate-job")
-        cancel.set_sensitive (True)
-        hold.set_sensitive (True)
-        release.set_sensitive (True)
-        reprint.set_sensitive (True)
-        authenticate.set_sensitive (False)
+        if path == None:
+            for widget in [cancel, hold, release, reprint, authenticate]:
+                widget.set_sensitive (False)
+            return
+
+        iter = self.store.get_iter (path)
+        self.jobid = self.store.get_value (iter, 0)
+        job = self.jobs[self.jobid]
+        for widget in [cancel, hold, release, reprint, authenticate]:
+            widget.set_sensitive (True)
+
         if job.has_key ('job-state'):
             s = job['job-state']
             if s >= cups.IPP_JOB_CANCELED:
