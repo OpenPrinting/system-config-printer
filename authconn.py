@@ -204,7 +204,7 @@ class Connection:
                 break
             except cups.IPPError, (e, m):
                 if self._use_pk and m == 'pkcancel':
-                    raise
+                    raise cups.IPPError (0, _("Operation canceled"))
                 if not self._cancel and (e == cups.IPP_NOT_AUTHORIZED or
                                          e == cups.IPP_FORBIDDEN):
                     self._failed (e == cups.IPP_FORBIDDEN)
