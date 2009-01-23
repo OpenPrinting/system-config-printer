@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+
 
 ## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 ## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
@@ -437,34 +437,32 @@ class JobViewer (GtkGUI, monitor.Watcher):
             if data.has_key ('time-at-creation'):
                 created = data['time-at-creation']
                 ago = now - created
-                if ago > 86400:
-                    t = time.ctime (created)
-                elif ago > 3600:
-                    need_update = True
-                    hours = int (ago / 3600)
-                    mins = int ((ago % 3600) / 60)
+                need_update = True
+                if ago < 2 * 60:
+                    t = _("a minute ago")
+                elif ago < 60 * 60:
+                    t = _("%d minutes ago") % ago / 60
+                elif ago < 24 * 60 * 60:
+                    hours = int (ago / (60 * 60))
                     if hours == 1:
-                        if mins == 0:
-                            t = _("1 hour ago")
-                        elif mins == 1:
-                            t = _("1 hour and 1 minute ago")
-                        else:
-                            t = _("1 hour and %d minutes ago") % mins
+                        t = _("an hour ago")
                     else:
-                        if mins == 0:
-                            t = _("%d hours ago") % hours
-                        elif mins == 1:
-                            t = _("%d hours and 1 minute ago") % hours
-                        else:
-                            t = _("%d hours and %d minutes ago") % \
-                                (hours, mins)
+                        t = _("%d hours ago") % hours
+                elif ago < 7 * 24 * 60 * 60:
+                    days = int (ago / (24 * 60 * 60))
+                    if days == 1:
+                        t = _("yesterday")
+                    else:
+                        t = _("%d days ago") % days
+                elif ago < 6 * 7 * 24 * 60 * 60:
+                    weeks = int (ago / (7 * 24 * 60 * 60))
+                    if weeks == 1:
+                        t = _("last week")
+                    else:
+                        t = _("%d weeks ago") % weeks
                 else:
-                    need_update = True
-                    mins = ago / 60
-                    if mins < 2:
-                        t = _("a minute ago")
-                    else:
-                        t = _("%d minutes ago") % mins
+                    need_update = False
+                    t = time.strftime ("%B %Y", created)
 
             self.store.set_value (iter, 5, t)
 
