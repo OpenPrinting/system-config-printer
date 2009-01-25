@@ -441,7 +441,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 if ago < 2 * 60:
                     t = _("a minute ago")
                 elif ago < 60 * 60:
-                    t = _("%d minutes ago") % ago / 60
+                    mins = int (ago / 60)
+                    t = _("%d minutes ago") % mins
                 elif ago < 24 * 60 * 60:
                     hours = int (ago / (60 * 60))
                     if hours == 1:
