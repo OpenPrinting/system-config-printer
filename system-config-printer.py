@@ -300,8 +300,6 @@ class GUI(GtkGUI, monitor.Watcher):
                               "tvClassNotMembers",
                               "btnClassAddMember",
                               "btnClassDelMember",
-                              "vbPMarkerLevels",
-                              "lblPMarkerLevels",
                               "btnRefreshMarkerLevels",
 
                               # Job options
@@ -2420,21 +2418,12 @@ class GUI(GtkGUI, monitor.Watcher):
         can_refresh = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
         self.btnRefreshMarkerLevels.set_sensitive (can_refresh)
         if len (markers) == 0:
-            if can_refresh:
-                label = gtk.Label(_("Marker levels are not reported "
-                                    "for this printer."))
-                label.set_line_wrap (True)
-                label.set_alignment (0.0, 0.0)
-                self.vboxMarkerLevels.pack_start (label, False, False, 0)
-            else:
-                tab_nr = self.ntbkPrinter.page_num(self.vbPMarkerLevels)
-                if tab_nr != -1:
-                    self.ntbkPrinter.remove_page(tab_nr)
+            label = gtk.Label(_("Marker levels are not reported "
+                                "for this printer."))
+            label.set_line_wrap (True)
+            label.set_alignment (0.0, 0.0)
+            self.vboxMarkerLevels.pack_start (label, False, False, 0)
         else:
-            tab_nr = self.ntbkPrinter.page_num(self.vbPMarkerLevels)
-            if tab_nr == -1:
-                self.ntbkPrinter.append_page(self.vbPMarkerLevels,
-                                             self.lblPMarkerLevels)
             num_markers = 0
             cols = len (markers)
             rows = 1 + (cols - 1) / 4
