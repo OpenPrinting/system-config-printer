@@ -2099,6 +2099,10 @@ class GUI(GtkGUI, monitor.Watcher):
     # print test page
 
     def on_btnPrintTestPage_clicked(self, button):
+        if self.ppd == False:
+            # Can't print a test page for a raw queue.
+            return
+
         # if we have a page size specific custom test page, use it;
         # otherwise use cups' default one
         custom_testpage = None
@@ -6166,7 +6170,7 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
 
         # Finally, suggest printing a test page.
-        if self.dialog_mode == "printer":
+        if self.dialog_mode == "printer" and self.mainapp.ppd != False:
             q = gtk.MessageDialog (self.mainapp.PrintersWindow,
                                    gtk.DIALOG_DESTROY_WITH_PARENT |
                                    gtk.DIALOG_MODAL,
