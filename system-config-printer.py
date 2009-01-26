@@ -652,10 +652,6 @@ class GUI(GtkGUI, monitor.Watcher):
         self.ServerSettingsDialog.connect ('response',
                                            self.server_settings_response)
 
-        self.conflict_dialog = gtk.MessageDialog(
-            parent=None, flags=0, type=gtk.MESSAGE_WARNING,
-            buttons=gtk.BUTTONS_OK)
-
         # Printer Properties dialog
         self.PrinterPropertiesDialog.connect ('response',
                                               self.printer_properties_response)
@@ -978,6 +974,25 @@ class GUI(GtkGUI, monitor.Watcher):
         self.PrinterPropertiesDialog.show ()
 
     def printer_properties_response (self, dialog, response):
+        if response == gtk.RESPONSE_REJECT:
+            # The Conflict button was pressed.
+            message = _("There are conflicting options.\n"
+                        "Changes can only be applied after\n"
+                        "these conflicts are resolved.")
+            message += "\n\n"
+            for option in self.conflicts:
+                message += option.option.text + "\n"
+
+            dialog = gtk.MessageDialog(self.PrinterPropertiesDialog,
+                                       gtk.DIALOG_DESTROY_WITH_PARENT |
+                                       gtk.DIALOG_MODAL,
+                                       gtk.MESSAGE_WARNING,
+                                       gtk.BUTTONS_CLOSE,
+                                       message)
+            dialog.run()
+            dialog.destroy()
+            return
+
         if (response == gtk.RESPONSE_OK or
             response == gtk.RESPONSE_APPLY):
             success = self.save_printer (self.printer)
@@ -1879,17 +1894,6 @@ class GUI(GtkGUI, monitor.Watcher):
                     pass
 
         self.btnPrinterPropertiesApply.set_sensitive (len (self.changed) > 0)
-
-    def on_btnConflict_clicked(self, button):
-        message = _("There are conflicting options.\n"
-                    "Changes can only be applied after\n"
-                    "these conflicts are resolved.")
-        message += "\n\n"
-        for option in self.conflicts:
-            message += option.option.text + "\n"
-        self.conflict_dialog.set_markup(message)
-        self.conflict_dialog.run()
-        self.conflict_dialog.hide()
 
     def save_printer(self, printer, saveall=False, parent=None):
         if parent == None:
