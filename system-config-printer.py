@@ -2099,6 +2099,10 @@ class GUI(GtkGUI, monitor.Watcher):
     # print test page
 
     def on_btnPrintTestPage_clicked(self, button):
+        if self.ppd == False:
+            # Can't print a test page for a raw queue.
+            return
+
         # if we have a page size specific custom test page, use it;
         # otherwise use cups' default one
         custom_testpage = None
@@ -5640,17 +5644,15 @@ class NewPrinterGUI(GtkGUI):
         for make in makes:
             iter = model.append((make,))
             if make==self.auto_make:
-                self.tvNPMakes.get_selection().select_iter(iter)
                 path = model.get_path(iter)
+                self.tvNPMakes.set_cursor (path)
                 self.tvNPMakes.scroll_to_cell(path, None,
                                               True, 0.5, 0.5)
                 found = True
 
         if not found:
-            self.tvNPMakes.get_selection().select_path(0)
+            self.tvNPMakes.set_cursor (0,)
             self.tvNPMakes.scroll_to_cell(0, None, True, 0.0, 0.0)
-
-        self.on_tvNPMakes_cursor_changed(self.tvNPMakes)
 
         # Also pre-fill the OpenPrinting.org search box.
         search = ''
@@ -5677,15 +5679,14 @@ class NewPrinterGUI(GtkGUI):
             iter = model.append((pmodel,))
             if self.NPMake==self.auto_make and pmodel==self.auto_model:
                 path = model.get_path(iter)
+                self.tvNPModels.set_cursor (path)
                 self.tvNPModels.scroll_to_cell(path, None,
                                                True, 0.5, 0.5)
-                self.tvNPModels.get_selection().select_iter(iter)
                 selected = True
         if not selected:
-            self.tvNPModels.get_selection().select_path(0)
+            self.tvNPModels.set_cursor (0,)
             self.tvNPModels.scroll_to_cell(0, None, True, 0.0, 0.0)
         self.tvNPModels.columns_autosize()
-        self.on_tvNPModels_cursor_changed(self.tvNPModels)
 
     def fillDriverList(self, pmake, pmodel):
         self.NPModel = pmodel
@@ -6166,7 +6167,7 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
 
         # Finally, suggest printing a test page.
-        if self.dialog_mode == "printer":
+        if self.dialog_mode == "printer" and self.mainapp.ppd != False:
             q = gtk.MessageDialog (self.mainapp.PrintersWindow,
                                    gtk.DIALOG_DESTROY_WITH_PARENT |
                                    gtk.DIALOG_MODAL,
