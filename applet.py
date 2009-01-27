@@ -18,6 +18,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+cups.require ("1.9.42")
 import sys
 import statereason
 from statereason import StateReason

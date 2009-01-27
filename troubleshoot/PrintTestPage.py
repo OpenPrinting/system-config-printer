@@ -158,7 +158,6 @@ class PrintTestPage(Question):
         self.job_to_iter = {}
 
         test_jobs = self.persistent_answers.get ('test_page_job_id', [])
-        cups.setServer ('')
         def get_jobs ():
             c = self.authconn
             jobs_dict = c.getJobs (which_jobs='not-completed',
@@ -209,7 +208,6 @@ class PrintTestPage(Question):
                                                   self.test_toggled)
 
         def create_subscription ():
-            cups.setServer ('')
             c = self.authconn
             sub_id = c.createSubscription ("/",
                                            events=["job-created",
