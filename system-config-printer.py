@@ -3135,8 +3135,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_troubleshoot_activate(self, widget):
         if not self.__dict__.has_key ('troubleshooter'):
-            self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit,
-                                                    parent=self.PrintersWindow)
+            self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit)
 
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
@@ -4446,15 +4445,16 @@ class NewPrinterGUI(GtkGUI):
             # Problem executing command.
             return None
 
+        faxtype = -1
         for line in stdout.split ("\n"):
             if line.find ("fax-type") == -1:
                 continue
-            faxtype = -1
             res = re.search ("(\d+)", line)
             if res:
                 resg = res.groups()
                 faxtype = resg[0]
-            if faxtype >= 0: break
+            if faxtype >= 0:
+                break
         if faxtype < 0:
             return None
         elif faxtype == 4:
