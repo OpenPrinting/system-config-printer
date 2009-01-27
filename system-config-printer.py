@@ -3642,15 +3642,16 @@ class NewPrinterGUI(GtkGUI):
             # Problem executing command.
             return None
 
+        faxtype = -1
         for line in stdout.split ("\n"):
             if line.find ("fax-type") == -1:
                 continue
-            faxtype = -1
             res = re.search ("(\d+)", line)
             if res:
                 resg = res.groups()
                 faxtype = resg[0]
-            if faxtype >= 0: break
+            if faxtype >= 0:
+                break
         if faxtype < 0:
             return None
         elif faxtype == 4:
