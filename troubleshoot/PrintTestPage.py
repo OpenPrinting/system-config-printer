@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -132,8 +132,8 @@ class PrintTestPage(Question):
         self.job_to_iter = {}
 
         test_jobs = self.persistent_answers.get ('test_page_job_id', [])
-        cups.setServer ('')
-        c = cups.Connection ()
+        self.authconn = self.troubleshooter.answers['_authenticated_connection']
+        c = self.authconn
 
         jobs_dict = c.getJobs (which_jobs='not-completed',
                                my_jobs=False)
@@ -179,8 +179,7 @@ class PrintTestPage(Question):
         self.test_sigid = self.test_cell.connect ('toggled',
                                                   self.test_toggled)
 
-        cups.setServer ('')
-        c = cups.Connection ()
+        c = self.authconn
         self.sub_id = c.createSubscription ("/",
                                             events=["job-created",
                                                     "job-completed",
@@ -210,7 +209,7 @@ class PrintTestPage(Question):
         self.print_button.disconnect (self.print_sigid)
         self.cancel_button.disconnect (self.cancel_sigid)
         self.test_cell.disconnect (self.test_sigid)
-        c = cups.Connection ()
+        c = self.authconn
         c.cancelSubscription (self.sub_id)
         try:
             del self.sub_seq
@@ -228,9 +227,9 @@ class PrintTestPage(Question):
         self.answers['test_page_successful'] = success
 
         class collect_jobs:
-            def __init__ (self, model):
+            def __init__ (self, model, conn):
                 self.jobs = []
-                self.cups = cups.Connection ()
+                self.cups = conn
                 self.job_attrs = None
                 model.foreach (self.each, None)
 
@@ -250,7 +249,8 @@ class PrintTestPage(Question):
                 self.jobs.append ((test, jobid, printer, doc, status, attrs))
 
         model = self.treeview.get_model ()
-        self.answers['test_page_job_status'] = collect_jobs (model).jobs
+        self.answers['test_page_job_status'] = collect_jobs (model,
+                                                             self.authconn).jobs
         return self.answers
 
     def handle_dbus_signal (self, *args):
@@ -282,6 +282,7 @@ class PrintTestPage(Question):
         answers = self.troubleshooter.answers
         c = None
         try:
+            cups.setUser ('')
             c = cups.Connection ()
         except RuntimeError:
             self.persistent_answers['test_page_submit_failure'] = 'connect'
@@ -330,6 +331,7 @@ class PrintTestPage(Question):
 
     def cancel_clicked (self, widget):
         self.persistent_answers['test_page_jobs_cancelled'] = True
+        cups.setUser ('')
         c = cups.Connection ()
         for jobid, iter in self.job_to_iter.iteritems ():
             try:
@@ -345,7 +347,7 @@ class PrintTestPage(Question):
         model.set_value (iter, 0, not active)
 
     def update_jobs_list (self):
-        c = cups.Connection ()
+        c = self.authconn
         try:
             notifications = c.getNotifications ([self.sub_id],
                                                 [self.sub_seq + 1])
