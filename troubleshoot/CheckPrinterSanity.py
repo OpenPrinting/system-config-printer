@@ -20,15 +20,18 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+import gobject
 import os
 import smburi
 import subprocess
+from timedops import TimedOperation, TimedSubprocess
 import urllib
 from base import *
 class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check printer sanity")
         troubleshooter.new_page (gtk.Label (), self)
+        self.troubleshooter = troubleshooter
 
     def display (self):
         # Collect information useful for the various checks.
@@ -41,18 +44,20 @@ class CheckPrinterSanity(Question):
 
         name = answers['cups_queue']
 
+        parent = self.troubleshooter.get_window ()
+
         # Find out if this is a printer or a class.
         try:
             cups.setServer ('')
-            c = cups.Connection ()
-            printers = c.getPrinters ()
+            c = TimedOperation (cups.Connection, parent=parent).run ()
+            printers = TimedOperation (c.getPrinters, parent=parent).run ()
             if printers.has_key (name):
                 self.answers['is_cups_class'] = False
                 queue = printers[name]
                 self.answers['cups_printer_dict'] = queue
             else:
                 self.answers['is_cups_class'] = True
-                classes = c.getClasses ()
+                classes = TimedOperation (c.getClasses, parent=parent).run ()
                 queue = classes[name]
                 self.answers['cups_class_dict'] = queue
         except:
@@ -78,34 +83,37 @@ class CheckPrinterSanity(Question):
                 else:
                     cmdline = 'LC_ALL=C nmblookup "$HOST"'
                 try:
-                    p = subprocess.Popen (cmdline, shell=True,
-                                          stdin=file("/dev/null"),
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE)
-                    (stdout, stderr) = p.communicate ()
-                    self.answers['nmblookup_output'] = (stdout, stderr)
-                    for line in stdout.split ('\n'):
+                    p = TimedSubprocess (parent=parent,
+                                         timeout=5000,
+                                         args=cmdline, shell=True,
+                                         stdin=file("/dev/null"),
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.PIPE)
+                    result = p.run ()
+                    self.answers['nmblookup_output'] = result
+                    for line in result[0]:
                         if line.startswith ("querying"):
                             continue
                         spc = line.find (' ')
                         if spc != -1:
+                            # Remember the IP address.
                             self.answers['remote_server_name'] = line[:spc]
                             break
-                except:
+                except OSError:
                     # Problem executing command.
                     pass
             elif scheme == "hp":
                 os.environ['URI'] = uri
                 try:
-                    p = subprocess.Popen ('LC_ALL=C DISPLAY= hp-info -d "$URI"',
-                                          shell=True,
-                                          stdin=file("/dev/null"),
-                                          stdout=subprocess.PIPE,
-                                          stderr=subprocess.PIPE)
-                    (stdout, stderr) = p.communicate ()
-                    self.answers['hplip_output'] = (stdout.split ('\n'),
-                                                    stderr.split ('\n'))
-                except:
+                    p = TimedSubprocess (parent=parent,
+                                         timeout=3000,
+                                         args='LC_ALL=C DISPLAY= hp-info -d "$URI"',
+                                         shell=True,
+                                         stdin=file("/dev/null"),
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.PIPE)
+                    self.answers['hplip_output'] = p.run ()
+                except OSError:
                     # Problem executing command.
                     pass
 

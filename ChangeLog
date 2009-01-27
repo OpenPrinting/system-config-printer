@@ -1,3 +1,226 @@
+2009-01-26  Tim Waugh  <twaugh@redhat.com>
+
+	* optionwidgets.py: Find parent window to set Conflicts dialog
+	transient for.
+	* system-config-printer.glade: Distinct response ID for
+	Conflicts button.
+	* system-config-printer.py: Fixed conflicts button.
+
+2009-01-26  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.fillMakeList): Use
+	set_cursor (trac #142).
+	(NewPrinterGUI.fillModelList): Likewise.
+
+2009-01-22  Tim Waugh  <twaugh@redhat.com>
+
+	* glade/JobsWindow.glade: Better default height for jobs window.
+
+2009-01-16  Tim Waugh  <twaugh@redhat.com>
+
+	* AdvancedServerSettings.py
+	(AdvancedServerSettingsDialog.on_response): Give a callback on
+	apply.
+	* system-config-printer.py (GUI.on_adv_server_settings_apply):
+	Refresh server settings when the advanced server settings dialog
+	has finished (trac #133).
+
+2009-01-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Prevent traceback.
+	(NewPrinterGUI.device_row_activated): Collapse/expand device rows
+	on activation.
+
+2009-01-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.fillPrinterTab): Avoid traceback
+	with raw queues.
+
+2009-01-13  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPDownloadableDrivers_cursor_changed): Fixed
+	traceback (Ubuntu #316828).
+
+2009-01-13  Tim Waugh  <twaugh@redhat.com>
+
+	* glade/ConnectDialog.glade, glade/NewPrinterWindow.glade,
+	glade/PrinterPropertiesDialog.glade: Added accessibility
+	relations, patch from Ghee Teo (trac #136).
+
+2009-01-12  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.on_btnNPApply_clicked):
+	Treat classes the same as printers after adding them: enable them
+	and set them accepting jobs (trac #132).
+
+2009-01-12  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.__init__): Handle exception from
+	dbus.SystemBus() (bug #479534).
+	(Monitor.cleanup): Only remove the D-Bus signal receiver if we
+	managed to add it in the first place.
+
+2009-01-08  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.dests_iconview_item_activated):
+	Use set_cursor here to match change introduced when fixing
+	Ubuntu #282634.
+
+2009-01-08  Tim Waugh  <twaugh@redhat.com>
+
+	* jobviewer.py (JobViewer.now_connected): Handle notification
+	closure for re-connected printers correctly.
+
+2009-01-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.__init__): Advertise correct
+	defaults for page-left, page-right, page-top and page-bottom job
+	options (bug #468553).
+
+2009-01-07  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_tvNPMakes_cursor_changed): Use get_cursor here.
+	(NewPrinterGUI.on_tvNPModels_cursor_changed): Likewise (Ubuntu
+	#299724).
+	(NewPrinterGUI.on_tvNPDevices_cursor_changed): Likewise.
+
+2008-12-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.in: Set prefix environment variable here,
+	partially reverting earlier change.
+	* system-config-printer-applet.in: Likewise.
+	* my-default-printer.in: Likewise.
+
+2008-12-19  Tim Waugh  <twaugh@redhat.com>
+
+	* PhysicalDevice.py (PhysicalDevice.get_info): The hpfax backend
+	wants to tell us that the device make and model is "HP Fax", so
+	ignore that useless field and use the device-info field instead.
+
+2008-12-19  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.nextNPTab): Prevent
+	traceback when adding a printer driven by HPLIP (bug #477107).
+
+2008-12-16  Tim Waugh  <twaugh@redhat.com>
+
+	* Makefile.am (EXTRA_DIST): Ship config.py.in.
+	(DISTCLEANFILES): Clean config.py.
+
+2008-12-15  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* cupshelpers/openprinting.py (OpenPrinting.searchPrinters):
+	The search term must be submitted with the query as the "printer"
+	argument and not as the "make" argument.
+
+2008-12-15  Tim Waugh  <twaugh@redhat.com>
+
+	* monitor.py (Monitor.refresh): Use getPrinters instead of
+	getDests to avoid character encoding problems.
+
+2008-12-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.on_btnNPApply_clicked):
+	Convert name of new printer to unicode (trac #124).
+
+2008-12-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.browse_ipp_queues_thread): Split port out from host
+	string if required (bug #476396).
+
+2008-12-13  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(GUI.on_tvPrinterProperties_cursor_changed): Use get_cursor here
+	(Ubuntu #282634).
+
+2008-12-13  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.on_btnNPApply_clicked):
+	Check we have a real PPD before trying to copy options (Ubuntu
+	#285133).
+
+2008-12-13  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.on_btnPrintTestPage_clicked):
+	Display an error dialog if unable to connect to server (Ubuntu
+	#286943).
+
+2008-12-13  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/ppds.py (PPDs._findBestMatchPPDs): Handle model
+	names with more than one set of digits (Ubuntu #251244).
+
+2008-12-12  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/__init__.py (Troubleshooter.is_moving_backwards):
+	Allow troubleshooter pages to know the direction we're going.
+
+	* troubleshoot/DeviceListed.py (DeviceListed.display): Don't
+	perform expensive operation if we're moving backwards and this
+	page will not be displayed.
+
+2008-12-11  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.enable_clicked): Reconnect after adjusting
+	server settings.
+	* troubleshoot/ErrorLogFetch.py (ErrorLogFetch.button_clicked):
+	Likewise.
+
+2008-12-11  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.enable_clicked): Handle values like '1m' for
+	MaxLogSize.
+
+2008-12-11  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.server_settings_response): Reload
+	server settings after advanced server settings dialog has
+	finished.
+
+2008-12-09  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.populateList): Allow prompting
+	again even if we disallowed it for one operation.
+
+2008-12-04  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (GUI.fillPrinterTab): Localize a copy
+	of the PPD, retaining the original in-memory representation.
+	(GUI.fillPrinterOptions): Use the localized PPD for widget labels,
+	and the original PPD for value writebacks.
+	(NewPrinterGUI.getNPPPD): Don't localize PPDs here.
+	(NewPrinterGUI.on_btnNPApply_clicked): Likewise.
+
+2008-12-04  Tim Waugh  <twaugh@redhat.com>
+
+	* cupshelpers/cupshelpers.py (Printer.__init__, Printer.getPPD):
+	Cache the temporary PPD filename instead of the in-memory
+	representation, to allow for a separate localized in-memory copy.
+	(Printer.__del__): Remove the temporary PPD file.
+
+2008-11-27  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.fillDeviceTab): Removed
+	some dead code.
+
+2008-11-26  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/ErrorLogCheckpoint.py
+	(ErrorLogCheckpoint.collect_answer): Make sure to use
+	authenticated connection here.
+
+2008-11-26  Tim Waugh  <twaugh@redhat.com>
+
+	* troubleshoot/DeviceListed.py (DeviceListed.display): Avoid
+	traceback if getDevices fails.
+
 2008-11-24  Tim Waugh  <twaugh@redhat.com>
 
 	* troubleshoot/CheckLocalServerPublishing.py

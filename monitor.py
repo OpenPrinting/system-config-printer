@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -148,12 +148,17 @@ class Monitor:
         self.received_any_dbus_signals = False
 
         if bus == None:
-            bus = dbus.SystemBus ()
+            try:
+                bus = dbus.SystemBus ()
+            except dbus.exceptions.DBusException:
+                # System bus not running.
+                pass
 
-        bus.add_signal_receiver (self.handle_dbus_signal,
-                                 path=self.DBUS_PATH,
-                                 dbus_interface=self.DBUS_IFACE)
-        self.bus = bus
+        if bus != None:
+            bus.add_signal_receiver (self.handle_dbus_signal,
+                                     path=self.DBUS_PATH,
+                                     dbus_interface=self.DBUS_IFACE)
+            self.bus = bus
 
         self.sub_id = -1
         self.refresh ()
@@ -175,9 +180,10 @@ class Monitor:
                 pass
             cups.setUser (user)
 
-        self.bus.remove_signal_receiver (self.handle_dbus_signal,
-                                         path=self.DBUS_PATH,
-                                         dbus_interface=self.DBUS_IFACE)
+        if self.bus != None:
+            self.bus.remove_signal_receiver (self.handle_dbus_signal,
+                                             path=self.DBUS_PATH,
+                                             dbus_interface=self.DBUS_IFACE)
 
         timers = self.connecting_timers.values ()
         for timer in [self.update_timer, self.fetch_jobs_timer]:
@@ -546,15 +552,8 @@ class Monitor:
 
         try:
             self.printer_state_reasons = collect_printer_state_reasons (c)
-            dests = c.getDests ()
-            printers = set()
-            for (printer, instance) in dests.keys ():
-                if printer == None:
-                    continue
-                if instance != None:
-                    continue
-                printers.add (printer)
-            self.printers = printers
+            dests = c.getPrinters ()
+            self.printers = set(dests.keys ())
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
             return

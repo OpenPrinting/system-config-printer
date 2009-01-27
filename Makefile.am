@@ -20,8 +20,17 @@ EXPORT_MODULES=					\
 	fi
 	touch .stamp-distutils-in-builddir
 
+config.py: config.py.in Makefile
+	sed \
+	  -e "s|\@prefix\@|$(prefix)|" \
+	  -e "s|\@datadir\@|$(datadir)|" \
+	  -e "s|\@localedir\@|$(localedir)|" \
+	  -e "s|\@VERSION\@|$(VERSION)|" \
+	  -e "s|\@PACKAGE\@|$(PACKAGE)|" \
+	  $< > $@
+
 # Use distutils to build the module.
-all-local: .stamp-distutils-in-builddir
+all-local: .stamp-distutils-in-builddir config.py
 	$(PYTHON) setup.py build
 
 # Use distutils to install the module.
@@ -66,6 +75,8 @@ nobase_pkgdata_DATA=					\
 	glade.py					\
 	GroupsPane.py					\
 	GroupsPaneModel.py				\
+	gtkinklevel.py					\
+	installpackage.py				\
 	jobviewer.py					\
 	monitor.py					\
 	options.py					\
@@ -78,6 +89,7 @@ nobase_pkgdata_DATA=					\
 	SearchCriterion.py				\
 	smburi.py					\
 	statereason.py					\
+	timedops.py					\
 	ToolbarSearchEntry.py				\
 	userdefault.py					\
 	XmlHelper.py					\
@@ -86,7 +98,6 @@ nobase_pkgdata_DATA=					\
 	glade/ConnectingDialog.glade			\
 	glade/InstallDialog.glade				\
 	glade/IPPBrowseDialog.glade			\
-	glade/job_popupmenu.glade				\
 	glade/JobsWindow.glade				\
 	glade/NewPrinterName.glade				\
 	glade/NewPrinterWindow.glade			\
@@ -200,7 +211,8 @@ EXTRA_DIST=\
 	print-applet.desktop.in \
 	intltool-extract.in \
 	intltool-merge.in \
-	intltool-update.in
+	intltool-update.in \
+	config.py.in
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
@@ -228,11 +240,11 @@ missing-languages:
 fix-glade:
 	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' $(top_srcdir)/glade/*.glade
 
-run:
+run:	config.py
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
 	python $(top_srcdir)/system-config-printer.py --debug
 
-run-applet:
+run-applet:	config.py
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
 	python $(top_srcdir)/applet.py --debug
 
@@ -259,7 +271,8 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
-	test-ppd-module.sh pickled-ppds
+	test-ppd-module.sh pickled-ppds \
+	config.py
 
 distclean-local:
 	rm -rf html

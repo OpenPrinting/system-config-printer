@@ -1,7 +1,7 @@
-#!/usr/bin/env python
 
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008 Red Hat, Inc.
+
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -59,7 +59,7 @@ from statereason import StateReason
 statereason.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
 
-pkgdata = config.Paths ().get_path ('pkgdatadir')
+pkgdata = config.pkgdatadir
 GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
@@ -149,26 +149,65 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.job_creation_times_timer = None
         self.special_status_icon = False
         self.new_printer_notifications = {}
+        self.completed_job_notifications = {}
         self.reasoniters = {}
         self.authenticated_jobs = set() # of job IDs
 
         self.getWidgets ({"JobsWindow":
                               ["JobsWindow",
+                               "job_menubar_item",
                                "treeview",
-                               "statusbar",
-                               "show_printer_status"],
-                          "job_popupmenu":
-                              ["job_popupmenu",
-                               "cancel",
-                               "hold",
-                               "release",
-                               "reprint",
-                               "authenticate"],
+                               "statusbar"],
                           "statusicon_popupmenu":
-                              ["statusicon_popupmenu"],
-                          "PrinterStatusWindow":
-                              ["PrinterStatusWindow",
-                               "treeview_printers"]})
+                              ["statusicon_popupmenu"]})
+
+        job_action_group = gtk.ActionGroup ("JobActionGroup")
+        job_action_group.add_actions ([
+                ("cancel-job", gtk.STOCK_CANCEL, None, None, None,
+                 self.on_job_cancel_activate),
+                ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None, None,
+                 self.on_job_hold_activate),
+                ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None, None,
+                 self.on_job_release_activate),
+                ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None, None,
+                 self.on_job_reprint_activate),
+                ("authenticate-job", None, _("_Authenticate"), None, None,
+                 self.on_job_authenticate_activate)
+                ])
+        self.job_ui_manager = gtk.UIManager ()
+        self.job_ui_manager.insert_action_group (job_action_group, -1)
+        self.job_ui_manager.add_ui_from_string (
+"""
+<ui>
+ <accelerator action="cancel-job"/>
+ <accelerator action="hold-job"/>
+ <accelerator action="release-job"/>
+ <accelerator action="reprint-job"/>
+ <accelerator action="authenticate-job"/>
+</ui>
+"""
+)
+        self.job_ui_manager.ensure_update ()
+        self.JobsWindow.add_accel_group (self.job_ui_manager.get_accel_group ())
+        self.job_context_menu = gtk.Menu ()
+        for action_name in ["cancel-job",
+                            "hold-job",
+                            "release-job",
+                            "reprint-job",
+                            None,
+                            "authenticate-job"]:
+            if not action_name:
+                item = gtk.SeparatorMenuItem ()
+            else:
+                action = job_action_group.get_action (action_name)
+                action.set_sensitive (False)
+                item = action.create_menu_item ()
+
+            item.show ()
+            self.job_context_menu.append (item)
+
+        self.job_menubar_item.set_submenu (self.job_context_menu)
+
         text=0
         for name in [_("Job"),
                      _("User"),
@@ -199,6 +238,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.treeview.connect ('button_release_event',
                                self.on_treeview_button_release_event)
         self.treeview.connect ('popup-menu', self.on_treeview_popup_menu)
+        self.treeview.connect ('cursor-changed',
+                               self.on_treeview_cursor_changed)
 
         self.JobsWindow.set_icon_name (ICON)
         self.JobsWindow.hide ()
@@ -222,30 +263,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.JobsWindow.set_transient_for (parent)
 
         self.statusbar_set = False
-
-        self.PrinterStatusWindow.set_icon_name (ICON)
-        self.PrinterStatusWindow.hide ()
-        column = gtk.TreeViewColumn(_("Printer"))
-        icon = gtk.CellRendererPixbuf()
-        column.pack_start (icon, False)
-        text = gtk.CellRendererText()
-        column.set_resizable(True)
-        column.pack_start (text, False)
-        column.set_cell_data_func (icon, self.set_printer_status_icon)
-        column.set_cell_data_func (text, self.set_printer_status_name)
-        column.set_resizable (True)
-        column.set_sort_column_id (1)
-        column.set_sort_order (gtk.SORT_ASCENDING)
-        self.treeview_printers.append_column(column)
-        cell = gtk.CellRendererText()
-        column = gtk.TreeViewColumn(_("Message"), cell, text=2)
-        column.set_resizable(True)
-        cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
-        self.treeview_printers.append_column(column)
-
-        self.treeview_printers.get_selection().set_mode(gtk.SELECTION_NONE)
-        self.store_printers = gtk.TreeStore (int, str, str)
-        self.treeview_printers.set_model(self.store_printers)
 
         if self.trayicon:
             self.statusicon = gtk.StatusIcon ()
@@ -336,19 +353,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_delete_event(self, *args):
         if self.trayicon or not self.loop:
             self.JobsWindow.hide ()
-            if self.show_printer_status.get_active ():
-                self.PrinterStatusWindow.hide ()
-
             if not self.loop:
                 # Being run from main app, not applet
                 self.cleanup ()
         else:
             self.loop.quit ()
-        return True
-
-    def on_printer_status_delete_event(self, *args):
-        self.show_printer_status.set_active (False)
-        self.PrinterStatusWindow.hide()
         return True
 
     def show_IPP_Error(self, exception, message):
@@ -361,12 +370,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         if visible:
             self.JobsWindow.hide()
-            if self.show_printer_status.get_active ():
-                self.PrinterStatusWindow.hide()
         else:
             self.JobsWindow.show()
-            if self.show_printer_status.get_active ():
-                self.PrinterStatusWindow.show()
 
     def on_show_completed_jobs_activate(self, menuitem):
         if menuitem.get_active():
@@ -374,12 +379,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         else:
             which_jobs = "not-completed"
         self.monitor.refresh(which_jobs=which_jobs, refresh_all=False)
-
-    def on_show_printer_status_activate(self, menuitem):
-        if self.show_printer_status.get_active ():
-            self.PrinterStatusWindow.show()
-        else:
-            self.PrinterStatusWindow.hide()
 
     def update_job_creation_times(self):
         now = time.time ()
@@ -392,34 +391,33 @@ class JobViewer (GtkGUI, monitor.Watcher):
             if data.has_key ('time-at-creation'):
                 created = data['time-at-creation']
                 ago = now - created
-                if ago > 86400:
-                    t = time.ctime (created)
-                elif ago > 3600:
-                    need_update = True
-                    hours = int (ago / 3600)
-                    mins = int ((ago % 3600) / 60)
+                need_update = True
+                if ago < 2 * 60:
+                    t = _("a minute ago")
+                elif ago < 60 * 60:
+                    mins = int (ago / 60)
+                    t = _("%d minutes ago") % mins
+                elif ago < 24 * 60 * 60:
+                    hours = int (ago / (60 * 60))
                     if hours == 1:
-                        if mins == 0:
-                            t = _("1 hour ago")
-                        elif mins == 1:
-                            t = _("1 hour and 1 minute ago")
-                        else:
-                            t = _("1 hour and %d minutes ago") % mins
+                        t = _("an hour ago")
                     else:
-                        if mins == 0:
-                            t = _("%d hours ago") % hours
-                        elif mins == 1:
-                            t = _("%d hours and 1 minute ago") % hours
-                        else:
-                            t = _("%d hours and %d minutes ago") % \
-                                (hours, mins)
+                        t = _("%d hours ago") % hours
+                elif ago < 7 * 24 * 60 * 60:
+                    days = int (ago / (24 * 60 * 60))
+                    if days == 1:
+                        t = _("yesterday")
+                    else:
+                        t = _("%d days ago") % days
+                elif ago < 6 * 7 * 24 * 60 * 60:
+                    weeks = int (ago / (7 * 24 * 60 * 60))
+                    if weeks == 1:
+                        t = _("last week")
+                    else:
+                        t = _("%d weeks ago") % weeks
                 else:
-                    need_update = True
-                    mins = ago / 60
-                    if mins < 2:
-                        t = _("a minute ago")
-                    else:
-                        t = _("%d minutes ago") % mins
+                    need_update = False
+                    t = time.strftime ("%B %Y", created)
 
             self.store.set_value (iter, 5, t)
 
@@ -548,10 +546,52 @@ class JobViewer (GtkGUI, monitor.Watcher):
         state = None
         if job_requires_auth:
             state = _("Held for authentication")
+        elif s == cups.IPP_JOB_HELD:
+            state = _("Held")
+            until = data.get ('job-hold-until')
+            if until != None:
+                try:
+                    colon1 = until.find (':')
+                    if colon1 != -1:
+                        now = time.gmtime ()
+                        hh = int (until[:colon1])
+                        colon2 = until[colon1 + 1:].find (':')
+                        if colon2 != -1:
+                            colon2 += colon1 + 1
+                            mm = int (until[colon1 + 1:colon2])
+                            ss = int (until[colon2 + 1:])
+                        else:
+                            mm = int (until[colon1 + 1:])
+                            ss = 0
+
+                        day = now.tm_mday
+                        if (hh < now.tm_hour or
+                            hh == now.tm_hour and
+                            (mm < now.tm_min or
+                             mm == now.tm_min and ss < now.tm_sec)):
+                            day += 1
+
+                        hold = (now.tm_year, now.tm_mon, day,
+                                hh, mm, ss, 0, 0, -1)
+                        local = time.gmtime (time.mktime (hold))
+                        state = _("Held until %s") % time.strftime ("%X", local)
+                except ValueError:
+                    pass
+            if until == "day-time":
+                state = _("Held until day-time")
+            elif until == "evening":
+                state = _("Held until evening")
+            elif until == "night":
+                state = _("Held until night-time")
+            elif until == "second-shift":
+                state = _("Held until second shift")
+            elif until == "third-shift":
+                state = _("Held until third shift")
+            elif until == "weekend":
+                state = _("Held until weekend")
         else:
             try:
                 state = { cups.IPP_JOB_PENDING: _("Pending"),
-                          cups.IPP_JOB_HELD: _("Held"),
                           cups.IPP_JOB_PROCESSING: _("Processing"),
                           cups.IPP_JOB_STOPPED: _("Stopped"),
                           cups.IPP_JOB_CANCELED: _("Canceled"),
@@ -797,6 +837,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         open_notifications = len (self.new_printer_notifications.keys ())
         open_notifications += len (self.auth_notifications.keys ())
+        open_notifications += len (self.completed_job_notifications.keys ())
         for reason, notification in self.state_reason_notifications.iteritems():
             if notification.get_data ('closed') != True:
                 open_notifications += 1
@@ -822,36 +863,43 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if event.button == 3:
             self.show_treeview_popup_menu (treeview, event, event.button)
 
-    def show_treeview_popup_menu (self, treeview, event, event_button):
-        # Right-clicked.
-        store, iter = treeview.get_selection ().get_selected ()
-        if iter == None:
+    def on_treeview_cursor_changed (self, treeview):
+        path, column = treeview.get_cursor ()
+        cancel = self.job_ui_manager.get_action ("/cancel-job")
+        hold = self.job_ui_manager.get_action ("/hold-job")
+        release = self.job_ui_manager.get_action ("/release-job")
+        reprint = self.job_ui_manager.get_action ("/reprint-job")
+        authenticate = self.job_ui_manager.get_action ("/authenticate-job")
+        if path == None:
+            for widget in [cancel, hold, release, reprint, authenticate]:
+                widget.set_sensitive (False)
             return
 
+        iter = self.store.get_iter (path)
         self.jobid = self.store.get_value (iter, 0)
         job = self.jobs[self.jobid]
-        self.cancel.set_sensitive (True)
-        self.hold.set_sensitive (True)
-        self.release.set_sensitive (True)
-        self.reprint.set_sensitive (True)
-        self.authenticate.set_sensitive (False)
+        for widget in [cancel, hold, release, reprint, authenticate]:
+            widget.set_sensitive (True)
+
         if job.has_key ('job-state'):
             s = job['job-state']
             if s >= cups.IPP_JOB_CANCELED:
-                self.cancel.set_sensitive (False)
+                cancel.set_sensitive (False)
             if s != cups.IPP_JOB_PENDING:
-                self.hold.set_sensitive (False)
+                hold.set_sensitive (False)
             if s != cups.IPP_JOB_HELD:
-                self.release.set_sensitive (False)
+                release.set_sensitive (False)
             if (not job.get('job-preserved', False)):
-                self.reprint.set_sensitive (False)
+                reprint.set_sensitive (False)
 
         if job.get ('job-state', cups.IPP_JOB_CANCELED) == cups.IPP_JOB_HELD:
             if job.get ('job-hold-until', 'none') == 'auth-info-required':
-                self.authenticate.set_sensitive (True)
+                authenticate.set_sensitive (True)
 
-        self.job_popupmenu.popup (None, None, None, event_button,
-                                  event.get_time ())
+    def show_treeview_popup_menu (self, treeview, event, event_button):
+        # Right-clicked.
+        self.job_context_menu.popup (None, None, None, event_button,
+                                     event.get_time ())
 
     def on_icon_popupmenu(self, icon, button, time):
         self.statusicon_popupmenu.popup (None, None, None, button, time)
@@ -1178,6 +1226,29 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.set_statusicon_visibility ()
         return
 
+    def notify_completed_job (self, jobid):
+        job = self.jobs.get (jobid, {})
+        document = job.get ('job-name', _("Unknown"))
+        printer = job.get ('job-printer-name', _("Unknown"))
+        notification = pynotify.Notification (_("Job %d completed") % jobid,
+                                              _("Document `%s' has finished "
+                                                "printing on `%s'.") %
+                                              (document, printer),
+                                              'printer')
+        notification.set_urgency (pynotify.URGENCY_LOW)
+        notification.connect ('closed',
+                              self.on_completed_job_notification_closed)
+        notification.set_data ('jobid', jobid)
+        self.completed_job_notifications[jobid] = notification
+        self.set_statusicon_visibility ()
+        notification.attach_to_status_icon (self.statusicon)
+        notification.show ()
+
+    def on_completed_job_notification_closed (self, notification, reason=None):
+        jobid = notification.get_data ('jobid')
+        del self.completed_job_notifications[jobid]
+        self.set_statusicon_visibility ()
+
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
         monitor.Watcher.current_printers_and_jobs (self, mon, printers, jobs)
@@ -1249,6 +1320,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.update_job (jobid, jobdata)
         jobdata = self.jobs[jobid]
+
+        # If the job has finished, let the user know.
+        if self.trayicon and (eventname == 'job-completed' or
+                              (eventname == 'job-state-changed' and
+                               event['job-state'] == cups.IPP_JOB_COMPLETED)):
+            self.notify_completed_job (jobid)
 
         # Look out for stopped jobs.
         if (self.trayicon and eventname == 'job-stopped' and
@@ -1348,6 +1425,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def job_removed (self, mon, jobid, eventname, event):
         monitor.Watcher.job_removed (self, mon, jobid, eventname, event)
+
+        # If the job has finished, let the user know.
+        if self.trayicon and (eventname == 'job-completed' or
+                              (eventname == 'job-state-changed' and
+                               event['job-state'] == cups.IPP_JOB_COMPLETED)):
+            self.notify_completed_job (jobid)
+
         if self.jobiters.has_key (jobid):
             self.store.remove (self.jobiters[jobid])
             del self.jobiters[jobid]
@@ -1477,7 +1561,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             debugprint ("Unexpected now_connected signal")
             return
 
-        notification.close ()
+        if notification.get_data ('closed') != True:
+            notification.close ()
+            notification.set_data ('closed', True)
 
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)

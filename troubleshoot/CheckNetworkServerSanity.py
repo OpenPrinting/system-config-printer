@@ -24,6 +24,7 @@ import os
 import smburi
 import socket
 import subprocess
+from timedops import TimedSubprocess, TimedOperation
 from base import *
 
 try:
@@ -44,6 +45,8 @@ class CheckNetworkServerSanity(Question):
         if (not answers.has_key ('remote_server_name') and
             not answers.has_key ('remote_server_ip_address')):
             return False
+
+        parent = self.troubleshooter.get_window ()
 
         server_name = answers['remote_server_name']
         server_port = answers.get('remote_server_port', 631)
@@ -88,7 +91,8 @@ class CheckNetworkServerSanity(Question):
             try:
                 cups.setServer (server_name)
                 cups.setPort (server_port)
-                c = cups.Connection ()
+                self.op = TimedOperation (cups.Connection, parent=parent)
+                c = self.op.run ()
                 ipp_connect = True
             except RuntimeError:
                 ipp_connect = False
@@ -97,7 +101,8 @@ class CheckNetworkServerSanity(Question):
 
             if ipp_connect:
                 try:
-                    c.getPrinters ()
+                    self.op = TimedOperation (c.getPrinters, parent=parent)
+                    self.op.run ()
                     cups_server = True
                 except:
                     cups_server = False
@@ -106,7 +111,10 @@ class CheckNetworkServerSanity(Question):
 
                 if cups_server and answers.get ('cups_queue', False):
                     try:
-                        attr = c.getPrinterAttributes (answers['cups_queue'])
+                        self.op = TimedOperation (c.getPrinterAttributes,
+                                                  args=(answers['cups_queue'],),
+                                                  parent=parent)
+                        attr = self.op.run ()
                         self.answers['remote_cups_queue_attributes'] = attr
                     except:
                         pass
@@ -118,7 +126,12 @@ class CheckNetworkServerSanity(Question):
             try:
                 context = smbc.Context ()
                 name = self.answers['remote_server_try_connect']
-                shares = context.opendir ("smb://%s/" % name).getdents ()
+                self.op = TimedOperation (context.opendir,
+                                          args=("smb://%s/" % name,),
+                                          parent=parent)
+                dir = self.op.run ()
+                self.op = TimedOperation (dir.getdents, parent=parent)
+                shares = self.op.run ()
                 self.answers['remote_server_smb'] = True
                 self.answers['remote_server_smb_shares'] = shares
             except NameError:
@@ -133,8 +146,13 @@ class CheckNetworkServerSanity(Question):
                 (group, host, share, user, password) = u.separate ()
                 accessible = False
                 try:
-                    f  = context.open ("smb://%s/%s" % (host, share),
-                                       os.O_RDWR, 0777)
+                    self.op = TimedOperation (context.open,
+                                              args=("smb://%s/%s" % (host,
+                                                                     share),
+                                                    os.O_RDWR,
+                                                    0777),
+                                              parent=parent)
+                    f  = self.op.run ()
                     accessible = True
                 except RuntimeError, (e, s):
                     accessible = (e, s)
@@ -145,13 +163,13 @@ class CheckNetworkServerSanity(Question):
         if (self.answers['remote_server_name_resolves'] and
             not answers.has_key ('remote_server_traceroute')):
             try:
-                p = subprocess.Popen (['traceroute', '-w', '1', server_name],
-                                      stdin=file("/dev/null"),
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE)
-                (stdout, stderr) = p.communicate ()
-                self.answers['remote_server_traceroute'] = (stdout.split ('\n'),
-                                                            stderr.split ('\n'))
+                self.op = TimedSubprocess (parent=parent,
+                                           args=['traceroute', '-w', '1',
+                                                 server_name],
+                                           stdin=file("/dev/null"),
+                                           stdout=subprocess.PIPE,
+                                           stderr=subprocess.PIPE)
+                self.answers['remote_server_traceroute'] = self.op.run ()
             except:
                 # Problem executing command.
                 pass
@@ -160,3 +178,6 @@ class CheckNetworkServerSanity(Question):
 
     def collect_answer (self):
         return self.answers
+
+    def cancel_operation (self):
+        self.op.cancel ()

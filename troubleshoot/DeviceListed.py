@@ -21,6 +21,7 @@
 
 import cups
 import gobject
+from timedops import TimedOperation
 from base import *
 class DeviceListed(Question):
     def __init__ (self, troubleshooter):
@@ -68,33 +69,41 @@ class DeviceListed(Question):
         iter = model.append (None)
         model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
 
-        try:
-            cups.setServer ('')
-            c = answers['_authenticated_connection']
-            devices = c.getDevices ()
-            devices_list = []
-            for uri, device in devices.iteritems ():
-                if uri.find (':') == -1:
-                    continue
+        devices = {}
+        parent = self.troubleshooter.get_window ()
+        # Skip device list if this page is hidden and we're skipping
+        # backwards past it.
+        if not (answers['cups_queue_listed'] and
+                self.troubleshooter.is_moving_backwards ()):
+            # Otherwise, fetch devices.
+            self.authconn = answers['_authenticated_connection']
+            try:
+                self.op = TimedOperation (self.authconn.getDevices,
+                                          parent=parent)
+                devices = self.op.run ()
+                devices_list = []
+                for uri, device in devices.iteritems ():
+                    if uri.find (':') == -1:
+                        continue
 
-                if device.get('device-class') != 'direct':
-                    continue
+                    if device.get('device-class') != 'direct':
+                        continue
 
-                name = device.get('device-info', _("Unknown"))
-                info = device.get('device-make-and-model', _("Unknown"))
-                devices_list.append ((name, info, uri, device))
+                    name = device.get('device-info', _("Unknown"))
+                    info = device.get('device-make-and-model', _("Unknown"))
+                    devices_list.append ((name, info, uri, device))
 
-            devices_list.sort (lambda x, y: cmp (x[0], y[0]))
-            for name, info, uri, device in devices_list:
-                iter = model.append (None)
-                model.set (iter, 0, name, 1, info, 2, uri, 3, device)
+                devices_list.sort (lambda x, y: cmp (x[0], y[0]))
+                for name, info, uri, device in devices_list:
+                    iter = model.append (None)
+                    model.set (iter, 0, name, 1, info, 2, uri, 3, device)
 
-        except cups.HTTPError:
-            pass
-        except cups.IPPError:
-            pass
-        except RuntimeError:
-            pass
+            except cups.HTTPError:
+                pass
+            except cups.IPPError:
+                pass
+            except RuntimeError:
+                pass
 
         if answers['cups_queue_listed']:
             try:
@@ -149,3 +158,13 @@ class DeviceListed(Question):
             self.answers['cups_device_attributes'] = device
 
         return self.answers
+
+    def cancel_operation (self):
+        self.op.cancel ()
+
+        # Abandon the CUPS connection and make another.
+        answers = self.troubleshooter.answers
+        factory = answers['_authenticated_connection_factory']
+        self.authconn = factory.get_connection ()
+        self.answers['_authenticated_connection'] = self.authconn
+

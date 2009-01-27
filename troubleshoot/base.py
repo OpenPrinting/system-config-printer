@@ -57,6 +57,9 @@ class Question:
     def collect_answer (self):
         return {}
 
+    def cancel_operation (self):
+        pass
+
     ## Helper functions
     def initial_vbox (self, title='', text=''):
         vbox = gtk.VBox ()

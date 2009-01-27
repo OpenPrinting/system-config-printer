@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 ## Copyright (C) 2006, 2007 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -47,10 +47,11 @@ def show_help():
            "            Select the named printer on start-up.\n\n"
            "  --choose-driver NAME\n"
            "            Select the named printer on start-up, and display\n"
-           "            a list of drivers.\n"
+           "            a list of drivers.\n\n"
            "  --print-test-page NAME\n"
            "            Select the named printer on start-up and print a\n"
-           "            test page to it.\n")
+           "            test page to it.\n\n"
+           "  --debug   Enable debugging output.\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
     show_help ()
@@ -89,6 +90,9 @@ from ToolbarSearchEntry import *
 from GroupsPane import *
 from GroupsPaneModel import *
 from SearchCriterion import *
+import gtkinklevel
+import pango
+import statereason
 
 domain='system-config-printer'
 import locale
@@ -100,11 +104,14 @@ except locale.Error:
 from gettext import gettext as _
 monitor.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
+authconn.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
-gtk.glade.bindtextdomain (domain)
+gettext.bindtextdomain (domain, config.localedir)
+gtk.glade.textdomain (domain)
+gtk.glade.bindtextdomain (domain, config.localedir)
 import ppdippstr
-pkgdata = config.Paths ().get_path ('pkgdatadir')
+pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
 
@@ -295,6 +302,9 @@ class GUI(GtkGUI, monitor.Watcher):
                               "tvClassNotMembers",
                               "btnClassAddMember",
                               "btnClassDelMember",
+                              "btnRefreshMarkerLevels",
+                              "tvPrinterStateReasons",
+                              "ntbkPrinterStateReasons",
 
                               # Job options
                               "sbJOCopies", "btnJOResetCopies",
@@ -323,7 +333,11 @@ class GUI(GtkGUI, monitor.Watcher):
                               "cbJOWrap", "btnJOResetWrap",
                               "sbJOColumns", "btnJOResetColumns",
                               "tblJOOther",
-                              "entNewJobOption", "btnNewJobOption"]})
+                              "entNewJobOption", "btnNewJobOption",
+
+                              # Marker levels
+                              "vboxMarkerLevels",
+                              "btnRefreshMarkerLevels"]})
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
@@ -471,6 +485,24 @@ class GUI(GtkGUI, monitor.Watcher):
             combobox.clear ()
             combobox.pack_start (cell, True)
             combobox.add_attribute (cell, 'text', 0)
+
+        btn = self.btnRefreshMarkerLevels
+        btn.connect ("clicked", self.on_btnRefreshMarkerLevels_clicked)
+
+        # Printer state reasons list
+        column = gtk.TreeViewColumn (_("Message"))
+        icon = gtk.CellRendererPixbuf ()
+        column.pack_start (icon, False)
+        text = gtk.CellRendererText ()
+        column.pack_start (text, False)
+        column.set_cell_data_func (icon, self.set_printer_state_reason_icon)
+        column.set_cell_data_func (text, self.set_printer_state_reason_text)
+        column.set_resizable (True)
+        self.tvPrinterStateReasons.append_column (column)
+        selection = self.tvPrinterStateReasons.get_selection ()
+        selection.set_mode (gtk.SELECTION_NONE)
+        store = gtk.ListStore (int, str)
+        self.tvPrinterStateReasons.set_model (store)
 
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
@@ -620,10 +652,6 @@ class GUI(GtkGUI, monitor.Watcher):
         self.ServerSettingsDialog.connect ('response',
                                            self.server_settings_response)
 
-        self.conflict_dialog = gtk.MessageDialog(
-            parent=None, flags=0, type=gtk.MESSAGE_WARNING,
-            buttons=gtk.BUTTONS_OK)
-
         # Printer Properties dialog
         self.PrinterPropertiesDialog.connect ('response',
                                               self.printer_properties_response)
@@ -738,19 +766,19 @@ class GUI(GtkGUI, monitor.Watcher):
                  options.OptionAlwaysShown ("lpi", float, 6.0,
                                             self.sbJOLpi, self.btnJOResetLpi),
 
-                 options.OptionAlwaysShown ("page-left", int, 18,
+                 options.OptionAlwaysShown ("page-left", int, 0,
                                             self.sbJOPageLeft,
                                             self.btnJOResetPageLeft),
 
-                 options.OptionAlwaysShown ("page-right", int, 18,
+                 options.OptionAlwaysShown ("page-right", int, 0,
                                             self.sbJOPageRight,
                                             self.btnJOResetPageRight),
 
-                 options.OptionAlwaysShown ("page-top", int, 36,
+                 options.OptionAlwaysShown ("page-top", int, 0,
                                             self.sbJOPageTop,
                                             self.btnJOResetPageTop),
 
-                 options.OptionAlwaysShown ("page-bottom", int, 36,
+                 options.OptionAlwaysShown ("page-bottom", int, 0,
                                             self.sbJOPageBottom,
                                             self.btnJOResetPageBottom),
 
@@ -823,7 +851,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter_first ()
         while iter != None:
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2))
             if name == queue:
                 path = model.get_path (iter)
                 self.dests_iconview.item_activated (path)
@@ -909,7 +937,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def dests_iconview_item_activated (self, iconview, path):
         model = iconview.get_model ()
         iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2))
         object = model.get_value (iter, 0)
 
         try:
@@ -939,16 +967,32 @@ class GUI(GtkGUI, monitor.Watcher):
             self.btnPrinterPropertiesClose.hide ()
         self.setDataButtonState ()
         treeview = self.tvPrinterProperties
-        sel = treeview.get_selection ()
-        sel.select_path ((0,))
-        self.on_tvPrinterProperties_selection_changed (sel)
-        self.on_tvPrinterProperties_cursor_changed (treeview)
+        treeview.set_cursor ((0,))
         host = CUPS_server_hostname ()
         self.PrinterPropertiesDialog.set_title (_("Printer Properties - "
                                                   "`%s' on %s") % (name, host))
         self.PrinterPropertiesDialog.show ()
 
     def printer_properties_response (self, dialog, response):
+        if response == gtk.RESPONSE_REJECT:
+            # The Conflict button was pressed.
+            message = _("There are conflicting options.\n"
+                        "Changes can only be applied after\n"
+                        "these conflicts are resolved.")
+            message += "\n\n"
+            for option in self.conflicts:
+                message += option.option.text + "\n"
+
+            dialog = gtk.MessageDialog(self.PrinterPropertiesDialog,
+                                       gtk.DIALOG_DESTROY_WITH_PARENT |
+                                       gtk.DIALOG_MODAL,
+                                       gtk.MESSAGE_WARNING,
+                                       gtk.BUTTONS_CLOSE,
+                                       message)
+            dialog.run()
+            dialog.destroy()
+            return
+
         if (response == gtk.RESPONSE_OK or
             response == gtk.RESPONSE_APPLY):
             success = self.save_printer (self.printer)
@@ -978,7 +1022,7 @@ class GUI(GtkGUI, monitor.Watcher):
         for path in paths:
             iter = model.get_iter (path)
             object = model.get_value (iter, 0)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2))
             self.groups_pane.currently_selected_queues.append (name)
             if object.discovered:
                 any_discovered = True
@@ -1109,10 +1153,17 @@ class GUI(GtkGUI, monitor.Watcher):
         elif response == gtk.RESPONSE_YES:
             # Advanced
             try:
-                AdvancedServerSettingsDialog (self.cups, dialog)
+                AdvancedServerSettingsDialog (self.cups, dialog,
+                                              self.on_adv_server_settings_apply)
             except:
                 return
         else:
+            dialog.hide ()
+
+    def on_adv_server_settings_apply (self):
+        try:
+            self.fillServerTab ()
+        except cups.IPPError:
             dialog.hide ()
 
     def busy (self, win = None):
@@ -1181,7 +1232,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         for path in paths:
             iter = model.get_iter (path)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2))
             selected_printers.add (name)
 
         if self.cups:
@@ -1199,6 +1250,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.default_printer = None
 
             self.cups._end_operation ()
+            self.cups._set_prompt_allowed (True)
         else:
             self.printers = {}
             self.default_printer = None
@@ -1387,7 +1439,7 @@ class GUI(GtkGUI, monitor.Watcher):
         # Restore selection of printers.
         model = self.dests_iconview.get_model ()
         def maybe_select (model, path, iter):
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2))
             if name in selected_printers:
                 self.dests_iconview.select_path (path)
         model.foreach (maybe_select)
@@ -1843,17 +1895,6 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.btnPrinterPropertiesApply.set_sensitive (len (self.changed) > 0)
 
-    def on_btnConflict_clicked(self, button):
-        message = _("There are conflicting options.\n"
-                    "Changes can only be applied after\n"
-                    "these conflicts are resolved.")
-        message += "\n\n"
-        for option in self.conflicts:
-            message += option.option.text + "\n"
-        self.conflict_dialog.set_markup(message)
-        self.conflict_dialog.run()
-        self.conflict_dialog.hide()
-
     def save_printer(self, printer, saveall=False, parent=None):
         if parent == None:
             parent = self.PrinterPropertiesDialog
@@ -2017,9 +2058,12 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_tvPrinterProperties_cursor_changed (self, treeview):
         # Adjust notebook to reflect selected item.
-        (store, iter) = treeview.get_selection ().get_selected ()
-        n = store.get_value (iter, 1)
-        self.ntbkPrinter.set_current_page (n)
+        (path, column) = treeview.get_cursor ()
+        if path != None:
+            model = treeview.get_model ()
+            iter = model.get_iter (path)
+            n = model.get_value (iter, 1)
+            self.ntbkPrinter.set_current_page (n)
 
     # set default printer
     def set_system_or_user_default_printer (self, name):
@@ -2076,21 +2120,33 @@ class GUI(GtkGUI, monitor.Watcher):
     # print test page
 
     def on_btnPrintTestPage_clicked(self, button):
+        if self.ppd == False:
+            # Can't print a test page for a raw queue.
+            return
+
         # if we have a page size specific custom test page, use it;
         # otherwise use cups' default one
         custom_testpage = None
-        opt = self.ppd.findOption ("PageSize")
-        if opt:
-            custom_testpage = os.path.join(pkgdata, 'testpage-%s.ps' % opt.defchoice.lower())
-
+        if self.ppd != False:
+            opt = self.ppd.findOption ("PageSize")
+            if opt:
+                custom_testpage = os.path.join(pkgdata,
+                                               'testpage-%s.ps' %
+                                               opt.defchoice.lower())
 
         # Connect as the current user so that the test page can be managed
         # as a normal job.
         user = cups.getUser ()
         cups.setUser ('')
-        c = authconn.Connection (self.PrintersWindow, try_as_root=False,
-                                 host=self.connect_server,
-                                 encryption=self.connect_encrypt)
+        try:
+            c = authconn.Connection (self.PrintersWindow, try_as_root=False,
+                                     host=self.connect_server,
+                                     encryption=self.connect_encrypt)
+        except RuntimeError, s:
+            show_IPP_Error (None, s, self.PrintersWindow)
+            return
+
+        job_id = None
         c._begin_operation (_("printing test page"))
         try:
             if custom_testpage and os.path.exists(custom_testpage):
@@ -2115,9 +2171,11 @@ class GUI(GtkGUI, monitor.Watcher):
 
         c._end_operation ()
         cups.setUser (user)
-        show_info_dialog (_("Submitted"),
-                          _("Test page submitted as job %d") % job_id,
-                          parent=self.PrintersWindow)
+
+        if job_id != None:
+            show_info_dialog (_("Submitted"),
+                              _("Test page submitted as job %d") % job_id,
+                              parent=self.PrintersWindow)
 
     def maintenance_command (self, command):
         (tmpfd, tmpfname) = tempfile.mkstemp ()
@@ -2193,6 +2251,9 @@ class GUI(GtkGUI, monitor.Watcher):
 
         try:
             self.ppd = printer.getPPD()
+            self.ppd_local = printer.getPPD()
+            if self.ppd_local != False:
+                self.ppd_local.localize()
         except cups.IPPError, (e, m):
             # Some IPP error other than IPP_NOT_FOUND.
             show_IPP_Error(e, m, self.PrintersWindow)
@@ -2339,6 +2400,15 @@ class GUI(GtkGUI, monitor.Watcher):
             # real Printer
             self.fillPrinterOptions(name, editablePPD)
 
+        self.updateMarkerLevels()
+        self.updateStateReasons()
+        self.updatePrinterPropertiesTreeView()
+
+        self.changed = set() # of options
+        self.updatePrinterProperties ()
+        self.setDataButtonState()
+
+    def updatePrinterPropertiesTreeView (self):
         # Now update the tree view (which we use instead of the notebook tabs).
         store = gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_INT)
         self.ntbkPrinter.set_show_tabs (False)
@@ -2351,9 +2421,105 @@ class GUI(GtkGUI, monitor.Watcher):
         sel = self.tvPrinterProperties.get_selection ()
         self.tvPrinterProperties.set_model (store)
 
-        self.changed = set() # of options
-        self.updatePrinterProperties ()
-        self.setDataButtonState()
+    def updateMarkerLevels (self):
+        printer = self.printer
+
+        # Marker levels
+        for widget in self.vboxMarkerLevels.get_children ():
+            self.vboxMarkerLevels.remove (widget)
+
+        marker_info = dict()
+        for attr in ['marker-colors', 'marker-names', 'marker-types',
+                     'marker-levels']:
+            marker_info[attr] = printer.other_attributes.get (attr, [])
+
+        markers = map (lambda color, name, type, level:
+                           (color, name, type, level),
+                       marker_info['marker-colors'],
+                       marker_info['marker-names'],
+                       marker_info['marker-types'],
+                       marker_info['marker-levels'])
+        debugprint (markers)
+
+        can_refresh = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
+        self.btnRefreshMarkerLevels.set_sensitive (can_refresh)
+        if len (markers) == 0:
+            label = gtk.Label(_("Marker levels are not reported "
+                                "for this printer."))
+            label.set_line_wrap (True)
+            label.set_alignment (0.0, 0.0)
+            self.vboxMarkerLevels.pack_start (label, False, False, 0)
+        else:
+            num_markers = 0
+            cols = len (markers)
+            rows = 1 + (cols - 1) / 4
+            if cols > 4:
+                cols = 4
+            table = gtk.Table (rows=rows,
+                               columns=cols,
+                               homogeneous=True)
+            table.set_col_spacings (6)
+            table.set_row_spacings (12)
+            self.vboxMarkerLevels.pack_start (table)
+            for color, name, marker_type, level in markers:
+                if name == None:
+                    name = ''
+
+                row = num_markers / 4
+                col = num_markers % 4
+
+                vbox = gtk.VBox (spacing=6)
+                subhbox = gtk.HBox ()
+                inklevel = gtkinklevel.GtkInkLevel (color, level)
+                subhbox.pack_start (inklevel, True, False, 0)
+                vbox.pack_start (subhbox, False, False, 0)
+                label = gtk.Label (name)
+                label.set_line_wrap (True)
+                vbox.pack_start (label, False, False, 0)
+                table.attach (vbox, col, col + 1, row, row + 1)
+                num_markers += 1
+
+        self.vboxMarkerLevels.show_all ()
+
+    def on_btnRefreshMarkerLevels_clicked (self, button):
+        self.maintenance_command ("ReportLevels")
+
+    def updateStateReasons (self):
+        printer = self.printer
+        reasons = printer.other_attributes.get ('printer-state-reasons', [])
+        print reasons
+        store = gtk.ListStore (int, str)
+        any = False
+        for reason in reasons:
+            if reason == "none":
+                break
+
+            any = True
+            iter = store.append (None)
+            r = statereason.StateReason (printer.name, reason)
+            store.set_value (iter, 0, r.get_level ())
+            (title, text) = r.get_description ()
+            store.set_value (iter, 1, text)
+
+        self.tvPrinterStateReasons.set_model (store)
+        page = 0
+        if any:
+            page = 1
+
+        self.ntbkPrinterStateReasons.set_current_page (page)
+
+    def set_printer_state_reason_icon (self, column, cell, model, iter, *data):
+        level = model.get_value (iter, 0)
+        icon = statereason.StateReason.LEVEL_ICON[level]
+        theme = gtk.icon_theme_get_default ()
+        try:
+            pixbuf = theme.load_icon (icon, 22, 0)
+            cell.set_property ("pixbuf", pixbuf)
+        except gobject.GError, exc:
+            pass # Couldn't load icon
+
+    def set_printer_state_reason_text (self, column, cell, model, iter, *data):
+        cell.set_property ("text", model.get_value (iter, 1))
 
     def updatePrinterProperties(self):
         debugprint ("update printer properties")
@@ -2395,6 +2561,12 @@ class GUI(GtkGUI, monitor.Watcher):
             self.rbtnPDeny.set_active(not printer.default_allow)
             self.setPUsers(printer.except_users)
 
+            # Marker levels
+            self.updateMarkerLevels ()
+            self.updateStateReasons ()
+
+            self.updatePrinterPropertiesTreeView
+
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
         tab_nr = self.ntbkPrinter.page_num(self.algnClassMembers)
@@ -2424,19 +2596,20 @@ class GUI(GtkGUI, monitor.Watcher):
             return
         ppd = self.ppd
         ppd.markDefaults()
+        self.ppd_local.markDefaults()
 
         hasInstallableOptions = False
 
         # build option tabs
-        for group in ppd.optionGroups:
+        for group in self.ppd_local.optionGroups:
             if group.name == "InstallableOptions":
                 hasInstallableOptions = True
                 container = self.vbPInstallOptions
                 tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
                 if tab_nr == -1:
-                    self.ntbkPrinter.insert_page(
-                        self.swPInstallOptions, gtk.Label(group.text),
-                        self.static_tabs)
+                    self.ntbkPrinter.insert_page(self.swPInstallOptions,
+                                                 gtk.Label(group.text),
+                                                 self.static_tabs)
                 tab_label = self.lblPInstallOptions
             else:
                 frame = gtk.Frame("<b>%s</b>" % ppdippstr.ppd.get (group.text))
@@ -2584,7 +2757,7 @@ class GUI(GtkGUI, monitor.Watcher):
         (path, cell) = tuple
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2))
         if not self.is_rename_possible (name):
             return
         cell.set_property ('editable', True)
@@ -2598,7 +2771,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def printer_name_edited (self, cell, path, newname):
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2))
         debugprint ("edited: %s -> %s" % (name, newname))
         try:
             self.rename_printer (name, newname)
@@ -2698,7 +2871,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # ..and select the new printer.
         def select_new_printer (model, path, iter):
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2))
             print name, new_name
             if name == new_name:
                 self.dests_iconview.select_path (path)
@@ -2724,7 +2897,7 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2))
         self.entCopyName.set_text(name)
         self.NewPrinterName.set_transient_for (self.PrintersWindow)
         result = self.NewPrinterName.run()
@@ -2744,7 +2917,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_entCopyName_changed(self, widget):
         # restrict
-        text = widget.get_text()
+        text = unicode (widget.get_text())
         new_text = text
         new_text = new_text.replace("/", "")
         new_text = new_text.replace("#", "")
@@ -2803,6 +2976,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 iter = model.get_iter (paths[i])
                 name = model.get_value (iter, 2)
                 self.cups._begin_operation (_("deleting printer %s") % name)
+                name = unicode (name)
                 self.cups.deletePrinter (name)
                 self.cups._end_operation ()
         except cups.IPPError, (e, msg):
@@ -2823,7 +2997,7 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 printer.setEnabled (enable)
@@ -2887,7 +3061,7 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         iter = model.get_iter (paths[0])
-        name = model.get_value (iter, 2)
+        name = unicode (model.get_value (iter, 2))
         self.set_system_or_user_default_printer (name)
 
     def on_edit_activate (self, UNUSED):
@@ -2900,7 +3074,7 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         for path in paths:
             iter = model.get_iter (path)
-            name = model.get_value (iter, 2)
+            name = unicode (model.get_value (iter, 2), 'utf-8')
             class_members.append (name)
         self.newPrinterGUI.init ("class")
         out_model = self.newPrinterGUI.tvNCNotMembers.get_model ()
@@ -2921,7 +3095,7 @@ class GUI(GtkGUI, monitor.Watcher):
             model = self.dests_iconview.get_model ()
             for path in paths:
                 iter = model.get_iter (path)
-                name = model.get_value (iter, 2)
+                name = unicode (model.get_value (iter, 2), 'utf-8')
                 specific_dests.append (name)
             viewer = jobviewer.JobViewer (None, None, my_jobs=False,
                                           specific_dests=specific_dests,
@@ -3147,7 +3321,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def checkNPName(self, name):
         if not name: return False
-        name = name.lower()
+        name = unicode (name.lower())
         for printer in self.printers.values():
             if not printer.discovered and printer.name.lower()==name:
                 return False
@@ -3170,7 +3344,9 @@ class GUI(GtkGUI, monitor.Watcher):
     ## Watcher interface helpers
     def printer_added_or_removed (self):
         # Just fetch the list of printers again.  This is too simplistic.
+        gtk.gdk.threads_enter ()
         self.populateList (prompt_allowed=False)
+        gtk.gdk.threads_leave ()
 
     ## Watcher interface
     def printer_added (self, mon, printer):
@@ -3179,15 +3355,34 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
-        self.printer_added_or_removed ()
-
+        gtk.gdk.threads_enter ()
         if self.PrinterPropertiesDialog.get_property('visible'):
             self.printer.getAttributes ()
             self.updatePrinterProperties ()
 
+        gtk.gdk.threads_leave ()
+
     def printer_removed (self, mon, printer):
         monitor.Watcher.printer_removed (self, mon, printer)
         self.printer_added_or_removed ()
+
+    def state_reason_added (self, mon, reason):
+        monitor.Watcher.state_reason_added (self, mon, reason)
+        gtk.gdk.threads_enter ()
+        if self.PrinterPropertiesDialog.get_property('visible'):
+            self.printer.getAttributes ()
+            self.updatePrinterProperties ()
+
+        gtk.gdk.threads_leave ()
+
+    def state_reason_removed (self, mon, reason):
+        monitor.Watcher.state_reason_removed (self, mon, reason)
+        gtk.gdk.threads_enter ()
+        if self.PrinterPropertiesDialog.get_property('visible'):
+            self.printer.getAttributes ()
+            self.updatePrinterProperties ()
+
+        gtk.gdk.threads_leave ()
 
     def cups_connection_error (self, mon):
         monitor.Watcher.cups_connection_error (self, mon)
@@ -3195,8 +3390,10 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups.getClasses ()
         except:
             self.cups = None
+            gtk.gdk.threads_enter ()
             self.setConnected ()
             self.populateList ()
+            gtk.gdk.threads_leave ()
 
 class NewPrinterGUI(GtkGUI):
 
@@ -3205,7 +3402,7 @@ class NewPrinterGUI(GtkGUI):
         "usb" : 0,
         "hal" : 0,
         "beh" : 0,
-        "hp" : 0,
+        "hp" : 8,
         "hpfax" : 0,
         "socket": 2,
         "ipp" : 3,
@@ -3214,6 +3411,7 @@ class NewPrinterGUI(GtkGUI):
         "scsi" : 5,
         "serial" : 6,
         "smb" : 7,
+        "network": 9,
         }
 
     DOWNLOADABLE_ONLYPPD=True
@@ -3270,6 +3468,11 @@ class NewPrinterGUI(GtkGUI):
                               "entSMBUsername",
                               "entSMBPassword",
                               "btnSMBVerify",
+                              "entNPTHPHostname",
+                              "btnHPFindQueue",
+                              "entNPTNetworkHostname",
+                              "btnNetworkFind",
+                              "lblHPURI",
                               "entNPTDevice",
                               "tvNCMembers",
                               "tvNCNotMembers",
@@ -3368,6 +3571,12 @@ class NewPrinterGUI(GtkGUI):
                        self.hsDownloadableDriverPerfPhoto]:
             widget.connect ('change-value',
                             lambda x, y, z: True)
+
+        # Device list
+        slct = self.tvNPDevices.get_selection ()
+        slct.set_select_function (self.device_select_function)
+        self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn)
+        self.tvNPDevices.connect ("row-activated", self.device_row_activated)
 
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
@@ -3795,8 +4004,8 @@ class NewPrinterGUI(GtkGUI):
             if page_nr == 1: # Device (first page)
                 self.auto_make, self.auto_model = None, None
                 self.device.uri = self.getDeviceURI()
-                if self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
-                    host = self.getNetworkPrinterMakeModel(self.device)
+                if self.device.type in ["socket", "lpd", "ipp"]:
+                    (host, uri) = self.getNetworkPrinterMakeModel ()
                     faxuri = None
                     if host:
                         faxuri = self.get_hplip_uri_for_network_printer(host,
@@ -4183,7 +4392,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_entNPName_changed(self, widget):
         # restrict
-        text = widget.get_text()
+        text = unicode (widget.get_text())
         new_text = text
         new_text = new_text.replace("/", "")
         new_text = new_text.replace("#", "")
@@ -4274,17 +4483,26 @@ class NewPrinterGUI(GtkGUI):
         uri = stdout.strip ()
         return uri
 
-    def getNetworkPrinterMakeModel(self, device):
+    def getNetworkPrinterMakeModel(self, host=None, device=None):
+        """
+        Try to determine the make and model for the currently selected
+        network printer, and store this in the data structure for the
+        printer.
+        Returns (hostname or None, uri or None).
+        """
+        uri = None
+        if device == None:
+            device = self.device
         # Determine host name/IP
-        host = None
-        s = device.uri.find ("://")
-        if s != -1:
-            s += 3
-            e = device.uri[s:].find (":")
-            if e == -1: e = device.uri[s:].find ("/")
-            if e == -1: e = device.uri[s:].find ("?")
-            if e == -1: e = len (device.uri)
-            host = device.uri[s:s+e]
+        if host == None:
+            s = device.uri.find ("://")
+            if s != -1:
+                s += 3
+                e = device.uri[s:].find (":")
+                if e == -1: e = device.uri[s:].find ("/")
+                if e == -1: e = device.uri[s:].find ("?")
+                if e == -1: e = len (device.uri)
+                host = device.uri[s:s+e]
         # Try to get make and model via SNMP
         if host:
             os.environ["HOST"] = host
@@ -4302,6 +4520,8 @@ class NewPrinterGUI(GtkGUI):
                 pass
 
             if stdout != None:
+                uri = re.sub("^\s*\S+\s+", "", stdout)
+                uri = re.sub("\s.*$", "", uri)
                 mm = re.sub("^\s*\S+\s+\S+\s+\"", "", stdout)
                 mm = re.sub("\"\s+.*$", "", mm)
                 if mm and mm != "": device.make_and_model = mm
@@ -4319,27 +4539,8 @@ class NewPrinterGUI(GtkGUI):
             (mk, md) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
-        # Check whether the device is supported by HPLIP and replace
-        # its URI by an HPLIP URI
-        if host:
-            hplipuri = self.get_hplip_uri_for_network_printer(host, "print")
-            if hplipuri:
-                device.uri = hplipuri
-                s = hplipuri.find ("/usb/")
-                if s == -1: s = hplipuri.find ("/par/")
-                if s == -1: s = hplipuri.find ("/net/")
-                if s != -1:
-                    s += 5
-                    e = hplipuri[s:].find ("?")
-                    if e == -1: e = len (hplipuri)
-                    mdl = hplipuri[s:s+e].replace ("_", " ")
-                    if mdl.startswith ("hp ") or mdl.startswith ("HP "):
-                        mdl = mdl[3:]
-                        device.make_and_model = "HP " + mdl
-                        device.id = "MFG:HP;MDL:" + mdl + ";DES:HP " + mdl + ";"
-                        device.id_dict = cupshelpers.parseDeviceID (device.id)
-        # Return the host name/IP for further actions
-        return host
+
+        return (host, uri)
 
     def fillDeviceTab(self, current_uri=None):
         try:
@@ -4365,35 +4566,30 @@ class NewPrinterGUI(GtkGUI):
             if device.type == "socket":
                 # Remove default port to more easily find duplicate URIs
                 device.uri = device.uri.replace (":9100", "")
-            try:
-                ## XXX This needs to be moved to *after* the device is
-                # selected.  Looping through all the network printers like
-                # this is far too slow.
-                if False and device.type in ("socket", "lpd", "ipp", "bluetooth"):
-                    host = self.getNetworkPrinterMakeModel(device)
-                    faxuri = None
-                    if host:
-                        faxuri = self.get_hplip_uri_for_network_printer(host,
-                                                                        "fax")
-                    if faxuri:
-                        fax_id_dict = \
-                            self.get_hpfax_device_id(faxuri)
-                        devices.append(cupshelpers.Device(faxuri,
-                              **{'device-class' : "direct",
-                                 'device-info' : device.info + " HP Fax HPLIP",
-                                 'device-device-make-and-model' : \
-                                     fax_id_dict["MFG"] + " " + \
-                                     fax_id_dict["MDL"],
-                                 'device-id' : \
-                                     "MFG:" + fax_id_dict["MFG"] + \
-                                     ";MDL:" + fax_id_dict["MDL"] + \
-                                     ";DES:" + \
-                                     fax_id_dict["DES"] + ";"}))
-                    if device.uri.startswith ("hp:"):
-                        device.type = "hp"
-                        device.info += (" HPLIP")
-            except:
-                nonfatalException ()
+
+        # Map generic URIs to something canonical
+        def replace_generic (device):
+            if device.uri == "hp:/no_device_found":
+                device.uri = "hp"
+            elif device.uri == "hpfax:/no_device_found":
+                device.uri = "hpfax"
+            return device
+
+        devices = map (replace_generic, devices)
+
+        # For HPLIP, only locally-connected devices are detected.  Add
+        # the generic URI to allow network devices to be searched for.
+        for each in devices:
+            if each.type == "hp" and each.uri != "hp":
+                # We know the hp backend is available because it has
+                # found a locally-connected device.
+                hp = cupshelpers.Device ("hp",
+                                         **{'device-class': 'network',
+                                            'device-info':
+                                                _("HP Printer (HPLIP)")})
+                devices.append (hp)
+                break
+
         # Mark duplicate URIs for deletion
         for i in range (len (devices) - 1):
             for j in range (i + 1, len (devices)):
@@ -4411,9 +4607,7 @@ class NewPrinterGUI(GtkGUI):
                         device1.uri = "delete"
                     else:
                         device2.uri = "delete"
-        devices = filter(lambda x: x.uri not in ("hp:/no_device_found",
-                                                 "hpfax:/no_device_found",
-                                                 "hp", "hpfax",
+        devices = filter(lambda x: x.uri not in ("hpfax",
                                                  "hal", "beh",
                                                  "scsi", "http", "delete"),
                          devices)
@@ -4445,11 +4639,35 @@ class NewPrinterGUI(GtkGUI):
             except ValueError:
                 self.devices.insert(0, current_device)
 
-        model = self.tvNPDevices.get_model()
-        model.clear()
+        model = gtk.TreeStore (gobject.TYPE_STRING,   # device-info
+                               gobject.TYPE_PYOBJECT, # PhysicalDevice obj
+                               gobject.TYPE_BOOLEAN)  # Separator?
+        network_iter = model.append (None, row=[_("Network Printer"),
+                                                None,
+                                                False])
+        network_dict = { 'device-class': 'network',
+                         'device-info': _("Find Network Printer") }
+        network = cupshelpers.Device ('network', **network_dict)
+        find_nw_iter = model.append (network_iter,
+                                     row=[network_dict['device-info'],
+                                          PhysicalDevice (network), False])
+        model.insert_after (network_iter, find_nw_iter, row=['', None, True])
+        self.devices_find_nw_iter = find_nw_iter
+        self.tvNPDevices.set_model (model)
 
         for device in self.devices:
-            model.append((device.get_info (),))
+            devs = device.get_devices ()
+            network = devs[0].device_class == 'network'
+            row=[device.get_info (), device, False]
+            if network:
+                if devs[0].uri != devs[0].type:
+                    # An actual network printer device.  Put this at the top.
+                    model.insert_before (network_iter, find_nw_iter, row=row)
+                else:
+                    # Just a method of finding one.
+                    model.append (network_iter, row=row)
+            else:
+                model.insert_before(None, network_iter, row=row)
             
         column = self.tvNPDevices.get_column (0)
         self.tvNPDevices.set_cursor (device_select_path, column)
@@ -4862,6 +5080,7 @@ class NewPrinterGUI(GtkGUI):
         thread.start_new_thread(self.browse_ipp_queues_thread, ())
 
     def browse_ipp_queues_thread(self):
+        host = None
         gtk.gdk.threads_enter()
         try:
             store = self.ipp_store
@@ -4880,8 +5099,12 @@ class NewPrinterGUI(GtkGUI):
         oldserver = cups.getServer ()
         printers = classes = {}
         failed = False
+        port = 631
+        if host != None:
+            (host, port) = urllib.splitnport (host, defport=port)
+
         try:
-            c = cups.Connection (host=host)
+            c = cups.Connection (host=host, port=port)
             printers = c.getPrinters ()
             del c
         except cups.IPPError, (e, m):
@@ -4968,10 +5191,35 @@ class NewPrinterGUI(GtkGUI):
         parent.set_child_packing (widget, expand, fill,
                                   padding, pack_type)
 
+    def device_row_separator_fn (self, model, iter):
+        return model.get_value (iter, 2)
+
+    def device_row_activated (self, view, path, column):
+        if view.row_expanded (path):
+            view.collapse_row (path)
+        else:
+            view.expand_row (path, False)
+
+    def device_select_function (self, path):
+        """
+        Allow this path to be selected as long as there
+        is a device associated with it.
+        """
+        model = self.tvNPDevices.get_model ()
+        iter = model.get_iter (path)
+        return model.get_value (iter, 1) != None
+
     def on_tvNPDevices_cursor_changed(self, widget):
-        model, iter = widget.get_selection ().get_selected()
-        path = model.get_path (iter)
-        physicaldevice = self.devices[path[0]]
+        path, column = widget.get_cursor ()
+        if path == None:
+            return
+
+        model = widget.get_model ()
+        iter = model.get_iter (path)
+        physicaldevice = model.get_value (iter, 1)
+        if physicaldevice == None:
+            return
+
         model = gtk.ListStore (str,                    # printer-info
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
@@ -4992,6 +5240,9 @@ class NewPrinterGUI(GtkGUI):
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
         page = self.new_printer_device_tabs.get(device.type, 1)
+        if device.type == "hp" and device.uri != "hp":
+            page = 0
+
         self.ntbkNPType.set_current_page(page)
 
         location = ''
@@ -5110,6 +5361,8 @@ class NewPrinterGUI(GtkGUI):
             self.entSMBPassword.set_text ('')
             self.entSMBURI.set_text(device.uri[6:])
             self.btnSMBVerify.set_sensitive(True)
+        elif device.uri == "hp":
+            self.lblHPURI.set_text ('')
         else:
             self.entNPTDevice.set_text(device.uri)
 
@@ -5137,6 +5390,79 @@ class NewPrinterGUI(GtkGUI):
             self.cmbentNPTLpdQueue.append_text(printer)
         if printers:
             self.cmbentNPTLpdQueue.set_active(0)
+
+    def on_entNPTHPHostname_changed(self, ent):
+        self.lblHPURI.set_text ('')
+        s = ent.get_text ()
+        self.btnHPFindQueue.set_sensitive (len (s) > 0)
+        self.setNPButtons ()
+
+    def on_btnHPFindQueue_clicked(self, button):
+        host = self.entNPTHPHostname.get_text ()
+
+        # Check whether the device is supported by HPLIP
+        hplipuri = self.get_hplip_uri_for_network_printer(host, "print")
+        if hplipuri == None or hplipuri == '':
+            show_error_dialog (_("No Print Shares"),
+                               _("HPLIP cannot find the device."),
+                               self.NewPrinterWindow)
+            self.entNPTHPHostname.grab_focus ()
+            return
+
+        self.lblHPURI.set_text (hplipuri)
+        s = hplipuri.find ("/usb/")
+        if s == -1:
+            s = hplipuri.find ("/par/")
+
+        if s == -1:
+            s = hplipuri.find ("/net/")
+
+        if s != -1:
+            s += 5
+            e = hplipuri[s:].find ("?")
+            if e == -1:
+                e = len (hplipuri)
+
+            mdl = hplipuri[s:s+e].replace ("_", " ")
+            if mdl.startswith ("hp ") or mdl.startswith ("HP "):
+                mdl = mdl[3:]
+                self.device.make_and_model = "HP " + mdl
+                id = "MFG:HP;MDL:%s;DES:HP %s;" % (mdl, mdl)
+                self.device.id = id
+                self.device.id_dict = cupshelpers.parseDeviceID (id)
+
+    ### Find Network Printer
+    def on_entNPTNetworkHostname_changed(self, ent):
+        s = ent.get_text ()
+        self.btnNetworkFind.set_sensitive (len (s) > 0)
+        self.setNPButtons ()
+
+    def on_btnNetworkFind_clicked(self, button):
+        host = self.entNPTNetworkHostname.get_text ()
+        uri = self.get_hplip_uri_for_network_printer (host, "print")
+        device_dict = { 'device-class': 'network' }
+        new_device = cupshelpers.Device ('', **device_dict)
+        if uri:
+            new_device = cupshelpers.Device (uri, **device_dict)
+
+        (host, uri) = self.getNetworkPrinterMakeModel (host=host,
+                                                       device=new_device)
+        if uri:
+            new_device.uri = uri
+
+        debugprint ("New device: %s" % new_device)
+        if not new_device.uri:
+            show_error_dialog (_("Not Found"),
+                               _("No printer was found at that address."),
+                               parent=self.NewPrinterWindow)
+        else:
+            model = self.tvNPDevices.get_model ()
+            dev = PhysicalDevice (new_device)
+            iter = model.insert_before (None, self.devices_find_nw_iter,
+                                        row=[dev.get_info (), dev, False])
+            path = model.get_path (iter)
+            self.tvNPDevices.set_cursor (path)
+    ###
 
     def getDeviceURI(self):
         type = self.device.type
@@ -5192,6 +5518,8 @@ class NewPrinterGUI(GtkGUI):
             uri = SMBURI (group=group, host=host, share=share,
                           user=user, password=password).get_uri ()
             device = "smb://" + uri
+        elif self.device.uri == "hp":
+            device = self.lblHPURI.get_text ()
         elif not self.device.is_class:
             device = self.device.uri
         else:
@@ -5387,17 +5715,15 @@ class NewPrinterGUI(GtkGUI):
         for make in makes:
             iter = model.append((make,))
             if make==self.auto_make:
-                self.tvNPMakes.get_selection().select_iter(iter)
                 path = model.get_path(iter)
+                self.tvNPMakes.set_cursor (path)
                 self.tvNPMakes.scroll_to_cell(path, None,
                                               True, 0.5, 0.5)
                 found = True
 
         if not found:
-            self.tvNPMakes.get_selection().select_path(0)
+            self.tvNPMakes.set_cursor (0,)
             self.tvNPMakes.scroll_to_cell(0, None, True, 0.0, 0.0)
-
-        self.on_tvNPMakes_cursor_changed(self.tvNPMakes)
 
         # Also pre-fill the OpenPrinting.org search box.
         search = ''
@@ -5408,14 +5734,12 @@ class NewPrinterGUI(GtkGUI):
         self.entNPDownloadableDriverSearch.set_text (search)
 
     def on_tvNPMakes_cursor_changed(self, tvNPMakes):
-        selection = tvNPMakes.get_selection()
-        model, iter = selection.get_selected()
-        if not iter:
-            # Interactively searching.
-            path, column = tvNPMakes.get_cursor()
+        path, column = tvNPMakes.get_cursor()
+        if path != None:
+            model = tvNPMakes.get_model ()
             iter = model.get_iter (path)
-        self.NPMake = model.get(iter, 0)[0]
-        self.fillModelList()
+            self.NPMake = model.get(iter, 0)[0]
+            self.fillModelList()
 
     def fillModelList(self):
         models = self.ppds.getModels(self.NPMake)
@@ -5426,15 +5750,14 @@ class NewPrinterGUI(GtkGUI):
             iter = model.append((pmodel,))
             if self.NPMake==self.auto_make and pmodel==self.auto_model:
                 path = model.get_path(iter)
+                self.tvNPModels.set_cursor (path)
                 self.tvNPModels.scroll_to_cell(path, None,
                                                True, 0.5, 0.5)
-                self.tvNPModels.get_selection().select_iter(iter)
                 selected = True
         if not selected:
-            self.tvNPModels.get_selection().select_path(0)
+            self.tvNPModels.set_cursor (0,)
             self.tvNPModels.scroll_to_cell(0, None, True, 0.0, 0.0)
         self.tvNPModels.columns_autosize()
-        self.on_tvNPModels_cursor_changed(self.tvNPModels)
 
     def fillDriverList(self, pmake, pmodel):
         self.NPModel = pmodel
@@ -5475,15 +5798,13 @@ class NewPrinterGUI(GtkGUI):
         return markup
 
     def on_tvNPModels_cursor_changed(self, widget):
-        model, iter = widget.get_selection().get_selected()
-        if not iter:
-            # Interactively searching.
-            path, column = widget.get_cursor()
+        path, column = widget.get_cursor()
+        if path != None:
+            model = widget.get_model ()
             iter = model.get_iter (path)
-        pmodel = model.get(iter, 0)[0]
-        self.fillDriverList(self.NPMake, pmodel)
-
-        self.on_tvNPDrivers_cursor_changed(self.tvNPDrivers)
+            pmodel = model.get(iter, 0)[0]
+            self.fillDriverList(self.NPMake, pmodel)
+            self.on_tvNPDrivers_cursor_changed(self.tvNPDrivers)
 
     def on_tvNPDrivers_cursor_changed(self, widget):
         self.setNPButtons()
@@ -5539,7 +5860,7 @@ class NewPrinterGUI(GtkGUI):
                 hs.hide ()
                 unknown.show_all ()
         supportcontacts = ""
-        if driver['supportcontacts']:
+        if driver.has_key ('supportcontacts'):
             for supportentry in driver['supportcontacts']:
                 if supportentry['name']:
                     supportcontact = " - " + supportentry['name']
@@ -5589,7 +5910,6 @@ class NewPrinterGUI(GtkGUI):
                 ppd = self.NPDrivers[nr]
             elif self.rbtnNPPPD.get_active():
                 ppd = cups.PPD(self.filechooserPPD.get_filename())
-                ppd.localize ()
             else:
                 # PPD of the driver downloaded from OpenPrinting XXX
                 treeview = self.tvNPDownloadableDrivers
@@ -5611,7 +5931,6 @@ class NewPrinterGUI(GtkGUI):
                             ppdfile.write(ppdcontent)
                             ppdfile.close()
                             ppd = cups.PPD(ppdname)
-                            ppd.localize ()
                             os.unlink(ppdname)
 
         except RuntimeError, e:
@@ -5667,7 +5986,6 @@ class NewPrinterGUI(GtkGUI):
                 if (ppd != "raw"):
                     f = self.mainapp.cups.getServerPPD(ppd)
                     ppd = cups.PPD(f)
-                    ppd.localize ()
                     os.unlink(f)
             except RuntimeError:
                 nonfatalException()
@@ -5738,9 +6056,9 @@ class NewPrinterGUI(GtkGUI):
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
         if self.dialog_mode in ("class", "printer"):
-            name = self.entNPName.get_text()
-            location = self.entNPLocation.get_text()
-            info = self.entNPDescription.get_text()
+            name = unicode (self.entNPName.get_text())
+            location = unicode (self.entNPLocation.get_text())
+            info = unicode (self.entNPDescription.get_text())
         else:
             name = self.mainapp.printer.name
 
@@ -5795,7 +6113,6 @@ class NewPrinterGUI(GtkGUI):
                          device=uri, info=info, location=location)
                     check = True
                     checkppd = ppd
-                cupshelpers.activateNewPrinter (self.mainapp.cups, name)
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
                 self.WaitWindow.hide ()
@@ -5814,6 +6131,7 @@ class NewPrinterGUI(GtkGUI):
             self.mainapp.cups._begin_operation (_("modifying printer %s") %
                                                 name)
             try:
+                cupshelpers.activateNewPrinter (self.mainapp.cups, name)
                 self.mainapp.cups.setPrinterLocation(name, location)
                 self.mainapp.cups.setPrinterInfo(name, info)
             except cups.IPPError, (e, msg):
@@ -5864,7 +6182,6 @@ class NewPrinterGUI(GtkGUI):
                 try:
                     filename = self.mainapp.cups.getPPD(name)
                     ppd = cups.PPD(filename)
-                    ppd.localize ()
                     os.unlink(filename)
                 except cups.IPPError, (e, msg):
                     if e == cups.IPP_NOT_FOUND:
@@ -5875,8 +6192,9 @@ class NewPrinterGUI(GtkGUI):
                         return
             else:
                 # We have an actual PPD to upload, not just a name.
-                if not self.rbtnChangePPDasIs.get_active():
-                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd) # XXX
+                if ((not self.rbtnChangePPDasIs.get_active()) and
+                    isinstance (self.mainapp.ppd, cups.PPD)):
+                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd)
                 else:
                     # write Installable Options to ppd
                     for option in self.options.itervalues():
@@ -5920,7 +6238,7 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
 
         # Finally, suggest printing a test page.
-        if self.dialog_mode == "printer":
+        if self.dialog_mode == "printer" and self.mainapp.ppd != False:
             q = gtk.MessageDialog (self.mainapp.PrintersWindow,
                                    gtk.DIALOG_DESTROY_WITH_PARENT |
                                    gtk.DIALOG_MODAL,

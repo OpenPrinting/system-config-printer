@@ -181,7 +181,7 @@ class OpenPrinting:
 
         # Common parameters for the request
         params = { 'type': 'printers',
-                   'make': searchterm,
+                   'printer': searchterm,
                    'format': 'xml' }
         return self.webQuery(params, parse_result, (callback, user_data))
 

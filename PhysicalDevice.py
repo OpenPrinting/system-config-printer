@@ -70,7 +70,10 @@ class PhysicalDevice:
         return self.devices
 
     def get_info (self):
-        if self.mfg == '':
+        # If the manufacturer/model is not known, or useless (in the
+        # case of the hpfax backend), show the device-info field
+        # instead.
+        if self.mfg == '' or (self.mfg == "HP" and self.mdl == "Fax"):
             return self.devices[0].info
 
         info = "%s %s" % (self.mfg, self.mdl)

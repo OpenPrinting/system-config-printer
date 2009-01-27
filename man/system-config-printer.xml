@@ -19,7 +19,7 @@
     <refentry id="system-config-printer">
       <refentryinfo>
 	<productname>system-config-printer</productname>
-	<date>25 May 2007</date>
+	<date>28 Nov 2008</date>
       </refentryinfo>
 
       <refmeta>
@@ -38,6 +38,7 @@
 	  <group>
 	    <arg choice="opt">--configure-printer=<replaceable>printer</replaceable></arg>
 	    <arg choice="opt">--choose-driver=<replaceable>printer</replaceable></arg>
+	    <arg choice="opt">--print-test-page=<replaceable>printer</replaceable></arg>
 	    <arg choice="opt">--debug</arg>
 	  </group>
 	</cmdsynopsis>
@@ -67,15 +68,23 @@
 	  <varlistentry>
 	    <term><option>--configure-printer=<replaceable>printer</replaceable></option></term>
 	    <listitem>
-	      <para>Select the named printer on start-up.</para>
+	      <para>Show the named printer on start-up.</para>
 	    </listitem>
 	  </varlistentry>
 
 	  <varlistentry>
 	    <term><option>--choose-driver=<replaceable>printer</replaceable></option></term>
 	    <listitem>
-	      <para>Select the named printer on start-up and display
+	      <para>Show the named printer on start-up and display
 	      the "choose driver" dialog.</para>
+	    </listitem>
+	  </varlistentry>
+
+	  <varlistentry>
+	    <term><option>--print-test-page=<replaceable>printer</replaceable></option></term>
+	    <listitem>
+	      <para>Show the named printer on start-up and print a
+	      test page to it.</para>
 	    </listitem>
 	  </varlistentry>
 

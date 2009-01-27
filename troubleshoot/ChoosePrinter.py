@@ -21,6 +21,7 @@
 
 import cups
 import gobject
+from timedops import TimedOperation
 from base import *
 class ChoosePrinter(Question):
     def __init__ (self, troubleshooter):
@@ -62,10 +63,11 @@ class ChoosePrinter(Question):
         iter = model.append (None)
         model.set (iter, 0, _("Not listed"), 1, '', 2, '', 3, None)
 
+        parent = self.troubleshooter.get_window ()
         try:
             cups.setServer ('')
-            c = cups.Connection ()
-            dests = c.getDests ()
+            c = self.timedop (cups.Connection, parent=parent).run ()
+            dests = self.timedop (c.getDests, parent=parent).run ()
             printers = None
             dests_list = []
             for (name, instance), dest in dests.iteritems ():
@@ -78,7 +80,8 @@ class ChoosePrinter(Question):
                     queue = name
 
                 if printers == None:
-                    printers = c.getPrinters ()
+                    printers = self.timedop (c.getPrinters,
+                                             parent=parent).run ()
 
                 if not printers.has_key (name):
                     info = _("Unknown")
@@ -137,3 +140,10 @@ class ChoosePrinter(Question):
                      'cups_dest': dest,
                      'cups_queue': dest.name,
                      'cups_instance': dest.instance }
+
+    def cancel_operation (self):
+        self.op.cancel ()
+
+    def timedop (self, *args, **kwargs):
+        self.op = TimedOperation (*args, **kwargs)
+        return self.op

@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -22,6 +22,7 @@
 import glob
 import os
 import subprocess
+from timedops import TimedSubprocess
 import urllib
 from base import *
 class CheckUSBPermissions(Question):
@@ -56,12 +57,15 @@ class CheckUSBPermissions(Question):
             return False
 
         # Run lsusb
+        parent = self.troubleshooter.get_window ()
         try:
-            lsusb = subprocess.Popen ("LC_ALL=C " + LSUSB + " -v", shell=True,
-                                      stdin=file("/dev/null"),
-                                      stdout=subprocess.PIPE,
-                                      stderr=subprocess.PIPE)
-            (lsusb_stdout, lsusb_stderr) = lsusb.communicate ()
+            self.op = TimedSubprocess (parent=parent,
+                                       args="LC_ALL=C " + LSUSB + " -v",
+                                       shell=True,
+                                       stdin=file("/dev/null"),
+                                       stdout=subprocess.PIPE,
+                                       stderr=subprocess.PIPE)
+            (lsusb_stdout, lsusb_stderr, result) = self.op.run ()
         except:
             # Problem executing command.
             return False
@@ -69,7 +73,7 @@ class CheckUSBPermissions(Question):
         # Now parse it.
         dev_by_id = {}
         this_dev = None
-        for line in lsusb_stdout.split ('\n'):
+        for line in lsusb_stdout:
             if (this_dev != None and
                 ((line.find ("bInterfaceClass") != -1 and
                   line.find ("7 Printer") != -1) or
@@ -134,14 +138,15 @@ class CheckUSBPermissions(Question):
         perms = []
         for path in paths:
             try:
-                getfacl = subprocess.Popen ("LC_ALL=C %s %s" % (GETFACL, path),
-                                            shell=True,
-                                            stdin=file("/dev/null"),
-                                            stdout=subprocess.PIPE,
-                                            stderr=subprocess.PIPE)
-                (getfacl_stdout, getfacl_stderr) = getfacl.communicate ()
-                output = filter (lambda x: len (x) > 0,
-                                 getfacl_stdout.split ('\n'))
+                self.op = TimedSubprocess (parent=parent,
+                                           args="LC_ALL=C %s %s" % (GETFACL,
+                                                                    path),
+                                           shell=True,
+                                           stdin=file("/dev/null"),
+                                           stdout=subprocess.PIPE,
+                                           stderr=subprocess.PIPE)
+                (getfacl_stdout, getfacl_stderr, result) = self.op.run ()
+                output = filter (lambda x: len (x) > 0, getfacl_stdout)
             except:
                 # Problem executing command.
                 output = []
@@ -156,3 +161,6 @@ class CheckUSBPermissions(Question):
 
     def collect_answer (self):
         return self.answers
+
+    def cancel_operation (self):
+        self.op.cancel ()

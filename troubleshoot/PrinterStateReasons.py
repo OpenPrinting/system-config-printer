@@ -21,6 +21,7 @@
 
 import cups
 import statereason
+from timedops import TimedOperation
 from base import *
 class PrinterStateReasons(Question):
     def __init__ (self, troubleshooter):
@@ -42,9 +43,14 @@ class PrinterStateReasons(Question):
         except KeyError:
             return False
 
+        parent = self.troubleshooter.get_window ()
         cups.setServer ('')
-        c = cups.Connection ()
-        dict = c.getPrinterAttributes (queue)
+        self.op = TimedOperation (cups.Connection, parent=parent)
+        c = self.op.run ()
+        self.op = TimedOperation (c.getPrinterAttributes,
+                                  args=(queue,),
+                                  parent=parent)
+        dict = self.op.run ()
 
         text = ''
         state_message = dict['printer-state-message']
@@ -105,3 +111,6 @@ class PrinterStateReasons(Question):
 
         return { 'printer-state-message': self.state_message,
                  'printer-state-reasons': self.state_reasons }
+
+    def cancel_operation (self):
+        self.op.cancel ()

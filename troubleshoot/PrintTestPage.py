@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -26,6 +26,8 @@ import gobject
 import os
 import pango
 import tempfile
+import time
+from timedops import TimedOperation
 
 from base import *
 
@@ -127,6 +129,8 @@ class PrintTestPage(Question):
         if not answers.has_key ('cups_queue'):
             return False
 
+        parent = self.troubleshooter.get_window ()
+        self.authconn = answers['_authenticated_connection']
         mediatype = None
         defaults = answers.get ('cups_printer_ppd_defaults', {})
         for opts in defaults.values ():
@@ -155,10 +159,15 @@ class PrintTestPage(Question):
 
         test_jobs = self.persistent_answers.get ('test_page_job_id', [])
         cups.setServer ('')
-        c = cups.Connection ()
+        def get_jobs ():
+            c = self.authconn
+            jobs_dict = c.getJobs (which_jobs='not-completed',
+                                   my_jobs=False)
+            completed_jobs_dict = c.getJobs (which_jobs='completed')
+            return (jobs_dict, completed_jobs_dict)
 
-        jobs_dict = c.getJobs (which_jobs='not-completed',
-                               my_jobs=False)
+        self.op = TimedOperation (get_jobs, parent=parent)
+        (jobs_dict, completed_jobs_dict) = self.op.run ()
 
         # We want to display the jobs in the queue for this printer...
         try:
@@ -178,8 +187,6 @@ class PrintTestPage(Question):
             try:
                 j = jobs_dict[job]
             except KeyError:
-                if completed_jobs_dict == None:
-                    completed_jobs_dict = c.getJobs (which_jobs='completed')
                 try:
                     j = completed_jobs_dict[job]
                 except KeyError:
@@ -201,14 +208,20 @@ class PrintTestPage(Question):
         self.test_sigid = self.test_cell.connect ('toggled',
                                                   self.test_toggled)
 
-        cups.setServer ('')
-        c = cups.Connection ()
-        self.sub_id = c.createSubscription ("/",
-                                            events=["job-created",
-                                                    "job-completed",
-                                                    "job-stopped",
-                                                    "job-progress",
-                                                    "job-state-changed"])
+        def create_subscription ():
+            cups.setServer ('')
+            c = self.authconn
+            sub_id = c.createSubscription ("/",
+                                           events=["job-created",
+                                                   "job-completed",
+                                                   "job-stopped",
+                                                   "job-progress",
+                                                   "job-state-changed"])
+            return sub_id
+
+        parent = self.troubleshooter.get_window ()
+        self.op = TimedOperation (create_subscription, parent=parent)
+        self.sub_id = self.op.run ()
 
         try:
             bus = dbus.SystemBus ()
@@ -232,8 +245,16 @@ class PrintTestPage(Question):
         self.print_button.disconnect (self.print_sigid)
         self.cancel_button.disconnect (self.cancel_sigid)
         self.test_cell.disconnect (self.test_sigid)
-        c = cups.Connection ()
-        c.cancelSubscription (self.sub_id)
+
+        def cancel_subscription (sub_id):
+            c = self.authconn
+            c.cancelSubscription (sub_id)
+
+        parent = self.troubleshooter.get_window ()
+        self.op = TimedOperation (cancel_subscription,
+                                  (self.sub_id,),
+                                  parent=parent)
+        self.op.run ()
         try:
             del self.sub_seq
         except:
@@ -246,34 +267,55 @@ class PrintTestPage(Question):
             return {}
 
         self.answers = self.persistent_answers.copy ()
+        parent = self.troubleshooter.get_window ()
         success = self.yes.get_active ()
         self.answers['test_page_successful'] = success
 
         class collect_jobs:
             def __init__ (self, model):
                 self.jobs = []
-                self.cups = cups.Connection ()
-                self.job_attrs = None
                 model.foreach (self.each, None)
 
             def each (self, model, path, iter, user_data):
-                (test, jobid, printer,
-                 doc, status) = model.get (iter, 0, 1, 2, 3, 4)
+                self.jobs.append (model.get (iter, 0, 1, 2, 3, 4))
+
+        model = self.treeview.get_model ()
+        jobs = collect_jobs (model).jobs
+        def collect_attributes (jobs):
+            job_attrs = None
+            c = self.authconn
+            with_attrs = []
+            for (test, jobid, printer, doc, status) in jobs:
                 attrs = None
                 if test:
                     try:
-                        attrs = self.cups.getJobAttributes (jobid)
+                        attrs = c.getJobAttributes (jobid)
                     except AttributeError:
                         # getJobAttributes was introduced in pycups 1.9.35.
-                        if self.job_attrs == None:
-                            self.job_attrs = self.cups.getJobs(which_jobs='all')
+                        if job_attrs == None:
+                            job_attrs = c.getJobs (which_jobs='all')
+
                         attrs = self.job_attrs[jobid]
 
-                self.jobs.append ((test, jobid, printer, doc, status, attrs))
+                with_attrs.append ((test, jobid, printer, doc, status, attrs))
 
-        model = self.treeview.get_model ()
-        self.answers['test_page_job_status'] = collect_jobs (model).jobs
+            return with_attrs
+
+        self.op = TimedOperation (collect_attributes,
+                                  (jobs,),
+                                  parent=parent)
+        with_attrs = self.op.run ()
+        self.answers['test_page_job_status'] = with_attrs
         return self.answers
+
+    def cancel_operation (self):
+        self.op.cancel ()
+
+        # Abandon the CUPS connection and make another.
+        answers = self.troubleshooter.answers
+        factory = answers['_authenticated_connection_factory']
+        self.authconn = factory.get_connection ()
+        self.answers['_authenticated_connection'] = self.authconn
 
     def handle_dbus_signal (self, *args):
         debugprint ("D-Bus signal caught: updating jobs list soon")
@@ -300,14 +342,17 @@ class PrintTestPage(Question):
         model.set_value (iter, 4, self.STATE[job_dict['job-state']])
 
     def print_clicked (self, widget):
-        self.persistent_answers['test_page_attempted'] = True
+        now = time.time ()
+        tt = time.localtime (now)
+        when = time.strftime ("%d/%b/%Y:%T %z", tt)
+        self.persistent_answers['test_page_attempted'] = when
         answers = self.troubleshooter.answers
-        c = None
-        try:
-            c = cups.Connection ()
-        except RuntimeError:
-            self.persistent_answers['test_page_submit_failure'] = 'connect'
-            return
+        parent = self.troubleshooter.get_window ()
+
+        def print_test_page (*args, **kwargs):
+            factory = answers['_authenticated_connection_factory']
+            c = factory.get_connection ()
+            return c.printTestPage (*args, **kwargs)
 
         tmpfname = None
         mimetypes = [None, 'text/plain']
@@ -315,14 +360,20 @@ class PrintTestPage(Question):
             try:
                 if mimetype == None:
                     # Default test page.
-                    jobid = c.printTestPage (answers['cups_queue'])
+                    self.op = TimedOperation (print_test_page,
+                                              (answers['cups_queue'],),
+                                              parent=parent)
+                    jobid = self.op.run ()
                 elif mimetype == 'text/plain':
                     (tmpfd, tmpfname) = tempfile.mkstemp ()
                     os.write (tmpfd, "This is a test page.\n")
                     os.close (tmpfd)
-                    jobid = c.printTestPage (answers['cups_queue'],
-                                             file=tmpfname,
-                                             format=mimetype)
+                    self.op = TimedOperation (print_test_page,
+                                              (answers['cups_queue'],),
+                                              kwargs={'file': tmpfname,
+                                                      'format': mimetype},
+                                              parent=parent)
+                    jobid = self.op.run ()
                     try:
                         os.unlink (tmpfname)
                     except OSError:
@@ -333,6 +384,9 @@ class PrintTestPage(Question):
                 jobs = self.persistent_answers.get ('test_page_job_id', [])
                 jobs.append (jobid)
                 self.persistent_answers['test_page_job_id'] = jobs
+                break
+            except RuntimeError:
+                self.persistent_answers['test_page_submit_failure'] = 'connect'
                 break
             except cups.IPPError, (e, s):
                 if (e == cups.IPP_DOCUMENT_FORMAT and
@@ -352,13 +406,23 @@ class PrintTestPage(Question):
 
     def cancel_clicked (self, widget):
         self.persistent_answers['test_page_jobs_cancelled'] = True
-        c = cups.Connection ()
+        jobids = []
         for jobid, iter in self.job_to_iter.iteritems ():
-            try:
-                c.cancelJob (jobid)
-            except cups.IPPError, (e, s):
-                if e != cups.IPP_NOT_POSSIBLE:
-                    self.persistent_answers['test_page_cancel_failure'] = (e, s)
+            jobids.append (jobid)
+
+        def cancel_jobs (jobids):
+            c = self.authconn
+            for jobid in jobids:
+                try:
+                    c.cancelJob (jobid)
+                except cups.IPPError, (e, s):
+                    if e != cups.IPP_NOT_POSSIBLE:
+                        self.persistent_answers['test_page_cancel_failure'] = (e, s)
+
+        self.op = TimedOperation (cancel_jobs,
+                                  (jobids,),
+                                  parent=self.troubleshooter.get_window ())
+        self.op.run ()
 
     def test_toggled (self, cell, path):
         model = self.treeview.get_model ()
@@ -367,12 +431,25 @@ class PrintTestPage(Question):
         model.set_value (iter, 0, not active)
 
     def update_jobs_list (self):
-        c = cups.Connection ()
-        try:
-            notifications = c.getNotifications ([self.sub_id],
-                                                [self.sub_seq + 1])
-        except AttributeError:
-            notifications = c.getNotifications ([self.sub_id])
+        def get_notifications (self):
+            c = self.authconn
+            try:
+                notifications = c.getNotifications ([self.sub_id],
+                                                    [self.sub_seq + 1])
+            except AttributeError:
+                notifications = c.getNotifications ([self.sub_id])
+
+            return notifications
+
+        # Enter the GDK lock.  We need to do this because we were
+        # called from a timeout.
+        gtk.gdk.threads_enter ()
+
+        parent = self.troubleshooter.get_window ()
+        self.op = TimedOperation (get_notifications,
+                                  (self,),
+                                  parent=parent)
+        notifications = self.op.run ()
 
         answers = self.troubleshooter.answers
         model = self.treeview.get_model ()
@@ -418,4 +495,5 @@ class PrintTestPage(Question):
                                           self.update_jobs_list)
         debugprint ("Update again in %ds" %
                     notifications['notify-get-interval'])
+        gtk.gdk.threads_leave ()
         return False
