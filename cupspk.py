@@ -287,11 +287,36 @@ class Connection:
 #    getDevices
 #    getJobs
 #    getJobAttributes
-#    cancelJob
+
+    def cancelJob(self, *args, **kwds):
+        (use_pycups, jobid) = self._args_to_tuple([int], *args)
+        pk_args = (jobid, )
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'JobCancel', pk_args,
+                                        self._connection.cancelJob,
+                                        *args, **kwds)
+
+
 #    cancelAllJobs
 #    authenticateJob
-#    setJobHoldUntil
-#    restartJob
+    def setJobHoldUntil(self, *args, **kwds):
+        (use_pycups, jobid, job_hold_until) = self._args_to_tuple([int, str], *args)
+        pk_args = (jobid, job_hold_until, )
+
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'JobSetHoldUntil', pk_args,
+                                        self._connection.setJobHoldUntil,
+                                        *args, **kwds)
+
+    def restartJob(self, *args, **kwds):
+        (use_pycups, jobid) = self._args_to_tuple([int], *args)
+        pk_args = (jobid, )
+        
+        self._call_with_pk_and_fallback(use_pycups,
+                                        'JobRestart', pk_args,
+                                        self._connection.restartJob,
+                                        *args, **kwds)
 
     def getFile(self, *args, **kwds):
         ''' Keeping this as an alternative for the code.
@@ -666,8 +691,6 @@ class Connection:
 
 
 #    printTestPage
-#    adminGetServerSettings
-
 
     def adminGetServerSettings(self, *args, **kwds):
         use_pycups = False
