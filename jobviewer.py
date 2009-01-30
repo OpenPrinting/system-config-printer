@@ -573,7 +573,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                         hold = (now.tm_year, now.tm_mon, day,
                                 hh, mm, ss, 0, 0, -1)
-                        local = time.gmtime (time.mktime (hold))
+                        local = time.localtime (time.mktime (hold) - time.timezone)
                         state = _("Held until %s") % time.strftime ("%X", local)
                 except ValueError:
                     pass

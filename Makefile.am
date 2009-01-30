@@ -101,7 +101,6 @@ nobase_pkgdata_DATA=					\
 	glade/NewPrinterName.glade				\
 	glade/NewPrinterWindow.glade			\
 	glade/PrinterPropertiesDialog.glade		\
-	glade/PrinterStatusWindow.glade			\
 	glade/PrintersWindow.glade				\
 	glade/ServerSettingsDialog.glade			\
 	glade/SMBBrowseDialog.glade			\
