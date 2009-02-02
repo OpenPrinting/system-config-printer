@@ -878,7 +878,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         iter = self.store.get_iter (path)
         self.jobid = self.store.get_value (iter, 0)
         job = self.jobs[self.jobid]
-        for widget in [cancel, hold, release, reprint, authenticate]:
+        authenticate.set_sensitive (False)
+        for widget in [cancel, hold, release, reprint]:
             widget.set_sensitive (True)
 
         if job.has_key ('job-state'):
