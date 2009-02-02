@@ -4723,7 +4723,7 @@ class NewPrinterGUI(GtkGUI):
 
         specified_uri = SMBURI (uri=self.entSMBURI.get_text ())
         (group, host, share, user, password) = specified_uri.separate ()
-        if len (host) > 0 and not pysmb.USE_OLD_CODE:
+        if len (host) > 0:
             # The user has specified a server before clicking Browse.
             # Append the server as a top-level entry.
             class FakeEntry:
