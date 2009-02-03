@@ -878,7 +878,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         iter = self.store.get_iter (path)
         self.jobid = self.store.get_value (iter, 0)
         job = self.jobs[self.jobid]
-        for widget in [cancel, hold, release, reprint, authenticate]:
+        authenticate.set_sensitive (False)
+        for widget in [cancel, hold, release, reprint]:
             widget.set_sensitive (True)
 
         if job.has_key ('job-state'):
@@ -1325,7 +1326,18 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if self.trayicon and (eventname == 'job-completed' or
                               (eventname == 'job-state-changed' and
                                event['job-state'] == cups.IPP_JOB_COMPLETED)):
-            self.notify_completed_job (jobid)
+            reasons = event['job-state-reasons']
+            if type (reasons) != list:
+                reasons = [reasons]
+
+            canceled = False
+            for reason in reasons:
+                if reason.startswith ("job-canceled"):
+                    canceled = True
+                    break
+
+            if not canceled:
+                self.notify_completed_job (jobid)
 
         # Look out for stopped jobs.
         if (self.trayicon and eventname == 'job-stopped' and
@@ -1430,7 +1442,19 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if self.trayicon and (eventname == 'job-completed' or
                               (eventname == 'job-state-changed' and
                                event['job-state'] == cups.IPP_JOB_COMPLETED)):
-            self.notify_completed_job (jobid)
+            reasons = event['job-state-reasons']
+            debugprint (reasons)
+            if type (reasons) != list:
+                reasons = [reasons]
+
+            canceled = False
+            for reason in reasons:
+                if reason.startswith ("job-canceled"):
+                    canceled = True
+                    break
+
+            if not canceled:
+                self.notify_completed_job (jobid)
 
         if self.jobiters.has_key (jobid):
             self.store.remove (self.jobiters[jobid])
