@@ -157,13 +157,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                               ["JobsWindow",
                                "job_menubar_item",
                                "treeview",
-                               "statusbar",
-                               "show_printer_status"],
+                               "statusbar"],
                           "statusicon_popupmenu":
-                              ["statusicon_popupmenu"],
-                          "PrinterStatusWindow":
-                              ["PrinterStatusWindow",
-                               "treeview_printers"]})
+                              ["statusicon_popupmenu"]})
 
         job_action_group = gtk.ActionGroup ("JobActionGroup")
         job_action_group.add_actions ([
@@ -268,30 +264,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.statusbar_set = False
 
-        self.PrinterStatusWindow.set_icon_name (ICON)
-        self.PrinterStatusWindow.hide ()
-        column = gtk.TreeViewColumn(_("Printer"))
-        icon = gtk.CellRendererPixbuf()
-        column.pack_start (icon, False)
-        text = gtk.CellRendererText()
-        column.set_resizable(True)
-        column.pack_start (text, False)
-        column.set_cell_data_func (icon, self.set_printer_status_icon)
-        column.set_cell_data_func (text, self.set_printer_status_name)
-        column.set_resizable (True)
-        column.set_sort_column_id (1)
-        column.set_sort_order (gtk.SORT_ASCENDING)
-        self.treeview_printers.append_column(column)
-        cell = gtk.CellRendererText()
-        column = gtk.TreeViewColumn(_("Message"), cell, text=2)
-        column.set_resizable(True)
-        cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
-        self.treeview_printers.append_column(column)
-
-        self.treeview_printers.get_selection().set_mode(gtk.SELECTION_NONE)
-        self.store_printers = gtk.TreeStore (int, str, str)
-        self.treeview_printers.set_model(self.store_printers)
-
         if self.trayicon:
             self.statusicon = gtk.StatusIcon ()
             theme = gtk.icon_theme_get_default ()
@@ -381,19 +353,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_delete_event(self, *args):
         if self.trayicon or not self.loop:
             self.JobsWindow.hide ()
-            if self.show_printer_status.get_active ():
-                self.PrinterStatusWindow.hide ()
-
             if not self.loop:
                 # Being run from main app, not applet
                 self.cleanup ()
         else:
             self.loop.quit ()
-        return True
-
-    def on_printer_status_delete_event(self, *args):
-        self.show_printer_status.set_active (False)
-        self.PrinterStatusWindow.hide()
         return True
 
     def show_IPP_Error(self, exception, message):
@@ -406,12 +370,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         if visible:
             self.JobsWindow.hide()
-            if self.show_printer_status.get_active ():
-                self.PrinterStatusWindow.hide()
         else:
             self.JobsWindow.show()
-            if self.show_printer_status.get_active ():
-                self.PrinterStatusWindow.show()
 
     def on_show_completed_jobs_activate(self, menuitem):
         if menuitem.get_active():
@@ -419,12 +379,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         else:
             which_jobs = "not-completed"
         self.monitor.refresh(which_jobs=which_jobs, refresh_all=False)
-
-    def on_show_printer_status_activate(self, menuitem):
-        if self.show_printer_status.get_active ():
-            self.PrinterStatusWindow.show()
-        else:
-            self.PrinterStatusWindow.hide()
 
     def update_job_creation_times(self):
         now = time.time ()
@@ -619,7 +573,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                         hold = (now.tm_year, now.tm_mon, day,
                                 hh, mm, ss, 0, 0, -1)
-                        local = time.gmtime (time.mktime (hold))
+                        local = time.localtime (time.mktime (hold) - time.timezone)
                         state = _("Held until %s") % time.strftime ("%X", local)
                 except ValueError:
                     pass
@@ -924,7 +878,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         iter = self.store.get_iter (path)
         self.jobid = self.store.get_value (iter, 0)
         job = self.jobs[self.jobid]
-        for widget in [cancel, hold, release, reprint, authenticate]:
+        authenticate.set_sensitive (False)
+        for widget in [cancel, hold, release, reprint]:
             widget.set_sensitive (True)
 
         if job.has_key ('job-state'):
@@ -1371,7 +1326,18 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if self.trayicon and (eventname == 'job-completed' or
                               (eventname == 'job-state-changed' and
                                event['job-state'] == cups.IPP_JOB_COMPLETED)):
-            self.notify_completed_job (jobid)
+            reasons = event['job-state-reasons']
+            if type (reasons) != list:
+                reasons = [reasons]
+
+            canceled = False
+            for reason in reasons:
+                if reason.startswith ("job-canceled"):
+                    canceled = True
+                    break
+
+            if not canceled:
+                self.notify_completed_job (jobid)
 
         # Look out for stopped jobs.
         if (self.trayicon and eventname == 'job-stopped' and
@@ -1476,7 +1442,19 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if self.trayicon and (eventname == 'job-completed' or
                               (eventname == 'job-state-changed' and
                                event['job-state'] == cups.IPP_JOB_COMPLETED)):
-            self.notify_completed_job (jobid)
+            reasons = event['job-state-reasons']
+            debugprint (reasons)
+            if type (reasons) != list:
+                reasons = [reasons]
+
+            canceled = False
+            for reason in reasons:
+                if reason.startswith ("job-canceled"):
+                    canceled = True
+                    break
+
+            if not canceled:
+                self.notify_completed_job (jobid)
 
         if self.jobiters.has_key (jobid):
             self.store.remove (self.jobiters[jobid])

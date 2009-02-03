@@ -91,6 +91,8 @@ from GroupsPane import *
 from GroupsPaneModel import *
 from SearchCriterion import *
 import gtkinklevel
+import pango
+import statereason
 
 domain='system-config-printer'
 import locale
@@ -300,9 +302,9 @@ class GUI(GtkGUI, monitor.Watcher):
                               "tvClassNotMembers",
                               "btnClassAddMember",
                               "btnClassDelMember",
-                              "vbPMarkerLevels",
-                              "lblPMarkerLevels",
                               "btnRefreshMarkerLevels",
+                              "tvPrinterStateReasons",
+                              "ntbkPrinterStateReasons",
 
                               # Job options
                               "sbJOCopies", "btnJOResetCopies",
@@ -487,6 +489,21 @@ class GUI(GtkGUI, monitor.Watcher):
         btn = self.btnRefreshMarkerLevels
         btn.connect ("clicked", self.on_btnRefreshMarkerLevels_clicked)
 
+        # Printer state reasons list
+        column = gtk.TreeViewColumn (_("Message"))
+        icon = gtk.CellRendererPixbuf ()
+        column.pack_start (icon, False)
+        text = gtk.CellRendererText ()
+        column.pack_start (text, False)
+        column.set_cell_data_func (icon, self.set_printer_state_reason_icon)
+        column.set_cell_data_func (text, self.set_printer_state_reason_text)
+        column.set_resizable (True)
+        self.tvPrinterStateReasons.append_column (column)
+        selection = self.tvPrinterStateReasons.get_selection ()
+        selection.set_mode (gtk.SELECTION_NONE)
+        store = gtk.ListStore (int, str)
+        self.tvPrinterStateReasons.set_model (store)
+
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
         np.NewPrinterWindow.set_transient_for(self.PrintersWindow)
@@ -634,10 +651,6 @@ class GUI(GtkGUI, monitor.Watcher):
         # Server Settings dialog
         self.ServerSettingsDialog.connect ('response',
                                            self.server_settings_response)
-
-        self.conflict_dialog = gtk.MessageDialog(
-            parent=None, flags=0, type=gtk.MESSAGE_WARNING,
-            buttons=gtk.BUTTONS_OK)
 
         # Printer Properties dialog
         self.PrinterPropertiesDialog.connect ('response',
@@ -961,6 +974,25 @@ class GUI(GtkGUI, monitor.Watcher):
         self.PrinterPropertiesDialog.show ()
 
     def printer_properties_response (self, dialog, response):
+        if response == gtk.RESPONSE_REJECT:
+            # The Conflict button was pressed.
+            message = _("There are conflicting options.\n"
+                        "Changes can only be applied after\n"
+                        "these conflicts are resolved.")
+            message += "\n\n"
+            for option in self.conflicts:
+                message += option.option.text + "\n"
+
+            dialog = gtk.MessageDialog(self.PrinterPropertiesDialog,
+                                       gtk.DIALOG_DESTROY_WITH_PARENT |
+                                       gtk.DIALOG_MODAL,
+                                       gtk.MESSAGE_WARNING,
+                                       gtk.BUTTONS_CLOSE,
+                                       message)
+            dialog.run()
+            dialog.destroy()
+            return
+
         if (response == gtk.RESPONSE_OK or
             response == gtk.RESPONSE_APPLY):
             success = self.save_printer (self.printer)
@@ -1863,17 +1895,6 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.btnPrinterPropertiesApply.set_sensitive (len (self.changed) > 0)
 
-    def on_btnConflict_clicked(self, button):
-        message = _("There are conflicting options.\n"
-                    "Changes can only be applied after\n"
-                    "these conflicts are resolved.")
-        message += "\n\n"
-        for option in self.conflicts:
-            message += option.option.text + "\n"
-        self.conflict_dialog.set_markup(message)
-        self.conflict_dialog.run()
-        self.conflict_dialog.hide()
-
     def save_printer(self, printer, saveall=False, parent=None):
         if parent == None:
             parent = self.PrinterPropertiesDialog
@@ -2106,10 +2127,12 @@ class GUI(GtkGUI, monitor.Watcher):
         # if we have a page size specific custom test page, use it;
         # otherwise use cups' default one
         custom_testpage = None
-        opt = self.ppd.findOption ("PageSize")
-        if opt:
-            custom_testpage = os.path.join(pkgdata, 'testpage-%s.ps' % opt.defchoice.lower())
-
+        if self.ppd != False:
+            opt = self.ppd.findOption ("PageSize")
+            if opt:
+                custom_testpage = os.path.join(pkgdata,
+                                               'testpage-%s.ps' %
+                                               opt.defchoice.lower())
 
         # Connect as the current user so that the test page can be managed
         # as a normal job.
@@ -2378,6 +2401,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.fillPrinterOptions(name, editablePPD)
 
         self.updateMarkerLevels()
+        self.updateStateReasons()
         self.updatePrinterPropertiesTreeView()
 
         self.changed = set() # of options
@@ -2420,21 +2444,12 @@ class GUI(GtkGUI, monitor.Watcher):
         can_refresh = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
         self.btnRefreshMarkerLevels.set_sensitive (can_refresh)
         if len (markers) == 0:
-            if can_refresh:
-                label = gtk.Label(_("Marker levels are not reported "
-                                    "for this printer."))
-                label.set_line_wrap (True)
-                label.set_alignment (0.0, 0.0)
-                self.vboxMarkerLevels.pack_start (label, False, False, 0)
-            else:
-                tab_nr = self.ntbkPrinter.page_num(self.vbPMarkerLevels)
-                if tab_nr != -1:
-                    self.ntbkPrinter.remove_page(tab_nr)
+            label = gtk.Label(_("Marker levels are not reported "
+                                "for this printer."))
+            label.set_line_wrap (True)
+            label.set_alignment (0.0, 0.0)
+            self.vboxMarkerLevels.pack_start (label, False, False, 0)
         else:
-            tab_nr = self.ntbkPrinter.page_num(self.vbPMarkerLevels)
-            if tab_nr == -1:
-                self.ntbkPrinter.append_page(self.vbPMarkerLevels,
-                                             self.lblPMarkerLevels)
             num_markers = 0
             cols = len (markers)
             rows = 1 + (cols - 1) / 4
@@ -2468,6 +2483,43 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_btnRefreshMarkerLevels_clicked (self, button):
         self.maintenance_command ("ReportLevels")
+
+    def updateStateReasons (self):
+        printer = self.printer
+        reasons = printer.other_attributes.get ('printer-state-reasons', [])
+        print reasons
+        store = gtk.ListStore (int, str)
+        any = False
+        for reason in reasons:
+            if reason == "none":
+                break
+
+            any = True
+            iter = store.append (None)
+            r = statereason.StateReason (printer.name, reason)
+            store.set_value (iter, 0, r.get_level ())
+            (title, text) = r.get_description ()
+            store.set_value (iter, 1, text)
+
+        self.tvPrinterStateReasons.set_model (store)
+        page = 0
+        if any:
+            page = 1
+
+        self.ntbkPrinterStateReasons.set_current_page (page)
+
+    def set_printer_state_reason_icon (self, column, cell, model, iter, *data):
+        level = model.get_value (iter, 0)
+        icon = statereason.StateReason.LEVEL_ICON[level]
+        theme = gtk.icon_theme_get_default ()
+        try:
+            pixbuf = theme.load_icon (icon, 22, 0)
+            cell.set_property ("pixbuf", pixbuf)
+        except gobject.GError, exc:
+            pass # Couldn't load icon
+
+    def set_printer_state_reason_text (self, column, cell, model, iter, *data):
+        cell.set_property ("text", model.get_value (iter, 1))
 
     def updatePrinterProperties(self):
         debugprint ("update printer properties")
@@ -2511,6 +2563,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
             # Marker levels
             self.updateMarkerLevels ()
+            self.updateStateReasons ()
 
             self.updatePrinterPropertiesTreeView
 
@@ -3082,8 +3135,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def on_troubleshoot_activate(self, widget):
         if not self.__dict__.has_key ('troubleshooter'):
-            self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit,
-                                                    parent=self.PrintersWindow)
+            self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit)
 
     def on_troubleshoot_quit(self, troubleshooter):
         del self.troubleshooter
@@ -3312,6 +3364,24 @@ class GUI(GtkGUI, monitor.Watcher):
     def printer_removed (self, mon, printer):
         monitor.Watcher.printer_removed (self, mon, printer)
         self.printer_added_or_removed ()
+
+    def state_reason_added (self, mon, reason):
+        monitor.Watcher.state_reason_added (self, mon, reason)
+        gtk.gdk.threads_enter ()
+        if self.PrinterPropertiesDialog.get_property('visible'):
+            self.printer.getAttributes ()
+            self.updatePrinterProperties ()
+
+        gtk.gdk.threads_leave ()
+
+    def state_reason_removed (self, mon, reason):
+        monitor.Watcher.state_reason_removed (self, mon, reason)
+        gtk.gdk.threads_enter ()
+        if self.PrinterPropertiesDialog.get_property('visible'):
+            self.printer.getAttributes ()
+            self.updatePrinterProperties ()
+
+        gtk.gdk.threads_leave ()
 
     def cups_connection_error (self, mon):
         monitor.Watcher.cups_connection_error (self, mon)
@@ -4375,15 +4445,16 @@ class NewPrinterGUI(GtkGUI):
             # Problem executing command.
             return None
 
+        faxtype = -1
         for line in stdout.split ("\n"):
             if line.find ("fax-type") == -1:
                 continue
-            faxtype = -1
             res = re.search ("(\d+)", line)
             if res:
                 resg = res.groups()
                 faxtype = resg[0]
-            if faxtype >= 0: break
+            if faxtype >= 0:
+                break
         if faxtype < 0:
             return None
         elif faxtype == 4:
@@ -4652,7 +4723,7 @@ class NewPrinterGUI(GtkGUI):
 
         specified_uri = SMBURI (uri=self.entSMBURI.get_text ())
         (group, host, share, user, password) = specified_uri.separate ()
-        if len (host) > 0 and not pysmb.USE_OLD_CODE:
+        if len (host) > 0:
             # The user has specified a server before clicking Browse.
             # Append the server as a top-level entry.
             class FakeEntry:

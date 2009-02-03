@@ -2,8 +2,8 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -41,7 +41,8 @@ printer_error_policy = TranslationDict ({
     
 # Names of printer operation policies
 printer_op_policy = TranslationDict ({
-        "default": _("Default behavior")
+        "default": _("Default behavior"),
+        "authenticated": _("Authenticated")
         })
 
 # Names of banner pages.

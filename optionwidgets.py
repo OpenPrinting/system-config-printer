@@ -1,8 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -42,10 +42,6 @@ def OptionWidget(option, ppd, gui, tab_label=None):
 # ---------------------------------------------------------------------------
 
 class Option:
-    
-    dialog = gtk.MessageDialog(parent=None, flags=0, type=gtk.MESSAGE_WARNING,
-                               buttons=gtk.BUTTONS_OK)
-
     def __init__(self, option, ppd, gui, tab_label=None):
         self.option = option
         self.ppd = ppd
@@ -138,9 +134,18 @@ class Option:
         self.checkConflicts()
 
     def on_btnConflict_clicked(self, button):
-        self.dialog.set_markup(self.conflict_message)
-        self.dialog.run()
-        self.dialog.hide()
+        parent = self.btnConflict
+        while parent != None and not isinstance (parent, gtk.Window):
+            parent = parent.get_parent ()
+
+        dialog = gtk.MessageDialog (parent,
+                                    gtk.DIALOG_DESTROY_WITH_PARENT |
+                                    gtk.DIALOG_MODAL,
+                                    gtk.MESSAGE_WARNING,
+                                    gtk.BUTTONS_CLOSE,
+                                    self.conflict_message)
+        dialog.run()
+        dialog.destroy()
         
 # ---------------------------------------------------------------------------
 
