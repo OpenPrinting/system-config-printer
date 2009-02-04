@@ -1,5 +1,3 @@
-
-
 ## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 ## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
