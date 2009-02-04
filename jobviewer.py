@@ -1,5 +1,4 @@
 
-
 ## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 ## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
@@ -841,7 +840,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         for reason, notification in self.state_reason_notifications.iteritems():
             if notification.get_data ('closed') != True:
                 open_notifications += 1
-        num_jobs = len (self.jobs.keys ())
+        num_jobs = len (self.active_jobs.keys ())
 
         debugprint ("open notifications: %d" % open_notifications)
         debugprint ("num_jobs: %d" % num_jobs)
