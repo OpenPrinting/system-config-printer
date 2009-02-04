@@ -734,7 +734,7 @@ class JobViewer (monitor.Watcher):
         for reason, notification in self.state_reason_notifications.iteritems():
             if notification.get_data ('closed') != True:
                 open_notifications += 1
-        num_jobs = len (self.active_jobs.keys ())
+        num_jobs = len (self.active_jobs)
 
         debugprint ("open notifications: %d" % open_notifications)
         debugprint ("num_jobs: %d" % num_jobs)
@@ -1078,7 +1078,11 @@ class JobViewer (monitor.Watcher):
         if not self.jobiters.has_key (jobid):
             self.add_job (jobid, jobdata)
 
-        self.active_jobs.add (jobid)
+        if self.job_is_active (jobdata):
+            self.active_jobs.add (jobid)
+        elif jobid in self.active_jobs:
+            self.active_jobs.remove (jobid)
+
         self.update_status (have_jobs=True)
         if self.trayicon:
             if not self.job_is_active (jobdata):
@@ -1098,10 +1102,13 @@ class JobViewer (monitor.Watcher):
             printer = uri
         jobdata['job-printer-name'] = printer
 
+        any_active = len (self.active_jobs) > 0
         if self.job_is_active (jobdata):
             self.active_jobs.add (jobid)
         elif jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
+        if (len (self.active_jobs) > 0) != any_active:
+            self.update_status ()
 
         if (jobdata.has_key ('job-hold-until') and
             not event.has_key ('job-hold-until')):

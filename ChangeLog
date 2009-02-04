@@ -1,5 +1,13 @@
 2009-02-04  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.set_statusicon_visibility): Fixed typo.
+	(JobViewer.job_added): Only add this job to the active set if it
+	is active; otherwise, remove it from the set if it is there.
+	(JobViewer.job_event): If the emptiness of the active set has
+	changed, update the status icon (trac #140).
+
+2009-02-04  Tim Waugh  <twaugh@redhat.com>
+
 	* jobviewer.py (JobViewer.set_statusicon_visibility): Don't
 	display status icon for completed jobs (trac #140).
 
