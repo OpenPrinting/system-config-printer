@@ -1,6 +1,8 @@
 # vim: set ts=4 sw=4 et: coding=UTF-8
 #
 # Copyright (C) 2008 Novell, Inc.
+# Copyright (C) 2009 Red Hat, Inc.
+# Copyright (C) 2009 Tim Waugh <twaugh@redhat.com>
 #
 # Authors: Vincent Untz
 #
@@ -73,8 +75,13 @@ def _pk_auth_error_handler(e):
 class Connection:
     def __init__(self, host, port, encryption):
         self._parent = None
-        self._session_bus = dbus.SessionBus()
-        self._system_bus = dbus.SystemBus()
+
+        try:
+            self._session_bus = dbus.SessionBus()
+            self._system_bus = dbus.SystemBus()
+        except dbus.exceptions.DBusException:
+            # One or other bus not running.
+            self._session_bus = self._system_bus = None
 
         self._connection = cups.Connection(host=host,
                                            port=port,
@@ -106,6 +113,10 @@ class Connection:
             object = self._system_bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
             return dbus.Interface(object, CUPS_PK_IFACE)
         except dbus.exceptions.DBusException:
+            # Failed to get object or interface.
+            return None
+        except AttributeError:
+            # No system D-Bus
             return None
 
 
