@@ -5982,8 +5982,9 @@ class NewPrinterGUI(GtkGUI):
 
         debugprint("ppd: " + repr(ppd))
         if isinstance(ppd, str) or isinstance(ppd, unicode):
+            self.mainapp.cups._begin_operation (_("fetching PPD"))
             try:
-                if (ppd != "raw"):
+                if ppd != "raw":
                     f = self.mainapp.cups.getServerPPD(ppd)
                     ppd = cups.PPD(f)
                     os.unlink(f)
@@ -5994,7 +5995,9 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
                 debugprint ("CUPS 1.3 server not available: never mind")
 
-        return ppd
+            self.mainapp.cups._end_operation ()
+
+       return ppd
 
     # Installable Options
 
