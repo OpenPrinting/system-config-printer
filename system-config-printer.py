@@ -3391,7 +3391,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups = None
             gtk.gdk.threads_enter ()
             self.setConnected ()
-            self.populateList ()
+            self.populateList (prompt_allowed=False)
             gtk.gdk.threads_leave ()
 
 class NewPrinterGUI(GtkGUI):
