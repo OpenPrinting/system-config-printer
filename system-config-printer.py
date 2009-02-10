@@ -6360,7 +6360,7 @@ if __name__ == "__main__":
             configure_printer = optarg
             if opt == "--choose-driver":
                 change_ppd = True
-            elif opt == "print-test-page":
+            elif opt == "--print-test-page":
                 print_test_page = True
 
         elif opt == '--devid':
