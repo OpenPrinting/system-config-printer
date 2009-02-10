@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2008 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -31,7 +31,11 @@ class PhysicalDevice:
         if mfg == '':
             return ('', '')
 
-        make_and_model = "%s %s" % (mfg, mdl)
+        if mdl.lower ().startswith (mfg.lower ()):
+            make_and_model = mdl
+        else:
+            make_and_model = "%s %s" % (mfg, mdl)
+
         return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
 
     def add_device (self, device):
