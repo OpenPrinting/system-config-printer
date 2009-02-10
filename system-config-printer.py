@@ -854,6 +854,8 @@ class GUI(GtkGUI, monitor.Watcher):
             name = unicode (model.get_value (iter, 2))
             if name == queue:
                 path = model.get_path (iter)
+                self.dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
+                self.dests_iconview.set_cursor (path)
                 self.dests_iconview.item_activated (path)
                 break
             iter = model.iter_next (iter)
@@ -2487,7 +2489,6 @@ class GUI(GtkGUI, monitor.Watcher):
     def updateStateReasons (self):
         printer = self.printer
         reasons = printer.other_attributes.get ('printer-state-reasons', [])
-        print reasons
         store = gtk.ListStore (int, str)
         any = False
         for reason in reasons:
@@ -3391,7 +3392,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups = None
             gtk.gdk.threads_enter ()
             self.setConnected ()
-            self.populateList ()
+            self.populateList (prompt_allowed=False)
             gtk.gdk.threads_leave ()
 
 class NewPrinterGUI(GtkGUI):
@@ -3819,10 +3820,10 @@ class NewPrinterGUI(GtkGUI):
 
     def getJockeyDriver_thread(self, id):
         debugprint ("Requesting driver from Jockey: %s" % id)
-        bus = dbus.SessionBus()
         self.jockey_driver_result = False
         self.jockey_installed_files = []
         try:
+            bus = dbus.SessionBus()
             obj = bus.get_object("com.ubuntu.DeviceDriver", "/GUI")
             jockeyloader = \
                 dbus.Interface(obj, "com.ubuntu.DeviceDriver")
@@ -5982,8 +5983,9 @@ class NewPrinterGUI(GtkGUI):
 
         debugprint("ppd: " + repr(ppd))
         if isinstance(ppd, str) or isinstance(ppd, unicode):
+            self.mainapp.cups._begin_operation (_("fetching PPD"))
             try:
-                if (ppd != "raw"):
+                if ppd != "raw":
                     f = self.mainapp.cups.getServerPPD(ppd)
                     ppd = cups.PPD(f)
                     os.unlink(f)
@@ -5994,7 +5996,9 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
                 debugprint ("CUPS 1.3 server not available: never mind")
 
-        return ppd
+            self.mainapp.cups._end_operation ()
+
+       return ppd
 
     # Installable Options
 
@@ -6358,7 +6362,7 @@ if __name__ == "__main__":
             configure_printer = optarg
             if opt == "--choose-driver":
                 change_ppd = True
-            elif opt == "print-test-page":
+            elif opt == "--print-test-page":
                 print_test_page = True
 
         elif opt == '--devid':
