@@ -2487,7 +2487,6 @@ class GUI(GtkGUI, monitor.Watcher):
     def updateStateReasons (self):
         printer = self.printer
         reasons = printer.other_attributes.get ('printer-state-reasons', [])
-        print reasons
         store = gtk.ListStore (int, str)
         any = False
         for reason in reasons:
