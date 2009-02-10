@@ -3819,10 +3819,10 @@ class NewPrinterGUI(GtkGUI):
 
     def getJockeyDriver_thread(self, id):
         debugprint ("Requesting driver from Jockey: %s" % id)
-        bus = dbus.SessionBus()
         self.jockey_driver_result = False
         self.jockey_installed_files = []
         try:
+            bus = dbus.SessionBus()
             obj = bus.get_object("com.ubuntu.DeviceDriver", "/GUI")
             jockeyloader = \
                 dbus.Interface(obj, "com.ubuntu.DeviceDriver")
