@@ -614,6 +614,8 @@ class GUI(GtkGUI, monitor.Watcher):
                 name = unicode (model.get_value (iter, 2))
                 if name == configure_printer:
                     path = model.get_path (iter)
+                    self.dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
+                    self.dests_iconview.set_cursor (path)
                     self.dests_iconview.item_activated (path)
                     if change_ppd:
                         self.btnChangePPD.clicked ()
