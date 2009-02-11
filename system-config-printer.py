@@ -5998,7 +5998,7 @@ class NewPrinterGUI(GtkGUI):
 
             self.mainapp.cups._end_operation ()
 
-       return ppd
+        return ppd
 
     # Installable Options
 
@@ -6095,11 +6095,6 @@ class NewPrinterGUI(GtkGUI):
                 option.writeback()
 
             self.busy (self.NewPrinterWindow)
-            self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                     _('Adding') + '</span>\n\n' +
-                                     _('Adding printer'))
-            self.WaitWindow.set_transient_for (self.NewPrinterWindow)
-            self.WaitWindow.show ()
             while gtk.events_pending ():
                 gtk.main_iteration ()
             self.mainapp.cups._begin_operation (_("adding printer %s") % name)
@@ -6119,17 +6114,14 @@ class NewPrinterGUI(GtkGUI):
                     checkppd = ppd
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
-                self.WaitWindow.hide ()
                 self.show_IPP_Error(e, msg)
                 self.mainapp.cups._end_operation()
                 return
             except:
                 self.ready (self.NewPrinterWindow)
-                self.WaitWindow.hide ()
                 self.mainapp.cups._end_operation()
                 fatalException (1)
             self.mainapp.cups._end_operation()
-            self.WaitWindow.hide ()
             self.ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer"):
             self.mainapp.cups._begin_operation (_("modifying printer %s") %

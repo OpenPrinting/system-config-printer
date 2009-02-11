@@ -143,13 +143,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.num_jobs_when_hidden = 0
         self.connecting_to_device = {} # dict of printer->time first seen
         self.state_reason_notifications = {}
-        self.auth_notifications = {} # by job ID
         self.auth_info_dialogs = {} # by job ID
         self.job_creation_times_timer = None
         self.special_status_icon = False
         self.new_printer_notifications = {}
         self.completed_job_notifications = {}
-        self.reasoniters = {}
         self.authenticated_jobs = set() # of job IDs
 
         self.getWidgets ({"JobsWindow":
@@ -307,7 +305,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         # Close any open notifications.
         for l in [self.new_printer_notifications.values (),
-                  self.auth_notifications.values (),
                   self.state_reason_notifications.values ()]:
             for notification in l:
                 if notification.get_data ('closed') != True:
@@ -606,7 +603,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         # Check whether authentication is required.
         if self.trayicon:
             if (job_requires_auth and
-                not self.auth_notifications.has_key (job) and
                 not self.auth_info_dialogs.has_key (job)):
                 try:
                     cups.require ("1.9.37")
@@ -684,33 +680,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                         c._end_operation ()
                         nonfatalException ()
 
-                title = _("Authentication Required")
-                text = _("Job requires authentication to proceed.")
-                notification = pynotify.Notification (title, text, 'printer')
-                notification.set_data ('job-id', job)
-                notification.set_data ('keyring-attrs', keyring_attrs)
-                notification.set_urgency (pynotify.URGENCY_NORMAL)
-                notification.set_timeout (pynotify.EXPIRES_NEVER)
-                notification.connect ('closed',
-                                      self.on_auth_notification_closed)
-                notification.add_action ("authenticate", _("Authenticate"),
-                                         self.on_auth_notification_authenticate)
-                self.auth_notifications[job] = notification
-                debugprint ("auth notification opened for job %s" % job)
-                self.set_statusicon_visibility ()
-
-                # In set_statusicon_visibility we process pending
-                # events, so we need to check that we still have a
-                # notification to show.
-                if notification.get_data ('closed') != True:
-                    notification.attach_to_status_icon (self.statusicon)
-                    notification.show ()
-            elif (not job_requires_auth and
-                  self.auth_notifications.has_key (job)):
-                debugprint ("job %s no longer requires auth" % job)
-                self.auth_notifications[job].close ()
-                self.auth_notifications[job].set_data ('closed', True)
-                del self.auth_notifications[job]
+                self.display_auth_info_dialog (job)
 
     def on_auth_notification_closed (self, notification, reason=None):
         job = notification.get_data ('job-id')
@@ -762,15 +732,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
         dialog.show_all ()
         dialog.set_keep_above (True)
         dialog.show_now ()
-        gtk.gdk.keyboard_grab (dialog.window, True)
-        gtk.gdk.pointer_grab (dialog.window, True)
 
     def auth_info_dialog_delete (self, dialog, event):
         self.auth_info_dialog_response (dialog, gtk.RESPONSE_CANCEL)
 
     def auth_info_dialog_response (self, dialog, response):
-        gtk.gdk.pointer_ungrab ()
-        gtk.gdk.keyboard_ungrab ()
         jobid = dialog.get_data ('job-id')
         del self.auth_info_dialogs[jobid]
         if response != gtk.RESPONSE_OK:
@@ -835,7 +801,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
 
         open_notifications = len (self.new_printer_notifications.keys ())
-        open_notifications += len (self.auth_notifications.keys ())
         open_notifications += len (self.completed_job_notifications.keys ())
         for reason, notification in self.state_reason_notifications.iteritems():
             if notification.get_data ('closed') != True:
@@ -1470,11 +1435,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
 
-        if self.auth_notifications.has_key (jobid):
-            self.auth_notifications[jobid].close ()
-            self.auth_notifications[jobid].set_data ('closed', True)
-            del self.auth_notifications[jobid]
-
         self.update_status ()
 
     def state_reason_added (self, mon, reason):
@@ -1482,11 +1442,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         (title, text) = reason.get_description ()
         printer = reason.get_printer ()
-        iter = self.store_printers.append (None)
-        self.store_printers.set_value (iter, 0, reason.get_level ())
-        self.store_printers.set_value (iter, 1, printer)
-        self.store_printers.set_value (iter, 2, text)
-        self.reasoniters[reason.get_tuple ()] = iter
 
         try:
             l = self.printer_state_reasons[printer]
@@ -1512,12 +1467,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def state_reason_removed (self, mon, reason):
         monitor.Watcher.state_reason_removed (self, mon, reason)
-
-        try:
-            iter = self.reasoniters[reason.get_tuple ()]
-            self.store_printers.remove (iter)
-        except KeyError:
-            debugprint ("Reason iter not found")
 
         printer = reason.get_printer ()
         try:
