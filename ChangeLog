@@ -1,3 +1,10 @@
+2009-02-11  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py (NewPrinterGUI.on_btnNPApply_clicked):
+	Don't show wait window when adding a new printer, as that may	
+	require an authentication dialog and we don't want them competing
+	for focus (bug #484960).
+
 2009-02-10  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (NewPrinterGUI.getJockeyDriver_thread):

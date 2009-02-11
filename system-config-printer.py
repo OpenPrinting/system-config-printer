@@ -5329,11 +5329,6 @@ class NewPrinterGUI(GtkGUI):
                 option.writeback()
 
             self.busy (self.NewPrinterWindow)
-            self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                     _('Adding') + '</span>\n\n' +
-                                     _('Adding printer'))
-            self.WaitWindow.set_transient_for (self.NewPrinterWindow)
-            self.WaitWindow.show ()
             while gtk.events_pending ():
                 gtk.main_iteration ()
             try:
@@ -5352,14 +5347,11 @@ class NewPrinterGUI(GtkGUI):
                     checkppd = ppd
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
-                self.WaitWindow.hide ()
                 self.show_IPP_Error(e, msg)
                 return
             except:
                 self.ready (self.NewPrinterWindow)
-                self.WaitWindow.hide ()
                 fatalException (1)
-            self.WaitWindow.hide ()
             self.ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer"):
             try:
