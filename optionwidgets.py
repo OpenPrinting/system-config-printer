@@ -64,7 +64,8 @@ class Option:
         icon.show()
 
         self.constraints = [c for c in ppd.constraints
-                            if c.option1 == option.keyword]
+                            if (c.option1 == option.keyword or
+                                c.option2 == option.keyword)]
         #for c in self.constraints:
         #    if not c.choice1 or not c.choice2:
         #        print c.option1, repr(c.choice1), c.option2, repr(c.choice2)
@@ -95,11 +96,19 @@ class Option:
     def checkConflicts(self, update_others=True):
         value = self.get_current_value()
         for constraint in self.constraints:
-            option2 = self.gui.options.get(constraint.option2, None)
+            if constraint.option1 == self.option.keyword:
+                option2 = self.gui.options.get(constraint.option2, None)
+                choice1 = constraint.choice1
+                choice2 = constraint.choice2
+            else:
+                option2 = self.gui.options.get(constraint.option1, None)
+                choice1 = constraint.choice2
+                choice2 = constraint.choice1
+
             if option2 is None: continue
 
-            if (constraint.choice1==value and
-                option2.get_current_value() == constraint.choice2):
+            if (choice1==value and
+                option2.get_current_value() == choice2):
                 # conflict
                 self.conflicts.add(constraint)
                 if update_others:
@@ -112,7 +121,11 @@ class Option:
 
         tooltip = [_("Conflicts with:")]
         for c in self.conflicts:
-            option = self.gui.options.get(c.option2)
+            if c.option1 == self.option.keyword:
+                option = self.gui.options.get(c.option2)
+            else:
+                option = self.gui.options.get(c.option1)
+
             tooltip.append(option.option.text)
             
         tooltip = "\n".join(tooltip)
