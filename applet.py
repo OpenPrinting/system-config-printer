@@ -104,70 +104,93 @@ class NewPrinterNotification(dbus.service.Object):
     def NewPrinter (self, status, name, mfg, mdl, des, cmd):
         global viewer
         self.wake_up ()
-        c = cups.Connection ()
-        try:
-            printer = c.getPrinters ()[name]
-        except KeyError:
-            return
 
-        try:
-            filename = c.getPPD (name)
-        except cups.IPPError:
-            return
-
-        del c
-
-        # Check for missing packages
-        ppd = cups.PPD (filename)
-        import os
-        os.unlink (filename)
-        import sys
-        sys.path.append (APPDIR)
-        import cupshelpers
-        (missing_pkgs,
-         missing_exes) = cupshelpers.missingPackagesAndExecutables (ppd)
-
-        from cupshelpers.ppds import ppdMakeModelSplit
-        (make, model) = ppdMakeModelSplit (printer['printer-make-and-model'])
-        driver = make + " " + model
-        if status < self.STATUS_GENERIC_DRIVER:
-            title = _("Printer added")
-        else:
+        if name.find("/"):
+            # name is a URI, no queue was generated, because no suitable
+            # driver was found
             title = _("Missing printer driver")
-
-        if len (missing_pkgs) > 0:
-            pkgs = reduce (lambda x,y: x + ", " + y, missing_pkgs)
-            title = _("Install printer driver")
-            text = _("`%s' requires driver installation: %s.") % (name, pkgs)
-            n = pynotify.Notification (title, text)
-            n.set_urgency (pynotify.URGENCY_CRITICAL)
-            import installpackage
-            try:
-                self.packagekit = installpackage.PackageKit ()
-                n.add_action ("install-driver", _("Install"),
-                              lambda x, y: self.install_driver (x, y,
-                                                                missing_pkgs))
-            except:
-                pass
-        elif status == self.STATUS_SUCCESS:
-            text = _("`%s' is ready for printing.") % name
-            n = pynotify.Notification (title, text)
-            n.set_urgency (pynotify.URGENCY_NORMAL)
-            n.add_action ("test-page", _("Print test page"),
-                          lambda x, y: self.print_test_page (x, y, name, devid))
-            n.add_action ("configure", _("Configure"),
-                          lambda x, y: self.configure (x, y, name))
-        else: # Model mismatch
             devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % \
                 (mfg, mdl, des, cmd)
-            text = _("`%s' has been added, using the `%s' driver.") % \
-                   (name, driver)
+            if (mfg and mdl):
+                text = _("A printer, %s %s, has been found, but there is no driver especially for this printer on your system.") % \
+                    (mfg, mdl)
+            elif (des):
+                text = _("A printer, %s, has been found, but there is no driver especially for this printer on your system.") % \
+                    des
+            else:
+                text = _("A printer has been found, but there is no driver especially for this printer on your system.")
+
             n = pynotify.Notification (title, text, 'printer')
             n.set_urgency (pynotify.URGENCY_CRITICAL)
-            n.add_action ("test-page", _("Print test page"),
-                          lambda x, y: self.print_test_page (x, y, name, devid))
-            n.add_action ("find-driver", _("Find driver"),
-                          lambda x, y: self.find_driver (x, y, name, devid))
+            n.add_action ("setup-printer", _("Set up printer"),
+                          lambda x, y: self.setup_printer (x, y, name, devid))
+        else:
+            # name is the name of the queue which hal_lpadmin has set up
+            # automatically.
+            c = cups.Connection ()
+            try:
+                printer = c.getPrinters ()[name]
+            except KeyError:
+                return
+
+            try:
+                filename = c.getPPD (name)
+            except cups.IPPError:
+                return
+
+            del c
+
+            # Check for missing packages
+            ppd = cups.PPD (filename)
+            import os
+            os.unlink (filename)
+            import sys
+            sys.path.append (APPDIR)
+            import cupshelpers
+            (missing_pkgs,
+             missing_exes) = cupshelpers.missingPackagesAndExecutables (ppd)
+
+            from cupshelpers.ppds import ppdMakeModelSplit
+            (make, model) = ppdMakeModelSplit (printer['printer-make-and-model'])
+            driver = make + " " + model
+            if status < self.STATUS_GENERIC_DRIVER:
+                title = _("Printer added")
+            else:
+                title = _("Missing printer driver")
+
+            if len (missing_pkgs) > 0:
+                pkgs = reduce (lambda x,y: x + ", " + y, missing_pkgs)
+                title = _("Install printer driver")
+                text = _("`%s' requires driver installation: %s.") % (name, pkgs)
+                n = pynotify.Notification (title, text)
+                n.set_urgency (pynotify.URGENCY_CRITICAL)
+                import installpackage
+                try:
+                    self.packagekit = installpackage.PackageKit ()
+                    n.add_action ("install-driver", _("Install"),
+                                  lambda x, y: self.install_driver (x, y,
+                                                                    missing_pkgs))
+                except:
+                    pass
+            elif status == self.STATUS_SUCCESS:
+                text = _("`%s' is ready for printing.") % name
+                n = pynotify.Notification (title, text)
+                n.set_urgency (pynotify.URGENCY_NORMAL)
+                n.add_action ("test-page", _("Print test page"),
+                              lambda x, y: self.print_test_page (x, y, name, devid))
+                n.add_action ("configure", _("Configure"),
+                              lambda x, y: self.configure (x, y, name))
+            else: # Model mismatch
+                devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % \
+                    (mfg, mdl, des, cmd)
+                text = _("`%s' has been added, using the `%s' driver.") % \
+                    (name, driver)
+                n = pynotify.Notification (title, text, 'printer')
+                n.set_urgency (pynotify.URGENCY_CRITICAL)
+                n.add_action ("test-page", _("Print test page"),
+                              lambda x, y: self.print_test_page (x, y, name, devid))
+                n.add_action ("find-driver", _("Find driver"),
+                              lambda x, y: self.find_driver (x, y, name, devid))
 
         n.set_timeout (pynotify.EXPIRES_NEVER)
         viewer.notify_new_printer (name, n)
@@ -199,6 +222,11 @@ class NewPrinterNotification(dbus.service.Object):
 
     def find_driver (self, notification, action, name, devid = ""):
         args = ["--choose-driver", name]
+        if devid != "": args = args + ["--devid", devid]
+        self.run_config_tool (args)
+
+    def setup_printer (self, notification, action, uri, devid = ""):
+        args = ["--setup-printer", uri]
         if devid != "": args = args + ["--devid", devid]
         self.run_config_tool (args)
 
