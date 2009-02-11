@@ -5998,7 +5998,7 @@ class NewPrinterGUI(GtkGUI):
 
             self.mainapp.cups._end_operation ()
 
-       return ppd
+        return ppd
 
     # Installable Options
 
