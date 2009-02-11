@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -282,12 +282,8 @@ class Connection:
         d.set_keep_above (True)
         d.show_all ()
         d.show_now ()
-        gtk.gdk.keyboard_grab (d.window, True)
-        gtk.gdk.pointer_grab (d.window, True)
         self._dialog_shown = True
         response = d.run ()
-        gtk.gdk.pointer_ungrab ()
-        gtk.gdk.keyboard_ungrab ()
         (self._use_user,
          self._use_password) = d.get_auth_info ()
         d.destroy ()
