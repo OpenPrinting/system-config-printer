@@ -148,7 +148,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.special_status_icon = False
         self.new_printer_notifications = {}
         self.completed_job_notifications = {}
-        self.reasoniters = {}
         self.authenticated_jobs = set() # of job IDs
 
         self.getWidgets ({"JobsWindow":
@@ -1443,11 +1442,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         (title, text) = reason.get_description ()
         printer = reason.get_printer ()
-        iter = self.store_printers.append (None)
-        self.store_printers.set_value (iter, 0, reason.get_level ())
-        self.store_printers.set_value (iter, 1, printer)
-        self.store_printers.set_value (iter, 2, text)
-        self.reasoniters[reason.get_tuple ()] = iter
 
         try:
             l = self.printer_state_reasons[printer]
@@ -1473,12 +1467,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def state_reason_removed (self, mon, reason):
         monitor.Watcher.state_reason_removed (self, mon, reason)
-
-        try:
-            iter = self.reasoniters[reason.get_tuple ()]
-            self.store_printers.remove (iter)
-        except KeyError:
-            debugprint ("Reason iter not found")
 
         printer = reason.get_printer ()
         try:
