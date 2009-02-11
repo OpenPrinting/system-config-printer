@@ -409,8 +409,6 @@ class Connection:
         d.set_keep_above (True)
         d.show_all ()
         d.show_now ()
-        gtk.gdk.keyboard_grab (d.window, True)
-        gtk.gdk.pointer_grab (d.window, True)
         self._dialog_shown = True
         if self._lock:
             d.connect ("response", self._on_authentication_response)
@@ -420,8 +418,6 @@ class Connection:
             self._on_authentication_response (d, response)
 
     def _on_authentication_response (self, dialog, response):
-        gtk.gdk.pointer_ungrab ()
-        gtk.gdk.keyboard_ungrab ()
         (self._use_user,
          self._use_password) = dialog.get_auth_info ()
         dialog.destroy ()
