@@ -1,5 +1,13 @@
 2009-02-11  Tim Waugh  <twaugh@redhat.com>
 
+	* jobviewer.py (JobViewer.update_job): Don't display a
+	notification when authentication is required, just go straight to
+	the authentication dialog.  Don't grab keyboard and pointer for
+	that dialog and instead let the window manager prevent keyboard
+	input accidentally going to the wrong window.
+
+2009-02-11  Tim Waugh  <twaugh@redhat.com>
+
 	* authconn.py (Connection._perform_authentication): Don't grab
 	keyboard and pointer when displaying authentication dialog.
 	Instead let the window manager prevent keyboard input accidentally
