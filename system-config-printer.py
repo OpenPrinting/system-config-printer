@@ -3447,6 +3447,8 @@ class NewPrinterGUI(GtkGUI):
         self.conflicts = set()
         self.ppd = None
         self.remotecupsqueue = False
+        self.exactdrivermatch = False
+        self.installable_options = False
         self.jockey_installed_files = []
 
         # Synchronisation objects.
@@ -3701,7 +3703,11 @@ class NewPrinterGUI(GtkGUI):
         label.set_text (_("Search"))
 
         if self.dialog_mode in ("printer", "printer_with_uri", "class"):
-            self.entNPName.set_text (self.mainapp.makeNameUnique(self.dialog_mode))
+            if self.dialog_mode == "class":
+                name_proto = "class"
+            else:
+                name_proto = "printer"
+            self.entNPName.set_text (self.mainapp.makeNameUnique(name_proto))
             self.entNPName.grab_focus()
             for widget in [self.entNPLocation,
                            self.entNPDescription,
@@ -3786,6 +3792,12 @@ class NewPrinterGUI(GtkGUI):
                         make_model = ppddict['ppd-make-and-model']
                         (self.auto_make, self.auto_model) = \
                             cupshelpers.ppds.ppdMakeModelSplit (make_model)
+                        if (status == self.ppds.STATUS_SUCCESS and \
+                            self.dialog_mode != "ppd"):
+                            self.exactdrivermatch = True
+                            self.fillMakeList()
+                            self.ntbkNewPrinter.set_current_page(6)
+                            self.nextNPTab(step = 0)
                     else:
                         self.auto_make = devid_dict["MFG"]
                         self.auto_model = devid_dict["MDL"]
@@ -4186,6 +4198,9 @@ class NewPrinterGUI(GtkGUI):
                             cupshelpers.ppds.ppdMakeModelSplit (make_model)
                         self.auto_make = make
                         self.auto_model = model
+                        if (status == self.ppds.STATUS_SUCCESS and \
+                            self.dialog_mode != "ppd"):
+                            self.exactdrivermatch = True
                 except:
                     nonfatalException ()
 
@@ -4209,6 +4224,8 @@ class NewPrinterGUI(GtkGUI):
             if self.dialog_mode == "printer":
                 if self.remotecupsqueue:
                     order = [1, 0]
+                elif self.exactdrivermatch:
+                    order = [1, 6, 0]
                 elif self.rbtnNPFoomatic.get_active():
                     order = [1, 2, 3, 6, 0]
                 elif self.rbtnNPPPD.get_active():
@@ -4219,6 +4236,8 @@ class NewPrinterGUI(GtkGUI):
             else:
                 if self.remotecupsqueue:
                     order = [0]
+                elif self.exactdrivermatch:
+                    order = [6, 0]
                 elif self.rbtnNPFoomatic.get_active():
                     order = [2, 3, 6, 0]
                 elif self.rbtnNPPPD.get_active():
@@ -4244,9 +4263,9 @@ class NewPrinterGUI(GtkGUI):
         try:
             if order.index (5) > -1:
                 # There is a copy settings page in this set
-                fetch_ppd = next_page_nr == 5 and step > 0
+                fetch_ppd = next_page_nr == 5 and step >= 0
         except ValueError:
-            fetch_ppd = next_page_nr == 6 and step > 0
+            fetch_ppd = next_page_nr == 6 and step >= 0
 
         debugprint ("Will fetch ppd? %d" % fetch_ppd)
         if fetch_ppd:
@@ -4412,6 +4431,11 @@ class NewPrinterGUI(GtkGUI):
                 # This is the first page for the New Class dialog, so
                 # hide the Back button.
                 self.btnNPBack.hide ()
+            if self.dialog_mode == "printer_with_uri" and \
+                    (self.remotecupsqueue or \
+                         (self.exactdrivermatch and \
+                              not self.installable_options)):
+                self.btnNPBack.hide ()
         if nr == 2: # Make/PPD file
             downloadable_selected = False
             if self.rbtnNPDownloadableDriverSearch.get_active ():
@@ -4438,6 +4462,10 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPApply.show()
             self.btnNPApply.set_sensitive(
                 bool(getCurrentClassMembers(self.tvNCMembers)))
+        if nr == 6: # Installable options
+            if self.dialog_mode == "printer_with_uri" and \
+                    self.exactdrivermatch:
+                self.btnNPBack.hide ()
         if nr == 7: # Downloadable drivers
             if self.ntbkNPDownloadableDriverProperties.get_current_page() == 1:
                 accepted = self.rbtnNPDownloadLicenseYes.get_active ()
