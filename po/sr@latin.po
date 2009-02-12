@@ -3,15 +3,14 @@
 # Copyright (C) 2005 Red Hat, Inc.
 # This file is distributed under the same license as the system-config-printer package.
 #
-# Igor Miletic <grejigl-gnomeprevod@yahoo.ca>, 2005, 2006, 2008.
+# Igor Miletic <grejigl-gnomeprevod@yahoo.ca>, 2005, 2006, 2008, 2009.
 # Miloš Komarčević <kmilos@gmail.com>, 2007.
-#  <>, 2008, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.0.7.82.x.sr\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-02-12 11:37+0000\n"
-"PO-Revision-Date: 2009-01-29 09:34-0500\n"
+"POT-Creation-Date: 2009-02-12 13:19+0000\n"
+"PO-Revision-Date: 2009-02-12 13:30-0500\n"
 "Last-Translator:  Igor Miletic <grejigl-gnomeprevod@yahoo.ca>\n"
 "Language-Team: Serbian <fedora-trans-sr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +38,7 @@ msgstr "Sačuvaj istoriju poslova ali ne i datoteke"
 
 #: ../AdvancedServerSettings.py:74
 msgid "Preserve job files (allow reprinting)"
-msgstr "sačuvaj štampane datoteke (dozvoljava ponovno štampanje)"
+msgstr "Sačuvaj štampane datoteke (dozvoljava ponovno štampanje)"
 
 #: ../AdvancedServerSettings.py:82
 msgid "Browse Servers"
@@ -50,9 +49,9 @@ msgid ""
 "Usually print servers broadcast their queues.  Specify print servers below "
 "to periodically ask for queues instead."
 msgstr ""
-"Uglavnom štamparski serveri odašilju svoje redove za štampanje.  Umesto toga "
-"navedite štamparske servere ispod kako bi se periodično slao upit za redove "
-"štampanja."
+"Uglavnom štamparski serveri odašilju svoje redove za štampanje.  Možete "
+"takođe navesti štamparske servere ispod kako bi se periodično slao upit za "
+"redove štampanja."
 
 #: ../AdvancedServerSettings.py:214
 msgid "Enter IP address"
@@ -91,7 +90,7 @@ msgstr "Greška CUPS servera (%s)"
 #: ../troubleshoot/PrintTestPage.py:400
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
-msgstr "Desila se greška tokom CUPS radnje: „%s“."
+msgstr "Greška tokom CUPS radnje: „%s“."
 
 #: ../authconn.py:258
 msgid "Retry"
@@ -197,7 +196,7 @@ msgstr "Nova grupa"
 
 #: ../GroupsPaneModel.py:47
 msgid "All Printers"
-msgstr "ŠtampačSvi štampači"
+msgstr "Svi štampači"
 
 #: ../GroupsPaneModel.py:60
 msgid "Favorites"
@@ -291,7 +290,6 @@ msgid "%d minutes ago"
 msgstr "pre %d minuta"
 
 #: ../jobviewer.py:399
-#, fuzzy
 msgid "an hour ago"
 msgstr "pre 1 sat"
 
@@ -302,21 +300,21 @@ msgstr "pre %d sati"
 
 #: ../jobviewer.py:405
 msgid "yesterday"
-msgstr ""
+msgstr "juče"
 
 #: ../jobviewer.py:407
-#, fuzzy, python-format
+#, python-format
 msgid "%d days ago"
-msgstr "pre %d sati"
+msgstr "pre %d dana"
 
 #: ../jobviewer.py:411
 msgid "last week"
-msgstr ""
+msgstr "prošle sedmice"
 
 #: ../jobviewer.py:413
-#, fuzzy, python-format
+#, python-format
 msgid "%d weeks ago"
-msgstr "pre %d minuta"
+msgstr "pre %d sedmice/a"
 
 #: ../jobviewer.py:544
 msgid "Held for authentication"
@@ -436,7 +434,7 @@ msgstr "Štampanje dokumenta „%s“ na „%s“ je završeno."
 #: ../jobviewer.py:1354
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr "Desila se greška tokom slanja dokumenta „%s“ (ID posla %d) štampaču."
+msgstr "Greška tokom slanja dokumenta „%s“ (ID posla %d) štampaču."
 
 #: ../jobviewer.py:1357
 #, python-format
@@ -502,9 +500,8 @@ msgid "Default behavior"
 msgstr "Podrazumevano ponašanje"
 
 #: ../ppdippstr.py:45
-#, fuzzy
 msgid "Authenticated"
-msgstr "Autentifikuj"
+msgstr "Autentifikovan"
 
 #: ../ppdippstr.py:50 ../system-config-printer.py:5926
 msgid "None"
@@ -997,7 +994,7 @@ msgstr "Greška"
 
 #: ../system-config-printer.py:2284
 msgid "There was a problem connecting to the CUPS server."
-msgstr "Desila se greška tokom povezivanja na CUPS server."
+msgstr "Greška tokom povezivanja na CUPS server."
 
 #: ../system-config-printer.py:2380
 #, python-format
@@ -1006,7 +1003,7 @@ msgstr "Vrednost opcije „%s“ je „%s“ i ne može biti uređivana."
 
 #: ../system-config-printer.py:2464
 msgid "Marker levels are not reported for this printer."
-msgstr ""
+msgstr "Nivoi mastila se ne izveštavaju za ovaj štampač."
 
 #: ../system-config-printer.py:2761
 msgid "Cannot Rename"
@@ -1365,7 +1362,7 @@ msgstr "Neuspeo pokušaj prevlačenja PPD."
 
 #: ../system-config-printer.py:6072
 msgid "fetching PPD"
-msgstr ""
+msgstr "dobavljam PPD"
 
 #: ../system-config-printer.py:6101 ../system-config-printer.py:6139
 msgid "No Installable Options"
@@ -2020,9 +2017,8 @@ msgid "<b>State</b>"
 msgstr "<b>Stanje</b>"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:17
-#, fuzzy
 msgid "<b>Status Messages</b>"
-msgstr "Poruke stanja"
+msgstr "<b>Poruke stanja</b>"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:18
 msgid "<b>Tests and Maintenance</b>"
@@ -2365,9 +2361,8 @@ msgid "Starting Banner:"
 msgstr "Početna oznaka:"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:123
-#, fuzzy
 msgid "There are no status messages for this printer."
-msgstr "Ima poruka stanja povezanih sa ovim redom."
+msgstr "Nema poruka o stanju ovog štampača."
 
 #: ../glade/PrinterPropertiesDialog.glade.h:124
 msgid "To add a new option, enter its name in the box below and click to add."
@@ -3026,14 +3021,13 @@ msgid "Missing printer driver"
 msgstr "Nedostaje upravljački program štampača"
 
 #: ../applet.py:119
-#, fuzzy, python-format
+#, python-format
 msgid "No printer driver for %s."
-msgstr "Nedostaje upravljački program štampača"
+msgstr "Nedostaje upravljački program za %s."
 
 #: ../applet.py:121
-#, fuzzy
 msgid "No driver for this printer."
-msgstr "Novo ime za štampač"
+msgstr "Nedostaje upravljački program za ovaj štampač."
 
 #: ../applet.py:157
 msgid "Printer added"
