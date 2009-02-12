@@ -1,3 +1,22 @@
+2009-02-12  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Skip selection of manufacturer, model,
+	and driver in the new-printer wizard if an exact driver match has 
+	been found (trac #141).
+
+2009-02-11  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py, applet.py: Support for auto-detection
+	of printers vis hal-cups-utils without hal-cups-utils creating a
+	queue, especially if there is no driver specifically assigned to
+	the detected printer. This way the user does not get confused by a
+	non-working queue when he ignores the notifications of the applet.
+	In such a case hal-cups-utils sends the CUPS URI resulting from
+	the auto-detection in the place of the queue name. the applet does
+	an appropriate notification then and if the user clicks the
+	button, system-config-printer is started with the new-printer
+	wizard direcly opening, but skipping the device selection step.
+
 2009-02-11  Tim Waugh  <twaugh@redhat.com>
 
 	* system-config-printer.py (GUI.setDataButtonState): Don't allow

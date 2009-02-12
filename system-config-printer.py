@@ -43,11 +43,15 @@ def show_help():
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n\n"
            "Options:\n\n"
+           "  --setup-printer URI\n"
+           "            Select the (detected) CUPS device URI on start-up,\n"
+           "            and run the new-printer wizard for it.\n\n"
            "  --configure-printer NAME\n"
-           "            Select the named printer on start-up.\n\n"
+           "            Select the named printer on start-up, and open its\n"
+           "            properties dialog.\n\n"
            "  --choose-driver NAME\n"
            "            Select the named printer on start-up, and display\n"
-           "            a list of drivers.\n\n"
+           "            the list of drivers.\n\n"
            "  --print-test-page NAME\n"
            "            Select the named printer on start-up and print a\n"
            "            test page to it.\n\n"
@@ -181,8 +185,8 @@ class GUI(GtkGUI, monitor.Watcher):
                        cups.IPP_PRINTER_BUSY: _("Busy"),
                        cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
-    def __init__(self, configure_printer = None, change_ppd = False,
-                 devid = "", print_test_page = False):
+    def __init__(self, setup_printer = None, configure_printer = None,
+                 change_ppd = False, devid = "", print_test_page = False):
 
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
@@ -835,6 +839,15 @@ class GUI(GtkGUI, monitor.Watcher):
             self.PrintersWindow.resize (width, height)
         except:
             nonfatalException ()
+
+        if setup_printer:
+            self.device_uri = setup_printer
+            self.devid = devid
+            self.ppd = None
+            try:
+                self.on_autodetected_printer_without_driver(None)
+            except RuntimeError:
+                pass
 
         if configure_printer:
             # Need to find the entry in the iconview model and activate it.
@@ -3305,6 +3318,12 @@ class GUI(GtkGUI, monitor.Watcher):
         self.newPrinterGUI.init("printer")
         self.ready (self.PrintersWindow)
 
+    # new printer, auto-detected, but now driver found
+    def on_autodetected_printer_without_driver(self, widget):
+        self.busy (self.PrintersWindow)
+        self.newPrinterGUI.init("printer_with_uri")
+        self.ready (self.PrintersWindow)
+
     # new class
     def on_new_class_activate(self, widget):
         self.newPrinterGUI.init("class")
@@ -3427,6 +3446,9 @@ class NewPrinterGUI(GtkGUI):
         self.changed = set()
         self.conflicts = set()
         self.ppd = None
+        self.remotecupsqueue = False
+        self.exactdrivermatch = False
+        self.installable_options = False
         self.jockey_installed_files = []
 
         # Synchronisation objects.
@@ -3680,14 +3702,23 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPDownloadableDriverSearch_label = label
         label.set_text (_("Search"))
 
-        if self.dialog_mode in ("printer", "class"):
-            self.entNPName.set_text (self.mainapp.makeNameUnique(self.dialog_mode))
+        if self.dialog_mode in ("printer", "printer_with_uri", "class"):
+            if self.dialog_mode == "class":
+                name_proto = "class"
+            else:
+                name_proto = "printer"
+            self.entNPName.set_text (self.mainapp.makeNameUnique(name_proto))
             self.entNPName.grab_focus()
             for widget in [self.entNPLocation,
                            self.entNPDescription,
                            self.entSMBURI, self.entSMBUsername,
                            self.entSMBPassword]:
                 widget.set_text('')
+
+        if self.dialog_mode == "printer_with_uri":
+            device_dict = { }
+            self.device = cupshelpers.Device (self.mainapp.device_uri,
+                                              **device_dict)
 
         self.entNPTDirectJetPort.set_text('9100')
 
@@ -3711,8 +3742,12 @@ class NewPrinterGUI(GtkGUI):
             self.NewPrinterWindow.set_title(_("Change Device URI"))
             self.ntbkNewPrinter.set_current_page(1)
             self.fillDeviceTab(self.mainapp.printer.device_uri)
-        elif self.dialog_mode == "ppd":
-            self.NewPrinterWindow.set_title(_("Change Driver"))
+        elif self.dialog_mode == "ppd" or \
+            self.dialog_mode == "printer_with_uri":
+            if self.dialog_mode == "ppd":
+                self.NewPrinterWindow.set_title(_("Change Driver"))
+            else:
+                self.NewPrinterWindow.set_title(_("New Printer"))
             self.ntbkNewPrinter.set_current_page(2)
             self.rbtnNPFoomatic.set_active (True)
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
@@ -3722,6 +3757,10 @@ class NewPrinterGUI(GtkGUI):
             ppd = self.mainapp.ppd
             #self.mainapp.devid = "MFG:Samsung;MDL:ML-3560;DES:;CMD:GDI;"
             devid = self.mainapp.devid
+            if self.dialog_mode == "ppd":
+                uri = self.mainapp.printer.device_uri
+            else:
+                uri = self.device.uri
             if devid != "":
                 try:
                     devid_dict = cupshelpers.parseDeviceID (devid)
@@ -3733,7 +3772,7 @@ class NewPrinterGUI(GtkGUI):
                                                     devid_dict["MDL"],
                                                     devid_dict["DES"],
                                                     devid_dict["CMD"],
-                                                    self.mainapp.printer.device_uri,
+                                                    uri,
                                                     self.jockey_installed_files)
                         if (status != self.ppds.STATUS_SUCCESS and
                             reloaded == 0):
@@ -3753,6 +3792,12 @@ class NewPrinterGUI(GtkGUI):
                         make_model = ppddict['ppd-make-and-model']
                         (self.auto_make, self.auto_model) = \
                             cupshelpers.ppds.ppdMakeModelSplit (make_model)
+                        if (status == self.ppds.STATUS_SUCCESS and \
+                            self.dialog_mode != "ppd"):
+                            self.exactdrivermatch = True
+                            self.fillMakeList()
+                            self.ntbkNewPrinter.set_current_page(6)
+                            self.nextNPTab(step = 0)
                     else:
                         self.auto_make = devid_dict["MFG"]
                         self.auto_model = devid_dict["MDL"]
@@ -3812,11 +3857,15 @@ class NewPrinterGUI(GtkGUI):
         try:
             devid = self.device.id
         except:
+            pass
+        if devid == '':
             try:
                 devid = self.mainapp.devid
             except:
-                self.jockey_lock.release ()
-                return
+                pass
+        if devid == '':
+            self.jockey_lock.release ()
+            return
         thread.start_new_thread (self.getJockeyDriver_thread, (devid,))
         debugprint ("Jockey driver thread started")
 
@@ -3863,7 +3912,7 @@ class NewPrinterGUI(GtkGUI):
                                          _('Searching') + '</span>\n\n' +
                                          _('Searching for downloadable drivers'))
                 if not parent:
-                    parent = self.mainapp.MainWindow
+                    parent = self.mainapp.PrintersWindow
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show ()
 
@@ -4001,7 +4050,8 @@ class NewPrinterGUI(GtkGUI):
 
         if self.dialog_mode == "class":
             order = [0, 4, 5]
-        elif self.dialog_mode == "printer":
+        elif self.dialog_mode == "printer" or \
+                self.dialog_mode == "printer_with_uri":
             self.busy (self.NewPrinterWindow)
             if page_nr == 1: # Device (first page)
                 self.auto_make, self.auto_model = None, None
@@ -4148,6 +4198,9 @@ class NewPrinterGUI(GtkGUI):
                             cupshelpers.ppds.ppdMakeModelSplit (make_model)
                         self.auto_make = make
                         self.auto_model = model
+                        if (status == self.ppds.STATUS_SUCCESS and \
+                            self.dialog_mode != "ppd"):
+                            self.exactdrivermatch = True
                 except:
                     nonfatalException ()
 
@@ -4168,15 +4221,30 @@ class NewPrinterGUI(GtkGUI):
                         nonfatalException ()
 
             self.ready (self.NewPrinterWindow)
-            if self.remotecupsqueue:
-                order = [1, 0]
-            elif self.rbtnNPFoomatic.get_active():
-                order = [1, 2, 3, 6, 0]
-            elif self.rbtnNPPPD.get_active():
-                order = [1, 2, 6, 0]
+            if self.dialog_mode == "printer":
+                if self.remotecupsqueue:
+                    order = [1, 0]
+                elif self.exactdrivermatch:
+                    order = [1, 6, 0]
+                elif self.rbtnNPFoomatic.get_active():
+                    order = [1, 2, 3, 6, 0]
+                elif self.rbtnNPPPD.get_active():
+                    order = [1, 2, 6, 0]
+                else:
+                    # Downloadable driver
+                    order = [1, 2, 7, 6, 0]
             else:
-                # Downloadable driver
-                order = [1, 2, 7, 6, 0]
+                if self.remotecupsqueue:
+                    order = [0]
+                elif self.exactdrivermatch:
+                    order = [6, 0]
+                elif self.rbtnNPFoomatic.get_active():
+                    order = [2, 3, 6, 0]
+                elif self.rbtnNPPPD.get_active():
+                    order = [2, 6, 0]
+                else:
+                    # Downloadable driver
+                    order = [2, 7, 6, 0]
         elif self.dialog_mode == "device":
             order = [1]
         elif self.dialog_mode == "ppd":
@@ -4195,9 +4263,9 @@ class NewPrinterGUI(GtkGUI):
         try:
             if order.index (5) > -1:
                 # There is a copy settings page in this set
-                fetch_ppd = next_page_nr == 5 and step > 0
+                fetch_ppd = next_page_nr == 5 and step >= 0
         except ValueError:
-            fetch_ppd = next_page_nr == 6 and step > 0
+            fetch_ppd = next_page_nr == 6 and step >= 0
 
         debugprint ("Will fetch ppd? %d" % fetch_ppd)
         if fetch_ppd:
@@ -4353,7 +4421,8 @@ class NewPrinterGUI(GtkGUI):
 
         if nr == 0: # Name
             self.btnNPBack.show()
-            if self.dialog_mode == "printer":
+            if self.dialog_mode == "printer" or \
+                    self.dialog_mode == "printer_with_uri":
                 self.btnNPForward.hide()
                 self.btnNPApply.show()
                 self.btnNPApply.set_sensitive(
@@ -4361,6 +4430,11 @@ class NewPrinterGUI(GtkGUI):
             if self.dialog_mode == "class":
                 # This is the first page for the New Class dialog, so
                 # hide the Back button.
+                self.btnNPBack.hide ()
+            if self.dialog_mode == "printer_with_uri" and \
+                    (self.remotecupsqueue or \
+                         (self.exactdrivermatch and \
+                              not self.installable_options)):
                 self.btnNPBack.hide ()
         if nr == 2: # Make/PPD file
             downloadable_selected = False
@@ -4374,6 +4448,12 @@ class NewPrinterGUI(GtkGUI):
                 self.rbtnNPFoomatic.get_active() or
                 self.filechooserPPD.get_filename() or
                 downloadable_selected))
+            # If we have an auto-detected printer for which there was no
+            # driver found, we have already the URI and so this step is
+            # not needed in the wizard. This makes manufacturer?PPD selection
+            # the firts step
+            if self.dialog_mode == "printer_with_uri":
+                self.btnNPBack.hide()
         if nr == 3: # Model/Driver
             model, iter = self.tvNPDrivers.get_selection().get_selected()
             self.btnNPForward.set_sensitive(bool(iter))
@@ -4382,6 +4462,10 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPApply.show()
             self.btnNPApply.set_sensitive(
                 bool(getCurrentClassMembers(self.tvNCMembers)))
+        if nr == 6: # Installable options
+            if self.dialog_mode == "printer_with_uri" and \
+                    self.exactdrivermatch:
+                self.btnNPBack.hide ()
         if nr == 7: # Downloadable drivers
             if self.ntbkNPDownloadableDriverProperties.get_current_page() == 1:
                 accepted = self.rbtnNPDownloadLicenseYes.get_active ()
@@ -6061,7 +6145,7 @@ class NewPrinterGUI(GtkGUI):
 
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
-        if self.dialog_mode in ("class", "printer"):
+        if self.dialog_mode in ("class", "printer", "printer_with_uri"):
             name = unicode (self.entNPName.get_text())
             location = unicode (self.entNPLocation.get_text())
             info = unicode (self.entNPDescription.get_text())
@@ -6073,7 +6157,7 @@ class NewPrinterGUI(GtkGUI):
         checkppd = None
         ppd = self.ppd
 
-        if self.dialog_mode=="class":
+        if self.dialog_mode == "class":
             members = getCurrentClassMembers(self.tvNCMembers)
             try:
                 for member in members:
@@ -6081,7 +6165,8 @@ class NewPrinterGUI(GtkGUI):
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 return
-        elif self.dialog_mode=="printer":
+        elif self.dialog_mode == "printer" or \
+                self.dialog_mode == "printer_with_uri":
             uri = None
             if self.device.uri:
                 uri = self.device.uri
@@ -6125,7 +6210,7 @@ class NewPrinterGUI(GtkGUI):
                 fatalException (1)
             self.mainapp.cups._end_operation()
             self.ready (self.NewPrinterWindow)
-        if self.dialog_mode in ("class", "printer"):
+        if self.dialog_mode in ("class", "printer", "printer_with_uri"):
             self.mainapp.cups._begin_operation (_("modifying printer %s") %
                                                 name)
             try:
@@ -6236,7 +6321,9 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
 
         # Finally, suggest printing a test page.
-        if self.dialog_mode == "printer" and self.mainapp.ppd != False:
+        if (self.dialog_mode == "printer" or \
+            self.dialog_mode == "printer_with_uri") and \
+            self.mainapp.ppd != False:
             q = gtk.MessageDialog (self.mainapp.PrintersWindow,
                                    gtk.DIALOG_DESTROY_WITH_PARENT |
                                    gtk.DIALOG_MODAL,
@@ -6320,12 +6407,13 @@ class NewPrinterGUI(GtkGUI):
                                    self.mainapp.PrintersWindow)
 
 
-def main(configure_printer = None, change_ppd = False, devid = "",
-         print_test_page = False):
+def main(setup_printer = None, configure_printer = None, change_ppd = False,
+         devid = "", print_test_page = False):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init()
 
-    mainwindow = GUI(configure_printer, change_ppd, devid, print_test_page)
+    mainwindow = GUI(setup_printer, configure_printer, change_ppd, devid,
+                     print_test_page)
     if gtk.__dict__.has_key("main"):
         gtk.main()
     else:
@@ -6336,7 +6424,8 @@ if __name__ == "__main__":
     import getopt
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
-                                        ['configure-printer=',
+                                        ['setup-printer=',
+                                         'configure-printer=',
                                          'choose-driver=',
                                          'devid=',
                                          'print-test-page=',
@@ -6345,6 +6434,7 @@ if __name__ == "__main__":
         show_help ()
         sys.exit (1)
 
+    setup_printer = None
     configure_printer = None
     change_ppd = False
     print_test_page = False
@@ -6359,10 +6449,13 @@ if __name__ == "__main__":
             elif opt == "--print-test-page":
                 print_test_page = True
 
+        elif opt == '--setup-printer':
+            setup_printer = optarg
+
         elif opt == '--devid':
             devid = optarg
 
         elif opt == '--debug':
             set_debugging (True)
 
-    main(configure_printer, change_ppd, devid, print_test_page)
+    main(setup_printer, configure_printer, change_ppd, devid, print_test_page)
