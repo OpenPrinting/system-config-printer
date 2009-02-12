@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -111,18 +111,18 @@ class NewPrinterNotification(dbus.service.Object):
             title = _("Missing printer driver")
             devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % \
                 (mfg, mdl, des, cmd)
-            if (mfg and mdl):
-                text = _("A printer, %s %s, has been found, but there is no driver especially for this printer on your system.") % \
-                    (mfg, mdl)
-            elif (des):
-                text = _("A printer, %s, has been found, but there is no driver especially for this printer on your system.") % \
-                    des
+            if (mfg and mdl) or des:
+                if (mfg and mdl):
+                    device = "%s %s" % (mfg, mdl)
+                else:
+                    device = des
+                text = _("No printer driver for %s.") % device
             else:
-                text = _("A printer has been found, but there is no driver especially for this printer on your system.")
+                text = _("No driver for this printer.")
 
             n = pynotify.Notification (title, text, 'printer')
             n.set_urgency (pynotify.URGENCY_CRITICAL)
-            n.add_action ("setup-printer", _("Set up printer"),
+            n.add_action ("setup-printer", _("Search"),
                           lambda x, y: self.setup_printer (x, y, name, devid))
         else:
             # name is the name of the queue which hal_lpadmin has set up
