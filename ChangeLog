@@ -1,3 +1,13 @@
+2009-02-13  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Made determining of the fax pseudo device
+	ID (for selecting the correct PPD file) also working with HPLIP 2.8.12.
+	The "hp-info" of this HPLIP version only allows queries when a print
+	queue for the given URI already exists. Therefore we need to access
+	the printer properties database file directly.
+	Fixed also the bug network printers from HP not getting assigned a
+	"hp://..." URI.
+
 2009-02-12  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* system-config-printer.py: Skip selection of manufacturer, model,
