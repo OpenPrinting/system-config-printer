@@ -4058,6 +4058,9 @@ class NewPrinterGUI(GtkGUI):
                 self.device.uri = self.getDeviceURI()
                 if self.device.type in ["socket", "lpd", "ipp"]:
                     (host, uri) = self.getNetworkPrinterMakeModel ()
+                    hplipuri = \
+                        self.get_hplip_uri_for_network_printer (host, "print")
+                    if hplipuri: self.device.uri = hplipuri
                     faxuri = None
                     if host:
                         faxuri = self.get_hplip_uri_for_network_printer(host,
@@ -4520,7 +4523,7 @@ class NewPrinterGUI(GtkGUI):
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
-        cmd = 'LC_ALL=C DISPLAY= hp-info -d "${URI}"'
+        cmd = 'LC_ALL=C DISPLAY= hp-info -d"${URI}"'
         debugprint (faxuri + ": " + cmd)
         try:
             p = subprocess.Popen (cmd, shell=True,
@@ -4542,7 +4545,7 @@ class NewPrinterGUI(GtkGUI):
                 faxtype = resg[0]
             if faxtype >= 0:
                 break
-        if faxtype < 0:
+        if faxtype <= 0:
             return None
         elif faxtype == 4:
             return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax 2;DES:HP Fax 2;')
@@ -6227,6 +6230,71 @@ class NewPrinterGUI(GtkGUI):
                                                 name)
             try:
                 uri = self.getDeviceURI()
+                if self.device.type in ["socket", "lpd", "ipp"]:
+                    (host, uri) = self.getNetworkPrinterMakeModel ()
+                    faxuri = None
+                    if host:
+                        faxuri = self.get_hplip_uri_for_network_printer(host,
+                                                                        "fax")
+                    if faxuri:
+                        dialog = gtk.Dialog(self.device.info,
+                                            self.NewPrinterWindow,
+                                            gtk.DIALOG_MODAL |
+                                            gtk.DIALOG_DESTROY_WITH_PARENT,
+                                            (_("Printer"), 1,
+                                             _("Fax"), 2))
+                        label = gtk.Label(_("This printer supports both "
+                                            "printing and sending faxes.  "
+                                            "Which functionality should be "
+                                            "used for this queue?"))
+                        dialog.vbox.pack_start(label, True, True, 0)
+                        label.show()
+                        queue_type = dialog.run()
+                        dialog.destroy()
+                        if (queue_type == 2):
+                            self.device.id_dict = \
+                               self.get_hpfax_device_id(faxuri)
+                            self.device.uri = faxuri
+                            self.auto_make = self.device.id_dict["MFG"]
+                            self.auto_model = self.device.id_dict["MDL"]
+                            self.device.id = "MFG:" + self.auto_make + \
+                                             ";MDL:" + self.auto_model + \
+                                             ";DES:" + \
+                                             self.device.id_dict["DES"] + ";"
+                uri = self.device.uri
+                if uri and not uri.startswith ("hpfax:"):
+                    hplipuri = \
+                        self.get_hplip_uri_for_network_printer (host, "print")
+                    if hplipuri:
+                        dialog = gtk.Dialog(self.device.info,
+                                            self.NewPrinterWindow,
+                                            gtk.DIALOG_MODAL |
+                                            gtk.DIALOG_DESTROY_WITH_PARENT,
+                                            (_("HPLIP"), 1,
+                                             _("Conventional"), 2))
+                        label = gtk.Label(_("There are two possibilities to "
+                                            "connect to your HP printer:\n") +
+                                          _("First, you can use HPLIP, HP's "
+                                            "specialized connection backend\n"
+                                            "which gives full functionality, "
+                                            "like borderless printing,\n"
+                                            "ink/toner level check, ...\n") +
+                                          _("The second possibility is using "
+                                            "the conventional backends which\n"
+                                            "come with CUPS. Do this if you "
+                                            "have problems with HPLIP.\n") +
+                                          _("Which connection backend do you "
+                                            "want to use?"))
+                        dialog.vbox.pack_start(label, True, True, 0)
+                        label.show()
+                        backend_type = dialog.run()
+                        dialog.destroy()
+                        if (backend_type == 1):
+                            self.device.uri = hplipuri
+                            uri = hplipuri
+                if uri and uri.startswith ("smb://"):
+                    uri = SMBURI (uri=uri[6:]).sanitize_uri ()
+
                 self.mainapp.cups.addPrinter(name, device=uri)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
