@@ -107,7 +107,7 @@ class CheckPrinterSanity(Question):
                 try:
                     p = TimedSubprocess (parent=parent,
                                          timeout=3000,
-                                         args='LC_ALL=C DISPLAY= hp-info -d"$URI"',
+                                         args='LC_ALL=C DISPLAY= hp-info -d "$URI"',
                                          shell=True,
                                          stdin=file("/dev/null"),
                                          stdout=subprocess.PIPE,

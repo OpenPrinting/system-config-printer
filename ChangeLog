@@ -11,22 +11,6 @@
 	failing due to PyQt not installed is caught and then the text mode
 	version of hp-plugin is called in a terminal window.
 
-	* system-config-printer.py: Fixed bug introduced with last commit
-	which made it impossible to change the URI of an existing print
-	queue to a locally connected (USB, parallel, ...) printer.
-
-2009-02-13  Till Kamppeter  <till.kamppeter@gmail.com>
-
-        * system-config-printer.py: Let network printers from HP getting
-	assigned a "hp://..." URI automatically if a new queue is created,
-	ask the user whether he wants to use the HPLIP backend with a
-	network printer if the URI is changed via the "Properties" dialog.
-	Let get_hpfax_device_id() return None if the "fax-type" is 0, this
-	means that fax is not available on the given printer.
-	* system-config-printer.py, troubleshoot/CheckPrinterSanity.py:
-	Fixed "hp-info" calls: There should be no space between "-d" and
-	the "URI".
-
 2009-02-12  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* system-config-printer.py: Skip selection of manufacturer, model,
