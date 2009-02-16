@@ -1,5 +1,11 @@
 2009-02-13  Till Kamppeter  <till.kamppeter@gmail.com>
 
+	* system-config-printer.py (get_hpfax_device_id): Return None
+	if the "fax-type" is 0, this means that fax is not available
+	on the given printer.
+
+2009-02-13  Till Kamppeter  <till.kamppeter@gmail.com>
+
 	* system-config-printer.py, troubleshoot/CheckPrinterSanity.py:
 	Fixed "hp-info" calls: There should be no space between "-d" and
 	the "URI" to work around HPLIP option parsing bug.

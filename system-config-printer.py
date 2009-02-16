@@ -3655,7 +3655,7 @@ class NewPrinterGUI(GtkGUI):
                 faxtype = resg[0]
             if faxtype >= 0:
                 break
-        if faxtype < 0:
+        if faxtype <= 0:
             return None
         elif faxtype == 4:
             return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax 2;DES:HP Fax 2;')
