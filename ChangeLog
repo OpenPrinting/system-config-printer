@@ -1,3 +1,20 @@
+2009-02-15  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Added functionality to automatically
+	recognize whether the proprietary plug-in of HPLIP is useful or
+	even required and to aks the user whether he want to download and
+	install it. This way the setup of HP printers which require the
+	plugin (especially the printers requiring firmware, as LaserJet
+	1000, 1005, 1018, 1020) is intuitive and the user does not end up
+	with non-working queues (fixes long-standing Ubuntu bug LP: #96454).
+	To achieve maximum compatibility with Ubuntu, an hp-plugin call
+	failing due to PyQt not installed is caught and then the text mode
+	version of hp-plugin is called in a terminal window.
+
+	* system-config-printer.py: Fixed bug introduced with last commit
+	which made it impossible to change the URI of an existing print
+	queue to a locally connected (USB, parallel, ...) printer.
+
 2009-02-13  Till Kamppeter  <till.kamppeter@gmail.com>
 
         * system-config-printer.py: Let network printers from HP getting
