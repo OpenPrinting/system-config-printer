@@ -5487,6 +5487,35 @@ class NewPrinterGUI(GtkGUI):
         model = gtk.ListStore (str,                    # printer-info
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
+
+        # If this is a network device, check whether HPLIP can drive it.
+        if physicaldevice.get_data ('checked-hplip') != True:
+            hp_drivable = False
+            is_network = False
+            for device in physicaldevice.get_devices ():
+                if device.type == "hp":
+                    # We already know that HPLIP can drive this device.
+                    hp_drivable = True
+                    break
+                elif device.type in ["socket", "lpd", "ipp"]:
+                    # This is a network printer.
+                    (scheme, rest) = urllib.splittype (device.uri)
+                    (hostport, rest) = urllib.splithost (rest)
+                    if hostport != None:
+                        (host, port) = urllib.splitport (hostport)
+                        is_network = True
+
+            if not hp_drivable and is_network:
+                hplipuri = self.get_hplip_uri_for_network_printer (host,
+                                                                   "print")
+                if hplipuri:
+                    device_dict = { 'device-class': 'network' }
+                    device = cupshelpers.Device (hplipuri, **device_dict)
+                    physicaldevice.add_device (device)
+
+                physicaldevice.set_data ('checked-hplip', True)
+
+        # Fill the list of connections for this device.
         n = 0
         for device in physicaldevice.get_devices ():
             model.append ((device.info, device))
