@@ -4690,7 +4690,7 @@ class NewPrinterGUI(GtkGUI):
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
-        cmd = 'LC_ALL=C DISPLAY= hp-info -d "${URI}"'
+        cmd = 'LC_ALL=C DISPLAY= hp-info -d"${URI}"'
         debugprint (faxuri + ": " + cmd)
         try:
             p = subprocess.Popen (cmd, shell=True,
@@ -4712,7 +4712,7 @@ class NewPrinterGUI(GtkGUI):
                 faxtype = resg[0]
             if faxtype >= 0:
                 break
-        if faxtype < 0:
+        if faxtype <= 0:
             return None
         elif faxtype == 4:
             return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax 2;DES:HP Fax 2;')
