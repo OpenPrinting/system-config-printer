@@ -97,7 +97,7 @@ class CheckPrinterSanity(Question):
             elif scheme == "hp":
                 os.environ['URI'] = uri
                 try:
-                    p = subprocess.Popen ('LC_ALL=C DISPLAY= hp-info -d "$URI"',
+                    p = subprocess.Popen ('LC_ALL=C DISPLAY= hp-info -d"$URI"',
                                           shell=True,
                                           stdin=file("/dev/null"),
                                           stdout=subprocess.PIPE,
