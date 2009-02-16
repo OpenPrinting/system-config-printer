@@ -707,10 +707,19 @@ class Connection:
         use_pycups = False
         pk_args = ()
 
-        return self._call_with_pk_and_fallback(use_pycups,
+        result = self._call_with_pk_and_fallback(use_pycups,
                                                'ServerGetSettings', pk_args,
                                                self._connection.adminGetServerSettings,
                                                *args, **kwds)
+        settings = {}
+        if result != None:
+            for i in result.keys():
+                if type(i) == 'dbus.String':
+                    settings[i.encode()] = result[i].encode()
+                else:
+                    settings[i] = result[i]
+
+        return settings
 
 
     def adminSetServerSettings(self, *args, **kwds):

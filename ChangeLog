@@ -1,3 +1,28 @@
+2009-02-13  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py (get_hpfax_device_id): Return None
+	if the "fax-type" is 0, this means that fax is not available
+	on the given printer.
+
+2009-02-13  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py, troubleshoot/CheckPrinterSanity.py:
+	Fixed "hp-info" calls: There should be no space between "-d" and
+	the "URI" to work around HPLIP option parsing bug.
+
+2009-02-15  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Added functionality to automatically
+	recognize whether the proprietary plug-in of HPLIP is useful or
+	even required and to aks the user whether he want to download and
+	install it. This way the setup of HP printers which require the
+	plugin (especially the printers requiring firmware, as LaserJet
+	1000, 1005, 1018, 1020) is intuitive and the user does not end up
+	with non-working queues (fixes long-standing Ubuntu bug LP: #96454).
+	To achieve maximum compatibility with Ubuntu, an hp-plugin call
+	failing due to PyQt not installed is caught and then the text mode
+	version of hp-plugin is called in a terminal window.
+
 2009-02-12  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* system-config-printer.py: Skip selection of manufacturer, model,
