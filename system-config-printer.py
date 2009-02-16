@@ -4837,15 +4837,22 @@ class NewPrinterGUI(GtkGUI):
         # For HPLIP, only locally-connected devices are detected.  Add
         # the generic URI to allow network devices to be searched for.
         for each in devices:
-            if each.type == "hp" and each.uri != "hp":
-                # We know the hp backend is available because it has
-                # found a locally-connected device.
-                hp = cupshelpers.Device ("hp",
-                                         **{'device-class': 'network',
-                                            'device-info':
-                                                _("HP Printer (HPLIP)")})
-                devices.append (hp)
-                break
+            if each.type == "hp":
+                if each.uri != "hp":
+                    # We know the hp backend is available because it has
+                    # found a locally-connected device.
+                    hp = cupshelpers.Device ("hp",
+                                             **{'device-class': 'network',
+                                                'device-info':
+                                                    _("HP Printer (HPLIP)")})
+                    devices.append (hp)
+                    break
+                else:
+                    # The hp backend is in the device list but as a
+                    # generic driver with no devices found.  It
+                    # reports "direct" as its class in this case, but
+                    # ought to report "network".
+                    each.device_class = 'network'
 
         # Mark duplicate URIs for deletion
         for i in range (len (devices) - 1):
