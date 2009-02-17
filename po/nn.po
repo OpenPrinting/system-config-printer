@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: printconf-gui\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-02-12 11:37+0000\n"
+"POT-Creation-Date: 2009-02-17 17:11+0000\n"
 "PO-Revision-Date: 2008-10-16 20:34+0200\n"
 "Last-Translator: Karl Ove Hufthammer <karl@huftis.org>\n"
 "Language-Team: Norwegian Nynorsk <i18n-nn@lister.ping.uio.no>\n"
@@ -232,7 +232,7 @@ msgstr "Dokument"
 
 #: ../jobviewer.py:212 ../my-default-printer.py:153
 #: ../system-config-printer.py:364 ../system-config-printer.py:1365
-#: ../system-config-printer.py:4070 ../troubleshoot/PrintTestPage.py:84
+#: ../system-config-printer.py:4078 ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Skrivar"
 
@@ -515,7 +515,7 @@ msgstr "Standardskrivar"
 msgid "Authenticated"
 msgstr "Godkjenn"
 
-#: ../ppdippstr.py:50 ../system-config-printer.py:5926
+#: ../ppdippstr.py:50 ../system-config-printer.py:6159
 msgid "None"
 msgstr "Ingen"
 
@@ -849,8 +849,8 @@ msgid "Automatic rotation"
 msgstr "Automatisk rotering"
 
 #: ../system-config-printer.py:987
-#, python-format
-msgid "Printer Properties - `%s' on %s"
+#, fuzzy, python-format
+msgid "Printer Properties - '%s' on %s"
 msgstr "Skrivareigenskapar – «%s» på %s"
 
 #. The Conflict button was pressed.
@@ -891,7 +891,7 @@ msgstr "Nettverksskrivar (oppdaga)"
 msgid "Network class (discovered)"
 msgstr "Nettverksklasse (oppdaga)"
 
-#: ../system-config-printer.py:1368 ../system-config-printer.py:4071
+#: ../system-config-printer.py:1368 ../system-config-printer.py:4079
 msgid "Fax"
 msgstr "Faks"
 
@@ -924,8 +924,8 @@ msgid "modifying class %s"
 msgstr ""
 
 #: ../system-config-printer.py:1924 ../system-config-printer.py:3017
-#: ../system-config-printer.py:3042 ../system-config-printer.py:6214
-#: ../system-config-printer.py:6226 ../system-config-printer.py:6244
+#: ../system-config-printer.py:3042 ../system-config-printer.py:6447
+#: ../system-config-printer.py:6459 ../system-config-printer.py:6481
 #, fuzzy, python-format
 msgid "modifying printer %s"
 msgstr "Legg til skrivar"
@@ -978,7 +978,7 @@ msgid "printing test page"
 msgstr "Skriv ut testside"
 
 #: ../system-config-printer.py:2180 ../system-config-printer.py:2215
-#: ../system-config-printer.py:5217
+#: ../system-config-printer.py:5418
 msgid "Not possible"
 msgstr "Ikkje mogleg"
 
@@ -1050,13 +1050,13 @@ msgid "copying printer"
 msgstr "Legg til skrivar"
 
 #: ../system-config-printer.py:2969
-#, python-format
-msgid "Really delete class `%s'?"
+#, fuzzy, python-format
+msgid "Really delete class '%s'?"
 msgstr "Er du sikker på at du vil sletta klassen «%s»?"
 
 #: ../system-config-printer.py:2971
-#, python-format
-msgid "Really delete printer `%s'?"
+#, fuzzy, python-format
+msgid "Really delete printer '%s'?"
 msgstr "Er du sikker på at du vil sletta skrivaren «%s»?"
 
 #: ../system-config-printer.py:2973
@@ -1132,8 +1132,8 @@ msgstr ""
 msgid "All files (*)"
 msgstr "Alle filer (*)"
 
-#: ../system-config-printer.py:3703 ../system-config-printer.py:5637
-#: ../system-config-printer.py:5675 ../applet.py:125
+#: ../system-config-printer.py:3703 ../system-config-printer.py:5870
+#: ../system-config-printer.py:5908 ../applet.py:124
 msgid "Search"
 msgstr "Søk"
 
@@ -1154,22 +1154,22 @@ msgstr "Endra einingsadresse"
 msgid "Change Driver"
 msgstr "Endra drivar"
 
-#: ../system-config-printer.py:3912 ../system-config-printer.py:3978
-#: ../system-config-printer.py:4300 ../system-config-printer.py:4498
-#: ../system-config-printer.py:5662
+#: ../system-config-printer.py:3917 ../system-config-printer.py:3983
+#: ../system-config-printer.py:4310 ../system-config-printer.py:4508
+#: ../system-config-printer.py:5895
 msgid "Searching"
 msgstr "Søkjer"
 
-#: ../system-config-printer.py:3913
+#: ../system-config-printer.py:3918
 #, fuzzy
 msgid "Searching for downloadable drivers"
 msgstr "Søkjer etter drivarar"
 
-#: ../system-config-printer.py:3979 ../system-config-printer.py:4301
+#: ../system-config-printer.py:3984 ../system-config-printer.py:4311
 msgid "Searching for drivers"
 msgstr "Søkjer etter drivarar"
 
-#: ../system-config-printer.py:4072
+#: ../system-config-printer.py:4080
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
@@ -1177,50 +1177,144 @@ msgstr ""
 "Denne skrivaren støttar både vanleg utskrift og sending av faksar. Vil du "
 "bruka denne køen til utskrift til faks?"
 
-#: ../system-config-printer.py:4499
+#: ../system-config-printer.py:4509
 msgid "Searching for printers"
 msgstr "Søkjer etter skrivarar"
 
-#: ../system-config-printer.py:4508
+#: ../system-config-printer.py:4518
 #, fuzzy
 msgid "fetching device list"
 msgstr "Juster tenarinnstillingar"
 
-#: ../system-config-printer.py:4645
+#. Tell the user why he needs the plugin
+#: ../system-config-printer.py:4590
+msgid "For this printer a proprietary driver plugin from HP is available.\n"
+msgstr ""
+
+#: ../system-config-printer.py:4593
+msgid ""
+"The installation of the plugin is required for your printer to work.\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.py:4596
+msgid ""
+"Installing the plugin is optional, it completes or enhances the "
+"functionality\n"
+"of your printer. Without plugin at least basic operations work.\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.py:4600
+msgid "The plugin provides the following features:\n"
+msgstr ""
+
+#: ../system-config-printer.py:4603
+msgid " - Printing support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4606
+#, fuzzy
+msgid " - Faster printing\n"
+msgstr "Feilsøking av utskrift"
+
+#: ../system-config-printer.py:4609
+msgid " - Better printout quality\n"
+msgstr ""
+
+#: ../system-config-printer.py:4612
+msgid " - Extra printing features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4615
+msgid " - Scanning support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4618
+msgid " - Faster scanning\n"
+msgstr ""
+
+#: ../system-config-printer.py:4621
+msgid " - Better scanning image quality\n"
+msgstr ""
+
+#: ../system-config-printer.py:4624
+msgid " - Faxing support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4627
+msgid " - Extra fax features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4630
+msgid " - Better Input/Output support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4633
+msgid " - Extra user interface features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4636
+msgid " - Other extra features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4641
+#, fuzzy
+msgid "Install plugin"
+msgstr "Installerte val"
+
+#: ../system-config-printer.py:4642
+#, fuzzy
+msgid "Do not set up printer"
+msgstr "Du har ikkje valt ein skrivar."
+
+#: ../system-config-printer.py:4643
+msgid "Set up without plugin"
+msgstr ""
+
+#: ../system-config-printer.py:4645 ../troubleshoot/PrintTestPage.py:118
+msgid "Yes"
+msgstr "Ja"
+
+#: ../system-config-printer.py:4646 ../troubleshoot/PrintTestPage.py:119
+msgid "No"
+msgstr "Nei"
+
+#: ../system-config-printer.py:4818
 msgid " (Current)"
 msgstr " (gjeldande)"
 
-#: ../system-config-printer.py:4676
+#: ../system-config-printer.py:4850
 #, fuzzy
 msgid "HP Printer (HPLIP)"
 msgstr "Skrivar-IP"
 
-#: ../system-config-printer.py:4711
+#: ../system-config-printer.py:4891
 msgid "Other"
 msgstr "Annan"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:4732
+#: ../system-config-printer.py:4907
 #, fuzzy
 msgid "Network Printer"
 msgstr "Nettverksskrivar"
 
-#: ../system-config-printer.py:4736
+#: ../system-config-printer.py:4911
 #, fuzzy
 msgid "Find Network Printer"
 msgstr "Nettverksskrivar"
 
-#: ../system-config-printer.py:4778 ../system-config-printer.py:5175
+#: ../system-config-printer.py:4979 ../system-config-printer.py:5376
 msgid "Scanning..."
 msgstr "Søkjer …"
 
-#: ../system-config-printer.py:4833 ../system-config-printer.py:5493
+#: ../system-config-printer.py:5034 ../system-config-printer.py:5726
 msgid "No Print Shares"
 msgstr "Ingen delt utskriftsressurs "
 
-#: ../system-config-printer.py:4834
+#: ../system-config-printer.py:5035
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1228,32 +1322,32 @@ msgstr ""
 "Fann ingen delte utskriftsressursar. Sjå til at Samba-tenesta er merkt som "
 "tiltrudd i brannmuroppsettet."
 
-#: ../system-config-printer.py:5095 ../system-config-printer.py:5156
+#: ../system-config-printer.py:5296 ../system-config-printer.py:5357
 msgid "Print Share Verified"
 msgstr "Stadfesta delt utskriftsressurs"
 
-#: ../system-config-printer.py:5096 ../system-config-printer.py:5157
+#: ../system-config-printer.py:5297 ../system-config-printer.py:5358
 msgid "This print share is accessible."
 msgstr "Denne utskriftsressuren er tilgjengeleg."
 
-#: ../system-config-printer.py:5101 ../system-config-printer.py:5161
+#: ../system-config-printer.py:5302 ../system-config-printer.py:5362
 msgid "This print share is not accessible."
 msgstr "Denne utskriftsressuren er ikkje tilgjengeleg."
 
-#: ../system-config-printer.py:5104
+#: ../system-config-printer.py:5305
 msgid "Print Share Inaccessible"
 msgstr "Ikkje tilgjengeleg utskriftsressurs"
 
-#: ../system-config-printer.py:5160
+#: ../system-config-printer.py:5361
 msgid "Inaccessible"
 msgstr "Utilgjengeleg"
 
-#: ../system-config-printer.py:5218
-#, python-format
-msgid "It is not possible to obtain a list of queues from `%s'."
+#: ../system-config-printer.py:5419
+#, fuzzy, python-format
+msgid "It is not possible to obtain a list of queues from '%s'."
 msgstr "Kan ikkje få tak i oversikt over køar frå «%s»."
 
-#: ../system-config-printer.py:5220
+#: ../system-config-printer.py:5421
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
@@ -1261,23 +1355,23 @@ msgstr ""
 "Henting av køoversikt er ei CUPS-utviding til IPP, og nettverksskrivarar "
 "støttar det såleis ikkje."
 
-#: ../system-config-printer.py:5223
+#: ../system-config-printer.py:5424
 msgid "No queues"
 msgstr "Ingen køar"
 
-#: ../system-config-printer.py:5224
+#: ../system-config-printer.py:5425
 msgid "There are no queues available."
 msgstr "Det finst ikkje nokon tilgjengelege køar."
 
-#: ../system-config-printer.py:5342
+#: ../system-config-printer.py:5576
 msgid "A printer connected to the parallel port."
 msgstr "Ein skrivar kopla til parallellporten."
 
-#: ../system-config-printer.py:5344
+#: ../system-config-printer.py:5578
 msgid "A printer connected to a USB port."
 msgstr "Ein skrivar kopla til ein USB-port."
 
-#: ../system-config-printer.py:5346
+#: ../system-config-printer.py:5580
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1285,7 +1379,7 @@ msgstr ""
 "HPLIP-programvare for styring av skrivarar eller skrivarfunksjonen i ei "
 "fleirbrukseining."
 
-#: ../system-config-printer.py:5349
+#: ../system-config-printer.py:5583
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1293,73 +1387,73 @@ msgstr ""
 "HPLIP-programvare for styring av faksmaskiner eller faksfunksjonen i ei "
 "fleirbrukseining."
 
-#: ../system-config-printer.py:5352
+#: ../system-config-printer.py:5586
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Lokal skrivar funnen av HAL (Hardware Abstraction Layer)."
 
-#: ../system-config-printer.py:5494
+#: ../system-config-printer.py:5727
 msgid "HPLIP cannot find the device."
 msgstr ""
 
-#: ../system-config-printer.py:5542
+#: ../system-config-printer.py:5775
 #, fuzzy
 msgid "Not Found"
 msgstr "Fann ikkje"
 
-#: ../system-config-printer.py:5543
+#: ../system-config-printer.py:5776
 msgid "No printer was found at that address."
 msgstr ""
 
-#: ../system-config-printer.py:5687
+#: ../system-config-printer.py:5920
 msgid "-- Select from search results --"
 msgstr "– Vel frå søkjeresultata –"
 
-#: ../system-config-printer.py:5689
+#: ../system-config-printer.py:5922
 msgid "-- No matches found --"
 msgstr "– Fann ikkje nokon –"
 
-#: ../system-config-printer.py:5870
+#: ../system-config-printer.py:6103
 msgid " (recommended)"
 msgstr " (tilrådd)"
 
-#: ../system-config-printer.py:5884
+#: ../system-config-printer.py:6117
 msgid "This PPD is generated by foomatic."
 msgstr "Denne PPD-fila er laga av foomatic."
 
-#: ../system-config-printer.py:5908
+#: ../system-config-printer.py:6141
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:5919
+#: ../system-config-printer.py:6152
 msgid "Distributable"
 msgstr "Kan distribuerast"
 
-#: ../system-config-printer.py:5960
+#: ../system-config-printer.py:6193
 #, fuzzy
 msgid ", "
 msgstr " "
 
-#: ../system-config-printer.py:5965
+#: ../system-config-printer.py:6198
 #, python-format
 msgid ""
 "\n"
 "(%s)"
 msgstr ""
 
-#: ../system-config-printer.py:5970
+#: ../system-config-printer.py:6203
 msgid "No support contacts known"
 msgstr ""
 
-#: ../system-config-printer.py:5974 ../system-config-printer.py:5987
+#: ../system-config-printer.py:6207 ../system-config-printer.py:6220
 msgid "Not specified."
 msgstr "Ikkje vald."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6027
+#: ../system-config-printer.py:6260
 msgid "Database error"
 msgstr "Databasefeil"
 
-#: ../system-config-printer.py:6028
+#: ../system-config-printer.py:6261
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Drivaren «%s» kan ikkje brukast med skrivaren «%s %s»."
@@ -1367,61 +1461,61 @@ msgstr "Drivaren «%s» kan ikkje brukast med skrivaren «%s %s»."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6038
+#: ../system-config-printer.py:6271
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Du må installera pakken «%s» for å kunna bruka denne drivaren."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6045
+#: ../system-config-printer.py:6278
 msgid "PPD error"
 msgstr "PPD-feil"
 
-#: ../system-config-printer.py:6047
+#: ../system-config-printer.py:6280
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Klarte ikkje lesa PPD-feil. Moglege grunnar:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6064
+#: ../system-config-printer.py:6297
 msgid "Downloadable drivers"
 msgstr "Nedlastbare drivarar"
 
-#: ../system-config-printer.py:6065
+#: ../system-config-printer.py:6298
 msgid "Failed to download PPD."
 msgstr "Klarte ikkje lasta ned PPD."
 
-#: ../system-config-printer.py:6072
+#: ../system-config-printer.py:6305
 #, fuzzy
 msgid "fetching PPD"
 msgstr "Endra tekst"
 
-#: ../system-config-printer.py:6101 ../system-config-printer.py:6139
+#: ../system-config-printer.py:6334 ../system-config-printer.py:6372
 msgid "No Installable Options"
 msgstr "Ingen installerbare val"
 
-#: ../system-config-printer.py:6187
+#: ../system-config-printer.py:6420
 #, fuzzy, python-format
 msgid "adding printer %s"
 msgstr "Legg til skrivar"
 
-#: ../system-config-printer.py:6332
+#: ../system-config-printer.py:6569
 msgid "Would you like to print a test page?"
 msgstr ""
 
-#: ../system-config-printer.py:6385
+#: ../system-config-printer.py:6622
 msgid "Install driver"
 msgstr "Installer drivar"
 
-#: ../system-config-printer.py:6386
+#: ../system-config-printer.py:6623 ../troubleshoot/CheckPPDSanity.py:131
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "Skrivaren «%s» treng pakken «%s», som ikkje er installert."
 
-#: ../system-config-printer.py:6402
+#: ../system-config-printer.py:6639
 msgid "Missing driver"
 msgstr "Manglar drivar"
 
-#: ../system-config-printer.py:6403
+#: ../system-config-printer.py:6640
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2641,8 +2735,8 @@ msgid "Printer off-line"
 msgstr "Skrivar ikkje tilgjengeleg"
 
 #: ../statereason.py:102
-#, python-format
-msgid "Printer `%s' is currently off-line."
+#, fuzzy, python-format
+msgid "Printer '%s' is currently off-line."
 msgstr "Skrivaren «%s» er ikkje tilgjengeleg."
 
 #: ../statereason.py:103
@@ -2659,8 +2753,8 @@ msgid "Printer error"
 msgstr "Skrivarfeil"
 
 #: ../statereason.py:106
-#, python-format
-msgid "There is a problem on printer `%s'."
+#, fuzzy, python-format
+msgid "There is a problem on printer '%s'."
 msgstr "Det er eit problem med skrivaren «%s»."
 
 #: ../statereason.py:117
@@ -2724,7 +2818,7 @@ msgstr ""
 "Slå på valet «Del offentleggjorde skrivarar kopla til systemet» i "
 "tenaroppsettet i skrivaroppsettverktøyet."
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:170
+#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:169
 msgid "Install"
 msgstr "Installer"
 
@@ -2733,31 +2827,26 @@ msgid "Invalid PPD File"
 msgstr "Ugyldig PPD-fil"
 
 #: ../troubleshoot/CheckPPDSanity.py:106
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"The PPD file for printer `%s' does not conform to the specification.  "
+"The PPD file for printer '%s' does not conform to the specification.  "
 "Possible reason follows:"
 msgstr "PPD-fila for skrivaren «%s» er ikkje gyldig. Moglege grunnar:"
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:112
-#, python-format
-msgid "There is a problem with the PPD file for printer `%s'."
+#, fuzzy, python-format
+msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "Det er eit problem med PPD-fila for skrivaren «%s»."
 
 #: ../troubleshoot/CheckPPDSanity.py:122
 msgid "Missing Printer Driver"
 msgstr "Manglar skrivardrivar"
 
-#: ../troubleshoot/CheckPPDSanity.py:131
-#, python-format
-msgid "Printer `%s' requires the %s package but it is not currently installed."
-msgstr "Skrivaren «%s» treng pakken «%s», men denne er ikkje installert."
-
 #: ../troubleshoot/CheckPPDSanity.py:136
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"Printer `%s' requires the `%s' program but it is not currently installed."
+"Printer '%s' requires the '%s' program but it is not currently installed."
 msgstr "Skrivaren «%s» treng programmet «%s», men dette er ikkje installert."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
@@ -2889,8 +2978,8 @@ msgid "There are status messages associated with this queue."
 msgstr "Det finst statusmeldingar til denne køen."
 
 #: ../troubleshoot/PrinterStateReasons.py:58
-#, python-format
-msgid "The printer's state message is: `%s'."
+#, fuzzy, python-format
+msgid "The printer's state message is: '%s'."
 msgstr "Skrivartilstanden er: «%s»."
 
 #: ../troubleshoot/PrinterStateReasons.py:83
@@ -2926,14 +3015,6 @@ msgstr "Test"
 msgid "Did the marked print jobs print correctly?"
 msgstr "Vart dei merkte jobbane skrivne rett ut?"
 
-#: ../troubleshoot/PrintTestPage.py:118
-msgid "Yes"
-msgstr "Ja"
-
-#: ../troubleshoot/PrintTestPage.py:119
-msgid "No"
-msgstr "Nei"
-
 #: ../troubleshoot/PrintTestPage.py:143
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
@@ -2945,8 +3026,8 @@ msgstr "Feil ved innsending av testside"
 
 #: ../troubleshoot/QueueNotEnabled.py:56
 #: ../troubleshoot/QueueRejectingJobs.py:66
-#, python-format
-msgid "The reason given is: `%s'."
+#, fuzzy, python-format
+msgid "The reason given is: '%s'."
 msgstr "Den oppgjevne grunnen er: «%s»."
 
 #: ../troubleshoot/QueueNotEnabled.py:58
@@ -2958,13 +3039,14 @@ msgid "Queue Not Enabled"
 msgstr "Kø ikkje verksam"
 
 #: ../troubleshoot/QueueNotEnabled.py:63
-#, python-format
-msgid "The queue `%s' is not enabled."
+#, fuzzy, python-format
+msgid "The queue '%s' is not enabled."
 msgstr "Køen «%s» er ikkje verksam."
 
 #: ../troubleshoot/QueueNotEnabled.py:71
+#, fuzzy
 msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
 "printer in the printer administration tool."
 msgstr ""
 "Vel avkryssingsboksen «Verksam» under kategorien «Reglar» for skrivaren i "
@@ -2975,14 +3057,15 @@ msgid "Queue Rejecting Jobs"
 msgstr "Kø tek ikkje imot jobbar"
 
 #: ../troubleshoot/QueueRejectingJobs.py:63
-#, python-format
-msgid "The queue `%s' is rejecting jobs."
+#, fuzzy, python-format
+msgid "The queue '%s' is rejecting jobs."
 msgstr "Køen «%s» tek ikkje imot jobbar."
 
 #: ../troubleshoot/QueueRejectingJobs.py:70
+#, fuzzy
 msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
+"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
+"'Policies' tab for the printer in the printer administration tool."
 msgstr ""
 "Vel avkryssingsboksen «Tek imot jobbar» under kategorien «Reglar» for "
 "skrivaren i oppsettverktøyet for å få køen til å ta imot jobbar."
@@ -3010,10 +3093,11 @@ msgid "CUPS Service Stopped"
 msgstr "CUPS-teneste stoppa"
 
 #: ../troubleshoot/SchedulerNotRunning.py:29
+#, fuzzy
 msgid ""
 "The CUPS print spooler does not appear to be running.  To correct this, "
 "choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
+"'cups' service."
 msgstr ""
 "Tenesta for CUPS-utskriftskøen ser ikkje ut til å køyra. Vel «System → "
 "Administrering → Tenester» frå hovudmenyen, og sjå etter tenesta «cups»."
@@ -3027,10 +3111,10 @@ msgid "It is not possible to connect to the server."
 msgstr "Det er ikkje mogleg å kopla til tenaren."
 
 #: ../troubleshoot/ServerFirewalled.py:42
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
+"port %d on server '%s'."
 msgstr ""
 "Undersøk om det er ein brannmur eller eit rutaroppsett som blokkerer TCP-"
 "porten %d på tenaren «%s»."
@@ -3069,7 +3153,7 @@ msgstr "Trykk «Neste» for å starta."
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
-#: ../applet.py:111 ../applet.py:159
+#: ../applet.py:111 ../applet.py:158
 msgid "Missing printer driver"
 msgstr "Manglar skrivardrivar"
 
@@ -3083,39 +3167,39 @@ msgstr "Skrivartest"
 msgid "No driver for this printer."
 msgstr "Nytt namn på skrivar"
 
-#: ../applet.py:157
+#: ../applet.py:156
 msgid "Printer added"
 msgstr "Skrivar lagd til"
 
-#: ../applet.py:163
+#: ../applet.py:162
 msgid "Install printer driver"
 msgstr "Installer skrivardrivar"
 
-#: ../applet.py:164
+#: ../applet.py:163
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "«%s» treng installering av drivar: %s."
 
-#: ../applet.py:176
+#: ../applet.py:175
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "«%s» er klar til utskrift."
 
-#: ../applet.py:179 ../applet.py:190
+#: ../applet.py:178 ../applet.py:189
 #, fuzzy
 msgid "Print test page"
 msgstr "Skriv ut testside"
 
-#: ../applet.py:181
+#: ../applet.py:180
 msgid "Configure"
 msgstr "Set opp"
 
-#: ../applet.py:186
+#: ../applet.py:185
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "«%s» er lagd til, og brukar drivaren «%s»."
 
-#: ../applet.py:192
+#: ../applet.py:191
 msgid "Find driver"
 msgstr "Finn drivar"
 
@@ -3138,6 +3222,10 @@ msgstr "Handter utskriftsjobbar"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "Vel standardskrivar"
+
+#~ msgid ""
+#~ "Printer `%s' requires the %s package but it is not currently installed."
+#~ msgstr "Skrivaren «%s» treng pakken «%s», men denne er ikkje installert."
 
 #~ msgid "Authentication Required"
 #~ msgstr "Treng godkjenning"
@@ -4162,10 +4250,6 @@ msgstr "Vel standardskrivar"
 #, fuzzy
 #~ msgid "Convert Text To Postscript"
 #~ msgstr "PostScript"
-
-#, fuzzy
-#~ msgid "You cannot edit an imported printer."
-#~ msgstr "Du har ikkje valt ein skrivar."
 
 #, fuzzy
 #~ msgid "."

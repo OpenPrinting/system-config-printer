@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ro\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-02-12 11:37+0000\n"
+"POT-Creation-Date: 2009-02-17 17:11+0000\n"
 "PO-Revision-Date: 2007-04-13 22:50+0300\n"
 "Last-Translator: MIrcea Daniel <visez.trance@gmail.com>\n"
 "Language-Team:  <ro@li.org>\n"
@@ -236,7 +236,7 @@ msgstr "Document"
 
 #: ../jobviewer.py:212 ../my-default-printer.py:153
 #: ../system-config-printer.py:364 ../system-config-printer.py:1365
-#: ../system-config-printer.py:4070 ../troubleshoot/PrintTestPage.py:84
+#: ../system-config-printer.py:4078 ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Imprimantă"
 
@@ -520,7 +520,7 @@ msgstr "Setează ca imprimantă implicită"
 msgid "Authenticated"
 msgstr "<b>Autentificare</b>"
 
-#: ../ppdippstr.py:50 ../system-config-printer.py:5926
+#: ../ppdippstr.py:50 ../system-config-printer.py:6159
 #, fuzzy
 msgid "None"
 msgstr "nici unul"
@@ -861,7 +861,7 @@ msgstr ""
 
 #: ../system-config-printer.py:987
 #, fuzzy, python-format
-msgid "Printer Properties - `%s' on %s"
+msgid "Printer Properties - '%s' on %s"
 msgstr "Raport imprimantă"
 
 #. The Conflict button was pressed.
@@ -903,7 +903,7 @@ msgstr "Imprimantă nouă "
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:1368 ../system-config-printer.py:4071
+#: ../system-config-printer.py:1368 ../system-config-printer.py:4079
 msgid "Fax"
 msgstr ""
 
@@ -938,8 +938,8 @@ msgid "modifying class %s"
 msgstr ""
 
 #: ../system-config-printer.py:1924 ../system-config-printer.py:3017
-#: ../system-config-printer.py:3042 ../system-config-printer.py:6214
-#: ../system-config-printer.py:6226 ../system-config-printer.py:6244
+#: ../system-config-printer.py:3042 ../system-config-printer.py:6447
+#: ../system-config-printer.py:6459 ../system-config-printer.py:6481
 #, fuzzy, python-format
 msgid "modifying printer %s"
 msgstr "Configurează imprimante"
@@ -995,7 +995,7 @@ msgid "printing test page"
 msgstr "Imprimă pagină de test"
 
 #: ../system-config-printer.py:2180 ../system-config-printer.py:2215
-#: ../system-config-printer.py:5217
+#: ../system-config-printer.py:5418
 msgid "Not possible"
 msgstr "Imposibil"
 
@@ -1068,12 +1068,12 @@ msgstr "Configurează imprimante"
 
 #: ../system-config-printer.py:2969
 #, fuzzy, python-format
-msgid "Really delete class `%s'?"
+msgid "Really delete class '%s'?"
 msgstr "Sigur şterg grupul %s?"
 
 #: ../system-config-printer.py:2971
 #, fuzzy, python-format
-msgid "Really delete printer `%s'?"
+msgid "Really delete printer '%s'?"
 msgstr "Sigur şterg imprimanta %s?"
 
 #: ../system-config-printer.py:2973
@@ -1146,8 +1146,8 @@ msgstr "Descriere imprimantă PostScript (*.ppd[.gz])"
 msgid "All files (*)"
 msgstr ""
 
-#: ../system-config-printer.py:3703 ../system-config-printer.py:5637
-#: ../system-config-printer.py:5675 ../applet.py:125
+#: ../system-config-printer.py:3703 ../system-config-printer.py:5870
+#: ../system-config-printer.py:5908 ../applet.py:124
 #, fuzzy
 msgid "Search"
 msgstr "Nume nou pentru imprimantă"
@@ -1169,127 +1169,220 @@ msgstr "Schimbă URI dispozitiv"
 msgid "Change Driver"
 msgstr "Schimbă driver"
 
-#: ../system-config-printer.py:3912 ../system-config-printer.py:3978
-#: ../system-config-printer.py:4300 ../system-config-printer.py:4498
-#: ../system-config-printer.py:5662
+#: ../system-config-printer.py:3917 ../system-config-printer.py:3983
+#: ../system-config-printer.py:4310 ../system-config-printer.py:4508
+#: ../system-config-printer.py:5895
 msgid "Searching"
 msgstr ""
 
-#: ../system-config-printer.py:3913
+#: ../system-config-printer.py:3918
 #, fuzzy
 msgid "Searching for downloadable drivers"
 msgstr "Nume nou pentru imprimantă"
 
-#: ../system-config-printer.py:3979 ../system-config-printer.py:4301
+#: ../system-config-printer.py:3984 ../system-config-printer.py:4311
 msgid "Searching for drivers"
 msgstr ""
 
-#: ../system-config-printer.py:4072
+#: ../system-config-printer.py:4080
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
 msgstr ""
 
-#: ../system-config-printer.py:4499
+#: ../system-config-printer.py:4509
 #, fuzzy
 msgid "Searching for printers"
 msgstr "Nume nou pentru imprimantă"
 
-#: ../system-config-printer.py:4508
+#: ../system-config-printer.py:4518
 #, fuzzy
 msgid "fetching device list"
 msgstr "<b>Setări de bază server</b>"
 
-#: ../system-config-printer.py:4645
+#. Tell the user why he needs the plugin
+#: ../system-config-printer.py:4590
+msgid "For this printer a proprietary driver plugin from HP is available.\n"
+msgstr ""
+
+#: ../system-config-printer.py:4593
+msgid ""
+"The installation of the plugin is required for your printer to work.\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.py:4596
+msgid ""
+"Installing the plugin is optional, it completes or enhances the "
+"functionality\n"
+"of your printer. Without plugin at least basic operations work.\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.py:4600
+msgid "The plugin provides the following features:\n"
+msgstr ""
+
+#: ../system-config-printer.py:4603
+msgid " - Printing support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4606
+msgid " - Faster printing\n"
+msgstr ""
+
+#: ../system-config-printer.py:4609
+msgid " - Better printout quality\n"
+msgstr ""
+
+#: ../system-config-printer.py:4612
+msgid " - Extra printing features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4615
+msgid " - Scanning support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4618
+msgid " - Faster scanning\n"
+msgstr ""
+
+#: ../system-config-printer.py:4621
+msgid " - Better scanning image quality\n"
+msgstr ""
+
+#: ../system-config-printer.py:4624
+msgid " - Faxing support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4627
+msgid " - Extra fax features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4630
+msgid " - Better Input/Output support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4633
+msgid " - Extra user interface features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4636
+msgid " - Other extra features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4641
+#, fuzzy
+msgid "Install plugin"
+msgstr "Opţiuni instalare"
+
+#: ../system-config-printer.py:4642
+#, fuzzy
+msgid "Do not set up printer"
+msgstr "Imprimantă de copiere"
+
+#: ../system-config-printer.py:4643
+msgid "Set up without plugin"
+msgstr ""
+
+#: ../system-config-printer.py:4645 ../troubleshoot/PrintTestPage.py:118
+msgid "Yes"
+msgstr ""
+
+#: ../system-config-printer.py:4646 ../troubleshoot/PrintTestPage.py:119
+msgid "No"
+msgstr ""
+
+#: ../system-config-printer.py:4818
 msgid " (Current)"
 msgstr " (Curent)"
 
-#: ../system-config-printer.py:4676
+#: ../system-config-printer.py:4850
 msgid "HP Printer (HPLIP)"
 msgstr ""
 
-#: ../system-config-printer.py:4711
+#: ../system-config-printer.py:4891
 msgid "Other"
 msgstr "Altul"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:4732
+#: ../system-config-printer.py:4907
 #, fuzzy
 msgid "Network Printer"
 msgstr "Imprimantă nouă "
 
-#: ../system-config-printer.py:4736
+#: ../system-config-printer.py:4911
 #, fuzzy
 msgid "Find Network Printer"
 msgstr "Imprimantă nouă "
 
-#: ../system-config-printer.py:4778 ../system-config-printer.py:5175
+#: ../system-config-printer.py:4979 ../system-config-printer.py:5376
 #, fuzzy
 msgid "Scanning..."
 msgstr "Redimensionează:"
 
-#: ../system-config-printer.py:4833 ../system-config-printer.py:5493
+#: ../system-config-printer.py:5034 ../system-config-printer.py:5726
 #, fuzzy
 msgid "No Print Shares"
 msgstr "Imprimantă nouă "
 
-#: ../system-config-printer.py:4834
+#: ../system-config-printer.py:5035
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
 
-#: ../system-config-printer.py:5095 ../system-config-printer.py:5156
+#: ../system-config-printer.py:5296 ../system-config-printer.py:5357
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:5096 ../system-config-printer.py:5157
+#: ../system-config-printer.py:5297 ../system-config-printer.py:5358
 msgid "This print share is accessible."
 msgstr "Această partajare de imprimare este accesibilă."
 
-#: ../system-config-printer.py:5101 ../system-config-printer.py:5161
+#: ../system-config-printer.py:5302 ../system-config-printer.py:5362
 msgid "This print share is not accessible."
 msgstr "Această partajare de imprimare nu este accesibilă."
 
-#: ../system-config-printer.py:5104
+#: ../system-config-printer.py:5305
 #, fuzzy
 msgid "Print Share Inaccessible"
 msgstr "Această partajare de imprimare este accesibilă."
 
-#: ../system-config-printer.py:5160
+#: ../system-config-printer.py:5361
 msgid "Inaccessible"
 msgstr "Inacesibil"
 
-#: ../system-config-printer.py:5218
+#: ../system-config-printer.py:5419
 #, fuzzy, python-format
-msgid "It is not possible to obtain a list of queues from `%s'."
+msgid "It is not possible to obtain a list of queues from '%s'."
 msgstr "A fost eroare la conectarea către serverul CUPS."
 
-#: ../system-config-printer.py:5220
+#: ../system-config-printer.py:5421
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
 msgstr ""
 
-#: ../system-config-printer.py:5223
+#: ../system-config-printer.py:5424
 msgid "No queues"
 msgstr ""
 
-#: ../system-config-printer.py:5224
+#: ../system-config-printer.py:5425
 msgid "There are no queues available."
 msgstr ""
 
-#: ../system-config-printer.py:5342
+#: ../system-config-printer.py:5576
 msgid "A printer connected to the parallel port."
 msgstr "O imprimantă conectată la un port paralel."
 
-#: ../system-config-printer.py:5344
+#: ../system-config-printer.py:5578
 msgid "A printer connected to a USB port."
 msgstr "O imprimantă conectată la un port USB."
 
-#: ../system-config-printer.py:5346
+#: ../system-config-printer.py:5580
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1297,7 +1390,7 @@ msgstr ""
 "HPLIP software utilizează o imprimantă, sau funcţia de printare a unui "
 "dispozitiv multifuncţional."
 
-#: ../system-config-printer.py:5349
+#: ../system-config-printer.py:5583
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1305,75 +1398,75 @@ msgstr ""
 "HPLIP software utilizează un fax, sau funcţia fax a unui dispozitiv "
 "multifuncţional."
 
-#: ../system-config-printer.py:5352
+#: ../system-config-printer.py:5586
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Imprimantă locală detectată de Stratul de Abstracţie Hardware (HAL)"
 
-#: ../system-config-printer.py:5494
+#: ../system-config-printer.py:5727
 msgid "HPLIP cannot find the device."
 msgstr ""
 
-#: ../system-config-printer.py:5542
+#: ../system-config-printer.py:5775
 #, fuzzy
 msgid "Not Found"
 msgstr "Nu a fost găsit"
 
-#: ../system-config-printer.py:5543
+#: ../system-config-printer.py:5776
 msgid "No printer was found at that address."
 msgstr ""
 
-#: ../system-config-printer.py:5687
+#: ../system-config-printer.py:5920
 #, fuzzy
 msgid "-- Select from search results --"
 msgstr "Selectează imprimantă din baza de date"
 
-#: ../system-config-printer.py:5689
+#: ../system-config-printer.py:5922
 msgid "-- No matches found --"
 msgstr ""
 
-#: ../system-config-printer.py:5870
+#: ../system-config-printer.py:6103
 msgid " (recommended)"
 msgstr "(recomandat)"
 
-#: ../system-config-printer.py:5884
+#: ../system-config-printer.py:6117
 msgid "This PPD is generated by foomatic."
 msgstr "Acest PPD este generat de foomatic."
 
-#: ../system-config-printer.py:5908
+#: ../system-config-printer.py:6141
 #, fuzzy
 msgid "OpenPrinting"
 msgstr "Imprimare"
 
-#: ../system-config-printer.py:5919
+#: ../system-config-printer.py:6152
 msgid "Distributable"
 msgstr ""
 
-#: ../system-config-printer.py:5960
+#: ../system-config-printer.py:6193
 #, fuzzy
 msgid ", "
 msgstr " "
 
-#: ../system-config-printer.py:5965
+#: ../system-config-printer.py:6198
 #, python-format
 msgid ""
 "\n"
 "(%s)"
 msgstr ""
 
-#: ../system-config-printer.py:5970
+#: ../system-config-printer.py:6203
 msgid "No support contacts known"
 msgstr ""
 
-#: ../system-config-printer.py:5974 ../system-config-printer.py:5987
+#: ../system-config-printer.py:6207 ../system-config-printer.py:6220
 msgid "Not specified."
 msgstr ""
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6027
+#: ../system-config-printer.py:6260
 msgid "Database error"
 msgstr "Eroare baza de date"
 
-#: ../system-config-printer.py:6028
+#: ../system-config-printer.py:6261
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Driverul '%s' nu poate fi folosit cu imprimanta '%s %s'."
@@ -1381,65 +1474,65 @@ msgstr "Driverul '%s' nu poate fi folosit cu imprimanta '%s %s'."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6038
+#: ../system-config-printer.py:6271
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Trebuie să instalaţi pachetul '%s' pentru a putea folosi acest driver."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6045
+#: ../system-config-printer.py:6278
 msgid "PPD error"
 msgstr "Eroare PPD"
 
-#: ../system-config-printer.py:6047
+#: ../system-config-printer.py:6280
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Nu am putut citi fişierul PPD.  Urmează motivul posibil:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6064
+#: ../system-config-printer.py:6297
 msgid "Downloadable drivers"
 msgstr ""
 
-#: ../system-config-printer.py:6065
+#: ../system-config-printer.py:6298
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:6072
+#: ../system-config-printer.py:6305
 #, fuzzy
 msgid "fetching PPD"
 msgstr "Schimbă PPD"
 
-#: ../system-config-printer.py:6101 ../system-config-printer.py:6139
+#: ../system-config-printer.py:6334 ../system-config-printer.py:6372
 #, fuzzy
 msgid "No Installable Options"
 msgstr "Opţiuni instalare"
 
-#: ../system-config-printer.py:6187
+#: ../system-config-printer.py:6420
 #, fuzzy, python-format
 msgid "adding printer %s"
 msgstr "Configurează imprimante"
 
-#: ../system-config-printer.py:6332
+#: ../system-config-printer.py:6569
 msgid "Would you like to print a test page?"
 msgstr ""
 
-#: ../system-config-printer.py:6385
+#: ../system-config-printer.py:6622
 #, fuzzy
 msgid "Install driver"
 msgstr "Driver lipsă"
 
-#: ../system-config-printer.py:6386
+#: ../system-config-printer.py:6623 ../troubleshoot/CheckPPDSanity.py:131
 #, fuzzy, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Imprimanta '%s' necesită pachetul %s ce nu este instalat.  Vă rog instalaţi-"
 "l înainte de a folosi această imprimantă."
 
-#: ../system-config-printer.py:6402
+#: ../system-config-printer.py:6639
 msgid "Missing driver"
 msgstr "Driver lipsă"
 
-#: ../system-config-printer.py:6403
+#: ../system-config-printer.py:6640
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2699,7 +2792,7 @@ msgstr "Opţiuni imprimantă"
 
 #: ../statereason.py:102
 #, fuzzy, python-format
-msgid "Printer `%s' is currently off-line."
+msgid "Printer '%s' is currently off-line."
 msgstr "Imprimanta '%s' nu mai are hârtie."
 
 #: ../statereason.py:103
@@ -2717,7 +2810,7 @@ msgstr "Eroare imprimantă"
 
 #: ../statereason.py:106
 #, fuzzy, python-format
-msgid "There is a problem on printer `%s'."
+msgid "There is a problem on printer '%s'."
 msgstr "Uşă deschisă la imprimanta '%s'."
 
 #: ../statereason.py:117
@@ -2773,7 +2866,7 @@ msgid ""
 "server settings using the printing administration tool."
 msgstr ""
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:170
+#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:169
 #, fuzzy
 msgid "Install"
 msgstr "Driver lipsă"
@@ -2786,14 +2879,14 @@ msgstr "Furnizează fişier PPD"
 #: ../troubleshoot/CheckPPDSanity.py:106
 #, python-format
 msgid ""
-"The PPD file for printer `%s' does not conform to the specification.  "
+"The PPD file for printer '%s' does not conform to the specification.  "
 "Possible reason follows:"
 msgstr ""
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:112
 #, fuzzy, python-format
-msgid "There is a problem with the PPD file for printer `%s'."
+msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "Uşă deschisă la imprimanta '%s'."
 
 #: ../troubleshoot/CheckPPDSanity.py:122
@@ -2801,17 +2894,10 @@ msgstr "Uşă deschisă la imprimanta '%s'."
 msgid "Missing Printer Driver"
 msgstr "Driver lipsă"
 
-#: ../troubleshoot/CheckPPDSanity.py:131
-#, fuzzy, python-format
-msgid "Printer `%s' requires the %s package but it is not currently installed."
-msgstr ""
-"Imprimanta '%s' necesită pachetul %s ce nu este instalat.  Vă rog instalaţi-"
-"l înainte de a folosi această imprimantă."
-
 #: ../troubleshoot/CheckPPDSanity.py:136
 #, fuzzy, python-format
 msgid ""
-"Printer `%s' requires the `%s' program but it is not currently installed."
+"Printer '%s' requires the '%s' program but it is not currently installed."
 msgstr ""
 "Imprimanta '%s' necesită pachetul %s ce nu este instalat.  Vă rog instalaţi-"
 "l înainte de a folosi această imprimantă."
@@ -2945,7 +3031,7 @@ msgstr ""
 
 #: ../troubleshoot/PrinterStateReasons.py:58
 #, fuzzy, python-format
-msgid "The printer's state message is: `%s'."
+msgid "The printer's state message is: '%s'."
 msgstr "Stare imprimantă:"
 
 #: ../troubleshoot/PrinterStateReasons.py:83
@@ -2980,14 +3066,6 @@ msgstr "Reset"
 msgid "Did the marked print jobs print correctly?"
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:118
-msgid "Yes"
-msgstr ""
-
-#: ../troubleshoot/PrintTestPage.py:119
-msgid "No"
-msgstr ""
-
 #: ../troubleshoot/PrintTestPage.py:143
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
@@ -2999,9 +3077,9 @@ msgstr ""
 
 #: ../troubleshoot/QueueNotEnabled.py:56
 #: ../troubleshoot/QueueRejectingJobs.py:66
-#, python-format
-msgid "The reason given is: `%s'."
-msgstr ""
+#, fuzzy, python-format
+msgid "The reason given is: '%s'."
+msgstr "Uşă deschisă la imprimanta '%s'."
 
 #: ../troubleshoot/QueueNotEnabled.py:58
 msgid "This may be due to the printer being disconnected or switched off."
@@ -3012,13 +3090,13 @@ msgid "Queue Not Enabled"
 msgstr ""
 
 #: ../troubleshoot/QueueNotEnabled.py:63
-#, python-format
-msgid "The queue `%s' is not enabled."
-msgstr ""
+#, fuzzy, python-format
+msgid "The queue '%s' is not enabled."
+msgstr "Această partajare de imprimare nu este accesibilă."
 
 #: ../troubleshoot/QueueNotEnabled.py:71
 msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
 "printer in the printer administration tool."
 msgstr ""
 
@@ -3028,13 +3106,13 @@ msgstr ""
 
 #: ../troubleshoot/QueueRejectingJobs.py:63
 #, python-format
-msgid "The queue `%s' is rejecting jobs."
+msgid "The queue '%s' is rejecting jobs."
 msgstr ""
 
 #: ../troubleshoot/QueueRejectingJobs.py:70
 msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
+"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
+"'Policies' tab for the printer in the printer administration tool."
 msgstr ""
 
 #: ../troubleshoot/RemoteAddress.py:26
@@ -3065,7 +3143,7 @@ msgstr ""
 msgid ""
 "The CUPS print spooler does not appear to be running.  To correct this, "
 "choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
+"'cups' service."
 msgstr ""
 
 #: ../troubleshoot/ServerFirewalled.py:26
@@ -3081,7 +3159,7 @@ msgstr "A fost eroare la conectarea către serverul CUPS."
 #, python-format
 msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
+"port %d on server '%s'."
 msgstr ""
 
 #: ../troubleshoot/Shrug.py:26
@@ -3114,7 +3192,7 @@ msgstr ""
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
-#: ../applet.py:111 ../applet.py:159
+#: ../applet.py:111 ../applet.py:158
 #, fuzzy
 msgid "Missing printer driver"
 msgstr "Driver lipsă"
@@ -3129,42 +3207,42 @@ msgstr "Driver lipsă"
 msgid "No driver for this printer."
 msgstr "Nume nou pentru imprimantă"
 
-#: ../applet.py:157
+#: ../applet.py:156
 #, fuzzy
 msgid "Printer added"
 msgstr "Nume imprimantă"
 
-#: ../applet.py:163
+#: ../applet.py:162
 #, fuzzy
 msgid "Install printer driver"
 msgstr "Driver lipsă"
 
-#: ../applet.py:164
+#: ../applet.py:163
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr ""
 
-#: ../applet.py:176
+#: ../applet.py:175
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr ""
 
-#: ../applet.py:179 ../applet.py:190
+#: ../applet.py:178 ../applet.py:189
 #, fuzzy
 msgid "Print test page"
 msgstr "Imprimă pagină de test"
 
-#: ../applet.py:181
+#: ../applet.py:180
 #, fuzzy
 msgid "Configure"
 msgstr "Configurează imprimante"
 
-#: ../applet.py:186
+#: ../applet.py:185
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr ""
 
-#: ../applet.py:192
+#: ../applet.py:191
 #, fuzzy
 msgid "Find driver"
 msgstr "Driver lipsă"
@@ -3191,6 +3269,13 @@ msgstr "Gestionează lucrări"
 #, fuzzy
 msgid "Select default printer"
 msgstr "Setează ca imprimantă implicită"
+
+#, fuzzy
+#~ msgid ""
+#~ "Printer `%s' requires the %s package but it is not currently installed."
+#~ msgstr ""
+#~ "Imprimanta '%s' necesită pachetul %s ce nu este instalat.  Vă rog "
+#~ "instalaţi-l înainte de a folosi această imprimantă."
 
 #, fuzzy
 #~ msgid "Authentication Required"
@@ -3380,10 +3465,6 @@ msgstr "Setează ca imprimantă implicită"
 
 #, fuzzy
 #~ msgid "The CUPS printer on the server is not accepting jobs."
-#~ msgstr "Această partajare de imprimare nu este accesibilă."
-
-#, fuzzy
-#~ msgid "The CUPS printer on the server is not enabled."
 #~ msgstr "Această partajare de imprimare nu este accesibilă."
 
 #, fuzzy
