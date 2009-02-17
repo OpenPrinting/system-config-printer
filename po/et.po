@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-02-12 12:15+0000\n"
+"POT-Creation-Date: 2009-02-17 17:18+0000\n"
 "PO-Revision-Date: 2009-02-16 13:38+0200\n"
 "Last-Translator: Marek Laane <bald@smail.ee>\n"
 "Language-Team: Estonian <Eesti>\n"
@@ -229,7 +229,7 @@ msgstr "Dokument"
 
 #: ../jobviewer.py:212 ../my-default-printer.py:153
 #: ../system-config-printer.py:364 ../system-config-printer.py:1365
-#: ../system-config-printer.py:4070 ../troubleshoot/PrintTestPage.py:84
+#: ../system-config-printer.py:4078 ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Printer"
 
@@ -499,7 +499,7 @@ msgstr "Vaikimisi käitumine"
 msgid "Authenticated"
 msgstr "Autenditud"
 
-#: ../ppdippstr.py:50 ../system-config-printer.py:5926
+#: ../ppdippstr.py:50 ../system-config-printer.py:6159
 msgid "None"
 msgstr "Puudub"
 
@@ -823,8 +823,8 @@ msgid "Automatic rotation"
 msgstr "Automaatne vahetamine"
 
 #: ../system-config-printer.py:987
-#, python-format
-msgid "Printer Properties - `%s' on %s"
+#, fuzzy, python-format
+msgid "Printer Properties - '%s' on %s"
 msgstr "Printeri omadused - `%s' masinas %s"
 
 #. The Conflict button was pressed.
@@ -865,7 +865,7 @@ msgstr "Võrguprinter (tuvastatud)"
 msgid "Network class (discovered)"
 msgstr "Võrguklass (tuvastatud)"
 
-#: ../system-config-printer.py:1368 ../system-config-printer.py:4071
+#: ../system-config-printer.py:1368 ../system-config-printer.py:4079
 msgid "Fax"
 msgstr "Faks"
 
@@ -898,8 +898,8 @@ msgid "modifying class %s"
 msgstr "klassi %s muutmine"
 
 #: ../system-config-printer.py:1924 ../system-config-printer.py:3017
-#: ../system-config-printer.py:3042 ../system-config-printer.py:6214
-#: ../system-config-printer.py:6226 ../system-config-printer.py:6244
+#: ../system-config-printer.py:3042 ../system-config-printer.py:6447
+#: ../system-config-printer.py:6459 ../system-config-printer.py:6481
 #, python-format
 msgid "modifying printer %s"
 msgstr "printeri %s muutmine"
@@ -949,7 +949,7 @@ msgid "printing test page"
 msgstr "testlehekülje trükkimine"
 
 #: ../system-config-printer.py:2180 ../system-config-printer.py:2215
-#: ../system-config-printer.py:5217
+#: ../system-config-printer.py:5418
 msgid "Not possible"
 msgstr "Ei ole võimalik"
 
@@ -1018,13 +1018,13 @@ msgid "copying printer"
 msgstr "printeri kopeerimine"
 
 #: ../system-config-printer.py:2969
-#, python-format
-msgid "Really delete class `%s'?"
+#, fuzzy, python-format
+msgid "Really delete class '%s'?"
 msgstr "Kas tõesti kustutada klass '%s'?"
 
 #: ../system-config-printer.py:2971
-#, python-format
-msgid "Really delete printer `%s'?"
+#, fuzzy, python-format
+msgid "Really delete printer '%s'?"
 msgstr "Kas tõesti kustutada printer '%s'?"
 
 #: ../system-config-printer.py:2973
@@ -1100,8 +1100,8 @@ msgstr ""
 msgid "All files (*)"
 msgstr "Kõik failid (*)"
 
-#: ../system-config-printer.py:3703 ../system-config-printer.py:5637
-#: ../system-config-printer.py:5675 ../applet.py:125
+#: ../system-config-printer.py:3703 ../system-config-printer.py:5870
+#: ../system-config-printer.py:5908 ../applet.py:124
 msgid "Search"
 msgstr "Otsing"
 
@@ -1122,21 +1122,21 @@ msgstr "Muuda seadme URI"
 msgid "Change Driver"
 msgstr "Muuda draiverit"
 
-#: ../system-config-printer.py:3912 ../system-config-printer.py:3978
-#: ../system-config-printer.py:4300 ../system-config-printer.py:4498
-#: ../system-config-printer.py:5662
+#: ../system-config-printer.py:3917 ../system-config-printer.py:3983
+#: ../system-config-printer.py:4310 ../system-config-printer.py:4508
+#: ../system-config-printer.py:5895
 msgid "Searching"
 msgstr "Otsimine"
 
-#: ../system-config-printer.py:3913
+#: ../system-config-printer.py:3918
 msgid "Searching for downloadable drivers"
 msgstr "Allalaaditavate draiverite otsimine"
 
-#: ../system-config-printer.py:3979 ../system-config-printer.py:4301
+#: ../system-config-printer.py:3984 ../system-config-printer.py:4311
 msgid "Searching for drivers"
 msgstr "Draiverite otsimine"
 
-#: ../system-config-printer.py:4072
+#: ../system-config-printer.py:4080
 msgid ""
 "This printer supports both printing and sending faxes.  Which functionality "
 "should be used for this queue?"
@@ -1144,46 +1144,140 @@ msgstr ""
 "See printer toetab nii trükkimist kui ka fakside saatmist. Kumba funktsiooni "
 "soovite antud tööjärjekorra puhul kasutada?"
 
-#: ../system-config-printer.py:4499
+#: ../system-config-printer.py:4509
 msgid "Searching for printers"
 msgstr "Printerite otsimine"
 
-#: ../system-config-printer.py:4508
+#: ../system-config-printer.py:4518
 msgid "fetching device list"
 msgstr "seadmete nimekirja hankimine"
 
-#: ../system-config-printer.py:4645
+#. Tell the user why he needs the plugin
+#: ../system-config-printer.py:4590
+msgid "For this printer a proprietary driver plugin from HP is available.\n"
+msgstr ""
+
+#: ../system-config-printer.py:4593
+msgid ""
+"The installation of the plugin is required for your printer to work.\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.py:4596
+msgid ""
+"Installing the plugin is optional, it completes or enhances the "
+"functionality\n"
+"of your printer. Without plugin at least basic operations work.\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.py:4600
+msgid "The plugin provides the following features:\n"
+msgstr ""
+
+#: ../system-config-printer.py:4603
+msgid " - Printing support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4606
+#, fuzzy
+msgid " - Faster printing\n"
+msgstr "Kahepoolne trükkimine"
+
+#: ../system-config-printer.py:4609
+msgid " - Better printout quality\n"
+msgstr ""
+
+#: ../system-config-printer.py:4612
+msgid " - Extra printing features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4615
+msgid " - Scanning support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4618
+msgid " - Faster scanning\n"
+msgstr ""
+
+#: ../system-config-printer.py:4621
+msgid " - Better scanning image quality\n"
+msgstr ""
+
+#: ../system-config-printer.py:4624
+msgid " - Faxing support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4627
+msgid " - Extra fax features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4630
+msgid " - Better Input/Output support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4633
+msgid " - Extra user interface features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4636
+msgid " - Other extra features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4641
+#, fuzzy
+msgid "Install plugin"
+msgstr "Paigaldatud valikud"
+
+#: ../system-config-printer.py:4642
+#, fuzzy
+msgid "Do not set up printer"
+msgstr "Printeri valik"
+
+#: ../system-config-printer.py:4643
+msgid "Set up without plugin"
+msgstr ""
+
+#: ../system-config-printer.py:4645 ../troubleshoot/PrintTestPage.py:118
+msgid "Yes"
+msgstr "Jah"
+
+#: ../system-config-printer.py:4646 ../troubleshoot/PrintTestPage.py:119
+msgid "No"
+msgstr "Ei"
+
+#: ../system-config-printer.py:4818
 msgid " (Current)"
 msgstr " (aktiivne)"
 
-#: ../system-config-printer.py:4676
+#: ../system-config-printer.py:4850
 msgid "HP Printer (HPLIP)"
 msgstr "HP printer (HPLIP)"
 
-#: ../system-config-printer.py:4711
+#: ../system-config-printer.py:4891
 msgid "Other"
 msgstr "Muu"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:4732
+#: ../system-config-printer.py:4907
 msgid "Network Printer"
 msgstr "Võrguprinter"
 
-#: ../system-config-printer.py:4736
+#: ../system-config-printer.py:4911
 msgid "Find Network Printer"
 msgstr "Otsi võrguprinterit"
 
-#: ../system-config-printer.py:4778 ../system-config-printer.py:5175
+#: ../system-config-printer.py:4979 ../system-config-printer.py:5376
 msgid "Scanning..."
 msgstr "Uurimine..."
 
-#: ../system-config-printer.py:4833 ../system-config-printer.py:5493
+#: ../system-config-printer.py:5034 ../system-config-printer.py:5726
 msgid "No Print Shares"
 msgstr "Jagatud printereid pole"
 
-#: ../system-config-printer.py:4834
+#: ../system-config-printer.py:5035
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1191,32 +1285,32 @@ msgstr ""
 "Jagatud printereid ei leitud. Palun kontrollige, kas tulemüüri seadistustes "
 "on Samba teenus märgitud ikka usaldusväärseks."
 
-#: ../system-config-printer.py:5095 ../system-config-printer.py:5156
+#: ../system-config-printer.py:5296 ../system-config-printer.py:5357
 msgid "Print Share Verified"
 msgstr "Jagatud printer on kontrollitud"
 
-#: ../system-config-printer.py:5096 ../system-config-printer.py:5157
+#: ../system-config-printer.py:5297 ../system-config-printer.py:5358
 msgid "This print share is accessible."
 msgstr "See jagatud printer on kättesaadav."
 
-#: ../system-config-printer.py:5101 ../system-config-printer.py:5161
+#: ../system-config-printer.py:5302 ../system-config-printer.py:5362
 msgid "This print share is not accessible."
 msgstr "See jagatud printer ei ole kättesaadav"
 
-#: ../system-config-printer.py:5104
+#: ../system-config-printer.py:5305
 msgid "Print Share Inaccessible"
 msgstr "Jagatud printer ei ole kättesaadav"
 
-#: ../system-config-printer.py:5160
+#: ../system-config-printer.py:5361
 msgid "Inaccessible"
 msgstr "Kättesaamatu"
 
-#: ../system-config-printer.py:5218
-#, python-format
-msgid "It is not possible to obtain a list of queues from `%s'."
+#: ../system-config-printer.py:5419
+#, fuzzy, python-format
+msgid "It is not possible to obtain a list of queues from '%s'."
 msgstr "Tööjärjekordade nimekirja hankimine printerist '%s' nurjus."
 
-#: ../system-config-printer.py:5220
+#: ../system-config-printer.py:5421
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
@@ -1224,23 +1318,23 @@ msgstr ""
 "Tööjärjekordade nimekirja hankimine on CUPS-i IPP laiendus. Võrguprinterid "
 "seda ei toeta."
 
-#: ../system-config-printer.py:5223
+#: ../system-config-printer.py:5424
 msgid "No queues"
 msgstr "Tööjärjekordi pole"
 
-#: ../system-config-printer.py:5224
+#: ../system-config-printer.py:5425
 msgid "There are no queues available."
 msgstr "Pole saadaval ühtegi tööjärjekorda."
 
-#: ../system-config-printer.py:5342
+#: ../system-config-printer.py:5576
 msgid "A printer connected to the parallel port."
 msgstr "Paralleelporti ühendatud printer."
 
-#: ../system-config-printer.py:5344
+#: ../system-config-printer.py:5578
 msgid "A printer connected to a USB port."
 msgstr "USB-porti ühendatud printer."
 
-#: ../system-config-printer.py:5346
+#: ../system-config-printer.py:5580
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1248,58 +1342,58 @@ msgstr ""
 "HPLIP tarkvaraga töötav printer või mitme funktsiooniga seadme "
 "printerifunktsioon."
 
-#: ../system-config-printer.py:5349
+#: ../system-config-printer.py:5583
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr ""
 "HPLIP tarkvaraga töötav faks või mitme funktsiooniga seadme faksifunktsioon."
 
-#: ../system-config-printer.py:5352
+#: ../system-config-printer.py:5586
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL-i tuvastatud kohalik printer."
 
-#: ../system-config-printer.py:5494
+#: ../system-config-printer.py:5727
 msgid "HPLIP cannot find the device."
 msgstr "HPLIP ei leidnud seadet."
 
-#: ../system-config-printer.py:5542
+#: ../system-config-printer.py:5775
 msgid "Not Found"
 msgstr "Ei leitud"
 
-#: ../system-config-printer.py:5543
+#: ../system-config-printer.py:5776
 msgid "No printer was found at that address."
 msgstr "Sellel aadressil ei leitud ühtegi printerit."
 
-#: ../system-config-printer.py:5687
+#: ../system-config-printer.py:5920
 msgid "-- Select from search results --"
 msgstr "-- Valige otsingutulemuste seast --"
 
-#: ../system-config-printer.py:5689
+#: ../system-config-printer.py:5922
 msgid "-- No matches found --"
 msgstr "-- Ühtegi tulemust ei leitud --"
 
-#: ../system-config-printer.py:5870
+#: ../system-config-printer.py:6103
 msgid " (recommended)"
 msgstr " (soovitatav)"
 
-#: ../system-config-printer.py:5884
+#: ../system-config-printer.py:6117
 msgid "This PPD is generated by foomatic."
 msgstr "Selle PPD genereeris foomatic."
 
-#: ../system-config-printer.py:5908
+#: ../system-config-printer.py:6141
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:5919
+#: ../system-config-printer.py:6152
 msgid "Distributable"
 msgstr "Levitatav"
 
-#: ../system-config-printer.py:5960
+#: ../system-config-printer.py:6193
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:5965
+#: ../system-config-printer.py:6198
 #, python-format
 msgid ""
 "\n"
@@ -1308,20 +1402,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:5970
+#: ../system-config-printer.py:6203
 msgid "No support contacts known"
 msgstr "Ühtegi tugiteenuse kontakti pole teada"
 
-#: ../system-config-printer.py:5974 ../system-config-printer.py:5987
+#: ../system-config-printer.py:6207 ../system-config-printer.py:6220
 msgid "Not specified."
 msgstr "Pole määratud."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6027
+#: ../system-config-printer.py:6260
 msgid "Database error"
 msgstr "Andmebaasi viga"
 
-#: ../system-config-printer.py:6028
+#: ../system-config-printer.py:6261
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' draiverit ei saa kasutada printeriga '%s %s'."
@@ -1329,60 +1423,60 @@ msgstr "'%s' draiverit ei saa kasutada printeriga '%s %s'."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6038
+#: ../system-config-printer.py:6271
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Selle draiveri kasutamiseks tuleb paigaldada '%s' pakett."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6045
+#: ../system-config-printer.py:6278
 msgid "PPD error"
 msgstr "PPD viga"
 
-#: ../system-config-printer.py:6047
+#: ../system-config-printer.py:6280
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD-faili lugemine nurjus. Võimalikud põhjused:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6064
+#: ../system-config-printer.py:6297
 msgid "Downloadable drivers"
 msgstr "Allalaaditavad draiverid"
 
-#: ../system-config-printer.py:6065
+#: ../system-config-printer.py:6298
 msgid "Failed to download PPD."
 msgstr "PPD allalaadimine nurjus."
 
-#: ../system-config-printer.py:6072
+#: ../system-config-printer.py:6305
 msgid "fetching PPD"
 msgstr "PPD hankimine"
 
-#: ../system-config-printer.py:6101 ../system-config-printer.py:6139
+#: ../system-config-printer.py:6334 ../system-config-printer.py:6372
 msgid "No Installable Options"
 msgstr "Paigaldatavaid valikuid pole"
 
-#: ../system-config-printer.py:6187
+#: ../system-config-printer.py:6420
 #, python-format
 msgid "adding printer %s"
 msgstr "printeri %s lisamine"
 
-#: ../system-config-printer.py:6332
+#: ../system-config-printer.py:6569
 msgid "Would you like to print a test page?"
 msgstr "Kas soovite trükkida testlehekülge?"
 
-#: ../system-config-printer.py:6385
+#: ../system-config-printer.py:6622
 msgid "Install driver"
 msgstr "Paigalda draiver"
 
-#: ../system-config-printer.py:6386
+#: ../system-config-printer.py:6623 ../troubleshoot/CheckPPDSanity.py:131
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "Printer '%s' nõuab %s paketti, aga see ei ole praegu paigaldatud"
 
-#: ../system-config-printer.py:6402
+#: ../system-config-printer.py:6639
 msgid "Missing driver"
 msgstr "Puuduv draiver"
 
-#: ../system-config-printer.py:6403
+#: ../system-config-printer.py:6640
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2573,8 +2667,8 @@ msgid "Printer off-line"
 msgstr "Printer pole sees"
 
 #: ../statereason.py:102
-#, python-format
-msgid "Printer `%s' is currently off-line."
+#, fuzzy, python-format
+msgid "Printer '%s' is currently off-line."
 msgstr "Printer '%s' pole praegu sees."
 
 #: ../statereason.py:103
@@ -2591,8 +2685,8 @@ msgid "Printer error"
 msgstr "Printeri viga"
 
 #: ../statereason.py:106
-#, python-format
-msgid "There is a problem on printer `%s'."
+#, fuzzy, python-format
+msgid "There is a problem on printer '%s'."
 msgstr "Printeril '%s' on probleem."
 
 #: ../statereason.py:117
@@ -2650,7 +2744,7 @@ msgstr ""
 "Lülitage trükkimishaldurit kasutades serveri seadistuste all sisse valik "
 "'Selle arvutiga ühendatud jagatud printerite avaldamine'."
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:170
+#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:169
 msgid "Install"
 msgstr "Paigalda"
 
@@ -2659,32 +2753,27 @@ msgid "Invalid PPD File"
 msgstr "Vigane PPD-fail"
 
 #: ../troubleshoot/CheckPPDSanity.py:106
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"The PPD file for printer `%s' does not conform to the specification.  "
+"The PPD file for printer '%s' does not conform to the specification.  "
 "Possible reason follows:"
 msgstr ""
 "Printeri '%s' PPD-fail ei vasta spetsifikatsioonile. Võimalikud põhjused:"
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:112
-#, python-format
-msgid "There is a problem with the PPD file for printer `%s'."
+#, fuzzy, python-format
+msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "Printeri '%s' PPD-failiga tekkis probleem."
 
 #: ../troubleshoot/CheckPPDSanity.py:122
 msgid "Missing Printer Driver"
 msgstr "Puuduv printeri draiver"
 
-#: ../troubleshoot/CheckPPDSanity.py:131
-#, python-format
-msgid "Printer `%s' requires the %s package but it is not currently installed."
-msgstr "Printer `%s' nõuab %s paketti, aga see ei ole praegu paigaldatud."
-
 #: ../troubleshoot/CheckPPDSanity.py:136
-#, python-format
+#, fuzzy, python-format
 msgid ""
-"Printer `%s' requires the `%s' program but it is not currently installed."
+"Printer '%s' requires the '%s' program but it is not currently installed."
 msgstr "Printer `%s' nõuab '%s' programmi, aga see ei ole praegu paigaldatud."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
@@ -2817,8 +2906,8 @@ msgid "There are status messages associated with this queue."
 msgstr "Need on käesoleva tööjärjekorraga seotud olekuteated."
 
 #: ../troubleshoot/PrinterStateReasons.py:58
-#, python-format
-msgid "The printer's state message is: `%s'."
+#, fuzzy, python-format
+msgid "The printer's state message is: '%s'."
 msgstr "Printeri olekuteade: '%s'"
 
 #: ../troubleshoot/PrinterStateReasons.py:83
@@ -2854,14 +2943,6 @@ msgstr "Test"
 msgid "Did the marked print jobs print correctly?"
 msgstr "Kas märgitud trükitööd trükiti korrektselt?"
 
-#: ../troubleshoot/PrintTestPage.py:118
-msgid "Yes"
-msgstr "Jah"
-
-#: ../troubleshoot/PrintTestPage.py:119
-msgid "No"
-msgstr "Ei"
-
 #: ../troubleshoot/PrintTestPage.py:143
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
@@ -2873,8 +2954,8 @@ msgstr "Viga testkehekülje edastamisel"
 
 #: ../troubleshoot/QueueNotEnabled.py:56
 #: ../troubleshoot/QueueRejectingJobs.py:66
-#, python-format
-msgid "The reason given is: `%s'."
+#, fuzzy, python-format
+msgid "The reason given is: '%s'."
 msgstr "Teatatud põhjus: '%s'."
 
 #: ../troubleshoot/QueueNotEnabled.py:58
@@ -2887,13 +2968,14 @@ msgid "Queue Not Enabled"
 msgstr "Tööjärjekord pole lubatud"
 
 #: ../troubleshoot/QueueNotEnabled.py:63
-#, python-format
-msgid "The queue `%s' is not enabled."
+#, fuzzy, python-format
+msgid "The queue '%s' is not enabled."
 msgstr "Tööjärjekord '%s' pole lubatud."
 
 #: ../troubleshoot/QueueNotEnabled.py:71
+#, fuzzy
 msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
 "printer in the printer administration tool."
 msgstr ""
 "Lubamiseks märkige printeri halduris printeri reeglite leheküljel kastike "
@@ -2904,14 +2986,15 @@ msgid "Queue Rejecting Jobs"
 msgstr "Tööjärjekord lükkab töid tagasi"
 
 #: ../troubleshoot/QueueRejectingJobs.py:63
-#, python-format
-msgid "The queue `%s' is rejecting jobs."
+#, fuzzy, python-format
+msgid "The queue '%s' is rejecting jobs."
 msgstr "Tööjärjekord `%s' lükkab töid tagasi,"
 
 #: ../troubleshoot/QueueRejectingJobs.py:70
+#, fuzzy
 msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
+"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
+"'Policies' tab for the printer in the printer administration tool."
 msgstr ""
 "Et tööjärjekord võtaks töid vastu, märkige printeri halduris printeri "
 "reeglite leheküljel kastike 'Tööde vastuvõtmine'."
@@ -2941,10 +3024,11 @@ msgid "CUPS Service Stopped"
 msgstr "CUPS-i teenus on peatatud"
 
 #: ../troubleshoot/SchedulerNotRunning.py:29
+#, fuzzy
 msgid ""
 "The CUPS print spooler does not appear to be running.  To correct this, "
 "choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
+"'cups' service."
 msgstr ""
 "Tundub, et CUPS-i printspuuler ei tööta. Selle parandamiseks valite "
 "peamenüüs Süsteem->Haldus->Teenused ja otsinge teenust 'cups'."
@@ -2958,10 +3042,10 @@ msgid "It is not possible to connect to the server."
 msgstr "Serveriga ei õnnestu ühendust luua."
 
 #: ../troubleshoot/ServerFirewalled.py:42
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
+"port %d on server '%s'."
 msgstr ""
 "Palun kontrollige, kas tulemüür või ruuteri seadistus blokeerib TCP porti %d "
 "serveris '%s'."
@@ -3000,7 +3084,7 @@ msgstr "Klõpsa alustamiseks 'Edasi'."
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
-#: ../applet.py:111 ../applet.py:159
+#: ../applet.py:111 ../applet.py:158
 msgid "Missing printer driver"
 msgstr "Puuduv printeri draiver"
 
@@ -3013,38 +3097,38 @@ msgstr "%s jaoks pole printeri draiverit."
 msgid "No driver for this printer."
 msgstr "Selle printeri jaoks pole draiverit."
 
-#: ../applet.py:157
+#: ../applet.py:156
 msgid "Printer added"
 msgstr "Printe on lisatud"
 
-#: ../applet.py:163
+#: ../applet.py:162
 msgid "Install printer driver"
 msgstr "Paigalda printeri draiver"
 
-#: ../applet.py:164
+#: ../applet.py:163
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "`%s' vajab draiveri paigaldamist: %s."
 
-#: ../applet.py:176
+#: ../applet.py:175
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "`%s' on trükkimiseks valmis."
 
-#: ../applet.py:179 ../applet.py:190
+#: ../applet.py:178 ../applet.py:189
 msgid "Print test page"
 msgstr "Trüki testlehekülg"
 
-#: ../applet.py:181
+#: ../applet.py:180
 msgid "Configure"
 msgstr "Seadista"
 
-#: ../applet.py:186
+#: ../applet.py:185
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "`%s' on lisatud, kasutatakse `%s' draiverit."
 
-#: ../applet.py:192
+#: ../applet.py:191
 msgid "Find driver"
 msgstr "Otsi draiverit"
 
@@ -3068,820 +3152,834 @@ msgstr "Trükitööde haldus"
 msgid "Select default printer"
 msgstr "Määra vaikeprinter"
 
-msgid "Verified"
-msgstr "(kontrollitud)"
+#~ msgid ""
+#~ "Printer `%s' requires the %s package but it is not currently installed."
+#~ msgstr "Printer `%s' nõuab %s paketti, aga see ei ole praegu paigaldatud."
 
-msgid "_Edit"
-msgstr "_Muuda"
+#~ msgid "Verified"
+#~ msgstr "(kontrollitud)"
 
-msgid "Create a new printer queue"
-msgstr "Loo uus printeri tööjärjekord"
+#~ msgid "_Edit"
+#~ msgstr "_Muuda"
 
-msgid "Delete this printer queue"
-msgstr "Kustuta see printeri tööjärjekord"
+#~ msgid "Create a new printer queue"
+#~ msgstr "Loo uus printeri tööjärjekord"
 
-msgid "3"
-msgstr "3"
+#~ msgid "Delete this printer queue"
+#~ msgstr "Kustuta see printeri tööjärjekord"
 
-msgid "Apply"
-msgstr "Rakenda"
+#~ msgid "3"
+#~ msgstr "3"
 
-msgid "localhost"
-msgstr "localhost"
+#~ msgid "Apply"
+#~ msgstr "Rakenda"
 
-msgid "smb://"
-msgstr "smb://"
+#~ msgid "localhost"
+#~ msgstr "localhost"
 
-msgid "Ok"
-msgstr "Olgu"
+#~ msgid "smb://"
+#~ msgstr "smb://"
 
-msgid "Info"
-msgstr "Info"
+#~ msgid "Ok"
+#~ msgstr "Olgu"
 
-msgid "Exit"
-msgstr "Välju"
+#~ msgid "Info"
+#~ msgstr "Info"
 
-msgid ""
-"You have made changes, would you like to save them? If you say no, your "
-"changes will be lost."
-msgstr ""
-"Kas soovite salvestada tehtud muudatusi? Mitte salvestamise korral kaotate oma "
-"muudatused."
+#~ msgid "Exit"
+#~ msgstr "Välju"
 
-msgid "Finish Making New Queue"
-msgstr "Uue ootejärjekorra tegemise lõpetamine"
+#~ msgid ""
+#~ "You have made changes, would you like to save them? If you say no, your "
+#~ "changes will be lost."
+#~ msgstr ""
+#~ "Kas soovite salvestada tehtud muudatusi? Mitte salvestamise korral "
+#~ "kaotate oma muudatused."
 
-msgid "About to create the following queue:"
-msgstr "Järgneva ootejärjekorra kohta:"
+#~ msgid "Finish Making New Queue"
+#~ msgstr "Uue ootejärjekorra tegemise lõpetamine"
 
-msgid "Back"
-msgstr "Tagasi"
+#~ msgid "About to create the following queue:"
+#~ msgstr "Järgneva ootejärjekorra kohta:"
 
-msgid "Type:"
-msgstr "Tüüp:"
+#~ msgid "Back"
+#~ msgstr "Tagasi"
 
-msgid "Workgroup:"
-msgstr "Töögrupp:"
+#~ msgid "Type:"
+#~ msgstr "Tüüp:"
 
-msgid "Name and Type"
-msgstr "Nimi ja tüüp"
+#~ msgid "Workgroup:"
+#~ msgstr "Töögrupp:"
 
-msgid "Next"
-msgstr "Järgmine"
+#~ msgid "Name and Type"
+#~ msgstr "Nimi ja tüüp"
 
-msgid ""
-"The name \"%s\" is bad. Please choose a name of the form [a-zA-Z][a-zA-Z0-"
-"9_-]*."
-msgstr ""
-"Nimi \"%s\" on halb. Palun vali nimi järgmisel kujul [a-zA-Z][a-zA-Z0-9_-]*."
+#~ msgid "Next"
+#~ msgstr "Järgmine"
 
-msgid ""
-"Pick the printer device from the list, or enter it using \"Custom\" below."
-msgstr "Valige printeriseade loendist või sisestage sektsioonis \"Kohandamine\""
+#~ msgid ""
+#~ "The name \"%s\" is bad. Please choose a name of the form [a-zA-Z][a-zA-Z0-"
+#~ "9_-]*."
+#~ msgstr ""
+#~ "Nimi \"%s\" on halb. Palun vali nimi järgmisel kujul [a-zA-Z][a-zA-Z0-9_-]"
+#~ "*."
 
-msgid "Specify Device:"
-msgstr "Seadme täpsustamine:"
+#~ msgid ""
+#~ "Pick the printer device from the list, or enter it using \"Custom\" below."
+#~ msgstr ""
+#~ "Valige printeriseade loendist või sisestage sektsioonis \"Kohandamine\""
 
-msgid "Specify the device to use."
-msgstr "Määrake seade, mida kasutad."
+#~ msgid "Specify Device:"
+#~ msgstr "Seadme täpsustamine:"
 
-msgid "Enter the LPD server and queue to use."
-msgstr "Kasutamiseks sisestage LPD server ja ootejärjekord."
+#~ msgid "Specify the device to use."
+#~ msgstr "Määrake seade, mida kasutad."
 
-msgid "LPD Data"
-msgstr "LPD andmed"
+#~ msgid "Enter the LPD server and queue to use."
+#~ msgstr "Kasutamiseks sisestage LPD server ja ootejärjekord."
 
-msgid "You must specify a server."
-msgstr "Server on vajalik määrata."
+#~ msgid "LPD Data"
+#~ msgstr "LPD andmed"
 
-msgid "Enter the SMB share to use."
-msgstr "Kasutamiseks sisestage SMB jagamine."
+#~ msgid "You must specify a server."
+#~ msgstr "Server on vajalik määrata."
 
-msgid "Workgroup"
-msgstr "Töögrupp"
+#~ msgid "Enter the SMB share to use."
+#~ msgstr "Kasutamiseks sisestage SMB jagamine."
 
-msgid "Windows Printer (SMB) Data"
-msgstr "Windowsi printeri (SMB) andmed"
+#~ msgid "Workgroup"
+#~ msgstr "Töögrupp"
 
-msgid "You must specify a SMB share to print to."
-msgstr "Printimiseks tuleb määrata SMB jagamine."
+#~ msgid "Windows Printer (SMB) Data"
+#~ msgstr "Windowsi printeri (SMB) andmed"
 
-msgid "Enter the NCP server and queue to use."
-msgstr "Kasutamiseks sisestage NCP server ja ootejärjekord."
+#~ msgid "You must specify a SMB share to print to."
+#~ msgstr "Printimiseks tuleb määrata SMB jagamine."
 
-msgid "Novell Netware Printer (NCP) Data"
-msgstr "Novell Netware Printeri (NCP) andmed"
+#~ msgid "Enter the NCP server and queue to use."
+#~ msgstr "Kasutamiseks sisestage NCP server ja ootejärjekord."
 
-msgid "You must specify an NCP server to print to."
-msgstr "Printimiseks on vajalik NCP serveri määramine."
+#~ msgid "Novell Netware Printer (NCP) Data"
+#~ msgstr "Novell Netware Printeri (NCP) andmed"
 
-msgid "You must specify a queue on the NCP server to print to."
-msgstr "Printimiseks on vajalik NCP serveris ootejärjekorra määramine."
+#~ msgid "You must specify an NCP server to print to."
+#~ msgstr "Printimiseks on vajalik NCP serveri määramine."
 
-msgid "Enter the Jetdirect ip and port to use."
-msgstr "Jetdirect-i kasutamiseks sisestage IP ja port."
+#~ msgid "You must specify a queue on the NCP server to print to."
+#~ msgstr "Printimiseks on vajalik NCP serveris ootejärjekorra määramine."
 
-msgid "Ip"
-msgstr "IP"
+#~ msgid "Enter the Jetdirect ip and port to use."
+#~ msgstr "Jetdirect-i kasutamiseks sisestage IP ja port."
 
-msgid "Jetdirect (JETDIRECT) Data"
-msgstr "Jetdirect (JETDIRECT) andmed"
+#~ msgid "Ip"
+#~ msgstr "IP"
 
-msgid "You must specify the ip address of a JetDirect printer."
-msgstr "JetDirect printeri jaoks on vajalik määrata IP-aadress."
+#~ msgid "Jetdirect (JETDIRECT) Data"
+#~ msgstr "Jetdirect (JETDIRECT) andmed"
 
-msgid "Select the Driver to use with this Queue."
-msgstr "Valige draiver, mida kasutatakse selle tööjärjekorraga."
+#~ msgid "You must specify the ip address of a JetDirect printer."
+#~ msgstr "JetDirect printeri jaoks on vajalik määrata IP-aadress."
 
-msgid "Type"
-msgstr "Tüüp"
+#~ msgid "Select the Driver to use with this Queue."
+#~ msgstr "Valige draiver, mida kasutatakse selle tööjärjekorraga."
 
-msgid "Edit Name and Aliases"
-msgstr "Nime ja aliaste muutmine"
+#~ msgid "Type"
+#~ msgstr "Tüüp"
 
-msgid "Add Alias"
-msgstr "Lisa alias"
+#~ msgid "Edit Name and Aliases"
+#~ msgstr "Nime ja aliaste muutmine"
 
-msgid "Edit Alias"
-msgstr "Muuda aliast"
+#~ msgid "Add Alias"
+#~ msgstr "Lisa alias"
 
-msgid "Delete Alias"
-msgstr "Kustuta alias"
+#~ msgid "Edit Alias"
+#~ msgstr "Muuda aliast"
 
-msgid "Alias:"
-msgstr "Alias:"
+#~ msgid "Delete Alias"
+#~ msgstr "Kustuta alias"
 
-msgid "Add an Alias"
-msgstr "Lisa alias:"
+#~ msgid "Alias:"
+#~ msgstr "Alias:"
 
-msgid "Edit the alias"
-msgstr "Aliase muutmine"
+#~ msgid "Add an Alias"
+#~ msgstr "Lisa alias:"
 
-msgid "You must select an alias to edit."
-msgstr "Muutmiseks tuleb valida alias."
+#~ msgid "Edit the alias"
+#~ msgstr "Aliase muutmine"
 
-msgid "You must select an alias to delete."
-msgstr "Kustutamiseks tuleb valida alias."
+#~ msgid "You must select an alias to edit."
+#~ msgstr "Muutmiseks tuleb valida alias."
 
-msgid "Strict RFC1179"
-msgstr "Range RFC1179"
+#~ msgid "You must select an alias to delete."
+#~ msgstr "Kustutamiseks tuleb valida alias."
 
-msgid "Translate \\n->\\r\\n"
-msgstr "Tõlkimine \\n->\\r\\n"
+#~ msgid "Strict RFC1179"
+#~ msgstr "Range RFC1179"
 
-msgid "Edit %s"
-msgstr "Redigeeri %s"
+#~ msgid "Translate \\n->\\r\\n"
+#~ msgstr "Tõlkimine \\n->\\r\\n"
 
-msgid "Integer: Min %s | Max %s"
-msgstr "Täisarv: min %s | maks %s"
+#~ msgid "Edit %s"
+#~ msgstr "Redigeeri %s"
 
-msgid "Value must be a number"
-msgstr "Väärtus peab olema arv"
+#~ msgid "Integer: Min %s | Max %s"
+#~ msgstr "Täisarv: min %s | maks %s"
 
-msgid "Float: Min %s | Max %s"
-msgstr "Ujuv: min %s | maks %s"
+#~ msgid "Value must be a number"
+#~ msgstr "Väärtus peab olema arv"
 
-msgid "US Letter"
-msgstr "US Letter"
+#~ msgid "Float: Min %s | Max %s"
+#~ msgstr "Ujuv: min %s | maks %s"
 
-msgid "Tabloid"
-msgstr "Tabloid"
+#~ msgid "US Letter"
+#~ msgstr "US Letter"
 
-msgid "Ledger"
-msgstr "Ledger"
+#~ msgid "Tabloid"
+#~ msgstr "Tabloid"
 
-msgid "Legal"
-msgstr "Legal"
+#~ msgid "Ledger"
+#~ msgstr "Ledger"
 
-msgid "Statement"
-msgstr "Statement"
+#~ msgid "Legal"
+#~ msgstr "Legal"
 
-msgid "Executive"
-msgstr "Executive"
+#~ msgid "Statement"
+#~ msgstr "Statement"
 
-msgid "A4"
-msgstr "A4"
+#~ msgid "Executive"
+#~ msgstr "Executive"
 
-msgid "A5"
-msgstr "A5"
+#~ msgid "A4"
+#~ msgstr "A4"
 
-msgid "B4"
-msgstr "B4"
+#~ msgid "A5"
+#~ msgstr "A5"
 
-msgid "B5"
-msgstr "B5"
+#~ msgid "B4"
+#~ msgstr "B4"
 
-msgid "Folio"
-msgstr "Folio"
+#~ msgid "B5"
+#~ msgstr "B5"
 
-msgid "Quatro"
-msgstr "Quatro"
+#~ msgid "Folio"
+#~ msgstr "Folio"
 
-msgid "10x14"
-msgstr "10x14"
+#~ msgid "Quatro"
+#~ msgstr "Quatro"
 
-msgid ""
-"You have made changes, would you like to save them?\n"
-"If you say no, you will not be able to print test pages."
-msgstr ""
-"Kas soovite tehtud muudatusi ka salvestada?\n"
-"Mittesalvestamise korral ei ole võimalik trükkida testlehekülgi."
+#~ msgid "10x14"
+#~ msgstr "10x14"
 
-msgid "Sent %s to \"%s\"."
-msgstr "%s saatmine printerisse \"%s\""
+#~ msgid ""
+#~ "You have made changes, would you like to save them?\n"
+#~ "If you say no, you will not be able to print test pages."
+#~ msgstr ""
+#~ "Kas soovite tehtud muudatusi ka salvestada?\n"
+#~ "Mittesalvestamise korral ei ole võimalik trükkida testlehekülgi."
 
-msgid "You must select a printer queue to delete."
-msgstr "Kustutamiseks on vajalik valida printeri tööjärjekord."
+#~ msgid "Sent %s to \"%s\"."
+#~ msgstr "%s saatmine printerisse \"%s\""
 
-msgid "You cannot delete an imported printer."
-msgstr "Imporditud printeri kustutamine ei ole võimalik."
+#~ msgid "You must select a printer queue to delete."
+#~ msgstr "Kustutamiseks on vajalik valida printeri tööjärjekord."
 
-msgid "Delete"
-msgstr "Kustuta"
+#~ msgid "You cannot delete an imported printer."
+#~ msgstr "Imporditud printeri kustutamine ei ole võimalik."
 
-msgid "You must select a printer queue to edit."
-msgstr "Muutmiseks on vaja valida printeri tööjärjekord."
+#~ msgid "Delete"
+#~ msgstr "Kustuta"
 
-msgid "This imported printer is protected from overrides. You can not edit it."
-msgstr "See imporditud printer on kaitstud ülekirjutamise eest. Seda ei saa muuta."
+#~ msgid "You must select a printer queue to edit."
+#~ msgstr "Muutmiseks on vaja valida printeri tööjärjekord."
 
-msgid "Override?"
-msgstr "Kas kirjutada üle?"
+#~ msgid ""
+#~ "This imported printer is protected from overrides. You can not edit it."
+#~ msgstr ""
+#~ "See imporditud printer on kaitstud ülekirjutamise eest. Seda ei saa muuta."
 
-msgid "This is an imported printer. Do you want to create a local override?"
-msgstr "See on imporditud printer. Kas soovite luua kohalikku eelisseadistust?"
+#~ msgid "Override?"
+#~ msgstr "Kas kirjutada üle?"
 
-msgid "You must select a queue to print to."
-msgstr "Trükkimiseks on vajalik tööjärjekorra määramine."
+#~ msgid "This is an imported printer. Do you want to create a local override?"
+#~ msgstr ""
+#~ "See on imporditud printer. Kas soovite luua kohalikku eelisseadistust?"
 
-msgid "Initializing alchemist edit environment ..."
-msgstr "alchemist redigeerimise keskkonna lähtestamine..."
+#~ msgid "You must select a queue to print to."
+#~ msgstr "Trükkimiseks on vajalik tööjärjekorra määramine."
 
-msgid "Initializing linux printing database ..."
-msgstr "Linuxi printimise andmebaasi lähtestamine..."
+#~ msgid "Initializing alchemist edit environment ..."
+#~ msgstr "alchemist redigeerimise keskkonna lähtestamine..."
 
-msgid "Importing CUPS queues ..."
-msgstr "CUPS-i tööjärjekordade importimine ..."
+#~ msgid "Initializing linux printing database ..."
+#~ msgstr "Linuxi printimise andmebaasi lähtestamine..."
 
-msgid ""
-"Failed to parse alchemist context: \n"
-"%s"
-msgstr ""
-"alchemist keskkonna analüüsimine nurjus:\n"
-"%s"
+#~ msgid "Importing CUPS queues ..."
+#~ msgstr "CUPS-i tööjärjekordade importimine ..."
 
-msgid "Invalid printconf context"
-msgstr "Vigane printconf keskkond"
+#~ msgid ""
+#~ "Failed to parse alchemist context: \n"
+#~ "%s"
+#~ msgstr ""
+#~ "alchemist keskkonna analüüsimine nurjus:\n"
+#~ "%s"
 
-msgid "\"%s\" is not a valid queue name."
-msgstr "\"%s\" ei ole sobiv tööjärjekorra nimi."
+#~ msgid "Invalid printconf context"
+#~ msgstr "Vigane printconf keskkond"
 
-msgid "Need device, make and model.\n"
-msgstr "Vajalik on seade, toode ja mudel.\n"
+#~ msgid "\"%s\" is not a valid queue name."
+#~ msgstr "\"%s\" ei ole sobiv tööjärjekorra nimi."
 
-msgid "add-local: queue name '%s' not unique\n"
-msgstr "add-local: tööjärjekorra nimi '%s' ei ole ainulaadne\n"
+#~ msgid "Need device, make and model.\n"
+#~ msgstr "Vajalik on seade, toode ja mudel.\n"
 
-msgid "add-local: no suitable name available\n"
-msgstr "add-local: puudub sobiv nimi\n"
+#~ msgid "add-local: queue name '%s' not unique\n"
+#~ msgstr "add-local: tööjärjekorra nimi '%s' ei ole ainulaadne\n"
 
-msgid "add-local: No information available about %s %s\n"
-msgstr "add-local: puudub info %s %s kohta\n"
+#~ msgid "add-local: no suitable name available\n"
+#~ msgstr "add-local: puudub sobiv nimi\n"
 
-msgid "Now run printconf-backend (or restart lpd service)."
-msgstr "Nüüd tuleb käivitada printconf-backend (või taaskäivitada lpd teenus)."
+#~ msgid "add-local: No information available about %s %s\n"
+#~ msgstr "add-local: puudub info %s %s kohta\n"
 
-msgid "You must run printconf-tui as root."
-msgstr "printconf-tui on vajalik käivitada juurkasutajana."
+#~ msgid "Now run printconf-backend (or restart lpd service)."
+#~ msgstr ""
+#~ "Nüüd tuleb käivitada printconf-backend (või taaskäivitada lpd teenus)."
 
-msgid "Conflicting commands: %s and %s"
-msgstr "Lahkhelid käskudes: %s ja %s"
+#~ msgid "You must run printconf-tui as root."
+#~ msgstr "printconf-tui on vajalik käivitada juurkasutajana."
 
-msgid "No handler for command: "
-msgstr "Puudub käsu draiver:"
+#~ msgid "Conflicting commands: %s and %s"
+#~ msgstr "Lahkhelid käskudes: %s ja %s"
 
-msgid "You must be root to run this program.\n"
-msgstr "Programmi käivitamiseks peab olema juurkasutaja.\n"
+#~ msgid "No handler for command: "
+#~ msgstr "Puudub käsu draiver:"
 
-msgid "_Don't save"
-msgstr "Ä_ra salvesta"
+#~ msgid "You must be root to run this program.\n"
+#~ msgstr "Programmi käivitamiseks peab olema juurkasutaja.\n"
 
-msgid ""
-"Loading printer information.\n"
-"Please wait..."
-msgstr ""
-"Printeri info laadimine.\n"
-"Palun oota..."
+#~ msgid "_Don't save"
+#~ msgstr "Ä_ra salvesta"
 
-msgid "Notes from the Linux Printing Database"
-msgstr "Kommentaarid Linuxi printimise andmebaasist"
+#~ msgid ""
+#~ "Loading printer information.\n"
+#~ "Please wait..."
+#~ msgstr ""
+#~ "Printeri info laadimine.\n"
+#~ "Palun oota..."
 
-msgid "Generic (click to select manufacturer)"
-msgstr "Üldine (vajuta tootja valimiseks)"
+#~ msgid "Notes from the Linux Printing Database"
+#~ msgstr "Kommentaarid Linuxi printimise andmebaasist"
 
-msgid ""
-"You are changing an option\n"
-"that has no effect in the print\n"
-"spooler you are using (%s)."
-msgstr ""
-"Oled muutnud valikuid, millised\n"
-"ei avalda printspuulerile (%s)\n"
-"mingit mõju."
+#~ msgid "Generic (click to select manufacturer)"
+#~ msgstr "Üldine (vajuta tootja valimiseks)"
 
-msgid ""
-"Applying changes.\n"
-"Please wait..."
-msgstr ""
-"Muudatuste rakendamine.\n"
-"Palun oota..."
+#~ msgid ""
+#~ "You are changing an option\n"
+#~ "that has no effect in the print\n"
+#~ "spooler you are using (%s)."
+#~ msgstr ""
+#~ "Oled muutnud valikuid, millised\n"
+#~ "ei avalda printspuulerile (%s)\n"
+#~ "mingit mõju."
 
-msgid "Failed to write queues."
-msgstr "Tööjärjekordade kirjutamine nurjus."
+#~ msgid ""
+#~ "Applying changes.\n"
+#~ "Please wait..."
+#~ msgstr ""
+#~ "Muudatuste rakendamine.\n"
+#~ "Palun oota..."
 
-msgid ""
-"Sent %s\n"
-"to '%s' queue.  Does it look okay?"
-msgstr ""
-"%s saadeti \n"
-"tööjärjekorda '%s'. Kas see sobib?"
+#~ msgid "Failed to write queues."
+#~ msgstr "Tööjärjekordade kirjutamine nurjus."
 
-msgid "'%s' does not look like a PPD file."
-msgstr "'%s' ei tundu olevat PPD fail."
+#~ msgid ""
+#~ "Sent %s\n"
+#~ "to '%s' queue.  Does it look okay?"
+#~ msgstr ""
+#~ "%s saadeti \n"
+#~ "tööjärjekorda '%s'. Kas see sobib?"
 
-msgid "File cannot be opened for reading."
-msgstr "Faili ei ole võimalik lugemiseks avada."
+#~ msgid "'%s' does not look like a PPD file."
+#~ msgstr "'%s' ei tundu olevat PPD fail."
 
-msgid "PPD imported."
-msgstr "PPD imporditud."
+#~ msgid "File cannot be opened for reading."
+#~ msgstr "Faili ei ole võimalik lugemiseks avada."
 
-msgid "PPD import failed."
-msgstr "PPD importimine nurjus."
+#~ msgid "PPD imported."
+#~ msgstr "PPD imporditud."
 
-msgid "An existing queue has an alias of that name."
-msgstr "Sellise aliasega tööjärjekord on juba olemas."
+#~ msgid "PPD import failed."
+#~ msgstr "PPD importimine nurjus."
 
-msgid "'%s' does not exist, or is not writable."
-msgstr "'%s' puudub või ei ole kirjutatav."
+#~ msgid "An existing queue has an alias of that name."
+#~ msgstr "Sellise aliasega tööjärjekord on juba olemas."
 
-msgid "You must select a device."
-msgstr "Vajalik on valida seade."
+#~ msgid "'%s' does not exist, or is not writable."
+#~ msgstr "'%s' puudub või ei ole kirjutatav."
 
-msgid "You must specify a path."
-msgstr "Asukoha määramine on vajalik."
+#~ msgid "You must select a device."
+#~ msgstr "Vajalik on valida seade."
 
-msgid "You must specify a queue."
-msgstr "Tööjärjekorra määramine on vajalik."
+#~ msgid "You must specify a path."
+#~ msgstr "Asukoha määramine on vajalik."
 
-msgid "You must choose an SMB share to print to."
-msgstr "Trükkimiseks on vajalik valida SMB jagatud ressurss."
+#~ msgid "You must specify a queue."
+#~ msgstr "Tööjärjekorra määramine on vajalik."
 
-msgid "You must choose a share, not a host."
-msgstr "Valida tuleb jagatud ressurss, mitte arvuti."
+#~ msgid "You must choose an SMB share to print to."
+#~ msgstr "Trükkimiseks on vajalik valida SMB jagatud ressurss."
 
-msgid "You must specify an SMB share to print to."
-msgstr "Trükkimiseks tuleb määrata SMB jagatud ressurss."
+#~ msgid "You must choose a share, not a host."
+#~ msgstr "Valida tuleb jagatud ressurss, mitte arvuti."
 
-msgid "You must specify a queue on the NCP server."
-msgstr "NCP serveri tööjärjekorra valimine on vajalik."
+#~ msgid "You must specify an SMB share to print to."
+#~ msgstr "Trükkimiseks tuleb määrata SMB jagatud ressurss."
 
-msgid "You must specify a JetDirect printer to print to."
-msgstr "JetDirect printeri valimine on vajalik."
+#~ msgid "You must specify a queue on the NCP server."
+#~ msgstr "NCP serveri tööjärjekorra valimine on vajalik."
 
-msgid "You must specify an IP port number."
-msgstr "IP pordi numbri määramine on vajalik."
+#~ msgid "You must specify a JetDirect printer to print to."
+#~ msgstr "JetDirect printeri valimine on vajalik."
 
-msgid ""
-"Select the printer manufacturer and model. Depending on how the remote queue "
-"is configured, you may need to select the generic PostScript option here."
-msgstr ""
-"Printeri tootja ja mudeli valimine. Sõltuvalt võrgutööjärjekorra "
-"seadistusest võib olla vajalik määrata üldine postskript valik."
+#~ msgid "You must specify an IP port number."
+#~ msgstr "IP pordi numbri määramine on vajalik."
 
-msgid ""
-"About to create the following queue:\n"
-"\n"
-msgstr ""
-"Järgmise tööjärjekorra loomise teave:\n"
-"\n"
+#~ msgid ""
+#~ "Select the printer manufacturer and model. Depending on how the remote "
+#~ "queue is configured, you may need to select the generic PostScript option "
+#~ "here."
+#~ msgstr ""
+#~ "Printeri tootja ja mudeli valimine. Sõltuvalt võrgutööjärjekorra "
+#~ "seadistusest võib olla vajalik määrata üldine postskript valik."
 
-msgid "Type: "
-msgstr "Tüüp: "
+#~ msgid ""
+#~ "About to create the following queue:\n"
+#~ "\n"
+#~ msgstr ""
+#~ "Järgmise tööjärjekorra loomise teave:\n"
+#~ "\n"
 
-msgid ""
-"Would you like to print a test page?\n"
-"Answering 'yes' will apply all changes\n"
-"and print a test page to this printer."
-msgstr ""
-"Kas trükkida testlehekülg?\n"
-"Vastuse 'Jah' korral rakendatakse kõik \n"
-"muutused ja trükitakse testlehekülg."
+#~ msgid "Type: "
+#~ msgstr "Tüüp: "
 
-msgid "Number of columns on a page"
-msgstr "Tulpade arv lehel"
+#~ msgid ""
+#~ "Would you like to print a test page?\n"
+#~ "Answering 'yes' will apply all changes\n"
+#~ "and print a test page to this printer."
+#~ msgstr ""
+#~ "Kas trükkida testlehekülg?\n"
+#~ "Vastuse 'Jah' korral rakendatakse kõik \n"
+#~ "muutused ja trükitakse testlehekülg."
 
-msgid "Billing label"
-msgstr "Arvestusinfo pealdis"
+#~ msgid "Number of columns on a page"
+#~ msgstr "Tulpade arv lehel"
 
-msgid ""
-"HH:MM:SS or '%s'.\n"
-"Use GMT."
-msgstr ""
-"HH:MM:SS või '%s'.\n"
-"Kasuta GMT."
+#~ msgid "Billing label"
+#~ msgstr "Arvestusinfo pealdis"
 
-msgid ""
-"Banner pages (start,end):\n"
-"for example, '%s'"
-msgstr ""
-"Prinditiitel (algus,lõpp):\n"
-"näiteks, '%s'"
+#~ msgid ""
+#~ "HH:MM:SS or '%s'.\n"
+#~ "Use GMT."
+#~ msgstr ""
+#~ "HH:MM:SS või '%s'.\n"
+#~ "Kasuta GMT."
 
-msgid "Landscape (%s or %s)"
-msgstr "Rõhtpaigutus (%s või %s)"
+#~ msgid ""
+#~ "Banner pages (start,end):\n"
+#~ "for example, '%s'"
+#~ msgstr ""
+#~ "Prinditiitel (algus,lõpp):\n"
+#~ "näiteks, '%s'"
 
-msgid ""
-"Number of document pages per\n"
-"printed page: 1, 2, 4, 6, 9, or 16"
-msgstr ""
-"Dokumendi lehtede arv \n"
-"printeri lehe kohta: 1, 2, 4, 6, 9 või 16"
+#~ msgid "Landscape (%s or %s)"
+#~ msgstr "Rõhtpaigutus (%s või %s)"
 
-msgid "Top margin in pt (1/72 in)"
-msgstr "Ülemine veeris punktides (1/72 tolli)"
+#~ msgid ""
+#~ "Number of document pages per\n"
+#~ "printed page: 1, 2, 4, 6, 9, or 16"
+#~ msgstr ""
+#~ "Dokumendi lehtede arv \n"
+#~ "printeri lehe kohta: 1, 2, 4, 6, 9 või 16"
 
-msgid "Left margin in pt (1/72 in)"
-msgstr "Vasak veeris punktides (1/72 tolli)"
+#~ msgid "Top margin in pt (1/72 in)"
+#~ msgstr "Ülemine veeris punktides (1/72 tolli)"
 
-msgid "Right margin in pt (1/72 in)"
-msgstr "Parem veeris punktides (1/72 tolli)"
+#~ msgid "Left margin in pt (1/72 in)"
+#~ msgstr "Vasak veeris punktides (1/72 tolli)"
 
-msgid ""
-"'%s', '%s', '%s'\n"
-"'%s' or '%s'"
-msgstr ""
-"'%s', '%s', '%s'\n"
-"'%s' või '%s'"
+#~ msgid "Right margin in pt (1/72 in)"
+#~ msgstr "Parem veeris punktides (1/72 tolli)"
 
-msgid "Pretty-print text (%s or %s)"
-msgstr "Ilutrüki tekst (%s või %s)"
+#~ msgid ""
+#~ "'%s', '%s', '%s'\n"
+#~ "'%s' or '%s'"
+#~ msgstr ""
+#~ "'%s', '%s', '%s'\n"
+#~ "'%s' või '%s'"
 
-msgid "Scaling (percentage)"
-msgstr "Skaleerimine (protsentides)"
+#~ msgid "Pretty-print text (%s or %s)"
+#~ msgstr "Ilutrüki tekst (%s või %s)"
 
-msgid "Word-wrapping (%s or %s)"
-msgstr "Reamurdmine (%s või %s)"
+#~ msgid "Scaling (percentage)"
+#~ msgstr "Skaleerimine (protsentides)"
 
-msgid "Value"
-msgstr "Väärtus"
+#~ msgid "Word-wrapping (%s or %s)"
+#~ msgstr "Reamurdmine (%s või %s)"
 
-msgid "Can't determine the printer model attached to this device."
-msgstr "Seadmega ühendatud printeri mudeli määramine pole võimalik."
+#~ msgid "Value"
+#~ msgstr "Väärtus"
 
-msgid "I don't know enough about this printer model to choose a driver."
-msgstr "Mul puuduvad piisavad teadmised selle printeri draiveri valikuks."
+#~ msgid "Can't determine the printer model attached to this device."
+#~ msgstr "Seadmega ühendatud printeri mudeli määramine pole võimalik."
 
-msgid "Add queue option"
-msgstr "Lisa tööjärjekorra valik"
+#~ msgid "I don't know enough about this printer model to choose a driver."
+#~ msgstr "Mul puuduvad piisavad teadmised selle printeri draiveri valikuks."
 
-msgid "Value for this option"
-msgstr "Selle valiku väärtus"
+#~ msgid "Add queue option"
+#~ msgstr "Lisa tööjärjekorra valik"
 
-msgid ""
-"(this is the\n"
-"recommended driver)"
-msgstr ""
-"(see on soovituslik\n"
-"draiver)"
+#~ msgid "Value for this option"
+#~ msgstr "Selle valiku väärtus"
 
-msgid ""
-"This driver requires Hewlett Packard's hpijs driver (available in the hpijs "
-"package) which does not appear to be installed."
-msgstr ""
-"Draiverile on vajalik Hewlett Packardi hpijs draiver (on paketis hpijs), "
-"kuid tundub, et see puudub."
+#~ msgid ""
+#~ "(this is the\n"
+#~ "recommended driver)"
+#~ msgstr ""
+#~ "(see on soovituslik\n"
+#~ "draiver)"
 
-msgid "Do you wish to use it anyway?"
-msgstr "Kas kasutada seda igal juhul?"
+#~ msgid ""
+#~ "This driver requires Hewlett Packard's hpijs driver (available in the "
+#~ "hpijs package) which does not appear to be installed."
+#~ msgstr ""
+#~ "Draiverile on vajalik Hewlett Packardi hpijs draiver (on paketis hpijs), "
+#~ "kuid tundub, et see puudub."
 
-msgid ""
-"This driver requires the Omni Print Driver System, which does not appear to "
-"be installed."
-msgstr ""
-"Draiverile on vajalik Omni Printer Driver System, kuid tundub, et see puudub."
+#~ msgid "Do you wish to use it anyway?"
+#~ msgstr "Kas kasutada seda igal juhul?"
 
-msgid ""
-"This driver requires the oki4drv daemon to be running, and it does not "
-"appear to be."
-msgstr ""
-"Draiverile on vajalik deemoni oki4drv töötamine, kuid tundub, et see puudub."
+#~ msgid ""
+#~ "This driver requires the Omni Print Driver System, which does not appear "
+#~ "to be installed."
+#~ msgstr ""
+#~ "Draiverile on vajalik Omni Printer Driver System, kuid tundub, et see "
+#~ "puudub."
 
-msgid "It is part of the \"samba-client\" package, as distributed by Red Hat."
-msgstr "See on osa \"samba-client\" paketist, mille väljaandja on Red Hat."
+#~ msgid ""
+#~ "This driver requires the oki4drv daemon to be running, and it does not "
+#~ "appear to be."
+#~ msgstr ""
+#~ "Draiverile on vajalik deemoni oki4drv töötamine, kuid tundub, et see "
+#~ "puudub."
 
-msgid "Do you wish to enable it anyway?"
-msgstr "Kas lubada seda igal juhul?"
+#~ msgid ""
+#~ "It is part of the \"samba-client\" package, as distributed by Red Hat."
+#~ msgstr "See on osa \"samba-client\" paketist, mille väljaandja on Red Hat."
 
-msgid "It is part of the \"ncpfs\" package, as distributed by Red Hat."
-msgstr "See on osa \"ncpfs\" paketist, mille väljaandja on Red Hat."
+#~ msgid "Do you wish to enable it anyway?"
+#~ msgstr "Kas lubada seda igal juhul?"
 
-msgid "Custom Command"
-msgstr "Kohandatud käsk"
+#~ msgid "It is part of the \"ncpfs\" package, as distributed by Red Hat."
+#~ msgstr "See on osa \"ncpfs\" paketist, mille väljaandja on Red Hat."
 
-msgid "Custom Filter"
-msgstr "Kohandatud filter"
+#~ msgid "Custom Command"
+#~ msgstr "Kohandatud käsk"
 
-msgid "ERROR: No box named \"%s\" found.\n"
-msgstr "Viga: kasti nimega \"%s\" polnud võimalik leida.\n"
+#~ msgid "Custom Filter"
+#~ msgstr "Kohandatud filter"
 
-msgid "ERROR: box \"%s\" is not a writable interface.\n"
-msgstr "Viga: kast \"%s\" ei ole kirjutatav liides.\n"
+#~ msgid "ERROR: No box named \"%s\" found.\n"
+#~ msgstr "Viga: kasti nimega \"%s\" polnud võimalik leida.\n"
 
-msgid "Send Form-Feed (FF)"
-msgstr "Saada lehevahetus (FF)"
+#~ msgid "ERROR: box \"%s\" is not a writable interface.\n"
+#~ msgstr "Viga: kast \"%s\" ei ole kirjutatav liides.\n"
 
-msgid "Send End-of-Transmission (EOT)"
-msgstr "Saada ülekande lõpu tähis (EOT)"
+#~ msgid "Send Form-Feed (FF)"
+#~ msgstr "Saada lehevahetus (FF)"
 
-msgid "Assume Unknown Data is Text"
-msgstr "Tundmatuid andmeid peetakse tekstiks"
+#~ msgid "Send End-of-Transmission (EOT)"
+#~ msgstr "Saada ülekande lõpu tähis (EOT)"
 
-msgid "Prerender Postscript"
-msgstr "Eeltõlgitsetud PostScript"
+#~ msgid "Assume Unknown Data is Text"
+#~ msgstr "Tundmatuid andmeid peetakse tekstiks"
 
-msgid "Convert Text to Postscript"
-msgstr "Teisenda tekst PostScriptiks"
+#~ msgid "Prerender Postscript"
+#~ msgstr "Eeltõlgitsetud PostScript"
 
-msgid "Effective Filter Locale"
-msgstr "Tõhus kohalik tegevuskoht"
+#~ msgid "Convert Text to Postscript"
+#~ msgstr "Teisenda tekst PostScriptiks"
 
-msgid "Couldn't load driver information.\n"
-msgstr "Draiveri teabe laadimine pole võimalik.\n"
+#~ msgid "Effective Filter Locale"
+#~ msgstr "Tõhus kohalik tegevuskoht"
 
-msgid "You must run printconf-backend as root."
-msgstr "printconf-backend on vajalik käivitada juurkasutajana."
+#~ msgid "Couldn't load driver information.\n"
+#~ msgstr "Draiveri teabe laadimine pole võimalik.\n"
 
-msgid "All hosts"
-msgstr "Kõik arvutid"
+#~ msgid "You must run printconf-backend as root."
+#~ msgstr "printconf-backend on vajalik käivitada juurkasutajana."
 
-msgid "Add allowed hosts - %s"
-msgstr "Lubatud arvutite lisamine - %s"
+#~ msgid "All hosts"
+#~ msgstr "Kõik arvutid"
 
-msgid "Edit allowed hosts - %s"
-msgstr "Lubatud arvutite muutmine - %s"
+#~ msgid "Add allowed hosts - %s"
+#~ msgstr "Lubatud arvutite lisamine - %s"
 
-msgid ""
-"LPD connections will be accepted\n"
-"on all interfaces, and jobs for\n"
-"all queues will be accepted."
-msgstr ""
-"Kõikide liideste LPD ühendusi\n"
-"aktsepteeritakse ning samuti \n"
-"töid kõikidele tööjärjekordadele."
+#~ msgid "Edit allowed hosts - %s"
+#~ msgstr "Lubatud arvutite muutmine - %s"
 
-msgid "Invalid network address"
-msgstr "Vigane võrguaadress"
+#~ msgid ""
+#~ "LPD connections will be accepted\n"
+#~ "on all interfaces, and jobs for\n"
+#~ "all queues will be accepted."
+#~ msgstr ""
+#~ "Kõikide liideste LPD ühendusi\n"
+#~ "aktsepteeritakse ning samuti \n"
+#~ "töid kõikidele tööjärjekordadele."
 
-msgid "Invalid netmask"
-msgstr "Vigane võrgumask"
+#~ msgid "Invalid network address"
+#~ msgstr "Vigane võrguaadress"
 
-msgid "*"
-msgstr "*"
+#~ msgid "Invalid netmask"
+#~ msgstr "Vigane võrgumask"
 
-msgid "/"
-msgstr "/"
+#~ msgid "*"
+#~ msgstr "*"
 
-msgid "="
-msgstr "="
+#~ msgid "/"
+#~ msgstr "/"
 
-msgid "ASC_II text test page"
-msgstr "ASC_II teksti testleht"
+#~ msgid "="
+#~ msgstr "="
 
-msgid "Add a new option"
-msgstr "Lisa uus valik"
+#~ msgid "ASC_II text test page"
+#~ msgstr "ASC_II teksti testleht"
 
-msgid "Add a new queue"
-msgstr "Lisa uus tööjärjekord"
+#~ msgid "Add a new option"
+#~ msgstr "Lisa uus valik"
 
-msgid "Add an allowed host"
-msgstr "Lisa lubatud arvuti"
+#~ msgid "Add a new queue"
+#~ msgstr "Lisa uus tööjärjekord"
 
-msgid "Add/edit queue option"
-msgstr "Lisa/redigeeri tööjärjekorra valik"
+#~ msgid "Add an allowed host"
+#~ msgstr "Lisa lubatud arvuti"
 
-msgid "Allowed hosts"
-msgstr "Lubatud arvutid"
+#~ msgid "Add/edit queue option"
+#~ msgstr "Lisa/redigeeri tööjärjekorra valik"
 
-msgid "Apply changes"
-msgstr "Rakenda muudatused"
+#~ msgid "Allowed hosts"
+#~ msgstr "Lubatud arvutid"
 
-msgid "At end of job:"
-msgstr "Peale tööd:"
+#~ msgid "Apply changes"
+#~ msgstr "Rakenda muudatused"
 
-msgid "At start of job:"
-msgstr "Enne tööd:"
+#~ msgid "At end of job:"
+#~ msgstr "Peale tööd:"
 
-msgid "Autoselect driver"
-msgstr "Vali draiver automaatselt"
+#~ msgid "At start of job:"
+#~ msgstr "Enne tööd:"
 
-msgid "Choose the queue type"
-msgstr "Vali tööjärjekorra tüüp"
+#~ msgid "Autoselect driver"
+#~ msgstr "Vali draiver automaatselt"
 
-msgid "Choose the type of queue you want to use"
-msgstr "Vali kasutatav tööjärjekorra tüüp"
+#~ msgid "Choose the queue type"
+#~ msgstr "Vali tööjärjekorra tüüp"
 
-msgid "Choose which other computers may use this queue."
-msgstr "Vali, millised teised arvutid võivad antud tööjärjekorda kasutada."
+#~ msgid "Choose the type of queue you want to use"
+#~ msgstr "Vali kasutatav tööjärjekorra tüüp"
 
-msgid "Edit the selected queue"
-msgstr "Valitud tööjärjekorra muutmine"
+#~ msgid "Choose which other computers may use this queue."
+#~ msgstr "Vali, millised teised arvutid võivad antud tööjärjekorda kasutada."
 
-msgid "Edit this host"
-msgstr "Arvuti muutmine"
+#~ msgid "Edit the selected queue"
+#~ msgstr "Valitud tööjärjekorra muutmine"
 
-msgid "Edit this option"
-msgstr "Selle valiku muutmine"
+#~ msgid "Edit this host"
+#~ msgstr "Arvuti muutmine"
 
-msgid "Enable _LPD protocol"
-msgstr "Luba _LPD protokoll"
+#~ msgid "Edit this option"
+#~ msgstr "Selle valiku muutmine"
 
-msgid "Enter the device you would like to use."
-msgstr "Sisesta seade, mida soovid kasutada."
+#~ msgid "Enable _LPD protocol"
+#~ msgstr "Luba _LPD protokoll"
 
-msgid "Finish, and create the new print queue"
-msgstr "Lõpeta ja loo uus trükkimise tööjärjekord"
+#~ msgid "Enter the device you would like to use."
+#~ msgstr "Sisesta seade, mida soovid kasutada."
 
-msgid "For example: /dev/lp0"
-msgstr "Näiteks: /dev/lp0"
+#~ msgid "Finish, and create the new print queue"
+#~ msgstr "Lõpeta ja loo uus trükkimise tööjärjekord"
 
-msgid "IP port number (often 9100)"
-msgstr "IP pordi number (sageli 9100)"
+#~ msgid "For example: /dev/lp0"
+#~ msgstr "Näiteks: /dev/lp0"
 
-msgid ""
-"If you like, you can enter a description of the printer to help you identify "
-"it more easily."
-msgstr ""
-"Hilisemaks printeri tuvastamise lihtsustamiseks on võimalik sisestada "
-"printeri kirjeldus."
+#~ msgid "IP port number (often 9100)"
+#~ msgstr "IP pordi number (sageli 9100)"
 
-msgid "Imageable Area"
-msgstr "Kujutatav ala"
+#~ msgid ""
+#~ "If you like, you can enter a description of the printer to help you "
+#~ "identify it more easily."
+#~ msgstr ""
+#~ "Hilisemaks printeri tuvastamise lihtsustamiseks on võimalik sisestada "
+#~ "printeri kirjeldus."
 
-msgid "JPE_G test"
-msgstr "JPE_G test"
+#~ msgid "Imageable Area"
+#~ msgstr "Kujutatav ala"
 
-msgid "Japanese EUC PostScript test page"
-msgstr "Jaapani EUC PostScript testlehekülg"
+#~ msgid "JPE_G test"
+#~ msgstr "JPE_G test"
 
-msgid "Japanese JIS PostScript test page"
-msgstr "Jaapani JIS PostScript testlehekülg"
+#~ msgid "Japanese EUC PostScript test page"
+#~ msgstr "Jaapani EUC PostScript testlehekülg"
 
-msgid "Japanese SJIS PostScript test page"
-msgstr "Jaapani SJIS PostScript testlehekülg"
+#~ msgid "Japanese JIS PostScript test page"
+#~ msgstr "Jaapani JIS PostScript testlehekülg"
 
-msgid "Japanese _EUC text test page"
-msgstr "Jaapani _EUC teksti testlehekülg"
+#~ msgid "Japanese SJIS PostScript test page"
+#~ msgstr "Jaapani SJIS PostScript testlehekülg"
 
-msgid "Japanese _JIS text test page"
-msgstr "Jaapani _JIS teksti testlehekülg"
+#~ msgid "Japanese _EUC text test page"
+#~ msgstr "Jaapani _EUC teksti testlehekülg"
 
-msgid "Japanese _SJIS text test page"
-msgstr "Jaapani _SJIS teksti testlehekülg"
+#~ msgid "Japanese _JIS text test page"
+#~ msgstr "Jaapani _JIS teksti testlehekülg"
 
-msgid "Linefeed translation"
-msgstr "Reavahetuse transleerimine"
+#~ msgid "Japanese _SJIS text test page"
+#~ msgstr "Jaapani _SJIS teksti testlehekülg"
 
-msgid "Networked CUPS (_IPP)"
-msgstr "Võrgu CUPS (_IPP)"
+#~ msgid "Linefeed translation"
+#~ msgstr "Reavahetuse transleerimine"
 
-msgid "Networked _JetDirect"
-msgstr "Võrgu _JetDirect"
+#~ msgid "Networked CUPS (_IPP)"
+#~ msgstr "Võrgu CUPS (_IPP)"
 
-msgid "Networked _Novell (NCP)"
-msgstr "Võrgu _Novell (NCP)"
+#~ msgid "Networked _JetDirect"
+#~ msgstr "Võrgu _JetDirect"
 
-msgid "Networked _UNIX (LPD)"
-msgstr "Võrgu _Unix (LPD)"
+#~ msgid "Networked _Novell (NCP)"
+#~ msgstr "Võrgu _Novell (NCP)"
 
-msgid "Networked _Windows (SMB)"
-msgstr "Võrgu _Windows (SMB)"
+#~ msgid "Networked _UNIX (LPD)"
+#~ msgstr "Võrgu _Unix (LPD)"
 
-msgid ""
-"On the following screens, you will be asked to provide basic information for "
-"adding a new print queue.  You will be able to edit the more advanced "
-"options afterwards.\n"
-"\n"
-"Nothing will be done to your settings until you hit \"Finish\" on the last "
-"screen."
-msgstr ""
-"Järgnevatel kuvadel palutakse sul sisestada üldist infot uue trükkimise "
-"tööjärjekorra loomiseks. Hiljem on võimalik muuta ka täiendavalt "
-"valikuid.\n"
-"\n"
-"Mitte midagi ei tehta, enne kui sa vajutad viimasel kuval nuppu \"Lõpp\"."
+#~ msgid "Networked _Windows (SMB)"
+#~ msgstr "Võrgu _Windows (SMB)"
 
-msgid "Path:"
-msgstr "Asukoht:"
+#~ msgid ""
+#~ "On the following screens, you will be asked to provide basic information "
+#~ "for adding a new print queue.  You will be able to edit the more advanced "
+#~ "options afterwards.\n"
+#~ "\n"
+#~ "Nothing will be done to your settings until you hit \"Finish\" on the "
+#~ "last screen."
+#~ msgstr ""
+#~ "Järgnevatel kuvadel palutakse sul sisestada üldist infot uue trükkimise "
+#~ "tööjärjekorra loomiseks. Hiljem on võimalik muuta ka täiendavalt "
+#~ "valikuid.\n"
+#~ "\n"
+#~ "Mitte midagi ei tehta, enne kui sa vajutad viimasel kuval nuppu \"Lõpp\"."
 
-msgid "Patience"
-msgstr "Kannatlikkus"
+#~ msgid "Path:"
+#~ msgstr "Asukoht:"
 
-msgid ""
-"Please enter a name for this queue.  Choose a short name that begins with a "
-"letter and contains no spaces."
-msgstr ""
-"Palun sisesta tööjärjekorra nimi. Vali nimi, mis algab tähega ning ei "
-"sisalda tühikuid."
+#~ msgid "Patience"
+#~ msgstr "Kannatlikkus"
 
-msgid "Remove this host from the list"
-msgstr "Eemalda see arvuti loendist"
+#~ msgid ""
+#~ "Please enter a name for this queue.  Choose a short name that begins with "
+#~ "a letter and contains no spaces."
+#~ msgstr ""
+#~ "Palun sisesta tööjärjekorra nimi. Vali nimi, mis algab tähega ning ei "
+#~ "sisalda tühikuid."
 
-msgid "Remove this option"
-msgstr "Eemalda see valik"
+#~ msgid "Remove this host from the list"
+#~ msgstr "Eemalda see arvuti loendist"
 
-msgid "Rescan devices"
-msgstr "Seadmete uuesti otsimine"
+#~ msgid "Remove this option"
+#~ msgstr "Eemalda see valik"
 
-msgid "Select a queue type:"
-msgstr "Vali tööjärjekorra tüüp:"
+#~ msgid "Rescan devices"
+#~ msgstr "Seadmete uuesti otsimine"
 
-msgid "Strict RFC1179 compliance"
-msgstr "Range RFC1179 vastavus"
+#~ msgid "Select a queue type:"
+#~ msgstr "Vali tööjärjekorra tüüp:"
 
-msgid "These settings are system-wide."
-msgstr "Need seaded on süsteemi ulatuses."
+#~ msgid "Strict RFC1179 compliance"
+#~ msgstr "Range RFC1179 vastavus"
 
-msgid "This allows older systems to print to this machine"
-msgstr "See võimaldab vanematel süsteemidel trükkida sellesse masinasse"
+#~ msgid "These settings are system-wide."
+#~ msgstr "Need seaded on süsteemi ulatuses."
 
-msgid "This enables CUPS IPP browsing"
-msgstr "See võimaldab CUPS IPP sirvimist"
+#~ msgid "This allows older systems to print to this machine"
+#~ msgstr "See võimaldab vanematel süsteemidel trükkida sellesse masinasse"
 
-msgid ""
-"This is the name of the queue.  It must begin with a letter and contain no "
-"spaces."
-msgstr ""
-"See on tööjärjekorra nimi. Nimi peab algama tähega ja ei või sisaldada "
-"tühikuid."
+#~ msgid "This enables CUPS IPP browsing"
+#~ msgstr "See võimaldab CUPS IPP sirvimist"
 
-msgid "Type in the netmask, or the CIDR mask length"
-msgstr "Tüüp võrgumaskis või CIDR maski pikkus"
+#~ msgid ""
+#~ "This is the name of the queue.  It must begin with a letter and contain "
+#~ "no spaces."
+#~ msgstr ""
+#~ "See on tööjärjekorra nimi. Nimi peab algama tähega ja ei või sisaldada "
+#~ "tühikuid."
 
-msgid "Type in the share name"
-msgstr "Kirjuta jagatud ressursi nimi"
+#~ msgid "Type in the netmask, or the CIDR mask length"
+#~ msgstr "Tüüp võrgumaskis või CIDR maski pikkus"
 
-msgid "Use control-F to search"
-msgstr "Otsimiseks kasuta Ctrl-F"
+#~ msgid "Type in the share name"
+#~ msgstr "Kirjuta jagatud ressursi nimi"
 
-msgid "_Add..."
-msgstr "_Lisa..."
+#~ msgid "Use control-F to search"
+#~ msgstr "Otsimiseks kasuta Ctrl-F"
 
-msgid "_All hosts"
-msgstr "_Kõik arvutid"
+#~ msgid "_Add..."
+#~ msgstr "_Lisa..."
 
-msgid "_Apply"
-msgstr "_Rakenda"
+#~ msgid "_All hosts"
+#~ msgstr "_Kõik arvutid"
 
-msgid "_Automatically find remote shared queues"
-msgstr "_Leia automaatselt teiste jagatud tööjärjekorrad"
+#~ msgid "_Apply"
+#~ msgstr "_Rakenda"
 
-msgid "_Big5 text test page"
-msgstr "_Big5 teksti testleht"
+#~ msgid "_Automatically find remote shared queues"
+#~ msgstr "_Leia automaatselt teiste jagatud tööjärjekorrad"
 
-msgid "_Custom device"
-msgstr "_Kohandatud seade"
+#~ msgid "_Big5 text test page"
+#~ msgstr "_Big5 teksti testleht"
 
-msgid "_Delete queue"
-msgstr "_Kustuta tööjärjekord"
+#~ msgid "_Custom device"
+#~ msgstr "_Kohandatud seade"
 
-msgid "_Duplex test"
-msgstr "_Dupleks test"
+#~ msgid "_Delete queue"
+#~ msgstr "_Kustuta tööjärjekord"
 
-msgid "_Edit..."
-msgstr "_Muuda..."
+#~ msgid "_Duplex test"
+#~ msgstr "_Dupleks test"
 
-msgid "_Import PPD..."
-msgstr "_Impordi PPD..."
+#~ msgid "_Edit..."
+#~ msgstr "_Muuda..."
 
-msgid "_Rescan devices"
-msgstr "_Seadmete uuesti otsimine"
+#~ msgid "_Import PPD..."
+#~ msgstr "_Impordi PPD..."
 
-msgid "_This queue is available to other computers"
-msgstr "_See tööjärjekord on kättesaadav ka teistele arvutitele"
+#~ msgid "_Rescan devices"
+#~ msgstr "_Seadmete uuesti otsimine"
 
-msgid "_US Letter PostScript test page"
-msgstr "_US Letter PostScript testlehekülg"
+#~ msgid "_This queue is available to other computers"
+#~ msgstr "_See tööjärjekord on kättesaadav ka teistele arvutitele"
 
-msgid "ipp"
-msgstr "ipp"
+#~ msgid "_US Letter PostScript test page"
+#~ msgstr "_US Letter PostScript testlehekülg"
 
-msgid "jetdirect"
-msgstr "jetdirect"
+#~ msgid "ipp"
+#~ msgstr "ipp"
 
-msgid "lpd"
-msgstr "lpd"
+#~ msgid "jetdirect"
+#~ msgstr "jetdirect"
 
-msgid "ncp"
-msgstr "ncp"
+#~ msgid "lpd"
+#~ msgstr "lpd"
+
+#~ msgid "ncp"
+#~ msgstr "ncp"
 
 #~ msgid "Authentication Required"
 #~ msgstr "Vajalik on autentimine"
