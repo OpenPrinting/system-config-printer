@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -41,7 +41,7 @@ class ServerFirewalled(Question):
             answers['remote_server_connect_ipp'] == False):
             self.label.set_text (_("Please check to see if a firewall or "
                                    "router configuration is blocking TCP "
-                                   "port %d on server `%s'.")
+                                   "port %d on server '%s'.")
                                  % (answers['remote_server_port'],
                                     answers['remote_server_try_connect']))
             return True

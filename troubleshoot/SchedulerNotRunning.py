@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ class SchedulerNotRunning(Question):
                                   _("The CUPS print spooler does not appear "
                                     "to be running.  To correct this, choose "
                                     "System->Administration->Services from "
-                                    "the main menu and look for the `cups' "
+                                    "the main menu and look for the 'cups' "
                                     "service."))
         troubleshooter.new_page (page, self)
 

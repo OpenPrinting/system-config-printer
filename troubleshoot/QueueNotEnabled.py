@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -53,14 +53,14 @@ class QueueNotEnabled(Question):
             reason = queue['printer-state-message']
 
         if reason:
-            reason = _("The reason given is: `%s'.") % reason
+            reason = _("The reason given is: '%s'.") % reason
         else:
             reason = _("This may be due to the printer being disconnected or "
                        "switched off.")
 
         text = ('<span weight="bold" size="larger">' +
                 _("Queue Not Enabled") + '</span>\n\n' +
-                _("The queue `%s' is not enabled.") %
+                _("The queue '%s' is not enabled.") %
                 answers['cups_queue'])
 
         if reason:
@@ -68,8 +68,8 @@ class QueueNotEnabled(Question):
 
         if not answers['cups_printer_remote']:
             text += '\n\n'
-            text += _("To enable it, select the `Enabled' checkbox in the "
-                      "`Policies' tab for the printer in the printer "
+            text += _("To enable it, select the 'Enabled' checkbox in the "
+                      "'Policies' tab for the printer in the printer "
                       "administration tool.")
             text += ' ' + TEXT_start_print_admin_tool
 
