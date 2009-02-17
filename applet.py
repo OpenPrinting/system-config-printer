@@ -108,7 +108,7 @@ class NewPrinterNotification(dbus.service.Object):
         if name.find("/") >= 0:
             # name is a URI, no queue was generated, because no suitable
             # driver was found
-            title = _("Printer could not be set up")
+            title = _("Missing printer driver")
             devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % \
                 (mfg, mdl, des, cmd)
             if (mfg and mdl) or des:
@@ -116,15 +116,12 @@ class NewPrinterNotification(dbus.service.Object):
                     device = "%s %s" % (mfg, mdl)
                 else:
                     device = des
-                text = _("The %s was connected to this computer. ") % device
+                text = _("No printer driver for %s.") % device
             else:
-                text = _("A printer was connected to this computer. ")
-            text += _("Unfortunately, no driver which supports this "
-                      "printer explicitly was found or a proprietary "
-                      "driver plugin needs to be downloaded.")
+                text = _("No driver for this printer.")
             n = pynotify.Notification (title, text, 'printer')
             n.set_urgency (pynotify.URGENCY_CRITICAL)
-            n.add_action ("setup-printer", _("Set up printer"),
+            n.add_action ("setup-printer", _("Search"),
                           lambda x, y: self.setup_printer (x, y, name, devid))
         else:
             # name is the name of the queue which hal_lpadmin has set up
