@@ -24,6 +24,7 @@ class PhysicalDevice:
     def __init__(self, device):
         self.devices = None
         self.add_device (device)
+        self._user_data = {}
 
     def _canonical_id (self, device):
         mfg = device.id_dict.get ('MFG', '')
@@ -84,6 +85,13 @@ class PhysicalDevice:
         if len (self.sn) > 0:
             info += " (%s)" % self.sn
         return info
+
+    # User data
+    def set_data (self, key, value):
+        self._user_data[key] = value
+
+    def get_data (self, key):
+        return self._user_data.get (key)
 
     def __str__ (self):
         return "(description: %s)" % self.__repr__ ()
