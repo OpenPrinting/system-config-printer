@@ -3436,6 +3436,7 @@ class NewPrinterGUI(GtkGUI):
         }
 
     DOWNLOADABLE_ONLYPPD=True
+    HP_PLUGIN_SUPPORT=False
 
     def __init__(self, mainapp):
         self.mainapp = mainapp
@@ -4529,6 +4530,9 @@ class NewPrinterGUI(GtkGUI):
         return devices
 
     def install_hplip_plugin(self, uri):
+        if not self.HP_PLUGIN_SUPPORT:
+            return 0
+
         # Check necessity of the plugin
         os.environ["URI"] = uri
         cmd = 'LC_ALL=C DISPLAY= hp-info -d"${URI}"'
