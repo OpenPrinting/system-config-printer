@@ -3761,6 +3761,9 @@ class NewPrinterGUI(GtkGUI):
                 uri = self.mainapp.printer.device_uri
             else:
                 uri = self.device.uri
+                if not self.install_hplip_plugin(uri):
+                    self.on_NPCancel(None)
+                    return
             if devid != "":
                 try:
                     devid_dict = cupshelpers.parseDeviceID (devid)
