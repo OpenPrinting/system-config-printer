@@ -105,7 +105,7 @@ class NewPrinterNotification(dbus.service.Object):
         global viewer
         self.wake_up ()
 
-        if name.find("/"):
+        if name.find("/") >= 0:
             # name is a URI, no queue was generated, because no suitable
             # driver was found
             title = _("Missing printer driver")
@@ -119,7 +119,6 @@ class NewPrinterNotification(dbus.service.Object):
                 text = _("No printer driver for %s.") % device
             else:
                 text = _("No driver for this printer.")
-
             n = pynotify.Notification (title, text, 'printer')
             n.set_urgency (pynotify.URGENCY_CRITICAL)
             n.add_action ("setup-printer", _("Search"),
