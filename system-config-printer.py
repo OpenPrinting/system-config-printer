@@ -4888,7 +4888,6 @@ class NewPrinterGUI(GtkGUI):
         other = cupshelpers.Device('', **{'device-info' :_("Other")})
         self.devices.append (PhysicalDevice (other))
         device_select_path = 0
-        connection_select_path = 0
         if current_uri:
             current_device = PhysicalDevice (current)
             try:
@@ -4896,10 +4895,6 @@ class NewPrinterGUI(GtkGUI):
                 self.devices[i].add_device (current)
                 device_select_path = i
                 devs = self.devices[i].get_devices ()
-                for i in xrange (len (devs)):
-                    if devs[i].uri == current_uri:
-                        connection_select_path = i
-                        break
             except ValueError:
                 self.devices.insert(0, current_device)
 
@@ -4926,15 +4921,41 @@ class NewPrinterGUI(GtkGUI):
             if network:
                 if devs[0].uri != devs[0].type:
                     # An actual network printer device.  Put this at the top.
-                    model.insert_before (network_iter, find_nw_iter, row=row)
+                    iter = model.insert_before (network_iter, find_nw_iter,
+                                                row=row)
+
+                    # If this is the currently selected device we need
+                    # to expand the "Network Printer" row so that it
+                    # is visible.
+                    network_path = model.get_path (network_iter)
+                    self.tvNPDevices.expand_row (network_path, False)
+                    self.tvNPDevices.scroll_to_cell (network_path,
+                                                     row_align=0.5)
+                    device_select_path = model.get_path (iter)
                 else:
                     # Just a method of finding one.
                     model.append (network_iter, row=row)
             else:
                 model.insert_before(None, network_iter, row=row)
-            
+
+        # Select the first/current device.
         column = self.tvNPDevices.get_column (0)
         self.tvNPDevices.set_cursor (device_select_path, column)
+
+        connection_select_path = 0
+        if current_uri:
+            model = self.tvNPDeviceURIs.get_model ()
+            iter = model.get_iter_first ()
+            i = 0
+            while iter:
+                dev = model.get_value (iter, 1)
+                if current_uri == dev.uri:
+                    connection_select_path = i
+                    break
+
+                iter = model.iter_next (iter)
+                i += 1
+
         column = self.tvNPDeviceURIs.get_column (0)
         self.tvNPDeviceURIs.set_cursor (connection_select_path, column)
 
@@ -5487,6 +5508,39 @@ class NewPrinterGUI(GtkGUI):
         model = gtk.ListStore (str,                    # printer-info
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
+
+        # If this is a network device, check whether HPLIP can drive it.
+        if physicaldevice.get_data ('checked-hplip') != True:
+            hp_drivable = False
+            is_network = False
+            device_dict = { 'device-class': 'network' }
+            for device in physicaldevice.get_devices ():
+                if device.type == "hp":
+                    # We already know that HPLIP can drive this device.
+                    hp_drivable = True
+                    break
+                elif device.type in ["socket", "lpd", "ipp"]:
+                    # This is a network printer.
+                    (scheme, rest) = urllib.splittype (device.uri)
+                    (hostport, rest) = urllib.splithost (rest)
+                    if hostport != None:
+                        (host, port) = urllib.splitport (hostport)
+                        is_network = True
+                        device_dict['device-info'] = device.info
+                        device_dict['device-make-and-model'] = (device.
+                                                                make_and_model)
+                        device_dict['device-id'] = device.id
+
+            if not hp_drivable and is_network:
+                hplipuri = self.get_hplip_uri_for_network_printer (host,
+                                                                   "print")
+                if hplipuri:
+                    dev = cupshelpers.Device (hplipuri, **device_dict)
+                    physicaldevice.add_device (dev)
+
+                physicaldevice.set_data ('checked-hplip', True)
+
+        # Fill the list of connections for this device.
         n = 0
         for device in physicaldevice.get_devices ():
             model.append ((device.info, device))
