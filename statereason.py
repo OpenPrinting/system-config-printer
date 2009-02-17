@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -99,11 +99,11 @@ class StateReason:
             'marker-supply-empty': (_("Ink empty"),
                                     _("Printer '%s' has no ink left.")),
             'offline': (_("Printer off-line"),
-                        _("Printer `%s' is currently off-line.")),
+                        _("Printer '%s' is currently off-line.")),
             'connecting-to-device': (_("Not connected?"),
                                      _("Printer '%s' may not be connected.")),
             'other': (_("Printer error"),
-                      _("There is a problem on printer `%s'.")),
+                      _("There is a problem on printer '%s'.")),
             }
         try:
             (title, text) = messages[self.get_reason ()]

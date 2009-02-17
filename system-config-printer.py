@@ -985,7 +985,7 @@ class GUI(GtkGUI, monitor.Watcher):
         treeview.set_cursor ((0,))
         host = CUPS_server_hostname ()
         self.PrinterPropertiesDialog.set_title (_("Printer Properties - "
-                                                  "`%s' on %s") % (name, host))
+                                                  "'%s' on %s") % (name, host))
         self.PrinterPropertiesDialog.show ()
 
     def printer_properties_response (self, dialog, response):
@@ -2966,9 +2966,9 @@ class GUI(GtkGUI, monitor.Watcher):
             object = model.get_value (iter, 0)
             name = model.get_value (iter, 2)
             if object.is_class:
-                message_format = _("Really delete class `%s'?") % name
+                message_format = _("Really delete class '%s'?") % name
             else:
-                message_format = _("Really delete printer `%s'?") % name
+                message_format = _("Really delete printer '%s'?") % name
         else:
             message_format = _("Really delete selected destinations?")
 
@@ -3761,6 +3761,9 @@ class NewPrinterGUI(GtkGUI):
                 uri = self.mainapp.printer.device_uri
             else:
                 uri = self.device.uri
+                if not self.install_hplip_plugin(uri):
+                    self.on_NPCancel(None)
+                    return
             if devid != "":
                 try:
                     devid_dict = cupshelpers.parseDeviceID (devid)
@@ -5414,7 +5417,7 @@ class NewPrinterGUI(GtkGUI):
                 if failed:
                     title = _("Not possible")
                     text = (_("It is not possible to obtain a list of queues "
-                              "from `%s'.") % host + '\n\n' +
+                              "from '%s'.") % host + '\n\n' +
                             _("Obtaining a list of queues is a CUPS extension "
                               "to IPP.  Network printers do not support it."))
                 else:
