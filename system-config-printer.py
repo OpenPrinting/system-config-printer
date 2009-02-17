@@ -4531,7 +4531,7 @@ class NewPrinterGUI(GtkGUI):
 
     def install_hplip_plugin(self, uri):
         if not self.HP_PLUGIN_SUPPORT:
-            return 0
+            return 1
 
         # Check necessity of the plugin
         os.environ["URI"] = uri
