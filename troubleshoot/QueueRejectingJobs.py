@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -60,15 +60,15 @@ class QueueRejectingJobs(Question):
         else:
             reason = queue['printer-state-message']
 
-        text = (_("The queue `%s' is rejecting jobs.") % answers['cups_queue'])
+        text = (_("The queue '%s' is rejecting jobs.") % answers['cups_queue'])
 
         if reason:
-            text += ' ' + _("The reason given is: `%s'.") % reason
+            text += ' ' + _("The reason given is: '%s'.") % reason
 
         if not answers['cups_printer_remote']:
             text += "\n\n"
             text += _("To make the queue accept jobs, select the "
-                      "`Accepting Jobs' checkbox in the `Policies' "
+                      "'Accepting Jobs' checkbox in the 'Policies' "
                       "tab for the printer in the printer administration "
                       "tool.") + ' ' + TEXT_start_print_admin_tool
 

@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -103,14 +103,14 @@ class CheckPPDSanity(Question):
                                            stderr=subprocess.PIPE)
                 result = self.op.run ()
                 self.answers['cupstestppd_output'] = result
-                text = _("The PPD file for printer `%s' does not conform "
+                text = _("The PPD file for printer '%s' does not conform "
                          "to the specification.  "
                          "Possible reason follows:") % name
                 text += '\n' + reduce (lambda x, y: x + '\n' + y, result[0])
             except OSError:
                 # Perhaps cupstestppd is not in the path.
                 text = _("There is a problem with the PPD file for "
-                         "printer `%s'.") % name
+                         "printer '%s'.") % name
 
         if tmpf:
             os.unlink (tmpf)
@@ -128,12 +128,12 @@ class CheckPPDSanity(Question):
 
                 if len (pkgs) > 0:
                     self.package = pkgs[0]
-                    text = _("Printer `%s' requires the %s package but it "
+                    text = _("Printer '%s' requires the %s package but it "
                              "is not currently installed.") % (name,
                                                                self.package)
                     self.install_button.show ()
                 else:
-                    text = _("Printer `%s' requires the `%s' program but it "
+                    text = _("Printer '%s' requires the '%s' program but it "
                              "is not currently installed.") % (name,
                                                                (exes + pkgs)[0])
 

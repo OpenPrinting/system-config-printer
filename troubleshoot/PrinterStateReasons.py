@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -55,7 +55,7 @@ class PrinterStateReasons(Question):
         text = ''
         state_message = dict['printer-state-message']
         if state_message:
-            text += _("The printer's state message is: `%s'.") % state_message
+            text += _("The printer's state message is: '%s'.") % state_message
             text += '\n\n'
 
         state_reasons_list = dict['printer-state-reasons']
