@@ -5533,6 +5533,8 @@ class NewPrinterGUI(GtkGUI):
                     if hostport != None:
                         (host, port) = urllib.splitport (hostport)
                         is_network = True
+                        self.getNetworkPrinterMakeModel(host=host,
+                                                        device=device)
                         device_dict['device-info'] = device.info
                         device_dict['device-make-and-model'] = (device.
                                                                 make_and_model)
