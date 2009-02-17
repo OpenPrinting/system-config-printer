@@ -5519,7 +5519,7 @@ class NewPrinterGUI(GtkGUI):
                         device_dict['device-id'] = faxdevid
                         device_dict['device-info'] = _("Fax")
                         faxdev = cupshelpers.Device (faxuri, **device_dict)
-                        physicaldevice.add_device (dev)
+                        physicaldevice.add_device (faxdev)
 
                 physicaldevice.set_data ('checked-hplip', True)
 
