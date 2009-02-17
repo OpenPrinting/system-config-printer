@@ -5492,6 +5492,7 @@ class NewPrinterGUI(GtkGUI):
         if physicaldevice.get_data ('checked-hplip') != True:
             hp_drivable = False
             is_network = False
+            device_dict = { 'device-class': 'network' }
             for device in physicaldevice.get_devices ():
                 if device.type == "hp":
                     # We already know that HPLIP can drive this device.
@@ -5504,14 +5505,17 @@ class NewPrinterGUI(GtkGUI):
                     if hostport != None:
                         (host, port) = urllib.splitport (hostport)
                         is_network = True
+                        device_dict['device-info'] = device.info
+                        device_dict['device-make-and-model'] = (device.
+                                                                make_and_model)
+                        device_dict['device-id'] = device.id
 
             if not hp_drivable and is_network:
                 hplipuri = self.get_hplip_uri_for_network_printer (host,
                                                                    "print")
                 if hplipuri:
-                    device_dict = { 'device-class': 'network' }
-                    device = cupshelpers.Device (hplipuri, **device_dict)
-                    physicaldevice.add_device (device)
+                    dev = cupshelpers.Device (hplipuri, **device_dict)
+                    physicaldevice.add_device (dev)
 
                 physicaldevice.set_data ('checked-hplip', True)
 
