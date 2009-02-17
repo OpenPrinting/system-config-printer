@@ -4684,9 +4684,9 @@ class NewPrinterGUI(GtkGUI):
         if faxtype <= 0:
             return None
         elif faxtype == 4:
-            return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax 2;DES:HP Fax 2;')
+            return 'MFG:HP;MDL:Fax 2;DES:HP Fax 2;'
         else:
-            return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax;DES:HP Fax;')
+            return 'MFG:HP;MDL:Fax;DES:HP Fax;'
 
     def get_hplip_uri_for_network_printer(self, host, mode):
         os.environ["HOST"] = host
@@ -5512,7 +5512,9 @@ class NewPrinterGUI(GtkGUI):
                     faxuri = self.get_hplip_uri_for_network_printer (host,
                                                                      "fax")
                     if faxuri:
-                        device_dict['device-info'] += _(" (fax)")
+                        faxdevid = self.get_hpfax_device_id (faxuri)
+                        device_dict['device-id'] = faxdevid
+                        device_dict['device-info'] = _("Fax")
                         faxdev = cupshelpers.Device (faxuri, **device_dict)
                         physicaldevice.add_device (dev)
 
