@@ -4820,6 +4820,10 @@ class NewPrinterGUI(GtkGUI):
             if devices.has_key (current_uri):
                 current = devices.pop(current_uri)
                 current.info += _(" (Current)")
+            elif devices.has_key (current_uri.replace (":9100", "")):
+                current_uri = current_uri.replace (":9100", "")
+                current = devices.pop(current_uri)
+                current.info += _(" (Current)")
             else:
                 current = cupshelpers.Device (current_uri)
                 current.info = "Current device"
@@ -4921,6 +4925,7 @@ class NewPrinterGUI(GtkGUI):
         self.devices_find_nw_iter = find_nw_iter
         self.tvNPDevices.set_model (model)
 
+        i = 0
         for device in self.devices:
             devs = device.get_devices ()
             network = devs[0].device_class == 'network'
@@ -4934,20 +4939,24 @@ class NewPrinterGUI(GtkGUI):
                     # If this is the currently selected device we need
                     # to expand the "Network Printer" row so that it
                     # is visible.
-                    network_path = model.get_path (network_iter)
-                    self.tvNPDevices.expand_row (network_path, False)
-                    self.tvNPDevices.scroll_to_cell (network_path,
-                                                     row_align=0.5)
-                    device_select_path = model.get_path (iter)
+                    if device_select_path == i:
+                        network_path = model.get_path (network_iter)
+                        self.tvNPDevices.expand_row (network_path, False)
+                        self.tvNPDevices.scroll_to_cell (network_path,
+                                                         row_align=0.5)
+                        device_select_path = model.get_path (iter)
+                        column = self.tvNPDevices.get_column (0)
+                        self.tvNPDevices.set_cursor (device_select_path, column)
                 else:
                     # Just a method of finding one.
                     model.append (network_iter, row=row)
             else:
-                model.insert_before(None, network_iter, row=row)
-
-        # Select the first/current device.
-        column = self.tvNPDevices.get_column (0)
-        self.tvNPDevices.set_cursor (device_select_path, column)
+                iter = model.insert_before(None, network_iter, row=row)
+                if device_select_path == i:
+                    device_select_path = model.get_path (iter)
+                    column = self.tvNPDevices.get_column (0)
+                    self.tvNPDevices.set_cursor (device_select_path, column)
+            i += 1
 
         connection_select_path = 0
         if current_uri:
