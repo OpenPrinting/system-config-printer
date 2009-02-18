@@ -5514,7 +5514,7 @@ class NewPrinterGUI(GtkGUI):
             elif device.type == "lpd":
                 device.menuentry = _("LPD/LPR")
             elif device.type == "smb":
-                device.menuentry = _("Windows printer via SAMBA")
+                device.menuentry = _("Windows Printer via SAMBA")
             elif device.type == "ipp":
                 device.menuentry = _("IPP")
             elif device.type == "http":
