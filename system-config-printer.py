@@ -5478,32 +5478,32 @@ class NewPrinterGUI(GtkGUI):
             return
         for device in physicaldevice.get_devices ():
             if device.type == "parallel":
-                device.menuentry = "Parallel Port"
+                device.menuentry = _("Parallel Port")
             elif device.type == "serial":
-                device.menuentry = "Serial Port"
+                device.menuentry = _("Serial Port")
             elif device.type == "usb":
-                device.menuentry = "USB"
+                device.menuentry = _("USB")
             elif device.type == "hp":
-                device.menuentry = "HP Linux Printing and Imaging (HPLIP)"
+                device.menuentry = _("HP Linux Imaging and Printing (HPLIP)")
             elif device.type == "hpfax":
                 device.menuentry = _("Fax") + " - " + \
-                    "HP Linux Printing and Imaging (HPLIP)"
+                    _("HP Linux Imaging and Printing (HPLIP)")
             elif device.type == "hal":
-                device.menuentry = "Hardware Abstraction Layer (HAL)"
+                device.menuentry = _("Hardware Abstraction Layer (HAL)")
             elif device.type == "socket":
-                device.menuentry = "AppSocket/JetDirect"
+                device.menuentry = _("AppSocket/HP JetDirect")
             elif device.type == "lpd":
-                device.menuentry = "LPD"
+                device.menuentry = _("LPD/LPR")
             elif device.type == "smb":
-                device.menuentry = "SMB (Windows)"
+                device.menuentry = _("Windows printer via SAMBA")
             elif device.type == "ipp":
-                device.menuentry = "IPP"
+                device.menuentry = _("IPP")
             elif device.type == "http":
-                device.menuentry = "HTTP"
+                device.menuentry = _("HTTP")
             else:
                 device.menuentry = device.uri
 
-        model = gtk.ListStore (str,                    # printer-info
+        model = gtk.ListStore (str,                    # URI description
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
 
