@@ -1,8 +1,8 @@
 # vim: set ts=4 sw=4 et: coding=UTF-8
 #
 # Copyright (C) 2008 Novell, Inc.
-# Copyright (C) 2009 Red Hat, Inc.
-# Copyright (C) 2009 Tim Waugh <twaugh@redhat.com>
+# Copyright (C) 2009, 2009 Red Hat, Inc.
+# Copyright (C) 2009, 2009 Tim Waugh <twaugh@redhat.com>
 #
 # Authors: Vincent Untz
 #
@@ -224,7 +224,8 @@ class Connection:
         # The PolicyKit call did not work (either a PK-error and we got a dbus
         # exception that wasn't handled, or an error in the mechanism itself)
         if pk_retval != '':
-            print >>sys.stderr, 'PolicyKit call to %s did not work: %s' % (pk_function_name, pk_retval)
+            debugprint ('PolicyKit call to %s did not work: %s' %
+                        (pk_function_name, pk_retval))
             return fallback_function(*args, **kwds)
 
 
