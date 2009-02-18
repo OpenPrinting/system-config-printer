@@ -4065,37 +4065,6 @@ class NewPrinterGUI(GtkGUI):
                 if not self.install_hplip_plugin(self.device.uri):
                     self.on_NPCancel(None)
                     return
-                if self.device.type in ["socket", "lpd", "ipp"]:
-                    (host, uri) = self.getNetworkPrinterMakeModel ()
-                    faxuri = None
-                    if host:
-                        faxuri = self.get_hplip_uri_for_network_printer(host,
-                                                                        "fax")
-                    if faxuri:
-                        dialog = gtk.Dialog(self.device.info,
-                                            self.NewPrinterWindow,
-                                            gtk.DIALOG_MODAL |
-                                            gtk.DIALOG_DESTROY_WITH_PARENT,
-                                            (_("Printer"), 1,
-                                             _("Fax"), 2))
-                        label = gtk.Label(_("This printer supports both "
-                                            "printing and sending faxes.  "
-                                            "Which functionality should be "
-                                            "used for this queue?"))
-                        dialog.vbox.pack_start(label, True, True, 0)
-                        label.show()
-                        queue_type = dialog.run()
-                        dialog.destroy()
-                        if (queue_type == 2):
-                            self.device.id_dict = \
-                               self.get_hpfax_device_id(faxuri)
-                            self.device.uri = faxuri
-                            self.auto_make = self.device.id_dict["MFG"]
-                            self.auto_model = self.device.id_dict["MDL"]
-                            self.device.id = "MFG:" + self.auto_make + \
-                                             ";MDL:" + self.auto_model + \
-                                             ";DES:" + \
-                                             self.device.id_dict["DES"] + ";"
                 uri = self.device.uri
                 if uri and uri.startswith ("smb://"):
                     uri = SMBURI (uri=uri[6:]).sanitize_uri ()
@@ -4729,9 +4698,9 @@ class NewPrinterGUI(GtkGUI):
         if faxtype <= 0:
             return None
         elif faxtype == 4:
-            return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax 2;DES:HP Fax 2;')
+            return 'MFG:HP;MDL:Fax 2;DES:HP Fax 2;'
         else:
-            return cupshelpers.parseDeviceID ('MFG:HP;MDL:Fax;DES:HP Fax;')
+            return 'MFG:HP;MDL:Fax;DES:HP Fax;'
 
     def get_hplip_uri_for_network_printer(self, host, mode):
         os.environ["HOST"] = host
@@ -5526,8 +5495,34 @@ class NewPrinterGUI(GtkGUI):
         physicaldevice = model.get_value (iter, 1)
         if physicaldevice == None:
             return
+        for device in physicaldevice.get_devices ():
+            if device.type == "parallel":
+                device.menuentry = _("Parallel Port")
+            elif device.type == "serial":
+                device.menuentry = _("Serial Port")
+            elif device.type == "usb":
+                device.menuentry = _("USB")
+            elif device.type == "hp":
+                device.menuentry = _("HP Linux Imaging and Printing (HPLIP)")
+            elif device.type == "hpfax":
+                device.menuentry = _("Fax") + " - " + \
+                    _("HP Linux Imaging and Printing (HPLIP)")
+            elif device.type == "hal":
+                device.menuentry = _("Hardware Abstraction Layer (HAL)")
+            elif device.type == "socket":
+                device.menuentry = _("AppSocket/HP JetDirect")
+            elif device.type == "lpd":
+                device.menuentry = _("LPD/LPR")
+            elif device.type == "smb":
+                device.menuentry = _("Windows printer via SAMBA")
+            elif device.type == "ipp":
+                device.menuentry = _("IPP")
+            elif device.type == "http":
+                device.menuentry = _("HTTP")
+            else:
+                device.menuentry = device.uri
 
-        model = gtk.ListStore (str,                    # printer-info
+        model = gtk.ListStore (str,                    # URI description
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
 
@@ -5560,14 +5555,28 @@ class NewPrinterGUI(GtkGUI):
                                                                    "print")
                 if hplipuri:
                     dev = cupshelpers.Device (hplipuri, **device_dict)
+                    dev.menuentry = "HP Linux Imaging and Printing (HPLIP)"
                     physicaldevice.add_device (dev)
+
+                    # Now check to see if we can also send faxes using
+                    # this device.
+                    faxuri = self.get_hplip_uri_for_network_printer (host,
+                                                                     "fax")
+                    if faxuri:
+                        faxdevid = self.get_hpfax_device_id (faxuri)
+                        device_dict['device-id'] = faxdevid
+                        device_dict['device-info'] = _("Fax")
+                        faxdev = cupshelpers.Device (faxuri, **device_dict)
+                        faxdev.menuentry = _("Fax") + " - " + \
+                            "HP Linux Imaging and Printing (HPLIP)"
+                        physicaldevice.add_device (faxdev)
 
                 physicaldevice.set_data ('checked-hplip', True)
 
         # Fill the list of connections for this device.
         n = 0
         for device in physicaldevice.get_devices ():
-            model.append ((device.info, device))
+            model.append ((device.menuentry, device))
             n += 1
         column = self.tvNPDeviceURIs.get_column (0)
         self.tvNPDeviceURIs.set_cursor (0, column)
