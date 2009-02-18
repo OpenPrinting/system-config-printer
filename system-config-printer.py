@@ -4942,20 +4942,19 @@ class NewPrinterGUI(GtkGUI):
                     if device_select_path == i:
                         network_path = model.get_path (network_iter)
                         self.tvNPDevices.expand_row (network_path, False)
-                        self.tvNPDevices.scroll_to_cell (network_path,
-                                                         row_align=0.5)
-                        device_select_path = model.get_path (iter)
-                        column = self.tvNPDevices.get_column (0)
-                        self.tvNPDevices.set_cursor (device_select_path, column)
                 else:
                     # Just a method of finding one.
                     model.append (network_iter, row=row)
             else:
                 iter = model.insert_before(None, network_iter, row=row)
-                if device_select_path == i:
-                    device_select_path = model.get_path (iter)
-                    column = self.tvNPDevices.get_column (0)
-                    self.tvNPDevices.set_cursor (device_select_path, column)
+
+            if device_select_path == i:
+                device_select_path = model.get_path (iter)
+                self.tvNPDevices.scroll_to_cell (device_select_path,
+                                                 row_align=0.5)
+                column = self.tvNPDevices.get_column (0)
+                self.tvNPDevices.set_cursor (device_select_path, column)
+
             i += 1
 
         connection_select_path = 0
