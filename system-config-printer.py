@@ -4530,8 +4530,15 @@ class NewPrinterGUI(GtkGUI):
         return devices
 
     def install_hplip_plugin(self, uri):
+        """
+        Attempt to install a plugin using hp-plugin.
+
+        @return: True if plugin not needed (or needed and installed),
+        False on error.
+        """
+
         if not self.HP_PLUGIN_SUPPORT:
-            return 1
+            return True
 
         # Check necessity of the plugin
         os.environ["URI"] = uri
@@ -4545,7 +4552,7 @@ class NewPrinterGUI(GtkGUI):
             (stdout, stderr) = p.communicate ()
         except:
             # Problem executing command.
-            return 2
+            return True # assume plugin not required
 
         plugin_needed = -1
         plugin_reason = -1
@@ -4575,7 +4582,7 @@ class NewPrinterGUI(GtkGUI):
             if plugin_needed >= 0 and plugin_reason >= 0 and fw_download >= 0:
                 break
         if plugin_needed <= 0 or not hplip_version:
-            return 2
+            return True # assume plugin not required
         # Check whether the plugin is already installed
         if glob.glob("/usr/share/hplip/data/plugin/*%s*plugin*" %
                      hplip_version):
@@ -4585,7 +4592,7 @@ class NewPrinterGUI(GtkGUI):
                     if line.strip ().startswith("plugin") and \
                             line.strip ().endswith("1"):
                         f.close()
-                        return 2
+                        return True
                 f.close()
             except:
                 pass
@@ -4683,17 +4690,17 @@ class NewPrinterGUI(GtkGUI):
                     if install_result != 255:
                         break
                 if install_result == 0:
-                    return 2
+                    return True
                 else:
-                    return 0
+                    return False
             except OSError, e:
                 debugprint ("Execution of hp-plugin failed: %s" % e)
-                return 0
+                return False
         elif (button_clicked == 2):
-            return 0
+            return False
         elif (button_clicked == 3):
-            return 1
-        return 0
+            return True
+        return False
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
