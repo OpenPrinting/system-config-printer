@@ -5476,6 +5476,32 @@ class NewPrinterGUI(GtkGUI):
         physicaldevice = model.get_value (iter, 1)
         if physicaldevice == None:
             return
+        for device in physicaldevice.get_devices ():
+            if device.type == "parallel":
+                device.menuentry = "Parallel Port"
+            elif device.type == "serial":
+                device.menuentry = "Serial Port"
+            elif device.type == "usb":
+                device.menuentry = "USB"
+            elif device.type == "hp":
+                device.menuentry = "HP Linux Printing and Imaging (HPLIP)"
+            elif device.type == "hpfax":
+                device.menuentry = _("Fax") + " - " + \
+                    "HP Linux Printing and Imaging (HPLIP)"
+            elif device.type == "hal":
+                device.menuentry = "Hardware Abstraction Layer (HAL)"
+            elif device.type == "socket":
+                device.menuentry = "AppSocket/JetDirect"
+            elif device.type == "lpd":
+                device.menuentry = "LPD"
+            elif device.type == "smb":
+                device.menuentry = "SMB (Windows)"
+            elif device.type == "ipp":
+                device.menuentry = "IPP"
+            elif device.type == "http":
+                device.menuentry = "HTTP"
+            else:
+                device.menuentry = device.uri
 
         model = gtk.ListStore (str,                    # printer-info
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
@@ -5508,6 +5534,7 @@ class NewPrinterGUI(GtkGUI):
                                                                    "print")
                 if hplipuri:
                     dev = cupshelpers.Device (hplipuri, **device_dict)
+                    dev.menuentry = "HP Linux Imaging and Printing (HPLIP)"
                     physicaldevice.add_device (dev)
 
                     # Now check to see if we can also send faxes using
@@ -5519,6 +5546,8 @@ class NewPrinterGUI(GtkGUI):
                         device_dict['device-id'] = faxdevid
                         device_dict['device-info'] = _("Fax")
                         faxdev = cupshelpers.Device (faxuri, **device_dict)
+                        faxdev.menuentry = _("Fax") + " - " + \
+                            "HP Linux Imaging and Printing (HPLIP)"
                         physicaldevice.add_device (faxdev)
 
                 physicaldevice.set_data ('checked-hplip', True)
@@ -5526,7 +5555,7 @@ class NewPrinterGUI(GtkGUI):
         # Fill the list of connections for this device.
         n = 0
         for device in physicaldevice.get_devices ():
-            model.append ((device.info, device))
+            model.append ((device.menuentry, device))
             n += 1
         column = self.tvNPDeviceURIs.get_column (0)
         self.tvNPDeviceURIs.set_cursor (0, column)
