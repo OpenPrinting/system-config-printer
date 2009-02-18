@@ -1,8 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -50,6 +50,11 @@ class Printer:
     def _expand_flags(self):
         prefix = "CUPS_PRINTER_"
         prefix_length = len(prefix)
+
+        # Use the C locale for lower() (trac #151).
+        current_ctype = locale.getlocale (locale.LC_CTYPE)
+        locale.setlocale (locale.LC_CTYPE, "C")
+
         # loop over cups constants
         for name in cups.__dict__:
             if name.startswith(prefix):
@@ -59,6 +64,8 @@ class Printer:
                 # set as attribute
                 setattr(self, attr_name,
                         bool(self.type & getattr(cups, name)))
+
+        locale.setlocale (locale.LC_CTYPE, current_ctype)
 
     def update(self, **kw):
         """
