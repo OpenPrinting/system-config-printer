@@ -29,10 +29,8 @@ class PhysicalDevice:
     def _canonical_id (self, device):
         mfg = device.id_dict.get ('MFG', '')
         mdl = device.id_dict.get ('MDL', '')
-        if mfg == '':
-            return ('', '')
 
-        if mdl.lower ().startswith (mfg.lower ()):
+        if mfg == '' or mdl.lower ().startswith (mfg.lower ()):
             make_and_model = mdl
         else:
             make_and_model = "%s %s" % (mfg, mdl)
@@ -65,7 +63,7 @@ class PhysicalDevice:
             self.mdl = nicest (self.mdl, mdl)
 
             sn = device.id_dict.get ('SN', '')
-            if sn != self.sn:
+            if sn != '' and self.sn != '' and sn != self.sn:
                 raise RuntimeError
 
         self.devices.append (device)
@@ -105,21 +103,39 @@ class PhysicalDevice:
         if other == None or type (other) != type (self):
             return 1
 
-        if other.mfg == '' or self.mfg == '':
+        if (other.mfg == '' and other.mdl == '') or \
+           (self.mfg == '' and self.mdl == ''):
             # One or other is just a backend, not a real physical device.
-            if other.mfg == '' and self.mfg == '':
+            if other.mfg == '' and other.mdl == '' and \
+               self.mfg == '' and self.mdl == '':
                 return cmp (self.devices[0], other.devices[0])
 
-            if other.mfg == '':
+            if other.mfg == '' and other.mdl == '':
                 return -1
             return 1
 
-        mfgcmp = cmp (self.mfg_lower, other.mfg_lower)
+        if self.mfg == '' or self.mdl.lower ().startswith (self.mfg.lower ()):
+            our_make_and_model = self.mdl
+        else:
+            our_make_and_model = "%s %s" % (self.mfg, self.mdl)
+        (our_mfg, our_mdl) = \
+            cupshelpers.ppds.ppdMakeModelSplit (our_make_and_model)
+
+        if other.mfg == '' or \
+                other.mdl.lower ().startswith (other.mfg.lower ()):
+            other_make_and_model = other.mdl
+        else:
+            other_make_and_model = "%s %s" % (other.mfg, other.mdl)
+        (other_mfg, other_mdl) = \
+            cupshelpers.ppds.ppdMakeModelSplit (other_make_and_model)
+
+        mfgcmp = cmp (our_mfg.lower (), other_mfg.lower ())
         if mfgcmp != 0:
             return mfgcmp
-        mdlcmp = cmp (self.mdl_lower, other.mdl_lower)
+        mdlcmp = cmp (our_mdl.lower (), other_mdl.lower ())
         if mdlcmp != 0:
             return mdlcmp
+        if self.sn == '' or other.sn == '': return 0;
         return cmp (self.sn, other.sn)
 
 if __name__ == '__main__':
