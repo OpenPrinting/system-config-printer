@@ -4874,13 +4874,13 @@ class NewPrinterGUI(GtkGUI):
         self.devices.sort()
         other = cupshelpers.Device('', **{'device-info' :_("Other")})
         self.devices.append (PhysicalDevice (other))
-        device_select_path = 0
+        device_select_index = 0
         if current_uri:
             current_device = PhysicalDevice (current)
             try:
                 i = self.devices.index (current_device)
                 self.devices[i].add_device (current)
-                device_select_path = i
+                device_select_index = i
                 devs = self.devices[i].get_devices ()
             except ValueError:
                 self.devices.insert(0, current_device)
@@ -4902,6 +4902,7 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.set_model (model)
 
         i = 0
+        device_select_path = None
         for device in self.devices:
             devs = device.get_devices ()
             network = devs[0].device_class == 'network'
@@ -4915,16 +4916,16 @@ class NewPrinterGUI(GtkGUI):
                     # If this is the currently selected device we need
                     # to expand the "Network Printer" row so that it
                     # is visible.
-                    if device_select_path == i:
+                    if device_select_index == i:
                         network_path = model.get_path (network_iter)
                         self.tvNPDevices.expand_row (network_path, False)
                 else:
                     # Just a method of finding one.
-                    model.append (network_iter, row=row)
+                    iter = model.append (network_iter, row=row)
             else:
                 iter = model.insert_before(None, network_iter, row=row)
 
-            if device_select_path == i:
+            if device_select_index == i:
                 device_select_path = model.get_path (iter)
                 self.tvNPDevices.scroll_to_cell (device_select_path,
                                                  row_align=0.5)
