@@ -30,6 +30,7 @@ import os
 import sys
 
 import tempfile
+import string
 
 import cups
 import dbus
@@ -142,7 +143,7 @@ class Connection:
         # need some repainting while the authorization dialog is displayed.
         pk_auth_running = True
 
-        pk_auth.ObtainAuthorization(action, dbus.UInt32(xid), dbus.UInt32(os.getpid()), reply_handler=_pk_auth_reply_handler, error_handler=_pk_auth_error_handler)
+        pk_auth.ObtainAuthorization(action, dbus.UInt32(xid), dbus.UInt32(os.getpid()), reply_handler=_pk_auth_reply_handler, error_handler=_pk_auth_error_handler, timeout=2**31/1000)
 
         while not pk_auth_done:
             gtk.main_iteration(True)
@@ -150,6 +151,8 @@ class Connection:
         pk_auth_running = False
 
         if pk_auth_error != None:
+            if string.find(pk_auth_error, 'org.freedesktop.DBus.Error.NoReply') == 0:
+                return False
             raise dbus.exceptions.DBusException(pk_auth_error)
 
         if not type(pk_auth_ret) == dbus.Boolean:
