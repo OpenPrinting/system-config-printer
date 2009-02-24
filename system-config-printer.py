@@ -3039,7 +3039,8 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            self.cups._begin_operation (_("modifying printer %s") % name)
+            self.cups._begin_operation (_("modifying printer %s") %
+                                        printer.name)
             try:
                 printer.setShared (share)
                 success = True
