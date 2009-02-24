@@ -1,6 +1,7 @@
 # German translation of system-config-printer
 # Copyright (C) 2001 Red Hat, Inc.
 #
+#
 # Claudia Krug <ckrug@redhat.it>, 2001.
 # Bernd Groh <bgroh@redhat.com>, 2002,2003.
 # Andreas Mueller <redhat@andreas-mueller.com>, 2003.
@@ -9,15 +10,15 @@
 # Roy Jamison <mcisbackuk@hotmail.com>, 2007.
 # Fabian Affolter <fab@fedoraproject.org>, 2007,2008.
 # Helge Kreutzmann <debian@helgefjell.de>, 2008.
-#
+# Marcus Nitzschke <kenda@fedoraproject.org>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer 0.7.81\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2009-02-18 13:19+0000\n"
-"PO-Revision-Date: 2009-02-23 18:19+0100\n"
-"Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
-"Language-Team: German Translation Team <fedora-trans-de@redhat.com>\n"
+"PO-Revision-Date: 2009-02-24 00:53+0100\n"
+"Last-Translator: Marcus Nitzschke <kenda@fedoraproject.org>\n"
+"Language-Team: German <fedora-trans-de@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -36,7 +37,7 @@ msgstr "Auftragsgeschichte"
 
 #: ../AdvancedServerSettings.py:69
 msgid "Do not preserve job history"
-msgstr ""
+msgstr "Auftragsverlauf wird nicht aufbewahrt"
 
 #: ../AdvancedServerSettings.py:71
 msgid "Preserve job history but not files"
@@ -178,7 +179,7 @@ msgstr "_Umbenennen"
 
 #: ../GroupsPane.py:170
 msgid "The item could not be renamed."
-msgstr ""
+msgstr "Der Eintrag konnte nicht umbenannt werden."
 
 #: ../GroupsPane.py:171
 #, python-format
@@ -188,11 +189,11 @@ msgstr "Name \"%s\" wird bereits benutzt. Bitte wählen Sie einen andere Namen."
 #: ../GroupsPane.py:290
 #, python-format
 msgid "Are you sure you want to permanently delete \"%s\"?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie \"%s\" dauerhaft entfernen möchten?"
 
 #: ../GroupsPane.py:296
 msgid "This will not delete any printer queues from your computer. To delete queues completely, you must delete them from the 'All Printers' group."
-msgstr ""
+msgstr "Dies wird nicht alle Warteschlangen von Ihrem Rechner löschen. Um die Warteschlangen komplett zu entfernen, müssen Sie diese aus der 'Alle Drucker' Gruppe entfernen."
 
 #: ../GroupsPane.py:318
 msgid "New Group"
@@ -420,7 +421,7 @@ msgstr "Druckauftrag abbrechen"
 
 #: ../jobviewer.py:910
 msgid "Do you really want to cancel this job?"
-msgstr "Wollen Sie diensen Auftrag wirklich abbrechen?"
+msgstr "Wollen Sie diesen Auftrag wirklich abbrechen?"
 
 #: ../jobviewer.py:938
 msgid "canceling job"
@@ -447,15 +448,15 @@ msgstr "Ein Dokument in der Warteschlange"
 msgid "%d documents queued"
 msgstr "%d Dokumente in der Warteschlange"
 
-#: ../jobviewer.py:1198
-#, python-format
+#: ../jobviewer.py:1198,
+#: python-format
 msgid "Job %d completed"
 msgstr "Auftrag %d abgeschlossen"
 
 #: ../jobviewer.py:1199
 #, python-format
 msgid "Document `%s' has finished printing on `%s'."
-msgstr ""
+msgstr "Drucken von `%s' auf `%s' wurde beendet."
 
 #: ../jobviewer.py:1354
 #, python-format
@@ -570,31 +571,31 @@ msgstr "Allgemein"
 #. HPIJS options
 #: ../ppdippstr.py:68
 msgid "Printout mode"
-msgstr "Ausdruck-Modus"
+msgstr "Druckmodus"
 
 #: ../ppdippstr.py:69
 msgid "Draft (auto-detect-paper type)"
-msgstr ""
+msgstr "Entwurf (automatische Papiererkennung)"
 
 #: ../ppdippstr.py:71
 msgid "Draft grayscale (auto-detect-paper type)"
-msgstr ""
+msgstr "Entwurf in Graustufen (automatische Papiererkennung)"
 
 #: ../ppdippstr.py:72
 msgid "Normal (auto-detect-paper type)"
-msgstr ""
+msgstr "Normal (automatische Papiererkennung)"
 
 #: ../ppdippstr.py:74
 msgid "Normal grayscale (auto-detect-paper type)"
-msgstr ""
+msgstr "Normal in Graustufen (automatische Papiererkennung)"
 
 #: ../ppdippstr.py:76
 msgid "High quality (auto-detect-paper type)"
-msgstr ""
+msgstr "Hohe Qualität (automatische Papiererkennung)"
 
 #: ../ppdippstr.py:78
 msgid "High quality grayscale (auto-detect-paper type)"
-msgstr ""
+msgstr "Hohe Qualität in Graustufen (automatische Papiererkennung)"
 
 #: ../ppdippstr.py:79
 msgid "Photo (on photo paper)"
@@ -602,11 +603,11 @@ msgstr "Photo (auf Photo-Papier)"
 
 #: ../ppdippstr.py:81
 msgid "Best quality (color on photo paper)"
-msgstr ""
+msgstr "Beste Qualität (farbig auf Fotopapier)"
 
 #: ../ppdippstr.py:83
 msgid "Normal quality (color on photo paper)"
-msgstr ""
+msgstr "Normale Qualität (farbig auf Fotopapier)"
 
 #: ../ppdippstr.py:85
 msgid "Media source"
@@ -630,7 +631,7 @@ msgstr "Unterer Schacht"
 
 #: ../ppdippstr.py:90
 msgid "CD or DVD tray"
-msgstr "CD- oder DVD-Einleger"
+msgstr "CD oder DVD Schacht"
 
 #: ../ppdippstr.py:91
 msgid "Envelope feeder"
@@ -659,11 +660,11 @@ msgstr "Benutzerdefiniert"
 
 #: ../ppdippstr.py:98
 msgid "Photo or 4x6 inch index card"
-msgstr ""
+msgstr "Foto oder 10x15 cm Karte"
 
 #: ../ppdippstr.py:99
 msgid "Photo or 5x7 inch index card"
-msgstr ""
+msgstr "Foto oder 13x18 cm Karte"
 
 #: ../ppdippstr.py:100
 msgid "Photo with tear-off tab"
@@ -671,7 +672,7 @@ msgstr ""
 
 #: ../ppdippstr.py:101
 msgid "3x5 inch index card"
-msgstr ""
+msgstr "9x13 cm Karte"
 
 #: ../ppdippstr.py:102
 msgid "5x8 inch index card"
@@ -695,11 +696,11 @@ msgstr "Doppelseitiges Drucken"
 
 #: ../ppdippstr.py:108
 msgid "Long edge (standard)"
-msgstr ""
+msgstr "Längsseitig (Standard)"
 
 #: ../ppdippstr.py:109
 msgid "Short edge (flip)"
-msgstr ""
+msgstr "Schmalseitig"
 
 #: ../ppdippstr.py:110
 msgid "Off"
@@ -707,47 +708,47 @@ msgstr "Aus"
 
 #: ../ppdippstr.py:113
 msgid "Resolution, quality, ink type, media type"
-msgstr ""
+msgstr "Auflösung, Qualität, Tintenart, Papierart"
 
 #: ../ppdippstr.py:114
 msgid "Controlled by 'Printout mode'"
-msgstr ""
+msgstr "Gesteuert von 'Druckmodus'"
 
 #: ../ppdippstr.py:116
 msgid "300 dpi, color, black + color cartridge"
-msgstr ""
+msgstr "300 dpi, farbig, Schwarz + Farb-Patrone"
 
 #: ../ppdippstr.py:118
 msgid "300 dpi, draft, color, black + color cartridge"
-msgstr ""
+msgstr "300 dpi, Entwurf, farbig, Schwarz + Farb-Patrone"
 
 #: ../ppdippstr.py:120
 msgid "300 dpi, draft, grayscale, black + color cartridge"
-msgstr ""
+msgstr "300 dpi, Entwurf, Graustufen, Schwarz + Farb-Patrone"
 
 #: ../ppdippstr.py:122
 msgid "300 dpi, grayscale, black + color cartridge"
-msgstr ""
+msgstr "300 dpi, Graustufen, Schwarz + Farb-Patrone"
 
 #: ../ppdippstr.py:124
 msgid "600 dpi, color, black + color cartridge"
-msgstr ""
+msgstr "600 dpi, farbig, Schwarz + Farb-Patrone"
 
 #: ../ppdippstr.py:126
 msgid "600 dpi, grayscale, black + color cartridge"
-msgstr ""
+msgstr "600 dpi, Graustufen, Schwarz + Farb-Patrone"
 
 #: ../ppdippstr.py:128
 msgid "600 dpi, photo, black + color cartridge, photo paper"
-msgstr ""
+msgstr "600 dpi, Foto, Schwarz + Farb-Patrone, Fotopapier"
 
 #: ../ppdippstr.py:130
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
-msgstr ""
+msgstr "600 dpi, farbig, Schwarz + Farb-Patrone, Fotopapier, Normal"
 
 #: ../ppdippstr.py:132
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
-msgstr ""
+msgstr "1200 dpi, Foto, Schwarz + Farb-Patrone, Fotopapier"
 
 #: ../system-config-printer.py:125
 msgid "To do this, select System->Administration->Firewall from the main menu."
@@ -895,7 +896,7 @@ msgstr "Verbunden mit %s"
 #: ../system-config-printer.py:1255
 #: ../system-config-printer.py:2040
 msgid "obtaining queue details"
-msgstr ""
+msgstr "Warteschlangen-Details werden ermittelt"
 
 #: ../system-config-printer.py:1293
 msgid "Remove from Group"
@@ -930,7 +931,7 @@ msgstr "Netzwerk-Drucker-Freigabe"
 #: ../glade/ConnectingDialog.glade.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
-msgstr "<i>Öffne Verbindung zu %s</i>"
+msgstr "<i>Verbindung zu %s wird geöffnet</i>"
 
 #: ../system-config-printer.py:1885
 msgid "Installable Options"
@@ -944,7 +945,7 @@ msgstr "Druckeroptionen"
 #: ../system-config-printer.py:1922
 #, python-format
 msgid "modifying class %s"
-msgstr "Ändere Klasse %s"
+msgstr "Klasse %s wird geändert"
 
 #: ../system-config-printer.py:1924
 #: ../system-config-printer.py:3017
@@ -1118,7 +1119,7 @@ msgstr "Sie müssen die Firewall anpassen, um Drucken über das Netzwerk für di
 
 #: ../system-config-printer.py:3614
 msgid "Browsing not available (pysmbc not installed)"
-msgstr ""
+msgstr "Durchsuchen nicht verfügbar (pysmbc nicht installiert)"
 
 #. SMB list columns
 #: ../system-config-printer.py:3620
@@ -1196,13 +1197,15 @@ msgstr "Server-Einstellungen anpassen"
 #. Tell the user why he needs the plugin
 #: ../system-config-printer.py:4570
 msgid "For this printer a proprietary driver plugin from HP is available.\n"
-msgstr ""
+msgstr "Für diesen Drucker ist ein proprietäres Treiber-Plugin von HP verfügbar.\n"
 
 #: ../system-config-printer.py:4573
 msgid ""
 "The installation of the plugin is required for your printer to work.\n"
 "\n"
 msgstr ""
+"Die Installation des Plugins ist erforderlich, damit Ihr Drucker funktioniert.\n"
+"\n"
 
 #: ../system-config-printer.py:4576
 msgid ""
@@ -1210,73 +1213,65 @@ msgid ""
 "of your printer. Without plugin at least basic operations work.\n"
 "\n"
 msgstr ""
+"Die Installation des Plugins ist optional. Es erweitert die Funktionen\n"
+"von Ihrem Drucker. Ohne Plugin stehen die Basisfunktionen zur Verfügung.\n"
+"\n"
 
 #: ../system-config-printer.py:4580
 msgid "The plugin provides the following features:\n"
-msgstr ""
+msgstr "Das Plugin enthält folgende Funktionen:\n"
 
 #: ../system-config-printer.py:4583
-#, fuzzy
 msgid " - Printing support\n"
-msgstr " - Druck-Unterstützungt\n"
+msgstr " - Druck-Unterstützung\n"
 
 #: ../system-config-printer.py:4586
-#, fuzzy
 msgid " - Faster printing\n"
-msgstr "Fehlersuche beim Drucken"
+msgstr " - Schnelleres Drucken\n"
 
 #: ../system-config-printer.py:4589
-#, fuzzy
 msgid " - Better printout quality\n"
 msgstr " - Bessere Ausdruck-Qualität\n"
 
 #: ../system-config-printer.py:4592
-#, fuzzy
 msgid " - Extra printing features\n"
 msgstr " - Extra Druckeigenschaften\n"
 
 #: ../system-config-printer.py:4595
-#, fuzzy
 msgid " - Scanning support\n"
-msgstr " - Scanning-Unterstützung\n"
+msgstr " - Scan-Unterstützung\n"
 
 #: ../system-config-printer.py:4598
-#, fuzzy
 msgid " - Faster scanning\n"
 msgstr " - Schnelleres Scannen\n"
 
 #: ../system-config-printer.py:4601
 msgid " - Better scanning image quality\n"
-msgstr " - Bessere Scanner-Bild-Qualität\n"
+msgstr " - Bessere Scan-Qualität\n"
 
 #: ../system-config-printer.py:4604
-#, fuzzy
 msgid " - Faxing support\n"
 msgstr " - Fax-Unterstützung\n"
 
 #: ../system-config-printer.py:4607
-#, fuzzy
 msgid " - Extra fax features\n"
 msgstr " - Extra Fax-Eigenschaften\n"
 
 #: ../system-config-printer.py:4610
-#, fuzzy
 msgid " - Better Input/Output support\n"
 msgstr " - Bessere Eingabe-/Ausgabe-Unterstützung\n"
 
 #: ../system-config-printer.py:4613
-#, fuzzy
 msgid " - Extra user interface features\n"
-msgstr " - Extra Benutzeroberfläche-Eigenschaften\n"
+msgstr " - zusätzliche Funktionen für Benutzeroberfläche\n"
 
 #: ../system-config-printer.py:4616
-#, fuzzy
 msgid " - Other extra features\n"
-msgstr " - Weitere extra Eigenschaften\n"
+msgstr " - Weitere Zusatzfunktionen\n"
 
 #: ../system-config-printer.py:4621
 msgid "Install plugin"
-msgstr "Installiere Plugin"
+msgstr "Plugin installieren"
 
 #: ../system-config-printer.py:4622
 msgid "Do not set up printer"
@@ -1546,7 +1541,7 @@ msgstr "Drucker hinzufügen %s"
 
 #: ../system-config-printer.py:6599
 msgid "Would you like to print a test page?"
-msgstr ""
+msgstr "Möchten Sie eine Testseite drucken?"
 
 #: ../system-config-printer.py:6652
 msgid "Install driver"
@@ -2949,7 +2944,7 @@ msgstr "War der Ausdruck des markierten Auftrages korrekt?"
 #: ../troubleshoot/PrintTestPage.py:143
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
-msgstr ""
+msgstr "Legen Sie bitte zunächst Papier vom Typ '%s' in den Drucker."
 
 #: ../troubleshoot/PrintTestPage.py:399
 msgid "Error submitting test page"
@@ -2975,7 +2970,6 @@ msgid "The queue '%s' is not enabled."
 msgstr "Die Warteschlange '%s' ist nicht aktiviert."
 
 #: ../troubleshoot/QueueNotEnabled.py:71
-#, fuzzy
 msgid "To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the printer in the printer administration tool."
 msgstr "Um sie zu aktivieren, wählen Sie im Drucker-Administrationswerkzeug 'Aktiviert' für den Drucker aus."
 
@@ -3015,7 +3009,7 @@ msgstr "CUPS-Service gestoppt"
 
 #: ../troubleshoot/SchedulerNotRunning.py:29
 msgid "The CUPS print spooler does not appear to be running.  To correct this, choose System->Administration->Services from the main menu and look for the 'cups' service."
-msgstr "Der CUPS-Drucker-Zwischenspeicher (Spooler) scheint nicht zu laufen. Um dies zu beheben, wählen Sie System->Administration->Dienste aus dem Hauptmenü und suchen Sie nach dem `cups'-Dienst."
+msgstr "Der CUPS-Drucker-Zwischenspeicher (Spooler) scheint nicht zu laufen. Um dies zu beheben, wählen Sie System->Administration->Dienste aus dem Hauptmenü und suchen Sie nach dem 'cups'-Dienst."
 
 #: ../troubleshoot/ServerFirewalled.py:26
 msgid "Check Server Firewall"
