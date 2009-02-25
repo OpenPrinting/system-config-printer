@@ -19,6 +19,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import socket, time
+import gtk
 
 class LpdServer:
     def __init__(self, hostname):
@@ -43,6 +44,7 @@ class LpdServer:
             af, socktype, proto, canonname, sa = res
             try:
                 s = socket.socket(af, socktype, proto)
+                s.settimeout(0.5)
             except socket.error, msg:
                 s = None
                 continue
@@ -56,6 +58,9 @@ class LpdServer:
         return s
 
     def _probe_queue(self,name, result):
+        while gtk.events_pending ():
+            gtk.main_iteration ()
+
         s = self._open_socket()
         if not s: return False
         print name

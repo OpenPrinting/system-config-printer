@@ -5735,7 +5735,15 @@ class NewPrinterGUI(GtkGUI):
         # read hostname, probe, fill printer names
         hostname = self.cmbentNPTLpdHost.get_active_text()
         server = probe_printer.LpdServer(hostname)
+
+        self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                 _('Searching') + '</span>\n\n' +
+                                 _('Searching for printers'))
+        self.WaitWindow.set_transient_for (self.NewPrinterWindow)
+        self.WaitWindow.show_now ()
         printers = server.probe()
+        self.WaitWindow.hide ()
+
         model = self.cmbentNPTLpdQueue.get_model()
         model.clear()
         for printer in printers:
