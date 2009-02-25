@@ -1,8 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -66,7 +66,7 @@ class LpdServer:
         print name
         
         try:
-            s.send('\0x02%s\n' % name) # cmd send job to queue
+            s.send('\2%s\n' % name) # cmd send job to queue
             data = s.recv(1024) # receive status
             print repr(data)
         except socket.error, msg:
@@ -78,9 +78,9 @@ class LpdServer:
 
             return False
 
-        if len(data)>0 and data[0]==0:
+        if len(data)>0 and ord(data[0])==0:
             try:
-                s.send('\0x01\n') # abort job again
+                s.send('\1\n') # abort job again
                 s.close ()
             except:
                 pass
