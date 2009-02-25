@@ -3477,6 +3477,7 @@ class NewPrinterGUI(GtkGUI):
                               "cmbNPTSerialParity",
                               "cmbNPTSerialBits",
                               "cmbNPTSerialFlow",
+                              "btnNPTLpdProbe",
                               "cmbentNPTLpdHost",
                               "cmbentNPTLpdQueue",
                               "entNPTIPPHostname",
@@ -5696,7 +5697,10 @@ class NewPrinterGUI(GtkGUI):
                 self.entNPTIPPQueuename.show()
                 self.lblIPPURI.hide()
         elif device.type=="lpd":
-            if device.uri.startswith ("lpd"):
+            self.cmbentNPTLpdHost.child.set_text ('')
+            self.cmbentNPTLpdQueue.child.set_text ('')
+            self.btnNPTLpdProbe.set_sensitive (False)
+            if len (device.uri) > 6:
                 host = device.uri[6:]
                 i = host.find ("/")
                 if i != -1:
@@ -5707,8 +5711,7 @@ class NewPrinterGUI(GtkGUI):
                 self.cmbentNPTLpdHost.child.set_text (host)
                 self.cmbentNPTLpdQueue.child.set_text (printer)
                 location = host
-        elif device.uri == "lpd":
-            pass
+                self.btnNPTLpdProbe.set_sensitive (True)
         elif device.uri == "smb":
             self.entSMBURI.set_text('')
             self.btnSMBVerify.set_sensitive(False)
@@ -5733,6 +5736,11 @@ class NewPrinterGUI(GtkGUI):
         except:
             nonfatalException ()
 
+        self.setNPButtons()
+
+    def on_cmbentNPTLpdHost_changed(self, cmbent):
+        hostname = cmbent.get_active_text()
+        self.btnNPTLpdProbe.set_sensitive (len (hostname) > 0)
         self.setNPButtons()
 
     def on_btnNPTLpdProbe_clicked(self, button):
