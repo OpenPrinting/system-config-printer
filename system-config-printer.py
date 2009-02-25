@@ -5481,11 +5481,15 @@ class NewPrinterGUI(GtkGUI):
     def device_select_function (self, path):
         """
         Allow this path to be selected as long as there
-        is a device associated with it.
+        is a device associated with it.  Otherwise, expand or collapse it.
         """
         model = self.tvNPDevices.get_model ()
         iter = model.get_iter (path)
-        return model.get_value (iter, 1) != None
+        if model.get_value (iter, 1) != None:
+            return True
+
+        self.device_row_activated (self.tvNPDevices, path, None)
+        return False
 
     def on_tvNPDevices_cursor_changed(self, widget):
         path, column = widget.get_cursor ()
