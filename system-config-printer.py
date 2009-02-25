@@ -3039,7 +3039,8 @@ class GUI(GtkGUI, monitor.Watcher):
         for i in range (len (paths)):
             iter = model.get_iter (paths[i])
             printer = model.get_value (iter, 0)
-            self.cups._begin_operation (_("modifying printer %s") % name)
+            self.cups._begin_operation (_("modifying printer %s") %
+                                        printer.name)
             try:
                 printer.setShared (share)
                 success = True
@@ -3476,6 +3477,7 @@ class NewPrinterGUI(GtkGUI):
                               "cmbNPTSerialParity",
                               "cmbNPTSerialBits",
                               "cmbNPTSerialFlow",
+                              "btnNPTLpdProbe",
                               "cmbentNPTLpdHost",
                               "cmbentNPTLpdQueue",
                               "entNPTIPPHostname",
@@ -4874,13 +4876,13 @@ class NewPrinterGUI(GtkGUI):
         self.devices.sort()
         other = cupshelpers.Device('', **{'device-info' :_("Other")})
         self.devices.append (PhysicalDevice (other))
-        device_select_path = 0
+        device_select_index = 0
         if current_uri:
             current_device = PhysicalDevice (current)
             try:
                 i = self.devices.index (current_device)
                 self.devices[i].add_device (current)
-                device_select_path = i
+                device_select_index = i
                 devs = self.devices[i].get_devices ()
             except ValueError:
                 self.devices.insert(0, current_device)
@@ -4902,6 +4904,7 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.set_model (model)
 
         i = 0
+        device_select_path = None
         for device in self.devices:
             devs = device.get_devices ()
             network = devs[0].device_class == 'network'
@@ -4915,16 +4918,16 @@ class NewPrinterGUI(GtkGUI):
                     # If this is the currently selected device we need
                     # to expand the "Network Printer" row so that it
                     # is visible.
-                    if device_select_path == i:
+                    if device_select_index == i:
                         network_path = model.get_path (network_iter)
                         self.tvNPDevices.expand_row (network_path, False)
                 else:
                     # Just a method of finding one.
-                    model.append (network_iter, row=row)
+                    iter = model.append (network_iter, row=row)
             else:
                 iter = model.insert_before(None, network_iter, row=row)
 
-            if device_select_path == i:
+            if device_select_index == i:
                 device_select_path = model.get_path (iter)
                 self.tvNPDevices.scroll_to_cell (device_select_path,
                                                  row_align=0.5)
@@ -5479,11 +5482,15 @@ class NewPrinterGUI(GtkGUI):
     def device_select_function (self, path):
         """
         Allow this path to be selected as long as there
-        is a device associated with it.
+        is a device associated with it.  Otherwise, expand or collapse it.
         """
         model = self.tvNPDevices.get_model ()
         iter = model.get_iter (path)
-        return model.get_value (iter, 1) != None
+        if model.get_value (iter, 1) != None:
+            return True
+
+        self.device_row_activated (self.tvNPDevices, path, None)
+        return False
 
     def on_tvNPDevices_cursor_changed(self, widget):
         path, column = widget.get_cursor ()
@@ -5690,7 +5697,10 @@ class NewPrinterGUI(GtkGUI):
                 self.entNPTIPPQueuename.show()
                 self.lblIPPURI.hide()
         elif device.type=="lpd":
-            if device.uri.startswith ("lpd"):
+            self.cmbentNPTLpdHost.child.set_text ('')
+            self.cmbentNPTLpdQueue.child.set_text ('')
+            self.btnNPTLpdProbe.set_sensitive (False)
+            if len (device.uri) > 6:
                 host = device.uri[6:]
                 i = host.find ("/")
                 if i != -1:
@@ -5701,8 +5711,7 @@ class NewPrinterGUI(GtkGUI):
                 self.cmbentNPTLpdHost.child.set_text (host)
                 self.cmbentNPTLpdQueue.child.set_text (printer)
                 location = host
-        elif device.uri == "lpd":
-            pass
+                self.btnNPTLpdProbe.set_sensitive (True)
         elif device.uri == "smb":
             self.entSMBURI.set_text('')
             self.btnSMBVerify.set_sensitive(False)
@@ -5729,11 +5738,24 @@ class NewPrinterGUI(GtkGUI):
 
         self.setNPButtons()
 
+    def on_cmbentNPTLpdHost_changed(self, cmbent):
+        hostname = cmbent.get_active_text()
+        self.btnNPTLpdProbe.set_sensitive (len (hostname) > 0)
+        self.setNPButtons()
+
     def on_btnNPTLpdProbe_clicked(self, button):
         # read hostname, probe, fill printer names
         hostname = self.cmbentNPTLpdHost.get_active_text()
         server = probe_printer.LpdServer(hostname)
+
+        self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                 _('Searching') + '</span>\n\n' +
+                                 _('Searching for printers'))
+        self.WaitWindow.set_transient_for (self.NewPrinterWindow)
+        self.WaitWindow.show_now ()
         printers = server.probe()
+        self.WaitWindow.hide ()
+
         model = self.cmbentNPTLpdQueue.get_model()
         model.clear()
         for printer in printers:

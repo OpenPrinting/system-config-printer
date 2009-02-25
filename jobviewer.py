@@ -1194,6 +1194,31 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def notify_completed_job (self, jobid):
         job = self.jobs.get (jobid, {})
         document = job.get ('job-name', _("Unknown"))
+        printer_uri = job.get ('job-printer-uri')
+        if printer_uri != None:
+            # Determine if this printer is remote.  There's no need to
+            # show a notification if the printer is connected to this
+            # machine.
+
+            # Find out the device URI.  We might already have
+            # determined this if authentication was required.
+            device_uri = job.get ('device-uri')
+
+            if device_uri == None:
+                pattrs = ['device-uri']
+                c = authconn.Connection (self.JobsWindow,
+                                         host=self.host,
+                                         port=self.port,
+                                         encryption=self.encryption)
+                attrs = c.getPrinterAttributes (uri=printer_uri,
+                                                requested_attributes=pattrs)
+                device_uri = attrs.get ('device-uri')
+
+            if device_uri != None:
+                (scheme, rest) = urllib.splittype (device_uri)
+                if scheme not in ['socket', 'ipp', 'http', 'smb']:
+                    return
+
         printer = job.get ('job-printer-name', _("Unknown"))
         notification = pynotify.Notification (_("Job %d completed") % jobid,
                                               _("Document `%s' has finished "
