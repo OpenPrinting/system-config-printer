@@ -4781,6 +4781,8 @@ class NewPrinterGUI(GtkGUI):
             (mk, md) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
+            device.make_and_model = "%s %s" % (mk, md)
+            device.info = device.make_and_model
 
         return (host, uri)
 
@@ -5812,29 +5814,42 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnNetworkFind_clicked(self, button):
         host = self.entNPTNetworkHostname.get_text ()
-        uri = self.get_hplip_uri_for_network_printer (host, "print")
+        self.network_found = 0
+
+        def found_callback (new_device):
+            if new_device:
+                self.network_found += 1
+                model = self.tvNPDevices.get_model ()
+                dev = PhysicalDevice (new_device)
+                iter = model.insert_before (None, self.devices_find_nw_iter,
+                                            row=[dev.get_info (), dev, False])
+                if self.network_found == 1:
+                    path = model.get_path (iter)
+                    self.tvNPDevices.set_cursor (path)
+            else:
+                if self.network_found == 0:
+                    show_error_dialog (_("Not Found"),
+                                       _("No printer was found "
+                                         "at that address."),
+                                       parent=self.NewPrinterWindow)
+
+        finder = probe_printer.PrinterFinder ()
+        finder.find (host, found_callback)
+
         device_dict = { 'device-class': 'network' }
         new_device = cupshelpers.Device ('', **device_dict)
-        if uri:
-            new_device = cupshelpers.Device (uri, **device_dict)
-
         (host, uri) = self.getNetworkPrinterMakeModel (host=host,
                                                        device=new_device)
         if uri:
             new_device.uri = uri
+            found_callback (new_device)
 
-        debugprint ("New device: %s" % new_device)
-        if not new_device.uri:
-            show_error_dialog (_("Not Found"),
-                               _("No printer was found at that address."),
-                               parent=self.NewPrinterWindow)
-        else:
-            model = self.tvNPDevices.get_model ()
-            dev = PhysicalDevice (new_device)
-            iter = model.insert_before (None, self.devices_find_nw_iter,
-                                        row=[dev.get_info (), dev, False])
-            path = model.get_path (iter)
-            self.tvNPDevices.set_cursor (path)
+        uri = self.get_hplip_uri_for_network_printer (host, "print")
+        if uri:
+            device_dict = { 'device-class': 'network',
+                            'device-info': _('HP Printer at %s') % host}
+            new_device = cupshelpers.Device (uri, **device_dict)
+            found_callback (new_device)
     ###
 
     def getDeviceURI(self):

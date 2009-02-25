@@ -18,8 +18,10 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import cupshelpers
 import socket, time
 import gtk
+from timedops import TimedOperation
 
 class LpdServer:
     def __init__(self, hostname):
@@ -57,7 +59,7 @@ class LpdServer:
             break
         return s
 
-    def _probe_queue(self,name, result):
+    def probe_queue(self,name, result):
         while gtk.events_pending ():
             gtk.main_iteration ()
 
@@ -95,30 +97,25 @@ class LpdServer:
 
         return False
 
-    def probe(self):
-        #s = self._open_socket()        
-        #if s is None:
-        #    return []
-        result = []
-        for name in ["PASSTHRU", "ps", "lp", "PORT1", ""]:
-            self._probe_queue(name, result)
-            time.sleep(0.1) # avoid DOS and following counter messures 
-        for nr in range(self.max_lpt_com):
-            self._probe_queue("LPT%d" % nr, result)
-            time.sleep(0.1)
-            self._probe_queue("LPT%d_PASSTHRU" % nr, result)
-            time.sleep(0.1)
-            self._probe_queue("COM%d" % nr, result)
-            time.sleep(0.1)
-            self._probe_queue("COM%d_PASSTHRU" % nr, result)
-            time.sleep(0.1)
+    def get_possible_queue_names (self):
+        candidate = ["PASSTHRU", "ps", "lp", "PORT1", ""]
+        for nr in range (self.max_lpt_com):
+            candidate.extend (["LPT%d" % nr,
+                               "LPT%d_PASSTHRU" % nr,
+                               "COM%d" % nr,
+                               "COM%d_PASSTHRU" % nr])
+        for nr in range (50):
+            candidate.append ("pr%d" % nr)
 
-        nr = 1
-        while nr<50:
-            found =  self._probe_queue("pr%d" % nr, result)
-            time.sleep(0.1)
-            if not found: break
-            nr += 1
+        return candidate
+
+    def probe(self):
+        result = []
+        for name in self.get_possible_queue_names ():
+            found = self.probe_queue(name, result)
+            if not found and name.startswith ("pr"):
+                break
+            time.sleep(0.1) # avoid DOS and following counter messures 
 
         return result
 
@@ -129,3 +126,22 @@ class SocketServer:
 class IppServer:
     def __init__(self, hostname):
         self.hostname = hostname
+
+class PrinterFinder:
+    def find (self, hostname, callback_fn):
+        self.hostname = hostname
+        self.callback_fn = callback_fn
+        self._probe_lpd ()
+        self.callback_fn (None)
+
+    def _probe_lpd (self):
+        lpd = LpdServer (self.hostname)
+        for name in lpd.get_possible_queue_names ():
+            op = TimedOperation (lpd.probe_queue, args=(name, []))
+            found = op.run ()
+            if found:
+                uri = "lpd://%s/%s" % (self.hostname, name)
+                device_dict = { 'device-class': 'network',
+                                'device-info': uri }
+                new_device = cupshelpers.Device (uri, **device_dict)
+                self.callback_fn (new_device)
