@@ -19,9 +19,60 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cupshelpers
+from debug import *
 import socket, time
 import gtk
 from timedops import TimedOperation
+import subprocess
+
+def wordsep (line):
+    words = []
+    escaped = False
+    quoted = False
+    in_word = False
+    word = ''
+    n = len (line)
+    for i in range (n):
+        ch = line[i]
+        if escaped:
+            word += ch
+            escaped = False
+            continue
+
+        if ch == '\\':
+            in_word = True
+            escaped = True
+            continue
+
+        if in_word:
+            if quoted:
+                if ch == '"':
+                    quoted = False
+                else:
+                    word += ch
+            elif ch.isspace ():
+                words.append (word)
+                word = ''
+                in_word = False
+            elif ch == '"':
+                quoted = True
+            else:
+                word += ch
+        else:
+            if ch == '"':
+                in_word = True
+                quoted = True
+            elif not ch.isspace ():
+                in_word = True
+                word += ch
+
+    if word != '':
+        words.append (word)
+
+    return words
+
+### should be ['network', 'foo bar', ' ofoo', '"', '2 3']
+##print wordsep ('network "foo bar" \ ofoo "\\"" 2" "3')
 
 class LpdServer:
     def __init__(self, hostname):
@@ -131,13 +182,43 @@ class PrinterFinder:
         op = TimedOperation (self._do_find)
 
     def _do_find (self):
-        try:
-            self._probe_lpd ()
-        except:
-            pass
+        for fn in [self._probe_snmp,
+                   self._probe_lpd]:
+            try:
+                fn ()
+            except Exception, e:
+                nonfatalException ()
 
         # Signal that we've finished.
         self.callback_fn (None)
+
+    def _probe_snmp (self):
+        # Run the CUPS SNMP backend, pointing it at the host.
+        null = file ("/dev/null", "r+")
+        p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
+                                    self.hostname],
+                              stdin=null,
+                              stdout=subprocess.PIPE,
+                              stderr=null)
+        (stdout, stderr) = p.communicate ()
+        for line in stdout.split ('\n'):
+            words = wordsep (line)
+            n = len (words)
+            if n == 5:
+                (device_class, uri, make_and_model, info, device_id) = words
+            elif n == 4:
+                (device_class, uri, make_and_model, info) = words
+            else:
+                continue
+
+            device_dict = { 'device-class': device_class,
+                            'device-make-and-model': make_and_model,
+                            'device-info': info }
+            if n == 5:
+                device_dict['device-id'] = device_id
+
+            device = cupshelpers.Device (uri, **device_dict)
+            self.callback_fn (device)
 
     def _probe_lpd (self):
         lpd = LpdServer (self.hostname)

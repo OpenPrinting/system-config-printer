@@ -5834,13 +5834,6 @@ class NewPrinterGUI(GtkGUI):
         spinner.start ()
         finder.find (host, found_callback)
         return
-        device_dict = { 'device-class': 'network' }
-        new_device = cupshelpers.Device ('', **device_dict)
-        (host, uri) = self.getNetworkPrinterMakeModel (host=host,
-                                                       device=new_device)
-        if uri:
-            new_device.uri = uri
-            found_callback (new_device)
 
         uri = self.get_hplip_uri_for_network_printer (host, "print")
         if uri:
