@@ -60,9 +60,6 @@ class LpdServer:
         return s
 
     def probe_queue(self,name, result):
-        while gtk.events_pending ():
-            gtk.main_iteration ()
-
         s = self._open_socket()
         if not s: return False
         print name
@@ -115,7 +112,7 @@ class LpdServer:
             found = self.probe_queue(name, result)
             if not found and name.startswith ("pr"):
                 break
-            time.sleep(0.1) # avoid DOS and following counter messures 
+            time.sleep(0.1) # avoid DOS and following counter measures 
 
         return result
 
@@ -131,17 +128,29 @@ class PrinterFinder:
     def find (self, hostname, callback_fn):
         self.hostname = hostname
         self.callback_fn = callback_fn
-        self._probe_lpd ()
+        op = TimedOperation (self._do_find)
+
+    def _do_find (self):
+        try:
+            self._probe_lpd ()
+        except:
+            pass
+
+        # Signal that we've finished.
         self.callback_fn (None)
 
     def _probe_lpd (self):
         lpd = LpdServer (self.hostname)
         for name in lpd.get_possible_queue_names ():
-            op = TimedOperation (lpd.probe_queue, args=(name, []))
-            found = op.run ()
+            found = lpd.probe_queue (name, [])
             if found:
                 uri = "lpd://%s/%s" % (self.hostname, name)
                 device_dict = { 'device-class': 'network',
                                 'device-info': uri }
                 new_device = cupshelpers.Device (uri, **device_dict)
                 self.callback_fn (new_device)
+
+            if not found and name.startswith ("pr"):
+                break
+
+            time.sleep(0.1) # avoid DOS and following counter measures 

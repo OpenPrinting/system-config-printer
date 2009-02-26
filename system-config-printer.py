@@ -35,6 +35,7 @@ except RuntimeError, e:
     print "This is a graphical application and requires DISPLAY to be set."
     sys.exit (1)
 
+import glib
 import gnome
 gtk.about_dialog_set_url_hook (lambda x, y: gnome.url_show (y))
 gtk.about_dialog_set_email_hook (lambda x, y: gnome.url_show ("mailto:" + y))
@@ -95,6 +96,7 @@ from GroupsPane import *
 from GroupsPaneModel import *
 from SearchCriterion import *
 import gtkinklevel
+import gtkspinner
 import pango
 import statereason
 
@@ -3499,6 +3501,9 @@ class NewPrinterGUI(GtkGUI):
                               "btnHPFindQueue",
                               "entNPTNetworkHostname",
                               "btnNetworkFind",
+                              "hbNetworkFindSearching",
+                              "imgNetworkFindSearching",
+                              "lblNetworkFindNotFound",
                               "lblHPURI",
                               "entNPTDevice",
                               "tvNCMembers",
@@ -5810,32 +5815,25 @@ class NewPrinterGUI(GtkGUI):
     def on_entNPTNetworkHostname_changed(self, ent):
         s = ent.get_text ()
         self.btnNetworkFind.set_sensitive (len (s) > 0)
+        self.lblNetworkFindNotFound.hide ()
         self.setNPButtons ()
 
     def on_btnNetworkFind_clicked(self, button):
         host = self.entNPTNetworkHostname.get_text ()
-        self.network_found = 0
 
         def found_callback (new_device):
-            if new_device:
-                self.network_found += 1
-                model = self.tvNPDevices.get_model ()
-                dev = PhysicalDevice (new_device)
-                iter = model.insert_before (None, self.devices_find_nw_iter,
-                                            row=[dev.get_info (), dev, False])
-                if self.network_found == 1:
-                    path = model.get_path (iter)
-                    self.tvNPDevices.set_cursor (path)
-            else:
-                if self.network_found == 0:
-                    show_error_dialog (_("Not Found"),
-                                       _("No printer was found "
-                                         "at that address."),
-                                       parent=self.NewPrinterWindow)
+            glib.idle_add (self.found_network_printer_callback, new_device)
 
+        self.btnNetworkFind.set_sensitive (False)
+        self.entNPTNetworkHostname.set_sensitive (False)
+        self.network_found = 0
+        spinner = gtkspinner.Spinner (self.imgNetworkFindSearching)
+        self.network_find_spinner = spinner
+        self.hbNetworkFindSearching.show_all ()
         finder = probe_printer.PrinterFinder ()
+        spinner.start ()
         finder.find (host, found_callback)
-
+        return
         device_dict = { 'device-class': 'network' }
         new_device = cupshelpers.Device ('', **device_dict)
         (host, uri) = self.getNetworkPrinterMakeModel (host=host,
@@ -5850,6 +5848,27 @@ class NewPrinterGUI(GtkGUI):
                             'device-info': _('HP Printer at %s') % host}
             new_device = cupshelpers.Device (uri, **device_dict)
             found_callback (new_device)
+
+    def found_network_printer_callback (self, new_device):
+        if new_device:
+            self.network_found += 1
+            model = self.tvNPDevices.get_model ()
+            dev = PhysicalDevice (new_device)
+            iter = model.insert_before (None, self.devices_find_nw_iter,
+                                        row=[dev.get_info (), dev, False])
+            if self.network_found == 1:
+                path = model.get_path (iter)
+                self.tvNPDevices.set_cursor (path)
+        else:
+            self.network_find_spinner.stop ()
+            self.hbNetworkFindSearching.hide ()
+            self.entNPTNetworkHostname.set_sensitive (True)
+            if self.network_found == 0:
+                self.lblNetworkFindNotFound.set_markup ('<i>' +
+                                                        _("No printer was "
+                                                          "found at that "
+                                                          "address.") + '</i>')
+                self.lblNetworkFindNotFound.show ()
     ###
 
     def getDeviceURI(self):
