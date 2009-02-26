@@ -5863,6 +5863,7 @@ class NewPrinterGUI(GtkGUI):
             self.network_find_spinner.stop ()
             self.hbNetworkFindSearching.hide ()
             self.entNPTNetworkHostname.set_sensitive (True)
+            self.btnNetworkFind.set_sensitive (True)
             if self.network_found == 0:
                 self.lblNetworkFindNotFound.set_markup ('<i>' +
                                                         _("No printer was "
