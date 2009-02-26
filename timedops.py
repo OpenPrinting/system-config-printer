@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -45,12 +45,13 @@ class TimedSubprocess(Timed):
         self.parent = parent
         self.show_dialog = show_dialog
         for f in [self.subp.stdout, self.subp.stderr]:
-            source = gobject.io_add_watch (f,
-                                           gobject.IO_IN |
-                                           gobject.IO_HUP |
-                                           gobject.IO_ERR,
-                                           self.watcher)
-            self.io_source.append (source)
+            if f != None:
+                source = gobject.io_add_watch (f,
+                                               gobject.IO_IN |
+                                               gobject.IO_HUP |
+                                               gobject.IO_ERR,
+                                               self.watcher)
+                self.io_source.append (source)
 
         self.wait_window = None
 
