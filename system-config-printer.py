@@ -5833,14 +5833,6 @@ class NewPrinterGUI(GtkGUI):
         finder = probe_printer.PrinterFinder ()
         spinner.start ()
         finder.find (host, found_callback)
-        return
-
-        uri = self.get_hplip_uri_for_network_printer (host, "print")
-        if uri:
-            device_dict = { 'device-class': 'network',
-                            'device-info': _('HP Printer at %s') % host}
-            new_device = cupshelpers.Device (uri, **device_dict)
-            found_callback (new_device)
 
     def found_network_printer_callback (self, new_device):
         if new_device:

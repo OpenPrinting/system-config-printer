@@ -182,8 +182,10 @@ class PrinterFinder:
         op = TimedOperation (self._do_find)
 
     def _do_find (self):
+        self._cached_attributes = dict()
         for fn in [self._probe_snmp,
-                   self._probe_lpd]:
+                   self._probe_lpd,
+                   self._probe_hplip]:
             try:
                 fn ()
             except Exception, e:
@@ -195,11 +197,18 @@ class PrinterFinder:
     def _probe_snmp (self):
         # Run the CUPS SNMP backend, pointing it at the host.
         null = file ("/dev/null", "r+")
-        p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
-                                    self.hostname],
-                              stdin=null,
-                              stdout=subprocess.PIPE,
-                              stderr=null)
+        try:
+            p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
+                                        self.hostname],
+                                  stdin=null,
+                                  stdout=subprocess.PIPE,
+                                  stderr=null)
+        except OSError, e:
+            if e == errno.ENOENT:
+                return
+
+            raise
+
         (stdout, stderr) = p.communicate ()
         for line in stdout.split ('\n'):
             words = wordsep (line)
@@ -220,6 +229,10 @@ class PrinterFinder:
             device = cupshelpers.Device (uri, **device_dict)
             self.callback_fn (device)
 
+            # Cache the make and model for use by other search methods
+            # that are not able to determine it.
+            self._cached_attributes['device-make-and-model'] = make_and_model
+
     def _probe_lpd (self):
         lpd = LpdServer (self.hostname)
         for name in lpd.get_possible_queue_names ():
@@ -228,6 +241,7 @@ class PrinterFinder:
                 uri = "lpd://%s/%s" % (self.hostname, name)
                 device_dict = { 'device-class': 'network',
                                 'device-info': uri }
+                device_dict.update (self._cached_attributes)
                 new_device = cupshelpers.Device (uri, **device_dict)
                 self.callback_fn (new_device)
 
@@ -235,3 +249,25 @@ class PrinterFinder:
                 break
 
             time.sleep(0.1) # avoid DOS and following counter measures 
+
+    def _probe_hplip (self):
+        null = file ("/dev/null", "r+")
+        try:
+            p = subprocess.Popen (args=["hp-makeuri", "-c", self.hostname],
+                                  stdin=null,
+                                  stdout=subprocess.PIPE,
+                                  stderr=null)
+        except OSError, e:
+            if e == errno.ENOENT:
+                return
+
+            raise
+
+        (stdout, stderr) = p.communicate ()
+        uri = stdout.strip ()
+        if uri.find (":") != -1:
+            device_dict = { 'device-class': 'network',
+                            'device-info': uri }
+            device_dict.update (self._cached_attributes)
+            new_device = cupshelpers.Device (uri, **device_dict)
+            self.callback_fn (new_device)
