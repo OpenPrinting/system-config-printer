@@ -23,39 +23,48 @@ import gtk
 
 class Spinner:
     def __init__ (self, image):
-        theme = gtk.icon_theme_get_default ()
-        icon_info = theme.lookup_icon ("process-working", 48, 0)
-        size = icon_info.get_base_size ()
-        icon = icon_info.get_filename ()
-        pixbuf = gtk.gdk.pixbuf_new_from_file (icon)
-        grid_width = pixbuf.get_width ()
-        grid_height = pixbuf.get_height ()
-        frames = []
-        y = 0
-        while y < grid_height:
-            x = 0
-            while x < grid_width:
-                frame = pixbuf.subpixbuf (x, y, size, size)
-                frames.append (frame)
-                x += size
-
-            y += size
-
         self.image = image
+        frames = []
+        theme = gtk.icon_theme_get_default ()
+        icon_info = theme.lookup_icon ("process-working", 22, 0)
+        if icon_info != None:
+            size = icon_info.get_base_size ()
+            icon = icon_info.get_filename ()
+            try:
+                pixbuf = gtk.gdk.pixbuf_new_from_file (icon)
+                grid_width = pixbuf.get_width ()
+                grid_height = pixbuf.get_height ()
+                y = 0
+                while y < grid_height:
+                    x = 0
+                    while x < grid_width:
+                        frame = pixbuf.subpixbuf (x, y, size, size)
+                        frames.append (frame)
+                        x += size
+
+                    y += size
+            except gobject.GError:
+                # Failed to load icon.
+                pass
+
         self.frames = frames
         self.n_frames = len (frames)
         self._rest ()
 
     def _set_frame (self, n):
-        self.image.set_from_pixbuf (self.frames[n])
         self._current_frame = n
+        if self.n_frames == 0:
+            self.image.clear ()
+            return
+
+        self.image.set_from_pixbuf (self.frames[n])
 
     def _rest (self):
         self._set_frame (0)
 
     def _next_frame (self):
         n = self._current_frame + 1
-        if n == self.n_frames:
+        if n >= self.n_frames:
             n = 0
 
         self._set_frame (n)
