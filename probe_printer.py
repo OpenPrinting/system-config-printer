@@ -160,6 +160,9 @@ class LpdServer:
     def probe(self):
         result = []
         for name in self.get_possible_queue_names ():
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
             found = self.probe_queue(name, result)
             if not found and name.startswith ("pr"):
                 break
