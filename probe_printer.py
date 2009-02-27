@@ -170,14 +170,6 @@ class LpdServer:
 
         return result
 
-class SocketServer:
-    def __init__(self, hostname):
-        self.hostname = hostname
-    
-class IppServer:
-    def __init__(self, hostname):
-        self.hostname = hostname
-
 class PrinterFinder:
     def find (self, hostname, callback_fn):
         self.hostname = hostname
