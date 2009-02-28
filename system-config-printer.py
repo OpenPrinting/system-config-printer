@@ -5837,10 +5837,19 @@ class NewPrinterGUI(GtkGUI):
     def found_network_printer_callback (self, new_device):
         if new_device:
             self.network_found += 1
-            model = self.tvNPDevices.get_model ()
             dev = PhysicalDevice (new_device)
-            iter = model.insert_before (None, self.devices_find_nw_iter,
-                                        row=[dev.get_info (), dev, False])
+            try:
+                i = self.devices.index (dev)
+                self.devices[i].add_device (new_device)
+            except ValueError:
+                dev.set_data ('checked-hplip', True)
+                self.devices.append (dev)
+                self.devices.sort ()
+                model = self.tvNPDevices.get_model ()
+                iter = model.insert_before (None, self.devices_find_nw_iter,
+                                            row=[dev.get_info (), dev, False])
+
+            # If this is the first one we've found, select it.
             if self.network_found == 1:
                 path = model.get_path (iter)
                 self.tvNPDevices.set_cursor (path)
