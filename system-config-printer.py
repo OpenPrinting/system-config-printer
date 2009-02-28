@@ -5841,6 +5841,12 @@ class NewPrinterGUI(GtkGUI):
             try:
                 i = self.devices.index (dev)
                 self.devices[i].add_device (new_device)
+
+                (path, column) = self.tvNPDevices.get_cursor ()
+                model = self.tvNPDevices.get_model ()
+                iter = model.get_iter (path)
+                if model.get_value (iter, 1) == self.devices[i]:
+                    self.on_tvNPDevices_cursor_changed (self.tvNPDevices)
             except ValueError:
                 dev.set_data ('checked-hplip', True)
                 self.devices.append (dev)
