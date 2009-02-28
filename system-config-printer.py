@@ -5526,7 +5526,17 @@ class NewPrinterGUI(GtkGUI):
             elif device.type == "socket":
                 device.menuentry = _("AppSocket/HP JetDirect")
             elif device.type == "lpd":
-                device.menuentry = _("LPD/LPR")
+                (scheme, rest) = urllib.splittype (device.uri)
+                (hostport, rest) = urllib.splithost (rest)
+                (queue, rest) = urllib.splitquery (rest)
+                if queue[0] == '/':
+                    queue = queue[1:]
+
+                if queue != '':
+                    device.menuentry = _("LPD/LPR queue '%s'") % queue
+                else:
+                    device.menuentry = _("LPD/LPR queue")
+
             elif device.type == "smb":
                 device.menuentry = _("Windows Printer via SAMBA")
             elif device.type == "ipp":
