@@ -88,6 +88,10 @@ class PhysicalDevice:
                 if sn != '' and self.sn != '' and sn != self.sn:
                     raise RuntimeError
 
+        for d in self.devices:
+            if d.uri == device.uri:
+                return
+
         self.devices.append (device)
         self.devices.sort ()
 
