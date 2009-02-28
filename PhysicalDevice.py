@@ -19,10 +19,12 @@
 
 from gettext import gettext as _
 import cupshelpers
+import urllib
 
 class PhysicalDevice:
     def __init__(self, device):
         self.devices = None
+        self._network_host = None
         self.add_device (device)
         self._user_data = {}
 
@@ -37,37 +39,61 @@ class PhysicalDevice:
 
         return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
 
-    def add_device (self, device):
-        (mfg, mdl) = self._canonical_id (device)
-        if self.devices == None:
-            self.mfg = mfg
-            self.mdl = mdl
-            self.mfg_lower = mfg.lower ()
-            self.mdl_lower = mdl.lower ()
-            self.sn = device.id_dict.get ('SN', '')
-            self.devices = []
+    def _get_host_from_uri (self, uri):
+        (scheme, rest) = urllib.splittype (uri)
+        if scheme == 'hp':
+            if rest.startswith ("/net/"):
+                (hostport, rest) = urllib.splithost (rest[5:])
+                if hostport == None:
+                    return None
         else:
-            def nicest (a, b):
-                def count_lower (s):
-                    l = s.lower ()
-                    n = 0
-                    for i in xrange (len (s)):
-                        if l[i] != s[i]:
-                            n += 1
-                    return n
-                if count_lower (b) < count_lower (a):
-                    return b
-                return a
+            (hostport, rest) = urllib.splithost (rest)
+            if hostport == None:
+                return None
 
-            self.mfg = nicest (self.mfg, mfg)
-            self.mdl = nicest (self.mdl, mdl)
+        (host, port) = urllib.splitport (hostport)
+        return host
 
-            sn = device.id_dict.get ('SN', '')
-            if sn != '' and self.sn != '' and sn != self.sn:
+    def add_device (self, device):
+        if self._network_host:
+            host = self._get_host_from_uri (device.uri)
+            if host != self._network_host:
                 raise RuntimeError
+        else:
+            (mfg, mdl) = self._canonical_id (device)
+            if self.devices == None:
+                self.mfg = mfg
+                self.mdl = mdl
+                self.mfg_lower = mfg.lower ()
+                self.mdl_lower = mdl.lower ()
+                self.sn = device.id_dict.get ('SN', '')
+                self.devices = []
+            else:
+                def nicest (a, b):
+                    def count_lower (s):
+                        l = s.lower ()
+                        n = 0
+                        for i in xrange (len (s)):
+                            if l[i] != s[i]:
+                                n += 1
+                        return n
+                    if count_lower (b) < count_lower (a):
+                        return b
+                    return a
+
+                self.mfg = nicest (self.mfg, mfg)
+                self.mdl = nicest (self.mdl, mdl)
+
+                sn = device.id_dict.get ('SN', '')
+                if sn != '' and self.sn != '' and sn != self.sn:
+                    raise RuntimeError
 
         self.devices.append (device)
         self.devices.sort ()
+
+        if not self._network_host and device.device_class == "network":
+            # We just added a network device.
+            self._network_host = self._get_host_from_uri (device.uri)
 
     def get_devices (self):
         return self.devices
@@ -102,6 +128,10 @@ class PhysicalDevice:
     def __cmp__(self, other):
         if other == None or type (other) != type (self):
             return 1
+
+        if (self._network_host != None or
+            other._network_host != None):
+            return cmp (self._network_host, other._network_host)
 
         if (other.mfg == '' and other.mdl == '') or \
            (self.mfg == '' and self.mdl == ''):
