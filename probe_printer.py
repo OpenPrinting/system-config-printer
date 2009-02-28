@@ -235,7 +235,7 @@ class PrinterFinder:
             if found:
                 uri = "lpd://%s/%s" % (self.hostname, name)
                 device_dict = { 'device-class': 'network',
-                                'device-info': uri }
+                                'device-info': self.hostname }
                 device_dict.update (self._cached_attributes)
                 new_device = cupshelpers.Device (uri, **device_dict)
                 self.callback_fn (new_device)
