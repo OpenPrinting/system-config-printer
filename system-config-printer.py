@@ -4605,6 +4605,7 @@ class NewPrinterGUI(GtkGUI):
         elif device.type=="lpd":
             self.cmbentNPTLpdHost.child.set_text ('')
             self.cmbentNPTLpdQueue.child.set_text ('')
+            self.cmbentNPTLpdQueue.get_model().clear ()
             self.btnNPTLpdProbe.set_sensitive (False)
             if len (device.uri) > 6:
                 host = device.uri[6:]
