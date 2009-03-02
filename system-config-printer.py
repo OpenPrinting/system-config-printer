@@ -3467,6 +3467,7 @@ class NewPrinterGUI(GtkGUI):
                               "btnNPBack",
                               "btnNPForward",
                               "btnNPApply",
+                              "imgProcessWorking",
                               "entNPName",
                               "entNPDescription",
                               "entNPLocation",
@@ -3501,8 +3502,7 @@ class NewPrinterGUI(GtkGUI):
                               "btnHPFindQueue",
                               "entNPTNetworkHostname",
                               "btnNetworkFind",
-                              "hbNetworkFindSearching",
-                              "imgNetworkFindSearching",
+                              "lblNetworkFindSearching",
                               "lblNetworkFindNotFound",
                               "lblHPURI",
                               "entNPTDevice",
@@ -3574,6 +3574,8 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkPPDSource.set_show_tabs(False)
         self.ntbkNPType.set_show_tabs(False)
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
+
+        self.spinner = gtkspinner.Spinner (self.imgProcessWorking)
 
         # Set up OpenPrinting widgets.
         self.openprinting = cupshelpers.openprinting.OpenPrinting ()
@@ -5837,11 +5839,10 @@ class NewPrinterGUI(GtkGUI):
         self.btnNetworkFind.set_sensitive (False)
         self.entNPTNetworkHostname.set_sensitive (False)
         self.network_found = 0
-        spinner = gtkspinner.Spinner (self.imgNetworkFindSearching)
-        self.network_find_spinner = spinner
-        self.hbNetworkFindSearching.show_all ()
+        self.lblNetworkFindSearching.show_all ()
         finder = probe_printer.PrinterFinder ()
-        spinner.start ()
+        self.imgProcessWorking.show ()
+        self.spinner.start ()
         finder.find (host, found_callback)
 
     def found_network_printer_callback (self, new_device):
@@ -5870,8 +5871,9 @@ class NewPrinterGUI(GtkGUI):
                 path = model.get_path (iter)
                 self.tvNPDevices.set_cursor (path)
         else:
-            self.network_find_spinner.stop ()
-            self.hbNetworkFindSearching.hide ()
+            self.imgProcessWorking.hide ()
+            self.spinner.stop ()
+            self.lblNetworkFindSearching.hide ()
             self.entNPTNetworkHostname.set_sensitive (True)
             self.btnNetworkFind.set_sensitive (True)
             if self.network_found == 0:
