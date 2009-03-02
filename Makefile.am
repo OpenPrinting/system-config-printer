@@ -76,6 +76,7 @@ nobase_pkgdata_DATA=					\
 	GroupsPane.py					\
 	GroupsPaneModel.py				\
 	gtkinklevel.py					\
+	gtkspinner.py					\
 	installpackage.py				\
 	jobviewer.py					\
 	monitor.py					\

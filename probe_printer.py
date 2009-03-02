@@ -18,8 +18,61 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import cupshelpers
+from debug import *
 import socket, time
 import gtk
+from timedops import TimedOperation
+import subprocess
+
+def wordsep (line):
+    words = []
+    escaped = False
+    quoted = False
+    in_word = False
+    word = ''
+    n = len (line)
+    for i in range (n):
+        ch = line[i]
+        if escaped:
+            word += ch
+            escaped = False
+            continue
+
+        if ch == '\\':
+            in_word = True
+            escaped = True
+            continue
+
+        if in_word:
+            if quoted:
+                if ch == '"':
+                    quoted = False
+                else:
+                    word += ch
+            elif ch.isspace ():
+                words.append (word)
+                word = ''
+                in_word = False
+            elif ch == '"':
+                quoted = True
+            else:
+                word += ch
+        else:
+            if ch == '"':
+                in_word = True
+                quoted = True
+            elif not ch.isspace ():
+                in_word = True
+                word += ch
+
+    if word != '':
+        words.append (word)
+
+    return words
+
+### should be ['network', 'foo bar', ' ofoo', '"', '2 3']
+##print wordsep ('network "foo bar" \ ofoo "\\"" 2" "3')
 
 class LpdServer:
     def __init__(self, hostname):
@@ -57,10 +110,7 @@ class LpdServer:
             break
         return s
 
-    def _probe_queue(self,name, result):
-        while gtk.events_pending ():
-            gtk.main_iteration ()
-
+    def probe_queue(self,name, result):
         s = self._open_socket()
         if not s: return False
         print name
@@ -95,37 +145,124 @@ class LpdServer:
 
         return False
 
-    def probe(self):
-        #s = self._open_socket()        
-        #if s is None:
-        #    return []
-        result = []
-        for name in ["PASSTHRU", "ps", "lp", "PORT1", ""]:
-            self._probe_queue(name, result)
-            time.sleep(0.1) # avoid DOS and following counter messures 
-        for nr in range(self.max_lpt_com):
-            self._probe_queue("LPT%d" % nr, result)
-            time.sleep(0.1)
-            self._probe_queue("LPT%d_PASSTHRU" % nr, result)
-            time.sleep(0.1)
-            self._probe_queue("COM%d" % nr, result)
-            time.sleep(0.1)
-            self._probe_queue("COM%d_PASSTHRU" % nr, result)
-            time.sleep(0.1)
+    def get_possible_queue_names (self):
+        candidate = ["PASSTHRU", "ps", "lp", "PORT1", ""]
+        for nr in range (self.max_lpt_com):
+            candidate.extend (["LPT%d" % nr,
+                               "LPT%d_PASSTHRU" % nr,
+                               "COM%d" % nr,
+                               "COM%d_PASSTHRU" % nr])
+        for nr in range (50):
+            candidate.append ("pr%d" % nr)
 
-        nr = 1
-        while nr<50:
-            found =  self._probe_queue("pr%d" % nr, result)
-            time.sleep(0.1)
-            if not found: break
-            nr += 1
+        return candidate
+
+    def probe(self):
+        result = []
+        for name in self.get_possible_queue_names ():
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+
+            found = self.probe_queue(name, result)
+            if not found and name.startswith ("pr"):
+                break
+            time.sleep(0.1) # avoid DOS and following counter measures 
 
         return result
 
-class SocketServer:
-    def __init__(self, hostname):
+class PrinterFinder:
+    def find (self, hostname, callback_fn):
         self.hostname = hostname
-    
-class IppServer:
-    def __init__(self, hostname):
-        self.hostname = hostname
+        self.callback_fn = callback_fn
+        op = TimedOperation (self._do_find)
+
+    def _do_find (self):
+        self._cached_attributes = dict()
+        for fn in [self._probe_snmp,
+                   self._probe_lpd,
+                   self._probe_hplip]:
+            try:
+                fn ()
+            except Exception, e:
+                nonfatalException ()
+
+        # Signal that we've finished.
+        self.callback_fn (None)
+
+    def _probe_snmp (self):
+        # Run the CUPS SNMP backend, pointing it at the host.
+        null = file ("/dev/null", "r+")
+        try:
+            p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
+                                        self.hostname],
+                                  stdin=null,
+                                  stdout=subprocess.PIPE,
+                                  stderr=null)
+        except OSError, e:
+            if e == errno.ENOENT:
+                return
+
+            raise
+
+        (stdout, stderr) = p.communicate ()
+        for line in stdout.split ('\n'):
+            words = wordsep (line)
+            n = len (words)
+            if n == 5:
+                (device_class, uri, make_and_model, info, device_id) = words
+            elif n == 4:
+                (device_class, uri, make_and_model, info) = words
+            else:
+                continue
+
+            device_dict = { 'device-class': device_class,
+                            'device-make-and-model': make_and_model,
+                            'device-info': info }
+            if n == 5:
+                device_dict['device-id'] = device_id
+
+            device = cupshelpers.Device (uri, **device_dict)
+            self.callback_fn (device)
+
+            # Cache the make and model for use by other search methods
+            # that are not able to determine it.
+            self._cached_attributes['device-make-and-model'] = make_and_model
+
+    def _probe_lpd (self):
+        lpd = LpdServer (self.hostname)
+        for name in lpd.get_possible_queue_names ():
+            found = lpd.probe_queue (name, [])
+            if found:
+                uri = "lpd://%s/%s" % (self.hostname, name)
+                device_dict = { 'device-class': 'network',
+                                'device-info': self.hostname }
+                device_dict.update (self._cached_attributes)
+                new_device = cupshelpers.Device (uri, **device_dict)
+                self.callback_fn (new_device)
+
+            if not found and name.startswith ("pr"):
+                break
+
+            time.sleep(0.1) # avoid DOS and following counter measures 
+
+    def _probe_hplip (self):
+        null = file ("/dev/null", "r+")
+        try:
+            p = subprocess.Popen (args=["hp-makeuri", "-c", self.hostname],
+                                  stdin=null,
+                                  stdout=subprocess.PIPE,
+                                  stderr=null)
+        except OSError, e:
+            if e == errno.ENOENT:
+                return
+
+            raise
+
+        (stdout, stderr) = p.communicate ()
+        uri = stdout.strip ()
+        if uri.find (":") != -1:
+            device_dict = { 'device-class': 'network',
+                            'device-info': uri }
+            device_dict.update (self._cached_attributes)
+            new_device = cupshelpers.Device (uri, **device_dict)
+            self.callback_fn (new_device)

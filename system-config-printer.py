@@ -35,6 +35,7 @@ except RuntimeError, e:
     print "This is a graphical application and requires DISPLAY to be set."
     sys.exit (1)
 
+import glib
 import gnome
 gtk.about_dialog_set_url_hook (lambda x, y: gnome.url_show (y))
 gtk.about_dialog_set_email_hook (lambda x, y: gnome.url_show ("mailto:" + y))
@@ -95,6 +96,7 @@ from GroupsPane import *
 from GroupsPaneModel import *
 from SearchCriterion import *
 import gtkinklevel
+import gtkspinner
 import pango
 import statereason
 
@@ -3465,6 +3467,7 @@ class NewPrinterGUI(GtkGUI):
                               "btnNPBack",
                               "btnNPForward",
                               "btnNPApply",
+                              "imgProcessWorking",
                               "entNPName",
                               "entNPDescription",
                               "entNPLocation",
@@ -3499,6 +3502,8 @@ class NewPrinterGUI(GtkGUI):
                               "btnHPFindQueue",
                               "entNPTNetworkHostname",
                               "btnNetworkFind",
+                              "lblNetworkFindSearching",
+                              "lblNetworkFindNotFound",
                               "lblHPURI",
                               "entNPTDevice",
                               "tvNCMembers",
@@ -3569,6 +3574,8 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkPPDSource.set_show_tabs(False)
         self.ntbkNPType.set_show_tabs(False)
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
+
+        self.spinner = gtkspinner.Spinner (self.imgProcessWorking)
 
         # Set up OpenPrinting widgets.
         self.openprinting = cupshelpers.openprinting.OpenPrinting ()
@@ -4781,6 +4788,8 @@ class NewPrinterGUI(GtkGUI):
             (mk, md) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
             device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
             device.id_dict = cupshelpers.parseDeviceID (device.id)
+            device.make_and_model = "%s %s" % (mk, md)
+            device.info = device.make_and_model
 
         return (host, uri)
 
@@ -5519,7 +5528,17 @@ class NewPrinterGUI(GtkGUI):
             elif device.type == "socket":
                 device.menuentry = _("AppSocket/HP JetDirect")
             elif device.type == "lpd":
-                device.menuentry = _("LPD/LPR")
+                (scheme, rest) = urllib.splittype (device.uri)
+                (hostport, rest) = urllib.splithost (rest)
+                (queue, rest) = urllib.splitquery (rest)
+                if queue[0] == '/':
+                    queue = queue[1:]
+
+                if queue != '':
+                    device.menuentry = _("LPD/LPR queue '%s'") % queue
+                else:
+                    device.menuentry = _("LPD/LPR queue")
+
             elif device.type == "smb":
                 device.menuentry = _("Windows Printer via SAMBA")
             elif device.type == "ipp":
@@ -5699,6 +5718,7 @@ class NewPrinterGUI(GtkGUI):
         elif device.type=="lpd":
             self.cmbentNPTLpdHost.child.set_text ('')
             self.cmbentNPTLpdQueue.child.set_text ('')
+            self.cmbentNPTLpdQueue.get_model().clear ()
             self.btnNPTLpdProbe.set_sensitive (False)
             if len (device.uri) > 6:
                 host = device.uri[6:]
@@ -5807,33 +5827,61 @@ class NewPrinterGUI(GtkGUI):
     def on_entNPTNetworkHostname_changed(self, ent):
         s = ent.get_text ()
         self.btnNetworkFind.set_sensitive (len (s) > 0)
+        self.lblNetworkFindNotFound.hide ()
         self.setNPButtons ()
 
     def on_btnNetworkFind_clicked(self, button):
         host = self.entNPTNetworkHostname.get_text ()
-        uri = self.get_hplip_uri_for_network_printer (host, "print")
-        device_dict = { 'device-class': 'network' }
-        new_device = cupshelpers.Device ('', **device_dict)
-        if uri:
-            new_device = cupshelpers.Device (uri, **device_dict)
 
-        (host, uri) = self.getNetworkPrinterMakeModel (host=host,
-                                                       device=new_device)
-        if uri:
-            new_device.uri = uri
+        def found_callback (new_device):
+            glib.idle_add (self.found_network_printer_callback, new_device)
 
-        debugprint ("New device: %s" % new_device)
-        if not new_device.uri:
-            show_error_dialog (_("Not Found"),
-                               _("No printer was found at that address."),
-                               parent=self.NewPrinterWindow)
-        else:
-            model = self.tvNPDevices.get_model ()
+        self.btnNetworkFind.set_sensitive (False)
+        self.entNPTNetworkHostname.set_sensitive (False)
+        self.network_found = 0
+        self.lblNetworkFindSearching.show_all ()
+        finder = probe_printer.PrinterFinder ()
+        self.imgProcessWorking.show ()
+        self.spinner.start ()
+        finder.find (host, found_callback)
+
+    def found_network_printer_callback (self, new_device):
+        if new_device:
+            self.network_found += 1
             dev = PhysicalDevice (new_device)
-            iter = model.insert_before (None, self.devices_find_nw_iter,
-                                        row=[dev.get_info (), dev, False])
-            path = model.get_path (iter)
-            self.tvNPDevices.set_cursor (path)
+            try:
+                i = self.devices.index (dev)
+                self.devices[i].add_device (new_device)
+
+                (path, column) = self.tvNPDevices.get_cursor ()
+                model = self.tvNPDevices.get_model ()
+                iter = model.get_iter (path)
+                if model.get_value (iter, 1) == self.devices[i]:
+                    self.on_tvNPDevices_cursor_changed (self.tvNPDevices)
+            except ValueError:
+                dev.set_data ('checked-hplip', True)
+                self.devices.append (dev)
+                self.devices.sort ()
+                model = self.tvNPDevices.get_model ()
+                iter = model.insert_before (None, self.devices_find_nw_iter,
+                                            row=[dev.get_info (), dev, False])
+
+            # If this is the first one we've found, select it.
+            if self.network_found == 1:
+                path = model.get_path (iter)
+                self.tvNPDevices.set_cursor (path)
+        else:
+            self.imgProcessWorking.hide ()
+            self.spinner.stop ()
+            self.lblNetworkFindSearching.hide ()
+            self.entNPTNetworkHostname.set_sensitive (True)
+            self.btnNetworkFind.set_sensitive (True)
+            if self.network_found == 0:
+                self.lblNetworkFindNotFound.set_markup ('<i>' +
+                                                        _("No printer was "
+                                                          "found at that "
+                                                          "address.") + '</i>')
+                self.lblNetworkFindNotFound.show ()
     ###
 
     def getDeviceURI(self):
