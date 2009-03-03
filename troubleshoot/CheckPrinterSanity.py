@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -55,6 +55,9 @@ class CheckPrinterSanity(Question):
                 classes = c.getClasses ()
                 queue = classes[name]
                 self.answers['cups_class_dict'] = queue
+
+            attrs = c.getPrinterAttributes(name)
+            self.answers['local_cups_queue_attributes'] = attrs
         except:
             pass
 
