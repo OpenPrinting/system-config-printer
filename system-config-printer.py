@@ -36,9 +36,13 @@ except RuntimeError, e:
     sys.exit (1)
 
 import glib
-import gnome
-gtk.about_dialog_set_url_hook (lambda x, y: gnome.url_show (y))
-gtk.about_dialog_set_email_hook (lambda x, y: gnome.url_show ("mailto:" + y))
+def show_uri (uri):
+    gtk.show_uri (gtk.gdk.screen_get_default (),
+                  uri,
+                  gtk.get_current_event_time ())
+
+gtk.about_dialog_set_url_hook (lambda x, y: show_uri (y))
+gtk.about_dialog_set_email_hook (lambda x, y: show_uri ("mailto:" + y))
 
 def show_help():
     print ("\nThis is system-config-printer, " \
