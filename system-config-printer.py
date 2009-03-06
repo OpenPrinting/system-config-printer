@@ -2773,6 +2773,14 @@ class GUI(GtkGUI, monitor.Watcher):
             return
 
         (path, cell) = tuple
+        if type (cell) != gtk.CellRendererText:
+            cells = self.dests_iconview.get_cells ()
+            for cell in cells:
+                if type (cell) == gtk.CellRendererText:
+                    break
+            if type (cell) != gtk.CellRendererText:
+                return
+
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
         name = unicode (model.get_value (iter, 2))
