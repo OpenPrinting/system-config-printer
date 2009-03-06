@@ -413,7 +413,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                         t = _("%d weeks ago") % weeks
                 else:
                     need_update = False
-                    t = time.strftime ("%B %Y", created)
+                    t = time.strftime ("%B %Y", time.localtime (created))
 
             self.store.set_value (iter, 5, t)
 
