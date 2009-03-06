@@ -27,7 +27,7 @@ import os
 import pango
 import tempfile
 import time
-from timedops import TimedOperation
+from timedops import TimedOperation, OperationCanceled
 
 from base import *
 
@@ -166,7 +166,10 @@ class PrintTestPage(Question):
             return (jobs_dict, completed_jobs_dict)
 
         self.op = TimedOperation (get_jobs, parent=parent)
-        (jobs_dict, completed_jobs_dict) = self.op.run ()
+        try:
+            (jobs_dict, completed_jobs_dict) = self.op.run ()
+        except OperationCanceled:
+            return False
 
         # We want to display the jobs in the queue for this printer...
         try:
@@ -219,7 +222,10 @@ class PrintTestPage(Question):
 
         parent = self.troubleshooter.get_window ()
         self.op = TimedOperation (create_subscription, parent=parent)
-        self.sub_id = self.op.run ()
+        try:
+            self.sub_id = self.op.run ()
+        except OperationCanceled:
+            pass
 
         try:
             bus = dbus.SystemBus ()
@@ -252,7 +258,11 @@ class PrintTestPage(Question):
         self.op = TimedOperation (cancel_subscription,
                                   (self.sub_id,),
                                   parent=parent)
-        self.op.run ()
+        try:
+            self.op.run ()
+        except OperationCanceled:
+            pass
+
         try:
             del self.sub_seq
         except:
@@ -302,8 +312,12 @@ class PrintTestPage(Question):
         self.op = TimedOperation (collect_attributes,
                                   (jobs,),
                                   parent=parent)
-        with_attrs = self.op.run ()
-        self.answers['test_page_job_status'] = with_attrs
+        try:
+            with_attrs = self.op.run ()
+            self.answers['test_page_job_status'] = with_attrs
+        except OperationCanceled:
+            pass
+
         return self.answers
 
     def cancel_operation (self):
@@ -383,6 +397,9 @@ class PrintTestPage(Question):
                 jobs.append (jobid)
                 self.persistent_answers['test_page_job_id'] = jobs
                 break
+            except OperationCanceled:
+                self.persistent_answers['test_page_submit_failure'] = 'cancel'
+                break
             except RuntimeError:
                 self.persistent_answers['test_page_submit_failure'] = 'connect'
                 break
@@ -420,7 +437,10 @@ class PrintTestPage(Question):
         self.op = TimedOperation (cancel_jobs,
                                   (jobids,),
                                   parent=self.troubleshooter.get_window ())
-        self.op.run ()
+        try:
+            self.op.run ()
+        except OperationCanceled:
+            pass
 
     def test_toggled (self, cell, path):
         model = self.treeview.get_model ()
@@ -447,7 +467,11 @@ class PrintTestPage(Question):
         self.op = TimedOperation (get_notifications,
                                   (self,),
                                   parent=parent)
-        notifications = self.op.run ()
+        try:
+            notifications = self.op.run ()
+        except OperationCanceled:
+            gtk.gdk.threads_leave ()
+            return True
 
         answers = self.troubleshooter.answers
         model = self.treeview.get_model ()
