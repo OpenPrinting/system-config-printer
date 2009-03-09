@@ -52,7 +52,7 @@ class Printer:
         prefix_length = len(prefix)
 
         # Use the C locale for lower() (trac #151).
-        current_ctype = locale.getlocale (locale.LC_CTYPE)
+        current_ctype = locale.setlocale (locale.LC_CTYPE)
         locale.setlocale (locale.LC_CTYPE, "C")
 
         # loop over cups constants
