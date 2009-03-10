@@ -2454,7 +2454,13 @@ class GUI(GtkGUI, monitor.Watcher):
         marker_info = dict()
         for attr in ['marker-colors', 'marker-names', 'marker-types',
                      'marker-levels']:
-            marker_info[attr] = printer.other_attributes.get (attr, [])
+            val = printer.other_attributes.get (attr, [])
+            if type (val) != list:
+                # Work around bug fixed in pycups 1.9.46.
+                val = [val]
+
+            marker_info[attr] = val
+
 
         markers = map (lambda color, name, type, level:
                            (color, name, type, level),
