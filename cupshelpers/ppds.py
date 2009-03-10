@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -700,39 +700,39 @@ class PPDs:
             modelnumber = 0
             if digits > 0:
                 modelnumber = int (modelid[digits_start:digits_end])
-            modelpattern = (modelid[:digits_start] + "%d" +
-                            modelid[digits_end:])
-            _debugprint ("Searching for model ID '%s', '%s' %% %d" %
-                        (modelid, modelpattern, modelnumber))
-            ignore_digits = 0
-            best_mdl = None
-            found = False
-            while ignore_digits < digits:
-                div = pow (10, ignore_digits)
-                modelid = modelpattern % ((modelnumber / div) * div)
-                _debugprint ("Ignoring %d of %d digits, trying %s" %
-                            (ignore_digits, digits, modelid))
+                modelpattern = (modelid[:digits_start] + "%d" +
+                                modelid[digits_end:])
+                _debugprint ("Searching for model ID '%s', '%s' %% %d" %
+                             (modelid, modelpattern, modelnumber))
+                ignore_digits = 0
+                best_mdl = None
+                found = False
+                while ignore_digits < digits:
+                    div = pow (10, ignore_digits)
+                    modelid = modelpattern % ((modelnumber / div) * div)
+                    _debugprint ("Ignoring %d of %d digits, trying %s" %
+                                 (ignore_digits, digits, modelid))
 
-                for (name, ppds) in mdlitems:
-                    for word in name.split (' '):
-                        if word.lower () == modelid:
-                            found = True
+                    for (name, ppds) in mdlitems:
+                        for word in name.split (' '):
+                            if word.lower () == modelid:
+                                found = True
+                                break
+
+                        if found:
+                            best_mdl = ppds.keys ()
                             break
 
                     if found:
-                        best_mdl = ppds.keys ()
+                        break
+
+                    ignore_digits += 1
+                    if digits < 2:
                         break
 
                 if found:
-                    break
-
-                ignore_digits += 1
-                if digits < 2:
-                    break
-
-            if found:
-                ppdnamelist = best_mdl
-                status = self.STATUS_MODEL_MISMATCH
+                    ppdnamelist = best_mdl
+                    status = self.STATUS_MODEL_MISMATCH
 
         return (status, ppdnamelist)
 
