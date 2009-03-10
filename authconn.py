@@ -246,13 +246,18 @@ class Connection:
         if self._lock:
             gtk.gdk.threads_enter ()
 
+        try:
+            msg = _("CUPS server error (%s)") % self._operation_stack[0]
+        except IndexError:
+            msg = _("CUPS server error")
+
         d = gtk.MessageDialog (self._parent,
                                gtk.DIALOG_MODAL |
                                gtk.DIALOG_DESTROY_WITH_PARENT,
                                gtk.MESSAGE_ERROR,
                                gtk.BUTTONS_NONE,
-                               _("CUPS server error (%s)") %
-                               self._operation_stack[0])
+                               msg)
+                               
         d.format_secondary_text (_("There was an error during the "
                                    "CUPS operation: '%s'." % message))
         d.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
@@ -398,8 +403,12 @@ class Connection:
 
         # Prompt.
         if len (self._operation_stack) > 0:
-            d = AuthDialog (title=_("Authentication (%s)") %
-                            self._operation_stack[0],
+            try:
+                title = _("Authentication (%s)") % self._operation_stack[0]
+            except IndexError:
+                title = _("Authentication")
+
+            d = AuthDialog (title=title,
                             parent=self._parent)
         else:
             d = AuthDialog (parent=self._parent)
