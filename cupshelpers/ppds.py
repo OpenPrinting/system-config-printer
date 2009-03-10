@@ -99,11 +99,6 @@ def ppdMakeModelSplit (ppd_make_and_model):
             make = ppd_make_and_model
             model = ''
 
-    def strip_suffix (model, suffix):
-        if model.endswith (suffix):
-            return model[:-len(suffix)]
-        return model
-
     # Model names do not contain a comma, truncate all from the
     # comma on
     c = model.find (",")
@@ -154,6 +149,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = re.sub (r"(?i)\s*PostScript\s*$", "", model)
     model = re.sub (r"(?i)\s*\(\s*\)", "", model)
     model = re.sub (r"(?i)\s*[\-\/]\s*$", "", model)
+    model = re.sub (r"(?i)\s*hpijs\s*$", "", model)
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Oki" ]:
         if make == mfr.upper ():
