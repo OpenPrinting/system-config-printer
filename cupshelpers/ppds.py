@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -550,27 +550,27 @@ class PPDs:
                 ppdnamelist = generic
 
         if not ppdnamelist:
-            _debugprint ("Text-only fallback")
             status = self.STATUS_NO_DRIVER
-            ppdnamelist = ["textonly.ppd"]
-            tppdfound = 0
-            for ppdpath in self.ppds.keys ():
-                if ppdpath.endswith (ppdnamelist[0]):
-                    tppdfound = 1
-                    ppdnamelist = [ppdpath]
-                    break
-            if tppdfound == 0:
-                _debugprint ("No text-only driver?!  Using postscript.ppd")
-                ppdnamelist = ["postscript.ppd"]
-                psppdfound = 0
+            fallbacks = ["textonly.ppd", "postscript.ppd"]
+            found = False
+            for fallback in fallbacks:
+                _debugprint ("'%s' fallback" % fallback)
+                fallbackgz = fallback + ".gz"
                 for ppdpath in self.ppds.keys ():
-                    if ppdpath.endswith (ppdnamelist[0]):
-                        psppdfound = 1
+                    if (ppdpath.endswith (fallback) or
+                        ppdpath.endswith (fallbackgz)):
                         ppdnamelist = [ppdpath]
+                        found = True
                         break
-                if psppdfound == 0:
-                    _debugprint ("No postscript.ppd; choosing any")
-                    ppdnamelist = [self.ppds.keys ()[0]]
+
+                if found:
+                    break
+
+                _debugprint ("Fallback '%s' not available" % fallback)
+
+            if not found:
+                _debugprint ("No fallback available; choosing any")
+                ppdnamelist = [self.ppds.keys ()[0]]
 
         if id_matched:
             _debugprint ("Checking DES field")
@@ -700,39 +700,39 @@ class PPDs:
             modelnumber = 0
             if digits > 0:
                 modelnumber = int (modelid[digits_start:digits_end])
-            modelpattern = (modelid[:digits_start] + "%d" +
-                            modelid[digits_end:])
-            _debugprint ("Searching for model ID '%s', '%s' %% %d" %
-                        (modelid, modelpattern, modelnumber))
-            ignore_digits = 0
-            best_mdl = None
-            found = False
-            while ignore_digits < digits:
-                div = pow (10, ignore_digits)
-                modelid = modelpattern % ((modelnumber / div) * div)
-                _debugprint ("Ignoring %d of %d digits, trying %s" %
-                            (ignore_digits, digits, modelid))
+                modelpattern = (modelid[:digits_start] + "%d" +
+                                modelid[digits_end:])
+                _debugprint ("Searching for model ID '%s', '%s' %% %d" %
+                             (modelid, modelpattern, modelnumber))
+                ignore_digits = 0
+                best_mdl = None
+                found = False
+                while ignore_digits < digits:
+                    div = pow (10, ignore_digits)
+                    modelid = modelpattern % ((modelnumber / div) * div)
+                    _debugprint ("Ignoring %d of %d digits, trying %s" %
+                                 (ignore_digits, digits, modelid))
 
-                for (name, ppds) in mdlitems:
-                    for word in name.split (' '):
-                        if word.lower () == modelid:
-                            found = True
+                    for (name, ppds) in mdlitems:
+                        for word in name.split (' '):
+                            if word.lower () == modelid:
+                                found = True
+                                break
+
+                        if found:
+                            best_mdl = ppds.keys ()
                             break
 
                     if found:
-                        best_mdl = ppds.keys ()
+                        break
+
+                    ignore_digits += 1
+                    if digits < 2:
                         break
 
                 if found:
-                    break
-
-                ignore_digits += 1
-                if digits < 2:
-                    break
-
-            if found:
-                ppdnamelist = best_mdl
-                status = self.STATUS_MODEL_MISMATCH
+                    ppdnamelist = best_mdl
+                    status = self.STATUS_MODEL_MISMATCH
 
         return (status, ppdnamelist)
 
