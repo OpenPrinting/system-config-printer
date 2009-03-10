@@ -413,7 +413,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                         t = _("%d weeks ago") % weeks
                 else:
                     need_update = False
-                    t = time.strftime ("%B %Y", created)
+                    t = time.strftime ("%B %Y", time.localtime (created))
 
             self.store.set_value (iter, 5, t)
 
@@ -771,13 +771,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 type = gnomekeyring.ITEM_NETWORK_PASSWORD
                 attrs = dialog.get_data ("keyring-attrs")
                 auth_info_required = dialog.get_data ('auth-info-required')
-                try:
-                    ind = auth_info_required.index ('username')
-                    attrs['user'] = auth_info[ind]
-                except IndexError:
-                    pass
+                if attrs != None and auth_info_required != None:
+                    try:
+                        ind = auth_info_required.index ('username')
+                        attrs['user'] = auth_info[ind]
+                    except IndexError:
+                        pass
 
-                if attrs != None:
                     name = "%s@%s (%s)" % (attrs.get ("user"),
                                            attrs.get ("server"),
                                            attrs.get ("protocol"))
