@@ -550,27 +550,27 @@ class PPDs:
                 ppdnamelist = generic
 
         if not ppdnamelist:
-            _debugprint ("Text-only fallback")
             status = self.STATUS_NO_DRIVER
-            ppdnamelist = ["textonly.ppd"]
-            tppdfound = 0
-            for ppdpath in self.ppds.keys ():
-                if ppdpath.endswith (ppdnamelist[0]):
-                    tppdfound = 1
-                    ppdnamelist = [ppdpath]
-                    break
-            if tppdfound == 0:
-                _debugprint ("No text-only driver?!  Using postscript.ppd")
-                ppdnamelist = ["postscript.ppd"]
-                psppdfound = 0
+            fallbacks = ["textonly.ppd", "postscript.ppd"]
+            found = False
+            for fallback in fallbacks:
+                _debugprint ("'%s' fallback" % fallback)
+                fallbackgz = fallback + ".gz"
                 for ppdpath in self.ppds.keys ():
-                    if ppdpath.endswith (ppdnamelist[0]):
-                        psppdfound = 1
+                    if (ppdpath.endswith (fallback) or
+                        ppdpath.endswith (fallbackgz)):
                         ppdnamelist = [ppdpath]
+                        found = True
                         break
-                if psppdfound == 0:
-                    _debugprint ("No postscript.ppd; choosing any")
-                    ppdnamelist = [self.ppds.keys ()[0]]
+
+                if found:
+                    break
+
+                _debugprint ("Fallback '%s' not available" % fallback)
+
+            if not found:
+                _debugprint ("No fallback available; choosing any")
+                ppdnamelist = [self.ppds.keys ()[0]]
 
         if id_matched:
             _debugprint ("Checking DES field")
