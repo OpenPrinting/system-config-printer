@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-03-10 09:51+0000\n"
+"POT-Creation-Date: 2009-03-10 16:09+0000\n"
 "PO-Revision-Date: 2009-02-24 10:41+0100\n"
 "Last-Translator: KAMI <kami911@gmail.com>\n"
 "Language-Team: Hungarian <fedora-trans-hu@redhat.com>\n"
@@ -75,35 +75,44 @@ msgstr "Hitelesítés"
 msgid "Remember password"
 msgstr "Jelszó megjegyzése"
 
-#: ../authconn.py:211 ../authconn.py:232
+#: ../authconn.py:208
+#, python-format
+msgid "Unauthorized request (%s)"
+msgstr ""
+
+#: ../authconn.py:209
+msgid "You are not authorized to carry out therequested action."
+msgstr ""
+
+#: ../authconn.py:212 ../authconn.py:233
 msgid "Operation canceled"
 msgstr "A művelet meg lett szakítva"
 
-#: ../authconn.py:253
+#: ../authconn.py:254
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "CUPS-kiszolgálóhiba (%s)"
 
-#: ../authconn.py:255 ../errordialogs.py:57
+#: ../authconn.py:256 ../errordialogs.py:57
 #: ../troubleshoot/PrintTestPage.py:417
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Hiba történt a CUPS-művelet közben: „%s”."
 
-#: ../authconn.py:258
+#: ../authconn.py:259
 msgid "Retry"
 msgstr "Újra"
 
-#: ../authconn.py:379 ../authconn.py:381 ../errordialogs.py:65 ../pysmb.py:75
+#: ../authconn.py:380 ../authconn.py:382 ../errordialogs.py:65 ../pysmb.py:75
 #: ../pysmb.py:77
 msgid "Not authorized"
 msgstr "Nincs jogosultság"
 
-#: ../authconn.py:382 ../pysmb.py:78
+#: ../authconn.py:383 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "Lehetséges, hogy helytelen a jelszó."
 
-#: ../authconn.py:400
+#: ../authconn.py:401
 #, python-format
 msgid "Authentication (%s)"
 msgstr "Hitelesítés (%s)"
@@ -267,7 +276,7 @@ msgstr "Dokumentum nyomtatási állapota (%s)"
 
 #: ../jobviewer.py:386 ../jobviewer.py:451 ../jobviewer.py:452
 #: ../jobviewer.py:492 ../jobviewer.py:600 ../jobviewer.py:727
-#: ../jobviewer.py:1196 ../jobviewer.py:1222 ../system-config-printer.py:2550
+#: ../jobviewer.py:1196 ../jobviewer.py:1222 ../system-config-printer.py:2556
 #: ../glade/NewPrinterWindow.glade.h:105
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
@@ -474,7 +483,7 @@ msgid "_Set Default"
 msgstr "_Beállítás alapértelmezettként"
 
 #: ../my-default-printer.py:158 ../system-config-printer.py:427
-#: ../system-config-printer.py:3669 ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../system-config-printer.py:3675 ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Hely"
@@ -503,7 +512,7 @@ msgstr "Alapértelmezett viselkedés"
 msgid "Authenticated"
 msgstr "Hitelesítve"
 
-#: ../ppdippstr.py:50 ../system-config-printer.py:6201
+#: ../ppdippstr.py:50 ../system-config-printer.py:6207
 msgid "None"
 msgstr "Nincs"
 
@@ -871,8 +880,8 @@ msgstr "Hálózati nyomtató (felfedezett)"
 msgid "Network class (discovered)"
 msgstr "Hálózati osztály (felfedezett)"
 
-#: ../system-config-printer.py:1374 ../system-config-printer.py:5513
-#: ../system-config-printer.py:5583 ../system-config-printer.py:5585
+#: ../system-config-printer.py:1374 ../system-config-printer.py:5519
+#: ../system-config-printer.py:5589 ../system-config-printer.py:5591
 msgid "Fax"
 msgstr "Fax"
 
@@ -904,9 +913,9 @@ msgstr "Nyomtatóbeállítások"
 msgid "modifying class %s"
 msgstr "A(z) %s osztály módosítása"
 
-#: ../system-config-printer.py:1930 ../system-config-printer.py:3031
-#: ../system-config-printer.py:3056 ../system-config-printer.py:6489
-#: ../system-config-printer.py:6501 ../system-config-printer.py:6523
+#: ../system-config-printer.py:1930 ../system-config-printer.py:3037
+#: ../system-config-printer.py:3062 ../system-config-printer.py:6495
+#: ../system-config-printer.py:6507 ../system-config-printer.py:6529
 #, python-format
 msgid "modifying printer %s"
 msgstr "%s nyomtató beállítása"
@@ -923,7 +932,7 @@ msgstr "Szeretné mégis folytatni?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:2034 ../system-config-printer.py:3215
+#: ../system-config-printer.py:2034 ../system-config-printer.py:3221
 msgid "fetching server settings"
 msgstr "Kiszolgáló beállítások lekérése"
 
@@ -956,7 +965,7 @@ msgid "printing test page"
 msgstr "Tesztoldal nyomtatása"
 
 #: ../system-config-printer.py:2186 ../system-config-printer.py:2221
-#: ../system-config-printer.py:5407
+#: ../system-config-printer.py:5413
 msgid "Not possible"
 msgstr "Nem lehetséges"
 
@@ -1002,52 +1011,52 @@ msgstr "Hiba történt a CUPS-kiszolgálóhoz történő kapcsolódás közben."
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "„%s” beállítás „%s” értékkel rendelkezik és nem változtatható meg."
 
-#: ../system-config-printer.py:2470
+#: ../system-config-printer.py:2476
 msgid "Marker levels are not reported for this printer."
 msgstr "A jelölők szintjét a nyomtató nem jelzi"
 
-#: ../system-config-printer.py:2767
+#: ../system-config-printer.py:2773
 msgid "Cannot Rename"
 msgstr "Nem nevezhető át"
 
-#: ../system-config-printer.py:2768
+#: ../system-config-printer.py:2774
 msgid "There are queued jobs."
 msgstr "Dokumentumok vannak a nyomtatási sorban"
 
-#: ../system-config-printer.py:2834
+#: ../system-config-printer.py:2840
 msgid "renaming printer"
 msgstr "nyomtató átnevezése"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:2919
+#: ../system-config-printer.py:2925
 msgid "copying printer"
 msgstr "nyomtató másolása"
 
-#: ../system-config-printer.py:2983
+#: ../system-config-printer.py:2989
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "Valóban törli „%s” osztályt?"
 
-#: ../system-config-printer.py:2985
+#: ../system-config-printer.py:2991
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Valóban törli „%s” nyomtatót?"
 
-#: ../system-config-printer.py:2987
+#: ../system-config-printer.py:2993
 msgid "Really delete selected destinations?"
 msgstr "Valóban törli a kiválasztott célokat?"
 
-#: ../system-config-printer.py:3008
+#: ../system-config-printer.py:3014
 #, python-format
 msgid "deleting printer %s"
 msgstr "„%s” nyomtató törlése"
 
-#: ../system-config-printer.py:3082
+#: ../system-config-printer.py:3088
 msgid "Publish Shared Printers"
 msgstr "Megosztott nyomtatók közzététele"
 
-#: ../system-config-printer.py:3083
+#: ../system-config-printer.py:3089
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -1056,7 +1065,7 @@ msgstr ""
 "nyomtatók közzététele” beállítást nem engedélyezi a kiszolgáló beállítási "
 "között."
 
-#: ../system-config-printer.py:3276
+#: ../system-config-printer.py:3282
 msgid "modifying server settings"
 msgstr "Kiszolgáló beállítások megváltoztatása"
 
@@ -1066,11 +1075,11 @@ msgstr "Kiszolgáló beállítások megváltoztatása"
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:3301
+#: ../system-config-printer.py:3307
 msgid "Review Firewall"
 msgstr "Tűzfal-beállítások ellenőrzése"
 
-#: ../system-config-printer.py:3302
+#: ../system-config-printer.py:3308
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
@@ -1078,86 +1087,86 @@ msgstr ""
 "Esetenként a rendszer tűzfala további beállításokat igényel, hogy a hálózati "
 "nyomtatás lehetséges legyen ezen a számítógépen keresztül."
 
-#: ../system-config-printer.py:3632
+#: ../system-config-printer.py:3638
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "Tallózás nem lehetséges (pysmbc nincs telepítve)"
 
 #. SMB list columns
-#: ../system-config-printer.py:3638
+#: ../system-config-printer.py:3644
 msgid "Share"
 msgstr "Megosztás"
 
-#: ../system-config-printer.py:3644
+#: ../system-config-printer.py:3650
 msgid "Comment"
 msgstr "Megjegyzés"
 
 #. IPP list columns
-#: ../system-config-printer.py:3663
+#: ../system-config-printer.py:3669
 msgid "Queue"
 msgstr "Nyomtatási sor"
 
-#: ../system-config-printer.py:3677
+#: ../system-config-printer.py:3683
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "PostScript nyomtatóleíró-fájlok (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
 
-#: ../system-config-printer.py:3686
+#: ../system-config-printer.py:3692
 msgid "All files (*)"
 msgstr "Minden fájl (*)"
 
-#: ../system-config-printer.py:3722 ../system-config-printer.py:5912
-#: ../system-config-printer.py:5950 ../applet.py:124
+#: ../system-config-printer.py:3728 ../system-config-printer.py:5918
+#: ../system-config-printer.py:5956 ../applet.py:124
 msgid "Search"
 msgstr "Keresés"
 
-#: ../system-config-printer.py:3745 ../system-config-printer.py:3769
+#: ../system-config-printer.py:3751 ../system-config-printer.py:3775
 #: ../glade/NewPrinterWindow.glade.h:73
 msgid "New Printer"
 msgstr "Új nyomtató"
 
-#: ../system-config-printer.py:3756
+#: ../system-config-printer.py:3762
 msgid "New Class"
 msgstr "Új osztály"
 
-#: ../system-config-printer.py:3761
+#: ../system-config-printer.py:3767
 msgid "Change Device URI"
 msgstr "Az eszköz URI azonosítójának módosítása"
 
-#: ../system-config-printer.py:3767
+#: ../system-config-printer.py:3773
 msgid "Change Driver"
 msgstr "Meghajtóprogram módosítása"
 
-#: ../system-config-printer.py:3936 ../system-config-printer.py:4002
-#: ../system-config-printer.py:4298 ../system-config-printer.py:4496
-#: ../system-config-printer.py:5756 ../system-config-printer.py:5937
+#: ../system-config-printer.py:3942 ../system-config-printer.py:4008
+#: ../system-config-printer.py:4304 ../system-config-printer.py:4502
+#: ../system-config-printer.py:5762 ../system-config-printer.py:5943
 msgid "Searching"
 msgstr "Keresés"
 
-#: ../system-config-printer.py:3937
+#: ../system-config-printer.py:3943
 msgid "Searching for downloadable drivers"
 msgstr "Letölthető meghajtóprogramok keresése"
 
-#: ../system-config-printer.py:4003 ../system-config-printer.py:4299
+#: ../system-config-printer.py:4009 ../system-config-printer.py:4305
 msgid "Searching for drivers"
 msgstr "Meghajtóprogramok keresése"
 
-#: ../system-config-printer.py:4497 ../system-config-printer.py:5757
+#: ../system-config-printer.py:4503 ../system-config-printer.py:5763
 msgid "Searching for printers"
 msgstr "Nyomtatók keresése"
 
-#: ../system-config-printer.py:4506
+#: ../system-config-printer.py:4512
 msgid "fetching device list"
 msgstr "eszközlista lekérése"
 
 #. Tell the user why he needs the plugin
-#: ../system-config-printer.py:4588
+#: ../system-config-printer.py:4594
 msgid "For this printer a proprietary driver plugin from HP is available.\n"
 msgstr ""
 "Ehhez a nyomtatóhoz zárt forráskódú bővítmény is elérhető a HP jóvoltából.\n"
 
-#: ../system-config-printer.py:4591
+#: ../system-config-printer.py:4597
 msgid ""
 "The installation of the plugin is required for your printer to work.\n"
 "\n"
@@ -1165,7 +1174,7 @@ msgstr ""
 "A nyomtató működéséhez elengedhetetlenül fontos a bővítmény telepítése.\n"
 "\n"
 
-#: ../system-config-printer.py:4594
+#: ../system-config-printer.py:4600
 msgid ""
 "Installing the plugin is optional, it completes or enhances the "
 "functionality\n"
@@ -1179,106 +1188,106 @@ msgstr ""
 "lesznek elérhetőek.\n"
 "\n"
 
-#: ../system-config-printer.py:4598
+#: ../system-config-printer.py:4604
 msgid "The plugin provides the following features:\n"
 msgstr "A bővítmény a következő szolgáltatásokat biztosítja:\n"
 
-#: ../system-config-printer.py:4601
+#: ../system-config-printer.py:4607
 msgid " - Printing support\n"
 msgstr " - Nyomtatás támogatás\n"
 
-#: ../system-config-printer.py:4604
+#: ../system-config-printer.py:4610
 msgid " - Faster printing\n"
 msgstr " - Gyorsabb nyomtatás\n"
 
-#: ../system-config-printer.py:4607
+#: ../system-config-printer.py:4613
 msgid " - Better printout quality\n"
 msgstr " - Jobb nyomtatási minőség\n"
 
-#: ../system-config-printer.py:4610
+#: ../system-config-printer.py:4616
 msgid " - Extra printing features\n"
 msgstr " - További nyomtatási szolgáltatások\n"
 
-#: ../system-config-printer.py:4613
+#: ../system-config-printer.py:4619
 msgid " - Scanning support\n"
 msgstr " - Lapolvasási képességek\n"
 
-#: ../system-config-printer.py:4616
+#: ../system-config-printer.py:4622
 msgid " - Faster scanning\n"
 msgstr " - Gyorsabb lapolvasás\n"
 
-#: ../system-config-printer.py:4619
+#: ../system-config-printer.py:4625
 msgid " - Better scanning image quality\n"
 msgstr " - Jobb lapolvasási képminőség\n"
 
-#: ../system-config-printer.py:4622
+#: ../system-config-printer.py:4628
 msgid " - Faxing support\n"
 msgstr " - Faxolás támogatása\n"
 
-#: ../system-config-printer.py:4625
+#: ../system-config-printer.py:4631
 msgid " - Extra fax features\n"
 msgstr " - Extra Faxolási lehetőségek\n"
 
-#: ../system-config-printer.py:4628
+#: ../system-config-printer.py:4634
 msgid " - Better Input/Output support\n"
 msgstr " - Jobb be- és kimeneti támogatás\n"
 
-#: ../system-config-printer.py:4631
+#: ../system-config-printer.py:4637
 msgid " - Extra user interface features\n"
 msgstr " - További felhasználói felület szolgáltatások\n"
 
-#: ../system-config-printer.py:4634
+#: ../system-config-printer.py:4640
 msgid " - Other extra features\n"
 msgstr " - Eszéb extra szolgáltatások\n"
 
-#: ../system-config-printer.py:4639
+#: ../system-config-printer.py:4645
 msgid "Install plugin"
 msgstr "Bővítmény telepítése"
 
-#: ../system-config-printer.py:4640
+#: ../system-config-printer.py:4646
 msgid "Do not set up printer"
 msgstr "Nyomtató beállításának kihagyása"
 
-#: ../system-config-printer.py:4641
+#: ../system-config-printer.py:4647
 msgid "Set up without plugin"
 msgstr "Beállítás bővítmény nélkül"
 
-#: ../system-config-printer.py:4643 ../troubleshoot/PrintTestPage.py:118
+#: ../system-config-printer.py:4649 ../troubleshoot/PrintTestPage.py:118
 msgid "Yes"
 msgstr "Igen"
 
-#: ../system-config-printer.py:4644 ../troubleshoot/PrintTestPage.py:119
+#: ../system-config-printer.py:4650 ../troubleshoot/PrintTestPage.py:119
 msgid "No"
 msgstr "Nem"
 
-#: ../system-config-printer.py:4818 ../system-config-printer.py:4822
+#: ../system-config-printer.py:4824 ../system-config-printer.py:4828
 msgid " (Current)"
 msgstr " (Aktuális)"
 
-#: ../system-config-printer.py:4875
+#: ../system-config-printer.py:4881
 msgid "Other"
 msgstr "Egyéb"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:4891
+#: ../system-config-printer.py:4897
 msgid "Network Printer"
 msgstr "Hálózati nyomtató"
 
-#: ../system-config-printer.py:4895
+#: ../system-config-printer.py:4901
 msgid "Find Network Printer"
 msgstr "Hálózati nyomtató keresése"
 
-#: ../system-config-printer.py:4968 ../system-config-printer.py:5365
+#: ../system-config-printer.py:4974 ../system-config-printer.py:5371
 msgid "Scanning..."
 msgstr "Keresés..."
 
-#: ../system-config-printer.py:5023
+#: ../system-config-printer.py:5029
 msgid "No Print Shares"
 msgstr "Nincsenek nyomatómegosztások"
 
-#: ../system-config-printer.py:5024
+#: ../system-config-printer.py:5030
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1286,32 +1295,32 @@ msgstr ""
 "Nem találhatóak megosztott nyomtatók. Ellenőrizze, hogy a Samba kiszolgáló "
 "szolgáltatás megbízhatónak van jelölve a tűzfal beállításaiban."
 
-#: ../system-config-printer.py:5285 ../system-config-printer.py:5346
+#: ../system-config-printer.py:5291 ../system-config-printer.py:5352
 msgid "Print Share Verified"
 msgstr "Nyomtató-megosztás ellenőrizve"
 
-#: ../system-config-printer.py:5286 ../system-config-printer.py:5347
+#: ../system-config-printer.py:5292 ../system-config-printer.py:5353
 msgid "This print share is accessible."
 msgstr "Ez a nyomtatási megosztás elérhető."
 
-#: ../system-config-printer.py:5291 ../system-config-printer.py:5351
+#: ../system-config-printer.py:5297 ../system-config-printer.py:5357
 msgid "This print share is not accessible."
 msgstr "Ez a nyomtatási megosztás nem elérhető."
 
-#: ../system-config-printer.py:5294
+#: ../system-config-printer.py:5300
 msgid "Print Share Inaccessible"
 msgstr "Nyomatómegosztások elérhetetlenek"
 
-#: ../system-config-printer.py:5350
+#: ../system-config-printer.py:5356
 msgid "Inaccessible"
 msgstr "Nem elérhető"
 
-#: ../system-config-printer.py:5408
+#: ../system-config-printer.py:5414
 #, python-format
 msgid "It is not possible to obtain a list of queues from '%s'."
 msgstr "A(z) „%s” gépről nem lehet lekérdezni a nyomtatási sorok listáját."
 
-#: ../system-config-printer.py:5410
+#: ../system-config-printer.py:5416
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
@@ -1319,69 +1328,69 @@ msgstr ""
 "A nyomtatási sorok listájának lekérése egy, az IPP protokollhoz szánt CUPS "
 "kiterjesztésen keresztül. A hálózati nyomtatók nem támogatják ezt a funkciót."
 
-#: ../system-config-printer.py:5413
+#: ../system-config-printer.py:5419
 msgid "No queues"
 msgstr "Nincs nyomtatási sor"
 
-#: ../system-config-printer.py:5414
+#: ../system-config-printer.py:5420
 msgid "There are no queues available."
 msgstr "Nincsen elérhető nyomtatási sor"
 
-#: ../system-config-printer.py:5505
+#: ../system-config-printer.py:5511
 msgid "Parallel Port"
 msgstr "Párhuzamos port"
 
-#: ../system-config-printer.py:5507
+#: ../system-config-printer.py:5513
 msgid "Serial Port"
 msgstr "Soros port"
 
-#: ../system-config-printer.py:5509
+#: ../system-config-printer.py:5515
 msgid "USB"
 msgstr "USB port"
 
-#: ../system-config-printer.py:5511 ../system-config-printer.py:5514
+#: ../system-config-printer.py:5517 ../system-config-printer.py:5520
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../system-config-printer.py:5516
+#: ../system-config-printer.py:5522
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardverabsztrakciós Réteg (HAL)"
 
-#: ../system-config-printer.py:5518
+#: ../system-config-printer.py:5524
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../system-config-printer.py:5527
+#: ../system-config-printer.py:5533
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr ""
 
-#: ../system-config-printer.py:5529
+#: ../system-config-printer.py:5535
 #, fuzzy
 msgid "LPD/LPR queue"
 msgstr "LPD/LPR"
 
-#: ../system-config-printer.py:5532
+#: ../system-config-printer.py:5538
 msgid "Windows Printer via SAMBA"
 msgstr "Windows nyomtató SAMBA megosztáson"
 
-#: ../system-config-printer.py:5534 ../glade/NewPrinterWindow.glade.h:65
+#: ../system-config-printer.py:5540 ../glade/NewPrinterWindow.glade.h:65
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.py:5536
+#: ../system-config-printer.py:5542
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../system-config-printer.py:5618
+#: ../system-config-printer.py:5624
 msgid "A printer connected to the parallel port."
 msgstr "A párhuzamos portra kapcsolt nyomtató."
 
-#: ../system-config-printer.py:5620
+#: ../system-config-printer.py:5626
 msgid "A printer connected to a USB port."
 msgstr "Egy USB-portra kapcsolt nyomtató."
 
-#: ../system-config-printer.py:5622
+#: ../system-config-printer.py:5628
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1389,7 +1398,7 @@ msgstr ""
 "Egy nyomtatót vagy egy többfunkciós eszköz nyomtatási funkcióját vezérlő "
 "HPLIP meghajtóprogram."
 
-#: ../system-config-printer.py:5625
+#: ../system-config-printer.py:5631
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1397,43 +1406,43 @@ msgstr ""
 "Egy faxgépet vagy egy többfunkciós eszköz fax-funkcióját vezérlő HPLIP "
 "meghajtóprogram."
 
-#: ../system-config-printer.py:5628
+#: ../system-config-printer.py:5634
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "A hardverabsztrakciós réteg (HAL) egy helyi nyomtatót érzékelt."
 
-#: ../system-config-printer.py:5825
+#: ../system-config-printer.py:5831
 msgid "No printer was found at that address."
 msgstr "A megadott cymen nyomtató nem található."
 
-#: ../system-config-printer.py:5962
+#: ../system-config-printer.py:5968
 msgid "-- Select from search results --"
 msgstr "–– Válasszon a keresés eredményéből ––"
 
-#: ../system-config-printer.py:5964
+#: ../system-config-printer.py:5970
 msgid "-- No matches found --"
 msgstr "–– Nincs találat ––"
 
-#: ../system-config-printer.py:6145
+#: ../system-config-printer.py:6151
 msgid " (recommended)"
 msgstr " (javasolt)"
 
-#: ../system-config-printer.py:6159
+#: ../system-config-printer.py:6165
 msgid "This PPD is generated by foomatic."
 msgstr "Ezt a PPD fájlt a Foomatic készítette."
 
-#: ../system-config-printer.py:6183
+#: ../system-config-printer.py:6189
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:6194
+#: ../system-config-printer.py:6200
 msgid "Distributable"
 msgstr "Terjeszthető"
 
-#: ../system-config-printer.py:6235
+#: ../system-config-printer.py:6241
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:6240
+#: ../system-config-printer.py:6246
 #, python-format
 msgid ""
 "\n"
@@ -1442,20 +1451,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:6245
+#: ../system-config-printer.py:6251
 msgid "No support contacts known"
 msgstr "Nincs ismert terméktámogatási kapcsolattartó"
 
-#: ../system-config-printer.py:6249 ../system-config-printer.py:6262
+#: ../system-config-printer.py:6255 ../system-config-printer.py:6268
 msgid "Not specified."
 msgstr "Nincs megadva."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6302
+#: ../system-config-printer.py:6308
 msgid "Database error"
 msgstr "Adatbázis-hiba"
 
-#: ../system-config-printer.py:6303
+#: ../system-config-printer.py:6309
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "„%s” meghajtóprogram nem használható ezzel a nyomtatóval: „%s %s”."
@@ -1463,62 +1472,62 @@ msgstr "„%s” meghajtóprogram nem használható ezzel a nyomtatóval: „%s 
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6313
+#: ../system-config-printer.py:6319
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "A meghajtóprogram használatához telepíteni kell a(z) „%s” csomagot."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6320
+#: ../system-config-printer.py:6326
 msgid "PPD error"
 msgstr "PPD-fájl hiba"
 
-#: ../system-config-printer.py:6322
+#: ../system-config-printer.py:6328
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Nem sikerült beolvasni a PPD-fájlt. A lehetséges ok:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6339
+#: ../system-config-printer.py:6345
 msgid "Downloadable drivers"
 msgstr "Letölthető meghajtóprogramok"
 
-#: ../system-config-printer.py:6340
+#: ../system-config-printer.py:6346
 msgid "Failed to download PPD."
 msgstr "Nem sikerült letölteni a PPD-fájlt."
 
-#: ../system-config-printer.py:6347
+#: ../system-config-printer.py:6353
 msgid "fetching PPD"
 msgstr "PPD-fájl letöltése"
 
-#: ../system-config-printer.py:6376 ../system-config-printer.py:6414
+#: ../system-config-printer.py:6382 ../system-config-printer.py:6420
 msgid "No Installable Options"
 msgstr "Nincs telepíthető opció"
 
-#: ../system-config-printer.py:6462
+#: ../system-config-printer.py:6468
 #, python-format
 msgid "adding printer %s"
 msgstr "nyomtató hozzáadása: %s"
 
-#: ../system-config-printer.py:6611
+#: ../system-config-printer.py:6617
 msgid "Would you like to print a test page?"
 msgstr "Szeretne nyomtatni egy teszoldalt?"
 
-#: ../system-config-printer.py:6664
+#: ../system-config-printer.py:6670
 msgid "Install driver"
 msgstr "Meghajtóprogram telepítése"
 
-#: ../system-config-printer.py:6665 ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:6671 ../troubleshoot/CheckPPDSanity.py:131
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "A(z) „%s” nyomtatóhoz szükség van a(z) %s csomagra, de az jelenleg nincs "
 "telepítve."
 
-#: ../system-config-printer.py:6681
+#: ../system-config-printer.py:6687
 msgid "Missing driver"
 msgstr "Hiányzó meghajtóprogram"
 
-#: ../system-config-printer.py:6682
+#: ../system-config-printer.py:6688
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "

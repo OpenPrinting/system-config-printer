@@ -16,7 +16,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-03-10 09:51+0000\n"
+"POT-Creation-Date: 2009-03-10 16:09+0000\n"
 "PO-Revision-Date: 2009-03-07 15:29-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
@@ -85,35 +85,44 @@ msgstr "Autenticação"
 msgid "Remember password"
 msgstr "Lembrar senha"
 
-#: ../authconn.py:211 ../authconn.py:232
+#: ../authconn.py:208
+#, python-format
+msgid "Unauthorized request (%s)"
+msgstr ""
+
+#: ../authconn.py:209
+msgid "You are not authorized to carry out therequested action."
+msgstr ""
+
+#: ../authconn.py:212 ../authconn.py:233
 msgid "Operation canceled"
 msgstr "Operação cancelada"
 
-#: ../authconn.py:253
+#: ../authconn.py:254
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "Erro no servidor CUPS (%s)"
 
-#: ../authconn.py:255 ../errordialogs.py:57
+#: ../authconn.py:256 ../errordialogs.py:57
 #: ../troubleshoot/PrintTestPage.py:417
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Houve um erro durante a operação do CUPS: \"%s\"."
 
-#: ../authconn.py:258
+#: ../authconn.py:259
 msgid "Retry"
 msgstr "Repetir"
 
-#: ../authconn.py:379 ../authconn.py:381 ../errordialogs.py:65 ../pysmb.py:75
+#: ../authconn.py:380 ../authconn.py:382 ../errordialogs.py:65 ../pysmb.py:75
 #: ../pysmb.py:77
 msgid "Not authorized"
 msgstr "Não autorizado"
 
-#: ../authconn.py:382 ../pysmb.py:78
+#: ../authconn.py:383 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "A senha pode estar incorreta."
 
-#: ../authconn.py:400
+#: ../authconn.py:401
 #, python-format
 msgid "Authentication (%s)"
 msgstr "Autenticação (%s)"
@@ -277,7 +286,7 @@ msgstr "Status da impressão do documento (%s)"
 
 #: ../jobviewer.py:386 ../jobviewer.py:451 ../jobviewer.py:452
 #: ../jobviewer.py:492 ../jobviewer.py:600 ../jobviewer.py:727
-#: ../jobviewer.py:1196 ../jobviewer.py:1222 ../system-config-printer.py:2550
+#: ../jobviewer.py:1196 ../jobviewer.py:1222 ../system-config-printer.py:2556
 #: ../glade/NewPrinterWindow.glade.h:105
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
@@ -485,7 +494,7 @@ msgid "_Set Default"
 msgstr "_Definir como padrão"
 
 #: ../my-default-printer.py:158 ../system-config-printer.py:427
-#: ../system-config-printer.py:3669 ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../system-config-printer.py:3675 ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Localização"
@@ -514,7 +523,7 @@ msgstr "Comportamento padrão"
 msgid "Authenticated"
 msgstr "Autenticado"
 
-#: ../ppdippstr.py:50 ../system-config-printer.py:6201
+#: ../ppdippstr.py:50 ../system-config-printer.py:6207
 msgid "None"
 msgstr "Nenhum"
 
@@ -883,8 +892,8 @@ msgstr "Impressora de rede (descoberta)"
 msgid "Network class (discovered)"
 msgstr "Classe de rede (descoberta)"
 
-#: ../system-config-printer.py:1374 ../system-config-printer.py:5513
-#: ../system-config-printer.py:5583 ../system-config-printer.py:5585
+#: ../system-config-printer.py:1374 ../system-config-printer.py:5519
+#: ../system-config-printer.py:5589 ../system-config-printer.py:5591
 msgid "Fax"
 msgstr "Fax"
 
@@ -916,9 +925,9 @@ msgstr "Opções da impressora"
 msgid "modifying class %s"
 msgstr "modificando classe %s"
 
-#: ../system-config-printer.py:1930 ../system-config-printer.py:3031
-#: ../system-config-printer.py:3056 ../system-config-printer.py:6489
-#: ../system-config-printer.py:6501 ../system-config-printer.py:6523
+#: ../system-config-printer.py:1930 ../system-config-printer.py:3037
+#: ../system-config-printer.py:3062 ../system-config-printer.py:6495
+#: ../system-config-printer.py:6507 ../system-config-printer.py:6529
 #, python-format
 msgid "modifying printer %s"
 msgstr "modificando impressora %s"
@@ -935,7 +944,7 @@ msgstr "Proceder mesmo assim?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:2034 ../system-config-printer.py:3215
+#: ../system-config-printer.py:2034 ../system-config-printer.py:3221
 msgid "fetching server settings"
 msgstr "buscando configurações do servidor"
 
@@ -969,7 +978,7 @@ msgid "printing test page"
 msgstr "imprimindo página de teste"
 
 #: ../system-config-printer.py:2186 ../system-config-printer.py:2221
-#: ../system-config-printer.py:5407
+#: ../system-config-printer.py:5413
 msgid "Not possible"
 msgstr "Impossível"
 
@@ -1015,52 +1024,52 @@ msgstr "Houve um problema ao conectar com o servidor CUPS."
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "A opção \"%s\" tem o valor \"%s\" e não pode ser editada."
 
-#: ../system-config-printer.py:2470
+#: ../system-config-printer.py:2476
 msgid "Marker levels are not reported for this printer."
 msgstr "Os níveis de marcador não são suportados por esta impressora."
 
-#: ../system-config-printer.py:2767
+#: ../system-config-printer.py:2773
 msgid "Cannot Rename"
 msgstr "Não foi possível renomear"
 
-#: ../system-config-printer.py:2768
+#: ../system-config-printer.py:2774
 msgid "There are queued jobs."
 msgstr "Há trabalhos na fila."
 
-#: ../system-config-printer.py:2834
+#: ../system-config-printer.py:2840
 msgid "renaming printer"
 msgstr "renomeando impressora"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:2919
+#: ../system-config-printer.py:2925
 msgid "copying printer"
 msgstr "copiando impressora"
 
-#: ../system-config-printer.py:2983
+#: ../system-config-printer.py:2989
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "Você realmente deseja excluir a classe \"%s\"?"
 
-#: ../system-config-printer.py:2985
+#: ../system-config-printer.py:2991
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Você realmente deseja excluir a impressora \"%s\"?"
 
-#: ../system-config-printer.py:2987
+#: ../system-config-printer.py:2993
 msgid "Really delete selected destinations?"
 msgstr "Deseja realmente excluir os destinos selecionados?"
 
-#: ../system-config-printer.py:3008
+#: ../system-config-printer.py:3014
 #, python-format
 msgid "deleting printer %s"
 msgstr "excluindo impressora %s"
 
-#: ../system-config-printer.py:3082
+#: ../system-config-printer.py:3088
 msgid "Publish Shared Printers"
 msgstr "Publicar impressoras compartilhadas"
 
-#: ../system-config-printer.py:3083
+#: ../system-config-printer.py:3089
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -1069,7 +1078,7 @@ msgstr ""
 "não ser que a opção \"Publicar impressoras compartilhadas\" esteja "
 "habilitada nas configurações do servidor."
 
-#: ../system-config-printer.py:3276
+#: ../system-config-printer.py:3282
 msgid "modifying server settings"
 msgstr "modificando configurações do servidor"
 
@@ -1079,11 +1088,11 @@ msgstr "modificando configurações do servidor"
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:3301
+#: ../system-config-printer.py:3307
 msgid "Review Firewall"
 msgstr "Verifique o Firewall"
 
-#: ../system-config-printer.py:3302
+#: ../system-config-printer.py:3308
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
@@ -1091,25 +1100,25 @@ msgstr ""
 "Pode ser necessário um ajuste no firewall para permitir a impressão de rede "
 "para este computador."
 
-#: ../system-config-printer.py:3632
+#: ../system-config-printer.py:3638
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "A navegação não está disponível (o pysmbc não está instalado)"
 
 #. SMB list columns
-#: ../system-config-printer.py:3638
+#: ../system-config-printer.py:3644
 msgid "Share"
 msgstr "Compartilhamento"
 
-#: ../system-config-printer.py:3644
+#: ../system-config-printer.py:3650
 msgid "Comment"
 msgstr "Comentário"
 
 #. IPP list columns
-#: ../system-config-printer.py:3663
+#: ../system-config-printer.py:3669
 msgid "Queue"
 msgstr "Fila"
 
-#: ../system-config-printer.py:3677
+#: ../system-config-printer.py:3683
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -1117,69 +1126,69 @@ msgstr ""
 "Arquivos PostScript Printer Description (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 
-#: ../system-config-printer.py:3686
+#: ../system-config-printer.py:3692
 msgid "All files (*)"
 msgstr "Todos os arquivos (*)"
 
-#: ../system-config-printer.py:3722 ../system-config-printer.py:5912
-#: ../system-config-printer.py:5950 ../applet.py:124
+#: ../system-config-printer.py:3728 ../system-config-printer.py:5918
+#: ../system-config-printer.py:5956 ../applet.py:124
 msgid "Search"
 msgstr "Pesquisar"
 
-#: ../system-config-printer.py:3745 ../system-config-printer.py:3769
+#: ../system-config-printer.py:3751 ../system-config-printer.py:3775
 #: ../glade/NewPrinterWindow.glade.h:73
 msgid "New Printer"
 msgstr "Nova impressora"
 
-#: ../system-config-printer.py:3756
+#: ../system-config-printer.py:3762
 msgid "New Class"
 msgstr "Nova classe"
 
-#: ../system-config-printer.py:3761
+#: ../system-config-printer.py:3767
 msgid "Change Device URI"
 msgstr "Alterar URI do dispositivo"
 
-#: ../system-config-printer.py:3767
+#: ../system-config-printer.py:3773
 msgid "Change Driver"
 msgstr "Alterar driver"
 
-#: ../system-config-printer.py:3936 ../system-config-printer.py:4002
-#: ../system-config-printer.py:4298 ../system-config-printer.py:4496
-#: ../system-config-printer.py:5756 ../system-config-printer.py:5937
+#: ../system-config-printer.py:3942 ../system-config-printer.py:4008
+#: ../system-config-printer.py:4304 ../system-config-printer.py:4502
+#: ../system-config-printer.py:5762 ../system-config-printer.py:5943
 msgid "Searching"
 msgstr "Pesquisando"
 
-#: ../system-config-printer.py:3937
+#: ../system-config-printer.py:3943
 msgid "Searching for downloadable drivers"
 msgstr "Pesquisando por drivers baixáveis"
 
-#: ../system-config-printer.py:4003 ../system-config-printer.py:4299
+#: ../system-config-printer.py:4009 ../system-config-printer.py:4305
 msgid "Searching for drivers"
 msgstr "Pesquisando por drivers"
 
-#: ../system-config-printer.py:4497 ../system-config-printer.py:5757
+#: ../system-config-printer.py:4503 ../system-config-printer.py:5763
 msgid "Searching for printers"
 msgstr "Pesquisando por impressoras"
 
-#: ../system-config-printer.py:4506
+#: ../system-config-printer.py:4512
 msgid "fetching device list"
 msgstr "Buscando lista de dispositivos"
 
 #. Tell the user why he needs the plugin
-#: ../system-config-printer.py:4588
+#: ../system-config-printer.py:4594
 msgid "For this printer a proprietary driver plugin from HP is available.\n"
 msgstr ""
 "Um plugin do driver proprietário da HP está disponível para esta "
 "impressora.\n"
 
-#: ../system-config-printer.py:4591
+#: ../system-config-printer.py:4597
 msgid ""
 "The installation of the plugin is required for your printer to work.\n"
 "\n"
 msgstr ""
 "A instalação do plugin é necessária para o funcionamento da sua impressora.\n"
 
-#: ../system-config-printer.py:4594
+#: ../system-config-printer.py:4600
 msgid ""
 "Installing the plugin is optional, it completes or enhances the "
 "functionality\n"
@@ -1190,106 +1199,106 @@ msgstr ""
 "da sua impressora. Sem o plugin pelo menos as operações básicas irão "
 "funcionar.\n"
 
-#: ../system-config-printer.py:4598
+#: ../system-config-printer.py:4604
 msgid "The plugin provides the following features:\n"
 msgstr "O plugin fornece os seguintes recursos:\n"
 
-#: ../system-config-printer.py:4601
+#: ../system-config-printer.py:4607
 msgid " - Printing support\n"
 msgstr " - Suporte à impressão\n"
 
-#: ../system-config-printer.py:4604
+#: ../system-config-printer.py:4610
 msgid " - Faster printing\n"
 msgstr " - Impressão mais rápida\n"
 
-#: ../system-config-printer.py:4607
+#: ../system-config-printer.py:4613
 msgid " - Better printout quality\n"
 msgstr " - Melhor qualidade de impressão\n"
 
-#: ../system-config-printer.py:4610
+#: ../system-config-printer.py:4616
 msgid " - Extra printing features\n"
 msgstr " - Recursos extras de impressão\n"
 
-#: ../system-config-printer.py:4613
+#: ../system-config-printer.py:4619
 msgid " - Scanning support\n"
 msgstr " - Suporte a escaneamento\n"
 
-#: ../system-config-printer.py:4616
+#: ../system-config-printer.py:4622
 msgid " - Faster scanning\n"
 msgstr " - Escaneamento mais rápido\n"
 
-#: ../system-config-printer.py:4619
+#: ../system-config-printer.py:4625
 msgid " - Better scanning image quality\n"
 msgstr " - Melhor qualidade da imagem escaneada\n"
 
-#: ../system-config-printer.py:4622
+#: ../system-config-printer.py:4628
 msgid " - Faxing support\n"
 msgstr " - Suporte a Fax\n"
 
-#: ../system-config-printer.py:4625
+#: ../system-config-printer.py:4631
 msgid " - Extra fax features\n"
 msgstr " - Recursos extras do fax\n"
 
-#: ../system-config-printer.py:4628
+#: ../system-config-printer.py:4634
 msgid " - Better Input/Output support\n"
 msgstr " - Melhor suporte de entrada/saída\n"
 
-#: ../system-config-printer.py:4631
+#: ../system-config-printer.py:4637
 msgid " - Extra user interface features\n"
 msgstr " - Recursos extras da interface de usuário\n"
 
-#: ../system-config-printer.py:4634
+#: ../system-config-printer.py:4640
 msgid " - Other extra features\n"
 msgstr " - Outros recursos extras\n"
 
-#: ../system-config-printer.py:4639
+#: ../system-config-printer.py:4645
 msgid "Install plugin"
 msgstr "Instalar plugin"
 
-#: ../system-config-printer.py:4640
+#: ../system-config-printer.py:4646
 msgid "Do not set up printer"
 msgstr "Não configurar a impressora"
 
-#: ../system-config-printer.py:4641
+#: ../system-config-printer.py:4647
 msgid "Set up without plugin"
 msgstr "Configurar sem o plugin"
 
-#: ../system-config-printer.py:4643 ../troubleshoot/PrintTestPage.py:118
+#: ../system-config-printer.py:4649 ../troubleshoot/PrintTestPage.py:118
 msgid "Yes"
 msgstr "Sim"
 
-#: ../system-config-printer.py:4644 ../troubleshoot/PrintTestPage.py:119
+#: ../system-config-printer.py:4650 ../troubleshoot/PrintTestPage.py:119
 msgid "No"
 msgstr "Não"
 
-#: ../system-config-printer.py:4818 ../system-config-printer.py:4822
+#: ../system-config-printer.py:4824 ../system-config-printer.py:4828
 msgid " (Current)"
 msgstr " (Atual)"
 
-#: ../system-config-printer.py:4875
+#: ../system-config-printer.py:4881
 msgid "Other"
 msgstr "Outro"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:4891
+#: ../system-config-printer.py:4897
 msgid "Network Printer"
 msgstr "Impressora de rede"
 
-#: ../system-config-printer.py:4895
+#: ../system-config-printer.py:4901
 msgid "Find Network Printer"
 msgstr "Localizar impressora de rede"
 
-#: ../system-config-printer.py:4968 ../system-config-printer.py:5365
+#: ../system-config-printer.py:4974 ../system-config-printer.py:5371
 msgid "Scanning..."
 msgstr "Examinando..."
 
-#: ../system-config-printer.py:5023
+#: ../system-config-printer.py:5029
 msgid "No Print Shares"
 msgstr "Nenhum compartilhamento de impressão"
 
-#: ../system-config-printer.py:5024
+#: ../system-config-printer.py:5030
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1298,32 +1307,32 @@ msgstr ""
 "o serviço do Samba está marcado como confiável na configuração do seu "
 "firewall."
 
-#: ../system-config-printer.py:5285 ../system-config-printer.py:5346
+#: ../system-config-printer.py:5291 ../system-config-printer.py:5352
 msgid "Print Share Verified"
 msgstr "Compartilhamento de impressão verificado"
 
-#: ../system-config-printer.py:5286 ../system-config-printer.py:5347
+#: ../system-config-printer.py:5292 ../system-config-printer.py:5353
 msgid "This print share is accessible."
 msgstr "Esta impressora compartilhada está acessível."
 
-#: ../system-config-printer.py:5291 ../system-config-printer.py:5351
+#: ../system-config-printer.py:5297 ../system-config-printer.py:5357
 msgid "This print share is not accessible."
 msgstr "Esta impressora compartilhada não está acessível."
 
-#: ../system-config-printer.py:5294
+#: ../system-config-printer.py:5300
 msgid "Print Share Inaccessible"
 msgstr "Compartilhamento de impressão inacessível"
 
-#: ../system-config-printer.py:5350
+#: ../system-config-printer.py:5356
 msgid "Inaccessible"
 msgstr "Inacessível"
 
-#: ../system-config-printer.py:5408
+#: ../system-config-printer.py:5414
 #, python-format
 msgid "It is not possible to obtain a list of queues from '%s'."
 msgstr "Não é possível obter uma lista de filas a partir de \"%s\"."
 
-#: ../system-config-printer.py:5410
+#: ../system-config-printer.py:5416
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
@@ -1331,68 +1340,68 @@ msgstr ""
 "A obtenção da lista de filas é uma extensão do CUPS para o IPP. As "
 "impressoras de rede não a suportam."
 
-#: ../system-config-printer.py:5413
+#: ../system-config-printer.py:5419
 msgid "No queues"
 msgstr "Nenhuma fila"
 
-#: ../system-config-printer.py:5414
+#: ../system-config-printer.py:5420
 msgid "There are no queues available."
 msgstr "Não há filas disponíveis."
 
-#: ../system-config-printer.py:5505
+#: ../system-config-printer.py:5511
 msgid "Parallel Port"
 msgstr "Porta paralela"
 
-#: ../system-config-printer.py:5507
+#: ../system-config-printer.py:5513
 msgid "Serial Port"
 msgstr "Porta serial"
 
-#: ../system-config-printer.py:5509
+#: ../system-config-printer.py:5515
 msgid "USB"
 msgstr "USB"
 
-#: ../system-config-printer.py:5511 ../system-config-printer.py:5514
+#: ../system-config-printer.py:5517 ../system-config-printer.py:5520
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../system-config-printer.py:5516
+#: ../system-config-printer.py:5522
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Camada de Abstração de Hardware (HAL)"
 
-#: ../system-config-printer.py:5518
+#: ../system-config-printer.py:5524
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../system-config-printer.py:5527
+#: ../system-config-printer.py:5533
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "Fila LPD/LPR \"%s\""
 
-#: ../system-config-printer.py:5529
+#: ../system-config-printer.py:5535
 msgid "LPD/LPR queue"
 msgstr "Fila LPD/LPR"
 
-#: ../system-config-printer.py:5532
+#: ../system-config-printer.py:5538
 msgid "Windows Printer via SAMBA"
 msgstr "Impressora do Windows via SAMBA"
 
-#: ../system-config-printer.py:5534 ../glade/NewPrinterWindow.glade.h:65
+#: ../system-config-printer.py:5540 ../glade/NewPrinterWindow.glade.h:65
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.py:5536
+#: ../system-config-printer.py:5542
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../system-config-printer.py:5618
+#: ../system-config-printer.py:5624
 msgid "A printer connected to the parallel port."
 msgstr "Uma impressora conectada à porta paralela."
 
-#: ../system-config-printer.py:5620
+#: ../system-config-printer.py:5626
 msgid "A printer connected to a USB port."
 msgstr "Uma impressora conectada à porta USB."
 
-#: ../system-config-printer.py:5622
+#: ../system-config-printer.py:5628
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1400,7 +1409,7 @@ msgstr ""
 "O programa HPLIP controlando uma impressora ou a função de impressão de um "
 "dispositivo multifuncional."
 
-#: ../system-config-printer.py:5625
+#: ../system-config-printer.py:5631
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1408,43 +1417,43 @@ msgstr ""
 "O software HPLIP controlando um aparelho de fax ou a função de fax de um "
 "dispositivo multifuncional."
 
-#: ../system-config-printer.py:5628
+#: ../system-config-printer.py:5634
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Impressora local detectada pelo HAL (Camada de Abstração de Hardware)."
 
-#: ../system-config-printer.py:5825
+#: ../system-config-printer.py:5831
 msgid "No printer was found at that address."
 msgstr "Nenhuma impressora foi localizada nesse endereço."
 
-#: ../system-config-printer.py:5962
+#: ../system-config-printer.py:5968
 msgid "-- Select from search results --"
 msgstr "-- Selecione a partir dos resultados da pesquisa --"
 
-#: ../system-config-printer.py:5964
+#: ../system-config-printer.py:5970
 msgid "-- No matches found --"
 msgstr "-- Nenhum resultado encontrado --"
 
-#: ../system-config-printer.py:6145
+#: ../system-config-printer.py:6151
 msgid " (recommended)"
 msgstr " (recomendado)"
 
-#: ../system-config-printer.py:6159
+#: ../system-config-printer.py:6165
 msgid "This PPD is generated by foomatic."
 msgstr "Este PPD foi gerado pelo foomatic."
 
-#: ../system-config-printer.py:6183
+#: ../system-config-printer.py:6189
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:6194
+#: ../system-config-printer.py:6200
 msgid "Distributable"
 msgstr "Distributivo"
 
-#: ../system-config-printer.py:6235
+#: ../system-config-printer.py:6241
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:6240
+#: ../system-config-printer.py:6246
 #, python-format
 msgid ""
 "\n"
@@ -1453,20 +1462,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:6245
+#: ../system-config-printer.py:6251
 msgid "No support contacts known"
 msgstr "Nenhum suporte de contato conhecido"
 
-#: ../system-config-printer.py:6249 ../system-config-printer.py:6262
+#: ../system-config-printer.py:6255 ../system-config-printer.py:6268
 msgid "Not specified."
 msgstr "Não especificado."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6302
+#: ../system-config-printer.py:6308
 msgid "Database error"
 msgstr "Erro na base de dados"
 
-#: ../system-config-printer.py:6303
+#: ../system-config-printer.py:6309
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "O driver \"%s\" não pode ser usado com a impressora \"%s %s\"."
@@ -1474,60 +1483,60 @@ msgstr "O driver \"%s\" não pode ser usado com a impressora \"%s %s\"."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6313
+#: ../system-config-printer.py:6319
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Você precisará instalar o pacote '%s' para usar este driver."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6320
+#: ../system-config-printer.py:6326
 msgid "PPD error"
 msgstr "Erro no PPD"
 
-#: ../system-config-printer.py:6322
+#: ../system-config-printer.py:6328
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Falhou ao ler o arquivo PPD.  Estas são as razões prováveis:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6339
+#: ../system-config-printer.py:6345
 msgid "Downloadable drivers"
 msgstr "Drivers baixáveis"
 
-#: ../system-config-printer.py:6340
+#: ../system-config-printer.py:6346
 msgid "Failed to download PPD."
 msgstr "Falha ao baixar o PPD."
 
-#: ../system-config-printer.py:6347
+#: ../system-config-printer.py:6353
 msgid "fetching PPD"
 msgstr "buscando PPD"
 
-#: ../system-config-printer.py:6376 ../system-config-printer.py:6414
+#: ../system-config-printer.py:6382 ../system-config-printer.py:6420
 msgid "No Installable Options"
 msgstr "Nenhuma opção instalável"
 
-#: ../system-config-printer.py:6462
+#: ../system-config-printer.py:6468
 #, python-format
 msgid "adding printer %s"
 msgstr "adicionando impressora %s"
 
-#: ../system-config-printer.py:6611
+#: ../system-config-printer.py:6617
 msgid "Would you like to print a test page?"
 msgstr "Você gostaria de imprimir uma página de teste?"
 
-#: ../system-config-printer.py:6664
+#: ../system-config-printer.py:6670
 msgid "Install driver"
 msgstr "Instalar o driver"
 
-#: ../system-config-printer.py:6665 ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:6671 ../troubleshoot/CheckPPDSanity.py:131
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "A impressora \"%s\" requer o pacote %s, mas ele não está instalado."
 
-#: ../system-config-printer.py:6681
+#: ../system-config-printer.py:6687
 msgid "Missing driver"
 msgstr "Driver faltando"
 
-#: ../system-config-printer.py:6682
+#: ../system-config-printer.py:6688
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
