@@ -53,6 +53,7 @@ except ImportError:
 from gettext import gettext as _
 DOMAIN="system-config-printer"
 gettext.textdomain (DOMAIN)
+gtk.glade.textdomain (DOMAIN)
 gtk.glade.bindtextdomain (DOMAIN)
 from statereason import StateReason
 statereason.set_gettext_function (_)
