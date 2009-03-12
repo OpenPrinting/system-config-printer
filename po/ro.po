@@ -1,590 +1,1054 @@
-# translation of ro.po to
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-#
-# Mircea Daniel <visez.trance@gmail.com>, 2007.
-# MIrcea Daniel <visez.trance@gmail.com>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: ro\n"
+"Project-Id-Version: Fedora 10\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-02-11 15:01+0000\n"
-"PO-Revision-Date: 2007-04-13 22:50+0300\n"
-"Last-Translator: MIrcea Daniel <visez.trance@gmail.com>\n"
-"Language-Team:  <ro@li.org>\n"
+"POT-Creation-Date: 2009-02-25 01:19+0000\n"
+"PO-Revision-Date: 2009-03-11 23:08+0200\n"
+"Last-Translator: alexxed <alexxed@gmail.com>\n"
+"Language-Team: Romanian <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=3; plural=n==1 ? 0 : (n==0 || (n%100 > 0 && n%100 < "
+"20)) ? 1 : 2;\n"
+"X-Generator: Narro 0.9.4 on http://tradu.softwareliber.ro\n"
 
 #: ../AdvancedServerSettings.py:41
-#, fuzzy
 msgid "Advanced Server Settings"
-msgstr "<b>Setări de bază server</b>"
+msgstr "Setări avansate pentru server"
 
 #: ../AdvancedServerSettings.py:58
-#, fuzzy
 msgid "Job History"
-msgstr "Prioritate lucrare:"
+msgstr "Istoricul lucrărilor"
 
 #: ../AdvancedServerSettings.py:69
 msgid "Do not preserve job history"
-msgstr ""
+msgstr "Nu păstra istoricul lucrărilor"
 
 #: ../AdvancedServerSettings.py:71
 msgid "Preserve job history but not files"
-msgstr ""
+msgstr "Păstrează istoricul lucrărilor dar nu și fișierelor"
 
 #: ../AdvancedServerSettings.py:74
 msgid "Preserve job files (allow reprinting)"
-msgstr ""
+msgstr "Păstrează fișierele lucrărilor (permite retipărirea)"
 
 #: ../AdvancedServerSettings.py:82
-#, fuzzy
 msgid "Browse Servers"
-msgstr "Mergi către server"
+msgstr "Răsfoiește serverele"
 
 #: ../AdvancedServerSettings.py:93
 msgid ""
-"Usually print servers broadcast their queues.  Specify print servers below "
-"to periodically ask for queues instead."
+"Usually print servers broadcast their queues.  Specify print servers below to "
+"periodically ask for queues instead."
 msgstr ""
+"În mod normal, serverele de tipărire transmit cozile de procesare. Altfel, "
+"specificați serverele de tipărire mai jos pentru a verifica periodic coada de "
+"procesare."
 
-#: ../AdvancedServerSettings.py:225
-#, fuzzy
+#: ../AdvancedServerSettings.py:214
 msgid "Enter IP address"
-msgstr "Nume imprimantă"
+msgstr "Introduceți adresa IP"
 
-#: ../authconn.py:31 ../system-config-printer.glade.h:253
+#: ../authconn.py:35 ../glade/NewPrinterWindow.glade.h:107
 msgid "Username:"
-msgstr "Nume utilizator:"
+msgstr "Nume de utilizator:"
 
-#: ../authconn.py:32 ../system-config-printer.glade.h:187
+#: ../authconn.py:36 ../glade/NewPrinterWindow.glade.h:77
 msgid "Password:"
 msgstr "Parolă:"
 
-#: ../authconn.py:33
-#, fuzzy
+#: ../authconn.py:37
 msgid "Domain:"
-msgstr "Margine sus:"
+msgstr "Domeniu:"
 
-#: ../authconn.py:41
-#, fuzzy
+#: ../authconn.py:46
 msgid "Authentication"
-msgstr "<b>Autentificare</b>"
+msgstr "Autentificare"
 
-#: ../authconn.py:177
-#, fuzzy
+#: ../authconn.py:85
+msgid "Remember password"
+msgstr "Memorează parola"
+
+#: ../authconn.py:211 ../authconn.py:232
 msgid "Operation canceled"
-msgstr "Reguli operaţiuni:"
+msgstr "Operație anulată"
 
-#: ../authconn.py:270 ../authconn.py:272 ../errordialogs.py:77 ../pysmb.py:80
-#: ../pysmb.py:82
+#: ../authconn.py:253
+#, python-format
+msgid "CUPS server error (%s)"
+msgstr "Eroare de server CUPS (%s)"
+
+#: ../authconn.py:255 ../errordialogs.py:57
+#: ../troubleshoot/PrintTestPage.py:400
+#, python-format
+msgid "There was an error during the CUPS operation: '%s'."
+msgstr "A intervenit o eroare în timpul operațiunii CUPS: „%s”."
+
+#: ../authconn.py:258
+msgid "Retry"
+msgstr "Încearcă din nou"
+
+#: ../authconn.py:379 ../authconn.py:381 ../errordialogs.py:65 ../pysmb.py:75
+#: ../pysmb.py:77
 msgid "Not authorized"
 msgstr "Neautorizat"
 
-#: ../authconn.py:273 ../pysmb.py:83
+#: ../authconn.py:382 ../pysmb.py:78
 msgid "The password may be incorrect."
-msgstr "Parola ar putea fi greşită."
+msgstr "Parola ar putea fi greșită."
 
-#: ../errordialogs.py:68 ../errordialogs.py:82
+#: ../authconn.py:400
+#, python-format
+msgid "Authentication (%s)"
+msgstr "Autentificare (%s)"
+
+#: ../errordialogs.py:56 ../errordialogs.py:70
 msgid "CUPS server error"
 msgstr "Eroare server CUPS"
 
-#: ../errordialogs.py:69 ../troubleshoot/PrintTestPage.py:327
-#, python-format
-msgid "There was an error during the CUPS operation: '%s'."
-msgstr "A fost eroare în timpul operaţiunii CUPS: '%s'."
-
-#: ../errordialogs.py:78
+#: ../errordialogs.py:66
 msgid ""
-"The password may be incorrect, or the server may be configured to deny "
-"remote administration."
+"The password may be incorrect, or the server may be configured to deny remote "
+"administration."
 msgstr ""
-"Parola ar putea fi greşită, sau serverul ar putea fi configurat să nu "
-"permită administrarea la distanţă."
+"Parola ar putea fi greșită sau serverul ar putea fi configurat să nu permită "
+"administrarea de la distanță."
 
-#: ../errordialogs.py:84
+#: ../errordialogs.py:72
 msgid "Bad request"
 msgstr "Cerere incorectă"
 
-#: ../errordialogs.py:86
+#: ../errordialogs.py:74
 msgid "Not found"
-msgstr "Nu a fost găsit"
+msgstr "Nu s-a găsit"
 
-#: ../errordialogs.py:88
+#: ../errordialogs.py:76
 msgid "Request timeout"
-msgstr "Timpul cererii depăşit"
+msgstr "Timpul de așteptare după cerere a expirat"
 
-#: ../errordialogs.py:90
+#: ../errordialogs.py:78
 msgid "Upgrade required"
-msgstr "Upgrade este necesar"
+msgstr "Este necesară actualizarea"
 
-#: ../errordialogs.py:92
+#: ../errordialogs.py:80
 msgid "Server error"
-msgstr "Eroare server"
+msgstr "Eroare de server"
 
-#: ../errordialogs.py:94 ../system-config-printer.py:828
+#: ../errordialogs.py:82 ../system-config-printer.py:1217
 msgid "Not connected"
 msgstr "Neconectat"
 
-#: ../errordialogs.py:96
-#, fuzzy, python-format
+#: ../errordialogs.py:84
+#, python-format
 msgid "status %s"
-msgstr "statut %d"
+msgstr "stare %s"
 
-#: ../errordialogs.py:98
+#: ../errordialogs.py:86
 #, python-format
 msgid "There was an HTTP error: %s."
-msgstr "A fost o eroare HTTP: %s."
+msgstr "A intervenit o eroare HTTP: %s."
 
-#: ../jobviewer.py:184 ../troubleshoot/PrintTestPage.py:77
+#: ../GroupsPane.py:92
+msgid "_New Group"
+msgstr "Grup _nou"
+
+#: ../GroupsPane.py:95
+msgid "_New Group from Selection"
+msgstr ""
+
+#: ../GroupsPane.py:98 ../system-config-printer.py:391
+msgid "_Rename"
+msgstr "_Redenumește"
+
+#: ../GroupsPane.py:170
+msgid "The item could not be renamed."
+msgstr "Elementul nu a putut fi redenumit."
+
+#: ../GroupsPane.py:171
+#, python-format
+msgid "The name \"%s\" is already in use. Please use a different name."
+msgstr "Numele „%s” este deja folosit. Vă rugăm să alegeți un alt nume."
+
+#: ../GroupsPane.py:290
+#, python-format
+msgid "Are you sure you want to permanently delete \"%s\"?"
+msgstr "Sigur doriți să ștergeți permanent „%s”?"
+
+#: ../GroupsPane.py:296
+msgid ""
+"This will not delete any printer queues from your computer. To delete queues "
+"completely, you must delete them from the 'All Printers' group."
+msgstr ""
+"Această operație nu va șterge nicio coadă de tipărire de pe calculator. "
+"Pentru a le șterge, trebuie să le ștergeți din grupul „Toate imprimantele”."
+
+#: ../GroupsPane.py:318
+msgid "New Group"
+msgstr "Grup nou"
+
+#: ../GroupsPaneModel.py:47
+msgid "All Printers"
+msgstr "Toate imprimantele"
+
+#: ../GroupsPaneModel.py:60
+msgid "Favorites"
+msgstr "Favorite"
+
+#: ../jobviewer.py:165
+msgid "_Hold"
+msgstr "Reține"
+
+#: ../jobviewer.py:167
+msgid "_Release"
+msgstr "Elibe_rează"
+
+#: ../jobviewer.py:169
+msgid "Re_print"
+msgstr "Ti_părește din nou"
+
+#: ../jobviewer.py:171
+msgid "_Authenticate"
+msgstr "_Autentificare"
+
+#: ../jobviewer.py:209 ../troubleshoot/PrintTestPage.py:82
 msgid "Job"
 msgstr "Lucrare"
 
-#: ../jobviewer.py:185
-#, fuzzy
+#: ../jobviewer.py:210
 msgid "User"
-msgstr "Utilizatori"
+msgstr "Utilizator"
 
-#: ../jobviewer.py:186 ../troubleshoot/PrintTestPage.py:81
+#: ../jobviewer.py:211 ../troubleshoot/PrintTestPage.py:86
 msgid "Document"
 msgstr "Document"
 
-#: ../jobviewer.py:187 ../jobviewer.py:251 ../my-default-printer.py:158
-#: ../system-config-printer.py:308 ../system-config-printer.py:924
-#: ../system-config-printer.py:3206 ../troubleshoot/PrintTestPage.py:79
+#: ../jobviewer.py:212 ../my-default-printer.py:153
+#: ../system-config-printer.py:364 ../system-config-printer.py:1365
+#: ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Imprimantă"
 
-#: ../jobviewer.py:188
+#: ../jobviewer.py:213
 msgid "Size"
-msgstr "Mărime"
+msgstr "Dimensiune"
 
-#: ../jobviewer.py:189
+#: ../jobviewer.py:214
 msgid "Time submitted"
 msgstr "Data trimiterii"
 
-#: ../jobviewer.py:190 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:215 ../troubleshoot/PrintTestPage.py:87
 msgid "Status"
-msgstr "Statut"
+msgstr "Stare"
 
-#: ../jobviewer.py:223
+#: ../jobviewer.py:249
 #, python-format
 msgid "my jobs on %s"
-msgstr ""
+msgstr "lucrările mele pe %s"
 
-#: ../jobviewer.py:225
+#: ../jobviewer.py:251
 msgid "my jobs"
-msgstr ""
+msgstr "lucrările mele"
 
-#: ../jobviewer.py:230
+#: ../jobviewer.py:256
 msgid "all jobs"
-msgstr ""
+msgstr "toate lucrările"
 
-#: ../jobviewer.py:231
-#, fuzzy, python-format
+#: ../jobviewer.py:257
+#, python-format
 msgid "Document Print Status (%s)"
-msgstr "Statut imprimare document"
+msgstr "Starea tipăririi documentului (%s)"
 
-#: ../jobviewer.py:264
-msgid "Message"
-msgstr "Mesaj"
-
-#: ../jobviewer.py:411 ../jobviewer.py:477 ../jobviewer.py:478
-#: ../jobviewer.py:531 ../jobviewer.py:561 ../jobviewer.py:645
-#: ../system-config-printer.py:1955 ../troubleshoot/ChooseNetworkPrinter.py:95
-#: ../troubleshoot/ChooseNetworkPrinter.py:96
-#: ../troubleshoot/ChooseNetworkPrinter.py:99
-#: ../troubleshoot/ChooseNetworkPrinter.py:100
-#: ../troubleshoot/ChoosePrinter.py:84 ../troubleshoot/ChoosePrinter.py:85
-#: ../troubleshoot/ChoosePrinter.py:88 ../troubleshoot/ChoosePrinter.py:89
-#: ../troubleshoot/DeviceListed.py:89 ../troubleshoot/DeviceListed.py:90
+#: ../jobviewer.py:386 ../jobviewer.py:451 ../jobviewer.py:452
+#: ../jobviewer.py:492 ../jobviewer.py:600 ../jobviewer.py:727
+#: ../jobviewer.py:1196 ../jobviewer.py:1197 ../system-config-printer.py:2544
+#: ../glade/NewPrinterWindow.glade.h:105
+#: ../troubleshoot/ChooseNetworkPrinter.py:101
+#: ../troubleshoot/ChooseNetworkPrinter.py:102
+#: ../troubleshoot/ChooseNetworkPrinter.py:105
+#: ../troubleshoot/ChooseNetworkPrinter.py:106
+#: ../troubleshoot/ChoosePrinter.py:87 ../troubleshoot/ChoosePrinter.py:88
+#: ../troubleshoot/ChoosePrinter.py:91 ../troubleshoot/ChoosePrinter.py:92
+#: ../troubleshoot/DeviceListed.py:92 ../troubleshoot/DeviceListed.py:93
 msgid "Unknown"
-msgstr "Necunoscut"
+msgstr "Necunoscută"
 
-#: ../jobviewer.py:423
-msgid "1 hour ago"
-msgstr "acum o oră"
-
-#: ../jobviewer.py:425
-msgid "1 hour and 1 minute ago"
-msgstr "acum o oră şi un minut"
-
-#: ../jobviewer.py:427
-#, python-format
-msgid "1 hour and %d minutes ago"
-msgstr "acum o oră şi %d minute"
-
-#: ../jobviewer.py:430
-#, python-format
-msgid "%d hours ago"
-msgstr "acum %d ore"
-
-#: ../jobviewer.py:432
-#, python-format
-msgid "%d hours and 1 minute ago"
-msgstr "acum %d ore şi 1 minut"
-
-#: ../jobviewer.py:434
-#, python-format
-msgid "%d hours and %d minutes ago"
-msgstr "acum %d ore şi %d minute"
-
-#: ../jobviewer.py:440
+#: ../jobviewer.py:392
 msgid "a minute ago"
 msgstr "acum un minut"
 
-#: ../jobviewer.py:442
+#: ../jobviewer.py:395
 #, python-format
 msgid "%d minutes ago"
 msgstr "acum %d minute"
 
-#: ../jobviewer.py:546
-#, fuzzy
+#: ../jobviewer.py:399
+msgid "an hour ago"
+msgstr "acum o oră"
+
+#: ../jobviewer.py:401
+#, python-format
+msgid "%d hours ago"
+msgstr "acum %d ore"
+
+#: ../jobviewer.py:405
+msgid "yesterday"
+msgstr "ieri"
+
+#: ../jobviewer.py:407
+#, python-format
+msgid "%d days ago"
+msgstr "acum %d zile"
+
+#: ../jobviewer.py:411
+msgid "last week"
+msgstr "săptămâna trecută"
+
+#: ../jobviewer.py:413
+#, python-format
+msgid "%d weeks ago"
+msgstr "acum %d săptămâni"
+
+#: ../jobviewer.py:544
 msgid "Held for authentication"
-msgstr "<b>Autentificare</b>"
+msgstr "Păstrată pentru autentificare"
 
-#: ../jobviewer.py:548 ../troubleshoot/PrintTestPage.py:39
-msgid "Pending"
-msgstr "În aşteptare"
-
-#: ../jobviewer.py:549 ../troubleshoot/PrintTestPage.py:40
+#: ../jobviewer.py:546 ../troubleshoot/PrintTestPage.py:42
 msgid "Held"
-msgstr "Reţinut"
+msgstr "Reținut"
 
-#: ../jobviewer.py:550 ../system-config-printer.py:170
-#: ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:573
+#, python-format
+msgid "Held until %s"
+msgstr "Păstrată până %s"
+
+#: ../jobviewer.py:577
+msgid "Held until day-time"
+msgstr "Păstrată până la sfârșitul zilei"
+
+#: ../jobviewer.py:579
+msgid "Held until evening"
+msgstr "Păstrată până deseară"
+
+#: ../jobviewer.py:581
+msgid "Held until night-time"
+msgstr "Păstrată până la noapte"
+
+#: ../jobviewer.py:583
+msgid "Held until second shift"
+msgstr "Păstrată până la schimbarea următoare"
+
+#: ../jobviewer.py:585
+msgid "Held until third shift"
+msgstr "Păstrată până la a treia schimbare"
+
+#: ../jobviewer.py:587
+msgid "Held until weekend"
+msgstr "Păstrată până în weekend"
+
+#: ../jobviewer.py:590 ../troubleshoot/PrintTestPage.py:41
+msgid "Pending"
+msgstr "În așteptare"
+
+#: ../jobviewer.py:591 ../system-config-printer.py:184
+#: ../troubleshoot/PrintTestPage.py:43
 msgid "Processing"
 msgstr "Procesez"
 
-#: ../jobviewer.py:551 ../system-config-printer.py:172
-#: ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:592 ../system-config-printer.py:186
+#: ../troubleshoot/PrintTestPage.py:44
 msgid "Stopped"
 msgstr "Oprit"
 
-#: ../jobviewer.py:552 ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:593 ../troubleshoot/PrintTestPage.py:45
 msgid "Canceled"
 msgstr "Anulat"
 
-#: ../jobviewer.py:553 ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:594 ../troubleshoot/PrintTestPage.py:46
 msgid "Aborted"
 msgstr "Anulat"
 
-#: ../jobviewer.py:554 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:595 ../troubleshoot/PrintTestPage.py:47
 msgid "Completed"
 msgstr "Terminat"
 
-#: ../jobviewer.py:643
+#: ../jobviewer.py:668 ../jobviewer.py:757
+msgid "authenticating job"
+msgstr "autentificare lucrare"
+
+#: ../jobviewer.py:725
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr ""
-
-#: ../jobviewer.py:894
-msgid "No documents queued"
-msgstr "Nici un document în aşteptare"
+"Autentificarea este necesară pentru tipărirea documentului „%s” (lucrarea %d)"
 
 #: ../jobviewer.py:896
-msgid "1 document queued"
-msgstr "1 document trecut în aşteptare"
+msgid "Cancel Job"
+msgstr "Anulează lucrarea"
 
-#: ../jobviewer.py:898
+#: ../jobviewer.py:910
+msgid "Do you really want to cancel this job?"
+msgstr "Sigur doriți să anulați această lucrare?"
+
+#: ../jobviewer.py:938
+msgid "canceling job"
+msgstr "anulare lucrare"
+
+#: ../jobviewer.py:962
+msgid "holding job"
+msgstr "păstrare lucrare"
+
+#: ../jobviewer.py:986
+msgid "releasing job"
+msgstr "eliberare lucrare"
+
+#: ../jobviewer.py:1096
+msgid "No documents queued"
+msgstr "Nici un document în așteptare"
+
+#: ../jobviewer.py:1098
+msgid "1 document queued"
+msgstr "1 document trecut în așteptare"
+
+#: ../jobviewer.py:1100
 #, python-format
 msgid "%d documents queued"
-msgstr "%d documente trecute în aşteptare"
+msgstr "%d documente trecute în așteptare"
 
-#: ../jobviewer.py:1113
-#, fuzzy, python-format
+#: ../jobviewer.py:1198
+#, python-format
+msgid "Job %d completed"
+msgstr "Lucrarea %d s-a încheiat"
+
+#: ../jobviewer.py:1199
+#, python-format
+msgid "Document `%s' has finished printing on `%s'."
+msgstr "S-a terminat de tipărit documentul „%s” la „%s”."
+
+#: ../jobviewer.py:1354
+#, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr "A fost eroare la conectarea către serverul CUPS."
+msgstr ""
+"A intervenit o problemă la trimiterea documentului „%s” (sarcina %d) către "
+"imprimantă."
 
-#: ../jobviewer.py:1116
+#: ../jobviewer.py:1357
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
-msgstr ""
+msgstr "A apărut o problemă la procesarea documentului „%s” (lucrarea %d)."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1122
+#: ../jobviewer.py:1363
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
-msgstr ""
+msgstr "A apărut o problemă la listarea documentului „%s” (lucrarea %d): `%s'."
 
-#: ../jobviewer.py:1129 ../jobviewer.py:1145
-#, fuzzy
+#: ../jobviewer.py:1370 ../jobviewer.py:1386
 msgid "Print Error"
-msgstr "Eroare imprimantă"
+msgstr "Eroare de tipărire"
 
-#: ../jobviewer.py:1130
+#: ../jobviewer.py:1371
 msgid "_Diagnose"
-msgstr ""
+msgstr "_Diagnosticare"
 
-#: ../jobviewer.py:1151
+#: ../jobviewer.py:1392
 #, python-format
 msgid "The printer called `%s' has been disabled."
-msgstr ""
+msgstr "Imprimanta cu numele „%s” a fost dezactivată."
 
-#: ../my-default-printer.py:142 ../my-default-printer.desktop.in.h:1
-#, fuzzy
+#: ../my-default-printer.py:137 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
-msgstr "Setează ca imprimantă implicită"
+msgstr "Imprimantă implicită"
 
-#: ../my-default-printer.py:146 ../my-default-printer.py:182
-#, fuzzy
+#: ../my-default-printer.py:141 ../my-default-printer.py:177
 msgid "_Use System Default"
-msgstr "Resetare la valorile implicite"
+msgstr "_Folosește setările implicite"
 
-#: ../my-default-printer.py:147 ../my-default-printer.py:184
-#, fuzzy
+#: ../my-default-printer.py:142 ../my-default-printer.py:179
 msgid "_Set Default"
-msgstr "implicit"
+msgstr "_Stabilește ca implicită"
 
-#: ../my-default-printer.py:163 ../system-config-printer.py:2805
-#: ../troubleshoot/ChooseNetworkPrinter.py:36
-#: ../troubleshoot/ChoosePrinter.py:37
-#, fuzzy
+#: ../my-default-printer.py:158 ../system-config-printer.py:421
+#: ../system-config-printer.py:3651 ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
-msgstr "Locaţie"
+msgstr "Amplasare"
 
-#: ../optionwidgets.py:122
+#: ../optionwidgets.py:123
 msgid "Conflicts with:"
 msgstr "În conflict cu:"
 
-#: ../system-config-printer.py:104
+#: ../ppdippstr.py:37
+msgid "Abort job"
+msgstr "Abandonează lucrarea"
+
+#: ../ppdippstr.py:38
+msgid "Retry job"
+msgstr "Retrimite lucrarea"
+
+#: ../ppdippstr.py:39
+msgid "Stop printer"
+msgstr "Oprește imprimanta"
+
+#: ../ppdippstr.py:44
+msgid "Default behavior"
+msgstr "Comportament implicit"
+
+#: ../ppdippstr.py:45
+msgid "Authenticated"
+msgstr "Autentificată"
+
+#: ../ppdippstr.py:50 ../system-config-printer.py:6189
+msgid "None"
+msgstr "Niciuna"
+
+#: ../ppdippstr.py:51
+msgid "Classified"
+msgstr "Clasificată"
+
+#: ../ppdippstr.py:52
+msgid "Confidential"
+msgstr "Confidențial"
+
+#: ../ppdippstr.py:53
+msgid "Secret"
+msgstr "Secretă"
+
+#: ../ppdippstr.py:54
+msgid "Standard"
+msgstr "Confidențial"
+
+#: ../ppdippstr.py:55
+msgid "Top secret"
+msgstr "Top secretă"
+
+#: ../ppdippstr.py:56
+msgid "Unclassified"
+msgstr "Neclasificată"
+
+#: ../ppdippstr.py:65
+msgid "General"
+msgstr "General"
+
+#. HPIJS options
+#: ../ppdippstr.py:68
+msgid "Printout mode"
+msgstr "Mod de tipărire"
+
+#: ../ppdippstr.py:69
+msgid "Draft (auto-detect-paper type)"
+msgstr "Ciornă (detectare automată a tipului de hârtie)"
+
+#: ../ppdippstr.py:71
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "Ciornă în tonuri de gri (detectare automată a tipului de hârtie)"
+
+#: ../ppdippstr.py:72
+msgid "Normal (auto-detect-paper type)"
+msgstr "Normal (detectare automată a tipului de hârtie)"
+
+#: ../ppdippstr.py:74
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "Normal în tonuri de gri (detectare automată a tipului de hârtie)"
+
+#: ../ppdippstr.py:76
+msgid "High quality (auto-detect-paper type)"
+msgstr "Calitate înaltă (detectare automată a tipului de hârtie)"
+
+#: ../ppdippstr.py:78
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr ""
+"Calitate înaltă în tonuri de gri (detectare automată a tipului de hârtie)"
+
+#: ../ppdippstr.py:79
+msgid "Photo (on photo paper)"
+msgstr "Fotografie (pe hârtie fotografică)"
+
+#: ../ppdippstr.py:81
+msgid "Best quality (color on photo paper)"
+msgstr "Calitatea cea mai bună (color pe hârtie fotografică)"
+
+#: ../ppdippstr.py:83
+msgid "Normal quality (color on photo paper)"
+msgstr "Calitate normală (color pe hârtie fotografică)"
+
+#: ../ppdippstr.py:85
+msgid "Media source"
+msgstr "Sursa de hârtie"
+
+#: ../ppdippstr.py:86
+msgid "Printer default"
+msgstr "Stabilită de imprimantă"
+
+#: ../ppdippstr.py:87
+msgid "Photo tray"
+msgstr "Tava pentru fotografii"
+
+#: ../ppdippstr.py:88
+msgid "Upper tray"
+msgstr "Tava de sus"
+
+#: ../ppdippstr.py:89
+msgid "Lower tray"
+msgstr "Tava de jos"
+
+#: ../ppdippstr.py:90
+msgid "CD or DVD tray"
+msgstr "Tava pentru CD sau DVD"
+
+#: ../ppdippstr.py:91
+msgid "Envelope feeder"
+msgstr "Alimentarea pentru plicuri"
+
+#: ../ppdippstr.py:92
+msgid "Large capacity tray"
+msgstr "Tava de capacitate mare"
+
+#: ../ppdippstr.py:93
+msgid "Manual feeder"
+msgstr "Alimentarea manuală"
+
+#: ../ppdippstr.py:94
+msgid "Multi-purpose tray"
+msgstr "Tava multi-scop"
+
+#: ../ppdippstr.py:96
+msgid "Page size"
+msgstr "Mărimea paginii"
+
+#: ../ppdippstr.py:97
+msgid "Custom"
+msgstr "Personalizat"
+
+#: ../ppdippstr.py:98
+msgid "Photo or 4x6 inch index card"
+msgstr ""
+
+#: ../ppdippstr.py:99
+msgid "Photo or 5x7 inch index card"
+msgstr ""
+
+#: ../ppdippstr.py:100
+msgid "Photo with tear-off tab"
+msgstr ""
+
+#: ../ppdippstr.py:101
+msgid "3x5 inch index card"
+msgstr ""
+
+#: ../ppdippstr.py:102
+msgid "5x8 inch index card"
+msgstr ""
+
+#: ../ppdippstr.py:103
+msgid "A6 with tear-off tab"
+msgstr ""
+
+#: ../ppdippstr.py:104
+msgid "CD or DVD 80mm"
+msgstr ""
+
+#: ../ppdippstr.py:105
+msgid "CD or DVD 120mm"
+msgstr ""
+
+#: ../ppdippstr.py:107
+msgid "Double-sided printing"
+msgstr ""
+
+#: ../ppdippstr.py:108
+msgid "Long edge (standard)"
+msgstr ""
+
+#: ../ppdippstr.py:109
+msgid "Short edge (flip)"
+msgstr ""
+
+#: ../ppdippstr.py:110
+msgid "Off"
+msgstr "Fără"
+
+#: ../ppdippstr.py:113
+msgid "Resolution, quality, ink type, media type"
+msgstr ""
+
+#: ../ppdippstr.py:114
+msgid "Controlled by 'Printout mode'"
+msgstr ""
+
+#: ../ppdippstr.py:116
+msgid "300 dpi, color, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:118
+msgid "300 dpi, draft, color, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:120
+msgid "300 dpi, draft, grayscale, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:122
+msgid "300 dpi, grayscale, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:124
+msgid "600 dpi, color, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:126
+msgid "600 dpi, grayscale, black + color cartridge"
+msgstr ""
+
+#: ../ppdippstr.py:128
+msgid "600 dpi, photo, black + color cartridge, photo paper"
+msgstr ""
+
+#: ../ppdippstr.py:130
+msgid "600 dpi, color, black + color cartridge, photo paper, normal"
+msgstr ""
+
+#: ../ppdippstr.py:132
+msgid "1200 dpi, photo, black + color cartridge, photo paper"
+msgstr ""
+
+#: ../system-config-printer.py:125
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr ""
 
-#: ../system-config-printer.py:169
+#: ../system-config-printer.py:183
 msgid "Idle"
 msgstr "Inactiv"
 
-#: ../system-config-printer.py:171
+#: ../system-config-printer.py:185
 msgid "Busy"
 msgstr "Ocupat"
 
-#: ../system-config-printer.py:314 ../system-config-printer.py:930
-#, fuzzy
+#: ../system-config-printer.py:370 ../system-config-printer.py:1371
 msgid "Class"
-msgstr "Grupă nouă"
+msgstr "Clasă"
 
-#: ../system-config-printer.py:355
-#, fuzzy
-msgid "Problems?"
-msgstr "Probează"
+#: ../system-config-printer.py:397
+msgid "Set As De_fault"
+msgstr ""
 
-#: ../system-config-printer.py:399 ../system-config-printer.py:401
-msgid "Members of this class"
-msgstr "Membri ai acestui grup"
-
-#: ../system-config-printer.py:400 ../system-config-printer.py:402
-msgid "Others"
-msgstr "Alţii"
+#: ../system-config-printer.py:401
+msgid "_Create class"
+msgstr ""
 
 #: ../system-config-printer.py:403
-msgid "Devices"
-msgstr "Dispozitive"
-
-#: ../system-config-printer.py:404
-#, fuzzy
-msgid "Connections"
-msgstr "Conectare"
+msgid "View Print _Queue"
+msgstr ""
 
 #: ../system-config-printer.py:405
-msgid "Makes"
-msgstr "Producători"
-
-#: ../system-config-printer.py:406
-msgid "Models"
-msgstr "Modele"
+msgid "_Add to Group"
+msgstr ""
 
 #: ../system-config-printer.py:407
-msgid "Drivers"
-msgstr "Drivere"
-
-#: ../system-config-printer.py:408 ../system-config-printer.glade.h:104
-msgid "Downloadable Drivers"
+msgid "Save Results as _Group"
 msgstr ""
 
 #: ../system-config-printer.py:409
+msgid "Save Filter as _Search Group"
+msgstr ""
+
+#: ../system-config-printer.py:413
+msgid "E_nabled"
+msgstr "_Activată"
+
+#: ../system-config-printer.py:415
+msgid "_Shared"
+msgstr "_Partajată"
+
+#: ../system-config-printer.py:419 ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
+msgid "Name"
+msgstr "Nume"
+
+#: ../system-config-printer.py:420
+msgid "Description"
+msgstr "Descriere"
+
+#: ../system-config-printer.py:422
+msgid "Manufacturer / Model"
+msgstr ""
+
+#. Printer state reasons list
+#: ../system-config-printer.py:497
+msgid "Message"
+msgstr "Mesaj"
+
+#: ../system-config-printer.py:532
+msgid "Problems?"
+msgstr "Probleme?"
+
+#: ../system-config-printer.py:635 ../system-config-printer.py:637
+msgid "Members of this class"
+msgstr "Membri ai acestui grup"
+
+#: ../system-config-printer.py:636 ../system-config-printer.py:638
+msgid "Others"
+msgstr "Alții"
+
+#: ../system-config-printer.py:639
+msgid "Devices"
+msgstr "Dispozitive"
+
+#: ../system-config-printer.py:640
+msgid "Connections"
+msgstr "Conexiuni"
+
+#: ../system-config-printer.py:641
+msgid "Makes"
+msgstr "Producători"
+
+#: ../system-config-printer.py:642
+msgid "Models"
+msgstr "Modele"
+
+#: ../system-config-printer.py:643
+msgid "Drivers"
+msgstr "Drivere"
+
+#: ../system-config-printer.py:644 ../glade/NewPrinterWindow.glade.h:55
+msgid "Downloadable Drivers"
+msgstr "Drivere descărcabile"
+
+#: ../system-config-printer.py:645
 msgid "Users"
 msgstr "Utilizatori"
 
-#: ../system-config-printer.py:446
+#: ../system-config-printer.py:680
 msgid "Automatic rotation"
+msgstr "Rotire automată"
+
+#: ../system-config-printer.py:987
+#, python-format
+msgid "Printer Properties - '%s' on %s"
 msgstr ""
 
-#: ../system-config-printer.py:659
-#, fuzzy, python-format
-msgid "Printer Properties - `%s' on %s"
-msgstr "Raport imprimantă"
-
 #. The Conflict button was pressed.
-#: ../system-config-printer.py:666
+#: ../system-config-printer.py:994
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
 "these conflicts are resolved."
 msgstr ""
-"Este un conflict între opţiuni.\n"
+"Este un conflict între opțiuni.\n"
 "Modificările pot fi aplicate numai după\n"
 "ce aceste conflicte au fost rezolvate."
 
-#: ../system-config-printer.py:823
+#: ../system-config-printer.py:1212
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Configurare imprimantă - %s"
 
-#: ../system-config-printer.py:826
+#: ../system-config-printer.py:1215
 #, python-format
 msgid "Connected to %s"
 msgstr "Conectat la %s"
 
-#: ../system-config-printer.py:918
-#, fuzzy
-msgid "Network printer (discovered)"
-msgstr "Imprimantă nouă "
+#. Update our copy of the printer's settings.
+#: ../system-config-printer.py:1255 ../system-config-printer.py:2040
+msgid "obtaining queue details"
+msgstr ""
 
-#: ../system-config-printer.py:921
+#: ../system-config-printer.py:1293
+msgid "Remove from Group"
+msgstr ""
+
+#: ../system-config-printer.py:1359
+msgid "Network printer (discovered)"
+msgstr ""
+
+#: ../system-config-printer.py:1362
 msgid "Network class (discovered)"
 msgstr ""
 
-#: ../system-config-printer.py:927 ../system-config-printer.py:3207
+#: ../system-config-printer.py:1368 ../system-config-printer.py:5508
+#: ../system-config-printer.py:5568 ../system-config-printer.py:5570
 msgid "Fax"
-msgstr ""
+msgstr "Fax"
 
-#: ../system-config-printer.py:933 ../system-config-printer.py:939
+#: ../system-config-printer.py:1374 ../system-config-printer.py:1380
 #: ../troubleshoot/LocalOrRemote.py:30
-#, fuzzy
 msgid "Network printer"
-msgstr "Imprimantă nouă "
-
-#: ../system-config-printer.py:936
-#, fuzzy
-msgid "Network print share"
-msgstr "Imprimantă nouă "
-
-#: ../system-config-printer.py:1064
-#, python-format
-msgid ""
-"Connecting to server:\n"
-"%s"
 msgstr ""
-"Conectare la server \n"
-"%s"
 
-#: ../system-config-printer.py:1435
+#: ../system-config-printer.py:1377
+msgid "Network print share"
+msgstr ""
+
+#: ../system-config-printer.py:1506 ../glade/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
+msgid "<i>Opening connection to %s</i>"
+msgstr ""
+
+#: ../system-config-printer.py:1885
 msgid "Installable Options"
-msgstr "Opţiuni instalare"
+msgstr "Opțiuni instalare"
 
-#: ../system-config-printer.py:1436 ../system-config-printer.glade.h:201
+#: ../system-config-printer.py:1886
+#: ../glade/PrinterPropertiesDialog.glade.h:109
 msgid "Printer Options"
-msgstr "Opţiuni imprimantă"
+msgstr "Opțiuni pentru imprimantă"
 
-#: ../system-config-printer.py:1484
+#: ../system-config-printer.py:1922
+#, python-format
+msgid "modifying class %s"
+msgstr ""
+
+#: ../system-config-printer.py:1924 ../system-config-printer.py:3017
+#: ../system-config-printer.py:3042 ../system-config-printer.py:6477
+#: ../system-config-printer.py:6489 ../system-config-printer.py:6511
+#, python-format
+msgid "modifying printer %s"
+msgstr ""
+
+#: ../system-config-printer.py:1939
 msgid "This will delete this class!"
-msgstr "Va fi ştearsă această clasă!"
+msgstr "Va fi ștearsă această clasă!"
 
-#: ../system-config-printer.py:1485
+#: ../system-config-printer.py:1940
 msgid "Proceed anyway?"
 msgstr "Continui oricum?"
 
-#: ../system-config-printer.py:1633
-#, fuzzy
-msgid "Set Default Printer"
-msgstr "Setează ca imprimantă implicită"
+#. We can authenticate with the server correctly at this point,
+#. but we have never fetched the server settings to see whether
+#. the server is publishing shared printers.  Fetch the settings
+#. now so that we can update the "not published" label if necessary.
+#: ../system-config-printer.py:2028 ../system-config-printer.py:3200
+msgid "fetching server settings"
+msgstr ""
 
-#: ../system-config-printer.py:1635
+#: ../system-config-printer.py:2098
+msgid "Set Default Printer"
+msgstr ""
+
+#: ../system-config-printer.py:2100
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr ""
 
-#: ../system-config-printer.py:1637
-#, fuzzy
+#: ../system-config-printer.py:2102
 msgid "Set as the _system-wide default printer"
-msgstr "Aceasta este imprimanta implicită"
+msgstr ""
 
-#: ../system-config-printer.py:1639
+#: ../system-config-printer.py:2104
 msgid "_Clear my personal default setting"
 msgstr ""
 
-#: ../system-config-printer.py:1640
-#, fuzzy
+#: ../system-config-printer.py:2105
 msgid "Set as my _personal default printer"
-msgstr "Setează ca imprimantă implicită"
+msgstr ""
 
-#: ../system-config-printer.py:1694 ../system-config-printer.py:1724
-msgid "Submitted"
-msgstr "Trimis"
+#: ../system-config-printer.py:2110
+msgid "setting default printer"
+msgstr ""
 
-#: ../system-config-printer.py:1695
-#, python-format
-msgid "Test page submitted as job %d"
-msgstr "Pagina de test a fost trimisă ca lucrarea %d"
+#: ../system-config-printer.py:2167
+msgid "printing test page"
+msgstr ""
 
-#: ../system-config-printer.py:1703 ../system-config-printer.py:1731
-#: ../system-config-printer.py:4414
+#: ../system-config-printer.py:2180 ../system-config-printer.py:2215
+#: ../system-config-printer.py:5406
 msgid "Not possible"
 msgstr "Imposibil"
 
-#: ../system-config-printer.py:1704 ../system-config-printer.py:1732
+#: ../system-config-printer.py:2181 ../system-config-printer.py:2216
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr ""
-"Serverul distant nu a acceptat lucrarea de imprimare, cel mai probabil "
-"imprimanta nu este partajată."
+"Serverul aflat la distanță nu a acceptat sarcina de tipărire, cel mai "
+"probabil imprimanta nu este partajată."
 
-#: ../system-config-printer.py:1725
-#, fuzzy, python-format
-msgid "Maintenance command submitted as job %d"
+#: ../system-config-printer.py:2193 ../system-config-printer.py:2208
+msgid "Submitted"
+msgstr "Trimis"
+
+#: ../system-config-printer.py:2194
+#, python-format
+msgid "Test page submitted as job %d"
 msgstr "Pagina de test a fost trimisă ca lucrarea %d"
+
+#: ../system-config-printer.py:2201
+msgid "sending maintenance command"
+msgstr ""
+
+#: ../system-config-printer.py:2209
+#, python-format
+msgid "Maintenance command submitted as job %d"
+msgstr "Comanda de întreținere trimisă ca lucrarea %d"
 
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:1787 ../system-config-printer.py:1894
+#: ../system-config-printer.py:2283 ../system-config-printer.py:2379
 msgid "Error"
 msgstr "Eroare"
 
-#: ../system-config-printer.py:1788
+#: ../system-config-printer.py:2284
 msgid "There was a problem connecting to the CUPS server."
 msgstr "A fost eroare la conectarea către serverul CUPS."
 
-#: ../system-config-printer.py:1895
+#: ../system-config-printer.py:2380
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
+msgstr "Opțiunea „%s” are valoarea „%s” și nu poate fi editată."
+
+#: ../system-config-printer.py:2464
+msgid "Marker levels are not reported for this printer."
 msgstr ""
 
-#: ../system-config-printer.py:2161
-#, fuzzy
+#: ../system-config-printer.py:2761
 msgid "Cannot Rename"
-msgstr "Elibe_rează"
+msgstr ""
 
-#: ../system-config-printer.py:2162
+#: ../system-config-printer.py:2762
 msgid "There are queued jobs."
 msgstr ""
 
-#: ../system-config-printer.py:2348
-#, fuzzy, python-format
-msgid "Really delete class `%s'?"
-msgstr "Sigur şterg grupul %s?"
+#: ../system-config-printer.py:2820
+msgid "renaming printer"
+msgstr ""
 
-#: ../system-config-printer.py:2350
-#, fuzzy, python-format
-msgid "Really delete printer `%s'?"
-msgstr "Sigur şterg imprimanta %s?"
+#. for classes make sure all members
+#. will get added
+#: ../system-config-printer.py:2905
+msgid "copying printer"
+msgstr ""
 
-#: ../system-config-printer.py:2352
-#, fuzzy
+#: ../system-config-printer.py:2969
+#, python-format
+msgid "Really delete class '%s'?"
+msgstr ""
+
+#: ../system-config-printer.py:2971
+#, python-format
+msgid "Really delete printer '%s'?"
+msgstr ""
+
+#: ../system-config-printer.py:2973
 msgid "Really delete selected destinations?"
-msgstr "Sigur şterg imprimanta %s?"
+msgstr ""
 
-#: ../system-config-printer.py:2418
+#: ../system-config-printer.py:2994
+#, python-format
+msgid "deleting printer %s"
+msgstr ""
+
+#: ../system-config-printer.py:3067
 msgid "Publish Shared Printers"
 msgstr ""
 
-#: ../system-config-printer.py:2419
+#: ../system-config-printer.py:3068
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
+msgstr ""
+
+#: ../system-config-printer.py:3261
+msgid "modifying server settings"
 msgstr ""
 
 #. We have just enabled print queue sharing.
@@ -593,692 +1057,662 @@ msgstr ""
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:2531
+#: ../system-config-printer.py:3286
 msgid "Review Firewall"
 msgstr ""
 
-#: ../system-config-printer.py:2532
+#: ../system-config-printer.py:3287
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr ""
 
-#: ../system-config-printer.py:2764 ../system-config-printer.py:2774
+#: ../system-config-printer.py:3614
+msgid "Browsing not available (pysmbc not installed)"
+msgstr ""
+
+#. SMB list columns
+#: ../system-config-printer.py:3620
 msgid "Share"
 msgstr "Partajare"
 
-#: ../system-config-printer.py:2770 ../system-config-printer.py:2780
+#: ../system-config-printer.py:3626
 msgid "Comment"
 msgstr "Comentariu"
 
 #. IPP list columns
-#: ../system-config-printer.py:2799
+#: ../system-config-printer.py:3645
 msgid "Queue"
+msgstr "Coadă"
+
+#: ../system-config-printer.py:3659
+msgid ""
+"PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD."
+"GZ)"
 msgstr ""
 
-#: ../system-config-printer.py:2813
-#, fuzzy
-msgid ""
-"PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
-"PPD.GZ)"
-msgstr "Descriere imprimantă PostScript (*.ppd[.gz])"
-
-#: ../system-config-printer.py:2822
+#: ../system-config-printer.py:3668
 msgid "All files (*)"
 msgstr ""
 
-#: ../system-config-printer.py:2860 ../system-config-printer.py:4779
-#: ../system-config-printer.py:4817
-#, fuzzy
+#: ../system-config-printer.py:3704 ../system-config-printer.py:5900
+#: ../system-config-printer.py:5938 ../applet.py:124
 msgid "Search"
-msgstr "Nume nou pentru imprimantă"
+msgstr "Caută"
 
-#: ../system-config-printer.py:2874 ../system-config-printer.glade.h:148
+#: ../system-config-printer.py:3727 ../system-config-printer.py:3751
+#: ../glade/NewPrinterWindow.glade.h:74
 msgid "New Printer"
-msgstr "Imprimantă nouă "
+msgstr "Imprimantă nouă"
 
-#: ../system-config-printer.py:2885
+#: ../system-config-printer.py:3738
 msgid "New Class"
 msgstr "Grupă nouă"
 
-#: ../system-config-printer.py:2890
+#: ../system-config-printer.py:3743
 msgid "Change Device URI"
 msgstr "Schimbă URI dispozitiv"
 
-#: ../system-config-printer.py:2894
+#: ../system-config-printer.py:3749
 msgid "Change Driver"
 msgstr "Schimbă driver"
 
-#: ../system-config-printer.py:3042 ../system-config-printer.py:3115
-#: ../system-config-printer.py:3432 ../system-config-printer.py:3614
-#: ../system-config-printer.py:4804
+#: ../system-config-printer.py:3918 ../system-config-printer.py:3984
+#: ../system-config-printer.py:4280 ../system-config-printer.py:4478
+#: ../system-config-printer.py:5925
 msgid "Searching"
-msgstr ""
+msgstr "Căutare"
 
-#: ../system-config-printer.py:3043
-#, fuzzy
+#: ../system-config-printer.py:3919
 msgid "Searching for downloadable drivers"
-msgstr "Nume nou pentru imprimantă"
+msgstr ""
 
-#: ../system-config-printer.py:3116 ../system-config-printer.py:3433
+#: ../system-config-printer.py:3985 ../system-config-printer.py:4281
 msgid "Searching for drivers"
-msgstr ""
+msgstr "Se caută drivere"
 
-#: ../system-config-printer.py:3208
-msgid ""
-"This printer supports both printing and sending faxes.  Which functionality "
-"should be used for this queue?"
-msgstr ""
-
-#: ../system-config-printer.py:3615
-#, fuzzy
+#: ../system-config-printer.py:4479
 msgid "Searching for printers"
-msgstr "Nume nou pentru imprimantă"
+msgstr ""
 
-#: ../system-config-printer.py:3754
+#: ../system-config-printer.py:4488
+msgid "fetching device list"
+msgstr ""
+
+#. Tell the user why he needs the plugin
+#: ../system-config-printer.py:4570
+msgid "For this printer a proprietary driver plugin from HP is available.\n"
+msgstr ""
+
+#: ../system-config-printer.py:4573
+msgid ""
+"The installation of the plugin is required for your printer to work.\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.py:4576
+msgid ""
+"Installing the plugin is optional, it completes or enhances the "
+"functionality\n"
+"of your printer. Without plugin at least basic operations work.\n"
+"\n"
+msgstr ""
+
+#: ../system-config-printer.py:4580
+msgid "The plugin provides the following features:\n"
+msgstr ""
+
+#: ../system-config-printer.py:4583
+msgid " - Printing support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4586
+msgid " - Faster printing\n"
+msgstr ""
+
+#: ../system-config-printer.py:4589
+msgid " - Better printout quality\n"
+msgstr ""
+
+#: ../system-config-printer.py:4592
+msgid " - Extra printing features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4595
+msgid " - Scanning support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4598
+msgid " - Faster scanning\n"
+msgstr ""
+
+#: ../system-config-printer.py:4601
+msgid " - Better scanning image quality\n"
+msgstr ""
+
+#: ../system-config-printer.py:4604
+msgid " - Faxing support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4607
+msgid " - Extra fax features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4610
+msgid " - Better Input/Output support\n"
+msgstr ""
+
+#: ../system-config-printer.py:4613
+msgid " - Extra user interface features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4616
+msgid " - Other extra features\n"
+msgstr ""
+
+#: ../system-config-printer.py:4621
+msgid "Install plugin"
+msgstr ""
+
+#: ../system-config-printer.py:4622
+msgid "Do not set up printer"
+msgstr ""
+
+#: ../system-config-printer.py:4623
+msgid "Set up without plugin"
+msgstr ""
+
+#: ../system-config-printer.py:4625 ../troubleshoot/PrintTestPage.py:118
+msgid "Yes"
+msgstr "Da"
+
+#: ../system-config-printer.py:4626 ../troubleshoot/PrintTestPage.py:119
+msgid "No"
+msgstr "Nu"
+
+#: ../system-config-printer.py:4798 ../system-config-printer.py:4802
 msgid " (Current)"
 msgstr " (Curent)"
 
-#: ../system-config-printer.py:3785
+#: ../system-config-printer.py:4834
 msgid "HP Printer (HPLIP)"
 msgstr ""
 
-#: ../system-config-printer.py:3820
+#: ../system-config-printer.py:4875
 msgid "Other"
 msgstr "Altul"
 
-#: ../system-config-printer.py:3860 ../system-config-printer.py:3877
-#: ../system-config-printer.py:4363
-#, fuzzy
+#. device-info
+#. PhysicalDevice obj
+#. Separator?
+#: ../system-config-printer.py:4891
+msgid "Network Printer"
+msgstr ""
+
+#: ../system-config-printer.py:4895
+msgid "Find Network Printer"
+msgstr ""
+
+#: ../system-config-printer.py:4967 ../system-config-printer.py:5364
 msgid "Scanning..."
-msgstr "Redimensionează:"
+msgstr "Scanare..."
 
-#: ../system-config-printer.py:3932 ../system-config-printer.py:4668
-#, fuzzy
+#: ../system-config-printer.py:5022 ../system-config-printer.py:5756
 msgid "No Print Shares"
-msgstr "Imprimantă nouă "
+msgstr ""
 
-#: ../system-config-printer.py:3933
+#: ../system-config-printer.py:5023
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
 
-#: ../system-config-printer.py:4273 ../system-config-printer.py:4344
+#: ../system-config-printer.py:5284 ../system-config-printer.py:5345
 msgid "Print Share Verified"
 msgstr ""
 
-#: ../system-config-printer.py:4274 ../system-config-printer.py:4345
+#: ../system-config-printer.py:5285 ../system-config-printer.py:5346
 msgid "This print share is accessible."
-msgstr "Această partajare de imprimare este accesibilă."
+msgstr "Această imprimantă partajată este accesibilă."
 
-#: ../system-config-printer.py:4279 ../system-config-printer.py:4349
+#: ../system-config-printer.py:5290 ../system-config-printer.py:5350
 msgid "This print share is not accessible."
-msgstr "Această partajare de imprimare nu este accesibilă."
+msgstr "Această imprimantă partajată nu este accesibilă."
 
-#: ../system-config-printer.py:4282
-#, fuzzy
+#: ../system-config-printer.py:5293
 msgid "Print Share Inaccessible"
-msgstr "Această partajare de imprimare este accesibilă."
+msgstr ""
 
-#: ../system-config-printer.py:4348
+#: ../system-config-printer.py:5349
 msgid "Inaccessible"
 msgstr "Inacesibil"
 
-#: ../system-config-printer.py:4415
-#, fuzzy, python-format
-msgid "It is not possible to obtain a list of queues from `%s'."
-msgstr "A fost eroare la conectarea către serverul CUPS."
+#: ../system-config-printer.py:5407
+#, python-format
+msgid "It is not possible to obtain a list of queues from '%s'."
+msgstr ""
 
-#: ../system-config-printer.py:4417
+#: ../system-config-printer.py:5409
 msgid ""
 "Obtaining a list of queues is a CUPS extension to IPP.  Network printers do "
 "not support it."
 msgstr ""
 
-#: ../system-config-printer.py:4420
+#: ../system-config-printer.py:5412
 msgid "No queues"
 msgstr ""
 
-#: ../system-config-printer.py:4421
+#: ../system-config-printer.py:5413
 msgid "There are no queues available."
 msgstr ""
 
-#: ../system-config-printer.py:4517
+#: ../system-config-printer.py:5500
+msgid "Parallel Port"
+msgstr ""
+
+#: ../system-config-printer.py:5502
+msgid "Serial Port"
+msgstr ""
+
+#: ../system-config-printer.py:5504
+msgid "USB"
+msgstr "USB"
+
+#: ../system-config-printer.py:5506 ../system-config-printer.py:5509
+msgid "HP Linux Imaging and Printing (HPLIP)"
+msgstr ""
+
+#: ../system-config-printer.py:5511
+msgid "Hardware Abstraction Layer (HAL)"
+msgstr ""
+
+#: ../system-config-printer.py:5513
+msgid "AppSocket/HP JetDirect"
+msgstr ""
+
+#: ../system-config-printer.py:5515
+msgid "LPD/LPR"
+msgstr ""
+
+#: ../system-config-printer.py:5517
+msgid "Windows Printer via SAMBA"
+msgstr ""
+
+#: ../system-config-printer.py:5519 ../glade/NewPrinterWindow.glade.h:66
+msgid "IPP"
+msgstr "IPP"
+
+#: ../system-config-printer.py:5521
+msgid "HTTP"
+msgstr "HTTP"
+
+#: ../system-config-printer.py:5606
 msgid "A printer connected to the parallel port."
 msgstr "O imprimantă conectată la un port paralel."
 
-#: ../system-config-printer.py:4519
+#: ../system-config-printer.py:5608
 msgid "A printer connected to a USB port."
 msgstr "O imprimantă conectată la un port USB."
 
-#: ../system-config-printer.py:4521
+#: ../system-config-printer.py:5610
 msgid ""
-"HPLIP software driving a printer, or the printer function of a multi-"
-"function device."
+"HPLIP software driving a printer, or the printer function of a multi-function "
+"device."
 msgstr ""
-"HPLIP software utilizează o imprimantă, sau funcţia de printare a unui "
-"dispozitiv multifuncţional."
+"Software HPLIP care utilizează o imprimantă sau funcția de tipărire a unui "
+"dispozitiv multifuncțional."
 
-#: ../system-config-printer.py:4524
+#: ../system-config-printer.py:5613
 msgid ""
-"HPLIP software driving a fax machine, or the fax function of a multi-"
-"function device."
+"HPLIP software driving a fax machine, or the fax function of a multi-function "
+"device."
 msgstr ""
-"HPLIP software utilizează un fax, sau funcţia fax a unui dispozitiv "
-"multifuncţional."
+"HPLIP software utilizează un fax, sau funcția fax a unui dispozitiv "
+"multifuncțional."
 
-#: ../system-config-printer.py:4527
+#: ../system-config-printer.py:5616
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
-msgstr "Imprimantă locală detectată de Stratul de Abstracţie Hardware (HAL)"
+msgstr "Imprimantă locală detectată de Stratul de Abstracție Hardware (HAL)"
 
-#: ../system-config-printer.py:4669
+#: ../system-config-printer.py:5757
 msgid "HPLIP cannot find the device."
 msgstr ""
 
-#: ../system-config-printer.py:4829
-#, fuzzy
-msgid "-- Select from search results --"
-msgstr "Selectează imprimantă din baza de date"
+#: ../system-config-printer.py:5805
+msgid "Not Found"
+msgstr "Nu s-a găsit"
 
-#: ../system-config-printer.py:4831
+#: ../system-config-printer.py:5806
+msgid "No printer was found at that address."
+msgstr ""
+
+#: ../system-config-printer.py:5950
+msgid "-- Select from search results --"
+msgstr ""
+
+#: ../system-config-printer.py:5952
 msgid "-- No matches found --"
 msgstr ""
 
-#: ../system-config-printer.py:5010
+#: ../system-config-printer.py:6133
 msgid " (recommended)"
 msgstr "(recomandat)"
 
-#: ../system-config-printer.py:5024
+#: ../system-config-printer.py:6147
 msgid "This PPD is generated by foomatic."
 msgstr "Acest PPD este generat de foomatic."
 
-#: ../system-config-printer.py:5048
-#, fuzzy
+#: ../system-config-printer.py:6171
 msgid "OpenPrinting"
-msgstr "Imprimare"
-
-#: ../system-config-printer.py:5051
-msgid "the printer's manufacturer"
 msgstr ""
 
-#: ../system-config-printer.py:5054 ../system-config-printer.py:5069
-#: ../system-config-printer.py:5092 ../system-config-printer.py:5096
-#: ../system-config-printer.py:5110
-#, fuzzy
-msgid ", "
-msgstr " "
-
-#: ../system-config-printer.py:5057
-#, python-format
-msgid " (%s)"
-msgstr ""
-
-#: ../system-config-printer.py:5059
+#: ../system-config-printer.py:6182
 msgid "Distributable"
 msgstr ""
 
-#: ../system-config-printer.py:5062
-#, fuzzy
-msgid " ("
-msgstr " "
+#: ../system-config-printer.py:6223
+msgid ", "
+msgstr ", "
 
-#: ../system-config-printer.py:5064
-msgid "free software"
-msgstr ""
-
-#: ../system-config-printer.py:5066
-msgid "non-free software"
-msgstr ""
-
-#: ../system-config-printer.py:5071
-msgid "driver contains (possibly) patented algorithms"
-msgstr ""
-
-#: ../system-config-printer.py:5074
-msgid ")"
-msgstr ""
-
-#: ../system-config-printer.py:5076
-#, fuzzy
-msgid "None"
-msgstr "nici unul"
-
-#: ../system-config-printer.py:5080
-#, python-format
-msgid "Graphics: %s/100, "
-msgstr ""
-
-#: ../system-config-printer.py:5083
-#, python-format
-msgid "Line Art: %s/100, "
-msgstr ""
-
-#: ../system-config-printer.py:5086
-#, python-format
-msgid "Photo: %s/100, "
-msgstr ""
-
-#: ../system-config-printer.py:5089
-#, python-format
-msgid "Text: %s/100, "
-msgstr ""
-
-#: ../system-config-printer.py:5093
-msgid "Output quality: "
-msgstr ""
-
-#: ../system-config-printer.py:5097
-#, fuzzy
-msgid "<b>Recommended Driver</b>"
-msgstr "<b>Imprimantă implicită</b>"
-
-#: ../system-config-printer.py:5115
+#: ../system-config-printer.py:6228
 #, python-format
 msgid ""
 "\n"
 "(%s)"
 msgstr ""
 
-#: ../system-config-printer.py:5120
+#: ../system-config-printer.py:6233
 msgid "No support contacts known"
 msgstr ""
 
-#: ../system-config-printer.py:5124 ../system-config-printer.py:5137
+#: ../system-config-printer.py:6237 ../system-config-printer.py:6250
 msgid "Not specified."
 msgstr ""
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:5177
+#: ../system-config-printer.py:6290
 msgid "Database error"
 msgstr "Eroare baza de date"
 
-#: ../system-config-printer.py:5178
+#: ../system-config-printer.py:6291
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
-msgstr "Driverul '%s' nu poate fi folosit cu imprimanta '%s %s'."
+msgstr "Driverul „%s” nu poate fi folosit cu imprimanta „%s %s”."
 
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:5188
+#: ../system-config-printer.py:6301
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
-msgstr "Trebuie să instalaţi pachetul '%s' pentru a putea folosi acest driver."
+msgstr "Trebuie să instalați pachetul '%s' pentru a putea folosi acest driver."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:5195
+#: ../system-config-printer.py:6308
 msgid "PPD error"
 msgstr "Eroare PPD"
 
-#: ../system-config-printer.py:5197
+#: ../system-config-printer.py:6310
 msgid "Failed to read PPD file.  Possible reason follows:"
-msgstr "Nu am putut citi fişierul PPD.  Urmează motivul posibil:"
+msgstr "Nu am putut citi fișierul PPD.  Urmează motivul posibil:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:5214
+#: ../system-config-printer.py:6327
 msgid "Downloadable drivers"
 msgstr ""
 
-#: ../system-config-printer.py:5215
+#: ../system-config-printer.py:6328
 msgid "Failed to download PPD."
 msgstr ""
 
-#: ../system-config-printer.py:5251 ../system-config-printer.py:5289
-#, fuzzy
+#: ../system-config-printer.py:6335
+msgid "fetching PPD"
+msgstr ""
+
+#: ../system-config-printer.py:6364 ../system-config-printer.py:6402
 msgid "No Installable Options"
-msgstr "Opţiuni instalare"
+msgstr ""
 
-#: ../system-config-printer.py:5490
-#, fuzzy
+#: ../system-config-printer.py:6450
+#, python-format
+msgid "adding printer %s"
+msgstr ""
+
+#: ../system-config-printer.py:6599
+msgid "Would you like to print a test page?"
+msgstr ""
+
+#: ../system-config-printer.py:6652
 msgid "Install driver"
-msgstr "Driver lipsă"
+msgstr ""
 
-#: ../system-config-printer.py:5491
-#, fuzzy, python-format
+#: ../system-config-printer.py:6653 ../troubleshoot/CheckPPDSanity.py:131
+#, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
-"Imprimanta '%s' necesită pachetul %s ce nu este instalat.  Vă rog instalaţi-"
-"l înainte de a folosi această imprimantă."
 
-#: ../system-config-printer.py:5516
+#: ../system-config-printer.py:6669
 msgid "Missing driver"
 msgstr "Driver lipsă"
 
-#: ../system-config-printer.py:5517
+#: ../system-config-printer.py:6670
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
 "Please install it before using this printer."
 msgstr ""
-"Imprimanta '%s' necesită programul %s ce nu este instalat.  Vă rog instalaţi-"
-"l înainte de a folosi această imprimantă."
+"Imprimanta „%s” are nevoie de programul „%s” care nu este instalat. Vă rugăm "
+"instalați-l înainte de a folosi această imprimantă."
 
-#: ../system-config-printer.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../system-config-printer.glade.h:2
-msgid ""
-"1\n"
-"2\n"
-"4\n"
-"6\n"
-"9\n"
-"16"
-msgstr ""
-"1\n"
-"2\n"
-"4\n"
-"6\n"
-"9\n"
-"16"
-
-#: ../system-config-printer.glade.h:8
-#, fuzzy
-msgid "72 points per inch"
-msgstr "puncte (72 puncte pe inch)"
-
-#: ../system-config-printer.glade.h:9
-#, fuzzy
-msgid "<b>Authentication</b>"
-msgstr "<b>Autentificare</b>"
-
-#: ../system-config-printer.glade.h:10
-msgid "<b>Banner</b>"
-msgstr "<b>Banner</b>"
-
-#: ../system-config-printer.glade.h:11
-msgid "<b>Basic Server Settings</b>"
-msgstr "<b>Setări de bază server</b>"
-
-#: ../system-config-printer.glade.h:12
-msgid "<b>Common Options</b>"
-msgstr "<b>Opţiuni uzuale</b>"
-
-#: ../system-config-printer.glade.h:13
-msgid "<b>Description</b>"
-msgstr "<b>Descriere</b>"
-
-#: ../system-config-printer.glade.h:14
-msgid "<b>Description</b> (optional)"
-msgstr "<b>Descriere</b> (opţional)"
-
-#: ../system-config-printer.glade.h:15
-#, fuzzy
-msgid "<b>Enter device URI</b>"
-msgstr "Introduceţi URI dispozitiv"
-
-#: ../system-config-printer.glade.h:16
-#, fuzzy
-msgid "<b>HP Printer (HPLIP) via network</b>"
-msgstr "<b>Nume imprimantă</b>"
-
-#: ../system-config-printer.glade.h:17
-#, fuzzy
-msgid "<b>IPP Printer</b>"
-msgstr "<b>Nume imprimantă</b>"
-
-#: ../system-config-printer.glade.h:18
-msgid "<b>Image Options</b>"
-msgstr "<b>Setări imagine</b>"
-
-#: ../system-config-printer.glade.h:19
-#, fuzzy
-msgid "<b>License Terms</b>"
-msgstr "<b>Nume imprimantă</b>"
-
-#: ../system-config-printer.glade.h:20
-msgid "<b>Location of the LPD network printer</b>"
-msgstr "<b>Locaţia imprimantei LPD</b>"
-
-#: ../system-config-printer.glade.h:21
-msgid "<b>Location of the network printer</b>"
-msgstr "<b>Locaţia imprimantei din reţea</b>"
-
-#: ../system-config-printer.glade.h:22
-msgid "<b>Location</b> (optional)"
-msgstr "<b>Locaţie</b> (opţional)"
-
-#: ../system-config-printer.glade.h:23
-#, fuzzy
-msgid "<b>Note</b>"
-msgstr "<b>Stare</b>"
-
-#: ../system-config-printer.glade.h:24
-msgid "<b>Other Options (Advanced)</b>"
-msgstr "<b>Alte opţiuni (Avansate)</b>"
-
-#: ../system-config-printer.glade.h:25
-msgid "<b>Policies</b>"
-msgstr "<b>Reguli</b>"
-
-#: ../system-config-printer.glade.h:26
-msgid "<b>Printer Name</b>"
-msgstr "<b>Nume imprimantă</b>"
-
-#: ../system-config-printer.glade.h:27
-#, fuzzy
-msgid "<b>SMB Printer</b>"
-msgstr "<b>Nume imprimantă</b>"
-
-#: ../system-config-printer.glade.h:28
-#, fuzzy
-msgid "<b>Select Driver</b>"
-msgstr "<b>Imprimantă implicită</b>"
-
-#: ../system-config-printer.glade.h:29
-msgid "<b>Settings of the serial port</b>"
-msgstr "<b>Setări ale portului serial</b>"
-
-#: ../system-config-printer.glade.h:30
-msgid "<b>Settings</b>"
-msgstr "<b>Setări</b>"
-
-#: ../system-config-printer.glade.h:31
-msgid "<b>State</b>"
-msgstr "<b>Stare</b>"
-
-#: ../system-config-printer.glade.h:32
-msgid "<b>Tests and Maintenance</b>"
-msgstr ""
-
-#: ../system-config-printer.glade.h:33
-msgid "<b>Text Options</b>"
-msgstr "<b>Setări text</b>"
-
-#: ../system-config-printer.glade.h:34
-msgid ""
-"<i>Not published\n"
-"See server settings</i>"
-msgstr ""
-"<i>Nepublicat\n"
-"Vezi setări server</i>"
-
-#: ../system-config-printer.glade.h:36
-msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-msgstr "<i>smb://[grup de lucru/]server[:port]/imprimantă</i>"
-
-#: ../system-config-printer.glade.h:37
-#, fuzzy
-msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Este necesară parola</span>\n"
-"\n"
-
-#: ../system-config-printer.glade.h:38
-#, fuzzy
-msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Este necesară parola</span>\n"
-"\n"
-
-#: ../system-config-printer.glade.h:39
-#, fuzzy
-msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Este necesară parola</span>\n"
-"\n"
-
-#: ../system-config-printer.glade.h:40
-#, fuzzy
-msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Este necesară parola</span>\n"
-"\n"
-
-#: ../system-config-printer.glade.h:41
-#, fuzzy
-msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Este necesară parola</span>\n"
-"\n"
-
-#: ../system-config-printer.glade.h:42
-#, fuzzy
-msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">Este necesară parola</span>\n"
-"\n"
-
-#: ../system-config-printer.glade.h:43
-#, fuzzy
+#: ../glade/AboutDialog.glade.h:1
 msgid "A CUPS configuration tool."
-msgstr "Configurare imprimantă - %s"
-
-#: ../system-config-printer.glade.h:44
-msgid "Accepting jobs"
-msgstr "Accept lucrări"
-
-#: ../system-config-printer.glade.h:45
-#, fuzzy
-msgid "Access Control"
-msgstr "Control acces"
-
-#: ../system-config-printer.glade.h:46
-msgid "Add or Remove Members"
-msgstr "Adaugă sau şterge membri"
-
-#: ../system-config-printer.glade.h:47
-#, fuzzy
-msgid "Adjust server settings"
-msgstr "<b>Setări de bază server</b>"
-
-#: ../system-config-printer.glade.h:48
-msgid "Allow printing for everyone except these users:"
-msgstr "Permite imprimarea pentru toată lumea mai puţin aceşti utilizatori:"
-
-#: ../system-config-printer.glade.h:49
-#, fuzzy
-msgid "Allow printing from the Internet"
-msgstr "Permite imprimarea pentru toată lumea mai puţin aceşti utilizatori:"
-
-#: ../system-config-printer.glade.h:50
-msgid "Allow remote administration"
-msgstr "Permite administrarea la distanţă"
-
-#: ../system-config-printer.glade.h:51
-msgid "Allow users to cancel any job (not just their own)"
-msgstr ""
-"Permite utilizatorilor să anuleze orice lucrare (nu numai cele proprii)"
-
-#: ../system-config-printer.glade.h:52
-#, fuzzy
-msgid "Basic Server Settings"
-msgstr "<b>Setări de bază server</b>"
-
-#: ../system-config-printer.glade.h:53
-msgid "Baud Rate"
-msgstr "Rată Baud"
-
-#: ../system-config-printer.glade.h:54
-msgid "Bottom margin:"
-msgstr "Margine subsol:"
-
-#: ../system-config-printer.glade.h:55
-msgid "Brightness:"
-msgstr "Luminozitate:"
-
-#: ../system-config-printer.glade.h:56
-msgid "Browse..."
 msgstr ""
 
-#: ../system-config-printer.glade.h:57
-msgid "CUPS server:"
-msgstr "Server CUPS:"
-
-#: ../system-config-printer.glade.h:58
-msgid "Change..."
-msgstr "Schimbă..."
-
-#: ../system-config-printer.glade.h:59
-msgid "Characters per inch:"
-msgstr "Caractere pe inch:"
-
-#: ../system-config-printer.glade.h:60
-#, fuzzy
-msgid "Choose a different CUPS server"
-msgstr "Conectare la server CUPS"
-
-#. Not more than 25 characters
-#: ../system-config-printer.glade.h:62
-msgid "Clean Print Heads"
+#: ../glade/AboutDialog.glade.h:2
+msgid "Copyright © 2006-2008 Red Hat, Inc."
 msgstr ""
 
-#: ../system-config-printer.glade.h:63
-msgid "Columns:"
-msgstr "Coloane:"
+#: ../glade/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it under "
+"the terms of the GNU General Public License as published by the Free Software "
+"Foundation; either version 2 of the License, or (at your option) any later "
+"version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS "
+"FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more "
+"details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
 
-#: ../system-config-printer.glade.h:64
-#, fuzzy
-msgid "Comments..."
-msgstr "Comentariu"
+#: ../glade/AboutDialog.glade.h:8
+msgid "system-config-printer"
+msgstr ""
 
-#: ../system-config-printer.glade.h:65
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../glade/AboutDialog.glade.h:10
+msgid "translator-credits"
+msgstr ""
+"Alexandru Szasz <alexxed@gmail.com> și comunitatea de traducători de pe tradu."
+"softwareliber.ro"
+
+#: ../glade/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr ""
+
+#: ../glade/ConnectDialog.glade.h:2
 msgid "Connect to CUPS server"
 msgstr "Conectare la server CUPS"
 
-#: ../system-config-printer.glade.h:66
-msgid "Connecting"
-msgstr "Conectare"
-
-#: ../system-config-printer.glade.h:68
-#, no-c-format
-msgid ""
-"Connecting to Server:\n"
-"%s\n"
+#: ../glade/ConnectDialog.glade.h:3
+msgid "Require _encryption"
 msgstr ""
-"Conectare la server:\n"
-"%s\n"
 
-#: ../system-config-printer.glade.h:71
-#, fuzzy
-msgid "Connection"
-msgstr "Conectare"
+#: ../glade/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr ""
 
-#: ../system-config-printer.glade.h:72
-msgid "Copies:"
-msgstr "Copii:"
+#: ../glade/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr ""
 
-#: ../system-config-printer.glade.h:73
+#: ../glade/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_Instalează"
+
+#: ../glade/IPPBrowseDialog.glade.h:1
+msgid "IPP Browser"
+msgstr ""
+
+#: ../glade/JobsWindow.glade.h:1
+msgid "Show _completed jobs"
+msgstr "Arată lu_crările terminate"
+
+#: ../glade/JobsWindow.glade.h:2
+msgid "_File"
+msgstr "_Fișier"
+
+#: ../glade/JobsWindow.glade.h:3
+msgid "_Job"
+msgstr "_Lucrare"
+
+#: ../glade/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "_Reîmprospătează"
+
+#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:17
+msgid "_View"
+msgstr "_Vizualizează"
+
+#: ../glade/NewPrinterName.glade.h:1
 msgid "Copy Printer"
-msgstr "Imprimantă de copiere"
+msgstr "Copie de imprimantă"
 
-#: ../system-config-printer.glade.h:74
-#, fuzzy
-msgid "Copyright © 2006-2008 Red Hat, Inc."
-msgstr "Copyright 2006 Red Hat, Inc."
+#: ../glade/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "Nume nou pentru imprimantă"
 
-#: ../system-config-printer.glade.h:75
-msgid ""
-"Create a class from the selected printers (for failover or load-balancing)"
+#: ../glade/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
 msgstr ""
 
-#: ../system-config-printer.glade.h:76
+#: ../glade/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>Descriere</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Descriere</b> (opțional)"
+
+#: ../glade/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:5
+msgid "<b>HP Printer (HPLIP) via network</b>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:6
+msgid "<b>IPP Printer</b>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:7
+msgid "<b>License Terms</b>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Locația imprimantei LPD în rețea</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:9
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Locația imprimantei de rețea</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:10
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Locație</b> (opțional)"
+
+#: ../glade/NewPrinterWindow.glade.h:11
+msgid "<b>Network Printer</b>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:12
+msgid "<b>Note</b>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:13
+msgid "<b>Output Quality</b>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:14
+msgid "<b>Printer Name</b>"
+msgstr "<b>Nume pentru imprimantă</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:15
+msgid "<b>SMB Printer</b>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:16
+msgid "<b>Select Driver</b>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:17
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Setări ale portului serial</b>"
+
+#: ../glade/NewPrinterWindow.glade.h:18
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[grup de lucru/]server[:port]/imprimantă</i>"
+
+#: ../glade/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:24
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:25
+msgid "Baud Rate"
+msgstr "Rată Baud"
+
+#: ../glade/NewPrinterWindow.glade.h:26
+msgid "Browse..."
+msgstr "Răsfoiește..."
+
+#: ../glade/NewPrinterWindow.glade.h:27
+msgid "Comments..."
+msgstr "Comentarii..."
+
+#: ../glade/NewPrinterWindow.glade.h:28
+msgid "Connection"
+msgstr "Conexiune"
+
+#: ../glade/NewPrinterWindow.glade.h:29
 msgid "Data Bits"
 msgstr "Bits Date"
 
-#: ../system-config-printer.glade.h:77
+#: ../glade/NewPrinterWindow.glade.h:30
 msgid ""
 "Default\n"
 "1200\n"
@@ -1300,7 +1734,7 @@ msgstr ""
 "57600\n"
 "115200"
 
-#: ../system-config-printer.glade.h:86
+#: ../glade/NewPrinterWindow.glade.h:39
 msgid ""
 "Default\n"
 "8\n"
@@ -1310,7 +1744,7 @@ msgstr ""
 "8\n"
 "7"
 
-#: ../system-config-printer.glade.h:89
+#: ../glade/NewPrinterWindow.glade.h:42
 msgid ""
 "Default\n"
 "None\n"
@@ -1322,7 +1756,7 @@ msgstr ""
 "Impar\n"
 "Par"
 
-#: ../system-config-printer.glade.h:93
+#: ../glade/NewPrinterWindow.glade.h:46
 msgid ""
 "Default\n"
 "None\n"
@@ -1336,129 +1770,446 @@ msgstr ""
 "RTS/CTS (Hardware)\n"
 "DTR/DSR (Hardware)"
 
-#: ../system-config-printer.glade.h:98
-msgid "Deny printing for everyone except these users:"
-msgstr "Permite imprimarea pentru toată lumea mai puţin aceşti utilizatori:"
-
-#: ../system-config-printer.glade.h:99
+#: ../glade/NewPrinterWindow.glade.h:51
+#: ../glade/PrinterPropertiesDialog.glade.h:35
 msgid "Description:"
 msgstr "Descriere"
 
-#: ../system-config-printer.glade.h:100 ../troubleshoot/DeviceListed.py:39
+#: ../glade/NewPrinterWindow.glade.h:52 ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "URI dispozitiv"
 
-#: ../system-config-printer.glade.h:101
-msgid "Device URI:"
-msgstr "URI dispozitiv:"
-
-#: ../system-config-printer.glade.h:102
+#: ../glade/NewPrinterWindow.glade.h:53
 msgid "Device description."
 msgstr "Descriere dispozitiv."
 
-#: ../system-config-printer.glade.h:103
+#: ../glade/NewPrinterWindow.glade.h:54
 msgid "DirectJet"
 msgstr "DirectJet"
 
-#: ../system-config-printer.glade.h:105
-#, fuzzy
+#: ../glade/NewPrinterWindow.glade.h:56
 msgid "Driver details"
-msgstr "Drivere"
+msgstr ""
 
-#: ../system-config-printer.glade.h:106
-#, fuzzy
-msgid "E_nabled"
-msgstr "Activ"
-
-#: ../system-config-printer.glade.h:107
+#: ../glade/NewPrinterWindow.glade.h:57
 msgid "Empty"
 msgstr "Gol"
 
-#: ../system-config-printer.glade.h:108
-msgid "Enabled"
-msgstr "Activ"
-
-#: ../system-config-printer.glade.h:109
-msgid "Ending Banner:"
-msgstr "Banner sfârşit:"
-
-#: ../system-config-printer.glade.h:110
-msgid "Error Policy: \t"
-msgstr "Reguli pentru erori: \t"
-
-#: ../system-config-printer.glade.h:111
+#: ../glade/NewPrinterWindow.glade.h:58
 msgid "Find _Queue..."
 msgstr ""
 
-#: ../system-config-printer.glade.h:112
-msgid "Finishings:"
-msgstr "Finisări:"
-
-#: ../system-config-printer.glade.h:113
+#: ../glade/NewPrinterWindow.glade.h:59
 msgid "Flow Control"
 msgstr "Control flux"
 
-#: ../system-config-printer.glade.h:114
+#: ../glade/NewPrinterWindow.glade.h:60
 msgid ""
 "For the printer you have selected there are drivers available for download."
 msgstr ""
 
-#: ../system-config-printer.glade.h:115
-msgid "Gamma:"
-msgstr "Gamma:"
-
-#: ../system-config-printer.glade.h:116
-msgid "Hold until:"
+#: ../glade/NewPrinterWindow.glade.h:61
+msgid "Free software"
 msgstr ""
 
-#: ../system-config-printer.glade.h:117
-#, fuzzy
+#: ../glade/NewPrinterWindow.glade.h:62
+msgid "Graphics:"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:63
 msgid "Host:"
-msgstr "Nume gazdă"
+msgstr "Gazdă:"
 
-#: ../system-config-printer.glade.h:118
-msgid "Hue adjustment:"
-msgstr "Ajustare nuanţă:"
-
-#: ../system-config-printer.glade.h:119
+#: ../glade/NewPrinterWindow.glade.h:64
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 msgstr ""
-"Descriere ce poate fi înţeleasă de oameni ca \"HP LaserJet cu Duplexer\""
+"Descriere ce poate fi înțeleasă de oameni ca \"HP LaserJet cu Duplexer\""
 
-#: ../system-config-printer.glade.h:120
+#: ../glade/NewPrinterWindow.glade.h:65
 msgid "Human-readable location such as \"Lab 1\""
-msgstr "Locaţie ce poate fi înţeleasă de oameni ca \"Lab 1\""
+msgstr "Locație ce poate fi înțeleasă de oameni ca \"Lab 1\""
 
-#: ../system-config-printer.glade.h:121
-msgid "IPP"
-msgstr "IPP"
-
-#: ../system-config-printer.glade.h:122
-msgid "IPP Browser"
-msgstr ""
-
-#: ../system-config-printer.glade.h:123
-#, fuzzy
-msgid "Installed Options"
-msgstr "Opţiuni instalare"
-
-#: ../system-config-printer.glade.h:124
-msgid "Job Options"
-msgstr "Opţiuni lucrări"
-
-#: ../system-config-printer.glade.h:125
-msgid "Job priority:"
-msgstr "Prioritate lucrare:"
-
-#: ../system-config-printer.glade.h:126
+#: ../glade/NewPrinterWindow.glade.h:67
 msgid "LPD"
 msgstr "LPD"
 
-#: ../system-config-printer.glade.h:127
+#: ../glade/NewPrinterWindow.glade.h:68
+msgid "License:"
+msgstr "Licență:"
+
+#: ../glade/NewPrinterWindow.glade.h:69
+msgid "Line art:"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:70
+msgid "Local Driver"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:71
+msgid "Make and model:"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:72
+msgid "Manufacturer"
+msgstr "Producător"
+
+#: ../glade/NewPrinterWindow.glade.h:73
+msgid "Network"
+msgstr "Rețea"
+
+#: ../glade/NewPrinterWindow.glade.h:75
+msgid "No, I do not accept this license"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:76
+msgid "Parity"
+msgstr "Paritate"
+
+#: ../glade/NewPrinterWindow.glade.h:78
+msgid "Patented algorithms"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:79
+msgid "Photo:"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:80
+msgid "Port number:"
+msgstr "Număr de port:"
+
+#: ../glade/NewPrinterWindow.glade.h:81
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often part "
+"of the Windows<sup>®</sup> driver."
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:82
+msgid "Printer model:"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:83
+msgid "Probe"
+msgstr "Probează"
+
+#: ../glade/NewPrinterWindow.glade.h:84
+msgid "Prompt user if authentication is required"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:85
+msgid "Provide PPD file"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:86
+msgid "Queue:"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:87
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../glade/NewPrinterWindow.glade.h:88
+msgid "SMB"
+msgstr "SMB"
+
+#: ../glade/NewPrinterWindow.glade.h:89
+msgid "Search for a printer driver to download"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:90
+msgid "Select A File"
+msgstr "Selectează un fișier"
+
+#: ../glade/NewPrinterWindow.glade.h:91
+msgid "Select printer from database"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:92
+msgid "Serial"
+msgstr "Serie"
+
+#: ../glade/NewPrinterWindow.glade.h:93
+msgid "Set authentication details now"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:94
+msgid "Short name for this printer such as \"laserjet\""
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:95
+msgid "Supplier:"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:96
+msgid "Support:"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:97
+msgid "Text:"
+msgstr "Text:"
+
+#: ../glade/NewPrinterWindow.glade.h:98
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"Baza de date a imprimantelor foomatic conține fișiere Descriere Imprimantă "
+"PostScript (PPD) furnizate de către diverși producători și poate genera "
+"fișiere PPD pentru un număr mare de imprimante (ce nu sunt PostScript). Dar "
+"în general fișierele PPD furnizate de producători dau un acces mai bun la "
+"trăsăturile specifice ale imprimantei."
+
+#: ../glade/NewPrinterWindow.glade.h:99
+msgid ""
+"These drivers do not come from your operating system supplier and will not be "
+"covered by their commercial support.  See the support and license terms of "
+"the driver's supplier."
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:100
+msgid ""
+"This driver supports additional hardware that may be installed in the printer."
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:101
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be lost "
+"and options only present in the new PPD will be set to default."
+msgstr ""
+"Acesta este făcut presupunând că opțiunile cu același nume au aceași "
+"semnificație. Setările opțiunilor ce nu sunt prezente în noul PPD vor fi "
+"pierdute și numai opțiunile prezente în noul PPD vor fi setate ca implicite."
+
+#: ../glade/NewPrinterWindow.glade.h:102
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"În acest mod toate setările opțiunilor curente vor fi pierdute. Vor fi "
+"folosite setările implicite al noului PPD."
+
+#: ../glade/NewPrinterWindow.glade.h:103
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Încearcă să copiezi setările opțiunilor din vechiul PPD."
+
+#: ../glade/NewPrinterWindow.glade.h:104
+msgid "URI:"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:106
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Folosește noul PPD (Descriere Imprimantă Postscript) ca atare."
+
+#: ../glade/NewPrinterWindow.glade.h:108
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:109
+msgid "Yes, I accept this license"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:110
+msgid "_Search"
+msgstr "_Căutare"
+
+#: ../glade/NewPrinterWindow.glade.h:111
+msgid "_Verify..."
+msgstr "_Verifică..."
+
+#: ../glade/NewPrinterWindow.glade.h:112
+#: ../glade/PrinterPropertiesDialog.glade.h:128
+msgid "move left"
+msgstr ""
+
+#: ../glade/NewPrinterWindow.glade.h:113
+#: ../glade/PrinterPropertiesDialog.glade.h:129
+msgid "move right"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../glade/PrinterPropertiesDialog.glade.h:2
+msgid ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+msgstr ""
+"1\n"
+"2\n"
+"4\n"
+"6\n"
+"9\n"
+"16"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:8
+msgid "72 points per inch"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:9
+msgid "<b>Banner</b>"
+msgstr "<b>Banner</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Common Options</b>"
+msgstr "<b>Opțiuni uzuale</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Image Options</b>"
+msgstr "<b>Setări imagine</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Ink/Toner Levels</b>"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:13
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Alte opțiuni (Avansate)</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:14
+msgid "<b>Policies</b>"
+msgstr "<b>Reguli</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:15
+msgid "<b>Settings</b>"
+msgstr "<b>Setări</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:16
+msgid "<b>State</b>"
+msgstr "<b>Stare</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:17
+msgid "<b>Status Messages</b>"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:18
+msgid "<b>Tests and Maintenance</b>"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:19
+msgid "<b>Text Options</b>"
+msgstr "<b>Setări text</b>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:20
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>Nepublicat\n"
+"Vezi setări server</i>"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:22
+msgid "Accepting jobs"
+msgstr "Accept lucrări"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:23
+msgid "Access Control"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:24
+msgid "Add or Remove Members"
+msgstr "Adaugă sau șterge membri"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:25
+msgid "Allow printing for everyone except these users:"
+msgstr "Permite tipărirea oricui cu excepția acestor utilizatori:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:26
+msgid "Bottom margin:"
+msgstr "Margine subsol:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:27
+msgid "Brightness:"
+msgstr "Luminozitate:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:28
+msgid "Change..."
+msgstr "Schimbă..."
+
+#: ../glade/PrinterPropertiesDialog.glade.h:29
+msgid "Characters per inch:"
+msgstr "Caractere pe inch:"
+
+#. Not more than 25 characters
+#: ../glade/PrinterPropertiesDialog.glade.h:31
+msgid "Clean Print Heads"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:32
+msgid "Columns:"
+msgstr "Coloane:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:33
+msgid "Copies:"
+msgstr "Copii:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:34
+msgid "Deny printing for everyone except these users:"
+msgstr "Refuză tipărirea oricui mai puțin acestor utilizatori:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:36
+msgid "Device URI:"
+msgstr "URI dispozitiv:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:37
+msgid "Enabled"
+msgstr "Activ"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:38
+msgid "Ending Banner:"
+msgstr "Banner sfârșit:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:39
+msgid "Error Policy: \t"
+msgstr "Reguli pentru erori: \t"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:40
+msgid "Finishings:"
+msgstr "Finisări:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:41
+msgid "Gamma:"
+msgstr "Gama:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:42
+msgid "Hold until:"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:43
+msgid "Hue adjustment:"
+msgstr "Ajustare nuanță:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:44
+msgid "Ink/Toner Levels"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:45
+msgid "Installed Options"
+msgstr ""
+
+#: ../glade/PrinterPropertiesDialog.glade.h:46
+msgid "Job Options"
+msgstr "Opțiuni lucrări"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:47
+msgid "Job priority:"
+msgstr "Prioritate lucrare:"
+
+#: ../glade/PrinterPropertiesDialog.glade.h:48
 msgid "Left margin:"
 msgstr "Margine stânga:"
 
-#: ../system-config-printer.glade.h:128
+#: ../glade/PrinterPropertiesDialog.glade.h:49
 msgid ""
 "Left to right, top to bottom\n"
 "Left to right, bottom to top\n"
@@ -1478,66 +2229,35 @@ msgstr ""
 "Jos către sus, stânga către dreapta\n"
 "Jos către sus, dreapta către stânga"
 
-#: ../system-config-printer.glade.h:136
-msgid "License:"
-msgstr ""
-
-#: ../system-config-printer.glade.h:137
+#: ../glade/PrinterPropertiesDialog.glade.h:57
 msgid "Lines per inch:"
 msgstr "Linii pe inch:"
 
-#: ../system-config-printer.glade.h:138
-#, fuzzy
-msgid "Local Driver"
-msgstr "Imprimante locale"
-
-#: ../system-config-printer.glade.h:139
+#: ../glade/PrinterPropertiesDialog.glade.h:58
 msgid "Location:"
-msgstr "Locaţie"
+msgstr "Locație"
 
-#: ../system-config-printer.glade.h:140
+#: ../glade/PrinterPropertiesDialog.glade.h:59
 msgid "Make and Model:"
-msgstr "Producător şi model:"
+msgstr "Producător și model:"
 
-#: ../system-config-printer.glade.h:141
-#, fuzzy
-msgid "Make and model:"
-msgstr "Producător şi model:"
-
-#: ../system-config-printer.glade.h:142
+#: ../glade/PrinterPropertiesDialog.glade.h:60
 msgid "Media:"
 msgstr "Media:"
 
-#: ../system-config-printer.glade.h:143
+#: ../glade/PrinterPropertiesDialog.glade.h:61
 msgid "Members"
 msgstr "Membri"
 
-#: ../system-config-printer.glade.h:144
+#: ../glade/PrinterPropertiesDialog.glade.h:62
 msgid "Mirror"
 msgstr "Oglindă"
 
-#: ../system-config-printer.glade.h:145
+#: ../glade/PrinterPropertiesDialog.glade.h:63
 msgid "More"
 msgstr "Mai mult"
 
-#: ../system-config-printer.glade.h:146
-msgid "Move left"
-msgstr ""
-
-#: ../system-config-printer.glade.h:147
-#, fuzzy
-msgid "Move right"
-msgstr "Copyright"
-
-#: ../system-config-printer.glade.h:149
-msgid "New name for the printer"
-msgstr "Nume nou pentru imprimantă"
-
-#: ../system-config-printer.glade.h:150
-msgid "No, I do not accept this license"
-msgstr ""
-
-#: ../system-config-printer.glade.h:151
+#: ../glade/PrinterPropertiesDialog.glade.h:64
 msgid ""
 "None\n"
 "Staple\n"
@@ -1578,7 +2298,7 @@ msgstr ""
 "Împăturire\n"
 "Elegant\n"
 "Teanc\n"
-"Creator broşură\n"
+"Creator broșură\n"
 "Ofset lucrare\n"
 "Capsare (stânga sus)\n"
 "Capsare (stânga jos)\n"
@@ -1597,466 +2317,274 @@ msgstr ""
 "Legare (dreapta)\n"
 "Legare (jos)"
 
-#: ../system-config-printer.glade.h:179
+#: ../glade/PrinterPropertiesDialog.glade.h:92
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
 "Two-sided (short edge)"
 msgstr ""
-"O singură faţă \n"
-"Două feţe (margine lungă) \n"
-"Două feţe (margine scurtă)"
+"O singură față \n"
+"Două fețe (margine lungă) \n"
+"Două fețe (margine scurtă)"
 
-#: ../system-config-printer.glade.h:182
+#: ../glade/PrinterPropertiesDialog.glade.h:95
 msgid "Operation Policy:"
-msgstr "Reguli operaţiuni:"
+msgstr "Reguli operațiuni:"
 
-#: ../system-config-printer.glade.h:183
+#: ../glade/PrinterPropertiesDialog.glade.h:96
 msgid "Orientation:"
 msgstr "Orientare:"
 
-#: ../system-config-printer.glade.h:184
+#: ../glade/PrinterPropertiesDialog.glade.h:97
 msgid "Pages per side layout:"
 msgstr "Aranjament pagini pe foaie:"
 
-#: ../system-config-printer.glade.h:185
+#: ../glade/PrinterPropertiesDialog.glade.h:98
 msgid "Pages per side:"
 msgstr "Pagini pe foaie:"
 
-#: ../system-config-printer.glade.h:186
-msgid "Parity"
-msgstr "Paritate"
-
-#: ../system-config-printer.glade.h:188
-msgid "Please Wait"
-msgstr ""
-
-#: ../system-config-printer.glade.h:189
+#: ../glade/PrinterPropertiesDialog.glade.h:99
 msgid "Policies"
 msgstr "Reguli"
 
-#: ../system-config-printer.glade.h:190
-#, fuzzy
-msgid "Port number:"
-msgstr "Număr port"
-
-#: ../system-config-printer.glade.h:191
+#: ../glade/PrinterPropertiesDialog.glade.h:100
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
 "Reverse landscape (270°)\n"
 "Reverse portrait (180°)"
 msgstr ""
-"Portret (nici o rotaţie)\n"
+"Portret (nici o rotație)\n"
 "Peisaj (90°)\n"
 "Peisaj inversat (270°)\n"
 "Portret inversat (180°)"
 
-#: ../system-config-printer.glade.h:195
-#, fuzzy
-msgid ""
-"PostScript Printer Description (PPD) files can often be found on the driver "
-"disk that comes with the printer. For PostScript printers they are often "
-"part of the Windows<sup>®</sup> driver."
-msgstr ""
-"Fişierele Descriere Imprimantă PostScript (PPD) adesea pot fi găsite pe "
-"discul cu drivere ce vine odată cu imprimanta. Pentru imprimantele "
-"PostScript adesea fac parte din driver-ul Windows<sup>®</sup>."
-
-#: ../system-config-printer.glade.h:196
+#: ../glade/PrinterPropertiesDialog.glade.h:104
 msgid "Pretty print"
-msgstr "Listare înfrumuseţată"
+msgstr "Listare înfrumusețată"
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:198
-#, fuzzy
+#: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Print Self-Test Page"
-msgstr "Imprimă pagină de test"
+msgstr ""
 
 #. Not more than 25 characters
-#: ../system-config-printer.glade.h:200 ../troubleshoot/PrintTestPage.py:67
+#: ../glade/PrinterPropertiesDialog.glade.h:108
+#: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Imprimă pagină de test"
 
-#: ../system-config-printer.glade.h:202
-#, fuzzy
+#: ../glade/PrinterPropertiesDialog.glade.h:110
 msgid "Printer Properties"
-msgstr "Raport imprimantă"
+msgstr "Proprietățile imprimantei"
 
-#: ../system-config-printer.glade.h:203
+#: ../glade/PrinterPropertiesDialog.glade.h:111
 msgid "Printer State:"
-msgstr "Stare imprimantă:"
+msgstr "Starea imprimantei:"
 
-#: ../system-config-printer.glade.h:204
-#, fuzzy
-msgid "Printer model:"
-msgstr "Nume imprimantă"
-
-#: ../system-config-printer.glade.h:205
-msgid "Probe"
-msgstr "Probează"
-
-#: ../system-config-printer.glade.h:206
-#, fuzzy
-msgid "Prompt user if authentication is required"
-msgstr "<b>Autentificare</b>"
-
-#: ../system-config-printer.glade.h:207
-#, fuzzy
-msgid "Provide PPD file"
-msgstr "Furnizează fişier PPD"
-
-#: ../system-config-printer.glade.h:208
-#, fuzzy
-msgid "Publish shared printers connected to this system"
-msgstr "Partajează imprimante publice conectate la acest sistem"
-
-#: ../system-config-printer.glade.h:209
-msgid "Queue:"
-msgstr ""
-
-#: ../system-config-printer.glade.h:210
-msgid "Require encryption"
-msgstr "Necesită encriptare"
-
-#: ../system-config-printer.glade.h:211
+#: ../glade/PrinterPropertiesDialog.glade.h:112
 msgid "Reset"
-msgstr "Reset"
+msgstr "Resetează"
 
-#: ../system-config-printer.glade.h:212
+#: ../glade/PrinterPropertiesDialog.glade.h:113
 msgid "Reset to system default"
 msgstr "Resetare la valorile implicite"
 
-#: ../system-config-printer.glade.h:213
+#: ../glade/PrinterPropertiesDialog.glade.h:114
 msgid "Right margin:"
 msgstr "Margine dreapta:"
 
-#: ../system-config-printer.glade.h:214
-msgid "SCSI"
-msgstr "SCSI"
-
-#: ../system-config-printer.glade.h:215
-msgid "SMB"
-msgstr "SMB"
-
-#: ../system-config-printer.glade.h:216
-msgid "SMB Browser"
-msgstr ""
-
-#: ../system-config-printer.glade.h:217
+#: ../glade/PrinterPropertiesDialog.glade.h:115
 msgid "Saturation:"
 msgstr "Saturare:"
 
-#: ../system-config-printer.glade.h:218
-msgid "Save debugging information for troubleshooting"
-msgstr "Salvaţi informaţiile de debugging pentru depanare"
-
-#: ../system-config-printer.glade.h:219
+#: ../glade/PrinterPropertiesDialog.glade.h:116
 msgid "Scale to fit"
 msgstr "Redimensionează pentru potrivire"
 
-#: ../system-config-printer.glade.h:220
+#: ../glade/PrinterPropertiesDialog.glade.h:117
 msgid "Scaling:"
 msgstr "Redimensionează:"
 
-#: ../system-config-printer.glade.h:221
-msgid "Search for a printer driver to download"
-msgstr ""
-
-#: ../system-config-printer.glade.h:222
-msgid "Select A File"
-msgstr "Selectează un fişier"
-
-#: ../system-config-printer.glade.h:223
-#, fuzzy
-msgid "Select printer from database"
-msgstr "Selectează imprimantă din baza de date"
-
-#: ../system-config-printer.glade.h:224
-msgid "Serial"
-msgstr "Serie"
-
-#: ../system-config-printer.glade.h:225
-#, fuzzy
-msgid "Set As De_fault"
-msgstr "implicit"
-
-#: ../system-config-printer.glade.h:226
-#, fuzzy
-msgid "Set As Default"
-msgstr "implicit"
-
-#: ../system-config-printer.glade.h:227
-#, fuzzy
-msgid "Set authentication details now"
-msgstr "<b>Autentificare</b>"
-
-#: ../system-config-printer.glade.h:228
+#: ../glade/PrinterPropertiesDialog.glade.h:118
 msgid "Settings"
 msgstr "Setări"
 
-#: ../system-config-printer.glade.h:229
+#: ../glade/PrinterPropertiesDialog.glade.h:119
 msgid "Shared"
 msgstr "Partajat"
 
-#: ../system-config-printer.glade.h:230
-msgid "Short name for this printer such as \"laserjet\""
-msgstr ""
-
-#: ../system-config-printer.glade.h:231
-msgid "Show printers shared by other systems"
-msgstr "Arată imprimantele partajate de alte sisteme"
-
-#: ../system-config-printer.glade.h:232
+#: ../glade/PrinterPropertiesDialog.glade.h:120
 msgid "Sides:"
-msgstr "Feţe:"
+msgstr "Fețe:"
 
-#: ../system-config-printer.glade.h:233
+#: ../glade/PrinterPropertiesDialog.glade.h:121
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
-"print server will have these options added if they are not already set by "
-"the application."
+"print server will have these options added if they are not already set by the "
+"application."
 msgstr ""
-"Specificaţi setările iniţiale pentru lucrările pe această imprimantă. "
+"Specificați setările inițiale pentru lucrările pe această imprimantă. "
 "Lucrările care ajung la acest server de imprimare vor avea adăugate aceste "
-"opţiuni dacă nu sunt deja setate de către aplicaţie."
+"opțiuni dacă nu sunt deja setate de către aplicație."
 
-#: ../system-config-printer.glade.h:234
+#: ../glade/PrinterPropertiesDialog.glade.h:122
 msgid "Starting Banner:"
 msgstr "Banner de început:"
 
-#: ../system-config-printer.glade.h:235
-msgid "Supplier:"
+#: ../glade/PrinterPropertiesDialog.glade.h:123
+msgid "There are no status messages for this printer."
 msgstr ""
 
-#: ../system-config-printer.glade.h:236
-msgid "Support:"
-msgstr ""
-
-#: ../system-config-printer.glade.h:237
-msgid "System-Config-Printer"
-msgstr "System-Config-Printer"
-
-#: ../system-config-printer.glade.h:238
-msgid ""
-"The foomatic printer database contains various manufacturer provided "
-"PostScript Printer Description (PPD) files and also can generate PPD files "
-"for a large number of (non PostScript) printers. But in general manufacturer "
-"provided PPD files provide better access to the specific features of the "
-"printer."
-msgstr ""
-"Baza de date a imprimantelor foomatic conţine fişiere Descriere Imprimantă "
-"PostScript (PPD) furnizate de către diverşi producători şi poate genera "
-"fişiere PPD pentru un număr mare de imprimante (ce nu sunt PostScript). Dar "
-"în general fişierele PPD furnizate de producători dau un acces mai bun la "
-"trăsăturile specifice ale imprimantei."
-
-#: ../system-config-printer.glade.h:239
-msgid ""
-"These drivers do not come from your operating system supplier and will not "
-"be covered by their commercial support.  See the support and license terms "
-"of the driver's supplier."
-msgstr ""
-
-#: ../system-config-printer.glade.h:240
-msgid ""
-"This driver supports additional hardware that may be installed in the "
-"printer."
-msgstr ""
-
-#: ../system-config-printer.glade.h:241
-msgid ""
-"This is done by assuming that options with the same name do have the same "
-"meaning. Settings of options that are not present in the new PPD will be "
-"lost and options only present in the new PPD will be set to default."
-msgstr ""
-"Acesta este făcut presupunând că opţiunile cu acelaşi nume au aceaşi "
-"semnificaţie. Setările opţiunilor ce nu sunt prezente în noul PPD vor fi "
-"pierdute şi numai opţiunile prezente în noul PPD vor fi setate ca implicite."
-
-#: ../system-config-printer.glade.h:242
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
-"Ave, Cambridge, MA 02139, USA."
-msgstr ""
-
-#: ../system-config-printer.glade.h:247
-msgid ""
-"This way all current option settings will be lost. The default settings of "
-"the new PPD will be used. "
-msgstr ""
-"În acest mod toate setările opţiunilor curente vor fi pierdute. Vor fi "
-"folosite setările implicite al noului PPD."
-
-#: ../system-config-printer.glade.h:248
+#: ../glade/PrinterPropertiesDialog.glade.h:124
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
-"Pentru a adăuga o nouă opţiune, introduceţi o denumire în căsuţa de mai jos "
-"şi click pentru adăugare."
+"Pentru a adăuga o nouă opțiune, introduceți o denumire în căsuța de mai jos "
+"și click pentru adăugare."
 
-#: ../system-config-printer.glade.h:249
+#: ../glade/PrinterPropertiesDialog.glade.h:125
 msgid "Top margin:"
 msgstr "Margine sus:"
 
-#: ../system-config-printer.glade.h:250
-msgid "Try to copy the option settings over from the old PPD. "
-msgstr "Încearcă să copiezi setările opţiunilor din vechiul PPD."
-
-#: ../system-config-printer.glade.h:251
-msgid "URI:"
-msgstr ""
-
-#: ../system-config-printer.glade.h:252
-msgid "Use the new PPD (Postscript Printer Description) as is."
-msgstr "Foloseşte noul PPD (Descriere Imprimantă Postscript) ca atare."
-
-#: ../system-config-printer.glade.h:254
-#, fuzzy
-msgid "View Print _Queue"
-msgstr "Imprimantă nouă "
-
-#: ../system-config-printer.glade.h:255
-msgid ""
-"With this choice no driver download will be performed. In the next steps a "
-"locally installed driver will be selected."
-msgstr ""
-
-#: ../system-config-printer.glade.h:256
+#: ../glade/PrinterPropertiesDialog.glade.h:126
 msgid "Word wrap"
-msgstr "Înfăşurare text"
+msgstr "Înfășurare text"
 
-#: ../system-config-printer.glade.h:257
-#, fuzzy
-msgid "Yes, I accept this license"
-msgstr "Accept lucrări"
-
-#: ../system-config-printer.glade.h:258
-#, fuzzy
-msgid "_Class"
-msgstr "Grupă nouă"
-
-#: ../system-config-printer.glade.h:259
-#, fuzzy
-msgid "_Connect..."
-msgstr "Conectare"
-
-#: ../system-config-printer.glade.h:260
-#, fuzzy
-msgid "_Create Class"
-msgstr "Grupuri distante"
-
-#: ../system-config-printer.glade.h:261
-msgid "_Discovered Printers"
-msgstr ""
-
-#: ../system-config-printer.glade.h:262
-#, fuzzy
-msgid "_Enabled"
-msgstr "Activ"
-
-#: ../system-config-printer.glade.h:263
-msgid "_Help"
-msgstr "_Ajutor"
-
-#: ../system-config-printer.glade.h:264
-msgid "_Install"
-msgstr ""
-
-#: ../system-config-printer.glade.h:265
-#, fuzzy
-msgid "_New"
-msgstr "_Vizualizează"
-
-#: ../system-config-printer.glade.h:266
-#, fuzzy
-msgid "_Printer"
-msgstr "Imprimantă"
-
-#: ../system-config-printer.glade.h:267
-#, fuzzy
-msgid "_Rename"
-msgstr "Elibe_rează"
-
-#: ../system-config-printer.glade.h:268
-msgid "_Search"
-msgstr ""
-
-#: ../system-config-printer.glade.h:269
-#, fuzzy
-msgid "_Server"
-msgstr "Mer_gi către server"
-
-#: ../system-config-printer.glade.h:270
-#, fuzzy
-msgid "_Settings..."
-msgstr "Setări"
-
-#: ../system-config-printer.glade.h:271
-#, fuzzy
-msgid "_Shared"
-msgstr "Partajat"
-
-#: ../system-config-printer.glade.h:272
-msgid "_Troubleshoot"
-msgstr ""
-
-#: ../system-config-printer.glade.h:273
-msgid "_Verify..."
-msgstr "_Verifică..."
-
-#: ../system-config-printer.glade.h:274 ../applet.glade.h:10
-msgid "_View"
-msgstr "_Vizualizează"
-
-#: ../system-config-printer.glade.h:275
+#: ../glade/PrinterPropertiesDialog.glade.h:127
 msgid "default"
 msgstr "implicit"
 
-#: ../system-config-printer.glade.h:276
-msgid "move left"
-msgstr ""
-
-#: ../system-config-printer.glade.h:277
+#: ../glade/PrinterPropertiesDialog.glade.h:130
 msgid "none"
 msgstr "nici unul"
 
-#: ../system-config-printer.glade.h:278
+#: ../glade/PrinterPropertiesDialog.glade.h:131
 msgid "points"
 msgstr "puncte"
 
-#: ../system-config-printer.glade.h:279
-#, fuzzy
-msgid "system-config-printer"
-msgstr "System-Config-Printer"
+#: ../glade/PrinterPropertiesDialog.glade.h:132
+msgid "user"
+msgstr "utilizator"
 
-#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
-#: ../system-config-printer.glade.h:281
-msgid "translator-credits"
+#: ../glade/PrintersWindow.glade.h:1
+msgid "Adjust server settings"
 msgstr ""
 
-#: ../system-config-printer.glade.h:282
-#, fuzzy
-msgid "user"
-msgstr "Utilizatori"
+#: ../glade/PrintersWindow.glade.h:2
+msgid "Choose a different CUPS server"
+msgstr ""
+
+#: ../glade/PrintersWindow.glade.h:3
+msgid "Show printer groups"
+msgstr ""
+
+#: ../glade/PrintersWindow.glade.h:4
+msgid "Show printers shared by other systems"
+msgstr "Arată imprimantele partajate de alte sisteme"
+
+#: ../glade/PrintersWindow.glade.h:5
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../glade/PrintersWindow.glade.h:6
+msgid "_Class"
+msgstr "_Clasă"
+
+#: ../glade/PrintersWindow.glade.h:7
+msgid "_Connect..."
+msgstr "_Conectare..."
+
+#: ../glade/PrintersWindow.glade.h:8
+msgid "_Discovered Printers"
+msgstr ""
+
+#: ../glade/PrintersWindow.glade.h:9
+msgid "_Group"
+msgstr "_Grup"
+
+#: ../glade/PrintersWindow.glade.h:10
+msgid "_Groups"
+msgstr "_Grupuri"
+
+#: ../glade/PrintersWindow.glade.h:11
+msgid "_Help"
+msgstr "_Ajutor"
+
+#: ../glade/PrintersWindow.glade.h:12
+msgid "_New"
+msgstr "_Nou"
+
+#: ../glade/PrintersWindow.glade.h:13
+msgid "_Printer"
+msgstr "Im_primantă"
+
+#: ../glade/PrintersWindow.glade.h:14
+msgid "_Server"
+msgstr "_Server"
+
+#: ../glade/PrintersWindow.glade.h:15
+msgid "_Settings..."
+msgstr ""
+
+#: ../glade/PrintersWindow.glade.h:16
+msgid "_Troubleshoot"
+msgstr ""
+
+#: ../glade/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Setări de bază server</b>"
+
+#: ../glade/ServerSettingsDialog.glade.h:2
+msgid "Allow _remote administration"
+msgstr ""
+
+#: ../glade/ServerSettingsDialog.glade.h:3
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr ""
+
+#: ../glade/ServerSettingsDialog.glade.h:4
+msgid "Allow printing from the _Internet"
+msgstr ""
+
+#: ../glade/ServerSettingsDialog.glade.h:5
+msgid "Basic Server Settings"
+msgstr ""
+
+#: ../glade/ServerSettingsDialog.glade.h:6
+msgid "Save _debugging information for troubleshooting"
+msgstr ""
+
+#: ../glade/ServerSettingsDialog.glade.h:7
+msgid "_Publish shared printers connected to this system"
+msgstr ""
+
+#: ../glade/ServerSettingsDialog.glade.h:8
+msgid "_Show printers shared by other systems"
+msgstr "Arată imprimantele partajate de alte _sisteme"
+
+#: ../glade/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr ""
+
+#: ../glade/statusicon_popupmenu.glade.h:1
+msgid "_Configure Printers"
+msgstr ""
+
+#: ../glade/statusicon_popupmenu.glade.h:2
+msgid "_Hide"
+msgstr "Ascunde"
+
+#: ../glade/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "Vă rugăm să așteptați"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
-msgstr "Configurează imprimante"
+msgstr "Configurează imprimantele"
 
 #: ../system-config-printer.desktop.in.h:2
 msgid "Printing"
-msgstr "Imprimare"
+msgstr "Tipărire"
 
 #: ../statereason.py:85
 msgid "Toner low"
@@ -2065,7 +2593,7 @@ msgstr "Toner scăzut"
 #: ../statereason.py:86
 #, python-format
 msgid "Printer '%s' is low on toner."
-msgstr "Imprimanta '%s' are toner puţin."
+msgstr "Imprimanta „%s” mai are doar puțin toner."
 
 #: ../statereason.py:87
 msgid "Toner empty"
@@ -2074,7 +2602,7 @@ msgstr "Toner gol"
 #: ../statereason.py:88
 #, python-format
 msgid "Printer '%s' has no toner left."
-msgstr "Imprimanta '%s' nu mai are toner."
+msgstr "Imprimanta „%s” nu mai are toner."
 
 #: ../statereason.py:89
 msgid "Cover open"
@@ -2083,25 +2611,25 @@ msgstr "Capac deschis"
 #: ../statereason.py:90
 #, python-format
 msgid "The cover is open on printer '%s'."
-msgstr "Capacul imprimantei '%s' este deschis."
+msgstr "Capacul imprimantei „%s” este deschis."
 
 #: ../statereason.py:91
 msgid "Door open"
-msgstr "Uşă deschisă"
+msgstr "Ușă deschisă"
 
 #: ../statereason.py:92
 #, python-format
 msgid "The door is open on printer '%s'."
-msgstr "Uşă deschisă la imprimanta '%s'."
+msgstr "Ușa imprimantei „%s” este deschisă."
 
 #: ../statereason.py:93
 msgid "Paper low"
-msgstr "Hârtie puţină"
+msgstr "Hârtie puțină"
 
 #: ../statereason.py:94
 #, python-format
 msgid "Printer '%s' is low on paper."
-msgstr "Imprimanta '%s' are hârtie puţină."
+msgstr "Imprimanta „%s” are hârtie puțină."
 
 #: ../statereason.py:95
 msgid "Out of paper"
@@ -2110,35 +2638,34 @@ msgstr "Fără hârtie"
 #: ../statereason.py:96
 #, python-format
 msgid "Printer '%s' is out of paper."
-msgstr "Imprimanta '%s' nu mai are hârtie."
+msgstr "Imprimanta „%s” nu mai are hârtie."
 
 #: ../statereason.py:97
 msgid "Ink low"
-msgstr "Tuş puţin"
+msgstr "Tuș puțin"
 
 #: ../statereason.py:98
 #, python-format
 msgid "Printer '%s' is low on ink."
-msgstr "Imprimanta '%s' are tuş puţin."
+msgstr "Imprimanta „%s” mai are doar puțină cerneală."
 
 #: ../statereason.py:99
 msgid "Ink empty"
-msgstr "Fără tuş"
+msgstr "Fără tuș"
 
 #: ../statereason.py:100
 #, python-format
 msgid "Printer '%s' has no ink left."
-msgstr "Imprimanta '%s' nu mai are tuş."
+msgstr "Imprimanta „%s” nu mai are tuș."
 
 #: ../statereason.py:101
-#, fuzzy
 msgid "Printer off-line"
-msgstr "Opţiuni imprimantă"
+msgstr ""
 
 #: ../statereason.py:102
-#, fuzzy, python-format
-msgid "Printer `%s' is currently off-line."
-msgstr "Imprimanta '%s' nu mai are hârtie."
+#, python-format
+msgid "Printer '%s' is currently off-line."
+msgstr ""
 
 #: ../statereason.py:103
 msgid "Not connected?"
@@ -2147,31 +2674,43 @@ msgstr "Neconectat?"
 #: ../statereason.py:104
 #, python-format
 msgid "Printer '%s' may not be connected."
-msgstr "Imprimanta '%s' s-ar putea să nu fie conectată."
+msgstr "S-ar putea ca imprimanta „%s” să nu fie conectată."
 
 #: ../statereason.py:105 ../statereason.py:121
 msgid "Printer error"
-msgstr "Eroare imprimantă"
+msgstr "Eroare de imprimantă"
 
 #: ../statereason.py:106
-#, fuzzy, python-format
-msgid "There is a problem on printer `%s'."
-msgstr "Uşă deschisă la imprimanta '%s'."
+#, python-format
+msgid "There is a problem on printer '%s'."
+msgstr ""
 
 #: ../statereason.py:117
 msgid "Printer report"
-msgstr "Raport imprimantă"
+msgstr "Raport de imprimantă"
 
 #: ../statereason.py:119
 msgid "Printer warning"
-msgstr "Avertisment imprimantă"
+msgstr "Avertisment de la imprimantă"
 
 #: ../statereason.py:122
 #, python-format
 msgid "Printer '%s': '%s'."
-msgstr "Imprimanta '%s': '%s'."
+msgstr "Imprimanta „%s”: „%s”."
 
-#: ../troubleshoot/__init__.py:52
+#: ../timedops.py:100 ../timedops.py:168
+msgid "Please wait"
+msgstr "Vă rugăm să așteptați"
+
+#: ../timedops.py:106 ../timedops.py:175
+msgid "Gathering information"
+msgstr ""
+
+#: ../ToolbarSearchEntry.py:73
+msgid "_Filter:"
+msgstr "_Filtru:"
+
+#: ../troubleshoot/__init__.py:54
 msgid "Printing troubleshooter"
 msgstr ""
 
@@ -2181,150 +2720,113 @@ msgid ""
 "menu."
 msgstr ""
 
-#: ../troubleshoot/CheckLocalServerPublishing.py:27
+#: ../troubleshoot/CheckLocalServerPublishing.py:28
 msgid "Server Not Exporting Printers"
 msgstr ""
 
-#: ../troubleshoot/CheckLocalServerPublishing.py:28
+#: ../troubleshoot/CheckLocalServerPublishing.py:29
 msgid ""
 "Although one or more printers are marked as being shared, this print server "
 "is not exporting shared printers to the network."
 msgstr ""
 
-#: ../troubleshoot/CheckLocalServerPublishing.py:32
+#: ../troubleshoot/CheckLocalServerPublishing.py:33
 msgid ""
 "Enable the 'Publish shared printers connected to this system' option in the "
 "server settings using the printing administration tool."
 msgstr ""
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:147
-#, fuzzy
+#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:169
 msgid "Install"
-msgstr "Driver lipsă"
+msgstr "Instalare"
 
-#: ../troubleshoot/CheckPPDSanity.py:93
-#, fuzzy
+#: ../troubleshoot/CheckPPDSanity.py:96
 msgid "Invalid PPD File"
-msgstr "Furnizează fişier PPD"
+msgstr ""
 
-#: ../troubleshoot/CheckPPDSanity.py:102
+#: ../troubleshoot/CheckPPDSanity.py:106
 #, python-format
 msgid ""
-"The PPD file for printer `%s' does not conform to the specification.  "
+"The PPD file for printer '%s' does not conform to the specification.  "
 "Possible reason follows:"
 msgstr ""
 
 #. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:108
-#, fuzzy, python-format
-msgid "There is a problem with the PPD file for printer `%s'."
-msgstr "Uşă deschisă la imprimanta '%s'."
+#: ../troubleshoot/CheckPPDSanity.py:112
+#, python-format
+msgid "There is a problem with the PPD file for printer '%s'."
+msgstr ""
 
-#: ../troubleshoot/CheckPPDSanity.py:118
-#, fuzzy
+#: ../troubleshoot/CheckPPDSanity.py:122
 msgid "Missing Printer Driver"
-msgstr "Driver lipsă"
-
-#: ../troubleshoot/CheckPPDSanity.py:121
-#, fuzzy, python-format
-msgid "Printer `%s' requires the %s package but it is not currently installed."
 msgstr ""
-"Imprimanta '%s' necesită pachetul %s ce nu este instalat.  Vă rog instalaţi-"
-"l înainte de a folosi această imprimantă."
 
-#: ../troubleshoot/CheckPPDSanity.py:126
-#, fuzzy, python-format
+#: ../troubleshoot/CheckPPDSanity.py:136
+#, python-format
 msgid ""
-"Printer `%s' requires the `%s' program but it is not currently installed."
+"Printer '%s' requires the '%s' program but it is not currently installed."
 msgstr ""
-"Imprimanta '%s' necesită pachetul %s ce nu este instalat.  Vă rog instalaţi-"
-"l înainte de a folosi această imprimantă."
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:28
-#, fuzzy
-msgid "Choose Network Printer"
-msgstr "Imprimantă nouă "
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
+msgid "Choose Network Printer"
+msgstr ""
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:30
 msgid ""
 "Please select the network printer you are trying to use from the list below. "
 "If it does not appear in the list, select 'Not listed'."
 msgstr ""
 
-#: ../troubleshoot/ChooseNetworkPrinter.py:34
-#: ../troubleshoot/ChoosePrinter.py:35 ../troubleshoot/DeviceListed.py:35
-msgid "Name"
-msgstr "Nume"
-
-#: ../troubleshoot/ChooseNetworkPrinter.py:38
-#: ../troubleshoot/ChoosePrinter.py:39 ../troubleshoot/DeviceListed.py:37
-#, fuzzy
+#: ../troubleshoot/ChooseNetworkPrinter.py:39
+#: ../troubleshoot/ChoosePrinter.py:40 ../troubleshoot/DeviceListed.py:38
 msgid "Information"
-msgstr "Locaţie"
+msgstr "Informații"
 
-#: ../troubleshoot/ChooseNetworkPrinter.py:74
-#: ../troubleshoot/ChoosePrinter.py:63 ../troubleshoot/DeviceListed.py:69
-#, fuzzy
+#: ../troubleshoot/ChooseNetworkPrinter.py:75
+#: ../troubleshoot/ChoosePrinter.py:64 ../troubleshoot/DeviceListed.py:70
 msgid "Not listed"
-msgstr "Neconectat"
-
-#: ../troubleshoot/ChoosePrinter.py:29
-#, fuzzy
-msgid "Choose Printer"
-msgstr "Imprimantă de copiere"
+msgstr ""
 
 #: ../troubleshoot/ChoosePrinter.py:30
+msgid "Choose Printer"
+msgstr ""
+
+#: ../troubleshoot/ChoosePrinter.py:31
 msgid ""
 "Please select the printer you are trying to use from the list below. If it "
 "does not appear in the list, select 'Not listed'."
 msgstr ""
 
-#: ../troubleshoot/DeviceListed.py:29
-#, fuzzy
-msgid "Choose Device"
-msgstr "Schimbă URI dispozitiv"
-
 #: ../troubleshoot/DeviceListed.py:30
+msgid "Choose Device"
+msgstr ""
+
+#: ../troubleshoot/DeviceListed.py:31
 msgid ""
 "Please select the device you want to use from the list below. If it does not "
 "appear in the list, select 'Not listed'."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:30
-#: ../troubleshoot/ErrorLogFetch.py:30
+#: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:31
+#: ../troubleshoot/ErrorLogCheckpoint.py:32
 msgid ""
 "I would like to enable debugging output from the CUPS scheduler.  This may "
 "cause the scheduler to restart.  Click the button below to enable debugging."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:35
+#: ../troubleshoot/ErrorLogCheckpoint.py:36
 msgid "Enable Debugging"
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:190
+#: ../troubleshoot/ErrorLogCheckpoint.py:211
 msgid "Debug logging enabled."
 msgstr ""
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:192
+#: ../troubleshoot/ErrorLogCheckpoint.py:213
 msgid "Debug logging was already enabled."
-msgstr ""
-
-#: ../troubleshoot/ErrorLogFetch.py:31
-msgid ""
-"I would like to disable debugging output from the CUPS scheduler.  This may "
-"cause the scheduler to restart.  Click the button below to disable debugging."
-msgstr ""
-
-#: ../troubleshoot/ErrorLogFetch.py:35
-msgid "Disable Debugging"
-msgstr ""
-
-#: ../troubleshoot/ErrorLogFetch.py:134
-msgid "Debug logging disabled."
 msgstr ""
 
 #: ../troubleshoot/ErrorLogParse.py:29
@@ -2350,95 +2852,85 @@ msgid "Print job page size:"
 msgstr ""
 
 #: ../troubleshoot/Locale.py:48
-#, fuzzy
 msgid "Printer page size:"
-msgstr "Stare imprimantă:"
+msgstr ""
 
 #: ../troubleshoot/LocalOrRemote.py:26
-#, fuzzy
 msgid "Printer Location"
-msgstr "Opţiuni imprimantă"
+msgstr "Locația imprimantei"
 
 #: ../troubleshoot/LocalOrRemote.py:27
-#, fuzzy
 msgid "Is the printer connected to this computer or available on the network?"
-msgstr "O imprimantă conectată la un port paralel."
+msgstr ""
 
 #: ../troubleshoot/LocalOrRemote.py:29
-#, fuzzy
 msgid "Locally connected printer"
-msgstr "Sigur şterg imprimanta %s?"
-
-#: ../troubleshoot/NetworkCUPSPrinterShared.py:27
-msgid "Queue Not Shared"
 msgstr ""
 
 #: ../troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr ""
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
 msgid "The CUPS printer on the server is not shared."
 msgstr ""
 
-#: ../troubleshoot/PrinterStateReasons.py:28
-#, fuzzy
-msgid "Status Messages"
-msgstr "Mesaj"
-
 #: ../troubleshoot/PrinterStateReasons.py:29
+msgid "Status Messages"
+msgstr ""
+
+#: ../troubleshoot/PrinterStateReasons.py:30
 msgid "There are status messages associated with this queue."
 msgstr ""
 
-#: ../troubleshoot/PrinterStateReasons.py:52
-#, fuzzy, python-format
-msgid "The printer's state message is: `%s'."
-msgstr "Stare imprimantă:"
+#: ../troubleshoot/PrinterStateReasons.py:58
+#, python-format
+msgid "The printer's state message is: '%s'."
+msgstr ""
 
-#: ../troubleshoot/PrinterStateReasons.py:77
+#: ../troubleshoot/PrinterStateReasons.py:83
 msgid "Errors are listed below:"
 msgstr ""
 
-#: ../troubleshoot/PrinterStateReasons.py:82
+#: ../troubleshoot/PrinterStateReasons.py:88
 msgid "Warnings are listed below:"
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:54
-#, fuzzy
+#: ../troubleshoot/PrintTestPage.py:62
 msgid "Test Page"
-msgstr "Imprimă pagină de test"
+msgstr "Pagină de test"
 
-#: ../troubleshoot/PrintTestPage.py:55
+#: ../troubleshoot/PrintTestPage.py:63
 msgid ""
 "Now print a test page.  If you are having problems printing a specific "
 "document, print that document now and mark the print job below."
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:70
+#: ../troubleshoot/PrintTestPage.py:75
 msgid "Cancel All Jobs"
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:76
-#, fuzzy
+#: ../troubleshoot/PrintTestPage.py:81
 msgid "Test"
-msgstr "Reset"
+msgstr "Test"
 
-#: ../troubleshoot/PrintTestPage.py:106
+#: ../troubleshoot/PrintTestPage.py:111
 msgid "Did the marked print jobs print correctly?"
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:113
-msgid "Yes"
+#: ../troubleshoot/PrintTestPage.py:143
+#, python-format
+msgid "Remember to load paper of type '%s' into the printer first."
 msgstr ""
 
-#: ../troubleshoot/PrintTestPage.py:114
-msgid "No"
-msgstr ""
-
-#: ../troubleshoot/PrintTestPage.py:326
+#: ../troubleshoot/PrintTestPage.py:399
 msgid "Error submitting test page"
 msgstr ""
 
 #: ../troubleshoot/QueueNotEnabled.py:56
 #: ../troubleshoot/QueueRejectingJobs.py:66
 #, python-format
-msgid "The reason given is: `%s'."
+msgid "The reason given is: '%s'."
 msgstr ""
 
 #: ../troubleshoot/QueueNotEnabled.py:58
@@ -2451,12 +2943,12 @@ msgstr ""
 
 #: ../troubleshoot/QueueNotEnabled.py:63
 #, python-format
-msgid "The queue `%s' is not enabled."
+msgid "The queue '%s' is not enabled."
 msgstr ""
 
 #: ../troubleshoot/QueueNotEnabled.py:71
 msgid ""
-"To enable it, select the `Enabled' checkbox in the `Policies' tab for the "
+"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
 "printer in the printer administration tool."
 msgstr ""
 
@@ -2466,19 +2958,18 @@ msgstr ""
 
 #: ../troubleshoot/QueueRejectingJobs.py:63
 #, python-format
-msgid "The queue `%s' is rejecting jobs."
+msgid "The queue '%s' is rejecting jobs."
 msgstr ""
 
 #: ../troubleshoot/QueueRejectingJobs.py:70
 msgid ""
-"To make the queue accept jobs, select the `Accepting Jobs' checkbox in the "
-"`Policies' tab for the printer in the printer administration tool."
+"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
+"'Policies' tab for the printer in the printer administration tool."
 msgstr ""
 
 #: ../troubleshoot/RemoteAddress.py:26
-#, fuzzy
 msgid "Remote Address"
-msgstr "Imprimante distante"
+msgstr ""
 
 #: ../troubleshoot/RemoteAddress.py:27
 msgid ""
@@ -2487,23 +2978,22 @@ msgid ""
 msgstr ""
 
 #: ../troubleshoot/RemoteAddress.py:35
-#, fuzzy
 msgid "Server name:"
-msgstr "Nume utilizator:"
+msgstr ""
 
 #: ../troubleshoot/RemoteAddress.py:42
 msgid "Server IP address:"
-msgstr ""
+msgstr "Adresă IP pentru server:"
 
-#: ../troubleshoot/SchedulerNotRunning.py:27
+#: ../troubleshoot/SchedulerNotRunning.py:28
 msgid "CUPS Service Stopped"
 msgstr ""
 
-#: ../troubleshoot/SchedulerNotRunning.py:28
+#: ../troubleshoot/SchedulerNotRunning.py:29
 msgid ""
 "The CUPS print spooler does not appear to be running.  To correct this, "
 "choose System->Administration->Services from the main menu and look for the "
-"`cups' service."
+"'cups' service."
 msgstr ""
 
 #: ../troubleshoot/ServerFirewalled.py:26
@@ -2511,15 +3001,14 @@ msgid "Check Server Firewall"
 msgstr ""
 
 #: ../troubleshoot/ServerFirewalled.py:27
-#, fuzzy
 msgid "It is not possible to connect to the server."
-msgstr "A fost eroare la conectarea către serverul CUPS."
+msgstr ""
 
 #: ../troubleshoot/ServerFirewalled.py:42
 #, python-format
 msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server `%s'."
+"port %d on server '%s'."
 msgstr ""
 
 #: ../troubleshoot/Shrug.py:26
@@ -2536,341 +3025,86 @@ msgstr ""
 msgid "Diagnostic Output (Advanced)"
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:35
+#: ../troubleshoot/Welcome.py:43
 msgid "Trouble-shooting Printing"
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:37
+#: ../troubleshoot/Welcome.py:45
 msgid ""
-"In the next few screens I will ask you some questions about your problem "
-"with printing. Based on your answers I will try to suggest a solution."
+"In the next few screens I will ask you some questions about your problem with "
+"printing. Based on your answers I will try to suggest a solution."
 msgstr ""
 
-#: ../troubleshoot/Welcome.py:41
+#: ../troubleshoot/Welcome.py:49
 msgid "Click 'Forward' to begin."
 msgstr ""
 
-#: ../applet.py:136
-#, fuzzy
-msgid "Printer added"
-msgstr "Nume imprimantă"
-
-#: ../applet.py:138
-#, fuzzy
+#. name is a URI, no queue was generated, because no suitable
+#. driver was found
+#: ../applet.py:111 ../applet.py:158
 msgid "Missing printer driver"
-msgstr "Driver lipsă"
+msgstr ""
 
-#: ../applet.py:142
-#, fuzzy
+#: ../applet.py:119
+#, python-format
+msgid "No printer driver for %s."
+msgstr ""
+
+#: ../applet.py:121
+msgid "No driver for this printer."
+msgstr ""
+
+#: ../applet.py:156
+msgid "Printer added"
+msgstr ""
+
+#: ../applet.py:162
 msgid "Install printer driver"
-msgstr "Driver lipsă"
+msgstr ""
 
-#: ../applet.py:143
+#: ../applet.py:163
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr ""
 
-#: ../applet.py:151
+#: ../applet.py:175
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr ""
 
-#: ../applet.py:154
-#, fuzzy
-msgid "Configure"
-msgstr "Configurează imprimante"
+#: ../applet.py:178 ../applet.py:189
+msgid "Print test page"
+msgstr "Tipărește pagina de test"
 
-#: ../applet.py:159
+#: ../applet.py:180
+msgid "Configure"
+msgstr "Configurează"
+
+#: ../applet.py:185
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr ""
 
-#: ../applet.py:163
-#, fuzzy
+#: ../applet.py:191
 msgid "Find driver"
-msgstr "Driver lipsă"
-
-#: ../applet.glade.h:1
-msgid "Printer status"
-msgstr "Stare imprimantă"
-
-#: ../applet.glade.h:2
-msgid "Re_print"
-msgstr "Re-im_primă"
-
-#: ../applet.glade.h:3
-msgid "Show _completed jobs"
-msgstr "Arată lu_crările terminate"
-
-#: ../applet.glade.h:4
-msgid "Show _printer status"
-msgstr "Arată stare im_primantă"
-
-#: ../applet.glade.h:5
-msgid "_File"
-msgstr "_Fişier"
-
-#: ../applet.glade.h:6
-msgid "_Hide"
-msgstr "Ascunde"
-
-#: ../applet.glade.h:7
-msgid "_Hold"
-msgstr "Reţine"
-
-#: ../applet.glade.h:8
-#, fuzzy
-msgid "_Refresh"
-msgstr "Elibe_rează"
-
-#: ../applet.glade.h:9
-msgid "_Release"
-msgstr "Elibe_rează"
+msgstr ""
 
 #: ../print-applet.desktop.in.h:1
-#, fuzzy
 msgid "Print Queue Applet"
-msgstr "Aplicaţie pentru coada de aşteptare la imprimare"
+msgstr ""
 
 #: ../print-applet.desktop.in.h:2
 msgid "System tray icon for managing print jobs"
-msgstr "Pictogramă bara de sistem pentru managementul lucrărilor de imprimare"
+msgstr "Iconiță în zona de notificare pentru gestionarea proceselor de tipărire"
 
 #: ../manage-print-jobs.desktop.in.h:1
 msgid "Cancel, pause, resume or reprint jobs"
 msgstr "Anulează, pauză, reia sau relistează lucrări"
 
 #: ../manage-print-jobs.desktop.in.h:2
-#, fuzzy
 msgid "Manage Print Jobs"
-msgstr "Gestionează lucrări"
+msgstr ""
 
 #: ../my-default-printer.desktop.in.h:2
-#, fuzzy
 msgid "Select default printer"
-msgstr "Setează ca imprimantă implicită"
-
-#, fuzzy
-#~ msgid "Authentication Required"
-#~ msgstr "<b>Autentificare</b>"
-
-#, fuzzy
-#~ msgid "Job requires authentication to proceed."
-#~ msgstr "<b>Autentificare</b>"
-
-#, fuzzy
-#~ msgid "Authenticate"
-#~ msgstr "<b>Autentificare</b>"
-
-#, fuzzy
-#~ msgid "Adding"
-#~ msgstr "În aşteptare"
-
-#, fuzzy
-#~ msgid "Adding printer"
-#~ msgstr "Configurează imprimante"
-
-#, fuzzy
-#~ msgid "<b>Download Printer Driver</b>"
-#~ msgstr "<b>Comentariu despre driver</b>"
-
-#, fuzzy
-#~ msgid "<b>Installed Options</b>"
-#~ msgstr "<b>Setări imagine</b>"
-
-#~ msgid "<b>Printers to be members of this Class</b>"
-#~ msgstr "<b>Imprimante ale membrilor acestui grup</b>"
-
-#~ msgid "<b>Select Connection</b>"
-#~ msgstr "<b>Selectează conexiune</b>"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
-#~ "\n"
-#~ "Any changes you have made will be lost unless you apply them."
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Aplic modificările?</span>\n"
-#~ "\n"
-#~ "Orice modificări făcute vor fi pierdute dacă nu le aplicaţi."
-
-#~ msgid "_Do not apply"
-#~ msgstr "_Nu aplica"
-
-#~ msgid "Verified"
-#~ msgstr "Verificat"
-
-#, fuzzy
-#~ msgid "Remote class"
-#~ msgstr "Grupuri distante"
-
-#, fuzzy
-#~ msgid "Remote printer"
-#~ msgstr "Imprimante distante"
-
-#, fuzzy
-#~ msgid "Local class"
-#~ msgstr "Grupuri locale"
-
-#, fuzzy
-#~ msgid "Local printer"
-#~ msgstr "Imprimante locale"
-
-#~ msgid "New Clas_s"
-#~ msgstr "Grup N_ou"
-
-#~ msgid "New _Printer"
-#~ msgstr "Im_primantă nouă"
-
-#, fuzzy
-#~ msgid "_Disable"
-#~ msgstr "_Fişier"
-
-#~ msgid "_Edit"
-#~ msgstr "_Editează"
-
-#, fuzzy
-#~ msgid "_Server Settings..."
-#~ msgstr "Setări server"
-
-#, fuzzy
-#~ msgid "Create a new printer group"
-#~ msgstr ""
-#~ "Încep să creeză o nouă imprimantă %s la\n"
-#~ "%s.\n"
-
-#, fuzzy
-#~ msgid "Create a new printer queue"
-#~ msgstr ""
-#~ "Încep să creeză o nouă imprimantă %s la\n"
-#~ "%s.\n"
-
-#, fuzzy
-#~ msgid "Make:"
-#~ msgstr "Producători"
-
-#, fuzzy
-#~ msgid ""
-#~ "May contain any printable characters except \"/\", \"#\", and space.\n"
-#~ "Name must be unique on the local machine!"
-#~ msgstr ""
-#~ "Poate conţine orice caracter printat mai puţin \"/\", \"#\", and space"
-
-#~ msgid "No default printer set."
-#~ msgstr "Nu este setată nici o imprimantă implicită."
-
-#~ msgid "Cancel Tests"
-#~ msgstr "Anulează teste"
-
-#, fuzzy
-#~ msgid "Default Printer:"
-#~ msgstr "Setează ca imprimantă implicită"
-
-#, fuzzy
-#~ msgid "Make Default"
-#~ msgstr "implicit"
-
-#~ msgid "User name:"
-#~ msgstr "Nume utilizator:"
-
-#, fuzzy
-#~ msgid "Search terms:"
-#~ msgstr "Nume nou pentru imprimantă"
-
-#, fuzzy
-#~ msgid "Copy this printer queue"
-#~ msgstr "Imprimantă de copiere"
-
-#, fuzzy
-#~ msgid "Password required"
-#~ msgstr "Upgrade este necesar"
-
-#, fuzzy
-#~ msgid "Queue Not Accepting Jobs"
-#~ msgstr "Accept lucrări"
-
-#, fuzzy
-#~ msgid "The CUPS printer on the server is not accepting jobs."
-#~ msgstr "Această partajare de imprimare nu este accesibilă."
-
-#, fuzzy
-#~ msgid "The CUPS printer on the server is not enabled."
-#~ msgstr "Această partajare de imprimare nu este accesibilă."
-
-#, fuzzy
-#~ msgid "Printer's state reasons:"
-#~ msgstr "Stare imprimantă:"
-
-#, fuzzy
-#~ msgid ""
-#~ "THe remote server did not accept the print job, most likely because the "
-#~ "printer is not shared."
-#~ msgstr ""
-#~ "Serverul distant nu a acceptat lucrarea de imprimare, cel mai probabil "
-#~ "imprimanta nu este partajată."
-
-#~ msgid "Hostname"
-#~ msgstr "Nume gazdă"
-
-#~ msgid "Printername"
-#~ msgstr "Nume imprimantă"
-
-#~ msgid "Default printer is %s"
-#~ msgstr "Imprimanta implicită este %s"
-
-#~ msgid "Going to create a new class %s."
-#~ msgstr "Încep să creez o nouă grupă %s."
-
-#~ msgid " PPD "
-#~ msgstr " PPD "
-
-#~ msgid "<b>Comment about the Printer</b>"
-#~ msgstr "<b>Comentariu despre imprimantă</b>"
-
-#~ msgid "<b>Information about the PPD</b>"
-#~ msgstr "<b>Informaţii despre PPD</b>"
-
-#~ msgid "About"
-#~ msgstr "Despre"
-
-#~ msgid "About System-Config-Printer"
-#~ msgstr "Despre System-Config-Printer"
-
-#~ msgid "Apply"
-#~ msgstr "Aplică"
-
-#~ msgid "Authors"
-#~ msgstr "Autori"
-
-#~ msgid "Change PPD"
-#~ msgstr "Schimbă PPD"
-
-#~ msgid "Class Members"
-#~ msgstr "Membri grup"
-
-#~ msgid "Comments: "
-#~ msgstr "Comentarii:"
-
-#~ msgid "Device"
-#~ msgstr "Dispozitiv"
-
-#~ msgid "Driver"
-#~ msgstr "Driver"
-
-#~ msgid "Make Default Printer"
-#~ msgstr "Setează ca imprimantă implicită"
-
-#~ msgid "PPD"
-#~ msgstr "PPD"
-
-#~ msgid "System-Config-Printer %s"
-#~ msgstr "System-Config-Printer %s"
-
-#~ msgid ""
-#~ "This PPD is provided by the manufacturer and is included with the "
-#~ "foomatic package."
-#~ msgstr ""
-#~ "Acest PPD este furnizat de către producător şi este inclus împreună cu "
-#~ "pachetul foomatic."
-
-#~ msgid "This PPD is provided by CUPS."
-#~ msgstr "Acest PPD este furnizat de CUPS."
+msgstr ""
