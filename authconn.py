@@ -206,7 +206,7 @@ class Connection:
             except cups.IPPError, (e, m):
                 if self._use_pk and m == 'pkcancel':
                     title = _('Unauthorized request (%s)') % fname
-                    text = _("You are not authorized to carry out the"
+                    text = _("You are not authorized to carry out the "
                              "requested action.")
                     show_error_dialog (title, text, None)
                     raise cups.IPPError (0, _("Operation canceled"))
