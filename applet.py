@@ -310,16 +310,20 @@ if __name__ == '__main__':
             bus = dbus.SessionBus()
             bus.add_signal_receiver (monitor_session)
         except:
-            print >> sys.stderr, "%s: failed to connect to session D-Bus" % \
-                PROGRAM_NAME
-            sys.exit (1)
+            try:
+                print >> sys.stderr, ("%s: failed to connect to "
+                                      "session D-Bus" % PROGRAM_NAME)
+            finally:
+                sys.exit (1)
 
     try:
         bus = dbus.SystemBus()
     except:
-        print >> sys.stderr, ("%s: failed to connect to system D-Bus" %
-                              PROGRAM_NAME)
-        sys.exit (1)
+        try:
+            print >> sys.stderr, ("%s: failed to connect to system D-Bus" %
+                                  PROGRAM_NAME)
+        finally:
+            sys.exit (1)
 
     if trayicon:
         try:
