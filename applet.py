@@ -46,7 +46,6 @@ except locale.Error, e:
 
 APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
-GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
 
