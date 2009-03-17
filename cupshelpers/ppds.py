@@ -176,7 +176,6 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = re.sub (r"(?i)\s*PostScript\s*$", "", model)
     model = re.sub (r"(?i)\s*\(\s*\)", "", model)
     model = re.sub (r"(?i)\s*[\-\/]\s*$", "", model)
-    model = re.sub (r"(?i)\s*hpijs\s*$", "", model)
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Oki" ]:
         if make == mfr.upper ():
