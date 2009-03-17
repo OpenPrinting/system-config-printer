@@ -147,6 +147,7 @@ class Monitor:
         self.still_connecting = set()
         self.connecting_to_device = {}
         self.received_any_dbus_signals = False
+        self.update_timer = None
 
         if bus == None:
             try:
@@ -330,7 +331,9 @@ class Monitor:
     def get_notifications(self):
         if not self.process_pending_events:
             # Defer the timer callback.
-            gobject.source_remove (self.update_timer)
+            if self.update_timer:
+                gobject.source_remove (self.update_timer)
+
             self.update_timer = gobject.timeout_add (200,
                                                      self.get_notifications)
             return False
@@ -475,7 +478,9 @@ class Monitor:
         # Update again when we're told to.  If we're getting CUPS
         # D-Bus signals, however, rely on those instead.
         if not self.received_any_dbus_signals:
-            gobject.source_remove (self.update_timer)
+            if self.update_timer:
+                gobject.source_remove (self.update_timer)
+
             interval = 1000 * notifications['notify-get-interval']
             self.update_timer = gobject.timeout_add (interval,
                                                      self.get_notifications)
@@ -505,7 +510,9 @@ class Monitor:
             except cups.IPPError, (e, m):
                 self.watcher.cups_ipp_error (self, e, m)
 
-            gobject.source_remove (self.update_timer)
+            if self.update_timer:
+                gobject.source_remove (self.update_timer)
+
             debugprint ("Canceled subscription %d" % self.sub_id)
 
         try:
@@ -706,7 +713,9 @@ class Monitor:
         self.check_state_reasons (my_printers, printer_jobs)
 
     def update(self):
-        gobject.source_remove (self.update_timer)
+        if self.update_timer:
+            gobject.source_remove (self.update_timer)
+
         self.update_timer = gobject.timeout_add (200, self.get_notifications)
 
     def handle_dbus_signal(self, *args):

@@ -3449,6 +3449,7 @@ class NewPrinterGUI(GtkGUI):
         "socket": 2,
         "ipp" : 3,
         "http" : 3,
+        "https" : 3,
         "lpd" : 4,
         "scsi" : 5,
         "serial" : 6,
@@ -4325,7 +4326,7 @@ class NewPrinterGUI(GtkGUI):
             descr = None
 
             try:
-                if self.device.id and not self.device.type in ("socket", "lpd", "ipp", "bluetooth"):
+                if self.device.id and not self.device.type in ("socket", "lpd", "ipp", "http", "https", "bluetooth"):
                     name = self.device.id_dict["MDL"]
                     descr = "%s %s" % (self.device.id_dict["MFG"], self.device.id_dict["MDL"])
             except:
@@ -5307,7 +5308,7 @@ class NewPrinterGUI(GtkGUI):
         valid = len (hostname) > 0 and queue != '/printers/'
 
         if valid:
-            uri = "ipp://%s%s" % (hostname, queue)
+            uri = "%s://%s%s" % (self.device.type, hostname, queue)
             self.lblIPPURI.set_text (uri)
             self.lblIPPURI.show ()
             self.entNPTIPPQueuename.show ()
@@ -5337,7 +5338,13 @@ class NewPrinterGUI(GtkGUI):
         if match:
             oldserver = cups.getServer ()
             try:
-                c = cups.Connection (host=match.group (2))
+                if uri.startswith ("https:"):
+                    encryption = cups.HTTP_ENCRYPT_ALWAYS
+                else:
+                    encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
+
+                c = cups.Connection (host=match.group (2),
+                                     encryption=encryption)
                 attributes = c.getPrinterAttributes (uri = uri)
                 verified = True
             except cups.IPPError, (e, msg):
@@ -5538,7 +5545,7 @@ class NewPrinterGUI(GtkGUI):
                 device.menuentry = _("Windows Printer via SAMBA")
             elif device.type == "ipp":
                 device.menuentry = _("IPP")
-            elif device.type == "http":
+            elif device.type == "http" or device.type == "https":
                 device.menuentry = _("HTTP")
             else:
                 device.menuentry = device.uri
@@ -5685,9 +5692,8 @@ class NewPrinterGUI(GtkGUI):
                         widget.set_active(0)
 
         # XXX FILL TABS FOR VALID DEVICE URIs
-        elif device.type in ("ipp", "http"):
-            if (device.uri.startswith ("ipp:") or
-                device.uri.startswith ("http:")):
+        elif device.type in ("ipp", "http", "https"):
+            if device.uri.find (":") != -1:
                 match = re.match ("(ipp|https?)://([^/]+)(.*)", device.uri)
                 if match:
                     server = match.group (2)
@@ -5842,7 +5848,7 @@ class NewPrinterGUI(GtkGUI):
             device = "socket://" + host
             if host and port:
                 device = device + ':' + port
-        elif type in ("http", "ipp"): # IPP
+        elif type in ("ipp", "http", "https"): # IPP
             if self.lblIPPURI.get_property('visible'):
                 device = self.lblIPPURI.get_text()
             else:
