@@ -1,3 +1,25 @@
+2009-03-17  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* cupshelpers/ppds.py: Improved identification of detected printers:
+	   o HP introduced a lot of abbreviations (like LJ, DJ, OJ, PS, ...)
+	     in the model names of their PPDs in HPLIP 3.9.2. These
+	     abbreviations are not used in device IDs. Now we expand the
+	     abbreviations in ppdMakeModelSplit() and take them also into
+	     account when we have to guess a missing manufacturer name.
+	   o Make guessing of manufacturer names in ppdMakeModelSplit() also
+	     working if there is whitespace in the beginning of the input
+	     string.
+           o Protect the manufacturer/model lists from being messed up by
+	     TurboPrint PPDs. They have manufacturer and model being stuffed
+	     into the manufacturer field, so each printer appeared as its own
+	     manufacturer (ppdMakeModelSplit()).
+	   o Make TurboPrint PPDs lowest priority, as this is a non-free
+	     third-party driver (_getDriverType()).
+	   o If no manufacturer name is supplied to the
+	     getPPDNameFromDeviceID() function (broken device ID from network
+	     CUPS backend), call ppdMakeModelSplit() to find out the 
+	     manufacturer via the model name.
+
 2009-03-16  Tim Waugh  <twaugh@redhat.com>
 
 	* monitor.py (Monitor.__init__): Initialise update_timer to

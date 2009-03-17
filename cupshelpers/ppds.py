@@ -43,55 +43,72 @@ def ppdMakeModelSplit (ppd_make_and_model):
     # If the string starts with a known model name (like "LaserJet") assume
     # that the manufacturer name is missing and add the manufacturer name
     # corresponding to the model name
-    if re.search ("^(deskjet|laserjet|designjet|officejet|photosmart|psc|edgeline)", \
-                      ppd_make_and_model, re.I):
+    if re.search ("^\s*(deskjet|dj\b|dj\d|laserjet|lj\b|color\s*laserjet|color\s*lj\b|designjet|officejet|oj\b|photosmart|ps\b|psc)", \
+                      ppd_make_and_model, re.I) or \
+       re.search ("(edgeline)", ppd_make_and_model, re.I):
         make = "HP"
         model = ppd_make_and_model
-    elif re.search ("^(stylus|aculaser)", \
+    elif re.search ("^\s*(stylus|aculaser)", \
                       ppd_make_and_model, re.I):
         make = "Epson"
         model = ppd_make_and_model
-    elif re.search ("^(stylewriter|imagewriter|deskwriter|laserwriter)", \
+    elif re.search ("^\s*(stylewriter|imagewriter|deskwriter|laserwriter)", \
                       ppd_make_and_model, re.I):
         make = "Apple"
         model = ppd_make_and_model
-    elif re.search ("^(pixus|pixma|selphy|imagerunner|\bbjc\b|\bbj\b|\blbp\b)",\
+    elif re.search ("^\s*(pixus|pixma|selphy|imagerunner|\bbjc\b|\bbj\b|\blbp\b)",\
                       ppd_make_and_model, re.I):
         make = "Canon"
         model = ppd_make_and_model
-    elif re.search ("^(\bhl\b|\bdcp\b|\bmfc\b)", \
+    elif re.search ("^\s*(\bhl\b|\bdcp\b|\bmfc\b)", \
                       ppd_make_and_model, re.I):
         make = "Brother"
         model = ppd_make_and_model
-    elif re.search ("^(docuprint|docupage|phaser|workcentre|homecentre)", \
+    elif re.search ("^\s*(docuprint|docupage|phaser|workcentre|homecentre)", \
                       ppd_make_and_model, re.I):
         make = "Xerox"
         model = ppd_make_and_model
-    elif re.search ("^(optra|(color\s*|)jetprinter)", \
+    elif re.search ("^\s*(optra|(color\s*|)jetprinter)", \
                       ppd_make_and_model, re.I):
         make = "Lexmark"
         model = ppd_make_and_model
-    elif re.search ("^(magicolor|pageworks|pagepro)", \
+    elif re.search ("^\s*(magicolor|pageworks|pagepro)", \
                       ppd_make_and_model, re.I):
         make = "KONICA MINOLTA"
         model = ppd_make_and_model
-    elif re.search ("^(aficio)", \
+    elif re.search ("^\s*(aficio)", \
                       ppd_make_and_model, re.I):
         make = "Ricoh"
         model = ppd_make_and_model
-    elif re.search ("^(varioprint)", \
+    elif re.search ("^\s*(varioprint)", \
                       ppd_make_and_model, re.I):
         make = "Oce"
         model = ppd_make_and_model
-    elif re.search ("^(okipage|microline)", \
+    elif re.search ("^\s*(okipage|microline)", \
                       ppd_make_and_model, re.I):
         make = "Oki"
         model = ppd_make_and_model
-    elif re.search ("^(konica[\s_-]*minolta)", \
+    elif re.search ("^\s*(konica[\s_-]*minolta)", \
                       ppd_make_and_model, re.I):
         make = "KONICA MINOLTA"
         model = ppd_make_and_model
         model = re.sub ("(?i)KONICA[\s_-]*MINOLTA\s*", "", model, 1)
+    elif re.search("turboprint", ppd_make_and_model, re.I):
+        # Support for Turboprint PPDs
+        t = ppd_make_and_model.find (" TurboPrint")
+        if t != -1:
+            ppd_make_and_model = ppd_make_and_model[:t]
+        try:
+            make, model = ppd_make_and_model.split("_", 1)
+        except:
+            make = ppd_make_and_model
+            model = ''
+        make = re.sub (r"(?<=[a-z])(?=[0-9])", " ", make)
+        make = re.sub (r"(?<=[a-z])(?=[A-Z])", " ", make)
+        model = re.sub (r"(?<=[a-z])(?=[0-9])", " ", model)
+        model = re.sub (r"(?<=[a-z])(?=[A-Z])", " ", model)
+        model = re.sub (r" Jet", "Jet", model)
+        model = re.sub (r"Photo Smart", "PhotoSmart", model)
     else:
         try:
             make, model = ppd_make_and_model.split(" ", 1)
@@ -140,6 +157,12 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = re.sub (r"(?i)\s*\(recommended\)", "", model)
     model = re.sub (r"(?i)\s*-\s*PostScript\b", "", model)
     model = re.sub (r"(?i)\s*\bseries\b", "", model)
+    if make.lower () == "hp":
+        model = re.sub (r"(?i)^dj\b", "DeskJet", model)
+        model = re.sub (r"(?i)^LJ\b", "LaserJet", model)
+        model = re.sub (r"(?i)^OJ\b", "OfficeJet", model)
+        model = re.sub (r"(?i)^Color\s*LJ\b", "Color LaserJet", model)
+        model = re.sub (r"(?i)^PS\b", "PhotoSmart", model)
     model = re.sub (r"(?i)\s*\bPS[123]?\b", "", model)
     model = re.sub (r"(?i)\s*\bPXL", "", model)
     model = re.sub (r"(?i)[\s_-]+BT\b", "", model)
@@ -175,9 +198,12 @@ DRIVER_TYPE_FOOMATIC_GUTENPRINT = 60
 DRIVER_TYPE_FOOMATIC = 70
 DRIVER_TYPE_CUPS = 80
 DRIVER_TYPE_FOOMATIC_GENERIC = 90
+DRIVER_TYPE_3RD_PARTY_NONFREE = 95
 DRIVER_DOES_NOT_WORK = 999
 def _getDriverType (ppdname, ppds=None):
     """Decides which of the above types ppdname is."""
+    if ppdname.find ("turboprint") != -1:
+        return DRIVER_TYPE_3RD_PARTY_NONFREE
     if ppdname.find ("gutenprint") != -1:
         if (ppdname.find ("/simple/") != -1 or
             ppdname.find (".sim-") != -1):
@@ -504,6 +530,9 @@ class PPDs:
                 mfgl = "hp"
             elif mfgl == "lexmark international":
                 mfgl = "lexmark"
+            elif mfgl == "":
+                (tmp1, tmp2) = ppdMakeModelSplit (mdl)
+                mfgl = tmp1.lower ()
 
         # Remove manufacturer name from model field
         ppdnamelist2 = None
