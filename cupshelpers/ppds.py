@@ -132,6 +132,10 @@ def ppdMakeModelSplit (ppd_make_and_model):
         # Truncate at that point.
         model = model[:v]
 
+    h = model.find (" hpijs")
+    if h != -1:
+        model = model[:h]
+
     f = model.find (" Foomatic/")
     if f != -1:
         model = model[:f]

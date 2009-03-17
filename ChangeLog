@@ -6,6 +6,9 @@
 	     abbreviations are not used in device IDs. Now we expand the
 	     abbreviations in ppdMakeModelSplit() and take them also into
 	     account when we have to guess a missing manufacturer name.
+	   o Let ppdMakeModelSplit() also truncate the model name on the
+	     string "hpijs", from HPLIP 3.9.2 on there is no "Foomatic" in
+	     the NickNames of the PPDs any more.
 	   o Make guessing of manufacturer names in ppdMakeModelSplit() also
 	     working if there is whitespace in the beginning of the input
 	     string.
