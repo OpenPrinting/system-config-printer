@@ -628,7 +628,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                         keyring_attrs["domain"] = str (group)
                     else:
                         (serverport, rest) = urllib.splithost (rest)
-                        (server, port) = urllib.splitnport (hostport)
+                        (server, port) = urllib.splitnport (serverport)
                     username = pwd.getpwuid (os.getuid ())[0]
                     keyring_attrs.update ({ "server": str (server.lower ()),
                                             "protocol": str (scheme),
