@@ -515,33 +515,26 @@ class PPDs:
             id_matched = True
         except KeyError:
             pass
+
+        mfgl = mfg.lower ()
+        mdll = mdl.lower ()
+
         # The HPLIP PPDs have incorrect IDs
-        if mfg.lower () == "hp":
-            try:
-                ppdnamelist += self.ids['hp'][mdl.lower ()]
-                status = self.STATUS_SUCCESS
-                id_matched = True
-            except KeyError:
-                pass
-            try:
-                ppdnamelist += self.ids['hp'][mdl.lower ().replace (" ", "_")]
-                status = self.STATUS_SUCCESS
-                id_matched = True
-            except KeyError:
-                pass
-        if mfg.lower () == "apollo":
-            try:
-                ppdnamelist += self.ids['apollo'][mdl.lower ()]
-                status = self.STATUS_SUCCESS
-                id_matched = True
-            except KeyError:
-                pass
-            try:
-                ppdnamelist += self.ids['apollo'][mdl.lower ().replace (" ", "_")]
-                status = self.STATUS_SUCCESS
-                id_matched = True
-            except KeyError:
-                pass
+        for mf in ["hp", "apollo"]:
+            if mfgl == mf:
+                try:
+                    ppdnamelist += self.ids[mf][mdll]
+                    status = self.STATUS_SUCCESS
+                    id_matched = True
+                except KeyError:
+                    pass
+
+                try:
+                    ppdnamelist += self.ids[mf][mdll.replace (" ", "_")]
+                    status = self.STATUS_SUCCESS
+                    id_matched = True
+                except KeyError:
+                    pass
 
         _debugprint ("Trying make/model names")
         mfgl = mfg.lower ()
@@ -572,7 +565,7 @@ class PPDs:
             mdl = mdl[3:]
         if mdls:
             for (model, ppdnames) in mdls.iteritems ():
-                if model.lower () == mdl.lower ():
+                if model.lower () == mdll:
                     ppdnamelist2 = ppdnames.keys ()
                     status = self.STATUS_SUCCESS
                     break
@@ -580,8 +573,9 @@ class PPDs:
                 # Make use of the model name clean-up in the
                 # ppdMakeModelSplit () function
                 (mfg2, mdl2) = ppdMakeModelSplit (mfg + " " + mdl)
+                mdl2l = mdl2.lower ()
                 for (model, ppdnames) in mdls.iteritems ():
-                    if model.lower () == mdl2.lower ():
+                    if model.lower () == mdl2l:
                         ppdnamelist2 = ppdnames.keys ()
                         status = self.STATUS_SUCCESS
                         break
