@@ -1,3 +1,15 @@
+2009-03-20  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* cupshelpers/ppds.py: Improved identification of detected printers:
+	   o HP's PPD files in HPLIP 3.9.2 have totally broken device IDs, all
+	     lowercase and underscores instead of spaces, not really what
+	     the printer reports. Added workarounds to match them with the
+	     real device IDs (Ubuntu #306301).
+	   o Match the model names of the PPDs case-insensitive with the
+	     model names of the detected printer. Some printers, like the
+	     HP DeskJet 895C report an all-uppercase model name
+	     (Ubuntu #306301).
+
 2009-03-17  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* cupshelpers/ppds.py: Improved identification of detected printers:
