@@ -501,9 +501,12 @@ class PPDs:
 	"""
         _debugprint ("\n%s %s" % (mfg, mdl))
         self._init_ids ()
+
         # Consider "HP" and "Hewlett-Packard" as equal, as the ID returned
         # by the CUPS "usb" backend and HPLIP's "hp" backend are different
-        if mfg.lower () == "hewlett-packard": mfg = "HP"
+        if mfg.lower () == "hewlett-packard":
+            mfg = "HP"
+
         ppdnamelist = []
         id_matched = False
         try:
@@ -632,10 +635,12 @@ class PPDs:
             inexact = set()
             if description:
                 for ppdname in ppdnamelist:
-                    if ppdname.find ("hpijs"): continue
+                    if ppdname.find ("hpijs"):
+                        continue
                     ppddict = self.ppds[ppdname]
                     id = ppddict['ppd-device-id']
-                    if not id: continue
+                    if not id:
+                        continue
                     # Fetch description field.
                     id_dict = parseDeviceID (id)
                     if id_dict["DES"] != description:
@@ -882,7 +887,8 @@ class PPDs:
 
             # Consider "HP" and "Hewlett-Packard" as equal, as the ID returned
             # by the CUPS "usb" backend and HPLIP's "hp" backend are different
-            if lmfg == "hewlett-packard": lmfg = "hp"
+            if lmfg == "hewlett-packard":
+                lmfg = "hp"
 
             bad = False
             if len (lmfg) == 0:
