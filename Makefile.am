@@ -212,7 +212,8 @@ EXTRA_DIST=\
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
-	config.py.in
+	config.py.in \
+	profile-ppds.py
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
