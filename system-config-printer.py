@@ -4569,7 +4569,7 @@ class NewPrinterGUI(GtkGUI):
                 elif line.find ("False") >= 0:
                     fw_download = 0
             elif line.find ("HP Linux Imaging and Printing") >= 0:
-                res = re.search ("(\d+\.\d+\.\d+\w+)", line)
+                res = re.search ("(\d+\.\d+\.\d+\w*)", line)
                 if res:
                     resg = res.groups()
                     hplip_version = resg[0]
@@ -4580,16 +4580,19 @@ class NewPrinterGUI(GtkGUI):
         # Check whether the plugin is already installed
         if glob.glob("/usr/share/hplip/data/plugin/*%s*plugin*" %
                      hplip_version):
-            try:
-                f = open('/etc/hp/hplip.conf', 'r')
-                for line in f:
-                    if line.strip ().startswith("plugin") and \
-                            line.strip ().endswith("1"):
+            if hplip_version.startswith("2"):
+                try:
+                    f = open('/etc/hp/hplip.conf', 'r')
+                    for line in f:
+                        if line.strip ().startswith("plugin") and \
+                                line.strip ().endswith("1"):
+                            f.close()
+                            return True
                         f.close()
-                        return True
-                f.close()
-            except:
-                pass
+                except:
+                    pass
+            else:
+                return True
         # Tell the user why he needs the plugin
         text = \
             _("For this printer a proprietary driver plugin from HP is available.\n")
