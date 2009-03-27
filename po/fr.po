@@ -16,6 +16,7 @@
 # Josselin Mouette <joss@debian.org>, 2008.
 # Canniot Thomas <thomas.canniot@mrtomlinux.org>, 2008.
 # Mathieu Schopfer <mat.schopfer@bluewin.ch>, 2008.
+# Luya Tshimbalanga <luya@fedoraproject.org>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: s-c-printer.trunk._2_\n"
@@ -42,26 +43,29 @@ msgstr "Priorité de tâche :"
 
 #: ../AdvancedServerSettings.py:69
 msgid "Do not preserve job history"
-msgstr ""
+msgstr "Ne pas conserver l'historique des tâches"
 
 #: ../AdvancedServerSettings.py:71
 msgid "Preserve job history but not files"
-msgstr ""
+msgstr "Conserver l'historique des tâches mais sans les fichiers"
 
 #: ../AdvancedServerSettings.py:74
 msgid "Preserve job files (allow reprinting)"
-msgstr ""
+msgstr "Conserver les fichiers des tâches (permet la réimpression)"
 
 #: ../AdvancedServerSettings.py:82
 #, fuzzy
 msgid "Browse Servers"
-msgstr "Aller au serveur"
+msgstr "Parcourir les serveurs"
 
 #: ../AdvancedServerSettings.py:93
 msgid ""
 "Usually print servers broadcast their queues.  Specify print servers below "
 "to periodically ask for queues instead."
 msgstr ""
+"Généralement les serveurs d'impression diffusent les files d'attente. "
+"Indiquez ci-dessous des serveurs d'impression pour lesquels demander "
+"périodiquement leurs files d'attente à la place."
 
 #: ../AdvancedServerSettings.py:214
 #, fuzzy
@@ -86,16 +90,16 @@ msgstr "Authentification"
 
 #: ../authconn.py:85
 msgid "Remember password"
-msgstr ""
+msgstr "Se souvenir du mot de passe"
 
 #: ../authconn.py:208
 #, python-format
 msgid "Unauthorized request (%s)"
-msgstr ""
+msgstr "Requête non autorisée (%s)"
 
 #: ../authconn.py:209
 msgid "You are not authorized to carry out the requested action."
-msgstr ""
+msgstr "Vous n'êtes pas autorisé à effecter l'action demandée."
 
 #: ../authconn.py:212 ../authconn.py:233
 #, fuzzy
@@ -105,7 +109,7 @@ msgstr "Comportement par défaut"
 #: ../authconn.py:250
 #, fuzzy, python-format
 msgid "CUPS server error (%s)"
-msgstr "Erreur du serveur CUPS"
+msgstr "Erreur du serveur CUPS (%s)"
 
 #: ../authconn.py:252 ../errordialogs.py:56 ../errordialogs.py:70
 msgid "CUPS server error"
@@ -180,11 +184,11 @@ msgstr "Il y a eu une erreur HTTP : %s."
 
 #: ../GroupsPane.py:92
 msgid "_New Group"
-msgstr ""
+msgstr "_Nouveau Groupe"
 
 #: ../GroupsPane.py:95
 msgid "_New Group from Selection"
-msgstr ""
+msgstr "_Nouveau Groupe de Sélection"
 
 #: ../GroupsPane.py:98 ../system-config-printer.py:397
 msgid "_Rename"
@@ -192,27 +196,29 @@ msgstr "_Renommer"
 
 #: ../GroupsPane.py:170
 msgid "The item could not be renamed."
-msgstr ""
+msgstr "L'objet ne peut être renommé."
 
 #: ../GroupsPane.py:171
 #, python-format
 msgid "The name \"%s\" is already in use. Please use a different name."
-msgstr ""
+msgstr "Le nom \"%s\" est en usage. Veuillez utiliser un autre nom."
 
 #: ../GroupsPane.py:290
 #, python-format
 msgid "Are you sure you want to permanently delete \"%s\"?"
-msgstr ""
+msgstr "Êtes-vous certain de supprimer complètement \"%s\"?"
 
 #: ../GroupsPane.py:296
 msgid ""
 "This will not delete any printer queues from your computer. To delete queues "
 "completely, you must delete them from the 'All Printers' group."
 msgstr ""
+"Ça ne supprime aucune queue d'impression de votre ordinateur. Pour les"
+"supprimer complètement, vous devez les effacaer du groupe 'Imprimante'"
 
 #: ../GroupsPane.py:318
 msgid "New Group"
-msgstr ""
+msgstr "Nouveau Groupe"
 
 #: ../GroupsPaneModel.py:47
 #, fuzzy
@@ -221,7 +227,7 @@ msgstr "Imprimante"
 
 #: ../GroupsPaneModel.py:60
 msgid "Favorites"
-msgstr ""
+msgstr "Favoris"
 
 #: ../jobviewer.py:166
 msgid "_Hold"
@@ -323,7 +329,7 @@ msgstr "%d heures"
 
 #: ../jobviewer.py:406
 msgid "yesterday"
-msgstr ""
+msgstr "hier"
 
 #: ../jobviewer.py:408
 #, fuzzy, python-format
