@@ -1,3 +1,12 @@
+2009-04-01  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* applet.py, glade.py, glade/PrintersWindow.glade, jobviewer.py,
+	system-config-printer.py: Added support for notfication daemons which
+	do not support action buttons in the notification bubbles. Now the
+	capabilities of the notification server are checked and if needed,
+	alternative notifications are used (Ubuntu #328604, #339847). Thanks to
+	David Barth and Ken VanDine (both from Ubuntu) to make the patch.
+
 2009-03-20  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* cupshelpers/ppds.py: Improved identification of detected printers:
