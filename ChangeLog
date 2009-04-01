@@ -1,5 +1,11 @@
 2009-04-01  Till Kamppeter  <till.kamppeter@gmail.com>
 
+	* cupshelpers/cupshelpers.py (_expand_flags): Do not use
+	locale.setlocale() to only convert uppercase to lowercase letters in
+	pure ASCII text. With many locales Python bugs get be triggered by
+	that. Define a simple case-conversion function which does not use
+	any locale-dependent constant or function (Ubuntu #340932).
+
 	* applet.py, glade.py, glade/PrintersWindow.glade, jobviewer.py,
 	system-config-printer.py: Added support for notfication daemons which
 	do not support action buttons in the notification bubbles. Now the
