@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: system-config-printer.1-1-x.ko\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2009-03-13 17:28+0000\n"
-"PO-Revision-Date: 2009-04-05 00:54+1000\n"
+"PO-Revision-Date: 2009-04-06 10:47+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -347,11 +348,11 @@ msgstr "저녁-시간 까지 대기 "
 
 #: ../jobviewer.py:584
 msgid "Held until second shift"
-msgstr ""
+msgstr "두 번째 교체 까지 대기 "
 
 #: ../jobviewer.py:586
 msgid "Held until third shift"
-msgstr ""
+msgstr "세 번째 교체 까지 대기 "
 
 #: ../jobviewer.py:588
 msgid "Held until weekend"
@@ -410,7 +411,7 @@ msgstr "작업 대기 중 "
 
 #: ../jobviewer.py:987
 msgid "releasing job"
-msgstr ""
+msgstr "작업 개시 중 "
 
 #: ../jobviewer.py:1097
 msgid "No documents queued"
@@ -1990,7 +1991,7 @@ msgstr ""
 msgid ""
 "This driver supports additional hardware that may be installed in the "
 "printer."
-msgstr ""
+msgstr "이 드라이버는 프린터에 설치된 추가 하드웨어를 지원합니다.  "
 
 #: ../glade/NewPrinterWindow.glade.h:101
 msgid ""
@@ -2942,13 +2943,13 @@ msgstr "테스트 페이지를 제출하는 도중 오류 발생  "
 
 #: ../troubleshoot/QueueNotEnabled.py:56
 #: ../troubleshoot/QueueRejectingJobs.py:66
-#, fuzzy, python-format
+#, python-format
 msgid "The reason given is: '%s'."
-msgstr "프린터 '%s'의 뚜껑이 열려있습니다."
+msgstr "이유: '%s' "
 
 #: ../troubleshoot/QueueNotEnabled.py:58
 msgid "This may be due to the printer being disconnected or switched off."
-msgstr ""
+msgstr "프린터 연결이 해제되거나 전원이 꺼져있을 수 있습니다.  "
 
 #: ../troubleshoot/QueueNotEnabled.py:62
 msgid "Queue Not Enabled"
@@ -2963,22 +2964,22 @@ msgstr "'%s' 대기열이 활성화되어 있지 않습니다. "
 msgid ""
 "To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
 "printer in the printer administration tool."
-msgstr ""
+msgstr "이를 활성화하려면, 프린터 관리 도구에서 해당 프린터의 '정책' 탭에 있는 체크 박스를 '활성화'로 선택합니다.  "
 
 #: ../troubleshoot/QueueRejectingJobs.py:31
 msgid "Queue Rejecting Jobs"
-msgstr ""
+msgstr "대기열이 작업을 거부 "
 
 #: ../troubleshoot/QueueRejectingJobs.py:63
 #, python-format
 msgid "The queue '%s' is rejecting jobs."
-msgstr ""
+msgstr "'%s' 대기열이 작업을 거부합니다. "
 
 #: ../troubleshoot/QueueRejectingJobs.py:70
 msgid ""
 "To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
 "'Policies' tab for the printer in the printer administration tool."
-msgstr ""
+msgstr "대기열이 작업을 허용하게 하려면, 프린터 관리 도구에서 '정책' 탭에 있는 '작업 허용' 체크박스를 선택합니다. "
 
 #: ../troubleshoot/RemoteAddress.py:26
 msgid "Remote Address"
@@ -2988,7 +2989,7 @@ msgstr "원격 주소 "
 msgid ""
 "Please enter as many details as you can about the network address of this "
 "printer."
-msgstr ""
+msgstr "프린터의 네트워크 주고에 관해 가능한 많은 정보를 입력해 주십시오. "
 
 #: ../troubleshoot/RemoteAddress.py:35
 msgid "Server name:"
@@ -3007,11 +3008,11 @@ msgid ""
 "The CUPS print spooler does not appear to be running.  To correct this, "
 "choose System->Administration->Services from the main menu and look for the "
 "'cups' service."
-msgstr ""
+msgstr "CUPS 프린트 스플러가 작동 중이라고 나타나지 않습니다. 이를 해결하려면, 주 메뉴에서 시스템->관리->서비스를 선택하고 'cups'서비스를 찾습니다. "
 
 #: ../troubleshoot/ServerFirewalled.py:26
 msgid "Check Server Firewall"
-msgstr ""
+msgstr "서버의 방화벽 확인  "
 
 #: ../troubleshoot/ServerFirewalled.py:27
 msgid "It is not possible to connect to the server."
@@ -3022,7 +3023,7 @@ msgstr "서버로 연결할 수 없습니다. "
 msgid ""
 "Please check to see if a firewall or router configuration is blocking TCP "
 "port %d on server '%s'."
-msgstr ""
+msgstr "방화벽 또는 라우터 설정이 TCP 포트 %d 서버 '%s'에서 차단하고 있는지 확인하십시오. "
 
 #: ../troubleshoot/Shrug.py:26
 msgid "Sorry!"
@@ -3032,25 +3033,25 @@ msgstr "죄송합니다! "
 msgid ""
 "I have not been able to work out what the problem is, but I have collected "
 "some useful information to put in a bug report."
-msgstr ""
+msgstr "문제가 무엇인지 파악할 수 없지만 버그 리포트 제출을 위한 유용한 정보를 수집했습니다."
 
 #: ../troubleshoot/Shrug.py:32
 msgid "Diagnostic Output (Advanced)"
-msgstr ""
+msgstr "진단 출력 (고급) "
 
 #: ../troubleshoot/Welcome.py:43
 msgid "Trouble-shooting Printing"
-msgstr ""
+msgstr "인쇄 문제 해결 "
 
 #: ../troubleshoot/Welcome.py:45
 msgid ""
 "In the next few screens I will ask you some questions about your problem "
 "with printing. Based on your answers I will try to suggest a solution."
-msgstr ""
+msgstr "다음의 화면에서는 인쇄 문제에 관해 질문을 합니다. 대답에 따라 해결책을 제시해 드립니다.  "
 
 #: ../troubleshoot/Welcome.py:49
 msgid "Click 'Forward' to begin."
-msgstr ""
+msgstr "'다음'을 눌러 시작합니다 "
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
@@ -3059,14 +3060,13 @@ msgid "Missing printer driver"
 msgstr "프린터 드라이버가 없음"
 
 #: ../applet.py:118
-#, fuzzy, python-format
+#, python-format
 msgid "No printer driver for %s."
-msgstr "프린터 드라이버가 없음"
+msgstr "%s의 프린터 드라이버가 없음 "
 
 #: ../applet.py:120
-#, fuzzy
 msgid "No driver for this printer."
-msgstr "새 프린터 이름"
+msgstr "프린터 드라이버가 없음   "
 
 #: ../applet.py:155
 msgid "Printer added"
@@ -3079,7 +3079,7 @@ msgstr "프린터 드라이버 설치 "
 #: ../applet.py:162
 #, python-format
 msgid "`%s' requires driver installation: %s."
-msgstr ""
+msgstr "`%s' 드라이버 설치가 필요합니다: %s. "
 
 #: ../applet.py:174
 #, python-format
