@@ -1,3 +1,30 @@
+2009-04-01  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* cupshelpers/cupshelpers.py (_expand_flags): Do not use
+	locale.setlocale() to only convert uppercase to lowercase letters in
+	pure ASCII text. With many locales Python bugs get be triggered by
+	that. Define a simple case-conversion function which does not use
+	any locale-dependent constant or function (Ubuntu #340932).
+
+	* applet.py, glade.py, glade/PrintersWindow.glade, jobviewer.py,
+	system-config-printer.py: Added support for notfication daemons which
+	do not support action buttons in the notification bubbles. Now the
+	capabilities of the notification server are checked and if needed,
+	alternative notifications are used (Ubuntu #328604, #339847). Thanks to
+	David Barth and Ken VanDine (both from Ubuntu) to make the patch.
+
+2009-03-20  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* cupshelpers/ppds.py: Improved identification of detected printers:
+	   o HP's PPD files in HPLIP 3.9.2 have totally broken device IDs, all
+	     lowercase and underscores instead of spaces, not really what
+	     the printer reports. Added workarounds to match them with the
+	     real device IDs (Ubuntu #306301).
+	   o Match the model names of the PPDs case-insensitive with the
+	     model names of the detected printer. Some printers, like the
+	     HP DeskJet 895C report an all-uppercase model name
+	     (Ubuntu #306301).
+
 2009-03-17  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* cupshelpers/ppds.py: Improved identification of detected printers:

@@ -37,4 +37,15 @@ class GtkGUI:
                 if widget is None:
                     raise ValueError, "Widget '%s' not found" % name
                 setattr(self, name, widget)
-            xml.signal_autoconnect (self)
+
+            try:
+                win = widget.get_top_level()
+            except AttributeError:
+                win = None
+            
+            if win != None:
+                gtk.Window.set_focus_on_map(widget.get_top_level (),
+                                            self.focus_on_map)
+                widget.show()
+
+            xml.signal_autoconnect(self)

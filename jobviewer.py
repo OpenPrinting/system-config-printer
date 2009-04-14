@@ -64,6 +64,9 @@ GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
 
+# We need to call pynotify.init before we can check the server for caps
+pynotify.init('System Config Printer Notification')
+
 class PrinterURIIndex:
     def __init__ (self, names=None):
         self.printer = {}
@@ -335,7 +338,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         notification.connect ('closed', self.on_new_printer_notification_closed)
         self.set_statusicon_visibility ()
         notification.attach_to_status_icon (self.statusicon)
-        notification.show ()
+        try:
+            notification.show ()
+        except gobject.GError:
+            nonfatalException ()
 
     def on_new_printer_notification_closed (self, notification, reason=None):
         printer = notification.get_data ('printer-name')
@@ -628,7 +634,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                         keyring_attrs["domain"] = str (group)
                     else:
                         (serverport, rest) = urllib.splithost (rest)
-                        (server, port) = urllib.splitnport (hostport)
+                        (server, port) = urllib.splitnport (serverport)
                     username = pwd.getpwuid (os.getuid ())[0]
                     keyring_attrs.update ({ "server": str (server.lower ()),
                                             "protocol": str (scheme),
@@ -1178,13 +1184,17 @@ class JobViewer (GtkGUI, monitor.Watcher):
         notification = pynotify.Notification (title, text, 'printer')
         reason.user_notified = True
         notification.set_urgency (urgency)
-        notification.set_timeout (pynotify.EXPIRES_NEVER)
+        if "actions" in pynotify.get_server_caps():
+            notification.set_timeout (pynotify.EXPIRES_NEVER)
         notification.connect ('closed',
                               self.on_state_reason_notification_closed)
         self.state_reason_notifications[reason.get_tuple ()] = notification
         self.set_statusicon_visibility ()
         notification.attach_to_status_icon (self.statusicon)
-        notification.show ()
+        try:
+            notification.show ()
+        except gobject.GError:
+            nonfatalException ()
 
     def on_state_reason_notification_closed (self, notification, reason=None):
         debugprint ("Notification %s closed" % repr (notification))
@@ -1233,7 +1243,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.completed_job_notifications[jobid] = notification
         self.set_statusicon_visibility ()
         notification.attach_to_status_icon (self.statusicon)
-        notification.show ()
+        try:
+            notification.show ()
+        except gobject.GError:
+            nonfatalException ()
 
     def on_completed_job_notification_closed (self, notification, reason=None):
         jobid = notification.get_data ('jobid')

@@ -158,6 +158,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
 
     make = re.sub (r"(?i)KONICA[\s_-]*MINOLTA", "KONICA MINOLTA", make, 1)
     make = re.sub (r"(?i)HEWLETT[\s_-]PACKARD", "HP", make, 1)
+    make = re.sub (r"(?i)Lexmark\s*International", "Lexmark", make, 1)
     model = re.sub (r"(?i)\s*\(recommended\)", "", model)
     model = re.sub (r"(?i)\s*-\s*PostScript\b", "", model)
     model = re.sub (r"(?i)\s*\bseries\b", "", model)
@@ -500,23 +501,40 @@ class PPDs:
 	"""
         _debugprint ("\n%s %s" % (mfg, mdl))
         self._init_ids ()
+
+        # Consider "HP" and "Hewlett-Packard" as equal, as the ID returned
+        # by the CUPS "usb" backend and HPLIP's "hp" backend are different
+        if mfg.lower () == "hewlett-packard":
+            mfg = "HP"
+
+        ppdnamelist = []
         id_matched = False
         try:
             ppdnamelist = self.ids[mfg.lower ()][mdl.lower ()]
             status = self.STATUS_SUCCESS
             id_matched = True
         except KeyError:
-            if uri and (uri.startswith ("hp:") or uri.startswith ("hpfax:")):
-                # The HPLIP backends make up incorrect IDs.
-                if mfg == "HP":
-                    try:
-                        ppdnamelist = self.ids['hewlett-packard'][mdl.lower ()]
-                        status = self.STATUS_SUCCESS
-                        id_matched = True
-                    except KeyError:
-                        pass
-            if not id_matched:
-                ppdnamelist = None
+            pass
+
+        mfgl = mfg.lower ()
+        mdll = mdl.lower ()
+
+        # The HPLIP PPDs have incorrect IDs
+        for mf in ["hp", "apollo"]:
+            if mfgl == mf:
+                try:
+                    ppdnamelist += self.ids[mf][mdll]
+                    status = self.STATUS_SUCCESS
+                    id_matched = True
+                except KeyError:
+                    pass
+
+                try:
+                    ppdnamelist += self.ids[mf][mdll.replace (" ", "_")]
+                    status = self.STATUS_SUCCESS
+                    id_matched = True
+                except KeyError:
+                    pass
 
         _debugprint ("Trying make/model names")
         mfgl = mfg.lower ()
@@ -545,16 +563,22 @@ class PPDs:
             mdl = mdl[16:]
         if mdl.startswith ('HP '):
             mdl = mdl[3:]
-        if mdls and mdls.has_key (mdl):
-            ppdnamelist2 = mdls[mdl].keys ()
-            status = self.STATUS_SUCCESS
-        else:
-            # Make use of the model name clean-up in the ppdMakeModelSplit ()
-            # function
-            (mfg2, mdl2) = ppdMakeModelSplit (mfg + " " + mdl)
-            if mdls and mdls.has_key (mdl2):
-                ppdnamelist2 = mdls[mdl2].keys ()
-                status = self.STATUS_SUCCESS
+        if mdls:
+            for (model, ppdnames) in mdls.iteritems ():
+                if model.lower () == mdll:
+                    ppdnamelist2 = ppdnames.keys ()
+                    status = self.STATUS_SUCCESS
+                    break
+            if not ppdnamelist2:
+                # Make use of the model name clean-up in the
+                # ppdMakeModelSplit () function
+                (mfg2, mdl2) = ppdMakeModelSplit (mfg + " " + mdl)
+                mdl2l = mdl2.lower ()
+                for (model, ppdnames) in mdls.iteritems ():
+                    if model.lower () == mdl2l:
+                        ppdnamelist2 = ppdnames.keys ()
+                        status = self.STATUS_SUCCESS
+                        break
       
         if ppdnamelist:
             if ppdnamelist2:
@@ -605,9 +629,12 @@ class PPDs:
             inexact = set()
             if description:
                 for ppdname in ppdnamelist:
+                    if ppdname.find ("hpijs"):
+                        continue
                     ppddict = self.ppds[ppdname]
                     id = ppddict['ppd-device-id']
-                    if not id: continue
+                    if not id:
+                        continue
                     # Fetch description field.
                     id_dict = parseDeviceID (id)
                     if id_dict["DES"] != description:
@@ -624,7 +651,7 @@ class PPDs:
         # take the first.
         ppdnamelist = self.orderPPDNamesByPreference (ppdnamelist,
                                                       downloadedfiles)
-        _debugprint (str (ppdnamelist))
+        _debugprint ("Found PPDs: %s" % str (ppdnamelist))
 
         if not id_matched:
             sanitised_uri = re.sub (pattern="//[^@]*@/?", repl="//",
@@ -851,6 +878,11 @@ class PPDs:
             id_dict = parseDeviceID (id)
             lmfg = id_dict['MFG'].lower ()
             lmdl = id_dict['MDL'].lower ()
+
+            # Consider "HP" and "Hewlett-Packard" as equal, as the ID returned
+            # by the CUPS "usb" backend and HPLIP's "hp" backend are different
+            if lmfg == "hewlett-packard":
+                lmfg = "hp"
 
             bad = False
             if len (lmfg) == 0:

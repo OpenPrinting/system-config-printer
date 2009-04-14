@@ -49,6 +49,9 @@ DOMAIN="system-config-printer"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
 
+# We need to call pynotify.init before we can check the server for caps
+pynotify.init('System Config Printer Notification')
+
 ####
 #### NewPrinterNotification DBus server (the 'new' way).
 ####
@@ -119,9 +122,16 @@ class NewPrinterNotification(dbus.service.Object):
             else:
                 text = _("No driver for this printer.")
             n = pynotify.Notification (title, text, 'printer')
-            n.set_urgency (pynotify.URGENCY_CRITICAL)
-            n.add_action ("setup-printer", _("Search"),
-                          lambda x, y: self.setup_printer (x, y, name, devid))
+            if "actions" in pynotify.get_server_caps():
+                n.set_urgency (pynotify.URGENCY_CRITICAL)
+                n.add_action ("setup-printer", _("Search"),
+                              lambda x, y:
+                                  self.setup_printer (x, y, name, devid))
+            else:
+                args = ["--setup-printer", name]
+                if devid != "": args = args + ["--devid", devid]
+                self.run_config_tool (args)
+
         else:
             # name is the name of the queue which hal_lpadmin has set up
             # automatically.
@@ -161,36 +171,56 @@ class NewPrinterNotification(dbus.service.Object):
                 title = _("Install printer driver")
                 text = _("`%s' requires driver installation: %s.") % (name, pkgs)
                 n = pynotify.Notification (title, text)
-                n.set_urgency (pynotify.URGENCY_CRITICAL)
                 import installpackage
-                try:
-                    self.packagekit = installpackage.PackageKit ()
-                    n.add_action ("install-driver", _("Install"),
-                                  lambda x, y: self.install_driver (x, y,
-                                                                    missing_pkgs))
-                except:
-                    pass
+                if "actions" in pynotify.get_server_caps():
+                    try:
+                        self.packagekit = installpackage.PackageKit ()
+                        n.add_action ("install-driver", _("Install"),
+                                      lambda x, y:
+                                          self.install_driver (x, y,
+                                                               missing_pkgs))
+                    except:
+                        pass
+                else:
+                    try:
+                        self.packagekit = installpackage.PackageKit ()
+                        self.packagekit.InstallPackageName (0, 0,
+                                                            missing_pkgs[0])
+                    except:
+                        pass
+
             elif status == self.STATUS_SUCCESS:
                 text = _("`%s' is ready for printing.") % name
                 n = pynotify.Notification (title, text)
-                n.set_urgency (pynotify.URGENCY_NORMAL)
-                n.add_action ("test-page", _("Print test page"),
-                              lambda x, y: self.print_test_page (x, y, name, devid))
-                n.add_action ("configure", _("Configure"),
-                              lambda x, y: self.configure (x, y, name))
+                if "actions" in pynotify.get_server_caps():
+                    n.set_urgency (pynotify.URGENCY_NORMAL)
+                    n.add_action ("test-page", _("Print test page"),
+                                  lambda x, y:
+                                      self.print_test_page (x, y, name, devid))
+                    n.add_action ("configure", _("Configure"),
+                                  lambda x, y: self.configure (x, y, name))
+                else:
+                    self.run_config_tool (["--configure-printer",
+                                           name, "--no-focus-on-map"])
             else: # Model mismatch
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % \
                     (mfg, mdl, des, cmd)
                 text = _("`%s' has been added, using the `%s' driver.") % \
                     (name, driver)
                 n = pynotify.Notification (title, text, 'printer')
-                n.set_urgency (pynotify.URGENCY_CRITICAL)
-                n.add_action ("test-page", _("Print test page"),
-                              lambda x, y: self.print_test_page (x, y, name, devid))
-                n.add_action ("find-driver", _("Find driver"),
-                              lambda x, y: self.find_driver (x, y, name, devid))
+                if "actions" in pynotify.get_server_caps():
+                    n.set_urgency (pynotify.URGENCY_CRITICAL)
+                    n.add_action ("test-page", _("Print test page"),
+                                  lambda x, y:
+                                      self.print_test_page (x, y, name, devid))
+                    n.add_action ("find-driver", _("Find driver"),
+                                  lambda x, y: 
+                                  self.find_driver (x, y, name, devid))
+                    n.set_timeout (pynotify.EXPIRES_NEVER)
+                else:
+                    self.run_config_tool (["--configure-printer",
+                                           name, "--no-focus-on-map"])
 
-        n.set_timeout (pynotify.EXPIRES_NEVER)
         viewer.notify_new_printer (name, n)
         # Set the icon back how it was.
         self.timeout_ready ()

@@ -60,6 +60,9 @@ def show_help():
            "  --print-test-page NAME\n"
            "            Select the named printer on start-up and print a\n"
            "            test page to it.\n\n"
+           "  --no-focus-on-map\n"
+           "            Do not focus the main window, to prevent focus \n"
+           "            stealing\n\n"
            "  --debug   Enable debugging output.\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
@@ -192,7 +195,8 @@ class GUI(GtkGUI, monitor.Watcher):
                        cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
     def __init__(self, setup_printer = None, configure_printer = None,
-                 change_ppd = False, devid = "", print_test_page = False):
+                 change_ppd = False, devid = "", print_test_page = False,
+                 focus_on_map = True):
 
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
@@ -216,6 +220,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.servers = set((self.connect_server,))
         self.server_is_publishing = False
         self.devid = devid
+        self.focus_on_map = focus_on_map
 
         # WIDGETS
         # =======
@@ -348,6 +353,11 @@ class GUI(GtkGUI, monitor.Watcher):
                               # Marker levels
                               "vboxMarkerLevels",
                               "btnRefreshMarkerLevels"]})
+
+        # Ensure the default PrintersWindow is shown despite
+        # the --no-focus-on-map option
+        self.PrintersWindow.set_focus_on_map (self.focus_on_map)
+        self.PrintersWindow.show()
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
@@ -992,6 +1002,7 @@ class GUI(GtkGUI, monitor.Watcher):
         host = CUPS_server_hostname ()
         self.PrinterPropertiesDialog.set_title (_("Printer Properties - "
                                                   "'%s' on %s") % (name, host))
+        self.PrinterPropertiesDialog.set_focus_on_map (self.focus_on_map)
         self.PrinterPropertiesDialog.show ()
 
     def printer_properties_response (self, dialog, response):
@@ -1216,6 +1227,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         host = CUPS_server_hostname ()
         self.PrintersWindow.set_title(_("Printer configuration - %s") % host)
+        self.PrintersWindow.set_focus_on_map (self.focus_on_map)
 
         if connected:
             status_msg = _("Connected to %s") % host
@@ -4569,7 +4581,7 @@ class NewPrinterGUI(GtkGUI):
                 elif line.find ("False") >= 0:
                     fw_download = 0
             elif line.find ("HP Linux Imaging and Printing") >= 0:
-                res = re.search ("(\d+\.\d+\.\d+\w+)", line)
+                res = re.search ("(\d+\.\d+\.\d+\w*)", line)
                 if res:
                     resg = res.groups()
                     hplip_version = resg[0]
@@ -4580,16 +4592,19 @@ class NewPrinterGUI(GtkGUI):
         # Check whether the plugin is already installed
         if glob.glob("/usr/share/hplip/data/plugin/*%s*plugin*" %
                      hplip_version):
-            try:
-                f = open('/etc/hp/hplip.conf', 'r')
-                for line in f:
-                    if line.strip ().startswith("plugin") and \
-                            line.strip ().endswith("1"):
+            if hplip_version.startswith("2"):
+                try:
+                    f = open('/etc/hp/hplip.conf', 'r')
+                    for line in f:
+                        if line.strip ().startswith("plugin") and \
+                                line.strip ().endswith("1"):
+                            f.close()
+                            return True
                         f.close()
-                        return True
-                f.close()
-            except:
-                pass
+                except:
+                    pass
+            else:
+                return True
         # Tell the user why he needs the plugin
         text = \
             _("For this printer a proprietary driver plugin from HP is available.\n")
@@ -6699,12 +6714,13 @@ class NewPrinterGUI(GtkGUI):
 
 
 def main(setup_printer = None, configure_printer = None, change_ppd = False,
-         devid = "", print_test_page = False):
+         devid = "", print_test_page = False, focus_on_map = True):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init()
 
     mainwindow = GUI(setup_printer, configure_printer, change_ppd, devid,
-                     print_test_page)
+                     print_test_page, focus_on_map)
+
     if gtk.__dict__.has_key("main"):
         gtk.main()
     else:
@@ -6720,6 +6736,7 @@ if __name__ == "__main__":
                                          'choose-driver=',
                                          'devid=',
                                          'print-test-page=',
+                                         'no-focus-on-map',
                                          'debug'])
     except getopt.GetoptError:
         show_help ()
@@ -6729,6 +6746,7 @@ if __name__ == "__main__":
     configure_printer = None
     change_ppd = False
     print_test_page = False
+    focus_on_map = True
     devid = ""
     for opt, optarg in opts:
         if (opt == "--configure-printer" or
@@ -6746,7 +6764,11 @@ if __name__ == "__main__":
         elif opt == '--devid':
             devid = optarg
 
+        elif opt == '--no-focus-on-map':
+            focus_on_map = False
+
         elif opt == '--debug':
             set_debugging (True)
 
-    main(setup_printer, configure_printer, change_ppd, devid, print_test_page)
+    main(setup_printer, configure_printer, change_ppd, devid, print_test_page,
+         focus_on_map)

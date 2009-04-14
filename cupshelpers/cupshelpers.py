@@ -18,7 +18,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import cups, pprint, os, tempfile, re
+import cups, pprint, os, tempfile, re, string
 import locale
 from . import _debugprint
 
@@ -48,24 +48,24 @@ class Printer:
         return "<cupshelpers.Printer \"%s\">" % self.name
 
     def _expand_flags(self):
+
+        def _ascii_lower(str):
+            return str.translate(string.maketrans(string.ascii_uppercase,
+                                                  string.ascii_lowercase));
+
         prefix = "CUPS_PRINTER_"
         prefix_length = len(prefix)
-
-        # Use the C locale for lower() (trac #151).
-        current_ctype = locale.setlocale (locale.LC_CTYPE)
-        locale.setlocale (locale.LC_CTYPE, "C")
 
         # loop over cups constants
         for name in cups.__dict__:
             if name.startswith(prefix):
-                attr_name = name[prefix_length:].lower()
+                attr_name = \
+                    _ascii_lower(name[prefix_length:])
                 if attr_name in self._flags_blacklist: continue
                 if attr_name == "class": attr_name = "is_class"
                 # set as attribute
                 setattr(self, attr_name,
                         bool(self.type & getattr(cups, name)))
-
-        locale.setlocale (locale.LC_CTYPE, current_ctype)
 
     def update(self, **kw):
         """
