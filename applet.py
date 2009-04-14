@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -120,6 +120,12 @@ class NewPrinterNotification(dbus.service.Object):
         del c
 
         # Check for missing packages
+        try:
+            cups.ppdSetConformance (cups.PPD_CONFORM_RELAXED)
+        except AttributeError:
+            # Requires pycups 1.9.46
+            pass
+
         ppd = cups.PPD (filename)
         import os
         os.unlink (filename)

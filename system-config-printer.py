@@ -55,6 +55,11 @@ if len(sys.argv)>1 and sys.argv[1] == '--help':
 
 import cups
 cups.require ("1.9.27")
+try:
+    cups.ppdSetConformance (cups.PPD_CONFORM_RELAXED)
+except AttributeError:
+    # Requires pycups 1.9.46
+    pass
 
 import pysmb
 import cupshelpers, options
