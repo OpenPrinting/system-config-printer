@@ -73,6 +73,12 @@ import cups
 cups.require ("1.9.42")
 
 try:
+    cups.ppdSetConformance (cups.PPD_CONFORM_RELAXED)
+except AttributeError:
+    # Requires pycups 1.9.46
+    pass
+
+try:
     import pysmb
     PYSMB_AVAILABLE=True
 except:
