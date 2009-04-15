@@ -4320,16 +4320,18 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnIPPVerify_clicked(self, button):
         uri = self.lblIPPURI.get_text ()
-        match = re.match ("(ipp|https?)://([^/]+)(.*)/([^/]*)", uri)
+        (scheme, rest) = urllib.splittype (uri)
+        (hostport, rest) = urllib.splithost (rest)
         verified = False
-        if match:
+        if hostport != None:
+            (host, port) = urllib.splitnport (hostport, defport=631)
             oldserver = cups.getServer ()
             try:
                 try:
-                    c = cups.Connection (host=match.group (2))
+                    c = cups.Connection (host=host, port=port)
                 except TypeError:
                     # host parameter requires pycups >= 1.9.40.
-                    cups.setServer (match.group (2))
+                    cups.setServer (host)
                     c = cups.Connection ()
 
                 try:
