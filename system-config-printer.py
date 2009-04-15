@@ -5354,9 +5354,11 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnIPPVerify_clicked(self, button):
         uri = self.lblIPPURI.get_text ()
-        match = re.match ("(ipp|https?)://([^/]+)(.*)/([^/]*)", uri)
+        (scheme, rest) = urllib.splittype (uri)
+        (hostport, rest) = urllib.splithost (rest)
         verified = False
-        if match:
+        if hostport != None:
+            (host, port) = urllib.splitnport (hostport, defport=631)
             oldserver = cups.getServer ()
             try:
                 if uri.startswith ("https:"):
@@ -5364,7 +5366,7 @@ class NewPrinterGUI(GtkGUI):
                 else:
                     encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
 
-                c = cups.Connection (host=match.group (2),
+                c = cups.Connection (host=host, port=port,
                                      encryption=encryption)
                 attributes = c.getPrinterAttributes (uri = uri)
                 verified = True
