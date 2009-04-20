@@ -4682,7 +4682,7 @@ class NewPrinterGUI(GtkGUI):
         button_clicked = dialog.run()
         dialog.destroy()
         if (button_clicked == 1):
-            cmds = ("gksu -- hp-plugin -u",
+            cmds = ("if python -c 'import PyQt4.QtGui' 2>/dev/null; then gksu -- hp-plugin -u; else exit 255; fi",
                     "gksu -- xterm -T 'HPLIP Plugin Installation' -sb -rightbar -e hp-plugin -i")
             try:
                 install_result = -1
@@ -4698,10 +4698,6 @@ class NewPrinterGUI(GtkGUI):
                         time.sleep (0.1)
                         p.poll ()
                     install_result = p.returncode
-                    for line in stderr.split ("\n"):
-                        if line.find ("PyQt not installed") >= 0:
-                            install_result = 255
-                            break
                     if install_result != 255:
                         break
                 if install_result == 0:
