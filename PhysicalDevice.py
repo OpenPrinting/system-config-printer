@@ -58,7 +58,7 @@ class PhysicalDevice:
         if self._network_host:
             host = self._get_host_from_uri (device.uri)
             if host != self._network_host:
-                raise RuntimeError
+                raise ValueError
         else:
             (mfg, mdl) = self._canonical_id (device)
             if self.devices == None:
@@ -86,7 +86,7 @@ class PhysicalDevice:
 
                 sn = device.id_dict.get ('SN', '')
                 if sn != '' and self.sn != '' and sn != self.sn:
-                    raise RuntimeError
+                    raise ValueError
 
         for d in self.devices:
             if d.uri == device.uri:
