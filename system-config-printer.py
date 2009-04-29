@@ -6105,9 +6105,10 @@ class NewPrinterGUI(GtkGUI):
         model = self.tvNPMakes.get_model()
         model.clear()
         found = False
+        auto_make_lower = self.auto_make.lower ()
         for make in makes:
             iter = model.append((make,))
-            if make.lower()==self.auto_make.lower():
+            if make.lower() == auto_make_lower:
                 path = model.get_path(iter)
                 self.tvNPMakes.set_cursor (path)
                 self.tvNPMakes.scroll_to_cell(path, None,
@@ -6139,10 +6140,13 @@ class NewPrinterGUI(GtkGUI):
         model = self.tvNPModels.get_model()
         model.clear()
         selected = False
+        is_auto_make = self.NPMake.lower () == self.auto_make.lower ()
+        if is_auto_make:
+            auto_model_lower = self.auto_model.lower ()
+
         for pmodel in models:
             iter = model.append((pmodel,))
-            if self.NPMake.lower()==self.auto_make.lower() and \
-                    pmodel.lower()==self.auto_model.lower():
+            if is_auto_make and pmodel.lower() == auto_model_lower:
                 path = model.get_path(iter)
                 self.tvNPModels.set_cursor (path)
                 self.tvNPModels.scroll_to_cell(path, None,
