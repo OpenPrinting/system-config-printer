@@ -4316,7 +4316,7 @@ class NewPrinterGUI(GtkGUI):
         if next_page_nr == 6 and not self.installable_options and step<0:
             next_page_nr = order[order.index(next_page_nr)-1]
 
-        if step > 0 and next_page_nr == 7: # About to show downloadable drivers
+        if step >= 0 and next_page_nr == 7: # About to show downloadable drivers
             if self.drivers_lock.locked ():
                 # Still searching for drivers.
                 self.lblWait.set_markup ('<span weight="bold" size="larger">' +
@@ -4338,7 +4338,7 @@ class NewPrinterGUI(GtkGUI):
 
             self.fillDownloadableDrivers()
 
-        if step > 0 and next_page_nr == 0: # About to choose a name.
+        if step >= 0 and next_page_nr == 0: # About to choose a name.
             # Suggest an appropriate name.
             name = None
             descr = None
@@ -6107,7 +6107,7 @@ class NewPrinterGUI(GtkGUI):
         found = False
         for make in makes:
             iter = model.append((make,))
-            if make==self.auto_make:
+            if make.lower()==self.auto_make.lower():
                 path = model.get_path(iter)
                 self.tvNPMakes.set_cursor (path)
                 self.tvNPMakes.scroll_to_cell(path, None,
@@ -6141,7 +6141,8 @@ class NewPrinterGUI(GtkGUI):
         selected = False
         for pmodel in models:
             iter = model.append((pmodel,))
-            if self.NPMake==self.auto_make and pmodel==self.auto_model:
+            if self.NPMake.lower()==self.auto_make.lower() and \
+                    pmodel.lower()==self.auto_model.lower():
                 path = model.get_path(iter)
                 self.tvNPModels.set_cursor (path)
                 self.tvNPModels.scroll_to_cell(path, None,

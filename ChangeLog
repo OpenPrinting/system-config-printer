@@ -1,3 +1,14 @@
+2009-04-29  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Compare make and model names
+	case-insensitively when positioning the cursor in the make/model
+	selection list (Ubuntu bug #365329).
+	Made sure that print queue name suggestion is always generated
+	(Ubuntu bug #363522, comment 6).
+
+	* cupshelpers/ppds.py: Let the getPPDNameFromDeviceID() function
+	always output which PPD got selected.
+
 2009-04-28  Tim Waugh  <twaugh@redhat.com>
 
 	* glade/NewPrinterWindow.glade: Adjusted border padding for New
