@@ -1045,6 +1045,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if ((response == gtk.RESPONSE_OK and not success) or
             response == gtk.RESPONSE_CANCEL):
+            del self.printer
             dialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
@@ -2782,6 +2783,8 @@ class GUI(GtkGUI, monitor.Watcher):
         self.monitor.cleanup ()
         while len (self.jobviewers) > 0:
             self.jobviewers[0].cleanup () # this will call on_jobviewer_exit
+        del self.mainlist
+        del self.printers
         gtk.main_quit()
 
     # Rename
