@@ -1,3 +1,12 @@
+2009-05-13  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py (NewPrinterGUI.fetchJockeyDriver):
+	While waiting for Jockey to download a driver from OpenPrinting,
+	check whether the CUPS connection stays stable and re-establish it
+	if it gets lost. Sometimes the installation of a driver package
+	breaks down the connection to CUPS (probably due to the restart of
+	CUPS).
+
 2009-04-29  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* system-config-printer.py: Compare make and model names

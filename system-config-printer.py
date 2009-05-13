@@ -3968,6 +3968,17 @@ class NewPrinterGUI(GtkGUI):
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show ()
 
+            if self.mainapp.cups == None:
+                debugprint("CUPS connection lost, reconnecting ...")
+                try:
+                    self.mainapp.cups = authconn.Connection(self.mainapp.PrintersWindow)
+                    self.mainapp.setConnected()
+                    debugprint("Reconnected")
+                    self.mainapp.populateList()
+                except RuntimeError:
+                    debugprint("Reconnection failed")
+                    pass
+
             while gtk.events_pending ():
                 gtk.main_iteration ()
 
