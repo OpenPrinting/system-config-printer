@@ -666,8 +666,8 @@ class PPDs:
                 cmd = ""
 
             print "  <commandset>%s</commandset>" % cmd
-            print "Using %s" % ppdnamelist[0]
 
+        print "Using %s (status: %d)" % (ppdnamelist[0], status)
         return (status, ppdnamelist[0])
 
     def _findBestMatchPPDs (self, mdls, mdl):

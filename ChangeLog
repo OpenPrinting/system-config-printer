@@ -1,3 +1,43 @@
+2009-05-13  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py (NewPrinterGUI.fetchJockeyDriver):
+	While waiting for Jockey to download a driver from OpenPrinting,
+	check whether the CUPS connection stays stable and re-establish it
+	if it gets lost. Sometimes the installation of a driver package
+	breaks down the connection to CUPS (probably due to the restart of
+	CUPS).
+
+2009-04-29  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Compare make and model names
+	case-insensitively when positioning the cursor in the make/model
+	selection list (Ubuntu bug #365329).
+	Made sure that print queue name suggestion is always generated
+	(Ubuntu bug #363522, comment 6).
+
+	* cupshelpers/ppds.py: Let the getPPDNameFromDeviceID() function
+	always output which PPD got selected.
+
+2009-04-28  Tim Waugh  <twaugh@redhat.com>
+
+	* glade/NewPrinterWindow.glade: Adjusted border padding for New
+	Printer window (bug #493862).
+
+2009-04-20  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Made call of hp-plugin also working with
+	HPLIP 3.9.2.
+
+2009-04-15  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py
+	(NewPrinterGUI.on_btnIPPVerify_clicked): Fixed URI parsing.
+
+2009-04-14  Tim Waugh  <twaugh@redhat.com>
+
+	* system-config-printer.py: Set relaxed PPD conformance (trac #159).
+	* applet.py (NewPrinterNotification.NewPrinter): Likewise.
+
 2009-04-01  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* cupshelpers/cupshelpers.py (_expand_flags): Do not use

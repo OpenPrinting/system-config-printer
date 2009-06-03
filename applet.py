@@ -149,6 +149,12 @@ class NewPrinterNotification(dbus.service.Object):
             del c
 
             # Check for missing packages
+            try:
+                cups.ppdSetConformance (cups.PPD_CONFORM_RELAXED)
+            except AttributeError:
+                # Requires pycups 1.9.46
+                pass
+
             ppd = cups.PPD (filename)
             import os
             os.unlink (filename)

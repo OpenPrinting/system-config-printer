@@ -73,6 +73,12 @@ import cups
 cups.require ("1.9.42")
 
 try:
+    cups.ppdSetConformance (cups.PPD_CONFORM_RELAXED)
+except AttributeError:
+    # Requires pycups 1.9.46
+    pass
+
+try:
     import pysmb
     PYSMB_AVAILABLE=True
 except:
@@ -1039,6 +1045,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if ((response == gtk.RESPONSE_OK and not success) or
             response == gtk.RESPONSE_CANCEL):
+            del self.printer
             dialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
@@ -2776,6 +2783,8 @@ class GUI(GtkGUI, monitor.Watcher):
         self.monitor.cleanup ()
         while len (self.jobviewers) > 0:
             self.jobviewers[0].cleanup () # this will call on_jobviewer_exit
+        del self.mainlist
+        del self.printers
         gtk.main_quit()
 
     # Rename
@@ -3959,6 +3968,17 @@ class NewPrinterGUI(GtkGUI):
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show ()
 
+            if self.mainapp.cups == None:
+                debugprint("CUPS connection lost, reconnecting ...")
+                try:
+                    self.mainapp.cups = authconn.Connection(self.mainapp.PrintersWindow)
+                    self.mainapp.setConnected()
+                    debugprint("Reconnected")
+                    self.mainapp.populateList()
+                except RuntimeError:
+                    debugprint("Reconnection failed")
+                    pass
+
             while gtk.events_pending ():
                 gtk.main_iteration ()
 
@@ -4310,7 +4330,7 @@ class NewPrinterGUI(GtkGUI):
         if next_page_nr == 6 and not self.installable_options and step<0:
             next_page_nr = order[order.index(next_page_nr)-1]
 
-        if step > 0 and next_page_nr == 7: # About to show downloadable drivers
+        if step >= 0 and next_page_nr == 7: # About to show downloadable drivers
             if self.drivers_lock.locked ():
                 # Still searching for drivers.
                 self.lblWait.set_markup ('<span weight="bold" size="larger">' +
@@ -4332,7 +4352,7 @@ class NewPrinterGUI(GtkGUI):
 
             self.fillDownloadableDrivers()
 
-        if step > 0 and next_page_nr == 0: # About to choose a name.
+        if step >= 0 and next_page_nr == 0: # About to choose a name.
             # Suggest an appropriate name.
             name = None
             descr = None
@@ -4676,7 +4696,7 @@ class NewPrinterGUI(GtkGUI):
         button_clicked = dialog.run()
         dialog.destroy()
         if (button_clicked == 1):
-            cmds = ("gksu -- hp-plugin -u",
+            cmds = ("if python -c 'import PyQt4.QtGui' 2>/dev/null; then gksu -- hp-plugin -u; else exit 255; fi",
                     "gksu -- xterm -T 'HPLIP Plugin Installation' -sb -rightbar -e hp-plugin -i")
             try:
                 install_result = -1
@@ -4692,10 +4712,6 @@ class NewPrinterGUI(GtkGUI):
                         time.sleep (0.1)
                         p.poll ()
                     install_result = p.returncode
-                    for line in stderr.split ("\n"):
-                        if line.find ("PyQt not installed") >= 0:
-                            install_result = 255
-                            break
                     if install_result != 255:
                         break
                 if install_result == 0:
@@ -5348,9 +5364,11 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnIPPVerify_clicked(self, button):
         uri = self.lblIPPURI.get_text ()
-        match = re.match ("(ipp|https?)://([^/]+)(.*)/([^/]*)", uri)
+        (scheme, rest) = urllib.splittype (uri)
+        (hostport, rest) = urllib.splithost (rest)
         verified = False
-        if match:
+        if hostport != None:
+            (host, port) = urllib.splitnport (hostport, defport=631)
             oldserver = cups.getServer ()
             try:
                 if uri.startswith ("https:"):
@@ -5358,7 +5376,7 @@ class NewPrinterGUI(GtkGUI):
                 else:
                     encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
 
-                c = cups.Connection (host=match.group (2),
+                c = cups.Connection (host=host, port=port,
                                      encryption=encryption)
                 attributes = c.getPrinterAttributes (uri = uri)
                 verified = True
@@ -6101,9 +6119,10 @@ class NewPrinterGUI(GtkGUI):
         model = self.tvNPMakes.get_model()
         model.clear()
         found = False
+        auto_make_lower = self.auto_make.lower ()
         for make in makes:
             iter = model.append((make,))
-            if make==self.auto_make:
+            if make.lower() == auto_make_lower:
                 path = model.get_path(iter)
                 self.tvNPMakes.set_cursor (path)
                 self.tvNPMakes.scroll_to_cell(path, None,
@@ -6135,9 +6154,13 @@ class NewPrinterGUI(GtkGUI):
         model = self.tvNPModels.get_model()
         model.clear()
         selected = False
+        is_auto_make = self.NPMake.lower () == self.auto_make.lower ()
+        if is_auto_make:
+            auto_model_lower = self.auto_model.lower ()
+
         for pmodel in models:
             iter = model.append((pmodel,))
-            if self.NPMake==self.auto_make and pmodel==self.auto_model:
+            if is_auto_make and pmodel.lower() == auto_model_lower:
                 path = model.get_path(iter)
                 self.tvNPModels.set_cursor (path)
                 self.tvNPModels.scroll_to_cell(path, None,

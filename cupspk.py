@@ -35,6 +35,7 @@ import string
 import cups
 import dbus
 import gtk
+from debug import debugprint
 
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
