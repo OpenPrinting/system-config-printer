@@ -459,6 +459,17 @@ class JobViewer (GtkGUI, monitor.Watcher):
         store.set_value (iter, 2, data.get('job-name', _("Unknown")))
         debugprint ("Job %d added" % job)
         self.jobiters[job] = iter
+
+        range = self.treeview.get_visible_range ()
+        if range != None:
+            (start, end) = range
+            if (self.store.get_sort_column_id () == (0,
+                                                     gtk.SORT_DESCENDING) and
+                start == (1,)):
+                # This job was added job above the visible range, and
+                # we are sorting by descending job ID.  Scroll to it.
+                self.treeview.scroll_to_cell ((0,), None, False, 0.0, 0.0)
+
         if not self.job_creation_times_timer:
             t = gobject.timeout_add (1000, self.update_job_creation_times)
             self.job_creation_times_timer = t
