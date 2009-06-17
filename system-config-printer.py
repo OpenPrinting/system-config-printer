@@ -3419,6 +3419,8 @@ class GUI(GtkGUI, monitor.Watcher):
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
         gtk.gdk.threads_enter ()
+        self.printers[printer].update (**event)
+        self.dests_iconview_selection_changed (self.dests_iconview)
         if self.PrinterPropertiesDialog.get_property('visible'):
             self.printer.getAttributes ()
             self.updatePrinterProperties ()
@@ -6626,7 +6628,22 @@ class NewPrinterGUI(GtkGUI):
 
         self.NewPrinterWindow.hide()
         self.mainapp.populateList()
-        self.mainapp.fillPrinterTab (name)
+
+        # Now select it.
+        dests_iconview = self.mainapp.dests_iconview
+        model = dests_iconview.get_model ()
+        iter = model.get_iter_first ()
+        while iter != None:
+            queue = unicode (model.get_value (iter, 2))
+            if queue == name:
+                path = model.get_path (iter)
+                dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
+                dests_iconview.set_cursor (path)
+                dests_iconview.select_path (path)
+                break
+
+            iter = model.iter_next (iter)
+
         if check:
             try:
                 self.checkDriverExists (name, ppd=checkppd)

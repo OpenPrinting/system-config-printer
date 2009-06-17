@@ -156,12 +156,6 @@ class Printer:
         elif attrs.has_key('requesting-user-name-denied'):
             self.except_users = attrs['requesting-user-name-denied']
         self.except_users_string = ', '.join(self.except_users)
-        if (attrs.has_key ('device-uri') and
-            attrs['device-uri'].startswith ("smb:")):
-            # Don't update device-uri for smb printers as we need to have
-            # the original from printers.conf, in case it has authentication
-            # details in it.
-            attrs['device-uri'] = self.device_uri
         self.update (**attrs)
 
     def getServer(self):

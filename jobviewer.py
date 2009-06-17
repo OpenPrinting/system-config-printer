@@ -241,6 +241,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.treeview.connect ('popup-menu', self.on_treeview_popup_menu)
         self.treeview.connect ('cursor-changed',
                                self.on_treeview_cursor_changed)
+        self.store.connect ('row-changed',
+                            self.on_treemodel_row_changed)
 
         self.JobsWindow.set_icon_name (ICON)
         self.JobsWindow.hide ()
@@ -459,6 +461,17 @@ class JobViewer (GtkGUI, monitor.Watcher):
         store.set_value (iter, 2, data.get('job-name', _("Unknown")))
         debugprint ("Job %d added" % job)
         self.jobiters[job] = iter
+
+        range = self.treeview.get_visible_range ()
+        if range != None:
+            (start, end) = range
+            if (self.store.get_sort_column_id () == (0,
+                                                     gtk.SORT_DESCENDING) and
+                start == (1,)):
+                # This job was added job above the visible range, and
+                # we are sorting by descending job ID.  Scroll to it.
+                self.treeview.scroll_to_cell ((0,), None, False, 0.0, 0.0)
+
         if not self.job_creation_times_timer:
             t = gobject.timeout_add (1000, self.update_job_creation_times)
             self.job_creation_times_timer = t
@@ -569,14 +582,23 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                         day = now.tm_mday
                         if (hh < now.tm_hour or
-                            hh == now.tm_hour and
-                            (mm < now.tm_min or
-                             mm == now.tm_min and ss < now.tm_sec)):
+                            (hh == now.tm_hour and
+                             (mm < now.tm_min or
+                              (mm == now.tm_min and ss < now.tm_sec)))):
                             day += 1
 
                         hold = (now.tm_year, now.tm_mon, day,
                                 hh, mm, ss, 0, 0, -1)
-                        local = time.localtime (time.mktime (hold) - time.timezone)
+                        old_tz = os.environ.get("TZ")
+                        os.environ["TZ"] = "UTC"
+                        simpletime = time.mktime (hold)
+
+                        if old_tz == None:
+                            del os.environ["TZ"]
+                        else:
+                            os.environ["TZ"] = old_tz
+
+                        local = time.localtime (simpletime)
                         state = _("Held until %s") % time.strftime ("%X", local)
                 except ValueError:
                     pass
@@ -833,6 +855,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_treeview_button_release_event(self, treeview, event):
         if event.button == 3:
             self.show_treeview_popup_menu (treeview, event, event.button)
+
+    def on_treemodel_row_changed (self, model, path, iter):
+        self.on_treeview_cursor_changed (self.treeview)
 
     def on_treeview_cursor_changed (self, treeview):
         path, column = treeview.get_cursor ()
