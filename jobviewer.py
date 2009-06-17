@@ -580,14 +580,23 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                         day = now.tm_mday
                         if (hh < now.tm_hour or
-                            hh == now.tm_hour and
-                            (mm < now.tm_min or
-                             mm == now.tm_min and ss < now.tm_sec)):
+                            (hh == now.tm_hour and
+                             (mm < now.tm_min or
+                              (mm == now.tm_min and ss < now.tm_sec)))):
                             day += 1
 
                         hold = (now.tm_year, now.tm_mon, day,
                                 hh, mm, ss, 0, 0, -1)
-                        local = time.localtime (time.mktime (hold) - time.timezone)
+                        old_tz = os.environ.get("TZ")
+                        os.environ["TZ"] = "UTC"
+                        simpletime = time.mktime (hold)
+
+                        if old_tz == None:
+                            del os.environ["TZ"]
+                        else:
+                            os.environ["TZ"] = old_tz
+
+                        local = time.localtime (simpletime)
                         state = _("Held until %s") % time.strftime ("%X", local)
                 except ValueError:
                     pass
