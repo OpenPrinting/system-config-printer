@@ -241,6 +241,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.treeview.connect ('popup-menu', self.on_treeview_popup_menu)
         self.treeview.connect ('cursor-changed',
                                self.on_treeview_cursor_changed)
+        self.store.connect ('row-changed',
+                            self.on_treemodel_row_changed)
 
         self.JobsWindow.set_icon_name (ICON)
         self.JobsWindow.hide ()
@@ -853,6 +855,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_treeview_button_release_event(self, treeview, event):
         if event.button == 3:
             self.show_treeview_popup_menu (treeview, event, event.button)
+
+    def on_treemodel_row_changed (self, model, path, iter):
+        self.on_treeview_cursor_changed (self.treeview)
 
     def on_treeview_cursor_changed (self, treeview):
         path, column = treeview.get_cursor ()
