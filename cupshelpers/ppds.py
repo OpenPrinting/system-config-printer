@@ -985,9 +985,9 @@ def _self_test(argv):
         ("MFG:Hewlett-Packard;MDL:LaserJet 3390 Series;"
          "CMD:MLC,PCL,POSTSCRIPT;CLS:PRINTER;", 0, 'HP LaserJet 3390'),
         ("MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;"
-         "CLS:PRINTER;1284.4DL:4d,4e,1;", 0, "HP PSC 2210"),
+         "CLS:PRINTER;1284.4DL:4d,4e,1;", 0, ".* PSC 2200 Series"),
         ("MFG:HP;MDL:PSC 2200 Series;CLS:PRINTER;DES:PSC 2200 Series;",
-         1, "HP PSC 2210"),# from HPLIP
+         1, ".* PSC 2200 Series"),# from HPLIP
         ("MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;"
          "DES:Hewlett-Packard DeskJet 990C;", 0, "HP DeskJet 990C"),
         ("CLASS:PRINTER;MODEL:HP LaserJet 6MP;MANUFACTURER:Hewlett-Packard;"
@@ -1025,19 +1025,21 @@ def _self_test(argv):
                                                          id_dict["CMD"])
         if status < max_status_code:
             success = True
-        elif status == max_status_code:
-            ppddict = ppds.getInfoFromPPDName (ppdname)
-            match = re.match (modelre, ppddict['ppd-make-and-model'], re.I)
-            success = match != None
         else:
-            success = False
+            ppddict = ppds.getInfoFromPPDName (ppdname)
+            if status == max_status_code:
+                match = re.match (modelre, ppddict['ppd-make-and-model'], re.I)
+                success = match != None
+            else:
+                success = False
 
         if success:
             result = "PASS"
         else:
             result = "*** FAIL ***"
 
-        print "%s: %s %s" % (result, id_dict["MFG"], id_dict["MDL"])
+        print "%s: %s %s (%s)" % (result, id_dict["MFG"], id_dict["MDL"],
+                                  ppddict['ppd-make-and-model'])
         all_passed = all_passed and success
 
     if not all_passed:
