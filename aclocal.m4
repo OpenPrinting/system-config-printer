@@ -1,4 +1,4 @@
-# generated automatically by aclocal 1.10.1 -*- Autoconf -*-
+# generated automatically by aclocal 1.10.2 -*- Autoconf -*-
 
 # Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
 # 2005, 2006, 2007, 2008  Free Software Foundation, Inc.
@@ -13,7 +13,7 @@
 
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
-m4_if(AC_AUTOCONF_VERSION, [2.63],,
+m4_if(m4_defn([AC_AUTOCONF_VERSION]), [2.63],,
 [m4_warning([this file was generated for autoconf 2.63.
 You have another version of autoconf.  It may work, but is not guaranteed to.
 If you have problems, you may need to regenerate the build system entirely.
@@ -688,25 +688,25 @@ INTLTOOL_SOUNDLIST_RULE='%.soundlist: %.soundlist.in $(INTLTOOL_MERGE) $(wildcar
     INTLTOOL_SERVICE_RULE='%.service: %.service.in   $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< [$]@'
    INTLTOOL_POLICY_RULE='%.policy:    %.policy.in    $(INTLTOOL_MERGE) $(wildcard $(top_srcdir)/po/*.po) ; LC_ALL=C $(INTLTOOL_MERGE) -x -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< [$]@'
 
-AC_SUBST(INTLTOOL_DESKTOP_RULE)
-AC_SUBST(INTLTOOL_DIRECTORY_RULE)
-AC_SUBST(INTLTOOL_KEYS_RULE)
-AC_SUBST(INTLTOOL_PROP_RULE)
-AC_SUBST(INTLTOOL_OAF_RULE)
-AC_SUBST(INTLTOOL_PONG_RULE)
-AC_SUBST(INTLTOOL_SERVER_RULE)
-AC_SUBST(INTLTOOL_SHEET_RULE)
-AC_SUBST(INTLTOOL_SOUNDLIST_RULE)
-AC_SUBST(INTLTOOL_UI_RULE)
-AC_SUBST(INTLTOOL_XAM_RULE)
-AC_SUBST(INTLTOOL_KBD_RULE)
-AC_SUBST(INTLTOOL_XML_RULE)
-AC_SUBST(INTLTOOL_XML_NOMERGE_RULE)
-AC_SUBST(INTLTOOL_CAVES_RULE)
-AC_SUBST(INTLTOOL_SCHEMAS_RULE)
-AC_SUBST(INTLTOOL_THEME_RULE)
-AC_SUBST(INTLTOOL_SERVICE_RULE)
-AC_SUBST(INTLTOOL_POLICY_RULE)
+_IT_SUBST(INTLTOOL_DESKTOP_RULE)
+_IT_SUBST(INTLTOOL_DIRECTORY_RULE)
+_IT_SUBST(INTLTOOL_KEYS_RULE)
+_IT_SUBST(INTLTOOL_PROP_RULE)
+_IT_SUBST(INTLTOOL_OAF_RULE)
+_IT_SUBST(INTLTOOL_PONG_RULE)
+_IT_SUBST(INTLTOOL_SERVER_RULE)
+_IT_SUBST(INTLTOOL_SHEET_RULE)
+_IT_SUBST(INTLTOOL_SOUNDLIST_RULE)
+_IT_SUBST(INTLTOOL_UI_RULE)
+_IT_SUBST(INTLTOOL_XAM_RULE)
+_IT_SUBST(INTLTOOL_KBD_RULE)
+_IT_SUBST(INTLTOOL_XML_RULE)
+_IT_SUBST(INTLTOOL_XML_NOMERGE_RULE)
+_IT_SUBST(INTLTOOL_CAVES_RULE)
+_IT_SUBST(INTLTOOL_SCHEMAS_RULE)
+_IT_SUBST(INTLTOOL_THEME_RULE)
+_IT_SUBST(INTLTOOL_SERVICE_RULE)
+_IT_SUBST(INTLTOOL_POLICY_RULE)
 
 # Check the gettext tools to make sure they are GNU
 AC_PATH_PROG(XGETTEXT, xgettext)
@@ -723,12 +723,17 @@ if test -z "$xgversion" -o -z "$mmversion" -o -z "$mfversion"; then
     AC_MSG_ERROR([GNU gettext tools not found; required for intltool])
 fi
 
-AC_PATH_PROG(INTLTOOL_PERL, [perl])
+AC_PATH_PROG(INTLTOOL_PERL, perl)
 if test -z "$INTLTOOL_PERL"; then
-   AC_MSG_ERROR([perl not found; required for intltool])
+   AC_MSG_ERROR([perl not found])
 fi
-if test -z "`$INTLTOOL_PERL -v | fgrep '5.' 2> /dev/null`"; then
-   AC_MSG_ERROR([perl 5.x required for intltool])
+AC_MSG_CHECKING([for perl >= 5.8.1])
+$INTLTOOL_PERL -e "use 5.8.1;" > /dev/null 2>&1
+if test $? -ne 0; then
+   AC_MSG_ERROR([perl 5.8.1 is required for intltool])
+else
+   IT_PERL_VERSION="`$INTLTOOL_PERL -e \"printf '%vd', $^V\"`"
+   AC_MSG_RESULT([$IT_PERL_VERSION])
 fi
 if test "x$2" != "xno-xml"; then
    AC_MSG_CHECKING([for XML::Parser])
@@ -784,7 +789,7 @@ dnl The following CONFIG_COMMANDS should be exetuted at the very end
 dnl of config.status.
 AC_CONFIG_COMMANDS_PRE([
   AC_CONFIG_COMMANDS([$1/stamp-it], [
-    if [ ! grep "^# INTLTOOL_MAKEFILE$" "$1/Makefile.in" ]; then
+    if [ ! grep "^# INTLTOOL_MAKEFILE$" "$1/Makefile.in" > /dev/null ]; then
        AC_MSG_ERROR([$1/Makefile.in.in was not created by intltoolize.])
     fi
     rm -f "$1/stamp-it" "$1/stamp-it.tmp" "$1/POTFILES" "$1/Makefile.tmp"
@@ -805,6 +810,17 @@ AC_CONFIG_COMMANDS_PRE([
   ])
 ])dnl
 ])
+
+# _IT_SUBST(VARIABLE)
+# -------------------
+# Abstract macro to do either _AM_SUBST_NOTMAKE or AC_SUBST
+#
+AC_DEFUN([_IT_SUBST],
+[
+AC_SUBST([$1])
+m4_ifdef([_AM_SUBST_NOTMAKE], [_AM_SUBST_NOTMAKE([$1])])
+]
+)
 
 # deprecated macros
 AU_ALIAS([AC_PROG_INTLTOOL], [IT_PROG_INTLTOOL])
@@ -2394,7 +2410,7 @@ fi
 AC_SUBST($1)dnl
 ])
 
-# Copyright (C) 2002, 2003, 2005, 2006, 2007  Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2005, 2006, 2007, 2008  Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
@@ -2409,7 +2425,7 @@ AC_DEFUN([AM_AUTOMAKE_VERSION],
 [am__api_version='1.10'
 dnl Some users find AM_AUTOMAKE_VERSION and mistake it for a way to
 dnl require some minimum version.  Point them to the right macro.
-m4_if([$1], [1.10.1], [],
+m4_if([$1], [1.10.2], [],
       [AC_FATAL([Do not call $0, use AM_INIT_AUTOMAKE([$1]).])])dnl
 ])
 
@@ -2423,12 +2439,12 @@ m4_define([_AM_AUTOCONF_VERSION], [])
 # AM_SET_CURRENT_AUTOMAKE_VERSION
 # -------------------------------
 # Call AM_AUTOMAKE_VERSION and AM_AUTOMAKE_VERSION so they can be traced.
-# This function is AC_REQUIREd by AC_INIT_AUTOMAKE.
+# This function is AC_REQUIREd by AM_INIT_AUTOMAKE.
 AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
-[AM_AUTOMAKE_VERSION([1.10.1])dnl
+[AM_AUTOMAKE_VERSION([1.10.2])dnl
 m4_ifndef([AC_AUTOCONF_VERSION],
   [m4_copy([m4_PACKAGE_VERSION], [AC_AUTOCONF_VERSION])])dnl
-_AM_AUTOCONF_VERSION(AC_AUTOCONF_VERSION)])
+_AM_AUTOCONF_VERSION(m4_defn([AC_AUTOCONF_VERSION]))])
 
 # AM_AUX_DIR_EXPAND                                         -*- Autoconf -*-
 
@@ -2678,19 +2694,28 @@ _AM_SUBST_NOTMAKE([AMDEPBACKSLASH])dnl
 
 # Generate code to set up dependency tracking.              -*- Autoconf -*-
 
-# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005
+# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005, 2008
 # Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-#serial 3
+#serial 4
 
 # _AM_OUTPUT_DEPENDENCY_COMMANDS
 # ------------------------------
 AC_DEFUN([_AM_OUTPUT_DEPENDENCY_COMMANDS],
-[for mf in $CONFIG_FILES; do
+[# Autoconf 2.62 quotes --file arguments for eval, but not when files
+# are listed without --file.  Let's play safe and only enable the eval
+# if we detect the quoting.
+case $CONFIG_FILES in
+*\'*) eval set x "$CONFIG_FILES" ;;
+*)   set x $CONFIG_FILES ;;
+esac
+shift
+for mf
+do
   # Strip MF so we end up with the name of the file.
   mf=`echo "$mf" | sed -e 's/:.*$//'`
   # Check whether this is an Automake generated Makefile or not.
@@ -3022,13 +3047,13 @@ esac
 
 # Helper functions for option handling.                     -*- Autoconf -*-
 
-# Copyright (C) 2001, 2002, 2003, 2005  Free Software Foundation, Inc.
+# Copyright (C) 2001, 2002, 2003, 2005, 2008  Free Software Foundation, Inc.
 #
 # This file is free software; the Free Software Foundation
 # gives unlimited permission to copy and/or distribute it,
 # with or without modifications, as long as this notice is preserved.
 
-# serial 3
+# serial 4
 
 # _AM_MANGLE_OPTION(NAME)
 # -----------------------
@@ -3045,7 +3070,7 @@ AC_DEFUN([_AM_SET_OPTION],
 # ----------------------------------
 # OPTIONS is a space-separated list of Automake options.
 AC_DEFUN([_AM_SET_OPTIONS],
-[AC_FOREACH([_AM_Option], [$1], [_AM_SET_OPTION(_AM_Option)])])
+[m4_foreach_w([_AM_Option], [$1], [_AM_SET_OPTION(_AM_Option)])])
 
 # _AM_IF_OPTION(OPTION, IF-SET, [IF-NOT-SET])
 # -------------------------------------------
