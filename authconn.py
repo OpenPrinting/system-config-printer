@@ -130,11 +130,11 @@ class Connection:
         self._server = cups.getServer ()
         self._port = cups.getPort()
         self._encryption = cups.getEncryption ()
-        self._connect ()
         self._prompt_allowed = True
         self._operation_stack = []
         self._lock = lock
         self._gui_event = threading.Event ()
+        self._connect ()
 
     def _begin_operation (self, operation):
         self._operation_stack.append (operation)
@@ -154,7 +154,8 @@ class Connection:
     def _connect (self):
         cups.setUser (self._use_user)
 
-        self._use_pk = self._server[0] == '/' or self._server == 'localhost'
+        self._use_pk = ((self._server[0] == '/' or self._server == 'localhost')
+                        and not self._lock)
         if self._use_pk:
             create_object = cupspk.Connection
         else:
