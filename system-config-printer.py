@@ -4570,7 +4570,7 @@ class NewPrinterGUI(GtkGUI):
 
         # Check necessity of the plugin
         os.environ["URI"] = uri
-        cmd = 'LC_ALL=C DISPLAY= hp-info -d"${URI}"'
+        cmd = 'LC_ALL=C DISPLAY= hp-info -x -i -d"${URI}"'
         debugprint (uri + ": " + cmd)
         try:
             p = subprocess.Popen (cmd, shell=True,
@@ -5779,8 +5779,12 @@ class NewPrinterGUI(GtkGUI):
         try:
             if len (location) == 0 and self.device.device_class == "direct":
                 # Set location to the name of this host.
-                u = os.uname ()
-                location = u[1]
+                if (self.mainapp.connect_server == 'localhost' or
+                    self.mainapp.connect_server[0] == '/'):
+                    u = os.uname ()
+                    location = u[1]
+                else:
+                    location = self.mainapp.connect_server
 
             # Pre-fill location field.
             self.entNPLocation.set_text (location)

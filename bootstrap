@@ -1,6 +1,7 @@
 #!/bin/sh
 intltoolize --force --copy
 aclocal
+touch ChangeLog # keep automake happy
 automake --copy --add-missing
 autoconf
 
