@@ -20,6 +20,15 @@ EXPORT_MODULES=					\
 	fi
 	touch .stamp-distutils-in-builddir
 
+dist-hook: mk-ChangeLog
+.PHONE: mk-ChangeLog
+mk-ChangeLog:
+	if test -d .git; then \
+	  $(top_srcdir)/gitlog-to-changelog --since=2009-05-01 \
+	    > $(distdir)/cl ;\
+	  mv -f $(distdir)/cl $(distdir)/ChangeLog ;\
+	fi
+
 config.py: config.py.in Makefile
 	sed \
 	  -e "s|\@prefix\@|$(prefix)|" \
@@ -205,6 +214,7 @@ EXTRA_DIST=\
 	newprinternotification.conf \
 	bootstrap \
 	mkinstalldirs \
+	ChangeLog-OLD \
 	system-config-printer.desktop.in \
 	manage-print-jobs.desktop.in \
 	my-default-printer.desktop.in \
