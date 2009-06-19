@@ -1,3 +1,11 @@
+2009-06-19  Till Kamppeter  <till.kamppeter@gmail.com>
+
+	* system-config-printer.py: Call "hp-info" with the "-x" option.
+	Then it works also when there is no CUPS queue for the URI.
+
+	* cupshelpers/ppds.py: Support for the new CUPS Raster driver of HPLIP
+	(hpcups). Use it preferably.
+
 2009-05-13  Till Kamppeter  <till.kamppeter@gmail.com>
 
 	* system-config-printer.py (NewPrinterGUI.fetchJockeyDriver):

@@ -4570,7 +4570,7 @@ class NewPrinterGUI(GtkGUI):
 
         # Check necessity of the plugin
         os.environ["URI"] = uri
-        cmd = 'LC_ALL=C DISPLAY= hp-info -d"${URI}"'
+        cmd = 'LC_ALL=C DISPLAY= hp-info -x -i -d"${URI}"'
         debugprint (uri + ": " + cmd)
         try:
             p = subprocess.Popen (cmd, shell=True,

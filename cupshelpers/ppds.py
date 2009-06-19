@@ -191,6 +191,7 @@ DRIVER_TYPE_DOWNLOADED_NOW = 5
 DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT = 8
 DRIVER_TYPE_VENDOR = 10
 DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 15
+DRIVER_TYPE_HPCUPS = 16
 DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP = 17
 DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED = 20
 DRIVER_TYPE_GUTENPRINT_NATIVE = 25
@@ -216,6 +217,8 @@ def _getDriverType (ppdname, ppds=None):
             return DRIVER_TYPE_GUTENPRINT_NATIVE
     if ppdname.find ("splix")!= -1:
         return DRIVER_TYPE_SPLIX
+    if ppdname.find ("hpcups") != -1:
+        return DRIVER_TYPE_HPCUPS
     if (ppdname.find (":") == -1 and
         ppdname.find ("/cups-included/") != -1):
         return DRIVER_TYPE_CUPS
@@ -392,7 +395,7 @@ class PPDs:
                 (xpath, xslash, xfilename) = x.rpartition ("/")
                 if filename == xfilename:
                     return DRIVER_TYPE_DOWNLOADED_NOW
-            if mfg == "HP":
+            if mfg == "HP" or mfg == "Apollo":
                 if t == DRIVER_TYPE_FOOMATIC_HPIJS:
                     # Prefer HPIJS for HP devices.
                     t = DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP
