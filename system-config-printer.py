@@ -5779,8 +5779,12 @@ class NewPrinterGUI(GtkGUI):
         try:
             if len (location) == 0 and self.device.device_class == "direct":
                 # Set location to the name of this host.
-                u = os.uname ()
-                location = u[1]
+                if (self.mainapp.connect_server == 'localhost' or
+                    self.mainapp.connect_server[0] == '/'):
+                    u = os.uname ()
+                    location = u[1]
+                else:
+                    location = self.mainapp.connect_server
 
             # Pre-fill location field.
             self.entNPLocation.set_text (location)
