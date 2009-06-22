@@ -6648,6 +6648,11 @@ class NewPrinterGUI(GtkGUI):
 
             iter = model.iter_next (iter)
 
+        # Load information about the printer,
+        # e.g. self.mainapp.server_side_options and self.mainapp.ppd
+        # (both used below).
+        self.mainapp.fillPrinterTab (name)
+
         if check:
             try:
                 self.checkDriverExists (name, ppd=checkppd)
