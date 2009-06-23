@@ -91,7 +91,8 @@ class CheckPrinterSanity(Question):
                         if line.startswith ("querying"):
                             continue
                         spc = line.find (' ')
-                        if spc != -1:
+                        if (spc != -1 and
+                            not line[spc:].startswith (" failed ")):
                             self.answers['remote_server_name'] = line[:spc]
                             break
                 except:
