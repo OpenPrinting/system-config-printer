@@ -5431,7 +5431,13 @@ class NewPrinterGUI(GtkGUI):
             (host, port) = urllib.splitnport (host, defport=port)
 
         try:
-            c = cups.Connection (host=host, port=port)
+            if self.device.type == "https":
+                encrypt = cups.HTTP_ENCRYPT_ALWAYS
+            else:
+                encrypt = cups.HTTP_ENCRYPT_IF_REQUESTED
+
+            c = cups.Connection (host=host, port=port,
+                                 encryption=encrypt)
             printers = c.getPrinters ()
             del c
         except cups.IPPError, (e, m):
@@ -5491,6 +5497,10 @@ class NewPrinterGUI(GtkGUI):
         if match:
             self.entNPTIPPHostname.set_text (match.group (2))
             self.entNPTIPPQueuename.set_text (match.group (3))
+
+        if self.device.type == "https" and uri.startswith ("ipp:"):
+            # Use https in our device URI for this printer.
+            uri = "https:" + uri[4:]
 
         self.lblIPPURI.set_text (uri)
         self.lblIPPURI.show()
