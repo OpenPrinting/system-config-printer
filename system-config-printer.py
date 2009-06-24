@@ -1045,7 +1045,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if ((response == gtk.RESPONSE_OK and not success) or
             response == gtk.RESPONSE_CANCEL):
-            del self.printer
+            self.printer = None
             dialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
