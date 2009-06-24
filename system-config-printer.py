@@ -4167,6 +4167,8 @@ class NewPrinterGUI(GtkGUI):
                             self.entNPDescription.set_text (info)
                         if len (location) > 0:
                             self.entNPLocation.set_text (location)
+                    except RuntimeError:
+                        pass
                     except:
                         nonfatalException ()
 
