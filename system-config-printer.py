@@ -1045,7 +1045,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if ((response == gtk.RESPONSE_OK and not success) or
             response == gtk.RESPONSE_CANCEL):
-            del self.printer
+            self.printer = None
             dialog.hide ()
 
     def dests_iconview_selection_changed (self, iconview):
@@ -4167,6 +4167,8 @@ class NewPrinterGUI(GtkGUI):
                             self.entNPDescription.set_text (info)
                         if len (location) > 0:
                             self.entNPLocation.set_text (location)
+                    except RuntimeError:
+                        pass
                     except:
                         nonfatalException ()
 
@@ -5429,7 +5431,13 @@ class NewPrinterGUI(GtkGUI):
             (host, port) = urllib.splitnport (host, defport=port)
 
         try:
-            c = cups.Connection (host=host, port=port)
+            if self.device.type == "https":
+                encrypt = cups.HTTP_ENCRYPT_ALWAYS
+            else:
+                encrypt = cups.HTTP_ENCRYPT_IF_REQUESTED
+
+            c = cups.Connection (host=host, port=port,
+                                 encryption=encrypt)
             printers = c.getPrinters ()
             del c
         except cups.IPPError, (e, m):
@@ -5489,6 +5497,10 @@ class NewPrinterGUI(GtkGUI):
         if match:
             self.entNPTIPPHostname.set_text (match.group (2))
             self.entNPTIPPQueuename.set_text (match.group (3))
+
+        if self.device.type == "https" and uri.startswith ("ipp:"):
+            # Use https in our device URI for this printer.
+            uri = "https:" + uri[4:]
 
         self.lblIPPURI.set_text (uri)
         self.lblIPPURI.show()
@@ -6647,6 +6659,11 @@ class NewPrinterGUI(GtkGUI):
                 break
 
             iter = model.iter_next (iter)
+
+        # Load information about the printer,
+        # e.g. self.mainapp.server_side_options and self.mainapp.ppd
+        # (both used below).
+        self.mainapp.fillPrinterTab (name)
 
         if check:
             try:
