@@ -389,6 +389,8 @@ class Connection:
                       _("The password may be incorrect."))
         if self._lock:
             d.connect ("response", self._on_not_authorized_dialog_response)
+            d.show_all ()
+            d.show_now ()
             gtk.gdk.threads_leave ()
         else:
             d.run ()
