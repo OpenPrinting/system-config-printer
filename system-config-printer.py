@@ -150,7 +150,6 @@ class GtkGUI:
         for row in rows:
             path = row.get_path()
             iter = model_from.get_iter(path)
-            
             row_data = model_from.get(iter, 0)
             model_to.append(row_data)
             model_from.remove(iter)
@@ -2698,6 +2697,7 @@ class NewPrinterGUI(GtkGUI):
                         "entNPTHPHostname", "btnHPFindQueue", "lblHPURI",
                            "entNPTDevice",
                            "tvNCMembers", "tvNCNotMembers",
+                           "btnNCAddMember", "btnNCDelMember",
                           "rbtnNPPPD", "tvNPMakes", 
                           "rbtnNPFoomatic", "filechooserPPD",
                           "rbtnNPDownloadableDriverSearch",
@@ -3167,11 +3167,25 @@ class NewPrinterGUI(GtkGUI):
         self.moveClassMembers(self.tvNCNotMembers, self.tvNCMembers)
         self.btnNPApply.set_sensitive(
             bool(self.getCurrentClassMembers(self.tvNCMembers)))
-        
+        button.set_sensitive(
+            bool(self.getCurrentClassMembers(self.tvNCNotMembers)))
+
     def on_btnNCDelMember_clicked(self, button):
-        self.moveClassMembers(self.tvNCMembers, self.tvNCNotMembers)        
+        self.moveClassMembers(self.tvNCMembers, self.tvNCNotMembers)
         self.btnNPApply.set_sensitive(
             bool(self.getCurrentClassMembers(self.tvNCMembers)))
+        button.set_sensitive(
+            bool(self.getCurrentClassMembers(self.tvNCMembers)))
+
+    def on_tvNCMembers_cursor_changed(self, widget):
+        selection = widget.get_selection()
+        model_from, rows = selection.get_selected_rows()
+        self.btnNCDelMember.set_sensitive(rows != [])
+
+    def on_tvNCNotMembers_cursor_changed(self, widget):
+        selection = widget.get_selection()
+        model_from, rows = selection.get_selected_rows()
+        self.btnNCAddMember.set_sensitive(rows != [])
 
     # Navigation buttons
 
