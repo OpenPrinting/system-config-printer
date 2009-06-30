@@ -3167,15 +3167,13 @@ class NewPrinterGUI(GtkGUI):
         self.moveClassMembers(self.tvNCNotMembers, self.tvNCMembers)
         self.btnNPApply.set_sensitive(
             bool(self.getCurrentClassMembers(self.tvNCMembers)))
-        button.set_sensitive(
-            bool(self.getCurrentClassMembers(self.tvNCNotMembers)))
+        button.set_sensitive(False)
 
     def on_btnNCDelMember_clicked(self, button):
         self.moveClassMembers(self.tvNCMembers, self.tvNCNotMembers)
         self.btnNPApply.set_sensitive(
             bool(self.getCurrentClassMembers(self.tvNCMembers)))
-        button.set_sensitive(
-            bool(self.getCurrentClassMembers(self.tvNCMembers)))
+        button.set_sensitive(False)
 
     def on_tvNCMembers_cursor_changed(self, widget):
         selection = widget.get_selection()
