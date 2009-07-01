@@ -6667,6 +6667,7 @@ class NewPrinterGUI(GtkGUI):
             if queue == name:
                 path = model.get_path (iter)
                 dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
+                dests_iconview.unselect_all ()
                 dests_iconview.set_cursor (path)
                 dests_iconview.select_path (path)
                 break
