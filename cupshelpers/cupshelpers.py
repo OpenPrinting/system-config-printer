@@ -841,8 +841,10 @@ def missingPackagesAndExecutables(ppd):
             # IJS servers (used by foomatic)
             'hpijs': 'hpijs',
             'ijsgutenprint.5.0': 'gutenprint',
+            'ijsgutenprint.5.2': 'gutenprint',
             # CUPS filters
             'rastertogutenprint.5.0': 'gutenprint-cups',
+            'rastertogutenprint.5.2': 'gutenprint-cups',
             'commandtoepson': 'gutenprint-cups',
             'commandtocanon': 'gutenprint-cups',
             }
