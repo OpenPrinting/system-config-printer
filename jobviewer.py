@@ -1073,7 +1073,10 @@ class JobViewer (monitor.Watcher):
         jobdata = self.jobs[jobid]
 
         # Look out for stopped jobs.
-        if (self.trayicon and eventname == 'job-stopped' and
+        if (self.trayicon and
+            (eventname == 'job-stopped' or
+             (eventname == 'job-state-changed' and
+              event['job-state'] == cups.IPP_JOB_STOPPED))and
             not jobid in self.stopped_job_prompts):
             # Why has the job stopped?  It might be due to a job error
             # of some sort, or it might be that the backend requires
