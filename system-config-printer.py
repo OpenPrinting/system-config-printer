@@ -174,7 +174,6 @@ def moveClassMembers(treeview_from, treeview_to):
     for row in rows:
         path = row.get_path()
         iter = model_from.get_iter(path)
-
         row_data = model_from.get(iter, 0)
         model_to.append(row_data)
         model_from.remove(iter)
@@ -3547,6 +3546,8 @@ class NewPrinterGUI(GtkGUI):
                               "entNPTDevice",
                               "tvNCMembers",
                               "tvNCNotMembers",
+                              "btnNCAddMember",
+                              "btnNCDelMember",
                               "ntbkPPDSource",
                               "rbtnNPPPD",
                               "tvNPMakes",
@@ -4089,11 +4090,23 @@ class NewPrinterGUI(GtkGUI):
         moveClassMembers(self.tvNCNotMembers, self.tvNCMembers)
         self.btnNPApply.set_sensitive(
             bool(getCurrentClassMembers(self.tvNCMembers)))
+        button.set_sensitive(False)
 
     def on_btnNCDelMember_clicked(self, button):
         moveClassMembers(self.tvNCMembers, self.tvNCNotMembers)
         self.btnNPApply.set_sensitive(
             bool(getCurrentClassMembers(self.tvNCMembers)))
+        button.set_sensitive(False)
+
+    def on_tvNCMembers_cursor_changed(self, widget):
+        selection = widget.get_selection()
+        model_from, rows = selection.get_selected_rows()
+        self.btnNCDelMember.set_sensitive(rows != [])
+
+    def on_tvNCNotMembers_cursor_changed(self, widget):
+        selection = widget.get_selection()
+        model_from, rows = selection.get_selected_rows()
+        self.btnNCAddMember.set_sensitive(rows != [])
 
     # Navigation buttons
 
@@ -6654,6 +6667,7 @@ class NewPrinterGUI(GtkGUI):
             if queue == name:
                 path = model.get_path (iter)
                 dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
+                dests_iconview.unselect_all ()
                 dests_iconview.set_cursor (path)
                 dests_iconview.select_path (path)
                 break
