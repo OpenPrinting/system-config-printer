@@ -252,11 +252,11 @@ fix-glade:
 
 run:	config.py
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
-	python $(top_srcdir)/system-config-printer.py --debug
+	$(PYTHON) $(top_srcdir)/system-config-printer.py --debug
 
 run-applet:	config.py
 	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
-	python $(top_srcdir)/applet.py --debug
+	$(PYTHON) $(top_srcdir)/applet.py --debug
 
 help:
 	@echo "Usage: make <target>"
@@ -269,7 +269,7 @@ help:
 	@echo " run-applet         Run system-config-printer-applet with local glade file"
 
 test-ppd-module.sh:
-	echo "#!/usr/bin/env python" > "$@"
+	echo "#!$(PYTHON)" > "$@"
 	echo "import sys; sys.path.append ('$(top_srcdir)')" >> "$@"
 	echo "from cupshelpers.ppds import _self_test" >> "$@"
 	echo "_self_test(sys.argv)" >> "$@"
