@@ -1346,14 +1346,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
             printer = uri
         jobdata['job-printer-name'] = printer
 
-        any_active = len (self.active_jobs) > 0
         if self.job_is_active (jobdata):
             self.active_jobs.add (jobid)
         elif jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
-        if (len (self.active_jobs) > 0) != any_active:
-            self.update_status ()
 
+        self.update_status ()
         self.update_job (jobid, jobdata)
         jobdata = self.jobs[jobid]
 
