@@ -1886,7 +1886,10 @@ class GUI(GtkGUI, monitor.Watcher):
                         self.printer.enabled and
                         not self.printer.rejecting)
 
-            self.btnPrintTestPage.set_sensitive (possible)
+            for button in [self.btnPrintTestPage,
+                           self.btnChangePPD,
+                           self.btnSelectDevice]:
+                button.set_sensitive (possible)
 
             commands = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
             self.btnSelfTest.set_sensitive (commands and possible)
@@ -6678,6 +6681,9 @@ class NewPrinterGUI(GtkGUI):
         # e.g. self.mainapp.server_side_options and self.mainapp.ppd
         # (both used below).
         self.mainapp.fillPrinterTab (name)
+
+        # Select 'Settings' in the properties treeview.
+        self.mainapp.tvPrinterProperties.set_cursor ((0,))
 
         if check:
             try:
