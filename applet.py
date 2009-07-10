@@ -205,9 +205,6 @@ class NewPrinterNotification(dbus.service.Object):
                                       self.print_test_page (x, y, name, devid))
                     n.add_action ("configure", _("Configure"),
                                   lambda x, y: self.configure (x, y, name))
-                else:
-                    self.run_config_tool (["--configure-printer",
-                                           name, "--no-focus-on-map"])
             else: # Model mismatch
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % \
                     (mfg, mdl, des, cmd)
