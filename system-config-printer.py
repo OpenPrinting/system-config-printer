@@ -3421,11 +3421,12 @@ class GUI(GtkGUI, monitor.Watcher):
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
         gtk.gdk.threads_enter ()
-        self.printers[printer].update (**event)
-        self.dests_iconview_selection_changed (self.dests_iconview)
-        if self.PrinterPropertiesDialog.get_property('visible'):
-            self.printer.getAttributes ()
-            self.updatePrinterProperties ()
+        if self.printers.has_key (printer):
+            self.printers[printer].update (**event)
+            self.dests_iconview_selection_changed (self.dests_iconview)
+            if self.PrinterPropertiesDialog.get_property('visible'):
+                self.printer.getAttributes ()
+                self.updatePrinterProperties ()
 
         gtk.gdk.threads_leave ()
 
