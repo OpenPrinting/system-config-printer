@@ -3775,6 +3775,7 @@ class NewPrinterGUI(GtkGUI):
                                               **device_dict)
 
         self.entNPTDirectJetPort.set_text('9100')
+        self.rbtnSMBAuthPrompt.set_active(True)
 
         if self.dialog_mode == "printer":
             self.NewPrinterWindow.set_title(_("New Printer"))
