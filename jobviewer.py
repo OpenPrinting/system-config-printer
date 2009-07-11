@@ -1256,7 +1256,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                     return
 
         printer = job.get ('job-printer-name', _("Unknown"))
-        notification = pynotify.Notification (_("Job %d completed") % jobid,
+        notification = pynotify.Notification (_("Document printed"),
                                               _("Document `%s' has finished "
                                                 "printing on `%s'.") %
                                               (document, printer),
