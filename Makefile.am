@@ -107,7 +107,6 @@ nobase_pkgdata_DATA=					\
 	glade/ConnectDialog.glade				\
 	glade/ConnectingDialog.glade			\
 	glade/InstallDialog.glade				\
-	glade/IPPBrowseDialog.glade			\
 	glade/JobsWindow.glade				\
 	glade/NewPrinterName.glade				\
 	glade/NewPrinterWindow.glade			\

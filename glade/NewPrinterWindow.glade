@@ -942,7 +942,7 @@
 					    <widget class="GtkTable" id="table16">
 					      <property name="visible">True</property>
 					      <property name="n_rows">3</property>
-					      <property name="n_columns">3</property>
+					      <property name="n_columns">2</property>
 					      <property name="homogeneous">False</property>
 					      <property name="row_spacing">6</property>
 					      <property name="column_spacing">6</property>
@@ -964,58 +964,10 @@
 						  <property name="width_chars">-1</property>
 						  <property name="single_line_mode">False</property>
 						  <property name="angle">0</property>
-						  <accessibility>
-						    <atkrelation target="entNPTIPPHostname" type="label-for"/>
-						  </accessibility>
 						</widget>
 						<packing>
 						  <property name="left_attach">0</property>
 						  <property name="right_attach">1</property>
-						  <property name="top_attach">0</property>
-						  <property name="bottom_attach">1</property>
-						  <property name="x_options">fill</property>
-						  <property name="y_options"></property>
-						</packing>
-					      </child>
-
-					      <child>
-						<widget class="GtkEntry" id="entNPTIPPHostname">
-						  <property name="visible">True</property>
-						  <property name="can_focus">True</property>
-						  <property name="editable">True</property>
-						  <property name="visibility">True</property>
-						  <property name="max_length">0</property>
-						  <property name="text" translatable="yes"></property>
-						  <property name="has_frame">True</property>
-						  <property name="activates_default">False</property>
-						  <accessibility>
-						    <atkrelation target="label195" type="labelled-by"/>
-						  </accessibility>
-						  <signal name="changed" handler="on_entNPTIPPHostname_changed" last_modification_time="Wed, 26 Sep 2007 16:17:41 GMT"/>
-						</widget>
-						<packing>
-						  <property name="left_attach">1</property>
-						  <property name="right_attach">2</property>
-						  <property name="top_attach">0</property>
-						  <property name="bottom_attach">1</property>
-						  <property name="y_options"></property>
-						</packing>
-					      </child>
-
-					      <child>
-						<widget class="GtkButton" id="btnIPPFindQueue">
-						  <property name="visible">True</property>
-						  <property name="sensitive">False</property>
-						  <property name="can_focus">True</property>
-						  <property name="label" translatable="yes">Find _Queue...</property>
-						  <property name="use_underline">True</property>
-						  <property name="relief">GTK_RELIEF_NORMAL</property>
-						  <property name="focus_on_click">True</property>
-						  <signal name="clicked" handler="on_btnIPPFindQueue_clicked" last_modification_time="Wed, 26 Sep 2007 16:25:35 GMT"/>
-						</widget>
-						<packing>
-						  <property name="left_attach">2</property>
-						  <property name="right_attach">3</property>
 						  <property name="top_attach">0</property>
 						  <property name="bottom_attach">1</property>
 						  <property name="x_options">fill</property>
@@ -1071,7 +1023,7 @@
 						</widget>
 						<packing>
 						  <property name="left_attach">1</property>
-						  <property name="right_attach">3</property>
+						  <property name="right_attach">2</property>
 						  <property name="top_attach">2</property>
 						  <property name="bottom_attach">3</property>
 						  <property name="x_options">fill</property>
@@ -1127,9 +1079,30 @@
 						</widget>
 						<packing>
 						  <property name="left_attach">1</property>
-						  <property name="right_attach">3</property>
+						  <property name="right_attach">2</property>
 						  <property name="top_attach">1</property>
 						  <property name="bottom_attach">2</property>
+						  <property name="y_options"></property>
+						</packing>
+					      </child>
+
+					      <child>
+						<widget class="GtkEntry" id="entNPTIPPHostname">
+						  <property name="visible">True</property>
+						  <property name="can_focus">True</property>
+						  <property name="editable">True</property>
+						  <property name="visibility">True</property>
+						  <property name="max_length">0</property>
+						  <property name="text" translatable="yes"></property>
+						  <property name="has_frame">True</property>
+						  <property name="activates_default">False</property>
+						  <signal name="changed" handler="on_entNPTIPPHostname_changed" last_modification_time="Wed, 26 Sep 2007 16:17:41 GMT"/>
+						</widget>
+						<packing>
+						  <property name="left_attach">1</property>
+						  <property name="right_attach">2</property>
+						  <property name="top_attach">0</property>
+						  <property name="bottom_attach">1</property>
 						  <property name="y_options"></property>
 						</packing>
 					      </child>
