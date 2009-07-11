@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
 ## Copyright (C) 2006, 2007 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -21,6 +21,13 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import urllib
+
+def _urlquote (x):
+    q = urllib.quote (x)
+    for c in ["/", "@", ":"]:
+        q = q.replace (c, "%%%02X" % ord (c))
+
+    return q
 
 class SMBURI:
     def __init__ (self,
@@ -41,17 +48,17 @@ class SMBURI:
     def _construct (self, group, host, share, user='', password=''):
         uri_password = ''
         if password:
-            uri_password = ':' + urllib.quote (password)
+            uri_password = ':' + _urlquote (password)
         if user:
             uri_password += '@'
-        uri = "%s%s%s" % (urllib.quote (user),
+        uri = "%s%s%s" % (_urlquote (user),
                           uri_password,
-                          urllib.quote (group))
+                          _urlquote (group))
         if len (group) > 0:
             uri += '/'
-        uri += urllib.quote (host)
+        uri += _urlquote (host)
         if len (share) > 0:
-            uri += "/" + urllib.quote (share)
+            uri += "/" + _urlquote (share)
         return uri
 
     def get_uri (self):

@@ -1886,7 +1886,10 @@ class GUI(GtkGUI, monitor.Watcher):
                         self.printer.enabled and
                         not self.printer.rejecting)
 
-            self.btnPrintTestPage.set_sensitive (possible)
+            for button in [self.btnPrintTestPage,
+                           self.btnChangePPD,
+                           self.btnSelectDevice]:
+                button.set_sensitive (possible)
 
             commands = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
             self.btnSelfTest.set_sensitive (commands and possible)
@@ -3418,11 +3421,12 @@ class GUI(GtkGUI, monitor.Watcher):
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
         gtk.gdk.threads_enter ()
-        self.printers[printer].update (**event)
-        self.dests_iconview_selection_changed (self.dests_iconview)
-        if self.PrinterPropertiesDialog.get_property('visible'):
-            self.printer.getAttributes ()
-            self.updatePrinterProperties ()
+        if self.printers.has_key (printer):
+            self.printers[printer].update (**event)
+            self.dests_iconview_selection_changed (self.dests_iconview)
+            if self.PrinterPropertiesDialog.get_property('visible'):
+                self.printer.getAttributes ()
+                self.updatePrinterProperties ()
 
         gtk.gdk.threads_leave ()
 
@@ -3771,6 +3775,7 @@ class NewPrinterGUI(GtkGUI):
                                               **device_dict)
 
         self.entNPTDirectJetPort.set_text('9100')
+        self.rbtnSMBAuthPrompt.set_active(True)
 
         if self.dialog_mode == "printer":
             self.NewPrinterWindow.set_title(_("New Printer"))
@@ -6678,6 +6683,9 @@ class NewPrinterGUI(GtkGUI):
         # e.g. self.mainapp.server_side_options and self.mainapp.ppd
         # (both used below).
         self.mainapp.fillPrinterTab (name)
+
+        # Select 'Settings' in the properties treeview.
+        self.mainapp.tvPrinterProperties.set_cursor ((0,))
 
         if check:
             try:
