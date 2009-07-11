@@ -4598,6 +4598,8 @@ class NewPrinterGUI(GtkGUI):
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
             (stdout, stderr) = p.communicate ()
+            if p.returncode != 0:
+                return True # assume plugin not required
         except:
             # Problem executing command.
             return True # assume plugin not required
@@ -4728,11 +4730,6 @@ class NewPrinterGUI(GtkGUI):
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE)
                     (stdout, stderr) = p.communicate ()
-                    while p.returncode == None:
-                        while gtk.events_pending ():
-                            gtk.main_iteration ()
-                        time.sleep (0.1)
-                        p.poll ()
                     install_result = p.returncode
                     if install_result != 255:
                         break
@@ -4794,6 +4791,8 @@ class NewPrinterGUI(GtkGUI):
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
             (stdout, stderr) = p.communicate ()
+            if p.returncode != 0:
+                return None
         except:
             # Problem executing command.
             return None
@@ -4833,6 +4832,8 @@ class NewPrinterGUI(GtkGUI):
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE)
                 (stdout, stderr) = p.communicate ()
+                if p.returncode != 0:
+                    stdout = None
             except:
                 # Problem executing command.
                 pass
