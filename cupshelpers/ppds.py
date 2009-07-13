@@ -45,7 +45,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
     # corresponding to the model name
     if re.search ("^\s*(deskjet|dj\b|dj\d|laserjet|lj\b|color\s*laserjet|color\s*lj\b|designjet|officejet|oj\b|photosmart|ps\b|psc)", \
                       ppd_make_and_model, re.I) or \
-       re.search ("(edgeline)", ppd_make_and_model, re.I):
+       re.search ("^\s*(edgeline)", ppd_make_and_model, re.I):
         make = "HP"
         model = ppd_make_and_model
     elif re.search ("^\s*(stylus|aculaser)", \
@@ -177,6 +177,8 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = re.sub (r"(?i)\s*PostScript\s*$", "", model)
     model = re.sub (r"(?i)\s*\(\s*\)", "", model)
     model = re.sub (r"(?i)\s*[\-\/]\s*$", "", model)
+    model = re.sub (r"(?i)\s*\([^\(\)]*\)", "", model)
+    model = re.sub (r"(?i)^(" + make + "|hp|hewlett-packard)\s+", "", model)
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Oki" ]:
         if make == mfr.upper ():
@@ -560,11 +562,11 @@ class PPDs:
 
         # Remove manufacturer name from model field
         ppdnamelist2 = None
-        if mdl.startswith (mfg + ' '):
+        if mdl.lower ().startswith (mfg.lower () + ' '):
             mdl = mdl[len (mfg) + 1:]
-        if mdl.startswith ('Hewlett-Packard '):
+        if mdl.lower ().startswith ('hewlett-packard '):
             mdl = mdl[16:]
-        if mdl.startswith ('HP '):
+        if mdl.lower ().startswith ('hp '):
             mdl = mdl[3:]
         if mdls:
             for (model, ppdnames) in mdls.iteritems ():
