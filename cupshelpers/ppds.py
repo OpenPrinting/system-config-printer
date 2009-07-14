@@ -26,7 +26,7 @@ import string
 import locale
 import os.path
 import re
-from . import _debugprint
+from . import _debugprint, set_debugprint_fn
 
 __all__ = ['ppdMakeModelSplit',
            'PPDs']
@@ -942,6 +942,14 @@ def _self_test(argv):
             list_models = True
         elif opt == "--list-ids":
             list_ids = True
+        elif opt == "--debug":
+            def _dprint(x):
+                try:
+                    print x
+                except:
+                    pass
+
+            set_debugprint_fn (_dprint)
 
     picklefile="pickled-ppds"
     import pickle
