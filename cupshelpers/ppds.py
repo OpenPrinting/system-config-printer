@@ -507,22 +507,23 @@ class PPDs:
         _debugprint ("\n%s %s" % (mfg, mdl))
         self._init_ids ()
 
+        mfgl = mfg.lower ()
+        mdll = mdl.lower ()
+
         # Consider "HP" and "Hewlett-Packard" as equal, as the ID returned
         # by the CUPS "usb" backend and HPLIP's "hp" backend are different
-        if mfg.lower () == "hewlett-packard":
+        if mfgl == "hewlett-packard":
             mfg = "HP"
+            mfgl = mfg.lower ()
 
         ppdnamelist = []
         id_matched = False
         try:
-            ppdnamelist = self.ids[mfg.lower ()][mdl.lower ()]
+            ppdnamelist = self.ids[mfgl][mdll]
             status = self.STATUS_SUCCESS
             id_matched = True
         except KeyError:
             pass
-
-        mfgl = mfg.lower ()
-        mdll = mdl.lower ()
 
         # The HPLIP PPDs have incorrect IDs
         for mf in ["hp", "apollo"]:
@@ -542,7 +543,6 @@ class PPDs:
                     pass
 
         _debugprint ("Trying make/model names")
-        mfgl = mfg.lower ()
         mdls = None
         self._init_makes ()
         for attempt in range (2):
@@ -562,12 +562,15 @@ class PPDs:
 
         # Remove manufacturer name from model field
         ppdnamelist2 = None
-        if mdl.lower ().startswith (mfg.lower () + ' '):
+        if mdll.startswith (mfgl + ' '):
             mdl = mdl[len (mfg) + 1:]
-        if mdl.lower ().startswith ('hewlett-packard '):
+            mdll = mdl.lower ()
+        if mdll.startswith ('hewlett-packard '):
             mdl = mdl[16:]
-        if mdl.lower ().startswith ('hp '):
+            mdll = mdl.lower ()
+        if mdll.startswith ('hp '):
             mdl = mdl[3:]
+            mdll = mdl.lower ()
         if mdls:
             for (model, ppdnames) in mdls.iteritems ():
                 if model.lower () == mdll:
