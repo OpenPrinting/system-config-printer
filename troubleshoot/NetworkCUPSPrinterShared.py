@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -44,8 +44,10 @@ class NetworkCUPSPrinterShared(Question):
                 return False
 
             try:
-                cups.setServer (answers['remote_server_try_connect'])
-                self.op = TimedOperation (cups.Connection, parent=parent)
+                host = answers['remote_server_try_connect']
+                self.op = TimedOperation (cups.Connection,
+                                          kwargs={"host": host},
+                                          parent=parent)
                 c = self.op.run ()
                 self.op = TimedOperation (c.getPrinterAttributes,
                                           args=(answers['remote_cups_queue'],),
