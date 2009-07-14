@@ -507,16 +507,16 @@ class PPDs:
         _debugprint ("\n%s %s" % (mfg, mdl))
         self._init_ids ()
 
+        # Start with an empty result list and build it up using
+        # several search methods, in increasing order of fuzziness.
+        ppdnamelist = []
+
+        # First, try looking up the device using the manufacturer and
+        # model fields from the Device ID exactly as they appear (but
+        # case-insensitively).
         mfgl = mfg.lower ()
         mdll = mdl.lower ()
 
-        # Consider "HP" and "Hewlett-Packard" as equal, as the ID returned
-        # by the CUPS "usb" backend and HPLIP's "hp" backend are different
-        if mfgl == "hewlett-packard":
-            mfg = "HP"
-            mfgl = mfg.lower ()
-
-        ppdnamelist = []
         id_matched = False
         try:
             ppdnamelist = self.ids[mfgl][mdll]
@@ -525,75 +525,53 @@ class PPDs:
         except KeyError:
             pass
 
-        # The HPLIP PPDs have incorrect IDs
-        for mf in ["hp", "apollo"]:
-            if mfgl == mf:
-                try:
-                    ppdnamelist += self.ids[mf][mdll]
-                    status = self.STATUS_SUCCESS
-                    id_matched = True
-                except KeyError:
-                    pass
-
-                try:
-                    ppdnamelist += self.ids[mf][mdll.replace (" ", "_")]
-                    status = self.STATUS_SUCCESS
-                    id_matched = True
-                except KeyError:
-                    pass
-
+        # Now try looking up the device by ppd-make-and-model.
         _debugprint ("Trying make/model names")
         mdls = None
         self._init_makes ()
-        for attempt in range (2):
-            for (make, models) in self.makes.iteritems ():
-                if make.lower () == mfgl:
-                    mdls = models
-                    break
+        make = None
+        if mfgl == "":
+            (mfg, mdl) = ppdMakeModelSplit (mdl)
+            mfgl = mfg.lower ()
+            mdll = mdl.lower ()
 
-            # Try again with replacements.
-            if mfgl == "hewlett-packard":
-                mfgl = "hp"
-            elif mfgl == "lexmark international":
-                mfgl = "lexmark"
-            elif mfgl == "":
-                (tmp1, tmp2) = ppdMakeModelSplit (mdl)
-                mfgl = tmp1.lower ()
+        mfgrepl = {"hewlett-packard": "hp",
+                   "lexmark international": "lexmark"}
+        if self.lmakes.has_key (mfgl):
+            # Found manufacturer.
+            make = self.lmakes[mfgl]
+        elif mfgrepl.has_key (mfgl):
+            rmfg = mfgrepl[mfgl]
+            if self.lmakes.has_key (rmfg):
+                mfg = rmfg
+                mfgl = mfg
+                # Found manufacturer (after mapping to canonical name)
+                make = self.lmakes[mfgl]
 
-        # Remove manufacturer name from model field
-        ppdnamelist2 = None
-        if mdll.startswith (mfgl + ' '):
-            mdl = mdl[len (mfg) + 1:]
-            mdll = mdl.lower ()
-        if mdll.startswith ('hewlett-packard '):
-            mdl = mdl[16:]
-            mdll = mdl.lower ()
-        if mdll.startswith ('hp '):
-            mdl = mdl[3:]
-            mdll = mdl.lower ()
-        if mdls:
-            for (model, ppdnames) in mdls.iteritems ():
-                if model.lower () == mdll:
-                    ppdnamelist2 = ppdnames.keys ()
-                    status = self.STATUS_SUCCESS
-                    break
-            if not ppdnamelist2:
+        if make != None:
+            mdls = self.makes[make]
+            mdlsl = self.lmodels[make.lower ()]
+
+            # Remove manufacturer name from model field
+            for prefix in [mfgl, 'hewlett-packard', 'hp']:
+                if mdll.startswith (prefix + ' '):
+                    mdl = mdl[len (prefix) + 1:]
+                    mdll = mdl.lower ()
+
+            if self.lmodels[mfgl].has_key (mdll):
+                model = mdlsl[mdll]
+                ppdnamelist += mdls[model].keys ()
+                status = self.STATUS_SUCCESS
+            else:
                 # Make use of the model name clean-up in the
                 # ppdMakeModelSplit () function
                 (mfg2, mdl2) = ppdMakeModelSplit (mfg + " " + mdl)
                 mdl2l = mdl2.lower ()
-                for (model, ppdnames) in mdls.iteritems ():
-                    if model.lower () == mdl2l:
-                        ppdnamelist2 = ppdnames.keys ()
-                        status = self.STATUS_SUCCESS
-                        break
+                if self.lmodels[mfgl].has_key (mdl2l):
+                    model = mdlsl[mdl2l]
+                    ppdnamelist += mdls[model].keys ()
+                    status = self.STATUS_SUCCESS
       
-        if ppdnamelist:
-            if ppdnamelist2:
-                ppdnamelist = ppdnamelist + ppdnamelist2
-        elif ppdnamelist2:
-            ppdnamelist = ppdnamelist2
-
         if not ppdnamelist and mdls:
             (s, ppds) = self._findBestMatchPPDs (mdls, mdl)
             if s != self.STATUS_NO_DRIVER:
