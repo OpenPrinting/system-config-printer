@@ -8,6 +8,9 @@
 
 ## Copyright (C) 2008 Rui Matos <tiagomatos@gmail.com>
 
+## Copyright (C) 2009 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
+
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
 ## the Free Software Foundation; either version 2 of the License, or
@@ -24,11 +27,6 @@
 
 import gobject
 import gtk
-try:
-    import sexy
-    has_sexy = True
-except:
-    has_sexy = False
 import HIG
 from gettext import gettext as _
 
@@ -53,8 +51,6 @@ class ToolbarSearchEntry (gtk.HBox):
         }
 
     def __init__ (self):
-        global has_sexy
-        self.sexy = has_sexy
         self.entry = None
         self.timeout = 0
         self.is_a11y_theme = False
@@ -74,14 +70,16 @@ class ToolbarSearchEntry (gtk.HBox):
         label.set_justify (gtk.JUSTIFY_RIGHT)
         self.pack_start (label, False, True, 0);
 
-        if self.sexy:
-            self.entry = sexy.IconEntry ()
-            self.entry.add_clear_button ()
-            self.entry.set_icon (sexy.ICON_ENTRY_PRIMARY,
-                                 gtk.image_new_from_stock (gtk.STOCK_FIND,
-                                                           gtk.ICON_SIZE_MENU))
-        else:
-            self.entry = gtk.Entry()
+        self.entry = gtk.Entry()
+        if gtk.__dict__.has_key ('ENTRY_ICON_PRIMARY'):
+            # We have primary/secondary icon support.
+            self.entry.set_icon_from_stock (gtk.ENTRY_ICON_PRIMARY,
+                                            gtk.STOCK_FIND)
+            self.entry.set_icon_from_stock (gtk.ENTRY_ICON_SECONDARY,
+                                            gtk.STOCK_CLEAR)
+
+            self.entry.set_icon_sensitive (gtk.ENTRY_ICON_SECONDARY, False)
+            self.entry.set_icon_activatable (gtk.ENTRY_ICON_SECONDARY, False)
 
         label.set_mnemonic_widget (self.entry)
 
@@ -90,8 +88,7 @@ class ToolbarSearchEntry (gtk.HBox):
         self.entry.connect ('changed', self.on_changed)
         self.entry.connect ('focus_out_event', self.on_focus_out_event)
         self.entry.connect ('activate', self.on_activate)
-        if self.sexy:
-            self.entry.connect ("icon-pressed", self.on_icon_pressed)
+        self.entry.connect ('icon-press', self.on_icon_press)
 
     def do_get_property (self, property):
         if property.name == 'search_timeout':
@@ -143,11 +140,16 @@ class ToolbarSearchEntry (gtk.HBox):
             self.timeout = 0
 
        	# emit it now if we have no more text
-        if len (self.entry.get_text ()) > 0:
+        has_text = self.entry.get_text_length () > 0
+        if has_text:
             self.timeout = gobject.timeout_add (self.search_timeout,
                                                 self.on_search_timeout)
         else:
             self.on_search_timeout ()
+
+        if gtk.__dict__.has_key ("ENTRY_ICON_PRIMARY"):
+            self.entry.set_icon_sensitive (gtk.ENTRY_ICON_SECONDARY, has_text)
+            self.entry.set_icon_activatable (gtk.ENTRY_ICON_SECONDARY, has_text)
 
     def on_search_timeout (self):
         self.emit ('search', self.entry.get_text ())
@@ -176,23 +178,27 @@ class ToolbarSearchEntry (gtk.HBox):
         self.entry.grab_focus ()
 
     def set_drop_down_menu (self, menu):
-        if not self.sexy:
+        if not gtk.__dict__.has_key ("ENTRY_ICON_PRIMARY"):
             return
+
         if menu:
-            self.entry.set_icon_highlight (sexy.ICON_ENTRY_PRIMARY, True)
+            self.entry.set_icon_sensitive (gtk.ENTRY_ICON_PRIMARY, True)
+            self.entry.set_icon_activatable (gtk.ENTRY_ICON_PRIMARY, True)
             self.menu = menu
         else:
-            self.entry.set_icon_highlight (sexy.ICON_ENTRY_PRIMARY, False)
+            self.entry.set_icon_sensitive (gtk.ENTRY_ICON_PRIMARY, False)
+            self.entry.set_icon_activatable (gtk.ENTRY_ICON_PRIMARY, False)
             self.menu = None
 
-    def on_icon_pressed (self, UNUSED, icon_position, button):
-        if not self.sexy:
-            return
-        if icon_position != sexy.ICON_ENTRY_PRIMARY:
-            return
-        if not self.menu:
+    def on_icon_press (self, UNUSED, icon_position, event):
+        if icon_position == gtk.ENTRY_ICON_SECONDARY:
+            self.set_text ("")
             return
 
-        self.menu.popup (None, None, None, button, 0L)
+        if icon_position == gtk.ENTRY_ICON_PRIMARY:
+            if not self.menu:
+                return
+
+            self.menu.popup (None, None, None, event.button, event.time)
 
 gobject.type_register (ToolbarSearchEntry)
