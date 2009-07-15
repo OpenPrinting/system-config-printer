@@ -3503,6 +3503,7 @@ class NewPrinterGUI(GtkGUI):
         # Synchronisation objects.
         self.jockey_lock = thread.allocate_lock()
         self.ppds_lock = thread.allocate_lock()
+        self.ppds_queried = False
         self.drivers_lock = thread.allocate_lock()
 
         self.getWidgets({"NewPrinterWindow":
@@ -3987,6 +3988,7 @@ class NewPrinterGUI(GtkGUI):
             debugprint ("queryPPDs: in progress")
             return
         debugprint ("Lock acquired for PPDs thread")
+        self.ppds_queried = True
         # Start new thread
         thread.start_new_thread (self.getPPDs_thread, (self.language[0],))
         debugprint ("PPDs thread started")
@@ -4015,7 +4017,8 @@ class NewPrinterGUI(GtkGUI):
 
     def fetchPPDs(self, parent=None):
         debugprint ("fetchPPDs")
-        self.queryPPDs()
+        if not self.ppds_queried:
+            self.queryPPDs ()
 
         # Keep the UI refreshed while we wait for the devices to load.
         waiting = False
@@ -4039,6 +4042,7 @@ class NewPrinterGUI(GtkGUI):
             self.WaitWindow.hide ()
 
         debugprint ("Got PPDs")
+        self.ppds_queried = False
         result = self.ppds_result # atomic operation
         if isinstance (result, Exception):
             # Propagate exception.
