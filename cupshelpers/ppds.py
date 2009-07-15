@@ -43,58 +43,77 @@ def ppdMakeModelSplit (ppd_make_and_model):
     # If the string starts with a known model name (like "LaserJet") assume
     # that the manufacturer name is missing and add the manufacturer name
     # corresponding to the model name
-    if re.search ("^\s*(deskjet|dj\b|dj\d|laserjet|lj\b|color\s*laserjet|color\s*lj\b|designjet|officejet|oj\b|photosmart|ps\b|psc)", \
-                      ppd_make_and_model, re.I) or \
-       re.search ("^\s*(edgeline)", ppd_make_and_model, re.I):
+    ppd_make_and_model.strip ()
+    l = ppd_make_and_model.lower ()
+    if (l.startswith ("deskjet") or
+        l.startswith ("dj ") or l == "dj" or
+        (l.startswith ("dj") and len (l) > 2 and l[2].isdigit ()) or
+        l.startswith ("laserjet") or
+        l.startswith ("lj") or
+        l.startswith ("color laserjet") or
+        l.startswith ("color lj") or
+        l.startswith ("designjet") or
+        l.startswith ("officejet") or
+        l.startswith ("oj") or
+        l.startswith ("photosmart") or
+        l.startswith ("ps ") or
+        l.startswith ("psc") or
+        l.startswith ("edgeline")):
         make = "HP"
         model = ppd_make_and_model
-    elif re.search ("^\s*(stylus|aculaser)", \
-                      ppd_make_and_model, re.I):
+    elif (l.startswith ("stylus") or
+          l.startswith ("aculaser")):
         make = "Epson"
         model = ppd_make_and_model
-    elif re.search ("^\s*(stylewriter|imagewriter|deskwriter|laserwriter)", \
-                      ppd_make_and_model, re.I):
+    elif (l.startswith ("stylewriter") or
+          l.startswith ("imagewriter") or
+          l.startswith ("deskwriter") or
+          l.startswith ("laserwriter")):
         make = "Apple"
         model = ppd_make_and_model
-    elif re.search ("^\s*(pixus|pixma|selphy|imagerunner|\bbjc\b|\bbj\b|\blbp\b)",\
-                      ppd_make_and_model, re.I):
+    elif (l.startswith ("pixus") or
+          l.startswith ("pixma") or
+          l.startswith ("selphy") or
+          l.startswith ("imagerunner") or
+          l.startswith ("bj") or
+          l.startswith ("lbp")):
         make = "Canon"
         model = ppd_make_and_model
-    elif re.search ("^\s*(\bhl\b|\bdcp\b|\bmfc\b)", \
-                      ppd_make_and_model, re.I):
+    elif (l.startswith ("hl") or
+          l.startswith ("dcp") or
+          l.startswith ("mfc")):
         make = "Brother"
         model = ppd_make_and_model
-    elif re.search ("^\s*(docuprint|docupage|phaser|workcentre|homecentre)", \
-                      ppd_make_and_model, re.I):
+    elif (l.startswith ("docuprint") or
+          l.startswith ("docupage") or
+          l.startswith ("phaser") or
+          l.startswith ("workcentre") or
+          l.startswith ("homecentre")):
         make = "Xerox"
         model = ppd_make_and_model
-    elif re.search ("^\s*(optra|(color\s*|)jetprinter)", \
-                      ppd_make_and_model, re.I):
+    elif (l.startswith ("optra") or
+          l.startswith ("jetprinter") or
+          l.startswith ("color jetprinter")):
         make = "Lexmark"
         model = ppd_make_and_model
-    elif re.search ("^\s*(magicolor|pageworks|pagepro)", \
-                      ppd_make_and_model, re.I):
+    elif (l.startswith ("magicolor") or
+          l.startswith ("pageworks") or
+          l.startswith ("pagepro")):
         make = "KONICA MINOLTA"
         model = ppd_make_and_model
-    elif re.search ("^\s*(aficio)", \
-                      ppd_make_and_model, re.I):
+    elif l.startswith ("aficio"):
         make = "Ricoh"
         model = ppd_make_and_model
-    elif re.search ("^\s*(varioprint)", \
-                      ppd_make_and_model, re.I):
+    elif l.startswith ("varioprint"):
         make = "Oce"
         model = ppd_make_and_model
-    elif re.search ("^\s*(okipage|microline)", \
-                      ppd_make_and_model, re.I):
+    elif (l.startswith ("okipage") or
+          l.startswith ("microline")):
         make = "Oki"
         model = ppd_make_and_model
-    elif re.search ("^\s*(konica[\s_-]*minolta)", \
-                      ppd_make_and_model, re.I):
-        make = "KONICA MINOLTA"
-        model = ppd_make_and_model
-        model = re.sub ("(?i)KONICA[\s_-]*MINOLTA\s*", "", model, 1)
-    elif re.search("turboprint", ppd_make_and_model, re.I):
-        # Support for Turboprint PPDs
+
+    # Handle PPDs provided by Turboprint
+    elif l.startswith ("turboprint"):
         t = ppd_make_and_model.find (" TurboPrint")
         if t != -1:
             ppd_make_and_model = ppd_make_and_model[:t]
@@ -109,6 +128,13 @@ def ppdMakeModelSplit (ppd_make_and_model):
         model = re.sub (r"(?<=[a-z])(?=[A-Z])", " ", model)
         model = re.sub (r" Jet", "Jet", model)
         model = re.sub (r"Photo Smart", "PhotoSmart", model)
+
+    # Special handling for two-word manufacturers
+    elif l.startswith ("konica minolta "):
+        make = "KONICA MINOLTA"
+        model = ppd_make_and_model[15:]
+
+    # Finally, take the first word as the name of the manufacturer.
     else:
         try:
             make, model = ppd_make_and_model.split(" ", 1)
@@ -116,11 +142,19 @@ def ppdMakeModelSplit (ppd_make_and_model):
             make = ppd_make_and_model
             model = ''
 
-    # Model names do not contain a comma, truncate all from the
-    # comma on
-    c = model.find (",")
-    if c != -1:
-        model = model[:c]
+    # Standardised names for manufacturers.
+    makel = make.lower ()
+    if (makel.startswith ("konica") and
+        makel.endswith ("minolta")):
+        make = "KONICA MINOLTA"
+        makel = "konica minolta"
+    elif (makel.startswith ("hewlett") and
+          makel.endswith ("packard")):
+        make = "HP"
+        makel = "hp"
+    elif makel == "lexmark international":
+        make = "Lexmark"
+        makel = "lexmark"
 
     # HP PPDs give NickNames like:
     # *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
@@ -132,56 +166,37 @@ def ppdMakeModelSplit (ppd_make_and_model):
         # Truncate at that point.
         model = model[:v]
 
-    h = model.find (" hpijs")
-    if h != -1:
-        model = model[:h]
+    for suffix in [" hpijs",
+                   " Foomatic/",
+                   " - ",
+                   " w/",
+                   " (",
+                   " PostScript",
+                   " PS",
+                   " PS1",
+                   " PS2",
+                   " PS3",
+                   " PXL",
+                   " series"
+                   ","]:
+        s = model.find (suffix)
+        if s != -1:
+            model = model[:s]
 
-    f = model.find (" Foomatic/")
-    if f != -1:
-        model = model[:f]
-
-    # Gutenprint PPDs have NickNames that end:
-    # ... - CUPS+Gutenprint v5.0.0
-    gutenprint = model.find (" - CUPS+Gutenprint")
-    if gutenprint != -1:
-        model = model[:gutenprint]
-
-    # Gimp-Print PPDs have NickNames that end:
-    # ... - CUPS+Gimp-Print v4.2.7
-    gimpprint = model.find (" - CUPS+Gimp-Print")
-    if gimpprint != -1:
-        model = model[:gimpprint]
-
-    wth = model.find (" w/")
-    if wth != -1:
-        model = model[:wth]
-
-    make = re.sub (r"(?i)KONICA[\s_-]*MINOLTA", "KONICA MINOLTA", make, 1)
-    make = re.sub (r"(?i)HEWLETT[\s_-]PACKARD", "HP", make, 1)
-    make = re.sub (r"(?i)Lexmark\s*International", "Lexmark", make, 1)
-    model = re.sub (r"(?i)\s*\(recommended\)", "", model)
-    model = re.sub (r"(?i)\s*-\s*PostScript\b", "", model)
-    model = re.sub (r"(?i)\s*\bseries\b", "", model)
-    if make.lower () == "hp":
-        model = re.sub (r"(?i)^dj\b", "DeskJet", model)
-        model = re.sub (r"(?i)^LJ\b", "LaserJet", model)
-        model = re.sub (r"(?i)^OJ\b", "OfficeJet", model)
-        model = re.sub (r"(?i)^Color\s*LJ\b", "Color LaserJet", model)
-        model = re.sub (r"(?i)^PS\b", "PhotoSmart", model)
-    model = re.sub (r"(?i)\s*\bPS[123]?\b", "", model)
-    model = re.sub (r"(?i)\s*\bPXL", "", model)
-    model = re.sub (r"(?i)[\s_-]+BT\b", "", model)
-    model = re.sub (r"(?i)\s*\(Bluetooth\)", "", model)
-    model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\s*-*\s*[0-9\.]+", "", model)
-    model = re.sub (r"(?i)\s*-\s*(RC|Ver(|sion))\b", "", model)
-    model = re.sub (r"(?i)\s*PostScript\s*$", "", model)
-    model = re.sub (r"(?i)\s*\(\s*\)", "", model)
-    model = re.sub (r"(?i)\s*[\-\/]\s*$", "", model)
-    model = re.sub (r"(?i)\s*\([^\(\)]*\)", "", model)
-    model = re.sub (r"(?i)^(" + make + "|hp|hewlett-packard)\s+", "", model)
+    if makel == "hp":
+        modelnames = {"dj": "DeskJet",
+                      "lj": "LaserJet",
+                      "oj": "OfficeJet",
+                      "color lj": "Color LaserJet",
+                      "ps ": "PhotoSmart",
+                      "hp ": ""}
+        modell = model.lower ()
+        for (name, fullname) in modelnames.iteritems ():
+            if modell.startswith (name):
+                model = fullname + model[len (name):]
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Oki" ]:
-        if make == mfr.upper ():
+        if makel == mfr.lower ():
             make = mfr
 
     model = model.strip ()
@@ -969,7 +984,7 @@ def _self_test(argv):
 
     idlist = [
         # Format is:
-        # (ID string, max status code, expected driver RE match)
+        # (ID string, max status code, expected ppd-make-and-model RE match)
 
         # Specific models
         ("MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;"
@@ -994,7 +1009,7 @@ def _self_test(argv):
          "1284.4DL:4d,4e,1;CLS:PRINTER;DES:5440;", 1, "HP DeskJet 5440"),
         ("MFG:Hewlett-Packard;MDL:HP LaserJet 3390;"
          "CMD:PJL,MLC,PCL,POSTSCRIPT,PCLXL;",
-         0, "HP LaserJet 3390.*Postscript"),
+         0, "HP LaserJet 3390"),
 
         # Generic models
         ("MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
