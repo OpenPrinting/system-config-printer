@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -89,9 +89,10 @@ class CheckNetworkServerSanity(Question):
         if (self.answers['remote_server_name_resolves'] and
             answers.get ('cups_device_uri_scheme', 'ipp') == 'ipp'):
             try:
-                cups.setServer (server_name)
-                cups.setPort (server_port)
-                self.op = TimedOperation (cups.Connection, parent=parent)
+                self.op = TimedOperation (cups.Connection,
+                                          kwargs={"host": server_name,
+                                                  "port": server_port},
+                                          parent=parent)
                 c = self.op.run ()
                 ipp_connect = True
             except RuntimeError:
@@ -109,15 +110,18 @@ class CheckNetworkServerSanity(Question):
 
                 self.answers['remote_server_cups'] = cups_server
 
-                if cups_server and answers.get ('cups_queue', False):
-                    try:
-                        self.op = TimedOperation (c.getPrinterAttributes,
-                                                  args=(answers['cups_queue'],),
-                                                  parent=parent)
-                        attr = self.op.run ()
-                        self.answers['remote_cups_queue_attributes'] = attr
-                    except:
-                        pass
+                if cups_server:
+                    cups_printer_dict = answers.get ('cups_printer_dict', {})
+                    uri = cups_printer_dict.get ('device-uri', None)
+                    if uri:
+                        try:
+                            self.op = TimedOperation (c.getPrinterAttributes,
+                                                      kwargs={"uri": uri},
+                                                      parent=parent)
+                            attr = self.op.run ()
+                            self.answers['remote_cups_queue_attributes'] = attr
+                        except:
+                            pass
 
         if (self.answers['remote_server_name_resolves'] and
             not self.answers.get ('remote_server_connect_ipp', False)):

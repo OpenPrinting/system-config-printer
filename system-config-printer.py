@@ -3503,7 +3503,7 @@ class NewPrinterGUI(GtkGUI):
         # Synchronisation objects.
         self.jockey_lock = thread.allocate_lock()
         self.ppds_lock = thread.allocate_lock()
-        self.ipp_lock = thread.allocate_lock()
+        self.ppds_queried = False
         self.drivers_lock = thread.allocate_lock()
 
         self.getWidgets({"NewPrinterWindow":
@@ -3529,7 +3529,6 @@ class NewPrinterGUI(GtkGUI):
                               "cmbentNPTLpdHost",
                               "cmbentNPTLpdQueue",
                               "entNPTIPPHostname",
-                              "btnIPPFindQueue",
                               "lblIPPURI",
                               "entNPTIPPQueuename",
                               "btnIPPVerify",
@@ -3588,10 +3587,6 @@ class NewPrinterGUI(GtkGUI):
                               "tvNPDownloadableDriverLicense",
                               "rbtnNPDownloadLicenseYes",
                               "rbtnNPDownloadLicenseNo"],
-                         "IPPBrowseDialog":
-                             ["IPPBrowseDialog",
-                              "tvIPPBrowser",
-                              "btnIPPBrowseOk"],
                          "SMBBrowseDialog":
                              ["SMBBrowseDialog",
                               "tvSMBBrowser",
@@ -3602,8 +3597,7 @@ class NewPrinterGUI(GtkGUI):
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
-        for dialog in [self.IPPBrowseDialog,
-                       self.SMBBrowseDialog]:
+        for dialog in [self.SMBBrowseDialog]:
             dialog.connect ("delete-event", on_delete_just_hide)
 
         # share with mainapp
@@ -3686,25 +3680,6 @@ class NewPrinterGUI(GtkGUI):
         slct.set_select_function (self.smb_select_function)
 
         self.SMBBrowseDialog.set_transient_for(self.NewPrinterWindow)
-
-        # IPP browser
-        self.ipp_store = gtk.TreeStore (str, # queue
-                                        str, # location
-                                        gobject.TYPE_PYOBJECT) # dict
-        self.tvIPPBrowser.set_model (self.ipp_store)
-        self.ipp_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
-
-        # IPP list columns
-        col = gtk.TreeViewColumn (_("Queue"), gtk.CellRendererText (),
-                                  text=0)
-        col.set_resizable (True)
-        col.set_sort_column_id (0)
-        self.tvIPPBrowser.append_column (col)
-
-        col = gtk.TreeViewColumn (_("Location"), gtk.CellRendererText (),
-                                  text=1)
-        self.tvIPPBrowser.append_column (col)
-        self.IPPBrowseDialog.set_transient_for(self.NewPrinterWindow)
 
         self.tvNPDriversTooltips = TreeViewTooltips(self.tvNPDrivers, self.NPDriversTooltips)
 
@@ -3834,14 +3809,17 @@ class NewPrinterGUI(GtkGUI):
                                                     self.jockey_installed_files)
                         if (status != self.ppds.STATUS_SUCCESS and
                             reloaded == 0):
-                            if self.fetchJockeyDriver ():
-                                try:
-                                    self.dropPPDs ()
-                                    self.loadPPDs ()
-                                    reloaded = 1
-                                except:
+                            try:
+                                if self.fetchJockeyDriver ():
+                                    try:
+                                        self.dropPPDs ()
+                                        self.loadPPDs ()
+                                        reloaded = 1
+                                    except:
+                                        reloaded = 2
+                                else:
                                     reloaded = 2
-                            else:
+                            except:
                                 reloaded = 2
                         else:
                             reloaded = 2
@@ -3948,7 +3926,7 @@ class NewPrinterGUI(GtkGUI):
             else:
                 debugprint ("No new driver found or download rejected")
         except dbus.DBusException, e:
-            self.jockey_driver_result = "D-Bus Error: %s" % e
+            self.jockey_driver_result = e
             debugprint (self.jockey_driver_result)
         except Exception, e:
             nonfatalException()
@@ -3961,7 +3939,7 @@ class NewPrinterGUI(GtkGUI):
     def fetchJockeyDriver(self, parent=None):
         debugprint ("fetchJockeyDriver")
         self.queryJockeyDriver()
-        time.sleep (0.1)
+        time.sleep (0.01)
 
         # Keep the UI refreshed while we wait for the driver to load.
         waiting = False
@@ -4010,6 +3988,7 @@ class NewPrinterGUI(GtkGUI):
             debugprint ("queryPPDs: in progress")
             return
         debugprint ("Lock acquired for PPDs thread")
+        self.ppds_queried = True
         # Start new thread
         thread.start_new_thread (self.getPPDs_thread, (self.language[0],))
         debugprint ("PPDs thread started")
@@ -4038,7 +4017,8 @@ class NewPrinterGUI(GtkGUI):
 
     def fetchPPDs(self, parent=None):
         debugprint ("fetchPPDs")
-        self.queryPPDs()
+        if not self.ppds_queried:
+            self.queryPPDs ()
 
         # Keep the UI refreshed while we wait for the devices to load.
         waiting = False
@@ -4062,6 +4042,7 @@ class NewPrinterGUI(GtkGUI):
             self.WaitWindow.hide ()
 
         debugprint ("Got PPDs")
+        self.ppds_queried = False
         result = self.ppds_result # atomic operation
         if isinstance (result, Exception):
             # Propagate exception.
@@ -4229,14 +4210,17 @@ class NewPrinterGUI(GtkGUI):
                                 #if reloaded == 0:
                                 #self.device.id = "MFG:Samsung;MDL:ML-1610;DES:;CMD:GDI;"
                                 #id_dict = cupshelpers.parseDeviceID(self.device.id)
-                                if self.fetchJockeyDriver ():
-                                    try:
-                                        self.dropPPDs ()
-                                        self.loadPPDs ()
-                                        reloaded = 1
-                                    except:
+                                try:
+                                    if self.fetchJockeyDriver ():
+                                        try:
+                                            self.dropPPDs ()
+                                            self.loadPPDs ()
+                                            reloaded = 1
+                                        except:
+                                            reloaded = 2
+                                    else:
                                         reloaded = 2
-                                else:
+                                except:
                                     reloaded = 2
                             else:
                                 reloaded = 2
@@ -4598,6 +4582,8 @@ class NewPrinterGUI(GtkGUI):
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
             (stdout, stderr) = p.communicate ()
+            if p.returncode != 0:
+                return True # assume plugin not required
         except:
             # Problem executing command.
             return True # assume plugin not required
@@ -4728,11 +4714,6 @@ class NewPrinterGUI(GtkGUI):
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE)
                     (stdout, stderr) = p.communicate ()
-                    while p.returncode == None:
-                        while gtk.events_pending ():
-                            gtk.main_iteration ()
-                        time.sleep (0.1)
-                        p.poll ()
                     install_result = p.returncode
                     if install_result != 255:
                         break
@@ -4794,6 +4775,8 @@ class NewPrinterGUI(GtkGUI):
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
             (stdout, stderr) = p.communicate ()
+            if p.returncode != 0:
+                return None
         except:
             # Problem executing command.
             return None
@@ -4833,6 +4816,8 @@ class NewPrinterGUI(GtkGUI):
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE)
                 (stdout, stderr) = p.communicate ()
+                if p.returncode != 0:
+                    stdout = None
             except:
                 # Problem executing command.
                 pass
@@ -5373,16 +5358,10 @@ class NewPrinterGUI(GtkGUI):
 
     def on_entNPTIPPHostname_changed(self, ent):
         valid = len (ent.get_text ()) > 0
-        self.btnIPPFindQueue.set_sensitive (valid)
         self.update_IPP_URI_label ()
 
     def on_entNPTIPPQueuename_changed(self, ent):
         self.update_IPP_URI_label ()
-
-    def on_btnIPPFindQueue_clicked(self, button):
-        self.btnIPPBrowseOk.set_sensitive(False)
-        self.IPPBrowseDialog.show()
-        self.browse_ipp_queues()
 
     def on_btnIPPVerify_clicked(self, button):
         uri = self.lblIPPURI.get_text ()
@@ -5418,117 +5397,6 @@ class NewPrinterGUI(GtkGUI):
             show_error_dialog (_("Inaccessible"),
                                _("This print share is not accessible."),
                                self.NewPrinterWindow)
-
-    def browse_ipp_queues(self):
-        if not self.ipp_lock.acquire(0):
-            return
-        thread.start_new_thread(self.browse_ipp_queues_thread, ())
-
-    def browse_ipp_queues_thread(self):
-        host = None
-        gtk.gdk.threads_enter()
-        try:
-            store = self.ipp_store
-            store.clear ()
-            store.append(None, (_('Scanning...'), '', None))
-            try:
-                self.busy(self.IPPBrowseDialog)
-            except:
-                nonfatalException()
-
-            host = self.entNPTIPPHostname.get_text()
-        except:
-            nonfatalException()
-        gtk.gdk.threads_leave()
-
-        oldserver = cups.getServer ()
-        printers = classes = {}
-        failed = False
-        port = 631
-        if host != None:
-            (host, port) = urllib.splitnport (host, defport=port)
-
-        try:
-            if self.device.type == "https":
-                encrypt = cups.HTTP_ENCRYPT_ALWAYS
-            else:
-                encrypt = cups.HTTP_ENCRYPT_IF_REQUESTED
-
-            c = cups.Connection (host=host, port=port,
-                                 encryption=encrypt)
-            printers = c.getPrinters ()
-            del c
-        except cups.IPPError, (e, m):
-            debugprint ("IPP browser: %s" % m)
-            failed = True
-        except:
-            nonfatalException()
-            failed = True
-        cups.setServer (oldserver)
-
-        gtk.gdk.threads_enter()
-        try:
-            store.clear ()
-            for printer, dict in printers.iteritems ():
-                iter = store.append (None)
-                store.set_value (iter, 0, printer)
-                store.set_value (iter, 1, dict.get ('printer-location', ''))
-                store.set_value (iter, 2, dict)
-
-            if len (printers) + len (classes) == 0:
-                # Display 'No queues' dialog
-                if failed:
-                    title = _("Not possible")
-                    text = (_("It is not possible to obtain a list of queues "
-                              "from '%s'.") % host + '\n\n' +
-                            _("Obtaining a list of queues is a CUPS extension "
-                              "to IPP.  Network printers do not support it."))
-                else:
-                    title = _("No queues")
-                    text = _("There are no queues available.")
-
-                self.IPPBrowseDialog.hide ()
-                show_error_dialog (title, text, self.NewPrinterWindow)
-
-            try:
-                self.ready(self.IPPBrowseDialog)
-            except:
-                nonfatalException()
-
-            self.ipp_lock.release()
-        except:
-            nonfatalException()
-        gtk.gdk.threads_leave()
-
-    def on_tvIPPBrowser_cursor_changed(self, widget):
-        self.btnIPPBrowseOk.set_sensitive(True)
-
-    def on_btnIPPBrowseOk_clicked(self, button):
-        store, iter = self.tvIPPBrowser.get_selection().get_selected()
-        self.IPPBrowseDialog.hide()
-        queue = store.get_value (iter, 0)
-        dict = store.get_value (iter, 2)
-        self.entNPTIPPQueuename.set_text (queue)
-        self.entNPTIPPQueuename.show()
-        uri = dict.get('printer-uri-supported', 'ipp')
-        match = re.match ("(ipp|https?)://([^/]+)(.*)", uri)
-        if match:
-            self.entNPTIPPHostname.set_text (match.group (2))
-            self.entNPTIPPQueuename.set_text (match.group (3))
-
-        if self.device.type == "https" and uri.startswith ("ipp:"):
-            # Use https in our device URI for this printer.
-            uri = "https:" + uri[4:]
-
-        self.lblIPPURI.set_text (uri)
-        self.lblIPPURI.show()
-        self.setNPButtons()
-
-    def on_btnIPPBrowseCancel_clicked(self, widget, *args):
-        self.IPPBrowseDialog.hide()
-
-    def on_btnIPPBrowseRefresh_clicked(self, button):
-        self.browse_ipp_queues()
 
     def on_expNPDeviceURIs_expanded (self, widget, UNUSED):
         # When the expanded is not expanded we want its packing to be

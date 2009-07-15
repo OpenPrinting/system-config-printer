@@ -205,6 +205,9 @@ class PrinterFinder:
             raise
 
         (stdout, stderr) = p.communicate ()
+        if p.returncode != 0:
+            return
+
         for line in stdout.split ('\n'):
             words = wordsep (line)
             n = len (words)
@@ -259,6 +262,9 @@ class PrinterFinder:
             raise
 
         (stdout, stderr) = p.communicate ()
+        if p.returncode != 0:
+            return
+
         uri = stdout.strip ()
         if uri.find (":") != -1:
             device_dict = { 'device-class': 'network',
