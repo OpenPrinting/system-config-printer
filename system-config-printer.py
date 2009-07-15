@@ -3938,7 +3938,7 @@ class NewPrinterGUI(GtkGUI):
     def fetchJockeyDriver(self, parent=None):
         debugprint ("fetchJockeyDriver")
         self.queryJockeyDriver()
-        time.sleep (0.1)
+        time.sleep (0.01)
 
         # Keep the UI refreshed while we wait for the driver to load.
         waiting = False
