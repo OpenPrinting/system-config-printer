@@ -3808,14 +3808,17 @@ class NewPrinterGUI(GtkGUI):
                                                     self.jockey_installed_files)
                         if (status != self.ppds.STATUS_SUCCESS and
                             reloaded == 0):
-                            if self.fetchJockeyDriver ():
-                                try:
-                                    self.dropPPDs ()
-                                    self.loadPPDs ()
-                                    reloaded = 1
-                                except:
+                            try:
+                                if self.fetchJockeyDriver ():
+                                    try:
+                                        self.dropPPDs ()
+                                        self.loadPPDs ()
+                                        reloaded = 1
+                                    except:
+                                        reloaded = 2
+                                else:
                                     reloaded = 2
-                            else:
+                            except:
                                 reloaded = 2
                         else:
                             reloaded = 2
@@ -3922,7 +3925,7 @@ class NewPrinterGUI(GtkGUI):
             else:
                 debugprint ("No new driver found or download rejected")
         except dbus.DBusException, e:
-            self.jockey_driver_result = "D-Bus Error: %s" % e
+            self.jockey_driver_result = e
             debugprint (self.jockey_driver_result)
         except Exception, e:
             nonfatalException()
@@ -4203,14 +4206,17 @@ class NewPrinterGUI(GtkGUI):
                                 #if reloaded == 0:
                                 #self.device.id = "MFG:Samsung;MDL:ML-1610;DES:;CMD:GDI;"
                                 #id_dict = cupshelpers.parseDeviceID(self.device.id)
-                                if self.fetchJockeyDriver ():
-                                    try:
-                                        self.dropPPDs ()
-                                        self.loadPPDs ()
-                                        reloaded = 1
-                                    except:
+                                try:
+                                    if self.fetchJockeyDriver ():
+                                        try:
+                                            self.dropPPDs ()
+                                            self.loadPPDs ()
+                                            reloaded = 1
+                                        except:
+                                            reloaded = 2
+                                    else:
                                         reloaded = 2
-                                else:
+                                except:
                                     reloaded = 2
                             else:
                                 reloaded = 2
