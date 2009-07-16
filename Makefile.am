@@ -147,6 +147,12 @@ bin_SCRIPTS=\
 	system-config-printer-applet		\
 	my-default-printer
 
+udev_udev_configure_printer_SOURCES=\
+	udev/udev-configure-printer.c
+udevhelperdir=/lib/udev
+udevhelper_PROGRAMS=\
+	udev/udev-configure-printer
+
 man_MANS=					\
 	man/system-config-printer.1		\
 	man/system-config-printer-applet.1
