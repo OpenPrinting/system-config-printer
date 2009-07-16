@@ -149,6 +149,7 @@ bin_SCRIPTS=\
 
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
+udev_udev_configure_printer_LDADD=-lcups
 udevhelperdir=/lib/udev
 udevhelper_PROGRAMS=\
 	udev/udev-configure-printer

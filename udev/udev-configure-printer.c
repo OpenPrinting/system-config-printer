@@ -35,13 +35,37 @@
  * corresponding to the queue.
  */
 
+#include <cups/cups.h>
+#include <cups/http.h>
 #include <stdio.h>
 #include <syslog.h>
+#include <unistd.h>
 
 int
 do_add (const char *cmd, const char *path)
 {
+  int tries = 6;
+  http_t *cups = NULL;
   syslog (LOG_DEBUG, "add %s", path);
+
+  while (cups == NULL && tries-- > 0)
+    {
+      cups = httpConnectEncrypt ("localhost", 631,
+				 HTTP_ENCRYPT_IF_REQUESTED);
+      if (cups)
+	break;
+
+      syslog (LOG_DEBUG, "failed to connect to CUPS server; retrying in 5s");
+      sleep (5);
+    }
+
+  if (cups == NULL)
+    {
+      syslog (LOG_DEBUG, "failed to connect to CUPS server; giving up");
+      return 0;
+    }
+
+  httpClose (cups);
   printf ("REMOVECMD=\"%s remove %s\"\n", cmd, "uri");
   return 0;
 }
