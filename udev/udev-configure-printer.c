@@ -29,25 +29,49 @@
  *
  * For "add", it will output the following to stdout:
  *
- * $0 remove $DEVICE_URI
+ * REMOVECMD="$0 remove $DEVICE_URI"
  *
  * where $0 is argv[0] and $DEVICE_URI is the CUPS device URI
  * corresponding to the queue.
  */
 
 #include <stdio.h>
+#include <syslog.h>
+
+int
+do_add (const char *cmd, const char *path)
+{
+  syslog (LOG_DEBUG, "add %s", path);
+  printf ("REMOVECMD=\"%s remove %s\"\n", cmd, "uri");
+  return 0;
+}
+
+int
+do_remove (const char *uri)
+{
+  syslog (LOG_DEBUG, "remove %s", uri);
+  return 0;
+}
 
 int
 main (int argc, char **argv)
 {
-    if (argc != 3)
-      {
-	fprintf (stderr,
-		 "Syntax: %s add {USB device path}\n"
-		 "        %s remove {CUPS device URI}\n",
-		 argv[0], argv[0]);
-	return 1;
-      }
+  int add;
 
-    return 0;
+  openlog ("udev-configure-printer", 0, LOG_LPR);
+  if (argc != 3 ||
+      !((add = !strcmp (argv[1], "add")) ||
+	!strcmp (argv[1], "remove")))
+    {
+      fprintf (stderr,
+	       "Syntax: %s add {USB device path}\n"
+	       "        %s remove {CUPS device URI}\n",
+	       argv[0], argv[0]);
+      return 1;
+    }
+
+  if (add)
+    return do_add (argv[0], argv[2]);
+
+  return do_remove (argv[2]);
 }
