@@ -35,18 +35,78 @@
  * corresponding to the queue.
  */
 
+#define LIBUDEV_I_KNOW_THE_API_IS_SUBJECT_TO_CHANGE 1
+
 #include <cups/cups.h>
 #include <cups/http.h>
+#include <libudev.h>
 #include <stdio.h>
 #include <syslog.h>
 #include <unistd.h>
 
-int
-do_add (const char *cmd, const char *path)
+static int
+do_add (const char *cmd, const char *devpath)
 {
   int tries = 6;
   http_t *cups = NULL;
-  syslog (LOG_DEBUG, "add %s", path);
+  struct udev *udev;
+  struct udev_device *dev, *dev_iface;
+  const char *sys;
+  size_t syslen, devpathlen;
+  char *syspath;
+  const char *ieee1284_id;
+
+  syslog (LOG_DEBUG, "add %s", devpath);
+
+  udev = udev_new ();
+  if (udev == NULL)
+    {
+      syslog (LOG_ERR, "udev_new failed");
+      return 1;
+    }
+
+  sys = udev_get_sys_path (udev);
+  syslen = strlen (sys);
+  devpathlen = strlen (devpath);
+  syspath = malloc (syslen + devpathlen + 1);
+  if (syspath == NULL)
+    {
+      udev_unref (udev);
+      syslog (LOG_ERR, "out of memory");
+      return 1;
+    }
+
+  memcpy (syspath, sys, syslen);
+  memcpy (syspath + syslen, devpath, devpathlen);
+  syspath[syslen + devpathlen] = '\0';
+
+  dev = udev_device_new_from_syspath (udev, syspath);
+  if (dev == NULL)
+    {
+      udev_device_unref (dev);
+      udev_unref (udev);
+      syslog (LOG_ERR, "unable to access %s", syspath);
+      return 1;
+    }
+
+  dev_iface = udev_device_get_parent_with_subsystem_devtype (dev, "usb",
+							     "usb_interface");
+  if (dev_iface == NULL)
+    {
+      udev_device_unref (dev);
+      udev_unref (udev);
+      syslog (LOG_ERR, "unable to access usb_interface device of %s",
+	      syspath);
+      return 1;
+    }
+
+  ieee1284_id = udev_device_get_sysattr_value (dev_iface, "ieee1284_id");
+  if (ieee1284_id != NULL)
+    {
+      syslog (LOG_DEBUG, "ieee1284_id=%s", ieee1284_id);
+    }
+
+  udev_device_unref (dev);
 
   while (cups == NULL && tries-- > 0)
     {
@@ -70,7 +130,7 @@ do_add (const char *cmd, const char *path)
   return 0;
 }
 
-int
+static int
 do_remove (const char *uri)
 {
   syslog (LOG_DEBUG, "remove %s", uri);
