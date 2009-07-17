@@ -198,17 +198,20 @@ no_password (const char *prompt)
   return "";
 }
 
-static char *
-find_matching_device_uri (struct device_id *id)
+static http_t *
+cups_connection (void)
 {
-  int tries = 6;
   http_t *cups = NULL;
-  ipp_t *request, *answer;
-  ipp_attribute_t *attr;
-  const char *include_schemes[] = { "usb" };
-  char *device_uri;
+  static int first_time = 1;
+  int tries = 1;
 
-  cupsSetPasswordCB (no_password);
+  if (first_time)
+    {
+      cupsSetPasswordCB (no_password);
+      tries = 6;
+      first_time = 0;
+    }
+
   while (cups == NULL && tries-- > 0)
     {
       cups = httpConnectEncrypt ("localhost", 631,
@@ -225,6 +228,18 @@ find_matching_device_uri (struct device_id *id)
       syslog (LOG_DEBUG, "failed to connect to CUPS server; giving up");
       exit (1);
     }
+ 
+  return cups;
+}
+
+static char *
+find_matching_device_uri (struct device_id *id)
+{
+  http_t *cups = cups_connection ();
+  ipp_t *request, *answer;
+  ipp_attribute_t *attr;
+  const char *include_schemes[] = { "usb" };
+  char *device_uri;
 
   request = ippNewRequest (CUPS_GET_DEVICES);
   ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_NAME, "include-schemes",
@@ -330,11 +345,84 @@ find_matching_device_uri (struct device_id *id)
   return device_uri;
 }
 
+static char *
+find_queue_by_device_uri (const char *device_uri)
+{
+  http_t *cups = cups_connection ();
+  ipp_t *request, *answer;
+  ipp_attribute_t *attr;
+  const char *attributes[] = {
+    "printer-uri-supported",
+    "device-uri"
+  };
+
+  request = ippNewRequest (CUPS_GET_PRINTERS);
+  ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
+		 "requested-attributes",
+		 sizeof (attributes) / sizeof (attributes[0]),
+		 NULL, attributes);
+  answer = cupsDoRequest (cups, request, "/");
+  httpClose (cups);
+  if (answer == NULL)
+    {
+      syslog (LOG_ERR, "failed to send CUPS-Get-Printers request");
+      exit (1);
+    }
+
+  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+    {
+      if (answer->request.status.status_code == IPP_NOT_FOUND)
+	{
+	  /* No printer queues configured. */
+	  ippDelete (answer);
+	  return NULL;
+	}
+
+      syslog (LOG_ERR, "CUPS-Get-Printers request failed (%d)",
+	      answer->request.status.status_code);
+      exit (1);
+    }
+
+  for (attr = answer->attrs; attr; attr = attr->next)
+    {
+      char *this_printer_uri = NULL;
+      char *this_device_uri = NULL;
+
+      while (attr && attr->group_tag != IPP_TAG_PRINTER)
+	attr = attr->next;
+
+      if (!attr)
+	break;
+
+      for (; attr && attr->group_tag == IPP_TAG_PRINTER; attr = attr->next)
+	{
+	  if (attr->value_tag == IPP_TAG_URI)
+	    {
+	      if (!strcmp (attr->name, "device-uri"))
+		this_device_uri = attr->values[0].string.text;
+	      else if (!strcmp (attr->name, "printer-uri-supported"))
+		this_printer_uri = attr->values[0].string.text;
+	    }
+	}
+
+      if (!strcmp (device_uri, this_device_uri))
+	{
+	  char *uri = strdup (this_printer_uri);
+	  ippDelete (answer);
+	  return uri;
+	}
+    }
+
+  ippDelete (answer);
+  return NULL;
+}
+
 static int
 do_add (const char *cmd, const char *devpath)
 {
   struct device_id id;
   char *device_uri = NULL;
+  char *printer_uri;
   int i;
 
   syslog (LOG_DEBUG, "add %s", devpath);
@@ -370,11 +458,16 @@ do_add (const char *cmd, const char *devpath)
 
   syslog (LOG_DEBUG, "Device URI: %s", device_uri ? device_uri : "?");
 
-  if (device_uri)
-    {
-      printf ("REMOVE_CMD=\"%s remove %s\"\n", cmd, device_uri);
-      free (device_uri);
-    }
+  if (device_uri == NULL)
+    return 0;
+
+  printf ("REMOVE_CMD=\"%s remove %s\"\n", cmd, device_uri);
+
+  printer_uri = find_queue_by_device_uri (device_uri);
+  free (device_uri);
+
+  syslog (LOG_DEBUG ,"Queue: %s", printer_uri ? printer_uri : "?");
+  free (printer_uri);
 
   return 0;
 }
