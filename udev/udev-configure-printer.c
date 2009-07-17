@@ -46,6 +46,9 @@
 #include <syslog.h>
 #include <unistd.h>
 
+#define DISABLED_REASON "Unplugged or turned off"
+#define MATCH_ONLY_DISABLED 1
+
 struct device_id
 {
   char *full_device_id;
@@ -232,6 +235,30 @@ cups_connection (void)
   return cups;
 }
 
+static ipp_t *
+cupsDoRequestOrDie (http_t *http,
+		    ipp_t *request,
+		    const char *resource)
+{
+  ipp_t *answer = cupsDoRequest (http, request, resource);
+  if (answer == NULL)
+    {
+      syslog (LOG_ERR, "failed to send IPP request %d",
+	      request->request.op.operation_id);
+      exit (1);
+    }
+
+  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+    {
+      syslog (LOG_ERR, "IPP request %d failed (%d)",
+	      request->request.op.operation_id,
+	      answer->request.status.status_code);
+      exit (1);
+    }
+
+  return answer;
+}
+
 static char *
 find_matching_device_uri (struct device_id *id)
 {
@@ -246,20 +273,8 @@ find_matching_device_uri (struct device_id *id)
 		 sizeof (include_schemes) / sizeof(include_schemes[0]),
 		 NULL, include_schemes);
 
-  answer = cupsDoRequest (cups, request, "/");
+  answer = cupsDoRequestOrDie (cups, request, "/");
   httpClose (cups);
-  if (answer == NULL)
-    {
-      syslog (LOG_ERR, "failed to send CUPS-Get-Devices request");
-      exit (1);
-    }
-
-  if (answer->request.status.status_code > IPP_OK_CONFLICT)
-    {
-      syslog (LOG_ERR, "CUPS-Get-Devices request failed (%d)",
-	      answer->request.status.status_code);
-      exit (1);
-    }
 
   for (attr = answer->attrs; attr; attr = attr->next)
     {
@@ -334,6 +349,7 @@ find_matching_device_uri (struct device_id *id)
 		}
 
 	      device_uri = strdup (attr->values[0].string.text);
+	      syslog (LOG_DEBUG, "Device URI is %s", device_uri);
 	    }
 	}
 
@@ -345,15 +361,22 @@ find_matching_device_uri (struct device_id *id)
   return device_uri;
 }
 
-static char *
-find_queue_by_device_uri (const char *device_uri)
+/* Call a function for each queue with the given device-uri and printer-state.
+ * Returns the number of queues with a matching device-uri. */
+static size_t
+for_each_matching_queue (const char *device_uri,
+			 int flags,
+			 void (*fn) (const char *, void *),
+			 void *context)
 {
+  size_t matched = 0;
   http_t *cups = cups_connection ();
   ipp_t *request, *answer;
   ipp_attribute_t *attr;
   const char *attributes[] = {
     "printer-uri-supported",
-    "device-uri"
+    "device-uri",
+    "printer-state"
   };
 
   request = ippNewRequest (CUPS_GET_PRINTERS);
@@ -375,7 +398,7 @@ find_queue_by_device_uri (const char *device_uri)
 	{
 	  /* No printer queues configured. */
 	  ippDelete (answer);
-	  return NULL;
+	  return;
 	}
 
       syslog (LOG_ERR, "CUPS-Get-Printers request failed (%d)",
@@ -387,6 +410,7 @@ find_queue_by_device_uri (const char *device_uri)
     {
       char *this_printer_uri = NULL;
       char *this_device_uri = NULL;
+      int state = 0;
 
       while (attr && attr->group_tag != IPP_TAG_PRINTER)
 	attr = attr->next;
@@ -403,18 +427,56 @@ find_queue_by_device_uri (const char *device_uri)
 	      else if (!strcmp (attr->name, "printer-uri-supported"))
 		this_printer_uri = attr->values[0].string.text;
 	    }
+	  else if (attr->value_tag == IPP_TAG_ENUM &&
+		   !strcmp (attr->name, "printer-state"))
+	    state = attr->values[0].integer;
 	}
 
       if (!strcmp (device_uri, this_device_uri))
 	{
-	  char *uri = strdup (this_printer_uri);
-	  ippDelete (answer);
-	  return uri;
+	  matched++;
+	  if (((flags & MATCH_ONLY_DISABLED) &&
+	       state == IPP_PRINTER_STOPPED) ||
+	      (flags & MATCH_ONLY_DISABLED) == 0)
+	    {
+	      syslog (LOG_DEBUG ,"Queue %s has matching device URI",
+		      this_printer_uri);
+	      (*fn) (this_printer_uri, context);
+	    }
 	}
+
+      if (!attr)
+	break;
     }
 
   ippDelete (answer);
-  return NULL;
+  return matched;
+}
+
+static void
+enable_queue (const char *printer_uri, void *context)
+{
+  /* Disable it. */
+  http_t *cups = cups_connection ();
+  ipp_t *request, *answer;
+  request = ippNewRequest (IPP_RESUME_PRINTER);
+  ippAddString (request, IPP_TAG_OPERATION, IPP_TAG_URI,
+		"printer-uri", NULL, printer_uri);
+  answer = cupsDoRequest (cups, request, "/admin/");
+  if (!answer)
+    {
+      syslog (LOG_ERR, "Failed to send IPP-Resume-Printer request");
+      httpClose (cups);
+      return;
+    }
+
+  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+    syslog (LOG_ERR, "IPP-Resume-Printer request failed");
+  else
+    syslog (LOG_INFO, "Re-enabled printer %s", printer_uri);
+
+  ippDelete (answer);
+  httpClose (cups);
 }
 
 static int
@@ -455,27 +517,61 @@ do_add (const char *cmd, const char *devpath)
 
   device_uri = find_matching_device_uri (&id);
   free_device_id (&id);
-
-  syslog (LOG_DEBUG, "Device URI: %s", device_uri ? device_uri : "?");
-
   if (device_uri == NULL)
     return 0;
 
   printf ("REMOVE_CMD=\"%s remove %s\"\n", cmd, device_uri);
 
-  printer_uri = find_queue_by_device_uri (device_uri);
-  free (device_uri);
+  /* Re-enable any queues we'd previously disabled. */
+  if (for_each_matching_queue (device_uri, MATCH_ONLY_DISABLED,
+			       enable_queue, NULL) == 0)
+    {
+      /* No queue is configured for this device yet. */
+      syslog (LOG_DEBUG, "About to add queue");
+    }
 
-  syslog (LOG_DEBUG ,"Queue: %s", printer_uri ? printer_uri : "?");
+  free (device_uri);
   free (printer_uri);
 
   return 0;
 }
 
-static int
-do_remove (const char *uri)
+static void
+disable_queue (const char *printer_uri, void *context)
 {
-  syslog (LOG_DEBUG, "remove %s", uri);
+  /* Disable it. */
+  http_t *cups = cups_connection ();
+  ipp_t *request, *answer;
+  request = ippNewRequest (IPP_PAUSE_PRINTER);
+  ippAddString (request, IPP_TAG_OPERATION, IPP_TAG_URI,
+		"printer-uri", NULL, printer_uri);
+  ippAddString (request, IPP_TAG_OPERATION, IPP_TAG_TEXT,
+		"printer-state-message", NULL, DISABLED_REASON);
+  answer = cupsDoRequest (cups, request, "/admin/");
+  if (!answer)
+    {
+      syslog (LOG_ERR, "Failed to send IPP-Pause-Printer request");
+      httpClose (cups);
+      return;
+    }
+
+  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+    syslog (LOG_ERR, "IPP-Pause-Printer request failed");
+  else
+    syslog (LOG_INFO, "Disabled printer %s as the corresponding device "
+	    "was unplugged or turned off", printer_uri);
+
+  ippDelete (answer);
+  httpClose (cups);
+}
+
+static int
+do_remove (const char *device_uri)
+{
+  syslog (LOG_DEBUG, "remove %s", device_uri);
+
+  /* Find the relevant queues and disable them if they are enabled. */
+  for_each_matching_queue (device_uri, 0, disable_queue, NULL);
   return 0;
 }
 
