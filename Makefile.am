@@ -147,6 +147,8 @@ bin_SCRIPTS=\
 	system-config-printer-applet		\
 	my-default-printer
 
+udevrulesdir=$(sysconfdir)/udev/rules.d
+nobase_udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
 udev_udev_configure_printer_LDADD=-lcups -ludev
@@ -228,7 +230,8 @@ EXTRA_DIST=\
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
-	config.py.in
+	config.py.in \
+	udev/70-printers.rules
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
