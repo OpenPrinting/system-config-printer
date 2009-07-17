@@ -155,6 +155,8 @@ udev_udev_configure_printer_LDADD=-lcups -ludev
 udevhelperdir=/lib/udev
 udevhelper_PROGRAMS=\
 	udev/udev-configure-printer
+udevhelper_SCRIPTS=\
+	udev/udev-add-printer
 
 man_MANS=					\
 	man/system-config-printer.1		\
@@ -216,6 +218,7 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
+	$(udevhelper_SCRIPTS) \
 	setup.py \
 	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
