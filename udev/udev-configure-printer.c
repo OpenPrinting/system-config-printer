@@ -29,7 +29,7 @@
  *
  * For "add", it will output the following to stdout:
  *
- * REMOVECMD="$0 remove $DEVICE_URI"
+ * REMOVE_CMD="$0 remove $DEVICE_URI"
  *
  * where $0 is argv[0] and $DEVICE_URI is the CUPS device URI
  * corresponding to the queue.
@@ -66,7 +66,7 @@ do_add (const char *cmd, const char *path)
     }
 
   httpClose (cups);
-  printf ("REMOVECMD=\"%s remove %s\"\n", cmd, "uri");
+  printf ("REMOVE_CMD=\"%s remove %s\"\n", cmd, "uri");
   return 0;
 }
 
