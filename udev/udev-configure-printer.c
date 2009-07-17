@@ -39,10 +39,14 @@
 
 #include <cups/cups.h>
 #include <cups/http.h>
+#include <fcntl.h>
 #include <libudev.h>
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 #include <syslog.h>
 #include <unistd.h>
 
@@ -262,12 +266,16 @@ cupsDoRequestOrDie (http_t *http,
 static char *
 find_matching_device_uri (struct device_id *id)
 {
-  http_t *cups = cups_connection ();
+  http_t *cups;
   ipp_t *request, *answer;
   ipp_attribute_t *attr;
   const char *include_schemes[] = { "usb" };
   char *device_uri;
 
+  /* Leave the bus to settle. */
+  sleep (1);
+
+  cups = cups_connection ();
   request = ippNewRequest (CUPS_GET_DEVICES);
   ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_NAME, "include-schemes",
 		 sizeof (include_schemes) / sizeof(include_schemes[0]),
@@ -516,9 +524,11 @@ do_add (const char *cmd, const char *devpath)
 	  id.sern ? id.sern : "-");
 
   device_uri = find_matching_device_uri (&id);
-  free_device_id (&id);
   if (device_uri == NULL)
-    return 0;
+    {
+      free_device_id (&id);
+      return 0;
+    }
 
   printf ("REMOVE_CMD=\"%s remove %s\"\n", cmd, device_uri);
 
@@ -526,10 +536,24 @@ do_add (const char *cmd, const char *devpath)
   if (for_each_matching_queue (device_uri, MATCH_ONLY_DISABLED,
 			       enable_queue, NULL) == 0)
     {
+      pid_t pid;
+      char argv0[PATH_MAX];
+      char *p;
+      char *argv[] = { argv0, device_uri, id.full_device_id, NULL }
+;
       /* No queue is configured for this device yet. */
       syslog (LOG_DEBUG, "About to add queue");
+      strcpy (argv0, cmd);
+      p = strrchr (argv0, '/');
+      if (p++ == NULL)
+	p = argv0;
+
+      strcpy (p, "udev-add-printer");
+      execv (argv0, argv);
+      syslog (LOG_ERR, "Failed to execute %s", argv0);
     }
 
+  free_device_id (&id);
   free (device_uri);
   free (printer_uri);
 
@@ -578,9 +602,10 @@ do_remove (const char *device_uri)
 int
 main (int argc, char **argv)
 {
+  pid_t pid;
+  int f;
   int add;
 
-  openlog ("udev-configure-printer", 0, LOG_LPR);
   if (argc != 3 ||
       !((add = !strcmp (argv[1], "add")) ||
 	!strcmp (argv[1], "remove")))
@@ -591,6 +616,26 @@ main (int argc, char **argv)
 	       argv[0], argv[0]);
       return 1;
     }
+
+  openlog ("udev-configure-printer", 0, LOG_LPR);
+  if ((pid = fork ()) == -1)
+    syslog (LOG_ERR, "Failed to fork process");
+  else if (pid != 0)
+    /* Parent. */
+    exit (0);
+
+  close (STDIN_FILENO);
+  close (STDOUT_FILENO);
+  close (STDERR_FILENO);
+  f = open ("/dev/null", O_RDWR);
+  if (f != STDIN_FILENO)
+    dup2 (f, STDIN_FILENO);
+  if (f != STDOUT_FILENO)
+    dup2 (f, STDOUT_FILENO);
+  if (f != STDERR_FILENO)
+    dup2 (f, STDERR_FILENO);
+
+  setsid ();
 
   if (add)
     return do_add (argv[0], argv[2]);
