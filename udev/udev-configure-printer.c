@@ -20,18 +20,19 @@
  */
 
 /*
- * The protocol for this program is that it is called by udev with
- * these arguments:
+ * The protocol for this program is:
  *
- * 1. "add" or "remove"
- * 2. For "add":    the path (%p) of the device
- *    For "remove": the CUPS device URI corresponding to the queue
+ * udev-configure-printer add {DEVPATH}
+ * udev-configure-printer remove {URIs...}
+ *
+ * where DEVPATH is the path (%p) of the device
+ * and   URIs... is one or more CUPS device URIs for the device.
  *
  * For "add", it will output the following to stdout:
  *
- * REMOVE_CMD="$0 remove $DEVICE_URI"
+ * REMOVE_CMD="$0 remove {URIs...}"
  *
- * where $0 is argv[0] and $DEVICE_URI is the CUPS device URI
+ * where $0 is argv[0] and URIs is the list of CUPS device URIs
  * corresponding to the queue.
  */
 
@@ -53,6 +54,12 @@
 #define DISABLED_REASON "Unplugged or turned off"
 #define MATCH_ONLY_DISABLED 1
 
+struct device_uris
+{
+  size_t n_uris;
+  char **uri;
+};
+
 struct device_id
 {
   char *full_device_id;
@@ -60,6 +67,15 @@ struct device_id
   char *mdl;
   char *sern;
 };
+
+static void
+free_device_uris (struct device_uris *uris)
+{
+  size_t i;
+  for (i = 0; i < uris->n_uris; i++)
+    free (uris->uri[i]);
+  free (uris->uri);
+}
 
 static void
 free_device_id (struct device_id *id)
@@ -263,14 +279,17 @@ cupsDoRequestOrDie (http_t *http,
   return answer;
 }
 
-static char *
-find_matching_device_uri (struct device_id *id)
+static int
+find_matching_device_uris (struct device_id *id,
+			   struct device_uris *uris)
 {
   http_t *cups;
   ipp_t *request, *answer;
   ipp_attribute_t *attr;
-  const char *include_schemes[] = { "usb" };
-  char *device_uri;
+  const char *include_schemes[] = { "usb", "hp", "hpfax" };
+
+  uris->n_uris = 0;
+  uris->uri = NULL;
 
   /* Leave the bus to settle. */
   sleep (1);
@@ -286,6 +305,10 @@ find_matching_device_uri (struct device_id *id)
 
   for (attr = answer->attrs; attr; attr = attr->next)
     {
+      const char *device_uri = NULL;
+      struct device_id this_id;
+      this_id.full_device_id = this_id.mfg = this_id.mdl = this_id.sern = NULL;
+
       while (attr && attr->group_tag != IPP_TAG_PRINTER)
 	attr = attr->next;
 
@@ -294,70 +317,57 @@ find_matching_device_uri (struct device_id *id)
 
       for (; attr && attr->group_tag == IPP_TAG_PRINTER; attr = attr->next)
 	{
-	  if (!strcmp (attr->name, "device-uri") &&
-	      attr->value_tag == IPP_TAG_URI)
+	  if (attr->value_tag == IPP_TAG_URI &&
+	      !strcmp (attr->name, "device-uri"))
+	    device_uri = attr->values[0].string.text;
+	  else if (attr->value_tag == IPP_TAG_TEXT &&
+		   !strcmp (attr->name, "device-id"))
+	    parse_device_id (attr->values[0].string.text, &this_id);
+	}
+
+      if (device_uri && this_id.mfg && this_id.mdl &&
+	  !strcmp (this_id.mfg, id->mfg) &&
+	  !strcmp (this_id.mdl, id->mdl) &&
+	  ((this_id.sern == NULL && id->sern == NULL) ||
+	   (this_id.sern && id->sern && !strcmp (this_id.sern, id->sern))))
+	{
+	  char *uri = strdup (device_uri);
+	  syslog (LOG_DEBUG, "Matching URI: %s", device_uri);
+	  if (uri)
 	    {
-	      char scheme[HTTP_MAX_URI];
-	      char username[HTTP_MAX_URI];
-	      char mfg[HTTP_MAX_URI];
-	      char resource[HTTP_MAX_URI];
-	      int port;
-	      char *mdl;
-	      char *serial;
-	      size_t seriallen, mdllen = 0;
-	      syslog (LOG_DEBUG, "uri:%s", attr->values[0].string.text);
-	      httpSeparateURI (HTTP_URI_CODING_ALL,
-			       attr->values[0].string.text,
-			       scheme, sizeof(scheme),
-			       username, sizeof(username),
-			       mfg, sizeof(mfg),
-			       &port,
-			       resource, sizeof(resource));
-
-	      mdl = resource;
-	      if (*mdl == '/')
-		mdl++;
-
-	      serial = strstr (mdl, "?serial=");
-	      if (serial)
+	      if (uris->n_uris == 0)
 		{
-		  mdllen = serial - mdl;
-		  serial += 8;
-		  seriallen = strspn (serial, "&");
-		}
-
-	      syslog (LOG_DEBUG, "%s <=> %s", mfg, id->mfg);
-	      if (strcasecmp (mfg, id->mfg))
-		continue;
-
-	      syslog (LOG_DEBUG, "%s <=> %s (%zd)", mdl, id->mdl, mdllen);
-	      if (mdllen)
-		{
-		  if (strncasecmp (mdl, id->mdl, mdllen))
-		    continue;
-		}
-	      else if (strcasecmp (mdl, id->mdl))
-		continue;
-
-	      if (serial)
-		{
-		  if (id->sern)
+		  uris->uri = malloc (sizeof (char *));
+		  if (uris->uri)
 		    {
-		      if (!strcasecmp (serial, id->sern))
-			{
-			  /* Serial number matches so stop looking. */
-			  device_uri = strdup (attr->values[0].string.text);
-			  break;
-			}
-		      else
-			continue;
+		      uris->n_uris = 1;
+		      uris->uri[0] = uri;
 		    }
 		  else
-		    continue;
+		    free (uri);
 		}
-
-	      device_uri = strdup (attr->values[0].string.text);
-	      syslog (LOG_DEBUG, "Device URI is %s", device_uri);
+	      else
+		{
+		  char **old = uris->uri;
+		  if (++uris->n_uris < UINT_MAX / sizeof (char *))
+		    {
+		      uris->uri = realloc (uris->uri,
+					   sizeof (char *) * uris->n_uris);
+		      if (uris->uri)
+			uris->uri[uris->n_uris - 1] = uri;
+		      else
+			{
+			  uris->uri = old;
+			  uris->n_uris--;
+			  free (uri);
+			}
+		    }
+		  else
+		    {
+		      uris->n_uris--;
+		      free (uri);
+		    }
+		}
 	    }
 	}
 
@@ -366,13 +376,13 @@ find_matching_device_uri (struct device_id *id)
     }
 
   ippDelete (answer);
-  return device_uri;
+  return uris->n_uris;
 }
 
 /* Call a function for each queue with the given device-uri and printer-state.
  * Returns the number of queues with a matching device-uri. */
 static size_t
-for_each_matching_queue (const char *device_uri,
+for_each_matching_queue (struct device_uris *device_uris,
 			 int flags,
 			 void (*fn) (const char *, void *),
 			 void *context)
@@ -421,6 +431,7 @@ for_each_matching_queue (const char *device_uri,
       const char *this_device_uri = NULL;
       const char *printer_state_message = NULL;
       int state = 0;
+      size_t i;
 
       while (attr && attr->group_tag != IPP_TAG_PRINTER)
 	attr = attr->next;
@@ -445,19 +456,20 @@ for_each_matching_queue (const char *device_uri,
 	    state = attr->values[0].integer;
 	}
 
-      if (!strcmp (device_uri, this_device_uri))
-	{
-	  matched++;
-	  if (((flags & MATCH_ONLY_DISABLED) &&
-	       state == IPP_PRINTER_STOPPED &&
-	       !strcmp (printer_state_message, DISABLED_REASON)) ||
-	      (flags & MATCH_ONLY_DISABLED) == 0)
-	    {
-	      syslog (LOG_DEBUG ,"Queue %s has matching device URI",
-		      this_printer_uri);
-	      (*fn) (this_printer_uri, context);
-	    }
-	}
+      for (i = 0; i < device_uris->n_uris; i++)
+	if (!strcmp (device_uris->uri[i], this_device_uri))
+	  {
+	    matched++;
+	    if (((flags & MATCH_ONLY_DISABLED) &&
+		 state == IPP_PRINTER_STOPPED &&
+		 !strcmp (printer_state_message, DISABLED_REASON)) ||
+		(flags & MATCH_ONLY_DISABLED) == 0)
+	      {
+		syslog (LOG_DEBUG ,"Queue %s has matching device URI",
+			this_printer_uri);
+		(*fn) (this_printer_uri, context);
+	      }
+	  }
 
       if (!attr)
 	break;
@@ -497,8 +509,8 @@ static int
 do_add (const char *cmd, const char *devpath)
 {
   struct device_id id;
-  char *device_uri = NULL;
-  int i;
+  struct device_uris device_uris;
+  size_t i;
 
   syslog (LOG_DEBUG, "add %s", devpath);
 
@@ -512,40 +524,27 @@ do_add (const char *cmd, const char *devpath)
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s", id.mfg, id.mdl,
 	  id.sern ? id.sern : "-");
 
-  /* If the manufacturer's name appears as the start of the model
-     name, remove it. */
-  i = 0;
-  while (id.mfg[i] != '\0')
-    if (id.mfg[i] != id.mdl[i])
-      break;
-  if (id.mfg[i] == '\0')
-    {
-      char *old = id.mdl;
-      id.mdl = strdup (id.mdl + i);
-      free (old);
-    }
-
-  syslog (LOG_DEBUG, "Match MFG:%s MDL:%s SERN:%s", id.mfg, id.mdl,
-	  id.sern ? id.sern : "-");
-
-  device_uri = find_matching_device_uri (&id);
-  if (device_uri == NULL)
+  find_matching_device_uris (&id, &device_uris);
+  if (device_uris.n_uris == 0)
     {
       free_device_id (&id);
       return 0;
     }
 
-  printf ("REMOVE_CMD=\"%s remove %s\"\n", cmd, device_uri);
+  printf ("REMOVE_CMD=\"%s remove %s", cmd, device_uris.uri[0]);
+  for (i = 1; i < device_uris.n_uris; i++)
+    printf (" %s", device_uris.uri[i]);
+  puts ("\"");
 
   /* Re-enable any queues we'd previously disabled. */
-  if (for_each_matching_queue (device_uri, MATCH_ONLY_DISABLED,
+  if (for_each_matching_queue (&device_uris, MATCH_ONLY_DISABLED,
 			       enable_queue, NULL) == 0)
     {
       pid_t pid;
       int f;
       char argv0[PATH_MAX];
       char *p;
-      char *argv[] = { argv0, device_uri, id.full_device_id, NULL }
+      char *argv[] = { argv0, device_uris.uri[0], id.full_device_id, NULL }
 ;
       /* No queue is configured for this device yet. */
       syslog (LOG_DEBUG, "About to add queue");
@@ -580,7 +579,7 @@ do_add (const char *cmd, const char *devpath)
     }
 
   free_device_id (&id);
-  free (device_uri);
+  free_device_uris (&device_uris);
   return 0;
 }
 
@@ -614,12 +613,28 @@ disable_queue (const char *printer_uri, void *context)
 }
 
 static int
-do_remove (const char *device_uri)
+do_remove (char **uris)
 {
-  syslog (LOG_DEBUG, "remove %s", device_uri);
+  struct device_uris device_uris;
+  int n = 0;
+  int max;
+  syslog (LOG_DEBUG, "remove %s%s", uris[0], uris[1] ? " ..." : "");
+
+  while (uris[n] != NULL)
+    n++;
+
+  max = UINT_MAX / sizeof (char *);
+  if (n > max)
+    n = max;
+
+  device_uris.n_uris = n;
+  device_uris.uri = malloc (sizeof (char *) * n);
+  while (--n >= 0)
+    device_uris.uri[n] = strdup (uris[n]);
 
   /* Find the relevant queues and disable them if they are enabled. */
-  for_each_matching_queue (device_uri, 0, disable_queue, NULL);
+  for_each_matching_queue (&device_uris, 0, disable_queue, NULL);
+  free_device_uris (&device_uris);
   return 0;
 }
 
@@ -628,13 +643,14 @@ main (int argc, char **argv)
 {
   int add;
 
-  if (argc != 3 ||
+  if (argc < 3 ||
       !((add = !strcmp (argv[1], "add")) ||
+	(add && argc != 3) ||
 	!strcmp (argv[1], "remove")))
     {
       fprintf (stderr,
 	       "Syntax: %s add {USB device path}\n"
-	       "        %s remove {CUPS device URI}\n",
+	       "        %s remove {CUPS device URIs...}\n",
 	       argv[0], argv[0]);
       return 1;
     }
@@ -643,5 +659,5 @@ main (int argc, char **argv)
   if (add)
     return do_add (argv[0], argv[2]);
 
-  return do_remove (argv[2]);
+  return do_remove (argv + 2);
 }
