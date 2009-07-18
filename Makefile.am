@@ -1,3 +1,5 @@
+AM_CFLAGS=-g -O2 -Wall
+
 SUBDIRS=po
 
 EXPORT_MODULES=					\

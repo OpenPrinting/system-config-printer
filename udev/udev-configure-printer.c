@@ -111,17 +111,17 @@ parse_device_id (const char *device_id,
       len = end - start;
 
       if (!id->mfg &&
-	  !strncasecmp (fieldname, "MANUFACTURER", 12) ||
-	  !strncasecmp (fieldname, "MFG", 3))
+	  (!strncasecmp (fieldname, "MANUFACTURER", 12) ||
+	   !strncasecmp (fieldname, "MFG", 3)))
 	id->mfg = strndup (start, len);
       else if (!id->mdl &&
-	       !strncasecmp (fieldname, "MODEL", 5) ||
-	       !strncasecmp (fieldname, "MDL", 3))
+	       (!strncasecmp (fieldname, "MODEL", 5) ||
+		!strncasecmp (fieldname, "MDL", 3)))
 	id->mdl = strndup (start, len);
       else if (!id->sern &&
-	       !strncasecmp (fieldname, "SERIALNUMBER", 12) ||
-	       !strncasecmp (fieldname, "SERN", 4) ||
-	       !strncasecmp (fieldname, "SN", 2))
+	       (!strncasecmp (fieldname, "SERIALNUMBER", 12) ||
+		!strncasecmp (fieldname, "SERN", 4) ||
+		!strncasecmp (fieldname, "SN", 2)))
 	id->sern = strndup (start, len);
 
       if (*end != '\0')
@@ -330,7 +330,7 @@ find_matching_device_uri (struct device_id *id)
 	      if (strcasecmp (mfg, id->mfg))
 		continue;
 
-	      syslog (LOG_DEBUG, "%s <=> %s (%d)", mdl, id->mdl, mdllen);
+	      syslog (LOG_DEBUG, "%s <=> %s (%zd)", mdl, id->mdl, mdllen);
 	      if (mdllen)
 		{
 		  if (strncasecmp (mdl, id->mdl, mdllen))
@@ -407,7 +407,7 @@ for_each_matching_queue (const char *device_uri,
 	{
 	  /* No printer queues configured. */
 	  ippDelete (answer);
-	  return;
+	  return 0;
 	}
 
       syslog (LOG_ERR, "CUPS-Get-Printers request failed (%d)",
@@ -419,7 +419,7 @@ for_each_matching_queue (const char *device_uri,
     {
       const char *this_printer_uri = NULL;
       const char *this_device_uri = NULL;
-      const char *printer_state_message;
+      const char *printer_state_message = NULL;
       int state = 0;
 
       while (attr && attr->group_tag != IPP_TAG_PRINTER)
@@ -498,7 +498,6 @@ do_add (const char *cmd, const char *devpath)
 {
   struct device_id id;
   char *device_uri = NULL;
-  char *printer_uri;
   int i;
 
   syslog (LOG_DEBUG, "add %s", devpath);
@@ -582,8 +581,6 @@ do_add (const char *cmd, const char *devpath)
 
   free_device_id (&id);
   free (device_uri);
-  free (printer_uri);
-
   return 0;
 }
 
