@@ -384,7 +384,8 @@ for_each_matching_queue (const char *device_uri,
   const char *attributes[] = {
     "printer-uri-supported",
     "device-uri",
-    "printer-state"
+    "printer-state",
+    "printer-state-message",
   };
 
   request = ippNewRequest (CUPS_GET_PRINTERS);
@@ -416,8 +417,9 @@ for_each_matching_queue (const char *device_uri,
 
   for (attr = answer->attrs; attr; attr = attr->next)
     {
-      char *this_printer_uri = NULL;
-      char *this_device_uri = NULL;
+      const char *this_printer_uri = NULL;
+      const char *this_device_uri = NULL;
+      const char *printer_state_message;
       int state = 0;
 
       while (attr && attr->group_tag != IPP_TAG_PRINTER)
@@ -435,6 +437,9 @@ for_each_matching_queue (const char *device_uri,
 	      else if (!strcmp (attr->name, "printer-uri-supported"))
 		this_printer_uri = attr->values[0].string.text;
 	    }
+	  else if (attr->value_tag == IPP_TAG_TEXT &&
+		   !strcmp (attr->name, "printer-state-message"))
+	    printer_state_message = attr->values[0].string.text;
 	  else if (attr->value_tag == IPP_TAG_ENUM &&
 		   !strcmp (attr->name, "printer-state"))
 	    state = attr->values[0].integer;
@@ -444,7 +449,8 @@ for_each_matching_queue (const char *device_uri,
 	{
 	  matched++;
 	  if (((flags & MATCH_ONLY_DISABLED) &&
-	       state == IPP_PRINTER_STOPPED) ||
+	       state == IPP_PRINTER_STOPPED &&
+	       !strcmp (printer_state_message, DISABLED_REASON)) ||
 	      (flags & MATCH_ONLY_DISABLED) == 0)
 	    {
 	      syslog (LOG_DEBUG ,"Queue %s has matching device URI",
