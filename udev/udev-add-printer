@@ -27,6 +27,25 @@ import sys
 import traceback
 from syslog import *
 
+def create_queue (c, name, device_uri, ppdname, info):
+    # Make sure the name is unique.
+    printers = cupshelpers.getPrinters (c)
+    names = printers.keys ()
+    if name in names:
+        suffix = 2
+        while (name + "-" + str (suffix)) in names:
+            suffix += 1
+            if suffix == 100:
+                break
+        name += str (suffix)
+
+    c.addPrinter (name,
+                  device=device_uri,
+                  ppdname=ppdname,
+                  info=info,
+                  location=os.uname ()[1])
+    cupshelpers.activateNewPrinter (c, name)
+
 def add_queue (device_uri, device_id):
     """
     Create a CUPS queue.
@@ -60,23 +79,10 @@ def add_queue (device_uri, device_id):
         name = name.replace ("/", "-")
         name = name.replace ("#", "-")
 
-        # Make sure it's unique.
-        printers = cupshelpers.getPrinters (c)
-        names = printers.keys ()
-        if name in names:
-            suffix = 2
-            while (name + "-" + str (suffix)) in names:
-                suffix += 1
-                if suffix == 100:
-                    break
-            name += str (suffix)
+        create_queue (c, name, device_uri, ppdname,
+                      "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
 
-            c.addPrinter (name,
-                          device=device_uri,
-                          ppdname=ppdname,
-                          info="%s %s" % (id_dict["MFG"], id_dict["MDL"]),
-                          location=os.uname ()[1])
-            cupshelpers.activateNewPrinter (c, name)
+        # Still to do: check whether we can add a fax queue.
     else:
         name = device_uri
 
