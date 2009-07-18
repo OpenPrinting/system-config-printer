@@ -537,6 +537,7 @@ do_add (const char *cmd, const char *devpath)
 			       enable_queue, NULL) == 0)
     {
       pid_t pid;
+      int f;
       char argv0[PATH_MAX];
       char *p;
       char *argv[] = { argv0, device_uri, id.full_device_id, NULL }
@@ -549,6 +550,26 @@ do_add (const char *cmd, const char *devpath)
 	p = argv0;
 
       strcpy (p, "udev-add-printer");
+
+      if ((pid = fork ()) == -1)
+	syslog (LOG_ERR, "Failed to fork process");
+      else if (pid != 0)
+	/* Parent. */
+	exit (0);
+
+      close (STDIN_FILENO);
+      close (STDOUT_FILENO);
+      close (STDERR_FILENO);
+      f = open ("/dev/null", O_RDWR);
+      if (f != STDIN_FILENO)
+	dup2 (f, STDIN_FILENO);
+      if (f != STDOUT_FILENO)
+	dup2 (f, STDOUT_FILENO);
+      if (f != STDERR_FILENO)
+	dup2 (f, STDERR_FILENO);
+
+      setsid ();
+
       execv (argv0, argv);
       syslog (LOG_ERR, "Failed to execute %s", argv0);
     }
@@ -602,8 +623,6 @@ do_remove (const char *device_uri)
 int
 main (int argc, char **argv)
 {
-  pid_t pid;
-  int f;
   int add;
 
   if (argc != 3 ||
@@ -618,25 +637,6 @@ main (int argc, char **argv)
     }
 
   openlog ("udev-configure-printer", 0, LOG_LPR);
-  if ((pid = fork ()) == -1)
-    syslog (LOG_ERR, "Failed to fork process");
-  else if (pid != 0)
-    /* Parent. */
-    exit (0);
-
-  close (STDIN_FILENO);
-  close (STDOUT_FILENO);
-  close (STDERR_FILENO);
-  f = open ("/dev/null", O_RDWR);
-  if (f != STDIN_FILENO)
-    dup2 (f, STDIN_FILENO);
-  if (f != STDOUT_FILENO)
-    dup2 (f, STDOUT_FILENO);
-  if (f != STDERR_FILENO)
-    dup2 (f, STDERR_FILENO);
-
-  setsid ();
-
   if (add)
     return do_add (argv[0], argv[2]);
 
