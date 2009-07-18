@@ -68,6 +68,27 @@ struct device_id
   char *sern;
 };
 
+/* Device URI schemes in decreasing order of preference. */
+static const char *device_uri_types[] =
+  { "usb",
+    "hp",
+    "hpfax",
+  };
+
+static int
+device_uri_type (const char *uri)
+{
+  int slen = strcspn (uri, ":");
+  int i;
+  int n = sizeof (device_uri_types) / sizeof (device_uri_types[0]);
+  for (i = 0; i < n; i++)
+    if (!strncmp (uri, device_uri_types[i], slen) &&
+	device_uri_types[i][slen] == '\0')
+      break;
+
+  return i;
+}
+
 static void
 free_device_uris (struct device_uris *uris)
 {
@@ -286,7 +307,6 @@ find_matching_device_uris (struct device_id *id,
   http_t *cups;
   ipp_t *request, *answer;
   ipp_attribute_t *attr;
-  const char *include_schemes[] = { "usb", "hp", "hpfax" };
 
   uris->n_uris = 0;
   uris->uri = NULL;
@@ -297,8 +317,8 @@ find_matching_device_uris (struct device_id *id,
   cups = cups_connection ();
   request = ippNewRequest (CUPS_GET_DEVICES);
   ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_NAME, "include-schemes",
-		 sizeof (include_schemes) / sizeof(include_schemes[0]),
-		 NULL, include_schemes);
+		 sizeof (device_uri_types) / sizeof(device_uri_types[0]),
+		 NULL, device_uri_types);
 
   answer = cupsDoRequestOrDie (cups, request, "/");
   httpClose (cups);
@@ -541,13 +561,27 @@ do_add (const char *cmd, const char *devpath)
 			       enable_queue, NULL) == 0)
     {
       pid_t pid;
+      size_t i;
+      int type;
       int f;
       char argv0[PATH_MAX];
       char *p;
-      char *argv[] = { argv0, device_uris.uri[0], id.full_device_id, NULL }
-;
-      /* No queue is configured for this device yet. */
-      syslog (LOG_DEBUG, "About to add queue");
+      char *argv[] = { argv0, device_uris.uri[0], id.full_device_id, NULL };
+
+      /* No queue is configured for this device yet.
+	 Decide on a URI to use. */
+      type = device_uri_type (argv[1]);
+      for (i = 1; i < device_uris.n_uris; i++)
+	{
+	  int new_type = device_uri_type (device_uris.uri[i]);
+	  if (new_type < type)
+	    {
+	      argv[1] = device_uris.uri[i];
+	      type = new_type;
+	    }
+	}
+
+      syslog (LOG_DEBUG, "About to add queue for %s", argv[1]);
       strcpy (argv0, cmd);
       p = strrchr (argv0, '/');
       if (p++ == NULL)
