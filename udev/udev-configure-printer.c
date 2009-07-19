@@ -665,9 +665,9 @@ do_add (const char *cmd, const char *devpath)
       return 0;
     }
 
-  printf ("REMOVE_CMD=\"%s remove %s", cmd, device_uris.uri[0]);
+  printf ("REMOVE_CMD=\"%s remove '%s'", cmd, device_uris.uri[0]);
   for (i = 1; i < device_uris.n_uris; i++)
-    printf (" %s", device_uris.uri[i]);
+    printf (" '%s'", device_uris.uri[i]);
   puts ("\"");
 
   /* Re-enable any queues we'd previously disabled. */
