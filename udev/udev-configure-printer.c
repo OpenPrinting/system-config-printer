@@ -224,6 +224,16 @@ device_id_from_devpath (const char *devpath,
   idProductStr = udev_device_get_sysattr_value (dev, "idProduct");
   serial = udev_device_get_sysattr_value (dev, "serial");
 
+  if (!idVendorStr || !idProductStr || !serial)
+    {
+      udev_device_unref (dev);
+      udev_unref (udev);
+      syslog (LOG_ERR, "Missing sysattr %s",
+	      idVendorStr ?
+	      (idProductStr ? "serial" : "idProduct") : "idVendor");
+      exit (1);
+    }
+
   idVendor = strtoul (idVendorStr, &end, 16);
   if (end == idVendorStr)
     {
@@ -651,7 +661,9 @@ do_add (const char *cmd, const char *devpath)
   device_id_from_devpath (devpath, &id);
   if (!id.mfg || !id.mdl)
     {
-      syslog (LOG_ERR, "invalid IEEE 1284 Device ID");
+      syslog (LOG_ERR, "invalid or missing IEEE 1284 Device ID%s%s",
+	      id.full_device_id ? " " : "",
+	      id.full_device_id ? id.full_device_id : "");
       exit (1);
     }
 
