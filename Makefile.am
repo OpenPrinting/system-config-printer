@@ -153,7 +153,7 @@ udevrulesdir=$(sysconfdir)/udev/rules.d
 nobase_udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
-udev_udev_configure_printer_LDADD=-lcups -ludev
+udev_udev_configure_printer_LDADD=-lcups -ludev -lusb
 udevhelperdir=/lib/udev
 udevhelper_PROGRAMS=\
 	udev/udev-configure-printer

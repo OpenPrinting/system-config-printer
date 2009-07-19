@@ -50,6 +50,7 @@
 #include <sys/stat.h>
 #include <syslog.h>
 #include <unistd.h>
+#include <usb.h>
 
 #define DISABLED_REASON "Unplugged or turned off"
 #define MATCH_ONLY_DISABLED 1
@@ -173,11 +174,18 @@ device_id_from_devpath (const char *devpath,
 			struct device_id *id)
 {
   struct udev *udev;
-  struct udev_device *dev, *dev_iface;
+  struct udev_device *dev;
   const char *sys;
+  const char *idVendorStr, *idProductStr, *serial;
+  char *end;
+  unsigned long idVendor, idProduct;
   size_t syslen, devpathlen;
   char *syspath;
-  const char *ieee1284_id;
+  struct usb_bus *bus;
+  struct usb_dev_handle *handle = NULL;
+  char ieee1284_id[1024];
+  int conf = 0, iface = 0;
+  int got = 0;
 
   id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
 
@@ -212,28 +220,134 @@ device_id_from_devpath (const char *devpath,
       exit (1);
     }
 
-#if 0
-  dev_iface = udev_device_get_parent_with_subsystem_devtype (dev, "usb",
-							     "usb_interface");
-  if (dev_iface == NULL)
+  idVendorStr = udev_device_get_sysattr_value (dev, "idVendor");
+  idProductStr = udev_device_get_sysattr_value (dev, "idProduct");
+  serial = udev_device_get_sysattr_value (dev, "serial");
+
+  idVendor = strtoul (idVendorStr, &end, 16);
+  if (end == idVendorStr)
     {
-      udev_device_unref (dev);
-      udev_unref (udev);
-      syslog (LOG_ERR, "unable to access usb_interface device of %s",
-	      syspath);
+      syslog (LOG_ERR, "Invalid idVendor: %s", idVendorStr);
       exit (1);
     }
 
-  ieee1284_id = udev_device_get_sysattr_value (dev_iface, "ieee1284_id");
-#endif
-  ieee1284_id = "MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;DES:EPSON Stylus D78;";
-  if (ieee1284_id != NULL)
+  idProduct = strtoul (idProductStr, &end, 16);
+  if (end == idProductStr)
     {
-      syslog (LOG_DEBUG, "ieee1284_id=%s", ieee1284_id);
-      parse_device_id (ieee1284_id, id);
+      syslog (LOG_ERR, "Invalid idProduct: %s", idProductStr);
+      exit (1);
     }
 
   udev_device_unref (dev);
+  syslog (LOG_DEBUG, "Device vendor/product is %04zX:%04zX",
+	  idVendor, idProduct);
+
+  usb_init ();
+  usb_find_busses ();
+  usb_find_devices ();
+  for (bus = usb_get_busses (); bus && !got; bus = bus->next)
+    {
+      struct usb_device *device;
+      for (device = bus->devices; device && !got; device = device->next)
+	{
+	  struct usb_config_descriptor *confptr;
+	  if (device->descriptor.idVendor != idVendor ||
+	      device->descriptor.idProduct != idProduct ||
+	      !device->config)
+	    continue;
+
+	  for (confptr = device->config;
+	       conf < device->descriptor.bNumConfigurations && !got;
+	       conf++, confptr++)
+	    {
+	      struct usb_interface *ifaceptr;
+	      for (ifaceptr = confptr->interface;
+		   iface < confptr->bNumInterfaces && !got;
+		   iface++, ifaceptr++)
+		{
+		  struct usb_interface_descriptor *altptr;
+		  int altset = 0;
+		  for (altptr = ifaceptr->altsetting;
+		       altset < ifaceptr->num_altsetting && !got;
+		       altset++, altptr++)
+		    {
+		      if (altptr->bInterfaceClass == USB_CLASS_PRINTER &&
+			  altptr->bInterfaceSubClass == 1)
+			{
+			  int n;
+			  handle = usb_open (device);
+			  if (!handle)
+			    {
+			      syslog (LOG_DEBUG, "failed to open device");
+			      continue;
+			    }
+
+			  n = confptr->bConfigurationValue;
+			  if (usb_set_configuration (handle, n) < 0)
+			    {
+			      usb_close (handle);
+			      handle = NULL;
+			      syslog (LOG_DEBUG, "failed to set configuration");
+			      continue;
+			    }
+
+			  n = altptr->bInterfaceNumber;
+			  if (usb_claim_interface (handle, n) < 0)
+			    {
+			      usb_close (handle);
+			      handle = NULL;
+			      syslog (LOG_DEBUG, "failed to claim interface");
+			      continue;
+			    }
+
+			  if (n != 0 && usb_claim_interface (handle, 0) < 0)
+			    {
+			      usb_close (handle);
+			      handle = NULL;
+			      syslog (LOG_DEBUG, "failed to claim interface 0");
+			      continue;
+			    }
+
+			  n = altptr->bAlternateSetting;
+			  if (usb_set_altinterface (handle, n) < 0)
+			    {
+			      usb_close (handle);
+			      handle = NULL;
+			      syslog (LOG_DEBUG, "failed set altinterface");
+			      continue;
+			    }
+
+			  memset (ieee1284_id, '\0', sizeof (ieee1284_id));
+			  if (usb_control_msg (handle,
+					       USB_TYPE_CLASS |
+					       USB_ENDPOINT_IN |
+					       USB_RECIP_INTERFACE,
+					       0, conf, iface,
+					       ieee1284_id,
+					       sizeof (ieee1284_id),
+					       5000) < 0)
+			    {
+			      usb_close (handle);
+			      handle = NULL;
+			      syslog (LOG_ERR, "Failed to fetch Device ID");
+			      continue;
+			    }
+
+			  got = 1;
+			  usb_close (handle);
+			  break;
+			}
+		    }
+		}
+	    }
+	}
+    }
+
+  if (got)
+    {
+      syslog (LOG_DEBUG, "ieee1284_id=%s", ieee1284_id + 2);
+      parse_device_id (ieee1284_id + 2, id);
+    }
 }
 
 static const char *
