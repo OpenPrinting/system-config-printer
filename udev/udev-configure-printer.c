@@ -23,17 +23,9 @@
  * The protocol for this program is:
  *
  * udev-configure-printer add {DEVPATH}
- * udev-configure-printer remove {URIs...}
+ * udev-configure-printer remove {DEVPATH}
  *
  * where DEVPATH is the path (%p) of the device
- * and   URIs... is one or more CUPS device URIs for the device.
- *
- * For "add", it will output the following to stdout:
- *
- * REMOVE_CMD="$0 remove {URIs...}"
- *
- * where $0 is argv[0] and URIs is the list of CUPS device URIs
- * corresponding to the queue.
  */
 
 #define LIBUDEV_I_KNOW_THE_API_IS_SUBJECT_TO_CHANGE 1
@@ -54,11 +46,19 @@
 
 #define DISABLED_REASON "Unplugged or turned off"
 #define MATCH_ONLY_DISABLED 1
+#define USB_URI_MAP "/var/run/udev-configure-printer/usb-uris"
 
 struct device_uris
 {
   size_t n_uris;
   char **uri;
+};
+
+struct usb_uri_map
+{
+  struct usb_uri_map *next;
+  char *devpath;
+  struct device_uris uris;
 };
 
 struct device_id
@@ -100,6 +100,138 @@ free_device_uris (struct device_uris *uris)
 }
 
 static void
+add_usb_uri_mapping (struct usb_uri_map **map,
+		     const char *devpath,
+		     const struct device_uris *uris)
+{
+  struct usb_uri_map *entry, **prev;
+  size_t i;
+  prev = map;
+  while (*prev)
+    prev = &((*prev)->next);
+
+  entry = malloc (sizeof (struct usb_uri_map));
+  if (!entry)
+    {
+      syslog (LOG_ERR, "out of memory");
+      return;
+    }
+
+  entry->devpath = strdup (devpath);
+  entry->uris.n_uris = uris->n_uris;
+  entry->uris.uri = malloc (sizeof (char *) * uris->n_uris);
+  for (i = 0; i < uris->n_uris; i++)
+    entry->uris.uri[i] = strdup (uris->uri[i]);
+  entry->next = NULL;
+  *prev = entry;
+}
+
+static struct usb_uri_map *
+read_usb_uri_map (void)
+{
+  FILE *f = fopen (USB_URI_MAP, "r");
+  struct usb_uri_map *map = NULL;
+  size_t linelen;
+  char *line = NULL;
+
+  if (!f)
+    return map;
+
+  while (getline (&line, &linelen, f) != -1)
+    {
+      char *saveptr = NULL;
+      const char *devpath = strtok_r (line, "\t", &saveptr);
+      char *uri = strtok_r (NULL, "\t", &saveptr);
+      struct device_uris uris;
+
+      if (!devpath || !uri)
+	{
+	  syslog (LOG_DEBUG, "Incorrect line in " USB_URI_MAP ": %s",
+		  line);
+	  continue;
+	}
+
+      uris.n_uris = 1;
+      uris.uri = malloc (sizeof (char *));
+      if (uris.uri == NULL)
+	break;
+
+      uris.uri[0] = strdup (uri);
+      while ((uri = strtok_r (NULL, "\t", &saveptr)) != NULL)
+	{
+	  char **old = uris.uri;
+	  if (++uris.n_uris < UINT_MAX / sizeof (char *))
+	    {
+	      uris.uri = realloc (uris.uri,
+				  sizeof (char *) * uris.n_uris);
+	      if (uris.uri)
+		uris.uri[uris.n_uris - 1] = uri;
+	      else
+		{
+		  uris.uri = old;
+		  uris.n_uris--;
+		}
+	    }
+	  else
+	    uris.n_uris--;
+	}
+
+      add_usb_uri_mapping (&map, devpath, &uris);
+    }
+
+  free (line);
+  fclose (f);
+  return map;
+}
+
+static void
+write_usb_uri_map (struct usb_uri_map *map)
+{
+  struct usb_uri_map *each;
+  FILE *f = fopen (USB_URI_MAP, "w+");
+  if (!f)
+    {
+      char dir[] = USB_URI_MAP;
+      char *p = strrchr (dir, '/');
+      if (p)
+	{
+	  *p = '\0';
+	  mkdir (dir, 0755);
+	  f = fopen (USB_URI_MAP, "w+");
+	}
+    }
+
+  if (!f)
+    {
+      syslog (LOG_ERR, "Unable to open " USB_URI_MAP);
+      return;
+    }
+
+  for (each = map; each; each = each->next)
+    {
+      size_t i;
+      fprintf (f, "%s\t%s", each->devpath, each->uris.uri[0]);
+      for (i = 1; i < each->uris.n_uris; i++)
+	fprintf (f, "\t%s", each->uris.uri[i]);
+      fwrite ("\n", 1, 1, f);
+    }
+  fclose (f);
+}
+
+static void
+free_usb_uri_map (struct usb_uri_map *map)
+{
+  struct usb_uri_map *each, *next;
+  for (each = map; each; each = next)
+    {
+      next = each->next;
+      free (each->devpath);
+      free_device_uris (&each->uris);
+      free (each);
+    }
+}
+
+static void
 free_device_id (struct device_id *id)
 {
   free (id->full_device_id);
@@ -116,16 +248,24 @@ parse_device_id (const char *device_id,
   char *start, *end;
   size_t len;
 
-  id->full_device_id = strdup (device_id);
-  fieldname = strdup (device_id);
-  if (id->full_device_id == NULL || fieldname == NULL)
+  len = strlen (device_id);
+  if (len == 0)
+    return;
+
+  if (device_id[len - 1] == '\n')
+    len--;
+
+  id->full_device_id = malloc (len + 1);
+  fieldname = malloc (len + 1);
+  if (!id->full_device_id || !fieldname)
     {
       syslog (LOG_ERR, "out of memory");
       exit (1);
     }
 
+  memcpy (id->full_device_id, device_id, len);
+  id->full_device_id[len] = '\0';
   fieldname[0] = '\0';
-
   start = id->full_device_id;
   while (*start != '\0')
     {
@@ -169,12 +309,12 @@ parse_device_id (const char *device_id,
   free (fieldname);
 }
 
-static void
+static char *
 device_id_from_devpath (const char *devpath,
 			struct device_id *id)
 {
   struct udev *udev;
-  struct udev_device *dev;
+  struct udev_device *dev, *parent_dev = NULL;
   const char *sys;
   const char *idVendorStr, *idProductStr, *serial;
   char *end;
@@ -184,8 +324,10 @@ device_id_from_devpath (const char *devpath,
   struct usb_bus *bus;
   struct usb_dev_handle *handle = NULL;
   char ieee1284_id[1024];
+  const char *device_id = NULL;
   int conf = 0, iface = 0;
   int got = 0;
+  char *usb_device_devpath = strdup (devpath);
 
   id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
 
@@ -220,9 +362,31 @@ device_id_from_devpath (const char *devpath,
       exit (1);
     }
 
-  idVendorStr = udev_device_get_sysattr_value (dev, "idVendor");
-  idProductStr = udev_device_get_sysattr_value (dev, "idProduct");
-  serial = udev_device_get_sysattr_value (dev, "serial");
+  parent_dev = udev_device_get_parent_with_subsystem_devtype (dev,
+							      "usb",
+							      "usb_device");
+  if (!parent_dev)
+    {
+      udev_unref (udev);
+      syslog (LOG_ERR, "Failed to get parent");
+      exit (1);
+    }
+
+  usb_device_devpath = strdup (udev_device_get_devpath (parent_dev));
+  syslog (LOG_DEBUG, "parent devpath is %s", usb_device_devpath);
+
+  /* See if we were triggered by a usblp add event. */
+  device_id = udev_device_get_sysattr_value (dev, "device/ieee1284_id");
+  if (device_id)
+    {
+      got = 1;
+      goto got_deviceid;
+    }
+
+  /* This is a low-level USB device.  Use libusb to fetch the Device ID. */
+  idVendorStr = udev_device_get_sysattr_value (parent_dev, "idVendor");
+  idProductStr = udev_device_get_sysattr_value (parent_dev, "idProduct");
+  serial = udev_device_get_sysattr_value (parent_dev, "serial");
 
   if (!idVendorStr || !idProductStr || !serial)
     {
@@ -248,7 +412,6 @@ device_id_from_devpath (const char *devpath,
       exit (1);
     }
 
-  udev_device_unref (dev);
   syslog (LOG_DEBUG, "Device vendor/product is %04zX:%04zX",
 	  idVendor, idProduct);
 
@@ -353,11 +516,17 @@ device_id_from_devpath (const char *devpath,
 	}
     }
 
+ got_deviceid:
   if (got)
     {
-      syslog (LOG_DEBUG, "ieee1284_id=%s", ieee1284_id + 2);
-      parse_device_id (ieee1284_id + 2, id);
+      if (!device_id)
+	device_id = ieee1284_id + 2;
+      parse_device_id (device_id, id);
     }
+
+  udev_device_unref (dev);
+  udev_unref (udev);
+  return usb_device_devpath;
 }
 
 static const char *
@@ -371,28 +540,26 @@ cups_connection (void)
 {
   http_t *cups = NULL;
   static int first_time = 1;
-  int tries = 1;
 
   if (first_time)
     {
       cupsSetPasswordCB (no_password);
-      tries = 6;
       first_time = 0;
     }
 
-  while (cups == NULL && tries-- > 0)
-    {
-      cups = httpConnectEncrypt ("localhost", 631,
+  cups = httpConnectEncrypt ("localhost", 631,
 				 HTTP_ENCRYPT_IF_REQUESTED);
-      if (cups)
-	break;
-
-      syslog (LOG_DEBUG, "failed to connect to CUPS server; retrying in 5s");
-      sleep (5);
-    }
-
   if (cups == NULL)
     {
+      /* Don't bother retrying here.  Instead, the CUPS initscript
+	 should run these commands after cupsd is started:
+
+	 rmmod usblp
+	 udevadm trigger --subsystem-match=usb \
+	                 --attr-match=bInterfaceClass=07 \
+			 --attr-match=bInterfaceSubClass=01
+      */
+
       syslog (LOG_DEBUG, "failed to connect to CUPS server; giving up");
       exit (1);
     }
@@ -426,7 +593,8 @@ cupsDoRequestOrDie (http_t *http,
 
 static int
 find_matching_device_uris (struct device_id *id,
-			   struct device_uris *uris)
+			   struct device_uris *uris,
+			   const char *devpath)
 {
   http_t *cups;
   ipp_t *request, *answer;
@@ -520,6 +688,23 @@ find_matching_device_uris (struct device_id *id,
     }
 
   ippDelete (answer);
+
+  if (uris->n_uris > 0)
+    {
+      struct usb_uri_map *map = read_usb_uri_map (), *entry;
+      for (entry = map; entry; entry = entry->next)
+	if (!strcmp (entry->devpath, devpath))
+	  break;
+
+      if (!entry)
+	{
+	  add_usb_uri_mapping (&map, devpath, uris);
+	  write_usb_uri_map (map);
+	}
+
+      free_usb_uri_map (map);
+    }
+
   return uris->n_uris;
 }
 
@@ -576,6 +761,7 @@ for_each_matching_queue (struct device_uris *device_uris,
       const char *printer_state_message = NULL;
       int state = 0;
       size_t i;
+      size_t len;
 
       while (attr && attr->group_tag != IPP_TAG_PRINTER)
 	attr = attr->next;
@@ -600,8 +786,11 @@ for_each_matching_queue (struct device_uris *device_uris,
 	    state = attr->values[0].integer;
 	}
 
+      len = strlen (this_device_uri);
+      if (this_device_uri[len - 1] == '\n')
+	len--;
       for (i = 0; i < device_uris->n_uris; i++)
-	if (!strcmp (device_uris->uri[i], this_device_uri))
+	if (!strncmp (device_uris->uri[i], this_device_uri, len))
 	  {
 	    matched++;
 	    if (((flags & MATCH_ONLY_DISABLED) &&
@@ -652,13 +841,15 @@ enable_queue (const char *printer_uri, void *context)
 static int
 do_add (const char *cmd, const char *devpath)
 {
+  pid_t pid;
+  int f;
   struct device_id id;
   struct device_uris device_uris;
-  size_t i;
+  char *usb_device_devpath;
 
   syslog (LOG_DEBUG, "add %s", devpath);
 
-  device_id_from_devpath (devpath, &id);
+  usb_device_devpath = device_id_from_devpath (devpath, &id);
   if (!id.mfg || !id.mdl)
     {
       syslog (LOG_ERR, "invalid or missing IEEE 1284 Device ID%s%s",
@@ -670,26 +861,39 @@ do_add (const char *cmd, const char *devpath)
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s", id.mfg, id.mdl,
 	  id.sern ? id.sern : "-");
 
-  find_matching_device_uris (&id, &device_uris);
+  if ((pid = fork ()) == -1)
+    syslog (LOG_ERR, "Failed to fork process");
+  else if (pid != 0)
+    /* Parent. */
+    exit (0);
+
+  close (STDIN_FILENO);
+  close (STDOUT_FILENO);
+  close (STDERR_FILENO);
+  f = open ("/dev/null", O_RDWR);
+  if (f != STDIN_FILENO)
+    dup2 (f, STDIN_FILENO);
+  if (f != STDOUT_FILENO)
+    dup2 (f, STDOUT_FILENO);
+  if (f != STDERR_FILENO)
+    dup2 (f, STDERR_FILENO);
+
+  setsid ();
+
+  find_matching_device_uris (&id, &device_uris, usb_device_devpath);
+  free (usb_device_devpath);
   if (device_uris.n_uris == 0)
     {
       free_device_id (&id);
       return 0;
     }
 
-  printf ("REMOVE_CMD=\"%s remove '%s'", cmd, device_uris.uri[0]);
-  for (i = 1; i < device_uris.n_uris; i++)
-    printf (" '%s'", device_uris.uri[i]);
-  puts ("\"");
-
   /* Re-enable any queues we'd previously disabled. */
   if (for_each_matching_queue (&device_uris, MATCH_ONLY_DISABLED,
 			       enable_queue, NULL) == 0)
     {
-      pid_t pid;
       size_t i;
       int type;
-      int f;
       char argv0[PATH_MAX];
       char *p;
       char *argv[] = { argv0, device_uris.uri[0], id.full_device_id, NULL };
@@ -714,25 +918,6 @@ do_add (const char *cmd, const char *devpath)
 	p = argv0;
 
       strcpy (p, "udev-add-printer");
-
-      if ((pid = fork ()) == -1)
-	syslog (LOG_ERR, "Failed to fork process");
-      else if (pid != 0)
-	/* Parent. */
-	exit (0);
-
-      close (STDIN_FILENO);
-      close (STDOUT_FILENO);
-      close (STDERR_FILENO);
-      f = open ("/dev/null", O_RDWR);
-      if (f != STDIN_FILENO)
-	dup2 (f, STDIN_FILENO);
-      if (f != STDOUT_FILENO)
-	dup2 (f, STDOUT_FILENO);
-      if (f != STDERR_FILENO)
-	dup2 (f, STDERR_FILENO);
-
-      setsid ();
 
       execv (argv0, argv);
       syslog (LOG_ERR, "Failed to execute %s", argv0);
@@ -773,28 +958,33 @@ disable_queue (const char *printer_uri, void *context)
 }
 
 static int
-do_remove (char **uris)
+do_remove (const char *devpath)
 {
-  struct device_uris device_uris;
-  int n = 0;
-  int max;
-  syslog (LOG_DEBUG, "remove %s%s", uris[0], uris[1] ? " ..." : "");
+  struct usb_uri_map *map, *entry, **prev = &map;
+  struct device_uris *uris = NULL;
+  syslog (LOG_DEBUG, "remove %s", devpath);
 
-  while (uris[n] != NULL)
-    n++;
+  map = read_usb_uri_map ();
+  for (entry = map; entry; entry = entry->next)
+    {
+      if (!strcmp (entry->devpath, devpath))
+	{
+	  uris = &map->uris;
+	  break;
+	}
 
-  max = UINT_MAX / sizeof (char *);
-  if (n > max)
-    n = max;
+      prev = &(entry->next);
+    }
 
-  device_uris.n_uris = n;
-  device_uris.uri = malloc (sizeof (char *) * n);
-  while (--n >= 0)
-    device_uris.uri[n] = strdup (uris[n]);
+  if (uris)
+    {
+      /* Find the relevant queues and disable them if they are enabled. */
+      for_each_matching_queue (uris, 0, disable_queue, NULL);
+      *prev = entry->next;
+      write_usb_uri_map (map);
+    }
 
-  /* Find the relevant queues and disable them if they are enabled. */
-  for_each_matching_queue (&device_uris, 0, disable_queue, NULL);
-  free_device_uris (&device_uris);
+  free_usb_uri_map (map);
   return 0;
 }
 
@@ -803,14 +993,13 @@ main (int argc, char **argv)
 {
   int add;
 
-  if (argc < 3 ||
+  if (argc != 3 ||
       !((add = !strcmp (argv[1], "add")) ||
-	(add && argc != 3) ||
 	!strcmp (argv[1], "remove")))
     {
       fprintf (stderr,
 	       "Syntax: %s add {USB device path}\n"
-	       "        %s remove {CUPS device URIs...}\n",
+	       "        %s remove {USB device path}\n",
 	       argv[0], argv[0]);
       return 1;
     }
@@ -819,5 +1008,5 @@ main (int argc, char **argv)
   if (add)
     return do_add (argv[0], argv[2]);
 
-  return do_remove (argv + 2);
+  return do_remove (argv[2]);
 }
