@@ -140,8 +140,8 @@ read_usb_uri_map (void)
   while (getline (&line, &linelen, f) != -1)
     {
       char *saveptr = NULL;
-      const char *devpath = strtok_r (line, "\t", &saveptr);
-      const char *uri = strtok_r (NULL, "\t", &saveptr);
+      const char *devpath = strtok_r (line, "\t\n", &saveptr);
+      const char *uri = strtok_r (NULL, "\t\n", &saveptr);
       struct device_uris uris;
 
       if (!devpath || !uri)
@@ -157,7 +157,7 @@ read_usb_uri_map (void)
 	break;
 
       uris.uri[0] = strdup (uri);
-      while ((uri = strtok_r (NULL, "\t", &saveptr)) != NULL)
+      while ((uri = strtok_r (NULL, "\t\n", &saveptr)) != NULL)
 	{
 	  char **old = uris.uri;
 	  if (++uris.n_uris < UINT_MAX / sizeof (char *))
@@ -761,7 +761,6 @@ for_each_matching_queue (struct device_uris *device_uris,
       const char *printer_state_message = NULL;
       int state = 0;
       size_t i;
-      size_t len;
 
       while (attr && attr->group_tag != IPP_TAG_PRINTER)
 	attr = attr->next;
@@ -786,11 +785,8 @@ for_each_matching_queue (struct device_uris *device_uris,
 	    state = attr->values[0].integer;
 	}
 
-      len = strlen (this_device_uri);
-      if (this_device_uri[len - 1] == '\n')
-	len--;
       for (i = 0; i < device_uris->n_uris; i++)
-	if (!strncmp (device_uris->uri[i], this_device_uri, len))
+	if (!strcmp (device_uris->uri[i], this_device_uri))
 	  {
 	    matched++;
 	    if (((flags & MATCH_ONLY_DISABLED) &&
