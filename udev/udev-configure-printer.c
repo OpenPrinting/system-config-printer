@@ -233,7 +233,7 @@ write_usb_uri_map (struct usb_uri_map *map)
 {
   const mode_t mode = 0644;
   struct usb_uri_map *each;
-  int fd = open (USB_URI_MAP, O_WRONLY | O_CREAT, mode);
+  int fd = open (USB_URI_MAP, O_WRONLY | O_TRUNC | O_CREAT, mode);
   struct flock lock;
   FILE *f;
 
@@ -245,7 +245,7 @@ write_usb_uri_map (struct usb_uri_map *map)
 	{
 	  *p = '\0';
 	  mkdir (dir, 0755);
-	  fd = open (USB_URI_MAP, O_WRONLY | O_CREAT, mode);
+	  fd = open (USB_URI_MAP, O_WRONLY | O_TRUNC | O_CREAT, mode);
 	}
     }
 
