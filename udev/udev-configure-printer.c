@@ -762,7 +762,7 @@ find_matching_device_uris (struct device_id *id,
 	      match = 1;
 	    }
 
-	  if (strlen (serial) >= 12)
+	  if (!match && strlen (serial) >= 12)
 	    {
 	      if (!id->sern)
 		{
