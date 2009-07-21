@@ -362,7 +362,6 @@ class GUI(GtkGUI, monitor.Watcher):
         # Ensure the default PrintersWindow is shown despite
         # the --no-focus-on-map option
         self.PrintersWindow.set_focus_on_map (self.focus_on_map)
-        self.PrintersWindow.show()
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
@@ -834,32 +833,11 @@ class GUI(GtkGUI, monitor.Watcher):
             self.populateList()
             show_HTTP_Error(s, self.PrintersWindow)
 
-        # Attempt to size the window appropriately.
-        try:
-            (max_width, max_height) = (600, 400)
-            self.dests_iconview.resize_children ()
-            (width, height) = self.dests_iconview.size_request ()
-            if height > max_height:
-                # Too tall.  Try at maximum width.
-                self.dests_iconview.set_size_request (max_width, -1)
-                self.dests_iconview.resize_children ()
-                while gtk.events_pending ():
-                    gtk.main_iteration ()
-                (width, height) = self.dests_iconview.size_request ()
+        if len (self.printers) > 3:
+            self.MainWindow.set_property ("default-width", 550);
+            self.MainWindow.set_property ("default-height", 400);
 
-                # Finally, limit both the width and height.
-                (width, height) = map (min,
-                                       (width, height),
-                                       (max_width, max_height))
-
-            self.dests_iconview.set_size_request (width, height)
-            while gtk.events_pending ():
-                gtk.main_iteration ()
-            (width, height) = self.PrintersWindow.get_size ()
-            self.dests_iconview.set_size_request (-1, -1)
-            self.PrintersWindow.resize (width, height)
-        except:
-            nonfatalException ()
+        self.PrintersWindow.show()
 
         if setup_printer:
             self.device_uri = setup_printer
