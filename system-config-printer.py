@@ -834,8 +834,8 @@ class GUI(GtkGUI, monitor.Watcher):
             show_HTTP_Error(s, self.PrintersWindow)
 
         if len (self.printers) > 3:
-            self.MainWindow.set_property ("default-width", 550);
-            self.MainWindow.set_property ("default-height", 400);
+            self.PrintersWindow.set_property ("default-width", 550);
+            self.PrintersWindow.set_property ("default-height", 400);
 
         self.PrintersWindow.show()
 
