@@ -91,6 +91,50 @@ device_uri_type (const char *uri)
 }
 
 static void
+add_device_uri (struct device_uris *uris,
+		const char *uri)
+{
+  char *uri_copy = strdup (uri);
+  if (!uri_copy)
+    {
+      syslog (LOG_ERR, "out of memory");
+      return;
+    }
+
+  if (uris->n_uris == 0)
+    {
+      uris->uri = malloc (sizeof (char *));
+      if (uris->uri)
+	{
+	  uris->n_uris = 1;
+	  uris->uri[0] = uri_copy;
+	}
+    }
+  else
+    {
+      char **old = uris->uri;
+      if (++uris->n_uris < UINT_MAX / sizeof (char *))
+	{
+	  uris->uri = realloc (uris->uri,
+			       sizeof (char *) * uris->n_uris);
+	  if (uris->uri)
+	    uris->uri[uris->n_uris - 1] = uri_copy;
+	  else
+	    {
+	      uris->uri = old;
+	      uris->n_uris--;
+	      free (uri_copy);
+	    }
+	}
+      else
+	{
+	  uris->n_uris--;
+	  free (uri_copy);
+	}
+    }
+}
+
+static void
 free_device_uris (struct device_uris *uris)
 {
   size_t i;
@@ -174,23 +218,7 @@ read_usb_uri_map (void)
 
       uris.uri[0] = strdup (uri);
       while ((uri = strtok_r (NULL, "\t\n", &saveptr)) != NULL)
-	{
-	  char **old = uris.uri;
-	  if (++uris.n_uris < UINT_MAX / sizeof (char *))
-	    {
-	      uris.uri = realloc (uris.uri,
-				  sizeof (char *) * uris.n_uris);
-	      if (uris.uri)
-		uris.uri[uris.n_uris - 1] = strdup (uri);
-	      else
-		{
-		  uris.uri = old;
-		  uris.n_uris--;
-		}
-	    }
-	  else
-	    uris.n_uris--;
-	}
+	add_device_uri (&uris, uri);
 
       add_usb_uri_mapping (&map, devpath, &uris);
     }
@@ -348,7 +376,8 @@ parse_device_id (const char *device_id,
 
 static char *
 device_id_from_devpath (const char *devpath,
-			struct device_id *id)
+			struct device_id *id,
+			char *usbserial, size_t usbseriallen)
 {
   struct udev *udev;
   struct udev_device *dev, *parent_dev = NULL;
@@ -412,6 +441,15 @@ device_id_from_devpath (const char *devpath,
   usb_device_devpath = strdup (udev_device_get_devpath (parent_dev));
   syslog (LOG_DEBUG, "parent devpath is %s", usb_device_devpath);
 
+  serial = udev_device_get_sysattr_value (parent_dev, "serial");
+  if (serial)
+    {
+      strncpy (usbserial, serial, usbseriallen);
+      usbserial[usbseriallen - 1] = '\0';
+    }
+  else
+    usbserial[0] = '\0';
+
   /* See if we were triggered by a usblp add event. */
   device_id = udev_device_get_sysattr_value (dev, "device/ieee1284_id");
   if (device_id)
@@ -423,9 +461,8 @@ device_id_from_devpath (const char *devpath,
   /* This is a low-level USB device.  Use libusb to fetch the Device ID. */
   idVendorStr = udev_device_get_sysattr_value (parent_dev, "idVendor");
   idProductStr = udev_device_get_sysattr_value (parent_dev, "idProduct");
-  serial = udev_device_get_sysattr_value (parent_dev, "serial");
 
-  if (!idVendorStr || !idProductStr || !serial)
+  if (!idVendorStr || !idProductStr)
     {
       udev_device_unref (dev);
       udev_unref (udev);
@@ -630,15 +667,20 @@ cupsDoRequestOrDie (http_t *http,
 
 static int
 find_matching_device_uris (struct device_id *id,
+			   const char *serial,
 			   struct device_uris *uris,
 			   const char *devpath)
 {
   http_t *cups;
   ipp_t *request, *answer;
   ipp_attribute_t *attr;
+  struct device_uris uris_noserial;
 
   uris->n_uris = 0;
   uris->uri = NULL;
+
+  uris_noserial.n_uris = 0;
+  uris_noserial.uri = NULL;
 
   /* Leave the bus to settle. */
   sleep (1);
@@ -676,47 +718,90 @@ find_matching_device_uris (struct device_id *id,
 
       if (device_uri && this_id.mfg && this_id.mdl &&
 	  !strcmp (this_id.mfg, id->mfg) &&
-	  !strcmp (this_id.mdl, id->mdl) &&
-	  ((this_id.sern == NULL && id->sern == NULL) ||
-	   (this_id.sern && id->sern && !strcmp (this_id.sern, id->sern))))
+	  !strcmp (this_id.mdl, id->mdl))
 	{
-	  char *uri = strdup (device_uri);
-	  syslog (LOG_DEBUG, "Matching URI: %s", device_uri);
-	  if (uri)
+	  /* We've checked everything except the serial numbers.  This
+	   * is more complicated.  Some devices include a serial
+	   * number (SERN) field in their IEEE 1284 Device ID.  Others
+	   * don't -- this was not a mandatory field in the
+	   * specification.
+	   *
+	   * If the device includes SERN field in its, it must match
+	   * what the device-id attribute has.
+	   *
+	   * Otherwise, the only means we have of knowing which device
+	   * is meant is the USB serial number.
+	   *
+	   * CUPS backends may choose to insert the USB serial number
+	   * into the SERN field when reporting a device-id attribute.
+	   * HPLIP does this, and it seems not to stray too far from
+	   * the intent of that field.  We accommodate this.
+	   *
+	   * Alternatively, CUPS backends may include the USB serial
+	   * number somewhere in their reported device-uri attributes.
+	   * For instance, the CUPS 1.4 usb backend, when compiled
+	   * with libusb support, gives device URIs containing the USB
+	   * serial number for devices without a SERN field, like
+	   * this: usb://HP/DESKJET%20990C?serial=US05M1D20CIJ
+	   *
+	   * To accommodate this we examine tokens between '?', '='
+	   * and '&' delimiters to check for USB serial number
+	   * matches.
+	   *
+	   * CUPS 1.3, and CUPS 1.4 without libusb support, doesn't do this.
+	   * As a result we also need to deal with devices that don't report a
+	   * SERN field where the backends that don't add a SERN field from
+	   * the USB serial number and also don't include the USB serial
+	   * number in the URI.
+	   */
+
+	  int match = 0;
+	  if ((id->sern && this_id.sern && !strcmp (id->sern, this_id.sern)))
 	    {
-	      if (uris->n_uris == 0)
+	      syslog (LOG_DEBUG, "SERN fields match");
+	      match = 1;
+	    }
+
+	  if (strlen (serial) >= 12)
+	    {
+	      if (!id->sern)
 		{
-		  uris->uri = malloc (sizeof (char *));
-		  if (uris->uri)
+		  if (this_id.sern && !strcmp (serial, this_id.sern))
 		    {
-		      uris->n_uris = 1;
-		      uris->uri[0] = uri;
-		    }
-		  else
-		    free (uri);
-		}
-	      else
-		{
-		  char **old = uris->uri;
-		  if (++uris->n_uris < UINT_MAX / sizeof (char *))
-		    {
-		      uris->uri = realloc (uris->uri,
-					   sizeof (char *) * uris->n_uris);
-		      if (uris->uri)
-			uris->uri[uris->n_uris - 1] = uri;
-		      else
-			{
-			  uris->uri = old;
-			  uris->n_uris--;
-			  free (uri);
-			}
-		    }
-		  else
-		    {
-		      uris->n_uris--;
-		      free (uri);
+		      syslog (LOG_DEBUG,
+			      "SERN field matches USB serial number");
+		      match = 1;
 		    }
 		}
+
+	      if (!match)
+		{
+		  char *saveptr, *uri = strdup (device_uri);
+		  const char *token;
+		  for (token = strtok_r (uri, "?=&", &saveptr);
+		       token;
+		       token = strtok_r (NULL, "?=&", &saveptr))
+		    if (!strcmp (token, serial))
+		      {
+			syslog (LOG_DEBUG, "URI contains USB serial number");
+			match = 1;
+			break;
+		      }
+
+		  free (uri);
+		}
+	    }
+
+	  if (match)
+	    {
+	      syslog (LOG_DEBUG, "URI match: %s", device_uri);
+	      add_device_uri (uris, device_uri);
+	    }
+	  else if (!id->sern)
+	    {
+	      syslog (LOG_DEBUG, "URI matches without serial number: %s",
+		      device_uri);
+	      add_device_uri (&uris_noserial, device_uri);
 	    }
 	}
 
@@ -726,6 +811,16 @@ find_matching_device_uris (struct device_id *id,
 
   ippDelete (answer);
 
+  if (uris->n_uris == 0 && uris_noserial.n_uris > 0)
+    {
+      syslog (LOG_DEBUG, "No serial number URI matches so using those without");
+      uris->n_uris = uris_noserial.n_uris;
+      uris->uri = uris_noserial.uri;
+      uris_noserial.n_uris = 0;
+      uris_noserial.uri = NULL;
+    }
+
+  free_device_uris (&uris_noserial);
   if (uris->n_uris > 0)
     {
       struct usb_uri_map *map = read_usb_uri_map (), *entry;
@@ -879,10 +974,12 @@ do_add (const char *cmd, const char *devpath)
   struct device_id id;
   struct device_uris device_uris;
   char *usb_device_devpath;
+  char serial[256];
 
   syslog (LOG_DEBUG, "add %s", devpath);
 
-  usb_device_devpath = device_id_from_devpath (devpath, &id);
+  usb_device_devpath = device_id_from_devpath (devpath, &id,
+					       serial, sizeof (serial));
   if (!id.mfg || !id.mdl)
     {
       syslog (LOG_ERR, "invalid or missing IEEE 1284 Device ID%s%s",
@@ -891,8 +988,8 @@ do_add (const char *cmd, const char *devpath)
       exit (1);
     }
 
-  syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s", id.mfg, id.mdl,
-	  id.sern ? id.sern : "-");
+  syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
+	  id.sern ? id.sern : "-", serial);
 
   if ((pid = fork ()) == -1)
     syslog (LOG_ERR, "Failed to fork process");
@@ -913,7 +1010,7 @@ do_add (const char *cmd, const char *devpath)
 
   setsid ();
 
-  find_matching_device_uris (&id, &device_uris, usb_device_devpath);
+  find_matching_device_uris (&id, serial, &device_uris, usb_device_devpath);
   free (usb_device_devpath);
   if (device_uris.n_uris == 0)
     {
