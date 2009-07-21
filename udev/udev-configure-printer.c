@@ -969,7 +969,7 @@ do_remove (const char *devpath)
     {
       if (!strcmp (entry->devpath, devpath))
 	{
-	  uris = &map->uris;
+	  uris = &entry->uris;
 	  break;
 	}
 
