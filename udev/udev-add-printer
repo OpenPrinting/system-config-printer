@@ -46,21 +46,25 @@ def create_queue (c, name, device_uri, ppdname, info):
                   location=os.uname ()[1])
     cupshelpers.activateNewPrinter (c, name)
 
-def add_queue (device_uri, device_id):
+def add_queue (device_id, device_uris, is_fax=False):
     """
     Create a CUPS queue.
     """
 
-    try:
-        bus = dbus.SystemBus ()
-        obj = bus.get_object ("com.redhat.NewPrinterNotification",
-                              "/com/redhat/NewPrinterNotification")
-        notification = dbus.Interface (obj,
-                                       "com.redhat.NewPrinterNotification")
-        notification.GetReady ()
-    except dbus.DBusException, e:
-        syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
+    syslog (LOG_DEBUG, "add_queue: URIs=%s" % device_uris)
+    if is_fax:
         notification = None
+    else:
+        try:
+            bus = dbus.SystemBus ()
+            obj = bus.get_object ("com.redhat.NewPrinterNotification",
+                                  "/com/redhat/NewPrinterNotification")
+            notification = dbus.Interface (obj,
+                                           "com.redhat.NewPrinterNotification")
+            notification.GetReady ()
+        except dbus.DBusException, e:
+            syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
+            notification = None
 
     id_dict = cupshelpers.parseDeviceID (device_id)
     c = cups.Connection ()
@@ -69,7 +73,7 @@ def add_queue (device_uri, device_id):
                                                      id_dict["MDL"],
                                                      id_dict["DES"],
                                                      id_dict["CMD"],
-                                                     device_uri)
+                                                     device_uris[0])
     syslog (LOG_DEBUG, "PPD: %s; Status: %d" % (ppdname, status))
 
     if status == 0:
@@ -79,12 +83,53 @@ def add_queue (device_uri, device_id):
         name = name.replace ("/", "-")
         name = name.replace ("#", "-")
 
-        create_queue (c, name, device_uri, ppdname,
+        if is_fax:
+            name += "-fax"
+
+        create_queue (c, name, device_uris[0], ppdname,
                       "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
 
-        # Still to do: check whether we can add a fax queue.
+        if not is_fax:
+            # Look for a corresponding fax queue.  We can only
+            # identify these by looking for device URIs that are the
+            # same as this one but with a different scheme.  If we
+            # find one whose scheme ends in "fax", use that as a fax
+            # queue.  Note that the HPLIP backends do follow this
+            # pattern (hp and hpfax).
+            not_fax_schemes=["beh",
+                             "bluetooth",
+                             "http",
+                             "https",
+                             "ipp",
+                             "lpd",
+                             "parallel",
+                             "serial",
+                             "smb",
+                             "snmp",
+                             "socket",
+                             "scsi",
+                             "usb"]
+            devices = c.getDevices (exclude_schemes=not_fax_schemes)
+            for uri, device_dict in devices.iteritems ():
+                if uri in device_uris:
+                    continue
+
+                if uri.find (":") == -1:
+                    continue
+
+                (scheme, rest) = uri.split (":", 1)
+                if scheme.endswith ("fax"):
+                    # Now see if the non-scheme parts of the URI match
+                    # any of the URIs we were given.
+                    for each_uri in device_uris:
+                        (s, device_uri_rest) = each_uri.split (":", 1)
+                        if rest == device_uri_rest:
+                            add_queue (uri,
+                                       [device_dict.get ("device-id", "")],
+                                       is_fax=True)
     else:
-        name = device_uri
+        # Not an exact match.
+        name = device_uris[0]
 
     if notification:
         try:
@@ -96,12 +141,12 @@ def add_queue (device_uri, device_id):
             syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
 
 if len (sys.argv) != 3:
-   print "Syntax: %s {Device URI} {Device ID}"
+   print "Syntax: %s {Device ID} {Device URI} [other device URIs...]"
    sys.exit (1)
 
 openlog ("udev-add-printer", 0, LOG_LPR)
 try:
-    add_queue (sys.argv[1], sys.argv[2])
+    add_queue (sys.argv[1], sys.argv[2:])
 except SystemExit, e:
     sys.exit (e)
 except:

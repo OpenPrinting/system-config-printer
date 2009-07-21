@@ -1026,22 +1026,30 @@ do_add (const char *cmd, const char *devpath)
       int type;
       char argv0[PATH_MAX];
       char *p;
-      char *argv[] = { argv0, device_uris.uri[0], id.full_device_id, NULL };
+      char **argv = malloc (sizeof (char *) * (3 + device_uris.n_uris));
 
       /* No queue is configured for this device yet.
 	 Decide on a URI to use. */
-      type = device_uri_type (argv[1]);
+      type = device_uri_type (device_uris.uri[0]);
       for (i = 1; i < device_uris.n_uris; i++)
 	{
 	  int new_type = device_uri_type (device_uris.uri[i]);
 	  if (new_type < type)
 	    {
-	      argv[1] = device_uris.uri[i];
+	      char *swap = device_uris.uri[0];
+	      device_uris.uri[0] = device_uris.uri[i];
+	      device_uris.uri[i] = swap;
 	      type = new_type;
 	    }
 	}
 
-      syslog (LOG_DEBUG, "About to add queue for %s", argv[1]);
+      argv[0] = argv0;
+      argv[1] = id.full_device_id;
+      for (i = 0; i < device_uris.n_uris; i++)
+	argv[i + 2] = device_uris.uri[i];
+      argv[i + 2] = NULL;
+
+      syslog (LOG_DEBUG, "About to add queue for %s", argv[2]);
       strcpy (argv0, cmd);
       p = strrchr (argv0, '/');
       if (p++ == NULL)
