@@ -129,11 +129,27 @@ add_usb_uri_mapping (struct usb_uri_map **map,
 static struct usb_uri_map *
 read_usb_uri_map (void)
 {
-  FILE *f = fopen (USB_URI_MAP, "r");
+  int fd = open (USB_URI_MAP, O_RDONLY);
+  FILE *f;
   struct usb_uri_map *map = NULL;
   size_t linelen;
   char *line = NULL;
+  struct flock lock;
 
+  if (fd == -1)
+    return map;
+
+  lock.l_type = F_RDLCK;
+  lock.l_whence = SEEK_SET;
+  lock.l_start = 0;
+  lock.l_len = 0;
+  if (fcntl (fd, F_SETLKW, &lock) == -1)
+    {
+      close (fd);
+      return map;
+    }
+
+  f = fdopen (fd, "r");
   if (!f)
     return map;
 
@@ -187,9 +203,13 @@ read_usb_uri_map (void)
 static void
 write_usb_uri_map (struct usb_uri_map *map)
 {
+  const mode_t mode = 0644;
   struct usb_uri_map *each;
-  FILE *f = fopen (USB_URI_MAP, "w+");
-  if (!f)
+  int fd = open (USB_URI_MAP, O_WRONLY | O_CREAT, mode);
+  struct flock lock;
+  FILE *f;
+
+  if (fd == -1)
     {
       char dir[] = USB_URI_MAP;
       char *p = strrchr (dir, '/');
@@ -197,13 +217,30 @@ write_usb_uri_map (struct usb_uri_map *map)
 	{
 	  *p = '\0';
 	  mkdir (dir, 0755);
-	  f = fopen (USB_URI_MAP, "w+");
+	  fd = open (USB_URI_MAP, O_WRONLY | O_CREAT, mode);
 	}
     }
 
-  if (!f)
+  if (fd == -1)
     {
       syslog (LOG_ERR, "Unable to open " USB_URI_MAP);
+      return;
+    }
+
+  lock.l_type = F_WRLCK;
+  lock.l_whence = SEEK_SET;
+  lock.l_start = 0;
+  lock.l_len = 0;
+  if (fcntl (fd, F_SETLKW, &lock) == -1)
+    {
+      syslog (LOG_ERR, "Unable to lock " USB_URI_MAP);
+      return;
+    }
+
+  f = fdopen (fd, "w");
+  if (!f)
+    {
+      syslog (LOG_ERR, "Unable to fdopen " USB_URI_MAP);
       return;
     }
 
