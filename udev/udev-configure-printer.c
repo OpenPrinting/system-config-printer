@@ -141,7 +141,7 @@ read_usb_uri_map (void)
     {
       char *saveptr = NULL;
       const char *devpath = strtok_r (line, "\t", &saveptr);
-      char *uri = strtok_r (NULL, "\t", &saveptr);
+      const char *uri = strtok_r (NULL, "\t", &saveptr);
       struct device_uris uris;
 
       if (!devpath || !uri)
@@ -165,7 +165,7 @@ read_usb_uri_map (void)
 	      uris.uri = realloc (uris.uri,
 				  sizeof (char *) * uris.n_uris);
 	      if (uris.uri)
-		uris.uri[uris.n_uris - 1] = uri;
+		uris.uri[uris.n_uris - 1] = strdup (uri);
 	      else
 		{
 		  uris.uri = old;
