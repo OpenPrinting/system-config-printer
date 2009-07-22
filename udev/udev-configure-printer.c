@@ -77,9 +77,9 @@ struct device_id
 
 /* Device URI schemes in decreasing order of preference. */
 static const char *device_uri_types[] =
-  { "usb",
+  {
     "hp",
-    "hpfax",
+    "usb",
   };
 
 static int
