@@ -54,11 +54,17 @@ struct device_uris
   char **uri;
 };
 
-struct usb_uri_map
+struct usb_uri_map_entry
 {
-  struct usb_uri_map *next;
+  struct usb_uri_map_entry *next;
   char *devpath;
   struct device_uris uris;
+};
+
+struct usb_uri_map
+{
+  struct usb_uri_map_entry *entries;
+  int fd;
 };
 
 struct device_id
@@ -148,13 +154,13 @@ add_usb_uri_mapping (struct usb_uri_map **map,
 		     const char *devpath,
 		     const struct device_uris *uris)
 {
-  struct usb_uri_map *entry, **prev;
+  struct usb_uri_map_entry *entry, **prev;
   size_t i;
-  prev = map;
+  prev = &(*map)->entries;
   while (*prev)
     prev = &((*prev)->next);
 
-  entry = malloc (sizeof (struct usb_uri_map));
+  entry = malloc (sizeof (struct usb_uri_map_entry));
   if (!entry)
     {
       syslog (LOG_ERR, "out of memory");
@@ -173,37 +179,85 @@ add_usb_uri_mapping (struct usb_uri_map **map,
 static struct usb_uri_map *
 read_usb_uri_map (void)
 {
-  int fd = open (USB_URI_MAP, O_RDONLY);
-  FILE *f;
+  int fd = open (USB_URI_MAP, O_RDWR);
   struct usb_uri_map *map = NULL;
-  size_t linelen;
-  char *line = NULL;
   struct flock lock;
+  struct stat st;
+  char *buf, *line;
 
   if (fd == -1)
-    return map;
+    {
+      char dir[] = USB_URI_MAP;
+      char *p = strrchr (dir, '/');
+      if (p)
+	{
+	  *p = '\0';
+	  mkdir (dir, 0755);
+	  fd = open (USB_URI_MAP, O_RDWR | O_TRUNC | O_CREAT, 0644);
+	  if (fd == -1)
+	    {
+	      syslog (LOG_ERR, "failed to create " USB_URI_MAP);
+	      exit (1);
+	    }
+	}
+    }
 
-  lock.l_type = F_RDLCK;
+  map = malloc (sizeof (struct usb_uri_map));
+  if (!map)
+    {
+      syslog (LOG_ERR, "out of memory");
+      exit (1);
+    }
+
+  lock.l_type = F_WRLCK;
   lock.l_whence = SEEK_SET;
   lock.l_start = 0;
   lock.l_len = 0;
   if (fcntl (fd, F_SETLKW, &lock) == -1)
     {
-      close (fd);
-      return map;
+      syslog (LOG_ERR, "failed to lock " USB_URI_MAP);
+      exit (1);
     }
 
-  f = fdopen (fd, "r");
-  if (!f)
-    return map;
+  map->entries = NULL;
+  map->fd = fd;
+  if (fstat (fd, &st) == -1)
+    {
+      syslog (LOG_ERR, "failed to fstat " USB_URI_MAP " (fd %d)", fd);
+      exit (1);
+    }
 
-  while (getline (&line, &linelen, f) != -1)
+  /* Read the entire file into memory. */
+  buf = malloc (1 + (sizeof (char) * st.st_size));
+  if (!buf)
+    {
+      syslog (LOG_ERR, "out of memory");
+      exit (1);
+    }
+
+  if (read (fd, buf, st.st_size) < 0)
+    {
+      syslog (LOG_ERR, "failed to read " USB_URI_MAP);
+      exit (1);
+    }
+
+  buf[st.st_size] = '\0';
+  line = buf;
+  while (line)
     {
       char *saveptr = NULL;
-      const char *devpath = strtok_r (line, "\t\n", &saveptr);
-      const char *uri = strtok_r (NULL, "\t\n", &saveptr);
+      const char *devpath, *uri;
       struct device_uris uris;
+      char *nextline = strchr (line, '\n');
+      if (!nextline)
+	break;
 
+      *nextline++ = '\0';
+      if (nextline >= buf + st.st_size)
+	nextline = NULL;
+
+      devpath = strtok_r (line, "\t", &saveptr);
+      uri = strtok_r (NULL, "\t", &saveptr);
       if (!devpath || !uri)
 	{
 	  syslog (LOG_DEBUG, "Incorrect line in " USB_URI_MAP ": %s",
@@ -217,83 +271,63 @@ read_usb_uri_map (void)
 	break;
 
       uris.uri[0] = strdup (uri);
-      while ((uri = strtok_r (NULL, "\t\n", &saveptr)) != NULL)
+      while ((uri = strtok_r (NULL, "\t", &saveptr)) != NULL)
 	add_device_uri (&uris, uri);
 
       add_usb_uri_mapping (&map, devpath, &uris);
+
+      line = nextline;
     }
 
-  free (line);
-  fclose (f);
+  free (buf);
   return map;
 }
 
 static void
 write_usb_uri_map (struct usb_uri_map *map)
 {
-  const mode_t mode = 0644;
-  struct usb_uri_map *each;
-  int fd = open (USB_URI_MAP, O_WRONLY | O_TRUNC | O_CREAT, mode);
-  struct flock lock;
+  struct usb_uri_map_entry *entry;
+  int fd = map->fd;
   FILE *f;
 
-  if (fd == -1)
-    {
-      char dir[] = USB_URI_MAP;
-      char *p = strrchr (dir, '/');
-      if (p)
-	{
-	  *p = '\0';
-	  mkdir (dir, 0755);
-	  fd = open (USB_URI_MAP, O_WRONLY | O_TRUNC | O_CREAT, mode);
-	}
-    }
-
-  if (fd == -1)
-    {
-      syslog (LOG_ERR, "Unable to open " USB_URI_MAP);
-      return;
-    }
-
-  lock.l_type = F_WRLCK;
-  lock.l_whence = SEEK_SET;
-  lock.l_start = 0;
-  lock.l_len = 0;
-  if (fcntl (fd, F_SETLKW, &lock) == -1)
-    {
-      syslog (LOG_ERR, "Unable to lock " USB_URI_MAP);
-      return;
-    }
-
+  lseek (fd, SEEK_SET, 0);
+  ftruncate (fd, 0);
   f = fdopen (fd, "w");
   if (!f)
     {
-      syslog (LOG_ERR, "Unable to fdopen " USB_URI_MAP);
-      return;
+      syslog (LOG_ERR, "failed to fdopen " USB_URI_MAP " (fd %d)", fd);
+      exit (1);
     }
 
-  for (each = map; each; each = each->next)
+  for (entry = map->entries; entry; entry = entry->next)
     {
       size_t i;
-      fprintf (f, "%s\t%s", each->devpath, each->uris.uri[0]);
-      for (i = 1; i < each->uris.n_uris; i++)
-	fprintf (f, "\t%s", each->uris.uri[i]);
+      fprintf (f, "%s\t%s", entry->devpath, entry->uris.uri[0]);
+      for (i = 1; i < entry->uris.n_uris; i++)
+	fprintf (f, "\t%s", entry->uris.uri[i]);
       fwrite ("\n", 1, 1, f);
     }
+
   fclose (f);
+  map->fd = -1;
 }
 
 static void
 free_usb_uri_map (struct usb_uri_map *map)
 {
-  struct usb_uri_map *each, *next;
-  for (each = map; each; each = next)
+  struct usb_uri_map_entry *entry, *next;
+  for (entry = map->entries; entry; entry = next)
     {
-      next = each->next;
-      free (each->devpath);
-      free_device_uris (&each->uris);
-      free (each);
+      next = entry->next;
+      free (entry->devpath);
+      free_device_uris (&entry->uris);
+      free (entry);
     }
+
+  if (map->fd != -1)
+    close (map->fd);
+
+  free (map);
 }
 
 static void
@@ -823,8 +857,9 @@ find_matching_device_uris (struct device_id *id,
   free_device_uris (&uris_noserial);
   if (uris->n_uris > 0)
     {
-      struct usb_uri_map *map = read_usb_uri_map (), *entry;
-      for (entry = map; entry; entry = entry->next)
+      struct usb_uri_map *map = read_usb_uri_map ();
+      struct usb_uri_map_entry *entry;
+      for (entry = map->entries; entry; entry = entry->next)
 	if (!strcmp (entry->devpath, devpath))
 	  break;
 
@@ -1098,12 +1133,14 @@ disable_queue (const char *printer_uri, void *context)
 static int
 do_remove (const char *devpath)
 {
-  struct usb_uri_map *map, *entry, **prev = &map;
+  struct usb_uri_map *map;
+  struct usb_uri_map_entry *entry, **prev;
   struct device_uris *uris = NULL;
   syslog (LOG_DEBUG, "remove %s", devpath);
 
   map = read_usb_uri_map ();
-  for (entry = map; entry; entry = entry->next)
+  prev = &map->entries;
+  for (entry = map->entries; entry; entry = entry->next)
     {
       if (!strcmp (entry->devpath, devpath))
 	{
