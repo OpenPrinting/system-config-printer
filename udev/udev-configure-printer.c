@@ -891,6 +891,9 @@ find_matching_device_uris (struct device_id *id,
 	    uris->uri[uris->n_uris + i] = uris_noserial.uri[i];
 	  uris->n_uris += uris_noserial.n_uris;
 	}
+
+      uris_noserial.n_uris = 0;
+      uris_noserial.uri = NULL;
     }
 
   free_device_uris (&uris_noserial);
