@@ -845,6 +845,22 @@ find_matching_device_uris (struct device_id *id,
 
   ippDelete (answer);
 
+  /* Decide what to do about device URIs that did not match a serial
+   * number.  The device had no SERN field, and the USB serial number
+   * was nowhere to be found from the device URI or device-id field.
+   *
+   * Device URIs with no reference to serial number can only each ever
+   * work when only one printer of that model is connected.
+   * Accordingly, it is safe to disable queues using such URIs, as we
+   * know the removed/added device is that lone printer.
+   *
+   * When adding queues it is best to avoid URIs that don't
+   * distinguish serial numbers.
+   *
+   * What we'll do, then, is concatenate the list of "non-serial" URIs
+   * onto the end of the list of "serial" URIs.
+   */
+
   if (uris->n_uris == 0 && uris_noserial.n_uris > 0)
     {
       syslog (LOG_DEBUG, "No serial number URI matches so using those without");
@@ -852,6 +868,22 @@ find_matching_device_uris (struct device_id *id,
       uris->uri = uris_noserial.uri;
       uris_noserial.n_uris = 0;
       uris_noserial.uri = NULL;
+    }
+  else if (uris_noserial.n_uris > 0)
+    {
+      char **old = uris->uri;
+      uris->uri = realloc (uris->uri,
+			   sizeof (char *) * (uris->n_uris +
+					      uris_noserial.n_uris));
+      if (!uris->uri)
+	uris->uri = old;
+      else
+	{
+	  size_t i;
+	  for (i = 0; i < uris_noserial.n_uris; i++)
+	    uris->uri[uris->n_uris + i] = uris_noserial.uri[i];
+	  uris->n_uris += uris_noserial.n_uris;
+	}
     }
 
   free_device_uris (&uris_noserial);
