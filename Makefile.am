@@ -149,6 +149,7 @@ bin_SCRIPTS=\
 	system-config-printer-applet		\
 	my-default-printer
 
+if UDEV_RULES
 udevrulesdir=$(sysconfdir)/udev/rules.d
 nobase_udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
@@ -159,6 +160,7 @@ udevhelper_PROGRAMS=\
 	udev/udev-configure-printer
 udevhelper_SCRIPTS=\
 	udev/udev-add-printer
+endif
 
 man_MANS=					\
 	man/system-config-printer.1		\
