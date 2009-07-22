@@ -738,6 +738,7 @@ find_matching_device_uris (struct device_id *id,
   for (attr = answer->attrs; attr; attr = attr->next)
     {
       const char *device_uri = NULL;
+      int i;
       struct device_id this_id;
       this_id.full_device_id = this_id.mfg = this_id.mdl = this_id.sern = NULL;
 
@@ -757,6 +758,24 @@ find_matching_device_uris (struct device_id *id,
 	    parse_device_id (attr->values[0].string.text, &this_id);
 	}
 
+      /* The include-schemes attribute is ignored by CUPS < 1.4, so
+       * perform our own filtering as well. */
+      for (i = 0;
+	   device_uri &&
+	   i < sizeof (device_uri_types) / sizeof (device_uri_types[0]);
+	   i++)
+	{
+	  size_t len = strlen (device_uri_types[i]);
+	  if (!strncmp (device_uri_types[i], device_uri, len) &&
+	      device_uri[len] == ':')
+	    break;
+	}
+
+      if (i == sizeof (device_uri_types) / sizeof (device_uri_types[0]))
+	/* Not what we wanted.  Ignore this one. */
+	device_uri = NULL;
+
+      /* Now check the manufacturer and model names. */
       if (device_uri && this_id.mfg && this_id.mdl &&
 	  !strcmp (this_id.mfg, id->mfg) &&
 	  !strcmp (this_id.mdl, id->mdl))
