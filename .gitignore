@@ -5,9 +5,13 @@ Makefile
 /config.log
 /autom4te.cache
 /missing
+/compile
+/depcomp
 /INSTALL
 /ChangeLog
 TAGS
+.deps
+.dirstamp
 
 intltool-extract*
 intltool-merge*
@@ -16,6 +20,7 @@ po/.intltool-merge-cache
 
 .stamp-distutils-in-builddir
 *.pyc
+*.o
 *.gladep
 
 /test-ppd-module.sh
@@ -37,6 +42,9 @@ manage-print-jobs.desktop
 my-default-printer.desktop
 print-applet.desktop
 system-config-printer.desktop
+
+# These are compiled
+udev/udev-configure-printer
 
 # These are generated from the XML file.
 man/*.1

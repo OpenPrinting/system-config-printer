@@ -32,6 +32,17 @@ fi
 AC_SUBST(DESKTOPVENDOR)
 AC_SUBST(DESKTOPPREFIX)
 
+AC_ARG_WITH(udev-rules,
+	    [AC_HELP_STRING([--with-udev-rules],
+			    [Enable automatic USB print queue configuration @<:@default=no@:>@])],
+	    [],
+	    [with_udev_rules=no])
+AM_CONDITIONAL([UDEV_RULES], [test x$with_udev_rules != xno])
+
+if test x$with_udev_rules != xno; then
+   AM_PROG_CC_C_O
+fi
+
 ALL_LINGUAS="ar as bg bn_IN bn bs ca cs cy da de el en_GB es et fa fi fr gu he hi hr hu hy id is it ja ka kn ko lo lv mai mk ml mr ms my nb nl nn or pa pl pt_BR pt ro ru si sk sl sr@latin sr sv ta te th tr uk vi zh_CN zh_TW"
 AC_CONFIG_FILES([
 Makefile

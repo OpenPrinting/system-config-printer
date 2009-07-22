@@ -540,6 +540,15 @@ class PPDs:
         except KeyError:
             pass
 
+        # The HP PPDs say "HP" not "Hewlett-Packard", so try that.
+        if mfgl == "hewlett-packard":
+            try:
+                ppdnamelist += self.ids["hp"][mdll]
+                status = self.STATUS_SUCCESS
+                id_matched = True
+            except KeyError:
+                pass
+
         # Now try looking up the device by ppd-make-and-model.
         _debugprint ("Trying make/model names")
         mdls = None
@@ -927,7 +936,7 @@ def _self_test(argv):
 
     for opt, optarg in opts:
         if opt == "--help":
-            show_help ()
+            _show_help ()
             sys.exit (0)
         if opt == "--deviceid":
             stdin_deviceid = True
@@ -994,9 +1003,7 @@ def _self_test(argv):
         ("MFG:Hewlett-Packard;MDL:LaserJet 3390 Series;"
          "CMD:MLC,PCL,POSTSCRIPT;CLS:PRINTER;", 0, 'HP LaserJet 3390'),
         ("MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;"
-         "CLS:PRINTER;1284.4DL:4d,4e,1;", 0, ".* PSC 2200 Series"),
-        ("MFG:HP;MDL:PSC 2200 Series;CLS:PRINTER;DES:PSC 2200 Series;",
-         1, ".* PSC 2200 Series"),# from HPLIP
+         "CLS:PRINTER;1284.4DL:4d,4e,1;", 0, "HP PSC 2210"),
         ("MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;"
          "DES:Hewlett-Packard DeskJet 990C;", 0, "HP DeskJet 990C"),
         ("CLASS:PRINTER;MODEL:HP LaserJet 6MP;MANUFACTURER:Hewlett-Packard;"
@@ -1033,10 +1040,10 @@ def _self_test(argv):
                                                          id_dict["MDL"],
                                                          id_dict["DES"],
                                                          id_dict["CMD"])
+        ppddict = ppds.getInfoFromPPDName (ppdname)
         if status < max_status_code:
             success = True
         else:
-            ppddict = ppds.getInfoFromPPDName (ppdname)
             if status == max_status_code:
                 match = re.match (modelre, ppddict['ppd-make-and-model'], re.I)
                 success = match != None
