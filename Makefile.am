@@ -222,7 +222,7 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
-	$(udevhelper_SCRIPTS) \
+	udev/udev-add-printer \
 	setup.py \
 	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
