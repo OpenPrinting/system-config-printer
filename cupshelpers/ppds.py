@@ -927,7 +927,7 @@ def _self_test(argv):
 
     for opt, optarg in opts:
         if opt == "--help":
-            show_help ()
+            _show_help ()
             sys.exit (0)
         if opt == "--deviceid":
             stdin_deviceid = True
@@ -1033,10 +1033,10 @@ def _self_test(argv):
                                                          id_dict["MDL"],
                                                          id_dict["DES"],
                                                          id_dict["CMD"])
+        ppddict = ppds.getInfoFromPPDName (ppdname)
         if status < max_status_code:
             success = True
         else:
-            ppddict = ppds.getInfoFromPPDName (ppdname)
             if status == max_status_code:
                 match = re.match (modelre, ppddict['ppd-make-and-model'], re.I)
                 success = match != None
