@@ -1,3 +1,5 @@
+AM_CFLAGS=-g -O2 -Wall
+
 SUBDIRS=po
 
 EXPORT_MODULES=					\
@@ -147,6 +149,19 @@ bin_SCRIPTS=\
 	system-config-printer-applet		\
 	my-default-printer
 
+if UDEV_RULES
+udevrulesdir=$(sysconfdir)/udev/rules.d
+nobase_udevrules_DATA=udev/70-printers.rules
+udev_udev_configure_printer_SOURCES=\
+	udev/udev-configure-printer.c
+udev_udev_configure_printer_LDADD=-lcups -ludev -lusb
+udevhelperdir=/lib/udev
+udevhelper_PROGRAMS=\
+	udev/udev-configure-printer
+udevhelper_SCRIPTS=\
+	udev/udev-add-printer
+endif
+
 man_MANS=					\
 	man/system-config-printer.1		\
 	man/system-config-printer-applet.1
@@ -207,6 +222,7 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
+	$(udevhelper_SCRIPTS) \
 	setup.py \
 	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
@@ -221,7 +237,8 @@ EXTRA_DIST=\
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
-	config.py.in
+	config.py.in \
+	udev/70-printers.rules
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 

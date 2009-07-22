@@ -1,0 +1,7 @@
+# Low-level USB device add trigger
+ACTION=="add", SUBSYSTEM=="usb", ATTR{bInterfaceClass}=="07", ATTR{bInterfaceSubClass}=="01", RUN+="udev-configure-printer add %p"
+# usblp device add trigger (needed when usblp is already loaded)
+ACTION=="add", KERNEL=="lp*", RUN+="udev-configure-printer add %p"
+
+# Low-level USB device remove trigger
+ACTION=="remove", SUBSYSTEM=="usb", ENV{ID_USB_INTERFACES}=="*:0701*:*", RUN+="udev-configure-printer remove %p"

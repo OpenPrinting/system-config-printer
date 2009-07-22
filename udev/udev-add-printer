@@ -1,0 +1,156 @@
+#!/usr/bin/python
+
+## udev-add-printer
+
+## Copyright (C) 2009 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
+
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+import cups
+import cupshelpers
+import dbus
+import os
+import sys
+import traceback
+from syslog import *
+
+def create_queue (c, name, device_uri, ppdname, info):
+    # Make sure the name is unique.
+    printers = cupshelpers.getPrinters (c)
+    names = printers.keys ()
+    if name in names:
+        suffix = 2
+        while (name + "-" + str (suffix)) in names:
+            suffix += 1
+            if suffix == 100:
+                break
+        name += str (suffix)
+
+    c.addPrinter (name,
+                  device=device_uri,
+                  ppdname=ppdname,
+                  info=info,
+                  location=os.uname ()[1])
+    cupshelpers.activateNewPrinter (c, name)
+
+def add_queue (device_id, device_uris, is_fax=False):
+    """
+    Create a CUPS queue.
+    """
+
+    syslog (LOG_DEBUG, "add_queue: URIs=%s" % device_uris)
+    if is_fax:
+        notification = None
+    else:
+        try:
+            bus = dbus.SystemBus ()
+            obj = bus.get_object ("com.redhat.NewPrinterNotification",
+                                  "/com/redhat/NewPrinterNotification")
+            notification = dbus.Interface (obj,
+                                           "com.redhat.NewPrinterNotification")
+            notification.GetReady ()
+        except dbus.DBusException, e:
+            syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
+            notification = None
+
+    id_dict = cupshelpers.parseDeviceID (device_id)
+    c = cups.Connection ()
+    ppds = cupshelpers.ppds.PPDs (c.getPPDs ())
+    (status, ppdname) = ppds.getPPDNameFromDeviceID (id_dict["MFG"],
+                                                     id_dict["MDL"],
+                                                     id_dict["DES"],
+                                                     id_dict["CMD"],
+                                                     device_uris[0])
+    syslog (LOG_DEBUG, "PPD: %s; Status: %d" % (ppdname, status))
+
+    if status == 0:
+        # Think of a name for it.
+        name = id_dict["MDL"]
+        name = name.replace (" ", "-")
+        name = name.replace ("/", "-")
+        name = name.replace ("#", "-")
+
+        create_queue (c, name, device_uris[0], ppdname,
+                      "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
+
+        if not is_fax:
+            # Look for a corresponding fax queue.  We can only
+            # identify these by looking for device URIs that are the
+            # same as this one but with a different scheme.  If we
+            # find one whose scheme ends in "fax", use that as a fax
+            # queue.  Note that the HPLIP backends do follow this
+            # pattern (hp and hpfax).
+            not_fax_schemes=["beh",
+                             "bluetooth",
+                             "http",
+                             "https",
+                             "ipp",
+                             "lpd",
+                             "parallel",
+                             "serial",
+                             "smb",
+                             "snmp",
+                             "socket",
+                             "scsi",
+                             "usb"]
+            devices = c.getDevices (exclude_schemes=not_fax_schemes)
+            for uri, device_dict in devices.iteritems ():
+                if uri in device_uris:
+                    continue
+
+                if uri.find (":") == -1:
+                    continue
+
+                (scheme, rest) = uri.split (":", 1)
+                if scheme.endswith ("fax"):
+                    # Now see if the non-scheme parts of the URI match
+                    # any of the URIs we were given.
+                    for each_uri in device_uris:
+                        (s, device_uri_rest) = each_uri.split (":", 1)
+                        if rest == device_uri_rest:
+                            add_queue (device_dict.get ("device-id", ""),
+                                       [uri], is_fax=True)
+    else:
+        # Not an exact match.
+        name = device_uris[0]
+
+    if notification:
+        try:
+            notification.NewPrinter (status, name, id_dict["MFG"],
+                                     id_dict["MDL"], id_dict["DES"],
+                                     reduce(lambda x, y: x + ',' + y,
+                                            id_dict["CMD"]))
+        except dbus.DBusException, e:
+            syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
+
+if len (sys.argv) < 3:
+   print "Syntax: %s {Device ID} {Device URI} [other device URIs...]"
+   sys.exit (1)
+
+openlog ("udev-add-printer", 0, LOG_LPR)
+try:
+    add_queue (sys.argv[1], sys.argv[2:])
+except SystemExit, e:
+    sys.exit (e)
+except:
+    (type, value, tb) = sys.exc_info ()
+    tblast = traceback.extract_tb (tb, limit=None)
+    if len (tblast):
+        tblast = tblast[:len (tblast) - 1]
+    for line in traceback.format_tb (tb):
+        syslog (LOG_ERR, line.strip ())
+    extxt = traceback.format_exception_only (type, value)
+    syslog (LOG_ERR, extxt[0].strip ())
