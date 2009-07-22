@@ -57,13 +57,20 @@ struct device_uris
 struct usb_uri_map_entry
 {
   struct usb_uri_map_entry *next;
+
+  /* The devpath of the ("usb","usb_device") device. */
   char *devpath;
+
+  /* List of matching device URIs. */
   struct device_uris uris;
 };
 
 struct usb_uri_map
 {
   struct usb_uri_map_entry *entries;
+
+  /* Open file descriptor for the map, or -1 if it has already been
+   * written. */
   int fd;
 };
 
