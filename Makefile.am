@@ -151,7 +151,7 @@ bin_SCRIPTS=\
 
 if UDEV_RULES
 udevrulesdir=$(sysconfdir)/udev/rules.d
-nobase_udevrules_DATA=udev/70-printers.rules
+udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
 udev_udev_configure_printer_LDADD=-lcups -ludev -lusb
