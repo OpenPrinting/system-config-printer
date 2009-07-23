@@ -1087,24 +1087,27 @@ do_add (const char *cmd, const char *devpath)
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
 	  id.sern ? id.sern : "-", usbserial);
 
-  if ((pid = fork ()) == -1)
-    syslog (LOG_ERR, "Failed to fork process");
-  else if (pid != 0)
-    /* Parent. */
-    exit (0);
+  if (getenv ("DEBUG") == NULL)
+    {
+      if ((pid = fork ()) == -1)
+	syslog (LOG_ERR, "Failed to fork process");
+      else if (pid != 0)
+	/* Parent. */
+	exit (0);
 
-  close (STDIN_FILENO);
-  close (STDOUT_FILENO);
-  close (STDERR_FILENO);
-  f = open ("/dev/null", O_RDWR);
-  if (f != STDIN_FILENO)
-    dup2 (f, STDIN_FILENO);
-  if (f != STDOUT_FILENO)
-    dup2 (f, STDOUT_FILENO);
-  if (f != STDERR_FILENO)
-    dup2 (f, STDERR_FILENO);
+      close (STDIN_FILENO);
+      close (STDOUT_FILENO);
+      close (STDERR_FILENO);
+      f = open ("/dev/null", O_RDWR);
+      if (f != STDIN_FILENO)
+	dup2 (f, STDIN_FILENO);
+      if (f != STDOUT_FILENO)
+	dup2 (f, STDOUT_FILENO);
+      if (f != STDERR_FILENO)
+	dup2 (f, STDERR_FILENO);
 
-  setsid ();
+      setsid ();
+    }
 
   find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath);
   free (usb_device_devpath);
