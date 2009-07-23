@@ -708,7 +708,7 @@ cupsDoRequestOrDie (http_t *http,
 
 static int
 find_matching_device_uris (struct device_id *id,
-			   const char *serial,
+			   const char *usbserial,
 			   struct device_uris *uris,
 			   const char *devpath)
 {
@@ -822,11 +822,11 @@ find_matching_device_uris (struct device_id *id,
 	      match = 1;
 	    }
 
-	  if (!match && strlen (serial) >= 12)
+	  if (!match && strlen (usbserial) >= 12)
 	    {
 	      if (!id->sern)
 		{
-		  if (this_id.sern && !strcmp (serial, this_id.sern))
+		  if (this_id.sern && !strcmp (usbserial, this_id.sern))
 		    {
 		      syslog (LOG_DEBUG,
 			      "SERN field matches USB serial number");
@@ -841,7 +841,7 @@ find_matching_device_uris (struct device_id *id,
 		  for (token = strtok_r (uri, "?=&", &saveptr);
 		       token;
 		       token = strtok_r (NULL, "?=&", &saveptr))
-		    if (!strcmp (token, serial))
+		    if (!strcmp (token, usbserial))
 		      {
 			syslog (LOG_DEBUG, "URI contains USB serial number");
 			match = 1;
@@ -1070,12 +1070,12 @@ do_add (const char *cmd, const char *devpath)
   struct device_id id;
   struct device_uris device_uris;
   char *usb_device_devpath;
-  char serial[256];
+  char usbserial[256];
 
   syslog (LOG_DEBUG, "add %s", devpath);
 
   usb_device_devpath = device_id_from_devpath (devpath, &id,
-					       serial, sizeof (serial));
+					       usbserial, sizeof (usbserial));
   if (!id.mfg || !id.mdl)
     {
       syslog (LOG_ERR, "invalid or missing IEEE 1284 Device ID%s%s",
@@ -1085,7 +1085,7 @@ do_add (const char *cmd, const char *devpath)
     }
 
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
-	  id.sern ? id.sern : "-", serial);
+	  id.sern ? id.sern : "-", usbserial);
 
   if ((pid = fork ()) == -1)
     syslog (LOG_ERR, "Failed to fork process");
@@ -1106,7 +1106,7 @@ do_add (const char *cmd, const char *devpath)
 
   setsid ();
 
-  find_matching_device_uris (&id, serial, &device_uris, usb_device_devpath);
+  find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath);
   free (usb_device_devpath);
   if (device_uris.n_uris == 0)
     {
