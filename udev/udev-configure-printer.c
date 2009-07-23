@@ -982,8 +982,26 @@ find_matching_device_uris (struct device_id *id,
 
       if (!entry)
 	{
+	  /* There was no entry for this device in our map. */
 	  add_usb_uri_mapping (&map, devpath, uris);
 	  write_usb_uri_map (map);
+	}
+      else
+	{
+	  /* The map already had an entry so has already been dealt
+	   * with.  This can happen because there are two "add"
+	   * triggers: one for the usb_device device and the other for
+	   * the usblp device.  We have most likely been triggered by
+	   * the usblp device, so the usb_device rule got there before
+	   * us and succeeded.
+	   *
+	   * Pretend we didn't find any device URIs that matched, and
+	   * exit.
+	   */
+
+	  free_device_uris (uris);
+	  uris->n_uris = 0;
+	  uris->uri = NULL;
 	}
 
       free_usb_uri_map (map);
