@@ -94,25 +94,8 @@ def add_queue (device_id, device_uris, is_fax=False):
             # find one whose scheme ends in "fax", use that as a fax
             # queue.  Note that the HPLIP backends do follow this
             # pattern (hp and hpfax).
-            not_fax_schemes=["beh",
-                             "bluetooth",
-                             "http",
-                             "https",
-                             "ipp",
-                             "lpd",
-                             "parallel",
-                             "serial",
-                             "smb",
-                             "snmp",
-                             "socket",
-                             "scsi",
-                             "usb"]
-            devices = c.getDevices (exclude_schemes=not_fax_schemes)
             used_uris = map (lambda x: x.device_uri, printers.values ())
-            for uri, device_dict in devices.iteritems ():
-                if uri in device_uris:
-                    continue
-
+            for uri in device_uris[1:]:
                 if uri.find (":") == -1:
                     continue
 
@@ -121,12 +104,19 @@ def add_queue (device_id, device_uris, is_fax=False):
                     # Now see if the non-scheme parts of the URI match
                     # any of the URIs we were given.
                     for each_uri in device_uris:
+                        if each_uri == uri:
+                            continue
                         (s, device_uri_rest) = each_uri.split (":", 1)
                         if rest == device_uri_rest:
                             # This one matches.  Check there is not
                             # already a queue using this URI.
                             if uri in used_uris:
-                                continue
+                                break
+
+                            devices = c.getDevices (include_schemes=[scheme])
+                            device_dict = devices.get (uri)
+                            if device_dict == None:
+                                break
 
                             add_queue (device_dict.get ("device-id", ""),
                                        [uri], is_fax=True)

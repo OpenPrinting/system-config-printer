@@ -716,21 +716,34 @@ find_matching_device_uris (struct device_id *id,
   ipp_t *request, *answer;
   ipp_attribute_t *attr;
   struct device_uris uris_noserial;
+  struct device_uris all_uris;
+  size_t i, n;
+  const char *exclude_schemes[] = {
+    "beh",
+    "bluetooth",
+    "http",
+    "https",
+    "ipp",
+    "lpd",
+    "ncp",
+    "parallel",
+    "scsi",
+    "smb",
+    "snmp",
+    "socket",
+  };
 
-  uris->n_uris = 0;
-  uris->uri = NULL;
-
-  uris_noserial.n_uris = 0;
-  uris_noserial.uri = NULL;
+  uris->n_uris = uris_noserial.n_uris = all_uris.n_uris = 0;
+  uris->uri = uris_noserial.uri = all_uris.uri = NULL;
 
   /* Leave the bus to settle. */
   sleep (1);
 
   cups = cups_connection ();
   request = ippNewRequest (CUPS_GET_DEVICES);
-  ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_NAME, "include-schemes",
-		 sizeof (device_uri_types) / sizeof(device_uri_types[0]),
-		 NULL, device_uri_types);
+  ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_NAME, "exclude-schemes",
+		 sizeof (exclude_schemes) / sizeof(exclude_schemes[0]),
+		 NULL, exclude_schemes);
 
   answer = cupsDoRequestOrDie (cups, request, "/");
   httpClose (cups);
@@ -738,7 +751,6 @@ find_matching_device_uris (struct device_id *id,
   for (attr = answer->attrs; attr; attr = attr->next)
     {
       const char *device_uri = NULL;
-      int i;
       struct device_id this_id;
       this_id.full_device_id = this_id.mfg = this_id.mdl = this_id.sern = NULL;
 
@@ -758,8 +770,9 @@ find_matching_device_uris (struct device_id *id,
 	    parse_device_id (attr->values[0].string.text, &this_id);
 	}
 
-      /* The include-schemes attribute is ignored by CUPS < 1.4, so
-       * perform our own filtering as well. */
+      /* Only use device schemes in our preference order for matching
+       * against the IEEE 1284 Device ID. */
+
       for (i = 0;
 	   device_uri &&
 	   i < sizeof (device_uri_types) / sizeof (device_uri_types[0]);
@@ -771,8 +784,11 @@ find_matching_device_uris (struct device_id *id,
 	    break;
 	}
 
+      if (device_uri)
+	add_device_uri (&all_uris, device_uri);
+
       if (i == sizeof (device_uri_types) / sizeof (device_uri_types[0]))
-	/* Not what we wanted.  Ignore this one. */
+	/* Not what we want to match against.  Ignore this one. */
 	device_uri = NULL;
 
       /* Now check the manufacturer and model names. */
@@ -905,7 +921,6 @@ find_matching_device_uris (struct device_id *id,
 	uris->uri = old;
       else
 	{
-	  size_t i;
 	  for (i = 0; i < uris_noserial.n_uris; i++)
 	    uris->uri[uris->n_uris + i] = uris_noserial.uri[i];
 	  uris->n_uris += uris_noserial.n_uris;
@@ -916,6 +931,46 @@ find_matching_device_uris (struct device_id *id,
     }
 
   free_device_uris (&uris_noserial);
+
+  /* Having decided which device URIs match based on IEEE 1284 Device
+   * ID, we now need to look for "paired" URIs for other functions of
+   * a multi-function device.  This are the same except for the
+   * scheme. */
+
+  n = uris->n_uris;
+  for (i = 0; i < n; i++)
+    {
+      size_t j;
+      char *me = uris->uri[i];
+      char *my_rest = strchr (me, ':');
+      size_t my_schemelen;
+      if (!my_rest)
+	continue;
+
+      my_schemelen = my_rest - me;
+      for (j = 0; j < all_uris.n_uris; j++)
+	{
+	  char *twin = all_uris.uri[j];
+	  char *twin_rest = strchr (twin, ':');
+	  size_t twin_schemelen;
+	  if (!twin_rest)
+	    continue;
+
+	  twin_schemelen = twin_rest - twin;
+	  if (my_schemelen == twin_schemelen &&
+	      !strncmp (me, twin, my_schemelen))
+	    /* This is the one we are looking for the twin of. */
+	    continue;
+
+	  if (!strcmp (my_rest, twin_rest))
+	    {
+	      syslog (LOG_DEBUG, "%s twinned with %s", me, twin);
+	      add_device_uri (uris, twin);
+	    }
+	}
+    }
+
+  free_device_uris (&all_uris);
   if (uris->n_uris > 0)
     {
       struct usb_uri_map *map = read_usb_uri_map ();
