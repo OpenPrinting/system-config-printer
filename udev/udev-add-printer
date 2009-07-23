@@ -31,7 +31,7 @@ def create_queue (c, printernames, name, device_uri, ppdname, info):
     # Make sure the name is unique.
     if name in printernames:
         suffix = 2
-        while (name + "-" + str (suffix)) in names:
+        while (name + "-" + str (suffix)) in printernames:
             suffix += 1
             if suffix == 100:
                 break
