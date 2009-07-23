@@ -27,11 +27,9 @@ import sys
 import traceback
 from syslog import *
 
-def create_queue (c, name, device_uri, ppdname, info):
+def create_queue (c, printernames, name, device_uri, ppdname, info):
     # Make sure the name is unique.
-    printers = cupshelpers.getPrinters (c)
-    names = printers.keys ()
-    if name in names:
+    if name in printernames:
         suffix = 2
         while (name + "-" + str (suffix)) in names:
             suffix += 1
@@ -83,7 +81,10 @@ def add_queue (device_id, device_uris, is_fax=False):
         name = name.replace ("/", "-")
         name = name.replace ("#", "-")
 
-        create_queue (c, name, device_uris[0], ppdname,
+        printers = cupshelpers.getPrinters (c)
+        printernames = printers.keys ()
+
+        create_queue (c, printernames, name, device_uris[0], ppdname,
                       "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
 
         if not is_fax:
@@ -107,6 +108,7 @@ def add_queue (device_id, device_uris, is_fax=False):
                              "scsi",
                              "usb"]
             devices = c.getDevices (exclude_schemes=not_fax_schemes)
+            used_uris = map (lambda x: x.device_uri, printers.values ())
             for uri, device_dict in devices.iteritems ():
                 if uri in device_uris:
                     continue
@@ -121,6 +123,11 @@ def add_queue (device_id, device_uris, is_fax=False):
                     for each_uri in device_uris:
                         (s, device_uri_rest) = each_uri.split (":", 1)
                         if rest == device_uri_rest:
+                            # This one matches.  Check there is not
+                            # already a queue using this URI.
+                            if uri in used_uris:
+                                continue
+
                             add_queue (device_dict.get ("device-id", ""),
                                        [uri], is_fax=True)
     else:
