@@ -838,7 +838,7 @@ find_matching_device_uris (struct device_id *id,
 	      match = 1;
 	    }
 
-	  if (!match && strlen (usbserial) >= 12)
+	  if (!match && usbserial[0] != '\0')
 	    {
 	      if (!id->sern)
 		{
