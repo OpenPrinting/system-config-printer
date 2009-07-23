@@ -854,9 +854,10 @@ find_matching_device_uris (struct device_id *id,
 		{
 		  char *saveptr, *uri = strdup (device_uri);
 		  const char *token;
-		  for (token = strtok_r (uri, "?=&", &saveptr);
+		  const char *sep = "?=&/";
+		  for (token = strtok_r (uri, sep, &saveptr);
 		       token;
-		       token = strtok_r (NULL, "?=&", &saveptr))
+		       token = strtok_r (NULL, sep, &saveptr))
 		    if (!strcmp (token, usbserial))
 		      {
 			syslog (LOG_DEBUG, "URI contains USB serial number");
