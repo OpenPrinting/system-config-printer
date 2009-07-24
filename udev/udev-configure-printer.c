@@ -1171,7 +1171,8 @@ do_add (const char *cmd, const char *devpath)
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
 	  id.sern ? id.sern : "-", usbserial);
 
-  find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath, map);
+  find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath,
+			     map);
   free (usb_device_devpath);
   if (device_uris.n_uris == 0)
     {
