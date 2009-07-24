@@ -27,15 +27,28 @@ import sys
 import traceback
 from syslog import *
 
-def create_queue (c, printernames, name, device_uri, ppdname, info):
+def create_queue (c, printers, name, device_uri, ppdname, info):
     # Make sure the name is unique.
-    if name in printernames:
-        suffix = 2
-        while (name + "-" + str (suffix)) in printernames:
+    namel = unicode (name.lower ())
+    unique = False
+    suffix = 1
+    while not unique:
+        unique = True
+        for printer in printers.values ():
+            if (not printer.discovered and
+                ((suffix == 1 and printer.name.lower () == namel) or
+                 (suffix > 1 and
+                  printer.name.lower () == namel + "-" + str (suffix)))):
+                unique = False
+                break
+
+        if not unique:
             suffix += 1
             if suffix == 100:
                 break
-        name += str (suffix)
+
+    if suffix > 1:
+        name += "-" + str (suffix)
 
     c.addPrinter (name,
                   device=device_uri,
@@ -82,9 +95,7 @@ def add_queue (device_id, device_uris, is_fax=False):
         name = name.replace ("#", "-")
 
         printers = cupshelpers.getPrinters (c)
-        printernames = printers.keys ()
-
-        create_queue (c, printernames, name, device_uris[0], ppdname,
+        create_queue (c, printers, name, device_uris[0], ppdname,
                       "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
 
         if not is_fax:
