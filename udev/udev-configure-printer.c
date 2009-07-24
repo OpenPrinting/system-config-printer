@@ -544,11 +544,13 @@ device_id_from_devpath (const char *devpath,
 	      !device->config)
 	    continue;
 
+	  conf = 0;
 	  for (confptr = device->config;
 	       conf < device->descriptor.bNumConfigurations && !got;
 	       conf++, confptr++)
 	    {
 	      struct usb_interface *ifaceptr;
+	      iface = 0;
 	      for (ifaceptr = confptr->interface;
 		   iface < confptr->bNumInterfaces && !got;
 		   iface++, ifaceptr++)
