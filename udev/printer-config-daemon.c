@@ -1,5 +1,5 @@
 /* -*- Mode: C; c-file-style: "gnu" -*-
- * udev-configure-printer - a udev callout to configure print queues
+ * printer-config-daemon - a D-Bus service for configuring printers
  * Copyright (C) 2009 Red Hat, Inc.
  * Author: Tim Waugh <twaugh@redhat.com>
  *
@@ -19,19 +19,12 @@
  *
  */
 
-/*
- * The protocol for this program is:
- *
- * udev-configure-printer add {DEVPATH}
- * udev-configure-printer remove {DEVPATH}
- *
- * where DEVPATH is the path (%p) of the device
- */
-
 #define LIBUDEV_I_KNOW_THE_API_IS_SUBJECT_TO_CHANGE 1
-
+#include "printer-config.h"
+#include "printer-config-server-bindings.h"
 #include <cups/cups.h>
 #include <cups/http.h>
+#include <dbus/dbus-glib-bindings.h>
 #include <fcntl.h>
 #include <libudev.h>
 #include <limits.h>
@@ -40,6 +33,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sys/wait.h>
 #include <syslog.h>
 #include <unistd.h>
 #include <usb.h>
@@ -47,6 +41,12 @@
 #define DISABLED_REASON "Unplugged or turned off"
 #define MATCH_ONLY_DISABLED 1
 #define USB_URI_MAP "/var/run/udev-configure-printer/usb-uris"
+
+struct children
+{
+  struct children *next;
+  GPid pid;
+};
 
 struct device_uris
 {
@@ -204,7 +204,7 @@ read_usb_uri_map (void)
 	  if (fd == -1)
 	    {
 	      syslog (LOG_ERR, "failed to create " USB_URI_MAP);
-	      exit (1);
+	      return NULL;
 	    }
 	}
     }
@@ -212,8 +212,9 @@ read_usb_uri_map (void)
   map = malloc (sizeof (struct usb_uri_map));
   if (!map)
     {
+      close (fd);
       syslog (LOG_ERR, "out of memory");
-      exit (1);
+      return NULL;
     }
 
   lock.l_type = F_WRLCK;
@@ -222,30 +223,39 @@ read_usb_uri_map (void)
   lock.l_len = 0;
   if (fcntl (fd, F_SETLKW, &lock) == -1)
     {
+      close (fd);
+      free (map);
       syslog (LOG_ERR, "failed to lock " USB_URI_MAP);
-      exit (1);
+      return NULL;
     }
 
   map->entries = NULL;
   map->fd = fd;
   if (fstat (fd, &st) == -1)
     {
+      close (fd);
+      free (map);
       syslog (LOG_ERR, "failed to fstat " USB_URI_MAP " (fd %d)", fd);
-      exit (1);
+      return NULL;
     }
 
   /* Read the entire file into memory. */
   buf = malloc (1 + (sizeof (char) * st.st_size));
   if (!buf)
     {
+      close (fd);
+      free (map);
       syslog (LOG_ERR, "out of memory");
-      exit (1);
+      return NULL;
     }
 
   if (read (fd, buf, st.st_size) < 0)
     {
+      close (fd);
+      free (map);
+      free (buf);
       syslog (LOG_ERR, "failed to read " USB_URI_MAP);
-      exit (1);
+      return NULL;
     }
 
   buf[st.st_size] = '\0';
@@ -303,7 +313,9 @@ write_usb_uri_map (struct usb_uri_map *map)
   if (!f)
     {
       syslog (LOG_ERR, "failed to fdopen " USB_URI_MAP " (fd %d)", fd);
-      exit (1);
+      close (fd);
+      map->fd = -1;
+      return;
     }
 
   for (entry = map->entries; entry; entry = entry->next)
@@ -366,7 +378,7 @@ parse_device_id (const char *device_id,
   if (!id->full_device_id || !fieldname)
     {
       syslog (LOG_ERR, "out of memory");
-      exit (1);
+      return;
     }
 
   memcpy (id->full_device_id, device_id, len);
@@ -415,247 +427,6 @@ parse_device_id (const char *device_id,
   free (fieldname);
 }
 
-static char *
-device_id_from_devpath (const char *devpath,
-			const struct usb_uri_map *map,
-			struct device_id *id,
-			char *usbserial, size_t usbseriallen)
-{
-  struct usb_uri_map_entry *entry;
-  struct udev *udev;
-  struct udev_device *dev, *parent_dev = NULL;
-  const char *sys;
-  const char *idVendorStr, *idProductStr, *serial;
-  char *end;
-  unsigned long idVendor, idProduct;
-  size_t syslen, devpathlen;
-  char *syspath;
-  struct usb_bus *bus;
-  struct usb_dev_handle *handle = NULL;
-  char ieee1284_id[1024];
-  const char *device_id = NULL;
-  int conf = 0, iface = 0;
-  int got = 0;
-  char *usb_device_devpath;
-
-  id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
-
-  udev = udev_new ();
-  if (udev == NULL)
-    {
-      syslog (LOG_ERR, "udev_new failed");
-      exit (1);
-    }
-
-  sys = udev_get_sys_path (udev);
-  syslen = strlen (sys);
-  devpathlen = strlen (devpath);
-  syspath = malloc (syslen + devpathlen + 1);
-  if (syspath == NULL)
-    {
-      udev_unref (udev);
-      syslog (LOG_ERR, "out of memory");
-      exit (1);
-    }
-
-  memcpy (syspath, sys, syslen);
-  memcpy (syspath + syslen, devpath, devpathlen);
-  syspath[syslen + devpathlen] = '\0';
-
-  dev = udev_device_new_from_syspath (udev, syspath);
-  if (dev == NULL)
-    {
-      udev_device_unref (dev);
-      udev_unref (udev);
-      syslog (LOG_ERR, "unable to access %s", syspath);
-      exit (1);
-    }
-
-  parent_dev = udev_device_get_parent_with_subsystem_devtype (dev,
-							      "usb",
-							      "usb_device");
-  if (!parent_dev)
-    {
-      udev_unref (udev);
-      syslog (LOG_ERR, "Failed to get parent");
-      exit (1);
-    }
-
-  usb_device_devpath = strdup (udev_device_get_devpath (parent_dev));
-  syslog (LOG_DEBUG, "parent devpath is %s", usb_device_devpath);
-
-  for (entry = map->entries; entry; entry = entry->next)
-    if (!strcmp (entry->devpath, usb_device_devpath))
-      break;
-
-  if (entry)
-    /* The map already had an entry so has already been dealt
-     * with.  This can happen because there are two "add"
-     * triggers: one for the usb_device device and the other for
-     * the usblp device.  We have most likely been triggered by
-     * the usblp device, so the usb_device rule got there before
-     * us and succeeded.
-     *
-     * Pretend we didn't find any device URIs that matched, and
-     * exit.
-     */
-    exit (0);
-
-  serial = udev_device_get_sysattr_value (parent_dev, "serial");
-  if (serial)
-    {
-      strncpy (usbserial, serial, usbseriallen);
-      usbserial[usbseriallen - 1] = '\0';
-    }
-  else
-    usbserial[0] = '\0';
-
-  /* See if we were triggered by a usblp add event. */
-  device_id = udev_device_get_sysattr_value (dev, "device/ieee1284_id");
-  if (device_id)
-    {
-      got = 1;
-      goto got_deviceid;
-    }
-
-  /* This is a low-level USB device.  Use libusb to fetch the Device ID. */
-  idVendorStr = udev_device_get_sysattr_value (parent_dev, "idVendor");
-  idProductStr = udev_device_get_sysattr_value (parent_dev, "idProduct");
-
-  if (!idVendorStr || !idProductStr)
-    {
-      udev_device_unref (dev);
-      udev_unref (udev);
-      syslog (LOG_ERR, "Missing sysattr %s",
-	      idVendorStr ?
-	      (idProductStr ? "serial" : "idProduct") : "idVendor");
-      exit (1);
-    }
-
-  idVendor = strtoul (idVendorStr, &end, 16);
-  if (end == idVendorStr)
-    {
-      syslog (LOG_ERR, "Invalid idVendor: %s", idVendorStr);
-      exit (1);
-    }
-
-  idProduct = strtoul (idProductStr, &end, 16);
-  if (end == idProductStr)
-    {
-      syslog (LOG_ERR, "Invalid idProduct: %s", idProductStr);
-      exit (1);
-    }
-
-  syslog (LOG_DEBUG, "Device vendor/product is %04zX:%04zX",
-	  idVendor, idProduct);
-
-  usb_init ();
-  usb_find_busses ();
-  usb_find_devices ();
-  for (bus = usb_get_busses (); bus && !got; bus = bus->next)
-    {
-      struct usb_device *device;
-      for (device = bus->devices; device && !got; device = device->next)
-	{
-	  struct usb_config_descriptor *confptr;
-	  if (device->descriptor.idVendor != idVendor ||
-	      device->descriptor.idProduct != idProduct ||
-	      !device->config)
-	    continue;
-
-	  conf = 0;
-	  for (confptr = device->config;
-	       conf < device->descriptor.bNumConfigurations && !got;
-	       conf++, confptr++)
-	    {
-	      struct usb_interface *ifaceptr;
-	      iface = 0;
-	      for (ifaceptr = confptr->interface;
-		   iface < confptr->bNumInterfaces && !got;
-		   iface++, ifaceptr++)
-		{
-		  struct usb_interface_descriptor *altptr;
-		  int altset = 0;
-		  for (altptr = ifaceptr->altsetting;
-		       altset < ifaceptr->num_altsetting && !got;
-		       altset++, altptr++)
-		    {
-		      if (altptr->bInterfaceClass == USB_CLASS_PRINTER &&
-			  altptr->bInterfaceSubClass == 1)
-			{
-			  int n;
-			  handle = usb_open (device);
-			  if (!handle)
-			    {
-			      syslog (LOG_DEBUG, "failed to open device");
-			      continue;
-			    }
-
-			  n = altptr->bInterfaceNumber;
-			  if (usb_claim_interface (handle, n) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_DEBUG, "failed to claim interface");
-			      continue;
-			    }
-
-			  if (n != 0 && usb_claim_interface (handle, 0) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_DEBUG, "failed to claim interface 0");
-			      continue;
-			    }
-
-			  n = altptr->bAlternateSetting;
-			  if (usb_set_altinterface (handle, n) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_DEBUG, "failed set altinterface");
-			      continue;
-			    }
-
-			  memset (ieee1284_id, '\0', sizeof (ieee1284_id));
-			  if (usb_control_msg (handle,
-					       USB_TYPE_CLASS |
-					       USB_ENDPOINT_IN |
-					       USB_RECIP_INTERFACE,
-					       0, conf, iface,
-					       ieee1284_id,
-					       sizeof (ieee1284_id),
-					       5000) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_ERR, "Failed to fetch Device ID");
-			      continue;
-			    }
-
-			  got = 1;
-			  usb_close (handle);
-			  break;
-			}
-		    }
-		}
-	    }
-	}
-    }
-
- got_deviceid:
-  if (got)
-    {
-      if (!device_id)
-	device_id = ieee1284_id + 2;
-      parse_device_id (device_id, id);
-    }
-
-  udev_device_unref (dev);
-  udev_unref (udev);
-  return usb_device_devpath;
-}
-
 static const char *
 no_password (const char *prompt)
 {
@@ -688,34 +459,10 @@ cups_connection (void)
       */
 
       syslog (LOG_DEBUG, "failed to connect to CUPS server; giving up");
-      exit (1);
+      return NULL;
     }
  
   return cups;
-}
-
-static ipp_t *
-cupsDoRequestOrDie (http_t *http,
-		    ipp_t *request,
-		    const char *resource)
-{
-  ipp_t *answer = cupsDoRequest (http, request, resource);
-  if (answer == NULL)
-    {
-      syslog (LOG_ERR, "failed to send IPP request %d",
-	      request->request.op.operation_id);
-      exit (1);
-    }
-
-  if (answer->request.status.status_code > IPP_OK_CONFLICT)
-    {
-      syslog (LOG_ERR, "IPP request %d failed (%d)",
-	      request->request.op.operation_id,
-	      answer->request.status.status_code);
-      exit (1);
-    }
-
-  return answer;
 }
 
 static int
@@ -758,8 +505,23 @@ find_matching_device_uris (struct device_id *id,
 		 sizeof (exclude_schemes) / sizeof(exclude_schemes[0]),
 		 NULL, exclude_schemes);
 
-  answer = cupsDoRequestOrDie (cups, request, "/");
+  answer = cupsDoRequest (cups, request, "/");
   httpClose (cups);
+
+  if (answer == NULL)
+    {
+      syslog (LOG_ERR, "failed to send IPP request %d",
+	      request->request.op.operation_id);
+      return 0;
+    }
+
+  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+    {
+      syslog (LOG_ERR, "IPP request %d failed (%d)",
+	      request->request.op.operation_id,
+	      answer->request.status.status_code);
+      return 0;
+    }
 
   for (attr = answer->attrs; attr; attr = attr->next)
     {
@@ -893,6 +655,8 @@ find_matching_device_uris (struct device_id *id,
 		      device_uri);
 	      add_device_uri (&uris_noserial, device_uri);
 	    }
+	  else
+	    syslog (LOG_DEBUG, "No match: %s", device_uri);
 	}
 
       if (!attr)
@@ -1024,7 +788,7 @@ for_each_matching_queue (struct device_uris *device_uris,
   if (answer == NULL)
     {
       syslog (LOG_ERR, "failed to send CUPS-Get-Printers request");
-      exit (1);
+      return 0;
     }
 
   if (answer->request.status.status_code > IPP_OK_CONFLICT)
@@ -1038,7 +802,7 @@ for_each_matching_queue (struct device_uris *device_uris,
 
       syslog (LOG_ERR, "CUPS-Get-Printers request failed (%d)",
 	      answer->request.status.status_code);
-      exit (1);
+      return 0;
     }
 
   for (attr = answer->attrs; attr; attr = attr->next)
@@ -1121,113 +885,6 @@ enable_queue (const char *printer_uri, void *context)
   httpClose (cups);
 }
 
-static int
-do_add (const char *cmd, const char *devpath)
-{
-  pid_t pid;
-  int f;
-  struct device_id id;
-  struct device_uris device_uris;
-  struct usb_uri_map *map;
-  char *usb_device_devpath;
-  char usbserial[256];
-
-  if (getenv ("DEBUG") == NULL)
-    {
-      if ((pid = fork ()) == -1)
-	syslog (LOG_ERR, "Failed to fork process");
-      else if (pid != 0)
-	/* Parent. */
-	exit (0);
-
-      close (STDIN_FILENO);
-      close (STDOUT_FILENO);
-      close (STDERR_FILENO);
-      f = open ("/dev/null", O_RDWR);
-      if (f != STDIN_FILENO)
-	dup2 (f, STDIN_FILENO);
-      if (f != STDOUT_FILENO)
-	dup2 (f, STDOUT_FILENO);
-      if (f != STDERR_FILENO)
-	dup2 (f, STDERR_FILENO);
-
-      setsid ();
-    }
-
-  syslog (LOG_DEBUG, "add %s", devpath);
-
-  map = read_usb_uri_map ();
-  usb_device_devpath = device_id_from_devpath (devpath, map, &id,
-					       usbserial, sizeof (usbserial));
-
-  if (!id.mfg || !id.mdl)
-    {
-      syslog (LOG_ERR, "invalid or missing IEEE 1284 Device ID%s%s",
-	      id.full_device_id ? " " : "",
-	      id.full_device_id ? id.full_device_id : "");
-      exit (1);
-    }
-
-  syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
-	  id.sern ? id.sern : "-", usbserial);
-
-  find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath,
-			     map);
-  free (usb_device_devpath);
-  if (device_uris.n_uris == 0)
-    {
-      free_device_id (&id);
-      return 0;
-    }
-
-  /* Re-enable any queues we'd previously disabled. */
-  if (for_each_matching_queue (&device_uris, MATCH_ONLY_DISABLED,
-			       enable_queue, NULL) == 0)
-    {
-      size_t i;
-      int type;
-      char argv0[PATH_MAX];
-      char *p;
-      char **argv = malloc (sizeof (char *) * (3 + device_uris.n_uris));
-
-      /* No queue is configured for this device yet.
-	 Decide on a URI to use. */
-      type = device_uri_type (device_uris.uri[0]);
-      for (i = 1; i < device_uris.n_uris; i++)
-	{
-	  int new_type = device_uri_type (device_uris.uri[i]);
-	  if (new_type < type)
-	    {
-	      char *swap = device_uris.uri[0];
-	      device_uris.uri[0] = device_uris.uri[i];
-	      device_uris.uri[i] = swap;
-	      type = new_type;
-	    }
-	}
-
-      argv[0] = argv0;
-      argv[1] = id.full_device_id;
-      for (i = 0; i < device_uris.n_uris; i++)
-	argv[i + 2] = device_uris.uri[i];
-      argv[i + 2] = NULL;
-
-      syslog (LOG_DEBUG, "About to add queue for %s", argv[2]);
-      strcpy (argv0, cmd);
-      p = strrchr (argv0, '/');
-      if (p++ == NULL)
-	p = argv0;
-
-      strcpy (p, "udev-add-printer");
-
-      execv (argv0, argv);
-      syslog (LOG_ERR, "Failed to execute %s", argv0);
-    }
-
-  free_device_id (&id);
-  free_device_uris (&device_uris);
-  return 0;
-}
-
 static void
 disable_queue (const char *printer_uri, void *context)
 {
@@ -1257,15 +914,303 @@ disable_queue (const char *printer_uri, void *context)
   httpClose (cups);
 }
 
-static int
-do_remove (const char *devpath)
+static char *
+syspath_from_devpath (struct udev *udev, const char *devpath)
+{
+  const char *sys;
+  char *syspath;
+  size_t syslen, devpathlen = strlen (devpath);
+  sys = udev_get_sys_path (udev);
+  syslen = strlen (sys);
+  syspath = malloc (syslen + devpathlen + 1);
+  if (syspath == NULL)
+    return NULL;
+
+  memcpy (syspath, sys, syslen);
+  memcpy (syspath + syslen, devpath, devpathlen);
+  syspath[syslen + devpathlen] = '\0';
+  return syspath;
+}
+
+static void
+reap_child (GPid pid, gint status, gpointer context)
+{
+  PrinterConfigDaemon *self = context;
+  struct children *child, **prev = &self->children;
+  g_debug ("PID %d has exited", pid);
+  for (child = self->children; child; prev = &child->next, child = child->next)
+    if (child->pid == pid)
+      {
+	*prev = child->next;
+	free (child);
+	g_debug ("self->children is now %p", self->children);
+	break;
+      }
+}
+
+G_DEFINE_TYPE (PrinterConfigDaemon, printer_config_daemon, G_TYPE_OBJECT)
+
+static gboolean
+kill_timeout (gpointer context)
+{
+  PrinterConfigDaemon *self = context;
+  if (self->children == NULL)
+    {
+      g_debug ("Time to go");
+      main_quit ();
+      return FALSE;
+    }
+
+  g_debug ("children is %p", self->children);
+  return TRUE;
+}
+
+static gboolean
+reset_killtimer (PrinterConfigDaemon *self)
+{
+  if (self->killtimer != 0)
+    {
+      g_debug ("Remove killtimer %d", self->killtimer);
+      g_source_remove (self->killtimer);
+    }
+
+  self->killtimer = g_timeout_add (1000, kill_timeout, self);
+  g_debug ("Set killtimer %d", self->killtimer);
+  return TRUE;
+}
+
+static void
+printer_config_daemon_dispose (GObject *gobject)
+{
+  PrinterConfigDaemon *self = PRINTER_CONFIG_DAEMON (gobject);
+  g_debug ("dispose %p", self);
+  G_OBJECT_CLASS (printer_config_daemon_parent_class)->dispose (gobject);
+}
+
+static void
+printer_config_daemon_finalize (GObject *gobject)
+{
+  PrinterConfigDaemon *self = PRINTER_CONFIG_DAEMON (gobject);
+  g_debug ("finalize %p", self);
+  if (self->killtimer != 0)
+    {
+      g_debug ("Remove killtimer %d", self->killtimer);
+      g_source_remove (self->killtimer);
+    }
+
+  G_OBJECT_CLASS (printer_config_daemon_parent_class)->finalize (gobject);
+}
+
+static void
+printer_config_daemon_class_init (PrinterConfigDaemonClass *klass)
+{
+  GError *error = NULL;
+  GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+  gobject_class->dispose = printer_config_daemon_dispose;
+  gobject_class->finalize = printer_config_daemon_finalize;
+  g_debug ("class init");
+  klass->connection = dbus_g_bus_get (DBUS_BUS_SYSTEM, &error);
+  if (klass->connection == NULL)
+    {
+      g_warning ("Unable to connect to D-Bus: %s", error->message);
+      g_error_free (error);
+      return;
+    }
+
+  dbus_g_object_type_install_info(PRINTER_CONFIG_TYPE_DAEMON,
+				  &dbus_glib_printer_config_daemon_object_info);
+}
+
+static void
+printer_config_daemon_init (PrinterConfigDaemon *self)
+{
+  DBusGProxy *driver_proxy;
+  GError *error = NULL;
+  PrinterConfigDaemonClass *klass = PRINTER_CONFIG_DAEMON_GET_CLASS (self);
+  guint request_ret;
+
+  dbus_g_connection_register_g_object (klass->connection,
+				       "/com/redhat/PrinterConfig",
+				       G_OBJECT (self));
+  driver_proxy = dbus_g_proxy_new_for_name (klass->connection,
+					    DBUS_SERVICE_DBUS,
+					    DBUS_PATH_DBUS,
+					    DBUS_INTERFACE_DBUS);
+
+  g_debug ("daemon init %p", self);
+  if (!org_freedesktop_DBus_request_name (driver_proxy,
+					  "com.redhat.PrinterConfig",
+					  0, &request_ret,
+					  &error))
+    {
+      g_warning ("Unable to register service: %s", error->message);
+      g_error_free (error);
+    }
+
+  self->children = NULL;
+  g_object_unref (driver_proxy);
+}
+
+gboolean
+printer_config_daemon_usb_printer_add (PrinterConfigDaemon *self,
+				       const char *usb_device_devpath,
+				       const char *deviceid,
+				       DBusGMethodInvocation *context)
+{
+  struct device_id id;
+  struct device_uris device_uris;
+  struct usb_uri_map *map;
+  struct usb_uri_map_entry *entry;
+  struct udev *udev;
+  struct udev_device *dev;
+  const char *usbserial;
+  char *syspath;
+
+  syslog (LOG_DEBUG, "add %s", usb_device_devpath);
+  dbus_g_method_return (context);
+
+  reset_killtimer (self);
+  udev = udev_new ();
+  if (!udev)
+    {
+      syslog (LOG_ERR, "failed to init libudev");
+      return FALSE;
+    }
+
+  map = read_usb_uri_map ();
+  if (!map)
+    return TRUE;
+
+  for (entry = map->entries; entry; entry = entry->next)
+    if (!strcmp (entry->devpath, usb_device_devpath))
+      break;
+
+  if (entry != NULL)
+    /* The map already had an entry so has already been dealt
+     * with.  This can happen because there are two "add"
+     * triggers: one for the usb_device device and the other for
+     * the usblp device.  We have most likely been triggered by
+     * the usblp device, so the usb_device rule got there before
+     * us and succeeded.
+     *
+     * Pretend we didn't find any device URIs that matched, and
+     * exit.
+     */
+    return TRUE;
+
+  id.full_device_id = id.mfg = id.mdl = id.sern = NULL;
+  parse_device_id (deviceid, &id);
+  if (!id.mfg || !id.mdl)
+    {
+      syslog (LOG_ERR, "invalid IEEE 1284 Device ID %s",
+	      id.full_device_id);
+      return FALSE;
+    }
+
+  syspath = syspath_from_devpath (udev, usb_device_devpath);
+  if (!syspath)
+    {
+      syslog (LOG_ERR, "unable to get syspath from devpath");
+      return FALSE;
+    }
+
+  dev = udev_device_new_from_syspath (udev, syspath);
+  if (!dev)
+    {
+      udev_device_unref (dev);
+      udev_unref (udev);
+      syslog (LOG_ERR, "unable to access %s", syspath);
+      free (syspath);
+      return TRUE;
+    }
+
+  free (syspath);
+  usbserial = udev_device_get_sysattr_value (dev, "serial");
+  syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
+	  id.sern ? id.sern : "-", usbserial ? usbserial : "-");
+
+  find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath,
+			     map);
+  udev_device_unref (dev);
+  udev_unref (udev);
+  if (device_uris.n_uris == 0)
+    {
+      free_device_id (&id);
+      return TRUE;
+    }
+
+  /* Re-enable any queues we'd previously disabled. */
+  if (for_each_matching_queue (&device_uris, MATCH_ONLY_DISABLED,
+			       enable_queue, NULL) == 0)
+    {
+      size_t i;
+      int type;
+      GPid child_pid;
+      GError *error = NULL;
+      char **argv = malloc (sizeof (char *) * (3 + device_uris.n_uris));
+
+      /* No queue is configured for this device yet.
+	 Decide on a URI to use. */
+      type = device_uri_type (device_uris.uri[0]);
+      for (i = 1; i < device_uris.n_uris; i++)
+	{
+	  int new_type = device_uri_type (device_uris.uri[i]);
+	  if (new_type < type)
+	    {
+	      char *swap = device_uris.uri[0];
+	      device_uris.uri[0] = device_uris.uri[i];
+	      device_uris.uri[i] = swap;
+	      type = new_type;
+	    }
+	}
+
+      argv[0] = "/usr/libexec/udev-add-printer";
+      argv[1] = id.full_device_id;
+      for (i = 0; i < device_uris.n_uris; i++)
+	argv[i + 2] = device_uris.uri[i];
+      argv[i + 2] = NULL;
+
+      syslog (LOG_DEBUG, "About to add queue for %s", argv[2]);
+      if (g_spawn_async ("/", argv, NULL,
+			 G_SPAWN_STDOUT_TO_DEV_NULL |
+			 G_SPAWN_STDERR_TO_DEV_NULL |
+			 G_SPAWN_DO_NOT_REAP_CHILD,
+			 NULL, NULL,
+			 &child_pid,
+			 &error) == FALSE)
+	syslog (LOG_ERR, "Failed to execute %s", argv[0]);
+      else
+	{
+	  struct children *child = malloc (sizeof (struct children));
+	  child->next = self->children;
+	  child->pid = child_pid;
+	  self->children = child;
+	  g_child_watch_add (child_pid, reap_child, self);
+	}
+    }
+
+  free_device_id (&id);
+  free_device_uris (&device_uris);
+  return TRUE;
+}
+
+gboolean
+printer_config_daemon_usb_printer_remove (PrinterConfigDaemon *self,
+					  const char *devpath,
+					  DBusGMethodInvocation *context)
 {
   struct usb_uri_map *map;
   struct usb_uri_map_entry *entry, **prev;
   struct device_uris *uris = NULL;
-  syslog (LOG_DEBUG, "remove %s", devpath);
 
+  syslog (LOG_DEBUG, "remove %s", devpath);
+  dbus_g_method_return (context);
+
+  reset_killtimer (self);
   map = read_usb_uri_map ();
+  if (!map)
+    return TRUE;
+
   prev = &map->entries;
   for (entry = map->entries; entry; entry = entry->next)
     {
@@ -1287,28 +1232,17 @@ do_remove (const char *devpath)
     }
 
   free_usb_uri_map (map);
-  return 0;
+  return TRUE;
 }
 
-int
-main (int argc, char **argv)
+PrinterConfigDaemon *
+printer_config_daemon_new (void)
 {
-  int add;
-
-  if (argc != 3 ||
-      !((add = !strcmp (argv[1], "add")) ||
-	!strcmp (argv[1], "remove")))
-    {
-      fprintf (stderr,
-	       "Syntax: %s add {USB device path}\n"
-	       "        %s remove {USB device path}\n",
-	       argv[0], argv[0]);
-      return 1;
-    }
-
-  openlog ("udev-configure-printer", 0, LOG_LPR);
-  if (add)
-    return do_add (argv[0], argv[2]);
-
-  return do_remove (argv[2]);
+  PrinterConfigDaemon *self;
+  self = PRINTER_CONFIG_DAEMON (g_object_new (PRINTER_CONFIG_TYPE_DAEMON,
+					      NULL));
+  self->children = NULL;
+  self->killtimer = 0;
+  g_debug ("New daemon %p", self);
+  return self;
 }
