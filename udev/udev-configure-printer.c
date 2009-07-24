@@ -572,15 +572,6 @@ device_id_from_devpath (const char *devpath,
 			      continue;
 			    }
 
-			  n = confptr->bConfigurationValue;
-			  if (usb_set_configuration (handle, n) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_DEBUG, "failed to set configuration");
-			      continue;
-			    }
-
 			  n = altptr->bInterfaceNumber;
 			  if (usb_claim_interface (handle, n) < 0)
 			    {
