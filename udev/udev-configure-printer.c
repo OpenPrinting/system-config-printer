@@ -703,7 +703,8 @@ static int
 find_matching_device_uris (struct device_id *id,
 			   const char *usbserial,
 			   struct device_uris *uris,
-			   const char *devpath)
+			   const char *devpath,
+			   struct usb_uri_map *map)
 {
   http_t *cups;
   ipp_t *request, *answer;
@@ -967,7 +968,6 @@ find_matching_device_uris (struct device_id *id,
   free_device_uris (&all_uris);
   if (uris->n_uris > 0)
     {
-      struct usb_uri_map *map = read_usb_uri_map ();
       struct usb_uri_map_entry *entry;
       for (entry = map->entries; entry; entry = entry->next)
 	if (!strcmp (entry->devpath, devpath))
@@ -1139,21 +1139,6 @@ do_add (const char *cmd, const char *devpath)
   char *usb_device_devpath;
   char usbserial[256];
 
-  syslog (LOG_DEBUG, "add %s", devpath);
-
-  usb_device_devpath = device_id_from_devpath (devpath, &id,
-					       usbserial, sizeof (usbserial));
-  if (!id.mfg || !id.mdl)
-    {
-      syslog (LOG_ERR, "invalid or missing IEEE 1284 Device ID%s%s",
-	      id.full_device_id ? " " : "",
-	      id.full_device_id ? id.full_device_id : "");
-      exit (1);
-    }
-
-  syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
-	  id.sern ? id.sern : "-", usbserial);
-
   if (getenv ("DEBUG") == NULL)
     {
       if ((pid = fork ()) == -1)
@@ -1176,7 +1161,25 @@ do_add (const char *cmd, const char *devpath)
       setsid ();
     }
 
-  find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath);
+  syslog (LOG_DEBUG, "add %s", devpath);
+
+  struct usb_uri_map *map = read_usb_uri_map ();
+
+  usb_device_devpath = device_id_from_devpath (devpath, &id,
+					       usbserial, sizeof (usbserial));
+
+  if (!id.mfg || !id.mdl)
+    {
+      syslog (LOG_ERR, "invalid or missing IEEE 1284 Device ID%s%s",
+	      id.full_device_id ? " " : "",
+	      id.full_device_id ? id.full_device_id : "");
+      exit (1);
+    }
+
+  syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
+	  id.sern ? id.sern : "-", usbserial);
+
+  find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath, map);
   free (usb_device_devpath);
   if (device_uris.n_uris == 0)
     {
