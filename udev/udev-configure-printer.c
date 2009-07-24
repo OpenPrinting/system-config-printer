@@ -436,7 +436,7 @@ device_id_from_devpath (const char *devpath,
   const char *device_id = NULL;
   int conf = 0, iface = 0;
   int got = 0;
-  char *usb_device_devpath = strdup (devpath);
+  char *usb_device_devpath;
 
   id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
 
@@ -485,7 +485,7 @@ device_id_from_devpath (const char *devpath,
   syslog (LOG_DEBUG, "parent devpath is %s", usb_device_devpath);
 
   for (entry = map->entries; entry; entry = entry->next)
-    if (!strcmp (entry->devpath, devpath))
+    if (!strcmp (entry->devpath, usb_device_devpath))
       break;
 
   if (entry)
