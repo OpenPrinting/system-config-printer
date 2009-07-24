@@ -56,6 +56,7 @@ def create_queue (c, printers, name, device_uri, ppdname, info):
                   info=info,
                   location=os.uname ()[1])
     cupshelpers.activateNewPrinter (c, name)
+    return name
 
 def add_queue (device_id, device_uris, is_fax=False):
     """
@@ -95,8 +96,8 @@ def add_queue (device_id, device_uris, is_fax=False):
         name = name.replace ("#", "-")
 
         printers = cupshelpers.getPrinters (c)
-        create_queue (c, printers, name, device_uris[0], ppdname,
-                      "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
+        uniquename = create_queue (c, printers, name, device_uris[0], ppdname,
+                                   "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
 
         if not is_fax:
             # Look for a corresponding fax queue.  We can only
@@ -138,11 +139,11 @@ def add_queue (device_id, device_uris, is_fax=False):
                                        [uri], is_fax=True)
     else:
         # Not an exact match.
-        name = device_uris[0]
+        uniquename = device_uris[0]
 
     if notification:
         try:
-            notification.NewPrinter (status, name, id_dict["MFG"],
+            notification.NewPrinter (status, uniquename, id_dict["MFG"],
                                      id_dict["MDL"], id_dict["DES"],
                                      reduce(lambda x, y: x + ',' + y,
                                             id_dict["CMD"]))
