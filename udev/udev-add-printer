@@ -58,13 +58,17 @@ def create_queue (c, printers, name, device_uri, ppdname, info):
     cupshelpers.activateNewPrinter (c, name)
     return name
 
-def add_queue (device_id, device_uris, is_fax=False):
+def add_queue (device_id, device_uris, fax_basename=False):
     """
     Create a CUPS queue.
+
+    device_id: the IEEE 1284 Device ID of the device to add a queue for.
+    device_uris: device URIs, best first, for this device
+    fax_basename: False if this is not a fax queue, else name prefix
     """
 
     syslog (LOG_DEBUG, "add_queue: URIs=%s" % device_uris)
-    if is_fax:
+    if fax_basename != False:
         notification = None
     else:
         try:
@@ -95,11 +99,14 @@ def add_queue (device_id, device_uris, is_fax=False):
         name = name.replace ("/", "-")
         name = name.replace ("#", "-")
 
+        if fax_basename != False:
+            name = fax_basename + "-" + name
+
         printers = cupshelpers.getPrinters (c)
         uniquename = create_queue (c, printers, name, device_uris[0], ppdname,
                                    "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
 
-        if not is_fax:
+        if fax_basename == False:
             # Look for a corresponding fax queue.  We can only
             # identify these by looking for device URIs that are the
             # same as this one but with a different scheme.  If we
@@ -136,7 +143,7 @@ def add_queue (device_id, device_uris, is_fax=False):
                                 break
 
                             add_queue (device_dict.get ("device-id", ""),
-                                       [uri], is_fax=True)
+                                       [uri], fax_basename=uniquename)
     else:
         # Not an exact match.
         uniquename = device_uris[0]
