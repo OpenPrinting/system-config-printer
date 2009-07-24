@@ -113,7 +113,12 @@ def add_queue (device_id, device_uris, is_fax=False):
                             if uri in used_uris:
                                 break
 
-                            devices = c.getDevices (include_schemes=[scheme])
+                            try:
+                                devices = c.getDevices(include_schemes=[scheme])
+                            except TypeError:
+                                # include_schemes requires pycups 1.9.46
+                                devices = c.getDevices ()
+
                             device_dict = devices.get (uri)
                             if device_dict == None:
                                 break
