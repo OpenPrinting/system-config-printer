@@ -417,9 +417,11 @@ parse_device_id (const char *device_id,
 
 static char *
 device_id_from_devpath (const char *devpath,
+			const struct usb_uri_map *map,
 			struct device_id *id,
 			char *usbserial, size_t usbseriallen)
 {
+  struct usb_uri_map_entry *entry;
   struct udev *udev;
   struct udev_device *dev, *parent_dev = NULL;
   const char *sys;
@@ -481,6 +483,23 @@ device_id_from_devpath (const char *devpath,
 
   usb_device_devpath = strdup (udev_device_get_devpath (parent_dev));
   syslog (LOG_DEBUG, "parent devpath is %s", usb_device_devpath);
+
+  for (entry = map->entries; entry; entry = entry->next)
+    if (!strcmp (entry->devpath, devpath))
+      break;
+
+  if (entry)
+    /* The map already had an entry so has already been dealt
+     * with.  This can happen because there are two "add"
+     * triggers: one for the usb_device device and the other for
+     * the usblp device.  We have most likely been triggered by
+     * the usblp device, so the usb_device rule got there before
+     * us and succeeded.
+     *
+     * Pretend we didn't find any device URIs that matched, and
+     * exit.
+     */
+    exit (0);
 
   serial = udev_device_get_sysattr_value (parent_dev, "serial");
   if (serial)
@@ -968,35 +987,8 @@ find_matching_device_uris (struct device_id *id,
   free_device_uris (&all_uris);
   if (uris->n_uris > 0)
     {
-      struct usb_uri_map_entry *entry;
-      for (entry = map->entries; entry; entry = entry->next)
-	if (!strcmp (entry->devpath, devpath))
-	  break;
-
-      if (!entry)
-	{
-	  /* There was no entry for this device in our map. */
-	  add_usb_uri_mapping (&map, devpath, uris);
-	  write_usb_uri_map (map);
-	}
-      else
-	{
-	  /* The map already had an entry so has already been dealt
-	   * with.  This can happen because there are two "add"
-	   * triggers: one for the usb_device device and the other for
-	   * the usblp device.  We have most likely been triggered by
-	   * the usblp device, so the usb_device rule got there before
-	   * us and succeeded.
-	   *
-	   * Pretend we didn't find any device URIs that matched, and
-	   * exit.
-	   */
-
-	  free_device_uris (uris);
-	  uris->n_uris = 0;
-	  uris->uri = NULL;
-	}
-
+      add_usb_uri_mapping (&map, devpath, uris);
+      write_usb_uri_map (map);
       free_usb_uri_map (map);
     }
 
@@ -1136,6 +1128,7 @@ do_add (const char *cmd, const char *devpath)
   int f;
   struct device_id id;
   struct device_uris device_uris;
+  struct usb_uri_map *map;
   char *usb_device_devpath;
   char usbserial[256];
 
@@ -1163,9 +1156,8 @@ do_add (const char *cmd, const char *devpath)
 
   syslog (LOG_DEBUG, "add %s", devpath);
 
-  struct usb_uri_map *map = read_usb_uri_map ();
-
-  usb_device_devpath = device_id_from_devpath (devpath, &id,
+  map = read_usb_uri_map ();
+  usb_device_devpath = device_id_from_devpath (devpath, map, &id,
 					       usbserial, sizeof (usbserial));
 
   if (!id.mfg || !id.mdl)
