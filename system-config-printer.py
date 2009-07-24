@@ -3377,7 +3377,7 @@ class GUI(GtkGUI, monitor.Watcher):
         name = name.replace ("#", "-")
         if not self.checkNPName (name):
             suffix=2
-            while not self.checkNPName (name + str (suffix)):
+            while not self.checkNPName (name + "-" + str (suffix)):
                 suffix += 1
                 if suffix == 100:
                     break
