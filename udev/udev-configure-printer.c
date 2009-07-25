@@ -248,6 +248,7 @@ read_usb_uri_map (void)
       exit (1);
     }
 
+  close (fd);
   buf[st.st_size] = '\0';
   line = buf;
   while (line)
