@@ -41,10 +41,12 @@ class PhysicalDevice:
 
     def _get_host_from_uri (self, uri):
         (scheme, rest) = urllib.splittype (uri)
-        if scheme == 'hp':
+        if scheme == 'hp' or scheme == 'hpfax':
             if rest.startswith ("/net/"):
-                (hostport, rest) = urllib.splithost (rest[5:])
-                if hostport == None:
+                (rest, ipparam) = urllib.splitquery (rest[5:])
+                if ipparam != None and ipparam.startswith("ip="):
+                    hostport = ipparam[3:]
+                else:
                     return None
         else:
             (hostport, rest) = urllib.splithost (rest)
