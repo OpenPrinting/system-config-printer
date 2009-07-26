@@ -4732,7 +4732,7 @@ class NewPrinterGUI(GtkGUI):
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
-        cmd = 'LC_ALL=C DISPLAY= hp-info -d"${URI}"'
+        cmd = 'LC_ALL=C DISPLAY= hp-info -x -i -d"${URI}"'
         debugprint (faxuri + ": " + cmd)
         try:
             p = subprocess.Popen (cmd, shell=True,
