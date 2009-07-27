@@ -152,8 +152,6 @@ def validDeviceURI (uri):
     (scheme, rest) = urllib.splittype (uri)
     if scheme == None or scheme == '':
         return False
-    if rest == None or rest.strip ('/') == '':
-        return False
     return True
 
 def CUPS_server_hostname ():
@@ -5774,9 +5772,11 @@ class NewPrinterGUI(GtkGUI):
             device = "lpd://" + host
             if printer:
                 device = device + "/" + printer
-        elif type == "parallel": # Parallel
+        elif type in ("parallel", "usb", "hp", "hpfax"): # Local printers where
+                                                         # CUPS backends report
+                                                         # full URI
             device = self.device.uri
-        elif type == "scsi": # SCSII
+        elif type == "scsi": # SCSI
             device = ""
         elif type == "serial": # Serial
             options = []
@@ -5809,8 +5809,6 @@ class NewPrinterGUI(GtkGUI):
             uri = SMBURI (group=group, host=host, share=share,
                           user=user, password=password).get_uri ()
             device = "smb://" + uri
-        elif not self.device.is_class:
-            device = self.device.uri
         else:
             device = self.entNPTDevice.get_text()
         return device
