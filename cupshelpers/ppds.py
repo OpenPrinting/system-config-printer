@@ -113,7 +113,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
         model = ppd_make_and_model
 
     # Handle PPDs provided by Turboprint
-    elif l.startswith ("turboprint"):
+    elif l.find ("turboprint") != -1:
         t = ppd_make_and_model.find (" TurboPrint")
         if t != -1:
             ppd_make_and_model = ppd_make_and_model[:t]
@@ -159,29 +159,32 @@ def ppdMakeModelSplit (ppd_make_and_model):
     # HP PPDs give NickNames like:
     # *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
     # Find the version number.
-    v = model.find (" v")
+    modell = model.lower ()
+    v = modell.find (" v")
     if v != -1 and (model[v + 2].isdigit () or
                     (model[v + 2] == '.' and
                      model[v + 3].isdigit ())):
         # Truncate at that point.
         model = model[:v]
+        modell = modell[:v]
 
     for suffix in [" hpijs",
-                   " Foomatic/",
+                   " foomatic/",
                    " - ",
                    " w/",
                    " (",
-                   " PostScript",
-                   " PS",
-                   " PS1",
-                   " PS2",
-                   " PS3",
-                   " PXL",
-                   " series"
+                   " postscript",
+                   " ps",
+                   " ps1",
+                   " ps2",
+                   " ps3",
+                   " pxl",
+                   " series",
                    ","]:
-        s = model.find (suffix)
+        s = modell.find (suffix)
         if s != -1:
             model = model[:s]
+            modell = modell[:s]
 
     if makel == "hp":
         modelnames = {"dj": "DeskJet",
@@ -190,10 +193,10 @@ def ppdMakeModelSplit (ppd_make_and_model):
                       "color lj": "Color LaserJet",
                       "ps ": "PhotoSmart",
                       "hp ": ""}
-        modell = model.lower ()
         for (name, fullname) in modelnames.iteritems ():
             if modell.startswith (name):
                 model = fullname + model[len (name):]
+                modell = model.lower ()
 
     for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Oki" ]:
         if makel == mfr.lower ():

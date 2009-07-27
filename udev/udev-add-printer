@@ -27,17 +27,28 @@ import sys
 import traceback
 from syslog import *
 
-def create_queue (c, name, device_uri, ppdname, info):
+def create_queue (c, printers, name, device_uri, ppdname, info):
     # Make sure the name is unique.
-    printers = cupshelpers.getPrinters (c)
-    names = printers.keys ()
-    if name in names:
-        suffix = 2
-        while (name + "-" + str (suffix)) in names:
+    namel = unicode (name.lower ())
+    unique = False
+    suffix = 1
+    while not unique:
+        unique = True
+        for printer in printers.values ():
+            if (not printer.discovered and
+                ((suffix == 1 and printer.name.lower () == namel) or
+                 (suffix > 1 and
+                  printer.name.lower () == namel + "-" + str (suffix)))):
+                unique = False
+                break
+
+        if not unique:
             suffix += 1
             if suffix == 100:
                 break
-        name += str (suffix)
+
+    if suffix > 1:
+        name += "-" + str (suffix)
 
     c.addPrinter (name,
                   device=device_uri,
@@ -45,14 +56,19 @@ def create_queue (c, name, device_uri, ppdname, info):
                   info=info,
                   location=os.uname ()[1])
     cupshelpers.activateNewPrinter (c, name)
+    return name
 
-def add_queue (device_id, device_uris, is_fax=False):
+def add_queue (device_id, device_uris, fax_basename=False):
     """
     Create a CUPS queue.
+
+    device_id: the IEEE 1284 Device ID of the device to add a queue for.
+    device_uris: device URIs, best first, for this device
+    fax_basename: False if this is not a fax queue, else name prefix
     """
 
     syslog (LOG_DEBUG, "add_queue: URIs=%s" % device_uris)
-    if is_fax:
+    if fax_basename != False:
         notification = None
     else:
         try:
@@ -83,34 +99,22 @@ def add_queue (device_id, device_uris, is_fax=False):
         name = name.replace ("/", "-")
         name = name.replace ("#", "-")
 
-        create_queue (c, name, device_uris[0], ppdname,
-                      "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
+        if fax_basename != False:
+            name = fax_basename + "-" + name
 
-        if not is_fax:
+        printers = cupshelpers.getPrinters (c)
+        uniquename = create_queue (c, printers, name, device_uris[0], ppdname,
+                                   "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
+
+        if fax_basename == False:
             # Look for a corresponding fax queue.  We can only
             # identify these by looking for device URIs that are the
             # same as this one but with a different scheme.  If we
             # find one whose scheme ends in "fax", use that as a fax
             # queue.  Note that the HPLIP backends do follow this
             # pattern (hp and hpfax).
-            not_fax_schemes=["beh",
-                             "bluetooth",
-                             "http",
-                             "https",
-                             "ipp",
-                             "lpd",
-                             "parallel",
-                             "serial",
-                             "smb",
-                             "snmp",
-                             "socket",
-                             "scsi",
-                             "usb"]
-            devices = c.getDevices (exclude_schemes=not_fax_schemes)
-            for uri, device_dict in devices.iteritems ():
-                if uri in device_uris:
-                    continue
-
+            used_uris = map (lambda x: x.device_uri, printers.values ())
+            for uri in device_uris[1:]:
                 if uri.find (":") == -1:
                     continue
 
@@ -119,17 +123,34 @@ def add_queue (device_id, device_uris, is_fax=False):
                     # Now see if the non-scheme parts of the URI match
                     # any of the URIs we were given.
                     for each_uri in device_uris:
+                        if each_uri == uri:
+                            continue
                         (s, device_uri_rest) = each_uri.split (":", 1)
                         if rest == device_uri_rest:
+                            # This one matches.  Check there is not
+                            # already a queue using this URI.
+                            if uri in used_uris:
+                                break
+
+                            try:
+                                devices = c.getDevices(include_schemes=[scheme])
+                            except TypeError:
+                                # include_schemes requires pycups 1.9.46
+                                devices = c.getDevices ()
+
+                            device_dict = devices.get (uri)
+                            if device_dict == None:
+                                break
+
                             add_queue (device_dict.get ("device-id", ""),
-                                       [uri], is_fax=True)
+                                       [uri], fax_basename=uniquename)
     else:
         # Not an exact match.
-        name = device_uris[0]
+        uniquename = device_uris[0]
 
     if notification:
         try:
-            notification.NewPrinter (status, name, id_dict["MFG"],
+            notification.NewPrinter (status, uniquename, id_dict["MFG"],
                                      id_dict["MDL"], id_dict["DES"],
                                      reduce(lambda x, y: x + ',' + y,
                                             id_dict["CMD"]))

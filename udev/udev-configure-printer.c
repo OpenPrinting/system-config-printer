@@ -417,9 +417,11 @@ parse_device_id (const char *device_id,
 
 static char *
 device_id_from_devpath (const char *devpath,
+			const struct usb_uri_map *map,
 			struct device_id *id,
 			char *usbserial, size_t usbseriallen)
 {
+  struct usb_uri_map_entry *entry;
   struct udev *udev;
   struct udev_device *dev, *parent_dev = NULL;
   const char *sys;
@@ -434,7 +436,7 @@ device_id_from_devpath (const char *devpath,
   const char *device_id = NULL;
   int conf = 0, iface = 0;
   int got = 0;
-  char *usb_device_devpath = strdup (devpath);
+  char *usb_device_devpath;
 
   id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
 
@@ -481,6 +483,23 @@ device_id_from_devpath (const char *devpath,
 
   usb_device_devpath = strdup (udev_device_get_devpath (parent_dev));
   syslog (LOG_DEBUG, "parent devpath is %s", usb_device_devpath);
+
+  for (entry = map->entries; entry; entry = entry->next)
+    if (!strcmp (entry->devpath, usb_device_devpath))
+      break;
+
+  if (entry)
+    /* The map already had an entry so has already been dealt
+     * with.  This can happen because there are two "add"
+     * triggers: one for the usb_device device and the other for
+     * the usblp device.  We have most likely been triggered by
+     * the usblp device, so the usb_device rule got there before
+     * us and succeeded.
+     *
+     * Pretend we didn't find any device URIs that matched, and
+     * exit.
+     */
+    exit (0);
 
   serial = udev_device_get_sysattr_value (parent_dev, "serial");
   if (serial)
@@ -544,11 +563,13 @@ device_id_from_devpath (const char *devpath,
 	      !device->config)
 	    continue;
 
+	  conf = 0;
 	  for (confptr = device->config;
 	       conf < device->descriptor.bNumConfigurations && !got;
 	       conf++, confptr++)
 	    {
 	      struct usb_interface *ifaceptr;
+	      iface = 0;
 	      for (ifaceptr = confptr->interface;
 		   iface < confptr->bNumInterfaces && !got;
 		   iface++, ifaceptr++)
@@ -567,15 +588,6 @@ device_id_from_devpath (const char *devpath,
 			  if (!handle)
 			    {
 			      syslog (LOG_DEBUG, "failed to open device");
-			      continue;
-			    }
-
-			  n = confptr->bConfigurationValue;
-			  if (usb_set_configuration (handle, n) < 0)
-			    {
-			      usb_close (handle);
-			      handle = NULL;
-			      syslog (LOG_DEBUG, "failed to set configuration");
 			      continue;
 			    }
 
@@ -708,29 +720,43 @@ cupsDoRequestOrDie (http_t *http,
 
 static int
 find_matching_device_uris (struct device_id *id,
-			   const char *serial,
+			   const char *usbserial,
 			   struct device_uris *uris,
-			   const char *devpath)
+			   const char *devpath,
+			   struct usb_uri_map *map)
 {
   http_t *cups;
   ipp_t *request, *answer;
   ipp_attribute_t *attr;
   struct device_uris uris_noserial;
+  struct device_uris all_uris;
+  size_t i, n;
+  const char *exclude_schemes[] = {
+    "beh",
+    "bluetooth",
+    "http",
+    "https",
+    "ipp",
+    "lpd",
+    "ncp",
+    "parallel",
+    "scsi",
+    "smb",
+    "snmp",
+    "socket",
+  };
 
-  uris->n_uris = 0;
-  uris->uri = NULL;
-
-  uris_noserial.n_uris = 0;
-  uris_noserial.uri = NULL;
+  uris->n_uris = uris_noserial.n_uris = all_uris.n_uris = 0;
+  uris->uri = uris_noserial.uri = all_uris.uri = NULL;
 
   /* Leave the bus to settle. */
   sleep (1);
 
   cups = cups_connection ();
   request = ippNewRequest (CUPS_GET_DEVICES);
-  ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_NAME, "include-schemes",
-		 sizeof (device_uri_types) / sizeof(device_uri_types[0]),
-		 NULL, device_uri_types);
+  ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_NAME, "exclude-schemes",
+		 sizeof (exclude_schemes) / sizeof(exclude_schemes[0]),
+		 NULL, exclude_schemes);
 
   answer = cupsDoRequestOrDie (cups, request, "/");
   httpClose (cups);
@@ -757,6 +783,28 @@ find_matching_device_uris (struct device_id *id,
 	    parse_device_id (attr->values[0].string.text, &this_id);
 	}
 
+      /* Only use device schemes in our preference order for matching
+       * against the IEEE 1284 Device ID. */
+
+      for (i = 0;
+	   device_uri &&
+	   i < sizeof (device_uri_types) / sizeof (device_uri_types[0]);
+	   i++)
+	{
+	  size_t len = strlen (device_uri_types[i]);
+	  if (!strncmp (device_uri_types[i], device_uri, len) &&
+	      device_uri[len] == ':')
+	    break;
+	}
+
+      if (device_uri)
+	add_device_uri (&all_uris, device_uri);
+
+      if (i == sizeof (device_uri_types) / sizeof (device_uri_types[0]))
+	/* Not what we want to match against.  Ignore this one. */
+	device_uri = NULL;
+
+      /* Now check the manufacturer and model names. */
       if (device_uri && this_id.mfg && this_id.mdl &&
 	  !strcmp (this_id.mfg, id->mfg) &&
 	  !strcmp (this_id.mdl, id->mdl))
@@ -803,11 +851,11 @@ find_matching_device_uris (struct device_id *id,
 	      match = 1;
 	    }
 
-	  if (!match && strlen (serial) >= 12)
+	  if (!match && usbserial[0] != '\0')
 	    {
 	      if (!id->sern)
 		{
-		  if (this_id.sern && !strcmp (serial, this_id.sern))
+		  if (this_id.sern && !strcmp (usbserial, this_id.sern))
 		    {
 		      syslog (LOG_DEBUG,
 			      "SERN field matches USB serial number");
@@ -819,10 +867,11 @@ find_matching_device_uris (struct device_id *id,
 		{
 		  char *saveptr, *uri = strdup (device_uri);
 		  const char *token;
-		  for (token = strtok_r (uri, "?=&", &saveptr);
+		  const char *sep = "?=&/";
+		  for (token = strtok_r (uri, sep, &saveptr);
 		       token;
-		       token = strtok_r (NULL, "?=&", &saveptr))
-		    if (!strcmp (token, serial))
+		       token = strtok_r (NULL, sep, &saveptr))
+		    if (!strcmp (token, usbserial))
 		      {
 			syslog (LOG_DEBUG, "URI contains USB serial number");
 			match = 1;
@@ -886,28 +935,60 @@ find_matching_device_uris (struct device_id *id,
 	uris->uri = old;
       else
 	{
-	  size_t i;
 	  for (i = 0; i < uris_noserial.n_uris; i++)
 	    uris->uri[uris->n_uris + i] = uris_noserial.uri[i];
 	  uris->n_uris += uris_noserial.n_uris;
 	}
+
+      uris_noserial.n_uris = 0;
+      uris_noserial.uri = NULL;
     }
 
   free_device_uris (&uris_noserial);
+
+  /* Having decided which device URIs match based on IEEE 1284 Device
+   * ID, we now need to look for "paired" URIs for other functions of
+   * a multi-function device.  This are the same except for the
+   * scheme. */
+
+  n = uris->n_uris;
+  for (i = 0; i < n; i++)
+    {
+      size_t j;
+      char *me = uris->uri[i];
+      char *my_rest = strchr (me, ':');
+      size_t my_schemelen;
+      if (!my_rest)
+	continue;
+
+      my_schemelen = my_rest - me;
+      for (j = 0; j < all_uris.n_uris; j++)
+	{
+	  char *twin = all_uris.uri[j];
+	  char *twin_rest = strchr (twin, ':');
+	  size_t twin_schemelen;
+	  if (!twin_rest)
+	    continue;
+
+	  twin_schemelen = twin_rest - twin;
+	  if (my_schemelen == twin_schemelen &&
+	      !strncmp (me, twin, my_schemelen))
+	    /* This is the one we are looking for the twin of. */
+	    continue;
+
+	  if (!strcmp (my_rest, twin_rest))
+	    {
+	      syslog (LOG_DEBUG, "%s twinned with %s", me, twin);
+	      add_device_uri (uris, twin);
+	    }
+	}
+    }
+
+  free_device_uris (&all_uris);
   if (uris->n_uris > 0)
     {
-      struct usb_uri_map *map = read_usb_uri_map ();
-      struct usb_uri_map_entry *entry;
-      for (entry = map->entries; entry; entry = entry->next)
-	if (!strcmp (entry->devpath, devpath))
-	  break;
-
-      if (!entry)
-	{
-	  add_usb_uri_mapping (&map, devpath, uris);
-	  write_usb_uri_map (map);
-	}
-
+      add_usb_uri_mapping (&map, devpath, uris);
+      write_usb_uri_map (map);
       free_usb_uri_map (map);
     }
 
@@ -1047,13 +1128,38 @@ do_add (const char *cmd, const char *devpath)
   int f;
   struct device_id id;
   struct device_uris device_uris;
+  struct usb_uri_map *map;
   char *usb_device_devpath;
-  char serial[256];
+  char usbserial[256];
+
+  if (getenv ("DEBUG") == NULL)
+    {
+      if ((pid = fork ()) == -1)
+	syslog (LOG_ERR, "Failed to fork process");
+      else if (pid != 0)
+	/* Parent. */
+	exit (0);
+
+      close (STDIN_FILENO);
+      close (STDOUT_FILENO);
+      close (STDERR_FILENO);
+      f = open ("/dev/null", O_RDWR);
+      if (f != STDIN_FILENO)
+	dup2 (f, STDIN_FILENO);
+      if (f != STDOUT_FILENO)
+	dup2 (f, STDOUT_FILENO);
+      if (f != STDERR_FILENO)
+	dup2 (f, STDERR_FILENO);
+
+      setsid ();
+    }
 
   syslog (LOG_DEBUG, "add %s", devpath);
 
-  usb_device_devpath = device_id_from_devpath (devpath, &id,
-					       serial, sizeof (serial));
+  map = read_usb_uri_map ();
+  usb_device_devpath = device_id_from_devpath (devpath, map, &id,
+					       usbserial, sizeof (usbserial));
+
   if (!id.mfg || !id.mdl)
     {
       syslog (LOG_ERR, "invalid or missing IEEE 1284 Device ID%s%s",
@@ -1063,28 +1169,10 @@ do_add (const char *cmd, const char *devpath)
     }
 
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
-	  id.sern ? id.sern : "-", serial);
+	  id.sern ? id.sern : "-", usbserial);
 
-  if ((pid = fork ()) == -1)
-    syslog (LOG_ERR, "Failed to fork process");
-  else if (pid != 0)
-    /* Parent. */
-    exit (0);
-
-  close (STDIN_FILENO);
-  close (STDOUT_FILENO);
-  close (STDERR_FILENO);
-  f = open ("/dev/null", O_RDWR);
-  if (f != STDIN_FILENO)
-    dup2 (f, STDIN_FILENO);
-  if (f != STDOUT_FILENO)
-    dup2 (f, STDOUT_FILENO);
-  if (f != STDERR_FILENO)
-    dup2 (f, STDERR_FILENO);
-
-  setsid ();
-
-  find_matching_device_uris (&id, serial, &device_uris, usb_device_devpath);
+  find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath,
+			     map);
   free (usb_device_devpath);
   if (device_uris.n_uris == 0)
     {

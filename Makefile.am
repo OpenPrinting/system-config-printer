@@ -151,7 +151,7 @@ bin_SCRIPTS=\
 
 if UDEV_RULES
 udevrulesdir=$(sysconfdir)/udev/rules.d
-nobase_udevrules_DATA=udev/70-printers.rules
+udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
 udev_udev_configure_printer_LDADD=-lcups -ludev -lusb
@@ -222,7 +222,7 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
-	$(udevhelper_SCRIPTS) \
+	udev/udev-add-printer \
 	setup.py \
 	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
