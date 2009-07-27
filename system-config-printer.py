@@ -5755,29 +5755,28 @@ class NewPrinterGUI(GtkGUI):
 
     def getDeviceURI(self):
         type = self.device.type
-        if type == "socket": # DirectJet
+        page = self.new_printer_device_tabs.get (type, 1)
+        device = type
+        if page == 0:
+            # The "no options page".  We already have the URI.
+            device = self.device.uri
+        elif type == "socket": # DirectJet
             host = self.entNPTDirectJetHostname.get_text()
             port = self.entNPTDirectJetPort.get_text()
-            device = "socket://" + host
-            if host and port:
-                device = device + ':' + port
+            if host:
+                device += "://" + host
+                if port:
+                    device += ":" + port
         elif type in ("ipp", "http", "https"): # IPP
             if self.lblIPPURI.get_property('visible'):
                 device = self.lblIPPURI.get_text()
-            else:
-                device = "ipp"
         elif type == "lpd": # LPD
             host = self.cmbentNPTLpdHost.get_active_text()
             printer = self.cmbentNPTLpdQueue.get_active_text()
-            device = "lpd://" + host
-            if printer:
-                device = device + "/" + printer
-        elif type in ("parallel", "usb", "hp", "hpfax"): # Local printers where
-                                                         # CUPS backends report
-                                                         # full URI
-            device = self.device.uri
-        elif type == "scsi": # SCSI
-            device = ""
+            if host:
+                device += "://" + host
+                if printer:
+                    device += "/" + printer
         elif type == "serial": # Serial
             options = []
             for widget, name, optionvalues in (
@@ -5808,7 +5807,8 @@ class NewPrinterGUI(GtkGUI):
                 password = self.entSMBPassword.get_text ()
             uri = SMBURI (group=group, host=host, share=share,
                           user=user, password=password).get_uri ()
-            device = "smb://" + uri
+            if uri:
+                device += "://" + uri
         else:
             device = self.entNPTDevice.get_text()
         return device
