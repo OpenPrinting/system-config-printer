@@ -4567,6 +4567,7 @@ class NewPrinterGUI(GtkGUI):
         plugin_needed = -1
         plugin_reason = -1
         fw_download = -1
+        hpmodel = None
         hplip_version = None
         for line in stdout.split ("\n"):
             if line.find ("plugin ") >= 0:
@@ -4584,31 +4585,54 @@ class NewPrinterGUI(GtkGUI):
                     fw_download = 1
                 elif line.find ("False") >= 0:
                     fw_download = 0
+            elif line.find ("model") >= 0:
+                res = re.search ("^\s*model\s*(\S+)\s*$", line)
+                if res:
+                    resg = res.groups()
+                    hpmodel = resg[0]
             elif line.find ("HP Linux Imaging and Printing") >= 0:
                 res = re.search ("(\d+\.\d+\.\d+\w*)", line)
                 if res:
                     resg = res.groups()
                     hplip_version = resg[0]
-            if plugin_needed >= 0 and plugin_reason >= 0 and fw_download >= 0:
+            if plugin_needed >= 0 and plugin_reason >= 0 and \
+                    fw_download >= 0 and hpmodel != None:
                 break
-        if plugin_needed <= 0 or not hplip_version:
+        if plugin_needed <= 0 or not hplip_version or not hpmodel:
             return True # assume plugin not required
         # Check whether the plugin is already installed
-        if glob.glob("/usr/share/hplip/data/plugin/*%s*plugin*" %
-                     hplip_version):
-            if hplip_version.startswith("2"):
-                try:
-                    f = open('/etc/hp/hplip.conf', 'r')
-                    for line in f:
-                        if line.strip ().startswith("plugin") and \
-                                line.strip ().endswith("1"):
+        if hplip_version.startswith("3"):
+            os.environ["hp_model"] = hpmodel;
+            cmd = 'LC_ALL=C hp-mkuri -c'
+            debugprint (uri + ": " + hpmodel)
+            try:
+                p = subprocess.Popen (cmd, shell=True,
+                                      stdin=file("/dev/null"),
+                                      stdout=subprocess.PIPE,
+                                      stderr=subprocess.PIPE)
+                (stdout, stderr) = p.communicate ()
+                if p.returncode < 2:
+                    return True # plugin installed or not required
+            except:
+                # Problem executing command.
+                return True # assume plugin not required
+        else:
+            if glob.glob("/usr/share/hplip/data/plugin/*%s*plugin*" %
+                         hplip_version):
+                if hplip_version.startswith("2"):
+                    try:
+                        f = open('/etc/hp/hplip.conf', 'r')
+                        for line in f:
+                            if line.strip ().startswith("plugin") and \
+                                    line.strip ().endswith("1"):
+                                f.close()
+                                return True
                             f.close()
-                            return True
-                        f.close()
-                except:
-                    pass
-            else:
-                return True
+                    except:
+                        pass
+                    else:
+                        return True
+
         # Tell the user why he needs the plugin
         text = \
             _("For this printer a proprietary driver plugin from HP is available.\n")
@@ -4708,7 +4732,7 @@ class NewPrinterGUI(GtkGUI):
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
-        cmd = 'LC_ALL=C DISPLAY= hp-info -d"${URI}"'
+        cmd = 'LC_ALL=C DISPLAY= hp-info -x -i -d"${URI}"'
         debugprint (faxuri + ": " + cmd)
         try:
             p = subprocess.Popen (cmd, shell=True,

@@ -1351,8 +1351,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         elif jobid in self.active_jobs:
             self.active_jobs.remove (jobid)
 
-        self.update_status ()
         self.update_job (jobid, jobdata)
+        self.update_status ()
         jobdata = self.jobs[jobid]
 
         # If the job has finished, let the user know.
