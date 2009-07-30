@@ -2,9 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
 ## Copyright (C) 2006, 2007 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -20,20 +20,25 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import gtk.glade
+import gtk
 import os
 
 import config
 pkgdata = config.pkgdatadir
 
 class GtkGUI:
-    def getWidgets(self, widgets):
-        glade_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_GLADE",
-                                    os.path.join (pkgdata, "glade"))
+    def getWidgets(self, widgets, domain=None):
+        ui_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_UI",
+                                 os.path.join (pkgdata, "ui"))
         for xmlfile, names in widgets.iteritems ():
-            xml = gtk.glade.XML (os.path.join (glade_dir, xmlfile + ".glade"))
+            bld = gtk.Builder ()
+
+            if domain:
+                bld.set_translation_domain (domain)
+
+            bld.add_from_file (os.path.join (ui_dir, xmlfile + ".ui"))
             for name in names:
-                widget = xml.get_widget(name)
+                widget = bld.get_object(name)
                 if widget is None:
                     raise ValueError, "Widget '%s' not found" % name
                 setattr(self, name, widget)
@@ -48,4 +53,4 @@ class GtkGUI:
                                             self.focus_on_map)
                 widget.show()
 
-            xml.signal_autoconnect(self)
+            bld.connect_signals (self)

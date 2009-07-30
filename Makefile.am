@@ -83,7 +83,7 @@ nobase_pkgdata_DATA=					\
 	debug.py					\
 	errordialogs.py					\
 	HIG.py						\
-	glade.py					\
+	gui.py						\
 	GroupsPane.py					\
 	GroupsPaneModel.py				\
 	gtkinklevel.py					\
@@ -105,19 +105,19 @@ nobase_pkgdata_DATA=					\
 	ToolbarSearchEntry.py				\
 	userdefault.py					\
 	XmlHelper.py					\
-	glade/AboutDialog.glade				\
-	glade/ConnectDialog.glade				\
-	glade/ConnectingDialog.glade			\
-	glade/InstallDialog.glade				\
-	glade/JobsWindow.glade				\
-	glade/NewPrinterName.glade				\
-	glade/NewPrinterWindow.glade			\
-	glade/PrinterPropertiesDialog.glade		\
-	glade/PrintersWindow.glade				\
-	glade/ServerSettingsDialog.glade			\
-	glade/SMBBrowseDialog.glade			\
-	glade/statusicon_popupmenu.glade			\
-	glade/WaitWindow.glade				\
+	ui/AboutDialog.ui				\
+	ui/ConnectDialog.ui				\
+	ui/ConnectingDialog.ui				\
+	ui/InstallDialog.ui				\
+	ui/JobsWindow.ui				\
+	ui/NewPrinterName.ui				\
+	ui/NewPrinterWindow.ui				\
+	ui/PrinterPropertiesDialog.ui			\
+	ui/PrintersWindow.ui				\
+	ui/ServerSettingsDialog.ui			\
+	ui/SMBBrowseDialog.ui				\
+	ui/statusicon_popupmenu.ui			\
+	ui/WaitWindow.ui				\
 	icons/i-network-printer.png			\
 	troubleshoot/base.py				\
 	troubleshoot/CheckLocalServerPublishing.py	\
@@ -264,15 +264,12 @@ missing-languages:
 	diff -u <(echo $$ALL_LINGUAS | xargs -rn1 echo) \
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
 
-fix-glade:
-	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' $(top_srcdir)/glade/*.glade
-
 run:	config.py
-	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
+	SYSTEM_CONFIG_PRINTER_UI=$(top_srcdir)/ui \
 	$(PYTHON) $(top_srcdir)/system-config-printer.py --debug
 
 run-applet:	config.py
-	SYSTEM_CONFIG_PRINTER_GLADE=$(top_srcdir)/glade \
+	SYSTEM_CONFIG_PRINTER_UI=$(top_srcdir)/ui \
 	$(PYTHON) $(top_srcdir)/applet.py --debug
 
 help:
@@ -281,9 +278,8 @@ help:
 	@echo " help               Show this help message"
 	@echo " update-po          Update the translations"
 	@echo " missing-languages  Show which po files are not shipped"
-	@echo " fix-glade          Sanitize the glade files"
-	@echo " run                Run system-config-printer with local glade file"
-	@echo " run-applet         Run system-config-printer-applet with local glade file"
+	@echo " run                Run system-config-printer with local UI files"
+	@echo " run-applet         Run system-config-printer-applet with local UI files"
 
 test-ppd-module.sh:
 	echo "#!$(PYTHON)" > "$@"
@@ -304,5 +300,5 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 distclean-local:
 	rm -rf html
 
-.PHONY: update-po missing-languages fix-glade run help
+.PHONY: update-po missing-languages run help
 

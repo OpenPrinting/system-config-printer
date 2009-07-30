@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<interface>
+  <requires lib="gtk+" version="2.16"/>
+  <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkMenu" id="statusicon_popupmenu">
+    <child>
+      <object class="GtkMenuItem" id="icon_hide">
+        <property name="visible">True</property>
+        <property name="label" translatable="yes">_Hide</property>
+        <property name="use_underline">True</property>
+        <signal name="activate" handler="on_icon_hide_activate"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="configure_printers">
+        <property name="label">_Configure Printers</property>
+        <property name="visible">True</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+        <signal name="activate" handler="on_icon_configure_printers_activate"/>
+      </object>
+    </child>
+    <child>
+      <object class="GtkSeparatorMenuItem" id="separator1">
+        <property name="visible">True</property>
+      </object>
+    </child>
+    <child>
+      <object class="GtkImageMenuItem" id="quit1">
+        <property name="label">gtk-quit</property>
+        <property name="visible">True</property>
+        <property name="use_underline">True</property>
+        <property name="use_stock">True</property>
+        <signal name="activate" handler="on_icon_quit_activate"/>
+      </object>
+    </child>
+  </object>
+</interface>

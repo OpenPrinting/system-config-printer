@@ -1,7 +1,7 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -18,6 +18,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import gobject
 import gtk
 
 def OptionWidget(name, v, s, on_change):
@@ -91,6 +92,13 @@ class OptionAlwaysShown(OptionInterface):
         self.ipp_type = ipp_type
         self.set_default (system_default)
         self.combobox_map = combobox_map
+
+        if (type(self.widget) == gtk.ComboBox and
+            self.widget.get_model () == None):
+            print "No ComboBox model for %s" % self.name
+            model = gtk.ListStore (gobject.TYPE_STRING)
+            self.widget.set_model (model)
+
         if combobox_map != None and ipp_type == int:
             model = self.widget.get_model ()
             i = 0

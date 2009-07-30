@@ -29,7 +29,7 @@ import subprocess
 import signal, thread
 import dbus
 try:
-    import gtk.glade
+    import gtk
 except RuntimeError, e:
     print "system-config-printer:", e
     print "This is a graphical application and requires DISPLAY to be set."
@@ -86,7 +86,7 @@ except:
 
 import cupshelpers, options
 import gobject # for TYPE_STRING and TYPE_PYOBJECT
-from glade import GtkGUI
+from gui import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
 import probe_printer
@@ -127,8 +127,6 @@ authconn.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
 gettext.bindtextdomain (domain, config.localedir)
-gtk.glade.textdomain (domain)
-gtk.glade.bindtextdomain (domain, config.localedir)
 import ppdippstr
 pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
@@ -355,7 +353,9 @@ class GUI(GtkGUI, monitor.Watcher):
 
                               # Marker levels
                               "vboxMarkerLevels",
-                              "btnRefreshMarkerLevels"]})
+                              "btnRefreshMarkerLevels"]},
+
+                        domain=domain)
 
         # Ensure the default PrintersWindow is shown despite
         # the --no-focus-on-map option
@@ -686,6 +686,75 @@ class GUI(GtkGUI, monitor.Watcher):
         sel.set_mode (gtk.SELECTION_SINGLE)
 
         # Job Options widgets.
+        for (widget,
+             opts) in [(self.cmbJOOrientationRequested,
+                        [[_("Portrait (no rotation)")],
+                         [_("Landscape (90 degrees)")],
+                         [_("Reverse landscape (270 degrees)")],
+                         [_("Reverse Portrait (180 degrees)")]]),
+
+                       (self.cmbJONumberUp,
+                        [["1"], ["2"], ["4"], ["6"], ["9"], ["16"]]),
+
+                       (self.cmbJONumberUpLayout,
+                        [[_("Left to right, top to bottom")],
+                         [_("Left to right, bottom to top")],
+                         [_("Right to left, top to bottom")],
+                         [_("Right to left, bottom to top")],
+                         [_("Top to bottom, left to right")],
+                         [_("Top to bottom, right to left")],
+                         [_("Bottom to top, left to right")],
+                         [_("Bottom to top, right to left")]]),
+
+                       (self.cmbJOFinishings,
+                        [[_("None")],
+                         [_("Staple")],
+                         [_("Punch")],
+                         [_("Cover")],
+                         [_("Bind")],
+                         [_("Saddle stitch")],
+                         [_("Edge stitch")],
+                         [_("Fold")],
+                         [_("Trim")],
+                         [_("Bale")],
+                         [_("Booklet maker")],
+                         [_("Job offset")],
+                         [_("Staple (top left)")],
+                         [_("Staple (bottom left)")],
+                         [_("Staple (top right)")],
+                         [_("Staple (bottom right)")],
+                         [_("Edge stitch (left)")],
+                         [_("Edge stitch (top)")],
+                         [_("Edge stitch (right)")],
+                         [_("Edge stitch (bottom)")],
+                         [_("Staple dual (left)")],
+                         [_("Staple dual (top)")],
+                         [_("Staple dual (right)")],
+                         [_("Staple dual (bottom)")],
+                         [_("Bind (left)")],
+                         [_("Bind (top)")],
+                         [_("Bind (right)")],
+                         [_("Bind (bottom)")]]),
+
+                       (self.cmbJOMedia, []),
+
+                       (self.cmbJOSides,
+                        [[_("One-sided")],
+                         [_("Two-sided (long edge)")],
+                         [_("Two-sided (short edge)")]]),
+
+                       (self.cmbJOHoldUntil, []),
+
+                       ]:
+            model = gtk.ListStore (gobject.TYPE_STRING)
+            for row in opts:
+                model.append (row=row)
+
+            cell = gtk.CellRendererText ()
+            widget.pack_start (cell, True)
+            widget.add_attribute (cell, 'text', 0)
+            widget.set_model (model)
+
         opts = [ options.OptionAlwaysShown ("copies", int, 1,
                                             self.sbJOCopies,
                                             self.btnJOResetCopies),

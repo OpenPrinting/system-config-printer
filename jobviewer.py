@@ -26,8 +26,7 @@ import gettext
 import gobject
 import gtk
 import gtk.gdk
-import gtk.glade
-from glade import GtkGUI
+from gui import GtkGUI
 import monitor
 import os
 import pango
@@ -53,14 +52,11 @@ except ImportError:
 from gettext import gettext as _
 DOMAIN="system-config-printer"
 gettext.textdomain (DOMAIN)
-gtk.glade.textdomain (DOMAIN)
-gtk.glade.bindtextdomain (DOMAIN)
 from statereason import StateReason
 statereason.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
 
 pkgdata = config.pkgdatadir
-GLADE="applet.glade"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
 
@@ -160,7 +156,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                "treeview",
                                "statusbar"],
                           "statusicon_popupmenu":
-                              ["statusicon_popupmenu"]})
+                              ["statusicon_popupmenu"]},
+
+                         domain=DOMAIN)
 
         job_action_group = gtk.ActionGroup ("JobActionGroup")
         job_action_group.add_actions ([
@@ -909,7 +907,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if self.loop:
             env = {}
             for name, value in os.environ.iteritems ():
-                if name == "SYSTEM_CONFIG_PRINTER_GLADE":
+                if name == "SYSTEM_CONFIG_PRINTER_UI":
                     continue
                 env[name] = value
             p = subprocess.Popen ([ "system-config-printer" ],
