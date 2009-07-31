@@ -691,7 +691,7 @@ class GUI(GtkGUI, monitor.Watcher):
                         [[_("Portrait (no rotation)")],
                          [_("Landscape (90 degrees)")],
                          [_("Reverse landscape (270 degrees)")],
-                         [_("Reverse Portrait (180 degrees)")]]),
+                         [_("Reverse portrait (180 degrees)")]]),
 
                        (self.cmbJONumberUp,
                         [["1"], ["2"], ["4"], ["6"], ["9"], ["16"]]),
