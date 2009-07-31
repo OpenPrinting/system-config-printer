@@ -1376,7 +1376,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if (self.trayicon and
             (eventname == 'job-stopped' or
              (eventname == 'job-state-changed' and
-              event['job-state'] == cups.IPP_JOB_STOPPED))and
+              event['job-state'] in [cups.IPP_JOB_STOPPED,
+                                     cups.IPP_JOB_PENDING])) and
             not jobid in self.stopped_job_prompts):
             # Why has the job stopped?  It might be due to a job error
             # of some sort, or it might be that the backend requires
@@ -1386,7 +1387,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             # update_job.
             may_be_problem = True
             jstate = jobdata['job-state']
-            if (jstate in [cups.IPP_JOB_PENDING, cups.IPP_JOB_PROCESSING] or
+            if (jstate == cups.IPP_JOB_PROCESSING or
                 (jstate == cups.IPP_JOB_HELD and
                  jobdata['job-hold-until'] == 'auth-info-required')):
                 # update_job already dealt with this.
@@ -1421,7 +1422,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 elif notify_text.find ("filter errors") != -1:
                     message = _("There was a problem processing document `%s' "
                                 "(job %d).") % (document, jobid)
-                elif notify_text.find ("being paused") != -1:
+                elif (notify_text.find ("being paused") != -1 or
+                      jstate != cups.IPP_JOB_STOPPED):
                     may_be_problem = False
                 else:
                     # Give up and use the provided message untranslated.
