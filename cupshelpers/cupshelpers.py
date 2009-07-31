@@ -345,6 +345,33 @@ class Printer:
                 ret.append (id)
         return ret
 
+    def jobsPreserved(self):
+        """
+        Find out whether there are preserved jobs for this printer.
+
+        @return: list of job IDs
+        """
+        ret = []
+        from pprint import pprint
+        try:
+            jobs = self.connection.getJobs (which_jobs='all')
+        except cups.IPPError:
+            return ret
+
+        for id, attrs in jobs.iteritems():
+            try:
+                uri = attrs['job-printer-uri']
+                uri = uri[uri.rindex ('/') + 1:]
+            except:
+                continue
+            if uri != self.name:
+                continue
+            if attrs['job-state'] < cups.IPP_JOB_COMPLETED:
+                continue
+            ret.append (id)
+
+        return ret
+
     def testsQueued(self):
         """
         Find out whether test jobs are queued for this printer.

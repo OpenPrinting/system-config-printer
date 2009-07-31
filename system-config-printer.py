@@ -355,7 +355,10 @@ class GUI(GtkGUI, monitor.Watcher):
 
                               # Marker levels
                               "vboxMarkerLevels",
-                              "btnRefreshMarkerLevels"]})
+                              "btnRefreshMarkerLevels"],
+                         "RenameDialog":
+                             ["RenameDialog"] })
+
 
         # Ensure the default PrintersWindow is shown despite
         # the --no-focus-on-map option
@@ -2776,6 +2779,21 @@ class GUI(GtkGUI, monitor.Watcher):
 
         return True
 
+    def rename_confirmed_by_user (self, name):
+        """
+        Renaming deletes job history. So if we have some completed jobs,
+        inform the user and let him confirm the renaming.
+        """
+        preserved_jobs = self.printers[name].jobsPreserved()
+        if len (preserved_jobs) > 0:
+            self.RenameDialog.set_transient_for (self.PrintersWindow)
+            result = self.RenameDialog.run()
+            self.RenameDialog.hide()
+            if result == gtk.RESPONSE_CANCEL:
+                return False
+
+        return True
+
     def on_rename_activate(self, UNUSED):
         tuple = self.dests_iconview.get_cursor ()
         if tuple == None:
@@ -2794,6 +2812,8 @@ class GUI(GtkGUI, monitor.Watcher):
         iter = model.get_iter (path)
         name = unicode (model.get_value (iter, 2))
         if not self.is_rename_possible (name):
+            return
+        if not self.rename_confirmed_by_user (name):
             return
         cell.set_property ('editable', True)
         self.dests_iconview.set_cursor (path, cell, start_editing=True)
