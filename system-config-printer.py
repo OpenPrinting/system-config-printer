@@ -70,13 +70,8 @@ if len(sys.argv)>1 and sys.argv[1] == '--help':
     sys.exit (0)
 
 import cups
-cups.require ("1.9.42")
-
-try:
-    cups.ppdSetConformance (cups.PPD_CONFORM_RELAXED)
-except AttributeError:
-    # Requires pycups 1.9.46
-    pass
+cups.require ("1.9.46")
+cups.ppdSetConformance (cups.PPD_CONFORM_RELAXED)
 
 try:
     import pysmb
@@ -2520,13 +2515,7 @@ class GUI(GtkGUI, monitor.Watcher):
         marker_info = dict()
         for attr in ['marker-colors', 'marker-names', 'marker-types',
                      'marker-levels']:
-            val = printer.other_attributes.get (attr, [])
-            if type (val) != list:
-                # Work around bug fixed in pycups 1.9.46.
-                val = [val]
-
-            marker_info[attr] = val
-
+            marker_info[attr] = printer.other_attributes.get (attr, [])
 
         markers = map (lambda color, name, type, level:
                            (color, name, type, level),
