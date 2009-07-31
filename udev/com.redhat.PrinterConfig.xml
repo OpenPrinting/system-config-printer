@@ -1,0 +1,71 @@
+<!DOCTYPE node PUBLIC
+"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
+"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
+<node name="/com/redhat/PrinterConfig" xmlns:doc="http://www.freedesktop.org/dbus/1.0/doc.dtd">
+
+  <interface name="com.redhat.PrinterConfig">
+    <doc:doc>
+      <doc:description>
+	<doc:para>The PrinterConfig service is available via the
+	system message bus.  To access the service, use the
+	<doc:tt>com.redhat.PrinterConfig</doc:tt> interface
+	on the <doc:tt>/com/redhat/PrinterConfig</doc:tt>
+	object on the D-Bus system bus service with the well-known
+	name
+	<doc:tt>com.redhat.PrinterConfig</doc:tt>.</doc:para>
+
+	<doc:para>It is intended to be used by udev when USB printers
+	are connected and disconnected.</doc:para>
+      </doc:description>
+    </doc:doc>
+
+    <method name="UsbPrinterAdd">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+      <arg name="devpath" direction="in" type="s">
+	<doc:doc>
+	  <doc:summary>
+	    <doc:para>The udev devpath of the device with subsystem
+	    usb and devtype usb_device referring to the USB printer
+	    device.</doc:para>
+	  </doc:summary>
+	</doc:doc>
+      </arg>
+
+      <arg name="deviceid" direction="in" type="s">
+	<doc:doc>
+	  <doc:summary>
+	    <doc:para>The IEEE 1284 Device ID (not including length
+	    field) of the device.</doc:para>
+	  </doc:summary>
+	</doc:doc>
+      </arg>
+
+      <doc:doc>
+	<doc:description>
+	  <doc:para>This method informs the PrinterConfig service that
+	  a USB printer is now connected.</doc:para>
+	</doc:description>
+      </doc:doc>
+    </method>
+
+    <method name="UsbPrinterRemove">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+      <arg name="devpath" direction="in" type="s">
+	<doc:doc>
+	  <doc:summary>
+	    <doc:para>The udev devpath of the device with subsystem
+	    usb and devtype usb_device referring to the USB printer
+	    device.</doc:para>
+	  </doc:summary>
+	</doc:doc>
+      </arg>
+
+      <doc:doc>
+	<doc:description>
+	  <doc:para>This method informs the PrinterConfig service that
+	  a USB printer has been disconnected.</doc:para>
+	</doc:description>
+      </doc:doc>
+    </method>
+  </interface>
+</node>
