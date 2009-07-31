@@ -355,9 +355,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
                               # Marker levels
                               "vboxMarkerLevels",
-                              "btnRefreshMarkerLevels"],
-                         "RenameDialog":
-                             ["RenameDialog"] })
+                              "btnRefreshMarkerLevels"]})
 
 
         # Ensure the default PrintersWindow is shown despite
@@ -2786,9 +2784,17 @@ class GUI(GtkGUI, monitor.Watcher):
         """
         preserved_jobs = self.printers[name].jobsPreserved()
         if len (preserved_jobs) > 0:
-            self.RenameDialog.set_transient_for (self.PrintersWindow)
-            result = self.RenameDialog.run()
-            self.RenameDialog.hide()
+            dialog = gtk.MessageDialog (self.PrintersWindow,
+                                        gtk.DIALOG_MODAL |
+                                        gtk.DIALOG_DESTROY_WITH_PARENT,
+                                        gtk.MESSAGE_WARNING,
+                                        gtk.BUTTONS_OK_CANCEL,
+                                        _("Renaming will lose history"))
+
+            dialog.format_secondary_text (_("Completed jobs will no longer "
+                                            "be available for re-printing."))
+            result = dialog.run()
+            dialog.destroy ()
             if result == gtk.RESPONSE_CANCEL:
                 return False
 

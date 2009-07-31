@@ -352,9 +352,8 @@ class Printer:
         @return: list of job IDs
         """
         ret = []
-        from pprint import pprint
         try:
-            jobs = self.connection.getJobs (which_jobs='all')
+            jobs = self.connection.getJobs (which_jobs='completed')
         except cups.IPPError:
             return ret
 
@@ -366,7 +365,8 @@ class Printer:
                 continue
             if uri != self.name:
                 continue
-            if attrs['job-state'] < cups.IPP_JOB_COMPLETED:
+            if (attrs.get ('job-state',
+                           cups.IPP_JOB_PENDING) < cups.IPP_JOB_COMPLETED):
                 continue
             ret.append (id)
 
