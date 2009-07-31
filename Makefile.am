@@ -152,14 +152,65 @@ bin_SCRIPTS=\
 if UDEV_RULES
 udevrulesdir=$(sysconfdir)/udev/rules.d
 udevrules_DATA=udev/70-printers.rules
-udev_udev_configure_printer_SOURCES=\
-	udev/udev-configure-printer.c
-udev_udev_configure_printer_LDADD=-lcups -ludev -lusb
+
+udev_printer_config_daemon_SOURCES=		\
+	udev/printer-config-daemon.c		\
+	udev/printer-config-main.c		\
+	udev/printer-config.h
+udev_printer_config_daemon_DEPENDENCIES=	\
+	udev/printer-config-server-bindings.h
+udev_printer_config_daemon_CPPFLAGS=		\
+	$(DBUS_GLIB_CFLAGS)
+udev_printer_config_daemon_LDADD=		\
+	$(DBUS_GLIB_LIBS)			\
+	-lcups -ludev -lusb
+
+udev_udev_usb_printer_SOURCES=			\
+	udev/udev-usb-printer.c
+udev_udev_usb_printer_DEPENDENCIES=		\
+	udev/printer-config-client-bindings.h
+udev_udev_usb_printer_CPPFLAGS=			\
+	$(DBUS_GLIB_CFLAGS)
+udev_udev_usb_printer_LDADD=			\
+	$(DBUS_GLIB_LIBS)			\
+	-ludev -lusb
 udevhelperdir=/lib/udev
 udevhelper_PROGRAMS=\
-	udev/udev-configure-printer
-udevhelper_SCRIPTS=\
+	udev/udev-usb-printer
+
+udev/printer-config-server-bindings.h: udev/com.redhat.PrinterConfig.xml \
+	Makefile
+	dbus-binding-tool --prefix=printer_config_daemon		\
+			  --mode=glib-server				\
+			  --output=$@ $<
+
+udev/printer-config-client-bindings.h: udev/com.redhat.PrinterConfig.xml \
+	Makefile
+	dbus-binding-tool --prefix=printer_config_daemon		 \
+			  --mode=glib-client				 \
+			  --output=$@ $<
+
+BUILT_SOURCES=					\
+	udev/printer-config-server-bindings.h	\
+	udev/printer-config-client-bindings.h
+
+libexec_PROGRAMS=\
+	udev/printer-config-daemon
+libexec_SCRIPTS=\
 	udev/udev-add-printer
+
+dbusifdir = $(datadir)/dbus-1/interfaces
+dbusif_DATA = udev/com.redhat.PrinterConfig.xml
+
+servicedir = $(datadir)/dbus-1/system-services
+service_in_files = udev/com.redhat.PrinterConfig.service.in
+service_DATA = $(service_in_files:.service.in=.service)
+
+$(service_DATA): $(service_in_files) Makefile
+	@sed -e "s,\@libexecdir\@,$(libexecdir)," $< > $@
+
+dbusconfdir = $(sysconfdir)/dbus-1/system.d
+dbusconf_DATA = udev/com.redhat.PrinterConfig.conf
 endif
 
 man_MANS=					\
@@ -238,7 +289,10 @@ EXTRA_DIST=\
 	intltool-merge.in \
 	intltool-update.in \
 	config.py.in \
-	udev/70-printers.rules
+	udev/70-printers.rules \
+	udev/com.redhat.PrinterConfig.xml \
+	udev/com.redhat.PrinterConfig.service.in \
+	udev/com.redhat.PrinterConfig.conf
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
 
@@ -293,12 +347,17 @@ test-ppd-module.sh:
 
 TESTS = test-ppd-module.sh
 
+CLEANFILES =					\
+	$(BUILT_SOURCES)			\
+	udev/*.o
+
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
 	test-ppd-module.sh pickled-ppds \
-	config.py
+	config.py \
+	$(service_DATA)
 
 distclean-local:
 	rm -rf html
