@@ -25,10 +25,11 @@ EXPORT_MODULES=					\
 dist-hook: mk-ChangeLog
 .PHONE: mk-ChangeLog
 mk-ChangeLog:
-	if test -d .git; then \
-	  $(top_srcdir)/gitlog-to-changelog --since=2009-05-01 \
-	    > $(distdir)/cl ;\
-	  mv -f $(distdir)/cl $(distdir)/ChangeLog ;\
+	if test -d .git; then				\
+	  $(top_srcdir)/gitlog-to-changelog		\
+	    --since=2009-05-01 -- --no-merges		\
+	    > $(distdir)/cl ;				\
+	  mv -f $(distdir)/cl $(distdir)/ChangeLog ;	\
 	fi
 
 config.py: config.py.in Makefile
