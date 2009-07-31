@@ -2768,7 +2768,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     # Rename
     def is_rename_possible (self, name):
-        jobs = self.printers[name].jobsQueued ()
+        jobs = self.printers[name].jobsQueued (limit=1)
         if len (jobs) > 0:
             show_error_dialog (_("Cannot Rename"),
                                _("There are queued jobs."),
@@ -2782,7 +2782,7 @@ class GUI(GtkGUI, monitor.Watcher):
         Renaming deletes job history. So if we have some completed jobs,
         inform the user and let him confirm the renaming.
         """
-        preserved_jobs = self.printers[name].jobsPreserved()
+        preserved_jobs = self.printers[name].jobsPreserved(limit=1)
         if len (preserved_jobs) > 0:
             dialog = gtk.MessageDialog (self.PrintersWindow,
                                         gtk.DIALOG_MODAL |
