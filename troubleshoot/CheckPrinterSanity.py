@@ -72,7 +72,7 @@ class CheckPrinterSanity(Question):
             uri = cups_printer_dict['device-uri']
             (scheme, rest) = urllib.splittype (uri)
             self.answers['cups_device_uri_scheme'] = scheme
-            if scheme in ["ipp", "http"]:
+            if scheme in ["ipp", "http", "https"]:
                 (hostport, rest) = urllib.splithost (rest)
                 (host, port) = urllib.splitnport (hostport, defport=631)
                 self.answers['remote_server_name'] = host
