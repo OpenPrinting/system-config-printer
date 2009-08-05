@@ -352,6 +352,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
                         domain=domain)
 
+
         # Ensure the default PrintersWindow is shown despite
         # the --no-focus-on-map option
         self.PrintersWindow.set_focus_on_map (self.focus_on_map)
@@ -2825,12 +2826,35 @@ class GUI(GtkGUI, monitor.Watcher):
 
     # Rename
     def is_rename_possible (self, name):
-        jobs = self.printers[name].jobsQueued ()
+        jobs = self.printers[name].jobsQueued (limit=1)
         if len (jobs) > 0:
             show_error_dialog (_("Cannot Rename"),
                                _("There are queued jobs."),
                                parent=self.PrintersWindow)
             return False
+
+        return True
+
+    def rename_confirmed_by_user (self, name):
+        """
+        Renaming deletes job history. So if we have some completed jobs,
+        inform the user and let him confirm the renaming.
+        """
+        preserved_jobs = self.printers[name].jobsPreserved(limit=1)
+        if len (preserved_jobs) > 0:
+            dialog = gtk.MessageDialog (self.PrintersWindow,
+                                        gtk.DIALOG_MODAL |
+                                        gtk.DIALOG_DESTROY_WITH_PARENT,
+                                        gtk.MESSAGE_WARNING,
+                                        gtk.BUTTONS_OK_CANCEL,
+                                        _("Renaming will lose history"))
+
+            dialog.format_secondary_text (_("Completed jobs will no longer "
+                                            "be available for re-printing."))
+            result = dialog.run()
+            dialog.destroy ()
+            if result == gtk.RESPONSE_CANCEL:
+                return False
 
         return True
 
@@ -2852,6 +2876,8 @@ class GUI(GtkGUI, monitor.Watcher):
         iter = model.get_iter (path)
         name = unicode (model.get_value (iter, 2))
         if not self.is_rename_possible (name):
+            return
+        if not self.rename_confirmed_by_user (name):
             return
         cell.set_property ('editable', True)
         self.dests_iconview.set_cursor (path, cell, start_editing=True)

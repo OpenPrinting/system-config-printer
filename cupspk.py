@@ -719,8 +719,8 @@ class Connection:
         settings = {}
         if result != None:
             for i in result.keys():
-                if type(i) == 'dbus.String':
-                    settings[i.encode()] = result[i].encode()
+                if type(i) == dbus.String:
+                    settings[str(i)] = str(result[i])
                 else:
                     settings[i] = result[i]
 

@@ -87,11 +87,19 @@ class CheckNetworkServerSanity(Question):
         self.answers['remote_server_try_connect'] = server_name
 
         if (self.answers['remote_server_name_resolves'] and
-            answers.get ('cups_device_uri_scheme', 'ipp') == 'ipp'):
+            answers.get ('cups_device_uri_scheme', 'ipp') in ['ipp',
+                                                              'http',
+                                                              'https']):
+            if answers.get ('cups_device_uri_scheme') == 'https':
+                encryption = cups.HTTP_ENCRYPT_REQUIRED
+            else:
+                encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
+
             try:
                 self.op = TimedOperation (cups.Connection,
                                           kwargs={"host": server_name,
-                                                  "port": server_port},
+                                                  "port": server_port,
+                                                  "encryption": encryption},
                                           parent=parent)
                 c = self.op.run ()
                 ipp_connect = True

@@ -316,7 +316,7 @@ class Printer:
         else:
             self.connection.setPrinterUsersAllowed(self.name, except_users)
 
-    def jobsQueued(self, only_tests=False):
+    def jobsQueued(self, only_tests=False, limit=None):
         """
         Find out whether jobs are queued for this printer.
 
@@ -343,15 +343,47 @@ class Printer:
                 (attrs.has_key ('job-name') and
                  attrs['job-name'] == 'Test Page')):
                 ret.append (id)
+
+                if limit != None and len (ret) == limit:
+                    break
         return ret
 
-    def testsQueued(self):
+    def jobsPreserved(self, limit=None):
+        """
+        Find out whether there are preserved jobs for this printer.
+
+        @return: list of job IDs
+        """
+        ret = []
+        try:
+            jobs = self.connection.getJobs (which_jobs='completed')
+        except cups.IPPError:
+            return ret
+
+        for id, attrs in jobs.iteritems():
+            try:
+                uri = attrs['job-printer-uri']
+                uri = uri[uri.rindex ('/') + 1:]
+            except:
+                continue
+            if uri != self.name:
+                continue
+            if (attrs.get ('job-state',
+                           cups.IPP_JOB_PENDING) < cups.IPP_JOB_COMPLETED):
+                continue
+            ret.append (id)
+            if limit != None and len (ret) == limit:
+                break
+
+        return ret
+
+    def testsQueued(self, limit=None):
         """
         Find out whether test jobs are queued for this printer.
 
         @returns: list of job IDs
         """
-        return self.jobsQueued (only_tests=True)
+        return self.jobsQueued (only_tests=True, limit=limit)
 
     def setAsDefault(self):
         """
