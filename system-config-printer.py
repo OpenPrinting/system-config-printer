@@ -1978,7 +1978,8 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.btnPrinterPropertiesApply.set_sensitive (len (self.changed) > 0 and
                                                       not self.conflicts)
-        self.btnPrinterPropertiesOK.set_sensitive (not self.conflicts)
+        self.btnPrinterPropertiesOK.set_sensitive (len (self.changed) > 0 and
+                                                   not self.conflicts)
 
     def save_printer(self, printer, saveall=False, parent=None):
         if parent == None:
