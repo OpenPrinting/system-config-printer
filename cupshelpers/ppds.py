@@ -1006,7 +1006,7 @@ def _self_test(argv):
         ("MFG:Hewlett-Packard;MDL:LaserJet 3390 Series;"
          "CMD:MLC,PCL,POSTSCRIPT;CLS:PRINTER;", 0, 'HP LaserJet 3390'),
         ("MFG:Hewlett-Packard;MDL:PSC 2200 Series;CMD:MLC,PCL,PML,DW-PCL,DYN;"
-         "CLS:PRINTER;1284.4DL:4d,4e,1;", 0, "HP PSC 2210"),
+         "CLS:PRINTER;1284.4DL:4d,4e,1;", 0, "HP PSC 22[01]0"),
         ("MFG:HEWLETT-PACKARD;MDL:DESKJET 990C;CMD:MLC,PCL,PML;CLS:PRINTER;"
          "DES:Hewlett-Packard DeskJet 990C;", 0, "HP DeskJet 990C"),
         ("CLASS:PRINTER;MODEL:HP LaserJet 6MP;MANUFACTURER:Hewlett-Packard;"
