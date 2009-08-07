@@ -662,38 +662,6 @@ no_password (const char *prompt)
   return "";
 }
 
-static http_t *
-cups_connection (void)
-{
-  http_t *cups = NULL;
-  static int first_time = 1;
-
-  if (first_time)
-    {
-      cupsSetPasswordCB (no_password);
-      first_time = 0;
-    }
-
-  cups = httpConnectEncrypt ("localhost", 631,
-				 HTTP_ENCRYPT_IF_REQUESTED);
-  if (cups == NULL)
-    {
-      /* Don't bother retrying here.  Instead, the CUPS initscript
-	 should run these commands after cupsd is started:
-
-	 rmmod usblp
-	 udevadm trigger --subsystem-match=usb \
-	                 --attr-match=bInterfaceClass=07 \
-			 --attr-match=bInterfaceSubClass=01
-      */
-
-      syslog (LOG_DEBUG, "failed to connect to CUPS server; giving up");
-      exit (1);
-    }
- 
-  return cups;
-}
-
 static ipp_t *
 cupsDoRequestOrDie (http_t *http,
 		    ipp_t *request,
@@ -752,7 +720,24 @@ find_matching_device_uris (struct device_id *id,
   /* Leave the bus to settle. */
   sleep (1);
 
-  cups = cups_connection ();
+  cups = httpConnectEncrypt ("localhost", 631, HTTP_ENCRYPT_IF_REQUESTED);
+  if (cups == NULL)
+    {
+      /* Don't bother retrying here.  Instead, the CUPS initscript
+	 should run these commands after cupsd is started:
+
+	 udevadm trigger --subsystem-match=usb \
+	                 --attr-match=bInterfaceClass=07 \
+			 --attr-match=bInterfaceSubClass=01
+
+	 udevadm trigger --subsystem-match=usb \
+	                 --property-match=DEVNAME="/dev/usb/lp*"
+      */
+
+      syslog (LOG_DEBUG, "failed to connect to CUPS server; giving up");
+      exit (1);
+    }
+
   request = ippNewRequest (CUPS_GET_DEVICES);
   ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_NAME, "exclude-schemes",
 		 sizeof (exclude_schemes) / sizeof(exclude_schemes[0]),
@@ -1004,7 +989,8 @@ for_each_matching_queue (struct device_uris *device_uris,
 			 void *context)
 {
   size_t matched = 0;
-  http_t *cups = cups_connection ();
+  http_t *cups = httpConnectEncrypt ("localhost", 631,
+				     HTTP_ENCRYPT_IF_REQUESTED);
   ipp_t *request, *answer;
   ipp_attribute_t *attr;
   const char *attributes[] = {
@@ -1013,6 +999,9 @@ for_each_matching_queue (struct device_uris *device_uris,
     "printer-state",
     "printer-state-message",
   };
+
+  if (cups == NULL)
+    return 0;
 
   request = ippNewRequest (CUPS_GET_PRINTERS);
   ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_KEYWORD,
@@ -1099,8 +1088,13 @@ static void
 enable_queue (const char *printer_uri, void *context)
 {
   /* Disable it. */
-  http_t *cups = cups_connection ();
+  http_t *cups = httpConnectEncrypt ("localhost", 631,
+				     HTTP_ENCRYPT_IF_REQUESTED);
   ipp_t *request, *answer;
+
+  if (cups == NULL)
+    return;
+
   request = ippNewRequest (IPP_RESUME_PRINTER);
   ippAddString (request, IPP_TAG_OPERATION, IPP_TAG_URI,
 		"printer-uri", NULL, printer_uri);
@@ -1232,8 +1226,13 @@ static void
 disable_queue (const char *printer_uri, void *context)
 {
   /* Disable it. */
-  http_t *cups = cups_connection ();
+  http_t *cups = httpConnectEncrypt ("localhost", 631,
+				     HTTP_ENCRYPT_IF_REQUESTED);
   ipp_t *request, *answer;
+
+  if (cups == NULL)
+    return;
+
   request = ippNewRequest (IPP_PAUSE_PRINTER);
   ippAddString (request, IPP_TAG_OPERATION, IPP_TAG_URI,
 		"printer-uri", NULL, printer_uri);
@@ -1307,6 +1306,7 @@ main (int argc, char **argv)
     }
 
   openlog ("udev-configure-printer", 0, LOG_LPR);
+  cupsSetPasswordCB (no_password);
   if (add)
     return do_add (argv[0], argv[2]);
 
