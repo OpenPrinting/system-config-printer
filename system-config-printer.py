@@ -1446,7 +1446,8 @@ class GUI(GtkGUI, monitor.Watcher):
                             emblem = gtk.STOCK_MEDIA_PAUSE
                             continue
 
-                        r = statereason.StateReason (object.name, reason)
+                        r = statereason.StateReason (object.connection,
+                                                     object.name, reason)
                         if worst_reason == None:
                             worst_reason = r
                         elif r > worst_reason:
@@ -2580,7 +2581,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
             any = True
             iter = store.append (None)
-            r = statereason.StateReason (printer.name, reason)
+            r = statereason.StateReason (printer.connection, printer.name, reason)
             if r.get_reason () == "paused":
                 icon = gtk.STOCK_MEDIA_PAUSE
             else:

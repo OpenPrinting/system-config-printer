@@ -17,6 +17,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import cups
+
 _ = lambda x: x
 def set_gettext_function (fn):
     global _
@@ -33,11 +35,12 @@ class StateReason:
         ERROR: "dialog-error"
         }
 
-    def __init__(self, printer, reason):
+    def __init__(self, connection, printer, reason):
         self.printer = printer
         self.reason = reason
         self.level = None
         self.canonical_reason = None
+        self.connection = connection
 
     def get_printer (self):
         return self.printer
@@ -53,6 +56,7 @@ class StateReason:
             self.level = self.WARNING
         else:
             self.level = self.ERROR
+
         return self.level
 
     def get_reason (self):
@@ -69,6 +73,7 @@ class StateReason:
         return self.canonical_reason
 
     def __repr__ (self):
+        self.get_level()
         if self.level == self.REPORT:
             level = "REPORT"
         elif self.level == self.WARNING:
@@ -119,8 +124,24 @@ class StateReason:
                 title = _("Printer warning")
             elif self.get_level () == self.ERROR:
                 title = _("Printer error")
-            text = _("Printer '%s': '%s'.") % (self.get_printer (),
-                                               self.get_reason ())
+
+            try:
+                f = self.connection.getPPD(self.printer)
+                ppd = cups.PPD (f)
+                schemes = ["text", "http", "help", "file"]
+                localized_reason = ""
+                for scheme in schemes:
+                    reason = ppd.localizeIPPReason(self.reason, scheme)
+                    if reason != None:
+                        localized_reason = localized_reason + reason + ", "
+                if localized_reason != "":
+                    reason = localized_reason[:-2]
+                else:
+                    reason = self.get_reason()
+            except cups.IPPError:
+                reason = self.get_reason()
+
+            text = _("Printer '%s': '%s'.") % (self.get_printer (), reason)
         return (title, text)
 
     def get_tuple (self):
