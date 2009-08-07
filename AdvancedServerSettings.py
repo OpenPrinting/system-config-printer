@@ -23,6 +23,7 @@ from gettext import gettext as _
 import gobject
 import gtk
 import os
+import socket
 import tempfile
 import time
 
@@ -230,10 +231,40 @@ class AdvancedServerSettingsDialog:
         cell.set_property ('editable', False)
         self.add.set_sensitive (True)
         self.disconnect ('edit')
+
         valid = True
-        if newvalue.find (' ') != -1:
-            valid = False
-        else:
+        # Check that it's a valid IP address or hostname.
+        # First, is it an IP address?
+        try:
+            socket.getaddrinfo (newvalue, '0', socket.AF_UNSPEC, 0, 0,
+                                socket.AI_NUMERICHOST)
+        except socket.gaierror:
+            # No.  Perhaps it's a hostname.
+            labels = newvalue.split (".")
+            seen_alpha = False
+            for label in labels:
+                if (label[0] == '-' or
+                    label.endswith ('-')):
+                    valid = False
+                    break
+                for char in label:
+                    if not seen_alpha:
+                        if char.isalpha ():
+                            seen_alpha = True
+
+                    if not (char.isalpha () or
+                            char.isdigit () or
+                            char == '-'):
+                        valid = False
+                        break
+
+                if not valid:
+                    break
+
+            if valid and not seen_alpha:
+                valid = False
+
+        if valid:
             count = 0
             i = model.get_iter_first ()
             while i:
@@ -245,8 +276,7 @@ class AdvancedServerSettingsDialog:
                         selection.select_iter (i)
                         break
                 i = model.iter_next (i)
-
-        if not valid:
+        else:
             model.remove (iter)
 
     def on_browse_poll_edit_cancel (self, cell):
