@@ -2581,7 +2581,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
             any = True
             iter = store.append (None)
-            r = statereason.StateReason (printer.name, reason)
+            r = statereason.StateReason (printer.connection, printer.name, reason)
             store.set_value (iter, 0, r.get_level ())
             (title, text) = r.get_description ()
             store.set_value (iter, 1, text)

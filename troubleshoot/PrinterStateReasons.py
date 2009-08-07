@@ -71,7 +71,7 @@ class PrinterStateReasons(Question):
             if reason == "none":
                 continue
 
-            r = statereason.StateReason (queue, reason)
+            r = statereason.StateReason (c, queue, reason)
             (title, description) = r.get_description ()
             level = r.get_level ()
             if level == statereason.StateReason.ERROR:

@@ -62,7 +62,7 @@ def collect_printer_state_reasons (connection):
                 continue
             if not result.has_key (name):
                 result[name] = []
-            result[name].append (StateReason (name, reason))
+            result[name].append (StateReason (connection, name, reason))
     return result
 
 class Watcher:
@@ -408,7 +408,7 @@ class Monitor:
                             break
                         if state_reason_is_harmless (reason):
                             continue
-                        reasons.append (StateReason (name, reason))
+                        reasons.append (StateReason (c, name, reason))
                     self.printer_state_reasons[name] = reasons
 
                     deferred_calls.append ((self.watcher.printer_event,
