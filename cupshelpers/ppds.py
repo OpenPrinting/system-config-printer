@@ -180,6 +180,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
                    " ps3",
                    " pxl",
                    " series",
+                   "_bt",
                    ","]:
         s = modell.find (suffix)
         if s != -1:
