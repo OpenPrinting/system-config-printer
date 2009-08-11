@@ -715,6 +715,10 @@ def missingPackagesAndExecutables(ppd):
     # First, a local function.  How to check that something exists
     # in a path:
     def pathcheck (name, path="/usr/bin:/bin"):
+        if name == "-":
+            # A filter of "-" means that no filter is required,
+            # i.e. the device accepts the given format as-is.
+            return "builtin"
         # Strip out foomatic '%'-style place-holders.
         p = name.find ('%')
         if p != -1:
