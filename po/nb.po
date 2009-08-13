@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: system-config-printer 1.1.10\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2009-08-07 17:56+0100\n"
-"PO-Revision-Date: 2009-08-08 17:25+0200\n"
+"PO-Revision-Date: 2009-08-13 19:08+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
@@ -428,9 +428,9 @@ msgid "Document `%s' has finished printing on `%s'."
 msgstr "Dokument «%s» er ferdig skrevet ut på «%s»."
 
 #: ../jobviewer.py:1418
-#, fuzzy, python-format
+#, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr "Det oppstod et problem ved tilkobling til CUPS-tjeneren."
+msgstr "Det oppstod et problem ved sending av dokument «%s» (jobb %d) til skriveren."
 
 #: ../jobviewer.py:1421
 #, python-format
@@ -454,7 +454,7 @@ msgstr "_Diagnose"
 #: ../jobviewer.py:1457
 #, python-format
 msgid "The printer called `%s' has been disabled."
-msgstr ""
+msgstr "Skriver med navn «%s» er deaktivert."
 
 #: ../my-default-printer.py:137 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
@@ -538,7 +538,7 @@ msgstr "Utskriftsmodus"
 
 #: ../ppdippstr.py:69
 msgid "Draft (auto-detect-paper type)"
-msgstr ""
+msgstr "Skisse (gjenkjenn papirtype automatisk)"
 
 #: ../ppdippstr.py:71
 msgid "Draft grayscale (auto-detect-paper type)"
@@ -558,23 +558,23 @@ msgstr ""
 
 #: ../ppdippstr.py:78
 msgid "High quality grayscale (auto-detect-paper type)"
-msgstr ""
+msgstr "Høy kvalitet gråtone (gjenkjenn papirtype automatisk)"
 
 #: ../ppdippstr.py:79
 msgid "Photo (on photo paper)"
-msgstr ""
+msgstr "Foto (på fotopapir)"
 
 #: ../ppdippstr.py:81
 msgid "Best quality (color on photo paper)"
-msgstr ""
+msgstr "Best kvalitet (farge på fotopapir)"
 
 #: ../ppdippstr.py:83
 msgid "Normal quality (color on photo paper)"
-msgstr ""
+msgstr "Normal kvalitet (farge på fotopapir)"
 
 #: ../ppdippstr.py:85
 msgid "Media source"
-msgstr ""
+msgstr "Mediakilde"
 
 #: ../ppdippstr.py:86
 msgid "Printer default"
@@ -598,11 +598,11 @@ msgstr "CD- eller DVD-skuff"
 
 #: ../ppdippstr.py:91
 msgid "Envelope feeder"
-msgstr ""
+msgstr "Konvoluttmater"
 
 #: ../ppdippstr.py:92
 msgid "Large capacity tray"
-msgstr ""
+msgstr "Skuff med høy kapasitet"
 
 #: ../ppdippstr.py:93
 msgid "Manual feeder"
@@ -610,7 +610,7 @@ msgstr "Manuell mating"
 
 #: ../ppdippstr.py:94
 msgid "Multi-purpose tray"
-msgstr ""
+msgstr "Skuff med flere formål"
 
 #: ../ppdippstr.py:96
 msgid "Page size"
@@ -622,7 +622,7 @@ msgstr "Egendefinert"
 
 #: ../ppdippstr.py:98
 msgid "Photo or 4x6 inch index card"
-msgstr ""
+msgstr "Foto eller 4x6 tommers indekskort"
 
 #: ../ppdippstr.py:99
 msgid "Photo or 5x7 inch index card"
@@ -646,11 +646,11 @@ msgstr ""
 
 #: ../ppdippstr.py:104
 msgid "CD or DVD 80mm"
-msgstr ""
+msgstr "CD eller DVD 80mm"
 
 #: ../ppdippstr.py:105
 msgid "CD or DVD 120mm"
-msgstr ""
+msgstr "CD eller DVD 120mm"
 
 #: ../ppdippstr.py:107
 msgid "Double-sided printing"
@@ -666,7 +666,7 @@ msgstr ""
 
 #: ../ppdippstr.py:110
 msgid "Off"
-msgstr ""
+msgstr "Av"
 
 #: ../ppdippstr.py:113
 msgid "Resolution, quality, ink type, media type"
@@ -1024,7 +1024,7 @@ msgstr ""
 
 #: ../system-config-printer.py:1358
 msgid "Remove from Group"
-msgstr ""
+msgstr "Fjern fra gruppe"
 
 #: ../system-config-printer.py:1424
 msgid "Network printer (discovered)"
@@ -1256,11 +1256,10 @@ msgid "Comment"
 msgstr "Kommentar"
 
 #: ../system-config-printer.py:3748
-#, fuzzy
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
-msgstr "PostScript skriverbeskrivelse (*.ppd[.gz])"
+msgstr "PostScript skriverbeskrivelse (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
 
 #: ../system-config-printer.py:3757
 msgid "All files (*)"
@@ -1330,7 +1329,7 @@ msgstr ""
 
 #: ../system-config-printer.py:4733
 msgid "The plugin provides the following features:\n"
-msgstr ""
+msgstr "Tillegget gir følgende funksjoner:\n"
 
 #: ../system-config-printer.py:4736
 msgid " - Printing support\n"
@@ -1342,11 +1341,11 @@ msgstr "- Raskere utskrifter\n"
 
 #: ../system-config-printer.py:4742
 msgid " - Better printout quality\n"
-msgstr ""
+msgstr " - Bedre utskriftskvalitet\n"
 
 #: ../system-config-printer.py:4745
 msgid " - Extra printing features\n"
-msgstr ""
+msgstr " - Ekstra utskriftsfunksjoner\n"
 
 #: ../system-config-printer.py:4748
 msgid " - Scanning support\n"
@@ -1358,7 +1357,7 @@ msgstr " - Raskere skanning\n"
 
 #: ../system-config-printer.py:4754
 msgid " - Better scanning image quality\n"
-msgstr ""
+msgstr " - Bedre bildekvalitet ved skanning\n"
 
 #: ../system-config-printer.py:4757
 msgid " - Faxing support\n"
@@ -1366,15 +1365,15 @@ msgstr " - Støtte for faks\n"
 
 #: ../system-config-printer.py:4760
 msgid " - Extra fax features\n"
-msgstr ""
+msgstr " - Flere funksjoner for faks\n"
 
 #: ../system-config-printer.py:4763
 msgid " - Better Input/Output support\n"
-msgstr ""
+msgstr " - Bedre støtte for inn-/utdata\n"
 
 #: ../system-config-printer.py:4766
 msgid " - Extra user interface features\n"
-msgstr ""
+msgstr " - Ekstra brukergrensesnittfunksjoner\n"
 
 #: ../system-config-printer.py:4769
 msgid " - Other extra features\n"
@@ -1475,7 +1474,7 @@ msgstr "Hardware Abstraction Layer (HAL)."
 
 #: ../system-config-printer.py:5549
 msgid "AppSocket/HP JetDirect"
-msgstr ""
+msgstr "AppSocket/HP JetDirect"
 
 #: ../system-config-printer.py:5558
 #, python-format
@@ -1488,7 +1487,7 @@ msgstr "LPD-/LPR-kø"
 
 #: ../system-config-printer.py:5563
 msgid "Windows Printer via SAMBA"
-msgstr ""
+msgstr "Windows-skriver via SAMBA"
 
 #: ../system-config-printer.py:5565
 msgid "IPP"
@@ -1528,7 +1527,7 @@ msgstr "Lokal skriver gjenkjent av Hardware Abstraction Layer (HAL)."
 
 #: ../system-config-printer.py:5859
 msgid "No printer was found at that address."
-msgstr ""
+msgstr "Ingen skriver ble funnet på den adressen."
 
 #: ../system-config-printer.py:5996
 msgid "-- Select from search results --"
@@ -1563,11 +1562,13 @@ msgstr ", "
 msgid ""
 "\n"
 "(%s)"
-msgstr "\n(%s)"
+msgstr ""
+"\n"
+"(%s)"
 
 #: ../system-config-printer.py:6284
 msgid "No support contacts known"
-msgstr ""
+msgstr "Ingen brukerstøttekontakter kjent"
 
 #: ../system-config-printer.py:6288 ../system-config-printer.py:6301
 msgid "Not specified."
@@ -1631,11 +1632,9 @@ msgid "Install driver"
 msgstr "Installer driver"
 
 #: ../system-config-printer.py:6728 ../troubleshoot/CheckPPDSanity.py:131
-#, fuzzy, python-format
+#, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
-msgstr ""
-"Skriveren '%s' er avhengig av pakken %s, som ikke er installert.  Vennligst "
-"installer denne pakken før skriveren tas i bruk."
+msgstr "Skriver «%s» er avhengig av pakke %s, men den er ikke installert."
 
 #: ../system-config-printer.py:6744
 msgid "Missing driver"
@@ -1784,7 +1783,7 @@ msgstr "_Filter:"
 
 #: ../troubleshoot/__init__.py:54
 msgid "Printing troubleshooter"
-msgstr ""
+msgstr "Feilsøking for utskrift"
 
 #: ../troubleshoot/base.py:33
 msgid ""
@@ -1794,7 +1793,7 @@ msgstr ""
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:28
 msgid "Server Not Exporting Printers"
-msgstr ""
+msgstr "Tjener eksporterer ikke skrivere"
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:29
 msgid ""
@@ -1825,21 +1824,19 @@ msgstr ""
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:112
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem with the PPD file for printer '%s'."
-msgstr "Døren er åpen på skriver «%s»."
+msgstr "Det er problemer med PPD-filen for skriver «%s»."
 
 #: ../troubleshoot/CheckPPDSanity.py:122
 msgid "Missing Printer Driver"
 msgstr "Mangler skriverdriver"
 
 #: ../troubleshoot/CheckPPDSanity.py:136
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed."
-msgstr ""
-"Skriveren '%s' er avhengig av pakken %s, som ikke er installert.  Vennligst "
-"installer denne pakken før skriveren tas i bruk."
+msgstr "Skriver «%s» er avhengig av programmet %s, men dette er ikke installert."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
 msgid "Choose Network Printer"
@@ -1897,11 +1894,11 @@ msgstr ""
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:36
 msgid "Enable Debugging"
-msgstr ""
+msgstr "Slå på feilsøking"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:211
 msgid "Debug logging enabled."
-msgstr ""
+msgstr "Logging av feilsøkingsinformasjon aktivert."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:213
 msgid "Debug logging was already enabled."
@@ -1909,7 +1906,7 @@ msgstr ""
 
 #: ../troubleshoot/ErrorLogParse.py:29
 msgid "Error log messages"
-msgstr ""
+msgstr "Logg med feilmeldinger"
 
 #: ../troubleshoot/ErrorLogParse.py:30
 msgid "There are messages in the error log."
@@ -1938,9 +1935,8 @@ msgid "Printer Location"
 msgstr "Lokasjon for skriver"
 
 #: ../troubleshoot/LocalOrRemote.py:27
-#, fuzzy
 msgid "Is the printer connected to this computer or available on the network?"
-msgstr "En skriver koblet til en parallellport."
+msgstr "En skriveren koblet til denne datamaskinen eller tilgjengelig på nettverket?"
 
 #: ../troubleshoot/LocalOrRemote.py:29
 msgid "Locally connected printer"
@@ -1952,7 +1948,7 @@ msgstr "Køen er ikke delt"
 
 #: ../troubleshoot/NetworkCUPSPrinterShared.py:29
 msgid "The CUPS printer on the server is not shared."
-msgstr ""
+msgstr "CUPS-skriver på tjeneren er ikke delt."
 
 #: ../troubleshoot/PrinterStateReasons.py:29
 msgid "Status Messages"
@@ -1963,9 +1959,9 @@ msgid "There are status messages associated with this queue."
 msgstr ""
 
 #: ../troubleshoot/PrinterStateReasons.py:58
-#, fuzzy, python-format
+#, python-format
 msgid "The printer's state message is: '%s'."
-msgstr "Tilstand for skriver:"
+msgstr "Skriverens tilstandsmelding er: «%s»."
 
 #: ../troubleshoot/PrinterStateReasons.py:83
 msgid "Errors are listed below:"
@@ -2008,7 +2004,7 @@ msgstr ""
 
 #: ../troubleshoot/PrintTestPage.py:416
 msgid "Error submitting test page"
-msgstr ""
+msgstr "Feil ved sending av testside"
 
 #: ../troubleshoot/QueueNotEnabled.py:56
 #: ../troubleshoot/QueueRejectingJobs.py:66
@@ -2025,9 +2021,9 @@ msgid "Queue Not Enabled"
 msgstr "Køen er ikke aktiv"
 
 #: ../troubleshoot/QueueNotEnabled.py:63
-#, fuzzy, python-format
+#, python-format
 msgid "The queue '%s' is not enabled."
-msgstr "Denne delte skriveren kan ikke aksesseres."
+msgstr "Køen «%s» er ikke aktivert."
 
 #: ../troubleshoot/QueueNotEnabled.py:71
 msgid ""
@@ -2037,12 +2033,12 @@ msgstr ""
 
 #: ../troubleshoot/QueueRejectingJobs.py:31
 msgid "Queue Rejecting Jobs"
-msgstr ""
+msgstr "Køen avviser jobber"
 
 #: ../troubleshoot/QueueRejectingJobs.py:63
 #, python-format
 msgid "The queue '%s' is rejecting jobs."
-msgstr ""
+msgstr "Køen «%s» tar ikke imot jobber."
 
 #: ../troubleshoot/QueueRejectingJobs.py:70
 msgid ""
@@ -2081,12 +2077,11 @@ msgstr ""
 
 #: ../troubleshoot/ServerFirewalled.py:26
 msgid "Check Server Firewall"
-msgstr ""
+msgstr "Sjekk brannmur på tjener"
 
 #: ../troubleshoot/ServerFirewalled.py:27
-#, fuzzy
 msgid "It is not possible to connect to the server."
-msgstr "Det oppstod et problem ved tilkobling til CUPS-tjeneren."
+msgstr "Det er ikke mulig å koble til tjeneren."
 
 #: ../troubleshoot/ServerFirewalled.py:42
 #, python-format
