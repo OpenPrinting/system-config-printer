@@ -791,8 +791,8 @@ find_matching_device_uris (struct device_id *id,
 
       /* Now check the manufacturer and model names. */
       if (device_uri && this_id.mfg && this_id.mdl &&
-	  !strcmp (this_id.mfg, id->mfg) &&
-	  !strcmp (this_id.mdl, id->mdl))
+	  !strcasecmp (this_id.mfg, id->mfg) &&
+	  !strcasecmp (this_id.mdl, id->mdl))
 	{
 	  /* We've checked everything except the serial numbers.  This
 	   * is more complicated.  Some devices include a serial
