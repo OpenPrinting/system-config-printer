@@ -300,7 +300,74 @@ class Connection:
 #    getPPDs
 #    getServerPPD
 #    getDocument
-#    getDevices
+
+
+    def getDevices(self, *args, **kwds):
+        use_pycups = False
+
+        timeout = 0
+        include_schemes = ''
+        exclude_schemes = ''
+
+        if len(args) == 3:
+            (use_pycups, timeout, include_schemes, exclude_schemes) = self._args_to_tuple([int, str, str], *args)
+        else:
+            if kwds.has_key('timeout'):
+                timeout = kwds['timeout']
+
+            if kwds.has_key('include_schemes'):
+                include_schemes = kwds['include_schemes']
+
+            if kwds.has_key('exclude_schemes'):
+                exclude_schemes = kwds['exclude_schemes']
+
+        pk_args = (timeout, include_schemes, exclude_schemes)
+
+        result = self._call_with_pk_and_fallback(use_pycups,
+                                                 'DevicesGet', pk_args,
+                                                 self._connection.getDevices,
+                                                 *args, **kwds)
+
+        # return 'result' if fallback was called
+        if len (result.keys()) > 0 and type (result[result.keys()[0]]) == dict:
+             return result
+
+        result_str = {}
+        if result != None:
+            for i in result.keys():
+                if type(i) == dbus.String:
+                    result_str[str(i)] = str(result[i])
+                else:
+                    result_str[i] = result[i]
+
+        # cups-pk-helper returns all devices in one dictionary.
+        # Keys of different devices are distinguished by ':n' postfix.
+
+        devices = {}
+        n = 0
+        postfix = ':' + str (n)
+        device_keys = [x for x in result_str.keys() if x.endswith(postfix)]
+        while len (device_keys) > 0:
+
+            device_uri = None
+            device_dict = {}
+            for i in device_keys:
+                key = i[:len(i) - len(postfix)]
+                if key != 'device-uri':
+                    device_dict[key] = result_str[i]
+                else:
+                    device_uri = result_str[i]
+
+            if device_uri != None:
+                devices[device_uri] = device_dict
+
+            n += 1
+            postfix = ':' + str (n)
+            device_keys = [x for x in result_str.keys() if x.endswith(postfix)]
+
+        return devices
+
+
 #    getJobs
 #    getJobAttributes
 

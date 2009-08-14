@@ -237,9 +237,6 @@ class GUI(GtkGUI, monitor.Watcher):
                               "view_groups"],
                          "AboutDialog":
                              ["AboutDialog"],
-                         "WaitWindow":
-                             ["WaitWindow",
-                              "lblWait"],
                          "ConnectDialog":
                              ["ConnectDialog",
                               "chkEncrypted",
@@ -2550,6 +2547,12 @@ class GUI(GtkGUI, monitor.Watcher):
             for color, name, marker_type, level in markers:
                 if name == None:
                     name = ''
+                else:
+                    ppd = printer.getPPD()
+                    if ppd != False:
+                        localized_name = ppd.localizeMarkerName(name)
+                        if localized_name != None:
+                            name = localized_name
 
                 row = num_markers / 4
                 col = num_markers % 4
@@ -3648,6 +3651,9 @@ class NewPrinterGUI(GtkGUI):
                               "tvNPDownloadableDriverLicense",
                               "rbtnNPDownloadLicenseYes",
                               "rbtnNPDownloadLicenseNo"],
+                         "WaitWindow":
+                             ["WaitWindow",
+                              "lblWait"],
                          "SMBBrowseDialog":
                              ["SMBBrowseDialog",
                               "tvSMBBrowser",
@@ -3662,8 +3668,6 @@ class NewPrinterGUI(GtkGUI):
             dialog.connect ("delete-event", on_delete_just_hide)
 
         # share with mainapp
-        self.WaitWindow = mainapp.WaitWindow
-        self.lblWait = mainapp.lblWait
         self.busy = mainapp.busy
         self.ready = mainapp.ready
 
@@ -4011,7 +4015,7 @@ class NewPrinterGUI(GtkGUI):
                                          _('Searching') + '</span>\n\n' +
                                          _('Searching for downloadable drivers'))
                 if not parent:
-                    parent = self.mainapp.PrintersWindow
+                    parent = self.NewPrinterWindow
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show ()
 
@@ -4090,7 +4094,7 @@ class NewPrinterGUI(GtkGUI):
                                          _('Searching') + '</span>\n\n' +
                                          _('Searching for drivers'))
                 if not parent:
-                    parent = self.mainapp.PrintersWindow
+                    parent = self.NewPrinterWindow
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show_now ()
 
