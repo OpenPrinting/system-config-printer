@@ -5,8 +5,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-08-07 17:56+0100\n"
-"PO-Revision-Date: 2009-03-23 17:28+0100\n"
+"POT-Creation-Date: 2009-07-31 10:38+0100\n"
+"PO-Revision-Date: 2009-08-15 13:40+0100\n"
 "Last-Translator: Rui Gouveia <rui.gouveia@globaltek.pt>\n"
 "Language-Team: pt <fedora-trans-pt@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -31,41 +31,35 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: PORTUGAL\n"
 
-#: ../AdvancedServerSettings.py:42
+#: ../AdvancedServerSettings.py:41
 msgid "Advanced Server Settings"
 msgstr "Configurações Avançadas do Servidor"
 
-#: ../AdvancedServerSettings.py:59
+#: ../AdvancedServerSettings.py:58
 msgid "Job History"
 msgstr "Histórico de tarefas"
 
-#: ../AdvancedServerSettings.py:70
+#: ../AdvancedServerSettings.py:69
 msgid "Do not preserve job history"
 msgstr "Não preservar histórico de tarefas"
 
-#: ../AdvancedServerSettings.py:72
+#: ../AdvancedServerSettings.py:71
 msgid "Preserve job history but not files"
 msgstr "Preservar histórico de tarefas, mas não os ficheiros"
 
-#: ../AdvancedServerSettings.py:75
+#: ../AdvancedServerSettings.py:74
 msgid "Preserve job files (allow reprinting)"
 msgstr "Preservar ficheiros das tarefas (permite reimpressão)"
 
-#: ../AdvancedServerSettings.py:83
+#: ../AdvancedServerSettings.py:82
 msgid "Browse Servers"
 msgstr "Navegue pelos Servidores"
 
-#: ../AdvancedServerSettings.py:94
-#, fuzzy
-msgid ""
-"Usually print servers broadcast their queues.  Specify print servers below "
-"to periodically ask for queues instead."
-msgstr ""
-"Normalmente os servidores anunciam as suas filas de impressão. "
-"Alternativamente, especifique servidores de impressão que periodicamente são "
-"consultados para obtenção de filas de impressão."
+#: ../AdvancedServerSettings.py:93
+msgid "Usually print servers broadcast their queues.  Specify print servers below to periodically ask for queues instead."
+msgstr "Normalmente os servidores anunciam as suas filas de impressão. Alternativamente, especifique servidores de impressão que periodicamente são consultados para obtenção de filas de impressão."
 
-#: ../AdvancedServerSettings.py:215
+#: ../AdvancedServerSettings.py:214
 msgid "Enter IP address"
 msgstr "Insira endereço IP"
 
@@ -81,7 +75,8 @@ msgstr "Senha:"
 msgid "Domain:"
 msgstr "Domínio:"
 
-#: ../authconn.py:46 ../authconn.py:412
+#: ../authconn.py:46
+#: ../authconn.py:412
 msgid "Authentication"
 msgstr "Autenticação"
 
@@ -90,28 +85,32 @@ msgid "Remember password"
 msgstr "Lembrar senha"
 
 #: ../authconn.py:209
-#, fuzzy, python-format
+#, python-format
 msgid "Unauthorized request (%s)"
-msgstr "Pedido de informação"
+msgstr "Pedido não autorizado (%s)"
 
 #: ../authconn.py:210
 msgid "You are not authorized to carry out the requested action."
-msgstr ""
+msgstr "Não está autorizado a executar a acção pretendida."
 
-#: ../authconn.py:213 ../authconn.py:234
+#: ../authconn.py:213
+#: ../authconn.py:234
 msgid "Operation canceled"
 msgstr "Operação Cancelada"
 
 #: ../authconn.py:251
-#, fuzzy, python-format
+#, python-format
 msgid "CUPS server error (%s)"
-msgstr "Erro no servidor CUPS"
+msgstr "Erro no servidor CUPS (%s)"
 
-#: ../authconn.py:253 ../errordialogs.py:56 ../errordialogs.py:70
+#: ../authconn.py:253
+#: ../errordialogs.py:56
+#: ../errordialogs.py:70
 msgid "CUPS server error"
 msgstr "Erro no servidor CUPS"
 
-#: ../authconn.py:262 ../errordialogs.py:57
+#: ../authconn.py:262
+#: ../errordialogs.py:57
 #: ../troubleshoot/PrintTestPage.py:417
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
@@ -121,27 +120,27 @@ msgstr "Houve um erro durante a operação CUPS: '%s'."
 msgid "Retry"
 msgstr "Tentar Novamente"
 
-#: ../authconn.py:386 ../authconn.py:388 ../errordialogs.py:65 ../pysmb.py:75
+#: ../authconn.py:386
+#: ../authconn.py:388
+#: ../errordialogs.py:65
+#: ../pysmb.py:75
 #: ../pysmb.py:77
 msgid "Not authorized"
 msgstr "Não autorizado"
 
-#: ../authconn.py:389 ../pysmb.py:78
+#: ../authconn.py:389
+#: ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "A senha pode estar incorrecta."
 
 #: ../authconn.py:410
-#, fuzzy, python-format
+#, python-format
 msgid "Authentication (%s)"
-msgstr "Autenticação"
+msgstr "Autenticação (%s)"
 
 #: ../errordialogs.py:66
-msgid ""
-"The password may be incorrect, or the server may be configured to deny "
-"remote administration."
-msgstr ""
-"A senha pode estar incorrecta ou o servidor poderá estar configurado para "
-"negar a administração remota."
+msgid "The password may be incorrect, or the server may be configured to deny remote administration."
+msgstr "A senha pode estar incorrecta ou o servidor poderá estar configurado para negar a administração remota."
 
 #: ../errordialogs.py:72
 msgid "Bad request"
@@ -163,7 +162,8 @@ msgstr "É necessária uma actualização"
 msgid "Server error"
 msgstr "Erro no servidor"
 
-#: ../errordialogs.py:82 ../system-config-printer.py:1282
+#: ../errordialogs.py:82
+#: ../system-config-printer.py:1286
 msgid "Not connected"
 msgstr "Não ligada"
 
@@ -178,39 +178,35 @@ msgid "There was an HTTP error: %s."
 msgstr "Ocorreu um erro de HTTP: %s."
 
 #: ../GroupsPane.py:92
-#, fuzzy
 msgid "_New Group"
-msgstr "Novo Grupo"
+msgstr "_Novo Grupo"
 
 #: ../GroupsPane.py:95
-#, fuzzy
 msgid "_New Group from Selection"
-msgstr "Novas Guias apartir da _Seleccao"
+msgstr "_Novo Grupo a partir da Selecção"
 
-#: ../GroupsPane.py:98 ../system-config-printer.py:405
+#: ../GroupsPane.py:98
+#: ../system-config-printer.py:409
 msgid "_Rename"
 msgstr "_Alterar nome"
 
 #: ../GroupsPane.py:170
-#, fuzzy
 msgid "The item could not be renamed."
 msgstr "Incapaz de renomear o item."
 
 #: ../GroupsPane.py:171
-#, fuzzy, python-format
+#, python-format
 msgid "The name \"%s\" is already in use. Please use a different name."
-msgstr "O nome \"%s\" já está a ser utilizado. Utilize um nome diferente."
+msgstr "O nome \"%s\" já está a ser utilizado. Por favor, utilize um nome diferente."
 
 #: ../GroupsPane.py:290
-#, fuzzy, python-format
+#, python-format
 msgid "Are you sure you want to permanently delete \"%s\"?"
 msgstr "Tem a certeza de que deseja apagar definitivamente \"%s\"?"
 
 #: ../GroupsPane.py:296
-msgid ""
-"This will not delete any printer queues from your computer. To delete queues "
-"completely, you must delete them from the 'All Printers' group."
-msgstr ""
+msgid "This will not delete any printer queues from your computer. To delete queues completely, you must delete them from the 'All Printers' group."
+msgstr "Isto não apaga as filas de impressão do seu computador. Para apagar as filas completamente, tem de as apagar do grupo 'Todas as Impressoras'."
 
 #: ../GroupsPane.py:318
 msgid "New Group"
@@ -240,7 +236,8 @@ msgstr "Im_primir de novo"
 msgid "_Authenticate"
 msgstr "_Autenticar"
 
-#: ../jobviewer.py:211 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:211
+#: ../troubleshoot/PrintTestPage.py:82
 msgid "Job"
 msgstr "Tarefa"
 
@@ -248,12 +245,15 @@ msgstr "Tarefa"
 msgid "User"
 msgstr "Utilizador"
 
-#: ../jobviewer.py:213 ../troubleshoot/PrintTestPage.py:86
+#: ../jobviewer.py:213
+#: ../troubleshoot/PrintTestPage.py:86
 msgid "Document"
 msgstr "Documento"
 
-#: ../jobviewer.py:214 ../my-default-printer.py:153
-#: ../system-config-printer.py:378 ../system-config-printer.py:1430
+#: ../jobviewer.py:214
+#: ../my-default-printer.py:153
+#: ../system-config-printer.py:382
+#: ../system-config-printer.py:1434
 #: ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Impressora"
@@ -266,7 +266,8 @@ msgstr "Tamanho"
 msgid "Time submitted"
 msgstr "Hora de envio"
 
-#: ../jobviewer.py:217 ../troubleshoot/PrintTestPage.py:87
+#: ../jobviewer.py:217
+#: ../troubleshoot/PrintTestPage.py:87
 msgid "Status"
 msgstr "Estado"
 
@@ -284,20 +285,29 @@ msgid "all jobs"
 msgstr "todas as tarefas"
 
 #: ../jobviewer.py:261
-#, fuzzy, python-format
+#, python-format
 msgid "Document Print Status (%s)"
 msgstr "Estado de impressão do documento (%s)"
 
-#: ../jobviewer.py:393 ../jobviewer.py:458 ../jobviewer.py:459
-#: ../jobviewer.py:510 ../jobviewer.py:627 ../jobviewer.py:754
-#: ../jobviewer.py:1230 ../jobviewer.py:1256 ../system-config-printer.py:2613
+#: ../jobviewer.py:393
+#: ../jobviewer.py:458
+#: ../jobviewer.py:459
+#: ../jobviewer.py:510
+#: ../jobviewer.py:627
+#: ../jobviewer.py:754
+#: ../jobviewer.py:1230
+#: ../jobviewer.py:1256
+#: ../system-config-printer.py:2622
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:105
 #: ../troubleshoot/ChooseNetworkPrinter.py:106
-#: ../troubleshoot/ChoosePrinter.py:87 ../troubleshoot/ChoosePrinter.py:88
-#: ../troubleshoot/ChoosePrinter.py:91 ../troubleshoot/ChoosePrinter.py:92
-#: ../troubleshoot/DeviceListed.py:92 ../troubleshoot/DeviceListed.py:93
+#: ../troubleshoot/ChoosePrinter.py:87
+#: ../troubleshoot/ChoosePrinter.py:88
+#: ../troubleshoot/ChoosePrinter.py:91
+#: ../troubleshoot/ChoosePrinter.py:92
+#: ../troubleshoot/DeviceListed.py:92
+#: ../troubleshoot/DeviceListed.py:93
 msgid "Unknown"
 msgstr "Desconhecido"
 
@@ -311,7 +321,6 @@ msgid "%d minutes ago"
 msgstr "Há %d minutos atrás"
 
 #: ../jobviewer.py:406
-#, fuzzy
 msgid "an hour ago"
 msgstr "Há 1 hora atrás"
 
@@ -321,31 +330,29 @@ msgid "%d hours ago"
 msgstr "Há %d horas atrás"
 
 #: ../jobviewer.py:412
-#, fuzzy
 msgid "yesterday"
 msgstr "ontem"
 
 #: ../jobviewer.py:414
-#, fuzzy, python-format
+#, python-format
 msgid "%d days ago"
 msgstr "Há %d dias atrás"
 
 #: ../jobviewer.py:418
-#, fuzzy
 msgid "last week"
-msgstr "D&ia da semana"
+msgstr "última semana"
 
 #: ../jobviewer.py:420
-#, fuzzy, python-format
+#, python-format
 msgid "%d weeks ago"
-msgstr "Há %d dias atrás"
+msgstr "%d semanas atrás"
 
 #: ../jobviewer.py:562
-#, fuzzy
 msgid "Held for authentication"
 msgstr "Retido para autenticação"
 
-#: ../jobviewer.py:564 ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:564
+#: ../troubleshoot/PrintTestPage.py:42
 msgid "Held"
 msgstr "Retida"
 
@@ -384,66 +391,67 @@ msgstr "Terceiro Turno (0h00 - 8h00)"
 msgid "Held until weekend"
 msgstr "%d hora até estar carregada (%d%%)"
 
-#: ../jobviewer.py:617 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:617
+#: ../troubleshoot/PrintTestPage.py:41
 msgid "Pending"
 msgstr "Pendente"
 
-#: ../jobviewer.py:618 ../system-config-printer.py:189
+#: ../jobviewer.py:618
+#: ../system-config-printer.py:194
 #: ../troubleshoot/PrintTestPage.py:43
 msgid "Processing"
 msgstr "A processar"
 
-#: ../jobviewer.py:619 ../system-config-printer.py:191
+#: ../jobviewer.py:619
+#: ../system-config-printer.py:196
 #: ../troubleshoot/PrintTestPage.py:44
 msgid "Stopped"
 msgstr "Parado"
 
-#: ../jobviewer.py:620 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:620
+#: ../troubleshoot/PrintTestPage.py:45
 msgid "Canceled"
 msgstr "Cancelada"
 
-#: ../jobviewer.py:621 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:621
+#: ../troubleshoot/PrintTestPage.py:46
 msgid "Aborted"
 msgstr "Interrompida"
 
-#: ../jobviewer.py:622 ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:622
+#: ../troubleshoot/PrintTestPage.py:47
 msgid "Completed"
 msgstr "Completa"
 
-#: ../jobviewer.py:695 ../jobviewer.py:784
-#, fuzzy
+#: ../jobviewer.py:695
+#: ../jobviewer.py:784
 msgid "authenticating job"
-msgstr "Trabalho de impressão"
+msgstr "A autenticar tarefa"
 
 #: ../jobviewer.py:752
-#, fuzzy, python-format
+#, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "Autenticação obrigatória para imprimir o documento `%s' (tarefa %d)"
 
 #: ../jobviewer.py:926
-#, fuzzy
 msgid "Cancel Job"
-msgstr "Cancelar a Tarefa"
+msgstr "Cancelar Tarefa"
 
 #: ../jobviewer.py:940
-#, fuzzy
 msgid "Do you really want to cancel this job?"
-msgstr "Deseja mesmo remover este desklet ?"
+msgstr "Deseja mesmo cancelar esta tarefa?"
 
 #: ../jobviewer.py:968
-#, fuzzy
 msgid "canceling job"
-msgstr "INFO: A cancelar trabalho de impressÃ£o...\n"
+msgstr "a cancelar tarefa"
 
 #: ../jobviewer.py:992
-#, fuzzy
 msgid "holding job"
-msgstr "Trabalho de impressão"
+msgstr "a reter tarefa"
 
 #: ../jobviewer.py:1016
-#, fuzzy
 msgid "releasing job"
-msgstr "Trabalho de impressão"
+msgstr "libertar tarefa"
 
 #: ../jobviewer.py:1126
 msgid "No documents queued"
@@ -459,131 +467,121 @@ msgid "%d documents queued"
 msgstr "%d documentos em espera"
 
 #: ../jobviewer.py:1257
-#, fuzzy
 msgid "Document printed"
-msgstr "Documento"
+msgstr "Documento impresso"
 
 #: ../jobviewer.py:1258
 #, python-format
 msgid "Document `%s' has finished printing on `%s'."
-msgstr ""
+msgstr "O documento `%s' terminou de imprimir em `%s'."
 
-#: ../jobviewer.py:1418
-#, fuzzy, python-format
+#: ../jobviewer.py:1417
+#, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
-msgstr ""
-"Ocorreu um problema ao enviar o documento `%s' (tarefa %d) para a impressora."
+msgstr "Ocorreu um problema ao enviar o documento `%s' (tarefa %d) para a impressora."
 
-#: ../jobviewer.py:1421
-#, fuzzy, python-format
+#: ../jobviewer.py:1420
+#, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "Ocorreu um erro ao processar o documento `%s' (tarefa %d)."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1428
-#, fuzzy, python-format
+#: ../jobviewer.py:1426
+#, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "Ocorreu um erro ao imprimir o documento `%s' (tarefa %d): `%s'."
 
-#: ../jobviewer.py:1435 ../jobviewer.py:1451
-#, fuzzy
+#: ../jobviewer.py:1433
+#: ../jobviewer.py:1449
 msgid "Print Error"
 msgstr "Erro de Impressão"
 
-#: ../jobviewer.py:1436
-#, fuzzy
+#: ../jobviewer.py:1434
 msgid "_Diagnose"
 msgstr "_Diagnosticar"
 
-#: ../jobviewer.py:1457
-#, fuzzy, python-format
+#: ../jobviewer.py:1455
+#, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "A impressora de nome `%s' foi desactivada."
 
-#: ../my-default-printer.py:137 ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:137
+#: ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
 msgstr "Impressora Predefinida"
 
-#: ../my-default-printer.py:141 ../my-default-printer.py:177
+#: ../my-default-printer.py:141
+#: ../my-default-printer.py:177
 msgid "_Use System Default"
 msgstr "_Usar a Predefinição do Sistema"
 
-#: ../my-default-printer.py:142 ../my-default-printer.py:179
+#: ../my-default-printer.py:142
+#: ../my-default-printer.py:179
 msgid "_Set Default"
 msgstr "Colocar por Omi_ssão"
 
-#: ../my-default-printer.py:158 ../system-config-printer.py:435
+#: ../my-default-printer.py:158
+#: ../system-config-printer.py:439
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Localização"
 
-#: ../optionwidgets.py:124
+#: ../optionwidgets.py:123
 msgid "Conflicts with:"
 msgstr "Em conflito com:"
 
 #: ../ppdippstr.py:37
-#, fuzzy
 msgid "Abort job"
-msgstr "Trabalho de impressão"
+msgstr "Cancelar tarefa"
 
 #: ../ppdippstr.py:38
-#, fuzzy
 msgid "Retry job"
-msgstr "Trabalho de impressão"
+msgstr "Tentar tarefa novamente"
 
 #: ../ppdippstr.py:39
-#, fuzzy
 msgid "Stop printer"
 msgstr "Parar impressora"
 
 #: ../ppdippstr.py:44
-#, fuzzy
 msgid "Default behavior"
-msgstr "Comportamento da bola"
+msgstr "Comportamento por omissão"
 
 #: ../ppdippstr.py:45
-#, fuzzy
 msgid "Authenticated"
-msgstr "Autenticado!"
+msgstr "Autenticado"
 
-#: ../ppdippstr.py:50 ../system-config-printer.py:706
-#: ../system-config-printer.py:6240
+#: ../ppdippstr.py:50
+#: ../system-config-printer.py:710
+#: ../system-config-printer.py:6224
 msgid "None"
 msgstr "Nenhum"
 
 #: ../ppdippstr.py:51
-#, fuzzy
 msgid "Classified"
-msgstr "Classificada"
+msgstr "Classificado"
 
 #: ../ppdippstr.py:52
-#, fuzzy
 msgid "Confidential"
 msgstr "Confidencial"
 
 #: ../ppdippstr.py:53
-#, fuzzy
 msgid "Secret"
-msgstr "Segredo"
+msgstr "Secreto"
 
 #: ../ppdippstr.py:54
-#, fuzzy
 msgid "Standard"
 msgstr "Standard"
 
 #: ../ppdippstr.py:55
-#, fuzzy
 msgid "Top secret"
-msgstr "Altamente Secreta"
+msgstr "Altamente Secreto"
 
 #: ../ppdippstr.py:56
-#, fuzzy
 msgid "Unclassified"
 msgstr "Sem Classificação"
 
 #: ../ppdippstr.py:65
-#, fuzzy
 msgid "General"
 msgstr "Geral"
 
@@ -594,100 +592,82 @@ msgid "Printout mode"
 msgstr "Modo de Impressão"
 
 #: ../ppdippstr.py:69
-#, fuzzy
 msgid "Draft (auto-detect-paper type)"
 msgstr "Rascunho (auto-detecção do tipo de papel)"
 
 #: ../ppdippstr.py:71
-#, fuzzy
 msgid "Draft grayscale (auto-detect-paper type)"
-msgstr "Rascunho em Cinzentos (auto-detecção do tipo de papel)"
+msgstr "Rascunho em tons de cinzento (auto-detecção do tipo de papel)"
 
 #: ../ppdippstr.py:72
-#, fuzzy
 msgid "Normal (auto-detect-paper type)"
 msgstr "Normal (auto-detecção do tipo de papel)"
 
 #: ../ppdippstr.py:74
-#, fuzzy
 msgid "Normal grayscale (auto-detect-paper type)"
-msgstr "Normal em Cinzentos (auto-detecção do tipo de papel)"
+msgstr "Normal em tons de cinzento (auto-detecção do tipo de papel)"
 
 #: ../ppdippstr.py:76
-#, fuzzy
 msgid "High quality (auto-detect-paper type)"
 msgstr "Alta Qualidade (auto-detecção do tipo de papel)"
 
 #: ../ppdippstr.py:78
-#, fuzzy
 msgid "High quality grayscale (auto-detect-paper type)"
-msgstr "Alta Qualidade em Cinzentos (auto-detecção do tipo de papel)"
+msgstr "Alta Qualidade em tons de cinzento (auto-detecção do tipo de papel)"
 
 #: ../ppdippstr.py:79
-#, fuzzy
 msgid "Photo (on photo paper)"
 msgstr "Fotografia (em papel de fotografia)"
 
 #: ../ppdippstr.py:81
 msgid "Best quality (color on photo paper)"
-msgstr ""
+msgstr "Melhor qualidade (cor em papel fotográfico)"
 
 #: ../ppdippstr.py:83
 msgid "Normal quality (color on photo paper)"
-msgstr ""
+msgstr "Qualidade normal (cor em papel fotográfico)"
 
 #: ../ppdippstr.py:85
-#, fuzzy
 msgid "Media source"
-msgstr "Fonte de Média"
+msgstr "Origem do suporte"
 
 #: ../ppdippstr.py:86
-#, fuzzy
 msgid "Printer default"
 msgstr "Predefinição da impressora"
 
 #: ../ppdippstr.py:87
-#, fuzzy
 msgid "Photo tray"
-msgstr "A orientação do ícone de painel."
+msgstr "Tabuleiro de papel fotográfico"
 
 #: ../ppdippstr.py:88
-#, fuzzy
 msgid "Upper tray"
-msgstr "Superior (Bandeja 1)"
+msgstr "Tabuleiro superior"
 
 #: ../ppdippstr.py:89
-#, fuzzy
 msgid "Lower tray"
-msgstr "Inferior (Bandeja 2)"
+msgstr "Tabuleiro inferior"
 
 #: ../ppdippstr.py:90
-#, fuzzy
 msgid "CD or DVD tray"
-msgstr "CD-R(W) ou DVD%1R(W)"
+msgstr "Tabuleiro de CD ou DVD"
 
 #: ../ppdippstr.py:91
-#, fuzzy
 msgid "Envelope feeder"
-msgstr " Alimentador de Envelopes"
+msgstr "Alimentador de envelopes"
 
 #: ../ppdippstr.py:92
-#, fuzzy
 msgid "Large capacity tray"
-msgstr "Bandeja de Grande Capacidade"
+msgstr "Tabuleiro de grande capacidade"
 
 #: ../ppdippstr.py:93
-#, fuzzy
 msgid "Manual feeder"
-msgstr "Alimentador Manual"
+msgstr "Alimentador manual"
 
 #: ../ppdippstr.py:94
-#, fuzzy
 msgid "Multi-purpose tray"
-msgstr "Bandeja Multi-Usos"
+msgstr "Tabuleiro multi-usos"
 
 #: ../ppdippstr.py:96
-#, fuzzy
 msgid "Page size"
 msgstr "Tamanho da página"
 
@@ -697,430 +677,410 @@ msgstr "Personalizado"
 
 #: ../ppdippstr.py:98
 msgid "Photo or 4x6 inch index card"
-msgstr ""
+msgstr "Fotografia ou cartão de índice de 4x6 polegadas"
 
 #: ../ppdippstr.py:99
 msgid "Photo or 5x7 inch index card"
-msgstr ""
+msgstr "Fotografia ou cartão de índice de 5x7 polegadas"
 
 #: ../ppdippstr.py:100
-#, fuzzy
 msgid "Photo with tear-off tab"
-msgstr "Foto com secção destacável"
+msgstr "Foto com aba destacável"
 
 #: ../ppdippstr.py:101
-#, fuzzy
 msgid "3x5 inch index card"
-msgstr "Cartão de Índice 3x5 polegadas"
+msgstr "Cartão de Índice de 3x5 polegadas"
 
 #: ../ppdippstr.py:102
-#, fuzzy
 msgid "5x8 inch index card"
-msgstr "Cartão de índice 5x8 polegadas"
+msgstr "Cartão de índice de 5x8 polegadas"
 
 #: ../ppdippstr.py:103
-#, fuzzy
 msgid "A6 with tear-off tab"
-msgstr "A6 com secção destacável"
+msgstr "A6 com aba destacável"
 
 #: ../ppdippstr.py:104
-#, fuzzy
 msgid "CD or DVD 80mm"
-msgstr "CD-R(W) ou DVD%1R(W)"
+msgstr "CD ou DVD de 80mm"
 
 #: ../ppdippstr.py:105
-#, fuzzy
 msgid "CD or DVD 120mm"
-msgstr "CD-R(W) ou DVD%1R(W)"
+msgstr "CD ou DVD de 120mm"
 
 #: ../ppdippstr.py:107
-#, fuzzy
 msgid "Double-sided printing"
 msgstr "Impressão dos dois lados"
 
 #: ../ppdippstr.py:108
-#, fuzzy
 msgid "Long edge (standard)"
-msgstr "Lado Maior (Normal)"
+msgstr "Lado maior (standard)"
 
 #: ../ppdippstr.py:109
-#, fuzzy
 msgid "Short edge (flip)"
-msgstr "Lado Menor (Rodado)"
+msgstr "Lado menor (rodado)"
 
 #: ../ppdippstr.py:110
-#, fuzzy
 msgid "Off"
 msgstr "Desligado"
 
 #: ../ppdippstr.py:113
-#, fuzzy
 msgid "Resolution, quality, ink type, media type"
-msgstr "Resolução, Qualidade, Tipo de Tinta, Tipo de Meio"
+msgstr "Resolução, qualidade, tipo de tinta, tipo de suporte"
 
 #: ../ppdippstr.py:114
-#, fuzzy
 msgid "Controlled by 'Printout mode'"
 msgstr "Controlado pelo 'Modo de Impressão'"
 
 #: ../ppdippstr.py:116
-#, fuzzy
 msgid "300 dpi, color, black + color cartridge"
-msgstr "300 ppp, Cor, Cartuchos Preto e Cores."
+msgstr "300 ppp, cor, tinteiros preto + cores"
 
 #: ../ppdippstr.py:118
-#, fuzzy
 msgid "300 dpi, draft, color, black + color cartridge"
-msgstr "300 ppp, Rascunho, Cor, Cartuchos Preto e Cores."
+msgstr "300 ppp, rascunho, cor, tinteiros preto + cores"
 
 #: ../ppdippstr.py:120
-#, fuzzy
 msgid "300 dpi, draft, grayscale, black + color cartridge"
-msgstr "300 ppp, Rascunho, Tons de Cinzento, Cartuchos Preto e Cores."
+msgstr "300 ppp, rascunho, tons de cinzento, tinteiros preto + cores"
 
 #: ../ppdippstr.py:122
-#, fuzzy
 msgid "300 dpi, grayscale, black + color cartridge"
-msgstr "300 ppp, Tons de Cinzento, Cartuchos Preto e Cores."
+msgstr "300 ppp, tons de cinzento, tinteiros preto + cores"
 
 #: ../ppdippstr.py:124
-#, fuzzy
 msgid "600 dpi, color, black + color cartridge"
-msgstr "600 ppp, Cor, Cartuchos Preto e Cores"
+msgstr "600 ppp, cor, tinteiros preto + cores"
 
 #: ../ppdippstr.py:126
-#, fuzzy
 msgid "600 dpi, grayscale, black + color cartridge"
-msgstr "600 ppp, Tons de Cinzento, Cartuchos Preto e Cores"
+msgstr "600 ppp, tons de cinzento, tinteiros preto + cores"
 
 #: ../ppdippstr.py:128
-#, fuzzy
 msgid "600 dpi, photo, black + color cartridge, photo paper"
-msgstr "600 ppp, Fotografia, Cartuchos Preto e Cores, Papel Normal"
+msgstr "600 ppp, fotografia, tinteiros preto + cores, papel fotográfico"
 
 #: ../ppdippstr.py:130
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
-msgstr ""
+msgstr "600 ppp, cor, tinteiros preto + cores, papel fotográfico, normal"
 
 #: ../ppdippstr.py:132
-#, fuzzy
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
-msgstr "1200 ppp, Fotografia, Cartuchos Preto e Cores, Papel Fotográfico"
+msgstr "1200 ppp, fotografia, tinteiros preto + cores, papel fotográfico"
 
-#: ../system-config-printer.py:133
-#, fuzzy
+#: ../system-config-printer.py:138
 msgid "To do this, select System->Administration->Firewall from the main menu."
-msgstr ""
-"Para fazer isto seleccione Sistema->Administração->Firewall a partir do menu "
-"principal."
+msgstr "Para fazer isto seleccione Sistema->Administração->Firewall a partir do menu principal."
 
-#: ../system-config-printer.py:188
+#: ../system-config-printer.py:193
 msgid "Idle"
 msgstr "Disponível"
 
-#: ../system-config-printer.py:190
+#: ../system-config-printer.py:195
 msgid "Busy"
 msgstr "Ocupada"
 
-#: ../system-config-printer.py:384 ../system-config-printer.py:1436
-#, fuzzy
+#: ../system-config-printer.py:388
+#: ../system-config-printer.py:1440
 msgid "Class"
-msgstr "Nova Classe"
-
-#: ../system-config-printer.py:411
-#, fuzzy
-msgid "Set As De_fault"
-msgstr "Colocar por Omi_ssão"
+msgstr "Classe"
 
 #: ../system-config-printer.py:415
-#, fuzzy
+msgid "Set As De_fault"
+msgstr "Definir como _Omissão"
+
+#: ../system-config-printer.py:419
 msgid "_Create class"
 msgstr "Criar _Classe"
 
-#: ../system-config-printer.py:417
-#, fuzzy
+#: ../system-config-printer.py:421
 msgid "View Print _Queue"
 msgstr "Ver _Fila de Impressão"
 
-#: ../system-config-printer.py:419
-#, fuzzy
-msgid "_Add to Group"
-msgstr "Adicionar um grupo ao projecto"
-
-#: ../system-config-printer.py:421
-#, fuzzy
-msgid "Save Results as _Group"
-msgstr "Gravar Resultados da Procura Como..."
-
 #: ../system-config-printer.py:423
-#, fuzzy
-msgid "Save Filter as _Search Group"
-msgstr "Gravar a procura actual como um ficheiro"
+msgid "_Add to Group"
+msgstr "_Adicionar ao Grupo"
+
+#: ../system-config-printer.py:425
+msgid "Save Results as _Group"
+msgstr "_Gravar Resultados como Grupo"
 
 #: ../system-config-printer.py:427
-#, fuzzy
+msgid "Save Filter as _Search Group"
+msgstr "Gravar Filtro como _Pesquisa de Grupo"
+
+#: ../system-config-printer.py:431
 msgid "E_nabled"
 msgstr "_Activar"
 
-#: ../system-config-printer.py:429
-#, fuzzy
+#: ../system-config-printer.py:433
 msgid "_Shared"
 msgstr "_Partilhada"
 
-#: ../system-config-printer.py:433 ../troubleshoot/ChooseNetworkPrinter.py:35
-#: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
+#: ../system-config-printer.py:437
+#: ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36
+#: ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "Nome"
 
-#: ../system-config-printer.py:434
-#, fuzzy
+#: ../system-config-printer.py:438
 msgid "Description"
 msgstr "Descrição"
 
-#: ../system-config-printer.py:436
-#, fuzzy
+#: ../system-config-printer.py:440
 msgid "Manufacturer / Model"
-msgstr "Modelo de Segurança:"
+msgstr "Fabricante / Modelo"
 
 #. Printer state reasons list
-#: ../system-config-printer.py:511
+#: ../system-config-printer.py:515
 msgid "Message"
 msgstr "Mensagem"
 
-#: ../system-config-printer.py:546
-#, fuzzy
+#: ../system-config-printer.py:550
 msgid "Problems?"
 msgstr "Problemas?"
 
-#: ../system-config-printer.py:649 ../system-config-printer.py:651
+#: ../system-config-printer.py:653
+#: ../system-config-printer.py:655
 msgid "Members of this class"
 msgstr "Membros desta classe"
 
-#: ../system-config-printer.py:650 ../system-config-printer.py:652
+#: ../system-config-printer.py:654
+#: ../system-config-printer.py:656
 msgid "Others"
 msgstr "Outras"
 
-#: ../system-config-printer.py:653
+#: ../system-config-printer.py:657
 msgid "Devices"
 msgstr "Dispositivos"
 
-#: ../system-config-printer.py:654
-#, fuzzy
+#: ../system-config-printer.py:658
 msgid "Connections"
 msgstr "Ligações"
 
-#: ../system-config-printer.py:655
+#: ../system-config-printer.py:659
 msgid "Makes"
 msgstr "Marcas"
 
-#: ../system-config-printer.py:656
+#: ../system-config-printer.py:660
 msgid "Models"
 msgstr "Modelos"
 
-#: ../system-config-printer.py:657
+#: ../system-config-printer.py:661
 msgid "Drivers"
 msgstr "Controladores"
 
-#: ../system-config-printer.py:658
-#, fuzzy
+#: ../system-config-printer.py:662
 msgid "Downloadable Drivers"
 msgstr "Controladores disponíveis"
 
-#: ../system-config-printer.py:659
+#: ../system-config-printer.py:663
 msgid "Users"
 msgstr "Utilizadores"
 
-#: ../system-config-printer.py:687
-#, fuzzy
+#: ../system-config-printer.py:691
 msgid "Portrait (no rotation)"
-msgstr "Rotação automática"
+msgstr "Retrato (sem rotação)"
 
-#: ../system-config-printer.py:688
-#, fuzzy
+#: ../system-config-printer.py:692
 msgid "Landscape (90 degrees)"
-msgstr "Horizontal (%s ou %s)"
+msgstr "Paisagem (90 graus)"
 
-#: ../system-config-printer.py:689
+#: ../system-config-printer.py:693
 msgid "Reverse landscape (270 degrees)"
-msgstr ""
+msgstr "Paisagem invertida (270 graus)"
 
-#: ../system-config-printer.py:690
+#: ../system-config-printer.py:694
 msgid "Reverse portrait (180 degrees)"
-msgstr ""
-
-#: ../system-config-printer.py:696
-msgid "Left to right, top to bottom"
-msgstr ""
-
-#: ../system-config-printer.py:697
-msgid "Left to right, bottom to top"
-msgstr ""
-
-#: ../system-config-printer.py:698
-msgid "Right to left, top to bottom"
-msgstr ""
-
-#: ../system-config-printer.py:699
-msgid "Right to left, bottom to top"
-msgstr ""
+msgstr "Retrato invertido (180 graus)"
 
 #: ../system-config-printer.py:700
-msgid "Top to bottom, left to right"
-msgstr ""
+msgid "Left to right, top to bottom"
+msgstr "Esquerda para a direita, cima para baixo"
 
 #: ../system-config-printer.py:701
-msgid "Top to bottom, right to left"
-msgstr ""
+msgid "Left to right, bottom to top"
+msgstr "Esquerda para a direita, baixo para cima"
 
 #: ../system-config-printer.py:702
-msgid "Bottom to top, left to right"
-msgstr ""
+msgid "Right to left, top to bottom"
+msgstr "Direita para a esquerda, cima para baixo"
 
 #: ../system-config-printer.py:703
-msgid "Bottom to top, right to left"
-msgstr ""
+msgid "Right to left, bottom to top"
+msgstr "Direita para a esquerda, baixo para cima"
+
+#: ../system-config-printer.py:704
+msgid "Top to bottom, left to right"
+msgstr "Cima para baixo, esquerda para a direita"
+
+#: ../system-config-printer.py:705
+msgid "Top to bottom, right to left"
+msgstr "Cima para baixo, direita para a esquerda"
+
+#: ../system-config-printer.py:706
+msgid "Bottom to top, left to right"
+msgstr "Baixo para cima, esquerda para a direita"
 
 #: ../system-config-printer.py:707
-#, fuzzy
-msgid "Staple"
-msgstr "Parado"
-
-#: ../system-config-printer.py:708
-msgid "Punch"
-msgstr ""
-
-#: ../system-config-printer.py:709
-#, fuzzy
-msgid "Cover"
-msgstr "Tampa aberta"
-
-#: ../system-config-printer.py:710
-msgid "Bind"
-msgstr ""
+msgid "Bottom to top, right to left"
+msgstr "Baixo para cima, direita para a esquerda"
 
 #: ../system-config-printer.py:711
-#, fuzzy
-msgid "Saddle stitch"
-msgstr "Ajustar para caber"
+msgid "Staple"
+msgstr "Agrafo"
 
 #: ../system-config-printer.py:712
-msgid "Edge stitch"
-msgstr ""
+msgid "Punch"
+msgstr "Premir!"
 
 #: ../system-config-printer.py:713
-#, fuzzy
-msgid "Fold"
-msgstr "_Reter"
+msgid "Cover"
+msgstr "Capa"
 
 #: ../system-config-printer.py:714
-msgid "Trim"
-msgstr ""
+#, fuzzy
+msgid "Bind"
+msgstr "Erro de cobertura (%s).\n"
 
 #: ../system-config-printer.py:715
+#, fuzzy
+msgid "Saddle stitch"
+msgstr "Dobrar e Coser em Pele"
+
+#: ../system-config-printer.py:716
+#, fuzzy
+msgid "Edge stitch"
+msgstr "Dobrar e Coser"
+
+#: ../system-config-printer.py:717
+#, fuzzy
+msgid "Fold"
+msgstr "Baralhar"
+
+#: ../system-config-printer.py:718
+#, fuzzy
+msgid "Trim"
+msgstr "_Aparar"
+
+#: ../system-config-printer.py:719
 #, fuzzy
 msgid "Bale"
 msgstr "Valor"
 
-#: ../system-config-printer.py:716
-msgid "Booklet maker"
-msgstr ""
-
-#: ../system-config-printer.py:717
-msgid "Job offset"
-msgstr ""
-
-#: ../system-config-printer.py:718
-#, fuzzy
-msgid "Staple (top left)"
-msgstr "Ajustar para caber"
-
-#: ../system-config-printer.py:719
-#, fuzzy
-msgid "Staple (bottom left)"
-msgstr "Ajustar para caber"
-
 #: ../system-config-printer.py:720
 #, fuzzy
-msgid "Staple (top right)"
-msgstr "Ajustar para caber"
+msgid "Booklet maker"
+msgstr "Nota do Fotógrafo"
 
 #: ../system-config-printer.py:721
 #, fuzzy
-msgid "Staple (bottom right)"
-msgstr "Ajustar para caber"
+msgid "Job offset"
+msgstr "Posição do Pedido"
 
 #: ../system-config-printer.py:722
-msgid "Edge stitch (left)"
-msgstr ""
+#, fuzzy
+msgid "Staple (top left)"
+msgstr "Bevel em cima à esquerda"
 
 #: ../system-config-printer.py:723
-msgid "Edge stitch (top)"
-msgstr ""
+#, fuzzy
+msgid "Staple (bottom left)"
+msgstr "Bevel em baixo à esquerda"
 
 #: ../system-config-printer.py:724
-msgid "Edge stitch (right)"
-msgstr ""
+#, fuzzy
+msgid "Staple (top right)"
+msgstr "Bevel em cima à direita"
 
 #: ../system-config-printer.py:725
-msgid "Edge stitch (bottom)"
-msgstr ""
+#, fuzzy
+msgid "Staple (bottom right)"
+msgstr "Bevel em baixo à direita"
 
 #: ../system-config-printer.py:726
-msgid "Staple dual (left)"
-msgstr ""
+#, fuzzy
+msgid "Edge stitch (left)"
+msgstr "Painel de Margem à Esquerda"
 
 #: ../system-config-printer.py:727
-msgid "Staple dual (top)"
-msgstr ""
+#, fuzzy
+msgid "Edge stitch (top)"
+msgstr "Painel de Margem Superior"
 
 #: ../system-config-printer.py:728
-msgid "Staple dual (right)"
-msgstr ""
+#, fuzzy
+msgid "Edge stitch (right)"
+msgstr "Painel de Margem à Direita"
 
 #: ../system-config-printer.py:729
-msgid "Staple dual (bottom)"
-msgstr ""
+#, fuzzy
+msgid "Edge stitch (bottom)"
+msgstr "Painel de Margem Inferior"
 
 #: ../system-config-printer.py:730
-msgid "Bind (left)"
-msgstr ""
+#, fuzzy
+msgid "Staple dual (left)"
+msgstr "%s [ Nenhuma aproximada ]"
 
 #: ../system-config-printer.py:731
-msgid "Bind (top)"
-msgstr ""
+#, fuzzy
+msgid "Staple dual (top)"
+msgstr "Sempre no Topo"
 
 #: ../system-config-printer.py:732
-msgid "Bind (right)"
-msgstr ""
+#, fuzzy
+msgid "Staple dual (right)"
+msgstr "Cor Ponto Final Direito"
 
 #: ../system-config-printer.py:733
-msgid "Bind (bottom)"
-msgstr ""
-
-#: ../system-config-printer.py:738
-msgid "One-sided"
-msgstr ""
-
-#: ../system-config-printer.py:739
-msgid "Two-sided (long edge)"
-msgstr ""
-
-#: ../system-config-printer.py:740
-msgid "Two-sided (short edge)"
-msgstr ""
-
-#: ../system-config-printer.py:763
 #, fuzzy
+msgid "Staple dual (bottom)"
+msgstr "Grau de arredondamento do fundo"
+
+#: ../system-config-printer.py:734
+#, fuzzy
+msgid "Bind (left)"
+msgstr "%s [ %i Aproximada restante ]"
+
+#: ../system-config-printer.py:735
+#, fuzzy
+msgid "Bind (top)"
+msgstr "Inferior/Superior"
+
+#: ../system-config-printer.py:736
+#, fuzzy
+msgid "Bind (right)"
+msgstr "Mover para a Direita"
+
+#: ../system-config-printer.py:737
+#, fuzzy
+msgid "Bind (bottom)"
+msgstr "Inferior/Superior"
+
+#: ../system-config-printer.py:742
+msgid "One-sided"
+msgstr "Um Lado"
+
+#: ../system-config-printer.py:743
+msgid "Two-sided (long edge)"
+msgstr "Dois lados (lado maior)"
+
+#: ../system-config-printer.py:744
+msgid "Two-sided (short edge)"
+msgstr "Dois lados (lado menor)"
+
+#: ../system-config-printer.py:767
 msgid "Automatic rotation"
 msgstr "Rotação automática"
 
-#: ../system-config-printer.py:1049
-#, fuzzy, python-format
+#: ../system-config-printer.py:1053
+#, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Propriedades da impressora - `%s' em %s"
 
 #. The Conflict button was pressed.
-#: ../system-config-printer.py:1057
+#: ../system-config-printer.py:1061
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -1130,86 +1090,85 @@ msgstr ""
 "As alterações só serão aplicadas após\n"
 "estes conflitos serem resolvidos."
 
-#: ../system-config-printer.py:1276
+#: ../system-config-printer.py:1280
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Configuração da impressora - %s"
 
-#: ../system-config-printer.py:1280
+#: ../system-config-printer.py:1284
 #, python-format
 msgid "Connected to %s"
 msgstr "Ligada a %s"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1320 ../system-config-printer.py:2109
+#: ../system-config-printer.py:1324
+#: ../system-config-printer.py:2112
 #, fuzzy
 msgid "obtaining queue details"
 msgstr "Ver os Detalhes da Previsão"
 
-#: ../system-config-printer.py:1358
-#, fuzzy
+#: ../system-config-printer.py:1362
 msgid "Remove from Group"
-msgstr ""
-"Remover Volume do\n"
-"Grupo de Volumes"
+msgstr "Remover do Grupo"
 
-#: ../system-config-printer.py:1424
-#, fuzzy
+#: ../system-config-printer.py:1428
 msgid "Network printer (discovered)"
 msgstr "Impressora de rede (descoberta)"
 
-#: ../system-config-printer.py:1427
-#, fuzzy
+#: ../system-config-printer.py:1431
 msgid "Network class (discovered)"
 msgstr "Classe de Rede (descoberta)"
 
-#: ../system-config-printer.py:1433 ../system-config-printer.py:5544
-#: ../system-config-printer.py:5614 ../system-config-printer.py:5616
-#, fuzzy
+#: ../system-config-printer.py:1437
+#: ../system-config-printer.py:5528
+#: ../system-config-printer.py:5598
+#: ../system-config-printer.py:5600
 msgid "Fax"
 msgstr "Fax"
 
-#: ../system-config-printer.py:1439 ../system-config-printer.py:1445
+#: ../system-config-printer.py:1443
+#: ../system-config-printer.py:1449
 #: ../troubleshoot/LocalOrRemote.py:30
-#, fuzzy
 msgid "Network printer"
 msgstr "Impressora de rede"
 
-#: ../system-config-printer.py:1442
-#, fuzzy
+#: ../system-config-printer.py:1446
 msgid "Network print share"
 msgstr "Impressora de rede partilhada"
 
-#: ../system-config-printer.py:1571
+#: ../system-config-printer.py:1575
 #, fuzzy, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "A estabelecer uma ligação à máquina %1"
 
-#: ../system-config-printer.py:1953
+#: ../system-config-printer.py:1957
 msgid "Installable Options"
 msgstr "Opções Instaláveis"
 
-#: ../system-config-printer.py:1954
+#: ../system-config-printer.py:1958
 msgid "Printer Options"
 msgstr "Opções da Impressora"
 
-#: ../system-config-printer.py:1991
+#: ../system-config-printer.py:1994
 #, fuzzy, python-format
 msgid "modifying class %s"
 msgstr "Classe Reservada"
 
-#: ../system-config-printer.py:1993 ../system-config-printer.py:3121
-#: ../system-config-printer.py:3146 ../system-config-printer.py:6528
-#: ../system-config-printer.py:6540 ../system-config-printer.py:6562
+#: ../system-config-printer.py:1996
+#: ../system-config-printer.py:3105
+#: ../system-config-printer.py:3130
+#: ../system-config-printer.py:6512
+#: ../system-config-printer.py:6524
+#: ../system-config-printer.py:6546
 #, fuzzy, python-format
 msgid "modifying printer %s"
 msgstr "Opção da impressora"
 
-#: ../system-config-printer.py:2008
+#: ../system-config-printer.py:2011
 msgid "This will delete this class!"
 msgstr "Isto vai apagar esta classe!"
 
-#: ../system-config-printer.py:2009
+#: ../system-config-printer.py:2012
 msgid "Proceed anyway?"
 msgstr "Continuar de qualquer forma?"
 
@@ -1217,75 +1176,66 @@ msgstr "Continuar de qualquer forma?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:2097 ../system-config-printer.py:3305
+#: ../system-config-printer.py:2100
+#: ../system-config-printer.py:3289
 #, fuzzy
 msgid "fetching server settings"
 msgstr "Outras Configurações de Servidores"
 
-#: ../system-config-printer.py:2167
-#, fuzzy
+#: ../system-config-printer.py:2170
 msgid "Set Default Printer"
 msgstr "Impressora Predefinida"
 
-#: ../system-config-printer.py:2169
-#, fuzzy
+#: ../system-config-printer.py:2172
 msgid "Do you want to set this as the system-wide default printer?"
-msgstr ""
-"Deseja definir esta impressora como a impressora predefinida para todo o "
-"sistema?"
+msgstr "Deseja definir esta impressora como a impressora predefinida para todo o sistema?"
 
-#: ../system-config-printer.py:2171
-#, fuzzy
+#: ../system-config-printer.py:2174
 msgid "Set as the _system-wide default printer"
 msgstr "Definir como a impressora predefinida para o _sistema."
 
-#: ../system-config-printer.py:2173
-#, fuzzy
+#: ../system-config-printer.py:2176
 msgid "_Clear my personal default setting"
 msgstr "_Limpar as minhas opções pessoais predefinidas"
 
-#: ../system-config-printer.py:2174
-#, fuzzy
+#: ../system-config-printer.py:2177
 msgid "Set as my _personal default printer"
 msgstr "Definir como a minha impressora _pessoal predefinida"
 
-#: ../system-config-printer.py:2179
-#, fuzzy
+#: ../system-config-printer.py:2182
 msgid "setting default printer"
-msgstr "Seleccionar a impressora predefinida"
+msgstr "A definir a impressora predefinida"
 
-#: ../system-config-printer.py:2236
-#, fuzzy
+#: ../system-config-printer.py:2239
 msgid "printing test page"
 msgstr "Imprimir Página de Teste"
 
-#: ../system-config-printer.py:2249 ../system-config-printer.py:2284
+#: ../system-config-printer.py:2252
+#: ../system-config-printer.py:2287
 msgid "Not possible"
 msgstr "Impossível"
 
-#: ../system-config-printer.py:2250 ../system-config-printer.py:2285
-msgid ""
-"The remote server did not accept the print job, most likely because the "
-"printer is not shared."
-msgstr ""
-"O servidor remoto não aceitou o trabalho de impressão, provavelmente porque "
-"a impressora não está partilhada."
+#: ../system-config-printer.py:2253
+#: ../system-config-printer.py:2288
+msgid "The remote server did not accept the print job, most likely because the printer is not shared."
+msgstr "O servidor remoto não aceitou o trabalho de impressão, provavelmente porque a impressora não está partilhada."
 
-#: ../system-config-printer.py:2262 ../system-config-printer.py:2277
+#: ../system-config-printer.py:2265
+#: ../system-config-printer.py:2280
 msgid "Submitted"
 msgstr "Enviado"
 
-#: ../system-config-printer.py:2263
+#: ../system-config-printer.py:2266
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Página de teste enviada como trabalho %d"
 
-#: ../system-config-printer.py:2270
+#: ../system-config-printer.py:2273
 #, fuzzy
 msgid "sending maintenance command"
 msgstr "A enviar um comando para manter a actividade"
 
-#: ../system-config-printer.py:2278
+#: ../system-config-printer.py:2281
 #, fuzzy, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Comando de manutenção submetido como tarefa %d"
@@ -1293,92 +1243,72 @@ msgstr "Comando de manutenção submetido como tarefa %d"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2352 ../system-config-printer.py:2448
+#: ../system-config-printer.py:2355
+#: ../system-config-printer.py:2451
 msgid "Error"
 msgstr "Erro"
 
-#: ../system-config-printer.py:2353
+#: ../system-config-printer.py:2356
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Ocorreu um problema na ligação ao servidor CUPS."
 
-#: ../system-config-printer.py:2449
-#, fuzzy, python-format
+#: ../system-config-printer.py:2452
+#, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Opção '%s' tem o valor '%s' e não pode ser editada."
 
-#: ../system-config-printer.py:2533
+#: ../system-config-printer.py:2542
 msgid "Marker levels are not reported for this printer."
-msgstr ""
+msgstr "Níveis de tinteiros não são suportados para esta impressora."
 
-#: ../system-config-printer.py:2832
-#, fuzzy
+#: ../system-config-printer.py:2841
 msgid "Cannot Rename"
-msgstr "Impossível _Alterar nome"
+msgstr "Impossível Alterar Nome"
 
-#: ../system-config-printer.py:2833
-#, fuzzy
+#: ../system-config-printer.py:2842
 msgid "There are queued jobs."
 msgstr "Existem tarefas na fila."
 
-#: ../system-config-printer.py:2851
-msgid "Renaming will lose history"
-msgstr ""
-
-#: ../system-config-printer.py:2853
-msgid "Completed jobs will no longer be available for re-printing."
-msgstr ""
-
-#: ../system-config-printer.py:2924
-#, fuzzy
+#: ../system-config-printer.py:2908
 msgid "renaming printer"
-msgstr "Opção da impressora"
+msgstr "A mudar o nome da impressora"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:3009
-#, fuzzy
+#: ../system-config-printer.py:2993
 msgid "copying printer"
-msgstr "Opção da impressora"
+msgstr "A copiar a impressora"
 
-#: ../system-config-printer.py:3073
-#, fuzzy, python-format
+#: ../system-config-printer.py:3057
+#, python-format
 msgid "Really delete class '%s'?"
 msgstr "Deseja mesmo apagar a classe %s?"
 
-#: ../system-config-printer.py:3075
-#, fuzzy, python-format
+#: ../system-config-printer.py:3059
+#, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Deseja mesmo apagar a impressora %s?"
 
-#: ../system-config-printer.py:3077
-#, fuzzy
+#: ../system-config-printer.py:3061
 msgid "Really delete selected destinations?"
 msgstr "Deseja mesmo apagar destinos seleccionados?"
 
-#: ../system-config-printer.py:3098
-#, fuzzy, python-format
+#: ../system-config-printer.py:3082
+#, python-format
 msgid "deleting printer %s"
-msgstr "Opção da impressora"
+msgstr "A apagar a impressora %s"
 
-#: ../system-config-printer.py:3172
-#, fuzzy
+#: ../system-config-printer.py:3156
 msgid "Publish Shared Printers"
 msgstr "Publicar Impressoras Partilhadas"
 
-#: ../system-config-printer.py:3173
-#, fuzzy
-msgid ""
-"Shared printers are not available to other people unless the 'Publish shared "
-"printers' option is enabled in the server settings."
-msgstr ""
-"As impressoras partilhadas não estão disponíveis para outros utilizadores, a "
-"não ser que a opção 'Publicar impressoras partilhadas' esteja activa nas "
-"configurações do servidor."
+#: ../system-config-printer.py:3157
+msgid "Shared printers are not available to other people unless the 'Publish shared printers' option is enabled in the server settings."
+msgstr "As impressoras partilhadas não estão disponíveis para outros utilizadores, a não ser que a opção 'Publicar impressoras partilhadas' esteja activa nas configurações do servidor."
 
-#: ../system-config-printer.py:3366
-#, fuzzy
+#: ../system-config-printer.py:3350
 msgid "modifying server settings"
-msgstr "Outras Configurações de Servidores"
+msgstr "A modificar configurações do servidor"
 
 #. We have just enabled print queue sharing.
 #. Ideally, this is the time we would check the firewall
@@ -1386,389 +1316,354 @@ msgstr "Outras Configurações de Servidores"
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:3391
-#, fuzzy
+#: ../system-config-printer.py:3375
 msgid "Review Firewall"
-msgstr ""
-"Reveja as configurações da Firewall. É necessário abrir a porta IPP (631)"
+msgstr "Rever as configurações da Firewall"
 
-#: ../system-config-printer.py:3392
-#, fuzzy
-msgid ""
-"You may need to adjust the firewall to allow network printing to this "
-"computer."
-msgstr ""
-"Pode ser necessário ajustar a firewall para permitir impressões da rede para "
-"este computador."
+#: ../system-config-printer.py:3376
+msgid "You may need to adjust the firewall to allow network printing to this computer."
+msgstr "Pode ser necessário ajustar a firewall para permitir impressões da rede para este computador."
 
-#: ../system-config-printer.py:3722
+#: ../system-config-printer.py:3706
 msgid "Browsing not available (pysmbc not installed)"
-msgstr ""
+msgstr "Navegação não disponível (pysmbc não está instalado)"
 
 #. SMB list columns
-#: ../system-config-printer.py:3728
+#: ../system-config-printer.py:3712
 msgid "Share"
 msgstr "Partilha"
 
-#: ../system-config-printer.py:3734
+#: ../system-config-printer.py:3718
 msgid "Comment"
 msgstr "Comentário"
 
-#: ../system-config-printer.py:3748
-#, fuzzy
-msgid ""
-"PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
-"PPD.GZ)"
-msgstr ""
-"Ficheiros PPD - \"PostScript Printer Description\" (*.ppd, *.PPD, *.ppd.gz, "
-"*.PPD.gz, *.PPD.GZ)"
+#: ../system-config-printer.py:3732
+msgid "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
+msgstr "Ficheiros PPD - \"PostScript Printer Description\" (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
 
-#: ../system-config-printer.py:3757
-#, fuzzy
+#: ../system-config-printer.py:3741
 msgid "All files (*)"
 msgstr "Todos os ficheiros (*)"
 
-#: ../system-config-printer.py:3793 ../system-config-printer.py:5946
-#: ../system-config-printer.py:5984 ../applet.py:127
-#, fuzzy
+#: ../system-config-printer.py:3777
+#: ../system-config-printer.py:5930
+#: ../system-config-printer.py:5968
+#: ../applet.py:127
 msgid "Search"
 msgstr "Procurar"
 
-#: ../system-config-printer.py:3817 ../system-config-printer.py:3841
+#: ../system-config-printer.py:3801
+#: ../system-config-printer.py:3825
 msgid "New Printer"
 msgstr "Nova Impressora"
 
-#: ../system-config-printer.py:3828
+#: ../system-config-printer.py:3812
 msgid "New Class"
 msgstr "Nova Classe"
 
-#: ../system-config-printer.py:3833
+#: ../system-config-printer.py:3817
 msgid "Change Device URI"
 msgstr "Mudar URI do Dispositivo"
 
-#: ../system-config-printer.py:3839
+#: ../system-config-printer.py:3823
 msgid "Change Driver"
 msgstr "Mudar o Controlador"
 
-#: ../system-config-printer.py:4011 ../system-config-printer.py:4090
-#: ../system-config-printer.py:4404 ../system-config-printer.py:4602
-#: ../system-config-printer.py:5790 ../system-config-printer.py:5971
-#, fuzzy
+#: ../system-config-printer.py:3995
+#: ../system-config-printer.py:4074
+#: ../system-config-printer.py:4388
+#: ../system-config-printer.py:4586
+#: ../system-config-printer.py:5774
+#: ../system-config-printer.py:5955
 msgid "Searching"
 msgstr "A procurar"
 
-#: ../system-config-printer.py:4012
-#, fuzzy
+#: ../system-config-printer.py:3996
 msgid "Searching for downloadable drivers"
 msgstr "A procurar por controladores disponíveis"
 
-#: ../system-config-printer.py:4091 ../system-config-printer.py:4405
-#, fuzzy
+#: ../system-config-printer.py:4075
+#: ../system-config-printer.py:4389
 msgid "Searching for drivers"
 msgstr "A procurar por controladores"
 
-#: ../system-config-printer.py:4603 ../system-config-printer.py:5791
-#, fuzzy
+#: ../system-config-printer.py:4587
+#: ../system-config-printer.py:5775
 msgid "Searching for printers"
 msgstr "A procurar por impressoras"
 
-#: ../system-config-printer.py:4612
-#, fuzzy
+#: ../system-config-printer.py:4596
 msgid "fetching device list"
-msgstr "Obter a lista de salas falhou."
+msgstr "A obter a lista de dispositivos"
 
 #. Tell the user why he needs the plugin
-#: ../system-config-printer.py:4723
+#: ../system-config-printer.py:4707
 msgid "For this printer a proprietary driver plugin from HP is available.\n"
-msgstr ""
+msgstr "Para esta impressora, está disponível um controlador proprietário da HP.\n"
 
-#: ../system-config-printer.py:4726
+#: ../system-config-printer.py:4710
 msgid ""
 "The installation of the plugin is required for your printer to work.\n"
 "\n"
 msgstr ""
+"A instalação do plugin é obrigatória para que esta impressora funcione.\n"
+"\n"
 
-#: ../system-config-printer.py:4729
+#: ../system-config-printer.py:4713
 msgid ""
-"Installing the plugin is optional, it completes or enhances the "
-"functionality\n"
+"Installing the plugin is optional, it completes or enhances the functionality\n"
 "of your printer. Without plugin at least basic operations work.\n"
 "\n"
 msgstr ""
+"A instalação do plugin é opcional. Ele completa ou aumenta a funcionalidade\n"
+"da sua impressora. Sem o plugin, pelo menos, as operações básicas funcionam.\n"
+"\n"
 
-#: ../system-config-printer.py:4733
-#, fuzzy
+#: ../system-config-printer.py:4717
 msgid "The plugin provides the following features:\n"
-msgstr "Um exemplo de plugin em C sem funcionalidades"
+msgstr "O plugin disponibiliza as seguintes funcionalidades:\n"
 
-#: ../system-config-printer.py:4736
+#: ../system-config-printer.py:4720
 #, fuzzy
 msgid " - Printing support\n"
 msgstr "Suporte Bonobo"
 
-#: ../system-config-printer.py:4739
+#: ../system-config-printer.py:4723
 #, fuzzy
 msgid " - Faster printing\n"
 msgstr "Impressão da Imagem"
 
-#: ../system-config-printer.py:4742
+#: ../system-config-printer.py:4726
 #, fuzzy
 msgid " - Better printout quality\n"
 msgstr "Desligado (melhor qualidade)"
 
-#: ../system-config-printer.py:4745
+#: ../system-config-printer.py:4729
 #, fuzzy
 msgid " - Extra printing features\n"
 msgstr ""
 "Erro ao imprimir o ficheiro:\n"
 "%s"
 
-#: ../system-config-printer.py:4748
+#: ../system-config-printer.py:4732
 #, fuzzy
 msgid " - Scanning support\n"
 msgstr "Suporte Bonobo"
 
-#: ../system-config-printer.py:4751
+#: ../system-config-printer.py:4735
 #, fuzzy
 msgid " - Faster scanning\n"
 msgstr "Parar a análise"
 
-#: ../system-config-printer.py:4754
+#: ../system-config-printer.py:4738
 #, fuzzy
 msgid " - Better scanning image quality\n"
 msgstr "Melhor qualidade, mas exibição lenta"
 
-#: ../system-config-printer.py:4757
+#: ../system-config-printer.py:4741
 #, fuzzy
 msgid " - Faxing support\n"
 msgstr "Suporte Bonobo"
 
-#: ../system-config-printer.py:4760
+#: ../system-config-printer.py:4744
 #, fuzzy
 msgid " - Extra fax features\n"
 msgstr "Dispositivo &fax/modem:"
 
-#: ../system-config-printer.py:4763
+#: ../system-config-printer.py:4747
 #, fuzzy
 msgid " - Better Input/Output support\n"
 msgstr "Entrada/Saída de Áudio MAS"
 
-#: ../system-config-printer.py:4766
+#: ../system-config-printer.py:4750
 #, fuzzy
 msgid " - Extra user interface features\n"
 msgstr "Executar sem interface de utilizador"
 
-#: ../system-config-printer.py:4769
+#: ../system-config-printer.py:4753
 #, fuzzy
 msgid " - Other extra features\n"
 msgstr "extra condensado"
 
-#: ../system-config-printer.py:4774
-#, fuzzy
+#: ../system-config-printer.py:4758
 msgid "Install plugin"
-msgstr "Configurar o 'plugin' %1"
+msgstr "Instalar plugin"
 
-#: ../system-config-printer.py:4775
-#, fuzzy
+#: ../system-config-printer.py:4759
 msgid "Do not set up printer"
-msgstr "Copiar Impressora"
+msgstr "Não configurar impressora"
 
-#: ../system-config-printer.py:4776
-#, fuzzy
+#: ../system-config-printer.py:4760
 msgid "Set up without plugin"
-msgstr "Definir as preferências do utilizador"
+msgstr "Configurar sem o plugin"
 
-#: ../system-config-printer.py:4778 ../troubleshoot/PrintTestPage.py:118
+#: ../system-config-printer.py:4762
+#: ../troubleshoot/PrintTestPage.py:118
 msgid "Yes"
 msgstr "Sim"
 
-#: ../system-config-printer.py:4779 ../troubleshoot/PrintTestPage.py:119
+#: ../system-config-printer.py:4763
+#: ../troubleshoot/PrintTestPage.py:119
 msgid "No"
 msgstr "Não"
 
-#: ../system-config-printer.py:4948 ../system-config-printer.py:4952
+#: ../system-config-printer.py:4932
+#: ../system-config-printer.py:4936
 msgid " (Current)"
 msgstr " (Actual)"
 
-#: ../system-config-printer.py:5005
+#: ../system-config-printer.py:4989
 msgid "Other"
 msgstr "Outras"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:5021
-#, fuzzy
+#: ../system-config-printer.py:5005
 msgid "Network Printer"
 msgstr "Impressora de rede"
 
-#: ../system-config-printer.py:5025
-#, fuzzy
+#: ../system-config-printer.py:5009
 msgid "Find Network Printer"
-msgstr "<b>Localização da impressora de rede</b>"
+msgstr "Procurar Impressoras em Rede"
 
-#: ../system-config-printer.py:5098
-#, fuzzy
+#: ../system-config-printer.py:5082
 msgid "Scanning..."
 msgstr "A analisar..."
 
-#: ../system-config-printer.py:5153
-#, fuzzy
+#: ../system-config-printer.py:5137
 msgid "No Print Shares"
 msgstr "Sem Partilhas de Impressão"
 
-#: ../system-config-printer.py:5154
-#, fuzzy
-msgid ""
-"There were no print shares found.  Please check that the Samba service is "
-"marked as trusted in your firewall configuration."
-msgstr ""
-"Não foram encontradas impressoras partilhadas. Por favor, verifique que que "
-"o serviço Samba está autorizado na configuração da firewall."
+#: ../system-config-printer.py:5138
+msgid "There were no print shares found.  Please check that the Samba service is marked as trusted in your firewall configuration."
+msgstr "Não foram encontradas impressoras partilhadas. Por favor, verifique que que o serviço Samba está autorizado na configuração da firewall."
 
-#: ../system-config-printer.py:5415 ../system-config-printer.py:5478
-#, fuzzy
+#: ../system-config-printer.py:5399
+#: ../system-config-printer.py:5462
 msgid "Print Share Verified"
 msgstr "Impressora Partilhada Verificada"
 
-#: ../system-config-printer.py:5416 ../system-config-printer.py:5479
+#: ../system-config-printer.py:5400
+#: ../system-config-printer.py:5463
 msgid "This print share is accessible."
 msgstr "Esta partilha de impressora está acessível."
 
-#: ../system-config-printer.py:5421 ../system-config-printer.py:5483
+#: ../system-config-printer.py:5405
+#: ../system-config-printer.py:5467
 msgid "This print share is not accessible."
 msgstr "Esta partilha de impressora está inacessível."
 
-#: ../system-config-printer.py:5424
-#, fuzzy
+#: ../system-config-printer.py:5408
 msgid "Print Share Inaccessible"
 msgstr "Partilha de Impressão inacessível"
 
-#: ../system-config-printer.py:5482
+#: ../system-config-printer.py:5466
 msgid "Inaccessible"
 msgstr "Inacessível"
 
-#: ../system-config-printer.py:5536
-#, fuzzy
+#: ../system-config-printer.py:5520
 msgid "Parallel Port"
-msgstr "Porta Paralela #%1"
+msgstr "Porta Paralela"
 
-#: ../system-config-printer.py:5538
-#, fuzzy
+#: ../system-config-printer.py:5522
 msgid "Serial Port"
-msgstr "Porta Série #%1"
+msgstr "Porta Série"
 
-#: ../system-config-printer.py:5540
-#, fuzzy
+#: ../system-config-printer.py:5524
 msgid "USB"
 msgstr "USB"
 
-#: ../system-config-printer.py:5542 ../system-config-printer.py:5545
+#: ../system-config-printer.py:5526
+#: ../system-config-printer.py:5529
 msgid "HP Linux Imaging and Printing (HPLIP)"
-msgstr ""
+msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../system-config-printer.py:5547
-#, fuzzy
+#: ../system-config-printer.py:5531
 msgid "Hardware Abstraction Layer (HAL)"
-msgstr "Camada de Abstracção do Equipamento (HAL) não foi lido"
+msgstr "Camada de Abstracção de Equipamento (HAL)"
 
-#: ../system-config-printer.py:5549
-#, fuzzy
+#: ../system-config-printer.py:5533
 msgid "AppSocket/HP JetDirect"
-msgstr "HP LaserJet 4L"
+msgstr "AppSocket/HP JetDirect"
 
-#: ../system-config-printer.py:5558
+#: ../system-config-printer.py:5542
 #, fuzzy, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "Fila de LPD &remota"
 
-#: ../system-config-printer.py:5560
+#: ../system-config-printer.py:5544
 #, fuzzy
 msgid "LPD/LPR queue"
 msgstr "Fila de LPD &remota"
 
-#: ../system-config-printer.py:5563
+#: ../system-config-printer.py:5547
 #, fuzzy
 msgid "Windows Printer via SAMBA"
 msgstr "Impressora partilhada por &SMB (Windows)"
 
-#: ../system-config-printer.py:5565
+#: ../system-config-printer.py:5549
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.py:5567
-#, fuzzy
+#: ../system-config-printer.py:5551
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../system-config-printer.py:5649
+#: ../system-config-printer.py:5633
 msgid "A printer connected to the parallel port."
 msgstr "Uma impressora ligada à porta paralela."
 
-#: ../system-config-printer.py:5651
+#: ../system-config-printer.py:5635
 msgid "A printer connected to a USB port."
 msgstr "Uma impressora ligada a uma porta USB."
 
-#: ../system-config-printer.py:5653
-msgid ""
-"HPLIP software driving a printer, or the printer function of a multi-"
-"function device."
-msgstr ""
-"A aplicação HPLIP a controlar uma impressora ou uma das funções de um "
-"dispositivo multifunções."
+#: ../system-config-printer.py:5637
+msgid "HPLIP software driving a printer, or the printer function of a multi-function device."
+msgstr "A aplicação HPLIP a controlar uma impressora ou uma das funções de um dispositivo multifunções."
 
-#: ../system-config-printer.py:5656
-msgid ""
-"HPLIP software driving a fax machine, or the fax function of a multi-"
-"function device."
-msgstr ""
-"A aplicação HPLIP a controlar uma máquina de fax ou a função de fax de um "
-"dispositivo multifunções."
+#: ../system-config-printer.py:5640
+msgid "HPLIP software driving a fax machine, or the fax function of a multi-function device."
+msgstr "A aplicação HPLIP a controlar uma máquina de fax ou a função de fax de um dispositivo multifunções."
 
-#: ../system-config-printer.py:5659
+#: ../system-config-printer.py:5643
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Impressora local detectada pelo HAL ('Hardware Abstraction Layer')."
 
-#: ../system-config-printer.py:5859
-#, fuzzy
+#: ../system-config-printer.py:5843
 msgid "No printer was found at that address."
-msgstr "Não foi encontrada nenhuma impressora neste endereço/porto."
+msgstr "Não foi encontrada nenhuma impressora neste endereço."
 
-#: ../system-config-printer.py:5996
-#, fuzzy
+#: ../system-config-printer.py:5980
 msgid "-- Select from search results --"
 msgstr "-- Seleccione entre os resultados da procura --"
 
-#: ../system-config-printer.py:5998
-#, fuzzy
+#: ../system-config-printer.py:5982
 msgid "-- No matches found --"
 msgstr "-- Pesquisa vazia --"
 
-#: ../system-config-printer.py:6184
+#: ../system-config-printer.py:6168
 msgid " (recommended)"
 msgstr " (recomendado)"
 
-#: ../system-config-printer.py:6198
+#: ../system-config-printer.py:6182
 msgid "This PPD is generated by foomatic."
 msgstr "Este PPD foi gerado pelo foomatic."
 
-#: ../system-config-printer.py:6222
-#, fuzzy
+#: ../system-config-printer.py:6206
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:6233
-#, fuzzy
+#: ../system-config-printer.py:6217
 msgid "Distributable"
 msgstr "Distribuível"
 
-#: ../system-config-printer.py:6274
-#, fuzzy
+#: ../system-config-printer.py:6258
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:6279
-#, fuzzy, python-format
+#: ../system-config-printer.py:6263
+#, python-format
 msgid ""
 "\n"
 "(%s)"
@@ -1776,22 +1671,21 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:6284
-#, fuzzy
+#: ../system-config-printer.py:6268
 msgid "No support contacts known"
 msgstr "Contacto de suporte desconhecido"
 
-#: ../system-config-printer.py:6288 ../system-config-printer.py:6301
-#, fuzzy
+#: ../system-config-printer.py:6272
+#: ../system-config-printer.py:6285
 msgid "Not specified."
 msgstr "Não especificado."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6341
+#: ../system-config-printer.py:6325
 msgid "Database error"
 msgstr "Erro na base de dados"
 
-#: ../system-config-printer.py:6342
+#: ../system-config-printer.py:6326
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "O controlador '%s' não pode ser usado com a impressora '%s %s'."
@@ -1799,47 +1693,45 @@ msgstr "O controlador '%s' não pode ser usado com a impressora '%s %s'."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6352
+#: ../system-config-printer.py:6336
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Terá de instalar o pacote '%s' para poder usar este controlador."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6359
+#: ../system-config-printer.py:6343
 msgid "PPD error"
 msgstr "Erro do PPD"
 
-#: ../system-config-printer.py:6361
+#: ../system-config-printer.py:6345
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Não é possível ler o ficheiro PPD. Seguem-se as possíveis razões:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6378
-#, fuzzy
+#: ../system-config-printer.py:6362
 msgid "Downloadable drivers"
-msgstr "Controladores disponíveis:"
+msgstr "Controladores disponíveis"
 
-#: ../system-config-printer.py:6379
-#, fuzzy
+#: ../system-config-printer.py:6363
 msgid "Failed to download PPD."
 msgstr "O download do PPD falhou."
 
-#: ../system-config-printer.py:6386
+#: ../system-config-printer.py:6370
 #, fuzzy
 msgid "fetching PPD"
 msgstr "Ficheiro PPD:"
 
-#: ../system-config-printer.py:6415 ../system-config-printer.py:6453
-#, fuzzy
+#: ../system-config-printer.py:6399
+#: ../system-config-printer.py:6437
 msgid "No Installable Options"
 msgstr "Sem Opções Instaláveis"
 
-#: ../system-config-printer.py:6501
+#: ../system-config-printer.py:6485
 #, fuzzy, python-format
 msgid "adding printer %s"
 msgstr "Adicionar uma nova impressora"
 
-#: ../system-config-printer.py:6674
+#: ../system-config-printer.py:6658
 #, fuzzy
 msgid "Would you like to print a test page?"
 msgstr ""
@@ -1847,30 +1739,25 @@ msgstr ""
 "\n"
 "   %s?"
 
-#: ../system-config-printer.py:6727
+#: ../system-config-printer.py:6711
 #, fuzzy
 msgid "Install driver"
 msgstr "Adicionar um novo controlador"
 
-#: ../system-config-printer.py:6728 ../troubleshoot/CheckPPDSanity.py:131
-#, fuzzy, python-format
+#: ../system-config-printer.py:6712
+#: ../troubleshoot/CheckPPDSanity.py:131
+#, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
-msgstr ""
-"A impressora '%s' precisa do pacote %s, mas este não está instalado de "
-"momento. Instale-o por favor, antes de usar esta impressora."
+msgstr "A impressora '%s' precisa do pacote %s, mas este não está instalado de momento."
 
-#: ../system-config-printer.py:6744
+#: ../system-config-printer.py:6728
 msgid "Missing driver"
 msgstr "Controlador em falta"
 
-#: ../system-config-printer.py:6745
+#: ../system-config-printer.py:6729
 #, python-format
-msgid ""
-"Printer '%s' requires the '%s' program but it is not currently installed.  "
-"Please install it before using this printer."
-msgstr ""
-"A impressora '%s' precisa do programa '%s', mas este não está instalado de "
-"momento. Instale-o por favor, antes de usar esta impressora."
+msgid "Printer '%s' requires the '%s' program but it is not currently installed.  Please install it before using this printer."
+msgstr "A impressora '%s' precisa do programa '%s', mas este não está instalado de momento. Instale-o por favor, antes de usar esta impressora."
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1939,9 +1826,9 @@ msgid "Ink low"
 msgstr "Tinteiro insuficiente"
 
 #: ../statereason.py:98
-#, fuzzy, python-format
+#, python-format
 msgid "Printer '%s' is low on ink."
-msgstr "A impressora '%s' está com níveis insuficientes de tinteiros."
+msgstr "A impressora '%s' está com os níveis de tinteiros baixos."
 
 #: ../statereason.py:99
 msgid "Ink empty"
@@ -1953,12 +1840,11 @@ msgid "Printer '%s' has no ink left."
 msgstr "A impressora '%s' está sem tinteiro."
 
 #: ../statereason.py:101
-#, fuzzy
 msgid "Printer off-line"
 msgstr "Impressora desligada"
 
 #: ../statereason.py:102
-#, fuzzy, python-format
+#, python-format
 msgid "Printer '%s' is currently off-line."
 msgstr "A impressora '%s' está actualmente desligada."
 
@@ -1971,12 +1857,13 @@ msgstr "Não ligada?"
 msgid "Printer '%s' may not be connected."
 msgstr "A impressora '%s' parece não estar ligada."
 
-#: ../statereason.py:105 ../statereason.py:121
+#: ../statereason.py:105
+#: ../statereason.py:121
 msgid "Printer error"
 msgstr "Erro da impressora"
 
 #: ../statereason.py:106
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem on printer '%s'."
 msgstr "Existe um problema com a impressora '%s'."
 
@@ -1993,18 +1880,17 @@ msgstr "Aviso da impressora"
 msgid "Printer '%s': '%s'."
 msgstr "Impressora '%s': '%s'."
 
-#: ../timedops.py:101 ../timedops.py:169
-#, fuzzy
+#: ../timedops.py:101
+#: ../timedops.py:169
 msgid "Please wait"
 msgstr "Aguarde por favor"
 
-#: ../timedops.py:107 ../timedops.py:176
-#, fuzzy
+#: ../timedops.py:107
+#: ../timedops.py:176
 msgid "Gathering information"
-msgstr "A obter informação de fonte... %3d%%"
+msgstr "A recolher informação"
 
 #: ../ToolbarSearchEntry.py:69
-#, fuzzy
 msgid "_Filter:"
 msgstr "_Filtro:"
 
@@ -2014,181 +1900,125 @@ msgid "Printing troubleshooter"
 msgstr "Imprimir resolução de erros"
 
 #: ../troubleshoot/base.py:33
-#, fuzzy
-msgid ""
-"To start this tool, select System->Administration->Printing from the main "
-"menu."
-msgstr ""
-"Para iniciar esta ferramenta, seleccione Sistema->Administração->Impressão a "
-"partir do menu principal."
+msgid "To start this tool, select System->Administration->Printing from the main menu."
+msgstr "Para iniciar esta ferramenta, seleccione Sistema->Administração->Impressão a partir do menu principal."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:28
-#, fuzzy
 msgid "Server Not Exporting Printers"
 msgstr "O Servidor Não Exporta Impressoras"
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:29
-#, fuzzy
-msgid ""
-"Although one or more printers are marked as being shared, this print server "
-"is not exporting shared printers to the network."
-msgstr ""
-"Embora uma ou mais impressoras estejam marcadas como partilhadas, este "
-"servidor de impressão não está a exportar as impressoras partilhadas para a "
-"rede."
+msgid "Although one or more printers are marked as being shared, this print server is not exporting shared printers to the network."
+msgstr "Embora uma ou mais impressoras estejam marcadas como partilhadas, este servidor de impressão não está a exportar as impressoras partilhadas para a rede."
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:33
-msgid ""
-"Enable the 'Publish shared printers connected to this system' option in the "
-"server settings using the printing administration tool."
-msgstr ""
+msgid "Enable the 'Publish shared printers connected to this system' option in the server settings using the printing administration tool."
+msgstr "Active a opção 'Publicar impressoras partilhadas ligadas a este sistema' nas configurações do servidor utilizando a ferramenta de administração de impressoras."
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:179
-#, fuzzy
+#: ../troubleshoot/CheckPPDSanity.py:44
+#: ../applet.py:184
 msgid "Install"
 msgstr "Instalar"
 
 #: ../troubleshoot/CheckPPDSanity.py:96
-#, fuzzy
 msgid "Invalid PPD File"
 msgstr "Ficheiro PPD inválido"
 
 #: ../troubleshoot/CheckPPDSanity.py:106
-#, fuzzy, python-format
-msgid ""
-"The PPD file for printer '%s' does not conform to the specification.  "
-"Possible reason follows:"
-msgstr ""
-"O ficheiro PPD para a impressora `%s' não obedece às especificações. As "
-"razões possíveis são:"
+#, python-format
+msgid "The PPD file for printer '%s' does not conform to the specification.  Possible reason follows:"
+msgstr "O ficheiro PPD para a impressora `%s' não obedece às especificações.  As razões possíveis são:"
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:112
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "Existe um problema com o ficheiro PPD da impressora '%s'."
 
 #: ../troubleshoot/CheckPPDSanity.py:122
-#, fuzzy
 msgid "Missing Printer Driver"
 msgstr "Controlador de impressão em falta"
 
 #: ../troubleshoot/CheckPPDSanity.py:136
-#, fuzzy, python-format
-msgid ""
-"Printer '%s' requires the '%s' program but it is not currently installed."
-msgstr ""
-"A impressora '%s' precisa do programa %s, mas este não está instalado de "
-"momento. Instale-o por favor, antes de utilizar esta impressora."
+#, python-format
+msgid "Printer '%s' requires the '%s' program but it is not currently installed."
+msgstr "A impressora '%s' precisa do programa %s, mas este não está instalado de momento."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
-#, fuzzy
 msgid "Choose Network Printer"
 msgstr "Escolha Impressora de rede"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:30
-#, fuzzy
-msgid ""
-"Please select the network printer you are trying to use from the list below. "
-"If it does not appear in the list, select 'Not listed'."
-msgstr ""
-"Por favor seleccione da lista a seguir a impressora de rede que está a "
-"tentar utilizar. Se não aparecer na lista, seleccione 'Não listada'."
+msgid "Please select the network printer you are trying to use from the list below. If it does not appear in the list, select 'Not listed'."
+msgstr "Por favor seleccione da lista a seguir a impressora de rede que está a tentar utilizar. Se não aparecer na lista, seleccione 'Não listada'."
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:39
-#: ../troubleshoot/ChoosePrinter.py:40 ../troubleshoot/DeviceListed.py:38
-#, fuzzy
+#: ../troubleshoot/ChoosePrinter.py:40
+#: ../troubleshoot/DeviceListed.py:38
 msgid "Information"
 msgstr "Informação"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:75
-#: ../troubleshoot/ChoosePrinter.py:64 ../troubleshoot/DeviceListed.py:70
-#, fuzzy
+#: ../troubleshoot/ChoosePrinter.py:64
+#: ../troubleshoot/DeviceListed.py:70
 msgid "Not listed"
 msgstr "Não listada"
 
 #: ../troubleshoot/ChoosePrinter.py:30
-#, fuzzy
 msgid "Choose Printer"
 msgstr "Escolha Impressora"
 
 #: ../troubleshoot/ChoosePrinter.py:31
-#, fuzzy
-msgid ""
-"Please select the printer you are trying to use from the list below. If it "
-"does not appear in the list, select 'Not listed'."
-msgstr ""
-"Por favor seleccione da lista a seguir a impressora que está a tentar "
-"utilizar. Se não aparecer na lista, seleccione 'Não listada'."
+msgid "Please select the printer you are trying to use from the list below. If it does not appear in the list, select 'Not listed'."
+msgstr "Por favor seleccione da lista a seguir a impressora que está a tentar utilizar. Se não aparecer na lista, seleccione 'Não listada'."
 
 #: ../troubleshoot/DeviceListed.py:30
-#, fuzzy
 msgid "Choose Device"
 msgstr "Escolha Controlador"
 
 #: ../troubleshoot/DeviceListed.py:31
-#, fuzzy
-msgid ""
-"Please select the device you want to use from the list below. If it does not "
-"appear in the list, select 'Not listed'."
-msgstr ""
-"Por favor seleccione da lista a seguir o dispositivo que está a tentar "
-"utilizar. Se não aparecer na lista, seleccione 'Não listada'."
+msgid "Please select the device you want to use from the list below. If it does not appear in the list, select 'Not listed'."
+msgstr "Por favor seleccione da lista a seguir o dispositivo que está a tentar utilizar. Se não aparecer na lista, seleccione 'Não listada'."
 
 #: ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "URI do Dispositivo"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
-#, fuzzy
 msgid "Debugging"
 msgstr "Depuração"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:32
-#, fuzzy
-msgid ""
-"I would like to enable debugging output from the CUPS scheduler.  This may "
-"cause the scheduler to restart.  Click the button below to enable debugging."
-msgstr ""
-"Eu gostaria de activar o output de depuração no gestor de tarefas do CUPS. "
-"Isto pode fazer com que o gestor de tarefas reinicie. Carregue no botão "
-"abaixo para activar a depuração."
+msgid "I would like to enable debugging output from the CUPS scheduler.  This may cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr "Eu gostaria de activar o output de depuração no gestor de tarefas do CUPS. Isto pode fazer com que o gestor de tarefas reinicie. Carregue no botão abaixo para activar a depuração."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:36
-#, fuzzy
 msgid "Enable Debugging"
 msgstr "Activar depuração"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:211
-#, fuzzy
 msgid "Debug logging enabled."
 msgstr "A recolha de dados de depuração foi activada."
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:213
-#, fuzzy
 msgid "Debug logging was already enabled."
 msgstr "A recolha de dados de depuração já estava activa."
 
 #: ../troubleshoot/ErrorLogParse.py:29
-#, fuzzy
 msgid "Error log messages"
 msgstr "Log de mensagens de erro"
 
 #: ../troubleshoot/ErrorLogParse.py:30
-#, fuzzy
 msgid "There are messages in the error log."
 msgstr "Existem mensagens no registo de erros."
 
 #: ../troubleshoot/Locale.py:29
-#, fuzzy
 msgid "Incorrect Page Size"
-msgstr "Tamanho da Página"
+msgstr "Tamanho de Página incorrecto"
 
 #: ../troubleshoot/Locale.py:30
-msgid ""
-"The page size for the print job was not the printer's default page size.  If "
-"this is not intentional it may cause alignment problems."
-msgstr ""
+msgid "The page size for the print job was not the printer's default page size.  If this is not intentional it may cause alignment problems."
+msgstr "O tamanho de página para a tarefa de impressão não corresponde com o tamanho de página, por omissão, da impressora. Se isto não é intencional, pode causar problemas de alinhamento."
 
 #: ../troubleshoot/Locale.py:43
 #, fuzzy
@@ -2196,302 +2026,229 @@ msgid "Print job page size:"
 msgstr "Redimensionar a impressão para o tamanho da página"
 
 #: ../troubleshoot/Locale.py:48
-#, fuzzy
 msgid "Printer page size:"
 msgstr "Tamanho da Página"
 
 #: ../troubleshoot/LocalOrRemote.py:26
-#, fuzzy
 msgid "Printer Location"
 msgstr "Localização da Impressora"
 
 #: ../troubleshoot/LocalOrRemote.py:27
-#, fuzzy
 msgid "Is the printer connected to this computer or available on the network?"
 msgstr "A impressora está ligada a este computador ou disponível na rede?"
 
 #: ../troubleshoot/LocalOrRemote.py:29
-#, fuzzy
 msgid "Locally connected printer"
 msgstr "Impressora ligada localmente"
 
 #: ../troubleshoot/NetworkCUPSPrinterShared.py:28
-#, fuzzy
 msgid "Queue Not Shared"
 msgstr "Fila Não Partilhada"
 
 #: ../troubleshoot/NetworkCUPSPrinterShared.py:29
-#, fuzzy
 msgid "The CUPS printer on the server is not shared."
 msgstr "A impressora CUPS no servidor não é partilhada."
 
 #: ../troubleshoot/PrinterStateReasons.py:29
-#, fuzzy
 msgid "Status Messages"
 msgstr "Mensagens de Estado"
 
 #: ../troubleshoot/PrinterStateReasons.py:30
-#, fuzzy
 msgid "There are status messages associated with this queue."
 msgstr "Existem mensagens de estado associadas a esta fila."
 
 #: ../troubleshoot/PrinterStateReasons.py:58
-#, fuzzy, python-format
+#, python-format
 msgid "The printer's state message is: '%s'."
 msgstr "O estado da impressora é: `%s'."
 
 #: ../troubleshoot/PrinterStateReasons.py:83
-#, fuzzy
 msgid "Errors are listed below:"
 msgstr "Os erros estão listados abaixo:"
 
 #: ../troubleshoot/PrinterStateReasons.py:88
-#, fuzzy
 msgid "Warnings are listed below:"
 msgstr "Avisos estão listados abaixo:"
 
 #: ../troubleshoot/PrintTestPage.py:62
-#, fuzzy
 msgid "Test Page"
-msgstr "Imprimir Página de Teste"
+msgstr "Página de Teste"
 
 #: ../troubleshoot/PrintTestPage.py:63
-#, fuzzy
-msgid ""
-"Now print a test page.  If you are having problems printing a specific "
-"document, print that document now and mark the print job below."
-msgstr ""
-"Agora imprima uma página de teste. Se está a ter problemas a imprimir um "
-"documento especifico, imprima esse documento agora e assinale a tarefa em "
-"baixo."
+msgid "Now print a test page.  If you are having problems printing a specific document, print that document now and mark the print job below."
+msgstr "Agora imprima uma página de teste. Se está a ter problemas a imprimir um documento especifico, imprima esse documento agora e assinale a tarefa em baixo."
 
 #: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Imprimir Página de Teste"
 
 #: ../troubleshoot/PrintTestPage.py:75
-#, fuzzy
 msgid "Cancel All Jobs"
 msgstr "Cancelar todas as tarefas"
 
 #: ../troubleshoot/PrintTestPage.py:81
-#, fuzzy
 msgid "Test"
 msgstr "Teste"
 
 #: ../troubleshoot/PrintTestPage.py:111
-#, fuzzy
 msgid "Did the marked print jobs print correctly?"
 msgstr "A tarefa assinalada imprimiu correctamente?"
 
 #: ../troubleshoot/PrintTestPage.py:143
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
-msgstr ""
+msgstr "Lembre-se de carregar papel do tipo '%s' na impressora."
 
 #: ../troubleshoot/PrintTestPage.py:416
-#, fuzzy
 msgid "Error submitting test page"
 msgstr "Erro ao submeter a página de teste"
 
 #: ../troubleshoot/QueueNotEnabled.py:56
 #: ../troubleshoot/QueueRejectingJobs.py:66
-#, fuzzy, python-format
+#, python-format
 msgid "The reason given is: '%s'."
 msgstr "O motivo dado foi: `%s'."
 
 #: ../troubleshoot/QueueNotEnabled.py:58
-#, fuzzy
 msgid "This may be due to the printer being disconnected or switched off."
-msgstr ""
-"Isto pode acontecer devido à impressora estar desligada da rede ou desligada "
-"da corrente."
+msgstr "Isto pode acontecer devido à impressora estar desligada da rede ou desligada da corrente."
 
 #: ../troubleshoot/QueueNotEnabled.py:62
-#, fuzzy
 msgid "Queue Not Enabled"
 msgstr "Fila Não Activa"
 
 #: ../troubleshoot/QueueNotEnabled.py:63
-#, fuzzy, python-format
+#, python-format
 msgid "The queue '%s' is not enabled."
 msgstr "A fila `%s' não está activa."
 
 #: ../troubleshoot/QueueNotEnabled.py:71
-#, fuzzy
-msgid ""
-"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
-"printer in the printer administration tool."
-msgstr ""
-"Para a activar, seleccione a opção 'Activo' no separador 'Políticas' da "
-"ferramenta de administração de impressoras."
+msgid "To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the printer in the printer administration tool."
+msgstr "Para a activar, seleccione a opção 'Activo' no separador 'Políticas' da ferramenta de administração de impressoras."
 
 #: ../troubleshoot/QueueRejectingJobs.py:31
-#, fuzzy
 msgid "Queue Rejecting Jobs"
 msgstr "Fila a rejeitar tarefas"
 
 #: ../troubleshoot/QueueRejectingJobs.py:63
-#, fuzzy, python-format
+#, python-format
 msgid "The queue '%s' is rejecting jobs."
 msgstr "A fila `%s' está a rejeitar tarefas."
 
 #: ../troubleshoot/QueueRejectingJobs.py:70
-#, fuzzy
-msgid ""
-"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
-"'Policies' tab for the printer in the printer administration tool."
-msgstr ""
-"Para fazer esta fila aceitar tarefas, seleccione a opção `Aceitar tarefas' "
-"no separador `Políticas' da ferramenta de administração de impressoras."
+msgid "To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the 'Policies' tab for the printer in the printer administration tool."
+msgstr "Para fazer esta fila aceitar tarefas, seleccione a opção `Aceitar tarefas' no separador `Políticas' da ferramenta de administração de impressoras."
 
 #: ../troubleshoot/RemoteAddress.py:26
-#, fuzzy
 msgid "Remote Address"
 msgstr "Endereço Remoto"
 
 #: ../troubleshoot/RemoteAddress.py:27
-#, fuzzy
-msgid ""
-"Please enter as many details as you can about the network address of this "
-"printer."
-msgstr ""
-"Por favor, insira o maior número de detalhes possível acerca do endereço de "
-"rede desta impressora."
+msgid "Please enter as many details as you can about the network address of this printer."
+msgstr "Por favor, insira o maior número de detalhes possível acerca do endereço de rede desta impressora."
 
 #: ../troubleshoot/RemoteAddress.py:35
-#, fuzzy
 msgid "Server name:"
 msgstr "Nome do Servidor:"
 
 #: ../troubleshoot/RemoteAddress.py:42
-#, fuzzy
 msgid "Server IP address:"
 msgstr "Endereço IP do servidor:"
 
 #: ../troubleshoot/SchedulerNotRunning.py:28
-#, fuzzy
 msgid "CUPS Service Stopped"
 msgstr "Serviço CUPS desligado"
 
 #: ../troubleshoot/SchedulerNotRunning.py:29
-#, fuzzy
-msgid ""
-"The CUPS print spooler does not appear to be running.  To correct this, "
-"choose System->Administration->Services from the main menu and look for the "
-"'cups' service."
-msgstr ""
-"O serviço CUPS parece que não está activo. Para corrigir isto, seleccione "
-"Sistema->Administração->Serviços a partir do menu principal e procure pelo "
-"serviço `cups'."
+msgid "The CUPS print spooler does not appear to be running.  To correct this, choose System->Administration->Services from the main menu and look for the 'cups' service."
+msgstr "O serviço CUPS parece que não está activo. Para corrigir isto, seleccione Sistema->Administração->Serviços a partir do menu principal e procure pelo serviço `cups'."
 
 #: ../troubleshoot/ServerFirewalled.py:26
-#, fuzzy
 msgid "Check Server Firewall"
 msgstr "Verifique a Firewall do Servidor"
 
 #: ../troubleshoot/ServerFirewalled.py:27
-#, fuzzy
 msgid "It is not possible to connect to the server."
 msgstr "Não é possível ligar ao servidor."
 
 #: ../troubleshoot/ServerFirewalled.py:42
-#, fuzzy, python-format
-msgid ""
-"Please check to see if a firewall or router configuration is blocking TCP "
-"port %d on server '%s'."
-msgstr ""
-"Por favor, verifique se a configuração de uma firewall ou router está a "
-"bloquear o porto TCP %d para o servidor `%s'."
+#, python-format
+msgid "Please check to see if a firewall or router configuration is blocking TCP port %d on server '%s'."
+msgstr "Por favor, verifique se a configuração de uma firewall ou router está a bloquear o porto TCP %d para o servidor `%s'."
 
 #: ../troubleshoot/Shrug.py:26
-#, fuzzy
 msgid "Sorry!"
 msgstr "Desculpe!"
 
 #: ../troubleshoot/Shrug.py:27
-#, fuzzy
-msgid ""
-"I have not been able to work out what the problem is, but I have collected "
-"some useful information to put in a bug report."
-msgstr ""
-"Não fui capaz de perceber o problema, mas recolhi alguma informação útil que "
-"pode ser colocada num relatório de erros."
+msgid "I have not been able to work out what the problem is, but I have collected some useful information to put in a bug report."
+msgstr "Não fui capaz de solucionar o problema, mas recolhi alguma informação útil que pode ser colocada num relatório de erros."
 
 #: ../troubleshoot/Shrug.py:32
-#, fuzzy
 msgid "Diagnostic Output (Advanced)"
-msgstr "Output do diagnóstico (Avançado)"
+msgstr "Resultado do diagnóstico (Avançado)"
 
 #: ../troubleshoot/Welcome.py:43
-#, fuzzy
 msgid "Trouble-shooting Printing"
-msgstr "A imprimir resolução de erros"
+msgstr "Resolução de erros de impressão"
 
 #: ../troubleshoot/Welcome.py:45
-#, fuzzy
-msgid ""
-"In the next few screens I will ask you some questions about your problem "
-"with printing. Based on your answers I will try to suggest a solution."
-msgstr ""
-"A seguir irei fazer algumas perguntas relacionadas com o seu problema de "
-"impressão. Baseado nas suas respostas irei sugerir uma solução."
+msgid "In the next few screens I will ask you some questions about your problem with printing. Based on your answers I will try to suggest a solution."
+msgstr "A seguir irei fazer algumas perguntas acerca do seu problema de impressão. Baseado nas suas respostas irei sugerir uma solução."
 
 #: ../troubleshoot/Welcome.py:49
-#, fuzzy
 msgid "Click 'Forward' to begin."
 msgstr "Carregue em \"Seguinte\" para começar."
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
-#: ../applet.py:113 ../applet.py:168
+#: ../applet.py:113
+#: ../applet.py:173
 msgid "Missing printer driver"
 msgstr "Controlador de impressão em falta"
 
 #: ../applet.py:121
-#, fuzzy, python-format
+#, python-format
 msgid "No printer driver for %s."
-msgstr "Imp&ressora não filtrada (não é preciso controlador)"
+msgstr "Não existe controlador de impressão para %s."
 
 #: ../applet.py:123
-#, fuzzy
 msgid "No driver for this printer."
-msgstr "Não há opções para este formato."
+msgstr "Não existe controlador para esta impressora."
 
-#: ../applet.py:166
+#: ../applet.py:171
 msgid "Printer added"
 msgstr "Impressora adicionada"
 
-#: ../applet.py:172
-#, fuzzy
+#: ../applet.py:177
 msgid "Install printer driver"
 msgstr "Instalar controlador"
 
-#: ../applet.py:173
-#, fuzzy, python-format
+#: ../applet.py:178
+#, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "`%s' necessita da instalação do controlador: %s."
 
-#: ../applet.py:194
+#: ../applet.py:199
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "A impressora `%s' está pronta para imprimir."
 
-#: ../applet.py:198 ../applet.py:211
-#, fuzzy
+#: ../applet.py:203
+#: ../applet.py:216
 msgid "Print test page"
 msgstr "Imprimir Página de Teste"
 
-#: ../applet.py:201
+#: ../applet.py:206
 msgid "Configure"
 msgstr "Configurar"
 
-#: ../applet.py:206
+#: ../applet.py:211
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "A `%s' foi adicionada com o controlador `%s'."
 
-#: ../applet.py:214
+#: ../applet.py:219
 msgid "Find driver"
 msgstr "Procurar o controlador"
 
@@ -2501,7 +2258,7 @@ msgstr "'Applet' da Fila de Impressão"
 
 #: ../print-applet.desktop.in.h:2
 msgid "System tray icon for managing print jobs"
-msgstr "Ícone da bandeja para gerir as tarefas de impressão"
+msgstr "Ícone da tabuleiro para gerir as tarefas de impressão"
 
 #: ../manage-print-jobs.desktop.in.h:1
 msgid "Cancel, pause, resume or reprint jobs"
@@ -2587,7 +2344,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "CUPS _server:"
 #~ msgstr "Servidor CUPS:"
-
 #~ msgid "Connect to CUPS server"
 #~ msgstr "Ligar a servidor CUPS"
 
@@ -2599,123 +2355,84 @@ msgstr "Seleccionar a impressora predefinida"
 #~ msgid ""
 #~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
 #~ msgstr "<span weight='bold' size='larger'>Erro ao Ligar à Galeria</span>\n"
-
 #~ msgid "Connecting to CUPS server"
 #~ msgstr "Ligar a servidor CUPS"
-
 #~ msgid "_Install"
 #~ msgstr "_Instalar"
-
 #~ msgid "IPP Browser"
 #~ msgstr "Navegador IPP"
-
 #~ msgid "Show _completed jobs"
 #~ msgstr "Mostrar as tarefas _completas"
-
 #~ msgid "_File"
 #~ msgstr "_Ficheiro"
-
 #~ msgid "_Job"
 #~ msgstr "_Tarefa"
-
 #~ msgid "_Refresh"
 #~ msgstr "_Actualizar"
-
 #~ msgid "_View"
 #~ msgstr "_Ver"
-
 #~ msgid "Copy Printer"
 #~ msgstr "Copiar Impressora"
-
 #~ msgid "New name for the printer"
 #~ msgstr "Novo nome para a impressora"
-
 #~ msgid "<b>Authentication</b>"
 #~ msgstr "<b>Autenticação</b>"
-
 #~ msgid "<b>Description</b>"
 #~ msgstr "<b>Descrição</b>"
-
 #~ msgid "<b>Description</b> (optional)"
 #~ msgstr "<b>Descrição</b> (opcional)"
-
 #~ msgid "<b>Enter device URI</b>"
 #~ msgstr "<b>Indique o URI do Dispositivo</b>"
-
 #~ msgid "<b>IPP Printer</b>"
 #~ msgstr "<b>Impressora IPP</b>"
-
 #~ msgid "<b>License Terms</b>"
 #~ msgstr "<b>Termos da Licença</b>"
-
 #~ msgid "<b>Location of the LPD network printer</b>"
 #~ msgstr "<b>Localização da impressora de rede LPD</b>"
-
 #~ msgid "<b>Location of the network printer</b>"
 #~ msgstr "<b>Localização da impressora de rede</b>"
-
 #~ msgid "<b>Location</b> (optional)"
 #~ msgstr "<b>Localização</b> (opcional)"
-
 #~ msgid "<b>Network Printer</b>"
 #~ msgstr "Impressora de rede"
-
 #~ msgid "<b>Note</b>"
 #~ msgstr "<b>Nota</b>"
-
 #~ msgid "<b>Output Quality</b>"
 #~ msgstr "Qualidade de output: "
-
 #~ msgid "<b>Printer Name</b>"
 #~ msgstr "<b>Nome da Impressora</b>"
-
 #~ msgid "<b>SMB Printer</b>"
 #~ msgstr "<b>Impressora SMB</b>"
-
 #~ msgid "<b>Select Driver</b>"
 #~ msgstr "<b>Seleccione Controlador</b>"
-
 #~ msgid "<b>Settings of the serial port</b>"
 #~ msgstr "<b>Opções da porta série</b>"
-
 #~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 #~ msgstr "<i>smb://[grupo-trabalho/]servidor[:porto]/impressora</i>"
-
 #~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
 #~ msgstr ""
 #~ "<span weight=\"bold\" size=\"larger\">Escolha membro da Classe</span>"
-
 #~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
 #~ msgstr "<span weight=\"bold\" size=\"larger\">Escolha Controlador</span>"
-
 #~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
 #~ msgstr ""
 #~ "<span weight=\"bold\" size=\"larger\">Descrição da Impressora</span>"
-
 #~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
 #~ msgstr "<span weight=\"bold\" size=\"larger\">Configurações Actuais</span>"
-
 #~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
 #~ msgstr "<span weight=\"bold\" size=\"larger\">Opções Instaláveis</span>"
-
 #~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
 #~ msgstr "<span weight=\"bold\" size=\"larger\">Seleccione Dispositivo</span>"
-
 #~ msgid "Baud Rate"
 #~ msgstr "Taxa de Baud"
-
 #~ msgid "Browse..."
 #~ msgstr "Navegar..."
-
 #~ msgid "Comments..."
 #~ msgstr "Comentários..."
-
 #~ msgid "Connection"
 #~ msgstr "Ligação"
-
 #~ msgid "Data Bits"
 #~ msgstr "Bits de Dados"
-
 #~ msgid ""
 #~ "Default\n"
 #~ "1200\n"
@@ -2736,7 +2453,6 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "38400\n"
 #~ "57600\n"
 #~ "115200"
-
 #~ msgid ""
 #~ "Default\n"
 #~ "8\n"
@@ -2745,7 +2461,6 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Por Omissão\n"
 #~ "8\n"
 #~ "7"
-
 #~ msgid ""
 #~ "Default\n"
 #~ "None\n"
@@ -2756,7 +2471,6 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Nenhuma\n"
 #~ "Ímpar\n"
 #~ "Par"
-
 #~ msgid ""
 #~ "Default\n"
 #~ "None\n"
@@ -2769,25 +2483,18 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "XON/XOFF (Software)\n"
 #~ "RTS/CTS (Hardware)\n"
 #~ "DTR/DSR (Hardware)"
-
 #~ msgid "Description:"
 #~ msgstr "Descrição:"
-
 #~ msgid "Device description."
 #~ msgstr "Descrição do dispositivo."
-
 #~ msgid "DirectJet"
 #~ msgstr "DirectJet"
-
 #~ msgid "Driver details"
 #~ msgstr "Detalhes do controlador"
-
 #~ msgid "Empty"
 #~ msgstr "Vazio"
-
 #~ msgid "Find _Queue..."
 #~ msgstr "Procurar _Fila..."
-
 #~ msgid "Flow Control"
 #~ msgstr "Controlo de Fluxo"
 
@@ -2798,7 +2505,6 @@ msgstr "Seleccionar a impressora predefinida"
 #~ msgstr ""
 #~ "Não existem controlados disponíveis para download para a impressora "
 #~ "seleccionada."
-
 #~ msgid "Free software"
 #~ msgstr "Software Livre"
 
@@ -2809,13 +2515,10 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Host:"
 #~ msgstr "Máquina:"
-
 #~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
 #~ msgstr "Descrição da impressora, como por exemplo \"HP LaserJet\""
-
 #~ msgid "Human-readable location such as \"Lab 1\""
 #~ msgstr "Descrição da localização, como por exemplo \"Sala 1\""
-
 #~ msgid "LPD"
 #~ msgstr "LPD"
 
@@ -2846,7 +2549,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "No, I do not accept this license"
 #~ msgstr "Não, Eu não aceito esta licença"
-
 #~ msgid "Parity"
 #~ msgstr "Paridade"
 
@@ -2878,7 +2580,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Printer model:"
 #~ msgstr "Modelo da Impressora:"
-
 #~ msgid "Probe"
 #~ msgstr "Detectar"
 
@@ -2889,13 +2590,10 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Provide PPD file"
 #~ msgstr "Fornecer ficheiro PPD"
-
 #~ msgid "Queue:"
 #~ msgstr "Fila:"
-
 #~ msgid "SCSI"
 #~ msgstr "SCSI"
-
 #~ msgid "SMB"
 #~ msgstr "SMB"
 
@@ -2906,14 +2604,12 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Searching..."
 #~ msgstr "A Procurar..."
-
 #~ msgid "Select A File"
 #~ msgstr "Escolha um Ficheiro"
 
 #, fuzzy
 #~ msgid "Select printer from database"
 #~ msgstr "Escolha a Impressora na base de dados"
-
 #~ msgid "Serial"
 #~ msgstr "Série"
 
@@ -2936,7 +2632,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Text:"
 #~ msgstr "Texto:"
-
 #~ msgid ""
 #~ "The foomatic printer database contains various manufacturer provided "
 #~ "PostScript Printer Description (PPD) files and also can generate PPD "
@@ -2967,7 +2662,6 @@ msgstr "Seleccionar a impressora predefinida"
 #~ msgstr ""
 #~ "Este controlador suporta hardware adicional que pode estar instalado na "
 #~ "impressora."
-
 #~ msgid ""
 #~ "This is done by assuming that options with the same name do have the same "
 #~ "meaning. Settings of options that are not present in the new PPD will be "
@@ -2977,21 +2671,18 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "significado. Os valores das opções não presentes no novo PPD serão "
 #~ "perdidos e as opções apenas presentes no novo PPD ficam com o valor "
 #~ "predefinido."
-
 #~ msgid ""
 #~ "This way all current option settings will be lost. The default settings "
 #~ "of the new PPD will be used. "
 #~ msgstr ""
 #~ "Desta forma todas as opções actuais serão perdidas. As predefinições do "
 #~ "novo PPD serão utilizadas."
-
 #~ msgid "Try to copy the option settings over from the old PPD. "
 #~ msgstr "Tentar copiar as opções do PPD antigo."
 
 #, fuzzy
 #~ msgid "URI:"
 #~ msgstr "URI:"
-
 #~ msgid "Use the new PPD (Postscript Printer Description) as is."
 #~ msgstr ""
 #~ "Utilizar o novo ficheiro PPD (Descrição de Impressora Postscript) como "
@@ -3012,7 +2703,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "_Search"
 #~ msgstr "_Procurar"
-
 #~ msgid "_Verify..."
 #~ msgstr "_Verificar..."
 
@@ -3023,10 +2713,8 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "move right"
 #~ msgstr "Mover para a Direita"
-
 #~ msgid " "
 #~ msgstr " "
-
 #~ msgid ""
 #~ "1\n"
 #~ "2\n"
@@ -3045,29 +2733,22 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "72 points per inch"
 #~ msgstr "72 pontos por polegada"
-
 #~ msgid "<b>Banner</b>"
 #~ msgstr "<b>Separador</b>"
-
 #~ msgid "<b>Common Options</b>"
 #~ msgstr "<b>Opções Comuns</b>"
-
 #~ msgid "<b>Image Options</b>"
 #~ msgstr "<b>Opções da Imagem</b>"
 
 #, fuzzy
 #~ msgid "<b>Ink/Toner Levels</b>"
 #~ msgstr "Tinta/toner vazio!"
-
 #~ msgid "<b>Other Options (Advanced)</b>"
 #~ msgstr "<b>Outras Opções (Avançado)</b>"
-
 #~ msgid "<b>Policies</b>"
 #~ msgstr "<b>Políticas</b>"
-
 #~ msgid "<b>Settings</b>"
 #~ msgstr "<b>Opções</b>"
-
 #~ msgid "<b>State</b>"
 #~ msgstr "<b>Estado</b>"
 
@@ -3078,76 +2759,56 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "<b>Tests and Maintenance</b>"
 #~ msgstr "<b>Testes e Manutenção</b>"
-
 #~ msgid "<b>Text Options</b>"
 #~ msgstr "<b>Opções do Texto</b>"
-
 #~ msgid ""
 #~ "<i>Not published\n"
 #~ "See server settings</i>"
 #~ msgstr ""
 #~ "<i>Ainda não publicado\n"
 #~ "Veja a configuração do servidor</i>"
-
 #~ msgid "Accepting jobs"
 #~ msgstr "A aceitar trabalhos"
 
 #, fuzzy
 #~ msgid "Access Control"
 #~ msgstr "Controlo de acesso"
-
 #~ msgid "Add or Remove Members"
 #~ msgstr "Adicionar ou Remover Membros"
-
 #~ msgid "Allow printing for everyone except these users:"
 #~ msgstr "Permitir impressão a toda a gente excepto estes utilizadores:"
-
 #~ msgid "Bottom margin:"
 #~ msgstr "Margem inferior:"
-
 #~ msgid "Brightness:"
 #~ msgstr "Brilho:"
-
 #~ msgid "Change..."
 #~ msgstr "Modificar..."
-
 #~ msgid "Characters per inch:"
 #~ msgstr "Caracteres por polegada:"
 
 #, fuzzy
 #~ msgid "Clean Print Heads"
 #~ msgstr "Limpar Cabeças Impressão"
-
 #~ msgid "Columns:"
 #~ msgstr "Colunas:"
-
 #~ msgid "Copies:"
 #~ msgstr "Cópias:"
-
 #~ msgid "Deny printing for everyone except these users:"
 #~ msgstr "Recusar impressão a toda a gente excepto estes utilizadores:"
-
 #~ msgid "Device URI:"
 #~ msgstr "URL do dispositivo:"
-
 #~ msgid "Enabled"
 #~ msgstr "Activo"
-
 #~ msgid "Ending Banner:"
 #~ msgstr "Separador final:"
-
 #~ msgid "Error Policy: \t"
 #~ msgstr "Política de Erros: \t"
-
 #~ msgid "Finishings:"
 #~ msgstr "Finalizações:"
-
 #~ msgid "Gamma:"
 #~ msgstr "Gama:"
-
 #~ msgid "Hold until:"
 #~ msgstr "Pendente até:"
-
 #~ msgid "Hue adjustment:"
 #~ msgstr "Ajuste de tom:"
 
@@ -3158,16 +2819,12 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Installed Options"
 #~ msgstr "Opções Instaláveis"
-
 #~ msgid "Job Options"
 #~ msgstr "Opções de Trabalhos"
-
 #~ msgid "Job priority:"
 #~ msgstr "Prioridade da tarefa:"
-
 #~ msgid "Left margin:"
 #~ msgstr "Margem esquerda:"
-
 #~ msgid ""
 #~ "Left to right, top to bottom\n"
 #~ "Left to right, bottom to top\n"
@@ -3186,28 +2843,20 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Cima para baixo, direita para esquerda\n"
 #~ "Baixo para cima, esquerda para direita\n"
 #~ "Baixo para cima, direita para esquerda"
-
 #~ msgid "Lines per inch:"
 #~ msgstr "Linhas por polegada:"
-
 #~ msgid "Location:"
 #~ msgstr "Localização:"
-
 #~ msgid "Make and Model:"
 #~ msgstr "Marca e modelo:"
-
 #~ msgid "Media:"
 #~ msgstr "Suporte:"
-
 #~ msgid "Members"
 #~ msgstr "Membros"
-
 #~ msgid "Mirror"
 #~ msgstr "Espelho"
-
 #~ msgid "More"
 #~ msgstr "Mais"
-
 #~ msgid ""
 #~ "None\n"
 #~ "Staple\n"
@@ -3266,7 +2915,6 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Laço (cima)\n"
 #~ "Laço (direita)\n"
 #~ "Laço (baixo)"
-
 #~ msgid ""
 #~ "One-sided\n"
 #~ "Two-sided (long edge)\n"
@@ -3275,22 +2923,16 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Um lado\n"
 #~ "Dois lados (lado maior)\n"
 #~ "Dois lados (lado menor)"
-
 #~ msgid "Operation Policy:"
 #~ msgstr "Política de Operação:"
-
 #~ msgid "Orientation:"
 #~ msgstr "Orientação:"
-
 #~ msgid "Pages per side layout:"
 #~ msgstr "Páginas por disposição lateral:"
-
 #~ msgid "Pages per side:"
 #~ msgstr "Páginas por lado:"
-
 #~ msgid "Policies"
 #~ msgstr "Políticas"
-
 #~ msgid ""
 #~ "Portrait (no rotation)\n"
 #~ "Landscape (90°)\n"
@@ -3301,7 +2943,6 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Paisagem (90°)\n"
 #~ "Paisagem invertida (270°)\n"
 #~ "Retrato invertido (180°)"
-
 #~ msgid "Pretty print"
 #~ msgstr "Impressão bonita"
 
@@ -3312,34 +2953,24 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Printer Properties"
 #~ msgstr "Propriedades da impressora"
-
 #~ msgid "Printer State:"
 #~ msgstr "Estado da impressora:"
-
 #~ msgid "Reset"
 #~ msgstr "Reiniciar"
-
 #~ msgid "Reset to system default"
 #~ msgstr "Repor as predefinições do sistema"
-
 #~ msgid "Right margin:"
 #~ msgstr "Margem direita:"
-
 #~ msgid "Saturation:"
 #~ msgstr "Saturação:"
-
 #~ msgid "Scaling:"
 #~ msgstr "Escala:"
-
 #~ msgid "Settings"
 #~ msgstr "Configuração"
-
 #~ msgid "Shared"
 #~ msgstr "Partilhada"
-
 #~ msgid "Sides:"
 #~ msgstr "Lados:"
-
 #~ msgid ""
 #~ "Specify the default job options for this printer.  Jobs arriving at this "
 #~ "print server will have these options added if they are not already set by "
@@ -3348,32 +2979,25 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Indique as opções de tarefas predefinidas para esta impressora. As "
 #~ "tarefas que chegarem a este servidor terão adicionadas estas opções, se "
 #~ "não tiverem já sido definidas pela aplicação."
-
 #~ msgid "Starting Banner:"
 #~ msgstr "Separador inicial:"
 
 #, fuzzy
 #~ msgid "There are no status messages for this printer."
 #~ msgstr "As seguintes mensagens apareceram no registo de erros:"
-
 #~ msgid ""
 #~ "To add a new option, enter its name in the box below and click to add."
 #~ msgstr ""
 #~ "Para adicionar uma nova opção, indique o seu nome no campo abaixo e "
 #~ "carregue para adicionar."
-
 #~ msgid "Top margin:"
 #~ msgstr "Margem superior:"
-
 #~ msgid "Word wrap"
 #~ msgstr "Mudança de linha"
-
 #~ msgid "default"
 #~ msgstr "por omissão"
-
 #~ msgid "none"
 #~ msgstr "nenhum"
-
 #~ msgid "points"
 #~ msgstr "pontos"
 
@@ -3392,10 +3016,8 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Show printer groups"
 #~ msgstr "Mostrar Grupos Para"
-
 #~ msgid "Show printers shared by other systems"
 #~ msgstr "Mostra as impressoras partilhadas por outros sistemas"
-
 #~ msgid "System-Config-Printer"
 #~ msgstr "System-Config-Printer"
 
@@ -3418,7 +3040,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "_Groups"
 #~ msgstr "_Grupos"
-
 #~ msgid "_Help"
 #~ msgstr "_Ajuda"
 
@@ -3441,7 +3062,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "_Troubleshoot"
 #~ msgstr "_Resolução de erros"
-
 #~ msgid "<b>Basic Server Settings</b>"
 #~ msgstr "<b>Opções Básicas do Servidor</b>"
 
@@ -3485,7 +3105,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "_Configure Printers"
 #~ msgstr "Configurar as impressoras"
-
 #~ msgid "_Hide"
 #~ msgstr "_Esconder"
 
@@ -3531,22 +3150,16 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Adding printer"
 #~ msgstr "Adicionar uma nova fila de impressão"
-
 #~ msgid "Show _printer status"
 #~ msgstr "Mostrar o estado da im_pressora"
-
 #~ msgid "Printer status"
 #~ msgstr "Estado da impressora"
-
 #~ msgid "1 hour and 1 minute ago"
 #~ msgstr "Há 1 hora e 1 minuto atrás"
-
 #~ msgid "1 hour and %d minutes ago"
 #~ msgstr "Há 1 hora e %d minutos atrás"
-
 #~ msgid "%d hours and 1 minute ago"
 #~ msgstr "Há %d horas e 1 minuto atrás"
-
 #~ msgid "%d hours and %d minutes ago"
 #~ msgstr "Há %d horas e %d minutos atrás"
 
@@ -3561,14 +3174,12 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "<b>Recommended Driver</b>"
 #~ msgstr "<b>Impressora Predefinida</b>"
-
 #~ msgid ""
 #~ "Connecting to server:\n"
 #~ "%s"
 #~ msgstr ""
 #~ "A ligar ao servidor:\n"
 #~ "%s"
-
 #~ msgid ""
 #~ "Connecting to Server:\n"
 #~ "%s\n"
@@ -3583,10 +3194,8 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "<b>Installed Options</b>"
 #~ msgstr "<b>Opções da Imagem</b>"
-
 #~ msgid "<b>Printers to be members of this Class</b>"
 #~ msgstr "<b>Impressoras a ser membro desta Classe</b>"
-
 #~ msgid "<b>Select Connection</b>"
 #~ msgstr "<b>Escolha a Ligação</b>"
 
@@ -3597,7 +3206,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "_Enabled"
 #~ msgstr "Activo"
-
 #~ msgid ""
 #~ "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
 #~ "\n"
@@ -3607,10 +3215,8 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "\n"
 #~ "Quaisquer alterações que tenha feito serão perdidas a não ser que as "
 #~ "aplique."
-
 #~ msgid "_Do not apply"
 #~ msgstr "_Não aplicar"
-
 #~ msgid "Verified"
 #~ msgstr "Verificado"
 
@@ -3629,17 +3235,14 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Local printer"
 #~ msgstr "Impressoras Locais"
-
 #~ msgid "New Clas_s"
 #~ msgstr "Nova Clas_se"
-
 #~ msgid "New _Printer"
 #~ msgstr "Nova Im_pressora"
 
 #, fuzzy
 #~ msgid "_Disable"
 #~ msgstr "_Ficheiro"
-
 #~ msgid "_Edit"
 #~ msgstr "_Editar"
 
@@ -3664,10 +3267,8 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "May contain any printable characters except \"/\", \"#\", and space.\n"
 #~ "Name must be unique on the local machine!"
 #~ msgstr "Pode conter qualquer caracter normal excepto \"/\", \"#\" e espaço"
-
 #~ msgid "No default printer set."
 #~ msgstr "Impressora predefinida não configurada."
-
 #~ msgid "Cancel Tests"
 #~ msgstr "Cancelar os Testes"
 
@@ -3678,7 +3279,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Make Default"
 #~ msgstr "Colocar por Omi_ssão"
-
 #~ msgid "User name:"
 #~ msgstr "Utilizador:"
 
@@ -3693,7 +3293,6 @@ msgstr "Seleccionar a impressora predefinida"
 #, fuzzy
 #~ msgid "Delete this printer queue"
 #~ msgstr "Apagar a fila seleccionada"
-
 #~ msgid "Goto Server"
 #~ msgstr "Ir para Servidor"
 
@@ -3724,433 +3323,301 @@ msgstr "Seleccionar a impressora predefinida"
 #~ msgstr ""
 #~ "O servidor remoto não aceitou o trabalho de impressão, provavelmente "
 #~ "porque a impressora não está partilhada."
-
 #~ msgid "Hostname"
 #~ msgstr "Nome da Máquina"
-
 #~ msgid "Printername"
 #~ msgstr "Nome da impressora"
-
 #~ msgid "Default printer is %s"
 #~ msgstr "Impressora predefinida é %s"
-
 #~ msgid "Going to create a new class %s."
 #~ msgstr "Prestes a criar a nova classe %s."
-
 #~ msgid ""
 #~ "Going to create a new printer %s at\n"
 #~ "%s.\n"
 #~ msgstr ""
 #~ "Prestes a criar uma nova impressora %s em\n"
 #~ "%s.\n"
-
 #~ msgid " PPD "
 #~ msgstr " PPD "
-
 #~ msgid "<b>Comment about the Printer</b>"
 #~ msgstr "<b>Comentário acerca da Impressora</b>"
-
 #~ msgid "<b>Information about the PPD</b>"
 #~ msgstr "<b>Comentário acerca do PPD</b>"
-
 #~ msgid "About"
 #~ msgstr "Acerca"
-
 #~ msgid "About System-Config-Printer"
 #~ msgstr "Acerca do System-Config-Printer"
-
 #~ msgid "Apply"
 #~ msgstr "Aplicar"
-
 #~ msgid "Authors"
 #~ msgstr "Autores"
-
 #~ msgid "Class Members"
 #~ msgstr "Membros da Classe"
-
 #~ msgid "Comments: "
 #~ msgstr "Comentários: "
-
 #~ msgid "Device"
 #~ msgstr "Dispositivo"
-
 #~ msgid "Driver"
 #~ msgstr "Controlador"
-
 #~ msgid "Make Default Printer"
 #~ msgstr "Tornar Impressora Predefinida"
-
 #~ msgid "PPD"
 #~ msgstr "PPD"
-
 #~ msgid "System-Config-Printer %s"
 #~ msgstr "System-Config-Printer %s"
-
 #~ msgid ""
 #~ "This PPD is provided by the manufacturer and is included with the "
 #~ "foomatic package."
 #~ msgstr ""
 #~ "Este PPD foi fornecido pelo fabricante e está incluído no pacote foomatic."
-
 #~ msgid "This PPD is provided by CUPS."
 #~ msgstr "Este PPD for fornecido pelo CUPS."
-
 #~ msgid "Specify default job options."
 #~ msgstr "Indicar as opções predefinidas de trabalhos."
-
 #~ msgid "Ok"
 #~ msgstr "Ok"
-
 #~ msgid "Info"
 #~ msgstr "Informação"
-
 #~ msgid "Exit"
 #~ msgstr "Sair"
-
 #~ msgid ""
 #~ "You have made changes, would you like to save them? If you say no, your "
 #~ "changes will be lost."
 #~ msgstr ""
 #~ "Efectuou alterações, quer gravá-las? Se dizer não, as suas alterações "
 #~ "serão perdidas."
-
 #~ msgid "Finish Making New Queue"
 #~ msgstr "Terminar a Criação da Nova Fila"
-
 #~ msgid "About to create the following queue:"
 #~ msgstr "Prestes a criar a seguinte fila:"
-
 #~ msgid "Back"
 #~ msgstr "Regressar"
-
 #~ msgid "Type:"
 #~ msgstr "Tipo:"
-
 #~ msgid "Lpd Queue:"
 #~ msgstr "Fila Lpd:"
-
 #~ msgid "Share:"
 #~ msgstr "Partilha:"
-
 #~ msgid "Workgroup:"
 #~ msgstr "Grupo de trabalho:"
-
 #~ msgid "User:"
 #~ msgstr "Utilizador:"
-
 #~ msgid "Driver:"
 #~ msgstr "Controlador:"
-
 #~ msgid "Name and Type"
 #~ msgstr "Nome e Tipo"
-
 #~ msgid "Next"
 #~ msgstr "Avançar"
-
 #~ msgid "Queue Type"
 #~ msgstr "Tipo da Fila"
-
 #~ msgid ""
 #~ "The name \"%s\" is bad. Please choose a name of the form [a-zA-Z][a-zA-Z0-"
 #~ "9_-]*."
 #~ msgstr ""
 #~ "O nome \"%s\" não é aceitável. Por favor escolha um nome no formato [a-zA-"
 #~ "Z][a-zA-Z0-9_-]*."
-
 #~ msgid ""
 #~ "Pick the printer device from the list, or enter it using \"Custom\" below."
 #~ msgstr ""
 #~ "Escolha um dispositivo de impressão da lista, ou insira-o manualmente "
 #~ "utilizando \"Dispositivo Personalizado\"."
-
 #~ msgid "Specify Device:"
 #~ msgstr "Indique o dispositivo:"
-
 #~ msgid "Specify the device to use."
 #~ msgstr "Indique o dispositivo a utilizar."
-
 #~ msgid "Enter the LPD server and queue to use."
 #~ msgstr "Insira o servidor e a fila LPD a utilizar."
-
 #~ msgid "LPD Data"
 #~ msgstr "Dados de LPD"
-
 #~ msgid "You must specify a server."
 #~ msgstr "Tem que indicar um servidor."
-
 #~ msgid "Enter the SMB share to use."
 #~ msgstr "Insira a partilha SMB a utilizar."
-
 #~ msgid "Workgroup"
 #~ msgstr "Grupo de Trabalho"
-
 #~ msgid "Passwd"
 #~ msgstr "Senha"
-
 #~ msgid "You must specify a SMB share to print to."
 #~ msgstr "Tem de indicar uma partilha de SMB para a qual imprimir."
-
 #~ msgid "Enter the NCP server and queue to use."
 #~ msgstr "Insira o servidor e fila NCP a utilizar."
-
 #~ msgid "Novell Netware Printer (NCP) Data"
 #~ msgstr "Dados de Impressora Novell Netware (NCP)"
-
 #~ msgid "You must specify an NCP server to print to."
 #~ msgstr "Tem de indicar um servidor de NCP para o qual imprimir."
-
 #~ msgid "You must specify a queue on the NCP server to print to."
 #~ msgstr "Tem de indicar uma fila no servidor de NCP para a qual imprimir."
-
 #~ msgid "Enter the Jetdirect ip and port to use."
 #~ msgstr "Insira o ip e porto da impressora Jetdirect a utilizar."
-
 #~ msgid "Ip"
 #~ msgstr "Ip"
-
 #~ msgid "Port"
 #~ msgstr "Porto"
-
 #~ msgid "Jetdirect (JETDIRECT) Data"
 #~ msgstr "Dados Jetdirect (JETDIRECT)"
-
 #~ msgid "You must specify the ip address of a JetDirect printer."
 #~ msgstr "Tem de indicar o endereço IP duma impressora JetDirect."
-
 #~ msgid "Queue Driver"
 #~ msgstr "Controlador da Fila"
-
 #~ msgid "Select the Driver to use with this Queue."
 #~ msgstr "Escolha o Controlador a utilizar com esta Fila."
-
 #~ msgid "You must specify a driver."
 #~ msgstr "Tem que indicar um controlador."
-
 #~ msgid "Edit Queue"
 #~ msgstr "Editar a Fila"
-
 #~ msgid "Names"
 #~ msgstr "Nomes"
-
 #~ msgid "Type"
 #~ msgstr "Tipo"
-
 #~ msgid "Done"
 #~ msgstr "Terminado"
-
 #~ msgid "Name:"
 #~ msgstr "Nome:"
-
 #~ msgid "Aliases:"
 #~ msgstr "Nomes alternativos:"
-
 #~ msgid "Edit Name and Aliases"
 #~ msgstr "Editar Nome e os Nomes Alternativos"
-
 #~ msgid "Add Alias"
 #~ msgstr "Adicionar um Nome Alternativo"
-
 #~ msgid "Edit Alias"
 #~ msgstr "Editar o Nome Alternativo"
-
 #~ msgid "Delete Alias"
 #~ msgstr "Apagar o Nome Alternativo"
-
 #~ msgid "Alias:"
 #~ msgstr "Nome alternativo:"
-
 #~ msgid "Add an Alias"
 #~ msgstr "Adicionar um Nome Alternativo:"
-
 #~ msgid "Edit the alias"
 #~ msgstr "Editar o Nome Alternativo"
-
 #~ msgid "You must select an alias to edit."
 #~ msgstr "Tem de escolher o nome alternativo que quer editar."
-
 #~ msgid "You must select an alias to delete."
 #~ msgstr "Tem de escolher o nome alternativo que quer apagar."
-
 #~ msgid "Strict RFC1179"
 #~ msgstr "Conformidade Estrita com o RFC1179"
-
 #~ msgid "Translate \\n->\\r\\n"
 #~ msgstr "Traduzir \\n->\\r\\n"
-
 #~ msgid "Edit Driver"
 #~ msgstr "Editar Controlador"
-
 #~ msgid "Edit Driver Options"
 #~ msgstr "Editar Opções do Controlador"
-
 #~ msgid "Edit %s"
 #~ msgstr "Editar %s"
-
 #~ msgid "Integer: Min %s | Max %s"
 #~ msgstr "Inteiro: Min %s | Máx %s"
-
 #~ msgid "Value must be a number"
 #~ msgstr "O valor deve ser um número"
-
 #~ msgid "Float: Min %s | Max %s"
 #~ msgstr "Real: Min %s | Máx %s"
-
 #~ msgid "US Letter"
 #~ msgstr "Letter (EUA)"
-
 #~ msgid "Tabloid"
 #~ msgstr "Tablóide"
-
 #~ msgid "Ledger"
 #~ msgstr "Ledger"
-
 #~ msgid "Legal"
 #~ msgstr "Legal"
-
 #~ msgid "Statement"
 #~ msgstr "Statement"
-
 #~ msgid "Executive"
 #~ msgstr "Executivo"
-
 #~ msgid "A4"
 #~ msgstr "A4"
-
 #~ msgid "A5"
 #~ msgstr "A5"
-
 #~ msgid "B4"
 #~ msgstr "B4"
-
 #~ msgid "B5"
 #~ msgstr "B5"
-
 #~ msgid "Folio"
 #~ msgstr "Folio"
-
 #~ msgid "Quatro"
 #~ msgstr "Quatro"
-
 #~ msgid "10x14"
 #~ msgstr "10x14"
-
 #~ msgid "Test %s"
 #~ msgstr "Testar %s"
-
 #~ msgid ""
 #~ "You have made changes, would you like to save them?\n"
 #~ "If you say no, you will not be able to print test pages."
 #~ msgstr ""
 #~ "Efectuou alterações, quer gravá-las?\n"
 #~ "Se dizer não, não será possível imprimir páginas de teste."
-
 #~ msgid "Sent %s to \"%s\"."
 #~ msgstr "Enviei %s para \"%s\"."
-
 #~ msgid "You must select a printer queue to delete."
 #~ msgstr "Tem de escolher a fila de impressão que quer apagar."
-
 #~ msgid "You cannot delete an imported printer."
 #~ msgstr "Não pode apagar uma impressora importada."
-
 #~ msgid "Confirm Delete"
 #~ msgstr "Confirmar Remoção"
-
 #~ msgid "Aliases"
 #~ msgstr "Nomes Alternativos"
-
 #~ msgid "Delete"
 #~ msgstr "Apagar"
-
 #~ msgid "You must select a printer queue to edit."
 #~ msgstr "Tem de escolher a fila de impressão a editar."
-
 #~ msgid ""
 #~ "This imported printer is protected from overrides. You can not edit it."
 #~ msgstr ""
 #~ "Esta impressora importada está protegida contra alterações. Não pode "
 #~ "editá-la."
-
 #~ msgid "Override?"
 #~ msgstr "Alterar?"
-
 #~ msgid "This is an imported printer. Do you want to create a local override?"
 #~ msgstr "Esta impressora é importada. Quer criar uma alteração local?"
-
 #~ msgid "You must select a queue to print to."
 #~ msgstr "Tem de escolher a fila de impressão para qual quer imprimir."
-
 #~ msgid "Initializing alchemist edit environment ..."
 #~ msgstr "A inicializar o ambiente de edição alchemist..."
-
 #~ msgid "Initializing linux printing database ..."
 #~ msgstr "A inicializar a base de dados de impressão linux ..."
-
 #~ msgid "Importing CUPS queues ..."
 #~ msgstr "A importar as filas do CUPS..."
-
 #~ msgid ""
 #~ "Failed to parse alchemist context: \n"
 #~ "%s"
 #~ msgstr ""
 #~ "Não consegui processar o contexto do alchemist: \n"
 #~ "%s"
-
 #~ msgid "Invalid printconf context"
 #~ msgstr "Contexto inválido do printconf"
-
 #~ msgid "\"%s\" is not a valid queue name."
 #~ msgstr "\"%s\" não é um nome válido para uma fila."
-
 #~ msgid "Need device, make and model.\n"
 #~ msgstr "É necessário o dispositivo, marca e modelo.\n"
-
 #~ msgid "add-local: queue name '%s' not unique\n"
 #~ msgstr "add-local: nome da fila '%s' não é único\n"
-
 #~ msgid "add-local: no suitable name available\n"
 #~ msgstr "add-local: nenhum nome disponível\n"
-
 #~ msgid "add-local: No information available about %s %s\n"
 #~ msgstr "add-local: Nenhuma informação disponível acerca de %s %s\n"
-
 #~ msgid "Now run printconf-backend (or restart lpd service)."
 #~ msgstr "Agora execute printconf-backend (ou reinicie o serviço lpd)."
-
 #~ msgid "You must run printconf-tui as root."
 #~ msgstr "Tem de executar o printconf-tui como root."
-
 #~ msgid "Conflicting commands: %s and %s"
 #~ msgstr "Comandos em conflito: %s e %s"
-
 #~ msgid "No handler for command: "
 #~ msgstr "Nenhum gestor para o comando: "
-
 #~ msgid "You must be root to run this program.\n"
 #~ msgstr "Tem que ser root para executar este programa.\n"
-
 #~ msgid "Queue name"
 #~ msgstr "Nome da fila"
-
 #~ msgid "_Don't save"
 #~ msgstr "_Não gravar"
-
 #~ msgid "_Save"
 #~ msgstr "_Gravar"
-
 #~ msgid ""
 #~ "Loading printer information.\n"
 #~ "Please wait..."
 #~ msgstr ""
 #~ "A carregar os dados das impressoras.\n"
 #~ "Aguarde por favor..."
-
 #~ msgid "Notes from the Linux Printing Database"
 #~ msgstr "Notas da Linux Printing Database"
-
 #~ msgid "Generic (click to select manufacturer)"
 #~ msgstr "Genérica (carregue para escolher o fabricante)"
-
 #~ msgid ""
 #~ "You are changing an option\n"
 #~ "that has no effect in the print\n"
@@ -4159,81 +3626,58 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Está a alterar uma opção que\n"
 #~ "não tem efeito no gestor de\n"
 #~ "impressão que está a utilizar (%s)."
-
 #~ msgid ""
 #~ "Applying changes.\n"
 #~ "Please wait..."
 #~ msgstr ""
 #~ "A aplicar as alterações.\n"
 #~ "Aguarde por favor..."
-
 #~ msgid "Failed to write queues."
 #~ msgstr "Não foi possível escrever as filas."
-
 #~ msgid ""
 #~ "Sent %s\n"
 #~ "to '%s' queue.  Does it look okay?"
 #~ msgstr ""
 #~ "Foi enviado %s\n"
 #~ "para o fila '%s'.  O resultado está correcto?"
-
 #~ msgid "'%s' does not look like a PPD file."
 #~ msgstr "'%s' não parece ser um ficheiro PPD."
-
 #~ msgid "File cannot be opened for reading."
 #~ msgstr "Não foi possível abrir o ficheiro para leitura."
-
 #~ msgid "PPD imported."
 #~ msgstr "PPD importado."
-
 #~ msgid "PPD import failed."
 #~ msgstr "Importação do PPD falhou."
-
 #~ msgid "Invalid name"
 #~ msgstr "Nome inválido"
-
 #~ msgid "There is already a queue with that name."
 #~ msgstr "Já existe uma fila com esse nome."
-
 #~ msgid "An existing queue has an alias of that name."
 #~ msgstr "Uma fila existente tem uma alcunha com esse nome."
-
 #~ msgid "'%s' does not exist, or is not writable."
 #~ msgstr "'%s' não existe, ou não é possível escrever nela."
-
 #~ msgid "Custom device"
 #~ msgstr "Dispositivo personalizado"
-
 #~ msgid "You must select a device."
 #~ msgstr "Tem de escolher um dispositivo."
-
 #~ msgid "You must specify a path."
 #~ msgstr "Tem que indicar uma localização."
-
 #~ msgid "You must specify a queue."
 #~ msgstr "Tem que indicar uma fila."
-
 #~ msgid "You must choose an SMB share to print to."
 #~ msgstr "Tem de escolher uma partilha de SMB para a qual imprimir."
-
 #~ msgid "You must choose a share, not a host."
 #~ msgstr "Tem de escolher uma partilha, não uma máquina."
-
 #~ msgid "You must specify an SMB share to print to."
 #~ msgstr "Tem de indicar uma partilha de SMB para a qual imprimir."
-
 #~ msgid "You must specify a queue on the NCP server."
 #~ msgstr "Tem de indicar uma fila no servidor NCP."
-
 #~ msgid "You must specify a JetDirect printer to print to."
 #~ msgstr "Tem de indicar uma impressora JetDirect para a qual imprimir."
-
 #~ msgid "You must specify an IP port number."
 #~ msgstr "Tem que indicar um número de porto IP."
-
 #~ msgid "Select the printer manufacturer and model."
 #~ msgstr "Escolha o fabricante e o modelo da impressora."
-
 #~ msgid ""
 #~ "Select the printer manufacturer and model. Depending on how the remote "
 #~ "queue is configured, you may need to select the generic PostScript option "
@@ -4242,20 +3686,16 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Escolha o fabricante e o modelo da impressora. Dependendo de como a fila "
 #~ "remota está configurada pode ter que seleccionar a opção impressora "
 #~ "genérica PostScript."
-
 #~ msgid ""
 #~ "About to create the following queue:\n"
 #~ "\n"
 #~ msgstr ""
 #~ "Prestes a criar a seguinte fila:\n"
 #~ "\n"
-
 #~ msgid "Type: "
 #~ msgstr "Tipo: "
-
 #~ msgid "Queue: "
 #~ msgstr "Fila: "
-
 #~ msgid ""
 #~ "Would you like to print a test page?\n"
 #~ "Answering 'yes' will apply all changes\n"
@@ -4265,94 +3705,72 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Ao responder 'sim' todas as alterações\n"
 #~ "são aplicadas e é impressa uma página\n"
 #~ "de teste nesta impressora."
-
 #~ msgid "Number of columns on a page"
 #~ msgstr "Número de colunas na página"
-
 #~ msgid "Billing label"
 #~ msgstr "Etiqueta contabilistica"
-
 #~ msgid ""
 #~ "HH:MM:SS or '%s'.\n"
 #~ "Use GMT."
 #~ msgstr ""
 #~ "HH:MM:SS ou '%s'.\n"
 #~ "Utilizar GMT."
-
 #~ msgid ""
 #~ "Banner pages (start,end):\n"
 #~ "for example, '%s'"
 #~ msgstr ""
 #~ "Páginas separadoras (inicial, final):\n"
 #~ "por exemplo, '%s'"
-
 #~ msgid ""
 #~ "Number of document pages per\n"
 #~ "printed page: 1, 2, 4, 6, 9, or 16"
 #~ msgstr ""
 #~ "Número de página do documento por\n"
 #~ "página impressa: 1, 2, 4, 6, 9 ou 16"
-
 #~ msgid "Top margin in pt (1/72 in)"
 #~ msgstr "Margem superior em pontos (1/72 pol.)"
-
 #~ msgid "Left margin in pt (1/72 in)"
 #~ msgstr "Margem esquerda em pontos (1/72 pol.)"
-
 #~ msgid "Right margin in pt (1/72 in)"
 #~ msgstr "Margem direita em pontos (1/72 pol.)"
-
 #~ msgid "Bottom margin in pt (1/72 in)"
 #~ msgstr "Margem inferior em pontos (1/72 pol.)"
-
 #~ msgid ""
 #~ "'%s', '%s', '%s'\n"
 #~ "'%s' or '%s'"
 #~ msgstr ""
 #~ "'%s', '%s', '%s'\n"
 #~ "'%s' ou '%s'"
-
 #~ msgid "Page label"
 #~ msgstr "Etiqueta da página"
-
 #~ msgid "Pretty-print text (%s or %s)"
 #~ msgstr "Impressão \"bonita\" do texto (%s ou %s)"
-
 #~ msgid "Scaling (percentage)"
 #~ msgstr "Redução (percentagem)"
-
 #~ msgid "Word-wrapping (%s or %s)"
 #~ msgstr "Quebra de linha (%s ou %s)"
-
 #~ msgid "Option name"
 #~ msgstr "Nome da opção"
-
 #~ msgid "Can't determine the printer model attached to this device."
 #~ msgstr ""
 #~ "Não foi possível determinar o modelo da impressora ligada a este "
 #~ "dispositivo."
-
 #~ msgid "I don't know enough about this printer model to choose a driver."
 #~ msgstr ""
 #~ "Não estão disponíveis informações suficientes acerca deste modelo de "
 #~ "impressora para escolher um controlador."
-
 #~ msgid "Add queue option"
 #~ msgstr "Adicionar opção à fila"
-
 #~ msgid "Invalid option name"
 #~ msgstr "Nome de opção inválido"
-
 #~ msgid "Value for this option"
 #~ msgstr "Valor para esta opção"
-
 #~ msgid ""
 #~ "(this is the\n"
 #~ "recommended driver)"
 #~ msgstr ""
 #~ "(este é o\n"
 #~ "controlador recomendado)"
-
 #~ msgid ""
 #~ "This driver requires Hewlett Packard's hpijs driver (available in the "
 #~ "hpijs package) which does not appear to be installed."
@@ -4360,127 +3778,92 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "Este controlador necessita do pacote de controladores hpijs da Hewlett "
 #~ "Packard (disponíveis no pacote hpjis), que aparentemente não está "
 #~ "instalado."
-
 #~ msgid "Do you wish to use it anyway?"
 #~ msgstr "Quer utilizá-los de qualquer forma?"
-
 #~ msgid ""
 #~ "This driver requires the Omni Print Driver System, which does not appear "
 #~ "to be installed."
 #~ msgstr ""
 #~ "Este controlador necessita do Omni Print Driver System, que aparentemente "
 #~ "não está instalado."
-
 #~ msgid ""
 #~ "This driver requires the oki4drv daemon to be running, and it does not "
 #~ "appear to be."
 #~ msgstr ""
 #~ "Este controlador necessita do servidor oki4drv a correr, e este "
 #~ "aparentemente não está."
-
 #~ msgid "Local Printer Device"
 #~ msgstr "Dispositivo de Impressão Local"
-
 #~ msgid "IPP Print Queue"
 #~ msgstr "Fila de Impressão IPP"
-
 #~ msgid "Unix Print Queue"
 #~ msgstr "Fila de Impressão Unix"
-
 #~ msgid "Windows Print Queue"
 #~ msgstr "Fila de Impressão Windows"
-
 #~ msgid ""
 #~ "SMB print queues require the \"smbclient\" program, which does not appear "
 #~ "to be installed."
 #~ msgstr ""
 #~ "As filas de impressão SMB necessitam do programa \"smbclient\", que "
 #~ "parece não estar instalado."
-
 #~ msgid ""
 #~ "It is part of the \"samba-client\" package, as distributed by Red Hat."
 #~ msgstr ""
 #~ "Este faz parte do pacote \"samba-cliente\", distribuído pela Red Hat."
-
 #~ msgid "Do you wish to enable it anyway?"
 #~ msgstr "Quer activá-la de qualquer forma?"
-
 #~ msgid "Novell Print Queue"
 #~ msgstr "Fila de Impressão Novell"
-
 #~ msgid ""
 #~ "NCP print queues require the \"nprint\" program, which does not appear to "
 #~ "be installed."
 #~ msgstr ""
 #~ "As filas de impressão NCP necessitam do programa \"nprint\", que parece "
 #~ "não estar instalado."
-
 #~ msgid "It is part of the \"ncpfs\" package, as distributed by Red Hat."
 #~ msgstr "Este faz parte do pacote \"ncpfs\", distribuído pela Red Hat."
-
 #~ msgid "Custom Command"
 #~ msgstr "Comando Personalizado"
-
 #~ msgid "Postscript Printer"
 #~ msgstr "Impressora Postscript"
-
 #~ msgid "Text Only Printer"
 #~ msgstr "Impressora apenas para Texto"
-
 #~ msgid "Custom Filter"
 #~ msgstr "Filtro Personalizado"
-
 #~ msgid "ERROR: No box named \"%s\" found.\n"
 #~ msgstr "ERROR: Não foi encontrada uma caixa com o nome \"%s\".\n"
-
 #~ msgid "ERROR: box \"%s\" is not a writable interface.\n"
 #~ msgstr "ERRO: a caixa \"%s\" não é uma interface onde se possa escrever.\n"
-
 #~ msgid "Send Form-Feed (FF)"
 #~ msgstr "Enviar 'Form-Feed' (FF)"
-
 #~ msgid "Send End-of-Transmission (EOT)"
 #~ msgstr "Enviar 'End-of-Transmision' (EOT)"
-
 #~ msgid "Assume Unknown Data is Text"
 #~ msgstr "Assumir que Dados Desconhecidos são Texto"
-
 #~ msgid "Prerender Postscript"
 #~ msgstr "Voltar a Gerar PostScript"
-
 #~ msgid "Convert Text to Postscript"
 #~ msgstr "Converter Texto para PostScript"
-
 #~ msgid "Effective Filter Locale"
 #~ msgstr "Localização do Filtro"
-
 #~ msgid "Couldn't load driver information.\n"
 #~ msgstr "Não foi possível carregar as informações do controlador.\n"
-
 #~ msgid "You must run printconf-backend as root."
 #~ msgstr "Tem de executar o printconf-backend como root."
-
 #~ msgid "Sharing properties - %s"
 #~ msgstr "Propriedades de partilha - %s"
-
 #~ msgid "All hosts"
 #~ msgstr "Todas as máquinas"
-
 #~ msgid "Network device %s"
 #~ msgstr "Dispositivo de rede %s"
-
 #~ msgid "Network devices %s"
 #~ msgstr "Dispositivos de rede %s"
-
 #~ msgid "Network address %s"
 #~ msgstr "Endereço de rede %s"
-
 #~ msgid "Add allowed hosts - %s"
 #~ msgstr "Adicionar uma máquina permitida - %s"
-
 #~ msgid "Edit allowed hosts - %s"
 #~ msgstr "Editar máquinas permitidas - %s"
-
 #~ msgid ""
 #~ "LPD connections will be accepted\n"
 #~ "on all interfaces, and jobs for\n"
@@ -4489,143 +3872,98 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "São aceites ligações LDP em\n"
 #~ "todas as interfaces e são aceites\n"
 #~ "trabalhos em todas as filas."
-
 #~ msgid "Invalid network address"
 #~ msgstr "Endereço de rede inválido"
-
 #~ msgid "Invalid netmask"
 #~ msgstr "Máscara de rede inválida"
-
 #~ msgid "Invalid IP address"
 #~ msgstr "Endereço IP inválido"
-
 #~ msgid "*"
 #~ msgstr "*"
-
 #~ msgid "/"
 #~ msgstr "/"
-
 #~ msgid "="
 #~ msgstr "="
-
 #~ msgid "ASC_II text test page"
 #~ msgstr "Página de teste de texto ASC_II"
-
 #~ msgid "Add a new option"
 #~ msgstr "Adicionar uma nova opção"
-
 #~ msgid "Add a new queue"
 #~ msgstr "Adicionar uma nova fila"
-
 #~ msgid "Add an allowed host"
 #~ msgstr "Adicionar uma máquina permitida"
-
 #~ msgid "Add/edit queue option"
 #~ msgstr "Adicionar/editar opção da fila"
-
 #~ msgid "Allowed hosts"
 #~ msgstr "Máquinas permitidas"
-
 #~ msgid "Apply changes"
 #~ msgstr "Aplicar as alterações"
-
 #~ msgid "At end of job:"
 #~ msgstr "No fim do trabalho:"
-
 #~ msgid "At start of job:"
 #~ msgstr "No início do trabalho:"
-
 #~ msgid "Autoselect driver"
 #~ msgstr "Autoseleccionar o controlador"
-
 #~ msgid "Banner pages"
 #~ msgstr "Separadores"
-
 #~ msgid "Big5 PostScript test page"
 #~ msgstr "Página de teste PostScript Big5"
-
 #~ msgid "Choose the queue type"
 #~ msgstr "Escolha o tipo de impressora"
-
 #~ msgid "Choose the type of queue you want to use"
 #~ msgstr "Escolha o tipo de fila que deseja utilizar"
-
 #~ msgid "Choose which other computers may use this queue."
 #~ msgstr "Escolha quais os computadores que podem utilizar esta fila."
-
 #~ msgid "Edit the selected queue"
 #~ msgstr "Editar a fila seleccionada"
-
 #~ msgid "Edit this host"
 #~ msgstr "Editar esta máquina"
-
 #~ msgid "Edit this option"
 #~ msgstr "Editar esta opção"
-
 #~ msgid "Enable _LPD protocol"
 #~ msgstr "Activar o protocolo _LPD"
-
 #~ msgid "Enter the device you would like to use."
 #~ msgstr "Indique qual o dispositivo que deseja utilizar."
-
 #~ msgid "Finish, and create the new print queue"
 #~ msgstr "Terminar, e criar a nova fila de impressão"
-
 #~ msgid "For example: /dev/lp0"
 #~ msgstr "Por exemplo: /dev/lp0"
-
 #~ msgid "IP port number (often 9100)"
 #~ msgstr "Número do porto IP (normalmente 9100)"
-
 #~ msgid ""
 #~ "If you like, you can enter a description of the printer to help you "
 #~ "identify it more easily."
 #~ msgstr ""
 #~ "Se o desejar, pode inserir uma descrição para a impressora, para "
 #~ "facilitar a sua identificação."
-
 #~ msgid "Imageable Area"
 #~ msgstr "Área de Imagem"
-
 #~ msgid "JPE_G test"
 #~ msgstr "Teste JPE_G"
-
 #~ msgid "Japanese EUC PostScript test page"
 #~ msgstr "Página de teste de PostScript japonês EUC"
-
 #~ msgid "Japanese JIS PostScript test page"
 #~ msgstr "Página de teste de PostScript japonês JIS"
-
 #~ msgid "Japanese SJIS PostScript test page"
 #~ msgstr "Página de teste de PostScript japonês SJIS"
-
 #~ msgid "Japanese _EUC text test page"
 #~ msgstr "Página de teste de texto japonês _EUC"
-
 #~ msgid "Japanese _JIS text test page"
 #~ msgstr "Página de teste de texto japonês _JIS"
-
 #~ msgid "Japanese _SJIS text test page"
 #~ msgstr "Página de teste de texto japonês _SJIS"
-
 #~ msgid "Linefeed translation"
 #~ msgstr "Tradução de mudanças de linha"
-
 #~ msgid "Network _devices"
 #~ msgstr "_Dispositivos de rede"
-
 #~ msgid "Networked CUPS (_IPP)"
 #~ msgstr "Por rede CUPS (_IPP)"
-
 #~ msgid "Networked _Novell (NCP)"
 #~ msgstr "Por rede _Novell (NCP)"
-
 #~ msgid "Networked _UNIX (LPD)"
 #~ msgstr "Por rede _UNIX (LPD)"
-
 #~ msgid "Networked _Windows (SMB)"
 #~ msgstr "Por rede _Windows (SMB)"
-
 #~ msgid ""
 #~ "On the following screens, you will be asked to provide basic information "
 #~ "for adding a new print queue.  You will be able to edit the more advanced "
@@ -4640,154 +3978,107 @@ msgstr "Seleccionar a impressora predefinida"
 #~ "\n"
 #~ "A sua configuração não sofrerá qualquer alteração até que carregue em "
 #~ "\"Terminar\" no último ecrã."
-
 #~ msgid "Path:"
 #~ msgstr "Localização:"
-
 #~ msgid "Patience"
 #~ msgstr "Paciência"
-
 #~ msgid ""
 #~ "Please enter a name for this queue.  Choose a short name that begins with "
 #~ "a letter and contains no spaces."
 #~ msgstr ""
 #~ "Indique um nome para a fila.  Escolha um nome curto que comece por uma "
 #~ "letra e não contenha espaços."
-
 #~ msgid "Printer hostname or IP address"
 #~ msgstr "Nome ou endereço IP da impressora"
-
 #~ msgid "Queue type"
 #~ msgstr "Tipo de fila"
-
 #~ msgid "Queue type:"
 #~ msgstr "Tipo de fila:"
-
 #~ msgid "Remove this host from the list"
 #~ msgstr "Retirar esta máquina da lista"
-
 #~ msgid "Remove this option"
 #~ msgstr "Remover esta opção"
-
 #~ msgid "Rescan devices"
 #~ msgstr "Procurar dispositivos"
-
 #~ msgid "Select a queue type:"
 #~ msgstr "Seleccione um tipo de fila:"
-
 #~ msgid "Select the appropriate printer manufacturer and model."
 #~ msgstr "Escolha o fabricante e o modelo da impressora."
-
 #~ msgid "Set as de_fault"
 #~ msgstr "Tornar por om_issão"
-
 #~ msgid "Set as default queue"
 #~ msgstr "Tornar a fila por omissão"
-
 #~ msgid "Short description:"
 #~ msgstr "Descrição abreviada:"
-
 #~ msgid "Short description: "
 #~ msgstr "Descrição abreviada: "
-
 #~ msgid "Single _IP address"
 #~ msgstr "Endereço _IP singular"
-
 #~ msgid "Strict RFC1179 compliance"
 #~ msgstr "Conformidade estrita com o RFC1179"
-
 #~ msgid "These settings are system-wide."
 #~ msgstr "Estas configurações são para todo o sistema."
-
 #~ msgid "This allows older systems to print to this machine"
 #~ msgstr "Permitir a sistemas mais antigos imprimir nesta máquina"
-
 #~ msgid "This enables CUPS IPP browsing"
 #~ msgstr "Activa a navegação IPP do CUPS"
-
 #~ msgid ""
 #~ "This is the name of the queue.  It must begin with a letter and contain "
 #~ "no spaces."
 #~ msgstr ""
 #~ "Este é o nome da fila.  Deve começar por uma letra e não deve ter espaços."
-
 #~ msgid "Type in an IP address"
 #~ msgstr "Indique um endereço IP"
-
 #~ msgid "Type in the netmask, or the CIDR mask length"
 #~ msgstr "Insira a máscara ou comprimento da máscara CIDR"
-
 #~ msgid "Type in the share name"
 #~ msgstr "Insira o nome da partilha"
-
 #~ msgid "Use control-F to search"
 #~ msgstr "Utilize control-F para procurar"
-
 #~ msgid "_A4 PostScript test page"
 #~ msgstr "Página de teste PostScript _A4"
-
 #~ msgid "_All hosts"
 #~ msgstr "Tod_as as máquinas"
-
 #~ msgid "_Apply"
 #~ msgstr "_Aplicar"
-
 #~ msgid "_Automatically find remote shared queues"
 #~ msgstr "Procurar _automaticamente as filas remotas partilhadas"
-
 #~ msgid "_Big5 text test page"
 #~ msgstr "Página de teste de texto _Big5"
-
 #~ msgid "_CUPS test page"
 #~ msgstr "Página de teste do _CUPS"
-
 #~ msgid "_Contents"
 #~ msgstr "_Conteúdo"
-
 #~ msgid "_Custom device"
 #~ msgstr "Dispositivo _personalizado"
-
 #~ msgid "_Delete queue"
 #~ msgstr "Apa_gar a fila"
-
 #~ msgid "_Duplex test"
 #~ msgstr "Teste _duplex"
-
 #~ msgid "_Edit queue"
 #~ msgstr "_Editar a fila"
-
 #~ msgid "_Edit..."
 #~ msgstr "_Editar..."
-
 #~ msgid "_Import PPD..."
 #~ msgstr "_Importar PPD..."
-
 #~ msgid "_Network address"
 #~ msgstr "E_ndereço de rede"
-
 #~ msgid "_Notes..."
 #~ msgstr "_Notas..."
-
 #~ msgid "_Rescan devices"
 #~ msgstr "Procu_rar dispositivos"
-
 #~ msgid "_This queue is available to other computers"
 #~ msgstr "Es_ta fila está disponível a outros computadores"
-
 #~ msgid "_US Letter PostScript test page"
 #~ msgstr "Página de teste PostScript _US Letter"
-
 #~ msgid "_none"
 #~ msgstr "_nada"
-
 #~ msgid "ipp"
 #~ msgstr "ipp"
-
 #~ msgid "jetdirect"
 #~ msgstr "jetdirect"
-
 #~ msgid "lpd"
 #~ msgstr "lpd"
-
 #~ msgid "ncp"
 #~ msgstr "ncp"
+
