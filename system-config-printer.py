@@ -109,7 +109,6 @@ from GroupsPaneModel import *
 from SearchCriterion import *
 import gtkinklevel
 import gtkspinner
-import pango
 import statereason
 
 domain='system-config-printer'
