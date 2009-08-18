@@ -2592,7 +2592,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.updateMarkerLevels ()
             self.updateStateReasons ()
 
-            self.updatePrinterPropertiesTreeView
+            self.updatePrinterPropertiesTreeView ()
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
