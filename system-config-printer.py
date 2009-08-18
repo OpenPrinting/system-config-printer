@@ -27,6 +27,7 @@ import errno
 import sys, os, tempfile, time, traceback, re, httplib, glob
 import subprocess
 import signal, thread
+from timedops import *
 import dbus
 try:
     import gtk.glade
@@ -5405,22 +5406,36 @@ class NewPrinterGUI(GtkGUI):
         verified = False
         if hostport != None:
             (host, port) = urllib.splitnport (hostport, defport=631)
-            oldserver = cups.getServer ()
-            try:
-                if uri.startswith ("https:"):
-                    encryption = cups.HTTP_ENCRYPT_ALWAYS
-                else:
-                    encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
+            if uri.startswith ("https:"):
+                encryption = cups.HTTP_ENCRYPT_ALWAYS
+            else:
+                encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
 
+            def get_attributes():
                 c = cups.Connection (host=host, port=port,
                                      encryption=encryption)
-                attributes = c.getPrinterAttributes (uri = uri)
+                return c.getPrinterAttributes (uri=uri)
+                
+            op = TimedOperation (get_attributes)
+            self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                     _('Verifying') + '</span>\n\n' +
+                                     _('Verifying printer'))
+            self.WaitWindow.set_transient_for (self.NewPrinterWindow)
+            self.WaitWindow.show ()
+            self.busy (self.WaitWindow)
+            source = gobject.timeout_add (10000, op.cancel)
+            try:
+                attributes = op.run ()
                 verified = True
+            except OperationCanceled:
+                pass
             except cups.IPPError, (e, msg):
                 debugprint ("Failed to get attributes: %s (%d)" % (msg, e))
             except:
                 nonfatalException ()
-            cups.setServer (oldserver)
+
+            gobject.source_remove (source)
+            self.WaitWindow.hide ()
         else:
             debugprint (uri)
 
