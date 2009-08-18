@@ -230,12 +230,6 @@ def _getDriverType (ppdname, ppds=None):
     """Decides which of the above types ppdname is."""
     if ppdname.find ("turboprint") != -1:
         return DRIVER_TYPE_3RD_PARTY_NONFREE
-    if ppdname.find ("gutenprint") != -1:
-        if (ppdname.find ("/simple/") != -1 or
-            ppdname.find (".sim-") != -1):
-            return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
-        else:
-            return DRIVER_TYPE_GUTENPRINT_NATIVE
     if ppdname.find ("splix")!= -1:
         return DRIVER_TYPE_SPLIX
     if ppdname.find ("hpcups") != -1:
@@ -265,6 +259,12 @@ def _getDriverType (ppdname, ppds=None):
                 return DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED
             return DRIVER_TYPE_FOOMATIC_GUTENPRINT
         return DRIVER_TYPE_FOOMATIC
+    if ppdname.find ("gutenprint") != -1:
+        if (ppdname.find ("/simple/") != -1 or
+            ppdname.find (".sim-") != -1):
+            return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
+        else:
+            return DRIVER_TYPE_GUTENPRINT_NATIVE
     if ppdname.find ("-hpijs") != -1:
         if ppdname.find ("hpijs-rss") == -1:
             return DRIVER_TYPE_FOOMATIC_HPIJS
