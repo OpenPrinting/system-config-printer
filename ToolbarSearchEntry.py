@@ -68,7 +68,7 @@ class ToolbarSearchEntry (gtk.HBox):
         label = gtk.Label ()
         label.set_text_with_mnemonic (_("_Filter:"))
         label.set_justify (gtk.JUSTIFY_RIGHT)
-        self.pack_start (label, False, True, 0);
+        self.pack_start (label, False, True, 0)
 
         self.entry = gtk.Entry()
         if gtk.__dict__.has_key ('ENTRY_ICON_PRIMARY'):

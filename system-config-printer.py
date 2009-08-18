@@ -892,8 +892,7 @@ class GUI(GtkGUI, monitor.Watcher):
             show_HTTP_Error(s, self.PrintersWindow)
 
         if len (self.printers) > 3:
-            self.PrintersWindow.set_property ("default-width", 550);
-            self.PrintersWindow.set_property ("default-height", 400);
+            self.PrintersWindow.set_default_size (550, 400)
 
         self.PrintersWindow.show()
 
@@ -1238,7 +1237,7 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             self.fillServerTab ()
         except cups.IPPError:
-            dialog.hide ()
+            self.ServerSettingsDialog.hide ()
 
     def busy (self, win = None):
         try:
@@ -4689,7 +4688,7 @@ class NewPrinterGUI(GtkGUI):
             return True # assume plugin not required
         # Check whether the plugin is already installed
         if hplip_version.startswith("3"):
-            os.environ["hp_model"] = hpmodel;
+            os.environ["hp_model"] = hpmodel
             cmd = 'LC_ALL=C hp-mkuri -c'
             debugprint (uri + ": " + hpmodel)
             try:
@@ -6193,7 +6192,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_NPDrivers_query_tooltip(self, tv, x, y, keyboard_mode, tooltip):
         if keyboard_mode:
-            path = tv.get_cursor()[0];
+            path = tv.get_cursor()[0]
             if path is None:
                 return False
         else:
