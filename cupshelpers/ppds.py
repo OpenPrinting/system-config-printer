@@ -209,14 +209,14 @@ def ppdMakeModelSplit (ppd_make_and_model):
 # Some drivers are just generally better than others.
 # Here is the preference list:
 DRIVER_TYPE_DOWNLOADED_NOW = 5
-DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT = 8
 DRIVER_TYPE_VENDOR = 10
-DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 15
 DRIVER_TYPE_HPCUPS = 16
 DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP = 17
 DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED = 20
 DRIVER_TYPE_GUTENPRINT_NATIVE = 25
 DRIVER_TYPE_SPLIX = 27
+DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT = 28
+DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 29
 DRIVER_TYPE_FOOMATIC_PS = 30
 DRIVER_TYPE_FOOMATIC_HPIJS = 40
 DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 50
@@ -230,12 +230,6 @@ def _getDriverType (ppdname, ppds=None):
     """Decides which of the above types ppdname is."""
     if ppdname.find ("turboprint") != -1:
         return DRIVER_TYPE_3RD_PARTY_NONFREE
-    if ppdname.find ("gutenprint") != -1:
-        if (ppdname.find ("/simple/") != -1 or
-            ppdname.find (".sim-") != -1):
-            return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
-        else:
-            return DRIVER_TYPE_GUTENPRINT_NATIVE
     if ppdname.find ("splix")!= -1:
         return DRIVER_TYPE_SPLIX
     if ppdname.find ("hpcups") != -1:
@@ -265,6 +259,12 @@ def _getDriverType (ppdname, ppds=None):
                 return DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED
             return DRIVER_TYPE_FOOMATIC_GUTENPRINT
         return DRIVER_TYPE_FOOMATIC
+    if ppdname.find ("gutenprint") != -1:
+        if (ppdname.find ("/simple") != -1 or
+            ppdname.find (".sim-") != -1):
+            return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
+        else:
+            return DRIVER_TYPE_GUTENPRINT_NATIVE
     if ppdname.find ("-hpijs") != -1:
         if ppdname.find ("hpijs-rss") == -1:
             return DRIVER_TYPE_FOOMATIC_HPIJS
