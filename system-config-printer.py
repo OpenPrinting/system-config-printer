@@ -2912,7 +2912,7 @@ class GUI(GtkGUI, monitor.Watcher):
             except cups.HTTPError, (s,):
                 show_HTTP_Error (s, self.PrintersWindow)
                 # Not fatal.
-            except CUPS.IPPError, (e, msg):
+            except cups.IPPError, (e, msg):
                 show_IPP_Error (e, msg, self.PrintersWindow)
                 # Not fatal.
 
