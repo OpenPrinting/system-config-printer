@@ -133,7 +133,6 @@ iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
 
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
-ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 
 TEXT_start_firewall_tool = _("To do this, select "
                              "System->Administration->Firewall "
@@ -1192,7 +1191,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 win = self.PrintersWindow
             gdkwin = win.window
             if gdkwin:
-                gdkwin.set_cursor (ready_cursor)
+                gdkwin.set_cursor (None)
                 while gtk.events_pending ():
                     gtk.main_iteration ()
         except:
@@ -3956,6 +3955,7 @@ class NewPrinterGUI(GtkGUI):
                     parent = self.NewPrinterWindow
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show ()
+                self.busy (self.WaitWindow)
 
             if self.mainapp.cups == None:
                 debugprint("CUPS connection lost, reconnecting ...")
@@ -4035,6 +4035,7 @@ class NewPrinterGUI(GtkGUI):
                     parent = self.NewPrinterWindow
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show_now ()
+                self.busy (self.WaitWindow)
 
             while gtk.events_pending ():
                 gtk.main_iteration ()
@@ -4347,6 +4348,7 @@ class NewPrinterGUI(GtkGUI):
                                          _('Searching for drivers'))
                 self.WaitWindow.set_transient_for (self.NewPrinterWindow)
                 self.WaitWindow.show ()
+                self.busy (self.WaitWindow)
                 self.busy (self.NewPrinterWindow)
 
                 # Keep the UI refreshed while we wait for the drivers
@@ -4547,6 +4549,7 @@ class NewPrinterGUI(GtkGUI):
             parent = self.mainapp.PrintersWindow
         self.WaitWindow.set_transient_for (parent)
         self.WaitWindow.show_now ()
+        self.busy (self.WaitWindow)
         while gtk.events_pending ():
             gtk.main_iteration ()
 
@@ -5733,6 +5736,7 @@ class NewPrinterGUI(GtkGUI):
                                  _('Searching for printers'))
         self.WaitWindow.set_transient_for (self.NewPrinterWindow)
         self.WaitWindow.show_now ()
+        self.busy (self.WaitWindow)
         printers = server.probe()
         self.WaitWindow.hide ()
 
