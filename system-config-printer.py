@@ -3872,7 +3872,12 @@ class NewPrinterGUI(GtkGUI):
                 self.auto_model = 'Queue'
 
             try:
-                self.loadPPDs ()
+                if self.dialog_mode == "ppd":
+                    parent = self.mainapp.PrinterPropertiesDialog
+                else:
+                    parent = self.NewPrinterWindow
+
+                self.loadPPDs (parent=parent)
             except cups.IPPError, (e, m):
                 show_IPP_Error (e, m, parent=self.mainapp.PrintersWindow)
                 return
@@ -4034,7 +4039,7 @@ class NewPrinterGUI(GtkGUI):
                 if not parent:
                     parent = self.NewPrinterWindow
                 self.WaitWindow.set_transient_for (parent)
-                self.WaitWindow.show_now ()
+                self.WaitWindow.show ()
                 self.busy (self.WaitWindow)
 
             while gtk.events_pending ():
