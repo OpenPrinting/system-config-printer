@@ -98,7 +98,6 @@ nobase_pkgdata_DATA=					\
 	ppdippstr.py					\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
-	gtk_treeviewtooltips.py				\
 	SearchCriterion.py				\
 	smburi.py					\
 	statereason.py					\
