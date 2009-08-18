@@ -1,8 +1,8 @@
 # vim: set ts=4 sw=4 et: coding=UTF-8
 #
 # Copyright (C) 2008 Novell, Inc.
-# Copyright (C) 2009, 2009 Red Hat, Inc.
-# Copyright (C) 2009, 2009 Tim Waugh <twaugh@redhat.com>
+# Copyright (C) 2008, 2009 Red Hat, Inc.
+# Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 #
 # Authors: Vincent Untz
 #
@@ -30,7 +30,6 @@ import os
 import sys
 
 import tempfile
-import string
 
 import cups
 import dbus
@@ -152,7 +151,7 @@ class Connection:
         pk_auth_running = False
 
         if pk_auth_error != None:
-            if string.find(pk_auth_error, 'org.freedesktop.DBus.Error.NoReply') == 0:
+            if pk_auth_error.find('org.freedesktop.DBus.Error.NoReply') == 0:
                 return False
             raise dbus.exceptions.DBusException(pk_auth_error)
 
