@@ -171,7 +171,8 @@ class PhysicalDevice:
         mdlcmp = cmp (our_mdl.lower (), other_mdl.lower ())
         if mdlcmp != 0:
             return mdlcmp
-        if self.sn == '' or other.sn == '': return 0;
+        if self.sn == '' or other.sn == '':
+            return 0
         return cmp (self.sn, other.sn)
 
 if __name__ == '__main__':
