@@ -135,8 +135,7 @@ class Option:
         self.conflict_message = tooltip # XXX more verbose
             
         if self.conflicts:
-            self.gui.tooltips.set_tip(self.btnConflict, tooltip,
-                                      "OPTION-" + self.option.keyword)
+            self.btnConflict.set_tooltip_text (tooltip)
             self.btnConflict.show()
         else:
             self.btnConflict.hide()
