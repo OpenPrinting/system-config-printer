@@ -1174,7 +1174,7 @@ class GUI(GtkGUI, monitor.Watcher):
         try:
             self.fillServerTab ()
         except cups.IPPError:
-            dialog.hide ()
+            self.ServerSettingsDialog.hide ()
 
     def busy (self, win = None):
         try:
