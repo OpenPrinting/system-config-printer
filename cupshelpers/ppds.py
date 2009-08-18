@@ -260,7 +260,7 @@ def _getDriverType (ppdname, ppds=None):
             return DRIVER_TYPE_FOOMATIC_GUTENPRINT
         return DRIVER_TYPE_FOOMATIC
     if ppdname.find ("gutenprint") != -1:
-        if (ppdname.find ("/simple/") != -1 or
+        if (ppdname.find ("/simple") != -1 or
             ppdname.find (".sim-") != -1):
             return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
         else:
