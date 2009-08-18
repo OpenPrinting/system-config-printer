@@ -104,7 +104,6 @@ from GroupsPaneModel import *
 from SearchCriterion import *
 import gtkinklevel
 import gtkspinner
-import pango
 import statereason
 
 domain='system-config-printer'
@@ -2626,7 +2625,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.fillComboBox(self.cmbPStartBanner,
                               printer.job_sheets_supported,
                               printer.job_sheet_start,
-                              ppdippstr.job_sheets),
+                              ppdippstr.job_sheets)
             self.fillComboBox(self.cmbPEndBanner, printer.job_sheets_supported,
                               printer.job_sheet_end,
                               ppdippstr.job_sheets)
@@ -2650,7 +2649,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.updateMarkerLevels ()
             self.updateStateReasons ()
 
-            self.updatePrinterPropertiesTreeView
+            self.updatePrinterPropertiesTreeView ()
 
     def fillPrinterOptions(self, name, editable):
         # remove Class membership tab
@@ -2970,7 +2969,7 @@ class GUI(GtkGUI, monitor.Watcher):
             except cups.HTTPError, (s,):
                 show_HTTP_Error (s, self.PrintersWindow)
                 # Not fatal.
-            except CUPS.IPPError, (e, msg):
+            except cups.IPPError, (e, msg):
                 show_IPP_Error (e, msg, self.PrintersWindow)
                 # Not fatal.
 
@@ -3092,8 +3091,8 @@ class GUI(GtkGUI, monitor.Watcher):
             return
 
         try:
-            for i in range (n):
-                iter = model.get_iter (paths[i])
+            for path in paths:
+                iter = model.get_iter (path)
                 name = model.get_value (iter, 2)
                 self.cups._begin_operation (_("deleting printer %s") % name)
                 name = unicode (name)
@@ -3114,8 +3113,8 @@ class GUI(GtkGUI, monitor.Watcher):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
-        for i in range (len (paths)):
-            iter = model.get_iter (paths[i])
+        for path in paths:
+            iter = model.get_iter (path)
             printer = model.get_value (iter, 0)
             name = unicode (model.get_value (iter, 2), 'utf-8')
             self.cups._begin_operation (_("modifying printer %s") % name)
@@ -3140,8 +3139,8 @@ class GUI(GtkGUI, monitor.Watcher):
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
         success = False
-        for i in range (len (paths)):
-            iter = model.get_iter (paths[i])
+        for path in paths:
+            iter = model.get_iter (path)
             printer = model.get_value (iter, 0)
             self.cups._begin_operation (_("modifying printer %s") %
                                         printer.name)
