@@ -2568,7 +2568,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.fillComboBox(self.cmbPStartBanner,
                               printer.job_sheets_supported,
                               printer.job_sheet_start,
-                              ppdippstr.job_sheets),
+                              ppdippstr.job_sheets)
             self.fillComboBox(self.cmbPEndBanner, printer.job_sheets_supported,
                               printer.job_sheet_end,
                               ppdippstr.job_sheets)
