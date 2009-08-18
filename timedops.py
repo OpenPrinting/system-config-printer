@@ -32,7 +32,7 @@ class Timed:
         pass
 
     def cancel (self):
-        pass
+        return False
 
 class TimedSubprocess(Timed):
     def __init__ (self, timeout=60000, parent=None, show_dialog=True,
@@ -119,6 +119,8 @@ class TimedSubprocess(Timed):
             gtk.main_quit ()
             self.watchers = 0
 
+        return False
+
 class OperationThread(threading.Thread):
     def __init__ (self, target=None, args=(), kwargs={}):
         threading.Thread.__init__ (self)
@@ -200,3 +202,4 @@ class TimedOperation(Timed):
     def cancel (self):
         debugprint ("Command canceled")
         gtk.main_quit ()
+        return False
