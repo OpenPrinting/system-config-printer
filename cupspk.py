@@ -747,7 +747,7 @@ class Connection:
 
         self._call_with_pk_and_fallback(use_pycups,
                                         'PrinterSetEnabled', pk_args,
-                                        self._connection.enablePrinter,
+                                        self._connection.disablePrinter,
                                         *args, **kwds)
 
 
