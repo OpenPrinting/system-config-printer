@@ -1425,15 +1425,19 @@ class GUI(GtkGUI, monitor.Watcher):
                                                      True, 8, w, h)
                             pixbuf.fill (0)
 
+                def_emblem = None
                 emblem = None
                 if name == self.default_printer:
-                    emblem = 'emblem-default'
+                    def_emblem = 'emblem-default'
                 elif name == userdef:
-                    emblem = 'emblem-favorite'
+                    def_emblem = 'emblem-favorite'
 
-                if emblem:
+                if object.rejecting or not object.enabled:
+                    emblem = 'gtk-media-pause'
+
+                if def_emblem:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
-                    default_emblem = theme.load_icon (emblem, w/2, 0)
+                    default_emblem = theme.load_icon (def_emblem, w/2, 0)
                     copy = pixbuf.copy ()
                     default_emblem.composite (copy, 0, 0,
                                               copy.get_width (),
@@ -1441,6 +1445,19 @@ class GUI(GtkGUI, monitor.Watcher):
                                               0, 0,
                                               1.0, 1.0,
                                               gtk.gdk.INTERP_NEAREST, 255)
+                    pixbuf = copy
+
+                if emblem:
+                    (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
+                    other_emblem = theme.load_icon (emblem, w/2, 0)
+                    copy = pixbuf.copy ()
+                    other_emblem.composite (copy, 0, 0,
+                                            copy.get_width (),
+                                            copy.get_height (),
+                                            copy.get_width () / 2,
+                                            copy.get_height () / 2,
+                                            1.0, 1.0,
+                                            gtk.gdk.INTERP_NEAREST, 255)
                     pixbuf = copy
 
                 self.mainlist.append (row=[object, pixbuf, name, tip])
@@ -3422,10 +3439,16 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
+
+        def deferred_refresh ():
+            self.populateList ()
+            return False
+
         gtk.gdk.threads_enter ()
         if self.printers.has_key (printer):
             self.printers[printer].update (**event)
             self.dests_iconview_selection_changed (self.dests_iconview)
+            gobject.idle_add (deferred_refresh)
             if self.PrinterPropertiesDialog.get_property('visible'):
                 self.printer.getAttributes ()
                 self.updatePrinterProperties ()
