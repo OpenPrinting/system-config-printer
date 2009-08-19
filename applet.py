@@ -88,7 +88,8 @@ class NewPrinterNotification(dbus.service.Object):
     def GetReady (self):
         self.wake_up ()
         if self.getting_ready == 0:
-            viewer.set_special_statusicon (SEARCHING_ICON)
+            viewer.set_special_statusicon (SEARCHING_ICON,
+                                           tooltip=_("Configuring new printer"))
 
         self.getting_ready += 1
         gobject.timeout_add (60 * 1000, self.timeout_ready)

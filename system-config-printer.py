@@ -27,6 +27,7 @@ import errno
 import sys, os, tempfile, time, traceback, re, httplib, glob
 import subprocess
 import signal, thread
+from timedops import *
 import dbus
 try:
     import gtk
@@ -126,7 +127,6 @@ iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
 
 busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
-ready_cursor = gtk.gdk.Cursor(gtk.gdk.LEFT_PTR)
 
 TEXT_start_firewall_tool = _("To do this, select "
                              "System->Administration->Firewall "
@@ -1256,7 +1256,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 win = self.PrintersWindow
             gdkwin = win.window
             if gdkwin:
-                gdkwin.set_cursor (ready_cursor)
+                gdkwin.set_cursor (None)
                 while gtk.events_pending ():
                     gtk.main_iteration ()
         except:
@@ -1489,15 +1489,19 @@ class GUI(GtkGUI, monitor.Watcher):
                                                      True, 8, w, h)
                             pixbuf.fill (0)
 
+                def_emblem = None
                 emblem = None
                 if name == self.default_printer:
-                    emblem = 'emblem-default'
+                    def_emblem = 'emblem-default'
                 elif name == userdef:
-                    emblem = 'emblem-favorite'
+                    def_emblem = 'emblem-favorite'
 
-                if emblem:
+                if object.rejecting or not object.enabled:
+                    emblem = 'gtk-media-pause'
+
+                if def_emblem:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
-                    default_emblem = theme.load_icon (emblem, w/2, 0)
+                    default_emblem = theme.load_icon (def_emblem, w/2, 0)
                     copy = pixbuf.copy ()
                     default_emblem.composite (copy, 0, 0,
                                               copy.get_width (),
@@ -1505,6 +1509,19 @@ class GUI(GtkGUI, monitor.Watcher):
                                               0, 0,
                                               1.0, 1.0,
                                               gtk.gdk.INTERP_NEAREST, 255)
+                    pixbuf = copy
+
+                if emblem:
+                    (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
+                    other_emblem = theme.load_icon (emblem, w/2, 0)
+                    copy = pixbuf.copy ()
+                    other_emblem.composite (copy, 0, 0,
+                                            copy.get_width (),
+                                            copy.get_height (),
+                                            copy.get_width () / 2,
+                                            copy.get_height () / 2,
+                                            1.0, 1.0,
+                                            gtk.gdk.INTERP_NEAREST, 255)
                     pixbuf = copy
 
                 self.mainlist.append (row=[object, pixbuf, name, tip])
@@ -3480,10 +3497,16 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
+
+        def deferred_refresh ():
+            self.populateList ()
+            return False
+
         gtk.gdk.threads_enter ()
         if self.printers.has_key (printer):
             self.printers[printer].update (**event)
             self.dests_iconview_selection_changed (self.dests_iconview)
+            gobject.idle_add (deferred_refresh)
             if self.PrinterPropertiesDialog.get_property('visible'):
                 self.printer.getAttributes ()
                 self.updatePrinterProperties ()
@@ -3931,7 +3954,12 @@ class NewPrinterGUI(GtkGUI):
                 self.auto_model = 'Queue'
 
             try:
-                self.loadPPDs ()
+                if self.dialog_mode == "ppd":
+                    parent = self.mainapp.PrinterPropertiesDialog
+                else:
+                    parent = self.NewPrinterWindow
+
+                self.loadPPDs (parent=parent)
             except cups.IPPError, (e, m):
                 show_IPP_Error (e, m, parent=self.mainapp.PrintersWindow)
                 return
@@ -4014,6 +4042,7 @@ class NewPrinterGUI(GtkGUI):
                     parent = self.NewPrinterWindow
                 self.WaitWindow.set_transient_for (parent)
                 self.WaitWindow.show ()
+                self.busy (self.WaitWindow)
 
             if self.mainapp.cups == None:
                 debugprint("CUPS connection lost, reconnecting ...")
@@ -4092,7 +4121,8 @@ class NewPrinterGUI(GtkGUI):
                 if not parent:
                     parent = self.NewPrinterWindow
                 self.WaitWindow.set_transient_for (parent)
-                self.WaitWindow.show_now ()
+                self.WaitWindow.show ()
+                self.busy (self.WaitWindow)
 
             while gtk.events_pending ():
                 gtk.main_iteration ()
@@ -4405,6 +4435,7 @@ class NewPrinterGUI(GtkGUI):
                                          _('Searching for drivers'))
                 self.WaitWindow.set_transient_for (self.NewPrinterWindow)
                 self.WaitWindow.show ()
+                self.busy (self.WaitWindow)
                 self.busy (self.NewPrinterWindow)
 
                 # Keep the UI refreshed while we wait for the drivers
@@ -4605,6 +4636,7 @@ class NewPrinterGUI(GtkGUI):
             parent = self.mainapp.PrintersWindow
         self.WaitWindow.set_transient_for (parent)
         self.WaitWindow.show_now ()
+        self.busy (self.WaitWindow)
         while gtk.events_pending ():
             gtk.main_iteration ()
 
@@ -5455,22 +5487,36 @@ class NewPrinterGUI(GtkGUI):
         verified = False
         if hostport != None:
             (host, port) = urllib.splitnport (hostport, defport=631)
-            oldserver = cups.getServer ()
-            try:
-                if uri.startswith ("https:"):
-                    encryption = cups.HTTP_ENCRYPT_ALWAYS
-                else:
-                    encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
+            if uri.startswith ("https:"):
+                encryption = cups.HTTP_ENCRYPT_ALWAYS
+            else:
+                encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
 
+            def get_attributes():
                 c = cups.Connection (host=host, port=port,
                                      encryption=encryption)
-                attributes = c.getPrinterAttributes (uri = uri)
+                return c.getPrinterAttributes (uri=uri)
+                
+            op = TimedOperation (get_attributes)
+            self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                     _('Verifying') + '</span>\n\n' +
+                                     _('Verifying printer'))
+            self.WaitWindow.set_transient_for (self.NewPrinterWindow)
+            self.WaitWindow.show ()
+            self.busy (self.WaitWindow)
+            source = gobject.timeout_add (10000, op.cancel)
+            try:
+                attributes = op.run ()
                 verified = True
+            except OperationCanceled:
+                pass
             except cups.IPPError, (e, msg):
                 debugprint ("Failed to get attributes: %s (%d)" % (msg, e))
             except:
                 nonfatalException ()
-            cups.setServer (oldserver)
+
+            gobject.source_remove (source)
+            self.WaitWindow.hide ()
         else:
             debugprint (uri)
 
@@ -5791,6 +5837,7 @@ class NewPrinterGUI(GtkGUI):
                                  _('Searching for printers'))
         self.WaitWindow.set_transient_for (self.NewPrinterWindow)
         self.WaitWindow.show_now ()
+        self.busy (self.WaitWindow)
         printers = server.probe()
         self.WaitWindow.hide ()
 
