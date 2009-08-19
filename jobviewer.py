@@ -324,15 +324,18 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.process_pending_events = whether
 
     # Handle "special" status icon
-    def set_special_statusicon (self, iconname):
+    def set_special_statusicon (self, iconname, tooltip=None):
         self.special_status_icon = True
         self.statusicon.set_from_icon_name (iconname)
         self.set_statusicon_visibility ()
+        if tooltip != None:
+            self.set_statusicon_tooltip (tooltip=tooltip)
 
     def unset_special_statusicon (self):
         self.special_status_icon = False
         self.statusicon.set_from_pixbuf (self.saved_statusicon_pixbuf)
         self.set_statusicon_visibility ()
+        self.set_statusicon_tooltip ()
 
     def notify_new_printer (self, printer, notification):
         self.new_printer_notifications[printer] = notification
