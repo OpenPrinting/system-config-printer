@@ -40,7 +40,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
 
 PK_AUTH_NAME  = 'org.freedesktop.PolicyKit.AuthenticationAgent'
-PK_AUTH_PATH  = '/'
+PK_AUTH_PATH  = '/org/gnome/PolicyKit/Manager'
 PK_AUTH_IFACE = 'org.freedesktop.PolicyKit.AuthenticationAgent'
 
 CUPS_PK_NAME  = 'org.opensuse.CupsPkHelper.Mechanism'

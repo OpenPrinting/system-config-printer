@@ -207,30 +207,44 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.job_menubar_item.set_submenu (self.job_context_menu)
 
-        text=0
-        for name in [_("Job"),
-                     _("User"),
-                     _("Document"),
-                     _("Printer"),
-                     _("Size"),
-                     _("Time submitted"),
-                     _("Status")]:
-            if text == 1 and trayicon:
+        for skip, ellipsize, name, setter in \
+                [(False, False, _("Job"), self._set_job_job_number_text),
+                 (True, False, _("User"), self._set_job_user_text),
+                 (False, True, _("Document"), self._set_job_document_text),
+                 (False, True, _("Printer"), self._set_job_printer_text),
+                 (False, False, _("Size"), self._set_job_size_text)]:
+            if trayicon and skip:
                 # Skip the user column for the trayicon.
-                text += 1
                 continue
+
             cell = gtk.CellRendererText()
-            if text == 2 or text == 3:
+            if ellipsize:
                 # Ellipsize the 'Document' and 'Printer' columns.
                 cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
                 cell.set_property ("width-chars", 20)
-            column = gtk.TreeViewColumn(name, cell, text=text)
+            column = gtk.TreeViewColumn(name, cell)
+            column.set_cell_data_func (cell, setter)
             column.set_resizable(True)
             self.treeview.append_column(column)
-            text += 1
+
+        cell = gtk.CellRendererText ()
+        column = gtk.TreeViewColumn (_("Time submitted"), cell, text=1)
+        column.set_resizable (True)
+        self.treeview.append_column (column)
+
+        column = gtk.TreeViewColumn (_("Status"))
+        icon = gtk.CellRendererPixbuf ()
+        column.pack_start (icon, False)
+        text = gtk.CellRendererText ()
+	text.set_property ("ellipsize", pango.ELLIPSIZE_END)
+	text.set_property ("width-chars", 20)
+        column.pack_start (text, True)
+        column.set_cell_data_func (icon, self._set_job_status_icon)
+        column.set_cell_data_func (text, self._set_job_status_text)
+        self.treeview.append_column (column)
 
         self.treeview.get_selection().set_mode(gtk.SELECTION_SINGLE)
-        self.store = gtk.TreeStore(int, str, str, str, str, str, str)
+        self.store = gtk.TreeStore(int, str)
         self.store.set_sort_column_id (0, gtk.SORT_DESCENDING)
         self.treeview.set_model(self.store)
         self.treeview.set_rules_hint (True)
@@ -265,24 +279,24 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.statusbar_set = False
 
+        theme = gtk.icon_theme_get_default ()
+        self.icon_jobs = theme.load_icon (ICON, 22, 0)
+        self.icon_jobs_processing = theme.load_icon ("printer-printing",
+                                                     22, 0)
+        self.icon_no_jobs = self.icon_jobs.copy ()
+        self.icon_no_jobs.fill (0)
+        self.icon_jobs.composite (self.icon_no_jobs,
+                                  0, 0,
+                                  self.icon_no_jobs.get_width(),
+                                  self.icon_no_jobs.get_height(),
+                                  0, 0,
+                                  1.0, 1.0,
+                                  gtk.gdk.INTERP_BILINEAR,
+                                  127)
         if self.trayicon:
             self.statusicon = gtk.StatusIcon ()
-            theme = gtk.icon_theme_get_default ()
             pixbuf = theme.load_icon (ICON, 22, 0)
-            self.statusicon.set_from_pixbuf (pixbuf)
-            self.icon_jobs = self.statusicon.get_pixbuf ()
-            self.icon_jobs_processing = theme.load_icon ("printer-printing",
-                                                         22, 0)
-            self.icon_no_jobs = self.icon_jobs.copy ()
-            self.icon_no_jobs.fill (0)
-            self.icon_jobs.composite (self.icon_no_jobs,
-                                      0, 0,
-                                      self.icon_no_jobs.get_width(),
-                                      self.icon_no_jobs.get_height(),
-                                      0, 0,
-                                      1.0, 1.0,
-                                      gtk.gdk.INTERP_BILINEAR,
-                                      127)
+            self.statusicon.set_from_pixbuf (pixbuf)    
             self.set_statusicon_from_pixbuf (self.icon_no_jobs)
             self.statusicon.connect ('activate', self.toggle_window_display)
             self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
@@ -314,6 +328,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 if notification.get_data ('closed') != True:
                     notification.close ()
                     notification.set_data ('closed', True)
+
+        if self.job_creation_times_timer != None:
+            gobject.source_remove (self.job_creation_times_timer)
+            self.job_creation_times_timer = None
 
         if self.exit_handler:
             self.exit_handler (self)
@@ -425,7 +443,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                     need_update = False
                     t = time.strftime ("%B %Y", time.localtime (created))
 
-            self.store.set_value (iter, 5, t)
+            self.store.set_value (iter, 1, t)
 
         if need_update and not self.job_creation_times_timer:
             t = gobject.timeout_add (60 * 1000, self.update_job_creation_times)
@@ -454,12 +472,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
         del self.troubleshooter
 
     def add_job (self, job, data, connection=None):
+        self.update_job (job, data, connection=connection)
+
         store = self.store
         iter = self.store.append (None)
         store.set_value (iter, 0, job)
-        store.set_value (iter, 1, data.get('job-originating-user-name',
-                                           _("Unknown")))
-        store.set_value (iter, 2, data.get('job-name', _("Unknown")))
         debugprint ("Job %d added" % job)
         self.jobiters[job] = iter
 
@@ -474,10 +491,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 self.treeview.scroll_to_cell ((0,), None, False, 0.0, 0.0)
 
         if not self.job_creation_times_timer:
-            t = gobject.timeout_add (1000, self.update_job_creation_times)
-            self.job_creation_times_timer = t
+            def start_updating_job_creation_times():
+                self.update_job_creation_times ()
+                return False
 
-        self.update_job (job, data, connection=connection)
+            gobject.timeout_add (500, start_updating_job_creation_times)
 
     def update_job (self, job, data, connection=None):
         # Fetch required attributes for this job if they are missing.
@@ -503,20 +521,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             if attrs:
                 data.update (attrs)
 
-        store = self.store
-        iter = self.jobiters[job]
         self.jobs[job] = data
 
-        printer = data['job-printer-name']
-        store.set_value (iter, 3, printer)
-
-        size = _("Unknown")
-        if data.has_key ('job-k-octets'):
-            size = str (data['job-k-octets']) + 'k'
-        store.set_value (iter, 4, size)
-
         job_requires_auth = False
-        c = None
         try:
             jstate = data.get ('job-state', cups.IPP_JOB_PROCESSING)
             s = int (jstate)
@@ -557,81 +564,19 @@ class JobViewer (GtkGUI, monitor.Watcher):
         except cups.IPPError, (e, m):
             pass
 
-        job_requires_auth = (s == cups.IPP_JOB_HELD and
-                             data.get ('job-hold-until', 'none') ==
-                             'auth-info-required')
-        state = None
-        if job_requires_auth:
-            state = _("Held for authentication")
-        elif s == cups.IPP_JOB_HELD:
-            state = _("Held")
-            until = data.get ('job-hold-until')
-            if until != None:
-                try:
-                    colon1 = until.find (':')
-                    if colon1 != -1:
-                        now = time.gmtime ()
-                        hh = int (until[:colon1])
-                        colon2 = until[colon1 + 1:].find (':')
-                        if colon2 != -1:
-                            colon2 += colon1 + 1
-                            mm = int (until[colon1 + 1:colon2])
-                            ss = int (until[colon2 + 1:])
-                        else:
-                            mm = int (until[colon1 + 1:])
-                            ss = 0
-
-                        day = now.tm_mday
-                        if (hh < now.tm_hour or
-                            (hh == now.tm_hour and
-                             (mm < now.tm_min or
-                              (mm == now.tm_min and ss < now.tm_sec)))):
-                            day += 1
-
-                        hold = (now.tm_year, now.tm_mon, day,
-                                hh, mm, ss, 0, 0, -1)
-                        old_tz = os.environ.get("TZ")
-                        os.environ["TZ"] = "UTC"
-                        simpletime = time.mktime (hold)
-
-                        if old_tz == None:
-                            del os.environ["TZ"]
-                        else:
-                            os.environ["TZ"] = old_tz
-
-                        local = time.localtime (simpletime)
-                        state = _("Held until %s") % time.strftime ("%X", local)
-                except ValueError:
-                    pass
-            if until == "day-time":
-                state = _("Held until day-time")
-            elif until == "evening":
-                state = _("Held until evening")
-            elif until == "night":
-                state = _("Held until night-time")
-            elif until == "second-shift":
-                state = _("Held until second shift")
-            elif until == "third-shift":
-                state = _("Held until third shift")
-            elif until == "weekend":
-                state = _("Held until weekend")
-        else:
-            try:
-                state = { cups.IPP_JOB_PENDING: _("Pending"),
-                          cups.IPP_JOB_PROCESSING: _("Processing"),
-                          cups.IPP_JOB_STOPPED: _("Stopped"),
-                          cups.IPP_JOB_CANCELED: _("Canceled"),
-                          cups.IPP_JOB_ABORTED: _("Aborted"),
-                          cups.IPP_JOB_COMPLETED: _("Completed") }[s]
-            except IndexError:
-                pass
-
-        if state == None:
-            state = _("Unknown")
-        store.set_value (iter, 6, state)
+        # Invalidate the cached status description and redraw the treeview.
+        try:
+            del data['_status_text']
+        except KeyError:
+            pass
+        self.treeview.queue_draw ()
 
         # Check whether authentication is required.
         if self.trayicon:
+            job_requires_auth = (s == cups.IPP_JOB_HELD and
+                                 data.get ('job-hold-until', 'none') ==
+                                 'auth-info-required')
+
             if (job_requires_auth and
                 not self.auth_info_dialogs.has_key (job)):
                 try:
@@ -1062,20 +1007,28 @@ class JobViewer (GtkGUI, monitor.Watcher):
         return True
 
     ## Icon manipulation
-    def add_state_reason_emblem (self, pixbuf):
-        if self.worst_reason != None:
+    def add_state_reason_emblem (self, pixbuf, printer=None):
+        worst_reason = None
+        if printer == None and self.worst_reason != None:
             # Check that it's valid.
             printer = self.worst_reason.get_printer ()
             found = False
-            for reason in self.printer_state_reasons[printer]:
+            for reason in self.printer_state_reasons.get (printer, []):
                 if reason == self.worst_reason:
-                    found = True
+                    worst_reason = self.worst_reason
                     break
-            if not found:
+            if worst_reason == None:
                 self.worst_reason = None
 
-        if self.worst_reason != None:
-            level = self.worst_reason.get_level ()
+        if printer != None:
+            for reason in self.printer_state_reasons.get (printer, []):
+                if worst_reason == None:
+                    worst_reason = reason
+                elif reason > worst_reason:
+                    worst_reason = reason
+
+        if worst_reason != None:
+            level = worst_reason.get_level ()
             if level > StateReason.REPORT:
                 # Add an emblem to the icon.
                 icon = StateReason.LEVEL_ICON[level]
@@ -1520,6 +1473,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         reason.user_notified = False
         l.append (reason)
         self.update_status ()
+        self.treeview.queue_draw ()
 
         if not self.trayicon:
             return
@@ -1552,6 +1506,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         del reasons[i]
 
         self.update_status ()
+        self.treeview.queue_draw ()
 
         if not self.trayicon:
             return
@@ -1620,16 +1575,157 @@ class JobViewer (GtkGUI, monitor.Watcher):
         monitor.Watcher.printer_removed (self, mon, printer)
         self.printer_uri_index.remove_printer (printer)
 
-    ## Printer status window
-    def set_printer_status_icon (self, column, cell, model, iter, *user_data):
-        level = model.get_value (iter, 0)
-        icon = StateReason.LEVEL_ICON[level]
-        theme = gtk.icon_theme_get_default ()
-        try:
-            pixbuf = theme.load_icon (icon, 22, 0)
-            cell.set_property("pixbuf", pixbuf)
-        except gobject.GError, exc:
-            pass # Couldn't load icon
+    ### Cell data functions
+    def _set_job_job_number_text (self, column, cell, model, iter, *data):
+        cell.set_property("text", str (model.get_value (iter, 0)))
 
-    def set_printer_status_name (self, column, cell, model, iter, *user_data):
-        cell.set_property("text", model.get_value (iter, 1))
+    def _set_job_user_text (self, column, cell, model, iter, *data):
+        jobid = model.get_value (iter, 0)
+        job = self.jobs[jobid]
+        cell.set_property("text", job.get ('job-originating-user-name',
+                                           _("Unknown")))
+
+    def _set_job_document_text (self, column, cell, model, iter, *data):
+        jobid = model.get_value (iter, 0)
+        job = self.jobs[jobid]
+        cell.set_property("text", job.get('job-name', _("Unknown")))
+
+    def _set_job_printer_text (self, column, cell, model, iter, *data):
+        jobid = model.get_value (iter, 0)
+        cell.set_property("text", self.jobs[jobid]['job-printer-name'])
+
+    def _set_job_size_text (self, column, cell, model, iter, *data):
+        jobid = model.get_value (iter, 0)
+        job = self.jobs[jobid]
+        size = _("Unknown")
+        if job.has_key ('job-k-octets'):
+            size = str (job['job-k-octets']) + 'k'
+        cell.set_property("text", size)
+
+    def _find_job_state_text (self, job):
+        data = self.jobs[job]
+        jstate = data.get ('job-state', cups.IPP_JOB_PROCESSING)
+        s = int (jstate)
+        job_requires_auth = (s == cups.IPP_JOB_HELD and
+                             data.get ('job-hold-until', 'none') ==
+                             'auth-info-required')
+        state = None
+        if job_requires_auth:
+            state = _("Held for authentication")
+        elif s == cups.IPP_JOB_HELD:
+            state = _("Held")
+            until = data.get ('job-hold-until')
+            if until != None:
+                try:
+                    colon1 = until.find (':')
+                    if colon1 != -1:
+                        now = time.gmtime ()
+                        hh = int (until[:colon1])
+                        colon2 = until[colon1 + 1:].find (':')
+                        if colon2 != -1:
+                            colon2 += colon1 + 1
+                            mm = int (until[colon1 + 1:colon2])
+                            ss = int (until[colon2 + 1:])
+                        else:
+                            mm = int (until[colon1 + 1:])
+                            ss = 0
+
+                        day = now.tm_mday
+                        if (hh < now.tm_hour or
+                            (hh == now.tm_hour and
+                             (mm < now.tm_min or
+                              (mm == now.tm_min and ss < now.tm_sec)))):
+                            day += 1
+
+                        hold = (now.tm_year, now.tm_mon, day,
+                                hh, mm, ss, 0, 0, -1)
+                        old_tz = os.environ.get("TZ")
+                        os.environ["TZ"] = "UTC"
+                        simpletime = time.mktime (hold)
+
+                        if old_tz == None:
+                            del os.environ["TZ"]
+                        else:
+                            os.environ["TZ"] = old_tz
+
+                        local = time.localtime (simpletime)
+                        state = _("Held until %s") % time.strftime ("%X", local)
+                except ValueError:
+                    pass
+            if until == "day-time":
+                state = _("Held until day-time")
+            elif until == "evening":
+                state = _("Held until evening")
+            elif until == "night":
+                state = _("Held until night-time")
+            elif until == "second-shift":
+                state = _("Held until second shift")
+            elif until == "third-shift":
+                state = _("Held until third shift")
+            elif until == "weekend":
+                state = _("Held until weekend")
+        else:
+            try:
+                state = { cups.IPP_JOB_PENDING: _("Pending"),
+                          cups.IPP_JOB_PROCESSING: _("Processing"),
+                          cups.IPP_JOB_STOPPED: _("Stopped"),
+                          cups.IPP_JOB_CANCELED: _("Canceled"),
+                          cups.IPP_JOB_ABORTED: _("Aborted"),
+                          cups.IPP_JOB_COMPLETED: _("Completed") }[s]
+            except IndexError:
+                pass
+
+        if state == None:
+            state = _("Unknown")
+
+        return state
+
+    def _set_job_status_icon (self, column, cell, model, iter, *data):
+        jobid = model.get_value (iter, 0)
+        data = self.jobs[jobid]
+        jstate = data.get ('job-state', cups.IPP_JOB_PROCESSING)
+        s = int (jstate)
+        if s == cups.IPP_JOB_PROCESSING:
+            icon = self.icon_jobs_processing
+        else:
+            icon = self.icon_jobs
+
+        if s == cups.IPP_JOB_HELD:
+            theme = gtk.icon_theme_get_default ()
+            emblem = theme.load_icon (gtk.STOCK_MEDIA_PAUSE, 22 / 2, 0)
+            copy = icon.copy ()
+            emblem.composite (copy, 0, 0,
+                              copy.get_width (),
+                              copy.get_height (),
+                              copy.get_width () / 2 - 1,
+                              copy.get_height () / 2 - 1,
+                              1.0, 1.0,
+                              gtk.gdk.INTERP_NEAREST, 255)
+            icon = copy
+        else:
+            # Check state reasons.
+            printer = data['job-printer-name']
+            icon = self.add_state_reason_emblem (icon, printer=printer)
+
+        cell.set_property ("pixbuf", icon)
+
+    def _set_job_status_text (self, column, cell, model, iter, *data):
+        jobid = model.get_value (iter, 0)
+        data = self.jobs[jobid]
+        try:
+            text = data['_status_text']
+        except KeyError:
+            text = self._find_job_state_text (jobid)
+            data['_status_text'] = text
+
+        printer = data['job-printer-name']
+        reasons = self.printer_state_reasons.get (printer, [])
+        if len (reasons) > 0:
+            worst_reason = reasons[0]
+            for reason in reasons[1:]:
+                if reason > worst_reason:
+                    worst_reason = reason
+            (title, unused) = worst_reason.get_description ()
+            text += " - " + title
+
+        cell.set_property ("text", text)
