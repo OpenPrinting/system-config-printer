@@ -209,14 +209,14 @@ def ppdMakeModelSplit (ppd_make_and_model):
 # Some drivers are just generally better than others.
 # Here is the preference list:
 DRIVER_TYPE_DOWNLOADED_NOW = 5
+DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT = 8
 DRIVER_TYPE_VENDOR = 10
+DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 15
 DRIVER_TYPE_HPCUPS = 16
 DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP = 17
 DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED = 20
 DRIVER_TYPE_GUTENPRINT_NATIVE = 25
 DRIVER_TYPE_SPLIX = 27
-DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT = 28
-DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 29
 DRIVER_TYPE_FOOMATIC_PS = 30
 DRIVER_TYPE_FOOMATIC_HPIJS = 40
 DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 50
@@ -420,12 +420,6 @@ class PPDs:
                 if t == DRIVER_TYPE_FOOMATIC_HPIJS:
                     # Prefer HPIJS for HP devices.
                     t = DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP
-                    # For HP LaserJet 12xx/13xx prefer HPIJS over
-                    # PostScript, as they do not have enough memory
-                    # to render complex graphics with their on-board
-                    # PostScript interpreter
-                    if re.search(r"(?i)HP[-_]LaserJet_1[23]\d\d", x):
-                        t = DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT
             return t
 
         def sort_ppdnames (a, b):

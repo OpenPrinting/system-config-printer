@@ -1496,8 +1496,41 @@ class GUI(GtkGUI, monitor.Watcher):
                 elif name == userdef:
                     def_emblem = 'emblem-favorite'
 
-                if object.rejecting or not object.enabled:
+                if not emblem:
+                    attrs = object.other_attributes
+                    reasons = attrs.get ('printer-state-reasons', [])
+                    worst_reason = None
+                    for reason in reasons:
+                        if reason == "none":
+                            break
+
+                        if reason == "paused":
+                            emblem = gtk.STOCK_MEDIA_PAUSE
+                            continue
+
+                        r = statereason.StateReason (object.connection,
+                                                     object.name, reason)
+                        if worst_reason == None:
+                            worst_reason = r
+                        elif r > worst_reason:
+                            worst_reason = r
+
+                    if worst_reason:
+                        level = worst_reason.get_level ()
+                        emblem = worst_reason.LEVEL_ICON[level]
+
+                if not emblem and not object.enabled:
                     emblem = gtk.STOCK_MEDIA_PAUSE
+
+                if object.rejecting:
+                    # Show the icon as insensitive
+                    copy = pixbuf.copy ()
+                    copy.fill (0)
+                    pixbuf.composite (copy, 0, 0,
+                                      copy.get_width(), copy.get_height(),
+                                      0, 0, 1.0, 1.0,
+                                      gtk.gdk.INTERP_BILINEAR, 127)
+                    pixbuf = copy
 
                 if def_emblem:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
@@ -2589,7 +2622,7 @@ class GUI(GtkGUI, monitor.Watcher):
     def updateStateReasons (self):
         printer = self.printer
         reasons = printer.other_attributes.get ('printer-state-reasons', [])
-        store = gtk.ListStore (int, str)
+        store = gtk.ListStore (str, str)
         any = False
         for reason in reasons:
             if reason == "none":
@@ -2598,7 +2631,11 @@ class GUI(GtkGUI, monitor.Watcher):
             any = True
             iter = store.append (None)
             r = statereason.StateReason (printer.connection, printer.name, reason)
-            store.set_value (iter, 0, r.get_level ())
+            if r.get_reason () == "paused":
+                icon = gtk.STOCK_MEDIA_PAUSE
+            else:
+                icon = statereason.StateReason.LEVEL_ICON[r.get_level ()]
+            store.set_value (iter, 0, icon)
             (title, text) = r.get_description ()
             store.set_value (iter, 1, text)
 
@@ -2610,8 +2647,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.ntbkPrinterStateReasons.set_current_page (page)
 
     def set_printer_state_reason_icon (self, column, cell, model, iter, *data):
-        level = model.get_value (iter, 0)
-        icon = statereason.StateReason.LEVEL_ICON[level]
+        icon = model.get_value (iter, 0)
         theme = gtk.icon_theme_get_default ()
         try:
             pixbuf = theme.load_icon (icon, 22, 0)

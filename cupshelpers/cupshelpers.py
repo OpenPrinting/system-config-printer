@@ -89,6 +89,7 @@ class Printer:
         if self.is_shared is None:
             self.is_shared = not self.not_shared
         del self.not_shared
+        self.other_attributes = kw
 
     def getAttributes(self):
         """
