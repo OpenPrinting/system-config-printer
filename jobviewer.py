@@ -317,6 +317,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
                     notification.close ()
                     notification.set_data ('closed', True)
 
+        if self.job_creation_times_timer != None:
+            gobject.source_remove (self.job_creation_times_timer)
+            self.job_creation_times_timer = None
+
         if self.exit_handler:
             self.exit_handler (self)
 
