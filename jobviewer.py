@@ -480,10 +480,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 self.treeview.scroll_to_cell ((0,), None, False, 0.0, 0.0)
 
         if not self.job_creation_times_timer:
-            t = gobject.timeout_add (1000, self.update_job_creation_times)
-            self.job_creation_times_timer = t
+            def start_updating_job_creation_times():
+                self.update_job_creation_times ()
+                return False
 
-        self.update_job (job, data, connection=connection)
+            gobject.timeout_add (500, start_updating_job_creation_times)
 
     def update_job (self, job, data, connection=None):
         # Fetch required attributes for this job if they are missing.
