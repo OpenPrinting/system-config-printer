@@ -1433,7 +1433,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     def_emblem = 'emblem-favorite'
 
                 if object.rejecting or not object.enabled:
-                    emblem = 'gtk-media-pause'
+                    emblem = gtk.STOCK_MEDIA_PAUSE
 
                 if def_emblem:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
