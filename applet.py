@@ -112,8 +112,7 @@ class NewPrinterNotification(dbus.service.Object):
             # name is a URI, no queue was generated, because no suitable
             # driver was found
             title = _("Missing printer driver")
-            devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % \
-                (mfg, mdl, des, cmd)
+            devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
             if (mfg and mdl) or des:
                 if (mfg and mdl):
                     device = "%s %s" % (mfg, mdl)
@@ -129,8 +128,7 @@ class NewPrinterNotification(dbus.service.Object):
                               lambda x, y:
                                   self.setup_printer (x, y, name, devid))
             else:
-                args = ["--setup-printer", name]
-                if devid != "": args = args + ["--devid", devid]
+                args = ["--setup-printer", name, "--devid", devid]
                 self.run_config_tool (args)
 
         else:
@@ -192,6 +190,7 @@ class NewPrinterNotification(dbus.service.Object):
                         pass
 
             elif status == self.STATUS_SUCCESS:
+                devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
                 text = _("`%s' is ready for printing.") % name
                 n = pynotify.Notification (title, text)
                 if "actions" in pynotify.get_server_caps():
@@ -202,10 +201,9 @@ class NewPrinterNotification(dbus.service.Object):
                     n.add_action ("configure", _("Configure"),
                                   lambda x, y: self.configure (x, y, name))
             else: # Model mismatch
-                devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % \
-                    (mfg, mdl, des, cmd)
-                text = _("`%s' has been added, using the `%s' driver.") % \
-                    (name, driver)
+                devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
+                text = (_("`%s' has been added, using the `%s' driver.") %
+                        (name, driver))
                 n = pynotify.Notification (title, text, 'printer')
                 if "actions" in pynotify.get_server_caps():
                     n.set_urgency (pynotify.URGENCY_CRITICAL)
@@ -360,9 +358,9 @@ if __name__ == '__main__':
             service_running = True
         except:
             try:
-                print >> sys.stderr, \
-                    "%s: failed to start NewPrinterNotification service" % \
-                    PROGRAM_NAME
+                print >> sys.stderr, ("%s: failed to start "
+                                      "NewPrinterNotification service" %
+                                      PROGRAM_NAME)
             except:
                 pass
 

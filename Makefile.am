@@ -74,7 +74,8 @@ nobase_pkgdata_SCRIPTS=				\
 	pysmb.py				\
 	system-config-printer.py		\
 	troubleshoot/__init__.py		\
-	applet.py
+	applet.py				\
+	postscriptdriver.prov
 
 nobase_pkgdata_DATA=					\
 	AdvancedServerSettings.py			\
