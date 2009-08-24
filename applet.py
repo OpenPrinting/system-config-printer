@@ -197,6 +197,7 @@ class NewPrinterNotification(dbus.service.Object):
                         pass
 
             elif status == self.STATUS_SUCCESS:
+                devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
                 text = _("`%s' is ready for printing.") % name
                 n = pynotify.Notification (title, text)
                 if "actions" in pynotify.get_server_caps():
