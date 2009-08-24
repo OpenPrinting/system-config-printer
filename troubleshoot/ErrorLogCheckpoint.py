@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -113,6 +113,9 @@ class ErrorLogCheckpoint(Question):
             return {}
 
         self.answers.update (self.persistent_answers)
+        if self.answers.has_key ('error_log_checkpoint'):
+            return self.answers
+
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.close (tmpfd)
         c = self.troubleshooter.answers['_authenticated_connection']
@@ -136,6 +139,7 @@ class ErrorLogCheckpoint(Question):
         statbuf = os.stat (tmpfname)
         os.remove (tmpfname)
         self.answers['error_log_checkpoint'] = statbuf[6]
+        self.persistent_answers['error_log_checkpoint'] = statbuf[6]
         return self.answers
 
     def can_click_forward (self):
