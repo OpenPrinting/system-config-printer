@@ -137,6 +137,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.jobs = {}
         self.jobiters = {}
+        self.jobids = []
         self.active_jobs = set() # of job IDs
         self.stopped_job_prompts = set() # of job IDs
         self.printer_state_reasons = {}
@@ -242,18 +243,17 @@ class JobViewer (GtkGUI, monitor.Watcher):
         column.set_cell_data_func (text, self._set_job_status_text)
         self.treeview.append_column (column)
 
-        self.treeview.get_selection().set_mode(gtk.SELECTION_SINGLE)
         self.store = gtk.TreeStore(int, str)
         self.store.set_sort_column_id (0, gtk.SORT_DESCENDING)
         self.treeview.set_model(self.store)
         self.treeview.set_rules_hint (True)
+        self.selection = self.treeview.get_selection()
+        self.selection.set_mode(gtk.SELECTION_MULTIPLE)
+        self.selection.connect('changed', self.on_selection_changed)
         self.treeview.connect ('button_release_event',
                                self.on_treeview_button_release_event)
         self.treeview.connect ('popup-menu', self.on_treeview_popup_menu)
-        self.treeview.connect ('cursor-changed',
-                               self.on_treeview_cursor_changed)
-        self.store.connect ('row-changed',
-                            self.on_treemodel_row_changed)
+        self.store.connect ('row-changed', self.on_treemodel_row_changed)
 
         self.JobsWindow.set_icon_name (ICON)
         self.JobsWindow.hide ()
@@ -713,6 +713,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def auth_info_dialog_response (self, dialog, response):
         jobid = dialog.get_data ('job-id')
         del self.auth_info_dialogs[jobid]
+
         if response != gtk.RESPONSE_OK:
             dialog.destroy ()
             return
@@ -801,10 +802,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.show_treeview_popup_menu (treeview, event, event.button)
 
     def on_treemodel_row_changed (self, model, path, iter):
-        self.on_treeview_cursor_changed (self.treeview)
+        self.on_selection_changed (self.selection)
 
-    def on_treeview_cursor_changed (self, treeview):
-        path, column = treeview.get_cursor ()
+    def on_selection_changed (self, selection):
+        treeview = selection.get_tree_view()
+        (model, pathlist) = selection.get_selected_rows()
+        (path, column) = treeview.get_cursor ()
+
         cancel = self.job_ui_manager.get_action ("/cancel-job")
         hold = self.job_ui_manager.get_action ("/hold-job")
         release = self.job_ui_manager.get_action ("/release-job")
@@ -815,27 +819,38 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 widget.set_sensitive (False)
             return
 
-        iter = self.store.get_iter (path)
-        self.jobid = self.store.get_value (iter, 0)
-        job = self.jobs[self.jobid]
-        authenticate.set_sensitive (False)
-        for widget in [cancel, hold, release, reprint]:
-            widget.set_sensitive (True)
+        self.jobids = []
+        for path in pathlist:
+            iter = self.store.get_iter (path)
+            jobid = self.store.get_value (iter, 0)
+            self.jobids.append(jobid)
+            job = self.jobs[jobid]
 
-        if job.has_key ('job-state'):
-            s = job['job-state']
-            if s >= cups.IPP_JOB_CANCELED:
-                cancel.set_sensitive (False)
-            if s != cups.IPP_JOB_PENDING:
-                hold.set_sensitive (False)
-            if s != cups.IPP_JOB_HELD:
-                release.set_sensitive (False)
-            if (not job.get('job-preserved', False)):
-                reprint.set_sensitive (False)
+            cancel_sensitive = True
+            hold_sensitive = True
+            release_sensitive = True
+            reprint_sensitive = True
+            authenticate_sensitive = True
+            if job.has_key ('job-state'):
+                s = job['job-state']
+                if s >= cups.IPP_JOB_CANCELED:
+                    cancel_sensitive = False
+                if s != cups.IPP_JOB_PENDING:
+                    hold_sensitive = False
+                if s != cups.IPP_JOB_HELD:
+                    release_sensitive = False
+                if (not job.get('job-preserved', False)):
+                    reprint_sensitive = False
 
-        if job.get ('job-state', cups.IPP_JOB_CANCELED) == cups.IPP_JOB_HELD:
-            if job.get ('job-hold-until', 'none') == 'auth-info-required':
-                authenticate.set_sensitive (True)
+            if (job.get ('job-state', cups.IPP_JOB_CANCELED) != cups.IPP_JOB_HELD or
+                job.get ('job-hold-until', 'none') != 'auth-info-required'):
+                authenticate_sensitive = False
+
+        cancel.set_sensitive(cancel_sensitive)
+        hold.set_sensitive(hold_sensitive)
+        release.set_sensitive(release_sensitive)
+        reprint.set_sensitive(reprint_sensitive)
+        authenticate.set_sensitive(authenticate_sensitive)
 
     def show_treeview_popup_menu (self, treeview, event, event_button):
         # Right-clicked.
@@ -883,12 +898,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
         image.set_from_stock (gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_DIALOG)
         image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
-        label = gtk.Label (_("Do you really want to cancel this job?"))
+        label = gtk.Label (_("Do you really want to cancel these jobs?"))
         label.set_line_wrap (True)
         label.set_alignment (0.0, 0.0)
         hbox.pack_start (label, False, False, 0)
         dialog.vbox.pack_start (hbox, False, False, 0)
-        dialog.set_data ('job-id', self.jobid)
+        dialog.set_data ('job-ids', self.jobids)
         dialog.connect ("response", self.on_job_cancel_prompt_response)
         dialog.connect ("delete-event", self.on_job_cancel_prompt_delete)
         dialog.show_all ()
@@ -897,7 +912,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.on_job_cancel_prompt_response (dialog, gtk.RESPONSE_NO)
 
     def on_job_cancel_prompt_response (self, dialog, response):
-        jobid = dialog.get_data ('job-id')
         dialog.destroy ()
 
         if response != gtk.RESPONSE_YES:
@@ -911,18 +925,19 @@ class JobViewer (GtkGUI, monitor.Watcher):
         except RuntimeError:
             return
 
-        c._begin_operation (_("canceling job"))
-        try:
-            c.cancelJob (jobid)
-        except cups.IPPError, (e, m):
-            if (e != cups.IPP_NOT_POSSIBLE and
-                e != cups.IPP_NOT_FOUND):
-                self.show_IPP_Error (e, m)
-            self.monitor.update ()
+        for jobid in dialog.get_data ('job-ids'):
+            c._begin_operation (_("canceling job"))
+            try:
+                c.cancelJob (jobid)
+            except cups.IPPError, (e, m):
+                if (e != cups.IPP_NOT_POSSIBLE and
+                    e != cups.IPP_NOT_FOUND):
+                    self.show_IPP_Error (e, m)
+                self.monitor.update ()
+                c._end_operation ()
+                return
             c._end_operation ()
-            return
 
-        c._end_operation ()
         del c
         self.monitor.update ()
 
@@ -935,18 +950,19 @@ class JobViewer (GtkGUI, monitor.Watcher):
         except RuntimeError:
             return
 
-        c._begin_operation (_("holding job"))
-        try:
-            c.setJobHoldUntil (self.jobid, "indefinite")
-        except cups.IPPError, (e, m):
-            if (e != cups.IPP_NOT_POSSIBLE and
-                e != cups.IPP_NOT_FOUND):
-                self.show_IPP_Error (e, m)
-            self.monitor.update ()
+        for jobid in self.jobids:
+            c._begin_operation (_("holding job"))
+            try:
+                c.setJobHoldUntil (jobid, "indefinite")
+            except cups.IPPError, (e, m):
+                if (e != cups.IPP_NOT_POSSIBLE and
+                    e != cups.IPP_NOT_FOUND):
+                    self.show_IPP_Error (e, m)
+                self.monitor.update ()
+                c._end_operation ()
+                return
             c._end_operation ()
-            return
 
-        c._end_operation ()
         del c
         self.monitor.update ()
 
@@ -959,18 +975,19 @@ class JobViewer (GtkGUI, monitor.Watcher):
         except RuntimeError:
             return
 
-        c._begin_operation (_("releasing job"))
-        try:
-            c.setJobHoldUntil (self.jobid, "no-hold")
-        except cups.IPPError, (e, m):
-            if (e != cups.IPP_NOT_POSSIBLE and
-                e != cups.IPP_NOT_FOUND):
-                self.show_IPP_Error (e, m)
-            self.monitor.update ()
+        for jobid in self.jobids:
+            c._begin_operation (_("releasing job"))
+            try:
+                c.setJobHoldUntil (jobid, "no-hold")
+            except cups.IPPError, (e, m):
+                if (e != cups.IPP_NOT_POSSIBLE and
+                    e != cups.IPP_NOT_FOUND):
+                    self.show_IPP_Error (e, m)
+                self.monitor.update ()
+                c._end_operation ()
+                return
             c._end_operation ()
-            return
 
-        c._end_operation ()
         del c
         self.monitor.update ()
 
@@ -980,7 +997,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                      host=self.host,
                                      port=self.port,
                                      encryption=self.encryption)
-            c.restartJob (self.jobid)
+            for jobid in self.jobids:
+                c.restartJob (jobid)
             del c
         except cups.IPPError, (e, m):
             self.show_IPP_Error (e, m)
@@ -992,7 +1010,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.monitor.update ()
 
     def on_job_authenticate_activate(self, menuitem):
-        self.display_auth_info_dialog (self.jobid)
+        for jobid in self.jobids:
+            self.display_auth_info_dialog (jobid)
 
     def on_refresh_activate(self, menuitem):
         self.monitor.refresh ()
