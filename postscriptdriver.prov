@@ -20,7 +20,12 @@
 
 import sys
 
-import cups
+try:
+    import cups
+    CAN_EXAMINE_PPDS=True
+except:
+    CAN_EXAMINE_PPDS=False
+
 from getopt import getopt
 import os
 import posix
@@ -206,23 +211,58 @@ class TagBuilder:
         if filelist == None:
             filelist = sys.stdin
 
+        paths = map (lambda x: x.rstrip (), filelist.readlines ())
         self.ids = DeviceIDs ()
-        while True:
-            path = filelist.readline ()
-            if path == '':
-                break
 
-            path = path.rstrip ()
-            st = os.stat (path)
-            if not stat.S_ISREG (st.st_mode):
-                continue
+        for path in paths:
+            if path.find ("/usr/lib/cups/driver/") != -1:
+                try:
+                    self.ids += DynamicDriver (path).list ()
+                except TimedOut:
+                    pass
 
-            if (path.find ("/usr/share/cups/model/") != -1 or
-                path.find ("/usr/share/ppd/") != -1 or
-                path.find ("/usr/share/cups/drv/") != -1):
-                self.ids += PPDDriver (path).list ()
-            elif path.find ("/usr/lib/cups/driver/") != -1:
-                self.ids += DynamicDriver (path).list ()
+        if CAN_EXAMINE_PPDS:
+            candidates = set()
+            symlinks = set()
+            for searchpath in ["/usr/share/cups/model/",
+                               "/usr/share/ppd/",
+                               "/usr/share/cups/drv/"]:
+                for path in paths:
+                    if path.find (searchpath) != -1:
+                        st = os.lstat (path)
+                        if stat.S_ISLNK (st.st_mode):
+                            symlinks.add (path)
+                        elif stat.S_ISREG (st.st_mode):
+                            candidates.add (path)
+
+            # Now check for symlinks (just one level)
+            for each in symlinks:
+                target = os.path.realpath (each)
+                if target in candidates:
+                    continue
+
+                try:
+                    st = os.lstat (target)
+                except OSError:
+                    continue
+
+                if stat.S_ISREG (st.st_mode):
+                    candidates.add (target)
+                elif stat.S_ISDIR (st.st_mode):
+                    if not target.endswith (os.path.sep):
+                        target += os.path.sep
+
+                    for path in paths:
+                        if path.find (target) != -1:
+                            st = os.lstat (path)
+                            if stat.S_ISREG (st.st_mode):
+                                candidates.add (path)
+
+            for path in candidates:
+                try:
+                    self.ids += PPDDriver (path).list ()
+                except TimedOut:
+                    pass
 
     def get_tags (self):
         return self.ids.get_tags ()
