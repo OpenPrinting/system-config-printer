@@ -1,5 +1,7 @@
-#!/usr/bin/python
+#!/bin/bash
 # -*- python -*-
+tail -n +5 -- "$0" | exec python -- "$@"
+exit ${PIPESTATUS[1]}
 
 ## Copyright (C) 2009 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
