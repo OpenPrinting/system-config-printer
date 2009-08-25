@@ -1,6 +1,6 @@
 #!/bin/bash
-# -*- python -*-
-exec python -- "$@" <(tail -n +4 -- "$0")
+shopt -s execfail
+exec -a "$0" python -- "$@" <(tail -n +4 -- "$0") || exit 0 # -*- python -*-
 
 ## Copyright (C) 2009 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
