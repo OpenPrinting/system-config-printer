@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-08-19 18:01+0100\n"
+"POT-Creation-Date: 2009-08-26 09:27+0100\n"
 "PO-Revision-Date: 2009-04-02 13:12+0200\n"
 "Last-Translator: Ondrej Šulek <feonsu@gmail.com>\n"
 "Language-Team: Slovak <fedora-trans-sk@redhat.com>\n"
@@ -56,11 +56,11 @@ msgstr ""
 msgid "Enter IP address"
 msgstr "Zadajte IP adresu"
 
-#: ../authconn.py:36
+#: ../authconn.py:36 ../ui/NewPrinterWindow.glade.h:84
 msgid "Username:"
 msgstr "Používateľské meno:"
 
-#: ../authconn.py:37
+#: ../authconn.py:37 ../ui/NewPrinterWindow.glade.h:54
 msgid "Password:"
 msgstr "Heslo:"
 
@@ -208,73 +208,73 @@ msgstr "Všetky tlačiarne"
 msgid "Favorites"
 msgstr "Obľúbené"
 
-#: ../jobviewer.py:167
+#: ../jobviewer.py:166
 msgid "_Hold"
 msgstr "_Podržať"
 
-#: ../jobviewer.py:169
+#: ../jobviewer.py:168
 msgid "_Release"
 msgstr "_Uvoľniť"
 
-#: ../jobviewer.py:171
+#: ../jobviewer.py:170
 msgid "Re_print"
 msgstr "Znova _vytlač"
 
-#: ../jobviewer.py:173
+#: ../jobviewer.py:172
 msgid "_Authenticate"
 msgstr "_Overenie"
 
-#: ../jobviewer.py:211 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:210 ../troubleshoot/PrintTestPage.py:82
 msgid "Job"
 msgstr "Úloha"
 
-#: ../jobviewer.py:212
+#: ../jobviewer.py:211
 msgid "User"
 msgstr "Používateľ"
 
-#: ../jobviewer.py:213 ../troubleshoot/PrintTestPage.py:86
+#: ../jobviewer.py:212 ../troubleshoot/PrintTestPage.py:86
 msgid "Document"
 msgstr "Dokument"
 
-#: ../jobviewer.py:214 ../my-default-printer.py:153
+#: ../jobviewer.py:213 ../my-default-printer.py:153
 #: ../system-config-printer.py:371 ../system-config-printer.py:1423
 #: ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Tlačiareň"
 
-#: ../jobviewer.py:215
+#: ../jobviewer.py:214
 msgid "Size"
 msgstr "Veľkosť"
 
-#: ../jobviewer.py:216
+#: ../jobviewer.py:230
 msgid "Time submitted"
 msgstr "Čas odoslania"
 
-#: ../jobviewer.py:217 ../troubleshoot/PrintTestPage.py:87
+#: ../jobviewer.py:234 ../troubleshoot/PrintTestPage.py:87
 msgid "Status"
 msgstr "Stav"
 
-#: ../jobviewer.py:253
+#: ../jobviewer.py:266
 #, python-format
 msgid "my jobs on %s"
 msgstr "moje úlohy na %s"
 
-#: ../jobviewer.py:255
+#: ../jobviewer.py:268
 msgid "my jobs"
 msgstr "moje úlohy"
 
-#: ../jobviewer.py:260
+#: ../jobviewer.py:273
 msgid "all jobs"
 msgstr "všetky úlohy"
 
-#: ../jobviewer.py:261
+#: ../jobviewer.py:274
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "Stav tlače dokumentu (%s)"
 
-#: ../jobviewer.py:396 ../jobviewer.py:461 ../jobviewer.py:462
-#: ../jobviewer.py:513 ../jobviewer.py:630 ../jobviewer.py:757
-#: ../jobviewer.py:1233 ../jobviewer.py:1259 ../system-config-printer.py:2629
+#: ../jobviewer.py:413 ../jobviewer.py:701 ../jobviewer.py:1498
+#: ../jobviewer.py:1503 ../jobviewer.py:1512 ../jobviewer.py:1591
+#: ../system-config-printer.py:2665 ../ui/NewPrinterWindow.glade.h:82
 #: ../troubleshoot/ChooseNetworkPrinter.py:101
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:105
@@ -285,186 +285,176 @@ msgstr "Stav tlače dokumentu (%s)"
 msgid "Unknown"
 msgstr "Neznámy"
 
-#: ../jobviewer.py:402
+#: ../jobviewer.py:419
 msgid "a minute ago"
 msgstr "pred minútou"
 
-#: ../jobviewer.py:405
+#: ../jobviewer.py:422
 #, python-format
 msgid "%d minutes ago"
 msgstr "Pred %d minútami"
 
-#: ../jobviewer.py:409
+#: ../jobviewer.py:426
 msgid "an hour ago"
 msgstr "pred hodinou"
 
-#: ../jobviewer.py:411
+#: ../jobviewer.py:428
 #, python-format
 msgid "%d hours ago"
 msgstr "Pred %d hodinami"
 
-#: ../jobviewer.py:415
+#: ../jobviewer.py:432
 msgid "yesterday"
 msgstr "včera"
 
-#: ../jobviewer.py:417
+#: ../jobviewer.py:434
 #, python-format
 msgid "%d days ago"
 msgstr "Pred %d dňami"
 
-#: ../jobviewer.py:421
+#: ../jobviewer.py:438
 msgid "last week"
 msgstr "minulý týždeň"
 
-#: ../jobviewer.py:423
+#: ../jobviewer.py:440
 #, python-format
 msgid "%d weeks ago"
 msgstr "Pred %d týždňami"
 
-#: ../jobviewer.py:565
-msgid "Held for authentication"
-msgstr "Pozdržaný pre overenie"
-
-#: ../jobviewer.py:567 ../troubleshoot/PrintTestPage.py:42
-msgid "Held"
-msgstr "Pozdržaný"
-
-#: ../jobviewer.py:603
-#, python-format
-msgid "Held until %s"
-msgstr "Pozdržať do %s"
-
-#: ../jobviewer.py:607
-msgid "Held until day-time"
-msgstr "Pozdržať do rána"
-
-#: ../jobviewer.py:609
-msgid "Held until evening"
-msgstr "Pozdržať do večera"
-
-#: ../jobviewer.py:611
-msgid "Held until night-time"
-msgstr "Pozdržať do noci"
-
-#: ../jobviewer.py:613
-msgid "Held until second shift"
-msgstr "Pozdržať do druhej zmeny"
-
-#: ../jobviewer.py:615
-msgid "Held until third shift"
-msgstr "Pozdržať do tretej zmeny"
-
-#: ../jobviewer.py:617
-msgid "Held until weekend"
-msgstr "Pozdržať do víkendu"
-
-#: ../jobviewer.py:620 ../troubleshoot/PrintTestPage.py:41
-msgid "Pending"
-msgstr "Čakajúci"
-
-#: ../jobviewer.py:621 ../system-config-printer.py:187
-#: ../troubleshoot/PrintTestPage.py:43
-msgid "Processing"
-msgstr "Spracúva sa"
-
-#: ../jobviewer.py:622 ../system-config-printer.py:189
-#: ../troubleshoot/PrintTestPage.py:44
-msgid "Stopped"
-msgstr "Zastavené"
-
-#: ../jobviewer.py:623 ../troubleshoot/PrintTestPage.py:45
-msgid "Canceled"
-msgstr "Zrušené"
-
-#: ../jobviewer.py:624 ../troubleshoot/PrintTestPage.py:46
-msgid "Aborted"
-msgstr "Prerušené"
-
-#: ../jobviewer.py:625 ../troubleshoot/PrintTestPage.py:47
-msgid "Completed"
-msgstr "Dokončené"
-
-#: ../jobviewer.py:698 ../jobviewer.py:787
+#: ../jobviewer.py:642 ../jobviewer.py:731
 msgid "authenticating job"
 msgstr "overovanie "
 
-#: ../jobviewer.py:755
+#: ../jobviewer.py:699
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "Pre tlač dokumentu `%s' (úloha %d) je vyžadované overenie"
 
-#: ../jobviewer.py:929
+#: ../jobviewer.py:872
 msgid "Cancel Job"
 msgstr "Zrušiť úlohu"
 
-#: ../jobviewer.py:943
+#: ../jobviewer.py:886
 msgid "Do you really want to cancel this job?"
 msgstr "Naozaj chcete zrušiť túto úlohu?"
 
-#: ../jobviewer.py:971
+#: ../jobviewer.py:914
 msgid "canceling job"
 msgstr "rušenie úlohy"
 
-#: ../jobviewer.py:995
+#: ../jobviewer.py:938
 msgid "holding job"
 msgstr "zadržanie úlohy"
 
-#: ../jobviewer.py:1019
+#: ../jobviewer.py:962
 msgid "releasing job"
 msgstr "uvoľňovanie úlohy"
 
-#: ../jobviewer.py:1129
+#: ../jobviewer.py:1080
 msgid "No documents queued"
 msgstr "Žiadne dokumenty vo fronte"
 
-#: ../jobviewer.py:1131
+#: ../jobviewer.py:1082
 msgid "1 document queued"
 msgstr "1 dokument vo fronte"
 
-#: ../jobviewer.py:1133
+#: ../jobviewer.py:1084
 #, python-format
 msgid "%d documents queued"
 msgstr "%d dokumentov vo fronte"
 
-#: ../jobviewer.py:1260
-#, fuzzy
-msgid "Document printed"
-msgstr "Dokument"
-
-#: ../jobviewer.py:1261
-#, python-format
-msgid "Document `%s' has finished printing on `%s'."
-msgstr "Dokument `%s' skončil tlač na `%s'."
-
-#: ../jobviewer.py:1421
+#: ../jobviewer.py:1304
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr ""
 "Pri odosielaní dokumentu `%s' (úloha %d) na tlačiareň sa vyskytol problém."
 
-#: ../jobviewer.py:1424
+#: ../jobviewer.py:1307
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "Pri spracovávaní dokumentu `%s' (úloha %d) sa vyskytol problém."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1431
+#: ../jobviewer.py:1314
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "Pri tlači dokumentu `%s' (úloha %d) sa vyskytol problém: `%s'."
 
-#: ../jobviewer.py:1438 ../jobviewer.py:1454
+#: ../jobviewer.py:1321 ../jobviewer.py:1337
 msgid "Print Error"
 msgstr "Chyba tlače"
 
-#: ../jobviewer.py:1439
+#: ../jobviewer.py:1322
 msgid "_Diagnose"
 msgstr "_Diagnostikovať"
 
-#: ../jobviewer.py:1460
+#: ../jobviewer.py:1343
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "Tlačiareň `%s' bola zakázaná."
+
+#: ../jobviewer.py:1526
+msgid "Held for authentication"
+msgstr "Pozdržaný pre overenie"
+
+#: ../jobviewer.py:1528 ../troubleshoot/PrintTestPage.py:42
+msgid "Held"
+msgstr "Pozdržaný"
+
+#: ../jobviewer.py:1564
+#, python-format
+msgid "Held until %s"
+msgstr "Pozdržať do %s"
+
+#: ../jobviewer.py:1568
+msgid "Held until day-time"
+msgstr "Pozdržať do rána"
+
+#: ../jobviewer.py:1570
+msgid "Held until evening"
+msgstr "Pozdržať do večera"
+
+#: ../jobviewer.py:1572
+msgid "Held until night-time"
+msgstr "Pozdržať do noci"
+
+#: ../jobviewer.py:1574
+msgid "Held until second shift"
+msgstr "Pozdržať do druhej zmeny"
+
+#: ../jobviewer.py:1576
+msgid "Held until third shift"
+msgstr "Pozdržať do tretej zmeny"
+
+#: ../jobviewer.py:1578
+msgid "Held until weekend"
+msgstr "Pozdržať do víkendu"
+
+#: ../jobviewer.py:1581 ../troubleshoot/PrintTestPage.py:41
+msgid "Pending"
+msgstr "Čakajúci"
+
+#: ../jobviewer.py:1582 ../system-config-printer.py:187
+#: ../troubleshoot/PrintTestPage.py:43
+msgid "Processing"
+msgstr "Spracúva sa"
+
+#: ../jobviewer.py:1583 ../system-config-printer.py:189
+#: ../troubleshoot/PrintTestPage.py:44
+msgid "Stopped"
+msgstr "Zastavené"
+
+#: ../jobviewer.py:1584 ../troubleshoot/PrintTestPage.py:45
+msgid "Canceled"
+msgstr "Zrušené"
+
+#: ../jobviewer.py:1585 ../troubleshoot/PrintTestPage.py:46
+msgid "Aborted"
+msgstr "Prerušené"
+
+#: ../jobviewer.py:1586 ../troubleshoot/PrintTestPage.py:47
+msgid "Completed"
+msgstr "Dokončené"
 
 #: ../my-default-printer.py:137 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
@@ -509,7 +499,7 @@ msgid "Authenticated"
 msgstr "Overené"
 
 #: ../ppdippstr.py:50 ../system-config-printer.py:700
-#: ../system-config-printer.py:6299
+#: ../system-config-printer.py:6335
 msgid "None"
 msgstr "Žiadny"
 
@@ -822,7 +812,7 @@ msgstr "Modely"
 msgid "Drivers"
 msgstr "Ovládače"
 
-#: ../system-config-printer.py:652
+#: ../system-config-printer.py:652 ../ui/NewPrinterWindow.glade.h:33
 msgid "Downloadable Drivers"
 msgstr "Ovládače k stiahnutiu"
 
@@ -1038,7 +1028,7 @@ msgid "Connected to %s"
 msgstr "Pripojené k %s"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1313 ../system-config-printer.py:2119
+#: ../system-config-printer.py:1313 ../system-config-printer.py:2152
 msgid "obtaining queue details"
 msgstr "získavanie podrobností o fronte"
 
@@ -1054,8 +1044,8 @@ msgstr "Sieťová tlačiareň (nájdená)"
 msgid "Network class (discovered)"
 msgstr "Sieťová trieda (nájdená)"
 
-#: ../system-config-printer.py:1426 ../system-config-printer.py:5590
-#: ../system-config-printer.py:5660 ../system-config-printer.py:5662
+#: ../system-config-printer.py:1426 ../system-config-printer.py:5626
+#: ../system-config-printer.py:5696 ../system-config-printer.py:5698
 msgid "Fax"
 msgstr "Fax"
 
@@ -1068,36 +1058,36 @@ msgstr "Sieťová tlačiareň"
 msgid "Network print share"
 msgstr "Zdieľaná sieťová tlačiareň"
 
-#: ../system-config-printer.py:1581
-#, python-format
+#: ../system-config-printer.py:1614 ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Otvára sa pripojenie k %s</i>"
 
-#: ../system-config-printer.py:1963
+#: ../system-config-printer.py:1996
 msgid "Installable Options"
 msgstr "Inštalovateľné možnosti"
 
-#: ../system-config-printer.py:1964
+#: ../system-config-printer.py:1997 ../ui/PrinterPropertiesDialog.glade.h:59
 msgid "Printer Options"
 msgstr "Možnosti tlačiarne"
 
-#: ../system-config-printer.py:2001
+#: ../system-config-printer.py:2034
 #, python-format
 msgid "modifying class %s"
 msgstr "upravovanie triedy %s"
 
-#: ../system-config-printer.py:2003 ../system-config-printer.py:3137
-#: ../system-config-printer.py:3162 ../system-config-printer.py:6587
-#: ../system-config-printer.py:6599 ../system-config-printer.py:6621
+#: ../system-config-printer.py:2036 ../system-config-printer.py:3173
+#: ../system-config-printer.py:3198 ../system-config-printer.py:6623
+#: ../system-config-printer.py:6635 ../system-config-printer.py:6657
 #, python-format
 msgid "modifying printer %s"
 msgstr "upravovanie tlačiarne %s"
 
-#: ../system-config-printer.py:2018
+#: ../system-config-printer.py:2051
 msgid "This will delete this class!"
 msgstr "Spôsobí zmazanie triedy!"
 
-#: ../system-config-printer.py:2019
+#: ../system-config-printer.py:2052
 msgid "Proceed anyway?"
 msgstr "Pokračovať aj tak?"
 
@@ -1105,43 +1095,43 @@ msgstr "Pokračovať aj tak?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:2107 ../system-config-printer.py:3321
+#: ../system-config-printer.py:2140 ../system-config-printer.py:3357
 msgid "fetching server settings"
 msgstr "načítavanie nastavení servera"
 
-#: ../system-config-printer.py:2177
+#: ../system-config-printer.py:2210
 msgid "Set Default Printer"
 msgstr "Nastaviť predvolenú tlačiareň"
 
-#: ../system-config-printer.py:2179
+#: ../system-config-printer.py:2212
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "Chcete nastaviť túto tlačiareň ako predvolenú pre celý systém?"
 
-#: ../system-config-printer.py:2181
+#: ../system-config-printer.py:2214
 msgid "Set as the _system-wide default printer"
 msgstr "Na_staviť ako predvolenú tlačiareň pre celý systém"
 
-#: ../system-config-printer.py:2183
+#: ../system-config-printer.py:2216
 msgid "_Clear my personal default setting"
 msgstr "_Vyčistiť moje osobné predvolené nastavenie"
 
-#: ../system-config-printer.py:2184
+#: ../system-config-printer.py:2217
 msgid "Set as my _personal default printer"
 msgstr "Nastaviť ako osobnú _predvolenú tlačiareň"
 
-#: ../system-config-printer.py:2189
+#: ../system-config-printer.py:2222
 msgid "setting default printer"
 msgstr "nastavenie predvolenej tlačiarne"
 
-#: ../system-config-printer.py:2246
+#: ../system-config-printer.py:2279
 msgid "printing test page"
 msgstr "tlačí sa skúšobná stránka"
 
-#: ../system-config-printer.py:2259 ../system-config-printer.py:2294
+#: ../system-config-printer.py:2292 ../system-config-printer.py:2327
 msgid "Not possible"
 msgstr "Nie je možné"
 
-#: ../system-config-printer.py:2260 ../system-config-printer.py:2295
+#: ../system-config-printer.py:2293 ../system-config-printer.py:2328
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -1149,20 +1139,20 @@ msgstr ""
 "Vzdialený server neprijal tlačovú úlohu, pravdepodobne preto, lebo tlačiareň "
 "nie je zdieľaná."
 
-#: ../system-config-printer.py:2272 ../system-config-printer.py:2287
+#: ../system-config-printer.py:2305 ../system-config-printer.py:2320
 msgid "Submitted"
 msgstr "Odoslané"
 
-#: ../system-config-printer.py:2273
+#: ../system-config-printer.py:2306
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Skúšobná stránka odoslaná ako úloha %d"
 
-#: ../system-config-printer.py:2280
+#: ../system-config-printer.py:2313
 msgid "sending maintenance command"
 msgstr "odosielanie príkazu na údržbu"
 
-#: ../system-config-printer.py:2288
+#: ../system-config-printer.py:2321
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Príkaz na údržbu bol odoslaný ako úloha %d"
@@ -1170,73 +1160,73 @@ msgstr "Príkaz na údržbu bol odoslaný ako úloha %d"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2362 ../system-config-printer.py:2458
+#: ../system-config-printer.py:2395 ../system-config-printer.py:2491
 msgid "Error"
 msgstr "Chyba"
 
-#: ../system-config-printer.py:2363
+#: ../system-config-printer.py:2396
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Počas pripájania na CUPS server sa vyskytol problém."
 
-#: ../system-config-printer.py:2459
+#: ../system-config-printer.py:2492
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Možnosť '%s' má pevne danú hodnotu '%s', ktorá sa nedá zmeniť."
 
-#: ../system-config-printer.py:2543
+#: ../system-config-printer.py:2576
 msgid "Marker levels are not reported for this printer."
 msgstr "Táto tlačiareň nezobrazuje úroveň atramentu."
 
-#: ../system-config-printer.py:2848
+#: ../system-config-printer.py:2884
 msgid "Cannot Rename"
 msgstr "Nedá sa premenovať"
 
-#: ../system-config-printer.py:2849
+#: ../system-config-printer.py:2885
 msgid "There are queued jobs."
 msgstr "Vo fronte sú úlohy."
 
-#: ../system-config-printer.py:2867
+#: ../system-config-printer.py:2903
 msgid "Renaming will lose history"
 msgstr ""
 
-#: ../system-config-printer.py:2869
+#: ../system-config-printer.py:2905
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr ""
 
-#: ../system-config-printer.py:2940
+#: ../system-config-printer.py:2976
 msgid "renaming printer"
 msgstr "premenováva sa tlačiareň"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:3025
+#: ../system-config-printer.py:3061
 msgid "copying printer"
 msgstr "kopíruje sa tlačiareň"
 
-#: ../system-config-printer.py:3089
+#: ../system-config-printer.py:3125
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "Skutočne odstrániť triedu '%s'?"
 
-#: ../system-config-printer.py:3091
+#: ../system-config-printer.py:3127
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Skutočne odstrániť tlačiareň '%s'?"
 
-#: ../system-config-printer.py:3093
+#: ../system-config-printer.py:3129
 msgid "Really delete selected destinations?"
 msgstr "Skutočne odstrániť označené umiestnenia?"
 
-#: ../system-config-printer.py:3114
+#: ../system-config-printer.py:3150
 #, python-format
 msgid "deleting printer %s"
 msgstr "odstraňuje sa tlačiareň %s"
 
-#: ../system-config-printer.py:3188
+#: ../system-config-printer.py:3224
 msgid "Publish Shared Printers"
 msgstr "Publikovať zdieľané tlačiarne"
 
-#: ../system-config-printer.py:3189
+#: ../system-config-printer.py:3225
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -1244,7 +1234,7 @@ msgstr ""
 "Zdieľané tlačiarne nie sú dostupné ostatným ľuďom, pokiaľ nie je v nastavení "
 "servera aktivovaná možnosť 'Publikovať zdieľané tlačiarne'."
 
-#: ../system-config-printer.py:3382
+#: ../system-config-printer.py:3418
 msgid "modifying server settings"
 msgstr "upravovanie nastavení servera"
 
@@ -1254,11 +1244,11 @@ msgstr "upravovanie nastavení servera"
 #. be unblocked.  Unfortunately, this is not yet possible
 #. (bug #440469).  However, we can display a dialog to suggest
 #. that now might be a good time to review the firewall settings.
-#: ../system-config-printer.py:3407
+#: ../system-config-printer.py:3443
 msgid "Review Firewall"
 msgstr "Skontrolovať firewall"
 
-#: ../system-config-printer.py:3408
+#: ../system-config-printer.py:3444
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
@@ -1266,20 +1256,20 @@ msgstr ""
 "Pre povolenie sieťovej tlače na tento počítač bude možno potrebné upraviť "
 "firewall."
 
-#: ../system-config-printer.py:3744
+#: ../system-config-printer.py:3780
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "Prehľadávanie nie je dostupné (pysmbc nie je nainštalovaný)"
 
 #. SMB list columns
-#: ../system-config-printer.py:3750
+#: ../system-config-printer.py:3786
 msgid "Share"
 msgstr "Zdieľanie"
 
-#: ../system-config-printer.py:3756
+#: ../system-config-printer.py:3792
 msgid "Comment"
 msgstr "Komentár"
 
-#: ../system-config-printer.py:3771
+#: ../system-config-printer.py:3807
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -1287,59 +1277,60 @@ msgstr ""
 "Súbory tlačových popisov vo formáte PostScript (*.ppd, *.PPD, *.ppd.gz, *."
 "PPD.gz, *.PPD.GZ)"
 
-#: ../system-config-printer.py:3780
+#: ../system-config-printer.py:3816
 msgid "All files (*)"
 msgstr "Všetky súbory (*)"
 
-#: ../system-config-printer.py:3816 ../system-config-printer.py:5993
-#: ../system-config-printer.py:6031 ../applet.py:128
+#: ../system-config-printer.py:3852 ../system-config-printer.py:6029
+#: ../system-config-printer.py:6067 ../applet.py:127
 msgid "Search"
 msgstr "Hľadať"
 
-#: ../system-config-printer.py:3840 ../system-config-printer.py:3864
+#: ../system-config-printer.py:3876 ../system-config-printer.py:3900
+#: ../ui/NewPrinterWindow.glade.h:51
 msgid "New Printer"
 msgstr "Nová tlačiareň"
 
-#: ../system-config-printer.py:3851
+#: ../system-config-printer.py:3887
 msgid "New Class"
 msgstr "Nová trieda"
 
-#: ../system-config-printer.py:3856
+#: ../system-config-printer.py:3892
 msgid "Change Device URI"
 msgstr "Zmeniť URI zariadenia"
 
-#: ../system-config-printer.py:3862
+#: ../system-config-printer.py:3898
 msgid "Change Driver"
 msgstr "Zmeniť ovládač"
 
-#: ../system-config-printer.py:4039 ../system-config-printer.py:4119
-#: ../system-config-printer.py:4434 ../system-config-printer.py:4633
-#: ../system-config-printer.py:5836 ../system-config-printer.py:6018
+#: ../system-config-printer.py:4075 ../system-config-printer.py:4155
+#: ../system-config-printer.py:4470 ../system-config-printer.py:4669
+#: ../system-config-printer.py:5872 ../system-config-printer.py:6054
 msgid "Searching"
 msgstr "Hľadá sa"
 
-#: ../system-config-printer.py:4040
+#: ../system-config-printer.py:4076
 msgid "Searching for downloadable drivers"
 msgstr "Hľadajú sa ovládače k stiahnutiu"
 
-#: ../system-config-printer.py:4120 ../system-config-printer.py:4435
+#: ../system-config-printer.py:4156 ../system-config-printer.py:4471
 msgid "Searching for drivers"
 msgstr "Hľadajú sa ovládače"
 
-#: ../system-config-printer.py:4634 ../system-config-printer.py:5837
+#: ../system-config-printer.py:4670 ../system-config-printer.py:5873
 msgid "Searching for printers"
 msgstr "Hľadajú sa tlačiarne"
 
-#: ../system-config-printer.py:4644
+#: ../system-config-printer.py:4680
 msgid "fetching device list"
 msgstr "získava sa zoznam zariadení"
 
 #. Tell the user why he needs the plugin
-#: ../system-config-printer.py:4755
+#: ../system-config-printer.py:4791
 msgid "For this printer a proprietary driver plugin from HP is available.\n"
 msgstr "Pre túto tlačiareň je dostupný proprietárny modul ovládača od HP.\n"
 
-#: ../system-config-printer.py:4758
+#: ../system-config-printer.py:4794
 msgid ""
 "The installation of the plugin is required for your printer to work.\n"
 "\n"
@@ -1347,7 +1338,7 @@ msgstr ""
 "Inštalácia modulu je vyžadovaná pre beh vašej tlačiarne.\n"
 "\n"
 
-#: ../system-config-printer.py:4761
+#: ../system-config-printer.py:4797
 msgid ""
 "Installing the plugin is optional, it completes or enhances the "
 "functionality\n"
@@ -1358,106 +1349,106 @@ msgstr ""
 "tlačiarne. Bez modulu fungujú iba základné funkcie.\n"
 "\n"
 
-#: ../system-config-printer.py:4765
+#: ../system-config-printer.py:4801
 msgid "The plugin provides the following features:\n"
 msgstr "Modul poskytuje nasledujúce funkcie:\n"
 
-#: ../system-config-printer.py:4768
+#: ../system-config-printer.py:4804
 msgid " - Printing support\n"
 msgstr " - podpora tlače\n"
 
-#: ../system-config-printer.py:4771
+#: ../system-config-printer.py:4807
 msgid " - Faster printing\n"
 msgstr " - rýchlejšia tlač\n"
 
-#: ../system-config-printer.py:4774
+#: ../system-config-printer.py:4810
 msgid " - Better printout quality\n"
 msgstr " - lepšia kvalita tlače\n"
 
-#: ../system-config-printer.py:4777
+#: ../system-config-printer.py:4813
 msgid " - Extra printing features\n"
 msgstr " - ďalšie tlačové funkcie\n"
 
-#: ../system-config-printer.py:4780
+#: ../system-config-printer.py:4816
 msgid " - Scanning support\n"
 msgstr " - podpora skenovania\n"
 
-#: ../system-config-printer.py:4783
+#: ../system-config-printer.py:4819
 msgid " - Faster scanning\n"
 msgstr " - rýchlejšie skenovanie\n"
 
-#: ../system-config-printer.py:4786
+#: ../system-config-printer.py:4822
 msgid " - Better scanning image quality\n"
 msgstr " - lepšia kvalita skenovania obrázku\n"
 
-#: ../system-config-printer.py:4789
+#: ../system-config-printer.py:4825
 msgid " - Faxing support\n"
 msgstr " - podpora faxu\n"
 
-#: ../system-config-printer.py:4792
+#: ../system-config-printer.py:4828
 msgid " - Extra fax features\n"
 msgstr " - ďalšie faxové funkcie\n"
 
-#: ../system-config-printer.py:4795
+#: ../system-config-printer.py:4831
 msgid " - Better Input/Output support\n"
 msgstr " - lepšia vstupno/výstupná podpora\n"
 
-#: ../system-config-printer.py:4798
+#: ../system-config-printer.py:4834
 msgid " - Extra user interface features\n"
 msgstr " - ďalšie funkcie užívateľského rozhrania\n"
 
-#: ../system-config-printer.py:4801
+#: ../system-config-printer.py:4837
 msgid " - Other extra features\n"
 msgstr " - ďalšie extra funkcie\n"
 
-#: ../system-config-printer.py:4806
+#: ../system-config-printer.py:4842
 msgid "Install plugin"
 msgstr "Inštalovať modul"
 
-#: ../system-config-printer.py:4807
+#: ../system-config-printer.py:4843
 msgid "Do not set up printer"
 msgstr "Nenastavovať tlačiareň"
 
-#: ../system-config-printer.py:4808
+#: ../system-config-printer.py:4844
 msgid "Set up without plugin"
 msgstr "Nastaviť tlačiareň bez modulu"
 
-#: ../system-config-printer.py:4810 ../troubleshoot/PrintTestPage.py:118
+#: ../system-config-printer.py:4846 ../troubleshoot/PrintTestPage.py:118
 msgid "Yes"
 msgstr "Áno"
 
-#: ../system-config-printer.py:4811 ../troubleshoot/PrintTestPage.py:119
+#: ../system-config-printer.py:4847 ../troubleshoot/PrintTestPage.py:119
 msgid "No"
 msgstr "Nie"
 
-#: ../system-config-printer.py:4980 ../system-config-printer.py:4984
+#: ../system-config-printer.py:5016 ../system-config-printer.py:5020
 msgid " (Current)"
 msgstr " (Aktuálny)"
 
-#: ../system-config-printer.py:5037
+#: ../system-config-printer.py:5073
 msgid "Other"
 msgstr "Iné"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:5053
+#: ../system-config-printer.py:5089
 msgid "Network Printer"
 msgstr "Sieťová tlačiareň"
 
-#: ../system-config-printer.py:5057
+#: ../system-config-printer.py:5093
 msgid "Find Network Printer"
 msgstr "Nájsť sieťovú tlačiareň"
 
-#: ../system-config-printer.py:5130
+#: ../system-config-printer.py:5166
 msgid "Scanning..."
 msgstr "Prehľadáva sa..."
 
-#: ../system-config-printer.py:5185
+#: ../system-config-printer.py:5221
 msgid "No Print Shares"
 msgstr "Žiadne zdieľané tlačiarne"
 
-#: ../system-config-printer.py:5186
+#: ../system-config-printer.py:5222
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1465,90 +1456,90 @@ msgstr ""
 "Neboli nájdené žiadne zdieľané tlačiarne. Skontrolujte prosím, či služba "
 "Samba je označená ako dôveryhodná v nastaveniach vášho firewallu."
 
-#: ../system-config-printer.py:5447 ../system-config-printer.py:5524
+#: ../system-config-printer.py:5483 ../system-config-printer.py:5560
 msgid "Print Share Verified"
 msgstr "Zdieľaná tlačiareň overená"
 
-#: ../system-config-printer.py:5448 ../system-config-printer.py:5525
+#: ../system-config-printer.py:5484 ../system-config-printer.py:5561
 msgid "This print share is accessible."
 msgstr "Zdieľaná tlačiareň je dostupná."
 
-#: ../system-config-printer.py:5453 ../system-config-printer.py:5529
+#: ../system-config-printer.py:5489 ../system-config-printer.py:5565
 msgid "This print share is not accessible."
 msgstr "Zdieľaná tlačiareň nie je dostupná."
 
-#: ../system-config-printer.py:5456
+#: ../system-config-printer.py:5492
 msgid "Print Share Inaccessible"
 msgstr "Zdieľaná tlačiareň nedostupná."
 
-#: ../system-config-printer.py:5502
+#: ../system-config-printer.py:5538
 #, fuzzy
 msgid "Verifying"
 msgstr "Overené"
 
-#: ../system-config-printer.py:5503
+#: ../system-config-printer.py:5539
 #, fuzzy
 msgid "Verifying printer"
 msgstr "upravovanie tlačiarne %s"
 
-#: ../system-config-printer.py:5528
+#: ../system-config-printer.py:5564
 msgid "Inaccessible"
 msgstr "Nedostupná"
 
-#: ../system-config-printer.py:5582
+#: ../system-config-printer.py:5618
 msgid "Parallel Port"
 msgstr "Paralelný port"
 
-#: ../system-config-printer.py:5584
+#: ../system-config-printer.py:5620
 msgid "Serial Port"
 msgstr "Sériový port"
 
-#: ../system-config-printer.py:5586
+#: ../system-config-printer.py:5622
 msgid "USB"
 msgstr "USB"
 
-#: ../system-config-printer.py:5588 ../system-config-printer.py:5591
+#: ../system-config-printer.py:5624 ../system-config-printer.py:5627
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../system-config-printer.py:5593
+#: ../system-config-printer.py:5629
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardware Abstraction Layer (HAL)"
 
-#: ../system-config-printer.py:5595
+#: ../system-config-printer.py:5631
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../system-config-printer.py:5604
+#: ../system-config-printer.py:5640
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "LPD/LPR fronta '%s'"
 
-#: ../system-config-printer.py:5606
+#: ../system-config-printer.py:5642
 msgid "LPD/LPR queue"
 msgstr "LPD/LPR fronta"
 
-#: ../system-config-printer.py:5609
+#: ../system-config-printer.py:5645
 msgid "Windows Printer via SAMBA"
 msgstr "Tlačiareň Windows pomocou SAMBA"
 
-#: ../system-config-printer.py:5611
+#: ../system-config-printer.py:5647 ../ui/NewPrinterWindow.glade.h:43
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.py:5613
+#: ../system-config-printer.py:5649
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../system-config-printer.py:5695
+#: ../system-config-printer.py:5731
 msgid "A printer connected to the parallel port."
 msgstr "Tlačiareň pripojená cez paralelný port."
 
-#: ../system-config-printer.py:5697
+#: ../system-config-printer.py:5733
 msgid "A printer connected to a USB port."
 msgstr "Tlačiareň pripojená cez USB port."
 
-#: ../system-config-printer.py:5699
+#: ../system-config-printer.py:5735
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1556,7 +1547,7 @@ msgstr ""
 "Softvér HPLIP ovládajúci tlačiarne, alebo funkcie tlače multi-funkčného "
 "zariadenia."
 
-#: ../system-config-printer.py:5702
+#: ../system-config-printer.py:5738
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1564,43 +1555,43 @@ msgstr ""
 "Softvér HPLIP ovládajúci faxovacie stroje, alebo faxovacie funkcie multi-"
 "funkčného zariadenia."
 
-#: ../system-config-printer.py:5705
+#: ../system-config-printer.py:5741
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Lokálna tlačiareň zistená cez Hardware Abstraction Layer (HAL)."
 
-#: ../system-config-printer.py:5906
+#: ../system-config-printer.py:5942
 msgid "No printer was found at that address."
 msgstr "Na zadanej adrese nebola nájdená žiadna tlačiareň."
 
-#: ../system-config-printer.py:6043
+#: ../system-config-printer.py:6079
 msgid "-- Select from search results --"
 msgstr "-- Vyberte z výsledkov hľadania --"
 
-#: ../system-config-printer.py:6045
+#: ../system-config-printer.py:6081
 msgid "-- No matches found --"
 msgstr "-- Nebol nájdený žiadny záznam --"
 
-#: ../system-config-printer.py:6231
+#: ../system-config-printer.py:6267
 msgid " (recommended)"
 msgstr " (odporúčané)"
 
-#: ../system-config-printer.py:6256
+#: ../system-config-printer.py:6292
 msgid "This PPD is generated by foomatic."
 msgstr "Tento PPD bol vygenerovaný foomaticom."
 
-#: ../system-config-printer.py:6281
+#: ../system-config-printer.py:6317
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:6292
+#: ../system-config-printer.py:6328
 msgid "Distributable"
 msgstr "Distribuovateľný"
 
-#: ../system-config-printer.py:6333
+#: ../system-config-printer.py:6369
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:6338
+#: ../system-config-printer.py:6374
 #, python-format
 msgid ""
 "\n"
@@ -1609,20 +1600,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:6343
+#: ../system-config-printer.py:6379
 msgid "No support contacts known"
 msgstr "Neznáme kontakty na podporu"
 
-#: ../system-config-printer.py:6347 ../system-config-printer.py:6360
+#: ../system-config-printer.py:6383 ../system-config-printer.py:6396
 msgid "Not specified."
 msgstr "Nezadané."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6400
+#: ../system-config-printer.py:6436
 msgid "Database error"
 msgstr "Chyba databázy"
 
-#: ../system-config-printer.py:6401
+#: ../system-config-printer.py:6437
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Ovládač '%s' nemôže byť použitý k tlačiarni '%s %s'."
@@ -1630,62 +1621,62 @@ msgstr "Ovládač '%s' nemôže byť použitý k tlačiarni '%s %s'."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6411
+#: ../system-config-printer.py:6447
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
 "Budete musieť nainštalovať balíček '%s', aby bolo možné použiť tento ovládač."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6418
+#: ../system-config-printer.py:6454
 msgid "PPD error"
 msgstr "Chyba PPD"
 
-#: ../system-config-printer.py:6420
+#: ../system-config-printer.py:6456
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Chyba pri čítaní PPD súboru. Možné dôvody sú:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6437
+#: ../system-config-printer.py:6473
 msgid "Downloadable drivers"
 msgstr "Ovládače k stiahnutiu"
 
-#: ../system-config-printer.py:6438
+#: ../system-config-printer.py:6474
 msgid "Failed to download PPD."
 msgstr "Nepodarilo sa stiahnuť PPD."
 
-#: ../system-config-printer.py:6445
+#: ../system-config-printer.py:6481
 msgid "fetching PPD"
 msgstr "získava sa PPD"
 
-#: ../system-config-printer.py:6474 ../system-config-printer.py:6512
+#: ../system-config-printer.py:6510 ../system-config-printer.py:6548
 msgid "No Installable Options"
 msgstr "Žiadne inštalovateľné možnosti"
 
-#: ../system-config-printer.py:6560
+#: ../system-config-printer.py:6596
 #, python-format
 msgid "adding printer %s"
 msgstr "pridáva sa tlačiareň %s"
 
-#: ../system-config-printer.py:6733
+#: ../system-config-printer.py:6769
 msgid "Would you like to print a test page?"
 msgstr "Chcete vytlačiť skúšobnú stránku?"
 
-#: ../system-config-printer.py:6786
+#: ../system-config-printer.py:6822
 msgid "Install driver"
 msgstr "Nainštalovať ovládač"
 
-#: ../system-config-printer.py:6787 ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:6823 ../troubleshoot/CheckPPDSanity.py:131
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Tlačiareň '%s' vyžaduje balíček %s, ktorý nie je momentálne nainštalovaný."
 
-#: ../system-config-printer.py:6803
+#: ../system-config-printer.py:6839
 msgid "Missing driver"
 msgstr "Chýba ovládač"
 
-#: ../system-config-printer.py:6804
+#: ../system-config-printer.py:6840
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -1693,6 +1684,859 @@ msgid ""
 msgstr ""
 "Tlačiareň '%s' vyžaduje program '%s', ktorý nie je momentálne nainštalovaný. "
 "Prosím nainštalujte ho pred používaním tejto tlačiarne."
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "Nástroj na konfiguráciu tlačového servera CUPS"
+
+#: ../ui/AboutDialog.glade.h:2
+#, fuzzy
+msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
+msgstr "Copyright © 2006-2008 Red Hat, Inc."
+
+# Existuje oficiálny preklad licencie?
+#: ../ui/AboutDialog.glade.h:3
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
+msgstr ""
+"Tento program je voľne šíriteľný softvér. Môžete ho šíriť a modifikovať "
+"podľa ustanovení licencie GNU General Public License, vydávanej nadáciou "
+"Free Software Foundation a to buď verzie 2 tejto licencie, alebo (podľa "
+"vášho uváženia) ktorejkoľvek neskoršej verzie.\n"
+"\n"
+"Tento program je šírený v nádeji, že bude užitočný, avšak BEZ AKEJKOĽVEK "
+"ZÁRUKY. Neposkytujú sa ani predpokladané záruky PREDAJNOSTI alebo VHODNOSTI "
+"PRE URČITÝ ÚČEL. Ďalšie podrobnosti hľadajte v licencii GNU General Public "
+"License.\n"
+"\n"
+"Kópiu licencie GNU General Public Licence by ste mali dostať spolu s týmto "
+"programom. Ak sa tak nestalo, požiadajte o ňu Free Software Foundation, "
+"Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
+
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr ""
+"Mike Karas\n"
+"Lubomir Kundrak\n"
+"Ondrej Šulek"
+
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "CUPS _server:"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "Pripojiť sa na server CUPS"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "_Požadovať šifrovanie"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Pripájanie na CUPS server</span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "Pripájanie na server CUPS"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_Inštalovať"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Show _completed jobs"
+msgstr "Zobraziť _dokončené úlohy"
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "_File"
+msgstr "_Súbor"
+
+#: ../ui/JobsWindow.glade.h:3
+msgid "_Job"
+msgstr "Ú_loha"
+
+#: ../ui/JobsWindow.glade.h:4 ../ui/PrintersWindow.glade.h:8
+msgid "_View"
+msgstr "_Zobraziť"
+
+#: ../ui/NewPrinterName.glade.h:1
+msgid "Copy Printer"
+msgstr "Kopírovať tlačiareň"
+
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "Nový názov pre tlačiareň"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>Overenie</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>Popis</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Popis</b> (voliteľný)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>Zadajte URI zariadenia</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>IPP tlačiareň</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>Licenčné podmienky</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Umiestnenie sieťovej LPD tlačiarne</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Umiestnenie sieťovej tlačiarne</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Umiestnenie</b> (voliteľné)"
+
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>Sieťová tlačiareň</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>Poznámka</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>Kvalita výstupu</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>Názov tlačiarne</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>SMB tlačiareň</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>Vyberte ovládač</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Nastavenia sériového portu</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[pracovná_skupina/]server[:port]/tlačiareň</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Vyberte členov triedy</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Vyberte ovládač</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Popíšte tlačiareň</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Existujúce nastavenia</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Inštalovateľné možnosti</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Vyberte zariadenie</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "Prenosová rýchlosť"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "Prehľadávať..."
+
+#: ../ui/NewPrinterWindow.glade.h:26
+msgid "Comments..."
+msgstr "Komentáre..."
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Connection"
+msgstr "Pripojenie"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Data Bits"
+msgstr "Údajové bity"
+
+#: ../ui/NewPrinterWindow.glade.h:29 ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Description:"
+msgstr "Popis:"
+
+#: ../ui/NewPrinterWindow.glade.h:30 ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "URI zariadenia "
+
+#: ../ui/NewPrinterWindow.glade.h:31
+msgid "Device description."
+msgstr "Popis zariadenia."
+
+#: ../ui/NewPrinterWindow.glade.h:32
+msgid "DirectJet"
+msgstr "DirectJet"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Driver details"
+msgstr "Podrobnosti o ovládači"
+
+#: ../ui/NewPrinterWindow.glade.h:35
+msgid "Empty"
+msgstr "Prázdne"
+
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Flow Control"
+msgstr "Riadenie toku"
+
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid ""
+"For the printer you have selected there are drivers available for download."
+msgstr "Pre vami vybranú tlačiareň sú dostupné ovládače na stiahnutie."
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Free software"
+msgstr "Sloboný softvér"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid "Graphics:"
+msgstr "Grafika:"
+
+#: ../ui/NewPrinterWindow.glade.h:40
+msgid "Host:"
+msgstr "Hostiteľ:"
+
+#: ../ui/NewPrinterWindow.glade.h:41
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "Zrozumiteľný popis, ako napr. \"HP LaserJet s duplexom\""
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "Zrozumiteľné umiestnenie, ako napr. \"Miestnosť 1\""
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "License:"
+msgstr "Licencia:"
+
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "Line art:"
+msgstr "Jemná grafika:"
+
+#: ../ui/NewPrinterWindow.glade.h:47
+msgid "Local Driver"
+msgstr "Lokálny ovládač"
+
+#: ../ui/NewPrinterWindow.glade.h:48
+msgid "Make and model:"
+msgstr "Výrobca a model:"
+
+#: ../ui/NewPrinterWindow.glade.h:49
+msgid "Manufacturer"
+msgstr "Výrobca"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+msgid "Network"
+msgstr "Sieť"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "No, I do not accept this license"
+msgstr "Nie, túto licenciu neakceptujem"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Parity"
+msgstr "Parita"
+
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Patented algorithms"
+msgstr "Patentované algoritmy"
+
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "Photo:"
+msgstr "Foto:"
+
+#: ../ui/NewPrinterWindow.glade.h:57
+msgid "Port number:"
+msgstr "Číslo portu:"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+#, fuzzy
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>&#xAE;</sup> driver."
+msgstr ""
+"Súbory tlačových popisov vo formáte PostScript (PPD) sa často nachádzajú na "
+"disku s ovládačmi, ktorý dostanete s tlačiarňou. Pre PostScript tlačiarne sú "
+"často súčasťou ovládačov pre Windows<sup>®</sup>."
+
+#: ../ui/NewPrinterWindow.glade.h:59
+msgid "Printer model:"
+msgstr "Model tlačiarne:"
+
+#: ../ui/NewPrinterWindow.glade.h:60
+msgid "Probe"
+msgstr "Preskúmať"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "Prompt user if authentication is required"
+msgstr "Vyzvať používateľa, ak je vyžadované overenie."
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Provide PPD file"
+msgstr "Zadať PPD súbor"
+
+#: ../ui/NewPrinterWindow.glade.h:63
+msgid "Queue:"
+msgstr "Fronta:"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Search for a printer driver to download"
+msgstr "Hľadať a stiahnuť ovládač tlačiarne"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+msgid "Searching..."
+msgstr "Hľadá sa..."
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Select printer from database"
+msgstr "Vyberte tlačiareň z databázy"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Serial"
+msgstr "Sériové číslo"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "Set authentication details now"
+msgstr "Nastaviť podrobnosti overenia teraz."
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "Krátky názov pre túto tlačiareň, napríklad \"laserjet\""
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Supplier:"
+msgstr "Dodávateľ:"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "Support:"
+msgstr "Podpora:"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "Text:"
+msgstr "Text:"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"Databáza tlačiarní foomatic obsahuje rôzne súbory tlačových popisov vo "
+"formáte PostScript (PPD) poskytovaných výrobcom a taktiež umožňuje "
+"vytvorenie PPD súborov pre veľké množstvo (ne-PostScript-ových) tlačiarní. "
+"Ale v zásade PPD súbory poskytované výrobcom zaručujú lepší prístup k "
+"špecifickým vlastnostiam tlačiarne."
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"Tieto ovládače nepochádzajú od dodávateľa vašeho operačného systému a "
+"nevzťahuje sa na ne ich obchodná podpora. Pozrite sa na podmienky podpory a "
+"licenciu dodávateľa ovládača."
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+"Tento ovládač podporuje prídavný hardvér, ktorý môže byť vo vašej tlačiarni "
+"nainštalovaný."
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"Toto je vykonané za predpokladu, že možnosti s rovnakým menom majú rovnaký "
+"význam. Nastavenia možností nenachádzajúcich sa v novej PPD budú stratené a "
+"možnosti nachádzajúce sa iba v novej PPD budú nastavené na predvolené "
+"hodnoty."
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"Týmto postupom sa všetky pôvodné možnosti stratia. Budú použité predvolené "
+"nastavenia z nového PPD."
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Pokúsiť sa skopírovať možnosti nastavení zo starého PPD."
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "URI:"
+msgstr "URI:"
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Použiť novú PPD (Definíciu Postscript Tlačiarne) ako je."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"S touto voľbou nebude stiahnutý žiadny ovládač. V ďalších krokoch bude "
+"vybraný lokálne inštalovaný ovládač."
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid "Yes, I accept this license"
+msgstr "Áno, akceptujem túto licenciu"
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid "_Search"
+msgstr "_Hľadať"
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid "_Verify..."
+msgstr "O_veriť..."
+
+#: ../ui/NewPrinterWindow.glade.h:89 ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "move left"
+msgstr "posunúť doľava"
+
+#: ../ui/NewPrinterWindow.glade.h:90 ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "move right"
+msgstr "posunúť doprava"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>Deliaca stránka</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>Spoločné možnosti</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>Možnosti obrázkov</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>Úroveň náplne/tonera</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Ďalšie možnosti (Pokročilé)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>Pravidlá</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>Nastavenia</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>Stav</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>Stavová správa</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>Testovanie a údržba</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>Možnosti textu</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
+msgid ""
+"<i>Not published\n"
+"See server settings</i>"
+msgstr ""
+"<i>Nepublikované\n"
+"Pozrite nastavenia servera</i>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "Prijíma úlohy"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "Riadenie prístupu"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "Pridať alebo odstrániť členov"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "Povoliť tlač všetkým okrem týchto používateľov:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "Dolný okraj:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "Jas:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "Zmeniť..."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "Znakov na palec:"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "Vyčistiť tlačové hlavy"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+msgid "Columns:"
+msgstr "Stĺpcov:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Copies:"
+msgstr "Kópie:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Deny printing for everyone except these users:"
+msgstr "Zakázať tlač všetkým okrem týchto používateľov:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Device URI:"
+msgstr "URI zariadenia:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Enabled"
+msgstr "Povolené"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Ending Banner:"
+msgstr "Koncová stránka:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Error Policy: \t"
+msgstr "Chyba pravidla: \t"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Finishings:"
+msgstr "Ukončenia:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Gamma:"
+msgstr "Gamma:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Hold until:"
+msgstr "Podržať do:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hue adjustment:"
+msgstr "Vyváženie farieb:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Ink/Toner Levels"
+msgstr "Úroveň náplne/tonera"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Installed Options"
+msgstr "Nainštalované možnosti"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Job Options"
+msgstr "Možnosti úlohy"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job priority:"
+msgstr "Priorita úlohy:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Left margin:"
+msgstr "Ľavý okraj:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Lines per inch:"
+msgstr "Riadkov na palec:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Location:"
+msgstr "Umiestnenie:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Make and Model:"
+msgstr "Výrobca a model:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Media:"
+msgstr "Veľkosť stránky:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Members"
+msgstr "Členovia"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Mirror"
+msgstr "Zrkadlovo"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "More"
+msgstr "Viac"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "Operation Policy:"
+msgstr "Operačné pravidlo:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Orientation:"
+msgstr "Orientácia:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Pages per side layout:"
+msgstr "Rozloženie stránok:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+msgid "Pages per side:"
+msgstr "Stránok na list:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Policies"
+msgstr "Pravidlá"
+
+# Ja by som toto neprekladal
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pretty print"
+msgstr "Pekná tlač"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Print Self-Test Page"
+msgstr "Vytlačiť samo-testovaciu stránku"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:58
+#: ../troubleshoot/PrintTestPage.py:72
+msgid "Print Test Page"
+msgstr "Vytlačiť skúšobnú stránku"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:60
+msgid "Printer Properties"
+msgstr "Vlastnosti tlačiarne"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:61
+msgid "Printer State:"
+msgstr "Stav tlačiarne:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+msgid "Reset"
+msgstr "Obnoviť"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:63
+msgid "Right margin:"
+msgstr "Pravý okraj:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Saturation:"
+msgstr "Saturácia:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+#, fuzzy
+msgid "Scale to fit"
+msgstr "Zväčšiť na celú plochu"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+msgid "Scaling:"
+msgstr "Zmena veľkosti:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Settings"
+msgstr "Nastavenia"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Shared"
+msgstr "Zdieľaná"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Sides:"
+msgstr "Strany:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"Špecifikujte predvolené možnosti úloh pre túto tlačiareň. Úlohy "
+"prichádzajúce na tento tlačový server budú používať tieto možnosti, ak ich "
+"aplikácia nezmení."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Starting Banner:"
+msgstr "Oddeľovacia stránka na začiatku:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "There are no status messages for this printer."
+msgstr "Pre túto tlačiareň nie sú žiadne stavové správy."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr ""
+"Pre pridanie novej možnosti zadajte jej meno do políčka nižšie a kliknite na "
+"Pridať."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "Top margin:"
+msgstr "Horný okraj:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid "Word wrap"
+msgstr "Zalamovať slová"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "points"
+msgstr "bodov"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "user"
+msgstr "používateľ"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid "System-Config-Printer"
+msgstr "System-Config-Printer"
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "_Discovered Printers"
+msgstr "Náj_dené tlačiarne"
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "_Group"
+msgstr "_Skupina"
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "_Groups"
+msgstr "_Skupiny"
+
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Help"
+msgstr "_Pomocník"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Printer"
+msgstr "_Tlačiareň"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Server"
+msgstr "_Server"
+
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Základné nastavenia servera</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+msgid "Allow _remote administration"
+msgstr "_Povoliť vzdialenú správu"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr "Povoliť po_užívateľom zrušenie akejkoľvek úlohy (nie iba ich vlastnej)"
+
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Allow printing from the _Internet"
+msgstr "Povoliť tlač z _Internetu"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Basic Server Settings"
+msgstr "Základné nastavenia servera"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Save _debugging information for troubleshooting"
+msgstr "Uložiť i_nformácie o ladení pre riešenie problémov"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "_Advanced..."
+msgstr ""
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "_Publish shared printers connected to this system"
+msgstr "Publikovať zdielané _tlačiarne pripojené k tomuto systému"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "_Show printers shared by other systems"
+msgstr "Zo_braziť tlačiarne zdieľané inými systémami"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "Prehliadač SMB"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Hide"
+msgstr "_Skryť"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "Čakajte, prosím"
 
 #: ../system-config-printer.desktop.in.h:1
 msgid "Configure printers"
@@ -1858,7 +2702,7 @@ msgstr ""
 "Aktivujte voľbu 'Publikovať zdieľané tlačiarne pripojené k tomuto systému' v "
 "nastavení servera pomocou nástroja správy tlače."
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:180
+#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:178
 msgid "Install"
 msgstr "Inštalovať"
 
@@ -1936,10 +2780,6 @@ msgstr ""
 "Prosím vyberte zariadenie, ktoré chcete použiť, zo zoznamu nižšie. Ak nie je "
 "v zozname, vyberte 'Nie je uvedená'."
 
-#: ../troubleshoot/DeviceListed.py:40
-msgid "Device URI"
-msgstr "URI zariadenia "
-
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
 msgstr "Ladenie"
@@ -1956,11 +2796,11 @@ msgstr ""
 msgid "Enable Debugging"
 msgstr "Povoliť ladenie"
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:211
+#: ../troubleshoot/ErrorLogCheckpoint.py:215
 msgid "Debug logging enabled."
 msgstr "Ladiace zápisy povolené."
 
-#: ../troubleshoot/ErrorLogCheckpoint.py:213
+#: ../troubleshoot/ErrorLogCheckpoint.py:217
 msgid "Debug logging was already enabled."
 msgstr "Ladiace zápisy už boli povolené."
 
@@ -2044,10 +2884,6 @@ msgid ""
 msgstr ""
 "Teraz vytlačte skúšobnú stránku. Ak máte problémy s tlačou určitého "
 "dokumentu, vytlačte tento dokument teraz a označte tlačovú úlohu nižšie."
-
-#: ../troubleshoot/PrintTestPage.py:72
-msgid "Print Test Page"
-msgstr "Vytlačiť skúšobnú stránku"
 
 #: ../troubleshoot/PrintTestPage.py:75
 msgid "Cancel All Jobs"
@@ -2202,51 +3038,51 @@ msgstr "Konfigurovať tlačiarne"
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
-#: ../applet.py:114 ../applet.py:169
+#: ../applet.py:114 ../applet.py:167
 msgid "Missing printer driver"
 msgstr "Chýba ovládač tlačiarne"
 
-#: ../applet.py:122
+#: ../applet.py:121
 #, python-format
 msgid "No printer driver for %s."
 msgstr "Žiadny ovládač tlačiarne pre %s."
 
-#: ../applet.py:124
+#: ../applet.py:123
 msgid "No driver for this printer."
 msgstr "Žiadny ovládač tlačiarne."
 
-#: ../applet.py:167
+#: ../applet.py:165
 msgid "Printer added"
 msgstr "Tlačiareň bola pridaná"
 
-#: ../applet.py:173
+#: ../applet.py:171
 msgid "Install printer driver"
 msgstr "Inštalovať ovládač tlačiarne"
 
-#: ../applet.py:174
+#: ../applet.py:172
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "`%s' vyžaduje inštaláciu ovládača: %s."
 
-#: ../applet.py:195
+#: ../applet.py:194
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "`%s' je pripravená tlačiť."
 
-#: ../applet.py:199 ../applet.py:212
+#: ../applet.py:198 ../applet.py:210
 msgid "Print test page"
 msgstr "Vytlačiť skúšobnú stránku"
 
-#: ../applet.py:202
+#: ../applet.py:201
 msgid "Configure"
 msgstr "Konfigurovať"
 
-#: ../applet.py:207
+#: ../applet.py:205
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "`%s' bola pridaná, používa ovládač `%s'."
 
-#: ../applet.py:215
+#: ../applet.py:213
 msgid "Find driver"
 msgstr "Nájsť ovládač"
 
@@ -2270,6 +3106,13 @@ msgstr "Spravovať tlačové úlohy "
 msgid "Select default printer"
 msgstr "Nastaviť tlačiareň ako predvolenú"
 
+#, fuzzy
+#~ msgid "Document printed"
+#~ msgstr "Dokument"
+
+#~ msgid "Document `%s' has finished printing on `%s'."
+#~ msgstr "Dokument `%s' skončil tlač na `%s'."
+
 #~ msgid "Queue"
 #~ msgstr "Fronta"
 
@@ -2289,179 +3132,14 @@ msgstr "Nastaviť tlačiareň ako predvolenú"
 #~ msgid "There are no queues available."
 #~ msgstr "Nie sú dostupné žiadne fronty."
 
-#~ msgid "A CUPS configuration tool."
-#~ msgstr "Nástroj na konfiguráciu tlačového servera CUPS"
-
-#~ msgid "Copyright © 2006-2008 Red Hat, Inc."
-#~ msgstr "Copyright © 2006-2008 Red Hat, Inc."
-
-# Existuje oficiálny preklad licencie?
-#~ msgid ""
-#~ "This program is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version.\n"
-#~ "\n"
-#~ "This program is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details.\n"
-#~ "\n"
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with this program; if not, write to the Free Software Foundation, Inc., "
-#~ "675 Mass Ave, Cambridge, MA 02139, USA."
-#~ msgstr ""
-#~ "Tento program je voľne šíriteľný softvér. Môžete ho šíriť a modifikovať "
-#~ "podľa ustanovení licencie GNU General Public License, vydávanej nadáciou "
-#~ "Free Software Foundation a to buď verzie 2 tejto licencie, alebo (podľa "
-#~ "vášho uváženia) ktorejkoľvek neskoršej verzie.\n"
-#~ "\n"
-#~ "Tento program je šírený v nádeji, že bude užitočný, avšak BEZ AKEJKOĽVEK "
-#~ "ZÁRUKY. Neposkytujú sa ani predpokladané záruky PREDAJNOSTI alebo "
-#~ "VHODNOSTI PRE URČITÝ ÚČEL. Ďalšie podrobnosti hľadajte v licencii GNU "
-#~ "General Public License.\n"
-#~ "\n"
-#~ "Kópiu licencie GNU General Public Licence by ste mali dostať spolu s "
-#~ "týmto programom. Ak sa tak nestalo, požiadajte o ňu Free Software "
-#~ "Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
-
 #~ msgid "system-config-printer"
 #~ msgstr "system-config-printer"
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Mike Karas\n"
-#~ "Lubomir Kundrak\n"
-#~ "Ondrej Šulek"
-
-#~ msgid "CUPS _server:"
-#~ msgstr "CUPS _server:"
-
-#~ msgid "Connect to CUPS server"
-#~ msgstr "Pripojiť sa na server CUPS"
-
-#~ msgid "Require _encryption"
-#~ msgstr "_Požadovať šifrovanie"
-
-#~ msgid ""
-#~ "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Pripájanie na CUPS server</span>"
-
-#~ msgid "Connecting to CUPS server"
-#~ msgstr "Pripájanie na server CUPS"
-
-#~ msgid "_Install"
-#~ msgstr "_Inštalovať"
 
 #~ msgid "IPP Browser"
 #~ msgstr "Prehliadač IPP"
 
-#~ msgid "Show _completed jobs"
-#~ msgstr "Zobraziť _dokončené úlohy"
-
-#~ msgid "_File"
-#~ msgstr "_Súbor"
-
-#~ msgid "_Job"
-#~ msgstr "Ú_loha"
-
 #~ msgid "_Refresh"
 #~ msgstr "_Obnoviť"
-
-#~ msgid "_View"
-#~ msgstr "_Zobraziť"
-
-#~ msgid "Copy Printer"
-#~ msgstr "Kopírovať tlačiareň"
-
-#~ msgid "New name for the printer"
-#~ msgstr "Nový názov pre tlačiareň"
-
-#~ msgid "<b>Authentication</b>"
-#~ msgstr "<b>Overenie</b>"
-
-#~ msgid "<b>Description</b>"
-#~ msgstr "<b>Popis</b>"
-
-#~ msgid "<b>Description</b> (optional)"
-#~ msgstr "<b>Popis</b> (voliteľný)"
-
-#~ msgid "<b>Enter device URI</b>"
-#~ msgstr "<b>Zadajte URI zariadenia</b>"
-
-#~ msgid "<b>IPP Printer</b>"
-#~ msgstr "<b>IPP tlačiareň</b>"
-
-#~ msgid "<b>License Terms</b>"
-#~ msgstr "<b>Licenčné podmienky</b>"
-
-#~ msgid "<b>Location of the LPD network printer</b>"
-#~ msgstr "<b>Umiestnenie sieťovej LPD tlačiarne</b>"
-
-#~ msgid "<b>Location of the network printer</b>"
-#~ msgstr "<b>Umiestnenie sieťovej tlačiarne</b>"
-
-#~ msgid "<b>Location</b> (optional)"
-#~ msgstr "<b>Umiestnenie</b> (voliteľné)"
-
-#~ msgid "<b>Network Printer</b>"
-#~ msgstr "<b>Sieťová tlačiareň</b>"
-
-#~ msgid "<b>Note</b>"
-#~ msgstr "<b>Poznámka</b>"
-
-#~ msgid "<b>Output Quality</b>"
-#~ msgstr "<b>Kvalita výstupu</b>"
-
-#~ msgid "<b>Printer Name</b>"
-#~ msgstr "<b>Názov tlačiarne</b>"
-
-#~ msgid "<b>SMB Printer</b>"
-#~ msgstr "<b>SMB tlačiareň</b>"
-
-#~ msgid "<b>Select Driver</b>"
-#~ msgstr "<b>Vyberte ovládač</b>"
-
-#~ msgid "<b>Settings of the serial port</b>"
-#~ msgstr "<b>Nastavenia sériového portu</b>"
-
-#~ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
-#~ msgstr "<i>smb://[pracovná_skupina/]server[:port]/tlačiareň</i>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Vyberte členov triedy</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Vyberte ovládač</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Popíšte tlačiareň</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Existujúce nastavenia</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-#~ msgstr ""
-#~ "<span weight=\"bold\" size=\"larger\">Inštalovateľné možnosti</span>"
-
-#~ msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-#~ msgstr "<span weight=\"bold\" size=\"larger\">Vyberte zariadenie</span>"
-
-#~ msgid "Baud Rate"
-#~ msgstr "Prenosová rýchlosť"
-
-#~ msgid "Browse..."
-#~ msgstr "Prehľadávať..."
-
-#~ msgid "Comments..."
-#~ msgstr "Komentáre..."
-
-#~ msgid "Connection"
-#~ msgstr "Pripojenie"
-
-#~ msgid "Data Bits"
-#~ msgstr "Údajové bity"
 
 #~ msgid ""
 #~ "Default\n"
@@ -2517,222 +3195,11 @@ msgstr "Nastaviť tlačiareň ako predvolenú"
 #~ "RTS/CTS (Hardvérové)\n"
 #~ "DTR/DSR (Hardvérové)"
 
-#~ msgid "Description:"
-#~ msgstr "Popis:"
-
-#~ msgid "Device description."
-#~ msgstr "Popis zariadenia."
-
-#~ msgid "DirectJet"
-#~ msgstr "DirectJet"
-
-#~ msgid "Driver details"
-#~ msgstr "Podrobnosti o ovládači"
-
-#~ msgid "Empty"
-#~ msgstr "Prázdne"
-
 #~ msgid "Find _Queue..."
 #~ msgstr "Nájsť _frontu..."
 
-#~ msgid "Flow Control"
-#~ msgstr "Riadenie toku"
-
-#~ msgid ""
-#~ "For the printer you have selected there are drivers available for "
-#~ "download."
-#~ msgstr "Pre vami vybranú tlačiareň sú dostupné ovládače na stiahnutie."
-
-#~ msgid "Free software"
-#~ msgstr "Sloboný softvér"
-
-#~ msgid "Graphics:"
-#~ msgstr "Grafika:"
-
-#~ msgid "Host:"
-#~ msgstr "Hostiteľ:"
-
-#~ msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
-#~ msgstr "Zrozumiteľný popis, ako napr. \"HP LaserJet s duplexom\""
-
-#~ msgid "Human-readable location such as \"Lab 1\""
-#~ msgstr "Zrozumiteľné umiestnenie, ako napr. \"Miestnosť 1\""
-
-#~ msgid "LPD"
-#~ msgstr "LPD"
-
-#~ msgid "License:"
-#~ msgstr "Licencia:"
-
-#~ msgid "Line art:"
-#~ msgstr "Jemná grafika:"
-
-#~ msgid "Local Driver"
-#~ msgstr "Lokálny ovládač"
-
-#~ msgid "Make and model:"
-#~ msgstr "Výrobca a model:"
-
-#~ msgid "Manufacturer"
-#~ msgstr "Výrobca"
-
-#~ msgid "Network"
-#~ msgstr "Sieť"
-
-#~ msgid "No, I do not accept this license"
-#~ msgstr "Nie, túto licenciu neakceptujem"
-
-#~ msgid "Parity"
-#~ msgstr "Parita"
-
-#~ msgid "Patented algorithms"
-#~ msgstr "Patentované algoritmy"
-
-#~ msgid "Photo:"
-#~ msgstr "Foto:"
-
-#~ msgid "Port number:"
-#~ msgstr "Číslo portu:"
-
-#~ msgid ""
-#~ "PostScript Printer Description (PPD) files can often be found on the "
-#~ "driver disk that comes with the printer. For PostScript printers they are "
-#~ "often part of the Windows<sup>®</sup> driver."
-#~ msgstr ""
-#~ "Súbory tlačových popisov vo formáte PostScript (PPD) sa často nachádzajú "
-#~ "na disku s ovládačmi, ktorý dostanete s tlačiarňou. Pre PostScript "
-#~ "tlačiarne sú často súčasťou ovládačov pre Windows<sup>®</sup>."
-
-#~ msgid "Printer model:"
-#~ msgstr "Model tlačiarne:"
-
-#~ msgid "Probe"
-#~ msgstr "Preskúmať"
-
-#~ msgid "Prompt user if authentication is required"
-#~ msgstr "Vyzvať používateľa, ak je vyžadované overenie."
-
-#~ msgid "Provide PPD file"
-#~ msgstr "Zadať PPD súbor"
-
-#~ msgid "Queue:"
-#~ msgstr "Fronta:"
-
-#~ msgid "SCSI"
-#~ msgstr "SCSI"
-
-#~ msgid "SMB"
-#~ msgstr "SMB"
-
-#~ msgid "Search for a printer driver to download"
-#~ msgstr "Hľadať a stiahnuť ovládač tlačiarne"
-
-#~ msgid "Searching..."
-#~ msgstr "Hľadá sa..."
-
 #~ msgid "Select A File"
 #~ msgstr "Vyberte súbor"
-
-#~ msgid "Select printer from database"
-#~ msgstr "Vyberte tlačiareň z databázy"
-
-#~ msgid "Serial"
-#~ msgstr "Sériové číslo"
-
-#~ msgid "Set authentication details now"
-#~ msgstr "Nastaviť podrobnosti overenia teraz."
-
-#~ msgid "Short name for this printer such as \"laserjet\""
-#~ msgstr "Krátky názov pre túto tlačiareň, napríklad \"laserjet\""
-
-#~ msgid "Supplier:"
-#~ msgstr "Dodávateľ:"
-
-#~ msgid "Support:"
-#~ msgstr "Podpora:"
-
-#~ msgid "Text:"
-#~ msgstr "Text:"
-
-#~ msgid ""
-#~ "The foomatic printer database contains various manufacturer provided "
-#~ "PostScript Printer Description (PPD) files and also can generate PPD "
-#~ "files for a large number of (non PostScript) printers. But in general "
-#~ "manufacturer provided PPD files provide better access to the specific "
-#~ "features of the printer."
-#~ msgstr ""
-#~ "Databáza tlačiarní foomatic obsahuje rôzne súbory tlačových popisov vo "
-#~ "formáte PostScript (PPD) poskytovaných výrobcom a taktiež umožňuje "
-#~ "vytvorenie PPD súborov pre veľké množstvo (ne-PostScript-ových) "
-#~ "tlačiarní. Ale v zásade PPD súbory poskytované výrobcom zaručujú lepší "
-#~ "prístup k špecifickým vlastnostiam tlačiarne."
-
-#~ msgid ""
-#~ "These drivers do not come from your operating system supplier and will "
-#~ "not be covered by their commercial support.  See the support and license "
-#~ "terms of the driver's supplier."
-#~ msgstr ""
-#~ "Tieto ovládače nepochádzajú od dodávateľa vašeho operačného systému a "
-#~ "nevzťahuje sa na ne ich obchodná podpora. Pozrite sa na podmienky podpory "
-#~ "a licenciu dodávateľa ovládača."
-
-#~ msgid ""
-#~ "This driver supports additional hardware that may be installed in the "
-#~ "printer."
-#~ msgstr ""
-#~ "Tento ovládač podporuje prídavný hardvér, ktorý môže byť vo vašej "
-#~ "tlačiarni nainštalovaný."
-
-#~ msgid ""
-#~ "This is done by assuming that options with the same name do have the same "
-#~ "meaning. Settings of options that are not present in the new PPD will be "
-#~ "lost and options only present in the new PPD will be set to default."
-#~ msgstr ""
-#~ "Toto je vykonané za predpokladu, že možnosti s rovnakým menom majú "
-#~ "rovnaký význam. Nastavenia možností nenachádzajúcich sa v novej PPD budú "
-#~ "stratené a možnosti nachádzajúce sa iba v novej PPD budú nastavené na "
-#~ "predvolené hodnoty."
-
-#~ msgid ""
-#~ "This way all current option settings will be lost. The default settings "
-#~ "of the new PPD will be used. "
-#~ msgstr ""
-#~ "Týmto postupom sa všetky pôvodné možnosti stratia. Budú použité "
-#~ "predvolené nastavenia z nového PPD."
-
-#~ msgid "Try to copy the option settings over from the old PPD. "
-#~ msgstr "Pokúsiť sa skopírovať možnosti nastavení zo starého PPD."
-
-#~ msgid "URI:"
-#~ msgstr "URI:"
-
-#~ msgid "Use the new PPD (Postscript Printer Description) as is."
-#~ msgstr "Použiť novú PPD (Definíciu Postscript Tlačiarne) ako je."
-
-#~ msgid ""
-#~ "With this choice no driver download will be performed. In the next steps "
-#~ "a locally installed driver will be selected."
-#~ msgstr ""
-#~ "S touto voľbou nebude stiahnutý žiadny ovládač. V ďalších krokoch bude "
-#~ "vybraný lokálne inštalovaný ovládač."
-
-#~ msgid "Yes, I accept this license"
-#~ msgstr "Áno, akceptujem túto licenciu"
-
-#~ msgid "_Search"
-#~ msgstr "_Hľadať"
-
-#~ msgid "_Verify..."
-#~ msgstr "O_veriť..."
-
-#~ msgid "move left"
-#~ msgstr "posunúť doľava"
-
-#~ msgid "move right"
-#~ msgstr "posunúť doprava"
-
-#~ msgid " "
-#~ msgstr " "
 
 #~ msgid ""
 #~ "1\n"
@@ -2752,121 +3219,6 @@ msgstr "Nastaviť tlačiareň ako predvolenú"
 #~ msgid "72 points per inch"
 #~ msgstr "72 bodov na palec"
 
-#~ msgid "<b>Banner</b>"
-#~ msgstr "<b>Deliaca stránka</b>"
-
-#~ msgid "<b>Common Options</b>"
-#~ msgstr "<b>Spoločné možnosti</b>"
-
-#~ msgid "<b>Image Options</b>"
-#~ msgstr "<b>Možnosti obrázkov</b>"
-
-#~ msgid "<b>Ink/Toner Levels</b>"
-#~ msgstr "<b>Úroveň náplne/tonera</b>"
-
-#~ msgid "<b>Other Options (Advanced)</b>"
-#~ msgstr "<b>Ďalšie možnosti (Pokročilé)</b>"
-
-#~ msgid "<b>Policies</b>"
-#~ msgstr "<b>Pravidlá</b>"
-
-#~ msgid "<b>Settings</b>"
-#~ msgstr "<b>Nastavenia</b>"
-
-#~ msgid "<b>State</b>"
-#~ msgstr "<b>Stav</b>"
-
-#~ msgid "<b>Status Messages</b>"
-#~ msgstr "<b>Stavová správa</b>"
-
-#~ msgid "<b>Tests and Maintenance</b>"
-#~ msgstr "<b>Testovanie a údržba</b>"
-
-#~ msgid "<b>Text Options</b>"
-#~ msgstr "<b>Možnosti textu</b>"
-
-#~ msgid ""
-#~ "<i>Not published\n"
-#~ "See server settings</i>"
-#~ msgstr ""
-#~ "<i>Nepublikované\n"
-#~ "Pozrite nastavenia servera</i>"
-
-#~ msgid "Accepting jobs"
-#~ msgstr "Prijíma úlohy"
-
-#~ msgid "Access Control"
-#~ msgstr "Riadenie prístupu"
-
-#~ msgid "Add or Remove Members"
-#~ msgstr "Pridať alebo odstrániť členov"
-
-#~ msgid "Allow printing for everyone except these users:"
-#~ msgstr "Povoliť tlač všetkým okrem týchto používateľov:"
-
-#~ msgid "Bottom margin:"
-#~ msgstr "Dolný okraj:"
-
-#~ msgid "Brightness:"
-#~ msgstr "Jas:"
-
-#~ msgid "Change..."
-#~ msgstr "Zmeniť..."
-
-#~ msgid "Characters per inch:"
-#~ msgstr "Znakov na palec:"
-
-#~ msgid "Clean Print Heads"
-#~ msgstr "Vyčistiť tlačové hlavy"
-
-#~ msgid "Columns:"
-#~ msgstr "Stĺpcov:"
-
-#~ msgid "Copies:"
-#~ msgstr "Kópie:"
-
-#~ msgid "Deny printing for everyone except these users:"
-#~ msgstr "Zakázať tlač všetkým okrem týchto používateľov:"
-
-#~ msgid "Device URI:"
-#~ msgstr "URI zariadenia:"
-
-#~ msgid "Enabled"
-#~ msgstr "Povolené"
-
-#~ msgid "Ending Banner:"
-#~ msgstr "Koncová stránka:"
-
-#~ msgid "Error Policy: \t"
-#~ msgstr "Chyba pravidla: \t"
-
-#~ msgid "Finishings:"
-#~ msgstr "Ukončenia:"
-
-#~ msgid "Gamma:"
-#~ msgstr "Gamma:"
-
-#~ msgid "Hold until:"
-#~ msgstr "Podržať do:"
-
-#~ msgid "Hue adjustment:"
-#~ msgstr "Vyváženie farieb:"
-
-#~ msgid "Ink/Toner Levels"
-#~ msgstr "Úroveň náplne/tonera"
-
-#~ msgid "Installed Options"
-#~ msgstr "Nainštalované možnosti"
-
-#~ msgid "Job Options"
-#~ msgstr "Možnosti úlohy"
-
-#~ msgid "Job priority:"
-#~ msgstr "Priorita úlohy:"
-
-#~ msgid "Left margin:"
-#~ msgstr "Ľavý okraj:"
-
 #~ msgid ""
 #~ "Left to right, top to bottom\n"
 #~ "Left to right, bottom to top\n"
@@ -2885,27 +3237,6 @@ msgstr "Nastaviť tlačiareň ako predvolenú"
 #~ "Zhora nadol, sprava doľava\n"
 #~ "Zdola nahor, zľava doprava\n"
 #~ "Zdola nahor, sprava doľava"
-
-#~ msgid "Lines per inch:"
-#~ msgstr "Riadkov na palec:"
-
-#~ msgid "Location:"
-#~ msgstr "Umiestnenie:"
-
-#~ msgid "Make and Model:"
-#~ msgstr "Výrobca a model:"
-
-#~ msgid "Media:"
-#~ msgstr "Veľkosť stránky:"
-
-#~ msgid "Members"
-#~ msgstr "Členovia"
-
-#~ msgid "Mirror"
-#~ msgstr "Zrkadlovo"
-
-#~ msgid "More"
-#~ msgstr "Viac"
 
 #~ msgid ""
 #~ "None\n"
@@ -2975,21 +3306,6 @@ msgstr "Nastaviť tlačiareň ako predvolenú"
 #~ "Obojstranne (dlhý okraj)\n"
 #~ "Obojstranne (krátky okraj)"
 
-#~ msgid "Operation Policy:"
-#~ msgstr "Operačné pravidlo:"
-
-#~ msgid "Orientation:"
-#~ msgstr "Orientácia:"
-
-#~ msgid "Pages per side layout:"
-#~ msgstr "Rozloženie stránok:"
-
-#~ msgid "Pages per side:"
-#~ msgstr "Stránok na list:"
-
-#~ msgid "Policies"
-#~ msgstr "Pravidlá"
-
 #~ msgid ""
 #~ "Portrait (no rotation)\n"
 #~ "Landscape (90°)\n"
@@ -3001,81 +3317,14 @@ msgstr "Nastaviť tlačiareň ako predvolenú"
 #~ "Opačne na šírku (270°)\n"
 #~ "Opačne na výšku (180°)"
 
-# Ja by som toto neprekladal
-#~ msgid "Pretty print"
-#~ msgstr "Pekná tlač"
-
-#~ msgid "Print Self-Test Page"
-#~ msgstr "Vytlačiť samo-testovaciu stránku"
-
-#~ msgid "Printer Properties"
-#~ msgstr "Vlastnosti tlačiarne"
-
-#~ msgid "Printer State:"
-#~ msgstr "Stav tlačiarne:"
-
-#~ msgid "Reset"
-#~ msgstr "Obnoviť"
-
 #~ msgid "Reset to system default"
 #~ msgstr "Obnoviť na predvolené nastavenia"
-
-#~ msgid "Right margin:"
-#~ msgstr "Pravý okraj:"
-
-#~ msgid "Saturation:"
-#~ msgstr "Saturácia:"
-
-#~ msgid "Scaling:"
-#~ msgstr "Zmena veľkosti:"
-
-#~ msgid "Settings"
-#~ msgstr "Nastavenia"
-
-#~ msgid "Shared"
-#~ msgstr "Zdieľaná"
-
-#~ msgid "Sides:"
-#~ msgstr "Strany:"
-
-#~ msgid ""
-#~ "Specify the default job options for this printer.  Jobs arriving at this "
-#~ "print server will have these options added if they are not already set by "
-#~ "the application."
-#~ msgstr ""
-#~ "Špecifikujte predvolené možnosti úloh pre túto tlačiareň. Úlohy "
-#~ "prichádzajúce na tento tlačový server budú používať tieto možnosti, ak "
-#~ "ich aplikácia nezmení."
-
-#~ msgid "Starting Banner:"
-#~ msgstr "Oddeľovacia stránka na začiatku:"
-
-#~ msgid "There are no status messages for this printer."
-#~ msgstr "Pre túto tlačiareň nie sú žiadne stavové správy."
-
-#~ msgid ""
-#~ "To add a new option, enter its name in the box below and click to add."
-#~ msgstr ""
-#~ "Pre pridanie novej možnosti zadajte jej meno do políčka nižšie a kliknite "
-#~ "na Pridať."
-
-#~ msgid "Top margin:"
-#~ msgstr "Horný okraj:"
-
-#~ msgid "Word wrap"
-#~ msgstr "Zalamovať slová"
 
 #~ msgid "default"
 #~ msgstr "predvolená"
 
 #~ msgid "none"
 #~ msgstr "žiaden"
-
-#~ msgid "points"
-#~ msgstr "bodov"
-
-#~ msgid "user"
-#~ msgstr "používateľ"
 
 #~ msgid "Adjust server settings"
 #~ msgstr "Upraviť nastavenia servera"
@@ -3089,35 +3338,14 @@ msgstr "Nastaviť tlačiareň ako predvolenú"
 #~ msgid "Show printers shared by other systems"
 #~ msgstr "Zobraziť tlačiarne zdieľané inými systémami"
 
-#~ msgid "System-Config-Printer"
-#~ msgstr "System-Config-Printer"
-
 #~ msgid "_Class"
 #~ msgstr "_Trieda"
 
 #~ msgid "_Connect..."
 #~ msgstr "_Pripojiť..."
 
-#~ msgid "_Discovered Printers"
-#~ msgstr "Náj_dené tlačiarne"
-
-#~ msgid "_Group"
-#~ msgstr "_Skupina"
-
-#~ msgid "_Groups"
-#~ msgstr "_Skupiny"
-
-#~ msgid "_Help"
-#~ msgstr "_Pomocník"
-
 #~ msgid "_New"
 #~ msgstr "_Nová"
-
-#~ msgid "_Printer"
-#~ msgstr "_Tlačiareň"
-
-#~ msgid "_Server"
-#~ msgstr "_Server"
 
 #~ msgid "_Settings..."
 #~ msgstr "Na_stavenia..."
@@ -3125,42 +3353,8 @@ msgstr "Nastaviť tlačiareň ako predvolenú"
 #~ msgid "_Troubleshoot"
 #~ msgstr "Riešenie _problémov"
 
-#~ msgid "<b>Basic Server Settings</b>"
-#~ msgstr "<b>Základné nastavenia servera</b>"
-
-#~ msgid "Allow _remote administration"
-#~ msgstr "_Povoliť vzdialenú správu"
-
-#~ msgid "Allow _users to cancel any job (not just their own)"
-#~ msgstr ""
-#~ "Povoliť po_užívateľom zrušenie akejkoľvek úlohy (nie iba ich vlastnej)"
-
-#~ msgid "Allow printing from the _Internet"
-#~ msgstr "Povoliť tlač z _Internetu"
-
-#~ msgid "Basic Server Settings"
-#~ msgstr "Základné nastavenia servera"
-
-#~ msgid "Save _debugging information for troubleshooting"
-#~ msgstr "Uložiť i_nformácie o ladení pre riešenie problémov"
-
-#~ msgid "_Publish shared printers connected to this system"
-#~ msgstr "Publikovať zdielané _tlačiarne pripojené k tomuto systému"
-
-#~ msgid "_Show printers shared by other systems"
-#~ msgstr "Zo_braziť tlačiarne zdieľané inými systémami"
-
-#~ msgid "SMB Browser"
-#~ msgstr "Prehliadač SMB"
-
 #~ msgid "_Configure Printers"
 #~ msgstr "_Konfigurovať tlačiarne"
-
-#~ msgid "_Hide"
-#~ msgstr "_Skryť"
-
-#~ msgid "Please Wait"
-#~ msgstr "Čakajte, prosím"
 
 #~ msgid "Job %d completed"
 #~ msgstr "Úloha %d dokončená"
