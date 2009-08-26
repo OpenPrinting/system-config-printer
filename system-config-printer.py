@@ -5655,7 +5655,12 @@ class NewPrinterGUI(GtkGUI):
             self.expNPDeviceURIs.hide ()
 
     def on_tvNPDeviceURIs_cursor_changed(self, widget):
-        model, iter = widget.get_selection().get_selected()
+        path, column = widget.get_cursor ()
+        if path == None:
+            return
+
+        model = widget.get_model ()
+        iter = model.get_iter (path)
         device = model.get_value(iter, 1)
         self.device = device
         self.lblNPDeviceDescription.set_text ('')
