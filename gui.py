@@ -36,7 +36,7 @@ class GtkGUI:
             if domain:
                 bld.set_translation_domain (domain)
 
-            bld.add_from_file (os.path.join (ui_dir, xmlfile + ".ui"))
+            bld.add_from_file (os.path.join (ui_dir, xmlfile + ".glade"))
             for name in names:
                 widget = bld.get_object(name)
                 if widget is None:
