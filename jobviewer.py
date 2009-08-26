@@ -253,7 +253,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.treeview.connect ('button_release_event',
                                self.on_treeview_button_release_event)
         self.treeview.connect ('popup-menu', self.on_treeview_popup_menu)
-        self.store.connect ('row-changed', self.on_treemodel_row_changed)
 
         self.JobsWindow.set_icon_name (ICON)
         self.JobsWindow.hide ()
@@ -801,23 +800,24 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if event.button == 3:
             self.show_treeview_popup_menu (treeview, event, event.button)
 
-    def on_treemodel_row_changed (self, model, path, iter):
-        self.on_selection_changed (self.selection)
-
     def on_selection_changed (self, selection):
         treeview = selection.get_tree_view()
         (model, pathlist) = selection.get_selected_rows()
-        (path, column) = treeview.get_cursor ()
-
         cancel = self.job_ui_manager.get_action ("/cancel-job")
         hold = self.job_ui_manager.get_action ("/hold-job")
         release = self.job_ui_manager.get_action ("/release-job")
         reprint = self.job_ui_manager.get_action ("/reprint-job")
         authenticate = self.job_ui_manager.get_action ("/authenticate-job")
-        if path == None:
+        if len (pathlist) == 0:
             for widget in [cancel, hold, release, reprint, authenticate]:
                 widget.set_sensitive (False)
             return
+
+        cancel_sensitive = True
+        hold_sensitive = True
+        release_sensitive = True
+        reprint_sensitive = True
+        authenticate_sensitive = True
 
         self.jobids = []
         for path in pathlist:
@@ -826,11 +826,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.jobids.append(jobid)
             job = self.jobs[jobid]
 
-            cancel_sensitive = True
-            hold_sensitive = True
-            release_sensitive = True
-            reprint_sensitive = True
-            authenticate_sensitive = True
             if job.has_key ('job-state'):
                 s = job['job-state']
                 if s >= cups.IPP_JOB_CANCELED:
