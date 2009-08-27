@@ -1045,18 +1045,20 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 # Add an emblem to the icon.
                 icon = StateReason.LEVEL_ICON[level]
                 pixbuf = pixbuf.copy ()
-                theme = gtk.icon_theme_get_default ()
-
-                emblem = theme.load_icon (icon, 22, 0)
-                emblem.composite (pixbuf,
-                                  pixbuf.get_width () / 2,
-                                  pixbuf.get_height () / 2,
-                                  emblem.get_width () / 2,
-                                  emblem.get_height () / 2,
-                                  pixbuf.get_width () / 2,
-                                  pixbuf.get_height () / 2,
-                                  0.5, 0.5,
-                                  gtk.gdk.INTERP_BILINEAR, 255)
+                try:
+                    theme = gtk.icon_theme_get_default ()
+                    emblem = theme.load_icon (icon, 22, 0)
+                    emblem.composite (pixbuf,
+                                      pixbuf.get_width () / 2,
+                                      pixbuf.get_height () / 2,
+                                      emblem.get_width () / 2,
+                                      emblem.get_height () / 2,
+                                      pixbuf.get_width () / 2,
+                                      pixbuf.get_height () / 2,
+                                      0.5, 0.5,
+                                      gtk.gdk.INTERP_BILINEAR, 255)
+                except gobject.GError:
+                    debugprint ("No %s icon available" % icon)
 
         return pixbuf
 

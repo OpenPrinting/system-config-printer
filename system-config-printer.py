@@ -1534,28 +1534,34 @@ class GUI(GtkGUI, monitor.Watcher):
 
                 if def_emblem:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
-                    default_emblem = theme.load_icon (def_emblem, w/2, 0)
-                    copy = pixbuf.copy ()
-                    default_emblem.composite (copy, 0, 0,
-                                              copy.get_width (),
-                                              copy.get_height (),
-                                              0, 0,
-                                              1.0, 1.0,
-                                              gtk.gdk.INTERP_NEAREST, 255)
-                    pixbuf = copy
+                    try:
+                        default_emblem = theme.load_icon (def_emblem, w/2, 0)
+                        copy = pixbuf.copy ()
+                        default_emblem.composite (copy, 0, 0,
+                                                  copy.get_width (),
+                                                  copy.get_height (),
+                                                  0, 0,
+                                                  1.0, 1.0,
+                                                  gtk.gdk.INTERP_NEAREST, 255)
+                        pixbuf = copy
+                    except gobject.GError:
+                        debugprint ("No %s icon available" % def_emblem)
 
                 if emblem:
                     (w, h) = gtk.icon_size_lookup (gtk.ICON_SIZE_DIALOG)
-                    other_emblem = theme.load_icon (emblem, w/2, 0)
-                    copy = pixbuf.copy ()
-                    other_emblem.composite (copy, 0, 0,
-                                            copy.get_width (),
-                                            copy.get_height (),
-                                            copy.get_width () / 2,
-                                            copy.get_height () / 2,
-                                            1.0, 1.0,
-                                            gtk.gdk.INTERP_NEAREST, 255)
-                    pixbuf = copy
+                    try:
+                        other_emblem = theme.load_icon (emblem, w/2, 0)
+                        copy = pixbuf.copy ()
+                        other_emblem.composite (copy, 0, 0,
+                                                copy.get_width (),
+                                                copy.get_height (),
+                                                copy.get_width () / 2,
+                                                copy.get_height () / 2,
+                                                1.0, 1.0,
+                                                gtk.gdk.INTERP_NEAREST, 255)
+                        pixbuf = copy
+                    except gobject.GError:
+                        debugprint ("No %s icon available" % emblem)
 
                 self.mainlist.append (row=[object, pixbuf, name, tip])
 
@@ -4673,19 +4679,32 @@ class NewPrinterGUI(GtkGUI):
         self.WaitWindow.set_transient_for (parent)
         self.WaitWindow.show_now ()
         self.busy (self.WaitWindow)
-        while gtk.events_pending ():
-            gtk.main_iteration ()
 
-        debugprint ("Fetching devices")
-        self.mainapp.cups._begin_operation (_("fetching device list"))
-        try:
-            devices = cupshelpers.getDevices(self.mainapp.cups)
-        except:
-            self.mainapp.cups._end_operation ()
-            self.WaitWindow.hide ()
-            raise
+        if self.mainapp.cups._use_pk and config.WITH_POLKIT_1:
+            def get_devices():
+                c = authconn.Connection (host=self.mainapp.connect_server,
+                                         parent=parent, lock=True)
+                c._begin_operation (_("fetching device list"))
+                ret = cupshelpers.getDevices (c)
+                c._end_operation ()
+                return ret
 
-        self.mainapp.cups._end_operation ()
+            op = TimedOperation (get_devices)
+            try:
+                devices = op.run ()
+            except (OperationCanceled, RuntimeError, cups.IPPError):
+                self.WaitWindow.hide ()
+                raise
+        else:
+            self.mainapp.cups._begin_operation (_("fetching device list"))
+            try:
+                devices = cupshelpers.getDevices (self.mainapp.cups)
+                self.mainapp.cups._end_operation ()
+            except cups.IPPError:
+                self.mainapp.cups._end_operation ()
+                self.WaitWindow.hide ()
+                raise
+
         self.WaitWindow.hide ()
         debugprint ("Got devices")
         return devices
@@ -5714,7 +5733,12 @@ class NewPrinterGUI(GtkGUI):
             self.expNPDeviceURIs.hide ()
 
     def on_tvNPDeviceURIs_cursor_changed(self, widget):
-        model, iter = widget.get_selection().get_selected()
+        path, column = widget.get_cursor ()
+        if path == None:
+            return
+
+        model = widget.get_model ()
+        iter = model.get_iter (path)
         device = model.get_value(iter, 1)
         self.device = device
         self.lblNPDeviceDescription.set_text ('')

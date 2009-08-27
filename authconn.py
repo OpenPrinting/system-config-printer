@@ -24,6 +24,7 @@ import gobject
 import gtk
 import os
 from errordialogs import *
+import config
 from debug import *
 
 _ = lambda x: x
@@ -156,8 +157,11 @@ class Connection:
         cups.setUser (self._use_user)
 
         self._use_pk = ((self._server[0] == '/' or self._server == 'localhost')
-                        and not self._lock
                         and os.getuid () != 0)
+
+        if not config.WITH_POLKIT_1 and self._lock:
+            self._use_pk = False
+
         if self._use_pk:
             create_object = cupspk.Connection
         else:
@@ -208,10 +212,6 @@ class Connection:
                 break
             except cups.IPPError, (e, m):
                 if self._use_pk and m == 'pkcancel':
-                    title = _('Unauthorized request (%s)') % fname
-                    text = _("You are not authorized to carry out the "
-                             "requested action.")
-                    show_error_dialog (title, text, None)
                     raise cups.IPPError (0, _("Operation canceled"))
                 if not self._cancel and (e == cups.IPP_NOT_AUTHORIZED or
                                          e == cups.IPP_FORBIDDEN):

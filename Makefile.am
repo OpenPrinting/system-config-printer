@@ -39,6 +39,7 @@ config.py: config.py.in Makefile
 	  -e "s|\@localedir\@|$(localedir)|" \
 	  -e "s|\@VERSION\@|$(VERSION)|" \
 	  -e "s|\@PACKAGE\@|$(PACKAGE)|" \
+	  -e "s|\@WITH_POLKIT_1\@|$(WITH_POLKIT_1)|" \
 	  $< > $@
 
 # Use distutils to build the module.

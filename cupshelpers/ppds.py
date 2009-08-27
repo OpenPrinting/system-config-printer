@@ -116,7 +116,11 @@ def ppdMakeModelSplit (ppd_make_and_model):
     elif l.find ("turboprint") != -1:
         t = ppd_make_and_model.find (" TurboPrint")
         if t != -1:
-            ppd_make_and_model = ppd_make_and_model[:t]
+            t2 = ppd_make_and_model.rfind (" TurboPrint")
+            if t != t2:
+                ppd_make_and_model = ppd_make_and_model[t + 12:t2]
+            else:
+                ppd_make_and_model = ppd_make_and_model[:t]
         try:
             make, model = ppd_make_and_model.split("_", 1)
         except:
@@ -368,7 +372,7 @@ class PPDs:
             models_list = self.makes[make].keys ()
         except KeyError:
             return []
-        models_list.sort (key=unicode.lower, cmp=cups.modelSort)
+        models_list.sort (key=lambda x: x.lower(), cmp=cups.modelSort)
         return models_list
 
     def getInfoFromModel (self, make, model):

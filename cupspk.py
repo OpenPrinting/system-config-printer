@@ -34,6 +34,7 @@ import tempfile
 import cups
 import dbus
 import gtk
+import config
 from debug import debugprint
 
 from dbus.mainloop.glib import DBusGMainLoop
@@ -221,8 +222,14 @@ class Connection:
                             return retval
                 break
             except dbus.exceptions.DBusException, e:
-                if not self._handle_exception_with_auth(e):
+                if config.WITH_POLKIT_1:
+                    if e.get_dbus_name() == CUPS_PK_NEED_AUTH:
+                        raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, 'pkcancel')
+
                     break
+                else:
+                    if not self._handle_exception_with_auth(e):
+                        break
 
         # The PolicyKit call did not work (either a PK-error and we got a dbus
         # exception that wasn't handled, or an error in the mechanism itself)
