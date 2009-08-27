@@ -156,7 +156,6 @@ class Connection:
         cups.setUser (self._use_user)
 
         self._use_pk = ((self._server[0] == '/' or self._server == 'localhost')
-                        and not self._lock
                         and os.getuid () != 0)
         if self._use_pk:
             create_object = cupspk.Connection
