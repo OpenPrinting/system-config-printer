@@ -4621,7 +4621,7 @@ class NewPrinterGUI(GtkGUI):
         self.WaitWindow.show_now ()
         self.busy (self.WaitWindow)
 
-        if self.mainapp.cups._use_pk:
+        if self.mainapp.cups._use_pk and config.WITH_POLKIT_1:
             def get_devices():
                 c = authconn.Connection (host=self.mainapp.connect_server,
                                          parent=parent, lock=True)

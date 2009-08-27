@@ -34,10 +34,15 @@ import tempfile
 import cups
 import dbus
 import gtk
+import config
 from debug import debugprint
 
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop(set_as_default=True)
+
+PK_AUTH_NAME  = 'org.freedesktop.PolicyKit.AuthenticationAgent'
+PK_AUTH_PATH  = '/org/gnome/PolicyKit/Manager'
+PK_AUTH_IFACE = 'org.freedesktop.PolicyKit.AuthenticationAgent'
 
 CUPS_PK_NAME  = 'org.opensuse.CupsPkHelper.Mechanism'
 CUPS_PK_PATH  = '/'
@@ -117,6 +122,70 @@ class Connection:
             return None
 
 
+    def _obtain_auth(self, action, xid = 0):
+        global pk_auth_ret
+        global pk_auth_error
+        global pk_auth_done
+        global pk_auth_running
+
+        if pk_auth_running:
+            # FIXME: raise an exception: this should really never happen
+            return False
+
+        pk_auth_ret = False
+        pk_auth_error = None
+        pk_auth_done = False
+
+        pk_auth_object = self._session_bus.get_object(PK_AUTH_NAME, PK_AUTH_PATH)
+        pk_auth = dbus.Interface(pk_auth_object, PK_AUTH_IFACE)
+
+        # We're doing this dbus call asynchronously because we want to not
+        # freeze the UI while a menu is being destroyed. And the windows might
+        # need some repainting while the authorization dialog is displayed.
+        pk_auth_running = True
+
+        pk_auth.ObtainAuthorization(action, dbus.UInt32(xid), dbus.UInt32(os.getpid()), reply_handler=_pk_auth_reply_handler, error_handler=_pk_auth_error_handler, timeout=2**31/1000)
+
+        while not pk_auth_done:
+            gtk.main_iteration(True)
+
+        pk_auth_running = False
+
+        if pk_auth_error != None:
+            if pk_auth_error.find('org.freedesktop.DBus.Error.NoReply') == 0:
+                return False
+            raise dbus.exceptions.DBusException(pk_auth_error)
+
+        if not type(pk_auth_ret) == dbus.Boolean:
+            return False
+
+        return pk_auth_ret != 0
+
+
+    def _handle_exception_with_auth(self, e):
+        if e.get_dbus_name() != CUPS_PK_NEED_AUTH:
+            return False
+
+        tokens = e.get_dbus_message().split(' ', 2)
+        if len(tokens) != 3:
+            return False
+
+        try:
+            xid = 0
+            if self._parent and getattr(self._parent, 'window') and getattr(self._parent.window, 'xid'):
+                xid = self._parent.window.xid
+
+            # FIXME: is xid working?
+            ret = self._obtain_auth(tokens[0], xid)
+        except dbus.exceptions.DBusException:
+            return False
+
+        if not ret:
+            raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, 'pkcancel')
+
+        return True
+
+
     def _call_with_pk_and_fallback(self, use_fallback, pk_function_name, pk_args, fallback_function, *args, **kwds):
         pk_function = None
 
@@ -153,10 +222,14 @@ class Connection:
                             return retval
                 break
             except dbus.exceptions.DBusException, e:
-                if e.get_dbus_name() == CUPS_PK_NEED_AUTH:
-                    raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, 'pkcancel')
+                if config.WITH_POLKIT_1:
+                    if e.get_dbus_name() == CUPS_PK_NEED_AUTH:
+                        raise cups.IPPError(cups.IPP_NOT_AUTHORIZED, 'pkcancel')
 
-                break
+                    break
+                else:
+                    if not self._handle_exception_with_auth(e):
+                        break
 
         # The PolicyKit call did not work (either a PK-error and we got a dbus
         # exception that wasn't handled, or an error in the mechanism itself)

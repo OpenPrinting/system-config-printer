@@ -24,6 +24,7 @@ import gobject
 import gtk
 import os
 from errordialogs import *
+import config
 from debug import *
 
 _ = lambda x: x
@@ -157,6 +158,10 @@ class Connection:
 
         self._use_pk = ((self._server[0] == '/' or self._server == 'localhost')
                         and os.getuid () != 0)
+
+        if not config.WITH_POLKIT_1 and self._lock:
+            self._use_pk = False
+
         if self._use_pk:
             create_object = cupspk.Connection
         else:
