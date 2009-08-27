@@ -4620,19 +4620,32 @@ class NewPrinterGUI(GtkGUI):
         self.WaitWindow.set_transient_for (parent)
         self.WaitWindow.show_now ()
         self.busy (self.WaitWindow)
-        while gtk.events_pending ():
-            gtk.main_iteration ()
 
-        debugprint ("Fetching devices")
-        self.mainapp.cups._begin_operation (_("fetching device list"))
-        try:
-            devices = cupshelpers.getDevices(self.mainapp.cups)
-        except:
-            self.mainapp.cups._end_operation ()
-            self.WaitWindow.hide ()
-            raise
+        if self.mainapp.cups._use_pk:
+            def get_devices():
+                c = authconn.Connection (host=self.mainapp.connect_server,
+                                         parent=parent, lock=True)
+                c._begin_operation (_("fetching device list"))
+                ret = cupshelpers.getDevices (c)
+                c._end_operation ()
+                return ret
 
-        self.mainapp.cups._end_operation ()
+            op = TimedOperation (get_devices)
+            try:
+                devices = op.run ()
+            except (OperationCanceled, RuntimeError, cups.IPPError):
+                self.WaitWindow.hide ()
+                raise
+        else:
+            self.mainapp.cups._begin_operation (_("fetching device list"))
+            try:
+                devices = cupshelpers.getDevices (self.mainapp.cups)
+                self.mainapp.cups._end_operation ()
+            except cups.IPPError:
+                self.mainapp.cups._end_operation ()
+                self.WaitWindow.hide ()
+                raise
+
         self.WaitWindow.hide ()
         debugprint ("Got devices")
         return devices
