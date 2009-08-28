@@ -80,6 +80,7 @@ class ToolbarSearchEntry (gtk.HBox):
 
             self.entry.set_icon_sensitive (gtk.ENTRY_ICON_SECONDARY, False)
             self.entry.set_icon_activatable (gtk.ENTRY_ICON_SECONDARY, False)
+            self.entry.connect ('icon-press', self.on_icon_press)
 
         label.set_mnemonic_widget (self.entry)
 
@@ -88,7 +89,6 @@ class ToolbarSearchEntry (gtk.HBox):
         self.entry.connect ('changed', self.on_changed)
         self.entry.connect ('focus_out_event', self.on_focus_out_event)
         self.entry.connect ('activate', self.on_activate)
-        self.entry.connect ('icon-press', self.on_icon_press)
 
     def do_get_property (self, property):
         if property.name == 'search_timeout':

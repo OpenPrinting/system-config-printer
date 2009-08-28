@@ -122,6 +122,7 @@ import gettext
 gettext.textdomain (domain)
 gettext.bindtextdomain (domain, config.localedir)
 import ppdippstr
+ppdippstr.init ()
 pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
