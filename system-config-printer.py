@@ -129,6 +129,7 @@ gettext.bindtextdomain (domain, config.localedir)
 gtk.glade.textdomain (domain)
 gtk.glade.bindtextdomain (domain, config.localedir)
 import ppdippstr
+ppdippstr.init ()
 pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
