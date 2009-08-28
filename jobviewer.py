@@ -656,19 +656,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                         c._end_operation ()
                         nonfatalException ()
 
-                self.display_auth_info_dialog (job)
-
-    def on_auth_notification_closed (self, notification, reason=None):
-        job = notification.get_data ('job-id')
-        debugprint ("auth notification closed for job %s" % job)
-        self.auth_notifications[job].set_data ('closed', True)
-        del self.auth_notifications[job]
-
-    def on_auth_notification_authenticate (self, notification, action):
-        job = notification.get_data ('job-id')
-        keyring_attrs = notification.get_data ('keyring-attrs')
-        debugprint ("auth notification authenticate for job %s" % job)
-        self.display_auth_info_dialog (job, keyring_attrs)
+                self.display_auth_info_dialog (job, keyring_attrs)
 
     def display_auth_info_dialog (self, job, keyring_attrs=None):
         data = self.jobs[job]
