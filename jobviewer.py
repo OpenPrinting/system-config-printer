@@ -604,10 +604,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                     else:
                         (serverport, rest) = urllib.splithost (rest)
                         (server, port) = urllib.splitnport (serverport)
-                    username = pwd.getpwuid (os.getuid ())[0]
                     keyring_attrs.update ({ "server": str (server.lower ()),
-                                            "protocol": str (scheme),
-                                            "user": str (username)})
+                                            "protocol": str (scheme)})
 
                 if job in self.authenticated_jobs:
                     # We've already tried to authenticate this job before.
@@ -656,6 +654,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                         c._end_operation ()
                         nonfatalException ()
 
+                username = pwd.getpwuid (os.getuid ())[0]
+                keyring_attrs["user"] = str (username)
                 self.display_auth_info_dialog (job, keyring_attrs)
 
     def display_auth_info_dialog (self, job, keyring_attrs=None):
@@ -747,8 +747,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                            attrs.get ("protocol"))
                     ind = auth_info_required.index ('password')
                     secret = auth_info[ind]
-                    gnomekeyring.item_create_sync (keyring, type, name,
-                                                   attrs, secret, True)
+                    id = gnomekeyring.item_create_sync (keyring, type, name,
+                                                        attrs, secret, True)
+                    debugprint ("keyring: created id %d for %s" % (id, name))
             except:
                 nonfatalException ()
 
