@@ -3717,6 +3717,7 @@ class NewPrinterGUI(GtkGUI):
         slct.set_select_function (self.device_select_function)
         self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn)
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
+        self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
 
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
@@ -4625,45 +4626,48 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPForward.set_sensitive(
                 self.mainapp.checkNPName(new_text))
 
-    def fetchDevices(self, parent=None):
+    def fetchDevices(self, parent=None, network=False):
         debugprint ("fetchDevices")
-        self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                 _('Searching') + '</span>\n\n' +
-                                 _('Searching for printers'))
-        if parent == None:
-            parent = self.mainapp.PrintersWindow
-        self.WaitWindow.set_transient_for (parent)
-        self.WaitWindow.show_now ()
-        self.busy (self.WaitWindow)
 
-        if self.mainapp.cups._use_pk and config.WITH_POLKIT_1:
-            def get_devices():
-                c = authconn.Connection (host=self.mainapp.connect_server,
-                                         parent=parent, lock=True)
-                c._begin_operation (_("fetching device list"))
-                ret = cupshelpers.getDevices (c)
-                c._end_operation ()
-                return ret
+        have_polkit_1 = self.mainapp.cups._use_pk and config.WITH_POLKIT_1
+        if not have_polkit_1:
+            if network:
+                return {}
 
-            op = TimedOperation (get_devices)
+            network = True
+
+        network_schemes = ["dnssd", "snmp"]
+        try:
+            c = authconn.Connection (host=self.mainapp.connect_server,
+                                     parent=parent, lock=True)
+            debugprint ("in get_devices: connected")
+            c._begin_operation (_("fetching device list"))
             try:
-                devices = op.run ()
-            except (OperationCanceled, RuntimeError, cups.IPPError):
-                self.WaitWindow.hide ()
-                raise
-        else:
-            self.mainapp.cups._begin_operation (_("fetching device list"))
-            try:
-                devices = cupshelpers.getDevices (self.mainapp.cups)
-                self.mainapp.cups._end_operation ()
-            except cups.IPPError:
-                self.mainapp.cups._end_operation ()
-                self.WaitWindow.hide ()
-                raise
+                if network:
+                    debugprint ("Fetching network devices")
+                    ret = cupshelpers.getDevices (c,
+                                                  include_schemes=network_schemes)
+                else:
+                    debugprint ("Fetching local devices")
+                    ret = cupshelpers.getDevices (c,
+                                                  exclude_schemes=network_schemes)
+            except TypeError:
+                # include_schemes/exclude_schemes requires pycups >= 1.9.46
+                if network:
+                    ret = {}
+                else:
+                    debugprint ("Fetching all devices")
+                    debugprint ("in get_devices: getDevices")
+                    ret = cupshelpers.getDevices (c)
+        except RuntimeError:
+            raise
+        except cups.IPPError:
+            c._end_operation ()
+            raise
 
-        self.WaitWindow.hide ()
+        c._end_operation ()
         debugprint ("Got devices")
-        return devices
+        return ret
 
     def install_hplip_plugin(self, uri):
         """
@@ -4976,23 +4980,53 @@ class NewPrinterGUI(GtkGUI):
         return (host, uri)
 
     def fillDeviceTab(self, current_uri=None):
-        try:
-            devices = self.fetchDevices()
-        except cups.IPPError, (e, msg):
-            self.show_IPP_Error(e, msg)
-            devices = {}
-        except:
-            nonfatalException()
-            devices = {}
+        self.device_selected = -1
+        model = gtk.TreeStore (gobject.TYPE_STRING,   # device-info
+                               gobject.TYPE_PYOBJECT, # PhysicalDevice obj
+                               gobject.TYPE_BOOLEAN)  # Separator?
+        other = cupshelpers.Device('', **{'device-info' :_("Other")})
+        physother = PhysicalDevice (other)
+        self.devices = [physother]
+        model.append (None, row=[physother.get_info (), physother, False])
+        network_iter = model.append (None, row=[_("Network Printer"),
+                                                None,
+                                                False])
+        network_dict = { 'device-class': 'network',
+                         'device-info': _("Find Network Printer") }
+        network = cupshelpers.Device ('network', **network_dict)
+        find_nw_iter = model.append (network_iter,
+                                     row=[network_dict['device-info'],
+                                          PhysicalDevice (network), False])
+        model.insert_after (network_iter, find_nw_iter, row=['', None, True])
+        self.devices_find_nw_iter = find_nw_iter
+        self.devices_network_iter = network_iter
+        self.devices_network_fetched = False
+        self.tvNPDevices.set_model (model)
+        self.entNPTDevice.set_text ('')
+        self.expNPDeviceURIs.hide ()
+        self.inc_spinner_task ()
 
+        TimedOperation (self.fetchDevices,
+                        kwargs={"network": False},
+                        callback=self.got_devices,
+                        context=current_uri)
+
+    def got_devices (self, result, exception, current_uri=None):
+        self.dec_spinner_task ()
+        if exception:
+            try:
+                raise exception
+            except:
+                nonfatalException()
+            return
+
+        devices = result
         if current_uri:
             if devices.has_key (current_uri):
                 current = devices.pop(current_uri)
-                current.info += _(" (Current)")
             elif devices.has_key (current_uri.replace (":9100", "")):
                 current_uri = current_uri.replace (":9100", "")
                 current = devices.pop(current_uri)
-                current.info += _(" (Current)")
             else:
                 current = cupshelpers.Device (current_uri)
                 current.info = "Current device"
@@ -5035,7 +5069,7 @@ class NewPrinterGUI(GtkGUI):
                                                  "hal", "beh",
                                                  "scsi", "http", "delete"),
                          devices)
-        self.devices = []
+        newdevices = []
         for device in devices:
             physicaldevice = PhysicalDevice (device)
             try:
@@ -5043,43 +5077,32 @@ class NewPrinterGUI(GtkGUI):
                 self.devices[i].add_device (device)
             except ValueError:
                 self.devices.append (physicaldevice)
+                newdevices.append (physicaldevice)
 
         self.devices.sort()
-        other = cupshelpers.Device('', **{'device-info' :_("Other")})
-        self.devices.append (PhysicalDevice (other))
-        device_select_index = 0
         if current_uri:
             current_device = PhysicalDevice (current)
             try:
                 i = self.devices.index (current_device)
                 self.devices[i].add_device (current)
-                device_select_index = i
-                devs = self.devices[i].get_devices ()
+                current_device = self.devices[i]
             except ValueError:
-                self.devices.insert(0, current_device)
+                self.devices.append (current_device)
+                newdevices.append (current_device)
+        else:
+            current_device = None
 
-        model = gtk.TreeStore (gobject.TYPE_STRING,   # device-info
-                               gobject.TYPE_PYOBJECT, # PhysicalDevice obj
-                               gobject.TYPE_BOOLEAN)  # Separator?
-        network_iter = model.append (None, row=[_("Network Printer"),
-                                                None,
-                                                False])
-        network_dict = { 'device-class': 'network',
-                         'device-info': _("Find Network Printer") }
-        network = cupshelpers.Device ('network', **network_dict)
-        find_nw_iter = model.append (network_iter,
-                                     row=[network_dict['device-info'],
-                                          PhysicalDevice (network), False])
-        model.insert_after (network_iter, find_nw_iter, row=['', None, True])
-        self.devices_find_nw_iter = find_nw_iter
-        self.tvNPDevices.set_model (model)
+        model = self.tvNPDevices.get_model ()
 
-        i = 0
-        device_select_path = None
-        for device in self.devices:
+        network_iter = self.devices_network_iter
+        find_nw_iter = self.devices_find_nw_iter
+        for device in newdevices:
             devs = device.get_devices ()
             network = devs[0].device_class == 'network'
-            row=[device.get_info (), device, False]
+            info = device.get_info ()
+            if device == current_device:
+                info += _(" (Current)")
+            row=[info, device, False]
             if network:
                 if devs[0].uri != devs[0].type:
                     # An actual network printer device.  Put this at the top.
@@ -5089,23 +5112,30 @@ class NewPrinterGUI(GtkGUI):
                     # If this is the currently selected device we need
                     # to expand the "Network Printer" row so that it
                     # is visible.
-                    if device_select_index == i:
+                    if device == current_device:
                         network_path = model.get_path (network_iter)
                         self.tvNPDevices.expand_row (network_path, False)
                 else:
                     # Just a method of finding one.
                     iter = model.append (network_iter, row=row)
             else:
-                iter = model.insert_before(None, network_iter, row=row)
+                # Insert this local device in order.
+                iter = model.get_iter_first ()
+                while iter != network_iter:
+                    physdev = model.get_value (iter, 1)
+                    if physdev > device:
+                        break
 
-            if device_select_index == i:
+                    iter = model.iter_next (iter)
+
+                iter = model.insert_before (None, iter, row=row)
+
+            if device == current_device:
                 device_select_path = model.get_path (iter)
                 self.tvNPDevices.scroll_to_cell (device_select_path,
                                                  row_align=0.5)
                 column = self.tvNPDevices.get_column (0)
                 self.tvNPDevices.set_cursor (device_select_path, column)
-
-            i += 1
 
         connection_select_path = 0
         if current_uri:
@@ -5120,6 +5150,9 @@ class NewPrinterGUI(GtkGUI):
 
                 iter = model.iter_next (iter)
                 i += 1
+        elif not self.device_selected:
+            column = self.tvNPDevices.get_column (0)
+            self.tvNPDevices.set_cursor ((0,), column)
 
         column = self.tvNPDeviceURIs.get_column (0)
         self.tvNPDeviceURIs.set_cursor (connection_select_path, column)
@@ -5565,6 +5598,13 @@ class NewPrinterGUI(GtkGUI):
         else:
             view.expand_row (path, False)
 
+    def device_row_expanded (self, view, iter, path):
+        if not self.devices_network_fetched:
+            self.devices_network_fetched = True
+            self.inc_spinner_task ()
+            TimedOperation (self.fetchDevices, kwargs={'network': True},
+                            callback=self.got_devices)
+
     def device_select_function (self, path):
         """
         Allow this path to be selected as long as there
@@ -5579,6 +5619,7 @@ class NewPrinterGUI(GtkGUI):
         return False
 
     def on_tvNPDevices_cursor_changed(self, widget):
+        self.device_selected += 1
         path, column = widget.get_cursor ()
         if path == None:
             return
