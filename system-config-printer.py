@@ -3681,6 +3681,7 @@ class NewPrinterGUI(GtkGUI):
         self.ntbkNPDownloadableDriverProperties.set_show_tabs(False)
 
         self.spinner = gtkspinner.Spinner (self.imgProcessWorking)
+        self.spinner_count = 0
 
         # Set up OpenPrinting widgets.
         self.openprinting = cupshelpers.openprinting.OpenPrinting ()
@@ -3764,6 +3765,19 @@ class NewPrinterGUI(GtkGUI):
         ppd_filter.set_name(_("All files (*)"))
         ppd_filter.add_pattern("*")
         self.filechooserPPD.add_filter(ppd_filter)
+
+    def inc_spinner_task (self):
+        if self.spinner_count == 0:
+            self.imgProcessWorking.show ()
+            self.spinner.start ()
+
+        self.spinner_count += 1
+
+    def dec_spinner_task (self):
+        self.spinner_count -= 1
+        if self.spinner_count == 0:
+            self.imgProcessWorking.hide ()
+            self.spinner.stop ()
 
     def show_IPP_Error (self, exception, message):
         return show_IPP_Error (exception, message, parent=self.NewPrinterWindow)
@@ -5868,8 +5882,7 @@ class NewPrinterGUI(GtkGUI):
         self.network_found = 0
         self.lblNetworkFindSearching.show_all ()
         finder = probe_printer.PrinterFinder ()
-        self.imgProcessWorking.show ()
-        self.spinner.start ()
+        self.inc_spinner_task ()
         finder.find (host, found_callback)
 
     def found_network_printer_callback (self, new_device):
@@ -5898,8 +5911,7 @@ class NewPrinterGUI(GtkGUI):
                 path = model.get_path (iter)
                 self.tvNPDevices.set_cursor (path)
         else:
-            self.imgProcessWorking.hide ()
-            self.spinner.stop ()
+            self.dec_spinner_task ()
             self.lblNetworkFindSearching.hide ()
             self.entNPTNetworkHostname.set_sensitive (True)
             self.btnNetworkFind.set_sensitive (True)
