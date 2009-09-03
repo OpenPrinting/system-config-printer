@@ -65,7 +65,7 @@ class Spinner:
     def _next_frame (self):
         n = self._current_frame + 1
         if n >= self.n_frames:
-            n = 0
+            n = 1
 
         self._set_frame (n)
         return True
