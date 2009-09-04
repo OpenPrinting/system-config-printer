@@ -152,16 +152,25 @@ class OperationThread(threading.Thread):
 
 class TimedOperation(Timed):
     def __init__ (self, target, args=(), kwargs={}, parent=None,
-                  show_dialog=False):
+                  show_dialog=False, callback=None, context=None):
         self.wait_window = None
         self.parent = parent
         self.show_dialog = show_dialog
+        self.callback = callback
+        self.context = context
         self.thread = OperationThread (target=target,
                                        args=args,
                                        kwargs=kwargs)
         self.thread.start ()
 
+        self.use_callback = callback != None
+        if self.use_callback:
+            self.timeout_source = gobject.timeout_add (50, self._check_thread)
+
     def run (self):
+        if self.use_callback:
+            raise RuntimeError
+
         if self.show_dialog:
             wait = gtk.MessageDialog (self.parent,
                                       gtk.DIALOG_MODAL |
@@ -170,7 +179,7 @@ class TimedOperation(Timed):
                                       gtk.BUTTONS_CANCEL,
                                       _("Please wait"))
             wait.connect ("delete_event", lambda *args: False)
-            wait.connect ("response", self.wait_window_response)
+            wait.connect ("response", self._wait_window_response)
             if self.parent:
                 wait.set_transient_for (self.parent)
 
@@ -178,7 +187,7 @@ class TimedOperation(Timed):
             wait.format_secondary_text (_("Gathering information"))
             wait.show_all ()
 
-        self.timeout_source = gobject.timeout_add (50, self.check_thread)
+        self.timeout_source = gobject.timeout_add (50, self._check_thread)
         gtk.main ()
         gobject.source_remove (self.timeout_source)
         if self.show_dialog:
@@ -186,20 +195,33 @@ class TimedOperation(Timed):
 
         return self.thread.collect_result ()
 
-    def check_thread (self):
+    def _check_thread (self):
         if self.thread.isAlive ():
             # Thread still running.
             return True
 
-        # Thread has finished.  Stop the sub-loop.
-        gtk.main_quit ()
+        # Thread has finished.  Stop the sub-loop or trigger callback.
+        if self.use_callback:
+            if self.callback != None:
+                if self.context != None:
+                    self.callback (self.thread.result, self.thread.exception,
+                                   self.context)
+                else:
+                    self.callback (self.thread.result, self.thread.exception)
+        else:
+            gtk.main_quit ()
+
         return False
 
-    def wait_window_response (self, dialog, response):
+    def _wait_window_response (self, dialog, response):
         if response == gtk.RESPONSE_CANCEL:
             self.cancel ()
 
     def cancel (self):
         debugprint ("Command canceled")
-        gtk.main_quit ()
+        if self.use_callback:
+            self.callback = None
+        else:
+            gtk.main_quit ()
+
         return False

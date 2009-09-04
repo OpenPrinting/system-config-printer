@@ -541,7 +541,7 @@ class Device:
         
         return result
 
-def getDevices(connection):
+def getDevices(connection, **kw):
     """
     Obtain a list of available CUPS devices.
 
@@ -550,7 +550,7 @@ def getDevices(connection):
     @returns: a list of L{Device} objects
     @raise cups.IPPError: IPP Error
     """
-    devices = connection.getDevices()
+    devices = connection.getDevices(**kw)
     for uri, data in devices.iteritems():
         device = Device(uri, **data)
         devices[uri] = device

@@ -218,12 +218,13 @@ class Connection:
     def getDevices(self, *args, **kwds):
         use_pycups = False
 
-        timeout = 0
+        limit = 0
         include_schemes = ''
         exclude_schemes = ''
+        timeout = 0
 
-        if len(args) == 3:
-            (use_pycups, timeout, include_schemes, exclude_schemes) = self._args_to_tuple([int, str, str], *args)
+        if len(args) == 4:
+            (use_pycups, limit, include_schemes, exclude_schemes, timeout) = self._args_to_tuple([int, str, str, int], *args)
         else:
             if kwds.has_key('timeout'):
                 timeout = kwds['timeout']
@@ -233,6 +234,17 @@ class Connection:
 
             if kwds.has_key('exclude_schemes'):
                 exclude_schemes = kwds['exclude_schemes']
+
+        # Convert from list to string
+        if len (include_schemes) > 0:
+            include_schemes = reduce (lambda x, y: x + "," + y, include_schemes)
+        else:
+            include_schemes = ""
+
+        if len (exclude_schemes) > 0:
+            exclude_schemes = reduce (lambda x, y: x + "," + y, exclude_schemes)
+        else:
+            exclude_schemes = ""
 
         pk_args = (timeout, include_schemes, exclude_schemes)
 
