@@ -4188,6 +4188,7 @@ class NewPrinterGUI(GtkGUI):
     def on_NPCancel(self, widget, event=None):
         if self.fetchDevices_op:
             self.fetchDevices_op.cancel ()
+            self.fetchDevices_op = None
             self.dec_spinner_task ()
 
         self.NewPrinterWindow.hide()
@@ -5015,6 +5016,7 @@ class NewPrinterGUI(GtkGUI):
                                                context=(current_uri, False))
 
     def got_devices (self, result, exception, context):
+        self.fetchDevices_op = None
         self.dec_spinner_task ()
         (current_uri, network) = context
         if exception:
@@ -5024,9 +5026,7 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
             return
 
-        if network:
-            self.fetchDevices_op = None
-        else:
+        if not network:
             # Now we've got the local devices, start a request for the
             # network devices.
             context = (current_uri, True)
@@ -6582,6 +6582,11 @@ class NewPrinterGUI(GtkGUI):
 
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
+        if self.fetchDevices_op:
+            self.fetchDevices_op.cancel ()
+            self.fetchDevices_op = None
+            self.dec_spinner_task ()
+
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):
             name = unicode (self.entNPName.get_text())
             location = unicode (self.entNPLocation.get_text())
