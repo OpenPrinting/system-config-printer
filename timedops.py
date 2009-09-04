@@ -163,11 +163,12 @@ class TimedOperation(Timed):
                                        kwargs=kwargs)
         self.thread.start ()
 
-        if self.callback:
+        self.use_callback = callback != None
+        if self.use_callback:
             self.timeout_source = gobject.timeout_add (50, self._check_thread)
 
     def run (self):
-        if self.callback:
+        if self.use_callback:
             raise RuntimeError
 
         if self.show_dialog:
@@ -200,12 +201,13 @@ class TimedOperation(Timed):
             return True
 
         # Thread has finished.  Stop the sub-loop or trigger callback.
-        if self.callback:
-            if self.context != None:
-                self.callback (self.thread.result, self.thread.exception,
-                               self.context)
-            else:
-                self.callback (self.thread.result, self.thread.exception)
+        if self.use_callback:
+            if self.callback != None:
+                if self.context != None:
+                    self.callback (self.thread.result, self.thread.exception,
+                                   self.context)
+                else:
+                    self.callback (self.thread.result, self.thread.exception)
         else:
             gtk.main_quit ()
 
@@ -217,7 +219,7 @@ class TimedOperation(Timed):
 
     def cancel (self):
         debugprint ("Command canceled")
-        if self.callback:
+        if self.use_callback:
             self.callback = None
         else:
             gtk.main_quit ()
