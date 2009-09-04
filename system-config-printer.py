@@ -3717,7 +3717,6 @@ class NewPrinterGUI(GtkGUI):
         slct.set_select_function (self.device_select_function)
         self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn)
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
-        self.tvNPDevices.connect ("row-expanded", self.device_row_expanded)
 
         # Devices expander
         self.expNPDeviceURIs.connect ("notify::expanded",
@@ -4187,6 +4186,10 @@ class NewPrinterGUI(GtkGUI):
     # Navigation buttons
 
     def on_NPCancel(self, widget, event=None):
+        if self.fetchDevices_op:
+            self.fetchDevices_op.cancel ()
+            self.dec_spinner_task ()
+
         self.NewPrinterWindow.hide()
         if self.openprinting_query_handle != None:
             self.openprinting.cancelOperation (self.openprinting_query_handle)
@@ -5006,19 +5009,32 @@ class NewPrinterGUI(GtkGUI):
         self.expNPDeviceURIs.hide ()
         self.inc_spinner_task ()
 
-        TimedOperation (self.fetchDevices,
-                        kwargs={"network": False},
-                        callback=self.got_devices,
-                        context=current_uri)
+        self.fetchDevices_op = TimedOperation (self.fetchDevices,
+                                               kwargs={"network": False},
+                                               callback=self.got_devices,
+                                               context=(current_uri, False))
 
-    def got_devices (self, result, exception, current_uri=None):
+    def got_devices (self, result, exception, context):
         self.dec_spinner_task ()
+        (current_uri, network) = context
         if exception:
             try:
                 raise exception
             except:
                 nonfatalException()
             return
+
+        if network:
+            self.fetchDevices_op = None
+        else:
+            # Now we've got the local devices, start a request for the
+            # network devices.
+            context = (current_uri, True)
+            self.inc_spinner_task ()
+            self.fetchDevices_op = TimedOperation (self.fetchDevices,
+                                                   kwargs={"network": True},
+                                                   callback=self.got_devices,
+                                                   context=context)
 
         devices = result
         if current_uri:
@@ -5597,13 +5613,6 @@ class NewPrinterGUI(GtkGUI):
             view.collapse_row (path)
         else:
             view.expand_row (path, False)
-
-    def device_row_expanded (self, view, iter, path):
-        if not self.devices_network_fetched:
-            self.devices_network_fetched = True
-            self.inc_spinner_task ()
-            TimedOperation (self.fetchDevices, kwargs={'network': True},
-                            callback=self.got_devices)
 
     def device_select_function (self, path):
         """
