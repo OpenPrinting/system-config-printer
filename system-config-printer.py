@@ -1907,19 +1907,20 @@ class GUI(GtkGUI, monitor.Watcher):
     # set buttons sensitivity
     def setDataButtonState(self):
         try:
-            possible = (self.ppd and
-                        not bool (self.changed) and
-                        self.printer.enabled and
-                        not self.printer.rejecting)
+            printable = (self.ppd and
+                         not bool (self.changed) and
+                         self.printer.enabled and
+                         not self.printer.rejecting)
 
-            self.btnPrintTestPage.set_sensitive (possible)
+            self.btnPrintTestPage.set_sensitive (printable)
+            adjustable = not (self.discovered or bool (self.changed))
             for button in [self.btnChangePPD,
                            self.btnSelectDevice]:
-                button.set_sensitive (not bool (self.changed))
+                button.set_sensitive (adjustable)
 
             commands = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
-            self.btnSelfTest.set_sensitive (commands and possible)
-            self.btnCleanHeads.set_sensitive (commands and possible)
+            self.btnSelfTest.set_sensitive (commands and printable)
+            self.btnCleanHeads.set_sensitive (commands and printable)
         except:
             pass
 
