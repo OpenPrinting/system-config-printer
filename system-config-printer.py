@@ -3805,6 +3805,7 @@ class NewPrinterGUI(GtkGUI):
         self.options = {} # keyword -> Option object
         self.changed = set()
         self.conflicts = set()
+        self.fetchDevices_op = None
 
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         combobox.set_model (gtk.ListStore (str, str))
