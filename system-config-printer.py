@@ -325,6 +325,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               "cmbJOMedia", "btnJOResetMedia",
                               "cmbJOSides", "btnJOResetSides",
                               "cmbJOHoldUntil", "btnJOResetHoldUntil",
+                              "cmbJOOutputOrder", "btnJOResetOutputOrder",
                               "cbJOMirror", "btnJOResetMirror",
                               "sbJOScaling", "btnJOResetScaling",
                               "sbJOSaturation", "btnJOResetSaturation",
@@ -736,6 +737,10 @@ class GUI(GtkGUI, monitor.Watcher):
 
                        (self.cmbJOHoldUntil, []),
 
+                       (self.cmbJOOutputOrder,
+                        [[_("Normal")],
+                         [_("Reverse")]]),
+
                        ]:
             model = gtk.ListStore (gobject.TYPE_STRING)
             for row in opts:
@@ -821,6 +826,14 @@ class GUI(GtkGUI, monitor.Watcher):
                                             self.cmbJOHoldUntil,
                                             self.btnJOResetHoldUntil,
                                             use_supported = True),
+
+                 options.OptionAlwaysShown ("outputorder", str,
+                                            "normal",
+                                            self.cmbJOOutputOrder,
+                                            self.btnJOResetOutputOrder,
+                                            combobox_map =
+                                            [ "normal",
+                                              "reverse" ]),
 
                  options.OptionAlwaysShown ("mirror", bool, False,
                                             self.cbJOMirror,
