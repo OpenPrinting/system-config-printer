@@ -220,7 +220,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.changed = set() # of options
 
         self.servers = set((self.connect_server,))
-        self.server_is_publishing = False
+        self.server_is_publishing = None # not known
         self.devid = devid
         self.focus_on_map = focus_on_map
 
@@ -3158,6 +3158,18 @@ class GUI(GtkGUI, monitor.Watcher):
             self.cups._end_operation ()
 
         if success and share:
+            if self.server_is_publishing == None:
+                # We haven't yet seen a server-is-sharing-printers attribute.
+                # Assuming CUPS 1.4, this means we haven't opened a
+                # properties dialog yet.  Fetch the attributes now and
+                # look for it.
+                try:
+                    printer.getAttributes ()
+                    p = printer.other_attributes['server-is-sharing-printers']
+                    self.server_is_publishing = p
+                except (cups.IPPError, KeyError):
+                    pass
+
             self.advise_publish ()
 
         # For some reason CUPS doesn't give us a notification about
