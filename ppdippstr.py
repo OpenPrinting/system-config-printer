@@ -24,6 +24,7 @@ from gettext import gettext as _
 printer_error_policy = dict()
 printer_op_policy = dict()
 job_sheets = dict()
+job_options = dict()
 ppd = dict()
 
 class TranslationDict:
@@ -63,6 +64,19 @@ def init ():
             "standard": _("Standard"),
             "topsecret": _("Top secret"),
             "unclassified": _("Unclassified")
+            })
+
+    # Names of job-hold-until values.
+    global job_options
+    job_options["job-hold-until"] = TranslationDict ({
+            "no-hold": _("No hold"),
+            "indefinite": _("Indefinite"),
+            "day-time": _("Daytime"),
+            "evening": _("Evening"),
+            "night": _("Night"),
+            "second-shift": _("Second shift"),
+            "third-shift": _("Third shift"),
+            "weekend": _("Weekend")
             })
 
     ## Common PPD strings

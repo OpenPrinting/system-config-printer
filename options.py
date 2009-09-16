@@ -20,6 +20,7 @@
 
 import gobject
 import gtk
+import ppdippstr
 
 def OptionWidget(name, v, s, on_change):
     if isinstance(v, list):
@@ -128,9 +129,23 @@ class OptionAlwaysShown(OptionInterface):
                 self.ipp_type == str):
                 model = self.widget.get_model ()
                 model.clear ()
+                translations = ppdippstr.job_options.get (self.name)
+                if translations:
+                    self.combobox_map = []
+                    self.combobox_dict = dict()
+                    i = 0
+
                 for each in supported:
+                    if translations:
+                        self.combobox_map.append (each)
+                        text = translations.get (each)
+                        self.combobox_dict[each] = text
+                        i += 1
+                    else:
+                        text = each
+
                     iter = model.append ()
-                    model.set_value (iter, 0, each)
+                    model.set_value (iter, 0, text)
             elif (type(self.widget) == gtk.ComboBox and
                   self.ipp_type == int and
                   self.combobox_map != None):
@@ -139,6 +154,7 @@ class OptionAlwaysShown(OptionInterface):
                 for each in supported:
                     iter = model.append ()
                     model.set_value (iter, 0, self.combobox_dict[each])
+
         if original_value != None:
             self.original_value = self.ipp_type (original_value)
             self.set_widget_value (self.original_value)
