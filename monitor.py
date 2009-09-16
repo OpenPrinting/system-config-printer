@@ -527,7 +527,8 @@ class Monitor:
             events.extend (["job-created",
                             "job-completed",
                             "job-stopped",
-                            "job-state-changed"])
+                            "job-state-changed",
+                            "job-progress"])
 
         try:
             self.sub_id = c.createSubscription ("/", events=events)

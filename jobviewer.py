@@ -138,6 +138,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.jobs = {}
         self.jobiters = {}
         self.jobids = []
+        self.jobs_attrs = {} # dict of jobid->GtkListStore of job attributes
         self.active_jobs = set() # of job IDs
         self.stopped_job_prompts = set() # of job IDs
         self.printer_state_reasons = {}
@@ -171,7 +172,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None, None,
                  self.on_job_reprint_activate),
                 ("authenticate-job", None, _("_Authenticate"), None, None,
-                 self.on_job_authenticate_activate)
+                 self.on_job_authenticate_activate),
+                 ("job-attributes", None, _("_Attributes"), None, None,
+                 self.on_jobs_attributes_activate)
                 ])
         self.job_ui_manager = gtk.UIManager ()
         self.job_ui_manager.insert_action_group (job_action_group, -1)
@@ -183,6 +186,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
  <accelerator action="release-job"/>
  <accelerator action="reprint-job"/>
  <accelerator action="authenticate-job"/>
+ <accelerator action="job-attributes"/>
 </ui>
 """
 )
@@ -194,7 +198,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                             "release-job",
                             "reprint-job",
                             None,
-                            "authenticate-job"]:
+                            "authenticate-job",
+                            "job-attributes"]:
             if not action_name:
                 item = gtk.SeparatorMenuItem ()
             else:
@@ -316,6 +321,15 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if not self.trayicon:
             self.JobsWindow.show ()
 
+        self.JobsAttributesWindow = gtk.Window()
+        self.JobsAttributesWindow.set_title (_("Jobs attributes"))
+        self.JobsAttributesWindow.set_position(gtk.WIN_POS_MOUSE)
+        self.JobsAttributesWindow.set_default_size(600, 600)
+        self.JobsAttributesWindow.set_transient_for (self.JobsWindow)
+        self.JobsAttributesWindow.connect("delete_event", self.jobs_attributes_on_delete_event)
+        self.notebook = gtk.Notebook()
+        self.JobsAttributesWindow.add(self.notebook)
+
     def cleanup (self):
         self.monitor.cleanup ()
 
@@ -382,6 +396,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.loop.quit ()
         return True
 
+    def jobs_attributes_on_delete_event(self, widget, event):
+        for page in range(self.notebook.get_n_pages()):
+            self.notebook.remove_page(-1)
+        self.jobs_attrs = {}
+        self.JobsAttributesWindow.hide_all()
+        return True
+
     def show_IPP_Error(self, exception, message):
         return errordialogs.show_IPP_Error (exception, message, self.JobsWindow)
 
@@ -401,6 +422,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         else:
             which_jobs = "not-completed"
         self.monitor.refresh(which_jobs=which_jobs, refresh_all=False)
+
 
     def update_job_creation_times(self):
         now = time.time ()
@@ -498,6 +520,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def update_job (self, job, data, connection=None):
         # Fetch required attributes for this job if they are missing.
         r = self.required_job_attributes - set (data.keys ())
+
+        # If we are showing attributes of this job at this moment, update them.
+        if job in self.jobs_attrs.keys():
+            self.update_job_attributes_viewer(job)
 
         if r:
             attrs = None
@@ -797,8 +823,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
         release = self.job_ui_manager.get_action ("/release-job")
         reprint = self.job_ui_manager.get_action ("/reprint-job")
         authenticate = self.job_ui_manager.get_action ("/authenticate-job")
+        attributes = self.job_ui_manager.get_action ("/job-attributes")
         if len (pathlist) == 0:
-            for widget in [cancel, hold, release, reprint, authenticate]:
+            for widget in [cancel, hold, release, reprint, authenticate, attributes]:
                 widget.set_sensitive (False)
             return
 
@@ -835,6 +862,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         release.set_sensitive(release_sensitive)
         reprint.set_sensitive(reprint_sensitive)
         authenticate.set_sensitive(authenticate_sensitive)
+        attributes.set_sensitive(True)
 
     def show_treeview_popup_menu (self, treeview, event, event_button):
         # Right-clicked.
@@ -999,6 +1027,58 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def on_refresh_activate(self, menuitem):
         self.monitor.refresh ()
+
+    def on_jobs_attributes_activate(self, menuitem):
+        """ For every selected job create notebook page with attributes. """
+        try:
+            c = cups.Connection (host=self.host,
+                                 port=self.port,
+                                 encryption=self.encryption)
+        except RuntimeError:
+            self.monitor.watcher.cups_connection_error (self)
+            return False
+
+        for jobid in self.jobids:
+            if jobid not in self.jobs_attrs.keys():
+                # add new notebook page with scrollable treeview
+                scrolledwindow = gtk.ScrolledWindow()
+                label = gtk.Label(jobid) # notebook page has label with jobid
+                self.notebook.append_page(scrolledwindow, label)
+                attr_treeview = gtk.TreeView()
+                scrolledwindow.add(attr_treeview)
+                cell = gtk.CellRendererText ()
+                attr_treeview.insert_column_with_attributes(0, _("Name"), cell, text=0)
+                cell = gtk.CellRendererText ()
+                attr_treeview.insert_column_with_attributes(1, _("Value"), cell, text=1)
+                attr_store = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+                attr_treeview.set_model(attr_store)
+                attr_treeview.get_selection().set_mode(gtk.SELECTION_NONE)
+                attr_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
+
+                jobattributes = c.getJobAttributes(jobid)
+                attr_store.clear()
+                # fill store with job attributes
+                for name, value in jobattributes.iteritems():
+                    attr_store.append([name, value])
+                self.jobs_attrs[jobid] = attr_store
+
+        self.JobsAttributesWindow.show_all ()
+
+    def update_job_attributes_viewer(self, jobid):
+        """ Update attributes store with new values. """
+        try:
+            c = cups.Connection (host=self.host,
+                                 port=self.port,
+                                 encryption=self.encryption)
+        except RuntimeError:
+            self.monitor.watcher.cups_connection_error (self)
+            return False
+
+        attr_store = self.jobs_attrs[jobid]        # store to update
+        jobattributes = c.getJobAttributes(jobid)  # new attributes
+        attr_store.clear()                         # remove old attributes
+        for name, value in jobattributes.iteritems():
+            attr_store.append([name, value])
 
     def job_is_active (self, jobdata):
         state = jobdata.get ('job-state', cups.IPP_JOB_CANCELED)
