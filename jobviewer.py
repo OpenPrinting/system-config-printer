@@ -1054,25 +1054,23 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 attr_treeview.set_model(attr_store)
                 attr_treeview.get_selection().set_mode(gtk.SELECTION_NONE)
                 attr_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
-
-                jobattributes = c.getJobAttributes(jobid)
-                attr_store.clear()
-                # fill store with job attributes
-                for name, value in jobattributes.iteritems():
-                    attr_store.append([name, value])
                 self.jobs_attrs[jobid] = attr_store
+                self.update_job_attributes_viewer (jobid, conn=c)
 
         self.JobsAttributesWindow.show_all ()
 
-    def update_job_attributes_viewer(self, jobid):
+    def update_job_attributes_viewer(self, jobid, conn=None):
         """ Update attributes store with new values. """
-        try:
-            c = cups.Connection (host=self.host,
-                                 port=self.port,
-                                 encryption=self.encryption)
-        except RuntimeError:
-            self.monitor.watcher.cups_connection_error (self)
-            return False
+        if conn != None:
+            c = conn
+        else:
+            try:
+                c = cups.Connection (host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
+            except RuntimeError:
+                self.monitor.watcher.cups_connection_error (self)
+                return False
 
         attr_store = self.jobs_attrs[jobid]        # store to update
         jobattributes = c.getJobAttributes(jobid)  # new attributes
