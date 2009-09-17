@@ -1076,6 +1076,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
         jobattributes = c.getJobAttributes(jobid)  # new attributes
         attr_store.clear()                         # remove old attributes
         for name, value in jobattributes.iteritems():
+            if name in ['job-id', 'job-printer-up-time']:
+                continue
+
             attr_store.append([name, value])
 
     def job_is_active (self, jobdata):
