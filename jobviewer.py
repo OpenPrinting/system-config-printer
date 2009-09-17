@@ -326,7 +326,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.JobsAttributesWindow.set_position(gtk.WIN_POS_MOUSE)
         self.JobsAttributesWindow.set_default_size(600, 600)
         self.JobsAttributesWindow.set_transient_for (self.JobsWindow)
-        self.JobsAttributesWindow.connect("delete_event", self.job_attributes_on_delete_event)
+        self.JobsAttributesWindow.connect("delete_event",
+                                          self.job_attributes_on_delete_event)
         self.notebook = gtk.Notebook()
         self.JobsAttributesWindow.add(self.notebook)
 
@@ -825,7 +826,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         authenticate = self.job_ui_manager.get_action ("/authenticate-job")
         attributes = self.job_ui_manager.get_action ("/job-attributes")
         if len (pathlist) == 0:
-            for widget in [cancel, hold, release, reprint, authenticate, attributes]:
+            for widget in [cancel, hold, release, reprint,
+                           authenticate, attributes]:
                 widget.set_sensitive (False)
             return
 
@@ -853,7 +855,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 if (not job.get('job-preserved', False)):
                     reprint_sensitive = False
 
-            if (job.get ('job-state', cups.IPP_JOB_CANCELED) != cups.IPP_JOB_HELD or
+            if (job.get ('job-state',
+                         cups.IPP_JOB_CANCELED) != cups.IPP_JOB_HELD or
                 job.get ('job-hold-until', 'none') != 'auth-info-required'):
                 authenticate_sensitive = False
 
@@ -1047,10 +1050,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 attr_treeview = gtk.TreeView()
                 scrolledwindow.add(attr_treeview)
                 cell = gtk.CellRendererText ()
-                attr_treeview.insert_column_with_attributes(0, _("Name"), cell, text=0)
+                attr_treeview.insert_column_with_attributes(0, _("Name"),
+                                                            cell, text=0)
                 cell = gtk.CellRendererText ()
-                attr_treeview.insert_column_with_attributes(1, _("Value"), cell, text=1)
-                attr_store = gtk.ListStore(gobject.TYPE_STRING, gobject.TYPE_STRING)
+                attr_treeview.insert_column_with_attributes(1, _("Value"),
+                                                            cell, text=1)
+                attr_store = gtk.ListStore(gobject.TYPE_STRING,
+                                           gobject.TYPE_STRING)
                 attr_treeview.set_model(attr_store)
                 attr_treeview.get_selection().set_mode(gtk.SELECTION_NONE)
                 attr_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
