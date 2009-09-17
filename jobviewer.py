@@ -174,7 +174,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 ("authenticate-job", None, _("_Authenticate"), None, None,
                  self.on_job_authenticate_activate),
                  ("job-attributes", None, _("_Attributes"), None, None,
-                 self.on_jobs_attributes_activate)
+                 self.on_job_attributes_activate)
                 ])
         self.job_ui_manager = gtk.UIManager ()
         self.job_ui_manager.insert_action_group (job_action_group, -1)
@@ -322,11 +322,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.JobsWindow.show ()
 
         self.JobsAttributesWindow = gtk.Window()
-        self.JobsAttributesWindow.set_title (_("Jobs attributes"))
+        self.JobsAttributesWindow.set_title (_("Job attributes"))
         self.JobsAttributesWindow.set_position(gtk.WIN_POS_MOUSE)
         self.JobsAttributesWindow.set_default_size(600, 600)
         self.JobsAttributesWindow.set_transient_for (self.JobsWindow)
-        self.JobsAttributesWindow.connect("delete_event", self.jobs_attributes_on_delete_event)
+        self.JobsAttributesWindow.connect("delete_event", self.job_attributes_on_delete_event)
         self.notebook = gtk.Notebook()
         self.JobsAttributesWindow.add(self.notebook)
 
@@ -396,7 +396,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.loop.quit ()
         return True
 
-    def jobs_attributes_on_delete_event(self, widget, event):
+    def job_attributes_on_delete_event(self, widget, event):
         for page in range(self.notebook.get_n_pages()):
             self.notebook.remove_page(-1)
         self.jobs_attrs = {}
@@ -1028,7 +1028,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_refresh_activate(self, menuitem):
         self.monitor.refresh ()
 
-    def on_jobs_attributes_activate(self, menuitem):
+    def on_job_attributes_activate(self, menuitem):
         """ For every selected job create notebook page with attributes. """
         try:
             c = cups.Connection (host=self.host,
