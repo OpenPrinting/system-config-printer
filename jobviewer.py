@@ -389,14 +389,24 @@ class JobViewer (GtkGUI, monitor.Watcher):
         return errordialogs.show_IPP_Error (exception, message, self.JobsWindow)
 
     def toggle_window_display(self, icon, force_show=False):
-        visible = self.JobsWindow.get_property('visible')
+        visible = self.JobsWindow.get_data('visible')
         if force_show:
             visible = False
 
         if visible:
-            self.JobsWindow.hide()
+            w = self.JobsWindow.window
+            (s, area, o) = self.statusicon.get_geometry ()
+            w.set_skip_taskbar_hint (True)
+            w.property_change ("_NET_WM_ICON_GEOMETRY",
+                               "CARDINAL", 32,
+                               gtk.gdk.PROP_MODE_REPLACE,
+                               list (area))
+            self.JobsWindow.iconify ()
         else:
-            self.JobsWindow.show()
+            self.JobsWindow.present ()
+            self.JobsWindow.window.set_skip_taskbar_hint (False)
+
+        self.JobsWindow.set_data ('visible', not visible)
 
     def on_show_completed_jobs_activate(self, menuitem):
         if menuitem.get_active():
