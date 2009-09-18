@@ -414,8 +414,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         if visible:
             w = self.JobsWindow.window
+            aw = self.JobsAttributesWindow.window
             (s, area, o) = self.statusicon.get_geometry ()
             w.set_skip_taskbar_hint (True)
+            if aw != None:
+                aw.set_skip_taskbar_hint (True)
+
             w.property_change ("_NET_WM_ICON_GEOMETRY",
                                "CARDINAL", 32,
                                gtk.gdk.PROP_MODE_REPLACE,
@@ -424,6 +428,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
         else:
             self.JobsWindow.present ()
             self.JobsWindow.window.set_skip_taskbar_hint (False)
+            aw = self.JobsAttributesWindow.window
+            if aw != None:
+                aw.set_skip_taskbar_hint (False)
 
         self.JobsWindow.set_data ('visible', not visible)
 
