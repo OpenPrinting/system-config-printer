@@ -173,7 +173,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                  self.on_job_reprint_activate),
                 ("authenticate-job", None, _("_Authenticate"), None, None,
                  self.on_job_authenticate_activate),
-                 ("job-attributes", None, _("_Attributes"), None, None,
+                 ("job-attributes", None, _("_View Attributes"), None, None,
                  self.on_job_attributes_activate)
                 ])
         self.job_ui_manager = gtk.UIManager ()
