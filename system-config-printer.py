@@ -106,6 +106,7 @@ from SearchCriterion import *
 import gtkinklevel
 import gtkspinner
 import statereason
+import firewall
 
 domain='system-config-printer'
 import locale
@@ -3468,17 +3469,20 @@ class GUI(GtkGUI, monitor.Watcher):
         new_setting = setting_dict.get (cups.CUPS_SERVER_SHARE_PRINTERS, '0')
         if (old_setting == '0' and new_setting != '0'):
             # We have just enabled print queue sharing.
-            # Ideally, this is the time we would check the firewall
-            # settings on this machine and request that the IPP TCP port
-            # be unblocked.  Unfortunately, this is not yet possible
-            # (bug #440469).  However, we can display a dialog to suggest
-            # that now might be a good time to review the firewall settings.
-            show_info_dialog (_("Review Firewall"),
-                              _("You may need to adjust the firewall "
-                                "to allow network printing to this "
-                                "computer.") + '\n\n' +
-                              TEXT_start_firewall_tool,
-                              parent=self.ServerSettingsDialog)
+            # Let's see if the firewall will allow IPP TCP packets in.
+            try:
+                f = firewall.Firewall ()
+                allowed = f.check_ipp_server_allowed ()
+            except:
+                allowed = False
+
+            if not allowed:
+                show_info_dialog (_("Review Firewall"),
+                                  _("You may need to adjust the firewall "
+                                    "to allow network printing to this "
+                                    "computer.") + '\n\n' +
+                                  TEXT_start_firewall_tool,
+                                  parent=self.ServerSettingsDialog)
 
         time.sleep(1) # give the server a chance to process our request
 

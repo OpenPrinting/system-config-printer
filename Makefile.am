@@ -84,6 +84,7 @@ nobase_pkgdata_DATA=					\
 	debug.py					\
 	errordialogs.py					\
 	HIG.py						\
+	firewall.py					\
 	gui.py						\
 	GroupsPane.py					\
 	GroupsPaneModel.py				\
