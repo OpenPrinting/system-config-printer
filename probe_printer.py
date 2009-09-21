@@ -24,6 +24,8 @@ import socket, time
 import gtk
 from timedops import TimedOperation
 import subprocess
+import threading
+import pysmb
 
 def wordsep (line):
     words = []
@@ -170,6 +172,32 @@ class LpdServer:
 
         return result
 
+class BackgroundSmbAuthContext(pysmb.AuthContext):
+    """An SMB AuthContext class that is only ever run from
+    a non-GUI thread."""
+
+    def __init__ (self, *args, **kwargs):
+        self._gui_event = threading.Event ()
+        pysmb.AuthContext.__init__ (self, *args, **kwargs)
+
+    def _do_perform_authentication (self):
+        result = pysmb.AuthContext.perform_authentication (self)
+        self.do_perform_authentication_result = result
+        self._gui_event.set ()
+        
+    def perform_authentication (self):
+        if (self.passes == 0 or
+            not self.has_failed or
+            not self.auth_called or
+            (self.auth_called and not self.tried_guest)):
+            # Safe to call the base function.  It won't try any UI stuff.
+            return pysmb.AuthContext.perform_authentication (self)
+
+        self._gui_event.clear ()
+        gobject.timeout_add (1, self._do_perform_authentication)
+        self._gui_event.wait ()
+        return self._do_perform_authentication_result
+
 class PrinterFinder:
     def find (self, hostname, callback_fn):
         self.hostname = hostname
@@ -180,7 +208,8 @@ class PrinterFinder:
         self._cached_attributes = dict()
         for fn in [self._probe_snmp,
                    self._probe_lpd,
-                   self._probe_hplip]:
+                   self._probe_hplip,
+                   self._probe_smb]:
             try:
                 fn ()
             except Exception, e:
@@ -272,3 +301,34 @@ class PrinterFinder:
             device_dict.update (self._cached_attributes)
             new_device = cupshelpers.Device (uri, **device_dict)
             self.callback_fn (new_device)
+
+    def _probe_smb (self):
+        smbc_auth = BackgroundSmbAuthContext ()
+        debug = 0
+        if get_debugging ():
+            debug = 10
+        ctx = pysmb.smbc.Context (debug=debug,
+                                  auth_fn=smbc_auth.callback)
+        entries = []
+        uri = "smb://%s/" % self.hostname
+        try:
+            while smbc_auth.perform_authentication () > 0:
+                try:
+                    entries = ctx.opendir (uri).getdents ()
+                except Exception, e:
+                    smbc_auth.failed (e)
+        except RuntimeError, (e, s):
+            if e not in [errno.ENOENT, errno.EACCES, errno.EPERM]:
+                debugprint ("Runtime error: %s" % repr ((e, s)))
+        except:
+            nonfatalException ()
+
+        for entry in entries:
+            if entry.smbc_type == pysmb.smbc.PRINTER_SHARE:
+                uri = "smb://%s/%s" % (self.hostname, entry.name)
+                device_dict = { 'device-class': 'network',
+                                'device-info': "SMB (%s)" % self.hostname }
+                device_dict.update (self._cached_attributes)
+                new_device = cupshelpers.Device (uri, **device_dict)
+                self.callback_fn (new_device)
+
