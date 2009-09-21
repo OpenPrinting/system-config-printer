@@ -3859,9 +3859,7 @@ class NewPrinterGUI(GtkGUI):
             self.fillDeviceTab()
             self.rbtnNPFoomatic.set_active (True)
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-            # Start fetching information from CUPS in the background
             self.new_printer_PPDs_loaded = False
-            self.queryPPDs ()
 
         elif self.dialog_mode == "class":
             self.NewPrinterWindow.set_title(_("New Class"))
@@ -4652,16 +4650,18 @@ class NewPrinterGUI(GtkGUI):
         debugprint ("fetchDevices")
 
         have_polkit_1 = self.mainapp.cups._use_pk and config.WITH_POLKIT_1
-        if not have_polkit_1:
-            if network:
-                return {}
-
-            network = True
-
         network_schemes = ["dnssd", "snmp"]
         try:
-            c = authconn.Connection (host=self.mainapp.connect_server,
-                                     parent=parent, lock=True)
+            try:
+                c = self.fetchDevices_conn
+            except AttributeError:
+                c = authconn.Connection (host=self.mainapp.connect_server,
+                                         parent=parent, lock=True)
+                if not have_polkit_1:
+                    # Use this connection for future calls so that the
+                    # username/password is cached.
+                    self.fetchDevices_conn = c
+
             debugprint ("in get_devices: connected")
             c._begin_operation (_("fetching device list"))
             try:
@@ -5053,6 +5053,10 @@ class NewPrinterGUI(GtkGUI):
                                                    kwargs={"network": True},
                                                    callback=self.got_devices,
                                                    context=context)
+        else:
+            # Now we've fetched both local and network devices, start
+            # querying the available PPDs.
+            gobject.timeout_add (1, self.queryPPDs)
 
         devices = result
         if current_uri:
