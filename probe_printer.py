@@ -20,6 +20,7 @@
 
 import cupshelpers
 from debug import *
+import errno
 import socket, time
 import gtk
 from timedops import TimedOperation
