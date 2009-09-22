@@ -237,6 +237,7 @@ class PrinterFinder:
                         'device-info': "%s" % info }
         device_dict.update (self._cached_attributes)
         new_device = cupshelpers.Device (uri, **device_dict)
+        debugprint ("Device found: %s" % uri)
         self.callback_fn (new_device)
 
     def _probe_snmp (self):
