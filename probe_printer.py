@@ -27,6 +27,8 @@ from timedops import TimedOperation
 import subprocess
 import threading
 import pysmb
+import errno
+import cups
 
 def wordsep (line):
     words = []
@@ -215,7 +217,9 @@ class PrinterFinder:
         for fn in [self._probe_snmp,
                    self._probe_lpd,
                    self._probe_hplip,
-                   self._probe_smb]:
+                   self._probe_smb,
+                   self._probe_jetdirect,
+                   self._probe_ipp]:
             if self.quit:
                 return
 
@@ -227,6 +231,13 @@ class PrinterFinder:
         # Signal that we've finished.
         if not self.quit:
             self.callback_fn (None)
+
+    def _new_device (self, uri, info):
+        device_dict = { 'device-class': 'network',
+                        'device-info': "%s" % info }
+        device_dict.update (self._cached_attributes)
+        new_device = cupshelpers.Device (uri, **device_dict)
+        self.callback_fn (new_device)
 
     def _probe_snmp (self):
         # Run the CUPS SNMP backend, pointing it at the host.
@@ -282,11 +293,7 @@ class PrinterFinder:
             found = lpd.probe_queue (name, [])
             if found:
                 uri = "lpd://%s/%s" % (self.hostname, name)
-                device_dict = { 'device-class': 'network',
-                                'device-info': self.hostname }
-                device_dict.update (self._cached_attributes)
-                new_device = cupshelpers.Device (uri, **device_dict)
-                self.callback_fn (new_device)
+                self._new_device(uri, self.hostname)
 
             if not found and name.startswith ("pr"):
                 break
@@ -315,11 +322,7 @@ class PrinterFinder:
 
         uri = stdout.strip ()
         if uri.find (":") != -1:
-            device_dict = { 'device-class': 'network',
-                            'device-info': uri }
-            device_dict.update (self._cached_attributes)
-            new_device = cupshelpers.Device (uri, **device_dict)
-            self.callback_fn (new_device)
+            self._new_device(uri, uri)
 
     def _probe_smb (self):
         smbc_auth = BackgroundSmbAuthContext ()
@@ -351,9 +354,54 @@ class PrinterFinder:
         for entry in entries:
             if entry.smbc_type == pysmb.smbc.PRINTER_SHARE:
                 uri = "smb://%s/%s" % (self.hostname, entry.name)
-                device_dict = { 'device-class': 'network',
-                                'device-info': "SMB (%s)" % self.hostname }
-                device_dict.update (self._cached_attributes)
-                new_device = cupshelpers.Device (uri, **device_dict)
-                self.callback_fn (new_device)
+                info = "SMB (%s)" % self.hostname
+                self._new_device(uri, info)
 
+    def _probe_jetdirect (self):
+        port = 9100    #jetdirect
+        sock_address = (self.hostname, port)
+        sock = socket.socket (socket.AF_INET, socket.SOCK_STREAM)
+        try:
+            # try to connect on given port
+            sock.connect (sock_address)
+        except socket.error:
+            debugprint ("%s:%d CLOSED" % sock_address)
+        else:
+            # port is open so assume its a JetDirect device
+            debugprint ("%s:%d OPEN" % sock_address)
+            uri = "socket://%s:%d" % sock_address
+            info = "JetDirect (%s)" % self.hostname
+            self._new_device(uri, info)
+            sock.close ()
+
+    def _probe_ipp (self):
+        try:
+            fqdn = socket.getfqdn(self.hostname)
+            ip_address = socket.gethostbyname(fqdn)
+        except socket.gaierror:
+            debugprint ("Can't resolve %s" % self.hostname)
+            return
+        if ip_address == "127.0.0.1":
+            debugprint ("Do not probe local cups server")
+            return
+
+        try:
+            c = cups.Connection (host = self.hostname)
+        except RuntimeError:
+            debugprint ("Can't connect to server/printer")
+            return
+
+        try:
+            printers = c.getPrinters ()
+        except cups.IPPError:
+            debugprint ("%s is probably not a cups server but IPP printer" %
+                        self.hostname)
+            uri = "ipp://%s:631/ipp" % (self.hostname)
+            info = "IPP (%s)" % self.hostname
+            self._new_device(uri, info)
+            return
+
+        for name, queue in printers.iteritems ():
+            uri = queue['device-uri']
+            info = queue['printer-info']
+            self._new_device(uri, info)
