@@ -203,7 +203,12 @@ class PrinterFinder:
     def find (self, hostname, callback_fn):
         self.hostname = hostname
         self.callback_fn = callback_fn
-        op = TimedOperation (self._do_find)
+        self.op = TimedOperation (self._do_find, callback=lambda x, y: None)
+        self.quit = False
+
+    def cancel (self):
+        self.op.cancel ()
+        self.quit = True
 
     def _do_find (self):
         self._cached_attributes = dict()
@@ -211,13 +216,17 @@ class PrinterFinder:
                    self._probe_lpd,
                    self._probe_hplip,
                    self._probe_smb]:
+            if self.quit:
+                return
+
             try:
                 fn ()
             except Exception, e:
                 nonfatalException ()
 
         # Signal that we've finished.
-        self.callback_fn (None)
+        if not self.quit:
+            self.callback_fn (None)
 
     def _probe_snmp (self):
         # Run the CUPS SNMP backend, pointing it at the host.
@@ -236,6 +245,9 @@ class PrinterFinder:
 
         (stdout, stderr) = p.communicate ()
         if p.returncode != 0:
+            return
+
+        if self.quit:
             return
 
         for line in stdout.split ('\n'):
@@ -264,6 +276,9 @@ class PrinterFinder:
     def _probe_lpd (self):
         lpd = LpdServer (self.hostname)
         for name in lpd.get_possible_queue_names ():
+            if self.quit:
+                return
+
             found = lpd.probe_queue (name, [])
             if found:
                 uri = "lpd://%s/%s" % (self.hostname, name)
@@ -295,6 +310,9 @@ class PrinterFinder:
         if p.returncode != 0:
             return
 
+        if self.quit:
+            return
+
         uri = stdout.strip ()
         if uri.find (":") != -1:
             device_dict = { 'device-class': 'network',
@@ -314,6 +332,9 @@ class PrinterFinder:
         uri = "smb://%s/" % self.hostname
         try:
             while smbc_auth.perform_authentication () > 0:
+                if self.quit:
+                    return
+
                 try:
                     entries = ctx.opendir (uri).getdents ()
                 except Exception, e:
@@ -323,6 +344,9 @@ class PrinterFinder:
                 debugprint ("Runtime error: %s" % repr ((e, s)))
         except:
             nonfatalException ()
+
+        if self.quit:
+            return
 
         for entry in entries:
             if entry.smbc_type == pysmb.smbc.PRINTER_SHARE:
