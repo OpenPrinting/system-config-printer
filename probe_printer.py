@@ -403,6 +403,6 @@ class PrinterFinder:
             return
 
         for name, queue in printers.iteritems ():
-            uri = queue['device-uri']
+            uri = queue['printer-uri-supported']
             info = queue['printer-info']
             self._new_device(uri, info)
