@@ -3822,6 +3822,12 @@ class NewPrinterGUI(GtkGUI):
         self.changed = set()
         self.conflicts = set()
         self.fetchDevices_op = None
+        self.printer_finder = None
+        self.lblNetworkFindSearching.hide ()
+        self.entNPTNetworkHostname.set_sensitive (True)
+        self.entNPTNetworkHostname.set_text ('')
+        self.btnNetworkFind.set_sensitive (True)
+        self.lblNetworkFindNotFound.hide ()
 
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         combobox.set_model (gtk.ListStore (str, str))
@@ -4205,6 +4211,11 @@ class NewPrinterGUI(GtkGUI):
         if self.fetchDevices_op:
             self.fetchDevices_op.cancel ()
             self.fetchDevices_op = None
+            self.dec_spinner_task ()
+
+        if self.printer_finder:
+            self.printer_finder.cancel ()
+            self.printer_finder = None
             self.dec_spinner_task ()
 
         self.NewPrinterWindow.hide()
@@ -5947,6 +5958,9 @@ class NewPrinterGUI(GtkGUI):
         host = self.entNPTNetworkHostname.get_text ()
 
         def found_callback (new_device):
+            if self.printer_finder == None:
+                return
+
             glib.idle_add (self.found_network_printer_callback, new_device)
 
         self.btnNetworkFind.set_sensitive (False)
@@ -5957,6 +5971,7 @@ class NewPrinterGUI(GtkGUI):
         finder = probe_printer.PrinterFinder ()
         self.inc_spinner_task ()
         finder.find (host, found_callback)
+        self.printer_finder = finder
 
     def found_network_printer_callback (self, new_device):
         if new_device:
@@ -5984,6 +5999,7 @@ class NewPrinterGUI(GtkGUI):
                 path = model.get_path (iter)
                 self.tvNPDevices.set_cursor (path)
         else:
+            self.printer_finder = None
             self.dec_spinner_task ()
             self.lblNetworkFindSearching.hide ()
             self.entNPTNetworkHostname.set_sensitive (True)
@@ -6608,6 +6624,11 @@ class NewPrinterGUI(GtkGUI):
         if self.fetchDevices_op:
             self.fetchDevices_op.cancel ()
             self.fetchDevices_op = None
+            self.dec_spinner_task ()
+
+        if self.printer_finder:
+            self.printer_finder.cancel ()
+            self.printer_finder = None
             self.dec_spinner_task ()
 
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):
