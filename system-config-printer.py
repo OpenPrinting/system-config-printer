@@ -5952,6 +5952,7 @@ class NewPrinterGUI(GtkGUI):
         self.btnNetworkFind.set_sensitive (False)
         self.entNPTNetworkHostname.set_sensitive (False)
         self.network_found = 0
+        self.lblNetworkFindNotFound.hide ()
         self.lblNetworkFindSearching.show_all ()
         finder = probe_printer.PrinterFinder ()
         self.inc_spinner_task ()
