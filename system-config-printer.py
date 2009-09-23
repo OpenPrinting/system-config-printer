@@ -4320,8 +4320,18 @@ class NewPrinterGUI(GtkGUI):
                         name = self.remotecupsqueue
                         name = self.mainapp.makeNameUnique (name)
                         self.entNPName.set_text (name)
-                    elif self.device.id:
-                        id_dict = self.device.id_dict
+                    elif self.device.id or \
+                            (self.device.make_and_model and \
+                             self.device.make_and_model != "Unknown"):
+                        if self.device.id:
+                            id_dict = self.device.id_dict
+                        else:
+                            id_dict = {}
+                            (id_dict["MFG"], id_dict["MDL"]) = \
+                                cupshelpers.ppds.ppdMakeModelSplit \
+                                    (self.device.make_and_model)
+                            id_dict["DES"] = ""
+                            id_dict["CMD"] = ()
                         reloaded = 0
                         while reloaded < 2:
                             (status, ppdname) = self.ppds.\
