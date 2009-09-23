@@ -3946,6 +3946,10 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     self.auto_make = devid_dict["MFG"]
                     self.auto_model = devid_dict["MDL"]
+                if not self.device.id:
+                    self.device.id = devid
+                    self.device.id_dict = \
+                        cupshelpers.parseDeviceID (self.device.id)
                 self.mainapp.devid = ""
             elif ppd:
                 attr = ppd.findAttr("Manufacturer")
@@ -4486,8 +4490,9 @@ class NewPrinterGUI(GtkGUI):
             descr = None
 
             try:
-                if self.device.id and not self.device.type in ("socket", "lpd", "ipp", "http", "https", "bluetooth"):
-                    name = self.device.id_dict["MDL"]
+                if self.device.id and not self.device.type in \
+                       ("socket", "lpd", "ipp", "http", "https", "bluetooth"):
+                    name = "%s %s" % (self.device.id_dict["MFG"], self.device.id_dict["MDL"])
                     descr = "%s %s" % (self.device.id_dict["MFG"], self.device.id_dict["MDL"])
             except:
                 nonfatalException ()
@@ -6274,7 +6279,15 @@ class NewPrinterGUI(GtkGUI):
 
         # Also pre-fill the OpenPrinting.org search box.
         search = ''
-        if self.auto_make != None:
+        if self.device.id_dict:
+            devid_dict = self.device.id_dict
+            if devid_dict["MFG"] and devid_dict["MDL"]:
+                search = devid_dict["MFG"] + " " + devid_dict["MDL"]
+            elif devid_dict["DES"]:
+                search = devid_dict["DES"]
+            elif devid_dict["MFG"]:
+                search = devid_dict["MFG"]
+        if search == '' and self.auto_make != None:
             search += self.auto_make
             if self.auto_model != None:
                 search += " " + self.auto_model
