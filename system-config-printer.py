@@ -3481,7 +3481,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 suffix += 1
                 if suffix == 100:
                     break
-            name += str (suffix)
+            name += "-" + str (suffix)
         return name
 
     ## Watcher interface helpers
