@@ -3577,6 +3577,7 @@ class NewPrinterGUI(GtkGUI):
         self.options = {} # keyword -> Option object
         self.changed = set()
         self.conflicts = set()
+        self.device = None
         self.ppd = None
         self.remotecupsqueue = False
         self.exactdrivermatch = False
@@ -3946,7 +3947,7 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     self.auto_make = devid_dict["MFG"]
                     self.auto_model = devid_dict["MDL"]
-                if not self.device.id:
+                if not self.device or not self.device.id:
                     self.device.id = devid
                     self.device.id_dict = \
                         cupshelpers.parseDeviceID (self.device.id)
@@ -6279,7 +6280,7 @@ class NewPrinterGUI(GtkGUI):
 
         # Also pre-fill the OpenPrinting.org search box.
         search = ''
-        if self.device.id_dict:
+        if self.device and self.device.id_dict:
             devid_dict = self.device.id_dict
             if devid_dict["MFG"] and devid_dict["MDL"]:
                 search = devid_dict["MFG"] + " " + devid_dict["MDL"]
