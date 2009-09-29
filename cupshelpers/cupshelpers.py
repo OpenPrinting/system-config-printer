@@ -489,9 +489,9 @@ class Device:
         @type kw: dict
         """
         self.uri = uri
-        self.device_class = kw.get('device-class', 'Unknown') # XXX better default
+        self.device_class = kw.get('device-class', '')
         self.info = kw.get('device-info', '')
-        self.make_and_model = kw.get('device-make-and-model', 'Unknown')
+        self.make_and_model = kw.get('device-make-and-model', '')
         self.id = kw.get('device-id', '')
 
         uri_pieces = uri.split(":")
@@ -554,7 +554,7 @@ def getDevices(connection, **kw):
     for uri, data in devices.iteritems():
         device = Device(uri, **data)
         devices[uri] = device
-        if device.info != 'Unknown' and device.make_and_model == 'Unknown':
+        if device.info != '' and device.make_and_model == '':
             device.make_and_model = device.info
     return devices
 
