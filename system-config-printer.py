@@ -3949,8 +3949,7 @@ class NewPrinterGUI(GtkGUI):
                     self.auto_model = devid_dict["MDL"]
                 if not self.device or not self.device.id:
                     self.device.id = devid
-                    self.device.id_dict = \
-                        cupshelpers.parseDeviceID (self.device.id)
+                    self.device.id_dict = cupshelpers.parseDeviceID (devid)
                 self.mainapp.devid = ""
             elif ppd:
                 attr = ppd.findAttr("Manufacturer")
@@ -4320,18 +4319,18 @@ class NewPrinterGUI(GtkGUI):
                         name = self.remotecupsqueue
                         name = self.mainapp.makeNameUnique (name)
                         self.entNPName.set_text (name)
-                    elif self.device.id or \
-                            (self.device.make_and_model and \
-                             self.device.make_and_model != "Unknown"):
+                    elif (self.device.id or
+                          (self.device.make_and_model and
+                           self.device.make_and_model != "Unknown")):
                         if self.device.id:
                             id_dict = self.device.id_dict
                         else:
                             id_dict = {}
-                            (id_dict["MFG"], id_dict["MDL"]) = \
-                                cupshelpers.ppds.ppdMakeModelSplit \
-                                    (self.device.make_and_model)
+                            (id_dict["MFG"],
+                             id_dict["MDL"]) = cupshelpers.ppds.\
+                                 ppdMakeModelSplit (self.device.make_and_model)
                             id_dict["DES"] = ""
-                            id_dict["CMD"] = ()
+                            id_dict["CMD"] = []
                         reloaded = 0
                         while reloaded < 2:
                             (status, ppdname) = self.ppds.\
@@ -4501,10 +4500,13 @@ class NewPrinterGUI(GtkGUI):
             descr = None
 
             try:
-                if self.device.id and not self.device.type in \
-                       ("socket", "lpd", "ipp", "http", "https", "bluetooth"):
-                    name = "%s %s" % (self.device.id_dict["MFG"], self.device.id_dict["MDL"])
-                    descr = "%s %s" % (self.device.id_dict["MFG"], self.device.id_dict["MDL"])
+                if (self.device.id and
+                    not self.device.type in ("socket", "lpd", "ipp",
+                                             "http", "https", "bluetooth")):
+                    name = "%s %s" % (self.device.id_dict["MFG"], 
+                                      elf.device.id_dict["MDL"])
+                    descr = "%s %s" % (self.device.id_dict["MFG"],
+                                       self.device.id_dict["MDL"])
             except:
                 nonfatalException ()
 
