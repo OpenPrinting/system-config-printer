@@ -3553,7 +3553,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 suffix += 1
                 if suffix == 100:
                     break
-            name += str (suffix)
+            name += "-" + str (suffix)
         return name
 
     ## Watcher interface helpers
@@ -3649,6 +3649,7 @@ class NewPrinterGUI(GtkGUI):
         self.options = {} # keyword -> Option object
         self.changed = set()
         self.conflicts = set()
+        self.device = None
         self.ppd = None
         self.remotecupsqueue = False
         self.exactdrivermatch = False
@@ -3894,6 +3895,12 @@ class NewPrinterGUI(GtkGUI):
         self.changed = set()
         self.conflicts = set()
         self.fetchDevices_op = None
+        self.printer_finder = None
+        self.lblNetworkFindSearching.hide ()
+        self.entNPTNetworkHostname.set_sensitive (True)
+        self.entNPTNetworkHostname.set_text ('')
+        self.btnNetworkFind.set_sensitive (True)
+        self.lblNetworkFindNotFound.hide ()
 
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         combobox.set_model (gtk.ListStore (str, str))
@@ -3931,9 +3938,7 @@ class NewPrinterGUI(GtkGUI):
             self.fillDeviceTab()
             self.rbtnNPFoomatic.set_active (True)
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-            # Start fetching information from CUPS in the background
             self.new_printer_PPDs_loaded = False
-            self.queryPPDs ()
 
         elif self.dialog_mode == "class":
             self.NewPrinterWindow.set_title(_("New Class"))
@@ -4014,6 +4019,9 @@ class NewPrinterGUI(GtkGUI):
                 except:
                     self.auto_make = devid_dict["MFG"]
                     self.auto_model = devid_dict["MDL"]
+                if not self.device or not self.device.id:
+                    self.device.id = devid
+                    self.device.id_dict = cupshelpers.parseDeviceID (devid)
                 self.mainapp.devid = ""
             elif ppd:
                 attr = ppd.findAttr("Manufacturer")
@@ -4281,6 +4289,11 @@ class NewPrinterGUI(GtkGUI):
             self.fetchDevices_op = None
             self.dec_spinner_task ()
 
+        if self.printer_finder:
+            self.printer_finder.cancel ()
+            self.printer_finder = None
+            self.dec_spinner_task ()
+
         self.NewPrinterWindow.hide()
         if self.openprinting_query_handle != None:
             self.openprinting.cancelOperation (self.openprinting_query_handle)
@@ -4378,8 +4391,18 @@ class NewPrinterGUI(GtkGUI):
                         name = self.remotecupsqueue
                         name = self.mainapp.makeNameUnique (name)
                         self.entNPName.set_text (name)
-                    elif self.device.id:
-                        id_dict = self.device.id_dict
+                    elif (self.device.id or
+                          (self.device.make_and_model and
+                           self.device.make_and_model != "Unknown")):
+                        if self.device.id:
+                            id_dict = self.device.id_dict
+                        else:
+                            id_dict = {}
+                            (id_dict["MFG"],
+                             id_dict["MDL"]) = cupshelpers.ppds.\
+                                 ppdMakeModelSplit (self.device.make_and_model)
+                            id_dict["DES"] = ""
+                            id_dict["CMD"] = []
                         reloaded = 0
                         while reloaded < 2:
                             (status, ppdname) = self.ppds.\
@@ -4549,9 +4572,13 @@ class NewPrinterGUI(GtkGUI):
             descr = None
 
             try:
-                if self.device.id and not self.device.type in ("socket", "lpd", "ipp", "http", "https", "bluetooth"):
-                    name = self.device.id_dict["MDL"]
-                    descr = "%s %s" % (self.device.id_dict["MFG"], self.device.id_dict["MDL"])
+                if (self.device.id and
+                    not self.device.type in ("socket", "lpd", "ipp",
+                                             "http", "https", "bluetooth")):
+                    name = "%s %s" % (self.device.id_dict["MFG"], 
+                                      elf.device.id_dict["MDL"])
+                    descr = "%s %s" % (self.device.id_dict["MFG"],
+                                       self.device.id_dict["MDL"])
             except:
                 nonfatalException ()
 
@@ -4731,8 +4758,16 @@ class NewPrinterGUI(GtkGUI):
 
         network_schemes = ["dnssd", "snmp"]
         try:
-            c = authconn.Connection (host=self.mainapp.connect_server,
-                                     parent=parent, lock=True)
+            try:
+                c = self.fetchDevices_conn
+            except AttributeError:
+                c = authconn.Connection (host=self.mainapp.connect_server,
+                                         parent=parent, lock=True)
+                if not self.mainapp.cups._use_pk:
+                    # Use this connection for future calls so that the
+                    # username/password is cached.
+                    self.fetchDevices_conn = c
+
             debugprint ("in get_devices: connected")
             c._begin_operation (_("fetching device list"))
             try:
@@ -5124,6 +5159,10 @@ class NewPrinterGUI(GtkGUI):
                                                    kwargs={"network": True},
                                                    callback=self.got_devices,
                                                    context=context)
+        else:
+            # Now we've fetched both local and network devices, start
+            # querying the available PPDs.
+            gobject.timeout_add (1, self.queryPPDs)
 
         devices = result
         if current_uri:
@@ -6014,15 +6053,20 @@ class NewPrinterGUI(GtkGUI):
         host = self.entNPTNetworkHostname.get_text ()
 
         def found_callback (new_device):
+            if self.printer_finder == None:
+                return
+
             glib.idle_add (self.found_network_printer_callback, new_device)
 
         self.btnNetworkFind.set_sensitive (False)
         self.entNPTNetworkHostname.set_sensitive (False)
         self.network_found = 0
+        self.lblNetworkFindNotFound.hide ()
         self.lblNetworkFindSearching.show_all ()
         finder = probe_printer.PrinterFinder ()
         self.inc_spinner_task ()
         finder.find (host, found_callback)
+        self.printer_finder = finder
 
     def found_network_printer_callback (self, new_device):
         if new_device:
@@ -6050,6 +6094,7 @@ class NewPrinterGUI(GtkGUI):
                 path = model.get_path (iter)
                 self.tvNPDevices.set_cursor (path)
         else:
+            self.printer_finder = None
             self.dec_spinner_task ()
             self.lblNetworkFindSearching.hide ()
             self.entNPTNetworkHostname.set_sensitive (True)
@@ -6324,7 +6369,15 @@ class NewPrinterGUI(GtkGUI):
 
         # Also pre-fill the OpenPrinting.org search box.
         search = ''
-        if self.auto_make != None:
+        if self.device and self.device.id_dict:
+            devid_dict = self.device.id_dict
+            if devid_dict["MFG"] and devid_dict["MDL"]:
+                search = devid_dict["MFG"] + " " + devid_dict["MDL"]
+            elif devid_dict["DES"]:
+                search = devid_dict["DES"]
+            elif devid_dict["MFG"]:
+                search = devid_dict["MFG"]
+        if search == '' and self.auto_make != None:
             search += self.auto_make
             if self.auto_model != None:
                 search += " " + self.auto_model
@@ -6674,6 +6727,11 @@ class NewPrinterGUI(GtkGUI):
         if self.fetchDevices_op:
             self.fetchDevices_op.cancel ()
             self.fetchDevices_op = None
+            self.dec_spinner_task ()
+
+        if self.printer_finder:
+            self.printer_finder.cancel ()
+            self.printer_finder = None
             self.dec_spinner_task ()
 
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):

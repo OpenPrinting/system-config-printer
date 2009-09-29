@@ -48,6 +48,8 @@ class PhysicalDevice:
                     hostport = ipparam[3:]
                 else:
                     return None
+            else:
+                return None
         else:
             (hostport, rest) = urllib.splithost (rest)
             if hostport == None:

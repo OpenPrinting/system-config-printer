@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -276,15 +276,18 @@ class Troubleshooter:
         debugprint (self.answers_as_text ())
 
     def _report_traceback (self):
-        print "Traceback:"
-        (type, value, tb) = sys.exc_info ()
-        tblast = traceback.extract_tb (tb, limit=None)
-        if len (tblast):
-            tblast = tblast[:len (tblast) - 1]
-        extxt = traceback.format_exception_only (type, value)
-        for line in traceback.format_tb(tb):
-            print line.strip ()
-        print extxt[0].strip ()
+        try:
+            print "Traceback:"
+            (type, value, tb) = sys.exc_info ()
+            tblast = traceback.extract_tb (tb, limit=None)
+            if len (tblast):
+                tblast = tblast[:len (tblast) - 1]
+            extxt = traceback.format_exception_only (type, value)
+            for line in traceback.format_tb(tb):
+                print line.strip ()
+            print extxt[0].strip ()
+        except:
+            pass
 
     def _display (self, question):
         result = False
