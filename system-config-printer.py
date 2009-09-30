@@ -4248,6 +4248,12 @@ class NewPrinterGUI(GtkGUI):
                 if not self.install_hplip_plugin(self.device.uri):
                     self.on_NPCancel(None)
                     return
+
+                if not devid and self.device.type in ["socket", "lpd", "ipp"]:
+                    # This is a network printer whose model we don't yet know.
+                    # Try to discover it.
+                    self.getNetworkPrinterMakeModel ()
+
                 uri = self.device.uri
                 if uri and uri.startswith ("smb://"):
                     uri = SMBURI (uri=uri[6:]).sanitize_uri ()
