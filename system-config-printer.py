@@ -3974,8 +3974,8 @@ class NewPrinterGUI(GtkGUI):
                  cupshelpers.ppds.ppdMakeModelSplit (makeandmodel)
             else:
                 # Special CUPS names for a raw queue.
-                self.auto_make = 'Raw'
-                self.auto_model = 'Queue'
+                self.auto_make = 'Generic'
+                self.auto_model = 'Raw Queue'
 
             try:
                 if self.dialog_mode == "ppd":
