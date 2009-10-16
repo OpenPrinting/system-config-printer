@@ -23,7 +23,6 @@ import sys
 import statereason
 from statereason import StateReason
 from debug import *
-import pprint
 
 import dbus
 import dbus.glib

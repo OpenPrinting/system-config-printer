@@ -6956,8 +6956,9 @@ class NewPrinterGUI(GtkGUI):
             response = q.run ()
             q.destroy ()
             if response == gtk.RESPONSE_YES:
-                # Display the properties dialog.
+                # Load the printer details but hide the properties dialog.
                 self.mainapp.display_properties_dialog_for (name)
+                self.mainapp.PrinterPropertiesDialog.hide ()
 
                 # Click the test button.
                 self.mainapp.btnPrintTestPage.clicked ()

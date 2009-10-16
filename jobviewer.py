@@ -41,7 +41,6 @@ from debug import *
 import config
 import statereason
 import errordialogs
-import pprint
 
 try:
     import gnomekeyring
