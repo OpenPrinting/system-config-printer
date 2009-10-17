@@ -191,7 +191,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                  self.on_job_release_activate),
                 ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None, None,
                  self.on_job_reprint_activate),
-                ("move-job", None, _("_Move"), None, None, None),
+                ("move-job", None, _("_Move To"), None, None, None),
                 ("authenticate-job", None, _("_Authenticate"), None, None,
                  self.on_job_authenticate_activate),
                  ("job-attributes", None, _("_View Attributes"), None, None,
