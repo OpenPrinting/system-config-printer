@@ -306,10 +306,10 @@ class Monitor:
                             break
 
                     if have_processing_job:
-                        t = gobject.timeout_add ((1 + CONNECTING_TIMEOUT)
-                                                 * 1000,
-                                                 self.check_still_connecting,
-                                                 printer)
+                        t = gobject.timeout_add_seconds (
+                            (1 + CONNECTING_TIMEOUT),
+                            self.check_still_connecting,
+                            printer)
                         self.connecting_timers[printer] = t
                         debugprint ("Start connecting timer for `%s'" %
                                     printer)
@@ -481,9 +481,10 @@ class Monitor:
             if self.update_timer:
                 gobject.source_remove (self.update_timer)
 
-            interval = 1000 * notifications['notify-get-interval']
-            self.update_timer = gobject.timeout_add (interval,
-                                                     self.get_notifications)
+            interval = notifications['notify-get-interval']
+            t = gobject.timeout_add_seconds (interval,
+                                             self.get_notifications)
+            self.update_timer = t
 
         return False
 
@@ -536,8 +537,8 @@ class Monitor:
 
         cups.setUser (user)
 
-        self.update_timer = gobject.timeout_add (MIN_REFRESH_INTERVAL * 1000,
-                                                 self.get_notifications)
+        self.update_timer = gobject.timeout_add_seconds (MIN_REFRESH_INTERVAL,
+                                                         self.get_notifications)
         debugprint ("Created subscription %d" % self.sub_id)
 
         if self.monitor_jobs:

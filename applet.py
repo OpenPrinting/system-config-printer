@@ -91,7 +91,7 @@ class NewPrinterNotification(dbus.service.Object):
                                            tooltip=_("Configuring new printer"))
 
         self.getting_ready += 1
-        gobject.timeout_add (60 * 1000, self.timeout_ready)
+        gobject.timeout_add_seconds (60, self.timeout_ready)
 
     def timeout_ready (self):
         global viewer
@@ -238,7 +238,7 @@ class NewPrinterNotification(dbus.service.Object):
         elif pid == -1:
             print "Error forking process"
         else:
-            gobject.timeout_add (60 * 1000, self.collect_exit_code, pid)
+            gobject.timeout_add_seconds (60, self.collect_exit_code, pid)
 
     def print_test_page (self, notification, action, name, devid = ""):
         args = ["--print-test-page", name]

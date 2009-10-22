@@ -456,7 +456,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.store.set_value (iter, 1, t)
 
         if need_update and not self.job_creation_times_timer:
-            t = gobject.timeout_add (60 * 1000, self.update_job_creation_times)
+            t = gobject.timeout_add_seconds (60, self.update_job_creation_times)
             self.job_creation_times_timer = t
 
         if not need_update:
@@ -858,7 +858,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 env[name] = value
             p = subprocess.Popen ([ "system-config-printer" ],
                                   close_fds=True, env=env)
-            gobject.timeout_add (10 * 1000, self.poll_subprocess, p)
+            gobject.timeout_add_seconds (10, self.poll_subprocess, p)
 
     def poll_subprocess(self, process):
         returncode = process.poll ()

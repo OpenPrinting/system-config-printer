@@ -238,7 +238,7 @@ class PrintTestPage(Question):
                                      path=DBUS_PATH,
                                      dbus_interface=DBUS_IFACE)
 
-        self.timer = gobject.timeout_add (1000, self.update_jobs_list)
+        self.timer = gobject.timeout_add_seconds (1, self.update_jobs_list)
 
     def disconnect_signals (self):
         if self.bus:
@@ -512,9 +512,9 @@ class PrintTestPage(Question):
         # Update again when we're told to. (But we might update sooner if
         # there is a D-Bus signal.)
         gobject.source_remove (self.timer)
-        self.timer = gobject.timeout_add (1000 *
-                                          notifications['notify-get-interval'],
-                                          self.update_jobs_list)
+        self.timer = gobject.timeout_add_seconds (
+            notifications['notify-get-interval'],
+            self.update_jobs_list)
         debugprint ("Update again in %ds" %
                     notifications['notify-get-interval'])
         gtk.gdk.threads_leave ()
