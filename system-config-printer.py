@@ -5698,7 +5698,7 @@ class NewPrinterGUI(GtkGUI):
             self.WaitWindow.set_transient_for (self.NewPrinterWindow)
             self.WaitWindow.show ()
             self.busy (self.WaitWindow)
-            source = gobject.timeout_add (10000, op.cancel)
+            source = gobject.timeout_add_seconds (10, op.cancel)
             try:
                 attributes = op.run ()
                 verified = True

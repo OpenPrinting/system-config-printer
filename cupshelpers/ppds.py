@@ -184,6 +184,8 @@ def ppdMakeModelSplit (ppd_make_and_model):
                    " ps3",
                    " pxl",
                    " series",
+                   " zxs",              # hpcups
+                   " pcl3",             # hpcups
                    "_bt",
                    ","]:
         s = modell.find (suffix)

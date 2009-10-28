@@ -57,8 +57,9 @@ class TimedSubprocess(Timed):
 
     def run (self):
         if self.show_dialog:
-            self.wait_source = gobject.timeout_add (1000,
-                                                    self.show_wait_window)
+            self.wait_source = gobject.timeout_add_seconds (
+                1,
+                self.show_wait_window)
 
         self.timeout_source = gobject.timeout_add (self.timeout,
                                                    self.do_timeout)

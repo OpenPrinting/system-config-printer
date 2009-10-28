@@ -151,7 +151,7 @@ bin_SCRIPTS=\
 	my-default-printer
 
 if UDEV_RULES
-udevrulesdir=$(sysconfdir)/udev/rules.d
+udevrulesdir=/lib/udev/rules.d
 udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
