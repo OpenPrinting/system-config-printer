@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -77,8 +77,9 @@ class ChooseNetworkPrinter(Question):
         parent = self.troubleshooter.get_window ()
 
         try:
-            cups.setServer (server)
-            self.op = TimedOperation (cups.Connection, parent=parent)
+            self.op = TimedOperation (cups.Connection, 
+                                      kwargs={"host": server},
+                                      parent=parent)
             c = self.op.run ()
             self.op = TimedOperation (c.getDests, parent=parent)
             dests = self.op.run ()
