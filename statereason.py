@@ -109,6 +109,10 @@ class StateReason:
                                      _("Printer '%s' may not be connected.")),
             'other': (_("Printer error"),
                       _("There is a problem on printer '%s'.")),
+
+            'cups-missing-filter': (_("Printer configuration error"),
+                                    _("There is a missing print filter for "
+                                      "printer '%s'.")),
             }
         try:
             (title, text) = messages[self.get_reason ()]
