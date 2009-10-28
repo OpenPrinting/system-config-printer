@@ -377,6 +377,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_delete_event(self, *args):
         if self.trayicon or not self.loop:
             self.JobsWindow.hide ()
+            self.JobsWindow.set_data ('visible', False)
             if not self.loop:
                 # Being run from main app, not applet
                 self.cleanup ()
