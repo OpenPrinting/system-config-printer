@@ -3581,8 +3581,11 @@ class GUI(GtkGUI, monitor.Watcher):
             self.dests_iconview_selection_changed (self.dests_iconview)
             gobject.idle_add (deferred_refresh)
             if self.PrinterPropertiesDialog.get_property('visible'):
-                self.printer.getAttributes ()
-                self.updatePrinterProperties ()
+                try:
+                    self.printer.getAttributes ()
+                    self.updatePrinterProperties ()
+                except cups.IPPError:
+                    pass
 
         gtk.gdk.threads_leave ()
 
@@ -3594,8 +3597,11 @@ class GUI(GtkGUI, monitor.Watcher):
         monitor.Watcher.state_reason_added (self, mon, reason)
         gtk.gdk.threads_enter ()
         if self.PrinterPropertiesDialog.get_property('visible'):
-            self.printer.getAttributes ()
-            self.updatePrinterProperties ()
+            try:
+                self.printer.getAttributes ()
+                self.updatePrinterProperties ()
+            except cups.IPPError:
+                pass
 
         gtk.gdk.threads_leave ()
 
@@ -3603,8 +3609,11 @@ class GUI(GtkGUI, monitor.Watcher):
         monitor.Watcher.state_reason_removed (self, mon, reason)
         gtk.gdk.threads_enter ()
         if self.PrinterPropertiesDialog.get_property('visible'):
-            self.printer.getAttributes ()
-            self.updatePrinterProperties ()
+            try:
+                self.printer.getAttributes ()
+                self.updatePrinterProperties ()
+            except cups.IPPError:
+                pass
 
         gtk.gdk.threads_leave ()
 
