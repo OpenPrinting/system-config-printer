@@ -6965,12 +6965,19 @@ class NewPrinterGUI(GtkGUI):
             response = q.run ()
             q.destroy ()
             if response == gtk.RESPONSE_YES:
-                # Load the printer details but hide the properties dialog.
-                self.mainapp.display_properties_dialog_for (name)
                 self.mainapp.PrinterPropertiesDialog.hide ()
 
-                # Click the test button.
-                self.mainapp.btnPrintTestPage.clicked ()
+                properties_shown = False
+                try:
+                    # Load the printer details but hide the properties dialog.
+                    self.mainapp.display_properties_dialog_for (name)
+                    properties_shown = True
+                except RuntimeError:
+                    pass
+
+                if properties_shown:
+                    # Click the test button.
+                    self.mainapp.btnPrintTestPage.clicked ()
 
     def checkDriverExists(self, name, ppd=None):
         """Check that the driver for an existing queue actually
