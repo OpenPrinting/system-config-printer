@@ -43,6 +43,7 @@ def init ():
     global printer_error_policy
     printer_error_policy = TranslationDict ({
             "abort-job": _("Abort job"),
+            "retry-current-job": _("Retry current job"),
             "retry-job": _("Retry job"),
             "stop-printer": _("Stop printer")
             })
