@@ -473,7 +473,10 @@ def parseDeviceID (id):
         id_dict.setdefault("CMD", id_dict["COMMAND SET"])
     for name in ["MFG", "MDL", "CMD", "CLS", "DES", "SN", "S", "P", "J"]:
         id_dict.setdefault(name, "")
-    id_dict["CMD"] = id_dict["CMD"].split(',') 
+    if id_dict["CMD"] == '':
+        id_dict["CMD"] = []
+    else:
+        id_dict["CMD"] = id_dict["CMD"].split(',') 
     return id_dict
 
 class Device:

@@ -4312,6 +4312,37 @@ class NewPrinterGUI(GtkGUI):
                     except:
                         nonfatalException ()
 
+                # Decide whether this might be a PostScript capable
+                # printer.  If it might be, check whether
+                # foomatic-db-ppds is installed and suggest installing
+                # it.
+                cmdsets = self.device.id_dict["CMD"]
+                if len (cmdsets) == 0:
+                    # No list of command sets available so might be PS capable
+                    may_be_ps = True
+                else:
+                    # We have the definitive list of command sets supported.
+                    # Only PS capable if it says so.
+                    may_be_ps = False
+                    for cmdset in cmdsets:
+                        if cmdset.lower ().startswith ("postscript"):
+                            may_be_ps = True
+
+                if may_be_ps:
+                    debugprint ("Printer might support PostScript")
+                    try:
+                        os.stat ("/usr/share/cups/model/foomatic-db-ppds")
+                        debugprint ("foomatic-db-ppds already installed")
+                    except OSError:
+                        debugprint ("foomatic-db-ppds not yet installed")
+                        pk = installpackage.PackageKit ()
+                        pid = None
+                        try:
+                            xid = self.mainapp.PrintersWindow.window.xid
+                            pk.InstallPackageName (xid, 0, "foomatic-db-ppds")
+                        except:
+                            pass
+
                 if (not self.remotecupsqueue and
                     not self.new_printer_PPDs_loaded):
                     try:
