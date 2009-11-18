@@ -759,6 +759,8 @@ def missingPackagesAndExecutables(ppd):
             exe = exe[:p]
 
         pkgs = {
+            # The foomatic filter
+            'foomatic-rip': 'foomatic',
             # Foomatic command line executables
             'gs': 'ghostscript',
             'perl': 'perl',
