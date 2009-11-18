@@ -202,11 +202,13 @@ class BackgroundSmbAuthContext(pysmb.AuthContext):
         return self._do_perform_authentication_result
 
 class PrinterFinder:
+    def __init__ (self):
+        self.quit = False
+
     def find (self, hostname, callback_fn):
         self.hostname = hostname
         self.callback_fn = callback_fn
         self.op = TimedOperation (self._do_find, callback=lambda x, y: None)
-        self.quit = False
 
     def cancel (self):
         self.op.cancel ()
