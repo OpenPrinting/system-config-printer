@@ -4335,9 +4335,9 @@ class NewPrinterGUI(GtkGUI):
                         debugprint ("foomatic-db-ppds already installed")
                     except OSError:
                         debugprint ("foomatic-db-ppds not yet installed")
-                        pk = installpackage.PackageKit ()
                         pid = None
                         try:
+                            pk = installpackage.PackageKit ()
                             xid = self.mainapp.PrintersWindow.window.xid
                             pk.InstallPackageName (xid, 0, "foomatic-db-ppds")
                         except:
