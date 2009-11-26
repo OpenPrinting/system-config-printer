@@ -2630,6 +2630,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 subhbox.pack_start (inklevel, True, False, 0)
                 vbox.pack_start (subhbox, False, False, 0)
                 label = gtk.Label (name)
+                label.set_width_chars (10)
                 label.set_line_wrap (True)
                 vbox.pack_start (label, False, False, 0)
                 table.attach (vbox, col, col + 1, row, row + 1)
