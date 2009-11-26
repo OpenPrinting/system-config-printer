@@ -2321,7 +2321,6 @@ class GUI(GtkGUI, monitor.Watcher):
             pass
 
         editable = not self.printer.discovered
-        editablePPD = not self.printer.remote
 
         try:
             self.ppd = printer.getPPD()
@@ -2472,7 +2471,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.fillClassMembers(name, editable)
         else:
             # real Printer
-            self.fillPrinterOptions(name, editablePPD)
+            self.fillPrinterOptions(name, editable)
 
         self.updateMarkerLevels()
         self.updateStateReasons()
