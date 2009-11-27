@@ -1051,6 +1051,11 @@ class GUI(GtkGUI, monitor.Watcher):
         else:
             self.btnPrinterPropertiesClose.hide ()
         self.setDataButtonState ()
+        self.btnPrintTestPage.set_tooltip_text(_("CUPS test page"))
+        self.btnSelfTest.set_tooltip_text(_("Typically shows whether all jets "
+                                            "on a print head are functioning "
+                                            "and that the print feed mechanisms"
+                                            " are working properly."))
         treeview = self.tvPrinterProperties
         treeview.set_cursor ((0,))
         host = CUPS_server_hostname ()
