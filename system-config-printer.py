@@ -2584,9 +2584,21 @@ class GUI(GtkGUI, monitor.Watcher):
             self.vboxMarkerLevels.remove (widget)
 
         marker_info = dict()
-        for attr in ['marker-colors', 'marker-names', 'marker-types',
-                     'marker-levels']:
-            marker_info[attr] = printer.other_attributes.get (attr, [])
+        for (attr, typ) in [('marker-colors', str),
+                            ('marker-names', str),
+                            ('marker-types', str),
+                            ('marker-levels', float)]:
+            val = printer.other_attributes.get (attr, [])
+            if typ != str:
+                try:
+                    # Can the value be coerced into the right type?
+                    typ (val[0])
+                except TypeError, s:
+                    debugprint ("%s value not coercible to %s: %s" %
+                                (attr, typ, s))
+                    val = []
+
+            marker_info[attr] = val
 
         markers = map (lambda color, name, type, level:
                            (color, name, type, level),
