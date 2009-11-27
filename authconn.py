@@ -193,15 +193,18 @@ class Connection:
         self._passes = 0
         c = self._connection
         retry = False
-        while retry or self._perform_authentication () != 0:
-            if c != self._connection:
-                # We have reconnected.
-                fn = getattr (self._connection, fname)
-                c = self._connection
-
-            cups.setUser (self._use_user)
-
+        while True:
             try:
+                if self._perform_authentication () == 0:
+                    break
+
+                if c != self._connection:
+                    # We have reconnected.
+                    fn = getattr (self._connection, fname)
+                    c = self._connection
+
+                cups.setUser (self._use_user)
+
                 result = fn.__call__ (*args, **kwds)
 
                 if fname == 'adminGetServerSettings':
@@ -228,6 +231,7 @@ class Connection:
                         debugprint ("retrying operation...")
                         retry = True
                         self._passes -= 1
+                        self._has_failed = True
                     else:
                         self._cancel = True
                         raise
@@ -334,7 +338,12 @@ class Connection:
                 debugprint ("Authentication: Try as root")
                 self._use_user = 'root'
                 self._auth_called = False
-                self._connect ()
+                try:
+                    self._connect ()
+                except RuntimeError:
+                    raise cups.IPPError (cups.IPP_SERVICE_UNAVAILABLE,
+                                         'server-error-service-unavailable')
+
                 return 1
 
         if not self._prompt_allowed:
@@ -374,7 +383,12 @@ class Connection:
 
         cups.setUser (self._use_user)
         debugprint ("Authentication: Reconnect")
-        self._connect ()
+        try:
+            self._connect ()
+        except RuntimeError:
+            raise cups.IPPError (cups.IPP_SERVICE_UNAVAILABLE,
+                                 'server-error-service-unavailable')
+
         return 1
 
     def _show_not_authorized_dialog (self):
