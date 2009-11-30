@@ -1004,9 +1004,9 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if (response == gtk.RESPONSE_OK or
             response == gtk.RESPONSE_APPLY):
-            success = self.save_printer (self.printer)
+            failed = self.save_printer (self.printer)
 
-        if response == gtk.RESPONSE_APPLY:
+        if response == gtk.RESPONSE_APPLY and not failed:
             try:
                 self.fillPrinterTab (self.printer.name)
             except:
@@ -1014,7 +1014,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
             self.setDataButtonState ()
 
-        if ((response == gtk.RESPONSE_OK and not success) or
+        if ((response == gtk.RESPONSE_OK and not failed) or
             response == gtk.RESPONSE_CANCEL):
             self.printer = None
             dialog.hide ()
