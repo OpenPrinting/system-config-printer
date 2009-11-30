@@ -2511,7 +2511,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 # Work around bug fixed in pycups 1.9.46.
                 val = [val]
 
-            if typ != str:
+            if typ != str and len (val) > 0:
                 try:
                     # Can the value be coerced into the right type?
                     typ (val[0])
