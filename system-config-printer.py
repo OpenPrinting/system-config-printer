@@ -1086,9 +1086,9 @@ class GUI(GtkGUI, monitor.Watcher):
 
         if (response == gtk.RESPONSE_OK or
             response == gtk.RESPONSE_APPLY):
-            success = self.save_printer (self.printer)
+            failed = self.save_printer (self.printer)
 
-        if response == gtk.RESPONSE_APPLY:
+        if response == gtk.RESPONSE_APPLY and not failed:
             try:
                 self.fillPrinterTab (self.printer.name)
             except:
@@ -1096,7 +1096,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
             self.setDataButtonState ()
 
-        if ((response == gtk.RESPONSE_OK and not success) or
+        if ((response == gtk.RESPONSE_OK and not failed) or
             response == gtk.RESPONSE_CANCEL):
             self.printer = None
             dialog.hide ()
@@ -2589,7 +2589,7 @@ class GUI(GtkGUI, monitor.Watcher):
                             ('marker-types', str),
                             ('marker-levels', float)]:
             val = printer.other_attributes.get (attr, [])
-            if typ != str:
+            if typ != str and len (val) > 0:
                 try:
                     # Can the value be coerced into the right type?
                     typ (val[0])
