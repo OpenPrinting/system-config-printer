@@ -29,110 +29,40 @@ import time
 
 from errordialogs import *
 
-class AdvancedServerSettingsDialog:
+class AdvancedServerSettings:
     RESOURCE="/admin/conf/cupsd.conf"
 
-    def __init__ (self, cupsconn, parent=None, on_apply=None):
-        self.cupsconn = cupsconn
+    def __init__ (self, gui, on_apply=None):
+        self.cupsconn = gui.cups
         self.on_apply = on_apply
 
         # Signal handler IDs.
         self.handler_ids = {}
 
-        dialog = gtk.Dialog (_("Advanced Server Settings"),
-                             parent,
-                             gtk.DIALOG_MODAL |
-                             gtk.DIALOG_DESTROY_WITH_PARENT,
-                             (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                              gtk.STOCK_OK, gtk.RESPONSE_OK))
-        dialog.set_default_response (gtk.RESPONSE_OK)
-        dialog.set_border_width (6)
-        dialog.set_resizable (False)
-        dialog.set_has_separator (False)
-        self.connect (dialog, 'response', self.on_response)
-        self.dialog = dialog
+        self.dialog = gui.ServerSettingsDialog
+        browse_frame = gui.frameBrowseServers
+        self.browse_treeview = gui.tvBrowseServers
+        self.rbPreserveJobFiles = gui.rbPreserveJobFiles
+        self.rbPreserveJobHistory = gui.rbPreserveJobHistory
+        self.rbPreserveJobNone = gui.rbPreserveJobNone
+        self.add = gui.btAdvServerAdd
+        self.remove = gui.btAdvServerRemove
 
-        frames_vbox = gtk.VBox (False, 6)
-        dialog.vbox.pack_start (frames_vbox, False, False, 0)
-
-        history_frame = gtk.Frame ()
-        label = gtk.Label ('<b>' + _("Job History") + '</b>')
-        label.set_use_markup (True)
-        history_frame.set_label_widget (label)
-        history_frame.set_shadow_type (gtk.SHADOW_NONE)
-        frames_vbox.pack_start (history_frame, False, False, 0)
-
-        align = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
-        align.set_padding (0, 0, 12, 0)
-        history_frame.add (align)
-        vbox = gtk.VBox (False, 0)
-        align.add (vbox)
-        rb1 = gtk.RadioButton (None, _("Do not preserve job history"), False)
-        self.rbPreserveJobNone = rb1
-        rb2 = gtk.RadioButton (rb1, _("Preserve job history but not files"),
-                               False)
-        self.rbPreserveJobHistory = rb2
-        rb3 = gtk.RadioButton (rb1, _("Preserve job files (allow reprinting)"),
-                               False)
-        self.rbPreserveJobFiles = rb3
-        vbox.pack_start (rb1, False, False, 0)
-        vbox.pack_start (rb2, False, False, 0)
-        vbox.pack_start (rb3, False, False, 0)
-
-        browse_frame = gtk.Frame ()
-        label = gtk.Label ('<b>' + _("Browse Servers") + '</b>')
-        label.set_use_markup (True)
-        browse_frame.set_label_widget (label)
-        browse_frame.set_shadow_type (gtk.SHADOW_NONE)
-        frames_vbox.pack_start (browse_frame, False, False, 0)
-
-        align = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
-        align.set_padding (0, 0, 12, 0)
-        browse_frame.add (align)
-        vbox = gtk.VBox (False, 6)
-        align.add (vbox)
-        label = gtk.Label (_("Usually print servers broadcast their "
-                             "queues.  Specify print servers below "
-                             "to periodically ask for queues instead."))
-        label.set_line_wrap (True)
-        vbox.pack_start (label, False, False, 0)
-        hbox = gtk.HBox (False, 6)
-        vbox.pack_start (hbox, False, False, 0)
-
-        scrollwin = gtk.ScrolledWindow ()
-        scrollwin.set_shadow_type (gtk.SHADOW_IN)
-        scrollwin.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        hbox.pack_start (scrollwin, True, True, 0)
-        treeview = gtk.TreeView ()
-        treeview.set_headers_visible (False)
-        scrollwin.add (treeview)
-        selection = treeview.get_selection ()
+        selection = self.browse_treeview.get_selection ()
         selection.set_mode (gtk.SELECTION_MULTIPLE)
         self.connect (selection, 'changed', self.on_treeview_selection_changed)
+
+        for column in self.browse_treeview.get_columns():
+            self.browse_treeview.remove_column(column)
         col = gtk.TreeViewColumn ('', gtk.CellRendererText (), text=0)
-        treeview.append_column (col)
-        self.browse_treeview = treeview
-
-        bb = gtk.VButtonBox ()
-        bb.set_layout (gtk.BUTTONBOX_START)
-        hbox.pack_start (bb, False, False, 0)
-
-        add = gtk.Button (stock=gtk.STOCK_ADD)
-        bb.add (add)
-        self.connect (add, 'clicked', self.on_add_clicked)
-        self.add = add
-        remove = gtk.Button (stock=gtk.STOCK_REMOVE)
-        remove.set_sensitive (False)
-        bb.add (remove)
-        self.connect (remove, 'clicked', self.on_remove_clicked)
-        self.remove = remove
+        self.browse_treeview.append_column (col)
 
         # Fetch cupsd.conf
         f = tempfile.TemporaryFile ()
         try:
-            cupsconn.getFile (self.RESOURCE, file=f)
+            self.cupsconn.getFile (self.RESOURCE, file=f)
         except cups.HTTPError, s:
-            show_HTTP_Error (s, dialog)
+            show_HTTP_Error (s, self.dialog)
             raise
 
         def parse_yesno (line):
@@ -173,9 +103,8 @@ class AdvancedServerSettingsDialog:
             elif l.startswith ("browsepoll "):
                 self.browse_poll.append (line[len ("browsepoll "):].strip ())
 
-        if not browsing:
-            browse_frame.set_sensitive (False)
-            
+        browse_frame.set_sensitive (browsing)
+
         if preserve_job_files:
             self.rbPreserveJobFiles.set_active (True)
         elif preserve_job_history:
@@ -187,11 +116,9 @@ class AdvancedServerSettingsDialog:
         self.preserve_job_files = preserve_job_files
 
         model = gtk.ListStore (gobject.TYPE_STRING)
-        treeview.set_model (model)
+        self.browse_treeview.set_model (model)
         for server in self.browse_poll:
             model.append (row=[server])
-
-        dialog.show_all ()
 
     def connect (self, widget, signal, handler, reason=None):
         id = widget.connect (signal, handler)
@@ -203,9 +130,6 @@ class AdvancedServerSettingsDialog:
         for (widget, id) in self.handler_ids[reason]:
             widget.disconnect (id)
         del self.handler_ids[reason]
-
-    def __del__ (self):
-        self.dialog.destroy ()
 
     def on_treeview_selection_changed (self, selection):
         self.remove.set_sensitive (selection.count_selected_rows () != 0)

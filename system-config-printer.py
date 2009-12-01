@@ -97,7 +97,7 @@ import errordialogs
 from errordialogs import *
 import installpackage
 import userdefault
-from AdvancedServerSettings import AdvancedServerSettingsDialog
+from AdvancedServerSettings import AdvancedServerSettings
 from PhysicalDevice import PhysicalDevice
 from ToolbarSearchEntry import *
 from GroupsPane import *
@@ -258,7 +258,14 @@ class GUI(GtkGUI, monitor.Watcher):
                               "chkServerRemoteAdmin",
                               "chkServerAllowCancelAll",
                               "chkServerLogDebug",
-                              "hboxServerBrowse"],
+                              "hboxServerBrowse",
+                              "rbPreserveJobFiles",
+                              "rbPreserveJobHistory",
+                              "rbPreserveJobNone",
+                              "tvBrowseServers",
+                              "frameBrowseServers",
+                              "btAdvServerAdd",
+                              "btAdvServerRemove"],
                          "PrinterPropertiesDialog":
                              ["PrinterPropertiesDialog",
                               "tvPrinterProperties",
@@ -1230,6 +1237,8 @@ class GUI(GtkGUI, monitor.Watcher):
     def on_server_settings_activate (self, menuitem):
         try:
             self.fillServerTab ()
+            self.advancedServerSettings = AdvancedServerSettings(self,
+                                             self.on_adv_server_settings_apply)
         except cups.IPPError:
             # Not authorized.
             return
@@ -1238,25 +1247,30 @@ class GUI(GtkGUI, monitor.Watcher):
         self.ServerSettingsDialog.show ()
 
     def server_settings_response (self, dialog, response):
+        self.advancedServerSettings.on_response(dialog, response)
         if response == gtk.RESPONSE_OK:
-            # OK
             if not self.save_serversettings ():
                 dialog.hide ()
-        elif response == gtk.RESPONSE_YES:
-            # Advanced
-            try:
-                AdvancedServerSettingsDialog (self.cups, dialog,
-                                              self.on_adv_server_settings_apply)
-            except:
-                return
         else:
             dialog.hide ()
 
+    # Add button on 'Advanced Server Settings' clicked
+    def on_adv_server_add_clicked (self, button):
+        self.advancedServerSettings.on_add_clicked(button)
+
+    # Remove button on 'Advanced Server Settings' clicked
+    def on_adv_server_remove_clicked (self, button):
+        self.advancedServerSettings.on_remove_clicked(button)
+
     def on_adv_server_settings_apply (self):
+        self.cups._begin_operation (_("fetching server settings"))
         try:
-            self.fillServerTab ()
-        except cups.IPPError:
-            self.ServerSettingsDialog.hide ()
+            self.server_settings = self.cups.adminGetServerSettings()
+        except cups.IPPError, (e, m):
+            show_IPP_Error(e, m, self.PrintersWindow)
+            self.cups._end_operation ()
+            raise
+        self.cups._end_operation ()
 
     def busy (self, win = None):
         try:
