@@ -707,6 +707,8 @@ class GUI(GtkGUI, monitor.Watcher):
                          [_("Bottom to top, right to left")]]),
 
                        (self.cmbJOFinishings,
+  # See section 4.2.6 of this document for explanation of finishing types:
+  # ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
                         [[_("None")],
                          [_("Staple")],
                          [_("Punch")],
@@ -3470,7 +3472,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.setDataButtonState()
 
     def save_serversettings(self):
-        setting_dict = self.server_settings.copy()
+        setting_dict = dict()
         for widget, setting in [
             (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
             (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),

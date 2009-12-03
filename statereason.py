@@ -142,7 +142,7 @@ class StateReason:
                     reason = localized_reason[:-2]
                 else:
                     reason = self.get_reason()
-            except cups.IPPError:
+            except (cups.IPPError, RuntimeError):
                 reason = self.get_reason()
 
             text = _("Printer '%s': '%s'.") % (self.get_printer (), reason)
