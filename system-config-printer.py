@@ -2480,7 +2480,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.setDataButtonState()
 
     def save_serversettings(self):
-        setting_dict = self.server_settings.copy()
+        setting_dict = dict()
         for widget, setting in [
             (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
             (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
