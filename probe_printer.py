@@ -26,9 +26,17 @@ import gtk
 from timedops import TimedOperation
 import subprocess
 import threading
-import pysmb
 import errno
 import cups
+
+try:
+    import pysmb
+    PYSMB_AVAILABLE=True
+except:
+    PYSMB_AVAILABLE=False
+    class pysmb:
+        class AuthContext:
+            pass
 
 def wordsep (line):
     words = []
@@ -328,6 +336,9 @@ class PrinterFinder:
             self._new_device(uri, uri)
 
     def _probe_smb (self):
+        if not PYSMB_AVAILABLE:
+            return
+
         smbc_auth = BackgroundSmbAuthContext ()
         debug = 0
         if get_debugging ():
