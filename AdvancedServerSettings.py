@@ -154,7 +154,7 @@ class AdvancedServerSettingsDialog:
         self.browse_poll = []
         f.seek (0)
         for line in f.readlines ():
-            l = line.lower ()
+            l = line.lower ().strip ()
             if l.startswith ("preservejobhistory "):
                 try:
                     preserve_job_history = parse_yesno (l)
