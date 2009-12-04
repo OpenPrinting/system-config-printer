@@ -87,44 +87,43 @@ def wordsep (line):
 ### should be ['network', 'foo bar', ' ofoo', '"', '2 3']
 ##print wordsep ('network "foo bar" \ ofoo "\\"" 2" "3')
 
+def open_socket(hostname, port):
+    try:
+        host, port = hostname.split(":", 1)
+    except ValueError:
+        host = hostname
+        
+    s = None
+    try:
+        ai = socket.getaddrinfo(host, port, socket.AF_UNSPEC,
+                                socket.SOCK_STREAM)
+    except socket.gaierror:
+        ai = []
+
+    for res in ai:
+        af, socktype, proto, canonname, sa = res
+        try:
+            s = socket.socket(af, socktype, proto)
+            s.settimeout(0.5)
+        except socket.error, msg:
+            s = None
+            continue
+        try:
+            s.connect(sa)
+        except socket.error, msg:
+            s.close()
+            s = None
+            continue
+        break
+    return s
+
 class LpdServer:
     def __init__(self, hostname):
         self.hostname = hostname
         self.max_lpt_com = 8
 
-    def _open_socket(self):
-        port = 515
-        try:
-            host, port = self.hostname.split(":", 1)
-        except ValueError:
-            host = self.hostname
-        
-        s = None
-        try:
-            ai = socket.getaddrinfo(host, port, socket.AF_UNSPEC,
-                                    socket.SOCK_STREAM)
-        except socket.gaierror:
-            ai = []
-
-        for res in ai:
-            af, socktype, proto, canonname, sa = res
-            try:
-                s = socket.socket(af, socktype, proto)
-                s.settimeout(0.5)
-            except socket.error, msg:
-                s = None
-                continue
-            try:
-                s.connect(sa)
-            except socket.error, msg:
-                s.close()
-                s = None
-                continue
-            break
-        return s
-
     def probe_queue(self,name, result):
-        s = self._open_socket()
+        s = open_socket(self.hostname, 515)
         if not s: return False
         print name
         
@@ -374,11 +373,8 @@ class PrinterFinder:
     def _probe_jetdirect (self):
         port = 9100    #jetdirect
         sock_address = (self.hostname, port)
-        sock = socket.socket (socket.AF_INET, socket.SOCK_STREAM)
-        try:
-            # try to connect on given port
-            sock.connect (sock_address)
-        except socket.error:
+        s = open_socket(self.hostname, port)
+        if not s:
             debugprint ("%s:%d CLOSED" % sock_address)
         else:
             # port is open so assume its a JetDirect device
@@ -386,18 +382,21 @@ class PrinterFinder:
             uri = "socket://%s:%d" % sock_address
             info = "JetDirect (%s)" % self.hostname
             self._new_device(uri, info)
-            sock.close ()
+            s.close ()
 
     def _probe_ipp (self):
         try:
-            fqdn = socket.getfqdn(self.hostname)
-            ip_address = socket.gethostbyname(fqdn)
+            ai = socket.getaddrinfo(self.hostname, 631, socket.AF_UNSPEC,
+                                    socket.SOCK_STREAM)
         except socket.gaierror:
             debugprint ("Can't resolve %s" % self.hostname)
             return
-        if ip_address == "127.0.0.1":
-            debugprint ("Do not probe local cups server")
-            return
+        for res in ai:
+            af, socktype, proto, canonname, sa = res
+            if (af == socket.AF_INET and sa[0] == '127.0.0.1' or
+                af == socket.AF_INET6 and sa[0] == '::1'):
+                debugprint ("Do not probe local cups server")
+                return
 
         try:
             c = cups.Connection (host = self.hostname)
@@ -419,3 +418,5 @@ class PrinterFinder:
             uri = queue['printer-uri-supported']
             info = queue['printer-info']
             self._new_device(uri, info)
+
+
