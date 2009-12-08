@@ -5767,10 +5767,10 @@ class NewPrinterGUI(GtkGUI):
                 (scheme, rest) = urllib.splittype (device.uri)
                 (hostport, rest) = urllib.splithost (rest)
                 (queue, rest) = urllib.splitquery (rest)
-                if queue[0] == '/':
-                    queue = queue[1:]
-
                 if queue != '':
+                    if queue[0] == '/':
+                        queue = queue[1:]
+
                     device.menuentry = _("LPD/LPR queue '%s'") % queue
                 else:
                     device.menuentry = _("LPD/LPR queue")
