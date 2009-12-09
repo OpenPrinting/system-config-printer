@@ -241,9 +241,11 @@ class PrinterFinder:
         if not self.quit:
             self.callback_fn (None)
 
-    def _new_device (self, uri, info):
+    def _new_device (self, uri, info, location = None):
         device_dict = { 'device-class': 'network',
                         'device-info': "%s" % info }
+        if location:
+            device_dict['device-location']=location
         device_dict.update (self._cached_attributes)
         new_device = cupshelpers.Device (uri, **device_dict)
         debugprint ("Device found: %s" % uri)
@@ -274,7 +276,10 @@ class PrinterFinder:
         for line in stdout.split ('\n'):
             words = wordsep (line)
             n = len (words)
-            if n == 5:
+            if n == 6:
+                (device_class, uri, make_and_model,
+                 info, device_id, device_location) = words
+            elif n == 5:
                 (device_class, uri, make_and_model, info, device_id) = words
             elif n == 4:
                 (device_class, uri, make_and_model, info) = words
@@ -286,6 +291,8 @@ class PrinterFinder:
                             'device-info': info }
             if n == 5:
                 device_dict['device-id'] = device_id
+            if n == 6:
+                device_dict['device-location'] = device_location
 
             device = cupshelpers.Device (uri, **device_dict)
             self.callback_fn (device)
@@ -417,6 +424,7 @@ class PrinterFinder:
         for name, queue in printers.iteritems ():
             uri = queue['printer-uri-supported']
             info = queue['printer-info']
-            self._new_device(uri, info)
+            location = queue['printer-location']
+            self._new_device(uri, info, location)
 
 

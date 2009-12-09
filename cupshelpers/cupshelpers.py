@@ -496,6 +496,7 @@ class Device:
         self.info = kw.get('device-info', '')
         self.make_and_model = kw.get('device-make-and-model', '')
         self.id = kw.get('device-id', '')
+        self.location = kw.get('device-location', '')
 
         uri_pieces = uri.split(":")
         self.type =  uri_pieces[0]

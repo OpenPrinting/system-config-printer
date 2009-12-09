@@ -5167,6 +5167,9 @@ class NewPrinterGUI(GtkGUI):
                 mm = re.sub("^\s*\S+\s+\S+\s+\"", "", stdout)
                 mm = re.sub("\"\s+.*$", "", mm)
                 if mm and mm != "": device.make_and_model = mm
+                location = re.sub("^\s*(\S+\s+){2}(\".*\"\s+){3}\"", "", stdout)
+                device.location = re.sub("\"\s*$", "", location)
+
         # Extract make and model and create a pseudo device ID, so
         # that a PPD/driver can be assigned to the device
         make_and_model = None
@@ -5909,6 +5912,7 @@ class NewPrinterGUI(GtkGUI):
                         device_dict['device-make-and-model'] = (device.
                                                                 make_and_model)
                         device_dict['device-id'] = device.id
+                        device_dict['device-location'] = device.location
 
             if not hp_drivable and is_network:
                 hplipuri = self.get_hplip_uri_for_network_printer (host,
@@ -5990,7 +5994,10 @@ class NewPrinterGUI(GtkGUI):
                 (host, port) = urllib.splitnport (hostport, defport=port)
                 debugprint ("socket: host is %s, port is %s" % (host,
                                                                 repr (port)))
-                location = host
+                if device.location != '':
+                    location = device.location
+                else:
+                    location = host
             self.entNPTDirectJetHostname.set_text (host)
             self.entNPTDirectJetPort.set_text (str (port))
         elif device.type=="serial":
@@ -6044,7 +6051,7 @@ class NewPrinterGUI(GtkGUI):
                 self.lblIPPURI.set_text(device.uri)
                 self.lblIPPURI.show()
                 self.entNPTIPPQueuename.show()
-                location = server
+                location = device.location
             else:
                 self.entNPTIPPHostname.set_text('')
                 self.entNPTIPPQueuename.set_text('/printers/')
