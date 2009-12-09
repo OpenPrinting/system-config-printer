@@ -178,6 +178,7 @@ class Troubleshooter:
         return text.rstrip () + '\n'
 
     def busy (self):
+        self._in_module_call = True
         self.forward.set_sensitive (False)
         self.back.set_sensitive (False)
         gdkwin = self.get_window ().window
@@ -187,6 +188,7 @@ class Troubleshooter:
                 gtk.main_iteration ()
 
     def ready (self):
+        self._in_module_call = False
         gdkwin = self.get_window ().window
         if gdkwin:
             gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
@@ -291,13 +293,11 @@ class Troubleshooter:
 
     def _display (self, question):
         result = False
-        self._in_module_call = True
         try:
             result = question.display ()
         except:
             self._report_traceback ()
 
-        self._in_module_call = False
         question.displayed = result
         return result
 
@@ -310,13 +310,11 @@ class Troubleshooter:
 
     def _collect_answer (self, question):
         answer = {}
-        self._in_module_call = True
         try:
             answer = question.collect_answer ()
         except:
             self._report_traceback ()
 
-        self._in_module_call = False
         return answer
 
 QUESTIONS = ["Welcome",

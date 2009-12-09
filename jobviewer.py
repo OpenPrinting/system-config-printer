@@ -1536,7 +1536,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
         try:
             notification = self.state_reason_notifications[tuple]
             if notification.get_data ('closed') != True:
-                notification.close ()
+                try:
+                    notification.close ()
+                except glib.GError:
+                    # Can fail if the notification wasn't even shown
+                    # yet (as in bug #545733).
+                    pass
+
             del self.state_reason_notifications[tuple]
             self.set_statusicon_visibility ()
         except KeyError:

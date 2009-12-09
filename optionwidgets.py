@@ -109,8 +109,13 @@ class Option:
 
             if option2 is None: continue
 
-            if (choice1==value and
-                option2.get_current_value() == choice2):
+            def matches (constraint_choice, value):
+                if constraint_choice != '':
+                    return constraint_choice == value
+                return value not in ['None', 'False', 'Off']
+
+            if (matches (choice1, value) and
+                matches (choice2, option2.get_current_value())):
                 # conflict
                 self.conflicts.add(constraint)
                 if update_others:
@@ -122,13 +127,23 @@ class Option:
 
 
         tooltip = [_("Conflicts with:")]
+        conflicting_options = dict()
         for c in self.conflicts:
             if c.option1 == self.option.keyword:
                 option = self.gui.options.get(c.option2)
             else:
                 option = self.gui.options.get(c.option1)
 
-            tooltip.append(option.option.text)
+            conflicting_options[option.option.keyword] = option
+
+        for option in conflicting_options.values ():
+            opt = option.option.text
+            val = option.get_current_value ()
+            for choice in option.option.choices:
+                if choice['choice'] == val:
+                    val = ppdippstr.ppd.get (choice['text'])
+
+            tooltip.append ("%s: %s" % (opt, val))
             
         tooltip = "\n".join(tooltip)
 
