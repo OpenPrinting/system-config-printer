@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -24,10 +24,12 @@ class Shrug(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Shrug")
         page = self.initial_vbox (_("Sorry!"),
-                                  _("I have not been able to work out what "
-                                    "the problem is, but I have collected "
-                                    "some useful information to put in a "
-                                    "bug report."))
+                                  _("There is no obvious solution to this "
+                                    "problem.  Your answers have been "
+                                    "collected together with "
+                                    "other useful information.  If you "
+                                    "would like to report a bug, please "
+                                    "include this information."))
 
         expander = gtk.Expander (_("Diagnostic Output (Advanced)"))
         expander.set_expanded (False)

@@ -29,7 +29,7 @@ class ErrorLogCheckpoint(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Error log checkpoint")
         page = self.initial_vbox (_("Debugging"),
-                                  _("I would like to enable debugging output "
+                                  _("This step will enable debugging output "
                                     "from the CUPS scheduler.  This may "
                                     "cause the scheduler to restart.  Click "
                                     "the button below to enable debugging."))

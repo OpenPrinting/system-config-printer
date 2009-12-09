@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -42,10 +42,10 @@ class Welcome(Question):
         intro = gtk.Label ('<span weight="bold" size="larger">' +
                            _("Trouble-shooting Printing") +
                            '</span>\n\n' +
-                           _("In the next few screens I will ask you some "
+                           _("The next few screens will contain some "
                              "questions about your problem with printing. "
-                             "Based on your answers I will try to suggest "
-                             "a solution.") + '\n\n' +
+                             "Based on your answers a solution may be "
+                             "suggested.") + '\n\n' +
                            _("Click 'Forward' to begin."))
         intro.set_alignment (0, 0)
         intro.set_use_markup (True)
