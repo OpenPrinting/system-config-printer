@@ -4410,7 +4410,7 @@ class NewPrinterGUI(GtkGUI):
                         if len (info) > 0:
                             self.entNPDescription.set_text (info)
                         if len (location) > 0:
-                            self.entNPLocation.set_text (location)
+                            self.device.location = location
                     except RuntimeError:
                         pass
                     except:
