@@ -5113,6 +5113,8 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.set_model (model)
         self.entNPTDevice.set_text ('')
         self.expNPDeviceURIs.hide ()
+        column = self.tvNPDevices.get_column (0)
+        self.tvNPDevices.set_cursor ((0,), column)
         self.inc_spinner_task ()
 
         self.fetchDevices_op = TimedOperation (self.fetchDevices,
