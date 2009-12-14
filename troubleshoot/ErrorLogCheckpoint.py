@@ -23,7 +23,7 @@ import cups
 import os
 import tempfile
 import time
-from timedops import TimedOperation
+from timedops import TimedOperation, OperationCanceled
 from base import *
 class ErrorLogCheckpoint(Question):
     def __init__ (self, troubleshooter):
@@ -162,7 +162,7 @@ class ErrorLogCheckpoint(Question):
             self.op = TimedOperation (self.authconn.adminGetServerSettings,
                                       parent=parent)
             settings = self.op.run ()
-        except cups.IPPError:
+        except (cups.IPPError, OperationCanceled):
             self.troubleshooter.ready ()
             self.forward_allowed = True
             handler (button)
