@@ -33,7 +33,34 @@ def set_gettext_function (fn):
     global _
     _ = fn
 
-class IPPConnectionThread(threading.Thread):
+######
+###### A class to keep track of what we're trying to achieve in order
+###### to display that to the user if authentication is required.
+######
+class SemanticOperations(object):
+    def __init__ (self):
+        self._operation_stack = []
+
+    def _begin_operation (self, operation):
+        self._operation_stack.append (operation)
+
+    def _end_operation (self):
+        self._operation_stack.pop ()
+
+    def _current_operation (self):
+        try:
+            return self._operation_stack[0]
+        except IndexError:
+            return None
+
+######
+###### An asynchronous libcups API using a separate worker thread.
+######
+
+###
+### This is the worker thread.
+###
+class _IPPConnectionThread(threading.Thread):
     def __init__ (self, queue, conn, reply_handler=None, error_handler=None,
                   auth_handler=None, host=None, port=None, encryption=None):
                   
@@ -175,19 +202,38 @@ class IPPConnectionThread(threading.Thread):
         if self._error_handler:
             gobject.idle_add (send_error, exc)
 
-class IPPConnection:
+###
+### This is the user-visible class.  Although it does not inherit from
+### cups.Connection it implements the same functions.
+###
+class IPPConnection(SemanticOperations):
+    """
+    This class starts a new thread to handle IPP operations.
+
+    Each IPP operation method takes optional reply_handler,
+    error_handler and auth_handler parameters.
+
+    If an operation requires a password to proceed, the auth_handler
+    function will be called.  The operation will continue once
+    set_auth_info (in this class) is called.
+
+    Once the operation has finished either reply_handler or
+    error_handler will be called.
+    """
+
     def __init__ (self, reply_handler=None, error_handler=None,
                   auth_handler=None, host=None, port=None, encryption=None,
                   parent=None):
         debugprint ("New IPPConnection")
+        super (IPPConnection, self).__init__ ()
         self._parent = parent
         self.queue = Queue.Queue ()
-        self.thread = IPPConnectionThread (self.queue, self,
-                                           reply_handler=reply_handler,
-                                           error_handler=error_handler,
-                                           auth_handler=auth_handler,
-                                           host=host, port=port,
-                                           encryption=encryption)
+        self.thread = _IPPConnectionThread (self.queue, self,
+                                            reply_handler=reply_handler,
+                                            error_handler=error_handler,
+                                            auth_handler=auth_handler,
+                                            host=host, port=port,
+                                            encryption=encryption)
         self.thread.start ()
 
         methodtype = type (cups.Connection.getPrinters)
@@ -206,6 +252,7 @@ class IPPConnection:
             self.queue.join ()
 
     def set_auth_info (self, password):
+        """Call this from your auth_handler function."""
         self.thread.set_auth_info (password)
 
     def reconnect (self, user, reply_handler=None, error_handler=None):
@@ -230,7 +277,15 @@ class IPPConnection:
         self.queue.put ((fn, args, kwds,
                          reply_handler, error_handler, auth_handler))
 
-class IPPAuthOperation:
+######
+###### An asynchronous libcups API with graphical authentication and
+###### retrying.
+######
+
+###
+### A class to take care of an individual operation.
+###
+class _IPPAuthOperation:
     def __init__ (self, reply_handler, error_handler, conn,
                   user=None, fn=None, args=None, kwds=None):
         self._auth_called = False
@@ -341,7 +396,14 @@ class IPPAuthOperation:
             d.run ()
             d.destroy ()
 
-        d = authconn.AuthDialog (parent=conn.parent)
+        op = conn._current_operation ()
+        if op == None:
+            d = authconn.AuthDialog (parent=conn.parent)
+        else:
+            title = _("Authentication (%s)") % op
+            d = authconn.AuthDialog (title=title,
+                                     parent=conn.parent)
+
         d.set_prompt (prompt)
         d.set_auth_info ([self._user, ''])
         d.field_grab_focus ('password')
@@ -398,7 +460,12 @@ class IPPAuthOperation:
             self._error (exc)
             return
 
-        msg = _("CUPS server error")
+        op = conn._current_operation ()
+        if op == None:
+            msg = _("CUPS server error")
+        else:
+            msg = _("CUPS server error (%s)") % op
+
         d = gtk.MessageDialog (self._conn.parent,
                                gtk.DIALOG_MODAL |
                                gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -434,6 +501,9 @@ class IPPAuthOperation:
         if self._client_error_handler:
             self._client_error_handler (self._conn, exc)
 
+###
+### The user-visible class.
+###
 class IPPAuthConnection(IPPConnection):
     def __init__ (self, reply_handler=None, error_handler=None,
                   auth_handler=None, host=None, port=None, encryption=None,
@@ -443,7 +513,7 @@ class IPPAuthConnection(IPPConnection):
         self.try_as_root = try_as_root
 
         # The "connect" operation.
-        op = IPPAuthOperation (reply_handler, error_handler, self)
+        op = _IPPAuthOperation (reply_handler, error_handler, self)
         IPPConnection.__init__ (self, reply_handler=reply_handler,
                                 error_handler=op.error_handler,
                                 auth_handler=op.auth_handler, host=host,
@@ -463,8 +533,8 @@ class IPPAuthConnection(IPPConnection):
 
         # Store enough information about the current operation to
         # restart it if necessary.
-        op = IPPAuthOperation (reply_handler, error_handler, self,
-                               self.thread.user, fn, args, kwds)
+        op = _IPPAuthOperation (reply_handler, error_handler, self,
+                                self.thread.user, fn, args, kwds)
 
         # Run the operation but use our own error and auth handlers.
         op.submit_task ()
@@ -510,10 +580,12 @@ if __name__ == "__main__":
         def get_devices (self, button):
             button.set_sensitive (False)
             debugprint ("Getting devices")
+            self.conn._begin_operation ("fetch devices")
             self.conn.getDevices (reply_handler=self.get_devices_reply,
                                   error_handler=self.get_devices_error)
 
         def get_devices_reply (self, conn, result):
+            conn._end_operation ()
             if conn != self.conn:
                 debugprint ("Ignoring stale reply")
                 return
@@ -522,6 +594,7 @@ if __name__ == "__main__":
             self.get_devices_button.set_sensitive (True)
 
         def get_devices_error (self, conn, exc):
+            conn._end_operation ()
             if conn != self.conn:
                 debugprint ("Ignoring stale error")
                 return
