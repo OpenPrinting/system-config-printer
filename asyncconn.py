@@ -62,7 +62,6 @@ class IPPConnectionThread(threading.Thread):
             self._encryption = cups.getEncryption ()
 
         self.user = cups.getUser ()
-        cups.setPasswordCB (self._auth)
         try:
             self.conn = cups.Connection (host=self.host,
                                          port=self._port,
@@ -72,6 +71,12 @@ class IPPConnectionThread(threading.Thread):
             return
 
         self._reply (None)
+
+        try:
+            self.conn.setPasswordCB (self._auth)
+        except AttributeError:
+            # Requires pycups >= 1.9.47.  Fall back to rubbish API.
+            cups.setPasswordCB (self._auth)
 
         while True:
             # Wait to find out what operation to try.
@@ -109,6 +114,13 @@ class IPPConnectionThread(threading.Thread):
 
                 self._queue.task_done ()
                 self._reply (None)
+
+                try:
+                    self.conn.setPasswordCB (self._auth)
+                except AttributeError:
+                    # Requires pycups >= 1.9.47.  Fall back to rubbish API.
+                    cups.setPasswordCB (self._auth)
+
                 continue
 
             # Normal IPP operation.  Try to perform it.
@@ -131,9 +143,13 @@ class IPPConnectionThread(threading.Thread):
 
         debugprint ("Thread exiting")
 
-    def _auth (self, prompt):
+    def _auth (self, prompt, conn=None, method=None, resource=None):
         def prompt_auth (prompt):
-            self._auth_handler (prompt)
+            if conn == None:
+                self._auth_handler (prompt, self._conn)
+            else:
+                self._auth_handler (prompt, self._conn, method, resource)
+
             return False
 
         if self._auth_handler == None:
@@ -222,6 +238,7 @@ class IPPAuthOperation:
         self._use_password = ''
         self._cancel = False
         self._reconnect = False
+        self._reconnected = False
         self._user = user
         self._conn = conn
         self._try_as_root = self._conn.try_as_root
@@ -243,6 +260,7 @@ class IPPAuthOperation:
 
         if self._reconnect:
             self._reconnect = False
+            self._reconnected = True
             conn.reconnect (self._user,
                             reply_handler=self._reconnect_reply,
                             error_handler=self._reconnect_error)
@@ -293,7 +311,25 @@ class IPPAuthOperation:
             # We aren't even getting a chance to supply credentials.
             return self._error (exc)
 
-        # If we're previously prompted, explain why we're prompting again.
+        # Now reconnect and retry.
+        conn.reconnect (self._user,
+                        reply_handler=self._reconnect_reply,
+                        error_handler=self._reconnect_error)
+
+    def auth_handler (self, prompt, conn, method=None, resource=None):
+        self._auth_called = True
+        if self._reconnected:
+            debugprint ("Supplying password after reconnection")
+            self._reconnected = False
+            conn.set_auth_info (self._use_password)
+            return
+
+        self._reconnected = False
+        if not conn.prompt_allowed:
+            conn.set_auth_info (self._use_password)
+            return
+
+        # If we've previously prompted, explain why we're prompting again.
         if self._dialog_shown:
             d = gtk.MessageDialog (self._conn.parent,
                                    gtk.DIALOG_MODAL |
@@ -305,18 +341,7 @@ class IPPAuthOperation:
             d.run ()
             d.destroy ()
 
-        # Now reconnect and retry.
-        conn.reconnect (self._user,
-                        reply_handler=self._reconnect_reply,
-                        error_handler=self._reconnect_error)
-
-    def auth_handler (self, prompt):
-        self._auth_called = True
-        if not self._conn.prompt_allowed:
-            self._conn.set_auth_info (self._use_password)
-            return
-
-        d = authconn.AuthDialog (parent=self._conn.parent)
+        d = authconn.AuthDialog (parent=conn.parent)
         d.set_prompt (prompt)
         d.set_auth_info ([self._user, ''])
         d.field_grab_focus ('password')
