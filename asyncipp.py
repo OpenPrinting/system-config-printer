@@ -71,6 +71,13 @@ class _IPPConnectionThread(threading.Thread):
             self._encryption = cups.getEncryption ()
 
         self.user = cups.getUser ()
+
+        try:
+            cups.setPasswordCB2 (self._auth)
+        except AttributeError:
+            # Requires pycups >= 1.9.47.  Fall back to rubbish API.
+            cups.setPasswordCB (self._auth)
+
         try:
             self.conn = cups.Connection (host=self.host,
                                          port=self._port,
@@ -80,12 +87,6 @@ class _IPPConnectionThread(threading.Thread):
             return
 
         self._reply (None)
-
-        try:
-            self.conn.setPasswordCB (self._auth)
-        except AttributeError:
-            # Requires pycups >= 1.9.47.  Fall back to rubbish API.
-            cups.setPasswordCB (self._auth)
 
         while True:
             # Wait to find out what operation to try.
@@ -111,6 +112,12 @@ class _IPPConnectionThread(threading.Thread):
                 cups.setUser (self.user)
                 debugprint ("Set user=%s; reconnecting..." % self.user)
                 try:
+                    cups.setPasswordCB2 (self._auth)
+                except AttributeError:
+                    # Requires pycups >= 1.9.47.  Fall back to rubbish API.
+                    cups.setPasswordCB (self._auth)
+
+                try:
                     self.conn = cups.Connection (host=self.host,
                                                  port=self._port,
                                                  encryption=self._encryption)
@@ -123,12 +130,6 @@ class _IPPConnectionThread(threading.Thread):
 
                 self._queue.task_done ()
                 self._reply (None)
-
-                try:
-                    self.conn.setPasswordCB (self._auth)
-                except AttributeError:
-                    # Requires pycups >= 1.9.47.  Fall back to rubbish API.
-                    cups.setPasswordCB (self._auth)
 
                 continue
 
