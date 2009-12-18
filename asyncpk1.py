@@ -140,7 +140,6 @@ class _FileGetTmpFileWrapper:
             os.lseek (fd, 0, os.SEEK_SET)
             line = tmpfile.readline ()
             while line != '':
-                print line
                 os.write (fd, line)
                 line = tempfile.readline ()
         else:
@@ -148,7 +147,6 @@ class _FileGetTmpFileWrapper:
             file_object.seek (0)
             line = tmpfile.readline ()
             while line != '':
-                print line
                 file_object.write (line)
                 line = tmpfile.readline ()
 
@@ -358,8 +356,6 @@ class PK1Connection:
 
         # getFile(resource, filename=None, fd=-1, file=None) -> None
         if use_pycups:
-            print len (args)
-            print kwds.keys ()
             if ((len (args) == 0 and kwds.has_key ('resource')) or
                 (len (args) == 1)):
                 can_use_tempfile = True
