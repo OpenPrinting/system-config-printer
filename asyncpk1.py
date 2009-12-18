@@ -20,6 +20,7 @@
 
 import cups
 import dbus
+import gobject
 import gtk
 import os
 import sys
@@ -40,6 +41,7 @@ def set_gettext_function (fn):
 CUPS_PK_NAME  = 'org.opensuse.CupsPkHelper.Mechanism'
 CUPS_PK_PATH  = '/'
 CUPS_PK_IFACE = 'org.opensuse.CupsPkHelper.Mechanism'
+CUPS_PK_NEED_AUTH = 'org.opensuse.CupsPkHelper.Mechanism.NotPrivileged'
 
 ######
 ###### A polkit-1 based asynchronous CupsPkHelper interface made to
@@ -48,216 +50,224 @@ CUPS_PK_IFACE = 'org.opensuse.CupsPkHelper.Mechanism'
 ###### authentication is used over a CUPS connection in a separate
 ###### thread.
 ######
-class PK1Connection(asyncipp.IPPAuthConnection):
+
+###
+### A class to handle an asynchronous method call.
+###
+class _PK1AsyncMethodCall:
+    def __init__ (self, bus, conn, pk_method_name, pk_args,
+                  reply_handler, error_handler, unpack_fn,
+                  fallback_fn, args, kwds):
+        self._client_reply_handler = reply_handler
+        self._client_error_handler = error_handler
+        object = bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
+        proxy = dbus.Interface (object, CUPS_PK_IFACE)
+        self._conn = conn
+        self._pk_method = proxy.get_dbus_method (pk_method_name)
+        self._pk_args = pk_args
+        self._unpack_fn = unpack_fn
+        self._fallback_fn = fallback_fn
+        self._fallback_args = args
+        self._fallback_kwds = kwds
+
+    def call (self):
+        try:
+            self._pk_method (*self._pk_args,
+                             reply_handler=self._pk_reply_handler,
+                             error_handler=self._pk_error_handler)
+        except TypeError, e:
+            debugprint ("Type error in PK call: %s" % e)
+            self._call_fallback_fn ()
+
+    def _pk_reply_handler (self, *args):
+        self._client_reply_handler (self._conn, self._unpack_fn (*args))
+
+    def _pk_error_handler (self, exc):
+        if exc.get_dbus_name () == CUPS_PK_NEED_AUTH:
+            exc = cups.IPPError (cups.IPP_NOT_AUTHORIZED, 'pkcancel')
+            self._client_error_handler (self._conn, exc)
+
+        debugprint ("PolicyKit call to %s did not work: %s" %
+                    (self._pk_method_name, exc))
+        self._call_fallback_fn ()
+
+    def _call_fallback_fn (self):
+        # Make the 'connection' parameter consistent with PK callbacks.
+        self._fallback_kwds["reply_handler"] = self._ipp_reply_handler
+        self._fallback_kwds["error_handler"] = self._ipp_error_handler
+        self._fallback_fn (*self._fallback_args, **self._fallback_kwds)
+
+    def _ipp_reply_handler (self, conn, *args):
+        self._client_reply_handler (self._conn, *args)
+
+    def _ipp_error_handler (self, conn, *args):
+        self._client_error_handler (self._conn, *args)
+
+###
+### The user-visible class.
+###
+class PK1Connection:
     def __init__(self, reply_handler=None, error_handler=None,
                  host=None, port=None, encryption=None, parent=None):
-        asyncipp.IPPAuthConnection.__init__ (self,
-                                             reply_handler=reply_handler,
-                                             error_handler=error_handler,
-                                             host=host, port=port,
-                                             encryption=encryption,
-                                             parent=parent)
+        self._conn = asyncipp.IPPAuthConnection  (reply_handler=reply_handler,
+                                                  error_handler=error_handler,
+                                                  host=host, port=port,
+                                                  encryption=encryption,
+                                                  parent=parent)
 
         try:
-            self._session_bus = dbus.SessionBus()
             self._system_bus = dbus.SystemBus()
-        except dbus.exceptions.DBusException:
-            # One or other bus not running.
-            self._session_bus = self._system_bus = None
+        except (dbus.exceptions.DBusException, AttributeError):
+            # No system D-Bus.
+            self._system_bus = None
 
-    def _get_cups_pk(self):
-        try:
-            object = self._system_bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
-            return dbus.Interface(object, CUPS_PK_IFACE)
-        except dbus.exceptions.DBusException:
-            # Failed to get object or interface.
-            return None
-        except AttributeError:
-            # No system D-Bus
-            return None
+    def _coerce (self, typ, val):
+        return typ (val)
 
-    def _call_with_pk_and_fallback(self, use_fallback, pk_function_name,
-                                   pk_args, fallback_function, *args, **kwds):
-        pk_function = None
+    def _args_kwds_to_tuple (self, types, params, args, kwds):
+        """Collapse args and kwds into a single tuple."""
+        leftover_kwds = kwds.copy ()
+        reply_handler = leftover_kwds.get ("reply_handler")
+        error_handler = leftover_kwds.get ("error_handler")
+        if leftover_kwds.has_key ("reply_handler"):
+            del leftover_kwds["reply_handler"]
+        if leftover_kwds.has_key ("error_handler"):
+            del leftover_kwds["error_handler"]
+        if leftover_kwds.has_key ("auth_handler"):
+            del leftover_kwds["auth_handler"]
 
-        if not use_fallback:
-            cups_pk = self._get_cups_pk()
-            if cups_pk:
+        result = [True, reply_handler, error_handler, ()]
+        if self._system_bus == None:
+            return result
+
+        tup = []
+        argindex = 0
+        for arg in args:
+            try:
+                val = self._coerce (types[argindex], arg)
+            except TypeError, e:
+                debugprint ("Error converting %s to %s" %
+                            (repr (arg), types[argindex]))
+                return result
+
+            tup.append (val)
+            argindex += 1
+
+        for kw, default in params[argindex:]:
+            if leftover_kwds.has_key (kw):
                 try:
-                    pk_function = cups_pk.get_dbus_method(pk_function_name)
-                except dbus.exceptions.DBusException:
-                    pass
+                    val = self._coerce (types[argindex], leftover_kwds[kw])
+                except TypeError, e:
+                    debugprint ("Error converting %s to %s" %
+                                (repr (leftover_kwds[kw]), types[argindex]))
+                    return result
 
-        if use_fallback or not pk_function:
-            return fallback_function(*args, **kwds)
-
-        reply_handler = kwds.get ("reply_handler")
-        error_handler = kwds.get ("error_handler")
-        if reply_handler and error_handler:
-            pk_function (*pk_args,
-                          reply_handler=reply_handler,
-                          error_handler=error_handler)
-        else:
-            pk_function (*pk_args)
-
-    def _error_handler (self, *args):
-        print args
-
-    def _args_to_tuple(self, types, *args):
-        retval = [ False ]
-
-        if len(types) != len(args):
-            retval[0] = True
-            # We do this to have the right length for the returned value
-            retval.extend(types)
-            return tuple(types)
-
-        exception = False
-
-        for i in range(len(types)):
-            if type(args[i]) != types[i]:
-                if types[i] == str and type(args[i]) == unicode:
-                    # we accept a mix between unicode and str
-                    pass
-                elif types[i] == str and type(args[i]) == int:
-                    # we accept a mix between int and str
-                    retval.append(str(args[i]))
-                    continue
-                elif types[i] == str and type(args[i]) == float:
-                    # we accept a mix between float and str
-                    retval.append(str(args[i]))
-                    continue
-                elif types[i] == str and type(args[i]) == bool:
-                    # we accept a mix between bool and str
-                    retval.append(str(args[i]))
-                    continue
-                elif types[i] == str and args[i] == None:
-                    # None is an empty string for dbus
-                    retval.append('')
-                    continue
-                elif types[i] == list and type(args[i]) == tuple:
-                    # we accept a mix between list and tuple
-                    retval.append(list(args[i]))
-                    continue
-                elif types[i] == list and args[i] == None:
-                    # None is an empty list
-                    retval.append([])
-                    continue
-                else:
-                    exception = True
-            retval.append(args[i])
-
-        retval[0] = exception
-
-        return tuple(retval)
-
-
-    def _kwds_to_vars(self, names, **kwds):
-        ret = []
-
-        for name in names:
-            if kwds.has_key(name):
-                ret.append(kwds[name])
+                tup.append (val)
+                del leftover_kwds[kw]
             else:
-                ret.append('')
+                tup.append (default)
 
-        return tuple(ret)
+            argindex += 1
 
+        if leftover_kwds:
+            debugprint ("Leftover keywords: %s" % repr (leftover_kwds.keys ()))
+            return result
 
-#    getPrinters
-#    getDests
-#    getClasses
-#    getPPDs
-#    getServerPPD
-#    getDocument
+        result[0] = False
+        result[3] = tuple (tup)
+        debugprint ("Converted %s/%s to %s" % (args, kwds, tuple (tup)))
+        return result
 
+    def _call_with_pk (self, use_pycups, pk_method_name, pk_args,
+                       reply_handler, error_handler, unpack_fn,
+                       fallback_fn, args, kwds):
+        if not use_pycups:
+            try:
+                asyncmethodcall = _PK1AsyncMethodCall (self._system_bus,
+                                                       self,
+                                                       pk_method_name,
+                                                       pk_args,
+                                                       reply_handler,
+                                                       error_handler,
+                                                       unpack_fn,
+                                                       fallback_fn,
+                                                       args, kwds)
+            except dbus.exceptions.DBusException, e:
+                debugprint ("Failed to get D-Bus method for %s: %s" %
+                            (pk_method_name, e))
+                use_pycups = True
 
-    def getDevices(self, *args, **kwds):
-        use_pycups = False
+        if use_pycups:
+            return fallback_fn (*args, **kwds)
 
-        limit = 0
-        include_schemes = ''
-        exclude_schemes = ''
-        timeout = 0
+        debugprint ("Calling PK method %s" % pk_method_name)
+        asyncmethodcall.call ()
 
-        if len(args) == 4:
-            (use_pycups, limit, include_schemes, exclude_schemes, timeout) = self._args_to_tuple([int, str, str, int], *args)
-        else:
-            if kwds.has_key('timeout'):
-                timeout = kwds['timeout']
+    def getDevices (self, *args, **kwds):
+        (use_pycups, reply_handler, error_handler,
+         tup) = self._args_kwds_to_tuple ([int, str, str],
+                                          [("limit", 0),
+                                           ("include_schemes", ""),
+                                           ("exclude_schemes", "")],
+                                          args, kwds)
 
-            if kwds.has_key('include_schemes'):
-                include_schemes = kwds['include_schemes']
-
-            if kwds.has_key('exclude_schemes'):
-                exclude_schemes = kwds['exclude_schemes']
-
-        # Convert from list to string
-        if len (include_schemes) > 0:
-            include_schemes = reduce (lambda x, y: x + "," + y, include_schemes)
-        else:
-            include_schemes = ""
-
-        if len (exclude_schemes) > 0:
-            exclude_schemes = reduce (lambda x, y: x + "," + y, exclude_schemes)
-        else:
-            exclude_schemes = ""
-
-        pk_args = (timeout, include_schemes, exclude_schemes)
-
-        reply_handler = kwds["reply_handler"]
-        def getDevices_reply_handler (*args):
-            print repr (args)
-            reply_handler (args)
-
-        self._call_with_pk_and_fallback(use_pycups,
-                                        'DevicesGet', pk_args,
-                                        super (asyncipp.IPPAuthConnection,
-                                               self).getDevices,
-                                        *args, **kwds)
-        return
-
-        # return 'result' if fallback was called
-        if len (result.keys()) > 0 and type (result[result.keys()[0]]) == dict:
-             return result
-
-        result_str = {}
-        if result != None:
-            for i in result.keys():
-                if type(i) == dbus.String:
-                    result_str[str(i)] = str(result[i])
+        if not use_pycups:
+            # Special handling for include_schemes/exclude_schemes.
+            # Convert from list to ","-separated string.
+            newtup = list (tup)
+            for paramindex in [1, 2]:
+                if len (newtup[paramindex]) > 0:
+                    newtup[paramindex] = reduce (lambda x, y: x + "," + y,
+                                                 newtup[paramindex])
                 else:
-                    result_str[i] = result[i]
+                    newtup[paramindex] = ""
+
+            tup = tuple (newtup)
+
+        self._call_with_pk (use_pycups,
+                            'DevicesGet', tup, reply_handler, error_handler,
+                            self._unpack_getDevices_reply,
+                            self._conn.getDevices, args, kwds)
+
+    def _unpack_getDevices_reply (self, unused, dbusdict):
+        result_str = dict()
+        for key, value in dbusdict.iteritems ():
+            if type (key) == dbus.String:
+                result_str[str (key)] = str (value)
+            else:
+                result_str[key] = value
 
         # cups-pk-helper returns all devices in one dictionary.
         # Keys of different devices are distinguished by ':n' postfix.
 
-        devices = {}
+        devices = dict()
         n = 0
-        postfix = ':' + str (n)
-        device_keys = [x for x in result_str.keys() if x.endswith(postfix)]
+        affix = ':' + str (n)
+        device_keys = [x for x in result_str.keys () if x.endswith (affix)]
         while len (device_keys) > 0:
-
             device_uri = None
-            device_dict = {}
-            for i in device_keys:
-                key = i[:len(i) - len(postfix)]
+            device_dict = dict()
+            for keywithaffix in device_keys:
+                key = keywithaffix[:len (keywithaffix) - len (affix)]
                 if key != 'device-uri':
-                    device_dict[key] = result_str[i]
+                    device_dict[key] = result_str[keywithaffix]
                 else:
-                    device_uri = result_str[i]
+                    device_uri = result_str[keywithaffix]
 
             if device_uri != None:
                 devices[device_uri] = device_dict
 
             n += 1
-            postfix = ':' + str (n)
-            device_keys = [x for x in result_str.keys() if x.endswith(postfix)]
+            affix = ':' + str (n)
+            device_keys = [x for x in result_str.keys () if x.endswith (affix)]
 
         return devices
 
 if __name__ == '__main__':
     import gtk
+    gobject.threads_init ()
+    from debug import set_debugging
+    set_debugging (True)
     class UI:
         def __init__ (self):
             w = gtk.Window ()
@@ -295,11 +305,19 @@ if __name__ == '__main__':
             self.conn.getDevices (reply_handler=self.got_devices,
                                   error_handler=self.get_devices_error)
 
-        def got_devices (self, *args):
-            print "got devices: %s" % repr (args)
+        def got_devices (self, conn, devices):
+            if conn != self.conn:
+                print "Ignoring stale reply"
+                return
 
-        def get_devices_error (self, *args):
-            print "devices error: %s" % repr (args)
+            print "got devices: %s" % devices
+
+        def get_devices_error (self, conn, exc):
+            if conn != self.conn:
+                print "Ignoring stale error"
+                return
+
+            print "devices error: %s" % repr (exc)
 
     UI ()
     gtk.main ()
