@@ -315,11 +315,12 @@ class _IPPAuthOperation:
             else:
                 return self._error (exc)
         elif type (exc) == cups.HTTPError:
+            (s,) = exc.args
             if (s == cups.HTTP_UNAUTHORIZED or
                 s == cups.HTTP_FORBIDDEN):
                 forbidden = (s == cups.HTTP_FORBIDDEN)
-
-            return self._error (exc)
+            else:
+                return self._error (exc)
         else:
             return self._error (exc)
 
