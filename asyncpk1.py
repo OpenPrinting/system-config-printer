@@ -112,6 +112,57 @@ class _PK1AsyncMethodCall:
         self._client_error_handler (self._conn, *args)
 
 ###
+### A class for handling GetFile when a temporary file is needed.
+class _FileGetTmpFileWrapper:
+    def __init__ (self, args, kwds, reply_handler, error_handler):
+        self._reply_handler = reply_handler
+        self._error_handler = error_handler
+        if len (args) == 0:
+            self._resource = kwds["resource"]
+        else:
+            self._resource = args[0]
+
+        (tmpfd, tmpfname) = tempfile.mkstemp ()
+        os.close (tmpfd)
+        self._filename = tmpfname
+        debugprint ("Created tempfile %s" % tmpfname)
+
+        self._kwds = kwds
+
+    def get_pk_args (self):
+        return (self._resource, self._filename)
+
+    def reply_handler (self, conn, none):
+        tmpfd = os.open (self._filename, os.O_RDONLY)
+        tmpfile = os.fdopen (tmpfd, 'r')
+        if self._kwds.has_key ("fd"):
+            fd = self._kwds["fd"]
+            os.lseek (fd, 0, os.SEEK_SET)
+            line = tmpfile.readline ()
+            while line != '':
+                print line
+                os.write (fd, line)
+                line = tempfile.readline ()
+        else:
+            file_object = self._kwds["file"]
+            file_object.seek (0)
+            line = tmpfile.readline ()
+            while line != '':
+                print line
+                file_object.write (line)
+                line = tmpfile.readline ()
+
+        tmpfile.close ()
+        os.unlink (self._filename)
+        debugprint ("Removed tempfile %s" % self._filename)
+        self._reply_handler (conn, none)
+
+    def error_handler (self, conn, exc):
+        os.unlink (self._filename)
+        debugprint ("Removed tempfile %s" % self._filename)
+        self._error_handler (conn, exc)
+
+###
 ### The user-visible class.
 ###
 class PK1Connection:
@@ -201,6 +252,9 @@ class PK1Connection:
         debugprint ("Calling PK method %s" % pk_method_name)
         asyncmethodcall.call ()
 
+    def _nothing_to_unpack (self):
+        return None
+
     def getDevices (self, *args, **kwds):
         (use_pycups, reply_handler, error_handler,
          tup) = self._args_kwds_to_tuple ([int, str, str],
@@ -269,11 +323,69 @@ class PK1Connection:
 
         self._call_with_pk (use_pycups,
                             'JobCancel', tup, reply_handler, error_handler,
-                            self._unpack_cancelJob_reply,
+                            self._nothing_to_unpack,
                             self._conn.cancelJob, args, kwds)
 
-    def _unpack_cancelJob_reply (self):
-        return None
+    def setJobHoldUntil (self, *args, **kwds):
+        (use_pycups, reply_handler, error_handler,
+         tup) = self._args_kwds_to_tuple ([int, str],
+                                          [(None, None),
+                                           (None, None)],
+                                          args, kwds)
+
+        self._call_with_pk (use_pycups,
+                            'JobSetHoldUntil', tup, reply_handler,
+                            error_handler, self._nothing_to_unpack,
+                            self._conn.setJobHoldUntil, args, kwds)
+
+    def restartJob (self, *args, **kwds):
+        (use_pycups, reply_handler, error_handler,
+         tup) = self._args_kwds_to_tuple ([int],
+                                          [(None, None)],
+                                          args, kwds)
+
+        self._call_with_pk (use_pycups,
+                            'JobRestart', tup, reply_handler,
+                            error_handler, self._nothing_to_unpack,
+                            self._conn.restartJob, args, kwds)
+
+    def getFile (self, *args, **kwds):
+        (use_pycups, reply_handler, error_handler,
+         tup) = self._args_kwds_to_tuple ([str, str],
+                                          [("resource", None),
+                                           ("filename", None)],
+                                          args, kwds)
+
+        # getFile(resource, filename=None, fd=-1, file=None) -> None
+        if use_pycups:
+            print len (args)
+            print kwds.keys ()
+            if ((len (args) == 0 and kwds.has_key ('resource')) or
+                (len (args) == 1)):
+                can_use_tempfile = True
+                for each in kwds.keys ():
+                    if each not in ['resource', 'fd', 'file',
+                                    'reply_handler', 'error_handler']:
+                        can_use_tempfile = False
+                        break
+
+                if can_use_tempfile:
+                    # We can still use PackageKit for this.
+                    wrapper = _FileGetTmpFileWrapper (args, kwds,
+                                                      reply_handler,
+                                                      error_handler)
+                    self._call_with_pk (False,
+                                        'FileGet', wrapper.get_pk_args (),
+                                        wrapper.reply_handler,
+                                        wrapper.error_handler,
+                                        self._nothing_to_unpack,
+                                        self._conn.getFile, args, kwds)
+                    return
+
+        self._call_with_pk (use_pycups,
+                            'FileGet', tup, reply_handler,
+                            error_handler, self._nothing_to_unpack,
+                            self._conn.getFile, args, kwds)
 
 if __name__ == '__main__':
     import gtk
@@ -298,6 +410,11 @@ if __name__ == '__main__':
             b.connect ("clicked", self.cancel_clicked)
             b.set_sensitive (False)
             self.cancel_button = b
+            b = gtk.Button ("Get file")
+            v.pack_start (b)
+            b.connect ("clicked", self.get_file_clicked)
+            b.set_sensitive (False)
+            self.get_file_button = b
             w.connect ("destroy", self.destroy)
             w.show_all ()
 
@@ -313,6 +430,7 @@ if __name__ == '__main__':
             print "Connected"
             self.fetch_button.set_sensitive (True)
             self.cancel_button.set_sensitive (True)
+            self.get_file_button.set_sensitive (True)
 
         def connection_error (self, conn, error):
             print "Failed to connect"
@@ -356,6 +474,26 @@ if __name__ == '__main__':
                 return
 
             print "cancel error: %s" % repr (exc)
+
+        def get_file_clicked (self, button):
+            self.my_file = file ("/tmp/foo", "w")
+            self.conn.getFile ("/admin/conf/cupsd.conf", file=self.my_file,
+                               reply_handler=self.got_file,
+                               error_handler=self.get_file_error)
+
+        def got_file (self, conn, none):
+            if conn != self.conn:
+                print "Ignoring stale reply for %s" % conn
+                return
+
+            print "Got file"
+
+        def get_file_error (self, conn, exc):
+            if conn != self.conn:
+                print "Ignoring stale error"
+                return
+
+            print "get file error: %s" % repr (exc)
 
     UI ()
     gtk.main ()
