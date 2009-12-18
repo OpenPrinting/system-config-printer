@@ -646,6 +646,7 @@ class GUI(GtkGUI, monitor.Watcher):
         # setup some lists
         m = gtk.SELECTION_MULTIPLE
         s = gtk.SELECTION_SINGLE
+        b = gtk.SELECTION_BROWSE
         for name, treeview, selection_mode in (
             (_("Members of this class"), self.tvClassMembers, m),
             (_("Others"), self.tvClassNotMembers, m),
@@ -656,7 +657,7 @@ class GUI(GtkGUI, monitor.Watcher):
             (_("Makes"), np.tvNPMakes,s),
             (_("Models"), np.tvNPModels,s),
             (_("Drivers"), np.tvNPDrivers,s),
-            (_("Downloadable Drivers"), np.tvNPDownloadableDrivers,s),
+            (_("Downloadable Drivers"), np.tvNPDownloadableDrivers, b),
             (_("Users"), self.tvPUsers, m),
             ):
 
