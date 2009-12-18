@@ -58,29 +58,37 @@ class _PK1AsyncMethodCall:
     def __init__ (self, bus, conn, pk_method_name, pk_args,
                   reply_handler, error_handler, unpack_fn,
                   fallback_fn, args, kwds):
+        self._bus = bus
+        self._conn = conn
+        self._pk_method_name = pk_method_name
+        self._pk_args = pk_args
         self._client_reply_handler = reply_handler
         self._client_error_handler = error_handler
-        object = bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
-        proxy = dbus.Interface (object, CUPS_PK_IFACE)
-        self._conn = conn
-        self._pk_method = proxy.get_dbus_method (pk_method_name)
-        self._pk_args = pk_args
         self._unpack_fn = unpack_fn
         self._fallback_fn = fallback_fn
         self._fallback_args = args
         self._fallback_kwds = kwds
 
     def call (self):
+        object = self._bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
+        proxy = dbus.Interface (object, CUPS_PK_IFACE)
+        pk_method = proxy.get_dbus_method (self._pk_method_name)
+
         try:
-            self._pk_method (*self._pk_args,
-                             reply_handler=self._pk_reply_handler,
-                             error_handler=self._pk_error_handler)
+            pk_method (*self._pk_args,
+                        reply_handler=self._pk_reply_handler,
+                        error_handler=self._pk_error_handler)
         except TypeError, e:
             debugprint ("Type error in PK call: %s" % e)
-            self._call_fallback_fn ()
+            self.call_fallback_fn ()
 
-    def _pk_reply_handler (self, *args):
-        self._client_reply_handler (self._conn, self._unpack_fn (*args))
+    def _pk_reply_handler (self, error, *args):
+        if str (error) == '':
+            self._client_reply_handler (self._conn, self._unpack_fn (*args))
+            return
+
+        debugprint ("PolicyKit method failed with: %s" % repr (str (error)))
+        self.call_fallback_fn ()
 
     def _pk_error_handler (self, exc):
         if exc.get_dbus_name () == CUPS_PK_NEED_AUTH:
@@ -89,9 +97,9 @@ class _PK1AsyncMethodCall:
 
         debugprint ("PolicyKit call to %s did not work: %s" %
                     (self._pk_method_name, exc))
-        self._call_fallback_fn ()
+        self.call_fallback_fn ()
 
-    def _call_fallback_fn (self):
+    def call_fallback_fn (self):
         # Make the 'connection' parameter consistent with PK callbacks.
         self._fallback_kwds["reply_handler"] = self._ipp_reply_handler
         self._fallback_kwds["error_handler"] = self._ipp_error_handler
@@ -181,24 +189,14 @@ class PK1Connection:
     def _call_with_pk (self, use_pycups, pk_method_name, pk_args,
                        reply_handler, error_handler, unpack_fn,
                        fallback_fn, args, kwds):
-        if not use_pycups:
-            try:
-                asyncmethodcall = _PK1AsyncMethodCall (self._system_bus,
-                                                       self,
-                                                       pk_method_name,
-                                                       pk_args,
-                                                       reply_handler,
-                                                       error_handler,
-                                                       unpack_fn,
-                                                       fallback_fn,
-                                                       args, kwds)
-            except dbus.exceptions.DBusException, e:
-                debugprint ("Failed to get D-Bus method for %s: %s" %
-                            (pk_method_name, e))
-                use_pycups = True
+        asyncmethodcall = _PK1AsyncMethodCall (self._system_bus, self,
+                                               pk_method_name, pk_args,
+                                               reply_handler, error_handler,
+                                               unpack_fn, fallback_fn,
+                                               args, kwds)
 
         if use_pycups:
-            return fallback_fn (*args, **kwds)
+            return asyncmethodcall.call_fallback_fn ()
 
         debugprint ("Calling PK method %s" % pk_method_name)
         asyncmethodcall.call ()
@@ -229,7 +227,7 @@ class PK1Connection:
                             self._unpack_getDevices_reply,
                             self._conn.getDevices, args, kwds)
 
-    def _unpack_getDevices_reply (self, unused, dbusdict):
+    def _unpack_getDevices_reply (self, dbusdict):
         result_str = dict()
         for key, value in dbusdict.iteritems ():
             if type (key) == dbus.String:
@@ -263,6 +261,20 @@ class PK1Connection:
 
         return devices
 
+    def cancelJob (self, *args, **kwds):
+        (use_pycups, reply_handler, error_handler,
+         tup) = self._args_kwds_to_tuple ([int],
+                                          [(None, None)],
+                                          args, kwds)
+
+        self._call_with_pk (use_pycups,
+                            'JobCancel', tup, reply_handler, error_handler,
+                            self._unpack_cancelJob_reply,
+                            self._conn.cancelJob, args, kwds)
+
+    def _unpack_cancelJob_reply (self):
+        return None
+
 if __name__ == '__main__':
     import gtk
     gobject.threads_init ()
@@ -281,6 +293,11 @@ if __name__ == '__main__':
             b.connect ("clicked", self.fetch_clicked)
             b.set_sensitive (False)
             self.fetch_button = b
+            b = gtk.Button ("Cancel job")
+            v.pack_start (b)
+            b.connect ("clicked", self.cancel_clicked)
+            b.set_sensitive (False)
+            self.cancel_button = b
             w.connect ("destroy", self.destroy)
             w.show_all ()
 
@@ -295,6 +312,7 @@ if __name__ == '__main__':
         def connected (self, conn, result):
             print "Connected"
             self.fetch_button.set_sensitive (True)
+            self.cancel_button.set_sensitive (True)
 
         def connection_error (self, conn, error):
             print "Failed to connect"
@@ -318,6 +336,26 @@ if __name__ == '__main__':
                 return
 
             print "devices error: %s" % repr (exc)
+
+        def cancel_clicked (self, button):
+            print "Cancel job..."
+            self.conn.cancelJob (1,
+                                 reply_handler=self.job_canceled,
+                                 error_handler=self.cancel_job_error)
+
+        def job_canceled (self, conn, none):
+            if conn != self.conn:
+                print "Ignoring stale reply for %s" % conn
+                return
+
+            print "Job canceled"
+
+        def cancel_job_error (self, conn, exc):
+            if conn != self.conn:
+                print "Ignoring stale error for %s" % conn
+                return
+
+            print "cancel error: %s" % repr (exc)
 
     UI ()
     gtk.main ()
