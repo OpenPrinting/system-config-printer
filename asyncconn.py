@@ -27,6 +27,7 @@ import asyncipp
 import authconn
 import config
 from debug import *
+import debug
 
 _ = lambda x: x
 N_ = lambda x: x
@@ -56,7 +57,7 @@ class SemanticOperations(object):
 
 ######
 ###### An asynchronous libcups API using IPP or PolicyKit as
-###### appropriate, with the ability to call synchronously.
+###### appropriate.
 ######
 
 class Connection(SemanticOperations):
@@ -92,6 +93,7 @@ class Connection(SemanticOperations):
             self._conn = c
 
         methodtype = type (self._conn.getPrinters)
+        bindings = []
         for fname in dir (self._conn):
             if fname.startswith ('_'):
                 continue
@@ -100,42 +102,26 @@ class Connection(SemanticOperations):
                 continue
             if not hasattr (self, fname):
                 setattr (self, fname, self._make_binding (fn))
+                bindings.append (fname)
+
+        self._bindings = bindings
+        debugprint ("+%s" % self)
+
+    def __del__ (self):
+        debug.debugprint ("-%s" % self)
+
+    def destroy (self):
+        debugprint ("DESTROY: %s" % self)
+        try:
+            self._conn.destroy ()
+        except AttributeError:
+            pass
+
+        for binding in self._bindings:
+            delattr (self, binding)
 
     def _make_binding (self, fn):
-        return lambda *args, **kwds: self._call_function (fn, *args, **kwds)
-
-    def _sync_reply_handler (self, conn, result):
-        self._result = result
-        gtk.main_quit ()
-
-    def _sync_error_handler (self, conn, error):
-        self._error = error
-        gtk.main_quit ()
-
-    def _call_function (self, fn, *args, **kwds):
-        if (kwds.has_key ("reply_handler") or
-            kwds.has_key ("error_handler")):
-            # Call asynchronously.
-            return fn (*args, **kwds)
-
-        # Call synchronously.
-        if self.__dict__.has_key ("_result"):
-            del self._result
-        if self.__dict__.has_key ("_error"):
-            del self._error
-
-        kwds["reply_handler"] = self._sync_reply_handler
-        kwds["error_handler"] = self._sync_error_handler
-        def deferred_call ():
-            fn (*args, **kwds)
-        gobject.idle_add (deferred_call)
-        debugprint ("Re-enter main")
-        gtk.main ()
-        debugprint ("Left main")
-        try:
-            return self._result
-        except AttributeError:
-            raise self._error
+        return lambda *args, **kwds: fn (*args, **kwds)
 
     def set_auth_info (self, password):
         """Call this from your auth_handler function."""
@@ -145,5 +131,33 @@ if __name__ == "__main__":
     # Demo
     set_debugging (True)
     gobject.threads_init ()
-    c = Connection ()
-    print c.getDevices ()
+
+    class Test:
+        def __init__ (self):
+            self._conn = Connection ()
+            debugprint ("+%s" % self)
+
+        def __del__ (self):
+            debug.debugprint ("-%s" % self)
+
+        def destroy (self):
+            debugprint ("DESTROY: %s" % self)
+            self._conn.destroy ()
+            loop.quit ()
+
+        def getDevices (self):
+            self._conn.getDevices (reply_handler=self.getDevices_reply,
+                                   error_handler=self.getDevices_error)
+
+        def getDevices_reply (self, conn, result):
+            print result
+            self.destroy ()
+
+        def getDevices_error (self, conn, exc):
+            print repr (exc)
+            self.destroy ()
+
+    t = Test ()
+    loop = gobject.MainLoop ()
+    t.getDevices ()
+    loop.run ()
