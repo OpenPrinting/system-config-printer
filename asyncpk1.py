@@ -199,11 +199,40 @@ class PK1Connection:
             # No system D-Bus.
             self._system_bus = None
 
+        methodtype = type (self._conn.getPrinters)
+        bindings = []
+        for fname in dir (self._conn):
+            if fname.startswith ('_'):
+                continue
+            fn = getattr (self._conn, fname)
+            if type (fn) != methodtype:
+                continue
+            if not hasattr (self, fname):
+                setattr (self, fname, self._make_binding (fn))
+                bindings.append (fname)
+
+        self._bindings = bindings
         debugprint ("+%s" % self)
 
     def __del__ (self):
         debug.debugprint ("-%s" % self)
+
+    def _make_binding (self, fn):
+        def binding (*args, **kwds):
+            op = _PK1AsyncMethodCall (None, self, None, None,
+                                      kwds.get ("reply_handler"),
+                                      kwds.get ("error_handler"),
+                                      None, fn, args, kwds)
+            op.call_fallback_fn ()
+
+        return binding
+
+    def destroy (self):
+        debugprint ("DESTROY: %s" % self)
         self._conn.destroy ()
+
+        for binding in self._bindings:
+            delattr (self, binding)
 
     def _coerce (self, typ, val):
         return typ (val)
@@ -444,8 +473,14 @@ if __name__ == '__main__':
             b.connect ("clicked", self.get_file_clicked)
             b.set_sensitive (False)
             self.get_file_button = b
+            b = gtk.Button ("Something harmless")
+            v.pack_start (b)
+            b.connect ("clicked", self.harmless_clicked)
+            b.set_sensitive (False)
+            self.harmless_button = b
             w.connect ("destroy", self.destroy)
             w.show_all ()
+            self.conn = None
             debugprint ("+%s" % self)
 
         def __del__ (self):
@@ -454,6 +489,7 @@ if __name__ == '__main__':
         def destroy (self, window):
             debugprint ("DESTROY: %s" % self)
             try:
+                self.conn.destroy ()
                 del self.conn
             except AttributeError:
                 pass
@@ -461,6 +497,9 @@ if __name__ == '__main__':
             gtk.main_quit ()
 
         def button_clicked (self, button):
+            if self.conn:
+                self.conn.destroy ()
+
             self.conn = PK1Connection (reply_handler=self.connected,
                                        error_handler=self.connection_error)
 
@@ -469,6 +508,7 @@ if __name__ == '__main__':
             self.fetch_button.set_sensitive (True)
             self.cancel_button.set_sensitive (True)
             self.get_file_button.set_sensitive (True)
+            self.harmless_button.set_sensitive (True)
 
         def connection_error (self, conn, error):
             print "Failed to connect"
@@ -532,6 +572,19 @@ if __name__ == '__main__':
                 return
 
             print "get file error: %s" % repr (exc)
+
+        def harmless_clicked (self, button):
+            self.conn.getJobs (reply_handler=self.got_jobs,
+                               error_handler=self.get_jobs_error)
+
+        def got_jobs (self, conn, result):
+            if conn != self.conn:
+                print "Ignoring stale reply from %s" % repr (conn)
+                return
+            print result
+
+        def get_jobs_error (self, exc):
+            print "get jobs error: %s" % repr (exc)
 
     UI ()
     gtk.main ()
