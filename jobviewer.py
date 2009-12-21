@@ -164,6 +164,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         job_action_group.add_actions ([
                 ("cancel-job", gtk.STOCK_CANCEL, None, None, None,
                  self.on_job_cancel_activate),
+                ("clear-job", gtk.STOCK_CLEAR, _("_Clear"), None, None,
+                 self.on_job_clear_activate),
                 ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None, None,
                  self.on_job_hold_activate),
                 ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None, None,
@@ -181,6 +183,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 """
 <ui>
  <accelerator action="cancel-job"/>
+ <accelerator action="clear-job"/>
  <accelerator action="hold-job"/>
  <accelerator action="release-job"/>
  <accelerator action="reprint-job"/>
@@ -193,6 +196,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.JobsWindow.add_accel_group (self.job_ui_manager.get_accel_group ())
         self.job_context_menu = gtk.Menu ()
         for action_name in ["cancel-job",
+                            "clear-job",
                             "hold-job",
                             "release-job",
                             "reprint-job",
@@ -837,13 +841,14 @@ class JobViewer (GtkGUI, monitor.Watcher):
         treeview = selection.get_tree_view()
         (model, pathlist) = selection.get_selected_rows()
         cancel = self.job_ui_manager.get_action ("/cancel-job")
+        clear = self.job_ui_manager.get_action ("/clear-job")
         hold = self.job_ui_manager.get_action ("/hold-job")
         release = self.job_ui_manager.get_action ("/release-job")
         reprint = self.job_ui_manager.get_action ("/reprint-job")
         authenticate = self.job_ui_manager.get_action ("/authenticate-job")
         attributes = self.job_ui_manager.get_action ("/job-attributes")
         if len (pathlist) == 0:
-            for widget in [cancel, hold, release, reprint,
+            for widget in [cancel, clear, hold, release, reprint,
                            authenticate, attributes]:
                 widget.set_sensitive (False)
             return
@@ -878,6 +883,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 authenticate_sensitive = False
 
         cancel.set_sensitive(cancel_sensitive)
+        clear.set_sensitive(True)
         hold.set_sensitive(hold_sensitive)
         release.set_sensitive(release_sensitive)
         reprint.set_sensitive(reprint_sensitive)
@@ -916,7 +922,28 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.loop.quit ()
 
     def on_job_cancel_activate(self, menuitem):
-        dialog = gtk.Dialog (_("Cancel Job"), self.JobsWindow,
+        self.on_job_cancel_activate2(False)
+
+    def on_job_clear_activate(self, menuitem):
+        self.on_job_cancel_activate2(True)
+
+    def on_job_cancel_activate2(self, purge_job):
+        if purge_job:
+            if len(self.jobids) > 1:
+                dialog_title = _("Clear Jobs")
+                dialog_label = _("Do you really want to clear these jobs?")
+            else:
+                dialog_title = _("Clear Job")
+                dialog_label = _("Do you really want to clear this job?")
+        else:
+            if len(self.jobids) > 1:
+                dialog_title = _("Cancel Jobs")
+                dialog_label = _("Do you really want to cancel these jobs?")
+            else:
+                dialog_title = _("Cancel Job")
+                dialog_label = _("Do you really want to cancel this job?")
+
+        dialog = gtk.Dialog (dialog_title, self.JobsWindow,
                              gtk.DIALOG_MODAL |
                              gtk.DIALOG_DESTROY_WITH_PARENT |
                              gtk.DIALOG_NO_SEPARATOR,
@@ -930,20 +957,33 @@ class JobViewer (GtkGUI, monitor.Watcher):
         image.set_from_stock (gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_DIALOG)
         image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
-        label = gtk.Label (_("Do you really want to cancel these jobs?"))
+        label = gtk.Label (dialog_label)
         label.set_line_wrap (True)
         label.set_alignment (0.0, 0.0)
         hbox.pack_start (label, False, False, 0)
         dialog.vbox.pack_start (hbox, False, False, 0)
         dialog.set_data ('job-ids', self.jobids)
-        dialog.connect ("response", self.on_job_cancel_prompt_response)
-        dialog.connect ("delete-event", self.on_job_cancel_prompt_delete)
+        dialog.connect ("response", self.on_job_clear_prompt_response
+                                    if purge_job
+                                    else self.on_job_cancel_prompt_response)
+        dialog.connect ("delete-event", self.on_job_clear_prompt_delete
+                                        if purge_job
+                                        else self.on_job_cancel_prompt_delete)
         dialog.show_all ()
 
     def on_job_cancel_prompt_delete (self, dialog, event):
-        self.on_job_cancel_prompt_response (dialog, gtk.RESPONSE_NO)
+        self.on_job_cancel_prompt_response (dialog, gtk.RESPONSE_NO, False)
+
+    def on_job_clear_prompt_delete (self, dialog, event):
+        self.on_job_clear_prompt_response (dialog, gtk.RESPONSE_NO, True)
 
     def on_job_cancel_prompt_response (self, dialog, response):
+        self.on_job_cancel_prompt_response2(dialog, response, False)
+
+    def on_job_clear_prompt_response (self, dialog, response):
+        self.on_job_cancel_prompt_response2(dialog, response, True)
+
+    def on_job_cancel_prompt_response2 (self, dialog, response, purge_job):
         dialog.destroy ()
 
         if response != gtk.RESPONSE_YES:
@@ -957,10 +997,14 @@ class JobViewer (GtkGUI, monitor.Watcher):
         except RuntimeError:
             return
 
+        operation = _("clearing job") if purge_job else _("canceling job")
         for jobid in dialog.get_data ('job-ids'):
-            c._begin_operation (_("canceling job"))
+            c._begin_operation (operation)
             try:
-                c.cancelJob (jobid)
+                if purge_job:
+                    self.purgeJob (jobid)
+                else:
+                    c.cancelJob (jobid)
             except cups.IPPError, (e, m):
                 if (e != cups.IPP_NOT_POSSIBLE and
                     e != cups.IPP_NOT_FOUND):
@@ -971,7 +1015,27 @@ class JobViewer (GtkGUI, monitor.Watcher):
             c._end_operation ()
 
         del c
-        self.monitor.update ()
+        if purge_job:
+            if self.jobs_attrs.has_key(jobid):
+                # we are looking at attributes of this job at this moment
+                # remove this job from attributes store to prevent crash
+                del self.jobs_attrs[jobid]
+            self.monitor.refresh ()
+        else:
+            self.monitor.update ()
+
+    def purgeJob(self, jobid):
+        """
+        This is work-around until cups-pk-helper supports calling
+        of cancelJob with second (purge-job) parameter.
+        """
+        try:
+            connection = cups.Connection (host=self.host,
+                                          port=self.port,
+                                          encryption=self.encryption)
+            connection.cancelJob(jobid, True)
+        except RuntimeError:
+            pass
 
     def on_job_hold_activate(self, menuitem):
         try:
