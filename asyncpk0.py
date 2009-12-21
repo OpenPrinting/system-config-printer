@@ -41,11 +41,12 @@ PK_AUTH_IFACE = 'org.freedesktop.PolicyKit.AuthenticationAgent'
 class _PK0AsyncMethodCall(asyncpk1._PK1AsyncMethodCall):
     def __init__ (self, bus, conn, pk_method_name, pk_args,
                   reply_handler, error_handler, unpack_fn,
-                  fallback_fn, args, kwds):
+                  fallback_fn, args, kwds, parent):
         asyncpk1._PK1AsyncMethodCall.__init__ (self, bus, conn, pk_method_name,
                                                pk_args, reply_handler,
                                                error_handler, unpack_fn,
                                                fallback_fn, args, kwds)
+        self._parent = parent
         debugprint ("+_PK0AsyncMethodCall: %s" % self)
 
     def __del__ (self):
@@ -70,10 +71,16 @@ class _PK0AsyncMethodCall(asyncpk1._PK1AsyncMethodCall):
             return asyncpk1._PK1AsyncMethodCall._pk_error_handler (self, exc)
 
         try:
+            xid = 0
+            if (self._parent and
+                getattr (self._parent, 'window') and
+                getattr (self._parent.window, 'xid')):
+                xid = self._parent.window.xid
+
             obj = bus.get_object (PK_AUTH_NAME, PK_AUTH_PATH)
             proxy = dbus.Interface (obj, PK_AUTH_IFACE)
             proxy.ObtainAuthorization (tokens[0],
-                                       dbus.UInt32 (0), # xid
+                                       dbus.UInt32 (xid),
                                        dbus.UInt32 (os.getpid ()),
                                        reply_handler=self._auth_reply_handler,
                                        error_handler=self._auth_error_handler)
@@ -109,6 +116,7 @@ class PK0Connection(asyncpk1.PK1Connection):
                                          host=host, port=port,
                                          encryption=encryption,
                                          parent=parent)
+        self._parent = parent
         debugprint ("+%s" % self)
 
     def _call_with_pk (self, use_pycups, pk_method_name, pk_args,
@@ -118,7 +126,7 @@ class PK0Connection(asyncpk1.PK1Connection):
                                                pk_method_name, pk_args,
                                                reply_handler, error_handler,
                                                unpack_fn, fallback_fn,
-                                               args, kwds)
+                                               args, kwds, self._parent)
 
         if use_pycups:
             return asyncmethodcall.call_fallback_fn ()
@@ -164,6 +172,7 @@ if __name__ == '__main__':
             w.show_all ()
             self.conn = None
             debugprint ("+%s" % self)
+            self.mainwin = w
 
         def __del__ (self):
             debug.debugprint ("-%s" % self)
@@ -183,7 +192,8 @@ if __name__ == '__main__':
                 self.conn.destroy ()
 
             self.conn = PK0Connection (reply_handler=self.connected,
-                                       error_handler=self.connection_error)
+                                       error_handler=self.connection_error,
+                                       parent=self.mainwin)
 
         def connected (self, conn, result):
             print "Connected"
