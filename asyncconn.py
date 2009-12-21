@@ -24,6 +24,7 @@ import gtk
 import os
 
 import asyncipp
+import asyncpk1
 import authconn
 import config
 from debug import *
@@ -72,10 +73,15 @@ class Connection(SemanticOperations):
         use_pk = ((host.startswith ('/') or host == 'localhost') and
                   os.getuid () != 0)
 
-        if False and use_pk and try_as_root:
+        if config.WITH_POLKIT_1 and use_pk and try_as_root:
             if config.WITH_POLKIT_1:
                 debugprint ("Using polkit-1 connection class")
-                raise RuntimeError
+                c = asyncpk1.PK1Connection (reply_handler=reply_handler,
+                                            error_handler=error_handler,
+                                            host=host, port=port,
+                                            encryption=encryption,
+                                            parent=parent)
+                self._conn = c
             else:
                 debugprint ("Using PolicyKit (pre-polkit-1) connection class")
                 raise RuntimeError
@@ -93,12 +99,13 @@ class Connection(SemanticOperations):
             self._conn = c
 
         methodtype = type (self._conn.getPrinters)
+        instancemethodtype = type (self._conn.getDevices)
         bindings = []
         for fname in dir (self._conn):
             if fname.startswith ('_'):
                 continue
             fn = getattr (self._conn, fname)
-            if type (fn) != methodtype:
+            if type (fn) != methodtype and type (fn) != instancemethodtype:
                 continue
             if not hasattr (self, fname):
                 setattr (self, fname, self._make_binding (fn))
