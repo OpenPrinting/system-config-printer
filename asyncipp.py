@@ -27,6 +27,7 @@ import Queue
 
 import authconn
 from debug import *
+import debug
 
 _ = lambda x: x
 N_ = lambda x: x
@@ -61,7 +62,7 @@ class _IPPConnectionThread(threading.Thread):
         debugprint ("+%s" % self)
 
     def __del__ (self):
-        debugprint ("-%s" % self)
+        debug.debugprint ("-%s" % self)
 
     def set_auth_info (self, password):
         self._auth_queue.put (password)
@@ -251,7 +252,7 @@ class IPPConnection:
         debugprint ("+%s" % self)
 
     def __del__ (self):
-        debugprint ("-%s" % self)
+        debug.debugprint ("-%s" % self)
 
     def destroy (self):
         debugprint ("DESTROY: %s" % self)
@@ -317,7 +318,15 @@ class _IPPAuthOperation:
         debugprint ("+%s" % self)
 
     def __del__ (self):
-        debugprint ("-%s" % self)
+        debug.debugprint ("-%s" % self)
+
+    def _destroy (self):
+        del self._conn
+        del self._client_fn
+        del self._client_args
+        del self._client_kwds
+        del self._client_reply_handler
+        del self._client_error_handler
 
     def error_handler (self, conn, exc):
         if self._client_fn == None:
@@ -523,6 +532,7 @@ class _IPPAuthOperation:
     def _error (self, exc):
         if self._client_error_handler:
             self._client_error_handler (self._conn, exc)
+            self._destroy ()
 
 ###
 ### The user-visible class.
@@ -543,6 +553,10 @@ class IPPAuthConnection(IPPConnection):
                                 error_handler=op.error_handler,
                                 auth_handler=op.auth_handler, host=host,
                                 port=port, encryption=encryption)
+
+    def destroy (self):
+        del self.semantic
+        IPPConnection.destroy (self)
 
     def _call_function (self, fn, *args, **kwds):
         reply_handler = error_handler = auth_handler = False
