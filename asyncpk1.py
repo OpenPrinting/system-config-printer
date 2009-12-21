@@ -28,6 +28,7 @@ import tempfile
 
 import asyncipp
 from debug import *
+import debug
 
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop (set_as_default=True)
@@ -71,7 +72,7 @@ class _PK1AsyncMethodCall:
         debugprint ("+_PK1AsyncMethodCall: %s" % self)
 
     def __del__ (self):
-        debugprint ("-_PK1AsyncMethodCall: %s" % self)
+        debug.debugprint ("-_PK1AsyncMethodCall: %s" % self)
 
     def call (self):
         object = self._bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
@@ -149,9 +150,9 @@ class _WriteToTmpFile:
     def __del__ (self):
         try:
             os.unlink (self._filename)
-            debugprint ("Removed tempfile %s" % self._filename)
+            debug.debugprint ("Removed tempfile %s" % self._filename)
         except:
-            debugprint ("No tempfile to remove")
+            debug.debugprint ("No tempfile to remove")
 
     def get_filename (self):
         return self._filename
@@ -201,7 +202,7 @@ class PK1Connection:
         debugprint ("+%s" % self)
 
     def __del__ (self):
-        debugprint ("-%s" % self)
+        debug.debugprint ("-%s" % self)
         self._conn.destroy ()
 
     def _coerce (self, typ, val):
@@ -448,7 +449,7 @@ if __name__ == '__main__':
             debugprint ("+%s" % self)
 
         def __del__ (self):
-            debugprint ("-%s" % self)
+            debug.debugprint ("-%s" % self)
 
         def destroy (self, window):
             debugprint ("DESTROY: %s" % self)
