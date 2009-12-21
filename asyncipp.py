@@ -58,6 +58,10 @@ class _IPPConnectionThread(threading.Thread):
         self._auth_handler = auth_handler
         self._auth_queue = Queue.Queue (1)
         self.user = None
+        debugprint ("+%s" % self)
+
+    def __del__ (self):
+        debugprint ("-%s" % self)
 
     def set_auth_info (self, password):
         self._auth_queue.put (password)
@@ -79,9 +83,9 @@ class _IPPConnectionThread(threading.Thread):
             cups.setPasswordCB (self._auth)
 
         try:
-            self.conn = cups.Connection (host=self.host,
-                                         port=self._port,
-                                         encryption=self._encryption)
+            conn = cups.Connection (host=self.host,
+                                    port=self._port,
+                                    encryption=self._encryption)
         except RuntimeError, e:
             self._error (e)
             return
@@ -118,9 +122,9 @@ class _IPPConnectionThread(threading.Thread):
                     cups.setPasswordCB (self._auth)
 
                 try:
-                    self.conn = cups.Connection (host=self.host,
-                                                 port=self._port,
-                                                 encryption=self._encryption)
+                    conn = cups.Connection (host=self.host,
+                                            port=self._port,
+                                            encryption=self._encryption)
                     debugprint ("...reconnected")
                 except RuntimeError, e:
                     debugprint ("...failed")
@@ -136,7 +140,7 @@ class _IPPConnectionThread(threading.Thread):
             # Normal IPP operation.  Try to perform it.
             try:
                 debugprint ("Call %s" % fn)
-                result = fn (self.conn, *args, **kwds)
+                result = fn (conn, *args, **kwds)
                 if fn == cups.Connection.adminGetServerSettings.__call__:
                     # Special case for a rubbish bit of API.
                     if result == {}:
@@ -152,6 +156,19 @@ class _IPPConnectionThread(threading.Thread):
             self._queue.task_done ()
 
         debugprint ("Thread exiting")
+        del self._conn # already destroyed
+        del self._reply_handler
+        del self._error_handler
+        del self._auth_handler
+        del self._queue
+        del self._auth_queue
+        del conn
+
+        try:
+            cups.setPasswordCB2 (None)
+        except AttributeError:
+            # Requires pycups >= 1.9.47.  Fall back to rubbish API.
+            cups.setPasswordCB (lambda x: '')
 
     def _auth (self, prompt, conn=None, method=None, resource=None):
         def prompt_auth (prompt):
@@ -220,6 +237,7 @@ class IPPConnection:
         self.thread.start ()
 
         methodtype = type (cups.Connection.getPrinters)
+        bindings = []
         for fname in dir (cups.Connection):
             if fname[0] == ' ':
                 continue
@@ -227,12 +245,23 @@ class IPPConnection:
             if type (fn) != methodtype:
                 continue
             setattr (self, fname, self._make_binding (fn))
+            bindings.append (fname)
 
-    def __fini__ (self):
+        self.bindings = bindings
+        debugprint ("+%s" % self)
+
+    def __del__ (self):
+        debugprint ("-%s" % self)
+
+    def destroy (self):
+        debugprint ("DESTROY: %s" % self)
         if self.thread.isAlive ():
             debugprint ("Putting None on the task queue")
             self.queue.put (None)
             self.queue.join ()
+
+        for binding in self.bindings:
+            delattr (self, binding)
 
     def set_auth_info (self, password):
         """Call this from your auth_handler function."""
@@ -285,6 +314,10 @@ class _IPPAuthOperation:
         self._client_kwds = kwds
         self._client_reply_handler = reply_handler
         self._client_error_handler = error_handler
+        debugprint ("+%s" % self)
+
+    def __del__ (self):
+        debugprint ("-%s" % self)
 
     def error_handler (self, conn, exc):
         if self._client_fn == None:
@@ -553,10 +586,17 @@ if __name__ == "__main__":
             w.show_all ()
 
         def destroy (self, window):
-            del self.conn
+            try:
+                self.conn.destroy ()
+            except AttributeError:
+                pass
+
             gtk.main_quit ()
 
         def connect_clicked (self, button):
+            if self.conn:
+                self.conn.destroy ()
+
             self.conn = IPPAuthConnection (reply_handler=self.connected,
                                            error_handler=self.connect_failed)
 
@@ -567,7 +607,7 @@ if __name__ == "__main__":
         def connect_failed (self, conn, exc):
             debugprint ("Exc %s" % exc)
             self.get_devices_button.set_sensitive (False)
-            del self.conn
+            self.conn.destroy ()
 
         def get_devices (self, button):
             button.set_sensitive (False)

@@ -68,6 +68,10 @@ class _PK1AsyncMethodCall:
         self._fallback_fn = fallback_fn
         self._fallback_args = args
         self._fallback_kwds = kwds
+        debugprint ("+_PK1AsyncMethodCall: %s" % self)
+
+    def __del__ (self):
+        debugprint ("-_PK1AsyncMethodCall: %s" % self)
 
     def call (self):
         object = self._bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
@@ -82,9 +86,23 @@ class _PK1AsyncMethodCall:
             debugprint ("Type error in PK call: %s" % e)
             self.call_fallback_fn ()
 
+    def _destroy (self):
+        debugprint ("DESTROY: %s" % self)
+        del self._bus
+        del self._conn
+        del self._pk_method_name
+        del self._pk_args
+        del self._client_reply_handler
+        del self._client_error_handler
+        del self._unpack_fn
+        del self._fallback_fn
+        del self._fallback_args
+        del self._fallback_kwds
+
     def _pk_reply_handler (self, error, *args):
         if str (error) == '':
             self._client_reply_handler (self._conn, self._unpack_fn (*args))
+            self._destroy ()
             return
 
         debugprint ("PolicyKit method failed with: %s" % repr (str (error)))
@@ -94,6 +112,8 @@ class _PK1AsyncMethodCall:
         if exc.get_dbus_name () == CUPS_PK_NEED_AUTH:
             exc = cups.IPPError (cups.IPP_NOT_AUTHORIZED, 'pkcancel')
             self._client_error_handler (self._conn, exc)
+            self._destroy ()
+            return
 
         debugprint ("PolicyKit call to %s did not work: %s" %
                     (self._pk_method_name, exc))
@@ -107,30 +127,34 @@ class _PK1AsyncMethodCall:
 
     def _ipp_reply_handler (self, conn, *args):
         self._client_reply_handler (self._conn, *args)
+        self._destroy ()
 
     def _ipp_error_handler (self, conn, *args):
         self._client_error_handler (self._conn, *args)
+        self._destroy ()
 
 ###
-### A class for handling GetFile when a temporary file is needed.
-class _FileGetTmpFileWrapper:
-    def __init__ (self, args, kwds, reply_handler, error_handler):
+### A class for handling FileGet when a temporary file is needed.
+###
+class _WriteToTmpFile:
+    def __init__ (self, kwds, reply_handler, error_handler):
         self._reply_handler = reply_handler
         self._error_handler = error_handler
-        if len (args) == 0:
-            self._resource = kwds["resource"]
-        else:
-            self._resource = args[0]
-
         (tmpfd, tmpfname) = tempfile.mkstemp ()
         os.close (tmpfd)
         self._filename = tmpfname
         debugprint ("Created tempfile %s" % tmpfname)
-
         self._kwds = kwds
 
-    def get_pk_args (self):
-        return (self._resource, self._filename)
+    def __del__ (self):
+        try:
+            os.unlink (self._filename)
+            debugprint ("Removed tempfile %s" % self._filename)
+        except:
+            debugprint ("No tempfile to remove")
+
+    def get_filename (self):
+        return self._filename
 
     def reply_handler (self, conn, none):
         tmpfd = os.open (self._filename, os.O_RDONLY)
@@ -151,13 +175,9 @@ class _FileGetTmpFileWrapper:
                 line = tmpfile.readline ()
 
         tmpfile.close ()
-        os.unlink (self._filename)
-        debugprint ("Removed tempfile %s" % self._filename)
         self._reply_handler (conn, none)
 
     def error_handler (self, conn, exc):
-        os.unlink (self._filename)
-        debugprint ("Removed tempfile %s" % self._filename)
         self._error_handler (conn, exc)
 
 ###
@@ -177,6 +197,12 @@ class PK1Connection:
         except (dbus.exceptions.DBusException, AttributeError):
             # No system D-Bus.
             self._system_bus = None
+
+        debugprint ("+%s" % self)
+
+    def __del__ (self):
+        debugprint ("-%s" % self)
+        self._conn.destroy ()
 
     def _coerce (self, typ, val):
         return typ (val)
@@ -367,11 +393,17 @@ class PK1Connection:
 
                 if can_use_tempfile:
                     # We can still use PackageKit for this.
-                    wrapper = _FileGetTmpFileWrapper (args, kwds,
-                                                      reply_handler,
-                                                      error_handler)
+                    if len (args) == 0:
+                        resource = kwds["resource"]
+                    else:
+                        resource = args[0]
+
+                    wrapper = _WriteToTmpFile (kwds,
+                                               reply_handler,
+                                               error_handler)
                     self._call_with_pk (False,
-                                        'FileGet', wrapper.get_pk_args (),
+                                        'FileGet',
+                                        (resource, wrapper.get_filename ()),
                                         wrapper.reply_handler,
                                         wrapper.error_handler,
                                         self._nothing_to_unpack,
@@ -413,9 +445,18 @@ if __name__ == '__main__':
             self.get_file_button = b
             w.connect ("destroy", self.destroy)
             w.show_all ()
+            debugprint ("+%s" % self)
+
+        def __del__ (self):
+            debugprint ("-%s" % self)
 
         def destroy (self, window):
-            del self.conn
+            debugprint ("DESTROY: %s" % self)
+            try:
+                del self.conn
+            except AttributeError:
+                pass
+
             gtk.main_quit ()
 
         def button_clicked (self, button):
