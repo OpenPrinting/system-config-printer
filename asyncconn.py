@@ -25,6 +25,7 @@ import os
 
 import asyncipp
 import asyncpk1
+import asyncpk0
 import authconn
 import config
 from debug import *
@@ -73,7 +74,7 @@ class Connection(SemanticOperations):
         use_pk = ((host.startswith ('/') or host == 'localhost') and
                   os.getuid () != 0)
 
-        if config.WITH_POLKIT_1 and use_pk and try_as_root:
+        if use_pk and try_as_root:
             if config.WITH_POLKIT_1:
                 debugprint ("Using polkit-1 connection class")
                 c = asyncpk1.PK1Connection (reply_handler=reply_handler,
@@ -84,7 +85,12 @@ class Connection(SemanticOperations):
                 self._conn = c
             else:
                 debugprint ("Using PolicyKit (pre-polkit-1) connection class")
-                raise RuntimeError
+                c = asyncpk0.PK0Connection (reply_handler=reply_handler,
+                                            error_handler=error_handler,
+                                            host=host, port=port,
+                                            encryption=encryption,
+                                            parent=parent)
+                self._conn = c
         else:
             debugprint ("Using IPP connection class")
             c = asyncipp.IPPAuthConnection (reply_handler=reply_handler,
