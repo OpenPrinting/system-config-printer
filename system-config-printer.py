@@ -5234,7 +5234,7 @@ class NewPrinterGUI(GtkGUI):
         column = self.tvNPDevices.get_column (0)
         self.tvNPDevices.set_cursor ((0,), column)
         self.fetchDevices_conn = asyncconn.Connection ()
-        self.fetchDevices_conn._begin_operation (_("fetch devices"))
+        self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=False, current_uri=current_uri)
 
     def add_devices (self, devices, current_uri):
