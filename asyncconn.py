@@ -123,6 +123,14 @@ class Connection(SemanticOperations):
     def __del__ (self):
         debug.debugprint ("-%s" % self)
 
+    def __eq__ (self, other):
+        # We want to be able to be compared as equal to our captured
+        # connection class.
+        return self._conn == other
+
+    def __ne__ (self, other):
+        return self._conn != other
+
     def destroy (self):
         debugprint ("DESTROY: %s" % self)
         try:
