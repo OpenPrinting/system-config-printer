@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: et\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2009-11-30 12:44+0000\n"
+"POT-Creation-Date: 2009-12-22 14:42+0000\n"
 "PO-Revision-Date: 2009-10-27 00:35+0200\n"
 "Last-Translator: Marek Laane <bald@smail.ee>\n"
 "Language-Team: Estonian <kde-et@linux.ee>\n"
@@ -55,6 +55,44 @@ msgstr ""
 msgid "Enter IP address"
 msgstr "Sisestage IP-aadress"
 
+#: ../asyncipp.py:420 ../authconn.py:402 ../authconn.py:404
+#: ../errordialogs.py:65 ../pysmb.py:75 ../pysmb.py:77
+msgid "Not authorized"
+msgstr "Pole autenditud"
+
+#: ../asyncipp.py:421 ../authconn.py:405 ../pysmb.py:78
+msgid "The password may be incorrect."
+msgstr "Võib-olla ei olnud parool õige."
+
+#: ../asyncipp.py:432 ../authconn.py:426
+#, python-format
+msgid "Authentication (%s)"
+msgstr "Autentimine (%s)"
+
+#: ../asyncipp.py:497 ../authconn.py:259 ../errordialogs.py:56
+#: ../errordialogs.py:70
+msgid "CUPS server error"
+msgstr "CUPS-serveri viga"
+
+#: ../asyncipp.py:499 ../authconn.py:257
+#, python-format
+msgid "CUPS server error (%s)"
+msgstr "CUPS-serveri viga (%s)"
+
+#: ../asyncipp.py:516 ../authconn.py:268 ../errordialogs.py:57
+#: ../troubleshoot/PrintTestPage.py:417
+#, python-format
+msgid "There was an error during the CUPS operation: '%s'."
+msgstr "CUPS-i operatsiooni ajal tekkis viga: '%s'."
+
+#: ../asyncipp.py:519 ../authconn.py:271
+msgid "Retry"
+msgstr "Proovi uuesti"
+
+#: ../asyncipp.py:530 ../authconn.py:218 ../authconn.py:240
+msgid "Operation canceled"
+msgstr "Operatsioon on tühistatud"
+
 #: ../authconn.py:37 ../glade/NewPrinterWindow.glade.h:106
 msgid "Username:"
 msgstr "Kasutajanimi:"
@@ -74,43 +112,6 @@ msgstr "Autentimine"
 #: ../authconn.py:87
 msgid "Remember password"
 msgstr "Parool jäetakse meelde"
-
-#: ../authconn.py:218 ../authconn.py:240
-msgid "Operation canceled"
-msgstr "Operatsioon on tühistatud"
-
-#: ../authconn.py:257
-#, python-format
-msgid "CUPS server error (%s)"
-msgstr "CUPS-serveri viga (%s)"
-
-#: ../authconn.py:259 ../errordialogs.py:56 ../errordialogs.py:70
-msgid "CUPS server error"
-msgstr "CUPS-serveri viga"
-
-#: ../authconn.py:268 ../errordialogs.py:57
-#: ../troubleshoot/PrintTestPage.py:417
-#, python-format
-msgid "There was an error during the CUPS operation: '%s'."
-msgstr "CUPS-i operatsiooni ajal tekkis viga: '%s'."
-
-#: ../authconn.py:271
-msgid "Retry"
-msgstr "Proovi uuesti"
-
-#: ../authconn.py:402 ../authconn.py:404 ../errordialogs.py:65 ../pysmb.py:75
-#: ../pysmb.py:77
-msgid "Not authorized"
-msgstr "Pole autenditud"
-
-#: ../authconn.py:405 ../pysmb.py:78
-msgid "The password may be incorrect."
-msgstr "Võib-olla ei olnud parool õige."
-
-#: ../authconn.py:426
-#, python-format
-msgid "Authentication (%s)"
-msgstr "Autentimine (%s)"
 
 #: ../errordialogs.py:66
 msgid ""
@@ -140,7 +141,7 @@ msgstr "Vajalik on uuendus"
 msgid "Server error"
 msgstr "Serveri viga"
 
-#: ../errordialogs.py:82 ../system-config-printer.py:1213
+#: ../errordialogs.py:82 ../system-config-printer.py:1216
 msgid "Not connected"
 msgstr "Pole ühendatud"
 
@@ -162,7 +163,7 @@ msgstr "_Uus grupp"
 msgid "_New Group from Selection"
 msgstr "_Uus grupp valiku põhjal"
 
-#: ../GroupsPane.py:98 ../system-config-printer.py:405
+#: ../GroupsPane.py:98 ../system-config-printer.py:407
 msgid "_Rename"
 msgstr "_Muuda nime"
 
@@ -229,7 +230,7 @@ msgid "Document"
 msgstr "Dokument"
 
 #: ../jobviewer.py:214 ../my-default-printer.py:153
-#: ../system-config-printer.py:378 ../system-config-printer.py:1361
+#: ../system-config-printer.py:380 ../system-config-printer.py:1364
 #: ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Printer"
@@ -264,9 +265,9 @@ msgstr "kõik tööd"
 msgid "Document Print Status (%s)"
 msgstr "Dokumendi trükkimise olek (%s)"
 
-#: ../jobviewer.py:425 ../jobviewer.py:701 ../jobviewer.py:1501
-#: ../jobviewer.py:1506 ../jobviewer.py:1515 ../jobviewer.py:1594
-#: ../system-config-printer.py:2627 ../glade/NewPrinterWindow.glade.h:104
+#: ../jobviewer.py:425 ../jobviewer.py:701 ../jobviewer.py:1510
+#: ../jobviewer.py:1515 ../jobviewer.py:1524 ../jobviewer.py:1603
+#: ../system-config-printer.py:2630 ../glade/NewPrinterWindow.glade.h:104
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:103
 #: ../troubleshoot/ChooseNetworkPrinter.py:106
@@ -355,95 +356,95 @@ msgstr "Järjekorras on 1 dokument"
 msgid "%d documents queued"
 msgstr "Järjekorras on %d dokumenti"
 
-#: ../jobviewer.py:1307
+#: ../jobviewer.py:1310
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "Dokumendi '%s' (töö %d) saatmisega printerisse tekkis probleem."
 
-#: ../jobviewer.py:1310
+#: ../jobviewer.py:1313
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "Dokumendi '%s' (töö %d) töötlemisel tekkis probleem."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1317
+#: ../jobviewer.py:1320
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "Dokumendi '%s' (töö %d) trükkimisel tekkis probleem: '%s'."
 
-#: ../jobviewer.py:1324 ../jobviewer.py:1340
+#: ../jobviewer.py:1327 ../jobviewer.py:1343
 msgid "Print Error"
 msgstr "Trükkimise viga"
 
-#: ../jobviewer.py:1325
+#: ../jobviewer.py:1328
 msgid "_Diagnose"
 msgstr "_Diagnoosi"
 
-#: ../jobviewer.py:1346
+#: ../jobviewer.py:1349
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "Printer nimega '%s' on keelatud."
 
-#: ../jobviewer.py:1529
+#: ../jobviewer.py:1538
 msgid "Held for authentication"
 msgstr "Autentimiseks kinni peetud"
 
-#: ../jobviewer.py:1531 ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:1540 ../troubleshoot/PrintTestPage.py:42
 msgid "Held"
 msgstr "Kinni peetud"
 
-#: ../jobviewer.py:1567
+#: ../jobviewer.py:1576
 #, python-format
 msgid "Held until %s"
 msgstr "Hoitakse kinni kuni %s"
 
-#: ../jobviewer.py:1571
+#: ../jobviewer.py:1580
 msgid "Held until day-time"
 msgstr "Hoitakse kinni kuni päevase ajani"
 
-#: ../jobviewer.py:1573
+#: ../jobviewer.py:1582
 msgid "Held until evening"
 msgstr "Hoitakse kinni kuni õhtuni"
 
-#: ../jobviewer.py:1575
+#: ../jobviewer.py:1584
 msgid "Held until night-time"
 msgstr "Hoitakse kinni kuni ööni"
 
-#: ../jobviewer.py:1577
+#: ../jobviewer.py:1586
 msgid "Held until second shift"
 msgstr "Hoitakse kinni kuni teise vahetuseni"
 
-#: ../jobviewer.py:1579
+#: ../jobviewer.py:1588
 msgid "Held until third shift"
 msgstr "Hoitakse kinni kuni kolmanda vahetuseni"
 
-#: ../jobviewer.py:1581
+#: ../jobviewer.py:1590
 msgid "Held until weekend"
 msgstr "Hoitakse kinni kuni nädalavahetuseni"
 
-#: ../jobviewer.py:1584 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:1593 ../troubleshoot/PrintTestPage.py:41
 msgid "Pending"
 msgstr "Ootel"
 
-#: ../jobviewer.py:1585 ../system-config-printer.py:196
+#: ../jobviewer.py:1594 ../system-config-printer.py:198
 #: ../troubleshoot/PrintTestPage.py:43
 msgid "Processing"
 msgstr "Töötlemisel"
 
-#: ../jobviewer.py:1586 ../system-config-printer.py:198
+#: ../jobviewer.py:1595 ../system-config-printer.py:200
 #: ../troubleshoot/PrintTestPage.py:44
 msgid "Stopped"
 msgstr "Peatatud"
 
-#: ../jobviewer.py:1587 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:1596 ../troubleshoot/PrintTestPage.py:45
 msgid "Canceled"
 msgstr "Loobutud"
 
-#: ../jobviewer.py:1588 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:1597 ../troubleshoot/PrintTestPage.py:46
 msgid "Aborted"
 msgstr "Tühistatud"
 
-#: ../jobviewer.py:1589 ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:1598 ../troubleshoot/PrintTestPage.py:47
 msgid "Completed"
 msgstr "Valmis"
 
@@ -459,13 +460,13 @@ msgstr "_Süsteemi vaikeväärtused"
 msgid "_Set Default"
 msgstr "_Vaikimisi"
 
-#: ../my-default-printer.py:158 ../system-config-printer.py:435
+#: ../my-default-printer.py:158 ../system-config-printer.py:437
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
 msgstr "Asukoht"
 
-#: ../optionwidgets.py:123
+#: ../optionwidgets.py:128
 msgid "Conflicts with:"
 msgstr "Konfliktid:"
 
@@ -494,7 +495,7 @@ msgstr "Vaikimisi käitumine"
 msgid "Authenticated"
 msgstr "Autenditud"
 
-#: ../ppdippstr.py:61 ../system-config-printer.py:6486
+#: ../ppdippstr.py:61 ../system-config-printer.py:6498
 msgid "None"
 msgstr "Puudub"
 
@@ -739,123 +740,123 @@ msgstr "600 DPI, värviline, must + värvikassett, fotopaber, tavaline"
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 DPI, foto, must + värvikassett, fotopaber"
 
-#: ../system-config-printer.py:140
+#: ../system-config-printer.py:142
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr "Selleks vali peamenüüst Süsteem->Haldus->Tulemüür."
 
-#: ../system-config-printer.py:195
+#: ../system-config-printer.py:197
 msgid "Idle"
 msgstr "Jõude"
 
-#: ../system-config-printer.py:197
+#: ../system-config-printer.py:199
 msgid "Busy"
 msgstr "Hõivatud"
 
-#: ../system-config-printer.py:384 ../system-config-printer.py:1367
+#: ../system-config-printer.py:386 ../system-config-printer.py:1370
 msgid "Class"
 msgstr "Klass"
 
-#: ../system-config-printer.py:411
+#: ../system-config-printer.py:413
 msgid "Set As De_fault"
 msgstr "Määra _vaikimisi"
 
-#: ../system-config-printer.py:415
+#: ../system-config-printer.py:417
 msgid "_Create class"
 msgstr "Loo _klass"
 
-#: ../system-config-printer.py:417
+#: ../system-config-printer.py:419
 msgid "View Print _Queue"
 msgstr "_Näita tööjärjekorda"
 
-#: ../system-config-printer.py:419
+#: ../system-config-printer.py:421
 msgid "_Add to Group"
 msgstr "Lis_a gruppi"
 
-#: ../system-config-printer.py:421
+#: ../system-config-printer.py:423
 msgid "Save Results as _Group"
 msgstr "Salvesta tulemused _grupina"
 
-#: ../system-config-printer.py:423
+#: ../system-config-printer.py:425
 msgid "Save Filter as _Search Group"
 msgstr "_Salvesta filter otsingugrupina"
 
-#: ../system-config-printer.py:427
+#: ../system-config-printer.py:429
 msgid "E_nabled"
 msgstr "Lu_batud"
 
-#: ../system-config-printer.py:429
+#: ../system-config-printer.py:431
 msgid "_Shared"
 msgstr "_Jagatud"
 
-#: ../system-config-printer.py:433 ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../system-config-printer.py:435 ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "Nimi"
 
-#: ../system-config-printer.py:434
+#: ../system-config-printer.py:436
 msgid "Description"
 msgstr "Kirjeldus"
 
-#: ../system-config-printer.py:436
+#: ../system-config-printer.py:438
 msgid "Manufacturer / Model"
 msgstr "Tootja/mudel"
 
 #. Printer state reasons list
-#: ../system-config-printer.py:511
+#: ../system-config-printer.py:513
 msgid "Message"
 msgstr "Teade"
 
-#: ../system-config-printer.py:546
+#: ../system-config-printer.py:548
 msgid "Problems?"
 msgstr "Probleemid?"
 
-#: ../system-config-printer.py:650 ../system-config-printer.py:652
+#: ../system-config-printer.py:653 ../system-config-printer.py:655
 msgid "Members of this class"
 msgstr "Selle klassi liikmed"
 
-#: ../system-config-printer.py:651 ../system-config-printer.py:653
+#: ../system-config-printer.py:654 ../system-config-printer.py:656
 msgid "Others"
 msgstr "Teised"
 
-#: ../system-config-printer.py:654
+#: ../system-config-printer.py:657
 msgid "Devices"
 msgstr "Seadmed"
 
-#: ../system-config-printer.py:655
+#: ../system-config-printer.py:658
 msgid "Connections"
 msgstr "Ühendused"
 
-#: ../system-config-printer.py:656
+#: ../system-config-printer.py:659
 msgid "Makes"
 msgstr "Valmistajad"
 
-#: ../system-config-printer.py:657
+#: ../system-config-printer.py:660
 msgid "Models"
 msgstr "Mudelid"
 
-#: ../system-config-printer.py:658
+#: ../system-config-printer.py:661
 msgid "Drivers"
 msgstr "Draiverid"
 
-#: ../system-config-printer.py:659 ../glade/NewPrinterWindow.glade.h:54
+#: ../system-config-printer.py:662 ../glade/NewPrinterWindow.glade.h:54
 msgid "Downloadable Drivers"
 msgstr "Allalaaditavad draiverid"
 
-#: ../system-config-printer.py:660
+#: ../system-config-printer.py:663
 msgid "Users"
 msgstr "Kasutajad"
 
-#: ../system-config-printer.py:695
+#: ../system-config-printer.py:698
 msgid "Automatic rotation"
 msgstr "Automaatne pööramine"
 
-#: ../system-config-printer.py:980
+#: ../system-config-printer.py:983
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Printeri omadused - '%s' masinas %s"
 
 #. The Conflict button was pressed.
-#: ../system-config-printer.py:988
+#: ../system-config-printer.py:991
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -865,78 +866,78 @@ msgstr ""
 "Muudatusi saab rakendada alles siis,\n"
 "kui vastuolud on lahendatud."
 
-#: ../system-config-printer.py:1207
+#: ../system-config-printer.py:1210
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Printeri seadistus - %s"
 
-#: ../system-config-printer.py:1211
+#: ../system-config-printer.py:1214
 #, python-format
 msgid "Connected to %s"
 msgstr "Ühendatud masinaga %s"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1251 ../system-config-printer.py:2097
+#: ../system-config-printer.py:1254 ../system-config-printer.py:2100
 msgid "obtaining queue details"
 msgstr "tööjärjekorra üksikasjade hankimine"
 
-#: ../system-config-printer.py:1289
+#: ../system-config-printer.py:1292
 msgid "Remove from Group"
 msgstr "Eemalda grupist"
 
-#: ../system-config-printer.py:1355
+#: ../system-config-printer.py:1358
 msgid "Network printer (discovered)"
 msgstr "Võrguprinter (tuvastatud)"
 
-#: ../system-config-printer.py:1358
+#: ../system-config-printer.py:1361
 msgid "Network class (discovered)"
 msgstr "Võrguklass (tuvastatud)"
 
-#: ../system-config-printer.py:1364 ../system-config-printer.py:5760
-#: ../system-config-printer.py:5830 ../system-config-printer.py:5832
+#: ../system-config-printer.py:1367 ../system-config-printer.py:5768
+#: ../system-config-printer.py:5838 ../system-config-printer.py:5840
 msgid "Fax"
 msgstr "Faks"
 
-#: ../system-config-printer.py:1370 ../system-config-printer.py:1376
+#: ../system-config-printer.py:1373 ../system-config-printer.py:1379
 #: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "Võrguprinter"
 
-#: ../system-config-printer.py:1373
+#: ../system-config-printer.py:1376
 msgid "Network print share"
 msgstr "Jagatud võrguprinter"
 
-#: ../system-config-printer.py:1558 ../glade/ConnectingDialog.glade.h:2
+#: ../system-config-printer.py:1561 ../glade/ConnectingDialog.glade.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Ühenduse avamine - %s</i>"
 
-#: ../system-config-printer.py:1941
+#: ../system-config-printer.py:1944
 msgid "Installable Options"
 msgstr "Paigaldatavad valikud"
 
-#: ../system-config-printer.py:1942
-#: ../glade/PrinterPropertiesDialog.glade.h:109
+#: ../system-config-printer.py:1945
+#: ../glade/PrinterPropertiesDialog.glade.h:111
 msgid "Printer Options"
 msgstr "Printeri valikud"
 
-#: ../system-config-printer.py:1979
+#: ../system-config-printer.py:1982
 #, python-format
 msgid "modifying class %s"
 msgstr "klassi %s muutmine"
 
-#: ../system-config-printer.py:1981 ../system-config-printer.py:3135
-#: ../system-config-printer.py:3160 ../system-config-printer.py:6784
-#: ../system-config-printer.py:6796 ../system-config-printer.py:6818
+#: ../system-config-printer.py:1984 ../system-config-printer.py:3138
+#: ../system-config-printer.py:3163 ../system-config-printer.py:6795
+#: ../system-config-printer.py:6807 ../system-config-printer.py:6829
 #, python-format
 msgid "modifying printer %s"
 msgstr "printeri %s muutmine"
 
-#: ../system-config-printer.py:1996
+#: ../system-config-printer.py:1999
 msgid "This will delete this class!"
 msgstr "See kustutab klassi!"
 
-#: ../system-config-printer.py:1997
+#: ../system-config-printer.py:2000
 msgid "Proceed anyway?"
 msgstr "Kas siiski jätkata?"
 
@@ -944,43 +945,43 @@ msgstr "Kas siiski jätkata?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:2085 ../system-config-printer.py:3331
+#: ../system-config-printer.py:2088 ../system-config-printer.py:3334
 msgid "fetching server settings"
 msgstr "serveri seadistuste hankimine"
 
-#: ../system-config-printer.py:2155
+#: ../system-config-printer.py:2158
 msgid "Set Default Printer"
 msgstr "Vaikeprinteriks määramine"
 
-#: ../system-config-printer.py:2157
+#: ../system-config-printer.py:2160
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "Kas soovite määrata selle kogu süsteemi vaikeprinteriks?"
 
-#: ../system-config-printer.py:2159
+#: ../system-config-printer.py:2162
 msgid "Set as the _system-wide default printer"
 msgstr "Määramine _süsteemseks vaikeprinteriks"
 
-#: ../system-config-printer.py:2161
+#: ../system-config-printer.py:2164
 msgid "_Clear my personal default setting"
 msgstr "Minu isikliku vaikeseadistuse _puhatamine"
 
-#: ../system-config-printer.py:2162
+#: ../system-config-printer.py:2165
 msgid "Set as my _personal default printer"
 msgstr "Määramine _minu isiklikuks vaikeprinteriks"
 
-#: ../system-config-printer.py:2167
+#: ../system-config-printer.py:2170
 msgid "setting default printer"
 msgstr "vaikeprinteri määramine"
 
-#: ../system-config-printer.py:2224
+#: ../system-config-printer.py:2227
 msgid "printing test page"
 msgstr "testlehekülje trükkimine"
 
-#: ../system-config-printer.py:2237 ../system-config-printer.py:2272
+#: ../system-config-printer.py:2240 ../system-config-printer.py:2275
 msgid "Not possible"
 msgstr "Ei ole võimalik"
 
-#: ../system-config-printer.py:2238 ../system-config-printer.py:2273
+#: ../system-config-printer.py:2241 ../system-config-printer.py:2276
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -988,20 +989,20 @@ msgstr ""
 "Võrguserver ei võta trükitööd vastu, arvatavasti ei ole printer välja "
 "jagatud."
 
-#: ../system-config-printer.py:2250 ../system-config-printer.py:2265
+#: ../system-config-printer.py:2253 ../system-config-printer.py:2268
 msgid "Submitted"
 msgstr "Edastatud"
 
-#: ../system-config-printer.py:2251
+#: ../system-config-printer.py:2254
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Testlehekülg saadeti tööna %d"
 
-#: ../system-config-printer.py:2258
+#: ../system-config-printer.py:2261
 msgid "sending maintenance command"
 msgstr "hoolduskäsu saatmine"
 
-#: ../system-config-printer.py:2266
+#: ../system-config-printer.py:2269
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Hoolduskäsk edastati tööna %d"
@@ -1009,73 +1010,73 @@ msgstr "Hoolduskäsk edastati tööna %d"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2339 ../system-config-printer.py:2435
+#: ../system-config-printer.py:2342 ../system-config-printer.py:2438
 msgid "Error"
 msgstr "Viga"
 
-#: ../system-config-printer.py:2340
+#: ../system-config-printer.py:2343
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Ühendumisel CUPS-serveriga tekkis probleem."
 
-#: ../system-config-printer.py:2436
+#: ../system-config-printer.py:2439
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Valikul '%s' on väärtus '%s' ja seda ei saa muuta"
 
-#: ../system-config-printer.py:2537
+#: ../system-config-printer.py:2540
 msgid "Marker levels are not reported for this printer."
 msgstr "Selle printeri puhul tasemeid ei teatata."
 
-#: ../system-config-printer.py:2846
+#: ../system-config-printer.py:2849
 msgid "Cannot Rename"
 msgstr "Ümbernimetamine nurjus"
 
-#: ../system-config-printer.py:2847
+#: ../system-config-printer.py:2850
 msgid "There are queued jobs."
 msgstr "Järjekorras on töid."
 
-#: ../system-config-printer.py:2865
+#: ../system-config-printer.py:2868
 msgid "Renaming will lose history"
 msgstr "Ümbernimetamisel kaob ajalugu"
 
-#: ../system-config-printer.py:2867
+#: ../system-config-printer.py:2870
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr "Lõpetatud töid pole enam taastrükkimiseks saadaval."
 
-#: ../system-config-printer.py:2938
+#: ../system-config-printer.py:2941
 msgid "renaming printer"
 msgstr "printeri ümbernimetamine"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:3023
+#: ../system-config-printer.py:3026
 msgid "copying printer"
 msgstr "printeri kopeerimine"
 
-#: ../system-config-printer.py:3087
+#: ../system-config-printer.py:3090
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "Kas tõesti kustutada klass '%s'?"
 
-#: ../system-config-printer.py:3089
+#: ../system-config-printer.py:3092
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Kas tõesti kustutada printer '%s'?"
 
-#: ../system-config-printer.py:3091
+#: ../system-config-printer.py:3094
 msgid "Really delete selected destinations?"
 msgstr "Kas tõesti kustutada valitud sihtkohad?"
 
-#: ../system-config-printer.py:3112
+#: ../system-config-printer.py:3115
 #, python-format
 msgid "deleting printer %s"
 msgstr "printeri %s kustutamine"
 
-#: ../system-config-printer.py:3198
+#: ../system-config-printer.py:3201
 msgid "Publish Shared Printers"
 msgstr "Jagatud printerite avaldamine"
 
-#: ../system-config-printer.py:3199
+#: ../system-config-printer.py:3202
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -1083,15 +1084,15 @@ msgstr ""
 "Jagatud printerid ei ole teistele kättesaadavad, kui serveri seadistustes "
 "pole märgitud valik 'Jagatud printerite avaldamine'."
 
-#: ../system-config-printer.py:3392
+#: ../system-config-printer.py:3395
 msgid "modifying server settings"
 msgstr "serveri seadistuste muutmine"
 
-#: ../system-config-printer.py:3420
+#: ../system-config-printer.py:3423
 msgid "Review Firewall"
 msgstr "Tulemüüri ülevaade"
 
-#: ../system-config-printer.py:3421
+#: ../system-config-printer.py:3424
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
@@ -1099,20 +1100,20 @@ msgstr ""
 "Võrgutrükkimise lubamiseks selles arvutis tasuks üle vaadata tulemüüri "
 "seadistused."
 
-#: ../system-config-printer.py:3768
+#: ../system-config-printer.py:3771
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "Sirvimine pole võimalik (pysmbc on paigaldamata)"
 
 #. SMB list columns
-#: ../system-config-printer.py:3774
+#: ../system-config-printer.py:3777
 msgid "Share"
 msgstr "Jagamine"
 
-#: ../system-config-printer.py:3780
+#: ../system-config-printer.py:3783
 msgid "Comment"
 msgstr "Kommentaar"
 
-#: ../system-config-printer.py:3795
+#: ../system-config-printer.py:3798
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -1120,56 +1121,52 @@ msgstr ""
 "PostScript Printer Description failid (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 
-#: ../system-config-printer.py:3804
+#: ../system-config-printer.py:3807
 msgid "All files (*)"
 msgstr "Kõik failid (*)"
 
-#: ../system-config-printer.py:3860 ../system-config-printer.py:6172
-#: ../system-config-printer.py:6210 ../applet.py:126
+#: ../system-config-printer.py:3863 ../system-config-printer.py:6184
+#: ../system-config-printer.py:6222 ../applet.py:129
 msgid "Search"
 msgstr "Otsing"
 
-#: ../system-config-printer.py:3884 ../system-config-printer.py:3906
+#: ../system-config-printer.py:3887 ../system-config-printer.py:3909
 #: ../glade/NewPrinterWindow.glade.h:72
 msgid "New Printer"
 msgstr "Uus printer"
 
-#: ../system-config-printer.py:3893
+#: ../system-config-printer.py:3896
 msgid "New Class"
 msgstr "Uus klass"
 
-#: ../system-config-printer.py:3898
+#: ../system-config-printer.py:3901
 msgid "Change Device URI"
 msgstr "Muuda seadme URI"
 
-#: ../system-config-printer.py:3904
+#: ../system-config-printer.py:3907
 msgid "Change Driver"
 msgstr "Draiveri muutmine"
 
-#: ../system-config-printer.py:4084 ../system-config-printer.py:4164
-#: ../system-config-printer.py:4536 ../system-config-printer.py:6011
-#: ../system-config-printer.py:6197
+#: ../system-config-printer.py:4087 ../system-config-printer.py:4167
+#: ../system-config-printer.py:4538 ../system-config-printer.py:6019
+#: ../system-config-printer.py:6209
 msgid "Searching"
 msgstr "Otsimine"
 
-#: ../system-config-printer.py:4085
+#: ../system-config-printer.py:4088
 msgid "Searching for downloadable drivers"
 msgstr "Allalaaditavate draiverite otsimine"
 
-#: ../system-config-printer.py:4165 ../system-config-printer.py:4537
+#: ../system-config-printer.py:4168 ../system-config-printer.py:4539
 msgid "Searching for drivers"
 msgstr "Draiverite otsimine"
 
-#: ../system-config-printer.py:4753
-msgid "fetching device list"
-msgstr "seadmete nimekirja hankimine"
-
 #. Tell the user why he needs the plugin
-#: ../system-config-printer.py:4879
+#: ../system-config-printer.py:4913
 msgid "For this printer a proprietary driver plugin from HP is available.\n"
 msgstr "Selle printeri tarbeks on saadaval HP omanduslik draiveriplugin.\n"
 
-#: ../system-config-printer.py:4882
+#: ../system-config-printer.py:4916
 msgid ""
 "The installation of the plugin is required for your printer to work.\n"
 "\n"
@@ -1177,7 +1174,7 @@ msgstr ""
 "Plugina paigaldamine on printeri töötamiseks hädavajalik.\n"
 "\n"
 
-#: ../system-config-printer.py:4885
+#: ../system-config-printer.py:4919
 msgid ""
 "Installing the plugin is optional, it completes or enhances the "
 "functionality\n"
@@ -1189,106 +1186,110 @@ msgstr ""
 "võimalikud vaid kõige elementaarsemad operatsioonid.\n"
 "\n"
 
-#: ../system-config-printer.py:4889
+#: ../system-config-printer.py:4923
 msgid "The plugin provides the following features:\n"
 msgstr "Plugin pakub järgmisi võimalusi:\n"
 
-#: ../system-config-printer.py:4892
+#: ../system-config-printer.py:4926
 msgid " - Printing support\n"
 msgstr " - trükkimise toetus\n"
 
-#: ../system-config-printer.py:4895
+#: ../system-config-printer.py:4929
 msgid " - Faster printing\n"
 msgstr "- kiirem trükkimine\n"
 
-#: ../system-config-printer.py:4898
+#: ../system-config-printer.py:4932
 msgid " - Better printout quality\n"
 msgstr " - parem väljatrüki kvaliteet\n"
 
-#: ../system-config-printer.py:4901
+#: ../system-config-printer.py:4935
 msgid " - Extra printing features\n"
 msgstr " - täiendavad trükkimisvõimalused\n"
 
-#: ../system-config-printer.py:4904
+#: ../system-config-printer.py:4938
 msgid " - Scanning support\n"
 msgstr " - skannimise toetus\n"
 
-#: ../system-config-printer.py:4907
+#: ../system-config-printer.py:4941
 msgid " - Faster scanning\n"
 msgstr " - kiirem skannimine\n"
 
-#: ../system-config-printer.py:4910
+#: ../system-config-printer.py:4944
 msgid " - Better scanning image quality\n"
 msgstr " - skannitud pildi parem kvaliteet\n"
 
-#: ../system-config-printer.py:4913
+#: ../system-config-printer.py:4947
 msgid " - Faxing support\n"
 msgstr " - faksimise toetus\n"
 
-#: ../system-config-printer.py:4916
+#: ../system-config-printer.py:4950
 msgid " - Extra fax features\n"
 msgstr " - täiendavad faksimise võimalused\n"
 
-#: ../system-config-printer.py:4919
+#: ../system-config-printer.py:4953
 msgid " - Better Input/Output support\n"
 msgstr " - parem sisendi/väljundi toetus\n"
 
-#: ../system-config-printer.py:4922
+#: ../system-config-printer.py:4956
 msgid " - Extra user interface features\n"
 msgstr " - kasutajaliidese lisavõimalused\n"
 
-#: ../system-config-printer.py:4925
+#: ../system-config-printer.py:4959
 msgid " - Other extra features\n"
 msgstr " - muud lisavõimalused\n"
 
-#: ../system-config-printer.py:4930
+#: ../system-config-printer.py:4964
 msgid "Install plugin"
 msgstr "Paigalda plugin"
 
-#: ../system-config-printer.py:4931
+#: ../system-config-printer.py:4965
 msgid "Do not set up printer"
 msgstr "Ära häälesta printerit"
 
-#: ../system-config-printer.py:4932
+#: ../system-config-printer.py:4966
 msgid "Set up without plugin"
 msgstr "Häälesta pluginata"
 
-#: ../system-config-printer.py:4934 ../troubleshoot/PrintTestPage.py:118
+#: ../system-config-printer.py:4968 ../troubleshoot/PrintTestPage.py:118
 msgid "Yes"
 msgstr "Jah"
 
-#: ../system-config-printer.py:4935 ../troubleshoot/PrintTestPage.py:119
+#: ../system-config-printer.py:4969 ../troubleshoot/PrintTestPage.py:119
 msgid "No"
 msgstr "Ei"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:5096
+#: ../system-config-printer.py:5130
 msgid "Other"
 msgstr "Muu"
 
-#: ../system-config-printer.py:5100
+#: ../system-config-printer.py:5134
 msgid "Network Printer"
 msgstr "Võrguprinter"
 
-#: ../system-config-printer.py:5104
+#: ../system-config-printer.py:5138
 msgid "Find Network Printer"
 msgstr "Otsi võrguprinterit"
 
-#: ../system-config-printer.py:5229
+#: ../system-config-printer.py:5153
+msgid "fetching device list"
+msgstr "seadmete nimekirja hankimine"
+
+#: ../system-config-printer.py:5237
 msgid " (Current)"
 msgstr " (aktiivne)"
 
-#: ../system-config-printer.py:5299
+#: ../system-config-printer.py:5307
 msgid "Scanning..."
 msgstr "Uurimine..."
 
-#: ../system-config-printer.py:5354
+#: ../system-config-printer.py:5362
 msgid "No Print Shares"
 msgstr "Jagatud printereid pole"
 
-#: ../system-config-printer.py:5355
+#: ../system-config-printer.py:5363
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1296,88 +1297,88 @@ msgstr ""
 "Jagatud printereid ei leitud. Palun kontrollige, kas tulemüüri seadistustes "
 "on Samba teenus märgitud ikka usaldusväärseks."
 
-#: ../system-config-printer.py:5616 ../system-config-printer.py:5693
+#: ../system-config-printer.py:5624 ../system-config-printer.py:5701
 msgid "Print Share Verified"
 msgstr "Jagatud printer on kontrollitud"
 
-#: ../system-config-printer.py:5617 ../system-config-printer.py:5694
+#: ../system-config-printer.py:5625 ../system-config-printer.py:5702
 msgid "This print share is accessible."
 msgstr "See jagatud printer on kättesaadav."
 
-#: ../system-config-printer.py:5622 ../system-config-printer.py:5698
+#: ../system-config-printer.py:5630 ../system-config-printer.py:5706
 msgid "This print share is not accessible."
 msgstr "See jagatud printer ei ole kättesaadav"
 
-#: ../system-config-printer.py:5625
+#: ../system-config-printer.py:5633
 msgid "Print Share Inaccessible"
 msgstr "Jagatud printer ei ole kättesaadav"
 
-#: ../system-config-printer.py:5671
+#: ../system-config-printer.py:5679
 msgid "Verifying"
 msgstr "Kontrollimine"
 
-#: ../system-config-printer.py:5672
+#: ../system-config-printer.py:5680
 msgid "Verifying printer"
 msgstr "Printeri kontrollimine"
 
-#: ../system-config-printer.py:5697
+#: ../system-config-printer.py:5705
 msgid "Inaccessible"
 msgstr "Kättesaamatu"
 
-#: ../system-config-printer.py:5752
+#: ../system-config-printer.py:5760
 msgid "Parallel Port"
 msgstr "Paralleelport"
 
-#: ../system-config-printer.py:5754
+#: ../system-config-printer.py:5762
 msgid "Serial Port"
 msgstr "Jadaport"
 
-#: ../system-config-printer.py:5756
+#: ../system-config-printer.py:5764
 msgid "USB"
 msgstr "USB"
 
-#: ../system-config-printer.py:5758 ../system-config-printer.py:5761
+#: ../system-config-printer.py:5766 ../system-config-printer.py:5769
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../system-config-printer.py:5763
+#: ../system-config-printer.py:5771
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardware Abstraction Layer (HAL)"
 
-#: ../system-config-printer.py:5765
+#: ../system-config-printer.py:5773
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
-#: ../system-config-printer.py:5774
+#: ../system-config-printer.py:5782
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "LPD/LPR tööjärjekord '%s'"
 
-#: ../system-config-printer.py:5776
+#: ../system-config-printer.py:5784
 msgid "LPD/LPR queue"
 msgstr "LPD/LPR tööjärjekord"
 
-#: ../system-config-printer.py:5779
+#: ../system-config-printer.py:5787
 msgid "Windows Printer via SAMBA"
 msgstr "Windowsi printer SAMBA kaudu"
 
-#: ../system-config-printer.py:5781 ../glade/NewPrinterWindow.glade.h:64
+#: ../system-config-printer.py:5789 ../glade/NewPrinterWindow.glade.h:64
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.py:5783
+#: ../system-config-printer.py:5791
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../system-config-printer.py:5870
+#: ../system-config-printer.py:5878
 msgid "A printer connected to the parallel port."
 msgstr "Paralleelporti ühendatud printer."
 
-#: ../system-config-printer.py:5872
+#: ../system-config-printer.py:5880
 msgid "A printer connected to a USB port."
 msgstr "USB-porti ühendatud printer."
 
-#: ../system-config-printer.py:5874
+#: ../system-config-printer.py:5882
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1385,54 +1386,54 @@ msgstr ""
 "HPLIP tarkvaraga töötav printer või mitme funktsiooniga seadme "
 "printerifunktsioon."
 
-#: ../system-config-printer.py:5877
+#: ../system-config-printer.py:5885
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr ""
 "HPLIP tarkvaraga töötav faks või mitme funktsiooniga seadme faksifunktsioon."
 
-#: ../system-config-printer.py:5880
+#: ../system-config-printer.py:5888
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL-i tuvastatud kohalik printer."
 
-#: ../system-config-printer.py:6012
+#: ../system-config-printer.py:6020
 msgid "Searching for printers"
 msgstr "Printerite otsimine"
 
-#: ../system-config-printer.py:6085
+#: ../system-config-printer.py:6097
 msgid "No printer was found at that address."
 msgstr "Sellel aadressil ei leitud ühtegi printerit."
 
-#: ../system-config-printer.py:6222
+#: ../system-config-printer.py:6234
 msgid "-- Select from search results --"
 msgstr "-- Valige otsingutulemuste seast --"
 
-#: ../system-config-printer.py:6224
+#: ../system-config-printer.py:6236
 msgid "-- No matches found --"
 msgstr "-- Ühtegi tulemust ei leitud --"
 
-#: ../system-config-printer.py:6418
+#: ../system-config-printer.py:6430
 msgid " (recommended)"
 msgstr " (soovitatav)"
 
-#: ../system-config-printer.py:6443
+#: ../system-config-printer.py:6455
 msgid "This PPD is generated by foomatic."
 msgstr "Selle PPD genereeris foomatic."
 
-#: ../system-config-printer.py:6468
+#: ../system-config-printer.py:6480
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:6479
+#: ../system-config-printer.py:6491
 msgid "Distributable"
 msgstr "Levitatav"
 
-#: ../system-config-printer.py:6520
+#: ../system-config-printer.py:6532
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:6525
+#: ../system-config-printer.py:6537
 #, python-format
 msgid ""
 "\n"
@@ -1441,20 +1442,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:6530
+#: ../system-config-printer.py:6542
 msgid "No support contacts known"
 msgstr "Ühtegi tugiteenuse kontakti pole teada"
 
-#: ../system-config-printer.py:6534 ../system-config-printer.py:6547
+#: ../system-config-printer.py:6546 ../system-config-printer.py:6559
 msgid "Not specified."
 msgstr "Pole määratud."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6587
+#: ../system-config-printer.py:6599
 msgid "Database error"
 msgstr "Andmebaasi viga"
 
-#: ../system-config-printer.py:6588
+#: ../system-config-printer.py:6600
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' draiverit ei saa kasutada printeriga '%s %s'."
@@ -1462,60 +1463,60 @@ msgstr "'%s' draiverit ei saa kasutada printeriga '%s %s'."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6598
+#: ../system-config-printer.py:6610
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Selle draiveri kasutamiseks tuleb paigaldada '%s' pakett."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6605
+#: ../system-config-printer.py:6617
 msgid "PPD error"
 msgstr "PPD viga"
 
-#: ../system-config-printer.py:6607
+#: ../system-config-printer.py:6619
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD-faili lugemine nurjus. Võimalikud põhjused:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6624
+#: ../system-config-printer.py:6636
 msgid "Downloadable drivers"
 msgstr "Allalaaditavad draiverid"
 
-#: ../system-config-printer.py:6625
+#: ../system-config-printer.py:6637
 msgid "Failed to download PPD."
 msgstr "PPD allalaadimine nurjus."
 
-#: ../system-config-printer.py:6632
+#: ../system-config-printer.py:6644
 msgid "fetching PPD"
 msgstr "PPD hankimine"
 
-#: ../system-config-printer.py:6661 ../system-config-printer.py:6699
+#: ../system-config-printer.py:6673 ../system-config-printer.py:6711
 msgid "No Installable Options"
 msgstr "Paigaldatavaid valikuid pole"
 
-#: ../system-config-printer.py:6757
+#: ../system-config-printer.py:6768
 #, python-format
 msgid "adding printer %s"
 msgstr "printeri %s lisamine"
 
-#: ../system-config-printer.py:6930
+#: ../system-config-printer.py:6941
 msgid "Would you like to print a test page?"
 msgstr "Kas soovite trükkida testlehekülge?"
 
-#: ../system-config-printer.py:6991
+#: ../system-config-printer.py:7002
 msgid "Install driver"
 msgstr "Paigalda draiver"
 
-#: ../system-config-printer.py:6992 ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:7003 ../troubleshoot/CheckPPDSanity.py:131
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "Printer '%s' nõuab %s paketti, aga see ei ole praegu paigaldatud"
 
-#: ../system-config-printer.py:7008
+#: ../system-config-printer.py:7019
 msgid "Missing driver"
 msgstr "Puuduv draiver"
 
-#: ../system-config-printer.py:7009
+#: ../system-config-printer.py:7020
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2054,12 +2055,12 @@ msgid "_Verify..."
 msgstr "Ko_ntrolli..."
 
 #: ../glade/NewPrinterWindow.glade.h:111
-#: ../glade/PrinterPropertiesDialog.glade.h:128
+#: ../glade/PrinterPropertiesDialog.glade.h:130
 msgid "move left"
 msgstr "liiguta vasakule"
 
 #: ../glade/NewPrinterWindow.glade.h:112
-#: ../glade/PrinterPropertiesDialog.glade.h:129
+#: ../glade/PrinterPropertiesDialog.glade.h:131
 msgid "move right"
 msgstr "liiguta paremale"
 
@@ -2288,7 +2289,9 @@ msgstr "Peegeldatud"
 msgid "More"
 msgstr "Rohkem"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:64
+#. See section 4.2.6 of this document:
+#. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
+#: ../glade/PrinterPropertiesDialog.glade.h:66
 msgid ""
 "None\n"
 "Staple\n"
@@ -2348,7 +2351,7 @@ msgstr ""
 "Köitmine (paremal)\n"
 "Köitmine (all)"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:92
+#: ../glade/PrinterPropertiesDialog.glade.h:94
 msgid ""
 "One-sided\n"
 "Two-sided (long edge)\n"
@@ -2358,27 +2361,27 @@ msgstr ""
 "Kahepoolne (pikk serv)\n"
 "Kahepoolne (lühike serv)"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:95
+#: ../glade/PrinterPropertiesDialog.glade.h:97
 msgid "Operation Policy:"
 msgstr "Tööreegel:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:96
+#: ../glade/PrinterPropertiesDialog.glade.h:98
 msgid "Orientation:"
 msgstr "Orientatsioon:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:97
+#: ../glade/PrinterPropertiesDialog.glade.h:99
 msgid "Pages per side layout:"
 msgstr "Lehekülgede paigutus lehel:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:98
+#: ../glade/PrinterPropertiesDialog.glade.h:100
 msgid "Pages per side:"
 msgstr "Lehekülgi lehel:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:99
+#: ../glade/PrinterPropertiesDialog.glade.h:101
 msgid "Policies"
 msgstr "Reeglid"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:100
+#: ../glade/PrinterPropertiesDialog.glade.h:102
 msgid ""
 "Portrait (no rotation)\n"
 "Landscape (90°)\n"
@@ -2390,66 +2393,66 @@ msgstr ""
 "Tagurpidi rõhtpaigutus (270°)\n"
 "Tagurpidi püstpaigutus (180°)"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:104
+#: ../glade/PrinterPropertiesDialog.glade.h:106
 msgid "Pretty print"
 msgstr "Ilutrükk"
 
 #. Not more than 25 characters
-#: ../glade/PrinterPropertiesDialog.glade.h:106
+#: ../glade/PrinterPropertiesDialog.glade.h:108
 msgid "Print Self-Test Page"
 msgstr "Trüki enesetestilehekülg"
 
 #. Not more than 25 characters
-#: ../glade/PrinterPropertiesDialog.glade.h:108
+#: ../glade/PrinterPropertiesDialog.glade.h:110
 #: ../troubleshoot/PrintTestPage.py:72
 msgid "Print Test Page"
 msgstr "Trüki testlehekülg"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:110
+#: ../glade/PrinterPropertiesDialog.glade.h:112
 msgid "Printer Properties"
 msgstr "Printeri omadused"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:111
+#: ../glade/PrinterPropertiesDialog.glade.h:113
 msgid "Printer State:"
 msgstr "Printeri olek:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:112
+#: ../glade/PrinterPropertiesDialog.glade.h:114
 msgid "Reset"
 msgstr "Lähtesta"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:113
+#: ../glade/PrinterPropertiesDialog.glade.h:115
 msgid "Reset to system default"
 msgstr "Süsteemi vaikeväärtused"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:114
+#: ../glade/PrinterPropertiesDialog.glade.h:116
 msgid "Right margin:"
 msgstr "Parem veeris:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:115
+#: ../glade/PrinterPropertiesDialog.glade.h:117
 msgid "Saturation:"
 msgstr "Küllastus:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:116
+#: ../glade/PrinterPropertiesDialog.glade.h:118
 msgid "Scale to fit"
 msgstr "Mahutamine lehele"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:117
+#: ../glade/PrinterPropertiesDialog.glade.h:119
 msgid "Scaling:"
 msgstr "Skaleerimine:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:118
+#: ../glade/PrinterPropertiesDialog.glade.h:120
 msgid "Settings"
 msgstr "Seadistused"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:119
+#: ../glade/PrinterPropertiesDialog.glade.h:121
 msgid "Shared"
 msgstr "Jagatud"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:120
+#: ../glade/PrinterPropertiesDialog.glade.h:122
 msgid "Sides:"
 msgstr "Küljed:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:121
+#: ../glade/PrinterPropertiesDialog.glade.h:123
 msgid ""
 "Specify the default job options for this printer.  Jobs arriving at this "
 "print server will have these options added if they are not already set by "
@@ -2459,41 +2462,41 @@ msgstr ""
 "saabuvatele töödele rakendatakse need seadistused, kui neile pole eelnevalt "
 "rakenduses midagi muud määratud."
 
-#: ../glade/PrinterPropertiesDialog.glade.h:122
+#: ../glade/PrinterPropertiesDialog.glade.h:124
 msgid "Starting Banner:"
 msgstr "Alustav prinditiitel:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:123
+#: ../glade/PrinterPropertiesDialog.glade.h:125
 msgid "There are no status messages for this printer."
 msgstr "Selle printeri puhul pole olekuteated."
 
-#: ../glade/PrinterPropertiesDialog.glade.h:124
+#: ../glade/PrinterPropertiesDialog.glade.h:126
 msgid "To add a new option, enter its name in the box below and click to add."
 msgstr ""
 "Uue valiku lisamiseks sisestage selle nimi allolevasse kasti ja klõpsake "
 "nupule 'Lisa'."
 
-#: ../glade/PrinterPropertiesDialog.glade.h:125
+#: ../glade/PrinterPropertiesDialog.glade.h:127
 msgid "Top margin:"
 msgstr "Ülemine veeris:"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:126
+#: ../glade/PrinterPropertiesDialog.glade.h:128
 msgid "Word wrap"
 msgstr "Reamurdmine"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:127
+#: ../glade/PrinterPropertiesDialog.glade.h:129
 msgid "default"
 msgstr "vaikimisi"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:130
+#: ../glade/PrinterPropertiesDialog.glade.h:132
 msgid "none"
 msgstr "puudub"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:131
+#: ../glade/PrinterPropertiesDialog.glade.h:133
 msgid "points"
 msgstr "punkti"
 
-#: ../glade/PrinterPropertiesDialog.glade.h:132
+#: ../glade/PrinterPropertiesDialog.glade.h:134
 msgid "user"
 msgstr "kasutaja"
 
@@ -2775,7 +2778,7 @@ msgstr ""
 "Lülitage trükkimishaldurit kasutades serveri seadistuste all sisse valik "
 "'Selle arvutiga ühendatud jagatud printerite avaldamine'."
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:182
+#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:185
 msgid "Install"
 msgstr "Paigalda"
 
@@ -3110,57 +3113,57 @@ msgstr ""
 msgid "Click 'Forward' to begin."
 msgstr "Klõpsa alustamiseks 'Edasi'."
 
-#: ../applet.py:91
+#: ../applet.py:94
 msgid "Configuring new printer"
 msgstr "Uue printeri seadistamine"
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
-#: ../applet.py:113 ../applet.py:171
+#: ../applet.py:116 ../applet.py:174
 msgid "Missing printer driver"
 msgstr "Puuduv printeri draiver"
 
-#: ../applet.py:120
+#: ../applet.py:123
 #, python-format
 msgid "No printer driver for %s."
 msgstr "%s jaoks pole printeri draiverit."
 
-#: ../applet.py:122
+#: ../applet.py:125
 msgid "No driver for this printer."
 msgstr "Selle printeri jaoks pole draiverit."
 
-#: ../applet.py:169
+#: ../applet.py:172
 msgid "Printer added"
 msgstr "Printer on lisatud"
 
-#: ../applet.py:175
+#: ../applet.py:178
 msgid "Install printer driver"
 msgstr "Paigalda printeri draiver"
 
-#: ../applet.py:176
+#: ../applet.py:179
 #, python-format
 msgid "`%s' requires driver installation: %s."
 msgstr "`%s' vajab draiveri paigaldamist: %s."
 
-#: ../applet.py:198
+#: ../applet.py:201
 #, python-format
 msgid "`%s' is ready for printing."
 msgstr "`%s' on trükkimiseks valmis."
 
-#: ../applet.py:202 ../applet.py:214
+#: ../applet.py:205 ../applet.py:217
 msgid "Print test page"
 msgstr "Trüki testlehekülg"
 
-#: ../applet.py:205
+#: ../applet.py:208
 msgid "Configure"
 msgstr "Seadista"
 
-#: ../applet.py:209
+#: ../applet.py:212
 #, python-format
 msgid "`%s' has been added, using the `%s' driver."
 msgstr "`%s' on lisatud, kasutatakse `%s' draiverit."
 
-#: ../applet.py:217
+#: ../applet.py:220
 msgid "Find driver"
 msgstr "Otsi draiverit"
 
