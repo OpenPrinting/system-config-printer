@@ -79,6 +79,10 @@ nobase_pkgdata_SCRIPTS=				\
 
 nobase_pkgdata_DATA=					\
 	AdvancedServerSettings.py			\
+	asyncconn.py					\
+	asyncipp.py					\
+	asyncpk0.py					\
+	asyncpk1.py					\
 	authconn.py					\
 	config.py					\
 	cupspk.py					\
@@ -108,17 +112,17 @@ nobase_pkgdata_DATA=					\
 	userdefault.py					\
 	XmlHelper.py					\
 	glade/AboutDialog.glade				\
-	glade/ConnectDialog.glade				\
+	glade/ConnectDialog.glade			\
 	glade/ConnectingDialog.glade			\
-	glade/InstallDialog.glade				\
+	glade/InstallDialog.glade			\
 	glade/JobsWindow.glade				\
-	glade/NewPrinterName.glade				\
+	glade/NewPrinterName.glade			\
 	glade/NewPrinterWindow.glade			\
 	glade/PrinterPropertiesDialog.glade		\
-	glade/PrintersWindow.glade				\
-	glade/ServerSettingsDialog.glade			\
+	glade/PrintersWindow.glade			\
+	glade/ServerSettingsDialog.glade		\
 	glade/SMBBrowseDialog.glade			\
-	glade/statusicon_popupmenu.glade			\
+	glade/statusicon_popupmenu.glade		\
 	glade/WaitWindow.glade				\
 	icons/i-network-printer.png			\
 	troubleshoot/base.py				\

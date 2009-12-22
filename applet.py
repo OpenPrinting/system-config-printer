@@ -48,6 +48,9 @@ DOMAIN="system-config-printer"
 ICON="printer"
 SEARCHING_ICON="document-print-preview"
 
+# Let gobject know we'll be using threads.
+gobject.threads_init ()
+
 # We need to call pynotify.init before we can check the server for caps
 pynotify.init('System Config Printer Notification')
 
