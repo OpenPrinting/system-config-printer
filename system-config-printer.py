@@ -6063,14 +6063,18 @@ class NewPrinterGUI(GtkGUI):
             dev = PhysicalDevice (new_device)
             try:
                 i = self.devices.index (dev)
+
+                # Adding a new URI to an existing physical device.
                 self.devices[i].add_device (new_device)
 
                 (path, column) = self.tvNPDevices.get_cursor ()
-                model = self.tvNPDevices.get_model ()
-                iter = model.get_iter (path)
-                if model.get_value (iter, 1) == self.devices[i]:
-                    self.on_tvNPDevices_cursor_changed (self.tvNPDevices)
+                if path:
+                    model = self.tvNPDevices.get_model ()
+                    iter = model.get_iter (path)
+                    if model.get_value (iter, 1) == self.devices[i]:
+                        self.on_tvNPDevices_cursor_changed (self.tvNPDevices)
             except ValueError:
+                # New physical device.
                 dev.set_data ('checked-hplip', True)
                 self.devices.append (dev)
                 self.devices.sort ()
@@ -6078,10 +6082,10 @@ class NewPrinterGUI(GtkGUI):
                 iter = model.insert_before (None, self.devices_find_nw_iter,
                                             row=[dev.get_info (), dev, False])
 
-            # If this is the first one we've found, select it.
-            if self.network_found == 1:
-                path = model.get_path (iter)
-                self.tvNPDevices.set_cursor (path)
+                # If this is the first one we've found, select it.
+                if self.network_found == 1:
+                    path = model.get_path (iter)
+                    self.tvNPDevices.set_cursor (path)
         else:
             self.printer_finder = None
             self.dec_spinner_task ()
