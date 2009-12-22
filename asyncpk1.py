@@ -33,12 +33,6 @@ import debug
 from dbus.mainloop.glib import DBusGMainLoop
 DBusGMainLoop (set_as_default=True)
 
-_ = lambda x: x
-N_ = lambda x: x
-def set_gettext_function (fn):
-    global _
-    _ = fn
-
 CUPS_PK_NAME  = 'org.opensuse.CupsPkHelper.Mechanism'
 CUPS_PK_PATH  = '/'
 CUPS_PK_IFACE = 'org.opensuse.CupsPkHelper.Mechanism'

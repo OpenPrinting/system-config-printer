@@ -124,6 +124,7 @@ except locale.Error:
 from gettext import gettext as _
 monitor.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
+asyncconn.set_gettext_function (_)
 authconn.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)

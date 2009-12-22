@@ -31,11 +31,8 @@ import config
 from debug import *
 import debug
 
-_ = lambda x: x
-N_ = lambda x: x
-def set_gettext_function (fn):
-    global _
-    _ = fn
+def set_gettext_function (x):
+    asyncipp.set_gettext_function (x)
 
 ######
 ###### A class to keep track of what we're trying to achieve in order
