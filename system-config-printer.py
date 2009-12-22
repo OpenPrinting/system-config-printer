@@ -7022,6 +7022,7 @@ class NewPrinterGUI(GtkGUI):
 def main(setup_printer = None, configure_printer = None, change_ppd = False,
          devid = "", print_test_page = False, focus_on_map = True):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
+    gobject.threads_init()
     gtk.gdk.threads_init()
 
     mainwindow = GUI(setup_printer, configure_printer, change_ppd, devid,
