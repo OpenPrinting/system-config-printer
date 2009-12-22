@@ -311,10 +311,10 @@ class PK1Connection:
 
     def getDevices (self, *args, **kwds):
         (use_pycups, reply_handler, error_handler,
-         tup) = self._args_kwds_to_tuple ([int, str, str],
+         tup) = self._args_kwds_to_tuple ([int, list, list],
                                           [("limit", 0),
-                                           ("include_schemes", ""),
-                                           ("exclude_schemes", "")],
+                                           ("include_schemes", []),
+                                           ("exclude_schemes", [])],
                                           args, kwds)
 
         if not use_pycups:
