@@ -107,6 +107,7 @@ import gtkinklevel
 import gtkspinner
 import statereason
 import firewall
+import asyncconn
 
 domain='system-config-printer'
 import locale
@@ -118,6 +119,7 @@ except locale.Error:
 from gettext import gettext as _
 monitor.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
+asyncconn.set_gettext_function (_)
 authconn.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
@@ -649,6 +651,7 @@ class GUI(GtkGUI, monitor.Watcher):
         # setup some lists
         m = gtk.SELECTION_MULTIPLE
         s = gtk.SELECTION_SINGLE
+        b = gtk.SELECTION_BROWSE
         for name, treeview, selection_mode in (
             (_("Members of this class"), self.tvClassMembers, m),
             (_("Others"), self.tvClassNotMembers, m),
@@ -659,7 +662,7 @@ class GUI(GtkGUI, monitor.Watcher):
             (_("Makes"), np.tvNPMakes,s),
             (_("Models"), np.tvNPModels,s),
             (_("Drivers"), np.tvNPDrivers,s),
-            (_("Downloadable Drivers"), np.tvNPDownloadableDrivers,s),
+            (_("Downloadable Drivers"), np.tvNPDownloadableDrivers, b),
             (_("Users"), self.tvPUsers, m),
             ):
 
@@ -3936,7 +3939,7 @@ class NewPrinterGUI(GtkGUI):
         self.options = {} # keyword -> Option object
         self.changed = set()
         self.conflicts = set()
-        self.fetchDevices_op = None
+        self.fetchDevices_conn = None
         self.printer_finder = None
         self.lblNetworkFindSearching.hide ()
         self.entNPTNetworkHostname.set_sensitive (True)
@@ -4326,9 +4329,8 @@ class NewPrinterGUI(GtkGUI):
     # Navigation buttons
 
     def on_NPCancel(self, widget, event=None):
-        if self.fetchDevices_op:
-            self.fetchDevices_op.cancel ()
-            self.fetchDevices_op = None
+        if self.fetchDevices_conn:
+            self.fetchDevices_conn = None
             self.dec_spinner_task ()
 
         if self.printer_finder:
@@ -4826,55 +4828,70 @@ class NewPrinterGUI(GtkGUI):
             self.btnNPForward.set_sensitive(
                 self.mainapp.checkNPName(new_text))
 
-    def fetchDevices(self, parent=None, network=False):
+    def fetchDevices(self, network=False, current_uri=None):
         debugprint ("fetchDevices")
-
-        if not self.mainapp.cups._use_pk:
-            if network:
-                return {}
-
-            network = True
-
+        self.inc_spinner_task ()
         network_schemes = ["dnssd", "snmp"]
-        try:
-            try:
-                c = self.fetchDevices_conn
-            except AttributeError:
-                c = authconn.Connection (host=self.mainapp.connect_server,
-                                         parent=parent, lock=True)
-                if not self.mainapp.cups._use_pk:
-                    # Use this connection for future calls so that the
-                    # username/password is cached.
-                    self.fetchDevices_conn = c
+        error_handler = self.error_getting_devices
+        if network == False:
+            reply_handler = (lambda x, y:
+                                 self.local_devices_reply (x, y,
+                                                           current_uri))
+            cupshelpers.getDevices (self.fetchDevices_conn,
+                                    exclude_schemes=network_schemes,
+                                    reply_handler=reply_handler,
+                                    error_handler=error_handler)
+        else:
+            reply_handler = (lambda x, y:
+                                 self.network_devices_reply (x, y,
+                                                             current_uri))
+            cupshelpers.getDevices (self.fetchDevices_conn,
+                                    include_schemes=network_schemes,
+                                    reply_handler=reply_handler,
+                                    error_handler=error_handler)
 
-            debugprint ("in get_devices: connected")
-            c._begin_operation (_("fetching device list"))
-            try:
-                if network:
-                    debugprint ("Fetching network devices")
-                    ret = cupshelpers.getDevices (c,
-                                                  include_schemes=network_schemes)
-                else:
-                    debugprint ("Fetching local devices")
-                    ret = cupshelpers.getDevices (c,
-                                                  exclude_schemes=network_schemes)
-            except TypeError:
-                # include_schemes/exclude_schemes requires pycups >= 1.9.46
-                if network:
-                    ret = {}
-                else:
-                    debugprint ("Fetching all devices")
-                    debugprint ("in get_devices: getDevices")
-                    ret = cupshelpers.getDevices (c)
-        except RuntimeError:
-            raise
-        except cups.IPPError:
-            c._end_operation ()
-            raise
+    def error_getting_devices (self, conn, exc):
+        # Just ignore the error.
+        debugprint ("Error fetching devices: %s" % repr (exc))
+        if conn != self.fetchDevices_conn:
+            conn.destroy ()
+            return
 
-        c._end_operation ()
-        debugprint ("Got devices")
-        return ret
+        self.dec_spinner_task ()
+        self.fetchDevices_conn._end_operation ()
+        self.fetchDevices_conn.destroy ()
+        self.fetchDevices_conn = None
+
+    def local_devices_reply (self, conn, result, current_uri):
+        if conn != self.fetchDevices_conn:
+            conn.destroy ()
+            return
+
+        self.dec_spinner_task ()
+
+        # Now we've got the local devices, start a request for the
+        # network devices.
+        self.fetchDevices (network=True, current_uri=current_uri)
+
+        # Add the local devices to the list.
+        self.add_devices (result, current_uri)
+
+    def network_devices_reply (self, conn, result, current_uri):
+        if conn != self.fetchDevices_conn:
+            conn.destroy ()
+            return
+
+        self.dec_spinner_task ()
+        self.fetchDevices_conn._end_operation ()
+        self.fetchDevices_conn.destroy ()
+        self.fetchDevices_conn = None
+
+        # Now we've fetched both local and network devices, start
+        # querying the available PPDs.
+        gobject.idle_add (self.queryPPDs)
+
+        # Add the network devices to the list.
+        self.add_devices (result, current_uri)
 
     def install_hplip_plugin(self, uri):
         """
@@ -5214,39 +5231,13 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.set_model (model)
         self.entNPTDevice.set_text ('')
         self.expNPDeviceURIs.hide ()
-        self.inc_spinner_task ()
+        column = self.tvNPDevices.get_column (0)
+        self.tvNPDevices.set_cursor ((0,), column)
+        self.fetchDevices_conn = asyncconn.Connection ()
+        self.fetchDevices_conn._begin_operation (_("fetch devices"))
+        self.fetchDevices (network=False, current_uri=current_uri)
 
-        self.fetchDevices_op = TimedOperation (self.fetchDevices,
-                                               kwargs={"network": False},
-                                               callback=self.got_devices,
-                                               context=(current_uri, False))
-
-    def got_devices (self, result, exception, context):
-        self.fetchDevices_op = None
-        self.dec_spinner_task ()
-        (current_uri, network) = context
-        if exception:
-            try:
-                raise exception
-            except:
-                nonfatalException()
-            return
-
-        if not network:
-            # Now we've got the local devices, start a request for the
-            # network devices.
-            context = (current_uri, True)
-            self.inc_spinner_task ()
-            self.fetchDevices_op = TimedOperation (self.fetchDevices,
-                                                   kwargs={"network": True},
-                                                   callback=self.got_devices,
-                                                   context=context)
-        else:
-            # Now we've fetched both local and network devices, start
-            # querying the available PPDs.
-            gobject.timeout_add (1, self.queryPPDs)
-
-        devices = result
+    def add_devices (self, devices, current_uri):
         if current_uri:
             if devices.has_key (current_uri):
                 current = devices.pop(current_uri)
@@ -6160,14 +6151,18 @@ class NewPrinterGUI(GtkGUI):
             dev = PhysicalDevice (new_device)
             try:
                 i = self.devices.index (dev)
+
+                # Adding a new URI to an existing physical device.
                 self.devices[i].add_device (new_device)
 
                 (path, column) = self.tvNPDevices.get_cursor ()
-                model = self.tvNPDevices.get_model ()
-                iter = model.get_iter (path)
-                if model.get_value (iter, 1) == self.devices[i]:
-                    self.on_tvNPDevices_cursor_changed (self.tvNPDevices)
+                if path:
+                    model = self.tvNPDevices.get_model ()
+                    iter = model.get_iter (path)
+                    if model.get_value (iter, 1) == self.devices[i]:
+                        self.on_tvNPDevices_cursor_changed (self.tvNPDevices)
             except ValueError:
+                # New physical device.
                 dev.set_data ('checked-hplip', True)
                 self.devices.append (dev)
                 self.devices.sort ()
@@ -6175,10 +6170,10 @@ class NewPrinterGUI(GtkGUI):
                 iter = model.insert_before (None, self.devices_find_nw_iter,
                                             row=[dev.get_info (), dev, False])
 
-            # If this is the first one we've found, select it.
-            if self.network_found == 1:
-                path = model.get_path (iter)
-                self.tvNPDevices.set_cursor (path)
+                # If this is the first one we've found, select it.
+                if self.network_found == 1:
+                    path = model.get_path (iter)
+                    self.tvNPDevices.set_cursor (path)
         else:
             self.printer_finder = None
             self.dec_spinner_task ()
@@ -6810,9 +6805,8 @@ class NewPrinterGUI(GtkGUI):
 
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
-        if self.fetchDevices_op:
-            self.fetchDevices_op.cancel ()
-            self.fetchDevices_op = None
+        if self.fetchDevices_conn:
+            self.fetchDevices_conn = None
             self.dec_spinner_task ()
 
         if self.printer_finder:
@@ -7121,6 +7115,7 @@ class NewPrinterGUI(GtkGUI):
 def main(setup_printer = None, configure_printer = None, change_ppd = False,
          devid = "", print_test_page = False, focus_on_map = True):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
+    gobject.threads_init()
     gtk.gdk.threads_init()
 
     mainwindow = GUI(setup_printer, configure_printer, change_ppd, devid,

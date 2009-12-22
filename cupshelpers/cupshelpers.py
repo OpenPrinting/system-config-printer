@@ -545,6 +545,29 @@ class Device:
         
         return result
 
+class _GetDevicesCall(object):
+    def call (self, connection, kwds):
+        if kwds.has_key ("reply_handler"):
+            self._client_reply_handler = kwds.get ("reply_handler")
+            kwds["reply_handler"] = self._reply_handler
+            return connection.getDevices (**kwds)
+
+        self._client_reply_handler = None
+        result = connection.getDevices (**kwds)
+        return self._reply_handler (connection, result)
+
+    def _reply_handler (self, connection, devices):
+        for uri, data in devices.iteritems():
+            device = Device(uri, **data)
+            devices[uri] = device
+            if device.info != '' and device.make_and_model == '':
+                device.make_and_model = device.info
+
+        if self._client_reply_handler:
+            self._client_reply_handler (connection, devices)
+        else:
+            return devices
+            
 def getDevices(connection, **kw):
     """
     Obtain a list of available CUPS devices.
@@ -554,13 +577,8 @@ def getDevices(connection, **kw):
     @returns: a list of L{Device} objects
     @raise cups.IPPError: IPP Error
     """
-    devices = connection.getDevices(**kw)
-    for uri, data in devices.iteritems():
-        device = Device(uri, **data)
-        devices[uri] = device
-        if device.info != '' and device.make_and_model == '':
-            device.make_and_model = device.info
-    return devices
+    op = _GetDevicesCall ()
+    return op.call (connection, kw)
 
 def activateNewPrinter(connection, name):
     """

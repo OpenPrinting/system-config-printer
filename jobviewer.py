@@ -1323,6 +1323,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
             debugprint ("Already sent notification for %s" % repr (reason))
             return
 
+        if reason.get_reason () == "com.apple.print.recoverable":
+            return
+
         level = reason.get_level ()
         if (level == StateReason.ERROR or
             reason.get_reason () == "connecting-to-device"):

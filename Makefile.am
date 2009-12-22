@@ -78,6 +78,9 @@ nobase_pkgdata_SCRIPTS=				\
 
 nobase_pkgdata_DATA=					\
 	AdvancedServerSettings.py			\
+	asyncconn.py					\
+	asyncipp.py					\
+	asyncpk1.py					\
 	authconn.py					\
 	config.py					\
 	cupspk.py					\
