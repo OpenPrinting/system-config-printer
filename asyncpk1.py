@@ -445,6 +445,34 @@ class PK1Connection:
                             error_handler, self._nothing_to_unpack,
                             self._conn.getFile, args, kwds)
 
+    ## etc
+    ## Still to implement:
+    ## putFile
+    ## addPrinter
+    ## setPrinterDevice
+    ## setPrinterInfo
+    ## setPrinterLocation
+    ## setPrinterShared
+    ## setPrinterJobSheets
+    ## setPrinterErrorPolicy
+    ## setPrinterOpPolicy
+    ## setPrinterUsersAllowed
+    ## setPrinterUsersDenied
+    ## addPrinterOptionDefault
+    ## deletePrinterOptionDefault
+    ## deletePrinter
+    ## addPrinterToClass
+    ## deletePrinterFromClass
+    ## deleteClass
+    ## setDefault
+    ## enablePrinter
+    ## disablePrinter
+    ## acceptJobs
+    ## rejectJobs
+    ## adminGetServerSettings
+    ## adminSetServerSettings
+    ## ...
+
 if __name__ == '__main__':
     import gtk
     gobject.threads_init ()
