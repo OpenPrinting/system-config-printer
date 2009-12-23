@@ -4564,7 +4564,7 @@ class NewPrinterGUI(GtkGUI):
                     not self.device.type in ("socket", "lpd", "ipp",
                                              "http", "https", "bluetooth")):
                     name = "%s %s" % (self.device.id_dict["MFG"], 
-                                      elf.device.id_dict["MDL"])
+                                      self.device.id_dict["MDL"])
                     descr = "%s %s" % (self.device.id_dict["MFG"],
                                        self.device.id_dict["MDL"])
             except:
