@@ -3968,38 +3968,41 @@ class NewPrinterGUI(GtkGUI):
                     else:
                         self.auto_make = devid_dict["MFG"]
                         self.auto_model = devid_dict["MDL"]
+                        self.auto_driver = None
                 except:
                     self.auto_make = devid_dict["MFG"]
                     self.auto_model = devid_dict["MDL"]
+                    self.auto_driver = None
                 if not self.device or not self.device.id:
                     self.device.id = devid
                     self.device.id_dict = cupshelpers.parseDeviceID (devid)
                 self.mainapp.devid = ""
             elif ppd:
-                attr = ppd.findAttr("Manufacturer")
-                if attr:
-                    mfr = attr.value
-                else:
-                    mfr = ""
-                makeandmodel = mfr
-                attr = ppd.findAttr("ModelName")
-                if not attr: attr = ppd.findAttr("ShortNickName")
-                if not attr: attr = ppd.findAttr("NickName")
-                if attr:
-                    if attr.value.startswith(mfr):
-                        makeandmodel = attr.value
-                    else:
-                        makeandmodel += ' ' + attr.value
-                else:
-                    makeandmodel = ''
+                attr = ppd.findAttr("NickName")
+                if not attr:
+                    attr = ppd.findAttr("ModelName")
 
-                (self.auto_make,
-                 self.auto_model) = \
-                 cupshelpers.ppds.ppdMakeModelSplit (makeandmodel)
+                if attr.value:
+                    mfgmdl = cupshelpers.ppds.ppdMakeModelSplit (attr.value)
+                    (self.auto_make, self.auto_model) = mfgmdl
+
+                    # Search for ppdname with that make-and-model
+                    self.loadPPDs ()
+                    ppds = self.ppds.getInfoFromModel (self.auto_make,
+                                                       self.auto_model)
+                    for ppd, info in ppds.iteritems ():
+                        if info.get ("ppd-make-and-model") == attr.value:
+                            self.auto_driver = ppd
+                            break
+                else:
+                    self.auto_make = None
+                    self.auto_model = None
+                    self.auto_driver = None
             else:
                 # Special CUPS names for a raw queue.
                 self.auto_make = 'Generic'
                 self.auto_model = 'Raw Queue'
+                self.auto_driver = None
 
             try:
                 if self.dialog_mode == "ppd":
@@ -4249,6 +4252,8 @@ class NewPrinterGUI(GtkGUI):
         if self.openprinting_query_handle != None:
             self.openprinting.cancelOperation (self.openprinting_query_handle)
             self.openprinting_query_handle = None
+
+        self.device = None
         return True
 
     def on_btnNPBack_clicked(self, widget):
@@ -4267,6 +4272,7 @@ class NewPrinterGUI(GtkGUI):
             self.busy (self.NewPrinterWindow)
             if page_nr == 1: # Device (first page)
                 self.auto_make, self.auto_model = None, None
+                self.auto_driver = None
                 self.device.uri = self.getDeviceURI()
                 if not self.install_hplip_plugin(self.device.uri):
                     self.on_NPCancel(None)
@@ -4434,6 +4440,7 @@ class NewPrinterGUI(GtkGUI):
                             cupshelpers.ppds.ppdMakeModelSplit (make_model)
                         self.auto_make = make
                         self.auto_model = model
+                        self.auto_driver = ppdname
                         if (status == self.ppds.STATUS_SUCCESS and \
                             self.dialog_mode != "ppd"):
                             self.exactdrivermatch = True
@@ -6414,7 +6421,17 @@ class NewPrinterGUI(GtkGUI):
         ppds = self.ppds.getInfoFromModel(pmake, pmodel)
 
         self.NPDrivers = self.ppds.orderPPDNamesByPreference(ppds.keys(),
-                                             self.jockey_installed_files) 
+                                             self.jockey_installed_files)
+        if self.auto_driver and self.device:
+            drivers = []
+            for driver in self.NPDrivers:
+                if driver == self.auto_driver:
+                    drivers.insert (0, driver)
+                else:
+                    drivers.append (driver)
+
+            self.NPDrivers = drivers
+
         for i in range (len(self.NPDrivers)):
             ppd = ppds[self.NPDrivers[i]]
             driver = ppd["ppd-make-and-model"]
@@ -6426,7 +6443,12 @@ class NewPrinterGUI(GtkGUI):
             except KeyError:
                 pass
 
-            if i == 0:
+            if not self.device and self.auto_driver == self.NPDrivers[i]:
+                iter = model.append ((driver + _(" (Current)"),))
+                path = model.get_path (iter)
+                self.tvNPDrivers.get_selection().select_path(path)
+                self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
+            elif self.device and i == 0:
                 iter = model.append ((driver + _(" (recommended)"),))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
@@ -6881,6 +6903,7 @@ class NewPrinterGUI(GtkGUI):
                 checkppd = ppd
 
         self.NewPrinterWindow.hide()
+        self.device = None
         self.mainapp.populateList()
 
         # Now select it.
