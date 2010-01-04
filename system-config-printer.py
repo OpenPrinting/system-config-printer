@@ -3975,7 +3975,7 @@ class NewPrinterGUI(GtkGUI):
                     self.auto_make = devid_dict["MFG"]
                     self.auto_model = devid_dict["MDL"]
                     self.auto_driver = None
-                if not self.device or not self.device.id:
+                if self.device and not self.device.id:
                     self.device.id = devid
                     self.device.id_dict = cupshelpers.parseDeviceID (devid)
                 self.mainapp.devid = ""
