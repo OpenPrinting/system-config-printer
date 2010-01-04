@@ -6897,6 +6897,8 @@ class NewPrinterGUI(GtkGUI):
                     self.mainapp.cups.addPrinter(name, ppd=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
+                    self.mainapp.cups._end_operation ()
+                    return
 
             self.mainapp.cups._end_operation ()
 
@@ -6923,6 +6925,11 @@ class NewPrinterGUI(GtkGUI):
                 break
 
             iter = model.iter_next (iter)
+
+        if not self.printers.has_key (name):
+            # At this stage the printer has disappeared even though we
+            # only added it moments ago.
+            return
 
         # Load information about the printer,
         # e.g. self.mainapp.server_side_options and self.mainapp.ppd
