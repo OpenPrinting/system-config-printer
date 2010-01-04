@@ -126,6 +126,7 @@ class NewPrinterNotification(dbus.service.Object):
             n = pynotify.Notification (title, text, 'printer')
             if "actions" in pynotify.get_server_caps():
                 n.set_urgency (pynotify.URGENCY_CRITICAL)
+                n.set_timeout (pynotify.EXPIRES_NEVER)
                 n.add_action ("setup-printer", _("Search"),
                               lambda x, y:
                                   self.setup_printer (x, y, name, devid))
@@ -182,6 +183,7 @@ class NewPrinterNotification(dbus.service.Object):
                 if "actions" in pynotify.get_server_caps():
                     try:
                         self.packagekit = installpackage.PackageKit ()
+                        n.set_timeout (pynotify.EXPIRES_NEVER)
                         n.add_action ("install-driver", _("Install"),
                                       lambda x, y:
                                           self.install_driver (x, y,
