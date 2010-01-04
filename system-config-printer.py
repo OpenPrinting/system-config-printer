@@ -2837,7 +2837,8 @@ class GUI(GtkGUI, monitor.Watcher):
     def on_quit_activate(self, widget, event=None):
         self.monitor.cleanup ()
         while len (self.jobviewers) > 0:
-            self.jobviewers[0].cleanup () # this will call on_jobviewer_exit
+            # this will call on_jobviewer_exit
+            self.jobviewers[0].on_delete_event ()
         del self.mainlist
         del self.printers
         gtk.main_quit()
