@@ -1,6 +1,8 @@
 
-## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
+##  Jiri Popelka <jpopelka@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -164,8 +166,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         job_action_group.add_actions ([
                 ("cancel-job", gtk.STOCK_CANCEL, None, None, None,
                  self.on_job_cancel_activate),
-                ("clear-job", gtk.STOCK_CLEAR, _("_Clear"), None, None,
-                 self.on_job_clear_activate),
+                ("delete-job", gtk.STOCK_DELETE, _("_Delete"), None, None,
+                 self.on_job_delete_activate),
                 ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None, None,
                  self.on_job_hold_activate),
                 ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None, None,
@@ -183,7 +185,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 """
 <ui>
  <accelerator action="cancel-job"/>
- <accelerator action="clear-job"/>
+ <accelerator action="delete-job"/>
  <accelerator action="hold-job"/>
  <accelerator action="release-job"/>
  <accelerator action="reprint-job"/>
@@ -196,7 +198,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.JobsWindow.add_accel_group (self.job_ui_manager.get_accel_group ())
         self.job_context_menu = gtk.Menu ()
         for action_name in ["cancel-job",
-                            "clear-job",
+                            "delete-job",
                             "hold-job",
                             "release-job",
                             "reprint-job",
@@ -841,14 +843,14 @@ class JobViewer (GtkGUI, monitor.Watcher):
         treeview = selection.get_tree_view()
         (model, pathlist) = selection.get_selected_rows()
         cancel = self.job_ui_manager.get_action ("/cancel-job")
-        clear = self.job_ui_manager.get_action ("/clear-job")
+        delete = self.job_ui_manager.get_action ("/delete-job")
         hold = self.job_ui_manager.get_action ("/hold-job")
         release = self.job_ui_manager.get_action ("/release-job")
         reprint = self.job_ui_manager.get_action ("/reprint-job")
         authenticate = self.job_ui_manager.get_action ("/authenticate-job")
         attributes = self.job_ui_manager.get_action ("/job-attributes")
         if len (pathlist) == 0:
-            for widget in [cancel, clear, hold, release, reprint,
+            for widget in [cancel, delete, hold, release, reprint,
                            authenticate, attributes]:
                 widget.set_sensitive (False)
             return
@@ -883,7 +885,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 authenticate_sensitive = False
 
         cancel.set_sensitive(cancel_sensitive)
-        clear.set_sensitive(True)
+        delete.set_sensitive(True)
         hold.set_sensitive(hold_sensitive)
         release.set_sensitive(release_sensitive)
         reprint.set_sensitive(reprint_sensitive)
@@ -924,17 +926,17 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_job_cancel_activate(self, menuitem):
         self.on_job_cancel_activate2(False)
 
-    def on_job_clear_activate(self, menuitem):
+    def on_job_delete_activate(self, menuitem):
         self.on_job_cancel_activate2(True)
 
     def on_job_cancel_activate2(self, purge_job):
         if purge_job:
             if len(self.jobids) > 1:
-                dialog_title = _("Clear Jobs")
-                dialog_label = _("Do you really want to clear these jobs?")
+                dialog_title = _("Delete Jobs")
+                dialog_label = _("Do you really want to delete these jobs?")
             else:
-                dialog_title = _("Clear Job")
-                dialog_label = _("Do you really want to clear this job?")
+                dialog_title = _("Delete Job")
+                dialog_label = _("Do you really want to delete this job?")
         else:
             if len(self.jobids) > 1:
                 dialog_title = _("Cancel Jobs")
@@ -963,10 +965,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         hbox.pack_start (label, False, False, 0)
         dialog.vbox.pack_start (hbox, False, False, 0)
         dialog.set_data ('job-ids', self.jobids)
-        dialog.connect ("response", self.on_job_clear_prompt_response
+        dialog.connect ("response", self.on_job_delete_prompt_response
                                     if purge_job
                                     else self.on_job_cancel_prompt_response)
-        dialog.connect ("delete-event", self.on_job_clear_prompt_delete
+        dialog.connect ("delete-event", self.on_job_delete_prompt_delete
                                         if purge_job
                                         else self.on_job_cancel_prompt_delete)
         dialog.show_all ()
@@ -974,13 +976,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
     def on_job_cancel_prompt_delete (self, dialog, event):
         self.on_job_cancel_prompt_response (dialog, gtk.RESPONSE_NO, False)
 
-    def on_job_clear_prompt_delete (self, dialog, event):
-        self.on_job_clear_prompt_response (dialog, gtk.RESPONSE_NO, True)
+    def on_job_delete_prompt_delete (self, dialog, event):
+        self.on_job_delete_prompt_response (dialog, gtk.RESPONSE_NO, True)
 
     def on_job_cancel_prompt_response (self, dialog, response):
         self.on_job_cancel_prompt_response2(dialog, response, False)
 
-    def on_job_clear_prompt_response (self, dialog, response):
+    def on_job_delete_prompt_response (self, dialog, response):
         self.on_job_cancel_prompt_response2(dialog, response, True)
 
     def on_job_cancel_prompt_response2 (self, dialog, response, purge_job):
@@ -997,7 +999,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         except RuntimeError:
             return
 
-        operation = _("clearing job") if purge_job else _("canceling job")
+        operation = _("deleting job") if purge_job else _("canceling job")
         for jobid in dialog.get_data ('job-ids'):
             c._begin_operation (operation)
             try:
