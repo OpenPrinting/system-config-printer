@@ -2,9 +2,10 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2006, 2007 Florian Festi <ffesti@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
+##  Florian Festi <ffesti@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
