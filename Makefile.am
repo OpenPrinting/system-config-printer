@@ -70,7 +70,6 @@ clean-local:
 	rm -f .stamp-distutils-in-builddir
 
 nobase_pkgdata_SCRIPTS=				\
-	my-default-printer.py			\
 	pysmb.py				\
 	system-config-printer.py		\
 	troubleshoot/__init__.py		\
@@ -150,8 +149,7 @@ nobase_pkgdata_DATA=					\
 
 bin_SCRIPTS=\
 	system-config-printer			\
-	system-config-printer-applet		\
-	my-default-printer
+	system-config-printer-applet
 
 if UDEV_RULES
 udevrulesdir=/lib/udev/rules.d
@@ -177,8 +175,7 @@ dbusdir = $(sysconfdir)/dbus-1/system.d/
 desktop_DATA =\
 	system-config-printer.desktop \
 	print-applet.desktop \
-	manage-print-jobs.desktop \
-	my-default-printer.desktop
+	manage-print-jobs.desktop
 desktopdir = $(datadir)/applications/
 autostartdir = $(sysconfdir)/xdg/autostart/
 
@@ -203,12 +200,6 @@ install-desktopDATA: $(desktop_DATA)
 	  --add-category GTK			\
 	  manage-print-jobs.desktop
 	desktop-file-install $(DESKTOP_VENDOR)	\
-	  --dir $(DESTDIR)$(desktopdir)		\
-	  --add-category Settings		\
-	  --add-category HardwareSettings	\
-	  --add-category GTK			\
-	  my-default-printer.desktop
-	desktop-file-install $(DESKTOP_VENDOR)	\
 	  --dir $(DESTDIR)$(autostartdir)	\
 	  --add-category System			\
 	  --add-category Monitor		\
@@ -218,7 +209,6 @@ install-desktopDATA: $(desktop_DATA)
 uninstall-desktopDATA:
 	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)system-config-printer.desktop
 	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)manage-print-jobs.desktop
-	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)my-default-printer.desktop
 	rm -f $(DESTDIR)$(autostartdir)/$(DESKTOP_PREFIX)print-applet.desktop
 
 EXTRA_DIST=\
@@ -236,7 +226,6 @@ EXTRA_DIST=\
 	ChangeLog-OLD \
 	system-config-printer.desktop.in \
 	manage-print-jobs.desktop.in \
-	my-default-printer.desktop.in \
 	print-applet.desktop.in \
 	intltool-extract.in \
 	intltool-merge.in \
