@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Authors: Tim Waugh <twaugh@redhat.com>, Vincent Untz
 
@@ -252,6 +252,16 @@ class PK1Connection:
         for arg in args:
             try:
                 val = self._coerce (types[argindex], arg)
+            except IndexError:
+                # More args than types.
+                kw, default = params[argindex]
+                if default != arg:
+                    return result
+
+                # It's OK, this is the default value anyway and can be
+                # ignored.  Skip to the next one.
+                argindex += 1
+                continue
             except TypeError, e:
                 debugprint ("Error converting %s to %s" %
                             (repr (arg), types[argindex]))
@@ -366,7 +376,8 @@ class PK1Connection:
     def cancelJob (self, *args, **kwds):
         (use_pycups, reply_handler, error_handler,
          tup) = self._args_kwds_to_tuple ([int],
-                                          [(None, None)],
+                                          [(None, None),
+                                           (None, False)], # purge_job
                                           args, kwds)
 
         self._call_with_pk (use_pycups,
