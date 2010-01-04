@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -126,6 +126,7 @@ class NewPrinterNotification(dbus.service.Object):
             n = pynotify.Notification (title, text, 'printer')
             if "actions" in pynotify.get_server_caps():
                 n.set_urgency (pynotify.URGENCY_CRITICAL)
+                n.set_timeout (pynotify.EXPIRES_NEVER)
                 n.add_action ("setup-printer", _("Search"),
                               lambda x, y:
                                   self.setup_printer (x, y, name, devid))
@@ -177,6 +178,7 @@ class NewPrinterNotification(dbus.service.Object):
                 if "actions" in pynotify.get_server_caps():
                     try:
                         self.packagekit = installpackage.PackageKit ()
+                        n.set_timeout (pynotify.EXPIRES_NEVER)
                         n.add_action ("install-driver", _("Install"),
                                       lambda x, y:
                                           self.install_driver (x, y,

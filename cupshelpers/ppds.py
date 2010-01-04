@@ -248,14 +248,25 @@ def _getDriverType (ppdname, ppds=None):
         # Foomatic (generated) -- but which driver?
         if ppdname.find ("Generic")!= -1:
             return DRIVER_TYPE_FOOMATIC_GENERIC
-        if (ppds != None and
-            ppds.getInfoFromPPDName (ppdname).\
-            get ('ppd-make-and-model', '').find ("(recommended)") != -1):
-            if ppds.getInfoFromPPDName (ppdname).\
-               get ('ppd-make-and-model', '').find ("Postscript") != -1:
-                return DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT
-            else:
-                return DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT
+        if ppds != None:
+            info = ppds.getInfoFromPPDName (ppdname)
+            device_id = info.get ('ppd-device-id', '')
+            id_dict = parseDeviceID (device_id)
+            drv = id_dict.get ('DRV', '')
+            drvfields = dict()
+            for field in drv.split (','):
+                if len (field) == 0:
+                    continue
+                key = field[0]
+                drvfields[key] = field[1:]
+
+            ppd_make_and_model = info.get ('ppd-make-and-model', '')
+            if (drvfields.get ('R', '0') == '1' or
+                ppd_make_and_model.find ("(recommended)") != -1):
+                if ppd_make_and_model.find ("Postscript") != -1:
+                    return DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT
+                else:
+                    return DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT
         if ppdname.find ("-Postscript")!= -1:
             return DRIVER_TYPE_FOOMATIC_PS
         if ppdname.find ("-hpijs") != -1:
