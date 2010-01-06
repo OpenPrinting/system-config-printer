@@ -251,8 +251,8 @@ class GUI(GtkGUI, monitor.Watcher):
                               "pbarConnecting"],
                          "NewPrinterName":
                              ["NewPrinterName",
-                              "entCopyName",
-                              "btnCopyOk"],
+                              "entDuplicateName",
+                              "btnDuplicateOk"],
                          "ServerSettingsDialog":
                              ["ServerSettingsDialog",
                               "chkServerBrowse",
@@ -410,8 +410,8 @@ class GUI(GtkGUI, monitor.Watcher):
         printer_manager_action_group.add_actions ([
                 ("rename-printer", None, _("_Rename"),
                  None, None, self.on_rename_activate),
-                ("copy-printer", gtk.STOCK_COPY, None,
-                 "<Ctrl>c", None, self.on_copy_activate),
+                ("duplicate-printer", gtk.STOCK_COPY, _("_Duplicate"),
+                 "<Ctrl>d", None, self.on_duplicate_activate),
                 ("delete-printer", gtk.STOCK_DELETE, None,
                  None, None, self.on_delete_activate),
                 ("set-default-printer", gtk.STOCK_HOME, _("Set As De_fault"),
@@ -455,7 +455,7 @@ class GUI(GtkGUI, monitor.Watcher):
 """
 <ui>
  <accelerator action="rename-printer"/>
- <accelerator action="copy-printer"/>
+ <accelerator action="duplicate-printer"/>
  <accelerator action="delete-printer"/>
  <accelerator action="set-default-printer"/>
  <accelerator action="edit-printer"/>
@@ -478,7 +478,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.printer_context_menu = gtk.Menu ()
         for action_name in ["edit-printer",
-                            "copy-printer",
+                            "duplicate-printer",
                             "rename-printer",
                             "delete-printer",
                             None,
@@ -1146,7 +1146,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.ui_manager.get_action ("/edit-printer").set_sensitive (n == 1)
 
-        self.ui_manager.get_action ("/copy-printer").set_sensitive (n == 1)
+        self.ui_manager.get_action ("/duplicate-printer").set_sensitive (n == 1)
 
         self.ui_manager.get_action ("/rename-printer").set_sensitive (
             n == 1 and not any_discovered)
@@ -3111,26 +3111,26 @@ class GUI(GtkGUI, monitor.Watcher):
         model = self.dests_iconview.get_model ()
         model.foreach (select_new_printer)
 
-    # Copy
+    # Duplicate
 
-    def copy_printer (self, new_name):
+    def duplicate_printer (self, new_name):
         self.printer.name = new_name
         self.printer.class_members = [] # for classes make sure all members
                                         # will get added
 
-        self.cups._begin_operation (_("copying printer"))
+        self.cups._begin_operation (_("duplicating printer"))
         ret = self.save_printer(self.printer, saveall=True,
                                 parent=self.PrintersWindow)
         self.cups._end_operation ()
         return ret
 
-    def on_copy_activate(self, UNUSED):
+    def on_duplicate_activate(self, UNUSED):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (paths[0])
         name = unicode (model.get_value (iter, 2))
-        self.entCopyName.set_text(name)
+        self.entDuplicateName.set_text(name)
         self.NewPrinterName.set_transient_for (self.PrintersWindow)
         result = self.NewPrinterName.run()
         self.NewPrinterName.hide()
@@ -3144,10 +3144,10 @@ class GUI(GtkGUI, monitor.Watcher):
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
 
-        self.copy_printer (self.entCopyName.get_text ())
+        self.duplicate_printer (self.entDuplicateName.get_text ())
         self.monitor.update ()
 
-    def on_entCopyName_changed(self, widget):
+    def on_entDuplicateName_changed(self, widget):
         # restrict
         text = unicode (widget.get_text())
         new_text = text
@@ -3156,7 +3156,7 @@ class GUI(GtkGUI, monitor.Watcher):
         new_text = new_text.replace(" ", "")
         if text!=new_text:
             widget.set_text(new_text)
-        self.btnCopyOk.set_sensitive(
+        self.btnDuplicateOk.set_sensitive(
             self.checkNPName(new_text))
 
     # Delete
