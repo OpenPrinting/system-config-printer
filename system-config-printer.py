@@ -2506,6 +2506,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.vboxMarkerLevels.remove (widget)
 
         marker_info = dict()
+        num_markers = 0
         for (attr, typ) in [('marker-colors', str),
                             ('marker-names', str),
                             ('marker-types', str),
@@ -2522,10 +2523,18 @@ class GUI(GtkGUI, monitor.Watcher):
                 except TypeError, s:
                     debugprint ("%s value not coercible to %s: %s" %
                                 (attr, typ, s))
-                    val = []
+                    val = map (lambda x: 0.0, val)
 
             marker_info[attr] = val
+            if num_markers == 0 or len (val) < num_markers:
+                num_markers = len (val)
 
+        for attr in ['marker-colors', 'marker-names',
+                     'marker-types', 'marker-levels']:
+            if len (marker_info[attr]) > num_markers:
+                debugprint ("Trimming %s from %s" %
+                            (marker_info[attr][num_markers:], attr))
+                del marker_info[attr][num_markers:]
 
         markers = map (lambda color, name, type, level:
                            (color, name, type, level),
