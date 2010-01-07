@@ -6935,7 +6935,7 @@ class NewPrinterGUI(GtkGUI):
 
             iter = model.iter_next (iter)
 
-        if not self.printers.has_key (name):
+        if not self.mainapp.printers.has_key (name):
             # At this stage the printer has disappeared even though we
             # only added it moments ago.
             return
