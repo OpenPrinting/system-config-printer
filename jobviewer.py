@@ -1,6 +1,6 @@
 
-## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -599,13 +599,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                 # Find out which auth-info is required.
                 try_keyring = USE_KEYRING
-                keyring_attrs = None
+                keyring_attrs = dict()
                 auth_info = None
                 if try_keyring and 'password' in auth_info_required:
                     auth_info_required = data.get ('auth-info-required', [])
                     device_uri = data.get ("device-uri")
                     (scheme, rest) = urllib.splittype (device_uri)
-                    keyring_attrs = dict ()
                     if scheme == 'smb':
                         uri = smburi.SMBURI (uri=device_uri)
                         (group, server, share,
