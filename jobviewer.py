@@ -164,7 +164,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         job_action_group = gtk.ActionGroup ("JobActionGroup")
         job_action_group.add_actions ([
-                ("cancel-job", gtk.STOCK_CANCEL, None, None, None,
+                ("cancel-job", gtk.STOCK_CANCEL, _("_Cancel"), None, None,
                  self.on_job_cancel_activate),
                 ("delete-job", gtk.STOCK_DELETE, _("_Delete"), None, None,
                  self.on_job_delete_activate),
