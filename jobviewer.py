@@ -150,6 +150,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.job_creation_times_timer = None
         self.special_status_icon = False
         self.new_printer_notifications = {}
+        self.completed_job_notifications = {}
         self.authenticated_jobs = set() # of job IDs
 
         self.getWidgets ({"JobsWindow":
@@ -814,6 +815,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
 
         open_notifications = len (self.new_printer_notifications.keys ())
+        open_notifications += len (self.completed_job_notifications.keys ())
         for reason, notification in self.state_reason_notifications.iteritems():
             if notification.get_data ('closed') != True:
                 open_notifications += 1
@@ -1357,6 +1359,57 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.set_statusicon_visibility ()
         return
 
+    def notify_completed_job (self, jobid):
+        job = self.jobs.get (jobid, {})
+        document = job.get ('job-name', _("Unknown"))
+        printer_uri = job.get ('job-printer-uri')
+        if printer_uri != None:
+            # Determine if this printer is remote.  There's no need to
+            # show a notification if the printer is connected to this
+            # machine.
+
+            # Find out the device URI.  We might already have
+            # determined this if authentication was required.
+            device_uri = job.get ('device-uri')
+
+            if device_uri == None:
+                pattrs = ['device-uri']
+                c = authconn.Connection (self.JobsWindow,
+                                         host=self.host,
+                                         port=self.port,
+                                         encryption=self.encryption)
+                attrs = c.getPrinterAttributes (uri=printer_uri,
+                                                requested_attributes=pattrs)
+                device_uri = attrs.get ('device-uri')
+
+            if device_uri != None:
+                (scheme, rest) = urllib.splittype (device_uri)
+                if scheme not in ['socket', 'ipp', 'http', 'smb']:
+                    return
+
+        printer = job.get ('job-printer-name', _("Unknown"))
+        notification = pynotify.Notification (_("Document printed"),
+                                              _("Document `%s' has been sent "
+                                                "to `%s' for printing.") %
+                                              (document, printer),
+                                              'printer')
+        notification.set_urgency (pynotify.URGENCY_LOW)
+        notification.connect ('closed',
+                              self.on_completed_job_notification_closed)
+        notification.set_data ('jobid', jobid)
+        self.completed_job_notifications[jobid] = notification
+        self.set_statusicon_visibility ()
+        notification.attach_to_status_icon (self.statusicon)
+        try:
+            notification.show ()
+        except gobject.GError:
+            nonfatalException ()
+
+    def on_completed_job_notification_closed (self, notification, reason=None):
+        jobid = notification.get_data ('jobid')
+        del self.completed_job_notifications[jobid]
+        self.set_statusicon_visibility ()
+
     ## monitor.Watcher interface
     def current_printers_and_jobs (self, mon, printers, jobs):
         monitor.Watcher.current_printers_and_jobs (self, mon, printers, jobs)
@@ -1433,6 +1486,23 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.update_job (jobid, jobdata)
         self.update_status ()
         jobdata = self.jobs[jobid]
+
+        # If the job has finished, let the user know.
+        if self.trayicon and (eventname == 'job-completed' or
+                              (eventname == 'job-state-changed' and
+                               event['job-state'] == cups.IPP_JOB_COMPLETED)):
+            reasons = event['job-state-reasons']
+            if type (reasons) != list:
+                reasons = [reasons]
+
+            canceled = False
+            for reason in reasons:
+                if reason.startswith ("job-canceled"):
+                    canceled = True
+                    break
+
+            if not canceled:
+                self.notify_completed_job (jobid)
 
         # Look out for stopped jobs.
         if (self.trayicon and
@@ -1537,6 +1607,24 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def job_removed (self, mon, jobid, eventname, event):
         monitor.Watcher.job_removed (self, mon, jobid, eventname, event)
+
+        # If the job has finished, let the user know.
+        if self.trayicon and (eventname == 'job-completed' or
+                              (eventname == 'job-state-changed' and
+                               event['job-state'] == cups.IPP_JOB_COMPLETED)):
+            reasons = event['job-state-reasons']
+            debugprint (reasons)
+            if type (reasons) != list:
+                reasons = [reasons]
+
+            canceled = False
+            for reason in reasons:
+                if reason.startswith ("job-canceled"):
+                    canceled = True
+                    break
+
+            if not canceled:
+                self.notify_completed_job (jobid)
 
         if self.jobiters.has_key (jobid):
             self.store.remove (self.jobiters[jobid])
