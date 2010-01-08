@@ -139,7 +139,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.jobs = {}
         self.jobiters = {}
         self.jobids = []
-        self.jobs_attrs = {} # dict of jobid->GtkListStore of job attributes
+        self.jobs_attrs = {} # dict of jobid->(GtkListStore, page_index)
         self.active_jobs = set() # of job IDs
         self.stopped_job_prompts = set() # of job IDs
         self.printer_state_reasons = {}
@@ -547,7 +547,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         r = self.required_job_attributes - set (data.keys ())
 
         # If we are showing attributes of this job at this moment, update them.
-        if job in self.jobs_attrs.keys():
+        if job in self.jobs_attrs:
             self.update_job_attributes_viewer(job)
 
         if r:
@@ -1020,10 +1020,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         del c
         if purge_job:
-            if self.jobs_attrs.has_key(jobid):
-                # we are looking at attributes of this job at this moment
-                # remove this job from attributes store to prevent crash
-                del self.jobs_attrs[jobid]
             self.monitor.refresh ()
         else:
             self.monitor.update ()
@@ -1127,11 +1123,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return False
 
         for jobid in self.jobids:
-            if jobid not in self.jobs_attrs.keys():
+            if jobid not in self.jobs_attrs:
                 # add new notebook page with scrollable treeview
                 scrolledwindow = gtk.ScrolledWindow()
                 label = gtk.Label(jobid) # notebook page has label with jobid
-                self.notebook.append_page(scrolledwindow, label)
+                page_index = self.notebook.append_page(scrolledwindow, label)
                 attr_treeview = gtk.TreeView()
                 scrolledwindow.add(attr_treeview)
                 cell = gtk.CellRendererText ()
@@ -1145,7 +1141,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 attr_treeview.set_model(attr_store)
                 attr_treeview.get_selection().set_mode(gtk.SELECTION_NONE)
                 attr_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
-                self.jobs_attrs[jobid] = attr_store
+                self.jobs_attrs[jobid] = (attr_store, page_index)
                 self.update_job_attributes_viewer (jobid, conn=c)
 
         self.JobsAttributesWindow.show_all ()
@@ -1163,14 +1159,24 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 self.monitor.watcher.cups_connection_error (self)
                 return False
 
-        attr_store = self.jobs_attrs[jobid]        # store to update
-        jobattributes = c.getJobAttributes(jobid)  # new attributes
-        attr_store.clear()                         # remove old attributes
-        for name, value in jobattributes.iteritems():
-            if name in ['job-id', 'job-printer-up-time']:
-                continue
+        if jobid in self.jobs_attrs:
+            (attr_store, page) = self.jobs_attrs[jobid]
+            try:
+                attrs = c.getJobAttributes(jobid)       # new attributes
+            except AttributeError:
+                return
+            except cups.IPPError:
+                # someone else may have purged the job,
+                # remove jobs notebook page
+                self.notebook.remove_page(page)
+                del self.jobs_attrs[jobid]
+                return
 
-            attr_store.append([name, value])
+            attr_store.clear()                          # remove old attributes
+            for name, value in attrs.iteritems():
+                if name in ['job-id', 'job-printer-up-time']:
+                    continue
+                attr_store.append([name, value])
 
     def job_is_active (self, jobdata):
         state = jobdata.get ('job-state', cups.IPP_JOB_CANCELED)
