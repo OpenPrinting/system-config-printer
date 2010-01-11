@@ -92,6 +92,7 @@ nobase_pkgdata_DATA=					\
 	GroupsPaneModel.py				\
 	gtkinklevel.py					\
 	gtkspinner.py					\
+	installdriver.py				\
 	installpackage.py				\
 	jobviewer.py					\
 	monitor.py					\
@@ -168,8 +169,9 @@ man_MANS=					\
 	man/system-config-printer.1		\
 	man/system-config-printer-applet.1
 
-dbus_DATA =\
-	newprinternotification.conf
+dbus_DATA =					\
+	newprinternotification.conf		\
+	printerdriversinstaller.conf
 dbusdir = $(sysconfdir)/dbus-1/system.d/
 
 desktop_DATA =\
