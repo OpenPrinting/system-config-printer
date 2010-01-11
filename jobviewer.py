@@ -762,13 +762,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
                 # Find out which auth-info is required.
                 try_keyring = USE_KEYRING
-                keyring_attrs = None
+                keyring_attrs = dict()
                 auth_info = None
                 if try_keyring and 'password' in auth_info_required:
                     auth_info_required = data.get ('auth-info-required', [])
                     device_uri = data.get ("device-uri")
                     (scheme, rest) = urllib.splittype (device_uri)
-                    keyring_attrs = dict ()
                     if scheme == 'smb':
                         uri = smburi.SMBURI (uri=device_uri)
                         (group, server, share,
