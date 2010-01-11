@@ -2069,9 +2069,10 @@ class GUI(GtkGUI, monitor.Watcher):
                 if option not in self.server_side_options:
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
+                print option.name, option.is_changed(), saveall
                 if (option.is_changed() or
-                    saveall and
-                    option.get_current_value () != option.system_default):
+                    (saveall and
+                     option.get_current_value () != option.get_default())):
                     printer.setOption(option.name, option.get_current_value())
 
         except cups.IPPError, (e, s):

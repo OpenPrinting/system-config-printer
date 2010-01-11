@@ -1,8 +1,9 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
+##  Florian Festi <ffesti@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -63,6 +64,9 @@ def OptionWidget(name, v, s, on_change):
 # ---------------------------------------------------------------------------
 
 class OptionInterface:
+    def get_default(self):
+        return None
+
     def get_current_value(self):
         raise NotImplemented
 
@@ -104,6 +108,9 @@ class OptionAlwaysShown(OptionInterface):
             self.combobox_dict = dict
         self.use_supported = use_supported
         self.reinit (None)
+
+    def get_default(self):
+        return self.system_default
 
     def set_default(self, system_default):
         # For the media option, the system default depends on the printer's
