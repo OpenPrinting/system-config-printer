@@ -3925,6 +3925,7 @@ class NewPrinterGUI(GtkGUI):
             self.rbtnChangePPDKeepSettings.set_active(True)
 
             self.auto_model = ""
+            self.auto_driver = None
             ppd = self.mainapp.ppd
             #self.mainapp.devid = "MFG:Samsung;MDL:ML-3560;DES:;CMD:GDI;"
             devid = self.mainapp.devid
