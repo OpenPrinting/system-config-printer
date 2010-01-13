@@ -76,7 +76,8 @@ class _PK1AsyncMethodCall:
         try:
             pk_method (*self._pk_args,
                         reply_handler=self._pk_reply_handler,
-                        error_handler=self._pk_error_handler)
+                        error_handler=self._pk_error_handler,
+                        timeout=3600)
         except TypeError, e:
             debugprint ("Type error in PK call: %s" % e)
             self.call_fallback_fn ()
