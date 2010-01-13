@@ -31,7 +31,7 @@ import gtk
 import gtk.gdk
 from gui import GtkGUI
 import monitor
-import os
+import os, shutil
 import pango
 import pwd
 import smburi
@@ -294,6 +294,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                  self.on_job_release_activate),
                 ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None, None,
                  self.on_job_reprint_activate),
+                ("retrieve-job", gtk.STOCK_SAVE_AS, _("Re_trieve"), None, None,
+                 self.on_job_retrieve_activate),
                 ("authenticate-job", None, _("_Authenticate"), None, None,
                  self.on_job_authenticate_activate),
                  ("job-attributes", None, _("_View Attributes"), None, None,
@@ -309,6 +311,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
  <accelerator action="hold-job"/>
  <accelerator action="release-job"/>
  <accelerator action="reprint-job"/>
+ <accelerator action="retrieve-job"/>
  <accelerator action="authenticate-job"/>
  <accelerator action="job-attributes"/>
 </ui>
@@ -322,6 +325,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                             "hold-job",
                             "release-job",
                             "reprint-job",
+                            "retrieve-job",
                             None,
                             "authenticate-job",
                             "job-attributes"]:
@@ -973,10 +977,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
         hold = self.job_ui_manager.get_action ("/hold-job")
         release = self.job_ui_manager.get_action ("/release-job")
         reprint = self.job_ui_manager.get_action ("/reprint-job")
+        retrieve = self.job_ui_manager.get_action ("/retrieve-job")
         authenticate = self.job_ui_manager.get_action ("/authenticate-job")
         attributes = self.job_ui_manager.get_action ("/job-attributes")
         if len (pathlist) == 0:
-            for widget in [cancel, delete, hold, release, reprint,
+            for widget in [cancel, delete, hold, release, reprint, retrieve,
                            authenticate, attributes]:
                 widget.set_sensitive (False)
             return
@@ -1015,6 +1020,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         hold.set_sensitive(hold_sensitive)
         release.set_sensitive(release_sensitive)
         reprint.set_sensitive(reprint_sensitive)
+        retrieve.set_sensitive(reprint_sensitive)
         authenticate.set_sensitive(authenticate_sensitive)
         attributes.set_sensitive(True)
 
@@ -1125,6 +1131,70 @@ class JobViewer (GtkGUI, monitor.Watcher):
         except RuntimeError:
             return
 
+        self.monitor.update ()
+
+    def on_job_retrieve_activate(self, menuitem):
+        try:
+            c = authconn.Connection (self.JobsWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
+        except RuntimeError:
+            return
+
+        for jobid in self.jobids:
+            try:
+                attrs=c.getJobAttributes(jobid)
+                printer_uri=attrs['job-printer-uri']
+                document_count=attrs['document-count']
+                for document_number in range(1, document_count+1):
+                    document=c.getDocument(printer_uri, jobid, document_number)
+                    tempfile = document.get('file')
+                    name = document.get('document-name')
+                    format = document.get('document-format', '')
+
+                    # if there's no document-name retrieved
+                    if name == None:
+                        # give the default filename some meaningful name
+                        name = _("retrieved")+str(document_number)
+                        # add extension according to format
+                        if format == 'application/postscript':
+                            name = name + ".ps"
+                        elif format.find('application/vnd.') != -1:
+                            name = name + format.replace('application/vnd', '')
+                        elif format.find('application/') != -1:
+                            name = name + format.replace('application/', '.')
+
+                    if tempfile != None:
+                        dialog = gtk.FileChooserDialog (_("Save File"),
+                                                        self.JobsWindow,
+                                                  gtk.FILE_CHOOSER_ACTION_SAVE,
+                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
+                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+                        dialog.set_current_name(name)
+                        dialog.set_do_overwrite_confirmation(True)
+
+                        response = dialog.run()
+                        if response == gtk.RESPONSE_OK:
+                            file_to_save = dialog.get_filename()
+                            try:
+                                shutil.copyfile(tempfile, file_to_save)
+                            except (IOError, shutil.Error):
+                                debugprint("Unable to save file "+file_to_save)
+                        elif response == gtk.RESPONSE_CANCEL:
+                            pass
+                        dialog.destroy()
+                        os.unlink(tempfile)
+                    else:
+                        debugprint("Unable to retrieve file from job file")
+                        return
+
+            except cups.IPPError, (e, m):
+                self.show_IPP_Error (e, m)
+                self.monitor.update ()
+                return
+
+        del c
         self.monitor.update ()
 
     def on_job_authenticate_activate(self, menuitem):
