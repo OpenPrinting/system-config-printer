@@ -3810,6 +3810,47 @@ class NewPrinterGUI(GtkGUI):
                              ["InstallDialog",
                               "lblInstall"]})
 
+        # Fill in liststores for combo-box widgets
+        for (widget,
+             opts) in [(self.cmbNPTSerialBaud,
+                        [[_("Default")],
+                         [_("1200")],
+                         [_("2400")],
+                         [_("4800")],
+                         [_("9600")],
+                         [_("19200")],
+                         [_("38400")],
+                         [_("57600")],
+                         [_("115200")]]),
+
+                       (self.cmbNPTSerialParity,
+                        [[_("Default")],
+                         [_("None")],
+                         [_("Odd")],
+                         [_("Even")]]),
+
+                       (self.cmbNPTSerialBits,
+                        [[_("Default")],
+                         [_("8")],
+                         [_("7")]]),
+
+                       (self.cmbNPTSerialFlow,
+                        [[_("Default")],
+                         [_("None")],
+                         [_("XON/XOFF (Software")],
+                         [_("RTS/CTS (Hardware)")],
+                         [_("DTR/DSR (Hardware)")]]),
+
+                       ]:
+            model = gtk.ListStore (gobject.TYPE_STRING)
+            for row in opts:
+                model.append (row=row)
+
+            cell = gtk.CellRendererText ()
+            widget.pack_start (cell, True)
+            widget.add_attribute (cell, 'text', 0)
+            widget.set_model (model)
+
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
         for dialog in [self.SMBBrowseDialog]:
