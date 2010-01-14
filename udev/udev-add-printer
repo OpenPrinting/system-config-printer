@@ -82,7 +82,30 @@ def add_queue (device_id, device_uris, fax_basename=False):
             syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
             notification = None
 
+        try:
+            obj = bus.get_object ("com.redhat.PrinterDriversInstaller",
+                                  "/com/redhat/PrinterDriversInstaller")
+            installer = dbus.Interface (obj,
+                                        "com.redhat.PrinterDriversInstaller")
+        except dbus.DBusException, e:
+            syslog (LOG_DEBUG, "Failed to get D-Bus object for "
+                    "PrinterDriversInstaller: %s" % e)
+            installer = None
+
     id_dict = cupshelpers.parseDeviceID (device_id)
+    if installer:
+        cmd = id_dict["CMD"]
+        if cmd:
+            cmd = reduce (lambda x, y: x + ',' + y, cmd)
+        else:
+            cmd = ""
+
+        try:
+            installer.InstallDrivers (id_dict["MFG"], id_dict["MDL"], cmd,
+                                      timeout=3600)
+        except dbus.DBusException, e:
+            syslog (LOG_DEBUG, "Failed to install drivers: %s" % repr (e))
+
     c = cups.Connection ()
     ppds = cupshelpers.ppds.PPDs (c.getPPDs ())
     (status, ppdname) = ppds.getPPDNameFromDeviceID (id_dict["MFG"],
