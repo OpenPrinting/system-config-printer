@@ -242,12 +242,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                    'job-state',
                                    'time-at-creation'])
 
-    def __init__(self, bus=None, loop=None, service_running=False,
+    def __init__(self, bus=None, loop=None,
                  trayicon=False, suppress_icon_hide=False,
                  my_jobs=True, specific_dests=None, exit_handler=None,
                  parent=None):
         self.loop = loop
-        self.service_running = service_running
         self.trayicon = trayicon
         self.suppress_icon_hide = suppress_icon_hide
         self.my_jobs = my_jobs

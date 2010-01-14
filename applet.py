@@ -32,6 +32,7 @@ import pynotify
 import time
 import locale
 import gettext
+import installdriver
 from gettext import gettext as _
 DOMAIN="system-config-printer"
 gettext.textdomain (DOMAIN)
@@ -82,7 +83,6 @@ class NewPrinterNotification(dbus.service.Object):
                 pass
             runloop = gobject.MainLoop ()
             viewer = jobviewer.JobViewer(bus=bus, loop=runloop,
-                                         service_running=service_running,
                                          trayicon=trayicon,
                                          suppress_icon_hide=True)
 
@@ -296,7 +296,6 @@ def show_version ():
 global waitloop, runloop, viewer
 
 trayicon = True
-service_running = False
 waitloop = runloop = None
 viewer = None
 
@@ -359,12 +358,21 @@ if __name__ == '__main__':
     if trayicon:
         try:
             NewPrinterNotification(bus)
-            service_running = True
         except:
             try:
                 print >> sys.stderr, ("%s: failed to start "
                                       "NewPrinterNotification service" %
                                       PROGRAM_NAME)
+            except:
+                pass
+
+        try:
+            installdriver.PrinterDriversInstaller(bus)
+        except Exception, e:
+            try:
+                print >> sys.stderr, ("%s: failed to start "
+                                      "PrinterDriversInstaller service: %s" %
+                                      (PROGRAM_NAME, e))
             except:
                 pass
 
@@ -431,7 +439,6 @@ if __name__ == '__main__':
         runloop = gobject.MainLoop ()
         gtk.window_set_default_icon_name ('printer')
         viewer = jobviewer.JobViewer(bus=bus, loop=runloop,
-                                     service_running=service_running,
                                      trayicon=trayicon)
 
     try:

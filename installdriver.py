@@ -49,7 +49,7 @@ class PrinterDriversInstaller(dbus.service.Object):
                                      error_handler=error_handler)
 
 if __name__ == "__main__":
-    bus = dbus.SessionBus ()
+    bus = dbus.SystemBus ()
     import sys
     if len (sys.argv) < 2 or sys.argv[1] == "--client":
         # Client
@@ -57,8 +57,3 @@ if __name__ == "__main__":
                               PrinterDriversInstaller.DBUS_PATH)
         proxy = dbus.Interface (obj, PrinterDriversInstaller.DBUS_IFACE)
         print proxy.InstallDriver ("MFG", "MDL", "CMD")
-    else:
-        # Server
-        import gtk
-        PrinterDriversInstaller (bus)
-        gtk.main ()
