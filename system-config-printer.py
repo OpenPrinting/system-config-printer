@@ -3714,8 +3714,6 @@ class NewPrinterGUI(GtkGUI):
 
         # Synchronisation objects.
         self.jockey_lock = thread.allocate_lock()
-        self.ppds_lock = thread.allocate_lock()
-        self.ppds_queried = False
         self.drivers_lock = thread.allocate_lock()
 
         self.getWidgets({"NewPrinterWindow":
@@ -3992,6 +3990,9 @@ class NewPrinterGUI(GtkGUI):
         self.changed = set()
         self.conflicts = set()
         self.fetchDevices_conn = None
+        self.fetchPPDs_conn = None
+        self.fetchPPDs_waiting = False
+        self.ppds_result = None
         self.printer_finder = None
         self.lblNetworkFindSearching.hide ()
         self.entNPTNetworkHostname.set_sensitive (True)
@@ -4273,63 +4274,64 @@ class NewPrinterGUI(GtkGUI):
 
     def queryPPDs(self):
         debugprint ("queryPPDs")
-        if not self.ppds_lock.acquire(0):
-            debugprint ("queryPPDs: in progress")
+        c = asyncconn.Connection ()
+        self.fetchPPDs_conn = c
+        c._begin_operation (_("fetching PPDs"))
+        c.getPPDs (reply_handler=self._getPPDs_reply,
+                   error_handler=self._getPPDs_error)
+        self.inc_spinner_task ()
+
+    def _getPPDs_reply (self, conn, result):
+        if conn != self.fetchPPDs_conn:
             return
-        debugprint ("Lock acquired for PPDs thread")
-        self.ppds_queried = True
-        # Start new thread
-        thread.start_new_thread (self.getPPDs_thread, (self.language[0],))
-        debugprint ("PPDs thread started")
 
-    def getPPDs_thread(self, language):
-        try:
-            debugprint ("Connecting (PPDs)")
-            cups.setUser (self.mainapp.connect_user)
-            cups.setPasswordCB (lambda x: '')
-            c = cups.Connection (host=self.mainapp.connect_server,
-                                 encryption=self.mainapp.connect_encrypt)
-            debugprint ("Fetching PPDs")
-            ppds_dict = c.getPPDs()
-            self.ppds_result = cupshelpers.ppds.PPDs(ppds_dict,
-                                                     language=language)
-            debugprint ("Closing connection (PPDs)")
-            del c
-        except cups.IPPError, (e, msg):
-            self.ppds_result = cups.IPPError (e, msg)
-        except Exception, e:
-            nonfatalException()
-            self.ppds_result = e
+        self.ppds_result = cupshelpers.ppds.PPDs (result,
+                                                  language=self.language[0])
+        if self.fetchPPDs_waiting:
+            # Break out of the innermost loop.
+            gtk.main_quit ()
 
-        debugprint ("Releasing PPDs lock")
-        self.ppds_lock.release ()
+        self.dec_spinner_task ()
+        self.fetchPPDs_conn._end_operation ()
+        self.fetchPPDs_conn.destroy ()
+        self.fetchPPDs_conn = None
+
+    def _getPPDs_error (self, conn, exc):
+        if conn != self.fetchPPDs_conn:
+            return
+
+        self.ppds_result = exc
+        if self.fetchPPDs_waiting:
+            # Break out of the innermost loop.
+            gtk.main_quit ()
+
+        self.dec_spinner_task ()
+        self.fetchPPDs_conn._end_operation ()
+        self.fetchPPDs_conn.destroy ()
+        self.fetchPPDs_conn = None
 
     def fetchPPDs(self, parent=None):
         debugprint ("fetchPPDs")
-        if not self.ppds_queried:
+        if not self.fetchPPDs_conn and self.ppds_result == None:
             self.queryPPDs ()
 
-        # Keep the UI refreshed while we wait for the devices to load.
-        waiting = False
-        while (self.ppds_lock.locked()):
-            if not waiting:
-                waiting = True
-                self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                         _('Searching') + '</span>\n\n' +
-                                         _('Searching for drivers'))
-                if not parent:
-                    parent = self.NewPrinterWindow
-                self.WaitWindow.set_transient_for (parent)
-                self.WaitWindow.show ()
-                self.busy (self.WaitWindow)
+        if self.ppds_result == None:
+            self.fetchPPDs_waiting = True
+            self.lblWait.set_markup ('<span weight="bold" size="larger">' +
+                                     _('Searching') + '</span>\n\n' +
+                                     _('Searching for drivers'))
+            if not parent:
+                parent = self.NewPrinterWindow
+            self.WaitWindow.set_transient_for (parent)
+            self.WaitWindow.show ()
+            self.busy (self.WaitWindow)
 
-            while gtk.events_pending ():
-                gtk.main_iteration ()
+            # Wait until we get the reply.
+            gtk.main ()
 
-            time.sleep (0.1)
-
-        if waiting:
+        if self.fetchPPDs_waiting:
             self.WaitWindow.hide ()
+            self.fetchPPDs_waiting = False
 
         debugprint ("Got PPDs")
         self.ppds_queried = False
@@ -4390,6 +4392,11 @@ class NewPrinterGUI(GtkGUI):
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
+            self.dec_spinner_task ()
+
+        if self.fetchPPDs_conn:
+            self.fetchPPDs_conn.destroy ()
+            self.fetchPPDs_conn = None
             self.dec_spinner_task ()
 
         if self.printer_finder:
@@ -6883,6 +6890,11 @@ class NewPrinterGUI(GtkGUI):
         if self.fetchDevices_conn:
             self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
+            self.dec_spinner_task ()
+
+        if self.fetchPPDs_conn:
+            self.fetchPPDs_conn.destroy ()
+            self.fetchPPDs_conn = None
             self.dec_spinner_task ()
 
         if self.printer_finder:
