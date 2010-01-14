@@ -2,7 +2,7 @@
 
 ## udev-add-printer
 
-## Copyright (C) 2009 Red Hat, Inc.
+## Copyright (C) 2009, 2010 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -150,10 +150,14 @@ def add_queue (device_id, device_uris, fax_basename=False):
 
     if notification:
         try:
+            cmd = id_dict["CMD"]
+            if cmd:
+                cmd = reduce (lambda x, y: x + ',' + y, cmd)
+            else:
+                cmd = ""
+
             notification.NewPrinter (status, uniquename, id_dict["MFG"],
-                                     id_dict["MDL"], id_dict["DES"],
-                                     reduce(lambda x, y: x + ',' + y,
-                                            id_dict["CMD"]))
+                                     id_dict["MDL"], id_dict["DES"], cmd)
         except dbus.DBusException, e:
             syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
 
