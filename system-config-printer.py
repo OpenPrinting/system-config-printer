@@ -530,7 +530,6 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # New Printer Dialog
         self.newPrinterGUI = np = NewPrinterGUI(self)
-        np.NewPrinterWindow.set_transient_for(self.PrintersWindow)
 
         # Set up "About" dialog
         self.AboutDialog.set_program_name(domain)
@@ -3959,6 +3958,13 @@ class NewPrinterGUI(GtkGUI):
         self.btnNetworkFind.set_sensitive (True)
         self.lblNetworkFindNotFound.hide ()
 
+        if dialog_mode == "ppd":
+            self.parent = self.mainapp.PrinterPropertiesDialog
+        else:
+            self.parent = self.NewPrinterWindow
+
+        self.NewPrinterWindow.set_transient_for (self.parent)
+
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         combobox.set_model (gtk.ListStore (str, str))
         self.entNPDownloadableDriverSearch.set_text ('')
@@ -4111,14 +4117,9 @@ class NewPrinterGUI(GtkGUI):
                 self.auto_driver = None
 
             try:
-                if self.dialog_mode == "ppd":
-                    parent = self.mainapp.PrinterPropertiesDialog
-                else:
-                    parent = self.NewPrinterWindow
-
-                self.loadPPDs (parent=parent)
+                self.loadPPDs (parent=self.parent)
             except cups.IPPError, (e, m):
-                show_IPP_Error (e, m, parent=self.mainapp.PrintersWindow)
+                show_IPP_Error (e, m, parent=self.parent)
                 return
             except:
                 return
@@ -7136,7 +7137,7 @@ class NewPrinterGUI(GtkGUI):
                                 (name, pkg))
                 dialog = self.InstallDialog
                 self.lblInstall.set_markup(install_text)
-                dialog.set_transient_for (self.mainapp.PrintersWindow)
+                dialog.set_transient_for (self.parent)
                 response = dialog.run ()
                 dialog.hide ()
                 if response == gtk.RESPONSE_OK:
@@ -7152,7 +7153,7 @@ class NewPrinterGUI(GtkGUI):
                                      "but it is not currently installed.  "
                                      "Please install it before using this "
                                      "printer.") % (name, (exes + pkgs)[0]),
-                                   self.mainapp.PrintersWindow)
+                                   self.parent)
 
 
 def main(setup_printer = None, configure_printer = None, change_ppd = False,
