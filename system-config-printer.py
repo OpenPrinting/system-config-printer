@@ -4388,6 +4388,7 @@ class NewPrinterGUI(GtkGUI):
 
     def on_NPCancel(self, widget, event=None):
         if self.fetchDevices_conn:
+            self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
             self.dec_spinner_task ()
 
@@ -6883,6 +6884,7 @@ class NewPrinterGUI(GtkGUI):
     # Create new Printer
     def on_btnNPApply_clicked(self, widget):
         if self.fetchDevices_conn:
+            self.fetchDevices_conn.destroy ()
             self.fetchDevices_conn = None
             self.dec_spinner_task ()
 
