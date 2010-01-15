@@ -4002,7 +4002,7 @@ class NewPrinterGUI(GtkGUI):
         if dialog_mode == "ppd":
             self.parent = self.mainapp.PrinterPropertiesDialog
         else:
-            self.parent = self.NewPrinterWindow
+            self.parent = self.mainapp.PrintersWindow
 
         self.NewPrinterWindow.set_transient_for (self.parent)
 
