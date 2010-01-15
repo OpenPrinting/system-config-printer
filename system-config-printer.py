@@ -4917,7 +4917,6 @@ class NewPrinterGUI(GtkGUI):
         # Just ignore the error.
         debugprint ("Error fetching devices: %s" % repr (exc))
         if conn != self.fetchDevices_conn:
-            conn.destroy ()
             return
 
         self.dec_spinner_task ()
@@ -4927,7 +4926,6 @@ class NewPrinterGUI(GtkGUI):
 
     def local_devices_reply (self, conn, result, current_uri):
         if conn != self.fetchDevices_conn:
-            conn.destroy ()
             return
 
         self.dec_spinner_task ()
@@ -4941,7 +4939,6 @@ class NewPrinterGUI(GtkGUI):
 
     def network_devices_reply (self, conn, result, current_uri):
         if conn != self.fetchDevices_conn:
-            conn.destroy ()
             return
 
         self.dec_spinner_task ()
