@@ -109,6 +109,7 @@ import gtkspinner
 import statereason
 import firewall
 import asyncconn
+import ppdsloader
 
 domain='system-config-printer'
 import locale
@@ -122,6 +123,7 @@ monitor.set_gettext_function (_)
 errordialogs.set_gettext_function (_)
 asyncconn.set_gettext_function (_)
 authconn.set_gettext_function (_)
+ppdsloader.set_gettext_function (_)
 import gettext
 gettext.textdomain (domain)
 gettext.bindtextdomain (domain, config.localedir)
@@ -3710,10 +3712,10 @@ class NewPrinterGUI(GtkGUI):
         self.remotecupsqueue = False
         self.exactdrivermatch = False
         self.installable_options = False
+        self.ppdsloader = None
         self.jockey_installed_files = []
 
         # Synchronisation objects.
-        self.jockey_lock = thread.allocate_lock()
         self.drivers_lock = thread.allocate_lock()
 
         self.getWidgets({"NewPrinterWindow":
@@ -3990,8 +3992,6 @@ class NewPrinterGUI(GtkGUI):
         self.changed = set()
         self.conflicts = set()
         self.fetchDevices_conn = None
-        self.fetchPPDs_conn = None
-        self.fetchPPDs_waiting = False
         self.ppds_result = None
         self.printer_finder = None
         self.lblNetworkFindSearching.hide ()
@@ -4043,7 +4043,6 @@ class NewPrinterGUI(GtkGUI):
             self.fillDeviceTab()
             self.rbtnNPFoomatic.set_active (True)
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
-            self.new_printer_PPDs_loaded = False
 
         elif self.dialog_mode == "class":
             self.NewPrinterWindow.set_title(_("New Class"))
@@ -4060,12 +4059,26 @@ class NewPrinterGUI(GtkGUI):
                 self.NewPrinterWindow.set_title(_("Change Driver"))
             else:
                 self.NewPrinterWindow.set_title(_("New Printer"))
+
+            try:
+                self.fetchPPDs (parent=self.parent)
+            except cups.IPPError, (e, m):
+                show_IPP_Error (e, m, parent=self.parent)
+                return
+            except:
+                nonfatalException ()
+                return
+
+            if not self.ppds:
+                return
+
             self.ntbkNewPrinter.set_current_page(2)
             self.rbtnNPFoomatic.set_active (True)
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
             self.rbtnChangePPDKeepSettings.set_active(True)
 
-            self.auto_model = ""
+            self.auto_make = None
+            self.auto_model = None
             self.auto_driver = None
             ppd = self.mainapp.ppd
             #self.mainapp.devid = "MFG:Samsung;MDL:ML-3560;DES:;CMD:GDI;"
@@ -4077,59 +4090,38 @@ class NewPrinterGUI(GtkGUI):
                 if not self.install_hplip_plugin(uri):
                     self.on_NPCancel(None)
                     return
+
+            self.exactdrivermatch = False
             if devid != "":
+                devid_dict = dict()
                 try:
                     devid_dict = cupshelpers.parseDeviceID (devid)
-                    self.loadPPDs ()
-                    reloaded = 0
-                    while reloaded < 2:
-                        (status, ppdname) = self.ppds.\
-                            getPPDNameFromDeviceID (devid_dict["MFG"],
-                                                    devid_dict["MDL"],
-                                                    devid_dict["DES"],
-                                                    devid_dict["CMD"],
-                                                    uri,
-                                                    self.jockey_installed_files)
-                        if (status != self.ppds.STATUS_SUCCESS and
-                            reloaded == 0):
-                            try:
-                                if self.fetchJockeyDriver ():
-                                    try:
-                                        self.dropPPDs ()
-                                        self.loadPPDs ()
-                                        reloaded = 1
-                                    except:
-                                        reloaded = 2
-                                else:
-                                    reloaded = 2
-                            except:
-                                reloaded = 2
-                        else:
-                            reloaded = 2
-                    if ppdname:
+                    self.auto_make = devid_dict["MFG"]
+                    self.auto_model = devid_dict["MDL"]
+                    (status, ppdname) = self.ppds.\
+                        getPPDNameFromDeviceID (devid_dict["MFG"],
+                                                devid_dict["MDL"],
+                                                devid_dict["DES"],
+                                                devid_dict["CMD"],
+                                                uri,
+                                                self.jockey_installed_files)
+                    if status == self.ppds.STATUS_SUCCESS:
                         ppddict = self.ppds.getInfoFromPPDName (ppdname)
                         make_model = ppddict['ppd-make-and-model']
                         (self.auto_make, self.auto_model) = \
                             cupshelpers.ppds.ppdMakeModelSplit (make_model)
-                        if (status == self.ppds.STATUS_SUCCESS and \
-                            self.dialog_mode != "ppd"):
+                        if self.dialog_mode == "printer_with_uri":
                             self.exactdrivermatch = True
                             self.fillMakeList()
                             self.ntbkNewPrinter.set_current_page(6)
                             self.nextNPTab(step = 0)
-                        else:
-                            self.exactdrivermatch = False
-                    else:
-                        self.auto_make = devid_dict["MFG"]
-                        self.auto_model = devid_dict["MDL"]
-                        self.auto_driver = None
                 except:
-                    self.auto_make = devid_dict["MFG"]
-                    self.auto_model = devid_dict["MDL"]
-                    self.auto_driver = None
+                    nonfatalException ()
+
                 if self.device and not self.device.id:
                     self.device.id = devid
-                    self.device.id_dict = cupshelpers.parseDeviceID (devid)
+                    self.device.id_dict = devid_dict
+
                 self.mainapp.devid = ""
             elif ppd:
                 attr = ppd.findAttr("NickName")
@@ -4141,212 +4133,79 @@ class NewPrinterGUI(GtkGUI):
                     (self.auto_make, self.auto_model) = mfgmdl
 
                     # Search for ppdname with that make-and-model
-                    self.loadPPDs ()
                     ppds = self.ppds.getInfoFromModel (self.auto_make,
                                                        self.auto_model)
                     for ppd, info in ppds.iteritems ():
                         if info.get ("ppd-make-and-model") == attr.value:
                             self.auto_driver = ppd
                             break
-                else:
-                    self.auto_make = None
-                    self.auto_model = None
-                    self.auto_driver = None
             else:
                 # Special CUPS names for a raw queue.
                 self.auto_make = 'Generic'
                 self.auto_model = 'Raw Queue'
-                self.auto_driver = None
-
-            try:
-                self.loadPPDs (parent=self.parent)
-            except cups.IPPError, (e, m):
-                show_IPP_Error (e, m, parent=self.parent)
-                return
-            except:
-                return
 
             self.fillMakeList()
 
         self.setNPButtons()
         self.NewPrinterWindow.show()
 
-    # Get a new driver with Jockey
+    # get PPDs
 
-    def queryJockeyDriver(self):
-        debugprint ("queryJockeyDriver")
-        if not self.jockey_lock.acquire(0):
-            debugprint ("queryJockeyDriver: in progress")
-            return
-        debugprint ("Lock acquired for Jockey driver thread")
-        # Start new thread
-        devid = ""
+    def _getPPDs_reply (self, ppdsloader, exc):
+        if exc:
+            self.ppds_result = exc
+        else:
+            ppds = ppdsloader.get_ppds ()
+            if ppds == None:
+                self.ppds_result = None
+            else:
+                language = self.language[0]
+                self.ppds_result = cupshelpers.ppds.PPDs (ppds,
+                                                          language=language)
+
+            self.jockey_installed_files = ppdsloader.get_installed_files ()
+
+        ppdsloader.destroy ()
+        self.ppdsloader = None
+
+        # Break out of the innermost loop.
+        gtk.main_quit ()
+
+    def fetchPPDs(self, parent=None):
+        debugprint ("fetchPPDs")
+
+        # First, let's see if there are drivers to install for this
+        # model.
         try:
             devid = self.device.id
         except:
-            pass
+            devid = ''
+
         if devid == '':
             try:
                 devid = self.mainapp.devid
             except:
                 pass
-        if devid == '':
-            self.jockey_lock.release ()
-            return
-        thread.start_new_thread (self.getJockeyDriver_thread, (devid,))
-        debugprint ("Jockey driver thread started")
 
-    def getJockeyDriver_thread(self, id):
-        debugprint ("Requesting driver from Jockey: %s" % id)
-        self.jockey_driver_result = False
-        self.jockey_installed_files = []
-        try:
-            bus = dbus.SessionBus()
-            obj = bus.get_object("com.ubuntu.DeviceDriver", "/GUI")
-            jockeyloader = \
-                dbus.Interface(obj, "com.ubuntu.DeviceDriver")
-            (result, installedfiles) = \
-                jockeyloader.search_driver("printer_deviceid:%s" % id,
-                                           timeout=999999)
-            self.jockey_driver_result = result
-            self.jockey_installed_files = installedfiles
-            if result:
-                debugprint ("New driver downloaded and installed")
-            else:
-                debugprint ("No new driver found or download rejected")
-        except dbus.DBusException, e:
-            self.jockey_driver_result = e
-            debugprint (self.jockey_driver_result)
-        except Exception, e:
-            nonfatalException()
-            self.jockey_driver_result = e
-            debugprint ("Non-D-Bus error on Jockey call: %s" % e)
+        # Now load the PPDs.
+        if not devid:
+            devid = None
 
-        debugprint ("Releasing Jockey driver lock")
-        self.jockey_lock.release ()
+        self.ppdsloader = ppdsloader.PPDsLoader (self._getPPDs_reply,
+                                                 device_id=devid,
+                                                 parent=parent)
 
-    def fetchJockeyDriver(self, parent=None):
-        debugprint ("fetchJockeyDriver")
-        self.queryJockeyDriver()
-        time.sleep (0.01)
-
-        # Keep the UI refreshed while we wait for the driver to load.
-        waiting = False
-        while (self.jockey_lock.locked()):
-            if not waiting:
-                waiting = True
-                self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                         _('Searching') + '</span>\n\n' +
-                                         _('Searching for downloadable drivers'))
-                if not parent:
-                    parent = self.NewPrinterWindow
-                self.WaitWindow.set_transient_for (parent)
-                self.WaitWindow.show ()
-                self.busy (self.WaitWindow)
-
-            if self.mainapp.cups == None:
-                debugprint("CUPS connection lost, reconnecting ...")
-                try:
-                    self.mainapp.cups = authconn.Connection(self.mainapp.PrintersWindow)
-                    self.mainapp.setConnected()
-                    debugprint("Reconnected")
-                    self.mainapp.populateList()
-                except RuntimeError:
-                    debugprint("Reconnection failed")
-                    pass
-
-            while gtk.events_pending ():
-                gtk.main_iteration ()
-
-            time.sleep (0.1)
-
-        if waiting:
-            self.WaitWindow.hide ()
-
-        debugprint ("Driver download request finished")
-        result = self.jockey_driver_result # atomic operation
-        if isinstance (result, Exception):
-            # Propagate exception.
-            raise result
-        return result
-
-    # get PPDs
-
-    def queryPPDs(self):
-        debugprint ("queryPPDs")
-        c = asyncconn.Connection ()
-        self.fetchPPDs_conn = c
-        c._begin_operation (_("fetching PPDs"))
-        c.getPPDs (reply_handler=self._getPPDs_reply,
-                   error_handler=self._getPPDs_error)
-        self.inc_spinner_task ()
-
-    def _getPPDs_reply (self, conn, result):
-        if conn != self.fetchPPDs_conn:
-            return
-
-        self.ppds_result = cupshelpers.ppds.PPDs (result,
-                                                  language=self.language[0])
-        if self.fetchPPDs_waiting:
-            # Break out of the innermost loop.
-            gtk.main_quit ()
-
-        self.dec_spinner_task ()
-        self.fetchPPDs_conn._end_operation ()
-        self.fetchPPDs_conn.destroy ()
-        self.fetchPPDs_conn = None
-
-    def _getPPDs_error (self, conn, exc):
-        if conn != self.fetchPPDs_conn:
-            return
-
-        self.ppds_result = exc
-        if self.fetchPPDs_waiting:
-            # Break out of the innermost loop.
-            gtk.main_quit ()
-
-        self.dec_spinner_task ()
-        self.fetchPPDs_conn._end_operation ()
-        self.fetchPPDs_conn.destroy ()
-        self.fetchPPDs_conn = None
-
-    def fetchPPDs(self, parent=None):
-        debugprint ("fetchPPDs")
-        if not self.fetchPPDs_conn and self.ppds_result == None:
-            self.queryPPDs ()
-
-        if self.ppds_result == None:
-            self.fetchPPDs_waiting = True
-            self.lblWait.set_markup ('<span weight="bold" size="larger">' +
-                                     _('Searching') + '</span>\n\n' +
-                                     _('Searching for drivers'))
-            if not parent:
-                parent = self.NewPrinterWindow
-            self.WaitWindow.set_transient_for (parent)
-            self.WaitWindow.show ()
-            self.busy (self.WaitWindow)
-
-            # Wait until we get the reply.
-            gtk.main ()
-
-        if self.fetchPPDs_waiting:
-            self.WaitWindow.hide ()
-            self.fetchPPDs_waiting = False
+        # Wait until we get the reply.
+        gtk.main ()
 
         debugprint ("Got PPDs")
-        self.ppds_queried = False
         result = self.ppds_result # atomic operation
         if isinstance (result, Exception):
             # Propagate exception.
             raise result
-        return result
 
-    def loadPPDs(self, parent=None):
-        try:
-            return self.ppds
-        except:
-            self.ppds = self.fetchPPDs (parent=parent)
-            return self.ppds
+        self.ppds = result
+        return result
 
     def dropPPDs(self):
         try:
@@ -4394,10 +4253,9 @@ class NewPrinterGUI(GtkGUI):
             self.fetchDevices_conn = None
             self.dec_spinner_task ()
 
-        if self.fetchPPDs_conn:
-            self.fetchPPDs_conn.destroy ()
-            self.fetchPPDs_conn = None
-            self.dec_spinner_task ()
+        if self.ppdsloader:
+            self.ppdsloader.destroy ()
+            self.ppds_loader = None
 
         if self.printer_finder:
             self.printer_finder.cancel ()
@@ -4487,49 +4345,21 @@ class NewPrinterGUI(GtkGUI):
                     except:
                         nonfatalException ()
 
-                # Decide whether this might be a PostScript capable
-                # printer.  If it might be, check whether
-                # foomatic-db-ppds is installed and suggest installing
-                # it.
-                cmdsets = self.device.id_dict["CMD"]
-                if len (cmdsets) == 0:
-                    # No list of command sets available so might be PS capable
-                    may_be_ps = True
-                else:
-                    # We have the definitive list of command sets supported.
-                    # Only PS capable if it says so.
-                    may_be_ps = False
-                    for cmdset in cmdsets:
-                        if cmdset.lower ().startswith ("postscript"):
-                            may_be_ps = True
-
-                if may_be_ps:
-                    debugprint ("Printer might support PostScript")
+                if not self.remotecupsqueue:
                     try:
-                        os.stat ("/usr/share/cups/model/foomatic-db-ppds")
-                        debugprint ("foomatic-db-ppds already installed")
-                    except OSError:
-                        debugprint ("foomatic-db-ppds not yet installed")
-                        pid = None
-                        try:
-                            pk = installpackage.PackageKit ()
-                            xid = self.mainapp.PrintersWindow.window.xid
-                            pk.InstallPackageName (xid, 0, "foomatic-db-ppds")
-                        except:
-                            pass
-
-                if (not self.remotecupsqueue and
-                    not self.new_printer_PPDs_loaded):
-                    try:
-                        self.loadPPDs(self.NewPrinterWindow)
+                        self.fetchPPDs(self.NewPrinterWindow)
                     except cups.IPPError, (e, msg):
                         self.ready (self.NewPrinterWindow)
                         self.show_IPP_Error(e, msg)
                         return
                     except:
+                        nonfatalException ()
                         self.ready (self.NewPrinterWindow)
                         return
-                    self.new_printer_PPDs_loaded = True
+
+                    if self.ppds == None:
+                        self.ready (self.NewPrinterWindow)
+                        return
 
                 ppdname = None
                 try:
@@ -4553,34 +4383,14 @@ class NewPrinterGUI(GtkGUI):
                                  ppdMakeModelSplit (self.device.make_and_model)
                             id_dict["DES"] = ""
                             id_dict["CMD"] = []
-                        reloaded = 0
-                        while reloaded < 2:
-                            (status, ppdname) = self.ppds.\
-                                getPPDNameFromDeviceID (id_dict["MFG"],
-                                                        id_dict["MDL"],
-                                                        id_dict["DES"],
-                                                        id_dict["CMD"],
-                                                        self.device.uri,
-                                                        self.jockey_installed_files)
-                            if (status != self.ppds.STATUS_SUCCESS and
-                                reloaded == 0):
-                                #if reloaded == 0:
-                                #self.device.id = "MFG:Samsung;MDL:ML-1610;DES:;CMD:GDI;"
-                                #id_dict = cupshelpers.parseDeviceID(self.device.id)
-                                try:
-                                    if self.fetchJockeyDriver ():
-                                        try:
-                                            self.dropPPDs ()
-                                            self.loadPPDs ()
-                                            reloaded = 1
-                                        except:
-                                            reloaded = 2
-                                    else:
-                                        reloaded = 2
-                                except:
-                                    reloaded = 2
-                            else:
-                                reloaded = 2
+
+                        (status, ppdname) = self.ppds.\
+                            getPPDNameFromDeviceID (id_dict["MFG"],
+                                                    id_dict["MDL"],
+                                                    id_dict["DES"],
+                                                    id_dict["CMD"],
+                                                    self.device.uri,
+                                                    self.jockey_installed_files)
                     else:
                         (status, ppdname) = self.ppds.\
                             getPPDNameFromDeviceID ("Generic",
@@ -4952,10 +4762,6 @@ class NewPrinterGUI(GtkGUI):
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()
         self.fetchDevices_conn = None
-
-        # Now we've fetched both local and network devices, start
-        # querying the available PPDs.
-        gobject.idle_add (self.queryPPDs)
 
         # Add the network devices to the list.
         self.add_devices (result, current_uri)
@@ -6501,10 +6307,14 @@ class NewPrinterGUI(GtkGUI):
         model = self.tvNPMakes.get_model()
         model.clear()
         found = False
-        auto_make_lower = self.auto_make.lower ()
+        if self.auto_make:
+            auto_make_lower = self.auto_make.lower ()
+        else:
+            auto_make_lower = None
+
         for make in makes:
             iter = model.append((make,))
-            if make.lower() == auto_make_lower:
+            if auto_make_lower != None and make.lower() == auto_make_lower:
                 path = model.get_path(iter)
                 self.tvNPMakes.set_cursor (path)
                 self.tvNPMakes.scroll_to_cell(path, None,
@@ -6892,10 +6702,9 @@ class NewPrinterGUI(GtkGUI):
             self.fetchDevices_conn = None
             self.dec_spinner_task ()
 
-        if self.fetchPPDs_conn:
-            self.fetchPPDs_conn.destroy ()
-            self.fetchPPDs_conn = None
-            self.dec_spinner_task ()
+        if self.ppdsloader:
+            self.ppdsloader.destroy ()
+            self.ppdsloader = None
 
         if self.printer_finder:
             self.printer_finder.cancel ()
