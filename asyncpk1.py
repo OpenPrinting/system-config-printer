@@ -299,17 +299,23 @@ class PK1Connection:
     def _call_with_pk (self, use_pycups, pk_method_name, pk_args,
                        reply_handler, error_handler, unpack_fn,
                        fallback_fn, args, kwds):
-        asyncmethodcall = _PK1AsyncMethodCall (self._system_bus, self,
-                                               pk_method_name, pk_args,
-                                               reply_handler, error_handler,
-                                               unpack_fn, fallback_fn,
-                                               args, kwds)
+        if not use_pycups:
+            try:
+                asyncmethodcall = _PK1AsyncMethodCall (self._system_bus, self,
+                                                       pk_method_name, pk_args,
+                                                       reply_handler,
+                                                       error_handler,
+                                                       unpack_fn, fallback_fn,
+                                                       args, kwds)
+
+                debugprint ("Calling PK method %s" % pk_method_name)
+                asyncmethodcall.call ()
+            except dbus.DBusException, e:
+                debugprint ("D-Bus call failed: %s" % repr (e))
+                use_pycups = True
 
         if use_pycups:
             return asyncmethodcall.call_fallback_fn ()
-
-        debugprint ("Calling PK method %s" % pk_method_name)
-        asyncmethodcall.call ()
 
     def _nothing_to_unpack (self):
         return None
