@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
-## Copyright (C) 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2010 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -161,7 +161,11 @@ class UserDefaultPrompt:
                 self.userdef.clear ()
             self.set_default_fn (self.name)
         else:
-            self.userdef.set (self.name)
+            try:
+                self.userdef.set (self.name)
+            except Exception, e:
+                print "Error setting default: %s" % repr (e)
+
             self.refresh_fn ()
 
         dialog.destroy ()
