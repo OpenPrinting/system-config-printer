@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
+##  Jiri Popelka <jpopelka@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -18,6 +20,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+import os
 
 _ = lambda x: x
 def set_gettext_function (fn):
@@ -41,6 +44,7 @@ class StateReason:
         self.level = None
         self.canonical_reason = None
         self.connection = connection
+        self._ppd = None
 
     def get_printer (self):
         return self.printer
@@ -125,21 +129,29 @@ class StateReason:
             elif self.get_level () == self.ERROR:
                 title = _("Printer error")
 
-            try:
-                f = self.connection.getPPD(self.printer)
-                ppd = cups.PPD (f)
-                schemes = ["text", "http", "help", "file"]
-                localized_reason = ""
-                for scheme in schemes:
-                    reason = ppd.localizeIPPReason(self.reason, scheme)
-                    if reason != None:
-                        localized_reason = localized_reason + reason + ", "
-                if localized_reason != "":
-                    reason = localized_reason[:-2]
-                else:
+            if not self._ppd:
+                try:
+                    f = self.connection.getPPD(self.printer)
+                    self._ppd = cups.PPD (f)
+                    os.unlink (f)
+                except (cups.IPPError, OSError):
+                    pass
+
+            if self._ppd:
+                try:
+                    schemes = ["text", "http", "help", "file"]
+                    localized_reason = ""
+                    for scheme in schemes:
+                        reason = self._ppd.localizeIPPReason(self.reason,
+                                                             scheme)
+                        if reason != None:
+                            localized_reason = localized_reason + reason + ", "
+                    if localized_reason != "":
+                        reason = localized_reason[:-2]
+                    else:
+                        reason = self.get_reason()
+                except RuntimeError:
                     reason = self.get_reason()
-            except (cups.IPPError, RuntimeError):
-                reason = self.get_reason()
 
             text = _("Printer '%s': '%s'.") % (self.get_printer (), reason)
         return (title, text)
