@@ -5951,6 +5951,9 @@ class NewPrinterGUI(GtkGUI):
                                     break
                                 iter = model.iter_next(iter)
                                 nr += 1
+
+                            if not iter:
+                                widget.set_active (0)
                         else: # use optionvalues
                             nr = optionvalues.index(
                                 option_dict[name])
