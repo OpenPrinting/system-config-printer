@@ -214,30 +214,28 @@ uninstall-desktopDATA:
 	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)manage-print-jobs.desktop
 	rm -f $(DESTDIR)$(autostartdir)/$(DESKTOP_PREFIX)print-applet.desktop
 
+desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
+
 EXTRA_DIST=\
 	$(nobase_pkgdata_SCRIPTS) \
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
-	udev/udev-add-printer \
+	$(udevhelper_SCRIPTS) \
 	setup.py \
 	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
-	newprinternotification.conf \
+	$(dbus_DATA) \
 	bootstrap \
 	mkinstalldirs \
 	ChangeLog-OLD \
-	system-config-printer.desktop.in \
-	manage-print-jobs.desktop.in \
-	print-applet.desktop.in \
+	$(desktop_in_files) \
 	intltool-extract.in \
 	intltool-merge.in \
 	intltool-update.in \
 	config.py.in \
 	profile-ppds.py \
-	udev/70-printers.rules
-
-desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
+	$(udevrules_DATA)
 
 @INTLTOOL_DESKTOP_RULE@
 
