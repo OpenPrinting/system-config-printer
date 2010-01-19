@@ -221,7 +221,6 @@ EXTRA_DIST=\
 	$(nobase_pkgdata_DATA) \
 	$(nobase_sbin_SCRIPTS) \
 	$(bin_SCRIPTS) \
-	$(udevhelper_SCRIPTS) \
 	setup.py \
 	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
@@ -235,7 +234,8 @@ EXTRA_DIST=\
 	intltool-update.in \
 	config.py.in \
 	profile-ppds.py \
-	$(udevrules_DATA)
+	udev/udev-add-printer \
+	udev/70-printers.rules
 
 @INTLTOOL_DESKTOP_RULE@
 
