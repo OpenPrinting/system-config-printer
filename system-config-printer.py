@@ -3836,7 +3836,7 @@ class NewPrinterGUI(GtkGUI):
                        (self.cmbNPTSerialFlow,
                         [[_("Default")],
                          [_("None")],
-                         [_("XON/XOFF (Software")],
+                         [_("XON/XOFF (Software)")],
                          [_("RTS/CTS (Hardware)")],
                          [_("DTR/DSR (Hardware)")]]),
 
