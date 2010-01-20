@@ -996,6 +996,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def on_refresh_activate(self, menuitem):
         self.monitor.refresh ()
+        self.update_job_creation_times ()
 
     def job_is_active (self, jobdata):
         state = jobdata.get ('job-state', cups.IPP_JOB_CANCELED)
