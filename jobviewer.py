@@ -1876,7 +1876,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def _set_job_printer_text (self, column, cell, model, iter, *data):
         jobid = model.get_value (iter, 0)
-        cell.set_property("text", self.jobs[jobid]['job-printer-name'])
+        reasons = self.jobs[jobid].get('job-state-reasons')
+        if reasons == 'printer-stopped':
+            reason = ' - disabled'
+        else:
+            reason = ''
+        cell.set_property("text", self.jobs[jobid]['job-printer-name']+reason)
 
     def _set_job_size_text (self, column, cell, model, iter, *data):
         jobid = model.get_value (iter, 0)
