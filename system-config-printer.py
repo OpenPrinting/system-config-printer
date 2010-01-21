@@ -3058,7 +3058,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 self.cups._end_operation ()
                 return
 
-        if self.copy_printer (new_name):
+        if self.duplicate_printer (new_name):
             # Failure.
             self.monitor.update ()
 
