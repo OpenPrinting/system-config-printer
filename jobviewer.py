@@ -1202,6 +1202,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
     def on_refresh_activate(self, menuitem):
         self.monitor.refresh ()
+        self.update_job_creation_times ()
 
     def on_job_attributes_activate(self, menuitem):
         """ For every selected job create notebook page with attributes. """
