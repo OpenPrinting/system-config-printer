@@ -122,15 +122,16 @@ class PK0Connection(asyncpk1.PK1Connection):
     def _call_with_pk (self, use_pycups, pk_method_name, pk_args,
                        reply_handler, error_handler, unpack_fn,
                        fallback_fn, args, kwds):
+        asyncmethodcall = _PK0AsyncMethodCall (self._system_bus, self,
+                                               pk_method_name, pk_args,
+                                               reply_handler,
+                                               error_handler,
+                                               unpack_fn, fallback_fn,
+                                               args, kwds,
+                                               self._parent)
+
         if not use_pycups:
             try:
-                asyncmethodcall = _PK0AsyncMethodCall (self._system_bus, self,
-                                                       pk_method_name, pk_args,
-                                                       reply_handler,
-                                                       error_handler,
-                                                       unpack_fn, fallback_fn,
-                                                       args, kwds,
-                                                       self._parent)
                 debugprint ("Calling PK method %s" % pk_method_name)
                 asyncmethodcall.call ()
             except dbus.DBusException, e:
