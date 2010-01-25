@@ -69,6 +69,12 @@ class PrinterURIIndex:
     def __init__ (self, names=None):
         self.printer = {}
         self.names = names
+        c = cups.Connection ()
+        for name in names:
+            self.add_printer (name, connection=c)
+
+    def add_printer (self, printer, connection=None):
+        self._map_printer (name=printer, connection=connection)
 
     def update_from_attrs (self, printer, attrs):
         uris = []
@@ -96,25 +102,38 @@ class PrinterURIIndex:
         try:
             return self.printer[uri]
         except KeyError:
-            if connection == None:
-                connection = cups.Connection ()
+            return self._map_printer (uri=uri, connection=connection)
 
-            r = ['printer-name', 'printer-uri-supported', 'printer-more-info']
-            try:
+    def all_printer_names (self):
+        return set (self.printer.values ())
+
+    def lookup_cached_by_name (self, name):
+        for uri, printer in self.printer.iteritems ():
+            if printer == name:
+                return uri
+
+        raise KeyError
+
+    def _map_printer (self, uri=None, name=None, connection=None):
+        if connection == None:
+            connection = cups.Connection ()
+
+        r = ['printer-name', 'printer-uri-supported', 'printer-more-info']
+        try:
+            if uri != None:
                 attrs = connection.getPrinterAttributes (uri=uri,
                                                          requested_attributes=r)
-            except cups.IPPError:
-                # URI not known.
-                raise KeyError
+            else:
+                attrs = connection.getPrinterAttributes (name,
+                                                         requested_attributes=r)
+        except cups.IPPError:
+            # URI not known.
+            raise KeyError
 
-            name = attrs['printer-name']
-            self.update_from_attrs (name, attrs)
-            self.printer[uri] = name
-            try:
-                return self.printer[uri]
-            except KeyError:
-                pass
-        raise KeyError
+        name = attrs['printer-name']
+        self.update_from_attrs (name, attrs)
+        self.printer[uri] = name
+        return self.printer[uri]
 
 
 class CancelJobsOperation:
@@ -295,6 +314,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                  self.on_job_reprint_activate),
                 ("retrieve-job", gtk.STOCK_SAVE_AS, _("Re_trieve"), None, None,
                  self.on_job_retrieve_activate),
+                ("move-job", None, _("_Move To"), None, None, None),
                 ("authenticate-job", None, _("_Authenticate"), None, None,
                  self.on_job_authenticate_activate),
                  ("job-attributes", None, _("_View Attributes"), None, None,
@@ -311,6 +331,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
  <accelerator action="release-job"/>
  <accelerator action="reprint-job"/>
  <accelerator action="retrieve-job"/>
+ <accelerator action="move-job"/>
  <accelerator action="authenticate-job"/>
  <accelerator action="job-attributes"/>
 </ui>
@@ -325,6 +346,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                             "release-job",
                             "reprint-job",
                             "retrieve-job",
+                            "move-job",
                             None,
                             "authenticate-job",
                             "job-attributes"]:
@@ -334,6 +356,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 action = job_action_group.get_action (action_name)
                 action.set_sensitive (False)
                 item = action.create_menu_item ()
+
+                if action_name == 'move-job':
+                    self.move_job_menuitem = item
+                    printers = gtk.Menu ()
+                    item.set_submenu (printers)
 
             item.show ()
             self.job_context_menu.append (item)
@@ -442,7 +469,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.port = cups.getPort ()
         self.encryption = cups.getEncryption ()
         self.monitor = monitor.Monitor (self, bus=bus, my_jobs=my_jobs,
-                                        specific_dests=specific_dests,
                                         host=self.host, port=self.port,
                                         encryption=self.encryption)
 
@@ -979,9 +1005,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         retrieve = self.job_ui_manager.get_action ("/retrieve-job")
         authenticate = self.job_ui_manager.get_action ("/authenticate-job")
         attributes = self.job_ui_manager.get_action ("/job-attributes")
+        move = self.job_ui_manager.get_action ("/move-job")
         if len (pathlist) == 0:
             for widget in [cancel, delete, hold, release, reprint, retrieve,
-                           authenticate, attributes]:
+                           move, authenticate, attributes]:
                 widget.set_sensitive (False)
             return
 
@@ -990,6 +1017,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
         release_sensitive = True
         reprint_sensitive = True
         authenticate_sensitive = True
+        move_sensitive = False
+        other_printers = self.printer_uri_index.all_printer_names ()
+        job_printers = dict()
 
         self.jobids = []
         for path in pathlist:
@@ -1014,12 +1044,39 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 job.get ('job-hold-until', 'none') != 'auth-info-required'):
                 authenticate_sensitive = False
 
+            uri = job.get ('job-printer-uri', None)
+            if uri:
+                printer = self.printer_uri_index.lookup (uri)
+                job_printers[printer] = uri
+
+        if len (job_printers.keys ()) == 1:
+            try:
+                other_printers.remove (job_printers.keys ()[0])
+            except KeyError:
+                pass
+
+        if len (other_printers) > 0:
+            printers_menu = gtk.Menu ()
+            other_printers = list (other_printers)
+            other_printers.sort ()
+            for printer in other_printers:
+                uri = self.printer_uri_index.lookup_cached_by_name (printer)
+                menuitem = gtk.MenuItem (printer, False)
+                menuitem.set_sensitive (True)
+                menuitem.show ()
+                menuitem.connect ('activate', self.on_job_move_activate, uri)
+                printers_menu.append (menuitem)
+
+            self.move_job_menuitem.set_submenu (printers_menu)
+            move_sensitive = True
+
         cancel.set_sensitive(cancel_sensitive)
         delete.set_sensitive(True)
         hold.set_sensitive(hold_sensitive)
         release.set_sensitive(release_sensitive)
         reprint.set_sensitive(reprint_sensitive)
         retrieve.set_sensitive(reprint_sensitive)
+        move.set_sensitive (move_sensitive)
         authenticate.set_sensitive(authenticate_sensitive)
         attributes.set_sensitive(True)
 
@@ -1194,6 +1251,28 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 return
 
         del c
+        self.monitor.update ()
+
+    def on_job_move_activate(self, menuitem, job_printer_uri):
+        try:
+            c = authconn.Connection (self.JobsWindow,
+                                     host=self.host,
+                                     port=self.port,
+                                     encryption=self.encryption)
+            for jobid in self.jobids:
+                c.moveJob (job_id=jobid, job_printer_uri=job_printer_uri)
+            del c
+        except cups.IPPError, (e, m):
+            self.show_IPP_Error (e, m)
+            self.monitor.update ()
+            return
+        except RuntimeError:
+            return
+        except AttributeError:
+            # Requires pycups >= 1.9.47
+            debugprint ("Move requires pycups >= 1.9.47")
+            return
+
         self.monitor.update ()
 
     def on_job_authenticate_activate(self, menuitem):
@@ -1851,6 +1930,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if notification.get_data ('closed') != True:
             notification.close ()
             notification.set_data ('closed', True)
+
+    def printer_added (self, mon, printer):
+        monitor.Watcher.printer_added (self, mon, printer)
+        self.printer_uri_index.add_printer (printer)
 
     def printer_event (self, mon, printer, eventname, event):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
