@@ -1,6 +1,6 @@
 
-## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -74,7 +74,6 @@ class PrinterURIIndex:
         self._map_printer (name=printer, connection=connection)
 
     def update_from_attrs (self, printer, attrs):
-        print "Update %s from %s" % (printer, attrs)
         uris = []
         if attrs.has_key ('printer-uri-supported'):
             uri_supported = attrs['printer-uri-supported']
@@ -91,7 +90,6 @@ class PrinterURIIndex:
 
     def remove_printer (self, printer):
         # Remove references to this printer in the URI map.
-        print "Remove %s" % (printer)
         uris = self.printer.keys ()
         for uri in uris:
             if self.printer[uri] == printer:
@@ -1116,7 +1114,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
         except AttributeError:
             # Requires pycups >= 1.9.47
-            print "Requires pycups >= 1.9.47"
+            debugprint ("Move requires pycups >= 1.9.47")
             return
 
         self.monitor.update ()
