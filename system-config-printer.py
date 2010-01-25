@@ -5727,7 +5727,8 @@ class NewPrinterGUI(GtkGUI):
         elif device.type=="lpd":
             self.cmbentNPTLpdHost.child.set_text ('')
             self.cmbentNPTLpdQueue.child.set_text ('')
-            self.cmbentNPTLpdQueue.get_model().clear ()
+            model = gtk.ListStore (gobject.TYPE_STRING)
+            self.cmbentNPTLpdQueue.set_model(model)
             self.btnNPTLpdProbe.set_sensitive (False)
             if len (device.uri) > 6:
                 host = device.uri[6:]
@@ -5788,8 +5789,8 @@ class NewPrinterGUI(GtkGUI):
         printers = server.probe()
         self.WaitWindow.hide ()
 
-        model = self.cmbentNPTLpdQueue.get_model()
-        model.clear()
+        model = gtk.ListStore (gobject.TYPE_STRING)
+        self.cmbentNPTLpdQueue.set_model (model)
         for printer in printers:
             self.cmbentNPTLpdQueue.append_text(printer)
         if printers:
