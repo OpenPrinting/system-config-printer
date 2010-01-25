@@ -141,6 +141,7 @@ class StateReason:
                 except (cups.IPPError, OSError):
                     pass
 
+            reason = self.get_reason ()
             if self._ppd:
                 try:
                     schemes = ["text", "http", "help", "file"]
@@ -152,10 +153,8 @@ class StateReason:
                             localized_reason = localized_reason + reason + ", "
                     if localized_reason != "":
                         reason = localized_reason[:-2]
-                    else:
-                        reason = self.get_reason()
                 except RuntimeError:
-                    reason = self.get_reason()
+                    pass
 
             text = _("Printer '%s': '%s'.") % (self.get_printer (), reason)
         return (title, text)

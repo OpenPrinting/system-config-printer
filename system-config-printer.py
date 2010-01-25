@@ -4757,7 +4757,7 @@ class NewPrinterGUI(GtkGUI):
         self.fetchDevices_conn = None
 
         # Add the network devices to the list.
-        self.add_devices (result, current_uri)
+        self.add_devices (result, current_uri, no_more=True)
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
@@ -4910,16 +4910,18 @@ class NewPrinterGUI(GtkGUI):
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=False, current_uri=current_uri)
 
-    def add_devices (self, devices, current_uri):
+    def add_devices (self, devices, current_uri, no_more=False):
         if current_uri:
             if devices.has_key (current_uri):
                 current = devices.pop(current_uri)
             elif devices.has_key (current_uri.replace (":9100", "")):
                 current_uri = current_uri.replace (":9100", "")
                 current = devices.pop(current_uri)
-            else:
+            elif no_more:
                 current = cupshelpers.Device (current_uri)
                 current.info = "Current device"
+            else:
+                current_uri = None
 
         devices = devices.values()
 
