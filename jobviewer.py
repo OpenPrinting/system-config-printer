@@ -1605,6 +1605,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                                          connection=connection)
             except KeyError:
                 printer = uri
+
+            if self.specific_dests and printer not in self.specific_dests:
+                continue
+
             jobdata['job-printer-name'] = printer
 
             self.add_job (jobid, jobdata, connection=connection)
@@ -1626,6 +1630,10 @@ class JobViewer (GtkGUI, monitor.Watcher):
             printer = self.printer_uri_index.lookup (uri)
         except KeyError:
             printer = uri
+
+        if self.specific_dests and printer not in self.specific_dests:
+            return
+
         jobdata['job-printer-name'] = printer
 
         # We may be showing this job already, perhaps because we are showing
