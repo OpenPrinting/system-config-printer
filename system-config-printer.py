@@ -1307,7 +1307,7 @@ class GUI(GtkGUI, monitor.Watcher):
         connected = bool(self.cups)
 
         host = CUPS_server_hostname ()
-        self.PrintersWindow.set_title(_("Printer configuration - %s") % host)
+        self.PrintersWindow.set_title(_("Printing - %s") % host)
         self.PrintersWindow.set_focus_on_map (self.focus_on_map)
 
         if connected:
