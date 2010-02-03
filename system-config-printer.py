@@ -2944,6 +2944,10 @@ class GUI(GtkGUI, monitor.Watcher):
         except RuntimeError:
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
+        except cups.IPPError, (e, m):
+            show_IPP_Error (e, m, self.PrintersWindow)
+            self.populateList ()
+            return
 
         if not self.is_rename_possible (old_name):
             return
@@ -2969,13 +2973,15 @@ class GUI(GtkGUI, monitor.Watcher):
             # Restore original accepting/rejecting state.
             if not rejecting:
                 try:
-                    self.printers[old_name].setAccepting (True)
+                    self.printer.name = old_name
+                    self.printer.setAccepting (True)
                 except cups.HTTPError, (s,):
                     show_HTTP_Error (s, self.PrintersWindow)
                 except cups.IPPError, (e, msg):
                     show_IPP_Error (e, msg, self.PrintersWindow)
 
             self.cups._end_operation ()
+            self.populateList ()
             return
 
         # Restore rejecting state.
