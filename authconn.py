@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -152,10 +152,11 @@ class Connection:
     def _set_lock (self, whether):
         self._lock = whether
 
-    def _connect (self):
+    def _connect (self, allow_pk=True):
         cups.setUser (self._use_user)
 
-        self._use_pk = ((self._server[0] == '/' or self._server == 'localhost')
+        self._use_pk = (allow_pk and
+                        (self._server[0] == '/' or self._server == 'localhost')
                         and os.getuid () != 0)
         if self._use_pk:
             create_object = cupspk.Connection
@@ -334,7 +335,7 @@ class Connection:
                 self._use_user = 'root'
                 self._auth_called = False
                 try:
-                    self._connect ()
+                    self._connect (allow_pk=False)
                 except RuntimeError:
                     raise cups.IPPError (cups.IPP_SERVICE_UNAVAILABLE,
                                          'server-error-service-unavailable')
@@ -379,7 +380,7 @@ class Connection:
         cups.setUser (self._use_user)
         debugprint ("Authentication: Reconnect")
         try:
-            self._connect ()
+            self._connect (allow_pk=False)
         except RuntimeError:
             raise cups.IPPError (cups.IPP_SERVICE_UNAVAILABLE,
                                  'server-error-service-unavailable')
