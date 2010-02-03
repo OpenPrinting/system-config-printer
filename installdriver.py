@@ -56,4 +56,4 @@ if __name__ == "__main__":
         obj = bus.get_object (PrinterDriversInstaller.DBUS_OBJ,
                               PrinterDriversInstaller.DBUS_PATH)
         proxy = dbus.Interface (obj, PrinterDriversInstaller.DBUS_IFACE)
-        print proxy.InstallDriver ("MFG", "MDL", "CMD")
+        print proxy.InstallDrivers ("MFG", "MDL", "CMD")
