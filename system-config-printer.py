@@ -1632,6 +1632,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         store = gtk.ListStore (gobject.TYPE_STRING)
         self.cmbServername.set_model(store)
+        self.cmbServername.set_text_column (0)
         for server in servers:
             self.cmbServername.append_text(server)
         self.cmbServername.show()
