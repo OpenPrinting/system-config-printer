@@ -68,6 +68,7 @@ class CheckSELinux(Question):
                 continue
             contexts[l[2]] = l[4]
         self.answers['selinux_contexts'] = contexts
+        return False
 
     def collect_answer (self):
         return self.answers
