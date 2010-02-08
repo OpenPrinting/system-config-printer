@@ -4099,8 +4099,6 @@ class NewPrinterGUI(GtkGUI):
                 devid_dict = dict()
                 try:
                     devid_dict = cupshelpers.parseDeviceID (devid)
-                    self.auto_make = devid_dict["MFG"]
-                    self.auto_model = devid_dict["MDL"]
                     (status, ppdname) = self.ppds.\
                         getPPDNameFromDeviceID (devid_dict["MFG"],
                                                 devid_dict["MDL"],
@@ -4108,12 +4106,13 @@ class NewPrinterGUI(GtkGUI):
                                                 devid_dict["CMD"],
                                                 uri,
                                                 self.jockey_installed_files)
-                    if status == self.ppds.STATUS_SUCCESS:
-                        ppddict = self.ppds.getInfoFromPPDName (ppdname)
-                        make_model = ppddict['ppd-make-and-model']
-                        (self.auto_make, self.auto_model) = \
-                            cupshelpers.ppds.ppdMakeModelSplit (make_model)
-                        if self.dialog_mode == "printer_with_uri":
+
+                    ppddict = self.ppds.getInfoFromPPDName (ppdname)
+                    make_model = ppddict['ppd-make-and-model']
+                    (self.auto_make, self.auto_model) = \
+                        cupshelpers.ppds.ppdMakeModelSplit (make_model)
+                    if (status == self.ppds.STATUS_SUCCESS and
+                        self.dialog_mode == "printer_with_uri"):
                             self.exactdrivermatch = True
                             self.fillMakeList()
                             self.ntbkNewPrinter.set_current_page(6)
