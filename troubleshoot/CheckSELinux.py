@@ -22,7 +22,6 @@
 import subprocess
 from base import *
 import os
-import selinux
 import shlex
 from timedops import TimedSubprocess
 
@@ -30,7 +29,7 @@ class CheckSELinux(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check SELinux contexts")
         troubleshooter.new_page (gtk.Label (), self)
-        
+
     def display (self):
         self.answers = {}
         #answers = self.troubleshooter.answers
@@ -39,32 +38,35 @@ class CheckSELinux(Question):
         if not os.access (RESTORECON, os.X_OK):
             return False
 
+        try:
+            import selinux
+        except ImportError:
+            return False
         if not selinux.is_selinux_enabled():
             return False
-        
-        paths = ["/etc/cups", "/usr/lib/cups", "/usr/share/cups"]
+
+        paths = "/etc/cups/ /usr/lib/cups/ /usr/share/cups/"
         null = file ("/dev/null", "r+")
         parent = self.troubleshooter.get_window ()
         contexts = {}
-        for path in paths:
-            restorecon_args = "LC_ALL=C " + RESTORECON + " -nvR " + path
-            try:
-                # Run restorecon -nvR
-                self.op = TimedSubprocess (parent=parent,
-                                           args=restorecon_args,
-                                           shell=True,
-                                           stdin=null,
-                                           stdout=subprocess.PIPE,
-                                           stderr=null)
-                (restorecon_stdout, restorecon_stderr, result) = self.op.run ()
-            except:
-                # Problem executing command.
-                return False
-            for line in restorecon_stdout:
-                l = shlex.split (line)
-                if len (l) < 1:
-                    continue
-                contexts[l[2]] = l[4]
+        restorecon_args = "LC_ALL=C " + RESTORECON + " -nvR " + paths
+        try:
+            # Run restorecon -nvR
+            self.op = TimedSubprocess (parent=parent,
+                                       args=restorecon_args,
+                                       shell=True,
+                                       stdin=null,
+                                       stdout=subprocess.PIPE,
+                                       stderr=null)
+            (restorecon_stdout, restorecon_stderr, result) = self.op.run ()
+        except:
+            # Problem executing command.
+            return False
+        for line in restorecon_stdout:
+            l = shlex.split (line)
+            if (len (l) < 1):
+                continue
+            contexts[l[2]] = l[4]
         self.answers['selinux_contexts'] = contexts
 
     def collect_answer (self):
