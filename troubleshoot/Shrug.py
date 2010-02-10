@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2010 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ class Shrug(Question):
         box.set_layout (gtk.BUTTONBOX_END)
         page.pack_start (box, False, False, 0)
 
-        self.save = gtk.Button (stock='gtk-save')
+        self.save = gtk.Button (stock=gtk.STOCK_SAVE)
         box.pack_start (self.save, False, False, 0)
 
         troubleshooter.new_page (page, self)
@@ -63,9 +63,9 @@ class Shrug(Question):
     def on_save_clicked (self, button):
         dialog = gtk.FileChooserDialog (parent=self.troubleshooter.get_window(),
                                         action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                                        buttons=('gtk-cancel',
+                                        buttons=(gtk.STOCK_CANCEL,
                                                  gtk.RESPONSE_CANCEL,
-                                                 'gtk-save',
+                                                 gtk.STOCK_SAVE,
                                                  gtk.RESPONSE_OK))
         dialog.set_do_overwrite_confirmation (True)
         dialog.set_current_name ("troubleshoot.txt")
