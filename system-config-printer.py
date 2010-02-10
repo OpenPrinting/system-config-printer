@@ -375,7 +375,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # Toolbar
         # Glade-2 doesn't have support for MenuToolButton, so we do that here.
-        self.btnNew = gtk.MenuToolButton ('gtk-new')
+        self.btnNew = gtk.MenuToolButton (gtk.STOCK_ADD)
         self.btnNew.set_is_important (True)
         newmenu = gtk.Menu ()
         newprinter = gtk.ImageMenuItem (_("Printer"))
