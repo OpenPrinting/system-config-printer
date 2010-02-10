@@ -2,8 +2,8 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -69,20 +69,20 @@ class Troubleshooter:
         box.set_spacing (3)
         box.set_layout (gtk.BUTTONBOX_END)
 
-        back = gtk.Button (stock='gtk-go-back')
+        back = gtk.Button (stock=gtk.STOCK_GO_BACK)
         back.connect ('clicked', self._on_back_clicked)
         back.set_sensitive (False)
         self.back = back
 
-        close = gtk.Button (stock='gtk-close')
+        close = gtk.Button (stock=gtk.STOCK_CLOSE)
         close.connect ('clicked', self.quit)
         self.close = close
 
-        cancel = gtk.Button (stock='gtk-cancel')
+        cancel = gtk.Button (stock=gtk.STOCK_CANCEL)
         cancel.connect ('clicked', self.quit)
         self.cancel = cancel
 
-        forward = gtk.Button (stock='gtk-go-forward')
+        forward = gtk.Button (stock=gtk.STOCK_GO_FORWARD)
         forward.connect ('clicked', self._on_forward_clicked)
         forward.set_flags (gtk.CAN_DEFAULT | gtk.HAS_DEFAULT)
         self.forward = forward

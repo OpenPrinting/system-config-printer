@@ -380,7 +380,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # Toolbar
         # Glade-2 doesn't have support for MenuToolButton, so we do that here.
-        self.btnNew = gtk.MenuToolButton ('gtk-new')
+        self.btnNew = gtk.MenuToolButton (gtk.STOCK_ADD)
         self.btnNew.set_is_important (True)
         newmenu = gtk.Menu ()
         newprinter = gtk.ImageMenuItem (_("Printer"))
@@ -391,7 +391,8 @@ class GUI(GtkGUI, monitor.Watcher):
         self.btnNew.connect ('clicked', self.on_new_printer_activate)
         newclass = gtk.ImageMenuItem (_("Class"))
         classicon = gtk.Image ()
-        classicon.set_from_icon_name ("gtk-dnd-multiple", gtk.ICON_SIZE_MENU)
+        classicon.set_from_icon_name (gtk.STOCK_DND_MULTIPLE,
+                                      gtk.ICON_SIZE_MENU)
         newclass.set_image (classicon)
         newclass.connect ('activate', self.on_new_class_activate)
         newprinter.show ()
@@ -401,7 +402,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.btnNew.set_menu (newmenu)
         self.toolbar.add (self.btnNew)
         self.toolbar.add (gtk.SeparatorToolItem ())
-        refreshbutton = gtk.ToolButton ('gtk-refresh')
+        refreshbutton = gtk.ToolButton (gtk.STOCK_REFRESH)
         refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
         self.toolbar.add (refreshbutton)
         self.toolbar.show_all ()
@@ -1956,7 +1957,7 @@ class GUI(GtkGUI, monitor.Watcher):
                                     yoptions=0)
             opt.selector.set_sensitive (editable)
 
-            btn = gtk.Button(stock="gtk-remove")
+            btn = gtk.Button(stock=gtk.STOCK_REMOVE)
             btn.connect("clicked", self.on_btnJOOtherRemove_clicked)
             btn.set_data("pyobject", opt)
             btn.set_sensitive (editable)
