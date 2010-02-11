@@ -5050,11 +5050,13 @@ class NewPrinterGUI(GtkGUI):
                 iter = model.iter_next (iter)
                 i += 1
         elif not self.device_selected:
+            # Select the device.
             column = self.tvNPDevices.get_column (0)
             self.tvNPDevices.set_cursor ((0,), column)
 
-        column = self.tvNPDeviceURIs.get_column (0)
-        self.tvNPDeviceURIs.set_cursor (connection_select_path, column)
+            # Select the connection.
+            column = self.tvNPDeviceURIs.get_column (0)
+            self.tvNPDeviceURIs.set_cursor (connection_select_path, column)
 
     def on_entNPTDevice_changed(self, entry):
         self.setNPButtons()
