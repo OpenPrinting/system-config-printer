@@ -322,24 +322,16 @@ class Connection:
             if kwds.has_key('timeout'):
                 timeout = kwds['timeout']
 
+            if kwds.has_key('limit'):
+                limit = kwds['limit']
+
             if kwds.has_key('include_schemes'):
                 include_schemes = kwds['include_schemes']
 
             if kwds.has_key('exclude_schemes'):
                 exclude_schemes = kwds['exclude_schemes']
 
-        # Convert from list to string
-        if len (include_schemes) > 0:
-            include_schemes = reduce (lambda x, y: x + "," + y, include_schemes)
-        else:
-            include_schemes = ""
-
-        if len (exclude_schemes) > 0:
-            exclude_schemes = reduce (lambda x, y: x + "," + y, exclude_schemes)
-        else:
-            exclude_schemes = ""
-
-        pk_args = (timeout, include_schemes, exclude_schemes)
+        pk_args = (timeout, limit, include_schemes, exclude_schemes)
 
         result = self._call_with_pk_and_fallback(use_pycups,
                                                  'DevicesGet', pk_args,
