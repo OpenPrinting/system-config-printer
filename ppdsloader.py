@@ -104,18 +104,21 @@ class PPDsLoader:
                                          timeout=3600)
         except Exception, e:
             debugprint ("Failed to talk to PackageKit: %s" % e)
-            self._dialog.show_all ()
-            self._query_jockey ()
+            if self._dialog:
+                self._dialog.show_all ()
+                self._query_jockey ()
 
     def _packagekit_reply (self):
         debugprint ("Got PackageKit reply")
-        self._dialog.show_all ()
-        self._query_jockey ()
+        if self._dialog:
+            self._dialog.show_all ()
+            self._query_jockey ()
 
     def _packagekit_error (self, exc):
         debugprint ("Got PackageKit error: %s" % exc)
-        self._dialog.show_all ()
-        self._query_jockey ()
+        if self._dialog:
+            self._dialog.show_all ()
+            self._query_jockey ()
 
     def _query_jockey (self):
         debugprint ("Asking Jockey to install drivers")
