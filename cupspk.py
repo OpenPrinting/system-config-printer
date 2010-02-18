@@ -1,8 +1,8 @@
 # vim: set ts=4 sw=4 et: coding=UTF-8
 #
 # Copyright (C) 2008 Novell, Inc.
-# Copyright (C) 2008, 2009 Red Hat, Inc.
-# Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+# Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+# Copyright (C) 2008, 2009, 2010 Tim Waugh <twaugh@redhat.com>
 #
 # Authors: Vincent Untz
 #
@@ -219,8 +219,8 @@ class Connection:
         use_pycups = False
 
         limit = 0
-        include_schemes = ''
-        exclude_schemes = ''
+        include_schemes = []
+        exclude_schemes = []
         timeout = 0
 
         if len(args) == 4:
@@ -229,29 +229,45 @@ class Connection:
             if kwds.has_key('timeout'):
                 timeout = kwds['timeout']
 
+            if kwds.has_key('limit'):
+                limit = kwds['limit']
+
             if kwds.has_key('include_schemes'):
                 include_schemes = kwds['include_schemes']
 
             if kwds.has_key('exclude_schemes'):
                 exclude_schemes = kwds['exclude_schemes']
 
-        # Convert from list to string
-        if len (include_schemes) > 0:
-            include_schemes = reduce (lambda x, y: x + "," + y, include_schemes)
-        else:
-            include_schemes = ""
+        pk_args = (timeout, limit, include_schemes, exclude_schemes)
 
-        if len (exclude_schemes) > 0:
-            exclude_schemes = reduce (lambda x, y: x + "," + y, exclude_schemes)
-        else:
-            exclude_schemes = ""
+        try:
+            result = self._call_with_pk_and_fallback(use_pycups,
+                                                     'DevicesGet', pk_args,
+                                                     self._connection.getDevices,
+                                                     *args, **kwds)
+        except TypeError:
+            debugprint ("DevicesGet API exception; using old signature")
+            if kwds.has_key ('timeout'):
+                use_pycups = True
 
-        pk_args = (timeout, include_schemes, exclude_schemes)
+            # Convert from list to string
+            if len (include_schemes) > 0:
+                include_schemes = reduce (lambda x, y: x + "," + y,
+                                          include_schemes)
+            else:
+                include_schemes = ""
 
-        result = self._call_with_pk_and_fallback(use_pycups,
-                                                 'DevicesGet', pk_args,
-                                                 self._connection.getDevices,
-                                                 *args, **kwds)
+            if len (exclude_schemes) > 0:
+                exclude_schemes = reduce (lambda x, y: x + "," + y,
+                                          exclude_schemes)
+            else:
+                exclude_schemes = ""
+
+            pk_args = (limit, include_schemes, exclude_schemes)
+            result = self._call_with_pk_and_fallback(use_pycups,
+                                                     'DevicesGet', pk_args,
+                                                     self._connection.getDevices,
+                                                     *args, **kwds)
 
         # return 'result' if fallback was called
         if len (result.keys()) > 0 and type (result[result.keys()[0]]) == dict:
