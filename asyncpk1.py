@@ -25,6 +25,7 @@ import gtk
 import os
 import sys
 import tempfile
+import xml.etree.ElementTree
 
 import asyncipp
 from debug import *
@@ -194,6 +195,38 @@ class PK1Connection:
             # No system D-Bus.
             self._system_bus = None
 
+        self._devicesget_uses_new_api = None
+        if self._system_bus:
+            try:
+                obj = self._system_bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
+                proxy = dbus.Interface (obj, dbus.INTROSPECTABLE_IFACE)
+                api = proxy.Introspect ()
+                top = xml.etree.ElementTree.XML (api)
+                for interface in top.findall ("interface"):
+                    if interface.attrib.get ("name") != CUPS_PK_IFACE:
+                        continue
+
+                    for method in interface.findall ("method"):
+                        if method.attrib.get ("name") != "DevicesGet":
+                            continue
+
+                        num_args = 0
+                        for arg in method.findall ("arg"):
+                            direction = arg.attrib.get ("direction")
+                            if direction != "in":
+                                continue
+
+                            num_args += 1
+
+                        self._devicesget_uses_new_api = num_args == 4
+                        debugprint ("DevicesGet new API: %s" % (num_args == 4))
+                        break
+
+                    break
+
+            except Exception, e:
+                debugprint ("Exception assessing DevicesGet API: %s" % e)
+
         methodtype = type (self._conn.getPrinters)
         bindings = []
         for fname in dir (self._conn):
@@ -321,13 +354,35 @@ class PK1Connection:
         return None
 
     def getDevices (self, *args, **kwds):
-        (use_pycups, reply_handler, error_handler,
-         tup) = self._args_kwds_to_tuple ([int, int, list, list],
-                                          [("timeout", 0),
-                                           ("limit", 0),
-                                           ("include_schemes", []),
-                                           ("exclude_schemes", [])],
-                                          args, kwds)
+        if self._devicesget_uses_new_api:
+            (use_pycups, reply_handler, error_handler,
+             tup) = self._args_kwds_to_tuple ([int, int, list, list],
+                                              [("timeout", 0),
+                                               ("limit", 0),
+                                               ("include_schemes", []),
+                                               ("exclude_schemes", [])],
+                                              args, kwds)
+        else:
+                (use_pycups, reply_handler, error_handler,
+                 tup) = self._args_kwds_to_tuple ([int, list, list],
+                                                  [("limit", 0),
+                                                   ("include_schemes", []),
+                                                   ("exclude_schemes", [])],
+                                                  args, kwds)
+
+                if not use_pycups:
+                    # Special handling for include_schemes/exclude_schemes.
+                    # Convert from list to ","-separated string.
+                    newtup = list (tup)
+                    for paramindex in [1, 2]:
+                        if len (newtup[paramindex]) > 0:
+                            newtup[paramindex] = reduce (lambda x, y:
+                                                             x + "," + y,
+                                                         newtup[paramindex])
+                        else:
+                            newtup[paramindex] = ""
+
+                    tup = tuple (newtup)
 
         self._call_with_pk (use_pycups,
                             'DevicesGet', tup, reply_handler, error_handler,
