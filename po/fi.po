@@ -10,15 +10,13 @@ msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2010-02-08 17:32+0000\n"
-"PO-Revision-Date: 2009-03-23 11:19+0200\n"
+"PO-Revision-Date: 2009-11-06 22:07+0200\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
-"Language-Team: Finnish\n"
+"Language-Team: Finnish <laatu@lokalisointi.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.3.1\n"
 
 #: ../AdvancedServerSettings.py:139
 msgid "Enter IP address"
@@ -203,7 +201,6 @@ msgid "Cancel Job"
 msgstr "Peru työ"
 
 #: ../jobviewer.py:157
-#, fuzzy
 msgid "Do you really want to cancel this job?"
 msgstr "Haluatko perua tämän työn?"
 
@@ -521,9 +518,8 @@ msgid "Abort job"
 msgstr "Keskeytä työ"
 
 #: ../ppdippstr.py:46
-#, fuzzy
 msgid "Retry current job"
-msgstr "Yritä työtä uudelleen"
+msgstr "Yritä nykyistä työtä uudelleen"
 
 #: ../ppdippstr.py:47
 msgid "Retry job"
@@ -574,40 +570,36 @@ msgid "Unclassified"
 msgstr "Julkinen"
 
 #: ../ppdippstr.py:73
-#, fuzzy
 msgid "No hold"
-msgstr "Ei löytynyt"
+msgstr "Ei pysäytetty"
 
 #: ../ppdippstr.py:74
 msgid "Indefinite"
-msgstr ""
+msgstr "Toistaiseksi"
 
 #: ../ppdippstr.py:75
 msgid "Daytime"
-msgstr ""
+msgstr "Päivä"
 
 #: ../ppdippstr.py:76
-#, fuzzy
 msgid "Evening"
-msgstr "Odottaa vuoroa"
+msgstr "Ilta"
 
 #: ../ppdippstr.py:77
 msgid "Night"
-msgstr ""
+msgstr "Yö"
 
 #: ../ppdippstr.py:78
-#, fuzzy
 msgid "Second shift"
-msgstr "Pysäytetty toiseen vuoroon asti"
+msgstr "Toinen vuoro"
 
 #: ../ppdippstr.py:79
-#, fuzzy
 msgid "Third shift"
-msgstr "Pysäytetty kolmanteen vuoroon asti"
+msgstr "Kolmas vuoro"
 
 #: ../ppdippstr.py:80
 msgid "Weekend"
-msgstr ""
+msgstr "Viikonloppu"
 
 #: ../ppdippstr.py:90
 msgid "General"
@@ -1311,11 +1303,12 @@ msgstr "Töitä on jonossa."
 
 #: ../system-config-printer.py:2975
 msgid "Renaming will lose history"
-msgstr ""
+msgstr "Nimeäminen uudelleen tyhjentää historian"
 
 #: ../system-config-printer.py:2977
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr ""
+"Valmistuneet työt eivät ole enää saatavilla uudelleentulostusta varten."
 
 #: ../system-config-printer.py:3052
 msgid "renaming printer"
@@ -1420,7 +1413,7 @@ msgstr ""
 #: ../system-config-printer.py:3836
 #, fuzzy
 msgid "Even"
-msgstr "Odottaa vuoroa"
+msgstr "Ilta"
 
 #: ../system-config-printer.py:3840
 msgid "8"
@@ -1545,14 +1538,12 @@ msgid "Print Share Inaccessible"
 msgstr "Tämä tulostinjako ei ole käytettävissä"
 
 #: ../system-config-printer.py:5444
-#, fuzzy
 msgid "Verifying"
-msgstr "Tarkistettu"
+msgstr "Tarkistetaan"
 
 #: ../system-config-printer.py:5445
-#, fuzzy
 msgid "Verifying printer"
-msgstr "muokataan tulostinta %s"
+msgstr "Tarkistetaan tulostinta"
 
 #: ../system-config-printer.py:5470
 msgid "Inaccessible"
@@ -2477,7 +2468,6 @@ msgid "Saturation:"
 msgstr "Värikylläisyys:"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:66
-#, fuzzy
 msgid "Scale to fit"
 msgstr "Skaalaa sopivaan kokoon"
 
@@ -3165,9 +3155,8 @@ msgid "Click 'Forward' to begin."
 msgstr "Napsauta ”Eteenpäin” aloittaaksesi."
 
 #: ../applet.py:94
-#, fuzzy
 msgid "Configuring new printer"
-msgstr "Muokkaa tulostimien asetuksia"
+msgstr "Tehdään uuden tulostimen asetuksia"
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
@@ -3235,8 +3224,11 @@ msgstr "Peru, aseta tauolle, jatka tai tulosta uudelleen töitä"
 msgid "Manage Print Jobs"
 msgstr "Hallitse tulostustöitä"
 
-#~ msgid "Printer configuration - %s"
-#~ msgstr "Tulostimen asetukset – %s"
+#~ msgid "_Use System Default"
+#~ msgstr "_Käytä järjestelmän oletusarvoa"
+
+#~ msgid "_Set Default"
+#~ msgstr "_Aseta oletustulostimeksi"
 
 #~ msgid "copying printer"
 #~ msgstr "kopioidaan tulostin"
@@ -3315,61 +3307,14 @@ msgstr "Hallitse tulostustöitä"
 #~ msgid "Set up without plugin"
 #~ msgstr "Tee tulostinasetukset ilman liitännäistä"
 
-#~ msgid "Copy Printer"
-#~ msgstr "Kopioi tulostin"
-
-#~ msgid "_Use System Default"
-#~ msgstr "_Käytä järjestelmän oletusarvoa"
-
-#~ msgid "_Set Default"
-#~ msgstr "_Aseta oletustulostimeksi"
-
-#~ msgid "Basic Server Settings"
-#~ msgstr "Palvelimen perusasetukset"
-
-#~ msgid ""
-#~ "I have not been able to work out what the problem is, but I have "
-#~ "collected some useful information to put in a bug report."
-#~ msgstr ""
-#~ "Ongelmaa ei ole saatu ratkaistua, mutta virheraporttia varten on kerätty "
-#~ "joitain hyödyllisiä tietoja."
-
-#~ msgid "Select default printer"
-#~ msgstr "Valitse oletustulostin"
-
-#~ msgid "Unauthorized request (%s)"
-#~ msgstr "Pyyntö ei ole sallittu (%s)"
-
-#~ msgid "You are not authorized to carry out the requested action."
-#~ msgstr "Sinulla ei ole oikeutta tehdä pyydettyä toimintoa."
-
-#~ msgid "Queue"
-#~ msgstr "Jono"
-
-#~ msgid "It is not possible to obtain a list of queues from '%s'."
-#~ msgstr "Koneelta ”%s” ei voi saada luetteloa jonoista."
-
-#~ msgid ""
-#~ "Obtaining a list of queues is a CUPS extension to IPP.  Network printers "
-#~ "do not support it."
-#~ msgstr ""
-#~ "Jonoluettelon saaminen on IPP:n CUPS-laajennos. Verkkotulostimet eivät "
-#~ "tue sitä."
-
-#~ msgid "No queues"
-#~ msgstr "Ei jonoja"
-
-#~ msgid "There are no queues available."
-#~ msgstr "Yhtään jonoa ei ole saatavilla."
-
 #~ msgid "system-config-printer"
 #~ msgstr "system-config-printer"
 
-#~ msgid "IPP Browser"
-#~ msgstr "IPP-selain"
-
 #~ msgid "_Refresh"
 #~ msgstr "_Päivitä"
+
+#~ msgid "Copy Printer"
+#~ msgstr "Kopioi tulostin"
 
 #~ msgid ""
 #~ "Default\n"
@@ -3424,9 +3369,6 @@ msgstr "Hallitse tulostustöitä"
 #~ "XON/XOFF (Ohjelmisto)\n"
 #~ "RTS/CTS (Laitteisto)\n"
 #~ "DTR/DSR (Laitteisto)"
-
-#~ msgid "Find _Queue..."
-#~ msgstr "Etsi _jono..."
 
 #~ msgid ""
 #~ "1\n"
@@ -3577,8 +3519,55 @@ msgstr "Hallitse tulostustöitä"
 #~ msgid "_Troubleshoot"
 #~ msgstr "_Vianetsintä"
 
+#~ msgid "Basic Server Settings"
+#~ msgstr "Palvelimen perusasetukset"
+
+#~ msgid "_Advanced..."
+#~ msgstr "_Lisäasetukset..."
+
 #~ msgid "_Configure Printers"
 #~ msgstr "_Muokkaa tulostimien asetuksia"
+
+#~ msgid ""
+#~ "I have not been able to work out what the problem is, but I have "
+#~ "collected some useful information to put in a bug report."
+#~ msgstr ""
+#~ "Ongelmaa ei ole saatu ratkaistua, mutta virheraporttia varten on kerätty "
+#~ "joitain hyödyllisiä tietoja."
+
+#~ msgid "Select default printer"
+#~ msgstr "Valitse oletustulostin"
+
+#~ msgid "Unauthorized request (%s)"
+#~ msgstr "Pyyntö ei ole sallittu (%s)"
+
+#~ msgid "You are not authorized to carry out the requested action."
+#~ msgstr "Sinulla ei ole oikeutta tehdä pyydettyä toimintoa."
+
+#~ msgid "Queue"
+#~ msgstr "Jono"
+
+#~ msgid "It is not possible to obtain a list of queues from '%s'."
+#~ msgstr "Koneelta ”%s” ei voi saada luetteloa jonoista."
+
+#~ msgid ""
+#~ "Obtaining a list of queues is a CUPS extension to IPP.  Network printers "
+#~ "do not support it."
+#~ msgstr ""
+#~ "Jonoluettelon saaminen on IPP:n CUPS-laajennos. Verkkotulostimet eivät "
+#~ "tue sitä."
+
+#~ msgid "No queues"
+#~ msgstr "Ei jonoja"
+
+#~ msgid "There are no queues available."
+#~ msgstr "Yhtään jonoa ei ole saatavilla."
+
+#~ msgid "IPP Browser"
+#~ msgstr "IPP-selain"
+
+#~ msgid "Find _Queue..."
+#~ msgstr "Etsi _jono..."
 
 #~ msgid "Job %d completed"
 #~ msgstr "Työ %d on valmis"
