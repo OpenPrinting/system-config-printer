@@ -46,7 +46,8 @@ class PrinterDriversInstaller(dbus.service.Object):
         proxy.InstallPrinterDrivers (0, ["MFG:%s;MDL:%s;" % (mfg, mdl)],
                                      "hide-finished",
                                      reply_handler=reply_handler,
-                                     error_handler=error_handler)
+                                     error_handler=error_handler,
+                                     timeout=3600)
 
 if __name__ == "__main__":
     bus = dbus.SystemBus ()
