@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
@@ -561,6 +561,10 @@ class PPDs:
             try:
                 ppdnamelist += self.ids["hp"][mdll]
                 status = self.STATUS_SUCCESS
+                print ("**** Incorrect IEEE 1284 Device ID: %s" %
+                       self.ids["hp"][mdll])
+                print "**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl)
+                print "**** Please report a bug against the HPLIP component"
                 id_matched = True
             except KeyError:
                 pass
