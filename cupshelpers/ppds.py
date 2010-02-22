@@ -900,19 +900,9 @@ class PPDs:
             if not id:
                 continue
 
-            # Fix up broken Kyocera IDs
-            v = id.find (":Model")
-            if v != -1:
-                id = id[:v] + ';' + id[v + 1:]
-
             id_dict = parseDeviceID (id)
             lmfg = id_dict['MFG'].lower ()
             lmdl = id_dict['MDL'].lower ()
-
-            # Consider "HP" and "Hewlett-Packard" as equal, as the ID returned
-            # by the CUPS "usb" backend and HPLIP's "hp" backend are different
-            if lmfg == "hewlett-packard":
-                lmfg = "hp"
 
             bad = False
             if len (lmfg) == 0:
