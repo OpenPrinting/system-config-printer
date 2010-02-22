@@ -74,7 +74,10 @@ class PrinterURIIndex:
             self.add_printer (name, connection=c)
 
     def add_printer (self, printer, connection=None):
-        self._map_printer (name=printer, connection=connection)
+        try:
+            self._map_printer (name=printer, connection=connection)
+        except KeyError:
+            return
 
     def update_from_attrs (self, printer, attrs):
         uris = []
