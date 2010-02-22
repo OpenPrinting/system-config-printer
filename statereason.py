@@ -134,7 +134,7 @@ class StateReason:
                     f = self.connection.getPPD(self.printer)
                     self._ppd = cups.PPD (f)
                     os.unlink (f)
-                except (cups.IPPError, OSError):
+                except (cups.IPPError, RuntimeError, OSError):
                     pass
 
             reason = self.get_reason ()
