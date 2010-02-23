@@ -94,7 +94,7 @@ class NewPrinterNotification(dbus.service.Object):
                                            tooltip=_("Configuring new printer"))
 
         self.getting_ready += 1
-        gobject.timeout_add_seconds (120, self.timeout_ready)
+        gobject.timeout_add_seconds (1200, self.timeout_ready)
 
     def timeout_ready (self):
         global viewer
