@@ -2433,8 +2433,12 @@ class GUI(GtkGUI, monitor.Watcher):
             if self.ppd_local != False:
                 self.ppd_local.localize()
         except cups.IPPError, (e, m):
-            # Some IPP error other than IPP_NOT_FOUND.
-            show_IPP_Error(e, m, self.PrintersWindow)
+            # We might get IPP_INTERNAL_ERROR if this is a memberless
+            # class.
+            if e != cups.IPP_INTERNAL_ERROR:
+                # Some IPP error other than IPP_NOT_FOUND.
+                show_IPP_Error(e, m, self.PrintersWindow)
+
             # Treat it as a raw queue.
             self.ppd = False
         except RuntimeError:

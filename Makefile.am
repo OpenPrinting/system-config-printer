@@ -70,6 +70,7 @@ clean-local:
 	rm -f .stamp-distutils-in-builddir
 
 nobase_pkgdata_SCRIPTS=				\
+	check-device-ids.py			\
 	pysmb.py				\
 	system-config-printer.py		\
 	troubleshoot/__init__.py		\
