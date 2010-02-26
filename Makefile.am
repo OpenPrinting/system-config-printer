@@ -72,6 +72,7 @@ clean-local:
 
 nobase_pkgdata_SCRIPTS=				\
 	my-default-printer.py			\
+	check-device-ids.py			\
 	pysmb.py				\
 	system-config-printer.py		\
 	troubleshoot/__init__.py		\
