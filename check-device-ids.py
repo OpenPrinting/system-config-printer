@@ -61,7 +61,9 @@ if devices == None:
             print "Not authorized."
             sys.exit (1)
 
-    devices['foo'] = devices[devices.keys()[0]]
+if len (devices) == 0:
+    print "No attached devices."
+    sys.exit (0)
 
 n = 0
 for device, attrs in devices.iteritems ():
