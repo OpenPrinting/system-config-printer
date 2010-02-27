@@ -68,6 +68,7 @@ def add_queue (device_id, device_uris, fax_basename=False):
     """
 
     syslog (LOG_DEBUG, "add_queue: URIs=%s" % device_uris)
+    installer = None
     if fax_basename != False:
         notification = None
     else:
@@ -90,7 +91,6 @@ def add_queue (device_id, device_uris, fax_basename=False):
         except dbus.DBusException, e:
             syslog (LOG_DEBUG, "Failed to get D-Bus object for "
                     "PrinterDriversInstaller: %s" % e)
-            installer = None
 
     id_dict = cupshelpers.parseDeviceID (device_id)
     if installer:
