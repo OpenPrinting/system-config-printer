@@ -2,7 +2,8 @@
 
 ## system-config-printer
 
-## Copyright (C) 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2009, 2010 Red Hat, Inc
+## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -19,6 +20,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import glib
+import gobject
 import gtk
 
 class Spinner:
