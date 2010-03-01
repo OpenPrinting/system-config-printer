@@ -1463,19 +1463,19 @@ class GUI(GtkGUI, monitor.Watcher):
                               'i-network-printer'),
                          'local-printer':
                              (_("Printer"),
-                              'gnome-dev-printer'),
+                              'printer'),
                          'local-fax':
                              (_("Fax"),
-                              'gnome-dev-printer'),
+                              'printer'),
                          'local-class':
                              (_("Class"),
-                              'gnome-dev-printer'),
+                              'printer'),
                          'ipp-printer':
                              (_("Network printer"),
                               'i-network-printer'),
                          'smb-printer':
                              (_("Network print share"),
-                              'gnome-dev-printer'),
+                              'printer'),
                          'network-printer':
                              (_("Network printer"),
                               'i-network-printer'),
