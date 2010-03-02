@@ -86,7 +86,7 @@ if device_ids:
             proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
             proxy.InstallPrinterDrivers (0, device_ids,
                                          "hide-finished", timeout=3600)
-        except dbus.exceptions.DBusException, (e, r):
+        except dbus.exceptions.DBusException, e:
             print "Ignoring exception: %s" % e
     except dbus.exceptions.DBusException:
         try:
@@ -112,6 +112,38 @@ print "Fetching driver list"
 ppds = PPDs (c.getPPDs ())
 ppds._init_ids ()
 makes = ppds.getMakes ()
+
+def driver_uri_to_filename (uri):
+    schemeparts = uri.split (':', 2)
+    if len (schemeparts) < 1:
+        return "/usr/share/cups/model/" + uri
+
+    scheme = schemeparts[0]
+    if scheme != "drv":
+        return "/usr/lib/cups/driver/" + scheme
+
+    if len (schemeparts) < 2:
+        return ""
+
+    rest = schemeparts[1]
+    rest = rest.lstrip ('/')
+    parts = rest.split ('/')
+    if len (parts) > 1:
+        parts = parts[:len (parts) - 1]
+
+    return "/usr/share/cups/drv/" + reduce (lambda x, y: x + "/" + y, parts)
+
+def driver_uri_to_pkg (uri):
+    filename = driver_uri_to_filename (uri)
+
+    try:
+        import packagekit.client, packagekit.enums
+        client = packagekit.client.PackageKitClient ()
+        packages = client.search_file ([filename],
+                                       packagekit.enums.FILTER_INSTALLED)
+        return packages[0].name
+    except:
+        return filename
 
 i = 1
 item = unichr (0x251c) + unichr (0x2500) + unichr (0x2500)
@@ -148,9 +180,11 @@ for device, attrs in devices.iteritems ():
         j = 1
         for driver in drivers:
             if j < n_drivers:
-                print "%s   %s %s" % (more, item, driver)
+                print "%s   %s %s [%s]" % (more, item, driver,
+                                           driver_uri_to_pkg (driver))
             else:
-                print "%s   %s %s" % (more, last, driver)
+                print "%s   %s %s [%s]" % (more, last, driver,
+                                           driver_uri_to_pkg (driver))
 
             j += 1
     else:
@@ -168,6 +202,7 @@ for device, attrs in devices.iteritems ():
         if s == ppds.STATUS_SUCCESS:
             missing = set (bestmatches) - set (drivers)
             for each in missing:
-                print "%s       MISSING  %s" % (more, each)
+                print "%s       MISSING  %s [%s]" % (more, each,
+                                                     driver_uri_to_pkg (each))
 
     i += 1
