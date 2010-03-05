@@ -2020,7 +2020,7 @@ class GUI(GtkGUI, monitor.Watcher):
                          not self.printer.rejecting)
 
             self.btnPrintTestPage.set_sensitive (printable)
-            adjustable = not (self.discovered or bool (self.changed))
+            adjustable = not (self.printer.discovered or bool (self.changed))
             for button in [self.btnChangePPD,
                            self.btnSelectDevice]:
                 button.set_sensitive (adjustable)
@@ -2029,7 +2029,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.btnSelfTest.set_sensitive (commands and printable)
             self.btnCleanHeads.set_sensitive (commands and printable)
         except:
-            pass
+            nonfatalException()
 
         installablebold = False
         optionsbold = False
