@@ -240,7 +240,12 @@ def _getDriverType (ppdname, ppds=None):
     if ppdname.find ("splix")!= -1:
         return DRIVER_TYPE_SPLIX
     if ppdname.find ("hpcups") != -1:
-        return DRIVER_TYPE_HPCUPS
+        info = ppds.getInfoFromPPDName (ppdname)
+        make_model = info.get ('ppd-make-and-model', '')
+        if make_model.find ("plugin") != -1:
+            return DRIVER_TYPE_3RD_PARTY_NONFREE
+        else:
+            return DRIVER_TYPE_HPCUPS
     if (ppdname.find (":") == -1 and
         ppdname.find ("/cups-included/") != -1):
         return DRIVER_TYPE_CUPS
