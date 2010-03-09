@@ -326,7 +326,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
                   self.state_reason_notifications.values ()]:
             for notification in l:
                 if notification.get_data ('closed') != True:
-                    notification.close ()
+                    try:
+                        notification.close ()
+                    except glib.GError:
+                        # Can fail if the notification wasn't even shown
+                        # yet (as in bug #571603).
+                        pass
                     notification.set_data ('closed', True)
 
         if self.job_creation_times_timer != None:
@@ -1488,7 +1493,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
             return
 
         if notification.get_data ('closed') != True:
-            notification.close ()
+            try:
+                notification.close ()
+            except glib.GError:
+                # Can fail if the notification wasn't even shown
+                pass
             notification.set_data ('closed', True)
 
     def printer_event (self, mon, printer, eventname, event):
