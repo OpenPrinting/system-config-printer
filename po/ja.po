@@ -11,13 +11,14 @@
 # kiyoto james hashida <khashida@brisbane.redhat.com>, 2006.
 # Kiyoto James Hashida <khashida@redhat.com>, 2007.
 # Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2007.
+# Hajime Taira <htaira@redhat.com>, 2010.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
 "POT-Creation-Date: 2010-02-27 10:34+0000\n"
-"PO-Revision-Date: 2010-03-09 17:41+0900\n"
+"PO-Revision-Date: 2010-03-15 23:58+0900\n"
 "Last-Translator: Hajime Taira <htaira@redhat.com>\n"
 "Language-Team: Japanese <ja@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -170,25 +171,24 @@ msgstr "このアイテムの名前は変更できません。"
 #: ../GroupsPane.py:171
 #, python-format
 msgid "The name \"%s\" is already in use. Please use a different name."
-msgstr ""
+msgstr "%s という名前は、すでに使われています。他の名前を指定してください。"
 
 #: ../GroupsPane.py:290
 #, python-format
 msgid "Are you sure you want to permanently delete \"%s\"?"
-msgstr ""
+msgstr "%s を本当に削除しますか？"
 
 #: ../GroupsPane.py:296
 msgid "This will not delete any printer queues from your computer. To delete queues completely, you must delete them from the 'All Printers' group."
-msgstr ""
+msgstr "この操作はこのコンピュータの印刷キューを削除するものではありません。印刷キューを完全に削除するには、「すべてのプリンター」から削除する必要があります。 "
 
 #: ../GroupsPane.py:318
 msgid "New Group"
-msgstr ""
+msgstr "新しいグループを作成"
 
 #: ../GroupsPaneModel.py:47
-#, fuzzy
 msgid "All Printers"
-msgstr "プリンター"
+msgstr "すべてのプリンター"
 
 #: ../GroupsPaneModel.py:60
 msgid "Favorites"
@@ -200,7 +200,7 @@ msgstr "ジョブの削除"
 
 #: ../jobviewer.py:150
 msgid "Do you really want to delete these jobs?"
-msgstr ""
+msgstr "選択された複数のジョブを本当に削除しますか？"
 
 #: ../jobviewer.py:152
 #, fuzzy
@@ -209,7 +209,7 @@ msgstr "取り消されました"
 
 #: ../jobviewer.py:153
 msgid "Do you really want to delete this job?"
-msgstr ""
+msgstr "選択されたジョブを本当に削除しますか？"
 
 #: ../jobviewer.py:156
 #, fuzzy
@@ -218,7 +218,7 @@ msgstr "取り消されました"
 
 #: ../jobviewer.py:157
 msgid "Do you really want to cancel these jobs?"
-msgstr ""
+msgstr "選択された複数のジョブを本当にキャンセルしますか？"
 
 #: ../jobviewer.py:159
 #, fuzzy
@@ -227,7 +227,7 @@ msgstr "取り消されました"
 
 #: ../jobviewer.py:160
 msgid "Do you really want to cancel this job?"
-msgstr ""
+msgstr "選択されたジョブを本当にキャンセルしますか？"
 
 #: ../jobviewer.py:217
 #, fuzzy
@@ -276,7 +276,7 @@ msgstr "<b>認証</b>"
 
 #: ../jobviewer.py:323
 msgid "_View Attributes"
-msgstr ""
+msgstr "属性を表示する(_V)"
 
 #: ../jobviewer.py:374
 #: ../troubleshoot/PrintTestPage.py:82
@@ -410,7 +410,7 @@ msgstr "保留中のジョブ"
 
 #: ../jobviewer.py:1164
 msgid "releasing job"
-msgstr ""
+msgstr "ジョブを解放中"
 
 #. give the default filename some meaningful name
 #: ../jobviewer.py:1220
@@ -432,7 +432,7 @@ msgstr "名前"
 
 #: ../jobviewer.py:1313
 msgid "Value"
-msgstr ""
+msgstr "値"
 
 #: ../jobviewer.py:1439
 msgid "No documents queued"
@@ -455,7 +455,7 @@ msgstr "ドキュメント"
 #: ../jobviewer.py:1574
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
-msgstr ""
+msgstr "ドキュメント %s は、プリンター %s にすでに印刷リクエストが送信されています。"
 
 #: ../jobviewer.py:1742
 #, fuzzy, python-format
@@ -465,13 +465,13 @@ msgstr "CUPS サーバーへの接続に問題があります。"
 #: ../jobviewer.py:1745
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
-msgstr ""
+msgstr "ドキュメント %s (ジョブ %d) のプロセス中に問題がありました。"
 
 #. Give up and use the provided message untranslated.
 #: ../jobviewer.py:1752
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
-msgstr ""
+msgstr "ドキュメント %s (ジョブ %d) の印刷中に問題がありました: %s"
 
 #: ../jobviewer.py:1759
 #: ../jobviewer.py:1775
@@ -480,12 +480,12 @@ msgstr "印刷エラー"
 
 #: ../jobviewer.py:1760
 msgid "_Diagnose"
-msgstr ""
+msgstr "診断(_D)"
 
 #: ../jobviewer.py:1781
 #, python-format
 msgid "The printer called `%s' has been disabled."
-msgstr ""
+msgstr "プリンター %s は無効化されています。"
 
 #: ../jobviewer.py:1978
 msgid "disabled"
@@ -502,36 +502,35 @@ msgid "Held"
 msgstr "ヘルプ"
 
 #: ../jobviewer.py:2038
-#, fuzzy, python-format
+#, python-format
 msgid "Held until %s"
-msgstr "以下まで保留:"
+msgstr "%s まで保留"
 
 #: ../jobviewer.py:2042
-#, fuzzy
 msgid "Held until day-time"
-msgstr "以下まで保留:"
+msgstr "昼間まで保留"
 
 #: ../jobviewer.py:2044
-#, fuzzy
 msgid "Held until evening"
-msgstr "以下まで保留:"
+msgstr "夜間まで保留"
 
 #: ../jobviewer.py:2046
 msgid "Held until night-time"
-msgstr ""
+msgstr "夜まで保留"
 
 #: ../jobviewer.py:2048
+#, fuzzy
 msgid "Held until second shift"
-msgstr ""
+msgstr "2営業日後まで保留"
 
 #: ../jobviewer.py:2050
+#, fuzzy
 msgid "Held until third shift"
-msgstr ""
+msgstr "3営業日後まで保留"
 
 #: ../jobviewer.py:2052
-#, fuzzy
 msgid "Held until weekend"
-msgstr "以下まで保留:"
+msgstr "週末まで保留"
 
 #: ../jobviewer.py:2055
 #: ../troubleshoot/PrintTestPage.py:41
@@ -575,26 +574,23 @@ msgstr "ジョブが異常終了しました"
 
 #: ../ppdippstr.py:46
 msgid "Retry current job"
-msgstr ""
+msgstr "現在のジョブを再試行"
 
 #: ../ppdippstr.py:47
 msgid "Retry job"
 msgstr "ジョブを再試行"
 
 #: ../ppdippstr.py:48
-#, fuzzy
 msgid "Stop printer"
-msgstr "プリンターの複製"
+msgstr "プリンターを停止"
 
 #: ../ppdippstr.py:54
-#, fuzzy
 msgid "Default behavior"
-msgstr "デフォルトのプリンター"
+msgstr "デフォルト動作"
 
 #: ../ppdippstr.py:55
-#, fuzzy
 msgid "Authenticated"
-msgstr "<b>認証</b>"
+msgstr "認証"
 
 #. See section 4.2.6 of this document for explanation of finishing types:
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
@@ -603,23 +599,20 @@ msgstr "<b>認証</b>"
 #: ../system-config-printer.py:3839
 #: ../system-config-printer.py:3850
 #: ../system-config-printer.py:6297
-#, fuzzy
 msgid "None"
 msgstr "なし"
 
 #: ../ppdippstr.py:62
-#, fuzzy
 msgid "Classified"
-msgstr "新規クラス"
+msgstr "クラス分類"
 
 #: ../ppdippstr.py:63
 msgid "Confidential"
 msgstr "社外秘"
 
 #: ../ppdippstr.py:64
-#, fuzzy
 msgid "Secret"
-msgstr "サーバー(_G)"
+msgstr "機密"
 
 #: ../ppdippstr.py:65
 msgid "Standard"
@@ -631,12 +624,11 @@ msgstr "重要機密"
 
 #: ../ppdippstr.py:67
 msgid "Unclassified"
-msgstr ""
+msgstr "分類なし"
 
 #: ../ppdippstr.py:73
-#, fuzzy
 msgid "No hold"
-msgstr "見つかりませんでした"
+msgstr "保留しない"
 
 #: ../ppdippstr.py:74
 msgid "Indefinite"
@@ -647,9 +639,8 @@ msgid "Daytime"
 msgstr "昼間"
 
 #: ../ppdippstr.py:76
-#, fuzzy
 msgid "Evening"
-msgstr "保留中"
+msgstr "夜間"
 
 #: ../ppdippstr.py:77
 msgid "Night"
@@ -674,9 +665,8 @@ msgstr "シリアル"
 
 #. HPIJS options
 #: ../ppdippstr.py:93
-#, fuzzy
 msgid "Printout mode"
-msgstr "追加したプリンター"
+msgstr "印刷モード"
 
 #: ../ppdippstr.py:95
 msgid "Draft (auto-detect-paper type)"
@@ -704,24 +694,23 @@ msgstr "高品質印刷 - 白黒 (用紙は自動選択)"
 
 #: ../ppdippstr.py:106
 msgid "Photo (on photo paper)"
-msgstr ""
+msgstr "フォト品質 (フォト用紙)"
 
 #: ../ppdippstr.py:108
 msgid "Best quality (color on photo paper)"
-msgstr ""
+msgstr "標準品質 (フォト用紙にカラー)"
 
 #: ../ppdippstr.py:110
 msgid "Normal quality (color on photo paper)"
-msgstr ""
+msgstr "標準品質 (フォト用紙にカラー)"
 
 #: ../ppdippstr.py:112
 msgid "Media source"
 msgstr ""
 
 #: ../ppdippstr.py:113
-#, fuzzy
 msgid "Printer default"
-msgstr "追加したプリンター"
+msgstr "デフォルトプリンター"
 
 #: ../ppdippstr.py:114
 msgid "Photo tray"
@@ -741,11 +730,11 @@ msgstr "CD/DVD トレイ"
 
 #: ../ppdippstr.py:118
 msgid "Envelope feeder"
-msgstr ""
+msgstr "封筒フィーダー"
 
 #: ../ppdippstr.py:119
 msgid "Large capacity tray"
-msgstr ""
+msgstr "大容量トレイ"
 
 #: ../ppdippstr.py:120
 msgid "Manual feeder"
@@ -753,12 +742,11 @@ msgstr "手差しフィーダー"
 
 #: ../ppdippstr.py:121
 msgid "Multi-purpose tray"
-msgstr ""
+msgstr "多機能トレイ"
 
 #: ../ppdippstr.py:123
-#, fuzzy
 msgid "Page size"
-msgstr "横ページ数:"
+msgstr "ページサイズ"
 
 #: ../ppdippstr.py:124
 msgid "Custom"
@@ -766,27 +754,27 @@ msgstr "カスタム"
 
 #: ../ppdippstr.py:125
 msgid "Photo or 4x6 inch index card"
-msgstr ""
+msgstr "フォトまたは 4x6 インチインデックスカード"
 
 #: ../ppdippstr.py:126
 msgid "Photo or 5x7 inch index card"
-msgstr ""
+msgstr "フォトまたは 5x7 インチインデックスカード"
 
 #: ../ppdippstr.py:127
 msgid "Photo with tear-off tab"
-msgstr ""
+msgstr "切り取りタブ付きフォト"
 
 #: ../ppdippstr.py:128
 msgid "3x5 inch index card"
-msgstr ""
+msgstr "3x5 インチインデックスカード"
 
 #: ../ppdippstr.py:129
 msgid "5x8 inch index card"
-msgstr ""
+msgstr "5x8 インチインデックスカード"
 
 #: ../ppdippstr.py:130
 msgid "A6 with tear-off tab"
-msgstr ""
+msgstr "切り取りタブ付きA6用紙"
 
 #: ../ppdippstr.py:131
 msgid "CD or DVD 80mm"
@@ -802,15 +790,15 @@ msgstr "両面印刷中"
 
 #: ../ppdippstr.py:135
 msgid "Long edge (standard)"
-msgstr ""
+msgstr "ロングエッジ（標準）"
 
 #: ../ppdippstr.py:136
 msgid "Short edge (flip)"
-msgstr ""
+msgstr "ショートエッジ（フリップ）"
 
 #: ../ppdippstr.py:137
 msgid "Off"
-msgstr ""
+msgstr "Off"
 
 #: ../ppdippstr.py:140
 msgid "Resolution, quality, ink type, media type"
@@ -869,9 +857,8 @@ msgid "Searching for drivers"
 msgstr "ドライバーを検索中"
 
 #: ../ppdsloader.py:147
-#, fuzzy
 msgid "fetching PPDs"
-msgstr "PPD の変更"
+msgstr "PPD を取り込み中"
 
 #: ../system-config-printer.py:138
 msgid "To do this, select System->Administration->Firewall from the main menu."
@@ -894,7 +881,7 @@ msgstr "新規クラス"
 #: ../system-config-printer.py:416
 #, fuzzy
 msgid "_Duplicate"
-msgstr "<b>認証</b>"
+msgstr "重複(_D)"
 
 #: ../system-config-printer.py:420
 #, fuzzy
@@ -902,14 +889,12 @@ msgid "Set As De_fault"
 msgstr "デフォルトに設定"
 
 #: ../system-config-printer.py:424
-#, fuzzy
 msgid "_Create class"
-msgstr "リモートクラス"
+msgstr "クラスの作成(_C) "
 
 #: ../system-config-printer.py:426
-#, fuzzy
 msgid "View Print _Queue"
-msgstr "新規プリンター"
+msgstr "印刷キューを表示する"
 
 #: ../system-config-printer.py:428
 msgid "_Add to Group"
@@ -921,22 +906,19 @@ msgstr ""
 
 #: ../system-config-printer.py:432
 msgid "Save Filter as _Search Group"
-msgstr ""
+msgstr "検索グループのフィルターを保存する(_S)"
 
 #: ../system-config-printer.py:436
-#, fuzzy
 msgid "E_nabled"
-msgstr "可能"
+msgstr "有効(_E)"
 
 #: ../system-config-printer.py:438
-#, fuzzy
 msgid "_Shared"
-msgstr "共有"
+msgstr "共有(_S)"
 
 #: ../system-config-printer.py:443
-#, fuzzy
 msgid "Description"
-msgstr "説明:"
+msgstr "説明"
 
 #: ../system-config-printer.py:444
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
@@ -946,7 +928,7 @@ msgstr "場所"
 
 #: ../system-config-printer.py:445
 msgid "Manufacturer / Model"
-msgstr ""
+msgstr "製造元 / モデル"
 
 #. Printer state reasons list
 #: ../system-config-printer.py:520
@@ -954,9 +936,8 @@ msgid "Message"
 msgstr "メッセージ"
 
 #: ../system-config-printer.py:554
-#, fuzzy
 msgid "Problems?"
-msgstr "プローブ"
+msgstr "問題発生"
 
 #: ../system-config-printer.py:659
 #: ../system-config-printer.py:661
@@ -973,9 +954,8 @@ msgid "Devices"
 msgstr "デバイス"
 
 #: ../system-config-printer.py:664
-#, fuzzy
 msgid "Connections"
-msgstr "接続中"
+msgstr "接続"
 
 #: ../system-config-printer.py:665
 msgid "Makes"
@@ -992,7 +972,7 @@ msgstr "ドライバー"
 #: ../system-config-printer.py:668
 #: ../ui/NewPrinterWindow.glade.h:33
 msgid "Downloadable Drivers"
-msgstr ""
+msgstr "ダウンロード可能なドライバー"
 
 #: ../system-config-printer.py:669
 msgid "Users"
@@ -1000,78 +980,75 @@ msgstr "ユーザー"
 
 #: ../system-config-printer.py:697
 msgid "Portrait (no rotation)"
-msgstr ""
+msgstr "縦長書式 (回転: なし)"
 
 #: ../system-config-printer.py:698
 msgid "Landscape (90 degrees)"
-msgstr ""
+msgstr "横長書式 (回転: 90°)"
 
 #: ../system-config-printer.py:699
 msgid "Reverse landscape (270 degrees)"
-msgstr ""
+msgstr "横長書式 (回転: 270°)"
 
 #: ../system-config-printer.py:700
 msgid "Reverse portrait (180 degrees)"
-msgstr ""
+msgstr "縦長書式 (回転: 180°)"
 
 #: ../system-config-printer.py:706
 msgid "Left to right, top to bottom"
-msgstr ""
+msgstr "左から右へ、上から下へ"
 
 #: ../system-config-printer.py:707
 msgid "Left to right, bottom to top"
-msgstr ""
+msgstr "左から右へ、下から上へ"
 
 #: ../system-config-printer.py:708
 msgid "Right to left, top to bottom"
-msgstr ""
+msgstr "右から左へ、上から下へ"
 
 #: ../system-config-printer.py:709
 msgid "Right to left, bottom to top"
-msgstr ""
+msgstr "右から左へ、下から上へ"
 
 #: ../system-config-printer.py:710
 msgid "Top to bottom, left to right"
-msgstr ""
+msgstr "上から下へ、左から右へ"
 
 #: ../system-config-printer.py:711
 msgid "Top to bottom, right to left"
-msgstr ""
+msgstr "上から下へ、右から左へ"
 
 #: ../system-config-printer.py:712
 msgid "Bottom to top, left to right"
-msgstr ""
+msgstr "下から上へ、左から右へ"
 
 #: ../system-config-printer.py:713
 msgid "Bottom to top, right to left"
-msgstr ""
+msgstr "下から上へ、右から左へ"
 
 #: ../system-config-printer.py:719
-#, fuzzy
 msgid "Staple"
-msgstr "停止"
+msgstr "綴じる"
 
 #: ../system-config-printer.py:720
 msgid "Punch"
-msgstr ""
+msgstr "穴開け"
 
 #: ../system-config-printer.py:721
-#, fuzzy
 msgid "Cover"
-msgstr "カバーが開いています"
+msgstr "カバー"
 
 #: ../system-config-printer.py:722
 msgid "Bind"
-msgstr ""
+msgstr "製本"
 
 #: ../system-config-printer.py:723
-#, fuzzy
 msgid "Saddle stitch"
-msgstr "適合サイズに拡大"
+msgstr "中綴じ"
 
 #: ../system-config-printer.py:724
 msgid "Edge stitch"
-msgstr ""
+msgstr "端綴じ"
 
 #: ../system-config-printer.py:725
 #, fuzzy
@@ -1080,15 +1057,15 @@ msgstr "保留 (_H)"
 
 #: ../system-config-printer.py:726
 msgid "Trim"
-msgstr ""
+msgstr "トリム"
 
 #: ../system-config-printer.py:727
 msgid "Bale"
-msgstr ""
+msgstr "梱包"
 
 #: ../system-config-printer.py:728
 msgid "Booklet maker"
-msgstr ""
+msgstr "小冊子の作成"
 
 #: ../system-config-printer.py:729
 msgid "Job offset"
@@ -1116,51 +1093,51 @@ msgstr "適合サイズに拡大"
 
 #: ../system-config-printer.py:734
 msgid "Edge stitch (left)"
-msgstr ""
+msgstr "端綴じ (左)"
 
 #: ../system-config-printer.py:735
 msgid "Edge stitch (top)"
-msgstr ""
+msgstr "端綴じ (上)"
 
 #: ../system-config-printer.py:736
 msgid "Edge stitch (right)"
-msgstr ""
+msgstr "端綴じ (右)"
 
 #: ../system-config-printer.py:737
 msgid "Edge stitch (bottom)"
-msgstr ""
+msgstr "端綴じ (下)"
 
 #: ../system-config-printer.py:738
 msgid "Staple dual (left)"
-msgstr ""
+msgstr "二重綴じ (左)"
 
 #: ../system-config-printer.py:739
 msgid "Staple dual (top)"
-msgstr ""
+msgstr "二重綴じ (上)"
 
 #: ../system-config-printer.py:740
 msgid "Staple dual (right)"
-msgstr ""
+msgstr "二重綴じ (右)"
 
 #: ../system-config-printer.py:741
 msgid "Staple dual (bottom)"
-msgstr ""
+msgstr "二重綴じ (下)"
 
 #: ../system-config-printer.py:742
 msgid "Bind (left)"
-msgstr ""
+msgstr "製本 (左)"
 
 #: ../system-config-printer.py:743
 msgid "Bind (top)"
-msgstr ""
+msgstr "製本 (上)"
 
 #: ../system-config-printer.py:744
 msgid "Bind (right)"
-msgstr ""
+msgstr "製本 (右)"
 
 #: ../system-config-printer.py:745
 msgid "Bind (bottom)"
-msgstr ""
+msgstr "製本 (下)"
 
 #: ../system-config-printer.py:750
 msgid "One-sided"
@@ -1185,7 +1162,7 @@ msgstr "解放する (_R)"
 
 #: ../system-config-printer.py:779
 msgid "Automatic rotation"
-msgstr ""
+msgstr "自動的に回転"
 
 #: ../system-config-printer.py:1069
 #, fuzzy
@@ -1241,7 +1218,7 @@ msgstr ""
 
 #: ../system-config-printer.py:1393
 msgid "Remove from Group"
-msgstr ""
+msgstr "グループから削除"
 
 #: ../system-config-printer.py:1459
 #, fuzzy
@@ -1250,7 +1227,7 @@ msgstr "新規プリンター"
 
 #: ../system-config-printer.py:1462
 msgid "Network class (discovered)"
-msgstr ""
+msgstr "ネットワーククラス (探索された)"
 
 #: ../system-config-printer.py:1468
 #: ../system-config-printer.py:5540
@@ -1275,7 +1252,7 @@ msgstr "新規プリンター"
 #: ../ui/ConnectingDialog.glade.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
-msgstr ""
+msgstr "<i>%s への接続を確立中</i>"
 
 #: ../system-config-printer.py:2046
 msgid "Installable Options"
@@ -1289,7 +1266,7 @@ msgstr "プリンターオプション"
 #: ../system-config-printer.py:2084
 #, python-format
 msgid "modifying class %s"
-msgstr ""
+msgstr "クラス %s を変更中"
 
 #: ../system-config-printer.py:2086
 #: ../system-config-printer.py:3256
@@ -1297,9 +1274,9 @@ msgstr ""
 #: ../system-config-printer.py:6599
 #: ../system-config-printer.py:6611
 #: ../system-config-printer.py:6629
-#, fuzzy, python-format
+#, python-format
 msgid "modifying printer %s"
-msgstr "プリンターの設定"
+msgstr "プリンター %s の設定を変更中"
 
 #: ../system-config-printer.py:2101
 msgid "This will delete this class!"
@@ -1310,35 +1287,30 @@ msgid "Proceed anyway?"
 msgstr "続けますか?"
 
 #: ../system-config-printer.py:2260
-#, fuzzy
 msgid "Set Default Printer"
-msgstr "デフォルトのプリンター"
+msgstr "デフォルトのプリンターを設定"
 
 #: ../system-config-printer.py:2262
 msgid "Do you want to set this as the system-wide default printer?"
-msgstr ""
+msgstr "このプリンターをシステム全体のデフォルトに設定しますか？"
 
 #: ../system-config-printer.py:2264
-#, fuzzy
 msgid "Set as the _system-wide default printer"
-msgstr "これはデフォルトのプリンターです"
+msgstr "システム全体のデフォルトのプリンターを設定 (_S)"
 
 #: ../system-config-printer.py:2266
 msgid "_Clear my personal default setting"
-msgstr ""
+msgstr "個人のデフォルト設定を解除(_C)"
 
 #: ../system-config-printer.py:2267
-#, fuzzy
 msgid "Set as my _personal default printer"
-msgstr "デフォルトのプリンターを選択する"
+msgstr "個人のデフォルトのプリンターを設定 (_S)"
 
 #: ../system-config-printer.py:2272
-#, fuzzy
 msgid "setting default printer"
-msgstr "デフォルトのプリンターを選択する"
+msgstr "デフォルトのプリンターを設定中"
 
 #: ../system-config-printer.py:2329
-#, fuzzy
 msgid "printing test page"
 msgstr "テストページの印刷"
 
@@ -1364,7 +1336,7 @@ msgstr "依頼 %d としてテストページが受け入れられました"
 
 #: ../system-config-printer.py:2363
 msgid "sending maintenance command"
-msgstr ""
+msgstr "メンテナンスコマンドを送信中"
 
 #: ../system-config-printer.py:2371
 #, fuzzy, python-format
@@ -1393,9 +1365,8 @@ msgid "Marker levels are not reported for this printer."
 msgstr ""
 
 #: ../system-config-printer.py:2961
-#, fuzzy
 msgid "Cannot Rename"
-msgstr "解放する (_R)"
+msgstr "名前を変更できません"
 
 #: ../system-config-printer.py:2962
 msgid "There are queued jobs."
@@ -1410,53 +1381,49 @@ msgid "Completed jobs will no longer be available for re-printing."
 msgstr ""
 
 #: ../system-config-printer.py:3057
-#, fuzzy
 msgid "renaming printer"
-msgstr "プリンターの設定"
+msgstr "プリンターの名前を変更中"
 
 #. for classes make sure all members
 #. will get added
 #: ../system-config-printer.py:3144
-#, fuzzy
 msgid "duplicating printer"
-msgstr "プリンターの設定"
+msgstr "プリンターを複製中"
 
 #: ../system-config-printer.py:3208
-#, fuzzy, python-format
+#, python-format
 msgid "Really delete class '%s'?"
-msgstr "本当にクラス %s を削除しますか?"
+msgstr "クラス %s を本当に削除しますか？"
 
 #: ../system-config-printer.py:3210
-#, fuzzy, python-format
+#, python-format
 msgid "Really delete printer '%s'?"
-msgstr "本当にプリンター %s を削除しますか?"
+msgstr "プリンター %s を本当に削除しますか？"
 
 #: ../system-config-printer.py:3212
-#, fuzzy
 msgid "Really delete selected destinations?"
-msgstr "本当にプリンター %s を削除しますか?"
+msgstr "選択された宛先を本当に削除しますか？"
 
 #: ../system-config-printer.py:3233
-#, fuzzy, python-format
+#, python-format
 msgid "deleting printer %s"
-msgstr "プリンターの設定"
+msgstr "プリンター %s を削除中"
 
 #: ../system-config-printer.py:3319
 msgid "Publish Shared Printers"
-msgstr ""
+msgstr "共有プリンターを公開"
 
 #: ../system-config-printer.py:3320
 msgid "Shared printers are not available to other people unless the 'Publish shared printers' option is enabled in the server settings."
-msgstr ""
+msgstr "共有プリンターは、「共有プリンターを公開」オプションがサーバーの設定で有効化されていない限り、他のユーザーからは利用できません。"
 
 #: ../system-config-printer.py:3513
-#, fuzzy
 msgid "modifying server settings"
-msgstr "<b>基本サーバー設定</b>"
+msgstr "サーバーの設定を変更中"
 
 #: ../system-config-printer.py:3541
 msgid "Review Firewall"
-msgstr ""
+msgstr "ファイアウォールを確認"
 
 #: ../system-config-printer.py:3542
 msgid "You may need to adjust the firewall to allow network printing to this computer."
@@ -1466,7 +1433,6 @@ msgstr ""
 #: ../system-config-printer.py:3838
 #: ../system-config-printer.py:3844
 #: ../system-config-printer.py:3849
-#, fuzzy
 msgid "Default"
 msgstr "デフォルト"
 
@@ -1504,12 +1470,11 @@ msgstr "115200"
 
 #: ../system-config-printer.py:3840
 msgid "Odd"
-msgstr ""
+msgstr "奇数ページ"
 
 #: ../system-config-printer.py:3841
-#, fuzzy
 msgid "Even"
-msgstr "保留中"
+msgstr "偶数ページ"
 
 #: ../system-config-printer.py:3845
 msgid "8"
@@ -1545,9 +1510,8 @@ msgid "Comment"
 msgstr "コメント"
 
 #: ../system-config-printer.py:3954
-#, fuzzy
 msgid "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
-msgstr "PostScript プリンター記述 (*.ppd[.gz])"
+msgstr "PostScript プリンター記述ファイル (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
 
 #: ../system-config-printer.py:3963
 msgid "All files (*)"
@@ -1557,9 +1521,8 @@ msgstr "すべてのファイル (*)"
 #: ../system-config-printer.py:5964
 #: ../system-config-printer.py:6002
 #: ../applet.py:130
-#, fuzzy
 msgid "Search"
-msgstr "プリンターの新規名称"
+msgstr "検索"
 
 #: ../system-config-printer.py:4051
 #: ../system-config-printer.py:4072
@@ -1587,19 +1550,16 @@ msgid "Other"
 msgstr "その他"
 
 #: ../system-config-printer.py:4902
-#, fuzzy
 msgid "Network Printer"
-msgstr "新規プリンター"
+msgstr "ネットワークプリンター"
 
 #: ../system-config-printer.py:4906
-#, fuzzy
 msgid "Find Network Printer"
-msgstr "新規プリンター"
+msgstr "ネットワークプリンターを検索"
 
 #: ../system-config-printer.py:4921
-#, fuzzy
 msgid "fetching device list"
-msgstr "<b>基本サーバー設定</b>"
+msgstr "デバイスリストを取り込み中"
 
 #: ../system-config-printer.py:5007
 #: ../system-config-printer.py:6224
@@ -1607,12 +1567,10 @@ msgid " (Current)"
 msgstr " (現在の設定)"
 
 #: ../system-config-printer.py:5079
-#, fuzzy
 msgid "Scanning..."
-msgstr "拡大:"
+msgstr "スキャニング中..."
 
 #: ../system-config-printer.py:5134
-#, fuzzy
 msgid "No Print Shares"
 msgstr "プリンターを共有しない"
 
@@ -1636,19 +1594,16 @@ msgid "This print share is not accessible."
 msgstr "このプリント共有はアクセスできません。"
 
 #: ../system-config-printer.py:5405
-#, fuzzy
 msgid "Print Share Inaccessible"
-msgstr "このプリント共有はアクセス可能です。"
+msgstr "このプリント共有はアクセスできません"
 
 #: ../system-config-printer.py:5451
-#, fuzzy
 msgid "Verifying"
-msgstr "確認済み"
+msgstr "確認中"
 
 #: ../system-config-printer.py:5452
-#, fuzzy
 msgid "Verifying printer"
-msgstr "プリンターの設定"
+msgstr "プリンターを確認中"
 
 #: ../system-config-printer.py:5477
 msgid "Inaccessible"
@@ -1672,9 +1627,8 @@ msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
 #: ../system-config-printer.py:5543
-#, fuzzy
 msgid "Hardware Abstraction Layer (HAL)"
-msgstr "HAL (Hardware Abstraction Layer) で検出されたローカルプリンター"
+msgstr "Hardware Abstraction Layer (HAL)"
 
 #: ../system-config-printer.py:5545
 msgid "AppSocket/HP JetDirect"
@@ -1723,18 +1677,16 @@ msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL (Hardware Abstraction Layer) で検出されたローカルプリンター"
 
 #: ../system-config-printer.py:5800
-#, fuzzy
 msgid "Searching for printers"
-msgstr "プリンターの新規名称"
+msgstr "プリンターを検索中"
 
 #: ../system-config-printer.py:5877
 msgid "No printer was found at that address."
 msgstr ""
 
 #: ../system-config-printer.py:6014
-#, fuzzy
 msgid "-- Select from search results --"
-msgstr "データベースからプリンタードライバーの選択"
+msgstr "-- 検索結果から選択 --"
 
 #: ../system-config-printer.py:6016
 msgid "-- No matches found --"
@@ -1815,15 +1767,13 @@ msgid "Failed to download PPD."
 msgstr ""
 
 #: ../system-config-printer.py:6443
-#, fuzzy
 msgid "fetching PPD"
-msgstr "PPD の変更"
+msgstr "PPD を取り込み中"
 
 #: ../system-config-printer.py:6472
 #: ../system-config-printer.py:6510
-#, fuzzy
 msgid "No Installable Options"
-msgstr "インストールできるオプション"
+msgstr "インストールできるオプションなし"
 
 #: ../system-config-printer.py:6572
 #, python-format
@@ -1840,9 +1790,9 @@ msgstr "ドライバーをインストール"
 
 #: ../system-config-printer.py:6811
 #: ../troubleshoot/CheckPPDSanity.py:131
-#, fuzzy, python-format
+#, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
-msgstr "プリンター '%s' には %s パッケージが必要ですが、現在インストールされていません。このプリンターを使用する前にインストールを行ってください。"
+msgstr "プリンター %s には %s パッケージが必要ですが、しかし、現在インストールされていません。"
 
 #: ../system-config-printer.py:6827
 msgid "Missing driver"
@@ -1854,14 +1804,12 @@ msgid "Printer '%s' requires the '%s' program but it is not currently installed.
 msgstr "プリンター '%s' には '%s' プログラムが必要ですが、現在インストールされていません。このプリンターを使用する前にインストールを行ってください。"
 
 #: ../ui/AboutDialog.glade.h:1
-#, fuzzy
 msgid "A CUPS configuration tool."
-msgstr "プリンター設定 - %s"
+msgstr "CUPS 設定ツール"
 
 #: ../ui/AboutDialog.glade.h:2
-#, fuzzy
 msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
-msgstr "Copyright 2006, 2007 Red Hat, Inc."
+msgstr "Copyright &#xA9; 2006-2008 Red Hat, Inc."
 
 #: ../ui/AboutDialog.glade.h:3
 msgid ""
@@ -1878,30 +1826,24 @@ msgid "translator-credits"
 msgstr ""
 
 #: ../ui/ConnectDialog.glade.h:1
-#, fuzzy
 msgid "CUPS _server:"
-msgstr "CUPS サーバー:"
+msgstr "CUPS サーバー(_S):"
 
 #: ../ui/ConnectDialog.glade.h:2
 msgid "Connect to CUPS server"
 msgstr "CUPS サーバーへの接続"
 
 #: ../ui/ConnectDialog.glade.h:3
-#, fuzzy
 msgid "Require _encryption"
 msgstr "暗号化を必要とする"
 
 #: ../ui/ConnectingDialog.glade.h:3
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">パスワードが必要です</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">CUPS サーバーへ接続中</span>"
 
 #: ../ui/ConnectingDialog.glade.h:4
-#, fuzzy
 msgid "Connecting to CUPS server"
-msgstr "CUPS サーバーへの接続"
+msgstr "CUPS サーバーへの接続中"
 
 #: ../ui/InstallDialog.glade.h:1
 msgid "_Install"
@@ -1916,9 +1858,8 @@ msgid "_File"
 msgstr "ファイル(_F)"
 
 #: ../ui/JobsWindow.glade.h:3
-#, fuzzy
 msgid "_Job"
-msgstr "依頼"
+msgstr "ジョブ(_J)"
 
 #: ../ui/JobsWindow.glade.h:4
 #: ../ui/PrintersWindow.glade.h:8
@@ -1935,7 +1876,6 @@ msgid "New name for the printer"
 msgstr "プリンターの新規名称"
 
 #: ../ui/NewPrinterWindow.glade.h:1
-#, fuzzy
 msgid "<b>Authentication</b>"
 msgstr "<b>認証</b>"
 
@@ -1952,14 +1892,12 @@ msgid "<b>Enter device URI</b>"
 msgstr "<b>デバイス URI の入力</b>"
 
 #: ../ui/NewPrinterWindow.glade.h:5
-#, fuzzy
 msgid "<b>IPP Printer</b>"
-msgstr "<b>SMB プリンター</b>"
+msgstr "<b>IPP プリンター</b>"
 
 #: ../ui/NewPrinterWindow.glade.h:6
-#, fuzzy
 msgid "<b>License Terms</b>"
-msgstr "プリンター名"
+msgstr "<b>ライセンス条項</b>"
 
 #: ../ui/NewPrinterWindow.glade.h:7
 msgid "<b>Location of the LPD network printer</b>"
@@ -1974,19 +1912,16 @@ msgid "<b>Location</b> (optional)"
 msgstr "<b>場所</b> (オプション)"
 
 #: ../ui/NewPrinterWindow.glade.h:10
-#, fuzzy
 msgid "<b>Network Printer</b>"
-msgstr "新規プリンター"
+msgstr "<b>ネットワークプリンター</b>"
 
 #: ../ui/NewPrinterWindow.glade.h:11
-#, fuzzy
 msgid "<b>Note</b>"
-msgstr "<b>状態</b>"
+msgstr "<b>注記</b>"
 
 #: ../ui/NewPrinterWindow.glade.h:12
-#, fuzzy
 msgid "<b>Output Quality</b>"
-msgstr "<b>状態</b>"
+msgstr "<b>出力品質</b>"
 
 #: ../ui/NewPrinterWindow.glade.h:13
 msgid "<b>Printer Name</b>"
@@ -1997,9 +1932,8 @@ msgid "<b>SMB Printer</b>"
 msgstr "<b>SMB プリンター</b>"
 
 #: ../ui/NewPrinterWindow.glade.h:15
-#, fuzzy
 msgid "<b>Select Driver</b>"
-msgstr "<b>デフォルトのプリンター</b>"
+msgstr "<b>ドライバーの選択</b>"
 
 #: ../ui/NewPrinterWindow.glade.h:16
 msgid "<b>Settings of the serial port</b>"
@@ -2010,46 +1944,28 @@ msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
 msgstr "<i>smb://[workgroup/]server[:port]/printer</i>"
 
 #: ../ui/NewPrinterWindow.glade.h:18
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">パスワードが必要です</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">クラスメンバーを選択</span>"
 
 #: ../ui/NewPrinterWindow.glade.h:19
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">パスワードが必要です</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">ドライバーを選択</span>"
 
 #: ../ui/NewPrinterWindow.glade.h:20
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">パスワードが必要です</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">プリンターの説明</span>"
 
 #: ../ui/NewPrinterWindow.glade.h:21
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">パスワードが必要です</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">既存の設定</span>"
 
 #: ../ui/NewPrinterWindow.glade.h:22
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">パスワードが必要です</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">インストール可能なオプション</span>"
 
 #: ../ui/NewPrinterWindow.glade.h:23
-#, fuzzy
 msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
-msgstr ""
-"<span weight=\"bold\" size=\"larger\">パスワードが必要です</span>\n"
-"\n"
+msgstr "<span weight=\"bold\" size=\"larger\">デバイスを選択</span>"
 
 #: ../ui/NewPrinterWindow.glade.h:24
 msgid "Baud Rate"
@@ -2060,14 +1976,12 @@ msgid "Browse..."
 msgstr ""
 
 #: ../ui/NewPrinterWindow.glade.h:26
-#, fuzzy
 msgid "Comments..."
 msgstr "コメント"
 
 #: ../ui/NewPrinterWindow.glade.h:27
-#, fuzzy
 msgid "Connection"
-msgstr "接続中"
+msgstr "接続"
 
 #: ../ui/NewPrinterWindow.glade.h:28
 msgid "Data Bits"
@@ -2092,9 +2006,8 @@ msgid "DirectJet"
 msgstr "DirectJet"
 
 #: ../ui/NewPrinterWindow.glade.h:34
-#, fuzzy
 msgid "Driver details"
-msgstr "ドライバー"
+msgstr "ドライバーの詳細"
 
 #: ../ui/NewPrinterWindow.glade.h:35
 msgid "Empty"
@@ -2117,9 +2030,8 @@ msgid "Graphics:"
 msgstr ""
 
 #: ../ui/NewPrinterWindow.glade.h:40
-#, fuzzy
 msgid "Host:"
-msgstr "ホスト名"
+msgstr "ホスト名:"
 
 #: ../ui/NewPrinterWindow.glade.h:41
 msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
@@ -2138,17 +2050,14 @@ msgid "License:"
 msgstr "ライセンス:"
 
 #: ../ui/NewPrinterWindow.glade.h:46
-#, fuzzy
 msgid "Line art:"
-msgstr "プリンター状態:"
+msgstr "ラインアート:"
 
 #: ../ui/NewPrinterWindow.glade.h:47
-#, fuzzy
 msgid "Local Driver"
-msgstr "ローカルプリンター"
+msgstr "ローカルドライバー"
 
 #: ../ui/NewPrinterWindow.glade.h:48
-#, fuzzy
 msgid "Make and model:"
 msgstr "製造元とモデル:"
 
@@ -2157,14 +2066,12 @@ msgid "Manufacturer"
 msgstr ""
 
 #: ../ui/NewPrinterWindow.glade.h:50
-#, fuzzy
 msgid "Network"
-msgstr "新規プリンター"
+msgstr "ネットワーク"
 
 #: ../ui/NewPrinterWindow.glade.h:52
-#, fuzzy
 msgid "No, I do not accept this license"
-msgstr "依頼の受け入れ中"
+msgstr "いいえ、このライセンスを受諾しません"
 
 #: ../ui/NewPrinterWindow.glade.h:53
 msgid "Parity"
@@ -2179,14 +2086,12 @@ msgid "Photo:"
 msgstr ""
 
 #: ../ui/NewPrinterWindow.glade.h:57
-#, fuzzy
 msgid "Port number:"
-msgstr "ポート番号"
+msgstr "ポート番号:"
 
 #: ../ui/NewPrinterWindow.glade.h:58
-#, fuzzy
 msgid "PostScript Printer Description (PPD) files can often be found on the driver disk that comes with the printer. For PostScript printers they are often part of the Windows<sup>&#xAE;</sup> driver."
-msgstr "PPD (PostScript Printer Description) ファイルはプリンターに同梱されているドライバーディスクに入っていることがよくあります。 PostScript プリンターの場合、 Windows<sup>®</sup> ドライバーの一部となっていることがよくあります。"
+msgstr "PPD (PostScript Printer Description) ファイルはプリンターに同梱されているドライバーディスクに入っていることがよくあります。 PostScript プリンターの場合、 Windows<sup>&#xAE;</sup> ドライバーの一部となっていることがよくあります。"
 
 #: ../ui/NewPrinterWindow.glade.h:59
 msgid "Printer model:"
@@ -2197,12 +2102,10 @@ msgid "Probe"
 msgstr "プローブ"
 
 #: ../ui/NewPrinterWindow.glade.h:61
-#, fuzzy
 msgid "Prompt user if authentication is required"
-msgstr "<b>認証</b>"
+msgstr "認証が必要な場合にはユーザーに要求する"
 
 #: ../ui/NewPrinterWindow.glade.h:62
-#, fuzzy
 msgid "Provide PPD file"
 msgstr "PPD ファイルを提供する"
 
@@ -2223,23 +2126,20 @@ msgid "Search for a printer driver to download"
 msgstr ""
 
 #: ../ui/NewPrinterWindow.glade.h:67
-#, fuzzy
 msgid "Searching..."
-msgstr "拡大:"
+msgstr "検索中..."
 
 #: ../ui/NewPrinterWindow.glade.h:68
-#, fuzzy
 msgid "Select printer from database"
-msgstr "データベースからプリンタードライバーの選択"
+msgstr "データベースからプリンターを選択"
 
 #: ../ui/NewPrinterWindow.glade.h:69
 msgid "Serial"
 msgstr "シリアル"
 
 #: ../ui/NewPrinterWindow.glade.h:70
-#, fuzzy
 msgid "Set authentication details now"
-msgstr "<b>認証</b>"
+msgstr "詳細な認証情報を設定"
 
 #: ../ui/NewPrinterWindow.glade.h:71
 msgid "Short name for this printer such as \"laserjet\""
@@ -2254,9 +2154,8 @@ msgid "Support:"
 msgstr ""
 
 #: ../ui/NewPrinterWindow.glade.h:74
-#, fuzzy
 msgid "Text:"
-msgstr "リセット"
+msgstr "テキスト:"
 
 #: ../ui/NewPrinterWindow.glade.h:75
 msgid "The foomatic printer database contains various manufacturer provided PostScript Printer Description (PPD) files and also can generate PPD files for a large number of (non PostScript) printers. But in general manufacturer provided PPD files provide better access to the specific features of the printer."
@@ -2295,14 +2194,12 @@ msgid "With this choice no driver download will be performed. In the next steps 
 msgstr ""
 
 #: ../ui/NewPrinterWindow.glade.h:86
-#, fuzzy
 msgid "Yes, I accept this license"
-msgstr "依頼の受け入れ中"
+msgstr "はい、このライセンスを受諾します"
 
 #: ../ui/NewPrinterWindow.glade.h:87
-#, fuzzy
 msgid "_Search"
-msgstr "プリンターの新規名称"
+msgstr "検索 (_S)"
 
 #: ../ui/NewPrinterWindow.glade.h:88
 msgid "_Verify..."
@@ -2310,15 +2207,13 @@ msgstr "確認(_V)..."
 
 #: ../ui/NewPrinterWindow.glade.h:89
 #: ../ui/PrinterPropertiesDialog.glade.h:77
-#, fuzzy
 msgid "move left"
-msgstr "著作権"
+msgstr "左へ移動"
 
 #: ../ui/NewPrinterWindow.glade.h:90
 #: ../ui/PrinterPropertiesDialog.glade.h:78
-#, fuzzy
 msgid "move right"
-msgstr "著作権"
+msgstr "右へ移動"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:1
 msgid " "
@@ -2337,9 +2232,8 @@ msgid "<b>Image Options</b>"
 msgstr "<b>イメージオプション</b>"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:5
-#, fuzzy
 msgid "<b>Ink/Toner Levels</b>"
-msgstr "<b>バナー</b>"
+msgstr "<b>インク/トナーのレベル</b>"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:6
 msgid "<b>Other Options (Advanced)</b>"
@@ -2358,9 +2252,8 @@ msgid "<b>State</b>"
 msgstr "<b>状態</b>"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:10
-#, fuzzy
 msgid "<b>Status Messages</b>"
-msgstr "メッセージ"
+msgstr "<b>ステータスメッセージ</b>"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:11
 msgid "<b>Tests and Maintenance</b>"
@@ -2383,7 +2276,6 @@ msgid "Accepting jobs"
 msgstr "依頼の受け入れ中"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:16
-#, fuzzy
 msgid "Access Control"
 msgstr "アクセス制御"
 
@@ -2413,9 +2305,8 @@ msgstr "1 インチあたりの文字数:"
 
 #. Not more than 25 characters
 #: ../ui/PrinterPropertiesDialog.glade.h:24
-#, fuzzy
 msgid "Clean Print Heads"
-msgstr "プリンター"
+msgstr "プリンターヘッドのクリーニング"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:25
 msgid "Columns:"
@@ -2462,14 +2353,12 @@ msgid "Hue adjustment:"
 msgstr "色調節:"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:37
-#, fuzzy
 msgid "Ink/Toner Levels"
-msgstr "<b>バナー</b>"
+msgstr "インク/トナーのレベル"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:38
-#, fuzzy
 msgid "Installed Options"
-msgstr "インストールできるオプション"
+msgstr "インストールしたオプション"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:39
 msgid "Job Options"
@@ -2541,7 +2430,6 @@ msgstr "美麗印刷"
 
 #. Not more than 25 characters
 #: ../ui/PrinterPropertiesDialog.glade.h:57
-#, fuzzy
 msgid "Print Self-Test Page"
 msgstr "テストページの印刷"
 
@@ -2552,9 +2440,8 @@ msgid "Print Test Page"
 msgstr "テストページの印刷"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:61
-#, fuzzy
 msgid "Printer Properties"
-msgstr "プリンターレポート"
+msgstr "プリンターのプロパティー"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:62
 msgid "Printer State:"
@@ -2602,9 +2489,8 @@ msgid "Starting Banner:"
 msgstr "開始バナー"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:73
-#, fuzzy
 msgid "There are no status messages for this printer."
-msgstr "プリンターの新規名称"
+msgstr "このプリンターの状態メッセージはありません。"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:74
 msgid "To add a new option, enter its name in the box below and click to add."
@@ -2623,7 +2509,6 @@ msgid "points"
 msgstr "ポイント"
 
 #: ../ui/PrinterPropertiesDialog.glade.h:80
-#, fuzzy
 msgid "user"
 msgstr "ユーザー"
 
@@ -2632,9 +2517,8 @@ msgid "System-Config-Printer"
 msgstr "プリンターの設定"
 
 #: ../ui/PrintersWindow.glade.h:2
-#, fuzzy
 msgid "_Discovered Printers"
-msgstr "プリンターの設定"
+msgstr "検出されたプリンター (D) "
 
 #: ../ui/PrintersWindow.glade.h:3
 msgid "_Group"
@@ -2649,14 +2533,12 @@ msgid "_Help"
 msgstr "ヘルプ(_H)"
 
 #: ../ui/PrintersWindow.glade.h:6
-#, fuzzy
 msgid "_Printer"
-msgstr "プリンター"
+msgstr "プリンター(_P)"
 
 #: ../ui/PrintersWindow.glade.h:7
-#, fuzzy
 msgid "_Server"
-msgstr "サーバー(_G)"
+msgstr "サーバー(_S)"
 
 #: ../ui/ServerSettingsDialog.glade.h:1
 msgid "<b>Basic Server Settings</b>"
@@ -2665,32 +2547,27 @@ msgstr "<b>基本サーバー設定</b>"
 #: ../ui/ServerSettingsDialog.glade.h:2
 #, fuzzy
 msgid "<b>Browse servers</b>"
-msgstr "サーバー"
+msgstr "<b>サーバーを閲覧</b>"
 
 #: ../ui/ServerSettingsDialog.glade.h:3
-#, fuzzy
 msgid "<b>Job history</b>"
-msgstr "依頼の優先度"
+msgstr "<b>ジョブ履歴</b>"
 
 #: ../ui/ServerSettingsDialog.glade.h:4
-#, fuzzy
 msgid "Advanced Server Settings"
-msgstr "<b>基本サーバー設定</b>"
+msgstr "高度なサーバー設定"
 
 #: ../ui/ServerSettingsDialog.glade.h:5
-#, fuzzy
 msgid "Allow _remote administration"
-msgstr "リモート管理者を許可する"
+msgstr "リモート管理を許可する (_R)"
 
 #: ../ui/ServerSettingsDialog.glade.h:6
-#, fuzzy
 msgid "Allow _users to cancel any job (not just their own)"
-msgstr "ユーザーに依頼をキャンセルすることを許可する (彼ら自身のものでなくても)"
+msgstr "ユーザーにジョブの取消を許可する (ジョブの依頼者以外であっても) (_U)"
 
 #: ../ui/ServerSettingsDialog.glade.h:7
-#, fuzzy
 msgid "Allow printing from the _Internet"
-msgstr "インターネットからの印刷を許可する"
+msgstr "インターネットからの印刷を許可する (_I)"
 
 #: ../ui/ServerSettingsDialog.glade.h:8
 msgid "Do not preserve job history"
@@ -2705,28 +2582,24 @@ msgid "Preserve job history but not files"
 msgstr ""
 
 #: ../ui/ServerSettingsDialog.glade.h:11
-#, fuzzy
 msgid "Save _debugging information for troubleshooting"
-msgstr "トラブルシュートのためのデバッグ情報を保存する"
+msgstr "トラブルシュートのためのデバッグ情報を保存する (_D)"
 
 #: ../ui/ServerSettingsDialog.glade.h:12
-#, fuzzy
 msgid "Server Settings"
-msgstr "サーバー設定"
+msgstr "サーバーの設定"
 
 #: ../ui/ServerSettingsDialog.glade.h:13
 msgid "Usually print servers broadcast their queues. Specify print servers below to periodically ask for queues instead."
 msgstr ""
 
 #: ../ui/ServerSettingsDialog.glade.h:14
-#, fuzzy
 msgid "_Publish shared printers connected to this system"
-msgstr "このシステムに接続されている共有公開プリンター"
+msgstr "このシステムに接続されている共有プリンターを公開 (_P)"
 
 #: ../ui/ServerSettingsDialog.glade.h:15
-#, fuzzy
 msgid "_Show printers shared by other systems"
-msgstr "他のシステムで共有されているプリンターを表示する"
+msgstr "他のシステムで共有されているプリンターを表示 (_S)"
 
 #: ../ui/SMBBrowseDialog.glade.h:1
 msgid "SMB Browser"
@@ -2825,9 +2698,9 @@ msgid "Printer off-line"
 msgstr "プリンターがオフラインです"
 
 #: ../statereason.py:111
-#, fuzzy, python-format
+#, python-format
 msgid "Printer '%s' is currently off-line."
-msgstr "プリンター '%s' の紙がなくなりました。"
+msgstr "プリンター '%s' は現在オフラインです。"
 
 #: ../statereason.py:112
 msgid "Not connected?"
@@ -2844,14 +2717,13 @@ msgid "Printer error"
 msgstr "プリンターのエラー"
 
 #: ../statereason.py:115
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem on printer '%s'."
-msgstr "プリンター '%s' の扉が開いています。"
+msgstr "プリンター '%s' に問題があります。"
 
 #: ../statereason.py:117
-#, fuzzy
 msgid "Printer configuration error"
-msgstr "プリンター設定 - %s"
+msgstr "プリンターの設定エラー"
 
 #: ../statereason.py:118
 #, fuzzy, python-format
@@ -2878,9 +2750,8 @@ msgstr "お待ちください"
 
 #: ../timedops.py:108
 #: ../timedops.py:188
-#, fuzzy
 msgid "Gathering information"
-msgstr "場所"
+msgstr "情報を収集中"
 
 #: ../ToolbarSearchEntry.py:69
 msgid "_Filter:"
@@ -2908,14 +2779,12 @@ msgstr ""
 
 #: ../troubleshoot/CheckPPDSanity.py:44
 #: ../applet.py:182
-#, fuzzy
 msgid "Install"
-msgstr "インストール(_I)"
+msgstr "インストール"
 
 #: ../troubleshoot/CheckPPDSanity.py:96
-#, fuzzy
 msgid "Invalid PPD File"
-msgstr "PPD ファイルを提供する"
+msgstr "無効な PPD ファイル"
 
 #: ../troubleshoot/CheckPPDSanity.py:106
 #, python-format
@@ -2924,14 +2793,13 @@ msgstr ""
 
 #. Perhaps cupstestppd is not in the path.
 #: ../troubleshoot/CheckPPDSanity.py:112
-#, fuzzy, python-format
+#, python-format
 msgid "There is a problem with the PPD file for printer '%s'."
-msgstr "プリンター '%s' の扉が開いています。"
+msgstr "プリンター '%s' の PPD ファイルに問題があります。"
 
 #: ../troubleshoot/CheckPPDSanity.py:122
-#, fuzzy
 msgid "Missing Printer Driver"
-msgstr "プリンタードライバーが見つからない"
+msgstr "プリンタードライバーがありません"
 
 #: ../troubleshoot/CheckPPDSanity.py:136
 #, fuzzy, python-format
@@ -3022,12 +2890,11 @@ msgstr "テストページの印刷"
 #: ../troubleshoot/Locale.py:48
 #, fuzzy
 msgid "Printer page size:"
-msgstr "プリンター状態:"
+msgstr "プリンターページサイズ"
 
 #: ../troubleshoot/LocalOrRemote.py:26
-#, fuzzy
 msgid "Printer Location"
-msgstr "プリンターオプション"
+msgstr "プリンターの場所"
 
 #: ../troubleshoot/LocalOrRemote.py:27
 #, fuzzy
@@ -3082,21 +2949,18 @@ msgid "Cancel All Jobs"
 msgstr "すべてのジョブをキャンセル"
 
 #: ../troubleshoot/PrintTestPage.py:81
-#, fuzzy
 msgid "Test"
-msgstr "リセット"
+msgstr "テスト"
 
 #: ../troubleshoot/PrintTestPage.py:111
 msgid "Did the marked print jobs print correctly?"
 msgstr ""
 
 #: ../troubleshoot/PrintTestPage.py:118
-#, fuzzy
 msgid "Yes"
 msgstr "Yes"
 
 #: ../troubleshoot/PrintTestPage.py:119
-#, fuzzy
 msgid "No"
 msgstr "No"
 
@@ -3124,9 +2988,9 @@ msgid "Queue Not Enabled"
 msgstr ""
 
 #: ../troubleshoot/QueueNotEnabled.py:63
-#, fuzzy, python-format
+#, python-format
 msgid "The queue '%s' is not enabled."
-msgstr "このプリント共有はアクセスできません。"
+msgstr "印刷キュー '%s' は有効化されていません。"
 
 #: ../troubleshoot/QueueNotEnabled.py:71
 msgid "To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the printer in the printer administration tool."
@@ -3146,9 +3010,8 @@ msgid "To make the queue accept jobs, select the 'Accepting Jobs' checkbox in th
 msgstr ""
 
 #: ../troubleshoot/RemoteAddress.py:26
-#, fuzzy
 msgid "Remote Address"
-msgstr "リモートプリンター"
+msgstr "リモートアドレス"
 
 #: ../troubleshoot/RemoteAddress.py:27
 msgid "Please enter as many details as you can about the network address of this printer."
