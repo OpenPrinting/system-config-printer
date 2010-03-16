@@ -259,7 +259,7 @@ html:	$(EXPORT_MODULES)
 	rm -rf html
 	epydoc -o html --html $(EXPORT_MODULES)
 
-distcheck-hook: update-po
+distcheck-hook: update-po missing-imports
 
 update-po: missing-languages
 	$(MAKE) -C po update-po
@@ -269,6 +269,20 @@ missing-languages:
 	eval $$(grep ALL_LINGUAS configure.in); \
 	diff -u <(echo $$ALL_LINGUAS | xargs -rn1 echo) \
 		<(cd po; ls -1 *.po | sed -e "s,\.po$$,,")'
+
+missing-imports:
+	s=0; \
+	for a in $(top_srcdir)/*.py; do \
+		modules=$$(sed -ne 's,^.*except \([a-z]\+\)\..*$$,\1,p' \
+				"$$a" | sort -u); \
+		for module in $$modules; do \
+			if ! grep -q "import \(.*, *\)\?$$module" "$$a"; then \
+				echo "$$a should import $$module"; \
+				s=1; \
+			fi; \
+		done; \
+	done; \
+	exit $$s
 
 fix-glade:
 	sed -i -e '/invisible_char/d' -e '/toolbar_style/d' $(top_srcdir)/glade/*.glade
