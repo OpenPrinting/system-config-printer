@@ -26,6 +26,7 @@ import dbus.glib
 import dbus.service
 import pynotify
 import gettext
+import glib
 import gobject
 import gtk
 import gtk.gdk
