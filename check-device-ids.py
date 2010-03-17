@@ -102,7 +102,7 @@ if device_ids:
                     id_dict = cupshelpers.parseDeviceID (device_id)
                     proxy.InstallDrivers (id_dict['MFG'], id_dict['MDL'], '',
                                           timeout=3600)
-            except dbus.exceptions.DBusException:
+            except dbus.exceptions.DBusException, e:
                 print "Ignoring exception: %s" % e
         except dbus.exceptions.DBusException:
             print "D-Bus not available so skipping package installation"
