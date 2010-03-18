@@ -94,7 +94,7 @@ for device, attrs in devices.iteritems ():
     try:
         drivers = ppds.ids[id_fields['MFG'].lower ()][id_fields['MDL'].lower ()]
     except KeyError:
-        drivers = None
+        drivers = []
 
     if i < n:
         more = unichr (0x2502)
