@@ -115,15 +115,12 @@ makes = ppds.getMakes ()
 
 def driver_uri_to_filename (uri):
     schemeparts = uri.split (':', 2)
-    if len (schemeparts) < 1:
+    if len (schemeparts) < 2:
         return "/usr/share/cups/model/" + uri
 
     scheme = schemeparts[0]
     if scheme != "drv":
         return "/usr/lib/cups/driver/" + scheme
-
-    if len (schemeparts) < 2:
-        return ""
 
     rest = schemeparts[1]
     rest = rest.lstrip ('/')
