@@ -95,7 +95,7 @@ for device, attrs in devices.iteritems ():
     else:
         cmd = ""
 
-    print "%s %s: MFG:%s;MDL:%s:%s" % (line, make_and_model,
+    print "%s %s: MFG:%s;MDL:%s;%s" % (line, make_and_model,
                                        id_fields['MFG'],
                                        id_fields['MDL'],
                                        cmd)
