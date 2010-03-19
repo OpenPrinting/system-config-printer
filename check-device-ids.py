@@ -160,14 +160,21 @@ for device, attrs in devices.iteritems ():
     else:
         line = last
 
-    print "%s %s: MFG:%s;MDL:%s;" % (line, make_and_model,
-                                     id_fields['MFG'],
-                                     id_fields['MDL'])
+    cmd = id_fields['CMD']
+    if cmd:
+        cmd = "CMD:%s;" % reduce (lambda x, y: x + ',' + y, cmd)
+    else:
+        cmd = ""
 
+    print "%s %s: MFG:%s;MDL:%s;%s" % (line, make_and_model,
+                                       id_fields['MFG'],
+                                       id_fields['MDL'],
+                                       cmd)
+    
     try:
         drivers = ppds.ids[id_fields['MFG'].lower ()][id_fields['MDL'].lower ()]
     except KeyError:
-        drivers = None
+        drivers = []
 
     if i < n:
         more = unichr (0x2502)
