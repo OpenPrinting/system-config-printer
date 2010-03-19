@@ -137,6 +137,15 @@ def ppdMakeModelSplit (ppd_make_and_model):
     elif l.startswith ("konica minolta "):
         make = "KONICA MINOLTA"
         model = ppd_make_and_model[15:]
+    elif l.startswith ("lexmark international "):
+        make = "Lexmark"
+        model = ppd_make_and_model[22:]
+    elif l.startswith ("kyocera mita "):
+        make = "Kyocera Mita"
+        model = ppd_make_and_model[13:]
+    elif l.startswith ("kyocera "):
+        make = "Kyocera Mita"
+        model = ppd_make_and_model[8:]
 
     # Finally, take the first word as the name of the manufacturer.
     else:
@@ -156,9 +165,6 @@ def ppdMakeModelSplit (ppd_make_and_model):
           makel.endswith ("packard")):
         make = "HP"
         makel = "hp"
-    elif makel == "lexmark international":
-        make = "Lexmark"
-        makel = "lexmark"
 
     # HP PPDs give NickNames like:
     # *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
@@ -585,7 +591,8 @@ class PPDs:
             mdll = mdl.lower ()
 
         mfgrepl = {"hewlett-packard": "hp",
-                   "lexmark international": "lexmark"}
+                   "lexmark international": "lexmark",
+                   "kyocera": "kyocera mita"}
         if self.lmakes.has_key (mfgl):
             # Found manufacturer.
             make = self.lmakes[mfgl]
