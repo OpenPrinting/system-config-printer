@@ -6334,6 +6334,7 @@ class NewPrinterGUI(GtkGUI):
             # Should report error.
             print drivers
             print traceback.extract_tb(drivers[2], limit=None)
+            self.downloadable_drivers = dict()
             return
 
         self.openprinting_query_handle = None
