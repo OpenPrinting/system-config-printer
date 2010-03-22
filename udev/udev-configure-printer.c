@@ -1,6 +1,6 @@
 /* -*- Mode: C; c-file-style: "gnu" -*-
  * udev-configure-printer - a udev callout to configure print queues
- * Copyright (C) 2009 Red Hat, Inc.
+ * Copyright (C) 2009, 2010 Red Hat, Inc.
  * Author: Tim Waugh <twaugh@redhat.com>
  *
  * This program is free software; you can redistribute it and/or modify
@@ -32,6 +32,7 @@
 
 #include <cups/cups.h>
 #include <cups/http.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <libudev.h>
 #include <limits.h>
@@ -298,11 +299,18 @@ write_usb_uri_map (struct usb_uri_map *map)
   FILE *f;
 
   lseek (fd, SEEK_SET, 0);
-  ftruncate (fd, 0);
+  if (ftruncate (fd, 0) == -1)
+    {
+      syslog (LOG_ERR, "failed to ftruncate " USB_URI_MAP " (fd %d, errno %d)",
+	      fd, errno);
+      exit (1);
+    }
+
   f = fdopen (fd, "w");
   if (!f)
     {
-      syslog (LOG_ERR, "failed to fdopen " USB_URI_MAP " (fd %d)", fd);
+      syslog (LOG_ERR, "failed to fdopen " USB_URI_MAP " (fd %d, errno %d)",
+	      fd, errno);
       exit (1);
     }
 
@@ -311,11 +319,26 @@ write_usb_uri_map (struct usb_uri_map *map)
       size_t i;
       fprintf (f, "%s\t%s", entry->devpath, entry->uris.uri[0]);
       for (i = 1; i < entry->uris.n_uris; i++)
-	fprintf (f, "\t%s", entry->uris.uri[i]);
-      fwrite ("\n", 1, 1, f);
+	{
+	  if (fprintf (f, "\t%s", entry->uris.uri[i]) < 0)
+	    {
+	      syslog (LOG_ERR, "failed to fprintf " USB_URI_MAP " (errno %d)",
+		      errno);
+	      exit (1);
+	    }
+	}
+
+      if (fwrite ("\n", 1, 1, f) < 1)
+	{
+	  syslog (LOG_ERR, "failed to fwrite " USB_URI_MAP " (errno %d)",
+		  errno);
+	  exit (1);
+	}
     }
 
-  fclose (f);
+  if (fclose (f) == EOF)
+    syslog (LOG_ERR, "error closing " USB_URI_MAP " (errno %d)", errno);
+
   map->fd = -1;
 }
 
