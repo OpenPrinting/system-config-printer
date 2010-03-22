@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
@@ -333,7 +333,7 @@ class _IPPAuthOperation:
             # This is the initial "connection" operation, or a
             # subsequent reconnection attempt.
             debugprint ("Connection/reconnection failed")
-            return self._reconnect_error (exc)
+            return self._reconnect_error (conn, exc)
 
         if self._cancel:
             return self._error (exc)
@@ -353,7 +353,7 @@ class _IPPAuthOperation:
                 e == cups.IPP_FORBIDDEN):
                 forbidden = (e == cups.IPP_FORBIDDEN)
             elif e == cups.IPP_SERVICE_UNAVAILABLE:
-                return self._reconnect_error (exc)
+                return self._reconnect_error (conn, exc)
             else:
                 return self._error (exc)
         elif type (exc) == cups.HTTPError:
