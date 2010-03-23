@@ -111,7 +111,7 @@ for device, attrs in devices.iteritems ():
         more = " "
 
     if drivers:
-        drivers.sort ()
+        drivers = ppds.orderPPDNamesByPreference (drivers)
         n_drivers = len (drivers)
         j = 1
         for driver in drivers:
