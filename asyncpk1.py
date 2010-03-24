@@ -426,12 +426,11 @@ class PK1Connection:
     def cancelJob (self, *args, **kwds):
         (use_pycups, reply_handler, error_handler,
          tup) = self._args_kwds_to_tuple ([int],
-                                          [(None, None),
-                                           (None, False)], # purge_job
+                                          [(None, None)],
                                           args, kwds)
 
         self._call_with_pk (use_pycups,
-                            'JobCancelPurge', tup, reply_handler, error_handler,
+                            'JobCancel', tup, reply_handler, error_handler,
                             self._nothing_to_unpack,
                             self._conn.cancelJob, args, kwds)
 
