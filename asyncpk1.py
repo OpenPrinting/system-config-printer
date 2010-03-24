@@ -431,7 +431,7 @@ class PK1Connection:
                                           args, kwds)
 
         self._call_with_pk (use_pycups,
-                            'JobCancel', tup, reply_handler, error_handler,
+                            'JobCancelPurge', tup, reply_handler, error_handler,
                             self._nothing_to_unpack,
                             self._conn.cancelJob, args, kwds)
 
