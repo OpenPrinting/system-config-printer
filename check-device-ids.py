@@ -116,6 +116,13 @@ makes = ppds.getMakes ()
 def driver_uri_to_filename (uri):
     schemeparts = uri.split (':', 2)
     if len (schemeparts) < 2:
+        if uri.startswith ("lsb/usr/"):
+            return "/usr/share/ppd/" + uri[8:]
+        elif uri.startswith ("lsb/opt/"):
+            return "/opt/share/ppd/" + uri[8:]
+        elif uri.startswith ("lsb/local/"):
+            return "/usr/local/share/ppd/" + uri[10:]
+
         return "/usr/share/cups/model/" + uri
 
     scheme = schemeparts[0]
