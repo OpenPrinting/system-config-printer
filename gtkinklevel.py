@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2009 Red Hat, Inc.
+## Copyright (C) 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -56,10 +57,9 @@ class GtkInkLevel (gtk.DrawingArea):
         ctx.translate (thickness, thickness)
         ctx.scale (w - 2 * thickness, h - 2 * thickness)
         thickness = max (ctx.device_to_user_distance (thickness, thickness))
-        ctx.set_line_width (thickness)
-        self.draw (ctx)
+        self.draw (ctx, thickness)
 
-    def draw (self, ctx):
+    def draw (self, ctx, thickness):
         r = self._color.red / 65535.0
         g = self._color.green / 65535.0
         b = self._color.blue / 65535.0
@@ -72,6 +72,7 @@ class GtkInkLevel (gtk.DrawingArea):
         ctx.curve_to (0.0, 0.5, 0.1, 0.2, 0.5, 0.0)
         ctx.close_path ()
         ctx.set_source_rgb (r, g, b)
+        ctx.set_line_width (thickness)
         ctx.stroke_preserve ()
         if fill_point > 0.0:
             grad_width = 0.10
@@ -89,6 +90,25 @@ class GtkInkLevel (gtk.DrawingArea):
         else:
             ctx.set_source_rgb (1, 1, 1)
             ctx.fill ()
+
+        ctx.set_line_width (thickness / 2)
+
+        ctx.move_to (0.03, 0.5)
+        ctx.line_to (0.9, 0.5)
+        ctx.set_source_rgb (r, g, b)
+        ctx.set_dash ([0.1])
+        ctx.stroke ()
+
+        ctx.move_to (0, 0.75)
+        ctx.line_to (1, 0.75)
+        ctx.set_source_rgb (r, g, b)
+        ctx.set_dash ([0.05])
+        ctx.stroke ()
+
+        ctx.move_to (0.15, 0.25)
+        ctx.line_to (0.6, 0.25)
+        ctx.set_source_rgb (r, g, b)
+        ctx.stroke ()
 
 if __name__ == '__main__':
     # Try it out.
