@@ -2681,6 +2681,7 @@ class GUI(GtkGUI, monitor.Watcher):
                 vbox = gtk.VBox (spacing=6)
                 subhbox = gtk.HBox ()
                 inklevel = gtkinklevel.GtkInkLevel (color, level)
+                inklevel.set_tooltip_text ("%d%%" % level)
                 subhbox.pack_start (inklevel, True, False, 0)
                 vbox.pack_start (subhbox, False, False, 0)
                 label = gtk.Label (name)
