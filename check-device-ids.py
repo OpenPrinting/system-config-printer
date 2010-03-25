@@ -125,6 +125,7 @@ for device, attrs in devices.iteritems ():
         print "%s   (No drivers)" % more
 
     (mfr, mdl) = ppdMakeModelSplit (make_and_model)
+    matches = set (ppds.getInfoFromModel (mfr, mdl))
     mfrl = mfr.lower ()
     mdls = None
     for make in makes:
@@ -134,8 +135,10 @@ for device, attrs in devices.iteritems ():
     if mdls:
         (s, bestmatches) = ppds._findBestMatchPPDs (mdls, id_fields['MDL'])
         if s == ppds.STATUS_SUCCESS:
-            missing = set (bestmatches) - set (drivers)
-            for each in missing:
-                print "%s       MISSING  %s" % (more, each)
+            matches += set (bestmatches)
+
+    missing = set (matches) - set (drivers)
+    for each in missing:
+        print "%s       MISSING  %s" % (more, each)
 
     i += 1
