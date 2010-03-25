@@ -64,6 +64,7 @@ class _PK1AsyncMethodCall:
         self._fallback_fn = fallback_fn
         self._fallback_args = args
         self._fallback_kwds = kwds
+        self._destroyed = False
         debugprint ("+_PK1AsyncMethodCall: %s" % self)
 
     def __del__ (self):
@@ -85,6 +86,7 @@ class _PK1AsyncMethodCall:
 
     def _destroy (self):
         debugprint ("DESTROY: %s" % self)
+        self._destroyed = True
         del self._bus
         del self._conn
         del self._pk_method_name
@@ -97,6 +99,9 @@ class _PK1AsyncMethodCall:
         del self._fallback_kwds
 
     def _pk_reply_handler (self, error, *args):
+        if self._destroyed:
+            return
+
         if str (error) == '':
             self._client_reply_handler (self._conn, self._unpack_fn (*args))
             self._destroy ()
@@ -106,6 +111,9 @@ class _PK1AsyncMethodCall:
         self.call_fallback_fn ()
 
     def _pk_error_handler (self, exc):
+        if self._destroyed:
+            return
+
         if exc.get_dbus_name () == CUPS_PK_NEED_AUTH:
             exc = cups.IPPError (cups.IPP_NOT_AUTHORIZED, 'pkcancel')
             self._client_error_handler (self._conn, exc)
@@ -123,10 +131,16 @@ class _PK1AsyncMethodCall:
         self._fallback_fn (*self._fallback_args, **self._fallback_kwds)
 
     def _ipp_reply_handler (self, conn, *args):
+        if self._destroyed:
+            return
+
         self._client_reply_handler (self._conn, *args)
         self._destroy ()
 
     def _ipp_error_handler (self, conn, *args):
+        if self._destroyed:
+            return
+
         self._client_error_handler (self._conn, *args)
         self._destroy ()
 

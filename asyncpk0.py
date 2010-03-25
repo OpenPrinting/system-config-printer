@@ -58,6 +58,9 @@ class _PK0AsyncMethodCall(asyncpk1._PK1AsyncMethodCall):
         asyncpk1._PK1AsyncMethodCall._destroy (self)
 
     def _pk_error_handler (self, exc):
+        if self._destroyed:
+            return
+
         if exc.get_dbus_name () != asyncpk1.CUPS_PK_NEED_AUTH:
             return asyncpk1._PK1AsyncMethodCall._pk_error_handler (self, exc)
 
@@ -89,6 +92,9 @@ class _PK0AsyncMethodCall(asyncpk1._PK1AsyncMethodCall):
             return asyncpk1._PK1AsyncMethodCall._pk_error_handler (self, exc)
 
     def _auth_reply_handler (self, result):
+        if self._destroyed:
+            return
+
         if type (result) != dbus.Boolean:
             self.call_fallback_fn ()
             return
@@ -103,6 +109,9 @@ class _PK0AsyncMethodCall(asyncpk1._PK1AsyncMethodCall):
         self.call ()
 
     def _auth_error_handler (self, exc):
+        if self._destroyed:
+            return
+
         self.call_fallback_fn ()
 
 ###
