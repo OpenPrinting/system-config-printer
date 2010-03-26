@@ -93,20 +93,26 @@ class GtkInkLevel (gtk.DrawingArea):
 
         ctx.set_line_width (thickness / 2)
 
-        ctx.move_to (0.03, 0.5)
-        ctx.line_to (0.9, 0.5)
+        ctx.move_to (0.5, 0.0)
+        ctx.line_to (0.5, 1.0)
         ctx.set_source_rgb (r, g, b)
-        ctx.set_dash ([0.1])
         ctx.stroke ()
 
-        ctx.move_to (0, 0.75)
-        ctx.line_to (1, 0.75)
+        # 50% marker
+        ctx.move_to (0.4, 0.5)
+        ctx.line_to (0.6, 0.5)
         ctx.set_source_rgb (r, g, b)
-        ctx.set_dash ([0.05])
         ctx.stroke ()
 
-        ctx.move_to (0.15, 0.25)
-        ctx.line_to (0.6, 0.25)
+        # 25% marker
+        ctx.move_to (0.45, 0.75)
+        ctx.line_to (0.55, 0.75)
+        ctx.set_source_rgb (r, g, b)
+        ctx.stroke ()
+
+        # 75% marker
+        ctx.move_to (0.45, 0.25)
+        ctx.line_to (0.55, 0.25)
         ctx.set_source_rgb (r, g, b)
         ctx.stroke ()
 
