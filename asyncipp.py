@@ -59,6 +59,7 @@ class _IPPConnectionThread(threading.Thread):
         self._auth_handler = auth_handler
         self._auth_queue = Queue.Queue (1)
         self.user = None
+        self._destroyed = False
         debugprint ("+%s" % self)
 
     def __del__ (self):
@@ -157,6 +158,7 @@ class _IPPConnectionThread(threading.Thread):
             self._queue.task_done ()
 
         debugprint ("Thread exiting")
+        self._destroyed = True
         del self._conn # already destroyed
         del self._reply_handler
         del self._error_handler
@@ -189,20 +191,22 @@ class _IPPConnectionThread(threading.Thread):
 
     def _reply (self, result):
         def send_reply (result):
-            if self._reply_handler:
+            if not self._destroyed and self._reply_handler:
                 self._reply_handler (self._conn, result)
             return False
 
-        gobject.idle_add (send_reply, result)
+        if not self._destroyed and self._reply_handler:
+            gobject.idle_add (send_reply, result)
 
     def _error (self, exc):
         def send_error (exc):
-            if self._error_handler:
+            if not self._destroyed and self._error_handler:
                 self._error_handler (self._conn, exc)
             return False
 
-        debugprint ("Add %s to idle" % self._error_handler)
-        gobject.idle_add (send_error, exc)
+        if not self._destroyed and self._error_handler:
+            debugprint ("Add %s to idle" % self._error_handler)
+            gobject.idle_add (send_error, exc)
 
 ###
 ### This is the user-visible class.  Although it does not inherit from

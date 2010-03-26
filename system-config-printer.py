@@ -4012,7 +4012,7 @@ class NewPrinterGUI(GtkGUI):
         self.btnNetworkFind.set_sensitive (True)
         self.lblNetworkFindNotFound.hide ()
 
-        if dialog_mode == "ppd":
+        if dialog_mode in ["ppd", "device"]:
             self.parent = self.mainapp.PrinterPropertiesDialog
         else:
             self.parent = self.mainapp.PrintersWindow
