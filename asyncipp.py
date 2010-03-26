@@ -190,23 +190,23 @@ class _IPPConnectionThread(threading.Thread):
         return password
 
     def _reply (self, result):
-        def send_reply (result):
-            if not self._destroyed and self._reply_handler:
-                self._reply_handler (self._conn, result)
+        def send_reply (handler, result):
+            if not self._destroyed:
+                handler (self._conn, result)
             return False
 
         if not self._destroyed and self._reply_handler:
-            gobject.idle_add (send_reply, result)
+            gobject.idle_add (send_reply, self._reply_handler, result)
 
     def _error (self, exc):
-        def send_error (exc):
-            if not self._destroyed and self._error_handler:
-                self._error_handler (self._conn, exc)
+        def send_error (handler, exc):
+            if not self._destroyed:
+                handler (self._conn, exc)
             return False
 
         if not self._destroyed and self._error_handler:
             debugprint ("Add %s to idle" % self._error_handler)
-            gobject.idle_add (send_error, exc)
+            gobject.idle_add (send_error, self._error_handler, exc)
 
 ###
 ### This is the user-visible class.  Although it does not inherit from
