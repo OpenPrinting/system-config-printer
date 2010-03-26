@@ -133,7 +133,7 @@ for device, attrs in devices.iteritems ():
             mdls = ppds.makes[make]
             break
     if mdls:
-        (s, bestmatches) = ppds._findBestMatchPPDs (mdls, id_fields['MDL'])
+        (s, bestmatches) = ppds._findBestMatchPPDs (mdls, mdl)
         if s == ppds.STATUS_SUCCESS:
             matches = matches.union (set (bestmatches))
 
