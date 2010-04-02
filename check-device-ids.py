@@ -37,7 +37,7 @@ if len (sys.argv) > 1 and sys.argv[1] == '--help':
 if len (sys.argv) == 3:
     id_dict = cupshelpers.parseDeviceID (sys.argv[2])
     if id_dict.has_key ("MFG") and id_dict.has_key ("MDL"):
-        devices = { 'user-specified':
+        devices = { 'user-specified:':
                         { 'device-make-and-model': sys.argv[1],
                           'device-id': sys.argv[2] }
                     }
