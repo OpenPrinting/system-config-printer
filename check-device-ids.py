@@ -51,7 +51,8 @@ if devices == None:
         devices = c.getDevices (include_schemes=["usb",
                                                  "parallel",
                                                  "serial",
-                                                 "bluetooth"])
+                                                 "bluetooth",
+                                                 "hp"])
     except cups.IPPError, (e, m):
         if e == cups.IPP_FORBIDDEN:
             print "Run this as root to examine IDs from attached devices."
@@ -95,10 +96,12 @@ for device, attrs in devices.iteritems ():
     else:
         cmd = ""
 
-    print "%s %s: MFG:%s;MDL:%s;%s" % (line, make_and_model,
-                                       id_fields['MFG'],
-                                       id_fields['MDL'],
-                                       cmd)
+    scheme = device.split (":", 1)[0]
+    print "%s %s (%s): MFG:%s;MDL:%s;%s" % (line, scheme,
+                                            make_and_model,
+                                            id_fields['MFG'],
+                                            id_fields['MDL'],
+                                            cmd)
     
     try:
         drivers = ppds.ids[id_fields['MFG'].lower ()][id_fields['MDL'].lower ()]
