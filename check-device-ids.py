@@ -45,11 +45,7 @@ if len (sys.argv) == 3:
 if devices == None:
     print "Examining connected devices"
     try:
-        devices = c.getDevices (include_schemes=["usb",
-                                                 "parallel",
-                                                 "serial",
-                                                 "bluetooth",
-                                                 "hp"])
+        devices = c.getDevices (exclude_schemes=["dnssd"])
     except cups.IPPError, (e, m):
         if e == cups.IPP_FORBIDDEN:
             print "Run this as root to examine IDs from attached devices."
@@ -156,7 +152,11 @@ last = unichr (0x2514) + unichr (0x2500) + unichr (0x2500)
 for device, attrs in devices.iteritems ():
     make_and_model = attrs.get ('device-make-and-model')
     device_id = attrs.get ('device-id')
+    if device.find (":") == -1:
+        continue
+
     if not (make_and_model and device_id):
+        print "Skipping %s, insufficient data" % device
         continue
 
     id_fields = cupshelpers.parseDeviceID (device_id)
