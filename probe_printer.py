@@ -1,6 +1,6 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
@@ -193,7 +193,7 @@ class BackgroundSmbAuthContext(pysmb.AuthContext):
 
     def _do_perform_authentication (self):
         result = pysmb.AuthContext.perform_authentication (self)
-        self.do_perform_authentication_result = result
+        self._do_perform_authentication_result = result
         self._gui_event.set ()
         
     def perform_authentication (self):
