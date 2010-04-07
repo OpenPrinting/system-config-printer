@@ -97,8 +97,8 @@ for device, attrs in devices.iteritems ():
         cmd = ""
 
     scheme = device.split (":", 1)[0]
-    print "%s %s (%s): MFG:%s;MDL:%s;%s" % (line, scheme,
-                                            make_and_model,
+    print "%s %s (%s): MFG:%s;MDL:%s;%s" % (line, make_and_model,
+                                            scheme,
                                             id_fields['MFG'],
                                             id_fields['MDL'],
                                             cmd)
