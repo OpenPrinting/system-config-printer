@@ -72,37 +72,40 @@ for device, attrs in devices.iteritems ():
     device_ids.append (this_id)
     n += 1
 
-if device_ids:
-    try:
-        bus = dbus.SessionBus ()
+if not device_ids:
+    print "No Device IDs available."
+    sys.exit (0)
 
-        print "Installing relevant drivers using session service"
+try:
+    bus = dbus.SessionBus ()
+
+    print "Installing relevant drivers using session service"
+    try:
+        obj = bus.get_object ("org.freedesktop.PackageKit",
+                              "/org/freedesktop/PackageKit")
+        proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
+        proxy.InstallPrinterDrivers (0, device_ids,
+                                     "hide-finished", timeout=3600)
+    except dbus.exceptions.DBusException, e:
+        print "Ignoring exception: %s" % e
+except dbus.exceptions.DBusException:
+    try:
+        bus = dbus.SystemBus ()
+
+        print "Installing relevant drivers using system service"
         try:
-            obj = bus.get_object ("org.freedesktop.PackageKit",
-                                  "/org/freedesktop/PackageKit")
-            proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
-            proxy.InstallPrinterDrivers (0, device_ids,
-                                         "hide-finished", timeout=3600)
+            obj = bus.get_object ("com.redhat.PrinterDriversInstaller",
+                                  "/com/redhat/PrinterDriversInstaller")
+            proxy = dbus.Interface (obj,
+                                    "com.redhat.PrinterDriversInstaller")
+            for device_id in device_ids:
+                id_dict = cupshelpers.parseDeviceID (device_id)
+                proxy.InstallDrivers (id_dict['MFG'], id_dict['MDL'], '',
+                                      timeout=3600)
         except dbus.exceptions.DBusException, e:
             print "Ignoring exception: %s" % e
     except dbus.exceptions.DBusException:
-        try:
-            bus = dbus.SystemBus ()
-
-            print "Installing relevant drivers using system service"
-            try:
-                obj = bus.get_object ("com.redhat.PrinterDriversInstaller",
-                                      "/com/redhat/PrinterDriversInstaller")
-                proxy = dbus.Interface (obj,
-                                        "com.redhat.PrinterDriversInstaller")
-                for device_id in device_ids:
-                    id_dict = cupshelpers.parseDeviceID (device_id)
-                    proxy.InstallDrivers (id_dict['MFG'], id_dict['MDL'], '',
-                                          timeout=3600)
-            except dbus.exceptions.DBusException, e:
-                print "Ignoring exception: %s" % e
-        except dbus.exceptions.DBusException:
-            print "D-Bus not available so skipping package installation"
+        print "D-Bus not available so skipping package installation"
 
 
 print "Fetching driver list"
