@@ -44,6 +44,10 @@ if len (sys.argv) == 3:
                         { 'device-make-and-model': sys.argv[1],
                           'device-id': sys.argv[2] }
                     }
+else:
+    print ("\nIf you have not already done so, you may get more results\n"
+           "by temporarily disabling your firewall (or by allowing\n"
+           "incoming UDP packets on port 161).\n")
 
 if devices == None:
     print "Examining connected devices"
