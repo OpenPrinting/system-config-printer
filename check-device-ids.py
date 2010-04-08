@@ -64,6 +64,9 @@ if len (devices) == 0:
 
 n = 0
 for device, attrs in devices.iteritems ():
+    if device.find (":") == -1:
+        continue
+
     make_and_model = attrs.get ('device-make-and-model')
     device_id = attrs.get ('device-id')
     if make_and_model and not device_id:
@@ -100,6 +103,7 @@ for device, attrs in devices.iteritems ():
             print "Exception: %s" % repr (e)
 
     if not (make_and_model and device_id):
+        print "Skipping %s, insufficient data" % device
         continue
 
     n += 1
@@ -114,7 +118,6 @@ for device, attrs in devices.iteritems ():
         continue
 
     if not (make_and_model and device_id):
-        print "Skipping %s, insufficient data" % device
         continue
 
     id_fields = cupshelpers.parseDeviceID (device_id)
