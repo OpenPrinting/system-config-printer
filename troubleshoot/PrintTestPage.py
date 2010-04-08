@@ -2,8 +2,9 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -168,7 +169,7 @@ class PrintTestPage(Question):
         self.op = TimedOperation (get_jobs, parent=parent)
         try:
             (jobs_dict, completed_jobs_dict) = self.op.run ()
-        except OperationCanceled:
+        except (OperationCanceled, cups.IPPError):
             return False
 
         # We want to display the jobs in the queue for this printer...
@@ -224,7 +225,7 @@ class PrintTestPage(Question):
         self.op = TimedOperation (create_subscription, parent=parent)
         try:
             self.sub_id = self.op.run ()
-        except OperationCanceled:
+        except (OperationCanceled, cups.IPPError):
             pass
 
         try:
@@ -260,7 +261,7 @@ class PrintTestPage(Question):
                                   parent=parent)
         try:
             self.op.run ()
-        except OperationCanceled:
+        except (OperationCanceled, cups.IPPError):
             pass
 
         try:
@@ -315,7 +316,7 @@ class PrintTestPage(Question):
         try:
             with_attrs = self.op.run ()
             self.answers['test_page_job_status'] = with_attrs
-        except OperationCanceled:
+        except (OperationCanceled, cups.IPPError):
             pass
 
         return self.answers
@@ -439,7 +440,7 @@ class PrintTestPage(Question):
                                   parent=self.troubleshooter.get_window ())
         try:
             self.op.run ()
-        except OperationCanceled:
+        except (OperationCanceled, cups.IPPError):
             pass
 
     def test_toggled (self, cell, path):
@@ -469,7 +470,7 @@ class PrintTestPage(Question):
                                   parent=parent)
         try:
             notifications = self.op.run ()
-        except OperationCanceled:
+        except (OperationCanceled, cups.IPPError):
             gtk.gdk.threads_leave ()
             return True
 

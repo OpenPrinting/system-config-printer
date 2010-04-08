@@ -41,6 +41,10 @@ if len (sys.argv) == 3:
                         { 'device-make-and-model': sys.argv[1],
                           'device-id': sys.argv[2] }
                     }
+else:
+    print ("\nIf you have not already done so, you may get more results\n"
+           "by temporarily disabling your firewall (or by allowing\n"
+           "incoming UDP packets on port 161).\n")
 
 if devices == None:
     print "Examining connected devices"
@@ -62,9 +66,46 @@ if len (devices) == 0:
 n = 0
 device_ids = []
 for device, attrs in devices.iteritems ():
+    if device.find (":") == -1:
+        continue
+
     make_and_model = attrs.get ('device-make-and-model')
     device_id = attrs.get ('device-id')
+    if make_and_model and not device_id:
+        try:
+            hostname = None
+            if device.startswith ("socket://"):
+                hostname = device[9:]
+                c = hostname.find (":")
+                if c != -1:
+                    hostname = hostname[:c]
+
+            if hostname:
+                devs = []
+
+                def got_device (dev):
+                    if dev != None:
+                        devs.append (dev)
+
+                import probe_printer
+                pf = probe_printer.PrinterFinder ()
+                pf.hostname = hostname
+                pf.callback_fn = got_device
+                pf._cached_attributes = dict()
+                print "Sending SNMP request to %s for device-id" % hostname
+                pf._probe_snmp ()
+
+                for dev in devs:
+                    if dev.id:
+                        device_id = dev.id
+                        attrs.update ({'device-id': dev.id})
+                        break
+
+        except Exception, e:
+            print "Exception: %s" % repr (e)
+
     if not (make_and_model and device_id):
+        print "Skipping %s, insufficient data" % device
         continue
 
     id_fields = cupshelpers.parseDeviceID (device_id)
@@ -159,7 +200,6 @@ for device, attrs in devices.iteritems ():
         continue
 
     if not (make_and_model and device_id):
-        print "Skipping %s, insufficient data" % device
         continue
 
     id_fields = cupshelpers.parseDeviceID (device_id)
@@ -175,8 +215,8 @@ for device, attrs in devices.iteritems ():
         cmd = ""
 
     scheme = device.split (":", 1)[0]
-    print "%s %s (%s): MFG:%s;MDL:%s;%s" % (line, scheme,
-                                            make_and_model,
+    print "%s %s (%s): MFG:%s;MDL:%s;%s" % (line, make_and_model,
+                                            scheme,
                                             id_fields['MFG'],
                                             id_fields['MDL'],
                                             cmd)
