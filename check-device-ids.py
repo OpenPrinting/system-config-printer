@@ -49,7 +49,7 @@ else:
 if devices == None:
     print "Examining connected devices"
     try:
-        devices = c.getDevices (exclude_schemes=["dnssd"])
+        devices = c.getDevices (exclude_schemes=["dnssd", "hal"])
     except cups.IPPError, (e, m):
         if e == cups.IPP_FORBIDDEN:
             print "Run this as root to examine IDs from attached devices."
@@ -76,9 +76,9 @@ for device, attrs in devices.iteritems ():
             hostname = None
             if device.startswith ("socket://"):
                 hostname = device[9:]
-                c = hostname.find (":")
-                if c != -1:
-                    hostname = hostname[:c]
+                colon = hostname.find (":")
+                if colon != -1:
+                    hostname = hostname[:colon]
 
             if hostname:
                 devs = []
