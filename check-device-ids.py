@@ -191,8 +191,13 @@ def driver_uri_to_pkg (uri):
         return filename
 
 i = 1
-item = unichr (0x251c) + unichr (0x2500) + unichr (0x2500)
-last = unichr (0x2514) + unichr (0x2500) + unichr (0x2500)
+if sys.stdout.encoding == 'UTF-8':
+    item = unichr (0x251c) + unichr (0x2500) + unichr (0x2500)
+    last = unichr (0x2514) + unichr (0x2500) + unichr (0x2500)
+else:
+    item = "|--"
+    last = "`--"
+
 for device, attrs in devices.iteritems ():
     make_and_model = attrs.get ('device-make-and-model')
     device_id = attrs.get ('device-id')
