@@ -78,9 +78,9 @@ for device, attrs in devices.iteritems ():
             hostname = None
             if device.startswith ("socket://"):
                 hostname = device[9:]
-                c = hostname.find (":")
-                if c != -1:
-                    hostname = hostname[:c]
+                colon = hostname.find (":")
+                if colon != -1:
+                    hostname = hostname[:colon]
 
             if hostname:
                 devs = []
