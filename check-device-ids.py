@@ -49,7 +49,7 @@ else:
 if devices == None:
     print "Examining connected devices"
     try:
-        devices = c.getDevices (exclude_schemes=["dnssd", "hal"])
+        devices = c.getDevices (exclude_schemes=["dnssd", "hal", "hpfax"])
     except cups.IPPError, (e, m):
         if e == cups.IPP_FORBIDDEN:
             print "Run this as root to examine IDs from attached devices."
