@@ -4729,27 +4729,6 @@ class NewPrinterGUI(GtkGUI):
         debugprint ("fetchDevices")
         self.inc_spinner_task ()
 
-        if network:
-            allowed = True
-            try:
-                f = firewall.Firewall ()
-                ipp_allowed = f.check_ipp_client_allowed ()
-                mdns_allowed = f.check_mdns_allowed ()
-                snmp_allowed = f.check_snmp_allowed ()
-                allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
-                if not ipp_allowed:
-                    debugprint ("Firewall does not permit incoming IPP "
-                                "UDP packets")
-                if not mdns_allowed:
-                    debugprint ("Firewall does not permit incoming mDNS")
-                if not snmp_allowed:
-                    debugprint ("Firewall does not permit incoming SNMP")
-            except:
-                allowed = False
-
-            # Ignored for now
-            del allowed
-
         network_schemes = ["dnssd", "snmp"]
         error_handler = self.error_getting_devices
         if network == False:
@@ -4952,6 +4931,49 @@ class NewPrinterGUI(GtkGUI):
         self.expNPDeviceURIs.hide ()
         column = self.tvNPDevices.get_column (0)
         self.tvNPDevices.set_cursor ((0,), column)
+
+        allowed = True
+        try:
+            f = firewall.Firewall ()
+            ipp_allowed = f.check_ipp_client_allowed ()
+            mdns_allowed = f.check_mdns_allowed ()
+            snmp_allowed = f.check_snmp_allowed ()
+            allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
+            secondary_text = _("The firewall may need adjusting in order to "
+                               "detect network printers.  Adjust the "
+                               "firewall now?") + "\n\n"
+            if not ipp_allowed:
+                secondary_text += ("- " +
+                                   _("Allow all incoming IPP Browse packets") +
+                                   "\n")
+                f.add_rule (f.ALLOW_IPP_CLIENT)
+            if not mdns_allowed:
+                secondary_text += ("- " +
+                                   _("Allow all incoming mDNS traffic") + "\n")
+                f.add_rule (f.ALLOW_MDNS)
+            if not snmp_allowed:
+                secondary_text += ("- " +
+                                   _("Allow all responses to "
+                                     "SNMP broadcast queries") + "\n")
+                f.add_rule (f.ALLOW_SNMP)
+
+            if not allowed:
+                dialog = gtk.MessageDialog (self.mainapp.PrintersWindow,
+                                            gtk.DIALOG_MODAL |
+                                            gtk.DIALOG_DESTROY_WITH_PARENT,
+                                            gtk.MESSAGE_QUESTION,
+                                            gtk.BUTTONS_YES_NO,
+                                            _("Adjust Firewall"))
+                dialog.format_secondary_markup (secondary_text)
+                response = dialog.run ()
+                dialog.destroy ()
+
+                if response == gtk.RESPONSE_YES:
+                    f.add_rule (f.ALLOW_IPP_SERVER)
+                    f.write ()
+        except (dbus.DBusException, Exception):
+            nonfatalException ()
+
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=False, current_uri=current_uri)
