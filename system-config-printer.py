@@ -209,7 +209,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.language = locale.getlocale(locale.LC_MESSAGES)
             self.encoding = locale.getlocale(locale.LC_CTYPE)
 
-        self.printer = None
+        self.printer = self.ppd = None
         self.conflicts = set() # of options
         self.connect_server = (self.printer and self.printer.getServer()) \
                                or cups.getServer()
@@ -2014,7 +2014,7 @@ class GUI(GtkGUI, monitor.Watcher):
     # set buttons sensitivity
     def setDataButtonState(self):
         try:
-            printable = (self.ppd and
+            printable = (self.ppd != None and
                          not bool (self.changed) and
                          self.printer.enabled and
                          not self.printer.rejecting)
@@ -3474,7 +3474,6 @@ class GUI(GtkGUI, monitor.Watcher):
             else:
                 widget.set_active(False)
                 widget.set_sensitive(False)
-        self.setDataButtonState()
 
         try:
             flag = cups.CUPS_SERVER_SHARE_PRINTERS
@@ -3497,8 +3496,6 @@ class GUI(GtkGUI, monitor.Watcher):
         sharing = self.chkServerShare.get_active ()
         self.chkServerShareAny.set_sensitive (
             sharing and self.server_settings.has_key(try_CUPS_SERVER_REMOTE_ANY))
-
-        self.setDataButtonState()
 
     def save_serversettings(self):
         setting_dict = dict()
@@ -3524,7 +3521,6 @@ class GUI(GtkGUI, monitor.Watcher):
             return True
         self.cups._end_operation ()
         self.changed = set()
-        self.setDataButtonState()
 
         old_setting = self.server_settings.get (cups.CUPS_SERVER_SHARE_PRINTERS,
                                                 '0')
