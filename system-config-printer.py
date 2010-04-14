@@ -3548,14 +3548,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     if response == gtk.RESPONSE_YES:
                         f.add_rule (f.ALLOW_IPP_SERVER)
                         f.write ()
-            except dbus.DBusException:
-                nonfatalException ()
-                show_info_dialog (_("Review Firewall"),
-                                  _("You may need to adjust the firewall "
-                                    "to allow network printing to this "
-                                    "computer."),
-                                  parent=self.ServerSettingsDialog)
-            except:
+            except (dbus.DBusException, Exception):
                 nonfatalException ()
 
         time.sleep(1) # give the server a chance to process our request
