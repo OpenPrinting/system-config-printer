@@ -27,6 +27,12 @@ import dbus
 import pickle
 
 class Firewall:
+    ALLOW_IPP_CLIENT = "--service=ipp-client"
+    ALLOW_IPP_SERVER = "--service=ipp"
+    ALLOW_SAMBA_CLIENT = "--service=samba-client"
+    ALLOW_MDNS = "--service=mdns"
+    ALLOW_SNMP = "--port=161:udp"
+
     def _get_fw_data (self):
         try:
             bus = dbus.SystemBus ()
@@ -41,25 +47,37 @@ class Firewall:
 
         return self._fw_data
 
+    def write (self):
+        self._firewall.write (pickle.dumps (self._fw_data[0]))
+
     def _check_any_allowed (self, search):
         (args, filename) = self._get_fw_data ()
         isect = set (search).intersection (set (args))
         return len (isect) != 0
 
+    def add_rule (self, rule):
+        try:
+            (args, filename) = self._fw_data
+        except AttributeError:
+            (args, filename) = self._get_fw_data ()
+
+        args.append (rule)
+        self._fw_data = (args, filename)
+
     def check_ipp_client_allowed (self):
         return self._check_any_allowed (set(["--port=631:udp",
-                                             "--service=ipp-client"]))
+                                             self.ALLOW_IPP_CLIENT]))
 
     def check_ipp_server_allowed (self):
         return self._check_any_allowed (set(["--port=631:tcp",
-                                             "--service=ipp"]))
+                                             self.ALLOW_IPP_SERVER]))
 
     def check_samba_client_allowed (self):
-        return self._check_any_allowed (set(["--service=samba-client"]))
+        return self._check_any_allowed (set([self.ALLOW_SAMBA_CLIENT]))
 
     def check_mdns_allowed (self):
         return self._check_any_allowed (set(["--port=5353:udp",
-                                             "--service=mdns"]))
+                                             self.ALLOW_MDNS]))
 
     def check_snmp_allowed (self):
-        return self._check_any_allowed (set(["--port=161:udp"]))
+        return self._check_any_allowed (set([self.ALLOW_SNMP]))
