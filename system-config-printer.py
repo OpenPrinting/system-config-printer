@@ -3449,16 +3449,32 @@ class GUI(GtkGUI, monitor.Watcher):
             try:
                 f = firewall.Firewall ()
                 allowed = f.check_ipp_server_allowed ()
-            except:
-                allowed = False
 
-            if not allowed:
+                if not allowed:
+                    dialog = gtk.MessageDialog (self.ServerSettingsDialog,
+                                                gtk.DIALOG_MODAL |
+                                                gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                gtk.MESSAGE_QUESTION,
+                                                gtk.BUTTONS_YES_NO,
+                                                _("Adjust Firewall"))
+                    dialog.format_secondary_text (_("Adjust the firewall now "
+                                                    "to allow all incoming IPP "
+                                                    "connections?"))
+                    response = dialog.run ()
+                    dialog.destroy ()
+
+                    if response == gtk.RESPONSE_YES:
+                        f.add_rule (f.ALLOW_IPP_SERVER)
+                        f.write ()
+            except dbus.DBusException:
+                nonfatalException ()
                 show_info_dialog (_("Review Firewall"),
                                   _("You may need to adjust the firewall "
                                     "to allow network printing to this "
-                                    "computer.") + '\n\n' +
-                                  TEXT_start_firewall_tool,
+                                    "computer."),
                                   parent=self.ServerSettingsDialog)
+            except:
+                nonfatalException ()
 
         time.sleep(1) # give the server a chance to process our request
 
