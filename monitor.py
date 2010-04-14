@@ -549,7 +549,8 @@ class Monitor:
                 # Filter out completed jobs.
                 filtered = {}
                 for jobid, job in jobs.iteritems ():
-                    if job['job-state'] < cups.IPP_JOB_CANCELED:
+                    if job.get ('job-state',
+                                cups.IPP_JOB_CANCELED) < cups.IPP_JOB_CANCELED:
                         filtered[jobid] = job
                 jobs = filtered
 
