@@ -2,7 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -54,3 +56,10 @@ class Firewall:
 
     def check_samba_client_allowed (self):
         return self._check_any_allowed (set(["--service=samba-client"]))
+
+    def check_mdns_allowed (self):
+        return self._check_any_allowed (set(["--port=5353:udp",
+                                             "--service=mdns"]))
+
+    def check_snmp_allowed (self):
+        return self._check_any_allowed (set(["--port=161:udp"]))

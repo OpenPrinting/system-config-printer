@@ -4712,6 +4712,28 @@ class NewPrinterGUI(GtkGUI):
     def fetchDevices(self, network=False, current_uri=None):
         debugprint ("fetchDevices")
         self.inc_spinner_task ()
+
+        if network:
+            allowed = True
+            try:
+                f = firewall.Firewall ()
+                ipp_allowed = f.check_ipp_client_allowed ()
+                mdns_allowed = f.check_mdns_allowed ()
+                snmp_allowed = f.check_snmp_allowed ()
+                allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
+                if not ipp_allowed:
+                    debugprint ("Firewall does not permit incoming IPP "
+                                "UDP packets")
+                if not mdns_allowed:
+                    debugprint ("Firewall does not permit incoming mDNS")
+                if not snmp_allowed:
+                    debugprint ("Firewall does not permit incoming SNMP")
+            except:
+                allowed = False
+
+            # Ignored for now
+            del allowed
+
         network_schemes = ["dnssd", "snmp"]
         error_handler = self.error_getting_devices
         if network == False:
@@ -5295,6 +5317,21 @@ class NewPrinterGUI(GtkGUI):
 
     def on_btnSMBBrowse_clicked(self, button):
         self.btnSMBBrowseOk.set_sensitive(False)
+
+        try:
+            f = firewall.Firewall ()
+            allowed = f.check_samba_client_allowed ()
+        except:
+            allowed = False
+
+        if not allowed:
+            show_info_dialog (_("Review Firewall"),
+                              _("You may need to adjust the firewall "
+                                "to allow network printer discovery on this "
+                                "computer.") + '\n\n' +
+                              TEXT_start_firewall_tool,
+                              parent=self.NewPrinterWindow)
+
         self.SMBBrowseDialog.show()
         self.browse_smb_hosts()
 
