@@ -1566,8 +1566,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                          host=self.host,
                                          port=self.port,
                                          encryption=self.encryption)
-                attrs = c.getPrinterAttributes (uri=printer_uri,
-                                                requested_attributes=pattrs)
+                try:
+                    attrs = c.getPrinterAttributes (uri=printer_uri,
+                                                    requested_attributes=pattrs)
+                except cups.IPPError:
+                    return
+
                 device_uri = attrs.get ('device-uri')
 
             if device_uri != None:
