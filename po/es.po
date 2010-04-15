@@ -1,481 +1,3837 @@
-# Fedora Spanish translation of Security Guide.
+# Fedora Spanish translation of system-config-printer.master.
+# This file is distributed under the same license as the system-config-printer.master package.
 #
-# Domingo Becker <domingobecker@gmail.com>, 2009
-# Claudio Rodrigo Pereyra Diaz <elsupergomez@gmail.com>, 2009.
-# Héctor Daniel Cabrera <logan@fedoraproject.org>, 2009.
-# Jorge A Gallegos <kad@blegh.net>, 2009.
+# Nuria Soriano <nsoriano@redhat.it>, 2001.
+# Fernando Ruiz-Tapiador Gutiérrez <frtapiador@redhat.es>, 2001.
+# Yelitza Louze <ylouze@redhat.com>, 2002, 2003, 2004.
+# Eduardo Villagrán Morales <evillagr@fedoraproject.org>, 2007.
+# Domingo Becker <domingobecker@gmail.com>, 2008.
+# Fernando Gonzalez Blanco <fgonz@fedoraproject.org>, 2009.
+# Héctor Daniel Cabrera <logan@fedoraproject.org>, 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Security Guide\n"
-"Report-Msgid-Bugs-To: http://bugs.kde.org\n"
-"POT-Creation-Date: 2010-04-14T22:08:09\n"
-"PO-Revision-Date: \n"
+"Project-Id-Version: system-config-printer.trunk.es\n"
+"Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
+"POT-Creation-Date: 2010-04-14 23:47+0100\n"
+"PO-Revision-Date: 2010-04-15 11:26-0300\n"
 "Last-Translator: Héctor Daniel Cabrera <logan@fedoraproject.org>\n"
-"Language-Team: Fedora Spanish <fedora-trans-es@redhat.com>\n"
+"Language-Team: Spanish <trans-es@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Spanish\n"
+"X-Generator: KBabel 1.11.4\n"
 "X-Poedit-Country: ARGENTINA\n"
 
-#. Tag: title
-#, no-c-format
-msgid "Encryption Standards"
-msgstr "Estandares de Encriptación"
+#: ../AdvancedServerSettings.py:141
+msgid "Enter IP address"
+msgstr "Ingrese la dirección IP"
 
-#. Tag: title
-#, fuzzy, no-c-format
-msgid "Synchronous Encryption"
-msgstr "Encriptación"
+#: ../asyncipp.py:424
+#: ../authconn.py:398
+#: ../authconn.py:400
+#: ../errordialogs.py:65
+#: ../pysmb.py:75
+#: ../pysmb.py:77
+msgid "Not authorized"
+msgstr "No autorizado"
 
-#. Tag: title
-#, no-c-format
-msgid "Advanced Encryption Standard - AES"
-msgstr "Advanced Encription Standard - AES"
+#: ../asyncipp.py:425
+#: ../authconn.py:401
+#: ../pysmb.py:78
+msgid "The password may be incorrect."
+msgstr "La contraseña puede ser incorrecta."
 
-#. Tag: para
-#, no-c-format
+#: ../asyncipp.py:436
+#: ../authconn.py:422
+#, python-format
+msgid "Authentication (%s)"
+msgstr "Autenticación (%s)"
+
+#: ../asyncipp.py:501
+#: ../authconn.py:255
+#: ../errordialogs.py:56
+#: ../errordialogs.py:70
+msgid "CUPS server error"
+msgstr "Error del servidor CUPS"
+
+#: ../asyncipp.py:503
+#: ../authconn.py:253
+#, python-format
+msgid "CUPS server error (%s)"
+msgstr "Error del servidor CUPS (%s)"
+
+# ../util/printconf_gui.py:1721 ../util/printconf_gui.py:1738
+# ../util/printconf_gui.py:1755 ../util/printconf_tui.py:1715
+# ../util/printconf_gui.py:1812 ../util/printconf_gui.py:1829
+# ../util/printconf_gui.py:1863 ../util/printconf_tui.py:1805
+# ../util/printconf_gui.py:1942 ../util/printconf_tui.py:1834
+#: ../asyncipp.py:520
+#: ../authconn.py:264
+#: ../errordialogs.py:57
+#: ../troubleshoot/PrintTestPage.py:418
+#, python-format
+msgid "There was an error during the CUPS operation: '%s'."
+msgstr "Se ha producido un error en CUPS durante la operación: '%s'."
+
+#: ../asyncipp.py:523
+#: ../authconn.py:267
+msgid "Retry"
+msgstr "Reintentar"
+
+#: ../asyncipp.py:534
+#: ../authconn.py:214
+#: ../authconn.py:236
+msgid "Operation canceled"
+msgstr "Operación cancelada"
+
+#: ../authconn.py:36
+#: ../ui/NewPrinterWindow.glade.h:91
+msgid "Username:"
+msgstr "Nombre de Usuario:"
+
+#: ../authconn.py:37
+#: ../ui/NewPrinterWindow.glade.h:60
+msgid "Password:"
+msgstr "Contraseña:"
+
+#: ../authconn.py:38
+msgid "Domain:"
+msgstr "Dominio:"
+
+#: ../authconn.py:47
+#: ../authconn.py:424
+msgid "Authentication"
+msgstr "Autenticación"
+
+#: ../authconn.py:86
+msgid "Remember password"
+msgstr "Recordar contraseña"
+
+#: ../errordialogs.py:66
+msgid "The password may be incorrect, or the server may be configured to deny remote administration."
+msgstr "La contraseña puede ser incorrecta, o el servidor fue configurado para negar la administración remota."
+
+#: ../errordialogs.py:72
+msgid "Bad request"
+msgstr "Mal pedido"
+
+#: ../errordialogs.py:74
+msgid "Not found"
+msgstr "No encontrado"
+
+#: ../errordialogs.py:76
+msgid "Request timeout"
+msgstr "Pasó el tiempo para el pedido"
+
+#: ../errordialogs.py:78
+msgid "Upgrade required"
+msgstr "Se requiere actualización"
+
+#: ../errordialogs.py:80
+msgid "Server error"
+msgstr "Error del servidor"
+
+#: ../errordialogs.py:82
+#: ../system-config-printer.py:1317
+msgid "Not connected"
+msgstr "No conectado"
+
+#: ../errordialogs.py:84
+#, python-format
+msgid "status %s"
+msgstr "estado %s"
+
+#: ../errordialogs.py:86
+#, python-format
+msgid "There was an HTTP error: %s."
+msgstr "Hubo un error HTTP: %s."
+
+#: ../GroupsPane.py:92
+msgid "_New Group"
+msgstr "_Nuevo Grupo"
+
+#: ../GroupsPane.py:95
+msgid "_New Group from Selection"
+msgstr "_Nuevo Grupo desde la Selección"
+
+#: ../GroupsPane.py:98
+#: ../system-config-printer.py:414
+msgid "_Rename"
+msgstr "_Renombrar"
+
+#: ../GroupsPane.py:170
+msgid "The item could not be renamed."
+msgstr "El elemento no se pudo renombrar."
+
+#: ../GroupsPane.py:171
+#, python-format
+msgid "The name \"%s\" is already in use. Please use a different name."
+msgstr "El nombre \"%s\" ya está siendo usado. Por favor utilice un nombre distinto."
+
+#: ../GroupsPane.py:290
+#, python-format
+msgid "Are you sure you want to permanently delete \"%s\"?"
+msgstr "¿Seguro que quiere borrar permanentemente \"%s\"?"
+
+#: ../GroupsPane.py:296
+msgid "This will not delete any printer queues from your computer. To delete queues completely, you must delete them from the 'All Printers' group."
+msgstr "Esto no borrará ninguna cola de impresión de su computadora. Para borrar las colas completamente, debe borrarlas desde el grupo 'Todas las Impresoras'"
+
+#: ../GroupsPane.py:318
+msgid "New Group"
+msgstr "Nuevo Grupo"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../GroupsPaneModel.py:47
+msgid "All Printers"
+msgstr "Todas las Impresoras"
+
+#: ../GroupsPaneModel.py:60
+msgid "Favorites"
+msgstr "Favoritos"
+
+#: ../jobviewer.py:150
+msgid "Delete Jobs"
+msgstr "Eliminar Trabajos"
+
+#: ../jobviewer.py:151
+msgid "Do you really want to delete these jobs?"
+msgstr "¿Realmente quiere eliminar estos trabajos?"
+
+#: ../jobviewer.py:153
+msgid "Delete Job"
+msgstr "Eliminar Trabajo"
+
+#: ../jobviewer.py:154
+msgid "Do you really want to delete this job?"
+msgstr "¿Realmente quiere eliminar este trabajo?"
+
+#: ../jobviewer.py:157
+msgid "Cancel Jobs"
+msgstr "Cancelar Trabajos"
+
+#: ../jobviewer.py:158
+msgid "Do you really want to cancel these jobs?"
+msgstr "¿Realmente quiere cancelar este trabajo?"
+
+#: ../jobviewer.py:160
+msgid "Cancel Job"
+msgstr "Cancelar Trabajo"
+
+#: ../jobviewer.py:161
+msgid "Do you really want to cancel this job?"
+msgstr "¿Realmente quiere cancelar este trabajo?"
+
+#: ../jobviewer.py:218
+msgid "deleting job"
+msgstr "eliminando trabajo"
+
+#: ../jobviewer.py:220
+msgid "canceling job"
+msgstr "cancelando trabajo"
+
+#: ../jobviewer.py:309
+msgid "_Cancel"
+msgstr "_Cancelar"
+
+#: ../jobviewer.py:311
+msgid "_Delete"
+msgstr "_Eliminar"
+
+#: ../jobviewer.py:313
+msgid "_Hold"
+msgstr "_Mantener"
+
+#: ../jobviewer.py:315
+msgid "_Release"
+msgstr "Libe_rar"
+
+#: ../jobviewer.py:317
+msgid "Re_print"
+msgstr "Reim_primir"
+
+#: ../jobviewer.py:319
+msgid "Re_trieve"
+msgstr "Ob_tener"
+
+#: ../jobviewer.py:321
+msgid "_Move To"
+msgstr "_Mover a"
+
+#: ../jobviewer.py:322
+msgid "_Authenticate"
+msgstr "_Autenticar"
+
+#: ../jobviewer.py:324
+msgid "_View Attributes"
+msgstr "_Ver Atributos"
+
+#: ../jobviewer.py:375
+#: ../troubleshoot/PrintTestPage.py:83
+msgid "Job"
+msgstr "Trabajo"
+
+# ../util/printconf_tui.py:508 ../util/printconf_tui.py:566
+# ../util/printconf_tui.py:1147 ../util/printconf_tui.py:1206
+# ../util/printconf_tui.py:538 ../util/printconf_tui.py:596
+# ../util/printconf_tui.py:1198 ../util/printconf_tui.py:1257
+# ../util/printconf_tui.py:533 ../util/printconf_tui.py:591
+# ../util/printconf_tui.py:1195 ../util/printconf_tui.py:1254
+#: ../jobviewer.py:376
+msgid "User"
+msgstr "Usuario"
+
+#: ../jobviewer.py:377
+#: ../troubleshoot/PrintTestPage.py:87
+msgid "Document"
+msgstr "Documento"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../jobviewer.py:378
+#: ../system-config-printer.py:386
+#: ../system-config-printer.py:1465
+#: ../troubleshoot/PrintTestPage.py:85
+msgid "Printer"
+msgstr "Impresora"
+
+#: ../jobviewer.py:379
+msgid "Size"
+msgstr "Tamaño"
+
+#: ../jobviewer.py:395
+msgid "Time submitted"
+msgstr "Hora de ingreso"
+
+#: ../jobviewer.py:399
+#: ../troubleshoot/PrintTestPage.py:88
+msgid "Status"
+msgstr "Estado"
+
+#: ../jobviewer.py:431
+#, python-format
+msgid "my jobs on %s"
+msgstr "mis trabajos en %s"
+
+#: ../jobviewer.py:433
+msgid "my jobs"
+msgstr "mis trabajos"
+
+#: ../jobviewer.py:438
+msgid "all jobs"
+msgstr "todos los trabajos"
+
+#: ../jobviewer.py:439
+#, python-format
+msgid "Document Print Status (%s)"
+msgstr "Estado de impresión del documento (%s)"
+
+#: ../jobviewer.py:485
+msgid "Job attributes"
+msgstr "Atributos del trabajo"
+
+#: ../jobviewer.py:621
+#: ../jobviewer.py:903
+#: ../jobviewer.py:1552
+#: ../jobviewer.py:1582
+#: ../jobviewer.py:1981
+#: ../jobviewer.py:1986
+#: ../jobviewer.py:2000
+#: ../jobviewer.py:2079
+#: ../system-config-printer.py:2742
+#: ../ui/NewPrinterWindow.glade.h:89
+#: ../troubleshoot/ChooseNetworkPrinter.py:102
+#: ../troubleshoot/ChooseNetworkPrinter.py:103
+#: ../troubleshoot/ChooseNetworkPrinter.py:106
+#: ../troubleshoot/ChooseNetworkPrinter.py:107
+#: ../troubleshoot/ChoosePrinter.py:87
+#: ../troubleshoot/ChoosePrinter.py:88
+#: ../troubleshoot/ChoosePrinter.py:91
+#: ../troubleshoot/ChoosePrinter.py:92
+#: ../troubleshoot/DeviceListed.py:92
+#: ../troubleshoot/DeviceListed.py:93
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: ../jobviewer.py:627
+msgid "a minute ago"
+msgstr "hace un minuto"
+
+#: ../jobviewer.py:630
+#, python-format
+msgid "%d minutes ago"
+msgstr "hace %d minutos"
+
+#: ../jobviewer.py:634
+msgid "an hour ago"
+msgstr "hace 1 hora"
+
+#: ../jobviewer.py:636
+#, python-format
+msgid "%d hours ago"
+msgstr "hace %d horas"
+
+#: ../jobviewer.py:640
+msgid "yesterday"
+msgstr "ayer"
+
+#: ../jobviewer.py:642
+#, python-format
+msgid "%d days ago"
+msgstr "Hace %d días"
+
+#: ../jobviewer.py:646
+msgid "last week"
+msgstr "la semana pasada"
+
+#: ../jobviewer.py:648
+#, python-format
+msgid "%d weeks ago"
+msgstr "hace %d semanas"
+
+#: ../jobviewer.py:854
+#: ../jobviewer.py:934
+msgid "authenticating job"
+msgstr "autenticando tarea"
+
+#: ../jobviewer.py:901
+#, python-format
+msgid "Authentication required for printing document `%s' (job %d)"
+msgstr "Se requiere autenticación para la impresión del documento `%s' (trabajo %d)"
+
+#: ../jobviewer.py:1145
+msgid "holding job"
+msgstr "manteniendo trabajo"
+
+#: ../jobviewer.py:1170
+msgid "releasing job"
+msgstr "liberando trabajo"
+
+#. give the default filename some meaningful name
+#: ../jobviewer.py:1226
+msgid "retrieved"
+msgstr "obtenido"
+
+#: ../jobviewer.py:1236
+msgid "Save File"
+msgstr "Guardar Archivo"
+
+#: ../jobviewer.py:1316
+#: ../system-config-printer.py:442
+#: ../ui/NewPrinterWindow.glade.h:54
+#: ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36
+#: ../troubleshoot/DeviceListed.py:36
+msgid "Name"
+msgstr "Nombre"
+
+#: ../jobviewer.py:1319
+msgid "Value"
+msgstr "Valor"
+
+#: ../jobviewer.py:1445
+msgid "No documents queued"
+msgstr "No hay documentos en la cola"
+
+#: ../jobviewer.py:1447
+msgid "1 document queued"
+msgstr "1 documento encolado"
+
+#: ../jobviewer.py:1449
+#, python-format
+msgid "%d documents queued"
+msgstr "%d documentos en la cola"
+
+#: ../jobviewer.py:1583
+msgid "Document printed"
+msgstr "Documento impreso"
+
+#: ../jobviewer.py:1584
+#, python-format
+msgid "Document `%s' has been sent to `%s' for printing."
+msgstr "El documento `%s' ha sido enviado a `%s' para imprimirse."
+
+# ../util/printconf_gui.py:1721 ../util/printconf_gui.py:1738
+# ../util/printconf_gui.py:1755 ../util/printconf_tui.py:1715
+# ../util/printconf_gui.py:1812 ../util/printconf_gui.py:1829
+# ../util/printconf_gui.py:1863 ../util/printconf_tui.py:1805
+# ../util/printconf_gui.py:1942 ../util/printconf_tui.py:1834
+#: ../jobviewer.py:1752
+#, python-format
+msgid "There was a problem sending document `%s' (job %d) to the printer."
+msgstr "Hubo un problema al enviar el documento `%s' (trabajo %d) a la impresora."
+
+#: ../jobviewer.py:1755
+#, python-format
+msgid "There was a problem processing document `%s' (job %d)."
+msgstr "Hubo un problema al procesar el documento `%s' (trabajo %d)."
+
+#. Give up and use the provided message untranslated.
+#: ../jobviewer.py:1762
+#, python-format
+msgid "There was a problem printing document `%s' (job %d): `%s'."
+msgstr "Hubo un problema al imprimir el documento `%s' (trabajo %d): `%s'."
+
+#: ../jobviewer.py:1769
+#: ../jobviewer.py:1785
+msgid "Print Error"
+msgstr "Error de Impresión"
+
+#: ../jobviewer.py:1770
+msgid "_Diagnose"
+msgstr "_Diagnosticar"
+
+#: ../jobviewer.py:1791
+#, python-format
+msgid "The printer called `%s' has been disabled."
+msgstr "La impresora llamada `%s' ha sido deshabilitada."
+
+#: ../jobviewer.py:1992
+msgid "disabled"
+msgstr "deshabilitado"
+
+#: ../jobviewer.py:2014
+msgid "Held for authentication"
+msgstr "Mantenido por Autenticación"
+
+#: ../jobviewer.py:2016
+#: ../troubleshoot/PrintTestPage.py:43
+msgid "Held"
+msgstr "Mantenido"
+
+#: ../jobviewer.py:2052
+#, python-format
+msgid "Held until %s"
+msgstr "Mantenido hasta %s"
+
+#: ../jobviewer.py:2056
+msgid "Held until day-time"
+msgstr "Mantenido hasta que sea de día"
+
+#: ../jobviewer.py:2058
+msgid "Held until evening"
+msgstr "Mantenido hasta el atardecer"
+
+#: ../jobviewer.py:2060
+msgid "Held until night-time"
+msgstr "Mantenido hasta la noche"
+
+#: ../jobviewer.py:2062
+msgid "Held until second shift"
+msgstr "Mantenido hasta el segundo desplazamiento"
+
+#: ../jobviewer.py:2064
+msgid "Held until third shift"
+msgstr "Mantenido hasta el tercer desplazamiento"
+
+#: ../jobviewer.py:2066
+msgid "Held until weekend"
+msgstr "Mantenido hasta el fin de semana"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../jobviewer.py:2069
+#: ../troubleshoot/PrintTestPage.py:42
+msgid "Pending"
+msgstr "Pendiente"
+
+#: ../jobviewer.py:2070
+#: ../system-config-printer.py:194
+#: ../troubleshoot/PrintTestPage.py:44
+msgid "Processing"
+msgstr "Procesando"
+
+#: ../jobviewer.py:2071
+#: ../system-config-printer.py:196
+#: ../troubleshoot/PrintTestPage.py:45
+msgid "Stopped"
+msgstr "Detenido"
+
+#: ../jobviewer.py:2072
+#: ../troubleshoot/PrintTestPage.py:46
+msgid "Canceled"
+msgstr "Cancelado"
+
+#: ../jobviewer.py:2073
+#: ../troubleshoot/PrintTestPage.py:47
+msgid "Aborted"
+msgstr "Abortado"
+
+#: ../jobviewer.py:2074
+#: ../troubleshoot/PrintTestPage.py:48
+msgid "Completed"
+msgstr "Completo"
+
+#: ../optionwidgets.py:129
+msgid "Conflicts with:"
+msgstr "Conflicto con:"
+
+#: ../ppdippstr.py:45
+msgid "Abort job"
+msgstr "Abortar trabajo"
+
+#: ../ppdippstr.py:46
+msgid "Retry current job"
+msgstr "Reintentar trabajo actual"
+
+#: ../ppdippstr.py:47
+msgid "Retry job"
+msgstr "Reintentar trabajo"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../ppdippstr.py:48
+msgid "Stop printer"
+msgstr "Detener la impresora"
+
+#: ../ppdippstr.py:54
+msgid "Default behavior"
+msgstr "Comportamiento predeterminado"
+
+#: ../ppdippstr.py:55
+msgid "Authenticated"
+msgstr "Autenticado"
+
+#. See section 4.2.6 of this document for explanation of finishing types:
+#. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
+#: ../ppdippstr.py:61
+#: ../system-config-printer.py:718
+#: ../system-config-printer.py:3845
+#: ../system-config-printer.py:3856
+#: ../system-config-printer.py:6363
+msgid "None"
+msgstr "Ninguno"
+
+#: ../ppdippstr.py:62
+msgid "Classified"
+msgstr "Clasificado"
+
+#: ../ppdippstr.py:63
+msgid "Confidential"
+msgstr "Confidencial"
+
+#: ../ppdippstr.py:64
+msgid "Secret"
+msgstr "Secreto"
+
+#: ../ppdippstr.py:65
+msgid "Standard"
+msgstr "Estándar"
+
+#: ../ppdippstr.py:66
+msgid "Top secret"
+msgstr "Muy secreto"
+
+#: ../ppdippstr.py:67
+msgid "Unclassified"
+msgstr "Desclasificado"
+
+#: ../ppdippstr.py:73
+msgid "No hold"
+msgstr "No mantenido"
+
+#: ../ppdippstr.py:74
+msgid "Indefinite"
+msgstr "Indefinido"
+
+#: ../ppdippstr.py:75
+msgid "Daytime"
+msgstr "Día"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../ppdippstr.py:76
+msgid "Evening"
+msgstr "Tarde"
+
+#: ../ppdippstr.py:77
+msgid "Night"
+msgstr "Noche"
+
+#: ../ppdippstr.py:78
+msgid "Second shift"
+msgstr "Segundo turno"
+
+#: ../ppdippstr.py:79
+msgid "Third shift"
+msgstr "Tercer.turno"
+
+#: ../ppdippstr.py:80
+msgid "Weekend"
+msgstr "Fin de Semana"
+
+#: ../ppdippstr.py:90
+msgid "General"
+msgstr "General"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#. HPIJS options
+#: ../ppdippstr.py:93
+msgid "Printout mode"
+msgstr "Modo de impresión"
+
+#: ../ppdippstr.py:95
+msgid "Draft (auto-detect-paper type)"
+msgstr "Borrador (autodetectar tipo de papel)"
+
+#: ../ppdippstr.py:97
+msgid "Draft grayscale (auto-detect-paper type)"
+msgstr "Borrador en escala de grises (autodetectar tipo de papel)"
+
+#: ../ppdippstr.py:99
+msgid "Normal (auto-detect-paper type)"
+msgstr "Normal (autodetectar tipo de papel)"
+
+#: ../ppdippstr.py:101
+msgid "Normal grayscale (auto-detect-paper type)"
+msgstr "Normal escala de grises (autodetectar tipo de papel)"
+
+#: ../ppdippstr.py:103
+msgid "High quality (auto-detect-paper type)"
+msgstr "Alta calidad (autodetectar tipo de papel)"
+
+#: ../ppdippstr.py:105
+msgid "High quality grayscale (auto-detect-paper type)"
+msgstr "Alta calidad escala de grises (autodetectar tipo de papel)"
+
+#: ../ppdippstr.py:106
+msgid "Photo (on photo paper)"
+msgstr "Foto (en papel de fotos)"
+
+#: ../ppdippstr.py:108
+msgid "Best quality (color on photo paper)"
+msgstr "La mejor calidad (color en papel para fotos)"
+
+#: ../ppdippstr.py:110
+msgid "Normal quality (color on photo paper)"
+msgstr "Calidad normal (color en papel para fotos)"
+
+#: ../ppdippstr.py:112
+msgid "Media source"
+msgstr "Fuente de Medio"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../ppdippstr.py:113
+msgid "Printer default"
+msgstr "Predeterminado de la impresora"
+
+#: ../ppdippstr.py:114
+msgid "Photo tray"
+msgstr "Bandeja de fotos"
+
+#: ../ppdippstr.py:115
+msgid "Upper tray"
+msgstr "Bandeja superior"
+
+#: ../ppdippstr.py:116
+msgid "Lower tray"
+msgstr "Bandeja inferior"
+
+#: ../ppdippstr.py:117
+msgid "CD or DVD tray"
+msgstr "Bandeja de CD o DVD"
+
+#: ../ppdippstr.py:118
+msgid "Envelope feeder"
+msgstr "Alimentador de sobres"
+
+#: ../ppdippstr.py:119
+msgid "Large capacity tray"
+msgstr "Bandeja de gran capacidad"
+
+#: ../ppdippstr.py:120
+msgid "Manual feeder"
+msgstr "Alimentador manual"
+
+#: ../ppdippstr.py:121
+msgid "Multi-purpose tray"
+msgstr "Bandeja multipropósito"
+
+#: ../ppdippstr.py:123
+msgid "Page size"
+msgstr "Tamaño de página"
+
+#: ../ppdippstr.py:124
+msgid "Custom"
+msgstr "Personalizada"
+
+#: ../ppdippstr.py:125
+msgid "Photo or 4x6 inch index card"
+msgstr "Foto o tarjeta personal de 4x6 pda."
+
+#: ../ppdippstr.py:126
+msgid "Photo or 5x7 inch index card"
+msgstr "Foto o tarjeta personal de 5x7 pda."
+
+#: ../ppdippstr.py:127
+msgid "Photo with tear-off tab"
+msgstr "Foto con pestaña eliminable"
+
+#: ../ppdippstr.py:128
+msgid "3x5 inch index card"
+msgstr "Tarjeta personal de 3x5 pda"
+
+#: ../ppdippstr.py:129
+msgid "5x8 inch index card"
+msgstr "Tarjeta personal de 5x8 pda"
+
+#: ../ppdippstr.py:130
+msgid "A6 with tear-off tab"
+msgstr "A6 con pestaña eliminable"
+
+#: ../ppdippstr.py:131
+msgid "CD or DVD 80mm"
+msgstr "CD o DVD 80mm"
+
+#: ../ppdippstr.py:132
+msgid "CD or DVD 120mm"
+msgstr "CD o DVD 120mm"
+
+#: ../ppdippstr.py:134
+msgid "Double-sided printing"
+msgstr "Impresión doble faz"
+
+#: ../ppdippstr.py:135
+msgid "Long edge (standard)"
+msgstr "Borde largo (estandar)"
+
+#: ../ppdippstr.py:136
+msgid "Short edge (flip)"
+msgstr "Borde corto (flip)"
+
+#: ../ppdippstr.py:137
+msgid "Off"
+msgstr "Apagado"
+
+#: ../ppdippstr.py:140
+msgid "Resolution, quality, ink type, media type"
+msgstr "Resolución, calidad, tipo de tinta, tipo de medio"
+
+#: ../ppdippstr.py:141
+msgid "Controlled by 'Printout mode'"
+msgstr "Controlado por 'Modo de impresión'"
+
+#: ../ppdippstr.py:143
+msgid "300 dpi, color, black + color cartridge"
+msgstr "300 ppp, color, cartucho negro + color"
+
+#: ../ppdippstr.py:145
+msgid "300 dpi, draft, color, black + color cartridge"
+msgstr "300 ppp, borrador, color, cartucho negro + color"
+
+#: ../ppdippstr.py:147
+msgid "300 dpi, draft, grayscale, black + color cartridge"
+msgstr "300 ppp, borrador, escala de grises, cartucho negro + color"
+
+#: ../ppdippstr.py:149
+msgid "300 dpi, grayscale, black + color cartridge"
+msgstr "300 ppp, escala de grises, cartucho negro + color"
+
+#: ../ppdippstr.py:151
+msgid "600 dpi, color, black + color cartridge"
+msgstr "600 ppp, color, cartucho negro + color"
+
+#: ../ppdippstr.py:153
+msgid "600 dpi, grayscale, black + color cartridge"
+msgstr "600 ppp, escala de grises, cartucho negro + color"
+
+#: ../ppdippstr.py:155
+msgid "600 dpi, photo, black + color cartridge, photo paper"
+msgstr "600 ppp, foto, cartucho negro + color, papel para fotos"
+
+#: ../ppdippstr.py:157
+msgid "600 dpi, color, black + color cartridge, photo paper, normal"
+msgstr "600 ppp, color, cartucho negro + color, papel para fotos, normal"
+
+#: ../ppdippstr.py:159
+msgid "1200 dpi, photo, black + color cartridge, photo paper"
+msgstr "1200 ppp, foto, cartucho negro + color, papel para fotos"
+
+#: ../ppdsloader.py:50
+#: ../system-config-printer.py:4521
+#: ../system-config-printer.py:5864
+#: ../system-config-printer.py:6054
+msgid "Searching"
+msgstr "Buscando"
+
+#: ../ppdsloader.py:58
+#: ../system-config-printer.py:4522
+msgid "Searching for drivers"
+msgstr "Buscando controladores"
+
+#: ../ppdsloader.py:147
+msgid "fetching PPDs"
+msgstr "obteniendo PPDs"
+
+#: ../system-config-printer.py:138
+msgid "To do this, select System->Administration->Firewall from the main menu."
+msgstr "Para hacer esto, seleccione Sistema->Administración->Cortafuego desde el menú principal."
+
+#: ../system-config-printer.py:193
+msgid "Idle"
+msgstr "Listo"
+
+#: ../system-config-printer.py:195
+msgid "Busy"
+msgstr "Ocupado"
+
+#: ../system-config-printer.py:392
+#: ../system-config-printer.py:1471
+msgid "Class"
+msgstr "Clase"
+
+#: ../system-config-printer.py:416
+msgid "_Duplicate"
+msgstr "_Duplicar"
+
+#: ../system-config-printer.py:420
+msgid "Set As De_fault"
+msgstr "_Poner como Predeterminada"
+
+#: ../system-config-printer.py:424
+msgid "_Create class"
+msgstr "_Crear Clase"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:426
+msgid "View Print _Queue"
+msgstr "Ver la Cola de _Impresión"
+
+#: ../system-config-printer.py:428
+msgid "_Add to Group"
+msgstr "_Añadir al Grupo"
+
+#: ../system-config-printer.py:430
+msgid "Save Results as _Group"
+msgstr "Guardar Resultados como _Grupo"
+
+#: ../system-config-printer.py:432
+msgid "Save Filter as _Search Group"
+msgstr "Guarda el Filtro como Grupo de Büsqueda"
+
+#: ../system-config-printer.py:436
+msgid "E_nabled"
+msgstr "_Activado"
+
+#: ../system-config-printer.py:438
+msgid "_Shared"
+msgstr "_Compartido"
+
+#: ../system-config-printer.py:443
+msgid "Description"
+msgstr "Descripción"
+
+#: ../system-config-printer.py:444
+#: ../troubleshoot/ChooseNetworkPrinter.py:37
+#: ../troubleshoot/ChoosePrinter.py:38
+msgid "Location"
+msgstr "Ubicación"
+
+#: ../system-config-printer.py:445
+msgid "Manufacturer / Model"
+msgstr "Fabricante / Modelo"
+
+#. Printer state reasons list
+#: ../system-config-printer.py:520
+msgid "Message"
+msgstr "Mensaje"
+
+#: ../system-config-printer.py:554
+msgid "Problems?"
+msgstr "¿Problemas?"
+
+#: ../system-config-printer.py:659
+#: ../system-config-printer.py:661
+msgid "Members of this class"
+msgstr "Miembros de esta clase"
+
+#: ../system-config-printer.py:660
+#: ../system-config-printer.py:662
+msgid "Others"
+msgstr "Otros"
+
+# ../gui/printconf-gui.glade.str:76 ../util/printconf_tui.py:361
+# ../gui/printconf-gui.glade.str:82 ../util/printconf_tui.py:383
+# ../gui/printconf-gui.glade.str:82 ../util/printconf_tui.py:376
+#: ../system-config-printer.py:663
+msgid "Devices"
+msgstr "Dispositivos"
+
+#: ../system-config-printer.py:664
+msgid "Connections"
+msgstr "Conexiones"
+
+#: ../system-config-printer.py:665
+msgid "Makes"
+msgstr "Marcas"
+
+# ../gui/printconf-gui.glade.str:129
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:141
+#: ../system-config-printer.py:666
+msgid "Models"
+msgstr "Modelos"
+
+# ../gui/printconf-gui.glade.str:79
+# ../gui/printconf-gui.glade.str:85 ../util/printconf_tui.py:812
+# ../gui/printconf-gui.glade.str:85 ../util/printconf_tui.py:805
+#: ../system-config-printer.py:667
+msgid "Drivers"
+msgstr "Controladores"
+
+#: ../system-config-printer.py:668
+#: ../ui/NewPrinterWindow.glade.h:36
+msgid "Downloadable Drivers"
+msgstr "Controladores Descargables"
+
+# ../util/printconf_tui.py:508 ../util/printconf_tui.py:566
+# ../util/printconf_tui.py:1147 ../util/printconf_tui.py:1206
+# ../util/printconf_tui.py:538 ../util/printconf_tui.py:596
+# ../util/printconf_tui.py:1198 ../util/printconf_tui.py:1257
+# ../util/printconf_tui.py:533 ../util/printconf_tui.py:591
+# ../util/printconf_tui.py:1195 ../util/printconf_tui.py:1254
+#: ../system-config-printer.py:669
+msgid "Users"
+msgstr "Usuarios"
+
+#: ../system-config-printer.py:697
+msgid "Portrait (no rotation)"
+msgstr "Vertical (sin rotación)"
+
+#: ../system-config-printer.py:698
+msgid "Landscape (90 degrees)"
+msgstr "Horizontal (90 grados)"
+
+#: ../system-config-printer.py:699
+msgid "Reverse landscape (270 degrees)"
+msgstr "Horizontal invertido (270 grados)"
+
+#: ../system-config-printer.py:700
+msgid "Reverse portrait (180 degrees)"
+msgstr "Vertical invertido (180 grados)"
+
+#: ../system-config-printer.py:706
+msgid "Left to right, top to bottom"
+msgstr "Izquierda a derecha, arriba a abajo"
+
+#: ../system-config-printer.py:707
+msgid "Left to right, bottom to top"
+msgstr "Izquierda a derecha, abajo a arriba"
+
+#: ../system-config-printer.py:708
+msgid "Right to left, top to bottom"
+msgstr "Derecha a izquierda, arriba a abajo"
+
+#: ../system-config-printer.py:709
+msgid "Right to left, bottom to top"
+msgstr "Derecha a izquierda, abajo a arriba"
+
+#: ../system-config-printer.py:710
+msgid "Top to bottom, left to right"
+msgstr "Arriba a abajo, izquierda a derecha"
+
+#: ../system-config-printer.py:711
+msgid "Top to bottom, right to left"
+msgstr "Arriba a abajo, derecha a izquierda"
+
+#: ../system-config-printer.py:712
+msgid "Bottom to top, left to right"
+msgstr "Abajo a arriba, izquierda a derecha"
+
+#: ../system-config-printer.py:713
+msgid "Bottom to top, right to left"
+msgstr "Abajo a arriba, derecha a izquierda"
+
+#: ../system-config-printer.py:719
+msgid "Staple"
+msgstr "Abrochar"
+
+#: ../system-config-printer.py:720
+msgid "Punch"
+msgstr "Perforar"
+
+#: ../system-config-printer.py:721
+msgid "Cover"
+msgstr "Tapa"
+
+#: ../system-config-printer.py:722
+msgid "Bind"
+msgstr "Encuadernar"
+
+#: ../system-config-printer.py:723
+msgid "Saddle stitch"
+msgstr "Montura puntada"
+
+#: ../system-config-printer.py:724
+msgid "Edge stitch"
+msgstr "Borde de punta"
+
+#: ../system-config-printer.py:725
+msgid "Fold"
+msgstr "Doblar"
+
+#: ../system-config-printer.py:726
+msgid "Trim"
+msgstr "Recorte"
+
+#: ../system-config-printer.py:727
+msgid "Bale"
+msgstr "Embalar"
+
+#: ../system-config-printer.py:728
+msgid "Booklet maker"
+msgstr "Constructor de folleto"
+
+#: ../system-config-printer.py:729
+msgid "Job offset"
+msgstr "Desplazamiento del trabajo"
+
+#: ../system-config-printer.py:730
+msgid "Staple (top left)"
+msgstr "Abrochar (arriba izquierda)"
+
+#: ../system-config-printer.py:731
+msgid "Staple (bottom left)"
+msgstr "Abrochar (abajo izquierda)"
+
+#: ../system-config-printer.py:732
+msgid "Staple (top right)"
+msgstr "Abrochar (arriba derecha)"
+
+#: ../system-config-printer.py:733
+msgid "Staple (bottom right)"
+msgstr "Abrochar (abajo derecha)"
+
+#: ../system-config-printer.py:734
+msgid "Edge stitch (left)"
+msgstr "Borde de punta (izquierda)"
+
+#: ../system-config-printer.py:735
+msgid "Edge stitch (top)"
+msgstr "Borde de punta (arriba)"
+
+#: ../system-config-printer.py:736
+msgid "Edge stitch (right)"
+msgstr "Borde de punta (derecha)"
+
+#: ../system-config-printer.py:737
+msgid "Edge stitch (bottom)"
+msgstr "Borde de punta (abajo)"
+
+#: ../system-config-printer.py:738
+msgid "Staple dual (left)"
+msgstr "Abrochado dual (izquierda)"
+
+#: ../system-config-printer.py:739
+msgid "Staple dual (top)"
+msgstr "Abrochado dual (arriba)"
+
+#: ../system-config-printer.py:740
+msgid "Staple dual (right)"
+msgstr "Abrochado dual (derecha)"
+
+#: ../system-config-printer.py:741
+msgid "Staple dual (bottom)"
+msgstr "Abrochado dual (abajo)"
+
+#: ../system-config-printer.py:742
+msgid "Bind (left)"
+msgstr "Encuadernar (izquierda)"
+
+#: ../system-config-printer.py:743
+msgid "Bind (top)"
+msgstr "Encuadernar (arriba)"
+
+#: ../system-config-printer.py:744
+msgid "Bind (right)"
+msgstr "Encuadernar (derecha)"
+
+#: ../system-config-printer.py:745
+msgid "Bind (bottom)"
+msgstr "Encuadernar (abajo)"
+
+#: ../system-config-printer.py:750
+msgid "One-sided"
+msgstr "De un lado"
+
+#: ../system-config-printer.py:751
+msgid "Two-sided (long edge)"
+msgstr "De dos lado (borde largo)"
+
+#: ../system-config-printer.py:752
+msgid "Two-sided (short edge)"
+msgstr "De dos lados (borde corto)"
+
+#: ../system-config-printer.py:757
+msgid "Normal"
+msgstr "Normal"
+
+#: ../system-config-printer.py:758
+msgid "Reverse"
+msgstr "Reverso"
+
+#: ../system-config-printer.py:779
+msgid "Automatic rotation"
+msgstr "Rotación automática"
+
+#: ../system-config-printer.py:1069
+msgid "CUPS test page"
+msgstr "Imprimir página de prueba"
+
+#: ../system-config-printer.py:1070
+msgid "Typically shows whether all jets on a print head are functioning and that the print feed mechanisms are working properly."
+msgstr "Normalmente se muestra si todos los inyectores del cabezal de impresión están funcionando, y los mecanismos de alimentación de impresión funcionan correctamente."
+
+#: ../system-config-printer.py:1077
+#, python-format
+msgid "Printer Properties - '%s' on %s"
+msgstr "Propiedades de la Impresora - '%s' en %s"
+
+#. The Conflict button was pressed.
+#: ../system-config-printer.py:1085
 msgid ""
-"In cryptography, the Advanced Encryption Standard (AES) is an encryption "
-"standard adopted by the U.S. government. The standard comprises three block "
-"ciphers, AES-128, AES-192 and AES-256, adopted from a larger collection "
-"originally published as Rijndael. Each AES cipher has a 128-bit block size, "
-"with key sizes of 128, 192 and 256 bits, respectively. The AES ciphers have "
-"been analyzed extensively and are now used worldwide, as was the case with "
-"its predecessor, the Data Encryption Standard (DES).<footnote><para>"
-"\"Advanced Encryption Standard.\" <emphasis>Wikipedia.</emphasis> 14 "
-"November 2009 <ulink url=\"http://en.wikipedia.org/wiki/"
-"Advanced_Encryption_Standard\">http://en.wikipedia.org/wiki/"
-"Advanced_Encryption_Standard</ulink></para></footnote>"
+"There are conflicting options.\n"
+"Changes can only be applied after\n"
+"these conflicts are resolved."
 msgstr ""
-"En criptografía, el Advanced Encryption Standard (AES), es un estandar de "
-"\r\n"
-"encriptación adoptado por el gobierno de EE.UU. El estandar comprende tres "
-"\r\n"
-"cifrados por bloques. AES-128, AES-192 y AES-256, adoptados de una colección "
-"\r\n"
-"originalmente publicada como Rijndael. Cada cifrado AES tiene un bloque de "
-"\r\n"
-"tamaño de 182 bits,  con claves de 128, 192 y 256 bits respectivamente. Los "
-"\r\n"
-"cifrados AES han sido analizados extensamente y son usados a nivel mundial, "
-"\r\n"
-"igual  que su predecesor, el Data Encryption Standard (DES).<footnote><para>"
-"\r\n"
-"\"Advanced Encryption Standard.\" <emphasis>Wikipedia.</emphasis> 14 \r\n"
-"November 2009 <ulink url=\"http://en.wikipedia.org/wiki/\r\n"
-"Advanced_Encryption_Standard\">http://en.wikipedia.org/wiki/\r\n"
-"Advanced_Encryption_Standard</ulink></para></footnote>"
+"Hay opciones conflictivas. Los\n"
+"cambios podrán ser aplicados\n"
+"después que sean resueltos."
 
-#. Tag: title
-#, no-c-format
-msgid "AES Uses"
-msgstr "Usos de AES"
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#. We can authenticate with the server correctly at this point,
+#. but we have never fetched the server settings to see whether
+#. the server is publishing shared printers.  Fetch the settings
+#. now so that we can update the "not published" label if necessary.
+#: ../system-config-printer.py:1274
+#: ../system-config-printer.py:2190
+#: ../system-config-printer.py:3453
+msgid "fetching server settings"
+msgstr "obteniendo la configuración del servidor"
 
-#. Tag: title
-#, no-c-format
-msgid "AES History"
-msgstr "Historia de AES"
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:1311
+#, python-format
+msgid "Printing - %s"
+msgstr "Imprimiendo - %s"
 
-#. Tag: para
-#, fuzzy, no-c-format
+#: ../system-config-printer.py:1315
+#, python-format
+msgid "Connected to %s"
+msgstr "Conectado a %s"
+
+#. Update our copy of the printer's settings.
+#: ../system-config-printer.py:1355
+#: ../system-config-printer.py:2202
+msgid "obtaining queue details"
+msgstr "obteniendo los detalles de la cola"
+
+#: ../system-config-printer.py:1393
+msgid "Remove from Group"
+msgstr "Eliminar del Grupo"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:1459
+msgid "Network printer (discovered)"
+msgstr "Impresora de red (descubierta)"
+
+#: ../system-config-printer.py:1462
+msgid "Network class (discovered)"
+msgstr "Clase de red (descubierta)"
+
+#: ../system-config-printer.py:1468
+#: ../system-config-printer.py:5605
+#: ../system-config-printer.py:5676
+#: ../system-config-printer.py:5678
+msgid "Fax"
+msgstr "Fax"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:1474
+#: ../system-config-printer.py:1480
+#: ../troubleshoot/LocalOrRemote.py:30
+msgid "Network printer"
+msgstr "Impresora de red"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:1477
+msgid "Network print share"
+msgstr "Impresora de red compartida"
+
+#: ../system-config-printer.py:1663
+#: ../ui/ConnectingDialog.glade.h:2
+#, no-c-format, python-format
+msgid "<i>Opening connection to %s</i>"
+msgstr "<i>Abriendo conexión a %s</i>"
+
+#: ../system-config-printer.py:2046
+msgid "Installable Options"
+msgstr "Opciones Instalables"
+
+#: ../system-config-printer.py:2047
+#: ../ui/PrinterPropertiesDialog.glade.h:61
+msgid "Printer Options"
+msgstr "Opciones de la Impresora"
+
+#: ../system-config-printer.py:2084
+#, python-format
+msgid "modifying class %s"
+msgstr "modificando clase %s"
+
+#: ../system-config-printer.py:2086
+#: ../system-config-printer.py:3257
+#: ../system-config-printer.py:3282
+#: ../system-config-printer.py:6665
+#: ../system-config-printer.py:6677
+#: ../system-config-printer.py:6695
+#, python-format
+msgid "modifying printer %s"
+msgstr "modificando impresora %s"
+
+#: ../system-config-printer.py:2101
+msgid "This will delete this class!"
+msgstr "Esto eliminará esta clase!"
+
+#: ../system-config-printer.py:2102
+msgid "Proceed anyway?"
+msgstr "¿Proceder de todos modos?"
+
+#: ../system-config-printer.py:2260
+msgid "Set Default Printer"
+msgstr "Poner como Impresora Predeterminada"
+
+#: ../system-config-printer.py:2262
+msgid "Do you want to set this as the system-wide default printer?"
+msgstr "¿Quiere poner a ésta como la impresora predeterminada para todo el sistema?"
+
+#: ../system-config-printer.py:2264
+msgid "Set as the _system-wide default printer"
+msgstr "Poner como la impresora predeterminada para todo el _sistema"
+
+#: ../system-config-printer.py:2266
+msgid "_Clear my personal default setting"
+msgstr "Limpiar mi configuración predeterminada personal"
+
+#: ../system-config-printer.py:2267
+msgid "Set as my _personal default printer"
+msgstr "Poner como mi impresora _predeterminada"
+
+#: ../system-config-printer.py:2272
+msgid "setting default printer"
+msgstr "poniendo la impresora predeterminada"
+
+#: ../system-config-printer.py:2329
+msgid "printing test page"
+msgstr "imprimiendo página de prueba"
+
+#: ../system-config-printer.py:2342
+#: ../system-config-printer.py:2377
+msgid "Not possible"
+msgstr "Imposible"
+
+#: ../system-config-printer.py:2343
+#: ../system-config-printer.py:2378
+msgid "The remote server did not accept the print job, most likely because the printer is not shared."
+msgstr "El servidor remoto no aceptó el trabajo de impresión, muy probablemente debido a que la impresora no es compartida."
+
+#: ../system-config-printer.py:2355
+#: ../system-config-printer.py:2370
+msgid "Submitted"
+msgstr "Enviado"
+
+#: ../system-config-printer.py:2356
+#, python-format
+msgid "Test page submitted as job %d"
+msgstr "Página de prueba enviada como trabajo %d"
+
+#: ../system-config-printer.py:2363
+msgid "sending maintenance command"
+msgstr "enviando comando de mantenimiento"
+
+#: ../system-config-printer.py:2371
+#, python-format
+msgid "Maintenance command submitted as job %d"
+msgstr "Comando de mantenimiento enviado como trabajo %d"
+
+#. The underlying cupsGetPPD2() function returned NULL without
+#. setting an IPP error, so it'll be something like a failed
+#. connection.
+#: ../system-config-printer.py:2448
+#: ../system-config-printer.py:2544
+msgid "Error"
+msgstr "Error"
+
+# ../util/printconf_gui.py:1721 ../util/printconf_gui.py:1738
+# ../util/printconf_gui.py:1755 ../util/printconf_tui.py:1715
+# ../util/printconf_gui.py:1812 ../util/printconf_gui.py:1829
+# ../util/printconf_gui.py:1863 ../util/printconf_tui.py:1805
+# ../util/printconf_gui.py:1942 ../util/printconf_tui.py:1834
+#: ../system-config-printer.py:2449
+msgid "There was a problem connecting to the CUPS server."
+msgstr "Hubo un problema al conectar al servidor CUPS."
+
+#: ../system-config-printer.py:2545
+#, python-format
+msgid "Option '%s' has value '%s' and cannot be edited."
+msgstr "La opción '%s' tiene el valor '%s' y no se puede editar."
+
+#: ../system-config-printer.py:2651
+msgid "Marker levels are not reported for this printer."
+msgstr "Los niveles de tinta no son informados por esta impresora."
+
+#: ../system-config-printer.py:2962
+msgid "Cannot Rename"
+msgstr "No se puede Renombrar"
+
+#: ../system-config-printer.py:2963
+msgid "There are queued jobs."
+msgstr "Hay trabajos encolados."
+
+#: ../system-config-printer.py:2981
+msgid "Renaming will lose history"
+msgstr "Si se modifica el nombre se perderá el historial"
+
+#: ../system-config-printer.py:2983
+msgid "Completed jobs will no longer be available for re-printing."
+msgstr "Los trabajos completados no estarán disponibles para reimpresiones."
+
+#: ../system-config-printer.py:3058
+msgid "renaming printer"
+msgstr "renombrando la impresora"
+
+#. for classes make sure all members
+#. will get added
+#: ../system-config-printer.py:3145
+msgid "duplicating printer"
+msgstr "duplicando impresora"
+
+# ../util/printconf_tui.py:1740
+# ../util/printconf_tui.py:1830
+# ../util/printconf_tui.py:1859
+#: ../system-config-printer.py:3209
+#, python-format
+msgid "Really delete class '%s'?"
+msgstr "¿Realmente eliminar la clase '%s'? "
+
+# ../util/printconf_tui.py:1740
+# ../util/printconf_tui.py:1830
+# ../util/printconf_tui.py:1859
+#: ../system-config-printer.py:3211
+#, python-format
+msgid "Really delete printer '%s'?"
+msgstr "¿Realmente eliminar la impresora '%s'? "
+
+# ../util/printconf_tui.py:1740
+# ../util/printconf_tui.py:1830
+# ../util/printconf_tui.py:1859
+#: ../system-config-printer.py:3213
+msgid "Really delete selected destinations?"
+msgstr "¿Realmente eliminar los destinos seleccionados? "
+
+#: ../system-config-printer.py:3234
+#, python-format
+msgid "deleting printer %s"
+msgstr "eliminando impresora %s"
+
+#: ../system-config-printer.py:3320
+msgid "Publish Shared Printers"
+msgstr "Publicar Impresoras Compartidas"
+
+#: ../system-config-printer.py:3321
+msgid "Shared printers are not available to other people unless the 'Publish shared printers' option is enabled in the server settings."
+msgstr "Las impresoras compartidas no están disponibles para otros a menos que 'Publique las impresoras compartidas' en la configuración del servidor."
+
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#: ../system-config-printer.py:3511
+msgid "modifying server settings"
+msgstr "modificando la configuración del servidor"
+
+#: ../system-config-printer.py:3541
+#: ../system-config-printer.py:4959
+msgid "Adjust Firewall"
+msgstr "Modificar el cortafuegos"
+
+#: ../system-config-printer.py:3542
+msgid "Adjust the firewall now to allow all incoming IPP connections?"
+msgstr "¿Modificar ahora el cortafuegos de modo de permitir todas las conexiones IPP entrantes?"
+
+#: ../system-config-printer.py:3833
+#: ../system-config-printer.py:3844
+#: ../system-config-printer.py:3850
+#: ../system-config-printer.py:3855
+msgid "Default"
+msgstr "Por Defecto"
+
+#: ../system-config-printer.py:3834
+msgid "1200"
+msgstr "1200"
+
+#: ../system-config-printer.py:3835
+msgid "2400"
+msgstr "2400"
+
+#: ../system-config-printer.py:3836
+msgid "4800"
+msgstr "4800"
+
+#: ../system-config-printer.py:3837
+msgid "9600"
+msgstr "9600"
+
+#: ../system-config-printer.py:3838
+msgid "19200"
+msgstr "19200"
+
+#: ../system-config-printer.py:3839
+msgid "38400"
+msgstr "38400"
+
+#: ../system-config-printer.py:3840
+msgid "57600"
+msgstr "57600"
+
+#: ../system-config-printer.py:3841
+msgid "115200"
+msgstr "115200"
+
+#: ../system-config-printer.py:3846
+msgid "Odd"
+msgstr "Original"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:3847
+msgid "Even"
+msgstr "Tarde"
+
+#: ../system-config-printer.py:3851
+msgid "8"
+msgstr "8"
+
+#: ../system-config-printer.py:3852
+msgid "7"
+msgstr "7"
+
+#: ../system-config-printer.py:3857
+msgid "XON/XOFF (Software)"
+msgstr "XON/XOFF (Software)"
+
+#: ../system-config-printer.py:3858
+msgid "RTS/CTS (Hardware)"
+msgstr "RTS/CTS (Hardware)"
+
+#: ../system-config-printer.py:3859
+msgid "DTR/DSR (Hardware)"
+msgstr "DTR/DSR (Hardware)"
+
+#: ../system-config-printer.py:3933
+msgid "Browsing not available (pysmbc not installed)"
+msgstr "Navegación no disponible (no se instaló pysmbc)"
+
+#. SMB list columns
+#: ../system-config-printer.py:3939
+msgid "Share"
+msgstr "Compartir"
+
+#: ../system-config-printer.py:3945
+msgid "Comment"
+msgstr "Comentario"
+
+#: ../system-config-printer.py:3960
+msgid "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
+msgstr "Archivo de Descripción de Impresora PostScript (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
+
+#: ../system-config-printer.py:3969
+msgid "All files (*)"
+msgstr "Todos los archivos (*)"
+
+#: ../system-config-printer.py:4033
+#: ../system-config-printer.py:6029
+#: ../system-config-printer.py:6067
+#: ../applet.py:130
+msgid "Search"
+msgstr "Buscar"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:4057
+#: ../system-config-printer.py:4078
+#: ../ui/NewPrinterWindow.glade.h:56
+msgid "New Printer"
+msgstr "Impresora Nueva"
+
+#: ../system-config-printer.py:4065
+msgid "New Class"
+msgstr "Clase nueva"
+
+#: ../system-config-printer.py:4070
+msgid "Change Device URI"
+msgstr "Cambiar el URI del Dispositivo"
+
+# ../util/printconf_tui.py:1002
+# ../util/printconf_tui.py:1053
+# ../util/printconf_tui.py:1050
+#: ../system-config-printer.py:4076
+msgid "Change Driver"
+msgstr "Cambiar controlador"
+
+#. device-info
+#. PhysicalDevice obj
+#. Separator?
+#: ../system-config-printer.py:4905
+msgid "Other"
+msgstr "Otro"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:4909
+msgid "Network Printer"
+msgstr "Impresora de red"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:4913
+msgid "Find Network Printer"
+msgstr "Buscar Impresora de Red"
+
+#: ../system-config-printer.py:4935
+msgid "The firewall may need adjusting in order to detect network printers.  Adjust the firewall now?"
+msgstr "Podrían necesitarse algunas modificaciones al cortafuegos para poder detectar las impresoras en red. ¿Desea modificarlo ahora?"
+
+#: ../system-config-printer.py:4940
+msgid "Allow all incoming IPP Browse packets"
+msgstr "Permitir todos los paquetes de navegación IPP entrantes"
+
+#: ../system-config-printer.py:4945
+msgid "Allow all incoming mDNS traffic"
+msgstr "Permitir todo el tráfico mDNS entrante "
+
+#: ../system-config-printer.py:4949
+msgid "Allow all responses to SNMP broadcast queries"
+msgstr "Permitir todas las respuestas a consultas de transmisión SNMP"
+
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#: ../system-config-printer.py:4971
+msgid "fetching device list"
+msgstr "obteniendo la lista de dispositivos"
+
+#: ../system-config-printer.py:5057
+#: ../system-config-printer.py:6290
+msgid " (Current)"
+msgstr "(Actual)"
+
+#: ../system-config-printer.py:5129
+msgid "Scanning..."
+msgstr "Examinando..."
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:5184
+msgid "No Print Shares"
+msgstr "No hay Impresoras Compartidas"
+
+#: ../system-config-printer.py:5185
+msgid "There were no print shares found.  Please check that the Samba service is marked as trusted in your firewall configuration."
+msgstr "uNo se encontraron impresoras compartidas. Por favor, verifique si el servicio Samba está marcado como confiable en la configuración de su cortafuego."
+
+#: ../system-config-printer.py:5359
+msgid "Review Firewall"
+msgstr "Revisar el Cortafuegos"
+
+#: ../system-config-printer.py:5360
+msgid "You may need to adjust the firewall to allow network printer discovery on this computer."
+msgstr "Podría necesitar modificar el cortafuego para que esta computadora pueda encontrar impresoras en red."
+
+#: ../system-config-printer.py:5461
+#: ../system-config-printer.py:5538
+msgid "Print Share Verified"
+msgstr "Impresora Compartida Verificada"
+
+#: ../system-config-printer.py:5462
+#: ../system-config-printer.py:5539
+msgid "This print share is accessible."
+msgstr "Esta impresora compartida es accesible."
+
+#: ../system-config-printer.py:5467
+#: ../system-config-printer.py:5543
+msgid "This print share is not accessible."
+msgstr "Esta impresora compartida no es accesible."
+
+#: ../system-config-printer.py:5470
+msgid "Print Share Inaccessible"
+msgstr "Impresora Compartida Inaccesible"
+
+#: ../system-config-printer.py:5516
+msgid "Verifying"
+msgstr "Verificando"
+
+#: ../system-config-printer.py:5517
+msgid "Verifying printer"
+msgstr "Verificando impresora"
+
+#: ../system-config-printer.py:5542
+msgid "Inaccessible"
+msgstr "Inaccesible"
+
+#: ../system-config-printer.py:5597
+msgid "Parallel Port"
+msgstr "Puerto Paralelo"
+
+#: ../system-config-printer.py:5599
+msgid "Serial Port"
+msgstr "Puerto Serie"
+
+#: ../system-config-printer.py:5601
+msgid "USB"
+msgstr "USB"
+
+#: ../system-config-printer.py:5603
+#: ../system-config-printer.py:5606
+msgid "HP Linux Imaging and Printing (HPLIP)"
+msgstr "Imagen e Impresión en Linux de HP (HPLIP)"
+
+#: ../system-config-printer.py:5608
+msgid "Hardware Abstraction Layer (HAL)"
+msgstr "Capa de Abstracción de Hardware (HAL)"
+
+#: ../system-config-printer.py:5610
+msgid "AppSocket/HP JetDirect"
+msgstr "AppSocket/HP JetDirect"
+
+#: ../system-config-printer.py:5619
+#, python-format
+msgid "LPD/LPR queue '%s'"
+msgstr "Cola LPD/LPR '%s' "
+
+#: ../system-config-printer.py:5621
+msgid "LPD/LPR queue"
+msgstr "Cola LPD/LPR"
+
+#: ../system-config-printer.py:5624
+msgid "Windows Printer via SAMBA"
+msgstr "Impresora Windows vía SAMBA"
+
+#: ../system-config-printer.py:5626
+#: ../ui/NewPrinterWindow.glade.h:46
+msgid "IPP"
+msgstr "IPP"
+
+#: ../system-config-printer.py:5628
+msgid "HTTP"
+msgstr "HTTP"
+
+#: ../system-config-printer.py:5716
+msgid "A printer connected to the parallel port."
+msgstr "Una impresora conectada al puerto paralelo."
+
+#: ../system-config-printer.py:5718
+msgid "A printer connected to a USB port."
+msgstr "Una impresora conectada a un puerto USB."
+
+#: ../system-config-printer.py:5720
+msgid "HPLIP software driving a printer, or the printer function of a multi-function device."
+msgstr "Software HPLIP manejando una impresora, o la impresora de un dispositivo multifunción."
+
+#: ../system-config-printer.py:5723
+msgid "HPLIP software driving a fax machine, or the fax function of a multi-function device."
+msgstr "Software HPLIP manejando un fax, o el fax de un dispositivo multifunción."
+
+#: ../system-config-printer.py:5726
+msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
+msgstr "Impresora local detectada por la Capa de Abstracción de Hardware (HAL)."
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:5865
+msgid "Searching for printers"
+msgstr "Buscando impresoras"
+
+#: ../system-config-printer.py:5942
+#: ../ui/NewPrinterWindow.glade.h:57
+msgid "No printer was found at that address."
+msgstr "No se encontró ninguna impresora en esa dirección."
+
+#: ../system-config-printer.py:6079
+msgid "-- Select from search results --"
+msgstr "-- Seleccione desde el resultado de la búsqueda --"
+
+#: ../system-config-printer.py:6081
+msgid "-- No matches found --"
+msgstr "-- No se encontraron coincidencias --"
+
+#: ../system-config-printer.py:6295
+msgid " (recommended)"
+msgstr "(recomendado)"
+
+#: ../system-config-printer.py:6320
+msgid "This PPD is generated by foomatic."
+msgstr "Este PPD es generado por foomatic."
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.py:6345
+msgid "OpenPrinting"
+msgstr "OpenPrinting"
+
+#: ../system-config-printer.py:6356
+msgid "Distributable"
+msgstr "Distribuible"
+
+#: ../system-config-printer.py:6397
+msgid ", "
+msgstr ", "
+
+#: ../system-config-printer.py:6402
+#, python-format
 msgid ""
-"AES was announced by National Institute of Standards and Technology (NIST) "
-"as U.S. FIPS PUB 197 (FIPS 197) on November 26, 2001 after a 5-year "
-"standardization process in which fifteen competing designs were presented "
-"and evaluated before Rijndael was selected as the most suitable (see "
-"Advanced Encryption Standard process for more details). It became effective "
-"as a standard May 26, 2002. It is available in many different encryption "
-"packages. AES is the first publicly accessible and open cipher approved by "
-"the NSA for top secret information (see Security of AES, below)."
-"<footnote><para>\"Advanced Encryption Standard.\" <emphasis>Wikipedia.</"
-"emphasis> 14 November 2009 <ulink url=\"http://en.wikipedia.org/wiki/"
-"Advanced_Encryption_Standard\">http://en.wikipedia.org/wiki/"
-"Advanced_Encryption_Standard</ulink></para></footnote>"
+"\n"
+"(%s)"
 msgstr ""
-"AES fué anunciado por el Instituto Nacional de Estandares y Tecnología "
-"(NIST) como U.S. FIPS PUB 197 (FIPS 1970 el 26 de Noviembre de 2001, despues "
-"de un proceso de estandarización de 5 años durante el cual quince diseños "
-"competidores fueron presentados y evaluados antes de que Rijndael fue "
-"seleccionado como el mas apropiado (ver proceso de Advanced  Encryption "
-"System para mas detalles). Fue considerado un estándar el 26 de Mayo de "
-"2002. Esta disponible en varios paquetes diferentes de encriptación. AES es "
-"el primer cifrado abierto y publicamente accesible  que es aprobado por la "
-"NSA para informacion altamente secreta (ver Seguridad  de AES, abajo). "
-"<footnote><para>\"Advanced Encryption Standard.\" <emphasis>Wikipedia.</"
-"emphasis> 14 November 2009 <ulink url=\"http://en.wikipedia.org/wiki/"
-"Advanced_Encryption_Standard\">http://en.wikipedia.org/wiki/"
-"Advanced_Encryption_Standard</ulink></para></footnote>"
+"\n"
+"(%s)"
 
-#. Tag: para
-#, fuzzy, no-c-format
+#: ../system-config-printer.py:6407
+msgid "No support contacts known"
+msgstr "No hay contactos de soporte conocidos"
+
+#: ../system-config-printer.py:6411
+#: ../system-config-printer.py:6424
+msgid "Not specified."
+msgstr "No especificado."
+
+#. Foomatic database problem of some sort.
+#: ../system-config-printer.py:6464
+msgid "Database error"
+msgstr "Error en la base de datos"
+
+#: ../system-config-printer.py:6465
+#, python-format
+msgid "The '%s' driver cannot be used with printer '%s %s'."
+msgstr "El controlador '%s' no se puede usar con la impresora '%s %s'."
+
+#. This printer references some XML that is not
+#. installed by default.  Point the user at the
+#. package they need to install.
+#: ../system-config-printer.py:6475
+#, python-format
+msgid "You will need to install the '%s' package in order to use this driver."
+msgstr "Necesitará instalar el paquete '%s' para poder usar este controlador."
+
+#. This error came from trying to open the PPD file.
+#: ../system-config-printer.py:6482
+msgid "PPD error"
+msgstr "Error del PPD"
+
+#: ../system-config-printer.py:6484
+msgid "Failed to read PPD file.  Possible reason follows:"
+msgstr "Falló la lectura del archivo PPD. Las posibles razones son:"
+
+#. Failed to get PPD downloaded from OpenPrinting XXX
+#: ../system-config-printer.py:6501
+msgid "Downloadable drivers"
+msgstr "Controladores descargables"
+
+#: ../system-config-printer.py:6502
+msgid "Failed to download PPD."
+msgstr "Falló al descargar el PPD."
+
+#: ../system-config-printer.py:6509
+msgid "fetching PPD"
+msgstr "obteniendo PPD"
+
+#: ../system-config-printer.py:6538
+#: ../system-config-printer.py:6576
+msgid "No Installable Options"
+msgstr "No hay Opciones Instalables"
+
+#: ../system-config-printer.py:6638
+#, python-format
+msgid "adding printer %s"
+msgstr "agregando impresora %s"
+
+#: ../system-config-printer.py:6815
+msgid "Would you like to print a test page?"
+msgstr "¿Desea imprimir una página de prueba?"
+
+#: ../system-config-printer.py:6876
+msgid "Install driver"
+msgstr "Instalar controlador"
+
+#: ../system-config-printer.py:6877
+#: ../troubleshoot/CheckPPDSanity.py:131
+#, python-format
+msgid "Printer '%s' requires the %s package but it is not currently installed."
+msgstr "La impresora '%s' necesita el paquete %s que no está instalado."
+
+#: ../system-config-printer.py:6893
+msgid "Missing driver"
+msgstr "Falta el controlador"
+
+#: ../system-config-printer.py:6894
+#, python-format
+msgid "Printer '%s' requires the '%s' program but it is not currently installed.  Please install it before using this printer."
+msgstr "La impresora '%s' necesita el paquete '%s' que no está instalado. Por favor, instálelo antes de usar esta impresora."
+
+#: ../ui/AboutDialog.glade.h:1
+msgid "A CUPS configuration tool."
+msgstr "Una herramienta de configuración de CUPS."
+
+#: ../ui/AboutDialog.glade.h:2
+msgid "Copyright &#xA9; 2006-2008 Red Hat, Inc."
+msgstr "Copyright &#xA9; 2006-2008 Red Hat, Inc."
+
+#: ../ui/AboutDialog.glade.h:3
 msgid ""
-"The Rijndael cipher was developed by two Belgian cryptographers, Joan Daemen "
-"and Vincent Rijmen, and submitted by them to the AES selection process. "
-"Rijndael (pronounced [rɛindaːl]) is a portmanteau of the names of the two "
-"inventors.<footnote><para>\"Advanced Encryption Standard.\" "
-"<emphasis>Wikipedia.</emphasis> 14 November 2009 <ulink url=\"http://en."
-"wikipedia.org/wiki/Advanced_Encryption_Standard\">http://en.wikipedia.org/"
-"wiki/Advanced_Encryption_Standard</ulink></para></footnote>"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
 msgstr ""
-"El cifrado Rijndael fue desarrollado por  dos criptógrafos Belgas, Joan "
-"Daemen y Vincent Rijmen, ellos lo enviaron al proceso de seleccion de AES. "
-"Rijndael (pronunciado [rɛindaːl]) es una contracción de los nombres de los "
-"dos inventores. footnote><para>\"Advanced Encryption Standard.\" "
-"<emphasis>Wikipedia.</emphasis> 14 November 2009 <ulink url=\"http://en."
-"wikipedia.org/wiki/Advanced_Encryption_Standard\">http://en.wikipedia.org/"
-"wiki/Advanced_Encryption_Standard</ulink></para></footnote>"
+"Este programa es software libre; puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General de GNU como fue publicada por la Fundación de Software Libre; ya sea en su versión 2 de la Licencia, o (a su opción) cualquier opción posterior.\n"
+"\n"
+"Este programa se distribuye con la esperanza que le sea útil, pero sin NINGUNA GARANTÍA; sin siquiera la garantía COMERCIAL explícita o AJUSTE A UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General de GNU para más detalles.\n"
+"\n"
+"Debe haber recibido una copia de la Licencia Pública General de GNU junto con este programa; sino, escriba a la Fundación de Software Libre, Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
 
-#. Tag: title
-#, no-c-format
-msgid "Data Encryption Standard - DES"
-msgstr "Data Encryption Standard - DES"
+#. TRANSLATORS: Replace this string with your names, one name per line.  Thank you very much for your effort on translating system-config-printer and all our other tools!
+#: ../ui/AboutDialog.glade.h:9
+msgid "translator-credits"
+msgstr "Domingo Becker <domingobecker@gmail.com>, 2006, 2007, 2008, 2009"
 
-#. Tag: para
-#, no-c-format
+#: ../ui/ConnectDialog.glade.h:1
+msgid "CUPS _server:"
+msgstr "_Servidor CUPS:"
+
+#: ../ui/ConnectDialog.glade.h:2
+msgid "Connect to CUPS server"
+msgstr "Conectar a un servidor CUPS"
+
+#: ../ui/ConnectDialog.glade.h:3
+msgid "Require _encryption"
+msgstr "Requerir _encriptado"
+
+#: ../ui/ConnectingDialog.glade.h:3
+msgid "<span weight=\"bold\" size=\"larger\">Connecting to CUPS server</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Conectando al servidor CUPS</span>"
+
+#: ../ui/ConnectingDialog.glade.h:4
+msgid "Connecting to CUPS server"
+msgstr "Conectar al servidor CUPS"
+
+#: ../ui/InstallDialog.glade.h:1
+msgid "_Install"
+msgstr "_Instalar"
+
+#: ../ui/JobsWindow.glade.h:1
+msgid "Show _completed jobs"
+msgstr "Mostrar trabajos _completados"
+
+#: ../ui/JobsWindow.glade.h:2
+msgid "_File"
+msgstr "_Archivo"
+
+#: ../ui/JobsWindow.glade.h:3
+msgid "_Job"
+msgstr "_Tarea"
+
+#: ../ui/JobsWindow.glade.h:4
+#: ../ui/PrintersWindow.glade.h:13
+msgid "_View"
+msgstr "_Ver"
+
+#: ../ui/NewPrinterName.glade.h:1
+msgid "Duplicate Printer"
+msgstr "Duplicar Impresora"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../ui/NewPrinterName.glade.h:2
+msgid "New name for the printer"
+msgstr "Nuevo nombre para la impresora"
+
+#: ../ui/NewPrinterWindow.glade.h:1
+msgid "<b>Authentication</b>"
+msgstr "<b>Autenticación</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:2
+msgid "<b>Description</b>"
+msgstr "<b>Descripción</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:3
+msgid "<b>Description</b> (optional)"
+msgstr "<b>Descripción</b> (opcional)"
+
+#: ../ui/NewPrinterWindow.glade.h:4
+msgid "<b>Enter device URI</b>"
+msgstr "<b>Ingrese el URI del Dispositivo</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:5
+msgid "<b>IPP Printer</b>"
+msgstr "<b>Impresora IPP</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:6
+msgid "<b>License Terms</b>"
+msgstr "<b>Términos de la Licencia</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:7
+msgid "<b>Location of the LPD network printer</b>"
+msgstr "<b>Ubicación de la impresora de red LPD</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:8
+msgid "<b>Location of the network printer</b>"
+msgstr "<b>Ubicación de la impresora de red</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:9
+msgid "<b>Location</b> (optional)"
+msgstr "<b>Ubicación</b> (opcional)"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../ui/NewPrinterWindow.glade.h:10
+msgid "<b>Network Printer</b>"
+msgstr "<b>Impresora de red</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:11
+msgid "<b>Note</b>"
+msgstr "<b>Nota</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:12
+msgid "<b>Output Quality</b>"
+msgstr "<b>Calidad de salida</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:13
+msgid "<b>Printer Name</b>"
+msgstr "<b>Nombre de Impresora</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:14
+msgid "<b>SMB Printer</b>"
+msgstr "<b>Impresora SMB</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:15
+msgid "<b>Select Driver</b>"
+msgstr "<b>Seleccione Controlador</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:16
+msgid "<b>Settings of the serial port</b>"
+msgstr "<b>Configuración del puerto serie</b>"
+
+#: ../ui/NewPrinterWindow.glade.h:17
+msgid "<i>smb://[workgroup/]server[:port]/printer</i>"
+msgstr "<i>smb://[grupo_trabajo/]servidor[:puerto]/impresora</i>"
+
+#: ../ui/NewPrinterWindow.glade.h:18
+msgid "<span weight=\"bold\" size=\"larger\">Choose Class Members</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Elija los Miembros de la Clase</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:19
+msgid "<span weight=\"bold\" size=\"larger\">Choose Driver</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Elija un Controlador</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:20
+msgid "<span weight=\"bold\" size=\"larger\">Describe Printer</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Describa la Impresora</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:21
+msgid "<span weight=\"bold\" size=\"larger\">Existing Settings</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Configuración Existente</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:22
+msgid "<span weight=\"bold\" size=\"larger\">Installable Options</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Opciones Instalables</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:23
+msgid "<span weight=\"bold\" size=\"larger\">Select Device</span>"
+msgstr "<span weight=\"bold\" size=\"larger\">Seleccione Dispositivo</span>"
+
+#: ../ui/NewPrinterWindow.glade.h:24
+msgid "Baud Rate"
+msgstr "Tasa de Baudios"
+
+#: ../ui/NewPrinterWindow.glade.h:25
+msgid "Browse..."
+msgstr "Navegar..."
+
+# ../util/printconf_tui.py:1002
+# ../util/printconf_tui.py:1053
+# ../util/printconf_tui.py:1050
+#: ../ui/NewPrinterWindow.glade.h:26
+msgid "Change PPD"
+msgstr "Modificar PPD"
+
+#: ../ui/NewPrinterWindow.glade.h:27
+msgid "Class Members"
+msgstr "Miembros de la clase"
+
+#: ../ui/NewPrinterWindow.glade.h:28
+msgid "Comments..."
+msgstr "Comentarios..."
+
+#: ../ui/NewPrinterWindow.glade.h:29
+msgid "Connection"
+msgstr "Conexión"
+
+#: ../ui/NewPrinterWindow.glade.h:30
+msgid "Data Bits"
+msgstr "Bits de Datos"
+
+#: ../ui/NewPrinterWindow.glade.h:31
+#: ../ui/PrinterPropertiesDialog.glade.h:29
+msgid "Description:"
+msgstr "Descripción:"
+
+# ../gui/printconf-gui.glade.str:76 ../util/printconf_tui.py:361
+# ../gui/printconf-gui.glade.str:82 ../util/printconf_tui.py:383
+# ../gui/printconf-gui.glade.str:82 ../util/printconf_tui.py:376
+#: ../ui/NewPrinterWindow.glade.h:32
+msgid "Device"
+msgstr "Dispositivo"
+
+#: ../ui/NewPrinterWindow.glade.h:33
+#: ../troubleshoot/DeviceListed.py:40
+msgid "Device URI"
+msgstr "URI del Dispositivo"
+
+#: ../ui/NewPrinterWindow.glade.h:34
+msgid "Device description."
+msgstr "Descripción del dispositivo."
+
+#: ../ui/NewPrinterWindow.glade.h:35
+msgid "DirectJet"
+msgstr "DirectJet"
+
+# ../gui/printconf-gui.glade.str:79
+# ../gui/printconf-gui.glade.str:85 ../util/printconf_tui.py:812
+# ../gui/printconf-gui.glade.str:85 ../util/printconf_tui.py:805
+#: ../ui/NewPrinterWindow.glade.h:37
+msgid "Driver details"
+msgstr "Detalles del controlador"
+
+#: ../ui/NewPrinterWindow.glade.h:38
+msgid "Empty"
+msgstr "Vacío"
+
+#: ../ui/NewPrinterWindow.glade.h:39
+msgid "Flow Control"
+msgstr "Control de Flujo"
+
+#: ../ui/NewPrinterWindow.glade.h:40
+msgid "For the printer you have selected there are drivers available for download."
+msgstr "Para la impresora que ha seleccionado hay controladores disponibles para descargar."
+
+#: ../ui/NewPrinterWindow.glade.h:41
+msgid "Free software"
+msgstr "Software libre"
+
+#: ../ui/NewPrinterWindow.glade.h:42
+msgid "Graphics:"
+msgstr "Gráficos:"
+
+#: ../ui/NewPrinterWindow.glade.h:43
+msgid "Host:"
+msgstr "Equipo:"
+
+#: ../ui/NewPrinterWindow.glade.h:44
+msgid "Human-readable description such as \"HP LaserJet with Duplexer\""
+msgstr "Descripción legible para humanos tal como \"HP LaserJet con Duplex\""
+
+#: ../ui/NewPrinterWindow.glade.h:45
+msgid "Human-readable location such as \"Lab 1\""
+msgstr "Ubicación legible al humano tal como \"Lab 1\""
+
+#: ../ui/NewPrinterWindow.glade.h:47
+#: ../ui/PrinterPropertiesDialog.glade.h:39
+msgid "Installed Options"
+msgstr "Opciones Instaladas"
+
+#: ../ui/NewPrinterWindow.glade.h:48
+msgid "LPD"
+msgstr "LPD"
+
+#: ../ui/NewPrinterWindow.glade.h:49
+msgid "License:"
+msgstr "Licencia:"
+
+#: ../ui/NewPrinterWindow.glade.h:50
+msgid "Line art:"
+msgstr "Arte lineal:"
+
+# ../gui/printconf-gui.glade.str:126
+# ../gui/printconf-gui.glade.str:138
+# ../gui/printconf-gui.glade.str:138
+#: ../ui/NewPrinterWindow.glade.h:51
+msgid "Local Driver"
+msgstr "Controlador Local"
+
+#: ../ui/NewPrinterWindow.glade.h:52
+msgid "Make and model:"
+msgstr "Marca y modelo:"
+
+#: ../ui/NewPrinterWindow.glade.h:53
+msgid "Manufacturer"
+msgstr "Fabricante"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../ui/NewPrinterWindow.glade.h:55
+msgid "Network"
+msgstr "Red"
+
+#: ../ui/NewPrinterWindow.glade.h:58
+msgid "No, I do not accept this license"
+msgstr "No, no acepto esta licencia"
+
+#: ../ui/NewPrinterWindow.glade.h:59
+msgid "Parity"
+msgstr "Paridad"
+
+#: ../ui/NewPrinterWindow.glade.h:61
+msgid "Patented algorithms"
+msgstr "Algoritmos patentados"
+
+#: ../ui/NewPrinterWindow.glade.h:62
+msgid "Photo:"
+msgstr "Foto:"
+
+#: ../ui/NewPrinterWindow.glade.h:63
+msgid "Port number:"
+msgstr "Número de puerto:"
+
+#: ../ui/NewPrinterWindow.glade.h:64
+msgid "PostScript Printer Description (PPD) files can often be found on the driver disk that comes with the printer. For PostScript printers they are often part of the Windows<sup>&#xAE;</sup> driver."
+msgstr "Los archivos de Descripción de Impresora PostScript (PPD) se pueden encontrar a menudo en el disco de controladores que viene con la impresora. Para las impresoras PostScript son a menudo parte del controlador para Windows<sup>&#xAE;</sup>."
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../ui/NewPrinterWindow.glade.h:65
+msgid "Printer model:"
+msgstr "Modelo de impresora:"
+
+#: ../ui/NewPrinterWindow.glade.h:66
+msgid "Probe"
+msgstr "Probar"
+
+#: ../ui/NewPrinterWindow.glade.h:67
+msgid "Prompt user if authentication is required"
+msgstr "Preguntar al usuario si se pedirá autenticación"
+
+#: ../ui/NewPrinterWindow.glade.h:68
+msgid "Provide PPD file"
+msgstr "Proveer archivo PPD"
+
+#: ../ui/NewPrinterWindow.glade.h:69
+msgid "Queue:"
+msgstr "Cola:"
+
+#: ../ui/NewPrinterWindow.glade.h:70
+msgid "SCSI"
+msgstr "SCSI"
+
+#: ../ui/NewPrinterWindow.glade.h:71
+msgid "SMB"
+msgstr "SMB"
+
+#: ../ui/NewPrinterWindow.glade.h:72
+msgid "Search for a printer driver to download"
+msgstr "Buscar un controlador de impresora para descargar"
+
+#: ../ui/NewPrinterWindow.glade.h:73
+msgid "Searching..."
+msgstr "Buscando…"
+
+#: ../ui/NewPrinterWindow.glade.h:74
+msgid "Select printer from database"
+msgstr "Seleccionar impresora desde la base de datos"
+
+#: ../ui/NewPrinterWindow.glade.h:75
+msgid "Serial"
+msgstr "Serie"
+
+#: ../ui/NewPrinterWindow.glade.h:76
+msgid "Set authentication details now"
+msgstr "Poner los detalles de la autenticación ahora"
+
+#: ../ui/NewPrinterWindow.glade.h:77
+msgid "Short name for this printer such as \"laserjet\""
+msgstr "Nombre corto para esta impresora, ejemplo \"laserjet\""
+
+#: ../ui/NewPrinterWindow.glade.h:78
+msgid "Supplier:"
+msgstr "Proveedor:"
+
+#: ../ui/NewPrinterWindow.glade.h:79
+msgid "Support:"
+msgstr "Soporte:"
+
+#: ../ui/NewPrinterWindow.glade.h:80
+msgid "Text:"
+msgstr "Texto:"
+
+#: ../ui/NewPrinterWindow.glade.h:81
+msgid "The foomatic printer database contains various manufacturer provided PostScript Printer Description (PPD) files and also can generate PPD files for a large number of (non PostScript) printers. But in general manufacturer provided PPD files provide better access to the specific features of the printer."
+msgstr "La base de datos de impresora foomatic contiene varios archivos de Descripción de Impresora PostScript (PPD en inglés) provistos por los fabricantes, y puede generar archivos PPD para un gran número de impresora (no PostScript). Pero, en general, los archivos PPD provistos por los fabricantes dan un mejor acceso a las características específicas de las impresoras."
+
+#: ../ui/NewPrinterWindow.glade.h:82
+msgid "These drivers do not come from your operating system supplier and will not be covered by their commercial support.  See the support and license terms of the driver's supplier."
+msgstr "Estos controladores no vienen desde el proveedor de su sistema operativo y no serán cubiertos por su soporte comercial. Vea los términos de la licencia y soporte del proveedor del controlador."
+
+#: ../ui/NewPrinterWindow.glade.h:83
+msgid "This driver supports additional hardware that may be installed in the printer."
+msgstr "Este controlador provee soporte para hardware adicional y se puede instalar en la impresora."
+
+#: ../ui/NewPrinterWindow.glade.h:84
+msgid "This is done by assuming that options with the same name do have the same meaning. Settings of options that are not present in the new PPD will be lost and options only present in the new PPD will be set to default."
+msgstr "Esto se realiza asumiendo que las opciones con el mismo nombre tienen exactamente el mismo significado. Los valores configurados para las opciones que no están presente en el nuevo archivo PPD se perderán y las opciones que solamente se encuentren presente en el nuevo archivo PPD se configurarán con valores por defecto."
+
+#: ../ui/NewPrinterWindow.glade.h:85
+msgid "This way all current option settings will be lost. The default settings of the new PPD will be used. "
+msgstr "De esta manera todas las opciones actualmente configuradas se perderán. Se usarán los valores por defecto del archivo PPD nuevo."
+
+#: ../ui/NewPrinterWindow.glade.h:86
+msgid "Try to copy the option settings over from the old PPD. "
+msgstr "Intente copiar los valores de configuración desde el viejo archivo PPD."
+
+#: ../ui/NewPrinterWindow.glade.h:87
+msgid "Try to transfer the current settings"
+msgstr "Intentar transferir las configuraciones actuales"
+
+#: ../ui/NewPrinterWindow.glade.h:88
+msgid "URI:"
+msgstr "URI:"
+
+#: ../ui/NewPrinterWindow.glade.h:90
+msgid "Use the new PPD (Postscript Printer Description) as is."
+msgstr "Usar el archivo PPD nuevo como está (PPD es PostScript Printer Description)."
+
+#: ../ui/NewPrinterWindow.glade.h:92
+msgid "With this choice no driver download will be performed. In the next steps a locally installed driver will be selected."
+msgstr "Con esta selección, no se descargarán controladores. En los siguientes pasos, se seleccionará un controlador instalado localmente."
+
+#: ../ui/NewPrinterWindow.glade.h:93
+msgid "Yes, I accept this license"
+msgstr "Si, acepto esta licencia"
+
+#: ../ui/NewPrinterWindow.glade.h:94
+msgid "_Search"
+msgstr "_Buscar"
+
+#: ../ui/NewPrinterWindow.glade.h:95
+msgid "_Verify..."
+msgstr "_Verificar..."
+
+#: ../ui/NewPrinterWindow.glade.h:96
+msgid "license"
+msgstr "licencia"
+
+#: ../ui/NewPrinterWindow.glade.h:97
+#: ../ui/PrinterPropertiesDialog.glade.h:78
+msgid "move left"
+msgstr "moverse a la izquierda"
+
+#: ../ui/NewPrinterWindow.glade.h:98
+#: ../ui/PrinterPropertiesDialog.glade.h:79
+msgid "move right"
+msgstr "moverse a la derecha"
+
+#: ../ui/NewPrinterWindow.glade.h:99
+msgid "short description"
+msgstr "descripción breve"
+
+#: ../ui/NewPrinterWindow.glade.h:100
+msgid "supplier"
+msgstr "proveedor"
+
+#: ../ui/NewPrinterWindow.glade.h:101
+msgid "support contacts"
+msgstr "contactos de soporte"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../ui/PrinterPropertiesDialog.glade.h:2
+msgid "<b>Banner</b>"
+msgstr "<b>Mensaje</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:3
+msgid "<b>Common Options</b>"
+msgstr "<b>Opciones Comúnes</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:4
+msgid "<b>Image Options</b>"
+msgstr "<b>Opciones de Imágen</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:5
+msgid "<b>Ink/Toner Levels</b>"
+msgstr "<b>Niveles de tinta/toner</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:6
+msgid "<b>Other Options (Advanced)</b>"
+msgstr "<b>Otras Opciones (Avanzado)</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:7
+msgid "<b>Policies</b>"
+msgstr "<b>Políticas</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:8
+msgid "<b>Settings</b>"
+msgstr "<b>Configuración</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:9
+msgid "<b>State</b>"
+msgstr "<b>Estado</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:10
+msgid "<b>Status Messages</b>"
+msgstr "<b>Mensajes de Estado</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:11
+msgid "<b>Tests and Maintenance</b>"
+msgstr "<b>Pruebas y Mantenimiento</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:12
+msgid "<b>Text Options</b>"
+msgstr "<b>Opciones de Texto</b>"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:13
 msgid ""
-"The Data Encryption Standard (DES) is a block cipher (a form of shared "
-"secret encryption) that was selected by the National Bureau of Standards as "
-"an official Federal Information Processing Standard (FIPS) for the United "
-"States in 1976 and which has subsequently enjoyed widespread use "
-"internationally. It is based on a symmetric-key algorithm that uses a 56-bit "
-"key. The algorithm was initially controversial with classified design "
-"elements, a relatively short key length, and suspicions about a National "
-"Security Agency (NSA) backdoor. DES consequently came under intense academic "
-"scrutiny which motivated the modern understanding of block ciphers and their "
-"cryptanalysis.<footnote><para>\"Data Encryption Standard.\" "
-"<emphasis>Wikipedia.</emphasis> 14 November 2009 <ulink url=\"http://en."
-"wikipedia.org/wiki/Data_Encryption_Standard\">http://en.wikipedia.org/wiki/"
-"Data_Encryption_Standard</ulink></para></footnote>"
+"<i>Not published\n"
+"See server settings</i>"
 msgstr ""
+"<i>No publicada\n"
+"Vea la configuración del servidor</i>"
 
-#. Tag: title
-#, no-c-format
-msgid "DES Uses"
-msgstr "Usos de DES"
+#: ../ui/PrinterPropertiesDialog.glade.h:15
+msgid "Accepting jobs"
+msgstr "Aceptando trabajos"
 
-#. Tag: title
-#, no-c-format
-msgid "DES History"
-msgstr "Historia de DES"
+#: ../ui/PrinterPropertiesDialog.glade.h:16
+msgid "Access Control"
+msgstr "Control de Acceso"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"DES is now considered to be insecure for many applications. This is chiefly "
-"due to the 56-bit key size being too small; in January, 1999, distributed."
-"net and the Electronic Frontier Foundation collaborated to publicly break a "
-"DES key in 22 hours and 15 minutes (see chronology). There are also some "
-"analytical results which demonstrate theoretical weaknesses in the cipher, "
-"although they are unfeasible to mount in practice. The algorithm is believed "
-"to be practically secure in the form of Triple DES, although there are "
-"theoretical attacks. In recent years, the cipher has been superseded by the "
-"Advanced Encryption Standard (AES).<footnote><para>\"Data Encryption "
-"Standard.\" <emphasis>Wikipedia.</emphasis> 14 November 2009 <ulink url="
-"\"http://en.wikipedia.org/wiki/Data_Encryption_Standard\">http://en."
-"wikipedia.org/wiki/Data_Encryption_Standard</ulink></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:17
+msgid "Add or Remove Members"
+msgstr "Agregar o Eliminar Miembros"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"In some documentation, a distinction is made between DES as a standard and "
-"DES the algorithm which is referred to as the DEA (the Data Encryption "
-"Algorithm). When spoken, \"DES\" is either spelled out as an abbreviation (/"
-"ˌdiːˌiːˈɛs/), or pronounced as a one-syllable acronym (/ˈdɛz/)."
-"<footnote><para>\"Data Encryption Standard.\" <emphasis>Wikipedia.</"
-"emphasis> 14 November 2009 <ulink url=\"http://en.wikipedia.org/wiki/"
-"Data_Encryption_Standard\">http://en.wikipedia.org/wiki/"
-"Data_Encryption_Standard</ulink></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:18
+msgid "Allow printing for everyone except these users:"
+msgstr "Permitir la impresión a todos menos a estos usuarios:"
 
-#. Tag: title
-#, no-c-format
-msgid "Public-key Encryption"
-msgstr "Encriptado de Clave Pública"
+#: ../ui/PrinterPropertiesDialog.glade.h:19
+msgid "Bottom margin:"
+msgstr "Margen inferior:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"Public-key cryptography is a cryptographic approach, employed by many "
-"cryptographic algorithms and cryptosystems, whose distinguishing "
-"characteristic is the use of asymmetric key algorithms instead of or in "
-"addition to symmetric key algorithms. Using the techniques of public key-"
-"private key cryptography, many methods of protecting communications or "
-"authenticating messages formerly unknown have become practical. They do not "
-"require a secure initial exchange of one or more secret keys as is required "
-"when using symmetric key algorithms. It can also be used to create digital "
-"signatures.<footnote><para>\"Public-key Encryption.\" <emphasis>Wikipedia.</"
-"emphasis> 14 November 2009 <ulink url=\"http://en.wikipedia.org/wiki/Public-"
-"key_cryptography\">http://en.wikipedia.org/wiki/Public-key_cryptography</"
-"ulink></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:20
+msgid "Brightness:"
+msgstr "Brillo:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"Public key cryptography is a fundamental and widely used technology around "
-"the world, and is the approach which underlies such Internet standards as "
-"Transport Layer Security (TLS) (successor to SSL), PGP and GPG."
-"<footnote><para>\"Public-key Encryption.\" <emphasis>Wikipedia.</emphasis> "
-"14 November 2009 <ulink url=\"http://en.wikipedia.org/wiki/Public-"
-"key_cryptography\">http://en.wikipedia.org/wiki/Public-key_cryptography</"
-"ulink></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:21
+msgid "Change..."
+msgstr "Cambiar..."
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"The distinguishing technique used in public key cryptography is the use of "
-"asymmetric key algorithms, where the key used to encrypt a message is not "
-"the same as the key used to decrypt it. Each user has a pair of "
-"cryptographic keys — a public key and a private key. The private key is kept "
-"secret, whilst the public key may be widely distributed. Messages are "
-"encrypted with the recipient's public key and can only be decrypted with the "
-"corresponding private key. The keys are related mathematically, but the "
-"private key cannot be feasibly (ie, in actual or projected practice) derived "
-"from the public key. It was the discovery of such algorithms which "
-"revolutionized the practice of cryptography beginning in the middle 1970s."
-"<footnote><para>\"Public-key Encryption.\" <emphasis>Wikipedia.</emphasis> "
-"14 November 2009 <ulink url=\"http://en.wikipedia.org/wiki/Public-"
-"key_cryptography\">http://en.wikipedia.org/wiki/Public-key_cryptography</"
-"ulink></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:22
+msgid "Characters per inch:"
+msgstr "Caracteres por pulgada:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"In contrast, Symmetric-key algorithms, variations of which have been used "
-"for some thousands of years, use a single secret key shared by sender and "
-"receiver (which must also be kept private, thus accounting for the ambiguity "
-"of the common terminology) for both encryption and decryption. To use a "
-"symmetric encryption scheme, the sender and receiver must securely share a "
-"key in advance.<footnote><para>\"Public-key Encryption.\" "
-"<emphasis>Wikipedia.</emphasis> 14 November 2009 <ulink url=\"http://en."
-"wikipedia.org/wiki/Public-key_cryptography\">http://en.wikipedia.org/wiki/"
-"Public-key_cryptography</ulink></para></footnote>"
-msgstr ""
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:24
+msgid "Clean Print Heads"
+msgstr "Limpiar Cabezales de Impresión"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"Because symmetric key algorithms are nearly always much less computationally "
-"intensive, it is common to exchange a key using a key-exchange algorithm and "
-"transmit data using that key and a symmetric key algorithm. PGP, and the SSL/"
-"TLS family of schemes do this, for instance, and are called hybrid "
-"cryptosystems in consequence.<footnote><para>\"Public-key Encryption.\" "
-"<emphasis>Wikipedia.</emphasis> 14 November 2009 <ulink url=\"http://en."
-"wikipedia.org/wiki/Public-key_cryptography\">http://en.wikipedia.org/wiki/"
-"Public-key_cryptography</ulink></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:25
+msgid "Co_nflicts"
+msgstr "Co_nflictos"
 
-#. Tag: title
-#, no-c-format
-msgid "Diffie-Hellman"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:26
+msgid "Columns:"
+msgstr "Columnas:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"Diffie–Hellman key exchange (D–H) is a cryptographic protocol that allows "
-"two parties that have no prior knowledge of each other to jointly establish "
-"a shared secret key over an insecure communications channel. This key can "
-"then be used to encrypt subsequent communications using a symmetric key "
-"cipher.<footnote><para>\"Diffie-Hellman.\" <emphasis>Wikipedia.</emphasis> "
-"14 November 2009 <ulink url=\"http://en.wikipedia.org/wiki/Diffie-Hellman"
-"\">http://en.wikipedia.org/wiki/Diffie-Hellman</ulink></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:27
+msgid "Copies:"
+msgstr "Copias:"
 
-#. Tag: title
-#, no-c-format
-msgid "Diffie-Hellman History"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:28
+msgid "Deny printing for everyone except these users:"
+msgstr "Negar la impresión a todos menos a estos usuarios:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"The scheme was first published by Whitfield Diffie and Martin Hellman in "
-"1976, although it later emerged that it had been separately invented a few "
-"years earlier within GCHQ, the British signals intelligence agency, by "
-"Malcolm J. Williamson but was kept classified. In 2002, Hellman suggested "
-"the algorithm be called Diffie–Hellman–Merkle key exchange in recognition of "
-"Ralph Merkle's contribution to the invention of public-key cryptography "
-"(Hellman, 2002).<footnote><para>\"Diffie-Hellman.\" <emphasis>Wikipedia.</"
-"emphasis> 14 November 2009 <ulink url=\"http://en.wikipedia.org/wiki/Diffie-"
-"Hellman\">http://en.wikipedia.org/wiki/Diffie-Hellman</ulink></para></"
-"footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:30
+msgid "Device URI:"
+msgstr "URI del Dispositivo:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"Although Diffie–Hellman key agreement itself is an anonymous (non-"
-"authenticated) key-agreement protocol, it provides the basis for a variety "
-"of authenticated protocols, and is used to provide perfect forward secrecy "
-"in Transport Layer Security's ephemeral modes (referred to as EDH or DHE "
-"depending on the cipher suite).<footnote><para>\"Diffie-Hellman.\" "
-"<emphasis>Wikipedia.</emphasis> 14 November 2009 <ulink url=\"http://en."
-"wikipedia.org/wiki/Diffie-Hellman\">http://en.wikipedia.org/wiki/Diffie-"
-"Hellman</ulink></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:31
+msgid "Enabled"
+msgstr "Activado"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"U.S. Patent 4,200,770, now expired, describes the algorithm and credits "
-"Hellman, Diffie, and Merkle as inventors.<footnote><para>\"Diffie-Hellman.\" "
-"<emphasis>Wikipedia.</emphasis> 14 November 2009 <ulink url=\"http://en."
-"wikipedia.org/wiki/Diffie-Hellman\">http://en.wikipedia.org/wiki/Diffie-"
-"Hellman</ulink></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:32
+msgid "Ending Banner:"
+msgstr "Mensaje de Finalización:"
 
-#. Tag: title
-#, no-c-format
-msgid "RSA"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:33
+msgid "Error Policy: \t"
+msgstr "Política de error: \t"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"In cryptography, RSA (which stands for Rivest, Shamir and Adleman who first "
-"publicly described it; see below) is an algorithm for public-key "
-"cryptography. It is the first algorithm known to be suitable for signing as "
-"well as encryption, and was one of the first great advances in public key "
-"cryptography. RSA is widely used in electronic commerce protocols, and is "
-"believed to be secure given sufficiently long keys and the use of up-to-date "
-"implementations.<footnote><para>\"RSA\" <emphasis>Wikipedia</emphasis> 14 "
-"April 2010 <ulink url=\"http://en.wikipedia.org/wiki/RSA\" /></para></"
-"footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:34
+msgid "Finishings:"
+msgstr "Terminados:"
 
-#. Tag: title
-#, no-c-format
-msgid "DSA"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:35
+msgid "Gamma:"
+msgstr "Gama:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"The Digital Signature Algorithm (DSA) is a United States Federal Government "
-"standard or FIPS for digital signatures. It was proposed by the National "
-"Institute of Standards and Technology (NIST) in August 1991 for use in their "
-"Digital Signature Standard (DSS), specified in FIPS 186, adopted in 1993. A "
-"minor revision was issued in 1996 as FIPS 186-1. The standard was expanded "
-"further in 2000 as FIPS 186-2 and again in 2009 as FIPS 186-3."
-"<footnote><para>\"Digital Signature Algorithm\" <emphasis>Wikipedia</"
-"emphasis> 14 April 2010 <ulink url=\"http://en.wikipedia.org/wiki/"
-"Digital_Signature_Algorithm\" /></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:36
+msgid "Hold until:"
+msgstr "Retener hasta:"
 
-#. Tag: title
-#, no-c-format
-msgid "SSL/TLS"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:37
+msgid "Hue adjustment:"
+msgstr "Ajuste de graduación de color:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"Transport Layer Security (TLS) and its predecessor, Secure Socket Layer "
-"(SSL), are cryptographic protocols that provide security for communications "
-"over networks such as the Internet. TLS and SSL encrypt the segments of "
-"network connections at the Transport Layer end-to-end. Several versions of "
-"the protocols are in widespread use in applications like web browsing, "
-"electronic mail, Internet faxing, instant messaging and voice-over-IP "
-"(VoIP). TLS is an IETF standards track protocol, last updated in RFC 5246, "
-"that was based on the earlier SSL specifications developed by Netscape "
-"Corporation."
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:38
+msgid "Ink/Toner Levels"
+msgstr "Niveles de tinta/toner"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"The TLS protocol allows client/server applications to communicate across a "
-"network in a way designed to prevent eavesdropping and tampering. TLS "
-"provides endpoint authentication and communications confidentiality over the "
-"Internet using cryptography. TLS provides RSA security with 1024 and 2048 "
-"bit strengths."
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:40
+msgid "Job Options"
+msgstr "Opciones de Trabajo"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"In typical end-user/browser usage, TLS authentication is unilateral: only "
-"the server is authenticated (the client knows the server's identity), but "
-"not vice versa (the client remains unauthenticated or anonymous)."
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:41
+msgid "Job priority:"
+msgstr "Prioridad del trabajo:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"TLS also supports the more secure bilateral connection mode (typically used "
-"in enterprise applications), in which both ends of the \"conversation\" can "
-"be assured with whom they are communicating (provided they diligently "
-"scrutinize the identity information in the other party's certificate). This "
-"is known as mutual authentication, or 2SSL. Mutual authentication requires "
-"that the TLS client-side also hold a certificate (which is not usually the "
-"case in the end-user/browser scenario). Unless, that is, TLS-PSK, the Secure "
-"Remote Password (SRP) protocol, or some other protocol is used that can "
-"provide strong mutual authentication in the absence of certificates."
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:42
+msgid "Left margin:"
+msgstr "Margen izquierdo:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"Typically, the key information and certificates necessary for TLS are "
-"handled in the form of X.509 certificates, which define required fields and "
-"data formats."
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:43
+msgid "Lines per inch:"
+msgstr "Líneas por pulgada:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"SSL operates in modular fashion. It is extensible by design, with support "
-"for forward and backward compatibility and negotiation between peers."
-"<footnote><para>\"Transport Layer Security\" <emphasis>Wikipedia</emphasis> "
-"14 April 2010 <ulink url=\"http://en.wikipedia.org/wiki/"
-"Transport_Layer_Security\" /></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:44
+msgid "Location:"
+msgstr "Ubicación:"
 
-#. Tag: title
-#, no-c-format
-msgid "Cramer-Shoup Cryptosystem"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:45
+msgid "Make and Model:"
+msgstr "Hacer y Modelar:"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"The Cramer–Shoup system is an asymmetric key encryption algorithm, and was "
-"the first efficient scheme proven to be secure against adaptive chosen "
-"ciphertext attack using standard cryptographic assumptions. Its security is "
-"based on the computational intractability (widely assumed, but not proved) "
-"of the decisional Diffie–Hellman assumption. Developed by Ronald Cramer and "
-"Victor Shoup in 1998, it is an extension of the Elgamal cryptosystem. In "
-"contrast to Elgamal, which is extremely malleable, Cramer–Shoup adds "
-"additional elements to ensure non-malleability even against a resourceful "
-"attacker. This non-malleability is achieved through the use of a collision-"
-"resistant hash function and additional computations, resulting in a "
-"ciphertext which is twice as large as in Elgamal.<footnote><para>\"Cramer–"
-"Shoup cryptosystem\" <emphasis>Wikipedia</emphasis> 14 April 2010 <ulink url="
-"\"http://en.wikipedia.org/wiki/Cramer-Shoup_cryptosystem\" /></para></"
-"footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:46
+msgid "Media:"
+msgstr "Medio:"
 
-#. Tag: title
-#, fuzzy, no-c-format
-msgid "ElGamal Encryption"
-msgstr "Encriptación"
+#: ../ui/PrinterPropertiesDialog.glade.h:47
+msgid "Members"
+msgstr "Miembros"
 
-#. Tag: para
-#, no-c-format
-msgid ""
-"In cryptography, the ElGamal encryption system is an asymmetric key "
-"encryption algorithm for public-key cryptography which is based on the "
-"Diffie-Hellman key agreement. It was described by Taher Elgamal in 1985.[1] "
-"ElGamal encryption is used in the free GNU Privacy Guard software, recent "
-"versions of PGP, and other cryptosystems. The Digital Signature Algorithm is "
-"a variant of the ElGamal signature scheme, which should not be confused with "
-"ElGamal encryption.<footnote><para>\"ElGamal encryption\" "
-"<emphasis>Wikipedia</emphasis> 14 April 2010 <ulink url=\"http://en."
-"wikipedia.org/wiki/ElGamal_encryption\" /></para></footnote>"
-msgstr ""
+#: ../ui/PrinterPropertiesDialog.glade.h:48
+msgid "Mirror"
+msgstr "Espejo"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:49
+msgid "More"
+msgstr "Más"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:50
+msgid "Operation Policy:"
+msgstr "Política de Operación:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:51
+msgid "Orientation:"
+msgstr "Orientación:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:52
+msgid "Output order:"
+msgstr "Orden de salida:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:53
+msgid "Pages per side layout:"
+msgstr "Páginas por cara de diseño:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:54
+msgid "Pages per side:"
+msgstr "Páginas por cara:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:55
+msgid "Policies"
+msgstr "Políticas"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:56
+msgid "Pretty print"
+msgstr "Impresión moderada"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:58
+msgid "Print Self-Test Page"
+msgstr "Imprimir Página de Auto-Prueba"
+
+#. Not more than 25 characters
+#: ../ui/PrinterPropertiesDialog.glade.h:60
+#: ../troubleshoot/PrintTestPage.py:73
+msgid "Print Test Page"
+msgstr "Imprimir Página de Prueba"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:62
+msgid "Printer Properties"
+msgstr "Propiedades de la Impresora"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:63
+msgid "Printer State:"
+msgstr "Estado de la Impresora:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:64
+msgid "Reset"
+msgstr "Resetear"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:65
+msgid "Right margin:"
+msgstr "Márgen derecho:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:66
+msgid "Saturation:"
+msgstr "Saturación"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:67
+msgid "Scale to fit"
+msgstr "Escalar para ajustar"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:68
+msgid "Scaling:"
+msgstr "Escala:"
+
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#: ../ui/PrinterPropertiesDialog.glade.h:69
+msgid "Settings"
+msgstr "Configuración"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:70
+msgid "Shared"
+msgstr "Compartido"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:71
+msgid "Sides:"
+msgstr "Lados:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:72
+msgid "Specify the default job options for this printer.  Jobs arriving at this print server will have these options added if they are not already set by the application."
+msgstr "Especifique las opciones por defecto del trabajo para esta impresora. Los trabajos que lleguen a este servidor de impresión tendrán estas opciones si es que no vinieron configuradas por la aplicación."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:73
+msgid "Starting Banner:"
+msgstr "Mensaje de inicio:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:74
+msgid "There are no status messages for this printer."
+msgstr "No hay mensajes de estado para esta impresora."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:75
+msgid "To add a new option, enter its name in the box below and click to add."
+msgstr "Para agregar una opción nueva, ingrese su nombre en la casilla abajo y haga clic en agregar."
+
+#: ../ui/PrinterPropertiesDialog.glade.h:76
+msgid "Top margin:"
+msgstr "Márgen superior:"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:77
+msgid "Word wrap"
+msgstr "Ajuste de línea"
+
+#: ../ui/PrinterPropertiesDialog.glade.h:80
+msgid "points"
+msgstr "puntos"
+
+# ../util/printconf_tui.py:508 ../util/printconf_tui.py:566
+# ../util/printconf_tui.py:1147 ../util/printconf_tui.py:1206
+# ../util/printconf_tui.py:538 ../util/printconf_tui.py:596
+# ../util/printconf_tui.py:1198 ../util/printconf_tui.py:1257
+# ../util/printconf_tui.py:533 ../util/printconf_tui.py:591
+# ../util/printconf_tui.py:1195 ../util/printconf_tui.py:1254
+#: ../ui/PrinterPropertiesDialog.glade.h:81
+msgid "user"
+msgstr "usuario"
+
+#: ../ui/PrintersWindow.glade.h:1
+msgid "System-Config-Printer"
+msgstr "Sistema-Configurar-Impresora"
+
+#: ../ui/PrintersWindow.glade.h:2
+msgid "_Class"
+msgstr "_Clase"
+
+#: ../ui/PrintersWindow.glade.h:3
+msgid "_Connect..."
+msgstr "_Conectar..."
+
+#: ../ui/PrintersWindow.glade.h:4
+msgid "_Discovered Printers"
+msgstr "Impresoras _Descubiertas"
+
+#: ../ui/PrintersWindow.glade.h:5
+msgid "_Group"
+msgstr "A_grupar"
+
+#: ../ui/PrintersWindow.glade.h:6
+msgid "_Groups"
+msgstr "_Grupos"
+
+#: ../ui/PrintersWindow.glade.h:7
+msgid "_Help"
+msgstr "Ay_uda"
+
+#: ../ui/PrintersWindow.glade.h:8
+msgid "_New"
+msgstr "_Nuevo"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../ui/PrintersWindow.glade.h:9
+msgid "_Printer"
+msgstr "_Impresora"
+
+#: ../ui/PrintersWindow.glade.h:10
+msgid "_Server"
+msgstr "_Servidor"
+
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#: ../ui/PrintersWindow.glade.h:11
+msgid "_Settings"
+msgstr "_Configuraciones"
+
+#: ../ui/PrintersWindow.glade.h:12
+msgid "_Troubleshoot"
+msgstr "_Resolver problemas"
+
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#: ../ui/ServerSettingsDialog.glade.h:1
+msgid "<b>Basic Server Settings</b>"
+msgstr "<b>Opciones Básicas del Servidor</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:2
+msgid "<b>Browse servers</b>"
+msgstr "<b>Navegar Servidores</b>"
+
+#: ../ui/ServerSettingsDialog.glade.h:3
+msgid "<b>Job history</b>"
+msgstr "<b>Historial de Trabajos</b>"
+
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#: ../ui/ServerSettingsDialog.glade.h:4
+msgid "Advanced Server Settings"
+msgstr "Opciones Avanzadas del Servidor"
+
+#: ../ui/ServerSettingsDialog.glade.h:5
+msgid "Allow _remote administration"
+msgstr "Permitir la administración _remota"
+
+#: ../ui/ServerSettingsDialog.glade.h:6
+msgid "Allow _users to cancel any job (not just their own)"
+msgstr "Permitir que los _usuarios cancelen cualquier trabajo (no solamente el suyo)"
+
+#: ../ui/ServerSettingsDialog.glade.h:7
+msgid "Allow printing from the _Internet"
+msgstr "Permitir la impresión desde _Internet"
+
+#: ../ui/ServerSettingsDialog.glade.h:8
+msgid "Do not preserve job history"
+msgstr "No guardar la historia de trabajos"
+
+#: ../ui/ServerSettingsDialog.glade.h:9
+msgid "Preserve job files (allow reprinting)"
+msgstr "Guardar los archivos de trabajo (lo que permite reimprimir)"
+
+#: ../ui/ServerSettingsDialog.glade.h:10
+msgid "Preserve job history but not files"
+msgstr "Guardar la historia pero no los archivos"
+
+#: ../ui/ServerSettingsDialog.glade.h:11
+msgid "Save _debugging information for troubleshooting"
+msgstr "Guardar información de _depuración para tratamiento de problemas"
+
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#: ../ui/ServerSettingsDialog.glade.h:12
+msgid "Server Settings"
+msgstr "Opciones del Servidor"
+
+#: ../ui/ServerSettingsDialog.glade.h:13
+msgid "Usually print servers broadcast their queues. Specify print servers below to periodically ask for queues instead."
+msgstr "Normalmente los servidores de impresión dan a conocer sus colas de impresión. Especifique abajo los servidores de impresión a los que periódicamente se les preguntará sobre la cola de impresión."
+
+#: ../ui/ServerSettingsDialog.glade.h:14
+msgid "_Publish shared printers connected to this system"
+msgstr "_Publicar impresoras compartidas conectadas a este sistema"
+
+#: ../ui/ServerSettingsDialog.glade.h:15
+msgid "_Show printers shared by other systems"
+msgstr "Mostrar impresoras compartidas por otros _sistemas"
+
+#: ../ui/SMBBrowseDialog.glade.h:1
+msgid "SMB Browser"
+msgstr "Navegador SMB"
+
+#: ../ui/statusicon_popupmenu.glade.h:1
+msgid "_Configure Printers"
+msgstr "_Configurar impresoras"
+
+#: ../ui/statusicon_popupmenu.glade.h:2
+msgid "_Hide"
+msgstr "_Ocultar"
+
+#: ../ui/WaitWindow.glade.h:1
+msgid "Please Wait"
+msgstr "Por favor, Espere"
+
+#: ../system-config-printer.desktop.in.h:1
+msgid "Configure printers"
+msgstr "Configurar impresoras"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../system-config-printer.desktop.in.h:2
+msgid "Printing"
+msgstr "Imprimiendo"
+
+#: ../statereason.py:94
+msgid "Toner low"
+msgstr "Toner bajo"
+
+#: ../statereason.py:95
+#, python-format
+msgid "Printer '%s' is low on toner."
+msgstr "La impresora '%s' tiene el toner bajo."
+
+#: ../statereason.py:96
+msgid "Toner empty"
+msgstr "Toner vacío"
+
+#: ../statereason.py:97
+#, python-format
+msgid "Printer '%s' has no toner left."
+msgstr "La impresora '%s' no tiene toner."
+
+#: ../statereason.py:98
+msgid "Cover open"
+msgstr "La tapa está abierta"
+
+#: ../statereason.py:99
+#, python-format
+msgid "The cover is open on printer '%s'."
+msgstr "La tapa de la impresora '%s' está abierta."
+
+#: ../statereason.py:100
+msgid "Door open"
+msgstr "Puerta abierta"
+
+#: ../statereason.py:101
+#, python-format
+msgid "The door is open on printer '%s'."
+msgstr "La puerta de la impresora '%s' está abierta."
+
+#: ../statereason.py:102
+msgid "Paper low"
+msgstr "Papel bajo"
+
+#: ../statereason.py:103
+#, python-format
+msgid "Printer '%s' is low on paper."
+msgstr "La impresora '%s' se está quedando sin papel."
+
+#: ../statereason.py:104
+msgid "Out of paper"
+msgstr "Sin papel"
+
+#: ../statereason.py:105
+#, python-format
+msgid "Printer '%s' is out of paper."
+msgstr "La impresora '%s' no tiene papel."
+
+#: ../statereason.py:106
+msgid "Ink low"
+msgstr "Tinta baja"
+
+#: ../statereason.py:107
+#, python-format
+msgid "Printer '%s' is low on ink."
+msgstr "La impresora '%s' tiene poca tinta."
+
+#: ../statereason.py:108
+msgid "Ink empty"
+msgstr "Tinta vacía"
+
+#: ../statereason.py:109
+#, python-format
+msgid "Printer '%s' has no ink left."
+msgstr "La impresora '%s' ya no tiene tinta."
+
+#: ../statereason.py:110
+msgid "Printer off-line"
+msgstr "Impresora fuera de línea"
+
+#: ../statereason.py:111
+#, python-format
+msgid "Printer '%s' is currently off-line."
+msgstr "La impresora '%s' está actualmente fuera de línea."
+
+#: ../statereason.py:112
+msgid "Not connected?"
+msgstr "¿No conectada?"
+
+#: ../statereason.py:113
+#, python-format
+msgid "Printer '%s' may not be connected."
+msgstr "La impresora '%s' puede estar desconectada."
+
+#: ../statereason.py:114
+#: ../statereason.py:134
+msgid "Printer error"
+msgstr "Error de la impresora"
+
+#: ../statereason.py:115
+#, python-format
+msgid "There is a problem on printer '%s'."
+msgstr "Hay un problema con la impresora '%s'."
+
+#: ../statereason.py:117
+msgid "Printer configuration error"
+msgstr "Error en configuración de impresora"
+
+#: ../statereason.py:118
+#, python-format
+msgid "There is a missing print filter for printer '%s'."
+msgstr "Falta un filtro de impresión para la impresora '%s'."
+
+#: ../statereason.py:130
+msgid "Printer report"
+msgstr "Informe de la Impresora"
+
+#: ../statereason.py:132
+msgid "Printer warning"
+msgstr "Advertencia de la Impresora"
+
+#: ../statereason.py:159
+#, python-format
+msgid "Printer '%s': '%s'."
+msgstr "Impresora '%s': '%s'."
+
+#: ../timedops.py:102
+#: ../timedops.py:181
+msgid "Please wait"
+msgstr "Por favor, espere"
+
+#: ../timedops.py:108
+#: ../timedops.py:188
+msgid "Gathering information"
+msgstr "Obteniendo información"
+
+#: ../ToolbarSearchEntry.py:69
+msgid "_Filter:"
+msgstr "_Filtro:"
+
+#: ../troubleshoot/__init__.py:54
+msgid "Printing troubleshooter"
+msgstr "Asistente para resolver problemas de impresión"
+
+#: ../troubleshoot/base.py:33
+msgid "To start this tool, select System->Administration->Printing from the main menu."
+msgstr "Para iniciar esta herramienta, seleccione Sistema->Administración->Impresoras desde el menú principal."
+
+#: ../troubleshoot/CheckLocalServerPublishing.py:28
+msgid "Server Not Exporting Printers"
+msgstr "Servidor No Exportando Impresoras"
+
+#: ../troubleshoot/CheckLocalServerPublishing.py:29
+msgid "Although one or more printers are marked as being shared, this print server is not exporting shared printers to the network."
+msgstr "Aunque una o más impresoras están marcadas como compartidas, este servidor de impresión no está exportando las impresoras compartidas a la red."
+
+#: ../troubleshoot/CheckLocalServerPublishing.py:33
+msgid "Enable the 'Publish shared printers connected to this system' option in the server settings using the printing administration tool."
+msgstr "Habilite la opción 'Publicar impresoras compartidas conectadas a este sistema' en los parámetros del servidor usando la herramienta de administración de impresión."
+
+#: ../troubleshoot/CheckPPDSanity.py:44
+#: ../applet.py:182
+msgid "Install"
+msgstr "Instalar"
+
+#: ../troubleshoot/CheckPPDSanity.py:96
+msgid "Invalid PPD File"
+msgstr "Archivo PPD Inválido"
+
+#: ../troubleshoot/CheckPPDSanity.py:106
+#, python-format
+msgid "The PPD file for printer '%s' does not conform to the specification.  Possible reason follows:"
+msgstr "El archivo PPD de la impresora '%s' no conforma con la especificación. Las razones posibles:"
+
+#. Perhaps cupstestppd is not in the path.
+#: ../troubleshoot/CheckPPDSanity.py:112
+#, python-format
+msgid "There is a problem with the PPD file for printer '%s'."
+msgstr "Hay un problema con el archivo PPD de la impresora '%s'."
+
+#: ../troubleshoot/CheckPPDSanity.py:122
+msgid "Missing Printer Driver"
+msgstr "Falta el Controlador de la Impresora"
+
+#: ../troubleshoot/CheckPPDSanity.py:136
+#, python-format
+msgid "Printer '%s' requires the '%s' program but it is not currently installed."
+msgstr "La impresora '%s' necesita el programa '%s' que no está instalado."
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../troubleshoot/ChooseNetworkPrinter.py:29
+msgid "Choose Network Printer"
+msgstr "Seleccionar Impresora de Red"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:30
+msgid "Please select the network printer you are trying to use from the list below. If it does not appear in the list, select 'Not listed'."
+msgstr "Por favor, seleccione la impresora de red que intenta usar desde la lista de abajo. Si no  aparece en la lista, seleccione 'No listada'."
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:39
+#: ../troubleshoot/ChoosePrinter.py:40
+#: ../troubleshoot/DeviceListed.py:38
+msgid "Information"
+msgstr "Información"
+
+#: ../troubleshoot/ChooseNetworkPrinter.py:75
+#: ../troubleshoot/ChoosePrinter.py:64
+#: ../troubleshoot/DeviceListed.py:70
+msgid "Not listed"
+msgstr "No listada"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../troubleshoot/ChoosePrinter.py:30
+msgid "Choose Printer"
+msgstr "Elija Impresora"
+
+#: ../troubleshoot/ChoosePrinter.py:31
+msgid "Please select the printer you are trying to use from the list below. If it does not appear in the list, select 'Not listed'."
+msgstr "Por favor, seleccione la impresora que intenta usar desde la lista de abajo. Si no aparece en la lista, seleccione 'No listada'."
+
+#: ../troubleshoot/DeviceListed.py:30
+msgid "Choose Device"
+msgstr "Elegir Dispositivo"
+
+#: ../troubleshoot/DeviceListed.py:31
+msgid "Please select the device you want to use from the list below. If it does not appear in the list, select 'Not listed'."
+msgstr "Por favor, seleccione el dispositivo que quiere usar de la lista de abajo. Si no aparece en la lista, seleccione 'No Listado'."
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:31
+msgid "Debugging"
+msgstr "Depuración"
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:32
+msgid "This step will enable debugging output from the CUPS scheduler.  This may cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr "Este paso habilitará la salida de depuración desde el planificador de CUPS. Esto puede causar que el planificador se reinicie. Haga clic en el botón de abajo para habilitar la depuración."
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:36
+msgid "Enable Debugging"
+msgstr "Habilitar la Depuración"
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:215
+msgid "Debug logging enabled."
+msgstr "Registrado de depuración habilitado."
+
+#: ../troubleshoot/ErrorLogCheckpoint.py:217
+msgid "Debug logging was already enabled."
+msgstr "El registrado de depuración ya fue habilitado."
+
+#: ../troubleshoot/ErrorLogParse.py:29
+msgid "Error log messages"
+msgstr "Mensajes log de Error"
+
+#: ../troubleshoot/ErrorLogParse.py:30
+msgid "There are messages in the error log."
+msgstr "Hay mensajes en el log de errores."
+
+#: ../troubleshoot/Locale.py:29
+msgid "Incorrect Page Size"
+msgstr "Tamaño de Página Incorrecto"
+
+#: ../troubleshoot/Locale.py:30
+msgid "The page size for the print job was not the printer's default page size.  If this is not intentional it may cause alignment problems."
+msgstr "El tamaño de página para el trabajo de impresión no fue el tamaño de página predeterminado de la impresora. Si esto no fue intencional, pueden haber problemas de alineación."
+
+#: ../troubleshoot/Locale.py:43
+msgid "Print job page size:"
+msgstr "Tamaño de página del trabajo de impresión:"
+
+#: ../troubleshoot/Locale.py:48
+msgid "Printer page size:"
+msgstr "Tamaño de página de la impresora:"
+
+#: ../troubleshoot/LocalOrRemote.py:26
+msgid "Printer Location"
+msgstr "Ubicación de la Impresora"
+
+#: ../troubleshoot/LocalOrRemote.py:27
+msgid "Is the printer connected to this computer or available on the network?"
+msgstr "¿La impresora está conectada a esta computadora o está disponible en la red?"
+
+# ../util/printconf_tui.py:1740
+# ../util/printconf_tui.py:1830
+# ../util/printconf_tui.py:1859
+#: ../troubleshoot/LocalOrRemote.py:29
+msgid "Locally connected printer"
+msgstr "Impresora conectada localmente"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:28
+msgid "Queue Not Shared"
+msgstr "Cola No Compartida"
+
+#: ../troubleshoot/NetworkCUPSPrinterShared.py:29
+msgid "The CUPS printer on the server is not shared."
+msgstr "La impresora CUPS en el servidor no está compartida."
+
+#: ../troubleshoot/PrinterStateReasons.py:29
+msgid "Status Messages"
+msgstr "Mensajes de Estado"
+
+#: ../troubleshoot/PrinterStateReasons.py:30
+msgid "There are status messages associated with this queue."
+msgstr "No hay mensajes de estado asociados a esta cola."
+
+#: ../troubleshoot/PrinterStateReasons.py:58
+#, python-format
+msgid "The printer's state message is: '%s'."
+msgstr "El mensaje de estado de la impresora es: '%s'."
+
+#: ../troubleshoot/PrinterStateReasons.py:83
+msgid "Errors are listed below:"
+msgstr "Los errores se listan abajo:"
+
+#: ../troubleshoot/PrinterStateReasons.py:88
+msgid "Warnings are listed below:"
+msgstr "Las advertencias se listan abajo:"
+
+#: ../troubleshoot/PrintTestPage.py:63
+msgid "Test Page"
+msgstr "Página de Prueba"
+
+#: ../troubleshoot/PrintTestPage.py:64
+msgid "Now print a test page.  If you are having problems printing a specific document, print that document now and mark the print job below."
+msgstr "Ahora imprima una página de prueba. Si está teniendo problemas de impresión en un documento específico, imprima ese documento ahora y el trabajo de impresión abajo."
+
+#: ../troubleshoot/PrintTestPage.py:76
+msgid "Cancel All Jobs"
+msgstr "Cancelar Todos los Trabajos"
+
+#: ../troubleshoot/PrintTestPage.py:82
+msgid "Test"
+msgstr "Probar"
+
+#: ../troubleshoot/PrintTestPage.py:112
+msgid "Did the marked print jobs print correctly?"
+msgstr "¿Los trabajos de impresión marcados se imprimieron correctamente?"
+
+#: ../troubleshoot/PrintTestPage.py:119
+msgid "Yes"
+msgstr "Si"
+
+#: ../troubleshoot/PrintTestPage.py:120
+msgid "No"
+msgstr "No"
+
+#: ../troubleshoot/PrintTestPage.py:144
+#, python-format
+msgid "Remember to load paper of type '%s' into the printer first."
+msgstr "Recuerde primero cargar papel del tipo '%s' en la impresora."
+
+#: ../troubleshoot/PrintTestPage.py:417
+msgid "Error submitting test page"
+msgstr "Error al enviar la página de prueba"
+
+#: ../troubleshoot/QueueNotEnabled.py:56
+#: ../troubleshoot/QueueRejectingJobs.py:66
+#, python-format
+msgid "The reason given is: '%s'."
+msgstr "La razón dada es: '%s'."
+
+#: ../troubleshoot/QueueNotEnabled.py:58
+msgid "This may be due to the printer being disconnected or switched off."
+msgstr "Esto puede deberse a que la impresora se desconectó o fue apagada."
+
+#: ../troubleshoot/QueueNotEnabled.py:62
+msgid "Queue Not Enabled"
+msgstr "Cola Deshabilitada"
+
+#: ../troubleshoot/QueueNotEnabled.py:63
+#, python-format
+msgid "The queue '%s' is not enabled."
+msgstr "La cola '%s' está deshabilitada."
+
+#: ../troubleshoot/QueueNotEnabled.py:71
+msgid "To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the printer in the printer administration tool."
+msgstr "Para habilitarla, seleccione la casilla 'Habilitada' en la pestaña de 'Políticas' de la impresora, en la herramienta de administración de impresión."
+
+#: ../troubleshoot/QueueRejectingJobs.py:31
+msgid "Queue Rejecting Jobs"
+msgstr "Cola Rechazando Trabajos"
+
+#: ../troubleshoot/QueueRejectingJobs.py:63
+#, python-format
+msgid "The queue '%s' is rejecting jobs."
+msgstr "La cola '%s' está rechazando trabajos."
+
+#: ../troubleshoot/QueueRejectingJobs.py:70
+msgid "To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the 'Policies' tab for the printer in the printer administration tool."
+msgstr "Para hacer que la cola acepte trabajos, marque 'Aceptar Trabajos' en la pestaña 'Políticas' de la impresora en la herramienta de administración de impresión."
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../troubleshoot/RemoteAddress.py:26
+msgid "Remote Address"
+msgstr "Dirección Remota"
+
+#: ../troubleshoot/RemoteAddress.py:27
+msgid "Please enter as many details as you can about the network address of this printer."
+msgstr "Por favor, ingrese tantos detalles como pueda acerca de la dirección de red de esta impresora."
+
+#: ../troubleshoot/RemoteAddress.py:35
+msgid "Server name:"
+msgstr "Nombre del servidor:"
+
+#: ../troubleshoot/RemoteAddress.py:42
+msgid "Server IP address:"
+msgstr "Dirección IP del servidor:"
+
+#: ../troubleshoot/SchedulerNotRunning.py:28
+msgid "CUPS Service Stopped"
+msgstr "Servicio CUPS Detenido"
+
+#: ../troubleshoot/SchedulerNotRunning.py:29
+msgid "The CUPS print spooler does not appear to be running.  To correct this, choose System->Administration->Services from the main menu and look for the 'cups' service."
+msgstr "El administrador de impresión CUPS parece estar detenido. Para corregir esto, elija Sistema->Administración->Servicios desde el menú principal y busque el servicio 'cups'."
+
+#: ../troubleshoot/ServerFirewalled.py:26
+msgid "Check Server Firewall"
+msgstr "Chequear el Cortafuego del Servidor"
+
+# ../util/printconf_gui.py:1721 ../util/printconf_gui.py:1738
+# ../util/printconf_gui.py:1755 ../util/printconf_tui.py:1715
+# ../util/printconf_gui.py:1812 ../util/printconf_gui.py:1829
+# ../util/printconf_gui.py:1863 ../util/printconf_tui.py:1805
+# ../util/printconf_gui.py:1942 ../util/printconf_tui.py:1834
+#: ../troubleshoot/ServerFirewalled.py:27
+msgid "It is not possible to connect to the server."
+msgstr "No es posible conectar al servidor."
+
+#: ../troubleshoot/ServerFirewalled.py:42
+#, python-format
+msgid "Please check to see if a firewall or router configuration is blocking TCP port %d on server '%s'."
+msgstr "Por favor, verifique si la configuración del cortafuego o del ruteador está bloqueando el puerto TCP %d en el servidor '%s'."
+
+#: ../troubleshoot/Shrug.py:26
+msgid "Sorry!"
+msgstr "¡Lo siento!"
+
+#: ../troubleshoot/Shrug.py:27
+msgid "There is no obvious solution to this problem.  Your answers have been collected together with other useful information.  If you would like to report a bug, please include this information."
+msgstr "No hay una solución obvia a este problema. Sus respuestas han sido recogidas, junto con otra información útil. Si desea reportar un error, por favor, incluya esta información."
+
+#: ../troubleshoot/Shrug.py:34
+msgid "Diagnostic Output (Advanced)"
+msgstr "Salida de Diagnóstico (Avanzado)"
+
+#: ../troubleshoot/Welcome.py:43
+msgid "Trouble-shooting Printing"
+msgstr "Asistente para resolver problemas de impresión"
+
+#: ../troubleshoot/Welcome.py:45
+msgid "The next few screens will contain some questions about your problem with printing. Based on your answers a solution may be suggested."
+msgstr "En las siguientes pantallas se le preguntará acerca de su problema con la impresión. Basado en sus respuestas, se intentará sugerir una solución."
+
+#: ../troubleshoot/Welcome.py:49
+msgid "Click 'Forward' to begin."
+msgstr "Clic en 'Siguiente' para comenzar."
+
+#: ../applet.py:94
+msgid "Configuring new printer"
+msgstr "Configurando impresora nueva"
+
+#. name is a URI, no queue was generated, because no suitable
+#. driver was found
+#: ../applet.py:116
+#: ../applet.py:170
+msgid "Missing printer driver"
+msgstr "Falta el controlador de impresora"
+
+#: ../applet.py:123
+#, python-format
+msgid "No printer driver for %s."
+msgstr "No hay un controlador para %s."
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../applet.py:125
+msgid "No driver for this printer."
+msgstr "No hay controlador para esta impresora."
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#: ../applet.py:168
+msgid "Printer added"
+msgstr "Impresora agregada"
+
+#: ../applet.py:174
+msgid "Install printer driver"
+msgstr "Instalar controlador de impresora"
+
+#: ../applet.py:175
+#, python-format
+msgid "`%s' requires driver installation: %s."
+msgstr "`%s' requiere la instalación del controlador: %s."
+
+#: ../applet.py:198
+#, python-format
+msgid "`%s' is ready for printing."
+msgstr "`%s' está lista para imprimir."
+
+#: ../applet.py:202
+#: ../applet.py:214
+msgid "Print test page"
+msgstr "Imprimir página de prueba"
+
+#: ../applet.py:205
+msgid "Configure"
+msgstr "Configurar"
+
+#: ../applet.py:209
+#, python-format
+msgid "`%s' has been added, using the `%s' driver."
+msgstr "`%s' se ha agregado, usando el controlador `%s'."
+
+#: ../applet.py:217
+msgid "Find driver"
+msgstr "Buscar controlador"
+
+#: ../print-applet.desktop.in.h:1
+msgid "Print Queue Applet"
+msgstr "Applet de la Cola de Impresión"
+
+#: ../print-applet.desktop.in.h:2
+msgid "System tray icon for managing print jobs"
+msgstr "Icono del area de notificación para administrar trabajos de impresión"
+
+#: ../manage-print-jobs.desktop.in.h:1
+msgid "Cancel, pause, resume or reprint jobs"
+msgstr "Cancelar, pausar, reanudar o reimprimir trabajos"
+
+#: ../manage-print-jobs.desktop.in.h:2
+msgid "Manage Print Jobs"
+msgstr "Administrar Trabajos de Impresión"
+
+#~ msgid "Printer configuration - %s"
+#~ msgstr "Configuracion de la impresora - %s"
+#~ msgid "copying printer"
+#~ msgstr "copiando impresora"
+#~ msgid "Searching for downloadable drivers"
+#~ msgstr "Buscando controladores descargables"
+#~ msgid "For this printer a proprietary driver plugin from HP is available.\n"
+#~ msgstr ""
+#~ "Para esta impresora hay un complemento de controlador propietario "
+#~ "disponible desde HP.\n"
+#~ msgid ""
+#~ "The installation of the plugin is required for your printer to work.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "La instalación del complemento es necesario para que funcione su "
+#~ "impresora.\n"
+#~ "\n"
+#~ msgid ""
+#~ "Installing the plugin is optional, it completes or enhances the "
+#~ "functionality\n"
+#~ "of your printer. Without plugin at least basic operations work.\n"
+#~ "\n"
+#~ msgstr ""
+#~ "La instalación del complemento es opcional, completa o mejora la "
+#~ "funcionalidad\n"
+#~ "de su impresora. Sin el complemento, al menos funcionarán las operaciones "
+#~ "básicas.\n"
+#~ "\n"
+#~ msgid "The plugin provides the following features:\n"
+#~ msgstr "El complemento provee las siguientes características:\n"
+#~ msgid " - Printing support\n"
+#~ msgstr " - Soporte para la impresión\n"
+#~ msgid " - Faster printing\n"
+#~ msgstr " - Impresión más rápida\n"
+#~ msgid " - Better printout quality\n"
+#~ msgstr " - Mejor calidad\n"
+#~ msgid " - Extra printing features\n"
+#~ msgstr "- Características de impresión extras\n"
+#~ msgid " - Scanning support\n"
+#~ msgstr " - Soporte para escáner\n"
+#~ msgid " - Faster scanning\n"
+#~ msgstr " - Escaneado más rápido\n"
+#~ msgid " - Better scanning image quality\n"
+#~ msgstr " - Mejor calidad e imágen escaneada\n"
+#~ msgid " - Faxing support\n"
+#~ msgstr " - Soporte para fax\n"
+#~ msgid " - Extra fax features\n"
+#~ msgstr " - Características extra para fax\n"
+#~ msgid " - Better Input/Output support\n"
+#~ msgstr " - Mejor soporte de Entrada/Salida\n"
+#~ msgid " - Extra user interface features\n"
+#~ msgstr " - Características adicionales de la interfaz de usuario\n"
+#~ msgid " - Other extra features\n"
+#~ msgstr " - Otras características extra\n"
+#~ msgid "Install plugin"
+#~ msgstr "Instalar complemento"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#~ msgid "Do not set up printer"
+#~ msgstr "No configurar impresora"
+#~ msgid "Set up without plugin"
+#~ msgstr "Configurar sin el complemento"
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#~ msgid "Copy Printer"
+#~ msgstr "Copiar Impresora"
+#~ msgid "_Use System Default"
+#~ msgstr "_Usar los valores por defecto del Sistema"
+#~ msgid "_Set Default"
+#~ msgstr "_Poner por defecto"
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#~ msgid "Basic Server Settings"
+#~ msgstr "Opciones Básicas del Servidor"
+#~ msgid "_Advanced..."
+#~ msgstr "_Avanzado..."
+#~ msgid ""
+#~ "I have not been able to work out what the problem is, but I have "
+#~ "collected some useful information to put in a bug report."
+#~ msgstr ""
+#~ "No se ha podido determinar cuál es su problema, pero se ha recolectado "
+#~ "suficiente información como para informar un error."
+#~ msgid "Select default printer"
+#~ msgstr "Elegir impresora predeterminada"
+#~ msgid "Unauthorized request (%s)"
+#~ msgstr "Pedido no autorizado (%s)"
+#~ msgid "You are not authorized to carry out the requested action."
+#~ msgstr "Usted no está autorizado para realizar la acción pedida."
+#~ msgid "Queue"
+#~ msgstr "Cola"
+#~ msgid "It is not possible to obtain a list of queues from '%s'."
+#~ msgstr "No es posible obtener una lista de las colas desde '%s'."
+#~ msgid ""
+#~ "Obtaining a list of queues is a CUPS extension to IPP.  Network printers "
+#~ "do not support it."
+#~ msgstr ""
+#~ "La obtención de la lista de colas es una extensión de CUPS a IPP. Las "
+#~ "impresoras de red no dan este soporte."
+#~ msgid "No queues"
+#~ msgstr "No hay colas"
+#~ msgid "There are no queues available."
+#~ msgstr "No hay colas disponibles."
+#~ msgid "system-config-printer"
+#~ msgstr "system-config-printer"
+#~ msgid "IPP Browser"
+#~ msgstr "Navegador IPP"
+#~ msgid "_Refresh"
+#~ msgstr "_Refrescar"
+#~ msgid ""
+#~ "Default\n"
+#~ "1200\n"
+#~ "2400\n"
+#~ "4800\n"
+#~ "9600\n"
+#~ "19200\n"
+#~ "38400\n"
+#~ "57600\n"
+#~ "115200"
+#~ msgstr ""
+#~ "Por defecto\n"
+#~ "1200\n"
+#~ "2400\n"
+#~ "4800\n"
+#~ "9600\n"
+#~ "19200\n"
+#~ "38400\n"
+#~ "57600\n"
+#~ "115200"
+#~ msgid ""
+#~ "Default\n"
+#~ "8\n"
+#~ "7"
+#~ msgstr ""
+#~ "Por defecto\n"
+#~ "8\n"
+#~ "7"
+#~ msgid ""
+#~ "Default\n"
+#~ "None\n"
+#~ "Odd\n"
+#~ "Even"
+#~ msgstr ""
+#~ "Por Defecto\n"
+#~ "Ninguna\n"
+#~ "Impar\n"
+#~ "Par"
+#~ msgid ""
+#~ "Default\n"
+#~ "None\n"
+#~ "XON/XOFF (Software)\n"
+#~ "RTS/CTS (Hardware)\n"
+#~ "DTR/DSR (Hardware)"
+#~ msgstr ""
+#~ "Por defecto\n"
+#~ "Ninguno\n"
+#~ "XON/XOFF (Software)\n"
+#~ "RTS/CTS (Hardware)\n"
+#~ "DTR/DSR (Hardware)"
+#~ msgid "Find _Queue..."
+#~ msgstr "Encontrar _Cola..."
+#~ msgid ""
+#~ "1\n"
+#~ "2\n"
+#~ "4\n"
+#~ "6\n"
+#~ "9\n"
+#~ "16"
+#~ msgstr ""
+#~ "1\n"
+#~ "2\n"
+#~ "4\n"
+#~ "6\n"
+#~ "9\n"
+#~ "16"
+#~ msgid "72 points per inch"
+#~ msgstr "72 puntos por pulgada"
+#~ msgid ""
+#~ "Left to right, top to bottom\n"
+#~ "Left to right, bottom to top\n"
+#~ "Right to left, top to bottom\n"
+#~ "Right to left, bottom to top\n"
+#~ "Top to bottom, left to right\n"
+#~ "Top to bottom, right to left\n"
+#~ "Bottom to top, left to right\n"
+#~ "Bottom to top, right to left"
+#~ msgstr ""
+#~ "Izquierda a derecha, arriba a abajo\n"
+#~ "Izquierda a derecha, abajo a arriba\n"
+#~ "Derecha a izquierda, arriba a abajo\n"
+#~ "Derecha a izquierda, abajo a arriba\n"
+#~ "Arriba a abajo, iquierda a derecha\n"
+#~ "Arriba a abajo, derecha a iquierda\n"
+#~ "Abajo a arriba, iquierda a derecha\n"
+#~ "Abajo a arriba, derecha a izquierda"
+#~ msgid ""
+#~ "None\n"
+#~ "Staple\n"
+#~ "Punch\n"
+#~ "Cover\n"
+#~ "Bind\n"
+#~ "Saddle stitch\n"
+#~ "Edge stitch\n"
+#~ "Fold\n"
+#~ "Trim\n"
+#~ "Bale\n"
+#~ "Booklet maker\n"
+#~ "Job offset\n"
+#~ "Staple (top left)\n"
+#~ "Staple (bottom left)\n"
+#~ "Staple (top right)\n"
+#~ "Staple (bottom right)\n"
+#~ "Edge stitch (left)\n"
+#~ "Edge stitch (top)\n"
+#~ "Edge stitch (right)\n"
+#~ "Edge stitch (bottom)\n"
+#~ "Staple dual (left)\n"
+#~ "Staple dual (top)\n"
+#~ "Staple dual (right)\n"
+#~ "Staple dual (bottom)\n"
+#~ "Bind (left)\n"
+#~ "Bind (top)\n"
+#~ "Bind (right)\n"
+#~ "Bind (bottom)"
+#~ msgstr ""
+#~ "Ninguna\n"
+#~ "Abrochar\n"
+#~ "Perforar\n"
+#~ "Cubrir\n"
+#~ "Unir\n"
+#~ "Costura con cuero\n"
+#~ "Costura al borde\n"
+#~ "Encarpetado\n"
+#~ "Refilado\n"
+#~ "Bale\n"
+#~ "Creador de folletos\n"
+#~ "Desplazamiento del trabajo\n"
+#~ "Abrochar (arriba iquierda)\n"
+#~ "Abrochar (abajo izquierda)\n"
+#~ "Abrochar (arriba derecha)\n"
+#~ "Abrochar (abajo derecha)\n"
+#~ "Costura al borde (izquierda)\n"
+#~ "Costura al borde (arriba)\n"
+#~ "Costura al borde (derecha)\n"
+#~ "Costura al borde (abajo)\n"
+#~ "Abrochado dual (izquierda)\n"
+#~ "Abrochado dual (arriba)\n"
+#~ "Abrochado dual (derecha)\n"
+#~ "Abrochado dual (abajo)\n"
+#~ "Costura (izquierda)\n"
+#~ "Costura (arriba)\n"
+#~ "Costura (derecha)\n"
+#~ "Costura (abajo)"
+#~ msgid ""
+#~ "One-sided\n"
+#~ "Two-sided (long edge)\n"
+#~ "Two-sided (short edge)"
+#~ msgstr ""
+#~ "De un lado\n"
+#~ "Dos lados (a lo largo)\n"
+#~ "Dos lados (a lo ancho)"
+#~ msgid ""
+#~ "Portrait (no rotation)\n"
+#~ "Landscape (90°)\n"
+#~ "Reverse landscape (270°)\n"
+#~ "Reverse portrait (180°)"
+#~ msgstr ""
+#~ "Vertical (sin rotación)\n"
+#~ "Horizontal (90°)\n"
+#~ "Horizontal invertido (270°)\n"
+#~ "Vertical invertido (180°)"
+#~ msgid "Reset to system default"
+#~ msgstr "Resetear a los valores por defecto del sistema"
+#~ msgid "none"
+#~ msgstr "ninguno"
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#~ msgid "Adjust server settings"
+#~ msgstr "Ajustar la configuración del servidor"
+#~ msgid "Choose a different CUPS server"
+#~ msgstr "Elegir un servidor CUPS diferente"
+#~ msgid "Show printer groups"
+#~ msgstr "Mostrar los grupos de impresora"
+#~ msgid "Show printers shared by other systems"
+#~ msgstr "Mostrar impresoras compartidas por otros sistemas"
+# ../gui/printconf-gui.glade.str:82
+# ../gui/printconf-gui.glade.str:88
+# ../gui/printconf-gui.glade.str:88
+#~ msgid "_Settings..."
+#~ msgstr "_Configuración..."
+#~ msgid "Job %d completed"
+#~ msgstr "El trabajo %d fue completado"
+#~ msgid "HP Printer (HPLIP)"
+#~ msgstr "Impresora HP (HPLIP)"
+#~ msgid "HPLIP cannot find the device."
+#~ msgstr "HPLIP no pueden encontrar el dispositivo."
+#~ msgid "<b>HP Printer (HPLIP) via network</b>"
+#~ msgstr "<b>Impresora HP (HPLIP) vía red</b>"
+#~ msgid "Not Found"
+#~ msgstr "No Encontrado"
+#~ msgid ""
+#~ "This printer supports both printing and sending faxes.  Which "
+#~ "functionality should be used for this queue?"
+#~ msgstr ""
+#~ "Esta impresora soporta la impresión y envío de faxes.  ¿Qué funcionalidad "
+#~ "se debe usar para esta cola?"
+#~ msgid ""
+#~ "Printer `%s' requires the %s package but it is not currently installed."
+#~ msgstr "La impresora `%s' necesita el paquete %s que no está instalado."
+#~ msgid "Authentication Required"
+#~ msgstr "Se Requiere Autenticación"
+#~ msgid "Job requires authentication to proceed."
+#~ msgstr "El trabajo requiere autenticación para continuar."
+#~ msgid "Authenticate"
+#~ msgstr "Autenticar"
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#~ msgid "Adding"
+#~ msgstr "Agregando"
+#~ msgid "Adding printer"
+#~ msgstr "Agregando impresoras"
+#~ msgid "Show _printer status"
+#~ msgstr "Mostrar estado de la impresora"
+#~ msgid "Printer status"
+#~ msgstr "Estado de la Impresora:"
+#~ msgid "1 hour and 1 minute ago"
+#~ msgstr "hace 1 hora y 1 minuto"
+#~ msgid "1 hour and %d minutes ago"
+#~ msgstr "hace 1 hora y %d minutos"
+#~ msgid "%d hours and 1 minute ago"
+#~ msgstr "hace %d horas y 1 minuto"
+#~ msgid "%d hours and %d minutes ago"
+#~ msgstr "hace %d horas y %d minutos"
+#~ msgid ""
+#~ "I would like to disable debugging output from the CUPS scheduler.  This "
+#~ "may cause the scheduler to restart.  Click the button below to disable "
+#~ "debugging."
+#~ msgstr ""
+#~ "Deseo deshabilitar la salida de depuración desde el planificador de CUPS. "
+#~ "Esto hará que el planificador se reinicie. Haga clic en el botón de abajo "
+#~ "para deshabilitar la depuración"
+#~ msgid "Disable Debugging"
+#~ msgstr "Deshabilitar la Depuración"
+#~ msgid "Debug logging disabled."
+#~ msgstr "El registrado de depuración está deshabilitado."
+#, fuzzy
+#~ msgid " ("
+#~ msgstr " "
+
+#, fuzzy
+#~ msgid "<b>Recommended Driver</b>"
+#~ msgstr "<b>Seleccione Controlador</b>"
+#~ msgid ""
+#~ "Connecting to server:\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Conectando al servidor:\n"
+#~ "%s"
+#~ msgid ""
+#~ "Connecting to Server:\n"
+#~ "%s\n"
+#~ msgstr ""
+#~ "Conectando al Servidor:\n"
+#~ "%s\n"
+#~ msgid "<b>Download Printer Driver</b>"
+#~ msgstr "<b>Descargar Controlador de Impresora</b>"
+#~ msgid "<b>Installed Options</b>"
+#~ msgstr "<b>Opciones Instaladas</b>"
+#~ msgid "<b>Printers to be members of this Class</b>"
+#~ msgstr "<b>Impresoras que serán miembros de esta Clase</b>"
+#~ msgid "<b>Select Connection</b>"
+#~ msgstr "<b>Seleccione Conexión</b>"
+
+#, fuzzy
+#~ msgid "Set As Default"
+#~ msgstr "_Poner por defecto"
+
+#, fuzzy
+#~ msgid "_Enabled"
+#~ msgstr "Activado"
+#~ msgid ""
+#~ "<span weight=\"bold\" size=\"larger\">Apply changes?</span>\n"
+#~ "\n"
+#~ "Any changes you have made will be lost unless you apply them."
+#~ msgstr ""
+#~ "<span weight=\"bold\" size=\"larger\">¿Aplicar cambios?</span>\n"
+#~ "\n"
+#~ "Cualquier cambio que haya hecho se perderá a menos que los aplique."
+#~ msgid "_Do not apply"
+#~ msgstr "_No aplicar"
+
+#, fuzzy
+#~ msgid "Remote class"
+#~ msgstr "Clases Remotas"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#, fuzzy
+#~ msgid "Remote printer"
+#~ msgstr "Impresoras Remotas"
+
+#, fuzzy
+#~ msgid "Local class"
+#~ msgstr "Clases Locales"
+
+# ../gui/printconf-gui.glade.str:126
+# ../gui/printconf-gui.glade.str:138
+# ../gui/printconf-gui.glade.str:138
+#, fuzzy
+#~ msgid "Local printer"
+#~ msgstr "Impresoras locales"
+#~ msgid "New Clas_s"
+#~ msgstr "Cla_se nueva"
+
+# ../gui/printconf-gui.glade.str:141
+# ../gui/printconf-gui.glade.str:153
+# ../gui/printconf-gui.glade.str:153
+#~ msgid "New _Printer"
+#~ msgstr "_Impresora Nueva"
+#~ msgid "_Edit"
+#~ msgstr "_Editar"
+#~ msgid "Debug logging was already disabled."
+#~ msgstr "El registrado de depuración ya fue desactivado."
+#~ msgid "Create a new printer group"
+#~ msgstr "Crear un nuevo grupo de impresoras"
+#~ msgid "Create a new printer queue"
+#~ msgstr "Crear una nueva cola de impresión"
+#, fuzzy
+#~ msgid "Make:"
+#~ msgstr "Marcas"
+#~ msgid ""
+#~ "May contain any printable characters except \"/\", \"#\", and space.\n"
+#~ "Name must be unique on the local machine!"
+#~ msgstr ""
+#~ "Puede contener cualquier caracter imprimible excepto \"/\", \"#\", y "
+#~ "espacio.\n"
+#~ "¡El nombre debe ser único en la máquina local!"
+#~ msgid "Refresh the list of printer queues"
+#~ msgstr "Refrescar la lista de colas de impresora"
+#~ msgid "No default printer set."
+#~ msgstr "No se configuró la impresora por defecto."
+#~ msgid "Cancel Tests"
+#~ msgstr "Cancelar Pruebas"
+#~ msgid "Default Printer:"
+#~ msgstr "Impresora Predeterminada:"
+#~ msgid "Make Default"
+#~ msgstr "_Predeterminada"
+#~ msgid "User name:"
+#~ msgstr "Nombre de Usuario:"
+#~ msgid "Support for downloadable drivers is not yet completed."
+#~ msgstr ""
+#~ "El soporte para controladores descargables no está completo todavía."
+#~ msgid "Enter some search terms for the model of your printer."
+#~ msgstr "Ingrese algunos términos para buscar el modelo de su impresora."
+
