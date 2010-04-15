@@ -3529,8 +3529,14 @@ class GUI(GtkGUI, monitor.Watcher):
             # We have just enabled print queue sharing.
             # Let's see if the firewall will allow IPP TCP packets in.
             try:
-                f = firewall.Firewall ()
-                allowed = f.check_ipp_server_allowed ()
+                if (self.connect_server == 'localhost' or
+                    self.connect_server[0] == '/'):
+                    f = firewall.Firewall ()
+                    allowed = f.check_ipp_server_allowed ()
+                else:
+                    # This is a remote server.  Nothing we can do
+                    # about the firewall there.
+                    allowed = True
 
                 if not allowed:
                     dialog = gtk.MessageDialog (self.ServerSettingsDialog,
@@ -4927,11 +4933,18 @@ class NewPrinterGUI(GtkGUI):
 
         allowed = True
         try:
-            f = firewall.Firewall ()
-            ipp_allowed = f.check_ipp_client_allowed ()
-            mdns_allowed = f.check_mdns_allowed ()
-            snmp_allowed = f.check_snmp_allowed ()
-            allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
+            if (self.mainapp.connect_server == 'localhost' or
+                self.mainapp.connect_server[0] == '/'):
+                f = firewall.Firewall ()
+                ipp_allowed = f.check_ipp_client_allowed ()
+                mdns_allowed = f.check_mdns_allowed ()
+                snmp_allowed = f.check_snmp_allowed ()
+                allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
+            else:
+                # This is a remote server.  Nothing we can do about
+                # the firewall there.
+                ipp_allowed = mdns_allowed = snmp_allowed = allowed = True
+
             secondary_text = _("The firewall may need adjusting in order to "
                                "detect network printers.  Adjust the "
                                "firewall now?") + "\n\n"
@@ -5350,6 +5363,8 @@ class NewPrinterGUI(GtkGUI):
         self.btnSMBBrowseOk.set_sensitive(False)
 
         try:
+            # Note: we do the browsing from *this* machine, regardless
+            # of which CUPS server we are connected to.
             f = firewall.Firewall ()
             allowed = f.check_samba_client_allowed ()
         except:
