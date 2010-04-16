@@ -31,11 +31,14 @@ def set_gettext_function (fn):
     _ = fn
 
 class PPDsLoader:
-    def __init__ (self, callback, device_id=None, parent=None):
+    def __init__ (self, callback, device_id=None, parent=None,
+                  host=None, encryption=None):
         debugprint ("+%s" % self)
         self._callback = callback
         self._device_id = device_id
         self._parent = parent
+        self._host = host
+        self._encryption = encryption
 
         self._installed_files = []
         self._conn = None
@@ -59,7 +62,13 @@ class PPDsLoader:
 
         self._dialog.connect ("response", self._dialog_response)
 
-        if device_id and self._bus:
+        if (device_id and self._bus and
+
+            # Only try to install packages if we are configuring the
+            # local CUPS server.
+            (self._host == None or
+             self._host == "localhost" or
+             self._host[0] == '/')):
             self._query_packagekit ()
         else:
             self._dialog.show_all ()
@@ -143,7 +152,7 @@ class PPDsLoader:
 
     def _query_cups (self):
         debugprint ("Asking CUPS for PPDs")
-        c = asyncconn.Connection ()
+        c = asyncconn.Connection (host=self._host, encryption=self._encryption)
         c._begin_operation (_("fetching PPDs"))
         self._conn = c
         c.getPPDs (reply_handler=self._cups_reply,

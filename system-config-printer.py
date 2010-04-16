@@ -4214,9 +4214,13 @@ class NewPrinterGUI(GtkGUI):
         if not devid:
             devid = None
 
+        host = self.mainapp.connect_server
+        encryption = self.mainapp.connect_encrypt
         self.ppdsloader = ppdsloader.PPDsLoader (self._getPPDs_reply,
                                                  device_id=devid,
-                                                 parent=parent)
+                                                 parent=parent,
+                                                 host=host,
+                                                 encryption=encryption)
 
         # Wait until we get the reply.
         gtk.main ()
