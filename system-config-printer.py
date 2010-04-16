@@ -2097,9 +2097,11 @@ class GUI(GtkGUI, monitor.Watcher):
                 if not new_members:
                     dialog = gtk.MessageDialog(
                         flags=0, type=gtk.MESSAGE_WARNING,
-                        buttons=gtk.BUTTONS_YES_NO,
+                        buttons=gtk.BUTTONS_NONE,
                         message_format=_("This will delete this class!"))
                     dialog.format_secondary_text(_("Proceed anyway?"))
+                    dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                                        gtk.STOCK_DELETE, gtk.RESPONSE_YES)
                     result = dialog.run()
                     dialog.destroy()
                     if result==gtk.RESPONSE_NO:
@@ -3543,11 +3545,13 @@ class GUI(GtkGUI, monitor.Watcher):
                                                 gtk.DIALOG_MODAL |
                                                 gtk.DIALOG_DESTROY_WITH_PARENT,
                                                 gtk.MESSAGE_QUESTION,
-                                                gtk.BUTTONS_YES_NO,
+                                                gtk.BUTTONS_NONE,
                                                 _("Adjust Firewall"))
                     dialog.format_secondary_text (_("Adjust the firewall now "
                                                     "to allow all incoming IPP "
                                                     "connections?"))
+                    dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                                        _("Adjust Firewall"), gtk.RESPONSE_YES)
                     response = dialog.run ()
                     dialog.destroy ()
 
@@ -4968,9 +4972,11 @@ class NewPrinterGUI(GtkGUI):
                                             gtk.DIALOG_MODAL |
                                             gtk.DIALOG_DESTROY_WITH_PARENT,
                                             gtk.MESSAGE_QUESTION,
-                                            gtk.BUTTONS_YES_NO,
+                                            gtk.BUTTONS_NONE,
                                             _("Adjust Firewall"))
                 dialog.format_secondary_markup (secondary_text)
+                dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                                    _("Adjust Firewall"), gtk.RESPONSE_YES)
                 response = dialog.run ()
                 dialog.destroy ()
 
@@ -6826,8 +6832,10 @@ class NewPrinterGUI(GtkGUI):
                                    gtk.DIALOG_DESTROY_WITH_PARENT |
                                    gtk.DIALOG_MODAL,
                                    gtk.MESSAGE_QUESTION,
-                                   gtk.BUTTONS_YES_NO,
+                                   gtk.BUTTONS_NONE,
                                    _("Would you like to print a test page?"))
+            q.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                           _("Print Test Page"), gtk.RESPONSE_YES)
             response = q.run ()
             q.destroy ()
             if response == gtk.RESPONSE_YES:

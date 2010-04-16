@@ -164,8 +164,8 @@ class CancelJobsOperation:
                              gtk.DIALOG_MODAL |
                              gtk.DIALOG_DESTROY_WITH_PARENT |
                              gtk.DIALOG_NO_SEPARATOR,
-                             (gtk.STOCK_NO, gtk.RESPONSE_NO,
-                              gtk.STOCK_YES, gtk.RESPONSE_YES))
+                             (_("Keep Printing"), gtk.RESPONSE_NO,
+                              dialog_title, gtk.RESPONSE_YES))
         dialog.set_default_response (gtk.RESPONSE_NO)
         dialog.set_border_width (6)
         dialog.set_resizable (False)
