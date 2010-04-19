@@ -3835,7 +3835,9 @@ class NewPrinterGUI(GtkGUI):
                               "btnSMBBrowseOk"],
                          "InstallDialog":
                              ["InstallDialog",
-                              "lblInstall"]})
+                              "lblInstall"]},
+
+                        domain=domain)
 
         # Fill in liststores for combo-box widgets
         for (widget,
