@@ -20,8 +20,6 @@
 import cups
 cups.require ("1.9.42")
 import sys
-import statereason
-from statereason import StateReason
 from debug import *
 
 import dbus
@@ -36,7 +34,6 @@ import installdriver
 from gettext import gettext as _
 DOMAIN="system-config-printer"
 gettext.textdomain (DOMAIN)
-statereason.set_gettext_function (_)
 try:
     locale.setlocale (locale.LC_ALL, "")
 except locale.Error, e:
