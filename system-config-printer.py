@@ -6785,7 +6785,11 @@ class NewPrinterGUI(GtkGUI):
             location = unicode (self.entNPLocation.get_text())
             info = unicode (self.entNPDescription.get_text())
         else:
-            name = self.mainapp.printer.name
+            if not self.mainapp.printer:
+                # Printer has disappeared
+                return
+            else:
+                name = self.mainapp.printer.name
 
         # Whether to check for missing drivers.
         check = False
