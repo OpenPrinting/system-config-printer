@@ -1023,6 +1023,9 @@ class GUI(GtkGUI, monitor.Watcher):
             self.printer = None
             dialog.hide ()
 
+            if self.newPrinterGUI.NewPrinterWindow.get_property ("visible"):
+                self.newPrinterGUI.on_NPCancel (None)
+
     def dests_iconview_selection_changed (self, iconview):
         self.updating_widgets = True
         paths = iconview.get_selected_items ()
