@@ -607,11 +607,26 @@ class Monitor:
             return False
 
         limit = 1
+        r = ["job-id",
+             "job-printer-uri",
+             "job-state",
+             "job-originating-user-name",
+             "job-k-octets",
+             "job-name",
+             "time-at-creation"]
         try:
-            fetched = c.getJobs (which_jobs=self.which_jobs,
-                                 my_jobs=self.my_jobs,
-                                 first_job_id=self.fetch_first_job_id,
-                                 limit=limit)
+            try:
+                fetched = c.getJobs (which_jobs=self.which_jobs,
+                                     my_jobs=self.my_jobs,
+                                     first_job_id=self.fetch_first_job_id,
+                                     limit=limit,
+                                     requested_attributes=r)
+            except TypeError:
+                # requested_attributes requires pycups 1.9.50
+                fetched = c.getJobs (which_jobs=self.which_jobs,
+                                     my_jobs=self.my_jobs,
+                                     first_job_id=self.fetch_first_job_id,
+                                     limit=limit)
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
             self.fetch_jobs_timer = None
