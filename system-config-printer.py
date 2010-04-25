@@ -189,12 +189,43 @@ def on_delete_just_hide (widget, event):
     widget.hide ()
     return True # stop other handlers
 
+class ServiceStart:
+    NAME="org.fedoraproject.Config.Services"
+    PATH="/org/fedoraproject/Config/Services/ServiceHerders/SysVServiceHerder/Services/cups"
+    IFACE="org.fedoraproject.Config.Services.SysVService"
+    def _get_iface (self, iface):
+        bus = dbus.SystemBus ()
+        obj = bus.get_object (self.NAME, self.PATH)
+        proxy = dbus.Interface (obj, iface)
+        return proxy
+
+    def can_start (self):
+        try:
+            proxy = self._get_iface (dbus.INTROSPECTABLE_IFACE)
+            introspect = proxy.Introspect ()
+        except:
+            return False
+
+        if str (introspect).find ('"start"') == -1:
+            return False
+
+        return True
+
+    def start (self, reply_handler, error_handler):
+        proxy = self._get_iface (self.IFACE)
+        proxy.start (reply_handler=reply_handler,
+                     error_handler=error_handler)
+
 class GUI(GtkGUI, monitor.Watcher):
 
     printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
                        cups.IPP_PRINTER_PROCESSING: _("Processing"),
                        cups.IPP_PRINTER_BUSY: _("Busy"),
                        cups.IPP_PRINTER_STOPPED: _("Stopped") }
+
+    DESTS_PAGE_DESTS=0
+    DESTS_PAGE_NO_PRINTERS=1
+    DESTS_PAGE_NO_SERVICE=2
 
     def __init__(self, setup_printer = None, configure_printer = None,
                  change_ppd = False, devid = "", print_test_page = False,
@@ -231,7 +262,11 @@ class GUI(GtkGUI, monitor.Watcher):
                              ["PrintersWindow",
                               "view_area_vbox",
                               "view_area_scrolledwindow",
+                              "dests_notebook",
                               "dests_iconview",
+                              "btnAddFirstPrinter",
+                              "btnStartService",
+                              "btnConnectNoService",
                               "statusbarMain",
                               "toolbar",
                               "server_settings_menu_entry",
@@ -651,6 +686,10 @@ class GUI(GtkGUI, monitor.Watcher):
                                                       gtk.gdk.ACTION_COPY)
         self.dests_iconview.connect ("drag-data-get",
                                      self.dests_iconview_drag_data_get)
+        self.btnStartService.connect ('clicked', self.on_start_service_clicked)
+        self.btnConnectNoService.connect ('clicked', self.on_connect_activate)
+        self.btnAddFirstPrinter.connect ('clicked',
+                                         self.on_new_printer_activate)
 
         # setup some lists
         m = gtk.SELECTION_MULTIPLE
@@ -911,6 +950,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.job_options_widgets[option.widget] = option
             self.job_options_buttons[option.button] = option
 
+        self.servicestart = ServiceStart ()
         self.monitor = monitor.Monitor (self, monitor_jobs=False)
 
         try:
@@ -1355,6 +1395,7 @@ class GUI(GtkGUI, monitor.Watcher):
             selected_printers.add (name)
 
         if self.cups:
+            kill_connection = False
             self.cups._set_prompt_allowed (prompt_allowed)
             self.cups._begin_operation (_("obtaining queue details"))
             try:
@@ -1367,9 +1408,13 @@ class GUI(GtkGUI, monitor.Watcher):
                 show_IPP_Error(e, m, self.PrintersWindow)
                 self.printers = {}
                 self.default_printer = None
+                if e == cups.IPP_SERVICE_UNAVAILABLE:
+                    kill_connection = True
 
             self.cups._end_operation ()
             self.cups._set_prompt_allowed (True)
+            if kill_connection:
+                self.cups = None
         else:
             self.printers = {}
             self.default_printer = None
@@ -1618,6 +1663,28 @@ class GUI(GtkGUI, monitor.Watcher):
             if name in selected_printers:
                 self.dests_iconview.select_path (path)
         model.foreach (maybe_select)
+
+        # Set up the dests_notebook page.
+        page = self.DESTS_PAGE_DESTS
+        if self.cups:
+            if not self.mainlist.get_iter_first ():
+                page = self.DESTS_PAGE_NO_PRINTERS
+        else:
+            page = self.DESTS_PAGE_NO_SERVICE
+            can_start = (self.connect_server == 'localhost' or
+                         self.connect_server[0] != '/')
+            tooltip_text = None
+            if can_start:
+                can_start = self.servicestart.can_start ()
+                if not can_start:
+                    tooltip_text = _("Service framework not available")
+            else:
+                tooltip_text = _("Cannot start service on remote server")
+
+            self.btnStartService.set_sensitive (can_start)
+            self.btnStartService.set_tooltip_text (tooltip_text)
+
+        self.dests_notebook.set_current_page (page)
 
         if (self.printer != None and
             self.printer.name not in self.printers.keys ()):
@@ -3636,6 +3703,27 @@ class GUI(GtkGUI, monitor.Watcher):
                     break
             name += "-" + str (suffix)
         return name
+
+    ## Service start-up
+    def on_start_service_clicked (self, button):
+        button.set_sensitive (False)
+        self.servicestart.start (reply_handler=self.on_start_service_reply,
+                                 error_handler=self.on_start_service_reply)
+
+    def on_start_service_reply (self, *args):
+        gobject.timeout_add_seconds (1, self.service_started_try)
+
+    def service_started_try (self):
+        self.on_btnRefresh_clicked (None)
+        gobject.timeout_add_seconds (1, self.service_started_retry)
+        return False
+
+    def service_started_retry (self):
+        if not self.cups:
+            self.on_btnRefresh_clicked (None)
+            self.btnStartService.set_sensitive (True)
+
+        return False
 
     ## Watcher interface helpers
     def printer_added_or_removed (self):
