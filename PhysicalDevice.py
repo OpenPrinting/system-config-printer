@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -60,7 +61,11 @@ class PhysicalDevice:
 
     def add_device (self, device):
         if self._network_host:
-            host = self._get_host_from_uri (device.uri)
+            if hasattr (device, 'address'):
+                host = device.address
+            else:
+                host = self._get_host_from_uri (device.uri)
+
             if host != self._network_host:
                 raise ValueError
         else:

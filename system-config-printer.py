@@ -110,6 +110,7 @@ import statereason
 import firewall
 import asyncconn
 import ppdsloader
+import dnssdresolve
 
 domain='system-config-printer'
 import locale
@@ -1115,6 +1116,9 @@ class GUI(GtkGUI, monitor.Watcher):
             response == gtk.RESPONSE_CANCEL):
             self.printer = None
             dialog.hide ()
+
+            if self.newPrinterGUI.NewPrinterWindow.get_property ("visible"):
+                self.newPrinterGUI.on_NPCancel (None)
 
     def dests_iconview_selection_changed (self, iconview):
         self.updating_widgets = True
@@ -4791,7 +4795,26 @@ class NewPrinterGUI(GtkGUI):
         self.fetchDevices_conn = None
 
         # Add the network devices to the list.
-        self.add_devices (result, current_uri, no_more=True)
+        no_more = True
+        need_resolving = {}
+        for uri, device in result.iteritems ():
+            if uri.startswith ("dnssd://"):
+                need_resolving[uri] = device
+                no_more = False
+
+        for uri in need_resolving.keys ():
+            del result[uri]
+
+        self.add_devices (result, current_uri, no_more=no_more)
+
+        if len (need_resolving) > 0:
+            resolver = dnssdresolve.DNSSDHostNamesResolver (need_resolving)
+            resolver.resolve (reply_handler=lambda devices:
+                                  self.dnssd_resolve_reply (current_uri,
+                                                            devices))
+
+    def dnssd_resolve_reply (self, current_uri, devices):
+        self.add_devices (devices, current_uri, no_more=True)
 
     def get_hpfax_device_id(self, faxuri):
         os.environ["URI"] = faxuri
@@ -6628,7 +6651,11 @@ class NewPrinterGUI(GtkGUI):
             location = unicode (self.entNPLocation.get_text())
             info = unicode (self.entNPDescription.get_text())
         else:
-            name = self.mainapp.printer.name
+            if not self.mainapp.printer:
+                # Printer has disappeared
+                return
+            else:
+                name = self.mainapp.printer.name
 
         # Whether to check for missing drivers.
         check = False
