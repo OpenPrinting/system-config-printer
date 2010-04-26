@@ -114,6 +114,7 @@ import gtkspinner
 import statereason
 import firewall
 import asyncconn
+import dnssdresolve
 
 domain='system-config-printer'
 import locale
@@ -4840,7 +4841,26 @@ class NewPrinterGUI(GtkGUI):
         gobject.idle_add (self.queryPPDs)
 
         # Add the network devices to the list.
-        self.add_devices (result, current_uri, no_more=True)
+        no_more = True
+        need_resolving = {}
+        for uri, device in result.iteritems ():
+            if uri.startswith ("dnssd://"):
+                need_resolving[uri] = device
+                no_more = False
+
+        for uri in need_resolving.keys ():
+            del result[uri]
+
+        self.add_devices (result, current_uri, no_more=no_more)
+
+        if len (need_resolving) > 0:
+            resolver = dnssdresolve.DNSSDHostNamesResolver (need_resolving)
+            resolver.resolve (reply_handler=lambda devices:
+                                  self.dnssd_resolve_reply (current_uri,
+                                                            devices))
+
+    def dnssd_resolve_reply (self, current_uri, devices):
+        self.add_devices (devices, current_uri, no_more=True)
 
     def install_hplip_plugin(self, uri):
         """

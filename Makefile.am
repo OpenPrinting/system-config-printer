@@ -88,6 +88,7 @@ nobase_pkgdata_DATA=					\
 	config.py					\
 	cupspk.py					\
 	debug.py					\
+	dnssdresolve.py					\
 	errordialogs.py					\
 	HIG.py						\
 	firewall.py					\
