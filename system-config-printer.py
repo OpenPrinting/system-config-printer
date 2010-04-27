@@ -479,6 +479,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
         # New Printer Dialog
         self.newPrinterGUI = np = newprinter.NewPrinterGUI(self)
+        np.connect ("printer-added", self.new_printer_added)
 
         # Set up "About" dialog
         self.AboutDialog.set_program_name(config.PACKAGE)
@@ -3581,6 +3582,31 @@ class GUI(GtkGUI, monitor.Watcher):
                     break
             name += "-" + str (suffix)
         return name
+
+    def new_printer_added (self, obj, name):
+        debugprint ("New printer added: %s" % name)
+        self.populateList ()
+
+        if not self.printers.has_key (name):
+            # At this stage the printer has disappeared even though we
+            # only added it moments ago.
+            debugprint ("New printer disappeared")
+            return
+
+        # Now select it.
+        model = self.dests_iconview.get_model ()
+        iter = model.get_iter_first ()
+        while iter != None:
+            queue = unicode (model.get_value (iter, 2))
+            if queue == name:
+                path = model.get_path (iter)
+                self.dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
+                self.dests_iconview.unselect_all ()
+                self.dests_iconview.set_cursor (path)
+                self.dests_iconview.select_path (path)
+                break
+
+            iter = model.iter_next (iter)
 
     ## Watcher interface helpers
     def printer_added_or_removed (self):

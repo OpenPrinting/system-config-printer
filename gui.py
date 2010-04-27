@@ -2,9 +2,10 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2006, 2007 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Florian Festi <ffesti@redhat.com>
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -20,13 +21,14 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+import gobject
 import gtk
 import os
 
 import config
 pkgdata = config.pkgdatadir
 
-class GtkGUI:
+class GtkGUI(gobject.GObject):
     def getWidgets(self, widgets, domain=None):
         ui_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_UI",
                                  os.path.join (pkgdata, "ui"))

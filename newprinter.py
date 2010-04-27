@@ -41,7 +41,7 @@ except:
     PYSMB_AVAILABLE=False
 
 import cupshelpers, options
-import gobject # for TYPE_STRING and TYPE_PYOBJECT
+import gobject
 from gui import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
@@ -103,6 +103,11 @@ def on_delete_just_hide (widget, event):
 
 class NewPrinterGUI(GtkGUI):
 
+    __gsignals__ = {
+        'printer-added' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                           [gobject.TYPE_STRING]),
+        }
+
     new_printer_device_tabs = {
         "parallel" : 0, # empty tab
         "usb" : 0,
@@ -124,6 +129,7 @@ class NewPrinterGUI(GtkGUI):
     DOWNLOADABLE_ONLYPPD=True
 
     def __init__(self, mainapp):
+        gobject.GObject.__init__ (self)
         self.mainapp = mainapp
         self.language = mainapp.language
 
@@ -3196,29 +3202,8 @@ class NewPrinterGUI(GtkGUI):
                 checkppd = ppd
 
         self.NewPrinterWindow.hide()
+        self.emit ('printer-added', name)
         self.device = None
-        self.mainapp.populateList()
-
-        # Now select it.
-        dests_iconview = self.mainapp.dests_iconview
-        model = dests_iconview.get_model ()
-        iter = model.get_iter_first ()
-        while iter != None:
-            queue = unicode (model.get_value (iter, 2))
-            if queue == name:
-                path = model.get_path (iter)
-                dests_iconview.scroll_to_path (path, True, 0.5, 0.5)
-                dests_iconview.unselect_all ()
-                dests_iconview.set_cursor (path)
-                dests_iconview.select_path (path)
-                break
-
-            iter = model.iter_next (iter)
-
-        if not self.mainapp.printers.has_key (name):
-            # At this stage the printer has disappeared even though we
-            # only added it moments ago.
-            return
 
         # Load information about the printer,
         # e.g. self.mainapp.server_side_options and self.mainapp.ppd
@@ -3345,3 +3330,5 @@ class NewPrinterGUI(GtkGUI):
                                      "Please install it before using this "
                                      "printer.") % (name, (exes + pkgs)[0]),
                                    self.parent)
+
+gobject.type_register (NewPrinterGUI)
