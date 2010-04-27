@@ -4322,7 +4322,8 @@ class NewPrinterGUI(GtkGUI):
                 self.auto_driver = None
                 self.device.uri = self.getDeviceURI()
 
-                if not devid and self.device.type in ["socket", "lpd", "ipp"]:
+                if (not self.device.id and
+                    self.device.type in ["socket", "lpd", "ipp"]):
                     # This is a network printer whose model we don't yet know.
                     # Try to discover it.
                     self.getNetworkPrinterMakeModel ()
