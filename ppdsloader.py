@@ -24,11 +24,7 @@ import gtk
 
 import asyncconn
 from debug import debugprint
-
-_ = lambda x: x
-def set_gettext_function (fn):
-    global _
-    _ = fn
+from gettext import gettext as _
 
 class PPDsLoader:
     def __init__ (self, callback, device_id=None, parent=None,

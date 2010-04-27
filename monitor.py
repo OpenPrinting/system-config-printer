@@ -25,14 +25,9 @@ import gobject
 import time
 from debug import *
 import pprint
-
-global _
-_ = lambda x: x
-def set_gettext_function (x):
-    _ = x
+from gettext import gettext as _
 import statereason
 from statereason import StateReason
-statereason.set_gettext_function (_)
 
 CONNECTING_TIMEOUT = 60 # seconds
 MIN_REFRESH_INTERVAL = 1 # seconds

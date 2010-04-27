@@ -21,11 +21,7 @@
 
 import cups
 import os
-
-_ = lambda x: x
-def set_gettext_function (fn):
-    global _
-    _ = fn
+from gettext import gettext as _
 
 class StateReason:
     REPORT=1

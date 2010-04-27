@@ -53,11 +53,7 @@ except ImportError:
     USE_KEYRING=False
 
 from gettext import gettext as _
-DOMAIN="system-config-printer"
-gettext.textdomain (DOMAIN)
 from statereason import StateReason
-statereason.set_gettext_function (_)
-errordialogs.set_gettext_function (_)
 
 pkgdata = config.pkgdatadir
 ICON="printer"
@@ -303,7 +299,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                           "statusicon_popupmenu":
                               ["statusicon_popupmenu"]},
 
-                         domain=DOMAIN)
+                         domain=config.PACKAGE)
 
         job_action_group = gtk.ActionGroup ("JobActionGroup")
         job_action_group.add_actions ([

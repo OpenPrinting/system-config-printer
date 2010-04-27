@@ -25,12 +25,8 @@ import gtk
 import os
 from errordialogs import *
 from debug import *
-
-_ = lambda x: x
+from gettext import gettext as _
 N_ = lambda x: x
-def set_gettext_function (fn):
-    global _
-    _ = fn
 
 class AuthDialog(gtk.Dialog):
     AUTH_FIELD={'username': N_("Username:"),

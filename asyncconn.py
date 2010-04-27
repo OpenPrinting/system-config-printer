@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Authors: Tim Waugh <twaugh@redhat.com>, Vincent Untz
 
@@ -29,9 +29,6 @@ import authconn
 import config
 from debug import *
 import debug
-
-def set_gettext_function (x):
-    asyncipp.set_gettext_function (x)
 
 ######
 ###### A class to keep track of what we're trying to achieve in order

@@ -106,9 +106,6 @@ import statereason
 import firewall
 import newprinter
 
-monitor.set_gettext_function (_)
-errordialogs.set_gettext_function (_)
-authconn.set_gettext_function (_)
 import ppdippstr
 ppdippstr.init ()
 pkgdata = config.pkgdatadir
