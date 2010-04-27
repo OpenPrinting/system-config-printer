@@ -108,13 +108,50 @@ class Watcher:
         debugprint (repr (monitor) + ": CUPS IPP error (%d, %s)" %
                     (e, repr (m)))
 
-class Monitor:
+class Monitor(gobject.GObject):
+    __gsignals__ = {
+        'monitor-exited' :       (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  []),
+        'state-reason-added':    (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_PYOBJECT]),
+        'state-reason-removed':  (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_PYOBJECT]),
+        'still-connecting':      (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_PYOBJECT]),
+        'now-connected':         (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_STRING]),
+        'job-added':             (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_INT, gobject.TYPE_STRING,
+                                   gobject.TYPE_PYOBJECT,
+                                   gobject.TYPE_PYOBJECT]),
+        'job-event':             (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_INT, gobject.TYPE_STRING,
+                                   gobject.TYPE_PYOBJECT,
+                                   gobject.TYPE_PYOBJECT]),
+        'job-removed':           (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_INT, gobject.TYPE_STRING,
+                                   gobject.TYPE_PYOBJECT]),
+        'printer-added':         (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_STRING]),
+        'printer-event':         (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_STRING, gobject.TYPE_STRING,
+                                   gobject.TYPE_PYOBJECT]),
+        'printer-removed':       (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_STRING]),
+        'cups-connection-error': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  []),
+        'cups-ipp-error':        (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  [gobject.TYPE_INT, gobject.TYPE_STRING])
+        }
+
     # Monitor jobs and printers.
     DBUS_PATH="/com/redhat/PrinterSpooler"
     DBUS_IFACE="com.redhat.PrinterSpooler"
 
-    def __init__(self, watcher, bus=None, my_jobs=True, specific_dests=None,
-                 monitor_jobs=True, host=None, port=None, encryption=None):
+    def __init__(self, watcher=None, bus=None, my_jobs=True,
+                 specific_dests=None, monitor_jobs=True, host=None,
+                 port=None, encryption=None):
+        gobject.GObject.__init__ (self)
         self.watcher = watcher
         self.my_jobs = my_jobs
         self.specific_dests = specific_dests
@@ -124,6 +161,9 @@ class Monitor:
         self.printers = set()
         self.process_pending_events = True
         self.fetch_jobs_timer = None
+
+        if watcher == None:
+            self.watcher = Watcher ()
 
         if host:
             cups.setServer (host)
@@ -189,6 +229,7 @@ class Monitor:
         for timer in timers:
             gobject.source_remove (timer)
 
+        self.emit ('monitor-exited')
         self.watcher.monitor_exited (self)
 
     def set_process_pending (self, whether):
@@ -245,6 +286,7 @@ class Monitor:
                         if have_processing_job:
                             if printer not in self.still_connecting:
                                 self.still_connecting.add (printer)
+                                self.emit ('still-connecting', reason)
                                 self.watcher.still_connecting (self, reason)
                             if self.connecting_timers.has_key (printer):
                                 gobject.source_remove (self.connecting_timers
@@ -266,6 +308,7 @@ class Monitor:
         for printer in self.still_connecting:
             if not connecting_to_device.has_key (printer):
                 remove.add (printer)
+                self.emit ('now-connected', printer)
                 self.watcher.now_connected (self, printer)
                 if self.connecting_timers.has_key (printer):
                     gobject.source_remove (self.connecting_timers[printer])
@@ -286,6 +329,7 @@ class Monitor:
                 reasons_now.add (tuple)
                 if not self.reasons_seen.has_key (tuple):
                     # New reason.
+                    self.emit ('state-reason-added', reason)
                     self.watcher.state_reason_added (self, reason)
                     self.reasons_seen[tuple] = reason
 
@@ -323,6 +367,7 @@ class Monitor:
                 # Reason no longer present.
                 reason = self.reasons_seen[tuple]
                 del self.reasons_seen[tuple]
+                self.emit ('state-reason-removed', reason)
                 self.watcher.state_reason_removed (self, reason)
 
     def get_notifications(self):
@@ -357,10 +402,12 @@ class Monitor:
                     self.refresh ()
                     return False
 
+                self.emit ('cups-ipp-error', e, m)
                 self.watcher.cups_ipp_error (self, e, m)
                 return True
         except RuntimeError:
             cups.setUser (user)
+            self.emit ('cups-connection-error')
             self.watcher.cups_connection_error (self)
             return True
 
@@ -379,6 +426,7 @@ class Monitor:
                 name = event['printer-name']
                 if nse == 'printer-added' and name not in self.printers:
                     self.printers.add (name)
+                    self.emit ('printer-added', name)
                     deferred_calls.append ((self.watcher.printer_added,
                                             (self, name)))
 
@@ -389,12 +437,14 @@ class Monitor:
                         if tuple[1] == name:
                             reason = self.reasons_seen[tuple]
                             del self.reasons_seen[tuple]
+                            self.emit ('state-reason-removed', reason)
                             deferred_calls.append ((self.watcher.state_reason_removed,
                                                     (self, reason)))
                             
                     if self.printer_state_reasons.has_key (name):
                         del self.printer_state_reasons[name]
 
+                    self.emit ('printer-removed', name)
                     deferred_calls.append ((self.watcher.printer_removed,
                                             (self, name)))
                 elif name in self.printers:
@@ -408,6 +458,7 @@ class Monitor:
                         reasons.append (StateReason (c, name, reason))
                     self.printer_state_reasons[name] = reasons
 
+                    self.emit ('printer-event', name, nse, event)
                     deferred_calls.append ((self.watcher.printer_event,
                                             (self, name, nse, event)))
                 continue
@@ -432,9 +483,11 @@ class Monitor:
                 except AttributeError:
                     jobs[jobid] = {'job-k-octets': 0}
                 except cups.IPPError, (e, m):
+                    self.emit ('cups-ipp-error', e, m)
                     self.watcher.cups_ipp_error (self, e, m)
                     jobs[jobid] = {'job-k-octets': 0}
 
+                self.emit ('job-added', jobid, nse, event, jobs[jobid].copy ())
                 deferred_calls.append ((self.watcher.job_added,
                                         (self, jobid, nse, event,
                                          jobs[jobid].copy ())))
@@ -444,6 +497,7 @@ class Monitor:
                 if not (self.which_jobs in ['completed', 'all']):
                     try:
                         del jobs[jobid]
+                        self.emit ('job-removed', jobid, nse, event)
                         deferred_calls.append ((self.watcher.job_removed,
                                                 (self, jobid, nse, event)))
                     except KeyError:
@@ -461,6 +515,7 @@ class Monitor:
             if event.has_key ('notify-printer-uri'):
                 job['job-printer-uri'] = event['notify-printer-uri']
 
+            self.emit ('job-event', jobid, nse, event, job.copy ())
             deferred_calls.append ((self.watcher.job_event,
                                    (self, jobid, nse, event, job.copy ())))
 
@@ -498,6 +553,7 @@ class Monitor:
                                  port=self.port,
                                  encryption=self.encryption)
         except RuntimeError:
+            self.emit ('cups-connection-error')
             self.watcher.cups_connection_error (self)
             cups.setUser (user)
             return
@@ -506,6 +562,7 @@ class Monitor:
             try:
                 c.cancelSubscription (self.sub_id)
             except cups.IPPError, (e, m):
+                self.emit ('cups-ipp-error', e, m)
                 self.watcher.cups_ipp_error (self, e, m)
 
             if self.update_timer:
@@ -531,6 +588,7 @@ class Monitor:
         try:
             self.sub_id = c.createSubscription ("/", events=events)
         except cups.IPPError, (e, m):
+            self.emit ('cups-ipp-error', e, m)
             self.watcher.cups_ipp_error (self, e, m)
 
         cups.setUser (user)
@@ -563,9 +621,11 @@ class Monitor:
             dests = c.getPrinters ()
             self.printers = set(dests.keys ())
         except cups.IPPError, (e, m):
+            self.emit ('cups-ipp-error', e, m)
             self.watcher.cups_ipp_error (self, e, m)
             return
         except RuntimeError:
+            self.emit ('cups-connection-error')
             self.watcher.cups_connection_error (self)
             return
 
@@ -578,6 +638,9 @@ class Monitor:
                     del jobs[jobid]
 
         self.set_process_pending (False)
+        for printer in self.printers:
+            print printer
+            self.emit ('printer-added', printer)
         self.watcher.current_printers_and_jobs (self, self.printers.copy (),
                                                 jobs.copy ())
         self.update_jobs (jobs)
@@ -597,6 +660,7 @@ class Monitor:
                                  port=self.port,
                                  encryption=self.encryption)
         except RuntimeError:
+            self.emit ('cups-connection-error')
             self.watcher.cups_connection_error (self)
             self.fetch_jobs_timer = None
             cups.setUser (user)
@@ -624,6 +688,7 @@ class Monitor:
                                      first_job_id=self.fetch_first_job_id,
                                      limit=limit)
         except cups.IPPError, (e, m):
+            self.emit ('cups-ipp-error', e, m)
             self.watcher.cups_ipp_error (self, e, m)
             self.fetch_jobs_timer = None
             cups.setUser (user)
@@ -653,16 +718,20 @@ class Monitor:
 
                 if jobs.has_key (jobid):
                     fn = self.watcher.job_event
+                    n = 'job-event'
                 else:
                     fn = self.watcher.job_added
+                    n = 'job-added'
 
                 jobs[jobid] = job
+                self.emit (n, jobid, '', {}, jobs.copy ())
                 deferred_calls.append ((fn,
                                         (self, jobid, '', {}, job.copy ())))
             except KeyError:
                 # No job by that ID.
                 if jobs.has_key (jobid):
                     del jobs[jobid]
+                    self.emit ('job-removed', jobid, '', {})
                     deferred_calls.append ((self.watcher.job_removed,
                                             (self, jobid, '', {})))
 
@@ -677,6 +746,7 @@ class Monitor:
             
                 if trim:
                     del jobs[jobid]
+                    self.emit ('job-removed', jobid, '', {})
                     deferred_calls.append ((self.watcher.job_removed,
                                             (self, jobid, '', {})))
 
@@ -738,9 +808,70 @@ class Monitor:
         if not self.received_any_dbus_signals:
             self.received_any_dbus_signals = True
 
+gobject.type_register (Monitor)
+
 if __name__ == '__main__':
+    class SignalWatcher:
+        def __init__ (self, monitor):
+            monitor.connect ('monitor-exited', self.on_monitor_exited)
+            monitor.connect ('state-reason-added', self.on_state_reason_added)
+            monitor.connect ('state-reason-removed',
+                             self.on_state_reason_removed)
+            monitor.connect ('still-connecting', self.on_still_connecting)
+            monitor.connect ('now-connected', self.on_now_connected)
+            monitor.connect ('job-added', self.on_job_added)
+            monitor.connect ('job-event', self.on_job_event)
+            monitor.connect ('job-removed', self.on_job_removed)
+            monitor.connect ('printer-added', self.on_printer_added)
+            monitor.connect ('printer-event', self.on_printer_event)
+            monitor.connect ('printer-removed', self.on_printer_removed)
+            monitor.connect ('cups-connection-error',
+                             self.on_cups_connection_error)
+            monitor.connect ('cups-ipp-error', self.on_cups_ipp_error)
+
+        def on_monitor_exited (self, obj):
+            print "*%s: monitor exited" % obj
+
+        def on_state_reason_added (self, obj, reason):
+            print "*%s: +%s" % (obj, reason)
+
+        def on_state_reason_removed (self, obj, reason):
+            print "*%s: -%s" % (obj, reason)
+
+        def on_still_connecting (self, obj, reason):
+            print "*%s: still connecting: %s" % (obj, reason)
+
+        def on_now_connected (self, obj, printer):
+            print "*%s: now connected: %s" % (obj, printer)
+
+        def on_job_added (self, obj, jobid, eventname, event, jobdata):
+            print "*%s: job %d added" % (obj, jobid)
+
+        def on_job_event (self, obj, jobid, eventname, event, jobdata):
+            print "*%s: job %d event: %s" % (obj, jobid, event)
+
+        def on_job_removed (self, obj, jobid, eventname, event):
+            print "*%s: job %d removed (%s)"% (obj, jobid, eventname)
+
+        def on_printer_added (self, obj, name):
+            print "*%s: printer added: %s" % (obj, name)
+
+        def on_printer_event (self, obj, name, eventname, event):
+            print "*%s: printer event: %s: %s" % (obj, name, eventname)
+
+        def on_printer_removed (self, obj, name):
+            print "*%s: printer %s removed" % (obj, name)
+
+        def on_cups_connection_error (self, obj):
+            print "*%s: cups connection error" % obj
+
+        def on_cups_ipp_error (self, obj, err, errstring):
+            print "*%s: IPP error (%d): %s" % (obj, err, errstring)
+
     set_debugging (True)
-    m = Monitor (Watcher ())
+    m = Monitor ()
+    SignalWatcher (m)
+    m.refresh ()
     loop = gobject.MainLoop ()
     try:
         loop.run ()
