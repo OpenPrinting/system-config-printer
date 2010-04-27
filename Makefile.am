@@ -98,6 +98,7 @@ nobase_pkgdata_DATA=					\
 	installpackage.py				\
 	jobviewer.py					\
 	monitor.py					\
+	newprinter.py					\
 	options.py					\
 	optionwidgets.py				\
 	PhysicalDevice.py				\
