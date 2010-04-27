@@ -134,7 +134,7 @@ def on_delete_just_hide (widget, event):
     widget.hide ()
     return True # stop other handlers
 
-class GUI(GtkGUI, monitor.Watcher):
+class GUI(GtkGUI):
 
     printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
                        cups.IPP_PRINTER_PROCESSING: _("Processing"),
@@ -857,7 +857,14 @@ class GUI(GtkGUI, monitor.Watcher):
             self.job_options_widgets[option.widget] = option
             self.job_options_buttons[option.button] = option
 
-        self.monitor = monitor.Monitor (self, monitor_jobs=False)
+        self.monitor = monitor.Monitor (monitor_jobs=False)
+        self.monitor.connect ('printer-added', self.printer_added)
+        self.monitor.connect ('printer-event', self.printer_event)
+        self.monitor.connect ('printer-removed', self.printer_removed)
+        self.monitor.connect ('state-reason-added', self.state_reason_added)
+        self.monitor.connect ('state-reason-removed', self.state_reason_removed)
+        self.monitor.connect ('cups-connection-error',
+                              self.cups_connection_error)
 
         try:
             self.populateList()
@@ -3608,21 +3615,18 @@ class GUI(GtkGUI, monitor.Watcher):
 
             iter = model.iter_next (iter)
 
-    ## Watcher interface helpers
+    ## Monitor signal helpers
     def printer_added_or_removed (self):
         # Just fetch the list of printers again.  This is too simplistic.
         gtk.gdk.threads_enter ()
         self.populateList (prompt_allowed=False)
         gtk.gdk.threads_leave ()
 
-    ## Watcher interface
+    ## Monitor signal handlers
     def printer_added (self, mon, printer):
-        monitor.Watcher.printer_added (self, mon, printer)
         self.printer_added_or_removed ()
 
     def printer_event (self, mon, printer, eventname, event):
-        monitor.Watcher.printer_event (self, mon, printer, eventname, event)
-
         def deferred_refresh ():
             self.populateList ()
             return False
@@ -3642,11 +3646,9 @@ class GUI(GtkGUI, monitor.Watcher):
         gtk.gdk.threads_leave ()
 
     def printer_removed (self, mon, printer):
-        monitor.Watcher.printer_removed (self, mon, printer)
         self.printer_added_or_removed ()
 
     def state_reason_added (self, mon, reason):
-        monitor.Watcher.state_reason_added (self, mon, reason)
         gtk.gdk.threads_enter ()
         if self.PrinterPropertiesDialog.get_property('visible'):
             try:
@@ -3658,7 +3660,6 @@ class GUI(GtkGUI, monitor.Watcher):
         gtk.gdk.threads_leave ()
 
     def state_reason_removed (self, mon, reason):
-        monitor.Watcher.state_reason_removed (self, mon, reason)
         gtk.gdk.threads_enter ()
         if self.PrinterPropertiesDialog.get_property('visible'):
             try:
@@ -3670,7 +3671,6 @@ class GUI(GtkGUI, monitor.Watcher):
         gtk.gdk.threads_leave ()
 
     def cups_connection_error (self, mon):
-        monitor.Watcher.cups_connection_error (self, mon)
         try:
             self.cups.getClasses ()
         except:

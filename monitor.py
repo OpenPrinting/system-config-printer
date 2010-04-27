@@ -639,8 +639,9 @@ class Monitor(gobject.GObject):
 
         self.set_process_pending (False)
         for printer in self.printers:
-            print printer
             self.emit ('printer-added', printer)
+        for jobid, job in jobs.iteritems ():
+            self.emit ('job-added', jobid, '', {}, job)
         self.watcher.current_printers_and_jobs (self, self.printers.copy (),
                                                 jobs.copy ())
         self.update_jobs (jobs)
@@ -724,7 +725,7 @@ class Monitor(gobject.GObject):
                     n = 'job-added'
 
                 jobs[jobid] = job
-                self.emit (n, jobid, '', {}, jobs.copy ())
+                self.emit (n, jobid, '', {}, job.copy ())
                 deferred_calls.append ((fn,
                                         (self, jobid, '', {}, job.copy ())))
             except KeyError:
