@@ -417,7 +417,8 @@ class NewPrinterGUI(GtkGUI):
     def setDataButtonState(self):
         self.btnNPForward.set_sensitive(not bool(self.conflicts))
 
-    def init(self, dialog_mode):
+    def init(self, dialog_mode, parent=None):
+        self.parent = parent
         self.dialog_mode = dialog_mode
         self.options = {} # keyword -> Option object
         self.changed = set()
@@ -431,12 +432,8 @@ class NewPrinterGUI(GtkGUI):
         self.btnNetworkFind.set_sensitive (True)
         self.lblNetworkFindNotFound.hide ()
 
-        if dialog_mode in ["ppd", "device"]:
-            self.parent = self.mainapp.PrinterPropertiesDialog
-        else:
-            self.parent = self.mainapp.PrintersWindow
-
-        self.NewPrinterWindow.set_transient_for (self.parent)
+        if parent:
+            self.NewPrinterWindow.set_transient_for (parent)
 
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         combobox.set_model (gtk.ListStore (str, str))

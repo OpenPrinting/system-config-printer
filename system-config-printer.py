@@ -3305,7 +3305,7 @@ class GUI(GtkGUI):
             iter = model.get_iter (path)
             name = unicode (model.get_value (iter, 2), 'utf-8')
             class_members.append (name)
-        self.newPrinterGUI.init ("class")
+        self.newPrinterGUI.init ("class", parent=self.PrintersWindow)
         out_model = self.newPrinterGUI.tvNCNotMembers.get_model ()
         in_model = self.newPrinterGUI.tvNCMembers.get_model ()
         iter = out_model.get_iter_first ()
@@ -3544,29 +3544,29 @@ class GUI(GtkGUI):
     # new printer
     def on_new_printer_activate(self, widget):
         self.busy (self.PrintersWindow)
-        self.newPrinterGUI.init("printer")
+        self.newPrinterGUI.init("printer", parent=self.PrintersWindow)
         self.ready (self.PrintersWindow)
 
     # new printer, auto-detected, but now driver found
     def on_autodetected_printer_without_driver(self, widget):
         self.busy (self.PrintersWindow)
-        self.newPrinterGUI.init("printer_with_uri")
+        self.newPrinterGUI.init("printer_with_uri", parent=self.PrintersWindow)
         self.ready (self.PrintersWindow)
 
     # new class
     def on_new_class_activate(self, widget):
-        self.newPrinterGUI.init("class")
+        self.newPrinterGUI.init("class", parent=self.PrintersWindow)
 
     # change device
     def on_btnSelectDevice_clicked(self, button):
         self.busy (self.PrintersWindow)
-        self.newPrinterGUI.init("device")
+        self.newPrinterGUI.init("device", parent=self.PrinterPropertiesDialog)
         self.ready (self.PrintersWindow)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
         self.busy (self.PrintersWindow)
-        self.newPrinterGUI.init("ppd")
+        self.newPrinterGUI.init("ppd", parent=self.PrinterPropertiesDialog)
         self.ready (self.PrintersWindow)
 
     def checkNPName(self, name):
