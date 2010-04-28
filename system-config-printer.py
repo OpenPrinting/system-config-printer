@@ -3141,7 +3141,7 @@ class GUI(GtkGUI):
         if text!=new_text:
             widget.set_text(new_text)
         self.btnDuplicateOk.set_sensitive(
-            self.checkNPName(new_text))
+            newprinter.checkNPName(self.printers, new_text))
 
     # Delete
 
@@ -3591,28 +3591,6 @@ class GUI(GtkGUI):
                                 encryption=self.connect_encrypt,
                                 parent=self.PrinterPropertiesDialog)
         self.ready (self.PrintersWindow)
-
-    def checkNPName(self, name):
-        if not name: return False
-        name = unicode (name.lower())
-        for printer in self.printers.values():
-            if not printer.discovered and printer.name.lower()==name:
-                return False
-        return True
-
-    def makeNameUnique(self, name):
-        """Make a suggested queue name valid and unique."""
-        name = name.replace (" ", "-")
-        name = name.replace ("/", "-")
-        name = name.replace ("#", "-")
-        if not self.checkNPName (name):
-            suffix=2
-            while not self.checkNPName (name + "-" + str (suffix)):
-                suffix += 1
-                if suffix == 100:
-                    break
-            name += "-" + str (suffix)
-        return name
 
     def new_printer_added (self, obj, name):
         debugprint ("New printer added: %s" % name)

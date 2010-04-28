@@ -25,6 +25,7 @@
 import config
 
 import authconn
+import cupshelpers
 
 import errno
 import sys, os, tempfile, time, traceback, re, httplib
@@ -98,6 +99,14 @@ def getCurrentClassMembers(treeview):
         iter = model.iter_next(iter)
     result.sort()
     return result
+
+def checkNPName(printers, name):
+    if not name: return False
+    name = unicode (name.lower())
+    for printer in printers.values():
+        if not printer.discovered and printer.name.lower()==name:
+            return False
+    return True
 
 def on_delete_just_hide (widget, event):
     widget.hide ()
@@ -419,6 +428,20 @@ class NewPrinterGUI(GtkGUI):
     def setDataButtonState(self):
         self.btnNPForward.set_sensitive(not bool(self.conflicts))
 
+    def makeNameUnique(self, name):
+        """Make a suggested queue name valid and unique."""
+        name = name.replace (" ", "-")
+        name = name.replace ("/", "-")
+        name = name.replace ("#", "-")
+        if not checkNPName (self.printers, name):
+            suffix=2
+            while not checkNPName (self.printers, name + "-" + str (suffix)):
+                suffix += 1
+                if suffix == 100:
+                    break
+            name += "-" + str (suffix)
+        return name
+
     def init(self, dialog_mode, device_uri=None, name=None, ppd=None,
              devid="", host=None, encryption=None, parent=None):
         self.parent = parent
@@ -456,7 +479,7 @@ class NewPrinterGUI(GtkGUI):
             return
 
         try:
-            self.printers = self.cups.getPrinters ()
+            self.printers = cupshelpers.getPrinters (self.cups)
         except cups.IPPError, (e, m):
             show_IPP_Error (e, m, parent=self.parent)
             return
@@ -479,7 +502,7 @@ class NewPrinterGUI(GtkGUI):
                 name_proto = "class"
             else:
                 name_proto = "printer"
-            self.entNPName.set_text (self.mainapp.makeNameUnique(name_proto))
+            self.entNPName.set_text (self.makeNameUnique(name_proto))
             self.entNPName.grab_focus()
             for widget in [self.entNPLocation,
                            self.entNPDescription,
@@ -671,7 +694,7 @@ class NewPrinterGUI(GtkGUI):
         model = self.tvNCNotMembers.get_model()
         model.clear()
         try:
-            self.printers = self.cups.getPrinters ()
+            self.printers = cupshelpers.getPrinters (self.cups)
         except cups.IPPError:
             pass
 
@@ -822,7 +845,7 @@ class NewPrinterGUI(GtkGUI):
                         ppdname = 'raw'
                         self.ppd = ppdname
                         name = self.remotecupsqueue
-                        name = self.mainapp.makeNameUnique (name)
+                        name = self.makeNameUnique (name)
                         self.entNPName.set_text (name)
                     elif (self.device.id or
                           (self.device.make_and_model and
@@ -879,7 +902,7 @@ class NewPrinterGUI(GtkGUI):
                         model, iter = self.tvNPModels.get_selection ().\
                                       get_selected ()
                         name = model.get(iter, 0)[0]
-                        name = self.mainapp.makeNameUnique (name)
+                        name = self.makeNameUnique (name)
                         self.entNPName.set_text (name)
                     except:
                         nonfatalException ()
@@ -1008,7 +1031,7 @@ class NewPrinterGUI(GtkGUI):
             if name == None:
                 name = 'printer'
 
-            name = self.mainapp.makeNameUnique (name)
+            name = self.makeNameUnique (name)
             self.entNPName.set_text (name)
 
             if self.entNPDescription.get_text () == '' and descr:
@@ -1095,7 +1118,7 @@ class NewPrinterGUI(GtkGUI):
                 self.btnNPForward.hide()
                 self.btnNPApply.show()
                 self.btnNPApply.set_sensitive(
-                    self.mainapp.checkNPName(self.entNPName.get_text()))
+                    checkNPName(self.printers, self.entNPName.get_text()))
             if self.dialog_mode == "class":
                 # This is the first page for the New Class dialog, so
                 # hide the Back button.
@@ -1156,10 +1179,10 @@ class NewPrinterGUI(GtkGUI):
             widget.set_text(new_text)
         if self.dialog_mode == "printer":
             self.btnNPApply.set_sensitive(
-                self.mainapp.checkNPName(new_text))
+                checkNPName(self.printers, new_text))
         else:
             self.btnNPForward.set_sensitive(
-                self.mainapp.checkNPName(new_text))
+                checkNPName(self.printers, new_text))
 
     def fetchDevices(self, network=False, current_uri=None):
         debugprint ("fetchDevices")
