@@ -136,7 +136,8 @@ class PrinterURIIndex:
 
         name = attrs['printer-name']
         self.update_from_attrs (name, attrs)
-        self.printer[uri] = name
+        if uri != None:
+            self.printer[uri] = name
         return self.printer[uri]
 
 
