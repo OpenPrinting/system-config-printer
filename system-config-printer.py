@@ -3551,8 +3551,9 @@ class GUI(GtkGUI):
     def on_autodetected_printer_without_driver(self, widget):
         self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("printer_with_uri", device_uri=self.device_uri,
-                                ppd=self.ppd,
+                                ppd=self.ppd, devid=self.devid,
                                 parent=self.PrintersWindow)
+        self.devid = ""
         self.ready (self.PrintersWindow)
 
     # new class

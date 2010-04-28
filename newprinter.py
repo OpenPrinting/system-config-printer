@@ -417,10 +417,12 @@ class NewPrinterGUI(GtkGUI):
     def setDataButtonState(self):
         self.btnNPForward.set_sensitive(not bool(self.conflicts))
 
-    def init(self, dialog_mode, device_uri=None, ppd=None, parent=None):
+    def init(self, dialog_mode, device_uri=None, ppd=None, devid="",
+             parent=None):
         self.parent = parent
         self.dialog_mode = dialog_mode
         self.orig_ppd = ppd
+        self.devid = devid
         self.options = {} # keyword -> Option object
         self.changed = set()
         self.conflicts = set()
@@ -513,8 +515,6 @@ class NewPrinterGUI(GtkGUI):
             self.auto_make = None
             self.auto_model = None
             self.auto_driver = None
-            #self.mainapp.devid = "MFG:Samsung;MDL:ML-3560;DES:;CMD:GDI;"
-            devid = self.mainapp.devid
             uri = self.device.uri
 
             self.exactdrivermatch = False
@@ -546,8 +546,6 @@ class NewPrinterGUI(GtkGUI):
                 if self.device and not self.device.id:
                     self.device.id = devid
                     self.device.id_dict = devid_dict
-
-                self.mainapp.devid = ""
             elif ppd:
                 attr = ppd.findAttr("NickName")
                 if not attr:
@@ -608,7 +606,7 @@ class NewPrinterGUI(GtkGUI):
 
         if devid == '':
             try:
-                devid = self.mainapp.devid
+                devid = self.devid
             except:
                 pass
 
