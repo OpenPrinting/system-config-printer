@@ -417,9 +417,10 @@ class NewPrinterGUI(GtkGUI):
     def setDataButtonState(self):
         self.btnNPForward.set_sensitive(not bool(self.conflicts))
 
-    def init(self, dialog_mode, device_uri=None, parent=None):
+    def init(self, dialog_mode, device_uri=None, ppd=None, parent=None):
         self.parent = parent
         self.dialog_mode = dialog_mode
+        self.orig_ppd = ppd
         self.options = {} # keyword -> Option object
         self.changed = set()
         self.conflicts = set()
@@ -512,7 +513,6 @@ class NewPrinterGUI(GtkGUI):
             self.auto_make = None
             self.auto_model = None
             self.auto_driver = None
-            ppd = self.mainapp.ppd
             #self.mainapp.devid = "MFG:Samsung;MDL:ML-3560;DES:;CMD:GDI;"
             devid = self.mainapp.devid
             uri = self.device.uri
@@ -3178,8 +3178,8 @@ class NewPrinterGUI(GtkGUI):
             else:
                 # We have an actual PPD to upload, not just a name.
                 if ((not self.rbtnChangePPDasIs.get_active()) and
-                    isinstance (self.mainapp.ppd, cups.PPD)):
-                    cupshelpers.copyPPDOptions(self.mainapp.ppd, ppd)
+                    isinstance (self.orig_ppd, cups.PPD)):
+                    cupshelpers.copyPPDOptions(self.orig_ppd, ppd)
                 else:
                     # write Installable Options to ppd
                     for option in self.options.itervalues():

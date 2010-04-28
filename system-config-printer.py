@@ -3551,6 +3551,7 @@ class GUI(GtkGUI):
     def on_autodetected_printer_without_driver(self, widget):
         self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("printer_with_uri", device_uri=self.device_uri,
+                                ppd=self.ppd,
                                 parent=self.PrintersWindow)
         self.ready (self.PrintersWindow)
 
@@ -3569,6 +3570,7 @@ class GUI(GtkGUI):
     def on_btnChangePPD_clicked(self, button):
         self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
+                                ppd=self.ppd,
                                 parent=self.PrinterPropertiesDialog)
         self.ready (self.PrintersWindow)
 
