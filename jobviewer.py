@@ -254,7 +254,7 @@ class CancelJobsOperation:
             self.jobviewer.update_monitor ()
             return
 
-class JobViewer (GtkGUI, monitor.Watcher):
+class JobViewer (GtkGUI):
     required_job_attributes = set(['job-k-octets',
                                    'job-name',
                                    'job-originating-user-name',
@@ -471,9 +471,21 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.host = cups.getServer ()
         self.port = cups.getPort ()
         self.encryption = cups.getEncryption ()
-        self.monitor = monitor.Monitor (self, bus=bus, my_jobs=my_jobs,
+        self.monitor = monitor.Monitor (bus=bus, my_jobs=my_jobs,
                                         host=self.host, port=self.port,
                                         encryption=self.encryption)
+        self.monitor.connect ('refresh', self.on_refresh)
+        self.monitor.connect ('job-added', self.job_added)
+        self.monitor.connect ('job-event', self.job_event)
+        self.monitor.connect ('job-removed', self.job_removed)
+        self.monitor.connect ('state-reason-added', self.state_reason_added)
+        self.monitor.connect ('state-reason-removed', self.state_reason_removed)
+        self.monitor.connect ('still-connecting', self.still_connecting)
+        self.monitor.connect ('now-connected', self.now_connected)
+        self.monitor.connect ('printer-added', self.printer_added)
+        self.monitor.connect ('printer-event', self.printer_event)
+        self.monitor.connect ('printer-removed', self.printer_removed)
+        self.monitor.refresh ()
 
         if not self.trayicon:
             self.JobsWindow.show ()
@@ -1298,7 +1310,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                  port=self.port,
                                  encryption=self.encryption)
         except RuntimeError:
-            self.monitor.watcher.cups_connection_error (self)
             return False
 
         for jobid in self.jobids:
@@ -1335,7 +1346,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                      port=self.port,
                                      encryption=self.encryption)
             except RuntimeError:
-                self.monitor.watcher.cups_connection_error (self)
                 return False
 
         if jobid in self.jobs_attrs:
@@ -1599,42 +1609,15 @@ class JobViewer (GtkGUI, monitor.Watcher):
         del self.completed_job_notifications[jobid]
         self.set_statusicon_visibility ()
 
-    ## monitor.Watcher interface
-    def current_printers_and_jobs (self, mon, printers, jobs):
-        monitor.Watcher.current_printers_and_jobs (self, mon, printers, jobs)
-        self.set_process_pending (False)
+    ## Monitor signal handlers
+    def on_refresh (self, mon):
         self.store.clear ()
         self.jobs = {}
+        self.active_jobs = {}
         self.jobiters = {}
-        self.printer_uri_index = PrinterURIIndex (names=printers)
-        connection = None
-        for jobid, jobdata in jobs.iteritems ():
-            uri = jobdata.get ('job-printer-uri', '')
-            try:
-                printer = self.printer_uri_index.lookup (uri,
-                                                         connection=connection)
-            except KeyError:
-                printer = uri
-
-            if self.specific_dests and printer not in self.specific_dests:
-                continue
-
-            jobdata['job-printer-name'] = printer
-
-            self.add_job (jobid, jobdata, connection=connection)
-
-        self.jobs = jobs
-        self.active_jobs = set()
-        for jobid, jobdata in jobs.iteritems ():
-            if self.job_is_active (jobdata):
-                self.active_jobs.add (jobid)
-
-        self.set_process_pending (True)
-        self.update_status ()
+        self.printer_uri_index = PrinterURIIndex ()
 
     def job_added (self, mon, jobid, eventname, event, jobdata):
-        monitor.Watcher.job_added (self, mon, jobid, eventname, event, jobdata)
-
         uri = jobdata.get ('job-printer-uri', '')
         try:
             printer = self.printer_uri_index.lookup (uri)
@@ -1666,8 +1649,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
                     self.notify_printer_state_reason_if_important (reason)
 
     def job_event (self, mon, jobid, eventname, event, jobdata):
-        monitor.Watcher.job_event (self, mon, jobid, eventname, event, jobdata)
-
         uri = jobdata.get ('job-printer-uri', '')
         try:
             printer = self.printer_uri_index.lookup (uri)
@@ -1803,8 +1784,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 dialog.show_all ()
 
     def job_removed (self, mon, jobid, eventname, event):
-        monitor.Watcher.job_removed (self, mon, jobid, eventname, event)
-
         # If the job has finished, let the user know.
         if self.trayicon and (eventname == 'job-completed' or
                               (eventname == 'job-state-changed' and
@@ -1837,8 +1816,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.update_status ()
 
     def state_reason_added (self, mon, reason):
-        monitor.Watcher.state_reason_added (self, mon, reason)
-
         (title, text) = reason.get_description ()
         printer = reason.get_printer ()
 
@@ -1866,8 +1843,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 break
 
     def state_reason_removed (self, mon, reason):
-        monitor.Watcher.state_reason_removed (self, mon, reason)
-
         printer = reason.get_printer ()
         try:
             reasons = self.printer_state_reasons[printer]
@@ -1906,15 +1881,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
             pass
 
     def still_connecting (self, mon, reason):
-        monitor.Watcher.still_connecting (self, mon, reason)
         if not self.trayicon:
             return
 
         self.notify_printer_state_reason (reason)
 
     def now_connected (self, mon, printer):
-        monitor.Watcher.now_connected (self, mon, printer)
-
         if not self.trayicon:
             return
 
@@ -1956,15 +1928,12 @@ class JobViewer (GtkGUI, monitor.Watcher):
             notification.set_data ('closed', True)
 
     def printer_added (self, mon, printer):
-        monitor.Watcher.printer_added (self, mon, printer)
         self.printer_uri_index.add_printer (printer)
 
     def printer_event (self, mon, printer, eventname, event):
-        monitor.Watcher.printer_event (self, mon, printer, eventname, event)
         self.printer_uri_index.update_from_attrs (printer, event)
 
     def printer_removed (self, mon, printer):
-        monitor.Watcher.printer_removed (self, mon, printer)
         self.printer_uri_index.remove_printer (printer)
 
     ### Cell data functions
