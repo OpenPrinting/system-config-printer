@@ -419,14 +419,15 @@ class NewPrinterGUI(GtkGUI):
     def setDataButtonState(self):
         self.btnNPForward.set_sensitive(not bool(self.conflicts))
 
-    def init(self, dialog_mode, device_uri=None, ppd=None, devid="",
-             host=None, encryption=None, parent=None):
+    def init(self, dialog_mode, device_uri=None, name=None, ppd=None,
+             devid="", host=None, encryption=None, parent=None):
         self.parent = parent
         self.dialog_mode = dialog_mode
         self.orig_ppd = ppd
         self.devid = devid
         self._host = host
         self._encryption = encryption
+        self._name = name
         if not host:
             self._host = cups.getServer ()
         if not encryption:
@@ -452,6 +453,12 @@ class NewPrinterGUI(GtkGUI):
                                              host=self._host,
                                              encryption=self._encryption)
         except:
+            return
+
+        try:
+            self.printers = self.cups.getPrinters ()
+        except cups.IPPError, (e, m):
+            show_IPP_Error (e, m, parent=self.parent)
             return
 
         if device_uri == None and dialog_mode in ['printer_with_uri',
@@ -663,8 +670,13 @@ class NewPrinterGUI(GtkGUI):
         model.clear()
         model = self.tvNCNotMembers.get_model()
         model.clear()
-        for printer in self.mainapp.printers.itervalues():
-            model.append((printer.name,))
+        try:
+            self.printers = self.cups.getPrinters ()
+        except cups.IPPError:
+            pass
+
+        for printer in self.printers.keys():
+            model.append((printer,))
 
     def on_btnNCAddMember_clicked(self, button):
         moveClassMembers(self.tvNCNotMembers, self.tvNCMembers)
@@ -3062,11 +3074,7 @@ class NewPrinterGUI(GtkGUI):
             location = unicode (self.entNPLocation.get_text())
             info = unicode (self.entNPDescription.get_text())
         else:
-            if not self.mainapp.printer:
-                # Printer has disappeared
-                return
-            else:
-                name = self.mainapp.printer.name
+            name = self._name
 
         # Whether to check for missing drivers.
         check = False

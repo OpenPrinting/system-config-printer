@@ -3575,6 +3575,7 @@ class GUI(GtkGUI):
     def on_btnSelectDevice_clicked(self, button):
         self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
+                                name=self.printer.name,
                                 host=self.connect_server,
                                 encryption=self.connect_encrypt,
                                 parent=self.PrinterPropertiesDialog)
@@ -3585,6 +3586,7 @@ class GUI(GtkGUI):
         self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
                                 ppd=self.ppd,
+                                name=self.printer.name,
                                 host=self.connect_server,
                                 encryption=self.connect_encrypt,
                                 parent=self.PrinterPropertiesDialog)
