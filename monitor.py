@@ -198,7 +198,9 @@ class Monitor(gobject.GObject):
             self.bus = bus
 
         self.sub_id = -1
-        self.refresh ()
+
+        if watcher:
+            self.refresh ()
 
     def get_jobs (self):
         return self.jobs.copy ()

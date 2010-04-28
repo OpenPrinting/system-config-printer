@@ -865,6 +865,7 @@ class GUI(GtkGUI):
         self.monitor.connect ('state-reason-removed', self.state_reason_removed)
         self.monitor.connect ('cups-connection-error',
                               self.cups_connection_error)
+        self.monitor.refresh ()
 
         try:
             self.populateList()
