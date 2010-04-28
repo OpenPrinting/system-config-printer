@@ -138,7 +138,7 @@ class PrinterURIIndex:
         self.update_from_attrs (name, attrs)
         if uri != None:
             self.printer[uri] = name
-        return self.printer[uri]
+        return name
 
 
 class CancelJobsOperation:
