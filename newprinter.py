@@ -418,11 +418,18 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPForward.set_sensitive(not bool(self.conflicts))
 
     def init(self, dialog_mode, device_uri=None, ppd=None, devid="",
-             parent=None):
+             host=None, encryption=None, parent=None):
         self.parent = parent
         self.dialog_mode = dialog_mode
         self.orig_ppd = ppd
         self.devid = devid
+        self._host = host
+        self._encryption = encryption
+        if not host:
+            self._host = cups.getServer ()
+        if not encryption:
+            self._encryption = cups.getEncryption ()
+
         self.options = {} # keyword -> Option object
         self.changed = set()
         self.conflicts = set()
@@ -614,8 +621,8 @@ class NewPrinterGUI(GtkGUI):
         if not devid:
             devid = None
 
-        host = self.mainapp.connect_server
-        encryption = self.mainapp.connect_encrypt
+        host = self._host
+        encryption = self._encryption
         self.ppdsloader = ppdsloader.PPDsLoader (self._getPPDs_reply,
                                                  device_id=devid,
                                                  parent=parent,
@@ -1361,8 +1368,8 @@ class NewPrinterGUI(GtkGUI):
 
         allowed = True
         try:
-            if (self.mainapp.connect_server == 'localhost' or
-                self.mainapp.connect_server[0] == '/'):
+            if (self._host == 'localhost' or
+                self._host[0] == '/'):
                 f = firewall.Firewall ()
                 ipp_allowed = f.check_ipp_client_allowed ()
                 mdns_allowed = f.check_mdns_allowed ()
@@ -1392,7 +1399,7 @@ class NewPrinterGUI(GtkGUI):
                 f.add_rule (f.ALLOW_SNMP)
 
             if not allowed:
-                dialog = gtk.MessageDialog (self.mainapp.PrintersWindow,
+                dialog = gtk.MessageDialog (self.parent,
                                             gtk.DIALOG_MODAL |
                                             gtk.DIALOG_DESTROY_WITH_PARENT,
                                             gtk.MESSAGE_QUESTION,
@@ -2281,12 +2288,12 @@ class NewPrinterGUI(GtkGUI):
         try:
             if len (location) == 0 and self.device.device_class == "direct":
                 # Set location to the name of this host.
-                if (self.mainapp.connect_server == 'localhost' or
-                    self.mainapp.connect_server[0] == '/'):
+                if (self._host == 'localhost' or
+                    self._host[0] == '/'):
                     u = os.uname ()
                     location = u[1]
                 else:
-                    location = self.mainapp.connect_server
+                    location = self._host
 
             # Pre-fill location field.
             self.entNPLocation.set_text (location)

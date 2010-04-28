@@ -3305,7 +3305,10 @@ class GUI(GtkGUI):
             iter = model.get_iter (path)
             name = unicode (model.get_value (iter, 2), 'utf-8')
             class_members.append (name)
-        self.newPrinterGUI.init ("class", parent=self.PrintersWindow)
+        self.newPrinterGUI.init ("class",
+                                host=self.connect_server,
+                                encryption=self.connect_encrypt,
+                                parent=self.PrintersWindow)
         out_model = self.newPrinterGUI.tvNCNotMembers.get_model ()
         in_model = self.newPrinterGUI.tvNCMembers.get_model ()
         iter = out_model.get_iter_first ()
@@ -3544,7 +3547,10 @@ class GUI(GtkGUI):
     # new printer
     def on_new_printer_activate(self, widget):
         self.busy (self.PrintersWindow)
-        self.newPrinterGUI.init("printer", parent=self.PrintersWindow)
+        self.newPrinterGUI.init("printer",
+                                host=self.connect_server,
+                                encryption=self.connect_encrypt,
+                                parent=self.PrintersWindow)
         self.ready (self.PrintersWindow)
 
     # new printer, auto-detected, but now driver found
@@ -3552,18 +3558,25 @@ class GUI(GtkGUI):
         self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("printer_with_uri", device_uri=self.device_uri,
                                 ppd=self.ppd, devid=self.devid,
+                                host=self.connect_server,
+                                encryption=self.connect_encrypt,
                                 parent=self.PrintersWindow)
         self.devid = ""
         self.ready (self.PrintersWindow)
 
     # new class
     def on_new_class_activate(self, widget):
-        self.newPrinterGUI.init("class", parent=self.PrintersWindow)
+        self.newPrinterGUI.init("class",
+                                host=self.connect_server,
+                                encryption=self.connect_encrypt,
+                                parent=self.PrintersWindow)
 
     # change device
     def on_btnSelectDevice_clicked(self, button):
         self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
+                                host=self.connect_server,
+                                encryption=self.connect_encrypt,
                                 parent=self.PrinterPropertiesDialog)
         self.ready (self.PrintersWindow)
 
@@ -3572,6 +3585,8 @@ class GUI(GtkGUI):
         self.busy (self.PrintersWindow)
         self.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
                                 ppd=self.ppd,
+                                host=self.connect_server,
+                                encryption=self.connect_encrypt,
                                 parent=self.PrinterPropertiesDialog)
         self.ready (self.PrintersWindow)
 
