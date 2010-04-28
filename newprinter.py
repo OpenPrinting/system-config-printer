@@ -417,7 +417,7 @@ class NewPrinterGUI(GtkGUI):
     def setDataButtonState(self):
         self.btnNPForward.set_sensitive(not bool(self.conflicts))
 
-    def init(self, dialog_mode, parent=None):
+    def init(self, dialog_mode, device_uri=None, parent=None):
         self.parent = parent
         self.dialog_mode = dialog_mode
         self.options = {} # keyword -> Option object
@@ -434,6 +434,11 @@ class NewPrinterGUI(GtkGUI):
 
         if parent:
             self.NewPrinterWindow.set_transient_for (parent)
+
+        if device_uri == None and dialog_mode in ['printer_with_uri',
+                                                  'device',
+                                                  'ppd']:
+            raise RuntimeError
 
         combobox = self.cmbNPDownloadableDriverFoundPrinters
         combobox.set_model (gtk.ListStore (str, str))
@@ -456,10 +461,9 @@ class NewPrinterGUI(GtkGUI):
                            self.entSMBPassword]:
                 widget.set_text('')
 
-        if self.dialog_mode == "printer_with_uri":
+        if self.dialog_mode in ['printer_with_uri', 'ppd']:
             device_dict = { }
-            self.device = cupshelpers.Device (self.mainapp.device_uri,
-                                              **device_dict)
+            self.device = cupshelpers.Device (device_uri, **device_dict)
 
         self.entNPTDirectJetPort.set_text('9100')
         self.rbtnSMBAuthPrompt.set_active(True)
@@ -480,7 +484,7 @@ class NewPrinterGUI(GtkGUI):
         elif self.dialog_mode == "device":
             self.NewPrinterWindow.set_title(_("Change Device URI"))
             self.ntbkNewPrinter.set_current_page(1)
-            self.fillDeviceTab(self.mainapp.printer.device_uri)
+            self.fillDeviceTab(device_uri)
         elif self.dialog_mode == "ppd" or \
             self.dialog_mode == "printer_with_uri":
             if self.dialog_mode == "ppd":
@@ -511,10 +515,7 @@ class NewPrinterGUI(GtkGUI):
             ppd = self.mainapp.ppd
             #self.mainapp.devid = "MFG:Samsung;MDL:ML-3560;DES:;CMD:GDI;"
             devid = self.mainapp.devid
-            if self.dialog_mode == "ppd":
-                uri = self.mainapp.printer.device_uri
-            else:
-                uri = self.device.uri
+            uri = self.device.uri
 
             self.exactdrivermatch = False
             if devid != "":

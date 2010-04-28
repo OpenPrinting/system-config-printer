@@ -3550,7 +3550,8 @@ class GUI(GtkGUI):
     # new printer, auto-detected, but now driver found
     def on_autodetected_printer_without_driver(self, widget):
         self.busy (self.PrintersWindow)
-        self.newPrinterGUI.init("printer_with_uri", parent=self.PrintersWindow)
+        self.newPrinterGUI.init("printer_with_uri", device_uri=self.device_uri,
+                                parent=self.PrintersWindow)
         self.ready (self.PrintersWindow)
 
     # new class
@@ -3560,13 +3561,15 @@ class GUI(GtkGUI):
     # change device
     def on_btnSelectDevice_clicked(self, button):
         self.busy (self.PrintersWindow)
-        self.newPrinterGUI.init("device", parent=self.PrinterPropertiesDialog)
+        self.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
+                                parent=self.PrinterPropertiesDialog)
         self.ready (self.PrintersWindow)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
         self.busy (self.PrintersWindow)
-        self.newPrinterGUI.init("ppd", parent=self.PrinterPropertiesDialog)
+        self.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
+                                parent=self.PrinterPropertiesDialog)
         self.ready (self.PrintersWindow)
 
     def checkNPName(self, name):
