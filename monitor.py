@@ -110,6 +110,8 @@ class Watcher:
 
 class Monitor(gobject.GObject):
     __gsignals__ = {
+        'refresh':               (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                                  []),
         'monitor-exited' :       (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
                                   []),
         'state-reason-added':    (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
@@ -545,6 +547,7 @@ class Monitor(gobject.GObject):
     def refresh(self, which_jobs=None, refresh_all=True):
         debugprint ("refresh")
 
+        self.emit ('refresh')
         if which_jobs != None:
             self.which_jobs = which_jobs
 
