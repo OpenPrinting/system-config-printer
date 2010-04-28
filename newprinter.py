@@ -24,6 +24,8 @@
 # config is generated from config.py.in by configure
 import config
 
+import authconn
+
 import errno
 import sys, os, tempfile, time, traceback, re, httplib
 import subprocess
@@ -444,6 +446,13 @@ class NewPrinterGUI(GtkGUI):
 
         if parent:
             self.NewPrinterWindow.set_transient_for (parent)
+
+        try:
+            self.cups = authconn.Connection (parent=self.NewPrinterWindow,
+                                             host=self._host,
+                                             encryption=self._encryption)
+        except:
+            return
 
         if device_uri == None and dialog_mode in ['printer_with_uri',
                                                   'device',
@@ -2958,10 +2967,10 @@ class NewPrinterGUI(GtkGUI):
 
         debugprint("ppd: " + repr(ppd))
         if isinstance(ppd, str) or isinstance(ppd, unicode):
-            self.mainapp.cups._begin_operation (_("fetching PPD"))
+            self.cups._begin_operation (_("fetching PPD"))
             try:
                 if ppd != "raw":
-                    f = self.mainapp.cups.getServerPPD(ppd)
+                    f = self.cups.getServerPPD(ppd)
                     ppd = cups.PPD(f)
                     os.unlink(f)
             except RuntimeError:
@@ -2971,7 +2980,7 @@ class NewPrinterGUI(GtkGUI):
                 nonfatalException()
                 debugprint ("CUPS 1.3 server not available: never mind")
 
-            self.mainapp.cups._end_operation ()
+            self.cups._end_operation ()
 
         return ppd
 
@@ -3068,7 +3077,7 @@ class NewPrinterGUI(GtkGUI):
             members = getCurrentClassMembers(self.tvNCMembers)
             try:
                 for member in members:
-                    self.mainapp.cups.addPrinterToClass(member, name)
+                    self.cups.addPrinterToClass(member, name)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
                 return
@@ -3091,55 +3100,53 @@ class NewPrinterGUI(GtkGUI):
             self.busy (self.NewPrinterWindow)
             while gtk.events_pending ():
                 gtk.main_iteration ()
-            self.mainapp.cups._begin_operation (_("adding printer %s") % name)
+            self.cups._begin_operation (_("adding printer %s") % name)
             try:
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
-                    self.mainapp.cups.addPrinter(name, ppdname=ppd,
+                    self.cups.addPrinter(name, ppdname=ppd,
                          device=uri, info=info, location=location)
                     check = True
                 elif ppd is None: # raw queue
-                    self.mainapp.cups.addPrinter(name, device=uri,
+                    self.cups.addPrinter(name, device=uri,
                                          info=info, location=location)
                 else:
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
-                    self.mainapp.cups.addPrinter(name, ppd=ppd,
-                         device=uri, info=info, location=location)
+                    self.cups.addPrinter(name, ppd=ppd, device=uri,
+                                         info=info, location=location)
                     check = True
                     checkppd = ppd
             except cups.IPPError, (e, msg):
                 self.ready (self.NewPrinterWindow)
                 self.show_IPP_Error(e, msg)
-                self.mainapp.cups._end_operation()
+                self.cups._end_operation()
                 return
             except:
                 self.ready (self.NewPrinterWindow)
-                self.mainapp.cups._end_operation()
+                self.cups._end_operation()
                 fatalException (1)
-            self.mainapp.cups._end_operation()
+            self.cups._end_operation()
             self.ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):
-            self.mainapp.cups._begin_operation (_("modifying printer %s") %
-                                                name)
+            self.cups._begin_operation (_("modifying printer %s") % name)
             try:
-                cupshelpers.activateNewPrinter (self.mainapp.cups, name)
-                self.mainapp.cups.setPrinterLocation(name, location)
-                self.mainapp.cups.setPrinterInfo(name, info)
+                cupshelpers.activateNewPrinter (self.cups, name)
+                self.cups.setPrinterLocation(name, location)
+                self.cups.setPrinterInfo(name, info)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
-                self.mainapp.cups._end_operation ()
+                self.cups._end_operation ()
                 return
-            self.mainapp.cups._end_operation ()
+            self.cups._end_operation ()
         elif self.dialog_mode == "device":
-            self.mainapp.cups._begin_operation (_("modifying printer %s") %
-                                                name)
+            self.cups._begin_operation (_("modifying printer %s") % name)
             try:
                 uri = self.getDeviceURI()
-                self.mainapp.cups.addPrinter(name, device=uri)
+                self.cups.addPrinter(name, device=uri)
             except cups.IPPError, (e, msg):
                 self.show_IPP_Error(e, msg)
-                self.mainapp.cups._end_operation ()
+                self.cups._end_operation ()
                 return
-            self.mainapp.cups._end_operation ()
+            self.cups._end_operation ()
         elif self.dialog_mode == "ppd":
             if not ppd:
                 ppd = self.ppd = self.getNPPPD()
@@ -3148,8 +3155,7 @@ class NewPrinterGUI(GtkGUI):
                     self.nextNPTab(-1)
                     return
 
-            self.mainapp.cups._begin_operation (_("modifying printer %s") %
-                                                name)
+            self.cups._begin_operation (_("modifying printer %s") % name)
             # set ppd on server and retrieve it
             # cups doesn't offer a way to just download a ppd ;(=
             raw = False
@@ -3159,18 +3165,18 @@ class NewPrinterGUI(GtkGUI):
                     # the old options over.  Do this by setting it to a
                     # raw queue (no PPD) first.
                     try:
-                        self.mainapp.cups.addPrinter(name, ppdname='raw')
+                        self.cups.addPrinter(name, ppdname='raw')
                     except cups.IPPError, (e, msg):
                         self.show_IPP_Error(e, msg)
                 try:
-                    self.mainapp.cups.addPrinter(name, ppdname=ppd)
+                    self.cups.addPrinter(name, ppdname=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
-                    self.mainapp.cups._end_operation ()
+                    self.cups._end_operation ()
                     return
 
                 try:
-                    filename = self.mainapp.cups.getPPD(name)
+                    filename = self.cups.getPPD(name)
                     ppd = cups.PPD(filename)
                     os.unlink(filename)
                 except cups.IPPError, (e, msg):
@@ -3178,7 +3184,7 @@ class NewPrinterGUI(GtkGUI):
                         raw = True
                     else:
                         self.show_IPP_Error(e, msg)
-                        self.mainapp.cups._end_operation ()
+                        self.cups._end_operation ()
                         return
             else:
                 # We have an actual PPD to upload, not just a name.
@@ -3192,13 +3198,13 @@ class NewPrinterGUI(GtkGUI):
                     cupshelpers.setPPDPageSize(ppd, self.language[0])
 
                 try:
-                    self.mainapp.cups.addPrinter(name, ppd=ppd)
+                    self.cups.addPrinter(name, ppd=ppd)
                 except cups.IPPError, (e, msg):
                     self.show_IPP_Error(e, msg)
-                    self.mainapp.cups._end_operation ()
+                    self.cups._end_operation ()
                     return
 
-            self.mainapp.cups._end_operation ()
+            self.cups._end_operation ()
 
             if not raw:
                 check = True
@@ -3284,7 +3290,7 @@ class NewPrinterGUI(GtkGUI):
         # Fetch the PPD if we haven't already.
         if not ppd:
             try:
-                filename = self.mainapp.cups.getPPD(name)
+                filename = self.cups.getPPD(name)
             except cups.IPPError, (e, msg):
                 if e == cups.IPP_NOT_FOUND:
                     # This is a raw queue.  Nothing to check.
