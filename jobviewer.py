@@ -67,7 +67,7 @@ SEARCHING_ICON="document-print-preview"
 pynotify.init('System Config Printer Notification')
 
 class PrinterURIIndex:
-    def __init__ (self, names=None):
+    def __init__ (self, names=[]):
         self.printer = {}
         self.names = names
         c = cups.Connection ()
