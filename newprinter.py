@@ -1435,18 +1435,32 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDevices.set_cursor ((0,), column)
 
         allowed = True
+        self.current_uri = current_uri
         try:
             if (self._host == 'localhost' or
                 self._host[0] == '/'):
-                f = firewall.Firewall ()
-                ipp_allowed = f.check_ipp_client_allowed ()
-                mdns_allowed = f.check_mdns_allowed ()
-                snmp_allowed = f.check_snmp_allowed ()
-                allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
+                self.firewall = firewall.Firewall ()
+                self.firewall.read (reply_handler=self.on_firewall_read,
+                                    error_handler=lambda x:
+                                        self.start_fetching_devices)
             else:
                 # This is a remote server.  Nothing we can do about
                 # the firewall there.
-                ipp_allowed = mdns_allowed = snmp_allowed = allowed = True
+                allowed = True
+        except (dbus.DBusException, Exception):
+            nonfatalException ()
+
+        if allowed:
+            self.start_fetching_devices ()
+
+    def on_firewall_read (self, data):
+        f = self.firewall
+        allowed = True
+        try:
+            ipp_allowed = f.check_ipp_client_allowed ()
+            mdns_allowed = f.check_mdns_allowed ()
+            snmp_allowed = f.check_snmp_allowed ()
+            allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
 
             secondary_text = _("The firewall may need adjusting in order to "
                                "detect network printers.  Adjust the "
@@ -1476,26 +1490,27 @@ class NewPrinterGUI(GtkGUI):
                 dialog.format_secondary_markup (secondary_text)
                 dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
                                     _("Adjust Firewall"), gtk.RESPONSE_YES)
-                dialog.connect ('response', self.adjust_firewall_response, current_uri)
+                dialog.connect ('response', self.adjust_firewall_response)
                 dialog.show ()
         except (dbus.DBusException, Exception):
             nonfatalException ()
 
         if allowed:
-            self.start_fetching_devices (current_uri)
+            self.start_fetching_devices ()
 
-    def adjust_firewall_response (self, dialog, response, current_uri):
+    def adjust_firewall_response (self, dialog, response):
         dialog.destroy ()
         if response == gtk.RESPONSE_YES:
             f.add_rule (f.ALLOW_IPP_SERVER)
             f.write ()
 
-        self.start_fetching_devices (current_uri)
+        self.start_fetching_devices ()
 
-    def start_fetching_devices (self, current_uri):
+    def start_fetching_devices (self):
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
-        self.fetchDevices (network=False, current_uri=current_uri)
+        self.fetchDevices (network=False, current_uri=self.current_uri)
+        del self.current_uri
 
     def add_devices (self, devices, current_uri, no_more=False):
         if current_uri:
