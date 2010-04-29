@@ -29,6 +29,7 @@ import cupshelpers
 
 import errno
 import sys, os, tempfile, time, traceback, re, httplib
+import locale
 import subprocess
 import thread
 from timedops import *
@@ -153,10 +154,9 @@ class NewPrinterGUI(GtkGUI):
 
     DOWNLOADABLE_ONLYPPD=True
 
-    def __init__(self, mainapp):
+    def __init__(self):
         gobject.GObject.__init__ (self)
-        self.mainapp = mainapp
-        self.language = mainapp.language
+        self.language = locale.getlocale (locale.LC_MESSAGES)
 
         self.options = {} # keyword -> Option object
         self.changed = set()

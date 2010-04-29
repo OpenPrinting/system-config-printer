@@ -481,7 +481,7 @@ class GUI(GtkGUI):
         self.tvPrinterStateReasons.set_model (store)
 
         # New Printer Dialog
-        self.newPrinterGUI = np = newprinter.NewPrinterGUI(self)
+        self.newPrinterGUI = np = newprinter.NewPrinterGUI()
         np.connect ("printer-added", self.on_new_printer_added)
         np.connect ("printer-modified", self.on_printer_modified)
 
