@@ -473,8 +473,17 @@ class NewPrinterGUI(GtkGUI):
         return name
 
     def init(self, dialog_mode, device_uri=None, name=None, ppd=None,
-             devid="", host=None, encryption=None, parent=None):
-        self.parent = parent
+             devid="", host=None, encryption=None, parent=None, xid=None):
+        if xid != None:
+            display = gtk.gdk.display_get_default ()
+            parent = gtk.gdk.window_foreign_new_for_display (display, xid)
+            debugprint ("Parent is %s" % parent)
+            self.parent = parent
+        elif parent != None:
+            self.parent = parent.window
+        else:
+            self.parent = None
+
         self.dialog_mode = dialog_mode
         self.orig_ppd = ppd
         self.devid = devid
@@ -497,9 +506,6 @@ class NewPrinterGUI(GtkGUI):
         self.entNPTNetworkHostname.set_text ('')
         self.btnNetworkFind.set_sensitive (True)
         self.lblNetworkFindNotFound.hide ()
-
-        if parent:
-            self.NewPrinterWindow.set_transient_for (parent)
 
         try:
             self.cups = authconn.Connection (parent=self.NewPrinterWindow,
@@ -572,9 +578,9 @@ class NewPrinterGUI(GtkGUI):
                 self.NewPrinterWindow.set_title(_("New Printer"))
 
             try:
-                self.fetchPPDs (parent=self.parent)
+                self.fetchPPDs (self.NewPrinterWindow)
             except cups.IPPError, (e, m):
-                show_IPP_Error (e, m, parent=self.parent)
+                show_IPP_Error (e, m, parent=self.NewPrinterWindow)
                 return
             except:
                 nonfatalException ()
@@ -646,7 +652,9 @@ class NewPrinterGUI(GtkGUI):
             self.fillMakeList()
 
         self.setNPButtons()
-        self.NewPrinterWindow.show()
+        self.NewPrinterWindow.show_now()
+        if parent:
+            self.NewPrinterWindow.window.set_transient_for (parent)
 
     # get PPDs
 
@@ -1474,7 +1482,7 @@ class NewPrinterGUI(GtkGUI):
                 f.add_rule (f.ALLOW_SNMP)
 
             if not allowed:
-                dialog = gtk.MessageDialog (self.parent,
+                dialog = gtk.MessageDialog (None,
                                             gtk.DIALOG_MODAL |
                                             gtk.DIALOG_DESTROY_WITH_PARENT,
                                             gtk.MESSAGE_QUESTION,
@@ -1483,6 +1491,10 @@ class NewPrinterGUI(GtkGUI):
                 dialog.format_secondary_markup (secondary_text)
                 dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
                                     _("Adjust Firewall"), gtk.RESPONSE_YES)
+                dialog.show_now ()
+                if self.parent:
+                    dialog.window.set_transient_for (self.parent)
+
                 response = dialog.run ()
                 dialog.destroy ()
 
@@ -3284,10 +3296,102 @@ class NewPrinterGUI(GtkGUI):
 
 gobject.type_register (NewPrinterGUI)
 
+CONFIG_BUS='org.fedoraproject.Config.Printing'
+CONFIG_PATH='/org/fedoraproject/Config/Printing'
+CONFIG_IFACE='org.fedoraproject.Config.Printing'
+CONFIG_NEWPRINTERDIALOG_IFACE=CONFIG_IFACE + ".NewPrinterDialog"
+import dbus.service
+class ConfigPrintingNewPrinterDialog(dbus.service.Object):
+    def __init__ (self, bus, path):
+        bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
+        dbus.service.Object.__init__ (self, bus_name, path)
+        self.dialog = NewPrinterGUI()
+        self.dialog.connect ('dialog-canceled', self.on_dialog_canceled)
+        self.dialog.connect ('printer-added', self.on_printer_added)
+
+    @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
+                         in_signature='i', out_signature='')
+    def NewPrinter(self, xid):
+        self.dialog.init ('printer', xid=xid)
+
+    @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
+                         signature='')
+    def DialogCanceled(self):
+        pass
+
+    @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
+                         signature='s')
+    def PrinterAdded(self, name):
+        pass
+
+    def on_dialog_canceled(self, obj):
+        self.DialogCanceled ()
+
+    def on_printer_added(self, obj, name):
+        self.PrinterAdded (name)
+
+class ConfigPrinting(dbus.service.Object):
+    def __init__ (self):
+        self.bus = dbus.SessionBus ()
+        bus_name = dbus.service.BusName (CONFIG_BUS, bus=self.bus)
+        dbus.service.Object.__init__ (self, bus_name, CONFIG_PATH)
+        self.pathn = 0
+        self.dialog = NewPrinterGUI ()
+
+    @dbus.service.method(dbus_interface=CONFIG_IFACE,
+                         in_signature='', out_signature='s')
+    def _NewPrinterDialog(self):
+        self.pathn += 1
+        path = "%s/NewPrinterDialog%s" % (CONFIG_PATH, self.pathn)
+        ConfigPrintingNewPrinterDialog (self.bus, path)
+        return path
+
 if __name__ == '__main__':
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
     gobject.threads_init ()
     set_debugging (True)
+    from dbus.glib import DBusGMainLoop
+    DBusGMainLoop (set_as_default=True)
+
+    if len (sys.argv) > 1:
+        if sys.argv[1] == "--service":
+            debugprint ("Service running...")
+            loop = gobject.MainLoop ()
+            ConfigPrinting ()
+            loop.run ()
+        elif sys.argv[1] == "--client":
+            # Client demo
+            bus = dbus.SessionBus ()
+            obj = bus.get_object ('org.fedoraproject.Config.Printing',
+                                  '/org/fedoraproject/Config/Printing')
+            iface = dbus.Interface (obj, 'org.fedoraproject.Config.Printing')
+            path = iface._NewPrinterDialog ()
+            debugprint (path)
+
+            obj = bus.get_object ('org.fedoraproject.Config.Printing', path)
+            iface = dbus.Interface (obj,
+                                    'org.fedoraproject.Config.Printing.'
+                                    'NewPrinterDialog')
+            loop = gobject.MainLoop ()
+            def on_canceled(path=None):
+                print "%s: Dialog canceled" % path
+                loop.quit ()
+
+            def on_added(name, path=None):
+                print "%s: Printer '%s' added" % (path, name)
+                loop.quit ()
+
+            w = gtk.Window ()
+            w.show_now ()
+            iface.connect_to_signal ("DialogCanceled", on_canceled,
+                                     path_keyword="path")
+            iface.connect_to_signal ("PrinterAdded", on_added,
+                                     path_keyword="path")
+            iface.NewPrinter (w.window.xid)
+            loop.run ()
+
+        sys.exit (0)
+
     n = NewPrinterGUI ()
     def on_signal (*args):
         gtk.main_quit ()
