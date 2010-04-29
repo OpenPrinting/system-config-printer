@@ -533,6 +533,10 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPDownloadableDriverSearch_label = label
         label.set_text (_("Search"))
 
+        self.NewPrinterWindow.show_now()
+        if parent:
+            self.NewPrinterWindow.window.set_transient_for (parent)
+
         if self.dialog_mode in ("printer", "printer_with_uri", "class"):
             if self.dialog_mode == "class":
                 name_proto = "class"
@@ -601,9 +605,6 @@ class NewPrinterGUI(GtkGUI):
             self.auto_driver = None
 
         self.setNPButtons()
-        self.NewPrinterWindow.show_now()
-        if parent:
-            self.NewPrinterWindow.window.set_transient_for (parent)
 
     def on_ppdsloader_finished_initial (self, ppdsloader):
         """
@@ -1466,7 +1467,7 @@ class NewPrinterGUI(GtkGUI):
                 f.add_rule (f.ALLOW_SNMP)
 
             if not allowed:
-                dialog = gtk.MessageDialog (None,
+                dialog = gtk.MessageDialog (self.NewPrinterWindow,
                                             gtk.DIALOG_MODAL |
                                             gtk.DIALOG_DESTROY_WITH_PARENT,
                                             gtk.MESSAGE_QUESTION,
@@ -1475,19 +1476,23 @@ class NewPrinterGUI(GtkGUI):
                 dialog.format_secondary_markup (secondary_text)
                 dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
                                     _("Adjust Firewall"), gtk.RESPONSE_YES)
-                dialog.show_now ()
-                if self.parent:
-                    dialog.window.set_transient_for (self.parent)
-
-                response = dialog.run ()
-                dialog.destroy ()
-
-                if response == gtk.RESPONSE_YES:
-                    f.add_rule (f.ALLOW_IPP_SERVER)
-                    f.write ()
+                dialog.connect ('response', self.adjust_firewall_response, current_uri)
+                dialog.show ()
         except (dbus.DBusException, Exception):
             nonfatalException ()
 
+        if allowed:
+            self.start_fetching_devices (current_uri)
+
+    def adjust_firewall_response (self, dialog, response, current_uri):
+        dialog.destroy ()
+        if response == gtk.RESPONSE_YES:
+            f.add_rule (f.ALLOW_IPP_SERVER)
+            f.write ()
+
+        self.start_fetching_devices (current_uri)
+
+    def start_fetching_devices (self, current_uri):
         self.fetchDevices_conn = asyncconn.Connection ()
         self.fetchDevices_conn._begin_operation (_("fetching device list"))
         self.fetchDevices (network=False, current_uri=current_uri)
