@@ -131,7 +131,8 @@ class NewPrinterGUI(GtkGUI):
         'printer-added' :   (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
                              [gobject.TYPE_STRING]),
         'printer-modified': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                             [gobject.TYPE_STRING])
+                             [gobject.TYPE_STRING]),
+        'dialog-canceled':  (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
         }
 
     new_printer_device_tabs = {
@@ -303,6 +304,28 @@ class NewPrinterGUI(GtkGUI):
             widget.pack_start (cell, True)
             widget.add_attribute (cell, 'text', 0)
             widget.set_model (model)
+
+        # Set up some lists
+        m = gtk.SELECTION_MULTIPLE
+        s = gtk.SELECTION_SINGLE
+        b = gtk.SELECTION_BROWSE
+        for name, treeview, selection_mode in (
+            (_("Members of this class"), self.tvNCMembers, m),
+            (_("Others"), self.tvNCNotMembers, m),
+            (_("Devices"), self.tvNPDevices, s),
+            (_("Connections"), self.tvNPDeviceURIs, s),
+            (_("Makes"), self.tvNPMakes,s),
+            (_("Models"), self.tvNPModels,s),
+            (_("Drivers"), self.tvNPDrivers,s),
+            (_("Downloadable Drivers"), self.tvNPDownloadableDrivers, b),
+            ):
+
+            model = gtk.ListStore(str)
+            cell = gtk.CellRendererText()
+            column = gtk.TreeViewColumn(name, cell, text=0)
+            treeview.set_model(model)
+            treeview.append_column(column)
+            treeview.get_selection().set_mode(selection_mode)
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
@@ -753,6 +776,7 @@ class NewPrinterGUI(GtkGUI):
             self.openprinting_query_handle = None
 
         self.device = None
+        self.emit ('dialog-canceled')
         return True
 
     def on_btnNPBack_clicked(self, widget):
@@ -3259,3 +3283,17 @@ class NewPrinterGUI(GtkGUI):
         self.device = None
 
 gobject.type_register (NewPrinterGUI)
+
+if __name__ == '__main__':
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    gobject.threads_init ()
+    set_debugging (True)
+    n = NewPrinterGUI ()
+    def on_signal (*args):
+        gtk.main_quit ()
+
+    n.connect ("printer-added", on_signal)
+    n.connect ("printer-modified", on_signal)
+    n.connect ("dialog-canceled", on_signal)
+    n.init ("printer")
+    gtk.main ()

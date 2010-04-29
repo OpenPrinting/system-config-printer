@@ -603,21 +603,10 @@ class GUI(GtkGUI):
                                      self.dests_iconview_drag_data_get)
 
         # setup some lists
-        m = gtk.SELECTION_MULTIPLE
-        s = gtk.SELECTION_SINGLE
-        b = gtk.SELECTION_BROWSE
-        for name, treeview, selection_mode in (
-            (_("Members of this class"), self.tvClassMembers, m),
-            (_("Others"), self.tvClassNotMembers, m),
-            (_("Members of this class"), np.tvNCMembers, m),
-            (_("Others"), np.tvNCNotMembers, m),
-            (_("Devices"), np.tvNPDevices, s),
-            (_("Connections"), np.tvNPDeviceURIs, s),
-            (_("Makes"), np.tvNPMakes,s),
-            (_("Models"), np.tvNPModels,s),
-            (_("Drivers"), np.tvNPDrivers,s),
-            (_("Downloadable Drivers"), np.tvNPDownloadableDrivers, b),
-            (_("Users"), self.tvPUsers, m),
+        for name, treeview in (
+            (_("Members of this class"), self.tvClassMembers),
+            (_("Others"), self.tvClassNotMembers),
+            (_("Users"), self.tvPUsers),
             ):
 
             model = gtk.ListStore(str)
@@ -625,7 +614,7 @@ class GUI(GtkGUI):
             column = gtk.TreeViewColumn(name, cell, text=0)
             treeview.set_model(model)
             treeview.append_column(column)
-            treeview.get_selection().set_mode(selection_mode)
+            treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
 
         # Server Settings dialog
         self.ServerSettingsDialog.connect ('response',
