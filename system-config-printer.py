@@ -105,14 +105,13 @@ import gtkinklevel
 import statereason
 import firewall
 import newprinter
+from newprinter import busy, ready
 
 import ppdippstr
 ppdippstr.init ()
 pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
-
-busy_cursor = gtk.gdk.Cursor(gtk.gdk.WATCH)
 
 TEXT_start_firewall_tool = _("To do this, select "
                              "System->Administration->Firewall "
@@ -1237,30 +1236,6 @@ class GUI(GtkGUI):
             self.cups._end_operation ()
             raise
         self.cups._end_operation ()
-
-    def busy (self, win = None):
-        try:
-            if not win:
-                win = self.PrintersWindow
-            gdkwin = win.window
-            if gdkwin:
-                gdkwin.set_cursor (busy_cursor)
-                while gtk.events_pending ():
-                    gtk.main_iteration ()
-        except:
-            nonfatalException ()
-
-    def ready (self, win = None):
-        try:
-            if not win:
-                win = self.PrintersWindow
-            gdkwin = win.window
-            if gdkwin:
-                gdkwin.set_cursor (None)
-                while gtk.events_pending ():
-                    gtk.main_iteration ()
-        except:
-            nonfatalException ()
 
     def setConnected(self):
         connected = bool(self.cups)
@@ -3546,23 +3521,23 @@ class GUI(GtkGUI):
 
     # new printer
     def on_new_printer_activate(self, widget):
-        self.busy (self.PrintersWindow)
+        busy (self.PrintersWindow)
         self.newPrinterGUI.init("printer",
                                 host=self.connect_server,
                                 encryption=self.connect_encrypt,
                                 parent=self.PrintersWindow)
-        self.ready (self.PrintersWindow)
+        ready (self.PrintersWindow)
 
     # new printer, auto-detected, but now driver found
     def on_autodetected_printer_without_driver(self, widget):
-        self.busy (self.PrintersWindow)
+        busy (self.PrintersWindow)
         self.newPrinterGUI.init("printer_with_uri", device_uri=self.device_uri,
                                 ppd=self.ppd, devid=self.devid,
                                 host=self.connect_server,
                                 encryption=self.connect_encrypt,
                                 parent=self.PrintersWindow)
         self.devid = ""
-        self.ready (self.PrintersWindow)
+        ready (self.PrintersWindow)
 
     # new class
     def on_new_class_activate(self, widget):
@@ -3573,24 +3548,24 @@ class GUI(GtkGUI):
 
     # change device
     def on_btnSelectDevice_clicked(self, button):
-        self.busy (self.PrintersWindow)
+        busy (self.PrintersWindow)
         self.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
                                 name=self.printer.name,
                                 host=self.connect_server,
                                 encryption=self.connect_encrypt,
                                 parent=self.PrinterPropertiesDialog)
-        self.ready (self.PrintersWindow)
+        ready (self.PrintersWindow)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
-        self.busy (self.PrintersWindow)
+        busy (self.PrintersWindow)
         self.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
                                 ppd=self.ppd,
                                 name=self.printer.name,
                                 host=self.connect_server,
                                 encryption=self.connect_encrypt,
                                 parent=self.PrinterPropertiesDialog)
-        self.ready (self.PrintersWindow)
+        ready (self.PrintersWindow)
 
     def new_printer_added (self, obj, name):
         debugprint ("New printer added: %s" % name)

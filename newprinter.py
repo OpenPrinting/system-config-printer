@@ -108,6 +108,19 @@ def checkNPName(printers, name):
             return False
     return True
 
+def ready (win, cursor=None):
+    try:
+        gdkwin = win.window
+        if gdkwin:
+            gdkwin.set_cursor (cursor)
+            while gtk.events_pending ():
+                gtk.main_iteration ()
+    except:
+        nonfatalException ()
+
+def busy (win):
+    ready (win, gtk.gdk.Cursor(gtk.gdk.WATCH))
+
 def on_delete_just_hide (widget, event):
     widget.hide ()
     return True # stop other handlers
@@ -297,10 +310,6 @@ class NewPrinterGUI(GtkGUI):
         # default handler destroy them
         for dialog in [self.SMBBrowseDialog]:
             dialog.connect ("delete-event", on_delete_just_hide)
-
-        # share with mainapp
-        self.busy = mainapp.busy
-        self.ready = mainapp.ready
 
         gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
@@ -761,7 +770,7 @@ class NewPrinterGUI(GtkGUI):
             order = [0, 4, 5]
         elif self.dialog_mode == "printer" or \
                 self.dialog_mode == "printer_with_uri":
-            self.busy (self.NewPrinterWindow)
+            busy (self.NewPrinterWindow)
             if page_nr == 1: # Device (first page)
                 self.auto_make, self.auto_model = None, None
                 self.auto_driver = None
@@ -825,16 +834,16 @@ class NewPrinterGUI(GtkGUI):
                     try:
                         self.fetchPPDs(self.NewPrinterWindow)
                     except cups.IPPError, (e, msg):
-                        self.ready (self.NewPrinterWindow)
+                        ready (self.NewPrinterWindow)
                         self.show_IPP_Error(e, msg)
                         return
                     except:
                         nonfatalException ()
-                        self.ready (self.NewPrinterWindow)
+                        ready (self.NewPrinterWindow)
                         return
 
                     if self.ppds == None:
-                        self.ready (self.NewPrinterWindow)
+                        ready (self.NewPrinterWindow)
                         return
 
                 ppdname = None
@@ -907,7 +916,7 @@ class NewPrinterGUI(GtkGUI):
                     except:
                         nonfatalException ()
 
-            self.ready (self.NewPrinterWindow)
+            ready (self.NewPrinterWindow)
             if self.dialog_mode == "printer":
                 if self.remotecupsqueue:
                     order = [1, 0]
@@ -988,8 +997,8 @@ class NewPrinterGUI(GtkGUI):
                                          _('Searching for drivers'))
                 self.WaitWindow.set_transient_for (self.NewPrinterWindow)
                 self.WaitWindow.show ()
-                self.busy (self.WaitWindow)
-                self.busy (self.NewPrinterWindow)
+                busy (self.WaitWindow)
+                busy (self.NewPrinterWindow)
 
                 # Keep the UI refreshed while we wait for the drivers
                 # query to complete.
@@ -998,7 +1007,7 @@ class NewPrinterGUI(GtkGUI):
                         gtk.main_iteration ()
                     time.sleep (0.1)
 
-                self.ready (self.NewPrinterWindow)
+                ready (self.NewPrinterWindow)
                 self.WaitWindow.hide ()
 
             self.fillDownloadableDrivers()
@@ -1615,7 +1624,7 @@ class NewPrinterGUI(GtkGUI):
         """Initialise the SMB tree store."""
         store = self.smb_store
         store.clear ()
-        self.busy(self.SMBBrowseDialog)
+        busy(self.SMBBrowseDialog)
         class X:
             pass
         dummy = X()
@@ -1671,7 +1680,7 @@ class NewPrinterGUI(GtkGUI):
             path = store.get_path (iter)
             self.tvSMBBrowser.expand_row (path, 0)
 
-        self.ready(self.SMBBrowseDialog)
+        ready(self.SMBBrowseDialog)
 
         if store.get_iter_first () == None:
             self.SMBBrowseDialog.hide ()
@@ -1735,7 +1744,7 @@ class NewPrinterGUI(GtkGUI):
             except:
                 self.expanding_row = 1
 
-            self.busy (self.SMBBrowseDialog)
+            busy (self.SMBBrowseDialog)
             uri = "smb://%s/" % entry.name
             debug = 0
             if get_debugging ():
@@ -1769,7 +1778,7 @@ class NewPrinterGUI(GtkGUI):
 
             view.expand_row (path, 0)
             del self.expanding_row
-            self.ready (self.SMBBrowseDialog)
+            ready (self.SMBBrowseDialog)
 
         elif entry.smbc_type == pysmb.smbc.SERVER:
             # Server
@@ -1779,7 +1788,7 @@ class NewPrinterGUI(GtkGUI):
             except:
                 self.expanding_row = 1
 
-            self.busy (self.SMBBrowseDialog)
+            busy (self.SMBBrowseDialog)
             uri = "smb://%s/" % entry.name
             debug = 0
             if get_debugging ():
@@ -1811,7 +1820,7 @@ class NewPrinterGUI(GtkGUI):
 
             view.expand_row (path, 0)
             del self.expanding_row
-            self.ready (self.SMBBrowseDialog)
+            ready (self.SMBBrowseDialog)
 
     def on_entSMBURI_changed (self, ent):
         uri = ent.get_text ()
@@ -1914,7 +1923,7 @@ class NewPrinterGUI(GtkGUI):
 
         accessible = False
         canceled = False
-        self.busy ()
+        busy (self.NewPrinterWindow)
         try:
             debug = 0
             if get_debugging ():
@@ -1951,7 +1960,7 @@ class NewPrinterGUI(GtkGUI):
             reason = s
         except:
             nonfatalException()
-        self.ready ()
+        ready (self.NewPrinterWindow)
 
         if accessible:
             show_info_dialog (_("Print Share Verified"),
@@ -2013,7 +2022,7 @@ class NewPrinterGUI(GtkGUI):
                                      _('Verifying printer'))
             self.WaitWindow.set_transient_for (self.NewPrinterWindow)
             self.WaitWindow.show ()
-            self.busy (self.WaitWindow)
+            busy (self.WaitWindow)
             source = gobject.timeout_add_seconds (10, op.cancel)
             try:
                 attributes = op.run ()
@@ -2361,7 +2370,7 @@ class NewPrinterGUI(GtkGUI):
                                  _('Searching for printers'))
         self.WaitWindow.set_transient_for (self.NewPrinterWindow)
         self.WaitWindow.show_now ()
-        self.busy (self.WaitWindow)
+        busy (self.WaitWindow)
         printers = server.probe()
         self.WaitWindow.hide ()
 
@@ -3128,7 +3137,7 @@ class NewPrinterGUI(GtkGUI):
             for option in self.options.itervalues():
                 option.writeback()
 
-            self.busy (self.NewPrinterWindow)
+            busy (self.NewPrinterWindow)
             while gtk.events_pending ():
                 gtk.main_iteration ()
             self.cups._begin_operation (_("adding printer %s") % name)
@@ -3147,16 +3156,16 @@ class NewPrinterGUI(GtkGUI):
                     check = True
                     checkppd = ppd
             except cups.IPPError, (e, msg):
-                self.ready (self.NewPrinterWindow)
+                ready (self.NewPrinterWindow)
                 self.show_IPP_Error(e, msg)
                 self.cups._end_operation()
                 return
             except:
-                self.ready (self.NewPrinterWindow)
+                ready (self.NewPrinterWindow)
                 self.cups._end_operation()
                 fatalException (1)
             self.cups._end_operation()
-            self.ready (self.NewPrinterWindow)
+            ready (self.NewPrinterWindow)
         if self.dialog_mode in ("class", "printer", "printer_with_uri"):
             self.cups._begin_operation (_("modifying printer %s") % name)
             try:
