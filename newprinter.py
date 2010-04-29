@@ -3362,16 +3362,13 @@ if __name__ == '__main__':
         elif sys.argv[1] == "--client":
             # Client demo
             bus = dbus.SessionBus ()
-            obj = bus.get_object ('org.fedoraproject.Config.Printing',
-                                  '/org/fedoraproject/Config/Printing')
-            iface = dbus.Interface (obj, 'org.fedoraproject.Config.Printing')
+            obj = bus.get_object (CONFIG_BUS, CONFIG_PATH)
+            iface = dbus.Interface (obj, CONFIG_IFACE)
             path = iface._NewPrinterDialog ()
             debugprint (path)
 
-            obj = bus.get_object ('org.fedoraproject.Config.Printing', path)
-            iface = dbus.Interface (obj,
-                                    'org.fedoraproject.Config.Printing.'
-                                    'NewPrinterDialog')
+            obj = bus.get_object (CONFIG_BUS, path)
+            iface = dbus.Interface (obj, CONFIG_NEWPRINTERDIALOG_IFACE)
             loop = gobject.MainLoop ()
             def on_canceled(path=None):
                 print "%s: Dialog canceled" % path
