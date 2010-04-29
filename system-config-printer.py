@@ -90,6 +90,7 @@ from debug import *
 import gtk_label_autowrap
 import urllib
 import troubleshoot
+import installpackage
 import jobviewer
 import authconn
 import monitor
@@ -200,6 +201,9 @@ class GUI(GtkGUI):
                              ["NewPrinterName",
                               "entDuplicateName",
                               "btnDuplicateOk"],
+                         "InstallDialog":
+                             ["InstallDialog",
+                              "lblInstall"],
                          "ServerSettingsDialog":
                              ["ServerSettingsDialog",
                               "chkServerBrowse",
@@ -478,7 +482,8 @@ class GUI(GtkGUI):
 
         # New Printer Dialog
         self.newPrinterGUI = np = newprinter.NewPrinterGUI(self)
-        np.connect ("printer-added", self.new_printer_added)
+        np.connect ("printer-added", self.on_new_printer_added)
+        np.connect ("printer-modified", self.on_printer_modified)
 
         # Set up "About" dialog
         self.AboutDialog.set_program_name(config.PACKAGE)
@@ -3567,7 +3572,7 @@ class GUI(GtkGUI):
                                 parent=self.PrinterPropertiesDialog)
         ready (self.PrintersWindow)
 
-    def new_printer_added (self, obj, name):
+    def on_new_printer_added (self, obj, name):
         debugprint ("New printer added: %s" % name)
         self.populateList ()
 
@@ -3591,6 +3596,137 @@ class GUI(GtkGUI):
                 break
 
             iter = model.iter_next (iter)
+
+        # Finally, suggest printing a test page.
+        self.fillPrinterTab (name)
+        if self.ppd:
+            try:
+                self.checkDriverExists (self.PrintersWindow, name,
+                                        ppd=self.ppd)
+            except:
+                nonfatalException()
+
+            q = gtk.MessageDialog (self.PrintersWindow,
+                                   gtk.DIALOG_DESTROY_WITH_PARENT |
+                                   gtk.DIALOG_MODAL,
+                                   gtk.MESSAGE_QUESTION,
+                                   gtk.BUTTONS_NONE,
+                                   _("Would you like to print a test page?"))
+            q.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                           _("Print Test Page"), gtk.RESPONSE_YES)
+            response = q.run ()
+            q.destroy ()
+            if response == gtk.RESPONSE_YES:
+                self.PrinterPropertiesDialog.hide ()
+
+                properties_shown = False
+                try:
+                    # Load the printer details but hide the properties dialog.
+                    self.display_properties_dialog_for (name)
+                    properties_shown = True
+                except RuntimeError:
+                    pass
+
+                if properties_shown:
+                    # Click the test button.
+                    self.btnPrintTestPage.clicked ()
+
+    def checkDriverExists(self, parent, name, ppd=None):
+        """Check that the driver for an existing queue actually
+        exists, and prompt to install the appropriate package
+        if not.
+
+        ppd: cups.PPD object, if already created"""
+
+        # Is this queue on the local machine?  If not, we can't check
+        # anything at all.
+        server = cups.getServer ()
+        if not (self.connect_server == 'localhost' or
+                self.connect_server[0] == '/'):
+            return
+
+        # Fetch the PPD if we haven't already.
+        if not ppd:
+            try:
+                filename = self.cups.getPPD(name)
+            except cups.IPPError, (e, msg):
+                if e == cups.IPP_NOT_FOUND:
+                    # This is a raw queue.  Nothing to check.
+                    return
+                else:
+                    self.show_IPP_Error(e, msg)
+                    return
+
+            ppd = cups.PPD(filename)
+            os.unlink(filename)
+
+        (pkgs, exes) = cupshelpers.missingPackagesAndExecutables (ppd)
+        if len (pkgs) > 0 or len (exes) > 0:
+            # We didn't find a necessary executable.  Complain.
+            can_install = False
+            if len (pkgs) > 0:
+                try:
+                    pk = installpackage.PackageKit ()
+                    can_install = True
+                except:
+                    pass
+
+            if can_install and len (pkgs) > 0:
+                pkg = pkgs[0]
+                install_text = ('<span weight="bold" size="larger">' +
+                                _('Install driver') + '</span>\n\n' +
+                                _("Printer '%s' requires the %s package but "
+                                  "it is not currently installed.") %
+                                (name, pkg))
+                dialog = self.InstallDialog
+                self.lblInstall.set_markup(install_text)
+                dialog.set_transient_for (parent)
+                response = dialog.run ()
+                dialog.hide ()
+                if response == gtk.RESPONSE_OK:
+                    # Install the package.
+                    try:
+                        xid = parent.window.xid
+                        pk.InstallPackageName (xid, 0, pkg)
+                    except:
+                        pass # should handle error
+            else:
+                show_error_dialog (_('Missing driver'),
+                                   _("Printer '%s' requires the '%s' program "
+                                     "but it is not currently installed.  "
+                                     "Please install it before using this "
+                                     "printer.") % (name, (exes + pkgs)[0]),
+                                   parent)
+
+    def on_printer_modified (self, obj, name):
+        debugprint ("Printer modified by user: %s" % name)
+        # Load information about the printer,
+        # e.g. self.server_side_options and self.ppd
+        # (both used below).
+        self.fillPrinterTab (name)
+
+        if self.ppd:
+            try:
+                self.checkDriverExists (self.PrinterPropertiesDialog,
+                                        name, ppd=self.ppd)
+            except:
+                nonfatalException()
+
+            # Also check to see whether the media option has become
+            # invalid.  This can happen if it had previously been
+            # explicitly set to a page size that is not offered with
+            # the new PPD (see bug #441836).
+            try:
+                option = self.server_side_options['media']
+                if option.get_current_value () == None:
+                    debugprint ("Invalid media option: resetting")
+                    option.reset ()
+                    self.changed.add (option)
+                    self.save_printer (self.printer)
+            except KeyError:
+                pass
+            except:
+                nonfatalException()
 
     ## Monitor signal helpers
     def printer_added_or_removed (self):

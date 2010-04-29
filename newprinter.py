@@ -53,7 +53,6 @@ import gtk_label_autowrap
 import urllib
 from smburi import SMBURI
 from errordialogs import *
-import installpackage
 from PhysicalDevice import PhysicalDevice
 import gtkspinner
 import firewall
@@ -128,8 +127,10 @@ def on_delete_just_hide (widget, event):
 class NewPrinterGUI(GtkGUI):
 
     __gsignals__ = {
-        'printer-added' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                           [gobject.TYPE_STRING]),
+        'printer-added' :   (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                             [gobject.TYPE_STRING]),
+        'printer-modified': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                             [gobject.TYPE_STRING])
         }
 
     new_printer_device_tabs = {
@@ -258,10 +259,7 @@ class NewPrinterGUI(GtkGUI):
                          "SMBBrowseDialog":
                              ["SMBBrowseDialog",
                               "tvSMBBrowser",
-                              "btnSMBBrowseOk"],
-                         "InstallDialog":
-                             ["InstallDialog",
-                              "lblInstall"]},
+                              "btnSMBBrowseOk"]},
 
                         domain=config.PACKAGE)
 
@@ -3251,133 +3249,13 @@ class NewPrinterGUI(GtkGUI):
                 checkppd = ppd
 
         self.NewPrinterWindow.hide()
-        self.emit ('printer-added', name)
+        if self.dialog_mode in ["printer", "printer_with_uri"]:
+            self.emit ('printer-added', name)
+        elif self.dialog_mode == "class":
+            self.emit ('class-added', name)
+        else:
+            self.emit ('printer-modified', name)
+
         self.device = None
-
-        # Load information about the printer,
-        # e.g. self.mainapp.server_side_options and self.mainapp.ppd
-        # (both used below).
-        self.mainapp.fillPrinterTab (name)
-
-        # Select 'Settings' in the properties treeview.
-        self.mainapp.tvPrinterProperties.set_cursor ((0,))
-
-        if check:
-            try:
-                self.checkDriverExists (name, ppd=checkppd)
-            except:
-                nonfatalException()
-
-            # Also check to see whether the media option has become
-            # invalid.  This can happen if it had previously been
-            # explicitly set to a page size that is not offered with
-            # the new PPD (see bug #441836).
-            try:
-                option = self.mainapp.server_side_options['media']
-                if option.get_current_value () == None:
-                    debugprint ("Invalid media option: resetting")
-                    option.reset ()
-                    self.mainapp.changed.add (option)
-                    self.mainapp.save_printer (self.mainapp.printer)
-            except KeyError:
-                pass
-            except:
-                nonfatalException()
-
-        # Finally, suggest printing a test page.
-        if (self.dialog_mode == "printer" or \
-            self.dialog_mode == "printer_with_uri") and \
-            self.mainapp.ppd != False:
-            q = gtk.MessageDialog (self.mainapp.PrintersWindow,
-                                   gtk.DIALOG_DESTROY_WITH_PARENT |
-                                   gtk.DIALOG_MODAL,
-                                   gtk.MESSAGE_QUESTION,
-                                   gtk.BUTTONS_NONE,
-                                   _("Would you like to print a test page?"))
-            q.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
-                           _("Print Test Page"), gtk.RESPONSE_YES)
-            response = q.run ()
-            q.destroy ()
-            if response == gtk.RESPONSE_YES:
-                self.mainapp.PrinterPropertiesDialog.hide ()
-
-                properties_shown = False
-                try:
-                    # Load the printer details but hide the properties dialog.
-                    self.mainapp.display_properties_dialog_for (name)
-                    properties_shown = True
-                except RuntimeError:
-                    pass
-
-                if properties_shown:
-                    # Click the test button.
-                    self.mainapp.btnPrintTestPage.clicked ()
-
-    def checkDriverExists(self, name, ppd=None):
-        """Check that the driver for an existing queue actually
-        exists, and prompt to install the appropriate package
-        if not.
-
-        ppd: cups.PPD object, if already created"""
-
-        # Is this queue on the local machine?  If not, we can't check
-        # anything at all.
-        server = cups.getServer ()
-        if not (server == 'localhost' or server == '127.0.0.1' or
-                server == '::1' or server[0] == '/'):
-            return
-
-        # Fetch the PPD if we haven't already.
-        if not ppd:
-            try:
-                filename = self.cups.getPPD(name)
-            except cups.IPPError, (e, msg):
-                if e == cups.IPP_NOT_FOUND:
-                    # This is a raw queue.  Nothing to check.
-                    return
-                else:
-                    self.show_IPP_Error(e, msg)
-                    return
-
-            ppd = cups.PPD(filename)
-            os.unlink(filename)
-
-        (pkgs, exes) = cupshelpers.missingPackagesAndExecutables (ppd)
-        if len (pkgs) > 0 or len (exes) > 0:
-            # We didn't find a necessary executable.  Complain.
-            can_install = False
-            if len (pkgs) > 0:
-                try:
-                    pk = installpackage.PackageKit ()
-                    can_install = True
-                except:
-                    pass
-
-            if can_install and len (pkgs) > 0:
-                pkg = pkgs[0]
-                install_text = ('<span weight="bold" size="larger">' +
-                                _('Install driver') + '</span>\n\n' +
-                                _("Printer '%s' requires the %s package but "
-                                  "it is not currently installed.") %
-                                (name, pkg))
-                dialog = self.InstallDialog
-                self.lblInstall.set_markup(install_text)
-                dialog.set_transient_for (self.parent)
-                response = dialog.run ()
-                dialog.hide ()
-                if response == gtk.RESPONSE_OK:
-                    # Install the package.
-                    try:
-                        xid = self.mainapp.PrintersWindow.window.xid
-                        pk.InstallPackageName (xid, 0, pkg)
-                    except:
-                        pass # should handle error
-            else:
-                show_error_dialog (_('Missing driver'),
-                                   _("Printer '%s' requires the '%s' program "
-                                     "but it is not currently installed.  "
-                                     "Please install it before using this "
-                                     "printer.") % (name, (exes + pkgs)[0]),
-                                   self.parent)
 
 gobject.type_register (NewPrinterGUI)
