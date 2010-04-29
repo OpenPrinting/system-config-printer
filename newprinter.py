@@ -534,8 +534,8 @@ class NewPrinterGUI(GtkGUI):
         label.set_text (_("Search"))
 
         self.NewPrinterWindow.show_now()
-        if parent:
-            self.NewPrinterWindow.window.set_transient_for (parent)
+        if self.parent:
+            self.NewPrinterWindow.window.set_transient_for (self.parent)
 
         if self.dialog_mode in ("printer", "printer_with_uri", "class"):
             if self.dialog_mode == "class":
