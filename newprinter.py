@@ -648,10 +648,10 @@ class NewPrinterGUI(GtkGUI):
             if self.device and not self.device.id:
                 self.device.id = self.devid
                 self.device.id_dict = devid_dict
-        elif ppd:
-            attr = ppd.findAttr("NickName")
+        elif self.orig_ppd:
+            attr = self.orig_ppd.findAttr("NickName")
             if not attr:
-                attr = ppd.findAttr("ModelName")
+                attr = self.orig_ppd.findAttr("ModelName")
 
             if attr.value:
                 mfgmdl = cupshelpers.ppds.ppdMakeModelSplit (attr.value)
