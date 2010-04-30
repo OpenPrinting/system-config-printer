@@ -479,10 +479,8 @@ class NewPrinterGUI(GtkGUI):
             parent = gtk.gdk.window_foreign_new_for_display (display, xid)
             debugprint ("Parent is %s" % parent)
             self.parent = parent
-        elif parent != None:
-            self.parent = parent.window
         else:
-            self.parent = None
+            self.parent = parent
 
         self.dialog_mode = dialog_mode
         self.orig_ppd = ppd
@@ -533,8 +531,9 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPDownloadableDriverSearch_label = label
         label.set_text (_("Search"))
 
-        self.NewPrinterWindow.show_now()
-        if self.parent:
+        if xid and self.parent:
+            # Show the window now so we can set its transcience.
+            self.NewPrinterWindow.show_now()
             self.NewPrinterWindow.window.set_transient_for (self.parent)
 
         if self.dialog_mode in ("printer", "printer_with_uri", "class"):
@@ -604,6 +603,10 @@ class NewPrinterGUI(GtkGUI):
             self.auto_model = ""
             self.auto_driver = None
 
+        if self.parent and not xid:
+            self.NewPrinterWindow.set_transient_for (self.parent)
+
+        self.NewPrinterWindow.show ()
         self.setNPButtons()
 
     def on_ppdsloader_finished_initial (self, ppdsloader):
