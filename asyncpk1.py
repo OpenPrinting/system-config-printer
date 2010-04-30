@@ -47,6 +47,8 @@ CUPS_PK_NEED_AUTH = 'org.opensuse.CupsPkHelper.Mechanism.NotPrivileged'
 ###### thread.
 ######
 
+_DevicesGet_uses_new_api = None
+
 ###
 ### A class to handle an asynchronous method call.
 ###
@@ -209,8 +211,8 @@ class PK1Connection:
             # No system D-Bus.
             self._system_bus = None
 
-        self._devicesget_uses_new_api = None
-        if self._system_bus:
+        global _DevicesGet_uses_new_api
+        if _DevicesGet_uses_new_api == None and self._system_bus:
             try:
                 obj = self._system_bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
                 proxy = dbus.Interface (obj, dbus.INTROSPECTABLE_IFACE)
@@ -232,7 +234,7 @@ class PK1Connection:
 
                             num_args += 1
 
-                        self._devicesget_uses_new_api = num_args == 4
+                        _DevicesGet_uses_new_api = num_args == 4
                         debugprint ("DevicesGet new API: %s" % (num_args == 4))
                         break
 
@@ -368,7 +370,8 @@ class PK1Connection:
         return None
 
     def getDevices (self, *args, **kwds):
-        if self._devicesget_uses_new_api:
+        global _DevicesGet_uses_new_api
+        if _DevicesGet_uses_new_api:
             (use_pycups, reply_handler, error_handler,
              tup) = self._args_kwds_to_tuple ([int, int, list, list],
                                               [("timeout", 0),
