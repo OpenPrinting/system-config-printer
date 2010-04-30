@@ -1442,7 +1442,8 @@ class NewPrinterGUI(GtkGUI):
                 self.firewall = firewall.Firewall ()
                 self.firewall.read (reply_handler=self.on_firewall_read,
                                     error_handler=lambda x:
-                                        self.start_fetching_devices)
+                                        self.start_fetching_devices())
+                allowed = False
             else:
                 # This is a remote server.  Nothing we can do about
                 # the firewall there.
@@ -1501,8 +1502,8 @@ class NewPrinterGUI(GtkGUI):
     def adjust_firewall_response (self, dialog, response):
         dialog.destroy ()
         if response == gtk.RESPONSE_YES:
-            f.add_rule (f.ALLOW_IPP_SERVER)
-            f.write ()
+            self.firewall.add_rule (self.firewall.ALLOW_IPP_SERVER)
+            self.firewall.write ()
 
         self.start_fetching_devices ()
 
