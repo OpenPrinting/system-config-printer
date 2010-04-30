@@ -104,6 +104,7 @@ nobase_pkgdata_DATA=					\
 	PhysicalDevice.py				\
 	ppdippstr.py					\
 	ppdsloader.py					\
+	printerproperties.py				\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
 	SearchCriterion.py				\
