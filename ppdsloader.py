@@ -182,6 +182,7 @@ class PPDsLoader(gobject.GObject):
         self._exc = exc
         self.emit ('finished')
 
+gobject.type_register(PPDsLoader)
 
 if __name__ == "__main__":
     class Foo:
