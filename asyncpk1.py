@@ -31,9 +31,6 @@ import asyncipp
 from debug import *
 import debug
 
-from dbus.mainloop.glib import DBusGMainLoop
-DBusGMainLoop (set_as_default=True)
-
 CUPS_PK_NAME  = 'org.opensuse.CupsPkHelper.Mechanism'
 CUPS_PK_PATH  = '/'
 CUPS_PK_IFACE = 'org.opensuse.CupsPkHelper.Mechanism'
@@ -684,4 +681,6 @@ if __name__ == '__main__':
             print "get jobs error: %s" % repr (exc)
 
     UI ()
+    from dbus.mainloop.glib import DBusGMainLoop
+    DBusGMainLoop (set_as_default=True)
     gtk.main ()

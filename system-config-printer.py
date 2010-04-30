@@ -3787,6 +3787,8 @@ def main(setup_printer = None, configure_printer = None, change_ppd = False,
          devid = "", print_test_page = False, focus_on_map = True):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gobject.threads_init()
+    from dbus.glib import DBusGMainLoop
+    DBusGMainLoop (set_as_default=True)
 
     mainwindow = GUI(setup_printer, configure_printer, change_ppd, devid,
                      print_test_page, focus_on_map)
