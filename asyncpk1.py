@@ -47,6 +47,8 @@ CUPS_PK_NEED_AUTH = 'org.opensuse.CupsPkHelper.Mechanism.NotPrivileged'
 ###### thread.
 ######
 
+_DevicesGet_uses_new_api = None
+
 ###
 ### A class to handle an asynchronous method call.
 ###
@@ -209,8 +211,8 @@ class PK1Connection:
             # No system D-Bus.
             self._system_bus = None
 
-        self._devicesget_uses_new_api = None
-        if self._system_bus:
+        global _DevicesGet_uses_new_api
+        if _DevicesGet_uses_new_api == None and self._system_bus:
             try:
                 obj = self._system_bus.get_object(CUPS_PK_NAME, CUPS_PK_PATH)
                 proxy = dbus.Interface (obj, dbus.INTROSPECTABLE_IFACE)
@@ -232,7 +234,7 @@ class PK1Connection:
 
                             num_args += 1
 
-                        self._devicesget_uses_new_api = num_args == 4
+                        _DevicesGet_uses_new_api = num_args == 4
                         debugprint ("DevicesGet new API: %s" % (num_args == 4))
                         break
 
@@ -368,7 +370,8 @@ class PK1Connection:
         return None
 
     def getDevices (self, *args, **kwds):
-        if self._devicesget_uses_new_api:
+        global _DevicesGet_uses_new_api
+        if _DevicesGet_uses_new_api:
             (use_pycups, reply_handler, error_handler,
              tup) = self._args_kwds_to_tuple ([int, int, list, list],
                                               [("timeout", 0),
@@ -377,26 +380,26 @@ class PK1Connection:
                                                ("exclude_schemes", [])],
                                               args, kwds)
         else:
-                (use_pycups, reply_handler, error_handler,
-                 tup) = self._args_kwds_to_tuple ([int, list, list],
-                                                  [("limit", 0),
-                                                   ("include_schemes", []),
-                                                   ("exclude_schemes", [])],
-                                                  args, kwds)
+            (use_pycups, reply_handler, error_handler,
+             tup) = self._args_kwds_to_tuple ([int, list, list],
+                                              [("limit", 0),
+                                               ("include_schemes", []),
+                                               ("exclude_schemes", [])],
+                                              args, kwds)
 
-                if not use_pycups:
-                    # Special handling for include_schemes/exclude_schemes.
-                    # Convert from list to ","-separated string.
-                    newtup = list (tup)
-                    for paramindex in [1, 2]:
-                        if len (newtup[paramindex]) > 0:
-                            newtup[paramindex] = reduce (lambda x, y:
-                                                             x + "," + y,
-                                                         newtup[paramindex])
-                        else:
-                            newtup[paramindex] = ""
+            if not use_pycups:
+                # Special handling for include_schemes/exclude_schemes.
+                # Convert from list to ","-separated string.
+                newtup = list (tup)
+                for paramindex in [1, 2]:
+                    if len (newtup[paramindex]) > 0:
+                        newtup[paramindex] = reduce (lambda x, y:
+                                                         x + "," + y,
+                                                     newtup[paramindex])
+                    else:
+                        newtup[paramindex] = ""
 
-                    tup = tuple (newtup)
+                tup = tuple (newtup)
 
         self._call_with_pk (use_pycups,
                             'DevicesGet', tup, reply_handler, error_handler,
