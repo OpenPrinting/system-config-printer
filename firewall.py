@@ -46,7 +46,7 @@ class Firewall:
                 return
 
             p = self._firewall.read ()
-            self.reply_handler (p)
+            self._fw_data = pickle.loads (p.encode ('utf-8'))
         except dbus.DBusException:
             raise RuntimeError
 
