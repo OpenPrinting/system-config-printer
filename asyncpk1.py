@@ -377,26 +377,26 @@ class PK1Connection:
                                                ("exclude_schemes", [])],
                                               args, kwds)
         else:
-                (use_pycups, reply_handler, error_handler,
-                 tup) = self._args_kwds_to_tuple ([int, list, list],
-                                                  [("limit", 0),
-                                                   ("include_schemes", []),
-                                                   ("exclude_schemes", [])],
-                                                  args, kwds)
+            (use_pycups, reply_handler, error_handler,
+             tup) = self._args_kwds_to_tuple ([int, list, list],
+                                              [("limit", 0),
+                                               ("include_schemes", []),
+                                               ("exclude_schemes", [])],
+                                              args, kwds)
 
-                if not use_pycups:
-                    # Special handling for include_schemes/exclude_schemes.
-                    # Convert from list to ","-separated string.
-                    newtup = list (tup)
-                    for paramindex in [1, 2]:
-                        if len (newtup[paramindex]) > 0:
-                            newtup[paramindex] = reduce (lambda x, y:
-                                                             x + "," + y,
-                                                         newtup[paramindex])
-                        else:
-                            newtup[paramindex] = ""
+            if not use_pycups:
+                # Special handling for include_schemes/exclude_schemes.
+                # Convert from list to ","-separated string.
+                newtup = list (tup)
+                for paramindex in [1, 2]:
+                    if len (newtup[paramindex]) > 0:
+                        newtup[paramindex] = reduce (lambda x, y:
+                                                         x + "," + y,
+                                                     newtup[paramindex])
+                    else:
+                        newtup[paramindex] = ""
 
-                    tup = tuple (newtup)
+                tup = tuple (newtup)
 
         self._call_with_pk (use_pycups,
                             'DevicesGet', tup, reply_handler, error_handler,
