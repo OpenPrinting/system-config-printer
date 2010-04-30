@@ -2,8 +2,9 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -65,19 +66,6 @@ class ErrorLogFetch(Question):
             return None
 
         self.authconn = self.troubleshooter.answers['_authenticated_connection']
-        if checkpoint != None:
-            self.op = TimedOperation (fetch_log,
-                                      (self.authconn,),
-                                      parent=parent)
-            tmpfname = self.op.run ()
-            if tmpfname != None:
-                f = file (tmpfname)
-                f.seek (checkpoint)
-                lines = f.readlines ()
-                os.remove (tmpfname)
-                self.answers = { 'error_log': map (lambda x: x.strip (),
-                                                   lines) }
-
         if answers.has_key ('error_log_debug_logging_set'):
             try:
                 self.op = TimedOperation (self.authconn.adminGetServerSettings,
@@ -113,6 +101,19 @@ class ErrorLogFetch(Question):
                 self.persistent_answers['error_log_debug_logging_unset'] = True
             except cups.IPPError:
                 pass
+
+        if checkpoint != None:
+            self.op = TimedOperation (fetch_log,
+                                      (self.authconn,),
+                                      parent=parent)
+            tmpfname = self.op.run ()
+            if tmpfname != None:
+                f = file (tmpfname)
+                f.seek (checkpoint)
+                lines = f.readlines ()
+                os.remove (tmpfname)
+                self.answers = { 'error_log': map (lambda x: x.strip (),
+                                                   lines) }
 
         return False
 
