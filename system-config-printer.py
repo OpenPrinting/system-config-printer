@@ -623,7 +623,9 @@ class GUI(GtkGUI):
         object = model.get_value (iter, 0)
 
         try:
-            self.propertiesDlg.show (name, self.PrintersWindow)
+            self.propertiesDlg.show (name, host=self.connect_server,
+                                     encryption=self.connect_encrypt,
+                                     parent=self.PrintersWindow)
         except cups.IPPError, (e, m):
             show_IPP_Error (e, m, self.PrintersWindow)
             if e == cups.IPP_SERVICE_UNAVAILABLE:

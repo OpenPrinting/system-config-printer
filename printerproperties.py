@@ -453,9 +453,16 @@ class PrinterPropertiesDialog(GtkGUI):
             self.job_options_widgets[option.widget] = option
             self.job_options_buttons[option.button] = option
 
-    def show (self, name, parent=None):
+    def show (self, name, host=None, encryption=None, parent=None):
         self.parent = parent
         self.cups = self.mainapp.cups
+        self._host = host
+        self._encryption = encryption
+        if not host:
+            self._host = cups.getServer()
+        if not encryption:
+            self._encryption = cups.getEncryption ()
+
         self.PrinterPropertiesDialog.set_transient_for (parent)
         self.fillPrinterTab (name)
         object = self.mainapp.printers[name]
@@ -999,8 +1006,8 @@ class PrinterPropertiesDialog(GtkGUI):
         cups.setUser ('')
         try:
             c = authconn.Connection (self.parent, try_as_root=False,
-                                     host=self.mainapp.connect_server,
-                                     encryption=self.mainapp.connect_encrypt)
+                                     host=self._host,
+                                     encryption=self._encryption)
         except RuntimeError, s:
             show_IPP_Error (None, s, self.parent)
             return
@@ -1017,8 +1024,8 @@ class PrinterPropertiesDialog(GtkGUI):
                 job_id = c.printTestPage(self.printer.name)
         except cups.IPPError, (e, msg):
             if (e == cups.IPP_NOT_AUTHORIZED and
-                self.mainapp.connect_server != 'localhost' and
-                self.mainapp.connect_server[0] != '/'):
+                self._host != 'localhost' and
+                self._host[0] != '/'):
                 show_error_dialog (_("Not possible"),
                                    _("The remote server did not accept "
                                      "the print job, most likely "
@@ -1046,7 +1053,7 @@ class PrinterPropertiesDialog(GtkGUI):
             job_id = self.cups.printTestPage (self.printer.name,
                                               format=format,
                                               file=tmpfname,
-                                              user=self.mainapp.connect_user)
+                                              user=cups.getUser ())
             show_info_dialog (_("Submitted"),
                               _("Maintenance command submitted as "
                                 "job %d") % job_id,
@@ -1629,8 +1636,8 @@ class PrinterPropertiesDialog(GtkGUI):
         busy (self.PrinterPropertiesDialog)
         self.mainapp.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
                                         name=self.printer.name,
-                                        host=self.mainapp.connect_server,
-                                        encryption=self.mainapp.connect_encrypt,
+                                        host=self._host,
+                                        encryption=self._encryption,
                                         parent=self.PrinterPropertiesDialog)
         ready (self.PrinterPropertiesDialog)
 
@@ -1640,7 +1647,7 @@ class PrinterPropertiesDialog(GtkGUI):
         self.mainapp.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
                                         ppd=self.ppd,
                                         name=self.printer.name,
-                                        host=self.mainapp.connect_server,
-                                        encryption=self.mainapp.connect_encrypt,
+                                        host=self._host,
+                                        encryption=self._encryption,
                                         parent=self.PrinterPropertiesDialog)
         ready (self.PrinterPropertiesDialog)
