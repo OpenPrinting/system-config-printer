@@ -80,7 +80,7 @@ class AuthContext:
             d.destroy ()
 
         # After that, prompt
-        d = gtk.Dialog ("Authentication", self.parent,
+        d = gtk.Dialog (_("Authentication"), self.parent,
                         gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
                         (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
                          gtk.STOCK_OK, gtk.RESPONSE_OK))
@@ -105,13 +105,13 @@ class AuthContext:
         table = gtk.Table (3, 2)
         table.set_row_spacings (6)
         table.set_col_spacings (6)
-        table.attach (gtk.Label ("Username:"), 0, 1, 0, 1, 0, 0)
+        table.attach (gtk.Label (_("Username:")), 0, 1, 0, 1, 0, 0)
         username_entry = gtk.Entry ()
         table.attach (username_entry, 1, 2, 0, 1, 0, 0)
-        table.attach (gtk.Label ("Domain:"), 0, 1, 1, 2, 0, 0)
+        table.attach (gtk.Label (_("Domain:")), 0, 1, 1, 2, 0, 0)
         domain_entry = gtk.Entry ()
         table.attach (domain_entry, 1, 2, 1, 2, 0, 0)
-        table.attach (gtk.Label ("Password:"), 0, 1, 2, 3, 0, 0)
+        table.attach (gtk.Label (_("Password:")), 0, 1, 2, 3, 0, 0)
         password_entry = gtk.Entry ()
         password_entry.set_activates_default (True)
         password_entry.set_visibility (False)

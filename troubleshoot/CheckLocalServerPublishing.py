@@ -34,7 +34,7 @@ class CheckLocalServerPublishing(Question):
                                     "connected to this system' option in "
                                     "the server settings using the printing "
                                     "administration tool.") + ' ' +
-                                  TEXT_start_print_admin_tool)
+                                  _(TEXT_start_print_admin_tool))
         troubleshooter.new_page (vbox, self)
 
     def display (self):

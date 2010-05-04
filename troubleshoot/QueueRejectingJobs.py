@@ -70,7 +70,7 @@ class QueueRejectingJobs(Question):
             text += _("To make the queue accept jobs, select the "
                       "'Accepting Jobs' checkbox in the 'Policies' "
                       "tab for the printer in the printer administration "
-                      "tool.") + ' ' + TEXT_start_print_admin_tool
+                      "tool.") + ' ' + _(TEXT_start_print_admin_tool)
 
         self.label.set_text (text)
         return True

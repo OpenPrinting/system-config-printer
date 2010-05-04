@@ -147,10 +147,10 @@ class StateReason:
                     schemes = ["text", "http", "help", "file"]
                     localized_reason = ""
                     for scheme in schemes:
-                        reason = self._ppd.localizeIPPReason(self.reason,
-                                                             scheme)
-                        if reason != None:
-                            localized_reason = localized_reason + reason + ", "
+                        lreason = self._ppd.localizeIPPReason(self.reason,
+                                                              scheme)
+                        if lreason != None:
+                            localized_reason = localized_reason + lreason + ", "
                     if localized_reason != "":
                         reason = localized_reason[:-2]
                 except RuntimeError:
