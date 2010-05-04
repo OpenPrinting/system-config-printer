@@ -51,10 +51,6 @@ def CUPS_server_hostname ():
         return 'localhost'
     return host
 
-def on_delete_just_hide (widget, event):
-    widget.hide ()
-    return True # stop other handlers
-
 class PrinterPropertiesDialog(GtkGUI):
 
     printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
@@ -174,10 +170,8 @@ class PrinterPropertiesDialog(GtkGUI):
                         domain=config.PACKAGE)
 
 
-        # Since some dialogs are reused we can't let the delete-event's
-        # default handler destroy them
-        for dialog in [self.PrinterPropertiesDialog]:
-            dialog.connect ("delete-event", on_delete_just_hide)
+        # Don't let delete-event destroy the dialog.
+        self.PrinterPropertiesDialog.connect ("delete-event", self.on_delete)
 
         # Printer properties combo boxes
         for combobox in [self.cmbPStartBanner,
@@ -532,6 +526,10 @@ class PrinterPropertiesDialog(GtkGUI):
                 self.mainapp.newPrinterGUI.on_NPCancel (None)
 
     # Data handling
+
+    def on_delete(self, dialog):
+        dialog.hide ()
+        self.printer_properties_response (dialog, gtk.RESPONSE_CANCEL)
 
     def on_printer_changed(self, widget):
         if isinstance(widget, gtk.CheckButton):
