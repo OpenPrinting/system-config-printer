@@ -484,8 +484,6 @@ class GUI(GtkGUI):
 
         # Printer Properties dialog
         self.propertiesDlg = printerproperties.PrinterPropertiesDialog ()
-        properties_events = self.propertiesDlg.get_monitored_events ()
-        # Actually just monitor all the events.
 
         self.monitor = monitor.Monitor (monitor_jobs=False)
         self.monitor.connect ('printer-added', self.printer_added)

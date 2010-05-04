@@ -39,6 +39,7 @@ import authconn
 from errordialogs import *
 import gtkinklevel
 import statereason
+import monitor
 import newprinter
 from newprinter import busy, ready
 
@@ -53,12 +54,18 @@ def CUPS_server_hostname ():
 
 class PrinterPropertiesDialog(GtkGUI):
 
+    __gsignals__ = {
+        'dialog-closed': ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        }
+
     printer_states = { cups.IPP_PRINTER_IDLE: _("Idle"),
                        cups.IPP_PRINTER_PROCESSING: _("Processing"),
                        cups.IPP_PRINTER_BUSY: _("Busy"),
                        cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
     def __init__(self):
+        gobject.GObject.__init__ (self)
+
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
             self.encoding = locale.getlocale(locale.LC_CTYPE)
@@ -453,13 +460,6 @@ class PrinterPropertiesDialog(GtkGUI):
 
         del self._monitor
 
-    def get_monitored_events (self):
-        return set(["printer-event",
-                    "printer-removed",
-                    "state-reason-added",
-                    "state-reason-removed",
-                    "cups-connection-error"])
-
     def set_monitor (self, monitor):
         self._monitor = monitor
         self._monitor.connect ('printer-event', self.on_printer_event)
@@ -478,6 +478,9 @@ class PrinterPropertiesDialog(GtkGUI):
             self._host = cups.getServer()
         if not encryption:
             self._encryption = cups.getEncryption ()
+
+        if self._monitor == None:
+            self.set_monitor (monitor.Monitor (monitor_jobs=False))
 
         self.newPrinterGUI = newprinter.NewPrinterGUI ()
         self.dialog.set_transient_for (parent)
@@ -542,14 +545,14 @@ class PrinterPropertiesDialog(GtkGUI):
             response == gtk.RESPONSE_CANCEL):
             self.printer = None
             dialog.hide ()
+            self.emit ('dialog-closed')
 
             if self.newPrinterGUI.NewPrinterWindow.get_property ("visible"):
                 self.newPrinterGUI.on_NPCancel (None)
 
     # Data handling
 
-    def on_delete(self, dialog):
-        dialog.hide ()
+    def on_delete(self, dialog, event):
         self.printer_properties_response (dialog, gtk.RESPONSE_CANCEL)
 
     def on_printer_changed(self, widget):
@@ -1704,3 +1707,24 @@ class PrinterPropertiesDialog(GtkGUI):
     def on_cups_connection_error (self, mon):
         # FIXME: figure out how to handle this
         pass
+
+if __name__ == '__main__':
+    import locale
+    import sys
+
+    if len (sys.argv) < 2:
+        print "Specify queue name"
+        sys.exit (1)
+
+    os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    locale.setlocale (locale.LC_ALL, "")
+    ppdippstr.init ()
+    loop = gobject.MainLoop ()
+    def on_dialog_closed (obj):
+        loop.quit ()
+
+    properties = PrinterPropertiesDialog ()
+    properties.connect ('dialog-closed', on_dialog_closed)
+    properties.show (sys.argv[1])
+
+    loop.run ()
