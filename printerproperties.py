@@ -58,9 +58,7 @@ class PrinterPropertiesDialog(GtkGUI):
                        cups.IPP_PRINTER_BUSY: _("Busy"),
                        cups.IPP_PRINTER_STOPPED: _("Stopped") }
 
-    def __init__(self, mainapp):
-        self.mainapp = mainapp
-
+    def __init__(self):
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
             self.encoding = locale.getlocale(locale.LC_CTYPE)
@@ -481,26 +479,17 @@ class PrinterPropertiesDialog(GtkGUI):
         if not encryption:
             self._encryption = cups.getEncryption ()
 
-        try:
-            c = authconn.Connection (parent=self.dialog,
-                                     host=self._host,
-                                     encryption=self._encryption)
-            self.cups = c
-        except:
-            return
-
         self.newPrinterGUI = newprinter.NewPrinterGUI ()
         self.dialog.set_transient_for (parent)
-        self.load (name)
-        object = self.mainapp.printers[name]
+        self.load (name, host=host, encryption=encryption, parent=parent)
         for button in [self.btnPrinterPropertiesCancel,
                        self.btnPrinterPropertiesOK,
                        self.btnPrinterPropertiesApply]:
-            if object.discovered:
+            if self.printer.discovered:
                 button.hide ()
             else:
                 button.show ()
-        if object.discovered:
+        if self.printer.discovered:
             self.btnPrinterPropertiesClose.show ()
         else:
             self.btnPrinterPropertiesClose.hide ()
@@ -964,23 +953,15 @@ class PrinterPropertiesDialog(GtkGUI):
 
             self.cups._end_operation ()
 
-        if class_deleted:
-            self.mainapp.monitor.update ()
-        else:
+        if not class_deleted:
             # Update our copy of the printer's settings.
-            self.cups._begin_operation (_("obtaining queue details"))
             try:
-                printers = cupshelpers.getPrinters (self.cups)
-                this_printer = { name: printers[name] }
-                self.mainapp.printers.update (this_printer)
-            except cups.IPPError, (e, s):
-                show_IPP_Error(e, s, self.dialog)
-            except KeyError:
-                # The printer was deleted in the mean time and the
-                # user made no changes.
-                self.mainapp.populateList ()
+                self.printer.getAttributes ()
+                self.updatePrinterProperties ()
+            except cups.IPPError:
+                pass
 
-            self.cups._end_operation ()
+        self._monitor.update ()
         return False
 
     def getPrinterSettings(self):
@@ -1127,14 +1108,25 @@ class PrinterPropertiesDialog(GtkGUI):
         if not set_active:
             combobox.set_active (0)
 
-    def load (self, name):
+    def load (self, name, host=None, encryption=None, parent=None):
         self.changed = set() # of options
         self.options = {} # keyword -> Option object
         self.conflicts = set() # of options
 
-        printer = self.mainapp.printers[name]
-        self.printer = printer
+        if not host:
+            host = cups.getServer()
+        if not encryption:
+            encryption = cups.getEncryption ()
+
+        c = authconn.Connection (parent=self.dialog,
+                                 host=host,
+                                 encryption=encryption)
+        self.cups = c
+
+        printers = cupshelpers.getPrinters (self.cups)
+        printer = printers[name]
         printer.getAttributes ()
+        self.printer = printer
         try:
             # CUPS 1.4
             publishing = printer.other_attributes['server-is-sharing-printers']
@@ -1294,7 +1286,7 @@ class PrinterPropertiesDialog(GtkGUI):
             tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
             if tab_nr != -1:
                 self.ntbkPrinter.remove_page(tab_nr)
-            self.fillClassMembers(name, editable)
+            self.fillClassMembers(editable)
         else:
             # real Printer
             self.fillPrinterOptions(name, editable)
@@ -1611,9 +1603,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     # Class members
 
-    def fillClassMembers(self, name, editable):
-        printer = self.mainapp.printers[name]
-
+    def fillClassMembers(self, editable):
         self.btnClassAddMember.set_sensitive(editable)
         self.btnClassDelMember.set_sensitive(editable)
 
@@ -1633,12 +1623,11 @@ class PrinterPropertiesDialog(GtkGUI):
         model_members.clear()
         model_not_members.clear()
 
-        names = self.mainapp.printers.keys()
-        names.sort()
+        names = list (self._monitor.get_printers ())
+        names.sort ()
         for name in names:
-            p = self.mainapp.printers[name]
-            if p is not printer:
-                if name in printer.class_members:
+            if name != self.printer.name:
+                if name in self.printer.class_members:
                     model_members.append((name, ))
                 else:
                     model_not_members.append((name, ))

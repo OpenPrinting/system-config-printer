@@ -483,7 +483,7 @@ class GUI(GtkGUI):
                                            self.server_settings_response)
 
         # Printer Properties dialog
-        self.propertiesDlg = printerproperties.PrinterPropertiesDialog (self)
+        self.propertiesDlg = printerproperties.PrinterPropertiesDialog ()
         properties_events = self.propertiesDlg.get_monitored_events ()
         # Actually just monitor all the events.
 
@@ -1440,7 +1440,10 @@ class GUI(GtkGUI):
             return
 
         try:
-            self.propertiesDlg.load (old_name)
+            self.propertiesDlg.load (old_name,
+                                     host=self.connect_server,
+                                     encryption=self.connect_encrypt,
+                                     parent=self.PrintersWindow)
         except RuntimeError:
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
@@ -1561,10 +1564,17 @@ class GUI(GtkGUI):
             return
 
         try:
-            self.propertiesDlg.load (name)
+            self.propertiesDlg.load (name,
+                                     host=self.connect_server,
+                                     encryption=self.connect_encrypt,
+                                     parent=self.PrintersWindow)
         except RuntimeError:
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
+        except cups.IPPError, (e, m):
+            show_IPP_Error (e, m, self.PrintersWindow)
+            self.populateList ()
+            return
 
         self.duplicate_printer (self.entDuplicateName.get_text ())
         self.monitor.update ()
