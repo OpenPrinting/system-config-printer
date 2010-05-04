@@ -1155,7 +1155,6 @@ class GUI(GtkGUI):
 
         self.lblConnecting.set_markup(_("<i>Opening connection to %s</i>") %
                                       servername)
-        self.newPrinterGUI.dropPPDs()
         self.ConnectingDialog.set_transient_for(self.PrintersWindow)
         self.ConnectingDialog.show()
         gobject.timeout_add (40, self.update_connecting_pbar)
@@ -1216,7 +1215,6 @@ class GUI(GtkGUI):
             connection = authconn.Connection(parent,
                                              host=self.connect_server,
                                              encryption=self.connect_encrypt)
-            self.newPrinterGUI.dropPPDs ()
         except RuntimeError, s:
             if self.connect_thread != thread.get_ident(): return
             gtk.gdk.threads_enter()
