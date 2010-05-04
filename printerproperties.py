@@ -1123,9 +1123,7 @@ class PrinterPropertiesDialog(GtkGUI):
                                  encryption=encryption)
         self.cups = c
 
-        printers = cupshelpers.getPrinters (self.cups)
-        printer = printers[name]
-        printer.getAttributes ()
+        printer = cupshelpers.Printer (name, self.cups)
         self.printer = printer
         try:
             # CUPS 1.4
