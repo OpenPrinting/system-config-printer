@@ -2,8 +2,9 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -21,6 +22,7 @@
 
 import gtk
 from gettext import gettext as _
+N_ = lambda x: x
 from debug import *
 
 __all__ = [ 'gtk',
@@ -30,9 +32,9 @@ __all__ = [ 'gtk',
             'Multichoice',
             'TEXT_start_print_admin_tool' ]
 
-TEXT_start_print_admin_tool = _("To start this tool, select "
-                                "System->Administration->Printing "
-                                "from the main menu.")
+TEXT_start_print_admin_tool = N_("To start this tool, select "
+                                 "System->Administration->Printing "
+                                 "from the main menu.")
 
 class Question:
     def __init__ (self, troubleshooter, name=None):
