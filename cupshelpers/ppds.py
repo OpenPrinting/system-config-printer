@@ -101,6 +101,11 @@ def ppdMakeModelSplit (ppd_make_and_model):
           l.startswith ("pagepro")):
         make = "KONICA MINOLTA"
         model = ppd_make_and_model
+    elif (l.startswith ("fs-") or
+          l.startswith ("km-") or
+          l.startswith ("taskalfa")):
+        make = "Kyocera Mita"
+        model = ppd_make_and_model
     elif l.startswith ("aficio"):
         make = "Ricoh"
         model = ppd_make_and_model
