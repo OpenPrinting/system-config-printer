@@ -484,16 +484,18 @@ class GUI(GtkGUI):
 
         # Printer Properties dialog
         self.propertiesDlg = printerproperties.PrinterPropertiesDialog (self)
+        properties_events = self.propertiesDlg.get_monitored_events ()
+        # Actually just monitor all the events.
 
         self.monitor = monitor.Monitor (monitor_jobs=False)
         self.monitor.connect ('printer-added', self.printer_added)
         self.monitor.connect ('printer-event', self.printer_event)
         self.monitor.connect ('printer-removed', self.printer_removed)
-        self.monitor.connect ('state-reason-added', self.state_reason_added)
-        self.monitor.connect ('state-reason-removed', self.state_reason_removed)
         self.monitor.connect ('cups-connection-error',
                               self.cups_connection_error)
         self.monitor.refresh ()
+
+        self.propertiesDlg.set_monitor (self.monitor)
 
         try:
             self.populateList()
@@ -1111,11 +1113,6 @@ class GUI(GtkGUI):
             if name in selected_printers:
                 self.dests_iconview.select_path (path)
         model.foreach (maybe_select)
-
-        if (self.propertiesDlg.printer != None and
-            self.propertiesDlg.printer.name not in self.printers.keys ()):
-            # The printer we're editing has been deleted.
-            self.propertiesDlg.PrinterPropertiesDialog.response (gtk.RESPONSE_CANCEL)
 
     # Connect to Server
 
@@ -2056,7 +2053,7 @@ class GUI(GtkGUI):
             response = q.run ()
             q.destroy ()
             if response == gtk.RESPONSE_YES:
-                self.propertiesDlg.PrinterPropertiesDialog.hide ()
+                self.propertiesDlg.dialog.hide ()
 
                 properties_shown = False
                 try:
@@ -2146,7 +2143,7 @@ class GUI(GtkGUI):
 
         if self.propertiesDlg.ppd:
             try:
-                self.checkDriverExists (self.propertiesDlg.PrinterPropertiesDialog,
+                self.checkDriverExists (self.propertiesDlg.dialog,
                                         name, ppd=self.propertiesDlg.ppd)
             except:
                 nonfatalException()
@@ -2170,67 +2167,28 @@ class GUI(GtkGUI):
     ## Monitor signal helpers
     def printer_added_or_removed (self):
         # Just fetch the list of printers again.  This is too simplistic.
-        gtk.gdk.threads_enter ()
         self.populateList (prompt_allowed=False)
-        gtk.gdk.threads_leave ()
 
     ## Monitor signal handlers
     def printer_added (self, mon, printer):
         self.printer_added_or_removed ()
 
     def printer_event (self, mon, printer, eventname, event):
-        def deferred_refresh ():
-            self.populateList ()
-            return False
-
-        gtk.gdk.threads_enter ()
         if self.printers.has_key (printer):
             self.printers[printer].update (**event)
             self.dests_iconview_selection_changed (self.dests_iconview)
-            gobject.idle_add (deferred_refresh)
-            if self.propertiesDlg.PrinterPropertiesDialog.get_property('visible'):
-                try:
-                    self.propertiesDlg.printer.getAttributes ()
-                    self.propertiesDlg.updatePrinterProperties ()
-                except cups.IPPError:
-                    pass
-
-        gtk.gdk.threads_leave ()
+            self.populateList ()
 
     def printer_removed (self, mon, printer):
         self.printer_added_or_removed ()
-
-    def state_reason_added (self, mon, reason):
-        gtk.gdk.threads_enter ()
-        if self.propertiesDlg.PrinterPropertiesDialog.get_property('visible'):
-            try:
-                self.propertiesDlg.printer.getAttributes ()
-                self.propertiesDlg.updatePrinterProperties ()
-            except cups.IPPError:
-                pass
-
-        gtk.gdk.threads_leave ()
-
-    def state_reason_removed (self, mon, reason):
-        gtk.gdk.threads_enter ()
-        if self.propertiesDlg.PrinterPropertiesDialog.get_property('visible'):
-            try:
-                self.propertiesDlg.printer.getAttributes ()
-                self.propertiesDlg.updatePrinterProperties ()
-            except cups.IPPError:
-                pass
-
-        gtk.gdk.threads_leave ()
 
     def cups_connection_error (self, mon):
         try:
             self.cups.getClasses ()
         except:
             self.cups = None
-            gtk.gdk.threads_enter ()
             self.setConnected ()
             self.populateList (prompt_allowed=False)
-            gtk.gdk.threads_leave ()
 
 
 def main(setup_printer = None, configure_printer = None, change_ppd = False,

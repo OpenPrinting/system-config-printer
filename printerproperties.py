@@ -170,8 +170,10 @@ class PrinterPropertiesDialog(GtkGUI):
                         domain=config.PACKAGE)
 
 
+        self.dialog = self.PrinterPropertiesDialog
+
         # Don't let delete-event destroy the dialog.
-        self.PrinterPropertiesDialog.connect ("delete-event", self.on_delete)
+        self.dialog.connect ("delete-event", self.on_delete)
 
         # Printer properties combo boxes
         for combobox in [self.cmbPStartBanner,
@@ -218,8 +220,7 @@ class PrinterPropertiesDialog(GtkGUI):
             treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
 
         # Printer Properties dialog
-        self.PrinterPropertiesDialog.connect ('response',
-                                              self.printer_properties_response)
+        self.dialog.connect ('response', self.printer_properties_response)
 
         # Printer Properties tree view
         col = gtk.TreeViewColumn ('', gtk.CellRendererText (), markup=0)
@@ -447,6 +448,30 @@ class PrinterPropertiesDialog(GtkGUI):
             self.job_options_widgets[option.widget] = option
             self.job_options_buttons[option.button] = option
 
+        self._monitor = None
+
+    def __del__ (self):
+        # FIXME: Disconnect signal handlers
+
+        del self._monitor
+
+    def get_monitored_events (self):
+        return set(["printer-event",
+                    "printer-removed",
+                    "state-reason-added",
+                    "state-reason-removed",
+                    "cups-connection-error"])
+
+    def set_monitor (self, monitor):
+        self._monitor = monitor
+        self._monitor.connect ('printer-event', self.on_printer_event)
+        self._monitor.connect ('printer-removed', self.on_printer_removed)
+        self._monitor.connect ('state-reason-added', self.on_state_reason_added)
+        self._monitor.connect ('state-reason-removed',
+                               self.on_state_reason_removed)
+        self._monitor.connect ('cups-connection-error',
+                               self.on_cups_connection_error)
+
     def show (self, name, host=None, encryption=None, parent=None):
         self.parent = parent
         self._host = host
@@ -457,7 +482,7 @@ class PrinterPropertiesDialog(GtkGUI):
             self._encryption = cups.getEncryption ()
 
         try:
-            c = authconn.Connection (parent=self.PrinterPropertiesDialog,
+            c = authconn.Connection (parent=self.dialog,
                                      host=self._host,
                                      encryption=self._encryption)
             self.cups = c
@@ -465,7 +490,7 @@ class PrinterPropertiesDialog(GtkGUI):
             return
 
         self.newPrinterGUI = newprinter.NewPrinterGUI ()
-        self.PrinterPropertiesDialog.set_transient_for (parent)
+        self.dialog.set_transient_for (parent)
         self.load (name)
         object = self.mainapp.printers[name]
         for button in [self.btnPrinterPropertiesCancel,
@@ -488,9 +513,9 @@ class PrinterPropertiesDialog(GtkGUI):
         treeview = self.tvPrinterProperties
         treeview.set_cursor ((0,))
         host = CUPS_server_hostname ()
-        self.PrinterPropertiesDialog.set_title (_("Printer Properties - "
-                                                  "'%s' on %s") % (name, host))
-        self.PrinterPropertiesDialog.show ()
+        self.dialog.set_title (_("Printer Properties - "
+                                 "'%s' on %s") % (name, host))
+        self.dialog.show ()
 
     def printer_properties_response (self, dialog, response):
         if response == gtk.RESPONSE_REJECT:
@@ -502,7 +527,7 @@ class PrinterPropertiesDialog(GtkGUI):
             for option in self.conflicts:
                 message += option.option.text + "\n"
 
-            dialog = gtk.MessageDialog(self.PrinterPropertiesDialog,
+            dialog = gtk.MessageDialog(self.dialog,
                                        gtk.DIALOG_DESTROY_WITH_PARENT |
                                        gtk.DIALOG_MODAL,
                                        gtk.MESSAGE_WARNING,
@@ -818,7 +843,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def save_printer(self, printer, saveall=False, parent=None):
         if parent == None:
-            parent = self.PrinterPropertiesDialog
+            parent = self.dialog
         class_deleted = False
         name = printer.name
 
@@ -949,7 +974,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 this_printer = { name: printers[name] }
                 self.mainapp.printers.update (this_printer)
             except cups.IPPError, (e, s):
-                show_IPP_Error(e, s, self.PrinterPropertiesDialog)
+                show_IPP_Error(e, s, self.dialog)
             except KeyError:
                 # The printer was deleted in the mean time and the
                 # user made no changes.
@@ -1638,21 +1663,57 @@ class PrinterPropertiesDialog(GtkGUI):
 
     # change device
     def on_btnSelectDevice_clicked(self, button):
-        busy (self.PrinterPropertiesDialog)
+        busy (self.dialog)
         self.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
                                 name=self.printer.name,
                                 host=self._host,
                                 encryption=self._encryption,
-                                parent=self.PrinterPropertiesDialog)
-        ready (self.PrinterPropertiesDialog)
+                                parent=self.dialog)
+        ready (self.dialog)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
-        busy (self.PrinterPropertiesDialog)
+        busy (self.dialog)
         self.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
                                 ppd=self.ppd,
                                 name=self.printer.name,
                                 host=self._host,
                                 encryption=self._encryption,
-                                parent=self.PrinterPropertiesDialog)
-        ready (self.PrinterPropertiesDialog)
+                                parent=self.dialog)
+        ready (self.dialog)
+
+    # Monitor signal handlers
+    def on_printer_event (self, mon, printer, eventname, event):
+        if self.dialog.get_property ('visible'):
+            try:
+                self.printer.getAttributes ()
+                self.updatePrinterProperties ()
+            except cups.IPPError:
+                pass
+
+    def on_printer_removed (self, mon, printer):
+        if (self.dialog.get_property ('visible') and
+            self.printer.name == printer):
+            self.dialog.response (gtk.RESPONSE_CANCEL)
+
+    def on_state_reason_added (self, mon, reason):
+        if (self.dialog.get_property ('visible') and
+            self.printer.name == reason.get_printer ()):
+            try:
+                self.printer.getAttributes ()
+                self.updatePrinterProperties ()
+            except cups.IPPError:
+                pass
+
+    def on_state_reason_removed (self, mon, reason):
+        if (self.dialog.get_property ('visible') and
+            self.printer.name == reason.get_printer ()):
+            try:
+                self.printer.getAttributes ()
+                self.updatePrinterProperties ()
+            except cups.IPPError:
+                pass
+
+    def on_cups_connection_error (self, mon):
+        # FIXME: figure out how to handle this
+        pass
