@@ -449,7 +449,6 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def show (self, name, host=None, encryption=None, parent=None):
         self.parent = parent
-        self.cups = self.mainapp.cups
         self._host = host
         self._encryption = encryption
         if not host:
@@ -457,8 +456,17 @@ class PrinterPropertiesDialog(GtkGUI):
         if not encryption:
             self._encryption = cups.getEncryption ()
 
+        try:
+            c = authconn.Connection (parent=self.PrinterPropertiesDialog,
+                                     host=self._host,
+                                     encryption=self._encryption)
+            self.cups = c
+        except:
+            return
+
+        self.newPrinterGUI = newprinter.NewPrinterGUI ()
         self.PrinterPropertiesDialog.set_transient_for (parent)
-        self.fillPrinterTab (name)
+        self.load (name)
         object = self.mainapp.printers[name]
         for button in [self.btnPrinterPropertiesCancel,
                        self.btnPrinterPropertiesOK,
@@ -482,7 +490,6 @@ class PrinterPropertiesDialog(GtkGUI):
         host = CUPS_server_hostname ()
         self.PrinterPropertiesDialog.set_title (_("Printer Properties - "
                                                   "'%s' on %s") % (name, host))
-        self.PrinterPropertiesDialog.set_focus_on_map (self.mainapp.focus_on_map)
         self.PrinterPropertiesDialog.show ()
 
     def printer_properties_response (self, dialog, response):
@@ -511,7 +518,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
         if response == gtk.RESPONSE_APPLY and not failed:
             try:
-                self.fillPrinterTab (self.printer.name)
+                self.load (self.printer.name)
             except:
                 pass
 
@@ -522,8 +529,8 @@ class PrinterPropertiesDialog(GtkGUI):
             self.printer = None
             dialog.hide ()
 
-            if self.mainapp.newPrinterGUI.NewPrinterWindow.get_property ("visible"):
-                self.mainapp.newPrinterGUI.on_NPCancel (None)
+            if self.newPrinterGUI.NewPrinterWindow.get_property ("visible"):
+                self.newPrinterGUI.on_NPCancel (None)
 
     # Data handling
 
@@ -1095,7 +1102,7 @@ class PrinterPropertiesDialog(GtkGUI):
         if not set_active:
             combobox.set_active (0)
 
-    def fillPrinterTab(self, name):
+    def load (self, name):
         self.changed = set() # of options
         self.options = {} # keyword -> Option object
         self.conflicts = set() # of options
@@ -1632,20 +1639,20 @@ class PrinterPropertiesDialog(GtkGUI):
     # change device
     def on_btnSelectDevice_clicked(self, button):
         busy (self.PrinterPropertiesDialog)
-        self.mainapp.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
-                                        name=self.printer.name,
-                                        host=self._host,
-                                        encryption=self._encryption,
-                                        parent=self.PrinterPropertiesDialog)
+        self.newPrinterGUI.init("device", device_uri=self.printer.device_uri,
+                                name=self.printer.name,
+                                host=self._host,
+                                encryption=self._encryption,
+                                parent=self.PrinterPropertiesDialog)
         ready (self.PrinterPropertiesDialog)
 
     # change PPD
     def on_btnChangePPD_clicked(self, button):
         busy (self.PrinterPropertiesDialog)
-        self.mainapp.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
-                                        ppd=self.ppd,
-                                        name=self.printer.name,
-                                        host=self._host,
-                                        encryption=self._encryption,
-                                        parent=self.PrinterPropertiesDialog)
+        self.newPrinterGUI.init("ppd", device_uri=self.printer.device_uri,
+                                ppd=self.ppd,
+                                name=self.printer.name,
+                                host=self._host,
+                                encryption=self._encryption,
+                                parent=self.PrinterPropertiesDialog)
         ready (self.PrinterPropertiesDialog)

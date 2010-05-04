@@ -1443,7 +1443,7 @@ class GUI(GtkGUI):
             return
 
         try:
-            self.propertiesDlg.fillPrinterTab (old_name)
+            self.propertiesDlg.load (old_name)
         except RuntimeError:
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
@@ -1564,7 +1564,7 @@ class GUI(GtkGUI):
             return
 
         try:
-            self.propertiesDlg.fillPrinterTab (name)
+            self.propertiesDlg.load (name)
         except RuntimeError:
             # Perhaps cupsGetPPD2 failed for a browsed printer
             pass
@@ -2037,7 +2037,7 @@ class GUI(GtkGUI):
             iter = model.iter_next (iter)
 
         # Finally, suggest printing a test page.
-        self.propertiesDlg.fillPrinterTab (name)
+        self.propertiesDlg.load (name)
         if self.propertiesDlg.ppd:
             try:
                 self.checkDriverExists (self.PrintersWindow, name,
@@ -2142,7 +2142,7 @@ class GUI(GtkGUI):
         # Load information about the printer,
         # e.g. self.propertiesDlg.server_side_options and self.propertiesDlg.ppd
         # (both used below).
-        self.propertiesDlg.fillPrinterTab (name)
+        self.propertiesDlg.load (name)
 
         if self.propertiesDlg.ppd:
             try:
