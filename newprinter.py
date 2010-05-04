@@ -3293,10 +3293,8 @@ class NewPrinterGUI(GtkGUI):
                 checkppd = ppd
 
         self.NewPrinterWindow.hide()
-        if self.dialog_mode in ["printer", "printer_with_uri"]:
+        if self.dialog_mode in ["printer", "printer_with_uri", "class"]:
             self.emit ('printer-added', name)
-        elif self.dialog_mode == "class":
-            self.emit ('class-added', name)
         else:
             self.emit ('printer-modified', name)
 
