@@ -37,7 +37,18 @@ class Printer:
         self.name = name
         self.connection = connection
         self.class_members = []
-        self.update (**kw)
+        have_kw = len (kw) > 0
+        fetch_attrs = True
+        if have_kw:
+            self.update (**kw)
+            if self.is_class:
+                fetch_attrs = True
+            else:
+                fetch_attrs = False
+
+        if fetch_attrs:
+            self.getAttributes ()
+
         self._ppd = None # load on demand
 
     def __del__ (self):
@@ -89,6 +100,8 @@ class Printer:
         if self.is_shared is None:
             self.is_shared = not self.not_shared
         del self.not_shared
+        self.class_members = kw.get('member-names', [])
+        self.class_members.sort ()
         self.other_attributes = kw
 
     def getAttributes(self):
