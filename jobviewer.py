@@ -425,9 +425,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         now = time.time ()
         need_update = False
         for job, data in self.jobs.iteritems():
-            if self.jobs.has_key (job):
-                iter = self.jobiters[job]
-
             t = _("Unknown")
             if data.has_key ('time-at-creation'):
                 created = data['time-at-creation']
@@ -460,7 +457,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                     need_update = False
                     t = time.strftime ("%B %Y", time.localtime (created))
 
-            self.store.set_value (iter, 1, t)
+            if self.jobiters.has_key (job):
+                iter = self.jobiters[job]
+                self.store.set_value (iter, 1, t)
 
         if need_update and not self.job_creation_times_timer:
             t = gobject.timeout_add_seconds (60, self.update_job_creation_times)
