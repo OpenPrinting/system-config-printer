@@ -149,6 +149,9 @@ class Monitor(gobject.GObject):
 
         self.sub_id = -1
 
+    def get_printers (self):
+        return self.printers.copy ()
+
     def get_jobs (self):
         return self.jobs.copy ()
 
