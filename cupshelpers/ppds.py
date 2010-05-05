@@ -703,16 +703,18 @@ class PPDs:
         if not id_matched:
             sanitised_uri = re.sub (pattern="//[^@]*@/?", repl="//",
                                     string=str (uri))
-            print "No ID match for device %s:" % sanitised_uri
-            print "  <manufacturer>%s</manufacturer>" % mfg
-            print "  <model>%s</model>" % mdl
-            print "  <description>%s</description>" % description
             try:
                 cmd = reduce (lambda x, y: x + ","+ y, commandsets)
             except TypeError:
                 cmd = ""
+            id = "MFG:%s;MDL:%s;" % (mfg, mdl)
+            if cmd:
+                id += "CMD:%s;" % cmd
+            if description:
+                id += "DES:%s;" % description
 
-            print "  <commandset>%s</commandset>" % cmd
+            print "No ID match for device %s:" % sanitised_uri
+            print id
 
         print "Using %s (status: %d)" % (ppdnamelist[0], status)
         return (status, ppdnamelist[0])
