@@ -20,21 +20,22 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import dbus
+import gobject
 import gtk
 
 import asyncconn
 from debug import debugprint
+from gettext import gettext as _
 
-_ = lambda x: x
-def set_gettext_function (fn):
-    global _
-    _ = fn
+class PPDsLoader(gobject.GObject):
+    __gsignals__ = {
+        'finished': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        }
 
-class PPDsLoader:
-    def __init__ (self, callback, device_id=None, parent=None,
+    def __init__ (self, device_id=None, parent=None,
                   host=None, encryption=None):
+        gobject.GObject.__init__ (self)
         debugprint ("+%s" % self)
-        self._callback = callback
         self._device_id = device_id
         self._parent = parent
         self._host = host
@@ -43,6 +44,7 @@ class PPDsLoader:
         self._installed_files = []
         self._conn = None
         self._ppds = None
+        self._exc = None
 
         try:
             self._bus = dbus.SessionBus ()
@@ -62,7 +64,8 @@ class PPDsLoader:
 
         self._dialog.connect ("response", self._dialog_response)
 
-        if (device_id and self._bus and
+    def run (self):
+        if (self._device_id and self._bus and
 
             # Only try to install packages if we are configuring the
             # local CUPS server.
@@ -83,7 +86,6 @@ class PPDsLoader:
             self._dialog.destroy ()
             self._dialog = None
 
-        self._callback = None
         self._parent = None
 
     def get_installed_files (self):
@@ -92,8 +94,11 @@ class PPDsLoader:
     def get_ppds (self):
         return self._ppds
 
+    def get_error (self):
+        return self._exc
+
     def _dialog_response (self, dialog, response):
-        self._call_callback (None)
+        self.emit ('finished')
 
     def _query_packagekit (self):
         debugprint ("Asking PackageKit to install drivers")
@@ -165,7 +170,7 @@ class PPDsLoader:
 
         conn.destroy ()
         self._ppds = result
-        self._call_callback (None)
+        self.emit ('finished')
 
     def _cups_error (self, conn, exc):
         if conn != self._conn:
@@ -174,12 +179,10 @@ class PPDsLoader:
 
         conn.destroy ()
         self._ppds = None
-        self._call_callback (exc)
+        self._exc = exc
+        self.emit ('finished')
 
-    def _call_callback (self, exc):
-        if self._callback:
-            self._callback (self, exc)
-
+gobject.type_register(PPDsLoader)
 
 if __name__ == "__main__":
     class Foo:
@@ -193,12 +196,15 @@ if __name__ == "__main__":
             self._window = w
 
         def go (self, button):
-            PPDsLoader (self.ppds_loaded, device_id="MFG:MFG;MDL:MDL;",
-                        parent=self._window)
+            loader = PPDsLoader (device_id="MFG:MFG;MDL:MDL;",
+                                 parent=self._window)
+            loader.connect ('finished', self.ppds_loaded)
+            loader.run ()
 
-        def ppds_loaded (self, ppdsloader, exc):
+        def ppds_loaded (self, ppdsloader):
             self._window.destroy ()
             gtk.main_quit ()
+            exc = ppdsloader.get_error ()
             print exc
             ppds = ppdsloader.get_ppds ()
             if ppds != None:

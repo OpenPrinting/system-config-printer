@@ -33,7 +33,6 @@ from timedops import TimedOperation, OperationCanceled
 from base import *
 
 import errordialogs
-errordialogs.set_gettext_function (_)
 from errordialogs import *
 
 DBUS_PATH="/com/redhat/PrinterSpooler"

@@ -1,8 +1,9 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Florian Festi <ffesti@redhat.com>
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -37,7 +38,18 @@ class Printer:
         self.name = name
         self.connection = connection
         self.class_members = []
-        self.update (**kw)
+        have_kw = len (kw) > 0
+        fetch_attrs = True
+        if have_kw:
+            self.update (**kw)
+            if self.is_class:
+                fetch_attrs = True
+            else:
+                fetch_attrs = False
+
+        if fetch_attrs:
+            self.getAttributes ()
+
         self._ppd = None # load on demand
 
     def __del__ (self):
@@ -89,6 +101,10 @@ class Printer:
         if self.is_shared is None:
             self.is_shared = not self.not_shared
         del self.not_shared
+        self.class_members = kw.get('member-names', [])
+        if type (self.class_members) != list:
+            self.class_members = [self.class_members]
+        self.class_members.sort ()
         self.other_attributes = kw
 
     def getAttributes(self):

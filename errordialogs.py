@@ -2,9 +2,10 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008 Red Hat, Inc.
-## Copyright (C) 2006, 2007 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2010 Red Hat, Inc.
+## Authors:
+##  Florian Festi <ffesti@redhat.com>
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -22,11 +23,7 @@
 
 import cups
 import gtk
-
-_ = lambda x: x
-def set_gettext_function (fn):
-    global _
-    _ = fn
+from gettext import gettext as _
 
 def show_dialog (title, text, type, parent=None):
     dialog = gtk.MessageDialog (parent,

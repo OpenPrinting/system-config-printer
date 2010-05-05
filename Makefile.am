@@ -98,11 +98,13 @@ nobase_pkgdata_DATA=					\
 	installpackage.py				\
 	jobviewer.py					\
 	monitor.py					\
+	newprinter.py					\
 	options.py					\
 	optionwidgets.py				\
 	PhysicalDevice.py				\
 	ppdippstr.py					\
 	ppdsloader.py					\
+	printerproperties.py				\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
 	SearchCriterion.py				\

@@ -33,19 +33,40 @@ class Firewall:
     ALLOW_MDNS = "--service=mdns"
     ALLOW_SNMP = "--port=161:udp"
 
-    def _get_fw_data (self):
+    def _get_fw_data (self, reply_handler=None, error_handler=None):
         try:
             bus = dbus.SystemBus ()
             obj = bus.get_object ("org.fedoraproject.Config.Firewall",
                                   "/org/fedoraproject/Config/Firewall")
             iface = dbus.Interface (obj, "org.fedoraproject.Config.Firewall")
             self._firewall = iface
+            if reply_handler:
+                self._firewall.read (reply_handler=reply_handler,
+                                     error_handler=error_handler)
+                return
+
             p = self._firewall.read ()
             self._fw_data = pickle.loads (p.encode ('utf-8'))
         except dbus.DBusException:
             raise RuntimeError
 
         return self._fw_data
+
+    def read (self, reply_handler=None, error_handler=None):
+        if reply_handler:
+            self._client_reply_handler = reply_handler
+            self._client_error_handler = error_handler
+            self._get_fw_data (reply_handler=self.reply_handler,
+                               error_handler=self.error_handler)
+        else:
+            self._get_fw_data ()
+
+    def reply_handler (self, result):
+        self._fw_data = pickle.loads (result.encode ('utf-8'))
+        self._client_reply_handler (self._fw_data)
+
+    def error_handler (self, exc):
+        self._client_error_handler (exc)
 
     def write (self):
         self._firewall.write (pickle.dumps (self._fw_data[0]))

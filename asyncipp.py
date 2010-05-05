@@ -28,12 +28,7 @@ import Queue
 import authconn
 from debug import *
 import debug
-
-_ = lambda x: x
-N_ = lambda x: x
-def set_gettext_function (fn):
-    global _
-    _ = fn
+from gettext import gettext as _
 
 ######
 ###### An asynchronous libcups API using IPP with a separate worker
