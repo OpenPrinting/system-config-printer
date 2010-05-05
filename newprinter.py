@@ -63,9 +63,9 @@ import dnssdresolve
 
 from gettext import gettext as _
 
-TEXT_start_firewall_tool = _("To do this, select "
-                             "System->Administration->Firewall "
-                             "from the main menu.")
+TEXT_adjust_firewall = _("The firewall may need adjusting in order to "
+                         "detect network printers.  Adjust the "
+                         "firewall now?")
 
 def validDeviceURI (uri):
     """Returns True is the provided URI is valid."""
@@ -1466,9 +1466,7 @@ class NewPrinterGUI(GtkGUI):
             snmp_allowed = f.check_snmp_allowed ()
             allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
 
-            secondary_text = _("The firewall may need adjusting in order to "
-                               "detect network printers.  Adjust the "
-                               "firewall now?") + "\n\n"
+            secondary_text = TEXT_adjust_firewall + "\n\n"
             if not ipp_allowed:
                 secondary_text += ("- " +
                                    _("Allow all incoming IPP Browse packets") +
@@ -1730,8 +1728,7 @@ class NewPrinterGUI(GtkGUI):
                               _("There were no print shares found.  "
                                 "Please check that the Samba service is "
                                 "marked as trusted in your firewall "
-                                "configuration.") + '\n\n' +
-                              TEXT_start_firewall_tool,
+                                "configuration."),
                               parent=self.NewPrinterWindow)
 
     def smb_select_function (self, path):
@@ -1899,16 +1896,28 @@ class NewPrinterGUI(GtkGUI):
             # of which CUPS server we are connected to.
             f = firewall.Firewall ()
             allowed = f.check_samba_client_allowed ()
-        except:
-            allowed = False
+            secondary_text = TEXT_adjust_firewall + "\n\n"
+            if not allowed:
+                dialog = gtk.MessageDialog (self.NewPrinterWindow,
+                                            gtk.DIALOG_MODAL |
+                                            gtk.DIALOG_DESTROY_WITH_PARENT,
+                                            gtk.MESSAGE_QUESTION,
+                                            gtk.BUTTONS_NONE,
+                                            _("Adjust Firewall"))
+                secondary_text += ("- " +
+                                   _("Allow all incoming SMB/CIFS "
+                                     "browse packets"))
+                dialog.format_secondary_markup (secondary_text)
+                dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                                    _("Adjust Firewall"), gtk.RESPONSE_YES)
+                response = dialog.run ()
+                dialog.destroy ()
 
-        if not allowed:
-            show_info_dialog (_("Review Firewall"),
-                              _("You may need to adjust the firewall "
-                                "to allow network printer discovery on this "
-                                "computer.") + '\n\n' +
-                              TEXT_start_firewall_tool,
-                              parent=self.NewPrinterWindow)
+                if response == gtk.RESPONSE_YES:
+                    f.add_rule (f.ALLOW_SAMBA_CLIENT)
+                    f.write ()
+        except (dbus.DBusException, Exception):
+            nonfatalException ()
 
         self.SMBBrowseDialog.show()
         self.browse_smb_hosts()
