@@ -113,10 +113,6 @@ pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
 
-TEXT_start_firewall_tool = _("To do this, select "
-                             "System->Administration->Firewall "
-                             "from the main menu.")
-
 try:
     try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY
 except AttributeError:
