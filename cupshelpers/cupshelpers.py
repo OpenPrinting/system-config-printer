@@ -1,8 +1,9 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Florian Festi <ffesti@redhat.com>
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -101,6 +102,8 @@ class Printer:
             self.is_shared = not self.not_shared
         del self.not_shared
         self.class_members = kw.get('member-names', [])
+        if type (self.class_members) != list:
+            self.class_members = [self.class_members]
         self.class_members.sort ()
         self.other_attributes = kw
 
