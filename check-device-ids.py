@@ -76,7 +76,8 @@ for device, attrs in devices.iteritems ():
     if make_and_model and not device_id:
         try:
             hostname = None
-            if device.startswith ("socket://"):
+            if (device.startswith ("socket://") or
+                device.startswith ("lpd://")):
                 hostname = device[9:]
                 colon = hostname.find (":")
                 if colon != -1:
