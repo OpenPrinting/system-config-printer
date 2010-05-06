@@ -805,7 +805,7 @@ class GUI(GtkGUI):
             self.fillServerTab ()
             self.advancedServerSettings = AdvancedServerSettings(self,
                                              self.on_adv_server_settings_apply)
-        except cups.IPPError:
+        except (cups.IPPError, cups.HTTPError):
             # Not authorized.
             return
 
