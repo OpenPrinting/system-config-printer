@@ -303,17 +303,17 @@ class JobViewer (GtkGUI):
 
         job_action_group = gtk.ActionGroup ("JobActionGroup")
         job_action_group.add_actions ([
-                ("cancel-job", gtk.STOCK_CANCEL, _("_Cancel"), None, None,
+                ("cancel-job", gtk.STOCK_CANCEL, _("_Cancel"), None, _("Cancel selected jobs"),
                  self.on_job_cancel_activate),
-                ("delete-job", gtk.STOCK_DELETE, _("_Delete"), None, None,
+                ("delete-job", gtk.STOCK_DELETE, _("_Delete"), None, _("Delete selected jobs"),
                  self.on_job_delete_activate),
-                ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None, None,
+                ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None, _("Hold selected jobs"),
                  self.on_job_hold_activate),
-                ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None, None,
+                ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None, _("Release selected jobs"),
                  self.on_job_release_activate),
-                ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None, None,
+                ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None, _("Reprint selected jobs"),
                  self.on_job_reprint_activate),
-                ("retrieve-job", gtk.STOCK_SAVE_AS, _("Re_trieve"), None, None,
+                ("retrieve-job", gtk.STOCK_SAVE_AS, _("Re_trieve"), None, _("Retrieve selected jobs"),
                  self.on_job_retrieve_activate),
                 ("move-job", None, _("_Move To"), None, None, None),
                 ("authenticate-job", None, _("_Authenticate"), None, None,
