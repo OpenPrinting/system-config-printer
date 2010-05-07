@@ -297,9 +297,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.getWidgets ({"JobsWindow":
                               ["JobsWindow",
-                               "job_menubar_item",
                                "treeview",
-                               "statusbar"],
+                               "statusbar",
+                               "toolbar"],
                           "statusicon_popupmenu":
                               ["statusicon_popupmenu"]},
 
@@ -370,7 +370,17 @@ class JobViewer (GtkGUI, monitor.Watcher):
             item.show ()
             self.job_context_menu.append (item)
 
-        self.job_menubar_item.set_submenu (self.job_context_menu)
+        for action_name in ["cancel-job",
+                            "delete-job",
+                            "hold-job",
+                            "release-job",
+                            "reprint-job",
+                            "retrieve-job"]:
+            action = job_action_group.get_action (action_name)
+            action.set_sensitive (False)
+            item = action.create_tool_item ()
+            item.show ()
+            self.toolbar.insert (item, -1)
 
         for skip, ellipsize, name, setter in \
                 [(False, False, _("Job"), self._set_job_job_number_text),
@@ -604,8 +614,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.JobsWindow.set_data ('visible', not visible)
 
-    def on_show_completed_jobs_activate(self, menuitem):
-        if menuitem.get_active():
+    def on_show_completed_jobs_clicked(self, toggletoolbutton):
+        if toggletoolbutton.get_active():
             which_jobs = "all"
         else:
             which_jobs = "not-completed"
@@ -869,6 +879,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 username = pwd.getpwuid (os.getuid ())[0]
                 keyring_attrs["user"] = str (username)
                 self.display_auth_info_dialog (job, keyring_attrs)
+        self.update_sensitivity ()
 
     def display_auth_info_dialog (self, job, keyring_attrs=None):
         data = self.jobs[job]
@@ -1005,8 +1016,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
         if event.button == 3:
             self.show_treeview_popup_menu (treeview, event, event.button)
 
-    def on_selection_changed (self, selection):
-        treeview = selection.get_tree_view()
+    def update_sensitivity (self, selection = None):
+        if (selection is None):
+            selection = self.treeview.get_selection () 
         (model, pathlist) = selection.get_selected_rows()
         cancel = self.job_ui_manager.get_action ("/cancel-job")
         delete = self.job_ui_manager.get_action ("/delete-job")
@@ -1090,6 +1102,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
         move.set_sensitive (move_sensitive)
         authenticate.set_sensitive(authenticate_sensitive)
         attributes.set_sensitive(True)
+
+    def on_selection_changed (self, selection):
+        self.update_sensitivity (selection)
 
     def show_treeview_popup_menu (self, treeview, event, event_button):
         # Right-clicked.
@@ -1290,7 +1305,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
         for jobid in self.jobids:
             self.display_auth_info_dialog (jobid)
 
-    def on_refresh_activate(self, menuitem):
+    def on_refresh_clicked(self, toolbutton):
         self.monitor.refresh ()
         self.update_job_creation_times ()
 
