@@ -523,13 +523,14 @@ class _IPPAuthOperation:
                        _("Retry"), gtk.RESPONSE_OK)
         d.set_default_response (gtk.RESPONSE_OK)
         d.connect ("response", self._on_retry_server_error_response)
+        d.show ()
 
     def _on_retry_server_error_response (self, dialog, response):
         dialog.destroy ()
         if response == gtk.RESPONSE_OK:
-            self.reconnect (self._conn.thread.user,
-                            reply_handler=self._reconnect_reply,
-                            error_handler=self._reconnect_error)
+            self._conn.reconnect (self._conn.thread.user,
+                                  reply_handler=self._reconnect_reply,
+                                  error_handler=self._reconnect_error)
         else:
             self._error (cups.IPPError (0, _("Operation canceled")))
 
