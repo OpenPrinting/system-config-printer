@@ -11,73 +11,51 @@
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkMenuBar" id="menubar1">
+          <object class="GtkToolbar" id="toolbar">
             <property name="visible">True</property>
             <child>
-              <object class="GtkMenuItem" id="menuitem4">
+              <object class="GtkToolButton" id="toolbutton1">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_File</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_text" translatable="yes">Refresh job list</property>
+                <property name="label" translatable="yes">_Refresh</property>
                 <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="menuitem4_menu">
-                    <child>
-                      <object class="GtkImageMenuItem" id="btnClose">
-                        <property name="label">gtk-close</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <signal name="activate" handler="on_delete_event"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
+                <property name="stock_id">gtk-refresh</property>
+                <accelerator key="r" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
+                <signal name="clicked" handler="on_refresh_clicked"/>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
             </child>
             <child>
-              <object class="GtkMenuItem" id="job_menubar_item">
+              <object class="GtkToggleToolButton" id="toolbutton2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_Job</property>
+                <property name="has_tooltip">True</property>
+                <property name="tooltip_text" translatable="yes">Show completed jobs</property>
+                <property name="label" translatable="yes">Show _completed jobs</property>
                 <property name="use_underline">True</property>
+                <property name="stock_id">gtk-ok</property>
+                <signal name="clicked" handler="on_show_completed_jobs_clicked"/>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
             </child>
             <child>
-              <object class="GtkMenuItem" id="view">
+              <object class="GtkSeparatorToolItem" id="toolbutton3">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">_View</property>
-                <property name="use_underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="view_menu">
-                    <child>
-                      <object class="GtkImageMenuItem" id="refresh1">
-                        <property name="label">gtk-refresh</property>
-                        <property name="visible">True</property>
-                        <property name="use_underline">True</property>
-                        <property name="use_stock">True</property>
-                        <accelerator key="R" signal="activate" modifiers="GDK_CONTROL_MASK"/>
-                        <signal name="activate" handler="on_refresh_activate"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem" id="separator">
-                        <property name="visible">True</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkCheckMenuItem" id="show_completed_jobs">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Show _completed jobs</property>
-                        <property name="use_underline">True</property>
-                        <signal name="activate" handler="on_show_completed_jobs_activate"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
               </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
             </child>
           </object>
           <packing>
             <property name="expand">False</property>
-            <property name="fill">False</property>
             <property name="position">0</property>
           </packing>
         </child>
