@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
 ## Authors: Tim Waugh <twaugh@redhat.com>, Vincent Untz
 
@@ -71,28 +71,40 @@ class Connection(SemanticOperations):
         use_pk = ((host.startswith ('/') or host == 'localhost') and
                   os.getuid () != 0)
 
+        def subst_reply_handler (conn, reply):
+            if reply_handler:
+                reply_handler (self, reply)
+
+        def subst_error_handler (conn, exc):
+            if error_handler:
+                error_handler (self, exc)
+
+        def subst_auth_handler (prompt, conn, method, resource):
+            if auth_handler:
+                auth_handler (prompt, self, method, resource)
+
         if use_pk and try_as_root:
             if config.WITH_POLKIT_1:
                 debugprint ("Using polkit-1 connection class")
-                c = asyncpk1.PK1Connection (reply_handler=reply_handler,
-                                            error_handler=error_handler,
+                c = asyncpk1.PK1Connection (reply_handler=subst_reply_handler,
+                                            error_handler=subst_error_handler,
                                             host=host, port=port,
                                             encryption=encryption,
                                             parent=parent)
                 self._conn = c
             else:
                 debugprint ("Using PolicyKit (pre-polkit-1) connection class")
-                c = asyncpk0.PK0Connection (reply_handler=reply_handler,
-                                            error_handler=error_handler,
+                c = asyncpk0.PK0Connection (reply_handler=subst_reply_handler,
+                                            error_handler=subst_error_handler,
                                             host=host, port=port,
                                             encryption=encryption,
                                             parent=parent)
                 self._conn = c
         else:
             debugprint ("Using IPP connection class")
-            c = asyncipp.IPPAuthConnection (reply_handler=reply_handler,
-                                            error_handler=error_handler,
-                                            auth_handler=auth_handler,
+            c = asyncipp.IPPAuthConnection (reply_handler=subst_reply_handler,
+                                            error_handler=subst_error_handler,
+                                            auth_handler=subst_auth_handler,
                                             host=host, port=port,
                                             encryption=encryption,
                                             parent=parent,
@@ -120,14 +132,6 @@ class Connection(SemanticOperations):
     def __del__ (self):
         debug.debugprint ("-%s" % self)
 
-    def __eq__ (self, other):
-        # We want to be able to be compared as equal to our captured
-        # connection class.
-        return self._conn == other
-
-    def __ne__ (self, other):
-        return self._conn != other
-
     def destroy (self):
         debugprint ("DESTROY: %s" % self)
         try:
@@ -139,7 +143,22 @@ class Connection(SemanticOperations):
             delattr (self, binding)
 
     def _make_binding (self, fn):
-        return lambda *args, **kwds: fn (*args, **kwds)
+        return lambda *args, **kwds: self._call_function (fn, *args, **kwds)
+
+    def _call_function (self, fn, *args, **kwds):
+        reply_handler = error_handler = auth_handler = False
+        if kwds.has_key ("reply_handler"):
+            reply_handler = kwds["reply_handler"]
+            kwds["reply_handler"] = lambda c, r: reply_handler (self, r)
+        if kwds.has_key ("error_handler"):
+            error_handler = kwds["error_handler"]
+            kwds["error_handler"] = lambda c, e: error_handler (self, e)
+        if kwds.has_key ("auth_handler"):
+            auth_handler = kwds["auth_handler"]
+            kwds["auth_handler"] = lambda p, c, m, r: auth_handler (p, self,
+                                                                    m, r)
+
+        fn (*args, **kwds)
 
     def set_auth_info (self, password):
         """Call this from your auth_handler function."""
