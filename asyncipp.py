@@ -88,11 +88,10 @@ class _IPPConnectionThread(threading.Thread):
             conn = cups.Connection (host=self.host,
                                     port=self._port,
                                     encryption=self._encryption)
+            self._reply (None)
         except RuntimeError, e:
+            conn = None
             self._error (e)
-            return
-
-        self._reply (None)
 
         while True:
             # Wait to find out what operation to try.
@@ -128,14 +127,13 @@ class _IPPConnectionThread(threading.Thread):
                                             port=self._port,
                                             encryption=self._encryption)
                     debugprint ("...reconnected")
+
+                    self._queue.task_done ()
+                    self._reply (None)
                 except RuntimeError, e:
                     debugprint ("...failed")
                     self._queue.task_done ()
                     self._error (e)
-                    break
-
-                self._queue.task_done ()
-                self._reply (None)
 
                 continue
 
@@ -273,6 +271,7 @@ class IPPConnection:
         self.thread.set_auth_info (password)
 
     def reconnect (self, user, reply_handler=None, error_handler=None):
+        debugprint ("Reconnect...")
         self.queue.put ((True, (user,), {},
                          reply_handler, error_handler, False))
 
