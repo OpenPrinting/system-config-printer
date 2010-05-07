@@ -157,11 +157,19 @@ class PPDsLoader(gobject.GObject):
 
     def _query_cups (self):
         debugprint ("Asking CUPS for PPDs")
-        c = asyncconn.Connection (host=self._host, encryption=self._encryption)
-        c._begin_operation (_("fetching PPDs"))
+        c = asyncconn.Connection (host=self._host, encryption=self._encryption,
+                                  reply_handler=self._cups_connect_reply,
+                                  error_handler=self._cups_error)
         self._conn = c
-        c.getPPDs (reply_handler=self._cups_reply,
-                   error_handler=self._cups_error)
+
+    def _cups_connect_reply (self, conn, UNUSED):
+        if conn != self._conn:
+            conn.destroy ()
+            return
+
+        conn._begin_operation (_("fetching PPDs"))
+        conn.getPPDs (reply_handler=self._cups_reply,
+                      error_handler=self._cups_error)
 
     def _cups_reply (self, conn, result):
         if conn != self._conn:

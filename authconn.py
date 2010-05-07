@@ -233,8 +233,7 @@ class Connection:
 
                     raise
             except cups.HTTPError, (s,):
-                if not self._cancel and (s == cups.HTTP_UNAUTHORIZED or
-                                         s == cups.HTTP_FORBIDDEN):
+                if not self._cancel:
                     self._failed (s == cups.HTTP_FORBIDDEN)
                 else:
                     raise
