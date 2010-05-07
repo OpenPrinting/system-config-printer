@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.1.0.x\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2010-05-05 16:34+0100\n"
+"POT-Creation-Date: 2010-05-07 17:54+0100\n"
 "PO-Revision-Date: 2010-01-31 12:19+0200\n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew\n"
@@ -28,25 +28,25 @@ msgstr "הכנס כתובת IP"
 
 # File: ../errordialogs.py, line: 65
 # File: ../errordialogs.py, line: 77
-#: ../asyncipp.py:419 ../authconn.py:394 ../authconn.py:396
+#: ../asyncipp.py:418 ../authconn.py:393 ../authconn.py:395
 #: ../errordialogs.py:62 ../pysmb.py:75 ../pysmb.py:77
 msgid "Not authorized"
 msgstr "לא מורשה"
 
 #
 # File: ../errordialogs.py, line: 66
-#: ../asyncipp.py:420 ../authconn.py:397 ../pysmb.py:78
+#: ../asyncipp.py:419 ../authconn.py:396 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "יתכן והססמה שגויה."
 
-#: ../asyncipp.py:431 ../authconn.py:418
+#: ../asyncipp.py:430 ../authconn.py:417
 #, python-format
 msgid "Authentication (%s)"
 msgstr "אימות (%s)"
 
 # File: ../errordialogs.py, line: 68
 # File: ../errordialogs.py, line: 82
-#: ../asyncipp.py:496 ../authconn.py:251 ../errordialogs.py:53
+#: ../asyncipp.py:495 ../authconn.py:250 ../errordialogs.py:53
 #: ../errordialogs.py:67
 msgid "CUPS server error"
 msgstr "שגיאת שרת הדפסה"
@@ -54,20 +54,20 @@ msgstr "שגיאת שרת הדפסה"
 #
 # File: ../errordialogs.py, line: 68
 # File: ../errordialogs.py, line: 82
-#: ../asyncipp.py:498 ../authconn.py:249
+#: ../asyncipp.py:497 ../authconn.py:248
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "שגיאת שרת הדפסה (%s)"
 
 # File: ../errordialogs.py, line: 69
 # File: ../troubleshoot/PrintTestPage.py, line: 322
-#: ../asyncipp.py:515 ../authconn.py:260 ../errordialogs.py:54
+#: ../asyncipp.py:514 ../authconn.py:259 ../errordialogs.py:54
 #: ../troubleshoot/PrintTestPage.py:417
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "התרחשה שגיאה בזמן פעילות שרת הדפסות: '%s'."
 
-#: ../asyncipp.py:518 ../authconn.py:263
+#: ../asyncipp.py:517 ../authconn.py:262
 msgid "Retry"
 msgstr "נסה שוב"
 
@@ -98,7 +98,7 @@ msgstr "שם מתחם (Domain):"
 #
 # File: ../authconn.py, line: 34
 #. After that, prompt
-#: ../authconn.py:43 ../authconn.py:420 ../pysmb.py:83
+#: ../authconn.py:43 ../authconn.py:419 ../pysmb.py:83
 msgid "Authentication"
 msgstr "אימות זהות"
 
@@ -277,10 +277,22 @@ msgstr "מבטל משימות"
 msgid "_Cancel"
 msgstr "_ביטול"
 
+#
+# File: ../troubleshoot/PrintTestPage.py, line: 70
+#: ../jobviewer.py:306
+#, fuzzy
+msgid "Cancel selected jobs"
+msgstr "ביטול כל המשימות"
+
 # File: ../applet.glade.h, line: 9
 #: ../jobviewer.py:308
 msgid "_Delete"
 msgstr "_מחק"
+
+#: ../jobviewer.py:308
+#, fuzzy
+msgid "Delete selected jobs"
+msgstr "מחק משימות"
 
 #
 # File: ../applet.glade.h, line: 7
@@ -289,10 +301,24 @@ msgid "_Hold"
 msgstr "_החזקה"
 
 #
+# File: ../applet.glade.h, line: 3
+#: ../jobviewer.py:310
+#, fuzzy
+msgid "Hold selected jobs"
+msgstr "הצגת משימות שהושלמו"
+
+#
 # File: ../applet.glade.h, line: 9
 #: ../jobviewer.py:312
 msgid "_Release"
 msgstr "_שחרור"
+
+#
+# File: ../system-config-printer.py, line: 2101
+#: ../jobviewer.py:312
+#, fuzzy
+msgid "Release selected jobs"
+msgstr "יש משימות בתור."
 
 #
 # File: ../applet.glade.h, line: 2
@@ -300,8 +326,16 @@ msgstr "_שחרור"
 msgid "Re_print"
 msgstr "הדפסה מחדש"
 
+#: ../jobviewer.py:314
+msgid "Reprint selected jobs"
+msgstr ""
+
 #: ../jobviewer.py:316
 msgid "Re_trieve"
+msgstr ""
+
+#: ../jobviewer.py:316
+msgid "Retrieve selected jobs"
 msgstr ""
 
 #: ../jobviewer.py:318
@@ -321,20 +355,20 @@ msgstr ""
 #
 # File: ../jobviewer.py, line: 185
 # File: ../troubleshoot/PrintTestPage.py, line: 77
-#: ../jobviewer.py:372 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:382 ../troubleshoot/PrintTestPage.py:82
 msgid "Job"
 msgstr "משימה"
 
 #
 # File: ../jobviewer.py, line: 186
-#: ../jobviewer.py:373
+#: ../jobviewer.py:383
 msgid "User"
 msgstr "משתמש"
 
 #
 # File: ../jobviewer.py, line: 187
 # File: ../troubleshoot/PrintTestPage.py, line: 81
-#: ../jobviewer.py:374 ../troubleshoot/PrintTestPage.py:86
+#: ../jobviewer.py:384 ../troubleshoot/PrintTestPage.py:86
 msgid "Document"
 msgstr "מסמך"
 
@@ -346,57 +380,57 @@ msgstr "מסמך"
 # File: ../system-config-printer.py, line: 881
 # File: ../system-config-printer.py, line: 3016
 # File: ../troubleshoot/PrintTestPage.py, line: 79
-#: ../jobviewer.py:375 ../system-config-printer.py:272
+#: ../jobviewer.py:385 ../system-config-printer.py:272
 #: ../system-config-printer.py:1004 ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "מדפסת"
 
 #
 # File: ../jobviewer.py, line: 189
-#: ../jobviewer.py:376
+#: ../jobviewer.py:386
 msgid "Size"
 msgstr "גודל"
 
 #
 # File: ../jobviewer.py, line: 190
-#: ../jobviewer.py:392
+#: ../jobviewer.py:402
 msgid "Time submitted"
 msgstr "זמן טעינה"
 
 #
 # File: ../jobviewer.py, line: 191
 # File: ../troubleshoot/PrintTestPage.py, line: 82
-#: ../jobviewer.py:396 ../troubleshoot/PrintTestPage.py:87
+#: ../jobviewer.py:406 ../troubleshoot/PrintTestPage.py:87
 msgid "Status"
 msgstr "מצב"
 
 #
 # File: ../jobviewer.py, line: 224
-#: ../jobviewer.py:428
+#: ../jobviewer.py:438
 #, python-format
 msgid "my jobs on %s"
 msgstr "המשימות שלי על %s"
 
 #
 # File: ../jobviewer.py, line: 226
-#: ../jobviewer.py:430
+#: ../jobviewer.py:440
 msgid "my jobs"
 msgstr "המשימות שלי"
 
 #
 # File: ../jobviewer.py, line: 231
-#: ../jobviewer.py:435
+#: ../jobviewer.py:445
 msgid "all jobs"
 msgstr "כל המשימות"
 
 #
 # File: ../jobviewer.py, line: 232
-#: ../jobviewer.py:436
+#: ../jobviewer.py:446
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "מצב הדפסת מסמך (%s)"
 
-#: ../jobviewer.py:494
+#: ../jobviewer.py:504
 msgid "Job attributes"
 msgstr ""
 
@@ -418,9 +452,9 @@ msgstr ""
 # File: ../troubleshoot/ChoosePrinter.py, line: 89
 # File: ../troubleshoot/DeviceListed.py, line: 83
 # File: ../troubleshoot/DeviceListed.py, line: 84
-#: ../jobviewer.py:627 ../jobviewer.py:911 ../jobviewer.py:1558
-#: ../jobviewer.py:1588 ../jobviewer.py:1946 ../jobviewer.py:1951
-#: ../jobviewer.py:1965 ../jobviewer.py:2044 ../printerproperties.py:1452
+#: ../jobviewer.py:637 ../jobviewer.py:922 ../jobviewer.py:1573
+#: ../jobviewer.py:1603 ../jobviewer.py:1961 ../jobviewer.py:1966
+#: ../jobviewer.py:1980 ../jobviewer.py:2059 ../printerproperties.py:1452
 #: ../ui/NewPrinterWindow.glade.h:89
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:103
@@ -435,80 +469,80 @@ msgstr "לא ידוע"
 #
 # File: ../jobviewer.py, line: 431
 # File: ../jobviewer.py, line: 472
-#: ../jobviewer.py:633
+#: ../jobviewer.py:643
 msgid "a minute ago"
 msgstr "לפני דקה"
 
 #
 # File: ../jobviewer.py, line: 433
-#: ../jobviewer.py:636
+#: ../jobviewer.py:646
 #, python-format
 msgid "%d minutes ago"
 msgstr "לפני %d דקות"
 
 #
 # File: ../jobviewer.py, line: 414
-#: ../jobviewer.py:640
+#: ../jobviewer.py:650
 msgid "an hour ago"
 msgstr "לפני שעה"
 
 #
 # File: ../jobviewer.py, line: 421
-#: ../jobviewer.py:642
+#: ../jobviewer.py:652
 #, python-format
 msgid "%d hours ago"
 msgstr "לפני %d שעות"
 
-#: ../jobviewer.py:646
+#: ../jobviewer.py:656
 msgid "yesterday"
 msgstr "אתמול"
 
 #
 # File: ../jobviewer.py, line: 421
-#: ../jobviewer.py:648
+#: ../jobviewer.py:658
 #, python-format
 msgid "%d days ago"
 msgstr "לפני %d ימים"
 
-#: ../jobviewer.py:652
+#: ../jobviewer.py:662
 msgid "last week"
 msgstr "שבוע שעבר"
 
 #
 # File: ../jobviewer.py, line: 433
-#: ../jobviewer.py:654
+#: ../jobviewer.py:664
 #, python-format
 msgid "%d weeks ago"
 msgstr "לפני %d שבועות"
 
 #
 # File: ../authconn.py, line: 34
-#: ../jobviewer.py:862 ../jobviewer.py:942
+#: ../jobviewer.py:872 ../jobviewer.py:953
 msgid "authenticating job"
 msgstr "מאמת משימה"
 
 #
 # File: ../jobviewer.py, line: 621
-#: ../jobviewer.py:909
+#: ../jobviewer.py:920
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "נדרש אימות עבור הדפסת המסמך '%s' (משימה %d)"
 
-#: ../jobviewer.py:1153
+#: ../jobviewer.py:1168
 msgid "holding job"
 msgstr "מחזיק משימה"
 
-#: ../jobviewer.py:1178
+#: ../jobviewer.py:1193
 msgid "releasing job"
 msgstr "משחרר עבודה"
 
 #. give the default filename some meaningful name
-#: ../jobviewer.py:1234
+#: ../jobviewer.py:1249
 msgid "retrieved"
 msgstr ""
 
 # File: ../system-config-printer.glade.h, line: 219
-#: ../jobviewer.py:1244
+#: ../jobviewer.py:1259
 msgid "Save File"
 msgstr "שמור קובץ"
 
@@ -516,57 +550,57 @@ msgstr "שמור קובץ"
 # File: ../troubleshoot/ChooseNetworkPrinter.py, line: 34
 # File: ../troubleshoot/ChoosePrinter.py, line: 35
 # File: ../troubleshoot/DeviceListed.py, line: 35
-#: ../jobviewer.py:1323 ../system-config-printer.py:328
+#: ../jobviewer.py:1338 ../system-config-printer.py:328
 #: ../ui/NewPrinterWindow.glade.h:54
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "שם"
 
-#: ../jobviewer.py:1326
+#: ../jobviewer.py:1341
 msgid "Value"
 msgstr "ערך"
 
 #
 # File: ../jobviewer.py, line: 863
-#: ../jobviewer.py:1451
+#: ../jobviewer.py:1466
 msgid "No documents queued"
 msgstr "אין מסמכים בתור"
 
 #
 # File: ../jobviewer.py, line: 865
-#: ../jobviewer.py:1453
+#: ../jobviewer.py:1468
 msgid "1 document queued"
 msgstr "מסמך אחד בתור"
 
 #
 # File: ../jobviewer.py, line: 867
-#: ../jobviewer.py:1455
+#: ../jobviewer.py:1470
 #, python-format
 msgid "%d documents queued"
 msgstr "יש %d מסמכים בתור"
 
 # File: ../jobviewer.py, line: 187
 # File: ../troubleshoot/PrintTestPage.py, line: 81
-#: ../jobviewer.py:1589
+#: ../jobviewer.py:1604
 msgid "Document printed"
 msgstr "המסמך הודפס"
 
-#: ../jobviewer.py:1590
+#: ../jobviewer.py:1605
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
 msgstr "המסמך `%s' נשלח אל `%s' להדפסה."
 
 #
 # File: ../jobviewer.py, line: 1148
-#: ../jobviewer.py:1729
+#: ../jobviewer.py:1744
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "קרתה תקלה בשליחת המסמך '%s' (משימה %d) למדפסת."
 
 #
 # File: ../jobviewer.py, line: 1151
-#: ../jobviewer.py:1732
+#: ../jobviewer.py:1747
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "קרתה תקלה בעיבוד המסמך '%s' (משימה %d)."
@@ -574,7 +608,7 @@ msgstr "קרתה תקלה בעיבוד המסמך '%s' (משימה %d)."
 #
 # File: ../jobviewer.py, line: 1157
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1739
+#: ../jobviewer.py:1754
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "קרתה תקלה בהדפסת המסמך '%s' (משימה %d): '%s'."
@@ -582,84 +616,84 @@ msgstr "קרתה תקלה בהדפסת המסמך '%s' (משימה %d): '%s'."
 #
 # File: ../jobviewer.py, line: 1163
 # File: ../jobviewer.py, line: 1179
-#: ../jobviewer.py:1746 ../jobviewer.py:1762
+#: ../jobviewer.py:1761 ../jobviewer.py:1777
 msgid "Print Error"
 msgstr "שגיאת הדפסה"
 
 #
 # File: ../jobviewer.py, line: 1164
-#: ../jobviewer.py:1747
+#: ../jobviewer.py:1762
 msgid "_Diagnose"
 msgstr "_אבחון"
 
 #
 # File: ../jobviewer.py, line: 1185
-#: ../jobviewer.py:1768
+#: ../jobviewer.py:1783
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "המדפסת  '%s' סומנה כלא פעילה."
 
 #
 # File: ../system-config-printer.glade.h, line: 107
-#: ../jobviewer.py:1957
+#: ../jobviewer.py:1972
 #, fuzzy
 msgid "disabled"
 msgstr "זמין"
 
 #
 # File: ../jobviewer.py, line: 497
-#: ../jobviewer.py:1979
+#: ../jobviewer.py:1994
 msgid "Held for authentication"
 msgstr "מוחזק עד לאימות"
 
 #
 # File: ../jobviewer.py, line: 500
 # File: ../troubleshoot/PrintTestPage.py, line: 40
-#: ../jobviewer.py:1981 ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:1996 ../troubleshoot/PrintTestPage.py:42
 msgid "Held"
 msgstr "נשמר"
 
 #
 # File: ../system-config-printer.glade.h, line: 115
-#: ../jobviewer.py:2017
+#: ../jobviewer.py:2032
 #, python-format
 msgid "Held until %s"
 msgstr "הוחזק עד %s"
 
 #
 # File: ../system-config-printer.glade.h, line: 115
-#: ../jobviewer.py:2021
+#: ../jobviewer.py:2036
 msgid "Held until day-time"
 msgstr "הוחזק עד שעות היום"
 
 #
 # File: ../system-config-printer.glade.h, line: 115
-#: ../jobviewer.py:2023
+#: ../jobviewer.py:2038
 msgid "Held until evening"
 msgstr "הוחזק עד הערב"
 
-#: ../jobviewer.py:2025
+#: ../jobviewer.py:2040
 msgid "Held until night-time"
 msgstr ""
 
-#: ../jobviewer.py:2027
+#: ../jobviewer.py:2042
 msgid "Held until second shift"
 msgstr "הוחזק עד משמרת שנייה"
 
-#: ../jobviewer.py:2029
+#: ../jobviewer.py:2044
 msgid "Held until third shift"
 msgstr "הוחזק עד משמרת שלישית"
 
 #
 # File: ../system-config-printer.glade.h, line: 115
-#: ../jobviewer.py:2031
+#: ../jobviewer.py:2046
 msgid "Held until weekend"
 msgstr "הוחזק עד סוף השבוע"
 
 #
 # File: ../jobviewer.py, line: 499
 # File: ../troubleshoot/PrintTestPage.py, line: 39
-#: ../jobviewer.py:2034 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:2049 ../troubleshoot/PrintTestPage.py:41
 msgid "Pending"
 msgstr "ממתין"
 
@@ -667,7 +701,7 @@ msgstr "ממתין"
 # File: ../jobviewer.py, line: 501
 # File: ../system-config-printer.py, line: 166
 # File: ../troubleshoot/PrintTestPage.py, line: 41
-#: ../jobviewer.py:2035 ../printerproperties.py:62
+#: ../jobviewer.py:2050 ../printerproperties.py:62
 #: ../system-config-printer.py:162 ../troubleshoot/PrintTestPage.py:43
 msgid "Processing"
 msgstr "בתהליך"
@@ -676,7 +710,7 @@ msgstr "בתהליך"
 # File: ../jobviewer.py, line: 502
 # File: ../system-config-printer.py, line: 168
 # File: ../troubleshoot/PrintTestPage.py, line: 42
-#: ../jobviewer.py:2036 ../printerproperties.py:64
+#: ../jobviewer.py:2051 ../printerproperties.py:64
 #: ../system-config-printer.py:164 ../troubleshoot/PrintTestPage.py:44
 msgid "Stopped"
 msgstr "מופסק"
@@ -684,21 +718,21 @@ msgstr "מופסק"
 #
 # File: ../jobviewer.py, line: 503
 # File: ../troubleshoot/PrintTestPage.py, line: 43
-#: ../jobviewer.py:2037 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:2052 ../troubleshoot/PrintTestPage.py:45
 msgid "Canceled"
 msgstr "בוטל"
 
 #
 # File: ../jobviewer.py, line: 504
 # File: ../troubleshoot/PrintTestPage.py, line: 44
-#: ../jobviewer.py:2038 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:2053 ../troubleshoot/PrintTestPage.py:46
 msgid "Aborted"
 msgstr "התבטל"
 
 #
 # File: ../jobviewer.py, line: 505
 # File: ../troubleshoot/PrintTestPage.py, line: 45
-#: ../jobviewer.py:2039 ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:2054 ../troubleshoot/PrintTestPage.py:47
 msgid "Completed"
 msgstr "הסתיים"
 
@@ -1261,37 +1295,37 @@ msgstr "נכשל בקריאת קובץ PPD. סיבות אפשריות:"
 #
 # File: ../system-config-printer.py, line: 4937
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../newprinter.py:3057
+#: ../newprinter.py:3058
 msgid "Downloadable drivers"
 msgstr "מנהלי התקנים הניתנים להורדה"
 
 #
 # File: ../system-config-printer.py, line: 4938
-#: ../newprinter.py:3058
+#: ../newprinter.py:3059
 msgid "Failed to download PPD."
 msgstr "נכשל בהורדת PPD."
 
-#: ../newprinter.py:3065
+#: ../newprinter.py:3066
 msgid "fetching PPD"
 msgstr "משיג PPD"
 
 #
 # File: ../system-config-printer.py, line: 4974
 # File: ../system-config-printer.py, line: 5012
-#: ../newprinter.py:3094 ../newprinter.py:3132
+#: ../newprinter.py:3095 ../newprinter.py:3133
 msgid "No Installable Options"
 msgstr "אין אפשרויות להתקנה"
 
 #
 # File: ../system-config-printer.py, line: 5059
-#: ../newprinter.py:3194
+#: ../newprinter.py:3195
 #, python-format
 msgid "adding printer %s"
 msgstr "מוסיף מדפסת %s"
 
 #
 # File: ../system-config-printer.py, line: 5059
-#: ../newprinter.py:3221 ../newprinter.py:3232 ../newprinter.py:3249
+#: ../newprinter.py:3222 ../newprinter.py:3233 ../newprinter.py:3250
 #: ../printerproperties.py:845 ../system-config-printer.py:1724
 #: ../system-config-printer.py:1749
 #, python-format
@@ -1603,7 +1637,7 @@ msgstr ""
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr ""
 
-#: ../ppdsloader.py:161
+#: ../ppdsloader.py:170
 msgid "fetching PPDs"
 msgstr "משיג קבצי PPD"
 
@@ -2275,7 +2309,7 @@ msgstr "התקנת מנהל התקן"
 
 #
 # File: ../system-config-printer.py, line: 5221
-#: ../system-config-printer.py:2212 ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:2212 ../troubleshoot/CheckPPDSanity.py:133
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "המדפסת '%s' זקוקה לחבילת ה-%s אבל היא אינה מותקנת כעת."
@@ -2387,31 +2421,28 @@ msgstr "מתחבר לשרת CUPS"
 msgid "_Install"
 msgstr "_התקנה"
 
+#: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
 #
 # File: ../applet.glade.h, line: 3
-#: ../ui/JobsWindow.glade.h:1
+#: ../ui/JobsWindow.glade.h:2
 msgid "Show _completed jobs"
 msgstr "הצגת משימות שהושלמו"
 
 #
-# File: ../applet.glade.h, line: 5
-#: ../ui/JobsWindow.glade.h:2
-msgid "_File"
-msgstr "_קובץ"
-
-#
-# File: ../jobviewer.py, line: 185
-# File: ../troubleshoot/PrintTestPage.py, line: 77
+# File: ../applet.glade.h, line: 3
 #: ../ui/JobsWindow.glade.h:3
-msgid "_Job"
-msgstr "_משימה"
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "הצגת משימות שהושלמו"
 
 #
-# File: ../system-config-printer.glade.h, line: 270
-# File: ../applet.glade.h, line: 10
-#: ../ui/JobsWindow.glade.h:4 ../ui/PrintersWindow.glade.h:16
-msgid "_View"
-msgstr "_תצוגה"
+# File: ../applet.glade.h, line: 8
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "_רענן"
 
 # File: ../my-default-printer.py, line: 141
 # File: ../my-default-printer.desktop.in.h, line: 1
@@ -3504,6 +3535,13 @@ msgid "_Troubleshoot"
 msgstr "_איתור תקלות"
 
 #
+# File: ../system-config-printer.glade.h, line: 270
+# File: ../applet.glade.h, line: 10
+#: ../ui/PrintersWindow.glade.h:16
+msgid "_View"
+msgstr "_תצוגה"
+
+#
 # File: ../system-config-printer.glade.h, line: 11
 #: ../ui/ServerSettingsDialog.glade.h:1
 msgid "<b>Basic Server Settings</b>"
@@ -3860,17 +3898,17 @@ msgstr ""
 #
 # File: ../troubleshoot/CheckPPDSanity.py, line: 44
 # File: ../applet.py, line: 146
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:179
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:179
 msgid "Install"
 msgstr "התקנה"
 
 #
 # File: ../troubleshoot/CheckPPDSanity.py, line: 93
-#: ../troubleshoot/CheckPPDSanity.py:96
+#: ../troubleshoot/CheckPPDSanity.py:97
 msgid "Invalid PPD File"
 msgstr "קובץ PPD אינו תקין"
 
-#: ../troubleshoot/CheckPPDSanity.py:106
+#: ../troubleshoot/CheckPPDSanity.py:108
 #, python-format
 msgid ""
 "The PPD file for printer '%s' does not conform to the specification.  "
@@ -3880,20 +3918,20 @@ msgstr ""
 #
 # File: ../statereason.py, line: 106
 #. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:112
+#: ../troubleshoot/CheckPPDSanity.py:114
 #, python-format
 msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "יש בעיה עם קובץ הPPD של המדפסת '%s'."
 
 #
 # File: ../troubleshoot/CheckPPDSanity.py, line: 118
-#: ../troubleshoot/CheckPPDSanity.py:122
+#: ../troubleshoot/CheckPPDSanity.py:124
 msgid "Missing Printer Driver"
 msgstr "חסר מנהל התקן למדפסת"
 
 #
 # File: ../troubleshoot/CheckPPDSanity.py, line: 126
-#: ../troubleshoot/CheckPPDSanity.py:136
+#: ../troubleshoot/CheckPPDSanity.py:138
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed."
@@ -4403,6 +4441,17 @@ msgid "Manage Print Jobs"
 msgstr "ניהול משימות הדפסה"
 
 #
+# File: ../applet.glade.h, line: 5
+#~ msgid "_File"
+#~ msgstr "_קובץ"
+
+#
+# File: ../jobviewer.py, line: 185
+# File: ../troubleshoot/PrintTestPage.py, line: 77
+#~ msgid "_Job"
+#~ msgstr "_משימה"
+
+#
 # File: ../system-config-printer.py, line: 100
 #~ msgid ""
 #~ "To do this, select System->Administration->Firewall from the main menu."
@@ -4551,11 +4600,6 @@ msgstr "ניהול משימות הדפסה"
 # File: ../system-config-printer.glade.h, line: 121
 #~ msgid "IPP Browser"
 #~ msgstr "דפדפן IPP"
-
-#
-# File: ../applet.glade.h, line: 8
-#~ msgid "_Refresh"
-#~ msgstr "_רענן"
 
 #
 # File: ../system-config-printer.glade.h, line: 76

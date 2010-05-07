@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2010-05-05 16:34+0100\n"
+"POT-Creation-Date: 2010-05-07 17:54+0100\n"
 "PO-Revision-Date: 2010-04-16 18:10+0100\n"
 "Last-Translator: Tim Waugh <twaugh@redhat.com>\n"
 "Language-Team: <en@li.org>\n"
@@ -22,37 +22,37 @@ msgstr ""
 msgid "Enter IP address"
 msgstr "Enter IP address"
 
-#: ../asyncipp.py:419 ../authconn.py:394 ../authconn.py:396
+#: ../asyncipp.py:418 ../authconn.py:393 ../authconn.py:395
 #: ../errordialogs.py:62 ../pysmb.py:75 ../pysmb.py:77
 msgid "Not authorized"
 msgstr "Not authorized"
 
-#: ../asyncipp.py:420 ../authconn.py:397 ../pysmb.py:78
+#: ../asyncipp.py:419 ../authconn.py:396 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "The password may be incorrect."
 
-#: ../asyncipp.py:431 ../authconn.py:418
+#: ../asyncipp.py:430 ../authconn.py:417
 #, python-format
 msgid "Authentication (%s)"
 msgstr "Authentication (%s)"
 
-#: ../asyncipp.py:496 ../authconn.py:251 ../errordialogs.py:53
+#: ../asyncipp.py:495 ../authconn.py:250 ../errordialogs.py:53
 #: ../errordialogs.py:67
 msgid "CUPS server error"
 msgstr "CUPS server error"
 
-#: ../asyncipp.py:498 ../authconn.py:249
+#: ../asyncipp.py:497 ../authconn.py:248
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "CUPS server error (%s)"
 
-#: ../asyncipp.py:515 ../authconn.py:260 ../errordialogs.py:54
+#: ../asyncipp.py:514 ../authconn.py:259 ../errordialogs.py:54
 #: ../troubleshoot/PrintTestPage.py:417
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "There was an error during the CUPS operation: '%s'."
 
-#: ../asyncipp.py:518 ../authconn.py:263
+#: ../asyncipp.py:517 ../authconn.py:262
 msgid "Retry"
 msgstr "Retry"
 
@@ -73,7 +73,7 @@ msgid "Domain:"
 msgstr "Domain:"
 
 #. After that, prompt
-#: ../authconn.py:43 ../authconn.py:420 ../pysmb.py:83
+#: ../authconn.py:43 ../authconn.py:419 ../pysmb.py:83
 msgid "Authentication"
 msgstr "Authentication"
 
@@ -217,25 +217,53 @@ msgstr "cancelling job"
 msgid "_Cancel"
 msgstr "_Cancel"
 
+#: ../jobviewer.py:306
+#, fuzzy
+msgid "Cancel selected jobs"
+msgstr "Cancel All Jobs"
+
 #: ../jobviewer.py:308
 msgid "_Delete"
 msgstr "_Delete"
+
+#: ../jobviewer.py:308
+#, fuzzy
+msgid "Delete selected jobs"
+msgstr "Delete Jobs"
 
 #: ../jobviewer.py:310
 msgid "_Hold"
 msgstr "_Hold"
 
+#: ../jobviewer.py:310
+#, fuzzy
+msgid "Hold selected jobs"
+msgstr "Show _completed jobs"
+
 #: ../jobviewer.py:312
 msgid "_Release"
 msgstr "_Release"
+
+#: ../jobviewer.py:312
+#, fuzzy
+msgid "Release selected jobs"
+msgstr "There are queued jobs."
 
 #: ../jobviewer.py:314
 msgid "Re_print"
 msgstr "Re_print"
 
+#: ../jobviewer.py:314
+msgid "Reprint selected jobs"
+msgstr ""
+
 #: ../jobviewer.py:316
 msgid "Re_trieve"
 msgstr "Re_trieve"
+
+#: ../jobviewer.py:316
+msgid "Retrieve selected jobs"
+msgstr ""
 
 #: ../jobviewer.py:318
 msgid "_Move To"
@@ -249,60 +277,60 @@ msgstr "_Authenticate"
 msgid "_View Attributes"
 msgstr "_View Attributes"
 
-#: ../jobviewer.py:372 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:382 ../troubleshoot/PrintTestPage.py:82
 msgid "Job"
 msgstr "Job"
 
-#: ../jobviewer.py:373
+#: ../jobviewer.py:383
 msgid "User"
 msgstr "User"
 
-#: ../jobviewer.py:374 ../troubleshoot/PrintTestPage.py:86
+#: ../jobviewer.py:384 ../troubleshoot/PrintTestPage.py:86
 msgid "Document"
 msgstr "Document"
 
-#: ../jobviewer.py:375 ../system-config-printer.py:272
+#: ../jobviewer.py:385 ../system-config-printer.py:272
 #: ../system-config-printer.py:1004 ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Printer"
 
-#: ../jobviewer.py:376
+#: ../jobviewer.py:386
 msgid "Size"
 msgstr "Size"
 
-#: ../jobviewer.py:392
+#: ../jobviewer.py:402
 msgid "Time submitted"
 msgstr "Time submitted"
 
-#: ../jobviewer.py:396 ../troubleshoot/PrintTestPage.py:87
+#: ../jobviewer.py:406 ../troubleshoot/PrintTestPage.py:87
 msgid "Status"
 msgstr "Status"
 
-#: ../jobviewer.py:428
+#: ../jobviewer.py:438
 #, python-format
 msgid "my jobs on %s"
 msgstr "my jobs on %s"
 
-#: ../jobviewer.py:430
+#: ../jobviewer.py:440
 msgid "my jobs"
 msgstr "my jobs"
 
-#: ../jobviewer.py:435
+#: ../jobviewer.py:445
 msgid "all jobs"
 msgstr "all jobs"
 
-#: ../jobviewer.py:436
+#: ../jobviewer.py:446
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "Document Print Status (%s)"
 
-#: ../jobviewer.py:494
+#: ../jobviewer.py:504
 msgid "Job attributes"
 msgstr "Job attributes"
 
-#: ../jobviewer.py:627 ../jobviewer.py:911 ../jobviewer.py:1558
-#: ../jobviewer.py:1588 ../jobviewer.py:1946 ../jobviewer.py:1951
-#: ../jobviewer.py:1965 ../jobviewer.py:2044 ../printerproperties.py:1452
+#: ../jobviewer.py:637 ../jobviewer.py:922 ../jobviewer.py:1573
+#: ../jobviewer.py:1603 ../jobviewer.py:1961 ../jobviewer.py:1966
+#: ../jobviewer.py:1980 ../jobviewer.py:2059 ../printerproperties.py:1452
 #: ../ui/NewPrinterWindow.glade.h:89
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:103
@@ -314,194 +342,194 @@ msgstr "Job attributes"
 msgid "Unknown"
 msgstr "Unknown"
 
-#: ../jobviewer.py:633
+#: ../jobviewer.py:643
 msgid "a minute ago"
 msgstr "a minute ago"
 
-#: ../jobviewer.py:636
+#: ../jobviewer.py:646
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d minutes ago"
 
-#: ../jobviewer.py:640
+#: ../jobviewer.py:650
 msgid "an hour ago"
 msgstr "an hour ago"
 
-#: ../jobviewer.py:642
+#: ../jobviewer.py:652
 #, python-format
 msgid "%d hours ago"
 msgstr "%d hours ago"
 
-#: ../jobviewer.py:646
+#: ../jobviewer.py:656
 msgid "yesterday"
 msgstr "yesterday"
 
-#: ../jobviewer.py:648
+#: ../jobviewer.py:658
 #, python-format
 msgid "%d days ago"
 msgstr "%d days ago"
 
-#: ../jobviewer.py:652
+#: ../jobviewer.py:662
 msgid "last week"
 msgstr "last week"
 
-#: ../jobviewer.py:654
+#: ../jobviewer.py:664
 #, python-format
 msgid "%d weeks ago"
 msgstr "%d weeks ago"
 
-#: ../jobviewer.py:862 ../jobviewer.py:942
+#: ../jobviewer.py:872 ../jobviewer.py:953
 msgid "authenticating job"
 msgstr "authenticating job"
 
-#: ../jobviewer.py:909
+#: ../jobviewer.py:920
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "Authentication required for printing document `%s' (job %d)"
 
-#: ../jobviewer.py:1153
+#: ../jobviewer.py:1168
 msgid "holding job"
 msgstr "holding job"
 
-#: ../jobviewer.py:1178
+#: ../jobviewer.py:1193
 msgid "releasing job"
 msgstr "releasing job"
 
 #. give the default filename some meaningful name
-#: ../jobviewer.py:1234
+#: ../jobviewer.py:1249
 msgid "retrieved"
 msgstr "retrieved"
 
-#: ../jobviewer.py:1244
+#: ../jobviewer.py:1259
 msgid "Save File"
 msgstr "Save File"
 
-#: ../jobviewer.py:1323 ../system-config-printer.py:328
+#: ../jobviewer.py:1338 ../system-config-printer.py:328
 #: ../ui/NewPrinterWindow.glade.h:54
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "Name"
 
-#: ../jobviewer.py:1326
+#: ../jobviewer.py:1341
 msgid "Value"
 msgstr "Value"
 
-#: ../jobviewer.py:1451
+#: ../jobviewer.py:1466
 msgid "No documents queued"
 msgstr "No documents queued"
 
-#: ../jobviewer.py:1453
+#: ../jobviewer.py:1468
 msgid "1 document queued"
 msgstr "1 document queued"
 
-#: ../jobviewer.py:1455
+#: ../jobviewer.py:1470
 #, python-format
 msgid "%d documents queued"
 msgstr "%d documents queued"
 
-#: ../jobviewer.py:1589
+#: ../jobviewer.py:1604
 msgid "Document printed"
 msgstr "Document printed"
 
-#: ../jobviewer.py:1590
+#: ../jobviewer.py:1605
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
 msgstr "Document `%s' has been sent to `%s' for printing."
 
-#: ../jobviewer.py:1729
+#: ../jobviewer.py:1744
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "There was a problem sending document `%s' (job %d) to the printer."
 
-#: ../jobviewer.py:1732
+#: ../jobviewer.py:1747
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "There was a problem processing document `%s' (job %d)."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1739
+#: ../jobviewer.py:1754
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "There was a problem printing document `%s' (job %d): `%s'."
 
-#: ../jobviewer.py:1746 ../jobviewer.py:1762
+#: ../jobviewer.py:1761 ../jobviewer.py:1777
 msgid "Print Error"
 msgstr "Print Error"
 
-#: ../jobviewer.py:1747
+#: ../jobviewer.py:1762
 msgid "_Diagnose"
 msgstr "_Diagnose"
 
-#: ../jobviewer.py:1768
+#: ../jobviewer.py:1783
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "The printer called `%s' has been disabled."
 
-#: ../jobviewer.py:1957
+#: ../jobviewer.py:1972
 msgid "disabled"
 msgstr "disabled"
 
-#: ../jobviewer.py:1979
+#: ../jobviewer.py:1994
 msgid "Held for authentication"
 msgstr "Held for authentication"
 
-#: ../jobviewer.py:1981 ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:1996 ../troubleshoot/PrintTestPage.py:42
 msgid "Held"
 msgstr "Held"
 
-#: ../jobviewer.py:2017
+#: ../jobviewer.py:2032
 #, python-format
 msgid "Held until %s"
 msgstr "Held until %s"
 
-#: ../jobviewer.py:2021
+#: ../jobviewer.py:2036
 msgid "Held until day-time"
 msgstr "Held until day time"
 
-#: ../jobviewer.py:2023
+#: ../jobviewer.py:2038
 msgid "Held until evening"
 msgstr "Held until evening"
 
-#: ../jobviewer.py:2025
+#: ../jobviewer.py:2040
 msgid "Held until night-time"
 msgstr "Held until night-time"
 
-#: ../jobviewer.py:2027
+#: ../jobviewer.py:2042
 msgid "Held until second shift"
 msgstr "Held until second shift"
 
-#: ../jobviewer.py:2029
+#: ../jobviewer.py:2044
 msgid "Held until third shift"
 msgstr "Held until third shift"
 
-#: ../jobviewer.py:2031
+#: ../jobviewer.py:2046
 msgid "Held until weekend"
 msgstr "Held until weekend"
 
-#: ../jobviewer.py:2034 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:2049 ../troubleshoot/PrintTestPage.py:41
 msgid "Pending"
 msgstr "Pending"
 
-#: ../jobviewer.py:2035 ../printerproperties.py:62
+#: ../jobviewer.py:2050 ../printerproperties.py:62
 #: ../system-config-printer.py:162 ../troubleshoot/PrintTestPage.py:43
 msgid "Processing"
 msgstr "Processing"
 
-#: ../jobviewer.py:2036 ../printerproperties.py:64
+#: ../jobviewer.py:2051 ../printerproperties.py:64
 #: ../system-config-printer.py:164 ../troubleshoot/PrintTestPage.py:44
 msgid "Stopped"
 msgstr "Stopped"
 
-#: ../jobviewer.py:2037 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:2052 ../troubleshoot/PrintTestPage.py:45
 msgid "Canceled"
 msgstr "Cancelled"
 
-#: ../jobviewer.py:2038 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:2053 ../troubleshoot/PrintTestPage.py:46
 msgid "Aborted"
 msgstr "Aborted"
 
-#: ../jobviewer.py:2039 ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:2054 ../troubleshoot/PrintTestPage.py:47
 msgid "Completed"
 msgstr "Completed"
 
@@ -921,28 +949,28 @@ msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Failed to read PPD file.  Possible reason follows:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../newprinter.py:3057
+#: ../newprinter.py:3058
 msgid "Downloadable drivers"
 msgstr "Downloadable drivers"
 
-#: ../newprinter.py:3058
+#: ../newprinter.py:3059
 msgid "Failed to download PPD."
 msgstr "Failed to download PPD."
 
-#: ../newprinter.py:3065
+#: ../newprinter.py:3066
 msgid "fetching PPD"
 msgstr "fetching PPD"
 
-#: ../newprinter.py:3094 ../newprinter.py:3132
+#: ../newprinter.py:3095 ../newprinter.py:3133
 msgid "No Installable Options"
 msgstr "No Installable Options"
 
-#: ../newprinter.py:3194
+#: ../newprinter.py:3195
 #, python-format
 msgid "adding printer %s"
 msgstr "adding printer %s"
 
-#: ../newprinter.py:3221 ../newprinter.py:3232 ../newprinter.py:3249
+#: ../newprinter.py:3222 ../newprinter.py:3233 ../newprinter.py:3250
 #: ../printerproperties.py:845 ../system-config-printer.py:1724
 #: ../system-config-printer.py:1749
 #, python-format
@@ -1218,7 +1246,7 @@ msgstr "600 dpi, colour, black + colour cartridge, photo paper, normal"
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, photo, black + colour cartridge, photo paper"
 
-#: ../ppdsloader.py:161
+#: ../ppdsloader.py:170
 msgid "fetching PPDs"
 msgstr "fetching PPDs"
 
@@ -1740,7 +1768,7 @@ msgstr "Print Test Page"
 msgid "Install driver"
 msgstr "Install driver"
 
-#: ../system-config-printer.py:2212 ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:2212 ../troubleshoot/CheckPPDSanity.py:133
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
@@ -1827,20 +1855,21 @@ msgid "_Install"
 msgstr "_Install"
 
 #: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
 msgid "Show _completed jobs"
 msgstr "Show _completed jobs"
 
-#: ../ui/JobsWindow.glade.h:2
-msgid "_File"
-msgstr "_File"
-
 #: ../ui/JobsWindow.glade.h:3
-msgid "_Job"
-msgstr "_Job"
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "Show _completed jobs"
 
-#: ../ui/JobsWindow.glade.h:4 ../ui/PrintersWindow.glade.h:16
-msgid "_View"
-msgstr "_View"
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "_Refresh"
 
 #: ../ui/NewPrinterName.glade.h:1
 msgid "Duplicate Printer"
@@ -2622,6 +2651,10 @@ msgstr "_Settings"
 msgid "_Troubleshoot"
 msgstr "_Troubleshoot"
 
+#: ../ui/PrintersWindow.glade.h:16
+msgid "_View"
+msgstr "_View"
+
 #: ../ui/ServerSettingsDialog.glade.h:1
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>Basic Server Settings</b>"
@@ -2875,15 +2908,15 @@ msgstr ""
 "Enable the Publish shared printers connected to this system' option in the "
 "server settings using the printing administration tool."
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:179
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:179
 msgid "Install"
 msgstr "Install"
 
-#: ../troubleshoot/CheckPPDSanity.py:96
+#: ../troubleshoot/CheckPPDSanity.py:97
 msgid "Invalid PPD File"
 msgstr "Invalid PPD File"
 
-#: ../troubleshoot/CheckPPDSanity.py:106
+#: ../troubleshoot/CheckPPDSanity.py:108
 #, python-format
 msgid ""
 "The PPD file for printer '%s' does not conform to the specification.  "
@@ -2893,16 +2926,16 @@ msgstr ""
 "Possible reason follows:"
 
 #. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:112
+#: ../troubleshoot/CheckPPDSanity.py:114
 #, python-format
 msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "There is a problem with the PPD file for printer '%s'."
 
-#: ../troubleshoot/CheckPPDSanity.py:122
+#: ../troubleshoot/CheckPPDSanity.py:124
 msgid "Missing Printer Driver"
 msgstr "Missing Printer Driver"
 
-#: ../troubleshoot/CheckPPDSanity.py:136
+#: ../troubleshoot/CheckPPDSanity.py:138
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed."
@@ -3288,6 +3321,12 @@ msgstr "Cancel, pause, resume or reprint jobs"
 msgid "Manage Print Jobs"
 msgstr "Manage Print Jobs"
 
+#~ msgid "_File"
+#~ msgstr "_File"
+
+#~ msgid "_Job"
+#~ msgstr "_Job"
+
 #~ msgid ""
 #~ "To do this, select System->Administration->Firewall from the main menu."
 #~ msgstr ""
@@ -3434,9 +3473,6 @@ msgstr "Manage Print Jobs"
 
 #~ msgid "IPP Browser"
 #~ msgstr "IPP Browser"
-
-#~ msgid "_Refresh"
-#~ msgstr "_Refresh"
 
 #~ msgid ""
 #~ "Default\n"

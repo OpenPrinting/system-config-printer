@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2010-05-05 16:34+0100\n"
+"POT-Creation-Date: 2010-05-07 17:54+0100\n"
 "PO-Revision-Date: 2010-04-17 16:08+0100\n"
 "Last-Translator: Miloš Komarčević <kmilos@gmail.com>\n"
 "Language-Team: Serbian <trans-sr@lists.fedoraproject.org>\n"
@@ -22,37 +22,37 @@ msgstr ""
 msgid "Enter IP address"
 msgstr "Унесите ИП адресу"
 
-#: ../asyncipp.py:419 ../authconn.py:394 ../authconn.py:396
+#: ../asyncipp.py:418 ../authconn.py:393 ../authconn.py:395
 #: ../errordialogs.py:62 ../pysmb.py:75 ../pysmb.py:77
 msgid "Not authorized"
 msgstr "Неовлашћен"
 
-#: ../asyncipp.py:420 ../authconn.py:397 ../pysmb.py:78
+#: ../asyncipp.py:419 ../authconn.py:396 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "Лозинка је можда нетачна."
 
-#: ../asyncipp.py:431 ../authconn.py:418
+#: ../asyncipp.py:430 ../authconn.py:417
 #, python-format
 msgid "Authentication (%s)"
 msgstr "Аутентификација (%s)"
 
-#: ../asyncipp.py:496 ../authconn.py:251 ../errordialogs.py:53
+#: ../asyncipp.py:495 ../authconn.py:250 ../errordialogs.py:53
 #: ../errordialogs.py:67
 msgid "CUPS server error"
 msgstr "Грешка CUPS сервера"
 
-#: ../asyncipp.py:498 ../authconn.py:249
+#: ../asyncipp.py:497 ../authconn.py:248
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "Грешка CUPS сервера (%s)"
 
-#: ../asyncipp.py:515 ../authconn.py:260 ../errordialogs.py:54
+#: ../asyncipp.py:514 ../authconn.py:259 ../errordialogs.py:54
 #: ../troubleshoot/PrintTestPage.py:417
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Грешка током CUPS радње: „%s“."
 
-#: ../asyncipp.py:518 ../authconn.py:263
+#: ../asyncipp.py:517 ../authconn.py:262
 msgid "Retry"
 msgstr "Покушај поново"
 
@@ -73,7 +73,7 @@ msgid "Domain:"
 msgstr "Домен:"
 
 #. After that, prompt
-#: ../authconn.py:43 ../authconn.py:420 ../pysmb.py:83
+#: ../authconn.py:43 ../authconn.py:419 ../pysmb.py:83
 msgid "Authentication"
 msgstr "Аутентификација"
 
@@ -217,25 +217,53 @@ msgstr "отказујем посао"
 msgid "_Cancel"
 msgstr "_Откажи"
 
+#: ../jobviewer.py:306
+#, fuzzy
+msgid "Cancel selected jobs"
+msgstr "Откажи све послове"
+
 #: ../jobviewer.py:308
 msgid "_Delete"
 msgstr "О_бриши"
+
+#: ../jobviewer.py:308
+#, fuzzy
+msgid "Delete selected jobs"
+msgstr "Обриши послове"
 
 #: ../jobviewer.py:310
 msgid "_Hold"
 msgstr "За_држи"
 
+#: ../jobviewer.py:310
+#, fuzzy
+msgid "Hold selected jobs"
+msgstr "Покажи _завршене послове"
+
 #: ../jobviewer.py:312
 msgid "_Release"
 msgstr "П_усти"
+
+#: ../jobviewer.py:312
+#, fuzzy
+msgid "Release selected jobs"
+msgstr "Има још послова у реду на чекање."
 
 #: ../jobviewer.py:314
 msgid "Re_print"
 msgstr "Поново ш_тампај"
 
+#: ../jobviewer.py:314
+msgid "Reprint selected jobs"
+msgstr ""
+
 #: ../jobviewer.py:316
 msgid "Re_trieve"
 msgstr "Пре_узми"
+
+#: ../jobviewer.py:316
+msgid "Retrieve selected jobs"
+msgstr ""
 
 #: ../jobviewer.py:318
 msgid "_Move To"
@@ -249,60 +277,60 @@ msgstr "_Аутентификуј"
 msgid "_View Attributes"
 msgstr "По_гледај особине"
 
-#: ../jobviewer.py:372 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:382 ../troubleshoot/PrintTestPage.py:82
 msgid "Job"
 msgstr "Посао"
 
-#: ../jobviewer.py:373
+#: ../jobviewer.py:383
 msgid "User"
 msgstr "Корисник"
 
-#: ../jobviewer.py:374 ../troubleshoot/PrintTestPage.py:86
+#: ../jobviewer.py:384 ../troubleshoot/PrintTestPage.py:86
 msgid "Document"
 msgstr "Документ"
 
-#: ../jobviewer.py:375 ../system-config-printer.py:272
+#: ../jobviewer.py:385 ../system-config-printer.py:272
 #: ../system-config-printer.py:1004 ../troubleshoot/PrintTestPage.py:84
 msgid "Printer"
 msgstr "Штампач"
 
-#: ../jobviewer.py:376
+#: ../jobviewer.py:386
 msgid "Size"
 msgstr "Величина"
 
-#: ../jobviewer.py:392
+#: ../jobviewer.py:402
 msgid "Time submitted"
 msgstr "Време слања"
 
-#: ../jobviewer.py:396 ../troubleshoot/PrintTestPage.py:87
+#: ../jobviewer.py:406 ../troubleshoot/PrintTestPage.py:87
 msgid "Status"
 msgstr "Стање"
 
-#: ../jobviewer.py:428
+#: ../jobviewer.py:438
 #, python-format
 msgid "my jobs on %s"
 msgstr "моји послови на %s"
 
-#: ../jobviewer.py:430
+#: ../jobviewer.py:440
 msgid "my jobs"
 msgstr "моји послови"
 
-#: ../jobviewer.py:435
+#: ../jobviewer.py:445
 msgid "all jobs"
 msgstr "све послове"
 
-#: ../jobviewer.py:436
+#: ../jobviewer.py:446
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "Стање штампања документа (%s)"
 
-#: ../jobviewer.py:494
+#: ../jobviewer.py:504
 msgid "Job attributes"
 msgstr "Особине посла"
 
-#: ../jobviewer.py:627 ../jobviewer.py:911 ../jobviewer.py:1558
-#: ../jobviewer.py:1588 ../jobviewer.py:1946 ../jobviewer.py:1951
-#: ../jobviewer.py:1965 ../jobviewer.py:2044 ../printerproperties.py:1452
+#: ../jobviewer.py:637 ../jobviewer.py:922 ../jobviewer.py:1573
+#: ../jobviewer.py:1603 ../jobviewer.py:1961 ../jobviewer.py:1966
+#: ../jobviewer.py:1980 ../jobviewer.py:2059 ../printerproperties.py:1452
 #: ../ui/NewPrinterWindow.glade.h:89
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:103
@@ -314,195 +342,195 @@ msgstr "Особине посла"
 msgid "Unknown"
 msgstr "Непознато"
 
-#: ../jobviewer.py:633
+#: ../jobviewer.py:643
 msgid "a minute ago"
 msgstr "пре једне минуте"
 
-#: ../jobviewer.py:636
+#: ../jobviewer.py:646
 #, python-format
 msgid "%d minutes ago"
 msgstr "пре %d минута"
 
-#: ../jobviewer.py:640
+#: ../jobviewer.py:650
 msgid "an hour ago"
 msgstr "пре 1 сат"
 
-#: ../jobviewer.py:642
+#: ../jobviewer.py:652
 #, python-format
 msgid "%d hours ago"
 msgstr "пре %d сати"
 
-#: ../jobviewer.py:646
+#: ../jobviewer.py:656
 msgid "yesterday"
 msgstr "јуче"
 
-#: ../jobviewer.py:648
+#: ../jobviewer.py:658
 #, python-format
 msgid "%d days ago"
 msgstr "пре %d дана"
 
-#: ../jobviewer.py:652
+#: ../jobviewer.py:662
 msgid "last week"
 msgstr "прошле седмице"
 
-#: ../jobviewer.py:654
+#: ../jobviewer.py:664
 #, python-format
 msgid "%d weeks ago"
 msgstr "пре %d седмице/а"
 
-#: ../jobviewer.py:862 ../jobviewer.py:942
+#: ../jobviewer.py:872 ../jobviewer.py:953
 msgid "authenticating job"
 msgstr "аутентификација посла"
 
-#: ../jobviewer.py:909
+#: ../jobviewer.py:920
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "Аутентификација је потребна за штампање документа. „%s“ (посао %d)"
 
-#: ../jobviewer.py:1153
+#: ../jobviewer.py:1168
 msgid "holding job"
 msgstr "задржавам посао"
 
-#: ../jobviewer.py:1178
+#: ../jobviewer.py:1193
 msgid "releasing job"
 msgstr "пуштам посао"
 
 #. give the default filename some meaningful name
-#: ../jobviewer.py:1234
+#: ../jobviewer.py:1249
 msgid "retrieved"
 msgstr "преузето"
 
-#: ../jobviewer.py:1244
+#: ../jobviewer.py:1259
 msgid "Save File"
 msgstr "Сачувај датотеку"
 
-#: ../jobviewer.py:1323 ../system-config-printer.py:328
+#: ../jobviewer.py:1338 ../system-config-printer.py:328
 #: ../ui/NewPrinterWindow.glade.h:54
 #: ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "Име"
 
-#: ../jobviewer.py:1326
+#: ../jobviewer.py:1341
 msgid "Value"
 msgstr "Вредност"
 
-#: ../jobviewer.py:1451
+#: ../jobviewer.py:1466
 msgid "No documents queued"
 msgstr "Нема докумената у реду"
 
-#: ../jobviewer.py:1453
+#: ../jobviewer.py:1468
 msgid "1 document queued"
 msgstr "1 документ у реду"
 
-#: ../jobviewer.py:1455
+#: ../jobviewer.py:1470
 #, python-format
 msgid "%d documents queued"
 msgstr "%d докумената у реду"
 
-#: ../jobviewer.py:1589
+#: ../jobviewer.py:1604
 msgid "Document printed"
 msgstr "Документ је одштампан"
 
-#: ../jobviewer.py:1590
+#: ../jobviewer.py:1605
 #, python-format
 msgid "Document `%s' has been sent to `%s' for printing."
 msgstr "Документ „%s“ је послат на „%s“ за штампу."
 
-#: ../jobviewer.py:1729
+#: ../jobviewer.py:1744
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "Грешка током слања документа „%s“ (посао %d) штампачу."
 
-#: ../jobviewer.py:1732
+#: ../jobviewer.py:1747
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "Дошло је до проблема приликом обраде документа „%s“ (посао %d)."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1739
+#: ../jobviewer.py:1754
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr ""
 "Дошло је до проблема приликом штампања документа „%s“ (посао %d): „%s“."
 
-#: ../jobviewer.py:1746 ../jobviewer.py:1762
+#: ../jobviewer.py:1761 ../jobviewer.py:1777
 msgid "Print Error"
 msgstr "Грешка у штампању"
 
-#: ../jobviewer.py:1747
+#: ../jobviewer.py:1762
 msgid "_Diagnose"
 msgstr "_Утврдите проблем"
 
-#: ../jobviewer.py:1768
+#: ../jobviewer.py:1783
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "Штампач „%s“ је онемогућен."
 
-#: ../jobviewer.py:1957
+#: ../jobviewer.py:1972
 msgid "disabled"
 msgstr "онемогућен"
 
-#: ../jobviewer.py:1979
+#: ../jobviewer.py:1994
 msgid "Held for authentication"
 msgstr "Задржано за аутентификација"
 
-#: ../jobviewer.py:1981 ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:1996 ../troubleshoot/PrintTestPage.py:42
 msgid "Held"
 msgstr "Задржано"
 
-#: ../jobviewer.py:2017
+#: ../jobviewer.py:2032
 #, python-format
 msgid "Held until %s"
 msgstr "Задржи до %s"
 
-#: ../jobviewer.py:2021
+#: ../jobviewer.py:2036
 msgid "Held until day-time"
 msgstr "Задржи до дана"
 
-#: ../jobviewer.py:2023
+#: ../jobviewer.py:2038
 msgid "Held until evening"
 msgstr "Задржи до вечери"
 
-#: ../jobviewer.py:2025
+#: ../jobviewer.py:2040
 msgid "Held until night-time"
 msgstr "Задржи до ноћи"
 
-#: ../jobviewer.py:2027
+#: ../jobviewer.py:2042
 msgid "Held until second shift"
 msgstr "Задржи до друге смене"
 
-#: ../jobviewer.py:2029
+#: ../jobviewer.py:2044
 msgid "Held until third shift"
 msgstr "Задржи до треће смене"
 
-#: ../jobviewer.py:2031
+#: ../jobviewer.py:2046
 msgid "Held until weekend"
 msgstr "Задржи до викенда"
 
-#: ../jobviewer.py:2034 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:2049 ../troubleshoot/PrintTestPage.py:41
 msgid "Pending"
 msgstr "На чекању"
 
-#: ../jobviewer.py:2035 ../printerproperties.py:62
+#: ../jobviewer.py:2050 ../printerproperties.py:62
 #: ../system-config-printer.py:162 ../troubleshoot/PrintTestPage.py:43
 msgid "Processing"
 msgstr "Обрађује"
 
-#: ../jobviewer.py:2036 ../printerproperties.py:64
+#: ../jobviewer.py:2051 ../printerproperties.py:64
 #: ../system-config-printer.py:164 ../troubleshoot/PrintTestPage.py:44
 msgid "Stopped"
 msgstr "Заустављен"
 
-#: ../jobviewer.py:2037 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:2052 ../troubleshoot/PrintTestPage.py:45
 msgid "Canceled"
 msgstr "Отказано"
 
-#: ../jobviewer.py:2038 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:2053 ../troubleshoot/PrintTestPage.py:46
 msgid "Aborted"
 msgstr "Обустављено"
 
-#: ../jobviewer.py:2039 ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:2054 ../troubleshoot/PrintTestPage.py:47
 msgid "Completed"
 msgstr "Завршено"
 
@@ -923,28 +951,28 @@ msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Читање PPD датотеке није успело. Могући разлози следе:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../newprinter.py:3057
+#: ../newprinter.py:3058
 msgid "Downloadable drivers"
 msgstr "Преузимљиви управљачки програми"
 
-#: ../newprinter.py:3058
+#: ../newprinter.py:3059
 msgid "Failed to download PPD."
 msgstr "Неуспео покушај превлачења PPD."
 
-#: ../newprinter.py:3065
+#: ../newprinter.py:3066
 msgid "fetching PPD"
 msgstr "добављам PPD"
 
-#: ../newprinter.py:3094 ../newprinter.py:3132
+#: ../newprinter.py:3095 ../newprinter.py:3133
 msgid "No Installable Options"
 msgstr "Нема опција које се могу инсталирати"
 
-#: ../newprinter.py:3194
+#: ../newprinter.py:3195
 #, python-format
 msgid "adding printer %s"
 msgstr "додајем штампач %s"
 
-#: ../newprinter.py:3221 ../newprinter.py:3232 ../newprinter.py:3249
+#: ../newprinter.py:3222 ../newprinter.py:3233 ../newprinter.py:3250
 #: ../printerproperties.py:845 ../system-config-printer.py:1724
 #: ../system-config-printer.py:1749
 #, python-format
@@ -1220,7 +1248,7 @@ msgstr "600 тпи, у боји, црна + у боји касета, фото �
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 тпи, у боји, црна + у боји касета, фото папир"
 
-#: ../ppdsloader.py:161
+#: ../ppdsloader.py:170
 msgid "fetching PPDs"
 msgstr "добављам PPD-е"
 
@@ -1741,7 +1769,7 @@ msgstr "Одштампај пробну страницу"
 msgid "Install driver"
 msgstr "Инсталирај управљачки програм"
 
-#: ../system-config-printer.py:2212 ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:2212 ../troubleshoot/CheckPPDSanity.py:133
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "Штампач „%s“ захтева пакет %s али он није тренутно инсталиран. "
@@ -1830,20 +1858,21 @@ msgid "_Install"
 msgstr "_Инсталирај"
 
 #: ../ui/JobsWindow.glade.h:1
+msgid "Refresh job list"
+msgstr ""
+
+#: ../ui/JobsWindow.glade.h:2
 msgid "Show _completed jobs"
 msgstr "Покажи _завршене послове"
 
-#: ../ui/JobsWindow.glade.h:2
-msgid "_File"
-msgstr "_Датотека"
-
 #: ../ui/JobsWindow.glade.h:3
-msgid "_Job"
-msgstr "_Посао"
+#, fuzzy
+msgid "Show completed jobs"
+msgstr "Покажи _завршене послове"
 
-#: ../ui/JobsWindow.glade.h:4 ../ui/PrintersWindow.glade.h:16
-msgid "_View"
-msgstr "Пре_глед"
+#: ../ui/JobsWindow.glade.h:4
+msgid "_Refresh"
+msgstr "_Освежи"
 
 #: ../ui/NewPrinterName.glade.h:1
 msgid "Duplicate Printer"
@@ -2630,6 +2659,10 @@ msgstr "По_ставке"
 msgid "_Troubleshoot"
 msgstr "_Решавање проблема"
 
+#: ../ui/PrintersWindow.glade.h:16
+msgid "_View"
+msgstr "Пре_глед"
+
 #: ../ui/ServerSettingsDialog.glade.h:1
 msgid "<b>Basic Server Settings</b>"
 msgstr "<b>Основне поставке сервера</b>"
@@ -2884,15 +2917,15 @@ msgstr ""
 "Омогући опцију „Објави дељене штампаче спојене на овај систем“ у поставкама "
 "сервера користећи алатку за администрацију штампања."
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:179
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:179
 msgid "Install"
 msgstr "Инсталирај"
 
-#: ../troubleshoot/CheckPPDSanity.py:96
+#: ../troubleshoot/CheckPPDSanity.py:97
 msgid "Invalid PPD File"
 msgstr "Неисправна PPD датотека"
 
-#: ../troubleshoot/CheckPPDSanity.py:106
+#: ../troubleshoot/CheckPPDSanity.py:108
 #, python-format
 msgid ""
 "The PPD file for printer '%s' does not conform to the specification.  "
@@ -2901,16 +2934,16 @@ msgstr ""
 "PPD датотека за штампач „%s“ не прати спецификације.  Могући разлози следе:"
 
 #. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:112
+#: ../troubleshoot/CheckPPDSanity.py:114
 #, python-format
 msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "Грешка у PPD датотеци за штампач „%s“."
 
-#: ../troubleshoot/CheckPPDSanity.py:122
+#: ../troubleshoot/CheckPPDSanity.py:124
 msgid "Missing Printer Driver"
 msgstr "Недостаје управљачки програм штампача"
 
-#: ../troubleshoot/CheckPPDSanity.py:136
+#: ../troubleshoot/CheckPPDSanity.py:138
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed."
@@ -3296,6 +3329,12 @@ msgstr "Откажи, паузирај, настави или поново шт�
 msgid "Manage Print Jobs"
 msgstr "Управљај пословима штампања"
 
+#~ msgid "_File"
+#~ msgstr "_Датотека"
+
+#~ msgid "_Job"
+#~ msgstr "_Посао"
+
 #~ msgid ""
 #~ "To do this, select System->Administration->Firewall from the main menu."
 #~ msgstr ""
@@ -3414,9 +3453,6 @@ msgstr "Управљај пословима штампања"
 
 #~ msgid "system-config-printer"
 #~ msgstr "system-config-printer"
-
-#~ msgid "_Refresh"
-#~ msgstr "_Освежи"
 
 #~ msgid ""
 #~ "Default\n"
