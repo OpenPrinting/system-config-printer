@@ -2,8 +2,9 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -61,6 +62,7 @@ class CheckUSBPermissions(Question):
         try:
             self.op = TimedSubprocess (parent=parent,
                                        args="LC_ALL=C " + LSUSB + " -v",
+                                       close_fds=True,
                                        shell=True,
                                        stdin=file("/dev/null"),
                                        stdout=subprocess.PIPE,
@@ -141,6 +143,7 @@ class CheckUSBPermissions(Question):
                 self.op = TimedSubprocess (parent=parent,
                                            args="LC_ALL=C %s %s" % (GETFACL,
                                                                     path),
+                                           close_fds=True,
                                            shell=True,
                                            stdin=file("/dev/null"),
                                            stdout=subprocess.PIPE,

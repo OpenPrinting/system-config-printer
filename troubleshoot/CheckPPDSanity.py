@@ -2,8 +2,9 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -98,6 +99,7 @@ class CheckPPDSanity(Question):
             try:
                 self.op = TimedSubprocess (parent=parent,
                                            args=['cupstestppd', '-rvv', tmpf],
+                                           close_fds=True,
                                            stdin=file("/dev/null"),
                                            stdout=subprocess.PIPE,
                                            stderr=subprocess.PIPE)

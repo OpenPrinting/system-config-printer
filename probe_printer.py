@@ -256,6 +256,7 @@ class PrinterFinder:
         try:
             p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
                                         self.hostname],
+                                  close_fds=True,
                                   stdin=null,
                                   stdout=subprocess.PIPE,
                                   stderr=null)
@@ -315,6 +316,7 @@ class PrinterFinder:
         null = file ("/dev/null", "r+")
         try:
             p = subprocess.Popen (args=["hp-makeuri", "-c", self.hostname],
+                                  close_fds=True,
                                   stdin=null,
                                   stdout=subprocess.PIPE,
                                   stderr=null)
