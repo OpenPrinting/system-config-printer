@@ -1294,7 +1294,7 @@ class NewPrinterGUI(GtkGUI):
         cmd = 'LC_ALL=C DISPLAY= hp-info -x -i -d"${URI}"'
         debugprint (faxuri + ": " + cmd)
         try:
-            p = subprocess.Popen (cmd, shell=True,
+            p = subprocess.Popen (cmd, shell=True, close_fds=True,
                                   stdin=file("/dev/null"),
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
@@ -1329,7 +1329,7 @@ class NewPrinterGUI(GtkGUI):
         debugprint (host + ": " + cmd)
         uri = None
         try:
-            p = subprocess.Popen (cmd, shell=True,
+            p = subprocess.Popen (cmd, shell=True, close_fds=True,
                                   stdin=file("/dev/null"),
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.PIPE)
@@ -1370,7 +1370,7 @@ class NewPrinterGUI(GtkGUI):
             debugprint (host + ": " + cmd)
             stdout = None
             try:
-                p = subprocess.Popen (cmd, shell=True,
+                p = subprocess.Popen (cmd, shell=True, close_fds=True,
                                       stdin=file("/dev/null"),
                                       stdout=subprocess.PIPE,
                                       stderr=subprocess.PIPE)
@@ -3044,6 +3044,7 @@ class NewPrinterGUI(GtkGUI):
                     # so we intentionally don't set LC_ALL=C here.
                     p = subprocess.Popen (['/usr/bin/cupstestppd',
                                            '-rvv', filename],
+                                          close_fds=True,
                                           stdin=file("/dev/null"),
                                           stdout=subprocess.PIPE,
                                           stderr=subprocess.PIPE)

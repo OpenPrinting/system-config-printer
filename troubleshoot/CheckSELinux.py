@@ -54,6 +54,7 @@ class CheckSELinux(Question):
             # Run restorecon -nvR
             self.op = TimedSubprocess (parent=parent,
                                        args=restorecon_args,
+                                       close_fds=True,
                                        shell=True,
                                        stdin=null,
                                        stdout=subprocess.PIPE,
