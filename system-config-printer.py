@@ -477,6 +477,8 @@ class GUI(GtkGUI):
         menu.show_all ()
         self.search_entry.set_drop_down_menu (menu)
 
+        self.servicestart = ServiceStart ()
+
         # Setup icon view
         self.mainlist = gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
                                       gtk.gdk.Pixbuf,        # Pixbuf
@@ -529,8 +531,6 @@ class GUI(GtkGUI):
         self.monitor.refresh ()
 
         self.propertiesDlg.set_monitor (self.monitor)
-
-        self.servicestart = ServiceStart ()
 
         try:
             self.populateList()
