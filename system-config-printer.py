@@ -216,6 +216,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.encoding = locale.getlocale(locale.LC_CTYPE)
 
         self.printer = self.ppd = None
+        self.printers = {}
         self.conflicts = set() # of options
         self.connect_server = (self.printer and self.printer.getServer()) \
                                or cups.getServer()
