@@ -72,6 +72,7 @@ class UserDefaultPrinter:
 
     def set (self, default):
         p = subprocess.Popen ([ "lpoptions", "-d", default ],
+                              close_fds=True,
                               stdin=file ("/dev/null"),
                               stdout=file ("/dev/null", "w"),
                               stderr=subprocess.PIPE)

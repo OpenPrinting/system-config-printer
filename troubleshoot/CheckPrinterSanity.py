@@ -2,8 +2,9 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -90,6 +91,7 @@ class CheckPrinterSanity(Question):
                     p = TimedSubprocess (parent=parent,
                                          timeout=5000,
                                          args=cmdline, shell=True,
+                                         close_fds=True,
                                          stdin=file("/dev/null"),
                                          stdout=subprocess.PIPE,
                                          stderr=subprocess.PIPE)
@@ -113,6 +115,7 @@ class CheckPrinterSanity(Question):
                     p = TimedSubprocess (parent=parent,
                                          timeout=3000,
                                          args='LC_ALL=C DISPLAY= hp-info -d"$URI"',
+                                         close_fds=True,
                                          shell=True,
                                          stdin=file("/dev/null"),
                                          stdout=subprocess.PIPE,
