@@ -29,30 +29,86 @@ import socket
 import tempfile
 import time
 
+import authconn
+from debug import *
 from errordialogs import *
+import firewall
+from gui import GtkGUI
 
-class AdvancedServerSettings:
+try:
+    try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY
+except AttributeError:
+    # cups module was compiled with CUPS < 1.3
+    try_CUPS_SERVER_REMOTE_ANY = "_remote_any"
+
+def on_delete_just_hide (widget, event):
+    widget.hide ()
+    return True # stop other handlers
+
+class ServerSettings(GtkGUI):
+
+    __gsignals__ = {
+        'settings-applied': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
+        'dialog-canceled': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
+        'problems-clicked': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        }
+
     RESOURCE="/admin/conf/cupsd.conf"
 
-    def __init__ (self, gui, on_apply=None):
-        self.cupsconn = gui.cups
-        self.on_apply = on_apply
+    def __init__ (self, host=None, encryption=None, parent=None):
+        gobject.GObject.__init__ (self)
+        self.cupsconn = authconn.Connection (host=host, encryption=encryption)
+        self._host = host
+        self._parent = parent
+        self.getWidgets({"ServerSettingsDialog":
+                             ["ServerSettingsDialog",
+                              "chkServerBrowse",
+                              "chkServerShare",
+                              "chkServerShareAny",
+                              "chkServerRemoteAdmin",
+                              "chkServerAllowCancelAll",
+                              "chkServerLogDebug",
+                              "hboxServerBrowse",
+                              "rbPreserveJobFiles",
+                              "rbPreserveJobHistory",
+                              "rbPreserveJobNone",
+                              "tvBrowseServers",
+                              "frameBrowseServers",
+                              "btAdvServerAdd",
+                              "btAdvServerRemove"]})
+
+        # Set up "Problems?" link button
+        class UnobtrusiveButton(gtk.Button):
+            def __init__ (self, **args):
+                gtk.Button.__init__ (self, **args)
+                self.set_relief (gtk.RELIEF_NONE)
+                label = self.get_child ()
+                text = label.get_text ()
+                label.set_use_markup (True)
+                label.set_markup ('<span size="small" ' +
+                                  'underline="single" ' +
+                                  'color="#0000ee">%s</span>' % text)
+
+        problems = UnobtrusiveButton (label=_("Problems?"))
+        self.hboxServerBrowse.pack_end (problems, False, False, 0)
+        problems.connect ('clicked', self.problems_clicked)
+        problems.show ()
+
+        #self.ServerSettingsDialog.connect ('delete-event', on_delete_just_hide)
+        self.ServerSettingsDialog.connect ('response', self.on_response)
 
         # Signal handler IDs.
         self.handler_ids = {}
 
-        self.dialog = gui.ServerSettingsDialog
-        browse_frame = gui.frameBrowseServers
-        self.browse_treeview = gui.tvBrowseServers
-        self.rbPreserveJobFiles = gui.rbPreserveJobFiles
-        self.rbPreserveJobHistory = gui.rbPreserveJobHistory
-        self.rbPreserveJobNone = gui.rbPreserveJobNone
-        self.add = gui.btAdvServerAdd
-        self.remove = gui.btAdvServerRemove
+        self.dialog = self.ServerSettingsDialog
+        browse_frame = self.frameBrowseServers
+        self.browse_treeview = self.tvBrowseServers
+        self.add = self.btAdvServerAdd
+        self.remove = self.btAdvServerRemove
 
         selection = self.browse_treeview.get_selection ()
         selection.set_mode (gtk.SELECTION_MULTIPLE)
-        self.connect (selection, 'changed', self.on_treeview_selection_changed)
+        self._connect (selection, 'changed', self.on_treeview_selection_changed)
 
         for column in self.browse_treeview.get_columns():
             self.browse_treeview.remove_column(column)
@@ -122,16 +178,79 @@ class AdvancedServerSettings:
         for server in self.browse_poll:
             model.append (row=[server])
 
-    def connect (self, widget, signal, handler, reason=None):
+        self.fillServerTab ()
+
+        if parent:
+            self.dialog.set_transient_for (parent)
+
+        self.dialog.show ()
+
+    def fillServerTab(self):
+        self.changed = set()
+        self.cupsconn._begin_operation (_("fetching server settings"))
+        try:
+            self.server_settings = self.cupsconn.adminGetServerSettings()
+        except cups.IPPError, (e, m):
+            show_IPP_Error(e, m, self._parent)
+            self.cupsconn._end_operation ()
+            raise
+
+        self.cupsconn._end_operation ()
+
+        for widget, setting in [
+            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
+            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
+            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
+            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
+            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
+            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
+            widget.set_data("setting", setting)
+            if self.server_settings.has_key(setting):
+                widget.set_active(int(self.server_settings[setting]))
+                widget.set_sensitive(True)
+            else:
+                widget.set_active(False)
+                widget.set_sensitive(False)
+
+        try:
+            flag = cups.CUPS_SERVER_SHARE_PRINTERS
+            publishing = int (self.server_settings[flag])
+            self.server_is_publishing = publishing
+        except AttributeError:
+            pass
+
+        # Set sensitivity of 'Allow printing from the Internet'.
+        self.on_server_changed (self.chkServerShare) # (any will do here)
+
+    def get_dialog (self):
+        return self.dialog
+
+    def on_server_changed(self, widget):
+        debugprint ("on_server_changed: %s" % widget)
+        setting = widget.get_data("setting")
+        if self.server_settings.has_key (setting):
+            if str(int(widget.get_active())) == self.server_settings[setting]:
+                self.changed.discard(widget)
+            else:
+                self.changed.add(widget)
+
+        sharing = self.chkServerShare.get_active ()
+        self.chkServerShareAny.set_sensitive (
+            sharing and self.server_settings.has_key(try_CUPS_SERVER_REMOTE_ANY))
+
+    def _connect (self, widget, signal, handler, reason=None):
         id = widget.connect (signal, handler)
         if not self.handler_ids.has_key (reason):
             self.handler_ids[reason] = []
         self.handler_ids[reason].append ((widget, id))
 
-    def disconnect (self, reason=None):
+    def _disconnect (self, reason=None):
         for (widget, id) in self.handler_ids[reason]:
             widget.disconnect (id)
         del self.handler_ids[reason]
+
+    def problems_clicked (self, button):
+        self.emit ('problems-clicked')
 
     def on_treeview_selection_changed (self, selection):
         self.remove.set_sensitive (selection.count_selected_rows () != 0)
@@ -144,10 +263,9 @@ class AdvancedServerSettings:
         cell = col.get_cell_renderers ()[0]
         cell.set_property ('editable', True)
         self.browse_treeview.set_cursor ((0,), col, start_editing=True)
-        self.connect (cell, 'edited', self.on_browse_poll_edited,
-                      'edit')
-        self.connect (cell, 'editing-canceled', self.on_browse_poll_edit_cancel,
-                      'edit')
+        self._connect (cell, 'edited', self.on_browse_poll_edited, 'edit')
+        self._connect (cell, 'editing-canceled',
+                       self.on_browse_poll_edit_cancel, 'edit')
 
     def on_browse_poll_edited (self, cell, path, newvalue):
         model = self.browse_treeview.get_model ()
@@ -156,7 +274,7 @@ class AdvancedServerSettings:
         cell.stop_editing (canceled=False)
         cell.set_property ('editable', False)
         self.add.set_sensitive (True)
-        self.disconnect ('edit')
+        self._disconnect ('edit')
 
         valid = True
         # Check that it's a valid IP address or hostname.
@@ -213,7 +331,7 @@ class AdvancedServerSettings:
         model.remove (iter)
         self.add.set_sensitive (True)
         self.remove.set_sensitive (False)
-        self.disconnect ('edit')
+        self._disconnect ('edit')
 
     def on_remove_clicked (self, button):
         model = self.browse_treeview.get_model ()
@@ -229,9 +347,13 @@ class AdvancedServerSettings:
     def on_response (self, dialog, response):
         if (response == gtk.RESPONSE_CANCEL or
             response != gtk.RESPONSE_OK):
-            self.disconnect ()
+            self._disconnect ()
+            self.dialog.hide ()
+            self.emit ('dialog-canceled')
             del self
             return
+
+        self.save_serversettings ()
 
         # See if there are changes.
         preserve_job_files = self.rbPreserveJobFiles.get_active ()
@@ -247,7 +369,9 @@ class AdvancedServerSettings:
         if (set (browse_poll) == set (self.browse_poll) and
             preserve_job_files == self.preserve_job_files and
             preserve_job_history == self.preserve_job_history):
-            self.disconnect ()
+            self._disconnect ()
+            self.dialog.hide ()
+            self.emit ('settings-applied')
             del self
             return
 
@@ -341,6 +465,14 @@ class AdvancedServerSettings:
         # Give the server a chance to process our request.
         time.sleep (1)
 
+        self.reconnect ()
+
+        self._disconnect ()
+        self.emit ('settings-applied')
+        self.dialog.hide ()
+        del self
+
+    def reconnect (self):
         # Now reconnect, in case the server needed to reload.
         try:
             attempt = 1
@@ -357,6 +489,95 @@ class AdvancedServerSettings:
             # interface, so don't fail if that method doesn't exist.
             pass
 
-        self.disconnect ()
-        self.on_apply ()
-        del self
+    def save_serversettings(self):
+        setting_dict = dict()
+        for widget, setting in [
+            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
+            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
+            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
+            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
+            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
+            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
+            if not self.server_settings.has_key(setting): continue
+            setting_dict[setting] = str(int(widget.get_active()))
+        self.cupsconn._begin_operation (_("modifying server settings"))
+        try:
+            self.cupsconn.adminSetServerSettings(setting_dict)
+        except cups.IPPError, (e, m):
+            show_IPP_Error(e, m, self.ServerSettingsDialog)
+            self.cupsconn._end_operation ()
+            return True
+        except RuntimeError, s:
+            show_IPP_Error(None, s, self.ServerSettingsDialog)
+            self.cupsconn._end_operation ()
+            return True
+        self.cupsconn._end_operation ()
+        self.changed = set()
+
+        old_setting = self.server_settings.get (cups.CUPS_SERVER_SHARE_PRINTERS,
+                                                '0')
+        new_setting = setting_dict.get (cups.CUPS_SERVER_SHARE_PRINTERS, '0')
+        if (old_setting == '0' and new_setting != '0'):
+            # We have just enabled print queue sharing.
+            # Let's see if the firewall will allow IPP TCP packets in.
+            try:
+                if (self._host == 'localhost' or
+                    self._host[0] == '/'):
+                    f = firewall.Firewall ()
+                    allowed = f.check_ipp_server_allowed ()
+                else:
+                    # This is a remote server.  Nothing we can do
+                    # about the firewall there.
+                    allowed = True
+
+                if not allowed:
+                    dialog = gtk.MessageDialog (self.ServerSettingsDialog,
+                                                gtk.DIALOG_MODAL |
+                                                gtk.DIALOG_DESTROY_WITH_PARENT,
+                                                gtk.MESSAGE_QUESTION,
+                                                gtk.BUTTONS_NONE,
+                                                _("Adjust Firewall"))
+                    dialog.format_secondary_text (_("Adjust the firewall now "
+                                                    "to allow all incoming IPP "
+                                                    "connections?"))
+                    dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                                        _("Adjust Firewall"), gtk.RESPONSE_YES)
+                    response = dialog.run ()
+                    dialog.destroy ()
+
+                    if response == gtk.RESPONSE_YES:
+                        f.add_rule (f.ALLOW_IPP_SERVER)
+                        f.write ()
+            except (dbus.DBusException, Exception):
+                nonfatalException ()
+
+        time.sleep(1) # give the server a chance to process our request
+
+        # Now reconnect, in case the server needed to reload.
+        self.reconnect ()
+
+        # Refresh the server settings in case they have changed in the
+        # mean time.
+        try:
+            self.fillServerTab()
+        except:
+            nonfatalException()
+
+gobject.type_register (ServerSettings)
+
+if __name__ == '__main__':
+    os.environ['SYSTEM_CONFIG_PRINTER_UI'] = 'ui'
+    loop = gobject.MainLoop ()
+
+    def quit (*args):
+        loop.quit ()
+
+    def problems (obj):
+        print "%s: problems" % obj
+
+    set_debugging (True)
+    s = ServerSettings ()
+    s.connect ('dialog-canceled', quit)
+    s.connect ('settings-applied', quit)
+    s.connect ('problems-clicked', problems)
+    loop.run ()

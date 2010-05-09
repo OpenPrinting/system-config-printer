@@ -96,7 +96,7 @@ import monitor
 import errordialogs
 from errordialogs import *
 import userdefault
-from serversettings import AdvancedServerSettings
+from serversettings import ServerSettings
 from ToolbarSearchEntry import *
 from GroupsPane import *
 from GroupsPaneModel import *
@@ -113,21 +113,11 @@ pkgdata = config.pkgdatadir
 iconpath = os.path.join (pkgdata, 'icons/')
 sys.path.append (pkgdata)
 
-try:
-    try_CUPS_SERVER_REMOTE_ANY = cups.CUPS_SERVER_REMOTE_ANY
-except AttributeError:
-    # cups module was compiled with CUPS < 1.3
-    try_CUPS_SERVER_REMOTE_ANY = "_remote_any"
-
 def CUPS_server_hostname ():
     host = cups.getServer ()
     if host[0] == '/':
         return 'localhost'
     return host
-
-def on_delete_just_hide (widget, event):
-    widget.hide ()
-    return True # stop other handlers
 
 class ServiceStart:
     NAME="org.fedoraproject.Config.Services"
@@ -229,23 +219,7 @@ class GUI(GtkGUI):
                               "btnDuplicateOk"],
                          "InstallDialog":
                              ["InstallDialog",
-                              "lblInstall"],
-                         "ServerSettingsDialog":
-                             ["ServerSettingsDialog",
-                              "chkServerBrowse",
-                              "chkServerShare",
-                              "chkServerShareAny",
-                              "chkServerRemoteAdmin",
-                              "chkServerAllowCancelAll",
-                              "chkServerLogDebug",
-                              "hboxServerBrowse",
-                              "rbPreserveJobFiles",
-                              "rbPreserveJobHistory",
-                              "rbPreserveJobNone",
-                              "tvBrowseServers",
-                              "frameBrowseServers",
-                              "btAdvServerAdd",
-                              "btAdvServerRemove"]},
+                              "lblInstall"]},
 
                         domain=config.PACKAGE)
 
@@ -256,9 +230,6 @@ class GUI(GtkGUI):
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
-        for dialog in [self.ServerSettingsDialog]:
-            dialog.connect ("delete-event", on_delete_just_hide)
-
         self.ConnectingDialog.connect ("delete-event",
                                        self.on_connectingdialog_delete)
 
@@ -399,23 +370,6 @@ class GUI(GtkGUI):
         self.AboutDialog.set_version(config.VERSION)
         self.AboutDialog.set_icon_name('printer')
 
-        # Set up "Problems?" link button
-        class UnobtrusiveButton(gtk.Button):
-            def __init__ (self, **args):
-                gtk.Button.__init__ (self, **args)
-                self.set_relief (gtk.RELIEF_NONE)
-                label = self.get_child ()
-                text = label.get_text ()
-                label.set_use_markup (True)
-                label.set_markup ('<span size="small" ' +
-                                  'underline="single" ' +
-                                  'color="#0000ee">%s</span>' % text)
-
-        problems = UnobtrusiveButton (label=_("Problems?"))
-        self.hboxServerBrowse.pack_end (problems, False, False, 0)
-        problems.connect ('clicked', self.on_problems_button_clicked)
-        problems.show ()
-
         gtk_label_autowrap.set_autowrap(self.PrintersWindow)
 
         try:
@@ -514,10 +468,6 @@ class GUI(GtkGUI):
         self.btnConnectNoService.connect ('clicked', self.on_connect_activate)
         self.btnAddFirstPrinter.connect ('clicked',
                                          self.on_new_printer_activate)
-
-        # Server Settings dialog
-        self.ServerSettingsDialog.connect ('response',
-                                           self.server_settings_response)
 
         # Printer Properties dialog
         self.propertiesDlg = printerproperties.PrinterPropertiesDialog ()
@@ -802,31 +752,14 @@ class GUI(GtkGUI):
 
     def on_server_settings_activate (self, menuitem):
         try:
-            self.fillServerTab ()
-            self.advancedServerSettings = AdvancedServerSettings(self,
-                                             self.on_adv_server_settings_apply)
+            self.serverSettings = ServerSettings (host=self.connect_server,
+                                                  encryption=self.connect_encrypt,
+                                                  parent=self.PrintersWindow)
+            self.serverSettings.connect ('problems-clicked',
+                                         self.on_problems_button_clicked)
         except (cups.IPPError, cups.HTTPError):
             # Not authorized.
             return
-
-        self.ServerSettingsDialog.set_transient_for (self.PrintersWindow)
-        self.ServerSettingsDialog.show ()
-
-    def server_settings_response (self, dialog, response):
-        self.advancedServerSettings.on_response(dialog, response)
-        if response == gtk.RESPONSE_OK:
-            if not self.save_serversettings ():
-                dialog.hide ()
-        else:
-            dialog.hide ()
-
-    # Add button on 'Advanced Server Settings' clicked
-    def on_adv_server_add_clicked (self, button):
-        self.advancedServerSettings.on_add_clicked(button)
-
-    # Remove button on 'Advanced Server Settings' clicked
-    def on_adv_server_remove_clicked (self, button):
-        self.advancedServerSettings.on_remove_clicked(button)
 
     def on_adv_server_settings_apply (self):
         self.cups._begin_operation (_("fetching server settings"))
@@ -853,20 +786,8 @@ class GUI(GtkGUI):
 
         for widget in (self.btnNew,
                        self.new_printer, self.new_class,
-                       self.chkServerBrowse, self.chkServerShare,
-                       self.chkServerRemoteAdmin,
-                       self.chkServerAllowCancelAll,
-                       self.chkServerLogDebug,
                        self.server_settings_menu_entry):
             widget.set_sensitive(connected)
-
-        sharing = self.chkServerShare.get_active ()
-        self.chkServerShareAny.set_sensitive (sharing)
-
-        try:
-            del self.server_settings
-        except:
-            pass
 
     def getServers(self):
         self.servers.discard(None)
@@ -1918,134 +1839,11 @@ class GUI(GtkGUI):
     ### Server settings
     ##########################################################################
 
-    def fillServerTab(self):
-        self.changed = set()
-        self.cups._begin_operation (_("fetching server settings"))
-        try:
-            self.server_settings = self.cups.adminGetServerSettings()
-        except cups.IPPError, (e, m):
-            show_IPP_Error(e, m, self.PrintersWindow)
-            self.cups._end_operation ()
-            raise
-
-        self.cups._end_operation ()
-
-        for widget, setting in [
-            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
-            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
-            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
-            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
-            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
-            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
-            widget.set_data("setting", setting)
-            if self.server_settings.has_key(setting):
-                widget.set_active(int(self.server_settings[setting]))
-                widget.set_sensitive(True)
-            else:
-                widget.set_active(False)
-                widget.set_sensitive(False)
-
-        try:
-            flag = cups.CUPS_SERVER_SHARE_PRINTERS
-            publishing = int (self.server_settings[flag])
-            self.server_is_publishing = publishing
-        except AttributeError:
-            pass
-
-        # Set sensitivity of 'Allow printing from the Internet'.
-        self.on_server_changed (self.chkServerShare) # (any will do here)
-
-    def on_server_changed(self, widget):
-        setting = widget.get_data("setting")
-        if self.server_settings.has_key (setting):
-            if str(int(widget.get_active())) == self.server_settings[setting]:
-                self.changed.discard(widget)
-            else:
-                self.changed.add(widget)
-
-        sharing = self.chkServerShare.get_active ()
-        self.chkServerShareAny.set_sensitive (
-            sharing and self.server_settings.has_key(try_CUPS_SERVER_REMOTE_ANY))
-
-    def save_serversettings(self):
-        setting_dict = dict()
-        for widget, setting in [
-            (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
-            (self.chkServerShare, cups.CUPS_SERVER_SHARE_PRINTERS),
-            (self.chkServerShareAny, try_CUPS_SERVER_REMOTE_ANY),
-            (self.chkServerRemoteAdmin, cups.CUPS_SERVER_REMOTE_ADMIN),
-            (self.chkServerAllowCancelAll, cups.CUPS_SERVER_USER_CANCEL_ANY),
-            (self.chkServerLogDebug, cups.CUPS_SERVER_DEBUG_LOGGING),]:
-            if not self.server_settings.has_key(setting): continue
-            setting_dict[setting] = str(int(widget.get_active()))
-        self.cups._begin_operation (_("modifying server settings"))
-        try:
-            self.cups.adminSetServerSettings(setting_dict)
-        except cups.IPPError, (e, m):
-            show_IPP_Error(e, m, self.ServerSettingsDialog)
-            self.cups._end_operation ()
-            return True
-        except RuntimeError, s:
-            show_IPP_Error(None, s, self.ServerSettingsDialog)
-            self.cups._end_operation ()
-            return True
-        self.cups._end_operation ()
-        self.changed = set()
-
-        old_setting = self.server_settings.get (cups.CUPS_SERVER_SHARE_PRINTERS,
-                                                '0')
-        new_setting = setting_dict.get (cups.CUPS_SERVER_SHARE_PRINTERS, '0')
-        if (old_setting == '0' and new_setting != '0'):
-            # We have just enabled print queue sharing.
-            # Let's see if the firewall will allow IPP TCP packets in.
-            try:
-                if (self.connect_server == 'localhost' or
-                    self.connect_server[0] == '/'):
-                    f = firewall.Firewall ()
-                    allowed = f.check_ipp_server_allowed ()
-                else:
-                    # This is a remote server.  Nothing we can do
-                    # about the firewall there.
-                    allowed = True
-
-                if not allowed:
-                    dialog = gtk.MessageDialog (self.ServerSettingsDialog,
-                                                gtk.DIALOG_MODAL |
-                                                gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                gtk.MESSAGE_QUESTION,
-                                                gtk.BUTTONS_NONE,
-                                                _("Adjust Firewall"))
-                    dialog.format_secondary_text (_("Adjust the firewall now "
-                                                    "to allow all incoming IPP "
-                                                    "connections?"))
-                    dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
-                                        _("Adjust Firewall"), gtk.RESPONSE_YES)
-                    response = dialog.run ()
-                    dialog.destroy ()
-
-                    if response == gtk.RESPONSE_YES:
-                        f.add_rule (f.ALLOW_IPP_SERVER)
-                        f.write ()
-            except (dbus.DBusException, Exception):
-                nonfatalException ()
-
-        time.sleep(1) # give the server a chance to process our request
-
-        # Now reconnect, in case the server needed to reload.
-        self.reconnect ()
-
-        # Refresh the server settings in case they have changed in the
-        # mean time.
-        try:
-            self.fillServerTab()
-        except:
-            nonfatalException()
-
     ### The "Problems?" clickable label
-    def on_problems_button_clicked (self, *args):
+    def on_problems_button_clicked (self, serversettings):
         if not self.__dict__.has_key ('troubleshooter'):
             self.troubleshooter = troubleshoot.run (self.on_troubleshoot_quit,
-                                                    parent=self.ServerSettingsDialog)
+                                                    parent=serversettings.get_dialog ())
 
     # ====================================================================
     # == New Printer Dialog ==============================================
