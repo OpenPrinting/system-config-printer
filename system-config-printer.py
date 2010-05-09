@@ -96,7 +96,7 @@ import monitor
 import errordialogs
 from errordialogs import *
 import userdefault
-from AdvancedServerSettings import AdvancedServerSettings
+from serversettings import AdvancedServerSettings
 from ToolbarSearchEntry import *
 from GroupsPane import *
 from GroupsPaneModel import *
