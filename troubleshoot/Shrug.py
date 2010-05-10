@@ -72,6 +72,7 @@ class Shrug(Question):
         dialog.set_do_overwrite_confirmation (True)
         dialog.set_current_name ("troubleshoot.txt")
         dialog.set_default_response (gtk.RESPONSE_OK)
+        dialog.set_local_only (True)
         response = dialog.run ()
         dialog.hide ()
         if response != gtk.RESPONSE_OK:
