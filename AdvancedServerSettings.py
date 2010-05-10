@@ -133,7 +133,7 @@ class AdvancedServerSettingsDialog:
         f = tempfile.TemporaryFile ()
         try:
             cupsconn.getFile (self.RESOURCE, file=f)
-        except cups.HTTPError, s:
+        except cups.HTTPError, (s,):
             show_HTTP_Error (s, dialog)
             raise
 
@@ -331,7 +331,7 @@ class AdvancedServerSettingsDialog:
         f = tempfile.TemporaryFile ()
         try:
             self.cupsconn.getFile (self.RESOURCE, file=f)
-        except cups.HTTPError, s:
+        except cups.HTTPError, (s,):
             show_HTTP_Error (s, dialog)
             return
 
@@ -410,7 +410,7 @@ class AdvancedServerSettingsDialog:
         os.lseek (fd, 0, os.SEEK_SET)
         try:
             self.cupsconn.putFile ("/admin/conf/cupsd.conf", fd=fd)
-        except cups.HTTPError, s:
+        except cups.HTTPError, (s,):
             show_HTTP_Error (s, dialog)
             return
 
