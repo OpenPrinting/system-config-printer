@@ -4111,8 +4111,8 @@ class NewPrinterGUI(GtkGUI):
             self.on_rbtnNPFoomatic_toggled(self.rbtnNPFoomatic)
             self.rbtnChangePPDKeepSettings.set_active(True)
 
-            self.auto_make = None
-            self.auto_model = None
+            self.auto_make = ""
+            self.auto_model = ""
             self.auto_driver = None
             ppd = self.mainapp.ppd
             #self.mainapp.devid = "MFG:Samsung;MDL:ML-3560;DES:;CMD:GDI;"
@@ -4319,7 +4319,7 @@ class NewPrinterGUI(GtkGUI):
                 self.dialog_mode == "printer_with_uri":
             self.busy (self.NewPrinterWindow)
             if page_nr == 1: # Device (first page)
-                self.auto_make, self.auto_model = None, None
+                self.auto_make, self.auto_model = "", ""
                 self.auto_driver = None
                 self.device.uri = self.getDeviceURI()
 
