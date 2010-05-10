@@ -4296,7 +4296,7 @@ class NewPrinterGUI(GtkGUI):
                 self.dialog_mode == "printer_with_uri":
             self.busy (self.NewPrinterWindow)
             if page_nr == 1: # Device (first page)
-                self.auto_make, self.auto_model = None, None
+                self.auto_make, self.auto_model = "", ""
                 self.auto_driver = None
                 self.device.uri = self.getDeviceURI()
                 if not self.install_hplip_plugin(self.device.uri):
