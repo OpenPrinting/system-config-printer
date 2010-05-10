@@ -110,6 +110,28 @@ class AuthDialog(gtk.Dialog):
         i = self.auth_info_required.index (field)
         self.field_entry[i].grab_focus ()
 
+class _AuthInfoCache:
+    def __init__ (self):
+        self.creds = dict() # by (host,port)
+
+    def cache_auth_info (self, data, host=None, port=None):
+        if port == None:
+            port = 631
+
+        self.creds[(host,port)] = data
+
+    def lookup_auth_info (self, host=None, port=None):
+        if port == None:
+            port = 631
+
+        try:
+            return self.creds[(host,port)]
+        except KeyError:
+            return None
+
+global _global_authinfocache
+_global_authinfocache = _AuthInfoCache ()
+
 class Connection:
     def __init__ (self, parent=None, try_as_root=True, lock=False,
                   host=None, port=None, encryption=None):
@@ -131,6 +153,12 @@ class Connection:
         self._operation_stack = []
         self._lock = lock
         self._gui_event = threading.Event ()
+
+        creds = _global_authinfocache.lookup_auth_info (host=host, port=port)
+        if creds != None:
+            (self._use_user, self._use_password) = creds
+            del creds
+
         self._connect ()
 
     def _begin_operation (self, operation):
@@ -440,6 +468,10 @@ class Connection:
     def _on_authentication_response (self, dialog, response):
         (self._use_user,
          self._use_password) = dialog.get_auth_info ()
+        _global_authinfocache.cache_auth_info ((self._use_user,
+                                                self._use_password),
+                                               host=self._server,
+                                               port=self._port)
         dialog.destroy ()
 
         if (response == gtk.RESPONSE_CANCEL or
