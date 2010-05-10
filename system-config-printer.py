@@ -761,16 +761,6 @@ class GUI(GtkGUI):
             # Not authorized.
             return
 
-    def on_adv_server_settings_apply (self):
-        self.cups._begin_operation (_("fetching server settings"))
-        try:
-            self.server_settings = self.cups.adminGetServerSettings()
-        except cups.IPPError, (e, m):
-            show_IPP_Error(e, m, self.PrintersWindow)
-            self.cups._end_operation ()
-            raise
-        self.cups._end_operation ()
-
     def setConnected(self):
         connected = bool(self.cups)
 
