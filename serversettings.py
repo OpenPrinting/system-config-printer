@@ -480,7 +480,7 @@ class ServerSettings(GtkGUI):
         # Give the server a chance to process our request.
         time.sleep (1)
 
-        self.reconnect ()
+        self._reconnect ()
 
         self._disconnect ()
         self.emit ('settings-applied')
@@ -552,7 +552,7 @@ class ServerSettings(GtkGUI):
         time.sleep(1) # give the server a chance to process our request
 
         # Now reconnect, in case the server needed to reload.
-        self.reconnect ()
+        self._reconnect ()
 
 gobject.type_register (ServerSettings)
 
