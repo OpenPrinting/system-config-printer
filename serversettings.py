@@ -41,9 +41,17 @@ except AttributeError:
     # cups module was compiled with CUPS < 1.3
     try_CUPS_SERVER_REMOTE_ANY = "_remote_any"
 
-def on_delete_just_hide (widget, event):
-    widget.hide ()
-    return True # stop other handlers
+# Set up "Problems?" link button
+class _UnobtrusiveButton(gtk.Button):
+    def __init__ (self, **args):
+        gtk.Button.__init__ (self, **args)
+        self.set_relief (gtk.RELIEF_NONE)
+        label = self.get_child ()
+        text = label.get_text ()
+        label.set_use_markup (True)
+        label.set_markup ('<span size="small" ' +
+                          'underline="single" ' +
+                          'color="#0000ee">%s</span>' % text)
 
 class ServerSettings(GtkGUI):
 
@@ -77,31 +85,17 @@ class ServerSettings(GtkGUI):
                               "btAdvServerAdd",
                               "btAdvServerRemove"]})
 
-        # Set up "Problems?" link button
-        class UnobtrusiveButton(gtk.Button):
-            def __init__ (self, **args):
-                gtk.Button.__init__ (self, **args)
-                self.set_relief (gtk.RELIEF_NONE)
-                label = self.get_child ()
-                text = label.get_text ()
-                label.set_use_markup (True)
-                label.set_markup ('<span size="small" ' +
-                                  'underline="single" ' +
-                                  'color="#0000ee">%s</span>' % text)
-
-        problems = UnobtrusiveButton (label=_("Problems?"))
+        problems = _UnobtrusiveButton (label=_("Problems?"))
         self.hboxServerBrowse.pack_end (problems, False, False, 0)
         problems.connect ('clicked', self.problems_clicked)
         problems.show ()
 
-        #self.ServerSettingsDialog.connect ('delete-event', on_delete_just_hide)
         self.ServerSettingsDialog.connect ('response', self.on_response)
 
         # Signal handler IDs.
         self.handler_ids = {}
 
         self.dialog = self.ServerSettingsDialog
-        browse_frame = self.frameBrowseServers
         self.browse_treeview = self.tvBrowseServers
         self.add = self.btAdvServerAdd
         self.remove = self.btAdvServerRemove
@@ -115,12 +109,27 @@ class ServerSettings(GtkGUI):
         col = gtk.TreeViewColumn ('', gtk.CellRendererText (), text=0)
         self.browse_treeview.append_column (col)
 
+        self._fillAdvanced ()
+        self._fillBasic ()
+
+        if parent:
+            self.dialog.set_transient_for (parent)
+
+        self.dialog.show ()
+
+    def get_dialog (self):
+        return self.dialog
+
+    def problems_clicked (self, button):
+        self.emit ('problems-clicked')
+
+    def _fillAdvanced(self):
         # Fetch cupsd.conf
         f = tempfile.TemporaryFile ()
         try:
             self.cupsconn.getFile (self.RESOURCE, file=f)
         except cups.HTTPError, s:
-            show_HTTP_Error (s, self.dialog)
+            show_HTTP_Error (s, self._parent)
             raise
 
         def parse_yesno (line):
@@ -161,7 +170,7 @@ class ServerSettings(GtkGUI):
             elif l.startswith ("browsepoll "):
                 self.browse_poll.append (line[len ("browsepoll "):].strip ())
 
-        browse_frame.set_sensitive (browsing)
+        self.frameBrowseServers.set_sensitive (browsing)
 
         if preserve_job_files:
             self.rbPreserveJobFiles.set_active (True)
@@ -178,14 +187,7 @@ class ServerSettings(GtkGUI):
         for server in self.browse_poll:
             model.append (row=[server])
 
-        self.fillServerTab ()
-
-        if parent:
-            self.dialog.set_transient_for (parent)
-
-        self.dialog.show ()
-
-    def fillServerTab(self):
+    def _fillBasic(self):
         self.changed = set()
         self.cupsconn._begin_operation (_("fetching server settings"))
         try:
@@ -222,9 +224,6 @@ class ServerSettings(GtkGUI):
         # Set sensitivity of 'Allow printing from the Internet'.
         self.on_server_changed (self.chkServerShare) # (any will do here)
 
-    def get_dialog (self):
-        return self.dialog
-
     def on_server_changed(self, widget):
         debugprint ("on_server_changed: %s" % widget)
         setting = widget.get_data("setting")
@@ -248,9 +247,6 @@ class ServerSettings(GtkGUI):
         for (widget, id) in self.handler_ids[reason]:
             widget.disconnect (id)
         del self.handler_ids[reason]
-
-    def problems_clicked (self, button):
-        self.emit ('problems-clicked')
 
     def on_treeview_selection_changed (self, selection):
         self.remove.set_sensitive (selection.count_selected_rows () != 0)
@@ -353,8 +349,27 @@ class ServerSettings(GtkGUI):
             del self
             return
 
-        self.save_serversettings ()
+        self.saveBasic ()
+        self.saveAdvanced ()
 
+    def _reconnect (self):
+        # Now reconnect, in case the server needed to reload.
+        try:
+            attempt = 1
+            while attempt <= 5:
+                try:
+                    self.cupsconn._connect ()
+                    break
+                except RuntimeError:
+                    # Connection failed.
+                    time.sleep (1)
+                    attempt += 1
+        except AttributeError:
+            # _connect method is part of the authconn.Connection
+            # interface, so don't fail if that method doesn't exist.
+            pass
+
+    def saveAdvanced (self):
         # See if there are changes.
         preserve_job_files = self.rbPreserveJobFiles.get_active ()
         preserve_job_history = (preserve_job_files or
@@ -380,7 +395,7 @@ class ServerSettings(GtkGUI):
         try:
             self.cupsconn.getFile (self.RESOURCE, file=f)
         except cups.HTTPError, s:
-            show_HTTP_Error (s, dialog)
+            show_HTTP_Error (s, self.dialog)
             return
 
         job_history_line = job_files_line = browsepoll_lines = ""
@@ -459,7 +474,7 @@ class ServerSettings(GtkGUI):
         try:
             self.cupsconn.putFile ("/admin/conf/cupsd.conf", fd=fd)
         except cups.HTTPError, s:
-            show_HTTP_Error (s, dialog)
+            show_HTTP_Error (s, self.dialog)
             return
 
         # Give the server a chance to process our request.
@@ -472,24 +487,7 @@ class ServerSettings(GtkGUI):
         self.dialog.hide ()
         del self
 
-    def reconnect (self):
-        # Now reconnect, in case the server needed to reload.
-        try:
-            attempt = 1
-            while attempt <= 5:
-                try:
-                    self.cupsconn._connect ()
-                    break
-                except RuntimeError:
-                    # Connection failed.
-                    time.sleep (1)
-                    attempt += 1
-        except AttributeError:
-            # _connect method is part of the authconn.Connection
-            # interface, so don't fail if that method doesn't exist.
-            pass
-
-    def save_serversettings(self):
+    def saveBasic (self):
         setting_dict = dict()
         for widget, setting in [
             (self.chkServerBrowse, cups.CUPS_SERVER_REMOTE_PRINTERS),
@@ -504,11 +502,11 @@ class ServerSettings(GtkGUI):
         try:
             self.cupsconn.adminSetServerSettings(setting_dict)
         except cups.IPPError, (e, m):
-            show_IPP_Error(e, m, self.ServerSettingsDialog)
+            show_IPP_Error(e, m, self.dialog)
             self.cupsconn._end_operation ()
             return True
         except RuntimeError, s:
-            show_IPP_Error(None, s, self.ServerSettingsDialog)
+            show_IPP_Error(None, s, self.dialog)
             self.cupsconn._end_operation ()
             return True
         self.cupsconn._end_operation ()
@@ -555,13 +553,6 @@ class ServerSettings(GtkGUI):
 
         # Now reconnect, in case the server needed to reload.
         self.reconnect ()
-
-        # Refresh the server settings in case they have changed in the
-        # mean time.
-        try:
-            self.fillServerTab()
-        except:
-            nonfatalException()
 
 gobject.type_register (ServerSettings)
 
