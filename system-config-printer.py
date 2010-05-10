@@ -4025,8 +4025,8 @@ class NewPrinterGUI(GtkGUI):
                             self.auto_driver = ppd
                             break
                 else:
-                    self.auto_make = None
-                    self.auto_model = None
+                    self.auto_make = ""
+                    self.auto_model = ""
                     self.auto_driver = None
             else:
                 # Special CUPS names for a raw queue.
