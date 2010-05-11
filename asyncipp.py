@@ -40,20 +40,21 @@ from gettext import gettext as _
 ###
 class _IPPConnectionThread(threading.Thread):
     def __init__ (self, queue, conn, reply_handler=None, error_handler=None,
-                  auth_handler=None, host=None, port=None, encryption=None):
+                  auth_handler=None, user=None, host=None, port=None,
+                  encryption=None):
                   
         threading.Thread.__init__ (self)
         self.setDaemon (True)
         self._queue = queue
         self._conn = conn
         self.host = host
-        self._port = port
+        self.port = port
         self._encryption = encryption
         self._reply_handler = reply_handler
         self._error_handler = error_handler
         self._auth_handler = auth_handler
         self._auth_queue = Queue.Queue (1)
-        self.user = None
+        self.user = user
         self._destroyed = False
         debugprint ("+%s" % self)
 
@@ -66,12 +67,15 @@ class _IPPConnectionThread(threading.Thread):
     def run (self):
         if self.host == None:
             self.host = cups.getServer ()
-        if self._port == None:
-            self._port = cups.getPort ()
+        if self.port == None:
+            self.port = cups.getPort ()
         if self._encryption == None:
             self._encryption = cups.getEncryption ()
 
-        self.user = cups.getUser ()
+        if self.user:
+            cups.setUser (self.user)
+        else:
+            self.user = cups.getUser ()
 
         try:
             cups.setPasswordCB2 (self._auth)
@@ -81,7 +85,7 @@ class _IPPConnectionThread(threading.Thread):
 
         try:
             conn = cups.Connection (host=self.host,
-                                    port=self._port,
+                                    port=self.port,
                                     encryption=self._encryption)
             self._reply (None)
         except RuntimeError, e:
@@ -119,7 +123,7 @@ class _IPPConnectionThread(threading.Thread):
 
                 try:
                     conn = cups.Connection (host=self.host,
-                                            port=self._port,
+                                            port=self.port,
                                             encryption=self._encryption)
                     debugprint ("...reconnected")
 
@@ -221,8 +225,8 @@ class IPPConnection:
     """
 
     def __init__ (self, reply_handler=None, error_handler=None,
-                  auth_handler=None, host=None, port=None, encryption=None,
-                  parent=None):
+                  auth_handler=None, user=None, host=None, port=None,
+                  encryption=None, parent=None):
         debugprint ("New IPPConnection")
         self._parent = parent
         self.queue = Queue.Queue ()
@@ -230,7 +234,7 @@ class IPPConnection:
                                             reply_handler=reply_handler,
                                             error_handler=error_handler,
                                             auth_handler=auth_handler,
-                                            host=host, port=port,
+                                            user=user, host=host, port=port,
                                             encryption=encryption)
         self.thread.start ()
 
@@ -313,6 +317,18 @@ class _IPPAuthOperation:
         self._client_kwds = kwds
         self._client_reply_handler = reply_handler
         self._client_error_handler = error_handler
+
+        if user:
+            host = conn.thread.host
+            port = conn.thread.port
+            creds = authconn.global_authinfocache.lookup_auth_info (host=host,
+                                                                    port=port)
+            if creds:
+                if creds[0] == user:
+                    self._use_password = creds[1]
+                    self._reconnected = True
+                del creds
+
         debugprint ("+%s" % self)
 
     def __del__ (self):
@@ -546,12 +562,20 @@ class IPPAuthConnection(IPPConnection):
         self.try_as_root = try_as_root
         self.semantic = semantic
 
+        user = None
+        creds = authconn.global_authinfocache.lookup_auth_info (host=host,
+                                                                port=port)
+        if creds:
+            if creds[0] != 'root' or try_as_root:
+                user = creds[0]
+            del creds
+
         # The "connect" operation.
         op = _IPPAuthOperation (reply_handler, error_handler, self)
         IPPConnection.__init__ (self, reply_handler=reply_handler,
                                 error_handler=op.error_handler,
-                                auth_handler=op.auth_handler, host=host,
-                                port=port, encryption=encryption)
+                                auth_handler=op.auth_handler, user=user,
+                                host=host, port=port, encryption=encryption)
 
     def destroy (self):
         del self.semantic
