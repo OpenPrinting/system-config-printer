@@ -37,6 +37,7 @@ class PPDCache(gobject.GObject):
         self._cups = None
         self._exc = None
         self._cache = dict()
+        self._modtimes = dict()
         self._host = host
         self._port = port
         self._encryption = encryption
@@ -57,7 +58,19 @@ class PPDCache(gobject.GObject):
             except OSError:
                 pass
 
-    def fetch_ppd (self, name):
+    def fetch_ppd (self, name, check_uptodate=True):
+        if check_uptodate and self._modtimes.has_key (name):
+            # We have getPPD3 so we can check whether the PPD is up to
+            # date.
+            debugprint ("PPD cache: check if %s is up to date" % name)
+            self._cups.getPPD3 (name,
+                                modtime=self._modtimes[name],
+                                reply_handler=lambda c, r:
+                                    self._got_ppd3 (c, name, r),
+                                error_handler=lambda c, r:
+                                    self._got_ppd3 (c, name, r))
+            return
+
         try:
             self.emit ('ppd-ready', name, cups.PPD (self._cache[name]))
         except RuntimeError, e:
@@ -77,11 +90,19 @@ class PPDCache(gobject.GObject):
                 return
 
             debugprint ("PPD cache: fetch PPD for %s" % name)
-            self._cups.getPPD (name,
-                               reply_handler=lambda c, r:
-                                   self._got_ppd (c, name, r),
-                               error_handler=lambda c, r:
-                                   self._got_ppd (c, name, r))
+            try:
+                self._cups.getPPD3 (name,
+                                    reply_handler=lambda c, r:
+                                        self._got_ppd3 (c, name, r),
+                                    error_handler=lambda c, r:
+                                        self._got_ppd3 (c, name, r))
+            except AttributeError:
+                # getPPD3 requires pycups >= 1.9.50
+                self._cups.getPPD (name,
+                                   reply_handler=lambda c, r:
+                                       self._got_ppd (c, name, r),
+                                   error_handler=lambda c, r:
+                                       self._got_ppd (c, name, r))
 
     def _connect (self):
         self._connecting = True
@@ -94,9 +115,23 @@ class PPDCache(gobject.GObject):
         if isinstance (result, Exception):
             self.emit ('ppd-error', name, result)
         else:
-            debugprint ("caching %s" % result)
+            debugprint ("PPD cache: caching %s" % result)
             self._cache[name] = result
             self.fetch_ppd (name)
+
+    def _got_ppd3 (self, connection, name, result):
+        (status, modtime, filename) = result
+        if status in [cups.HTTP_OK, cups.HTTP_NOT_MODIFIED]:
+            if status == cups.HTTP_OK:
+                debugprint ("PPD cache: caching %s (%s) - %s" % (filename,
+                                                                 modtime,
+                                                                 status))
+                self._cache[name] = filename
+                self._modtimes[name] = modtime
+
+            self.fetch_ppd (name, check_uptodate=False)
+        else:
+            self.emit ('ppd-error', name, cups.HTTPError (status))
 
     def _connected (self, connection, exc):
         self._connecting = False
@@ -132,6 +167,10 @@ if __name__ == "__main__":
     cache = PPDCache ()
     cache.connect ('ppd-error', signal)
     cache.connect ('ppd-ready', signal)
+    p = None
     for p in printers:
         cache.fetch_ppd (p)
+
+    if p:
+        gobject.timeout_add_seconds (1, cache.fetch_ppd, p)
     loop.run ()
