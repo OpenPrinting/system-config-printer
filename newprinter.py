@@ -1237,18 +1237,12 @@ class NewPrinterGUI(GtkGUI):
     def error_getting_devices (self, conn, exc):
         # Just ignore the error.
         debugprint ("Error fetching devices: %s" % repr (exc))
-        if conn != self.fetchDevices_conn:
-            return
-
         self.dec_spinner_task ()
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()
         self.fetchDevices_conn = None
 
     def local_devices_reply (self, conn, result, current_uri):
-        if conn != self.fetchDevices_conn:
-            return
-
         self.dec_spinner_task ()
 
         # Now we've got the local devices, start a request for the
@@ -1259,9 +1253,6 @@ class NewPrinterGUI(GtkGUI):
         self.add_devices (result, current_uri)
 
     def network_devices_reply (self, conn, result, current_uri):
-        if conn != self.fetchDevices_conn:
-            return
-
         self.dec_spinner_task ()
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()

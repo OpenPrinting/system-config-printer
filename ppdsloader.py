@@ -88,6 +88,10 @@ class PPDsLoader(gobject.GObject):
 
         self._parent = None
 
+        if self._conn:
+            self._conn.destroy ()
+            self._conn = None
+
     def get_installed_files (self):
         return self._installed_files
 
@@ -163,28 +167,16 @@ class PPDsLoader(gobject.GObject):
         self._conn = c
 
     def _cups_connect_reply (self, conn, UNUSED):
-        if conn != self._conn:
-            conn.destroy ()
-            return
-
         conn._begin_operation (_("fetching PPDs"))
         conn.getPPDs (reply_handler=self._cups_reply,
                       error_handler=self._cups_error)
 
     def _cups_reply (self, conn, result):
-        if conn != self._conn:
-            conn.destroy ()
-            return
-
         conn.destroy ()
         self._ppds = result
         self.emit ('finished')
 
     def _cups_error (self, conn, exc):
-        if conn != self._conn:
-            conn.destroy ()
-            return
-
         conn.destroy ()
         self._ppds = None
         self._exc = exc
