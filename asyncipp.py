@@ -95,6 +95,7 @@ class _IPPConnectionThread(threading.Thread):
         while True:
             # Wait to find out what operation to try.
             debugprint ("Awaiting further instructions")
+            self.idle = self._queue.empty ()
             item = self._queue.get ()
             debugprint ("Next task: %s" % repr (item))
             if item == None:
@@ -102,6 +103,7 @@ class _IPPConnectionThread(threading.Thread):
                 self._queue.task_done ()
                 break
 
+            self.idle = False
             (fn, args, kwds, rh, eh, ah) = item
             if rh != False:
                 self._reply_handler = rh
@@ -257,13 +259,21 @@ class IPPConnection:
 
     def destroy (self):
         debugprint ("DESTROY: %s" % self)
+        for binding in self.bindings:
+            delattr (self, binding)
+
         if self.thread.isAlive ():
+            gobject.timeout_add_seconds (1, self._reap_thread)
+
+    def _reap_thread (self):
+        if self.thread.idle:
             debugprint ("Putting None on the task queue")
             self.queue.put (None)
             self.queue.join ()
+            return False
 
-        for binding in self.bindings:
-            delattr (self, binding)
+        debugprint ("Thread %s still processing tasks" % self.thread)
+        return True
 
     def set_auth_info (self, password):
         """Call this from your auth_handler function."""
