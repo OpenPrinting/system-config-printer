@@ -61,6 +61,8 @@ class Connection(SemanticOperations):
                   parent=None, try_as_root=True, prompt_allowed=True):
         super (Connection, self).__init__ ()
 
+        self._destroyed = False
+
         # Decide whether to use direct IPP or PolicyKit.
         if host == None:
             host = cups.getServer()
@@ -68,16 +70,13 @@ class Connection(SemanticOperations):
                   os.getuid () != 0)
 
         def subst_reply_handler (conn, reply):
-            if reply_handler:
-                reply_handler (self, reply)
+            self._subst_reply_handler (reply_handler, reply)
 
         def subst_error_handler (conn, exc):
-            if error_handler:
-                error_handler (self, exc)
+            self._subst_error_handler (error_handler, exc)
 
         def subst_auth_handler (prompt, conn, method, resource):
-            if auth_handler:
-                auth_handler (prompt, self, method, resource)
+            self._subst_auth_handler (auth_handler, prompt, method, resource)
 
         if use_pk and try_as_root:
             debugprint ("Using polkit-1 connection class")
@@ -121,6 +120,7 @@ class Connection(SemanticOperations):
 
     def destroy (self):
         debugprint ("DESTROY: %s" % self)
+        self._destroyed = True
         try:
             self._conn.destroy ()
         except AttributeError:
@@ -136,16 +136,30 @@ class Connection(SemanticOperations):
         reply_handler = error_handler = auth_handler = False
         if kwds.has_key ("reply_handler"):
             reply_handler = kwds["reply_handler"]
-            kwds["reply_handler"] = lambda c, r: reply_handler (self, r)
+            kwds["reply_handler"] = lambda c, r: \
+                self._subst_reply_handler (reply_handler, r)
         if kwds.has_key ("error_handler"):
             error_handler = kwds["error_handler"]
-            kwds["error_handler"] = lambda c, e: error_handler (self, e)
+            kwds["error_handler"] = lambda c, e: \
+                self._subst_error_handler (error_handler, e)
         if kwds.has_key ("auth_handler"):
             auth_handler = kwds["auth_handler"]
-            kwds["auth_handler"] = lambda p, c, m, r: auth_handler (p, self,
-                                                                    m, r)
+            kwds["auth_handler"] = lambda p, c, m, r: \
+                self._subst_auth_handler (auth_handler, p, m, r)
 
         fn (*args, **kwds)
+
+    def _subst_reply_handler (self, reply_handler, reply):
+        if reply_handler and not self._destroyed:
+            reply_handler (self, reply)
+
+    def _subst_error_handler (self, error_handler, conn, exc):
+        if error_handler and not self._destroyed:
+            error_handler (self, exc)
+
+    def _subst_auth_handler (self, auth_handler, prompt, method, resource):
+        if auth_handler and not self._destroyed:
+            auth_handler (prompt, self, method, resource)
 
     def set_auth_info (self, password):
         """Call this from your auth_handler function."""
@@ -157,8 +171,9 @@ if __name__ == "__main__":
     gobject.threads_init ()
 
     class Test:
-        def __init__ (self):
+        def __init__ (self, quit):
             self._conn = Connection ()
+            self._quit = quit
             debugprint ("+%s" % self)
 
         def __del__ (self):
@@ -167,21 +182,26 @@ if __name__ == "__main__":
         def destroy (self):
             debugprint ("DESTROY: %s" % self)
             self._conn.destroy ()
-            loop.quit ()
+            if self._quit:
+                loop.quit ()
 
         def getDevices (self):
             self._conn.getDevices (reply_handler=self.getDevices_reply,
                                    error_handler=self.getDevices_error)
 
         def getDevices_reply (self, conn, result):
-            print result
+            print conn, result
             self.destroy ()
 
         def getDevices_error (self, conn, exc):
             print repr (exc)
             self.destroy ()
 
-    t = Test ()
+    t = Test (False)
     loop = gobject.MainLoop ()
+    t.getDevices ()
+    t.destroy ()
+
+    t = Test (True)
     t.getDevices ()
     loop.run ()
