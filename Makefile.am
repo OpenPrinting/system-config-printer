@@ -102,6 +102,7 @@ nobase_pkgdata_DATA=					\
 	options.py					\
 	optionwidgets.py				\
 	PhysicalDevice.py				\
+	ppdcache.py					\
 	ppdippstr.py					\
 	ppdsloader.py					\
 	printerproperties.py				\
