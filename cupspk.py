@@ -385,7 +385,9 @@ class Connection:
                     filename = None
 
         if (not use_pycups) and (fd != None or file_object != None):
-            (tmpfd, tmpfname) = tempfile.mkstemp()
+            # Create the temporary file in /tmp to ensure that
+            # cups-pk-helper-mechanism is able to write to it.
+            (tmpfd, tmpfname) = tempfile.mkstemp(dir="/tmp")
             os.close (tmpfd)
 
             pk_args = (resource, tmpfname)
