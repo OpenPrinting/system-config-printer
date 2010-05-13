@@ -153,7 +153,10 @@ class _WriteToTmpFile:
     def __init__ (self, kwds, reply_handler, error_handler):
         self._reply_handler = reply_handler
         self._error_handler = error_handler
-        (tmpfd, tmpfname) = tempfile.mkstemp ()
+
+        # Create the temporary file in /tmp to ensure that
+        # cups-pk-helper-mechanism is able to write to it.
+        (tmpfd, tmpfname) = tempfile.mkstemp (dir="/tmp")
         os.close (tmpfd)
         self._filename = tmpfname
         debugprint ("Created tempfile %s" % tmpfname)
