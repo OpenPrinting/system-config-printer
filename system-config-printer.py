@@ -2402,7 +2402,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def fillComboBox(self, combobox, values, value, translationdict=None):
         if translationdict == None:
-            translationdict = ppdippstr.TranslactionDict ()
+            translationdict = ppdippstr.TranslationDict ()
 
         model = gtk.ListStore (gobject.TYPE_STRING,
                                gobject.TYPE_STRING)
@@ -4158,7 +4158,7 @@ class NewPrinterGUI(GtkGUI):
                 if not attr:
                     attr = ppd.findAttr("ModelName")
 
-                if attr.value:
+                if attr and attr.value:
                     mfgmdl = cupshelpers.ppds.ppdMakeModelSplit (attr.value)
                     (self.auto_make, self.auto_model) = mfgmdl
 

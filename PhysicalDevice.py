@@ -22,12 +22,15 @@ from gettext import gettext as _
 import cupshelpers
 import urllib
 
+import ppdippstr
+
 class PhysicalDevice:
     def __init__(self, device):
         self.devices = None
         self._network_host = None
         self.add_device (device)
         self._user_data = {}
+        self._ppdippstr = ppdippstr.backends
 
     def _canonical_id (self, device):
         mfg = device.id_dict.get ('MFG', '')
@@ -116,7 +119,7 @@ class PhysicalDevice:
         # case of the hpfax backend), show the device-info field
         # instead.
         if self.mfg == '' or (self.mfg == "HP" and self.mdl == "Fax"):
-            return self.devices[0].info
+            return self._ppdippstr.get (self.devices[0].info)
 
         info = "%s %s" % (self.mfg, self.mdl)
         if len (self.sn) > 0:
