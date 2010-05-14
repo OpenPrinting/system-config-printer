@@ -2299,7 +2299,7 @@ class GUI(GtkGUI, monitor.Watcher):
 
     def fillComboBox(self, combobox, values, value, translationdict=None):
         if translationdict == None:
-            translationdict = ppdippstr.TranslactionDict ()
+            translationdict = ppdippstr.TranslationDict ()
 
         model = gtk.ListStore (gobject.TYPE_STRING,
                                gobject.TYPE_STRING)
