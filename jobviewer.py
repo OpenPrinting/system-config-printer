@@ -40,6 +40,7 @@ import subprocess
 import sys
 import time
 import urllib
+from xml.sax import saxutils
 
 from debug import *
 import config
@@ -1775,7 +1776,7 @@ class JobViewer (GtkGUI):
 
                 markup = ('<span weight="bold" size="larger">' +
                           _("Print Error") + '</span>\n\n' +
-                          message)
+                          saxutils.escape (message))
                 try:
                     if event['printer-state'] == cups.IPP_PRINTER_STOPPED:
                         name = event['printer-name']
