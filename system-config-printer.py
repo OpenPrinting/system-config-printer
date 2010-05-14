@@ -4012,7 +4012,7 @@ class NewPrinterGUI(GtkGUI):
                 if not attr:
                     attr = ppd.findAttr("ModelName")
 
-                if attr.value:
+                if attr and attr.value:
                     mfgmdl = cupshelpers.ppds.ppdMakeModelSplit (attr.value)
                     (self.auto_make, self.auto_model) = mfgmdl
 
