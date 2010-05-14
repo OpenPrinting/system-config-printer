@@ -14,7 +14,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer.1-1-x\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2010-03-10 09:35+0000\n"
+"POT-Creation-Date: 2010-05-14 17:11+0100\n"
 "PO-Revision-Date: 2009-12-08 11:12+1000\n"
 "Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
 "Language-Team: Traditional Chinese <zh@li.org>\n"
@@ -23,91 +23,92 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../AdvancedServerSettings.py:42
+#: ../AdvancedServerSettings.py:44
 msgid "Advanced Server Settings"
 msgstr "進階伺服器設定"
 
-#: ../AdvancedServerSettings.py:59
+#: ../AdvancedServerSettings.py:61
 msgid "Job History"
 msgstr "工作歷史"
 
-#: ../AdvancedServerSettings.py:70
+#: ../AdvancedServerSettings.py:72
 msgid "Do not preserve job history"
 msgstr "不保留工作歷史"
 
-#: ../AdvancedServerSettings.py:72
+#: ../AdvancedServerSettings.py:74
 msgid "Preserve job history but not files"
 msgstr "保留工作歷史不過不保留檔案"
 
-#: ../AdvancedServerSettings.py:75
+#: ../AdvancedServerSettings.py:77
 msgid "Preserve job files (allow reprinting)"
 msgstr "保留工作檔案（允許重新列印）"
 
-#: ../AdvancedServerSettings.py:83
+#: ../AdvancedServerSettings.py:85
 msgid "Browse Servers"
 msgstr "瀏覽伺服器"
 
-#: ../AdvancedServerSettings.py:94
+#: ../AdvancedServerSettings.py:96
 msgid ""
 "Usually print servers broadcast their queues.  Specify print servers below "
 "to periodically ask for queues instead."
 msgstr "通常列印伺服器會廣播它們的佇列。請指定下列列印伺服器定期地詢問佇列。"
 
-#: ../AdvancedServerSettings.py:215
+#: ../AdvancedServerSettings.py:217
 msgid "Enter IP address"
 msgstr "輸入 IP 位址"
 
-#: ../asyncipp.py:420 ../authconn.py:403 ../authconn.py:405
+#: ../asyncipp.py:423 ../authconn.py:402 ../authconn.py:404
 #: ../errordialogs.py:65 ../pysmb.py:75 ../pysmb.py:77
 msgid "Not authorized"
 msgstr "未經授權"
 
-#: ../asyncipp.py:421 ../authconn.py:406 ../pysmb.py:78
+#: ../asyncipp.py:424 ../authconn.py:405 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "密碼可能不正確。"
 
-#: ../asyncipp.py:432 ../authconn.py:427
+#: ../asyncipp.py:435 ../authconn.py:426
 #, python-format
 msgid "Authentication (%s)"
 msgstr "身分核證（%s）"
 
-#: ../asyncipp.py:497 ../authconn.py:260 ../errordialogs.py:56
+#: ../asyncipp.py:500 ../authconn.py:259 ../errordialogs.py:56
 #: ../errordialogs.py:70
 msgid "CUPS server error"
 msgstr "CUPS 伺服器錯誤"
 
-#: ../asyncipp.py:499 ../authconn.py:258
+#: ../asyncipp.py:502 ../authconn.py:257
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "CUPS 伺服器錯誤（%s）"
 
-#: ../asyncipp.py:516 ../authconn.py:269 ../errordialogs.py:57
-#: ../troubleshoot/PrintTestPage.py:417
+#: ../asyncipp.py:519 ../authconn.py:268 ../errordialogs.py:57
+#: ../troubleshoot/PrintTestPage.py:418
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "進行 CUPS 作業時發生錯誤：'%s'。"
 
-#: ../asyncipp.py:519 ../authconn.py:272
+#: ../asyncipp.py:522 ../authconn.py:271
 msgid "Retry"
 msgstr "重新嘗試"
 
-#: ../asyncipp.py:530 ../authconn.py:219 ../authconn.py:241
+#: ../asyncipp.py:534 ../authconn.py:219 ../authconn.py:241
 msgid "Operation canceled"
 msgstr "作業已取消"
 
-#: ../authconn.py:37 ../glade/NewPrinterWindow.glade.h:106
+#: ../authconn.py:37 ../pysmb.py:108 ../glade/NewPrinterWindow.glade.h:106
 msgid "Username:"
 msgstr "使用者名稱："
 
-#: ../authconn.py:38 ../glade/NewPrinterWindow.glade.h:75
+#: ../authconn.py:38 ../pysmb.py:114 ../glade/NewPrinterWindow.glade.h:75
 msgid "Password:"
 msgstr "密碼："
 
-#: ../authconn.py:39
+#: ../authconn.py:39 ../pysmb.py:111
 msgid "Domain:"
 msgstr "網域："
 
-#: ../authconn.py:48 ../authconn.py:429
+#. After that, prompt
+#: ../authconn.py:48 ../authconn.py:428 ../pysmb.py:83
 msgid "Authentication"
 msgstr "身分核證"
 
@@ -141,7 +142,7 @@ msgstr "需要升級"
 msgid "Server error"
 msgstr "伺服器錯誤"
 
-#: ../errordialogs.py:82 ../system-config-printer.py:1217
+#: ../errordialogs.py:82 ../system-config-printer.py:1222
 msgid "Not connected"
 msgstr "未連接"
 
@@ -163,7 +164,7 @@ msgstr "新群組(_N)"
 msgid "_New Group from Selection"
 msgstr "從選項中建立新群組(_N)"
 
-#: ../GroupsPane.py:98 ../system-config-printer.py:409
+#: ../GroupsPane.py:98 ../system-config-printer.py:411
 msgid "_Rename"
 msgstr "重新命名(_R)"
 
@@ -201,73 +202,73 @@ msgstr "所有印表機"
 msgid "Favorites"
 msgstr "我的最愛"
 
-#: ../jobviewer.py:167
+#: ../jobviewer.py:169
 msgid "_Hold"
 msgstr "抑制(_H)"
 
-#: ../jobviewer.py:169
+#: ../jobviewer.py:171
 msgid "_Release"
 msgstr "釋放(_R)"
 
-#: ../jobviewer.py:171
+#: ../jobviewer.py:173
 msgid "Re_print"
 msgstr "重新列印(_p)"
 
-#: ../jobviewer.py:173
+#: ../jobviewer.py:175
 msgid "_Authenticate"
 msgstr "身分核證(_A)"
 
-#: ../jobviewer.py:211 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:213 ../troubleshoot/PrintTestPage.py:83
 msgid "Job"
 msgstr "工作"
 
-#: ../jobviewer.py:212
+#: ../jobviewer.py:214
 msgid "User"
 msgstr "使用者"
 
-#: ../jobviewer.py:213 ../troubleshoot/PrintTestPage.py:86
+#: ../jobviewer.py:215 ../troubleshoot/PrintTestPage.py:87
 msgid "Document"
 msgstr "文件"
 
-#: ../jobviewer.py:214 ../my-default-printer.py:153
-#: ../system-config-printer.py:381 ../system-config-printer.py:1365
-#: ../troubleshoot/PrintTestPage.py:84
+#: ../jobviewer.py:216 ../my-default-printer.py:153
+#: ../system-config-printer.py:383 ../system-config-printer.py:1370
+#: ../troubleshoot/PrintTestPage.py:85
 msgid "Printer"
 msgstr "印表機"
 
-#: ../jobviewer.py:215
+#: ../jobviewer.py:217
 msgid "Size"
 msgstr "大小"
 
-#: ../jobviewer.py:231
+#: ../jobviewer.py:233
 msgid "Time submitted"
 msgstr "提交的時間"
 
-#: ../jobviewer.py:235 ../troubleshoot/PrintTestPage.py:87
+#: ../jobviewer.py:237 ../troubleshoot/PrintTestPage.py:88
 msgid "Status"
 msgstr "狀態"
 
-#: ../jobviewer.py:267
+#: ../jobviewer.py:269
 #, python-format
 msgid "my jobs on %s"
 msgstr "我在 %s 上的工作"
 
-#: ../jobviewer.py:269
+#: ../jobviewer.py:271
 msgid "my jobs"
 msgstr "我的工作"
 
-#: ../jobviewer.py:274
+#: ../jobviewer.py:276
 msgid "all jobs"
 msgstr "所有工作"
 
-#: ../jobviewer.py:275
+#: ../jobviewer.py:277
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "文件列印狀態（%s）"
 
-#: ../jobviewer.py:430 ../jobviewer.py:705 ../jobviewer.py:1519
-#: ../jobviewer.py:1524 ../jobviewer.py:1533 ../jobviewer.py:1612
-#: ../system-config-printer.py:2644 ../glade/NewPrinterWindow.glade.h:104
+#: ../jobviewer.py:429 ../jobviewer.py:706 ../jobviewer.py:1520
+#: ../jobviewer.py:1525 ../jobviewer.py:1534 ../jobviewer.py:1613
+#: ../system-config-printer.py:2649 ../glade/NewPrinterWindow.glade.h:104
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:103
 #: ../troubleshoot/ChooseNetworkPrinter.py:106
@@ -278,173 +279,173 @@ msgstr "文件列印狀態（%s）"
 msgid "Unknown"
 msgstr "不明"
 
-#: ../jobviewer.py:436
+#: ../jobviewer.py:435
 msgid "a minute ago"
 msgstr "一分鐘以前"
 
-#: ../jobviewer.py:439
+#: ../jobviewer.py:438
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d 分鐘以前"
 
-#: ../jobviewer.py:443
+#: ../jobviewer.py:442
 msgid "an hour ago"
 msgstr "一個小時以前"
 
-#: ../jobviewer.py:445
+#: ../jobviewer.py:444
 #, python-format
 msgid "%d hours ago"
 msgstr "%d 個小時以前"
 
-#: ../jobviewer.py:449
+#: ../jobviewer.py:448
 msgid "yesterday"
 msgstr "昨天"
 
-#: ../jobviewer.py:451
+#: ../jobviewer.py:450
 #, python-format
 msgid "%d days ago"
 msgstr "%d 天以前"
 
-#: ../jobviewer.py:455
+#: ../jobviewer.py:454
 msgid "last week"
 msgstr "上個禮拜"
 
-#: ../jobviewer.py:457
+#: ../jobviewer.py:456
 #, python-format
 msgid "%d weeks ago"
 msgstr "%d 個禮拜以前"
 
-#: ../jobviewer.py:656 ../jobviewer.py:735
+#: ../jobviewer.py:657 ../jobviewer.py:736
 msgid "authenticating job"
 msgstr "驗證工作"
 
-#: ../jobviewer.py:703
+#: ../jobviewer.py:704
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "列印文件 `%s'（job %d）需要經過驗證"
 
-#: ../jobviewer.py:877
+#: ../jobviewer.py:878
 msgid "Cancel Job"
 msgstr "取消工作"
 
-#: ../jobviewer.py:891
+#: ../jobviewer.py:892
 msgid "Do you really want to cancel this job?"
 msgstr "您是否真的希望取消這項工作？"
 
-#: ../jobviewer.py:919
+#: ../jobviewer.py:920
 msgid "canceling job"
 msgstr "正在取消工作"
 
-#: ../jobviewer.py:943
+#: ../jobviewer.py:944
 msgid "holding job"
 msgstr "保留工作"
 
-#: ../jobviewer.py:967
+#: ../jobviewer.py:968
 msgid "releasing job"
 msgstr "釋放工作"
 
-#: ../jobviewer.py:1088
+#: ../jobviewer.py:1089
 msgid "No documents queued"
 msgstr "佇列中沒有文件"
 
-#: ../jobviewer.py:1090
+#: ../jobviewer.py:1091
 msgid "1 document queued"
 msgstr "佇列中有 1 個文件"
 
-#: ../jobviewer.py:1092
+#: ../jobviewer.py:1093
 #, python-format
 msgid "%d documents queued"
 msgstr "佇列中有 %d 個文件"
 
-#: ../jobviewer.py:1315
+#: ../jobviewer.py:1316
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "將文件 `%s'（job %d）傳送至印表機時發生了問題。"
 
-#: ../jobviewer.py:1318
+#: ../jobviewer.py:1319
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "處理文件 `%s'（job %d）時發生了問題。"
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1325
+#: ../jobviewer.py:1326
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "列印文件 `%s'（job %d）時發生了問題：`%s'。"
 
-#: ../jobviewer.py:1332 ../jobviewer.py:1348
+#: ../jobviewer.py:1333 ../jobviewer.py:1349
 msgid "Print Error"
 msgstr "列印錯誤"
 
-#: ../jobviewer.py:1333
+#: ../jobviewer.py:1334
 msgid "_Diagnose"
 msgstr "診斷(_D)"
 
-#: ../jobviewer.py:1354
+#: ../jobviewer.py:1355
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "名稱為 `%s' 的印表機已被停用。"
 
-#: ../jobviewer.py:1547
+#: ../jobviewer.py:1548
 msgid "Held for authentication"
 msgstr "等待身分核證"
 
-#: ../jobviewer.py:1549 ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:1550 ../troubleshoot/PrintTestPage.py:43
 msgid "Held"
 msgstr "等待"
 
-#: ../jobviewer.py:1585
+#: ../jobviewer.py:1586
 #, python-format
 msgid "Held until %s"
 msgstr "等待直到 %s"
 
-#: ../jobviewer.py:1589
+#: ../jobviewer.py:1590
 msgid "Held until day-time"
 msgstr "等待一天"
 
-#: ../jobviewer.py:1591
+#: ../jobviewer.py:1592
 msgid "Held until evening"
 msgstr "等待到黃昏"
 
-#: ../jobviewer.py:1593
+#: ../jobviewer.py:1594
 msgid "Held until night-time"
 msgstr "等待到夜間"
 
-#: ../jobviewer.py:1595
+#: ../jobviewer.py:1596
 msgid "Held until second shift"
 msgstr "等待到第二個輪班"
 
-#: ../jobviewer.py:1597
+#: ../jobviewer.py:1598
 msgid "Held until third shift"
 msgstr "等待到第三個輪班"
 
-#: ../jobviewer.py:1599
+#: ../jobviewer.py:1600
 msgid "Held until weekend"
 msgstr "等待到週末"
 
-#: ../jobviewer.py:1602 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:1603 ../troubleshoot/PrintTestPage.py:42
 msgid "Pending"
 msgstr "等待處理中"
 
-#: ../jobviewer.py:1603 ../system-config-printer.py:199
-#: ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:1604 ../system-config-printer.py:200
+#: ../troubleshoot/PrintTestPage.py:44
 msgid "Processing"
 msgstr "正在處理中"
 
-#: ../jobviewer.py:1604 ../system-config-printer.py:201
-#: ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:1605 ../system-config-printer.py:202
+#: ../troubleshoot/PrintTestPage.py:45
 msgid "Stopped"
 msgstr "已停止"
 
-#: ../jobviewer.py:1605 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:1606 ../troubleshoot/PrintTestPage.py:46
 msgid "Canceled"
 msgstr "已取消"
 
-#: ../jobviewer.py:1606 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:1607 ../troubleshoot/PrintTestPage.py:47
 msgid "Aborted"
 msgstr "已放棄"
 
-#: ../jobviewer.py:1607 ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:1608 ../troubleshoot/PrintTestPage.py:48
 msgid "Completed"
 msgstr "已完成"
 
@@ -460,7 +461,7 @@ msgstr "使用系統預設值(_U)"
 msgid "_Set Default"
 msgstr "設定預設值(_S)"
 
-#: ../my-default-printer.py:158 ../system-config-printer.py:439
+#: ../my-default-printer.py:158 ../system-config-printer.py:441
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
@@ -470,392 +471,425 @@ msgstr "位置"
 msgid "Conflicts with:"
 msgstr "和此有衝突："
 
-#: ../ppdippstr.py:45
+#: ../ppdippstr.py:47
 msgid "Abort job"
 msgstr "放棄工作"
 
-#: ../ppdippstr.py:46
+#: ../ppdippstr.py:48
 msgid "Retry current job"
 msgstr "重新嘗試目前的工作"
 
-#: ../ppdippstr.py:47
+#: ../ppdippstr.py:49
 msgid "Retry job"
 msgstr "重新嘗試工作"
 
-#: ../ppdippstr.py:48
+#: ../ppdippstr.py:50
 msgid "Stop printer"
 msgstr "停止印表機"
 
-#: ../ppdippstr.py:54
+#: ../ppdippstr.py:56
 msgid "Default behavior"
 msgstr "預設特性"
 
-#: ../ppdippstr.py:55
+#: ../ppdippstr.py:57
 msgid "Authenticated"
 msgstr "已核證"
 
-#: ../ppdippstr.py:61 ../system-config-printer.py:6555
+#: ../ppdippstr.py:63 ../system-config-printer.py:6576
 msgid "None"
 msgstr "無"
 
-#: ../ppdippstr.py:62
+#: ../ppdippstr.py:64
 msgid "Classified"
 msgstr "已分類"
 
-#: ../ppdippstr.py:63
+#: ../ppdippstr.py:65
 msgid "Confidential"
 msgstr "機密"
 
-#: ../ppdippstr.py:64
+#: ../ppdippstr.py:66
 msgid "Secret"
 msgstr "秘密"
 
-#: ../ppdippstr.py:65
+#: ../ppdippstr.py:67
 msgid "Standard"
 msgstr "標準"
 
-#: ../ppdippstr.py:66
+#: ../ppdippstr.py:68
 msgid "Top secret"
 msgstr "最高機密"
 
-#: ../ppdippstr.py:67
+#: ../ppdippstr.py:69
 msgid "Unclassified"
 msgstr "未分類"
 
-#: ../ppdippstr.py:73
+#: ../ppdippstr.py:75
 msgid "No hold"
 msgstr "No hold"
 
-#: ../ppdippstr.py:74
+#: ../ppdippstr.py:76
 msgid "Indefinite"
 msgstr "不確定"
 
-#: ../ppdippstr.py:75
+#: ../ppdippstr.py:77
 msgid "Daytime"
 msgstr "日間"
 
-#: ../ppdippstr.py:76
+#: ../ppdippstr.py:78
 msgid "Evening"
 msgstr "傍晚"
 
-#: ../ppdippstr.py:77
+#: ../ppdippstr.py:79
 msgid "Night"
 msgstr "夜間"
 
-#: ../ppdippstr.py:78
+#: ../ppdippstr.py:80
 msgid "Second shift"
 msgstr "第二個輪班"
 
-#: ../ppdippstr.py:79
+#: ../ppdippstr.py:81
 msgid "Third shift"
 msgstr "第三個輪班"
 
-#: ../ppdippstr.py:80
+#: ../ppdippstr.py:82
 msgid "Weekend"
 msgstr "週末"
 
-#: ../ppdippstr.py:90
+#: ../ppdippstr.py:92
 msgid "General"
 msgstr "一般"
 
 #. HPIJS options
-#: ../ppdippstr.py:93
+#: ../ppdippstr.py:95
 msgid "Printout mode"
 msgstr "列印輸出模式"
 
-#: ../ppdippstr.py:95
+#: ../ppdippstr.py:97
 msgid "Draft (auto-detect-paper type)"
 msgstr "草稿（自動偵測紙張類型）"
 
-#: ../ppdippstr.py:97
+#: ../ppdippstr.py:99
 msgid "Draft grayscale (auto-detect-paper type)"
 msgstr "草稿灰階（自動偵測紙張類型）"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:101
 msgid "Normal (auto-detect-paper type)"
 msgstr "正常（自動偵測紙張類型）"
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:103
 msgid "Normal grayscale (auto-detect-paper type)"
 msgstr "正常灰階（自動偵測紙張類型）"
 
-#: ../ppdippstr.py:103
+#: ../ppdippstr.py:105
 msgid "High quality (auto-detect-paper type)"
 msgstr "高品質（自動偵測紙張類型）"
 
-#: ../ppdippstr.py:105
+#: ../ppdippstr.py:107
 msgid "High quality grayscale (auto-detect-paper type)"
 msgstr "高品質灰階（自動偵測紙張類型）"
 
-#: ../ppdippstr.py:106
+#: ../ppdippstr.py:108
 msgid "Photo (on photo paper)"
 msgstr "照片（照相紙）"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:110
 msgid "Best quality (color on photo paper)"
 msgstr "最高品質（彩色照相紙）"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:112
 msgid "Normal quality (color on photo paper)"
 msgstr "正常品質（彩色照相紙）"
 
-#: ../ppdippstr.py:112
+#: ../ppdippstr.py:114
 msgid "Media source"
 msgstr "媒介來源"
 
-#: ../ppdippstr.py:113
+#: ../ppdippstr.py:115
 msgid "Printer default"
 msgstr "印表機預設值"
 
-#: ../ppdippstr.py:114
+#: ../ppdippstr.py:116
 msgid "Photo tray"
 msgstr "照片匣（Photo tray）"
 
-#: ../ppdippstr.py:115
+#: ../ppdippstr.py:117
 msgid "Upper tray"
 msgstr "上紙匣（Upper tray）"
 
-#: ../ppdippstr.py:116
+#: ../ppdippstr.py:118
 msgid "Lower tray"
 msgstr "下紙匣（Lower tray）"
 
-#: ../ppdippstr.py:117
+#: ../ppdippstr.py:119
 msgid "CD or DVD tray"
 msgstr "CD 或 DVD 匣"
 
-#: ../ppdippstr.py:118
+#: ../ppdippstr.py:120
 msgid "Envelope feeder"
 msgstr "信封進紙器（Envelope feeder）"
 
-#: ../ppdippstr.py:119
+#: ../ppdippstr.py:121
 msgid "Large capacity tray"
 msgstr "大容量紙匣（Large capacity tray）"
 
-#: ../ppdippstr.py:120
+#: ../ppdippstr.py:122
 msgid "Manual feeder"
 msgstr "手動式進紙器（Manual feeder）"
 
-#: ../ppdippstr.py:121
+#: ../ppdippstr.py:123
 msgid "Multi-purpose tray"
 msgstr "多功能紙匣（Multi-purpose tray）"
 
-#: ../ppdippstr.py:123
+#: ../ppdippstr.py:125
 msgid "Page size"
 msgstr "頁面大小"
 
-#: ../ppdippstr.py:124
+#: ../ppdippstr.py:126
 msgid "Custom"
 msgstr "自訂"
 
-#: ../ppdippstr.py:125
+#: ../ppdippstr.py:127
 msgid "Photo or 4x6 inch index card"
 msgstr "照片或 4x6 吋索引卡"
 
-#: ../ppdippstr.py:126
+#: ../ppdippstr.py:128
 msgid "Photo or 5x7 inch index card"
 msgstr "照片或 5x7 吋索引卡"
 
-#: ../ppdippstr.py:127
+#: ../ppdippstr.py:129
 msgid "Photo with tear-off tab"
 msgstr "照片具撕掉的標籤"
 
-#: ../ppdippstr.py:128
+#: ../ppdippstr.py:130
 msgid "3x5 inch index card"
 msgstr "3x5 吋索引卡"
 
-#: ../ppdippstr.py:129
+#: ../ppdippstr.py:131
 msgid "5x8 inch index card"
 msgstr "5x8 吋索引卡"
 
-#: ../ppdippstr.py:130
+#: ../ppdippstr.py:132
 msgid "A6 with tear-off tab"
 msgstr "A6 具撕掉的標籤"
 
-#: ../ppdippstr.py:131
+#: ../ppdippstr.py:133
 msgid "CD or DVD 80mm"
 msgstr "CD 或 DVD 80mm"
 
-#: ../ppdippstr.py:132
+#: ../ppdippstr.py:134
 msgid "CD or DVD 120mm"
 msgstr "CD 或 DVD 120mm"
 
-#: ../ppdippstr.py:134
+#: ../ppdippstr.py:136
 msgid "Double-sided printing"
 msgstr "雙面列印"
 
-#: ../ppdippstr.py:135
+#: ../ppdippstr.py:137
 msgid "Long edge (standard)"
 msgstr "長邊（標準）"
 
-#: ../ppdippstr.py:136
+#: ../ppdippstr.py:138
 msgid "Short edge (flip)"
 msgstr "短邊（翻頁）"
 
-#: ../ppdippstr.py:137
+#: ../ppdippstr.py:139
 msgid "Off"
 msgstr "關閉"
 
-#: ../ppdippstr.py:140
+#: ../ppdippstr.py:142
 msgid "Resolution, quality, ink type, media type"
 msgstr "解析度、品質、墨水類型、媒介類型"
 
-#: ../ppdippstr.py:141
+#: ../ppdippstr.py:143
 msgid "Controlled by 'Printout mode'"
 msgstr "由 'Printout mode'（列印輸出模式）控制"
 
-#: ../ppdippstr.py:143
+#: ../ppdippstr.py:145
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi、彩色、黑白 + 彩色墨水匣"
 
-#: ../ppdippstr.py:145
+#: ../ppdippstr.py:147
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi、草稿、彩色、黑白 + 彩色墨水匣"
 
-#: ../ppdippstr.py:147
+#: ../ppdippstr.py:149
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi、草稿、灰階、黑白 + 彩色墨水匣"
 
-#: ../ppdippstr.py:149
+#: ../ppdippstr.py:151
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi、灰階、黑白 + 彩色墨水匣"
 
-#: ../ppdippstr.py:151
+#: ../ppdippstr.py:153
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi、彩色、黑白 + 彩色墨水匣"
 
-#: ../ppdippstr.py:153
+#: ../ppdippstr.py:155
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi、灰階、黑白 + 彩色墨水匣"
 
-#: ../ppdippstr.py:155
+#: ../ppdippstr.py:157
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi、照片、黑白 + 彩色墨水匣、照片紙"
 
-#: ../ppdippstr.py:157
+#: ../ppdippstr.py:159
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi、彩色、黑白 + 彩色墨水匣、照片紙、正常"
 
-#: ../ppdippstr.py:159
+#: ../ppdippstr.py:161
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi、照片、黑白 + 彩色墨水匣、照片紙"
 
-#: ../system-config-printer.py:143
+#: ../ppdippstr.py:168
+msgid "Internet Printing Protocol (ipp)"
+msgstr ""
+
+#: ../ppdippstr.py:170
+msgid "Internet Printing Protocol (http)"
+msgstr ""
+
+#: ../ppdippstr.py:172
+msgid "Internet Printing Protocol (https)"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "LPD/LPR Host or Printer"
+msgstr ""
+
+#: ../ppdippstr.py:176 ../system-config-printer.py:5828
+msgid "AppSocket/HP JetDirect"
+msgstr "AppSocket/HP JetDirect"
+
+#: ../ppdippstr.py:178
+#, fuzzy
+msgid "Serial Port #1"
+msgstr "序列連接埠"
+
+#: ../ppdippstr.py:180
+msgid "LPT #1"
+msgstr ""
+
+#: ../ppdippstr.py:182 ../system-config-printer.py:5842
+msgid "Windows Printer via SAMBA"
+msgstr "透過 SAMBA 連接的 Windows 印表機"
+
+#: ../system-config-printer.py:144
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr "若要這麼作，請由主選單中選擇系統 -> 管理 -> 安全等級與防火牆。"
 
-#: ../system-config-printer.py:198
+#: ../system-config-printer.py:199
 msgid "Idle"
 msgstr "閒置"
 
-#: ../system-config-printer.py:200
+#: ../system-config-printer.py:201
 msgid "Busy"
 msgstr "忙碌"
 
-#: ../system-config-printer.py:387 ../system-config-printer.py:1371
+#: ../system-config-printer.py:389 ../system-config-printer.py:1376
 msgid "Class"
 msgstr "類別"
 
-#: ../system-config-printer.py:415
+#: ../system-config-printer.py:417
 msgid "Set As De_fault"
 msgstr "設為預設值（_f）"
 
-#: ../system-config-printer.py:419
+#: ../system-config-printer.py:421
 msgid "_Create class"
 msgstr "建立組別(_C)"
 
-#: ../system-config-printer.py:421
+#: ../system-config-printer.py:423
 msgid "View Print _Queue"
 msgstr "檢視列印佇列(_Q)"
 
-#: ../system-config-printer.py:423
+#: ../system-config-printer.py:425
 msgid "_Add to Group"
 msgstr "新增至群組(_A)"
 
-#: ../system-config-printer.py:425
+#: ../system-config-printer.py:427
 msgid "Save Results as _Group"
 msgstr "將結果設為群組(_G)"
 
-#: ../system-config-printer.py:427
+#: ../system-config-printer.py:429
 msgid "Save Filter as _Search Group"
 msgstr "將過濾器設為搜尋群組(_S)"
 
-#: ../system-config-printer.py:431
+#: ../system-config-printer.py:433
 msgid "E_nabled"
 msgstr "已啟用(_n)"
 
-#: ../system-config-printer.py:433
+#: ../system-config-printer.py:435
 msgid "_Shared"
 msgstr "已共享(_S)"
 
-#: ../system-config-printer.py:437 ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../system-config-printer.py:439 ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "名稱"
 
-#: ../system-config-printer.py:438
+#: ../system-config-printer.py:440
 msgid "Description"
 msgstr "描述"
 
-#: ../system-config-printer.py:440
+#: ../system-config-printer.py:442
 msgid "Manufacturer / Model"
 msgstr "製造廠商/型號"
 
 #. Printer state reasons list
-#: ../system-config-printer.py:515
+#: ../system-config-printer.py:517
 msgid "Message"
 msgstr "訊息"
 
-#: ../system-config-printer.py:549
+#: ../system-config-printer.py:551
 msgid "Problems?"
 msgstr "問題？"
 
-#: ../system-config-printer.py:654 ../system-config-printer.py:656
+#: ../system-config-printer.py:656 ../system-config-printer.py:658
 msgid "Members of this class"
 msgstr "此類別的成員"
 
-#: ../system-config-printer.py:655 ../system-config-printer.py:657
+#: ../system-config-printer.py:657 ../system-config-printer.py:659
 msgid "Others"
 msgstr "其他"
 
-#: ../system-config-printer.py:658
+#: ../system-config-printer.py:660
 msgid "Devices"
 msgstr "裝置"
 
-#: ../system-config-printer.py:659
+#: ../system-config-printer.py:661
 msgid "Connections"
 msgstr "連線"
 
-#: ../system-config-printer.py:660
+#: ../system-config-printer.py:662
 msgid "Makes"
 msgstr "廠牌"
 
-#: ../system-config-printer.py:661
+#: ../system-config-printer.py:663
 msgid "Models"
 msgstr "型號"
 
-#: ../system-config-printer.py:662
+#: ../system-config-printer.py:664
 msgid "Drivers"
 msgstr "驅動程式"
 
-#: ../system-config-printer.py:663 ../glade/NewPrinterWindow.glade.h:54
+#: ../system-config-printer.py:665 ../glade/NewPrinterWindow.glade.h:54
 msgid "Downloadable Drivers"
 msgstr "可下載的驅動程式"
 
-#: ../system-config-printer.py:664
+#: ../system-config-printer.py:666
 msgid "Users"
 msgstr "使用者"
 
-#: ../system-config-printer.py:699
+#: ../system-config-printer.py:701
 msgid "Automatic rotation"
 msgstr "自動轉換"
 
-#: ../system-config-printer.py:984
+#: ../system-config-printer.py:986
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "印表機內容 - '%s' 在 %s 上"
 
 #. The Conflict button was pressed.
-#: ../system-config-printer.py:992
+#: ../system-config-printer.py:994
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -865,78 +899,78 @@ msgstr ""
 "變更只能在這些衝\n"
 "突解決之後套用。"
 
-#: ../system-config-printer.py:1211
+#: ../system-config-printer.py:1216
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "印表機設定 - %s"
 
-#: ../system-config-printer.py:1215
+#: ../system-config-printer.py:1220
 #, python-format
 msgid "Connected to %s"
 msgstr "已連接至 %s"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1255 ../system-config-printer.py:2101
+#: ../system-config-printer.py:1260 ../system-config-printer.py:2106
 msgid "obtaining queue details"
 msgstr "正在取得佇列詳情"
 
-#: ../system-config-printer.py:1293
+#: ../system-config-printer.py:1298
 msgid "Remove from Group"
 msgstr "由群組中移除"
 
-#: ../system-config-printer.py:1359
+#: ../system-config-printer.py:1364
 msgid "Network printer (discovered)"
 msgstr "網路印表機（已發現）"
 
-#: ../system-config-printer.py:1362
+#: ../system-config-printer.py:1367
 msgid "Network class (discovered)"
 msgstr "網路類別（已發現）"
 
-#: ../system-config-printer.py:1368 ../system-config-printer.py:5803
-#: ../system-config-printer.py:5873 ../system-config-printer.py:5875
+#: ../system-config-printer.py:1373 ../system-config-printer.py:5823
+#: ../system-config-printer.py:5893 ../system-config-printer.py:5895
 msgid "Fax"
 msgstr "傳真"
 
-#: ../system-config-printer.py:1374 ../system-config-printer.py:1380
+#: ../system-config-printer.py:1379 ../system-config-printer.py:1385
 #: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "網路印表機"
 
-#: ../system-config-printer.py:1377
+#: ../system-config-printer.py:1382
 msgid "Network print share"
 msgstr "網路列印共享"
 
-#: ../system-config-printer.py:1562 ../glade/ConnectingDialog.glade.h:2
+#: ../system-config-printer.py:1567 ../glade/ConnectingDialog.glade.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>正在開啟至 %s 的連線</i>"
 
-#: ../system-config-printer.py:1945
+#: ../system-config-printer.py:1950
 msgid "Installable Options"
 msgstr "可安裝的選項"
 
-#: ../system-config-printer.py:1946
+#: ../system-config-printer.py:1951
 #: ../glade/PrinterPropertiesDialog.glade.h:111
 msgid "Printer Options"
 msgstr "印表機選項"
 
-#: ../system-config-printer.py:1983
+#: ../system-config-printer.py:1988
 #, python-format
 msgid "modifying class %s"
 msgstr "修改類別 %s"
 
-#: ../system-config-printer.py:1985 ../system-config-printer.py:3159
-#: ../system-config-printer.py:3184 ../system-config-printer.py:6852
-#: ../system-config-printer.py:6864 ../system-config-printer.py:6886
+#: ../system-config-printer.py:1990 ../system-config-printer.py:3164
+#: ../system-config-printer.py:3189 ../system-config-printer.py:6878
+#: ../system-config-printer.py:6890 ../system-config-printer.py:6912
 #, python-format
 msgid "modifying printer %s"
 msgstr "修改印表機 %s"
 
-#: ../system-config-printer.py:2000
+#: ../system-config-printer.py:2005
 msgid "This will delete this class!"
 msgstr "這樣將會刪除此類別！"
 
-#: ../system-config-printer.py:2001
+#: ../system-config-printer.py:2006
 msgid "Proceed anyway?"
 msgstr "要繼續進行嗎？"
 
@@ -944,62 +978,62 @@ msgstr "要繼續進行嗎？"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:2089 ../system-config-printer.py:3355
+#: ../system-config-printer.py:2094 ../system-config-printer.py:3360
 msgid "fetching server settings"
 msgstr "取得伺服器設定"
 
-#: ../system-config-printer.py:2159
+#: ../system-config-printer.py:2164
 msgid "Set Default Printer"
 msgstr "設定預設印表機"
 
-#: ../system-config-printer.py:2161
+#: ../system-config-printer.py:2166
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "您是否希望將此印表機設為系統全域的預設印表機？"
 
-#: ../system-config-printer.py:2163
+#: ../system-config-printer.py:2168
 msgid "Set as the _system-wide default printer"
 msgstr "設為系統全域的預設印表機(_s)"
 
-#: ../system-config-printer.py:2165
+#: ../system-config-printer.py:2170
 msgid "_Clear my personal default setting"
 msgstr "清除我的個人預設設定(_C)"
 
-#: ../system-config-printer.py:2166
+#: ../system-config-printer.py:2171
 msgid "Set as my _personal default printer"
 msgstr "設為我的個人預設印表機(_p)"
 
-#: ../system-config-printer.py:2171
+#: ../system-config-printer.py:2176
 msgid "setting default printer"
 msgstr "設定預設印表機"
 
-#: ../system-config-printer.py:2228
+#: ../system-config-printer.py:2233
 msgid "printing test page"
 msgstr "列印測試頁"
 
-#: ../system-config-printer.py:2241 ../system-config-printer.py:2276
+#: ../system-config-printer.py:2246 ../system-config-printer.py:2281
 msgid "Not possible"
 msgstr "不可能"
 
-#: ../system-config-printer.py:2242 ../system-config-printer.py:2277
+#: ../system-config-printer.py:2247 ../system-config-printer.py:2282
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
 msgstr "遠端伺服器不接受列印工作，這很可能是因為印表機未共享。"
 
-#: ../system-config-printer.py:2254 ../system-config-printer.py:2269
+#: ../system-config-printer.py:2259 ../system-config-printer.py:2274
 msgid "Submitted"
 msgstr "已提交"
 
-#: ../system-config-printer.py:2255
+#: ../system-config-printer.py:2260
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "測試頁已提交為工作 %d"
 
-#: ../system-config-printer.py:2262
+#: ../system-config-printer.py:2267
 msgid "sending maintenance command"
 msgstr "正在傳送維護指令"
 
-#: ../system-config-printer.py:2270
+#: ../system-config-printer.py:2275
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "維護指令已被提交為工作 %d"
@@ -1007,73 +1041,73 @@ msgstr "維護指令已被提交為工作 %d"
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2347 ../system-config-printer.py:2443
+#: ../system-config-printer.py:2352 ../system-config-printer.py:2448
 msgid "Error"
 msgstr "錯誤"
 
-#: ../system-config-printer.py:2348
+#: ../system-config-printer.py:2353
 msgid "There was a problem connecting to the CUPS server."
 msgstr "連至 CUPS 伺服器時發生了錯誤。"
 
-#: ../system-config-printer.py:2444
+#: ../system-config-printer.py:2449
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "選項 '%s\" 含有 '%s' 這個值因此無法被編輯。"
 
-#: ../system-config-printer.py:2554
+#: ../system-config-printer.py:2559
 msgid "Marker levels are not reported for this printer."
 msgstr "沒有回報此印表機的標記程序等級。"
 
-#: ../system-config-printer.py:2864
+#: ../system-config-printer.py:2869
 msgid "Cannot Rename"
 msgstr "無法重新命名"
 
-#: ../system-config-printer.py:2865
+#: ../system-config-printer.py:2870
 msgid "There are queued jobs."
 msgstr "佇列中有工作。"
 
-#: ../system-config-printer.py:2883
+#: ../system-config-printer.py:2888
 msgid "Renaming will lose history"
 msgstr "重新命名將會失去歷史"
 
-#: ../system-config-printer.py:2885
+#: ../system-config-printer.py:2890
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr "已完成的工作將無法再重新列印。"
 
-#: ../system-config-printer.py:2960
+#: ../system-config-printer.py:2965
 msgid "renaming printer"
 msgstr "正在為印表機重新命名"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:3047
+#: ../system-config-printer.py:3052
 msgid "copying printer"
 msgstr "正在複製印表機"
 
-#: ../system-config-printer.py:3111
+#: ../system-config-printer.py:3116
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "您真的要刪除 '%s' 這個類別嗎？"
 
-#: ../system-config-printer.py:3113
+#: ../system-config-printer.py:3118
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "您真的要刪除 '%s' 這個印表機嗎？"
 
-#: ../system-config-printer.py:3115
+#: ../system-config-printer.py:3120
 msgid "Really delete selected destinations?"
 msgstr "您真的要刪除您所選取的目的地嗎？"
 
-#: ../system-config-printer.py:3136
+#: ../system-config-printer.py:3141
 #, python-format
 msgid "deleting printer %s"
 msgstr "正在刪除印表機 %s"
 
-#: ../system-config-printer.py:3222
+#: ../system-config-printer.py:3227
 msgid "Publish Shared Printers"
 msgstr "公佈共享的印表機"
 
-#: ../system-config-printer.py:3223
+#: ../system-config-printer.py:3228
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -1081,86 +1115,86 @@ msgstr ""
 "除非 'Publish shared printers'（公佈共享的印表機）選項有在伺服器設定中啟用，"
 "否則其他人將無法使用共享的印表機。"
 
-#: ../system-config-printer.py:3416
+#: ../system-config-printer.py:3418
 msgid "modifying server settings"
 msgstr "修改伺服器設定"
 
-#: ../system-config-printer.py:3444
+#: ../system-config-printer.py:3445
 msgid "Review Firewall"
 msgstr "檢視防火牆"
 
-#: ../system-config-printer.py:3445
+#: ../system-config-printer.py:3446
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
 msgstr "您可能需要調整防火牆才能允許網路列印至這台電腦。"
 
-#: ../system-config-printer.py:3792
+#: ../system-config-printer.py:3793
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "無法瀏覽（pysmbc 未安裝）"
 
 #. SMB list columns
-#: ../system-config-printer.py:3798
+#: ../system-config-printer.py:3799
 msgid "Share"
 msgstr "共享"
 
-#: ../system-config-printer.py:3804
+#: ../system-config-printer.py:3805
 msgid "Comment"
 msgstr "註解"
 
-#: ../system-config-printer.py:3819
+#: ../system-config-printer.py:3820
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
 msgstr ""
 "PostScript 印表機的描述檔案（*.ppd、*.PPD、*.ppd.gz、*.PPD.gz、*.PPD.GZ）"
 
-#: ../system-config-printer.py:3828
+#: ../system-config-printer.py:3829
 msgid "All files (*)"
 msgstr "所有檔案（*）"
 
-#: ../system-config-printer.py:3891 ../system-config-printer.py:6222
-#: ../system-config-printer.py:6260 ../applet.py:130
+#: ../system-config-printer.py:3892 ../system-config-printer.py:6242
+#: ../system-config-printer.py:6280 ../applet.py:130
 msgid "Search"
 msgstr "搜尋"
 
-#: ../system-config-printer.py:3915 ../system-config-printer.py:3937
+#: ../system-config-printer.py:3916 ../system-config-printer.py:3938
 #: ../glade/NewPrinterWindow.glade.h:72
 msgid "New Printer"
 msgstr "新印表機"
 
-#: ../system-config-printer.py:3924
+#: ../system-config-printer.py:3925
 msgid "New Class"
 msgstr "新類別"
 
-#: ../system-config-printer.py:3929
+#: ../system-config-printer.py:3930
 msgid "Change Device URI"
 msgstr "更改裝置 URI"
 
-#: ../system-config-printer.py:3935
+#: ../system-config-printer.py:3936
 msgid "Change Driver"
 msgstr "更改驅動程式"
 
-#: ../system-config-printer.py:4114 ../system-config-printer.py:4194
-#: ../system-config-printer.py:4569 ../system-config-printer.py:6057
-#: ../system-config-printer.py:6247
+#: ../system-config-printer.py:4115 ../system-config-printer.py:4195
+#: ../system-config-printer.py:4570 ../system-config-printer.py:6077
+#: ../system-config-printer.py:6267
 msgid "Searching"
 msgstr "正在搜尋"
 
-#: ../system-config-printer.py:4115
+#: ../system-config-printer.py:4116
 msgid "Searching for downloadable drivers"
 msgstr "正在搜尋可下載的驅動程式"
 
-#: ../system-config-printer.py:4195 ../system-config-printer.py:4570
+#: ../system-config-printer.py:4196 ../system-config-printer.py:4571
 msgid "Searching for drivers"
 msgstr "正在搜尋驅動程式"
 
 #. Tell the user why he needs the plugin
-#: ../system-config-printer.py:4944
+#: ../system-config-printer.py:4964
 msgid "For this printer a proprietary driver plugin from HP is available.\n"
 msgstr "此印表機的專屬驅動程式插件可由 HP 取得。\n"
 
-#: ../system-config-printer.py:4947
+#: ../system-config-printer.py:4967
 msgid ""
 "The installation of the plugin is required for your printer to work.\n"
 "\n"
@@ -1168,7 +1202,7 @@ msgstr ""
 "您必須要安裝插件才可使您的印表機正常運作。\n"
 "\n"
 
-#: ../system-config-printer.py:4950
+#: ../system-config-printer.py:4970
 msgid ""
 "Installing the plugin is optional, it completes or enhances the "
 "functionality\n"
@@ -1179,110 +1213,110 @@ msgstr ""
 "在沒有安裝插件的情況下，至少基本作業工作還是能夠進行。\n"
 "\n"
 
-#: ../system-config-printer.py:4954
+#: ../system-config-printer.py:4974
 msgid "The plugin provides the following features:\n"
 msgstr "插件提供了下列功能：\n"
 
-#: ../system-config-printer.py:4957
+#: ../system-config-printer.py:4977
 msgid " - Printing support\n"
 msgstr " - 列印支援\n"
 
-#: ../system-config-printer.py:4960
+#: ../system-config-printer.py:4980
 msgid " - Faster printing\n"
 msgstr " - 更快的列印速度\n"
 
-#: ../system-config-printer.py:4963
+#: ../system-config-printer.py:4983
 msgid " - Better printout quality\n"
 msgstr " - 更佳的列印輸出品質\n"
 
-#: ../system-config-printer.py:4966
+#: ../system-config-printer.py:4986
 msgid " - Extra printing features\n"
 msgstr " - 額外的列印功能\n"
 
-#: ../system-config-printer.py:4969
+#: ../system-config-printer.py:4989
 msgid " - Scanning support\n"
 msgstr " - 掃描支援\n"
 
-#: ../system-config-printer.py:4972
+#: ../system-config-printer.py:4992
 msgid " - Faster scanning\n"
 msgstr " - 更快的掃描速度\n"
 
-#: ../system-config-printer.py:4975
+#: ../system-config-printer.py:4995
 msgid " - Better scanning image quality\n"
 msgstr " - 更佳的掃描圖像品質\n"
 
-#: ../system-config-printer.py:4978
+#: ../system-config-printer.py:4998
 msgid " - Faxing support\n"
 msgstr " - 傳真支援\n"
 
-#: ../system-config-printer.py:4981
+#: ../system-config-printer.py:5001
 msgid " - Extra fax features\n"
 msgstr " - 額外傳真功能\n"
 
-#: ../system-config-printer.py:4984
+#: ../system-config-printer.py:5004
 msgid " - Better Input/Output support\n"
 msgstr " - 更佳的輸入/輸出支援\n"
 
-#: ../system-config-printer.py:4987
+#: ../system-config-printer.py:5007
 msgid " - Extra user interface features\n"
 msgstr " - 額外用戶介面功能\n"
 
-#: ../system-config-printer.py:4990
+#: ../system-config-printer.py:5010
 msgid " - Other extra features\n"
 msgstr " - 其它額外功能\n"
 
-#: ../system-config-printer.py:4995
+#: ../system-config-printer.py:5015
 msgid "Install plugin"
 msgstr "安裝插件"
 
-#: ../system-config-printer.py:4996
+#: ../system-config-printer.py:5016
 msgid "Do not set up printer"
 msgstr "不設定印表機"
 
-#: ../system-config-printer.py:4997
+#: ../system-config-printer.py:5017
 msgid "Set up without plugin"
 msgstr "設定並且不使用插件"
 
-#: ../system-config-printer.py:4999 ../troubleshoot/PrintTestPage.py:118
+#: ../system-config-printer.py:5019 ../troubleshoot/PrintTestPage.py:119
 msgid "Yes"
 msgstr "是"
 
-#: ../system-config-printer.py:5000 ../troubleshoot/PrintTestPage.py:119
+#: ../system-config-printer.py:5020 ../troubleshoot/PrintTestPage.py:120
 msgid "No"
 msgstr "否"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:5161
+#: ../system-config-printer.py:5181
 msgid "Other"
 msgstr "其它"
 
-#: ../system-config-printer.py:5165
+#: ../system-config-printer.py:5185
 msgid "Network Printer"
 msgstr "網路印表機"
 
-#: ../system-config-printer.py:5169
+#: ../system-config-printer.py:5189
 msgid "Find Network Printer"
 msgstr "尋找網路印表機"
 
-#: ../system-config-printer.py:5184
+#: ../system-config-printer.py:5204
 msgid "fetching device list"
 msgstr "正在取得裝置清單"
 
-#: ../system-config-printer.py:5270 ../system-config-printer.py:6482
+#: ../system-config-printer.py:5290 ../system-config-printer.py:6503
 msgid " (Current)"
 msgstr "（目前）"
 
-#: ../system-config-printer.py:5342
+#: ../system-config-printer.py:5362
 msgid "Scanning..."
 msgstr "正在掃描..."
 
-#: ../system-config-printer.py:5397
+#: ../system-config-printer.py:5417
 msgid "No Print Shares"
 msgstr "無列印共享"
 
-#: ../system-config-printer.py:5398
+#: ../system-config-printer.py:5418
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1290,140 +1324,132 @@ msgstr ""
 "沒有找到任何列印共享。請檢查 Samba 服務在您的防火牆配置中已被標記為信任的服"
 "務。"
 
-#: ../system-config-printer.py:5659 ../system-config-printer.py:5736
+#: ../system-config-printer.py:5679 ../system-config-printer.py:5756
 msgid "Print Share Verified"
 msgstr "列印共享資源驗證"
 
-#: ../system-config-printer.py:5660 ../system-config-printer.py:5737
+#: ../system-config-printer.py:5680 ../system-config-printer.py:5757
 msgid "This print share is accessible."
 msgstr "此列印共享資源可被存取。"
 
-#: ../system-config-printer.py:5665 ../system-config-printer.py:5741
+#: ../system-config-printer.py:5685 ../system-config-printer.py:5761
 msgid "This print share is not accessible."
 msgstr "此列印共享資源不可被存取。"
 
-#: ../system-config-printer.py:5668
+#: ../system-config-printer.py:5688
 msgid "Print Share Inaccessible"
 msgstr "列印共享資源不可被存取"
 
-#: ../system-config-printer.py:5714
+#: ../system-config-printer.py:5734
 msgid "Verifying"
 msgstr "驗證中"
 
-#: ../system-config-printer.py:5715
+#: ../system-config-printer.py:5735
 msgid "Verifying printer"
 msgstr "正在驗證印表機"
 
-#: ../system-config-printer.py:5740
+#: ../system-config-printer.py:5760
 msgid "Inaccessible"
 msgstr "不可存取"
 
-#: ../system-config-printer.py:5795
+#: ../system-config-printer.py:5815
 msgid "Parallel Port"
 msgstr "並行連接埠"
 
-#: ../system-config-printer.py:5797
+#: ../system-config-printer.py:5817
 msgid "Serial Port"
 msgstr "序列連接埠"
 
-#: ../system-config-printer.py:5799
+#: ../system-config-printer.py:5819
 msgid "USB"
 msgstr "USB"
 
-#: ../system-config-printer.py:5801 ../system-config-printer.py:5804
+#: ../system-config-printer.py:5821 ../system-config-printer.py:5824
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing（HPLIP）"
 
-#: ../system-config-printer.py:5806
+#: ../system-config-printer.py:5826
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "硬體箤取層（Hardware Abstraction Layer，HAL）"
 
-#: ../system-config-printer.py:5808
-msgid "AppSocket/HP JetDirect"
-msgstr "AppSocket/HP JetDirect"
-
-#: ../system-config-printer.py:5817
+#: ../system-config-printer.py:5837
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "LPD/LPR 佇列 '%s'"
 
-#: ../system-config-printer.py:5819
+#: ../system-config-printer.py:5839
 msgid "LPD/LPR queue"
 msgstr "LPD/LPR 佇列"
 
-#: ../system-config-printer.py:5822
-msgid "Windows Printer via SAMBA"
-msgstr "透過 SAMBA 連接的 Windows 印表機"
-
-#: ../system-config-printer.py:5824 ../glade/NewPrinterWindow.glade.h:64
+#: ../system-config-printer.py:5844 ../glade/NewPrinterWindow.glade.h:64
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.py:5826
+#: ../system-config-printer.py:5846
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../system-config-printer.py:5913
+#: ../system-config-printer.py:5933
 msgid "A printer connected to the parallel port."
 msgstr "連接至並行連接埠的印表機。"
 
-#: ../system-config-printer.py:5915
+#: ../system-config-printer.py:5935
 msgid "A printer connected to a USB port."
 msgstr "連接至 USB 連接埠的印表機。"
 
-#: ../system-config-printer.py:5917
+#: ../system-config-printer.py:5937
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
 msgstr "HPLIP 軟體驅動印表機，或多功能裝置的印表機功能。"
 
-#: ../system-config-printer.py:5920
+#: ../system-config-printer.py:5940
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
 msgstr "HPLIP 軟體驅動傳真機，或多功能裝置的傳真機功能。"
 
-#: ../system-config-printer.py:5923
+#: ../system-config-printer.py:5943
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "由硬體箤取層（Hardware Abstraction Layer，HAL）偵測到的本機印表機。"
 
-#: ../system-config-printer.py:6058
+#: ../system-config-printer.py:6078
 msgid "Searching for printers"
 msgstr "正在搜尋印表機"
 
-#: ../system-config-printer.py:6135
+#: ../system-config-printer.py:6155
 msgid "No printer was found at that address."
 msgstr "該位址上未發現印表機。"
 
-#: ../system-config-printer.py:6272
+#: ../system-config-printer.py:6292
 msgid "-- Select from search results --"
 msgstr "-- 從搜尋結果中選擇 --"
 
-#: ../system-config-printer.py:6274
+#: ../system-config-printer.py:6294
 msgid "-- No matches found --"
 msgstr "-- 沒有發現符合的型號 --"
 
-#: ../system-config-printer.py:6487
+#: ../system-config-printer.py:6508
 msgid " (recommended)"
 msgstr "（建議）"
 
-#: ../system-config-printer.py:6512
+#: ../system-config-printer.py:6533
 msgid "This PPD is generated by foomatic."
 msgstr "此 PPD 是由 foomatic 所產生的。"
 
-#: ../system-config-printer.py:6537
+#: ../system-config-printer.py:6558
 msgid "OpenPrinting"
 msgstr "OpenPrinting（開放式列印）"
 
-#: ../system-config-printer.py:6548
+#: ../system-config-printer.py:6569
 msgid "Distributable"
 msgstr "可發佈"
 
-#: ../system-config-printer.py:6589
+#: ../system-config-printer.py:6610
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:6594
+#: ../system-config-printer.py:6615
 #, python-format
 msgid ""
 "\n"
@@ -1432,20 +1458,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:6599
+#: ../system-config-printer.py:6620
 msgid "No support contacts known"
 msgstr "沒有已知的支援服務"
 
-#: ../system-config-printer.py:6603 ../system-config-printer.py:6616
+#: ../system-config-printer.py:6624 ../system-config-printer.py:6637
 msgid "Not specified."
 msgstr "未指定。"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6656
+#: ../system-config-printer.py:6677
 msgid "Database error"
 msgstr "資料庫錯誤"
 
-#: ../system-config-printer.py:6657
+#: ../system-config-printer.py:6678
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' 驅動程式無法用於印表機 '%s %s'。"
@@ -1453,62 +1479,62 @@ msgstr "'%s' 驅動程式無法用於印表機 '%s %s'。"
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6667
+#: ../system-config-printer.py:6688
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "若要使用此驅動程式，您需要安裝 '%s' 套件。"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6674
+#: ../system-config-printer.py:6695
 msgid "PPD error"
 msgstr "PPD 錯誤"
 
-#: ../system-config-printer.py:6676
+#: ../system-config-printer.py:6697
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "讀取 PPD 檔案失敗。可能原因有："
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6693
+#: ../system-config-printer.py:6715
 msgid "Downloadable drivers"
 msgstr "可下載的驅動程式"
 
-#: ../system-config-printer.py:6694
+#: ../system-config-printer.py:6716
 msgid "Failed to download PPD."
 msgstr "無法下載 PPD。"
 
-#: ../system-config-printer.py:6701
+#: ../system-config-printer.py:6723
 msgid "fetching PPD"
 msgstr "正在取得 PPD"
 
-#: ../system-config-printer.py:6730 ../system-config-printer.py:6768
+#: ../system-config-printer.py:6752 ../system-config-printer.py:6790
 msgid "No Installable Options"
 msgstr "沒有可安裝的選項"
 
-#: ../system-config-printer.py:6825
+#: ../system-config-printer.py:6851
 #, python-format
 msgid "adding printer %s"
 msgstr "新增印表機 %s"
 
-#: ../system-config-printer.py:7006
+#: ../system-config-printer.py:7032
 msgid "Would you like to print a test page?"
 msgstr "您是否希望列印一份測試頁？"
 
-#: ../system-config-printer.py:7067
+#: ../system-config-printer.py:7093
 msgid "Install driver"
 msgstr "安裝驅動程式"
 
-#: ../system-config-printer.py:7068 ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:7094 ../troubleshoot/CheckPPDSanity.py:133
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "印表機 '%s' 需要 %s 套件，但此套件尚未被安裝。在使用本印表機前，請安裝此套"
 "件。"
 
-#: ../system-config-printer.py:7084
+#: ../system-config-printer.py:7110
 msgid "Missing driver"
 msgstr "找不到驅動程式"
 
-#: ../system-config-printer.py:7085
+#: ../system-config-printer.py:7111
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2386,7 +2412,7 @@ msgstr "列印自行測試頁"
 
 #. Not more than 25 characters
 #: ../glade/PrinterPropertiesDialog.glade.h:110
-#: ../troubleshoot/PrintTestPage.py:72
+#: ../troubleshoot/PrintTestPage.py:73
 msgid "Print Test Page"
 msgstr "列印測試頁"
 
@@ -2731,7 +2757,7 @@ msgstr "過濾器(_F)："
 msgid "Printing troubleshooter"
 msgstr "列印疑難排解程式"
 
-#: ../troubleshoot/base.py:33
+#: ../troubleshoot/base.py:35
 msgid ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
@@ -2757,15 +2783,15 @@ msgstr ""
 "使用列印管理工具來啟用伺服器設定中的 'Publish shared printers connected to "
 "this system'（公佈連至此系統的共享印表機）選項。"
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:187
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:187
 msgid "Install"
 msgstr "安裝"
 
-#: ../troubleshoot/CheckPPDSanity.py:96
+#: ../troubleshoot/CheckPPDSanity.py:97
 msgid "Invalid PPD File"
 msgstr "無效的 PPD 檔案"
 
-#: ../troubleshoot/CheckPPDSanity.py:106
+#: ../troubleshoot/CheckPPDSanity.py:108
 #, python-format
 msgid ""
 "The PPD file for printer '%s' does not conform to the specification.  "
@@ -2773,16 +2799,16 @@ msgid ""
 msgstr "印表機 '%s' 的 PPD 檔案與規格不符，可能原因如下："
 
 #. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:112
+#: ../troubleshoot/CheckPPDSanity.py:114
 #, python-format
 msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "印表機 '%s' 的 PPD 檔案發生了問題。"
 
-#: ../troubleshoot/CheckPPDSanity.py:122
+#: ../troubleshoot/CheckPPDSanity.py:124
 msgid "Missing Printer Driver"
 msgstr "找不到印表機驅動程式"
 
-#: ../troubleshoot/CheckPPDSanity.py:136
+#: ../troubleshoot/CheckPPDSanity.py:138
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed."
@@ -2927,11 +2953,11 @@ msgstr "錯誤列在下方："
 msgid "Warnings are listed below:"
 msgstr "警告列在下方："
 
-#: ../troubleshoot/PrintTestPage.py:62
+#: ../troubleshoot/PrintTestPage.py:63
 msgid "Test Page"
 msgstr "測試頁"
 
-#: ../troubleshoot/PrintTestPage.py:63
+#: ../troubleshoot/PrintTestPage.py:64
 msgid ""
 "Now print a test page.  If you are having problems printing a specific "
 "document, print that document now and mark the print job below."
@@ -2939,24 +2965,24 @@ msgstr ""
 "現在列印一份測試頁。若您沒辦法列印一份特定文件的話，請現在列印這份文件並在下"
 "方標記此列印工作。"
 
-#: ../troubleshoot/PrintTestPage.py:75
+#: ../troubleshoot/PrintTestPage.py:76
 msgid "Cancel All Jobs"
 msgstr "取消所有工作"
 
-#: ../troubleshoot/PrintTestPage.py:81
+#: ../troubleshoot/PrintTestPage.py:82
 msgid "Test"
 msgstr "測試"
 
-#: ../troubleshoot/PrintTestPage.py:111
+#: ../troubleshoot/PrintTestPage.py:112
 msgid "Did the marked print jobs print correctly?"
 msgstr "標記的列印工作是否有正確列印出？"
 
-#: ../troubleshoot/PrintTestPage.py:143
+#: ../troubleshoot/PrintTestPage.py:144
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
 msgstr "請記得先將類型 '%s' 的紙張放入印表機。"
 
-#: ../troubleshoot/PrintTestPage.py:416
+#: ../troubleshoot/PrintTestPage.py:417
 msgid "Error submitting test page"
 msgstr "提交測試頁時發生了錯誤"
 

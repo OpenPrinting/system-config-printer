@@ -18,7 +18,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2010-03-10 09:35+0000\n"
+"POT-Creation-Date: 2010-05-14 17:11+0100\n"
 "PO-Revision-Date: 2010-04-01 11:02+0900\n"
 "Last-Translator: Hajime Taira <htaira@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
@@ -28,107 +28,94 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../AdvancedServerSettings.py:42
+#: ../AdvancedServerSettings.py:44
 msgid "Advanced Server Settings"
 msgstr "高度なサーバー設定"
 
-#: ../AdvancedServerSettings.py:59
+#: ../AdvancedServerSettings.py:61
 msgid "Job History"
 msgstr "ジョブ履歴"
 
-#: ../AdvancedServerSettings.py:70
+#: ../AdvancedServerSettings.py:72
 msgid "Do not preserve job history"
 msgstr "ジョブ経歴を保存しない"
 
-#: ../AdvancedServerSettings.py:72
+#: ../AdvancedServerSettings.py:74
 msgid "Preserve job history but not files"
 msgstr "ジョブ経歴は保存し、ファイルは保存しない"
 
-#: ../AdvancedServerSettings.py:75
+#: ../AdvancedServerSettings.py:77
 msgid "Preserve job files (allow reprinting)"
 msgstr "ジョブファイルを保存する（再印刷を許可）"
 
-#: ../AdvancedServerSettings.py:83
+#: ../AdvancedServerSettings.py:85
 msgid "Browse Servers"
 msgstr "サーバーを閲覧"
 
-#: ../AdvancedServerSettings.py:94
-msgid "Usually print servers broadcast their queues.  Specify print servers below to periodically ask for queues instead."
-msgstr "通常、印刷サーバーはそのキューを通知します。定期的に印刷キューを依頼するようにするには印刷サーバーを指定します。 "
+#: ../AdvancedServerSettings.py:96
+msgid ""
+"Usually print servers broadcast their queues.  Specify print servers below "
+"to periodically ask for queues instead."
+msgstr ""
+"通常、印刷サーバーはそのキューを通知します。定期的に印刷キューを依頼するよう"
+"にするには印刷サーバーを指定します。 "
 
-#: ../AdvancedServerSettings.py:215
+#: ../AdvancedServerSettings.py:217
 msgid "Enter IP address"
 msgstr "IP アドレスを入力"
 
-#: ../asyncipp.py:420
-#: ../authconn.py:403
-#: ../authconn.py:405
-#: ../errordialogs.py:65
-#: ../pysmb.py:75
-#: ../pysmb.py:77
+#: ../asyncipp.py:423 ../authconn.py:402 ../authconn.py:404
+#: ../errordialogs.py:65 ../pysmb.py:75 ../pysmb.py:77
 msgid "Not authorized"
 msgstr "認証されていません"
 
-#: ../asyncipp.py:421
-#: ../authconn.py:406
-#: ../pysmb.py:78
+#: ../asyncipp.py:424 ../authconn.py:405 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "パスワードが間違っている可能性があります。"
 
-#: ../asyncipp.py:432
-#: ../authconn.py:427
+#: ../asyncipp.py:435 ../authconn.py:426
 #, python-format
 msgid "Authentication (%s)"
 msgstr "認証 (%s)"
 
-#: ../asyncipp.py:497
-#: ../authconn.py:260
-#: ../errordialogs.py:56
+#: ../asyncipp.py:500 ../authconn.py:259 ../errordialogs.py:56
 #: ../errordialogs.py:70
 msgid "CUPS server error"
 msgstr "CUPS サーバーエラー"
 
-#: ../asyncipp.py:499
-#: ../authconn.py:258
+#: ../asyncipp.py:502 ../authconn.py:257
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "CUPS サーバーエラー(%s)"
 
-#: ../asyncipp.py:516
-#: ../authconn.py:269
-#: ../errordialogs.py:57
-#: ../troubleshoot/PrintTestPage.py:417
+#: ../asyncipp.py:519 ../authconn.py:268 ../errordialogs.py:57
+#: ../troubleshoot/PrintTestPage.py:418
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "CUPS 操作中にエラーが発生しました:  '%s'."
 
-#: ../asyncipp.py:519
-#: ../authconn.py:272
+#: ../asyncipp.py:522 ../authconn.py:271
 msgid "Retry"
 msgstr "再試行"
 
-#: ../asyncipp.py:530
-#: ../authconn.py:219
-#: ../authconn.py:241
+#: ../asyncipp.py:534 ../authconn.py:219 ../authconn.py:241
 msgid "Operation canceled"
 msgstr "取消された操作"
 
-#: ../authconn.py:37
-#: ../glade/NewPrinterWindow.glade.h:106
+#: ../authconn.py:37 ../pysmb.py:108 ../glade/NewPrinterWindow.glade.h:106
 msgid "Username:"
 msgstr "ユーザー名:"
 
-#: ../authconn.py:38
-#: ../glade/NewPrinterWindow.glade.h:75
+#: ../authconn.py:38 ../pysmb.py:114 ../glade/NewPrinterWindow.glade.h:75
 msgid "Password:"
 msgstr "パスワード:"
 
-#: ../authconn.py:39
+#: ../authconn.py:39 ../pysmb.py:111
 msgid "Domain:"
 msgstr "ドメイン:"
 
-#: ../authconn.py:48
-#: ../authconn.py:429
+#. After that, prompt
+#: ../authconn.py:48 ../authconn.py:428 ../pysmb.py:83
 msgid "Authentication"
 msgstr "認証"
 
@@ -137,8 +124,12 @@ msgid "Remember password"
 msgstr "パスワードを記憶"
 
 #: ../errordialogs.py:66
-msgid "The password may be incorrect, or the server may be configured to deny remote administration."
-msgstr "パスワードが間違っているか、印刷サーバーがリモート管理を拒否するよう設定されている可能性があります。"
+msgid ""
+"The password may be incorrect, or the server may be configured to deny "
+"remote administration."
+msgstr ""
+"パスワードが間違っているか、印刷サーバーがリモート管理を拒否するよう設定され"
+"ている可能性があります。"
 
 #: ../errordialogs.py:72
 msgid "Bad request"
@@ -160,8 +151,7 @@ msgstr "アップグレードが必要です"
 msgid "Server error"
 msgstr "サーバーエラーです"
 
-#: ../errordialogs.py:82
-#: ../system-config-printer.py:1217
+#: ../errordialogs.py:82 ../system-config-printer.py:1222
 msgid "Not connected"
 msgstr "未接続"
 
@@ -183,8 +173,7 @@ msgstr "新規グループ (_N)"
 msgid "_New Group from Selection"
 msgstr "選択肢からの新規グループ (_N)"
 
-#: ../GroupsPane.py:98
-#: ../system-config-printer.py:409
+#: ../GroupsPane.py:98 ../system-config-printer.py:411
 msgid "_Rename"
 msgstr "名前を変更 (_R)"
 
@@ -203,8 +192,13 @@ msgid "Are you sure you want to permanently delete \"%s\"?"
 msgstr "\"%s\" を本当に削除しますか？"
 
 #: ../GroupsPane.py:296
-msgid "This will not delete any printer queues from your computer. To delete queues completely, you must delete them from the 'All Printers' group."
-msgstr "この操作は使用コンピュータからキューを削除するものではありません。キューを 完全に削除するには、「全てのプリンター」（All Printers）グループからキューを 削除する必要があります。 "
+msgid ""
+"This will not delete any printer queues from your computer. To delete queues "
+"completely, you must delete them from the 'All Printers' group."
+msgstr ""
+"この操作は使用コンピュータからキューを削除するものではありません。キューを 完"
+"全に削除するには、「全てのプリンター」（All Printers）グループからキューを 削"
+"除する必要があります。 "
 
 #: ../GroupsPane.py:318
 msgid "New Group"
@@ -218,292 +212,266 @@ msgstr "すべてのプリンター"
 msgid "Favorites"
 msgstr "お気に入り"
 
-#: ../jobviewer.py:167
+#: ../jobviewer.py:169
 msgid "_Hold"
 msgstr "保留 (_H)"
 
-#: ../jobviewer.py:169
+#: ../jobviewer.py:171
 msgid "_Release"
 msgstr "解放する (_R)"
 
-#: ../jobviewer.py:171
+#: ../jobviewer.py:173
 msgid "Re_print"
 msgstr "再印刷 (_p)"
 
-#: ../jobviewer.py:173
+#: ../jobviewer.py:175
 msgid "_Authenticate"
 msgstr "認証する (_A)"
 
-#: ../jobviewer.py:211
-#: ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:213 ../troubleshoot/PrintTestPage.py:83
 msgid "Job"
 msgstr "依頼"
 
-#: ../jobviewer.py:212
+#: ../jobviewer.py:214
 msgid "User"
 msgstr "ユーザー"
 
-#: ../jobviewer.py:213
-#: ../troubleshoot/PrintTestPage.py:86
+#: ../jobviewer.py:215 ../troubleshoot/PrintTestPage.py:87
 msgid "Document"
 msgstr "ドキュメント"
 
-#: ../jobviewer.py:214
-#: ../my-default-printer.py:153
-#: ../system-config-printer.py:381
-#: ../system-config-printer.py:1365
-#: ../troubleshoot/PrintTestPage.py:84
+#: ../jobviewer.py:216 ../my-default-printer.py:153
+#: ../system-config-printer.py:383 ../system-config-printer.py:1370
+#: ../troubleshoot/PrintTestPage.py:85
 msgid "Printer"
 msgstr "プリンター"
 
-#: ../jobviewer.py:215
+#: ../jobviewer.py:217
 msgid "Size"
 msgstr "大きさ"
 
-#: ../jobviewer.py:231
+#: ../jobviewer.py:233
 msgid "Time submitted"
 msgstr "送信時刻"
 
-#: ../jobviewer.py:235
-#: ../troubleshoot/PrintTestPage.py:87
+#: ../jobviewer.py:237 ../troubleshoot/PrintTestPage.py:88
 msgid "Status"
 msgstr "状態"
 
-#: ../jobviewer.py:267
+#: ../jobviewer.py:269
 #, python-format
 msgid "my jobs on %s"
 msgstr "%s 上の個人用ジョブ"
 
-#: ../jobviewer.py:269
+#: ../jobviewer.py:271
 msgid "my jobs"
 msgstr "個人用ジョブ"
 
-#: ../jobviewer.py:274
+#: ../jobviewer.py:276
 msgid "all jobs"
 msgstr "全てのジョブ"
 
-#: ../jobviewer.py:275
+#: ../jobviewer.py:277
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "ドキュメントの印刷状態 (%s)"
 
-#: ../jobviewer.py:430
-#: ../jobviewer.py:705
-#: ../jobviewer.py:1519
-#: ../jobviewer.py:1524
-#: ../jobviewer.py:1533
-#: ../jobviewer.py:1612
-#: ../system-config-printer.py:2644
-#: ../glade/NewPrinterWindow.glade.h:104
+#: ../jobviewer.py:429 ../jobviewer.py:706 ../jobviewer.py:1520
+#: ../jobviewer.py:1525 ../jobviewer.py:1534 ../jobviewer.py:1613
+#: ../system-config-printer.py:2649 ../glade/NewPrinterWindow.glade.h:104
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:103
 #: ../troubleshoot/ChooseNetworkPrinter.py:106
 #: ../troubleshoot/ChooseNetworkPrinter.py:107
-#: ../troubleshoot/ChoosePrinter.py:87
-#: ../troubleshoot/ChoosePrinter.py:88
-#: ../troubleshoot/ChoosePrinter.py:91
-#: ../troubleshoot/ChoosePrinter.py:92
-#: ../troubleshoot/DeviceListed.py:92
-#: ../troubleshoot/DeviceListed.py:93
+#: ../troubleshoot/ChoosePrinter.py:87 ../troubleshoot/ChoosePrinter.py:88
+#: ../troubleshoot/ChoosePrinter.py:91 ../troubleshoot/ChoosePrinter.py:92
+#: ../troubleshoot/DeviceListed.py:92 ../troubleshoot/DeviceListed.py:93
 msgid "Unknown"
 msgstr "不明"
 
-#: ../jobviewer.py:436
+#: ../jobviewer.py:435
 msgid "a minute ago"
 msgstr "1 分前"
 
-#: ../jobviewer.py:439
+#: ../jobviewer.py:438
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d 分前"
 
-#: ../jobviewer.py:443
+#: ../jobviewer.py:442
 msgid "an hour ago"
 msgstr "1 時間前"
 
-#: ../jobviewer.py:445
+#: ../jobviewer.py:444
 #, python-format
 msgid "%d hours ago"
 msgstr "%d 時間前"
 
-#: ../jobviewer.py:449
+#: ../jobviewer.py:448
 msgid "yesterday"
 msgstr "昨日"
 
-#: ../jobviewer.py:451
+#: ../jobviewer.py:450
 #, python-format
 msgid "%d days ago"
 msgstr "%d 日前"
 
-#: ../jobviewer.py:455
+#: ../jobviewer.py:454
 msgid "last week"
 msgstr "先週"
 
-#: ../jobviewer.py:457
+#: ../jobviewer.py:456
 #, python-format
 msgid "%d weeks ago"
 msgstr "%d 週間前"
 
-#: ../jobviewer.py:656
-#: ../jobviewer.py:735
+#: ../jobviewer.py:657 ../jobviewer.py:736
 msgid "authenticating job"
 msgstr "ジョブを認証中"
 
-#: ../jobviewer.py:703
+#: ../jobviewer.py:704
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "ドキュメント `%s' ジョブ %d) の印刷には認証が必要"
 
-#: ../jobviewer.py:877
+#: ../jobviewer.py:878
 msgid "Cancel Job"
 msgstr "ジョブを取消"
 
-#: ../jobviewer.py:891
+#: ../jobviewer.py:892
 msgid "Do you really want to cancel this job?"
 msgstr "このジョブを本当に取り消しますか？"
 
-#: ../jobviewer.py:919
+#: ../jobviewer.py:920
 msgid "canceling job"
 msgstr "ジョブを取消中"
 
-#: ../jobviewer.py:943
+#: ../jobviewer.py:944
 msgid "holding job"
 msgstr "ジョブを保留中"
 
-#: ../jobviewer.py:967
+#: ../jobviewer.py:968
 msgid "releasing job"
 msgstr "ジョブを開放中"
 
-#: ../jobviewer.py:1088
+#: ../jobviewer.py:1089
 msgid "No documents queued"
 msgstr "印刷待ちのドキュメントはありません"
 
-#: ../jobviewer.py:1090
+#: ../jobviewer.py:1091
 msgid "1 document queued"
 msgstr "1 個のドキュメントが印刷待ちです"
 
-#: ../jobviewer.py:1092
+#: ../jobviewer.py:1093
 #, python-format
 msgid "%d documents queued"
 msgstr "%d 個のドキュメントが印刷待ちです"
 
-#: ../jobviewer.py:1315
+#: ../jobviewer.py:1316
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "ドキュメント %s' (ジョブ %d) のプリンターへの送信に問題がありました。"
 
-#: ../jobviewer.py:1318
+#: ../jobviewer.py:1319
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "ドキュメント `%s' (ジョブ %d) のプロセス中に問題がありました。"
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1325
+#: ../jobviewer.py:1326
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "ドキュメント `%s' (ジョブ %d) の印刷中に問題がありました: `%s'"
 
-#: ../jobviewer.py:1332
-#: ../jobviewer.py:1348
+#: ../jobviewer.py:1333 ../jobviewer.py:1349
 msgid "Print Error"
 msgstr "印刷エラー"
 
-#: ../jobviewer.py:1333
+#: ../jobviewer.py:1334
 msgid "_Diagnose"
 msgstr "診断 (_D)"
 
-#: ../jobviewer.py:1354
+#: ../jobviewer.py:1355
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "`%s' と言う名前のプリンターは無効になっています。"
 
-#: ../jobviewer.py:1547
+#: ../jobviewer.py:1548
 msgid "Held for authentication"
 msgstr "認証のため保留"
 
-#: ../jobviewer.py:1549
-#: ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:1550 ../troubleshoot/PrintTestPage.py:43
 msgid "Held"
 msgstr "ヘルプ"
 
-#: ../jobviewer.py:1585
+#: ../jobviewer.py:1586
 #, python-format
 msgid "Held until %s"
 msgstr "%s まで保留"
 
-#: ../jobviewer.py:1589
+#: ../jobviewer.py:1590
 msgid "Held until day-time"
 msgstr "期日-時刻まで保留"
 
-#: ../jobviewer.py:1591
+#: ../jobviewer.py:1592
 msgid "Held until evening"
 msgstr "夕方まで保留"
 
-#: ../jobviewer.py:1593
+#: ../jobviewer.py:1594
 msgid "Held until night-time"
 msgstr "夜まで保留"
 
-#: ../jobviewer.py:1595
+#: ../jobviewer.py:1596
 msgid "Held until second shift"
 msgstr "第二シフトまで保留"
 
-#: ../jobviewer.py:1597
+#: ../jobviewer.py:1598
 msgid "Held until third shift"
 msgstr "第三シフトまで保留"
 
-#: ../jobviewer.py:1599
+#: ../jobviewer.py:1600
 msgid "Held until weekend"
 msgstr "週末まで保留"
 
-#: ../jobviewer.py:1602
-#: ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:1603 ../troubleshoot/PrintTestPage.py:42
 msgid "Pending"
 msgstr "保留中"
 
-#: ../jobviewer.py:1603
-#: ../system-config-printer.py:199
-#: ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:1604 ../system-config-printer.py:200
+#: ../troubleshoot/PrintTestPage.py:44
 msgid "Processing"
 msgstr "処理中"
 
-#: ../jobviewer.py:1604
-#: ../system-config-printer.py:201
-#: ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:1605 ../system-config-printer.py:202
+#: ../troubleshoot/PrintTestPage.py:45
 msgid "Stopped"
 msgstr "停止"
 
-#: ../jobviewer.py:1605
-#: ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:1606 ../troubleshoot/PrintTestPage.py:46
 msgid "Canceled"
 msgstr "取り消されました"
 
-#: ../jobviewer.py:1606
-#: ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:1607 ../troubleshoot/PrintTestPage.py:47
 msgid "Aborted"
 msgstr "異常終了しました"
 
-#: ../jobviewer.py:1607
-#: ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:1608 ../troubleshoot/PrintTestPage.py:48
 msgid "Completed"
 msgstr "完了しました"
 
-#: ../my-default-printer.py:137
-#: ../my-default-printer.desktop.in.h:1
+#: ../my-default-printer.py:137 ../my-default-printer.desktop.in.h:1
 msgid "Default Printer"
 msgstr "デフォルトのプリンター"
 
-#: ../my-default-printer.py:141
-#: ../my-default-printer.py:177
+#: ../my-default-printer.py:141 ../my-default-printer.py:177
 msgid "_Use System Default"
 msgstr "システムのデフォルトを使用"
 
-#: ../my-default-printer.py:142
-#: ../my-default-printer.py:179
+#: ../my-default-printer.py:142 ../my-default-printer.py:179
 msgid "_Set Default"
 msgstr "デフォルトに設定"
 
-#: ../my-default-printer.py:158
-#: ../system-config-printer.py:439
+#: ../my-default-printer.py:158 ../system-config-printer.py:441
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
@@ -513,399 +481,427 @@ msgstr "場所"
 msgid "Conflicts with:"
 msgstr "以下と競合: "
 
-#: ../ppdippstr.py:45
+#: ../ppdippstr.py:47
 msgid "Abort job"
 msgstr "ジョブの中止"
 
-#: ../ppdippstr.py:46
+#: ../ppdippstr.py:48
 msgid "Retry current job"
 msgstr "現在のジョブを再試行"
 
-#: ../ppdippstr.py:47
+#: ../ppdippstr.py:49
 msgid "Retry job"
 msgstr "ジョブを再試行"
 
-#: ../ppdippstr.py:48
+#: ../ppdippstr.py:50
 msgid "Stop printer"
 msgstr "プリンターを停止"
 
-#: ../ppdippstr.py:54
+#: ../ppdippstr.py:56
 msgid "Default behavior"
 msgstr "デフォルト動作"
 
-#: ../ppdippstr.py:55
+#: ../ppdippstr.py:57
 msgid "Authenticated"
 msgstr "認証済"
 
-#: ../ppdippstr.py:61
-#: ../system-config-printer.py:6555
+#: ../ppdippstr.py:63 ../system-config-printer.py:6576
 msgid "None"
 msgstr "なし"
 
-#: ../ppdippstr.py:62
+#: ../ppdippstr.py:64
 msgid "Classified"
 msgstr "クラス分類"
 
-#: ../ppdippstr.py:63
+#: ../ppdippstr.py:65
 msgid "Confidential"
 msgstr "内密"
 
-#: ../ppdippstr.py:64
+#: ../ppdippstr.py:66
 msgid "Secret"
 msgstr "秘密"
 
-#: ../ppdippstr.py:65
+#: ../ppdippstr.py:67
 msgid "Standard"
 msgstr "通常"
 
-#: ../ppdippstr.py:66
+#: ../ppdippstr.py:68
 msgid "Top secret"
 msgstr "最上位秘密"
 
-#: ../ppdippstr.py:67
+#: ../ppdippstr.py:69
 msgid "Unclassified"
 msgstr "分類なし"
 
-#: ../ppdippstr.py:73
+#: ../ppdippstr.py:75
 msgid "No hold"
 msgstr "ホールドなし"
 
-#: ../ppdippstr.py:74
+#: ../ppdippstr.py:76
 msgid "Indefinite"
 msgstr "定義なし"
 
-#: ../ppdippstr.py:75
+#: ../ppdippstr.py:77
 msgid "Daytime"
 msgstr "日中"
 
-#: ../ppdippstr.py:76
+#: ../ppdippstr.py:78
 msgid "Evening"
 msgstr "夕方"
 
-#: ../ppdippstr.py:77
+#: ../ppdippstr.py:79
 msgid "Night"
 msgstr "夜"
 
-#: ../ppdippstr.py:78
+#: ../ppdippstr.py:80
 msgid "Second shift"
 msgstr "第二シフト"
 
-#: ../ppdippstr.py:79
+#: ../ppdippstr.py:81
 msgid "Third shift"
 msgstr "第三シフト"
 
-#: ../ppdippstr.py:80
+#: ../ppdippstr.py:82
 msgid "Weekend"
 msgstr "週末"
 
-#: ../ppdippstr.py:90
+#: ../ppdippstr.py:92
 msgid "General"
 msgstr "全般"
 
 #. HPIJS options
-#: ../ppdippstr.py:93
+#: ../ppdippstr.py:95
 msgid "Printout mode"
 msgstr "印刷モード"
 
-#: ../ppdippstr.py:95
+#: ../ppdippstr.py:97
 msgid "Draft (auto-detect-paper type)"
 msgstr "ドラフト（ペーパータイプ自動検出）"
 
-#: ../ppdippstr.py:97
+#: ../ppdippstr.py:99
 msgid "Draft grayscale (auto-detect-paper type)"
 msgstr "ドラフトグレースケール（ペーパータイプ自動検出）"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:101
 msgid "Normal (auto-detect-paper type)"
 msgstr "普通（ペーパータイプ自動検出）"
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:103
 msgid "Normal grayscale (auto-detect-paper type)"
 msgstr "普通グレースケール（ペーパータイプ自動検出）"
 
-#: ../ppdippstr.py:103
+#: ../ppdippstr.py:105
 msgid "High quality (auto-detect-paper type)"
 msgstr "高品質（ペーパータイプ自動検出）"
 
-#: ../ppdippstr.py:105
+#: ../ppdippstr.py:107
 msgid "High quality grayscale (auto-detect-paper type)"
 msgstr "高品質グレースケール（ペーパータイプ自動検出）"
 
-#: ../ppdippstr.py:106
+#: ../ppdippstr.py:108
 msgid "Photo (on photo paper)"
 msgstr "フォト（フォトペーパー用）"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:110
 msgid "Best quality (color on photo paper)"
 msgstr "最高品質（フォトペーパー用カラー）"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:112
 msgid "Normal quality (color on photo paper)"
 msgstr "普通品質（フォトペーパー用カラー）"
 
-#: ../ppdippstr.py:112
+#: ../ppdippstr.py:114
 msgid "Media source"
 msgstr "メディアソース"
 
-#: ../ppdippstr.py:113
+#: ../ppdippstr.py:115
 msgid "Printer default"
 msgstr "プリンターのデフォルト"
 
-#: ../ppdippstr.py:114
+#: ../ppdippstr.py:116
 msgid "Photo tray"
 msgstr "フォトトレイ"
 
-#: ../ppdippstr.py:115
+#: ../ppdippstr.py:117
 msgid "Upper tray"
 msgstr "上部トレイ"
 
-#: ../ppdippstr.py:116
+#: ../ppdippstr.py:118
 msgid "Lower tray"
 msgstr "下部トレイ"
 
-#: ../ppdippstr.py:117
+#: ../ppdippstr.py:119
 msgid "CD or DVD tray"
 msgstr "CD / DVD トレイ"
 
-#: ../ppdippstr.py:118
+#: ../ppdippstr.py:120
 msgid "Envelope feeder"
 msgstr "封筒フィーダー"
 
-#: ../ppdippstr.py:119
+#: ../ppdippstr.py:121
 msgid "Large capacity tray"
 msgstr "大容量トレイ"
 
-#: ../ppdippstr.py:120
+#: ../ppdippstr.py:122
 msgid "Manual feeder"
 msgstr "手動フィーダー"
 
-#: ../ppdippstr.py:121
+#: ../ppdippstr.py:123
 msgid "Multi-purpose tray"
 msgstr "多目的トレイ"
 
-#: ../ppdippstr.py:123
+#: ../ppdippstr.py:125
 msgid "Page size"
 msgstr "ページサイズ"
 
-#: ../ppdippstr.py:124
+#: ../ppdippstr.py:126
 msgid "Custom"
 msgstr "カスタム"
 
-#: ../ppdippstr.py:125
+#: ../ppdippstr.py:127
 msgid "Photo or 4x6 inch index card"
 msgstr "フォト又は 4x6 インチインデックスカード"
 
-#: ../ppdippstr.py:126
+#: ../ppdippstr.py:128
 msgid "Photo or 5x7 inch index card"
 msgstr "フォト又は 5x7 インチインデックスカード"
 
-#: ../ppdippstr.py:127
+#: ../ppdippstr.py:129
 msgid "Photo with tear-off tab"
 msgstr "切り取りタブ付きフォト"
 
-#: ../ppdippstr.py:128
+#: ../ppdippstr.py:130
 msgid "3x5 inch index card"
 msgstr "3x5 インチインデックスカード"
 
-#: ../ppdippstr.py:129
+#: ../ppdippstr.py:131
 msgid "5x8 inch index card"
 msgstr "5x8 インチインデックスカード"
 
-#: ../ppdippstr.py:130
+#: ../ppdippstr.py:132
 msgid "A6 with tear-off tab"
 msgstr "切り取りタブ付き A6"
 
-#: ../ppdippstr.py:131
+#: ../ppdippstr.py:133
 msgid "CD or DVD 80mm"
 msgstr "CD / DVD 80mm"
 
-#: ../ppdippstr.py:132
+#: ../ppdippstr.py:134
 msgid "CD or DVD 120mm"
 msgstr "CD / DVD 120mm"
 
-#: ../ppdippstr.py:134
+#: ../ppdippstr.py:136
 msgid "Double-sided printing"
 msgstr "両面印刷"
 
-#: ../ppdippstr.py:135
+#: ../ppdippstr.py:137
 msgid "Long edge (standard)"
 msgstr "ロングエッジ（標準）"
 
-#: ../ppdippstr.py:136
+#: ../ppdippstr.py:138
 msgid "Short edge (flip)"
 msgstr "ショートエッジ（フリップ）"
 
-#: ../ppdippstr.py:137
+#: ../ppdippstr.py:139
 msgid "Off"
 msgstr "オフ"
 
-#: ../ppdippstr.py:140
+#: ../ppdippstr.py:142
 msgid "Resolution, quality, ink type, media type"
 msgstr "解像度、品質、インクタイプ、メディアタイプ"
 
-#: ../ppdippstr.py:141
+#: ../ppdippstr.py:143
 msgid "Controlled by 'Printout mode'"
 msgstr "プリントアウトモードによる制御"
 
-#: ../ppdippstr.py:143
+#: ../ppdippstr.py:145
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi、カラー、ブラック/カラーカートリッジ"
 
-#: ../ppdippstr.py:145
+#: ../ppdippstr.py:147
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi、ドラフト、カラー、ブラック/カラーカートリッジ"
 
-#: ../ppdippstr.py:147
+#: ../ppdippstr.py:149
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi、ドラフト、グレースケール、ブラック/カラーカートリッジ"
 
-#: ../ppdippstr.py:149
+#: ../ppdippstr.py:151
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi、グレースケール、ブラック/カラーカートリッジ"
 
-#: ../ppdippstr.py:151
+#: ../ppdippstr.py:153
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi、カラー、ブラック/カラーカートリッジ"
 
-#: ../ppdippstr.py:153
+#: ../ppdippstr.py:155
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi、グレースケール、ブラック/カラーカートリッジ"
 
-#: ../ppdippstr.py:155
+#: ../ppdippstr.py:157
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi、フォト、ブラック/カラーカートリッジ、フォトペーパー"
 
-#: ../ppdippstr.py:157
+#: ../ppdippstr.py:159
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi、カラー、ブラック/カラーカートリッジ、フォトペーパー、普通"
 
-#: ../ppdippstr.py:159
+#: ../ppdippstr.py:161
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi、フォト、ブラック/カラーカートリッジ、フォトペーパー"
 
-#: ../system-config-printer.py:143
-msgid "To do this, select System->Administration->Firewall from the main menu."
-msgstr "これを行うには、メインメニューからシステム -> 管理 -> ファイアウォールと選択します。"
+#: ../ppdippstr.py:168
+msgid "Internet Printing Protocol (ipp)"
+msgstr ""
 
-#: ../system-config-printer.py:198
+#: ../ppdippstr.py:170
+msgid "Internet Printing Protocol (http)"
+msgstr ""
+
+#: ../ppdippstr.py:172
+msgid "Internet Printing Protocol (https)"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "LPD/LPR Host or Printer"
+msgstr ""
+
+#: ../ppdippstr.py:176 ../system-config-printer.py:5828
+msgid "AppSocket/HP JetDirect"
+msgstr "AppSocket/HP JetDirect"
+
+#: ../ppdippstr.py:178
+#, fuzzy
+msgid "Serial Port #1"
+msgstr "シリアルポート"
+
+#: ../ppdippstr.py:180
+msgid "LPT #1"
+msgstr ""
+
+#: ../ppdippstr.py:182 ../system-config-printer.py:5842
+msgid "Windows Printer via SAMBA"
+msgstr "SAMBA 経由の Windows プリンター"
+
+#: ../system-config-printer.py:144
+msgid "To do this, select System->Administration->Firewall from the main menu."
+msgstr ""
+"これを行うには、メインメニューからシステム -> 管理 -> ファイアウォールと選択"
+"します。"
+
+#: ../system-config-printer.py:199
 msgid "Idle"
 msgstr "アイドル状態"
 
-#: ../system-config-printer.py:200
+#: ../system-config-printer.py:201
 msgid "Busy"
 msgstr "ビジー"
 
-#: ../system-config-printer.py:387
-#: ../system-config-printer.py:1371
+#: ../system-config-printer.py:389 ../system-config-printer.py:1376
 msgid "Class"
 msgstr "クラス"
 
-#: ../system-config-printer.py:415
+#: ../system-config-printer.py:417
 msgid "Set As De_fault"
 msgstr "デフォルトに設定 (_F) "
 
-#: ../system-config-printer.py:419
+#: ../system-config-printer.py:421
 msgid "_Create class"
 msgstr "クラスの作成 (_C) "
 
-#: ../system-config-printer.py:421
+#: ../system-config-printer.py:423
 msgid "View Print _Queue"
 msgstr "印刷キューを表示 (_Q)"
 
-#: ../system-config-printer.py:423
+#: ../system-config-printer.py:425
 msgid "_Add to Group"
 msgstr "グループへ追加 (_A)"
 
-#: ../system-config-printer.py:425
+#: ../system-config-printer.py:427
 msgid "Save Results as _Group"
 msgstr "結果をグループとして保存 (_G)"
 
-#: ../system-config-printer.py:427
+#: ../system-config-printer.py:429
 msgid "Save Filter as _Search Group"
 msgstr "フィルターを検索グループとして保存 (_S)"
 
-#: ../system-config-printer.py:431
+#: ../system-config-printer.py:433
 msgid "E_nabled"
 msgstr "有効 (_N)"
 
-#: ../system-config-printer.py:433
+#: ../system-config-printer.py:435
 msgid "_Shared"
 msgstr "共有 (_S)"
 
-#: ../system-config-printer.py:437
-#: ../troubleshoot/ChooseNetworkPrinter.py:35
-#: ../troubleshoot/ChoosePrinter.py:36
-#: ../troubleshoot/DeviceListed.py:36
+#: ../system-config-printer.py:439 ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "名前"
 
-#: ../system-config-printer.py:438
+#: ../system-config-printer.py:440
 msgid "Description"
 msgstr "説明"
 
-#: ../system-config-printer.py:440
+#: ../system-config-printer.py:442
 msgid "Manufacturer / Model"
 msgstr "製造元 / モデル"
 
 #. Printer state reasons list
-#: ../system-config-printer.py:515
+#: ../system-config-printer.py:517
 msgid "Message"
 msgstr "メッセージ"
 
-#: ../system-config-printer.py:549
+#: ../system-config-printer.py:551
 msgid "Problems?"
 msgstr "問題がありますか？"
 
-#: ../system-config-printer.py:654
-#: ../system-config-printer.py:656
+#: ../system-config-printer.py:656 ../system-config-printer.py:658
 msgid "Members of this class"
 msgstr "このクラスのメンバー"
 
-#: ../system-config-printer.py:655
-#: ../system-config-printer.py:657
+#: ../system-config-printer.py:657 ../system-config-printer.py:659
 msgid "Others"
 msgstr "その他"
 
-#: ../system-config-printer.py:658
+#: ../system-config-printer.py:660
 msgid "Devices"
 msgstr "デバイス"
 
-#: ../system-config-printer.py:659
+#: ../system-config-printer.py:661
 msgid "Connections"
 msgstr "接続"
 
-#: ../system-config-printer.py:660
+#: ../system-config-printer.py:662
 msgid "Makes"
 msgstr "製造元"
 
-#: ../system-config-printer.py:661
+#: ../system-config-printer.py:663
 msgid "Models"
 msgstr "モデル"
 
-#: ../system-config-printer.py:662
+#: ../system-config-printer.py:664
 msgid "Drivers"
 msgstr "ドライバー"
 
-#: ../system-config-printer.py:663
-#: ../glade/NewPrinterWindow.glade.h:54
+#: ../system-config-printer.py:665 ../glade/NewPrinterWindow.glade.h:54
 msgid "Downloadable Drivers"
 msgstr "ダウンロード可能なドライバー"
 
-#: ../system-config-printer.py:664
+#: ../system-config-printer.py:666
 msgid "Users"
 msgstr "ユーザー"
 
-#: ../system-config-printer.py:699
+#: ../system-config-printer.py:701
 msgid "Automatic rotation"
 msgstr "自動回転"
 
-#: ../system-config-printer.py:984
+#: ../system-config-printer.py:986
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "プリンターのプロパティ - %s 上の '%s'"
 
 #. The Conflict button was pressed.
-#: ../system-config-printer.py:992
+#: ../system-config-printer.py:994
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -915,86 +911,78 @@ msgstr ""
 "あります。競合が解決され\n"
 "ないと変更は適用できません。"
 
-#: ../system-config-printer.py:1211
+#: ../system-config-printer.py:1216
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "プリンター設定 - %s"
 
-#: ../system-config-printer.py:1215
+#: ../system-config-printer.py:1220
 #, python-format
 msgid "Connected to %s"
 msgstr "%s に接続"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1255
-#: ../system-config-printer.py:2101
+#: ../system-config-printer.py:1260 ../system-config-printer.py:2106
 msgid "obtaining queue details"
 msgstr "キューの詳細を取得中"
 
-#: ../system-config-printer.py:1293
+#: ../system-config-printer.py:1298
 msgid "Remove from Group"
 msgstr "グループから削除"
 
-#: ../system-config-printer.py:1359
+#: ../system-config-printer.py:1364
 msgid "Network printer (discovered)"
 msgstr "ネットワークプリンター (検出分)"
 
-#: ../system-config-printer.py:1362
+#: ../system-config-printer.py:1367
 msgid "Network class (discovered)"
 msgstr "ネットワーククラス (検出済み)"
 
-#: ../system-config-printer.py:1368
-#: ../system-config-printer.py:5803
-#: ../system-config-printer.py:5873
-#: ../system-config-printer.py:5875
+#: ../system-config-printer.py:1373 ../system-config-printer.py:5823
+#: ../system-config-printer.py:5893 ../system-config-printer.py:5895
 msgid "Fax"
 msgstr "ファックス"
 
-#: ../system-config-printer.py:1374
-#: ../system-config-printer.py:1380
+#: ../system-config-printer.py:1379 ../system-config-printer.py:1385
 #: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "ネットワークプリンター"
 
-#: ../system-config-printer.py:1377
+#: ../system-config-printer.py:1382
 msgid "Network print share"
 msgstr "プリンター印刷共有"
 
-#: ../system-config-printer.py:1562
-#: ../glade/ConnectingDialog.glade.h:2
+#: ../system-config-printer.py:1567 ../glade/ConnectingDialog.glade.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i> %s への接続を開いています</i>"
 
-#: ../system-config-printer.py:1945
+#: ../system-config-printer.py:1950
 msgid "Installable Options"
 msgstr "オプションパーツ"
 
-#: ../system-config-printer.py:1946
+#: ../system-config-printer.py:1951
 #: ../glade/PrinterPropertiesDialog.glade.h:111
 msgid "Printer Options"
 msgstr "プリンターオプション"
 
-#: ../system-config-printer.py:1983
+#: ../system-config-printer.py:1988
 #, python-format
 msgid "modifying class %s"
 msgstr "クラス %s を変更中"
 
-#: ../system-config-printer.py:1985
-#: ../system-config-printer.py:3159
-#: ../system-config-printer.py:3184
-#: ../system-config-printer.py:6852
-#: ../system-config-printer.py:6864
-#: ../system-config-printer.py:6886
+#: ../system-config-printer.py:1990 ../system-config-printer.py:3164
+#: ../system-config-printer.py:3189 ../system-config-printer.py:6878
+#: ../system-config-printer.py:6890 ../system-config-printer.py:6912
 #, python-format
 msgid "modifying printer %s"
 msgstr "プリンター %s の修正"
 
-#: ../system-config-printer.py:2000
+#: ../system-config-printer.py:2005
 msgid "This will delete this class!"
 msgstr "このクラスを削除します!"
 
-#: ../system-config-printer.py:2001
+#: ../system-config-printer.py:2006
 msgid "Proceed anyway?"
 msgstr "続けますか?"
 
@@ -1002,64 +990,64 @@ msgstr "続けますか?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:2089
-#: ../system-config-printer.py:3355
+#: ../system-config-printer.py:2094 ../system-config-printer.py:3360
 msgid "fetching server settings"
 msgstr "サーバー設定を取り込み中"
 
-#: ../system-config-printer.py:2159
+#: ../system-config-printer.py:2164
 msgid "Set Default Printer"
 msgstr "デフォルトのプリンターを設定"
 
-#: ../system-config-printer.py:2161
+#: ../system-config-printer.py:2166
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "これをシステム全体のデフォルトのプリンターに設定しますか？"
 
-#: ../system-config-printer.py:2163
+#: ../system-config-printer.py:2168
 msgid "Set as the _system-wide default printer"
 msgstr "システム全体のデフォルトのプリンターに設定 (_S)"
 
-#: ../system-config-printer.py:2165
+#: ../system-config-printer.py:2170
 msgid "_Clear my personal default setting"
 msgstr "個人のデフォルト設定を抹消 (_C)"
 
-#: ../system-config-printer.py:2166
+#: ../system-config-printer.py:2171
 msgid "Set as my _personal default printer"
 msgstr "個人用のデフォルトプリンターに設定 (_P) "
 
-#: ../system-config-printer.py:2171
+#: ../system-config-printer.py:2176
 msgid "setting default printer"
 msgstr "デフォルトプリンターを設定"
 
-#: ../system-config-printer.py:2228
+#: ../system-config-printer.py:2233
 msgid "printing test page"
 msgstr "テストページを印刷中"
 
-#: ../system-config-printer.py:2241
-#: ../system-config-printer.py:2276
+#: ../system-config-printer.py:2246 ../system-config-printer.py:2281
 msgid "Not possible"
 msgstr "不可能です"
 
-#: ../system-config-printer.py:2242
-#: ../system-config-printer.py:2277
-msgid "The remote server did not accept the print job, most likely because the printer is not shared."
-msgstr "リモートサーバーは印刷依頼を受け入れませんでした。多分プリンターが共有されていないからでしょう。"
+#: ../system-config-printer.py:2247 ../system-config-printer.py:2282
+msgid ""
+"The remote server did not accept the print job, most likely because the "
+"printer is not shared."
+msgstr ""
+"リモートサーバーは印刷依頼を受け入れませんでした。多分プリンターが共有されて"
+"いないからでしょう。"
 
-#: ../system-config-printer.py:2254
-#: ../system-config-printer.py:2269
+#: ../system-config-printer.py:2259 ../system-config-printer.py:2274
 msgid "Submitted"
 msgstr "受付られました"
 
-#: ../system-config-printer.py:2255
+#: ../system-config-printer.py:2260
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "依頼 %d としてテストページが受け入れられました"
 
-#: ../system-config-printer.py:2262
+#: ../system-config-printer.py:2267
 msgid "sending maintenance command"
 msgstr "メンテナンスコマンドを送信中"
 
-#: ../system-config-printer.py:2270
+#: ../system-config-printer.py:2275
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "ジョブ %d としてメンテナンスコマンドが提出されました"
@@ -1067,158 +1055,163 @@ msgstr "ジョブ %d としてメンテナンスコマンドが提出されま�
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2347
-#: ../system-config-printer.py:2443
+#: ../system-config-printer.py:2352 ../system-config-printer.py:2448
 msgid "Error"
 msgstr "エラー"
 
-#: ../system-config-printer.py:2348
+#: ../system-config-printer.py:2353
 msgid "There was a problem connecting to the CUPS server."
 msgstr "CUPS サーバーへの接続に問題があります。"
 
-#: ../system-config-printer.py:2444
+#: ../system-config-printer.py:2449
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "オプション  '%s'は値 '%s' を持ちます。そして編集できません。"
 
-#: ../system-config-printer.py:2554
+#: ../system-config-printer.py:2559
 msgid "Marker levels are not reported for this printer."
 msgstr "マーカーレベルはこのプリンター用に報告されていません。"
 
-#: ../system-config-printer.py:2864
+#: ../system-config-printer.py:2869
 msgid "Cannot Rename"
 msgstr "改名はできません"
 
-#: ../system-config-printer.py:2865
+#: ../system-config-printer.py:2870
 msgid "There are queued jobs."
 msgstr "キューにジョブがあります。"
 
-#: ../system-config-printer.py:2883
+#: ../system-config-printer.py:2888
 msgid "Renaming will lose history"
 msgstr "名前を変えると履歴が消えます"
 
-#: ../system-config-printer.py:2885
+#: ../system-config-printer.py:2890
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr "完了した依頼は再印刷では扱えません。"
 
-#: ../system-config-printer.py:2960
+#: ../system-config-printer.py:2965
 msgid "renaming printer"
 msgstr "プリンターを改名中"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:3047
+#: ../system-config-printer.py:3052
 msgid "copying printer"
 msgstr "プリンターをコピー中"
 
-#: ../system-config-printer.py:3111
+#: ../system-config-printer.py:3116
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "本当にクラス %s を削除しますか?"
 
-#: ../system-config-printer.py:3113
+#: ../system-config-printer.py:3118
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "本当にプリンター %s を削除しますか?"
 
-#: ../system-config-printer.py:3115
+#: ../system-config-printer.py:3120
 msgid "Really delete selected destinations?"
 msgstr "本当に選択した宛先を削除しますか?"
 
-#: ../system-config-printer.py:3136
+#: ../system-config-printer.py:3141
 #, python-format
 msgid "deleting printer %s"
 msgstr "プリンター %s を削除中"
 
-#: ../system-config-printer.py:3222
+#: ../system-config-printer.py:3227
 msgid "Publish Shared Printers"
 msgstr "共有プリンターを公開"
 
-#: ../system-config-printer.py:3223
-msgid "Shared printers are not available to other people unless the 'Publish shared printers' option is enabled in the server settings."
-msgstr "共有プリンターは、「共有プリンターを公開」オプションがサーバー設定で 有効でない限りは、他の人には利用できません。"
+#: ../system-config-printer.py:3228
+msgid ""
+"Shared printers are not available to other people unless the 'Publish shared "
+"printers' option is enabled in the server settings."
+msgstr ""
+"共有プリンターは、「共有プリンターを公開」オプションがサーバー設定で 有効でな"
+"い限りは、他の人には利用できません。"
 
-#: ../system-config-printer.py:3416
+#: ../system-config-printer.py:3418
 msgid "modifying server settings"
 msgstr "サーバー設定を変更中"
 
-#: ../system-config-printer.py:3444
+#: ../system-config-printer.py:3445
 msgid "Review Firewall"
 msgstr "ファイアウォールを確認"
 
-#: ../system-config-printer.py:3445
-msgid "You may need to adjust the firewall to allow network printing to this computer."
-msgstr "ファイアウォールを調節してこのコンピュータへネットワーク印刷を許可する 必要があるかも知れません。"
+#: ../system-config-printer.py:3446
+msgid ""
+"You may need to adjust the firewall to allow network printing to this "
+"computer."
+msgstr ""
+"ファイアウォールを調節してこのコンピュータへネットワーク印刷を許可する 必要が"
+"あるかも知れません。"
 
-#: ../system-config-printer.py:3792
+#: ../system-config-printer.py:3793
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "閲覧はできません（pysmbc がインストールされていません）"
 
 #. SMB list columns
-#: ../system-config-printer.py:3798
+#: ../system-config-printer.py:3799
 msgid "Share"
 msgstr "共有"
 
-#: ../system-config-printer.py:3804
+#: ../system-config-printer.py:3805
 msgid "Comment"
 msgstr "コメント"
 
-#: ../system-config-printer.py:3819
-msgid "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
-msgstr "PostScript プリンター記述ファイル (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"
+#: ../system-config-printer.py:3820
+msgid ""
+"PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
+"PPD.GZ)"
+msgstr ""
+"PostScript プリンター記述ファイル (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD."
+"GZ)"
 
-#: ../system-config-printer.py:3828
+#: ../system-config-printer.py:3829
 msgid "All files (*)"
 msgstr "全てのファイル (*)"
 
-#: ../system-config-printer.py:3891
-#: ../system-config-printer.py:6222
-#: ../system-config-printer.py:6260
-#: ../applet.py:130
+#: ../system-config-printer.py:3892 ../system-config-printer.py:6242
+#: ../system-config-printer.py:6280 ../applet.py:130
 msgid "Search"
 msgstr "検索"
 
-#: ../system-config-printer.py:3915
-#: ../system-config-printer.py:3937
+#: ../system-config-printer.py:3916 ../system-config-printer.py:3938
 #: ../glade/NewPrinterWindow.glade.h:72
 msgid "New Printer"
 msgstr "新規プリンター"
 
-#: ../system-config-printer.py:3924
+#: ../system-config-printer.py:3925
 msgid "New Class"
 msgstr "新規クラス"
 
-#: ../system-config-printer.py:3929
+#: ../system-config-printer.py:3930
 msgid "Change Device URI"
 msgstr "デバイス URI の変更"
 
-#: ../system-config-printer.py:3935
+#: ../system-config-printer.py:3936
 msgid "Change Driver"
 msgstr "ドライバーの変更"
 
-#: ../system-config-printer.py:4114
-#: ../system-config-printer.py:4194
-#: ../system-config-printer.py:4569
-#: ../system-config-printer.py:6057
-#: ../system-config-printer.py:6247
+#: ../system-config-printer.py:4115 ../system-config-printer.py:4195
+#: ../system-config-printer.py:4570 ../system-config-printer.py:6077
+#: ../system-config-printer.py:6267
 msgid "Searching"
 msgstr "検索中"
 
-#: ../system-config-printer.py:4115
+#: ../system-config-printer.py:4116
 msgid "Searching for downloadable drivers"
 msgstr "ダウンロード可能なドライバーを検索中"
 
-#: ../system-config-printer.py:4195
-#: ../system-config-printer.py:4570
+#: ../system-config-printer.py:4196 ../system-config-printer.py:4571
 msgid "Searching for drivers"
 msgstr "ドライバーを検索中"
 
 #. Tell the user why he needs the plugin
-#: ../system-config-printer.py:4944
+#: ../system-config-printer.py:4964
 msgid "For this printer a proprietary driver plugin from HP is available.\n"
 msgstr "このプリンターには、HP の商用ドライバープラグインが利用できます。\n"
 
-#: ../system-config-printer.py:4947
+#: ../system-config-printer.py:4967
 msgid ""
 "The installation of the plugin is required for your printer to work.\n"
 "\n"
@@ -1226,261 +1219,258 @@ msgstr ""
 "ご使用のプリンターを機能させるためにプラグインのインストールが必要です。\n"
 "\n"
 
-#: ../system-config-printer.py:4950
+#: ../system-config-printer.py:4970
 msgid ""
-"Installing the plugin is optional, it completes or enhances the functionality\n"
+"Installing the plugin is optional, it completes or enhances the "
+"functionality\n"
 "of your printer. Without plugin at least basic operations work.\n"
 "\n"
 msgstr ""
-"プラグインのインストールはオプションです。ご使用のプリンターの 機能を完全にしたり、\n"
+"プラグインのインストールはオプションです。ご使用のプリンターの 機能を完全にし"
+"たり、\n"
 " 強化したりします。プラグインなしでも最低の \n"
 "基本動作は機能します。\n"
 
-#: ../system-config-printer.py:4954
+#: ../system-config-printer.py:4974
 msgid "The plugin provides the following features:\n"
 msgstr "プラグインは以下のような機能を提供します:\n"
 
-#: ../system-config-printer.py:4957
+#: ../system-config-printer.py:4977
 msgid " - Printing support\n"
 msgstr " - 印刷サポート\n"
 
-#: ../system-config-printer.py:4960
+#: ../system-config-printer.py:4980
 msgid " - Faster printing\n"
 msgstr " - より速い印刷\n"
 
-#: ../system-config-printer.py:4963
+#: ../system-config-printer.py:4983
 msgid " - Better printout quality\n"
 msgstr " - より良い印刷品質\n"
 
-#: ../system-config-printer.py:4966
+#: ../system-config-printer.py:4986
 msgid " - Extra printing features\n"
 msgstr " -  追加の印刷機能\n"
 
-#: ../system-config-printer.py:4969
+#: ../system-config-printer.py:4989
 msgid " - Scanning support\n"
 msgstr " - スキャンサポート\n"
 
-#: ../system-config-printer.py:4972
+#: ../system-config-printer.py:4992
 msgid " - Faster scanning\n"
 msgstr " - より速いスキャン\n"
 
-#: ../system-config-printer.py:4975
+#: ../system-config-printer.py:4995
 msgid " - Better scanning image quality\n"
 msgstr " - より良いスキャンイメージ品質\n"
 
-#: ../system-config-printer.py:4978
+#: ../system-config-printer.py:4998
 msgid " - Faxing support\n"
 msgstr " - ファックスサポート\n"
 
-#: ../system-config-printer.py:4981
+#: ../system-config-printer.py:5001
 msgid " - Extra fax features\n"
 msgstr " - 追加のファックス機能\n"
 
-#: ../system-config-printer.py:4984
+#: ../system-config-printer.py:5004
 msgid " - Better Input/Output support\n"
 msgstr " - より良い入力/出力サポート\n"
 
-#: ../system-config-printer.py:4987
+#: ../system-config-printer.py:5007
 msgid " - Extra user interface features\n"
 msgstr " - 追加のユーザーインターフェイス機能\n"
 
-#: ../system-config-printer.py:4990
+#: ../system-config-printer.py:5010
 msgid " - Other extra features\n"
 msgstr " - その他の追加機能\n"
 
-#: ../system-config-printer.py:4995
+#: ../system-config-printer.py:5015
 msgid "Install plugin"
 msgstr "プラグインのインストール"
 
-#: ../system-config-printer.py:4996
+#: ../system-config-printer.py:5016
 msgid "Do not set up printer"
 msgstr "プリンターをセットアップしない"
 
-#: ../system-config-printer.py:4997
+#: ../system-config-printer.py:5017
 msgid "Set up without plugin"
 msgstr "プラグインなしのセットアップ"
 
-#: ../system-config-printer.py:4999
-#: ../troubleshoot/PrintTestPage.py:118
+#: ../system-config-printer.py:5019 ../troubleshoot/PrintTestPage.py:119
 msgid "Yes"
 msgstr "はい"
 
-#: ../system-config-printer.py:5000
-#: ../troubleshoot/PrintTestPage.py:119
+#: ../system-config-printer.py:5020 ../troubleshoot/PrintTestPage.py:120
 msgid "No"
 msgstr "いいえ"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:5161
+#: ../system-config-printer.py:5181
 msgid "Other"
 msgstr "その他"
 
-#: ../system-config-printer.py:5165
+#: ../system-config-printer.py:5185
 msgid "Network Printer"
 msgstr "ネットワークプリンター"
 
-#: ../system-config-printer.py:5169
+#: ../system-config-printer.py:5189
 msgid "Find Network Printer"
 msgstr "ネットワークプリンターを検索"
 
-#: ../system-config-printer.py:5184
+#: ../system-config-printer.py:5204
 msgid "fetching device list"
 msgstr "デバイス一覧を取り込み中"
 
-#: ../system-config-printer.py:5270
-#: ../system-config-printer.py:6482
+#: ../system-config-printer.py:5290 ../system-config-printer.py:6503
 msgid " (Current)"
 msgstr " (現在の設定)"
 
-#: ../system-config-printer.py:5342
+#: ../system-config-printer.py:5362
 msgid "Scanning..."
 msgstr "スキャン中..."
 
-#: ../system-config-printer.py:5397
+#: ../system-config-printer.py:5417
 msgid "No Print Shares"
 msgstr "印刷共有をしない"
 
-#: ../system-config-printer.py:5398
-msgid "There were no print shares found.  Please check that the Samba service is marked as trusted in your firewall configuration."
-msgstr "印刷共有が見付かりません。Samba サービスがご使用のファイアウォール設定で 「信頼できる接続」としてマークしてあることをチェックして下さい。"
+#: ../system-config-printer.py:5418
+msgid ""
+"There were no print shares found.  Please check that the Samba service is "
+"marked as trusted in your firewall configuration."
+msgstr ""
+"印刷共有が見付かりません。Samba サービスがご使用のファイアウォール設定で 「信"
+"頼できる接続」としてマークしてあることをチェックして下さい。"
 
-#: ../system-config-printer.py:5659
-#: ../system-config-printer.py:5736
+#: ../system-config-printer.py:5679 ../system-config-printer.py:5756
 msgid "Print Share Verified"
 msgstr "プリント共有の確証"
 
-#: ../system-config-printer.py:5660
-#: ../system-config-printer.py:5737
+#: ../system-config-printer.py:5680 ../system-config-printer.py:5757
 msgid "This print share is accessible."
 msgstr "このプリント共有はアクセスできます。"
 
-#: ../system-config-printer.py:5665
-#: ../system-config-printer.py:5741
+#: ../system-config-printer.py:5685 ../system-config-printer.py:5761
 msgid "This print share is not accessible."
 msgstr "このプリント共有はアクセスできません。"
 
-#: ../system-config-printer.py:5668
+#: ../system-config-printer.py:5688
 msgid "Print Share Inaccessible"
 msgstr "プリント共有アクセス不能。"
 
-#: ../system-config-printer.py:5714
+#: ../system-config-printer.py:5734
 msgid "Verifying"
 msgstr "確認(_V)"
 
-#: ../system-config-printer.py:5715
+#: ../system-config-printer.py:5735
 msgid "Verifying printer"
 msgstr "プリンター %s の確認"
 
-#: ../system-config-printer.py:5740
+#: ../system-config-printer.py:5760
 msgid "Inaccessible"
 msgstr "アクセス不能"
 
-#: ../system-config-printer.py:5795
+#: ../system-config-printer.py:5815
 msgid "Parallel Port"
 msgstr "パラレルポート"
 
-#: ../system-config-printer.py:5797
+#: ../system-config-printer.py:5817
 msgid "Serial Port"
 msgstr "シリアルポート"
 
-#: ../system-config-printer.py:5799
+#: ../system-config-printer.py:5819
 msgid "USB"
 msgstr "USB"
 
-#: ../system-config-printer.py:5801
-#: ../system-config-printer.py:5804
+#: ../system-config-printer.py:5821 ../system-config-printer.py:5824
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../system-config-printer.py:5806
+#: ../system-config-printer.py:5826
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "HAL (Hardware Abstraction Layer)"
 
-#: ../system-config-printer.py:5808
-msgid "AppSocket/HP JetDirect"
-msgstr "AppSocket/HP JetDirect"
-
-#: ../system-config-printer.py:5817
+#: ../system-config-printer.py:5837
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "LPD/LPR キュー '%s'"
 
-#: ../system-config-printer.py:5819
+#: ../system-config-printer.py:5839
 msgid "LPD/LPR queue"
 msgstr "LPD/LPR キュー"
 
-#: ../system-config-printer.py:5822
-msgid "Windows Printer via SAMBA"
-msgstr "SAMBA 経由の Windows プリンター"
-
-#: ../system-config-printer.py:5824
-#: ../glade/NewPrinterWindow.glade.h:64
+#: ../system-config-printer.py:5844 ../glade/NewPrinterWindow.glade.h:64
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.py:5826
+#: ../system-config-printer.py:5846
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../system-config-printer.py:5913
+#: ../system-config-printer.py:5933
 msgid "A printer connected to the parallel port."
 msgstr "パラレルポートに接続されたプリンター"
 
-#: ../system-config-printer.py:5915
+#: ../system-config-printer.py:5935
 msgid "A printer connected to a USB port."
 msgstr "USB ポートに接続されたプリンター"
 
-#: ../system-config-printer.py:5917
-msgid "HPLIP software driving a printer, or the printer function of a multi-function device."
-msgstr "HPLIP ソフトウェアが動かすプリンター、又はマルチ機能デバイスのプリンター機能"
+#: ../system-config-printer.py:5937
+msgid ""
+"HPLIP software driving a printer, or the printer function of a multi-"
+"function device."
+msgstr ""
+"HPLIP ソフトウェアが動かすプリンター、又はマルチ機能デバイスのプリンター機能"
 
-#: ../system-config-printer.py:5920
-msgid "HPLIP software driving a fax machine, or the fax function of a multi-function device."
-msgstr "HPLIP ソフトウェアが動かすファックスマシン、又はマルチ機能デバイスのファックス機能"
+#: ../system-config-printer.py:5940
+msgid ""
+"HPLIP software driving a fax machine, or the fax function of a multi-"
+"function device."
+msgstr ""
+"HPLIP ソフトウェアが動かすファックスマシン、又はマルチ機能デバイスのファック"
+"ス機能"
 
-#: ../system-config-printer.py:5923
+#: ../system-config-printer.py:5943
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL (Hardware Abstraction Layer) で検出されたローカルプリンター"
 
-#: ../system-config-printer.py:6058
+#: ../system-config-printer.py:6078
 msgid "Searching for printers"
 msgstr "プリンターを検索中"
 
-#: ../system-config-printer.py:6135
+#: ../system-config-printer.py:6155
 msgid "No printer was found at that address."
 msgstr "そのアドレスではプリンターが見付かりません。"
 
-#: ../system-config-printer.py:6272
+#: ../system-config-printer.py:6292
 msgid "-- Select from search results --"
 msgstr "-- 検索結果から選択 --"
 
-#: ../system-config-printer.py:6274
+#: ../system-config-printer.py:6294
 msgid "-- No matches found --"
 msgstr "-- 一致するものがありません --"
 
-#: ../system-config-printer.py:6487
+#: ../system-config-printer.py:6508
 msgid " (recommended)"
 msgstr " (推奨)"
 
-#: ../system-config-printer.py:6512
+#: ../system-config-printer.py:6533
 msgid "This PPD is generated by foomatic."
 msgstr "この PPD は foomatic で作成されています。"
 
-#: ../system-config-printer.py:6537
+#: ../system-config-printer.py:6558
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:6548
+#: ../system-config-printer.py:6569
 msgid "Distributable"
 msgstr "分散可能"
 
-#: ../system-config-printer.py:6589
+#: ../system-config-printer.py:6610
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:6594
+#: ../system-config-printer.py:6615
 #, python-format
 msgid ""
 "\n"
@@ -1489,21 +1479,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:6599
+#: ../system-config-printer.py:6620
 msgid "No support contacts known"
 msgstr "サポートの連絡先が不明です"
 
-#: ../system-config-printer.py:6603
-#: ../system-config-printer.py:6616
+#: ../system-config-printer.py:6624 ../system-config-printer.py:6637
 msgid "Not specified."
 msgstr "指定がありません"
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6656
+#: ../system-config-printer.py:6677
 msgid "Database error"
 msgstr "データベースエラー"
 
-#: ../system-config-printer.py:6657
+#: ../system-config-printer.py:6678
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "'%s' ドライバーはプリンター '%s %s' で使用できません。"
@@ -1511,65 +1500,70 @@ msgstr "'%s' ドライバーはプリンター '%s %s' で使用できません�
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6667
+#: ../system-config-printer.py:6688
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
-msgstr "このドライバーを使うには '%s' パッケージをインストールする必要があります。"
+msgstr ""
+"このドライバーを使うには '%s' パッケージをインストールする必要があります。"
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6674
+#: ../system-config-printer.py:6695
 msgid "PPD error"
 msgstr "PPD エラー"
 
-#: ../system-config-printer.py:6676
+#: ../system-config-printer.py:6697
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "PPD ファイルの読み込みに失敗しました。次のような理由があります:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6693
+#: ../system-config-printer.py:6715
 msgid "Downloadable drivers"
 msgstr "ダウンロード可能なドライバー"
 
-#: ../system-config-printer.py:6694
+#: ../system-config-printer.py:6716
 msgid "Failed to download PPD."
 msgstr "PPD のダウンロードに失敗"
 
-#: ../system-config-printer.py:6701
+#: ../system-config-printer.py:6723
 msgid "fetching PPD"
 msgstr "PPD を取り込み中"
 
-#: ../system-config-printer.py:6730
-#: ../system-config-printer.py:6768
+#: ../system-config-printer.py:6752 ../system-config-printer.py:6790
 msgid "No Installable Options"
 msgstr "インストールできるオプションなし"
 
-#: ../system-config-printer.py:6825
+#: ../system-config-printer.py:6851
 #, python-format
 msgid "adding printer %s"
 msgstr "プリンター %s を追加中"
 
-#: ../system-config-printer.py:7006
+#: ../system-config-printer.py:7032
 msgid "Would you like to print a test page?"
 msgstr "テストページを印刷しますか？"
 
-#: ../system-config-printer.py:7067
+#: ../system-config-printer.py:7093
 msgid "Install driver"
 msgstr "ドライバーをインストール"
 
-#: ../system-config-printer.py:7068
-#: ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:7094 ../troubleshoot/CheckPPDSanity.py:133
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
-msgstr "プリンター '%s' には %s パッケージが必要ですが、現在インストールされていません。"
+msgstr ""
+"プリンター '%s' には %s パッケージが必要ですが、現在インストールされていませ"
+"ん。"
 
-#: ../system-config-printer.py:7084
+#: ../system-config-printer.py:7110
 msgid "Missing driver"
 msgstr "見つからないドライバー"
 
-#: ../system-config-printer.py:7085
+#: ../system-config-printer.py:7111
 #, python-format
-msgid "Printer '%s' requires the '%s' program but it is not currently installed.  Please install it before using this printer."
-msgstr "プリンター '%s' には '%s' プログラムが必要ですが、現在インストールされていません。このプリンターを使用する前にインストールを行ってください。"
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed.  "
+"Please install it before using this printer."
+msgstr ""
+"プリンター '%s' には '%s' プログラムが必要ですが、現在インストールされていま"
+"せん。このプリンターを使用する前にインストールを行ってください。"
 
 #: ../glade/AboutDialog.glade.h:1
 msgid "A CUPS configuration tool."
@@ -1581,17 +1575,33 @@ msgstr "Copyright © 2006-2008 Red Hat, Inc."
 
 #: ../glade/AboutDialog.glade.h:3
 msgid ""
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
 msgstr ""
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program; if not, write to the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA."
+"You should have received a copy of the GNU General Public License along with "
+"this program; if not, write to the Free Software Foundation, Inc., 675 Mass "
+"Ave, Cambridge, MA 02139, USA."
 
 #: ../glade/AboutDialog.glade.h:8
 msgid "system-config-printer"
@@ -1642,8 +1652,7 @@ msgstr "ジョブ (_J)"
 msgid "_Refresh"
 msgstr "リフレッシュ (_R)"
 
-#: ../glade/JobsWindow.glade.h:5
-#: ../glade/PrintersWindow.glade.h:17
+#: ../glade/JobsWindow.glade.h:5 ../glade/PrintersWindow.glade.h:17
 msgid "_View"
 msgstr "表示 (_V)"
 
@@ -1830,8 +1839,7 @@ msgstr ""
 msgid "Description:"
 msgstr "説明:"
 
-#: ../glade/NewPrinterWindow.glade.h:51
-#: ../troubleshoot/DeviceListed.py:40
+#: ../glade/NewPrinterWindow.glade.h:51 ../troubleshoot/DeviceListed.py:40
 msgid "Device URI"
 msgstr "デバイス URI"
 
@@ -1856,7 +1864,8 @@ msgid "Flow Control"
 msgstr "フロー制御"
 
 #: ../glade/NewPrinterWindow.glade.h:58
-msgid "For the printer you have selected there are drivers available for download."
+msgid ""
+"For the printer you have selected there are drivers available for download."
 msgstr "選択されたプリンター用にダウンロード可能なドライバーがあります。"
 
 #: ../glade/NewPrinterWindow.glade.h:59
@@ -1928,8 +1937,15 @@ msgid "Port number:"
 msgstr "ポート番号:"
 
 #: ../glade/NewPrinterWindow.glade.h:79
-msgid "PostScript Printer Description (PPD) files can often be found on the driver disk that comes with the printer. For PostScript printers they are often part of the Windows<sup>®</sup> driver."
-msgstr "PPD (PostScript Printer Description) ファイルはプリンターに同梱されているデバイスドライバーディスクに入っていることがよくあります。 PostScript プリンターの場合、 Windows<sup>®</sup> のデバイスドライバーの一部となっていることがよくあります。"
+msgid ""
+"PostScript Printer Description (PPD) files can often be found on the driver "
+"disk that comes with the printer. For PostScript printers they are often "
+"part of the Windows<sup>®</sup> driver."
+msgstr ""
+"PPD (PostScript Printer Description) ファイルはプリンターに同梱されているデバ"
+"イスドライバーディスクに入っていることがよくあります。 PostScript プリンター"
+"の場合、 Windows<sup>®</sup> のデバイスドライバーの一部となっていることがよく"
+"あります。"
 
 #: ../glade/NewPrinterWindow.glade.h:80
 msgid "Printer model:"
@@ -2000,24 +2016,53 @@ msgid "Text:"
 msgstr "テキスト:"
 
 #: ../glade/NewPrinterWindow.glade.h:97
-msgid "The foomatic printer database contains various manufacturer provided PostScript Printer Description (PPD) files and also can generate PPD files for a large number of (non PostScript) printers. But in general manufacturer provided PPD files provide better access to the specific features of the printer."
-msgstr "foomatic プリンターのデータベースには製造元が提供する各種 PPD (PostScript Printer Description) ファイルが含まれ、また多数のプリンター (PostScript以外) 用 PPD ファイルを生成することもできます。 ただし、一般的には製造元が提供する PPD ファイルの方がプリンターの特定機能に対してはよい手段を提供します。"
+msgid ""
+"The foomatic printer database contains various manufacturer provided "
+"PostScript Printer Description (PPD) files and also can generate PPD files "
+"for a large number of (non PostScript) printers. But in general manufacturer "
+"provided PPD files provide better access to the specific features of the "
+"printer."
+msgstr ""
+"foomatic プリンターのデータベースには製造元が提供する各種 PPD (PostScript "
+"Printer Description) ファイルが含まれ、また多数のプリンター (PostScript以外) "
+"用 PPD ファイルを生成することもできます。 ただし、一般的には製造元が提供する "
+"PPD ファイルの方がプリンターの特定機能に対してはよい手段を提供します。"
 
 #: ../glade/NewPrinterWindow.glade.h:98
-msgid "These drivers do not come from your operating system supplier and will not be covered by their commercial support.  See the support and license terms of the driver's supplier."
-msgstr "これらのドライバーはオペレーティングシステムの供給元から配布するものでなく、 それらの商用サポートではカバーされません。ドライバーの供給元のサポートと ライセンスの条項を確認して下さい。"
+msgid ""
+"These drivers do not come from your operating system supplier and will not "
+"be covered by their commercial support.  See the support and license terms "
+"of the driver's supplier."
+msgstr ""
+"これらのドライバーはオペレーティングシステムの供給元から配布するものでなく、 "
+"それらの商用サポートではカバーされません。ドライバーの供給元のサポートと ライ"
+"センスの条項を確認して下さい。"
 
 #: ../glade/NewPrinterWindow.glade.h:99
-msgid "This driver supports additional hardware that may be installed in the printer."
-msgstr "このドライバーはプリンターにインストールできるような追加のハードウェアを サポートします。"
+msgid ""
+"This driver supports additional hardware that may be installed in the "
+"printer."
+msgstr ""
+"このドライバーはプリンターにインストールできるような追加のハードウェアを サ"
+"ポートします。"
 
 #: ../glade/NewPrinterWindow.glade.h:100
-msgid "This is done by assuming that options with the same name do have the same meaning. Settings of options that are not present in the new PPD will be lost and options only present in the new PPD will be set to default."
-msgstr "これは同じ名前のオプションは同じ意味を持つと仮定することで行われます。 新しい PPD にないオプション設定は失われ、新しい PPD にあるオプションのみがデフォルトに設定されます。"
+msgid ""
+"This is done by assuming that options with the same name do have the same "
+"meaning. Settings of options that are not present in the new PPD will be "
+"lost and options only present in the new PPD will be set to default."
+msgstr ""
+"これは同じ名前のオプションは同じ意味を持つと仮定することで行われます。 新し"
+"い PPD にないオプション設定は失われ、新しい PPD にあるオプションのみがデフォ"
+"ルトに設定されます。"
 
 #: ../glade/NewPrinterWindow.glade.h:101
-msgid "This way all current option settings will be lost. The default settings of the new PPD will be used. "
-msgstr "このようにして現在のすべてのオプション設定は失われることになり、 新しい PPD のデフォルト設定が使用されるようになります。"
+msgid ""
+"This way all current option settings will be lost. The default settings of "
+"the new PPD will be used. "
+msgstr ""
+"このようにして現在のすべてのオプション設定は失われることになり、 新しい PPD "
+"のデフォルト設定が使用されるようになります。"
 
 #: ../glade/NewPrinterWindow.glade.h:102
 msgid "Try to copy the option settings over from the old PPD. "
@@ -2032,8 +2077,12 @@ msgid "Use the new PPD (Postscript Printer Description) as is."
 msgstr "新しい PPD (Postscript Printer Description) のままで使用します。"
 
 #: ../glade/NewPrinterWindow.glade.h:107
-msgid "With this choice no driver download will be performed. In the next steps a locally installed driver will be selected."
-msgstr "この選択ではドライバーのダウンロードは実行されません。次のステップで、 ローカルでインストールされるドライバーが選択されます。"
+msgid ""
+"With this choice no driver download will be performed. In the next steps a "
+"locally installed driver will be selected."
+msgstr ""
+"この選択ではドライバーのダウンロードは実行されません。次のステップで、 ローカ"
+"ルでインストールされるドライバーが選択されます。"
 
 #: ../glade/NewPrinterWindow.glade.h:108
 msgid "Yes, I accept this license"
@@ -2397,7 +2446,7 @@ msgstr "テストページの印刷"
 
 #. Not more than 25 characters
 #: ../glade/PrinterPropertiesDialog.glade.h:110
-#: ../troubleshoot/PrintTestPage.py:72
+#: ../troubleshoot/PrintTestPage.py:73
 msgid "Print Test Page"
 msgstr "テストページの印刷"
 
@@ -2446,8 +2495,14 @@ msgid "Sides:"
 msgstr "面:"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:123
-msgid "Specify the default job options for this printer.  Jobs arriving at this print server will have these options added if they are not already set by the application."
-msgstr "このプリンター用のデフォルト依頼オプションを指定して下さい。アプリケーションで既に設定されていない場合は、このプリンターサーバーに到着する依頼に、これらのオプションが追加されます。"
+msgid ""
+"Specify the default job options for this printer.  Jobs arriving at this "
+"print server will have these options added if they are not already set by "
+"the application."
+msgstr ""
+"このプリンター用のデフォルト依頼オプションを指定して下さい。アプリケーション"
+"で既に設定されていない場合は、このプリンターサーバーに到着する依頼に、これら"
+"のオプションが追加されます。"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:124
 msgid "Starting Banner:"
@@ -2459,7 +2514,9 @@ msgstr "このプリンターの状態メッセージはありません。"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:126
 msgid "To add a new option, enter its name in the box below and click to add."
-msgstr "新規のオプションを追加するには、下のボックスにその名前を入力して、追加のクリックをします。"
+msgstr ""
+"新規のオプションを追加するには、下のボックスにその名前を入力して、追加のク"
+"リックをします。"
 
 #: ../glade/PrinterPropertiesDialog.glade.h:127
 msgid "Top margin:"
@@ -2699,8 +2756,7 @@ msgstr "未接続?"
 msgid "Printer '%s' may not be connected."
 msgstr "プリンター '%s' が接続されていないようです。"
 
-#: ../statereason.py:114
-#: ../statereason.py:130
+#: ../statereason.py:114 ../statereason.py:130
 msgid "Printer error"
 msgstr "プリンターのエラー"
 
@@ -2722,13 +2778,11 @@ msgstr "プリンターの警告"
 msgid "Printer '%s': '%s'."
 msgstr "プリンター '%s': '%s'。"
 
-#: ../timedops.py:102
-#: ../timedops.py:181
+#: ../timedops.py:102 ../timedops.py:181
 msgid "Please wait"
 msgstr "お待ちください"
 
-#: ../timedops.py:108
-#: ../timedops.py:188
+#: ../timedops.py:108 ../timedops.py:188
 msgid "Gathering information"
 msgstr "情報を収集中です"
 
@@ -2740,68 +2794,87 @@ msgstr "フィルター (_F):"
 msgid "Printing troubleshooter"
 msgstr "印刷トラブルシューター"
 
-#: ../troubleshoot/base.py:33
-msgid "To start this tool, select System->Administration->Printing from the main menu."
-msgstr "このツールを開始するには、メインメニューからシステム -> 管理 -> 印刷 と選択します。"
+#: ../troubleshoot/base.py:35
+msgid ""
+"To start this tool, select System->Administration->Printing from the main "
+"menu."
+msgstr ""
+"このツールを開始するには、メインメニューからシステム -> 管理 -> 印刷 と選択し"
+"ます。"
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:28
 msgid "Server Not Exporting Printers"
 msgstr "サーバーがプリンターをエキスポートしません"
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:29
-msgid "Although one or more printers are marked as being shared, this print server is not exporting shared printers to the network."
-msgstr "単数、又は複数のプリンターが共有とマークされていますが、この印刷サーバーは 共有プリンターをネットワークにエキスポートしていません。"
+msgid ""
+"Although one or more printers are marked as being shared, this print server "
+"is not exporting shared printers to the network."
+msgstr ""
+"単数、又は複数のプリンターが共有とマークされていますが、この印刷サーバーは 共"
+"有プリンターをネットワークにエキスポートしていません。"
 
 #: ../troubleshoot/CheckLocalServerPublishing.py:33
-msgid "Enable the 'Publish shared printers connected to this system' option in the server settings using the printing administration tool."
-msgstr "印刷管理ツールを使用してサーバー設定内の「このシステムに接続された共有プリンターを 公開」オプションを有効にします。 "
+msgid ""
+"Enable the 'Publish shared printers connected to this system' option in the "
+"server settings using the printing administration tool."
+msgstr ""
+"印刷管理ツールを使用してサーバー設定内の「このシステムに接続された共有プリン"
+"ターを 公開」オプションを有効にします。 "
 
-#: ../troubleshoot/CheckPPDSanity.py:44
-#: ../applet.py:187
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:187
 msgid "Install"
 msgstr "インストール"
 
-#: ../troubleshoot/CheckPPDSanity.py:96
+#: ../troubleshoot/CheckPPDSanity.py:97
 msgid "Invalid PPD File"
 msgstr "無効な PPD ファイル"
 
-#: ../troubleshoot/CheckPPDSanity.py:106
+#: ../troubleshoot/CheckPPDSanity.py:108
 #, python-format
-msgid "The PPD file for printer '%s' does not conform to the specification.  Possible reason follows:"
-msgstr "プリンター '%s' 用の PPD ファイルは仕様に適合しません。考えられる 理由は以下のようになります:"
+msgid ""
+"The PPD file for printer '%s' does not conform to the specification.  "
+"Possible reason follows:"
+msgstr ""
+"プリンター '%s' 用の PPD ファイルは仕様に適合しません。考えられる 理由は以下"
+"のようになります:"
 
 #. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:112
+#: ../troubleshoot/CheckPPDSanity.py:114
 #, python-format
 msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "プリンター '%s' の PPD ファイルに問題があります。"
 
-#: ../troubleshoot/CheckPPDSanity.py:122
+#: ../troubleshoot/CheckPPDSanity.py:124
 msgid "Missing Printer Driver"
 msgstr "プリンタードライバーがない"
 
-#: ../troubleshoot/CheckPPDSanity.py:136
+#: ../troubleshoot/CheckPPDSanity.py:138
 #, python-format
-msgid "Printer '%s' requires the '%s' program but it is not currently installed."
-msgstr "プリンター '%s' には %s プログラムが必要だが、現在インストールされていない"
+msgid ""
+"Printer '%s' requires the '%s' program but it is not currently installed."
+msgstr ""
+"プリンター '%s' には %s プログラムが必要だが、現在インストールされていない"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:29
 msgid "Choose Network Printer"
 msgstr "ネットワークプリンターを選択"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:30
-msgid "Please select the network printer you are trying to use from the list below. If it does not appear in the list, select 'Not listed'."
-msgstr "使用するネットワークプリンターを以下の一覧から選択して下さい。 一覧にない場合は、「一覧になし」を選択します。"
+msgid ""
+"Please select the network printer you are trying to use from the list below. "
+"If it does not appear in the list, select 'Not listed'."
+msgstr ""
+"使用するネットワークプリンターを以下の一覧から選択して下さい。 一覧にない場合"
+"は、「一覧になし」を選択します。"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:39
-#: ../troubleshoot/ChoosePrinter.py:40
-#: ../troubleshoot/DeviceListed.py:38
+#: ../troubleshoot/ChoosePrinter.py:40 ../troubleshoot/DeviceListed.py:38
 msgid "Information"
 msgstr "情報"
 
 #: ../troubleshoot/ChooseNetworkPrinter.py:75
-#: ../troubleshoot/ChoosePrinter.py:64
-#: ../troubleshoot/DeviceListed.py:70
+#: ../troubleshoot/ChoosePrinter.py:64 ../troubleshoot/DeviceListed.py:70
 msgid "Not listed"
 msgstr "一覧になし"
 
@@ -2810,24 +2883,37 @@ msgid "Choose Printer"
 msgstr "プリンターを選択"
 
 #: ../troubleshoot/ChoosePrinter.py:31
-msgid "Please select the printer you are trying to use from the list below. If it does not appear in the list, select 'Not listed'."
-msgstr "使用するプリンターを以下の一覧から選択して下さい。一覧にない場合は、 「一覧になし」を選択します。"
+msgid ""
+"Please select the printer you are trying to use from the list below. If it "
+"does not appear in the list, select 'Not listed'."
+msgstr ""
+"使用するプリンターを以下の一覧から選択して下さい。一覧にない場合は、 「一覧に"
+"なし」を選択します。"
 
 #: ../troubleshoot/DeviceListed.py:30
 msgid "Choose Device"
 msgstr "デバイスを選択"
 
 #: ../troubleshoot/DeviceListed.py:31
-msgid "Please select the device you want to use from the list below. If it does not appear in the list, select 'Not listed'."
-msgstr "使用するデバイスを以下の一覧から選択して下さい。一覧にない場合は、 「一覧になし」を選択します。"
+msgid ""
+"Please select the device you want to use from the list below. If it does not "
+"appear in the list, select 'Not listed'."
+msgstr ""
+"使用するデバイスを以下の一覧から選択して下さい。一覧にない場合は、 「一覧にな"
+"し」を選択します。"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:31
 msgid "Debugging"
 msgstr "デバッグ機能有効化中"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:32
-msgid "I would like to enable debugging output from the CUPS scheduler.  This may cause the scheduler to restart.  Click the button below to enable debugging."
-msgstr "CUPS スケジューラからのデバッグ出力を有効にします。これはスケジューラが 再開始する原因になるかも知れません。以下のボタンを押してデバッグ機能を有効にして下さい。"
+msgid ""
+"I would like to enable debugging output from the CUPS scheduler.  This may "
+"cause the scheduler to restart.  Click the button below to enable debugging."
+msgstr ""
+"CUPS スケジューラからのデバッグ出力を有効にします。これはスケジューラが 再開"
+"始する原因になるかも知れません。以下のボタンを押してデバッグ機能を有効にして"
+"下さい。"
 
 #: ../troubleshoot/ErrorLogCheckpoint.py:36
 msgid "Enable Debugging"
@@ -2854,8 +2940,12 @@ msgid "Incorrect Page Size"
 msgstr "誤ったページサイズ"
 
 #: ../troubleshoot/Locale.py:30
-msgid "The page size for the print job was not the printer's default page size.  If this is not intentional it may cause alignment problems."
-msgstr "印刷ジョブ用のページサイズはプリンターのデフォルトページサイズでは ありません。これが意図的でない場合は、整列問題になるかも知れません。"
+msgid ""
+"The page size for the print job was not the printer's default page size.  If "
+"this is not intentional it may cause alignment problems."
+msgstr ""
+"印刷ジョブ用のページサイズはプリンターのデフォルトページサイズでは ありませ"
+"ん。これが意図的でない場合は、整列問題になるかも知れません。"
 
 #: ../troubleshoot/Locale.py:43
 msgid "Print job page size:"
@@ -2871,7 +2961,9 @@ msgstr "プリンターの場所"
 
 #: ../troubleshoot/LocalOrRemote.py:27
 msgid "Is the printer connected to this computer or available on the network?"
-msgstr "プリンターはこのコンピュータに接続されているか、又はネットワーク上で使用できますか？"
+msgstr ""
+"プリンターはこのコンピュータに接続されているか、又はネットワーク上で使用でき"
+"ますか？"
 
 #: ../troubleshoot/LocalOrRemote.py:29
 msgid "Locally connected printer"
@@ -2906,32 +2998,37 @@ msgstr "エラーは以下に一覧表示:"
 msgid "Warnings are listed below:"
 msgstr "警告は以下の表示の通りです。"
 
-#: ../troubleshoot/PrintTestPage.py:62
+#: ../troubleshoot/PrintTestPage.py:63
 msgid "Test Page"
 msgstr "テストページ"
 
-#: ../troubleshoot/PrintTestPage.py:63
-msgid "Now print a test page.  If you are having problems printing a specific document, print that document now and mark the print job below."
-msgstr "ここでテストページを印刷します。特定のドキュメントの印刷に問題が ある場合は、そのドキュメントを今、印刷してその印刷ジョブを以下に マークします。"
+#: ../troubleshoot/PrintTestPage.py:64
+msgid ""
+"Now print a test page.  If you are having problems printing a specific "
+"document, print that document now and mark the print job below."
+msgstr ""
+"ここでテストページを印刷します。特定のドキュメントの印刷に問題が ある場合は、"
+"そのドキュメントを今、印刷してその印刷ジョブを以下に マークします。"
 
-#: ../troubleshoot/PrintTestPage.py:75
+#: ../troubleshoot/PrintTestPage.py:76
 msgid "Cancel All Jobs"
 msgstr "全てのジョブをキャンセル"
 
-#: ../troubleshoot/PrintTestPage.py:81
+#: ../troubleshoot/PrintTestPage.py:82
 msgid "Test"
 msgstr "テスト"
 
-#: ../troubleshoot/PrintTestPage.py:111
+#: ../troubleshoot/PrintTestPage.py:112
 msgid "Did the marked print jobs print correctly?"
 msgstr "マークされた印刷ジョブは正常に印刷しましたか？"
 
-#: ../troubleshoot/PrintTestPage.py:143
+#: ../troubleshoot/PrintTestPage.py:144
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
-msgstr "最初にペーパータイプ '%s' をプリンターに挿入することを忘れないで下さい。"
+msgstr ""
+"最初にペーパータイプ '%s' をプリンターに挿入することを忘れないで下さい。"
 
-#: ../troubleshoot/PrintTestPage.py:416
+#: ../troubleshoot/PrintTestPage.py:417
 msgid "Error submitting test page"
 msgstr "テストページの提出中にエラー"
 
@@ -2943,7 +3040,8 @@ msgstr "与えられた理由は: '%s'"
 
 #: ../troubleshoot/QueueNotEnabled.py:58
 msgid "This may be due to the printer being disconnected or switched off."
-msgstr "これは、プリンターが切断されているか、スイッチオフが原因かも知れません。"
+msgstr ""
+"これは、プリンターが切断されているか、スイッチオフが原因かも知れません。"
 
 #: ../troubleshoot/QueueNotEnabled.py:62
 msgid "Queue Not Enabled"
@@ -2955,8 +3053,12 @@ msgid "The queue '%s' is not enabled."
 msgstr "キュー '%s' は有効になっていません。"
 
 #: ../troubleshoot/QueueNotEnabled.py:71
-msgid "To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the printer in the printer administration tool."
-msgstr "有効にするには、そのプリンターの管理ツールのポリシータブの中の「有効にする」 チェックボックスを選択します。"
+msgid ""
+"To enable it, select the 'Enabled' checkbox in the 'Policies' tab for the "
+"printer in the printer administration tool."
+msgstr ""
+"有効にするには、そのプリンターの管理ツールのポリシータブの中の「有効にする」 "
+"チェックボックスを選択します。"
 
 #: ../troubleshoot/QueueRejectingJobs.py:31
 msgid "Queue Rejecting Jobs"
@@ -2968,16 +3070,24 @@ msgid "The queue '%s' is rejecting jobs."
 msgstr "キュー '%s' がジョブを拒否しています。"
 
 #: ../troubleshoot/QueueRejectingJobs.py:70
-msgid "To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the 'Policies' tab for the printer in the printer administration tool."
-msgstr "キューがジョブを受理するようにするには、プリンター管理ツール内でそのプリンター用の 「ポリシー」タブにある「ジョブを受理」を選択します。"
+msgid ""
+"To make the queue accept jobs, select the 'Accepting Jobs' checkbox in the "
+"'Policies' tab for the printer in the printer administration tool."
+msgstr ""
+"キューがジョブを受理するようにするには、プリンター管理ツール内でそのプリン"
+"ター用の 「ポリシー」タブにある「ジョブを受理」を選択します。"
 
 #: ../troubleshoot/RemoteAddress.py:26
 msgid "Remote Address"
 msgstr "リモートアクセス"
 
 #: ../troubleshoot/RemoteAddress.py:27
-msgid "Please enter as many details as you can about the network address of this printer."
-msgstr "このプリンターのネットワークアドレスに関して出来るだけ多くの詳細事項を記入して 下さい。"
+msgid ""
+"Please enter as many details as you can about the network address of this "
+"printer."
+msgstr ""
+"このプリンターのネットワークアドレスに関して出来るだけ多くの詳細事項を記入し"
+"て 下さい。"
 
 #: ../troubleshoot/RemoteAddress.py:35
 msgid "Server name:"
@@ -2992,8 +3102,14 @@ msgid "CUPS Service Stopped"
 msgstr "CUPS サービスが停止しました"
 
 #: ../troubleshoot/SchedulerNotRunning.py:29
-msgid "The CUPS print spooler does not appear to be running.  To correct this, choose System->Administration->Services from the main menu and look for the 'cups' service."
-msgstr "CUPS プリントスプーラは作動しているように見えません。これを修正するには、 メインメニューから システム -> 管理 -> サービスと進んで 'cups' サービスを 見つけます。"
+msgid ""
+"The CUPS print spooler does not appear to be running.  To correct this, "
+"choose System->Administration->Services from the main menu and look for the "
+"'cups' service."
+msgstr ""
+"CUPS プリントスプーラは作動しているように見えません。これを修正するには、 メ"
+"インメニューから システム -> 管理 -> サービスと進んで 'cups' サービスを 見つ"
+"けます。"
 
 #: ../troubleshoot/ServerFirewalled.py:26
 msgid "Check Server Firewall"
@@ -3005,16 +3121,24 @@ msgstr "サーバーへの接続ができません。"
 
 #: ../troubleshoot/ServerFirewalled.py:42
 #, python-format
-msgid "Please check to see if a firewall or router configuration is blocking TCP port %d on server '%s'."
-msgstr "ファイアウォール、又はルータ設定が、TCP ポート  %d をサーバー '%s' 上で ブロックしているかどうかチェックして下さい。"
+msgid ""
+"Please check to see if a firewall or router configuration is blocking TCP "
+"port %d on server '%s'."
+msgstr ""
+"ファイアウォール、又はルータ設定が、TCP ポート  %d をサーバー '%s' 上で ブ"
+"ロックしているかどうかチェックして下さい。"
 
 #: ../troubleshoot/Shrug.py:26
 msgid "Sorry!"
 msgstr "すみません！"
 
 #: ../troubleshoot/Shrug.py:27
-msgid "I have not been able to work out what the problem is, but I have collected some useful information to put in a bug report."
-msgstr "この問題が何であるか把握できません。しかし、バグレポートに提出するための 役に立つ情報を収集しました。"
+msgid ""
+"I have not been able to work out what the problem is, but I have collected "
+"some useful information to put in a bug report."
+msgstr ""
+"この問題が何であるか把握できません。しかし、バグレポートに提出するための 役に"
+"立つ情報を収集しました。"
 
 #: ../troubleshoot/Shrug.py:32
 msgid "Diagnostic Output (Advanced)"
@@ -3025,8 +3149,12 @@ msgid "Trouble-shooting Printing"
 msgstr "印刷のトラブルシューティング"
 
 #: ../troubleshoot/Welcome.py:45
-msgid "In the next few screens I will ask you some questions about your problem with printing. Based on your answers I will try to suggest a solution."
-msgstr "次のいくつかの画面で、印刷に関する問題について質問を表示します。 その回答に応じて解決策を提案してみます。"
+msgid ""
+"In the next few screens I will ask you some questions about your problem "
+"with printing. Based on your answers I will try to suggest a solution."
+msgstr ""
+"次のいくつかの画面で、印刷に関する問題について質問を表示します。 その回答に応"
+"じて解決策を提案してみます。"
 
 #: ../troubleshoot/Welcome.py:49
 msgid "Click 'Forward' to begin."
@@ -3038,8 +3166,7 @@ msgstr "新しいプリンターの設定"
 
 #. name is a URI, no queue was generated, because no suitable
 #. driver was found
-#: ../applet.py:116
-#: ../applet.py:175
+#: ../applet.py:116 ../applet.py:175
 msgid "Missing printer driver"
 msgstr "プリンタードライバーが見つからない"
 
@@ -3070,8 +3197,7 @@ msgstr "`%s' はドライバーのインストールを必要とします: %s。
 msgid "`%s' is ready for printing."
 msgstr "`%s' は印刷準備ができています。"
 
-#: ../applet.py:207
-#: ../applet.py:219
+#: ../applet.py:207 ../applet.py:219
 msgid "Print test page"
 msgstr "テストページを印刷"
 
@@ -3107,4 +3233,3 @@ msgstr "印刷依頼を管理する"
 #: ../my-default-printer.desktop.in.h:2
 msgid "Select default printer"
 msgstr "デフォルトのプリンターを選択する"
-

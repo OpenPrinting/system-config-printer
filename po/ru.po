@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2010-03-10 09:35+0000\n"
+"POT-Creation-Date: 2010-05-14 17:11+0100\n"
 "PO-Revision-Date: 2010-01-22 14:24+1100\n"
 "Last-Translator: Yulia <ypoyarko@redhat.com>\n"
 "Language-Team: Russian <fedora-trans-ru@redhat.com>\n"
@@ -23,31 +23,31 @@ msgstr ""
 "Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
 "10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: ../AdvancedServerSettings.py:42
+#: ../AdvancedServerSettings.py:44
 msgid "Advanced Server Settings"
 msgstr "Дополнительные параметры сервера"
 
-#: ../AdvancedServerSettings.py:59
+#: ../AdvancedServerSettings.py:61
 msgid "Job History"
 msgstr "История заданий"
 
-#: ../AdvancedServerSettings.py:70
+#: ../AdvancedServerSettings.py:72
 msgid "Do not preserve job history"
 msgstr "Не сохранять историю заданий"
 
-#: ../AdvancedServerSettings.py:72
+#: ../AdvancedServerSettings.py:74
 msgid "Preserve job history but not files"
 msgstr "Сохранять историю без файлов"
 
-#: ../AdvancedServerSettings.py:75
+#: ../AdvancedServerSettings.py:77
 msgid "Preserve job files (allow reprinting)"
 msgstr "Сохранять файлы заданий (позволяет повторную печать)"
 
-#: ../AdvancedServerSettings.py:83
+#: ../AdvancedServerSettings.py:85
 msgid "Browse Servers"
 msgstr "Обзор серверов"
 
-#: ../AdvancedServerSettings.py:94
+#: ../AdvancedServerSettings.py:96
 msgid ""
 "Usually print servers broadcast their queues.  Specify print servers below "
 "to periodically ask for queues instead."
@@ -55,61 +55,62 @@ msgstr ""
 "Как правило, серверы печати рассылают сведения о своих очередях. Если вместо "
 "этого вы хотите периодически их опрашивать, укажите ниже список серверов."
 
-#: ../AdvancedServerSettings.py:215
+#: ../AdvancedServerSettings.py:217
 msgid "Enter IP address"
 msgstr "Введите IP-адрес"
 
-#: ../asyncipp.py:420 ../authconn.py:403 ../authconn.py:405
+#: ../asyncipp.py:423 ../authconn.py:402 ../authconn.py:404
 #: ../errordialogs.py:65 ../pysmb.py:75 ../pysmb.py:77
 msgid "Not authorized"
 msgstr "Не авторизован"
 
-#: ../asyncipp.py:421 ../authconn.py:406 ../pysmb.py:78
+#: ../asyncipp.py:424 ../authconn.py:405 ../pysmb.py:78
 msgid "The password may be incorrect."
 msgstr "Возможно пароль ошибочен."
 
-#: ../asyncipp.py:432 ../authconn.py:427
+#: ../asyncipp.py:435 ../authconn.py:426
 #, python-format
 msgid "Authentication (%s)"
 msgstr "Аутентификация (%s)"
 
-#: ../asyncipp.py:497 ../authconn.py:260 ../errordialogs.py:56
+#: ../asyncipp.py:500 ../authconn.py:259 ../errordialogs.py:56
 #: ../errordialogs.py:70
 msgid "CUPS server error"
 msgstr "Ошибка сервера CUPS"
 
-#: ../asyncipp.py:499 ../authconn.py:258
+#: ../asyncipp.py:502 ../authconn.py:257
 #, python-format
 msgid "CUPS server error (%s)"
 msgstr "Ошибка сервера CUPS (%s)"
 
-#: ../asyncipp.py:516 ../authconn.py:269 ../errordialogs.py:57
-#: ../troubleshoot/PrintTestPage.py:417
+#: ../asyncipp.py:519 ../authconn.py:268 ../errordialogs.py:57
+#: ../troubleshoot/PrintTestPage.py:418
 #, python-format
 msgid "There was an error during the CUPS operation: '%s'."
 msgstr "Обнаружена ошибка во время операции CUPS: «%s»."
 
-#: ../asyncipp.py:519 ../authconn.py:272
+#: ../asyncipp.py:522 ../authconn.py:271
 msgid "Retry"
 msgstr "Повтор"
 
-#: ../asyncipp.py:530 ../authconn.py:219 ../authconn.py:241
+#: ../asyncipp.py:534 ../authconn.py:219 ../authconn.py:241
 msgid "Operation canceled"
 msgstr "Действие отменено"
 
-#: ../authconn.py:37 ../glade/NewPrinterWindow.glade.h:106
+#: ../authconn.py:37 ../pysmb.py:108 ../glade/NewPrinterWindow.glade.h:106
 msgid "Username:"
 msgstr "Имя пользователя:"
 
-#: ../authconn.py:38 ../glade/NewPrinterWindow.glade.h:75
+#: ../authconn.py:38 ../pysmb.py:114 ../glade/NewPrinterWindow.glade.h:75
 msgid "Password:"
 msgstr "Пароль:"
 
-#: ../authconn.py:39
+#: ../authconn.py:39 ../pysmb.py:111
 msgid "Domain:"
 msgstr "Домен:"
 
-#: ../authconn.py:48 ../authconn.py:429
+#. After that, prompt
+#: ../authconn.py:48 ../authconn.py:428 ../pysmb.py:83
 msgid "Authentication"
 msgstr "Аутентификация"
 
@@ -145,7 +146,7 @@ msgstr "Требуется обновление"
 msgid "Server error"
 msgstr "Ошибка сервера"
 
-#: ../errordialogs.py:82 ../system-config-printer.py:1217
+#: ../errordialogs.py:82 ../system-config-printer.py:1222
 msgid "Not connected"
 msgstr "Не подключен"
 
@@ -167,7 +168,7 @@ msgstr "_Новая группа"
 msgid "_New Group from Selection"
 msgstr "_Новая группа из выбора"
 
-#: ../GroupsPane.py:98 ../system-config-printer.py:409
+#: ../GroupsPane.py:98 ../system-config-printer.py:411
 msgid "_Rename"
 msgstr "Переи_меновать"
 
@@ -205,73 +206,73 @@ msgstr "Все принтеры"
 msgid "Favorites"
 msgstr "Избранное"
 
-#: ../jobviewer.py:167
+#: ../jobviewer.py:169
 msgid "_Hold"
 msgstr "_Приостановить"
 
-#: ../jobviewer.py:169
+#: ../jobviewer.py:171
 msgid "_Release"
 msgstr "_Возобновить"
 
-#: ../jobviewer.py:171
+#: ../jobviewer.py:173
 msgid "Re_print"
 msgstr "Пере_печатать"
 
-#: ../jobviewer.py:173
+#: ../jobviewer.py:175
 msgid "_Authenticate"
 msgstr "_Аутентификация"
 
-#: ../jobviewer.py:211 ../troubleshoot/PrintTestPage.py:82
+#: ../jobviewer.py:213 ../troubleshoot/PrintTestPage.py:83
 msgid "Job"
 msgstr "Задание"
 
-#: ../jobviewer.py:212
+#: ../jobviewer.py:214
 msgid "User"
 msgstr "Пользователь"
 
-#: ../jobviewer.py:213 ../troubleshoot/PrintTestPage.py:86
+#: ../jobviewer.py:215 ../troubleshoot/PrintTestPage.py:87
 msgid "Document"
 msgstr "Документ"
 
-#: ../jobviewer.py:214 ../my-default-printer.py:153
-#: ../system-config-printer.py:381 ../system-config-printer.py:1365
-#: ../troubleshoot/PrintTestPage.py:84
+#: ../jobviewer.py:216 ../my-default-printer.py:153
+#: ../system-config-printer.py:383 ../system-config-printer.py:1370
+#: ../troubleshoot/PrintTestPage.py:85
 msgid "Printer"
 msgstr "Принтер"
 
-#: ../jobviewer.py:215
+#: ../jobviewer.py:217
 msgid "Size"
 msgstr "Размер"
 
-#: ../jobviewer.py:231
+#: ../jobviewer.py:233
 msgid "Time submitted"
 msgstr "Время отсылки"
 
-#: ../jobviewer.py:235 ../troubleshoot/PrintTestPage.py:87
+#: ../jobviewer.py:237 ../troubleshoot/PrintTestPage.py:88
 msgid "Status"
 msgstr "Состояние"
 
-#: ../jobviewer.py:267
+#: ../jobviewer.py:269
 #, python-format
 msgid "my jobs on %s"
 msgstr "мои задания на %s"
 
-#: ../jobviewer.py:269
+#: ../jobviewer.py:271
 msgid "my jobs"
 msgstr "мои задания"
 
-#: ../jobviewer.py:274
+#: ../jobviewer.py:276
 msgid "all jobs"
 msgstr "все задания"
 
-#: ../jobviewer.py:275
+#: ../jobviewer.py:277
 #, python-format
 msgid "Document Print Status (%s)"
 msgstr "Состояние печати документа (%s)"
 
-#: ../jobviewer.py:430 ../jobviewer.py:705 ../jobviewer.py:1519
-#: ../jobviewer.py:1524 ../jobviewer.py:1533 ../jobviewer.py:1612
-#: ../system-config-printer.py:2644 ../glade/NewPrinterWindow.glade.h:104
+#: ../jobviewer.py:429 ../jobviewer.py:706 ../jobviewer.py:1520
+#: ../jobviewer.py:1525 ../jobviewer.py:1534 ../jobviewer.py:1613
+#: ../system-config-printer.py:2649 ../glade/NewPrinterWindow.glade.h:104
 #: ../troubleshoot/ChooseNetworkPrinter.py:102
 #: ../troubleshoot/ChooseNetworkPrinter.py:103
 #: ../troubleshoot/ChooseNetworkPrinter.py:106
@@ -282,173 +283,173 @@ msgstr "Состояние печати документа (%s)"
 msgid "Unknown"
 msgstr "Неизвестно"
 
-#: ../jobviewer.py:436
+#: ../jobviewer.py:435
 msgid "a minute ago"
 msgstr "минуту назад"
 
-#: ../jobviewer.py:439
+#: ../jobviewer.py:438
 #, python-format
 msgid "%d minutes ago"
 msgstr "%d мин. назад"
 
-#: ../jobviewer.py:443
+#: ../jobviewer.py:442
 msgid "an hour ago"
 msgstr "1 час назад"
 
-#: ../jobviewer.py:445
+#: ../jobviewer.py:444
 #, python-format
 msgid "%d hours ago"
 msgstr "%d час. назад"
 
-#: ../jobviewer.py:449
+#: ../jobviewer.py:448
 msgid "yesterday"
 msgstr "вчера"
 
-#: ../jobviewer.py:451
+#: ../jobviewer.py:450
 #, python-format
 msgid "%d days ago"
 msgstr "%d дня/дней назад"
 
-#: ../jobviewer.py:455
+#: ../jobviewer.py:454
 msgid "last week"
 msgstr "на прошлой неделе"
 
-#: ../jobviewer.py:457
+#: ../jobviewer.py:456
 #, python-format
 msgid "%d weeks ago"
 msgstr "%d недели/недель назад"
 
-#: ../jobviewer.py:656 ../jobviewer.py:735
+#: ../jobviewer.py:657 ../jobviewer.py:736
 msgid "authenticating job"
 msgstr "Задача аутентификации"
 
-#: ../jobviewer.py:703
+#: ../jobviewer.py:704
 #, python-format
 msgid "Authentication required for printing document `%s' (job %d)"
 msgstr "Для печати документа «%s» (задание %d) требуется проверка подлинности"
 
-#: ../jobviewer.py:877
+#: ../jobviewer.py:878
 msgid "Cancel Job"
 msgstr "Отменить задание"
 
-#: ../jobviewer.py:891
+#: ../jobviewer.py:892
 msgid "Do you really want to cancel this job?"
 msgstr "Вы действительно хотите отменить это задание?"
 
-#: ../jobviewer.py:919
+#: ../jobviewer.py:920
 msgid "canceling job"
 msgstr "отмена задания"
 
-#: ../jobviewer.py:943
+#: ../jobviewer.py:944
 msgid "holding job"
 msgstr "задержка задания"
 
-#: ../jobviewer.py:967
+#: ../jobviewer.py:968
 msgid "releasing job"
 msgstr "освобождение задания"
 
-#: ../jobviewer.py:1088
+#: ../jobviewer.py:1089
 msgid "No documents queued"
 msgstr "Нет документов в очереди"
 
-#: ../jobviewer.py:1090
+#: ../jobviewer.py:1091
 msgid "1 document queued"
 msgstr "1 документ в очереди"
 
-#: ../jobviewer.py:1092
+#: ../jobviewer.py:1093
 #, python-format
 msgid "%d documents queued"
 msgstr "%d докум. в очереди"
 
-#: ../jobviewer.py:1315
+#: ../jobviewer.py:1316
 #, python-format
 msgid "There was a problem sending document `%s' (job %d) to the printer."
 msgstr "При отправке на печать документа «%s» (задание %d) возникла проблема."
 
-#: ../jobviewer.py:1318
+#: ../jobviewer.py:1319
 #, python-format
 msgid "There was a problem processing document `%s' (job %d)."
 msgstr "При обработке документа «%s» (задание %d) возникла проблема."
 
 #. Give up and use the provided message untranslated.
-#: ../jobviewer.py:1325
+#: ../jobviewer.py:1326
 #, python-format
 msgid "There was a problem printing document `%s' (job %d): `%s'."
 msgstr "Во время печати документа «%s» (задание %d) возникла проблема: «%s»."
 
-#: ../jobviewer.py:1332 ../jobviewer.py:1348
+#: ../jobviewer.py:1333 ../jobviewer.py:1349
 msgid "Print Error"
 msgstr "Ошибка печати"
 
-#: ../jobviewer.py:1333
+#: ../jobviewer.py:1334
 msgid "_Diagnose"
 msgstr "_Диагностика"
 
-#: ../jobviewer.py:1354
+#: ../jobviewer.py:1355
 #, python-format
 msgid "The printer called `%s' has been disabled."
 msgstr "Принтер «%s» был выключен."
 
-#: ../jobviewer.py:1547
+#: ../jobviewer.py:1548
 msgid "Held for authentication"
 msgstr "Удерживать для аутентификации"
 
-#: ../jobviewer.py:1549 ../troubleshoot/PrintTestPage.py:42
+#: ../jobviewer.py:1550 ../troubleshoot/PrintTestPage.py:43
 msgid "Held"
 msgstr "Приостановлено"
 
-#: ../jobviewer.py:1585
+#: ../jobviewer.py:1586
 #, python-format
 msgid "Held until %s"
 msgstr "Удерживать до %s"
 
-#: ../jobviewer.py:1589
+#: ../jobviewer.py:1590
 msgid "Held until day-time"
 msgstr "Удерживать до дневного времени"
 
-#: ../jobviewer.py:1591
+#: ../jobviewer.py:1592
 msgid "Held until evening"
 msgstr "Удерживать до вечера"
 
-#: ../jobviewer.py:1593
+#: ../jobviewer.py:1594
 msgid "Held until night-time"
 msgstr "Удерживать до ночи"
 
-#: ../jobviewer.py:1595
+#: ../jobviewer.py:1596
 msgid "Held until second shift"
 msgstr "Удерживать до второй смены"
 
-#: ../jobviewer.py:1597
+#: ../jobviewer.py:1598
 msgid "Held until third shift"
 msgstr "Удерживать до третьей смены"
 
-#: ../jobviewer.py:1599
+#: ../jobviewer.py:1600
 msgid "Held until weekend"
 msgstr "Удерживать до выходных"
 
-#: ../jobviewer.py:1602 ../troubleshoot/PrintTestPage.py:41
+#: ../jobviewer.py:1603 ../troubleshoot/PrintTestPage.py:42
 msgid "Pending"
 msgstr "Запланировано"
 
-#: ../jobviewer.py:1603 ../system-config-printer.py:199
-#: ../troubleshoot/PrintTestPage.py:43
+#: ../jobviewer.py:1604 ../system-config-printer.py:200
+#: ../troubleshoot/PrintTestPage.py:44
 msgid "Processing"
 msgstr "Обработка"
 
-#: ../jobviewer.py:1604 ../system-config-printer.py:201
-#: ../troubleshoot/PrintTestPage.py:44
+#: ../jobviewer.py:1605 ../system-config-printer.py:202
+#: ../troubleshoot/PrintTestPage.py:45
 msgid "Stopped"
 msgstr "Остановлено"
 
-#: ../jobviewer.py:1605 ../troubleshoot/PrintTestPage.py:45
+#: ../jobviewer.py:1606 ../troubleshoot/PrintTestPage.py:46
 msgid "Canceled"
 msgstr "Отменено"
 
-#: ../jobviewer.py:1606 ../troubleshoot/PrintTestPage.py:46
+#: ../jobviewer.py:1607 ../troubleshoot/PrintTestPage.py:47
 msgid "Aborted"
 msgstr "Прервано"
 
-#: ../jobviewer.py:1607 ../troubleshoot/PrintTestPage.py:47
+#: ../jobviewer.py:1608 ../troubleshoot/PrintTestPage.py:48
 msgid "Completed"
 msgstr "Выполнено"
 
@@ -464,7 +465,7 @@ msgstr "Использовать _системный"
 msgid "_Set Default"
 msgstr "_Использовать по умолчанию"
 
-#: ../my-default-printer.py:158 ../system-config-printer.py:439
+#: ../my-default-printer.py:158 ../system-config-printer.py:441
 #: ../troubleshoot/ChooseNetworkPrinter.py:37
 #: ../troubleshoot/ChoosePrinter.py:38
 msgid "Location"
@@ -474,394 +475,427 @@ msgstr "Местонахождение"
 msgid "Conflicts with:"
 msgstr "Конфликтует с:"
 
-#: ../ppdippstr.py:45
+#: ../ppdippstr.py:47
 msgid "Abort job"
 msgstr "Отменить задание"
 
-#: ../ppdippstr.py:46
+#: ../ppdippstr.py:48
 msgid "Retry current job"
 msgstr "Повтор текущего задания"
 
-#: ../ppdippstr.py:47
+#: ../ppdippstr.py:49
 msgid "Retry job"
 msgstr "Повтор задания"
 
-#: ../ppdippstr.py:48
+#: ../ppdippstr.py:50
 msgid "Stop printer"
 msgstr "Остановить принтер"
 
-#: ../ppdippstr.py:54
+#: ../ppdippstr.py:56
 msgid "Default behavior"
 msgstr "Стандартное поведение"
 
-#: ../ppdippstr.py:55
+#: ../ppdippstr.py:57
 msgid "Authenticated"
 msgstr "Авторизован"
 
-#: ../ppdippstr.py:61 ../system-config-printer.py:6555
+#: ../ppdippstr.py:63 ../system-config-printer.py:6576
 msgid "None"
 msgstr "Нет"
 
-#: ../ppdippstr.py:62
+#: ../ppdippstr.py:64
 msgid "Classified"
 msgstr "Классифицированный"
 
-#: ../ppdippstr.py:63
+#: ../ppdippstr.py:65
 msgid "Confidential"
 msgstr "Конфиденциально"
 
-#: ../ppdippstr.py:64
+#: ../ppdippstr.py:66
 msgid "Secret"
 msgstr "Секретный"
 
-#: ../ppdippstr.py:65
+#: ../ppdippstr.py:67
 msgid "Standard"
 msgstr "Стандартный"
 
-#: ../ppdippstr.py:66
+#: ../ppdippstr.py:68
 msgid "Top secret"
 msgstr "Строго секретный"
 
-#: ../ppdippstr.py:67
+#: ../ppdippstr.py:69
 msgid "Unclassified"
 msgstr "Неклассифицированный"
 
-#: ../ppdippstr.py:73
+#: ../ppdippstr.py:75
 msgid "No hold"
 msgstr "Не удерживать"
 
-#: ../ppdippstr.py:74
+#: ../ppdippstr.py:76
 msgid "Indefinite"
 msgstr "Бессрочно"
 
-#: ../ppdippstr.py:75
+#: ../ppdippstr.py:77
 msgid "Daytime"
 msgstr "День"
 
-#: ../ppdippstr.py:76
+#: ../ppdippstr.py:78
 msgid "Evening"
 msgstr "Вечер"
 
-#: ../ppdippstr.py:77
+#: ../ppdippstr.py:79
 msgid "Night"
 msgstr "Ночь"
 
-#: ../ppdippstr.py:78
+#: ../ppdippstr.py:80
 msgid "Second shift"
 msgstr "Вторая смена"
 
-#: ../ppdippstr.py:79
+#: ../ppdippstr.py:81
 msgid "Third shift"
 msgstr "Третья смена"
 
-#: ../ppdippstr.py:80
+#: ../ppdippstr.py:82
 msgid "Weekend"
 msgstr "Выходные"
 
-#: ../ppdippstr.py:90
+#: ../ppdippstr.py:92
 msgid "General"
 msgstr "Общий"
 
 #. HPIJS options
-#: ../ppdippstr.py:93
+#: ../ppdippstr.py:95
 msgid "Printout mode"
 msgstr "Режим распечатки"
 
-#: ../ppdippstr.py:95
+#: ../ppdippstr.py:97
 msgid "Draft (auto-detect-paper type)"
 msgstr "Черновое (автоматическое определение типа бумаги)"
 
-#: ../ppdippstr.py:97
+#: ../ppdippstr.py:99
 msgid "Draft grayscale (auto-detect-paper type)"
 msgstr "Черновой, черно-белый (автоматическое определение типа бумаги)"
 
-#: ../ppdippstr.py:99
+#: ../ppdippstr.py:101
 msgid "Normal (auto-detect-paper type)"
 msgstr "Обычный (автоматическое определение бумаги)"
 
-#: ../ppdippstr.py:101
+#: ../ppdippstr.py:103
 msgid "Normal grayscale (auto-detect-paper type)"
 msgstr "Обычный черно-белый (автоматическое определение типа бумаги)"
 
-#: ../ppdippstr.py:103
+#: ../ppdippstr.py:105
 msgid "High quality (auto-detect-paper type)"
 msgstr "Высокое качество (автоматическое определение бумаги)"
 
-#: ../ppdippstr.py:105
+#: ../ppdippstr.py:107
 msgid "High quality grayscale (auto-detect-paper type)"
 msgstr "Высокое качество, черно-белый (автоматическое определение бумаги)"
 
-#: ../ppdippstr.py:106
+#: ../ppdippstr.py:108
 msgid "Photo (on photo paper)"
 msgstr "Фото (на фото-бумаге)"
 
-#: ../ppdippstr.py:108
+#: ../ppdippstr.py:110
 msgid "Best quality (color on photo paper)"
 msgstr "Максимальное качество (цвет на фото-бумаге)"
 
-#: ../ppdippstr.py:110
+#: ../ppdippstr.py:112
 msgid "Normal quality (color on photo paper)"
 msgstr "Обычное качество (цвет на фото-бумаге)"
 
-#: ../ppdippstr.py:112
+#: ../ppdippstr.py:114
 msgid "Media source"
 msgstr "Медиа"
 
-#: ../ppdippstr.py:113
+#: ../ppdippstr.py:115
 msgid "Printer default"
 msgstr "Стандартный принтер"
 
-#: ../ppdippstr.py:114
+#: ../ppdippstr.py:116
 msgid "Photo tray"
 msgstr "Фото лоток"
 
-#: ../ppdippstr.py:115
+#: ../ppdippstr.py:117
 msgid "Upper tray"
 msgstr "Верхний лоток"
 
-#: ../ppdippstr.py:116
+#: ../ppdippstr.py:118
 msgid "Lower tray"
 msgstr "Нижний лоток"
 
-#: ../ppdippstr.py:117
+#: ../ppdippstr.py:119
 msgid "CD or DVD tray"
 msgstr "Лоток CD или DVD"
 
-#: ../ppdippstr.py:118
+#: ../ppdippstr.py:120
 msgid "Envelope feeder"
 msgstr "Лоток подачи конвертов"
 
-#: ../ppdippstr.py:119
+#: ../ppdippstr.py:121
 msgid "Large capacity tray"
 msgstr "Лоток большой вместимости"
 
-#: ../ppdippstr.py:120
+#: ../ppdippstr.py:122
 msgid "Manual feeder"
 msgstr "Лоток ручной подачи"
 
-#: ../ppdippstr.py:121
+#: ../ppdippstr.py:123
 msgid "Multi-purpose tray"
 msgstr "Универсальный лоток"
 
-#: ../ppdippstr.py:123
+#: ../ppdippstr.py:125
 msgid "Page size"
 msgstr "Размер страницы"
 
-#: ../ppdippstr.py:124
+#: ../ppdippstr.py:126
 msgid "Custom"
 msgstr "Произвольный"
 
-#: ../ppdippstr.py:125
+#: ../ppdippstr.py:127
 msgid "Photo or 4x6 inch index card"
 msgstr "Фото или карточка 4x6 дюймов"
 
-#: ../ppdippstr.py:126
+#: ../ppdippstr.py:128
 msgid "Photo or 5x7 inch index card"
 msgstr "Фото или карточка 5x7 дюймов"
 
-#: ../ppdippstr.py:127
+#: ../ppdippstr.py:129
 msgid "Photo with tear-off tab"
 msgstr "Фото с отрывным полем"
 
-#: ../ppdippstr.py:128
+#: ../ppdippstr.py:130
 msgid "3x5 inch index card"
 msgstr "Карточка 3x5 дюймов"
 
-#: ../ppdippstr.py:129
+#: ../ppdippstr.py:131
 msgid "5x8 inch index card"
 msgstr "Карточка 5x8 дюймов"
 
-#: ../ppdippstr.py:130
+#: ../ppdippstr.py:132
 msgid "A6 with tear-off tab"
 msgstr "A6 с отрывным полем"
 
-#: ../ppdippstr.py:131
+#: ../ppdippstr.py:133
 msgid "CD or DVD 80mm"
 msgstr "CD или DVD 80мм"
 
-#: ../ppdippstr.py:132
+#: ../ppdippstr.py:134
 msgid "CD or DVD 120mm"
 msgstr "CD или DVD 120мм"
 
-#: ../ppdippstr.py:134
+#: ../ppdippstr.py:136
 msgid "Double-sided printing"
 msgstr "Двухсторонняя печать"
 
-#: ../ppdippstr.py:135
+#: ../ppdippstr.py:137
 msgid "Long edge (standard)"
 msgstr "Стандартный"
 
-#: ../ppdippstr.py:136
+#: ../ppdippstr.py:138
 msgid "Short edge (flip)"
 msgstr "Блокнот"
 
-#: ../ppdippstr.py:137
+#: ../ppdippstr.py:139
 msgid "Off"
 msgstr "Выкл"
 
-#: ../ppdippstr.py:140
+#: ../ppdippstr.py:142
 msgid "Resolution, quality, ink type, media type"
 msgstr "Разрешение, качество, тип чернил, тип медиа"
 
-#: ../ppdippstr.py:141
+#: ../ppdippstr.py:143
 msgid "Controlled by 'Printout mode'"
 msgstr "Под управлением режима распечатки"
 
-#: ../ppdippstr.py:143
+#: ../ppdippstr.py:145
 msgid "300 dpi, color, black + color cartridge"
 msgstr "300 dpi, цвет, черный и цветной картридж"
 
-#: ../ppdippstr.py:145
+#: ../ppdippstr.py:147
 msgid "300 dpi, draft, color, black + color cartridge"
 msgstr "300 dpi, черновик, черный и цветной картридж"
 
-#: ../ppdippstr.py:147
+#: ../ppdippstr.py:149
 msgid "300 dpi, draft, grayscale, black + color cartridge"
 msgstr "300 dpi, черновик, черно-белое, черный и цветной картридж"
 
-#: ../ppdippstr.py:149
+#: ../ppdippstr.py:151
 msgid "300 dpi, grayscale, black + color cartridge"
 msgstr "300 dpi, черно-белое, черный и цветной картридж"
 
-#: ../ppdippstr.py:151
+#: ../ppdippstr.py:153
 msgid "600 dpi, color, black + color cartridge"
 msgstr "600 dpi, цветное, черный и цветной картридж"
 
-#: ../ppdippstr.py:153
+#: ../ppdippstr.py:155
 msgid "600 dpi, grayscale, black + color cartridge"
 msgstr "600 dpi, черно-белое, черный и цветной картридж"
 
-#: ../ppdippstr.py:155
+#: ../ppdippstr.py:157
 msgid "600 dpi, photo, black + color cartridge, photo paper"
 msgstr "600 dpi, фото, черный и цветной картридж, фото-бумага"
 
-#: ../ppdippstr.py:157
+#: ../ppdippstr.py:159
 msgid "600 dpi, color, black + color cartridge, photo paper, normal"
 msgstr "600 dpi, цветное, черный и цветной картридж, фото-бумага, обычный"
 
-#: ../ppdippstr.py:159
+#: ../ppdippstr.py:161
 msgid "1200 dpi, photo, black + color cartridge, photo paper"
 msgstr "1200 dpi, фото, черный и цветной картридж, фото-бумага"
 
-#: ../system-config-printer.py:143
+#: ../ppdippstr.py:168
+msgid "Internet Printing Protocol (ipp)"
+msgstr ""
+
+#: ../ppdippstr.py:170
+msgid "Internet Printing Protocol (http)"
+msgstr ""
+
+#: ../ppdippstr.py:172
+msgid "Internet Printing Protocol (https)"
+msgstr ""
+
+#: ../ppdippstr.py:174
+msgid "LPD/LPR Host or Printer"
+msgstr ""
+
+#: ../ppdippstr.py:176 ../system-config-printer.py:5828
+msgid "AppSocket/HP JetDirect"
+msgstr "AppSocket/HP JetDirect"
+
+#: ../ppdippstr.py:178
+#, fuzzy
+msgid "Serial Port #1"
+msgstr "Последовательный порт"
+
+#: ../ppdippstr.py:180
+msgid "LPT #1"
+msgstr ""
+
+#: ../ppdippstr.py:182 ../system-config-printer.py:5842
+msgid "Windows Printer via SAMBA"
+msgstr "Принтер Windows через SAMBA"
+
+#: ../system-config-printer.py:144
 msgid "To do this, select System->Administration->Firewall from the main menu."
 msgstr ""
 "Для этого выберите Система->Администрирование->Межсетевой экран в главном "
 "меню."
 
-#: ../system-config-printer.py:198
+#: ../system-config-printer.py:199
 msgid "Idle"
 msgstr "Простаивает"
 
-#: ../system-config-printer.py:200
+#: ../system-config-printer.py:201
 msgid "Busy"
 msgstr "Занят"
 
-#: ../system-config-printer.py:387 ../system-config-printer.py:1371
+#: ../system-config-printer.py:389 ../system-config-printer.py:1376
 msgid "Class"
 msgstr "Класс"
 
-#: ../system-config-printer.py:415
+#: ../system-config-printer.py:417
 msgid "Set As De_fault"
 msgstr "Использовать по _умолчанию"
 
-#: ../system-config-printer.py:419
+#: ../system-config-printer.py:421
 msgid "_Create class"
 msgstr "_Создать класс"
 
-#: ../system-config-printer.py:421
+#: ../system-config-printer.py:423
 msgid "View Print _Queue"
 msgstr "Просмотр _очереди печати"
 
-#: ../system-config-printer.py:423
+#: ../system-config-printer.py:425
 msgid "_Add to Group"
 msgstr "_Добавить в группу"
 
-#: ../system-config-printer.py:425
+#: ../system-config-printer.py:427
 msgid "Save Results as _Group"
 msgstr "Сохранить результаты как _группу"
 
-#: ../system-config-printer.py:427
+#: ../system-config-printer.py:429
 msgid "Save Filter as _Search Group"
 msgstr "Сохранить фильтр как группу _поиска"
 
-#: ../system-config-printer.py:431
+#: ../system-config-printer.py:433
 msgid "E_nabled"
 msgstr "_Разрешён"
 
-#: ../system-config-printer.py:433
+#: ../system-config-printer.py:435
 msgid "_Shared"
 msgstr "_Общий доступ"
 
-#: ../system-config-printer.py:437 ../troubleshoot/ChooseNetworkPrinter.py:35
+#: ../system-config-printer.py:439 ../troubleshoot/ChooseNetworkPrinter.py:35
 #: ../troubleshoot/ChoosePrinter.py:36 ../troubleshoot/DeviceListed.py:36
 msgid "Name"
 msgstr "Имя"
 
-#: ../system-config-printer.py:438
+#: ../system-config-printer.py:440
 msgid "Description"
 msgstr "Описание"
 
-#: ../system-config-printer.py:440
+#: ../system-config-printer.py:442
 msgid "Manufacturer / Model"
 msgstr "Производитель/ модель"
 
 #. Printer state reasons list
-#: ../system-config-printer.py:515
+#: ../system-config-printer.py:517
 msgid "Message"
 msgstr "Сообщение"
 
-#: ../system-config-printer.py:549
+#: ../system-config-printer.py:551
 msgid "Problems?"
 msgstr "Проблемы?"
 
-#: ../system-config-printer.py:654 ../system-config-printer.py:656
+#: ../system-config-printer.py:656 ../system-config-printer.py:658
 msgid "Members of this class"
 msgstr "Члены этого класса"
 
-#: ../system-config-printer.py:655 ../system-config-printer.py:657
+#: ../system-config-printer.py:657 ../system-config-printer.py:659
 msgid "Others"
 msgstr "Другие"
 
-#: ../system-config-printer.py:658
+#: ../system-config-printer.py:660
 msgid "Devices"
 msgstr "Устройства"
 
-#: ../system-config-printer.py:659
+#: ../system-config-printer.py:661
 msgid "Connections"
 msgstr "Соединения"
 
-#: ../system-config-printer.py:660
+#: ../system-config-printer.py:662
 msgid "Makes"
 msgstr "Производители"
 
-#: ../system-config-printer.py:661
+#: ../system-config-printer.py:663
 msgid "Models"
 msgstr "Модели"
 
-#: ../system-config-printer.py:662
+#: ../system-config-printer.py:664
 msgid "Drivers"
 msgstr "Драйверы"
 
-#: ../system-config-printer.py:663 ../glade/NewPrinterWindow.glade.h:54
+#: ../system-config-printer.py:665 ../glade/NewPrinterWindow.glade.h:54
 msgid "Downloadable Drivers"
 msgstr "Доступные для загрузки драйвера"
 
-#: ../system-config-printer.py:664
+#: ../system-config-printer.py:666
 msgid "Users"
 msgstr "Пользователи"
 
-#: ../system-config-printer.py:699
+#: ../system-config-printer.py:701
 msgid "Automatic rotation"
 msgstr "Автоматически"
 
-#: ../system-config-printer.py:984
+#: ../system-config-printer.py:986
 #, python-format
 msgid "Printer Properties - '%s' on %s"
 msgstr "Свойства принтера «%s» на %s"
 
 #. The Conflict button was pressed.
-#: ../system-config-printer.py:992
+#: ../system-config-printer.py:994
 msgid ""
 "There are conflicting options.\n"
 "Changes can only be applied after\n"
@@ -871,78 +905,78 @@ msgstr ""
 "Изменения могут быть сохранены\n"
 "только после разрешения конфликта."
 
-#: ../system-config-printer.py:1211
+#: ../system-config-printer.py:1216
 #, python-format
 msgid "Printer configuration - %s"
 msgstr "Настройка принтера — %s"
 
-#: ../system-config-printer.py:1215
+#: ../system-config-printer.py:1220
 #, python-format
 msgid "Connected to %s"
 msgstr "Подключен к %s"
 
 #. Update our copy of the printer's settings.
-#: ../system-config-printer.py:1255 ../system-config-printer.py:2101
+#: ../system-config-printer.py:1260 ../system-config-printer.py:2106
 msgid "obtaining queue details"
 msgstr "получение настроек очереди"
 
-#: ../system-config-printer.py:1293
+#: ../system-config-printer.py:1298
 msgid "Remove from Group"
 msgstr "Удалить из группы"
 
-#: ../system-config-printer.py:1359
+#: ../system-config-printer.py:1364
 msgid "Network printer (discovered)"
 msgstr "Сетевой принтер (обнаруженный)"
 
-#: ../system-config-printer.py:1362
+#: ../system-config-printer.py:1367
 msgid "Network class (discovered)"
 msgstr "Сетевой класс (обнаруженный)"
 
-#: ../system-config-printer.py:1368 ../system-config-printer.py:5803
-#: ../system-config-printer.py:5873 ../system-config-printer.py:5875
+#: ../system-config-printer.py:1373 ../system-config-printer.py:5823
+#: ../system-config-printer.py:5893 ../system-config-printer.py:5895
 msgid "Fax"
 msgstr "Факс"
 
-#: ../system-config-printer.py:1374 ../system-config-printer.py:1380
+#: ../system-config-printer.py:1379 ../system-config-printer.py:1385
 #: ../troubleshoot/LocalOrRemote.py:30
 msgid "Network printer"
 msgstr "Сетевой принтер"
 
-#: ../system-config-printer.py:1377
+#: ../system-config-printer.py:1382
 msgid "Network print share"
 msgstr "Ресурс сетевого принтера"
 
-#: ../system-config-printer.py:1562 ../glade/ConnectingDialog.glade.h:2
+#: ../system-config-printer.py:1567 ../glade/ConnectingDialog.glade.h:2
 #, no-c-format, python-format
 msgid "<i>Opening connection to %s</i>"
 msgstr "<i>Открывается соединение к %s</i>"
 
-#: ../system-config-printer.py:1945
+#: ../system-config-printer.py:1950
 msgid "Installable Options"
 msgstr "Устанавливаемые возможности"
 
-#: ../system-config-printer.py:1946
+#: ../system-config-printer.py:1951
 #: ../glade/PrinterPropertiesDialog.glade.h:111
 msgid "Printer Options"
 msgstr "Параметры принтера"
 
-#: ../system-config-printer.py:1983
+#: ../system-config-printer.py:1988
 #, python-format
 msgid "modifying class %s"
 msgstr "изменение класса %s"
 
-#: ../system-config-printer.py:1985 ../system-config-printer.py:3159
-#: ../system-config-printer.py:3184 ../system-config-printer.py:6852
-#: ../system-config-printer.py:6864 ../system-config-printer.py:6886
+#: ../system-config-printer.py:1990 ../system-config-printer.py:3164
+#: ../system-config-printer.py:3189 ../system-config-printer.py:6878
+#: ../system-config-printer.py:6890 ../system-config-printer.py:6912
 #, python-format
 msgid "modifying printer %s"
 msgstr "изменение принтера %s"
 
-#: ../system-config-printer.py:2000
+#: ../system-config-printer.py:2005
 msgid "This will delete this class!"
 msgstr "Это приведет к удалению класса!"
 
-#: ../system-config-printer.py:2001
+#: ../system-config-printer.py:2006
 msgid "Proceed anyway?"
 msgstr "Продолжить?"
 
@@ -950,43 +984,43 @@ msgstr "Продолжить?"
 #. but we have never fetched the server settings to see whether
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
-#: ../system-config-printer.py:2089 ../system-config-printer.py:3355
+#: ../system-config-printer.py:2094 ../system-config-printer.py:3360
 msgid "fetching server settings"
 msgstr "получение настроек сервера"
 
-#: ../system-config-printer.py:2159
+#: ../system-config-printer.py:2164
 msgid "Set Default Printer"
 msgstr "Назначить по умолчанию"
 
-#: ../system-config-printer.py:2161
+#: ../system-config-printer.py:2166
 msgid "Do you want to set this as the system-wide default printer?"
 msgstr "Вы хотите назначить этот принтер общесистемным принтером по умолчанию?"
 
-#: ../system-config-printer.py:2163
+#: ../system-config-printer.py:2168
 msgid "Set as the _system-wide default printer"
 msgstr "Назначить _общесистемным по умолчанию"
 
-#: ../system-config-printer.py:2165
+#: ../system-config-printer.py:2170
 msgid "_Clear my personal default setting"
 msgstr "_Сбросить мой принтер по умолчанию"
 
-#: ../system-config-printer.py:2166
+#: ../system-config-printer.py:2171
 msgid "Set as my _personal default printer"
 msgstr "Выбрать принтером по умолчанию для этого _пользователя"
 
-#: ../system-config-printer.py:2171
+#: ../system-config-printer.py:2176
 msgid "setting default printer"
 msgstr "настройка стандартного принтера"
 
-#: ../system-config-printer.py:2228
+#: ../system-config-printer.py:2233
 msgid "printing test page"
 msgstr "распечатка пробной страницы"
 
-#: ../system-config-printer.py:2241 ../system-config-printer.py:2276
+#: ../system-config-printer.py:2246 ../system-config-printer.py:2281
 msgid "Not possible"
 msgstr "Операция невозможна"
 
-#: ../system-config-printer.py:2242 ../system-config-printer.py:2277
+#: ../system-config-printer.py:2247 ../system-config-printer.py:2282
 msgid ""
 "The remote server did not accept the print job, most likely because the "
 "printer is not shared."
@@ -994,20 +1028,20 @@ msgstr ""
 "Удаленный сервер не принял задание печати, скорее всего потому, что принтер "
 "не настроен для общего доступа."
 
-#: ../system-config-printer.py:2254 ../system-config-printer.py:2269
+#: ../system-config-printer.py:2259 ../system-config-printer.py:2274
 msgid "Submitted"
 msgstr "Отправлено"
 
-#: ../system-config-printer.py:2255
+#: ../system-config-printer.py:2260
 #, python-format
 msgid "Test page submitted as job %d"
 msgstr "Тестовая страница поставлена в очередь как задание %d"
 
-#: ../system-config-printer.py:2262
+#: ../system-config-printer.py:2267
 msgid "sending maintenance command"
 msgstr "отправляется команда обслуживания"
 
-#: ../system-config-printer.py:2270
+#: ../system-config-printer.py:2275
 #, python-format
 msgid "Maintenance command submitted as job %d"
 msgstr "Команда обслуживания поставлена в очередь как задание %d"
@@ -1015,73 +1049,73 @@ msgstr "Команда обслуживания поставлена в очер
 #. The underlying cupsGetPPD2() function returned NULL without
 #. setting an IPP error, so it'll be something like a failed
 #. connection.
-#: ../system-config-printer.py:2347 ../system-config-printer.py:2443
+#: ../system-config-printer.py:2352 ../system-config-printer.py:2448
 msgid "Error"
 msgstr "Ошибка"
 
-#: ../system-config-printer.py:2348
+#: ../system-config-printer.py:2353
 msgid "There was a problem connecting to the CUPS server."
 msgstr "Ошибка подключения к серверу CUPS."
 
-#: ../system-config-printer.py:2444
+#: ../system-config-printer.py:2449
 #, python-format
 msgid "Option '%s' has value '%s' and cannot be edited."
 msgstr "Параметр «%s» имеет значение «%s» и не может быть изменён."
 
-#: ../system-config-printer.py:2554
+#: ../system-config-printer.py:2559
 msgid "Marker levels are not reported for this printer."
 msgstr "Для этого принтера не определены уровни маркеров."
 
-#: ../system-config-printer.py:2864
+#: ../system-config-printer.py:2869
 msgid "Cannot Rename"
 msgstr "Переименование невозможно"
 
-#: ../system-config-printer.py:2865
+#: ../system-config-printer.py:2870
 msgid "There are queued jobs."
 msgstr "В очереди печати остались задания."
 
-#: ../system-config-printer.py:2883
+#: ../system-config-printer.py:2888
 msgid "Renaming will lose history"
 msgstr "При переименовании история будет потеряна."
 
-#: ../system-config-printer.py:2885
+#: ../system-config-printer.py:2890
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr "Завершённые задания не будут доступны для повторной печати."
 
-#: ../system-config-printer.py:2960
+#: ../system-config-printer.py:2965
 msgid "renaming printer"
 msgstr "переименование принтера"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:3047
+#: ../system-config-printer.py:3052
 msgid "copying printer"
 msgstr "копирование принтера"
 
-#: ../system-config-printer.py:3111
+#: ../system-config-printer.py:3116
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "Действительно удалить класс «%s»?"
 
-#: ../system-config-printer.py:3113
+#: ../system-config-printer.py:3118
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Действительно удалить принтер «%s»?"
 
-#: ../system-config-printer.py:3115
+#: ../system-config-printer.py:3120
 msgid "Really delete selected destinations?"
 msgstr "Действительно удалить выбранные пункты назначения?"
 
-#: ../system-config-printer.py:3136
+#: ../system-config-printer.py:3141
 #, python-format
 msgid "deleting printer %s"
 msgstr "удаление принтера %s"
 
-#: ../system-config-printer.py:3222
+#: ../system-config-printer.py:3227
 msgid "Publish Shared Printers"
 msgstr "Публикация общих принтеров"
 
-#: ../system-config-printer.py:3223
+#: ../system-config-printer.py:3228
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
@@ -1089,15 +1123,15 @@ msgstr ""
 "Общие принтеры не будут доступны другим пользователям, если в параметрах "
 "сервера не разрешена «Публикация общих принтеров»."
 
-#: ../system-config-printer.py:3416
+#: ../system-config-printer.py:3418
 msgid "modifying server settings"
 msgstr "изменение настроек сервера"
 
-#: ../system-config-printer.py:3444
+#: ../system-config-printer.py:3445
 msgid "Review Firewall"
 msgstr "Пересмотрите параметры межсетевого экрана"
 
-#: ../system-config-printer.py:3445
+#: ../system-config-printer.py:3446
 msgid ""
 "You may need to adjust the firewall to allow network printing to this "
 "computer."
@@ -1105,20 +1139,20 @@ msgstr ""
 "Для разрешения сетевой печати на этом компьютере может потребоваться "
 "изменение настроек межсетевого экрана."
 
-#: ../system-config-printer.py:3792
+#: ../system-config-printer.py:3793
 msgid "Browsing not available (pysmbc not installed)"
 msgstr "Просмотр недоступен (не установлен pysmbc)"
 
 #. SMB list columns
-#: ../system-config-printer.py:3798
+#: ../system-config-printer.py:3799
 msgid "Share"
 msgstr "Ресурс"
 
-#: ../system-config-printer.py:3804
+#: ../system-config-printer.py:3805
 msgid "Comment"
 msgstr "Комментарий"
 
-#: ../system-config-printer.py:3819
+#: ../system-config-printer.py:3820
 msgid ""
 "PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *."
 "PPD.GZ)"
@@ -1126,52 +1160,52 @@ msgstr ""
 "Файлы описаний PostScript-принтеров (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD."
 "GZ)"
 
-#: ../system-config-printer.py:3828
+#: ../system-config-printer.py:3829
 msgid "All files (*)"
 msgstr "Все файлы (*)"
 
-#: ../system-config-printer.py:3891 ../system-config-printer.py:6222
-#: ../system-config-printer.py:6260 ../applet.py:130
+#: ../system-config-printer.py:3892 ../system-config-printer.py:6242
+#: ../system-config-printer.py:6280 ../applet.py:130
 msgid "Search"
 msgstr "Поиск"
 
-#: ../system-config-printer.py:3915 ../system-config-printer.py:3937
+#: ../system-config-printer.py:3916 ../system-config-printer.py:3938
 #: ../glade/NewPrinterWindow.glade.h:72
 msgid "New Printer"
 msgstr "Новый принтер"
 
-#: ../system-config-printer.py:3924
+#: ../system-config-printer.py:3925
 msgid "New Class"
 msgstr "Новый класс"
 
-#: ../system-config-printer.py:3929
+#: ../system-config-printer.py:3930
 msgid "Change Device URI"
 msgstr "Изменение URI адреса устройства"
 
-#: ../system-config-printer.py:3935
+#: ../system-config-printer.py:3936
 msgid "Change Driver"
 msgstr "Изменение драйвера"
 
-#: ../system-config-printer.py:4114 ../system-config-printer.py:4194
-#: ../system-config-printer.py:4569 ../system-config-printer.py:6057
-#: ../system-config-printer.py:6247
+#: ../system-config-printer.py:4115 ../system-config-printer.py:4195
+#: ../system-config-printer.py:4570 ../system-config-printer.py:6077
+#: ../system-config-printer.py:6267
 msgid "Searching"
 msgstr "Поиск"
 
-#: ../system-config-printer.py:4115
+#: ../system-config-printer.py:4116
 msgid "Searching for downloadable drivers"
 msgstr "Поиск загружаемых драйверов"
 
-#: ../system-config-printer.py:4195 ../system-config-printer.py:4570
+#: ../system-config-printer.py:4196 ../system-config-printer.py:4571
 msgid "Searching for drivers"
 msgstr "Поиск драйверов"
 
 #. Tell the user why he needs the plugin
-#: ../system-config-printer.py:4944
+#: ../system-config-printer.py:4964
 msgid "For this printer a proprietary driver plugin from HP is available.\n"
 msgstr "Для этого принтера доступен модуль драйвера HP.\n"
 
-#: ../system-config-printer.py:4947
+#: ../system-config-printer.py:4967
 msgid ""
 "The installation of the plugin is required for your printer to work.\n"
 "\n"
@@ -1179,7 +1213,7 @@ msgstr ""
 "Для работы принтера необходимо установить дополнительный модуль.\n"
 "\n"
 
-#: ../system-config-printer.py:4950
+#: ../system-config-printer.py:4970
 msgid ""
 "Installing the plugin is optional, it completes or enhances the "
 "functionality\n"
@@ -1191,110 +1225,110 @@ msgstr ""
 "Без модуля будут доступны только базовые функции.\n"
 "\n"
 
-#: ../system-config-printer.py:4954
+#: ../system-config-printer.py:4974
 msgid "The plugin provides the following features:\n"
 msgstr "Модуль включает следующие функции:\n"
 
-#: ../system-config-printer.py:4957
+#: ../system-config-printer.py:4977
 msgid " - Printing support\n"
 msgstr " - Поддержка печати\n"
 
-#: ../system-config-printer.py:4960
+#: ../system-config-printer.py:4980
 msgid " - Faster printing\n"
 msgstr " - Быстрая печать\n"
 
-#: ../system-config-printer.py:4963
+#: ../system-config-printer.py:4983
 msgid " - Better printout quality\n"
 msgstr " - Улучшенное качество печати\n"
 
-#: ../system-config-printer.py:4966
+#: ../system-config-printer.py:4986
 msgid " - Extra printing features\n"
 msgstr " - Дополнительные возможности печати\n"
 
-#: ../system-config-printer.py:4969
+#: ../system-config-printer.py:4989
 msgid " - Scanning support\n"
 msgstr " - Поддержка сканирования\n"
 
-#: ../system-config-printer.py:4972
+#: ../system-config-printer.py:4992
 msgid " - Faster scanning\n"
 msgstr " - Быстрое сканирование\n"
 
-#: ../system-config-printer.py:4975
+#: ../system-config-printer.py:4995
 msgid " - Better scanning image quality\n"
 msgstr " - Улучшенное качество сканируемых изображений\n"
 
-#: ../system-config-printer.py:4978
+#: ../system-config-printer.py:4998
 msgid " - Faxing support\n"
 msgstr " - Поддержка факса\n"
 
-#: ../system-config-printer.py:4981
+#: ../system-config-printer.py:5001
 msgid " - Extra fax features\n"
 msgstr " - Дополнительные возможности факса\n"
 
-#: ../system-config-printer.py:4984
+#: ../system-config-printer.py:5004
 msgid " - Better Input/Output support\n"
 msgstr " - Улучшенная поддержка ввода и вывода\n"
 
-#: ../system-config-printer.py:4987
+#: ../system-config-printer.py:5007
 msgid " - Extra user interface features\n"
 msgstr " - Дополнительные возможности пользовательского интерфейса\n"
 
-#: ../system-config-printer.py:4990
+#: ../system-config-printer.py:5010
 msgid " - Other extra features\n"
 msgstr " - Другие дополнительные возможности\n"
 
-#: ../system-config-printer.py:4995
+#: ../system-config-printer.py:5015
 msgid "Install plugin"
 msgstr "Установить дополнительный модуль"
 
-#: ../system-config-printer.py:4996
+#: ../system-config-printer.py:5016
 msgid "Do not set up printer"
 msgstr "Не настраивать принтер"
 
-#: ../system-config-printer.py:4997
+#: ../system-config-printer.py:5017
 msgid "Set up without plugin"
 msgstr "Настроить без дополнительного модуля"
 
-#: ../system-config-printer.py:4999 ../troubleshoot/PrintTestPage.py:118
+#: ../system-config-printer.py:5019 ../troubleshoot/PrintTestPage.py:119
 msgid "Yes"
 msgstr "Да"
 
-#: ../system-config-printer.py:5000 ../troubleshoot/PrintTestPage.py:119
+#: ../system-config-printer.py:5020 ../troubleshoot/PrintTestPage.py:120
 msgid "No"
 msgstr "Нет"
 
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:5161
+#: ../system-config-printer.py:5181
 msgid "Other"
 msgstr "Другой"
 
-#: ../system-config-printer.py:5165
+#: ../system-config-printer.py:5185
 msgid "Network Printer"
 msgstr "Сетевой принтер"
 
-#: ../system-config-printer.py:5169
+#: ../system-config-printer.py:5189
 msgid "Find Network Printer"
 msgstr "Найти сетевой принтер"
 
-#: ../system-config-printer.py:5184
+#: ../system-config-printer.py:5204
 msgid "fetching device list"
 msgstr "получение списка устройств"
 
-#: ../system-config-printer.py:5270 ../system-config-printer.py:6482
+#: ../system-config-printer.py:5290 ../system-config-printer.py:6503
 msgid " (Current)"
 msgstr " (текущий)"
 
-#: ../system-config-printer.py:5342
+#: ../system-config-printer.py:5362
 msgid "Scanning..."
 msgstr "Сканирование..."
 
-#: ../system-config-printer.py:5397
+#: ../system-config-printer.py:5417
 msgid "No Print Shares"
 msgstr "Общих принтеров не найдено"
 
-#: ../system-config-printer.py:5398
+#: ../system-config-printer.py:5418
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
@@ -1302,88 +1336,80 @@ msgstr ""
 "Общих принтеров не найдено. Пожалуйста, убедитесь, что служба Samba отмечена "
 "как доверенная в настройках вашего межсетевого экрана."
 
-#: ../system-config-printer.py:5659 ../system-config-printer.py:5736
+#: ../system-config-printer.py:5679 ../system-config-printer.py:5756
 msgid "Print Share Verified"
 msgstr "Общий принтер проверен"
 
-#: ../system-config-printer.py:5660 ../system-config-printer.py:5737
+#: ../system-config-printer.py:5680 ../system-config-printer.py:5757
 msgid "This print share is accessible."
 msgstr "Этот общий принтер доступен."
 
-#: ../system-config-printer.py:5665 ../system-config-printer.py:5741
+#: ../system-config-printer.py:5685 ../system-config-printer.py:5761
 msgid "This print share is not accessible."
 msgstr "Этот общий принтер не доступен."
 
-#: ../system-config-printer.py:5668
+#: ../system-config-printer.py:5688
 msgid "Print Share Inaccessible"
 msgstr "Общий принтер недоступен"
 
-#: ../system-config-printer.py:5714
+#: ../system-config-printer.py:5734
 msgid "Verifying"
 msgstr "Проверяется"
 
-#: ../system-config-printer.py:5715
+#: ../system-config-printer.py:5735
 msgid "Verifying printer"
 msgstr "Выполняется проверка принтера"
 
-#: ../system-config-printer.py:5740
+#: ../system-config-printer.py:5760
 msgid "Inaccessible"
 msgstr "Недоступен"
 
-#: ../system-config-printer.py:5795
+#: ../system-config-printer.py:5815
 msgid "Parallel Port"
 msgstr "Параллельный порт"
 
-#: ../system-config-printer.py:5797
+#: ../system-config-printer.py:5817
 msgid "Serial Port"
 msgstr "Последовательный порт"
 
-#: ../system-config-printer.py:5799
+#: ../system-config-printer.py:5819
 msgid "USB"
 msgstr "USB"
 
-#: ../system-config-printer.py:5801 ../system-config-printer.py:5804
+#: ../system-config-printer.py:5821 ../system-config-printer.py:5824
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HPLIP (HP Linux Imaging and Printing)"
 
-#: ../system-config-printer.py:5806
+#: ../system-config-printer.py:5826
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "HAL (Hardware Abstraction Layer) "
 
-#: ../system-config-printer.py:5808
-msgid "AppSocket/HP JetDirect"
-msgstr "AppSocket/HP JetDirect"
-
-#: ../system-config-printer.py:5817
+#: ../system-config-printer.py:5837
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "очередь LPD/LPR '%s'"
 
-#: ../system-config-printer.py:5819
+#: ../system-config-printer.py:5839
 msgid "LPD/LPR queue"
 msgstr "очередь LPD/LPR"
 
-#: ../system-config-printer.py:5822
-msgid "Windows Printer via SAMBA"
-msgstr "Принтер Windows через SAMBA"
-
-#: ../system-config-printer.py:5824 ../glade/NewPrinterWindow.glade.h:64
+#: ../system-config-printer.py:5844 ../glade/NewPrinterWindow.glade.h:64
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.py:5826
+#: ../system-config-printer.py:5846
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../system-config-printer.py:5913
+#: ../system-config-printer.py:5933
 msgid "A printer connected to the parallel port."
 msgstr "Принтер подключен к параллельному порту."
 
-#: ../system-config-printer.py:5915
+#: ../system-config-printer.py:5935
 msgid "A printer connected to a USB port."
 msgstr "Принтер подключен к порту USB."
 
-#: ../system-config-printer.py:5917
+#: ../system-config-printer.py:5937
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1391,7 +1417,7 @@ msgstr ""
 "Работу принтера обеспечивает HPLIP или функция принтера многофункционального "
 "устройства."
 
-#: ../system-config-printer.py:5920
+#: ../system-config-printer.py:5940
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1399,47 +1425,47 @@ msgstr ""
 "Работу принтера обеспечивает HPLIP или функция факса многофункционального "
 "устройства."
 
-#: ../system-config-printer.py:5923
+#: ../system-config-printer.py:5943
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "HAL (Hardware Abstraction Layer) обнаружил локальный принтер."
 
-#: ../system-config-printer.py:6058
+#: ../system-config-printer.py:6078
 msgid "Searching for printers"
 msgstr "Поиск принтеров"
 
-#: ../system-config-printer.py:6135
+#: ../system-config-printer.py:6155
 msgid "No printer was found at that address."
 msgstr "По этому адресу не найден принтер."
 
-#: ../system-config-printer.py:6272
+#: ../system-config-printer.py:6292
 msgid "-- Select from search results --"
 msgstr "-- Выберите из результатов поиска --"
 
-#: ../system-config-printer.py:6274
+#: ../system-config-printer.py:6294
 msgid "-- No matches found --"
 msgstr "-- Совпадений не найдено --"
 
-#: ../system-config-printer.py:6487
+#: ../system-config-printer.py:6508
 msgid " (recommended)"
 msgstr " (рекомендуемый)"
 
-#: ../system-config-printer.py:6512
+#: ../system-config-printer.py:6533
 msgid "This PPD is generated by foomatic."
 msgstr "Данный PPD сформирован foomatic."
 
-#: ../system-config-printer.py:6537
+#: ../system-config-printer.py:6558
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:6548
+#: ../system-config-printer.py:6569
 msgid "Distributable"
 msgstr "Распространяемый"
 
-#: ../system-config-printer.py:6589
+#: ../system-config-printer.py:6610
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:6594
+#: ../system-config-printer.py:6615
 #, python-format
 msgid ""
 "\n"
@@ -1448,20 +1474,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:6599
+#: ../system-config-printer.py:6620
 msgid "No support contacts known"
 msgstr "Нет контактов поддержки"
 
-#: ../system-config-printer.py:6603 ../system-config-printer.py:6616
+#: ../system-config-printer.py:6624 ../system-config-printer.py:6637
 msgid "Not specified."
 msgstr "Не указано."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6656
+#: ../system-config-printer.py:6677
 msgid "Database error"
 msgstr "Ошибка базы данных"
 
-#: ../system-config-printer.py:6657
+#: ../system-config-printer.py:6678
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Драйвер «%s» не может быть использован с принтером «%s %s»."
@@ -1469,62 +1495,62 @@ msgstr "Драйвер «%s» не может быть использован с
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6667
+#: ../system-config-printer.py:6688
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr ""
 "Чтобы воспользоваться этим драйвером, вам необходимо установить пакет «%s»."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6674
+#: ../system-config-printer.py:6695
 msgid "PPD error"
 msgstr "Ошибка PPD"
 
-#: ../system-config-printer.py:6676
+#: ../system-config-printer.py:6697
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Не удалось прочитать файл PPD. Возможные причины:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6693
+#: ../system-config-printer.py:6715
 msgid "Downloadable drivers"
 msgstr "Доступные для загрузки драйвера"
 
-#: ../system-config-printer.py:6694
+#: ../system-config-printer.py:6716
 msgid "Failed to download PPD."
 msgstr "Не удалось загрузить PPD."
 
-#: ../system-config-printer.py:6701
+#: ../system-config-printer.py:6723
 msgid "fetching PPD"
 msgstr "получение PPD"
 
-#: ../system-config-printer.py:6730 ../system-config-printer.py:6768
+#: ../system-config-printer.py:6752 ../system-config-printer.py:6790
 msgid "No Installable Options"
 msgstr "Нет устанавливаемых параметров"
 
-#: ../system-config-printer.py:6825
+#: ../system-config-printer.py:6851
 #, python-format
 msgid "adding printer %s"
 msgstr "добавление принтера %s"
 
-#: ../system-config-printer.py:7006
+#: ../system-config-printer.py:7032
 msgid "Would you like to print a test page?"
 msgstr "Распечатать тестовую страницу?"
 
-#: ../system-config-printer.py:7067
+#: ../system-config-printer.py:7093
 msgid "Install driver"
 msgstr "Установить драйвер"
 
-#: ../system-config-printer.py:7068 ../troubleshoot/CheckPPDSanity.py:131
+#: ../system-config-printer.py:7094 ../troubleshoot/CheckPPDSanity.py:133
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr ""
 "Принтер «%s» требует пакет %s, который не установлен в настоящий момент."
 
-#: ../system-config-printer.py:7084
+#: ../system-config-printer.py:7110
 msgid "Missing driver"
 msgstr "Отсутствует драйвер"
 
-#: ../system-config-printer.py:7085
+#: ../system-config-printer.py:7111
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2426,7 +2452,7 @@ msgstr "Пробная страница принтера"
 
 #. Not more than 25 characters
 #: ../glade/PrinterPropertiesDialog.glade.h:110
-#: ../troubleshoot/PrintTestPage.py:72
+#: ../troubleshoot/PrintTestPage.py:73
 msgid "Print Test Page"
 msgstr "Пробная страница"
 
@@ -2774,7 +2800,7 @@ msgstr "_Фильтр:"
 msgid "Printing troubleshooter"
 msgstr "Устранение неполадок печати"
 
-#: ../troubleshoot/base.py:33
+#: ../troubleshoot/base.py:35
 msgid ""
 "To start this tool, select System->Administration->Printing from the main "
 "menu."
@@ -2802,15 +2828,15 @@ msgstr ""
 "Активируйте параметр «Публиковать общие принтеры, подключенные к этой "
 "системе» в программе администрирования печати."
 
-#: ../troubleshoot/CheckPPDSanity.py:44 ../applet.py:187
+#: ../troubleshoot/CheckPPDSanity.py:45 ../applet.py:187
 msgid "Install"
 msgstr "Установить"
 
-#: ../troubleshoot/CheckPPDSanity.py:96
+#: ../troubleshoot/CheckPPDSanity.py:97
 msgid "Invalid PPD File"
 msgstr "Неверный PPD-файл"
 
-#: ../troubleshoot/CheckPPDSanity.py:106
+#: ../troubleshoot/CheckPPDSanity.py:108
 #, python-format
 msgid ""
 "The PPD file for printer '%s' does not conform to the specification.  "
@@ -2819,16 +2845,16 @@ msgstr ""
 "PPD-файл для принтера «%s» не соответствует спецификации. Возможная причина:"
 
 #. Perhaps cupstestppd is not in the path.
-#: ../troubleshoot/CheckPPDSanity.py:112
+#: ../troubleshoot/CheckPPDSanity.py:114
 #, python-format
 msgid "There is a problem with the PPD file for printer '%s'."
 msgstr "Ошибка PPD-файла для принтера «%s»."
 
-#: ../troubleshoot/CheckPPDSanity.py:122
+#: ../troubleshoot/CheckPPDSanity.py:124
 msgid "Missing Printer Driver"
 msgstr "Драйвер принтера отсутствует"
 
-#: ../troubleshoot/CheckPPDSanity.py:136
+#: ../troubleshoot/CheckPPDSanity.py:138
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed."
@@ -2974,11 +3000,11 @@ msgstr "Ошибки:"
 msgid "Warnings are listed below:"
 msgstr "Предупреждения:"
 
-#: ../troubleshoot/PrintTestPage.py:62
+#: ../troubleshoot/PrintTestPage.py:63
 msgid "Test Page"
 msgstr "Пробная страница"
 
-#: ../troubleshoot/PrintTestPage.py:63
+#: ../troubleshoot/PrintTestPage.py:64
 msgid ""
 "Now print a test page.  If you are having problems printing a specific "
 "document, print that document now and mark the print job below."
@@ -2987,24 +3013,24 @@ msgstr ""
 "определённого документа, распечатайте этот документ и отметьте ниже "
 "соответствующее задание."
 
-#: ../troubleshoot/PrintTestPage.py:75
+#: ../troubleshoot/PrintTestPage.py:76
 msgid "Cancel All Jobs"
 msgstr "Отменить все задания"
 
-#: ../troubleshoot/PrintTestPage.py:81
+#: ../troubleshoot/PrintTestPage.py:82
 msgid "Test"
 msgstr "Проверка"
 
-#: ../troubleshoot/PrintTestPage.py:111
+#: ../troubleshoot/PrintTestPage.py:112
 msgid "Did the marked print jobs print correctly?"
 msgstr "Были ли напечатаны успешно отмеченные задания?"
 
-#: ../troubleshoot/PrintTestPage.py:143
+#: ../troubleshoot/PrintTestPage.py:144
 #, python-format
 msgid "Remember to load paper of type '%s' into the printer first."
 msgstr "Не забудьте загрузить бумагу типа «%s»."
 
-#: ../troubleshoot/PrintTestPage.py:416
+#: ../troubleshoot/PrintTestPage.py:417
 msgid "Error submitting test page"
 msgstr "Ошибка отправки пробной страницы"
 
