@@ -2,8 +2,9 @@
 
 ## system-config-printer
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -26,6 +27,7 @@ printer_op_policy = dict()
 job_sheets = dict()
 job_options = dict()
 ppd = dict()
+backends = dict()
 
 class TranslationDict:
     STR = {}
@@ -157,4 +159,25 @@ def init ():
                 _("600 dpi, color, black + color cartridge, photo paper, normal"),
             "1200 dpi, Photo, Black + Color Cartr., Photo Paper":
                 _("1200 dpi, photo, black + color cartridge, photo paper"),
+            })
+
+    ## Common backend descriptions
+    global backends
+    backends = TranslationDict ({
+            "Internet Printing Protocol (ipp)":
+                _("Internet Printing Protocol (ipp)"),
+            "Internet Printing Protocol (http)":
+                _("Internet Printing Protocol (http)"),
+            "Internet Printing Protocol (https)":
+                _("Internet Printing Protocol (https)"),
+            "LPD/LPR Host or Printer":
+                _("LPD/LPR Host or Printer"),
+            "AppSocket/HP JetDirect":
+                _("AppSocket/HP JetDirect"),
+            "Serial Port #1":
+                _("Serial Port #1"),
+            "LPT #1":
+                _("LPT #1"),
+            "Windows Printer via SAMBA":
+                _("Windows Printer via SAMBA"),
             })
