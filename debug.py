@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2008 Red Hat, Inc.
-## Copyright (C) 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -24,7 +25,8 @@ _debug=False
 def debugprint (x):
     if _debug:
         try:
-            print >>sys.stderr, x
+            sys.stderr.write (x + "\n")
+            sys.stderr.flush ()
         except:
             pass
 
