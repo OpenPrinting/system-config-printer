@@ -23,17 +23,8 @@ import cups
 import gobject
 import os
 
-class PPDCache(gobject.GObject):
-
-    __gsignals__ = {
-        'ppd-ready': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                      [gobject.TYPE_STRING, gobject.TYPE_PYOBJECT]),
-        'ppd-error': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
-                      [gobject.TYPE_STRING, gobject.TYPE_PYOBJECT])
-        }
-
+class PPDCache:
     def __init__ (self, host=None, port=None, encryption=None):
-        gobject.GObject.__init__ (self)
         self._cups = None
         self._exc = None
         self._cache = dict()
@@ -58,7 +49,7 @@ class PPDCache(gobject.GObject):
             except OSError:
                 pass
 
-    def fetch_ppd (self, name, check_uptodate=True):
+    def fetch_ppd (self, name, callback, check_uptodate=True):
         if check_uptodate and self._modtimes.has_key (name):
             # We have getPPD3 so we can check whether the PPD is up to
             # date.
@@ -66,60 +57,59 @@ class PPDCache(gobject.GObject):
             self._cups.getPPD3 (name,
                                 modtime=self._modtimes[name],
                                 reply_handler=lambda c, r:
-                                    self._got_ppd3 (c, name, r),
+                                    self._got_ppd3 (c, name, r, callback),
                                 error_handler=lambda c, r:
-                                    self._got_ppd3 (c, name, r))
+                                    self._got_ppd3 (c, name, r, callback))
             return
 
         try:
-            self.emit ('ppd-ready', name, cups.PPD (self._cache[name]))
+            ppd = cups.PPD (self._cache[name])
         except RuntimeError, e:
-            self.emit ('ppd-error', name, e)
+            callback (name, None, e)
+            return
         except KeyError:
             if not self._cups:
-                self._queued.append (name)
-                if self._connecting:
-                    return
+                self._queued.append ((name, callback))
+                if not self._connecting:
+                    self._connect ()
 
-                exc = self._exc
-                self._connect ()
-                if not exc:
-                    exc = RuntimeError
-
-                self.emit ('ppd-error', name, exc)
                 return
 
             debugprint ("PPD cache: fetch PPD for %s" % name)
             try:
                 self._cups.getPPD3 (name,
                                     reply_handler=lambda c, r:
-                                        self._got_ppd3 (c, name, r),
+                                        self._got_ppd3 (c, name, r, callback),
                                     error_handler=lambda c, r:
-                                        self._got_ppd3 (c, name, r))
+                                        self._got_ppd3 (c, name, r, callback))
             except AttributeError:
                 # getPPD3 requires pycups >= 1.9.50
                 self._cups.getPPD (name,
                                    reply_handler=lambda c, r:
-                                       self._got_ppd (c, name, r),
+                                       self._got_ppd (c, name, r, callback),
                                    error_handler=lambda c, r:
-                                       self._got_ppd (c, name, r))
+                                       self._got_ppd (c, name, r, callback))
 
-    def _connect (self):
+            return
+
+        callback (name, ppd, None)
+
+    def _connect (self, callback=None):
         self._connecting = True
         asyncconn.Connection (host=self._host, port=self._port,
                               encryption=self._encryption,
                               reply_handler=self._connected,
                               error_handler=self._connected)
 
-    def _got_ppd (self, connection, name, result):
+    def _got_ppd (self, connection, name, result, callback):
         if isinstance (result, Exception):
-            self.emit ('ppd-error', name, result)
+            self._schedule_callback (callback, name, result, None)
         else:
             debugprint ("PPD cache: caching %s" % result)
             self._cache[name] = result
-            self.fetch_ppd (name)
+            self.fetch_ppd (name, callback)
 
-    def _got_ppd3 (self, connection, name, result):
+    def _got_ppd3 (self, connection, name, result, callback):
         (status, modtime, filename) = result
         if status in [cups.HTTP_OK, cups.HTTP_NOT_MODIFIED]:
             if status == cups.HTTP_OK:
@@ -129,9 +119,10 @@ class PPDCache(gobject.GObject):
                 self._cache[name] = filename
                 self._modtimes[name] = modtime
 
-            self.fetch_ppd (name, check_uptodate=False)
+            self.fetch_ppd (name, callback, check_uptodate=False)
         else:
-            self.emit ('ppd-error', name, cups.HTTPError (status))
+            self._schedule_callback (callback, name,
+                                     None, cups.HTTPError (status))
 
     def _connected (self, connection, exc):
         self._connecting = False
@@ -143,34 +134,37 @@ class PPDCache(gobject.GObject):
 
         queued = self._queued
         self._queued = list()
-        for name in queued:
-            self.fetch_ppd (name)
+        for name, callback in queued:
+            self.fetch_ppd (name, callback)
 
-gobject.type_register (PPDCache)
+    def _schedule_callback (self, callback, name, result, exc):
+        def cb_func (callback, name, result, exc):
+            callback (name, result, exc)
+            return False
+
+        gobject.idle_add (cb_func)
 
 if __name__ == "__main__":
+    import sys
     from debug import *
     set_debugging (True)
     gobject.threads_init ()
     loop = gobject.MainLoop ()
 
-    def signal (obj, name, result):
-        print "****"
-        print obj
-        print name
-        print result
+    def signal (name, result, exc):
+        debugprint ("**** %s" % name)
+        debugprint (result)
+        debugprint (exc)
 
     c = cups.Connection ()
     printers = c.getPrinters ()
     del c
 
     cache = PPDCache ()
-    cache.connect ('ppd-error', signal)
-    cache.connect ('ppd-ready', signal)
     p = None
     for p in printers:
-        cache.fetch_ppd (p)
+        cache.fetch_ppd (p, signal)
 
     if p:
-        gobject.timeout_add_seconds (1, cache.fetch_ppd, p)
+        gobject.timeout_add_seconds (1, cache.fetch_ppd, p, signal)
     loop.run ()
