@@ -1000,8 +1000,7 @@ class GUI(GtkGUI):
                             emblem = gtk.STOCK_MEDIA_PAUSE
                             continue
 
-                        r = statereason.StateReason (object.connection,
-                                                     object.name, reason)
+                        r = statereason.StateReason (object.name, reason)
                         if worst_reason == None:
                             worst_reason = r
                         elif r > worst_reason:

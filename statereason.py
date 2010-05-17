@@ -34,13 +34,17 @@ class StateReason:
         ERROR: "dialog-error"
         }
 
-    def __init__(self, connection, printer, reason):
+    def __init__(self, printer, reason, ppdcache=None):
         self.printer = printer
         self.reason = reason
         self.level = None
         self.canonical_reason = None
-        self.connection = connection
         self._ppd = None
+        if ppdcache:
+            ppdcache.fetch_ppd (printer, self._got_ppd)
+
+    def _got_ppd (self, name, result, exc):
+        self._ppd = result
 
     def get_printer (self):
         return self.printer
@@ -128,14 +132,6 @@ class StateReason:
                 title = _("Printer warning")
             elif self.get_level () == self.ERROR:
                 title = _("Printer error")
-
-            if not self._ppd:
-                try:
-                    f = self.connection.getPPD(self.printer)
-                    self._ppd = cups.PPD (f)
-                    os.unlink (f)
-                except (cups.IPPError, RuntimeError, OSError):
-                    pass
 
             reason = self.get_reason ()
             if self._ppd:

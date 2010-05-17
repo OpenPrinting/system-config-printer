@@ -38,6 +38,7 @@ from debug import *
 import authconn
 from errordialogs import *
 import gtkinklevel
+import ppdcache
 import statereason
 import monitor
 import newprinter
@@ -454,6 +455,7 @@ class PrinterPropertiesDialog(GtkGUI):
             self.job_options_buttons[option.button] = option
 
         self._monitor = None
+        self._ppdcache = None
 
     def __del__ (self):
         # FIXME: Disconnect signal handlers
@@ -481,6 +483,9 @@ class PrinterPropertiesDialog(GtkGUI):
 
         if self._monitor == None:
             self.set_monitor (monitor.Monitor (monitor_jobs=False))
+
+        self._ppdcache = ppdcache.PPDCache (host=host,
+                                            encryption=encryption)
 
         self.newPrinterGUI = newprinter.NewPrinterGUI ()
         self.dialog.set_transient_for (parent)
@@ -1417,7 +1422,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
             any = True
             iter = store.append (None)
-            r = statereason.StateReason (printer.connection, printer.name, reason)
+            r = statereason.StateReason (printer.name, reason, self._ppdcache)
             if r.get_reason () == "paused":
                 icon = gtk.STOCK_MEDIA_PAUSE
             else:

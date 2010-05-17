@@ -26,6 +26,7 @@ import time
 from debug import *
 import pprint
 from gettext import gettext as _
+import ppdcache
 import statereason
 from statereason import StateReason
 
@@ -41,7 +42,7 @@ def state_reason_is_harmless (reason):
         return True
     return False
 
-def collect_printer_state_reasons (connection):
+def collect_printer_state_reasons (connection, ppdcache):
     result = {}
     try:
         printers = connection.getPrinters ()
@@ -57,7 +58,7 @@ def collect_printer_state_reasons (connection):
                 continue
             if not result.has_key (name):
                 result[name] = []
-            result[name].append (StateReason (connection, name, reason))
+            result[name].append (StateReason (name, reason, ppdcache))
     return result
 
 class Monitor(gobject.GObject):
@@ -125,6 +126,9 @@ class Monitor(gobject.GObject):
         self.host = cups.getServer ()
         self.port = cups.getPort ()
         self.encryption = cups.getEncryption ()
+        self.ppdcache = ppdcache.PPDCache (host=self.host,
+                                           port=self.port,
+                                           encryption=self.encryption)
 
         self.which_jobs = "not-completed"
         self.reasons_seen = {}
@@ -393,7 +397,8 @@ class Monitor(gobject.GObject):
                             break
                         if state_reason_is_harmless (reason):
                             continue
-                        reasons.append (StateReason (c, name, reason))
+                        reasons.append (StateReason (name, reason,
+                                                     self.ppdcache))
                     self.printer_state_reasons[name] = reasons
 
                     self.emit ('printer-event', name, nse, event)
@@ -540,7 +545,8 @@ class Monitor(gobject.GObject):
             jobs = {}
 
         try:
-            self.printer_state_reasons = collect_printer_state_reasons (c)
+            r = collect_printer_state_reasons (c, self.ppdcache)
+            self.printer_state_reasons = r
             dests = c.getPrinters ()
             self.printers = set(dests.keys ())
         except cups.IPPError, (e, m):

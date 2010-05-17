@@ -2,8 +2,9 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -20,6 +21,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
+import ppdcache
 import statereason
 from timedops import TimedOperation
 from base import *
@@ -52,6 +54,8 @@ class PrinterStateReasons(Question):
                                   parent=parent)
         dict = self.op.run ()
 
+        ppdcache = ppdcache.PPDCache ()
+
         text = ''
         state_message = dict['printer-state-message']
         if state_message:
@@ -71,7 +75,7 @@ class PrinterStateReasons(Question):
             if reason == "none":
                 continue
 
-            r = statereason.StateReason (c, queue, reason)
+            r = statereason.StateReason (queue, reason, ppdcache)
             (title, description) = r.get_description ()
             level = r.get_level ()
             if level == statereason.StateReason.ERROR:
