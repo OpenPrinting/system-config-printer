@@ -22,6 +22,7 @@ import asyncconn
 import cups
 import gobject
 import os
+from debug import *
 
 class PPDCache:
     def __init__ (self, host=None, port=None, encryption=None):
@@ -43,7 +44,7 @@ class PPDCache:
 
         for f in self._cache.values ():
             try:
-                debugprint ("PPD cache: removing %s" % f)
+                debugprint ("%s: removing %s" % (self, f))
                 os.unlink (f)
             except OSError:
                 pass
@@ -52,7 +53,7 @@ class PPDCache:
         if check_uptodate and self._modtimes.has_key (name):
             # We have getPPD3 so we can check whether the PPD is up to
             # date.
-            debugprint ("PPD cache: check if %s is up to date" % name)
+            debugprint ("%s: check if %s is up to date" % (self, name))
             self._cups.getPPD3 (name,
                                 modtime=self._modtimes[name],
                                 reply_handler=lambda c, r:
@@ -74,7 +75,7 @@ class PPDCache:
 
                 return
 
-            debugprint ("PPD cache: fetch PPD for %s" % name)
+            debugprint ("%s: fetch PPD for %s" % (self, name))
             try:
                 self._cups.getPPD3 (name,
                                     reply_handler=lambda c, r:
@@ -104,7 +105,7 @@ class PPDCache:
         if isinstance (result, Exception):
             self._schedule_callback (callback, name, result, None)
         else:
-            debugprint ("PPD cache: caching %s" % result)
+            debugprint ("%s: caching %s" % (self, result))
             self._cache[name] = result
             self.fetch_ppd (name, callback)
 
@@ -112,9 +113,10 @@ class PPDCache:
         (status, modtime, filename) = result
         if status in [cups.HTTP_OK, cups.HTTP_NOT_MODIFIED]:
             if status == cups.HTTP_OK:
-                debugprint ("PPD cache: caching %s (%s) - %s" % (filename,
-                                                                 modtime,
-                                                                 status))
+                debugprint ("%s: caching %s (%s) - %s" % (self,
+                                                          filename,
+                                                          modtime,
+                                                          status))
                 self._cache[name] = filename
                 self._modtimes[name] = modtime
 
