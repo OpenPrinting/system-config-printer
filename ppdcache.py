@@ -34,7 +34,6 @@ class PPDCache:
         self._encryption = encryption
         self._queued = list()
         self._connecting = False
-        self._connect ()
         debugprint ("+%s" % self)
 
     def __del__ (self):
