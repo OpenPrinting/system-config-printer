@@ -22,6 +22,7 @@ import asyncconn
 import cups
 import gobject
 import os
+import tempfile
 from debug import *
 
 class PPDCache:
@@ -42,13 +43,6 @@ class PPDCache:
         if self._cups:
             self._cups.destroy ()
 
-        for f in self._cache.values ():
-            try:
-                debugprint ("%s: removing %s" % (self, f))
-                os.unlink (f)
-            except OSError:
-                pass
-
     def fetch_ppd (self, name, callback, check_uptodate=True):
         if check_uptodate and self._modtimes.has_key (name):
             # We have getPPD3 so we can check whether the PPD is up to
@@ -63,7 +57,7 @@ class PPDCache:
             return
 
         try:
-            ppd = cups.PPD (self._cache[name])
+            f = self._cache[name]
         except RuntimeError, e:
             callback (name, None, e)
             return
@@ -92,6 +86,16 @@ class PPDCache:
 
             return
 
+        # Copy from our file object to a new temporary file, create a
+        # PPD object from it, then remove the file.  This way we don't
+        # leave temporary files around even though we are caching...
+        f.seek (0)
+        (tmpfd, tmpfname) = tempfile.mkstemp ()
+        tmpf = file (tmpfname, "w")
+        tmpf.writelines (f.readlines ())
+        del tmpf
+        ppd = cups.PPD (tmpfname)
+        os.unlink (tmpfname)
         callback (name, ppd, None)
 
     def _connect (self, callback=None):
@@ -106,7 +110,10 @@ class PPDCache:
             self._schedule_callback (callback, name, result, None)
         else:
             debugprint ("%s: caching %s" % (self, result))
-            self._cache[name] = result
+            # Store an open file object, then remove the actual file.
+            # This way we don't leave temporary files around.
+            self._cache[name] = file (result)
+            os.unlink (result)
             self.fetch_ppd (name, callback)
 
     def _got_ppd3 (self, connection, name, result, callback):
@@ -117,7 +124,11 @@ class PPDCache:
                                                           filename,
                                                           modtime,
                                                           status))
-                self._cache[name] = filename
+                # Store an open file object, then remove the actual
+                # file.  This way we don't leave temporary files
+                # around.
+                self._cache[name] = file (filename)
+                os.unlink (result)
                 self._modtimes[name] = modtime
 
             self.fetch_ppd (name, callback, check_uptodate=False)
