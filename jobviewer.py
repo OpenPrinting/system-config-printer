@@ -232,6 +232,7 @@ class CancelJobsOperation:
             return
 
         self.connection._end_operation ()
+        self.connection.destroy ()
         self.jobviewer.update_monitor ()
         if type (exc) == cups.IPPError:
             (e, m) = exc.args
@@ -256,6 +257,7 @@ class CancelJobsOperation:
         except IndexError:
             # Last job canceled.
             self.connection._end_operation ()
+            self.connection.destroy ()
             self.jobviewer.update_monitor ()
             return
 
