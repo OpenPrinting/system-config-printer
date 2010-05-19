@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
-## Copyright (C) 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -94,6 +95,7 @@ class TimedSubprocess(Timed):
         return True
 
     def show_wait_window (self):
+        gtk.gdk.threads_enter ()
         wait = gtk.MessageDialog (self.parent,
                                   gtk.DIALOG_MODAL |
                                   gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -108,6 +110,7 @@ class TimedSubprocess(Timed):
         wait.format_secondary_text (_("Gathering information"))
         wait.show_all ()
         self.wait_window = wait
+        gtk.gdk.threads_leave ()
         return False
 
     def wait_window_response (self, dialog, response):

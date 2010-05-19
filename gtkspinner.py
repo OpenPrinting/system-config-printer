@@ -69,7 +69,9 @@ class Spinner:
         if n >= self.n_frames:
             n = 1
 
+        gtk.gdk.threads_enter ()
         self._set_frame (n)
+        gtk.gdk.threads_leave ()
         return True
 
     def start (self, timeout=125):
