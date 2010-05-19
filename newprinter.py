@@ -2450,6 +2450,7 @@ class NewPrinterGUI(GtkGUI):
         self.printer_finder = finder
 
     def found_network_printer_callback (self, new_device):
+        gtk.gdk.threads_enter ()
         if new_device:
             self.network_found += 1
             dev = PhysicalDevice (new_device)
@@ -2490,6 +2491,8 @@ class NewPrinterGUI(GtkGUI):
                                                           "found at that "
                                                           "address.") + '</i>')
                 self.lblNetworkFindNotFound.show ()
+
+        gtk.gdk.threads_leave ()
     ###
 
     def getDeviceURI(self):

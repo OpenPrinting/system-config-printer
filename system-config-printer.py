@@ -1142,11 +1142,15 @@ class GUI(GtkGUI):
                                                       (self.PrintersWindow,))
 
     def update_connecting_pbar (self):
+        ret = True
+        gtk.gdk.threads_enter ()
         if not self.ConnectingDialog.get_property ("visible"):
-            return False # stop animation
+            ret = False # stop animation
+        else:
+            self.pbarConnecting.pulse ()
 
-        self.pbarConnecting.pulse ()
-        return True
+        gtk.gdk.threads_leave ()
+        return ret
 
     def on_connectingdialog_delete (self, widget, event):
         self.on_cancel_connect_clicked (widget)
@@ -1688,7 +1692,9 @@ class GUI(GtkGUI):
         # printers changing 'shared' state, so refresh instead of
         # update.  We have to defer this to prevent signal problems.
         def deferred_refresh ():
+            gtk.gdk.threads_enter ()
             self.populateList ()
+            gtk.gdk.threads_leave ()
             return False
         gobject.idle_add (deferred_refresh)
 
@@ -1934,14 +1940,18 @@ class GUI(GtkGUI):
         gobject.timeout_add_seconds (1, self.service_started_try)
 
     def service_started_try (self):
+        gtk.gdk.threads_enter ()
         self.on_btnRefresh_clicked (None)
+        gtk.gdk.threads_leave ()
         gobject.timeout_add_seconds (1, self.service_started_retry)
         return False
 
     def service_started_retry (self):
         if not self.cups:
+            gtk.gdk.threads_enter ()
             self.on_btnRefresh_clicked (None)
             self.btnStartService.set_sensitive (True)
+            gtk.gdk.threads_leave ()
 
         return False
 

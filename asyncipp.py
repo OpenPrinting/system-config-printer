@@ -174,11 +174,13 @@ class _IPPConnectionThread(threading.Thread):
 
     def _auth (self, prompt, conn=None, method=None, resource=None):
         def prompt_auth (prompt):
+            gtk.gdk.threads_enter ()
             if conn == None:
                 self._auth_handler (prompt, self._conn)
             else:
                 self._auth_handler (prompt, self._conn, method, resource)
 
+            gtk.gdk.threads_leave ()
             return False
 
         if self._auth_handler == None:
@@ -191,7 +193,9 @@ class _IPPConnectionThread(threading.Thread):
     def _reply (self, result):
         def send_reply (handler, result):
             if not self._destroyed:
+                gtk.gdk.threads_enter ()
                 handler (self._conn, result)
+                gtk.gdk.threads_leave ()
             return False
 
         if not self._destroyed and self._reply_handler:
@@ -200,7 +204,9 @@ class _IPPConnectionThread(threading.Thread):
     def _error (self, exc):
         def send_error (handler, exc):
             if not self._destroyed:
+                gtk.gdk.threads_enter ()
                 handler (self._conn, exc)
+                gtk.gdk.threads_leave ()
             return False
 
         if not self._destroyed and self._error_handler:

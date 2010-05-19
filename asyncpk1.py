@@ -102,7 +102,9 @@ class _PK1AsyncMethodCall:
             return
 
         if str (error) == '':
+            gtk.gdk.threads_enter ()
             self._client_reply_handler (self._conn, self._unpack_fn (*args))
+            gtk.gdk.threads_leave ()
             self._destroy ()
             return
 
@@ -115,7 +117,9 @@ class _PK1AsyncMethodCall:
 
         if exc.get_dbus_name () == CUPS_PK_NEED_AUTH:
             exc = cups.IPPError (cups.IPP_NOT_AUTHORIZED, 'pkcancel')
+            gtk.gdk.threads_enter ()
             self._client_error_handler (self._conn, exc)
+            gtk.gdk.threads_leave ()
             self._destroy ()
             return
 
