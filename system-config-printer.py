@@ -3218,7 +3218,9 @@ class GUI(GtkGUI, monitor.Watcher):
         # printers changing 'shared' state, so refresh instead of
         # update.  We have to defer this to prevent signal problems.
         def deferred_refresh ():
+            gtk.gdk.threads_enter ()
             self.populateList ()
+            gtk.gdk.threads_leave ()
             return False
         gobject.idle_add (deferred_refresh)
 
@@ -3537,7 +3539,9 @@ class GUI(GtkGUI, monitor.Watcher):
         monitor.Watcher.printer_event (self, mon, printer, eventname, event)
 
         def deferred_refresh ():
+            gtk.gdk.threads_enter ()
             self.populateList ()
+            gtk.gdk.threads_leave ()
             return False
 
         gtk.gdk.threads_enter ()
@@ -6116,6 +6120,7 @@ class NewPrinterGUI(GtkGUI):
         self.printer_finder = finder
 
     def found_network_printer_callback (self, new_device):
+        gtk.gdk.threads_enter ()
         if new_device:
             self.network_found += 1
             dev = PhysicalDevice (new_device)
@@ -6156,6 +6161,8 @@ class NewPrinterGUI(GtkGUI):
                                                           "found at that "
                                                           "address.") + '</i>')
                 self.lblNetworkFindNotFound.show ()
+
+        gtk.gdk.threads_leave ()
     ###
 
     def getDeviceURI(self):

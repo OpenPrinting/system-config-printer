@@ -463,7 +463,13 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 self.store.set_value (iter, 1, t)
 
         if need_update and not self.job_creation_times_timer:
-            t = gobject.timeout_add_seconds (60, self.update_job_creation_times)
+            def update_times_with_locking ():
+                gtk.gdk.threads_enter ()
+                ret = self.update_job_creation_times ()
+                gtk.gdk.threads_leave ()
+                return ret
+
+            t = gobject.timeout_add_seconds (60, update_times_with_locking)
             self.job_creation_times_timer = t
 
         if not need_update:
@@ -509,7 +515,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         if not self.job_creation_times_timer:
             def start_updating_job_creation_times():
+                gtk.gdk.threads_enter ()
                 self.update_job_creation_times ()
+                gtk.gdk.threads_leave ()
                 return False
 
             gobject.timeout_add (500, start_updating_job_creation_times)

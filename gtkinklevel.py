@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 
-## Copyright (C) 2009 Tim Waugh <twaugh@redhat.com>
-## Copyright (C) 2009 Red Hat, Inc.
+## Copyright (C) 2009, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -95,11 +96,13 @@ if __name__ == '__main__':
     import gobject
     import time
     def adjust_level (level):
+        gtk.gdk.threads_enter ()
         l = level.get_level ()
         l += 1
         if l > 100:
             l = 0
         level.set_level (l)
+        gtk.gdk.threads_leave ()
         return True
 
     w = gtk.Window ()
@@ -122,4 +125,5 @@ if __name__ == '__main__':
     gobject.timeout_add (10, adjust_level, ylevel)
     w.show_all ()
     w.connect ('delete_event', gtk.main_quit)
+    gtk.gdk.threads_init ()
     gtk.main ()
