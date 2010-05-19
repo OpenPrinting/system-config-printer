@@ -1638,7 +1638,7 @@ class JobViewer (GtkGUI):
     def on_refresh (self, mon):
         self.store.clear ()
         self.jobs = {}
-        self.active_jobs = {}
+        self.active_jobs = set()
         self.jobiters = {}
         self.printer_uri_index = PrinterURIIndex ()
 
