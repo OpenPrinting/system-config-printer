@@ -153,7 +153,7 @@ class Connection(SemanticOperations):
         if reply_handler and not self._destroyed:
             reply_handler (self, reply)
 
-    def _subst_error_handler (self, error_handler, conn, exc):
+    def _subst_error_handler (self, error_handler, exc):
         if error_handler and not self._destroyed:
             error_handler (self, exc)
 
