@@ -1681,11 +1681,15 @@ class GUI(GtkGUI, monitor.Watcher):
                                                       (self.PrintersWindow,))
 
     def update_connecting_pbar (self):
+        ret = True
+        gtk.gdk.threads_enter ()
         if not self.ConnectingDialog.get_property ("visible"):
-            return False # stop animation
+            ret = False # stop animation
+        else:
+            self.pbarConnecting.pulse ()
 
-        self.pbarConnecting.pulse ()
-        return True
+        gtk.gdk.threads_leave ()
+        return ret
 
     def on_connectingdialog_delete (self, widget, event):
         self.on_cancel_connect_clicked (widget)

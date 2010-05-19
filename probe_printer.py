@@ -191,7 +191,9 @@ class BackgroundSmbAuthContext(pysmb.AuthContext):
         pysmb.AuthContext.__init__ (self, *args, **kwargs)
 
     def _do_perform_authentication (self):
+        gtk.gdk.threads_enter ()
         result = pysmb.AuthContext.perform_authentication (self)
+        gtk.gdk.threads_leave ()
         self._do_perform_authentication_result = result
         self._gui_event.set ()
         
