@@ -136,9 +136,6 @@ class ServiceStart:
         except:
             return False
 
-        if str (introspect).find ('"start"') == -1:
-            return False
-
         return True
 
     def start (self, reply_handler, error_handler):
