@@ -56,6 +56,7 @@ def CUPS_server_hostname ():
 class PrinterPropertiesDialog(GtkGUI):
 
     __gsignals__ = {
+        'destroy':       ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
         'dialog-closed': ( gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
         }
 
@@ -456,11 +457,21 @@ class PrinterPropertiesDialog(GtkGUI):
 
         self._monitor = None
         self._ppdcache = None
+        debugprint ("+%s" % self)
 
     def __del__ (self):
         # FIXME: Disconnect signal handlers
-
+        debugprint ("-%s" % self)
         del self._monitor
+
+    def do_destroy (self):
+        debugprint ("DESTROY: %s" % self)
+        if self.PrinterPropertiesDialog:
+            self.PrinterPropertiesDialog.destroy ()
+            self.PrinterPropertiesDialog = None
+
+    def destroy (self):
+        self.emit ('destroy')
 
     def set_monitor (self, monitor):
         self._monitor = monitor
@@ -1721,11 +1732,13 @@ if __name__ == '__main__':
         print "Specify queue name"
         sys.exit (1)
 
+    set_debugging (True)
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
     locale.setlocale (locale.LC_ALL, "")
     ppdippstr.init ()
     loop = gobject.MainLoop ()
     def on_dialog_closed (obj):
+        obj.destroy ()
         loop.quit ()
 
     properties = PrinterPropertiesDialog ()
