@@ -128,6 +128,7 @@ def on_delete_just_hide (widget, event):
 class NewPrinterGUI(GtkGUI):
 
     __gsignals__ = {
+        'destroy':          (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
         'printer-added' :   (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
                              [gobject.TYPE_STRING]),
         'printer-modified': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
@@ -424,6 +425,24 @@ class NewPrinterGUI(GtkGUI):
         ppd_filter.set_name(_("All files (*)"))
         ppd_filter.add_pattern("*")
         self.filechooserPPD.add_filter(ppd_filter)
+        debugprint ("+%s" % self)
+
+    def __del__ (self):
+        debugprint ("-%s" % self)
+
+    def do_destroy (self):
+        debugprint ("DESTROY: %s" % self)
+        if self.SMBBrowseDialog:
+            self.SMBBrowseDialog.destroy ()
+            self.SMBBrowseDialog = None
+
+        if self.NewPrinterWindow:
+            self.NewPrinterWindow.destroy ()
+            self.NewPrinterWindow = None
+
+        if self.WaitWindow:
+            self.WaitWindow.destroy ()
+            self.WaitWindow = None
 
     def inc_spinner_task (self):
         if self.spinner_count == 0:
@@ -471,6 +490,9 @@ class NewPrinterGUI(GtkGUI):
                     break
             name += "-" + str (suffix)
         return name
+
+    def destroy (self):
+        self.emit ('destroy')
 
     def init(self, dialog_mode, device_uri=None, name=None, ppd=None,
              devid="", host=None, encryption=None, parent=None, xid=None):
@@ -3364,6 +3386,10 @@ class ConfigPrinting(dbus.service.Object):
 
 if __name__ == '__main__':
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
+    import ppdippstr
+    import locale
+    locale.setlocale (locale.LC_ALL, "")
+    ppdippstr.init ()
     gobject.threads_init ()
     set_debugging (True)
     from dbus.glib import DBusGMainLoop
@@ -3373,10 +3399,6 @@ if __name__ == '__main__':
         if sys.argv[1] == "--service":
             debugprint ("Service running...")
             loop = gobject.MainLoop ()
-            import ppdippstr
-            import locale
-            locale.setlocale (locale.LC_ALL, "")
-            ppdippstr.init ()
             ConfigPrinting ()
             loop.run ()
         elif sys.argv[1] == "--client":
