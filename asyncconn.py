@@ -51,6 +51,56 @@ class SemanticOperations(object):
             return None
 
 ######
+###### Destructible method call.  Required so that all references can
+###### be dropped when an asynchronous method call is destroyed.
+######
+class _AsyncMethodCall:
+    def __init__ (self, fn, reply_handler, error_handler, auth_handler):
+        self._fn = fn
+        self._reply_handler = reply_handler
+        self._error_handler = error_handler
+        self._auth_handler = auth_handler
+        self._destroyed = False
+        debugprint ("+%s" % self)
+
+    def __del__ (self):
+        debugprint ("-%s" % self)
+
+    def destroy (self):
+        if self._destroyed:
+            return
+
+        debugprint ("DESTROY: %s" % self)
+        self._destroyed = True
+        self._reply_handler = None
+        self._error_handler = None
+        self._auth_handler = None
+        self._reply_data = None
+        self._error_data = None
+        self._auth_data = None
+
+    def run (self, *args, **kwds):
+        self._reply_data = kwds.get ('reply_handler')
+        self._error_data = kwds.get ('error_handler')
+        self._auth_data = kwds.get ('auth_handler')
+        kwds['reply_handler'] = self.reply_handler
+        kwds['error_handler'] = self.error_handler
+        kwds['auth_handler'] = self.auth_handler
+        self._fn (*args, **kwds)
+
+    def reply_handler (self, *args):
+        if not self._destroyed:
+            self._reply_handler (self, self._reply_data, *args)
+
+    def error_handler (self, *args):
+        if not self._destroyed:
+            self._error_handler (self, self._error_data, *args)
+
+    def auth_handler (self, *args):
+        if not self._destroyed:
+            self._auth_handler (self, self.auth_data, *args)
+
+######
 ###### An asynchronous libcups API using IPP or PolicyKit as
 ###### appropriate.
 ######
@@ -70,13 +120,13 @@ class Connection(SemanticOperations):
                   os.getuid () != 0)
 
         def subst_reply_handler (conn, reply):
-            self._subst_reply_handler (reply_handler, reply)
+            self._subst_reply_handler (None, reply_handler, reply)
 
         def subst_error_handler (conn, exc):
-            self._subst_error_handler (error_handler, exc)
+            self._subst_error_handler (None, error_handler, exc)
 
         def subst_auth_handler (prompt, conn, method, resource):
-            self._subst_auth_handler (auth_handler, prompt, method, resource)
+            self._subst_auth_handler (None, auth_handler, prompt, method, resource)
 
         if use_pk and try_as_root:
             debugprint ("Using polkit-1 connection class")
@@ -113,6 +163,7 @@ class Connection(SemanticOperations):
                 bindings.append (fname)
 
         self._bindings = bindings
+        self._methodcalls = []
         debugprint ("+%s" % self)
 
     def __del__ (self):
@@ -126,6 +177,9 @@ class Connection(SemanticOperations):
         except AttributeError:
             pass
 
+        for methodcall in self._methodcalls:
+            methodcall.destroy ()
+
         for binding in self._bindings:
             delattr (self, binding)
 
@@ -133,31 +187,36 @@ class Connection(SemanticOperations):
         return lambda *args, **kwds: self._call_function (fn, *args, **kwds)
 
     def _call_function (self, fn, *args, **kwds):
-        reply_handler = error_handler = auth_handler = False
-        if kwds.has_key ("reply_handler"):
-            reply_handler = kwds["reply_handler"]
-            kwds["reply_handler"] = lambda c, r: \
-                self._subst_reply_handler (reply_handler, r)
-        if kwds.has_key ("error_handler"):
-            error_handler = kwds["error_handler"]
-            kwds["error_handler"] = lambda c, e: \
-                self._subst_error_handler (error_handler, e)
-        if kwds.has_key ("auth_handler"):
-            auth_handler = kwds["auth_handler"]
-            kwds["auth_handler"] = lambda p, c, m, r: \
-                self._subst_auth_handler (auth_handler, p, m, r)
+        methodcall = _AsyncMethodCall (fn,
+                                       self._subst_reply_handler,
+                                       self._subst_error_handler,
+                                       self._subst_auth_handler)
+        self._methodcalls.append (methodcall)
+        methodcall.run (*args, **kwds)
 
-        fn (*args, **kwds)
-
-    def _subst_reply_handler (self, reply_handler, reply):
+    def _subst_reply_handler (self, methodcall, reply_handler, *args):
+        if methodcall:
+            methodcall.destroy ()
+            i = self._methodcalls.index (methodcall)
+            del self._methodcalls[i]
+            args = args[1:]
         if reply_handler and not self._destroyed:
-            reply_handler (self, reply)
+            reply_handler (self, *args)
 
-    def _subst_error_handler (self, error_handler, exc):
+    def _subst_error_handler (self, methodcall, error_handler, exc):
+        if methodcall:
+            methodcall.destroy ()
+            i = self._methodcalls.index (methodcall)
+            del self._methodcalls[i]
+            args = args[1:]
         if error_handler and not self._destroyed:
             error_handler (self, exc)
 
-    def _subst_auth_handler (self, auth_handler, prompt, method, resource):
+    def _subst_auth_handler (self, methodcall, auth_handler, prompt, method, resource):
+        if methodcall:
+            methodcall.destroy ()
+            i = self._methodcalls.index (methodcall)
+            del self._methodcalls[i]
         if auth_handler and not self._destroyed:
             auth_handler (prompt, self, method, resource)
 
