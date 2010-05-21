@@ -138,11 +138,23 @@ class PrinterURIIndex:
         return name
 
 
-class CancelJobsOperation:
-    def __init__ (self, jobviewer, jobids, purge_job):
-        self.jobviewer = jobviewer
+class CancelJobsOperation(gobject.GObject):
+    __gsignals__ = {
+        'destroy':     (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, []),
+        'job-deleted': (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                        [gobject.TYPE_INT]),
+        'ipp-error':   (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
+                        [gobject.TYPE_INT, gobject.TYPE_PYOBJECT]),
+        'finished':    (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        }
+
+    def __init__ (self, parent, host, port, encryption, jobids, purge_job):
+        gobject.GObject.__init__ (self)
         self.jobids = jobids
         self.purge_job = purge_job
+        self.host = host
+        self.port = port
+        self.encryption = encryption
         if purge_job:
             if len(self.jobids) > 1:
                 dialog_title = _("Delete Jobs")
@@ -158,7 +170,7 @@ class CancelJobsOperation:
                 dialog_title = _("Cancel Job")
                 dialog_label = _("Do you really want to cancel this job?")
 
-        dialog = gtk.Dialog (dialog_title, jobviewer.JobsWindow,
+        dialog = gtk.Dialog (dialog_title, parent,
                              gtk.DIALOG_MODAL |
                              gtk.DIALOG_DESTROY_WITH_PARENT |
                              gtk.DIALOG_NO_SEPARATOR,
@@ -177,7 +189,6 @@ class CancelJobsOperation:
         label.set_alignment (0.0, 0.0)
         hbox.pack_start (label, False, False, 0)
         dialog.vbox.pack_start (hbox, False, False, 0)
-        dialog.set_data ('job-ids', self.jobids)
         dialog.connect ("response", self.on_job_cancel_prompt_response)
         dialog.connect ("delete-event", self.on_job_cancel_prompt_delete)
         dialog.show_all ()
@@ -188,14 +199,19 @@ class CancelJobsOperation:
     def __del__ (self):
         debugprint ("-%s" % self)
 
-    def destroy (self):
-        self.jobviewer = None
-        self.connection = None
+    def do_destroy (self):
+        if self.connection:
+            self.connection.destroy ()
+            self.connection = None
+
         if self.dialog:
             self.dialog.destroy ()
             self.dialog = None
 
         debugprint ("DESTROY: %s" % self)
+
+    def destroy (self):
+        self.emit ('destroy')
 
     def on_job_cancel_prompt_delete (self, dialog, event):
         self.on_job_cancel_prompt_response (dialog, gtk.RESPONSE_NO)
@@ -205,11 +221,12 @@ class CancelJobsOperation:
         self.dialog = None
 
         if response != gtk.RESPONSE_YES:
+            self.emit ('finished')
             return
 
-        c = asyncconn.Connection (host=self.jobviewer.host,
-                                  port=self.jobviewer.port,
-                                  encryption=self.jobviewer.encryption)
+        c = asyncconn.Connection (host=self.host,
+                                  port=self.port,
+                                  encryption=self.encryption)
         self.connection = c
 
         if self.purge_job:
@@ -224,27 +241,15 @@ class CancelJobsOperation:
 
     def cancelJob_error (self, connection, exc):
         debugprint ("cancelJob_error %s:%s" % (connection, repr (exc)))
-        if self.jobviewer == None:
-            return
-
         self.connection._end_operation ()
         self.connection.destroy ()
-        self.jobviewer.update_monitor ()
-        if type (exc) == cups.IPPError:
-            (e, m) = exc.args
-            if (e != cups.IPP_NOT_POSSIBLE and
-                e != cups.IPP_NOT_FOUND):
-                self.jobviewer.show_IPP_Error (e, m)
-
-            return
-
-        raise exc
+        self.connection = None
+        self.emit ('ipp-error', self.jobids[0], exc)
+        return
 
     def cancelJob_finish (self, connection, result):
         debugprint ("cancelJob_finish %s:%s" % (connection, repr (result)))
-        if self.jobviewer == None:
-            return
-
+        self.emit ('job-deleted', self.jobids[0])
         del self.jobids[0]
         try:
             connection.cancelJob (self.jobids[0], self.purge_job,
@@ -254,8 +259,11 @@ class CancelJobsOperation:
             # Last job canceled.
             self.connection._end_operation ()
             self.connection.destroy ()
-            self.jobviewer.update_monitor ()
+            self.connection = None
+            self.emit ('finished')
             return
+
+gobject.type_register (CancelJobsOperation)
 
 class JobViewer (GtkGUI):
     required_job_attributes = set(['job-k-octets',
@@ -1163,8 +1171,32 @@ class JobViewer (GtkGUI):
         self.on_job_cancel_activate2(True)
 
     def on_job_cancel_activate2(self, purge_job):
-        op = CancelJobsOperation (self, self.jobids, purge_job)
+        op = CancelJobsOperation (self.JobsWindow, self.host, self.port,
+                                  self.encryption, self.jobids, purge_job)
         self.ops.append (op)
+        op.connect ('finished', self.on_canceljobs_finished)
+        op.connect ('ipp-error', self.on_canceljobs_error)
+
+    def on_canceljobs_finished (self, canceljobsoperation):
+        canceljobsoperation.destroy ()
+        i = self.ops.index (canceljobsoperation)
+        del self.ops[i]
+        self.update_monitor ()
+
+    def on_canceljobs_error (self, canceljobsoperation, jobid, exc):
+        canceljobsoperation.destroy ()
+        i = self.ops.index (canceljobsoperation)
+        del self.ops[i]
+        self.update_monitor ()
+        if type (exc) == cups.IPPError:
+            (e, m) = exc.args
+            if (e != cups.IPP_NOT_POSSIBLE and
+                e != cups.IPP_NOT_FOUND):
+                self.show_IPP_Error (e, m)
+
+            return
+
+        raise exc
 
     def on_job_hold_activate(self, menuitem):
         try:
