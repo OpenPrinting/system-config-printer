@@ -21,6 +21,7 @@
 import asyncconn
 import cups
 import gobject
+import gtk
 import os
 import tempfile
 from debug import *
@@ -59,7 +60,7 @@ class PPDCache:
         try:
             f = self._cache[name]
         except RuntimeError, e:
-            callback (name, None, e)
+            self._schedule_callback (callback, name, None, e)
             return
         except KeyError:
             if not self._cups:
@@ -96,7 +97,7 @@ class PPDCache:
         del tmpf
         ppd = cups.PPD (tmpfname)
         os.unlink (tmpfname)
-        callback (name, ppd, None)
+        self._schedule_callback (callback, name, ppd, None)
 
     def _connect (self, callback=None):
         self._connecting = True
@@ -151,7 +152,9 @@ class PPDCache:
 
     def _schedule_callback (self, callback, name, result, exc):
         def cb_func (callback, name, result, exc):
+            gtk.gdk.threads_enter ()
             callback (name, result, exc)
+            gtk.gdk.threads_leave ()
             return False
 
         gobject.idle_add (cb_func)
@@ -161,6 +164,7 @@ if __name__ == "__main__":
     from debug import *
     set_debugging (True)
     gobject.threads_init ()
+    gtk.gdk.threads_init ()
     loop = gobject.MainLoop ()
 
     def signal (name, result, exc):
