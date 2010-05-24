@@ -203,14 +203,14 @@ class Connection(SemanticOperations):
         if reply_handler and not self._destroyed:
             reply_handler (self, *args)
 
-    def _subst_error_handler (self, methodcall, error_handler, exc):
+    def _subst_error_handler (self, methodcall, error_handler, *args):
         if methodcall:
             methodcall.destroy ()
             i = self._methodcalls.index (methodcall)
             del self._methodcalls[i]
             args = args[1:]
         if error_handler and not self._destroyed:
-            error_handler (self, exc)
+            error_handler (self, *args)
 
     def _subst_auth_handler (self, methodcall, auth_handler, prompt, method, resource):
         if methodcall:
