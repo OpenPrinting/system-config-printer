@@ -531,7 +531,14 @@ class NewPrinterGUI(GtkGUI):
             self.cups = authconn.Connection (parent=self.NewPrinterWindow,
                                              host=self._host,
                                              encryption=self._encryption)
-        except:
+        except cups.HTTPError, (s,):
+            show_HTTP_Error (s, self.parent)
+            return
+        except RuntimeError:
+            show_HTTP_Error (-1, self.parent)
+            return
+        except Exception, e:
+            nonfatalException (e)
             return
 
         try:
