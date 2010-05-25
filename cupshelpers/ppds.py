@@ -199,6 +199,8 @@ def ppdMakeModelSplit (ppd_make_and_model):
                    " zxs",              # hpcups
                    " pcl3",             # hpcups
                    "_bt",
+                   " pcl",              # Canon CQue
+                   " ufr ii",           # Canon UFR II
                    ","]:
         s = modell.find (suffix)
         if s != -1:
