@@ -77,7 +77,6 @@ nobase_pkgdata_SCRIPTS=				\
 	applet.py
 
 nobase_pkgdata_DATA=					\
-	AdvancedServerSettings.py			\
 	asyncconn.py					\
 	asyncipp.py					\
 	asyncpk1.py					\
@@ -109,6 +108,7 @@ nobase_pkgdata_DATA=					\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
 	SearchCriterion.py				\
+	serversettings.py				\
 	smburi.py					\
 	statereason.py					\
 	timedops.py					\
