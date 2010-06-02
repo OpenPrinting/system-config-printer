@@ -752,6 +752,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
                 pass
             except AttributeError:
                 pass
+            except cups.IPPError:
+                # someone else may have purged the job
+                return
 
             if attrs:
                 data.update (attrs)
