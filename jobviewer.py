@@ -211,6 +211,9 @@ class CancelJobsOperation:
         if response != gtk.RESPONSE_YES:
             return
 
+        if len(self.jobids) == 0:
+            return
+
         c = asyncconn.Connection (host=self.jobviewer.host,
                                   port=self.jobviewer.port,
                                   encryption=self.jobviewer.encryption)
