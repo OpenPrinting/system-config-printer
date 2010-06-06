@@ -32,12 +32,14 @@ fi
 AC_SUBST(DESKTOPVENDOR)
 AC_SUBST(DESKTOPPREFIX)
 
+PKG_CHECK_MODULES(GLIB, glib-2.0, has_glib=yes, has_glib=no)
+
 AC_ARG_WITH(udev-rules,
 	    [AC_HELP_STRING([--with-udev-rules],
 			    [Enable automatic USB print queue configuration @<:@default=no@:>@])],
 	    [],
 	    [with_udev_rules=no])
-AM_CONDITIONAL([UDEV_RULES], [test x$with_udev_rules != xno])
+AM_CONDITIONAL([UDEV_RULES], [test x$with_udev_rules != xno && test x$has_glib != xno])
 
 if test x$with_udev_rules != xno; then
    AM_PROG_CC_C_O

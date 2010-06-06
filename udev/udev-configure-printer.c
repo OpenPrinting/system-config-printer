@@ -44,6 +44,7 @@
 #include <syslog.h>
 #include <unistd.h>
 #include <usb.h>
+#include <glib.h>
 
 #define DISABLED_REASON "Unplugged or turned off"
 #define MATCH_ONLY_DISABLED 1
@@ -679,6 +680,23 @@ device_id_from_devpath (const char *devpath,
   return usb_device_devpath;
 }
 
+static void
+device_id_from_bluetooth (const char *bdaddr, struct device_id *id)
+{
+  char *device_id, *cmdline;
+
+  id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
+  cmdline = g_strdup_printf ("/usr/lib/cups/backend/bluetooth --get-deviceid %s", bdaddr);
+  if (g_spawn_command_line_sync (cmdline, &device_id, NULL, NULL, NULL) == FALSE) {
+    g_free (cmdline);
+    return;
+  }
+  g_free (cmdline);
+
+  parse_device_id (device_id, id);
+  g_free (device_id);
+}
+
 static const char *
 no_password (const char *prompt)
 {
@@ -724,7 +742,6 @@ find_matching_device_uris (struct device_id *id,
   size_t i, n;
   const char *exclude_schemes[] = {
     "beh",
-    "bluetooth",
     "http",
     "https",
     "ipp",
@@ -1138,6 +1155,38 @@ enable_queue (const char *printer_uri, void *context)
   httpClose (cups);
 }
 
+static gboolean
+bluetooth_verify_address (const char *bdaddr)
+{
+  gboolean retval = TRUE;
+  char **elems;
+  guint i;
+
+  g_return_val_if_fail (bdaddr != NULL, FALSE);
+
+  if (strlen (bdaddr) != 17)
+    return FALSE;
+
+  elems = g_strsplit (bdaddr, ":", -1);
+  if (elems == NULL)
+    return FALSE;
+  if (g_strv_length (elems) != 6) {
+    g_strfreev (elems);
+    return FALSE;
+  }
+  for (i = 0; i < 6; i++) {
+    if (strlen (elems[i]) != 2 ||
+        g_ascii_isxdigit (elems[i][0]) == FALSE ||
+        g_ascii_isxdigit (elems[i][1]) == FALSE) {
+	  retval = FALSE;
+	  break;
+    }
+  }
+
+  g_strfreev (elems);
+  return retval;
+}
+
 static int
 do_add (const char *cmd, const char *devpath)
 {
@@ -1146,7 +1195,7 @@ do_add (const char *cmd, const char *devpath)
   struct device_id id;
   struct device_uris device_uris;
   struct usb_uri_map *map;
-  char *usb_device_devpath;
+  char *usb_device_devpath = NULL;
   char usbserial[256];
 
   if (getenv ("DEBUG") == NULL)
@@ -1174,8 +1223,12 @@ do_add (const char *cmd, const char *devpath)
   syslog (LOG_DEBUG, "add %s", devpath);
 
   map = read_usb_uri_map ();
-  usb_device_devpath = device_id_from_devpath (devpath, map, &id,
-					       usbserial, sizeof (usbserial));
+  if (bluetooth_verify_address (devpath)) {
+    device_id_from_bluetooth (devpath, &id);
+  } else {
+    usb_device_devpath = device_id_from_devpath (devpath, map, &id,
+						 usbserial, sizeof (usbserial));
+  }
 
   if (!id.mfg || !id.mdl)
     {
@@ -1252,6 +1305,8 @@ disable_queue (const char *printer_uri, void *context)
   http_t *cups = httpConnectEncrypt ("localhost", 631,
 				     HTTP_ENCRYPT_IF_REQUESTED);
   ipp_t *request, *answer;
+
+  //FIXME remove instead of disable for Bluetooth
 
   if (cups == NULL)
     return;
