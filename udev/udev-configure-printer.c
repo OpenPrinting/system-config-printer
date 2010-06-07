@@ -1237,6 +1237,7 @@ do_add (const char *cmd, const char *devpath)
 
   map = read_usb_uri_map ();
   if (bluetooth_verify_address (devpath)) {
+    usbserial[0] = '\0';
     device_id_from_bluetooth (devpath, &id);
   } else {
     usb_device_devpath = device_id_from_devpath (devpath, map, &id,
@@ -1252,7 +1253,7 @@ do_add (const char *cmd, const char *devpath)
     }
 
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
-	  id.sern ? id.sern : "-", usbserial);
+	  id.sern ? id.sern : "-", usbserial[0] ? usbserial : "-");
 
   find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath,
 			     map);
