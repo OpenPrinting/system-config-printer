@@ -683,17 +683,30 @@ device_id_from_devpath (const char *devpath,
 static void
 device_id_from_bluetooth (const char *bdaddr, struct device_id *id)
 {
-  char *device_id, *cmdline;
+  gint exit_status;
+  char *device_id;
+  gchar *argv[4];
 
   id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
-  cmdline = g_strdup_printf ("/usr/lib/cups/backend/bluetooth --get-deviceid %s", bdaddr);
-  if (g_spawn_command_line_sync (cmdline, &device_id, NULL, NULL, NULL) == FALSE) {
-    g_free (cmdline);
+  argv[0] = g_strdup ("/usr/lib/cups/backend/bluetooth");
+  argv[1] = g_strdup ("--get-deviceid");
+  argv[2] = g_strdup (bdaddr);
+  argv[3] = NULL;
+  if (g_spawn_sync (NULL, argv, NULL,
+		    G_SPAWN_STDERR_TO_DEV_NULL, NULL, NULL,
+		    &device_id, NULL, &exit_status, NULL) == FALSE) {
+    g_free (argv[0]);
+    g_free (argv[1]);
+    g_free (argv[2]);
     return;
   }
-  g_free (cmdline);
+  g_free (argv[0]);
+  g_free (argv[1]);
+  g_free (argv[2]);
 
-  parse_device_id (device_id, id);
+  if (WEXITSTATUS(exit_status) == 0)
+    parse_device_id (device_id, id);
+
   g_free (device_id);
 }
 
