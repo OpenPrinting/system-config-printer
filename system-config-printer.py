@@ -235,9 +235,7 @@ class GUI(GtkGUI, monitor.Watcher):
                               "dests_iconview",
                               "statusbarMain",
                               "toolbar",
-                              "server_settings_menu_entry",
-                              "new_printer",
-                              "new_class",
+                              "server_menubar_item",
                               "group_menubar_item",
                               "printer_menubar_item",
                               "view_discovered_printers",
@@ -380,38 +378,22 @@ class GUI(GtkGUI, monitor.Watcher):
 
         gtk.window_set_default_icon_name ('printer')
 
-        # Toolbar
-        # Glade-2 doesn't have support for MenuToolButton, so we do that here.
-        self.btnNew = gtk.MenuToolButton (gtk.STOCK_ADD)
-        self.btnNew.set_is_important (True)
-        newmenu = gtk.Menu ()
-        newprinter = gtk.ImageMenuItem (_("Printer"))
-        printericon = gtk.Image ()
-        printericon.set_from_icon_name ("printer", gtk.ICON_SIZE_MENU)
-        newprinter.set_image (printericon)
-        newprinter.connect ('activate', self.on_new_printer_activate)
-        self.btnNew.connect ('clicked', self.on_new_printer_activate)
-        newclass = gtk.ImageMenuItem (_("Class"))
-        classicon = gtk.Image ()
-        classicon.set_from_icon_name (gtk.STOCK_DND_MULTIPLE,
-                                      gtk.ICON_SIZE_MENU)
-        newclass.set_image (classicon)
-        newclass.connect ('activate', self.on_new_class_activate)
-        newprinter.show ()
-        newclass.show ()
-        newmenu.attach (newprinter, 0, 1, 0, 1)
-        newmenu.attach (newclass, 0, 1, 1, 2)
-        self.btnNew.set_menu (newmenu)
-        self.toolbar.add (self.btnNew)
-        self.toolbar.add (gtk.SeparatorToolItem ())
-        refreshbutton = gtk.ToolButton (gtk.STOCK_REFRESH)
-        refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
-        self.toolbar.add (refreshbutton)
-        self.toolbar.show_all ()
-
         # Printer Actions
         printer_manager_action_group = \
             gtk.ActionGroup ("PrinterManagerActionGroup")
+        printer_manager_action_group.add_actions ([
+                ("connect-to-server", gtk.STOCK_CONNECT, _("_Connect..."),
+                 None, _("Choose a different CUPS server"),
+                 self.on_connect_activate),
+                ("server-settings", gtk.STOCK_PREFERENCES, _("_Settings..."),
+                 None, _("Adjust server settings"),
+                 self.on_server_settings_activate),
+                ("new-printer", gtk.STOCK_PRINT, _("_Printer"),
+                 None, None, self.on_new_printer_activate),
+                ("new-class", gtk.STOCK_DND_MULTIPLE, _("_Class"),
+                 None, None, self.on_new_class_activate),
+                ("quit", gtk.STOCK_QUIT, None, None, None,
+                 self.on_quit_activate)])
         printer_manager_action_group.add_actions ([
                 ("rename-printer", None, _("_Rename"),
                  None, None, self.on_rename_activate),
@@ -448,17 +430,27 @@ class GUI(GtkGUI, monitor.Watcher):
                 ], 1, self.on_filter_criterion_changed)
         for action in printer_manager_action_group.list_actions ():
             action.set_sensitive (False)
-        printer_manager_action_group.get_action ("view-print-queue").set_sensitive (True)
-        printer_manager_action_group.get_action ("filter-name").set_sensitive (True)
-        printer_manager_action_group.get_action ("filter-description").set_sensitive (True)
-        printer_manager_action_group.get_action ("filter-location").set_sensitive (True)
-        printer_manager_action_group.get_action ("filter-manufacturer").set_sensitive (True)
+        for action in ["connect-to-server",
+                       "quit",
+                       "view-print-queue",
+                       "filter-name",
+                       "filter-description",
+                       "filter-location",
+                       "filter-manufacturer"]:
+            act = printer_manager_action_group.get_action (action)
+            act.set_sensitive (True)
 
         self.ui_manager = gtk.UIManager ()
         self.ui_manager.insert_action_group (printer_manager_action_group, -1)
         self.ui_manager.add_ui_from_string (
 """
 <ui>
+ <accelerator action="connect-to-server"/>
+ <accelerator action="server-settings"/>
+ <accelerator action="new-printer"/>
+ <accelerator action="new-class"/>
+ <accelerator action="quit"/>
+
  <accelerator action="rename-printer"/>
  <accelerator action="duplicate-printer"/>
  <accelerator action="delete-printer"/>
@@ -480,6 +472,56 @@ class GUI(GtkGUI, monitor.Watcher):
 )
         self.ui_manager.ensure_update ()
         self.PrintersWindow.add_accel_group (self.ui_manager.get_accel_group ())
+
+        # Toolbar
+        # Glade-2 doesn't have support for MenuToolButton, so we do that here.
+        self.btnNew = gtk.MenuToolButton (gtk.STOCK_ADD)
+        self.btnNew.set_is_important (True)
+        newmenu = gtk.Menu ()
+        action = self.ui_manager.get_action ("/new-printer")
+        newprinter = action.create_menu_item ()
+        action = self.ui_manager.get_action ("/new-class")
+        newclass = action.create_menu_item ()
+        newprinter.show ()
+        newclass.show ()
+        newmenu.attach (newprinter, 0, 1, 0, 1)
+        newmenu.attach (newclass, 0, 1, 1, 2)
+        self.btnNew.set_menu (newmenu)
+        self.toolbar.add (self.btnNew)
+        self.toolbar.add (gtk.SeparatorToolItem ())
+        refreshbutton = gtk.ToolButton (gtk.STOCK_REFRESH)
+        refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
+        self.toolbar.add (refreshbutton)
+        self.toolbar.show_all ()
+
+        server_context_menu = gtk.Menu ()
+        for action_name in ["connect-to-server",
+                            "server-settings",
+                            None,
+                            "new",
+                            None,
+                            "quit"]:
+            if action_name == "new":
+                item = gtk.MenuItem (_("_New"))
+                item.set_sensitive (True)
+                self.menuItemNew = item
+            elif not action_name:
+                item = gtk.SeparatorMenuItem ()
+            else:
+                action = printer_manager_action_group.get_action (action_name)
+                item = action.create_menu_item ()
+            item.show ()
+            server_context_menu.append (item)
+        self.server_menubar_item.set_submenu (server_context_menu)
+
+        new_menu = gtk.Menu ()
+        for action_name in ["new-printer",
+                            "new-class"]:
+            action = printer_manager_action_group.get_action (action_name)
+            item = action.create_menu_item ()
+            item.show ()
+            new_menu.append (item)
+        self.menuItemNew.set_submenu (new_menu)
 
         self.printer_context_menu = gtk.Menu ()
         for action_name in ["edit-printer",
@@ -1323,13 +1365,18 @@ class GUI(GtkGUI, monitor.Watcher):
         self.statusbarMain.push(self.status_context_id, status_msg)
 
         for widget in (self.btnNew,
-                       self.new_printer, self.new_class,
+                       self.menuItemNew,
                        self.chkServerBrowse, self.chkServerShare,
                        self.chkServerRemoteAdmin,
                        self.chkServerAllowCancelAll,
-                       self.chkServerLogDebug,
-                       self.server_settings_menu_entry):
+                       self.chkServerLogDebug):
             widget.set_sensitive(connected)
+
+        for action_name in ["/server-settings",
+                            "/new-printer",
+                            "/new-class"]:
+            action = self.ui_manager.get_action (action_name)
+            action.set_sensitive (connected)
 
         sharing = self.chkServerShare.get_active ()
         self.chkServerShareAny.set_sensitive (sharing)
