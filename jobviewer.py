@@ -510,8 +510,33 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.JobsAttributesWindow.set_transient_for (self.JobsWindow)
         self.JobsAttributesWindow.connect("delete_event",
                                           self.job_attributes_on_delete_event)
+        self.JobsAttributesWindow.add_accel_group (self.job_ui_manager.get_accel_group ())
+        attrs_action_group = gtk.ActionGroup ("AttrsActionGroup")
+        attrs_action_group.add_actions ([
+                ("close", gtk.STOCK_CLOSE, None, "<ctrl>w",
+                 _("Close this window"), self.job_attributes_on_delete_event)
+                ])
+        self.attrs_ui_manager = gtk.UIManager ()
+        self.attrs_ui_manager.insert_action_group (attrs_action_group, -1)
+        self.attrs_ui_manager.add_ui_from_string (
+"""
+<ui>
+ <accelerator action="close"/>
+</ui>
+"""
+)
+        self.attrs_ui_manager.ensure_update ()
+        self.JobsAttributesWindow.add_accel_group (self.attrs_ui_manager.get_accel_group ())
+        vbox = gtk.VBox ()
+        self.JobsAttributesWindow.add (vbox)
+        toolbar = gtk.Toolbar ()
+        action = self.attrs_ui_manager.get_action ("/close")
+        item = action.create_tool_item ()
+        item.set_is_important (True)
+        toolbar.insert (item, 0)
+        vbox.pack_start (toolbar, False, False, 0)
         self.notebook = gtk.Notebook()
-        self.JobsAttributesWindow.add(self.notebook)
+        vbox.pack_start (self.notebook)
 
     def cleanup (self):
         self.monitor.cleanup ()
@@ -588,7 +613,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             self.loop.quit ()
         return True
 
-    def job_attributes_on_delete_event(self, widget, event):
+    def job_attributes_on_delete_event(self, widget, event=None):
         for page in range(self.notebook.get_n_pages()):
             self.notebook.remove_page(-1)
         self.jobs_attrs = {}
