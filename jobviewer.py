@@ -224,6 +224,9 @@ class CancelJobsOperation(gobject.GObject):
             self.emit ('finished')
             return
 
+        if len(self.jobids) == 0:
+            return
+
         c = asyncconn.Connection (host=self.host,
                                   port=self.port,
                                   encryption=self.encryption)
@@ -314,23 +317,25 @@ class JobViewer (GtkGUI):
 
         job_action_group = gtk.ActionGroup ("JobActionGroup")
         job_action_group.add_actions ([
-                ("cancel-job", gtk.STOCK_CANCEL, _("_Cancel"), None, _("Cancel selected jobs"),
-                 self.on_job_cancel_activate),
-                ("delete-job", gtk.STOCK_DELETE, _("_Delete"), None, _("Delete selected jobs"),
-                 self.on_job_delete_activate),
-                ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None, _("Hold selected jobs"),
-                 self.on_job_hold_activate),
-                ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None, _("Release selected jobs"),
-                 self.on_job_release_activate),
-                ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None, _("Reprint selected jobs"),
-                 self.on_job_reprint_activate),
-                ("retrieve-job", gtk.STOCK_SAVE_AS, _("Re_trieve"), None, _("Retrieve selected jobs"),
-                 self.on_job_retrieve_activate),
+                ("cancel-job", gtk.STOCK_CANCEL, _("_Cancel"), None,
+                 _("Cancel selected jobs"), self.on_job_cancel_activate),
+                ("delete-job", gtk.STOCK_DELETE, _("_Delete"), None,
+                 _("Delete selected jobs"), self.on_job_delete_activate),
+                ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None,
+                 _("Hold selected jobs"), self.on_job_hold_activate),
+                ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None,
+                 _("Release selected jobs"), self.on_job_release_activate),
+                ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None,
+                 _("Reprint selected jobs"), self.on_job_reprint_activate),
+                ("retrieve-job", gtk.STOCK_SAVE_AS, _("Re_trieve"), None,
+                 _("Retrieve selected jobs"), self.on_job_retrieve_activate),
                 ("move-job", None, _("_Move To"), None, None, None),
                 ("authenticate-job", None, _("_Authenticate"), None, None,
                  self.on_job_authenticate_activate),
-                 ("job-attributes", None, _("_View Attributes"), None, None,
-                 self.on_job_attributes_activate)
+                ("job-attributes", None, _("_View Attributes"), None, None,
+                 self.on_job_attributes_activate),
+                ("close", gtk.STOCK_CLOSE, None, "<ctrl>w",
+                 _("Close this window"), self.on_delete_event)
                 ])
         self.job_ui_manager = gtk.UIManager ()
         self.job_ui_manager.insert_action_group (job_action_group, -1)
@@ -346,6 +351,7 @@ class JobViewer (GtkGUI):
  <accelerator action="move-job"/>
  <accelerator action="authenticate-job"/>
  <accelerator action="job-attributes"/>
+ <accelerator action="close"/>
 </ui>
 """
 )
@@ -382,9 +388,11 @@ class JobViewer (GtkGUI):
                             "hold-job",
                             "release-job",
                             "reprint-job",
-                            "retrieve-job"]:
+                            "retrieve-job",
+                            "close"]:
             action = job_action_group.get_action (action_name)
-            action.set_sensitive (False)
+            action.set_sensitive (action_name == "close")
+            action.set_is_important (action_name == "close")
             item = action.create_tool_item ()
             item.show ()
             self.toolbar.insert (item, -1)
@@ -518,8 +526,33 @@ class JobViewer (GtkGUI):
         self.JobsAttributesWindow.set_transient_for (self.JobsWindow)
         self.JobsAttributesWindow.connect("delete_event",
                                           self.job_attributes_on_delete_event)
+        self.JobsAttributesWindow.add_accel_group (self.job_ui_manager.get_accel_group ())
+        attrs_action_group = gtk.ActionGroup ("AttrsActionGroup")
+        attrs_action_group.add_actions ([
+                ("close", gtk.STOCK_CLOSE, None, "<ctrl>w",
+                 _("Close this window"), self.job_attributes_on_delete_event)
+                ])
+        self.attrs_ui_manager = gtk.UIManager ()
+        self.attrs_ui_manager.insert_action_group (attrs_action_group, -1)
+        self.attrs_ui_manager.add_ui_from_string (
+"""
+<ui>
+ <accelerator action="close"/>
+</ui>
+"""
+)
+        self.attrs_ui_manager.ensure_update ()
+        self.JobsAttributesWindow.add_accel_group (self.attrs_ui_manager.get_accel_group ())
+        vbox = gtk.VBox ()
+        self.JobsAttributesWindow.add (vbox)
+        toolbar = gtk.Toolbar ()
+        action = self.attrs_ui_manager.get_action ("/close")
+        item = action.create_tool_item ()
+        item.set_is_important (True)
+        toolbar.insert (item, 0)
+        vbox.pack_start (toolbar, False, False, 0)
         self.notebook = gtk.Notebook()
-        self.JobsAttributesWindow.add(self.notebook)
+        vbox.pack_start (self.notebook)
 
     def cleanup (self):
         self.monitor.cleanup ()
@@ -596,7 +629,7 @@ class JobViewer (GtkGUI):
             self.loop.quit ()
         return True
 
-    def job_attributes_on_delete_event(self, widget, event):
+    def job_attributes_on_delete_event(self, widget, event=None):
         for page in range(self.notebook.get_n_pages()):
             self.notebook.remove_page(-1)
         self.jobs_attrs = {}
@@ -768,6 +801,9 @@ class JobViewer (GtkGUI):
                 pass
             except AttributeError:
                 pass
+            except cups.IPPError:
+                # someone else may have purged the job
+                return
 
             if attrs:
                 data.update (attrs)
