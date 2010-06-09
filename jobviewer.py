@@ -313,23 +313,25 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         job_action_group = gtk.ActionGroup ("JobActionGroup")
         job_action_group.add_actions ([
-                ("cancel-job", gtk.STOCK_CANCEL, _("_Cancel"), None, None,
-                 self.on_job_cancel_activate),
-                ("delete-job", gtk.STOCK_DELETE, _("_Delete"), None, None,
-                 self.on_job_delete_activate),
-                ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None, None,
-                 self.on_job_hold_activate),
-                ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None, None,
-                 self.on_job_release_activate),
-                ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None, None,
-                 self.on_job_reprint_activate),
-                ("retrieve-job", gtk.STOCK_SAVE_AS, _("Re_trieve"), None, None,
-                 self.on_job_retrieve_activate),
+                ("cancel-job", gtk.STOCK_CANCEL, _("_Cancel"), None,
+                 _("Cancel jobs"), self.on_job_cancel_activate),
+                ("delete-job", gtk.STOCK_DELETE, _("_Delete"), None,
+                 _("Erase jobs"), self.on_job_delete_activate),
+                ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None,
+                 _("Hold jobs"), self.on_job_hold_activate),
+                ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None,
+                 _("Release jobs"), self.on_job_release_activate),
+                ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None,
+                 _("Reprint jobs"), self.on_job_reprint_activate),
+                ("retrieve-job", gtk.STOCK_SAVE_AS, _("Re_trieve"), None,
+                 _("Retrieve job files"), self.on_job_retrieve_activate),
                 ("move-job", None, _("_Move To"), None, None, None),
-                ("authenticate-job", None, _("_Authenticate"), None, None,
-                 self.on_job_authenticate_activate),
-                 ("job-attributes", None, _("_View Attributes"), None, None,
-                 self.on_job_attributes_activate)
+                ("authenticate-job", None, _("_Authenticate"), None,
+                 _("Authenticate jobs"), self.on_job_authenticate_activate),
+                ("job-attributes", None, _("_View Attributes"), None,
+                 _("View job attributes"), self.on_job_attributes_activate),
+                ("close", gtk.STOCK_CLOSE, None, "<ctrl>w",
+                 _("Close this window"), self.on_delete_event)
                 ])
         self.job_ui_manager = gtk.UIManager ()
         self.job_ui_manager.insert_action_group (job_action_group, -1)
@@ -345,6 +347,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
  <accelerator action="move-job"/>
  <accelerator action="authenticate-job"/>
  <accelerator action="job-attributes"/>
+ <accelerator action="close"/>
 </ui>
 """
 )
@@ -381,9 +384,11 @@ class JobViewer (GtkGUI, monitor.Watcher):
                             "hold-job",
                             "release-job",
                             "reprint-job",
-                            "retrieve-job"]:
+                            "retrieve-job",
+                            "close"]:
             action = job_action_group.get_action (action_name)
-            action.set_sensitive (False)
+            action.set_sensitive (action_name == "close")
+            action.set_is_important (action_name == "close")
             item = action.create_tool_item ()
             item.show ()
             self.toolbar.insert (item, -1)
