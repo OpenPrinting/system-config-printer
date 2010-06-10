@@ -145,7 +145,7 @@ class PrinterURIIndex:
 class CancelJobsOperation:
     def __init__ (self, jobviewer, jobids, purge_job):
         self.jobviewer = jobviewer
-        self.jobids = jobids
+        self.jobids = list (jobids)
         self.purge_job = purge_job
         if purge_job:
             if len(self.jobids) > 1:
