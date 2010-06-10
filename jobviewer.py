@@ -211,9 +211,6 @@ class CancelJobsOperation:
         if response != gtk.RESPONSE_YES:
             return
 
-        if len(self.jobids) == 0:
-            return
-
         c = asyncconn.Connection (host=self.jobviewer.host,
                                   port=self.jobviewer.port,
                                   encryption=self.jobviewer.encryption)
@@ -234,18 +231,17 @@ class CancelJobsOperation:
         if self.jobviewer == None:
             return
 
-        self.connection._end_operation ()
-        self.connection.destroy ()
-        self.jobviewer.update_monitor ()
         if type (exc) == cups.IPPError:
             (e, m) = exc.args
             if (e != cups.IPP_NOT_POSSIBLE and
                 e != cups.IPP_NOT_FOUND):
                 self.jobviewer.show_IPP_Error (e, m)
-
-            return
-
-        raise exc
+            self.cancelJob_finish(connection, None)
+        else:
+            self.connection._end_operation ()
+            self.connection.destroy ()
+            self.jobviewer.update_monitor ()
+            raise exc
 
     def cancelJob_finish (self, connection, result):
         debugprint ("cancelJob_finish %s:%s" % (connection, repr (result)))
@@ -253,16 +249,16 @@ class CancelJobsOperation:
             return
 
         del self.jobids[0]
-        try:
-            connection.cancelJob (self.jobids[0], self.purge_job,
-                                  reply_handler=self.cancelJob_finish,
-                                  error_handler=self.cancelJob_error)
-        except IndexError:
+        if not self.jobids:
             # Last job canceled.
             self.connection._end_operation ()
             self.connection.destroy ()
             self.jobviewer.update_monitor ()
-            return
+        else:
+            # there are other jobs to cancel/delete
+            connection.cancelJob (self.jobids[0], self.purge_job,
+                                  reply_handler=self.cancelJob_finish,
+                                  error_handler=self.cancelJob_error)
 
 class JobViewer (GtkGUI, monitor.Watcher):
     required_job_attributes = set(['job-k-octets',
@@ -1191,8 +1187,9 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.on_job_cancel_activate2(True)
 
     def on_job_cancel_activate2(self, purge_job):
-        op = CancelJobsOperation (self, self.jobids, purge_job)
-        self.ops.append (op)
+        if self.jobids:
+            op = CancelJobsOperation (self, self.jobids, purge_job)
+            self.ops.append (op)
 
     def on_job_hold_activate(self, menuitem):
         try:
