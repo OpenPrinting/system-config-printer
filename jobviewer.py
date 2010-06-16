@@ -1688,7 +1688,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.jobs = jobs
         self.active_jobs = set()
         for jobid, jobdata in jobs.iteritems ():
-            if self.job_is_active (jobdata):
+            if (self.job_is_active (jobdata) and
+                jobdata.has_key('job-printer-name')):
                 self.active_jobs.add (jobid)
 
         self.set_process_pending (True)
