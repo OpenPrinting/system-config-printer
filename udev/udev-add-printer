@@ -27,7 +27,7 @@ import sys
 import traceback
 from syslog import *
 
-def create_queue (c, printers, name, device_uri, ppdname, info):
+def create_queue (c, printers, name, device_uri, ppdname, info, installer):
     # Make sure the name is unique.
     namel = unicode (name.lower ())
     unique = False
@@ -55,7 +55,34 @@ def create_queue (c, printers, name, device_uri, ppdname, info):
                   ppdname=ppdname,
                   info=info,
                   location=os.uname ()[1])
-    cupshelpers.activateNewPrinter (c, name)
+
+    if not installer:
+        # There is no session applet running to deal with installing
+        # drivers so there is a good chance that this queue won't work
+        # right now.  If that's the case, delete it.  The user can
+        # reconnect the printer when they log in, and everything will
+        # be set up correctly for them at that point.
+        try:
+            ppdfile = c.getPPD (name)
+            ppd = cups.PPD (ppdfile)
+            os.unlink (ppdfile)
+
+            (pkgs, exes) = cupshelpers.missingPackagesAndExecutables (ppd)
+            if pkgs or exes:
+                # There are filters missing.  Delete the queue.
+                syslog (LOG_ERROR, "PPD %s requires %s" % (ppdname,
+                                                           repr ((pkgs, exes))))
+                syslog (LOG_ERROR, "Deleting non-functional queue")
+                c.deletePrinter (name)
+                name = None
+        except cups.IPPError, (e, m):
+            pass
+        except RuntimeError:
+            pass
+
+    if name:
+        cupshelpers.activateNewPrinter (c, name)
+
     return name
 
 def add_queue (device_id, device_uris, fax_basename=False):
@@ -127,9 +154,10 @@ def add_queue (device_id, device_uris, fax_basename=False):
 
         printers = cupshelpers.getPrinters (c)
         uniquename = create_queue (c, printers, name, device_uris[0], ppdname,
-                                   "%s %s" % (id_dict["MFG"], id_dict["MDL"]))
+                                   "%s %s" % (id_dict["MFG"], id_dict["MDL"]),
+                                   installer)
 
-        if fax_basename == False:
+        if uniquename != None and fax_basename == False:
             # Look for a corresponding fax queue.  We can only
             # identify these by looking for device URIs that are the
             # same as this one but with a different scheme.  If we
@@ -171,7 +199,7 @@ def add_queue (device_id, device_uris, fax_basename=False):
         # Not an exact match.
         uniquename = device_uris[0]
 
-    if notification:
+    if uniquename != None and notification:
         try:
             cmd = id_dict["CMD"]
             if cmd:
