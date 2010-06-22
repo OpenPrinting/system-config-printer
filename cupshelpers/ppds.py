@@ -1045,7 +1045,7 @@ def _self_test(argv):
          "DES:Canon iP3000;VER:1.09;STA:10;FSI:03;", 1, "Canon PIXMA iP3000"),
         ("MFG:HP;MDL:Deskjet 5400 series;CMD:MLC,PCL,PML,DW-PCL,DESKJET,DYN;"
          "1284.4DL:4d,4e,1;CLS:PRINTER;DES:5440;",
-         1, "HP DeskJet (5440)|(5550)"), # foomatic-db-hpijs used to say 5440
+         1, "HP DeskJet (5440|5550)"), # foomatic-db-hpijs used to say 5440
         ("MFG:Hewlett-Packard;MDL:HP LaserJet 3390;"
          "CMD:PJL,MLC,PCL,POSTSCRIPT,PCLXL;",
          0, "HP LaserJet 3390"),
