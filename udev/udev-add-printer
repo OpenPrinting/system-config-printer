@@ -27,6 +27,10 @@ import sys
 import traceback
 from syslog import *
 
+MFR_BLACKLIST=[
+    "graphtec",
+    ]
+
 def create_queue (c, printers, name, device_uri, ppdname, info):
     # Make sure the name is unique.
     namel = unicode (name.lower ())
@@ -67,6 +71,11 @@ def add_queue (device_id, device_uris, fax_basename=False):
     fax_basename: False if this is not a fax queue, else name prefix
     """
 
+    id_dict = cupshelpers.parseDeviceID (device_id)
+    if id_dict["MFG"].lower () in MFG_BLACKLIST:
+        syslog (LOG_DEBUG, "Ignoring blacklisted manufacturer %s", id_dict["MFG"])
+        return
+
     syslog (LOG_DEBUG, "add_queue: URIs=%s" % device_uris)
     if fax_basename != False:
         notification = None
@@ -82,7 +91,6 @@ def add_queue (device_id, device_uris, fax_basename=False):
             syslog (LOG_DEBUG, "D-Bus method call failed: %s" % e)
             notification = None
 
-    id_dict = cupshelpers.parseDeviceID (device_id)
     c = cups.Connection ()
     ppds = cupshelpers.ppds.PPDs (c.getPPDs ())
     (status, ppdname) = ppds.getPPDNameFromDeviceID (id_dict["MFG"],
