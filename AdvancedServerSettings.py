@@ -129,9 +129,10 @@ class AdvancedServerSettings:
         self.handler_ids[reason].append ((widget, id))
 
     def disconnect (self, reason=None):
-        for (widget, id) in self.handler_ids[reason]:
-            widget.disconnect (id)
-        del self.handler_ids[reason]
+        if self.handler_ids.has_key (reason):
+            for (widget, id) in self.handler_ids[reason]:
+                widget.disconnect (id)
+            del self.handler_ids[reason]
 
     def on_treeview_selection_changed (self, selection):
         self.remove.set_sensitive (selection.count_selected_rows () != 0)
