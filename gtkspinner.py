@@ -55,7 +55,7 @@ class Spinner:
 
     def _set_frame (self, n):
         self._current_frame = n
-        if self.n_frames == 0:
+        if self.n_frames < 2:
             self.image.clear ()
             return
 

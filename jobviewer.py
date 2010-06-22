@@ -150,7 +150,7 @@ class CancelJobsOperation(gobject.GObject):
 
     def __init__ (self, parent, host, port, encryption, jobids, purge_job):
         gobject.GObject.__init__ (self)
-        self.jobids = jobids
+        self.jobids = list (jobids)
         self.purge_job = purge_job
         self.host = host
         self.port = port
@@ -225,6 +225,7 @@ class CancelJobsOperation(gobject.GObject):
             return
 
         if len(self.jobids) == 0:
+            self.emit ('finished')
             return
 
         c = asyncconn.Connection (host=self.host,
@@ -244,27 +245,37 @@ class CancelJobsOperation(gobject.GObject):
 
     def cancelJob_error (self, connection, exc):
         debugprint ("cancelJob_error %s:%s" % (connection, repr (exc)))
-        self.connection._end_operation ()
-        self.connection.destroy ()
-        self.connection = None
-        self.emit ('ipp-error', self.jobids[0], exc)
-        return
+        if type (exc) == cups.IPPError:
+            (e, m) = exc.args
+            if (e != cups.IPP_NOT_POSSIBLE and
+                e != cups.IPP_NOT_FOUND):
+                self.emit ('ipp-error', self.jobids[0], exc)
+            self.cancelJob_finish(connection, None)
+        else:
+            self.connection._end_operation ()
+            self.connection.destroy ()
+            self.connection = None
+            self.emit ('ipp-error', self.jobids[0], exc)
+            # Give up.
+            self.emit ('finished')
+            return
 
     def cancelJob_finish (self, connection, result):
         debugprint ("cancelJob_finish %s:%s" % (connection, repr (result)))
         self.emit ('job-deleted', self.jobids[0])
         del self.jobids[0]
-        try:
-            connection.cancelJob (self.jobids[0], self.purge_job,
-                                  reply_handler=self.cancelJob_finish,
-                                  error_handler=self.cancelJob_error)
-        except IndexError:
+        if not self.jobids:
             # Last job canceled.
             self.connection._end_operation ()
             self.connection.destroy ()
             self.connection = None
             self.emit ('finished')
             return
+        else:
+            # there are other jobs to cancel/delete
+            connection.cancelJob (self.jobids[0], self.purge_job,
+                                  reply_handler=self.cancelJob_finish,
+                                  error_handler=self.cancelJob_error)
 
 gobject.type_register (CancelJobsOperation)
 
@@ -1207,11 +1218,12 @@ class JobViewer (GtkGUI):
         self.on_job_cancel_activate2(True)
 
     def on_job_cancel_activate2(self, purge_job):
-        op = CancelJobsOperation (self.JobsWindow, self.host, self.port,
-                                  self.encryption, self.jobids, purge_job)
-        self.ops.append (op)
-        op.connect ('finished', self.on_canceljobs_finished)
-        op.connect ('ipp-error', self.on_canceljobs_error)
+        if self.jobids:
+            op = CancelJobsOperation (self.JobsWindow, self.host, self.port,
+                                      self.encryption, self.jobids, purge_job)
+            self.ops.append (op)
+            op.connect ('finished', self.on_canceljobs_finished)
+            op.connect ('ipp-error', self.on_canceljobs_error)
 
     def on_canceljobs_finished (self, canceljobsoperation):
         canceljobsoperation.destroy ()
@@ -1220,9 +1232,6 @@ class JobViewer (GtkGUI):
         self.update_monitor ()
 
     def on_canceljobs_error (self, canceljobsoperation, jobid, exc):
-        canceljobsoperation.destroy ()
-        i = self.ops.index (canceljobsoperation)
-        del self.ops[i]
         self.update_monitor ()
         if type (exc) == cups.IPPError:
             (e, m) = exc.args
@@ -1747,6 +1756,10 @@ class JobViewer (GtkGUI):
             printer = self.printer_uri_index.lookup (uri)
         except KeyError:
             printer = uri
+
+        if self.specific_dests and printer not in self.specific_dests:
+            return
+
         jobdata['job-printer-name'] = printer
 
         if self.job_is_active (jobdata):
