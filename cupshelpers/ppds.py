@@ -864,15 +864,15 @@ class PPDs:
             return get ("PostScript Printer")
         elif (("pclxl" in cmdsets) or ("pcl-xl" in cmdsets) or
               ("pcl6" in cmdsets) or ("pcl 6 emulation" in cmdsets)):
-            return get ("PCL 6/PCL XL Printer")
+            return get ("PCL 6/PCL XL Printer", "PCL Laser Printer")
         elif "pcl5e" in cmdsets:
-            return get ("PCL 5e Printer")
+            return get ("PCL 5e Printer", "PCL Laser Printer")
         elif "pcl5c" in cmdsets:
-            return get ("PCL 5c Printer")
+            return get ("PCL 5c Printer", "PCL Laser Printer")
         elif ("pcl5" in cmdsets) or ("pcl 5 emulation" in cmdsets):
-            return get ("PCL 5 Printer")
+            return get ("PCL 5 Printer", "PCL Laser Printer")
         elif "pcl" in cmdsets:
-            return get ("PCL 3 Printer")
+            return get ("PCL 3 Printer", "PCL Laser Printer")
         elif (("escpl2" in cmdsets) or ("esc/p2" in cmdsets) or
               ("escp2e" in cmdsets)):
             return get ("ESC/P Dot Matrix Printer")
@@ -1058,7 +1058,6 @@ def _self_test(argv):
         ("MFG:New;MDL:Unknown PCL5c Printer;CMD:PCL5c;", 2, "Generic PCL 5c"),
         ("MFG:New;MDL:Unknown PCL5 Printer;CMD:PCL5;", 2, "Generic PCL 5"),
         ("MFG:New;MDL:Unknown PCL3 Printer;CMD:PCL;", 2, "Generic PCL"),
-        ("MFG:New;MDL:Unknown ESC/P Printer;CMD:ESCP2E;", 2, "Generic ESC/P"),
         ("MFG:New;MDL:Unknown Printer;", 100, None),
         ]
 
