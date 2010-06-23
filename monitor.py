@@ -418,6 +418,12 @@ class Monitor:
                 continue
 
             # Job events
+            if not nse.startswith ("job-"):
+                # Some versions of CUPS give empty
+                # notify-subscribed-event attributes (STR #3608).
+                debugprint ("Unhandled nse %s" % repr (nse))
+                continue
+
             jobid = event['notify-job-id']
             if (nse == 'job-created' or
                 (nse == 'job-state-changed' and
