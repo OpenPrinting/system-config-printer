@@ -478,8 +478,6 @@ class JobViewer (GtkGUI):
         if parent:
             self.JobsWindow.set_transient_for (parent)
 
-        self.statusbar_set = False
-
         theme = gtk.icon_theme_get_default ()
         self.icon_jobs = theme.load_icon (ICON, 22, 0)
         self.icon_jobs_processing = theme.load_icon ("printer-printing",
@@ -1591,17 +1589,27 @@ class JobViewer (GtkGUI):
             self.worst_reason = worst_reason
             debugprint ("Worst reason: %s" % worst_reason)
 
+        self.statusbar.pop (0)
         if self.worst_reason != None:
             (title, tooltip) = self.worst_reason.get_description ()
-            if self.statusbar_set:
-                self.statusbar.pop (0)
             self.statusbar.push (0, tooltip)
-            self.statusbar_set = True
         else:
             tooltip = None
-            if self.statusbar_set:
-                self.statusbar.pop (0)
-                self.statusbar_set = False
+            status_message = ""
+            processing = 0
+            pending = 0
+            for jobid in self.active_jobs:
+                try:
+                    job_state = self.jobs[jobid]['job-state']
+                except KeyError:
+                    continue
+                if job_state == cups.IPP_JOB_PROCESSING:
+                    processing = processing + 1
+                elif job_state == cups.IPP_JOB_PENDING:
+                    pending = pending + 1
+            if ((processing > 0) or (pending > 0)):
+                status_message = _("processing / pending:   %d / %d") % (processing, pending)
+                self.statusbar.push(0, status_message)
 
         if self.trayicon:
             pixbuf = self.get_icon_pixbuf (have_jobs=have_jobs)
