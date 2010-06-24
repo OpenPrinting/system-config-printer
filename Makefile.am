@@ -160,12 +160,12 @@ bin_SCRIPTS=\
 	system-config-printer-applet
 
 if UDEV_RULES
-udevrulesdir=/lib/udev/rules.d
+udevrulesdir=$(sysconfdir)/udev/rules.d
 udevrules_DATA=udev/70-printers.rules
 udev_udev_configure_printer_SOURCES=\
 	udev/udev-configure-printer.c
 udev_udev_configure_printer_LDADD=-lcups -ludev -lusb $(GLIB_LIBS)
-udevhelperdir=/lib/udev
+udevhelperdir=$(sysconfdir)/udev
 udevhelper_PROGRAMS=\
 	udev/udev-configure-printer
 udevhelper_SCRIPTS=\
