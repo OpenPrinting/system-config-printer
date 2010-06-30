@@ -487,6 +487,7 @@ class GUI(GtkGUI, monitor.Watcher):
         newmenu.attach (newprinteritem, 0, 1, 0, 1)
         newmenu.attach (newclassitem, 0, 1, 1, 2)
         self.btnNew.set_menu (newmenu)
+        self.btnNew.connect ('clicked', self.on_new_printer_activate)
         self.toolbar.add (self.btnNew)
         self.toolbar.add (gtk.SeparatorToolItem ())
         refreshbutton = gtk.ToolButton (gtk.STOCK_REFRESH)
