@@ -228,10 +228,17 @@ class CancelJobsOperation(gobject.GObject):
             self.emit ('finished')
             return
 
-        c = asyncconn.Connection (host=self.host,
-                                  port=self.port,
-                                  encryption=self.encryption)
-        self.connection = c
+        asyncconn.Connection (host=self.jobviewer.host,
+                              port=self.jobviewer.port,
+                              encryption=self.jobviewer.encryption,
+                              reply_handler=self._connected,
+                              error_handler=self._connect_failed)
+
+    def _connect_failed (self, connection, exc):
+        debugprint ("CancelJobsOperation._connect_failed %s:%s" % (connection, repr (exc)))
+
+    def _connected (self, connection, result):
+        self.connection = connection
 
         if self.purge_job:
             operation = _("deleting job")

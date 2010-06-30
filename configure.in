@@ -33,17 +33,17 @@ AC_SUBST(DESKTOPVENDOR)
 AC_SUBST(DESKTOPPREFIX)
 
 PKG_CHECK_MODULES(GLIB, glib-2.0, has_glib=yes, has_glib=no)
-PKG_CHECK_MODULES(libudev, libudev, has_libudev=yes, has_libudev=no)
-PKG_CHECK_MODULES(libusb, libusb, has_libusb=yes, has_libusb=no)
 
 AC_ARG_WITH(udev-rules,
 	    [AC_HELP_STRING([--with-udev-rules],
 			    [Enable automatic USB print queue configuration @<:@default=no@:>@])],
 	    [],
 	    [with_udev_rules=no])
-AM_CONDITIONAL([UDEV_RULES], [test x$with_udev_rules])
+AM_CONDITIONAL([UDEV_RULES], [test x$with_udev_rules != xno])
 
 if test x$with_udev_rules != xno; then
+   PKG_CHECK_MODULES(libudev, libudev, has_libudev=yes, has_libudev=no)
+   PKG_CHECK_MODULES(libusb, libusb, has_libusb=yes, has_libusb=no)
    if test x$has_glib == xno -o \
            x$has_libudev == xno -o \
            x$has_libusb == xno; then
