@@ -464,6 +464,8 @@ class _IPPAuthOperation:
                                      parent=conn.parent)
 
         d.set_prompt (prompt)
+        if self._user == None:
+            self._user = cups.getUser()
         d.set_auth_info ([self._user, ''])
         d.field_grab_focus ('password')
         d.set_keep_above (True)

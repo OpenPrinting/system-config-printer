@@ -2639,6 +2639,7 @@ class NewPrinterGUI(GtkGUI):
 
     def openprinting_printers_found (self, status, user_data, printers):
         self.openprinting_query_handle = None
+        self.downloadable_drivers = dict()
         button = self.btnNPDownloadableDriverSearch
         label = self.btnNPDownloadableDriverSearch_label
         gtk.gdk.threads_enter ()
@@ -2720,7 +2721,6 @@ class NewPrinterGUI(GtkGUI):
             # Should report error.
             print drivers
             print traceback.extract_tb(drivers[2], limit=None)
-            self.downloadable_drivers = dict()
             return
 
         self.openprinting_query_handle = None
