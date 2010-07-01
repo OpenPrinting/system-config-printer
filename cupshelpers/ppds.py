@@ -201,6 +201,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
                    "_bt",
                    " pcl",              # Canon CQue
                    " ufr ii",           # Canon UFR II
+                   " br-script3",       # Brother PPDs
                    ","]:
         s = modell.find (suffix)
         if s != -1:
