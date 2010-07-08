@@ -63,6 +63,7 @@ errordialogs.set_gettext_function (_)
 pkgdata = config.pkgdatadir
 GLADE="applet.glade"
 ICON="printer"
+ICON_SIZE=22
 SEARCHING_ICON="document-print-preview"
 
 # We need to call pynotify.init before we can check the server for caps
@@ -281,10 +282,20 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.statusbar_set = False
 
+        def load_icon(theme, icon):
+            try:
+                pixbuf = theme.load_icon (icon, ICON_SIZE, 0)
+            except gobject.GError:
+                debugprint ("No %s icon available" % icon)
+                # Just create an empty pixbuf.
+                pixbuf = gtk.gdk.Pixbuf (gtk.gdk.COLORSPACE_RGB,
+                                         True, 8, ICON_SIZE, ICON_SIZE)
+                pixbuf.fill (0)
+            return pixbuf
+
         theme = gtk.icon_theme_get_default ()
-        self.icon_jobs = theme.load_icon (ICON, 22, 0)
-        self.icon_jobs_processing = theme.load_icon ("printer-printing",
-                                                     22, 0)
+        self.icon_jobs = load_icon (theme, ICON)
+        self.icon_jobs_processing = load_icon (theme, "printer-printing")
         self.icon_no_jobs = self.icon_jobs.copy ()
         self.icon_no_jobs.fill (0)
         self.icon_jobs.composite (self.icon_no_jobs,
@@ -297,8 +308,8 @@ class JobViewer (GtkGUI, monitor.Watcher):
                                   127)
         if self.trayicon:
             self.statusicon = gtk.StatusIcon ()
-            pixbuf = theme.load_icon (ICON, 22, 0)
-            self.statusicon.set_from_pixbuf (pixbuf)    
+            pixbuf = load_icon (theme, ICON)
+            self.statusicon.set_from_pixbuf (pixbuf)
             self.set_statusicon_from_pixbuf (self.icon_no_jobs)
             self.statusicon.connect ('activate', self.toggle_window_display)
             self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
