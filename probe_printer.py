@@ -296,6 +296,7 @@ class PrinterFinder:
             # Cache the make and model for use by other search methods
             # that are not able to determine it.
             self._cached_attributes['device-make-and-model'] = make_and_model
+            self._cached_attributes['device_id'] = device_id
 
     def _probe_lpd (self):
         lpd = LpdServer (self.hostname)
