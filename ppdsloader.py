@@ -134,16 +134,19 @@ class PPDsLoader:
         try:
             obj = self._bus.get_object ("com.ubuntu.DeviceDriver", "/GUI")
             jockey = dbus.Interface (obj, "com.ubuntu.DeviceDriver")
-            r = jockey.search_driver ("printer_deviceid:%s" % devid,
+            r = jockey.search_driver ("printer_deviceid:%s" % self._device_id,
                                       reply_handler=self._jockey_reply,
                                       error_handler=self._jockey_error,
                                       timeout=3600)
         except Exception, e:
             self._jockey_error (e)
 
-    def _jockey_reply (self, result):
+    def _jockey_reply (self, conn, result):
         debugprint ("Got Jockey result: %s" % repr (result))
-        self._installed_files = result[1]
+        try:
+            self._installed_files = result[1]
+        except:
+            self._installed_files = ()
         self._query_cups ()
 
     def _jockey_error (self, exc):
