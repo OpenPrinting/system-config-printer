@@ -125,8 +125,9 @@ def add_queue (device_id, device_uris, fax_basename=False):
             installer = dbus.Interface (obj,
                                         "com.redhat.PrinterDriversInstaller")
         except dbus.DBusException, e:
-            syslog (LOG_DEBUG, "Failed to get D-Bus object for "
-                    "PrinterDriversInstaller: %s" % e)
+            #syslog (LOG_DEBUG, "Failed to get D-Bus object for "
+            #        "PrinterDriversInstaller: %s" % e)
+            pass
 
     id_dict = cupshelpers.parseDeviceID (device_id)
     if installer:
