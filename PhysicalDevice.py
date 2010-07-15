@@ -100,6 +100,9 @@ class PhysicalDevice:
                 if sn != '' and self.sn != '' and sn != self.sn:
                     raise ValueError
 
+        if device.type == "socket":
+            # Remove default port to more easily find duplicate URIs
+            device.uri = device.uri.replace (":9100", "")
         for d in self.devices:
             if d.uri == device.uri:
                 return
