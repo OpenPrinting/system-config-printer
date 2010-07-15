@@ -4152,8 +4152,12 @@ class NewPrinterGUI(GtkGUI):
             else:
                 self.NewPrinterWindow.set_title(_("New Printer"))
 
+            if self.dialog_mode == "ppd":
+                uri = self.mainapp.printer.device_uri
+            else:
+                uri = self.device.uri
             try:
-                self.fetchPPDs (parent=self.parent)
+                self.fetchPPDs (parent=self.parent, uri=uri)
             except cups.IPPError, (e, m):
                 show_IPP_Error (e, m, parent=self.parent)
                 return
@@ -4175,10 +4179,6 @@ class NewPrinterGUI(GtkGUI):
             ppd = self.mainapp.ppd
             #self.mainapp.devid = "MFG:Samsung;MDL:ML-3560;DES:;CMD:GDI;"
             devid = self.mainapp.devid
-            if self.dialog_mode == "ppd":
-                uri = self.mainapp.printer.device_uri
-            else:
-                uri = self.device.uri
 
             self.exactdrivermatch = False
             if devid != "":
@@ -4259,7 +4259,7 @@ class NewPrinterGUI(GtkGUI):
         # Break out of the innermost loop.
         gtk.main_quit ()
 
-    def fetchPPDs(self, parent=None):
+    def fetchPPDs(self, parent=None, uri=None):
         debugprint ("fetchPPDs")
 
         # First, let's see if there are drivers to install for this
@@ -4283,6 +4283,7 @@ class NewPrinterGUI(GtkGUI):
         encryption = self.mainapp.connect_encrypt
         self.ppdsloader = ppdsloader.PPDsLoader (self._getPPDs_reply,
                                                  device_id=devid,
+                                                 device_uri=uri,
                                                  parent=parent,
                                                  host=host,
                                                  encryption=encryption)
@@ -4445,7 +4446,7 @@ class NewPrinterGUI(GtkGUI):
 
                 if not self.remotecupsqueue:
                     try:
-                        self.fetchPPDs(self.NewPrinterWindow)
+                        self.fetchPPDs(self.NewPrinterWindow, uri=uri)
                     except cups.IPPError, (e, msg):
                         self.ready (self.NewPrinterWindow)
                         self.show_IPP_Error(e, msg)
