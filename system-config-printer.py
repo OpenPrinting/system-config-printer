@@ -3771,6 +3771,7 @@ class NewPrinterGUI(GtkGUI):
     new_printer_device_tabs = {
         "parallel" : 0, # empty tab
         "usb" : 0,
+        "bluetooth" : 0,
         "hal" : 0,
         "beh" : 0,
         "hp" : 0,
@@ -4800,7 +4801,9 @@ class NewPrinterGUI(GtkGUI):
         debugprint ("fetchDevices")
         self.inc_spinner_task ()
 
-        network_schemes = ["dnssd", "snmp"]
+        # Search for Bluetooth printers together with the network printers
+        # as the Bluetooth search takes rather long time
+        network_schemes = ["dnssd", "snmp", "bluetooth"]
         error_handler = self.error_getting_devices
         if network == False:
             reply_handler = (lambda x, y:
@@ -5707,6 +5710,8 @@ class NewPrinterGUI(GtkGUI):
                 device.menuentry = _("Serial Port")
             elif device.type == "usb":
                 device.menuentry = _("USB")
+            elif device.type == "bluetooth":
+                device.menuentry = _("Bluetooth")
             elif device.type == "hp":
                 device.menuentry = _("HP Linux Imaging and Printing (HPLIP)")
             elif device.type == "hpfax":
@@ -5824,6 +5829,8 @@ class NewPrinterGUI(GtkGUI):
                 text = _("A printer connected to the parallel port.")
             elif device.type == "usb":
                 text = _("A printer connected to a USB port.")
+            elif device.type == "bluetooth":
+                text = _("A printer connected via Bluetooth.")
             elif device.type == "hp":
                 text = _("HPLIP software driving a printer, "
                          "or the printer function of a multi-function device.")
