@@ -534,6 +534,10 @@ class Device:
                 return 1
             if self.type == "hp" or self.type == "hpfax":
                 return -1
+            if other.type == "dnssd":
+                return 1
+            if self.type == "dnssd":
+                return -1
             if other.type == "usb":
                 return 1
             if self.type == "usb":
