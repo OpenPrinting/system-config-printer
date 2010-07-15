@@ -28,6 +28,7 @@ import subprocess
 import threading
 import errno
 import cups
+import gobject
 
 try:
     import pysmb
