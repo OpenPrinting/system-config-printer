@@ -4324,8 +4324,12 @@ class NewPrinterGUI(GtkGUI):
                 res = re.search ("ipp://(\S+(:\d+|))/printers/(\S+)", uri)
                 if res:
                     resg = res.groups()
+                    if len (resg[1]) > 0:
+                        port = int (resg[1])
+                    else:
+                        port = 631
                     try:
-                        conn = httplib.HTTPConnection(resg[0])
+                        conn = httplib.HTTPConnection(resg[0], port)
                         conn.request("GET", "/printers/%s.ppd" % resg[2])
                         resp = conn.getresponse()
                         if resp.status == 200: self.remotecupsqueue = resg[2]
@@ -4336,11 +4340,6 @@ class NewPrinterGUI(GtkGUI):
                     # printer-location attributes, to pre-fill those
                     # fields for this new queue.
                     try:
-                        if len (resg[1]) > 0:
-                            port = int (resg[1])
-                        else:
-                            port = 631
-
                         encryption = cups.HTTP_ENCRYPT_IF_REQUESTED
                         c = cups.Connection (host=resg[0],
                                              port=port,
