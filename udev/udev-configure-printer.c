@@ -774,7 +774,7 @@ find_matching_device_uris (struct device_id *id,
   /* Leave the bus to settle. */
   sleep (1);
 
-  cups = httpConnectEncrypt ("localhost", 631, HTTP_ENCRYPT_IF_REQUESTED);
+  cups = httpConnectEncrypt (cupsServer (), ippPort(), cupsEncryption ());
   if (cups == NULL)
     {
       /* Don't bother retrying here.  Instead, the CUPS initscript
@@ -1043,8 +1043,8 @@ for_each_matching_queue (struct device_uris *device_uris,
 			 void *context)
 {
   size_t matched = 0;
-  http_t *cups = httpConnectEncrypt ("localhost", 631,
-				     HTTP_ENCRYPT_IF_REQUESTED);
+  http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
+				     cupsEncryption ());
   ipp_t *request, *answer;
   ipp_attribute_t *attr;
   const char *attributes[] = {
@@ -1142,8 +1142,8 @@ static void
 enable_queue (const char *printer_uri, void *context)
 {
   /* Disable it. */
-  http_t *cups = httpConnectEncrypt ("localhost", 631,
-				     HTTP_ENCRYPT_IF_REQUESTED);
+  http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
+				     cupsEncryption ());
   ipp_t *request, *answer;
 
   if (cups == NULL)
@@ -1317,8 +1317,8 @@ static void
 disable_queue (const char *printer_uri, void *context)
 {
   /* Disable it. */
-  http_t *cups = httpConnectEncrypt ("localhost", 631,
-				     HTTP_ENCRYPT_IF_REQUESTED);
+  http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
+				     cupsEncryption ());
   ipp_t *request, *answer;
 
   //FIXME remove instead of disable for Bluetooth
