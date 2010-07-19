@@ -1170,15 +1170,26 @@ class JobViewer (GtkGUI, monitor.Watcher):
             # Not important enough to justify a notification.
             return
 
+        blacklist = [
+            # Some printers report 'other-warning' for no apparent
+            # reason, e.g.  Canon iR 3170C, Epson AL-CX11NF.
+            # See bug #520815.
+            "other",
+
+            # This seems to be some sort of 'magic' state reason that
+            # is for internal use only.
+            "com.apple.print.recoverable",
+            ]
+
+        if reason.get_reason () in blacklist:
+            return
+
         self.notify_printer_state_reason (reason)
 
     def notify_printer_state_reason (self, reason):
         tuple = reason.get_tuple ()
         if self.state_reason_notifications.has_key (tuple):
             debugprint ("Already sent notification for %s" % repr (reason))
-            return
-
-        if reason.get_reason () == "com.apple.print.recoverable":
             return
 
         level = reason.get_level ()
