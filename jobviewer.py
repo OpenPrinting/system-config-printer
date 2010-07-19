@@ -58,6 +58,7 @@ from statereason import StateReason
 
 pkgdata = config.pkgdatadir
 ICON="printer"
+ICON_SIZE=22
 SEARCHING_ICON="document-print-preview"
 
 # We need to call pynotify.init before we can check the server for caps
@@ -485,10 +486,20 @@ class JobViewer (GtkGUI):
         if parent:
             self.JobsWindow.set_transient_for (parent)
 
+        def load_icon(theme, icon):
+            try:
+                pixbuf = theme.load_icon (icon, ICON_SIZE, 0)
+            except gobject.GError:
+                debugprint ("No %s icon available" % icon)
+                # Just create an empty pixbuf.
+                pixbuf = gtk.gdk.Pixbuf (gtk.gdk.COLORSPACE_RGB,
+                                         True, 8, ICON_SIZE, ICON_SIZE)
+                pixbuf.fill (0)
+            return pixbuf
+
         theme = gtk.icon_theme_get_default ()
-        self.icon_jobs = theme.load_icon (ICON, 22, 0)
-        self.icon_jobs_processing = theme.load_icon ("printer-printing",
-                                                     22, 0)
+        self.icon_jobs = load_icon (theme, ICON)
+        self.icon_jobs_processing = load_icon (theme, "printer-printing")
         self.icon_no_jobs = self.icon_jobs.copy ()
         self.icon_no_jobs.fill (0)
         self.icon_jobs.composite (self.icon_no_jobs,
@@ -501,8 +512,8 @@ class JobViewer (GtkGUI):
                                   127)
         if self.trayicon:
             self.statusicon = gtk.StatusIcon ()
-            pixbuf = theme.load_icon (ICON, 22, 0)
-            self.statusicon.set_from_pixbuf (pixbuf)    
+            pixbuf = load_icon (theme, ICON)
+            self.statusicon.set_from_pixbuf (pixbuf)
             self.set_statusicon_from_pixbuf (self.icon_no_jobs)
             self.statusicon.connect ('activate', self.toggle_window_display)
             self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
@@ -1631,15 +1642,26 @@ class JobViewer (GtkGUI):
             # Not important enough to justify a notification.
             return
 
+        blacklist = [
+            # Some printers report 'other-warning' for no apparent
+            # reason, e.g.  Canon iR 3170C, Epson AL-CX11NF.
+            # See bug #520815.
+            "other",
+
+            # This seems to be some sort of 'magic' state reason that
+            # is for internal use only.
+            "com.apple.print.recoverable",
+            ]
+
+        if reason.get_reason () in blacklist:
+            return
+
         self.notify_printer_state_reason (reason)
 
     def notify_printer_state_reason (self, reason):
         tuple = reason.get_tuple ()
         if self.state_reason_notifications.has_key (tuple):
             debugprint ("Already sent notification for %s" % repr (reason))
-            return
-
-        if reason.get_reason () == "com.apple.print.recoverable":
             return
 
         level = reason.get_level ()
