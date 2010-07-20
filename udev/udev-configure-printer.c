@@ -725,6 +725,7 @@ find_matching_device_uris (struct device_id *id,
   const char *exclude_schemes[] = {
     "beh",
     "bluetooth",
+    "dnssd",
     "http",
     "https",
     "ipp",
