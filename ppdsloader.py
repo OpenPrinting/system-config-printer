@@ -184,6 +184,7 @@ class PPDsLoader:
             return
 
         conn.destroy ()
+        self._conn = None
         self._ppds = result
         ppds = cupshelpers.ppds.PPDs (result)
         if self._device_id and self._bus:
@@ -208,6 +209,7 @@ class PPDsLoader:
             return
 
         conn.destroy ()
+        self._conn = None
         self._ppds = result
         self._call_callback (None)
 
@@ -217,6 +219,7 @@ class PPDsLoader:
             return
 
         conn.destroy ()
+        self._conn = None
         self._ppds = None
         self._call_callback (exc)
 
