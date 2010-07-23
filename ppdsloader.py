@@ -181,6 +181,7 @@ class PPDsLoader(gobject.GObject):
 
     def _cups_reply_local (self, conn, result):
         conn.destroy ()
+        self._conn = None
         self._ppds = result
         ppds = cupshelpers.ppds.PPDs (result)
         if self._device_id and self._bus:
@@ -201,11 +202,13 @@ class PPDsLoader(gobject.GObject):
 
     def _cups_reply (self, conn, result):
         conn.destroy ()
+        self._conn = None
         self._ppds = result
         self.emit ('finished')
 
     def _cups_error (self, conn, exc):
         conn.destroy ()
+        self._conn = None
         self._ppds = None
         self._exc = exc
         self.emit ('finished')
