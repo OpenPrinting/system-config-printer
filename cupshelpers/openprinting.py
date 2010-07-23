@@ -19,7 +19,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import urllib, httplib, platform, threading, tempfile, traceback
+import urllib, platform, threading, tempfile, traceback
 import os, sys
 from xml.etree.ElementTree import XML
 from . import Device
@@ -60,18 +60,15 @@ class _QueryThread (threading.Thread):
         result = None
         status = 1
         try:
-            conn = httplib.HTTPConnection(self.parent.base_url)
-            conn.request("POST", query_command, params, headers)
-            resp = conn.getresponse()
-            status = resp.status
-            if status == 200:
-                result = resp.read()
-            conn.close()
+            conn = urllib.urlopen(self.url);
+            status = conn.getcode();
+            if (status == 200):
+                result = conn.read()
+                status = 0;
+            else:
+                result = sys.exc_info ()
         except:
             result = sys.exc_info ()
-
-        if status == 200:
-            status = 0
 
         if self.callback != None:
             self.callback (status, self.user_data, result)

@@ -522,6 +522,10 @@ class Device:
 
         self.id_dict = parseDeviceID (self.id)
 
+        s = uri.find("serial=")
+        if s != -1 and not self.id_dict.get ('SN',''):
+            self.id_dict['SN'] = uri[s + 7:]
+
     def __repr__ (self):
         return "<cupshelpers.Device \"%s\">" % self.uri
 
@@ -550,6 +554,10 @@ class Device:
             if other.type == "hp" or other.type == "hpfax":
                 return 1
             if self.type == "hp" or self.type == "hpfax":
+                return -1
+            if other.type == "dnssd":
+                return 1
+            if self.type == "dnssd":
                 return -1
             if other.type == "usb":
                 return 1

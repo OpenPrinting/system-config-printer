@@ -42,6 +42,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
+#include <ctype.h>
 #include <syslog.h>
 #include <unistd.h>
 #include <usb.h>
@@ -444,7 +445,8 @@ static char *
 device_id_from_devpath (const char *devpath,
 			const struct usb_uri_map *map,
 			struct device_id *id,
-			char *usbserial, size_t usbseriallen)
+			char *usbserial, size_t usbseriallen,
+			char *usblpdev, size_t usblpdevlen)
 {
   struct usb_uri_map_entry *entry;
   struct udev *udev;
@@ -462,6 +464,7 @@ device_id_from_devpath (const char *devpath,
   int conf = 0, iface = 0;
   int got = 0;
   char *usb_device_devpath;
+  char *usblpdevpos, *dest;
 
   id->full_device_id = id->mfg = id->mdl = id->sern = NULL;
 
@@ -470,6 +473,31 @@ device_id_from_devpath (const char *devpath,
     {
       syslog (LOG_ERR, "udev_new failed");
       exit (1);
+    }
+
+  /* For devices discovered via the usblp kernel module we read out the number
+   * of the /dev/usb/lp* device file, as there can be queues set up with 
+   * non-standard CUPS backends based on the /dev/usb/lp* device file and
+   * we want to avoid that an additional queue with a standard CUPS backend
+   * gets set up.
+   */
+  usblpdevpos = strstr(devpath, "/usb/lp");
+  if (usblpdevpos != NULL)
+    usblpdevpos += 7;
+  else
+    {
+      usblpdevpos = strstr(devpath, "/usblp");
+      if (usblpdevpos != NULL)
+	usblpdevpos += 6;
+    }
+  if (usblpdevpos != NULL)
+    {
+      for (dest = usblpdev;
+	   (*usblpdevpos >= '0') && (*usblpdevpos <= '9') &&
+	     (dest - usblpdev < usblpdevlen);
+	   usblpdevpos ++, dest ++)
+	*dest = *usblpdevpos;
+      *dest = '\0';
     }
 
   sys = udev_get_sys_path (udev);
@@ -756,6 +784,9 @@ find_matching_device_uris (struct device_id *id,
   size_t i, n;
   const char *exclude_schemes[] = {
     "beh",
+    "cups-pdf",
+    "bluetooth",
+    "dnssd",
     "http",
     "https",
     "ipp",
@@ -796,6 +827,8 @@ find_matching_device_uris (struct device_id *id,
   ippAddStrings (request, IPP_TAG_OPERATION, IPP_TAG_NAME, "exclude-schemes",
 		 sizeof (exclude_schemes) / sizeof(exclude_schemes[0]),
 		 NULL, exclude_schemes);
+  ippAddInteger (request, IPP_TAG_OPERATION, IPP_TAG_INTEGER, "timeout",
+                 2);
 
   answer = cupsDoRequestOrDie (cups, request, "/");
   httpClose (cups);
@@ -1034,13 +1067,72 @@ find_matching_device_uris (struct device_id *id,
   return uris->n_uris;
 }
 
+char *
+normalize_device_uri(const char *str_orig)
+{
+  int i, j;
+  int havespace = 0;
+  char *str;
+
+  if (str_orig == NULL)
+    return NULL;
+
+  str = strdup(str_orig);
+  for (i = 0, j = 0; i < strlen(str); i++, j++)
+    {
+      if (((str[i] >= 'A') && (str[i] <= 'Z')) ||
+	  ((str[i] >= 'a') && (str[i] <= 'z')) ||
+	  ((str[i] >= '0') && (str[i] <= '9')))
+	{
+	  /* Letter or number, keep it */
+	  havespace = 0;
+	  str[j] = tolower(str[i]);
+	}
+      else
+	{
+	  if ((str[i] == '%') && (i <= strlen(str)-3) &&
+	      (((str[i+1] >= 'A') && (str[i+1] <= 'F')) ||
+	       ((str[i+1] >= 'a') && (str[i+1] <= 'f')) ||
+	       ((str[i+1] >= '0') && (str[i+1] <= '9'))) &&
+	    (((str[i+2] >= 'A') && (str[i+2] <= 'F')) ||
+	     ((str[i+2] >= 'a') && (str[i+2] <= 'f')) ||
+	     ((str[i+2] >= '0') && (str[i+2] <= '9'))))
+	    /* Hex-encoded special characters replace by a single space if the
+	       last character is not already a space */
+	    i += 2;
+	  if (havespace == 1)
+	    j --;
+	  else
+	    {
+	      havespace = 1;
+	      str[j] = ' ';
+	    }
+	}
+    }
+  /* Add terminating zero */
+  str[j] = '\0';
+  /* Cut off trailing white space */
+  while (str[strlen(str)-1] == ' ')
+    str[strlen(str)-1] = '\0';
+  /* Cut off all before model name */
+  while ((strstr(str, "hp ") == str) ||
+	 (strstr(str, "hewlett ") == str) ||
+	 (strstr(str, "packard ") == str) ||
+	 (strstr(str, "apollo ") == str) ||
+	 (strstr(str, "usb ") == str))
+    str = strchr(str, ' ') + 1;
+
+  return str;
+}
+
 /* Call a function for each queue with the given device-uri and printer-state.
  * Returns the number of queues with a matching device-uri. */
 static size_t
 for_each_matching_queue (struct device_uris *device_uris,
 			 int flags,
 			 void (*fn) (const char *, void *),
-			 void *context)
+			 void *context,
+			 char *usblpdev, size_t usblpdevlen)
 {
   size_t matched = 0;
   http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
@@ -1053,6 +1145,7 @@ for_each_matching_queue (struct device_uris *device_uris,
     "printer-state",
     "printer-state-message",
   };
+  char usblpdevstr1[32] = "", usblpdevstr2[32] = "";
 
   if (cups == NULL)
     return 0;
@@ -1084,13 +1177,31 @@ for_each_matching_queue (struct device_uris *device_uris,
       exit (1);
     }
 
+  if (strlen(usblpdev) > 0)
+    {
+      /* If one of these strings is contained in one of the existing queue's
+	 device URIs, consider the printer as already configured. Some
+	 non-standard CUPS backend use the (obsolete) reference to the
+	 usblp device file. This avoids that in such a case a second queue
+	 with a standard CUPS backend is auto-created. */
+      snprintf(usblpdevstr1, sizeof(usblpdevstr1), "/usb/lp%s",
+	       usblpdev);
+      snprintf(usblpdevstr2, sizeof(usblpdevstr2), "/usblp%s",
+	       usblpdev);
+      syslog (LOG_DEBUG,
+	      "Consider also queues with \"%s\" or \"%s\" in their URIs as matching",
+	      usblpdevstr1, usblpdevstr2);
+    }
+
   for (attr = answer->attrs; attr; attr = attr->next)
     {
       const char *this_printer_uri = NULL;
       const char *this_device_uri = NULL;
       const char *printer_state_message = NULL;
       int state = 0;
-      size_t i;
+      size_t i, l;
+      char *this_device_uri_n, *device_uri_n;
+      const char *ps1, *ps2, *pi1, *pi2;
 
       while (attr && attr->group_tag != IPP_TAG_PRINTER)
 	attr = attr->next;
@@ -1115,20 +1226,63 @@ for_each_matching_queue (struct device_uris *device_uris,
 	    state = attr->values[0].integer;
 	}
 
+      this_device_uri_n = normalize_device_uri(this_device_uri);
+      syslog (LOG_DEBUG, "URI of print queue: %s, normalized: %s",
+	      this_device_uri, this_device_uri_n);
+      pi1 = strstr (this_device_uri, "interface=");
+      ps1 = strstr (this_device_uri, "serial=");
       for (i = 0; i < device_uris->n_uris; i++)
-	if (!strcmp (device_uris->uri[i], this_device_uri))
-	  {
-	    matched++;
-	    if (((flags & MATCH_ONLY_DISABLED) &&
-		 state == IPP_PRINTER_STOPPED &&
-		 !strcmp (printer_state_message, DISABLED_REASON)) ||
-		(flags & MATCH_ONLY_DISABLED) == 0)
-	      {
-		syslog (LOG_DEBUG ,"Queue %s has matching device URI",
-			this_printer_uri);
-		(*fn) (this_printer_uri, context);
-	      }
-	  }
+	{
+	  device_uri_n = normalize_device_uri(device_uris->uri[i]);
+	  /* As for the same device different URIs can come out when the
+	     device is accessed via the usblp kernel module or via low-
+	     level USB (libusb) we cannot simply compare URIs, must
+	     consider also URIs as equal if one has an "interface"
+	     or "serial" attribute and the other not. If both have
+	     the attribute it must naturally match. We check which attributes 
+             are there and this way determine up to which length the two URIs 
+             must match. Here we can assume that if a URI has an "interface"
+	  `  attribute it has also a "serial" attribute, as this URI is
+	     an URI obtained via libusb and these always have a "serial"
+	     attribute. usblp-based URIs never have an "interface"
+	     attribute.*/
+	  pi2 = strstr (device_uris->uri[i], "interface=");
+	  ps2 = strstr (device_uris->uri[i], "serial=");
+	  if (pi1 && !pi2)
+	    l = strlen(device_uris->uri[i]);
+	  else if (!pi1 && pi2)
+	    l = strlen(this_device_uri);
+	  else if (ps1 && !ps2)
+	    l = strlen(device_uris->uri[i]);
+	  else if (!ps1 && ps2)
+	    l = strlen(this_device_uri);
+	  else if (strlen(this_device_uri) > strlen(device_uris->uri[i]))
+	    l = strlen(this_device_uri);
+	  else
+	    l = strlen(device_uris->uri[i]);
+	  syslog (LOG_DEBUG, "URI of detected printer: %s, normalized: %s",
+		  device_uris->uri[i], device_uri_n);
+	  if ((!strncmp (device_uris->uri[i], this_device_uri, l)) ||
+	      (strstr (device_uri_n, this_device_uri_n) == 
+	       device_uri_n) ||
+	      (strstr (this_device_uri_n, device_uri_n) == 
+	       this_device_uri_n) ||
+	      ((strlen(usblpdev) > 0) &&
+	       ((strstr (this_device_uri, usblpdevstr1) != NULL) ||
+	       (strstr (this_device_uri, usblpdevstr2) != NULL)))) 
+	    {
+	      matched++;
+	      syslog (LOG_DEBUG, "Queue %s has matching device URI",
+		      this_printer_uri);
+	      if (((flags & MATCH_ONLY_DISABLED) &&
+		   state == IPP_PRINTER_STOPPED &&
+		   !strcmp (printer_state_message, DISABLED_REASON)) ||
+		  (flags & MATCH_ONLY_DISABLED) == 0)
+		{
+		  (*fn) (this_printer_uri, context);
+		}
+	    }
+	}
 
       if (!attr)
 	break;
@@ -1141,7 +1295,7 @@ for_each_matching_queue (struct device_uris *device_uris,
 static void
 enable_queue (const char *printer_uri, void *context)
 {
-  /* Disable it. */
+  /* Enable it. */
   http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
 				     cupsEncryption ());
   ipp_t *request, *answer;
@@ -1211,6 +1365,7 @@ do_add (const char *cmd, const char *devpath)
   struct usb_uri_map *map;
   char *usb_device_devpath = NULL;
   char usbserial[256];
+  char usblpdev[8] = "";
 
   if (getenv ("DEBUG") == NULL)
     {
@@ -1242,7 +1397,8 @@ do_add (const char *cmd, const char *devpath)
     device_id_from_bluetooth (devpath, &id);
   } else {
     usb_device_devpath = device_id_from_devpath (devpath, map, &id,
-						 usbserial, sizeof (usbserial));
+						 usbserial, sizeof (usbserial),
+						 usblpdev, sizeof (usblpdev));
   }
 
   if (!id.mfg || !id.mdl)
@@ -1267,7 +1423,8 @@ do_add (const char *cmd, const char *devpath)
 
   /* Re-enable any queues we'd previously disabled. */
   if (for_each_matching_queue (&device_uris, MATCH_ONLY_DISABLED,
-			       enable_queue, NULL) == 0)
+			       enable_queue, NULL,
+			       usblpdev, sizeof (usblpdev)) == 0)
     {
       size_t i;
       int type;
@@ -1355,6 +1512,7 @@ do_remove (const char *devpath)
   struct usb_uri_map *map;
   struct usb_uri_map_entry *entry, **prev;
   struct device_uris *uris = NULL;
+  char usblpdev[8] = "";
   syslog (LOG_DEBUG, "remove %s", devpath);
 
   map = read_usb_uri_map ();
@@ -1373,7 +1531,8 @@ do_remove (const char *devpath)
   if (uris)
     {
       /* Find the relevant queues and disable them if they are enabled. */
-      for_each_matching_queue (uris, 0, disable_queue, NULL);
+      for_each_matching_queue (uris, 0, disable_queue, NULL,
+			       usblpdev, sizeof (usblpdev));
       *prev = entry->next;
       write_usb_uri_map (map);
     }

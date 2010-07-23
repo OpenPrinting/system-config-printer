@@ -367,9 +367,10 @@ if __name__ == '__main__':
             installdriver.PrinterDriversInstaller(bus)
         except Exception, e:
             try:
-                print >> sys.stderr, ("%s: failed to start "
-                                      "PrinterDriversInstaller service: %s" %
-                                      (PROGRAM_NAME, e))
+                #print >> sys.stderr, ("%s: failed to start "
+                #                      "PrinterDriversInstaller service: %s" %
+                #                      (PROGRAM_NAME, e))
+                pass
             except:
                 pass
 

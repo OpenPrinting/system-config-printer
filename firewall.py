@@ -48,7 +48,7 @@ class Firewall:
             p = self._firewall.read ()
             self._fw_data = pickle.loads (p.encode ('utf-8'))
         except dbus.DBusException:
-            raise RuntimeError
+            return None, None
 
         return self._fw_data
 
@@ -69,10 +69,14 @@ class Firewall:
         self._client_error_handler (exc)
 
     def write (self):
-        self._firewall.write (pickle.dumps (self._fw_data[0]))
+        try:
+            self._firewall.write (pickle.dumps (self._fw_data[0]))
+        except:
+            pass
 
     def _check_any_allowed (self, search):
         (args, filename) = self._get_fw_data ()
+        if filename == None: return True
         isect = set (search).intersection (set (args))
         return len (isect) != 0
 
@@ -81,6 +85,7 @@ class Firewall:
             (args, filename) = self._fw_data
         except AttributeError:
             (args, filename) = self._get_fw_data ()
+        if filename == None: return
 
         args.append (rule)
         self._fw_data = (args, filename)
