@@ -45,7 +45,10 @@ class PPDsLoader:
         self._installed_files = []
         self._conn = None
         self._ppds = None
-
+        self._packagekit_queried = False
+        self._local_cups = (self._host == None or
+                            self._host == "localhost" or
+                            self._host[0] == '/')
         try:
             self._bus = dbus.SessionBus ()
         except:
@@ -65,7 +68,7 @@ class PPDsLoader:
         self._dialog.connect ("response", self._dialog_response)
 
         self._dialog.show_all ()
-        self._query_cups (True)
+        self._query_cups ()
 
     def __del__ (self):
         debugprint ("-%s" % self)
@@ -87,6 +90,67 @@ class PPDsLoader:
 
     def _dialog_response (self, dialog, response):
         self._call_callback (None)
+
+    def _query_cups (self):
+        debugprint ("Asking CUPS for PPDs")
+        if (not self._conn):
+            c = asyncconn.Connection (host=self._host,
+                                      encryption=self._encryption,
+                                      reply_handler=self._cups_connect_reply,
+                                      error_handler=self._cups_error)
+            self._conn = c
+        else:
+            self._cups_connect_reply(self._conn, None)
+
+    def _cups_connect_reply (self, conn, UNUSED):
+        if conn != self._conn:
+            conn.destroy ()
+            return
+
+        conn._begin_operation (_("fetching PPDs"))
+        conn.getPPDs (reply_handler=self._cups_reply,
+                      error_handler=self._cups_error)
+
+    def _cups_reply (self, conn, result):
+        if conn != self._conn:
+            conn.destroy ()
+            return
+
+        ppds = cupshelpers.ppds.PPDs (result)
+        if self._device_id and self._bus:
+            devid_dict = cupshelpers.parseDeviceID (self._device_id)
+            (status, ppdname) = ppds.\
+                getPPDNameFromDeviceID (devid_dict["MFG"],
+                                        devid_dict["MDL"],
+                                        devid_dict["DES"],
+                                        devid_dict["CMD"],
+                                        self._device_uri,
+                                        ())
+            # Try to install packages if
+            # - there's no appropriate driver (PPD) locally available
+            # - we didn't try to do so yet
+            # - we are configuring local CUPS server
+            if (status != ppds.STATUS_SUCCESS and
+                self._packagekit_queried == False and
+                self._local_cups == True):
+                self._query_packagekit ()
+                self._packagekit_queried = True
+                return
+
+        conn.destroy ()
+        self._conn = None
+        self._ppds = result
+        self._call_callback (None)
+
+    def _cups_error (self, conn, exc):
+        if conn != self._conn:
+            conn.destroy ()
+            return
+
+        conn.destroy ()
+        self._conn = None
+        self._ppds = None
+        self._call_callback (exc)
 
     def _query_packagekit (self):
         debugprint ("Asking PackageKit to install drivers")
@@ -145,83 +209,6 @@ class PPDsLoader:
     def _jockey_error (self, exc):
         debugprint ("Got Jockey error: %s" % exc)
         self._query_cups ()
-
-    def _query_cups (self, local=False):
-        debugprint ("Asking CUPS for PPDs")
-        if (local):
-            c = asyncconn.Connection (host=self._host,
-                                      encryption=self._encryption,
-                                      reply_handler=self._cups_connect_reply_local,
-                                      error_handler=self._cups_error)
-        else:
-            c = asyncconn.Connection (host=self._host,
-                                      encryption=self._encryption,
-                                      reply_handler=self._cups_connect_reply,
-                                      error_handler=self._cups_error)
-        self._conn = c
-
-    def _cups_connect_reply_local (self, conn, UNUSED):
-        if conn != self._conn:
-            conn.destroy ()
-            return
-
-        conn._begin_operation (_("fetching PPDs"))
-        conn.getPPDs (reply_handler=self._cups_reply_local,
-                      error_handler=self._cups_error)
-
-    def _cups_connect_reply (self, conn, UNUSED):
-        if conn != self._conn:
-            conn.destroy ()
-            return
-
-        conn._begin_operation (_("fetching PPDs"))
-        conn.getPPDs (reply_handler=self._cups_reply,
-                      error_handler=self._cups_error)
-
-    def _cups_reply_local (self, conn, result):
-        if conn != self._conn:
-            conn.destroy ()
-            return
-
-        conn.destroy ()
-        self._conn = None
-        self._ppds = result
-        ppds = cupshelpers.ppds.PPDs (result)
-        if self._device_id and self._bus:
-            devid_dict = cupshelpers.parseDeviceID (self._device_id)
-            (status, ppdname) = ppds.\
-                getPPDNameFromDeviceID (devid_dict["MFG"],
-                                        devid_dict["MDL"],
-                                        devid_dict["DES"],
-                                        devid_dict["CMD"],
-                                        self._device_uri,
-                                        ())
-            if status != ppds.STATUS_SUCCESS:
-                self._query_packagekit ()
-            else:
-                self._call_callback (None)
-        else:
-            self._call_callback (None)
-
-    def _cups_reply (self, conn, result):
-        if conn != self._conn:
-            conn.destroy ()
-            return
-
-        conn.destroy ()
-        self._conn = None
-        self._ppds = result
-        self._call_callback (None)
-
-    def _cups_error (self, conn, exc):
-        if conn != self._conn:
-            conn.destroy ()
-            return
-
-        conn.destroy ()
-        self._conn = None
-        self._ppds = None
-        self._call_callback (exc)
 
     def _call_callback (self, exc):
         if self._callback:
