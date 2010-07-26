@@ -139,7 +139,7 @@ class PPDsLoader:
         try:
             self._installed_files = result[1]
         except:
-            self._installed_files = ()
+            self._installed_files = []
         self._query_cups ()
 
     def _jockey_error (self, exc):
