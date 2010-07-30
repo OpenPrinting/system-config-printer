@@ -1159,7 +1159,10 @@ class JobViewer (GtkGUI):
 
             uri = job.get ('job-printer-uri', None)
             if uri:
-                printer = self.printer_uri_index.lookup (uri)
+                try:
+                    printer = self.printer_uri_index.lookup (uri)
+                except KeyError:
+                    printer = uri
                 job_printers[printer] = uri
 
         if len (job_printers.keys ()) == 1:
