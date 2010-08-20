@@ -1366,6 +1366,7 @@ do_add (const char *cmd, const char *devpath)
   char *usb_device_devpath = NULL;
   char usbserial[256];
   char usblpdev[8] = "";
+  gboolean is_bluetooth;
 
   if (getenv ("DEBUG") == NULL)
     {
@@ -1391,8 +1392,10 @@ do_add (const char *cmd, const char *devpath)
 
   syslog (LOG_DEBUG, "add %s", devpath);
 
+  is_bluetooth = bluetooth_verify_address (devpath);
+
   map = read_usb_uri_map ();
-  if (bluetooth_verify_address (devpath)) {
+  if (is_bluetooth) {
     usbserial[0] = '\0';
     device_id_from_bluetooth (devpath, &id);
   } else {
@@ -1412,9 +1415,26 @@ do_add (const char *cmd, const char *devpath)
   syslog (LOG_DEBUG, "MFG:%s MDL:%s SERN:%s serial:%s", id.mfg, id.mdl,
 	  id.sern ? id.sern : "-", usbserial[0] ? usbserial : "-");
 
-  find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath,
-			     map);
-  free (usb_device_devpath);
+  if (!is_bluetooth)
+    {
+      find_matching_device_uris (&id, usbserial, &device_uris, usb_device_devpath,
+				 map);
+      free (usb_device_devpath);
+    } else {
+      char *device_uri;
+
+      device_uri = g_strdup_printf("bluetooth://%c%c%c%c%c%c%c%c%c%c%c%c",
+				   devpath[0], devpath[1],
+				   devpath[3], devpath[4],
+				   devpath[6], devpath[7],
+				   devpath[9], devpath[10],
+				   devpath[12], devpath[13],
+				   devpath[15], devpath[16]);
+
+      add_device_uri (&device_uris, device_uri);
+      g_free (device_uri);
+    }
+
   if (device_uris.n_uris == 0)
     {
       free_device_id (&id);
