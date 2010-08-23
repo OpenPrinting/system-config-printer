@@ -1176,9 +1176,12 @@ class JobViewer (GtkGUI):
             other_printers = list (other_printers)
             other_printers.sort ()
             for printer in other_printers:
-                uri = self.printer_uri_index.lookup_cached_by_name (printer)
+                try:
+                    uri = self.printer_uri_index.lookup_cached_by_name (printer)
+                except KeyError:
+                    uri = None
                 menuitem = gtk.MenuItem (printer, False)
-                menuitem.set_sensitive (True)
+                menuitem.set_sensitive (uri != None)
                 menuitem.show ()
                 menuitem.connect ('activate', self.on_job_move_activate, uri)
                 printers_menu.append (menuitem)
