@@ -4206,6 +4206,7 @@ class NewPrinterGUI(GtkGUI):
                     make_model = ppddict['ppd-make-and-model']
                     (self.auto_make, self.auto_model) = \
                         cupshelpers.ppds.ppdMakeModelSplit (make_model)
+                    self.auto_driver = ppdname
                     if (status == self.ppds.STATUS_SUCCESS and
                         self.dialog_mode == "printer_with_uri"):
                             self.exactdrivermatch = True
