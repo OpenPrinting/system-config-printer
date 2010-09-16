@@ -3734,7 +3734,8 @@ class NewPrinterGUI(GtkGUI):
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
-        for dialog in [self.SMBBrowseDialog]:
+        for dialog in [self.SMBBrowseDialog,
+                       self.WaitWindow]:
             dialog.connect ("delete-event", on_delete_just_hide)
 
         # share with mainapp
