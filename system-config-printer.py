@@ -2926,6 +2926,9 @@ class GUI(GtkGUI, monitor.Watcher):
         self.rename_sigids = ids
 
     def printer_name_edited (self, cell, path, newname):
+        newname = newname.replace("/", "")
+        newname = newname.replace("#", "")
+        newname = newname.replace(" ", "")
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
         name = unicode (model.get_value (iter, 2))
