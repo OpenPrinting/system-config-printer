@@ -2949,7 +2949,7 @@ class GUI(GtkGUI, monitor.Watcher):
             cell.disconnect (id)
 
     def rename_printer (self, old_name, new_name):
-        if old_name == new_name:
+        if old_name.lower() == new_name.lower():
             return
 
         try:
