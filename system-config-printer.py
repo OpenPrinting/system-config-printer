@@ -2984,7 +2984,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.monitor.update ()
 
             # Restore original accepting/rejecting state.
-            if not rejecting:
+            if not rejecting and self.printer:
                 try:
                     self.printer.name = old_name
                     self.printer.setAccepting (True)
@@ -2993,6 +2993,11 @@ class GUI(GtkGUI, monitor.Watcher):
                 except cups.IPPError, (e, msg):
                     show_IPP_Error (e, msg, self.PrintersWindow)
 
+            self.cups._end_operation ()
+            self.populateList ()
+            return
+
+        if not self.printer:
             self.cups._end_operation ()
             self.populateList ()
             return
