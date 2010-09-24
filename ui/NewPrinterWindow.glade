@@ -419,7 +419,7 @@
                                             <property name="xalign">0</property>
                                             <property name="label" translatable="yes">Port number:</property>
                                             <accessibility>
-                                              <relation type="label-for" target="entNPTDirectJetPort"/>
+                                              <relation type="label-for" target="entNPTJetDirectPort"/>
                                             </accessibility>
                                           </object>
                                           <packing>
@@ -430,13 +430,13 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkEntry" id="entNPTDirectJetPort">
+                                          <object class="GtkEntry" id="entNPTJetDirectPort">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label203"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_entNPTDevice_changed"/>
+                                            <signal name="changed" handler="on_entNPTJetDirectPort_changed"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -447,13 +447,13 @@
                                           </packing>
                                         </child>
                                         <child>
-                                          <object class="GtkEntry" id="entNPTDirectJetHostname">
+                                          <object class="GtkEntry" id="entNPTJetDirectHostname">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label202"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_entNPTDevice_changed"/>
+                                            <signal name="changed" handler="on_entNPTJetDirectHostname_changed"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -481,7 +481,7 @@
                             <child type="tab">
                               <object class="GtkLabel" id="label32">
                                 <property name="visible">True</property>
-                                <property name="label" translatable="yes">DirectJet</property>
+                                <property name="label" translatable="yes">JetDirect</property>
                               </object>
                               <packing>
                                 <property name="position">2</property>

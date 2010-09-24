@@ -343,7 +343,12 @@ class Printer:
         """
         ret = []
         try:
-            jobs = self.connection.getJobs ()
+            try:
+                r = ['job-id', 'job-printer-uri', 'job-name']
+                jobs = self.connection.getJobs (requested_attributes=r)
+            except TypeError:
+                # requested_attributes requires pycups 1.9.50
+                jobs = self.connection.getJobs ()
         except cups.IPPError:
             return ret
 
@@ -373,7 +378,13 @@ class Printer:
         """
         ret = []
         try:
-            jobs = self.connection.getJobs (which_jobs='completed')
+            try:
+                r = ['job-id', 'job-printer-uri', 'job-state']
+                jobs = self.connection.getJobs (which_jobs='completed',
+                                                requested_attributes=r)
+            except TypeError:
+                # requested_attributes requires pycups 1.9.50
+                jobs = self.connection.getJobs (which_jobs='completed')
         except cups.IPPError:
             return ret
 

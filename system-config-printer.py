@@ -1435,6 +1435,9 @@ class GUI(GtkGUI):
         self.rename_sigids = ids
 
     def printer_name_edited (self, cell, path, newname):
+        newname = newname.replace("/", "")
+        newname = newname.replace("#", "")
+        newname = newname.replace(" ", "")
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
         name = unicode (model.get_value (iter, 2))
@@ -1455,7 +1458,7 @@ class GUI(GtkGUI):
             cell.disconnect (id)
 
     def rename_printer (self, old_name, new_name):
-        if old_name == new_name:
+        if old_name.lower() == new_name.lower():
             return
 
         try:
@@ -1493,7 +1496,7 @@ class GUI(GtkGUI):
             self.monitor.update ()
 
             # Restore original accepting/rejecting state.
-            if not rejecting:
+            if not rejecting and self.printer:
                 try:
                     self.propertiesDlg.printer.name = old_name
                     self.propertiesDlg.printer.setAccepting (True)
@@ -1502,6 +1505,11 @@ class GUI(GtkGUI):
                 except cups.IPPError, (e, msg):
                     show_IPP_Error (e, msg, self.PrintersWindow)
 
+            self.cups._end_operation ()
+            self.populateList ()
+            return
+
+        if not self.printer:
             self.cups._end_operation ()
             self.populateList ()
             return

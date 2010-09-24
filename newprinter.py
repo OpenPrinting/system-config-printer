@@ -30,6 +30,7 @@ import cupshelpers
 import errno
 import sys, os, tempfile, time, traceback, re, httplib
 import locale
+import string
 import subprocess
 import thread
 from timedops import *
@@ -202,8 +203,8 @@ class NewPrinterGUI(GtkGUI):
                               "lblIPPURI",
                               "entNPTIPPQueuename",
                               "btnIPPVerify",
-                              "entNPTDirectJetHostname",
-                              "entNPTDirectJetPort",
+                              "entNPTJetDirectHostname",
+                              "entNPTJetDirectPort",
                               "entSMBURI",
                               "btnSMBBrowse",
                               "tblSMBAuth",
@@ -584,7 +585,7 @@ class NewPrinterGUI(GtkGUI):
             device_dict = { }
             self.device = cupshelpers.Device (device_uri, **device_dict)
 
-        self.entNPTDirectJetPort.set_text('9100')
+        self.entNPTJetDirectPort.set_text('9100')
         self.rbtnSMBAuthPrompt.set_active(True)
 
         if self.dialog_mode == "printer":
@@ -1690,9 +1691,6 @@ class NewPrinterGUI(GtkGUI):
             column = self.tvNPDeviceURIs.get_column (0)
             self.tvNPDeviceURIs.set_cursor (connection_select_path, column)
 
-    def on_entNPTDevice_changed(self, entry):
-        self.setNPButtons()
-
     ## SMB browsing
 
     def browse_smb_hosts(self):
@@ -1897,6 +1895,8 @@ class NewPrinterGUI(GtkGUI):
             ready (self.SMBBrowseDialog)
 
     def on_entSMBURI_changed (self, ent):
+        allowed_chars = string.letters+string.digits+'_-./:@'
+        self.entry_changed(ent, allowed_chars)
         uri = ent.get_text ()
         (group, host, share, user, password) = SMBURI (uri=uri).separate ()
         if user:
@@ -2078,11 +2078,38 @@ class NewPrinterGUI(GtkGUI):
         self.btnIPPVerify.set_sensitive (valid)
         self.setNPButtons ()
 
+    def entry_changed(self, entry, allowed_chars):
+        "Remove all chars from entry's text that are not in allowed_chars."
+        origtext = unicode (entry.get_text())
+        new_text = origtext
+        for char in origtext:
+            if char not in allowed_chars:
+                new_text = new_text.replace(char, "")
+        if origtext!=new_text:
+            entry.set_text(new_text)
+
+    def on_entNPTDevice_changed(self, ent):
+        allowed_chars = string.letters+string.digits+'_-./:'
+        self.entry_changed(ent, allowed_chars)
+        self.setNPButtons()
+
+    def on_entNPTJetDirectHostname_changed(self, ent):
+        allowed_chars = string.letters+string.digits+'_-.'
+        self.entry_changed(ent, allowed_chars)
+        self.setNPButtons()
+
+    def on_entNPTJetDirectPort_changed(self, ent):
+        self.entry_changed(ent, string.digits)
+        self.setNPButtons()
+
     def on_entNPTIPPHostname_changed(self, ent):
-        valid = len (ent.get_text ()) > 0
+        allowed_chars = string.letters+string.digits+'_-.'
+        self.entry_changed(ent, allowed_chars)
         self.update_IPP_URI_label ()
 
     def on_entNPTIPPQueuename_changed(self, ent):
+        allowed_chars = string.letters+string.digits+'_-/'
+        self.entry_changed(ent, allowed_chars)
         self.update_IPP_URI_label ()
 
     def on_btnIPPVerify_clicked(self, button):
@@ -2395,8 +2422,8 @@ class NewPrinterGUI(GtkGUI):
                     location = device.location
                 else:
                     location = host
-            self.entNPTDirectJetHostname.set_text (host)
-            self.entNPTDirectJetPort.set_text (str (port))
+            self.entNPTJetDirectHostname.set_text (host)
+            self.entNPTJetDirectPort.set_text (str (port))
         elif device.type=="serial":
             if not device.is_class:
                 options = device.uri.split("?")[1]
@@ -2532,6 +2559,8 @@ class NewPrinterGUI(GtkGUI):
 
     ### Find Network Printer
     def on_entNPTNetworkHostname_changed(self, ent):
+        allowed_chars = string.letters+string.digits+'_-.:'
+        self.entry_changed(ent, allowed_chars)
         s = ent.get_text ()
         self.btnNetworkFind.set_sensitive (len (s) > 0)
         self.lblNetworkFindNotFound.hide ()
@@ -2609,9 +2638,9 @@ class NewPrinterGUI(GtkGUI):
         if page == 0:
             # The "no options page".  We already have the URI.
             device = self.device.uri
-        elif type == "socket": # DirectJet
-            host = self.entNPTDirectJetHostname.get_text()
-            port = self.entNPTDirectJetPort.get_text()
+        elif type == "socket": # JetDirect
+            host = self.entNPTJetDirectHostname.get_text()
+            port = self.entNPTJetDirectPort.get_text()
             if host:
                 device += "://" + host
                 if port:

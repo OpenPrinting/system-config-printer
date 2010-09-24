@@ -160,9 +160,22 @@ class PrintTestPage(Question):
         test_jobs = self.persistent_answers.get ('test_page_job_id', [])
         def get_jobs ():
             c = self.authconn
-            jobs_dict = c.getJobs (which_jobs='not-completed',
-                                   my_jobs=False)
-            completed_jobs_dict = c.getJobs (which_jobs='completed')
+            try:
+                r = ["job-id",
+                     "job-name",
+                     "job-state",
+                     "job-printer-uri",
+                     "printer-name"]
+                jobs_dict = c.getJobs (which_jobs='not-completed',
+                                       my_jobs=False,
+                                       requested_attributes=r)
+                completed_jobs_dict = c.getJobs (which_jobs='completed',
+                                                 requested_attributes=r)
+            except TypeError:
+                # requested_attributes requires pycups 1.9.50
+                jobs_dict = c.getJobs (which_jobs='not-completed',
+                                       my_jobs=False)
+                completed_jobs_dict = c.getJobs (which_jobs='completed')
             return (jobs_dict, completed_jobs_dict)
 
         self.op = TimedOperation (get_jobs, parent=parent)
