@@ -3078,6 +3078,9 @@ class GUI(GtkGUI, monitor.Watcher):
         self.rename_sigids = ids
 
     def printer_name_edited (self, cell, path, newname):
+        newname = newname.replace("/", "")
+        newname = newname.replace("#", "")
+        newname = newname.replace(" ", "")
         model = self.dests_iconview.get_model ()
         iter = model.get_iter (path)
         name = unicode (model.get_value (iter, 2))
@@ -3098,7 +3101,7 @@ class GUI(GtkGUI, monitor.Watcher):
             cell.disconnect (id)
 
     def rename_printer (self, old_name, new_name):
-        if old_name == new_name:
+        if old_name.lower() == new_name.lower():
             return
 
         try:
@@ -3133,7 +3136,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.monitor.update ()
 
             # Restore original accepting/rejecting state.
-            if not rejecting:
+            if not rejecting and self.printer:
                 try:
                     self.printer.name = old_name
                     self.printer.setAccepting (True)
@@ -3142,6 +3145,11 @@ class GUI(GtkGUI, monitor.Watcher):
                 except cups.IPPError, (e, msg):
                     show_IPP_Error (e, msg, self.PrintersWindow)
 
+            self.cups._end_operation ()
+            self.populateList ()
+            return
+
+        if not self.printer:
             self.cups._end_operation ()
             self.populateList ()
             return
@@ -3945,7 +3953,8 @@ class NewPrinterGUI(GtkGUI):
 
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
-        for dialog in [self.SMBBrowseDialog]:
+        for dialog in [self.SMBBrowseDialog,
+                       self.WaitWindow]:
             dialog.connect ("delete-event", on_delete_just_hide)
 
         # share with mainapp
