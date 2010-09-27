@@ -555,6 +555,8 @@ class PPDs:
 	@returns: an integer,string pair of (status,ppd-name)
 	"""
         _debugprint ("\n%s %s" % (mfg, mdl))
+        orig_mfg = mfg
+        orig_mdl = mdl
         self._init_ids ()
 
         # Start with an empty result list and build it up using
@@ -710,7 +712,7 @@ class PPDs:
                 cmd = reduce (lambda x, y: x + ","+ y, commandsets)
             except TypeError:
                 cmd = ""
-            id = "MFG:%s;MDL:%s;" % (mfg, mdl)
+            id = "MFG:%s;MDL:%s;" % (orig_mfg, orig_mdl)
             if cmd:
                 id += "CMD:%s;" % cmd
             if description:
