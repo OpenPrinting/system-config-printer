@@ -3617,7 +3617,7 @@ class GUI(GtkGUI, monitor.Watcher):
                     dialog.format_secondary_text (_("Adjust the firewall now "
                                                     "to allow all incoming IPP "
                                                     "connections?"))
-                    dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                    dialog.add_buttons (_("Do It Later"), gtk.RESPONSE_NO,
                                         _("Adjust Firewall"), gtk.RESPONSE_YES)
                     response = dialog.run ()
                     dialog.destroy ()
@@ -5085,7 +5085,7 @@ class NewPrinterGUI(GtkGUI):
                                             gtk.BUTTONS_NONE,
                                             _("Adjust Firewall"))
                 dialog.format_secondary_markup (secondary_text)
-                dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
+                dialog.add_buttons (_("Do It Later"), gtk.RESPONSE_NO,
                                     _("Adjust Firewall"), gtk.RESPONSE_YES)
                 response = dialog.run ()
                 dialog.destroy ()
