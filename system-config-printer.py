@@ -3461,11 +3461,13 @@ class GUI(GtkGUI, monitor.Watcher):
                                                 gtk.DIALOG_MODAL |
                                                 gtk.DIALOG_DESTROY_WITH_PARENT,
                                                 gtk.MESSAGE_QUESTION,
-                                                gtk.BUTTONS_YES_NO,
+                                                gtk.BUTTONS_NONE,
                                                 _("Adjust Firewall"))
                     dialog.format_secondary_text (_("Adjust the firewall now "
                                                     "to allow all incoming IPP "
                                                     "connections?"))
+                    dialog.add_buttons (_("Do It Later"), gtk.RESPONSE_NO,
+                                        _("Adjust Firewall"), gtk.RESPONSE_YES)
                     response = dialog.run ()
                     dialog.destroy ()
 
@@ -5267,9 +5269,11 @@ class NewPrinterGUI(GtkGUI):
                                             gtk.DIALOG_MODAL |
                                             gtk.DIALOG_DESTROY_WITH_PARENT,
                                             gtk.MESSAGE_QUESTION,
-                                            gtk.BUTTONS_YES_NO,
+                                            gtk.BUTTONS_NONE,
                                             _("Adjust Firewall"))
                 dialog.format_secondary_markup (secondary_text)
+                dialog.add_buttons (_("Do It Later"), gtk.RESPONSE_NO,
+                                    _("Adjust Firewall"), gtk.RESPONSE_YES)
                 response = dialog.run ()
                 dialog.destroy ()
 
