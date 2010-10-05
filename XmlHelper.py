@@ -24,12 +24,7 @@ class XmlHelper (object):
         self.xml_doc = libxml2.newDoc ('1.0')
         self.xml_doc.setRootElement (libxml2.newNode ("ospm-groups"))
 
-        if not os.path.exists (self.group_file_name):
-            try:
-                self.xml_doc.saveFormatFile (self.group_file_name, False)
-            except:
-                nonfatalException ()
-        else:
+        if os.path.exists (self.group_file_name):
             try:
                 self.xml_doc = libxml2.parseFile (self.group_file_name)
             except:
