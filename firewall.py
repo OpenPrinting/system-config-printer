@@ -31,7 +31,6 @@ class Firewall:
     ALLOW_IPP_SERVER = "--service=ipp"
     ALLOW_SAMBA_CLIENT = "--service=samba-client"
     ALLOW_MDNS = "--service=mdns"
-    ALLOW_SNMP = "--port=161:udp"
 
     def _get_fw_data (self, reply_handler=None, error_handler=None):
         try:
@@ -104,6 +103,3 @@ class Firewall:
     def check_mdns_allowed (self):
         return self._check_any_allowed (set(["--port=5353:udp",
                                              self.ALLOW_MDNS]))
-
-    def check_snmp_allowed (self):
-        return self._check_any_allowed (set([self.ALLOW_SNMP]))

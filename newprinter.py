@@ -1511,8 +1511,7 @@ class NewPrinterGUI(GtkGUI):
         try:
             ipp_allowed = f.check_ipp_client_allowed ()
             mdns_allowed = f.check_mdns_allowed ()
-            snmp_allowed = f.check_snmp_allowed ()
-            allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
+            allowed = (ipp_allowed and mdns_allowed)
 
             secondary_text = TEXT_adjust_firewall + "\n\n"
             if not ipp_allowed:
@@ -1524,11 +1523,6 @@ class NewPrinterGUI(GtkGUI):
                 secondary_text += ("- " +
                                    _("Allow all incoming mDNS traffic") + "\n")
                 f.add_rule (f.ALLOW_MDNS)
-            if not snmp_allowed:
-                secondary_text += ("- " +
-                                   _("Allow all responses to "
-                                     "SNMP broadcast queries") + "\n")
-                f.add_rule (f.ALLOW_SNMP)
 
             if not allowed:
                 dialog = gtk.MessageDialog (self.NewPrinterWindow,
