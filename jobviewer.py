@@ -1780,6 +1780,15 @@ class JobViewer (GtkGUI, monitor.Watcher):
 
         self.update_job (jobid, jobdata)
         self.update_status ()
+
+        # Check that the job still exists, as update_status re-enters
+        # the main loop in order to paint/hide the tray icon.  Really
+        # that should probably be deferred to the idle handler, but
+        # for the moment just deal with the fact that the job might
+        # have gone (bug #640904).
+        if not self.jobs.has_key (jobid):
+            return
+
         jobdata = self.jobs[jobid]
 
         # If the job has finished, let the user know.
