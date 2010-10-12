@@ -20,25 +20,18 @@ from debug import *
 
 class XmlHelper (object):
     def __init__ (self, filename):
-        self.group_file_name = None
+        self.group_file_name = filename
         self.xml_doc = libxml2.newDoc ('1.0')
         self.xml_doc.setRootElement (libxml2.newNode ("ospm-groups"))
 
-        self.group_file_name = filename
-
-        if not os.path.exists (self.group_file_name):
-            try:
-                self.xml_doc.saveFormatFile (self.group_file_name, True)
-            except:
-                nonfatalException ()
-        else:
+        if os.path.exists (self.group_file_name):
             try:
                 self.xml_doc = libxml2.parseFile (self.group_file_name)
             except:
                 nonfatalException ()
 
     def write (self):
-        if self.xml_doc.saveFormatFile (self.group_file_name, True) == -1:
+        if self.xml_doc.saveFormatFile (self.group_file_name, False) == -1:
             nonfatalException ()
 
     def __get_non_text_child (self, node):

@@ -739,6 +739,18 @@ device_id_from_bluetooth (const char *bdaddr, struct device_id *id)
   g_free (device_id);
 }
 
+static char *
+uri_from_bdaddr (const char *devpath)
+{
+  return g_strdup_printf("bluetooth://%c%c%c%c%c%c%c%c%c%c%c%c",
+			 devpath[0], devpath[1],
+			 devpath[3], devpath[4],
+			 devpath[6], devpath[7],
+			 devpath[9], devpath[10],
+			 devpath[12], devpath[13],
+			 devpath[15], devpath[16]);
+}
+
 static const char *
 no_password (const char *prompt)
 {
@@ -1423,14 +1435,7 @@ do_add (const char *cmd, const char *devpath)
     } else {
       char *device_uri;
 
-      device_uri = g_strdup_printf("bluetooth://%c%c%c%c%c%c%c%c%c%c%c%c",
-				   devpath[0], devpath[1],
-				   devpath[3], devpath[4],
-				   devpath[6], devpath[7],
-				   devpath[9], devpath[10],
-				   devpath[12], devpath[13],
-				   devpath[15], devpath[16]);
-
+      device_uri = uri_from_bdaddr (devpath);
       add_device_uri (&device_uris, device_uri);
       g_free (device_uri);
     }
@@ -1491,14 +1496,44 @@ do_add (const char *cmd, const char *devpath)
 }
 
 static void
-disable_queue (const char *printer_uri, void *context)
+remove_queue (const char *printer_uri)
 {
   /* Disable it. */
   http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
 				     cupsEncryption ());
   ipp_t *request, *answer;
 
-  //FIXME remove instead of disable for Bluetooth
+  if (cups == NULL)
+    return;
+
+  request = ippNewRequest (CUPS_DELETE_PRINTER);
+  ippAddString (request, IPP_TAG_OPERATION, IPP_TAG_URI,
+		"printer-uri", NULL, printer_uri);
+  answer = cupsDoRequest (cups, request, "/admin/");
+  if (!answer)
+    {
+      syslog (LOG_ERR, "Failed to send IPP-Delete-Printer request");
+      httpClose (cups);
+      return;
+    }
+
+  if (answer->request.status.status_code > IPP_OK_CONFLICT)
+    syslog (LOG_ERR, "IPP-Delete-Printer request failed");
+  else
+    syslog (LOG_INFO, "Deleted printer %s as the corresponding device "
+	    "was unpaired", printer_uri);
+
+  ippDelete (answer);
+  httpClose (cups);
+}
+
+static void
+disable_queue (const char *printer_uri, void *context)
+{
+  /* Disable it. */
+  http_t *cups = httpConnectEncrypt (cupsServer (), ippPort (),
+				     cupsEncryption ());
+  ipp_t *request, *answer;
 
   if (cups == NULL)
     return;
@@ -1534,6 +1569,16 @@ do_remove (const char *devpath)
   struct device_uris *uris = NULL;
   char usblpdev[8] = "";
   syslog (LOG_DEBUG, "remove %s", devpath);
+
+  if (bluetooth_verify_address (devpath))
+    {
+      char *device_uri;
+
+      device_uri = uri_from_bdaddr (devpath);
+      remove_queue (devpath);
+      g_free (device_uri);
+      return 0;
+    }
 
   map = read_usb_uri_map ();
   prev = &map->entries;
