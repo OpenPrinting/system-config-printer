@@ -117,13 +117,14 @@ class StaticGroupItem (MutableItem):
 
         for queue_name in queue_list:
             if queue_name in self.printer_queues:
-                queue_node = self.xml_node.children.children
+                queue_node = queues_node.children
                 while queue_node:
                     if queue_node.prop ("name") == queue_name:
                         break
                     queue_node = queue_node.next
-                queue_node.unlinkNode ()
-                queue_node.freeNode ()
+                if queue_node:
+                    queue_node.unlinkNode ()
+                    queue_node.freeNode ()
                 self.printer_queues.remove (queue_name)
 
         xml_helper.write ()
