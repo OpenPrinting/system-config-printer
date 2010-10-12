@@ -653,6 +653,74 @@ class PPDs:
                 status = self.STATUS_GENERIC_DRIVER
                 ppdnamelist = generic
 
+        # What about the CMD field of the Device ID?  Some devices
+        # have optional units for page description languages, such as
+        # PostScript, and they will report different CMD strings
+        # accordingly.
+        #
+        # By convention, if a PPD contains a Device ID with a CMD
+        # field, that PPD can only be used whenever any of the
+        # comma-separated words in the CMD field appear in the
+        # device's ID.
+        # (See Red Hat bug #630058).
+        #
+        # We'll do that check now, and any PPDs that fail
+        # (e.g. PostScript PPD for non-PostScript printer) can be
+        # eliminated from the list.
+        #
+        # The reason we don't do this check any earlier is that we
+        # don't want to eliminate PPDs only to have the fuzzy matcher
+        # add them back in afterwards.
+        if id_matched and len (commandsets) > 0:
+            failed = set()
+            for ppdname in ppdnamelist:
+                ppd = self.ppds[ppdname]
+                ppd_device_id = ppd.get ('ppd-device-id')
+                print ppd_device_id
+                if not ppd_device_id:
+                    continue
+
+                ppd_device_id_dict = parseDeviceID (ppd_device_id)
+                ppd_cmd_field = ppd_device_id_dict["CMD"]
+                print ppd_cmd_field
+                if not ppd_cmd_field:
+                    continue
+
+                usable = False
+                for pdl in ppd_cmd_field:
+                    if pdl in commandsets:
+                        usable = True
+                        print "usable"
+                        break
+
+                if not usable:
+                    failed.add (ppdname)
+
+            _debugprint ("Removed %s due to CMD mis-match" % failed)
+            ppdnamelist = list (set (ppdnamelist) - failed)
+
+        # If the Device ID matched but the DES field is different,
+        # eliminate those PPDs too.
+        if id_matched and description:
+            _debugprint ("Checking DES field")
+            inexact = set()
+            for ppdname in ppdnamelist:
+                if ppdname.find ("hpijs"):
+                    continue
+                ppddict = self.ppds[ppdname]
+                id = ppddict['ppd-device-id']
+                if not id:
+                    continue
+                # Fetch description field.
+                id_dict = parseDeviceID (id)
+                if id_dict["DES"] != description:
+                    inexact.add (ppdname)
+
+            exact = set (ppdnamelist).difference (inexact)
+            _debugprint ("discarding: %s" % inexact)
+            if len (exact) >= 1:
+                ppdnamelist = list (exact)
+
         if not ppdnamelist:
             status = self.STATUS_NO_DRIVER
             fallbacks = ["textonly.ppd", "postscript.ppd"]
@@ -675,27 +743,6 @@ class PPDs:
             if not found:
                 _debugprint ("No fallback available; choosing any")
                 ppdnamelist = [self.ppds.keys ()[0]]
-
-        if id_matched:
-            _debugprint ("Checking DES field")
-            inexact = set()
-            if description:
-                for ppdname in ppdnamelist:
-                    if ppdname.find ("hpijs"):
-                        continue
-                    ppddict = self.ppds[ppdname]
-                    id = ppddict['ppd-device-id']
-                    if not id:
-                        continue
-                    # Fetch description field.
-                    id_dict = parseDeviceID (id)
-                    if id_dict["DES"] != description:
-                        inexact.add (ppdname)
-
-            exact = set (ppdnamelist).difference (inexact)
-            _debugprint ("discarding: %s" % inexact)
-            if len (exact) >= 1:
-                ppdnamelist = list (exact)
 
         # We've got a set of PPDs, any of which will drive the device.
         # Now we have to choose the "best" one.  This is quite tricky
