@@ -5239,12 +5239,11 @@ class NewPrinterGUI(GtkGUI):
                 f = firewall.Firewall ()
                 ipp_allowed = f.check_ipp_client_allowed ()
                 mdns_allowed = f.check_mdns_allowed ()
-                snmp_allowed = f.check_snmp_allowed ()
-                allowed = (ipp_allowed and mdns_allowed and snmp_allowed)
+                allowed = (ipp_allowed and mdns_allowed)
             else:
                 # This is a remote server.  Nothing we can do about
                 # the firewall there.
-                ipp_allowed = mdns_allowed = snmp_allowed = allowed = True
+                ipp_allowed = mdns_allowed = allowed = True
 
             secondary_text = _("The firewall may need adjusting in order to "
                                "detect network printers.  Adjust the "
@@ -5258,11 +5257,6 @@ class NewPrinterGUI(GtkGUI):
                 secondary_text += ("- " +
                                    _("Allow all incoming mDNS traffic") + "\n")
                 f.add_rule (f.ALLOW_MDNS)
-            if not snmp_allowed:
-                secondary_text += ("- " +
-                                   _("Allow all responses to "
-                                     "SNMP broadcast queries") + "\n")
-                f.add_rule (f.ALLOW_SNMP)
 
             if not allowed:
                 dialog = gtk.MessageDialog (self.mainapp.PrintersWindow,
