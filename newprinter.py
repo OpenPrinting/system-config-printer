@@ -1441,6 +1441,7 @@ class NewPrinterGUI(GtkGUI):
                 if n == 4:
                     # No Device ID given so we'll have to make one
                     # up.
+                    debugprint ("No Device ID from snmp backend")
                     (mk, md) = cupshelpers.ppds.\
                         ppdMakeModelSplit (make_and_model)
                     device.id = "MFG:%s;MDL:%s;DES:%s %s;" % (mk, md,
