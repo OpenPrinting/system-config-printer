@@ -4990,30 +4990,42 @@ class NewPrinterGUI(GtkGUI):
                 pass
 
             if stdout != None:
-                uri = re.sub("^\s*\S+\s+", "", stdout)
-                uri = re.sub("\s.*$", "", uri)
-                mm = re.sub("^\s*\S+\s+\S+\s+\"", "", stdout)
-                mm = re.sub("\"\s+.*$", "", mm)
-                if mm and mm != "": device.make_and_model = mm
-                location = re.sub("^\s*(\S+\s+){2}(\".*\"\s+){3}\"", "", stdout)
-                device.location = re.sub("\"\s*$", "", location)
+                line = stdout.strip ()
+                words = probe_printer.wordsep (line)
+                n = len (words)
+                if n < 4:
+                    words.extend (['','','',''])
+                    words = words[:4]
+                    n = 4
+                elif n > 6:
+                    words = words[:6]
+                    n = 6
 
-        # Extract make and model and create a pseudo device ID, so
-        # that a PPD/driver can be assigned to the device
-        make_and_model = None
-        if len (device.make_and_model) > 7:
-            make_and_model = device.make_and_model
-        elif len (device.info) > 7:
-            make_and_model = device.info
-            make_and_model = re.sub("\s*(\(|\d+\.\d+\.\d+\.\d+).*$", "", make_and_model)
-        if make_and_model and not device.id:
-            mk = None
-            md = None
-            (mk, md) = cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
-            device.id = "MFG:" + mk + ";MDL:" + md + ";DES:" + mk + " " + md + ";"
-            device.id_dict = cupshelpers.parseDeviceID (device.id)
-            device.make_and_model = "%s %s" % (mk, md)
-            device.info = device.make_and_model
+                if n == 6:
+                    (device_class, uri, make_and_model,
+                     info, device_id, device_location) = words
+                elif n == 5:
+                    (device_class, uri, make_and_model,
+                     info, device_id) = words
+                elif n == 4:
+                    (device_class, uri, make_and_model, info) = words
+
+                if n == 4:
+                    # No Device ID given so we'll have to make one
+                    # up.
+                    (mk, md) = cupshelpers.ppds.\
+                        ppdMakeModelSplit (make_and_model)
+                    device.id = "MFG:%s;MDL:%s;DES:%s %s;" % (mk, md,
+                                                              mk, md)
+                else:
+                    debugprint ("Got Device ID: %s" % device_id)
+                    device.id = device_id
+
+                device.id_dict = cupshelpers.parseDeviceID (device.id)
+                device.make_and_model = make_and_model
+                device.info = info
+                if n == 6:
+                    device.location = device_location
 
         return (host, uri)
 
