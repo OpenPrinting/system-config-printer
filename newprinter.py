@@ -672,6 +672,7 @@ class NewPrinterGUI(GtkGUI):
                 make_model = ppddict['ppd-make-and-model']
                 (self.auto_make, self.auto_model) = \
                     cupshelpers.ppds.ppdMakeModelSplit (make_model)
+                self.auto_driver = ppdname
                 if (status == self.ppds.STATUS_SUCCESS and
                     self.dialog_mode == "printer_with_uri"):
                     self.exactdrivermatch = True
@@ -2968,6 +2969,7 @@ class NewPrinterGUI(GtkGUI):
 
             self.NPDrivers = drivers
 
+        driverlist = []
         for i in range (len(self.NPDrivers)):
             ppd = ppds[self.NPDrivers[i]]
             driver = ppd["ppd-make-and-model"]
@@ -2978,6 +2980,12 @@ class NewPrinterGUI(GtkGUI):
                 driver += lpostfix
             except KeyError:
                 pass
+
+            duplicate = False
+            if driver in driverlist:
+                duplicate = True
+            else:
+                driverlist.append (driver)
 
             if not self.device and self.auto_driver == self.NPDrivers[i]:
                 iter = model.append ((driver + _(" (Current)"),))
@@ -2990,6 +2998,8 @@ class NewPrinterGUI(GtkGUI):
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
             else:
+                if duplicate:
+                    continue
                 model.append((driver, ))
         self.tvNPDrivers.columns_autosize()
 
