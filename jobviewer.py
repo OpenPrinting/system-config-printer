@@ -1161,7 +1161,7 @@ class JobViewer (GtkGUI, monitor.Watcher):
             move_sensitive = True
 
         cancel.set_sensitive(cancel_sensitive)
-        delete.set_sensitive(True)
+        delete.set_sensitive(not cancel_sensitive)
         hold.set_sensitive(hold_sensitive)
         release.set_sensitive(release_sensitive)
         reprint.set_sensitive(reprint_sensitive)
