@@ -22,6 +22,7 @@
 import dbus
 import dbus.glib
 import dbus.service
+from debug import debugprint
 
 class PrinterDriversInstaller(dbus.service.Object):
     DBUS_PATH  = "/com/redhat/PrinterDriversInstaller"
@@ -43,8 +44,12 @@ class PrinterDriversInstaller(dbus.service.Object):
         obj = bus.get_object ("org.freedesktop.PackageKit",
                               "/org/freedesktop/PackageKit")
         proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
-        proxy.InstallPrinterDrivers (0, ["MFG:%s;MDL:%s;" % (mfg, mdl)],
-                                     "hide-finished",
+        xid = 0
+        resources = ["MFG:%s;MDL:%s;" % (mfg, mdl)]
+        interaction = "hide-finished"
+        debugprint ("Calling InstallPrinterDrivers (%s, %s, %s)" %
+                    (repr (xid), repr (resources), repr (interaction)))
+        proxy.InstallPrinterDrivers (xid, resources, interaction,
                                      reply_handler=reply_handler,
                                      error_handler=error_handler,
                                      timeout=3600)

@@ -22,6 +22,7 @@
 
 import cups
 from .cupshelpers import parseDeviceID
+import itertools
 import string
 import locale
 import os.path
@@ -171,17 +172,37 @@ def ppdMakeModelSplit (ppd_make_and_model):
         make = "HP"
         makel = "hp"
 
-    # HP PPDs give NickNames like:
+    # HP PostScript PPDs give NickNames like:
     # *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
-    # Find the version number.
+    # Find the version number and truncate at that point.  But beware,
+    # other model names can legitimately look like version numbers,
+    # e.g. Epson PX V500.
+    # Truncate only if the version number has only one digit, or a dot
+    # with digits before and after.
     modell = model.lower ()
     v = modell.find (" v")
-    if v != -1 and (model[v + 2].isdigit () or
-                    (model[v + 2] == '.' and
-                     model[v + 3].isdigit ())):
-        # Truncate at that point.
-        model = model[:v]
-        modell = modell[:v]
+    if v != -1:
+        # Find the version number string (immediately after "v")
+        vstring = modell[v+2:]
+        ve = vstring.find (" ")
+        if ve == -1:
+            vstring = vstring[:ve]
+
+        # Count the digits
+        digits = len (list (itertools.takewhile (unicode.isdigit, vstring)))
+
+        vstringlen = len (vstring)
+        if (
+            # Single digit?
+            (vstringlen == 1 and digits == 1) or
+
+            # Dot surrounded by digits?
+            (digits > 0 and digits + 1 < vstringlen and
+             vstring[digits - 1].isdigit () and
+             vstring[digits + 1].isdigit ())):
+                # Truncate at " v"...
+            model = model[:v]
+            modell = modell[:v]
 
     for suffix in [" hpijs",
                    " foomatic/",
