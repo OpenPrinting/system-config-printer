@@ -163,8 +163,11 @@ class PPDsLoader:
             obj = self._bus.get_object ("org.freedesktop.PackageKit",
                                         "/org/freedesktop/PackageKit")
             proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
-            proxy.InstallPrinterDrivers (xid, [self._device_id],
-                                         "hide-finished",
+            resources = [self._device_id]
+            interaction = "hide-finished"
+            debugprint ("Calling InstallPrinterDrivers (%s, %s, %s)" %
+                        (repr (xid), repr (resources), repr (interaction)))
+            proxy.InstallPrinterDrivers (xid, resources, interaction,
                                          reply_handler=self._packagekit_reply,
                                          error_handler=self._packagekit_error,
                                          timeout=3600)
