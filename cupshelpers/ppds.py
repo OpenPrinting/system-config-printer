@@ -690,7 +690,6 @@ class PPDs:
                 for pdl in ppd_cmd_field:
                     if pdl in commandsets:
                         usable = True
-                        print "usable"
                         break
 
                 if not usable:
