@@ -133,6 +133,8 @@ class PPDsLoader:
             if (status != ppds.STATUS_SUCCESS and
                 self._packagekit_queried == False and
                 self._local_cups == True):
+                self._gpk_device_id = "MFG:%s;MDL:%s;" % (devid_dict["MFG"],
+                                                          devid_dict["MDL"])
                 self._query_packagekit ()
                 self._packagekit_queried = True
                 return
@@ -163,7 +165,7 @@ class PPDsLoader:
             obj = self._bus.get_object ("org.freedesktop.PackageKit",
                                         "/org/freedesktop/PackageKit")
             proxy = dbus.Interface (obj, "org.freedesktop.PackageKit.Modify")
-            resources = [self._device_id]
+            resources = [self._gpk_device_id]
             interaction = "hide-finished"
             debugprint ("Calling InstallPrinterDrivers (%s, %s, %s)" %
                         (repr (xid), repr (resources), repr (interaction)))
