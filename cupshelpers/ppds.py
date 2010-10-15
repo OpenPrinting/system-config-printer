@@ -24,6 +24,7 @@ import cups
 from .cupshelpers import parseDeviceID
 import itertools
 import string
+import time
 import locale
 import os.path
 import re
@@ -31,6 +32,8 @@ from . import _debugprint, set_debugprint_fn
 
 __all__ = ['ppdMakeModelSplit',
            'PPDs']
+
+_RE_version_numbers = re.compile (" v\d(?:\d*\.\d+)?(?: |$)")
 
 def ppdMakeModelSplit (ppd_make_and_model):
     """
@@ -182,27 +185,15 @@ def ppdMakeModelSplit (ppd_make_and_model):
     modell = model.lower ()
     v = modell.find (" v")
     if v != -1:
-        # Find the version number string (immediately after "v")
-        vstring = modell[v+2:]
-        ve = vstring.find (" ")
-        if ve == -1:
-            vstring = vstring[:ve]
-
-        # Count the digits
-        digits = len (list (itertools.takewhile (unicode.isdigit, vstring)))
-
-        vstringlen = len (vstring)
-        if (
-            # Single digit?
-            (vstringlen == 1 and digits == 1) or
-
-            # Dot surrounded by digits?
-            (digits > 0 and digits + 1 < vstringlen and
-             vstring[digits - 1].isdigit () and
-             vstring[digits + 1].isdigit ())):
-                # Truncate at " v"...
-            model = model[:v]
-            modell = modell[:v]
+        # Look for " v" followed by a digit, optionally followed by more
+        # digits, a dot, and more digits; and terminated by a space of the
+        # end of the line.
+        vmatch = _RE_version_numbers.search (modell)
+        if vmatch:
+            # Found it -- truncate at that point.
+            vstart = vmatch.start ()
+            modell = modell[:vstart]
+            model = model[:vstart]
 
     for suffix in [" hpijs",
                    " foomatic/",
@@ -952,6 +943,7 @@ class PPDs:
         if self.makes:
             return
 
+        tstart = time.time ()
         makes = {}
         lmakes = {}
         lmodels = {}
@@ -978,6 +970,7 @@ class PPDs:
         self.makes = makes
         self.lmakes = lmakes
         self.lmodels = lmodels
+        _debugprint ("init_makes: %.3fs" % (time.time () - tstart))
 
     def _init_ids (self):
         if self.ids:

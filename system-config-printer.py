@@ -2198,6 +2198,7 @@ if __name__ == "__main__":
 
         elif opt == '--debug':
             set_debugging (True)
+            cupshelpers.ppds.set_debugprint_fn (debugprint)
 
     main(setup_printer, configure_printer, change_ppd, devid, print_test_page,
          focus_on_map)
