@@ -24,6 +24,7 @@ import cups
 from .cupshelpers import parseDeviceID
 import itertools
 import string
+import time
 import locale
 import os.path
 import re
@@ -952,6 +953,7 @@ class PPDs:
         if self.makes:
             return
 
+        tstart = time.time ()
         makes = {}
         lmakes = {}
         lmodels = {}
@@ -978,6 +980,7 @@ class PPDs:
         self.makes = makes
         self.lmakes = lmakes
         self.lmodels = lmodels
+        _debugprint ("init_makes: %.3fs" % (time.time () - tstart))
 
     def _init_ids (self):
         if self.ids:
