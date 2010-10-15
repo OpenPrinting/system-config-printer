@@ -33,6 +33,8 @@ from . import _debugprint, set_debugprint_fn
 __all__ = ['ppdMakeModelSplit',
            'PPDs']
 
+_RE_version_numbers = re.compile (" v\d(?:\d*\.\d+)?(?: |$)")
+
 def ppdMakeModelSplit (ppd_make_and_model):
     """
     Split a ppd-make-and-model string into a canonical make and model pair.
@@ -183,27 +185,15 @@ def ppdMakeModelSplit (ppd_make_and_model):
     modell = model.lower ()
     v = modell.find (" v")
     if v != -1:
-        # Find the version number string (immediately after "v")
-        vstring = modell[v+2:]
-        ve = vstring.find (" ")
-        if ve == -1:
-            vstring = vstring[:ve]
-
-        # Count the digits
-        digits = len (list (itertools.takewhile (unicode.isdigit, vstring)))
-
-        vstringlen = len (vstring)
-        if (
-            # Single digit?
-            (vstringlen == 1 and digits == 1) or
-
-            # Dot surrounded by digits?
-            (digits > 0 and digits + 1 < vstringlen and
-             vstring[digits - 1].isdigit () and
-             vstring[digits + 1].isdigit ())):
-                # Truncate at " v"...
-            model = model[:v]
-            modell = modell[:v]
+        # Look for " v" followed by a digit, optionally followed by more
+        # digits, a dot, and more digits; and terminated by a space of the
+        # end of the line.
+        vmatch = _RE_version_numbers.search (modell)
+        if vmatch:
+            # Found it -- truncate at that point.
+            vstart = vmatch.start ()
+            modell = modell[:vstart]
+            model = model[:vstart]
 
     for suffix in [" hpijs",
                    " foomatic/",
