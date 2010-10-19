@@ -2860,6 +2860,7 @@ class GUI(GtkGUI, monitor.Watcher):
             self.jobviewers[0].on_delete_event ()
         del self.mainlist
         del self.printers
+        del self.printer
         gtk.main_quit()
 
     # Rename
