@@ -34,15 +34,19 @@ class Firewall:
 
     def _get_fw_data (self):
         try:
-            bus = dbus.SystemBus ()
-            obj = bus.get_object ("org.fedoraproject.Config.Firewall",
-                                  "/org/fedoraproject/Config/Firewall")
-            iface = dbus.Interface (obj, "org.fedoraproject.Config.Firewall")
-            self._firewall = iface
-            p = self._firewall.read ()
-            self._fw_data = pickle.loads (p.encode ('utf-8'))
-        except dbus.DBusException:
-            return None, None
+            return self._fw_data
+        except AttributeError:
+            try:
+                bus = dbus.SystemBus ()
+                obj = bus.get_object ("org.fedoraproject.Config.Firewall",
+                                      "/org/fedoraproject/Config/Firewall")
+                iface = dbus.Interface (obj,
+                                        "org.fedoraproject.Config.Firewall")
+                self._firewall = iface
+                p = self._firewall.read ()
+                self._fw_data = pickle.loads (p.encode ('utf-8'))
+            except dbus.DBusException:
+                self._fw_data = (None, None)
 
         return self._fw_data
 
