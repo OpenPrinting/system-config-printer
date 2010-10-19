@@ -1369,6 +1369,8 @@ class GUI(GtkGUI):
             self.jobviewers[0].on_delete_event ()
         del self.mainlist
         del self.printers
+        self.propertiesDlg.destroy ()
+        self.newPrinterGUI.destroy ()
         gtk.main_quit()
 
     # Rename

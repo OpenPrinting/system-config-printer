@@ -471,6 +471,9 @@ class PrinterPropertiesDialog(GtkGUI):
             self.PrinterPropertiesDialog = None
 
     def destroy (self):
+        self.ppd = None
+        self.ppd_local = None
+        self.printer = None
         self.emit ('destroy')
 
     def set_monitor (self, monitor):
@@ -559,6 +562,8 @@ class PrinterPropertiesDialog(GtkGUI):
 
         if ((response == gtk.RESPONSE_OK and not failed) or
             response == gtk.RESPONSE_CANCEL):
+            self.ppd = None
+            self.ppd_local = None
             self.printer = None
             dialog.hide ()
             self.emit ('dialog-closed')

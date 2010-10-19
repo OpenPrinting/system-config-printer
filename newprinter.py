@@ -805,6 +805,7 @@ class NewPrinterGUI(GtkGUI):
             self.openprinting_query_handle = None
 
         self.device = None
+        del self.printers
         self.emit ('dialog-canceled')
         return True
 
@@ -2544,6 +2545,9 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPTLpdProbe.set_sensitive (len (hostname) > 0)
         self.setNPButtons()
 
+    def on_cmbentNPTLpdQueue_changed(self, cmbent):
+        self.setNPButtons()
+
     def on_btnNPTLpdProbe_clicked(self, button):
         # read hostname, probe, fill printer names
         hostname = self.cmbentNPTLpdHost.get_active_text()
@@ -3456,6 +3460,7 @@ class NewPrinterGUI(GtkGUI):
             self.emit ('printer-modified', name)
 
         self.device = None
+        del self.printers
 
 gobject.type_register (NewPrinterGUI)
 
