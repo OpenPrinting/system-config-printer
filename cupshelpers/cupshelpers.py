@@ -1,8 +1,8 @@
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
-## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2006, 2007, 2008, 2009, 2010 Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ class Printer:
             os.unlink(self._ppd)
 
     def __repr__ (self):
-        return "<cupshelpers.Printer \"%s\">" % self.name
+        return "<cupshelpers.Printer \"%s\" at 0x%x>" % (self.name, id (self))
 
     def _expand_flags(self):
 
