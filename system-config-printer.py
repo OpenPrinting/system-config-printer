@@ -6083,6 +6083,9 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPTLpdProbe.set_sensitive (len (hostname) > 0)
         self.setNPButtons()
 
+    def on_cmbentNPTLpdQueue_changed(self, cmbent):
+        self.setNPButtons()
+
     def on_btnNPTLpdProbe_clicked(self, button):
         # read hostname, probe, fill printer names
         hostname = self.cmbentNPTLpdHost.get_active_text()
