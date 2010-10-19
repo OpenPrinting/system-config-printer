@@ -168,6 +168,7 @@ class GUI(GtkGUI):
             self.language = locale.getlocale(locale.LC_MESSAGES)
             self.encoding = locale.getlocale(locale.LC_CTYPE)
 
+        self.printers = {}
         self.connect_server = cups.getServer()
         self.connect_encrypt = cups.getEncryption ()
         self.connect_user = cups.getUser()
