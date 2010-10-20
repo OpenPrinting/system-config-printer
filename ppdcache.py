@@ -129,7 +129,7 @@ class PPDCache:
                 # file.  This way we don't leave temporary files
                 # around.
                 self._cache[name] = file (filename)
-                os.unlink (result)
+                os.unlink (filename)
                 self._modtimes[name] = modtime
 
             self.fetch_ppd (name, callback, check_uptodate=False)
