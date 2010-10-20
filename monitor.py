@@ -540,14 +540,16 @@ class Monitor:
 
         try:
             self.sub_id = c.createSubscription ("/", events=events)
+            debugprint ("Created subscription %d" % self.sub_id)
         except cups.IPPError, (e, m):
             self.watcher.cups_ipp_error (self, e, m)
 
         cups.setUser (user)
 
-        self.update_timer = gobject.timeout_add_seconds (MIN_REFRESH_INTERVAL,
-                                                         self.get_notifications)
-        debugprint ("Created subscription %d" % self.sub_id)
+        if self.sub_id != -1:
+            self.update_timer = gobject.timeout_add_seconds (
+                MIN_REFRESH_INTERVAL,
+                self.get_notifications)
 
         if self.monitor_jobs:
             jobs = self.jobs.copy ()
