@@ -210,6 +210,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
                    " zjs",              # hpcups
                    " zxs",              # hpcups
                    " pcl3",             # hpcups
+                   " printer",          # hpcups
                    "_bt",
                    " pcl",              # Canon CQue
                    " ufr ii",           # Canon UFR II
