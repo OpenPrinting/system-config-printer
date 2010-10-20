@@ -329,6 +329,7 @@ class Monitor(gobject.GObject):
 
             self.update_timer = gobject.timeout_add (200,
                                                      self.get_notifications)
+            debugprint ("Deferred get_notifications by 200ms")
             return False
 
         debugprint ("get_notifications")
@@ -354,6 +355,9 @@ class Monitor(gobject.GObject):
                     return False
 
                 self.emit ('cups-ipp-error', e, m)
+                if e == cups.IPP_FORBIDDEN:
+                    return False
+
                 return True
         except RuntimeError:
             cups.setUser (user)
@@ -472,6 +476,7 @@ class Monitor(gobject.GObject):
             interval = notifications['notify-get-interval']
             t = gobject.timeout_add_seconds (interval,
                                              self.get_notifications)
+            debugprint ("Next notifications fetch in %ds" % interval)
             self.update_timer = t
 
         return False
@@ -522,14 +527,19 @@ class Monitor(gobject.GObject):
 
         try:
             self.sub_id = c.createSubscription ("/", events=events)
+            debugprint ("Created subscription %d, events=%s" % (self.sub_id,
+                                                                repr (events)))
         except cups.IPPError, (e, m):
             self.emit ('cups-ipp-error', e, m)
 
         cups.setUser (user)
 
-        self.update_timer = gobject.timeout_add_seconds (MIN_REFRESH_INTERVAL,
-                                                         self.get_notifications)
-        debugprint ("Created subscription %d" % self.sub_id)
+        if self.sub_id != -1:
+            self.update_timer = gobject.timeout_add_seconds (
+                MIN_REFRESH_INTERVAL,
+                self.get_notifications)
+            debugprint ("Next notifications fetch in %ds" %
+                        MIN_REFRESH_INTERVAL)
 
         if self.monitor_jobs:
             jobs = self.jobs.copy ()
@@ -720,8 +730,10 @@ class Monitor(gobject.GObject):
             gobject.source_remove (self.update_timer)
 
         self.update_timer = gobject.timeout_add (200, self.get_notifications)
+        debugprint ("Next notifications fetch in 200ms (update called)")
 
     def handle_dbus_signal(self, *args):
+        debugprint ("D-Bus signal from CUPS... calling update")
         self.update ()
         if not self.received_any_dbus_signals:
             self.received_any_dbus_signals = True
