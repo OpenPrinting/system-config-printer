@@ -550,7 +550,8 @@ class Monitor:
 
         self.update_timer = gobject.timeout_add_seconds (MIN_REFRESH_INTERVAL,
                                                          self.get_notifications)
-        debugprint ("Created subscription %d" % self.sub_id)
+        debugprint ("Created subscription %d, events=%s" % (self.sub_id,
+                                                            repr (events)))
         debugprint ("Next notifications fetch in %ds" % MIN_REFRESH_INTERVAL)
 
         if self.monitor_jobs:
