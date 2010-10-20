@@ -364,6 +364,9 @@ class Monitor:
                     return False
 
                 self.watcher.cups_ipp_error (self, e, m)
+                if e == cups.IPP_FORBIDDEN:
+                    return False
+
                 return True
         except RuntimeError:
             cups.setUser (user)
