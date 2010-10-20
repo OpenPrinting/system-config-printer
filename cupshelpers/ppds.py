@@ -239,6 +239,13 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = model.strip ()
     return (make, model)
 
+def _singleton (x):
+    """If we don't know whether getPPDs() or getPPDs2() was used, this
+    function can unwrap an item from a list in either case."""
+    if isinstance (x, list):
+        return x[0]
+    return x
+
 # Some drivers are just generally better than others.
 # Here is the preference list:
 DRIVER_TYPE_DOWNLOADED_NOW = 5
@@ -267,7 +274,7 @@ def _getDriverType (ppdname, ppds=None):
         return DRIVER_TYPE_SPLIX
     if ppdname.find ("hpcups") != -1:
         info = ppds.getInfoFromPPDName (ppdname)
-        make_model = info.get ('ppd-make-and-model', '')
+        make_model = _singleton (info.get ('ppd-make-and-model', ''))
         if make_model.find ("plugin") != -1:
             return DRIVER_TYPE_3RD_PARTY_NONFREE
         else:
@@ -281,7 +288,7 @@ def _getDriverType (ppdname, ppds=None):
             return DRIVER_TYPE_FOOMATIC_GENERIC
         if ppds != None:
             info = ppds.getInfoFromPPDName (ppdname)
-            device_id = info.get ('ppd-device-id', '')
+            device_id = _singleton (info.get ('ppd-device-id', ''))
             id_dict = parseDeviceID (device_id)
             drv = id_dict.get ('DRV', '')
             drvfields = dict()
@@ -291,7 +298,8 @@ def _getDriverType (ppdname, ppds=None):
                 key = field[0]
                 drvfields[key] = field[1:]
 
-            ppd_make_and_model = info.get ('ppd-make-and-model', '')
+            ppd_make_and_model = _singleton (info.get ('ppd-make-and-model',
+                                                       ''))
             if (drvfields.get ('R', '0') == '1' or
                 ppd_make_and_model.find ("(recommended)") != -1):
                 if ppd_make_and_model.find ("Postscript") != -1:
@@ -340,6 +348,7 @@ class PPDs:
         """
         @type ppds: dict
         @param ppds: dict of PPDs as returned by cups.Connection.getPPDs()
+        or cups.Connection.getPPDs2()
 
         @type language: string
 	@param language: language name, as given by the first element
@@ -363,7 +372,7 @@ class PPDs:
         to_remove = []
         for ppdname, ppddict in self.ppds.iteritems ():
             try:
-                natural_language = ppddict['ppd-natural-language']
+                natural_language = _singleton (ppddict['ppd-natural-language'])
             except KeyError:
                 continue
 
@@ -387,7 +396,7 @@ class PPDs:
         # which unfortunately then appears as manufacturer Raw and
         # model Queue.  Use 'Generic' for this model.
         if self.ppds.has_key ('raw'):
-            makemodel = self.ppds['raw']['ppd-make-and-model']
+            makemodel = _singleton (self.ppds['raw']['ppd-make-and-model'])
             if not makemodel.startswith ("Generic "):
                 self.ppds['raw']['ppd-make-and-model'] = "Generic " + makemodel
 
@@ -456,7 +465,7 @@ class PPDs:
             return ppdnamelist
 
         dict = self.getInfoFromPPDName (ppdnamelist[0])
-        make_model = dict['ppd-make-and-model']
+        make_model = _singleton (dict['ppd-make-and-model'])
         mfg, mdl = ppdMakeModelSplit (make_model)
         def getDriverTypeWithBias (x, mfg):
             t = _getDriverType (x, ppds=self)
@@ -687,7 +696,7 @@ class PPDs:
             failed = set()
             for ppdname in ppdnamelist:
                 ppd = self.ppds[ppdname]
-                ppd_device_id = ppd.get ('ppd-device-id')
+                ppd_device_id = _singleton (ppd.get ('ppd-device-id'))
                 if not ppd_device_id:
                     continue
 
@@ -717,7 +726,7 @@ class PPDs:
                 if ppdname.find ("hpijs"):
                     continue
                 ppddict = self.ppds[ppdname]
-                id = ppddict['ppd-device-id']
+                id = _singleton (ppddict['ppd-device-id'])
                 if not id:
                     continue
                 # Fetch description field.
@@ -946,7 +955,7 @@ class PPDs:
         lmakes = {}
         lmodels = {}
         for ppdname, ppddict in self.ppds.iteritems ():
-            ppd_make_and_model = ppddict['ppd-make-and-model']
+            ppd_make_and_model = _singleton (ppddict['ppd-make-and-model'])
             (make, model) = ppdMakeModelSplit (ppd_make_and_model)
             lmake = make.lower ()
             lmodel = model.lower ()
@@ -976,9 +985,7 @@ class PPDs:
 
         ids = {}
         for ppdname, ppddict in self.ppds.iteritems ():
-            if not ppddict.has_key ('ppd-device-id'):
-                continue
-            id = ppddict['ppd-device-id']
+            id = _singleton (ppddict.get ('ppd-device-id'))
             if not id:
                 continue
 
@@ -1053,7 +1060,14 @@ def _self_test(argv):
     except IOError:
         f = open (picklefile, "w")
         c = cups.Connection ()
-        cupsppds = c.getPPDs ()
+        try:
+            cupsppds = c.getPPDs2 ()
+            print "Using getPPDs2()"
+        except AttributeError:
+            # Need pycups >= 1.9.52 for getPPDs2
+            cupsppds = c.getPPDs ()
+            print "Using getPPDs()"
+
         pickle.dump (cupsppds, f)
 
     ppds = PPDs (cupsppds)
@@ -1137,7 +1151,9 @@ def _self_test(argv):
             success = True
         else:
             if status == max_status_code:
-                match = re.match (modelre, ppddict['ppd-make-and-model'], re.I)
+                match = re.match (modelre,
+                                  _singleton (ppddict['ppd-make-and-model']),
+                                  re.I)
                 success = match != None
             else:
                 success = False
@@ -1148,7 +1164,7 @@ def _self_test(argv):
             result = "*** FAIL ***"
 
         print "%s: %s %s (%s)" % (result, id_dict["MFG"], id_dict["MDL"],
-                                  ppddict['ppd-make-and-model'])
+                                  _singleton (ppddict['ppd-make-and-model']))
         all_passed = all_passed and success
 
     if not all_passed:
