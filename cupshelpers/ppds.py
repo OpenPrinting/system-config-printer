@@ -688,13 +688,11 @@ class PPDs:
             for ppdname in ppdnamelist:
                 ppd = self.ppds[ppdname]
                 ppd_device_id = ppd.get ('ppd-device-id')
-                print ppd_device_id
                 if not ppd_device_id:
                     continue
 
                 ppd_device_id_dict = parseDeviceID (ppd_device_id)
                 ppd_cmd_field = ppd_device_id_dict["CMD"]
-                print ppd_cmd_field
                 if not ppd_cmd_field:
                     continue
 
