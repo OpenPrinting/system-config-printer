@@ -955,24 +955,54 @@ class PPDs:
         lmakes = {}
         lmodels = {}
         for ppdname, ppddict in self.ppds.iteritems ():
+            # One entry for ppd-make-and-model
             ppd_make_and_model = _singleton (ppddict['ppd-make-and-model'])
-            (make, model) = ppdMakeModelSplit (ppd_make_and_model)
-            lmake = make.lower ()
-            lmodel = model.lower ()
-            if not lmakes.has_key (lmake):
-                lmakes[lmake] = make
-                lmodels[lmake] = {}
-                makes[make] = {}
-            else:
-                make = lmakes[lmake]
+            ppd_makes_and_models = set([ppdMakeModelSplit (ppd_make_and_model)])
 
-            if not lmodels[lmake].has_key (lmodel):
-                lmodels[lmake][lmodel] = model
-                makes[make][model] = {}
-            else:
-                model = lmodels[lmake][lmodel]
+            # Another entry for each ppd-product
+            ppd_products = ppddict.get ('ppd-product')
+            if ppd_products:
+                if not isinstance (ppd_products, list):
+                    ppd_products = [ppd_products]
 
-            makes[make][model][ppdname] = ppddict
+                make = _singleton (ppddict.get ('ppd-make', '')).rstrip ()
+                if make:
+                    make += ' '
+                lmake = make.lower ()
+                for ppd_product in ppd_products:
+                    # *Product: attribute is "(text)"
+                    if (ppd_product.startswith ("(") and
+                        ppd_product.endswith (")")):
+                        ppd_product = ppd_product[1:len (ppd_product) - 1]
+
+                    if not ppd_product:
+                        continue
+
+                    # If manufacturer name missing, take it from ppd-make
+                    lprod = ppd_product.lower ()
+                    if not lprod.startswith (lmake):
+                        ppd_product = make + ppd_product
+
+                    ppd_makes_and_models.add (ppdMakeModelSplit (ppd_product))
+
+            # Add the entries to our dictionary
+            for make, model in ppd_makes_and_models:
+                lmake = make.lower ()
+                lmodel = model.lower ()
+                if not lmakes.has_key (lmake):
+                    lmakes[lmake] = make
+                    lmodels[lmake] = {}
+                    makes[make] = {}
+                else:
+                    make = lmakes[lmake]
+
+                if not lmodels[lmake].has_key (lmodel):
+                    lmodels[lmake][lmodel] = model
+                    makes[make][model] = {}
+                else:
+                    model = lmodels[lmake][lmodel]
+
+                makes[make][model][ppdname] = ppddict
 
         self.makes = makes
         self.lmakes = lmakes
