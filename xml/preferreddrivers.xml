@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<preferreddrivers>
+  <printer> <!-- Use hpcups on HP printers -->
+    <make-and-model match="(HP|Hewlett-Packard) .*"/>
+    <deviceid field="MFG" match="HP|Hewlett-Packard"/>
+    <drivers>
+      <drivertype>hpcups</drivertype>
+    </drivers>
+  </printer>
+
+  <!-- any other special cases here... -->
+
+  <printer>
+    <!-- catch all -->
+    <drivers>
+      <drivertype>foomatic-recommended-non-postscript</drivertype>
+      <drivertype>manufacturer</drivertype>
+      <drivertype>foomatic-recommended-postscript</drivertype>
+      <drivertype>hpcups</drivertype>
+      <drivertype>gutenprint-simplified</drivertype>
+      <drivertype>gutenprint-expert</drivertype>
+      <drivertype>foomatic</drivertype>
+      <drivertype>cups</drivertype>
+      <drivertype>ghostscript</drivertype>
+    </drivers>
+  </printer>
+
+  <!-- Generic drivers listed last -->
+  <printer>
+    <deviceid field="CMD" match=".*,?POSTSCRIPT(,.*)$"/>
+    <drivers>
+      <drivertype>generic-postscript</drivertype>
+    </drivers>
+  </printer>
+  <printer>
+    <deviceid field="CMD"
+	      match=".*,?(PCLXL|PCL-XL|PCL6|PCL 6 EMULATION)(,.*)$"/>
+    <drivers>
+      <drivertype>generic-pcl6</drivertype>
+    </drivers>
+  </printer>
+  <printer>
+    <deviceid field="CMD" match=".*?PCL5E(,.*)$"/>
+    <drivers>
+      <drivertype>generic-pcl5e</drivertype>
+      <drivertype>generic-pcl</drivertype>
+    </drivers>
+  </printer>
+  <printer>
+    <deviceid field="CMD" match=".*?PCL5C(,.*)$"/>
+    <drivers>
+      <drivertype>generic-pcl5c</drivertype>
+      <drivertype>generic-pcl</drivertype>
+    </drivers>
+  </printer>
+  <printer>
+    <deviceid field="CMD" match=".*?PCL5(,.*)$"/>
+    <drivers>
+      <drivertype>generic-pcl5</drivertype>
+      <drivertype>generic-pcl</drivertype>
+    </drivers>
+  </printer>
+  <printer>
+    <deviceid field="CMD" match=".*,?PCL(,.*)$"/>
+    <drivers>
+      <drivertype>generic-pcl</drivertype>
+    </drivers>
+  </printer>
+  <printer>
+    <deviceid field="CMD" match=".*,?(ESCPL2|ESC/P2|ESCP2E)(,.*)$"/>
+    <drivers>
+      <drivertype>generic-escp</drivertype>
+    </drivers>
+  </printer>
+</preferreddrivers>

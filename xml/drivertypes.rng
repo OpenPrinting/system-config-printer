@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This type of file is for naming types of PPD file. -->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+	 xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" 
+         datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <start>
+    <element name="drivertypes">
+      <zeroOrMore>
+	<!-- First matching element stops processes of elements
+	     following it -->
+	<ref name="drivertype"/>
+      </zeroOrMore>
+    </element>
+  </start>
+
+  <define name="drivertype">
+    <element name="drivertype">
+      <attribute name="name">
+	<!-- Same name may be specified in more than one drivertype
+	     element -->
+	<data type="normalizedString"/>
+      </attribute>
+
+      <!-- Match criteria (ppdname, attributes, deviceid) within one
+	   drivertype element must all be satisfied -->
+      <optional>
+	<attribute name="ppdname">
+	  <!-- Extended regular expression for matching against
+	       ppd-name attribute value (starting at beginning) -->
+	  <data type="string"/>
+	</attribute>
+      </optional>
+
+      <zeroOrMore>
+	<choice>
+	  <element name="attribute">
+	    <attribute name="name">
+	      <!-- IPP attribute name, e.g. ppd-make-and-model -->
+	      <data type="normalizedString"/>
+	    </attribute>
+
+	    <attribute name="match">
+	      <!-- Extended regular expression for matching against
+		   attribute's value (starting at beginning) -->
+	      <data type="string"/>
+	    </attribute>
+	    <empty/>
+	  </element>
+
+	  <element name="deviceid">
+	    <attribute name="field">
+	      <!-- Case-insensitive, abbreviated form of IEEE 1284
+		   Device ID field key name e.g. MFG -->
+	      <data type="normalizedString"/>
+	    </attribute>
+
+	    <attribute name="match">
+	      <!-- Extended regular expression for matching against
+		   IEEE 1284 Device ID field's value (starting at
+		   beginning) -->
+	      <data type="string"/>
+	    </attribute>
+	    <empty/>
+	  </element>
+	</choice>
+      </zeroOrMore>
+
+      <optional>
+	<!-- This drivertype should not be considered as a match in
+	     any circumstance -->
+	<element name="blacklisted">
+	  <empty/>
+	</element>
+      </optional>
+    </element>
+  </define>
+</grammar>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This type of file is for ordering named PPD files based on a
+     given device being present. -->
+
+<grammar xmlns="http://relaxng.org/ns/structure/1.0"
+	 xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" 
+         datatypeLibrary="http://www.w3.org/2001/XMLSchema-datatypes">
+  <start>
+    <element name="preferreddrivers">
+      <zeroOrMore>
+	<!-- Matches are accumulated -->
+	<ref name="printer"/>
+      </zeroOrMore>
+    </element>
+  </start>
+
+  <define name="printer">
+    <element name="printer">
+      <!-- Either the make-and-model element, or all deviceid
+	   elements, must match -->
+      <optional>
+	<element name="make-and-model">
+	  <attribute name="match">
+	    <!-- Extended regular expression for matching against
+		 device-make-and-model attribute value (starting at
+		 beginning) -->
+	    <data type="string"/>
+	  </attribute>
+	  <empty/>
+	</element>
+      </optional>
+
+      <zeroOrMore>
+	<!-- All deviceid elements must match -->
+	<element name="deviceid">
+	  <attribute name="field">
+	    <!-- Case-insensitive, abbreviated form of IEEE 1284
+		 Device ID field key name e.g. MFG -->
+	    <data type="normalizedString"/>
+	  </attribute>
+
+	  <attribute name="match">
+	    <!-- Extended regular expression for matching against
+		 IEEE 1284 Device ID field's value (starting at
+		 beginning) -->
+	    <data type="string"/>
+	  </attribute>
+	  <empty/>
+	</element>
+      </zeroOrMore>
+
+      <element name="drivers">
+	<!-- Ordered list of named drivertypes, most preferred first -->
+	<oneOrMore>
+	  <element name="drivertype">
+	    <!-- drivertype name -->
+	    <text/>
+	  </element>
+	</oneOrMore>
+      </element>
+    </element>
+  </define>
+</grammar>

@@ -153,7 +153,11 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/SchedulerNotRunning.py		\
 	troubleshoot/ServerFirewalled.py		\
 	troubleshoot/Shrug.py				\
-	troubleshoot/Welcome.py
+	troubleshoot/Welcome.py				\
+	xml/drivertypes.rng				\
+	xml/drivertypes.xml				\
+	xml/preferreddrivers.rng			\
+	xml/preferreddrivers.xml
 
 bin_SCRIPTS=\
 	system-config-printer			\
