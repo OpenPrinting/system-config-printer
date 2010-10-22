@@ -6,7 +6,8 @@ EXPORT_MODULES=					\
 	cupshelpers/__init__.py			\
 	cupshelpers/cupshelpers.py		\
 	cupshelpers/ppds.py			\
-	cupshelpers/openprinting.py
+	cupshelpers/openprinting.py		\
+	cupshelpers/xmldriverprefs.py
 
 ### Automake hooks for Distutils.
 # The distutils module doesn't understand srcdir != builddir,
