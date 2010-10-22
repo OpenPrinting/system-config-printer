@@ -22,6 +22,7 @@
 
 import cups
 from .cupshelpers import parseDeviceID
+import xmldriverprefs
 import itertools
 import string
 import time
@@ -247,89 +248,6 @@ def _singleton (x):
         return x[0]
     return x
 
-# Some drivers are just generally better than others.
-# Here is the preference list:
-DRIVER_TYPE_DOWNLOADED_NOW = 5
-DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT = 8
-DRIVER_TYPE_VENDOR = 10
-DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 15
-DRIVER_TYPE_HPCUPS = 16
-DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP = 17
-DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED = 20
-DRIVER_TYPE_GUTENPRINT_NATIVE = 25
-DRIVER_TYPE_SPLIX = 27
-DRIVER_TYPE_FOOMATIC_PS = 30
-DRIVER_TYPE_FOOMATIC_HPIJS = 40
-DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 50
-DRIVER_TYPE_FOOMATIC_GUTENPRINT = 60
-DRIVER_TYPE_FOOMATIC = 70
-DRIVER_TYPE_CUPS = 80
-DRIVER_TYPE_FOOMATIC_GENERIC = 90
-DRIVER_TYPE_3RD_PARTY_NONFREE = 95
-DRIVER_DOES_NOT_WORK = 999
-def _getDriverType (ppdname, ppds=None):
-    """Decides which of the above types ppdname is."""
-    if ppdname.find ("turboprint") != -1:
-        return DRIVER_TYPE_3RD_PARTY_NONFREE
-    if ppdname.find ("splix")!= -1:
-        return DRIVER_TYPE_SPLIX
-    if ppdname.find ("hpcups") != -1:
-        info = ppds.getInfoFromPPDName (ppdname)
-        make_model = _singleton (info.get ('ppd-make-and-model', ''))
-        if make_model.find ("plugin") != -1:
-            return DRIVER_TYPE_3RD_PARTY_NONFREE
-        else:
-            return DRIVER_TYPE_HPCUPS
-    if (ppdname.find (":") == -1 and
-        ppdname.find ("/cups-included/") != -1):
-        return DRIVER_TYPE_CUPS
-    if ppdname.startswith ("foomatic:"):
-        # Foomatic (generated) -- but which driver?
-        if ppdname.find ("Generic")!= -1:
-            return DRIVER_TYPE_FOOMATIC_GENERIC
-        if ppds != None:
-            info = ppds.getInfoFromPPDName (ppdname)
-            device_id = _singleton (info.get ('ppd-device-id', ''))
-            id_dict = parseDeviceID (device_id)
-            drv = id_dict.get ('DRV', '')
-            drvfields = dict()
-            for field in drv.split (','):
-                if len (field) == 0:
-                    continue
-                key = field[0]
-                drvfields[key] = field[1:]
-
-            ppd_make_and_model = _singleton (info.get ('ppd-make-and-model',
-                                                       ''))
-            if (drvfields.get ('R', '0') == '1' or
-                ppd_make_and_model.find ("(recommended)") != -1):
-                if ppd_make_and_model.find ("Postscript") != -1:
-                    return DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT
-                else:
-                    return DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT
-        if ppdname.find ("-Postscript")!= -1:
-            return DRIVER_TYPE_FOOMATIC_PS
-        if ppdname.find ("-hpijs") != -1:
-            if ppdname.find ("hpijs-rss") == -1:
-                return DRIVER_TYPE_FOOMATIC_HPIJS
-        if ppdname.find ("-gutenprint") != -1:
-            if ppdname.find ("-simplified")!= -1:
-                return DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED
-            return DRIVER_TYPE_FOOMATIC_GUTENPRINT
-        return DRIVER_TYPE_FOOMATIC
-    if ppdname.find ("gutenprint") != -1:
-        if (ppdname.find ("/simple") != -1 or
-            ppdname.find (".sim-") != -1):
-            return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
-        else:
-            return DRIVER_TYPE_GUTENPRINT_NATIVE
-    if ppdname.find ("-hpijs") != -1:
-        if ppdname.find ("hpijs-rss") == -1:
-            return DRIVER_TYPE_FOOMATIC_HPIJS
-    # Anything else should be a vendor's PPD.
-    return DRIVER_TYPE_VENDOR # vendor's own
-
-
 class PPDs:
     """
     This class is for handling the list of PPDs returned by CUPS.  It
@@ -345,7 +263,7 @@ class PPDs:
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
 
-    def __init__ (self, ppds, language=None):
+    def __init__ (self, ppds, language=None, xml_dir="xml"):
         """
         @type ppds: dict
         @param ppds: dict of PPDs as returned by cups.Connection.getPPDs()
@@ -358,6 +276,25 @@ class PPDs:
         self.ppds = ppds.copy ()
         self.makes = None
         self.ids = None
+
+        self.drivertypes = xmldriverprefs.DriverTypes ()
+        self.preforder = xmldriverprefs.PreferenceOrder ()
+        try:
+            typesfile = os.path.join (xml_dir, "drivertypes.xml")
+            self.drivertypes.load (typesfile)
+        except Exception, e:
+            print "Error loading %s: %s" % (typesfile, e)
+            self.drivertypes = None
+            self.preforder = None
+
+        if self.preforder:
+            try:
+                prefsfile = os.path.join (xml_dir, "preferreddrivers.xml")
+                self.preforder.load (prefsfile)
+            except Exception, e:
+                print "Error loading %s: %s" % (prefsfile, e)
+                self.drivertypes = None
+                self.preforder = None
 
         if (language == None or
             language == "C" or
@@ -452,101 +389,68 @@ class PPDs:
         return self.ppds[ppdname]
 
     def orderPPDNamesByPreference (self, ppdnamelist=[],
-                                   downloadedfiles=[]):
+                                   downloadedfiles=[],
+                                   make_and_model=None,
+                                   devid=None):
         """
 
 	Sort a list of PPD names by (hard-coded) preferred driver
-	type.
+	type (obsolete).
 
 	@param ppdnamelist: PPD names
 	@type ppdnamelist: string list
+        @param downloadedfiles: Filenames from packages downloaded
+        @type downloadedfiles: string list
+        @param make_and_model: device-make-and-model name
+        @type make_and_model: string
+        @param devid: Device ID dict
+        @type devid: dict indexed by Device ID field name, of strings;
+        except for CMD field which must be a string list
 	@returns: string list
 	"""
         if len (ppdnamelist) < 1:
             return ppdnamelist
 
-        dict = self.getInfoFromPPDName (ppdnamelist[0])
-        make_model = _singleton (dict['ppd-make-and-model'])
-        mfg, mdl = ppdMakeModelSplit (make_model)
-        def getDriverTypeWithBias (x, mfg):
-            t = _getDriverType (x, ppds=self)
-            for file in downloadedfiles:
-                (path, slash, filename) = file.rpartition ("/")
-                (xpath, xslash, xfilename) = x.rpartition ("/")
-                if filename == xfilename:
-                    return DRIVER_TYPE_DOWNLOADED_NOW
-            if mfg == "HP" or mfg == "Apollo":
-                if t == DRIVER_TYPE_FOOMATIC_HPIJS:
-                    # Prefer HPIJS for HP devices.
-                    t = DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP
-            return t
+        if self.drivertypes and self.preforder:
+            ppds = {}
+            for ppdname in ppdnamelist:
+                ppds[ppdname] = self.ppds[ppdname]
 
-        def sort_ppdnames (a, b):
-            ta = getDriverTypeWithBias (a, mfg)
-            tb = getDriverTypeWithBias (b, mfg)
-            if ta != tb:
-                if tb < ta:
-                    return 1
-                else:
-                    return -1
+            orderedtypes = self.preforder.get_ordered_types (make_and_model,
+                                                             devid)
+            orderedppds = self.drivertypes.get_ordered_ppdnames (orderedtypes,
+                                                                 ppds)
+            ppdnamelist = map (lambda (typ, name): name, orderedppds)
 
-            # Prefer C locale localized PPDs to other languages, just
-            # because we don't know the user's locale.  This only
-            # applies to PPDs provided by gutenprint 5.0; in 5.2 the
-            # PPDs are localized properly.
-            def is_C_locale (x):
-                try:
-                    while x:
-                        i = x.find ("C")
-                        if i == -1:
-                            return False
-                        lword = False
-                        if i == 0:
-                            lword = True
-                        elif x[i - 1] not in string.letters:
-                            lword = True
+        # Special handling for files we've downloaded.  First collect
+        # their basenames.
+        downloadedfnames = set()
+        for downloadedfile in downloadedfiles:
+            (path, slash, fname) = downloadedfile.rpartition ("/")
+            downloadedfnames.add (fname)
 
-                        if lword:
-                            rword = False
-                            if i == (len (x) - 1):
-                                rword = True
-                            elif x[i + 1] not in string.letters:
-                                rword = True
-                            if rword:
-                                return True
-                        
-                        x = x[i + 1:]
-                except UnicodeDecodeError:
-                    return False
+        if downloadedfnames:
+            # Next compare the basenames of each ppdname
+            downloadedppdnames = []
+            for ppdname in ppdnamelist:
+                (path, slash, ppdfname) = ppdname.rpartition ("/")
+                if ppdfname in downloadedfnames:
+                    downloadedppdnames.add (ppdname)
 
-            ca = is_C_locale (a)
-            cb = is_C_locale (b)
-            if ca != cb:
-                # If they compare equal stringwise up to "C", sort.
-                if ca:
-                    l = a.find ("C")
-                else:
-                    l = b.find ("C")
+            # Finally, promote the matching ones to the head of the list.
+            if downloadedppdnames:
+                for ppdname in ppdnamelist:
+                    if ppdname not in downloadedppdnames:
+                        downloadedppdnames.append (ppdname)
 
-                if a[:l] == b[:l]:
-                    if cb:
-                        return 1
-                    else:
-                        return -1
+                ppdnamelist = downloadedppdnames
 
-            # String-wise compare.
-            if a > b:
-                return 1
-            elif a < b:
-                return -1
-            return 0
-
-        ppdnamelist.sort (sort_ppdnames)
         return ppdnamelist
 
     def getPPDNameFromDeviceID (self, mfg, mdl, description="",
                                 commandsets=[], uri=None,
-                                downloadedfiles=[]):
+                                downloadedfiles=[],
+                                make_and_model=None):
         """
 	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
 	The status is one of:
@@ -574,6 +478,10 @@ class PPDs:
 	@type commandsets: string
 	@param uri: device URI, optional (only needed for debugging)
 	@type uri: string
+        @param downloadedfiles: filenames from downloaded packages
+        @type downloadedfiles: string list
+        @param make_and_model: device-make-and-model string
+        @type make_and_model: string
 	@returns: an integer,string pair of (status,ppd-name)
 	"""
         _debugprint ("\n%s %s" % (mfg, mdl))
@@ -767,8 +675,13 @@ class PPDs:
         # Now we have to choose the "best" one.  This is quite tricky
         # to decide, so let's sort them in order of preference and
         # take the first.
+        devid = { "MFG": mfg, "MDL": mdl,
+                  "DES": description,
+                  "CMD": commandsets }
         ppdnamelist = self.orderPPDNamesByPreference (ppdnamelist,
-                                                      downloadedfiles)
+                                                      downloadedfiles,
+                                                      make_and_model,
+                                                      devid)
         _debugprint ("Found PPDs: %s" % str (ppdnamelist))
 
         if not id_matched:

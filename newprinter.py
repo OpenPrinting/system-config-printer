@@ -2969,8 +2969,26 @@ class NewPrinterGUI(GtkGUI):
 
         ppds = self.ppds.getInfoFromModel(pmake, pmodel)
 
+        files = self.jockey_installed_files
+
+        # Use a generic make and model string for generating the
+        # driver preference list.
+        make_and_model = pmake + " " + pmodel
+        if self.device:
+            devid = self.device.id_dict
+            if (self.auto_make and self.auto_make == pmake and
+                self.auto_model and self.auto_model == pmodel):
+                # ..except if this is the auto-selected model, in
+                # which case we'll use the actual
+                # device-make-and-model string.
+                make_and_model = self.device.make_and_model
+        else:
+            devid = None
+
         self.NPDrivers = self.ppds.orderPPDNamesByPreference(ppds.keys(),
-                                             self.jockey_installed_files)
+                                                             files,
+                                                             make_and_model,
+                                                             devid)
         if self.auto_driver and self.device:
             drivers = []
             for driver in self.NPDrivers:
