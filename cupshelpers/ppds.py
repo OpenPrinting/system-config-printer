@@ -930,21 +930,21 @@ class PPDs:
         cmdsets = map (lambda x: x.lower (), commandsets)
         if (("postscript" in cmdsets) or ("postscript2" in cmdsets) or
             ("postscript level 2 emulation" in cmdsets)):
-            return get ("PostScript Printer")
+            return get ("PostScript")
         elif (("pclxl" in cmdsets) or ("pcl-xl" in cmdsets) or
               ("pcl6" in cmdsets) or ("pcl 6 emulation" in cmdsets)):
-            return get ("PCL 6/PCL XL Printer", "PCL Laser Printer")
+            return get ("PCL 6/PCL XL", "PCL Laser")
         elif "pcl5e" in cmdsets:
-            return get ("PCL 5e Printer", "PCL Laser Printer")
+            return get ("PCL 5e", "PCL Laser")
         elif "pcl5c" in cmdsets:
-            return get ("PCL 5c Printer", "PCL Laser Printer")
+            return get ("PCL 5c", "PCL Laser")
         elif ("pcl5" in cmdsets) or ("pcl 5 emulation" in cmdsets):
-            return get ("PCL 5 Printer", "PCL Laser Printer")
+            return get ("PCL 5", "PCL Laser")
         elif "pcl" in cmdsets:
-            return get ("PCL 3 Printer", "PCL Laser Printer")
+            return get ("PCL 3", "PCL Laser")
         elif (("escpl2" in cmdsets) or ("esc/p2" in cmdsets) or
               ("escp2e" in cmdsets)):
-            return get ("ESC/P Dot Matrix Printer")
+            return get ("ESC/P Dot Matrix")
         return None
 
     def _init_makes (self):
