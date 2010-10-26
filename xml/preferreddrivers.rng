@@ -50,15 +50,29 @@
 	</element>
       </zeroOrMore>
 
-      <element name="drivers">
-	<!-- Ordered list of named drivertypes, most preferred first -->
-	<oneOrMore>
-	  <element name="drivertype">
-	    <!-- drivertype name -->
-	    <text/>
-	  </element>
-	</oneOrMore>
-      </element>
+      <optional>
+	<element name="drivers">
+	  <!-- Ordered list of named drivertypes, most preferred first -->
+	  <oneOrMore>
+	    <element name="drivertype">
+	      <!-- drivertype name -->
+	      <text/>
+	    </element>
+	  </oneOrMore>
+	</element>
+      </optional>
+
+      <optional>
+	<element name="blacklist">
+	  <!-- List of named drivertypes which must not be used -->
+	  <oneOrMore>
+	    <element name="drivertype">
+	      <!-- drivertype name -->
+	      <text/>
+	    </element>
+	  </oneOrMore>
+	</element>
+      </optional>
     </element>
   </define>
 </grammar>

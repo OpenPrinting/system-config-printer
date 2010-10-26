@@ -34,7 +34,6 @@ class DriverType:
         self.ppd_name = None
         self.attributes = []
         self.deviceid = []
-        self.is_blacklisted = False
 
     def add_ppd_name (self, pattern):
         """
@@ -55,18 +54,6 @@ class DriverType:
         expression to match against its value.
         """
         self.deviceid.append ((field.upper (), re.compile (pattern, re.I)))
-
-    def set_is_blacklisted (self, whether):
-        """
-        Set whether this driver type is blacklisted.
-        """
-        self.is_blacklisted = whether
-
-    def get_is_blacklisted (self):
-        """
-        Return whether this driver type is blacklisted.
-        """
-        return self.is_blacklisted
 
     def get_name (self):
         """
@@ -180,9 +167,7 @@ class DriverTypes:
                 t.add_ppd_name (drivertype.attrib["ppdname"])
 
             for child in drivertype.getchildren ():
-                if child.tag == "blacklisted":
-                    t.set_is_blacklisted (True)
-                elif child.tag == "attribute":
+                if child.tag == "attribute":
                     t.add_attribute (child.attrib["name"],
                                      child.attrib["match"])
                 elif child.tag == "deviceid":
@@ -222,24 +207,20 @@ class DriverTypes:
 
         # First find out what driver types we have
         ppdtypes = {}
-        blacklisted = set()
         for ppd_name, ppd_dict in ppds.iteritems ():
             drivertype = self.match (ppd_name, ppd_dict)
             name = drivertype.get_name ()
             m = ppdtypes.get (name, [])
             m.append (ppd_name)
             ppdtypes[name] = m
-            if drivertype.get_is_blacklisted ():
-                blacklisted.add (name)
 
         # Now construct the list.
         for drivertypename in drivertypes:
-            if drivertypename not in blacklisted:
-                for ppd_name in ppdtypes.get (drivertypename, []):
-                    if ppd_name in ppdnames:
-                        continue
+            for ppd_name in ppdtypes.get (drivertypename, []):
+                if ppd_name in ppdnames:
+                    continue
 
-                    ppdnames.append ((drivertypename, ppd_name))
+                ppdnames.append ((drivertypename, ppd_name))
 
         return ppdnames
 
@@ -254,6 +235,7 @@ class PrinterType:
         self.make_and_model = None
         self.deviceid = []
         self.drivertypes = []
+        self.blacklist = set()
 
     def add_make_and_model (self, pattern):
         """
@@ -278,6 +260,18 @@ class PrinterType:
         Return the list of driver types.
         """
         return self.drivertypes
+
+    def add_blacklisted (self, name):
+        """
+        Add a blacklisted driver type.
+        """
+        self.blacklist.add (name)
+
+    def get_blacklist (self):
+        """
+        Return the set of blacklisted driver types.
+        """
+        return self.blacklist
 
     def match (self, make_and_model, deviceid):
         """
@@ -354,6 +348,10 @@ class PreferenceOrder:
                     for drivertype in child.getchildren ():
                         ptype.add_drivertype (drivertype.text)
 
+                elif child.tag == "blacklist":
+                    for drivertype in child.getchildren ():
+                        ptype.add_blacklisted (drivertype.text)
+
             self.ptypes.append (ptype)
 
     def get_ordered_types (self, make_and_model, deviceid):
@@ -373,11 +371,23 @@ class PreferenceOrder:
             make_and_model = ""
 
         orderedtypes = []
+        blacklist = set()
         for ptype in self.ptypes:
             if ptype.match (make_and_model, deviceid):
                 for drivertype in ptype.get_drivertypes ():
                     if drivertype not in orderedtypes:
                         orderedtypes.append (drivertype)
+
+                blacklist.update (ptype.get_blacklist ())
+
+        if blacklist:
+            # Remove blacklisted drivers.
+            remaining = []
+            for t in orderedtypes:
+                if t not in blacklist:
+                    remaining.append (t)
+
+            orderedtypes = remaining
 
         return orderedtypes
 
