@@ -960,11 +960,26 @@ class PPDs:
             ppd_make_and_model = _singleton (ppddict['ppd-make-and-model'])
             ppd_makes_and_models = set([ppdMakeModelSplit (ppd_make_and_model)])
 
-            # Another entry for each ppd-product
+            # The ppd-product IPP attribute contains values from each
+            # Product PPD attribute as well as the value from the
+            # ModelName attribute if present.  The Product attribute
+            # values are surrounded by parentheses; the ModelName
+            # attribute value is not.
+
+            # Add another entry for each ppd-product that came from a
+            # Product attribute in the PPD file.
             ppd_products = ppddict.get ('ppd-product')
             if ppd_products:
                 if not isinstance (ppd_products, list):
                     ppd_products = [ppd_products]
+
+                ppd_products = set (filter (lambda x: x.startswith ("("),
+                                            ppd_products))
+
+                # If there is only one ppd-product value it is
+                # unlikely to be useful.
+                if len (ppd_products) == 1:
+                    ppd_products = set()
 
                 make = _singleton (ppddict.get ('ppd-make', '')).rstrip ()
                 if make:
