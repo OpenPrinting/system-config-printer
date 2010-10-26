@@ -2985,10 +2985,15 @@ class NewPrinterGUI(GtkGUI):
         else:
             devid = None
 
-        self.NPDrivers = self.ppds.orderPPDNamesByPreference(ppds.keys(),
-                                                             files,
-                                                             make_and_model,
-                                                             devid)
+        try:
+            self.NPDrivers = self.ppds.orderPPDNamesByPreference(ppds.keys(),
+                                                                 files,
+                                                                 make_and_model,
+                                                                 devid)
+        except:
+            nonfatalException ()
+            self.NPDrivers = ppds.keys ()
+
         if self.auto_driver and self.device:
             drivers = []
             for driver in self.NPDrivers:
