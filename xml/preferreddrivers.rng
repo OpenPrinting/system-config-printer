@@ -1,7 +1,60 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- This type of file is for ordering named PPD files based on a
-     given device being present. -->
+<!--
+   This type of file is for ordering named PPD files for a given
+   printer.
+
+   When choosing a driver for a known printer, first the complete list
+   of available drivers is compiled.  This includes any generic
+   drivers that are likely to be able to drive the device, based on
+   its IEEE 1284 Device ID's COMMAND SET field.
+
+   The next task is to present this list to the user in order of
+   preference, i.e. the drivers most likely to be the "right" ones
+   first.
+
+   This is done with reference to two XML files; firstly, one
+   following the structure described here; then, one following the
+   structure described in drivertypes.rng.
+
+   Elements in the preferreddrivers XML file are processed in order,
+   with each printer element being matched against the printer in
+   question.  Once all the elements have been processed, the result
+   will be a list of driver types in preference order (most preferred
+   first), and a set of blacklisted driver types.
+
+   For each printer element, either the make-and-model regular
+   expression, or else all of the deviceid regular expressions, must
+   match.  For a matching printer element, each of the driver types
+   contained in the drivers element is appended to the (initially
+   empty) list of driver types.  The driver types contained in the
+   blacklist element are added to the (initially empty) set of
+   blacklisted driver types.
+
+   A printer element that does not contain any make-and-model or
+   deviceid elements is a "catch-all" element and matches any
+   printer.
+
+   Once the file has been processed, the blacklisted driver types
+   should be removed from the list of driver types, resulting in an
+   ordered list of types of driver which should be used for this
+   printer.
+
+   To convert this into a list of drivers (i.e. PPDs), the drivertypes
+   XML file is consulted.  Each PPD is assigned a driver type name,
+   and then the PPDs are arranged in order corresponding to the list
+   of preferred driver types.
+
+   To determine the driver type name for a PPD, the drivertypes XML
+   file is processed.  For each drivertype element, the criteria
+   elements defined are matched against the PPD attributes.  If all
+   criteria are satisfied, this PPD's driver type is given by the
+   "name" attribute of the containing drivertype element.  In this
+   case, no further drivertype elements are examined.
+
+   If there are no criteria defined by a driver type, it is considered
+   to match (i.e. it is a "catch-all" type).
+  -->
 
 <grammar xmlns="http://relaxng.org/ns/structure/1.0"
 	 xmlns:a="http://relaxng.org/ns/compatibility/annotations/1.0" 
