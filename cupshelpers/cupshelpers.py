@@ -517,10 +517,6 @@ class Device:
 
         self.id_dict = parseDeviceID (self.id)
 
-        s = uri.find("serial=")
-        if s != -1 and not self.id_dict.get ('SN',''):
-            self.id_dict['SN'] = uri[s + 7:]
-
     def __repr__ (self):
         return "<cupshelpers.Device \"%s\">" % self.uri
 

@@ -21,127 +21,29 @@
 from gettext import gettext as _
 import cupshelpers
 import urllib
-import re, subprocess, time
-from debug import *
+
 import ppdippstr
-
-dnssdbrowsemap = None
-
-def dnssdclearcache():
-    global dnssdbrowsemap
-    dnssdbrowsemap = None
-
-def dnssdresolve(name):
-    global dnssdbrowsemap
-    def expandhex (searchres):
-        expr = searchres.group(0)
-        return chr(int(expr[1:], 16))
-    def expanddec (searchres):
-        expr = searchres.group(0)
-        return chr(int(expr[1:], 10))
-    ip = None
-    dnssdhost = None
-    name = name.encode('utf-8')
-    name = re.sub("%(?i)[\dabcdef]{2}", expandhex, name)
-    if (dnssdbrowsemap == None):
-        for mode in ("-t", "-c"):
-            debugprint ("Browsing DNS-SD hosts ...")
-            cmd = ["avahi-browse", "-a", "-r", mode, "-k", "-p"]
-            try:
-                debugprint ("Running avahi-browse -a -r %s -k -p" % mode)
-                p = subprocess.Popen (cmd, shell=False,
-                                      stdin=file("/dev/null"),
-                                      stdout=subprocess.PIPE,
-                                      stderr=file("/dev/null"))
-                timeout = 2.0
-                starttime = time.time ()
-                debugprint ("Timeout %s sec" % timeout)
-                while p.poll () == None and \
-                      time.time () < starttime + timeout:
-                    time.sleep (0.1)
-                if p.poll () == None:
-                    p.kill ()
-                    debugprint ("avahi-browse timed out, killed.")
-                haveoutput = 0
-                for line in p.stdout:
-                    res = re.search ("^=;[^;]*;[^;]*;([^;]*);[^;]*;[^;]*;([^;]*);([^;]*);",
-                                     line)
-                    if res:
-                        haveoutput = 1
-                        resg = res.groups ()
-                        servicename = resg[0]
-                        dnssdhost = resg[1]
-                        ip = resg[2]
-                        if servicename and (dnssdhost or ip):
-                            servicename = servicename.encode('utf-8')
-                            servicename = re.sub('\\\\\d{3}',
-                                                 expanddec, servicename)
-                            if dnssdhost:
-                                dnssdhost = re.sub('\.local$', '', dnssdhost)
-                                dnssdhost = dnssdhost.encode('utf-8')
-                                dnssdhost = re.sub('\\\\\d{3}',
-                                                   expanddec, dnssdhost)
-                            debugprint ("Found host: Service name: %s; Name: %s; IP: %s" % (servicename, dnssdhost, ip))
-                            if dnssdbrowsemap == None:
-                                dnssdbrowsemap = []
-                            found = 0
-                            for entry in dnssdbrowsemap:
-                                if entry['servicename'] == servicename:
-                                    found = 1
-                                    if ip: entry['ip'] = ip
-                                    if dnssdhost: entry['dnssdhost'] = dnssdhost
-                                    break
-                            if not found:
-                                entry = {};
-                                entry['servicename'] = servicename
-                                if ip: entry['ip'] = ip
-                                if dnssdhost: entry['dnssdhost'] = dnssdhost
-                                dnssdbrowsemap.append(entry)
-                if haveoutput:
-                    break
-            except:
-                # Problem executing command.
-                pass
-        debugprint ("avahi-browse completed, host table %s" % dnssdbrowsemap)
-
-    debugprint ("Resolving host %s ..." % name)
-    if dnssdbrowsemap != None:
-        for entry in dnssdbrowsemap:
-            if entry['servicename'] == name:
-                ip = entry['ip']
-                dnssdhost = entry['dnssdhost']
-                break
-
-    debugprint ("Resolved host: Service name: %s; Name: %s; IP: %s" % (name, dnssdhost, ip))
-    return ip, dnssdhost
 
 class PhysicalDevice:
     def __init__(self, device):
         self.devices = None
         self._network_host = None
-        self.dnssd_hostname = None
         self.add_device (device)
         self._user_data = {}
         self._ppdippstr = ppdippstr.backends
 
     def _canonical_id (self, device):
-        if device.id_dict:
-            mfg = device.id_dict.get ('MFG', '')
-            mdl = device.id_dict.get ('MDL', '')
+        mfg = device.id_dict.get ('MFG', '')
+        mdl = device.id_dict.get ('MDL', '')
 
-            if mfg == '' or mdl.lower ().startswith (mfg.lower ()):
-                make_and_model = mdl
-            else:
-                make_and_model = "%s %s" % (mfg, mdl)
+        if mfg == '' or mdl.lower ().startswith (mfg.lower ()):
+            make_and_model = mdl
         else:
-            make_and_model = device.make_and_model
+            make_and_model = "%s %s" % (mfg, mdl)
 
         return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
 
     def _get_host_from_uri (self, uri):
-        hostport = None
-        host = None
-        dnssdhost = None
         (scheme, rest) = urllib.splittype (uri)
         if scheme == 'hp' or scheme == 'hpfax':
             if rest.startswith ("/net/"):
@@ -149,41 +51,25 @@ class PhysicalDevice:
                 if ipparam != None and ipparam.startswith("ip="):
                     hostport = ipparam[3:]
                 else:
-                    if ipparam != None and ipparam.startswith("zc="):
-                        dnssdhost = ipparam[3:]
-                    else:
-                        return None, None
+                    return None
             else:
-                return None, None
-        elif scheme == 'dnssd' or scheme == 'mdns':
-            (hostport, rest) = urllib.splithost (rest)
-            p = hostport.find(".")
-            if (p != -1):
-               hostport = hostport[:p]
-            if hostport == '':
-                return None, None
-            if not uri.endswith("/cups"):
-                (hostport, dnssdhost) = dnssdresolve(hostport);
+                return None
         else:
             (hostport, rest) = urllib.splithost (rest)
             if hostport == None:
-                return None, None
+                return None
 
-        if hostport:
-            (host, port) = urllib.splitport (hostport)
-        return host, dnssdhost
+        (host, port) = urllib.splitport (hostport)
+        return host
 
     def add_device (self, device):
-        if self._network_host or self.dnssd_hostname:
-            host, dnssdhost = self._get_host_from_uri (device.uri)
-            if (host == None and hasattr (device, 'address')):
+        if self._network_host:
+            if hasattr (device, 'address'):
                 host = device.address
-            if (host == None and dnssdhost == None) or \
-               (host and self._network_host and host != self._network_host) or \
-               (dnssdhost and self.dnssd_hostname and
-                dnssdhost != self.dnssd_hostname) or \
-               (host == None and self.dnssd_hostname == None) or \
-               (dnssdhost == None and self._network_host == None):
+            else:
+                host = self._get_host_from_uri (device.uri)
+
+            if host != self._network_host:
                 raise ValueError
         else:
             (mfg, mdl) = self._canonical_id (device)
@@ -224,43 +110,23 @@ class PhysicalDevice:
         self.devices.append (device)
         self.devices.sort ()
 
-        if (not self._network_host or not self.dnssd_hostname) and \
-           device.device_class == "network":
+        if not self._network_host and device.device_class == "network":
             # We just added a network device.
-            self._network_host, dnssdhost = \
-                self._get_host_from_uri (device.uri)
-            if dnssdhost:
-                self.dnssd_hostname = dnssdhost;
+            self._network_host = self._get_host_from_uri (device.uri)
 
     def get_devices (self):
         return self.devices
 
     def get_info (self):
         # If the manufacturer/model is not known, or useless (in the
-        # case of the hpfax backend or a dnssd URI pointing to a remote
-        # CUPS queue), show the device-info field
+        # case of the hpfax backend), show the device-info field
         # instead.
-        if self.mfg == '' or \
-           (self.mfg == "HP" and self.mdl.startswith("Fax")) or \
-           ((self.devices[0].uri.startswith('dnssd:') or \
-             self.devices[0].uri.startswith('mdns:')) and \
-            self.devices[0].uri.endswith('/cups')):
-            info = self._ppdippstr.get (self.devices[0].info)
-        else:
-            info = "%s %s" % (self.mfg, self.mdl)
+        if self.mfg == '' or (self.mfg == "HP" and self.mdl == "Fax"):
+            return self._ppdippstr.get (self.devices[0].info)
+
+        info = "%s %s" % (self.mfg, self.mdl)
         if len (self.sn) > 0:
             info += " (%s)" % self.sn
-        elif ((self._network_host and len (self._network_host) > 0) or \
-              (self.dnssd_hostname and len (self.dnssd_hostname))) and not \
-             ((self.devices[0].uri.startswith('dnssd:') or \
-               self.devices[0].uri.startswith('mdns:')) and \
-              self.devices[0].uri.endswith('/cups')):
-            if not self.dnssd_hostname:
-                info += " (%s)" % self._network_host
-            elif not self._network_host:
-                info += " (%s)" % self.dnssd_hostname
-            else:
-                info += " (%s, %s)" % (self.dnssd_hostname, self._network_host)
         return info
 
     # User data
