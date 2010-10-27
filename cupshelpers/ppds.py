@@ -723,7 +723,8 @@ class PPDs:
             _debugprint ("Checking DES field")
             inexact = set()
             for ppdname in ppdnamelist:
-                if ppdname.find ("hpijs") != -1:
+                if (ppdname.find ("hpijs") != -1 or
+                    ppdname.find ("hpcups") != -1):
                     continue
                 ppddict = self.ppds[ppdname]
                 id = _singleton (ppddict['ppd-device-id'])
