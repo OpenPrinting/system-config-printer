@@ -6350,6 +6350,7 @@ class NewPrinterGUI(GtkGUI):
     # PPD from foomatic
 
     def fillMakeList(self):
+        self.recommended_make_selected = False
         makes = self.ppds.getMakes()
         model = self.tvNPMakes.get_model()
         model.clear()
@@ -6394,9 +6395,13 @@ class NewPrinterGUI(GtkGUI):
             model = tvNPMakes.get_model ()
             iter = model.get_iter (path)
             self.NPMake = model.get(iter, 0)[0]
+            recommended_make = (self.auto_make and
+                                self.auto_make.lower () == self.NPMake.lower ())
+            self.recommended_make_selected = recommended_make
             self.fillModelList()
 
     def fillModelList(self):
+        self.recommended_model_selected = False
         models = self.ppds.getModels(self.NPMake)
         model = self.tvNPModels.get_model()
         model.clear()
@@ -6460,7 +6465,7 @@ class NewPrinterGUI(GtkGUI):
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
-            elif self.device and i == 0:
+            elif self.device and self.recommended_model_selected and i == 0:
                 iter = model.append ((driver + _(" (recommended)"),))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
@@ -6498,6 +6503,12 @@ class NewPrinterGUI(GtkGUI):
             model = widget.get_model ()
             iter = model.get_iter (path)
             pmodel = model.get(iter, 0)[0]
+
+            # Find out if this is the auto-detected make and model
+            recommended_model = (self.recommended_make_selected and
+                                 self.auto_model and
+                                 self.auto_model.lower () == pmodel.lower ())
+            self.recommended_model_selected = recommended_model
             self.fillDriverList(self.NPMake, pmodel)
             self.on_tvNPDrivers_cursor_changed(self.tvNPDrivers)
 
