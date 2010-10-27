@@ -41,6 +41,7 @@ class PPDsLoader:
         self._parent = parent
         self._host = host
         self._encryption = encryption
+        self._language = language
 
         self._installed_files = []
         self._conn = None
@@ -116,7 +117,7 @@ class PPDsLoader:
             conn.destroy ()
             return
 
-        ppds = cupshelpers.ppds.PPDs (result)
+        ppds = cupshelpers.ppds.PPDs (result, language=self._language)
         self._ppds = ppds
         self._need_requery_cups = False
         if self._device_id and self._bus:
