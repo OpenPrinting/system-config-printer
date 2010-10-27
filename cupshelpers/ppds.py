@@ -955,10 +955,12 @@ class PPDs:
         makes = {}
         lmakes = {}
         lmodels = {}
+        aliases = {} # Generic model name: set(specific model names)
         for ppdname, ppddict in self.ppds.iteritems ():
             # One entry for ppd-make-and-model
             ppd_make_and_model = _singleton (ppddict['ppd-make-and-model'])
-            ppd_makes_and_models = set([ppdMakeModelSplit (ppd_make_and_model)])
+            ppd_mm_split = ppdMakeModelSplit (ppd_make_and_model)
+            ppd_makes_and_models = set([ppd_mm_split])
 
             # The ppd-product IPP attribute contains values from each
             # Product PPD attribute as well as the value from the
@@ -968,14 +970,12 @@ class PPDs:
 
             # Add another entry for each ppd-product that came from a
             # Product attribute in the PPD file.
-            ppd_products = ppddict.get ('ppd-product')
+            ppd_products = ppddict.get ('ppd-product', [])
+            if not isinstance (ppd_products, list):
+                ppd_products = [ppd_products]
+            ppd_products = set (filter (lambda x: x.startswith ("("),
+                                        ppd_products))
             if ppd_products:
-                if not isinstance (ppd_products, list):
-                    ppd_products = [ppd_products]
-
-                ppd_products = set (filter (lambda x: x.startswith ("("),
-                                            ppd_products))
-
                 # If there is only one ppd-product value it is
                 # unlikely to be useful.
                 if len (ppd_products) == 1:
@@ -1019,6 +1019,39 @@ class PPDs:
                     model = lmodels[lmake][lmodel]
 
                 makes[make][model][ppdname] = ppddict
+
+            # Build list of model aliases
+            if ppd_mm_split in ppd_makes_and_models:
+                ppd_makes_and_models.remove (ppd_mm_split)
+
+            if ppd_makes_and_models:
+                (make, model) = ppd_mm_split
+                if aliases.has_key (make):
+                    models = aliases[make].get (model, set())
+                else:
+                    aliases[make] = {}
+                    models = set()
+
+                models = models.union (map (lambda x: x[1],
+                                            ppd_makes_and_models))
+                aliases[make][model] = models
+
+        # Now, for each set of model aliases, add all drivers from the
+        # "main" (generic) model name to each of the specific models.
+        for make, models in aliases.iteritems ():
+            lmake = make.lower ()
+            main_make = lmakes[lmake]
+            for model, modelnames in models.iteritems ():
+                main_model = lmodels[lmake].get (model.lower ())
+                if not main_model:
+                    continue
+
+                main_ppds = makes[main_make][main_model]
+
+                for eachmodel in modelnames:
+                    this_model = lmodels[lmake].get (eachmodel.lower ())
+                    ppds = makes[main_make][this_model]
+                    ppds.update (main_ppds)
 
         self.makes = makes
         self.lmakes = lmakes
