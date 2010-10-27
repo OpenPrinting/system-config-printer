@@ -112,7 +112,7 @@ _RE_ignore_suffix = re.compile (","
                                 "|_bt"
                                 "| pcl"         # Canon CQue
                                 "| ufr ii"      # Canon UFR II
-                                "| br-script3"  # Brother PPDs
+                                "| br-script"  # Brother PPDs
                                 )
 
 def ppdMakeModelSplit (ppd_make_and_model):
