@@ -4253,14 +4253,7 @@ class NewPrinterGUI(GtkGUI):
         if exc:
             self.ppds_result = exc
         else:
-            ppds = ppdsloader.get_ppds ()
-            if ppds == None:
-                self.ppds_result = None
-            else:
-                language = self.language[0]
-                self.ppds_result = cupshelpers.ppds.PPDs (ppds,
-                                                          language=language)
-
+            self.ppds_result = ppdsloader.get_ppds ()
             self.jockey_installed_files = ppdsloader.get_installed_files ()
 
         ppdsloader.destroy ()
@@ -4296,7 +4289,8 @@ class NewPrinterGUI(GtkGUI):
                                                  device_uri=uri,
                                                  parent=parent,
                                                  host=host,
-                                                 encryption=encryption)
+                                                 encryption=encryption,
+                                                 language=self.language[0])
 
         # Wait until we get the reply.
         gtk.main ()

@@ -33,7 +33,7 @@ def set_gettext_function (fn):
 
 class PPDsLoader:
     def __init__ (self, callback, device_id=None, device_uri=None, parent=None,
-                  host=None, encryption=None):
+                  host=None, encryption=None, language=None):
         debugprint ("+%s" % self)
         self._callback = callback
         self._device_id = device_id
@@ -117,6 +117,8 @@ class PPDsLoader:
             return
 
         ppds = cupshelpers.ppds.PPDs (result)
+        self._ppds = ppds
+        self._need_requery_cups = False
         if self._device_id and self._bus:
             devid_dict = cupshelpers.parseDeviceID (self._device_id)
             (status, ppdname) = ppds.\
@@ -141,7 +143,6 @@ class PPDsLoader:
 
         conn.destroy ()
         self._conn = None
-        self._ppds = result
         self._call_callback (None)
 
     def _cups_error (self, conn, exc):
@@ -181,6 +182,7 @@ class PPDsLoader:
 
     def _packagekit_reply (self):
         debugprint ("Got PackageKit reply")
+        self._need_requery_cups = True
         if self._dialog:
             self._dialog.show_all ()
             self._query_jockey ()
@@ -213,7 +215,12 @@ class PPDsLoader:
 
     def _jockey_error (self, exc):
         debugprint ("Got Jockey error: %s" % exc)
-        self._query_cups ()
+        if self._need_requery_cups:
+            self._query_cups ()
+        else:
+            self._conn.destroy ()
+            self._conn = None
+            self._call_callback (None)
 
     def _call_callback (self, exc):
         if self._callback:
