@@ -319,18 +319,19 @@ class NewPrinterGUI(GtkGUI):
         m = gtk.SELECTION_MULTIPLE
         s = gtk.SELECTION_SINGLE
         b = gtk.SELECTION_BROWSE
-        for name, treeview, selection_mode in (
-            (_("Members of this class"), self.tvNCMembers, m),
-            (_("Others"), self.tvNCNotMembers, m),
-            (_("Devices"), self.tvNPDevices, s),
-            (_("Connections"), self.tvNPDeviceURIs, s),
-            (_("Makes"), self.tvNPMakes,s),
-            (_("Models"), self.tvNPModels,s),
-            (_("Drivers"), self.tvNPDrivers,s),
-            (_("Downloadable Drivers"), self.tvNPDownloadableDrivers, b),
+        for name, model, treeview, selection_mode in (
+            (_("Members of this class"), gtk.ListStore(str),
+             self.tvNCMembers, m),
+            (_("Others"), gtk.ListStore(str), self.tvNCNotMembers, m),
+            (_("Devices"), gtk.ListStore(str), self.tvNPDevices, s),
+            (_("Connections"), gtk.ListStore(str), self.tvNPDeviceURIs, s),
+            (_("Makes"), gtk.ListStore(str, str), self.tvNPMakes,s),
+            (_("Models"), gtk.ListStore(str, str), self.tvNPModels,s),
+            (_("Drivers"), gtk.ListStore(str), self.tvNPDrivers,s),
+            (_("Downloadable Drivers"), gtk.ListStore(str),
+             self.tvNPDownloadableDrivers, b),
             ):
 
-            model = gtk.ListStore(str)
             cell = gtk.CellRendererText()
             column = gtk.TreeViewColumn(name, cell, text=0)
             treeview.set_model(model)
@@ -2836,8 +2837,14 @@ class NewPrinterGUI(GtkGUI):
             auto_make_lower = None
 
         for make in makes:
-            iter = model.append((make,))
-            if auto_make_lower != None and make.lower() == auto_make_lower:
+            recommended = (auto_make_lower and make.lower() == auto_make_lower)
+            if self.device and recommended:
+                text = make + _(" (recommended)")
+            else:
+                text = make
+
+            iter = model.append((text, make,))
+            if recommended:
                 path = model.get_path(iter)
                 self.tvNPMakes.set_cursor (path)
                 self.tvNPMakes.scroll_to_cell(path, None,
@@ -2869,7 +2876,7 @@ class NewPrinterGUI(GtkGUI):
         if path != None:
             model = tvNPMakes.get_model ()
             iter = model.get_iter (path)
-            self.NPMake = model.get(iter, 0)[0]
+            self.NPMake = model.get(iter, 1)[0]
             recommended_make = (self.auto_make and
                                 self.auto_make.lower () == self.NPMake.lower ())
             self.recommended_make_selected = recommended_make
@@ -2886,8 +2893,14 @@ class NewPrinterGUI(GtkGUI):
             auto_model_lower = self.auto_model.lower ()
 
         for pmodel in models:
-            iter = model.append((pmodel,))
-            if is_auto_make and pmodel.lower() == auto_model_lower:
+            recommended = (is_auto_make and pmodel.lower() == auto_model_lower)
+            if self.device and recommended:
+                text = pmodel + _(" (recommended)")
+            else:
+                text = pmodel
+
+            iter = model.append((text, pmodel,))
+            if recommended:
                 path = model.get_path(iter)
                 self.tvNPModels.set_cursor (path)
                 self.tvNPModels.scroll_to_cell(path, None,
@@ -2977,7 +2990,7 @@ class NewPrinterGUI(GtkGUI):
         if path != None:
             model = widget.get_model ()
             iter = model.get_iter (path)
-            pmodel = model.get(iter, 0)[0]
+            pmodel = model.get(iter, 1)[0]
 
             # Find out if this is the auto-detected make and model
             recommended_model = (self.recommended_make_selected and
