@@ -449,7 +449,6 @@ class PPDs:
 
     def getPPDNamesFromDeviceID (self, mfg, mdl, description="",
                                  commandsets=[], uri=None,
-                                 downloadedfiles=[],
                                  make_and_model=None):
         """
 	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
@@ -478,8 +477,6 @@ class PPDs:
 	@type commandsets: string
 	@param uri: device URI, optional (only needed for debugging)
 	@type uri: string
-        @param downloadedfiles: filenames from downloaded packages
-        @type downloadedfiles: string list
         @param make_and_model: device-make-and-model string
         @type make_and_model: string
 	@returns: a dict of match status by PPD name
@@ -728,7 +725,6 @@ class PPDs:
 
         fit = self.getPPDNamesFromDeviceID (mfg, mdl, description,
                                             commandsets, uri,
-                                            downloadedfiles,
                                             make_and_model)
 
         # We've got a set of PPDs, any of which will drive the device.
