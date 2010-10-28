@@ -416,7 +416,7 @@ class PreferenceOrder:
         return orderedtypes
 
 
-def test (xml_dir=None):
+def test (xml_dir=None, attached=False):
     import cups
     import ppds
     from pprint import pprint
@@ -450,20 +450,55 @@ def test (xml_dir=None):
 
     ppdfinder = ppds.PPDs (cupsppds)
 
-    for make in ppdfinder.getMakes ():
-        for model in ppdfinder.getModels (make):
-            ppdsdict = ppdfinder.getInfoFromModel (make, model)
-            mm = make + " " + model
-            orderedtypes = preforder.get_ordered_types (mm, None)
+    if attached:
+        cups.setUser ("root")
+        devices = c.getDevices ()
+        for uri, device in devices.iteritems ():
+            if uri.find (":") == -1:
+                continue
 
-            fit = {}
-            for ppdname in ppdsdict.keys ():
-                fit[ppdname] = ppds.PPDs.STATUS_MODEL_MISMATCH
+            devid = device.get ("device-id", "")
+            if isinstance (devid, list):
+                devid = devid[0]
+
+            if not devid:
+                continue
+
+            print uri
+            id_dict = parseDeviceID (devid)
+            status = ppdfinder.getPPDNamesFromDeviceID (id_dict["MFG"],
+                                                        id_dict["MDL"],
+                                                        id_dict["DES"],
+                                                        id_dict["CMD"],
+                                                        uri)
+
+            mm = device.get ("device-make-and-model", "")
+            orderedtypes = preforder.get_ordered_types (mm, id_dict)
+
+            ppds = {}
+            for ppdname in status.keys ():
+                ppds[ppdname] = ppdfinder.getInfoFromPPDName (ppdname)
 
             orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
-                                                            ppdsdict, fit)
-            print mm + ":"
+                                                            ppds,
+                                                            status)
             for t, ppd in orderedppds:
                 print "  %s\n    (%s)" % (ppd, t)
+    else:
+        for make in ppdfinder.getMakes ():
+            for model in ppdfinder.getModels (make):
+                ppdsdict = ppdfinder.getInfoFromModel (make, model)
+                mm = make + " " + model
+                orderedtypes = preforder.get_ordered_types (mm, None)
 
-            print
+                fit = {}
+                for ppdname in ppdsdict.keys ():
+                    fit[ppdname] = ppds.PPDs.STATUS_MODEL_MISMATCH
+
+                orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
+                                                                ppdsdict, fit)
+                print mm + ":"
+                for t, ppd in orderedppds:
+                    print "  %s\n    (%s)" % (ppd, t)
+
+                print
