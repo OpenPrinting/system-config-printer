@@ -2853,7 +2853,7 @@ class NewPrinterGUI(GtkGUI):
 
         for make in makes:
             recommended = (auto_make_lower and make.lower() == auto_make_lower)
-            if self.device and recommended:
+            if self.device and self.device.make_and_model and recommended:
                 text = make + _(" (recommended)")
             else:
                 text = make
@@ -2909,7 +2909,7 @@ class NewPrinterGUI(GtkGUI):
 
         for pmodel in models:
             recommended = (is_auto_make and pmodel.lower() == auto_model_lower)
-            if self.device and recommended:
+            if self.device and self.device.make_and_model and recommended:
                 text = pmodel + _(" (recommended)")
             else:
                 text = pmodel
@@ -2931,46 +2931,50 @@ class NewPrinterGUI(GtkGUI):
         model = self.tvNPDrivers.get_model()
         model.clear()
 
-        ppds = self.ppds.getInfoFromModel(pmake, pmodel)
-
-        files = self.jockey_installed_files
-
-        # Use a generic make and model string for generating the
-        # driver preference list.
-        make_and_model = pmake + " " + pmodel
         if self.device:
             devid = self.device.id_dict
-            if (self.auto_make and self.auto_make == pmake and
-                self.auto_model and self.auto_model == pmodel):
-                # ..except if this is the auto-selected model, in
-                # which case we'll use the actual
-                # device-make-and-model string.
-                make_and_model = self.device.make_and_model
         else:
             devid = None
 
-        try:
-            self.NPDrivers = self.ppds.orderPPDNamesByPreference(ppds.keys(),
-                                                                 files,
-                                                                 make_and_model,
-                                                                 devid)
-        except:
-            nonfatalException ()
-            self.NPDrivers = ppds.keys ()
+        if (self.device and self.device.make_and_model and
+            self.recommended_model_selected):
+            # Use the actual device-make-and-model string.
+            make_and_model = self.device.make_and_model
 
-        if self.auto_driver and self.device:
-            drivers = []
-            for driver in self.NPDrivers:
-                if driver == self.auto_driver:
-                    drivers.insert (0, driver)
-                else:
-                    drivers.append (driver)
+            # and the ID-matched list of PPDs.
+            self.NPDrivers = self.id_matched_ppdnames
+            debugprint ("ID matched PPDs: %s" % repr (self.NPDrivers))
+        else:
+            # Use a generic make and model string for generating the
+            # driver preference list.
+            make_and_model = pmake + " " + pmodel
+            ppds = self.ppds.getInfoFromModel(pmake, pmodel)
+            ppdnames = ppds.keys ()
 
-            self.NPDrivers = drivers
+            files = self.jockey_installed_files
+            try:
+                self.NPDrivers = self.ppds.orderPPDNamesByPreference(ppdnames,
+                                                                     files,
+                                                                     make_and_model,
+                                                                     devid)
+            except:
+                nonfatalException ()
+                self.NPDrivers = ppdnames
+
+            # Put the current driver first.
+            if self.auto_driver and self.device:
+                drivers = []
+                for driver in self.NPDrivers:
+                    if driver == self.auto_driver:
+                        drivers.insert (0, driver)
+                    else:
+                        drivers.append (driver)
+
+                self.NPDrivers = drivers
 
         driverlist = []
         for i in range (len(self.NPDrivers)):
-            ppd = ppds[self.NPDrivers[i]]
+            ppd = self.ppds.getInfoFromPPDName (self.NPDrivers[i])
             driver = _singleton (ppd["ppd-make-and-model"])
             driver = driver.replace(" (recommended)", "")
 
