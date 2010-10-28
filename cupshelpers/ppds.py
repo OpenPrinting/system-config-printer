@@ -34,7 +34,87 @@ from . import _debugprint, set_debugprint_fn
 __all__ = ['ppdMakeModelSplit',
            'PPDs']
 
+_MFR_BY_RANGE = [
+    # Fill in missing manufacturer names based on model name
+    ("HP", re.compile("deskjet"
+                      "|dj[ 0-9]?"
+                      "|laserjet"
+                      "|lj"
+                      "|color laserjet"
+                      "|color lj"
+                      "|designjet"
+                      "|officejet"
+                      "|oj"
+                      "|photosmart"
+                      "|ps "
+                      "|psc"
+                      "|edgeline")),
+    ("Epson", re.compile("stylus|aculaser")),
+    ("Apple", re.compile("stylewriter"
+                         "|imagewriter"
+                         "|deskwriter"
+                         "|laserwriter")),
+    ("Canon", re.compile("pixus"
+                         "|pixma"
+                         "|selphy"
+                         "|imagerunner"
+                         "|bj"
+                         "|lbp")),
+    ("Brother", re.compile("hl|dcp|mfc")),
+    ("Xerox", re.compile("docuprint"
+                         "|docupage"
+                         "|phaser"
+                         "|workcentre"
+                         "|homecentre")),
+    ("Lexmark", re.compile("optra|(:color )?jetprinter")),
+    ("KONICA MINOLTA", re.compile("magicolor"
+                                  "|pageworks"
+                                  "|pagepro")),
+    ("Kyocera Mita", re.compile("fs-"
+                                "|km-"
+                                "|taskalfa")),
+    ("Ricoh", re.compile("aficio")),
+    ("Oce", re.compile("varioprint")),
+    ("Oki", re.compile("okipage|microline"))
+    ]
+
+_MFR_NAMES_BY_LOWER = {}
+for mfr, regexp in _MFR_BY_RANGE:
+    _MFR_NAMES_BY_LOWER[mfr.lower ()] = mfr
+
+_RE_konica_minolta = re.compile("konica.*minolta$")
+_RE_hewlett_packard = re.compile("hewlett.*packard$")
+
+_HP_MODEL_BY_NAME = {
+    "dj": "DeskJet",
+    "lj": "LaserJet",
+    "oj": "OfficeJet",
+    "color lj": "Color LaserJet",
+    "ps ": "PhotoSmart",
+    "hp ": ""
+}
+
+_RE_turboprint = re.compile ("turboprint")
 _RE_version_numbers = re.compile (" v\d(?:\d*\.\d+)?(?: |$)")
+_RE_ignore_suffix = re.compile (","
+                                "| hpijs"
+                                "| foomatic/"
+                                "| - "
+                                "| w/"
+                                "| \("
+                                "| postscript"
+                                "| ps"
+                                "| pxl"
+                                "| series"
+                                "| zjs"         # hpcups
+                                "| zxs"         # hpcups
+                                "| pcl3"        # hpcups
+                                "| printer"     # hpcups
+                                "|_bt"
+                                "| pcl"         # Canon CQue
+                                "| ufr ii"      # Canon UFR II
+                                "| br-script"  # Brother PPDs
+                                )
 
 def ppdMakeModelSplit (ppd_make_and_model):
     """
@@ -49,81 +129,17 @@ def ppdMakeModelSplit (ppd_make_and_model):
     # that the manufacturer name is missing and add the manufacturer name
     # corresponding to the model name
     ppd_make_and_model.strip ()
+    make = None
+    cleanup_make = False
     l = ppd_make_and_model.lower ()
-    if (l.startswith ("deskjet") or
-        l.startswith ("dj ") or l == "dj" or
-        (l.startswith ("dj") and len (l) > 2 and l[2].isdigit ()) or
-        l.startswith ("laserjet") or
-        l.startswith ("lj") or
-        l.startswith ("color laserjet") or
-        l.startswith ("color lj") or
-        l.startswith ("designjet") or
-        l.startswith ("officejet") or
-        l.startswith ("oj") or
-        l.startswith ("photosmart") or
-        l.startswith ("ps ") or
-        l.startswith ("psc") or
-        l.startswith ("edgeline")):
-        make = "HP"
-        model = ppd_make_and_model
-    elif (l.startswith ("stylus") or
-          l.startswith ("aculaser")):
-        make = "Epson"
-        model = ppd_make_and_model
-    elif (l.startswith ("stylewriter") or
-          l.startswith ("imagewriter") or
-          l.startswith ("deskwriter") or
-          l.startswith ("laserwriter")):
-        make = "Apple"
-        model = ppd_make_and_model
-    elif (l.startswith ("pixus") or
-          l.startswith ("pixma") or
-          l.startswith ("selphy") or
-          l.startswith ("imagerunner") or
-          l.startswith ("bj") or
-          l.startswith ("lbp")):
-        make = "Canon"
-        model = ppd_make_and_model
-    elif (l.startswith ("hl") or
-          l.startswith ("dcp") or
-          l.startswith ("mfc")):
-        make = "Brother"
-        model = ppd_make_and_model
-    elif (l.startswith ("docuprint") or
-          l.startswith ("docupage") or
-          l.startswith ("phaser") or
-          l.startswith ("workcentre") or
-          l.startswith ("homecentre")):
-        make = "Xerox"
-        model = ppd_make_and_model
-    elif (l.startswith ("optra") or
-          l.startswith ("jetprinter") or
-          l.startswith ("color jetprinter")):
-        make = "Lexmark"
-        model = ppd_make_and_model
-    elif (l.startswith ("magicolor") or
-          l.startswith ("pageworks") or
-          l.startswith ("pagepro")):
-        make = "KONICA MINOLTA"
-        model = ppd_make_and_model
-    elif (l.startswith ("fs-") or
-          l.startswith ("km-") or
-          l.startswith ("taskalfa")):
-        make = "Kyocera Mita"
-        model = ppd_make_and_model
-    elif l.startswith ("aficio"):
-        make = "Ricoh"
-        model = ppd_make_and_model
-    elif l.startswith ("varioprint"):
-        make = "Oce"
-        model = ppd_make_and_model
-    elif (l.startswith ("okipage") or
-          l.startswith ("microline")):
-        make = "Oki"
-        model = ppd_make_and_model
+    for mfr, regexp in _MFR_BY_RANGE:
+        if regexp.match (l):
+            make = mfr
+            model = ppd_make_and_model
+            break
 
     # Handle PPDs provided by Turboprint
-    elif l.find ("turboprint") != -1:
+    if make == None and _RE_turboprint.search (l):
         t = ppd_make_and_model.find (" TurboPrint")
         if t != -1:
             t2 = ppd_make_and_model.rfind (" TurboPrint")
@@ -142,6 +158,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
         model = re.sub (r"(?<=[a-z])(?=[A-Z])", " ", model)
         model = re.sub (r" Jet", "Jet", model)
         model = re.sub (r"Photo Smart", "PhotoSmart", model)
+        cleanup_make = True
 
     # Special handling for two-word manufacturers
     elif l.startswith ("konica minolta "):
@@ -159,6 +176,7 @@ def ppdMakeModelSplit (ppd_make_and_model):
 
     # Finally, take the first word as the name of the manufacturer.
     else:
+        cleanup_make = True
         try:
             make, model = ppd_make_and_model.split(" ", 1)
         except:
@@ -167,14 +185,20 @@ def ppdMakeModelSplit (ppd_make_and_model):
 
     # Standardised names for manufacturers.
     makel = make.lower ()
-    if (makel.startswith ("konica") and
-        makel.endswith ("minolta")):
-        make = "KONICA MINOLTA"
-        makel = "konica minolta"
-    elif (makel.startswith ("hewlett") and
-          makel.endswith ("packard")):
-        make = "HP"
-        makel = "hp"
+    if cleanup_make:
+        if (makel.startswith ("hewlett") and
+            makel.endswith ("packard")):
+            make = "HP"
+            makel = "hp"
+        elif (makel.startswith ("konica") and
+              makel.endswith ("minolta")):
+            make = "KONICA MINOLTA"
+            makel = "konica minolta"
+        else:
+            # Fix case errors.
+            mfr = _MFR_NAMES_BY_LOWER.get (makel)
+            if mfr:
+                make = mfr
 
     # HP PostScript PPDs give NickNames like:
     # *NickName: "HP LaserJet 4 Plus v2013.111 Postscript (recommended)"
@@ -196,47 +220,18 @@ def ppdMakeModelSplit (ppd_make_and_model):
             modell = modell[:vstart]
             model = model[:vstart]
 
-    for suffix in [" hpijs",
-                   " foomatic/",
-                   " - ",
-                   " w/",
-                   " (",
-                   " postscript",
-                   " ps",
-                   " ps1",
-                   " ps2",
-                   " ps3",
-                   " pxl",
-                   " series",
-                   " zjs",              # hpcups
-                   " zxs",              # hpcups
-                   " pcl3",             # hpcups
-                   " printer",          # hpcups
-                   "_bt",
-                   " pcl",              # Canon CQue
-                   " ufr ii",           # Canon UFR II
-                   " br-script3",       # Brother PPDs
-                   ","]:
-        s = modell.find (suffix)
-        if s != -1:
-            model = model[:s]
-            modell = modell[:s]
+    suffix = _RE_ignore_suffix.search (modell)
+    if suffix:
+        suffixstart = suffix.start ()
+        modell = modell[:suffixstart]
+        model = model[:suffixstart]
 
     if makel == "hp":
-        modelnames = {"dj": "DeskJet",
-                      "lj": "LaserJet",
-                      "oj": "OfficeJet",
-                      "color lj": "Color LaserJet",
-                      "ps ": "PhotoSmart",
-                      "hp ": ""}
-        for (name, fullname) in modelnames.iteritems ():
+        for (name, fullname) in _HP_MODEL_BY_NAME.iteritems ():
             if modell.startswith (name):
                 model = fullname + model[len (name):]
                 modell = model.lower ()
-
-    for mfr in [ "Apple", "Canon", "Epson", "Lexmark", "Oki" ]:
-        if makel == mfr.lower ():
-            make = mfr
+                break
 
     model = model.strip ()
     return (make, model)
@@ -629,7 +624,8 @@ class PPDs:
             _debugprint ("Checking DES field")
             inexact = set()
             for ppdname in status.keys ():
-                if ppdname.find ("hpijs"):
+                if (ppdname.find ("hpijs") != -1 or
+                    ppdname.find ("hpcups") != -1):
                     continue
                 ppddict = self.ppds[ppdname]
                 id = _singleton (ppddict['ppd-device-id'])
@@ -909,16 +905,31 @@ class PPDs:
         makes = {}
         lmakes = {}
         lmodels = {}
+        aliases = {} # Generic model name: set(specific model names)
         for ppdname, ppddict in self.ppds.iteritems ():
             # One entry for ppd-make-and-model
             ppd_make_and_model = _singleton (ppddict['ppd-make-and-model'])
-            ppd_makes_and_models = set([ppdMakeModelSplit (ppd_make_and_model)])
+            ppd_mm_split = ppdMakeModelSplit (ppd_make_and_model)
+            ppd_makes_and_models = set([ppd_mm_split])
 
-            # Another entry for each ppd-product
-            ppd_products = ppddict.get ('ppd-product')
+            # The ppd-product IPP attribute contains values from each
+            # Product PPD attribute as well as the value from the
+            # ModelName attribute if present.  The Product attribute
+            # values are surrounded by parentheses; the ModelName
+            # attribute value is not.
+
+            # Add another entry for each ppd-product that came from a
+            # Product attribute in the PPD file.
+            ppd_products = ppddict.get ('ppd-product', [])
+            if not isinstance (ppd_products, list):
+                ppd_products = [ppd_products]
+            ppd_products = set (filter (lambda x: x.startswith ("("),
+                                        ppd_products))
             if ppd_products:
-                if not isinstance (ppd_products, list):
-                    ppd_products = [ppd_products]
+                # If there is only one ppd-product value it is
+                # unlikely to be useful.
+                if len (ppd_products) == 1:
+                    ppd_products = set()
 
                 make = _singleton (ppddict.get ('ppd-make', '')).rstrip ()
                 if make:
@@ -958,6 +969,39 @@ class PPDs:
                     model = lmodels[lmake][lmodel]
 
                 makes[make][model][ppdname] = ppddict
+
+            # Build list of model aliases
+            if ppd_mm_split in ppd_makes_and_models:
+                ppd_makes_and_models.remove (ppd_mm_split)
+
+            if ppd_makes_and_models:
+                (make, model) = ppd_mm_split
+                if aliases.has_key (make):
+                    models = aliases[make].get (model, set())
+                else:
+                    aliases[make] = {}
+                    models = set()
+
+                models = models.union (map (lambda x: x[1],
+                                            ppd_makes_and_models))
+                aliases[make][model] = models
+
+        # Now, for each set of model aliases, add all drivers from the
+        # "main" (generic) model name to each of the specific models.
+        for make, models in aliases.iteritems ():
+            lmake = make.lower ()
+            main_make = lmakes[lmake]
+            for model, modelnames in models.iteritems ():
+                main_model = lmodels[lmake].get (model.lower ())
+                if not main_model:
+                    continue
+
+                main_ppds = makes[main_make][main_model]
+
+                for eachmodel in modelnames:
+                    this_model = lmodels[lmake].get (eachmodel.lower ())
+                    ppds = makes[main_make][this_model]
+                    ppds.update (main_ppds)
 
         self.makes = makes
         self.lmakes = lmakes

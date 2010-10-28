@@ -34,7 +34,7 @@ class PPDsLoader(gobject.GObject):
         }
 
     def __init__ (self, device_id=None, parent=None, device_uri=None,
-                  host=None, encryption=None):
+                  host=None, encryption=None, language=None):
         gobject.GObject.__init__ (self)
         debugprint ("+%s" % self)
         self._device_id = device_id
@@ -42,6 +42,7 @@ class PPDsLoader(gobject.GObject):
         self._parent = parent
         self._host = host
         self._encryption = encryption
+        self._language = language
 
         self._installed_files = []
         self._conn = None
@@ -123,7 +124,9 @@ class PPDsLoader(gobject.GObject):
                           error_handler=self._cups_error)
 
     def _cups_reply (self, conn, result):
-        ppds = cupshelpers.ppds.PPDs (result)
+        ppds = cupshelpers.ppds.PPDs (result, language=self._language)
+        self._ppds = ppds
+        self._need_requery_cups = False
         if self._device_id and self._bus:
             devid_dict = cupshelpers.parseDeviceID (self._device_id)
             (status, ppdname) = ppds.\
@@ -148,7 +151,6 @@ class PPDsLoader(gobject.GObject):
 
         conn.destroy ()
         self._conn = None
-        self._ppds = result
         self.emit ('finished')
 
     def _cups_error (self, conn, exc):
@@ -184,6 +186,7 @@ class PPDsLoader(gobject.GObject):
 
     def _packagekit_reply (self):
         debugprint ("Got PackageKit reply")
+        self._need_requery_cups = True
         if self._dialog:
             self._dialog.show_all ()
             self._query_jockey ()
@@ -216,7 +219,12 @@ class PPDsLoader(gobject.GObject):
 
     def _jockey_error (self, exc):
         debugprint ("Got Jockey error: %s" % exc)
-        self._query_cups ()
+        if self._need_requery_cups:
+            self._query_cups ()
+        else:
+            self._conn.destroy ()
+            self._conn = None
+            self.emit ('finished')
 
 gobject.type_register(PPDsLoader)
 

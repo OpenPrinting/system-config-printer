@@ -55,7 +55,7 @@ import gtk_label_autowrap
 import urllib
 from smburi import SMBURI
 from errordialogs import *
-from PhysicalDevice import *
+from PhysicalDevice import PhysicalDevice
 import gtkspinner
 import firewall
 import asyncconn
@@ -152,7 +152,6 @@ class NewPrinterGUI(GtkGUI):
         "beh" : 0,
         "hp" : 0,
         "hpfax" : 0,
-        "dnssd" : 0,
         "socket": 2,
         "ipp" : 3,
         "http" : 3,
@@ -320,18 +319,19 @@ class NewPrinterGUI(GtkGUI):
         m = gtk.SELECTION_MULTIPLE
         s = gtk.SELECTION_SINGLE
         b = gtk.SELECTION_BROWSE
-        for name, treeview, selection_mode in (
-            (_("Members of this class"), self.tvNCMembers, m),
-            (_("Others"), self.tvNCNotMembers, m),
-            (_("Devices"), self.tvNPDevices, s),
-            (_("Connections"), self.tvNPDeviceURIs, s),
-            (_("Makes"), self.tvNPMakes,s),
-            (_("Models"), self.tvNPModels,s),
-            (_("Drivers"), self.tvNPDrivers,s),
-            (_("Downloadable Drivers"), self.tvNPDownloadableDrivers, b),
+        for name, model, treeview, selection_mode in (
+            (_("Members of this class"), gtk.ListStore(str),
+             self.tvNCMembers, m),
+            (_("Others"), gtk.ListStore(str), self.tvNCNotMembers, m),
+            (_("Devices"), gtk.ListStore(str), self.tvNPDevices, s),
+            (_("Connections"), gtk.ListStore(str), self.tvNPDeviceURIs, s),
+            (_("Makes"), gtk.ListStore(str, str), self.tvNPMakes,s),
+            (_("Models"), gtk.ListStore(str, str), self.tvNPModels,s),
+            (_("Drivers"), gtk.ListStore(str), self.tvNPDrivers,s),
+            (_("Downloadable Drivers"), gtk.ListStore(str),
+             self.tvNPDownloadableDrivers, b),
             ):
 
-            model = gtk.ListStore(str)
             cell = gtk.CellRendererText()
             column = gtk.TreeViewColumn(name, cell, text=0)
             treeview.set_model(model)
@@ -629,7 +629,8 @@ class NewPrinterGUI(GtkGUI):
                                                      device_uri=device_uri,
                                                      parent=self.NewPrinterWindow,
                                                      host=self._host,
-                                                     encryption=self._encryption)
+                                                     encryption=self._encryption,
+                                                     language=self.language[0])
             self.ppdsloader.connect ('finished',
                                      self.on_ppdsloader_finished_initial)
             self.ppdsloader.run ()
@@ -751,8 +752,7 @@ class NewPrinterGUI(GtkGUI):
 
         ppds = ppdsloader.get_ppds ()
         if ppds:
-            language = self.language[0]
-            self.ppds = cupshelpers.ppds.PPDs (ppds, language=language)
+            self.ppds = ppds
             self.jockey_installed_files = ppdsloader.get_installed_files ()
         else:
             self.ppds = None
@@ -895,14 +895,6 @@ class NewPrinterGUI(GtkGUI):
                         pass
                     except:
                         nonfatalException ()
-                else:
-                    # Remote CUPS queue discovered by "dnssd" CUPS backend
-                    res = re.search ("(dnssd|mdns)://([^\./]+)(\.[^/]+|)/cups",
-                                     uri)
-                    if res and self.device.id_dict and \
-                       self.device.id_dict.get ('MDL', ''):
-                        resg = res.groups()
-                        self.remotecupsqueue = self.device.info    
 
                 if not self.remotecupsqueue:
                     if self.ppds == None:
@@ -1294,8 +1286,6 @@ class NewPrinterGUI(GtkGUI):
                                     reply_handler=reply_handler,
                                     error_handler=error_handler)
         else:
-            # Clear cache of DNS-SD resolutions
-            dnssdclearcache ()
             reply_handler = (lambda x, y:
                                  self.network_devices_reply (x, y,
                                                              current_uri))
@@ -2278,28 +2268,6 @@ class NewPrinterGUI(GtkGUI):
                 device.menuentry = _("IPP")
             elif device.type == "http" or device.type == "https":
                 device.menuentry = _("HTTP")
-            elif device.type == "dnssd" or device.type == "mdns":
-                (scheme, rest) = urllib.splittype (device.uri)
-                (name, rest) = urllib.splithost (rest)
-                (cupsqueue, rest) = urllib.splitquery (rest)
-                if cupsqueue[0] == '/':
-                    cupsqueue = cupsqueue[1:]
-                if cupsqueue == 'cups':
-                    device.menuentry = _("Remote CUPS printer via DNS-SD")
-                else:
-                    protocol = None
-                    if name.find("._ipp") != -1:
-                        protocol = "IPP"
-                    elif name.find("._printer") != -1:
-                        protocol = "LPD"
-                    elif name.find("._pdl-datastream") != -1:
-                        protocol = "AppSocket/JetDirect"
-                    if protocol != None:
-                        device.menuentry = \
-                            _("%s network printer via DNS-SD") % protocol
-                    else:
-                        device.menuentry = \
-                            _("Network printer via DNS-SD")
             else:
                 device.menuentry = device.uri
 
@@ -2311,45 +2279,29 @@ class NewPrinterGUI(GtkGUI):
         if physicaldevice.get_data ('checked-hplip') != True:
             hp_drivable = False
             is_network = False
-            remotecups = False
-            host = None
             device_dict = { 'device-class': 'network' }
-            if physicaldevice._network_host:
-                host = physicaldevice._network_host
             for device in physicaldevice.get_devices ():
                 if device.type == "hp":
                     # We already know that HPLIP can drive this device.
                     hp_drivable = True
                     break
-                elif device.type in ["socket", "lpd", "ipp", "dnssd", "mdns"]:
+                elif device.type in ["socket", "lpd", "ipp"]:
                     # This is a network printer.
-                    if host == None and device.type in ["socket", "lpd", "ipp"]:
-                        (scheme, rest) = urllib.splittype (device.uri)
-                        (hostport, rest) = urllib.splithost (rest)
-                        if hostport != None:
-                            (host, port) = urllib.splitport (hostport)
-                    if host:
+                    (scheme, rest) = urllib.splittype (device.uri)
+                    (hostport, rest) = urllib.splithost (rest)
+                    if hostport != None:
+                        (host, port) = urllib.splitport (hostport)
                         is_network = True
-                        remotecups = ((device.uri.startswith('dnssd:') or \
-                                       device.uri.startswith('mdns:')) and \
-                                      device.uri.endswith('/cups'))
-                        if (not device.make_and_model or \
-                            device.make_and_model == "Unknown") and not \
-                           remotecups:
-                            self.getNetworkPrinterMakeModel(host=host,
-                                                            device=device)
+                        self.getNetworkPrinterMakeModel(host=host,
+                                                        device=device)
                         device_dict['device-info'] = device.info
                         device_dict['device-make-and-model'] = (device.
                                                                 make_and_model)
                         device_dict['device-id'] = device.id
                         device_dict['device-location'] = device.location
 
-            if not hp_drivable and is_network and not remotecups:
-                if physicaldevice.dnssd_hostname:
-                    hpliphost = physicaldevice.dnssd_hostname
-                else:
-                    hpliphost = host
-                hplipuri = self.get_hplip_uri_for_network_printer (hpliphost,
+            if not hp_drivable and is_network:
+                hplipuri = self.get_hplip_uri_for_network_printer (host,
                                                                    "print")
                 if hplipuri:
                     dev = cupshelpers.Device (hplipuri, **device_dict)
@@ -2358,7 +2310,7 @@ class NewPrinterGUI(GtkGUI):
 
                     # Now check to see if we can also send faxes using
                     # this device.
-                    faxuri = self.get_hplip_uri_for_network_printer (hpliphost,
+                    faxuri = self.get_hplip_uri_for_network_printer (host,
                                                                      "fax")
                     if faxuri:
                         faxdevid = self.get_hpfax_device_id (faxuri)
@@ -2417,26 +2369,6 @@ class NewPrinterGUI(GtkGUI):
             elif device.type == "hal":
                 text = _("Local printer detected by the "
                          "Hardware Abstraction Layer (HAL).")
-            elif device.type == "dnssd" or device.type == "mdns":
-                (scheme, rest) = urllib.splittype (device.uri)
-                (name, rest) = urllib.splithost (rest)
-                (cupsqueue, rest) = urllib.splitquery (rest)
-                if cupsqueue[0] == '/':
-                    cupsqueue = cupsqueue[1:]
-                if cupsqueue == 'cups':
-                    text = _("Remote CUPS printer via DNS-SD")
-                else:
-                    protocol = None
-                    if name.find("._ipp") != -1:
-                        protocol = "IPP"
-                    elif name.find("._printer") != -1:
-                        protocol = "LPD"
-                    elif name.find("._pdl-datastream") != -1:
-                        protocol = "AppSocket/JetDirect"
-                    if protocol != None:
-                        text = _("%s network printer via DNS-SD") % protocol
-                    else:
-                        text = _("Network printer via DNS-SD")
             else:
                 text = device.uri
 
@@ -2909,6 +2841,7 @@ class NewPrinterGUI(GtkGUI):
     # PPD from foomatic
 
     def fillMakeList(self):
+        self.recommended_make_selected = False
         makes = self.ppds.getMakes()
         model = self.tvNPMakes.get_model()
         model.clear()
@@ -2919,8 +2852,14 @@ class NewPrinterGUI(GtkGUI):
             auto_make_lower = None
 
         for make in makes:
-            iter = model.append((make,))
-            if auto_make_lower != None and make.lower() == auto_make_lower:
+            recommended = (auto_make_lower and make.lower() == auto_make_lower)
+            if self.device and recommended:
+                text = make + _(" (recommended)")
+            else:
+                text = make
+
+            iter = model.append((text, make,))
+            if recommended:
                 path = model.get_path(iter)
                 self.tvNPMakes.set_cursor (path)
                 self.tvNPMakes.scroll_to_cell(path, None,
@@ -2952,10 +2891,14 @@ class NewPrinterGUI(GtkGUI):
         if path != None:
             model = tvNPMakes.get_model ()
             iter = model.get_iter (path)
-            self.NPMake = model.get(iter, 0)[0]
+            self.NPMake = model.get(iter, 1)[0]
+            recommended_make = (self.auto_make and
+                                self.auto_make.lower () == self.NPMake.lower ())
+            self.recommended_make_selected = recommended_make
             self.fillModelList()
 
     def fillModelList(self):
+        self.recommended_model_selected = False
         models = self.ppds.getModels(self.NPMake)
         model = self.tvNPModels.get_model()
         model.clear()
@@ -2965,8 +2908,14 @@ class NewPrinterGUI(GtkGUI):
             auto_model_lower = self.auto_model.lower ()
 
         for pmodel in models:
-            iter = model.append((pmodel,))
-            if is_auto_make and pmodel.lower() == auto_model_lower:
+            recommended = (is_auto_make and pmodel.lower() == auto_model_lower)
+            if self.device and recommended:
+                text = pmodel + _(" (recommended)")
+            else:
+                text = pmodel
+
+            iter = model.append((text, pmodel,))
+            if recommended:
                 path = model.get_path(iter)
                 self.tvNPModels.set_cursor (path)
                 self.tvNPModels.scroll_to_cell(path, None,
@@ -3042,7 +2991,7 @@ class NewPrinterGUI(GtkGUI):
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
-            elif self.device and i == 0:
+            elif self.device and self.recommended_model_selected and i == 0:
                 iter = model.append ((driver + _(" (recommended)"),))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
@@ -3079,7 +3028,13 @@ class NewPrinterGUI(GtkGUI):
         if path != None:
             model = widget.get_model ()
             iter = model.get_iter (path)
-            pmodel = model.get(iter, 0)[0]
+            pmodel = model.get(iter, 1)[0]
+
+            # Find out if this is the auto-detected make and model
+            recommended_model = (self.recommended_make_selected and
+                                 self.auto_model and
+                                 self.auto_model.lower () == pmodel.lower ())
+            self.recommended_model_selected = recommended_model
             self.fillDriverList(self.NPMake, pmodel)
             self.on_tvNPDrivers_cursor_changed(self.tvNPDrivers)
 
