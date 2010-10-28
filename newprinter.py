@@ -663,18 +663,25 @@ class NewPrinterGUI(GtkGUI):
             return
 
         self.exactdrivermatch = False
+        self.id_matched_ppdnames = []
         if self.devid != "":
             devid_dict = dict()
             try:
                 devid_dict = cupshelpers.parseDeviceID (self.devid)
-                (status, ppdname) = self.ppds.\
-                    getPPDNameFromDeviceID (devid_dict["MFG"],
-                                            devid_dict["MDL"],
-                                            devid_dict["DES"],
-                                            devid_dict["CMD"],
-                                            self.device.uri,
-                                            self.jockey_installed_files)
+                fit = self.ppds.\
+                    getPPDNamesFromDeviceID (devid_dict["MFG"],
+                                             devid_dict["MDL"],
+                                             devid_dict["DES"],
+                                             devid_dict["CMD"],
+                                             self.device.uri)
 
+                ppdnamelist = self.ppds.\
+                    orderPPDNamesByPreference (fit.keys (),
+                                               self.jockey_installed_files,
+                                               devid=devid_dict, fit=fit)
+                self.id_matched_ppdnames = ppdnamelist
+                ppdname = ppdnamelist[0]
+                status = fit[ppdname]
                 ppddict = self.ppds.getInfoFromPPDName (ppdname)
                 make_model = _singleton (ppddict['ppd-make-and-model'])
                 (self.auto_make, self.auto_model) = \
@@ -916,6 +923,7 @@ class NewPrinterGUI(GtkGUI):
                         return
 
                 ppdname = None
+                self.id_matched_ppdnames = []
                 try:
                     if self.remotecupsqueue:
                         # We have a remote CUPS queue, let the client queue
@@ -938,13 +946,20 @@ class NewPrinterGUI(GtkGUI):
                             id_dict["DES"] = ""
                             id_dict["CMD"] = []
 
-                        (status, ppdname) = self.ppds.\
-                            getPPDNameFromDeviceID (id_dict["MFG"],
-                                                    id_dict["MDL"],
-                                                    id_dict["DES"],
-                                                    id_dict["CMD"],
-                                                    self.device.uri,
-                                                    self.jockey_installed_files)
+                        fit = self.ppds.\
+                            getPPDNamesFromDeviceID (id_dict["MFG"],
+                                                     id_dict["MDL"],
+                                                     id_dict["DES"],
+                                                     id_dict["CMD"],
+                                                     self.device.uri,
+                                                     self.device.make_and_model)
+                        ppdnamelist = self.ppds.\
+                            orderPPDNamesByPreference (fit.keys (),
+                                                       self.jockey_installed_files,
+                                                       devid=id_dict, fit=fit)
+                        self.id_matched_ppdnames = ppdnamelist
+                        ppdname = ppdnamelist[0]
+                        status = fit[ppdname]
                     else:
                         (status, ppdname) = self.ppds.\
                             getPPDNameFromDeviceID ("Generic",
