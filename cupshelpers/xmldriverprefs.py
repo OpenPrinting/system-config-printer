@@ -23,6 +23,7 @@
 import xml.etree.ElementTree
 import re
 from .cupshelpers import parseDeviceID
+import ppds
 
 class DriverType:
     """
@@ -34,6 +35,15 @@ class DriverType:
         self.ppd_name = None
         self.attributes = []
         self.deviceid = []
+        self.fit = { ppds.PPDs.STATUS_SUCCESS: True,
+                     ppds.PPDs.STATUS_MODEL_MISMATCH: True,
+                     ppds.PPDs.STATUS_GENERIC_DRIVER: True,
+                     ppds.PPDs.STATUS_NO_DRIVER: True }
+
+        self._fitmap = { "exact": ppds.PPDs.STATUS_SUCCESS,
+                         "close": ppds.PPDs.STATUS_MODEL_MISMATCH,
+                         "generic": ppds.PPDs.STATUS_GENERIC_DRIVER,
+                         "none": ppds.PPDs.STATUS_NO_DRIVER }
 
     def add_ppd_name (self, pattern):
         """
@@ -55,6 +65,11 @@ class DriverType:
         """
         self.deviceid.append ((field.upper (), re.compile (pattern, re.I)))
 
+    def add_fit (self, text):
+        self.fit = {}
+        for fittype in text.split():
+            self.fit[self._fitmap[fittype]] = True
+
     def get_name (self):
         """
         Return the name for this driver type.
@@ -64,7 +79,7 @@ class DriverType:
     def __repr__ (self):
         return "<DriverType %s instance at 0x%x>" % (self.name, id (self))
 
-    def match (self, ppd_name, attributes):
+    def match (self, ppd_name, attributes, fit):
         """
         Return True if there is a match for all specified criteria.
 
@@ -76,8 +91,8 @@ class DriverType:
         except the CMD field which must be a list of strings.
         """
 
-        matches = True
-        if self.ppd_name and not self.ppd_name.match (ppd_name):
+        matches = self.fit.get (fit, False)
+        if matches and self.ppd_name and not self.ppd_name.match (ppd_name):
             matches = False
 
         if matches:
@@ -163,39 +178,42 @@ class DriverTypes:
         drivertypes = xml.etree.ElementTree.XML (file (filename).read ())
         for drivertype in drivertypes.getchildren ():
             t = DriverType (drivertype.attrib["name"])
-            if drivertype.attrib.has_key ("ppdname"):
-                t.add_ppd_name (drivertype.attrib["ppdname"])
 
             for child in drivertype.getchildren ():
-                if child.tag == "attribute":
+                if child.tag == "ppdname":
+                    t.add_ppd_name (child.attrib["match"])
+                elif child.tag == "attribute":
                     t.add_attribute (child.attrib["name"],
                                      child.attrib["match"])
                 elif child.tag == "deviceid":
                     t.add_deviceid (child.attrib["field"],
                                     child.attrib["match"])
+                elif child.tag == "fit":
+                    t.add_fit (child.text)
 
             types.append (t)
 
         self.drivertypes = types
 
-    def match (self, ppdname, ppddict):
+    def match (self, ppdname, ppddict, fit):
         """
-        Return the first matching drivertype for a PPD, given its name
-        and attributes, or None if there is no match.
+        Return the first matching drivertype for a PPD, given its name,
+        attributes, and fitness, or None if there is no match.
         """
 
         for drivertype in self.drivertypes:
-            if drivertype.match (ppdname, ppddict):
+            if drivertype.match (ppdname, ppddict, fit):
                 return drivertype
 
         return None
 
-    def get_ordered_ppdnames (self, drivertypes, ppds):
+    def get_ordered_ppdnames (self, drivertypes, ppdsdict, fit):
         """
-        Given a list of driver type names and a dict of PPD attributes
-        by PPD name, return a list of tuples in the form
-        (driver-type-name, PPD-name), representing PPDs that match the
-        list of driver types.
+        Given a list of driver type names, a dict of PPD attributes by
+        PPD name, and a dict of driver fitness status codes by PPD
+        name, return a list of tuples in the form (driver-type-name,
+        PPD-name), representing PPDs that match the list of driver
+        types.
 
         The returned tuples will have driver types in the same order
         as the driver types given, with the exception that any
@@ -207,9 +225,15 @@ class DriverTypes:
 
         # First find out what driver types we have
         ppdtypes = {}
-        for ppd_name, ppd_dict in ppds.iteritems ():
-            drivertype = self.match (ppd_name, ppd_dict)
-            name = drivertype.get_name ()
+        fit_default = ppds.PPDs.STATUS_MODEL_MISMATCH
+        for ppd_name, ppd_dict in ppdsdict.iteritems ():
+            drivertype = self.match (ppd_name, ppd_dict, fit.get (ppd_name,
+                                                                  fit_default))
+            if drivertype:
+                name = drivertype.get_name ()
+            else:
+                name = "none"
+
             m = ppdtypes.get (name, [])
             m.append (ppd_name)
             ppdtypes[name] = m
@@ -428,11 +452,16 @@ def test (xml_dir=None):
 
     for make in ppdfinder.getMakes ():
         for model in ppdfinder.getModels (make):
-            ppds = ppdfinder.getInfoFromModel (make, model)
+            ppdsdict = ppdfinder.getInfoFromModel (make, model)
             mm = make + " " + model
             orderedtypes = preforder.get_ordered_types (mm, None)
+
+            fit = {}
+            for ppdname in ppdsdict.keys ():
+                fit[ppdname] = ppds.PPDs.STATUS_MODEL_MISMATCH
+
             orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
-                                                            ppds)
+                                                            ppdsdict, fit)
             print mm + ":"
             for t, ppd in orderedppds:
                 print "  %s\n    (%s)" % (ppd, t)

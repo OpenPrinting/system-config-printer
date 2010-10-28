@@ -28,49 +28,89 @@
 	<data type="normalizedString"/>
       </attribute>
 
-      <!-- Match criteria (ppdname, attributes, deviceid) within one
-	   drivertype element must all be satisfied -->
-      <optional>
-	<attribute name="ppdname">
-	  <!-- Extended regular expression for matching against
-	       ppd-name attribute value (starting at beginning) -->
-	  <data type="string"/>
-	</attribute>
-      </optional>
+      <!-- Match criteria (ppdname, attributes, deviceid, fit)
+	   within one drivertype element must all be satisfied -->
+      <interleave>
+	<optional>
+	  <ref name="ppdname"/>
+	</optional>
 
-      <zeroOrMore>
-	<choice>
-	  <element name="attribute">
-	    <attribute name="name">
-	      <!-- IPP attribute name, e.g. ppd-make-and-model -->
-	      <data type="normalizedString"/>
-	    </attribute>
+	<optional>
+	  <ref name="attribute"/>
+	</optional>
 
-	    <attribute name="match">
-	      <!-- Extended regular expression for matching against
-		   attribute's value (starting at beginning) -->
-	      <data type="string"/>
-	    </attribute>
-	    <empty/>
-	  </element>
+	<optional>
+	  <ref name="deviceid"/>
+	</optional>
 
-	  <element name="deviceid">
-	    <attribute name="field">
-	      <!-- Case-insensitive, abbreviated form of IEEE 1284
-		   Device ID field key name e.g. MFG -->
-	      <data type="normalizedString"/>
-	    </attribute>
+	<optional>
+	  <ref name="fit"/>
+	</optional>
+      </interleave>
+    </element>
+  </define>
 
-	    <attribute name="match">
-	      <!-- Extended regular expression for matching against
-		   IEEE 1284 Device ID field's value (starting at
-		   beginning) -->
-	      <data type="string"/>
-	    </attribute>
-	    <empty/>
-	  </element>
-	</choice>
-      </zeroOrMore>
+  <define name="ppdname">
+    <element name="ppdname">
+      <attribute name="match">
+	<!-- Extended regular expression for matching against
+	     ppd-name attribute value (starting at beginning)
+	-->
+	<data type="string"/>
+      </attribute>
+
+      <empty/>
+    </element>
+  </define>
+
+  <define name="attribute">
+    <element name="attribute">
+      <attribute name="name">
+	<!-- IPP attribute name, e.g. ppd-make-and-model -->
+	<data type="normalizedString"/>
+      </attribute>
+
+      <attribute name="match">
+	<!-- Extended regular expression for matching against
+	     attribute's value (starting at beginning) -->
+	<data type="string"/>
+      </attribute>
+
+      <empty/>
+    </element>
+  </define>
+
+  <define name="deviceid">
+    <element name="deviceid">
+      <attribute name="field">
+	<!-- Case-insensitive, abbreviated form of IEEE 1284
+	     Device ID field key name e.g. MFG -->
+	<data type="normalizedString"/>
+      </attribute>
+
+      <attribute name="match">
+	<!-- Extended regular expression for matching against
+	     IEEE 1284 Device ID field's value (starting at
+	     beginning) -->
+	<data type="string"/>
+      </attribute>
+
+      <empty/>
+    </element>
+  </define>
+
+  <define name="fit">
+    <element name="fit">
+      <list>
+	<oneOrMore>
+	  <choice>
+	    <value>exact</value>   <!-- STATUS_SUCCESS -->
+	    <value>close</value>   <!-- STATUS_MODEL_MISMATCH -->
+	    <value>generic</value> <!-- STATUS_GENERIC_DRIVER -->
+	    <value>none</value>    <!-- STATUS_NO_DRIVER -->
+	  </choice>
+	</oneOrMore>
+      </list>
     </element>
   </define>
 </grammar>

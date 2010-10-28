@@ -1,26 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <drivertypes>
-  <drivertype name="cups" ppdname="drv:///sample.drv/"/>
+  <drivertype name="cups">
+    <ppdname match="drv:///sample.drv/"/>
+  </drivertype>
 
   <drivertype name="ghostscript">
     <attribute name="ppd-product" match=".*Ghostscript"/>
   </drivertype>
 
-  <drivertype name="gutenprint-expert"
-	      ppdname="gutenprint.*:.*/expert"/>
+  <drivertype name="gutenprint-expert">
+    <ppdname match="gutenprint.*:.*/expert"/>
+  </drivertype>
 
-  <drivertype name="gutenprint-simplified"
-	      ppdname="gutenprint.*:.*/simple"/>
+  <drivertype name="gutenprint-simplified">
+    <ppdname match="gutenprint.*:.*/simple"/>
+  </drivertype>
 
-  <drivertype name="generic-escp"
-	      ppdname="foomatic:Epson-Dot_Matrix.*"/>
-  <drivertype name="generic-escp"
-	      ppdname="drv:///sample.drv/epson(9|24).ppd"/>
+  <drivertype name="generic-escp">
+    <ppdname match="foomatic:Epson-Dot_Matrix.*"/>
+  </drivertype>
+
+  <drivertype name="generic-escp">
+    <ppdname match="drv:///sample.drv/epson(9|24).ppd"/>
+  </drivertype>
 
   <drivertype name="foomatic-recommended-hpijs">
-    <attribute name="ppd-make-and-model"
-	       match=".* Foomatic/hpijs"/>
+    <attribute name="ppd-make-and-model" match=".* Foomatic/hpijs"/>
     <deviceid field="DRV" match=",?R1"/>
+    <fit>
+      exact
+      close
+    </fit>
   </drivertype>
 
   <drivertype name="foomatic-hpijs">
@@ -28,55 +38,94 @@
 	       match=".* Foomatic/hpijs"/>
   </drivertype>
 
-  <drivertype name="foomatic-recommended-postscript"
-	      ppdname="foomatic:.*">
+  <drivertype name="foomatic-recommended-postscript">
+    <ppdname match="foomatic:.*"/>
     <attribute name="ppd-make-and-model"
 	       match=".* Postscript"/>
     <deviceid field="DRV" match=".*,?R1"/>
+    <fit>
+      exact
+      close
+    </fit>
   </drivertype>
 
-  <drivertype name="foomatic-recommended-non-postscript"
-	      ppdname="foomatic:.*">
+  <drivertype name="foomatic-recommended-non-postscript">
+    <ppdname match="foomatic:.*"/>
     <deviceid field="DRV" match=".*,?R1"/>
+    <fit>
+      exact
+      close
+    </fit>
   </drivertype>
 
-  <drivertype name="foomatic"
-	      ppdname="foomatic:.*"/>
+  <drivertype name="foomatic">
+    <ppdname match="foomatic:.*"/>
+  </drivertype>
 
   <drivertype name="generic-postscript">
-    <attribute name="ppd-make-and-model"
-	       match="Generic PostScript Printer"/>
+    <attribute name="ppd-make-and-model" match="Generic PostScript Printer"/>
+    <fit>
+      generic
+      none
+    </fit>
   </drivertype>
 
   <drivertype name="generic-pcl6">
-    <attribute name="ppd-make-and-model"
-	       match="Generic PCL 6 Printer"/>
+    <attribute name="ppd-make-and-model" match="Generic PCL 6 Printer"/>
+    <fit>
+      generic
+      none
+    </fit>
   </drivertype>
 
   <drivertype name="generic-pcl5e">
-    <attribute name="ppd-make-and-model"
-	       match="Generic PCL 5e Printer"/>
+    <attribute name="ppd-make-and-model" match="Generic PCL 5e Printer"/>
+    <fit>
+      generic
+      none
+    </fit>
   </drivertype>
 
   <drivertype name="generic-pcl5">
-    <attribute name="ppd-make-and-model"
-	       match="Generic PCL 5 Printer"/>
+    <attribute name="ppd-make-and-model" match="Generic PCL 5 Printer"/>
+    <fit>
+      generic
+      none
+    </fit>
   </drivertype>
 
   <drivertype name="generic-pcl">
-    <attribute name="ppd-make-and-model"
-	       match="Generic PCL Laser Printer"/>
+    <attribute name="ppd-make-and-model" match="Generic PCL Laser Printer"/>
+    <fit>
+      generic
+      none
+    </fit>
   </drivertype>
 
-  <drivertype name="hpcups-plugin"
-	      ppdname="drv:///hp/hpcups.drv/">
-    <attribute name="ppd-make-and-model"
-	       match=".* plugin.*"/>
+  <drivertype name="hpcups-plugin">
+    <ppdname match="drv:///hp/hpcups.drv/"/>
+    <attribute name="ppd-make-and-model" match=".* plugin.*"/>
+    <fit>
+      exact
+      close
+    </fit>
   </drivertype>
 
-  <drivertype name="hpcups"
-	      ppdname="drv:///hp/hpcups.drv/"/>
+  <drivertype name="hpcups">
+    <ppdname match="drv:///hp/hpcups.drv/"/>
+  </drivertype>
 
   <!-- Catch-all -->
-  <drivertype name="manufacturer"/>
+  <drivertype name="manufacturer">
+    <fit>
+      exact
+      close
+    </fit>
+  </drivertype>
+  <drivertype name="generic">
+    <fit>
+      generic
+      none
+    </fit>
+  </drivertype>
 </drivertypes>

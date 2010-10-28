@@ -391,7 +391,7 @@ class PPDs:
     def orderPPDNamesByPreference (self, ppdnamelist=[],
                                    downloadedfiles=[],
                                    make_and_model=None,
-                                   devid=None):
+                                   devid=None, fit=None):
         """
 
 	Sort a list of PPD names by (hard-coded) preferred driver
@@ -408,8 +408,8 @@ class PPDs:
         except for CMD field which must be a string list
 	@returns: string list
 	"""
-        if len (ppdnamelist) < 1:
-            return ppdnamelist
+        if fit == None:
+            fit = {}
 
         if self.drivertypes and self.preforder:
             ppds = {}
@@ -419,7 +419,7 @@ class PPDs:
             orderedtypes = self.preforder.get_ordered_types (make_and_model,
                                                              devid)
             orderedppds = self.drivertypes.get_ordered_ppdnames (orderedtypes,
-                                                                 ppds)
+                                                                 ppds, fit)
             ppdnamelist = map (lambda (typ, name): name, orderedppds)
 
         # Special handling for files we've downloaded.  First collect
@@ -447,10 +447,10 @@ class PPDs:
 
         return ppdnamelist
 
-    def getPPDNameFromDeviceID (self, mfg, mdl, description="",
-                                commandsets=[], uri=None,
-                                downloadedfiles=[],
-                                make_and_model=None):
+    def getPPDNamesFromDeviceID (self, mfg, mdl, description="",
+                                 commandsets=[], uri=None,
+                                 downloadedfiles=[],
+                                 make_and_model=None):
         """
 	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
 	The status is one of:
@@ -482,7 +482,7 @@ class PPDs:
         @type downloadedfiles: string list
         @param make_and_model: device-make-and-model string
         @type make_and_model: string
-	@returns: an integer,string pair of (status,ppd-name)
+	@returns: a dict of match status by PPD name
 	"""
         _debugprint ("\n%s %s" % (mfg, mdl))
         orig_mfg = mfg
@@ -491,7 +491,7 @@ class PPDs:
 
         # Start with an empty result list and build it up using
         # several search methods, in increasing order of fuzziness.
-        ppdnamelist = []
+        status = {}
 
         # First, try looking up the device using the manufacturer and
         # model fields from the Device ID exactly as they appear (but
@@ -501,8 +501,8 @@ class PPDs:
 
         id_matched = False
         try:
-            ppdnamelist = self.ids[mfgl][mdll]
-            status = self.STATUS_SUCCESS
+            for each in self.ids[mfgl][mdll]:
+                status[each] = self.STATUS_SUCCESS
             id_matched = True
         except KeyError:
             pass
@@ -510,8 +510,8 @@ class PPDs:
         # The HP PPDs say "HP" not "Hewlett-Packard", so try that.
         if mfgl == "hewlett-packard":
             try:
-                ppdnamelist += self.ids["hp"][mdll]
-                status = self.STATUS_SUCCESS
+                for each in self.ids["hp"][mdll]:
+                    status[each] = self.STATUS_SUCCESS
                 print ("**** Incorrect IEEE 1284 Device ID: %s" %
                        self.ids["hp"][mdll])
                 print "**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl)
@@ -556,8 +556,8 @@ class PPDs:
 
             if self.lmodels[mfgl].has_key (mdll):
                 model = mdlsl[mdll]
-                ppdnamelist += mdls[model].keys ()
-                status = self.STATUS_SUCCESS
+                for each in mdls[model].keys ():
+                    status[each] = self.STATUS_SUCCESS
             else:
                 # Make use of the model name clean-up in the
                 # ppdMakeModelSplit () function
@@ -565,23 +565,22 @@ class PPDs:
                 mdl2l = mdl2.lower ()
                 if self.lmodels[mfgl].has_key (mdl2l):
                     model = mdlsl[mdl2l]
-                    ppdnamelist += mdls[model].keys ()
-                    status = self.STATUS_SUCCESS
+                    for each in mdls[model].keys ():
+                        status[each] = self.STATUS_SUCCESS
       
-        if not ppdnamelist and mdls:
+        if not status and mdls:
             (s, ppds) = self._findBestMatchPPDs (mdls, mdl)
             if s != self.STATUS_NO_DRIVER:
-                status = s
-                ppdnamelist = ppds
+                for each in ppds:
+                    status[each] = s
 
-        if not ppdnamelist and commandsets:
+        if not status and commandsets:
             if type (commandsets) != list:
                 commandsets = commandsets.split (',')
 
             generic = self._getPPDNameFromCommandSet (commandsets)
             if generic:
-                status = self.STATUS_GENERIC_DRIVER
-                ppdnamelist = generic
+                status[generic[0]] = self.STATUS_GENERIC_DRIVER
 
         # What about the CMD field of the Device ID?  Some devices
         # have optional units for page description languages, such as
@@ -603,7 +602,7 @@ class PPDs:
         # add them back in afterwards.
         if id_matched and len (commandsets) > 0:
             failed = set()
-            for ppdname in ppdnamelist:
+            for ppdname in status.keys ():
                 ppd = self.ppds[ppdname]
                 ppd_device_id = _singleton (ppd.get ('ppd-device-id'))
                 if not ppd_device_id:
@@ -624,14 +623,15 @@ class PPDs:
                     failed.add (ppdname)
 
             _debugprint ("Removed %s due to CMD mis-match" % failed)
-            ppdnamelist = list (set (ppdnamelist) - failed)
+            for each in failed:
+                del status[each]
 
         # If the Device ID matched but the DES field is different,
         # eliminate those PPDs too.
         if id_matched and description:
             _debugprint ("Checking DES field")
             inexact = set()
-            for ppdname in ppdnamelist:
+            for ppdname in status.keys ():
                 if ppdname.find ("hpijs"):
                     continue
                 ppddict = self.ppds[ppdname]
@@ -643,13 +643,12 @@ class PPDs:
                 if id_dict["DES"] != description:
                     inexact.add (ppdname)
 
-            exact = set (ppdnamelist).difference (inexact)
-            _debugprint ("discarding: %s" % inexact)
-            if len (exact) >= 1:
-                ppdnamelist = list (exact)
+            if len (status) - len (inexact) >= 1:
+                _debugprint ("discarding: %s" % inexact)
+                for each in inexact:
+                    del status[each]
 
-        if not ppdnamelist:
-            status = self.STATUS_NO_DRIVER
+        if not status:
             fallbacks = ["textonly.ppd", "postscript.ppd"]
             found = False
             for fallback in fallbacks:
@@ -658,7 +657,7 @@ class PPDs:
                 for ppdpath in self.ppds.keys ():
                     if (ppdpath.endswith (fallback) or
                         ppdpath.endswith (fallbackgz)):
-                        ppdnamelist = [ppdpath]
+                        status[ppdpath] = self.STATUS_NO_DRIVER
                         found = True
                         break
 
@@ -669,20 +668,7 @@ class PPDs:
 
             if not found:
                 _debugprint ("No fallback available; choosing any")
-                ppdnamelist = [self.ppds.keys ()[0]]
-
-        # We've got a set of PPDs, any of which will drive the device.
-        # Now we have to choose the "best" one.  This is quite tricky
-        # to decide, so let's sort them in order of preference and
-        # take the first.
-        devid = { "MFG": mfg, "MDL": mdl,
-                  "DES": description,
-                  "CMD": commandsets }
-        ppdnamelist = self.orderPPDNamesByPreference (ppdnamelist,
-                                                      downloadedfiles,
-                                                      make_and_model,
-                                                      devid)
-        _debugprint ("Found PPDs: %s" % str (ppdnamelist))
+                status[self.ppds.keys ()[0]] = self.STATUS_NO_DRIVER
 
         if not id_matched:
             sanitised_uri = re.sub (pattern="//[^@]*@/?", repl="//",
@@ -700,6 +686,65 @@ class PPDs:
             print "No ID match for device %s:" % sanitised_uri
             print id
 
+        return status
+
+    def getPPDNameFromDeviceID (self, mfg, mdl, description="",
+                                commandsets=[], uri=None,
+                                downloadedfiles=[],
+                                make_and_model=None):
+        """
+	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
+	The status is one of:
+
+	  - L{STATUS_SUCCESS}: the match was successful, and an exact
+            match was found
+
+	  - L{STATUS_MODEL_MISMATCH}: a similar match was found, but
+            the model name does not exactly match
+
+	  - L{STATUS_GENERIC_DRIVER}: no match was found, but a
+            generic driver is available that can drive this device
+            according to its command set list
+
+	  - L{STATUS_NO_DRIVER}: no match was found at all, and the
+            returned PPD name is a last resort
+
+	@param mfg: MFG or MANUFACTURER field
+	@type mfg: string
+	@param mdl: MDL or MODEL field
+	@type mdl: string
+	@param description: DES or DESCRIPTION field, optional
+	@type description: string
+	@param commandsets: CMD or COMMANDSET field, optional
+	@type commandsets: string
+	@param uri: device URI, optional (only needed for debugging)
+	@type uri: string
+        @param downloadedfiles: filenames from downloaded packages
+        @type downloadedfiles: string list
+        @param make_and_model: device-make-and-model string
+        @type make_and_model: string
+	@returns: an integer,string pair of (status,ppd-name)
+	"""
+
+        fit = self.getPPDNamesFromDeviceID (mfg, mdl, description,
+                                            commandsets, uri,
+                                            downloadedfiles,
+                                            make_and_model)
+
+        # We've got a set of PPDs, any of which will drive the device.
+        # Now we have to choose the "best" one.  This is quite tricky
+        # to decide, so let's sort them in order of preference and
+        # take the first.
+        devid = { "MFG": mfg, "MDL": mdl,
+                  "DES": description,
+                  "CMD": commandsets }
+        ppdnamelist = self.orderPPDNamesByPreference (fit.keys (),
+                                                      downloadedfiles,
+                                                      make_and_model,
+                                                      devid, fit)
+        _debugprint ("Found PPDs: %s" % str (ppdnamelist))
+
+        status = fit[ppdnamelist[0]]
         print "Using %s (status: %d)" % (ppdnamelist[0], status)
         return (status, ppdnamelist[0])
 
