@@ -22,7 +22,7 @@
 import dbus
 import dbus.glib
 import dbus.service
-from debug import debugprint
+from . import _debugprint, set_debugprint_fn
 
 class PrinterDriversInstaller(dbus.service.Object):
     DBUS_PATH  = "/com/redhat/PrinterDriversInstaller"
@@ -47,20 +47,18 @@ class PrinterDriversInstaller(dbus.service.Object):
         xid = 0
         resources = ["MFG:%s;MDL:%s;" % (mfg, mdl)]
         interaction = "hide-finished"
-        debugprint ("Calling InstallPrinterDrivers (%s, %s, %s)" %
-                    (repr (xid), repr (resources), repr (interaction)))
+        _debugprint ("Calling InstallPrinterDrivers (%s, %s, %s)" %
+                     (repr (xid), repr (resources), repr (interaction)))
         proxy.InstallPrinterDrivers (dbus.UInt32 (xid),
                                      resources, interaction,
                                      reply_handler=reply_handler,
                                      error_handler=error_handler,
                                      timeout=3600)
 
-if __name__ == "__main__":
+def client_test():
     bus = dbus.SystemBus ()
     import sys
-    if len (sys.argv) < 2 or sys.argv[1] == "--client":
-        # Client
-        obj = bus.get_object (PrinterDriversInstaller.DBUS_OBJ,
-                              PrinterDriversInstaller.DBUS_PATH)
-        proxy = dbus.Interface (obj, PrinterDriversInstaller.DBUS_IFACE)
-        print proxy.InstallDrivers ("MFG", "MDL", "CMD")
+    obj = bus.get_object (PrinterDriversInstaller.DBUS_OBJ,
+                          PrinterDriversInstaller.DBUS_PATH)
+    proxy = dbus.Interface (obj, PrinterDriversInstaller.DBUS_IFACE)
+    print proxy.InstallDrivers ("MFG", "MDL", "CMD")
