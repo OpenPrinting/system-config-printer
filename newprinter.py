@@ -625,6 +625,9 @@ class NewPrinterGUI(GtkGUI):
             if not devid:
                 devid = None
 
+            self.current_devices = None
+
+            # We'll need the list of PPDs.
             self.ppdsloader = ppdsloader.PPDsLoader (device_id=devid,
                                                      device_uri=device_uri,
                                                      parent=self.NewPrinterWindow,
@@ -634,6 +637,21 @@ class NewPrinterGUI(GtkGUI):
             self.ppdsloader.connect ('finished',
                                      self.on_ppdsloader_finished_initial)
             self.ppdsloader.run ()
+
+            # We'll also need to know the Device ID for this device.
+            if self.dialog_mode == "ppd" and not self.devid:
+                scheme = device_uri.split (":", 1)[0]
+                schemes = [scheme]
+                if scheme in ["socket", "lpd", "ipp"]:
+                    schemes.extend (["snmp", "dnssd"])
+                self.fetchDevices_conn = asyncconn.Connection ()
+                self.fetchDevices_conn._begin_operation (_("fetching device "
+                                                           "list"))
+                self.inc_spinner_task ()
+                cupshelpers.getDevices (self.fetchDevices_conn,
+                                        include_schemes=schemes,
+                                        reply_handler=self.change_ppd_got_devs,
+                                        error_handler=self.change_ppd_got_devs)
 
             self.ntbkNewPrinter.set_current_page(2)
             self.rbtnNPFoomatic.set_active (True)
@@ -663,12 +681,42 @@ class NewPrinterGUI(GtkGUI):
         if not self.ppds:
             return
 
+        if self.devid or self.current_devices != None:
+            # Device fetch has finished too.
+            self.change_ppd_have_ppds_and_devs ()
+
+    def change_ppd_got_devs (self, conn, result):
+        self.fetchDevices_conn._end_operation ()
+        self.fetchDevices_conn.destroy ()
+        self.fetchDevices_conn = None
+        self.dec_spinner_task ()
+        if isinstance (result, Exception):
+            self.current_devices = {}
+        else:
+            self.current_devices = result
+
+        if not self.ppdsloader:
+            # PPDs loader has finished too.
+            self.change_ppd_have_ppds_and_devs ()
+
+    def change_ppd_have_ppds_and_devs (self):
         self.exactdrivermatch = False
         self.id_matched_ppdnames = []
+        devid_dict = dict()
         if self.devid != "":
-            devid_dict = dict()
+            devid = self.devid
             try:
-                devid_dict = cupshelpers.parseDeviceID (self.devid)
+                devid_dict = cupshelpers.parseDeviceID (devid)
+            except:
+                nonfatalException ()
+        else:
+            device = self.current_devices.get (self.device.uri)
+            if device:
+                devid_dict = device.id_dict
+                self.device = device
+
+        if devid_dict:
+            try:
                 fit = self.ppds.\
                     getPPDNamesFromDeviceID (devid_dict["MFG"],
                                              devid_dict["MDL"],
