@@ -275,21 +275,15 @@ class PPDs:
         self.drivertypes = xmldriverprefs.DriverTypes ()
         self.preforder = xmldriverprefs.PreferenceOrder ()
         try:
-            typesfile = os.path.join (xml_dir, "drivertypes.xml")
-            self.drivertypes.load (typesfile)
+            xmlfile = os.path.join (xml_dir, "preferreddrivers.xml")
+            (drivertypes, preferenceorder) = \
+                xmldriverprefs.PreferredDrivers (xmlfile)
+            self.drivertypes.load (drivertypes)
+            self.preforder.load (preferenceorder)
         except Exception, e:
-            print "Error loading %s: %s" % (typesfile, e)
+            print "Error loading %s: %s" % (xmlfile, e)
             self.drivertypes = None
             self.preforder = None
-
-        if self.preforder:
-            try:
-                prefsfile = os.path.join (xml_dir, "preferreddrivers.xml")
-                self.preforder.load (prefsfile)
-            except Exception, e:
-                print "Error loading %s: %s" % (prefsfile, e)
-                self.drivertypes = None
-                self.preforder = None
 
         if (language == None or
             language == "C" or

@@ -1,37 +1,165 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <preferreddrivers>
-  <printer> <!-- Use hpcups on HP printers -->
-    <make-and-model match="(HP|Hewlett-Packard) .*"/>
-    <deviceid field="MFG" match="HP|Hewlett-Packard"/>
-    <drivers>
-      <drivertype>hpcups</drivertype>
-    </drivers>
-  </printer>
+  <drivertypes>
+    <!-- GENERIC DRIVERS -->
+    <drivertype name="generic-escp">
+      <ppdname match="foomatic:Generic-ESC_P.*"/>
+      <fit>
+	generic
+	none
+      </fit>
+    </drivertype>
 
-  <!-- any other special cases here... -->
+    <drivertype name="generic-escp">
+      <ppdname match="drv:///sample.drv/epson(9|24).ppd"/>
+      <fit>
+	generic
+	none
+      </fit>
+    </drivertype>
 
-  <printer>
-    <!-- catch all -->
-    <drivers>
-      <drivertype>foomatic-recommended-non-postscript</drivertype>
-      <drivertype>manufacturer</drivertype>
-      <drivertype>foomatic-recommended-postscript</drivertype>
-      <drivertype>hpcups</drivertype>
-      <drivertype>gutenprint-simplified</drivertype>
-      <drivertype>gutenprint-expert</drivertype>
-      <drivertype>foomatic</drivertype>
-      <drivertype>cups</drivertype>
-      <drivertype>ghostscript</drivertype>
+    <drivertype name="generic-postscript">
+      <attribute name="ppd-make-and-model"
+		 match="Generic PostScript Printer"/>
+      <fit>
+	generic
+	none
+      </fit>
+    </drivertype>
 
-      <!-- Generic drivers listed last, in this order -->
-      <drivertype>generic-postscript</drivertype>
-      <drivertype>generic-pcl6</drivertype>
-      <drivertype>generic-pcl5e</drivertype>
-      <drivertype>generic-pcl5c</drivertype>
-      <drivertype>generic-pcl5</drivertype>
-      <drivertype>generic-pcl</drivertype>
-      <drivertype>generic-escp</drivertype>
-      <drivertype>generic</drivertype>
-    </drivers>
-  </printer>
+    <drivertype name="generic-pcl6">
+      <attribute name="ppd-make-and-model"
+		 match="Generic PCL 6 Printer"/>
+      <fit>
+	generic
+	none
+      </fit>
+    </drivertype>
+
+    <drivertype name="generic-pcl5e">
+      <attribute name="ppd-make-and-model"
+		 match="Generic PCL 5e Printer"/>
+      <fit>
+	generic
+	none
+      </fit>
+    </drivertype>
+
+    <drivertype name="generic-pcl5">
+      <attribute name="ppd-make-and-model"
+		 match="Generic PCL 5 Printer"/>
+      <fit>
+	generic
+	none
+      </fit>
+    </drivertype>
+
+    <drivertype name="generic-pcl">
+      <attribute name="ppd-make-and-model"
+		 match="Generic PCL Laser Printer"/>
+      <fit>
+	generic
+	none
+      </fit>
+    </drivertype>
+
+    <drivertype name="generic">
+      <fit>
+	generic
+	none
+      </fit>
+    </drivertype>
+
+    <!-- END OF GENERIC DRIVERS -->
+    <!-- now fit is either exact or close -->
+
+    <drivertype name="cups">
+      <ppdname match="drv:///sample.drv/"/>
+    </drivertype>
+
+    <drivertype name="ghostscript">
+      <attribute name="ppd-product" match=".*Ghostscript"/>
+    </drivertype>
+
+    <drivertype name="gutenprint-expert">
+      <ppdname match="gutenprint.*:.*/expert"/>
+    </drivertype>
+
+    <drivertype name="gutenprint-simplified">
+      <ppdname match="gutenprint.*:"/>
+    </drivertype>
+
+    <drivertype name="foomatic-recommended-hpijs">
+      <attribute name="ppd-make-and-model" match=".* Foomatic/hpijs"/>
+      <deviceid field="DRV" match=",?R1"/>
+    </drivertype>
+
+    <drivertype name="foomatic-hpijs">
+      <attribute name="ppd-make-and-model" match=".* Foomatic/hpijs"/>
+    </drivertype>
+
+    <drivertype name="foomatic-recommended-postscript">
+      <ppdname match="foomatic:.*"/>
+      <attribute name="ppd-make-and-model" match=".* Postscript"/>
+      <deviceid field="DRV" match=".*,?R1"/>
+    </drivertype>
+
+    <drivertype name="foomatic-recommended-non-postscript">
+      <ppdname match="foomatic:.*"/>
+      <deviceid field="DRV" match=".*,?R1"/>
+    </drivertype>
+
+    <drivertype name="foomatic">
+      <ppdname match="foomatic:.*"/>
+    </drivertype>
+
+    <drivertype name="hpcups-plugin">
+      <ppdname match="drv:///hp/hpcups.drv/"/>
+      <attribute name="ppd-make-and-model" match=".* plugin.*"/>
+    </drivertype>
+
+    <drivertype name="hpcups">
+      <ppdname match="drv:///hp/hpcups.drv/"/>
+    </drivertype>
+
+    <!-- Catch-all -->
+    <drivertype name="manufacturer"/>
+  </drivertypes>
+
+  <preferenceorder>
+    <printer> <!-- Use hpcups on HP printers -->
+      <make-and-model match="(HP|Hewlett-Packard) .*"/>
+      <deviceid field="MFG" match="HP|Hewlett-Packard"/>
+      <drivers>
+	<drivertype>hpcups</drivertype>
+      </drivers>
+    </printer>
+
+    <!-- any other special cases here... -->
+
+    <printer>
+      <!-- catch all -->
+      <drivers>
+	<drivertype>foomatic-recommended-non-postscript</drivertype>
+	<drivertype>manufacturer</drivertype>
+	<drivertype>foomatic-recommended-postscript</drivertype>
+	<drivertype>hpcups</drivertype>
+	<drivertype>gutenprint-simplified</drivertype>
+	<drivertype>gutenprint-expert</drivertype>
+	<drivertype>foomatic</drivertype>
+	<drivertype>cups</drivertype>
+	<drivertype>ghostscript</drivertype>
+
+	<!-- Generic drivers listed last, in this order -->
+	<drivertype>generic-postscript</drivertype>
+	<drivertype>generic-pcl6</drivertype>
+	<drivertype>generic-pcl5e</drivertype>
+	<drivertype>generic-pcl5c</drivertype>
+	<drivertype>generic-pcl5</drivertype>
+	<drivertype>generic-pcl</drivertype>
+	<drivertype>generic-escp</drivertype>
+	<drivertype>generic</drivertype>
+      </drivers>
+    </printer>
+  </preferenceorder>
 </preferreddrivers>

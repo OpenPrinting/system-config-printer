@@ -25,6 +25,10 @@ import re
 from .cupshelpers import parseDeviceID
 import ppds
 
+def PreferredDrivers (filename):
+    preferreddrivers = xml.etree.ElementTree.XML (file (filename).read ())
+    return preferreddrivers.getchildren()
+
 class DriverType:
     """
     A type of driver.
@@ -169,13 +173,12 @@ class DriverTypes:
     def __init__ (self):
         self.drivertypes = []
 
-    def load (self, filename):
+    def load (self, drivertypes):
         """
         Load the list of driver types from an XML file.
         """
 
         types = []
-        drivertypes = xml.etree.ElementTree.XML (file (filename).read ())
         for drivertype in drivertypes.getchildren ():
             t = DriverType (drivertype.attrib["name"])
 
@@ -353,12 +356,11 @@ class PreferenceOrder:
     def __init__ (self):
         self.ptypes = []
 
-    def load (self, filename):
+    def load (self, preferreddrivers):
         """
         Load the policy from an XML file.
         """
 
-        preferreddrivers = xml.etree.ElementTree.XML (file (filename).read ())
         for printer in preferreddrivers.getchildren ():
             ptype = PrinterType ()
             for child in printer.getchildren ():
@@ -416,37 +418,36 @@ class PreferenceOrder:
         return orderedtypes
 
 
-def test (xml_dir=None, attached=False):
+def test (xml_path=None, attached=False):
     import cups
     import ppds
     from pprint import pprint
     from time import time
     import os.path
 
-    if xml_dir == None:
-        xml_dir = os.path.join (os.path.join (os.path.dirname (__file__),
-                                              ".."),
-                                "xml")
+    if xml_path == None:
+        xml_path = os.path.join (os.path.join (os.path.dirname (__file__),
+                                               ".."),
+                                 "xml")
 
-    typesfilename = os.path.join (xml_dir, "drivertypes.xml")
-    preffilename = os.path.join (xml_dir, "preferreddrivers.xml")
-    c = cups.Connection ()
+        xml_path = os.path.join (xml_path, "preferreddrivers.xml")
+
     loadstart = time ()
+    (drivertypes, preferenceorder) = PreferredDrivers (xml_path)
     drivertypes = DriverTypes ()
-    drivertypes.load (typesfilename)
+    drivertypes.load (drivertypes)
+
+    preforder = PreferenceOrder ()
+    preforder.load (preferenceorder)
     loadtime = time () - loadstart
-    print "Time to load %s: %.3fs" % (typesfilename, loadtime)
+    print "Time to load %s: %.3fs" % (xml_path, loadtime)
+
+    c = cups.Connection ()
     try:
         cupsppds = c.getPPDs2 ()
     except AttributeError:
         # getPPDs2 requires pycups >= 1.9.52 
         cupsppds = c.getPPDs ()
-
-    loadstart = time ()
-    preforder = PreferenceOrder ()
-    preforder.load (preffilename)
-    loadtime = time () - loadstart
-    print "Time to load %s: %.3fs" % (preffilename, loadtime)
 
     ppdfinder = ppds.PPDs (cupsppds)
 
