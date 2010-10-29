@@ -5,6 +5,7 @@ SUBDIRS=po
 EXPORT_MODULES=					\
 	cupshelpers/__init__.py			\
 	cupshelpers/cupshelpers.py		\
+	cupshelpers/installdriver.py		\
 	cupshelpers/ppds.py			\
 	cupshelpers/openprinting.py
 
@@ -93,7 +94,6 @@ nobase_pkgdata_DATA=					\
 	GroupsPaneModel.py				\
 	gtkinklevel.py					\
 	gtkspinner.py					\
-	installdriver.py				\
 	installpackage.py				\
 	jobviewer.py					\
 	monitor.py					\

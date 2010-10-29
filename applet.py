@@ -30,7 +30,7 @@ import pynotify
 import time
 import locale
 import gettext
-import installdriver
+import cupshelpers.installdriver
 from gettext import gettext as _
 DOMAIN="system-config-printer"
 gettext.textdomain (DOMAIN)
@@ -364,12 +364,13 @@ if __name__ == '__main__':
                 pass
 
         try:
-            installdriver.PrinterDriversInstaller(bus)
+            cupshelpers.installdriver.set_debugprint_fn (debugprint)
+            cupshelpers.installdriver.PrinterDriversInstaller(bus)
         except Exception, e:
             try:
-                #print >> sys.stderr, ("%s: failed to start "
-                #                      "PrinterDriversInstaller service: %s" %
-                #                      (PROGRAM_NAME, e))
+                print >> sys.stderr, ("%s: failed to start "
+                                      "PrinterDriversInstaller service: %s" %
+                                      (PROGRAM_NAME, e))
                 pass
             except:
                 pass

@@ -174,7 +174,8 @@ class PPDsLoader(gobject.GObject):
             interaction = "hide-finished"
             debugprint ("Calling InstallPrinterDrivers (%s, %s, %s)" %
                         (repr (xid), repr (resources), repr (interaction)))
-            proxy.InstallPrinterDrivers (xid, resources, interaction,
+            proxy.InstallPrinterDrivers (dbus.UInt32 (xid),
+                                         resources, interaction,
                                          reply_handler=self._packagekit_reply,
                                          error_handler=self._packagekit_error,
                                          timeout=3600)
