@@ -566,7 +566,7 @@ class PPDs:
                 for each in ppds:
                     status[each] = s
 
-        if not status and commandsets:
+        if commandsets:
             if type (commandsets) != list:
                 commandsets = commandsets.split (',')
 
