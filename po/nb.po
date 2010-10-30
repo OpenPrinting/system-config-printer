@@ -1,4 +1,4 @@
-# Kjartan Maraas <kmaraas@broadpark.no>, 2001-2010
+# Kjartan Maraas <kmaraas@gnome.org>, 2001-2010
 # Espen Stefansen <espenas@gmail.com>, 2007
 # Trond Eivind Glomsrød <teg@redhat.com>, 2007.
 #
@@ -6,10 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: system-config-printer 1.2.4\n"
 "Report-Msgid-Bugs-To: https://bugzilla.redhat.com/bugzilla\n"
-"POT-Creation-Date: 2010-10-13 12:08+0100\n"
-"PO-Revision-Date: 2010-08-30 17:59+0200\n"
-"Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
+"POT-Creation-Date: 2010-10-30 16:07+0200\n"
+"PO-Revision-Date: 2010-10-30 16:11+0200\n"
+"Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norsk bokmål <i18n-nb@lister.ping.uio.no>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -560,7 +561,7 @@ msgstr "Autentisert"
 #. ftp://ftp.pwg.org/pub/pwg/candidates/cs-ippfinishings10-20010205-5100.1.pdf
 #: ../ppdippstr.py:63 ../system-config-printer.py:763
 #: ../system-config-printer.py:3928 ../system-config-printer.py:3939
-#: ../system-config-printer.py:6605
+#: ../system-config-printer.py:6545
 msgid "None"
 msgstr "Ingen"
 
@@ -723,11 +724,11 @@ msgstr "Foto eller 5x7 tommer indekskort"
 
 #: ../ppdippstr.py:129
 msgid "Photo with tear-off tab"
-msgstr ""
+msgstr "Foto med avrivingsfane"
 
 #: ../ppdippstr.py:130
 msgid "3x5 inch index card"
-msgstr ""
+msgstr "3x5 tommers kartotekkort"
 
 #: ../ppdippstr.py:131
 msgid "5x8 inch index card"
@@ -763,7 +764,7 @@ msgstr "Av"
 
 #: ../ppdippstr.py:142
 msgid "Resolution, quality, ink type, media type"
-msgstr ""
+msgstr "Oppløsing, kvalitet, blekktype, medietype"
 
 #: ../ppdippstr.py:143
 msgid "Controlled by 'Printout mode'"
@@ -821,7 +822,7 @@ msgstr "Internet Printing Protocol (https)"
 msgid "LPD/LPR Host or Printer"
 msgstr "LPD/LPR-vert eller skriver"
 
-#: ../ppdippstr.py:176 ../system-config-printer.py:5777
+#: ../ppdippstr.py:176 ../system-config-printer.py:5761
 msgid "AppSocket/HP JetDirect"
 msgstr "AppSocket/HP JetDirect"
 
@@ -833,20 +834,20 @@ msgstr "Seriellport #1"
 msgid "LPT #1"
 msgstr "LPT #1"
 
-#: ../ppdippstr.py:182 ../system-config-printer.py:5791
+#: ../ppdippstr.py:182 ../system-config-printer.py:5775
 msgid "Windows Printer via SAMBA"
 msgstr "Windows-skriver via SAMBA"
 
-#: ../ppdsloader.py:58 ../system-config-printer.py:4619
-#: ../system-config-printer.py:6092 ../system-config-printer.py:6287
+#: ../ppdsloader.py:59 ../system-config-printer.py:4605
+#: ../system-config-printer.py:6021 ../system-config-printer.py:6216
 msgid "Searching"
 msgstr "Søker"
 
-#: ../ppdsloader.py:66 ../system-config-printer.py:4620
+#: ../ppdsloader.py:67 ../system-config-printer.py:4606
 msgid "Searching for drivers"
 msgstr "Søker etter drivere"
 
-#: ../ppdsloader.py:110
+#: ../ppdsloader.py:111
 msgid "fetching PPDs"
 msgstr "henter PPDer"
 
@@ -1200,7 +1201,7 @@ msgstr ""
 #. the server is publishing shared printers.  Fetch the settings
 #. now so that we can update the "not published" label if necessary.
 #: ../system-config-printer.py:1322 ../system-config-printer.py:2249
-#: ../system-config-printer.py:3522
+#: ../system-config-printer.py:3523
 msgid "fetching server settings"
 msgstr "henter innstillinger for tjener"
 
@@ -1231,8 +1232,8 @@ msgstr "Nettverksskriver (oppdaget)"
 msgid "Network class (discovered)"
 msgstr "Nettverksklasse (oppdaget)"
 
-#: ../system-config-printer.py:1521 ../system-config-printer.py:5772
-#: ../system-config-printer.py:5881 ../system-config-printer.py:5883
+#: ../system-config-printer.py:1521 ../system-config-printer.py:5756
+#: ../system-config-printer.py:5827 ../system-config-printer.py:5829
 msgid "Fax"
 msgstr "Faks"
 
@@ -1267,9 +1268,9 @@ msgstr "Alternativer for skriver"
 msgid "modifying class %s"
 msgstr "endrer klasse %s"
 
-#: ../system-config-printer.py:2143 ../system-config-printer.py:3324
-#: ../system-config-printer.py:3349 ../system-config-printer.py:6912
-#: ../system-config-printer.py:6924 ../system-config-printer.py:6942
+#: ../system-config-printer.py:2143 ../system-config-printer.py:3325
+#: ../system-config-printer.py:3350 ../system-config-printer.py:6852
+#: ../system-config-printer.py:6864 ../system-config-printer.py:6882
 #, python-format
 msgid "modifying printer %s"
 msgstr "endrer skriver %s"
@@ -1360,77 +1361,77 @@ msgstr ""
 msgid "Marker levels are not reported for this printer."
 msgstr ""
 
-#: ../system-config-printer.py:3021
+#: ../system-config-printer.py:3022
 msgid "Cannot Rename"
 msgstr "Kan ikke endre navn"
 
-#: ../system-config-printer.py:3022
+#: ../system-config-printer.py:3023
 msgid "There are queued jobs."
 msgstr "Det ligger jobber i kø."
 
-#: ../system-config-printer.py:3040
+#: ../system-config-printer.py:3041
 msgid "Renaming will lose history"
 msgstr "Endring av navn vil medføre tap av historikk"
 
-#: ../system-config-printer.py:3042
+#: ../system-config-printer.py:3043
 msgid "Completed jobs will no longer be available for re-printing."
 msgstr ""
 
-#: ../system-config-printer.py:3120
+#: ../system-config-printer.py:3121
 msgid "renaming printer"
 msgstr "endrer navn på skriver"
 
 #. for classes make sure all members
 #. will get added
-#: ../system-config-printer.py:3212
+#: ../system-config-printer.py:3213
 msgid "duplicating printer"
 msgstr "duplisererskriver"
 
-#: ../system-config-printer.py:3276
+#: ../system-config-printer.py:3277
 #, python-format
 msgid "Really delete class '%s'?"
 msgstr "Vil du virkelig slette klassen «%s»?"
 
-#: ../system-config-printer.py:3278
+#: ../system-config-printer.py:3279
 #, python-format
 msgid "Really delete printer '%s'?"
 msgstr "Vil du virkelig slette skriver «%s»?"
 
-#: ../system-config-printer.py:3280
+#: ../system-config-printer.py:3281
 msgid "Really delete selected destinations?"
 msgstr "Vil du virkelig slette valgte mål?"
 
-#: ../system-config-printer.py:3301
+#: ../system-config-printer.py:3302
 #, python-format
 msgid "deleting printer %s"
 msgstr "sletter skriver %s"
 
-#: ../system-config-printer.py:3389
+#: ../system-config-printer.py:3390
 msgid "Publish Shared Printers"
 msgstr "Publiser delte skrivere"
 
-#: ../system-config-printer.py:3390
+#: ../system-config-printer.py:3391
 msgid ""
 "Shared printers are not available to other people unless the 'Publish shared "
 "printers' option is enabled in the server settings."
 msgstr ""
 
-#: ../system-config-printer.py:3580
+#: ../system-config-printer.py:3581
 msgid "modifying server settings"
 msgstr "endrer innstillinger for tjener"
 
-#: ../system-config-printer.py:3616 ../system-config-printer.py:3621
-#: ../system-config-printer.py:5094 ../system-config-printer.py:5097
+#: ../system-config-printer.py:3617 ../system-config-printer.py:3622
+#: ../system-config-printer.py:5078 ../system-config-printer.py:5081
 msgid "Adjust Firewall"
 msgstr "Juster brannmur"
 
-#: ../system-config-printer.py:3617
+#: ../system-config-printer.py:3618
 msgid "Adjust the firewall now to allow all incoming IPP connections?"
 msgstr ""
 
-#: ../system-config-printer.py:3620 ../system-config-printer.py:5096
+#: ../system-config-printer.py:3621 ../system-config-printer.py:5080
 msgid "Do It Later"
-msgstr ""
+msgstr "Gjør det senere"
 
 #: ../system-config-printer.py:3916 ../system-config-printer.py:3927
 #: ../system-config-printer.py:3933 ../system-config-printer.py:3938
@@ -1521,8 +1522,8 @@ msgstr ""
 msgid "All files (*)"
 msgstr "Alle filer (*)"
 
-#: ../system-config-printer.py:4117 ../system-config-printer.py:6262
-#: ../system-config-printer.py:6301 ../applet.py:127
+#: ../system-config-printer.py:4117 ../system-config-printer.py:6191
+#: ../system-config-printer.py:6230 ../applet.py:127
 msgid "Search"
 msgstr "Søk"
 
@@ -1546,159 +1547,146 @@ msgstr "Endre driver"
 #. device-info
 #. PhysicalDevice obj
 #. Separator?
-#: ../system-config-printer.py:5039
+#: ../system-config-printer.py:5023
 msgid "Other"
 msgstr "Andre"
 
-#: ../system-config-printer.py:5043
+#: ../system-config-printer.py:5027
 msgid "Network Printer"
 msgstr "Nettverksskriver"
 
-#: ../system-config-printer.py:5047
+#: ../system-config-printer.py:5031
 msgid "Find Network Printer"
 msgstr "Finn nettverksskriver"
 
-#: ../system-config-printer.py:5075
+#: ../system-config-printer.py:5059
 msgid ""
 "The firewall may need adjusting in order to detect network printers.  Adjust "
 "the firewall now?"
 msgstr ""
 
-#: ../system-config-printer.py:5080
+#: ../system-config-printer.py:5064
 msgid "Allow all incoming IPP Browse packets"
 msgstr ""
 
-#: ../system-config-printer.py:5085
+#: ../system-config-printer.py:5069
 msgid "Allow all incoming mDNS traffic"
 msgstr ""
 
-#: ../system-config-printer.py:5108
+#: ../system-config-printer.py:5092
 msgid "fetching device list"
 msgstr "henter enhetsliste"
 
-#: ../system-config-printer.py:5194 ../system-config-printer.py:6530
+#: ../system-config-printer.py:5178 ../system-config-printer.py:6464
 msgid " (Current)"
 msgstr " (aktiv)"
 
-#: ../system-config-printer.py:5263
+#: ../system-config-printer.py:5247
 msgid "Scanning..."
 msgstr "Søker..."
 
-#: ../system-config-printer.py:5318
+#: ../system-config-printer.py:5302
 msgid "No Print Shares"
 msgstr "Ingen delte utskriftsressurser"
 
-#: ../system-config-printer.py:5319
+#: ../system-config-printer.py:5303
 msgid ""
 "There were no print shares found.  Please check that the Samba service is "
 "marked as trusted in your firewall configuration."
 msgstr ""
 
-#: ../system-config-printer.py:5497
+#: ../system-config-printer.py:5481
 msgid "Review Firewall"
 msgstr "Se gjennom brannmur"
 
-#: ../system-config-printer.py:5498
+#: ../system-config-printer.py:5482
 msgid ""
 "You may need to adjust the firewall to allow network printer discovery on "
 "this computer."
 msgstr ""
 
-#: ../system-config-printer.py:5599 ../system-config-printer.py:5703
+#: ../system-config-printer.py:5583 ../system-config-printer.py:5687
 msgid "Print Share Verified"
 msgstr "Delt skriver verifisert"
 
-#: ../system-config-printer.py:5600 ../system-config-printer.py:5704
+#: ../system-config-printer.py:5584 ../system-config-printer.py:5688
 msgid "This print share is accessible."
 msgstr "Denne delte skriveren er tilgjengelig."
 
-#: ../system-config-printer.py:5605 ../system-config-printer.py:5708
+#: ../system-config-printer.py:5589 ../system-config-printer.py:5692
 msgid "This print share is not accessible."
 msgstr "Denne delte skriveren kan ikke aksesseres."
 
-#: ../system-config-printer.py:5608
+#: ../system-config-printer.py:5592
 msgid "Print Share Inaccessible"
 msgstr "Delt skriver er ikke tilgjengelig"
 
-#: ../system-config-printer.py:5681
+#: ../system-config-printer.py:5665
 msgid "Verifying"
 msgstr "Verifiserer"
 
-#: ../system-config-printer.py:5682
+#: ../system-config-printer.py:5666
 msgid "Verifying printer"
 msgstr "Verifiserer skriver"
 
-#: ../system-config-printer.py:5707
+#: ../system-config-printer.py:5691
 msgid "Inaccessible"
 msgstr "Kan ikke aksesseres"
 
-#: ../system-config-printer.py:5762
+#: ../system-config-printer.py:5746
 msgid "Parallel Port"
 msgstr "Parallellport"
 
-#: ../system-config-printer.py:5764
+#: ../system-config-printer.py:5748
 msgid "Serial Port"
 msgstr "Seriellport"
 
-#: ../system-config-printer.py:5766
+#: ../system-config-printer.py:5750
 msgid "USB"
 msgstr "USB"
 
-#: ../system-config-printer.py:5768
+#: ../system-config-printer.py:5752
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: ../system-config-printer.py:5770 ../system-config-printer.py:5773
+#: ../system-config-printer.py:5754 ../system-config-printer.py:5757
 msgid "HP Linux Imaging and Printing (HPLIP)"
 msgstr "HP Linux Imaging and Printing (HPLIP)"
 
-#: ../system-config-printer.py:5775
+#: ../system-config-printer.py:5759
 msgid "Hardware Abstraction Layer (HAL)"
 msgstr "Hardware Abstraction Layer (HAL)."
 
-#: ../system-config-printer.py:5786
+#: ../system-config-printer.py:5770
 #, python-format
 msgid "LPD/LPR queue '%s'"
 msgstr "LPD-/LPR-kø «%s»"
 
-#: ../system-config-printer.py:5788
+#: ../system-config-printer.py:5772
 msgid "LPD/LPR queue"
 msgstr "LPD-/LPR-kø"
 
-#: ../system-config-printer.py:5793 ../ui/NewPrinterWindow.glade.h:48
+#: ../system-config-printer.py:5777 ../ui/NewPrinterWindow.glade.h:48
 msgid "IPP"
 msgstr "IPP"
 
-#: ../system-config-printer.py:5795
+#: ../system-config-printer.py:5779
 msgid "HTTP"
 msgstr "HTTP"
 
-#: ../system-config-printer.py:5803 ../system-config-printer.py:5942
-msgid "Remote CUPS printer via DNS-SD"
-msgstr "Ekstern CUPS-skriver via DNS-SD"
-
-#: ../system-config-printer.py:5814 ../system-config-printer.py:5952
-#, python-format
-msgid "%s network printer via DNS-SD"
-msgstr "%s nettverksskriver via DNS-SD"
-
-#: ../system-config-printer.py:5817 ../system-config-printer.py:5954
-msgid "Network printer via DNS-SD"
-msgstr "Nettverksskriver via DNS-SD"
-
-#: ../system-config-printer.py:5921
+#: ../system-config-printer.py:5867
 msgid "A printer connected to the parallel port."
 msgstr "En skriver koblet til en parallellport."
 
-#: ../system-config-printer.py:5923
+#: ../system-config-printer.py:5869
 msgid "A printer connected to a USB port."
 msgstr "En skriver koblet til en USB port."
 
-#: ../system-config-printer.py:5925
+#: ../system-config-printer.py:5871
 msgid "A printer connected via Bluetooth."
 msgstr "En skriver koblet til via Bluetooth."
 
-#: ../system-config-printer.py:5927
+#: ../system-config-printer.py:5873
 msgid ""
 "HPLIP software driving a printer, or the printer function of a multi-"
 "function device."
@@ -1706,7 +1694,7 @@ msgstr ""
 "HPLIP-programvare som kjører en skriver eller skriverfunksjonen i en "
 "multifunksjonsenhet."
 
-#: ../system-config-printer.py:5930
+#: ../system-config-printer.py:5876
 msgid ""
 "HPLIP software driving a fax machine, or the fax function of a multi-"
 "function device."
@@ -1714,47 +1702,47 @@ msgstr ""
 "HPLIP-programvare som driver en faksmaskin eller faksfunksjonen på en "
 "multifunksjonsenhet."
 
-#: ../system-config-printer.py:5933
+#: ../system-config-printer.py:5879
 msgid "Local printer detected by the Hardware Abstraction Layer (HAL)."
 msgstr "Lokal skriver gjenkjent av Hardware Abstraction Layer (HAL)."
 
-#: ../system-config-printer.py:6093
+#: ../system-config-printer.py:6022
 msgid "Searching for printers"
 msgstr "Søker etter skrivere"
 
-#: ../system-config-printer.py:6173 ../ui/NewPrinterWindow.glade.h:60
+#: ../system-config-printer.py:6102 ../ui/NewPrinterWindow.glade.h:60
 msgid "No printer was found at that address."
 msgstr "Ingen skriver ble funnet på den adressen."
 
-#: ../system-config-printer.py:6313
+#: ../system-config-printer.py:6242
 msgid "-- Select from search results --"
 msgstr "-- Velg fra søkeresultatene --"
 
-#: ../system-config-printer.py:6315
+#: ../system-config-printer.py:6244
 msgid "-- No matches found --"
 msgstr "-- Ingen treff funnet --"
 
-#: ../system-config-printer.py:6535
+#: ../system-config-printer.py:6469
 msgid " (recommended)"
 msgstr " (anbefalt)"
 
-#: ../system-config-printer.py:6562
+#: ../system-config-printer.py:6496
 msgid "This PPD is generated by foomatic."
 msgstr "Denne PPDen er generert av foomatic."
 
-#: ../system-config-printer.py:6587
+#: ../system-config-printer.py:6527
 msgid "OpenPrinting"
 msgstr "OpenPrinting"
 
-#: ../system-config-printer.py:6598
+#: ../system-config-printer.py:6538
 msgid "Distributable"
 msgstr "Distribuerbar"
 
-#: ../system-config-printer.py:6639
+#: ../system-config-printer.py:6579
 msgid ", "
 msgstr ", "
 
-#: ../system-config-printer.py:6644
+#: ../system-config-printer.py:6584
 #, python-format
 msgid ""
 "\n"
@@ -1763,20 +1751,20 @@ msgstr ""
 "\n"
 "(%s)"
 
-#: ../system-config-printer.py:6649
+#: ../system-config-printer.py:6589
 msgid "No support contacts known"
 msgstr "Ingen brukerstøttekontakter kjent"
 
-#: ../system-config-printer.py:6653 ../system-config-printer.py:6666
+#: ../system-config-printer.py:6593 ../system-config-printer.py:6606
 msgid "Not specified."
 msgstr "Ikke spesifisert."
 
 #. Foomatic database problem of some sort.
-#: ../system-config-printer.py:6706
+#: ../system-config-printer.py:6646
 msgid "Database error"
 msgstr "Database-feil"
 
-#: ../system-config-printer.py:6707
+#: ../system-config-printer.py:6647
 #, python-format
 msgid "The '%s' driver cannot be used with printer '%s %s'."
 msgstr "Driveren '%s' kan ikke brukes sammen med skriver '%s' %s."
@@ -1784,66 +1772,66 @@ msgstr "Driveren '%s' kan ikke brukes sammen med skriver '%s' %s."
 #. This printer references some XML that is not
 #. installed by default.  Point the user at the
 #. package they need to install.
-#: ../system-config-printer.py:6717
+#: ../system-config-printer.py:6657
 #, python-format
 msgid "You will need to install the '%s' package in order to use this driver."
 msgstr "Du er nødt til å installere pakken '%s' for å bruke denne skriveren."
 
 #. This error came from trying to open the PPD file.
-#: ../system-config-printer.py:6724
+#: ../system-config-printer.py:6664
 msgid "PPD error"
 msgstr "PPD-feil"
 
-#: ../system-config-printer.py:6726
+#: ../system-config-printer.py:6666
 msgid "Failed to read PPD file.  Possible reason follows:"
 msgstr "Kunne ikke lese PPD-fil. Mulige årsaker følger:"
 
 #. Failed to get PPD downloaded from OpenPrinting XXX
-#: ../system-config-printer.py:6744
+#: ../system-config-printer.py:6684
 msgid "Downloadable drivers"
 msgstr "Nedlastbare drivere"
 
-#: ../system-config-printer.py:6745
+#: ../system-config-printer.py:6685
 msgid "Failed to download PPD."
 msgstr "Klarte ikke å laste ned PPD."
 
-#: ../system-config-printer.py:6752
+#: ../system-config-printer.py:6692
 msgid "fetching PPD"
 msgstr "henter PPD"
 
-#: ../system-config-printer.py:6781 ../system-config-printer.py:6819
+#: ../system-config-printer.py:6721 ../system-config-printer.py:6759
 msgid "No Installable Options"
 msgstr "Ingen installerbare alternativer"
 
-#: ../system-config-printer.py:6885
+#: ../system-config-printer.py:6825
 #, python-format
 msgid "adding printer %s"
 msgstr "legger til skriver %s"
 
-#: ../system-config-printer.py:7062
+#: ../system-config-printer.py:7002
 msgid "Would you like to print a test page?"
 msgstr "Vil du skrive ut en testside?"
 
 #. Not more than 25 characters
-#: ../system-config-printer.py:7064 ../ui/PrinterPropertiesDialog.glade.h:60
+#: ../system-config-printer.py:7004 ../ui/PrinterPropertiesDialog.glade.h:60
 #: ../troubleshoot/PrintTestPage.py:73
 msgid "Print Test Page"
 msgstr "Skriv ut testside"
 
-#: ../system-config-printer.py:7125
+#: ../system-config-printer.py:7065
 msgid "Install driver"
 msgstr "Installer driver"
 
-#: ../system-config-printer.py:7126 ../troubleshoot/CheckPPDSanity.py:133
+#: ../system-config-printer.py:7066 ../troubleshoot/CheckPPDSanity.py:133
 #, python-format
 msgid "Printer '%s' requires the %s package but it is not currently installed."
 msgstr "Skriver «%s» er avhengig av pakke %s, men den er ikke installert."
 
-#: ../system-config-printer.py:7142
+#: ../system-config-printer.py:7082
 msgid "Missing driver"
 msgstr "Mangler driver"
 
-#: ../system-config-printer.py:7143
+#: ../system-config-printer.py:7083
 #, python-format
 msgid ""
 "Printer '%s' requires the '%s' program but it is not currently installed.  "
@@ -2118,9 +2106,8 @@ msgid "Installed Options"
 msgstr "Installerte alternativer"
 
 #: ../ui/NewPrinterWindow.glade.h:50
-#, fuzzy
 msgid "JetDirect"
-msgstr "DirectJet"
+msgstr "JetDirect"
 
 #: ../ui/NewPrinterWindow.glade.h:51
 msgid "LPD"
@@ -2132,7 +2119,7 @@ msgstr "Lisens:"
 
 #: ../ui/NewPrinterWindow.glade.h:53
 msgid "Line art:"
-msgstr ""
+msgstr "Linjekunst:"
 
 #: ../ui/NewPrinterWindow.glade.h:54
 msgid "Local Driver"
@@ -2282,7 +2269,7 @@ msgstr ""
 
 #: ../ui/NewPrinterWindow.glade.h:90
 msgid "Try to transfer the current settings"
-msgstr ""
+msgstr "Prøv å overføre nåværende innstillinger"
 
 #: ../ui/NewPrinterWindow.glade.h:91
 msgid "URI:"
