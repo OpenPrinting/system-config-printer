@@ -153,6 +153,7 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/SchedulerNotRunning.py		\
 	troubleshoot/ServerFirewalled.py		\
 	troubleshoot/Shrug.py				\
+	troubleshoot/VerifyPackages.py			\
 	troubleshoot/Welcome.py
 
 bin_SCRIPTS=\

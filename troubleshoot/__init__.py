@@ -338,6 +338,7 @@ QUESTIONS = ["Welcome",
              "QueueRejectingJobs",
              "PrinterStateReasons",
 
+             "VerifyPackages",
              "CheckSELinux",
              "ServerFirewalled",
              "ErrorLogCheckpoint",
