@@ -155,8 +155,6 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/ServerFirewalled.py		\
 	troubleshoot/Shrug.py				\
 	troubleshoot/Welcome.py				\
-	xml/drivertypes.rng				\
-	xml/drivertypes.xml				\
 	xml/preferreddrivers.rng			\
 	xml/preferreddrivers.xml
 
