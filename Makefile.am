@@ -298,24 +298,33 @@ help:
 	@echo " run                Run system-config-printer with local UI files"
 	@echo " run-applet         Run system-config-printer-applet with local UI files"
 
-test-ppd-module.sh:
+test-ppd-module.sh:	FORCE
 	echo "#!$(PYTHON)" > "$@"
 	echo "import sys; sys.path.append ('$(top_srcdir)')" >> "$@"
 	echo "from cupshelpers.ppds import _self_test" >> "$@"
 	echo "_self_test(sys.argv)" >> "$@"
 	chmod 755 "$@"
 
-TESTS = test-ppd-module.sh
+test-xml-validity.sh:	FORCE
+	echo "#!/bin/bash" > "$@"
+	echo "set -e" >> "$@"
+	echo "xmllint --relaxng \\" >> "$@"
+	echo "    $(top_srcdir)/xml/preferreddrivers.rng \\" >> "$@"
+	echo "    $(top_srcdir)/xml/preferreddrivers.xml >/dev/null" >> "$@"
+	echo "python $(top_srcdir)/xml/validate.py" >> "$@"
+	chmod 755 "$@"
+
+TESTS = test-xml-validity.sh test-ppd-module.sh
 
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
-	test-ppd-module.sh pickled-ppds \
+	test-ppd-module.sh test-xml-validity.sh pickled-ppds \
 	config.py
 
 distclean-local:
 	rm -rf html
 
-.PHONY: update-po missing-languages run help
+.PHONY: update-po missing-languages run help FORCE
 
