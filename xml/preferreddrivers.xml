@@ -127,11 +127,12 @@
   </drivertypes>
 
   <preferenceorder>
-    <printer> <!-- Use hpcups on HP printers -->
+    <printer> <!-- Use hpijs on HP printers -->
       <make-and-model match="(HP|Hewlett-Packard) .*"/>
       <deviceid field="MFG" match="HP|Hewlett-Packard"/>
       <drivers>
-	<drivertype>hpcups</drivertype>
+	<drivertype>foomatic-recommended-hpijs</drivertype>
+	<drivertype>foomatic-hpijs</drivertype>
       </drivers>
     </printer>
 
@@ -159,6 +160,9 @@
 	<drivertype>generic-pcl</drivertype>
 	<drivertype>generic-escp</drivertype>
 	<drivertype>generic</drivertype>
+
+	<!-- Last of all, hpcups for models requiring a plugin -->
+	<drivertype>hpcups-plugin</drivertype>
       </drivers>
     </printer>
   </preferenceorder>
