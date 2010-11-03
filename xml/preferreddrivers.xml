@@ -104,9 +104,17 @@
       <deviceid field="DRV" match=".*,?R1"/>
     </drivertype>
 
+    <drivertype name="foomatic-postscript">
+      <ppdname match="foomatic:.*-Postscript"/>
+    </drivertype>
+
     <drivertype name="foomatic-recommended-non-postscript">
       <ppdname match="foomatic:.*"/>
       <deviceid field="DRV" match=".*,?R1"/>
+    </drivertype>
+
+    <drivertype name="foomatic-gutenprint">
+      <ppdname match="foomatic:.*-gutenprint"/>
     </drivertype>
 
     <drivertype name="foomatic">
@@ -127,29 +135,37 @@
   </drivertypes>
 
   <preferenceorder>
-    <printer> <!-- Use hpijs on HP printers -->
-      <make-and-model match="(HP|Hewlett-Packard) .*"/>
-      <deviceid field="MFG" match="HP|Hewlett-Packard"/>
+    <printer>
+      <!-- For all printers -->
       <drivers>
 	<drivertype>foomatic-recommended-hpijs</drivertype>
-	<drivertype>foomatic-hpijs</drivertype>
-      </drivers>
-    </printer>
-
-    <!-- any other special cases here... -->
-
-    <printer>
-      <!-- catch all -->
-      <drivers>
 	<drivertype>foomatic-recommended-non-postscript</drivertype>
 	<drivertype>manufacturer</drivertype>
 	<drivertype>foomatic-recommended-postscript</drivertype>
 	<drivertype>hpcups</drivertype>
+      </drivers>
+    </printer>
+
+    <printer>
+      <!-- Use hpijs on HP printers at this point (i.e. in preference
+           to gutenprint) -->
+      <make-and-model match="(HP|Hewlett-Packard) .*"/>
+      <deviceid field="MFG" match="HP|Hewlett-Packard"/>
+      <drivers>
+	<drivertype>foomatic-hpijs</drivertype>
+      </drivers>
+    </printer>
+
+    <printer>
+      <!-- For all printers (continued) -->
+      <drivers>
 	<drivertype>gutenprint-simplified</drivertype>
 	<drivertype>gutenprint-expert</drivertype>
+	<drivertype>foomatic-postscript</drivertype>
+	<drivertype>foomatic-hpijs</drivertype>
+	<drivertype>foomatic-gutenprint</drivertype>
 	<drivertype>foomatic</drivertype>
 	<drivertype>cups</drivertype>
-	<drivertype>ghostscript</drivertype>
 
 	<!-- Generic drivers listed last, in this order -->
 	<drivertype>generic-postscript</drivertype>
@@ -159,6 +175,7 @@
 	<drivertype>generic-pcl5</drivertype>
 	<drivertype>generic-pcl</drivertype>
 	<drivertype>generic-escp</drivertype>
+	<drivertype>ghostscript</drivertype>
 	<drivertype>generic</drivertype>
 
 	<!-- Last of all, hpcups for models requiring a plugin -->
