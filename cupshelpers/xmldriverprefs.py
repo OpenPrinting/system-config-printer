@@ -280,7 +280,7 @@ class PrinterType:
         """
         Append a driver type.
         """
-        self.drivertypes.append (name)
+        self.drivertypes.append (name.strip ())
 
     def get_drivertypes (self):
         """
