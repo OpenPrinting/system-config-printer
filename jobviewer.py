@@ -296,15 +296,18 @@ class JobViewer (GtkGUI):
                                    'time-at-creation'])
 
     def __init__(self, bus=None, loop=None,
-                 trayicon=False, suppress_icon_hide=False,
+                 applet=False, suppress_icon_hide=False,
                  my_jobs=True, specific_dests=None, exit_handler=None,
                  parent=None):
         self.loop = loop
-        self.trayicon = trayicon
+        self.applet = applet
         self.suppress_icon_hide = suppress_icon_hide
         self.my_jobs = my_jobs
         self.specific_dests = specific_dests
         self.exit_handler = exit_handler
+        notify_caps = pynotify.get_server_caps ()
+        self.notify_has_actions = "actions" in notify_caps
+        self.notify_has_persistence = "persistence" in notify_caps
 
         self.jobs = {}
         self.jobiters = {}
@@ -422,8 +425,8 @@ class JobViewer (GtkGUI):
                  (False, True, _("Document"), self._set_job_document_text),
                  (False, True, _("Printer"), self._set_job_printer_text),
                  (False, False, _("Size"), self._set_job_size_text)]:
-            if trayicon and skip:
-                # Skip the user column for the trayicon.
+            if applet and skip:
+                # Skip the user column when running as applet.
                 continue
 
             cell = gtk.CellRendererText()
@@ -510,7 +513,7 @@ class JobViewer (GtkGUI):
                                   1.0, 1.0,
                                   gtk.gdk.INTERP_BILINEAR,
                                   127)
-        if self.trayicon:
+        if self.applet and not self.notify_has_persistence:
             self.statusicon = gtk.StatusIcon ()
             pixbuf = load_icon (theme, ICON)
             self.statusicon.set_from_pixbuf (pixbuf)
@@ -543,7 +546,7 @@ class JobViewer (GtkGUI):
         self.monitor.connect ('printer-removed', self.printer_removed)
         self.monitor.refresh ()
 
-        if not self.trayicon:
+        if not self.applet:
             self.JobsWindow.show ()
 
         self.JobsAttributesWindow = gtk.Window()
@@ -612,6 +615,9 @@ class JobViewer (GtkGUI):
 
     # Handle "special" status icon
     def set_special_statusicon (self, iconname, tooltip=None):
+        if self.notify_has_persistence:
+            return
+
         self.special_status_icon = True
         self.statusicon.set_from_icon_name (iconname)
         self.set_statusicon_visibility ()
@@ -619,6 +625,9 @@ class JobViewer (GtkGUI):
             self.set_statusicon_tooltip (tooltip=tooltip)
 
     def unset_special_statusicon (self):
+        if self.notify_has_persistence:
+            return
+
         self.special_status_icon = False
         self.statusicon.set_from_pixbuf (self.saved_statusicon_pixbuf)
         self.set_statusicon_visibility ()
@@ -629,6 +638,9 @@ class JobViewer (GtkGUI):
         notification.set_data ('printer-name', printer)
         notification.connect ('closed', self.on_new_printer_notification_closed)
         self.set_statusicon_visibility ()
+        if not self.notify_has_persistence:
+            notification.attach_to_status_icon (self.statusicon)
+
         try:
             notification.show ()
         except gobject.GError:
@@ -645,7 +657,7 @@ class JobViewer (GtkGUI):
             self.statusicon.set_from_pixbuf (pb)
 
     def on_delete_event(self, *args):
-        if self.trayicon or not self.loop:
+        if self.applet or not self.loop:
             self.JobsWindow.hide ()
             self.JobsWindow.set_data ('visible', False)
             if not self.loop:
@@ -670,25 +682,31 @@ class JobViewer (GtkGUI):
         if force_show:
             visible = False
 
-        if visible:
-            w = self.JobsWindow.window
-            aw = self.JobsAttributesWindow.window
-            (s, area, o) = self.statusicon.get_geometry ()
-            w.set_skip_taskbar_hint (True)
-            if aw != None:
-                aw.set_skip_taskbar_hint (True)
-
-            w.property_change ("_NET_WM_ICON_GEOMETRY",
-                               "CARDINAL", 32,
-                               gtk.gdk.PROP_MODE_REPLACE,
-                               list (area))
-            self.JobsWindow.iconify ()
+        if self.notify_has_persistence:
+            if visible:
+                self.JobsWindow.hide ()
+            else:
+                self.JobsWindow.show ()
         else:
-            self.JobsWindow.present ()
-            self.JobsWindow.window.set_skip_taskbar_hint (False)
-            aw = self.JobsAttributesWindow.window
-            if aw != None:
-                aw.set_skip_taskbar_hint (False)
+            if visible:
+                w = self.JobsWindow.window
+                aw = self.JobsAttributesWindow.window
+                (s, area, o) = self.statusicon.get_geometry ()
+                w.set_skip_taskbar_hint (True)
+                if aw != None:
+                    aw.set_skip_taskbar_hint (True)
+
+                w.property_change ("_NET_WM_ICON_GEOMETRY",
+                                   "CARDINAL", 32,
+                                   gtk.gdk.PROP_MODE_REPLACE,
+                                   list (area))
+                self.JobsWindow.iconify ()
+            else:
+                self.JobsWindow.present ()
+                self.JobsWindow.window.set_skip_taskbar_hint (False)
+                aw = self.JobsAttributesWindow.window
+                if aw != None:
+                    aw.set_skip_taskbar_hint (False)
 
         self.JobsWindow.set_data ('visible', not visible)
 
@@ -885,7 +903,7 @@ class JobViewer (GtkGUI):
         self.treeview.queue_draw ()
 
         # Check whether authentication is required.
-        if self.trayicon:
+        if self.applet:
             job_requires_auth = (s == cups.IPP_JOB_HELD and
                                  data.get ('job-hold-until', 'none') ==
                                  'auth-info-required')
@@ -1069,7 +1087,7 @@ class JobViewer (GtkGUI):
         dialog.destroy ()
 
     def set_statusicon_visibility (self):
-        if not self.trayicon:
+        if not self.applet:
             return
 
         if self.suppress_icon_hide:
@@ -1088,6 +1106,9 @@ class JobViewer (GtkGUI):
         debugprint ("open notifications: %d" % open_notifications)
         debugprint ("num_jobs: %d" % num_jobs)
         debugprint ("num_jobs_when_hidden: %d" % self.num_jobs_when_hidden)
+
+        if self.notify_has_persistence:
+            return
 
         self.statusicon.set_visible (self.special_status_icon or
                                      open_notifications > 0 or
@@ -1542,7 +1563,7 @@ class JobViewer (GtkGUI):
         return pixbuf
 
     def get_icon_pixbuf (self, have_jobs=None):
-        if not self.trayicon:
+        if not self.applet:
             return
 
         if have_jobs == None:
@@ -1566,7 +1587,7 @@ class JobViewer (GtkGUI):
         return pixbuf
 
     def set_statusicon_tooltip (self, tooltip=None):
-        if not self.trayicon:
+        if not self.applet:
             return
 
         if tooltip == None:
@@ -1634,7 +1655,7 @@ class JobViewer (GtkGUI):
                 status_message = _("processing / pending:   %d / %d") % (processing, pending)
                 self.statusbar.push(0, status_message)
 
-        if self.trayicon:
+        if self.applet:
             pixbuf = self.get_icon_pixbuf (have_jobs=have_jobs)
             self.set_statusicon_from_pixbuf (pixbuf)
             self.set_statusicon_visibility ()
@@ -1680,12 +1701,15 @@ class JobViewer (GtkGUI):
         notification = pynotify.Notification (title, text, 'printer')
         reason.user_notified = True
         notification.set_urgency (urgency)
-        if "actions" in pynotify.get_server_caps():
+        if self.notify_has_actions:
             notification.set_timeout (pynotify.EXPIRES_NEVER)
         notification.connect ('closed',
                               self.on_state_reason_notification_closed)
         self.state_reason_notifications[reason.get_tuple ()] = notification
         self.set_statusicon_visibility ()
+        if not self.notify_has_persistence:
+            notification.attach_to_status_icon (self.statusicon)
+
         try:
             notification.show ()
         except gobject.GError:
@@ -1741,6 +1765,9 @@ class JobViewer (GtkGUI):
         notification.set_data ('jobid', jobid)
         self.completed_job_notifications[jobid] = notification
         self.set_statusicon_visibility ()
+        if not self.notify_has_persistence:
+            notification.attach_to_status_icon (self.statusicon)
+
         try:
             notification.show ()
         except gobject.GError:
@@ -1782,7 +1809,7 @@ class JobViewer (GtkGUI):
             self.active_jobs.remove (jobid)
 
         self.update_status (have_jobs=True)
-        if self.trayicon:
+        if self.applet:
             if not self.job_is_active (jobdata):
                 return
 
@@ -1821,9 +1848,9 @@ class JobViewer (GtkGUI):
         jobdata = self.jobs[jobid]
 
         # If the job has finished, let the user know.
-        if self.trayicon and (eventname == 'job-completed' or
-                              (eventname == 'job-state-changed' and
-                               event['job-state'] == cups.IPP_JOB_COMPLETED)):
+        if self.applet and (eventname == 'job-completed' or
+                            (eventname == 'job-state-changed' and
+                             event['job-state'] == cups.IPP_JOB_COMPLETED)):
             reasons = event['job-state-reasons']
             if type (reasons) != list:
                 reasons = [reasons]
@@ -1838,7 +1865,7 @@ class JobViewer (GtkGUI):
                 self.notify_completed_job (jobid)
 
         # Look out for stopped jobs.
-        if (self.trayicon and
+        if (self.applet and
             (eventname == 'job-stopped' or
              (eventname == 'job-state-changed' and
               event['job-state'] in [cups.IPP_JOB_STOPPED,
@@ -1898,7 +1925,7 @@ class JobViewer (GtkGUI):
 
             if may_be_problem:
                 debugprint ("Problem detected")
-                self.toggle_window_display (self.statusicon, force_show=True)
+                self.toggle_window_display (None, force_show=True)
                 dialog = gtk.Dialog (_("Print Error"), self.JobsWindow, 0,
                                      (_("_Diagnose"), gtk.RESPONSE_NO,
                                         gtk.STOCK_OK, gtk.RESPONSE_OK))
@@ -1940,9 +1967,9 @@ class JobViewer (GtkGUI):
 
     def job_removed (self, mon, jobid, eventname, event):
         # If the job has finished, let the user know.
-        if self.trayicon and (eventname == 'job-completed' or
-                              (eventname == 'job-state-changed' and
-                               event['job-state'] == cups.IPP_JOB_COMPLETED)):
+        if self.applet and (eventname == 'job-completed' or
+                            (eventname == 'job-state-changed' and
+                             event['job-state'] == cups.IPP_JOB_COMPLETED)):
             reasons = event['job-state-reasons']
             debugprint (reasons)
             if type (reasons) != list:
@@ -1985,7 +2012,7 @@ class JobViewer (GtkGUI):
         self.update_status ()
         self.treeview.queue_draw ()
 
-        if not self.trayicon:
+        if not self.applet:
             return
 
         # Find out if the user has jobs queued for that printer.
@@ -2016,7 +2043,7 @@ class JobViewer (GtkGUI):
         self.update_status ()
         self.treeview.queue_draw ()
 
-        if not self.trayicon:
+        if not self.applet:
             return
 
         tuple = reason.get_tuple ()
@@ -2036,13 +2063,13 @@ class JobViewer (GtkGUI):
             pass
 
     def still_connecting (self, mon, reason):
-        if not self.trayicon:
+        if not self.applet:
             return
 
         self.notify_printer_state_reason (reason)
 
     def now_connected (self, mon, printer):
-        if not self.trayicon:
+        if not self.applet:
             return
 
         # Find the connecting-to-device state reason.

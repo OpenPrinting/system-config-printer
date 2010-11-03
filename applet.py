@@ -80,7 +80,7 @@ class NewPrinterNotification(dbus.service.Object):
                 pass
             runloop = gobject.MainLoop ()
             viewer = jobviewer.JobViewer(bus=bus, loop=runloop,
-                                         trayicon=trayicon,
+                                         applet=applet,
                                          suppress_icon_hide=True)
 
     @dbus.service.method(PDS_IFACE, in_signature='', out_signature='')
@@ -292,7 +292,7 @@ def show_version ():
 
 global waitloop, runloop, viewer
 
-trayicon = True
+applet = True
 waitloop = runloop = None
 viewer = None
 
@@ -316,7 +316,7 @@ if __name__ == '__main__':
             show_version ()
             sys.exit (0)
         if opt == "--no-tray-icon":
-            trayicon = False
+            applet = False
         elif opt == "--debug":
             set_debugging (True)
 
@@ -328,7 +328,7 @@ if __name__ == '__main__':
         except:
             pass
 
-    if trayicon:
+    if applet:
         # Stop running when the session ends.
         def monitor_session (*args):
             pass
@@ -352,7 +352,7 @@ if __name__ == '__main__':
         finally:
             sys.exit (1)
 
-    if trayicon:
+    if applet:
         try:
             NewPrinterNotification(bus)
         except:
@@ -375,7 +375,7 @@ if __name__ == '__main__':
             except:
                 pass
 
-    if trayicon and get_debugging () == False:
+    if applet and get_debugging () == False:
         # Start off just waiting for print jobs.
         def any_jobs ():
             try:
@@ -438,7 +438,7 @@ if __name__ == '__main__':
         runloop = gobject.MainLoop ()
         gtk.window_set_default_icon_name ('printer')
         viewer = jobviewer.JobViewer(bus=bus, loop=runloop,
-                                     trayicon=trayicon)
+                                     applet=applet)
 
     try:
         runloop.run()
