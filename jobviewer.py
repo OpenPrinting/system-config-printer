@@ -121,17 +121,20 @@ class PrinterURIIndex:
         raise KeyError
 
     def _map_printer (self, uri=None, name=None, connection=None):
-        if connection == None:
-            connection = cups.Connection ()
-
-        r = ['printer-name', 'printer-uri-supported', 'printer-more-info']
         try:
+            if connection == None:
+                connection = cups.Connection ()
+
+            r = ['printer-name', 'printer-uri-supported', 'printer-more-info']
             if uri != None:
                 attrs = connection.getPrinterAttributes (uri=uri,
                                                          requested_attributes=r)
             else:
                 attrs = connection.getPrinterAttributes (name,
                                                          requested_attributes=r)
+        except RuntimeError:
+            # cups.Connection() failed
+            raise KeyError
         except cups.IPPError:
             # URI not known.
             raise KeyError
