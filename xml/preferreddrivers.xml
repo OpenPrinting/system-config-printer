@@ -3,7 +3,7 @@
   <drivertypes>
     <!-- GENERIC DRIVERS -->
     <drivertype name="generic-escp">
-      <ppdname match="foomatic:Generic-ESC_P.*"/>
+      <ppdname match="foomatic:Generic-ESC_P"/>
       <fit>
 	generic
 	none
@@ -99,7 +99,7 @@
     </drivertype>
 
     <drivertype name="foomatic-recommended-postscript">
-      <ppdname match="foomatic:.*"/>
+      <ppdname match="foomatic:"/>
       <attribute name="ppd-make-and-model" match=".* Postscript"/>
       <deviceid field="DRV" match=".*,?R1"/>
     </drivertype>
@@ -109,7 +109,7 @@
     </drivertype>
 
     <drivertype name="foomatic-recommended-non-postscript">
-      <ppdname match="foomatic:.*"/>
+      <ppdname match="foomatic:"/>
       <deviceid field="DRV" match=".*,?R1"/>
     </drivertype>
 
@@ -118,16 +118,24 @@
     </drivertype>
 
     <drivertype name="foomatic">
-      <ppdname match="foomatic:.*"/>
+      <ppdname match="foomatic:"/>
     </drivertype>
 
     <drivertype name="hpcups-plugin">
       <ppdname match="drv:///hp/hpcups.drv/"/>
-      <attribute name="ppd-make-and-model" match=".* plugin.*"/>
+      <attribute name="ppd-make-and-model" match=".* plugin"/>
     </drivertype>
 
     <drivertype name="hpcups">
       <ppdname match="drv:///hp/hpcups.drv/"/>
+    </drivertype>
+
+    <drivertype name="splix">
+      <ppdname match=".*splix"/>
+    </drivertype>
+
+    <drivertype name="turboprint">
+      <ppdname match=".*turboprint"/>
     </drivertype>
 
     <!-- Catch-all -->
@@ -149,7 +157,7 @@
     <printer>
       <!-- Use hpijs on HP printers at this point (i.e. in preference
            to gutenprint) -->
-      <make-and-model match="(HP|Hewlett-Packard) .*"/>
+      <make-and-model match="(HP|Hewlett-Packard) "/>
       <deviceid field="MFG" match="HP|Hewlett-Packard"/>
       <drivers>
 	<drivertype>foomatic-hpijs</drivertype>
@@ -178,8 +186,10 @@
 	<drivertype>ghostscript</drivertype>
 	<drivertype>generic</drivertype>
 
-	<!-- Last of all, hpcups for models requiring a plugin -->
+	<!-- Last of all, 3rd party non-free drivers -->
 	<drivertype>hpcups-plugin</drivertype>
+	<drivertype>splix</drivertype>
+	<drivertype>turboprint</drivertype>
       </drivers>
     </printer>
   </preferenceorder>
