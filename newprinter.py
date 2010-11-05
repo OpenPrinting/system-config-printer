@@ -625,6 +625,9 @@ class NewPrinterGUI(GtkGUI):
             if not devid:
                 devid = None
 
+            self.current_devices = None
+
+            # We'll need the list of PPDs.
             self.ppdsloader = ppdsloader.PPDsLoader (device_id=devid,
                                                      device_uri=device_uri,
                                                      parent=self.NewPrinterWindow,
@@ -634,6 +637,21 @@ class NewPrinterGUI(GtkGUI):
             self.ppdsloader.connect ('finished',
                                      self.on_ppdsloader_finished_initial)
             self.ppdsloader.run ()
+
+            # We'll also need to know the Device ID for this device.
+            if self.dialog_mode == "ppd" and not self.devid:
+                scheme = device_uri.split (":", 1)[0]
+                schemes = [scheme]
+                if scheme in ["socket", "lpd", "ipp"]:
+                    schemes.extend (["snmp", "dnssd"])
+                self.fetchDevices_conn = asyncconn.Connection ()
+                self.fetchDevices_conn._begin_operation (_("fetching device "
+                                                           "list"))
+                self.inc_spinner_task ()
+                cupshelpers.getDevices (self.fetchDevices_conn,
+                                        include_schemes=schemes,
+                                        reply_handler=self.change_ppd_got_devs,
+                                        error_handler=self.change_ppd_got_devs)
 
             self.ntbkNewPrinter.set_current_page(2)
             self.rbtnNPFoomatic.set_active (True)
@@ -663,19 +681,56 @@ class NewPrinterGUI(GtkGUI):
         if not self.ppds:
             return
 
-        self.exactdrivermatch = False
-        if self.devid != "":
-            devid_dict = dict()
-            try:
-                devid_dict = cupshelpers.parseDeviceID (self.devid)
-                (status, ppdname) = self.ppds.\
-                    getPPDNameFromDeviceID (devid_dict["MFG"],
-                                            devid_dict["MDL"],
-                                            devid_dict["DES"],
-                                            devid_dict["CMD"],
-                                            self.device.uri,
-                                            self.jockey_installed_files)
+        if self.devid or self.current_devices != None:
+            # Device fetch has finished too.
+            self.change_ppd_have_ppds_and_devs ()
 
+    def change_ppd_got_devs (self, conn, result):
+        self.fetchDevices_conn._end_operation ()
+        self.fetchDevices_conn.destroy ()
+        self.fetchDevices_conn = None
+        self.dec_spinner_task ()
+        if isinstance (result, Exception):
+            self.current_devices = {}
+        else:
+            self.current_devices = result
+
+        if not self.ppdsloader:
+            # PPDs loader has finished too.
+            self.change_ppd_have_ppds_and_devs ()
+
+    def change_ppd_have_ppds_and_devs (self):
+        self.exactdrivermatch = False
+        self.id_matched_ppdnames = []
+        devid_dict = dict()
+        if self.devid != "":
+            devid = self.devid
+            try:
+                devid_dict = cupshelpers.parseDeviceID (devid)
+            except:
+                nonfatalException ()
+        else:
+            device = self.current_devices.get (self.device.uri)
+            if device:
+                devid_dict = device.id_dict
+                self.device = device
+
+        if devid_dict:
+            try:
+                fit = self.ppds.\
+                    getPPDNamesFromDeviceID (devid_dict["MFG"],
+                                             devid_dict["MDL"],
+                                             devid_dict["DES"],
+                                             devid_dict["CMD"],
+                                             self.device.uri)
+
+                ppdnamelist = self.ppds.\
+                    orderPPDNamesByPreference (fit.keys (),
+                                               self.jockey_installed_files,
+                                               devid=devid_dict, fit=fit)
+                self.id_matched_ppdnames = ppdnamelist
+                ppdname = ppdnamelist[0]
+                status = fit[ppdname]
                 ppddict = self.ppds.getInfoFromPPDName (ppdname)
                 make_model = _singleton (ppddict['ppd-make-and-model'])
                 (self.auto_make, self.auto_model) = \
@@ -915,6 +970,7 @@ class NewPrinterGUI(GtkGUI):
                         return
 
                 ppdname = None
+                self.id_matched_ppdnames = []
                 try:
                     if self.remotecupsqueue:
                         # We have a remote CUPS queue, let the client queue
@@ -937,13 +993,20 @@ class NewPrinterGUI(GtkGUI):
                             id_dict["DES"] = ""
                             id_dict["CMD"] = []
 
-                        (status, ppdname) = self.ppds.\
-                            getPPDNameFromDeviceID (id_dict["MFG"],
-                                                    id_dict["MDL"],
-                                                    id_dict["DES"],
-                                                    id_dict["CMD"],
-                                                    self.device.uri,
-                                                    self.jockey_installed_files)
+                        fit = self.ppds.\
+                            getPPDNamesFromDeviceID (id_dict["MFG"],
+                                                     id_dict["MDL"],
+                                                     id_dict["DES"],
+                                                     id_dict["CMD"],
+                                                     self.device.uri,
+                                                     self.device.make_and_model)
+                        ppdnamelist = self.ppds.\
+                            orderPPDNamesByPreference (fit.keys (),
+                                                       self.jockey_installed_files,
+                                                       devid=id_dict, fit=fit)
+                        self.id_matched_ppdnames = ppdnamelist
+                        ppdname = ppdnamelist[0]
+                        status = fit[ppdname]
                     else:
                         (status, ppdname) = self.ppds.\
                             getPPDNameFromDeviceID ("Generic",
@@ -2845,7 +2908,7 @@ class NewPrinterGUI(GtkGUI):
 
         for make in makes:
             recommended = (auto_make_lower and make.lower() == auto_make_lower)
-            if self.device and recommended:
+            if self.device and self.device.make_and_model and recommended:
                 text = make + _(" (recommended)")
             else:
                 text = make
@@ -2901,7 +2964,7 @@ class NewPrinterGUI(GtkGUI):
 
         for pmodel in models:
             recommended = (is_auto_make and pmodel.lower() == auto_model_lower)
-            if self.device and recommended:
+            if self.device and self.device.make_and_model and recommended:
                 text = pmodel + _(" (recommended)")
             else:
                 text = pmodel
@@ -2923,23 +2986,50 @@ class NewPrinterGUI(GtkGUI):
         model = self.tvNPDrivers.get_model()
         model.clear()
 
-        ppds = self.ppds.getInfoFromModel(pmake, pmodel)
+        if self.device:
+            devid = self.device.id_dict
+        else:
+            devid = None
 
-        self.NPDrivers = self.ppds.orderPPDNamesByPreference(ppds.keys(),
-                                             self.jockey_installed_files)
-        if self.auto_driver and self.device:
-            drivers = []
-            for driver in self.NPDrivers:
-                if driver == self.auto_driver:
-                    drivers.insert (0, driver)
-                else:
-                    drivers.append (driver)
+        if (self.device and self.device.make_and_model and
+            self.recommended_model_selected):
+            # Use the actual device-make-and-model string.
+            make_and_model = self.device.make_and_model
 
-            self.NPDrivers = drivers
+            # and the ID-matched list of PPDs.
+            self.NPDrivers = self.id_matched_ppdnames
+            debugprint ("ID matched PPDs: %s" % repr (self.NPDrivers))
+        else:
+            # Use a generic make and model string for generating the
+            # driver preference list.
+            make_and_model = pmake + " " + pmodel
+            ppds = self.ppds.getInfoFromModel(pmake, pmodel)
+            ppdnames = ppds.keys ()
+
+            files = self.jockey_installed_files
+            try:
+                self.NPDrivers = self.ppds.orderPPDNamesByPreference(ppdnames,
+                                                                     files,
+                                                                     make_and_model,
+                                                                     devid)
+            except:
+                nonfatalException ()
+                self.NPDrivers = ppdnames
+
+            # Put the current driver first.
+            if self.auto_driver and self.device:
+                drivers = []
+                for driver in self.NPDrivers:
+                    if driver == self.auto_driver:
+                        drivers.insert (0, driver)
+                    else:
+                        drivers.append (driver)
+
+                self.NPDrivers = drivers
 
         driverlist = []
         for i in range (len(self.NPDrivers)):
-            ppd = ppds[self.NPDrivers[i]]
+            ppd = self.ppds.getInfoFromPPDName (self.NPDrivers[i])
             driver = _singleton (ppd["ppd-make-and-model"])
             driver = driver.replace(" (recommended)", "")
 

@@ -1,0 +1,68 @@
+#!/usr/bin/env python
+
+## system-config-printer
+
+## Copyright (C) 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
+
+## This program is free software; you can redistribute it and/or modify
+## it under the terms of the GNU General Public License as published by
+## the Free Software Foundation; either version 2 of the License, or
+## (at your option) any later version.
+
+## This program is distributed in the hope that it will be useful,
+## but WITHOUT ANY WARRANTY; without even the implied warranty of
+## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+## GNU General Public License for more details.
+
+## You should have received a copy of the GNU General Public License
+## along with this program; if not, write to the Free Software
+## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+## This program performs validation that cannot be performed using
+## RELAX NG alone.
+
+import sys
+import xml.etree.ElementTree
+
+class Validator:
+    def __init__ (self, filename):
+        self._filename = filename
+
+    def validate (self):
+        filename = self._filename
+        print "Validating %s" % filename
+        preferreddrivers = xml.etree.ElementTree.XML (file (filename).read ())
+        (drivertypes, preferenceorder) = preferreddrivers.getchildren ()
+        used = dict()
+        validates = True
+        for printer in preferenceorder.getchildren ():
+            drivers = printer.find ("drivers")
+            for drivertype in drivers:
+                used[drivertype.text.strip ()] = True
+
+        for drivertype in drivertypes.getchildren ():
+            name = drivertype.get ("name")
+            if not used.get (name, False):
+                validates = False
+                print >>sys.stderr, ("*** Driver type \"%s\" is never used" %
+                                     name)
+
+        return validates
+
+import getopt
+import os
+opts, args = getopt.getopt (sys.argv[1:], "")
+
+if len (args) < 1:
+    dirname = os.path.dirname (sys.argv[0])
+    args = [os.path.join (dirname, "preferreddrivers.xml")]
+
+exitcode = 0
+for filename in args:
+    validator = Validator (filename)
+    if not validator.validate ():
+        exitcode = 1
+
+sys.exit (exitcode)

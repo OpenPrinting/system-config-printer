@@ -7,7 +7,11 @@ EXPORT_MODULES=					\
 	cupshelpers/cupshelpers.py		\
 	cupshelpers/installdriver.py		\
 	cupshelpers/ppds.py			\
-	cupshelpers/openprinting.py
+	cupshelpers/openprinting.py		\
+	cupshelpers/xmldriverprefs.py
+
+EXPORT_MODULES_GEN=				\
+	cupshelpers/config.py
 
 ### Automake hooks for Distutils.
 # The distutils module doesn't understand srcdir != builddir,
@@ -16,7 +20,7 @@ EXPORT_MODULES=					\
 .stamp-distutils-in-builddir:	setup.py $(EXPORT_MODULES)
 	if [ "$(top_srcdir)" != "$(top_builddir)" ]; then	\
 		cp $(top_srcdir)/setup.py .;			\
-		mkdir cupshelpers;				\
+		$(mkdir_p) cupshelpers;				\
 		for file in $(EXPORT_MODULES); do		\
 			cp $(top_srcdir)/$$file $$file;		\
 		done;						\
@@ -42,8 +46,15 @@ config.py: config.py.in Makefile
 	  -e "s|\@PACKAGE\@|$(PACKAGE)|" \
 	  $< > $@
 
+cupshelpers/config.py: cupshelpers/config.py.in Makefile
+	$(mkdir_p) cupshelpers
+	sed \
+	  -e "s|\@prefix\@|$(prefix)|" \
+	  -e "s|\@sysconfdir\@|$(sysconfdir)|" \
+	  $< > $@
+
 # Use distutils to build the module.
-all-local: .stamp-distutils-in-builddir config.py
+all-local: .stamp-distutils-in-builddir config.py cupshelpers/config.py
 	$(PYTHON) setup.py build
 
 # Use distutils to install the module.
@@ -55,8 +66,8 @@ install-exec-local: .stamp-distutils-in-builddir
 # doesn't provide a way to do this itself.
 uninstall-local:
 	rm -f $(DESTDIR)/$(pythondir)/cupshelpers*.egg-info
-	for file in $(EXPORT_MODULES); do				\
-		rm -f $(DESTDIR)/$(pythondir)/$$file*;			\
+	for file in $(EXPORT_MODULES) $(EXPORT_MODULES_GEN); do	\
+		rm -f $(DESTDIR)/$(pythondir)/$$file*;		\
 	done
 
 # Tell distutils to clean up.
@@ -64,7 +75,8 @@ clean-local:
 	-$(PYTHON) setup.py clean --all
 	if [ "$(top_srcdir)" != "$(top_builddir)" ]; then	\
 		rm -f setup.py;					\
-		for file in $(EXPORT_MODULES); do		\
+		for file in $(EXPORT_MODULES)			\
+			$(EXPORT_MODULES_GEN); do		\
 			rm -f $$file*;				\
 		done;						\
 	fi
@@ -154,7 +166,13 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/ServerFirewalled.py		\
 	troubleshoot/Shrug.py				\
 	troubleshoot/VerifyPackages.py			\
-	troubleshoot/Welcome.py
+	troubleshoot/Welcome.py				\
+	xml/preferreddrivers.rng			\
+	xml/validate.py
+
+cupshelpersdir=$(sysconfdir)/cupshelpers
+cupshelpers_DATA=\
+	xml/preferreddrivers.xml
 
 bin_SCRIPTS=\
 	system-config-printer			\
@@ -240,9 +258,11 @@ EXTRA_DIST=\
 	intltool-merge.in \
 	intltool-update.in \
 	config.py.in \
+	cupshelpers/config.py.in \
 	profile-ppds.py \
 	udev/udev-add-printer \
-	udev/70-printers.rules
+	udev/70-printers.rules \
+	xml/preferreddrivers.xml
 
 @INTLTOOL_DESKTOP_RULE@
 
@@ -250,7 +270,7 @@ EXTRA_DIST=\
 $(man_MANS): $(top_srcdir)/man/system-config-printer.xml
 	xmlto man -o man $<
 
-html:	$(EXPORT_MODULES)
+html:	$(EXPORT_MODULES) $(EXPORT_MODULES_GEN)
 	rm -rf html
 	epydoc -o html --html $(EXPORT_MODULES)
 
@@ -279,12 +299,14 @@ missing-imports:
 	done; \
 	exit $$s
 
-run:	config.py
+run:	config.py cupshelpers/config.py
 	SYSTEM_CONFIG_PRINTER_UI=$(top_srcdir)/ui \
+	CUPSHELPERS_XMLDIR=$(top_srcdir)/xml \
 	$(PYTHON) $(top_srcdir)/system-config-printer.py --debug
 
-run-applet:	config.py
+run-applet:	config.py cupshelpers/config.py
 	SYSTEM_CONFIG_PRINTER_UI=$(top_srcdir)/ui \
+	CUPSHELPERS_XMLDIR=$(top_srcdir)/xml \
 	$(PYTHON) $(top_srcdir)/applet.py --debug
 
 help:
@@ -296,24 +318,35 @@ help:
 	@echo " run                Run system-config-printer with local UI files"
 	@echo " run-applet         Run system-config-printer-applet with local UI files"
 
-test-ppd-module.sh:
+test-ppd-module.sh:	FORCE
 	echo "#!$(PYTHON)" > "$@"
-	echo "import sys; sys.path.append ('$(top_srcdir)')" >> "$@"
+	echo "import os, sys; sys.path.append ('$(top_srcdir)')" >> "$@"
+	echo "os.environ['top_srcdir'] = '$(top_srcdir)'" >> "$@"
 	echo "from cupshelpers.ppds import _self_test" >> "$@"
 	echo "_self_test(sys.argv)" >> "$@"
 	chmod 755 "$@"
 
-TESTS = test-ppd-module.sh
+test-xml-validity.sh:	FORCE
+	echo "#!/bin/bash" > "$@"
+	echo "set -e" >> "$@"
+	echo "xmllint --relaxng \\" >> "$@"
+	echo "    $(top_srcdir)/xml/preferreddrivers.rng \\" >> "$@"
+	echo "    $(top_srcdir)/xml/preferreddrivers.xml >/dev/null" >> "$@"
+	echo "python $(top_srcdir)/xml/validate.py \\" >> "$@"
+	echo "    $(top_srcdir)/xml/preferreddrivers.xml" >> "$@"
+	chmod 755 "$@"
+
+TESTS = test-xml-validity.sh test-ppd-module.sh
 
 DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	troubleshoot/*.pyc troubleshoot/*.pyo troubleshoot/*~ \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
-	test-ppd-module.sh pickled-ppds \
-	config.py
+	test-ppd-module.sh test-xml-validity.sh pickled-ppds \
+	config.py cupshelpers/config.py
 
 distclean-local:
 	rm -rf html
 
-.PHONY: update-po missing-languages run help
+.PHONY: update-po missing-languages run help FORCE
 

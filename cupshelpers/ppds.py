@@ -22,6 +22,7 @@
 
 import cups
 from .cupshelpers import parseDeviceID
+import xmldriverprefs
 import itertools
 import string
 import time
@@ -250,89 +251,6 @@ def _singleton (x):
         return x[0]
     return x
 
-# Some drivers are just generally better than others.
-# Here is the preference list:
-DRIVER_TYPE_DOWNLOADED_NOW = 5
-DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT = 8
-DRIVER_TYPE_VENDOR = 10
-DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 15
-DRIVER_TYPE_HPCUPS = 16
-DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP = 17
-DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED = 20
-DRIVER_TYPE_GUTENPRINT_NATIVE = 25
-DRIVER_TYPE_SPLIX = 27
-DRIVER_TYPE_FOOMATIC_PS = 30
-DRIVER_TYPE_FOOMATIC_HPIJS = 40
-DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 50
-DRIVER_TYPE_FOOMATIC_GUTENPRINT = 60
-DRIVER_TYPE_FOOMATIC = 70
-DRIVER_TYPE_CUPS = 80
-DRIVER_TYPE_FOOMATIC_GENERIC = 90
-DRIVER_TYPE_3RD_PARTY_NONFREE = 95
-DRIVER_DOES_NOT_WORK = 999
-def _getDriverType (ppdname, ppds=None):
-    """Decides which of the above types ppdname is."""
-    if ppdname.find ("turboprint") != -1:
-        return DRIVER_TYPE_3RD_PARTY_NONFREE
-    if ppdname.find ("splix")!= -1:
-        return DRIVER_TYPE_SPLIX
-    if ppdname.find ("hpcups") != -1:
-        info = ppds.getInfoFromPPDName (ppdname)
-        make_model = _singleton (info.get ('ppd-make-and-model', ''))
-        if make_model.find ("plugin") != -1:
-            return DRIVER_TYPE_3RD_PARTY_NONFREE
-        else:
-            return DRIVER_TYPE_HPCUPS
-    if (ppdname.find (":") == -1 and
-        ppdname.find ("/cups-included/") != -1):
-        return DRIVER_TYPE_CUPS
-    if ppdname.startswith ("foomatic:"):
-        # Foomatic (generated) -- but which driver?
-        if ppdname.find ("Generic")!= -1:
-            return DRIVER_TYPE_FOOMATIC_GENERIC
-        if ppds != None:
-            info = ppds.getInfoFromPPDName (ppdname)
-            device_id = _singleton (info.get ('ppd-device-id', ''))
-            id_dict = parseDeviceID (device_id)
-            drv = id_dict.get ('DRV', '')
-            drvfields = dict()
-            for field in drv.split (','):
-                if len (field) == 0:
-                    continue
-                key = field[0]
-                drvfields[key] = field[1:]
-
-            ppd_make_and_model = _singleton (info.get ('ppd-make-and-model',
-                                                       ''))
-            if (drvfields.get ('R', '0') == '1' or
-                ppd_make_and_model.find ("(recommended)") != -1):
-                if ppd_make_and_model.find ("Postscript") != -1:
-                    return DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT
-                else:
-                    return DRIVER_TYPE_FOOMATIC_RECOMMENDED_NON_POSTSCRIPT
-        if ppdname.find ("-Postscript")!= -1:
-            return DRIVER_TYPE_FOOMATIC_PS
-        if ppdname.find ("-hpijs") != -1:
-            if ppdname.find ("hpijs-rss") == -1:
-                return DRIVER_TYPE_FOOMATIC_HPIJS
-        if ppdname.find ("-gutenprint") != -1:
-            if ppdname.find ("-simplified")!= -1:
-                return DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED
-            return DRIVER_TYPE_FOOMATIC_GUTENPRINT
-        return DRIVER_TYPE_FOOMATIC
-    if ppdname.find ("gutenprint") != -1:
-        if (ppdname.find ("/simple") != -1 or
-            ppdname.find (".sim-") != -1):
-            return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
-        else:
-            return DRIVER_TYPE_GUTENPRINT_NATIVE
-    if ppdname.find ("-hpijs") != -1:
-        if ppdname.find ("hpijs-rss") == -1:
-            return DRIVER_TYPE_FOOMATIC_HPIJS
-    # Anything else should be a vendor's PPD.
-    return DRIVER_TYPE_VENDOR # vendor's own
-
-
 class PPDs:
     """
     This class is for handling the list of PPDs returned by CUPS.  It
@@ -348,7 +266,7 @@ class PPDs:
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
 
-    def __init__ (self, ppds, language=None):
+    def __init__ (self, ppds, language=None, xml_dir=None):
         """
         @type ppds: dict
         @param ppds: dict of PPDs as returned by cups.Connection.getPPDs()
@@ -361,6 +279,25 @@ class PPDs:
         self.ppds = ppds.copy ()
         self.makes = None
         self.ids = None
+
+        self.drivertypes = xmldriverprefs.DriverTypes ()
+        self.preforder = xmldriverprefs.PreferenceOrder ()
+        if xml_dir == None:
+            xml_dir = os.environ.get ("CUPSHELPERS_XMLDIR")
+            if xml_dir == None:
+                import config
+                xml_dir = os.path.join (config.sysconfdir, "cupshelpers")
+
+        try:
+            xmlfile = os.path.join (xml_dir, "preferreddrivers.xml")
+            (drivertypes, preferenceorder) = \
+                xmldriverprefs.PreferredDrivers (xmlfile)
+            self.drivertypes.load (drivertypes)
+            self.preforder.load (preferenceorder)
+        except Exception, e:
+            print "Error loading %s: %s" % (xmlfile, e)
+            self.drivertypes = None
+            self.preforder = None
 
         if (language == None or
             language == "C" or
@@ -455,101 +392,67 @@ class PPDs:
         return self.ppds[ppdname]
 
     def orderPPDNamesByPreference (self, ppdnamelist=[],
-                                   downloadedfiles=[]):
+                                   downloadedfiles=[],
+                                   make_and_model=None,
+                                   devid=None, fit=None):
         """
 
 	Sort a list of PPD names by (hard-coded) preferred driver
-	type.
+	type (obsolete).
 
 	@param ppdnamelist: PPD names
 	@type ppdnamelist: string list
+        @param downloadedfiles: Filenames from packages downloaded
+        @type downloadedfiles: string list
+        @param make_and_model: device-make-and-model name
+        @type make_and_model: string
+        @param devid: Device ID dict
+        @type devid: dict indexed by Device ID field name, of strings;
+        except for CMD field which must be a string list
 	@returns: string list
 	"""
-        if len (ppdnamelist) < 1:
-            return ppdnamelist
+        if fit == None:
+            fit = {}
 
-        dict = self.getInfoFromPPDName (ppdnamelist[0])
-        make_model = _singleton (dict['ppd-make-and-model'])
-        mfg, mdl = ppdMakeModelSplit (make_model)
-        def getDriverTypeWithBias (x, mfg):
-            t = _getDriverType (x, ppds=self)
-            for file in downloadedfiles:
-                (path, slash, filename) = file.rpartition ("/")
-                (xpath, xslash, xfilename) = x.rpartition ("/")
-                if filename == xfilename:
-                    return DRIVER_TYPE_DOWNLOADED_NOW
-            if mfg == "HP" or mfg == "Apollo":
-                if t == DRIVER_TYPE_FOOMATIC_HPIJS:
-                    # Prefer HPIJS for HP devices.
-                    t = DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP
-            return t
+        if self.drivertypes and self.preforder:
+            ppds = {}
+            for ppdname in ppdnamelist:
+                ppds[ppdname] = self.ppds[ppdname]
 
-        def sort_ppdnames (a, b):
-            ta = getDriverTypeWithBias (a, mfg)
-            tb = getDriverTypeWithBias (b, mfg)
-            if ta != tb:
-                if tb < ta:
-                    return 1
-                else:
-                    return -1
+            orderedtypes = self.preforder.get_ordered_types (make_and_model,
+                                                             devid)
+            orderedppds = self.drivertypes.get_ordered_ppdnames (orderedtypes,
+                                                                 ppds, fit)
+            ppdnamelist = map (lambda (typ, name): name, orderedppds)
 
-            # Prefer C locale localized PPDs to other languages, just
-            # because we don't know the user's locale.  This only
-            # applies to PPDs provided by gutenprint 5.0; in 5.2 the
-            # PPDs are localized properly.
-            def is_C_locale (x):
-                try:
-                    while x:
-                        i = x.find ("C")
-                        if i == -1:
-                            return False
-                        lword = False
-                        if i == 0:
-                            lword = True
-                        elif x[i - 1] not in string.letters:
-                            lword = True
+        # Special handling for files we've downloaded.  First collect
+        # their basenames.
+        downloadedfnames = set()
+        for downloadedfile in downloadedfiles:
+            (path, slash, fname) = downloadedfile.rpartition ("/")
+            downloadedfnames.add (fname)
 
-                        if lword:
-                            rword = False
-                            if i == (len (x) - 1):
-                                rword = True
-                            elif x[i + 1] not in string.letters:
-                                rword = True
-                            if rword:
-                                return True
-                        
-                        x = x[i + 1:]
-                except UnicodeDecodeError:
-                    return False
+        if downloadedfnames:
+            # Next compare the basenames of each ppdname
+            downloadedppdnames = []
+            for ppdname in ppdnamelist:
+                (path, slash, ppdfname) = ppdname.rpartition ("/")
+                if ppdfname in downloadedfnames:
+                    downloadedppdnames.add (ppdname)
 
-            ca = is_C_locale (a)
-            cb = is_C_locale (b)
-            if ca != cb:
-                # If they compare equal stringwise up to "C", sort.
-                if ca:
-                    l = a.find ("C")
-                else:
-                    l = b.find ("C")
+            # Finally, promote the matching ones to the head of the list.
+            if downloadedppdnames:
+                for ppdname in ppdnamelist:
+                    if ppdname not in downloadedppdnames:
+                        downloadedppdnames.append (ppdname)
 
-                if a[:l] == b[:l]:
-                    if cb:
-                        return 1
-                    else:
-                        return -1
+                ppdnamelist = downloadedppdnames
 
-            # String-wise compare.
-            if a > b:
-                return 1
-            elif a < b:
-                return -1
-            return 0
-
-        ppdnamelist.sort (sort_ppdnames)
         return ppdnamelist
 
-    def getPPDNameFromDeviceID (self, mfg, mdl, description="",
-                                commandsets=[], uri=None,
-                                downloadedfiles=[]):
+    def getPPDNamesFromDeviceID (self, mfg, mdl, description="",
+                                 commandsets=[], uri=None,
+                                 make_and_model=None):
         """
 	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
 	The status is one of:
@@ -577,7 +480,9 @@ class PPDs:
 	@type commandsets: string
 	@param uri: device URI, optional (only needed for debugging)
 	@type uri: string
-	@returns: an integer,string pair of (status,ppd-name)
+        @param make_and_model: device-make-and-model string
+        @type make_and_model: string
+	@returns: a dict of match status by PPD name
 	"""
         _debugprint ("\n%s %s" % (mfg, mdl))
         orig_mfg = mfg
@@ -586,7 +491,7 @@ class PPDs:
 
         # Start with an empty result list and build it up using
         # several search methods, in increasing order of fuzziness.
-        ppdnamelist = []
+        status = {}
 
         # First, try looking up the device using the manufacturer and
         # model fields from the Device ID exactly as they appear (but
@@ -596,8 +501,8 @@ class PPDs:
 
         id_matched = False
         try:
-            ppdnamelist = self.ids[mfgl][mdll]
-            status = self.STATUS_SUCCESS
+            for each in self.ids[mfgl][mdll]:
+                status[each] = self.STATUS_SUCCESS
             id_matched = True
         except KeyError:
             pass
@@ -605,8 +510,8 @@ class PPDs:
         # The HP PPDs say "HP" not "Hewlett-Packard", so try that.
         if mfgl == "hewlett-packard":
             try:
-                ppdnamelist += self.ids["hp"][mdll]
-                status = self.STATUS_SUCCESS
+                for each in self.ids["hp"][mdll]:
+                    status[each] = self.STATUS_SUCCESS
                 print ("**** Incorrect IEEE 1284 Device ID: %s" %
                        self.ids["hp"][mdll])
                 print "**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl)
@@ -651,8 +556,8 @@ class PPDs:
 
             if self.lmodels[mfgl].has_key (mdll):
                 model = mdlsl[mdll]
-                ppdnamelist += mdls[model].keys ()
-                status = self.STATUS_SUCCESS
+                for each in mdls[model].keys ():
+                    status[each] = self.STATUS_SUCCESS
             else:
                 # Make use of the model name clean-up in the
                 # ppdMakeModelSplit () function
@@ -660,23 +565,22 @@ class PPDs:
                 mdl2l = mdl2.lower ()
                 if self.lmodels[mfgl].has_key (mdl2l):
                     model = mdlsl[mdl2l]
-                    ppdnamelist += mdls[model].keys ()
-                    status = self.STATUS_SUCCESS
+                    for each in mdls[model].keys ():
+                        status[each] = self.STATUS_SUCCESS
       
-        if not ppdnamelist and mdls:
+        if not status and mdls:
             (s, ppds) = self._findBestMatchPPDs (mdls, mdl)
             if s != self.STATUS_NO_DRIVER:
-                status = s
-                ppdnamelist = ppds
+                for each in ppds:
+                    status[each] = s
 
-        if not ppdnamelist and commandsets:
+        if commandsets:
             if type (commandsets) != list:
                 commandsets = commandsets.split (',')
 
             generic = self._getPPDNameFromCommandSet (commandsets)
             if generic:
-                status = self.STATUS_GENERIC_DRIVER
-                ppdnamelist = generic
+                status[generic[0]] = self.STATUS_GENERIC_DRIVER
 
         # What about the CMD field of the Device ID?  Some devices
         # have optional units for page description languages, such as
@@ -698,7 +602,7 @@ class PPDs:
         # add them back in afterwards.
         if id_matched and len (commandsets) > 0:
             failed = set()
-            for ppdname in ppdnamelist:
+            for ppdname in status.keys ():
                 ppd = self.ppds[ppdname]
                 ppd_device_id = _singleton (ppd.get ('ppd-device-id'))
                 if not ppd_device_id:
@@ -719,14 +623,15 @@ class PPDs:
                     failed.add (ppdname)
 
             _debugprint ("Removed %s due to CMD mis-match" % failed)
-            ppdnamelist = list (set (ppdnamelist) - failed)
+            for each in failed:
+                del status[each]
 
         # If the Device ID matched but the DES field is different,
         # eliminate those PPDs too.
         if id_matched and description:
             _debugprint ("Checking DES field")
             inexact = set()
-            for ppdname in ppdnamelist:
+            for ppdname in status.keys ():
                 if (ppdname.find ("hpijs") != -1 or
                     ppdname.find ("hpcups") != -1):
                     continue
@@ -739,13 +644,12 @@ class PPDs:
                 if id_dict["DES"] != description:
                     inexact.add (ppdname)
 
-            exact = set (ppdnamelist).difference (inexact)
-            _debugprint ("discarding: %s" % inexact)
-            if len (exact) >= 1:
-                ppdnamelist = list (exact)
+            if len (status) - len (inexact) >= 1:
+                _debugprint ("discarding: %s" % inexact)
+                for each in inexact:
+                    del status[each]
 
-        if not ppdnamelist:
-            status = self.STATUS_NO_DRIVER
+        if not status:
             fallbacks = ["textonly.ppd", "postscript.ppd"]
             found = False
             for fallback in fallbacks:
@@ -754,7 +658,7 @@ class PPDs:
                 for ppdpath in self.ppds.keys ():
                     if (ppdpath.endswith (fallback) or
                         ppdpath.endswith (fallbackgz)):
-                        ppdnamelist = [ppdpath]
+                        status[ppdpath] = self.STATUS_NO_DRIVER
                         found = True
                         break
 
@@ -765,15 +669,7 @@ class PPDs:
 
             if not found:
                 _debugprint ("No fallback available; choosing any")
-                ppdnamelist = [self.ppds.keys ()[0]]
-
-        # We've got a set of PPDs, any of which will drive the device.
-        # Now we have to choose the "best" one.  This is quite tricky
-        # to decide, so let's sort them in order of preference and
-        # take the first.
-        ppdnamelist = self.orderPPDNamesByPreference (ppdnamelist,
-                                                      downloadedfiles)
-        _debugprint ("Found PPDs: %s" % str (ppdnamelist))
+                status[self.ppds.keys ()[0]] = self.STATUS_NO_DRIVER
 
         if not id_matched:
             sanitised_uri = re.sub (pattern="//[^@]*@/?", repl="//",
@@ -791,6 +687,64 @@ class PPDs:
             print "No ID match for device %s:" % sanitised_uri
             print id
 
+        return status
+
+    def getPPDNameFromDeviceID (self, mfg, mdl, description="",
+                                commandsets=[], uri=None,
+                                downloadedfiles=[],
+                                make_and_model=None):
+        """
+	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
+	The status is one of:
+
+	  - L{STATUS_SUCCESS}: the match was successful, and an exact
+            match was found
+
+	  - L{STATUS_MODEL_MISMATCH}: a similar match was found, but
+            the model name does not exactly match
+
+	  - L{STATUS_GENERIC_DRIVER}: no match was found, but a
+            generic driver is available that can drive this device
+            according to its command set list
+
+	  - L{STATUS_NO_DRIVER}: no match was found at all, and the
+            returned PPD name is a last resort
+
+	@param mfg: MFG or MANUFACTURER field
+	@type mfg: string
+	@param mdl: MDL or MODEL field
+	@type mdl: string
+	@param description: DES or DESCRIPTION field, optional
+	@type description: string
+	@param commandsets: CMD or COMMANDSET field, optional
+	@type commandsets: string
+	@param uri: device URI, optional (only needed for debugging)
+	@type uri: string
+        @param downloadedfiles: filenames from downloaded packages
+        @type downloadedfiles: string list
+        @param make_and_model: device-make-and-model string
+        @type make_and_model: string
+	@returns: an integer,string pair of (status,ppd-name)
+	"""
+
+        fit = self.getPPDNamesFromDeviceID (mfg, mdl, description,
+                                            commandsets, uri,
+                                            make_and_model)
+
+        # We've got a set of PPDs, any of which will drive the device.
+        # Now we have to choose the "best" one.  This is quite tricky
+        # to decide, so let's sort them in order of preference and
+        # take the first.
+        devid = { "MFG": mfg, "MDL": mdl,
+                  "DES": description,
+                  "CMD": commandsets }
+        ppdnamelist = self.orderPPDNamesByPreference (fit.keys (),
+                                                      downloadedfiles,
+                                                      make_and_model,
+                                                      devid, fit)
+        _debugprint ("Found PPDs: %s" % str (ppdnamelist))
+
+        status = fit[ppdnamelist[0]]
         print "Using %s (status: %d)" % (ppdnamelist[0], status)
         return (status, ppdnamelist[0])
 
@@ -1153,7 +1107,11 @@ def _self_test(argv):
 
         pickle.dump (cupsppds, f)
 
-    ppds = PPDs (cupsppds)
+    xml_dir = os.environ.get ("top_srcdir")
+    if xml_dir:
+        xml_dir = os.path.join (xml_dir, "xml")
+
+    ppds = PPDs (cupsppds, xml_dir=xml_dir)
     makes = ppds.getMakes ()
     models_count = 0
     for make in makes:
