@@ -3,8 +3,9 @@
 ## system-config-printer
 ## CUPS backend
  
-## Copyright (C) 2002, 2003, 2006, 2007, 2008 Red Hat, Inc.
-## Copyright (C) 2002, 2003, 2006, 2007, 2008 Tim Waugh <twaugh@redhat.com>
+## Copyright (C) 2002, 2003, 2006, 2007, 2008, 2010 Red Hat, Inc.
+## Authors:
+##  Tim Waugh <twaugh@redhat.com>
  
 ## This program is free software; you can redistribute it and/or modify
 ## it under the terms of the GNU General Public License as published by
@@ -28,6 +29,20 @@ import os
 import pwd
 import smbc
 from debug import *
+
+class _None(RuntimeError):
+    pass
+
+try:
+    NoEntryError = smbc.NoEntryError
+    PermissionError = smbc.PermissionError
+    ExistsError = smbc.ExistsError
+    NotEmptyError = smbc.NotEmptyError
+    TimedOutError = smbc.TimedOutError
+    NoSpaceError = smbc.NoSpaceError
+except AttributeError:
+    NoEntryError = PermissionError = ExistsError = _None
+    NotEmptyError = TimedOutError = NoSpaceError = _None
 
 class AuthContext:
     def __init__ (self, parent=None, workgroup='', user='', passwd=''):
@@ -160,6 +175,8 @@ class AuthContext:
 
         if exc:
             if (self.cancel or
+                (type (exc) in [NoEntryError, ExistsError, NotEmptyError,
+                                TimedOutError, NoSpaceError]) or
                 (type (exc) == RuntimeError and
                  not (exc.args[0] in [errno.EACCES, errno.EPERM]))):
                     raise exc

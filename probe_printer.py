@@ -258,6 +258,7 @@ class PrinterFinder:
         # Run the CUPS SNMP backend, pointing it at the host.
         null = file ("/dev/null", "r+")
         try:
+            debugprint ("snmp: trying")
             p = subprocess.Popen (args=["/usr/lib/cups/backend/snmp",
                                         self.hostname],
                                   close_fds=True,
@@ -265,6 +266,7 @@ class PrinterFinder:
                                   stdout=subprocess.PIPE,
                                   stderr=null)
         except OSError, e:
+            debugprint ("snmp: no good")
             if e == errno.ENOENT:
                 return
 
@@ -272,9 +274,11 @@ class PrinterFinder:
 
         (stdout, stderr) = p.communicate ()
         if p.returncode != 0:
+            debugprint ("snmp: no good")
             return
 
         if self.quit:
+            debugprint ("snmp: no good")
             return
 
         for line in stdout.split ('\n'):
@@ -294,11 +298,14 @@ class PrinterFinder:
                             'device-make-and-model': make_and_model,
                             'device-info': info }
             if n == 5:
+                debugprint ("snmp: Device ID found:\n%s" %
+                            device_id)
                 device_dict['device-id'] = device_id
             if n == 6:
                 device_dict['device-location'] = device_location
 
             device = cupshelpers.Device (uri, **device_dict)
+            debugprint ("Device found: %s" % uri)
             self.callback_fn (device)
 
             # Cache the make and model for use by other search methods
@@ -306,10 +313,14 @@ class PrinterFinder:
             self._cached_attributes['device-make-and-model'] = make_and_model
             self._cached_attributes['device_id'] = device_id
 
+        debugprint ("snmp: done")
+
     def _probe_lpd (self):
+        debugprint ("lpd: trying")
         lpd = LpdServer (self.hostname)
         for name in lpd.get_possible_queue_names ():
             if self.quit:
+                debugprint ("lpd: no good")
                 return
 
             found = lpd.probe_queue (name, [])
@@ -322,15 +333,19 @@ class PrinterFinder:
 
             time.sleep(0.1) # avoid DOS and following counter measures 
 
+        debugprint ("lpd: done")
+
     def _probe_hplip (self):
         null = file ("/dev/null", "r+")
         try:
+            debugprint ("hplip: trying")
             p = subprocess.Popen (args=["hp-makeuri", "-c", self.hostname],
                                   close_fds=True,
                                   stdin=null,
                                   stdout=subprocess.PIPE,
                                   stderr=null)
         except OSError, e:
+            debugprint ("hplip: no good")
             if e == errno.ENOENT:
                 return
 
@@ -338,14 +353,18 @@ class PrinterFinder:
 
         (stdout, stderr) = p.communicate ()
         if p.returncode != 0:
+            debugprint ("hplip: no good")
             return
 
         if self.quit:
+            debugprint ("hplip: no good")
             return
 
         uri = stdout.strip ()
         if uri.find (":") != -1:
             self._new_device(uri, uri)
+
+        debugprint ("hplip: done")
 
     def _probe_smb (self):
         if not PYSMB_AVAILABLE:
@@ -359,9 +378,11 @@ class PrinterFinder:
                                   auth_fn=smbc_auth.callback)
         entries = []
         uri = "smb://%s/" % self.hostname
+        debugprint ("smb: trying")
         try:
             while smbc_auth.perform_authentication () > 0:
                 if self.quit:
+                    debugprint ("smb: no good")
                     return
 
                 try:
@@ -375,6 +396,7 @@ class PrinterFinder:
             nonfatalException ()
 
         if self.quit:
+            debugprint ("smb: no good")
             return
 
         for entry in entries:
@@ -383,38 +405,47 @@ class PrinterFinder:
                 info = "SMB (%s)" % self.hostname
                 self._new_device(uri, info)
 
+        debugprint ("smb: done")
+
     def _probe_jetdirect (self):
         port = 9100    #jetdirect
         sock_address = (self.hostname, port)
+        debugprint ("jetdirect: trying")
         s = open_socket(self.hostname, port)
         if not s:
-            debugprint ("%s:%d CLOSED" % sock_address)
+            debugprint ("jetdirect: %s:%d CLOSED" % sock_address)
         else:
             # port is open so assume its a JetDirect device
-            debugprint ("%s:%d OPEN" % sock_address)
+            debugprint ("jetdirect %s:%d OPEN" % sock_address)
             uri = "socket://%s:%d" % sock_address
             info = "JetDirect (%s)" % self.hostname
             self._new_device(uri, info)
             s.close ()
 
+        debugprint ("jetdirect: done")
+
     def _probe_ipp (self):
+        debugprint ("ipp: trying")
         try:
             ai = socket.getaddrinfo(self.hostname, 631, socket.AF_UNSPEC,
                                     socket.SOCK_STREAM)
         except socket.gaierror:
-            debugprint ("Can't resolve %s" % self.hostname)
+            debugprint ("ipp: can't resolve %s" % self.hostname)
+            debugprint ("ipp: no good")
             return
         for res in ai:
             af, socktype, proto, canonname, sa = res
             if (af == socket.AF_INET and sa[0] == '127.0.0.1' or
                 af == socket.AF_INET6 and sa[0] == '::1'):
-                debugprint ("Do not probe local cups server")
+                debugprint ("ipp: do not probe local cups server")
+                debugprint ("ipp: no good")
                 return
 
         try:
             c = cups.Connection (host = self.hostname)
         except RuntimeError:
-            debugprint ("Can't connect to server/printer")
+            debugprint ("ipp: can't connect to server/printer")
+            debugprint ("ipp: no good")
             return
 
         try:
@@ -425,6 +456,7 @@ class PrinterFinder:
             uri = "ipp://%s:631/ipp" % (self.hostname)
             info = "IPP (%s)" % self.hostname
             self._new_device(uri, info)
+            debugprint ("ipp: done")
             return
 
         for name, queue in printers.iteritems ():
@@ -433,4 +465,4 @@ class PrinterFinder:
             location = queue['printer-location']
             self._new_device(uri, info, location)
 
-
+        debugprint ("ipp: done")
