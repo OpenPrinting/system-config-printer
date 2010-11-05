@@ -104,7 +104,6 @@ _RE_ignore_suffix = re.compile (","
                                 "| postscript"
                                 "| ps"
                                 "| pxl"
-                                "| series"
                                 "| zjs"         # hpcups
                                 "| zxs"         # hpcups
                                 "| pcl3"        # hpcups
@@ -114,6 +113,7 @@ _RE_ignore_suffix = re.compile (","
                                 "| ufr ii"      # Canon UFR II
                                 "| br-script"  # Brother PPDs
                                 )
+_RE_ignore_series = re.compile (" series", re.I)
 
 def ppdMakeModelSplit (ppd_make_and_model):
     """
@@ -224,6 +224,14 @@ def ppdMakeModelSplit (ppd_make_and_model):
         suffixstart = suffix.start ()
         modell = modell[:suffixstart]
         model = model[:suffixstart]
+
+    # Remove the word "Series" if present.  Some models are referred
+    # to as e.g. HP OfficeJet Series 300 (from hpcups, and in the
+    # Device IDs of such models), and other groups of models are
+    # referred to in drivers as e.g. Epson Stylus Color Series (CUPS).
+    (model, n) = _RE_ignore_series.subn ("", model, count=1)
+    if n:
+        modell = model.lower ()
 
     if makel == "hp":
         for (name, fullname) in _HP_MODEL_BY_NAME.iteritems ():
