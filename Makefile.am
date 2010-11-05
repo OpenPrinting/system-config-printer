@@ -300,10 +300,12 @@ missing-imports:
 
 run:	config.py cupshelpers/config.py
 	SYSTEM_CONFIG_PRINTER_UI=$(top_srcdir)/ui \
+	CUPSHELPERS_XMLDIR=$(top_srcdir)/xml \
 	$(PYTHON) $(top_srcdir)/system-config-printer.py --debug
 
 run-applet:	config.py cupshelpers/config.py
 	SYSTEM_CONFIG_PRINTER_UI=$(top_srcdir)/ui \
+	CUPSHELPERS_XMLDIR=$(top_srcdir)/xml \
 	$(PYTHON) $(top_srcdir)/applet.py --debug
 
 help:
