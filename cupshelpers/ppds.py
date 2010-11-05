@@ -275,8 +275,8 @@ class PPDs:
         self.drivertypes = xmldriverprefs.DriverTypes ()
         self.preforder = xmldriverprefs.PreferenceOrder ()
         if xml_dir == None:
-            # FIXME: Need to use a config variable here
-            xml_dir = "/usr/share/system-config-printer/xml"
+            import config
+            xml_dir = os.path.join (config.sysconfdir, "cupshelpers")
 
         try:
             xmlfile = os.path.join (xml_dir, "preferreddrivers.xml")

@@ -9,6 +9,9 @@ EXPORT_MODULES=					\
 	cupshelpers/openprinting.py		\
 	cupshelpers/xmldriverprefs.py
 
+EXPORT_MODULES_GEN=				\
+	cupshelpers/config.py
+
 ### Automake hooks for Distutils.
 # The distutils module doesn't understand srcdir != builddir,
 # so we copy in, along with the cupshelpers modules, into
@@ -16,7 +19,7 @@ EXPORT_MODULES=					\
 .stamp-distutils-in-builddir:	setup.py $(EXPORT_MODULES)
 	if [ "$(top_srcdir)" != "$(top_builddir)" ]; then	\
 		cp $(top_srcdir)/setup.py .;			\
-		mkdir cupshelpers;				\
+		$(mkdir_p) cupshelpers;				\
 		for file in $(EXPORT_MODULES); do		\
 			cp $(top_srcdir)/$$file $$file;		\
 		done;						\
@@ -42,8 +45,15 @@ config.py: config.py.in Makefile
 	  -e "s|\@PACKAGE\@|$(PACKAGE)|" \
 	  $< > $@
 
+cupshelpers/config.py: cupshelpers/config.py.in Makefile
+	$(mkdir_p) cupshelpers
+	sed \
+	  -e "s|\@prefix\@|$(prefix)|" \
+	  -e "s|\@sysconfdir\@|$(sysconfdir)|" \
+	  $< > $@
+
 # Use distutils to build the module.
-all-local: .stamp-distutils-in-builddir config.py
+all-local: .stamp-distutils-in-builddir config.py cupshelpers/config.py
 	$(PYTHON) setup.py build
 
 # Use distutils to install the module.
@@ -55,8 +65,8 @@ install-exec-local: .stamp-distutils-in-builddir
 # doesn't provide a way to do this itself.
 uninstall-local:
 	rm -f $(DESTDIR)/$(pythondir)/cupshelpers*.egg-info
-	for file in $(EXPORT_MODULES); do				\
-		rm -f $(DESTDIR)/$(pythondir)/$$file*;			\
+	for file in $(EXPORT_MODULES) $(EXPORT_MODULES_GEN); do	\
+		rm -f $(DESTDIR)/$(pythondir)/$$file*;		\
 	done
 
 # Tell distutils to clean up.
@@ -64,7 +74,8 @@ clean-local:
 	-$(PYTHON) setup.py clean --all
 	if [ "$(top_srcdir)" != "$(top_builddir)" ]; then	\
 		rm -f setup.py;					\
-		for file in $(EXPORT_MODULES); do		\
+		for file in $(EXPORT_MODULES)			\
+			$(EXPORT_MODULES_GEN); do		\
 			rm -f $$file*;				\
 		done;						\
 	fi
@@ -156,8 +167,11 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/Shrug.py				\
 	troubleshoot/Welcome.py				\
 	xml/preferreddrivers.rng			\
-	xml/preferreddrivers.xml			\
 	xml/validate.py
+
+cupshelpersdir=$(sysconfdir)/cupshelpers
+cupshelpers_DATA=\
+	xml/preferreddrivers.xml
 
 bin_SCRIPTS=\
 	system-config-printer			\
@@ -243,9 +257,11 @@ EXTRA_DIST=\
 	intltool-merge.in \
 	intltool-update.in \
 	config.py.in \
+	cupshelpers/config.py.in \
 	profile-ppds.py \
 	udev/udev-add-printer \
-	udev/70-printers.rules
+	udev/70-printers.rules \
+	xml/preferreddrivers.xml
 
 @INTLTOOL_DESKTOP_RULE@
 
@@ -253,7 +269,7 @@ EXTRA_DIST=\
 $(man_MANS): $(top_srcdir)/man/system-config-printer.xml
 	xmlto man -o man $<
 
-html:	$(EXPORT_MODULES)
+html:	$(EXPORT_MODULES) $(EXPORT_MODULES_GEN)
 	rm -rf html
 	epydoc -o html --html $(EXPORT_MODULES)
 
@@ -282,11 +298,11 @@ missing-imports:
 	done; \
 	exit $$s
 
-run:	config.py
+run:	config.py cupshelpers/config.py
 	SYSTEM_CONFIG_PRINTER_UI=$(top_srcdir)/ui \
 	$(PYTHON) $(top_srcdir)/system-config-printer.py --debug
 
-run-applet:	config.py
+run-applet:	config.py cupshelpers/config.py
 	SYSTEM_CONFIG_PRINTER_UI=$(top_srcdir)/ui \
 	$(PYTHON) $(top_srcdir)/applet.py --debug
 
@@ -324,7 +340,7 @@ DISTCLEANFILES=*.pyc *.pyo *~ *.bak \
 	intltool-extract intltool-merge intltool-update \
 	*.desktop man/*.1 \
 	test-ppd-module.sh test-xml-validity.sh pickled-ppds \
-	config.py
+	config.py cupshelpers/config.py
 
 distclean-local:
 	rm -rf html
