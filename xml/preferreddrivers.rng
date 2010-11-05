@@ -16,7 +16,7 @@
    This is done with reference to an XML file of the type described
    here.
 
-   Child elements of the preferreddrivers element are processed in
+   Child elements of the preferenceorder element are processed in
    order, with each printer element being matched against the printer
    in question.  Once all the elements have been processed, the result
    will be a list of driver types in preference order (most preferred
@@ -26,9 +26,10 @@
    expression, or else all of the deviceid regular expressions, must
    match.  For a matching printer element, each of the driver types
    contained in the drivers element is appended to the (initially
-   empty) list of driver types.  The driver types contained in the
-   blacklist element are added to the (initially empty) set of
-   blacklisted driver types.
+   empty) list of driver types if not already in that list.
+
+   The driver types contained in the blacklist element are added to
+   the (initially empty) set of blacklisted driver types.
 
    A printer element that does not contain any make-and-model or
    deviceid elements is a "catch-all" element and matches any
