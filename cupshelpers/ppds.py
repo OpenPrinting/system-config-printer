@@ -275,8 +275,10 @@ class PPDs:
         self.drivertypes = xmldriverprefs.DriverTypes ()
         self.preforder = xmldriverprefs.PreferenceOrder ()
         if xml_dir == None:
-            import config
-            xml_dir = os.path.join (config.sysconfdir, "cupshelpers")
+            xml_dir = os.environ.get ("CUPSHELPERS_XMLDIR")
+            if xml_dir == None:
+                import config
+                xml_dir = os.path.join (config.sysconfdir, "cupshelpers")
 
         try:
             xmlfile = os.path.join (xml_dir, "preferreddrivers.xml")
