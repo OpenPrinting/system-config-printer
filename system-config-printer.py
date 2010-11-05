@@ -5889,8 +5889,6 @@ class NewPrinterGUI(GtkGUI):
             if scheme == "socket":
                 (hostport, rest) = urllib.splithost (rest)
                 (host, port) = urllib.splitnport (hostport, defport=port)
-                debugprint ("socket: host is %s, port is %s" % (host,
-                                                                repr (port)))
                 if device.location != '':
                     location = device.location
                 else:
