@@ -4386,6 +4386,13 @@ class NewPrinterGUI(GtkGUI):
                 self.auto_driver = None
                 self.device.uri = self.getDeviceURI()
 
+                # Cancel the printer finder now as the user has
+                # already selected their device.
+                if self.printer_finder:
+                    self.printer_finder.cancel ()
+                    self.printer_finder = None
+                    self.dec_spinner_task ()
+
                 if (not self.device.id and
                     self.device.type in ["socket", "lpd", "ipp"]):
                     # This is a network printer whose model we don't yet know.
