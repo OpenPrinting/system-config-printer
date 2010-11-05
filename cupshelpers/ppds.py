@@ -258,7 +258,7 @@ class PPDs:
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
 
-    def __init__ (self, ppds, language=None, xml_dir="xml"):
+    def __init__ (self, ppds, language=None, xml_dir=None):
         """
         @type ppds: dict
         @param ppds: dict of PPDs as returned by cups.Connection.getPPDs()
@@ -274,6 +274,10 @@ class PPDs:
 
         self.drivertypes = xmldriverprefs.DriverTypes ()
         self.preforder = xmldriverprefs.PreferenceOrder ()
+        if xml_dir == None:
+            # FIXME: Need to use a config variable here
+            xml_dir = "/usr/share/system-config-printer/xml"
+
         try:
             xmlfile = os.path.join (xml_dir, "preferreddrivers.xml")
             (drivertypes, preferenceorder) = \
@@ -1093,7 +1097,11 @@ def _self_test(argv):
 
         pickle.dump (cupsppds, f)
 
-    ppds = PPDs (cupsppds)
+    xml_dir = os.environ.get ("top_srcdir")
+    if xml_dir:
+        xml_dir = os.path.join (xml_dir, "xml")
+
+    ppds = PPDs (cupsppds, xml_dir=xml_dir)
     makes = ppds.getMakes ()
     models_count = 0
     for make in makes:

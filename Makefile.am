@@ -156,7 +156,8 @@ nobase_pkgdata_DATA=					\
 	troubleshoot/Shrug.py				\
 	troubleshoot/Welcome.py				\
 	xml/preferreddrivers.rng			\
-	xml/preferreddrivers.xml
+	xml/preferreddrivers.xml			\
+	xml/validate.py
 
 bin_SCRIPTS=\
 	system-config-printer			\
@@ -300,7 +301,8 @@ help:
 
 test-ppd-module.sh:	FORCE
 	echo "#!$(PYTHON)" > "$@"
-	echo "import sys; sys.path.append ('$(top_srcdir)')" >> "$@"
+	echo "import os, sys; sys.path.append ('$(top_srcdir)')" >> "$@"
+	echo "os.environ['top_srcdir'] = '$(top_srcdir)'" >> "$@"
 	echo "from cupshelpers.ppds import _self_test" >> "$@"
 	echo "_self_test(sys.argv)" >> "$@"
 	chmod 755 "$@"
@@ -311,7 +313,8 @@ test-xml-validity.sh:	FORCE
 	echo "xmllint --relaxng \\" >> "$@"
 	echo "    $(top_srcdir)/xml/preferreddrivers.rng \\" >> "$@"
 	echo "    $(top_srcdir)/xml/preferreddrivers.xml >/dev/null" >> "$@"
-	echo "python $(top_srcdir)/xml/validate.py" >> "$@"
+	echo "python $(top_srcdir)/xml/validate.py \\" >> "$@"
+	echo "    $(top_srcdir)/xml/preferreddrivers.xml" >> "$@"
 	chmod 755 "$@"
 
 TESTS = test-xml-validity.sh test-ppd-module.sh
