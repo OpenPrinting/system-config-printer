@@ -138,6 +138,14 @@
       <ppdname match=".*turboprint"/>
     </drivertype>
 
+    <drivertype name="manufacturer-ricoh-postscript">
+      <ppdname match=".*/(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG)/PS/"/>
+    </drivertype>
+
+    <drivertype name="manufacturer-ricoh-pxl">
+      <ppdname match=".*/(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG)/PXL/"/>
+    </drivertype>
+
     <!-- Catch-all -->
     <drivertype name="manufacturer"/>
   </drivertypes>
@@ -157,12 +165,25 @@
       </blacklist>
     </printer>
 
+    <!-- Ricoh family printers should use manufacturer's own PPD
+         files, with PostScript versions in preference to PXL versions
+	 (bug #550315 comment #8)
+         -->
+    <printer>
+      <make-and-model match="(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG) "/>
+      <deviceid field="MFG" match="(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG)"/>
+      <drivers>
+	<drivertype>manufacturer-ricoh-postscript</drivertype>
+	<drivertype>manufacturer-ricoh-pxl</drivertype>
+      </drivers>
+    </printer>
+
     <printer>
       <!-- For all printers -->
       <drivers>
 	<drivertype>foomatic-recommended-hpijs</drivertype>
 	<drivertype>foomatic-recommended-non-postscript</drivertype>
-	<drivertype>manufacturer</drivertype>
+	<drivertype>manufacturer*</drivertype>
 	<drivertype>foomatic-recommended-postscript</drivertype>
 	<drivertype>hpcups</drivertype>
       </drivers>

@@ -1170,6 +1170,14 @@ def _self_test(argv):
         ("MFG:Hewlett-Packard;MDL:HP LaserJet 3390;"
          "CMD:PJL,MLC,PCL,POSTSCRIPT,PCLXL;",
          0, "HP LaserJet 3390"),
+        # Ricoh printers should use PostScript versions of
+        # manufacturer's PPDs (bug #550315 comment #8).
+        ("MFG:RICOH;MDL:Aficio 3045;",
+         0, "Ricoh Aficio 3045 PS"),
+        # Don't mind which driver gets used here so long as it isn't
+        # gutenprint (bug #645993).
+        ("MFG:Brother;MDL:HL-2030;",
+         0 | FLAG_INVERT | FLAG_IGNORE_STATUS, ".*Gutenprint"),
 
         # Generic models
         ("MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
