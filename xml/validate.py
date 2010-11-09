@@ -44,8 +44,16 @@ class Validator:
             names.add (name)
 
         for printer in preferenceorder.getchildren ():
+            types = []
             drivers = printer.find ("drivers")
-            for drivertype in drivers.getchildren ():
+            if drivers != None:
+                types.extend (drivers.getchildren ())
+
+            blacklist = printer.find ("blacklist")
+            if blacklist != None:
+                types.extend (blacklist.getchildren ())
+
+            for drivertype in types:
                 pattern = drivertype.text.strip ()
                 matches = fnmatch.filter (names, pattern)
                 names -= set (matches)
