@@ -307,7 +307,7 @@ class PrinterType:
 
     def get_blacklist (self):
         """
-        Return the set of blacklisted driver types.
+        Return the set of blacklisted driver type patterns.
         """
         return self.blacklist
 
@@ -419,7 +419,9 @@ class PreferenceOrder:
                             orderedtypes.append (drivertype)
 
                 for pattern in ptype.get_blacklist ():
+                    # Match against the glob pattern.
                     for drivertype in drivertypes.filter (pattern):
+                        # Add each result to the set.
                         blacklist.add (drivertype)
 
         if blacklist:
