@@ -436,11 +436,14 @@ class PreferenceOrder:
 
 def test (xml_path=None, attached=False):
     import cups
+    import locale
     import ppds
     from pprint import pprint
     from time import time
     import os.path
 
+    locale.setlocale (locale.LC_ALL, "")
+    encoding = locale.getlocale (locale.LC_CTYPE)[1]
     if xml_path == None:
         xml_path = os.path.join (os.path.join (os.path.dirname (__file__),
                                                ".."),
@@ -516,7 +519,7 @@ def test (xml_path=None, attached=False):
 
                 orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
                                                                 ppdsdict, fit)
-                print mm + ":"
+                print mm.encode (encoding) + ":"
                 for t, ppd in orderedppds:
                     print "  %s\n    (%s)" % (ppd, t)
 
