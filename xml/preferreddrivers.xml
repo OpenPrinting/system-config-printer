@@ -142,7 +142,21 @@
     <drivertype name="manufacturer"/>
   </drivertypes>
 
+  <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+  <!-- This is where the types are arranged into the preferred order -->
+  <!-- +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
   <preferenceorder>
+    <!-- gutenprint is no good on the Brother HL-2030 (bug #645993) -->
+    <printer>
+      <make-and-model match="Brother HL-2030"/>
+      <deviceid field="MFG" match="Brother"/>
+      <deviceid field="MDL" match="HL-2030"/>
+      <blacklist>
+	<drivertype>gutenprint*</drivertype>
+      </blacklist>
+    </printer>
+
     <printer>
       <!-- For all printers -->
       <drivers>
