@@ -430,15 +430,15 @@ def test (xml_path=None, attached=False):
                                                ".."),
                                  "xml")
 
-        xml_path = os.path.join (xml_path, "preferreddrivers.xml")
-
+    os.environ["CUPSHELPERS_XMLDIR"] = xml_path
+    xml_path = os.path.join (xml_path, "preferreddrivers.xml")
     loadstart = time ()
-    (drivertypes, preferenceorder) = PreferredDrivers (xml_path)
+    (xmldrivertypes, xmlpreferenceorder) = PreferredDrivers (xml_path)
     drivertypes = DriverTypes ()
-    drivertypes.load (drivertypes)
+    drivertypes.load (xmldrivertypes)
 
     preforder = PreferenceOrder ()
-    preforder.load (preferenceorder)
+    preforder.load (xmlpreferenceorder)
     loadtime = time () - loadstart
     print "Time to load %s: %.3fs" % (xml_path, loadtime)
 
