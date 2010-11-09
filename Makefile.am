@@ -309,6 +309,10 @@ run-applet:	config.py cupshelpers/config.py
 	CUPSHELPERS_XMLDIR=$(top_srcdir)/xml \
 	$(PYTHON) $(top_srcdir)/applet.py --debug
 
+test-xmldriverprefs:	cupshelpers/xmldriverprefs.py xml/preferreddrivers.xml
+	python -c 'from cupshelpers.xmldriverprefs import test; test()' \
+		2>&1 | less
+
 help:
 	@echo "Usage: make <target>"
 	@echo "Available targets:"
@@ -317,6 +321,7 @@ help:
 	@echo " missing-languages  Show which po files are not shipped"
 	@echo " run                Run system-config-printer with local UI files"
 	@echo " run-applet         Run system-config-printer-applet with local UI files"
+	@echo " test-xmldriverprefs  Show preferred driver order for all models"
 
 test-ppd-module.sh:	FORCE
 	echo "#!$(PYTHON)" > "$@"
