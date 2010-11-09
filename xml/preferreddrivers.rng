@@ -24,12 +24,14 @@
 
    For each printer element, either the make-and-model regular
    expression, or else all of the deviceid regular expressions, must
-   match.  For a matching printer element, each of the driver types
-   contained in the drivers element is appended to the (initially
-   empty) list of driver types if not already in that list.
+   match.  For a matching printer element, the driver types
+   matching each pattern contained in the drivers element are appended
+   to the (initially empty) list of driver type patterns if not
+   already in that list.
 
-   The driver types contained in the blacklist element are added to
-   the (initially empty) set of blacklisted driver types.
+   The driver types matching each pattern contained in the blacklist
+   element are added to the (initially empty) set of blacklisted driver
+   types.
 
    A printer element that does not contain any make-and-model or
    deviceid elements is a "catch-all" element and matches any
@@ -204,7 +206,7 @@
 	       first -->
 	  <oneOrMore>
 	    <element name="drivertype">
-	      <!-- drivertype name -->
+	      <!-- drivertype glob pattern -->
 	      <text/>
 	    </element>
 	  </oneOrMore>
@@ -216,7 +218,7 @@
 	  <!-- List of named drivertypes which must not be used -->
 	  <oneOrMore>
 	    <element name="drivertype">
-	      <!-- drivertype name -->
+	      <!-- drivertype glob pattern -->
 	      <text/>
 	    </element>
 	  </oneOrMore>

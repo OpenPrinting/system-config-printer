@@ -23,6 +23,7 @@
 ## This program performs validation that cannot be performed using
 ## RELAX NG alone.
 
+import fnmatch
 import sys
 import xml.etree.ElementTree
 
@@ -35,19 +36,24 @@ class Validator:
         print "Validating %s" % filename
         preferreddrivers = xml.etree.ElementTree.XML (file (filename).read ())
         (drivertypes, preferenceorder) = preferreddrivers.getchildren ()
-        used = dict()
         validates = True
-        for printer in preferenceorder.getchildren ():
-            drivers = printer.find ("drivers")
-            for drivertype in drivers:
-                used[drivertype.text.strip ()] = True
 
+        names = set()
         for drivertype in drivertypes.getchildren ():
             name = drivertype.get ("name")
-            if not used.get (name, False):
-                validates = False
-                print >>sys.stderr, ("*** Driver type \"%s\" is never used" %
-                                     name)
+            names.add (name)
+
+        for printer in preferenceorder.getchildren ():
+            drivers = printer.find ("drivers")
+            for drivertype in drivers.getchildren ():
+                pattern = drivertype.text.strip ()
+                matches = fnmatch.filter (names, pattern)
+                names -= set (matches)
+
+        for name in names:
+            validates = False
+            print >>sys.stderr, ("*** Driver type \"%s\" is never used" %
+                                 name)
 
         return validates
 

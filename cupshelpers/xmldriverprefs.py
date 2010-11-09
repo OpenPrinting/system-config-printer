@@ -20,8 +20,9 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import xml.etree.ElementTree
+import fnmatch
 import re
+import xml.etree.ElementTree
 from .cupshelpers import parseDeviceID
 import ppds
 
@@ -210,6 +211,16 @@ class DriverTypes:
 
         return None
 
+    def filter (self, pattern):
+        """
+        Return the subset of driver type names that match a glob
+        pattern.
+        """
+
+        return fnmatch.filter (map (lambda x: x.get_name (),
+                                    self.drivertypes),
+                               pattern)
+
     def get_ordered_ppdnames (self, drivertypes, ppdsdict, fit):
         """
         Given a list of driver type names, a dict of PPD attributes by
@@ -261,7 +272,7 @@ class PrinterType:
     def __init__ (self):
         self.make_and_model = None
         self.deviceid = []
-        self.drivertypes = []
+        self.drivertype_patterns = []
         self.blacklist = set()
 
     def add_make_and_model (self, pattern):
@@ -276,21 +287,21 @@ class PrinterType:
         """
         self.deviceid.append ((field.upper (), re.compile (pattern, re.I)))
 
-    def add_drivertype (self, name):
+    def add_drivertype_pattern (self, name):
         """
-        Append a driver type.
+        Append a driver type pattern.
         """
-        self.drivertypes.append (name.strip ())
+        self.drivertype_patterns.append (name.strip ())
 
-    def get_drivertypes (self):
+    def get_drivertype_patterns (self):
         """
-        Return the list of driver types.
+        Return the list of driver type patterns.
         """
-        return self.drivertypes
+        return self.drivertype_patterns
 
     def add_blacklisted (self, name):
         """
-        Add a blacklisted driver type.
+        Add a blacklisted driver type pattern.
         """
         self.blacklist.add (name)
 
@@ -372,7 +383,7 @@ class PreferenceOrder:
 
                 elif child.tag == "drivers":
                     for drivertype in child.getchildren ():
-                        ptype.add_drivertype (drivertype.text)
+                        ptype.add_drivertype_pattern (drivertype.text)
 
                 elif child.tag == "blacklist":
                     for drivertype in child.getchildren ():
@@ -380,7 +391,7 @@ class PreferenceOrder:
 
             self.ptypes.append (ptype)
 
-    def get_ordered_types (self, make_and_model, deviceid):
+    def get_ordered_types (self, drivertypes, make_and_model, deviceid):
         """
         Return an accumulated list of driver types from all printer
         types that match a given printer's device-make-and-model and
@@ -400,11 +411,16 @@ class PreferenceOrder:
         blacklist = set()
         for ptype in self.ptypes:
             if ptype.match (make_and_model, deviceid):
-                for drivertype in ptype.get_drivertypes ():
-                    if drivertype not in orderedtypes:
-                        orderedtypes.append (drivertype)
+                for pattern in ptype.get_drivertype_patterns ():
+                    # Match against the glob pattern
+                    for drivertype in drivertypes.filter (pattern):
+                        # Add each result if not already in the list.
+                        if drivertype not in orderedtypes:
+                            orderedtypes.append (drivertype)
 
-                blacklist.update (ptype.get_blacklist ())
+                for pattern in ptype.get_blacklist ():
+                    for drivertype in drivertypes.filter (pattern):
+                        blacklist.add (drivertype)
 
         if blacklist:
             # Remove blacklisted drivers.
@@ -474,7 +490,8 @@ def test (xml_path=None, attached=False):
                                                         uri)
 
             mm = device.get ("device-make-and-model", "")
-            orderedtypes = preforder.get_ordered_types (mm, id_dict)
+            orderedtypes = preforder.get_ordered_types (drivertypes,
+                                                        mm, id_dict)
 
             ppds = {}
             for ppdname in status.keys ():
@@ -490,7 +507,8 @@ def test (xml_path=None, attached=False):
             for model in ppdfinder.getModels (make):
                 ppdsdict = ppdfinder.getInfoFromModel (make, model)
                 mm = make + " " + model
-                orderedtypes = preforder.get_ordered_types (mm, None)
+                orderedtypes = preforder.get_ordered_types (drivertypes,
+                                                            mm, None)
 
                 fit = {}
                 for ppdname in ppdsdict.keys ():

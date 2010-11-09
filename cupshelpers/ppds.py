@@ -419,7 +419,8 @@ class PPDs:
             for ppdname in ppdnamelist:
                 ppds[ppdname] = self.ppds[ppdname]
 
-            orderedtypes = self.preforder.get_ordered_types (make_and_model,
+            orderedtypes = self.preforder.get_ordered_types (self.drivertypes,
+                                                             make_and_model,
                                                              devid)
             orderedppds = self.drivertypes.get_ordered_ppdnames (orderedtypes,
                                                                  ppds, fit)
