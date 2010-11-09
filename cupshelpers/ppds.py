@@ -1139,9 +1139,13 @@ def _self_test(argv):
 
     print "\nID matching tests\n"
 
+    MASK_STATUS = (1 << 2) - 1
+    FLAG_INVERT = (1 << 2)
+    FLAG_IGNORE_STATUS = (1 << 3)
     idlist = [
         # Format is:
-        # (ID string, max status code, expected ppd-make-and-model RE match)
+        # (ID string, max status code (plus flags),
+        #  expected ppd-make-and-model RE match)
 
         # Specific models
         ("MFG:EPSON;CMD:ESCPL2,BDC,D4,D4PX;MDL:Stylus D78;CLS:PRINTER;"
@@ -1183,12 +1187,18 @@ def _self_test(argv):
 
     all_passed = True
     for id, max_status_code, modelre in idlist:
+        flags = max_status_code & ~MASK_STATUS
+        max_status_code &= MASK_STATUS
+        print max_status_code, flags
         id_dict = parseDeviceID (id)
         (status, ppdname) = ppds.getPPDNameFromDeviceID (id_dict["MFG"],
                                                          id_dict["MDL"],
                                                          id_dict["DES"],
                                                          id_dict["CMD"])
         ppddict = ppds.getInfoFromPPDName (ppdname)
+        if flags & FLAG_IGNORE_STATUS:
+            status = max_status_code
+
         if status < max_status_code:
             success = True
         else:
@@ -1199,6 +1209,10 @@ def _self_test(argv):
                 success = match != None
             else:
                 success = False
+
+
+        if flags & FLAG_INVERT:
+            success = not success
 
         if success:
             result = "PASS"
