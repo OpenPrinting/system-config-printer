@@ -49,12 +49,34 @@ class DriverType:
                          "close": ppds.PPDs.STATUS_MODEL_MISMATCH,
                          "generic": ppds.PPDs.STATUS_GENERIC_DRIVER,
                          "none": ppds.PPDs.STATUS_NO_DRIVER }
+        self._packagehint = None
 
     def add_ppd_name (self, pattern):
         """
         An optional PPD name regular expression.
         """
         self.ppd_name = re.compile (pattern, re.I)
+
+        # If the PPD name pattern includes a scheme, we can perhaps
+        # deduce which package would provide this driver type.
+        if self._packagehint != None:
+            return
+
+        parts = pattern.split (":", 1)
+        if len (parts) > 1:
+            scheme = parts[0]
+            if scheme == "drv":
+                rest = parts[1]
+                if rest.startswith ("///"):
+                    drv = rest[3:]
+                    f = drv.rfind ("/")
+                    if f != -1:
+                        drv = drv[:f]
+                        self._packagehint = "/usr/share/cups/drv/%s" % drv
+                        print self.get_name (), self._packagehint
+            else:
+                self._packagehint = "/usr/lib/cups/driver/%s" % scheme
+                print self.get_name (), self._packagehint
 
     def add_attribute (self, name, pattern):
         """
@@ -74,6 +96,9 @@ class DriverType:
         self.fit = {}
         for fittype in text.split():
             self.fit[self._fitmap[fittype]] = True
+
+    def set_packagehint (self, hint):
+        self._packagekit = hint
 
     def get_name (self):
         """
@@ -165,6 +190,9 @@ class DriverType:
                     matches = False
 
         return matches
+
+    def get_packagehint (self):
+        return None
 
 class DriverTypes:
     """
