@@ -32,6 +32,20 @@ def set_gettext_function (fn):
     _ = fn
 
 class PPDsLoader:
+    """
+    1. If PackageKit support is available, and this is a local server,
+    try to use PackageKit to install relevant drivers.  We do this
+    because we can only make the right choice about the "best" driver
+    when the full complement of drivers is there to choose from.
+
+    2. Fetch the list of available drivers from CUPS.
+
+    3. If Jockey is available, and there is no appropriate driver
+    available, try to use Jockey to install one.
+
+    4. If Jockey was able to install one, fetch the list of available
+    drivers again.
+    """
     def __init__ (self, callback, device_id=None, device_uri=None, parent=None,
                   host=None, encryption=None, language=None):
         debugprint ("+%s" % self)
@@ -46,7 +60,7 @@ class PPDsLoader:
         self._installed_files = []
         self._conn = None
         self._ppds = None
-        self._packagekit_queried = False
+        self._jockey_queried = False
         self._local_cups = (self._host == None or
                             self._host == "localhost" or
                             self._host[0] == '/')
@@ -69,7 +83,13 @@ class PPDsLoader:
         self._dialog.connect ("response", self._dialog_response)
 
         self._dialog.show_all ()
-        self._query_cups ()
+        if self._local_cups and self._device_id and self._bus:
+            self._devid_dict = cupshelpers.parseDeviceID (self._device_id)
+            self._gpk_device_id = "MFG:%s;MDL:%s;" % (self._devid_dict["MFG"],
+                                                      self._devid_dict["MDL"])
+            self._query_packagekit ()
+        else:
+            self._query_cups ()
 
     def __del__ (self):
         debugprint ("-%s" % self)
@@ -121,25 +141,21 @@ class PPDsLoader:
         self._ppds = ppds
         self._need_requery_cups = False
         if self._device_id and self._bus:
-            devid_dict = cupshelpers.parseDeviceID (self._device_id)
             (status, ppdname) = ppds.\
-                getPPDNameFromDeviceID (devid_dict["MFG"],
-                                        devid_dict["MDL"],
-                                        devid_dict["DES"],
-                                        devid_dict["CMD"],
+                getPPDNameFromDeviceID (self._devid_dict["MFG"],
+                                        self._devid_dict["MDL"],
+                                        self._devid_dict["DES"],
+                                        self._devid_dict["CMD"],
                                         self._device_uri,
                                         ())
-            # Try to install packages if
+            # Try to install packages using jockey if
             # - there's no appropriate driver (PPD) locally available
-            # - we didn't try to do so yet
             # - we are configuring local CUPS server
             if (status != ppds.STATUS_SUCCESS and
-                self._packagekit_queried == False and
+                not self._jockey_queried and
                 self._local_cups == True):
-                self._gpk_device_id = "MFG:%s;MDL:%s;" % (devid_dict["MFG"],
-                                                          devid_dict["MDL"])
-                self._query_packagekit ()
-                self._packagekit_queried = True
+                self._jockey_queried = True
+                self._query_jockey ()
                 return
 
         conn.destroy ()
@@ -180,20 +196,20 @@ class PPDsLoader:
             debugprint ("Failed to talk to PackageKit: %s" % e)
             if self._dialog:
                 self._dialog.show_all ()
-                self._query_jockey ()
+                self._query_cups ()
 
     def _packagekit_reply (self):
         debugprint ("Got PackageKit reply")
         self._need_requery_cups = True
         if self._dialog:
             self._dialog.show_all ()
-            self._query_jockey ()
+            self._query_cups ()
 
     def _packagekit_error (self, exc):
         debugprint ("Got PackageKit error: %s" % exc)
         if self._dialog:
             self._dialog.show_all ()
-            self._query_jockey ()
+            self._query_cups ()
 
     def _query_jockey (self):
         debugprint ("Asking Jockey to install drivers")
