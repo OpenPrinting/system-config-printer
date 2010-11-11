@@ -1442,6 +1442,7 @@ do_add (const char *cmd, const char *devpath)
 
   if (device_uris.n_uris == 0)
     {
+      syslog (LOG_ERR, "no corresponding CUPS device found");
       free_device_id (&id);
       return 0;
     }
