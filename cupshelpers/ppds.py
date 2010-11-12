@@ -82,9 +82,6 @@ _MFR_NAMES_BY_LOWER = {}
 for mfr, regexp in _MFR_BY_RANGE:
     _MFR_NAMES_BY_LOWER[mfr.lower ()] = mfr
 
-_RE_konica_minolta = re.compile("konica.*minolta$")
-_RE_hewlett_packard = re.compile("hewlett.*packard$")
-
 _HP_MODEL_BY_NAME = {
     "dj": "DeskJet",
     "lj": "LaserJet",
