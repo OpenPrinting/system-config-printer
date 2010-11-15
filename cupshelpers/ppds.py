@@ -1175,6 +1175,10 @@ def _self_test(argv):
         # gutenprint (bug #645993).
         ("MFG:Brother;MDL:HL-2030;",
          0 | FLAG_INVERT | FLAG_IGNORE_STATUS, ".*Gutenprint"),
+        # Make sure we get a colour driver for this one, see launchpad
+        # #669152.
+        ("MFG:Xerox;MDL:6250DP;",
+         1, ".*Postscript"),
 
         # Generic models
         ("MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
