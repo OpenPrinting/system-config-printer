@@ -1558,7 +1558,6 @@ class GUI(GtkGUI):
         # ..and select the new printer.
         def select_new_printer (model, path, iter):
             name = unicode (model.get_value (iter, 2))
-            print name, new_name
             if name == new_name:
                 self.dests_iconview.select_path (path)
         self.populateList ()
