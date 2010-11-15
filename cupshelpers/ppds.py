@@ -1194,7 +1194,6 @@ def _self_test(argv):
     for id, max_status_code, modelre in idlist:
         flags = max_status_code & ~MASK_STATUS
         max_status_code &= MASK_STATUS
-        print max_status_code, flags
         id_dict = parseDeviceID (id)
         (status, ppdname) = ppds.getPPDNameFromDeviceID (id_dict["MFG"],
                                                          id_dict["MDL"],

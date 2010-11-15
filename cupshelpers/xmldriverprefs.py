@@ -73,10 +73,8 @@ class DriverType:
                     if f != -1:
                         drv = drv[:f]
                         self._packagehint = "/usr/share/cups/drv/%s" % drv
-                        print self.get_name (), self._packagehint
             else:
                 self._packagehint = "/usr/lib/cups/driver/%s" % scheme
-                print self.get_name (), self._packagehint
 
     def add_attribute (self, name, pattern):
         """
