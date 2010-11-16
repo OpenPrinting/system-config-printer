@@ -167,10 +167,27 @@
       <list>
 	<oneOrMore>
 	  <choice>
-	    <value>exact</value>   <!-- STATUS_SUCCESS -->
-	    <value>close</value>   <!-- STATUS_MODEL_MISMATCH -->
-	    <value>generic</value> <!-- STATUS_GENERIC_DRIVER -->
-	    <value>none</value>    <!-- STATUS_NO_DRIVER -->
+	    <!-- Drivers are put into one of the following categories
+	         regarding how well it fits for this particular
+	         printer.  When matching against a category of
+	         fitness, "exact" implies "exact-cmd", i.e. an
+	         "exact-cmd" driver will match an entry listing
+	         "exact". -->
+
+	    <!-- STATUS_SUCCESS and CMD matches -->
+	    <value>exact-cmd</value>
+
+	    <!-- STATUS_SUCCESS -->
+	    <value>exact</value>
+
+	    <!-- STATUS_MODEL_MISMATCH -->
+	    <value>close</value>
+
+	    <!-- STATUS_GENERIC_DRIVER -->
+	    <value>generic</value>
+
+	    <!-- STATUS_NO_DRIVER -->
+	    <value>none</value>
 	  </choice>
 	</oneOrMore>
       </list>

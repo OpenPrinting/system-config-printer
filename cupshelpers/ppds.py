@@ -263,6 +263,18 @@ class PPDs:
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
 
+    FIT_EXACT_CMD = xmldriverprefs.DriverType.FIT_EXACT_CMD
+    FIT_EXACT = xmldriverprefs.DriverType.FIT_EXACT
+    FIT_CLOSE = xmldriverprefs.DriverType.FIT_CLOSE
+    FIT_GENERIC = xmldriverprefs.DriverType.FIT_GENERIC
+    FIT_NONE = xmldriverprefs.DriverType.FIT_NONE
+
+    _fit_to_status = { FIT_EXACT_CMD: STATUS_SUCCESS,
+                       FIT_EXACT: STATUS_SUCCESS,
+                       FIT_CLOSE: STATUS_MODEL_MISMATCH,
+                       FIT_GENERIC: STATUS_GENERIC_DRIVER,
+                       FIT_NONE: STATUS_NO_DRIVER }
+
     def __init__ (self, ppds, language=None, xml_dir=None):
         """
         @type ppds: dict
@@ -388,6 +400,9 @@ class PPDs:
 	"""
         return self.ppds[ppdname]
 
+    def getStatusFromFit (self, fit):
+        return self._fit_to_status.get (fit, xmldriverprefs.DriverType.FIT_NONE)
+
     def orderPPDNamesByPreference (self, ppdnamelist=[],
                                    downloadedfiles=[],
                                    make_and_model=None,
@@ -453,20 +468,6 @@ class PPDs:
                                  make_and_model=None):
         """
 	Obtain a best-effort PPD match for an IEEE 1284 Device ID.
-	The status is one of:
-
-	  - L{STATUS_SUCCESS}: the match was successful, and an exact
-            match was found
-
-	  - L{STATUS_MODEL_MISMATCH}: a similar match was found, but
-            the model name does not exactly match
-
-	  - L{STATUS_GENERIC_DRIVER}: no match was found, but a
-            generic driver is available that can drive this device
-            according to its command set list
-
-	  - L{STATUS_NO_DRIVER}: no match was found at all, and the
-            returned PPD name is a last resort
 
 	@param mfg: MFG or MANUFACTURER field
 	@type mfg: string
@@ -480,7 +481,7 @@ class PPDs:
 	@type uri: string
         @param make_and_model: device-make-and-model string
         @type make_and_model: string
-	@returns: a dict of match status by PPD name
+	@returns: a dict of fit (string) indexed by PPD name
 	"""
         _debugprint ("\n%s %s" % (mfg, mdl))
         orig_mfg = mfg
@@ -489,7 +490,7 @@ class PPDs:
 
         # Start with an empty result list and build it up using
         # several search methods, in increasing order of fuzziness.
-        status = {}
+        fit = {}
 
         # First, try looking up the device using the manufacturer and
         # model fields from the Device ID exactly as they appear (but
@@ -500,7 +501,7 @@ class PPDs:
         id_matched = False
         try:
             for each in self.ids[mfgl][mdll]:
-                status[each] = self.STATUS_SUCCESS
+                fit[each] = self.FIT_EXACT
             id_matched = True
         except KeyError:
             pass
@@ -509,7 +510,7 @@ class PPDs:
         if mfgl == "hewlett-packard":
             try:
                 for each in self.ids["hp"][mdll]:
-                    status[each] = self.STATUS_SUCCESS
+                    fit[each] = self.FIT_EXACT
                 print ("**** Incorrect IEEE 1284 Device ID: %s" %
                        self.ids["hp"][mdll])
                 print "**** Actual ID is MFG:%s;MDL:%s;" % (mfg, mdl)
@@ -555,7 +556,7 @@ class PPDs:
             if self.lmodels[mfgl].has_key (mdll):
                 model = mdlsl[mdll]
                 for each in mdls[model].keys ():
-                    status[each] = self.STATUS_SUCCESS
+                    fit[each] = self.FIT_EXACT
             else:
                 # Make use of the model name clean-up in the
                 # ppdMakeModelSplit () function
@@ -564,13 +565,13 @@ class PPDs:
                 if self.lmodels[mfgl].has_key (mdl2l):
                     model = mdlsl[mdl2l]
                     for each in mdls[model].keys ():
-                        status[each] = self.STATUS_SUCCESS
+                        fit[each] = self.FIT_EXACT
       
-        if not status and mdls:
+        if not fit and mdls:
             (s, ppds) = self._findBestMatchPPDs (mdls, mdl)
-            if s != self.STATUS_NO_DRIVER:
+            if s != self.FIT_NONE:
                 for each in ppds:
-                    status[each] = s
+                    fit[each] = s
 
         if commandsets:
             if type (commandsets) != list:
@@ -578,7 +579,7 @@ class PPDs:
 
             generic = self._getPPDNameFromCommandSet (commandsets)
             if generic:
-                status[generic[0]] = self.STATUS_GENERIC_DRIVER
+                fit[generic[0]] = self.FIT_GENERIC
 
         # What about the CMD field of the Device ID?  Some devices
         # have optional units for page description languages, such as
@@ -598,17 +599,36 @@ class PPDs:
         # The reason we don't do this check any earlier is that we
         # don't want to eliminate PPDs only to have the fuzzy matcher
         # add them back in afterwards.
+        #
+        # While doing this, any drivers that we can positively confirm
+        # as using a command set understood by the printer will be
+        # converted from FIT_EXACT to FIT_EXACT_CMD.
         if id_matched and len (commandsets) > 0:
             failed = set()
-            for ppdname in status.keys ():
+            exact_cmd = set()
+            for ppdname in fit.keys ():
+                ppd_cmd_field = None
                 ppd = self.ppds[ppdname]
                 ppd_device_id = _singleton (ppd.get ('ppd-device-id'))
-                if not ppd_device_id:
-                    continue
+                if ppd_device_id:
+                    ppd_device_id_dict = parseDeviceID (ppd_device_id)
+                    ppd_cmd_field = ppd_device_id_dict["CMD"]
 
-                ppd_device_id_dict = parseDeviceID (ppd_device_id)
-                ppd_cmd_field = ppd_device_id_dict["CMD"]
+                if (not ppd_cmd_field and
+                    # ppd-type is not reliable for driver-generated
+                    # PPDs (see CUPS STR #3720).  Neither gutenprint
+                    # nor foomatic specify ppd-type in their CUPS
+                    # drivers.
+                    ppdname.find (":") == -1):
+                    # If this is a PostScript PPD we know which
+                    # command set it will use.
+                    ppd_type = _singleton (ppd.get ('ppd-type'))
+                    if ppd_type == "postscript":
+                        ppd_cmd_field = ["POSTSCRIPT"]
+
                 if not ppd_cmd_field:
+                    # We can't be sure which command set this driver
+                    # uses.
                     continue
 
                 usable = False
@@ -617,19 +637,28 @@ class PPDs:
                         usable = True
                         break
 
-                if not usable:
+                if usable:
+                    exact_cmd.add (ppdname)
+                else:
                     failed.add (ppdname)
+
+            # Assign the more specific fit "exact-cmd" to those that
+            # positively matched the CMD field.
+            for each in exact_cmd:
+                if fit[each] == self.FIT_EXACT:
+                    fit[each] = self.FIT_EXACT_CMD
+                    _debugprint (self.FIT_EXACT_CMD + ": %s" % each)
 
             _debugprint ("Removed %s due to CMD mis-match" % failed)
             for each in failed:
-                del status[each]
+                del fit[each]
 
         # If the Device ID matched but the DES field is different,
         # eliminate those PPDs too.
         if id_matched and description:
             _debugprint ("Checking DES field")
             inexact = set()
-            for ppdname in status.keys ():
+            for ppdname in fit.keys ():
                 if (ppdname.find ("hpijs") != -1 or
                     ppdname.find ("hpcups") != -1):
                     continue
@@ -642,12 +671,12 @@ class PPDs:
                 if id_dict["DES"] != description:
                     inexact.add (ppdname)
 
-            if len (status) - len (inexact) >= 1:
+            if len (fit) - len (inexact) >= 1:
                 _debugprint ("discarding: %s" % inexact)
                 for each in inexact:
-                    del status[each]
+                    del fit[each]
 
-        if not status:
+        if not fit:
             fallbacks = ["textonly.ppd", "postscript.ppd"]
             found = False
             for fallback in fallbacks:
@@ -656,7 +685,7 @@ class PPDs:
                 for ppdpath in self.ppds.keys ():
                     if (ppdpath.endswith (fallback) or
                         ppdpath.endswith (fallbackgz)):
-                        status[ppdpath] = self.STATUS_NO_DRIVER
+                        fit[ppdpath] = self.FIT_NONE
                         found = True
                         break
 
@@ -667,7 +696,7 @@ class PPDs:
 
             if not found:
                 _debugprint ("No fallback available; choosing any")
-                status[self.ppds.keys ()[0]] = self.STATUS_NO_DRIVER
+                fit[self.ppds.keys ()[0]] = self.FIT_NONE
 
         if not id_matched:
             sanitised_uri = re.sub (pattern="//[^@]*@/?", repl="//",
@@ -685,7 +714,7 @@ class PPDs:
             print "No ID match for device %s:" % sanitised_uri
             print id
 
-        return status
+        return fit
 
     def getPPDNameFromDeviceID (self, mfg, mdl, description="",
                                 commandsets=[], uri=None,
@@ -742,7 +771,7 @@ class PPDs:
                                                       devid, fit)
         _debugprint ("Found PPDs: %s" % str (ppdnamelist))
 
-        status = fit[ppdnamelist[0]]
+        status = self.getStatusFromFit (fit[ppdnamelist[0]])
         print "Using %s (status: %d)" % (ppdnamelist[0], status)
         return (status, ppdnamelist[0])
 
@@ -788,11 +817,11 @@ class PPDs:
         if best_mdl and best_matchlen > (len (mdll) / 2):
             ppdnamelist = best_mdl
             if best_matchlen == len (mdll):
-                status = self.STATUS_SUCCESS
+                fit = self.FIT_EXACT
             else:
-                status = self.STATUS_MODEL_MISMATCH
+                fit = self.FIT_CLOSE
         else:
-            status = self.STATUS_NO_DRIVER
+            fit = self.FIT_NONE
             ppdnamelist = None
 
             # Last resort.  Find the "most important" word in the MDL
@@ -863,9 +892,9 @@ class PPDs:
 
                 if found:
                     ppdnamelist = best_mdl
-                    status = self.STATUS_MODEL_MISMATCH
+                    fit = self.FIT_CLOSE
 
-        return (status, ppdnamelist)
+        return (fit, ppdnamelist)
 
     def _getPPDNameFromCommandSet (self, commandsets=[]):
         """Return ppd-name list or None, given a list of strings representing
@@ -879,7 +908,7 @@ class PPDs:
         def get (*candidates):
             for model in candidates:
                 (s, ppds) = self._findBestMatchPPDs (models, model)
-                if s == self.STATUS_SUCCESS:
+                if s == self.FIT_EXACT:
                     return ppds
             return None
 

@@ -35,20 +35,23 @@ class DriverType:
     A type of driver.
     """
 
+    FIT_EXACT_CMD =     "exact-cmd"
+    FIT_EXACT =         "exact"
+    FIT_CLOSE =         "close"
+    FIT_GENERIC =       "generic"
+    FIT_NONE =          "none"
+
     def __init__ (self, name):
         self.name = name
         self.ppd_name = None
         self.attributes = []
         self.deviceid = []
-        self.fit = { ppds.PPDs.STATUS_SUCCESS: True,
-                     ppds.PPDs.STATUS_MODEL_MISMATCH: True,
-                     ppds.PPDs.STATUS_GENERIC_DRIVER: True,
-                     ppds.PPDs.STATUS_NO_DRIVER: True }
 
-        self._fitmap = { "exact": ppds.PPDs.STATUS_SUCCESS,
-                         "close": ppds.PPDs.STATUS_MODEL_MISMATCH,
-                         "generic": ppds.PPDs.STATUS_GENERIC_DRIVER,
-                         "none": ppds.PPDs.STATUS_NO_DRIVER }
+        class AlwaysTrue:
+            def get (self, k, d=None):
+                return True
+
+        self._fit = AlwaysTrue ()
         self._packagehint = None
 
     def add_ppd_name (self, pattern):
@@ -91,9 +94,13 @@ class DriverType:
         self.deviceid.append ((field.upper (), re.compile (pattern, re.I)))
 
     def add_fit (self, text):
-        self.fit = {}
+        self._fit = {}
         for fittype in text.split():
-            self.fit[self._fitmap[fittype]] = True
+            self._fit[fittype] = True
+
+            # <fit>exact</fit> matches exact-cmd as well
+            if fittype == self.FIT_EXACT:
+                self._fit[self.FIT_EXACT_CMD] = True
 
     def set_packagehint (self, hint):
         self._packagekit = hint
@@ -119,7 +126,7 @@ class DriverType:
         except the CMD field which must be a list of strings.
         """
 
-        matches = self.fit.get (fit, False)
+        matches = self._fit.get (fit, False)
         if matches and self.ppd_name and not self.ppd_name.match (ppd_name):
             matches = False
 
@@ -265,7 +272,7 @@ class DriverTypes:
 
         # First find out what driver types we have
         ppdtypes = {}
-        fit_default = ppds.PPDs.STATUS_MODEL_MISMATCH
+        fit_default = DriverType.FIT_CLOSE
         for ppd_name, ppd_dict in ppdsdict.iteritems ():
             drivertype = self.match (ppd_name, ppd_dict, fit.get (ppd_name,
                                                                   fit_default))
@@ -462,7 +469,7 @@ class PreferenceOrder:
         return orderedtypes
 
 
-def test (xml_path=None, attached=False):
+def test (xml_path=None, attached=False, deviceid=None):
     import cups
     import locale
     import ppds
@@ -498,9 +505,19 @@ def test (xml_path=None, attached=False):
 
     ppdfinder = ppds.PPDs (cupsppds)
 
-    if attached:
-        cups.setUser ("root")
-        devices = c.getDevices ()
+    if attached or deviceid:
+        if attached:
+            cups.setUser ("root")
+            devices = c.getDevices ()
+        else:
+            devid = parseDeviceID (deviceid)
+            devices = { "xxx://yyy":
+                            { "device-id": deviceid,
+                              "device-make-and-model": "%s %s" % (devid["MFG"],
+                                                                  devid["MDL"])
+                              }
+                        }
+
         for uri, device in devices.iteritems ():
             if uri.find (":") == -1:
                 continue
@@ -514,25 +531,25 @@ def test (xml_path=None, attached=False):
 
             print uri
             id_dict = parseDeviceID (devid)
-            status = ppdfinder.getPPDNamesFromDeviceID (id_dict["MFG"],
-                                                        id_dict["MDL"],
-                                                        id_dict["DES"],
-                                                        id_dict["CMD"],
-                                                        uri)
+            fit = ppdfinder.getPPDNamesFromDeviceID (id_dict["MFG"],
+                                                     id_dict["MDL"],
+                                                     id_dict["DES"],
+                                                     id_dict["CMD"],
+                                                     uri)
 
             mm = device.get ("device-make-and-model", "")
             orderedtypes = preforder.get_ordered_types (drivertypes,
                                                         mm, id_dict)
 
             ppds = {}
-            for ppdname in status.keys ():
+            for ppdname in fit.keys ():
                 ppds[ppdname] = ppdfinder.getInfoFromPPDName (ppdname)
 
             orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
                                                             ppds,
-                                                            status)
+                                                            fit)
             for t, ppd in orderedppds:
-                print "  %s\n    (%s)" % (ppd, t)
+                print "  %s\n    (%s, %s)" % (ppd, t, fit[ppd])
     else:
         for make in ppdfinder.getMakes ():
             for model in ppdfinder.getModels (make):
@@ -543,7 +560,7 @@ def test (xml_path=None, attached=False):
 
                 fit = {}
                 for ppdname in ppdsdict.keys ():
-                    fit[ppdname] = ppds.PPDs.STATUS_MODEL_MISMATCH
+                    fit[ppdname] = DriverType.FIT_CLOSE
 
                 orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
                                                                 ppdsdict, fit)
