@@ -296,7 +296,8 @@ class JobViewer (GtkGUI):
                                    'job-originating-user-name',
                                    'job-printer-uri',
                                    'job-state',
-                                   'time-at-creation'])
+                                   'time-at-creation',
+                                   'job-preserved'])
 
     def __init__(self, bus=None, loop=None,
                  applet=False, suppress_icon_hide=False,
