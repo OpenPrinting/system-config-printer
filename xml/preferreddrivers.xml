@@ -71,7 +71,7 @@
     </drivertype>
 
     <!-- END OF GENERIC DRIVERS -->
-    <!-- now fit is either exact or close -->
+    <!-- now fit is either exact-cmd, exact, or close -->
 
     <drivertype name="cups">
       <ppdname match="drv:///sample.drv/"/>
@@ -146,6 +146,12 @@
       <ppdname match=".*/(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG)/PXL/"/>
     </drivertype>
 
+    <drivertype name="manufacturer-cmd">
+      <fit>
+	exact-cmd
+      </fit>
+    </drivertype>
+
     <!-- Catch-all -->
     <drivertype name="manufacturer"/>
   </drivertypes>
@@ -181,6 +187,7 @@
     <printer>
       <!-- For all printers -->
       <drivers>
+	<drivertype>manufacturer-cmd</drivertype>
 	<drivertype>foomatic-recommended-hpijs</drivertype>
 	<drivertype>foomatic-recommended-non-postscript</drivertype>
 	<drivertype>manufacturer*</drivertype>
