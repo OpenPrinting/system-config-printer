@@ -196,8 +196,8 @@ man_MANS=					\
 	man/system-config-printer-applet.1
 
 dbus_DATA =					\
-	newprinternotification.conf		\
-	printerdriversinstaller.conf
+	com.redhat.NewPrinterNotification.conf		\
+	com.redhat.PrinterDriversInstaller.conf
 dbusdir = $(sysconfdir)/dbus-1/system.d/
 
 desktop_DATA =\
