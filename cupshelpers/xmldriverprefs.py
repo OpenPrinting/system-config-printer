@@ -307,6 +307,7 @@ class PrinterType:
         self.deviceid = []
         self.drivertype_patterns = []
         self.blacklist = set()
+        self.avoid = set()
 
     def add_make_and_model (self, pattern):
         """
@@ -331,6 +332,18 @@ class PrinterType:
         Return the list of driver type patterns.
         """
         return self.drivertype_patterns
+
+    def add_avoidtype_pattern (self, name):
+        """
+        Add an avoid driver type pattern.
+        """
+        self.avoid.add (name)
+
+    def get_avoidtype_patterns (self):
+        """
+        Return the set of driver type patterns to avoid.
+        """
+        return self.avoid
 
     def add_blacklisted (self, name):
         """
@@ -418,6 +431,10 @@ class PreferenceOrder:
                     for drivertype in child.getchildren ():
                         ptype.add_drivertype_pattern (drivertype.text)
 
+                elif child.tag == "avoid":
+                    for drivertype in child.getchildren ():
+                        ptype.add_avoidtype_pattern (drivertype.text)
+
                 elif child.tag == "blacklist":
                     for drivertype in child.getchildren ():
                         ptype.add_blacklisted (drivertype.text)
@@ -442,6 +459,7 @@ class PreferenceOrder:
 
         orderedtypes = []
         blacklist = set()
+        avoidtypes = set()
         for ptype in self.ptypes:
             if ptype.match (make_and_model, deviceid):
                 for pattern in ptype.get_drivertype_patterns ():
@@ -451,11 +469,29 @@ class PreferenceOrder:
                         if drivertype not in orderedtypes:
                             orderedtypes.append (drivertype)
 
+                for pattern in ptype.get_avoidtype_patterns ():
+                    # Match against the glob pattern.
+                    for drivertype in drivertypes.filter (pattern):
+                        # Add each result to the set.
+                        avoidtypes.add (drivertype)
+
                 for pattern in ptype.get_blacklist ():
                     # Match against the glob pattern.
                     for drivertype in drivertypes.filter (pattern):
                         # Add each result to the set.
                         blacklist.add (drivertype)
+
+        if avoidtypes:
+            avoided = []
+            for t in avoidtypes:
+                try:
+                    i = orderedtypes.index (t)
+                    del orderedtypes[i]
+                    avoided.append (t)
+                except IndexError:
+                    continue
+
+            orderedtypes.extend (avoided)
 
         if blacklist:
             # Remove blacklisted drivers.

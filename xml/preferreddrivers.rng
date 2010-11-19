@@ -24,14 +24,10 @@
 
    For each printer element, either the make-and-model regular
    expression, or else all of the deviceid regular expressions, must
-   match.  For a matching printer element, the driver types
-   matching each pattern contained in the drivers element are appended
-   to the (initially empty) list of driver type patterns if not
-   already in that list.
-
-   The driver types matching each pattern contained in the blacklist
-   element are added to the (initially empty) set of blacklisted driver
-   types.
+   match.  For a matching printer element, the driver types matching
+   each pattern contained in the drivers, avoid, and blacklist
+   elements are appended to separate lists for drivers to use, drivers
+   to avoid, and drivers that must not be used.
 
    A printer element that does not contain any make-and-model or
    deviceid elements is a "catch-all" element and matches any
@@ -40,7 +36,9 @@
    To convert this into a list of drivers (i.e. PPDs), the drivertypes
    element is examined.  Each PPD is assigned a driver type name, and
    then the PPDs are arranged in order corresponding to the list of
-   preferred driver types.
+   preferred driver types.  Drivers in the avoid list are then placed
+   at the end of the list, and drivers in the blacklist are removed
+   altogether.
 
    To determine the driver type name for a PPD, the child elements of
    the drivertypes element are examined.  For each drivertype element,
@@ -225,30 +223,45 @@
 	<ref name="deviceid"/>
       </zeroOrMore>
 
-      <optional>
-	<element name="drivers">
-	  <!-- Ordered list of named drivertypes, most preferred
-	       first -->
-	  <oneOrMore>
-	    <element name="drivertype">
-	      <!-- drivertype glob pattern -->
-	      <text/>
-	    </element>
-	  </oneOrMore>
-	</element>
-      </optional>
+      <interleave>
+	<optional>
+	  <element name="drivers">
+	    <!-- Ordered list of named drivertypes, most preferred
+		 first -->
+	    <oneOrMore>
+	      <element name="drivertype">
+		<!-- drivertype glob pattern -->
+		<text/>
+	      </element>
+	    </oneOrMore>
+	  </element>
+	</optional>
 
-      <optional>
-	<element name="blacklist">
-	  <!-- List of named drivertypes which must not be used -->
-	  <oneOrMore>
-	    <element name="drivertype">
-	      <!-- drivertype glob pattern -->
-	      <text/>
-	    </element>
-	  </oneOrMore>
-	</element>
-      </optional>
+	<optional>
+	  <!-- These drivertypes will collectively be put last in
+	       the preference list, in no particular order. -->
+	  <element name="avoid">
+	    <oneOrMore>
+	      <element name="drivertype">
+		<!-- drivertype glob pattern -->
+		<text/>
+	      </element>
+	    </oneOrMore>
+	  </element>
+	</optional>
+
+	<optional>
+	  <element name="blacklist">
+	    <!-- List of named drivertypes which must not be used -->
+	    <oneOrMore>
+	      <element name="drivertype">
+		<!-- drivertype glob pattern -->
+		<text/>
+	      </element>
+	    </oneOrMore>
+	  </element>
+	</optional>
+      </interleave>
     </element>
   </define>
 </grammar>
