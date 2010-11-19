@@ -22,12 +22,13 @@
    will be a list of driver types in preference order (most preferred
    first), and a set of blacklisted driver types.
 
-   For each printer element, either the make-and-model regular
-   expression, or else all of the deviceid regular expressions, must
-   match.  For a matching printer element, the driver types matching
-   each pattern contained in the drivers, avoid, and blacklist
-   elements are appended to separate lists for drivers to use, drivers
-   to avoid, and drivers that must not be used.
+   For each printer element, at least one of the make-and-model and
+   deviceid elements must match.  A deviceid element matches if all of
+   the field regular expressions match.  For a matching printer
+   element, the driver types matching each pattern contained in the
+   drivers, avoid, and blacklist elements are appended to separate
+   lists for drivers to use, drivers to avoid, and drivers that must
+   not be used.
 
    A printer element that does not contain any make-and-model or
    deviceid elements is a "catch-all" element and matches any
@@ -96,17 +97,17 @@
 	  <ref name="ppdname"/>
 	</optional>
 
-	<optional>
+	<zeroOrMore>
 	  <ref name="attribute"/>
-	</optional>
+	</zeroOrMore>
 
-	<optional>
+	<zeroOrMore>
 	  <ref name="deviceid"/>
-	</optional>
+	</zeroOrMore>
 
-	<optional>
+	<zeroOrMore>
 	  <ref name="fit"/>
-	</optional>
+	</zeroOrMore>
       </interleave>
     </element>
   </define>
@@ -143,20 +144,24 @@
 
   <define name="deviceid">
     <element name="deviceid">
-      <attribute name="field">
-	<!-- Case-insensitive, abbreviated form of IEEE 1284
-	     Device ID field key name e.g. MFG -->
-	<data type="normalizedString"/>
-      </attribute>
+      <oneOrMore>
+	<element name="field">
+	  <attribute name="name">
+	    <!-- Case-insensitive, abbreviated form of IEEE 1284
+		 Device ID field key name e.g. MFG -->
+	    <data type="normalizedString"/>
+	  </attribute>
 
-      <attribute name="match">
-	<!-- Extended regular expression for matching against
-	     IEEE 1284 Device ID field's value (starting at
-	     beginning) -->
-	<data type="string"/>
-      </attribute>
+	  <attribute name="match">
+	    <!-- Extended regular expression for matching against
+		 IEEE 1284 Device ID field's value (starting at
+		 beginning) -->
+	    <data type="string"/>
+	  </attribute>
 
-      <empty/>
+	  <empty/>
+	</element>
+      </oneOrMore>
     </element>
   </define>
 
@@ -204,8 +209,8 @@
 
   <define name="printer">
     <element name="printer">
-      <!-- Either the make-and-model element, or all deviceid
-	   elements, must match -->
+
+      <!-- Any of these make-and-model or deviceid criteria must match -->
       <optional>
 	<element name="make-and-model">
 	  <attribute name="match">
@@ -219,7 +224,6 @@
       </optional>
 
       <zeroOrMore>
-	<!-- All deviceid elements must match -->
 	<ref name="deviceid"/>
       </zeroOrMore>
 

@@ -30,6 +30,44 @@ def PreferredDrivers (filename):
     preferreddrivers = xml.etree.ElementTree.XML (file (filename).read ())
     return preferreddrivers.getchildren()
 
+class DeviceIDMatch:
+    """
+    A set of fields and regular expressions for matching a Device ID.
+    """
+    def __init__ (self):
+        self._re = dict()
+
+    def add_field (self, field, pattern):
+        self._re[field.upper ()] = re.compile (pattern, re.I)
+
+    def match (self, deviceid):
+        """
+        Match against a parsed Device ID dictionary.
+
+        The CMD field is treated specially.  If any of the
+        comma-separated words in this field value match, the Device ID
+        pattern is considered to match.
+        """
+
+        for field, match in self._re.iteritems ():
+            if not deviceid.has_key (field):
+                return False
+
+            if field == "CMD":
+                this_field_matches = False
+                for cmd in deviceid[field]:
+                    if match.match (cmd):
+                        this_field_matches = True
+                        break
+
+                if not this_field_matches:
+                    return False
+
+            if not match.match (deviceid[field]):
+                return False
+
+        return True
+
 class DriverType:
     """
     A type of driver.
@@ -86,12 +124,11 @@ class DriverType:
         """
         self.attributes.append ((name, re.compile (pattern, re.I)))
 
-    def add_deviceid (self, field, pattern):
+    def add_deviceid_match (self, deviceid_match):
         """
-        An optional IEEE 1284 Device ID field name and regular
-        expression to match against its value.
+        An optional IEEE 1284 Device ID match.
         """
-        self.deviceid.append ((field.upper (), re.compile (pattern, re.I)))
+        self.deviceid.append (deviceid_match)
 
     def add_fit (self, text):
         self._fit = {}
@@ -122,8 +159,7 @@ class DriverType:
 
         attributes: dict
 
-        deviceid: dict indexed by Device ID field key, of strings;
-        except the CMD field which must be a list of strings.
+        fit: string
         """
 
         matches = self._fit.get (fit, False)
@@ -154,7 +190,7 @@ class DriverType:
         if matches:
             if self.deviceid and not attributes.has_key ("ppd-device-id"):
                 matches = False
-            else:
+            elif self.deviceid:
                 # This is a match if any of the ppd-device-id values
                 # match.
                 deviceidlist = attributes["ppd-device-id"]
@@ -165,31 +201,10 @@ class DriverType:
                 any_id_matches = False
                 for deviceidstr in deviceidlist:
                     deviceid = parseDeviceID (deviceidstr)
-
-                    this_id_matches = True
-                    for field, match in self.deviceid:
-                        if not deviceid.has_key (field):
-                            this_id_matches = False
+                    for match in self.deviceid:
+                        if match.match (deviceid):
+                            any_id_matches = True
                             break
-
-                        if field == "CMD":
-                            this_field_matches = False
-                            for cmd in deviceid[field]:
-                                if match.match (cmd):
-                                    this_field_matches = True
-                                    break
-
-                            if not this_field_matches:
-                                this_id_matches = False
-                                break
-
-                        if not match.match (deviceid[field]):
-                            this_id_matches = False
-                            break
-
-                    if this_id_matches:
-                        any_id_matches = True
-                        break
 
                 if not any_id_matches:
                     matches = False
@@ -223,8 +238,13 @@ class DriverTypes:
                     t.add_attribute (child.attrib["name"],
                                      child.attrib["match"])
                 elif child.tag == "deviceid":
-                    t.add_deviceid (child.attrib["field"],
-                                    child.attrib["match"])
+                    deviceid_match = DeviceIDMatch ()
+                    for field in child.getchildren ():
+                        if field.tag == "field":
+                            deviceid_match.add_field (field.attrib["name"],
+                                                      field.attrib["match"])
+
+                    t.add_deviceid_match (deviceid_match)
                 elif child.tag == "fit":
                     t.add_fit (child.text)
 
@@ -306,8 +326,8 @@ class PrinterType:
         self.make_and_model = None
         self.deviceid = []
         self.drivertype_patterns = []
-        self.blacklist = set()
         self.avoid = set()
+        self.blacklist = set()
 
     def add_make_and_model (self, pattern):
         """
@@ -315,11 +335,11 @@ class PrinterType:
         """
         self.make_and_model = re.compile (pattern, re.I)
 
-    def add_deviceid (self, field, pattern):
+    def add_deviceid_match (self, deviceid_match):
         """
-        Add a Device ID regular expression.
+        Add a Device ID match.
         """
-        self.deviceid.append ((field.upper (), re.compile (pattern, re.I)))
+        self.deviceid.append (deviceid_match)
 
     def add_drivertype_pattern (self, name):
         """
@@ -363,10 +383,6 @@ class PrinterType:
         the make-and-model pattern matches; or if all of the IEEE 1284
         Device ID patterns match.
 
-        The CMD field is treated specially.  If any of the
-        comma-separated words in this field value match, the Device ID
-        pattern is considered to match.
-
         The deviceid parameter must be a dict indexed by Device ID
         field key, of strings; except for the CMD field which must be
         a list of strings.
@@ -374,34 +390,16 @@ class PrinterType:
         Return False otherwise.
         """
 
-        matches = (not self.make_and_model and not self.deviceid)
+        matches = (self.make_and_model == None and self.deviceid == [])
         if self.make_and_model:
             if self.make_and_model.match (make_and_model):
                 matches = True
 
-        if not matches and self.deviceid:
-            all_match = True
-            for field, regexp in self.deviceid:
-                if not deviceid.has_key (field):
-                    all_match = False
+        if not matches:
+            for match in self.deviceid:
+                if match.match (deviceid):
+                    matches = True
                     break
-
-                if field == "CMD":
-                    any_cmd_match = False
-                    for cmd in deviceid[field]:
-                        if regexp.match (cmd):
-                            any_cmd_match = True
-                            break
-
-                    if not any_cmd_match:
-                        all_match = False
-                        break
-                elif not regexp.match (deviceid[field]):
-                    all_match = False
-                    break
-
-            if all_match:
-                matches = True
 
         return matches
 
@@ -424,8 +422,12 @@ class PreferenceOrder:
                 if child.tag == "make-and-model":
                     ptype.add_make_and_model (child.attrib["match"])
                 elif child.tag == "deviceid":
-                    ptype.add_deviceid (child.attrib["field"],
-                                        child.attrib["match"])
+                    deviceid_match = DeviceIDMatch ()
+                    for field in child.getchildren ():
+                        if field.tag == "field":
+                            deviceid_match.add_field (field.attrib["name"],
+                                                      field.attrib["match"])
+                    ptype.add_deviceid_match (deviceid_match)
 
                 elif child.tag == "drivers":
                     for drivertype in child.getchildren ():

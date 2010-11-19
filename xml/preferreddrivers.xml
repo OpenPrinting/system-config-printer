@@ -91,7 +91,9 @@
 
     <drivertype name="foomatic-recommended-hpijs">
       <attribute name="ppd-make-and-model" match=".* Foomatic/hpijs"/>
-      <deviceid field="DRV" match=",?R1"/>
+      <deviceid>
+	<field name="DRV" match=",?R1"/>
+      </deviceid>
     </drivertype>
 
     <drivertype name="foomatic-hpijs">
@@ -101,7 +103,9 @@
     <drivertype name="foomatic-recommended-postscript">
       <ppdname match="foomatic:"/>
       <attribute name="ppd-make-and-model" match=".* Postscript"/>
-      <deviceid field="DRV" match=".*,?R1"/>
+      <deviceid>
+	<field name="DRV" match=".*,?R1"/>
+      </deviceid>
     </drivertype>
 
     <drivertype name="foomatic-postscript">
@@ -110,7 +114,9 @@
 
     <drivertype name="foomatic-recommended-non-postscript">
       <ppdname match="foomatic:"/>
-      <deviceid field="DRV" match=".*,?R1"/>
+      <deviceid>
+	<field name="DRV" match=".*,?R1"/>
+      </deviceid>
     </drivertype>
 
     <drivertype name="foomatic-gutenprint">
@@ -164,8 +170,10 @@
     <!-- gutenprint is no good on the Brother HL-2030 (bug #645993) -->
     <printer>
       <make-and-model match="Brother HL-2030"/>
-      <deviceid field="MFG" match="Brother"/>
-      <deviceid field="MDL" match="HL-2030"/>
+      <deviceid>
+	<field name="MFG" match="Brother"/>
+	<field name="MDL" match="HL-2030"/>
+      </deviceid>
       <blacklist>
 	<drivertype>gutenprint*</drivertype>
       </blacklist>
@@ -176,8 +184,12 @@
 	 (bug #550315 comment #8)
          -->
     <printer>
-      <make-and-model match="(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG) "/>
-      <deviceid field="MFG" match="(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG)"/>
+      <make-and-model
+	  match="(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG) "/>
+      <deviceid>
+	<field name="MFG"
+	       match="(Ricoh|Lanier|Gestetner|InfoPrint|Infotech|Savin|NRG)"/>
+      </deviceid>
       <drivers>
 	<drivertype>manufacturer-ricoh-postscript</drivertype>
 	<drivertype>manufacturer-ricoh-pxl</drivertype>
@@ -188,8 +200,10 @@
          white, so prefer other drivers -->
     <printer>
       <make-and-model match="Xerox 6250DP"/>
-      <deviceid field="MFG" match="Xerox"/>
-      <deviceid field="MDL" match="6250DP"/>
+      <deviceid>
+	<field name="MFG" match="Xerox"/>
+	<field name="MDL" match="6250DP"/>
+      </deviceid>
       <avoid>
 	<drivertype>gutenprint*</drivertype>
       </avoid>
@@ -211,7 +225,9 @@
       <!-- Use hpijs on HP printers at this point (i.e. in preference
            to gutenprint) -->
       <make-and-model match="(HP|Hewlett-Packard) "/>
-      <deviceid field="MFG" match="HP|Hewlett-Packard"/>
+      <deviceid>
+	<field name="MFG" match="HP|Hewlett-Packard"/>
+      </deviceid>
       <drivers>
 	<drivertype>foomatic-hpijs</drivertype>
       </drivers>
