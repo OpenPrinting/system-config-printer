@@ -1207,7 +1207,7 @@ def _self_test(argv):
         # Make sure we get a colour driver for this one, see launchpad
         # #669152.
         ("MFG:Xerox;MDL:6250DP;",
-         1, ".*Postscript"),
+         1, ".*(Postscript|pcl5e)"),
 
         # Generic models
         ("MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",

@@ -206,6 +206,17 @@
       </drivers>
     </printer>
 
+    <!-- The gutenprint driver for the Xerox 6250DP is black and
+         white, so prefer postscript -->
+    <printer>
+      <make-and-model match="Xerox 6250DP"/>
+      <deviceid field="MFG" match="Xerox"/>
+      <deviceid field="MDL" match="6250DP"/>
+      <drivers>
+	<drivertype>foomatic*</drivertype>
+      </drivers>
+    </printer>
+
     <printer>
       <!-- For all printers (continued) -->
       <drivers>
