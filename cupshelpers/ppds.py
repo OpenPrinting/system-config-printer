@@ -409,8 +409,7 @@ class PPDs:
                                    devid=None, fit=None):
         """
 
-	Sort a list of PPD names by (hard-coded) preferred driver
-	type (obsolete).
+	Sort a list of PPD names by preferred driver type.
 
 	@param ppdnamelist: PPD names
 	@type ppdnamelist: string list
@@ -421,6 +420,8 @@ class PPDs:
         @param devid: Device ID dict
         @type devid: dict indexed by Device ID field name, of strings;
         except for CMD field which must be a string list
+        @param fit: Driver fit string for each PPD name
+        @type fit: dict of PPD name:fit
 	@returns: string list
 	"""
         if fit == None:
