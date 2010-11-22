@@ -119,6 +119,7 @@ nobase_pkgdata_DATA=					\
 	printerproperties.py				\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
+	scp-dbus-service.py				\
 	SearchCriterion.py				\
 	serversettings.py				\
 	smburi.py					\
@@ -174,9 +175,10 @@ cupshelpersdir=$(sysconfdir)/cupshelpers
 cupshelpers_DATA=\
 	xml/preferreddrivers.xml
 
-bin_SCRIPTS=\
+bin_SCRIPTS=					\
 	system-config-printer			\
-	system-config-printer-applet
+	system-config-printer-applet		\
+	scp-dbus-service
 
 if UDEV_RULES
 udevrulesdir=$(sysconfdir)/udev/rules.d
@@ -199,6 +201,14 @@ dbus_DATA =					\
 	com.redhat.NewPrinterNotification.conf		\
 	com.redhat.PrinterDriversInstaller.conf
 dbusdir = $(sysconfdir)/dbus-1/system.d/
+
+dbusinterfaces_DATA =				\
+	org.fedoraproject.Config.Printing.xml
+dbusinterfacesdir = $(datadir)/dbus-1/interfaces/
+
+dbusservices_DATA =				\
+	org.fedoraproject.Config.Printing.service
+dbusservicesdir = $(datadir)/dbus-1/services/
 
 desktop_DATA =\
 	system-config-printer.desktop \
@@ -250,6 +260,8 @@ EXTRA_DIST=\
 	$(EXPORT_MODULES) \
 	man/system-config-printer.xml \
 	$(dbus_DATA) \
+	$(dbusinterfaces_DATA) \
+	$(dbusservices_DATA) \
 	bootstrap \
 	mkinstalldirs \
 	ChangeLog-OLD \

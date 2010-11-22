@@ -3524,62 +3524,6 @@ class NewPrinterGUI(GtkGUI):
 
 gobject.type_register (NewPrinterGUI)
 
-CONFIG_BUS='org.fedoraproject.Config.Printing'
-CONFIG_PATH='/org/fedoraproject/Config/Printing'
-CONFIG_IFACE='org.fedoraproject.Config.Printing'
-CONFIG_NEWPRINTERDIALOG_IFACE=CONFIG_IFACE + ".NewPrinterDialog"
-import dbus.service
-class ConfigPrintingNewPrinterDialog(dbus.service.Object):
-    def __init__ (self, bus, path):
-        bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
-        dbus.service.Object.__init__ (self, bus_name, path)
-        self.dialog = NewPrinterGUI()
-        self.dialog.connect ('dialog-canceled', self.on_dialog_canceled)
-        self.dialog.connect ('printer-added', self.on_printer_added)
-
-    @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
-                         in_signature='i', out_signature='')
-    def NewPrinter(self, xid):
-        self.dialog.init ('printer', xid=xid)
-
-    @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
-                         in_signature='iss', out_signature='')
-    def NewPrinterFromDevice(self, xid, device_uri, device_id):
-        self.dialog.init ('printer_with_uri', device_uri=device_uri,
-                          devid=device_id, xid=xid)
-
-    @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
-                         signature='')
-    def DialogCanceled(self):
-        pass
-
-    @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
-                         signature='s')
-    def PrinterAdded(self, name):
-        pass
-
-    def on_dialog_canceled(self, obj):
-        self.DialogCanceled ()
-
-    def on_printer_added(self, obj, name):
-        self.PrinterAdded (name)
-
-class ConfigPrinting(dbus.service.Object):
-    def __init__ (self):
-        self.bus = dbus.SessionBus ()
-        bus_name = dbus.service.BusName (CONFIG_BUS, bus=self.bus)
-        dbus.service.Object.__init__ (self, bus_name, CONFIG_PATH)
-        self.pathn = 0
-        self.dialog = NewPrinterGUI ()
-
-    @dbus.service.method(dbus_interface=CONFIG_IFACE,
-                         in_signature='', out_signature='s')
-    def _NewPrinterDialog(self):
-        self.pathn += 1
-        path = "%s/NewPrinterDialog%s" % (CONFIG_PATH, self.pathn)
-        ConfigPrintingNewPrinterDialog (self.bus, path)
-        return path
-
 if __name__ == '__main__':
     os.environ["SYSTEM_CONFIG_PRINTER_UI"] = "ui"
     import ppdippstr
@@ -3588,56 +3532,6 @@ if __name__ == '__main__':
     ppdippstr.init ()
     gobject.threads_init ()
     set_debugging (True)
-    from dbus.glib import DBusGMainLoop
-    DBusGMainLoop (set_as_default=True)
-
-    if len (sys.argv) > 1:
-        if sys.argv[1] == "--service":
-            debugprint ("Service running...")
-            loop = gobject.MainLoop ()
-            ConfigPrinting ()
-            loop.run ()
-        elif sys.argv[1] == "--client":
-            # Client demo
-            bus = dbus.SessionBus ()
-            obj = bus.get_object (CONFIG_BUS, CONFIG_PATH)
-            iface = dbus.Interface (obj, CONFIG_IFACE)
-            path = iface._NewPrinterDialog ()
-            debugprint (path)
-
-            obj = bus.get_object (CONFIG_BUS, path)
-            iface = dbus.Interface (obj, CONFIG_NEWPRINTERDIALOG_IFACE)
-            loop = gobject.MainLoop ()
-            def on_canceled(path=None):
-                print "%s: Dialog canceled" % path
-                loop.quit ()
-
-            def on_added(name, path=None):
-                print "%s: Printer '%s' added" % (path, name)
-                loop.quit ()
-
-            w = gtk.Window ()
-            w.show_now ()
-            iface.connect_to_signal ("DialogCanceled", on_canceled,
-                                     path_keyword="path")
-            iface.connect_to_signal ("PrinterAdded", on_added,
-                                     path_keyword="path")
-
-            if (len (sys.argv) > 3 and
-                sys.argv[2] == "--setup-printer"):
-                device_uri = sys.argv[3]
-                device_id = ''
-                if len (sys.argv) > 5:
-                    if sys.argv[4] == '--devid':
-                        device_id = sys.argv[5]
-
-                iface.NewPrinterFromDevice (w.window.xid, device_uri, device_id)
-            else:
-                iface.NewPrinter (w.window.xid)
-
-            loop.run ()
-
-        sys.exit (0)
 
     n = NewPrinterGUI ()
     def on_signal (*args):
