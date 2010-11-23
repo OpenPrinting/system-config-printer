@@ -506,7 +506,7 @@ class NewPrinterGUI(GtkGUI):
 
     def init(self, dialog_mode, device_uri=None, name=None, ppd=None,
              devid="", host=None, encryption=None, parent=None, xid=None):
-        if xid != None:
+        if xid != None and xid != 0:
             display = gtk.gdk.display_get_default ()
             parent = gtk.gdk.window_foreign_new_for_display (display, xid)
             debugprint ("Parent is %s" % parent)
