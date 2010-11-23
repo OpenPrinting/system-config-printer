@@ -572,9 +572,8 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPDownloadableDriverSearch_label = label
         label.set_text (_("Search"))
 
+        self.NewPrinterWindow.show_now()
         if xid and self.parent:
-            # Show the window now so we can set its transcience.
-            self.NewPrinterWindow.show_now()
             self.NewPrinterWindow.window.set_transient_for (self.parent)
 
         if self.dialog_mode in ("printer", "printer_with_uri", "class"):
