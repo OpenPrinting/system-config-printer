@@ -26,7 +26,31 @@
 	<doc:doc>
 	  <doc:summary>
 	    <doc:para>
-	      Path of D-Bus object representing dialog.
+	      Path of D-Bus object representing dialog.  This object
+	      supports the interface
+	      org.fedoraproject.Config.Printing.NewPrinterDialog.
+	    </doc:para>
+	  </doc:summary>
+	</doc:doc>
+      </arg>
+    </method>
+
+    <method name="JobApplet">
+      <doc:doc>
+	<doc:description>
+	  <doc:para>
+	    Create a new job applet if there is not already one running.
+	  </doc:para>
+	</doc:description>
+      </doc:doc>
+
+      <arg name="path" type="s" direction="out">
+	<doc:doc>
+	  <doc:summary>
+	    <doc:para>
+	      Path of D-Bus object representing job applet.  This
+	      object supports the interface
+	      org.fedoraproject.Config.Printing.JobApplet.
 	    </doc:para>
 	  </doc:summary>
 	</doc:doc>
@@ -148,5 +172,17 @@
 	</doc:doc>
       </arg>
     </signal>
+  </interface>
+
+  <interface name="org.fedoraproject.Config.Printing.JobApplet">
+    <doc:doc>
+      <doc:description>
+	<doc:para>
+	  This interface is for interacting with the job applet.
+	</doc:para>
+      </doc:description>
+    </doc:doc>
+
+    <signal name="Finished"/>
   </interface>
 </node>

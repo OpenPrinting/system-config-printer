@@ -26,6 +26,7 @@ import sys
 
 from debug import *
 import asyncconn
+import jobviewer
 import newprinter
 import ppdcache
 
@@ -33,6 +34,7 @@ CONFIG_BUS='org.fedoraproject.Config.Printing'
 CONFIG_PATH='/org/fedoraproject/Config/Printing'
 CONFIG_IFACE='org.fedoraproject.Config.Printing'
 CONFIG_NEWPRINTERDIALOG_IFACE=CONFIG_IFACE + ".NewPrinterDialog"
+CONFIG_JOBVIEWER_IFACE=CONFIG_IFACE + ".JobViewer"
 
 class KillTimer:
     def __init__ (self, timeout=30, killfunc=None):
@@ -132,6 +134,30 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         self._killtimer.remove_hold ()
         self.PrinterAdded (name)
 
+class ConfigPrintingJobApplet(dbus.service.Object):
+    def __init__ (self, bus, path, killtimer):
+        bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
+        dbus.service.Object.__init__ (self, bus_name, path)
+        self.jobapplet = jobviewer.JobViewer(bus=dbus.SystemBus (),
+                                             applet=True, my_jobs=True)
+        self.jobapplet.connect ('finished', self.on_jobapplet_finished)
+        self._killtimer = killtimer
+        self.has_finished = False
+        killtimer.add_hold ()
+        debugprint ("+%s" % self)
+
+    def __del__ (self):
+        debugprint ("-%s" % self)
+
+    @dbus.service.signal(dbus_interface=CONFIG_JOBVIEWER_IFACE, signature='')
+    def Finished(self):
+        pass
+
+    def on_jobapplet_finished (self, jobapplet):
+        self.Finished ()
+        self._killtimer.remove_hold ()
+        self.has_finished = True
+
 class ConfigPrinting(dbus.service.Object):
     def __init__ (self, killtimer):
         self._killtimer = killtimer
@@ -139,18 +165,32 @@ class ConfigPrinting(dbus.service.Object):
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=self.bus)
         dbus.service.Object.__init__ (self, bus_name, CONFIG_PATH)
         self._cupsconn = asyncconn.Connection ()
-        self.pathn = 0
+        self._pathn = 0
+        self._jobapplet = None
+        self._jobappletpath = None
 
     @dbus.service.method(dbus_interface=CONFIG_IFACE,
                          in_signature='', out_signature='s')
     def NewPrinterDialog(self):
-        self.pathn += 1
-        path = "%s/NewPrinterDialog%s" % (CONFIG_PATH, self.pathn)
+        self._pathn += 1
+        path = "%s/NewPrinterDialog%s" % (CONFIG_PATH, self._pathn)
         ConfigPrintingNewPrinterDialog (self.bus, path,
                                         self._cupsconn,
                                         killtimer=self._killtimer)
         self._killtimer.alive ()
         return path
+
+    @dbus.service.method(dbus_interface=CONFIG_IFACE,
+                         in_signature='', out_signature='s')
+    def JobApplet(self):
+       if self._jobapplet == None or self._jobapplet.has_finished:
+            self._pathn += 1
+            path = "%s/JobApplet%s" % (CONFIG_PATH, self._pathn)
+            self._jobapplet = ConfigPrintingJobApplet (self.bus, path,
+                                                       self._killtimer)
+            self._jobappletpath = path
+
+       return self._jobappletpath
 
 def _client_demo ():
     # Client demo

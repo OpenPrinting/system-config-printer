@@ -615,6 +615,9 @@ class JobViewer (GtkGUI):
         for op in self.ops:
             op.destroy ()
 
+        if self.applet:
+            self.statusicon.set_visible (False)
+
         self.emit ('finished')
 
     def set_process_pending (self, whether):
@@ -667,7 +670,7 @@ class JobViewer (GtkGUI):
         if self.applet or not self.loop:
             self.JobsWindow.hide ()
             self.JobsWindow.set_data ('visible', False)
-            if not self.loop:
+            if not self.applet:
                 # Being run from main app, not applet
                 self.cleanup ()
         else:
@@ -1257,6 +1260,7 @@ class JobViewer (GtkGUI):
         return returncode == None
 
     def on_icon_quit_activate (self, menuitem):
+        self.cleanup ()
         if self.loop:
             self.loop.quit ()
 
