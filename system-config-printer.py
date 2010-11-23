@@ -1793,12 +1793,12 @@ class GUI(GtkGUI):
                 specific_dests.append (name)
             viewer = jobviewer.JobViewer (None, None, my_jobs=False,
                                           specific_dests=specific_dests,
-                                          exit_handler=self.on_jobviewer_exit,
                                           parent=self.PrintersWindow)
+            viewer.connect ('finished', self.on_jobviewer_exit)
         else:
             viewer = jobviewer.JobViewer (None, None, my_jobs=False,
-                                          exit_handler=self.on_jobviewer_exit,
                                           parent=self.PrintersWindow)
+            viewer.connect ('finished', self.on_jobviewer_exit)
 
         self.jobviewers.append (viewer)
 

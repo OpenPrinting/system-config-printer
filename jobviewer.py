@@ -299,16 +299,20 @@ class JobViewer (GtkGUI):
                                    'time-at-creation',
                                    'job-preserved'])
 
+    __gsignals__ = {
+        'finished':    (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE, [])
+        }
+
     def __init__(self, bus=None, loop=None,
                  applet=False, suppress_icon_hide=False,
-                 my_jobs=True, specific_dests=None, exit_handler=None,
+                 my_jobs=True, specific_dests=None,
                  parent=None):
+        gobject.GObject.__init__ (self)
         self.loop = loop
         self.applet = applet
         self.suppress_icon_hide = suppress_icon_hide
         self.my_jobs = my_jobs
         self.specific_dests = specific_dests
-        self.exit_handler = exit_handler
         notify_caps = pynotify.get_server_caps ()
         self.notify_has_actions = "actions" in notify_caps
         self.notify_has_persistence = "persistence" in notify_caps
@@ -611,8 +615,7 @@ class JobViewer (GtkGUI):
         for op in self.ops:
             op.destroy ()
 
-        if self.exit_handler:
-            self.exit_handler (self)
+        self.emit ('finished')
 
     def set_process_pending (self, whether):
         self.process_pending_events = whether
@@ -2303,3 +2306,5 @@ class JobViewer (GtkGUI):
                 break
 
         return True
+
+gobject.type_register (JobViewer)
