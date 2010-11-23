@@ -36,6 +36,7 @@ class KillTimer:
     def __init__ (self, timeout=30, killfunc=None):
         self._timeout = timeout
         self._killfunc = killfunc
+        self._holds = 0
         self._add_timeout ()
 
     def _add_timeout (self):
@@ -49,18 +50,20 @@ class KillTimer:
             sys.exit (0)
 
     def add_hold (self):
-        if self._timer != None:
+        if self._holds == 0:
             debugprint ("Kill timer stopped")
             gobject.source_remove (self._timer)
-            self._timer = None
+
+        self._holds += 1
 
     def remove_hold (self):
-        if self._timer == None:
+        self._holds -= 1
+        if self._holds == 0:
             debugprint ("Kill timer started")
             self._add_timeout ()
 
     def alive (self):
-        if self._timer != None:
+        if self._holds == 0:
             gobject.source_remove (self._timer)
             self._add_timeout ()
 
