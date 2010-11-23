@@ -80,13 +80,7 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         debugprint ("-%s" % self)
 
     @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
-                         in_signature='i', out_signature='')
-    def NewPrinter(self, xid):
-        killtimer.add_hold ()
-        self.dialog.init ('printer', xid=xid)
-
-    @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
-                         in_signature='iss', out_signature='')
+                         in_signature='uss', out_signature='')
     def NewPrinterFromDevice(self, xid, device_uri, device_id):
         killtimer.add_hold ()
         self.dialog.init ('printer_with_uri', device_uri=device_uri,
@@ -130,6 +124,16 @@ class ConfigPrinting(dbus.service.Object):
 
 def _client_demo ():
     # Client demo
+    if len (sys.argv) > 2:
+        device_uri = sys.argv[2]
+        device_id = ''
+        if (len (sys.argv) > 4 and
+            sys.argv[3] == '--devid'):
+            device_id = sys.argv[4]
+    else:
+        print "Device URI required"
+        return
+
     import gtk
     bus = dbus.SessionBus ()
     obj = bus.get_object (CONFIG_BUS, CONFIG_PATH)
@@ -155,18 +159,7 @@ def _client_demo ():
     iface.connect_to_signal ("PrinterAdded", on_added,
                              path_keyword="path")
 
-    if (len (sys.argv) > 3 and
-        sys.argv[2] == "--setup-printer"):
-        device_uri = sys.argv[3]
-        device_id = ''
-        if len (sys.argv) > 5:
-            if sys.argv[4] == '--devid':
-                device_id = sys.argv[5]
-
-        iface.NewPrinterFromDevice (w.window.xid, device_uri, device_id)
-    else:
-        iface.NewPrinter (w.window.xid)
-
+    iface.NewPrinterFromDevice (w.window.xid, device_uri, device_id)
     loop.run ()
 
 if __name__ == '__main__':
