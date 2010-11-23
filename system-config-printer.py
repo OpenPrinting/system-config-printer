@@ -46,6 +46,9 @@ def show_help():
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n\n"
            "Options:\n\n"
+           "  --setup-printer URI\n"
+           "            Select the (detected) CUPS device URI on start-up,\n"
+           "            and run the new-printer wizard for it.\n\n"
            "  --configure-printer NAME\n"
            "            Select the named printer on start-up, and open its\n"
            "            properties dialog.\n\n"
@@ -151,7 +154,7 @@ class GUI(GtkGUI):
     DESTS_PAGE_NO_PRINTERS=1
     DESTS_PAGE_NO_SERVICE=2
 
-    def __init__(self, configure_printer = None,
+    def __init__(self, setup_printer = None, configure_printer = None,
                  change_ppd = False, devid = "", print_test_page = False,
                  focus_on_map = True):
 
@@ -532,6 +535,14 @@ class GUI(GtkGUI):
             self.PrintersWindow.set_default_size (550, 400)
 
         self.PrintersWindow.show()
+
+        if setup_printer:
+            self.device_uri = setup_printer
+            self.devid = devid
+            try:
+                self.on_autodetected_printer_without_driver(None)
+            except RuntimeError:
+                pass
 
         if configure_printer:
             # Need to find the entry in the iconview model and activate it.
@@ -1897,6 +1908,17 @@ class GUI(GtkGUI):
                                 parent=self.PrintersWindow)
         ready (self.PrintersWindow)
 
+    # new printer, auto-detected, but now driver found
+    def on_autodetected_printer_without_driver(self, widget):
+        busy (self.PrintersWindow)
+        self.newPrinterGUI.init("printer_with_uri", device_uri=self.device_uri,
+                                ppd=None, devid=self.devid,
+                                host=self.connect_server,
+                                encryption=self.connect_encrypt,
+                                parent=self.PrintersWindow)
+        self.devid = ""
+        ready (self.PrintersWindow)
+
     # new class
     def on_new_class_activate(self, widget):
         self.newPrinterGUI.init("class",
@@ -2119,7 +2141,7 @@ class GUI(GtkGUI):
             self.populateList (prompt_allowed=False)
 
 
-def main(configure_printer = None, change_ppd = False,
+def main(setup_printer = None, configure_printer = None, change_ppd = False,
          devid = "", print_test_page = False, focus_on_map = True):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init ()
@@ -2127,7 +2149,7 @@ def main(configure_printer = None, change_ppd = False,
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
 
-    mainwindow = GUI(configure_printer, change_ppd, devid,
+    mainwindow = GUI(setup_printer, configure_printer, change_ppd, devid,
                      print_test_page, focus_on_map)
 
     if gtk.__dict__.has_key("main"):
@@ -2151,6 +2173,7 @@ if __name__ == "__main__":
         show_help ()
         sys.exit (1)
 
+    setup_printer = None
     configure_printer = None
     change_ppd = False
     print_test_page = False
@@ -2166,6 +2189,9 @@ if __name__ == "__main__":
             elif opt == "--print-test-page":
                 print_test_page = True
 
+        elif opt == '--setup-printer':
+            setup_printer = optarg
+
         elif opt == '--devid':
             devid = optarg
 
@@ -2176,5 +2202,5 @@ if __name__ == "__main__":
             set_debugging (True)
             cupshelpers.ppds.set_debugprint_fn (debugprint)
 
-    main(configure_printer, change_ppd, devid, print_test_page,
+    main(setup_printer, configure_printer, change_ppd, devid, print_test_page,
          focus_on_map)
