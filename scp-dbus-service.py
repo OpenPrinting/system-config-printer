@@ -175,7 +175,6 @@ if __name__ == '__main__':
     locale.setlocale (locale.LC_ALL, "")
     ppdippstr.init ()
     gobject.threads_init ()
-    set_debugging (True)
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
 
