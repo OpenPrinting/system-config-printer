@@ -513,7 +513,9 @@ class NewPrinterGUI(GtkGUI):
             self.parent = parent
         else:
             self.parent = parent
-
+            if not self.parent:
+                self.NewPrinterWindow.set_focus_on_map (False)
+            
         self.dialog_mode = dialog_mode
         self.orig_ppd = ppd
         self.devid = devid
