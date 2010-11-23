@@ -25,7 +25,9 @@ import gobject
 import sys
 
 from debug import *
+import asyncconn
 import newprinter
+import ppdcache
 
 CONFIG_BUS='org.fedoraproject.Config.Printing'
 CONFIG_PATH='/org/fedoraproject/Config/Printing'
@@ -68,12 +70,15 @@ class KillTimer:
             self._add_timeout ()
 
 class ConfigPrintingNewPrinterDialog(dbus.service.Object):
-    def __init__ (self, bus, path, killtimer):
+    def __init__ (self, bus, path, cupsconn, killtimer):
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
         dbus.service.Object.__init__ (self, bus_name, path)
         self.dialog = newprinter.NewPrinterGUI()
         self.dialog.connect ('dialog-canceled', self.on_dialog_canceled)
         self.dialog.connect ('printer-added', self.on_printer_added)
+        self._ppdcache = ppdcache.PPDCache ()
+        self._cupsconn = cupsconn
+        self._killtimer = killtimer
         debugprint ("+%s" % self)
 
     def __del__ (self):
@@ -82,9 +87,32 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
     @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
                          in_signature='uss', out_signature='')
     def NewPrinterFromDevice(self, xid, device_uri, device_id):
-        killtimer.add_hold ()
+        self._killtimer.add_hold ()
         self.dialog.init ('printer_with_uri', device_uri=device_uri,
                           devid=device_id, xid=xid)
+
+    @dbus.service.method(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
+                         in_signature='uss', out_signature='')
+    def ChangePPD(self, xid, name, device_id):
+        self._killtimer.add_hold ()
+        self.xid = xid
+        self.name = name
+        self.device_id = device_id
+        self._ppdcache.fetch_ppd (name, self._change_ppd_got_ppd)
+
+    def _change_ppd_got_ppd(self, name, ppd, exc):
+        # Got PPD; now find device URI.
+        self.ppd = ppd
+        self._cupsconn.getPrinters (reply_handler=self._change_ppd_with_dev,
+                                    error_handler=self._do_change_ppd)
+
+    def _change_ppd_with_dev (self, conn, result):
+        self.device_uri = result.get (self.name, {}).get ('device-uri', None)
+        self._do_change_ppd (conn)
+
+    def _do_change_ppd(self, conn, exc=None):
+        self.dialog.init ('ppd', device_uri=self.device_uri, name=self.name,
+                          ppd=self.ppd, devid=self.device_id, xid=self.xid)
 
     @dbus.service.signal(dbus_interface=CONFIG_NEWPRINTERDIALOG_IFACE,
                          signature='')
@@ -97,11 +125,11 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         pass
 
     def on_dialog_canceled(self, obj):
-        killtimer.remove_hold ()
+        self._killtimer.remove_hold ()
         self.DialogCanceled ()
 
     def on_printer_added(self, obj, name):
-        killtimer.remove_hold ()
+        self._killtimer.remove_hold ()
         self.PrinterAdded (name)
 
 class ConfigPrinting(dbus.service.Object):
@@ -110,6 +138,7 @@ class ConfigPrinting(dbus.service.Object):
         self.bus = dbus.SessionBus ()
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=self.bus)
         dbus.service.Object.__init__ (self, bus_name, CONFIG_PATH)
+        self._cupsconn = asyncconn.Connection ()
         self.pathn = 0
 
     @dbus.service.method(dbus_interface=CONFIG_IFACE,
@@ -118,6 +147,7 @@ class ConfigPrinting(dbus.service.Object):
         self.pathn += 1
         path = "%s/NewPrinterDialog%s" % (CONFIG_PATH, self.pathn)
         ConfigPrintingNewPrinterDialog (self.bus, path,
+                                        self._cupsconn,
                                         killtimer=self._killtimer)
         self._killtimer.alive ()
         return path

@@ -52,6 +52,12 @@ gobject.threads_init ()
 # We need to call pynotify.init before we can check the server for caps
 pynotify.init('System Config Printer Notification')
 
+# D-Bus APIs of other objects we'll use.
+PRINTING_BUS="org.fedoraproject.Config.Printing"
+PRINTING_PATH="/org/fedoraproject/Config/Printing"
+PRINTING_IFACE="org.fedoraproject.Config.Printing"
+NEWPRINTERDIALOG_IFACE="org.fedoraproject.Config.Printing.NewPrinterDialog"
+
 ####
 #### NewPrinterNotification DBus server (the 'new' way).
 ####
@@ -246,28 +252,32 @@ class NewPrinterNotification(dbus.service.Object):
     def configure (self, notification, action, name):
         self.run_config_tool (["--configure-printer", name])
 
-    def find_driver (self, notification, action, name, devid = ""):
-        args = ["--choose-driver", name]
-        if devid != "": args = args + ["--devid", devid]
-        self.run_config_tool (args)
+    def get_newprinterdialog_interface (self):
+        obj = self.session_bus.get_object (PRINTING_BUS, PRINTING_PATH)
+        iface = dbus.Interface (obj, PRINTING_IFACE)
+        path = iface.NewPrinterDialog ()
+        obj = self.session_bus.get_object (PRINTING_BUS, path)
+        iface = dbus.Interface (obj, NEWPRINTERDIALOG_IFACE)
+        return iface
 
-    def setup_printer (self, notification, action, uri, devid = ""):
-        PRINTING_BUS="org.fedoraproject.Config.Printing"
-        PRINTING_PATH="/org/fedoraproject/Config/Printing"
-        PRINTING_IFACE="org.fedoraproject.Config.Printing"
-        DIALOG_IFACE="org.fedoraproject.Config.Printing.NewPrinterDialog"
-        def ignore (*args):
+    def ignore_dbus_replies (self, *args):
+        pass
+
+    def find_driver (self, notification, action, name, devid = ""):
+        try:
+            iface = self.get_newprinterdialog_interface ()
+            iface.ChangePPD (dbus.UInt32(0), name, devid,
+                             reply_handler=self.ignore_dbus_replies,
+                             error_handler=self.ignore_dbus_replies)
+        except dbus.DBusException:
             pass
 
+    def setup_printer (self, notification, action, uri, devid = ""):
         try:
-            obj = self.session_bus.get_object (PRINTING_BUS, PRINTING_PATH)
-            iface = dbus.Interface (obj, PRINTING_IFACE)
-            path = iface.NewPrinterDialog ()
-            obj = self.session_bus.get_object (PRINTING_BUS, path)
-            iface = dbus.Interface (obj, DIALOG_IFACE)
+            iface = self.get_newprinterdialog_interface ()
             iface.NewPrinterFromDevice (dbus.UInt32(0), uri, devid,
-                                        reply_handler=ignore,
-                                        error_handler=ignore)
+                                        reply_handler=self.ignore_dbus_replies,
+                                        error_handler=self.ignore_dbus_replies)
         except dbus.DBusException:
             pass
 

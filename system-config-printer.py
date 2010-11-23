@@ -49,9 +49,6 @@ def show_help():
            "  --configure-printer NAME\n"
            "            Select the named printer on start-up, and open its\n"
            "            properties dialog.\n\n"
-           "  --choose-driver NAME\n"
-           "            Select the named printer on start-up, and display\n"
-           "            the list of drivers.\n\n"
            "  --print-test-page NAME\n"
            "            Select the named printer on start-up and print a\n"
            "            test page to it.\n\n"
@@ -152,7 +149,7 @@ class GUI(GtkGUI):
     DESTS_PAGE_NO_SERVICE=2
 
     def __init__(self, configure_printer = None,
-                 change_ppd = False, devid = "", print_test_page = False,
+                 devid = "", print_test_page = False,
                  focus_on_map = True):
 
         try:
@@ -539,8 +536,6 @@ class GUI(GtkGUI):
                 self.display_properties_dialog_for (configure_printer)
                 if print_test_page:
                     self.propertiesDlg.btnPrintTestPage.clicked ()
-                if change_ppd:
-                    self.propertiesDlg.btnChangePPD.clicked ()
             except RuntimeError:
                 pass
 
@@ -2119,7 +2114,7 @@ class GUI(GtkGUI):
             self.populateList (prompt_allowed=False)
 
 
-def main(configure_printer = None, change_ppd = False,
+def main(configure_printer = None,
          devid = "", print_test_page = False, focus_on_map = True):
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init ()
@@ -2127,8 +2122,7 @@ def main(configure_printer = None, change_ppd = False,
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
 
-    mainwindow = GUI(configure_printer, change_ppd, devid,
-                     print_test_page, focus_on_map)
+    mainwindow = GUI(configure_printer, devid, print_test_page, focus_on_map)
 
     if gtk.__dict__.has_key("main"):
         gtk.main()
@@ -2142,7 +2136,6 @@ if __name__ == "__main__":
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
                                         ['setup-printer=',
                                          'configure-printer=',
-                                         'choose-driver=',
                                          'devid=',
                                          'print-test-page=',
                                          'no-focus-on-map',
@@ -2152,18 +2145,14 @@ if __name__ == "__main__":
         sys.exit (1)
 
     configure_printer = None
-    change_ppd = False
     print_test_page = False
     focus_on_map = True
     devid = ""
     for opt, optarg in opts:
         if (opt == "--configure-printer" or
-            opt == "--choose-driver" or
             opt == "--print-test-page"):
             configure_printer = optarg
-            if opt == "--choose-driver":
-                change_ppd = True
-            elif opt == "--print-test-page":
+            if opt == "--print-test-page":
                 print_test_page = True
 
         elif opt == '--devid':
@@ -2176,5 +2165,4 @@ if __name__ == "__main__":
             set_debugging (True)
             cupshelpers.ppds.set_debugprint_fn (debugprint)
 
-    main(configure_printer, change_ppd, devid, print_test_page,
-         focus_on_map)
+    main(configure_printer, devid, print_test_page, focus_on_map)
