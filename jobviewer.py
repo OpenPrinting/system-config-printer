@@ -232,9 +232,9 @@ class CancelJobsOperation(gobject.GObject):
             self.emit ('finished')
             return
 
-        asyncconn.Connection (host=self.jobviewer.host,
-                              port=self.jobviewer.port,
-                              encryption=self.jobviewer.encryption,
+        asyncconn.Connection (host=self.host,
+                              port=self.port,
+                              encryption=self.encryption,
                               reply_handler=self._connected,
                               error_handler=self._connect_failed)
 
