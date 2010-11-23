@@ -114,7 +114,7 @@ class ConfigPrinting(dbus.service.Object):
 
     @dbus.service.method(dbus_interface=CONFIG_IFACE,
                          in_signature='', out_signature='s')
-    def _NewPrinterDialog(self):
+    def NewPrinterDialog(self):
         self.pathn += 1
         path = "%s/NewPrinterDialog%s" % (CONFIG_PATH, self.pathn)
         ConfigPrintingNewPrinterDialog (self.bus, path,
@@ -138,7 +138,7 @@ def _client_demo ():
     bus = dbus.SessionBus ()
     obj = bus.get_object (CONFIG_BUS, CONFIG_PATH)
     iface = dbus.Interface (obj, CONFIG_IFACE)
-    path = iface._NewPrinterDialog ()
+    path = iface.NewPrinterDialog ()
     debugprint (path)
 
     obj = bus.get_object (CONFIG_BUS, path)

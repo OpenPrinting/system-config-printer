@@ -262,7 +262,7 @@ class NewPrinterNotification(dbus.service.Object):
         try:
             obj = self.session_bus.get_object (PRINTING_BUS, PRINTING_PATH)
             iface = dbus.Interface (obj, PRINTING_IFACE)
-            path = iface._NewPrinterDialog ()
+            path = iface.NewPrinterDialog ()
             obj = self.session_bus.get_object (PRINTING_BUS, path)
             iface = dbus.Interface (obj, DIALOG_IFACE)
             iface.NewPrinterFromDevice (dbus.UInt32(0), uri, devid,
