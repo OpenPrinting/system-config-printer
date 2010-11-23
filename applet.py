@@ -64,10 +64,11 @@ class NewPrinterNotification(dbus.service.Object):
     STATUS_GENERIC_DRIVER = 2
     STATUS_NO_DRIVER = 3
 
-    def __init__ (self, bus):
-        self.bus = bus
+    def __init__ (self, system_bus, session_bus):
+        self.system_bus = system_bus
+        self.session_bus = session_bus
         self.getting_ready = 0
-        bus_name = dbus.service.BusName (PDS_OBJ, bus=bus)
+        bus_name = dbus.service.BusName (PDS_OBJ, bus=system_bus)
         dbus.service.Object.__init__ (self, bus_name, PDS_PATH)
 
     def wake_up (self):
@@ -79,7 +80,7 @@ class NewPrinterNotification(dbus.service.Object):
             except:
                 pass
             runloop = gobject.MainLoop ()
-            viewer = jobviewer.JobViewer(bus=bus, loop=runloop,
+            viewer = jobviewer.JobViewer(bus=self.system_bus, loop=runloop,
                                          applet=applet,
                                          suppress_icon_hide=True)
 
@@ -128,8 +129,7 @@ class NewPrinterNotification(dbus.service.Object):
                               lambda x, y:
                                   self.setup_printer (x, y, name, devid))
             else:
-                args = ["--setup-printer", name, "--devid", devid]
-                self.run_config_tool (args)
+                self.setup_printer (None, None, name, devid)
 
         else:
             # name is the name of the queue which hal_lpadmin has set up
@@ -252,9 +252,24 @@ class NewPrinterNotification(dbus.service.Object):
         self.run_config_tool (args)
 
     def setup_printer (self, notification, action, uri, devid = ""):
-        args = ["--setup-printer", uri]
-        if devid != "": args = args + ["--devid", devid]
-        self.run_config_tool (args)
+        PRINTING_BUS="org.fedoraproject.Config.Printing"
+        PRINTING_PATH="/org/fedoraproject/Config/Printing"
+        PRINTING_IFACE="org.fedoraproject.Config.Printing"
+        DIALOG_IFACE="org.fedoraproject.Config.Printing.NewPrinterDialog"
+        def ignore (*args):
+            pass
+
+        try:
+            obj = self.session_bus.get_object (PRINTING_BUS, PRINTING_PATH)
+            iface = dbus.Interface (obj, PRINTING_IFACE)
+            path = iface._NewPrinterDialog ()
+            obj = self.session_bus.get_object (PRINTING_BUS, path)
+            iface = dbus.Interface (obj, DIALOG_IFACE)
+            iface.NewPrinterFromDevice (dbus.UInt32(0), uri, devid,
+                                        reply_handler=ignore,
+                                        error_handler=ignore)
+        except dbus.DBusException:
+            pass
 
     def install_driver (self, notification, action, missing_pkgs):
         try:
@@ -328,23 +343,9 @@ if __name__ == '__main__':
         except:
             pass
 
-    if applet:
-        # Stop running when the session ends.
-        def monitor_session (*args):
-            pass
-
-        try:
-            bus = dbus.SessionBus()
-            bus.add_signal_receiver (monitor_session)
-        except:
-            try:
-                print >> sys.stderr, ("%s: failed to connect to "
-                                      "session D-Bus" % PROGRAM_NAME)
-            finally:
-                sys.exit (1)
-
+    system_bus = session_bus = None
     try:
-        bus = dbus.SystemBus()
+        system_bus = dbus.SystemBus()
     except:
         try:
             print >> sys.stderr, ("%s: failed to connect to system D-Bus" %
@@ -353,27 +354,43 @@ if __name__ == '__main__':
             sys.exit (1)
 
     if applet:
-        try:
-            NewPrinterNotification(bus)
-        except:
-            try:
-                print >> sys.stderr, ("%s: failed to start "
-                                      "NewPrinterNotification service" %
-                                      PROGRAM_NAME)
-            except:
-                pass
+        # Stop running when the session ends.
+        def monitor_session (*args):
+            pass
 
         try:
-            cupshelpers.installdriver.set_debugprint_fn (debugprint)
-            cupshelpers.installdriver.PrinterDriversInstaller(bus)
-        except Exception, e:
+            session_bus = dbus.SessionBus()
+            session_bus.add_signal_receiver (monitor_session)
+        except:
             try:
-                print >> sys.stderr, ("%s: failed to start "
-                                      "PrinterDriversInstaller service: %s" %
-                                      (PROGRAM_NAME, e))
-                pass
+                print >> sys.stderr, ("%s: failed to connect to "
+                                      "session D-Bus" % PROGRAM_NAME)
+            finally:
+                sys.exit (1)
+
+        if system_bus and session_bus:
+            try:
+                NewPrinterNotification(system_bus, session_bus)
             except:
-                pass
+                try:
+                    print >> sys.stderr, ("%s: failed to start "
+                                          "NewPrinterNotification service" %
+                                          PROGRAM_NAME)
+                except:
+                    pass
+
+        if system_bus:
+            try:
+                cupshelpers.installdriver.set_debugprint_fn (debugprint)
+                cupshelpers.installdriver.PrinterDriversInstaller(system_bus)
+            except Exception, e:
+                try:
+                    print >> sys.stderr, ("%s: failed to start "
+                                          "PrinterDriversInstaller service: "
+                                          "%s" % (PROGRAM_NAME, e))
+                    pass
+                except:
+                    pass
 
     if applet and get_debugging () == False:
         # Start off just waiting for print jobs.
@@ -437,7 +454,7 @@ if __name__ == '__main__':
         import gtk
         runloop = gobject.MainLoop ()
         gtk.window_set_default_icon_name ('printer')
-        viewer = jobviewer.JobViewer(bus=bus, loop=runloop,
+        viewer = jobviewer.JobViewer(bus=system_bus, loop=runloop,
                                      applet=applet)
 
     try:
