@@ -626,7 +626,7 @@ class NewPrinterGUI(GtkGUI):
             if not devid:
                 devid = None
 
-            self.current_devices = None
+            self.current_devices = {}
 
             # We'll need the list of PPDs.
             self.ppdsloader = ppdsloader.PPDsLoader (device_id=devid,
@@ -682,7 +682,9 @@ class NewPrinterGUI(GtkGUI):
         if not self.ppds:
             return
 
-        if self.devid or self.current_devices != None:
+        if (self.dialog_mode != "ppd" or
+            self.devid or
+            self.current_devices != None):
             # Device fetch has finished too.
             self.change_ppd_have_ppds_and_devs ()
 
