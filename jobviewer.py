@@ -592,6 +592,8 @@ class JobViewer (GtkGUI):
     def cleanup (self):
         self.monitor.cleanup ()
 
+        self.JobsWindow.hide ()
+
         # Close any open notifications.
         for l in [self.new_printer_notifications.values (),
                   self.state_reason_notifications.values ()]:

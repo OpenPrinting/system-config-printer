@@ -157,7 +157,7 @@ class PPDCache:
             gtk.gdk.threads_leave ()
             return False
 
-        gobject.idle_add (cb_func)
+        gobject.idle_add (cb_func, callback, name, result, exc)
 
 if __name__ == "__main__":
     import sys
