@@ -502,7 +502,9 @@ class PrinterPropertiesDialog(GtkGUI):
                                             encryption=encryption)
 
         self.newPrinterGUI = newprinter.NewPrinterGUI ()
-        self.dialog.set_transient_for (parent)
+        if parent:
+            self.dialog.set_transient_for (parent)
+
         self.load (name, host=host, encryption=encryption, parent=parent)
         for button in [self.btnPrinterPropertiesCancel,
                        self.btnPrinterPropertiesOK,
