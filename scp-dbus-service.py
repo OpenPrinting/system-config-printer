@@ -76,8 +76,11 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
         dbus.service.Object.__init__ (self, bus_name, path)
         self.dialog = newprinter.NewPrinterGUI()
-        self.dialog.connect ('dialog-canceled', self.on_dialog_canceled)
-        self.dialog.connect ('printer-added', self.on_printer_added)
+        self.dialog.NewPrinterWindow.set_modal (False)
+        self.handles = [self.dialog.connect ('dialog-canceled',
+                                             self.on_dialog_canceled),
+                        self.dialog.connect ('printer-added',
+                                             self.on_printer_added)]
         self._ppdcache = ppdcache.PPDCache ()
         self._cupsconn = cupsconn
         self._killtimer = killtimer
@@ -129,18 +132,27 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
     def on_dialog_canceled(self, obj):
         self._killtimer.remove_hold ()
         self.DialogCanceled ()
+        self.remove_handles ()
+        self.remove_from_connection ()
 
     def on_printer_added(self, obj, name):
         self._killtimer.remove_hold ()
         self.PrinterAdded (name)
+        self.remove_handles ()
+        self.remove_from_connection ()
+
+    def remove_handles (self):
+        for handle in self.handles:
+            self.dialog.disconnect (handle)
 
 class ConfigPrintingJobApplet(dbus.service.Object):
     def __init__ (self, bus, path, killtimer):
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
-        dbus.service.Object.__init__ (self, bus_name, path)
+        dbus.service.Object.__init__ (self, bus_name=bus_name, object_path=path)
         self.jobapplet = jobviewer.JobViewer(bus=dbus.SystemBus (),
                                              applet=True, my_jobs=True)
-        self.jobapplet.connect ('finished', self.on_jobapplet_finished)
+        handle = self.jobapplet.connect ('finished', self.on_jobapplet_finished)
+        self.finished_handle = handle
         self._killtimer = killtimer
         self.has_finished = False
         killtimer.add_hold ()
@@ -157,6 +169,8 @@ class ConfigPrintingJobApplet(dbus.service.Object):
         self.Finished ()
         self._killtimer.remove_hold ()
         self.has_finished = True
+        self.jobapplet.disconnect (self.finished_handle)
+        self.remove_from_connection ()
 
 class ConfigPrinting(dbus.service.Object):
     def __init__ (self, killtimer):
