@@ -178,7 +178,7 @@ cupshelpers_DATA=\
 bin_SCRIPTS=					\
 	system-config-printer			\
 	system-config-printer-applet		\
-	scp-dbus-service
+	dbus/scp-dbus-service
 
 if UDEV_RULES
 udevrulesdir=$(sysconfdir)/udev/rules.d
@@ -198,16 +198,16 @@ man_MANS=					\
 	man/system-config-printer-applet.1
 
 dbus_DATA =					\
-	com.redhat.NewPrinterNotification.conf		\
-	com.redhat.PrinterDriversInstaller.conf
+	dbus/com.redhat.NewPrinterNotification.conf		\
+	dbus/com.redhat.PrinterDriversInstaller.conf
 dbusdir = $(sysconfdir)/dbus-1/system.d/
 
 dbusinterfaces_DATA =				\
-	org.fedoraproject.Config.Printing.xml
+	dbus/org.fedoraproject.Config.Printing.xml
 dbusinterfacesdir = $(datadir)/dbus-1/interfaces/
 
 dbusservices_DATA =				\
-	org.fedoraproject.Config.Printing.service
+	dbus/org.fedoraproject.Config.Printing.service
 dbusservicesdir = $(datadir)/dbus-1/services/
 
 desktop_DATA =\
