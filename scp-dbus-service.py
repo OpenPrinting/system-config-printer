@@ -161,6 +161,12 @@ class ConfigPrintingJobApplet(dbus.service.Object):
     def __del__ (self):
         debugprint ("-%s" % self)
 
+    @dbus.service.method(dbus_interface=CONFIG_JOBVIEWER_IFACE,
+                         in_signature='', out_signature='')
+    def Quit(self):
+        if not self.has_finished:
+            self.jobapplet.cleanup ()
+
     @dbus.service.signal(dbus_interface=CONFIG_JOBVIEWER_IFACE, signature='')
     def Finished(self):
         pass
