@@ -169,6 +169,9 @@ class ConfigPrinting(dbus.service.Object):
         self._jobapplet = None
         self._jobappletpath = None
 
+    def destroy (self):
+        self._cupsconn.destroy ()
+
     @dbus.service.method(dbus_interface=CONFIG_IFACE,
                          in_signature='', out_signature='s')
     def NewPrinterDialog(self):
@@ -256,5 +259,6 @@ if __name__ == '__main__':
     debugprint ("Service running...")
     loop = gobject.MainLoop ()
     killtimer = KillTimer (killfunc=loop.quit)
-    ConfigPrinting (killtimer=killtimer)
+    cp = ConfigPrinting (killtimer=killtimer)
     loop.run ()
+    cp.destroy ()
