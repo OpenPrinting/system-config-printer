@@ -44,7 +44,6 @@ except locale.Error, e:
 APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
 ICON="printer"
-SEARCHING_ICON="document-print-preview"
 
 # Let gobject know we'll be using threads.
 gobject.threads_init ()
@@ -76,44 +75,39 @@ class NewPrinterNotification(dbus.service.Object):
         self.getting_ready = 0
         bus_name = dbus.service.BusName (PDS_OBJ, bus=system_bus)
         dbus.service.Object.__init__ (self, bus_name, PDS_PATH)
-
-    def wake_up (self):
-        global waitloop, runloop, viewer
-        import jobviewer
-        if viewer == None:
-            try:
-                waitloop.quit ()
-            except:
-                pass
-            runloop = gobject.MainLoop ()
-            viewer = jobviewer.JobViewer(bus=self.system_bus, loop=runloop,
-                                         applet=True,
-                                         suppress_icon_hide=True)
+        self.notification = None
 
     @dbus.service.method(PDS_IFACE, in_signature='', out_signature='')
     def GetReady (self):
-        self.wake_up ()
+        TIMEOUT=1200000
         if self.getting_ready == 0:
-            viewer.set_special_statusicon (SEARCHING_ICON,
-                                           tooltip=_("Configuring new printer"))
+            n = pynotify.Notification (_("Configuring new printer"),
+                                       _("Please wait..."),
+                                       'printer')
+            n.set_timeout (TIMEOUT + 5000)
+            n.set_data ('closed', False)
+            n.connect ('closed', self.on_notification_closed)
+            n.show ()
+            self.notification = n
 
         self.getting_ready += 1
-        gobject.timeout_add_seconds (1200, self.timeout_ready)
+        gobject.timeout_add_seconds (TIMEOUT, self.timeout_ready)
+
+    def on_notification_closed (self, notification):
+        notification.set_data ('closed', True)
 
     def timeout_ready (self):
-        global viewer
         if self.getting_ready > 0:
             self.getting_ready -= 1
-        if self.getting_ready == 0:
-            viewer.unset_special_statusicon ()
+        if (self.getting_ready == 0 and
+            self.notification and
+            not self.notification.get_data ('closed')):
+            self.notification.close ()
 
         return False
 
     @dbus.service.method(PDS_IFACE, in_signature='isssss', out_signature='')
     def NewPrinter (self, status, name, mfg, mdl, des, cmd):
-        global viewer
-        self.wake_up ()
-
         if name.find("/") >= 0:
             # name is a URI, no queue was generated, because no suitable
             # driver was found
@@ -225,9 +219,9 @@ class NewPrinterNotification(dbus.service.Object):
                     self.run_config_tool (["--configure-printer",
                                            name, "--no-focus-on-map"])
 
-        viewer.notify_new_printer (name, n)
-        # Set the icon back how it was.
         self.timeout_ready ()
+        n.show ()
+        self.notification = n
 
     def run_config_tool (self, argv):
         import os
@@ -315,10 +309,75 @@ def show_version ():
 #### Main program entry
 ####
 
-global waitloop, runloop, viewer
+def monitor_session (*args):
+    pass
 
-waitloop = runloop = None
-viewer = None
+def any_jobs ():
+    try:
+        c = cups.Connection ()
+        jobs = c.getJobs (my_jobs=True, limit=1)
+        if len (jobs):
+            return True
+    except:
+        pass
+
+    return False
+
+class RunLoop:
+    DBUS_PATH="/com/redhat/PrinterSpooler"
+    DBUS_IFACE="com.redhat.PrinterSpooler"
+
+    def __init__ (self, session_bus, system_bus, loop):
+        self.system_bus = system_bus
+        self.session_bus = session_bus
+        self.loop = loop
+        self.timer = None
+        system_bus.add_signal_receiver (self.handle_dbus_signal,
+                                        path=self.DBUS_PATH,
+                                        dbus_interface=self.DBUS_IFACE)
+        self.check_for_jobs ()
+
+    def remove_signal_receiver (self):
+        self.system_bus.remove_signal_receiver (self.handle_dbus_signal,
+                                                path=self.DBUS_PATH,
+                                                dbus_interface=self.DBUS_IFACE)
+
+    def run (self):
+        self.loop.run ()
+
+    def __del__ (self):
+        self.remove_signal_receiver ()
+        if self.timer:
+            gobject.source_remove (self.timer)
+
+    def handle_dbus_signal (self, *args):
+        if self.timer:
+            gobject.source_remove (self.timer)
+        self.timer = gobject.timeout_add (200, self.check_for_jobs)
+
+    def check_for_jobs (self, *args):
+        debugprint ("checking for jobs")
+        if any_jobs ():
+            if self.timer != None:
+                gobject.source_remove (self.timer)
+
+            self.remove_signal_receiver ()
+
+            # Start the job applet.
+            debugprint ("Starting job applet")
+            try:
+                obj = self.session_bus.get_object (PRINTING_BUS, PRINTING_PATH)
+                iface = dbus.Interface (obj, PRINTING_IFACE)
+                path = iface.JobApplet ()
+                debugprint ("Job applet is %s" % path)
+            except dbus.DBusException, e:
+                try:
+                    print e
+                except:
+                    pass
+
+        # Don't run this timer again.
+        return False
 
 if __name__ == '__main__':
     import sys, getopt
@@ -359,12 +418,9 @@ if __name__ == '__main__':
         finally:
             sys.exit (1)
 
-    # Stop running when the session ends.
-    def monitor_session (*args):
-        pass
-
     try:
         session_bus = dbus.SessionBus()
+        # Stop running when the session ends.
         session_bus.add_signal_receiver (monitor_session)
     except:
         try:
@@ -373,97 +429,30 @@ if __name__ == '__main__':
         finally:
             sys.exit (1)
 
-    if system_bus and session_bus:
+    try:
+        NewPrinterNotification(system_bus, session_bus)
+    except:
         try:
-            NewPrinterNotification(system_bus, session_bus)
+            print >> sys.stderr, ("%s: failed to start "
+                                  "NewPrinterNotification service" %
+                                  PROGRAM_NAME)
         except:
-            try:
-                print >> sys.stderr, ("%s: failed to start "
-                                      "NewPrinterNotification service" %
-                                      PROGRAM_NAME)
-            except:
-                pass
-
-    if system_bus:
-        try:
-            cupshelpers.installdriver.set_debugprint_fn (debugprint)
-            cupshelpers.installdriver.PrinterDriversInstaller(system_bus)
-        except Exception, e:
-            try:
-                print >> sys.stderr, ("%s: failed to start "
-                                      "PrinterDriversInstaller service: "
-                                      "%s" % (PROGRAM_NAME, e))
-                pass
-            except:
-                pass
-
-    if get_debugging () == False:
-        # Start off just waiting for print jobs.
-        def any_jobs ():
-            try:
-                c = cups.Connection ()
-                jobs = c.getJobs (my_jobs=True, limit=1)
-                if len (jobs):
-                    return True
-            except:
-                pass
-
-            return False
-
-        if not any_jobs ():
-
-            ###
-            class WaitForJobs:
-                DBUS_PATH="/com/redhat/PrinterSpooler"
-                DBUS_IFACE="com.redhat.PrinterSpooler"
-
-                def __init__ (self, bus, waitloop):
-                    self.bus = bus
-                    self.waitloop = waitloop
-                    self.timer = None
-                    bus.add_signal_receiver (self.handle_dbus_signal,
-                                             path=self.DBUS_PATH,
-                                             dbus_interface=self.DBUS_IFACE)
-
-                def __del__ (self):
-                    bus = self.bus
-                    bus.remove_signal_receiver (self.handle_dbus_signal,
-                                                path=self.DBUS_PATH,
-                                                dbus_interface=self.DBUS_IFACE)
-                    if self.timer:
-                        gobject.source_remove (self.timer)
-
-                def handle_dbus_signal (self, *args):
-                    if self.timer:
-                        gobject.source_remove (self.timer)
-                    self.timer = gobject.timeout_add (200, self.check_for_jobs)
-
-                def check_for_jobs (self, *args):
-                    debugprint ("checking for jobs")
-                    if any_jobs ():
-                        gobject.source_remove (self.timer)
-                        self.waitloop.quit ()
-
-                    # Don't run this timer again.
-                    return False
-            ###
-
-            waitloop = gobject.MainLoop ()
-            jobwaiter = WaitForJobs(bus, waitloop)
-            waitloop.run()
-            del jobwaiter
-            waitloop = None
-
-    if viewer == None:
-        import jobviewer
-        import gtk
-        runloop = gobject.MainLoop ()
-        gtk.window_set_default_icon_name ('printer')
-        viewer = jobviewer.JobViewer(bus=system_bus, loop=runloop,
-                                     applet=True)
+            pass
 
     try:
-        runloop.run()
+        cupshelpers.installdriver.set_debugprint_fn (debugprint)
+        cupshelpers.installdriver.PrinterDriversInstaller(system_bus)
+    except Exception, e:
+        try:
+            print >> sys.stderr, ("%s: failed to start "
+                                  "PrinterDriversInstaller service: "
+                                  "%s" % (PROGRAM_NAME, e))
+        except:
+            pass
+
+    loop = gobject.MainLoop ()
+    runloop = RunLoop (session_bus, system_bus, loop)
+    try:
+        runloop.run ()
     except KeyboardInterrupt:
         pass
-    viewer.cleanup ()

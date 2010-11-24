@@ -329,7 +329,6 @@ class JobViewer (GtkGUI):
         self.state_reason_notifications = {}
         self.auth_info_dialogs = {} # by job ID
         self.job_creation_times_timer = None
-        self.special_status_icon = False
         self.new_printer_notifications = {}
         self.completed_job_notifications = {}
         self.authenticated_jobs = set() # of job IDs
@@ -523,9 +522,7 @@ class JobViewer (GtkGUI):
                                   127)
         if self.applet and not self.notify_has_persistence:
             self.statusicon = gtk.StatusIcon ()
-            pixbuf = load_icon (theme, ICON)
-            self.statusicon.set_from_pixbuf (pixbuf)
-            self.set_statusicon_from_pixbuf (self.icon_no_jobs)
+            self.statusicon.set_from_pixbuf (self.icon_no_jobs)
             self.statusicon.connect ('activate', self.toggle_window_display)
             self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
             self.statusicon.set_visible (False)
@@ -622,49 +619,6 @@ class JobViewer (GtkGUI):
 
     def set_process_pending (self, whether):
         self.process_pending_events = whether
-
-    # Handle "special" status icon
-    def set_special_statusicon (self, iconname, tooltip=None):
-        if self.notify_has_persistence:
-            return
-
-        self.special_status_icon = True
-        self.statusicon.set_from_icon_name (iconname)
-        self.set_statusicon_visibility ()
-        if tooltip != None:
-            self.set_statusicon_tooltip (tooltip=tooltip)
-
-    def unset_special_statusicon (self):
-        if self.notify_has_persistence:
-            return
-
-        self.special_status_icon = False
-        self.statusicon.set_from_pixbuf (self.saved_statusicon_pixbuf)
-        self.set_statusicon_visibility ()
-        self.set_statusicon_tooltip ()
-
-    def notify_new_printer (self, printer, notification):
-        self.new_printer_notifications[printer] = notification
-        notification.set_data ('printer-name', printer)
-        notification.connect ('closed', self.on_new_printer_notification_closed)
-        self.set_statusicon_visibility ()
-        if not self.notify_has_persistence:
-            notification.attach_to_status_icon (self.statusicon)
-
-        try:
-            notification.show ()
-        except gobject.GError:
-            nonfatalException ()
-
-    def on_new_printer_notification_closed (self, notification, reason=None):
-        printer = notification.get_data ('printer-name')
-        del self.new_printer_notifications[printer]
-        self.set_statusicon_visibility ()
-
-    def set_statusicon_from_pixbuf (self, pb):
-        self.saved_statusicon_pixbuf = pb
-        if not self.special_status_icon:
-            self.statusicon.set_from_pixbuf (pb)
 
     def on_delete_event(self, *args):
         if self.applet or not self.loop:
@@ -1120,8 +1074,7 @@ class JobViewer (GtkGUI):
         if self.notify_has_persistence:
             return
 
-        self.statusicon.set_visible (self.special_status_icon or
-                                     open_notifications > 0 or
+        self.statusicon.set_visible (open_notifications > 0 or
                                      num_jobs > self.num_jobs_when_hidden)
 
         # Let the icon show/hide itself before continuing.
@@ -1668,7 +1621,7 @@ class JobViewer (GtkGUI):
 
         if self.applet:
             pixbuf = self.get_icon_pixbuf (have_jobs=have_jobs)
-            self.set_statusicon_from_pixbuf (pixbuf)
+            self.statusicon.set_from_pixbuf (pixbuf)
             self.set_statusicon_visibility ()
             self.set_statusicon_tooltip (tooltip=tooltip)
 
