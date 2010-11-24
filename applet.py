@@ -87,7 +87,7 @@ class NewPrinterNotification(dbus.service.Object):
                 pass
             runloop = gobject.MainLoop ()
             viewer = jobviewer.JobViewer(bus=self.system_bus, loop=runloop,
-                                         applet=applet,
+                                         applet=True,
                                          suppress_icon_hide=True)
 
     @dbus.service.method(PDS_IFACE, in_signature='', out_signature='')
@@ -305,7 +305,7 @@ class NewPrinterNotification(dbus.service.Object):
 
 PROGRAM_NAME="system-config-printer-applet"
 def show_help ():
-    print "usage: %s [--no-tray-icon]" % PROGRAM_NAME
+    print "usage: %s [--help|--version|--debug]" % PROGRAM_NAME
 
 def show_version ():
     import config
@@ -317,7 +317,6 @@ def show_version ():
 
 global waitloop, runloop, viewer
 
-applet = True
 waitloop = runloop = None
 viewer = None
 
@@ -325,8 +324,7 @@ if __name__ == '__main__':
     import sys, getopt
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
-                                        ['no-tray-icon',
-                                         'debug',
+                                        ['debug',
                                          'help',
                                          'version'])
     except getopt.GetoptError:
@@ -340,8 +338,6 @@ if __name__ == '__main__':
         if opt == "--version":
             show_version ()
             sys.exit (0)
-        if opt == "--no-tray-icon":
-            applet = False
         elif opt == "--debug":
             set_debugging (True)
 
@@ -363,46 +359,45 @@ if __name__ == '__main__':
         finally:
             sys.exit (1)
 
-    if applet:
-        # Stop running when the session ends.
-        def monitor_session (*args):
-            pass
+    # Stop running when the session ends.
+    def monitor_session (*args):
+        pass
 
+    try:
+        session_bus = dbus.SessionBus()
+        session_bus.add_signal_receiver (monitor_session)
+    except:
         try:
-            session_bus = dbus.SessionBus()
-            session_bus.add_signal_receiver (monitor_session)
+            print >> sys.stderr, ("%s: failed to connect to "
+                                  "session D-Bus" % PROGRAM_NAME)
+        finally:
+            sys.exit (1)
+
+    if system_bus and session_bus:
+        try:
+            NewPrinterNotification(system_bus, session_bus)
         except:
             try:
-                print >> sys.stderr, ("%s: failed to connect to "
-                                      "session D-Bus" % PROGRAM_NAME)
-            finally:
-                sys.exit (1)
-
-        if system_bus and session_bus:
-            try:
-                NewPrinterNotification(system_bus, session_bus)
+                print >> sys.stderr, ("%s: failed to start "
+                                      "NewPrinterNotification service" %
+                                      PROGRAM_NAME)
             except:
-                try:
-                    print >> sys.stderr, ("%s: failed to start "
-                                          "NewPrinterNotification service" %
-                                          PROGRAM_NAME)
-                except:
-                    pass
+                pass
 
-        if system_bus:
+    if system_bus:
+        try:
+            cupshelpers.installdriver.set_debugprint_fn (debugprint)
+            cupshelpers.installdriver.PrinterDriversInstaller(system_bus)
+        except Exception, e:
             try:
-                cupshelpers.installdriver.set_debugprint_fn (debugprint)
-                cupshelpers.installdriver.PrinterDriversInstaller(system_bus)
-            except Exception, e:
-                try:
-                    print >> sys.stderr, ("%s: failed to start "
-                                          "PrinterDriversInstaller service: "
-                                          "%s" % (PROGRAM_NAME, e))
-                    pass
-                except:
-                    pass
+                print >> sys.stderr, ("%s: failed to start "
+                                      "PrinterDriversInstaller service: "
+                                      "%s" % (PROGRAM_NAME, e))
+                pass
+            except:
+                pass
 
-    if applet and get_debugging () == False:
+    if get_debugging () == False:
         # Start off just waiting for print jobs.
         def any_jobs ():
             try:
@@ -465,7 +460,7 @@ if __name__ == '__main__':
         runloop = gobject.MainLoop ()
         gtk.window_set_default_icon_name ('printer')
         viewer = jobviewer.JobViewer(bus=system_bus, loop=runloop,
-                                     applet=applet)
+                                     applet=True)
 
     try:
         runloop.run()

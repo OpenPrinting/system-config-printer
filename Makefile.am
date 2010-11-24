@@ -212,8 +212,7 @@ dbusservicesdir = $(datadir)/dbus-1/services/
 
 desktop_DATA =\
 	system-config-printer.desktop \
-	print-applet.desktop \
-	manage-print-jobs.desktop
+	print-applet.desktop
 desktopdir = $(datadir)/applications/
 autostartdir = $(sysconfdir)/xdg/autostart/
 
@@ -232,12 +231,6 @@ install-desktopDATA: $(desktop_DATA)
 	  --add-category GTK			\
 	  system-config-printer.desktop
 	desktop-file-install $(DESKTOP_VENDOR)	\
-	  --dir $(DESTDIR)$(desktopdir)		\
-	  --add-category System			\
-	  --add-category Monitor		\
-	  --add-category GTK			\
-	  manage-print-jobs.desktop
-	desktop-file-install $(DESKTOP_VENDOR)	\
 	  --dir $(DESTDIR)$(autostartdir)	\
 	  --add-category System			\
 	  --add-category Monitor		\
@@ -246,7 +239,6 @@ install-desktopDATA: $(desktop_DATA)
 
 uninstall-desktopDATA:
 	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)system-config-printer.desktop
-	rm -f $(DESTDIR)$(desktopdir)/$(DESKTOP_PREFIX)manage-print-jobs.desktop
 	rm -f $(DESTDIR)$(autostartdir)/$(DESKTOP_PREFIX)print-applet.desktop
 
 desktop_in_files = $(desktop_DATA:.desktop=.desktop.in)
