@@ -163,6 +163,7 @@ class ConfigPrintingPrinterPropertiesDialog(dbus.service.Object):
     @dbus.service.method(dbus_interface=CONFIG_PRINTERPROPERTIESDIALOG_IFACE,
                          in_signature='', out_signature='')
     def PrintTestPage (self):
+        debugprint ("Printing test page")
         return self.dialog.printTestPage ()
 
     @dbus.service.signal(dbus_interface=CONFIG_PRINTERPROPERTIESDIALOG_IFACE,

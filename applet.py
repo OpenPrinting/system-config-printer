@@ -55,7 +55,8 @@ pynotify.init('System Config Printer Notification')
 PRINTING_BUS="org.fedoraproject.Config.Printing"
 PRINTING_PATH="/org/fedoraproject/Config/Printing"
 PRINTING_IFACE="org.fedoraproject.Config.Printing"
-NEWPRINTERDIALOG_IFACE="org.fedoraproject.Config.Printing.NewPrinterDialog"
+NEWPRINTERDIALOG_IFACE=PRINTING_IFACE + ".NewPrinterDialog"
+PRINTERPROPERTIESDIALOG_IFACE=PRINTING_IFACE + ".PrinterPropertiesDialog"
 
 ####
 #### NewPrinterNotification DBus server (the 'new' way).
@@ -198,7 +199,7 @@ class NewPrinterNotification(dbus.service.Object):
                     n.set_urgency (pynotify.URGENCY_NORMAL)
                     n.add_action ("test-page", _("Print test page"),
                                   lambda x, y:
-                                      self.print_test_page (x, y, name, devid))
+                                      self.print_test_page (x, y, name))
                     n.add_action ("configure", _("Configure"),
                                   lambda x, y: self.configure (x, y, name))
             else: # Model mismatch
@@ -236,18 +237,16 @@ class NewPrinterNotification(dbus.service.Object):
         else:
             gobject.timeout_add_seconds (60, self.collect_exit_code, pid)
 
-    def print_test_page (self, notification, action, name, devid = ""):
-        args = ["--print-test-page", name]
-        if devid != "":
-            args.extend (["--devid", devid])
-        self.run_config_tool (args)
+    def print_test_page (self, notification, action, name):
+        path = self.configure (None, None, name)
+        obj = self.session_bus.get_object (PRINTING_BUS, path)
+        iface = dbus.Interface (obj, PRINTERPROPERTIESDIALOG_IFACE)
+        iface.PrintTestPage ()
 
     def configure (self, notification, action, name):
         obj = self.session_bus.get_object (PRINTING_BUS, PRINTING_PATH)
         iface = dbus.Interface (obj, PRINTING_IFACE)
-        iface.PrinterPropertiesDialog (dbus.UInt32(0), name,
-                                       reply_handler=self.ignore_dbus_replies,
-                                       error_handler=self.ignore_dbus_replies)
+        return iface.PrinterPropertiesDialog (dbus.UInt32(0), name)
 
     def get_newprinterdialog_interface (self):
         obj = self.session_bus.get_object (PRINTING_BUS, PRINTING_PATH)

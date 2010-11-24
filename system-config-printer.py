@@ -46,12 +46,6 @@ def show_help():
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n\n"
            "Options:\n\n"
-           "  --print-test-page NAME\n"
-           "            Select the named printer on start-up and print a\n"
-           "            test page to it.\n\n"
-           "  --no-focus-on-map\n"
-           "            Do not focus the main window, to prevent focus \n"
-           "            stealing\n\n"
            "  --debug   Enable debugging output.\n")
 
 if len(sys.argv)>1 and sys.argv[1] == '--help':
@@ -145,9 +139,7 @@ class GUI(GtkGUI):
     DESTS_PAGE_NO_PRINTERS=1
     DESTS_PAGE_NO_SERVICE=2
 
-    def __init__(self, configure_printer = None,
-                 devid = "", print_test_page = False,
-                 focus_on_map = True):
+    def __init__(self):
 
         try:
             self.language = locale.getlocale(locale.LC_MESSAGES)
@@ -166,8 +158,6 @@ class GUI(GtkGUI):
 
         self.servers = set((self.connect_server,))
         self.server_is_publishing = None # not known
-        self.devid = devid
-        self.focus_on_map = focus_on_map
         self.changed = set() # of options
 
         # WIDGETS
@@ -526,15 +516,6 @@ class GUI(GtkGUI):
             self.PrintersWindow.set_default_size (550, 400)
 
         self.PrintersWindow.show()
-
-        if configure_printer:
-            # Need to find the entry in the iconview model and activate it.
-            try:
-                self.display_properties_dialog_for (configure_printer)
-                if print_test_page:
-                    self.propertiesDlg.btnPrintTestPage.clicked ()
-            except RuntimeError:
-                pass
 
     def display_properties_dialog_for (self, queue):
         model = self.dests_iconview.get_model ()
@@ -2111,15 +2092,14 @@ class GUI(GtkGUI):
             self.populateList (prompt_allowed=False)
 
 
-def main(configure_printer = None,
-         devid = "", print_test_page = False, focus_on_map = True):
+def main():
     cups.setUser (os.environ.get ("CUPS_USER", cups.getUser()))
     gtk.gdk.threads_init ()
     gobject.threads_init()
     from dbus.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
 
-    mainwindow = GUI(configure_printer, devid, print_test_page, focus_on_map)
+    mainwindow = GUI()
 
     if gtk.__dict__.has_key("main"):
         gtk.main()
@@ -2131,32 +2111,14 @@ if __name__ == "__main__":
     import getopt
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
-                                        ['setup-printer=',
-                                         'devid=',
-                                         'print-test-page=',
-                                         'no-focus-on-map',
-                                         'debug'])
+                                        ['debug'])
     except getopt.GetoptError:
         show_help ()
         sys.exit (1)
 
-    configure_printer = None
-    print_test_page = False
-    focus_on_map = True
-    devid = ""
     for opt, optarg in opts:
-        if opt == "--print-test-page":
-            configure_printer = optarg
-            print_test_page = True
-
-        elif opt == '--devid':
-            devid = optarg
-
-        elif opt == '--no-focus-on-map':
-            focus_on_map = False
-
-        elif opt == '--debug':
+        if opt == '--debug':
             set_debugging (True)
             cupshelpers.ppds.set_debugprint_fn (debugprint)
 
-    main(configure_printer, devid, print_test_page, focus_on_map)
+    main()
