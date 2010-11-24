@@ -1020,6 +1020,9 @@ class PrinterPropertiesDialog(GtkGUI):
 
     # print test page
 
+    def printTestPage (self):
+        self.btnPrintTestPage.clicked ()
+
     def on_btnPrintTestPage_clicked(self, button):
         if self.ppd == False:
             # Can't print a test page for a raw queue.

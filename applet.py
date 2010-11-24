@@ -216,8 +216,7 @@ class NewPrinterNotification(dbus.service.Object):
                                   self.find_driver (x, y, name, devid))
                     n.set_timeout (pynotify.EXPIRES_NEVER)
                 else:
-                    self.run_config_tool (["--configure-printer",
-                                           name, "--no-focus-on-map"])
+                    self.configure (None, None, name)
 
         self.timeout_ready ()
         n.show ()
@@ -244,7 +243,11 @@ class NewPrinterNotification(dbus.service.Object):
         self.run_config_tool (args)
 
     def configure (self, notification, action, name):
-        self.run_config_tool (["--configure-printer", name])
+        obj = self.session_bus.get_object (PRINTING_BUS, PRINTING_PATH)
+        iface = dbus.Interface (obj, PRINTING_IFACE)
+        iface.PrinterPropertiesDialog (dbus.UInt32(0), name,
+                                       reply_handler=self.ignore_dbus_replies,
+                                       error_handler=self.ignore_dbus_replies)
 
     def get_newprinterdialog_interface (self):
         obj = self.session_bus.get_object (PRINTING_BUS, PRINTING_PATH)

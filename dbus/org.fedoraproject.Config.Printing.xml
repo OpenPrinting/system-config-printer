@@ -35,6 +35,38 @@
       </arg>
     </method>
 
+    <method name="PrinterPropertiesDialog">
+      <doc:doc>
+	<doc:description>
+	  <doc:para>
+	    Create a Printer Properties dialog object.
+	  </doc:para>
+	</doc:description>
+      </doc:doc>
+
+      <arg name="name" type="s" direction="in">
+	<doc:doc>
+	  <doc:summary>
+	    <doc:para>
+	      Name of queue to create properties dialog for.
+	    </doc:para>
+	  </doc:summary>
+	</doc:doc>
+      </arg>
+
+      <arg name="path" type="s" direction="out">
+	<doc:doc>
+	  <doc:summary>
+	    <doc:para>
+	      Path of D-Bus object representing dialog.  This object
+	      supports the interface
+	      org.fedoraproject.Config.Printing.PrinterPropertiesDialog.
+	    </doc:para>
+	  </doc:summary>
+	</doc:doc>
+      </arg>
+    </method>
+
     <method name="JobApplet">
       <doc:doc>
 	<doc:description>
@@ -172,6 +204,29 @@
 	</doc:doc>
       </arg>
     </signal>
+  </interface>
+
+  <interface name="org.fedoraproject.Config.Printing.PrinterPropertiesDialog">
+    <doc:doc>
+      <doc:description>
+	<doc:para>
+	  This interface is for interacting with the printer properties
+	  dialog.
+	</doc:para>
+      </doc:description>
+    </doc:doc>
+
+    <method name="PrintTestPage">
+      <doc:doc>
+	<doc:description>
+	  <doc:para>
+	    Attempt to print a test page.
+	  </doc:para>
+	</doc:description>
+      </doc:doc>
+    </method>
+
+    <signal name="Finished"/>
   </interface>
 
   <interface name="org.fedoraproject.Config.Printing.JobApplet">

@@ -46,9 +46,6 @@ def show_help():
     print ("\nThis is system-config-printer, " \
            "a CUPS server configuration program.\n\n"
            "Options:\n\n"
-           "  --configure-printer NAME\n"
-           "            Select the named printer on start-up, and open its\n"
-           "            properties dialog.\n\n"
            "  --print-test-page NAME\n"
            "            Select the named printer on start-up and print a\n"
            "            test page to it.\n\n"
@@ -2135,7 +2132,6 @@ if __name__ == "__main__":
     try:
         opts, args = getopt.gnu_getopt (sys.argv[1:], '',
                                         ['setup-printer=',
-                                         'configure-printer=',
                                          'devid=',
                                          'print-test-page=',
                                          'no-focus-on-map',
@@ -2149,11 +2145,9 @@ if __name__ == "__main__":
     focus_on_map = True
     devid = ""
     for opt, optarg in opts:
-        if (opt == "--configure-printer" or
-            opt == "--print-test-page"):
+        if opt == "--print-test-page":
             configure_printer = optarg
-            if opt == "--print-test-page":
-                print_test_page = True
+            print_test_page = True
 
         elif opt == '--devid':
             devid = optarg

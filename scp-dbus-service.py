@@ -29,11 +29,13 @@ import asyncconn
 import jobviewer
 import newprinter
 import ppdcache
+import printerproperties
 
 CONFIG_BUS='org.fedoraproject.Config.Printing'
 CONFIG_PATH='/org/fedoraproject/Config/Printing'
 CONFIG_IFACE='org.fedoraproject.Config.Printing'
 CONFIG_NEWPRINTERDIALOG_IFACE=CONFIG_IFACE + ".NewPrinterDialog"
+CONFIG_PRINTERPROPERTIESDIALOG_IFACE=CONFIG_IFACE + ".PrinterPropertiesDialog"
 CONFIG_JOBVIEWER_IFACE=CONFIG_IFACE + ".JobViewer"
 
 class KillTimer:
@@ -145,6 +147,36 @@ class ConfigPrintingNewPrinterDialog(dbus.service.Object):
         for handle in self.handles:
             self.dialog.disconnect (handle)
 
+class ConfigPrintingPrinterPropertiesDialog(dbus.service.Object):
+    def __init__ (self, bus, path, xid, name, killtimer):
+        bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
+        dbus.service.Object.__init__ (self, bus_name=bus_name, object_path=path)
+        self.dialog = printerproperties.PrinterPropertiesDialog ()
+        self.dialog.dialog.set_modal (False)
+        handle = self.dialog.connect ('dialog-closed', self.on_dialog_closed)
+        self.closed_handle = handle
+        self.dialog.show (name)
+        self.dialog.dialog.set_modal (False)
+        self._killtimer = killtimer
+        killtimer.add_hold ()
+
+    @dbus.service.method(dbus_interface=CONFIG_PRINTERPROPERTIESDIALOG_IFACE,
+                         in_signature='', out_signature='')
+    def PrintTestPage (self):
+        return self.dialog.printTestPage ()
+
+    @dbus.service.signal(dbus_interface=CONFIG_PRINTERPROPERTIESDIALOG_IFACE,
+                         signature='')
+    def Finished (self):
+        pass
+
+    def on_dialog_closed (self, dialog):
+        dialog.destroy ()
+        self._killtimer.remove_hold ()
+        self.Finished ()
+        self.dialog.disconnect (self.closed_handle)
+        self.remove_from_connection ()
+
 class ConfigPrintingJobApplet(dbus.service.Object):
     def __init__ (self, bus, path, killtimer):
         bus_name = dbus.service.BusName (CONFIG_BUS, bus=bus)
@@ -200,6 +232,16 @@ class ConfigPrinting(dbus.service.Object):
         ConfigPrintingNewPrinterDialog (self.bus, path,
                                         self._cupsconn,
                                         killtimer=self._killtimer)
+        self._killtimer.alive ()
+        return path
+
+    @dbus.service.method(dbus_interface=CONFIG_IFACE,
+                         in_signature='us', out_signature='s')
+    def PrinterPropertiesDialog(self, xid, name):
+        self._pathn += 1
+        path = "%s/PrinterPropertiesDialog%s" % (CONFIG_PATH, self._pathn)
+        ConfigPrintingPrinterPropertiesDialog (self.bus, path, xid, name,
+                                               killtimer=self._killtimer)
         self._killtimer.alive ()
         return path
 
