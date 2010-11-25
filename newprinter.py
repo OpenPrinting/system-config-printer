@@ -505,8 +505,8 @@ class NewPrinterGUI(GtkGUI):
         self.emit ('destroy')
 
     def init(self, dialog_mode, device_uri=None, name=None, ppd=None,
-             devid="", host=None, encryption=None, parent=None, xid=None):
-        if xid != None and xid != 0:
+             devid="", host=None, encryption=None, parent=None, xid=0):
+        if xid != 0:
             display = gtk.gdk.display_get_default ()
             parent = gtk.gdk.window_foreign_new_for_display (display, xid)
             debugprint ("Parent is %s" % parent)
@@ -572,10 +572,6 @@ class NewPrinterGUI(GtkGUI):
         self.btnNPDownloadableDriverSearch_label = label
         label.set_text (_("Search"))
 
-        self.NewPrinterWindow.show_now()
-        if xid and self.parent:
-            self.NewPrinterWindow.window.set_transient_for (self.parent)
-
         if self.dialog_mode in ("printer", "printer_with_uri", "class"):
             if self.dialog_mode == "class":
                 name_proto = "class"
@@ -595,6 +591,10 @@ class NewPrinterGUI(GtkGUI):
 
         self.entNPTJetDirectPort.set_text('9100')
         self.rbtnSMBAuthPrompt.set_active(True)
+
+        if xid != 0 and self.parent:
+            self.NewPrinterWindow.show_now()
+            self.NewPrinterWindow.window.set_transient_for (self.parent)
 
         if self.dialog_mode == "printer":
             self.NewPrinterWindow.set_title(_("New Printer"))
@@ -663,10 +663,10 @@ class NewPrinterGUI(GtkGUI):
             self.auto_model = ""
             self.auto_driver = None
 
-        if self.parent and not xid:
-            self.NewPrinterWindow.set_transient_for (self.parent)
+        if xid == 0 and self.parent:
+            self.NewPrinterWindow.set_transient_for (parent)
 
-        self.NewPrinterWindow.show ()
+        self.NewPrinterWindow.show()
         self.setNPButtons()
 
     def on_ppdsloader_finished_initial (self, ppdsloader):
