@@ -45,9 +45,6 @@ APPDIR="/usr/share/system-config-printer"
 DOMAIN="system-config-printer"
 ICON="printer"
 
-# Let gobject know we'll be using threads.
-gobject.threads_init ()
-
 # We need to call pynotify.init before we can check the server for caps
 pynotify.init('System Config Printer Notification')
 
@@ -222,20 +219,6 @@ class NewPrinterNotification(dbus.service.Object):
         self.timeout_ready ()
         n.show ()
         self.notification = n
-
-    def run_config_tool (self, argv):
-        import os
-        pid = os.fork ()
-        if pid == 0:
-            # Child.
-            cmd = "/usr/bin/system-config-printer"
-            argv.insert (0, cmd)
-            os.execvp (cmd, argv)
-            sys.exit (1)
-        elif pid == -1:
-            print "Error forking process"
-        else:
-            gobject.timeout_add_seconds (60, self.collect_exit_code, pid)
 
     def print_test_page (self, notification, action, name):
         path = self.configure (None, None, name)
