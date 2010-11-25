@@ -229,7 +229,7 @@ class ConfigPrinting(dbus.service.Object):
                          in_signature='', out_signature='s')
     def NewPrinterDialog(self):
         self._pathn += 1
-        path = "%s/NewPrinterDialog%s" % (CONFIG_PATH, self._pathn)
+        path = "%s/NewPrinterDialog/%s" % (CONFIG_PATH, self._pathn)
         ConfigPrintingNewPrinterDialog (self.bus, path,
                                         self._cupsconn,
                                         killtimer=self._killtimer)
@@ -240,7 +240,7 @@ class ConfigPrinting(dbus.service.Object):
                          in_signature='us', out_signature='s')
     def PrinterPropertiesDialog(self, xid, name):
         self._pathn += 1
-        path = "%s/PrinterPropertiesDialog%s" % (CONFIG_PATH, self._pathn)
+        path = "%s/PrinterPropertiesDialog/%s" % (CONFIG_PATH, self._pathn)
         ConfigPrintingPrinterPropertiesDialog (self.bus, path, xid, name,
                                                killtimer=self._killtimer)
         self._killtimer.alive ()
@@ -251,7 +251,7 @@ class ConfigPrinting(dbus.service.Object):
     def JobApplet(self):
        if self._jobapplet == None or self._jobapplet.has_finished:
             self._pathn += 1
-            path = "%s/JobApplet%s" % (CONFIG_PATH, self._pathn)
+            path = "%s/JobApplet/%s" % (CONFIG_PATH, self._pathn)
             self._jobapplet = ConfigPrintingJobApplet (self.bus, path,
                                                        self._killtimer)
             self._jobappletpath = path
