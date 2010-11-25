@@ -2995,7 +2995,8 @@ class NewPrinterGUI(GtkGUI):
             devid = None
 
         if (self.device and self.device.make_and_model and
-            self.recommended_model_selected):
+            self.recommended_model_selected and
+            self.id_matched_ppdnames):
             # Use the actual device-make-and-model string.
             make_and_model = self.device.make_and_model
 
