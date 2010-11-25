@@ -85,6 +85,7 @@ clean-local:
 nobase_pkgdata_SCRIPTS=				\
 	check-device-ids.py			\
 	pysmb.py				\
+	scp-dbus-service.py			\
 	system-config-printer.py		\
 	troubleshoot/__init__.py		\
 	applet.py
@@ -119,7 +120,6 @@ nobase_pkgdata_DATA=					\
 	printerproperties.py				\
 	probe_printer.py				\
 	gtk_label_autowrap.py				\
-	scp-dbus-service.py				\
 	SearchCriterion.py				\
 	serversettings.py				\
 	smburi.py					\
