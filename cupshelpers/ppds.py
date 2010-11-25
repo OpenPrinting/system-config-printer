@@ -254,11 +254,11 @@ DRIVER_TYPE_VENDOR = 10
 DRIVER_TYPE_FOOMATIC_RECOMMENDED_POSTSCRIPT = 15
 DRIVER_TYPE_HPCUPS = 16
 DRIVER_TYPE_FOOMATIC_HPIJS_ON_HP = 17
-DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED = 20
-DRIVER_TYPE_GUTENPRINT_NATIVE = 25
 DRIVER_TYPE_SPLIX = 27
 DRIVER_TYPE_FOOMATIC_PS = 30
 DRIVER_TYPE_FOOMATIC_HPIJS = 40
+DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED = 42
+DRIVER_TYPE_GUTENPRINT_NATIVE = 45
 DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 50
 DRIVER_TYPE_FOOMATIC_GUTENPRINT = 60
 DRIVER_TYPE_FOOMATIC = 70
@@ -313,12 +313,17 @@ def _getDriverType (ppdname, ppds=None):
                 return DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED
             return DRIVER_TYPE_FOOMATIC_GUTENPRINT
         return DRIVER_TYPE_FOOMATIC
-    if ppdname.find ("gutenprint") != -1:
+    if ppdname.startswith ("gutenprint"):
         if (ppdname.find ("/simple") != -1 or
             ppdname.find (".sim-") != -1):
             return DRIVER_TYPE_GUTENPRINT_NATIVE_SIMPLIFIED
         else:
             return DRIVER_TYPE_GUTENPRINT_NATIVE
+    if ppdname.startswith ("ijsgutenprint"):
+        if ppdname.find ("-simplified") != -1:
+            return DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED
+        else:
+            return DRIVER_TYPE_FOOMATIC_GUTENPRINT
     if ppdname.find ("-hpijs") != -1:
         if ppdname.find ("hpijs-rss") == -1:
             return DRIVER_TYPE_FOOMATIC_HPIJS
