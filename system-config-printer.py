@@ -201,10 +201,6 @@ class GUI(GtkGUI):
                         domain=config.PACKAGE)
 
 
-        # Ensure the default PrintersWindow is shown despite
-        # the --no-focus-on-map option
-        self.PrintersWindow.set_focus_on_map (self.focus_on_map)
-
         # Since some dialogs are reused we can't let the delete-event's
         # default handler destroy them
         self.ConnectingDialog.connect ("delete-event",
@@ -769,7 +765,6 @@ class GUI(GtkGUI):
 
         host = CUPS_server_hostname ()
         self.PrintersWindow.set_title(_("Printing - %s") % host)
-        self.PrintersWindow.set_focus_on_map (self.focus_on_map)
 
         if connected:
             status_msg = _("Connected to %s") % host
