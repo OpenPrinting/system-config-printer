@@ -1214,7 +1214,11 @@ def _self_test(argv):
         # Generic models
         ("MFG:New;MDL:Unknown PS Printer;CMD:POSTSCRIPT;",
          2, "Generic postscript printer"),
-        ("MFG:New;MDL:Unknown PCL6 Printer;CMD:PCLXL;", 2, "Generic PCL 6"),
+        # Make sure pxlcolor is used for PCLXL.  The gutenprint driver
+        # is black and white, and pxlcolor is the foomatic-recommended
+        # generic driver for "Generic PCL 6/PCL XL Printer".
+        ("MFG:New;MDL:Unknown PCL6 Printer;CMD:PCLXL;", 2,
+         "Generic PCL 6.*pxlcolor"),
         ("MFG:New;MDL:Unknown PCL5e Printer;CMD:PCL5e;", 2, "Generic PCL 5e"),
         ("MFG:New;MDL:Unknown PCL5c Printer;CMD:PCL5c;", 2, "Generic PCL 5c"),
         ("MFG:New;MDL:Unknown PCL5 Printer;CMD:PCL5;", 2, "Generic PCL 5"),
