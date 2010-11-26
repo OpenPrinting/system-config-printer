@@ -101,7 +101,7 @@
     </drivertype>
 
     <drivertype name="foomatic-recommended-postscript">
-      <ppdname match="foomatic:"/>
+      <ppdname match="foomatic(-db-compressed-ppds)?:"/>
       <attribute name="ppd-make-and-model" match=".* Postscript"/>
       <deviceid>
 	<field name="DRV" match=".*,?R1"/>
@@ -109,22 +109,22 @@
     </drivertype>
 
     <drivertype name="foomatic-postscript">
-      <ppdname match="foomatic:.*-Postscript"/>
+      <ppdname match="foomatic(-db-compressed-ppds)?:.*-Postscript"/>
     </drivertype>
 
     <drivertype name="foomatic-recommended-non-postscript">
-      <ppdname match="foomatic:"/>
+      <ppdname match="foomatic(-db-compressed-ppds)?:"/>
       <deviceid>
 	<field name="DRV" match=".*,?R1"/>
       </deviceid>
     </drivertype>
 
     <drivertype name="foomatic-gutenprint">
-      <ppdname match="foomatic:.*-gutenprint"/>
+      <ppdname match="foomatic(-db-compressed-ppds)?:.*-gutenprint"/>
     </drivertype>
 
     <drivertype name="foomatic">
-      <ppdname match="foomatic:"/>
+      <ppdname match="foomatic(-db-compressed-ppds)?:"/>
     </drivertype>
 
     <drivertype name="hpcups-plugin">
