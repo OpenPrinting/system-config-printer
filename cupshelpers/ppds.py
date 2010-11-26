@@ -263,7 +263,6 @@ DRIVER_TYPE_FOOMATIC_GUTENPRINT_SIMPLIFIED = 50
 DRIVER_TYPE_FOOMATIC_GUTENPRINT = 60
 DRIVER_TYPE_FOOMATIC = 70
 DRIVER_TYPE_CUPS = 80
-DRIVER_TYPE_FOOMATIC_GENERIC = 90
 DRIVER_TYPE_3RD_PARTY_NONFREE = 95
 DRIVER_DOES_NOT_WORK = 999
 def _getDriverType (ppdname, ppds=None):
@@ -284,8 +283,6 @@ def _getDriverType (ppdname, ppds=None):
         return DRIVER_TYPE_CUPS
     if ppdname.startswith ("foomatic") and ppdname.find (":") != -1:
         # Foomatic (generated) -- but which driver?
-        if ppdname.find ("Generic")!= -1:
-            return DRIVER_TYPE_FOOMATIC_GENERIC
         if ppds != None:
             info = ppds.getInfoFromPPDName (ppdname)
             device_id = _singleton (info.get ('ppd-device-id', ''))
