@@ -580,7 +580,8 @@ class PPDs:
 
             generic = self._getPPDNameFromCommandSet (commandsets)
             if generic:
-                fit[generic[0]] = self.FIT_GENERIC
+                for driver in generic:
+                    fit[driver] = self.FIT_GENERIC
 
         # What about the CMD field of the Device ID?  Some devices
         # have optional units for page description languages, such as
