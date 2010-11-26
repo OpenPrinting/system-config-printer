@@ -2,6 +2,16 @@
 <preferreddrivers>
   <drivertypes>
     <!-- GENERIC DRIVERS -->
+    <drivertype name="generic-foomatic-recommended">
+      <ppdname match="foomatic(-db-compressed-ppds)?:"/>
+      <deviceid>
+	<field name="DRV" match=".*,?R1"/>
+      </deviceid>
+      <fit>
+	generic
+      </fit>
+    </drivertype>
+
     <drivertype name="generic-escp">
       <ppdname match="foomatic(-db-compressed-ppds)?:Generic-ESC_P"/>
       <fit>
@@ -246,6 +256,7 @@
 
 	<!-- Generic drivers listed last, in this order -->
 	<drivertype>generic-postscript</drivertype>
+	<drivertype>generic-foomatic-recommended</drivertype>
 	<drivertype>generic-pcl6</drivertype>
 	<drivertype>generic-pcl5c</drivertype>
 	<drivertype>generic-pcl5e</drivertype>
