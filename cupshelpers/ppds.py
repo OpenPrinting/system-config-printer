@@ -282,7 +282,7 @@ def _getDriverType (ppdname, ppds=None):
     if (ppdname.find (":") == -1 and
         ppdname.find ("/cups-included/") != -1):
         return DRIVER_TYPE_CUPS
-    if ppdname.startswith ("foomatic:"):
+    if ppdname.startswith ("foomatic") and ppdname.find (":") != -1:
         # Foomatic (generated) -- but which driver?
         if ppdname.find ("Generic")!= -1:
             return DRIVER_TYPE_FOOMATIC_GENERIC
