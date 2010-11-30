@@ -398,7 +398,6 @@ class GUI(GtkGUI):
 
         self.status_context_id = self.statusbarMain.get_context_id(
             "Connection")
-        self.setConnected()
 
         # Setup search and printer groups
         self.setup_toolbar_for_search_entry ()
@@ -775,6 +774,9 @@ class GUI(GtkGUI):
             action.set_sensitive (connected)
 
         if connected:
+            if self.monitor:
+                self.monitor.cleanup ()
+
             self.monitor = monitor.Monitor (monitor_jobs=False,
                                             host=self.connect_server,
                                             encryption=self.connect_encrypt)
@@ -785,12 +787,6 @@ class GUI(GtkGUI):
                                   self.cups_connection_error)
             self.monitor.refresh ()
             self.propertiesDlg.set_monitor (self.monitor)
-        else:
-            if self.monitor:
-                self.propertiesDlg.set_monitor (None)
-                self.monitor.cleanup ()
-
-            self.monitor = None
 
     def getServers(self):
         self.servers.discard(None)
@@ -1331,7 +1327,9 @@ class GUI(GtkGUI):
     # Quit
 
     def on_quit_activate(self, widget, event=None):
-        self.monitor.cleanup ()
+        if self.monitor:
+            self.monitor.cleanup ()
+
         while len (self.jobviewers) > 0:
             # this will call on_jobviewer_exit
             self.jobviewers[0].on_delete_event ()
