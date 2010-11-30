@@ -478,6 +478,9 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def set_monitor (self, monitor):
         self._monitor = monitor
+        if not monitor:
+            return
+
         self._monitor.connect ('printer-event', self.on_printer_event)
         self._monitor.connect ('printer-removed', self.on_printer_removed)
         self._monitor.connect ('state-reason-added', self.on_state_reason_added)

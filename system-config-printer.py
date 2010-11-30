@@ -155,6 +155,7 @@ class GUI(GtkGUI):
         self.connect_server = cups.getServer()
         self.connect_encrypt = cups.getEncryption ()
         self.connect_user = cups.getUser()
+        self.monitor = None
 
         self.servers = set((self.connect_server,))
         self.server_is_publishing = None # not known
@@ -490,23 +491,14 @@ class GUI(GtkGUI):
         # Printer Properties dialog
         self.propertiesDlg = printerproperties.PrinterPropertiesDialog ()
 
-        self.monitor = monitor.Monitor (monitor_jobs=False)
-        self.monitor.connect ('printer-added', self.printer_added)
-        self.monitor.connect ('printer-event', self.printer_event)
-        self.monitor.connect ('printer-removed', self.printer_removed)
-        self.monitor.connect ('cups-connection-error',
-                              self.cups_connection_error)
-        self.monitor.refresh ()
-
-        self.propertiesDlg.set_monitor (self.monitor)
-
         try:
             self.populateList()
         except cups.HTTPError, (s,):
             self.cups = None
-            self.setConnected()
             self.populateList()
             show_HTTP_Error(s, self.PrintersWindow)
+
+        self.setConnected()
 
         if len (self.printers) > 3:
             self.PrintersWindow.set_default_size (550, 400)
@@ -781,6 +773,24 @@ class GUI(GtkGUI):
                             "/new-class"]:
             action = self.ui_manager.get_action (action_name)
             action.set_sensitive (connected)
+
+        if connected:
+            self.monitor = monitor.Monitor (monitor_jobs=False,
+                                            host=self.connect_server,
+                                            encryption=self.connect_encrypt)
+            self.monitor.connect ('printer-added', self.printer_added)
+            self.monitor.connect ('printer-event', self.printer_event)
+            self.monitor.connect ('printer-removed', self.printer_removed)
+            self.monitor.connect ('cups-connection-error',
+                                  self.cups_connection_error)
+            self.monitor.refresh ()
+            self.propertiesDlg.set_monitor (self.monitor)
+        else:
+            if self.monitor:
+                self.propertiesDlg.set_monitor (None)
+                self.monitor.cleanup ()
+
+            self.monitor = None
 
     def getServers(self):
         self.servers.discard(None)
