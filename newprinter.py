@@ -627,6 +627,7 @@ class NewPrinterGUI(GtkGUI):
                 devid = None
 
             self.current_devices = {}
+            self.devices_fetched = False
 
             # We'll need the list of PPDs.
             self.ppdsloader = ppdsloader.PPDsLoader (device_id=devid,
@@ -684,8 +685,9 @@ class NewPrinterGUI(GtkGUI):
 
         if (self.dialog_mode != "ppd" or
             self.devid or
-            self.current_devices != None):
+            self.devices_fetched):
             # Device fetch has finished too.
+            debugprint ("Device fetch has finished too")
             self.change_ppd_have_ppds_and_devs ()
 
     def change_ppd_got_devs (self, conn, result):
@@ -698,6 +700,7 @@ class NewPrinterGUI(GtkGUI):
         else:
             self.current_devices = result
 
+        self.devices_fetched = True
         if not self.ppdsloader:
             # PPDs loader has finished too.
             self.change_ppd_have_ppds_and_devs ()
