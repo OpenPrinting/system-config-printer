@@ -1673,9 +1673,6 @@ class JobViewer (GtkGUI):
                               self.on_state_reason_notification_closed)
         self.state_reason_notifications[reason.get_tuple ()] = notification
         self.set_statusicon_visibility ()
-        if not self.notify_has_persistence:
-            notification.attach_to_status_icon (self.statusicon)
-
         try:
             notification.show ()
         except gobject.GError:
@@ -1731,9 +1728,6 @@ class JobViewer (GtkGUI):
         notification.set_data ('jobid', jobid)
         self.completed_job_notifications[jobid] = notification
         self.set_statusicon_visibility ()
-        if not self.notify_has_persistence:
-            notification.attach_to_status_icon (self.statusicon)
-
         try:
             notification.show ()
         except gobject.GError:
