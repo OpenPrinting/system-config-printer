@@ -217,6 +217,7 @@ class GUI(GtkGUI, monitor.Watcher):
                                or cups.getServer()
         self.connect_encrypt = cups.getEncryption ()
         self.connect_user = cups.getUser()
+        self.monitor = None
 
         self.changed = set() # of options
 
@@ -955,15 +956,14 @@ class GUI(GtkGUI, monitor.Watcher):
             self.job_options_widgets[option.widget] = option
             self.job_options_buttons[option.button] = option
 
-        self.monitor = monitor.Monitor (self, monitor_jobs=False)
-
         try:
             self.populateList()
         except cups.HTTPError, (s,):
             self.cups = None
-            self.setConnected()
             self.populateList()
             show_HTTP_Error(s, self.PrintersWindow)
+
+        self.setConnected()
 
         if len (self.printers) > 3:
             self.PrintersWindow.set_default_size (550, 400)
@@ -1386,6 +1386,13 @@ class GUI(GtkGUI, monitor.Watcher):
             del self.server_settings
         except:
             pass
+
+        if connected:
+            self.monitor = monitor.Monitor (self, monitor_jobs=False,
+                                            host=self.connect_server,
+                                            encryption=self.connect_encrypt)
+        else:
+            self.monitor = None
 
     def getServers(self):
         self.servers.discard(None)
