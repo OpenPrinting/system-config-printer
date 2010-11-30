@@ -241,6 +241,52 @@ def ppdMakeModelSplit (ppd_make_and_model):
     model = model.strip ()
     return (make, model)
 
+def normalize (strin):
+    # This function normalizes manufacturer and model names for comparing.
+    # The string is turned to lower case and leading and trailing white
+    # space is removed. After that each sequence of non-alphanumeric
+    # characters (including white space) is replaced by a single space and
+    # also at each change between letters and numbers a single space is added.
+    # This makes the comparison only done by alphanumeric characters and the
+    # words formed from them. So mostly two strings which sound the same when
+    # you pronounce them are considered equal. Printer manufacturers do not
+    # market two models whose names sound the same but differ only by
+    # upper/lower case, spaces, dashes, ..., but in printer drivers names can
+    # be easily supplied with these details of the name written in the wrong
+    # way, especially if the IEEE-1284 device ID of the printer is not known.
+    # This way we get a very reliable matching of printer model names.
+    # Examples:
+    # - Epson PM-A820 -> epson pm a 820
+    # - Epson PM A820 -> epson pm a 820
+    # - HP PhotoSmart C 8100 -> hp photosmart c 8100
+    # - hp Photosmart C8100  -> hp photosmart c 8100
+    lstrin = strin.strip ().lower ()
+    normalized = ""
+
+    BLANK=0
+    ALPHA=1
+    DIGIT=2
+    lastchar = BLANK
+
+    alnumfound = False
+    for i in range (len (lstrin)):
+        if lstrin[i].isalpha ():
+            if lastchar != ALPHA and alnumfound:
+                normalized += " ";
+            lastchar = ALPHA
+        elif lstrin[i].isdigit ():
+            if lastchar != DIGIT and alnumfound:
+                normalized += " ";
+            lastchar = DIGIT
+        else:
+            lastchar = BLANK
+
+        if lstrin[i].isalnum ():
+            normalized += lstrin[i]
+            alnumfound = True
+
+    return normalized
+
 def _singleton (x):
     """If we don't know whether getPPDs() or getPPDs2() was used, this
     function can unwrap an item from a list in either case."""
@@ -527,8 +573,8 @@ class PPDs:
         make = None
         if mfgl == "":
             (mfg, mdl) = ppdMakeModelSplit (mdl)
-            mfgl = mfg.lower ()
-            mdll = mdl.lower ()
+            mfgl = normalize (mfg)
+            mdll = normalize (mdl)
 
         mfgrepl = {"hewlett-packard": "hp",
                    "lexmark international": "lexmark",
@@ -546,13 +592,13 @@ class PPDs:
 
         if make != None:
             mdls = self.makes[make]
-            mdlsl = self.lmodels[make.lower ()]
+            mdlsl = self.lmodels[normalize(make)]
 
             # Remove manufacturer name from model field
             for prefix in [mfgl, 'hewlett-packard', 'hp']:
                 if mdll.startswith (prefix + ' '):
                     mdl = mdl[len (prefix) + 1:]
-                    mdll = mdl.lower ()
+                    mdll = normalize (mdl)
 
             if self.lmodels[mfgl].has_key (mdll):
                 model = mdlsl[mdll]
@@ -562,7 +608,7 @@ class PPDs:
                 # Make use of the model name clean-up in the
                 # ppdMakeModelSplit () function
                 (mfg2, mdl2) = ppdMakeModelSplit (mfg + " " + mdl)
-                mdl2l = mdl2.lower ()
+                mdl2l = normalize (mdl2)
                 if self.lmodels[mfgl].has_key (mdl2l):
                     model = mdlsl[mdl2l]
                     for each in mdls[model].keys ():
@@ -971,7 +1017,7 @@ class PPDs:
                 make = _singleton (ppddict.get ('ppd-make', '')).rstrip ()
                 if make:
                     make += ' '
-                lmake = make.lower ()
+                lmake = normalize (make)
                 for ppd_product in ppd_products:
                     # *Product: attribute is "(text)"
                     if (ppd_product.startswith ("(") and
@@ -982,7 +1028,7 @@ class PPDs:
                         continue
 
                     # If manufacturer name missing, take it from ppd-make
-                    lprod = ppd_product.lower ()
+                    lprod = normalize (ppd_product)
                     if not lprod.startswith (lmake):
                         ppd_product = make + ppd_product
 
@@ -990,8 +1036,8 @@ class PPDs:
 
             # Add the entries to our dictionary
             for make, model in ppd_makes_and_models:
-                lmake = make.lower ()
-                lmodel = model.lower ()
+                lmake = normalize (make)
+                lmodel = normalize (model)
                 if not lmakes.has_key (lmake):
                     lmakes[lmake] = make
                     lmodels[lmake] = {}
@@ -1026,17 +1072,17 @@ class PPDs:
         # Now, for each set of model aliases, add all drivers from the
         # "main" (generic) model name to each of the specific models.
         for make, models in aliases.iteritems ():
-            lmake = make.lower ()
+            lmake = normalize (make)
             main_make = lmakes[lmake]
             for model, modelnames in models.iteritems ():
-                main_model = lmodels[lmake].get (model.lower ())
+                main_model = lmodels[lmake].get (normalize (model))
                 if not main_model:
                     continue
 
                 main_ppds = makes[main_make][main_model]
 
                 for eachmodel in modelnames:
-                    this_model = lmodels[lmake].get (eachmodel.lower ())
+                    this_model = lmodels[lmake].get (normalize (eachmodel))
                     ppds = makes[main_make][this_model]
                     ppds.update (main_ppds)
 

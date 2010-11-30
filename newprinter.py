@@ -2908,12 +2908,13 @@ class NewPrinterGUI(GtkGUI):
         model.clear()
         found = False
         if self.auto_make:
-            auto_make_lower = self.auto_make.lower ()
+            auto_make_norm = cupshelpers.ppds.normalize (self.auto_make)
         else:
-            auto_make_lower = None
+            auto_make_norm = None
 
         for make in makes:
-            recommended = (auto_make_lower and make.lower() == auto_make_lower)
+            recommended = (auto_make_norm and
+                           cupshelpers.ppds.normalize (make) == auto_make_norm)
             if self.device and self.device.make_and_model and recommended:
                 text = make + _(" (recommended)")
             else:
@@ -2954,7 +2955,8 @@ class NewPrinterGUI(GtkGUI):
             iter = model.get_iter (path)
             self.NPMake = model.get(iter, 1)[0]
             recommended_make = (self.auto_make and
-                                self.auto_make.lower () == self.NPMake.lower ())
+                                cupshelpers.ppds.normalize (self.auto_make) ==
+                                cupshelpers.ppds.normalize (self.NPMake))
             self.recommended_make_selected = recommended_make
             self.fillModelList()
 
@@ -2964,12 +2966,15 @@ class NewPrinterGUI(GtkGUI):
         model = self.tvNPModels.get_model()
         model.clear()
         selected = False
-        is_auto_make = self.NPMake.lower () == self.auto_make.lower ()
+        is_auto_make = (cupshelpers.ppds.normalize (self.NPMake) ==
+                        cupshelpers.ppds.normalize (self.auto_make))
         if is_auto_make:
-            auto_model_lower = self.auto_model.lower ()
+            auto_model_norm = cupshelpers.ppds.normalize (self.auto_model)
 
         for pmodel in models:
-            recommended = (is_auto_make and pmodel.lower() == auto_model_lower)
+            recommended = (is_auto_make and
+                           cupshelpers.ppds.normalize (pmodel) ==
+                           auto_model_norm)
             if self.device and self.device.make_and_model and recommended:
                 text = pmodel + _(" (recommended)")
             else:
