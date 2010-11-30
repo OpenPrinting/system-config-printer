@@ -351,6 +351,7 @@ class Monitor(gobject.GObject):
                 if e == cups.IPP_NOT_FOUND:
                     # Subscription lease has expired.
                     self.sub_id = -1
+                    debugprint ("Subscription not found, will refresh")
                     self.refresh ()
                     return False
 
@@ -358,9 +359,11 @@ class Monitor(gobject.GObject):
                 if e == cups.IPP_FORBIDDEN:
                     return False
 
+                debugprint ("getNotifications failed with %d (%s)" % (e, m))
                 return True
         except RuntimeError:
             cups.setUser (user)
+            debugprint ("cups-connection-error, will retry")
             self.emit ('cups-connection-error')
             return True
 
