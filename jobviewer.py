@@ -604,7 +604,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         notification.set_data ('printer-name', printer)
         notification.connect ('closed', self.on_new_printer_notification_closed)
         self.set_statusicon_visibility ()
-        notification.attach_to_status_icon (self.statusicon)
         try:
             notification.show ()
         except gobject.GError:
@@ -1633,7 +1632,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
                               self.on_state_reason_notification_closed)
         self.state_reason_notifications[reason.get_tuple ()] = notification
         self.set_statusicon_visibility ()
-        notification.attach_to_status_icon (self.statusicon)
         try:
             notification.show ()
         except gobject.GError:
@@ -1689,7 +1687,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         notification.set_data ('jobid', jobid)
         self.completed_job_notifications[jobid] = notification
         self.set_statusicon_visibility ()
-        notification.attach_to_status_icon (self.statusicon)
         try:
             notification.show ()
         except gobject.GError:
