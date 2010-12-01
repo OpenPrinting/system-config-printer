@@ -3,7 +3,7 @@
   <drivertypes>
     <!-- GENERIC DRIVERS -->
     <drivertype name="generic-foomatic-recommended">
-      <ppdname match="foomatic(-db-compressed-ppds)?:"/>
+      <ppdname match="(foomatic(-db-compressed-ppds)?|ijsgutenprint.*):"/>
       <deviceid>
 	<field name="DRV" match=".*,?R1"/>
       </deviceid>
@@ -13,7 +13,7 @@
     </drivertype>
 
     <drivertype name="generic-escp">
-      <ppdname match="foomatic(-db-compressed-ppds)?:Generic-ESC_P"/>
+      <ppdname match="(foomatic(-db-compressed-ppds)?|ijsgutenprint.*):Generic-ESC_P"/>
       <fit>
 	generic
 	none
@@ -123,18 +123,18 @@
     </drivertype>
 
     <drivertype name="foomatic-recommended-non-postscript">
-      <ppdname match="foomatic(-db-compressed-ppds)?:"/>
+      <ppdname match="(foomatic(-db-compressed-ppds)?|ijsgutenprint.*):"/>
       <deviceid>
 	<field name="DRV" match=".*,?R1"/>
       </deviceid>
     </drivertype>
 
     <drivertype name="foomatic-gutenprint">
-      <ppdname match="foomatic(-db-compressed-ppds)?:.*-gutenprint"/>
+      <ppdname match="(foomatic(-db-compressed-ppds)?|ijsgutenprint.*):.*-gutenprint"/>
     </drivertype>
 
     <drivertype name="foomatic">
-      <ppdname match="foomatic(-db-compressed-ppds)?:"/>
+      <ppdname match="(foomatic(-db-compressed-ppds)?|ijsgutenprint.*):"/>
     </drivertype>
 
     <drivertype name="hpcups-plugin">

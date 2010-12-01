@@ -165,9 +165,11 @@ class Connection:
         self._connect ()
 
     def _begin_operation (self, operation):
+        debugprint ("%s: Operation += %s" % (self, repr (operation)))
         self._operation_stack.append (operation)
 
     def _end_operation (self):
+        debugprint ("%s: Operation ended" % self)
         self._operation_stack.pop ()
 
     def _get_prompt_allowed (self, ):
