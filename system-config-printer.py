@@ -4634,8 +4634,6 @@ class NewPrinterGUI(GtkGUI):
                                              "http", "https", "bluetooth")):
                     name = "%s %s" % (self.device.id_dict["MFG"], 
                                       self.device.id_dict["MDL"])
-                    descr = "%s %s" % (self.device.id_dict["MFG"],
-                                       self.device.id_dict["MDL"])
             except:
                 nonfatalException ()
 
@@ -4647,14 +4645,12 @@ class NewPrinterGUI(GtkGUI):
                         name = "%s %s" % (make, model)
                     elif make or model:
                         name = "%s%s" % (make, model)
-                    if name:
-                        descr = name
-                    else:
-                        name = None
             except:
                 nonfatalException ()
 
-            if name == None:
+            if name:
+                descr = name
+            else:
                 name = 'printer'
 
             name = self.mainapp.makeNameUnique (name)
