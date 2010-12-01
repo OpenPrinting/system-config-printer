@@ -4100,6 +4100,7 @@ class NewPrinterGUI(GtkGUI):
         self.conflicts = set()
         self.fetchDevices_conn = None
         self.ppds_result = None
+        self.ppdsmatch_result = None
         self.printer_finder = None
         self.lblNetworkFindSearching.hide ()
         self.entNPTNetworkHostname.set_sensitive (True)
@@ -4200,14 +4201,7 @@ class NewPrinterGUI(GtkGUI):
                 devid_dict = dict()
                 try:
                     devid_dict = cupshelpers.parseDeviceID (devid)
-                    (status, ppdname) = self.ppds.\
-                        getPPDNameFromDeviceID (devid_dict["MFG"],
-                                                devid_dict["MDL"],
-                                                devid_dict["DES"],
-                                                devid_dict["CMD"],
-                                                uri,
-                                                self.jockey_installed_files)
-
+                    (status, ppdname) = self.ppdsmatch_result
                     ppddict = self.ppds.getInfoFromPPDName (ppdname)
                     make_model = ppddict['ppd-make-and-model']
                     (self.auto_make, self.auto_model) = \
@@ -4260,6 +4254,7 @@ class NewPrinterGUI(GtkGUI):
             self.ppds_result = exc
         else:
             self.ppds_result = ppdsloader.get_ppds ()
+            self.ppdsmatch_result = ppdsloader.get_ppdsmatch_result ()
             self.jockey_installed_files = ppdsloader.get_installed_files ()
 
         ppdsloader.destroy ()
@@ -4491,13 +4486,7 @@ class NewPrinterGUI(GtkGUI):
                             id_dict["DES"] = ""
                             id_dict["CMD"] = []
 
-                        (status, ppdname) = self.ppds.\
-                            getPPDNameFromDeviceID (id_dict["MFG"],
-                                                    id_dict["MDL"],
-                                                    id_dict["DES"],
-                                                    id_dict["CMD"],
-                                                    self.device.uri,
-                                                    self.jockey_installed_files)
+                        (status, ppdname) = self.ppdsmatch_result
                     else:
                         (status, ppdname) = self.ppds.\
                             getPPDNameFromDeviceID ("Generic",

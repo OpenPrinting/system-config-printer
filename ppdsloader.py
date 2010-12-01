@@ -60,6 +60,7 @@ class PPDsLoader:
         self._installed_files = []
         self._conn = None
         self._ppds = None
+        self._ppdsmatch_result = (cupshelpers.ppds.PPDs.STATUS_NO_DRIVER, '')
         self._jockey_queried = False
         self._local_cups = (self._host == None or
                             self._host == "localhost" or
@@ -109,6 +110,9 @@ class PPDsLoader:
     def get_ppds (self):
         return self._ppds
 
+    def get_ppdsmatch_result (self):
+        return self._ppdsmatch_result
+
     def _dialog_response (self, dialog, response):
         self._call_callback (None)
 
@@ -140,20 +144,23 @@ class PPDsLoader:
         ppds = cupshelpers.ppds.PPDs (result, language=self._language)
         self._ppds = ppds
         self._need_requery_cups = False
-        if self._device_id and self._bus:
-            (status, ppdname) = ppds.\
+        if self._device_id:
+            self._ppdsmatch_result = ppds.\
                 getPPDNameFromDeviceID (self._devid_dict["MFG"],
                                         self._devid_dict["MDL"],
                                         self._devid_dict["DES"],
                                         self._devid_dict["CMD"],
                                         self._device_uri,
-                                        ())
-            # Try to install packages using jockey if
-            # - there's no appropriate driver (PPD) locally available
-            # - we are configuring local CUPS server
-            if (status != ppds.STATUS_SUCCESS and
+                                        self._installed_files)
+
+            (status, ppdname) = self._ppdsmatch_result
+            if (self._bus and
+                status != ppds.STATUS_SUCCESS and
                 not self._jockey_queried and
-                self._local_cups == True):
+                self._local_cups):
+                # Try to install packages using jockey if
+                # - there's no appropriate driver (PPD) locally available
+                # - we are configuring local CUPS server
                 self._jockey_queried = True
                 self._query_jockey ()
                 return
