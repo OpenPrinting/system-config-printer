@@ -49,11 +49,13 @@ class PPDsLoader(gobject.GObject):
         }
 
     def __init__ (self, device_id=None, parent=None, device_uri=None,
-                  host=None, encryption=None, language=None):
+                  host=None, encryption=None, language=None,
+                  device_make_and_model=None):
         gobject.GObject.__init__ (self)
         debugprint ("+%s" % self)
         self._device_id = device_id
         self._device_uri = device_uri
+        self._device_make_and_model = device_make_and_model
         self._parent = parent
         self._host = host
         self._encryption = encryption
@@ -64,6 +66,7 @@ class PPDsLoader(gobject.GObject):
         self._ppds = None
         self._exc = None
 
+        self._ppdsmatch_result = None
         self._jockey_queried = False
         self._local_cups = (self._host == None or
                             self._host == "localhost" or
@@ -117,6 +120,9 @@ class PPDsLoader(gobject.GObject):
     def get_ppds (self):
         return self._ppds
 
+    def get_ppdsmatch_result (self):
+        return self._ppdsmatch_result
+
     def get_error (self):
         return self._exc
 
@@ -148,20 +154,30 @@ class PPDsLoader(gobject.GObject):
         ppds = cupshelpers.ppds.PPDs (result, language=self._language)
         self._ppds = ppds
         self._need_requery_cups = False
-        if self._device_id and self._bus:
-            (status, ppdname) = ppds.\
-                getPPDNameFromDeviceID (self._devid_dict["MFG"],
-                                        self._devid_dict["MDL"],
-                                        self._devid_dict["DES"],
-                                        self._devid_dict["CMD"],
-                                        self._device_uri,
-                                        ())
-            # Try to install packages using jockey if
-            # - there's no appropriate driver (PPD) locally available
-            # - we are configuring local CUPS server
-            if (status != ppds.STATUS_SUCCESS and
+        if self._device_id:
+            fit = ppds.\
+                getPPDNamesFromDeviceID (self._devid_dict["MFG"],
+                                         self._devid_dict["MDL"],
+                                         self._devid_dict["DES"],
+                                         self._devid_dict["CMD"],
+                                         self._device_uri,
+                                         self._device_make_and_model)
+
+            ppdnamelist = ppds.\
+                orderPPDNamesByPreference (fit.keys (),
+                                           self._installed_files,
+                                           devid=self._devid_dict,
+                                           fit=fit)
+            self._ppdsmatch_result = (fit, ppdnamelist)
+
+            ppdname = ppdnamelist[0]
+            if (self._bus and
+                not fit[ppdname].startswith ("exact") and
                 not self._jockey_queried and
-                self._local_cups == True):
+                self._local_cups):
+                # Try to install packages using jockey if
+                # - there's no appropriate driver (PPD) locally available
+                # - we are configuring local CUPS server
                 self._jockey_queried = True
                 self._query_jockey ()
                 return

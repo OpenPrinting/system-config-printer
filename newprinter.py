@@ -532,6 +532,7 @@ class NewPrinterGUI(GtkGUI):
         self.conflicts = set()
         self.fetchDevices_conn = None
         self.ppds = None
+        self.ppdsmatch_result = None
         self.printer_finder = None
         self.lblNetworkFindSearching.hide ()
         self.entNPTNetworkHostname.set_sensitive (True)
@@ -626,21 +627,7 @@ class NewPrinterGUI(GtkGUI):
             if not devid:
                 devid = None
 
-            self.current_devices = {}
-            self.devices_fetched = False
-
-            # We'll need the list of PPDs.
-            self.ppdsloader = ppdsloader.PPDsLoader (device_id=devid,
-                                                     device_uri=device_uri,
-                                                     parent=self.NewPrinterWindow,
-                                                     host=self._host,
-                                                     encryption=self._encryption,
-                                                     language=self.language[0])
-            self.ppdsloader.connect ('finished',
-                                     self.on_ppdsloader_finished_initial)
-            self.ppdsloader.run ()
-
-            # We'll also need to know the Device ID for this device.
+            # We'll need to know the Device ID for this device.
             if self.dialog_mode == "ppd" and not self.devid:
                 scheme = device_uri.split (":", 1)[0]
                 schemes = [scheme]
@@ -683,57 +670,49 @@ class NewPrinterGUI(GtkGUI):
         if not self.ppds:
             return
 
-        if (self.dialog_mode != "ppd" or
-            self.devid or
-            self.devices_fetched):
-            # Device fetch has finished too.
-            debugprint ("Device fetch has finished too")
-            self.change_ppd_have_ppds_and_devs ()
-
     def change_ppd_got_devs (self, conn, result):
         self.fetchDevices_conn._end_operation ()
         self.fetchDevices_conn.destroy ()
         self.fetchDevices_conn = None
         self.dec_spinner_task ()
         if isinstance (result, Exception):
-            self.current_devices = {}
+            current_devices = {}
         else:
-            self.current_devices = result
+            current_devices = result
 
-        self.devices_fetched = True
-        if not self.ppdsloader:
-            # PPDs loader has finished too.
-            self.change_ppd_have_ppds_and_devs ()
-
-    def change_ppd_have_ppds_and_devs (self):
-        self.exactdrivermatch = False
-        self.id_matched_ppdnames = []
-        devid_dict = dict()
+        devid = None
+        mm = None
         if self.devid != "":
             devid = self.devid
-            try:
-                devid_dict = cupshelpers.parseDeviceID (devid)
-            except:
-                nonfatalException ()
         else:
-            device = self.current_devices.get (self.device.uri)
+            device = current_devices.get (self.device.uri)
             if device:
-                devid_dict = device.id_dict
+                devid = device.id
+                mm = device.make_and_model
                 self.device = device
 
-        if devid_dict:
-            try:
-                fit = self.ppds.\
-                    getPPDNamesFromDeviceID (devid_dict["MFG"],
-                                             devid_dict["MDL"],
-                                             devid_dict["DES"],
-                                             devid_dict["CMD"],
-                                             self.device.uri)
+        # We'll also need the list of PPDs.
+        self.ppdsloader = ppdsloader.PPDsLoader (device_id=devid,
+                                                 device_uri=self.device.uri,
+                                                 device_make_and_model=mm,
+                                                 parent=self.NewPrinterWindow,
+                                                 host=self._host,
+                                                 encryption=self._encryption,
+                                                 language=self.language[0])
+        self.ppdsloader.connect ('finished',
+                                 self.change_ppd_have_devs_and_ppds)
+        self.ppdsloader.run ()
 
-                ppdnamelist = self.ppds.\
-                    orderPPDNamesByPreference (fit.keys (),
-                                               self.jockey_installed_files,
-                                               devid=devid_dict, fit=fit)
+    def change_ppd_have_devs_and_ppds (self, ppdsloader):
+        self._getPPDs_reply (ppdsloader)
+        if not self.ppds:
+            return
+
+        self.exactdrivermatch = False
+        self.id_matched_ppdnames = []
+        if self.ppdsmatch_result != None:
+            try:
+                (fit, ppdnamelist) = self.ppdsmatch_result
                 self.id_matched_ppdnames = ppdnamelist
                 ppdname = ppdnamelist[0]
                 status = fit[ppdname]
@@ -742,7 +721,7 @@ class NewPrinterGUI(GtkGUI):
                 (self.auto_make, self.auto_model) = \
                     cupshelpers.ppds.ppdMakeModelSplit (make_model)
                 self.auto_driver = ppdname
-                if (status == self.ppds.STATUS_SUCCESS and
+                if (status.startswith ("exact") and
                     self.dialog_mode == "printer_with_uri"):
                     self.exactdrivermatch = True
                     self.fillMakeList()
@@ -750,10 +729,6 @@ class NewPrinterGUI(GtkGUI):
                     self.nextNPTab(step = 0)
             except:
                 nonfatalException ()
-
-            if self.device and not self.device.id:
-                self.device.id = self.devid
-                self.device.id_dict = devid_dict
         elif self.orig_ppd:
             attr = self.orig_ppd.findAttr("NickName")
             if not attr:
@@ -807,9 +782,11 @@ class NewPrinterGUI(GtkGUI):
         ppds = ppdsloader.get_ppds ()
         if ppds:
             self.ppds = ppds
+            self.ppdsmatch_result = ppdsloader.get_ppdsmatch_result ()
             self.jockey_installed_files = ppdsloader.get_installed_files ()
         else:
             self.ppds = None
+            self.ppdsmatch_result = None
 
         ppdsloader.destroy ()
         self.ppdsloader = None
