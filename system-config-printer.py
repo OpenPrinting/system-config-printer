@@ -3086,6 +3086,7 @@ class GUI(GtkGUI, monitor.Watcher):
         ids.append (cell.connect ('editing-canceled',
                                  self.printer_name_edit_cancel))
         self.rename_sigids = ids
+        self.dests_iconview.grab_focus ()
 
     def printer_name_edited (self, cell, path, newname):
         newname = newname.replace("/", "")
