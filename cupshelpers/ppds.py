@@ -998,10 +998,8 @@ class PPDs:
 
             bad = False
             if len (lmfg) == 0:
-                _debugprint ("Missing MFG field for %s" % ppdname)
                 bad = True
             if len (lmdl) == 0:
-                _debugprint ("Missing MDL field for %s" % ppdname)
                 bad = True
             if bad:
                 continue
