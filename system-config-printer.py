@@ -613,7 +613,6 @@ class GUI(GtkGUI, monitor.Watcher):
 
         self.status_context_id = self.statusbarMain.get_context_id(
             "Connection")
-        self.setConnected()
 
         # Setup search and printer groups
         self.setup_toolbar_for_search_entry ()
@@ -1388,6 +1387,9 @@ class GUI(GtkGUI, monitor.Watcher):
             pass
 
         if connected:
+            if self.monitor:
+                self.monitor.cleanup ()
+
             self.monitor = monitor.Monitor (self, monitor_jobs=False,
                                             host=self.connect_server,
                                             encryption=self.connect_encrypt)
