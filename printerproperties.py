@@ -811,8 +811,11 @@ class PrinterPropertiesDialog(GtkGUI):
                 button.set_sensitive (adjustable)
 
             commands = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
-            self.btnSelfTest.set_sensitive (commands and printable)
-            self.btnCleanHeads.set_sensitive (commands and printable)
+            for button in [self.btnSelfTest, self.btnCleanHeads]:
+                if commands and printable:
+                    button.show ()
+                else:
+                    button.hide ()
         except:
             nonfatalException()
 
@@ -1385,7 +1388,11 @@ class PrinterPropertiesDialog(GtkGUI):
         debugprint (markers)
 
         can_refresh = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
-        self.btnRefreshMarkerLevels.set_sensitive (can_refresh)
+        if can_refresh:
+            self.btnRefreshMarkerLevels.show ()
+        else:
+            self.btnRefreshMarkerLevels.hide ()
+
         if len (markers) == 0:
             label = gtk.Label(_("Marker levels are not reported "
                                 "for this printer."))
