@@ -128,19 +128,19 @@ nobase_pkgdata_DATA=					\
 	ToolbarSearchEntry.py				\
 	userdefault.py					\
 	XmlHelper.py					\
-	ui/AboutDialog.glade				\
-	ui/ConnectDialog.glade				\
-	ui/ConnectingDialog.glade			\
-	ui/InstallDialog.glade				\
-	ui/JobsWindow.glade				\
-	ui/NewPrinterName.glade				\
-	ui/NewPrinterWindow.glade			\
-	ui/PrinterPropertiesDialog.glade		\
-	ui/PrintersWindow.glade				\
-	ui/ServerSettingsDialog.glade			\
-	ui/SMBBrowseDialog.glade			\
-	ui/statusicon_popupmenu.glade			\
-	ui/WaitWindow.glade				\
+	ui/AboutDialog.ui				\
+	ui/ConnectDialog.ui				\
+	ui/ConnectingDialog.ui				\
+	ui/InstallDialog.ui				\
+	ui/JobsWindow.ui				\
+	ui/NewPrinterName.ui				\
+	ui/NewPrinterWindow.ui				\
+	ui/PrinterPropertiesDialog.ui			\
+	ui/PrintersWindow.ui				\
+	ui/ServerSettingsDialog.ui			\
+	ui/SMBBrowseDialog.ui				\
+	ui/statusicon_popupmenu.ui			\
+	ui/WaitWindow.ui				\
 	icons/i-network-printer.png			\
 	troubleshoot/base.py				\
 	troubleshoot/CheckLocalServerPublishing.py	\
