@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -9,11 +9,9 @@
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox10">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkFrame" id="frame1">
             <property name="visible">True</property>
@@ -28,7 +26,6 @@
                 <child>
                   <object class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkHBox" id="hboxServerBrowse">
@@ -43,7 +40,7 @@
                             <property name="use_underline">True</property>
                             <property name="image_position">top</property>
                             <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_server_changed"/>
+                            <signal name="toggled" handler="on_server_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="expand">False</property>
@@ -69,7 +66,7 @@
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_server_changed"/>
+                        <signal name="toggled" handler="on_server_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -89,7 +86,7 @@
                             <property name="receives_default">False</property>
                             <property name="use_underline">True</property>
                             <property name="draw_indicator">True</property>
-                            <signal name="toggled" handler="on_server_changed"/>
+                            <signal name="toggled" handler="on_server_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -107,7 +104,7 @@
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_server_changed"/>
+                        <signal name="toggled" handler="on_server_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -123,7 +120,7 @@
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_server_changed"/>
+                        <signal name="toggled" handler="on_server_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -139,7 +136,7 @@
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_server_changed"/>
+                        <signal name="toggled" handler="on_server_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -154,7 +151,6 @@
                         <child>
                           <object class="GtkVBox" id="frames_vbox">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkFrame" id="history_frame">
@@ -168,7 +164,6 @@
                                     <child>
                                       <object class="GtkVBox" id="rb_vbox">
                                         <property name="visible">True</property>
-                                        <property name="orientation">vertical</property>
                                         <child>
                                           <object class="GtkRadioButton" id="rbPreserveJobNone">
                                             <property name="label" translatable="yes">Do not preserve job history</property>
@@ -238,7 +233,6 @@
                                     <child>
                                       <object class="GtkVBox" id="vbox2">
                                         <property name="visible">True</property>
-                                        <property name="orientation">vertical</property>
                                         <property name="spacing">6</property>
                                         <child>
                                           <object class="GtkLabel" id="label5">
@@ -276,7 +270,6 @@
                                             <child>
                                               <object class="GtkVButtonBox" id="vbuttonbox1">
                                                 <property name="visible">True</property>
-                                                <property name="orientation">vertical</property>
                                                 <property name="spacing">6</property>
                                                 <property name="layout_style">start</property>
                                                 <child>
@@ -286,7 +279,7 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>
                                                     <property name="use_stock">True</property>
-                                                    <signal name="clicked" handler="on_add_clicked"/>
+                                                    <signal name="clicked" handler="on_add_clicked" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -302,7 +295,7 @@
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>
                                                     <property name="use_stock">True</property>
-                                                    <signal name="clicked" handler="on_remove_clicked"/>
+                                                    <signal name="clicked" handler="on_remove_clicked" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>

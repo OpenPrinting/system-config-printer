@@ -1,17 +1,100 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
+  <object class="GtkAdjustment" id="adjustment14">
+    <property name="lower">1</property>
+    <property name="upper">4</property>
+    <property name="value">1</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment13">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment12">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment11">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment10">
+    <property name="upper">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment9">
+    <property name="lower">1</property>
+    <property name="upper">100</property>
+    <property name="value">6</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment8">
+    <property name="lower">1</property>
+    <property name="upper">100</property>
+    <property name="value">10</property>
+    <property name="step_increment">0.10000000000000001</property>
+    <property name="page_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment7">
+    <property name="lower">1</property>
+    <property name="upper">10000</property>
+    <property name="value">1000</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment6">
+    <property name="lower">-180</property>
+    <property name="upper">180</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment5">
+    <property name="upper">1000</property>
+    <property name="value">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment4">
+    <property name="lower">1</property>
+    <property name="upper">100</property>
+    <property name="value">50</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment3">
+    <property name="upper">1000</property>
+    <property name="value">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment2">
+    <property name="upper">1000</property>
+    <property name="value">100</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment1">
+    <property name="upper">1000</property>
+    <property name="value">1</property>
+    <property name="step_increment">1</property>
+    <property name="page_increment">10</property>
+  </object>
   <object class="GtkDialog" id="PrinterPropertiesDialog">
     <property name="title" translatable="yes">Printer Properties</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox11">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkHPaned" id="hpaned2">
             <property name="visible">True</property>
@@ -31,7 +114,7 @@
                     <property name="can_focus">True</property>
                     <property name="headers_visible">False</property>
                     <property name="enable_search">False</property>
-                    <signal name="cursor_changed" handler="on_tvPrinterProperties_cursor_changed"/>
+                    <signal name="cursor-changed" handler="on_tvPrinterProperties_cursor_changed" swapped="no"/>
                   </object>
                 </child>
               </object>
@@ -49,7 +132,6 @@
                   <object class="GtkVBox" id="vbox25">
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame3">
@@ -107,7 +189,7 @@
                                     <accessibility>
                                       <relation type="labelled-by" target="lblPDescription"/>
                                     </accessibility>
-                                    <signal name="changed" handler="on_printer_changed"/>
+                                    <signal name="changed" handler="on_printer_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -122,7 +204,7 @@
                                     <accessibility>
                                       <relation type="labelled-by" target="lblPLocation"/>
                                     </accessibility>
-                                    <signal name="changed" handler="on_printer_changed"/>
+                                    <signal name="changed" handler="on_printer_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -174,7 +256,7 @@
                                         <accessibility>
                                           <relation type="labelled-by" target="lblPDevice2"/>
                                         </accessibility>
-                                        <signal name="changed" handler="on_printer_changed"/>
+                                        <signal name="changed" handler="on_printer_changed" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="position">0</property>
@@ -187,7 +269,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
-                                        <signal name="clicked" handler="on_btnSelectDevice_clicked"/>
+                                        <signal name="clicked" handler="on_btnSelectDevice_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -262,7 +344,7 @@
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
-                                        <signal name="clicked" handler="on_btnChangePPD_clicked"/>
+                                        <signal name="clicked" handler="on_btnChangePPD_clicked" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -321,7 +403,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="use_underline">True</property>
-                                    <signal name="clicked" handler="on_btnPrintTestPage_clicked"/>
+                                    <signal name="clicked" handler="on_btnPrintTestPage_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="position">0</property>
@@ -335,7 +417,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="use_underline">True</property>
-                                    <signal name="clicked" handler="on_btnSelfTest_clicked"/>
+                                    <signal name="clicked" handler="on_btnSelfTest_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="position">1</property>
@@ -349,7 +431,7 @@
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
                                     <property name="use_underline">True</property>
-                                    <signal name="clicked" handler="on_btnCleanHeads_clicked"/>
+                                    <signal name="clicked" handler="on_btnCleanHeads_clicked" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="position">2</property>
@@ -387,7 +469,6 @@
                   <object class="GtkVBox" id="vbox28">
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame4">
@@ -406,7 +487,6 @@
                                 <child>
                                   <object class="GtkVBox" id="vbox26">
                                     <property name="visible">True</property>
-                                    <property name="orientation">vertical</property>
                                     <child>
                                       <object class="GtkCheckButton" id="chkPEnabled">
                                         <property name="label" translatable="yes">Enabled</property>
@@ -415,7 +495,7 @@
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_indicator">True</property>
-                                        <signal name="toggled" handler="on_printer_changed"/>
+                                        <signal name="toggled" handler="on_printer_changed" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -431,7 +511,7 @@
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_indicator">True</property>
-                                        <signal name="toggled" handler="on_printer_changed"/>
+                                        <signal name="toggled" handler="on_printer_changed" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -447,7 +527,7 @@
                                         <property name="receives_default">False</property>
                                         <property name="use_underline">True</property>
                                         <property name="draw_indicator">True</property>
-                                        <signal name="toggled" handler="on_printer_changed"/>
+                                        <signal name="toggled" handler="on_printer_changed" swapped="no"/>
                                       </object>
                                       <packing>
                                         <property name="expand">False</property>
@@ -545,7 +625,7 @@ See server settings&lt;/i&gt;</property>
                                     <accessibility>
                                       <relation type="labelled-by" target="label77"/>
                                     </accessibility>
-                                    <signal name="changed" handler="on_printer_changed"/>
+                                    <signal name="changed" handler="on_printer_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -559,7 +639,7 @@ See server settings&lt;/i&gt;</property>
                                     <accessibility>
                                       <relation type="labelled-by" target="label78"/>
                                     </accessibility>
-                                    <signal name="changed" handler="on_printer_changed"/>
+                                    <signal name="changed" handler="on_printer_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -638,7 +718,7 @@ See server settings&lt;/i&gt;</property>
                                     <accessibility>
                                       <relation type="labelled-by" target="label73"/>
                                     </accessibility>
-                                    <signal name="changed" handler="on_printer_changed"/>
+                                    <signal name="changed" handler="on_printer_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -652,7 +732,7 @@ See server settings&lt;/i&gt;</property>
                                     <accessibility>
                                       <relation type="labelled-by" target="label74"/>
                                     </accessibility>
-                                    <signal name="changed" handler="on_printer_changed"/>
+                                    <signal name="changed" handler="on_printer_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="left_attach">1</property>
@@ -698,7 +778,6 @@ See server settings&lt;/i&gt;</property>
                   <object class="GtkVBox" id="vbox44">
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkRadioButton" id="rbtnPAllow">
@@ -708,7 +787,7 @@ See server settings&lt;/i&gt;</property>
                         <property name="receives_default">False</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_printer_changed"/>
+                        <signal name="toggled" handler="on_printer_changed" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -749,7 +828,7 @@ See server settings&lt;/i&gt;</property>
                                 <property name="AtkObject::accessible-description" translatable="yes">user</property>
                               </object>
                             </child>
-                            <signal name="changed" handler="on_entPUser_changed"/>
+                            <signal name="changed" handler="on_entPUser_changed" swapped="no"/>
                           </object>
                           <packing>
                             <property name="y_options"></property>
@@ -766,7 +845,7 @@ See server settings&lt;/i&gt;</property>
                               <object class="GtkTreeView" id="tvPUsers">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <signal name="cursor_changed" handler="on_tvPUsers_cursor_changed"/>
+                                <signal name="cursor-changed" handler="on_tvPUsers_cursor_changed" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -779,7 +858,6 @@ See server settings&lt;/i&gt;</property>
                         <child>
                           <object class="GtkVBox" id="vbox45">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkButton" id="btnPDelUser">
                                 <property name="label">gtk-delete</property>
@@ -787,7 +865,7 @@ See server settings&lt;/i&gt;</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">False</property>
                                 <property name="use_stock">True</property>
-                                <signal name="clicked" handler="on_btnPDelUser_clicked"/>
+                                <signal name="clicked" handler="on_btnPDelUser_clicked" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -817,7 +895,7 @@ See server settings&lt;/i&gt;</property>
                             <accessibility>
                               <relation type="labelled-by" target="entPUser"/>
                             </accessibility>
-                            <signal name="clicked" handler="on_btnPAddUser_clicked"/>
+                            <signal name="clicked" handler="on_btnPAddUser_clicked" swapped="no"/>
                           </object>
                           <packing>
                             <property name="left_attach">1</property>
@@ -853,7 +931,6 @@ See server settings&lt;/i&gt;</property>
                       <object class="GtkVBox" id="vbClassMembers">
                         <property name="visible">True</property>
                         <property name="border_width">6</property>
-                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkLabel" id="label64">
@@ -909,7 +986,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="AtkObject::accessible-description" translatable="yes">move left</property>
                                           </object>
                                         </child>
-                                        <signal name="clicked" handler="on_btnClassAddMember_clicked"/>
+                                        <signal name="clicked" handler="on_btnClassAddMember_clicked" swapped="no"/>
                                         <child>
                                           <object class="GtkImage" id="image11">
                                             <property name="visible">True</property>
@@ -934,7 +1011,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="AtkObject::accessible-description" translatable="yes">move right</property>
                                           </object>
                                         </child>
-                                        <signal name="clicked" handler="on_btnClassDelMember_clicked"/>
+                                        <signal name="clicked" handler="on_btnClassDelMember_clicked" swapped="no"/>
                                         <child>
                                           <object class="GtkImage" id="image12">
                                             <property name="visible">True</property>
@@ -1009,7 +1086,6 @@ See server settings&lt;/i&gt;</property>
                           <object class="GtkVBox" id="vbPInstallOptions">
                             <property name="visible">True</property>
                             <property name="border_width">6</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkHSeparator" id="hseparator1">
@@ -1052,7 +1128,6 @@ See server settings&lt;/i&gt;</property>
                         <child>
                           <object class="GtkVBox" id="vbPOptions">
                             <property name="border_width">6</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkHSeparator" id="hseparator2">
@@ -1096,7 +1171,6 @@ See server settings&lt;/i&gt;</property>
                           <object class="GtkVBox" id="vbox51">
                             <property name="visible">True</property>
                             <property name="border_width">6</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkLabel" id="label136">
@@ -1184,7 +1258,7 @@ See server settings&lt;/i&gt;</property>
                                                 <accessibility>
                                                   <relation type="labelled-by" target="label141"/>
                                                 </accessibility>
-                                                <signal name="changed" handler="on_job_option_changed"/>
+                                                <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                               </object>
                                             </child>
                                           </object>
@@ -1205,7 +1279,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
                                             <property name="draw_indicator">True</property>
-                                            <signal name="toggled" handler="on_job_option_changed"/>
+                                            <signal name="toggled" handler="on_job_option_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="right_attach">2</property>
@@ -1263,7 +1337,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1280,7 +1354,7 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label167"/>
                                                     </accessibility>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -1296,7 +1370,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1318,7 +1392,7 @@ See server settings&lt;/i&gt;</property>
                                                         <accessibility>
                                                           <relation type="labelled-by" target="label168"/>
                                                         </accessibility>
-                                                        <signal name="changed" handler="on_job_option_changed"/>
+                                                        <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                       </object>
                                                       <packing>
                                                         <property name="position">0</property>
@@ -1368,7 +1442,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1385,7 +1459,7 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label176"/>
                                                     </accessibility>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -1421,7 +1495,7 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label177"/>
                                                     </accessibility>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -1438,7 +1512,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1465,7 +1539,7 @@ See server settings&lt;/i&gt;</property>
                                                 <child>
                                                   <object class="GtkComboBox" id="cmbJOMedia">
                                                     <property name="visible">True</property>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -1483,7 +1557,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1516,7 +1590,7 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label179"/>
                                                     </accessibility>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -1534,7 +1608,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1565,7 +1639,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1579,7 +1653,7 @@ See server settings&lt;/i&gt;</property>
                                                 <child>
                                                   <object class="GtkComboBox" id="cmbJOHoldUntil">
                                                     <property name="visible">True</property>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -1610,7 +1684,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">True</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1624,7 +1698,7 @@ See server settings&lt;/i&gt;</property>
                                                 <child>
                                                   <object class="GtkComboBox" id="cmbJOOutputOrder">
                                                     <property name="visible">True</property>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -1658,7 +1732,7 @@ See server settings&lt;/i&gt;</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label139"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_job_option_changed"/>
+                                            <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -1679,7 +1753,7 @@ See server settings&lt;/i&gt;</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label138"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_job_option_changed"/>
+                                            <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -1695,7 +1769,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -1713,7 +1787,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -1731,7 +1805,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -1749,7 +1823,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -1820,7 +1894,7 @@ See server settings&lt;/i&gt;</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">False</property>
                                                 <property name="use_underline">True</property>
-                                                <signal name="clicked" handler="on_job_option_reset"/>
+                                                <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                               </object>
                                             </child>
                                           </object>
@@ -1844,7 +1918,7 @@ See server settings&lt;/i&gt;</property>
                                                 <accessibility>
                                                   <relation type="labelled-by" target="label144"/>
                                                 </accessibility>
-                                                <signal name="changed" handler="on_job_option_changed"/>
+                                                <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                               </object>
                                               <packing>
                                                 <property name="position">0</property>
@@ -1880,7 +1954,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
                                             <property name="draw_indicator">True</property>
-                                            <signal name="toggled" handler="on_job_option_changed"/>
+                                            <signal name="toggled" handler="on_job_option_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="right_attach">2</property>
@@ -1926,7 +2000,7 @@ See server settings&lt;/i&gt;</property>
                                                         <accessibility>
                                                           <relation type="labelled-by" target="label170"/>
                                                         </accessibility>
-                                                        <signal name="changed" handler="on_job_option_changed"/>
+                                                        <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                       </object>
                                                       <packing>
                                                         <property name="position">0</property>
@@ -1958,7 +2032,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1996,7 +2070,7 @@ See server settings&lt;/i&gt;</property>
                                                         <accessibility>
                                                           <relation type="labelled-by" target="label172"/>
                                                         </accessibility>
-                                                        <signal name="changed" handler="on_job_option_changed"/>
+                                                        <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                       </object>
                                                       <packing>
                                                         <property name="position">0</property>
@@ -2006,7 +2080,7 @@ See server settings&lt;/i&gt;</property>
                                                       <object class="GtkLabel" id="label173">
                                                         <property name="visible">True</property>
                                                         <property name="xalign">0</property>
-                                                        <property name="label">&#xB0;</property>
+                                                        <property name="label">°</property>
                                                       </object>
                                                       <packing>
                                                         <property name="expand">False</property>
@@ -2031,7 +2105,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -2051,7 +2125,7 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label174"/>
                                                     </accessibility>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -2084,7 +2158,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -2118,7 +2192,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -2212,7 +2286,7 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label156"/>
                                                     </accessibility>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="position">0</property>
@@ -2256,7 +2330,7 @@ See server settings&lt;/i&gt;</property>
                                                 <accessibility>
                                                   <relation type="labelled-by" target="label150"/>
                                                 </accessibility>
-                                                <signal name="changed" handler="on_job_option_changed"/>
+                                                <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                               </object>
                                               <packing>
                                                 <property name="position">0</property>
@@ -2296,7 +2370,7 @@ See server settings&lt;/i&gt;</property>
                                                 <accessibility>
                                                   <relation type="labelled-by" target="label151"/>
                                                 </accessibility>
-                                                <signal name="changed" handler="on_job_option_changed"/>
+                                                <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                               </object>
                                               <packing>
                                                 <property name="position">0</property>
@@ -2353,7 +2427,7 @@ See server settings&lt;/i&gt;</property>
                                                 <accessibility>
                                                   <relation type="labelled-by" target="label154"/>
                                                 </accessibility>
-                                                <signal name="changed" handler="on_job_option_changed"/>
+                                                <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                               </object>
                                               <packing>
                                                 <property name="position">0</property>
@@ -2415,7 +2489,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
                                                     <property name="draw_indicator">True</property>
-                                                    <signal name="toggled" handler="on_job_option_changed"/>
+                                                    <signal name="toggled" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="right_attach">2</property>
@@ -2430,7 +2504,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -2447,7 +2521,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
                                                     <property name="draw_indicator">True</property>
-                                                    <signal name="toggled" handler="on_job_option_changed"/>
+                                                    <signal name="toggled" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="right_attach">2</property>
@@ -2483,7 +2557,7 @@ See server settings&lt;/i&gt;</property>
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label175"/>
                                                     </accessibility>
-                                                    <signal name="changed" handler="on_job_option_changed"/>
+                                                    <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -2501,7 +2575,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -2519,7 +2593,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
-                                                    <signal name="clicked" handler="on_job_option_reset"/>
+                                                    <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -2577,7 +2651,7 @@ See server settings&lt;/i&gt;</property>
                                                 <accessibility>
                                                   <relation type="labelled-by" target="label158"/>
                                                 </accessibility>
-                                                <signal name="changed" handler="on_job_option_changed"/>
+                                                <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                               </object>
                                               <packing>
                                                 <property name="position">0</property>
@@ -2634,7 +2708,7 @@ See server settings&lt;/i&gt;</property>
                                                 <accessibility>
                                                   <relation type="labelled-by" target="label160"/>
                                                 </accessibility>
-                                                <signal name="changed" handler="on_job_option_changed"/>
+                                                <signal name="changed" handler="on_job_option_changed" swapped="no"/>
                                               </object>
                                               <packing>
                                                 <property name="position">0</property>
@@ -2668,7 +2742,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -2686,7 +2760,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -2704,7 +2778,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -2722,7 +2796,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -2740,7 +2814,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -2758,7 +2832,7 @@ See server settings&lt;/i&gt;</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
                                             <property name="use_underline">True</property>
-                                            <signal name="clicked" handler="on_job_option_reset"/>
+                                            <signal name="clicked" handler="on_job_option_reset" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">2</property>
@@ -2798,7 +2872,6 @@ See server settings&lt;/i&gt;</property>
                                     <child>
                                       <object class="GtkVBox" id="vbox52">
                                         <property name="visible">True</property>
-                                        <property name="orientation">vertical</property>
                                         <property name="spacing">12</property>
                                         <child>
                                           <object class="GtkTable" id="tblJOOther">
@@ -2839,7 +2912,6 @@ See server settings&lt;/i&gt;</property>
                                         <child>
                                           <object class="GtkVBox" id="vbox53">
                                             <property name="visible">True</property>
-                                            <property name="orientation">vertical</property>
                                             <property name="spacing">6</property>
                                             <child>
                                               <object class="GtkLabel" id="label163">
@@ -2862,8 +2934,8 @@ See server settings&lt;/i&gt;</property>
                                                   <object class="GtkEntry" id="entNewJobOption">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <signal name="changed" handler="on_entNewJobOption_changed"/>
-                                                    <signal name="activate" handler="on_entNewJobOption_activate"/>
+                                                    <signal name="changed" handler="on_entNewJobOption_changed" swapped="no"/>
+                                                    <signal name="activate" handler="on_entNewJobOption_activate" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -2877,7 +2949,7 @@ See server settings&lt;/i&gt;</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_stock">True</property>
-                                                    <signal name="clicked" handler="on_btnNewJobOption_clicked"/>
+                                                    <signal name="clicked" handler="on_btnNewJobOption_clicked" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -2938,7 +3010,6 @@ See server settings&lt;/i&gt;</property>
                   <object class="GtkVBox" id="vbPMarkerLevels">
                     <property name="visible">True</property>
                     <property name="border_width">6</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame33">
@@ -2948,7 +3019,6 @@ See server settings&lt;/i&gt;</property>
                         <child>
                           <object class="GtkVBox" id="vbox1">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkAlignment" id="alignment95">
@@ -2969,7 +3039,6 @@ See server settings&lt;/i&gt;</property>
                                           <object class="GtkVBox" id="vboxMarkerLevels">
                                             <property name="visible">True</property>
                                             <property name="border_width">3</property>
-                                            <property name="orientation">vertical</property>
                                             <property name="spacing">6</property>
                                             <child>
                                               <placeholder/>
@@ -3258,104 +3327,5 @@ See server settings&lt;/i&gt;</property>
       <action-widget response="-5">btnPrinterPropertiesOK</action-widget>
       <action-widget response="-6">btnPrinterPropertiesClose</action-widget>
     </action-widgets>
-  </object>
-  <object class="GtkAdjustment" id="adjustment1">
-    <property name="value">1</property>
-    <property name="upper">1000</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment2">
-    <property name="value">100</property>
-    <property name="upper">1000</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment3">
-    <property name="value">100</property>
-    <property name="upper">1000</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment4">
-    <property name="value">50</property>
-    <property name="lower">1</property>
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment5">
-    <property name="value">100</property>
-    <property name="upper">1000</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment6">
-    <property name="lower">-180</property>
-    <property name="upper">180</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment7">
-    <property name="value">1000</property>
-    <property name="lower">1</property>
-    <property name="upper">10000</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment8">
-    <property name="value">10</property>
-    <property name="lower">1</property>
-    <property name="upper">100</property>
-    <property name="step_increment">0.10000000000000001</property>
-    <property name="page_increment">1</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment9">
-    <property name="value">6</property>
-    <property name="lower">1</property>
-    <property name="upper">100</property>
-    <property name="step_increment">0.10000000000000001</property>
-    <property name="page_increment">1</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment10">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment11">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment12">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment13">
-    <property name="upper">100</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">10</property>
-    <property name="page_size">0</property>
-  </object>
-  <object class="GtkAdjustment" id="adjustment14">
-    <property name="value">1</property>
-    <property name="lower">1</property>
-    <property name="upper">4</property>
-    <property name="step_increment">1</property>
-    <property name="page_increment">1</property>
-    <property name="page_size">0</property>
   </object>
 </interface>

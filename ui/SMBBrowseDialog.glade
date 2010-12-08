@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -22,9 +22,9 @@
               <object class="GtkTreeView" id="tvSMBBrowser">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-                <signal name="row_expanded" handler="on_tvSMBBrowser_row_expanded"/>
-                <signal name="cursor_changed" handler="on_tvSMBBrowser_cursor_changed"/>
-                <signal name="row_activated" handler="on_tvSMBBrowser_row_activated"/>
+                <signal name="row-expanded" handler="on_tvSMBBrowser_row_expanded" swapped="no"/>
+                <signal name="cursor-changed" handler="on_tvSMBBrowser_cursor_changed" swapped="no"/>
+                <signal name="row-activated" handler="on_tvSMBBrowser_row_activated" swapped="no"/>
               </object>
             </child>
           </object>
@@ -61,7 +61,7 @@
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_btnSMBBrowseRefresh_clicked"/>
+                    <signal name="clicked" handler="on_btnSMBBrowseRefresh_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -76,7 +76,7 @@
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_btnSMBBrowseCancel_clicked"/>
+                    <signal name="clicked" handler="on_btnSMBBrowseCancel_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -91,7 +91,7 @@
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_btnSMBBrowseOk_clicked"/>
+                    <signal name="clicked" handler="on_btnSMBBrowseOk_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

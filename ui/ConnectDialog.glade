@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -10,11 +10,9 @@
     <property name="window_position">center-on-parent</property>
     <property name="icon_name">printer</property>
     <property name="type_hint">dialog</property>
-    <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkTable" id="table5">
@@ -30,7 +28,7 @@
                 <accessibility>
                   <relation type="labelled-by" target="label53"/>
                 </accessibility>
-                <signal name="changed" handler="on_connect_servername_changed"/>
+                <signal name="changed" handler="on_connect_servername_changed" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">1</property>

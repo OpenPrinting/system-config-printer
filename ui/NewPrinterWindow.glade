@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -8,11 +8,10 @@
     <property name="window_position">center-on-parent</property>
     <property name="default_width">600</property>
     <property name="default_height">420</property>
-    <signal name="delete_event" handler="on_NPCancel"/>
+    <signal name="delete-event" handler="on_NPCancel" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox9">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkNotebook" id="ntbkNewPrinter">
             <property name="visible">True</property>
@@ -22,7 +21,6 @@
               <object class="GtkVBox" id="vbox76">
                 <property name="visible">True</property>
                 <property name="border_width">12</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label238">
@@ -42,7 +40,6 @@
                 <child>
                   <object class="GtkVBox" id="vbox1">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkFrame" id="frame17">
@@ -57,7 +54,6 @@
                             <child>
                               <object class="GtkVBox" id="vbox30">
                                 <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <object class="GtkLabel" id="label87">
@@ -75,7 +71,7 @@
                                   <object class="GtkEntry" id="entNPName">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <signal name="changed" handler="on_entNPName_changed"/>
+                                    <signal name="changed" handler="on_entNPName_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -113,7 +109,6 @@
                             <child>
                               <object class="GtkVBox" id="vbox31">
                                 <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <object class="GtkLabel" id="label88">
@@ -168,7 +163,6 @@
                             <child>
                               <object class="GtkVBox" id="vbox32">
                                 <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <object class="GtkLabel" id="label89">
@@ -230,7 +224,6 @@
               <object class="GtkVBox" id="vbox69">
                 <property name="visible">True</property>
                 <property name="border_width">12</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label231">
@@ -263,7 +256,7 @@
                           <object class="GtkTreeView" id="tvNPDevices">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="cursor_changed" handler="on_tvNPDevices_cursor_changed"/>
+                            <signal name="cursor-changed" handler="on_tvNPDevices_cursor_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -274,7 +267,6 @@
                     <child>
                       <object class="GtkVBox" id="vbNPDevices">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <property name="spacing">12</property>
                         <child>
                           <object class="GtkNotebook" id="ntbkNPType">
@@ -284,7 +276,6 @@
                             <child>
                               <object class="GtkVBox" id="vbox27">
                                 <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkFrame" id="frame24">
                                     <property name="visible">True</property>
@@ -334,7 +325,6 @@
                             <child>
                               <object class="GtkVBox" id="vbox56">
                                 <property name="visible">True</property>
-                                <property name="orientation">vertical</property>
                                 <child>
                                   <object class="GtkFrame" id="frame31">
                                     <property name="visible">True</property>
@@ -351,7 +341,7 @@
                                           <object class="GtkEntry" id="entNPTDevice">
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
-                                            <signal name="changed" handler="on_entNPTDevice_changed"/>
+                                            <signal name="changed" handler="on_entNPTDevice_changed" swapped="no"/>
                                           </object>
                                         </child>
                                       </object>
@@ -436,7 +426,7 @@
                                             <accessibility>
                                               <relation type="labelled-by" target="label203"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_entNPTJetDirectPort_changed"/>
+                                            <signal name="changed" handler="on_entNPTJetDirectPort_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -453,7 +443,7 @@
                                             <accessibility>
                                               <relation type="labelled-by" target="label202"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_entNPTJetDirectHostname_changed"/>
+                                            <signal name="changed" handler="on_entNPTJetDirectHostname_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -506,7 +496,6 @@
                                         <child>
                                           <object class="GtkVBox" id="vbox61">
                                             <property name="visible">True</property>
-                                            <property name="orientation">vertical</property>
                                             <property name="spacing">6</property>
                                             <child>
                                               <object class="GtkTable" id="table16">
@@ -580,7 +569,7 @@
                                                     <accessibility>
                                                       <relation type="labelled-by" target="label198"/>
                                                     </accessibility>
-                                                    <signal name="changed" handler="on_entNPTIPPQueuename_changed"/>
+                                                    <signal name="changed" handler="on_entNPTIPPQueuename_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -594,7 +583,7 @@
                                                   <object class="GtkEntry" id="entNPTIPPHostname">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <signal name="changed" handler="on_entNPTIPPHostname_changed"/>
+                                                    <signal name="changed" handler="on_entNPTIPPHostname_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -617,7 +606,7 @@
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
                                                     <property name="receives_default">False</property>
-                                                    <signal name="clicked" handler="on_btnIPPVerify_clicked"/>
+                                                    <signal name="clicked" handler="on_btnIPPVerify_clicked" swapped="no"/>
                                                     <child>
                                                       <object class="GtkAlignment" id="alignment85">
                                                         <property name="visible">True</property>
@@ -738,7 +727,7 @@ ipp://printer.mydomain/ipp</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label200"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_cmbentNPTLpdHost_changed"/>
+                                            <signal name="changed" handler="on_cmbentNPTLpdHost_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -752,7 +741,7 @@ ipp://printer.mydomain/ipp</property>
                                             <accessibility>
                                               <relation type="labelled-by" target="label201"/>
                                             </accessibility>
-                                            <signal name="changed" handler="on_cmbentNPTLpdQueue_changed"/>
+                                            <signal name="changed" handler="on_cmbentNPTLpdQueue_changed" swapped="no"/>
                                           </object>
                                           <packing>
                                             <property name="left_attach">1</property>
@@ -768,7 +757,7 @@ ipp://printer.mydomain/ipp</property>
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="receives_default">False</property>
-                                            <signal name="clicked" handler="on_btnNPTLpdProbe_clicked"/>
+                                            <signal name="clicked" handler="on_btnNPTLpdProbe_clicked" swapped="no"/>
                                             <child>
                                               <object class="GtkAlignment" id="alignment16">
                                                 <property name="visible">True</property>
@@ -844,7 +833,6 @@ ipp://printer.mydomain/ipp</property>
                               <object class="GtkVBox" id="vbox18">
                                 <property name="visible">True</property>
                                 <property name="border_width">6</property>
-                                <property name="orientation">vertical</property>
                                 <property name="spacing">6</property>
                                 <child>
                                   <placeholder/>
@@ -1046,7 +1034,6 @@ ipp://printer.mydomain/ipp</property>
                                 <child>
                                   <object class="GtkVBox" id="vbox49">
                                     <property name="visible">True</property>
-                                    <property name="orientation">vertical</property>
                                     <property name="spacing">6</property>
                                     <child>
                                       <object class="GtkFrame" id="frame30">
@@ -1061,7 +1048,6 @@ ipp://printer.mydomain/ipp</property>
                                             <child>
                                               <object class="GtkVBox" id="vbox55">
                                                 <property name="visible">True</property>
-                                                <property name="orientation">vertical</property>
                                                 <property name="spacing">6</property>
                                                 <child>
                                                   <object class="GtkHBox" id="hbox42">
@@ -1088,7 +1074,7 @@ ipp://printer.mydomain/ipp</property>
                                                         <accessibility>
                                                           <relation type="labelled-by" target="label129"/>
                                                         </accessibility>
-                                                        <signal name="changed" handler="on_entSMBURI_changed"/>
+                                                        <signal name="changed" handler="on_entSMBURI_changed" swapped="no"/>
                                                       </object>
                                                       <packing>
                                                         <property name="position">1</property>
@@ -1101,7 +1087,7 @@ ipp://printer.mydomain/ipp</property>
                                                         <property name="can_focus">True</property>
                                                         <property name="receives_default">False</property>
                                                         <property name="use_underline">True</property>
-                                                        <signal name="clicked" handler="on_btnSMBBrowse_clicked"/>
+                                                        <signal name="clicked" handler="on_btnSMBBrowse_clicked" swapped="no"/>
                                                       </object>
                                                       <packing>
                                                         <property name="expand">False</property>
@@ -1162,7 +1148,6 @@ ipp://printer.mydomain/ipp</property>
                                                 <child>
                                                   <object class="GtkVBox" id="vbox68">
                                                     <property name="visible">True</property>
-                                                    <property name="orientation">vertical</property>
                                                     <property name="spacing">6</property>
                                                     <child>
                                                       <object class="GtkRadioButton" id="rbtnSMBAuthPrompt">
@@ -1183,7 +1168,6 @@ ipp://printer.mydomain/ipp</property>
                                                     <child>
                                                       <object class="GtkVBox" id="vbox2">
                                                         <property name="visible">True</property>
-                                                        <property name="orientation">vertical</property>
                                                         <child>
                                                           <object class="GtkRadioButton" id="rbtnSMBAuthSet">
                                                             <property name="label" translatable="yes">Set authentication details now</property>
@@ -1193,7 +1177,7 @@ ipp://printer.mydomain/ipp</property>
                                                             <property name="use_underline">True</property>
                                                             <property name="draw_indicator">True</property>
                                                             <property name="group">rbtnSMBAuthPrompt</property>
-                                                            <signal name="toggled" handler="on_rbtnSMBAuthSet_toggled"/>
+                                                            <signal name="toggled" handler="on_rbtnSMBAuthSet_toggled" swapped="no"/>
                                                           </object>
                                                           <packing>
                                                             <property name="expand">False</property>
@@ -1318,7 +1302,7 @@ ipp://printer.mydomain/ipp</property>
                                                 <property name="visible">True</property>
                                                 <property name="can_focus">True</property>
                                                 <property name="receives_default">False</property>
-                                                <signal name="clicked" handler="on_btnSMBVerify_clicked"/>
+                                                <signal name="clicked" handler="on_btnSMBVerify_clicked" swapped="no"/>
                                                 <child>
                                                   <object class="GtkAlignment" id="alignment51">
                                                     <property name="visible">True</property>
@@ -1384,7 +1368,6 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkVBox" id="vbox77">
                                             <property name="visible">True</property>
-                                            <property name="orientation">vertical</property>
                                             <property name="spacing">12</property>
                                             <child>
                                               <object class="GtkTable" id="table23">
@@ -1407,7 +1390,7 @@ ipp://printer.mydomain/ipp</property>
                                                   <object class="GtkEntry" id="entNPTNetworkHostname">
                                                     <property name="visible">True</property>
                                                     <property name="can_focus">True</property>
-                                                    <signal name="changed" handler="on_entNPTNetworkHostname_changed"/>
+                                                    <signal name="changed" handler="on_entNPTNetworkHostname_changed" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">1</property>
@@ -1424,7 +1407,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_stock">True</property>
                                                     <accelerator key="Return" signal="activate"/>
-                                                    <signal name="clicked" handler="on_btnNetworkFind_clicked"/>
+                                                    <signal name="clicked" handler="on_btnNetworkFind_clicked" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="left_attach">2</property>
@@ -1443,7 +1426,6 @@ ipp://printer.mydomain/ipp</property>
                                             <child>
                                               <object class="GtkVBox" id="vbox78">
                                                 <property name="visible">True</property>
-                                                <property name="orientation">vertical</property>
                                                 <child>
                                                   <object class="GtkLabel" id="lblNetworkFindSearching">
                                                     <property name="xalign">0</property>
@@ -1526,7 +1508,7 @@ ipp://printer.mydomain/ipp</property>
                                   <object class="GtkTreeView" id="tvNPDeviceURIs">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <signal name="cursor_changed" handler="on_tvNPDeviceURIs_cursor_changed"/>
+                                    <signal name="cursor-changed" handler="on_tvNPDeviceURIs_cursor_changed" swapped="no"/>
                                   </object>
                                 </child>
                               </object>
@@ -1573,7 +1555,6 @@ ipp://printer.mydomain/ipp</property>
               <object class="GtkVBox" id="vbox70">
                 <property name="visible">True</property>
                 <property name="border_width">12</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label232">
@@ -1593,7 +1574,6 @@ ipp://printer.mydomain/ipp</property>
                 <child>
                   <object class="GtkVBox" id="vbox36">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkRadioButton" id="rbtnNPFoomatic">
@@ -1604,7 +1584,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="use_underline">True</property>
                         <property name="active">True</property>
                         <property name="draw_indicator">True</property>
-                        <signal name="toggled" handler="on_rbtnNPFoomatic_toggled"/>
+                        <signal name="toggled" handler="on_rbtnNPFoomatic_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1637,7 +1617,7 @@ ipp://printer.mydomain/ipp</property>
                         <property name="use_underline">True</property>
                         <property name="draw_indicator">True</property>
                         <property name="group">rbtnNPFoomatic</property>
-                        <signal name="toggled" handler="on_rbtnNPFoomatic_toggled"/>
+                        <signal name="toggled" handler="on_rbtnNPFoomatic_toggled" swapped="no"/>
                       </object>
                       <packing>
                         <property name="expand">False</property>
@@ -1663,7 +1643,6 @@ ipp://printer.mydomain/ipp</property>
                         <child>
                           <object class="GtkVBox" id="vbox39">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkLabel" id="label105">
@@ -1690,7 +1669,7 @@ ipp://printer.mydomain/ipp</property>
                                   <object class="GtkTreeView" id="tvNPMakes">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <signal name="cursor_changed" handler="on_tvNPMakes_cursor_changed"/>
+                                    <signal name="cursor-changed" handler="on_tvNPMakes_cursor_changed" swapped="no"/>
                                   </object>
                                 </child>
                               </object>
@@ -1712,13 +1691,12 @@ ipp://printer.mydomain/ipp</property>
                         <child>
                           <object class="GtkVBox" id="vbox38">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <property name="spacing">6</property>
                             <child>
                               <object class="GtkLabel" id="label103">
                                 <property name="visible">True</property>
                                 <property name="xalign">0</property>
-                                <property name="label" translatable="yes">PostScript Printer Description (PPD) files can often be found on the driver disk that comes with the printer. For PostScript printers they are often part of the Windows&lt;sup&gt;&#xAE;&lt;/sup&gt; driver.</property>
+                                <property name="label" translatable="yes">PostScript Printer Description (PPD) files can often be found on the driver disk that comes with the printer. For PostScript printers they are often part of the Windows&lt;sup&gt;®&lt;/sup&gt; driver.</property>
                                 <property name="use_markup">True</property>
                                 <property name="wrap">True</property>
                               </object>
@@ -1735,7 +1713,7 @@ ipp://printer.mydomain/ipp</property>
                                   <object class="GtkFileChooserButton" id="filechooserPPD">
                                     <property name="visible">True</property>
                                     <property name="width_chars">40</property>
-                                    <signal name="selection_changed" handler="on_filechooserPPD_selection_changed"/>
+                                    <signal name="selection-changed" handler="on_filechooserPPD_selection_changed" swapped="no"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1792,7 +1770,7 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <accelerator key="Return" signal="activate"/>
-                                    <signal name="activate" handler="on_btnNPDownloadableDriverSearch_clicked" object="btnNPDownloadableDriverSearch"/>
+                                    <signal name="activate" handler="on_btnNPDownloadableDriverSearch_clicked" object="btnNPDownloadableDriverSearch" swapped="yes"/>
                                   </object>
                                   <packing>
                                     <property name="expand">False</property>
@@ -1805,7 +1783,7 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
                                     <property name="receives_default">False</property>
-                                    <signal name="clicked" handler="on_btnNPDownloadableDriverSearch_clicked"/>
+                                    <signal name="clicked" handler="on_btnNPDownloadableDriverSearch_clicked" swapped="no"/>
                                     <child>
                                       <object class="GtkAlignment" id="alignment89">
                                         <property name="visible">True</property>
@@ -1872,7 +1850,7 @@ ipp://printer.mydomain/ipp</property>
                             <child>
                               <object class="GtkComboBox" id="cmbNPDownloadableDriverFoundPrinters">
                                 <property name="visible">True</property>
-                                <signal name="changed" handler="on_cmbNPDownloadableDriverFoundPrinters_changed"/>
+                                <signal name="changed" handler="on_cmbNPDownloadableDriverFoundPrinters_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="left_attach">1</property>
@@ -1927,7 +1905,6 @@ ipp://printer.mydomain/ipp</property>
               <object class="GtkVBox" id="vbox71">
                 <property name="visible">True</property>
                 <property name="border_width">12</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label233">
@@ -1960,7 +1937,7 @@ ipp://printer.mydomain/ipp</property>
                           <object class="GtkTreeView" id="tvNPModels">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="cursor_changed" handler="on_tvNPModels_cursor_changed"/>
+                            <signal name="cursor-changed" handler="on_tvNPModels_cursor_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -1973,7 +1950,6 @@ ipp://printer.mydomain/ipp</property>
                       <object class="GtkVBox" id="vbox58">
                         <property name="width_request">200</property>
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkScrolledWindow" id="scrolledwindow14">
@@ -1987,7 +1963,7 @@ ipp://printer.mydomain/ipp</property>
                               <object class="GtkTreeView" id="tvNPDrivers">
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
-                                <signal name="cursor_changed" handler="on_tvNPDrivers_cursor_changed"/>
+                                <signal name="cursor-changed" handler="on_tvNPDrivers_cursor_changed" swapped="no"/>
                               </object>
                             </child>
                           </object>
@@ -2049,7 +2025,6 @@ ipp://printer.mydomain/ipp</property>
               <object class="GtkVBox" id="vbox72">
                 <property name="visible">True</property>
                 <property name="border_width">12</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label234">
@@ -2081,7 +2056,7 @@ ipp://printer.mydomain/ipp</property>
                           <object class="GtkTreeView" id="tvNCMembers">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="cursor_changed" handler="on_tvNCMembers_cursor_changed"/>
+                            <signal name="cursor-changed" handler="on_tvNCMembers_cursor_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -2110,7 +2085,7 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="AtkObject::accessible-description" translatable="yes">move left</property>
                                   </object>
                                 </child>
-                                <signal name="clicked" handler="on_btnNCAddMember_clicked"/>
+                                <signal name="clicked" handler="on_btnNCAddMember_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkAlignment" id="alignment33">
                                     <property name="visible">True</property>
@@ -2165,7 +2140,7 @@ ipp://printer.mydomain/ipp</property>
                                     <property name="AtkObject::accessible-description" translatable="yes">move right</property>
                                   </object>
                                 </child>
-                                <signal name="clicked" handler="on_btnNCDelMember_clicked"/>
+                                <signal name="clicked" handler="on_btnNCDelMember_clicked" swapped="no"/>
                                 <child>
                                   <object class="GtkImage" id="image15">
                                     <property name="visible">True</property>
@@ -2198,7 +2173,7 @@ ipp://printer.mydomain/ipp</property>
                           <object class="GtkTreeView" id="tvNCNotMembers">
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
-                            <signal name="cursor_changed" handler="on_tvNCNotMembers_cursor_changed"/>
+                            <signal name="cursor-changed" handler="on_tvNCNotMembers_cursor_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -2230,7 +2205,6 @@ ipp://printer.mydomain/ipp</property>
               <object class="GtkVBox" id="vbox73">
                 <property name="visible">True</property>
                 <property name="border_width">12</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label235">
@@ -2250,7 +2224,6 @@ ipp://printer.mydomain/ipp</property>
                 <child>
                   <object class="GtkVBox" id="vbox41">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkLabel" id="label116">
@@ -2362,7 +2335,6 @@ ipp://printer.mydomain/ipp</property>
                       <object class="GtkVBox" id="vbox74">
                         <property name="visible">True</property>
                         <property name="border_width">12</property>
-                        <property name="orientation">vertical</property>
                         <property name="spacing">12</property>
                         <child>
                           <object class="GtkLabel" id="label236">
@@ -2382,7 +2354,6 @@ ipp://printer.mydomain/ipp</property>
                         <child>
                           <object class="GtkVBox" id="vbox59">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label193">
                                 <property name="visible">True</property>
@@ -2418,7 +2389,6 @@ ipp://printer.mydomain/ipp</property>
                                     <child>
                                       <object class="GtkVBox" id="vbNPInstallOptions">
                                         <property name="visible">True</property>
-                                        <property name="orientation">vertical</property>
                                         <property name="spacing">6</property>
                                         <child>
                                           <object class="GtkLabel" id="label240">
@@ -2468,7 +2438,6 @@ ipp://printer.mydomain/ipp</property>
               <object class="GtkVBox" id="vbox75">
                 <property name="visible">True</property>
                 <property name="border_width">12</property>
-                <property name="orientation">vertical</property>
                 <property name="spacing">12</property>
                 <child>
                   <object class="GtkLabel" id="label237">
@@ -2488,12 +2457,10 @@ ipp://printer.mydomain/ipp</property>
                 <child>
                   <object class="GtkVBox" id="vbox63">
                     <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkVBox" id="vbox64">
                         <property name="visible">True</property>
-                        <property name="orientation">vertical</property>
                         <property name="spacing">6</property>
                         <child>
                           <object class="GtkLabel" id="label211">
@@ -2553,7 +2520,6 @@ ipp://printer.mydomain/ipp</property>
                         <child>
                           <object class="GtkVBox" id="vbox65">
                             <property name="visible">True</property>
-                            <property name="orientation">vertical</property>
                             <child>
                               <object class="GtkLabel" id="label214">
                                 <property name="visible">True</property>
@@ -2579,7 +2545,7 @@ ipp://printer.mydomain/ipp</property>
                                   <object class="GtkTreeView" id="tvNPDownloadableDrivers">
                                     <property name="visible">True</property>
                                     <property name="can_focus">True</property>
-                                    <signal name="cursor_changed" handler="on_tvNPDownloadableDrivers_cursor_changed"/>
+                                    <signal name="cursor-changed" handler="on_tvNPDownloadableDrivers_cursor_changed" swapped="no"/>
                                   </object>
                                 </child>
                               </object>
@@ -2623,7 +2589,6 @@ ipp://printer.mydomain/ipp</property>
                               <object class="GtkVBox" id="vbox67">
                                 <property name="visible">True</property>
                                 <property name="border_width">6</property>
-                                <property name="orientation">vertical</property>
                                 <property name="spacing">12</property>
                                 <child>
                                   <object class="GtkTable" id="table20">
@@ -3064,7 +3029,6 @@ ipp://printer.mydomain/ipp</property>
                                         <child>
                                           <object class="GtkVBox" id="vbox66">
                                             <property name="visible">True</property>
-                                            <property name="orientation">vertical</property>
                                             <property name="spacing">12</property>
                                             <child>
                                               <object class="GtkScrolledWindow" id="scrolledwindow26">
@@ -3087,7 +3051,6 @@ ipp://printer.mydomain/ipp</property>
                                             <child>
                                               <object class="GtkVBox" id="vbox3">
                                                 <property name="visible">True</property>
-                                                <property name="orientation">vertical</property>
                                                 <child>
                                                   <object class="GtkRadioButton" id="rbtnNPDownloadLicenseYes">
                                                     <property name="label" translatable="yes">Yes, I accept this license</property>
@@ -3096,7 +3059,7 @@ ipp://printer.mydomain/ipp</property>
                                                     <property name="receives_default">False</property>
                                                     <property name="use_underline">True</property>
                                                     <property name="draw_indicator">True</property>
-                                                    <signal name="toggled" handler="on_rbtnNPDownloadLicense_toggled"/>
+                                                    <signal name="toggled" handler="on_rbtnNPDownloadLicense_toggled" swapped="no"/>
                                                   </object>
                                                   <packing>
                                                     <property name="expand">False</property>
@@ -3218,7 +3181,7 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_btnNPBack_clicked"/>
+                    <signal name="clicked" handler="on_btnNPBack_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3234,7 +3197,7 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_NPCancel"/>
+                    <signal name="clicked" handler="on_NPCancel" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3250,7 +3213,7 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_btnNPApply_clicked"/>
+                    <signal name="clicked" handler="on_btnNPApply_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -3266,7 +3229,7 @@ ipp://printer.mydomain/ipp</property>
                     <property name="can_default">True</property>
                     <property name="receives_default">False</property>
                     <property name="use_stock">True</property>
-                    <signal name="clicked" handler="on_btnNPForward_clicked"/>
+                    <signal name="clicked" handler="on_btnNPForward_clicked" swapped="no"/>
                   </object>
                   <packing>
                     <property name="expand">False</property>

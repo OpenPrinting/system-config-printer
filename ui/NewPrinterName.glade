@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -10,7 +10,6 @@
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox6">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <property name="spacing">6</property>
         <child>
           <object class="GtkLabel" id="label102">
@@ -29,7 +28,7 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <property name="has_focus">True</property>
-            <signal name="changed" handler="on_entDuplicateName_changed"/>
+            <signal name="changed" handler="on_entDuplicateName_changed" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>

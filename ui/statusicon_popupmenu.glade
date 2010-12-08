@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
@@ -8,16 +8,16 @@
         <property name="visible">True</property>
         <property name="label" translatable="yes">_Hide</property>
         <property name="use_underline">True</property>
-        <signal name="activate" handler="on_icon_hide_activate"/>
+        <signal name="activate" handler="on_icon_hide_activate" swapped="no"/>
       </object>
     </child>
     <child>
       <object class="GtkImageMenuItem" id="configure_printers">
-        <property name="label" translatable="yes">_Configure Printers</property>
+        <property name="label">_Configure Printers</property>
         <property name="visible">True</property>
         <property name="use_underline">True</property>
         <property name="use_stock">True</property>
-        <signal name="activate" handler="on_icon_configure_printers_activate"/>
+        <signal name="activate" handler="on_icon_configure_printers_activate" swapped="no"/>
       </object>
     </child>
     <child>
@@ -31,7 +31,7 @@
         <property name="visible">True</property>
         <property name="use_underline">True</property>
         <property name="use_stock">True</property>
-        <signal name="activate" handler="on_icon_quit_activate"/>
+        <signal name="activate" handler="on_icon_quit_activate" swapped="no"/>
       </object>
     </child>
   </object>

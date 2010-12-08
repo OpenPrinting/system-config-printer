@@ -1,15 +1,14 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy toplevel-contextual -->
   <object class="GtkWindow" id="JobsWindow">
     <property name="height_request">200</property>
     <property name="title">Document Print Status</property>
-    <signal name="delete_event" handler="on_delete_event"/>
+    <signal name="delete-event" handler="on_delete_event" swapped="no"/>
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="orientation">vertical</property>
         <child>
           <object class="GtkToolbar" id="toolbar">
             <property name="visible">True</property>
@@ -22,7 +21,7 @@
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-refresh</property>
                 <accelerator key="r" signal="clicked" modifiers="GDK_CONTROL_MASK"/>
-                <signal name="clicked" handler="on_refresh_clicked"/>
+                <signal name="clicked" handler="on_refresh_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -37,7 +36,7 @@
                 <property name="label" translatable="yes">Show _completed jobs</property>
                 <property name="use_underline">True</property>
                 <property name="stock_id">gtk-ok</property>
-                <signal name="clicked" handler="on_show_completed_jobs_clicked"/>
+                <signal name="clicked" handler="on_show_completed_jobs_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
