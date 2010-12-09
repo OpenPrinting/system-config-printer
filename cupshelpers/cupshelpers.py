@@ -491,7 +491,7 @@ def parseDeviceID (id):
         if piece.find(":") == -1:
             continue
         name, value = piece.split(":",1)
-        id_dict[name] = value
+        id_dict[name.strip ()] = value.strip()
     if id_dict.has_key ("MANUFACTURER"):
         id_dict.setdefault("MFG", id_dict["MANUFACTURER"])
     if id_dict.has_key ("MODEL"):
