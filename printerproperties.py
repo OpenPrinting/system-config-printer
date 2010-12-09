@@ -1183,14 +1183,20 @@ class PrinterPropertiesDialog(GtkGUI):
 
             # Treat it as a raw queue.
             self.ppd = False
-        except RuntimeError:
-            # The underlying cupsGetPPD2() function returned NULL without
-            # setting an IPP error, so it'll be something like a failed
-            # connection.
-            show_error_dialog (_("Error"),
-                               _("There was a problem connecting to "
-                                 "the CUPS server."),
-                               self.parent)
+        except RuntimeError, e:
+            # Either the underlying cupsGetPPD2() function returned
+            # NULL without setting an IPP error (so it'll be something
+            # like a failed connection), or the PPD could not be parsed.
+            if e.message.startswith ("ppd"):
+                show_error_dialog (_("Error"),
+                                   _("The PPD file for this queue "
+                                     "is damaged."),
+                                   self.parent)
+            else:
+                show_error_dialog (_("Error"),
+                                   _("There was a problem connecting to "
+                                     "the CUPS server."),
+                                   self.parent)
             raise
 
         for widget in (self.entPDescription, self.entPLocation,
