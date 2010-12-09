@@ -95,9 +95,13 @@ class PPDCache:
         tmpf = file (tmpfname, "w")
         tmpf.writelines (f.readlines ())
         del tmpf
-        ppd = cups.PPD (tmpfname)
-        os.unlink (tmpfname)
-        self._schedule_callback (callback, name, ppd, None)
+        try:
+            ppd = cups.PPD (tmpfname)
+            os.unlink (tmpfname)
+            self._schedule_callback (callback, name, ppd, None)
+        except Exception, e:
+            os.unlink (tmpfname)
+            self._schedule_callback (callback, name, None, e)
 
     def _connect (self, callback=None):
         self._connecting = True
