@@ -3091,7 +3091,7 @@ class GUI(GtkGUI, monitor.Watcher):
         self.rename_sigids = ids
         self.rename_entry_sigid = None
         self.dests_iconview.set_cursor (path, cell, start_editing=True)
-        self.dests_iconview.grab_focus ()
+        cell.grab_focus ()
 
     def printer_name_edit_start (self, cell, editable, path):
         debugprint ("editing-started")
