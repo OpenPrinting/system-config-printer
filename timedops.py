@@ -18,12 +18,20 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+from dbus.mainloop.glib import threads_init
+import glib
 import gobject
 import gtk
 import subprocess
 import threading
 from gettext import gettext as _
 from debug import *
+
+# Initialise threading for D-Bus.  This is needed as long as it is
+# used from two separate threads.  We only do this in a few places
+# now, but in particular the troubleshooter does this (bug #662047).
+glib.threads_init ()
+dbus.mainloop.glib_threads_init ()
 
 class OperationCanceled(RuntimeError):
     pass
