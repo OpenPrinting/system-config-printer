@@ -2147,6 +2147,7 @@ class NewPrinterGUI(GtkGUI):
         for char in origtext:
             if char not in allowed_chars:
                 new_text = new_text.replace(char, "")
+                debugprint ("removed disallowed character %s" % char)
         if origtext!=new_text:
             entry.set_text(new_text)
 
