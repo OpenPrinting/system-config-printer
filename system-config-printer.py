@@ -3015,7 +3015,9 @@ class GUI(GtkGUI, monitor.Watcher):
     # Quit
 
     def on_quit_activate(self, widget, event=None):
-        self.monitor.cleanup ()
+        if self.monitor:
+            self.monitor.cleanup ()
+
         while len (self.jobviewers) > 0:
             # this will call on_jobviewer_exit
             self.jobviewers[0].on_delete_event ()
