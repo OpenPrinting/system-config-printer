@@ -1418,7 +1418,7 @@ do_add (const char *cmd, const char *devpath)
 
   if (!id.mfg || !id.mdl)
     {
-      syslog (LOG_ERR, "invalid or missing IEEE 1284 Device ID%s%s",
+      syslog (LOG_DEBUG, "invalid or missing IEEE 1284 Device ID%s%s",
 	      id.full_device_id ? " " : "",
 	      id.full_device_id ? id.full_device_id : "");
       exit (1);
