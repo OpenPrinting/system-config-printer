@@ -5640,6 +5640,10 @@ class NewPrinterGUI(GtkGUI):
 
     def entry_changed(self, entry, allowed_chars):
         "Remove all chars from entry's text that are not in allowed_chars."
+        try:
+            allowed_chars = unicode (allowed_chars, locale.getpreferredencoding())
+        except UnicodeDecodeError:
+            allowed_chars = unicode (allowed_chars)
         origtext = unicode (entry.get_text())
         new_text = origtext
         for char in origtext:
