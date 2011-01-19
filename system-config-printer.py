@@ -6474,10 +6474,11 @@ class NewPrinterGUI(GtkGUI):
 
             self.NPDrivers = drivers
 
-        duplicates = []
         driverlist = []
-        for i in range (len(self.NPDrivers)):
-            ppd = ppds[self.NPDrivers[i]]
+        NPDrivers = []
+        i = 0
+        for ppdname in self.NPDrivers:
+            ppd = ppds[ppdname]
             driver = ppd["ppd-make-and-model"]
             driver = driver.replace(" (recommended)", "")
 
@@ -6487,19 +6488,20 @@ class NewPrinterGUI(GtkGUI):
             except KeyError:
                 pass
 
-            duplicate = False
-            if driver in driverlist:
-                duplicate = True
-                duplicates.insert (i, 0)
-            else:
-                driverlist.append (driver)
+            duplicate = driver in driverlist
 
-            if not self.device and self.auto_driver == self.NPDrivers[i]:
+            if not self.device and self.auto_driver == ppdname:
+                driverlist.append (driver)
+                NPDrivers.append (ppdname)
+                i += 1
                 iter = model.append ((driver + _(" (Current)"),))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
-            elif self.device and self.recommended_model_selected and i == 0:
+            elif self.device and i == 0:
+                driverlist.append (driver)
+                NPDrivers.append (ppdname)
+                i += 1
                 iter = model.append ((driver + _(" (recommended)"),))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
@@ -6507,11 +6509,12 @@ class NewPrinterGUI(GtkGUI):
             else:
                 if duplicate:
                     continue
+                driverlist.append (driver)
+                NPDrivers.append (ppdname)
+                i += 1
                 model.append((driver, ))
 
-        for i in duplicates:
-            del self.NPDrivers[i]
-
+        self.NPDrivers = NPDrivers
         self.tvNPDrivers.columns_autosize()
 
     def on_NPDrivers_query_tooltip(self, tv, x, y, keyboard_mode, tooltip):
