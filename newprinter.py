@@ -3043,7 +3043,8 @@ class NewPrinterGUI(GtkGUI):
 
             duplicate = driver in driverlist
 
-            if not self.device and self.auto_driver == ppdname:
+            if (not (self.device and self.device.make_and_model) and
+                self.auto_driver == ppdname):
                 driverlist.append (driver)
                 NPDrivers.append (ppdname)
                 i += 1
