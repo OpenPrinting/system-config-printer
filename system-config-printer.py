@@ -4252,14 +4252,18 @@ class NewPrinterGUI(GtkGUI):
                     attr = ppd.findAttr("ModelName")
 
                 if attr and attr.value:
-                    mfgmdl = cupshelpers.ppds.ppdMakeModelSplit (attr.value)
+                    value = attr.value
+                    if value.endswith (" (recommended)"):
+                        value = value[:-14]
+
+                    mfgmdl = cupshelpers.ppds.ppdMakeModelSplit (value)
                     (self.auto_make, self.auto_model) = mfgmdl
 
                     # Search for ppdname with that make-and-model
                     ppds = self.ppds.getInfoFromModel (self.auto_make,
                                                        self.auto_model)
                     for ppd, info in ppds.iteritems ():
-                        if info.get ("ppd-make-and-model") == attr.value:
+                        if info.get ("ppd-make-and-model") == value:
                             self.auto_driver = ppd
                             break
             else:
