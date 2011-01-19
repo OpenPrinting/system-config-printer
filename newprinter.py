@@ -735,7 +735,11 @@ class NewPrinterGUI(GtkGUI):
                 attr = self.orig_ppd.findAttr("ModelName")
 
             if attr and attr.value:
-                mfgmdl = cupshelpers.ppds.ppdMakeModelSplit (attr.value)
+                value = attr.value
+                if value.endswith (" (recommended)"):
+                    value = value[:-14]
+
+                mfgmdl = cupshelpers.ppds.ppdMakeModelSplit (value)
                 (self.auto_make, self.auto_model) = mfgmdl
 
                 # Search for ppdname with that make-and-model
@@ -743,7 +747,7 @@ class NewPrinterGUI(GtkGUI):
                                                    self.auto_model)
                 for ppd, info in ppds.iteritems ():
                     if _singleton (info.
-                                   get ("ppd-make-and-model")) == attr.value:
+                                   get ("ppd-make-and-model")) == value:
                         self.auto_driver = ppd
                         break
         else:
@@ -3023,10 +3027,11 @@ class NewPrinterGUI(GtkGUI):
 
                 self.NPDrivers = drivers
 
-        duplicates = []
         driverlist = []
-        for i in range (len(self.NPDrivers)):
-            ppd = self.ppds.getInfoFromPPDName (self.NPDrivers[i])
+        NPDrivers = []
+        i = 0
+        for ppdname in self.NPDrivers:
+            ppd = self.ppds.getInfoFromPPDName (ppdname)
             driver = _singleton (ppd["ppd-make-and-model"])
             driver = driver.replace(" (recommended)", "")
 
@@ -3036,19 +3041,20 @@ class NewPrinterGUI(GtkGUI):
             except KeyError:
                 pass
 
-            duplicate = False
-            if driver in driverlist:
-                duplicate = True
-                duplicates.insert (i, 0)
-            else:
-                driverlist.append (driver)
+            duplicate = driver in driverlist
 
-            if not self.device and self.auto_driver == self.NPDrivers[i]:
+            if not self.device and self.auto_driver == ppdname:
+                driverlist.append (driver)
+                NPDrivers.append (ppdname)
+                i += 1
                 iter = model.append ((driver + _(" (Current)"),))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
                 self.tvNPDrivers.scroll_to_cell(path, None, True, 0.5, 0.0)
-            elif self.device and self.recommended_model_selected and i == 0:
+            elif self.device and i == 0:
+                driverlist.append (driver)
+                NPDrivers.append (ppdname)
+                i += 1
                 iter = model.append ((driver + _(" (recommended)"),))
                 path = model.get_path (iter)
                 self.tvNPDrivers.get_selection().select_path(path)
@@ -3056,11 +3062,12 @@ class NewPrinterGUI(GtkGUI):
             else:
                 if duplicate:
                     continue
+                driverlist.append (driver)
+                NPDrivers.append (ppdname)
+                i += 1
                 model.append((driver, ))
 
-        for i in duplicates:
-            del self.NPDrivers[i]
-
+        self.NPDrivers = NPDrivers
         self.tvNPDrivers.columns_autosize()
 
     def on_NPDrivers_query_tooltip(self, tv, x, y, keyboard_mode, tooltip):
