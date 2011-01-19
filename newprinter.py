@@ -2156,7 +2156,7 @@ class NewPrinterGUI(GtkGUI):
             entry.set_text(new_text)
 
     def on_entNPTDevice_changed(self, ent):
-        allowed_chars = string.letters+string.digits+'_-./:'
+        allowed_chars = string.letters+string.digits+'_-./:%()'
         self.entry_changed(ent, allowed_chars)
         self.setNPButtons()
 
@@ -3023,6 +3023,7 @@ class NewPrinterGUI(GtkGUI):
 
                 self.NPDrivers = drivers
 
+        duplicates = []
         driverlist = []
         for i in range (len(self.NPDrivers)):
             ppd = self.ppds.getInfoFromPPDName (self.NPDrivers[i])
@@ -3038,6 +3039,7 @@ class NewPrinterGUI(GtkGUI):
             duplicate = False
             if driver in driverlist:
                 duplicate = True
+                duplicates.insert (i, 0)
             else:
                 driverlist.append (driver)
 
@@ -3055,6 +3057,10 @@ class NewPrinterGUI(GtkGUI):
                 if duplicate:
                     continue
                 model.append((driver, ))
+
+        for i in duplicates:
+            del self.NPDrivers[i]
+
         self.tvNPDrivers.columns_autosize()
 
     def on_NPDrivers_query_tooltip(self, tv, x, y, keyboard_mode, tooltip):
