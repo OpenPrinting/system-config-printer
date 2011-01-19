@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -81,6 +81,7 @@ class PrinterPropertiesDialog(GtkGUI):
         self.printer = self.ppd = None
         self.conflicts = set() # of options
         self.changed = set() # of options
+        self.signal_ids = dict()
 
         # WIDGETS
         # =======
@@ -460,9 +461,26 @@ class PrinterPropertiesDialog(GtkGUI):
         debugprint ("+%s" % self)
 
     def __del__ (self):
-        # FIXME: Disconnect signal handlers
         debugprint ("-%s" % self)
         del self._monitor
+
+    def _connect (self, collection, obj, name, handler):
+        c = self.signal_ids.get (collection, [])
+        c.append ((obj, obj.connect (name, handler)))
+        self.signal_ids[collection] = c
+
+    def _disconnect (self, collection=None):
+        if collection:
+            collection = [collection]
+        else:
+            collection = self.signal_ids.keys ()
+
+        for coll in collection:
+            if self.signal_ids.has_key (coll):
+                for (obj, signal_id) in self.signal_ids[coll]:
+                    obj.disconnect (signal_id)
+
+                del self.signal_ids[coll]
 
     def do_destroy (self):
         debugprint ("DESTROY: %s" % self)
@@ -471,6 +489,7 @@ class PrinterPropertiesDialog(GtkGUI):
             self.PrinterPropertiesDialog = None
 
     def destroy (self):
+        self._disconnect ()
         self.ppd = None
         self.ppd_local = None
         self.printer = None
@@ -504,7 +523,10 @@ class PrinterPropertiesDialog(GtkGUI):
         self._ppdcache = ppdcache.PPDCache (host=host,
                                             encryption=encryption)
 
+        self._disconnect ("newPrinterGUI")
         self.newPrinterGUI = newprinter.NewPrinterGUI ()
+        self._connect ("newPrinterGUI", self.newPrinterGUI,
+                       "printer-modified", self.on_printer_modified)
         if parent:
             self.dialog.set_transient_for (parent)
 
@@ -1714,14 +1736,19 @@ class PrinterPropertiesDialog(GtkGUI):
                                 parent=self.dialog)
         ready (self.dialog)
 
-    # Monitor signal handlers
-    def on_printer_event (self, mon, printer, eventname, event):
+    # NewPrinterGUI signal handlers
+    def on_printer_modified (self, obj, name):
+        debugprint ("on_printer_modified called")
         if self.dialog.get_property ('visible'):
             try:
                 self.printer.getAttributes ()
                 self.updatePrinterProperties ()
             except cups.IPPError:
                 pass
+
+    # Monitor signal handlers
+    def on_printer_event (self, mon, printer, eventname, event):
+        self.on_printer_modified (None, printer)
 
     def on_printer_removed (self, mon, printer):
         if (self.dialog.get_property ('visible') and
