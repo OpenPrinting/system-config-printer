@@ -1,5 +1,5 @@
 
-## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Jiri Popelka <jpopelka@redhat.com>
@@ -68,9 +68,22 @@ class PrinterURIIndex:
     def __init__ (self, names=[]):
         self.printer = {}
         self.names = names
-        c = cups.Connection ()
-        for name in names:
+        self._collect_names ()
+
+    def _collect_names (self, connection=None):
+        if not self.names:
+            return
+
+        if not connection:
+            try:
+                c = cups.Connection ()
+            except RuntimeError:
+                return
+
+        for name in self.names:
             self.add_printer (name, connection=c)
+
+        self.names = []
 
     def add_printer (self, printer, connection=None):
         try:
@@ -95,21 +108,25 @@ class PrinterURIIndex:
 
     def remove_printer (self, printer):
         # Remove references to this printer in the URI map.
+        self._collect_names ()
         uris = self.printer.keys ()
         for uri in uris:
             if self.printer[uri] == printer:
                 del self.printer[uri]
 
     def lookup (self, uri, connection=None):
+        self._collect_names ()
         try:
             return self.printer[uri]
         except KeyError:
             return self._map_printer (uri=uri, connection=connection)
 
     def all_printer_names (self):
+        self._collect_names ()
         return set (self.printer.values ())
 
     def lookup_cached_by_name (self, name):
+        self._collect_names ()
         for uri, printer in self.printer.iteritems ():
             if printer == name:
                 return uri
