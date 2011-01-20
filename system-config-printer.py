@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -3091,7 +3091,6 @@ class GUI(GtkGUI, monitor.Watcher):
         self.rename_sigids = ids
         self.rename_entry_sigid = None
         self.dests_iconview.set_cursor (path, cell, start_editing=True)
-        self.dests_iconview.grab_focus ()
 
     def printer_name_edit_start (self, cell, editable, path):
         debugprint ("editing-started")
