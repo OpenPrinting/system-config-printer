@@ -257,9 +257,9 @@ class ServerSettings(GtkGUI):
         iter = model.insert (0, row=[_("Enter IP address")])
         button.set_sensitive (False)
         col = self.browse_treeview.get_columns ()[0]
-        cell = col.get_cell_renderers ()[0]
+        cell = col.get_cells ()[0]
         cell.set_property ('editable', True)
-        self.browse_treeview.set_cursor ((0,), col, start_editing=True)
+        self.browse_treeview.set_cursor (Gtk.TreePath(), col, True)
         self._connect (cell, 'edited', self.on_browse_poll_edited, 'edit')
         self._connect (cell, 'editing-canceled',
                        self.on_browse_poll_edit_cancel, 'edit')
@@ -268,7 +268,7 @@ class ServerSettings(GtkGUI):
         model = self.browse_treeview.get_model ()
         iter = model.get_iter (path)
         model.set_value (iter, 0, newvalue)
-        cell.stop_editing (canceled=False)
+        cell.stop_editing (False)
         cell.set_property ('editable', False)
         self.add.set_sensitive (True)
         self._disconnect ('edit')
@@ -321,7 +321,7 @@ class ServerSettings(GtkGUI):
             model.remove (iter)
 
     def on_browse_poll_edit_cancel (self, cell):
-        cell.stop_editing (canceled=True)
+        cell.stop_editing (True)
         cell.set_property ('editable', False)
         model = self.browse_treeview.get_model ()
         iter = model.get_iter ((0,))
@@ -334,7 +334,7 @@ class ServerSettings(GtkGUI):
         model = self.browse_treeview.get_model ()
         selection = self.browse_treeview.get_selection ()
         rows = selection.get_selected_rows ()
-        refs = map (lambda path: Gtk.TreeRowReference (model, path),
+        refs = map (lambda path: Gtk.TreeRowReference.new (model, path),
                     rows[1])
         for ref in refs:
             path = ref.get_path ()

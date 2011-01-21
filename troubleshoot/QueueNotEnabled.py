@@ -19,6 +19,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+from gi.repository import Gtk
+
 import cups
 from base import *
 class QueueNotEnabled(Question):

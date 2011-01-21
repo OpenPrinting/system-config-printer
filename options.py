@@ -31,7 +31,7 @@ def OptionWidget(name, v, s, on_change):
                 if not isinstance(vv, str): raise ValueError
             return OptionSelectMany(name, v, s, on_change)
         print v, s
-        raise NotImplemented
+        raise NotImplementedError
     else:
         if (isinstance(s, int) or
             isinstance(s, float) or
@@ -69,10 +69,10 @@ class OptionInterface:
         return None
 
     def get_current_value(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def is_changed(self):
-        raise NotImplemented
+        raise NotImplementedError
 
 class OptionAlwaysShown(OptionInterface):
     # States
@@ -176,7 +176,7 @@ class OptionAlwaysShown(OptionInterface):
         t = type(self.widget)
         if t == Gtk.SpinButton:
             return self.widget.set_value (ipp_value)
-        elif t == Gtk.ComboBox:
+        elif t == Gtk.ComboBox or t == Gtk.ComboBoxText:
             if self.ipp_type == str and self.combobox_map == None:
                 model = self.widget.get_model ()
                 iter = model.get_iter_first ()
@@ -195,7 +195,7 @@ class OptionAlwaysShown(OptionInterface):
         elif t == Gtk.CheckButton:
             return self.widget.set_active (ipp_value)
         else:
-            raise NotImplemented
+            raise NotImplementedError
 
     def get_widget_value(self):
         t = type(self.widget)
@@ -215,13 +215,16 @@ class OptionAlwaysShown(OptionInterface):
             if self.combobox_map:
                 return self.combobox_map[self.widget.get_active()]
             if self.ipp_type == str:
-                return self.widget.get_active_text ()
+                raise TypeError, 'you need to convert this widget to GtkComboBoxText:' + str(self.widget)
             return self.ipp_type (self.widget.get_active ())
+        elif t == Gtk.ComboBoxText:
+            if self.ipp_type == str:
+                return self.widget.get_active_text ()
         elif t == Gtk.CheckButton:
             return self.ipp_type (self.widget.get_active ())
 
-        print t
-        raise NotImplemented
+        print t, self.widget, self.ipp_type
+        raise NotImplementedError
 
     def get_current_value(self):
         return self.get_widget_value ()
@@ -323,7 +326,7 @@ class Option(OptionInterface):
         self.label.set_alignment(0.0, 0.5)
 
     def get_current_value(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def is_changed(self):
         return (self.is_new or
@@ -362,7 +365,7 @@ class OptionSelectOne(Option):
 class OptionSelectOneNumber(OptionSelectOne):
 
     def get_current_value(self):
-        return int(self.selector.get_active_text())
+        return int(self.selector.get_active_text() or 0)
 
 # ---------------------------------------------------------------------------
 

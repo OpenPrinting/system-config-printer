@@ -25,8 +25,7 @@ from gettext import gettext as _
 N_ = lambda x: x
 from debug import *
 
-__all__ = [ 'gtk',
-            '_',
+__all__ = [ '_',
             'debugprint', 'get_debugging', 'set_debugging',
             'Question',
             'Multichoice',
@@ -89,10 +88,13 @@ class Multichoice(Question):
         page.pack_start (choice_vbox, False, False, 0)
         self.question_tag = question_tag
         self.widgets = []
+        button = None
         for choice, tag in choices:
-            button = Gtk.RadioButton (label=choice)
-            if len (self.widgets) > 0:
-                button.set_group (self.widgets[0][0])
+            if button:
+                button = Gtk.RadioButton.new_with_label_from_widget(button, choice)
+            else:
+                # special case to work around GNOME#635253
+                button = Gtk.RadioButton.new_with_label([], choice)
             choice_vbox.pack_start (button, False, False, 0)
             self.widgets.append ((button, tag))
 

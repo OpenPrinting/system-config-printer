@@ -25,6 +25,8 @@ import dbus
 import dbus.glib
 import gobject
 import os
+from gi.repository import Gdk
+from gi.repository import Gtk
 from gi.repository import Pango
 import tempfile
 import time
@@ -106,7 +108,7 @@ class PrintTestPage(Question):
         sw.set_shadow_type (Gtk.ShadowType.IN)
         sw.add (tv)
         self.treeview = tv
-        page.pack_start (sw)
+        page.pack_start (sw, False, False, 0)
 
         label = Gtk.Label(label=_("Did the marked print jobs print correctly?"))
         label.set_line_wrap (True)
@@ -116,8 +118,7 @@ class PrintTestPage(Question):
         vbox = Gtk.VBox ()
         vbox.set_spacing (6)
         self.yes = Gtk.RadioButton (label=_("Yes"))
-        no = Gtk.RadioButton (label=_("No"))
-        no.set_group (self.yes)
+        no = Gtk.RadioButton.new_with_label_from_widget (self.yes, _("No"))
         vbox.pack_start (self.yes, False, False, 0)
         vbox.pack_start (no, False, False, 0)
         page.pack_start (vbox, False, False, 0)

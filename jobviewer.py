@@ -30,7 +30,6 @@ import glib
 import gobject
 from gi.repository import Gdk
 from gi.repository import Gtk
-import Gtk.gdk
 from gui import GtkGUI
 import monitor
 import os, shutil
@@ -177,14 +176,13 @@ class CancelJobsOperation(gobject.GObject):
 
         dialog = Gtk.Dialog (dialog_title, parent,
                              Gtk.DialogFlags.MODAL |
-                             Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                             Gtk.DialogFlags.NO_SEPARATOR,
+                             Gtk.DialogFlags.DESTROY_WITH_PARENT,
                              (_("Keep Printing"), Gtk.ResponseType.NO,
                               dialog_title, Gtk.ResponseType.YES))
         dialog.set_default_response (Gtk.ResponseType.NO)
         dialog.set_border_width (6)
         dialog.set_resizable (False)
-        hbox = Gtk.HBox (False, 12)
+        hbox = Gtk.HBox.new (False, 12)
         image = Gtk.Image ()
         image.set_from_stock (Gtk.STOCK_DIALOG_QUESTION, Gtk.IconSize.DIALOG)
         image.set_alignment (0.0, 0.0)
@@ -443,7 +441,7 @@ class JobViewer (GtkGUI):
                 cell.set_property ("ellipsize", Pango.EllipsizeMode.END)
                 cell.set_property ("width-chars", 20)
             column = Gtk.TreeViewColumn(name, cell)
-            column.set_cell_data_func (cell, setter)
+            column.set_cell_data_func (cell, setter, None)
             column.set_resizable(True)
             self.treeview.append_column(column)
 
@@ -459,8 +457,8 @@ class JobViewer (GtkGUI):
         text.set_property ("ellipsize", Pango.EllipsizeMode.END)
         text.set_property ("width-chars", 20)
         column.pack_start (text, True)
-        column.set_cell_data_func (icon, self._set_job_status_icon)
-        column.set_cell_data_func (text, self._set_job_status_text)
+        column.set_cell_data_func (icon, self._set_job_status_icon, None)
+        column.set_cell_data_func (text, self._set_job_status_text, None)
         self.treeview.append_column (column)
 
         self.store = Gtk.TreeStore(int, str)
@@ -503,7 +501,7 @@ class JobViewer (GtkGUI):
             except gobject.GError:
                 debugprint ("No %s icon available" % icon)
                 # Just create an empty pixbuf.
-                pixbuf = GdkPixbuf.Pixbuf (GdkPixbuf.Colorspace.RGB,
+                pixbuf = GdkPixbuf.Pixbuf (Gdk.COLORSPACE_RGB,
                                          True, 8, ICON_SIZE, ICON_SIZE)
                 pixbuf.fill (0)
             return pixbuf
@@ -588,7 +586,7 @@ class JobViewer (GtkGUI):
         toolbar.insert (item, 0)
         vbox.pack_start (toolbar, False, False, 0)
         self.notebook = Gtk.Notebook()
-        vbox.pack_start (self.notebook)
+        vbox.pack_start (self.notebook, False, False, 0)
 
     def cleanup (self):
         self.monitor.cleanup ()
@@ -1894,13 +1892,13 @@ class JobViewer (GtkGUI):
                 dialog.set_border_width (6)
                 dialog.set_resizable (False)
                 dialog.set_icon_name (ICON)
-                hbox = Gtk.HBox (False, 12)
+                hbox = Gtk.HBox.new (False, 12)
                 hbox.set_border_width (6)
                 image = Gtk.Image ()
                 image.set_from_stock (Gtk.STOCK_DIALOG_ERROR,
                                       Gtk.IconSize.DIALOG)
                 hbox.pack_start (image, False, False, 0)
-                vbox = Gtk.VBox (False, 12)
+                vbox = Gtk.VBox.new (False, 12)
 
                 markup = ('<span weight="bold" size="larger">' +
                           _("Print Error") + '</span>\n\n' +
@@ -1920,7 +1918,7 @@ class JobViewer (GtkGUI):
                 label.set_alignment (0, 0)
                 vbox.pack_start (label, False, False, 0)
                 hbox.pack_start (vbox, False, False, 0)
-                dialog.vbox.pack_start (hbox)
+                dialog.vbox.pack_start (hbox, False, False, 0)
                 dialog.connect ('response',
                                 self.print_error_dialog_response, jobid)
                 self.stopped_job_prompts.add (jobid)

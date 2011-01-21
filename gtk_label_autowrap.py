@@ -23,6 +23,8 @@ from pango import SCALE
 
 ### set autowrapping for all labels in this widget tree
 def set_autowrap(widget):
+    return #TODO: currently doesn't work with GTK/pygi, and it is not really
+           # making a visible improvement anyway
     if isinstance(widget, Gtk.Container):
         children = widget.get_children()
         for i in xrange(len(children)):

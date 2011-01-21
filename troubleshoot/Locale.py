@@ -21,6 +21,8 @@
 
 import locale
 
+from gi.repository import Gtk
+
 from base import *
 
 class Locale(Question):
@@ -35,7 +37,7 @@ class Locale(Question):
         table = Gtk.Table (2, 2)
         table.set_row_spacings (6)
         table.set_col_spacings (6)
-        page.pack_start (table)
+        page.pack_start (table, False, False, 0)
         self.printer_page_size = Gtk.Label ()
         self.printer_page_size.set_alignment (0, 0)
         self.job_page_size = Gtk.Label ()

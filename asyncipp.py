@@ -631,12 +631,12 @@ if __name__ == "__main__":
             b = Gtk.Button ("Connect")
             b.connect ("clicked", self.connect_clicked)
             vbox = Gtk.VBox ()
-            vbox.pack_start (b)
+            vbox.pack_start (b, False, False, 0)
             w.add (vbox)
             self.get_devices_button = Gtk.Button ("Get Devices")
             self.get_devices_button.connect ("clicked", self.get_devices)
             self.get_devices_button.set_sensitive (False)
-            vbox.pack_start (self.get_devices_button)
+            vbox.pack_start (self.get_devices_button, False, False, 0)
             self.conn = None
             w.show_all ()
 

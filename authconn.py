@@ -35,7 +35,7 @@ class AuthDialog(Gtk.Dialog):
                 'domain': N_("Domain:")}
 
     def __init__ (self, title=None, parent=None,
-                  flags=Gtk.DialogFlags.MODAL | Gtk.DialogFlags.NO_SEPARATOR,
+                  flags=Gtk.DialogFlags.MODAL,
                   buttons=(Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                            Gtk.STOCK_OK, Gtk.ResponseType.OK),
                   auth_info_required=['username', 'password'],
@@ -47,14 +47,14 @@ class AuthDialog(Gtk.Dialog):
         self.set_default_response (Gtk.ResponseType.OK)
         self.set_border_width (6)
         self.set_resizable (False)
-        hbox = Gtk.HBox (False, 12)
+        hbox = Gtk.HBox.new (False, 12)
         hbox.set_border_width (6)
         image = Gtk.Image ()
         image.set_from_stock (Gtk.STOCK_DIALOG_AUTHENTICATION,
                               Gtk.IconSize.DIALOG)
         image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
-        vbox = Gtk.VBox (False, 12)
+        vbox = Gtk.VBox.new (False, 12)
         self.prompt_label = Gtk.Label ()
         vbox.pack_start (self.prompt_label, False, False, 0)
 
@@ -77,12 +77,12 @@ class AuthDialog(Gtk.Dialog):
         self.field_entry[num_fields - 1].set_activates_default (True)
         vbox.pack_start (table, False, False, 0)
         hbox.pack_start (vbox, False, False, 0)
-        self.vbox.pack_start (hbox)
+        self.vbox.pack_start (hbox, False, False, 0)
 
         if allow_remember:
             cb = Gtk.CheckButton (_("Remember password"))
             cb.set_active (False)
-            vbox.pack_start (cb)
+            vbox.pack_start (cb, False, False, 0)
             self.remember_checkbox = cb
 
         self.vbox.show_all ()

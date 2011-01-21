@@ -102,37 +102,35 @@ class UserDefaultPrompt:
         dialog = Gtk.Dialog (title,
                              parent,
                              Gtk.DialogFlags.MODAL |
-                             Gtk.DialogFlags.DESTROY_WITH_PARENT |
-                             Gtk.DialogFlags.NO_SEPARATOR,
+                             Gtk.DialogFlags.DESTROY_WITH_PARENT,
                              (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                               Gtk.STOCK_OK, Gtk.ResponseType.OK))
         dialog.set_default_response (Gtk.ResponseType.OK)
         dialog.set_border_width (6)
         dialog.set_resizable (False)
-        hbox = Gtk.HBox (False, 12)
+        hbox = Gtk.HBox.new (False, 12)
         hbox.set_border_width (6)
         image = Gtk.Image ()
         image.set_from_stock (Gtk.STOCK_DIALOG_QUESTION, Gtk.IconSize.DIALOG)
         image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
-        vboxouter = Gtk.VBox (False, 6)
+        vboxouter = Gtk.VBox.new (False, 6)
         primary = Gtk.Label ()
         primary.set_markup ('<span weight="bold" size="larger">' +
                             primarylabel + '</span>')
         primary.set_line_wrap (True)
         primary.set_alignment (0.0, 0.0)
         vboxouter.pack_start (primary, False, False, 0)
-        vboxradio = Gtk.VBox (False, 0)
+        vboxradio = Gtk.VBox.new (False, 0)
         systemwide = Gtk.RadioButton (label=systemwidelabel)
         vboxradio.pack_start (systemwide, False, False, 0)
         clearpersonal = Gtk.CheckButton (clearpersonallabel)
-        alignment = Gtk.Alignment (0, 0, 0, 0)
+        alignment = Gtk.Alignment.new (0, 0, 0, 0)
         alignment.set_padding (0, 0, 12, 0)
         alignment.add (clearpersonal)
-        vboxradio.pack_start (alignment)
+        vboxradio.pack_start (alignment, False, False, 0)
         vboxouter.pack_start (vboxradio, False, False, 0)
-        personal = Gtk.RadioButton (group=systemwide,
-                                    label=personallabel)
+        personal = Gtk.RadioButton.new_with_label_from_widget(systemwide, personallabel)
         vboxouter.pack_start (personal, False, False, 0)
         hbox.pack_start (vboxouter, False, False, 0)
         dialog.vbox.pack_start (hbox, False, False, 0)

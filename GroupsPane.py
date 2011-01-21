@@ -48,17 +48,17 @@ class GroupsPane (Gtk.ScrolledWindow):
 
         cell = Gtk.CellRendererPixbuf ()
         column.pack_start (cell, False)
-        column.set_cell_data_func (cell, self.icon_cell_data_func)
+        column.set_cell_data_func (cell, self.icon_cell_data_func, None)
 
         cell = Gtk.CellRendererText ()
         column.pack_start (cell, True)
-        column.set_cell_data_func (cell, self.label_cell_data_func)
+        column.set_cell_data_func (cell, self.label_cell_data_func, None)
 
         # To change the group name in place
         cell.connect ('edited', self.on_group_name_edited)
         cell.connect ('editing-canceled', self.on_group_name_editing_canceled)
 
-        self.tree_view.set_row_separator_func (self.row_separator_func)
+        self.tree_view.set_row_separator_func (self.row_separator_func, None)
         self.tree_view.append_column (column)
 
         self.store = GroupsPaneModel ()
@@ -148,11 +148,11 @@ class GroupsPane (Gtk.ScrolledWindow):
             self.store.append (SavedSearchGroupItem (group_name,
                                                      xml_node = group_node))
 
-    def icon_cell_data_func (self, column, cell, model, iter):
+    def icon_cell_data_func (self, column, cell, model, iter, UNUSED):
         icon = model.get (iter).icon
         cell.set_properties (pixbuf = icon)
 
-    def label_cell_data_func (self, column, cell, model, iter):
+    def label_cell_data_func (self, column, cell, model, iter, UNUSED):
         label = model.get (iter).name
         cell.set_properties (text = label)
 
@@ -188,13 +188,13 @@ class GroupsPane (Gtk.ScrolledWindow):
         if ((event.keyval == Gdk.KEY_BackSpace or
              event.keyval == Gdk.KEY_Delete or
              event.keyval == Gdk.KEY_KP_Delete) and
-            ((event.get_state() & modifiers) == 0)):
+            ((event.get_state()[1] & modifiers) == 0)):
 
             self.delete_selected_group ()
             return True
 
         if ((event.keyval == Gdk.KEY_F2) and
-            ((event.get_state() & modifiers) == 0)):
+            ((event.get_state()[1] & modifiers) == 0)):
 
             self.rename_selected_group ()
             return True
@@ -223,7 +223,7 @@ class GroupsPane (Gtk.ScrolledWindow):
         self.ui_manager.get_action ("/rename-group").set_sensitive (sensitivity)
         self.ui_manager.get_action ("/delete-group").set_sensitive (sensitivity)
 
-    def row_separator_func (self, model, iter):
+    def row_separator_func (self, model, iter, data):
         return model.get (iter).separator
 
     def do_popup_menu (self, event):

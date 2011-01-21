@@ -27,6 +27,7 @@ import config
 import sys, os, time, re
 import thread
 import dbus
+from gi.repository import GdkPixbuf
 try:
     from gi.repository import Gdk
     from gi.repository import Gtk
@@ -34,14 +35,6 @@ except RuntimeError, e:
     print "system-config-printer:", e
     print "This is a graphical application and requires DISPLAY to be set."
     sys.exit (1)
-
-def show_uri (uri):
-    Gtk.show_uri (Gdk.Screen.get_default (),
-                  uri,
-                  Gtk.get_current_event_time ())
-
-Gtk.about_dialog_set_url_hook (lambda x, y: show_uri (y))
-Gtk.about_dialog_set_email_hook (lambda x, y: show_uri ("mailto:" + y))
 
 def show_help():
     print ("\nThis is system-config-printer, " \
@@ -307,7 +300,7 @@ class GUI(GtkGUI):
 
         # Toolbar
         # Glade-2 doesn't have support for MenuToolButton, so we do that here.
-        self.btnNew = Gtk.MenuToolButton (Gtk.STOCK_ADD)
+        self.btnNew = Gtk.MenuToolButton.new_from_stock(Gtk.STOCK_ADD)
         self.btnNew.set_is_important (True)
         newmenu = Gtk.Menu ()
         action = self.ui_manager.get_action ("/new-printer")
@@ -322,7 +315,7 @@ class GUI(GtkGUI):
         self.btnNew.connect ('clicked', self.on_new_printer_activate)
         self.toolbar.add (self.btnNew)
         self.toolbar.add (Gtk.SeparatorToolItem ())
-        refreshbutton = Gtk.ToolButton (Gtk.STOCK_REFRESH)
+        refreshbutton = Gtk.ToolButton.new_from_stock(Gtk.STOCK_REFRESH)
         refreshbutton.connect ('clicked', self.on_btnRefresh_clicked)
         self.toolbar.add (refreshbutton)
         self.toolbar.show_all ()
@@ -335,7 +328,7 @@ class GUI(GtkGUI):
                             None,
                             "quit"]:
             if action_name == "new":
-                item = Gtk.MenuItem (_("_New"))
+                item = Gtk.MenuItem.new_with_label(_("_New"))
                 item.set_sensitive (True)
                 self.menuItemNew = item
             elif not action_name:
@@ -454,7 +447,7 @@ class GUI(GtkGUI):
 
         # Setup icon view
         self.mainlist = Gtk.ListStore(gobject.TYPE_PYOBJECT, # Object
-                                      GdkPixbuf.Pixbuf,        # Pixbuf
+                                      GdkPixbuf.Pixbuf,      # Pixbuf
                                       gobject.TYPE_STRING,   # Name
                                       gobject.TYPE_STRING)   # Tooltip
 
@@ -476,10 +469,10 @@ class GUI(GtkGUI):
         self.dests_iconview.connect ('popup-menu',
                                      self.dests_iconview_popup_menu)
         self.dests_iconview_selection_changed (self.dests_iconview)
-        self.dests_iconview.enable_model_drag_source (Gdk.EventMask.BUTTON1_MASK,
+        self.dests_iconview.enable_model_drag_source (Gdk.ModifierType.BUTTON1_MASK,
                                                       # should use a variable
                                                       # instead of 0
-                                                      [("queue", 0, 0)],
+                                                      [Gtk.TargetEntry.new("queue", 0, 0)],
                                                       Gdk.DragAction.COPY)
         self.dests_iconview.connect ("drag-data-get",
                                      self.dests_iconview_drag_data_get)
@@ -573,7 +566,7 @@ class GUI(GtkGUI):
             self.add_to_group_menu.remove (child)
         static_groups = self.groups_pane.get_static_groups ()
         for group in static_groups:
-            item = Gtk.MenuItem (group.name, False)
+            item = Gtk.MenuItem.new_with_label (group.name)
             item.connect ("activate",
                           self.on_add_to_group_menu_item_activate, group)
             self.add_to_group_menu.append (item)
@@ -686,10 +679,11 @@ class GUI(GtkGUI):
         self.updating_widgets = False
 
     def dests_iconview_popup_menu (self, iconview):
-        self.printer_context_menu.popup (None, None, None, 0, 0L)
+        self.printer_context_menu.popup_for_device (None, None, None, None,
+                                            None, 0, 0L)
 
     def dests_iconview_button_press_event (self, iconview, event):
-        if event.button > 1:
+        if event.button.button > 1:
             click_path = iconview.get_path_at_pos (int (event.x),
                                                    int (event.y))
             paths = iconview.get_selected_items ()
@@ -702,9 +696,9 @@ class GUI(GtkGUI):
                 for cell in cells:
                     if type (cell) == Gtk.CellRendererText:
                         break
-                iconview.set_cursor (click_path, cell)
-            self.printer_context_menu.popup (None, None, None,
-                                             event.button, event.time)
+                iconview.set_cursor (click_path, cell, False)
+            self.printer_context_menu.popup_for_device (None, None, None, None, 
+                                             None, event.button.button, event.time)
         return False
 
     def dests_iconview_key_press_event (self, iconview, event):
@@ -713,13 +707,13 @@ class GUI(GtkGUI):
         if ((event.keyval == Gdk.KEY_BackSpace or
              event.keyval == Gdk.KEY_Delete or
              event.keyval == Gdk.KEY_KP_Delete) and
-            ((event.get_state() & modifiers) == 0)):
+            ((event.get_state()[1] & modifiers) == 0)):
 
             self.ui_manager.get_action ("/delete-printer").activate ()
             return True
 
         if ((event.keyval == Gdk.KEY_F2) and
-            ((event.get_state() & modifiers) == 0)):
+            ((event.get_state()[1] & modifiers) == 0)):
 
             self.ui_manager.get_action ("/rename-printer").activate ()
             return True
@@ -741,7 +735,7 @@ class GUI(GtkGUI):
         else:
             nonfatalException ()
 
-    def on_server_settings_activate (self, menuitem):
+    def on_server_settings_activate (self, menuitem, UNUSED):
         try:
             self.serverSettings = ServerSettings (host=self.connect_server,
                                                   encryption=self.connect_encrypt,
@@ -968,7 +962,7 @@ class GUI(GtkGUI):
                         type = 'network-printer'
 
                 (tip, icon) = PRINTER_TYPE[type]
-                (w, h) = Gtk.icon_size_lookup (Gtk.IconSize.DIALOG)
+                (result, w, h) = Gtk.icon_size_lookup (Gtk.IconSize.DIALOG)
                 try:
                     pixbuf = theme.load_icon (icon, w, 0)
                 except gobject.GError:
@@ -987,7 +981,7 @@ class GUI(GtkGUI):
                             pixbuf = theme.load_icon ('printer', w, 0)
                         except:
                             # Just create an empty pixbuf.
-                            pixbuf = GdkPixbuf.Pixbuf (GdkPixbuf.Colorspace.RGB,
+                            pixbuf = GdkPixbuf.Pixbuf (Gdk.COLORSPACE_RGB,
                                                      True, 8, w, h)
                             pixbuf.fill (0)
 
@@ -1034,7 +1028,7 @@ class GUI(GtkGUI):
                     pixbuf = copy
 
                 if def_emblem:
-                    (w, h) = Gtk.icon_size_lookup (Gtk.IconSize.DIALOG)
+                    (result, w, h) = Gtk.icon_size_lookup (Gtk.IconSize.DIALOG)
                     try:
                         default_emblem = theme.load_icon (def_emblem, w/2, 0)
                         copy = pixbuf.copy ()
@@ -1049,7 +1043,7 @@ class GUI(GtkGUI):
                         debugprint ("No %s icon available" % def_emblem)
 
                 if emblem:
-                    (w, h) = Gtk.icon_size_lookup (Gtk.IconSize.DIALOG)
+                    (result, w, h) = Gtk.icon_size_lookup (Gtk.IconSize.DIALOG)
                     try:
                         other_emblem = theme.load_icon (emblem, w/2, 0)
                         copy = pixbuf.copy ()
@@ -1068,11 +1062,11 @@ class GUI(GtkGUI):
 
         # Restore selection of printers.
         model = self.dests_iconview.get_model ()
-        def maybe_select (model, path, iter):
+        def maybe_select (model, path, iter, UNUSED):
             name = unicode (model.get_value (iter, 2))
             if name in selected_printers:
                 self.dests_iconview.select_path (path)
-        model.foreach (maybe_select)
+        model.foreach (maybe_select, None)
 
         # Set up the dests_notebook page.
         page = self.DESTS_PAGE_DESTS
@@ -1099,9 +1093,9 @@ class GUI(GtkGUI):
     # Connect to Server
 
     def on_connect_servername_changed(self, widget):
-        self.btnConnect.set_sensitive (len (widget.get_active_text ()) > 0)
+        self.btnConnect.set_sensitive (len (widget.get_active_text () or '') > 0)
 
-    def on_connect_activate(self, widget):
+    def on_connect_activate(self, widget, UNUSED):
         # Use browsed queues to build up a list of known IPP servers
         servers = self.getServers()
         current_server = (self.propertiesDlg.printer and
@@ -1110,7 +1104,7 @@ class GUI(GtkGUI):
 
         store = Gtk.ListStore (gobject.TYPE_STRING)
         self.cmbServername.set_model(store)
-        self.cmbServername.set_text_column (0)
+        self.cmbServername.set_entry_text_column (0)
         for server in servers:
             self.cmbServername.append_text(server)
         self.cmbServername.show()
@@ -1374,12 +1368,12 @@ class GUI(GtkGUI):
 
         return True
 
-    def on_rename_activate(self, UNUSED):
+    def on_rename_activate(self, *UNUSED):
         tuple = self.dests_iconview.get_cursor ()
         if tuple == None:
             return
 
-        (path, cell) = tuple
+        (res, path, cell) = tuple
         if type (cell) != Gtk.CellRendererText:
             cells = self.dests_iconview.get_cells ()
             for cell in cells:
@@ -1404,7 +1398,7 @@ class GUI(GtkGUI):
                                  self.printer_name_edit_cancel))
         self.rename_sigids = ids
         self.rename_entry_sigid = None
-        self.dests_iconview.set_cursor (path, cell, start_editing=True)
+        self.dests_iconview.set_cursor (path, cell, True)
         self.dests_iconview.grab_focus ()
 
     def printer_name_edit_start (self, cell, editable, path):
@@ -1430,7 +1424,7 @@ class GUI(GtkGUI):
         try:
             self.rename_printer (name, newname)
         finally:
-            cell.stop_editing (canceled=False)
+            cell.stop_editing (False)
             cell.set_property ('editable', False)
             for id in self.rename_sigids:
                 cell.disconnect (id)
@@ -1439,7 +1433,7 @@ class GUI(GtkGUI):
 
     def printer_name_edit_cancel (self, cell):
         debugprint ("editing-canceled")
-        cell.stop_editing (canceled=True)
+        cell.stop_editing (True)
         cell.set_property ('editable', False)
         for id in self.rename_sigids:
             cell.disconnect (id)
@@ -1565,7 +1559,7 @@ class GUI(GtkGUI):
         self.cups._end_operation ()
         return ret
 
-    def on_duplicate_activate(self, UNUSED):
+    def on_duplicate_activate(self, *UNUSED):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = self.dests_iconview.get_model ()
@@ -1609,7 +1603,7 @@ class GUI(GtkGUI):
 
     # Delete
 
-    def on_delete_activate(self, UNUSED):
+    def on_delete_activate(self, *UNUSED):
         if isinstance (self.current_groups_pane_item, StaticGroupItem):
             paths = self.dests_iconview.get_selected_items ()
             model = self.dests_iconview.get_model ()
@@ -1666,7 +1660,7 @@ class GUI(GtkGUI):
         self.monitor.update ()
 
     # Enable/disable
-    def on_enabled_activate(self, toggle_action):
+    def on_enabled_activate(self, toggle_action, UNUSED):
         if self.updating_widgets:
             return
         enable = toggle_action.get_active ()
@@ -1691,7 +1685,7 @@ class GUI(GtkGUI):
         self.monitor.update ()
 
     # Shared
-    def on_shared_activate(self, menuitem):
+    def on_shared_activate(self, menuitem, UNUSED):
         if self.updating_widgets:
             return
         share = menuitem.get_active ()
@@ -1750,7 +1744,7 @@ class GUI(GtkGUI):
                               parent=self.PrintersWindow)
 
     # Set As Default
-    def on_set_as_default_activate(self, UNUSED):
+    def on_set_as_default_activate(self, *UNUSED):
         iconview = self.dests_iconview
         paths = iconview.get_selected_items ()
         model = iconview.get_model ()
@@ -1758,7 +1752,7 @@ class GUI(GtkGUI):
         name = unicode (model.get_value (iter, 2))
         self.set_system_or_user_default_printer (name)
 
-    def on_edit_activate (self, UNUSED):
+    def on_edit_activate (self, *UNUSED):
         paths = self.dests_iconview.get_selected_items ()
         self.dests_iconview_item_activated (self.dests_iconview, paths[0])
 
@@ -1785,7 +1779,7 @@ class GUI(GtkGUI):
                 out_model.remove (iter)
             iter = next
 
-    def on_view_print_queue_activate (self, UNUSED):
+    def on_view_print_queue_activate (self, *UNUSED):
         paths = self.dests_iconview.get_selected_items ()
         if len (paths):
             specific_dests = []
@@ -1887,7 +1881,7 @@ class GUI(GtkGUI):
     # ====================================================================
 
     # new printer
-    def on_new_printer_activate(self, widget):
+    def on_new_printer_activate(self, widget, UNUSED):
         busy (self.PrintersWindow)
         self.newPrinterGUI.init("printer",
                                 host=self.connect_server,
@@ -1896,7 +1890,7 @@ class GUI(GtkGUI):
         ready (self.PrintersWindow)
 
     # new class
-    def on_new_class_activate(self, widget):
+    def on_new_class_activate(self, widget, UNUSED):
         self.newPrinterGUI.init("class",
                                 host=self.connect_server,
                                 encryption=self.connect_encrypt,
@@ -2126,11 +2120,7 @@ def main():
 
     mainwindow = GUI()
 
-    if Gtk.__dict__.has_key("main"):
-        Gtk.main()
-    else:
-        Gtk.mainloop()
-
+    Gtk.main()
 
 if __name__ == "__main__":
     import getopt

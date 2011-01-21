@@ -19,6 +19,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
+from gi.repository import Gtk
+
 from base import *
 class Shrug(Question):
     def __init__ (self, troubleshooter):
@@ -31,14 +33,14 @@ class Shrug(Question):
                                     "would like to report a bug, please "
                                     "include this information."))
 
-        expander = Gtk.Expander (_("Diagnostic Output (Advanced)"))
+        expander = Gtk.Expander.new(_("Diagnostic Output (Advanced)"))
         expander.set_expanded (False)
         sw = Gtk.ScrolledWindow ()
         expander.add (sw)
         textview = Gtk.TextView ()
         textview.set_editable (False)
         sw.add (textview)
-        page.pack_start (expander)
+        page.pack_start (expander, False, False, 0)
         self.buffer = textview.get_buffer ()
 
         box = Gtk.HButtonBox ()

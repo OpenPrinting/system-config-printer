@@ -201,8 +201,8 @@ class PrinterPropertiesDialog(GtkGUI):
         column.pack_start (icon, False)
         text = Gtk.CellRendererText ()
         column.pack_start (text, False)
-        column.set_cell_data_func (icon, self.set_printer_state_reason_icon)
-        column.set_cell_data_func (text, self.set_printer_state_reason_text)
+        column.set_cell_data_func (icon, self.set_printer_state_reason_icon, None)
+        column.set_cell_data_func (text, self.set_printer_state_reason_text, None)
         column.set_resizable (True)
         self.tvPrinterStateReasons.append_column (column)
         selection = self.tvPrinterStateReasons.get_selection ()
@@ -527,7 +527,7 @@ class PrinterPropertiesDialog(GtkGUI):
                                             "and that the print feed mechanisms"
                                             " are working properly."))
         treeview = self.tvPrinterProperties
-        treeview.set_cursor ((0,))
+        treeview.set_cursor (Gtk.TreePath(), None, False)
         host = CUPS_server_hostname ()
         self.dialog.set_title (_("Printer Properties - "
                                  "'%s' on %s") % (name, host))
@@ -642,8 +642,8 @@ class PrinterPropertiesDialog(GtkGUI):
         """return list of usernames from the GUI"""
         model = self.tvPUsers.get_model()
         result = []
-        model.foreach(lambda model, path, iter:
-                      result.append(model.get(iter, 0)[0]))
+        model.foreach(lambda model, path, iter, data:
+                      result.append(model.get(iter, 0)[0]), None)
         result.sort()
         return result
 
@@ -724,7 +724,7 @@ class PrinterPropertiesDialog(GtkGUI):
     def draw_other_job_options (self, editable=True):
         n = len (self.other_job_options)
         if n == 0:
-            self.tblJOOther.hide_all ()
+            self.tblJOOther.hide()
             return
 
         self.tblJOOther.resize (n, 3)
@@ -960,6 +960,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 if option not in self.server_side_options:
                     printer.unsetOption(option)
             for option in self.server_side_options.itervalues():
+                #XXX for debugging: print 'option', option, option.name, option.get_current_value()
                 if (option.is_changed() or
                     (saveall and
                      option.get_current_value () != option.get_default())):
@@ -1235,14 +1236,14 @@ class PrinterPropertiesDialog(GtkGUI):
         try:
             if printer.is_shared:
                 if self.server_is_publishing:
-                    self.lblNotPublished.hide_all ()
+                    self.lblNotPublished.hide()
                 else:
                     self.lblNotPublished.show_all ()
             else:
-                self.lblNotPublished.hide_all ()
+                self.lblNotPublished.hide()
         except:
             nonfatalException()
-            self.lblNotPublished.hide_all ()
+            self.lblNotPublished.hide()
 
         # Job sheets
         self.cmbPStartBanner.set_sensitive(editable)
@@ -1578,11 +1579,11 @@ class PrinterPropertiesDialog(GtkGUI):
                                                  self.static_tabs)
                 tab_label = self.lblPInstallOptions
             else:
-                frame = Gtk.Frame("<b>%s</b>" % ppdippstr.ppd.get (group.text))
+                frame = Gtk.Frame(label="<b>%s</b>" % ppdippstr.ppd.get (group.text))
                 frame.get_label_widget().set_use_markup(True)
                 frame.set_shadow_type (Gtk.ShadowType.NONE)
                 self.vbPOptions.pack_start (frame, False, False, 0)
-                container = Gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                container = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
                 # We want a left padding of 12, but there is a Table with
                 # spacing 6, and the left-most column of it (the conflict
                 # icon) is normally hidden, so just use 6 here.
@@ -1614,14 +1615,14 @@ class PrinterPropertiesDialog(GtkGUI):
 
                 hbox = Gtk.HBox()
                 if o.label:
-                    a = Gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                    a = Gtk.Alignment.new(0.5, 0.5, 1.0, 1.0)
                     a.set_padding (0, 0, 0, 6)
                     a.add (o.label)
                     table.attach(a, 1, 2, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
                     table.attach(hbox, 2, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
                 else:
                     table.attach(hbox, 1, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
-                hbox.pack_start(o.selector, False)
+                hbox.pack_start(o.selector, False, False, 0)
                 self.options[option.keyword] = o
                 o.selector.set_sensitive(editable)
                 if option.keyword == "InputSlot":
