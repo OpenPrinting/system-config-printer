@@ -631,7 +631,7 @@ class JobViewer (GtkGUI):
         for op in self.ops:
             op.destroy ()
 
-        if self.applet:
+        if self.applet and not self.notify_has_persistence:
             self.statusicon.set_visible (False)
 
         self.emit ('finished')
@@ -1638,7 +1638,7 @@ class JobViewer (GtkGUI):
                 status_message = _("processing / pending:   %d / %d") % (processing, pending)
                 self.statusbar.push(0, status_message)
 
-        if self.applet:
+        if self.applet and not self.notify_has_persistence:
             pixbuf = self.get_icon_pixbuf (have_jobs=have_jobs)
             self.statusicon.set_from_pixbuf (pixbuf)
             self.set_statusicon_visibility ()
