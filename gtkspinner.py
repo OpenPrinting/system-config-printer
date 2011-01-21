@@ -21,8 +21,8 @@
 
 import glib
 import gobject
-from gi.repository import Gdk
 from gi.repository import Gtk
+from gi.repository import GdkPixbuf
 
 class Spinner:
     def __init__ (self, image):
@@ -41,7 +41,7 @@ class Spinner:
                 while y < grid_height:
                     x = 0
                     while x < grid_width:
-                        frame = pixbuf.subpixbuf (x, y, size, size)
+                        frame = pixbuf.new_subpixbuf (x, y, size, size)
                         frames.append (frame)
                         x += size
 

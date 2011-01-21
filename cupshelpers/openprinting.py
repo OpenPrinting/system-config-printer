@@ -377,20 +377,22 @@ class OpenPrinting:
         return self.webQuery(params, parse_result, (callback, user_data))
 
 def _simple_gui ():
-    import gtk, pprint
+    from gi.repository import Gdk
+    from gi.repository import Gtk
+    import pprint
     Gdk.threads_init ()
     class QueryApp:
         def __init__(self):
             self.openprinting = OpenPrinting()
             self.main = Gtk.Dialog ("OpenPrinting query application",
                                     None,
-                                    Gtk.DialogFlags.MODAL | Gtk.DialogFlags.NO_SEPARATOR,
+                                    Gtk.DialogFlags.MODAL,
                                     (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE,
                                      "Search", 10,
                                      "List", 20))
             self.main.set_border_width (6)
             self.main.vbox.set_spacing (2)
-            vbox = Gtk.VBox (False, 6)
+            vbox = Gtk.VBox.new (False, 6)
             self.main.vbox.pack_start (vbox, True, True, 0)
             vbox.set_border_width (6)
             self.entry = Gtk.Entry ()

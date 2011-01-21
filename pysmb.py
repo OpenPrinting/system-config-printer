@@ -97,13 +97,13 @@ class AuthContext:
 
         # After that, prompt
         d = Gtk.Dialog (_("Authentication"), self.parent,
-                        Gtk.DialogFlags.MODAL | Gtk.DialogFlags.NO_SEPARATOR,
+                        Gtk.DialogFlags.MODAL,
                         (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
                          Gtk.STOCK_OK, Gtk.ResponseType.OK))
         d.set_default_response (Gtk.ResponseType.OK)
         d.set_border_width (6)
         d.set_resizable (False)
-        hbox = Gtk.HBox (False, 12)
+        hbox = Gtk.HBox.new (False, 12)
         hbox.set_border_width (6)
         image = Gtk.Image ()
         image.set_from_stock (Gtk.STOCK_DIALOG_AUTHENTICATION,
@@ -134,7 +134,7 @@ class AuthContext:
         table.attach (password_entry, 1, 2, 2, 3, 0, 0)
         vbox.pack_start (table, False, False, 0)
         hbox.pack_start (vbox, False, False, 0)
-        d.vbox.pack_start (hbox)
+        d.vbox.pack_start (hbox, False, False, 0)
         self.dialog_shown = True
         d.show_all ()
         d.show_now ()

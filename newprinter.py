@@ -133,7 +133,7 @@ def ready (win, cursor=None):
         nonfatalException ()
 
 def busy (win):
-    ready (win, Gdk.Cursor.new(Gdk.WATCH))
+    ready (win, Gdk.Cursor.new(Gdk.CursorType.WATCH))
 
 def on_delete_just_hide (widget, event):
     widget.hide ()
@@ -476,8 +476,8 @@ class NewPrinterGUI(GtkGUI):
 
         # Device list
         slct = self.tvNPDevices.get_selection ()
-        slct.set_select_function (self.device_select_function)
-        self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn)
+        slct.set_select_function (self.device_select_function, None)
+        self.tvNPDevices.set_row_separator_func (self.device_row_separator_fn, None)
         self.tvNPDevices.connect ("row-activated", self.device_row_activated)
 
         # Devices expander
@@ -498,17 +498,17 @@ class NewPrinterGUI(GtkGUI):
         col = Gtk.TreeViewColumn (_("Share"))
         cell = Gtk.CellRendererText ()
         col.pack_start (cell, False)
-        col.set_cell_data_func (cell, self.smbbrowser_cell_share)
+        col.set_cell_data_func (cell, self.smbbrowser_cell_share, None)
         self.tvSMBBrowser.append_column (col)
 
         col = Gtk.TreeViewColumn (_("Comment"))
         cell = Gtk.CellRendererText ()
         col.pack_start (cell, False)
-        col.set_cell_data_func (cell, self.smbbrowser_cell_comment)
+        col.set_cell_data_func (cell, self.smbbrowser_cell_comment, None)
         self.tvSMBBrowser.append_column (col)
 
         slct = self.tvSMBBrowser.get_selection ()
-        slct.set_select_function (self.smb_select_function)
+        slct.set_select_function (self.smb_select_function, None)
 
         self.SMBBrowseDialog.set_transient_for(self.NewPrinterWindow)
 
@@ -1911,7 +1911,7 @@ class NewPrinterGUI(GtkGUI):
         self.entNPTDevice.set_text ('')
         self.expNPDeviceURIs.hide ()
         column = self.tvNPDevices.get_column (0)
-        self.tvNPDevices.set_cursor ((0,), column)
+        self.tvNPDevices.set_cursor (Gtk.TreePath(), column, False)
 
         allowed = True
         self.current_uri = current_uri
@@ -2108,7 +2108,7 @@ class NewPrinterGUI(GtkGUI):
                 self.tvNPDevices.scroll_to_cell (device_select_path,
                                                  row_align=0.5)
                 column = self.tvNPDevices.get_column (0)
-                self.tvNPDevices.set_cursor (device_select_path, column)
+                self.tvNPDevices.set_cursor (device_select_path, column, False)
 
         connection_select_path = 0
         if current_uri:
@@ -2126,11 +2126,11 @@ class NewPrinterGUI(GtkGUI):
         elif not self.device_selected:
             # Select the device.
             column = self.tvNPDevices.get_column (0)
-            self.tvNPDevices.set_cursor ((0,), column)
+            self.tvNPDevices.set_cursor (Gtk.TreePath(), column, False)
 
             # Select the connection.
             column = self.tvNPDeviceURIs.get_column (0)
-            self.tvNPDeviceURIs.set_cursor (connection_select_path, column)
+            self.tvNPDeviceURIs.set_cursor (connection_select_path, column, False)
 
     ## SMB browsing
 
@@ -2205,19 +2205,19 @@ class NewPrinterGUI(GtkGUI):
                                 "configuration."),
                               parent=self.NewPrinterWindow)
 
-    def smb_select_function (self, path):
+    def smb_select_function (self, model, path, path_selected, data):
         """Don't allow this path to be selected unless it is a leaf."""
         iter = self.smb_store.get_iter (path)
         return not self.smb_store.iter_has_child (iter)
 
-    def smbbrowser_cell_share (self, column, cell, model, iter):
+    def smbbrowser_cell_share (self, column, cell, model, iter, data):
         entry = model.get_value (iter, 0)
         share = ''
         if entry != None:
             share = entry.name
         cell.set_property ('text', share)
 
-    def smbbrowser_cell_comment (self, column, cell, model, iter):
+    def smbbrowser_cell_comment (self, column, cell, model, iter, data):
         entry = model.get_value (iter, 0)
         comment = ''
         if entry != None:
@@ -2553,7 +2553,7 @@ class NewPrinterGUI(GtkGUI):
         parent.set_child_packing (widget, expand, fill,
                                   padding, pack_type)
 
-    def device_row_separator_fn (self, model, iter):
+    def device_row_separator_fn (self, model, iter, data):
         return model.get_value (iter, 2)
 
     def device_row_activated (self, view, path, column):
@@ -2562,7 +2562,7 @@ class NewPrinterGUI(GtkGUI):
         else:
             view.expand_row (path, False)
 
-    def device_select_function (self, path):
+    def device_select_function (self, selection, model, path, *UNUSED):
         """
         Allow this path to be selected as long as there
         is a device associated with it.  Otherwise, expand or collapse it.
@@ -2752,7 +2752,7 @@ class NewPrinterGUI(GtkGUI):
             model.append ((device.menuentry, device))
             n += 1
         column = self.tvNPDeviceURIs.get_column (0)
-        self.tvNPDeviceURIs.set_cursor (0, column)
+        self.tvNPDevices.set_cursor (Gtk.TreePath(), column, False)
         if n > 1:
             self.expNPDeviceURIs.show_all ()
         else:
@@ -3027,7 +3027,7 @@ class NewPrinterGUI(GtkGUI):
                 # If this is the first one we've found, select it.
                 if self.network_found == 1:
                     path = model.get_path (iter)
-                    self.tvNPDevices.set_cursor (path)
+                    self.tvNPDevices.set_cursor (path, None, False)
         else:
             self.printer_finder = None
             self.dec_spinner_task ()
@@ -3389,13 +3389,13 @@ class NewPrinterGUI(GtkGUI):
             iter = model.append((text, make,))
             if recommended:
                 path = model.get_path(iter)
-                self.tvNPMakes.set_cursor (path)
+                self.tvNPMakes.set_cursor (path, None, False)
                 self.tvNPMakes.scroll_to_cell(path, None,
                                               True, 0.5, 0.5)
                 found = True
 
         if not found:
-            self.tvNPMakes.set_cursor (0,)
+            self.tvNPMakes.set_cursor (Gtk.TreePath(), None, False)
             self.tvNPMakes.scroll_to_cell(0, None, True, 0.0, 0.0)
 
         # Also pre-fill the OpenPrinting.org search box.
@@ -3452,12 +3452,12 @@ class NewPrinterGUI(GtkGUI):
             iter = model.append((text, pmodel,))
             if recommended:
                 path = model.get_path(iter)
-                self.tvNPModels.set_cursor (path)
+                self.tvNPModels.set_cursor (path, None, False)
                 self.tvNPModels.scroll_to_cell(path, None,
                                                True, 0.5, 0.5)
                 selected = True
         if not selected:
-            self.tvNPModels.set_cursor (0,)
+            self.tvNPModels.set_cursor (Gtk.TreePath(), None, False)
             self.tvNPModels.scroll_to_cell(0, None, True, 0.0, 0.0)
         self.tvNPModels.columns_autosize()
 
@@ -3848,14 +3848,14 @@ class NewPrinterGUI(GtkGUI):
 
                 hbox = Gtk.HBox()
                 if o.label:
-                    a = Gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                    a = Gtk.Alignment.new (0.5, 0.5, 1.0, 1.0)
                     a.set_padding (0, 0, 0, 6)
                     a.add (o.label)
                     table.attach(a, 1, 2, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
                     table.attach(hbox, 2, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
                 else:
                     table.attach(hbox, 1, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
-                hbox.pack_start(o.selector, False)
+                hbox.pack_start(o.selector, False, False, 0)
                 self.options[option.keyword] = o
         if not self.installable_options:
             l = Gtk.Label(label=_("No Installable Options"))

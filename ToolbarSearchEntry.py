@@ -72,7 +72,7 @@ class ToolbarSearchEntry (Gtk.HBox):
         self.pack_start (label, False, True, 0)
 
         self.entry = Gtk.Entry()
-        if Gtk.__dict__.has_key ('ENTRY_ICON_PRIMARY'):
+        if Gtk.EntryIconPosition.__dict__.has_key ('PRIMARY'):
             # We have primary/secondary icon support.
             self.entry.set_icon_from_stock (Gtk.EntryIconPosition.PRIMARY,
                                             Gtk.STOCK_FIND)
@@ -120,8 +120,8 @@ class ToolbarSearchEntry (Gtk.HBox):
         if self.is_a11y_theme:
             return
 
-        bg_colour = Gdk.color_parse ('#f7f7be') # yellow-ish
-        fg_colour = Gdk.color_parse ('#000000') # black
+        (result, bg_colour) = Gdk.color_parse ('#f7f7be') # yellow-ish
+        (result, fg_colour) = Gdk.color_parse ('#000000') # black
 
         text = self.entry.get_text ()
         if len (text) > 0:
@@ -148,7 +148,7 @@ class ToolbarSearchEntry (Gtk.HBox):
         else:
             self.on_search_timeout ()
 
-        if Gtk.__dict__.has_key ("ENTRY_ICON_PRIMARY"):
+        if Gtk.EntryIconPosition.__dict__.has_key ('PRIMARY'):
             self.entry.set_icon_sensitive (Gtk.EntryIconPosition.SECONDARY, has_text)
             self.entry.set_icon_activatable (Gtk.EntryIconPosition.SECONDARY, has_text)
 
@@ -179,7 +179,7 @@ class ToolbarSearchEntry (Gtk.HBox):
         self.entry.grab_focus ()
 
     def set_drop_down_menu (self, menu):
-        if not Gtk.__dict__.has_key ("ENTRY_ICON_PRIMARY"):
+        if not Gtk.EntryIconPosition.__dict__.has_key ('PRIMARY'):
             return
 
         if menu:

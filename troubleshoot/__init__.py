@@ -85,7 +85,8 @@ class Troubleshooter:
 
         forward = Gtk.Button (stock=Gtk.STOCK_GO_FORWARD)
         forward.connect ('clicked', self._on_forward_clicked)
-        forward.set_flags (Gtk.CAN_DEFAULT | Gtk.HAS_DEFAULT)
+        forward.set_property('can-default', True)
+        forward.set_property('has-default', True)
         self.forward = forward
 
         box.pack_start (back, False, False, 0)
@@ -148,7 +149,7 @@ class Troubleshooter:
         debugprint ("Page %d: new: %s" % (page, str (question)))
         self.questions.append (question)
         self.question_answers.append ([])
-        self.ntbk.insert_page (widget, position=page)
+        self.ntbk.insert_page (widget, None, page)
         widget.show_all ()
         if page == 0:
             try:
@@ -184,7 +185,7 @@ class Troubleshooter:
         self.back.set_sensitive (False)
         gdkwin = self.get_window ().get_window()
         if gdkwin:
-            gdkwin.set_cursor (Gdk.Cursor.new(Gdk.WATCH))
+            gdkwin.set_cursor (Gdk.Cursor.new(Gdk.CursorType.WATCH))
             while Gtk.events_pending ():
                 Gtk.main_iteration ()
 

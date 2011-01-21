@@ -26,6 +26,8 @@ import subprocess
 from timedops import TimedSubprocess
 import urllib
 from base import *
+from gi.repository import Gtk
+
 class CheckUSBPermissions(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check USB permissions")

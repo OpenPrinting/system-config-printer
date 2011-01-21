@@ -19,6 +19,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+from gi.repository import Gtk
+
 from base import *
 class ErrorLogParse(Question):
 
@@ -32,7 +34,7 @@ class ErrorLogParse(Question):
         textview = Gtk.TextView ()
         textview.set_editable (False)
         sw.add (textview)
-        page.pack_start (sw)
+        page.pack_start (sw, False, False, 0)
         self.buffer = textview.get_buffer ()
         troubleshooter.new_page (page, self)
 
