@@ -21,19 +21,20 @@
 
 import glib
 import gobject
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 
 class Spinner:
     def __init__ (self, image):
         self.image = image
         frames = []
-        theme = gtk.icon_theme_get_default ()
+        theme = Gtk.IconTheme.get_default ()
         icon_info = theme.lookup_icon ("process-working", 22, 0)
         if icon_info != None:
             size = icon_info.get_base_size ()
             icon = icon_info.get_filename ()
             try:
-                pixbuf = gtk.gdk.pixbuf_new_from_file (icon)
+                pixbuf = GdkPixbuf.Pixbuf.new_from_file (icon)
                 grid_width = pixbuf.get_width ()
                 grid_height = pixbuf.get_height ()
                 y = 0
@@ -69,14 +70,14 @@ class Spinner:
         if n >= self.n_frames:
             n = 1
 
-        gtk.gdk.threads_enter ()
+        Gdk.threads_enter ()
         self._set_frame (n)
-        gtk.gdk.threads_leave ()
+        Gdk.threads_leave ()
         return True
 
     def start (self, timeout=125):
-        self._task = glib.timeout_add (timeout, self._next_frame)
+        self._task = gobject.timeout_add (timeout, self._next_frame)
 
     def stop (self):
-        glib.source_remove (self._task)
+        gobject.source_remove (self._task)
         self._rest ()

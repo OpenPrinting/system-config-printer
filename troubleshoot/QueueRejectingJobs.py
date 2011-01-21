@@ -24,15 +24,15 @@ from base import *
 class QueueRejectingJobs(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Queue rejecting jobs?")
-        solution = gtk.VBox ()
+        solution = Gtk.VBox ()
         solution.set_border_width (12)
         solution.set_spacing (12)
-        label = gtk.Label ('<span weight="bold" size="larger">' +
+        label = Gtk.Label(label='<span weight="bold" size="larger">' +
                            _("Queue Rejecting Jobs") + '</span>')
         label.set_alignment (0, 0)
         label.set_use_markup (True)
         solution.pack_start (label, False, False, 0)
-        self.label = gtk.Label ()
+        self.label = Gtk.Label ()
         self.label.set_alignment (0, 0)
         self.label.set_line_wrap (True)
         solution.pack_start (self.label, False, False, 0)

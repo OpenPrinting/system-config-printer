@@ -26,11 +26,12 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import gobject
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 import HIG
 from gettext import gettext as _
 
-class ToolbarSearchEntry (gtk.HBox):
+class ToolbarSearchEntry (Gtk.HBox):
     __gproperties__ = {
         'search_timeout' : (gobject.TYPE_UINT,
                             'search timeout',
@@ -57,29 +58,29 @@ class ToolbarSearchEntry (gtk.HBox):
         self.search_timeout = 300
         self.menu = None
 
-        gtk.HBox.__gobject_init__ (self)
+        Gtk.HBox.__gobject_init__ (self)
         self.set_spacing (HIG.PAD_NORMAL)
         self.set_border_width (HIG.PAD_NORMAL)
 
-        settings = gtk.settings_get_for_screen (self.get_screen ())
+        settings = Gtk.Settings.get_for_screen (self.get_screen ())
         theme = settings.get_property ('gtk-theme-name')
         self.is_a11y_theme = theme == 'HighContrast' or theme == 'LowContrast'
 
-        label = gtk.Label ()
+        label = Gtk.Label ()
         label.set_text_with_mnemonic (_("_Filter:"))
-        label.set_justify (gtk.JUSTIFY_RIGHT)
+        label.set_justify (Gtk.Justification.RIGHT)
         self.pack_start (label, False, True, 0)
 
-        self.entry = gtk.Entry()
-        if gtk.__dict__.has_key ('ENTRY_ICON_PRIMARY'):
+        self.entry = Gtk.Entry()
+        if Gtk.__dict__.has_key ('ENTRY_ICON_PRIMARY'):
             # We have primary/secondary icon support.
-            self.entry.set_icon_from_stock (gtk.ENTRY_ICON_PRIMARY,
-                                            gtk.STOCK_FIND)
-            self.entry.set_icon_from_stock (gtk.ENTRY_ICON_SECONDARY,
-                                            gtk.STOCK_CLEAR)
+            self.entry.set_icon_from_stock (Gtk.EntryIconPosition.PRIMARY,
+                                            Gtk.STOCK_FIND)
+            self.entry.set_icon_from_stock (Gtk.EntryIconPosition.SECONDARY,
+                                            Gtk.STOCK_CLEAR)
 
-            self.entry.set_icon_sensitive (gtk.ENTRY_ICON_SECONDARY, False)
-            self.entry.set_icon_activatable (gtk.ENTRY_ICON_SECONDARY, False)
+            self.entry.set_icon_sensitive (Gtk.EntryIconPosition.SECONDARY, False)
+            self.entry.set_icon_activatable (Gtk.EntryIconPosition.SECONDARY, False)
             self.entry.connect ('icon-press', self.on_icon_press)
 
         label.set_mnemonic_widget (self.entry)
@@ -119,16 +120,16 @@ class ToolbarSearchEntry (gtk.HBox):
         if self.is_a11y_theme:
             return
 
-        bg_colour = gtk.gdk.color_parse ('#f7f7be') # yellow-ish
-        fg_colour = gtk.gdk.color_parse ('#000000') # black
+        bg_colour = Gdk.color_parse ('#f7f7be') # yellow-ish
+        fg_colour = Gdk.color_parse ('#000000') # black
 
         text = self.entry.get_text ()
         if len (text) > 0:
-            self.entry.modify_text (gtk.STATE_NORMAL, fg_colour)
-            self.entry.modify_base (gtk.STATE_NORMAL, bg_colour)
+            self.entry.modify_text (Gtk.StateType.NORMAL, fg_colour)
+            self.entry.modify_base (Gtk.StateType.NORMAL, bg_colour)
         else:
-            self.entry.modify_text (gtk.STATE_NORMAL, None)
-            self.entry.modify_base (gtk.STATE_NORMAL, None)
+            self.entry.modify_text (Gtk.StateType.NORMAL, None)
+            self.entry.modify_base (Gtk.StateType.NORMAL, None)
 
         self.queue_draw ()
 
@@ -147,9 +148,9 @@ class ToolbarSearchEntry (gtk.HBox):
         else:
             self.on_search_timeout ()
 
-        if gtk.__dict__.has_key ("ENTRY_ICON_PRIMARY"):
-            self.entry.set_icon_sensitive (gtk.ENTRY_ICON_SECONDARY, has_text)
-            self.entry.set_icon_activatable (gtk.ENTRY_ICON_SECONDARY, has_text)
+        if Gtk.__dict__.has_key ("ENTRY_ICON_PRIMARY"):
+            self.entry.set_icon_sensitive (Gtk.EntryIconPosition.SECONDARY, has_text)
+            self.entry.set_icon_activatable (Gtk.EntryIconPosition.SECONDARY, has_text)
 
     def on_search_timeout (self):
         self.emit ('search', self.entry.get_text ())
@@ -178,24 +179,24 @@ class ToolbarSearchEntry (gtk.HBox):
         self.entry.grab_focus ()
 
     def set_drop_down_menu (self, menu):
-        if not gtk.__dict__.has_key ("ENTRY_ICON_PRIMARY"):
+        if not Gtk.__dict__.has_key ("ENTRY_ICON_PRIMARY"):
             return
 
         if menu:
-            self.entry.set_icon_sensitive (gtk.ENTRY_ICON_PRIMARY, True)
-            self.entry.set_icon_activatable (gtk.ENTRY_ICON_PRIMARY, True)
+            self.entry.set_icon_sensitive (Gtk.EntryIconPosition.PRIMARY, True)
+            self.entry.set_icon_activatable (Gtk.EntryIconPosition.PRIMARY, True)
             self.menu = menu
         else:
-            self.entry.set_icon_sensitive (gtk.ENTRY_ICON_PRIMARY, False)
-            self.entry.set_icon_activatable (gtk.ENTRY_ICON_PRIMARY, False)
+            self.entry.set_icon_sensitive (Gtk.EntryIconPosition.PRIMARY, False)
+            self.entry.set_icon_activatable (Gtk.EntryIconPosition.PRIMARY, False)
             self.menu = None
 
     def on_icon_press (self, UNUSED, icon_position, event):
-        if icon_position == gtk.ENTRY_ICON_SECONDARY:
+        if icon_position == Gtk.EntryIconPosition.SECONDARY:
             self.set_text ("")
             return
 
-        if icon_position == gtk.ENTRY_ICON_PRIMARY:
+        if icon_position == Gtk.EntryIconPosition.PRIMARY:
             if not self.menu:
                 return
 

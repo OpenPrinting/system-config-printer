@@ -31,7 +31,7 @@ from base import *
 class CheckPrinterSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check printer sanity")
-        troubleshooter.new_page (gtk.Label (), self)
+        troubleshooter.new_page (Gtk.Label (), self)
         self.troubleshooter = troubleshooter
 
     def display (self):

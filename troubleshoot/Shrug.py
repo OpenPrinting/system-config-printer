@@ -31,23 +31,23 @@ class Shrug(Question):
                                     "would like to report a bug, please "
                                     "include this information."))
 
-        expander = gtk.Expander (_("Diagnostic Output (Advanced)"))
+        expander = Gtk.Expander (_("Diagnostic Output (Advanced)"))
         expander.set_expanded (False)
-        sw = gtk.ScrolledWindow ()
+        sw = Gtk.ScrolledWindow ()
         expander.add (sw)
-        textview = gtk.TextView ()
+        textview = Gtk.TextView ()
         textview.set_editable (False)
         sw.add (textview)
         page.pack_start (expander)
         self.buffer = textview.get_buffer ()
 
-        box = gtk.HButtonBox ()
+        box = Gtk.HButtonBox ()
         box.set_border_width (0)
         box.set_spacing (3)
-        box.set_layout (gtk.BUTTONBOX_END)
+        box.set_layout (Gtk.ButtonBoxStyle.END)
         page.pack_start (box, False, False, 0)
 
-        self.save = gtk.Button (stock=gtk.STOCK_SAVE)
+        self.save = Gtk.Button (stock=Gtk.STOCK_SAVE)
         box.pack_start (self.save, False, False, 0)
 
         troubleshooter.new_page (page, self)
@@ -63,19 +63,19 @@ class Shrug(Question):
         self.save.disconnect (self.save_sigid)
 
     def on_save_clicked (self, button):
-        dialog = gtk.FileChooserDialog (parent=self.troubleshooter.get_window(),
-                                        action=gtk.FILE_CHOOSER_ACTION_SAVE,
-                                        buttons=(gtk.STOCK_CANCEL,
-                                                 gtk.RESPONSE_CANCEL,
-                                                 gtk.STOCK_SAVE,
-                                                 gtk.RESPONSE_OK))
+        dialog = Gtk.FileChooserDialog (parent=self.troubleshooter.get_window(),
+                                        action=Gtk.FileChooserAction.SAVE,
+                                        buttons=(Gtk.STOCK_CANCEL,
+                                                 Gtk.ResponseType.CANCEL,
+                                                 Gtk.STOCK_SAVE,
+                                                 Gtk.ResponseType.OK))
         dialog.set_do_overwrite_confirmation (True)
         dialog.set_current_name ("troubleshoot.txt")
-        dialog.set_default_response (gtk.RESPONSE_OK)
+        dialog.set_default_response (Gtk.ResponseType.OK)
         dialog.set_local_only (True)
         response = dialog.run ()
         dialog.hide ()
-        if response != gtk.RESPONSE_OK:
+        if response != Gtk.ResponseType.OK:
             return
 
         f = file (dialog.get_filename (), "w")

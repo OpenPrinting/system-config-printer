@@ -21,7 +21,8 @@
 import cups
 import dbus
 import gobject
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 import os
 import sys
 import tempfile
@@ -102,9 +103,9 @@ class _PK1AsyncMethodCall:
             return
 
         if str (error) == '':
-            gtk.gdk.threads_enter ()
+            Gdk.threads_enter ()
             self._client_reply_handler (self._conn, self._unpack_fn (*args))
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
             self._destroy ()
             return
 
@@ -117,9 +118,9 @@ class _PK1AsyncMethodCall:
 
         if exc.get_dbus_name () == CUPS_PK_NEED_AUTH:
             exc = cups.IPPError (cups.IPP_NOT_AUTHORIZED, 'pkcancel')
-            gtk.gdk.threads_enter ()
+            Gdk.threads_enter ()
             self._client_error_handler (self._conn, exc)
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
             self._destroy ()
             return
 
@@ -550,34 +551,33 @@ class PK1Connection:
     ## ...
 
 if __name__ == '__main__':
-    import gtk
     gobject.threads_init ()
     from debug import set_debugging
     set_debugging (True)
     class UI:
         def __init__ (self):
-            w = gtk.Window ()
-            v = gtk.VBox ()
+            w = Gtk.Window ()
+            v = Gtk.VBox ()
             w.add (v)
-            b = gtk.Button ("Go")
+            b = Gtk.Button ("Go")
             v.pack_start (b)
             b.connect ("clicked", self.button_clicked)
-            b = gtk.Button ("Fetch")
+            b = Gtk.Button ("Fetch")
             v.pack_start (b)
             b.connect ("clicked", self.fetch_clicked)
             b.set_sensitive (False)
             self.fetch_button = b
-            b = gtk.Button ("Cancel job")
+            b = Gtk.Button ("Cancel job")
             v.pack_start (b)
             b.connect ("clicked", self.cancel_clicked)
             b.set_sensitive (False)
             self.cancel_button = b
-            b = gtk.Button ("Get file")
+            b = Gtk.Button ("Get file")
             v.pack_start (b)
             b.connect ("clicked", self.get_file_clicked)
             b.set_sensitive (False)
             self.get_file_button = b
-            b = gtk.Button ("Something harmless")
+            b = Gtk.Button ("Something harmless")
             v.pack_start (b)
             b.connect ("clicked", self.harmless_clicked)
             b.set_sensitive (False)
@@ -598,7 +598,7 @@ if __name__ == '__main__':
             except AttributeError:
                 pass
 
-            gtk.main_quit ()
+            Gtk.main_quit ()
 
         def button_clicked (self, button):
             if self.conn:
@@ -693,4 +693,4 @@ if __name__ == '__main__':
     UI ()
     from dbus.mainloop.glib import DBusGMainLoop
     DBusGMainLoop (set_as_default=True)
-    gtk.main ()
+    Gtk.main ()

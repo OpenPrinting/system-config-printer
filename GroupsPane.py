@@ -14,14 +14,15 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 import gobject
 from gettext import gettext as _
 
 from GroupsPaneModel import *
 from XmlHelper import xml_helper
 
-class GroupsPane (gtk.ScrolledWindow):
+class GroupsPane (Gtk.ScrolledWindow):
     __gsignals__ = {
         'item-activated' : (gobject.SIGNAL_RUN_LAST, gobject.TYPE_NONE,
                             [GroupsPaneItem]),
@@ -38,18 +39,18 @@ class GroupsPane (gtk.ScrolledWindow):
         self.ui_manager = None
         self.currently_selected_queues = []
 
-        self.set_policy (gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.set_policy (Gtk.PolicyType.NEVER, Gtk.PolicyType.AUTOMATIC)
 
-        self.tree_view = gtk.TreeView ()
+        self.tree_view = Gtk.TreeView ()
         self.tree_view.set_headers_visible (False)
 
-        column = gtk.TreeViewColumn ()
+        column = Gtk.TreeViewColumn ()
 
-        cell = gtk.CellRendererPixbuf ()
+        cell = Gtk.CellRendererPixbuf ()
         column.pack_start (cell, False)
         column.set_cell_data_func (cell, self.icon_cell_data_func)
 
-        cell = gtk.CellRendererText ()
+        cell = Gtk.CellRendererText ()
         column.pack_start (cell, True)
         column.set_cell_data_func (cell, self.label_cell_data_func)
 
@@ -78,7 +79,7 @@ class GroupsPane (gtk.ScrolledWindow):
                                 self.on_popup_menu)
 
         self.tree_view.enable_model_drag_dest ([("queue", 0, 0)],
-                                               gtk.gdk.ACTION_COPY)
+                                               Gdk.DragAction.COPY)
         self.tree_view.connect ("drag-data-received",
                                 self.on_drag_data_received)
         self.tree_view.connect ("drag-drop",
@@ -87,9 +88,9 @@ class GroupsPane (gtk.ScrolledWindow):
                                 self.on_drag_motion)
 
         # actions
-        action_group = gtk.ActionGroup ("GroupsPaneActionGroup")
+        action_group = Gtk.ActionGroup ("GroupsPaneActionGroup")
         action_group.add_actions ([
-                ("new-group", gtk.STOCK_NEW, _("_New Group"),
+                ("new-group", Gtk.STOCK_NEW, _("_New Group"),
                  "<Ctrl>g", None, self.on_new_group_activate),
                 ("new-group-from-selection", None,
                  _("_New Group from Selection"),
@@ -97,7 +98,7 @@ class GroupsPane (gtk.ScrolledWindow):
                  self.on_new_group_from_selection_activate),
                 ("rename-group", None, _("_Rename"),
                  None, None, self.on_rename_group_activate),
-                ("delete-group", gtk.STOCK_DELETE, None,
+                ("delete-group", Gtk.STOCK_DELETE, None,
                  None, None, self.on_delete_group_activate),
                 ])
         action_group.get_action (
@@ -107,7 +108,7 @@ class GroupsPane (gtk.ScrolledWindow):
         action_group.get_action (
             "delete-group").set_sensitive (False)
 
-        self.ui_manager = gtk.UIManager ()
+        self.ui_manager = Gtk.UIManager ()
         self.ui_manager.insert_action_group (action_group, -1)
         self.ui_manager.add_ui_from_string (
 """
@@ -121,14 +122,14 @@ class GroupsPane (gtk.ScrolledWindow):
 )
         self.ui_manager.ensure_update ()
 
-        self.groups_menu = gtk.Menu ()
+        self.groups_menu = Gtk.Menu ()
         for action_name in ["new-group",
                             "new-group-from-selection",
                             None,
                             "rename-group",
                             "delete-group"]:
             if not action_name:
-                item = gtk.SeparatorMenuItem ()
+                item = Gtk.SeparatorMenuItem ()
             else:
                 action = action_group.get_action (action_name)
                 item = action.create_menu_item ()
@@ -137,7 +138,7 @@ class GroupsPane (gtk.ScrolledWindow):
 
         selection = self.tree_view.get_selection ()
         selection.connect ("changed", self.on_selection_changed)
-        selection.set_mode (gtk.SELECTION_BROWSE)
+        selection.set_mode (Gtk.SelectionMode.BROWSE)
         selection.select_iter (self.store.append (AllPrintersItem ()))
 #        self.store.append (FavouritesItem ())
         self.store.append (SeparatorItem ())
@@ -163,10 +164,10 @@ class GroupsPane (gtk.ScrolledWindow):
             return
 
         if self.store.lookup_by_name (new_text):
-            dialog = gtk.MessageDialog (self.get_toplevel (),
-                                        gtk.DIALOG_DESTROY_WITH_PARENT,
-                                        gtk.MESSAGE_ERROR,
-                                        gtk.BUTTONS_OK,
+            dialog = Gtk.MessageDialog (self.get_toplevel (),
+                                        Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                        Gtk.MessageType.ERROR,
+                                        Gtk.ButtonsType.OK,
                                         _("The item could not be renamed."))
             dialog.format_secondary_text (_("The name \"%s\" is already "
                                             "in use. Please use a different "
@@ -182,18 +183,18 @@ class GroupsPane (gtk.ScrolledWindow):
         cell.set_properties (editable = False)
 
     def on_key_press_event (self, tree_view, event):
-        modifiers = gtk.accelerator_get_default_mod_mask ()
+        modifiers = Gtk.accelerator_get_default_mod_mask ()
 
-        if ((event.keyval == gtk.keysyms.BackSpace or
-             event.keyval == gtk.keysyms.Delete or
-             event.keyval == gtk.keysyms.KP_Delete) and
-            ((event.state & modifiers) == 0)):
+        if ((event.keyval == Gdk.KEY_BackSpace or
+             event.keyval == Gdk.KEY_Delete or
+             event.keyval == Gdk.KEY_KP_Delete) and
+            ((event.get_state() & modifiers) == 0)):
 
             self.delete_selected_group ()
             return True
 
-        if ((event.keyval == gtk.keysyms.F2) and
-            ((event.state & modifiers) == 0)):
+        if ((event.keyval == Gdk.KEY_F2) and
+            ((event.get_state() & modifiers) == 0)):
 
             self.rename_selected_group ()
             return True
@@ -231,7 +232,7 @@ class GroupsPane (gtk.ScrolledWindow):
         activate_time = 0L # GDK_CURRENT_TIME
         if event:
             activate_time = event.time
-            if event.type != gtk.gdk.BUTTON_RELEASE:
+            if event.type != Gdk.BUTTON_RELEASE:
                 button = event.button
 
         self.groups_menu.popup (None, None, None, button, activate_time)
@@ -269,7 +270,7 @@ class GroupsPane (gtk.ScrolledWindow):
         column = self.tree_view.get_column (0)
         cell = None
         for cr in column.get_cell_renderers ():
-            if isinstance (cr, gtk.CellRendererText):
+            if isinstance (cr, Gtk.CellRendererText):
                 cell = cr
                 break
         cell.set_properties (editable = True)
@@ -282,17 +283,17 @@ class GroupsPane (gtk.ScrolledWindow):
         if not isinstance (group_item, MutableItem):
             return
 
-        dialog = gtk.MessageDialog (self.get_toplevel (),
-                                    gtk.DIALOG_DESTROY_WITH_PARENT |
-                                    gtk.DIALOG_MODAL,
-                                    gtk.MESSAGE_WARNING,
-                                    gtk.BUTTONS_NONE,
+        dialog = Gtk.MessageDialog (self.get_toplevel (),
+                                    Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                    Gtk.DialogFlags.MODAL,
+                                    Gtk.MessageType.WARNING,
+                                    Gtk.ButtonsType.NONE,
                                     _("Are you sure you want to "
                                       "permanently delete \"%s\"?") %
                                     group_item.name)
-        dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT,
-                            gtk.STOCK_DELETE, gtk.RESPONSE_ACCEPT)
-        dialog.set_default_response (gtk.RESPONSE_REJECT)
+        dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.REJECT,
+                            Gtk.STOCK_DELETE, Gtk.ResponseType.ACCEPT)
+        dialog.set_default_response (Gtk.ResponseType.REJECT)
         dialog.format_secondary_text (_("This will not delete any printer queues from your computer. To delete queues completely, you must delete them from the 'All Printers' group."))
         dialog.connect ('response', self.on_delete_selected_group_response,
                         group_item, titer)
@@ -302,7 +303,7 @@ class GroupsPane (gtk.ScrolledWindow):
                                            group_item, titer):
         dialog.destroy ()
 
-        if response == gtk.RESPONSE_ACCEPT:
+        if response == Gtk.ResponseType.ACCEPT:
             self.tree_view.row_activated (
                 self.store.get_path (self.store.get_iter_first ()),
                 self.tree_view.get_column (0))
@@ -396,7 +397,7 @@ class GroupsPane (gtk.ScrolledWindow):
         path, position = tree_view.get_dest_row_at_pos (x, y)
         tree_view.set_drag_dest_row (path, position)
 
-        context.drag_status (gtk.gdk.ACTION_COPY, timestamp)
+        context.drag_status (Gdk.DragAction.COPY, timestamp)
         return True
 
     def get_static_groups (self):

@@ -28,8 +28,8 @@ class ErrorLogParse(Question):
         Question.__init__ (self, troubleshooter, "Error log parse")
         page = self.initial_vbox (_("Error log messages"),
                                   _("There are messages in the error log."))
-        sw = gtk.ScrolledWindow ()
-        textview = gtk.TextView ()
+        sw = Gtk.ScrolledWindow ()
+        textview = Gtk.TextView ()
         textview.set_editable (False)
         sw.add (textview)
         page.pack_start (sw)

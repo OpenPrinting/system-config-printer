@@ -32,13 +32,13 @@ class DeviceListed(Question):
                                      "to use from the list below. "
                                      "If it does not appear in the list, "
                                      "select 'Not listed'."))
-        tv = gtk.TreeView ()
-        name = gtk.TreeViewColumn (_("Name"),
-                                   gtk.CellRendererText (), text=0)
-        info = gtk.TreeViewColumn (_("Information"),
-                                   gtk.CellRendererText (), text=1)
-        uri = gtk.TreeViewColumn (_("Device URI"),
-                                  gtk.CellRendererText (), text=2)
+        tv = Gtk.TreeView ()
+        name = Gtk.TreeViewColumn (_("Name"),
+                                   Gtk.CellRendererText (), text=0)
+        info = Gtk.TreeViewColumn (_("Information"),
+                                   Gtk.CellRendererText (), text=1)
+        uri = Gtk.TreeViewColumn (_("Device URI"),
+                                  Gtk.CellRendererText (), text=2)
         name.set_property ("resizable", True)
         info.set_property ("resizable", True)
         uri.set_property ("resizable", True)
@@ -46,9 +46,9 @@ class DeviceListed(Question):
         tv.append_column (info)
         tv.append_column (uri)
         tv.set_rules_hint (True)
-        sw = gtk.ScrolledWindow ()
-        sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        sw.set_shadow_type (gtk.SHADOW_IN)
+        sw = Gtk.ScrolledWindow ()
+        sw.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        sw.set_shadow_type (Gtk.ShadowType.IN)
         sw.add (tv)
         page1.pack_start (sw, True, True, 0)
         self.treeview = tv
@@ -61,7 +61,7 @@ class DeviceListed(Question):
             answers.get ('cups_printer_remote', False)):
             return False
 
-        model = gtk.ListStore (gobject.TYPE_STRING,
+        model = Gtk.ListStore (gobject.TYPE_STRING,
                                gobject.TYPE_STRING,
                                gobject.TYPE_STRING,
                                gobject.TYPE_PYOBJECT)

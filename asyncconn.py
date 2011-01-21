@@ -20,7 +20,7 @@
 
 import cups
 import gobject
-import gtk
+from gi.repository import Gtk
 import os
 
 import asyncipp

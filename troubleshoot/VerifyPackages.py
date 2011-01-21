@@ -27,7 +27,7 @@ from timedops import TimedSubprocess
 class VerifyPackages(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Verify packages")
-        troubleshooter.new_page (gtk.Label (), self)
+        troubleshooter.new_page (Gtk.Label (), self)
 
     def display (self):
         self.answers = {}

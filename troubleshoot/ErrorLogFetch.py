@@ -29,7 +29,7 @@ from base import *
 class ErrorLogFetch(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Error log fetch")
-        troubleshooter.new_page (gtk.Label (), self)
+        troubleshooter.new_page (Gtk.Label (), self)
         self.persistent_answers = {}
 
     def display (self):

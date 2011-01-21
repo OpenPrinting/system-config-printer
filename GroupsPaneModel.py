@@ -15,7 +15,7 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import gobject
-import gtk
+from gi.repository import Gtk
 import libxml2
 from XmlHelper import xml_helper
 from SearchCriterion import *
@@ -32,10 +32,10 @@ class GroupsPaneItem (gobject.GObject):
         self.separator = False
 
     def load_icon (self, icon_name):
-        theme = gtk.icon_theme_get_default ()
+        theme = Gtk.IconTheme.get_default ()
         try:
             return theme.load_icon (icon_name,
-                                    gtk.ICON_SIZE_MENU, 0)
+                                    Gtk.IconSize.MENU, 0)
         except gobject.GError:
             return None
 
@@ -174,7 +174,7 @@ class SavedSearchGroupItem (MutableItem):
                 self.criteria.append (criterion)
                 criterion_node = criterion_node.next
 
-class GroupsPaneModel (gtk.ListStore):
+class GroupsPaneModel (Gtk.ListStore):
     def __init__ (self):
         super (GroupsPaneModel, self).__init__ (GroupsPaneItem)
 

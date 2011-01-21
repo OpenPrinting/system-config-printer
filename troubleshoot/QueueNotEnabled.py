@@ -24,8 +24,8 @@ from base import *
 class QueueNotEnabled(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Queue not enabled?")
-        self.label = gtk.Label ()
-        solution = gtk.VBox ()
+        self.label = Gtk.Label ()
+        solution = Gtk.VBox ()
         self.label.set_line_wrap (True)
         self.label.set_alignment (0, 0)
         solution.pack_start (self.label, False, False, 0)

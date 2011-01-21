@@ -33,7 +33,7 @@ import tempfile
 
 import cups
 import dbus
-import gtk
+from gi.repository import Gtk
 from debug import debugprint
 
 from dbus.mainloop.glib import DBusGMainLoop

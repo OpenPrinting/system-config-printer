@@ -23,7 +23,7 @@
 from gettext import gettext as _
 import cups
 import gobject
-import gtk
+from gi.repository import Gtk
 import os
 import socket
 import tempfile
@@ -42,10 +42,10 @@ except AttributeError:
     try_CUPS_SERVER_REMOTE_ANY = "_remote_any"
 
 # Set up "Problems?" link button
-class _UnobtrusiveButton(gtk.Button):
+class _UnobtrusiveButton(Gtk.Button):
     def __init__ (self, **args):
-        gtk.Button.__init__ (self, **args)
-        self.set_relief (gtk.RELIEF_NONE)
+        gobject.GObject.__init__ (self, **args)
+        self.set_relief (Gtk.ReliefStyle.NONE)
         label = self.get_child ()
         text = label.get_text ()
         label.set_use_markup (True)
@@ -101,12 +101,12 @@ class ServerSettings(GtkGUI):
         self.remove = self.btAdvServerRemove
 
         selection = self.browse_treeview.get_selection ()
-        selection.set_mode (gtk.SELECTION_MULTIPLE)
+        selection.set_mode (Gtk.SelectionMode.MULTIPLE)
         self._connect (selection, 'changed', self.on_treeview_selection_changed)
 
         for column in self.browse_treeview.get_columns():
             self.browse_treeview.remove_column(column)
-        col = gtk.TreeViewColumn ('', gtk.CellRendererText (), text=0)
+        col = Gtk.TreeViewColumn ('', Gtk.CellRendererText (), text=0)
         self.browse_treeview.append_column (col)
 
         self._fillAdvanced ()
@@ -182,7 +182,7 @@ class ServerSettings(GtkGUI):
         self.preserve_job_history = preserve_job_history
         self.preserve_job_files = preserve_job_files
 
-        model = gtk.ListStore (gobject.TYPE_STRING)
+        model = Gtk.ListStore (gobject.TYPE_STRING)
         self.browse_treeview.set_model (model)
         for server in self.browse_poll:
             model.append (row=[server])
@@ -334,7 +334,7 @@ class ServerSettings(GtkGUI):
         model = self.browse_treeview.get_model ()
         selection = self.browse_treeview.get_selection ()
         rows = selection.get_selected_rows ()
-        refs = map (lambda path: gtk.TreeRowReference (model, path),
+        refs = map (lambda path: Gtk.TreeRowReference (model, path),
                     rows[1])
         for ref in refs:
             path = ref.get_path ()
@@ -342,8 +342,8 @@ class ServerSettings(GtkGUI):
             model.remove (iter)
 
     def on_response (self, dialog, response):
-        if (response == gtk.RESPONSE_CANCEL or
-            response != gtk.RESPONSE_OK):
+        if (response == Gtk.ResponseType.CANCEL or
+            response != Gtk.ResponseType.OK):
             self._disconnect ()
             self.dialog.hide ()
             self.emit ('dialog-canceled')
@@ -530,21 +530,21 @@ class ServerSettings(GtkGUI):
                     allowed = True
 
                 if not allowed:
-                    dialog = gtk.MessageDialog (self.ServerSettingsDialog,
-                                                gtk.DIALOG_MODAL |
-                                                gtk.DIALOG_DESTROY_WITH_PARENT,
-                                                gtk.MESSAGE_QUESTION,
-                                                gtk.BUTTONS_NONE,
+                    dialog = Gtk.MessageDialog (self.ServerSettingsDialog,
+                                                Gtk.DialogFlags.MODAL |
+                                                Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                                Gtk.MessageType.QUESTION,
+                                                Gtk.ButtonsType.NONE,
                                                 _("Adjust Firewall"))
                     dialog.format_secondary_text (_("Adjust the firewall now "
                                                     "to allow all incoming IPP "
                                                     "connections?"))
-                    dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
-                                        _("Adjust Firewall"), gtk.RESPONSE_YES)
+                    dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.NO,
+                                        _("Adjust Firewall"), Gtk.ResponseType.YES)
                     response = dialog.run ()
                     dialog.destroy ()
 
-                    if response == gtk.RESPONSE_YES:
+                    if response == Gtk.ResponseType.YES:
                         f.add_rule (f.ALLOW_IPP_SERVER)
                         f.write ()
             except (dbus.DBusException, Exception):

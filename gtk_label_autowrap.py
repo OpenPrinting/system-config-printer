@@ -18,19 +18,19 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
-import gtk
+from gi.repository import Gtk
 from pango import SCALE
 
 ### set autowrapping for all labels in this widget tree
 def set_autowrap(widget):
-    if isinstance(widget, gtk.Container):
+    if isinstance(widget, Gtk.Container):
         children = widget.get_children()
         for i in xrange(len(children)):
             set_autowrap(children[i])
-    elif isinstance(widget, gtk.Label) and widget.get_line_wrap():
+    elif isinstance(widget, Gtk.Label) and widget.get_line_wrap():
         widget.connect_after("size-allocate", label_size_allocate)
 
-### set wrap width to the pango.Layout of the labels ###
+### set wrap width to the Pango.Layout of the labels ###
 def label_size_allocate(widget, allocation):
     layout = widget.get_layout()
 

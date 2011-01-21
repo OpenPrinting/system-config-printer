@@ -35,7 +35,8 @@ import subprocess
 import thread
 from timedops import *
 import dbus
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 
 import cups
 
@@ -80,7 +81,7 @@ def validDeviceURI (uri):
 def moveClassMembers(treeview_from, treeview_to):
     selection = treeview_from.get_selection()
     model_from, rows = selection.get_selected_rows()
-    rows = [gtk.TreeRowReference(model_from, row) for row in rows]
+    rows = [Gtk.TreeRowReference(model_from, row) for row in rows]
 
     model_to = treeview_to.get_model()
 
@@ -111,16 +112,16 @@ def checkNPName(printers, name):
 
 def ready (win, cursor=None):
     try:
-        gdkwin = win.window
+        gdkwin = win.get_window()
         if gdkwin:
             gdkwin.set_cursor (cursor)
-            while gtk.events_pending ():
-                gtk.main_iteration ()
+            while Gtk.events_pending ():
+                Gtk.main_iteration ()
     except:
         nonfatalException ()
 
 def busy (win):
-    ready (win, gtk.gdk.Cursor(gtk.gdk.WATCH))
+    ready (win, Gdk.Cursor.new(Gdk.WATCH))
 
 def on_delete_just_hide (widget, event):
     widget.hide ()
@@ -306,34 +307,34 @@ class NewPrinterGUI(GtkGUI):
                          [_("DTR/DSR (Hardware)")]]),
 
                        ]:
-            model = gtk.ListStore (gobject.TYPE_STRING)
+            model = Gtk.ListStore (gobject.TYPE_STRING)
             for row in opts:
                 model.append (row=row)
 
-            cell = gtk.CellRendererText ()
+            cell = Gtk.CellRendererText ()
             widget.pack_start (cell, True)
             widget.add_attribute (cell, 'text', 0)
             widget.set_model (model)
 
         # Set up some lists
-        m = gtk.SELECTION_MULTIPLE
-        s = gtk.SELECTION_SINGLE
-        b = gtk.SELECTION_BROWSE
+        m = Gtk.SelectionMode.MULTIPLE
+        s = Gtk.SelectionMode.SINGLE
+        b = Gtk.SelectionMode.BROWSE
         for name, model, treeview, selection_mode in (
-            (_("Members of this class"), gtk.ListStore(str),
+            (_("Members of this class"), Gtk.ListStore(str),
              self.tvNCMembers, m),
-            (_("Others"), gtk.ListStore(str), self.tvNCNotMembers, m),
-            (_("Devices"), gtk.ListStore(str), self.tvNPDevices, s),
-            (_("Connections"), gtk.ListStore(str), self.tvNPDeviceURIs, s),
-            (_("Makes"), gtk.ListStore(str, str), self.tvNPMakes,s),
-            (_("Models"), gtk.ListStore(str, str), self.tvNPModels,s),
-            (_("Drivers"), gtk.ListStore(str), self.tvNPDrivers,s),
-            (_("Downloadable Drivers"), gtk.ListStore(str),
+            (_("Others"), Gtk.ListStore(str), self.tvNCNotMembers, m),
+            (_("Devices"), Gtk.ListStore(str), self.tvNPDevices, s),
+            (_("Connections"), Gtk.ListStore(str), self.tvNPDeviceURIs, s),
+            (_("Makes"), Gtk.ListStore(str, str), self.tvNPMakes,s),
+            (_("Models"), Gtk.ListStore(str, str), self.tvNPModels,s),
+            (_("Drivers"), Gtk.ListStore(str), self.tvNPDrivers,s),
+            (_("Downloadable Drivers"), Gtk.ListStore(str),
              self.tvNPDownloadableDrivers, b),
             ):
 
-            cell = gtk.CellRendererText()
-            column = gtk.TreeViewColumn(name, cell, text=0)
+            cell = Gtk.CellRendererText()
+            column = Gtk.TreeViewColumn(name, cell, text=0)
             treeview.set_model(model)
             treeview.append_column(column)
             treeview.get_selection().set_mode(selection_mode)
@@ -357,7 +358,7 @@ class NewPrinterGUI(GtkGUI):
         self.openprinting = cupshelpers.openprinting.OpenPrinting ()
         self.openprinting_query_handle = None
         combobox = self.cmbNPDownloadableDriverFoundPrinters
-        cell = gtk.CellRendererText()
+        cell = Gtk.CellRendererText()
         combobox.pack_start (cell, True)
         combobox.add_attribute(cell, 'text', 0)
         if self.DOWNLOADABLE_ONLYPPD:
@@ -393,7 +394,7 @@ class NewPrinterGUI(GtkGUI):
                                       self.on_expNPDeviceURIs_expanded)
 
         # SMB browser
-        self.smb_store = gtk.TreeStore (gobject.TYPE_PYOBJECT)
+        self.smb_store = Gtk.TreeStore (gobject.TYPE_PYOBJECT)
         self.btnSMBBrowse.set_sensitive (PYSMB_AVAILABLE)
         if not PYSMB_AVAILABLE:
             self.btnSMBBrowse.set_tooltip_text (_("Browsing not available "
@@ -402,14 +403,14 @@ class NewPrinterGUI(GtkGUI):
         self.tvSMBBrowser.set_model (self.smb_store)
 
         # SMB list columns
-        col = gtk.TreeViewColumn (_("Share"))
-        cell = gtk.CellRendererText ()
+        col = Gtk.TreeViewColumn (_("Share"))
+        cell = Gtk.CellRendererText ()
         col.pack_start (cell, False)
         col.set_cell_data_func (cell, self.smbbrowser_cell_share)
         self.tvSMBBrowser.append_column (col)
 
-        col = gtk.TreeViewColumn (_("Comment"))
-        cell = gtk.CellRendererText ()
+        col = Gtk.TreeViewColumn (_("Comment"))
+        cell = Gtk.CellRendererText ()
         col.pack_start (cell, False)
         col.set_cell_data_func (cell, self.smbbrowser_cell_comment)
         self.tvSMBBrowser.append_column (col)
@@ -422,7 +423,7 @@ class NewPrinterGUI(GtkGUI):
         self.tvNPDrivers.set_has_tooltip(True)
         self.tvNPDrivers.connect("query-tooltip", self.on_NPDrivers_query_tooltip)
 
-        ppd_filter = gtk.FileFilter()
+        ppd_filter = Gtk.FileFilter()
         ppd_filter.set_name(_("PostScript Printer Description files (*.ppd, *.PPD, *.ppd.gz, *.PPD.gz, *.PPD.GZ)"))
         ppd_filter.add_pattern("*.ppd")
         ppd_filter.add_pattern("*.PPD")
@@ -431,7 +432,7 @@ class NewPrinterGUI(GtkGUI):
         ppd_filter.add_pattern("*.PPD.GZ")
         self.filechooserPPD.add_filter(ppd_filter)
 
-        ppd_filter = gtk.FileFilter()
+        ppd_filter = Gtk.FileFilter()
         ppd_filter.set_name(_("All files (*)"))
         ppd_filter.add_pattern("*")
         self.filechooserPPD.add_filter(ppd_filter)
@@ -507,8 +508,8 @@ class NewPrinterGUI(GtkGUI):
     def init(self, dialog_mode, device_uri=None, name=None, ppd=None,
              devid="", host=None, encryption=None, parent=None, xid=0):
         if xid != 0:
-            display = gtk.gdk.display_get_default ()
-            parent = gtk.gdk.window_foreign_new_for_display (display, xid)
+            display = Gdk.Display.get_default ()
+            parent = Gdk.window_foreign_new_for_display (display, xid)
             debugprint ("Parent is %s" % parent)
             self.parent = parent
         else:
@@ -566,7 +567,7 @@ class NewPrinterGUI(GtkGUI):
             raise RuntimeError
 
         combobox = self.cmbNPDownloadableDriverFoundPrinters
-        combobox.set_model (gtk.ListStore (str, str))
+        combobox.set_model (Gtk.ListStore (str, str))
         self.entNPDownloadableDriverSearch.set_text ('')
         button = self.btnNPDownloadableDriverSearch
         label = button.get_children ()[0].get_children ()[0].get_children ()[1]
@@ -595,7 +596,7 @@ class NewPrinterGUI(GtkGUI):
 
         if xid != 0 and self.parent:
             self.NewPrinterWindow.show_now()
-            self.NewPrinterWindow.window.set_transient_for (self.parent)
+            self.NewPrinterWindow.set_transient_for (self.parent)
 
         if self.dialog_mode == "printer":
             self.NewPrinterWindow.set_title(_("New Printer"))
@@ -1117,8 +1118,8 @@ class NewPrinterGUI(GtkGUI):
                 # Keep the UI refreshed while we wait for the drivers
                 # query to complete.
                 while self.drivers_lock.locked ():
-                    while gtk.events_pending ():
-                        gtk.main_iteration ()
+                    while Gtk.events_pending ():
+                        Gtk.main_iteration ()
                     time.sleep (0.1)
 
                 ready (self.NewPrinterWindow)
@@ -1515,7 +1516,7 @@ class NewPrinterGUI(GtkGUI):
 
     def fillDeviceTab(self, current_uri=None):
         self.device_selected = -1
-        model = gtk.TreeStore (gobject.TYPE_STRING,   # device-info
+        model = Gtk.TreeStore (gobject.TYPE_STRING,   # device-info
                                gobject.TYPE_PYOBJECT, # PhysicalDevice obj
                                gobject.TYPE_BOOLEAN)  # Separator?
         other = cupshelpers.Device('', **{'device-info' :_("Other")})
@@ -1581,15 +1582,15 @@ class NewPrinterGUI(GtkGUI):
                 f.add_rule (f.ALLOW_MDNS)
 
             if not allowed:
-                dialog = gtk.MessageDialog (self.NewPrinterWindow,
-                                            gtk.DIALOG_MODAL |
-                                            gtk.DIALOG_DESTROY_WITH_PARENT,
-                                            gtk.MESSAGE_QUESTION,
-                                            gtk.BUTTONS_NONE,
+                dialog = Gtk.MessageDialog (self.NewPrinterWindow,
+                                            Gtk.DialogFlags.MODAL |
+                                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                            Gtk.MessageType.QUESTION,
+                                            Gtk.ButtonsType.NONE,
                                             _("Adjust Firewall"))
                 dialog.format_secondary_markup (secondary_text)
-                dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
-                                    _("Adjust Firewall"), gtk.RESPONSE_YES)
+                dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.NO,
+                                    _("Adjust Firewall"), Gtk.ResponseType.YES)
                 dialog.connect ('response', self.adjust_firewall_response)
                 dialog.show ()
         except (dbus.DBusException, Exception):
@@ -1600,7 +1601,7 @@ class NewPrinterGUI(GtkGUI):
 
     def adjust_firewall_response (self, dialog, response):
         dialog.destroy ()
-        if response == gtk.RESPONSE_YES:
+        if response == Gtk.ResponseType.YES:
             self.firewall.add_rule (self.firewall.ALLOW_IPP_SERVER)
             self.firewall.write ()
 
@@ -1767,8 +1768,8 @@ class NewPrinterGUI(GtkGUI):
         dummy.name = _('Scanning...')
         dummy.comment = ''
         store.append(None, [dummy])
-        while gtk.events_pending ():
-            gtk.main_iteration ()
+        while Gtk.events_pending ():
+            Gtk.main_iteration ()
 
         debug = 0
         if get_debugging ():
@@ -1995,22 +1996,22 @@ class NewPrinterGUI(GtkGUI):
             allowed = f.check_samba_client_allowed ()
             secondary_text = TEXT_adjust_firewall + "\n\n"
             if not allowed:
-                dialog = gtk.MessageDialog (self.NewPrinterWindow,
-                                            gtk.DIALOG_MODAL |
-                                            gtk.DIALOG_DESTROY_WITH_PARENT,
-                                            gtk.MESSAGE_QUESTION,
-                                            gtk.BUTTONS_NONE,
+                dialog = Gtk.MessageDialog (self.NewPrinterWindow,
+                                            Gtk.DialogFlags.MODAL |
+                                            Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                            Gtk.MessageType.QUESTION,
+                                            Gtk.ButtonsType.NONE,
                                             _("Adjust Firewall"))
                 secondary_text += ("- " +
                                    _("Allow all incoming SMB/CIFS "
                                      "browse packets"))
                 dialog.format_secondary_markup (secondary_text)
-                dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
-                                    _("Adjust Firewall"), gtk.RESPONSE_YES)
+                dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.NO,
+                                    _("Adjust Firewall"), Gtk.ResponseType.YES)
                 response = dialog.run ()
                 dialog.destroy ()
 
-                if response == gtk.RESPONSE_YES:
+                if response == Gtk.ResponseType.YES:
                     f.add_rule (f.ALLOW_SAMBA_CLIENT)
                     f.write ()
         except (dbus.DBusException, Exception):
@@ -2316,7 +2317,7 @@ class NewPrinterGUI(GtkGUI):
             else:
                 device.menuentry = device.uri
 
-        model = gtk.ListStore (str,                    # URI description
+        model = Gtk.ListStore (str,                    # URI description
                                gobject.TYPE_PYOBJECT)  # cupshelpers.Device
         self.tvNPDeviceURIs.set_model (model)
 
@@ -2494,9 +2495,9 @@ class NewPrinterGUI(GtkGUI):
                 self.entNPTIPPQueuename.show()
                 self.lblIPPURI.hide()
         elif device.type=="lpd":
-            self.cmbentNPTLpdHost.child.set_text ('')
-            self.cmbentNPTLpdQueue.child.set_text ('')
-            model = gtk.ListStore (gobject.TYPE_STRING)
+            self.cmbentNPTLpdHost.get_child().set_text ('')
+            self.cmbentNPTLpdQueue.get_child().set_text ('')
+            model = Gtk.ListStore (gobject.TYPE_STRING)
             self.cmbentNPTLpdQueue.set_model(model)
             self.cmbentNPTLpdQueue.set_text_column(0)
             self.btnNPTLpdProbe.set_sensitive (False)
@@ -2508,8 +2509,8 @@ class NewPrinterGUI(GtkGUI):
                     host = host[:i]
                 else:
                     printer = ""
-                self.cmbentNPTLpdHost.child.set_text (host)
-                self.cmbentNPTLpdQueue.child.set_text (printer)
+                self.cmbentNPTLpdHost.get_child().set_text (host)
+                self.cmbentNPTLpdQueue.get_child().set_text (printer)
                 location = host
                 self.btnNPTLpdProbe.set_sensitive (True)
         elif device.uri == "smb":
@@ -2598,7 +2599,7 @@ class NewPrinterGUI(GtkGUI):
         self.printer_finder = finder
 
     def found_network_printer_callback (self, new_device):
-        gtk.gdk.threads_enter ()
+        Gdk.threads_enter ()
         if new_device:
             self.network_found += 1
             dev = PhysicalDevice (new_device)
@@ -2640,7 +2641,7 @@ class NewPrinterGUI(GtkGUI):
                                                           "address.") + '</i>')
                 self.lblNetworkFindNotFound.show ()
 
-        gtk.gdk.threads_leave ()
+        Gdk.threads_leave ()
     ###
 
     def getDeviceURI(self):
@@ -2726,7 +2727,7 @@ class NewPrinterGUI(GtkGUI):
             self.openprinting_query_handle = None
             self.btnNPDownloadableDriverSearch_label.set_text (_("Search"))
             # Clear printer list.
-            model = gtk.ListStore (str, str)
+            model = Gtk.ListStore (str, str)
             combobox = self.cmbNPDownloadableDriverFoundPrinters
             combobox.set_model (model)
             combobox.set_sensitive (False)
@@ -2761,7 +2762,7 @@ class NewPrinterGUI(GtkGUI):
         self.downloadable_drivers = dict()
         button = self.btnNPDownloadableDriverSearch
         label = self.btnNPDownloadableDriverSearch_label
-        gtk.gdk.threads_enter ()
+        Gdk.threads_enter ()
         try:
             label.set_text (_("Search"))
             button.set_sensitive (True)
@@ -2769,10 +2770,10 @@ class NewPrinterGUI(GtkGUI):
                 # Should report error.
                 print printers
                 print traceback.extract_tb(printers[2], limit=None)
-                gtk.gdk.threads_leave ()
+                Gdk.threads_leave ()
                 return
 
-            model = gtk.ListStore (str, str)
+            model = Gtk.ListStore (str, str)
             if len (printers) != 1:
                 if len (printers) > 1:
                     first = _("-- Select from search results --")
@@ -2803,7 +2804,7 @@ class NewPrinterGUI(GtkGUI):
             self.setNPButtons ()
         except:
             nonfatalException()
-        gtk.gdk.threads_leave ()
+        Gdk.threads_leave ()
 
     def on_cmbNPDownloadableDriverFoundPrinters_changed(self, widget):
         self.setNPButtons ()
@@ -2857,7 +2858,7 @@ class NewPrinterGUI(GtkGUI):
         self.frmNPDownloadableDriverLicenseTerms.hide ()
 
         drivers = self.downloadable_drivers
-        model = gtk.ListStore (str,                     # driver name
+        model = Gtk.ListStore (str,                     # driver name
                                gobject.TYPE_PYOBJECT)   # driver data
         recommended_iter = None
         first_iter = None
@@ -3299,7 +3300,7 @@ class NewPrinterGUI(GtkGUI):
             container.remove(child)
 
         if not self.ppd:
-            l = gtk.Label(_("No Installable Options"))
+            l = Gtk.Label(label=_("No Installable Options"))
             container.add(l)
             l.show()
             debugprint ("No PPD so no installable options")
@@ -3311,7 +3312,7 @@ class NewPrinterGUI(GtkGUI):
                 continue
             self.installable_options = True
 
-            table = gtk.Table(1, 3, False)
+            table = Gtk.Table(1, 3, False)
             table.set_col_spacings(6)
             table.set_row_spacings(6)
             container.add(table)
@@ -3325,19 +3326,19 @@ class NewPrinterGUI(GtkGUI):
                 o = OptionWidget(option, self.ppd, self)
                 table.attach(o.conflictIcon, 0, 1, nr, nr+1, 0, 0, 0, 0)
 
-                hbox = gtk.HBox()
+                hbox = Gtk.HBox()
                 if o.label:
-                    a = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                    a = Gtk.Alignment (0.5, 0.5, 1.0, 1.0)
                     a.set_padding (0, 0, 0, 6)
                     a.add (o.label)
-                    table.attach(a, 1, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
-                    table.attach(hbox, 2, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    table.attach(a, 1, 2, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
+                    table.attach(hbox, 2, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
                 else:
-                    table.attach(hbox, 1, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    table.attach(hbox, 1, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
                 hbox.pack_start(o.selector, False)
                 self.options[option.keyword] = o
         if not self.installable_options:
-            l = gtk.Label(_("No Installable Options"))
+            l = Gtk.Label(label=_("No Installable Options"))
             container.add(l)
             l.show()
         self.scrNPInstallableOptions.hide()
@@ -3397,8 +3398,8 @@ class NewPrinterGUI(GtkGUI):
                 option.writeback()
 
             busy (self.NewPrinterWindow)
-            while gtk.events_pending ():
-                gtk.main_iteration ()
+            while Gtk.events_pending ():
+                Gtk.main_iteration ()
             self.cups._begin_operation (_("adding printer %s") % name)
             try:
                 if isinstance(ppd, str) or isinstance(ppd, unicode):
@@ -3531,10 +3532,10 @@ if __name__ == '__main__':
 
     n = NewPrinterGUI ()
     def on_signal (*args):
-        gtk.main_quit ()
+        Gtk.main_quit ()
 
     n.connect ("printer-added", on_signal)
     n.connect ("printer-modified", on_signal)
     n.connect ("dialog-canceled", on_signal)
     n.init ("printer")
-    gtk.main ()
+    Gtk.main ()

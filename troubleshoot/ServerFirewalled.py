@@ -26,7 +26,7 @@ class ServerFirewalled(Question):
         page = self.initial_vbox (_("Check Server Firewall"),
                                    _("It is not possible to connect to the "
                                      "server."))
-        self.label = gtk.Label ()
+        self.label = Gtk.Label ()
         self.label.set_alignment (0, 0)
         self.label.set_line_wrap (True)
         page.pack_start (self.label, False, False, 0)

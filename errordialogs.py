@@ -22,25 +22,25 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 import cups
-import gtk
+from gi.repository import Gtk
 from gettext import gettext as _
 
 def show_dialog (title, text, type, parent=None):
-    dialog = gtk.MessageDialog (parent,
-                                gtk.DIALOG_MODAL |
-                                gtk.DIALOG_DESTROY_WITH_PARENT,
+    dialog = Gtk.MessageDialog (parent,
+                                Gtk.DialogFlags.MODAL |
+                                Gtk.DialogFlags.DESTROY_WITH_PARENT,
                                 type,
-                                gtk.BUTTONS_OK,
+                                Gtk.ButtonsType.OK,
                                 title)
     dialog.format_secondary_text (text)
     dialog.run ()
     dialog.destroy ()
 
 def show_info_dialog (title, text, parent=None):
-    return show_dialog (title, text, gtk.MESSAGE_INFO, parent=parent)
+    return show_dialog (title, text, Gtk.MessageType.INFO, parent=parent)
 
 def show_error_dialog (title, text, parent=None):
-    return show_dialog (title, text, gtk.MESSAGE_ERROR, parent=parent)
+    return show_dialog (title, text, Gtk.MessageType.ERROR, parent=parent)
 
 def show_IPP_Error(exception, message, parent=None):
     if exception == 0:

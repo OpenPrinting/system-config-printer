@@ -22,7 +22,8 @@ import threading
 import config
 import cups
 import gobject
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 import Queue
 
 import authconn
@@ -174,13 +175,13 @@ class _IPPConnectionThread(threading.Thread):
 
     def _auth (self, prompt, conn=None, method=None, resource=None):
         def prompt_auth (prompt):
-            gtk.gdk.threads_enter ()
+            Gdk.threads_enter ()
             if conn == None:
                 self._auth_handler (prompt, self._conn)
             else:
                 self._auth_handler (prompt, self._conn, method, resource)
 
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
             return False
 
         if self._auth_handler == None:
@@ -193,9 +194,9 @@ class _IPPConnectionThread(threading.Thread):
     def _reply (self, result):
         def send_reply (handler, result):
             if not self._destroyed:
-                gtk.gdk.threads_enter ()
+                Gdk.threads_enter ()
                 handler (self._conn, result)
-                gtk.gdk.threads_leave ()
+                Gdk.threads_leave ()
             return False
 
         if not self._destroyed and self._reply_handler:
@@ -204,9 +205,9 @@ class _IPPConnectionThread(threading.Thread):
     def _error (self, exc):
         def send_error (handler, exc):
             if not self._destroyed:
-                gtk.gdk.threads_enter ()
+                Gdk.threads_enter ()
                 handler (self._conn, exc)
-                gtk.gdk.threads_leave ()
+                Gdk.threads_leave ()
             return False
 
         if not self._destroyed and self._error_handler:
@@ -442,11 +443,11 @@ class _IPPAuthOperation:
 
         # If we've previously prompted, explain why we're prompting again.
         if self._dialog_shown:
-            d = gtk.MessageDialog (self._conn.parent,
-                                   gtk.DIALOG_MODAL |
-                                   gtk.DIALOG_DESTROY_WITH_PARENT,
-                                   gtk.MESSAGE_ERROR,
-                                   gtk.BUTTONS_CLOSE,
+            d = Gtk.MessageDialog (self._conn.parent,
+                                   Gtk.DialogFlags.MODAL |
+                                   Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                   Gtk.MessageType.ERROR,
+                                   Gtk.ButtonsType.CLOSE,
                                    _("Not authorized"))
             d.format_secondary_text (_("The password may be incorrect."))
             d.run ()
@@ -488,8 +489,8 @@ class _IPPAuthOperation:
         self._dialog = dialog
         dialog.hide ()
 
-        if (response == gtk.RESPONSE_CANCEL or
-            response == gtk.RESPONSE_DELETE_EVENT):
+        if (response == Gtk.ResponseType.CANCEL or
+            response == Gtk.ResponseType.DELETE_EVENT):
             self._cancel = True
             self._conn.set_auth_info ('')
             debugprint ("Auth canceled")
@@ -530,11 +531,11 @@ class _IPPAuthOperation:
         else:
             msg = _("CUPS server error (%s)") % op
 
-        d = gtk.MessageDialog (self._conn.parent,
-                               gtk.DIALOG_MODAL |
-                               gtk.DIALOG_DESTROY_WITH_PARENT,
-                               gtk.MESSAGE_ERROR,
-                               gtk.BUTTONS_NONE,
+        d = Gtk.MessageDialog (self._conn.parent,
+                               Gtk.DialogFlags.MODAL |
+                               Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                               Gtk.MessageType.ERROR,
+                               Gtk.ButtonsType.NONE,
                                msg)
 
         if self._client_fn == None and type (exc) == RuntimeError:
@@ -547,15 +548,15 @@ class _IPPAuthOperation:
 
         d.format_secondary_text (_("There was an error during the "
                                    "CUPS operation: '%s'." % message))
-        d.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                       _("Retry"), gtk.RESPONSE_OK)
-        d.set_default_response (gtk.RESPONSE_OK)
+        d.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                       _("Retry"), Gtk.ResponseType.OK)
+        d.set_default_response (Gtk.ResponseType.OK)
         d.connect ("response", self._on_retry_server_error_response)
         d.show ()
 
     def _on_retry_server_error_response (self, dialog, response):
         dialog.destroy ()
-        if response == gtk.RESPONSE_OK:
+        if response == Gtk.ResponseType.OK:
             self._conn.reconnect (self._conn.thread.user,
                                   reply_handler=self._reconnect_reply,
                                   error_handler=self._reconnect_error)
@@ -621,19 +622,18 @@ class IPPAuthConnection(IPPConnection):
 
 if __name__ == "__main__":
     # Demo
-    import gtk
     set_debugging (True)
     gobject.threads_init ()
     class UI:
         def __init__ (self):
-            w = gtk.Window ()
+            w = Gtk.Window ()
             w.connect ("destroy", self.destroy)
-            b = gtk.Button ("Connect")
+            b = Gtk.Button ("Connect")
             b.connect ("clicked", self.connect_clicked)
-            vbox = gtk.VBox ()
+            vbox = Gtk.VBox ()
             vbox.pack_start (b)
             w.add (vbox)
-            self.get_devices_button = gtk.Button ("Get Devices")
+            self.get_devices_button = Gtk.Button ("Get Devices")
             self.get_devices_button.connect ("clicked", self.get_devices)
             self.get_devices_button.set_sensitive (False)
             vbox.pack_start (self.get_devices_button)
@@ -646,7 +646,7 @@ if __name__ == "__main__":
             except AttributeError:
                 pass
 
-            gtk.main_quit ()
+            Gtk.main_quit ()
 
         def connect_clicked (self, button):
             if self.conn:
@@ -687,4 +687,4 @@ if __name__ == "__main__":
             self.get_devices_button.set_sensitive (True)
 
     UI ()
-    gtk.main ()
+    Gtk.main ()

@@ -36,7 +36,7 @@ except:
 class CheckNetworkServerSanity(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check network server sanity")
-        troubleshooter.new_page (gtk.Label (), self)
+        troubleshooter.new_page (Gtk.Label (), self)
 
     def display (self):
         # Collect useful information.

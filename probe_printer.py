@@ -22,7 +22,8 @@ import cupshelpers
 from debug import *
 import errno
 import socket, time
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 from timedops import TimedOperation
 import subprocess
 import threading
@@ -173,8 +174,8 @@ class LpdServer:
     def probe(self):
         result = []
         for name in self.get_possible_queue_names ():
-            while gtk.events_pending ():
-                gtk.main_iteration ()
+            while Gtk.events_pending ():
+                Gtk.main_iteration ()
 
             found = self.probe_queue(name, result)
             if not found and name.startswith ("pr"):
@@ -192,9 +193,9 @@ class BackgroundSmbAuthContext(pysmb.AuthContext):
         pysmb.AuthContext.__init__ (self, *args, **kwargs)
 
     def _do_perform_authentication (self):
-        gtk.gdk.threads_enter ()
+        Gdk.threads_enter ()
         result = pysmb.AuthContext.perform_authentication (self)
-        gtk.gdk.threads_leave ()
+        Gdk.threads_leave ()
         self._do_perform_authentication_result = result
         self._gui_event.set ()
         

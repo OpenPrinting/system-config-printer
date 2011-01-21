@@ -362,34 +362,34 @@ class OpenPrinting:
 
 def _simple_gui ():
     import gtk, pprint
-    gtk.gdk.threads_init ()
+    Gdk.threads_init ()
     class QueryApp:
         def __init__(self):
             self.openprinting = OpenPrinting()
-            self.main = gtk.Dialog ("OpenPrinting query application",
+            self.main = Gtk.Dialog ("OpenPrinting query application",
                                     None,
-                                    gtk.DIALOG_MODAL | gtk.DIALOG_NO_SEPARATOR,
-                                    (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE,
+                                    Gtk.DialogFlags.MODAL | Gtk.DialogFlags.NO_SEPARATOR,
+                                    (Gtk.STOCK_CLOSE, Gtk.ResponseType.CLOSE,
                                      "Search", 10,
                                      "List", 20))
             self.main.set_border_width (6)
             self.main.vbox.set_spacing (2)
-            vbox = gtk.VBox (False, 6)
+            vbox = Gtk.VBox (False, 6)
             self.main.vbox.pack_start (vbox, True, True, 0)
             vbox.set_border_width (6)
-            self.entry = gtk.Entry ()
+            self.entry = Gtk.Entry ()
             vbox.pack_start (self.entry, False, False, 6)
-            sw = gtk.ScrolledWindow ()
-            self.tv = gtk.TextView ()
+            sw = Gtk.ScrolledWindow ()
+            self.tv = Gtk.TextView ()
             sw.add (self.tv)
             vbox.pack_start (sw, True, True, 6)
             self.main.connect ("response", self.response)
             self.main.show_all ()
 
         def response (self, dialog, response):
-            if (response == gtk.RESPONSE_CLOSE or
-                response == gtk.RESPONSE_DELETE_EVENT):
-                gtk.main_quit ()
+            if (response == Gtk.ResponseType.CLOSE or
+                response == Gtk.ResponseType.DELETE_EVENT):
+                Gtk.main_quit ()
 
             if response == 10:
                 # Run a query.
@@ -407,24 +407,24 @@ def _simple_gui ():
             text = ""
             for printer in printers.values ():
                 text += printer + "\n"
-            gtk.gdk.threads_enter ()
+            Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (text)
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
 
         def list_drivers_callback (self, status, user_data, drivers):
             if status != 0:
                 raise drivers[1]
 
             text = pprint.pformat (drivers)
-            gtk.gdk.threads_enter ()
+            Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (text)
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
 
         def query_callback (self, status, user_data, result):
-            gtk.gdk.threads_enter ()
+            Gdk.threads_enter ()
             self.tv.get_buffer ().set_text (str (result))
             file ("result.xml", "w").write (str (result))
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
 
     q = QueryApp()
-    gtk.main ()
+    Gtk.main ()
