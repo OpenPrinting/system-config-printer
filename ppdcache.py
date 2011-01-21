@@ -21,7 +21,8 @@
 import asyncconn
 import cups
 import gobject
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 import os
 import tempfile
 from debug import *
@@ -169,9 +170,9 @@ class PPDCache:
 
     def _schedule_callback (self, callback, name, result, exc):
         def cb_func (callback, name, result, exc):
-            gtk.gdk.threads_enter ()
+            Gdk.threads_enter ()
             callback (name, result, exc)
-            gtk.gdk.threads_leave ()
+            Gdk.threads_leave ()
             return False
 
         gobject.idle_add (cb_func, callback, name, result, exc)
@@ -181,7 +182,7 @@ if __name__ == "__main__":
     from debug import *
     set_debugging (True)
     gobject.threads_init ()
-    gtk.gdk.threads_init ()
+    Gdk.threads_init ()
     loop = gobject.MainLoop ()
 
     def signal (name, result, exc):

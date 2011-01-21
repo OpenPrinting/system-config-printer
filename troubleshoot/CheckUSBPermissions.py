@@ -29,7 +29,7 @@ from base import *
 class CheckUSBPermissions(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Check USB permissions")
-        troubleshooter.new_page (gtk.Label (), self)
+        troubleshooter.new_page (Gtk.Label (), self)
 
     def display (self):
         self.answers = {}

@@ -25,7 +25,7 @@
 import config
 
 import os, tempfile
-import gtk
+from gi.repository import Gtk
 import cups
 import locale
 from gettext import gettext as _
@@ -196,7 +196,7 @@ class PrinterPropertiesDialog(GtkGUI):
                          self.cmbPEndBanner,
                          self.cmbPErrorPolicy,
                          self.cmbPOperationPolicy]:
-            cell = gtk.CellRendererText ()
+            cell = Gtk.CellRendererText ()
             combobox.clear ()
             combobox.pack_start (cell, True)
             combobox.add_attribute (cell, 'text', 0)
@@ -205,18 +205,18 @@ class PrinterPropertiesDialog(GtkGUI):
         btn.connect ("clicked", self.on_btnRefreshMarkerLevels_clicked)
 
         # Printer state reasons list
-        column = gtk.TreeViewColumn (_("Message"))
-        icon = gtk.CellRendererPixbuf ()
+        column = Gtk.TreeViewColumn (_("Message"))
+        icon = Gtk.CellRendererPixbuf ()
         column.pack_start (icon, False)
-        text = gtk.CellRendererText ()
+        text = Gtk.CellRendererText ()
         column.pack_start (text, False)
         column.set_cell_data_func (icon, self.set_printer_state_reason_icon)
         column.set_cell_data_func (text, self.set_printer_state_reason_text)
         column.set_resizable (True)
         self.tvPrinterStateReasons.append_column (column)
         selection = self.tvPrinterStateReasons.get_selection ()
-        selection.set_mode (gtk.SELECTION_NONE)
-        store = gtk.ListStore (int, str)
+        selection.set_mode (Gtk.SelectionMode.NONE)
+        store = Gtk.ListStore (int, str)
         self.tvPrinterStateReasons.set_model (store)
         self.PrinterPropertiesDialog.connect ("delete-event",
                                               on_delete_just_hide)
@@ -230,22 +230,22 @@ class PrinterPropertiesDialog(GtkGUI):
             (_("Users"), self.tvPUsers),
             ):
 
-            model = gtk.ListStore(str)
-            cell = gtk.CellRendererText()
-            column = gtk.TreeViewColumn(name, cell, text=0)
+            model = Gtk.ListStore(str)
+            cell = Gtk.CellRendererText()
+            column = Gtk.TreeViewColumn(name, cell, text=0)
             treeview.set_model(model)
             treeview.append_column(column)
-            treeview.get_selection().set_mode(gtk.SELECTION_MULTIPLE)
+            treeview.get_selection().set_mode(Gtk.SelectionMode.MULTIPLE)
 
         # Printer Properties dialog
         self.dialog.connect ('response', self.printer_properties_response)
 
         # Printer Properties tree view
-        col = gtk.TreeViewColumn ('', gtk.CellRendererText (), markup=0)
+        col = Gtk.TreeViewColumn ('', Gtk.CellRendererText (), markup=0)
         self.tvPrinterProperties.append_column (col)
         sel = self.tvPrinterProperties.get_selection ()
         sel.connect ('changed', self.on_tvPrinterProperties_selection_changed)
-        sel.set_mode (gtk.SELECTION_SINGLE)
+        sel.set_mode (Gtk.SelectionMode.SINGLE)
 
         # Job Options widgets.
         for (widget,
@@ -322,11 +322,11 @@ class PrinterPropertiesDialog(GtkGUI):
 
                        (self.cmbJOOutputBin, []),
                        ]:
-            model = gtk.ListStore (gobject.TYPE_STRING)
+            model = Gtk.ListStore (gobject.TYPE_STRING)
             for row in opts:
                 model.append (row=row)
 
-            cell = gtk.CellRendererText ()
+            cell = Gtk.CellRendererText ()
             widget.pack_start (cell, True)
             widget.add_attribute (cell, 'text', 0)
             widget.set_model (model)
@@ -595,9 +595,9 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def printer_properties_response (self, dialog, response):
         if not self.printer:
-            response = gtk.RESPONSE_CANCEL
+            response = Gtk.ResponseType.CANCEL
 
-        if response == gtk.RESPONSE_REJECT:
+        if response == Gtk.ResponseType.REJECT:
             # The Conflict button was pressed.
             message = _("There are conflicting options.\n"
                         "Changes can only be applied after\n"
@@ -606,24 +606,24 @@ class PrinterPropertiesDialog(GtkGUI):
             for option in self.conflicts:
                 message += option.option.text + "\n"
 
-            dialog = gtk.MessageDialog(self.dialog,
-                                       gtk.DIALOG_DESTROY_WITH_PARENT |
-                                       gtk.DIALOG_MODAL,
-                                       gtk.MESSAGE_WARNING,
-                                       gtk.BUTTONS_CLOSE,
+            dialog = Gtk.MessageDialog(self.dialog,
+                                       Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                       Gtk.DialogFlags.MODAL,
+                                       Gtk.MessageType.WARNING,
+                                       Gtk.ButtonsType.CLOSE,
                                        message)
             dialog.run()
             dialog.destroy()
             return
 
-        if (response == gtk.RESPONSE_OK or
-            response == gtk.RESPONSE_APPLY):
-            if (response == gtk.RESPONSE_OK and len (self.changed) == 0):
+        if (response == Gtk.ResponseType.OK or
+            response == Gtk.ResponseType.APPLY):
+            if (response == Gtk.ResponseType.OK and len (self.changed) == 0):
                 failed = False
             else:
                 failed = self.save_printer (self.printer)
 
-        if response == gtk.RESPONSE_APPLY and not failed:
+        if response == Gtk.ResponseType.APPLY and not failed:
             try:
                 self.load (self.printer.name)
             except:
@@ -631,8 +631,8 @@ class PrinterPropertiesDialog(GtkGUI):
 
             self.setDataButtonState ()
 
-        if ((response == gtk.RESPONSE_OK and not failed) or
-            response == gtk.RESPONSE_CANCEL):
+        if ((response == Gtk.ResponseType.OK and not failed) or
+            response == Gtk.ResponseType.CANCEL):
             self.ppd = None
             self.ppd_local = None
             self.printer = None
@@ -645,16 +645,16 @@ class PrinterPropertiesDialog(GtkGUI):
     # Data handling
 
     def on_delete(self, dialog, event):
-        self.printer_properties_response (dialog, gtk.RESPONSE_CANCEL)
+        self.printer_properties_response (dialog, Gtk.ResponseType.CANCEL)
 
     def on_printer_changed(self, widget):
-        if isinstance(widget, gtk.CheckButton):
+        if isinstance(widget, Gtk.CheckButton):
             value = widget.get_active()
-        elif isinstance(widget, gtk.Entry):
+        elif isinstance(widget, Gtk.Entry):
             value = widget.get_text()
-        elif isinstance(widget, gtk.RadioButton):
+        elif isinstance(widget, Gtk.RadioButton):
             value = widget.get_active()
-        elif isinstance(widget, gtk.ComboBox):
+        elif isinstance(widget, Gtk.ComboBox):
             model = widget.get_model ()
             iter = widget.get_active_iter()
             value = model.get_value (iter, 1)
@@ -746,7 +746,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def on_btnPDelUser_clicked(self, button):
         model, rows = self.tvPUsers.get_selection().get_selected_rows()
-        rows = [gtk.TreeRowReference(model, row) for row in rows]
+        rows = [Gtk.TreeRowReference(model, row) for row in rows]
         for row in rows:
             path = row.get_path()
             iter = model.get_iter(path)
@@ -803,15 +803,15 @@ class PrinterPropertiesDialog(GtkGUI):
         i = 0
         for opt in self.other_job_options:
             self.tblJOOther.attach (opt.label, 0, 1, i, i + 1,
-                                    xoptions=gtk.FILL,
-                                    yoptions=gtk.FILL)
+                                    xoptions=Gtk.AttachOptions.FILL,
+                                    yoptions=Gtk.AttachOptions.FILL)
             opt.label.set_alignment (0.0, 0.5)
             self.tblJOOther.attach (opt.selector, 1, 2, i, i + 1,
-                                    xoptions=gtk.FILL,
+                                    xoptions=Gtk.AttachOptions.FILL,
                                     yoptions=0)
             opt.selector.set_sensitive (editable)
 
-            btn = gtk.Button(stock=gtk.STOCK_REMOVE)
+            btn = Gtk.Button(stock=Gtk.STOCK_REMOVE)
             btn.connect("clicked", self.on_btnJOOtherRemove_clicked)
             btn.set_data("pyobject", opt)
             btn.set_sensitive (editable)
@@ -998,16 +998,16 @@ class PrinterPropertiesDialog(GtkGUI):
                 # update member list
                 new_members = newprinter.getCurrentClassMembers(self.tvClassMembers)
                 if not new_members:
-                    dialog = gtk.MessageDialog(
-                        flags=0, type=gtk.MESSAGE_WARNING,
-                        buttons=gtk.BUTTONS_NONE,
+                    dialog = Gtk.MessageDialog(
+                        flags=0, type=Gtk.MessageType.WARNING,
+                        buttons=Gtk.ButtonsType.NONE,
                         message_format=_("This will delete this class!"))
                     dialog.format_secondary_text(_("Proceed anyway?"))
-                    dialog.add_buttons (gtk.STOCK_CANCEL, gtk.RESPONSE_NO,
-                                        gtk.STOCK_DELETE, gtk.RESPONSE_YES)
+                    dialog.add_buttons (Gtk.STOCK_CANCEL, Gtk.ResponseType.NO,
+                                        Gtk.STOCK_DELETE, Gtk.ResponseType.YES)
                     result = dialog.run()
                     dialog.destroy()
-                    if result==gtk.RESPONSE_NO:
+                    if result==Gtk.ResponseType.NO:
                         self.cups._end_operation ()
                         return True
                     class_deleted = True
@@ -1253,7 +1253,7 @@ class PrinterPropertiesDialog(GtkGUI):
         if translationdict == None:
             translationdict = ppdippstr.TranslationDict ()
 
-        model = gtk.ListStore (gobject.TYPE_STRING,
+        model = Gtk.ListStore (gobject.TYPE_STRING,
                                gobject.TYPE_STRING)
         combobox.set_model (model)
         set_active = False
@@ -1466,7 +1466,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def updatePrinterPropertiesTreeView (self):
         # Now update the tree view (which we use instead of the notebook tabs).
-        store = gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_INT)
+        store = Gtk.ListStore (gobject.TYPE_STRING, gobject.TYPE_INT)
         self.ntbkPrinter.set_show_tabs (False)
         for n in range (self.ntbkPrinter.get_n_pages ()):
             page = self.ntbkPrinter.get_nth_page (n)
@@ -1529,7 +1529,7 @@ class PrinterPropertiesDialog(GtkGUI):
             self.btnRefreshMarkerLevels.hide ()
 
         if len (markers) == 0:
-            label = gtk.Label(_("Marker levels are not reported "
+            label = Gtk.Label(label=_("Marker levels are not reported "
                                 "for this printer."))
             label.set_line_wrap (True)
             label.set_alignment (0.0, 0.0)
@@ -1540,7 +1540,7 @@ class PrinterPropertiesDialog(GtkGUI):
             rows = 1 + (cols - 1) / 4
             if cols > 4:
                 cols = 4
-            table = gtk.Table (rows=rows,
+            table = Gtk.Table (rows=rows,
                                columns=cols,
                                homogeneous=True)
             table.set_col_spacings (6)
@@ -1557,13 +1557,13 @@ class PrinterPropertiesDialog(GtkGUI):
                 row = num_markers / 4
                 col = num_markers % 4
 
-                vbox = gtk.VBox (spacing=6)
-                subhbox = gtk.HBox ()
+                vbox = Gtk.VBox (spacing=6)
+                subhbox = Gtk.HBox ()
                 inklevel = gtkinklevel.GtkInkLevel (color, level)
                 inklevel.set_tooltip_text ("%d%%" % level)
                 subhbox.pack_start (inklevel, True, False, 0)
                 vbox.pack_start (subhbox, False, False, 0)
-                label = gtk.Label (name)
+                label = Gtk.Label(label=name)
                 label.set_width_chars (10)
                 label.set_line_wrap (True)
                 vbox.pack_start (label, False, False, 0)
@@ -1578,7 +1578,7 @@ class PrinterPropertiesDialog(GtkGUI):
     def updateStateReasons (self):
         printer = self.printer
         reasons = printer.other_attributes.get ('printer-state-reasons', [])
-        store = gtk.ListStore (str, str)
+        store = Gtk.ListStore (str, str)
         any = False
         for reason in reasons:
             if reason == "none":
@@ -1588,7 +1588,7 @@ class PrinterPropertiesDialog(GtkGUI):
             iter = store.append (None)
             r = statereason.StateReason (printer.name, reason, self._ppdcache)
             if r.get_reason () == "paused":
-                icon = gtk.STOCK_MEDIA_PAUSE
+                icon = Gtk.STOCK_MEDIA_PAUSE
             else:
                 icon = statereason.StateReason.LEVEL_ICON[r.get_level ()]
             store.set_value (iter, 0, icon)
@@ -1604,7 +1604,7 @@ class PrinterPropertiesDialog(GtkGUI):
 
     def set_printer_state_reason_icon (self, column, cell, model, iter, *data):
         icon = model.get_value (iter, 0)
-        theme = gtk.icon_theme_get_default ()
+        theme = Gtk.IconTheme.get_default ()
         try:
             pixbuf = theme.load_icon (icon, 22, 0)
             cell.set_property ("pixbuf", pixbuf)
@@ -1701,15 +1701,15 @@ class PrinterPropertiesDialog(GtkGUI):
                 tab_nr = self.ntbkPrinter.page_num(self.swPInstallOptions)
                 if tab_nr == -1:
                     self.ntbkPrinter.insert_page(self.swPInstallOptions,
-                                                 gtk.Label(group.text),
+                                                 Gtk.Label(label=group.text),
                                                  self.static_tabs)
                 tab_label = self.lblPInstallOptions
             else:
-                frame = gtk.Frame("<b>%s</b>" % ppdippstr.ppd.get (group.text))
+                frame = Gtk.Frame("<b>%s</b>" % ppdippstr.ppd.get (group.text))
                 frame.get_label_widget().set_use_markup(True)
-                frame.set_shadow_type (gtk.SHADOW_NONE)
+                frame.set_shadow_type (Gtk.ShadowType.NONE)
                 self.vbPOptions.pack_start (frame, False, False, 0)
-                container = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                container = Gtk.Alignment (0.5, 0.5, 1.0, 1.0)
                 # We want a left padding of 12, but there is a Table with
                 # spacing 6, and the left-most column of it (the conflict
                 # icon) is normally hidden, so just use 6 here.
@@ -1717,7 +1717,7 @@ class PrinterPropertiesDialog(GtkGUI):
                 frame.add (container)
                 tab_label = self.lblPOptions
 
-            table = gtk.Table(1, 3, False)
+            table = Gtk.Table(1, 3, False)
             table.set_col_spacings(6)
             table.set_row_spacings(6)
             container.add(table)
@@ -1739,15 +1739,15 @@ class PrinterPropertiesDialog(GtkGUI):
                 o = OptionWidget(option, ppd, self, tab_label=tab_label)
                 table.attach(o.conflictIcon, 0, 1, nr, nr+1, 0, 0, 0, 0)
 
-                hbox = gtk.HBox()
+                hbox = Gtk.HBox()
                 if o.label:
-                    a = gtk.Alignment (0.5, 0.5, 1.0, 1.0)
+                    a = Gtk.Alignment (0.5, 0.5, 1.0, 1.0)
                     a.set_padding (0, 0, 0, 6)
                     a.add (o.label)
-                    table.attach(a, 1, 2, nr, nr+1, gtk.FILL, 0, 0, 0)
-                    table.attach(hbox, 2, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    table.attach(a, 1, 2, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
+                    table.attach(hbox, 2, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
                 else:
-                    table.attach(hbox, 1, 3, nr, nr+1, gtk.FILL, 0, 0, 0)
+                    table.attach(hbox, 1, 3, nr, nr+1, Gtk.AttachOptions.FILL, 0, 0, 0)
                 hbox.pack_start(o.selector, False)
                 self.options[option.keyword] = o
                 o.selector.set_sensitive(editable)
@@ -1862,7 +1862,7 @@ class PrinterPropertiesDialog(GtkGUI):
     def on_printer_removed (self, mon, printer):
         if (self.dialog.get_property ('visible') and
             self.printer and self.printer.name == printer):
-            self.dialog.response (gtk.RESPONSE_CANCEL)
+            self.dialog.response (Gtk.ResponseType.CANCEL)
 
         if self.printer and self.printer.name == printer:
             self.printer = None

@@ -21,7 +21,7 @@
 
 import dbus
 import gobject
-import gtk
+from gi.repository import Gtk
 import cupshelpers
 
 import cups
@@ -82,11 +82,11 @@ class PPDsLoader(gobject.GObject):
             self._bus = None
 
         fmt = _("Searching")
-        self._dialog = gtk.MessageDialog (parent=parent,
-                                          flags=gtk.DIALOG_MODAL |
-                                          gtk.DIALOG_DESTROY_WITH_PARENT,
-                                          type=gtk.MESSAGE_INFO,
-                                          buttons=gtk.BUTTONS_CANCEL,
+        self._dialog = Gtk.MessageDialog (parent=parent,
+                                          flags=Gtk.DialogFlags.MODAL |
+                                          Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                          type=Gtk.MessageType.INFO,
+                                          buttons=Gtk.ButtonsType.CANCEL,
                                           message_format=fmt)
 
         self._dialog.format_secondary_text (_("Searching for drivers"))
@@ -207,7 +207,7 @@ class PPDsLoader(gobject.GObject):
     def _query_packagekit (self):
         debugprint ("Asking PackageKit to install drivers")
         try:
-            xid = self._parent.window.xid
+            xid = self._parent.get_window().xid
         except:
             xid = 0
 
@@ -284,11 +284,11 @@ gobject.type_register(PPDsLoader)
 if __name__ == "__main__":
     class Foo:
         def __init__ (self):
-            w = gtk.Window ()
-            b = gtk.Button ("Go")
+            w = Gtk.Window ()
+            b = Gtk.Button ("Go")
             w.add (b)
             b.connect ('clicked', self.go)
-            w.connect ('delete-event', gtk.main_quit)
+            w.connect ('delete-event', Gtk.main_quit)
             w.show_all ()
             self._window = w
 
@@ -300,7 +300,7 @@ if __name__ == "__main__":
 
         def ppds_loaded (self, ppdsloader):
             self._window.destroy ()
-            gtk.main_quit ()
+            Gtk.main_quit ()
             exc = ppdsloader.get_error ()
             print exc
             ppds = ppdsloader.get_ppds ()
@@ -314,4 +314,4 @@ if __name__ == "__main__":
     set_debugging (True)
     gobject.threads_init ()
     Foo ()
-    gtk.main ()
+    Gtk.main ()

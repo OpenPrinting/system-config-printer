@@ -475,7 +475,7 @@ def _client_demo ():
         print "Device URI required"
         return
 
-    import gtk
+    from gi.repository import Gtk
     bus = dbus.SessionBus ()
     obj = bus.get_object (CONFIG_BUS, CONFIG_PATH)
     iface = dbus.Interface (obj, CONFIG_IFACE)
@@ -493,14 +493,14 @@ def _client_demo ():
         print "%s: Printer '%s' added" % (path, name)
         loop.quit ()
 
-    w = gtk.Window ()
+    w = Gtk.Window ()
     w.show_now ()
     iface.connect_to_signal ("DialogCanceled", on_canceled,
                              path_keyword="path")
     iface.connect_to_signal ("PrinterAdded", on_added,
                              path_keyword="path")
 
-    iface.NewPrinterFromDevice (w.window.xid, device_uri, device_id)
+    iface.NewPrinterFromDevice (w.get_window().xid, device_uri, device_id)
     loop.run ()
 
 if __name__ == '__main__':

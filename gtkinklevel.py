@@ -18,18 +18,19 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 import cairo
 
-class GtkInkLevel (gtk.DrawingArea):
+class GtkInkLevel (Gtk.DrawingArea):
     def __init__ (self, color, level=0):
-        gtk.DrawingArea.__init__ (self)
+        gobject.GObject.__init__ (self)
         self.connect ('expose-event', self.expose_event)
         self._level = level
         try:
-            self._color = gtk.gdk.color_parse (color)
+            self._color = Gdk.color_parse (color)
         except (ValueError, TypeError):
-            self._color = gtk.gdk.color_parse ('#cccccc')
+            self._color = Gdk.color_parse ('#cccccc')
 
         self.set_size_request (30, 45)
 
@@ -41,13 +42,13 @@ class GtkInkLevel (gtk.DrawingArea):
         return self._level
 
     def expose_event (self, widget, event):
-        ctx = self.window.cairo_create ()
+        ctx = self.get_window().cairo_create ()
         ctx.rectangle (event.area.x, event.area.y,
                        event.area.width,
                        event.area.height)
         ctx.clip ()
 
-        (w, h) = self.window.get_size ()
+        (w, h) = self.get_window().get_size ()
         ratio = 1.0 * h / w
         if ratio < 1.5:
             w = h * 2.0 / 3.0
@@ -121,20 +122,20 @@ if __name__ == '__main__':
     import gobject
     import time
     def adjust_level (level):
-        gtk.gdk.threads_enter ()
+        Gdk.threads_enter ()
         l = level.get_level ()
         l += 1
         if l > 100:
             l = 0
         level.set_level (l)
-        gtk.gdk.threads_leave ()
+        Gdk.threads_leave ()
         return True
 
-    w = gtk.Window ()
+    w = Gtk.Window ()
     w.set_border_width (12)
-    vbox = gtk.VBox (spacing=6)
+    vbox = Gtk.VBox (spacing=6)
     w.add (vbox)
-    hbox = gtk.HBox (spacing=6)
+    hbox = Gtk.HBox (spacing=6)
     vbox.pack_start (hbox, False, False, 0)
     klevel = GtkInkLevel ("black", level=100)
     clevel = GtkInkLevel ("cyan", level=60)
@@ -149,6 +150,6 @@ if __name__ == '__main__':
     gobject.timeout_add (10, adjust_level, mlevel)
     gobject.timeout_add (10, adjust_level, ylevel)
     w.show_all ()
-    w.connect ('delete_event', gtk.main_quit)
-    gtk.gdk.threads_init ()
-    gtk.main ()
+    w.connect ('delete_event', Gtk.main_quit)
+    Gdk.threads_init ()
+    Gtk.main ()

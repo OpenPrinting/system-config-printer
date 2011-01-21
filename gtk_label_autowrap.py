@@ -18,20 +18,21 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-import gtk, pango
+from gi.repository import Gtk
+from pango import SCALE
 
 ### set autowrapping for all labels in this widget tree
 def set_autowrap(widget):
-    if isinstance(widget, gtk.Container):
+    if isinstance(widget, Gtk.Container):
         children = widget.get_children()
         for i in xrange(len(children)):
             set_autowrap(children[i])
-    elif isinstance(widget, gtk.Label) and widget.get_line_wrap():
+    elif isinstance(widget, Gtk.Label) and widget.get_line_wrap():
         widget.connect_after("size-allocate", label_size_allocate)
         widget.set_property("xalign", 0)
         widget.set_property("yalign", 0)
 
-### set wrap width to the pango.Layout of the labels ###
+### set wrap width to the Pango.Layout of the labels ###
 def label_size_allocate(widget, allocation):
     layout = widget.get_layout()
 
@@ -41,7 +42,7 @@ def label_size_allocate(widget, allocation):
     if lw_old == allocation.width:
         return
 
-    layout.set_width(allocation.width * pango.SCALE)
+    layout.set_width(allocation.width * SCALE)
     lw, lh = layout.get_pixel_size()
 
     if lh_old != lh:
@@ -50,16 +51,16 @@ def label_size_allocate(widget, allocation):
 ##############################################################################
 
 if __name__ == "__main__":
-    window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-    window.connect("delete_event", gtk.main_quit)
+    window = Gtk.Window(Gtk.WindowType.TOPLEVEL)
+    window.connect("delete_event", Gtk.main_quit)
 
-    label = gtk.Label("When you invoke GCC, it normally does preprocessing, compilation, assembly and linking.")
+    label = Gtk.Label(label="When you invoke GCC, it normally does preprocessing, compilation, assembly and linking.")
     label.set_line_wrap(True)
     label.set_use_markup(True)
     label.set_property("xalign", 1)
     label.set_property("yalign", 1)
 
-    hbox = gtk.HBox()
+    hbox = Gtk.HBox()
     hbox.pack_start(label)
 #    window.add(label)
     window.add(hbox)
@@ -67,4 +68,4 @@ if __name__ == "__main__":
 
     window.set_resizable(True)
     window.show_all()
-    gtk.main()
+    Gtk.main()

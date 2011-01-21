@@ -31,7 +31,7 @@ class PrinterStateReasons(Question):
         page = self.initial_vbox (_("Status Messages"),
                                   _("There are status messages associated with "
                                     "this queue."))
-        self.label = gtk.Label ()
+        self.label = Gtk.Label ()
         self.label.set_alignment (0, 0)
         self.label.set_line_wrap (True)
         page.pack_start (self.label, False, False, 0)

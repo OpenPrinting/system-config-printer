@@ -33,13 +33,13 @@ class AuthConnFactory:
 class Welcome(Question):
     def __init__ (self, troubleshooter):
         Question.__init__ (self, troubleshooter, "Welcome")
-        welcome = gtk.HBox ()
+        welcome = Gtk.HBox ()
         welcome.set_spacing (12)
         welcome.set_border_width (12)
-        image = gtk.Image ()
+        image = Gtk.Image ()
         image.set_alignment (0, 0)
-        image.set_from_stock (gtk.STOCK_PRINT, gtk.ICON_SIZE_DIALOG)
-        intro = gtk.Label ('<span weight="bold" size="larger">' +
+        image.set_from_stock (Gtk.STOCK_PRINT, Gtk.IconSize.DIALOG)
+        intro = Gtk.Label(label='<span weight="bold" size="larger">' +
                            _("Trouble-shooting Printing") +
                            '</span>\n\n' +
                            _("The next few screens will contain some "

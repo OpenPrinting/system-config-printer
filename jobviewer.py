@@ -24,16 +24,16 @@ import cups
 import dbus
 import dbus.glib
 import dbus.service
-import pynotify
+from gi.repository import Notify
 import gettext
 import glib
 import gobject
-import gtk
-import gtk.gdk
+from gi.repository import Gdk
+from gi.repository import Gtk
 from gui import GtkGUI
 import monitor
 import os, shutil
-import pango
+from gi.repository import Pango
 import pwd
 import smburi
 import subprocess
@@ -63,8 +63,8 @@ ICON="printer"
 ICON_SIZE=22
 SEARCHING_ICON="document-print-preview"
 
-# We need to call pynotify.init before we can check the server for caps
-pynotify.init('System Config Printer Notification')
+# We need to call Notify.init before we can check the server for caps
+Notify.init('System Config Printer Notification')
 
 class PrinterURIIndex:
     def __init__ (self, names=[]):
@@ -193,21 +193,21 @@ class CancelJobsOperation(gobject.GObject):
                 dialog_title = _("Cancel Job")
                 dialog_label = _("Do you really want to cancel this job?")
 
-        dialog = gtk.Dialog (dialog_title, parent,
-                             gtk.DIALOG_MODAL |
-                             gtk.DIALOG_DESTROY_WITH_PARENT |
-                             gtk.DIALOG_NO_SEPARATOR,
-                             (_("Keep Printing"), gtk.RESPONSE_NO,
-                              dialog_title, gtk.RESPONSE_YES))
-        dialog.set_default_response (gtk.RESPONSE_NO)
+        dialog = Gtk.Dialog (dialog_title, parent,
+                             Gtk.DialogFlags.MODAL |
+                             Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                             Gtk.DialogFlags.NO_SEPARATOR,
+                             (_("Keep Printing"), Gtk.ResponseType.NO,
+                              dialog_title, Gtk.ResponseType.YES))
+        dialog.set_default_response (Gtk.ResponseType.NO)
         dialog.set_border_width (6)
         dialog.set_resizable (False)
-        hbox = gtk.HBox (False, 12)
-        image = gtk.Image ()
-        image.set_from_stock (gtk.STOCK_DIALOG_QUESTION, gtk.ICON_SIZE_DIALOG)
+        hbox = Gtk.HBox (False, 12)
+        image = Gtk.Image ()
+        image.set_from_stock (Gtk.STOCK_DIALOG_QUESTION, Gtk.IconSize.DIALOG)
         image.set_alignment (0.0, 0.0)
         hbox.pack_start (image, False, False, 0)
-        label = gtk.Label (dialog_label)
+        label = Gtk.Label(label=dialog_label)
         label.set_line_wrap (True)
         label.set_alignment (0.0, 0.0)
         hbox.pack_start (label, False, False, 0)
@@ -237,13 +237,13 @@ class CancelJobsOperation(gobject.GObject):
         self.emit ('destroy')
 
     def on_job_cancel_prompt_delete (self, dialog, event):
-        self.on_job_cancel_prompt_response (dialog, gtk.RESPONSE_NO)
+        self.on_job_cancel_prompt_response (dialog, Gtk.ResponseType.NO)
 
     def on_job_cancel_prompt_response (self, dialog, response):
         dialog.destroy ()
         self.dialog = None
 
-        if response != gtk.RESPONSE_YES:
+        if response != Gtk.ResponseType.YES:
             self.emit ('finished')
             return
 
@@ -332,7 +332,7 @@ class JobViewer (GtkGUI):
         self.suppress_icon_hide = suppress_icon_hide
         self.my_jobs = my_jobs
         self.specific_dests = specific_dests
-        notify_caps = pynotify.get_server_caps ()
+        notify_caps = Notify.get_server_caps ()
         self.notify_has_actions = "actions" in notify_caps
         self.notify_has_persistence = "persistence" in notify_caps
 
@@ -363,29 +363,29 @@ class JobViewer (GtkGUI):
 
                          domain=config.PACKAGE)
 
-        job_action_group = gtk.ActionGroup ("JobActionGroup")
+        job_action_group = Gtk.ActionGroup ("JobActionGroup")
         job_action_group.add_actions ([
-                ("cancel-job", gtk.STOCK_CANCEL, _("_Cancel"), None,
+                ("cancel-job", Gtk.STOCK_CANCEL, _("_Cancel"), None,
                  _("Cancel selected jobs"), self.on_job_cancel_activate),
-                ("delete-job", gtk.STOCK_DELETE, _("_Delete"), None,
+                ("delete-job", Gtk.STOCK_DELETE, _("_Delete"), None,
                  _("Delete selected jobs"), self.on_job_delete_activate),
-                ("hold-job", gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None,
+                ("hold-job", Gtk.STOCK_MEDIA_PAUSE, _("_Hold"), None,
                  _("Hold selected jobs"), self.on_job_hold_activate),
-                ("release-job", gtk.STOCK_MEDIA_PLAY, _("_Release"), None,
+                ("release-job", Gtk.STOCK_MEDIA_PLAY, _("_Release"), None,
                  _("Release selected jobs"), self.on_job_release_activate),
-                ("reprint-job", gtk.STOCK_REDO, _("Re_print"), None,
+                ("reprint-job", Gtk.STOCK_REDO, _("Re_print"), None,
                  _("Reprint selected jobs"), self.on_job_reprint_activate),
-                ("retrieve-job", gtk.STOCK_SAVE_AS, _("Re_trieve"), None,
+                ("retrieve-job", Gtk.STOCK_SAVE_AS, _("Re_trieve"), None,
                  _("Retrieve selected jobs"), self.on_job_retrieve_activate),
                 ("move-job", None, _("_Move To"), None, None, None),
                 ("authenticate-job", None, _("_Authenticate"), None, None,
                  self.on_job_authenticate_activate),
                 ("job-attributes", None, _("_View Attributes"), None, None,
                  self.on_job_attributes_activate),
-                ("close", gtk.STOCK_CLOSE, None, "<ctrl>w",
+                ("close", Gtk.STOCK_CLOSE, None, "<ctrl>w",
                  _("Close this window"), self.on_delete_event)
                 ])
-        self.job_ui_manager = gtk.UIManager ()
+        self.job_ui_manager = Gtk.UIManager ()
         self.job_ui_manager.insert_action_group (job_action_group, -1)
         self.job_ui_manager.add_ui_from_string (
 """
@@ -405,7 +405,7 @@ class JobViewer (GtkGUI):
 )
         self.job_ui_manager.ensure_update ()
         self.JobsWindow.add_accel_group (self.job_ui_manager.get_accel_group ())
-        self.job_context_menu = gtk.Menu ()
+        self.job_context_menu = Gtk.Menu ()
         for action_name in ["cancel-job",
                             "delete-job",
                             "hold-job",
@@ -417,7 +417,7 @@ class JobViewer (GtkGUI):
                             "authenticate-job",
                             "job-attributes"]:
             if not action_name:
-                item = gtk.SeparatorMenuItem ()
+                item = Gtk.SeparatorMenuItem ()
             else:
                 action = job_action_group.get_action (action_name)
                 action.set_sensitive (False)
@@ -425,7 +425,7 @@ class JobViewer (GtkGUI):
 
                 if action_name == 'move-job':
                     self.move_job_menuitem = item
-                    printers = gtk.Menu ()
+                    printers = Gtk.Menu ()
                     item.set_submenu (printers)
 
             item.show ()
@@ -455,38 +455,38 @@ class JobViewer (GtkGUI):
                 # Skip the user column when running as applet.
                 continue
 
-            cell = gtk.CellRendererText()
+            cell = Gtk.CellRendererText()
             if ellipsize:
                 # Ellipsize the 'Document' and 'Printer' columns.
-                cell.set_property ("ellipsize", pango.ELLIPSIZE_END)
+                cell.set_property ("ellipsize", Pango.EllipsizeMode.END)
                 cell.set_property ("width-chars", 20)
-            column = gtk.TreeViewColumn(name, cell)
+            column = Gtk.TreeViewColumn(name, cell)
             column.set_cell_data_func (cell, setter)
             column.set_resizable(True)
             self.treeview.append_column(column)
 
-        cell = gtk.CellRendererText ()
-        column = gtk.TreeViewColumn (_("Time submitted"), cell, text=1)
+        cell = Gtk.CellRendererText ()
+        column = Gtk.TreeViewColumn (_("Time submitted"), cell, text=1)
         column.set_resizable (True)
         self.treeview.append_column (column)
 
-        column = gtk.TreeViewColumn (_("Status"))
-        icon = gtk.CellRendererPixbuf ()
+        column = Gtk.TreeViewColumn (_("Status"))
+        icon = Gtk.CellRendererPixbuf ()
         column.pack_start (icon, False)
-        text = gtk.CellRendererText ()
-        text.set_property ("ellipsize", pango.ELLIPSIZE_END)
+        text = Gtk.CellRendererText ()
+        text.set_property ("ellipsize", Pango.EllipsizeMode.END)
         text.set_property ("width-chars", 20)
         column.pack_start (text, True)
         column.set_cell_data_func (icon, self._set_job_status_icon)
         column.set_cell_data_func (text, self._set_job_status_text)
         self.treeview.append_column (column)
 
-        self.store = gtk.TreeStore(int, str)
-        self.store.set_sort_column_id (0, gtk.SORT_DESCENDING)
+        self.store = Gtk.TreeStore(int, str)
+        self.store.set_sort_column_id (0, Gtk.SortType.DESCENDING)
         self.treeview.set_model(self.store)
         self.treeview.set_rules_hint (True)
         self.selection = self.treeview.get_selection()
-        self.selection.set_mode(gtk.SELECTION_MULTIPLE)
+        self.selection.set_mode(Gtk.SelectionMode.MULTIPLE)
         self.selection.connect('changed', self.on_selection_changed)
         self.treeview.connect ('button_release_event',
                                self.on_treeview_button_release_event)
@@ -519,12 +519,12 @@ class JobViewer (GtkGUI):
             except gobject.GError:
                 debugprint ("No %s icon available" % icon)
                 # Just create an empty pixbuf.
-                pixbuf = gtk.gdk.Pixbuf (gtk.gdk.COLORSPACE_RGB,
+                pixbuf = GdkPixbuf.Pixbuf (GdkPixbuf.Colorspace.RGB,
                                          True, 8, ICON_SIZE, ICON_SIZE)
                 pixbuf.fill (0)
             return pixbuf
 
-        theme = gtk.icon_theme_get_default ()
+        theme = Gtk.IconTheme.get_default ()
         self.icon_jobs = load_icon (theme, ICON)
         self.icon_jobs_processing = load_icon (theme, "printer-printing")
         self.icon_no_jobs = self.icon_jobs.copy ()
@@ -535,10 +535,10 @@ class JobViewer (GtkGUI):
                                   self.icon_no_jobs.get_height(),
                                   0, 0,
                                   1.0, 1.0,
-                                  gtk.gdk.INTERP_BILINEAR,
+                                  GdkPixbuf.InterpType.BILINEAR,
                                   127)
         if self.applet and not self.notify_has_persistence:
-            self.statusicon = gtk.StatusIcon ()
+            self.statusicon = Gtk.StatusIcon ()
             self.statusicon.set_from_pixbuf (self.icon_no_jobs)
             self.statusicon.connect ('activate', self.toggle_window_display)
             self.statusicon.connect ('popup-menu', self.on_icon_popupmenu)
@@ -580,20 +580,20 @@ class JobViewer (GtkGUI):
         if not self.applet:
             self.JobsWindow.show ()
 
-        self.JobsAttributesWindow = gtk.Window()
+        self.JobsAttributesWindow = Gtk.Window()
         self.JobsAttributesWindow.set_title (_("Job attributes"))
-        self.JobsAttributesWindow.set_position(gtk.WIN_POS_MOUSE)
+        self.JobsAttributesWindow.set_position(Gtk.WindowPosition.MOUSE)
         self.JobsAttributesWindow.set_default_size(600, 600)
         self.JobsAttributesWindow.set_transient_for (self.JobsWindow)
         self.JobsAttributesWindow.connect("delete_event",
                                           self.job_attributes_on_delete_event)
         self.JobsAttributesWindow.add_accel_group (self.job_ui_manager.get_accel_group ())
-        attrs_action_group = gtk.ActionGroup ("AttrsActionGroup")
+        attrs_action_group = Gtk.ActionGroup ("AttrsActionGroup")
         attrs_action_group.add_actions ([
-                ("close", gtk.STOCK_CLOSE, None, "<ctrl>w",
+                ("close", Gtk.STOCK_CLOSE, None, "<ctrl>w",
                  _("Close this window"), self.job_attributes_on_delete_event)
                 ])
-        self.attrs_ui_manager = gtk.UIManager ()
+        self.attrs_ui_manager = Gtk.UIManager ()
         self.attrs_ui_manager.insert_action_group (attrs_action_group, -1)
         self.attrs_ui_manager.add_ui_from_string (
 """
@@ -604,15 +604,15 @@ class JobViewer (GtkGUI):
 )
         self.attrs_ui_manager.ensure_update ()
         self.JobsAttributesWindow.add_accel_group (self.attrs_ui_manager.get_accel_group ())
-        vbox = gtk.VBox ()
+        vbox = Gtk.VBox ()
         self.JobsAttributesWindow.add (vbox)
-        toolbar = gtk.Toolbar ()
+        toolbar = Gtk.Toolbar ()
         action = self.attrs_ui_manager.get_action ("/close")
         item = action.create_tool_item ()
         item.set_is_important (True)
         toolbar.insert (item, 0)
         vbox.pack_start (toolbar, False, False, 0)
-        self.notebook = gtk.Notebook()
+        self.notebook = Gtk.Notebook()
         vbox.pack_start (self.notebook)
 
     def cleanup (self):
@@ -629,7 +629,7 @@ class JobViewer (GtkGUI):
                 if notification.get_data ('closed') != True:
                     try:
                         notification.close ()
-                    except glib.GError:
+                    except gobject.GError:
                         # Can fail if the notification wasn't even shown
                         # yet (as in bug #571603).
                         pass
@@ -683,8 +683,8 @@ class JobViewer (GtkGUI):
                 self.JobsWindow.show ()
         else:
             if visible:
-                w = self.JobsWindow.window
-                aw = self.JobsAttributesWindow.window
+                w = self.JobsWindow.get_window()
+                aw = self.JobsAttributesWindow.get_window()
                 (s, area, o) = self.statusicon.get_geometry ()
                 w.set_skip_taskbar_hint (True)
                 if aw != None:
@@ -692,13 +692,13 @@ class JobViewer (GtkGUI):
 
                 w.property_change ("_NET_WM_ICON_GEOMETRY",
                                    "CARDINAL", 32,
-                                   gtk.gdk.PROP_MODE_REPLACE,
+                                   Gdk.PROP_MODE_REPLACE,
                                    list (area))
                 self.JobsWindow.iconify ()
             else:
                 self.JobsWindow.present ()
-                self.JobsWindow.window.set_skip_taskbar_hint (False)
-                aw = self.JobsAttributesWindow.window
+                self.JobsWindow.set_skip_taskbar_hint (False)
+                aw = self.JobsAttributesWindow.get_window()
                 if aw != None:
                     aw.set_skip_taskbar_hint (False)
 
@@ -755,9 +755,9 @@ class JobViewer (GtkGUI):
 
         if need_update and not self.job_creation_times_timer:
             def update_times_with_locking ():
-                gtk.gdk.threads_enter ()
+                Gdk.threads_enter ()
                 ret = self.update_job_creation_times ()
-                gtk.gdk.threads_leave ()
+                Gdk.threads_leave ()
                 return ret
 
             t = gobject.timeout_add_seconds (60, update_times_with_locking)
@@ -775,7 +775,7 @@ class JobViewer (GtkGUI):
         dialog.hide ()
         dialog.destroy ()
         self.stopped_job_prompts.remove (jobid)
-        if response == gtk.RESPONSE_NO:
+        if response == Gtk.ResponseType.NO:
             # Diagnose
             if not self.__dict__.has_key ('troubleshooter'):
                 import troubleshoot
@@ -803,7 +803,7 @@ class JobViewer (GtkGUI):
         if range != None:
             (start, end) = range
             if (self.store.get_sort_column_id () == (0,
-                                                     gtk.SORT_DESCENDING) and
+                                                     Gtk.SortType.DESCENDING) and
                 start == (1,)):
                 # This job was added job above the visible range, and
                 # we are sorting by descending job ID.  Scroll to it.
@@ -811,9 +811,9 @@ class JobViewer (GtkGUI):
 
         if not self.job_creation_times_timer:
             def start_updating_job_creation_times():
-                gtk.gdk.threads_enter ()
+                Gdk.threads_enter ()
                 self.update_job_creation_times ()
-                gtk.gdk.threads_leave ()
+                Gdk.threads_leave ()
                 return False
 
             gobject.timeout_add (500, start_updating_job_creation_times)
@@ -999,7 +999,7 @@ class JobViewer (GtkGUI):
                                       allow_remember=USE_KEYRING)
         dialog.set_data ('keyring-attrs', keyring_attrs)
         dialog.set_data ('auth-info-required', auth_info_required)
-        dialog.set_position (gtk.WIN_POS_CENTER)
+        dialog.set_position (Gtk.WindowPosition.CENTER)
 
         # Pre-fill 'username' field.
         auth_info = map (lambda x: '', auth_info_required)
@@ -1032,13 +1032,13 @@ class JobViewer (GtkGUI):
         dialog.show_now ()
 
     def auth_info_dialog_delete (self, dialog, event):
-        self.auth_info_dialog_response (dialog, gtk.RESPONSE_CANCEL)
+        self.auth_info_dialog_response (dialog, Gtk.ResponseType.CANCEL)
 
     def auth_info_dialog_response (self, dialog, response):
         jobid = dialog.get_data ('job-id')
         del self.auth_info_dialogs[jobid]
 
-        if response != gtk.RESPONSE_OK:
+        if response != Gtk.ResponseType.OK:
             dialog.destroy ()
             return
 
@@ -1123,11 +1123,11 @@ class JobViewer (GtkGUI):
                                      num_jobs > self.num_jobs_when_hidden)
 
         # Let the icon show/hide itself before continuing.
-        while self.process_pending_events and gtk.events_pending ():
-            gtk.main_iteration ()
+        while self.process_pending_events and Gtk.events_pending ():
+            Gtk.main_iteration ()
 
     def on_treeview_popup_menu (self, treeview):
-        event = gtk.gdk.Event (gtk.gdk.NOTHING)
+        event = Gdk.Event (Gdk.NOTHING)
         self.show_treeview_popup_menu (treeview, event, 0)
 
     def on_treeview_button_release_event(self, treeview, event):
@@ -1200,7 +1200,7 @@ class JobViewer (GtkGUI):
                 pass
 
         if len (other_printers) > 0:
-            printers_menu = gtk.Menu ()
+            printers_menu = Gtk.Menu ()
             other_printers = list (other_printers)
             other_printers.sort ()
             for printer in other_printers:
@@ -1208,7 +1208,7 @@ class JobViewer (GtkGUI):
                     uri = self.printer_uri_index.lookup_cached_by_name (printer)
                 except KeyError:
                     uri = None
-                menuitem = gtk.MenuItem (printer, False)
+                menuitem = Gtk.MenuItem (printer, False)
                 menuitem.set_sensitive (uri != None)
                 menuitem.show ()
                 menuitem.connect ('activate', self.on_job_move_activate, uri)
@@ -1395,22 +1395,22 @@ class JobViewer (GtkGUI):
                             name = name + format.replace('application/', '.')
 
                     if tempfile != None:
-                        dialog = gtk.FileChooserDialog (_("Save File"),
+                        dialog = Gtk.FileChooserDialog (_("Save File"),
                                                         self.JobsWindow,
-                                                  gtk.FILE_CHOOSER_ACTION_SAVE,
-                                        (gtk.STOCK_CANCEL, gtk.RESPONSE_CANCEL,
-                                         gtk.STOCK_SAVE, gtk.RESPONSE_OK))
+                                                  Gtk.FileChooserAction.SAVE,
+                                        (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
+                                         Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
                         dialog.set_current_name(name)
                         dialog.set_do_overwrite_confirmation(True)
 
                         response = dialog.run()
-                        if response == gtk.RESPONSE_OK:
+                        if response == Gtk.ResponseType.OK:
                             file_to_save = dialog.get_filename()
                             try:
                                 shutil.copyfile(tempfile, file_to_save)
                             except (IOError, shutil.Error):
                                 debugprint("Unable to save file "+file_to_save)
-                        elif response == gtk.RESPONSE_CANCEL:
+                        elif response == Gtk.ResponseType.CANCEL:
                             pass
                         dialog.destroy()
                         os.unlink(tempfile)
@@ -1467,22 +1467,22 @@ class JobViewer (GtkGUI):
         for jobid in self.jobids:
             if jobid not in self.jobs_attrs:
                 # add new notebook page with scrollable treeview
-                scrolledwindow = gtk.ScrolledWindow()
-                label = gtk.Label(str(jobid)) # notebook page has label with jobid
+                scrolledwindow = Gtk.ScrolledWindow()
+                label = Gtk.Label(label=str(jobid)) # notebook page has label with jobid
                 page_index = self.notebook.append_page(scrolledwindow, label)
-                attr_treeview = gtk.TreeView()
+                attr_treeview = Gtk.TreeView()
                 scrolledwindow.add(attr_treeview)
-                cell = gtk.CellRendererText ()
+                cell = Gtk.CellRendererText ()
                 attr_treeview.insert_column_with_attributes(0, _("Name"),
                                                             cell, text=0)
-                cell = gtk.CellRendererText ()
+                cell = Gtk.CellRendererText ()
                 attr_treeview.insert_column_with_attributes(1, _("Value"),
                                                             cell, text=1)
-                attr_store = gtk.ListStore(gobject.TYPE_STRING,
+                attr_store = Gtk.ListStore(gobject.TYPE_STRING,
                                            gobject.TYPE_STRING)
                 attr_treeview.set_model(attr_store)
-                attr_treeview.get_selection().set_mode(gtk.SELECTION_NONE)
-                attr_store.set_sort_column_id (0, gtk.SORT_ASCENDING)
+                attr_treeview.get_selection().set_mode(Gtk.SelectionMode.NONE)
+                attr_store.set_sort_column_id (0, Gtk.SortType.ASCENDING)
                 self.jobs_attrs[jobid] = (attr_store, page_index)
                 self.update_job_attributes_viewer (jobid, conn=c)
 
@@ -1554,7 +1554,7 @@ class JobViewer (GtkGUI):
                 icon = StateReason.LEVEL_ICON[level]
                 pixbuf = pixbuf.copy ()
                 try:
-                    theme = gtk.icon_theme_get_default ()
+                    theme = Gtk.IconTheme.get_default ()
                     emblem = theme.load_icon (icon, 22, 0)
                     emblem.composite (pixbuf,
                                       pixbuf.get_width () / 2,
@@ -1564,7 +1564,7 @@ class JobViewer (GtkGUI):
                                       pixbuf.get_width () / 2,
                                       pixbuf.get_height () / 2,
                                       0.5, 0.5,
-                                      gtk.gdk.INTERP_BILINEAR, 255)
+                                      GdkPixbuf.InterpType.BILINEAR, 255)
                 except gobject.GError:
                     debugprint ("No %s icon available" % icon)
 
@@ -1715,16 +1715,16 @@ class JobViewer (GtkGUI):
         level = reason.get_level ()
         if (level == StateReason.ERROR or
             reason.get_reason () == "connecting-to-device"):
-            urgency = pynotify.URGENCY_NORMAL
+            urgency = Notify.URGENCY_NORMAL
         else:
-            urgency = pynotify.URGENCY_LOW
+            urgency = Notify.URGENCY_LOW
 
         (title, text) = reason.get_description ()
-        notification = pynotify.Notification (title, text, 'printer')
+        notification = Notify.Notification (title, text, 'printer')
         reason.user_notified = True
         notification.set_urgency (urgency)
         if self.notify_has_actions:
-            notification.set_timeout (pynotify.EXPIRES_NEVER)
+            notification.set_timeout (Notify.EXPIRES_NEVER)
         notification.connect ('closed',
                               self.on_state_reason_notification_closed)
         self.state_reason_notifications[reason.get_tuple ()] = notification
@@ -1773,12 +1773,12 @@ class JobViewer (GtkGUI):
                     return
 
         printer = job.get ('job-printer-name', _("Unknown"))
-        notification = pynotify.Notification (_("Document printed"),
+        notification = Notify.Notification (_("Document printed"),
                                               _("Document `%s' has been sent "
                                                 "to `%s' for printing.") %
                                               (document, printer),
                                               'printer')
-        notification.set_urgency (pynotify.URGENCY_LOW)
+        notification.set_urgency (Notify.URGENCY_LOW)
         notification.connect ('closed',
                               self.on_completed_job_notification_closed)
         notification.set_data ('jobid', jobid)
@@ -1952,20 +1952,20 @@ class JobViewer (GtkGUI):
             if may_be_problem:
                 debugprint ("Problem detected")
                 self.toggle_window_display (None, force_show=True)
-                dialog = gtk.Dialog (_("Print Error"), self.JobsWindow, 0,
-                                     (_("_Diagnose"), gtk.RESPONSE_NO,
-                                        gtk.STOCK_OK, gtk.RESPONSE_OK))
-                dialog.set_default_response (gtk.RESPONSE_OK)
+                dialog = Gtk.Dialog (_("Print Error"), self.JobsWindow, 0,
+                                     (_("_Diagnose"), Gtk.ResponseType.NO,
+                                        Gtk.STOCK_OK, Gtk.ResponseType.OK))
+                dialog.set_default_response (Gtk.ResponseType.OK)
                 dialog.set_border_width (6)
                 dialog.set_resizable (False)
                 dialog.set_icon_name (ICON)
-                hbox = gtk.HBox (False, 12)
+                hbox = Gtk.HBox (False, 12)
                 hbox.set_border_width (6)
-                image = gtk.Image ()
-                image.set_from_stock (gtk.STOCK_DIALOG_ERROR,
-                                      gtk.ICON_SIZE_DIALOG)
+                image = Gtk.Image ()
+                image.set_from_stock (Gtk.STOCK_DIALOG_ERROR,
+                                      Gtk.IconSize.DIALOG)
                 hbox.pack_start (image, False, False, 0)
-                vbox = gtk.VBox (False, 12)
+                vbox = Gtk.VBox (False, 12)
 
                 markup = ('<span weight="bold" size="larger">' +
                           _("Print Error") + '</span>\n\n' +
@@ -1979,7 +1979,7 @@ class JobViewer (GtkGUI):
                 except KeyError:
                     pass
 
-                label = gtk.Label (markup)
+                label = Gtk.Label(label=markup)
                 label.set_use_markup (True)
                 label.set_line_wrap (True)
                 label.set_alignment (0, 0)
@@ -2078,7 +2078,7 @@ class JobViewer (GtkGUI):
             if notification.get_data ('closed') != True:
                 try:
                     notification.close ()
-                except glib.GError:
+                except gobject.GError:
                     # Can fail if the notification wasn't even shown
                     # yet (as in bug #545733).
                     pass
@@ -2136,7 +2136,7 @@ class JobViewer (GtkGUI):
         if notification.get_data ('closed') != True:
             try:
                 notification.close ()
-            except glib.GError:
+            except gobject.GError:
                 # Can fail if the notification wasn't even shown
                 pass
             notification.set_data ('closed', True)
@@ -2272,8 +2272,8 @@ class JobViewer (GtkGUI):
 
         if s == cups.IPP_JOB_HELD:
             try:
-                theme = gtk.icon_theme_get_default ()
-                emblem = theme.load_icon (gtk.STOCK_MEDIA_PAUSE, 22 / 2, 0)
+                theme = Gtk.IconTheme.get_default ()
+                emblem = theme.load_icon (Gtk.STOCK_MEDIA_PAUSE, 22 / 2, 0)
                 copy = icon.copy ()
                 emblem.composite (copy, 0, 0,
                                   copy.get_width (),
@@ -2281,7 +2281,7 @@ class JobViewer (GtkGUI):
                                   copy.get_width () / 2 - 1,
                                   copy.get_height () / 2 - 1,
                                   1.0, 1.0,
-                                  gtk.gdk.INTERP_NEAREST, 255)
+                                  GdkPixbuf.InterpType.NEAREST, 255)
                 icon = copy
             except gobject.GError:
                 debugprint ("No %s icon available" % gtk.STOCK_MEDIA_PAUSE)
@@ -2312,5 +2312,27 @@ class JobViewer (GtkGUI):
             text += " - " + title
 
         cell.set_property ("text", text)
+
+    def _on_treeview_query_tooltip (self, tv, x, y, keyboard_mode, tooltip):
+        if keyboard_mode:
+            (path, column) = tv.get_cursor ()
+            if path is None:
+                return False
+        else:
+            bin_x, bin_y = tv.convert_widget_to_bin_window_coords (x, y)
+            ret = tv.get_path_at_pos (bin_x, bin_y)
+            if ret is None:
+                return False
+            path = ret[0]
+            column = ret[1]
+
+        cells = column.get_cell_renderers ()
+        for cell in cells:
+            if type (cell) == Gtk.CellRendererText:
+                tooltip.set_markup (cell.get_property ("text"))
+                self.treeview.set_tooltip_cell (tooltip, path, column, cell)
+                break
+
+        return True
 
 gobject.type_register (JobViewer)

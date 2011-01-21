@@ -33,14 +33,14 @@ class ErrorLogCheckpoint(Question):
                                     "from the CUPS scheduler.  This may "
                                     "cause the scheduler to restart.  Click "
                                     "the button below to enable debugging."))
-        button = gtk.Button (_("Enable Debugging"))
-        buttonbox = gtk.HButtonBox ()
+        button = Gtk.Button (_("Enable Debugging"))
+        buttonbox = Gtk.HButtonBox ()
         buttonbox.set_border_width (0)
-        buttonbox.set_layout (gtk.BUTTONBOX_START)
+        buttonbox.set_layout (Gtk.ButtonBoxStyle.START)
         buttonbox.pack_start (button, False, False, 0)
         self.button = button
         page.pack_start (buttonbox, False, False, 0)
-        self.label = gtk.Label ()
+        self.label = Gtk.Label ()
         self.label.set_alignment (0, 0)
         self.label.set_line_wrap (True)
         page.pack_start (self.label, False, False, 0)

@@ -31,13 +31,13 @@ class ChooseNetworkPrinter(Question):
                                      "are trying to use from the list below. "
                                      "If it does not appear in the list, "
                                      "select 'Not listed'."))
-        tv = gtk.TreeView ()
-        name = gtk.TreeViewColumn (_("Name"),
-                                   gtk.CellRendererText (), text=0)
-        location = gtk.TreeViewColumn (_("Location"),
-                                       gtk.CellRendererText (), text=1)
-        info = gtk.TreeViewColumn (_("Information"),
-                                   gtk.CellRendererText (), text=2)
+        tv = Gtk.TreeView ()
+        name = Gtk.TreeViewColumn (_("Name"),
+                                   Gtk.CellRendererText (), text=0)
+        location = Gtk.TreeViewColumn (_("Location"),
+                                       Gtk.CellRendererText (), text=1)
+        info = Gtk.TreeViewColumn (_("Information"),
+                                   Gtk.CellRendererText (), text=2)
         name.set_property ("resizable", True)
         location.set_property ("resizable", True)
         info.set_property ("resizable", True)
@@ -45,9 +45,9 @@ class ChooseNetworkPrinter(Question):
         tv.append_column (location)
         tv.append_column (info)
         tv.set_rules_hint (True)
-        sw = gtk.ScrolledWindow ()
-        sw.set_policy (gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        sw.set_shadow_type (gtk.SHADOW_IN)
+        sw = Gtk.ScrolledWindow ()
+        sw.set_policy (Gtk.PolicyType.AUTOMATIC, Gtk.PolicyType.AUTOMATIC)
+        sw.set_shadow_type (Gtk.ShadowType.IN)
         sw.add (tv)
         page1.pack_start (sw, True, True, 0)
         self.treeview = tv
@@ -63,7 +63,7 @@ class ChooseNetworkPrinter(Question):
 
         server = answers['remote_server_try_connect']
 
-        model = gtk.ListStore (gobject.TYPE_STRING,
+        model = Gtk.ListStore (gobject.TYPE_STRING,
                                gobject.TYPE_STRING,
                                gobject.TYPE_STRING,
                                gobject.TYPE_PYOBJECT)

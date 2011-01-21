@@ -22,7 +22,7 @@
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 import gobject
-import gtk
+from gi.repository import Gtk
 import os
 
 import config
@@ -33,7 +33,7 @@ class GtkGUI(gobject.GObject):
         ui_dir = os.environ.get ("SYSTEM_CONFIG_PRINTER_UI",
                                  os.path.join (pkgdata, "ui"))
         for xmlfile, names in widgets.iteritems ():
-            bld = gtk.Builder ()
+            bld = Gtk.Builder ()
 
             if domain:
                 bld.set_translation_domain (domain)
@@ -51,7 +51,7 @@ class GtkGUI(gobject.GObject):
                 win = None
             
             if win != None:
-                gtk.Window.set_focus_on_map(widget.get_top_level (),
+                Gtk.Window.set_focus_on_map(widget.get_top_level (),
                                             self.focus_on_map)
                 widget.show()
 

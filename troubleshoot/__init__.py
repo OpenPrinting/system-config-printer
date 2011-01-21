@@ -19,7 +19,8 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gtk
+from gi.repository import Gdk
+from gi.repository import Gtk
 import pprint
 import sys
 import traceback
@@ -45,10 +46,10 @@ class Troubleshooter:
     def __init__ (self, quitfn=None, parent=None):
         self._in_module_call = False
 
-        main = gtk.Window ()
+        main = Gtk.Window ()
         if parent:
             main.set_transient_for (parent)
-            main.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
+            main.set_position (Gtk.WindowPosition.CENTER_ON_PARENT)
             main.set_modal (True)
 
         main.set_title (_("Printing troubleshooter"))
@@ -58,33 +59,33 @@ class Troubleshooter:
         self.main = main
         self.quitfn = quitfn
 
-        vbox = gtk.VBox ()
+        vbox = Gtk.VBox ()
         main.add (vbox)
-        ntbk = gtk.Notebook ()
+        ntbk = Gtk.Notebook ()
         ntbk.set_border_width (6)
         vbox.pack_start (ntbk, True, True, 0)
-        vbox.pack_start (gtk.HSeparator (), False, False, 0)
-        box = gtk.HButtonBox ()
+        vbox.pack_start (Gtk.HSeparator (), False, False, 0)
+        box = Gtk.HButtonBox ()
         box.set_border_width (6)
         box.set_spacing (3)
-        box.set_layout (gtk.BUTTONBOX_END)
+        box.set_layout (Gtk.ButtonBoxStyle.END)
 
-        back = gtk.Button (stock=gtk.STOCK_GO_BACK)
+        back = Gtk.Button (stock=Gtk.STOCK_GO_BACK)
         back.connect ('clicked', self._on_back_clicked)
         back.set_sensitive (False)
         self.back = back
 
-        close = gtk.Button (stock=gtk.STOCK_CLOSE)
+        close = Gtk.Button (stock=Gtk.STOCK_CLOSE)
         close.connect ('clicked', self.quit)
         self.close = close
 
-        cancel = gtk.Button (stock=gtk.STOCK_CANCEL)
+        cancel = Gtk.Button (stock=Gtk.STOCK_CANCEL)
         cancel.connect ('clicked', self.quit)
         self.cancel = cancel
 
-        forward = gtk.Button (stock=gtk.STOCK_GO_FORWARD)
+        forward = Gtk.Button (stock=Gtk.STOCK_GO_FORWARD)
         forward.connect ('clicked', self._on_forward_clicked)
-        forward.set_flags (gtk.CAN_DEFAULT | gtk.HAS_DEFAULT)
+        forward.set_flags (Gtk.CAN_DEFAULT | Gtk.HAS_DEFAULT)
         self.forward = forward
 
         box.pack_start (back, False, False, 0)
@@ -181,17 +182,17 @@ class Troubleshooter:
         self._in_module_call = True
         self.forward.set_sensitive (False)
         self.back.set_sensitive (False)
-        gdkwin = self.get_window ().window
+        gdkwin = self.get_window ().get_window()
         if gdkwin:
-            gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.WATCH))
-            while gtk.events_pending ():
-                gtk.main_iteration ()
+            gdkwin.set_cursor (Gdk.Cursor.new(Gdk.WATCH))
+            while Gtk.events_pending ():
+                Gtk.main_iteration ()
 
     def ready (self):
         self._in_module_call = False
-        gdkwin = self.get_window ().window
+        gdkwin = self.get_window ().get_window()
         if gdkwin:
-            gdkwin.set_cursor (gtk.gdk.Cursor (gtk.gdk.LEFT_PTR))
+            gdkwin.set_cursor (Gdk.Cursor.new(Gdk.CursorType.LEFT_PTR))
 
         self._set_back_forward_buttons ()
 
@@ -373,8 +374,8 @@ if __name__ == "__main__":
                 set_debugging (True)
     except getopt.GetoptError:
         pass
-    gtk.gdk.threads_init()
-    run (gtk.main_quit)
-    gtk.gdk.threads_enter ()
-    gtk.main ()
-    gtk.gdk.threads_leave ()
+    Gdk.threads_init()
+    run (Gtk.main_quit)
+    Gdk.threads_enter ()
+    Gtk.main ()
+    Gdk.threads_leave ()

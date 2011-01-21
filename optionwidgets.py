@@ -18,7 +18,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-import gtk
+from gi.repository import Gtk
 import cups
 from gettext import gettext as _
 import ppdippstr
@@ -50,11 +50,11 @@ class Option:
         self.enabled = True
         self.tab_label = tab_label
 
-        vbox = gtk.VBox()
+        vbox = Gtk.VBox()
         
-        self.btnConflict = gtk.Button()
-        icon = gtk.image_new_from_stock(gtk.STOCK_DIALOG_WARNING,
-                                        gtk.ICON_SIZE_SMALL_TOOLBAR)
+        self.btnConflict = Gtk.Button()
+        icon = Gtk.Image.new_from_stock(Gtk.STOCK_DIALOG_WARNING,
+                                        Gtk.IconSize.SMALL_TOOLBAR)
         self.btnConflict.add(icon)
         self.btnConflict.set_no_show_all(True) #avoid the button taking
                                                # over control again
@@ -163,14 +163,14 @@ class Option:
 
     def on_btnConflict_clicked(self, button):
         parent = self.btnConflict
-        while parent != None and not isinstance (parent, gtk.Window):
+        while parent != None and not isinstance (parent, Gtk.Window):
             parent = parent.get_parent ()
 
-        dialog = gtk.MessageDialog (parent,
-                                    gtk.DIALOG_DESTROY_WITH_PARENT |
-                                    gtk.DIALOG_MODAL,
-                                    gtk.MESSAGE_WARNING,
-                                    gtk.BUTTONS_CLOSE,
+        dialog = Gtk.MessageDialog (parent,
+                                    Gtk.DialogFlags.DESTROY_WITH_PARENT |
+                                    Gtk.DialogFlags.MODAL,
+                                    Gtk.MessageType.WARNING,
+                                    Gtk.ButtonsType.CLOSE,
                                     self.conflict_message)
         dialog.run()
         dialog.destroy()
@@ -180,7 +180,7 @@ class Option:
 class OptionBool(Option):
 
     def __init__(self, option, ppd, gui, tab_label=None):
-        self.selector = gtk.CheckButton(ppdippstr.ppd.get (option.text))
+        self.selector = Gtk.CheckButton(ppdippstr.ppd.get (option.text))
         self.label = None
         self.false = u"False" # hack to allow "None" instead of "False"
         self.true = u"True"
@@ -203,13 +203,13 @@ class OptionPickOne(Option):
     widget_name = "OptionPickOne"
 
     def __init__(self, option, ppd, gui, tab_label=None):
-        self.selector = gtk.combo_box_new_text()
+        self.selector = Gtk.ComboBoxText()
         #self.selector.set_alignment(0.0, 0.5)
 
         label = ppdippstr.ppd.get (option.text)
         if not label.endswith (':'):
             label += ':'
-        self.label = gtk.Label(label)
+        self.label = Gtk.Label(label=label)
         self.label.set_alignment(0.0, 0.5)
         
         selected = None

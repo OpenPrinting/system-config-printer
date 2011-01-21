@@ -26,6 +26,7 @@ import dbus
 import dbus.glib
 import dbus.service
 import gobject
+from gi.repository import Notify
 import time
 import locale
 import gettext
@@ -50,8 +51,8 @@ except RuntimeError, e:
 APPDIR="/usr/share/system-config-printer"
 ICON="printer"
 
-# We need to call pynotify.init before we can check the server for caps
-pynotify.init('System Config Printer Notification')
+# We need to call Notify.init before we can check the server for caps
+Notify.init('System Config Printer Notification')
 
 # D-Bus APIs of other objects we'll use.
 PRINTING_BUS="org.fedoraproject.Config.Printing"
@@ -84,7 +85,7 @@ class NewPrinterNotification(dbus.service.Object):
     def GetReady (self):
         TIMEOUT=1200000
         if self.getting_ready == 0:
-            n = pynotify.Notification (_("Configuring new printer"),
+            n = Notify.Notification (_("Configuring new printer"),
                                        _("Please wait..."),
                                        'printer')
             n.set_timeout (TIMEOUT + 5000)
@@ -124,10 +125,10 @@ class NewPrinterNotification(dbus.service.Object):
                 text = _("No printer driver for %s.") % device
             else:
                 text = _("No driver for this printer.")
-            n = pynotify.Notification (title, text, 'printer')
-            if "actions" in pynotify.get_server_caps():
-                n.set_urgency (pynotify.URGENCY_CRITICAL)
-                n.set_timeout (pynotify.EXPIRES_NEVER)
+            n = Notify.Notification (title, text, 'printer')
+            if "actions" in Notify.get_server_caps():
+                n.set_urgency (Notify.URGENCY_CRITICAL)
+                n.set_timeout (Notify.EXPIRES_NEVER)
                 n.add_action ("setup-printer", _("Search"),
                               lambda x, y:
                                   self.setup_printer (x, y, name, devid))
@@ -173,12 +174,12 @@ class NewPrinterNotification(dbus.service.Object):
                 pkgs = reduce (lambda x,y: x + ", " + y, missing_pkgs)
                 title = _("Install printer driver")
                 text = _("`%s' requires driver installation: %s.") % (name, pkgs)
-                n = pynotify.Notification (title, text)
+                n = Notify.Notification (title, text)
                 import installpackage
-                if "actions" in pynotify.get_server_caps():
+                if "actions" in Notify.get_server_caps():
                     try:
                         self.packagekit = installpackage.PackageKit ()
-                        n.set_timeout (pynotify.EXPIRES_NEVER)
+                        n.set_timeout (Notify.EXPIRES_NEVER)
                         n.add_action ("install-driver", _("Install"),
                                       lambda x, y:
                                           self.install_driver (x, y,
@@ -196,9 +197,9 @@ class NewPrinterNotification(dbus.service.Object):
             elif status == self.STATUS_SUCCESS:
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
                 text = _("`%s' is ready for printing.") % name
-                n = pynotify.Notification (title, text)
-                if "actions" in pynotify.get_server_caps():
-                    n.set_urgency (pynotify.URGENCY_NORMAL)
+                n = Notify.Notification (title, text)
+                if "actions" in Notify.get_server_caps():
+                    n.set_urgency (Notify.URGENCY_NORMAL)
                     n.add_action ("test-page", _("Print test page"),
                                   lambda x, y:
                                       self.print_test_page (x, y, name))
@@ -208,16 +209,16 @@ class NewPrinterNotification(dbus.service.Object):
                 devid = "MFG:%s;MDL:%s;DES:%s;CMD:%s;" % (mfg, mdl, des, cmd)
                 text = (_("`%s' has been added, using the `%s' driver.") %
                         (name, driver))
-                n = pynotify.Notification (title, text, 'printer')
-                if "actions" in pynotify.get_server_caps():
-                    n.set_urgency (pynotify.URGENCY_CRITICAL)
+                n = Notify.Notification (title, text, 'printer')
+                if "actions" in Notify.get_server_caps():
+                    n.set_urgency (Notify.URGENCY_CRITICAL)
                     n.add_action ("test-page", _("Print test page"),
                                   lambda x, y:
                                       self.print_test_page (x, y, name, devid))
                     n.add_action ("find-driver", _("Find driver"),
                                   lambda x, y: 
                                   self.find_driver (x, y, name, devid))
-                    n.set_timeout (pynotify.EXPIRES_NEVER)
+                    n.set_timeout (Notify.EXPIRES_NEVER)
                 else:
                     self.configure (None, None, name)
 
@@ -391,7 +392,7 @@ if __name__ == '__main__':
             set_debugging (True)
 
     # Must be done before connecting to D-Bus (for some reason).
-    if not pynotify.init (PROGRAM_NAME):
+    if not Notify.init (PROGRAM_NAME):
         try:
             print >> sys.stderr, ("%s: unable to initialize pynotify" %
                                   PROGRAM_NAME)
