@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2011 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -61,9 +61,7 @@ class ChooseNetworkPrinter(Question):
         if not answers.get ('remote_server_cups', False):
             return False
 
-        server = answers['remote_server_name']
-        if not server:
-            server = answers['remote_server_ip_address']
+        server = answers['remote_server_try_connect']
 
         model = gtk.ListStore (gobject.TYPE_STRING,
                                gobject.TYPE_STRING,
