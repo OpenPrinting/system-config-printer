@@ -2,7 +2,7 @@
 
 ## Printing troubleshooter
 
-## Copyright (C) 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -51,6 +51,7 @@ class CheckNetworkServerSanity(Question):
 
         server_name = answers['remote_server_name']
         server_port = answers.get('remote_server_port', 631)
+        try_connect = False
         if server_name:
             # Try resolving the hostname.
             try:
@@ -58,13 +59,14 @@ class CheckNetworkServerSanity(Question):
                 resolves = map (lambda (family, socktype,
                                         proto, canonname, sockaddr):
                                     sockaddr[0], ai)
+                try_connect = True
             except socket.gaierror:
                 resolves = False
 
             self.answers['remote_server_name_resolves'] = resolves
 
+            ipaddr = answers.get ('remote_server_ip_address', '')
             if resolves:
-                ipaddr = answers.get ('remote_server_ip_address', '')
                 if ipaddr:
                     try:
                         resolves.index (ipaddr)
@@ -72,6 +74,10 @@ class CheckNetworkServerSanity(Question):
                         # The IP address given doesn't match the server name.
                         # Use the IP address instead of the name.
                         server_name = ipaddr
+                        try_connect = True
+            elif ipaddr:
+                server_name = ipaddr
+                try_connect = True
         else:
             server_name = answers['remote_server_ip_address']
             # Validate it.
@@ -84,10 +90,11 @@ class CheckNetworkServerSanity(Question):
                 resolves = False
 
             self.answers['remote_server_name_resolves'] = resolves
+            try_connect = True
 
         self.answers['remote_server_try_connect'] = server_name
 
-        if (self.answers['remote_server_name_resolves'] and
+        if (try_connect and
             answers.get ('cups_device_uri_scheme', 'ipp') in ['ipp',
                                                               'http',
                                                               'https']):
@@ -132,8 +139,7 @@ class CheckNetworkServerSanity(Question):
                         except:
                             pass
 
-        if (self.answers['remote_server_name_resolves'] and
-            not self.answers.get ('remote_server_connect_ipp', False)):
+        if try_connect:
             # Try to see if we can connect using smbc.
             context = None
             try:
@@ -173,7 +179,7 @@ class CheckNetworkServerSanity(Question):
                 self.answers['remote_server_smb_share_anon_access'] = accessible
 
         # Try traceroute if we haven't already.
-        if (self.answers['remote_server_name_resolves'] and
+        if (try_connect and
             not answers.has_key ('remote_server_traceroute')):
             try:
                 self.op = TimedSubprocess (parent=parent, close_fds=True,
