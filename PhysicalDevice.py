@@ -112,7 +112,10 @@ class PhysicalDevice:
 
         if not self._network_host and device.device_class == "network":
             # We just added a network device.
-            self._network_host = self._get_host_from_uri (device.uri)
+            if hasattr (device, 'address'):
+                self._network_host = device.address
+            else:
+                self._network_host = self._get_host_from_uri (device.uri)
 
     def get_devices (self):
         return self.devices
