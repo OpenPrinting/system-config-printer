@@ -152,6 +152,7 @@ class NewPrinterGUI(GtkGUI):
         "beh" : 0,
         "hp" : 0,
         "hpfax" : 0,
+        "dnssd" : 0,
         "socket": 2,
         "ipp" : 3,
         "http" : 3,
@@ -937,6 +938,11 @@ class NewPrinterGUI(GtkGUI):
                         pass
                     except:
                         nonfatalException ()
+                elif ((uri.startswith ("dnssd:") or uri.startswith("mdns:")) and
+                      uri.endswith ("/cups") and
+                      self.device.info):
+                    # Remote CUPS queue discovered by "dnssd" CUPS backend
+                    self.remotecupsqueue = self.device.info
 
                 if not self.remotecupsqueue:
                     if self.ppds == None:
@@ -2317,6 +2323,28 @@ class NewPrinterGUI(GtkGUI):
                 device.menuentry = _("IPP")
             elif device.type == "http" or device.type == "https":
                 device.menuentry = _("HTTP")
+            elif device.type == "dnssd" or device.type == "mdns":
+                (scheme, rest) = urllib.splittype (device.uri)
+                (name, rest) = urllib.splithost (rest)
+                (cupsqueue, rest) = urllib.splitquery (rest)
+                if cupsqueue[0] == '/':
+                    cupsqueue = cupsqueue[1:]
+                if cupsqueue == 'cups':
+                    device.menuentry = _("Remote CUPS printer via DNS-SD")
+                else:
+                    protocol = None
+                    if name.find("._ipp") != -1:
+                        protocol = "IPP"
+                    elif name.find("._printer") != -1:
+                        protocol = "LPD"
+                    elif name.find("._pdl-datastream") != -1:
+                        protocol = "AppSocket/JetDirect"
+                    if protocol != None:
+                        device.menuentry = \
+                            _("%s network printer via DNS-SD") % protocol
+                    else:
+                        device.menuentry = \
+                            _("Network printer via DNS-SD")
             else:
                 device.menuentry = device.uri
 
@@ -2328,29 +2356,46 @@ class NewPrinterGUI(GtkGUI):
         if physicaldevice.get_data ('checked-hplip') != True:
             hp_drivable = False
             is_network = False
+            remotecups = False
+            host = None
             device_dict = { 'device-class': 'network' }
+            if physicaldevice._network_host:
+                host = physicaldevice._network_host
             for device in physicaldevice.get_devices ():
                 if device.type == "hp":
                     # We already know that HPLIP can drive this device.
                     hp_drivable = True
                     break
-                elif device.type in ["socket", "lpd", "ipp"]:
+                elif device.type in ["socket", "lpd", "ipp", "dnssd", "mdns"]:
                     # This is a network printer.
-                    (scheme, rest) = urllib.splittype (device.uri)
-                    (hostport, rest) = urllib.splithost (rest)
-                    if hostport != None:
-                        (host, port) = urllib.splitport (hostport)
+                    if host == None and device.type in ["socket", "lpd", "ipp"]:
+                        (scheme, rest) = urllib.splittype (device.uri)
+                        (hostport, rest) = urllib.splithost (rest)
+                        if hostport != None:
+                            (host, port) = urllib.splitport (hostport)
+                    if host:
                         is_network = True
-                        self.getNetworkPrinterMakeModel(host=host,
-                                                        device=device)
+                        remotecups = ((device.uri.startswith('dnssd:') or \
+                                       device.uri.startswith('mdns:')) and \
+                                      device.uri.endswith('/cups'))
+                        if (not device.make_and_model or \
+                            device.make_and_model == "Unknown") and not \
+                           remotecups:
+                            self.getNetworkPrinterMakeModel(host=host,
+                                                            device=device)
                         device_dict['device-info'] = device.info
                         device_dict['device-make-and-model'] = (device.
                                                                 make_and_model)
                         device_dict['device-id'] = device.id
                         device_dict['device-location'] = device.location
 
-            if not hp_drivable and is_network:
-                hplipuri = self.get_hplip_uri_for_network_printer (host,
+            if not hp_drivable and is_network and not remotecups:
+                if (hasattr (physicaldevice, "dnssd_hostname") and \
+                    physicaldevice.dnssd_hostname):
+                    hpliphost = physicaldevice.dnssd_hostname
+                else:
+                    hpliphost = host
+                hplipuri = self.get_hplip_uri_for_network_printer (hpliphost,
                                                                    "print")
                 if hplipuri:
                     dev = cupshelpers.Device (hplipuri, **device_dict)
@@ -2359,7 +2404,7 @@ class NewPrinterGUI(GtkGUI):
 
                     # Now check to see if we can also send faxes using
                     # this device.
-                    faxuri = self.get_hplip_uri_for_network_printer (host,
+                    faxuri = self.get_hplip_uri_for_network_printer (hpliphost,
                                                                      "fax")
                     if faxuri:
                         faxdevid = self.get_hpfax_device_id (faxuri)
@@ -2418,6 +2463,26 @@ class NewPrinterGUI(GtkGUI):
             elif device.type == "hal":
                 text = _("Local printer detected by the "
                          "Hardware Abstraction Layer (HAL).")
+            elif device.type == "dnssd" or device.type == "mdns":
+                (scheme, rest) = urllib.splittype (device.uri)
+                (name, rest) = urllib.splithost (rest)
+                (cupsqueue, rest) = urllib.splitquery (rest)
+                if cupsqueue[0] == '/':
+                    cupsqueue = cupsqueue[1:]
+                if cupsqueue == 'cups':
+                    text = _("Remote CUPS printer via DNS-SD")
+                else:
+                    protocol = None
+                    if name.find("._ipp") != -1:
+                        protocol = "IPP"
+                    elif name.find("._printer") != -1:
+                        protocol = "LPD"
+                    elif name.find("._pdl-datastream") != -1:
+                        protocol = "AppSocket/JetDirect"
+                    if protocol != None:
+                        text = _("%s network printer via DNS-SD") % protocol
+                    else:
+                        text = _("Network printer via DNS-SD")
             else:
                 text = device.uri
 

@@ -28,22 +28,29 @@ class PhysicalDevice:
     def __init__(self, device):
         self.devices = None
         self._network_host = None
+        self.dnssd_hostname = None
         self.add_device (device)
         self._user_data = {}
         self._ppdippstr = ppdippstr.backends
 
     def _canonical_id (self, device):
-        mfg = device.id_dict.get ('MFG', '')
-        mdl = device.id_dict.get ('MDL', '')
+        if hasattr (device, "id_dict"):
+            mfg = device.id_dict.get ('MFG', '')
+            mdl = device.id_dict.get ('MDL', '')
 
-        if mfg == '' or mdl.lower ().startswith (mfg.lower ()):
-            make_and_model = mdl
+            if mfg == '' or mdl.lower ().startswith (mfg.lower ()):
+                make_and_model = mdl
+            else:
+                make_and_model = "%s %s" % (mfg, mdl)
         else:
-            make_and_model = "%s %s" % (mfg, mdl)
+             make_and_model = device.make_and_model
 
         return cupshelpers.ppds.ppdMakeModelSplit (make_and_model)
 
     def _get_host_from_uri (self, uri):
+        hostport = None
+        host = None
+        dnssdhost = None
         (scheme, rest) = urllib.splittype (uri)
         if scheme == 'hp' or scheme == 'hpfax':
             if rest.startswith ("/net/"):
@@ -51,25 +58,39 @@ class PhysicalDevice:
                 if ipparam != None and ipparam.startswith("ip="):
                     hostport = ipparam[3:]
                 else:
-                    return None
+                    if ipparam != None and ipparam.startswith("zc="):
+                        dnssdhost = ipparam[3:]
+                    else:
+                        return None, None
             else:
-                return None
+                return None, None
+        elif scheme == 'dnssd' or scheme == 'mdns':
+            # The URIs of the CUPS "dnssd" backend do not contain the host
+            # name of the printer
+            return None, None
         else:
             (hostport, rest) = urllib.splithost (rest)
             if hostport == None:
-                return None
+                return None, None
 
-        (host, port) = urllib.splitport (hostport)
-        return host
+        if hostport:
+            (host, port) = urllib.splitport (hostport)
+        return host, dnssdhost
 
     def add_device (self, device):
-        if self._network_host:
-            if hasattr (device, 'address'):
+        if self._network_host or self.dnssd_hostname:
+            host, dnssdhost = self._get_host_from_uri (device.uri)
+            if (hasattr (device, 'address')):
                 host = device.address
-            else:
-                host = self._get_host_from_uri (device.uri)
-
-            if host != self._network_host:
+            if (hasattr (device, 'hostname') and dnssdhost == None):
+                dnssdhost = device.hostname
+            if (host == None and dnssdhost == None) or \
+               (host and self._network_host and \
+                host != self._network_host) or \
+               (dnssdhost and self.dnssd_hostname and \
+                dnssdhost != self.dnssd_hostname) or \
+               (host == None and self.dnssd_hostname == None) or \
+               (dnssdhost == None and self._network_host == None):
                 raise ValueError
         else:
             (mfg, mdl) = self._canonical_id (device)
@@ -110,22 +131,48 @@ class PhysicalDevice:
         self.devices.append (device)
         self.devices.sort ()
 
-        if not self._network_host and device.device_class == "network":
+        if (not self._network_host or not self.dnssd_hostname) and \
+           device.device_class == "network":
             # We just added a network device.
-            self._network_host = self._get_host_from_uri (device.uri)
+            self._network_host, dnssdhost = \
+                self._get_host_from_uri (device.uri)
+            if dnssdhost:
+                self.dnssd_hostname = dnssdhost;
+
+        if (hasattr (device, 'address') and self._network_host == None):
+            if device.address:
+                self._network_host = device.address
+        if (hasattr (device, 'hostname') and self.dnssd_hostname == None):
+            if device.hostname:
+                self.dnssd_hostname = device.hostname
 
     def get_devices (self):
         return self.devices
 
     def get_info (self):
         # If the manufacturer/model is not known, or useless (in the
-        # case of the hpfax backend), show the device-info field
-        # instead.
-        if self.mfg == '' or (self.mfg == "HP" and self.mdl == "Fax"):
-            return self._ppdippstr.get (self.devices[0].info)
-
-        info = "%s %s" % (self.mfg, self.mdl)
-        if len (self.sn) > 0:
+        # case of the hpfax backend or a dnssd URI pointing to a remote
+        # CUPS queue), show the device-info fiel instead.
+        if self.mfg == '' or \
+           (self.mfg == "HP" and self.mdl.startswith("Fax")) or \
+           ((self.devices[0].uri.startswith('dnssd:') or \
+             self.devices[0].uri.startswith('mdns:')) and \
+            self.devices[0].uri.endswith('/cups')):
+            info = self._ppdippstr.get (self.devices[0].info)
+        else:
+            info = "%s %s" % (self.mfg, self.mdl)
+        if ((self._network_host and len (self._network_host) > 0) or \
+              (self.dnssd_hostname and len (self.dnssd_hostname))) and not \
+             ((self.devices[0].uri.startswith('dnssd:') or \
+               self.devices[0].uri.startswith('mdns:')) and \
+              self.devices[0].uri.endswith('/cups')):
+            if not self.dnssd_hostname:
+                info += " (%s)" % self._network_host
+            elif not self._network_host:
+                info += " (%s)" % self.dnssd_hostname
+            else:
+                info += " (%s, %s)" % (self.dnssd_hostname, self._network_host)
+        elif len (self.sn) > 0:
             info += " (%s)" % self.sn
         return info
 

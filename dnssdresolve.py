@@ -18,7 +18,7 @@
 ## along with this program; if not, write to the Free Software
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
-import dbus
+import dbus, re
 from debug import *
 
 class DNSSDHostNamesResolver:
@@ -32,6 +32,11 @@ class DNSSDHostNamesResolver:
         debugprint ("-%s" % self)
 
     def resolve (self, reply_handler):
+
+        def expandhex (searchres):
+            expr = searchres.group(0)
+            return chr(int(expr[1:], 16))
+
         self._reply_handler = reply_handler
 
         bus = dbus.SystemBus ()
@@ -53,6 +58,9 @@ class DNSSDHostNamesResolver:
                 hostname = uri[8:]
             else:
                 hostname = uri[8:8+p]
+
+            hostname = hostname.encode('utf-8')
+            hostname = re.sub("%(?i)[\dabcdef]{2}", expandhex, hostname)
 
             elements = hostname.split (".")
             if len (elements) != 4:
