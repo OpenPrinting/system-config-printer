@@ -4476,7 +4476,7 @@ class NewPrinterGUI(GtkGUI):
                     except:
                         nonfatalException ()
                 elif ((uri.startswith ("dnssd:") or uri.startswith("mdns:")) and
-                      uri.endswith ("/cups") and
+                      uri.find ("/cups") != -1 and
                       self.device.info):
                     # Remote CUPS queue discovered by "dnssd" CUPS backend
                     self.remotecupsqueue = self.device.info
