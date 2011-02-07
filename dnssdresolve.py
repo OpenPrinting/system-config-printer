@@ -98,7 +98,12 @@ class DNSSDHostNamesResolver:
                 host, aprotocol, address, port, txt, flags):
         uri = self._device_uri_by_name[(name, stype, domain)]
         self._devices[uri].address = address
-        debugprint ("%s is at %s" % (uri, address))
+        hostname = host
+        p = hostname.find(".")
+        if p != -1:
+            hostname = hostname[:p]
+        debugprint ("%s is at %s (%s)" % (uri, address, hostname))
+        self._devices[uri].hostname = hostname
         self._resolved ()
 
     def _error (self, uri, error):
