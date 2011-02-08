@@ -2091,9 +2091,33 @@ class GUI(GtkGUI, monitor.Watcher):
                            self.btnSelectDevice]:
                 button.set_sensitive (adjustable)
 
-            commands = (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0
-            self.btnSelfTest.set_sensitive (commands and printable)
-            self.btnCleanHeads.set_sensitive (commands and printable)
+            selftest = False
+            cleanheads = False
+            if (self.printer.type & cups.CUPS_PRINTER_COMMANDS) != 0:
+                attrs = self.printer.other_attributes
+                formats = attrs.get('document-format-supported', [])
+                try:
+                    # Is the command format supported?
+                    formats.index ('application/vnd.cups-command')
+
+                    # Yes...
+                    commands = attrs.get('printer-commands', [])
+                    for command in commands:
+                        if command == "PrintSelfTestPage":
+                            selftest = True
+                            if cleanheads:
+                                break
+
+                        elif command == "Clean":
+                            cleanheads = True
+                            if selftest:
+                                break
+                except ValueError:
+                    # Command format not supported.
+                    pass
+
+            self.btnSelfTest.set_sensitive (selftest)
+            self.btnCleanHeads.set_sensitive (cleanheads)
         except:
             nonfatalException()
 
