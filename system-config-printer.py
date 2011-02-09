@@ -389,7 +389,10 @@ class GUI(GtkGUI):
         self.AboutDialog.set_version(config.VERSION)
         self.AboutDialog.set_icon_name('printer')
 
-        gtk_label_autowrap.set_autowrap(self.PrintersWindow)
+        try:
+            slip.gtk.label_set_autowrap(self.PrintersWindow)
+        except: # no slip.gtk module
+            gtk_label_autowrap.set_autowrap(self.PrintersWindow)
 
         try:
             self.cups = authconn.Connection(self.PrintersWindow)

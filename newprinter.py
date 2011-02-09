@@ -51,7 +51,13 @@ from gui import GtkGUI
 from optionwidgets import OptionWidget
 from debug import *
 import probe_printer
-import gtk_label_autowrap
+
+try:
+    # label_set_autowrap()
+    import slip.gtk
+except:
+    import gtk_label_autowrap
+
 import urllib
 from smburi import SMBURI
 from errordialogs import *
@@ -344,7 +350,10 @@ class NewPrinterGUI(GtkGUI):
         for dialog in [self.SMBBrowseDialog]:
             dialog.connect ("delete-event", on_delete_just_hide)
 
-        gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
+        try:
+            slip.gtk.label_set_autowrap(self.NewPrinterWindow)
+        except: # no slip.gtk module
+            gtk_label_autowrap.set_autowrap(self.NewPrinterWindow)
 
         self.ntbkNewPrinter.set_show_tabs(False)
         self.ntbkPPDSource.set_show_tabs(False)
