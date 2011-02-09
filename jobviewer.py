@@ -464,8 +464,6 @@ class JobViewer (GtkGUI, monitor.Watcher):
         self.treeview.connect ('button_release_event',
                                self.on_treeview_button_release_event)
         self.treeview.connect ('popup-menu', self.on_treeview_popup_menu)
-        self.treeview.set_has_tooltip (True)
-        self.treeview.connect ('query-tooltip', self._on_treeview_query_tooltip)
 
         self.JobsWindow.set_icon_name (ICON)
         self.JobsWindow.hide ()
@@ -2251,25 +2249,3 @@ class JobViewer (GtkGUI, monitor.Watcher):
             text += " - " + title
 
         cell.set_property ("text", text)
-
-    def _on_treeview_query_tooltip (self, tv, x, y, keyboard_mode, tooltip):
-        if keyboard_mode:
-            (path, column) = tv.get_cursor ()
-            if path is None:
-                return False
-        else:
-            bin_x, bin_y = tv.convert_widget_to_bin_window_coords (x, y)
-            ret = tv.get_path_at_pos (bin_x, bin_y)
-            if ret is None:
-                return False
-            path = ret[0]
-            column = ret[1]
-
-        cells = column.get_cell_renderers ()
-        for cell in cells:
-            if type (cell) == gtk.CellRendererText:
-                tooltip.set_markup (cell.get_property ("text"))
-                self.treeview.set_tooltip_cell (tooltip, path, column, cell)
-                break
-
-        return True
