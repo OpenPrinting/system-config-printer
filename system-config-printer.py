@@ -24,18 +24,20 @@
 # config is generated from config.py.in by configure
 import config
 
-import errno
-import sys, os, tempfile, time, traceback, re, httplib, glob, string
-import subprocess
-import signal, thread
-from timedops import *
-import dbus
+import sys
 try:
     import gtk
 except RuntimeError, e:
     print "system-config-printer:", e
     print "This is a graphical application and requires DISPLAY to be set."
     sys.exit (1)
+
+import errno
+import os, tempfile, time, traceback, re, httplib, glob, string
+import subprocess
+import signal, thread
+from timedops import *
+import dbus
 
 import glib
 def show_uri (uri):
