@@ -5938,7 +5938,7 @@ class NewPrinterGUI(GtkGUI):
                             "HP Linux Imaging and Printing (HPLIP)"
                         physicaldevice.add_device (faxdev)
 
-                physicaldevice.set_data ('checked-hplip', True)
+            physicaldevice.set_data ('checked-hplip', True)
 
         # Fill the list of connections for this device.
         n = 0
