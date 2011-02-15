@@ -4523,6 +4523,15 @@ class NewPrinterGUI(GtkGUI):
                         self.ready (self.NewPrinterWindow)
                         return
 
+                if (self.device.hp_scannable and
+                    not os.access ("/etc/sane.d/dll.d/hpaio", os.R_OK)):
+                    try:
+                        pk = installpackage.PackageKit ()
+                        xid = self.NewPrinterWindow.window.xid
+                        pk.InstallPackageName (xid, 0, "libsane-hpaio")
+                    except:
+                        pass
+
                 ppdname = None
                 try:
                     if self.remotecupsqueue:
@@ -4976,6 +4985,33 @@ class NewPrinterGUI(GtkGUI):
             return 'MFG:HP;MDL:Fax 2;DES:HP Fax 2;'
         else:
             return 'MFG:HP;MDL:Fax;DES:HP Fax;'
+
+    def get_hplip_scan_type_for_uri(self, uri):
+        os.environ["URI"] = uri
+        cmd = 'hp-query -k scan-type -d "${URI}"'
+        debugprint (uri + ": " + cmd)
+        try:
+            p = subprocess.Popen (cmd, shell=True, close_fds=True,
+                                  stdin=file("/dev/null"),
+                                  stdout=subprocess.PIPE,
+                                  stderr=subprocess.PIPE)
+            (stdout, stderr) = p.communicate ()
+            if p.returncode != 0:
+                return None
+        except:
+            # Problem executing command.
+            return None
+
+        scan_type = stdout.strip ()
+        fields = scan_type.split ("=", 1)
+        if len (fields) < 2:
+            return None
+
+        value = fields[1]
+        if value == '0':
+            return None
+
+        return value
 
     def get_hplip_uri_for_network_printer(self, host, mode):
         os.environ["HOST"] = host
@@ -5878,6 +5914,7 @@ class NewPrinterGUI(GtkGUI):
         # If this is a network device, check whether HPLIP can drive it.
         if physicaldevice.get_data ('checked-hplip') != True:
             hp_drivable = False
+            hp_scannable = False
             is_network = False
             remotecups = False
             host = None
@@ -5888,6 +5925,11 @@ class NewPrinterGUI(GtkGUI):
                 if device.type == "hp":
                     # We already know that HPLIP can drive this device.
                     hp_drivable = True
+
+                    # But can we scan using it?
+                    if self.get_hplip_scan_type_for_uri (device.uri):
+                        hp_scannable = True
+
                     break
                 elif device.type in ["socket", "lpd", "ipp", "dnssd", "mdns"]:
                     # This is a network printer.
@@ -5938,7 +5980,19 @@ class NewPrinterGUI(GtkGUI):
                             "HP Linux Imaging and Printing (HPLIP)"
                         physicaldevice.add_device (faxdev)
 
+            physicaldevice.set_data ('hp-scannable', True)
+            if hp_scannable and not os.access ("/etc/sane.d/dll.d/hpaio",
+                                               os.R_OK):
+                try:
+                    pk = installpackage.PackageKit ()
+                    xid = self.NewPrinterWindow.window.xid
+                    pk.InstallPackageName (xid, 0, "libsane-hpaio")
+                except:
+                    pass
+
             physicaldevice.set_data ('checked-hplip', True)
+
+        device.hp_scannable = physicaldevice.get_data ('hp-scannable')
 
         # Fill the list of connections for this device.
         n = 0
