@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/python
 
 ## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
 ## Copyright (C) 2008 Novell, Inc.
