@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2010 Red Hat, Inc.
+## Copyright (C) 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -96,7 +96,7 @@ class DNSSDHostNamesResolver:
 
     def _reply (self, interface, protocol, name, stype, domain,
                 host, aprotocol, address, port, txt, flags):
-        uri = self._device_uri_by_name[(name, stype, domain)]
+        uri = self._device_uri_by_name[(name.encode ('utf-8'), stype, domain)]
         self._devices[uri].address = address
         hostname = host
         p = hostname.find(".")
