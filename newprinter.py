@@ -1026,6 +1026,7 @@ class NewPrinterGUI(GtkGUI):
                                                     "Generic Printer",
                                                     [],
                                                     self.device.uri)
+                        status = "generic"
 
                     if ppdname and not self.remotecupsqueue:
                         ppddict = self.ppds.getInfoFromPPDName (ppdname)
@@ -1035,7 +1036,7 @@ class NewPrinterGUI(GtkGUI):
                         self.auto_make = make
                         self.auto_model = model
                         self.auto_driver = ppdname
-                        if (status == self.ppds.STATUS_SUCCESS and \
+                        if (status == "exact" and \
                             self.dialog_mode != "ppd"):
                             self.exactdrivermatch = True
                         else:
