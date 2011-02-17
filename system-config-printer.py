@@ -156,6 +156,7 @@ class GUI(GtkGUI):
         self.connect_encrypt = cups.getEncryption ()
         self.connect_user = cups.getUser()
         self.monitor = None
+        self.populateList_timer = None
 
         self.servers = set((self.connect_server,))
         self.server_is_publishing = None # not known
@@ -2087,7 +2088,17 @@ class GUI(GtkGUI):
     ## Monitor signal helpers
     def printer_added_or_removed (self):
         # Just fetch the list of printers again.  This is too simplistic.
-        self.populateList (prompt_allowed=False)
+        def deferred_refresh ():
+            gtk.gdk.threads_enter ()
+            self.populateList (prompt_allowed=False)
+            gtk.gdk.threads_leave ()
+            return False
+
+        if self.populateList_timer:
+            gobject.source_remove (self.populateList_timer)
+
+        self.populateList_timer = gobject.timeout_add (200, deferred_refresh)
+        debugprint ("Deferred populateList by 200ms")
 
     ## Monitor signal handlers
     def printer_added (self, mon, printer):
@@ -2097,7 +2108,7 @@ class GUI(GtkGUI):
         if self.printers.has_key (printer):
             self.printers[printer].update (**event)
             self.dests_iconview_selection_changed (self.dests_iconview)
-            self.populateList ()
+            self.printer_added_or_removed ()
 
     def printer_removed (self, mon, printer):
         self.printer_added_or_removed ()
