@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-## Copyright (C) 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Author: Tim Waugh <twaugh@redhat.com>
 
 ## This program is free software; you can redistribute it and/or modify
@@ -145,12 +145,11 @@ class Monitor(gobject.GObject):
                 # System bus not running.
                 pass
 
+        self.bus = bus
         if bus != None:
             bus.add_signal_receiver (self.handle_dbus_signal,
                                      path=self.DBUS_PATH,
                                      dbus_interface=self.DBUS_IFACE)
-            self.bus = bus
-
         self.sub_id = -1
 
     def get_printers (self):
