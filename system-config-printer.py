@@ -1987,13 +1987,6 @@ class GUI(GtkGUI):
 
         return False
 
-    ## Watcher interface helpers
-    def printer_added_or_removed (self):
-        # Just fetch the list of printers again.  This is too simplistic.
-        gtk.gdk.threads_enter ()
-        self.populateList (prompt_allowed=False)
-        gtk.gdk.threads_leave ()
-
     def checkDriverExists(self, parent, name, ppd=None):
         """Check that the driver for an existing queue actually
         exists, and prompt to install the appropriate package
