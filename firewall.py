@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 
@@ -34,7 +34,10 @@ class Firewall:
 
     def _get_fw_data (self, reply_handler=None, error_handler=None):
         try:
-            return self._fw_data
+            if reply_handler == None:
+                return self._fw_data
+
+            self._client_reply_handler (self._fw_data)
         except AttributeError:
             try:
                 bus = dbus.SystemBus ()
