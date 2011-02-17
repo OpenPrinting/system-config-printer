@@ -971,7 +971,8 @@ class NewPrinterGUI(GtkGUI):
                         ready (self.NewPrinterWindow)
                         return
 
-                if (self.device.hp_scannable and
+                if (hasattr (self.device, 'hp_scannable') and
+                    self.device.hp_scannable and
                     not os.access ("/etc/sane.d/dll.d/hpaio", os.R_OK)):
                     try:
                         pk = installpackage.PackageKit ()
@@ -2467,15 +2468,6 @@ class NewPrinterGUI(GtkGUI):
                         physicaldevice.add_device (faxdev)
 
             physicaldevice.set_data ('hp-scannable', True)
-            if hp_scannable and not os.access ("/etc/sane.d/dll.d/hpaio",
-                                               os.R_OK):
-                try:
-                    pk = installpackage.PackageKit ()
-                    xid = self.NewPrinterWindow.window.xid
-                    pk.InstallPackageName (xid, 0, "libsane-hpaio")
-                except:
-                    pass
-
             physicaldevice.set_data ('checked-hplip', True)
 
         device.hp_scannable = physicaldevice.get_data ('hp-scannable')
