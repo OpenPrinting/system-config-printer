@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Authors:
 ##  Tim Waugh <twaugh@redhat.com>
 ##  Florian Festi <ffesti@redhat.com>
@@ -1603,6 +1603,7 @@ class NewPrinterGUI(GtkGUI):
             if (self._host == 'localhost' or
                 self._host[0] == '/'):
                 self.firewall = firewall.Firewall ()
+                debugprint ("Examining firewall")
                 self.firewall.read (reply_handler=self.on_firewall_read,
                                     error_handler=lambda x:
                                         self.start_fetching_devices())
@@ -1615,6 +1616,7 @@ class NewPrinterGUI(GtkGUI):
             nonfatalException ()
 
         if allowed:
+            debugprint ("Fetching devices (no firewall service")
             self.start_fetching_devices ()
 
     def on_firewall_read (self, data):
@@ -1637,6 +1639,8 @@ class NewPrinterGUI(GtkGUI):
                 f.add_rule (f.ALLOW_MDNS)
 
             if not allowed:
+                debugprint ("Asking for permission to adjust firewall:\n%s" %
+                            secondary_text)
                 dialog = gtk.MessageDialog (self.NewPrinterWindow,
                                             gtk.DIALOG_MODAL |
                                             gtk.DIALOG_DESTROY_WITH_PARENT,
@@ -1652,6 +1656,7 @@ class NewPrinterGUI(GtkGUI):
             nonfatalException ()
 
         if allowed:
+            debugprint ("Firewall all OK; fetching devices")
             self.start_fetching_devices ()
 
     def adjust_firewall_response (self, dialog, response):
@@ -1660,6 +1665,7 @@ class NewPrinterGUI(GtkGUI):
             self.firewall.add_rule (self.firewall.ALLOW_IPP_SERVER)
             self.firewall.write ()
 
+        debugprint ("Fetching devices after firewall dialog response")
         self.start_fetching_devices ()
 
     def start_fetching_devices (self):

@@ -25,6 +25,7 @@ import config
 
 import dbus
 import pickle
+from debug import *
 
 class Firewall:
     ALLOW_IPP_CLIENT = "--service=ipp-client"
@@ -34,10 +35,12 @@ class Firewall:
 
     def _get_fw_data (self, reply_handler=None, error_handler=None):
         try:
-            if reply_handler == None:
-                return self._fw_data
+            if self._fw_data:
+                debugprint ("Using cached firewall data")
+                if reply_handler == None:
+                    return self._fw_data
 
-            self._client_reply_handler (self._fw_data)
+                self._client_reply_handler (self._fw_data)
         except AttributeError:
             try:
                 bus = dbus.SystemBus ()
@@ -53,8 +56,11 @@ class Firewall:
 
                 p = self._firewall.read ()
                 self._fw_data = pickle.loads (p.encode ('utf-8'))
-            except dbus.DBusException:
+            except dbus.DBusException, e:
                 self._fw_data = (None, None)
+                if error_handler:
+                    debugprint ("D-Bus exception examining firewall")
+                    self._client_error_handler (e)
 
         return self._fw_data
 
@@ -69,9 +75,11 @@ class Firewall:
 
     def reply_handler (self, result):
         self._fw_data = pickle.loads (result.encode ('utf-8'))
+        debugprint ("Firewall data obtained")
         self._client_reply_handler (self._fw_data)
 
     def error_handler (self, exc):
+        debugprint ("Exception fetching firewall data")
         self._client_error_handler (exc)
 
     def write (self):
