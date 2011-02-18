@@ -91,12 +91,12 @@
       <attribute name="ppd-product" match=".*Ghostscript"/>
     </drivertype>
 
-    <drivertype name="gutenprint-expert">
-      <ppdname match="gutenprint.*:.*/expert"/>
+    <drivertype name="gutenprint-simplified">
+      <ppdname match="gutenprint.*:.*/simple|.*-gutenprint.*\.sim"/>
     </drivertype>
 
-    <drivertype name="gutenprint-simplified">
-      <ppdname match="gutenprint.*:"/>
+    <drivertype name="gutenprint-expert">
+      <ppdname match="gutenprint.*:|.*-gutenprint"/>
     </drivertype>
 
     <drivertype name="foomatic-recommended-hpijs">
