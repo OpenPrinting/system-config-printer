@@ -574,7 +574,9 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
             if not devid:
                 continue
 
-            print uri
+            if not uri.startswith ("xxx:"):
+                print uri
+
             id_dict = parseDeviceID (devid)
             fit = ppdfinder.getPPDNamesFromDeviceID (id_dict["MFG"],
                                                      id_dict["MDL"],
@@ -593,8 +595,10 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
             orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
                                                             ppds,
                                                             fit)
+            i = 1
             for t, ppd in orderedppds:
-                print "  %s\n    (%s, %s)" % (ppd, t, fit[ppd])
+                print "%d  %s\n    (%s, %s)" % (i, ppd, t, fit[ppd])
+                i += 1
     else:
         for make in ppdfinder.getMakes ():
             for model in ppdfinder.getModels (make):
@@ -610,7 +614,9 @@ def test (xml_path=None, attached=False, deviceid=None, debug=False):
                 orderedppds = drivertypes.get_ordered_ppdnames (orderedtypes,
                                                                 ppdsdict, fit)
                 print mm.encode (encoding) + ":"
+                i = 1
                 for t, ppd in orderedppds:
-                    print "  %s\n    (%s)" % (ppd, t)
+                    print "%d  %s\n    (%s)" % (i, ppd, t)
+                    i += 1
 
                 print
