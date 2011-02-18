@@ -2,7 +2,7 @@
 
 ## system-config-printer
 
-## Copyright (C) 2006, 2007, 2008, 2009, 2010 Red Hat, Inc.
+## Copyright (C) 2006, 2007, 2008, 2009, 2010, 2011 Red Hat, Inc.
 ## Copyright (C) 2006 Florian Festi <ffesti@redhat.com>
 ## Copyright (C) 2006, 2007, 2008, 2009 Tim Waugh <twaugh@redhat.com>
 
@@ -704,7 +704,7 @@ class PPDs:
         # If the Device ID matched but the DES field is different,
         # eliminate those PPDs too.
         if id_matched and description:
-            _debugprint ("Checking DES field")
+            _debugprint ("Checking DES field (%s)" % description)
             inexact = set()
             for ppdname in fit.keys ():
                 if (ppdname.find ("hpijs") != -1 or
@@ -716,8 +716,9 @@ class PPDs:
                     continue
                 # Fetch description field.
                 id_dict = parseDeviceID (id)
-                if id_dict["DES"] != description:
+                if id_dict["DES"] and id_dict["DES"] != description:
                     inexact.add (ppdname)
+                    _debugprint ("%s: DES:%s;" % (ppdname, id_dict["DES"]))
 
             if len (fit) - len (inexact) >= 1:
                 _debugprint ("discarding: %s" % inexact)
