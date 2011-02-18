@@ -515,6 +515,10 @@ def test (xml_path=None, attached=False, deviceid=None):
     from time import time
     import os.path
 
+    def debugprint (x):
+        print x
+    ppds.set_debugprint_fn (debugprint)
+
     locale.setlocale (locale.LC_ALL, "")
     encoding = locale.getlocale (locale.LC_CTYPE)[1]
     if xml_path == None:

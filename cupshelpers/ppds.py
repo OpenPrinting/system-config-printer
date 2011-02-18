@@ -576,6 +576,8 @@ class PPDs:
             mfgl = normalize (mfg)
             mdll = normalize (mdl)
 
+        _debugprint ("mfgl: %s" % mfgl)
+        _debugprint ("mdll: %s" % mdll)
         mfgrepl = {"hewlett-packard": "hp",
                    "lexmark international": "lexmark",
                    "kyocera": "kyocera mita"}
@@ -588,8 +590,10 @@ class PPDs:
                 mfg = rmfg
                 mfgl = mfg
                 # Found manufacturer (after mapping to canonical name)
+                _debugprint ("remapped mfgl: %s" % mfgl)
                 make = self.lmakes[mfgl]
 
+        _debugprint ("make: %s" % make)
         if make != None:
             mdls = self.makes[make]
             mdlsl = self.lmodels[normalize(make)]
@@ -599,35 +603,42 @@ class PPDs:
                 if mdll.startswith (prefix + ' '):
                     mdl = mdl[len (prefix) + 1:]
                     mdll = normalize (mdl)
+                    _debugprint ("unprefixed mdll: %s" % mdll)
 
             if self.lmodels[mfgl].has_key (mdll):
                 model = mdlsl[mdll]
                 for each in mdls[model].keys ():
                     fit[each] = self.FIT_EXACT
+                    _debugprint ("%s: %s" % (fit[each], each))
             else:
                 # Make use of the model name clean-up in the
                 # ppdMakeModelSplit () function
                 (mfg2, mdl2) = ppdMakeModelSplit (mfg + " " + mdl)
                 mdl2l = normalize (mdl2)
+                _debugprint ("re-split mdll: %s" % mdl2l)
                 if self.lmodels[mfgl].has_key (mdl2l):
                     model = mdlsl[mdl2l]
                     for each in mdls[model].keys ():
                         fit[each] = self.FIT_EXACT
+                        _debugprint ("%s: %s" % (fit[each], each))
       
         if not fit and mdls:
             (s, ppds) = self._findBestMatchPPDs (mdls, mdl)
             if s != self.FIT_NONE:
                 for each in ppds:
                     fit[each] = s
+                    _debugprint ("%s: %s" % (fit[each], each))
 
         if commandsets:
             if type (commandsets) != list:
                 commandsets = commandsets.split (',')
 
+            _debugprint ("Checking CMD field")
             generic = self._getPPDNameFromCommandSet (commandsets)
             if generic:
                 for driver in generic:
                     fit[driver] = self.FIT_GENERIC
+                    _debugprint ("%s: %s" % (fit[driver], driver))
 
         # What about the CMD field of the Device ID?  Some devices
         # have optional units for page description languages, such as
