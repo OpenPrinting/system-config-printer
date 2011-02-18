@@ -712,30 +712,6 @@ class PPDs:
             for each in failed:
                 del fit[each]
 
-        # If the Device ID matched but the DES field is different,
-        # eliminate those PPDs too.
-        if id_matched and description:
-            _debugprint ("Checking DES field (%s)" % description)
-            inexact = set()
-            for ppdname in fit.keys ():
-                if (ppdname.find ("hpijs") != -1 or
-                    ppdname.find ("hpcups") != -1):
-                    continue
-                ppddict = self.ppds[ppdname]
-                id = _singleton (ppddict['ppd-device-id'])
-                if not id:
-                    continue
-                # Fetch description field.
-                id_dict = parseDeviceID (id)
-                if id_dict["DES"] and id_dict["DES"] != description:
-                    inexact.add (ppdname)
-                    _debugprint ("%s: DES:%s;" % (ppdname, id_dict["DES"]))
-
-            if len (fit) - len (inexact) >= 1:
-                _debugprint ("discarding: %s" % inexact)
-                for each in inexact:
-                    del fit[each]
-
         if not fit:
             fallbacks = ["textonly.ppd", "postscript.ppd"]
             found = False
