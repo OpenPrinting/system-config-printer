@@ -507,7 +507,7 @@ class PreferenceOrder:
         return orderedtypes
 
 
-def test (xml_path=None, attached=False, deviceid=None):
+def test (xml_path=None, attached=False, deviceid=None, debug=False):
     import cups
     import locale
     import ppds
@@ -515,10 +515,12 @@ def test (xml_path=None, attached=False, deviceid=None):
     from time import time
     import os.path
 
-    def debugprint (x):
-        print x
-    ppds.set_debugprint_fn (debugprint)
+    if debug:
+        def debugprint (x):
+            print x
 
+        ppds.set_debugprint_fn (debugprint)
+            
     locale.setlocale (locale.LC_ALL, "")
     encoding = locale.getlocale (locale.LC_CTYPE)[1]
     if xml_path == None:
@@ -536,7 +538,8 @@ def test (xml_path=None, attached=False, deviceid=None):
     preforder = PreferenceOrder ()
     preforder.load (xmlpreferenceorder)
     loadtime = time () - loadstart
-    print "Time to load %s: %.3fs" % (xml_path, loadtime)
+    if debug:
+        print "Time to load %s: %.3fs" % (xml_path, loadtime)
 
     c = cups.Connection ()
     try:
