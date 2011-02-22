@@ -144,16 +144,21 @@
     </drivertype>
 
     <drivertype name="hpcups-plugin">
-      <ppdname match="drv:///(hp/)?hpcups.drv/"/>
+      <ppdname match="drv:///(hp/)?hpcups.drv/|.*-hpcups"/>
       <attribute name="ppd-make-and-model" match=".* plugin"/>
     </drivertype>
 
     <drivertype name="hpcups">
-      <ppdname match="drv:///(hp/)?hpcups.drv/|.*/HP-Fax-hpcups"/>
+      <ppdname match="drv:///(hp/)?hpcups.drv/|.*-hpcups"/>
+    </drivertype>
+
+    <drivertype name="hpijs-plugin">
+      <ppdname match="drv:///(hp/)?hpijs.drv/|.*-hpijs"/>
+      <attribute name="ppd-make-and-model" match=".* plugin"/>
     </drivertype>
 
     <drivertype name="hpijs">
-      <ppdname match="drv:///(hp/)?hpijs.drv/|.*/HP-Fax-hpijs"/>
+      <ppdname match="drv:///(hp/)?hpijs.drv/|.*-hpijs"/>
     </drivertype>
 
     <drivertype name="splix">
@@ -280,6 +285,7 @@
 
 	<!-- Last of all, 3rd party non-free drivers -->
 	<drivertype>hpcups-plugin</drivertype>
+	<drivertype>hpijs-plugin</drivertype>
 	<drivertype>splix</drivertype>
 	<drivertype>turboprint</drivertype>
       </drivers>
