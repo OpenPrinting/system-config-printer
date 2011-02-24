@@ -352,6 +352,9 @@ class OptionSelectOne(Option):
         else:
             print "Unknown value for %s: %s" % (name, value)
             print "Choices:", supported
+            if len(supported) > 0:
+                print "Selecting from choices:", supported[0]
+                self.selector.set_active(0)
         self.selector.connect("changed", self.changed)
 
     def get_current_value(self):
